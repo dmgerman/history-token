@@ -9,6 +9,12 @@ DECL|macro|TLB_V4_D_PAGE
 mdefine_line|#define TLB_V4_D_PAGE&t;(1 &lt;&lt; 2)
 DECL|macro|TLB_V4_I_PAGE
 mdefine_line|#define TLB_V4_I_PAGE&t;(1 &lt;&lt; 3)
+DECL|macro|TLB_V6_U_PAGE
+mdefine_line|#define TLB_V6_U_PAGE&t;(1 &lt;&lt; 4)
+DECL|macro|TLB_V6_D_PAGE
+mdefine_line|#define TLB_V6_D_PAGE&t;(1 &lt;&lt; 5)
+DECL|macro|TLB_V6_I_PAGE
+mdefine_line|#define TLB_V6_I_PAGE&t;(1 &lt;&lt; 6)
 DECL|macro|TLB_V3_FULL
 mdefine_line|#define TLB_V3_FULL&t;(1 &lt;&lt; 8)
 DECL|macro|TLB_V4_U_FULL
@@ -17,11 +23,23 @@ DECL|macro|TLB_V4_D_FULL
 mdefine_line|#define TLB_V4_D_FULL&t;(1 &lt;&lt; 10)
 DECL|macro|TLB_V4_I_FULL
 mdefine_line|#define TLB_V4_I_FULL&t;(1 &lt;&lt; 11)
+DECL|macro|TLB_V6_U_FULL
+mdefine_line|#define TLB_V6_U_FULL&t;(1 &lt;&lt; 12)
+DECL|macro|TLB_V6_D_FULL
+mdefine_line|#define TLB_V6_D_FULL&t;(1 &lt;&lt; 13)
+DECL|macro|TLB_V6_I_FULL
+mdefine_line|#define TLB_V6_I_FULL&t;(1 &lt;&lt; 14)
+DECL|macro|TLB_V6_U_ASID
+mdefine_line|#define TLB_V6_U_ASID&t;(1 &lt;&lt; 16)
+DECL|macro|TLB_V6_D_ASID
+mdefine_line|#define TLB_V6_D_ASID&t;(1 &lt;&lt; 17)
+DECL|macro|TLB_V6_I_ASID
+mdefine_line|#define TLB_V6_I_ASID&t;(1 &lt;&lt; 18)
 DECL|macro|TLB_DCLEAN
 mdefine_line|#define TLB_DCLEAN&t;(1 &lt;&lt; 30)
 DECL|macro|TLB_WB
 mdefine_line|#define TLB_WB&t;&t;(1 &lt;&lt; 31)
-multiline_comment|/*&n; *&t;MMU TLB Model&n; *&t;=============&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3    - ARMv3&n; *&t;  v4    - ARMv4 without write buffer&n; *&t;  v4wb  - ARMv4 with write buffer without I TLB flush entry instruction&n; *&t;  v4wbi - ARMv4 with write buffer with I TLB flush entry instruction&n; */
+multiline_comment|/*&n; *&t;MMU TLB Model&n; *&t;=============&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3    - ARMv3&n; *&t;  v4    - ARMv4 without write buffer&n; *&t;  v4wb  - ARMv4 with write buffer without I TLB flush entry instruction&n; *&t;  v4wbi - ARMv4 with write buffer with I TLB flush entry instruction&n; *&t;  v6wbi - ARMv6 with write buffer with I TLB flush entry instruction&n; */
 DECL|macro|_TLB
 macro_line|#undef _TLB
 DECL|macro|MULTI_TLB
@@ -105,6 +123,26 @@ DECL|macro|v4wb_possible_flags
 macro_line|# define v4wb_possible_flags&t;0
 DECL|macro|v4wb_always_flags
 macro_line|# define v4wb_always_flags&t;(-1UL)
+macro_line|#endif
+DECL|macro|v6wbi_tlb_flags
+mdefine_line|#define v6wbi_tlb_flags (TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V6_I_FULL | TLB_V6_D_FULL | &bslash;&n;&t;&t;&t; TLB_V6_I_PAGE | TLB_V6_D_PAGE | &bslash;&n;&t;&t;&t; TLB_V6_I_ASID | TLB_V6_D_ASID)
+macro_line|#if defined(CONFIG_CPU_V6)
+DECL|macro|v6wbi_possible_flags
+macro_line|# define v6wbi_possible_flags&t;v6wbi_tlb_flags
+DECL|macro|v6wbi_always_flags
+macro_line|# define v6wbi_always_flags&t;v6wbi_tlb_flags
+macro_line|# ifdef _TLB
+DECL|macro|MULTI_TLB
+macro_line|#  define MULTI_TLB 1
+macro_line|# else
+DECL|macro|_TLB
+macro_line|#  define _TLB v6wbi
+macro_line|# endif
+macro_line|#else
+DECL|macro|v6wbi_possible_flags
+macro_line|# define v6wbi_possible_flags&t;0
+DECL|macro|v6wbi_always_flags
+macro_line|# define v6wbi_always_flags&t;(-1UL)
 macro_line|#endif
 macro_line|#ifndef _TLB
 macro_line|#error Unknown TLB model
@@ -203,9 +241,9 @@ mdefine_line|#define __cpu_tlb_flags&t;&t;&t;cpu_tlb.tlb_flags
 multiline_comment|/*&n; *&t;TLB Management&n; *&t;==============&n; *&n; *&t;The arch/arm/mm/tlb-*.S files implement these methods.&n; *&n; *&t;The TLB specific code is expected to perform whatever tests it&n; *&t;needs to determine if it should invalidate the TLB for each&n; *&t;call.  Start addresses are inclusive and end addresses are&n; *&t;exclusive; it is safe to round these addresses down.&n; *&n; *&t;flush_tlb_all()&n; *&n; *&t;&t;Invalidate the entire TLB.&n; *&n; *&t;flush_tlb_mm(mm)&n; *&n; *&t;&t;Invalidate all TLB entries in a particular address&n; *&t;&t;space.&n; *&t;&t;- mm&t;- mm_struct describing address space&n; *&n; *&t;flush_tlb_range(mm,start,end)&n; *&n; *&t;&t;Invalidate a range of TLB entries in the specified&n; *&t;&t;address space.&n; *&t;&t;- mm&t;- mm_struct describing address space&n; *&t;&t;- start - start address (may not be aligned)&n; *&t;&t;- end&t;- end address (exclusive, may not be aligned)&n; *&n; *&t;flush_tlb_page(vaddr,vma)&n; *&n; *&t;&t;Invalidate the specified page in the specified address range.&n; *&t;&t;- vaddr - virtual address (may not be aligned)&n; *&t;&t;- vma&t;- vma_struct describing address range&n; *&n; *&t;flush_kern_tlb_page(kaddr)&n; *&n; *&t;&t;Invalidate the TLB entry for the specified page.  The address&n; *&t;&t;will be in the kernels virtual memory space.  Current uses&n; *&t;&t;only require the D-TLB to be invalidated.&n; *&t;&t;- kaddr - Kernel virtual memory address&n; */
 multiline_comment|/*&n; * We optimise the code below by:&n; *  - building a set of TLB flags that might be set in __cpu_tlb_flags&n; *  - building a set of TLB flags that will always be set in __cpu_tlb_flags&n; *  - if we&squot;re going to need __cpu_tlb_flags, access it once and only once&n; *&n; * This allows us to build optimal assembly for the single-CPU type case,&n; * and as close to optimal given the compiler constrants for multi-CPU&n; * case.  We could do better for the multi-CPU case if the compiler&n; * implemented the &quot;%?&quot; method, but this has been discontinued due to too&n; * many people getting it wrong.&n; */
 DECL|macro|possible_tlb_flags
-mdefine_line|#define possible_tlb_flags&t;(v3_possible_flags | &bslash;&n;&t;&t;&t;&t; v4_possible_flags | &bslash;&n;&t;&t;&t;&t; v4wbi_possible_flags | &bslash;&n;&t;&t;&t;&t; v4wb_possible_flags)
+mdefine_line|#define possible_tlb_flags&t;(v3_possible_flags | &bslash;&n;&t;&t;&t;&t; v4_possible_flags | &bslash;&n;&t;&t;&t;&t; v4wbi_possible_flags | &bslash;&n;&t;&t;&t;&t; v4wb_possible_flags | &bslash;&n;&t;&t;&t;&t; v6wbi_possible_flags)
 DECL|macro|always_tlb_flags
-mdefine_line|#define always_tlb_flags&t;(v3_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4wbi_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4wb_always_flags)
+mdefine_line|#define always_tlb_flags&t;(v3_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4wbi_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v4wb_always_flags &amp; &bslash;&n;&t;&t;&t;&t; v6wbi_always_flags)
 DECL|macro|tlb_flag
 mdefine_line|#define tlb_flag(f)&t;((always_tlb_flags &amp; (f)) || (__tlb_flag &amp; possible_tlb_flags &amp; (f)))
 DECL|function|flush_tlb_all
@@ -280,6 +318,8 @@ id|tlb_flag
 c_func
 (paren
 id|TLB_V4_U_FULL
+op_or
+id|TLB_V6_U_FULL
 )paren
 )paren
 id|asm
@@ -301,6 +341,8 @@ id|tlb_flag
 c_func
 (paren
 id|TLB_V4_D_FULL
+op_or
+id|TLB_V6_D_FULL
 )paren
 )paren
 id|asm
@@ -322,6 +364,8 @@ id|tlb_flag
 c_func
 (paren
 id|TLB_V4_I_FULL
+op_or
+id|TLB_V6_I_FULL
 )paren
 )paren
 id|asm
@@ -355,6 +399,16 @@ r_int
 id|zero
 op_assign
 l_int|0
+suffix:semicolon
+r_const
+r_int
+id|asid
+op_assign
+id|ASID
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 r_const
 r_int
@@ -477,6 +531,69 @@ id|zero
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_U_ASID
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c7, 2&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|asid
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_D_ASID
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c6, 2&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|asid
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_I_ASID
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c5, 2&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|asid
+)paren
+)paren
+suffix:semicolon
 )brace
 r_static
 r_inline
@@ -509,8 +626,18 @@ op_assign
 id|__cpu_tlb_flags
 suffix:semicolon
 id|uaddr
-op_and_assign
+op_assign
+(paren
+id|uaddr
+op_amp
 id|PAGE_MASK
+)paren
+op_or
+id|ASID
+c_func
+(paren
+id|vma-&gt;vm_mm
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -654,6 +781,69 @@ id|zero
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_U_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c7, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|uaddr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_D_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c6, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|uaddr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_I_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c5, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|uaddr
+)paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|flush_tlb_kernel_page
 r_static
@@ -814,6 +1004,69 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|zero
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_U_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c7, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|kaddr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_D_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c6, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|kaddr
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_flag
+c_func
+(paren
+id|TLB_V6_I_PAGE
+)paren
+)paren
+id|asm
+c_func
+(paren
+l_string|&quot;mcr%? p15, 0, %0, c8, c5, 1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|kaddr
 )paren
 )paren
 suffix:semicolon

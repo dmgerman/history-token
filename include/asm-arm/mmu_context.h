@@ -3,8 +3,85 @@ macro_line|#ifndef __ASM_ARM_MMU_CONTEXT_H
 DECL|macro|__ASM_ARM_MMU_CONTEXT_H
 mdefine_line|#define __ASM_ARM_MMU_CONTEXT_H
 macro_line|#include &lt;asm/proc-fns.h&gt;
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 6
+multiline_comment|/*&n; * On ARMv6, we have the following structure in the Context ID:&n; *&n; * 31                         7          0&n; * +-------------------------+-----------+&n; * |      process ID         |   ASID    |&n; * +-------------------------+-----------+&n; * |              context ID             |&n; * +-------------------------------------+&n; *&n; * The ASID is used to tag entries in the CPU caches and TLBs.&n; * The context ID is used by debuggers and trace logic, and&n; * should be unique within all running processes.&n; */
+DECL|macro|ASID_BITS
+mdefine_line|#define ASID_BITS&t;8
+DECL|macro|ASID_MASK
+mdefine_line|#define ASID_MASK&t;((~0) &lt;&lt; ASID_BITS)
+r_extern
+r_int
+r_int
+id|cpu_last_asid
+suffix:semicolon
+r_void
+id|__init_new_context
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+r_void
+id|__new_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+DECL|function|check_context
+r_static
+r_inline
+r_void
+id|check_context
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+id|mm-&gt;context.id
+op_xor
+id|cpu_last_asid
+)paren
+op_rshift
+id|ASID_BITS
+)paren
+)paren
+id|__new_context
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+)brace
+DECL|macro|init_new_context
+mdefine_line|#define init_new_context(tsk,mm)&t;(__init_new_context(tsk,mm),0)
+macro_line|#else
+DECL|macro|check_context
+mdefine_line|#define check_context(mm)&t;&t;do { } while (0)
 DECL|macro|init_new_context
 mdefine_line|#define init_new_context(tsk,mm)&t;0
+macro_line|#endif
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)
 multiline_comment|/*&n; * This is called when &quot;tsk&quot; is about to enter lazy TLB mode.&n; *&n; * mm:  describes the currently active mm context&n; * tsk: task which is entering lazy tlb&n; * cpu: cpu number which is entering lazy tlb&n; *&n; * tsk-&gt;mm will be NULL&n; */
@@ -59,6 +136,12 @@ op_ne
 id|next
 )paren
 (brace
+id|check_context
+c_func
+(paren
+id|next
+)paren
+suffix:semicolon
 id|cpu_switch_mm
 c_func
 (paren
@@ -89,6 +172,12 @@ op_star
 id|next
 )paren
 (brace
+id|check_context
+c_func
+(paren
+id|next
+)paren
+suffix:semicolon
 id|cpu_switch_mm
 c_func
 (paren

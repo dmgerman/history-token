@@ -35,6 +35,12 @@ DECL|macro|PMD_SECT_AP_READ
 mdefine_line|#define PMD_SECT_AP_READ&t;(1 &lt;&lt; 11)
 DECL|macro|PMD_SECT_TEX
 mdefine_line|#define PMD_SECT_TEX(x)&t;&t;((x) &lt;&lt; 12)&t;/* v5 */
+DECL|macro|PMD_SECT_APX
+mdefine_line|#define PMD_SECT_APX&t;&t;(1 &lt;&lt; 15)&t;/* v6 */
+DECL|macro|PMD_SECT_S
+mdefine_line|#define PMD_SECT_S&t;&t;(1 &lt;&lt; 16)&t;/* v6 */
+DECL|macro|PMD_SECT_nG
+mdefine_line|#define PMD_SECT_nG&t;&t;(1 &lt;&lt; 17)&t;/* v6 */
 DECL|macro|PMD_SECT_UNCACHED
 mdefine_line|#define PMD_SECT_UNCACHED&t;(0)
 DECL|macro|PMD_SECT_BUFFERED

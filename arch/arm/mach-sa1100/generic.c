@@ -403,11 +403,6 @@ id|dev
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA11x0 [UDC]&quot;
-comma
-dot
 id|dma_mask
 op_assign
 op_amp
@@ -480,17 +475,6 @@ dot
 id|id
 op_assign
 l_int|0
-comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA11x0 [MCP]&quot;
-comma
-)brace
 comma
 dot
 id|num_resources
@@ -569,11 +553,6 @@ dot
 id|dev
 op_assign
 (brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA11x0 [SSP]&quot;
-comma
 dot
 id|dma_mask
 op_assign
@@ -671,17 +650,6 @@ op_assign
 l_int|0
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA11x0 [LCD]&quot;
-comma
-)brace
-comma
-dot
 id|num_resources
 op_assign
 id|ARRAY_SIZE
@@ -713,17 +681,6 @@ dot
 id|id
 op_assign
 l_int|0
-comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel Corporation SA11x0 [PCMCIA]&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon
