@@ -1359,6 +1359,12 @@ l_int|NULL
 suffix:semicolon
 id|changed
 suffix:colon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign

@@ -985,6 +985,12 @@ op_member_access_from_pointer
 id|i_meta_lock
 )paren
 suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign
