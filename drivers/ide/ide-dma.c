@@ -590,7 +590,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|READ
 )paren

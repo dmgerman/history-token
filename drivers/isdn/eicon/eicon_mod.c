@@ -7102,6 +7102,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* all adapter flavors checked without match, finito with:            */
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7331,6 +7332,7 @@ op_ne
 id|cards_membase
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7374,6 +7376,7 @@ op_ne
 id|cards_irq
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7440,6 +7443,7 @@ op_ne
 id|cards_membase
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7483,6 +7487,7 @@ op_ne
 id|cards_irq
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7560,6 +7565,7 @@ op_ne
 id|cards_irq
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7573,6 +7579,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -7676,6 +7683,7 @@ multiline_comment|/* eicon_addcard added a card */
 r_else
 (brace
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace

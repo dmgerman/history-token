@@ -9467,7 +9467,11 @@ r_else
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -10746,7 +10750,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|READ
 )paren
@@ -10770,7 +10778,11 @@ r_else
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|WRITE
 )paren
@@ -12512,11 +12524,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sect=%ld cmd=%d&bslash;n&quot;
+l_string|&quot;sect=%ld flags=%lx&bslash;n&quot;
 comma
 id|CURRENT-&gt;sector
 comma
-id|CURRENT-&gt;cmd
+id|CURRENT-&gt;flags
 )paren
 suffix:semicolon
 r_return

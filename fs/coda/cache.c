@@ -41,8 +41,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -96,8 +94,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|cii-&gt;c_cached_perm
 op_assign
 l_int|0
@@ -134,8 +130,6 @@ r_struct
 id|list_head
 op_star
 id|tmp
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|sbi
 op_assign
@@ -389,8 +383,6 @@ r_struct
 id|dentry
 op_star
 id|alias_de
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 r_if
 c_cond

@@ -1793,7 +1793,6 @@ id|rd_ioctl
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/* Before freeing the module, invalidate all of the protected buffers! */
 DECL|function|rd_cleanup
 r_static
@@ -1885,7 +1884,6 @@ id|MAJOR_NR
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* This is the registration and initialization section of the RAM disk driver */
 DECL|function|rd_init
 r_int

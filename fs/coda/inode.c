@@ -334,8 +334,6 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|idx
 op_assign
 id|get_device_index
@@ -394,8 +392,6 @@ c_func
 l_string|&quot;coda_read_super: No pseudo device&bslash;n&quot;
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -411,8 +407,6 @@ c_func
 (paren
 l_string|&quot;coda_read_super: Device already mounted&bslash;n&quot;
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 l_int|NULL
@@ -439,8 +433,6 @@ op_logical_neg
 id|sbi
 )paren
 (brace
-id|EXIT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -583,15 +575,11 @@ c_func
 id|root
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|sb
 suffix:semicolon
 id|error
 suffix:colon
-id|EXIT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -648,8 +636,6 @@ id|coda_sb_info
 op_star
 id|sbi
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|sbi
 op_assign
 id|coda_sbp
@@ -681,8 +667,6 @@ c_func
 id|sbi
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 )brace
 multiline_comment|/* all filling in of inodes postponed until lookup */
 DECL|function|coda_read_inode
@@ -712,8 +696,6 @@ r_struct
 id|coda_inode_info
 op_star
 id|cii
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 r_if
 c_cond
@@ -852,8 +834,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|CDEBUG
 c_func
 (paren
@@ -923,8 +903,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-id|EXIT
-suffix:semicolon
 )brace
 DECL|function|coda_notify_change
 r_int
@@ -955,8 +933,6 @@ id|vattr
 suffix:semicolon
 r_int
 id|error
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|memset
 c_func
@@ -1048,8 +1024,6 @@ id|inode-&gt;i_mode
 comma
 id|error
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 id|error

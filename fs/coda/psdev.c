@@ -1119,8 +1119,6 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -1230,8 +1228,6 @@ comma
 id|vcp-&gt;vc_inuse
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1282,8 +1278,6 @@ id|lh
 comma
 op_star
 id|next
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1487,8 +1481,6 @@ comma
 l_string|&quot;Done.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1630,6 +1622,12 @@ c_func
 l_string|&quot;Peter J. Braam &lt;braam@cs.cmu.edu&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_coda
 r_static
 r_int
@@ -1732,8 +1730,6 @@ r_void
 (brace
 r_int
 id|err
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|err
 op_assign

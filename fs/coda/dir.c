@@ -471,8 +471,6 @@ id|length
 op_assign
 id|entry-&gt;d_name.len
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -793,8 +791,6 @@ id|C_VATTR
 )paren
 suffix:semicolon
 )brace
-id|EXIT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -815,8 +811,6 @@ id|mask
 (brace
 r_int
 id|error
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.permission
 op_increment
@@ -1019,8 +1013,6 @@ suffix:semicolon
 r_struct
 id|coda_vattr
 id|attrs
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.create
 op_increment
@@ -1450,8 +1442,6 @@ r_struct
 id|ViceFid
 id|newfid
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|coda_vfs_stat.mkdir
 op_increment
 suffix:semicolon
@@ -1668,8 +1658,6 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|coda_vfs_stat.link
 op_increment
 suffix:semicolon
@@ -1805,8 +1793,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -1852,8 +1838,6 @@ r_int
 id|error
 op_assign
 l_int|0
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.symlink
 op_increment
@@ -1964,8 +1948,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -2001,8 +1983,6 @@ r_int
 id|len
 op_assign
 id|de-&gt;d_name.len
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.unlink
 op_increment
@@ -2108,8 +2088,6 @@ id|de-&gt;d_name.len
 suffix:semicolon
 r_int
 id|error
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.rmdir
 op_increment
@@ -2247,8 +2225,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|error
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.rename
 op_increment
@@ -2404,8 +2380,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -2466,8 +2440,6 @@ c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.readdir
 op_increment
@@ -2555,8 +2527,6 @@ id|dirent
 )paren
 suffix:semicolon
 )brace
-id|EXIT
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -2600,6 +2570,10 @@ suffix:semicolon
 id|fake_file-&gt;f_op
 op_assign
 id|cont_dentry-&gt;d_inode-&gt;i_fop
+suffix:semicolon
+id|fake_file-&gt;f_flags
+op_assign
+id|coda_file-&gt;f_flags
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2691,8 +2665,6 @@ id|d_name
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|CODA_ALLOC
 c_func
@@ -3080,8 +3052,6 @@ id|coda_inode_info
 op_star
 id|cii
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3349,8 +3319,6 @@ c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|CDEBUG
 c_func

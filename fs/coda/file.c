@@ -399,8 +399,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|coda_vfs_stat.open
 op_increment
 suffix:semicolon
@@ -574,8 +572,6 @@ comma
 id|fh-&gt;f_dentry-&gt;d_inode-&gt;i_op
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -637,8 +633,6 @@ op_assign
 l_int|0
 comma
 id|fcnt
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|coda_vfs_stat.flush
 op_increment
@@ -849,8 +843,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|coda_vfs_stat.release
 op_increment
 suffix:semicolon
@@ -1058,8 +1050,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 r_if
 c_cond

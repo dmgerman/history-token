@@ -1251,7 +1251,6 @@ suffix:semicolon
 DECL|function|st5481_release_b_out
 r_static
 r_void
-id|__devexit
 id|st5481_release_b_out
 c_func
 (paren
@@ -1403,7 +1402,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Release buffers and URBs for the B channels&n; */
 DECL|function|st5481_release_b
 r_void
-id|__devexit
 id|st5481_release_b
 c_func
 (paren

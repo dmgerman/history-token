@@ -1172,7 +1172,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Release buffers and URBs for the interrupt and control&n; * endpoint.&n; */
 DECL|function|st5481_release_usb
 r_void
-id|__devexit
 id|st5481_release_usb
 c_func
 (paren
@@ -1734,7 +1733,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_release_isocpipes
 r_void
-id|__devexit
 id|st5481_release_isocpipes
 c_func
 (paren
@@ -2232,7 +2230,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_release_in
 r_void
-id|__devexit
 id|st5481_release_in
 c_func
 (paren

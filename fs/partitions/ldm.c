@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ldm - Part of the Linux-NTFS project.&n; *&n; * Copyri
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

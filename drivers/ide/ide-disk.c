@@ -1450,7 +1450,11 @@ comma
 id|drive-&gt;name
 comma
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|READ
 )paren
@@ -1602,7 +1606,11 @@ comma
 id|drive-&gt;name
 comma
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|READ
 )paren
@@ -1662,7 +1670,11 @@ macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|READ
 )paren
@@ -1727,7 +1739,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|WRITE
 )paren
@@ -1962,11 +1978,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: bad command: %d&bslash;n&quot;
+l_string|&quot;%s: bad command: %lx&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|rq-&gt;cmd
+id|rq-&gt;flags
 )paren
 suffix:semicolon
 id|ide_end_request

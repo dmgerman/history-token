@@ -4181,7 +4181,11 @@ suffix:semicolon
 )brace
 id|pf_cmd
 op_assign
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 suffix:semicolon
 id|pf_buf
 op_assign
@@ -4297,7 +4301,11 @@ c_cond
 id|QUEUE_EMPTY
 op_logical_or
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_ne
 id|pf_cmd
 )paren

@@ -404,7 +404,8 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;major minor  #blocks  name&bslash;n&bslash;n&quot;
+l_string|&quot;major minor   #blocks  start_sect   nr_sects  &quot;
+l_string|&quot;name&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|read_lock
@@ -472,7 +473,7 @@ id|len
 comma
 l_int|63
 comma
-l_string|&quot;%4d  %4d %10d %s&bslash;n&quot;
+l_string|&quot;%4d  %4d %10d  %10lu %10lu  %s&bslash;n&quot;
 comma
 id|gp-&gt;major
 comma
@@ -482,6 +483,20 @@ id|gp-&gt;sizes
 (braket
 id|n
 )braket
+comma
+id|gp-&gt;part
+(braket
+id|n
+)braket
+dot
+id|start_sect
+comma
+id|gp-&gt;part
+(braket
+id|n
+)braket
+dot
+id|nr_sects
 comma
 id|disk_name
 c_func

@@ -691,7 +691,7 @@ id|inf
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1126,6 +1126,10 @@ id|file_operations
 id|isdn_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 id|no_llseek

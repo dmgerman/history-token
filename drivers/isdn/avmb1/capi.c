@@ -155,19 +155,19 @@ r_int
 id|minor
 suffix:semicolon
 DECL|member|applid
-id|__u16
+id|u16
 id|applid
 suffix:semicolon
 DECL|member|ncci
-id|__u32
+id|u32
 id|ncci
 suffix:semicolon
 DECL|member|datahandle
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 DECL|member|msgid
-id|__u16
+id|u16
 id|msgid
 suffix:semicolon
 DECL|member|file
@@ -244,7 +244,7 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|datahandle
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 DECL|member|ackqueue
@@ -270,7 +270,7 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|ncci
-id|__u32
+id|u32
 id|ncci
 suffix:semicolon
 DECL|member|cdev
@@ -306,11 +306,11 @@ op_star
 id|file
 suffix:semicolon
 DECL|member|applid
-id|__u16
+id|u16
 id|applid
 suffix:semicolon
 DECL|member|errcode
-id|__u16
+id|u16
 id|errcode
 suffix:semicolon
 DECL|member|minor
@@ -427,6 +427,7 @@ macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
 multiline_comment|/* -------- datahandles --------------------------------------------- */
 DECL|function|capincci_add_ack
+r_static
 r_int
 id|capincci_add_ack
 c_func
@@ -436,7 +437,7 @@ id|capiminor
 op_star
 id|mp
 comma
-id|__u16
+id|u16
 id|datahandle
 )paren
 (brace
@@ -526,6 +527,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|capiminor_del_ack
+r_static
 r_int
 id|capiminor_del_ack
 c_func
@@ -535,7 +537,7 @@ id|capiminor
 op_star
 id|mp
 comma
-id|__u16
+id|u16
 id|datahandle
 )paren
 (brace
@@ -620,6 +622,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|capiminor_del_all_ack
+r_static
 r_void
 id|capiminor_del_all_ack
 c_func
@@ -681,16 +684,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* -------- struct capiminor ---------------------------------------- */
 DECL|function|capiminor_alloc
+r_static
 r_struct
 id|capiminor
 op_star
 id|capiminor_alloc
 c_func
 (paren
-id|__u16
+id|u16
 id|applid
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -904,6 +908,7 @@ id|mp
 suffix:semicolon
 )brace
 DECL|function|capiminor_free
+r_static
 r_void
 id|capiminor_free
 c_func
@@ -1037,6 +1042,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capiminor_find
+r_static
 r_struct
 id|capiminor
 op_star
@@ -1090,7 +1096,7 @@ id|capidev
 op_star
 id|cdev
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1290,7 +1296,7 @@ id|capidev
 op_star
 id|cdev
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1487,6 +1493,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capincci_find
+r_static
 r_struct
 id|capincci
 op_star
@@ -1498,7 +1505,7 @@ id|capidev
 op_star
 id|cdev
 comma
-id|__u32
+id|u32
 id|ncci
 )paren
 (brace
@@ -1751,7 +1758,7 @@ op_star
 id|capidev_find
 c_func
 (paren
-id|__u16
+id|u16
 id|applid
 )paren
 (brace
@@ -1790,6 +1797,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
 multiline_comment|/* -------- handle data queue --------------------------------------- */
+r_static
 r_struct
 id|sk_buff
 op_star
@@ -1829,7 +1837,7 @@ c_cond
 id|nskb
 )paren
 (brace
-id|__u16
+id|u16
 id|datahandle
 op_assign
 id|CAPIMSG_U16
@@ -1934,6 +1942,7 @@ id|nskb
 suffix:semicolon
 )brace
 DECL|function|handle_recv_skb
+r_static
 r_int
 id|handle_recv_skb
 c_func
@@ -1958,7 +1967,7 @@ r_int
 r_int
 id|datalen
 suffix:semicolon
-id|__u16
+id|u16
 id|errcode
 comma
 id|datahandle
@@ -2362,6 +2371,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|handle_minor_recv
+r_static
 r_void
 id|handle_minor_recv
 c_func
@@ -2437,6 +2447,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|handle_minor_send
+r_static
 r_int
 id|handle_minor_send
 c_func
@@ -2452,7 +2463,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|__u16
+id|u16
 id|len
 suffix:semicolon
 r_int
@@ -2460,10 +2471,10 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-id|__u16
+id|u16
 id|errcode
 suffix:semicolon
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 r_if
@@ -2511,7 +2522,7 @@ suffix:semicolon
 id|len
 op_assign
 (paren
-id|__u16
+id|u16
 )paren
 id|skb-&gt;len
 suffix:semicolon
@@ -2601,7 +2612,7 @@ comma
 l_int|12
 comma
 (paren
-id|__u32
+id|u32
 )paren
 id|skb-&gt;data
 )paren
@@ -2801,7 +2812,7 @@ r_void
 id|capi_signal
 c_func
 (paren
-id|__u16
+id|u16
 id|applid
 comma
 r_void
@@ -2827,7 +2838,7 @@ id|capiminor
 op_star
 id|mp
 suffix:semicolon
-id|__u16
+id|u16
 id|datahandle
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
@@ -2843,7 +2854,7 @@ id|skb
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+id|u32
 id|ncci
 suffix:semicolon
 (paren
@@ -3495,7 +3506,7 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|__u16
+id|u16
 id|mlen
 suffix:semicolon
 r_if
@@ -4694,7 +4705,7 @@ c_func
 id|cdev
 comma
 (paren
-id|__u32
+id|u32
 )paren
 id|ncci
 )paren
@@ -4806,7 +4817,7 @@ c_func
 id|cdev
 comma
 (paren
-id|__u32
+id|u32
 )paren
 id|ncci
 )paren
@@ -5963,6 +5974,7 @@ comma
 suffix:semicolon
 multiline_comment|/* -------- tty_operations for capincci ----------------------------- */
 DECL|function|capinc_tty_open
+r_static
 r_int
 id|capinc_tty_open
 c_func
@@ -6120,6 +6132,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_close
+r_static
 r_void
 id|capinc_tty_close
 c_func
@@ -6229,6 +6242,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_write
+r_static
 r_int
 id|capinc_tty_write
 c_func
@@ -6482,6 +6496,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_put_char
+r_static
 r_void
 id|capinc_tty_put_char
 c_func
@@ -6669,6 +6684,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capinc_tty_flush_chars
+r_static
 r_void
 id|capinc_tty_flush_chars
 c_func
@@ -6775,6 +6791,7 @@ id|mp
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_write_room
+r_static
 r_int
 id|capinc_tty_write_room
 c_func
@@ -6854,6 +6871,7 @@ id|room
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_chars_in_buffer
+r_static
 r_int
 id|capinc_tty_chars_in_buffer
 c_func
@@ -6931,6 +6949,7 @@ id|mp-&gt;outbytes
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_ioctl
+r_static
 r_int
 id|capinc_tty_ioctl
 c_func
@@ -6988,6 +7007,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_set_termios
+r_static
 r_void
 id|capinc_tty_set_termios
 c_func
@@ -7014,6 +7034,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_throttle
+r_static
 r_void
 id|capinc_tty_throttle
 c_func
@@ -7056,6 +7077,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_unthrottle
+r_static
 r_void
 id|capinc_tty_unthrottle
 c_func
@@ -7106,6 +7128,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capinc_tty_stop
+r_static
 r_void
 id|capinc_tty_stop
 c_func
@@ -7150,6 +7173,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capinc_tty_start
+r_static
 r_void
 id|capinc_tty_start
 c_func
@@ -7203,6 +7227,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|capinc_tty_hangup
+r_static
 r_void
 id|capinc_tty_hangup
 c_func
@@ -7224,6 +7249,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_break_ctl
+r_static
 r_void
 id|capinc_tty_break_ctl
 c_func
@@ -7250,6 +7276,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_flush_buffer
+r_static
 r_void
 id|capinc_tty_flush_buffer
 c_func
@@ -7271,6 +7298,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_set_ldisc
+r_static
 r_void
 id|capinc_tty_set_ldisc
 c_func
@@ -7292,6 +7320,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_send_xchar
+r_static
 r_void
 id|capinc_tty_send_xchar
 c_func
@@ -7318,6 +7347,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|capinc_tty_read_proc
+r_static
 r_int
 id|capinc_tty_read_proc
 c_func
@@ -7340,34 +7370,6 @@ comma
 r_int
 op_star
 id|eof
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|capinc_write_proc
-r_int
-id|capinc_write_proc
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_const
-r_char
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|count
 comma
 r_void
 op_star
@@ -7422,6 +7424,7 @@ id|CAPINC_NR_PORTS
 )braket
 suffix:semicolon
 DECL|function|capinc_tty_init
+r_static
 r_int
 id|capinc_tty_init
 c_func
@@ -7646,6 +7649,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|capinc_tty_exit
+r_static
 r_void
 id|capinc_tty_exit
 c_func
@@ -8532,7 +8536,7 @@ r_int
 r_int
 id|cmd
 comma
-id|__u32
+id|u32
 id|contr
 comma
 r_void

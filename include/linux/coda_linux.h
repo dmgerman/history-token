@@ -359,10 +359,6 @@ DECL|macro|D_DOWNCALL
 mdefine_line|#define D_DOWNCALL 2048
 DECL|macro|CDEBUG
 mdefine_line|#define CDEBUG(mask, format, a...)                                &bslash;&n;  do {                                                            &bslash;&n;  if (coda_debug &amp; mask) {                                        &bslash;&n;    printk(&quot;(%s,l. %d): &quot;,  __FUNCTION__, __LINE__);              &bslash;&n;    printk(format, ## a); }                                       &bslash;&n;} while (0)
-DECL|macro|ENTRY
-mdefine_line|#define ENTRY    &bslash;&n;    if(coda_print_entry) printk(&quot;Process %d entered %s&bslash;n&quot;,current-&gt;pid,__FUNCTION__)
-DECL|macro|EXIT
-mdefine_line|#define EXIT    &bslash;&n;    if(coda_print_entry) printk(&quot;Process %d leaving %s&bslash;n&quot;,current-&gt;pid,__FUNCTION__)
 DECL|macro|CODA_ALLOC
 mdefine_line|#define CODA_ALLOC(ptr, cast, size)                                       &bslash;&n;do {                                                                      &bslash;&n;    if (size &lt; PAGE_SIZE) {                                               &bslash;&n;        ptr = (cast)kmalloc((unsigned long) size, GFP_KERNEL);            &bslash;&n;        CDEBUG(D_MALLOC, &quot;kmalloced: %lx at %p.&bslash;n&quot;, (long)size, ptr);     &bslash;&n;     }  else {                                                            &bslash;&n;        ptr = (cast)vmalloc((unsigned long) size);                        &bslash;&n;&t;CDEBUG(D_MALLOC, &quot;vmalloced: %lx at %p .&bslash;n&quot;, (long)size, ptr);}   &bslash;&n;    if (ptr == 0) {                                                       &bslash;&n;        printk(&quot;kernel malloc returns 0 at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;    }                                                                     &bslash;&n;    else memset( ptr, 0, size );                                          &bslash;&n;} while (0)
 DECL|macro|CODA_FREE

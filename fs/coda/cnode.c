@@ -452,8 +452,6 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 multiline_comment|/* We get inode numbers from Venus -- see venus source */
 id|error
 op_assign
@@ -495,8 +493,6 @@ id|inode
 op_assign
 l_int|NULL
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -531,8 +527,6 @@ c_func
 (paren
 l_string|&quot;coda_cnode_make: coda_iget failed&bslash;n&quot;
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 id|PTR_ERR
@@ -583,8 +577,6 @@ op_member_access_from_pointer
 id|c_fid
 )paren
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 l_int|0
@@ -700,8 +692,6 @@ r_struct
 id|coda_inode_info
 op_star
 id|cii
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 r_if
 c_cond

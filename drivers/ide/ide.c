@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1593,14 +1594,15 @@ id|rq
 op_assign
 id|hwgroup-&gt;rq
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;inactive
-)paren
-id|BUG
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_STARTED
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * small hack to eliminate locking from ide_end_request to grab&n;&t; * the first segment number of sectors&n;&t; */
@@ -2919,9 +2921,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_CMD
+id|rq-&gt;flags
+op_amp
+id|REQ_DRIVE_CMD
 )paren
 (brace
 id|byte
@@ -2984,9 +2986,9 @@ r_else
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_TASK
+id|rq-&gt;flags
+op_amp
+id|REQ_DRIVE_TASK
 )paren
 (brace
 id|byte
@@ -3097,16 +3099,6 @@ c_func
 (paren
 id|drive
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;inactive
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|blkdev_dequeue_request
@@ -3797,13 +3789,12 @@ multiline_comment|/* retry only &quot;normal&quot; I/O: */
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_CMD
-op_logical_or
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_TASK
+op_logical_neg
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
 )paren
 (brace
 id|rq-&gt;errors
@@ -3958,9 +3949,13 @@ op_amp
 id|DRQ_STAT
 )paren
 op_logical_and
-id|rq-&gt;cmd
-op_ne
-id|WRITE
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
+op_eq
+id|READ
 )paren
 id|try_to_flush_leftover_data
 c_func
@@ -4699,9 +4694,11 @@ c_cond
 (paren
 id|args
 op_logical_and
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_TASK
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_DRIVE_TASK
+)paren
 )paren
 (brace
 id|byte
@@ -5079,14 +5076,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;inactive
-)paren
-id|BUG
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_STARTED
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -5184,13 +5182,9 @@ r_if
 c_cond
 (paren
 (paren
-id|rq-&gt;cmd
-op_eq
-id|READ
-op_logical_or
-id|rq-&gt;cmd
-op_eq
-id|WRITE
+id|rq-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 op_logical_and
 (paren
@@ -5294,15 +5288,14 @@ id|drive-&gt;special.all
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_CMD
-op_logical_or
-id|rq-&gt;cmd
-op_eq
-id|IDE_DRIVE_TASK
+id|rq-&gt;flags
+op_amp
+(paren
+id|REQ_DRIVE_CMD
+op_or
+id|REQ_DRIVE_TASK
 )paren
-(brace
+)paren
 r_return
 id|execute_drive_cmd
 c_func
@@ -5312,7 +5305,6 @@ comma
 id|rq
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7412,9 +7404,9 @@ id|rq
 )paren
 )paren
 suffix:semicolon
-id|rq-&gt;cmd
+id|rq-&gt;flags
 op_assign
-id|IDE_DRIVE_CMD
+id|REQ_DRIVE_CMD
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function issues a special IDE device request&n; * onto the request queue.&n; *&n; * If action is ide_wait, then the rq is queued at the end of the&n; * request queue, and the function sleeps until it has been processed.&n; * This is for use when invoked from an ioctl handler.&n; *&n; * If action is ide_preempt, then the rq is queued at the head of&n; * the request queue, displacing the currently-being-processed&n; * request and this function returns immediately without waiting&n; * for the new rq to be completed.  This is VERY DANGEROUS, and is&n; * intended for careful use by the ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_next, then the rq is queued immediately after&n; * the currently-being-processed-request (if any), and the function&n; * returns without waiting for the new rq to be completed.  As above,&n; * This is VERY DANGEROUS, and is intended for careful use by the&n; * ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_end, then the rq is queued at the end of the&n; * request queue, and the function returns immediately without waiting&n; * for the new rq to be completed. This is again intended for careful&n; * use by the ATAPI tape/cdrom driver code.&n; */
@@ -11581,9 +11573,9 @@ op_amp
 id|rq
 )paren
 suffix:semicolon
-id|rq.cmd
+id|rq.flags
 op_assign
-id|IDE_DRIVE_TASK
+id|REQ_DRIVE_TASK
 suffix:semicolon
 id|rq.buffer
 op_assign
@@ -13121,6 +13113,24 @@ id|BLKBSZSET
 suffix:colon
 r_return
 id|blk_ioctl
+c_func
+(paren
+id|inode-&gt;i_rdev
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * uniform packet command handling&n;&t;&t; */
+r_case
+id|CDROMEJECT
+suffix:colon
+r_case
+id|CDROMCLOSETRAY
+suffix:colon
+r_return
+id|block_ioctl
 c_func
 (paren
 id|inode-&gt;i_rdev

@@ -2515,10 +2515,10 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-DECL|function|hdlc_irq
+DECL|function|hdlc_irq_one
 r_static
 r_void
-id|hdlc_irq
+id|hdlc_irq_one
 c_func
 (paren
 r_struct
@@ -2614,11 +2614,11 @@ id|bcs
 suffix:semicolon
 )brace
 )brace
-DECL|function|hdlc_interrupt
+DECL|function|hdlc_irq
 r_static
 r_inline
 r_void
-id|hdlc_interrupt
+id|hdlc_irq
 c_func
 (paren
 r_struct
@@ -2681,7 +2681,7 @@ id|stat
 op_amp
 id|HDLC_INT_MASK
 )paren
-id|hdlc_irq
+id|hdlc_irq_one
 c_func
 (paren
 op_amp
@@ -3104,7 +3104,7 @@ id|val
 op_amp
 id|AVM_STATUS0_IRQ_ISAC
 )paren
-id|isacsx_interrupt
+id|isacsx_irq
 c_func
 (paren
 op_amp
@@ -3118,7 +3118,7 @@ id|val
 op_amp
 id|AVM_STATUS0_IRQ_HDLC
 )paren
-id|hdlc_interrupt
+id|hdlc_irq
 c_func
 (paren
 id|adapter
@@ -3199,7 +3199,7 @@ op_amp
 id|AVM_STATUS0_IRQ_ISAC
 )paren
 )paren
-id|isac_interrupt
+id|isac_irq
 c_func
 (paren
 op_amp
@@ -3216,7 +3216,7 @@ op_amp
 id|AVM_STATUS0_IRQ_HDLC
 )paren
 )paren
-id|hdlc_interrupt
+id|hdlc_irq
 c_func
 (paren
 id|adapter

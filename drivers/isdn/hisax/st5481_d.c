@@ -2879,7 +2879,6 @@ suffix:semicolon
 DECL|function|st5481_release_d_out
 r_static
 r_void
-id|__devexit
 id|st5481_release_d_out
 c_func
 (paren
@@ -3070,7 +3069,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_release_d
 r_void
-id|__devexit
 id|st5481_release_d
 c_func
 (paren

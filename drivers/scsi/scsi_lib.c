@@ -63,9 +63,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|rq-&gt;cmd
+id|rq-&gt;flags
 op_assign
-id|SPECIAL
+id|REQ_SPECIAL
+op_or
+id|REQ_NOMERGE
+op_or
+id|REQ_BARRIER
 suffix:semicolon
 id|rq-&gt;special
 op_assign
@@ -86,10 +90,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|rq-&gt;elevator_sequence
-op_assign
-l_int|0
-suffix:semicolon
-id|rq-&gt;inactive
 op_assign
 l_int|0
 suffix:semicolon
@@ -424,6 +424,12 @@ op_star
 )paren
 id|SCpnt
 suffix:semicolon
+macro_line|#if 0
+id|SCpnt-&gt;request.flags
+op_or_assign
+id|REQ_SPECIAL
+suffix:semicolon
+macro_line|#endif
 id|list_add
 c_func
 (paren
@@ -1118,7 +1124,11 @@ id|i
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;request.cmd
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
 op_eq
 id|READ
 )paren
@@ -1190,7 +1200,11 @@ id|req-&gt;buffer
 r_if
 c_cond
 (paren
-id|req-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
 op_eq
 id|READ
 )paren
@@ -2070,7 +2084,7 @@ id|q
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * get next queueable request. cur_rq would be set if we&n;&t;&t; * previously had to abort for some reason&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * get next queueable request.&n;&t;&t; */
 id|req
 op_assign
 id|elv_next_request
@@ -2083,9 +2097,9 @@ multiline_comment|/*&n;&t;&t; * Find the actual device driver associated with th
 r_if
 c_cond
 (paren
-id|req-&gt;cmd
-op_eq
-id|SPECIAL
+id|req-&gt;flags
+op_amp
+id|REQ_SPECIAL
 )paren
 (brace
 id|STpnt
@@ -2147,6 +2161,13 @@ suffix:semicolon
 )brace
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|req-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
 (brace
 id|SRpnt
 op_assign
@@ -2179,8 +2200,6 @@ r_if
 c_cond
 (paren
 id|req-&gt;special
-op_ne
-l_int|NULL
 )paren
 (brace
 id|SCpnt
@@ -2221,6 +2240,19 @@ c_cond
 op_logical_neg
 id|SCpnt
 )paren
+r_break
+suffix:semicolon
+)brace
+r_else
+(brace
+id|blk_dump_rq_flags
+c_func
+(paren
+id|req
+comma
+l_string|&quot;SCSI bad req&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2290,9 +2322,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;request.cmd
-op_ne
-id|SPECIAL
+id|SCpnt-&gt;request.flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * This will do a couple of things:&n;&t;&t;&t; *  1) Fill in the actual SCSI command.&n;&t;&t;&t; *  2) Fill in any other upper-level specific fields&n;&t;&t;&t; * (timeout).&n;&t;&t;&t; *&n;&t;&t;&t; * If this returns 0, it means that the request failed&n;&t;&t;&t; * (reading past end of disk, reading offline device,&n;&t;&t;&t; * etc).   This won&squot;t actually talk to the device, but&n;&t;&t;&t; * some kinds of consistency checking may cause the&t;&n;&t;&t;&t; * request to be rejected immediately.&n;&t;&t;&t; */
@@ -2303,16 +2335,15 @@ id|STpnt
 op_eq
 l_int|NULL
 )paren
-(brace
 id|STpnt
 op_assign
 id|scsi_get_request_dev
 c_func
 (paren
-id|req
+op_amp
+id|SCpnt-&gt;request
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* &n;&t;&t;&t; * This sets up the scatter-gather table (allocating if&n;&t;&t;&t; * required).  Hosts that need bounce buffers will also&n;&t;&t;&t; * get those allocated here.  &n;&t;&t;&t; */
 r_if
 c_cond

@@ -163,8 +163,6 @@ id|outsize
 comma
 id|error
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 id|insize
 op_assign
 id|SIZE
@@ -244,8 +242,6 @@ comma
 id|insize
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -287,8 +283,6 @@ comma
 id|outsize
 comma
 id|error
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|insize
 op_assign
@@ -340,8 +334,6 @@ id|inp
 comma
 id|insize
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 id|error
@@ -2186,8 +2178,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -2360,8 +2350,6 @@ l_string|&quot; result %d&bslash;n&quot;
 comma
 id|error
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 id|CODA_FREE
 c_func
@@ -2603,8 +2591,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -2789,8 +2775,6 @@ id|inp
 comma
 id|insize
 )paren
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 id|error
@@ -3246,8 +3230,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|EXIT
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -3593,8 +3575,6 @@ r_int
 id|error
 op_assign
 l_int|0
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 id|vcommp
 op_assign

@@ -34,6 +34,36 @@ id|bv_offset
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * weee, c forward decl...&n; */
+r_struct
+id|bio
+suffix:semicolon
+DECL|typedef|bio_end_io_t
+r_typedef
+r_int
+(paren
+id|bio_end_io_t
+)paren
+(paren
+r_struct
+id|bio
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|bio_destructor_t
+r_typedef
+r_void
+(paren
+id|bio_destructor_t
+)paren
+(paren
+r_struct
+id|bio
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * main unit of I/O for the block layer and lower layers (ie drivers and&n; * stacking drivers)&n; */
 DECL|struct|bio
 r_struct
@@ -50,11 +80,6 @@ op_star
 id|bi_next
 suffix:semicolon
 multiline_comment|/* request queue link */
-DECL|member|bi_cnt
-id|atomic_t
-id|bi_cnt
-suffix:semicolon
-multiline_comment|/* pin count */
 DECL|member|bi_dev
 id|kdev_t
 id|bi_dev
@@ -77,7 +102,7 @@ r_int
 r_int
 id|bi_vcnt
 suffix:semicolon
-multiline_comment|/* how may bio_vec&squot;s */
+multiline_comment|/* how many bio_vec&squot;s */
 DECL|member|bi_idx
 r_int
 r_int
@@ -104,37 +129,24 @@ id|bi_io_vec
 suffix:semicolon
 multiline_comment|/* the actual vec list */
 DECL|member|bi_end_io
-r_int
-(paren
+id|bio_end_io_t
 op_star
 id|bi_end_io
-)paren
-(paren
-r_struct
-id|bio
-op_star
-id|bio
-comma
-r_int
-id|nr_sectors
-)paren
 suffix:semicolon
+DECL|member|bi_cnt
+id|atomic_t
+id|bi_cnt
+suffix:semicolon
+multiline_comment|/* pin count */
 DECL|member|bi_private
 r_void
 op_star
 id|bi_private
 suffix:semicolon
 DECL|member|bi_destructor
-r_void
-(paren
+id|bio_destructor_t
 op_star
 id|bi_destructor
-)paren
-(paren
-r_struct
-id|bio
-op_star
-)paren
 suffix:semicolon
 multiline_comment|/* destructor */
 )brace
@@ -155,11 +167,11 @@ DECL|macro|BIO_RW
 mdefine_line|#define BIO_RW&t;&t;0
 DECL|macro|BIO_RW_AHEAD
 mdefine_line|#define BIO_RW_AHEAD&t;1
-DECL|macro|BIO_BARRIER
-mdefine_line|#define BIO_BARRIER&t;2
+DECL|macro|BIO_RW_BARRIER
+mdefine_line|#define BIO_RW_BARRIER&t;2
 multiline_comment|/*&n; * various member access, note that bio_data should of course not be used&n; * on highmem page vectors&n; */
 DECL|macro|bio_iovec_idx
-mdefine_line|#define bio_iovec_idx(bio, idx)&t;(&amp;((bio)-&gt;bi_io_vec[(bio)-&gt;bi_idx]))
+mdefine_line|#define bio_iovec_idx(bio, idx)&t;(&amp;((bio)-&gt;bi_io_vec[(idx)]))
 DECL|macro|bio_iovec
 mdefine_line|#define bio_iovec(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_idx)
 DECL|macro|bio_page
@@ -190,39 +202,13 @@ DECL|macro|bio_kunmap
 mdefine_line|#define bio_kunmap(bio)&t;&t;__bio_kunmap((bio), (bio)-&gt;bi_idx)
 multiline_comment|/*&n; * merge helpers etc&n; */
 DECL|macro|__BVEC_END
-mdefine_line|#define __BVEC_END(bio) bio_iovec_idx((bio), (bio)-&gt;bi_idx - 1)
+mdefine_line|#define __BVEC_END(bio) bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
 DECL|macro|BIO_CONTIG
-mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio)) + (bio)-&gt;bi_size) == bio_to_phys((nxt)))
+mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio))) + (bio)-&gt;bi_size == bio_to_phys((nxt)))
 DECL|macro|__BIO_SEG_BOUNDARY
 mdefine_line|#define __BIO_SEG_BOUNDARY(addr1, addr2, mask) &bslash;&n;&t;(((addr1) | (mask)) == (((addr2) - 1) | (mask)))
 DECL|macro|BIO_SEG_BOUNDARY
 mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys(__BVEC_END((b1))), bio_to_phys((b2)) + (b2)-&gt;bi_size, (q)-&gt;seg_boundary_mask)
-DECL|typedef|bio_end_io_t
-r_typedef
-r_int
-(paren
-id|bio_end_io_t
-)paren
-(paren
-r_struct
-id|bio
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|typedef|bio_destructor_t
-r_typedef
-r_void
-(paren
-id|bio_destructor_t
-)paren
-(paren
-r_struct
-id|bio
-op_star
-)paren
-suffix:semicolon
 DECL|macro|bio_io_error
 mdefine_line|#define bio_io_error(bio) bio_endio((bio), 0, bio_sectors((bio)))
 DECL|macro|bio_for_each_segment

@@ -104,8 +104,6 @@ r_int
 id|mask
 )paren
 (brace
-id|ENTRY
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -157,8 +155,6 @@ r_struct
 id|coda_inode_info
 op_star
 id|cnp
-suffix:semicolon
-id|ENTRY
 suffix:semicolon
 multiline_comment|/* get the Pioctl data arguments from user space */
 r_if

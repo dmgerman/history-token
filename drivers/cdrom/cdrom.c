@@ -25,7 +25,7 @@ mdefine_line|#define CD_DVD&t;&t;0x80
 multiline_comment|/* Define this to remove _all_ the debugging messages */
 multiline_comment|/* #define ERRLOGMASK CD_NOTHING */
 DECL|macro|ERRLOGMASK
-mdefine_line|#define ERRLOGMASK (CD_WARNING)
+mdefine_line|#define ERRLOGMASK CD_WARNING
 multiline_comment|/* #define ERRLOGMASK (CD_WARNING|CD_OPEN|CD_COUNT_TRACKS|CD_CLOSE) */
 multiline_comment|/* #define ERRLOGMASK (CD_WARNING|CD_REG_UNREG|CD_DO_IOCTL|CD_OPEN|CD_CLOSE|CD_COUNT_TRACKS) */
 macro_line|#include &lt;linux/config.h&gt;

@@ -95,7 +95,7 @@ DECL|typedef|rhdr_t
 id|rhdr_t
 suffix:semicolon
 DECL|macro|SG_MAX
-mdefine_line|#define SG_MAX&t;&t;&t;32
+mdefine_line|#define SG_MAX&t;&t;&t;31
 r_typedef
 r_struct
 (brace

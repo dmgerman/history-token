@@ -1185,9 +1185,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_ne
-id|IDESCSI_PC_RQ
+op_logical_neg
+(paren
+id|rq-&gt;flags
+op_amp
+id|REQ_SPECIAL
+)paren
 )paren
 (brace
 id|ide_end_request
@@ -2313,9 +2316,9 @@ macro_line|#endif /* IDESCSI_DEBUG_LOG */
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|IDESCSI_PC_RQ
+id|rq-&gt;flags
+op_amp
+id|REQ_SPECIAL
 )paren
 (brace
 r_return
@@ -2331,14 +2334,12 @@ id|rq-&gt;buffer
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|blk_dump_rq_flags
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;ide-scsi: %s: unsupported command in request queue (%x)&bslash;n&quot;
+id|rq
 comma
-id|drive-&gt;name
-comma
-id|rq-&gt;cmd
+l_string|&quot;ide-scsi: unsup command&quot;
 )paren
 suffix:semicolon
 id|idescsi_end_request
@@ -4207,9 +4208,9 @@ comma
 id|pc
 )paren
 suffix:semicolon
-id|rq-&gt;cmd
+id|rq-&gt;flags
 op_assign
-id|IDESCSI_PC_RQ
+id|REQ_SPECIAL
 suffix:semicolon
 id|spin_unlock
 c_func

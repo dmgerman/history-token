@@ -26,6 +26,26 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
+DECL|struct|request_list
+r_struct
+id|request_list
+(brace
+DECL|member|count
+r_int
+r_int
+id|count
+suffix:semicolon
+DECL|member|free
+r_struct
+id|list_head
+id|free
+suffix:semicolon
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|request
 r_struct
 id|request
@@ -40,11 +60,20 @@ DECL|member|elevator_sequence
 r_int
 id|elevator_sequence
 suffix:semicolon
-DECL|member|inactive
+DECL|member|cmd
 r_int
-id|inactive
+r_char
+id|cmd
+(braket
+l_int|16
+)braket
 suffix:semicolon
-multiline_comment|/* driver hasn&squot;t seen it yet */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* see REQ_ bits below */
 DECL|member|rq_status
 r_int
 id|rq_status
@@ -54,11 +83,6 @@ DECL|member|rq_dev
 id|kdev_t
 id|rq_dev
 suffix:semicolon
-DECL|member|cmd
-r_int
-id|cmd
-suffix:semicolon
-multiline_comment|/* READ or WRITE */
 DECL|member|errors
 r_int
 id|errors
@@ -73,11 +97,14 @@ r_int
 id|nr_sectors
 suffix:semicolon
 DECL|member|hard_sector
-DECL|member|hard_nr_sectors
 r_int
 r_int
 id|hard_sector
-comma
+suffix:semicolon
+multiline_comment|/* the hard_* are block layer&n;&t;&t;&t;&t;&t; * internals, no driver should&n;&t;&t;&t;&t;&t; * touch them&n;&t;&t;&t;&t;&t; */
+DECL|member|hard_nr_sectors
+r_int
+r_int
 id|hard_nr_sectors
 suffix:semicolon
 DECL|member|nr_segments
@@ -131,8 +158,102 @@ id|request_queue_t
 op_star
 id|q
 suffix:semicolon
+DECL|member|rl
+r_struct
+id|request_list
+op_star
+id|rl
+suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * first three bits match BIO_RW* bits, important&n; */
+DECL|enum|rq_flag_bits
+r_enum
+id|rq_flag_bits
+(brace
+DECL|enumerator|__REQ_RW
+id|__REQ_RW
+comma
+multiline_comment|/* not set, read. set, write */
+DECL|enumerator|__REQ_RW_AHEAD
+id|__REQ_RW_AHEAD
+comma
+multiline_comment|/* READA */
+DECL|enumerator|__REQ_BARRIER
+id|__REQ_BARRIER
+comma
+multiline_comment|/* may not be passed */
+DECL|enumerator|__REQ_CMD
+id|__REQ_CMD
+comma
+multiline_comment|/* is a regular fs rw request */
+DECL|enumerator|__REQ_NOMERGE
+id|__REQ_NOMERGE
+comma
+multiline_comment|/* don&squot;t touch this for merging */
+DECL|enumerator|__REQ_STARTED
+id|__REQ_STARTED
+comma
+multiline_comment|/* drive already may have started this one */
+DECL|enumerator|__REQ_DONTPREP
+id|__REQ_DONTPREP
+comma
+multiline_comment|/* don&squot;t call prep for this one */
+multiline_comment|/*&n;&t; * for IDE&n; &t;*/
+DECL|enumerator|__REQ_DRIVE_CMD
+id|__REQ_DRIVE_CMD
+comma
+DECL|enumerator|__REQ_DRIVE_TASK
+id|__REQ_DRIVE_TASK
+comma
+DECL|enumerator|__REQ_PC
+id|__REQ_PC
+comma
+multiline_comment|/* packet command (special) */
+DECL|enumerator|__REQ_BLOCK_PC
+id|__REQ_BLOCK_PC
+comma
+multiline_comment|/* queued down pc from block layer */
+DECL|enumerator|__REQ_SENSE
+id|__REQ_SENSE
+comma
+multiline_comment|/* sense retrival */
+DECL|enumerator|__REQ_SPECIAL
+id|__REQ_SPECIAL
+comma
+multiline_comment|/* driver special command */
+DECL|enumerator|__REQ_NR_BITS
+id|__REQ_NR_BITS
+comma
+multiline_comment|/* stops here */
+)brace
+suffix:semicolon
+DECL|macro|REQ_RW
+mdefine_line|#define REQ_RW&t;&t;(1 &lt;&lt; __REQ_RW)
+DECL|macro|REQ_RW_AHEAD
+mdefine_line|#define REQ_RW_AHEAD&t;(1 &lt;&lt; __REQ_RW_AHEAD)
+DECL|macro|REQ_BARRIER
+mdefine_line|#define REQ_BARRIER&t;(1 &lt;&lt; __REQ_BARRIER)
+DECL|macro|REQ_CMD
+mdefine_line|#define REQ_CMD&t;&t;(1 &lt;&lt; __REQ_CMD)
+DECL|macro|REQ_NOMERGE
+mdefine_line|#define REQ_NOMERGE&t;(1 &lt;&lt; __REQ_NOMERGE)
+DECL|macro|REQ_STARTED
+mdefine_line|#define REQ_STARTED&t;(1 &lt;&lt; __REQ_STARTED)
+DECL|macro|REQ_DONTPREP
+mdefine_line|#define REQ_DONTPREP&t;(1 &lt;&lt; __REQ_DONTPREP)
+DECL|macro|REQ_DRIVE_CMD
+mdefine_line|#define REQ_DRIVE_CMD&t;(1 &lt;&lt; __REQ_DRIVE_CMD)
+DECL|macro|REQ_DRIVE_TASK
+mdefine_line|#define REQ_DRIVE_TASK&t;(1 &lt;&lt; __REQ_DRIVE_TASK)
+DECL|macro|REQ_PC
+mdefine_line|#define REQ_PC&t;&t;(1 &lt;&lt; __REQ_PC)
+DECL|macro|REQ_SENSE
+mdefine_line|#define REQ_SENSE&t;(1 &lt;&lt; __REQ_SENSE)
+DECL|macro|REQ_BLOCK_PC
+mdefine_line|#define REQ_BLOCK_PC&t;(1 &lt;&lt; __REQ_BLOCK_PC)
+DECL|macro|REQ_SPECIAL
+mdefine_line|#define REQ_SPECIAL&t;(1 &lt;&lt; __REQ_SPECIAL)
 macro_line|#include &lt;linux/elevator.h&gt;
 DECL|typedef|merge_request_fn
 r_typedef
@@ -213,6 +334,21 @@ op_star
 id|bio
 )paren
 suffix:semicolon
+DECL|typedef|prep_rq_fn
+r_typedef
+r_int
+(paren
+id|prep_rq_fn
+)paren
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 DECL|typedef|unplug_device_fn
 r_typedef
 r_void
@@ -240,26 +376,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
 DECL|macro|QUEUE_NR_REQUESTS
 mdefine_line|#define QUEUE_NR_REQUESTS&t;8192
-DECL|struct|request_list
-r_struct
-id|request_list
-(brace
-DECL|member|count
-r_int
-r_int
-id|count
-suffix:semicolon
-DECL|member|free
-r_struct
-id|list_head
-id|free
-suffix:semicolon
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|request_queue
 r_struct
 id|request_queue
@@ -307,6 +423,11 @@ DECL|member|make_request_fn
 id|make_request_fn
 op_star
 id|make_request_fn
+suffix:semicolon
+DECL|member|prep_rq_fn
+id|prep_rq_fn
+op_star
+id|prep_rq_fn
 suffix:semicolon
 multiline_comment|/*&n;&t; * The queue owner gets to use this for whatever they like.&n;&t; * ll_rw_blk doesn&squot;t touch it.&n;&t; */
 DECL|member|queuedata
@@ -393,6 +514,8 @@ DECL|macro|blk_queue_empty
 mdefine_line|#define blk_queue_empty(q)&t;elv_queue_empty(q)
 DECL|macro|list_entry_rq
 mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queuelist)
+DECL|macro|rq_data_dir
+mdefine_line|#define rq_data_dir(rq)&t;&t;((rq)-&gt;flags &amp; 1)
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
@@ -403,53 +526,6 @@ id|blk_max_low_pfn
 comma
 id|blk_max_pfn
 suffix:semicolon
-DECL|macro|__elv_next_request
-mdefine_line|#define __elv_next_request(q)&t;(q)-&gt;elevator.elevator_next_req_fn((q))
-DECL|function|elv_next_request
-r_extern
-r_inline
-r_struct
-id|request
-op_star
-id|elv_next_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-)paren
-(brace
-r_struct
-id|request
-op_star
-id|rq
-op_assign
-id|__elv_next_request
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq
-)paren
-(brace
-id|rq-&gt;inactive
-op_assign
-l_int|0
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_return
-id|rq
-suffix:semicolon
-)brace
 DECL|macro|BLK_BOUNCE_HIGH
 mdefine_line|#define BLK_BOUNCE_HIGH&t;(blk_max_low_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ANY
@@ -503,7 +579,7 @@ DECL|macro|blk_queue_bounce
 mdefine_line|#define blk_queue_bounce(q, bio)&t;do { } while (0)
 macro_line|#endif /* CONFIG_HIGHMEM */
 DECL|macro|rq_for_each_bio
-mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
+mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
 DECL|struct|blk_dev_struct
 r_struct
 id|blk_dev_struct
@@ -650,6 +726,54 @@ id|request
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|request
+op_star
+id|blk_get_request
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_put_request
+c_func
+(paren
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_plug_device
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|block_ioctl
+c_func
+(paren
+id|kdev_t
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Access functions for manipulating queue properties&n; */
 r_extern
 r_int
@@ -779,6 +903,19 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|blk_dump_rq_flags
+c_func
+(paren
+r_struct
+id|request
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|generic_unplug_device
 c_func
 (paren
@@ -834,19 +971,15 @@ mdefine_line|#define blkdev_prev_request(req) blkdev_entry_to_request((req)-&gt;
 r_extern
 r_void
 id|drive_stat_acct
+c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|request
+op_star
 comma
 r_int
-id|rw
 comma
 r_int
-r_int
-id|nr_sectors
-comma
-r_int
-id|new_io
 )paren
 suffix:semicolon
 DECL|function|blk_clear

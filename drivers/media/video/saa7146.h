@@ -166,11 +166,6 @@ r_int
 r_int
 id|id
 suffix:semicolon
-DECL|member|i2c
-r_struct
-id|i2c_bus
-id|i2c
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev

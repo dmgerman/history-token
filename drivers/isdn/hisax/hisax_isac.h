@@ -175,7 +175,7 @@ id|isac
 )paren
 suffix:semicolon
 r_void
-id|isac_interrupt
+id|isac_irq
 c_func
 (paren
 r_struct
@@ -195,7 +195,7 @@ id|isac
 )paren
 suffix:semicolon
 r_void
-id|isacsx_interrupt
+id|isacsx_irq
 c_func
 (paren
 r_struct

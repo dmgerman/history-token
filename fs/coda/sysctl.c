@@ -1334,8 +1334,6 @@ id|tmplen
 op_assign
 l_int|0
 suffix:semicolon
-id|ENTRY
-suffix:semicolon
 multiline_comment|/* this works as long as we are below 1024 characters! */
 r_if
 c_cond
@@ -1556,8 +1554,6 @@ l_int|0
 id|len
 op_assign
 l_int|0
-suffix:semicolon
-id|EXIT
 suffix:semicolon
 r_return
 id|len
