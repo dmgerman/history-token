@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#ifdef CONFIG_KBUILD_2_5
 macro_line|#include &lt;scsi.h&gt;
@@ -50,10 +51,10 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 545 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 584 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
-multiline_comment|/*&n; * Change sbp2_max_speed on module load if you have a bad IEEE-1394 controller&n; * that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * sbp2_max_speed = 2 (default: max speed 400mb)&n; * sbp2_max_speed = 1 (max speed 200mb)&n; * sbp2_max_speed = 0 (max speed 100mb)&n; */
+multiline_comment|/*&n; * Change sbp2_max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * sbp2_max_speed = 2 (default: max speed 400mb)&n; * sbp2_max_speed = 1 (max speed 200mb)&n; * sbp2_max_speed = 0 (max speed 100mb)&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -77,7 +78,7 @@ id|sbp2_max_speed
 op_assign
 id|SPEED_400
 suffix:semicolon
-multiline_comment|/*&n; * Set sbp2_serialize_io to 1 if you&squot;d like only one scsi command sent down to&n; * us at a time (debugging). This might be necessary for very badly behaved sbp2 devices.&n; */
+multiline_comment|/*&n; * Set sbp2_serialize_io to 1 if you&squot;d like only one scsi command sent&n; * down to us at a time (debugging). This might be necessary for very&n; * badly behaved sbp2 devices.&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -102,7 +103,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* serialize I/O - available for debugging purposes */
-multiline_comment|/*&n; * Bump up sbp2_max_sectors if you&squot;d like to support very large sized transfers. Please note &n; * that some older sbp2 bridge chips are broken for transfers greater or equal to 128KB.&n; * Default is a value of 255 sectors, or just under 128KB (at 512 byte sector size). I can note&n; * that the Oxsemi sbp2 chipsets have no problems supporting very large transfer sizes.&n; */
+multiline_comment|/*&n; * Bump up sbp2_max_sectors if you&squot;d like to support very large sized&n; * transfers. Please note that some older sbp2 bridge chips are broken for&n; * transfers greater or equal to 128KB.  Default is a value of 255&n; * sectors, or just under 128KB (at 512 byte sector size). I can note that&n; * the Oxsemi sbp2 chipsets have no problems supporting very large&n; * transfer sizes.&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -126,7 +127,7 @@ id|sbp2_max_sectors
 op_assign
 id|SBP2_MAX_SECTORS
 suffix:semicolon
-multiline_comment|/*&n; * Adjust sbp2_max_outstanding_cmds to tune performance if you have many sbp2 devices attached&n; * (or if you need to do some debugging).&n; */
+multiline_comment|/*&n; * Adjust sbp2_max_outstanding_cmds to tune performance if you have many&n; * sbp2 devices attached (or if you need to do some debugging).&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -150,7 +151,7 @@ id|sbp2_max_outstanding_cmds
 op_assign
 id|SBP2SCSI_MAX_OUTSTANDING_CMDS
 suffix:semicolon
-multiline_comment|/*&n; * Adjust sbp2_max_cmds_per_lun to tune performance. Enabling more than one concurrent/linked &n; * command per sbp2 device may allow some performance gains, but some older sbp2 devices have &n; * firmware bugs resulting in problems when linking commands... so, enable this with care. &n; * I can note that the Oxsemi OXFW911 sbp2 chipset works very well with large numbers of &n; * concurrent/linked commands.  =)&n; */
+multiline_comment|/*&n; * Adjust sbp2_max_cmds_per_lun to tune performance. Enabling more than&n; * one concurrent/linked command per sbp2 device may allow some&n; * performance gains, but some older sbp2 devices have firmware bugs&n; * resulting in problems when linking commands... so, enable this with&n; * care.  I can note that the Oxsemi OXFW911 sbp2 chipset works very well&n; * with large numbers of concurrent/linked commands.  =)&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -174,7 +175,7 @@ id|sbp2_max_cmds_per_lun
 op_assign
 id|SBP2SCSI_MAX_CMDS_PER_LUN
 suffix:semicolon
-multiline_comment|/*&n; * Exclusive login to sbp2 device? In most cases, the sbp2 driver should do an exclusive login, as it&squot;s&n; * generally unsafe to have two hosts talking to a single sbp2 device at the same time (filesystem&n; * coherency, etc.). If you&squot;re running an sbp2 device that supports multiple logins, and you&squot;re either&n; * running read-only filesystems or some sort of special filesystem supporting multiple hosts, then&n; * set sbp2_exclusive_login to zero. Note: The Oxsemi OXFW911 sbp2 chipset supports up to four&n; * concurrent logins.&n; */
+multiline_comment|/*&n; * Exclusive login to sbp2 device? In most cases, the sbp2 driver should&n; * do an exclusive login, as it&squot;s generally unsafe to have two hosts&n; * talking to a single sbp2 device at the same time (filesystem coherency,&n; * etc.). If you&squot;re running an sbp2 device that supports multiple logins,&n; * and you&squot;re either running read-only filesystems or some sort of special&n; * filesystem supporting multiple hosts, then set sbp2_exclusive_login to&n; * zero. Note: The Oxsemi OXFW911 sbp2 chipset supports up to four&n; * concurrent logins.&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -198,7 +199,7 @@ id|sbp2_exclusive_login
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on if your sbp2 device&n; * is not properly handling the SCSI inquiry command. This hack makes the inquiry look more&n; * like a typical MS Windows inquiry.&n; */
+multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on&n; * if your sbp2 device is not properly handling the SCSI inquiry command.&n; * This hack makes the inquiry look more like a typical MS Windows&n; * inquiry.&n; * &n; * If sbp2_force_inquiry_hack=1 is required for your device to work,&n; * please submit the logged sbp2_firmware_revision value of this device to&n; * the linux1394-devel mailing list.&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -487,7 +488,7 @@ op_assign
 id|sbp2_update
 )brace
 suffix:semicolon
-multiline_comment|/* List of device firmware&squot;s that require a forced 36 byte inquiry. Note&n; * the final 0x0 needs to be there for denoting end of list.  */
+multiline_comment|/* List of device firmware&squot;s that require a forced 36 byte inquiry.  */
 DECL|variable|sbp2_broken_inquiry_list
 r_static
 id|u32
@@ -499,9 +500,14 @@ op_assign
 l_int|0x00002800
 comma
 multiline_comment|/* Stefan Richter &lt;richtest@bauwesen.tu-cottbus.de&gt; */
-l_int|0x0
+multiline_comment|/* DViCO Momobay CX-1 */
+l_int|0x00000200
+multiline_comment|/* Andreas Plesch &lt;plesch@fas.harvard.edu&gt; */
+multiline_comment|/* QPS Fire DVDBurner */
 )brace
 suffix:semicolon
+DECL|macro|NUM_BROKEN_INQUIRY_DEVS
+mdefine_line|#define NUM_BROKEN_INQUIRY_DEVS &bslash;&n;&t;(sizeof(sbp2_broken_inquiry_list)/sizeof(*sbp2_broken_inquiry_list))
 multiline_comment|/**************************************&n; * General utility functions&n; **************************************/
 macro_line|#ifndef __BIG_ENDIAN
 multiline_comment|/*&n; * Converts a buffer from be32 to cpu byte ordering. Length is in bytes.&n; */
@@ -1330,14 +1336,13 @@ id|request_packet-&gt;hi_context
 op_assign
 id|hi
 suffix:semicolon
-id|queue_task
+id|hpsb_add_packet_complete_task
 c_func
 (paren
-op_amp
-id|request_packet-&gt;tq
+id|packet
 comma
 op_amp
-id|packet-&gt;complete_tq
+id|request_packet-&gt;tq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Now, put the packet on the in-use list.&n;&t;&t; */
@@ -5403,6 +5408,24 @@ id|i
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbp2_force_inquiry_hack
+)paren
+id|SBP2_INFO
+c_func
+(paren
+l_string|&quot;sbp2_firmware_revision = %x&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|scsi_id-&gt;sbp2_firmware_revision
+)paren
+suffix:semicolon
+r_else
 id|SBP2_DEBUG
 c_func
 (paren
@@ -5480,7 +5503,7 @@ op_or_assign
 id|SBP2_BREAKAGE_128K_MAX_TRANSFER
 suffix:semicolon
 )brace
-multiline_comment|/* Check for a blacklisted set of devices that require us to force&n;&t; * a 36 byte host inquiry. This can be overriden as a module param&n;&t; * (to force all hosts).&n;&t; *&n;&t; * XXX If this does not detect your firmware as being defective,&n;&t; * but using the sbp2_force_inquiry_hack allows your device to&n;&t; * work, please submit the value of your firmware revision to the&n;&t; * linux1394-devel mailing list.  */
+multiline_comment|/* Check for a blacklisted set of devices that require us to force&n;&t; * a 36 byte host inquiry. This can be overriden as a module param&n;&t; * (to force all hosts).  */
 r_for
 c_loop
 (paren
@@ -5488,10 +5511,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|sbp2_broken_inquiry_list
-(braket
 id|i
-)braket
+OL
+id|NUM_BROKEN_INQUIRY_DEVS
 suffix:semicolon
 id|i
 op_increment
@@ -5532,7 +5554,7 @@ id|SBP2_BREAKAGE_INQUIRY_HACK
 suffix:semicolon
 r_break
 suffix:semicolon
-singleline_comment|// No need to continue.
+multiline_comment|/* No need to continue. */
 )brace
 )brace
 )brace

@@ -136,6 +136,48 @@ op_star
 id|hl_handle
 suffix:semicolon
 multiline_comment|/* = NULL; */
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|dv1394_devfs
+)paren
+suffix:semicolon
+DECL|struct|dv1394_devfs_entry
+r_struct
+id|dv1394_devfs_entry
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|devfs
+id|devfs_handle_t
+id|devfs
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|dv1394_devfs_entry
+op_star
+id|parent
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|variable|dv1394_devfs_lock
+r_static
+id|spinlock_t
+id|dv1394_devfs_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* translate from a struct file* to the corresponding struct video_card* */
 DECL|function|file_to_video_card
 r_static
@@ -9802,49 +9844,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*** DEVFS HELPERS *********************************************************/
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|dv1394_devfs
-)paren
-suffix:semicolon
-DECL|struct|dv1394_devfs_entry
-r_struct
-id|dv1394_devfs_entry
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-DECL|member|parent
-r_struct
-id|dv1394_devfs_entry
-op_star
-id|parent
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|variable|dv1394_devfs_lock
-r_static
-id|spinlock_t
-id|dv1394_devfs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 r_struct
 id|dv1394_devfs_entry
 op_star
@@ -10502,7 +10501,6 @@ id|p
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_DEVFS */
 multiline_comment|/*** IEEE1394 HPSB CALLBACKS ***********************************************/
 DECL|function|dv1394_init
 r_static
@@ -11241,6 +11239,11 @@ id|buf
 l_int|16
 )braket
 suffix:semicolon
+r_struct
+id|dv1394_devfs_entry
+op_star
+id|devfs_entry
+suffix:semicolon
 multiline_comment|/* We only work with the OHCI-1394 driver */
 r_if
 c_cond
@@ -11337,12 +11340,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
-(brace
-r_struct
-id|dv1394_devfs_entry
-op_star
-id|devfs_entry
-suffix:semicolon
 id|devfs_entry
 op_assign
 id|dv1394_devfs_find
@@ -11405,7 +11402,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 id|dv1394_init
