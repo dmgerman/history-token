@@ -1,4 +1,4 @@
-multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; *&n; * Changes&n; *&n; *&t;Mitsuru KANDA @USAGI       : IPv6 Support &n; * &t;Kazunori MIYAZAWA @USAGI   :&n; * &t;Kunihiro Ishiguro          :&n; * &t;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -13,6 +13,9 @@ macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#endif
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|xfrm_nl
