@@ -4,6 +4,7 @@ multiline_comment|/*&n; * This program is free software; you can redistribute it
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -239,11 +240,15 @@ l_int|56
 comma
 l_int|100
 )brace
+suffix:semicolon
+DECL|variable|amikbd_messages
 r_static
+r_const
 r_char
 op_star
 id|amikbd_messages
 (braket
+l_int|8
 )braket
 op_assign
 (brace
@@ -351,9 +356,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lowest bit is release bit */
 id|scancode
-op_assign
-id|scancode
-op_rshift
+op_rshift_assign
 l_int|1
 suffix:semicolon
 r_if
@@ -377,7 +380,7 @@ c_cond
 (paren
 id|scancode
 op_eq
-id|KEY_CAPS
+id|KEY_CAPSLOCK
 )paren
 (brace
 multiline_comment|/* CapsLock is a toggle switch key on Amiga */
@@ -517,6 +520,22 @@ id|amikbd_dev.keycode
 op_assign
 id|amikbd_keycode
 suffix:semicolon
+id|amikbd_dev.keycodesize
+op_assign
+r_sizeof
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
+id|amikbd_dev.keycodemax
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|amikbd_keycode
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -567,7 +586,7 @@ l_int|0
 comma
 l_string|&quot;amikbd&quot;
 comma
-l_int|NULL
+id|amikbd_interrupt
 )paren
 suffix:semicolon
 id|amikbd_dev.name

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
-macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
@@ -24,6 +23,12 @@ DECL|macro|KEYB_LEDREG
 mdefine_line|#define KEYB_LEDREG&t;2&t;/* register # for leds on ADB keyboard */
 DECL|macro|MOUSE_DATAREG
 mdefine_line|#define MOUSE_DATAREG&t;0&t;/* reg# for movement/button codes from mouse */
+r_extern
+r_struct
+id|pt_regs
+op_star
+id|kbd_pt_regs
+suffix:semicolon
 r_static
 r_int
 id|adb_message_handler

@@ -40,7 +40,6 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ohare.h&gt;
 macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -2474,26 +2473,6 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|select_adb_keyboard
-id|select_adb_keyboard
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_VT
-id|ppc_md.kbd_translate
-op_assign
-id|mac_hid_kbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|mac_hid_kbd_unexpected_up
-suffix:semicolon
-macro_line|#endif /* CONFIG_VT */
-)brace
-r_void
-id|__init
 DECL|function|pmac_init
 id|pmac_init
 c_func
@@ -2623,11 +2602,6 @@ suffix:semicolon
 id|ppc_md.feature_call
 op_assign
 id|pmac_do_feature_call
-suffix:semicolon
-id|select_adb_keyboard
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 id|ppc_md.progress
