@@ -475,6 +475,18 @@ DECL|macro|__NR_reserved2
 mdefine_line|#define __NR_reserved2&t;&t;&t;1260&t;/* reserved for NUMA interface */
 DECL|macro|__NR_reserved3
 mdefine_line|#define __NR_reserved3&t;&t;&t;1261&t;/* reserved for NUMA interface */
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;1262
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;1263
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;1264
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;1265
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;1266
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
