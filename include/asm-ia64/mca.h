@@ -280,8 +280,6 @@ l_int|1
 multiline_comment|/* SAL to return to new context */
 )brace
 suffix:semicolon
-DECL|macro|MIN_STATE_AREA_SIZE
-mdefine_line|#define MIN_STATE_AREA_SIZE     57
 DECL|struct|ia64_mca_os_to_sal_state_s
 r_typedef
 r_struct
