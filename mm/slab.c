@@ -3344,14 +3344,6 @@ r_int
 )paren
 )paren
 (brace
-r_const
-r_char
-op_star
-id|func_nm
-op_assign
-id|KERN_ERR
-l_string|&quot;kmem_create: &quot;
-suffix:semicolon
 r_int
 id|left_over
 comma
@@ -3446,9 +3438,11 @@ multiline_comment|/* No constructor, but inital state check requested */
 id|printk
 c_func
 (paren
-l_string|&quot;%sNo con, but init state check requested - %s&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: No con, but init state check &quot;
+l_string|&quot;requested - %s&bslash;n&quot;
 comma
-id|func_nm
+id|__FUNCTION__
 comma
 id|name
 )paren
@@ -3597,16 +3591,6 @@ op_complement
 id|BYTES_PER_WORD
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%sForcing size word alignment - %s&bslash;n&quot;
-comma
-id|func_nm
-comma
-id|name
 )paren
 suffix:semicolon
 )brace
