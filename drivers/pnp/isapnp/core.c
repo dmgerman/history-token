@@ -5773,7 +5773,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;isapnp:   Device &squot;%s&squot;&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 (braket
 l_int|0
 )braket
