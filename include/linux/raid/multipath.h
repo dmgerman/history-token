@@ -18,6 +18,12 @@ DECL|member|dev
 id|kdev_t
 id|dev
 suffix:semicolon
+DECL|member|bdev
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
 multiline_comment|/*&n;&t; * State bits:&n;&t; */
 DECL|member|operational
 r_int
@@ -74,7 +80,7 @@ op_star
 id|spare
 suffix:semicolon
 DECL|member|device_lock
-id|md_spinlock_t
+id|spinlock_t
 id|device_lock
 suffix:semicolon
 multiline_comment|/* buffer pool */
@@ -94,7 +100,7 @@ r_int
 id|freer1_cnt
 suffix:semicolon
 DECL|member|wait_buffer
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|wait_buffer
 suffix:semicolon
 )brace
@@ -132,16 +138,17 @@ id|mddev_t
 op_star
 id|mddev
 suffix:semicolon
-DECL|member|master_bh
+DECL|member|master_bio
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|master_bh
+id|master_bio
 suffix:semicolon
-DECL|member|bh_req
+DECL|member|bio
 r_struct
-id|buffer_head
-id|bh_req
+id|bio
+op_star
+id|bio
 suffix:semicolon
 DECL|member|next_mp
 r_struct

@@ -1152,20 +1152,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Work out start of non-adfs partition.&n;&t; */
 id|nr_sects
 op_assign
-id|hd-&gt;part
-(braket
-id|minor
-c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
+id|bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+l_int|9
 )paren
-)paren
-)braket
-dot
-id|nr_sects
 op_minus
 id|start_sect
 suffix:semicolon

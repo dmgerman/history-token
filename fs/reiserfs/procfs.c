@@ -2131,7 +2131,7 @@ ques
 c_cond
 l_string|&quot;none&quot;
 suffix:colon
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|to_kdev_t

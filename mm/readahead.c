@@ -26,12 +26,18 @@ id|blk_ra_kbytes
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_bdev
+)paren
+(brace
 id|blk_ra_kbytes
 op_assign
 id|blk_get_readahead
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_bdev
 )paren
 op_div
 l_int|2
@@ -47,6 +53,7 @@ id|blk_ra_kbytes
 op_assign
 id|VM_MAX_READAHEAD
 suffix:semicolon
+)brace
 r_return
 id|blk_ra_kbytes
 op_rshift

@@ -53,15 +53,6 @@ suffix:semicolon
 id|Sector
 id|sect
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_struct
 id|sgi_disklabel
 (brace
@@ -206,7 +197,7 @@ op_ne
 id|SGI_LABEL_MAGIC
 )paren
 (brace
-multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(dev), magic);*/
+multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev), magic);*/
 id|put_dev_sector
 c_func
 (paren
@@ -284,7 +275,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon
