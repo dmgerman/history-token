@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 DECL|macro|DCACHE_PARANOIA
 mdefine_line|#define DCACHE_PARANOIA 1
 multiline_comment|/* #define DCACHE_DEBUG 1 */
@@ -5458,6 +5459,30 @@ r_int
 id|mempages
 )paren
 (brace
+r_int
+r_int
+id|reserve
+suffix:semicolon
+multiline_comment|/* Base hash sizes on available memory, with a reserve equal to&n;           150% of current kernel size */
+id|reserve
+op_assign
+(paren
+id|mempages
+op_minus
+id|nr_free_pages
+c_func
+(paren
+)paren
+)paren
+op_star
+l_int|3
+op_div
+l_int|2
+suffix:semicolon
+id|mempages
+op_sub_assign
+id|reserve
+suffix:semicolon
 id|names_cachep
 op_assign
 id|kmem_cache_create
