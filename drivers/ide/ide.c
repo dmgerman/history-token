@@ -7774,7 +7774,6 @@ op_minus
 l_int|14
 suffix:colon
 multiline_comment|/* &quot;scsi&quot; */
-macro_line|#if defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI)
 id|drive-&gt;scsi
 op_assign
 l_int|1
@@ -7782,15 +7781,6 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-macro_line|#else
-id|drive-&gt;scsi
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|bad_option
-suffix:semicolon
-macro_line|#endif /* defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI) */
 r_case
 op_minus
 l_int|15
