@@ -916,9 +916,6 @@ r_struct
 id|scsi_device
 op_star
 id|sdev
-comma
-op_star
-id|sdev2
 suffix:semicolon
 r_struct
 id|Scsi_Host
@@ -1059,7 +1056,7 @@ id|shost-&gt;can_queue
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * As long as shost is accepting commands and we have&n;&t;&t; * starved queues, call __blk_run_queue. scsi_request_fn&n;&t;&t; * drops the queue_lock and can add us back to the&n;&t;&t; * starved_list.&n;&t;&t; *&n;&t;&t; * host_lock protects the starved_list and starved_entry.&n;&t;&t; * scsi_request_fn must get the host_lock before checking&n;&t;&t; * or modifying starved_list or starved_entry.&n;&t;&t; */
-id|sdev2
+id|sdev
 op_assign
 id|list_entry
 c_func
@@ -1076,7 +1073,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|sdev2-&gt;starved_entry
+id|sdev-&gt;starved_entry
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1090,7 +1087,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|sdev2-&gt;request_queue-&gt;queue_lock
+id|sdev-&gt;request_queue-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -1098,13 +1095,13 @@ suffix:semicolon
 id|__blk_run_queue
 c_func
 (paren
-id|sdev2-&gt;request_queue
+id|sdev-&gt;request_queue
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|sdev2-&gt;request_queue-&gt;queue_lock
+id|sdev-&gt;request_queue-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -3013,35 +3010,6 @@ op_logical_or
 id|shost-&gt;host_self_blocked
 )paren
 (brace
-id|SCSI_LOG_MLQUEUE
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;add starved dev &lt;%d,%d,%d,%d&gt;; host &quot;
-l_string|&quot;limit %d, busy %d, blocked %d selfblocked %d&bslash;n&quot;
-comma
-id|sdev-&gt;host-&gt;host_no
-comma
-id|sdev-&gt;channel
-comma
-id|sdev-&gt;id
-comma
-id|sdev-&gt;lun
-comma
-id|shost-&gt;can_queue
-comma
-id|shost-&gt;host_busy
-comma
-id|shost-&gt;host_blocked
-comma
-id|shost-&gt;host_self_blocked
-)paren
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
