@@ -1580,7 +1580,7 @@ mdefine_line|#define PCI_DEVICE_ID_TTI_HPT366&t;0x0004
 DECL|macro|PCI_VENDOR_ID_VIA
 mdefine_line|#define PCI_VENDOR_ID_VIA&t;&t;0x1106
 DECL|macro|PCI_DEVICE_ID_VIA_8363_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_8363_0&t;0x0305
+mdefine_line|#define PCI_DEVICE_ID_VIA_8363_0&t;0x0305 
 DECL|macro|PCI_DEVICE_ID_VIA_8371_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8371_0&t;0x0391
 DECL|macro|PCI_DEVICE_ID_VIA_8501_0
@@ -1647,12 +1647,16 @@ DECL|macro|PCI_DEVICE_ID_VIA_82C686_6
 mdefine_line|#define PCI_DEVICE_ID_VIA_82C686_6&t;0x3068
 DECL|macro|PCI_DEVICE_ID_VIA_8233_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8233_0&t;0x3074
+DECL|macro|PCI_DEVICE_ID_VIA_8622
+mdefine_line|#define PCI_DEVICE_ID_VIA_8622          0x3102 
 DECL|macro|PCI_DEVICE_ID_VIA_8233C_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8233C_0&t;0x3109
+DECL|macro|PCI_DEVICE_ID_VIA_8361
+mdefine_line|#define PCI_DEVICE_ID_VIA_8361          0x3112 
 DECL|macro|PCI_DEVICE_ID_VIA_8633_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8633_0&t;0x3091
 DECL|macro|PCI_DEVICE_ID_VIA_8367_0
-mdefine_line|#define PCI_DEVICE_ID_VIA_8367_0&t;0x3099
+mdefine_line|#define PCI_DEVICE_ID_VIA_8367_0&t;0x3099 
 DECL|macro|PCI_DEVICE_ID_VIA_86C100A
 mdefine_line|#define PCI_DEVICE_ID_VIA_86C100A&t;0x6100
 DECL|macro|PCI_DEVICE_ID_VIA_8231

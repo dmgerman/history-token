@@ -3795,6 +3795,15 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|aux_count_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|kbd_write_command_w
 c_func
 (paren
@@ -3830,15 +3839,6 @@ id|KBD_CMD_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* try to workaround toshiba4030cdt problem */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|aux_count_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

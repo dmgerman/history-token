@@ -176,8 +176,6 @@ DECL|macro|bio_iovec
 mdefine_line|#define bio_iovec(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_idx)
 DECL|macro|bio_page
 mdefine_line|#define bio_page(bio)&t;&t;bio_iovec((bio))-&gt;bv_page
-DECL|macro|__bio_offset
-mdefine_line|#define __bio_offset(bio, idx)&t;bio_iovec_idx((bio), (idx))-&gt;bv_offset
 DECL|macro|bio_offset
 mdefine_line|#define bio_offset(bio)&t;&t;bio_iovec((bio))-&gt;bv_offset
 DECL|macro|bio_sectors
@@ -211,8 +209,11 @@ DECL|macro|BIO_SEG_BOUNDARY
 mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys(__BVEC_END((b1))), bio_to_phys((b2)) + (b2)-&gt;bi_size, (q)-&gt;seg_boundary_mask)
 DECL|macro|bio_io_error
 mdefine_line|#define bio_io_error(bio) bio_endio((bio), 0, bio_sectors((bio)))
+multiline_comment|/*&n; * drivers should not use the __ version unless they _really_ want to&n; * run through the entire bio and not just pending pieces&n; */
+DECL|macro|__bio_for_each_segment
+mdefine_line|#define __bio_for_each_segment(bvl, bio, i, start_idx)&t;&t;&t;&bslash;&n;&t;for (bvl = bio_iovec_idx((bio), (start_idx)), i = (start_idx);&t;&bslash;&n;&t;     i &lt; (bio)-&gt;bi_vcnt;&t;&t;&t;&t;&t;&bslash;&n;&t;     bvl++, i++)
 DECL|macro|bio_for_each_segment
-mdefine_line|#define bio_for_each_segment(bvl, bio, i)&t;&t;&t;&t;&bslash;&n;&t;for (bvl = bio_iovec((bio)), i = (bio)-&gt;bi_idx;&t;&t;&t;&bslash;&n;&t;     i &lt; (bio)-&gt;bi_vcnt;&t;&t;&t;&t;&t;&bslash;&n;&t;     bvl++, i++)
+mdefine_line|#define bio_for_each_segment(bvl, bio, i)&t;&t;&t;&t;&bslash;&n;&t;__bio_for_each_segment(bvl, bio, i, (bio)-&gt;bi_idx)
 multiline_comment|/*&n; * get a reference to a bio, so it won&squot;t disappear. the intended use is&n; * something like:&n; *&n; * bio_get(bio);&n; * submit_bio(rw, bio);&n; * if (bio-&gt;bi_flags ...)&n; *&t;do_something&n; * bio_put(bio);&n; *&n; * without the bio_get(), it could potentially complete I/O before submit_bio&n; * returns. and then bio would be freed memory when if (bio-&gt;bi_flags ...)&n; * runs&n; */
 DECL|macro|bio_get
 mdefine_line|#define bio_get(bio)&t;atomic_inc(&amp;(bio)-&gt;bi_cnt)

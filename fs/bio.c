@@ -1181,7 +1181,7 @@ op_star
 id|bv
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * iterate iovec list and alloc pages + copy data&n;&t;&t; */
-id|bio_for_each_segment
+id|__bio_for_each_segment
 c_func
 (paren
 id|bv
@@ -1189,6 +1189,8 @@ comma
 id|bio
 comma
 id|i
+comma
+l_int|0
 )paren
 (brace
 r_struct
@@ -1263,15 +1265,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|vfrom
@@ -1348,7 +1345,7 @@ comma
 id|KM_BIO_IRQ
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1395,11 +1392,11 @@ suffix:colon
 r_while
 c_loop
 (paren
+op_decrement
 id|i
 op_ge
 l_int|0
 )paren
-(brace
 id|__free_page
 c_func
 (paren
@@ -1411,10 +1408,6 @@ dot
 id|bv_page
 )paren
 suffix:semicolon
-id|i
-op_decrement
-suffix:semicolon
-)brace
 id|bio_pool_put
 c_func
 (paren
@@ -2086,6 +2079,7 @@ id|kio-&gt;errno
 op_assign
 id|err
 suffix:semicolon
+multiline_comment|/*&n;&t; * final atomic_dec of io_count to match our initial setting of 1.&n;&t; * I/O may or may not have completed at this point, final completion&n;&t; * handler is only run on last decrement.&n;&t; */
 id|end_kio_request
 c_func
 (paren

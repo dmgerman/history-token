@@ -5221,7 +5221,7 @@ op_assign
 l_int|9
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Nobody seems to know what this does. Damn.&n; *&n; * But it does seem to fix some unspecified problem&n; * with &squot;movntq&squot; copies on Athlons.&n; *&n; * VIA 8363 chipset:&n; *  - bit 7 at offset 0x55: Debug (RW)&n; */
+multiline_comment|/*&n; * Nobody seems to know what this does. Damn.&n; *&n; * But it does seem to fix some unspecified problem&n; * with &squot;movntq&squot; copies on Athlons.&n; *&n; * VIA 8363,8622,8361 Northbridges:&n; *  - bits  5, 6, 7 at offset 0x55 need to be turned off&n; * VIA 8367 (KT266x) Northbridges:&n; *  - bits  5, 6, 7 at offset 0x95 need to be turned off&n; */
 DECL|function|pci_fixup_via_athlon_bug
 r_static
 r_void
@@ -5238,12 +5238,31 @@ id|d
 id|u8
 id|v
 suffix:semicolon
+r_int
+id|where
+op_assign
+l_int|0x55
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d-&gt;device
+op_eq
+id|PCI_DEVICE_ID_VIA_8367_0
+)paren
+(brace
+id|where
+op_assign
+l_int|0x95
+suffix:semicolon
+multiline_comment|/* the memory write queue timer register is &n;                                 different for the kt266x&squot;s: 0x95 not 0x55 */
+)brace
 id|pci_read_config_byte
 c_func
 (paren
 id|d
 comma
-l_int|0x55
+id|where
 comma
 op_amp
 id|v
@@ -5254,7 +5273,7 @@ c_cond
 (paren
 id|v
 op_amp
-l_int|0x80
+l_int|0xe0
 )paren
 (brace
 id|printk
@@ -5265,15 +5284,15 @@ l_string|&quot;Trying to stomp on Athlon bug...&bslash;n&quot;
 suffix:semicolon
 id|v
 op_and_assign
-l_int|0x7f
+l_int|0x1f
 suffix:semicolon
-multiline_comment|/* clear bit 55.7 */
+multiline_comment|/* clear bits 5, 6, 7 */
 id|pci_write_config_byte
 c_func
 (paren
 id|d
 comma
-l_int|0x55
+id|where
 comma
 id|v
 )paren
@@ -5374,6 +5393,36 @@ comma
 id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8363_0
+comma
+id|pci_fixup_via_athlon_bug
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8622
+comma
+id|pci_fixup_via_athlon_bug
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8361
+comma
+id|pci_fixup_via_athlon_bug
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8367_0
 comma
 id|pci_fixup_via_athlon_bug
 )brace

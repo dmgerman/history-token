@@ -599,6 +599,19 @@ id|REQ_CMD
 r_return
 l_int|0
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|rq-&gt;cmd
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|rq-&gt;cmd
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -624,13 +637,6 @@ l_int|0
 )braket
 op_assign
 id|WRITE_10
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * fill in lba&n;&t; */
 id|rq-&gt;cmd
@@ -680,13 +686,6 @@ op_assign
 id|block
 op_amp
 l_int|0xff
-suffix:semicolon
-id|rq-&gt;cmd
-(braket
-l_int|6
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * and transfer length&n;&t; */
 id|rq-&gt;cmd
@@ -816,8 +815,6 @@ comma
 id|i
 comma
 id|cluster
-comma
-id|j
 suffix:semicolon
 id|nsegs
 op_assign
@@ -843,10 +840,6 @@ id|QUEUE_FLAG_CLUSTER
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * for each bio in rq&n;&t; */
-id|j
-op_assign
-l_int|0
-suffix:semicolon
 id|rq_for_each_bio
 c_func
 (paren
@@ -855,9 +848,6 @@ comma
 id|rq
 )paren
 (brace
-id|j
-op_increment
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * for each segment in bio&n;&t;&t; */
 id|bio_for_each_segment
 c_func
@@ -976,24 +966,6 @@ comma
 id|q-&gt;max_segments
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;map %d, %d, bio_sectors %d, vcnt %d&bslash;n&quot;
-comma
-id|i
-comma
-id|j
-comma
-id|bio_sectors
-c_func
-(paren
-id|bio
-)paren
-comma
-id|bio-&gt;bi_vcnt
-)paren
-suffix:semicolon
 id|BUG
 c_func
 (paren
@@ -1087,7 +1059,7 @@ c_cond
 id|req-&gt;nr_segments
 op_plus
 id|bio-&gt;bi_vcnt
-OL
+op_le
 id|q-&gt;max_segments
 )paren
 (brace
@@ -1356,9 +1328,11 @@ op_star
 id|q
 )paren
 (brace
+multiline_comment|/*&n;&t; * not plugged&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|test_and_clear_bit
 c_func
 (paren
@@ -1368,6 +1342,9 @@ op_amp
 id|q-&gt;queue_flags
 )paren
 )paren
+r_return
+suffix:semicolon
+multiline_comment|/*&n;&t; * was plugged, fire request_fn if queue has stuff to do&n;&t; */
 r_if
 c_cond
 (paren
