@@ -2889,14 +2889,6 @@ op_or
 id|IA64_DCR_LC
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|ia64_set_fpu_owner
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
