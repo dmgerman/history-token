@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.22 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.23 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -31,7 +31,9 @@ mdefine_line|#define TIQDIO_THININT_ISC 3
 DECL|macro|TIQDIO_DELAY_TARGET
 mdefine_line|#define TIQDIO_DELAY_TARGET 0
 DECL|macro|QDIO_BUSY_BIT_PATIENCE
-mdefine_line|#define QDIO_BUSY_BIT_PATIENCE 2000 /* in microsecs */
+mdefine_line|#define QDIO_BUSY_BIT_PATIENCE 100 /* in microsecs */
+DECL|macro|QDIO_BUSY_BIT_GIVE_UP
+mdefine_line|#define QDIO_BUSY_BIT_GIVE_UP 10000000 /* 10 seconds */
 DECL|macro|IQDIO_GLOBAL_LAPS
 mdefine_line|#define IQDIO_GLOBAL_LAPS 2 /* GLOBAL_LAPS are not used as we */
 DECL|macro|IQDIO_GLOBAL_LAPS_INT
@@ -1120,9 +1122,17 @@ DECL|member|last_transfer_time
 id|__u64
 id|last_transfer_time
 suffix:semicolon
+DECL|member|busy_start
+id|__u64
+id|busy_start
+suffix:semicolon
 DECL|member|timing
 )brace
 id|timing
+suffix:semicolon
+DECL|member|busy_siga_counter
+id|atomic_t
+id|busy_siga_counter
 suffix:semicolon
 DECL|member|queue_type
 r_int

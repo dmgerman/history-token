@@ -421,7 +421,7 @@ c_func
 )paren
 suffix:semicolon
 r_case
-id|DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 suffix:colon
 multiline_comment|/* invalidate only */
 id|invalidate_dcache_range

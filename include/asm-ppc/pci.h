@@ -512,7 +512,7 @@ op_eq
 id|PCI_DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync_for_cpu
+id|consistent_sync
 c_func
 (paren
 id|bus_to_virt
@@ -557,7 +557,7 @@ op_eq
 id|PCI_DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync_for_device
+id|consistent_sync
 c_func
 (paren
 id|bus_to_virt
@@ -625,7 +625,7 @@ comma
 id|sg
 op_increment
 )paren
-id|consistent_sync_page_for_cpu
+id|consistent_sync_page
 c_func
 (paren
 id|sg-&gt;page
@@ -690,7 +690,7 @@ comma
 id|sg
 op_increment
 )paren
-id|consistent_sync_page_for_device
+id|consistent_sync_page
 c_func
 (paren
 id|sg-&gt;page

@@ -675,7 +675,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -741,7 +745,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -1541,7 +1549,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 macro_line|#if VERBOSE &gt; SHOW_ERROR_MESSAGES
 id|DEBUG

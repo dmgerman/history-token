@@ -1719,10 +1719,6 @@ id|hunit
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;initializing
-op_assign
-l_int|1
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1780,10 +1776,6 @@ l_int|5
 suffix:semicolon
 )brace
 )brace
-id|hwif-&gt;initializing
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1795,10 +1787,6 @@ id|u16
 id|munit
 op_assign
 l_int|0
-suffix:semicolon
-id|mate-&gt;initializing
-op_assign
-l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -1857,10 +1845,6 @@ l_int|5
 suffix:semicolon
 )brace
 )brace
-id|mate-&gt;initializing
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#else
 id|hwif

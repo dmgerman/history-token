@@ -762,6 +762,24 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* __i386__ */
+id|memcpy
+c_func
+(paren
+op_amp
+id|block
+(braket
+l_int|0x1BE
+)braket
+comma
+op_amp
+id|pe
+comma
+r_sizeof
+(paren
+id|pe
+)paren
+)paren
+suffix:semicolon
 id|write
 c_func
 (paren

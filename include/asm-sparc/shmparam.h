@@ -2,6 +2,8 @@ multiline_comment|/* $Id: shmparam.h,v 1.6 1999/12/09 10:32:41 davem Exp $ */
 macro_line|#ifndef _ASMSPARC_SHMPARAM_H
 DECL|macro|_ASMSPARC_SHMPARAM_H
 mdefine_line|#define _ASMSPARC_SHMPARAM_H
+DECL|macro|__ARCH_FORCE_SHMLBA
+mdefine_line|#define __ARCH_FORCE_SHMLBA &t;1
 r_extern
 r_int
 id|vac_cache_size

@@ -311,6 +311,7 @@ id|irb
 r_if
 c_cond
 (paren
+op_logical_neg
 id|irb-&gt;scsw.eswf
 op_logical_and
 id|irb-&gt;scsw.stctl

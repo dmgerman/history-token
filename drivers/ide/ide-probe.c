@@ -2983,10 +2983,6 @@ op_star
 id|hwif
 )paren
 (brace
-id|hwif-&gt;initializing
-op_assign
-l_int|1
-suffix:semicolon
 id|probe_hwif
 c_func
 (paren
@@ -3051,10 +3047,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|hwif-&gt;initializing
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -3,6 +3,8 @@ macro_line|#ifndef _ASMSPARC64_SHMPARAM_H
 DECL|macro|_ASMSPARC64_SHMPARAM_H
 mdefine_line|#define _ASMSPARC64_SHMPARAM_H
 macro_line|#include &lt;asm/spitfire.h&gt;
+DECL|macro|__ARCH_FORCE_SHMLBA
+mdefine_line|#define __ARCH_FORCE_SHMLBA&t;1
 multiline_comment|/* attach addr a multiple of this */
 DECL|macro|SHMLBA
 mdefine_line|#define&t;SHMLBA&t;((PAGE_SIZE &gt; L1DCACHE_SIZE) ? PAGE_SIZE : L1DCACHE_SIZE)

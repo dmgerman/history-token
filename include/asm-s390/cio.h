@@ -333,6 +333,8 @@ DECL|macro|CCW_CMD_SUSPEND_RECONN
 mdefine_line|#define CCW_CMD_SUSPEND_RECONN&t;0x5B
 DECL|macro|CCW_CMD_RDC
 mdefine_line|#define CCW_CMD_RDC&t;&t;0x64
+DECL|macro|CCW_CMD_RELEASE
+mdefine_line|#define CCW_CMD_RELEASE&t;&t;0x94
 DECL|macro|CCW_CMD_SET_PGID
 mdefine_line|#define CCW_CMD_SET_PGID&t;0xAF
 DECL|macro|CCW_CMD_SENSE_ID

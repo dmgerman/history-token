@@ -238,10 +238,15 @@ r_int
 r_int
 id|paddr
 suffix:semicolon
-DECL|member|ioaddr
+DECL|member|io_mem_addr
 r_int
 r_int
-id|ioaddr
+id|io_mem_addr
+suffix:semicolon
+DECL|member|io_mem_length
+r_int
+r_int
+id|io_mem_length
 suffix:semicolon
 DECL|member|intr
 r_int

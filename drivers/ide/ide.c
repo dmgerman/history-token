@@ -1796,34 +1796,6 @@ l_int|1
 r_goto
 id|control_region_busy
 suffix:semicolon
-macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_MAC)
-id|addr
-op_assign
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|addr
-op_logical_and
-op_logical_neg
-id|hwif_request_region
-c_func
-(paren
-id|hwif
-comma
-id|addr
-comma
-l_int|1
-)paren
-)paren
-r_goto
-id|irq_region_busy
-suffix:semicolon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
 id|hwif-&gt;straight8
 op_assign
 l_int|0
@@ -1936,30 +1908,6 @@ l_int|0
 suffix:semicolon
 id|data_region_busy
 suffix:colon
-macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_MAC)
-id|addr
-op_assign
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|addr
-)paren
-id|hwif_release_region
-c_func
-(paren
-id|addr
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|irq_region_busy
-suffix:colon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
 id|addr
 op_assign
 id|hwif-&gt;io_ports
@@ -2039,27 +1987,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_AMIGA) || defined(CONFIG_MAC)
-r_if
-c_cond
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-)paren
-id|hwif_release_region
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_IRQ_OFFSET
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
 r_if
 c_cond
 (paren
@@ -2094,7 +2021,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -2103,7 +2029,6 @@ id|hwif-&gt;io_ports
 id|i
 )braket
 )paren
-(brace
 id|hwif_release_region
 c_func
 (paren
@@ -2115,8 +2040,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
-)brace
 )brace
 DECL|variable|ide_hwif_release_regions
 id|EXPORT_SYMBOL
@@ -3101,10 +3024,6 @@ op_assign
 id|old_hwif.irq
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECS */
-id|hwif-&gt;initializing
-op_assign
-id|old_hwif.initializing
-suffix:semicolon
 id|hwif-&gt;dma_base
 op_assign
 id|old_hwif.dma_base

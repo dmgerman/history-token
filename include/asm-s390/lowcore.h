@@ -59,6 +59,12 @@ DECL|macro|__LC_PGM_ILC
 mdefine_line|#define __LC_PGM_ILC                    0x08C
 DECL|macro|__LC_PGM_INT_CODE
 mdefine_line|#define __LC_PGM_INT_CODE               0x08E
+DECL|macro|__LC_PER_ATMID
+mdefine_line|#define __LC_PER_ATMID&t;&t;&t;0x096
+DECL|macro|__LC_PER_ADDRESS
+mdefine_line|#define __LC_PER_ADDRESS&t;&t;0x098
+DECL|macro|__LC_PER_ACCESS_ID
+mdefine_line|#define __LC_PER_ACCESS_ID&t;&t;0x0A1
 DECL|macro|__LC_SUBCHANNEL_ID
 mdefine_line|#define __LC_SUBCHANNEL_ID              0x0B8
 DECL|macro|__LC_SUBCHANNEL_NR

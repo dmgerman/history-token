@@ -12612,6 +12612,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|tmp_irq
+suffix:semicolon
 multiline_comment|/*&n;&t; * According to Alex Freed (freed@europa.orion.adobe.com), this is&n;&t; * required for the Fusion CD-16 package.  If the sound driver is&n;&t; * loaded, it should work fine, but just in case...&n;&t; *&n;&t; * The following turn on the CD-ROM interface for a Fusion CD-16.&n;&t; */
 r_if
 c_cond
@@ -12656,7 +12659,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Need IRQ 0 because we can&squot;t sleep here. */
-r_int
 id|tmp_irq
 op_assign
 id|cdu31a_irq

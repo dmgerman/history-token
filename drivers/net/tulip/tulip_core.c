@@ -1301,6 +1301,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 r_static
 r_void
 id|poll_tulip
@@ -1312,6 +1313,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|tulip_set_power_state
 r_static
 r_void

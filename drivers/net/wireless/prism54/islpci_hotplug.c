@@ -10,17 +10,17 @@ macro_line|#include &quot;isl_oid.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;prism54&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.0.2.2&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;W.Termorshuizen, R.Bastings, H.V.Riedel, prism54.org team&quot;
+l_string|&quot;[Intersil] R.Bastings and W.Termorshuizen, The prism54.org Development Team &lt;prism54-devel@prism54.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Intersil 802.11 Wireless LAN adapter&quot;
+l_string|&quot;The Prism54 802.11 Wireless LAN adapter&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -264,6 +264,26 @@ comma
 (brace
 id|PCIVENDOR_INTERSIL
 comma
+id|PCIDEVICE_ISL3890
+comma
+id|PCIVENDOR_SMC
+comma
+l_int|0xa835UL
+comma
+l_int|0
+comma
+l_int|0
+comma
+(paren
+r_int
+r_int
+)paren
+l_string|&quot;SMC 2835Wv2&quot;
+)brace
+comma
+(brace
+id|PCIVENDOR_INTERSIL
+comma
 id|PCIDEVICE_ISL3877
 comma
 id|PCI_ANY_ID
@@ -427,7 +447,11 @@ id|modelp
 suffix:semicolon
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -504,6 +528,15 @@ suffix:colon
 id|modelp
 op_assign
 l_string|&quot;SMC2835W&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xa835UL
+suffix:colon
+id|modelp
+op_assign
+l_string|&quot;SMC2835W V2&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -823,7 +856,11 @@ suffix:semicolon
 )brace
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|islpci_set_state
 c_func
@@ -982,7 +1019,11 @@ op_assign
 id|ndev
 ques
 c_cond
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -1142,7 +1183,11 @@ op_assign
 id|ndev
 ques
 c_cond
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -1233,7 +1278,11 @@ op_assign
 id|ndev
 ques
 c_cond
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:colon
 l_int|0
 suffix:semicolon

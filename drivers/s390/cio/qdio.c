@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.74 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.78 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -2111,6 +2111,12 @@ id|q
 r_int
 id|result
 suffix:semicolon
+r_char
+id|dbf_text
+(braket
+l_int|15
+)braket
+suffix:semicolon
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -2146,6 +2152,7 @@ id|q-&gt;siga_out
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* here&squot;s the story with cc=2 and busy bit set (thanks, Rick):&n;&t; * VM&squot;s CP could present us cc=2 and busy bit set on SIGA-write&n;&t; * during reconfiguration of their Guest LAN (only in HIPERS mode,&n;&t; * QDIO mode is asynchronous -- cc=2 and busy bit there will take&n;&t; * the queues down immediately; and not being under VM we have a&n;&t; * problem on cc=2 and busy bit set right away).&n;&t; *&n;&t; * Therefore qdio_siga_output will try for a short time constantly,&n;&t; * if such a condition occurs. If it doesn&squot;t change, it will&n;&t; * increase the busy_siga_counter and save the timestamp, and&n;&t; * schedule the queue for later processing (via mark_q, using the&n;&t; * queue tasklet). __qdio_outbound_processing will check out the&n;&t; * counter. If non-zero, it will call qdio_kick_outbound_q as often&n;&t; * as the value of the counter. This will attempt further SIGA&n;&t; * instructions. For each successful SIGA, the counter is&n;&t; * decreased, for failing SIGAs the counter remains the same, after&n;&t; * all.&n;&t; * After some time of no movement, qdio_kick_outbound_q will&n;&t; * finally fail and reflect corresponding error codes to call&n;&t; * the upper layer module and have it take the queues down.&n;&t; *&n;&t; * Note that this is a change from the original HiperSockets design&n;&t; * (saying cc=2 and busy bit means take the queues down), but in&n;&t; * these days Guest LAN didn&squot;t exist... excessive cc=2 with busy bit&n;&t; * conditions will still take the queues down, but the threshold is&n;&t; * higher due to the Guest LAN environment.&n;&t; */
 id|result
 op_assign
 id|qdio_siga_output
@@ -2154,14 +2161,152 @@ c_func
 id|q
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|result
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* went smooth this time, reset timestamp */
+id|QDIO_DBF_TEXT3
+c_func
+(paren
+l_int|0
+comma
+id|trace
+comma
+l_string|&quot;cc2reslv&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dbf_text
+comma
+l_string|&quot;%4x%2x%2x&quot;
+comma
+id|q-&gt;irq
+comma
+id|q-&gt;q_no
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+)paren
+)paren
+suffix:semicolon
+id|QDIO_DBF_TEXT3
+c_func
+(paren
+l_int|0
+comma
+id|trace
+comma
+id|dbf_text
+)paren
+suffix:semicolon
+id|q-&gt;timing.busy_start
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+(paren
+l_int|2
+op_or
+id|QDIO_SIGA_ERROR_B_BIT_SET
+)paren
+suffix:colon
+multiline_comment|/* cc=2 and busy bit: */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+)paren
+suffix:semicolon
+multiline_comment|/* if the last siga was successful, save&n;&t;&t;&t; * timestamp here */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|result
+id|q-&gt;timing.busy_start
 )paren
-r_return
+id|q-&gt;timing.busy_start
+op_assign
+id|NOW
 suffix:semicolon
+multiline_comment|/* if we&squot;re in time, don&squot;t touch error_status_flags&n;&t;&t;&t; * and siga_error */
+r_if
+c_cond
+(paren
+id|NOW
+op_minus
+id|q-&gt;timing.busy_start
+OL
+id|QDIO_BUSY_BIT_GIVE_UP
+)paren
+(brace
+id|qdio_mark_q
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|QDIO_DBF_TEXT2
+c_func
+(paren
+l_int|0
+comma
+id|trace
+comma
+l_string|&quot;cc2REPRT&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dbf_text
+comma
+l_string|&quot;%4x%2x%2x&quot;
+comma
+id|q-&gt;irq
+comma
+id|q-&gt;q_no
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+)paren
+)paren
+suffix:semicolon
+id|QDIO_DBF_TEXT3
+c_func
+(paren
+l_int|0
+comma
+id|trace
+comma
+id|dbf_text
+)paren
+suffix:semicolon
+multiline_comment|/* else fallthrough and report error */
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* for plain cc=1, 2 or 3: */
 r_if
 c_cond
 (paren
@@ -2179,6 +2324,7 @@ id|q-&gt;siga_error
 op_assign
 id|result
 suffix:semicolon
+)brace
 )brace
 r_inline
 r_static
@@ -2366,6 +2512,9 @@ op_star
 id|q
 )paren
 (brace
+r_int
+id|siga_attempts
+suffix:semicolon
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -2463,6 +2612,39 @@ id|perf_stats.tl_runs
 op_increment
 suffix:semicolon
 macro_line|#endif /* QDIO_PERFORMANCE_STATS */
+multiline_comment|/* see comment in qdio_kick_outbound_q */
+id|siga_attempts
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|siga_attempts
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+)paren
+suffix:semicolon
+id|qdio_kick_outbound_q
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+id|siga_attempts
+op_decrement
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5570,6 +5752,20 @@ op_amp
 id|qdio_inbound_processing
 )paren
 suffix:semicolon
+multiline_comment|/* actually this is not used for inbound queues. yet. */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|q-&gt;timing.busy_start
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&t;&t;for (j=0;j&lt;QDIO_STATS_NUMBER;j++)&n;&t;&t;&t;q-&gt;timing.last_transfer_times[j]=(qdio_get_micros()/&n;&t;&t;&t;&t;&t;&t;&t;  QDIO_STATS_NUMBER)*j;&n;&t;&t;q-&gt;timing.last_transfer_index=QDIO_STATS_NUMBER-1;&n;*/
 multiline_comment|/* fill in slib */
 r_if
@@ -5989,6 +6185,19 @@ r_int
 )paren
 op_amp
 id|qdio_outbound_processing
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|q-&gt;busy_siga_counter
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|q-&gt;timing.busy_start
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* fill in slib */
 r_if
@@ -9245,9 +9454,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rc
 op_eq
 l_int|0
+)paren
+op_logical_or
+(paren
+id|rc
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
 )paren
 id|rc
 op_assign
@@ -9287,6 +9505,9 @@ r_int
 id|result
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 r_int
 r_int
@@ -9579,14 +9800,6 @@ op_minus
 id|EINPROGRESS
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|result
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/* cleanup subchannel */
 id|spin_lock_irqsave
 c_func
@@ -9608,7 +9821,7 @@ op_amp
 id|QDIO_FLAG_CLEANUP_USING_CLEAR
 )paren
 (brace
-id|result
+id|rc
 op_assign
 id|ccw_device_clear
 c_func
@@ -9632,7 +9845,7 @@ op_amp
 id|QDIO_FLAG_CLEANUP_USING_HALT
 )paren
 (brace
-id|result
+id|rc
 op_assign
 id|ccw_device_halt
 c_func
@@ -9650,7 +9863,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* default behaviour */
-id|result
+id|rc
 op_assign
 id|ccw_device_halt
 c_func
@@ -9668,7 +9881,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|rc
 op_eq
 op_minus
 id|ENODEV
@@ -9683,11 +9896,6 @@ comma
 id|QDIO_IRQ_STATE_INACTIVE
 )paren
 suffix:semicolon
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* No error. */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -9705,7 +9913,7 @@ r_else
 r_if
 c_cond
 (paren
-id|result
+id|rc
 op_eq
 l_int|0
 )paren
@@ -9781,6 +9989,10 @@ id|cdev
 comma
 id|flags
 )paren
+suffix:semicolon
+id|result
+op_assign
+id|rc
 suffix:semicolon
 r_goto
 id|out

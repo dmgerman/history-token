@@ -2962,11 +2962,6 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* our irq number */
-DECL|member|initializing
-r_int
-id|initializing
-suffix:semicolon
-multiline_comment|/* set while initializing self */
 DECL|member|dma_master
 r_int
 r_int
