@@ -282,10 +282,12 @@ id|size
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

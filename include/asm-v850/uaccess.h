@@ -56,10 +56,12 @@ OL
 l_int|0xFFFFF000
 suffix:semicolon
 )brace
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_extern
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 (paren
 r_int

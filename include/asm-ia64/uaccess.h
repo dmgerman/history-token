@@ -31,9 +31,11 @@ DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr, size, segment)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(addr);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(likely((unsigned long) (addr) &lt;= (segment).seg)&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     || likely(REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT)));&t;&bslash;&n;})
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size)&t;__access_ok((addr), (size), get_fs())
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 r_static
 r_inline
 r_int
+id|__deprecated
 DECL|function|verify_area
 id|verify_area
 (paren

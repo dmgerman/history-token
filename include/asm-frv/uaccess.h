@@ -128,10 +128,12 @@ DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) (__range_ok((addr), (size)) == 0)
 DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr,size) (__range_ok((addr), (size)) == 0)
+multiline_comment|/* this function will go away soon - use access_ok() / __range_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

@@ -139,11 +139,12 @@ id|memory_end
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MMU */
-multiline_comment|/**&n; * verify_area: - Obsolete, use access_ok()&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This function has been replaced by access_ok().&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns zero if the memory block may be valid, -EFAULT&n; * if it is definitely invalid.&n; *&n; * See access_ok() for more details.&n; */
+multiline_comment|/**&n; * verify_area: - Obsolete/deprecated and will go away soon,&n; * use access_ok() instead.&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This function has been replaced by access_ok().&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns zero if the memory block may be valid, -EFAULT&n; * if it is definitely invalid.&n; *&n; * See access_ok() for more details.&n; */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

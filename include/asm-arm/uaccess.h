@@ -89,10 +89,12 @@ DECL|macro|__range_ok
 mdefine_line|#define __range_ok(addr,size) ({ &bslash;&n;&t;unsigned long flag, sum; &bslash;&n;&t;__chk_user_ptr(addr);&t;&bslash;&n;&t;__asm__(&quot;adds %1, %2, %3; sbcccs %1, %1, %0; movcc %0, #0&quot; &bslash;&n;&t;&t;: &quot;=&amp;r&quot; (flag), &quot;=&amp;r&quot; (sum) &bslash;&n;&t;&t;: &quot;r&quot; (addr), &quot;Ir&quot; (size), &quot;0&quot; (current_thread_info()-&gt;addr_limit) &bslash;&n;&t;&t;: &quot;cc&quot;); &bslash;&n;&t;flag; })
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)&t;(__range_ok(addr,size) == 0)
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

@@ -63,11 +63,12 @@ DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr, size, mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((signed long)((mask) &amp; ((addr) | ((addr) + (size)) | __ua_size(size)))) == 0)
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size)&t;&t;&t;&t;&t;&bslash;&n;&t;likely(__access_ok((unsigned long)(addr), (size),__access_mask))
-multiline_comment|/*&n; * verify_area: - Obsolete, use access_ok()&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This function has been replaced by access_ok().&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns zero if the memory block may be valid, -EFAULT&n; * if it is definitely invalid.&n; *&n; * See access_ok() for more details.&n; */
+multiline_comment|/*&n; * verify_area: - Obsolete/deprecated and will go away soon,&n; * use access_ok() instead.&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This function has been replaced by access_ok().&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns zero if the memory block may be valid, -EFAULT&n; * if it is definitely invalid.&n; *&n; * See access_ok() for more details.&n; */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

@@ -33,10 +33,12 @@ DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr,size) (1)
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) __access_ok(addr,size)
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_extern
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

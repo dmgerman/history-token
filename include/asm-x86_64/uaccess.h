@@ -34,10 +34,12 @@ DECL|macro|__range_not_ok
 mdefine_line|#define __range_not_ok(addr,size) ({ &bslash;&n;&t;unsigned long flag,sum; &bslash;&n;&t;__chk_user_ptr(addr); &bslash;&n;&t;asm(&quot;# range_ok&bslash;n&bslash;r&quot; &bslash;&n;&t;&t;&quot;addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0&quot;  &bslash;&n;&t;&t;:&quot;=&amp;r&quot; (flag), &quot;=r&quot; (sum) &bslash;&n;&t;&t;:&quot;1&quot; (addr),&quot;g&quot; ((long)(size)),&quot;g&quot; (current_thread_info()-&gt;addr_limit.seg)); &bslash;&n;&t;flag; })
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size) (__range_not_ok(addr,size) == 0)
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_extern
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

@@ -30,10 +30,12 @@ DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr,size,segment) &bslash;&n;&t;(((segment).seg &amp; (addr | size )) == 0)
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) &bslash;&n;&t;__access_ok(((__force unsigned long)(addr)),(size),get_fs())
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

@@ -12,10 +12,12 @@ macro_line|#include &quot;uaccess-skas.h&quot;
 macro_line|#endif
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size) &bslash;&n;&t;CHOOSE_MODE_PROC(access_ok_tt, access_ok_skas, type, addr, size)
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren

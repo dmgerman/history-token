@@ -82,7 +82,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|verify_area
-mdefine_line|#define verify_area(type,addr,size) (0)
+mdefine_line|#define verify_area(type,addr,size) (0)&t;/* FIXME: all users should go away soon,&n;                                         * and use access_ok instead, then this&n;                                         * should be removed. */
 DECL|macro|put_user
 mdefine_line|#define put_user __put_user
 DECL|macro|get_user

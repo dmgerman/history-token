@@ -54,10 +54,12 @@ mdefine_line|#define segment_eq(a,b)&t;((a) == (b))
 macro_line|#include &lt;asm/uaccess-asm.h&gt;
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)&t;(__range_ok(addr,size) == 0)
+multiline_comment|/* this function will go away soon - use access_ok() instead */
 DECL|function|verify_area
 r_static
 r_inline
 r_int
+id|__deprecated
 id|verify_area
 c_func
 (paren
