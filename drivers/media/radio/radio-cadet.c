@@ -148,6 +148,7 @@ op_assign
 initialization_block
 suffix:semicolon
 DECL|function|cadet_wake
+r_static
 r_void
 id|cadet_wake
 c_func
