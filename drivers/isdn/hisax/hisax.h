@@ -2931,14 +2931,6 @@ r_int
 r_int
 id|cfg_reg
 suffix:semicolon
-DECL|member|pciaddr
-r_int
-r_int
-id|pciaddr
-(braket
-l_int|2
-)braket
-suffix:semicolon
 DECL|member|ipac
 r_int
 r_int
