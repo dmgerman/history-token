@@ -801,8 +801,7 @@ op_assign
 id|read_cache_page
 c_func
 (paren
-op_amp
-id|inode-&gt;i_data
+id|inode-&gt;i_mapping
 comma
 id|desc-&gt;page_index
 comma
@@ -2960,8 +2959,7 @@ op_assign
 id|find_get_page
 c_func
 (paren
-op_amp
-id|dir-&gt;i_data
+id|dir-&gt;i_mapping
 comma
 id|desc.page_index
 )paren
