@@ -743,17 +743,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: MRB-remove - this doesn&squot;t seem sane, should this be done somewhere else ?*/
-id|mem_map
-op_assign
-id|NODE_DATA
-c_func
-(paren
-l_int|0
-)paren
-op_member_access_from_pointer
-id|node_mem_map
-suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n;&t; * And for discontig, do some more fixups on the zone sizes..&n;&t; */
 id|zones_size

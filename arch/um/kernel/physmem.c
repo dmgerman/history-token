@@ -1438,10 +1438,6 @@ id|p-&gt;lru
 )paren
 suffix:semicolon
 )brace
-id|mem_map
-op_assign
-id|map
-suffix:semicolon
 id|max_mapnr
 op_assign
 id|total_pages

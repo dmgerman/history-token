@@ -958,16 +958,6 @@ comma
 id|zhole_size
 )paren
 suffix:semicolon
-id|mem_map
-op_assign
-id|NODE_DATA
-c_func
-(paren
-l_int|0
-)paren
-op_member_access_from_pointer
-id|node_mem_map
-suffix:semicolon
 multiline_comment|/*&n;&t; * finish off the bad pages once&n;&t; * the mem_map is initialised&n;&t; */
 id|memzero
 c_func

@@ -957,10 +957,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mem_map
-op_assign
-id|contig_page_data.node_mem_map
-suffix:semicolon
 )brace
 multiline_comment|/* Initialize remaps of some I/O-ports. It is important that this&n; * is called before any driver is initialized.&n; */
 r_static

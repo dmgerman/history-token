@@ -1025,9 +1025,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|mem_map
-op_assign
-id|contig_page_data.node_mem_map
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|node_mem_map
 op_assign
 id|vmem_map
 suffix:semicolon

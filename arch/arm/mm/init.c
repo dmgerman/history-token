@@ -1746,12 +1746,6 @@ id|zhole_size
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-id|mem_map
-op_assign
-id|contig_page_data.node_mem_map
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * finish off the bad pages once&n;&t; * the mem_map is initialised&n;&t; */
 id|memzero
 c_func

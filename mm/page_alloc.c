@@ -7327,10 +7327,11 @@ id|zone-&gt;spanned_pages
 suffix:semicolon
 )brace
 )brace
-DECL|function|node_alloc_mem_map
+DECL|function|alloc_node_mem_map
+r_static
 r_void
 id|__init
-id|node_alloc_mem_map
+id|alloc_node_mem_map
 c_func
 (paren
 r_struct
@@ -7343,6 +7344,23 @@ r_int
 r_int
 id|size
 suffix:semicolon
+multiline_comment|/* Skip empty nodes */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pgdat-&gt;node_spanned_pages
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* ia64 gets its own node_mem_map, before this, without bootmem */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pgdat-&gt;node_mem_map
+)paren
+(brace
 id|size
 op_assign
 (paren
@@ -7367,10 +7385,29 @@ comma
 id|size
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifndef CONFIG_DISCONTIGMEM
+multiline_comment|/*&n;&t; * With no DISCONTIG, the global mem_map is just set as node 0&squot;s&n;&t; */
+r_if
+c_cond
+(paren
+id|pgdat
+op_eq
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+)paren
 id|mem_map
 op_assign
-id|contig_page_data.node_mem_map
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|node_mem_map
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -7421,17 +7458,7 @@ comma
 id|zholes_size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pfn_to_page
-c_func
-(paren
-id|node_start_pfn
-)paren
-)paren
-id|node_alloc_mem_map
+id|alloc_node_mem_map
 c_func
 (paren
 id|pgdat
