@@ -309,6 +309,14 @@ id|tf-&gt;flags
 op_amp
 id|ATA_TFLAG_ISADDR
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tf-&gt;ctl
+op_ne
+id|ap-&gt;last_ctl
+)paren
+(brace
 id|outb
 c_func
 (paren
@@ -317,6 +325,17 @@ comma
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
+id|ap-&gt;last_ctl
+op_assign
+id|tf-&gt;ctl
+suffix:semicolon
+id|ata_wait_idle
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -514,6 +533,14 @@ id|tf-&gt;flags
 op_amp
 id|ATA_TFLAG_ISADDR
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tf-&gt;ctl
+op_ne
+id|ap-&gt;last_ctl
+)paren
+(brace
 id|writeb
 c_func
 (paren
@@ -522,6 +549,17 @@ comma
 id|ap-&gt;ioaddr.ctl_addr
 )paren
 suffix:semicolon
+id|ap-&gt;last_ctl
+op_assign
+id|tf-&gt;ctl
+suffix:semicolon
+id|ata_wait_idle
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4336,7 +4374,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|10
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: flush */
@@ -4353,7 +4391,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|10
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: flush */
@@ -9511,6 +9549,10 @@ suffix:semicolon
 id|ap-&gt;active_tag
 op_assign
 id|ATA_TAG_POISON
+suffix:semicolon
+id|ap-&gt;last_ctl
+op_assign
+l_int|0xFF
 suffix:semicolon
 multiline_comment|/* ata_engine init */
 id|ap-&gt;eng.flags

@@ -827,6 +827,15 @@ op_plus
 id|host-&gt;csr.rom_size
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|host-&gt;csr.lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|RCODE_ADDRESS_ERROR
 suffix:semicolon

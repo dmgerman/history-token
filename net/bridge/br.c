@@ -38,7 +38,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_INET) &amp;&amp; defined(CONFIG_NETFILTER)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
 (paren
@@ -92,7 +92,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_INET) &amp;&amp; defined(CONFIG_NETFILTER)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 id|br_netfilter_fini
 c_func
 (paren

@@ -1283,6 +1283,21 @@ c_func
 id|__csum_partial_copy_sparc_generic
 )paren
 suffix:semicolon
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
+multiline_comment|/* Cache flushing.  */
+DECL|variable|sparc_flush_page_to_ram
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sparc_flush_page_to_ram
+)paren
+suffix:semicolon
 multiline_comment|/* No version information on this, heavily used in inline asm,&n; * and will always be &squot;void __ret_efault(void)&squot;.&n; */
 DECL|variable|__ret_efault
 id|EXPORT_SYMBOL_NOVERS

@@ -220,6 +220,8 @@ id|flags
 suffix:semicolon
 DECL|macro|EBUS_DMA_FLAG_USE_EBDMA_HANDLER
 mdefine_line|#define EBUS_DMA_FLAG_USE_EBDMA_HANDLER&t;&t;0x00000001
+DECL|macro|EBUS_DMA_FLAG_TCI_DISABLE
+mdefine_line|#define EBUS_DMA_FLAG_TCI_DISABLE&t;&t;0x00000002
 multiline_comment|/* These are only valid is EBUS_DMA_FLAG_USE_EBDMA_HANDLER is&n;&t; * set.&n;&t; */
 DECL|member|callback
 r_void

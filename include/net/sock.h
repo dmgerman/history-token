@@ -3238,6 +3238,9 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|skb_len
+suffix:semicolon
 multiline_comment|/* Cast skb-&gt;rcvbuf to unsigned... It&squot;s pointless, but reduces&n;&t;   number of warnings when compiling with -W --ANK&n;&t; */
 r_if
 c_cond
@@ -3299,6 +3302,11 @@ comma
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Cache the SKB length before we tack it onto the receive&n;&t; * queue.  Once it is added it no longer belongs to us and&n;&t; * may be freed by other threads of control pulling packets&n;&t; * from the queue.&n;&t; */
+id|skb_len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|skb_queue_tail
 c_func
 (paren
@@ -3327,7 +3335,7 @@ c_func
 (paren
 id|sk
 comma
-id|skb-&gt;len
+id|skb_len
 )paren
 suffix:semicolon
 id|out

@@ -940,6 +940,12 @@ id|sg_tablesize
 op_assign
 id|SG_ALL
 comma
+multiline_comment|/* limit the total size of a transfer to 120 KB */
+dot
+id|max_sectors
+op_assign
+l_int|240
+comma
 multiline_comment|/* merge commands... this seems to help performance, but&n;&t; * periodically someone should test to see which setting is more&n;&t; * optimal.&n;&t; */
 dot
 id|use_clustering

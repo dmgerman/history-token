@@ -21115,8 +21115,6 @@ id|PAGE_MASK
 )paren
 op_plus
 id|count
-op_minus
-l_int|1
 op_plus
 op_complement
 id|PAGE_MASK

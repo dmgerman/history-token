@@ -4470,7 +4470,7 @@ suffix:semicolon
 multiline_comment|/* clear the reselection indicator */
 id|SDp
 op_assign
-id|scsi_find_device
+id|__scsi_device_lookup
 c_func
 (paren
 id|host
@@ -6671,15 +6671,12 @@ id|hostdata-&gt;pScript
 )paren
 suffix:semicolon
 multiline_comment|/* clear all the negotiated parameters */
-id|list_for_each_entry
+id|__shost_for_each_device
 c_func
 (paren
 id|SDp
 comma
-op_amp
-id|host-&gt;my_devices
-comma
-id|siblings
+id|host
 )paren
 id|SDp-&gt;hostdata
 op_assign

@@ -78,6 +78,11 @@ id|this_id
 op_assign
 l_int|7
 comma
+dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -85,7 +90,7 @@ c_func
 (paren
 id|parisc
 comma
-id|lasi700_scsi_tbl
+id|lasi700_ids
 )paren
 suffix:semicolon
 r_static

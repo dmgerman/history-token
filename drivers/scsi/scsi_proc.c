@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/* 4K page size, but our output routines, use some slack for overruns */
@@ -949,7 +949,7 @@ id|shost
 suffix:semicolon
 id|sdev
 op_assign
-id|scsi_find_device
+id|scsi_device_lookup
 c_func
 (paren
 id|shost
@@ -964,26 +964,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sdev
 )paren
-r_goto
-id|out
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
+(brace
+id|scsi_remove_device
 c_func
 (paren
-op_amp
-id|sdev-&gt;access_count
+id|sdev
 )paren
-)paren
-r_goto
-id|out
 suffix:semicolon
-id|scsi_remove_device
+id|scsi_device_put
 c_func
 (paren
 id|sdev
@@ -993,8 +983,7 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|out
-suffix:colon
+)brace
 id|scsi_host_put
 c_func
 (paren

@@ -8644,7 +8644,6 @@ id|addrconf_hash_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Step 3: clear address list */
 id|write_lock_bh
 c_func
 (paren
@@ -8652,6 +8651,24 @@ op_amp
 id|idev-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* Step 3: clear flags for stateless addrconf */
+r_if
+c_cond
+(paren
+id|how
+op_ne
+l_int|1
+)paren
+id|idev-&gt;if_flags
+op_and_assign
+op_complement
+(paren
+id|IF_RS_SENT
+op_or
+id|IF_RA_RCVD
+)paren
+suffix:semicolon
+multiline_comment|/* Step 4: clear address list */
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 r_if
 c_cond
@@ -8817,7 +8834,7 @@ op_amp
 id|idev-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* Step 4: Discard multicast list */
+multiline_comment|/* Step 5: Discard multicast list */
 r_if
 c_cond
 (paren

@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SG_MEMPOOL_NR
@@ -764,9 +764,19 @@ id|current_sdev
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|current_sdev-&gt;host
+suffix:semicolon
+r_struct
 id|scsi_device
 op_star
 id|sdev
+comma
+op_star
+id|tmp
 suffix:semicolon
 r_int
 r_int
@@ -775,7 +785,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -794,7 +804,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -806,10 +816,11 @@ c_func
 id|current_sdev-&gt;request_queue
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * After unlock, this races with anyone clearing starget_sdev_user,&n;&t; * but we always enter this function again, avoiding any problems.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -819,41 +830,70 @@ c_cond
 (paren
 id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * After unlock, this races with anyone clearing&n;&t;&t; * starget_sdev_user, but we (should) always enter this&n;&t;&t; * function again, avoiding any problems.&n;&t;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|current_sdev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|current_sdev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|sdev
+comma
+id|tmp
 comma
 op_amp
 id|current_sdev-&gt;same_target_siblings
 comma
 id|same_target_siblings
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|scsi_device_get
+c_func
+(paren
+id|sdev
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|blk_run_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|scsi_device_put
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+)brace
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2473,6 +2513,56 @@ id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
+r_int
+id|specials_only
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|sdev-&gt;sdev_state
+op_ne
+id|SDEV_RUNNING
+)paren
+)paren
+(brace
+multiline_comment|/* OK, we&squot;re not in a running state don&squot;t prep&n;&t;&t; * user commands */
+r_if
+c_cond
+(paren
+id|sdev-&gt;sdev_state
+op_eq
+id|SDEV_DEL
+)paren
+(brace
+multiline_comment|/* Device is fully deleted, no commands&n;&t;&t;&t; * at all allowed down */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi%d (%d:%d): rejecting I/O to dead device&bslash;n&quot;
+comma
+id|sdev-&gt;host-&gt;host_no
+comma
+id|sdev-&gt;id
+comma
+id|sdev-&gt;lun
+)paren
+suffix:semicolon
+r_return
+id|BLKPREP_KILL
+suffix:semicolon
+)brace
+multiline_comment|/* OK, we only allow special commands (i.e. not&n;&t;&t; * user initiated ones */
+id|specials_only
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Find the actual device driver associated with this command.&n;&t; * The SPECIAL requests are things like character device or&n;&t; * ioctls, which did not originate from ll_rw_blk.  Note that&n;&t; * the special field is also used to indicate the cmd for&n;&t; * the remainder of a partially fulfilled request that can &n;&t; * come up when there is a medium error.  We have to treat&n;&t; * these two cases differently.  We differentiate by looking&n;&t; * at request-&gt;cmd, as this tells us the real story.&n;&t; */
 r_if
 c_cond
@@ -2548,6 +2638,33 @@ id|REQ_BLOCK_PC
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|specials_only
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi%d (%d:%d): rejecting I/O to device being removed&bslash;n&quot;
+comma
+id|sdev-&gt;host-&gt;host_no
+comma
+id|sdev-&gt;id
+comma
+id|sdev-&gt;lun
+)paren
+suffix:semicolon
+r_return
+id|BLKPREP_KILL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Just check to see if the device is online.  If&n;&t;&t; * it isn&squot;t, we refuse to process ordinary commands&n;&t;&t; * (we will allow specials just in case someone needs&n;&t;&t; * to send a command to an offline device without bringing&n;&t;&t; * it back online)&n;&t;&t; */
 r_if
 c_cond
@@ -3036,6 +3153,22 @@ id|request
 op_star
 id|req
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|get_device
+c_func
+(paren
+op_amp
+id|sdev-&gt;sdev_gendev
+)paren
+)paren
+(brace
+multiline_comment|/* We must be tearing the block queue down already */
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * To start with, we keep looping until the queue is empty, or until&n;&t; * the host is no longer able to accept any more requests.&n;&t; */
 r_while
 c_loop
@@ -3251,7 +3384,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|not_ready
 suffix:colon
@@ -3294,6 +3428,28 @@ id|q
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+multiline_comment|/* must be careful here...if we trigger the -&gt;remove() function&n;&t; * we cannot be holding the q lock */
+id|spin_unlock_irq
+c_func
+(paren
+id|q-&gt;queue_lock
+)paren
+suffix:semicolon
+id|put_device
+c_func
+(paren
+op_amp
+id|sdev-&gt;sdev_gendev
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|q-&gt;queue_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|scsi_calculate_bounce_limit
 id|u64

@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/device.h&gt;
 r_struct
 id|module
 suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
 DECL|struct|scsi_driver
 r_struct
 id|scsi_driver

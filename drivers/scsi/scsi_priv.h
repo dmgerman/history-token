@@ -512,16 +512,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|scsi_free_sdev
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scsi_rescan_device
 c_func
 (paren
@@ -556,8 +546,18 @@ macro_line|# define scsi_exit_sysctl()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_SYSCTL */
 multiline_comment|/* scsi_sysfs.c */
 r_extern
+r_void
+id|scsi_device_dev_release
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
-id|scsi_device_register
+id|scsi_sysfs_add_sdev
 c_func
 (paren
 r_struct

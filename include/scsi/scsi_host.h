@@ -441,10 +441,11 @@ DECL|struct|Scsi_Host
 r_struct
 id|Scsi_Host
 (brace
-DECL|member|my_devices
+multiline_comment|/*&n;&t; * __devices is protected by the host_lock, but you should&n;&t; * usually use scsi_device_lookup / shost_for_each_device&n;&t; * to access it and don&squot;t care about locking yourself.&n;&t; * In the rare case of beeing in irq context you can use&n;&t; * their __ prefixed variants with the lock held. NEVER&n;&t; * access this list directly from a driver.&n;&t; */
+DECL|member|__devices
 r_struct
 id|list_head
-id|my_devices
+id|__devices
 suffix:semicolon
 DECL|member|cmd_pool
 r_struct
@@ -476,6 +477,12 @@ id|spinlock_t
 op_star
 id|host_lock
 suffix:semicolon
+DECL|member|scan_mutex
+r_struct
+id|semaphore
+id|scan_mutex
+suffix:semicolon
+multiline_comment|/* serialize scanning activity */
 DECL|member|eh_cmd_q
 r_struct
 id|list_head
@@ -494,7 +501,7 @@ id|semaphore
 op_star
 id|eh_wait
 suffix:semicolon
-multiline_comment|/* The error recovery thread waits on&n;                                          this. */
+multiline_comment|/* The error recovery thread waits&n;&t;&t;&t;&t;&t;      on this. */
 DECL|member|eh_notify
 r_struct
 id|completion
@@ -713,12 +720,6 @@ DECL|member|sht_legacy_list
 r_struct
 id|list_head
 id|sht_legacy_list
-suffix:semicolon
-multiline_comment|/*&n;&t; * This mutex serializes all scsi scanning activity from kernel- and&n;&t; * userspace.&n;&t; */
-DECL|member|scan_mutex
-r_struct
-id|semaphore
-id|scan_mutex
 suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata
