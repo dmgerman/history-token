@@ -243,6 +243,189 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* for configuring coalescing parameters of chip */
+DECL|struct|ethtool_coalesce
+r_struct
+id|ethtool_coalesce
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_{G,S}COALESCE */
+multiline_comment|/* How many usecs to delay an RX interrupt after&n;&t; * a packet arrives.  If 0, only rx_max_coalesced_frames&n;&t; * is used.&n;&t; */
+DECL|member|rx_coalesce_usecs
+id|u32
+id|rx_coalesce_usecs
+suffix:semicolon
+multiline_comment|/* How many packets to delay an RX interrupt after&n;&t; * a packet arrives.  If 0, only rx_coalesce_usecs is&n;&t; * used.  It is illegal to set both usecs and max frames&n;&t; * to zero as this would cause RX interrupts to never be&n;&t; * generated.&n;&t; */
+DECL|member|rx_max_coalesced_frames
+id|u32
+id|rx_max_coalesced_frames
+suffix:semicolon
+multiline_comment|/* Same as above two parameters, except that these values&n;&t; * apply while an IRQ is being services by the host.  Not&n;&t; * all cards support this feature and the values are ignored&n;&t; * in that case.&n;&t; */
+DECL|member|rx_coalesce_usecs_irq
+id|u32
+id|rx_coalesce_usecs_irq
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_irq
+id|u32
+id|rx_max_coalesced_frames_irq
+suffix:semicolon
+multiline_comment|/* How many usecs to delay a TX interrupt after&n;&t; * a packet is sent.  If 0, only tx_max_coalesced_frames&n;&t; * is used.&n;&t; */
+DECL|member|tx_coalesce_usecs
+id|u32
+id|tx_coalesce_usecs
+suffix:semicolon
+multiline_comment|/* How many packets to delay a TX interrupt after&n;&t; * a packet is sent.  If 0, only tx_coalesce_usecs is&n;&t; * used.  It is illegal to set both usecs and max frames&n;&t; * to zero as this would cause TX interrupts to never be&n;&t; * generated.&n;&t; */
+DECL|member|tx_max_coalesced_frames
+id|u32
+id|tx_max_coalesced_frames
+suffix:semicolon
+multiline_comment|/* Same as above two parameters, except that these values&n;&t; * apply while an IRQ is being services by the host.  Not&n;&t; * all cards support this feature and the values are ignored&n;&t; * in that case.&n;&t; */
+DECL|member|tx_coalesce_usecs_irq
+id|u32
+id|tx_coalesce_usecs_irq
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_irq
+id|u32
+id|tx_max_coalesced_frames_irq
+suffix:semicolon
+multiline_comment|/* How many usecs to delay in-memory statistics&n;&t; * block updates.  Some drivers do not have an in-memory&n;&t; * statistic block, and in such cases this value is ignored.&n;&t; * This value must not be zero.&n;&t; */
+DECL|member|stats_block_coalesce_usecs
+id|u32
+id|stats_block_coalesce_usecs
+suffix:semicolon
+multiline_comment|/* Adaptive RX/TX coalescing is an algorithm implemented by&n;&t; * some drivers to improve latency under low packet rates and&n;&t; * improve throughput under high packet rates.  Some drivers&n;&t; * only implement one of RX or TX adaptive coalescing.  Anything&n;&t; * not implemented by the driver causes these values to be&n;&t; * silently ignored.&n;&t; */
+DECL|member|use_adaptive_rx_coalesce
+id|u32
+id|use_adaptive_rx_coalesce
+suffix:semicolon
+DECL|member|use_adaptive_tx_coalesce
+id|u32
+id|use_adaptive_tx_coalesce
+suffix:semicolon
+multiline_comment|/* When the packet rate (measured in packets per second)&n;&t; * is below pkt_rate_low, the {rx,tx}_*_low parameters are&n;&t; * used.&n;&t; */
+DECL|member|pkt_rate_low
+id|u32
+id|pkt_rate_low
+suffix:semicolon
+DECL|member|rx_coalesce_usecs_low
+id|u32
+id|rx_coalesce_usecs_low
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_low
+id|u32
+id|rx_max_coalesced_frames_low
+suffix:semicolon
+DECL|member|tx_coalesce_usecs_low
+id|u32
+id|tx_coalesce_usecs_low
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_low
+id|u32
+id|tx_max_coalesced_frames_low
+suffix:semicolon
+multiline_comment|/* When the packet rate is below pkt_rate_high but above&n;&t; * pkt_rate_low (both measured in packets per second) the&n;&t; * normal {rx,tx}_* coalescing parameters are used.&n;&t; */
+multiline_comment|/* When the packet rate is (measured in packets per second)&n;&t; * is above pkt_rate_high, the {rx,tx}_*_high parameters are&n;&t; * used.&n;&t; */
+DECL|member|pkt_rate_high
+id|u32
+id|pkt_rate_high
+suffix:semicolon
+DECL|member|rx_coalesce_usecs_high
+id|u32
+id|rx_coalesce_usecs_high
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_high
+id|u32
+id|rx_max_coalesced_frames_high
+suffix:semicolon
+DECL|member|tx_coalesce_usecs_high
+id|u32
+id|tx_coalesce_usecs_high
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_high
+id|u32
+id|tx_max_coalesced_frames_high
+suffix:semicolon
+multiline_comment|/* How often to do adaptive coalescing packet rate sampling,&n;&t; * measured in seconds.  Must not be zero.&n;&t; */
+DECL|member|rate_sample_interval
+id|u32
+id|rate_sample_interval
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* for configuring RX/TX ring parameters */
+DECL|struct|ethtool_ringparam
+r_struct
+id|ethtool_ringparam
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_{G,S}RINGPARAM */
+multiline_comment|/* Read only attributes.  These indicate the maximum number&n;&t; * of pending RX/TX ring entries the driver will allow the&n;&t; * user to set.&n;&t; */
+DECL|member|rx_max_pending
+id|u32
+id|rx_max_pending
+suffix:semicolon
+DECL|member|rx_mini_max_pending
+id|u32
+id|rx_mini_max_pending
+suffix:semicolon
+DECL|member|rx_jumbo_max_pending
+id|u32
+id|rx_jumbo_max_pending
+suffix:semicolon
+DECL|member|tx_max_pending
+id|u32
+id|tx_max_pending
+suffix:semicolon
+multiline_comment|/* Values changeable by the user.  The valid values are&n;&t; * in the range 1 to the &quot;*_max_pending&quot; counterpart above.&n;&t; */
+DECL|member|rx_pending
+id|u32
+id|rx_pending
+suffix:semicolon
+DECL|member|rx_mini_pending
+id|u32
+id|rx_mini_pending
+suffix:semicolon
+DECL|member|rx_jumbo_pending
+id|u32
+id|rx_jumbo_pending
+suffix:semicolon
+DECL|member|tx_pending
+id|u32
+id|tx_pending
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* for configuring link flow control parameters */
+DECL|struct|ethtool_pauseparam
+r_struct
+id|ethtool_pauseparam
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_{G,S}PAUSEPARAM */
+multiline_comment|/* If the link is being auto-negotiated (via ethtool_cmd.autoneg&n;&t; * being true) the user may set &squot;autonet&squot; here non-zero to have the&n;&t; * pause parameters be auto-negotiated too.  In such a case, the&n;&t; * {rx,tx}_pause values below determine what capabilities are&n;&t; * advertised.&n;&t; *&n;&t; * If &squot;autoneg&squot; is zero or the link is not being auto-negotiated,&n;&t; * then {rx,tx}_pause force the driver to use/not-use pause&n;&t; * flow control.&n;&t; */
+DECL|member|autoneg
+id|u32
+id|autoneg
+suffix:semicolon
+DECL|member|rx_pause
+id|u32
+id|rx_pause
+suffix:semicolon
+DECL|member|tx_pause
+id|u32
+id|tx_pause
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
 mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
@@ -263,11 +446,35 @@ mdefine_line|#define ETHTOOL_SMSGLVL&t;&t;0x00000008 /* Set driver msg level, pr
 DECL|macro|ETHTOOL_NWAY_RST
 mdefine_line|#define ETHTOOL_NWAY_RST&t;0x00000009 /* Restart autonegotiation, priv. */
 DECL|macro|ETHTOOL_GLINK
-mdefine_line|#define ETHTOOL_GLINK&t;&t;0x0000000a /* Get link status */
+mdefine_line|#define ETHTOOL_GLINK&t;&t;0x0000000a /* Get link status (ethtool_value) */
 DECL|macro|ETHTOOL_GEEPROM
 mdefine_line|#define ETHTOOL_GEEPROM&t;&t;0x0000000b /* Get EEPROM data */
 DECL|macro|ETHTOOL_SEEPROM
 mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data */
+DECL|macro|ETHTOOL_GCOALESCE
+mdefine_line|#define ETHTOOL_GCOALESCE&t;0x0000000e /* Get coalesce config */
+DECL|macro|ETHTOOL_SCOALESCE
+mdefine_line|#define ETHTOOL_SCOALESCE&t;0x0000000f /* Set coalesce config */
+DECL|macro|ETHTOOL_GRINGPARAM
+mdefine_line|#define ETHTOOL_GRINGPARAM&t;0x00000010 /* Get ring parameters */
+DECL|macro|ETHTOOL_SRINGPARAM
+mdefine_line|#define ETHTOOL_SRINGPARAM&t;0x00000011 /* Set ring parameters */
+DECL|macro|ETHTOOL_GPAUSEPARAM
+mdefine_line|#define ETHTOOL_GPAUSEPARAM&t;0x00000012 /* Get pause parameters */
+DECL|macro|ETHTOOL_SPAUSEPARAM
+mdefine_line|#define ETHTOOL_SPAUSEPARAM&t;0x00000013 /* Set pause parameters */
+DECL|macro|ETHTOOL_GRXCSUM
+mdefine_line|#define ETHTOOL_GRXCSUM&t;&t;0x00000014 /* Get RX hw csum enable (ethtool_value) */
+DECL|macro|ETHTOOL_SRXCSUM
+mdefine_line|#define ETHTOOL_SRXCSUM&t;&t;0x00000015 /* Set RX hw csum enable (ethtool_value) */
+DECL|macro|ETHTOOL_GTXCSUM
+mdefine_line|#define ETHTOOL_GTXCSUM&t;&t;0x00000016 /* Get TX hw csum enable (ethtool_value) */
+DECL|macro|ETHTOOL_STXCSUM
+mdefine_line|#define ETHTOOL_STXCSUM&t;&t;0x00000017 /* Set TX hw csum enable (ethtool_value) */
+DECL|macro|ETHTOOL_GSG
+mdefine_line|#define ETHTOOL_GSG&t;&t;0x00000018 /* Get scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value) */
+DECL|macro|ETHTOOL_SSG
+mdefine_line|#define ETHTOOL_SSG&t;&t;0x00000019 /* Set scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value) */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
