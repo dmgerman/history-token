@@ -3336,6 +3336,7 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sb_set_blocksize
 c_func
 (paren
