@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * Copyright 2001,2002 SuSE Labs&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD K8 northbridge and the AMD 8151 &n; * AGP bridge. The main work is done in the northbridge. The configuration&n; * is only mirrored in the 8151 for compatibility (could be likely&n; * removed now).&n; */
+multiline_comment|/*&n; * On x86-64 the AGP driver needs to be initialized early by the IOMMU&n; * code.  When you use this driver as a template for a new K8 AGP bridge&n; * driver don&squot;t forget to change arch/x86_64/kernel/pci-gart.c too -AK.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2278,8 +2279,8 @@ id|agp_amdk8_probe
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Not static due to IOMMU code calling it early. */
 DECL|function|agp_amdk8_init
-r_static
 r_int
 id|__init
 id|agp_amdk8_init
@@ -2340,6 +2341,8 @@ id|agp_amdk8_pci_driver
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* On x86-64 the PCI driver needs to initialize this driver early&n;   for the IOMMU, so it has to be called via a backdoor. */
+macro_line|#ifndef CONFIG_GART_IOMMU
 DECL|variable|agp_amdk8_init
 id|module_init
 c_func
@@ -2354,6 +2357,7 @@ c_func
 id|agp_amdk8_cleanup
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

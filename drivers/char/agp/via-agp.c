@@ -793,17 +793,17 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_8235_0
+id|PCI_DEVICE_ID_VIA_8754
 comma
 dot
 id|chipset
 op_assign
-id|VIA_P4X400
+id|VIA_P4X
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;P4X400&quot;
+l_string|&quot;Apollo P4X333/P4X400&quot;
 )brace
 comma
 (brace
