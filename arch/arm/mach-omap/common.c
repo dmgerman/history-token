@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;clock.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
@@ -1538,7 +1537,7 @@ id|offset
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Internal UARTs need to be initialized for the 8250 autoconfig to work&n; * properly.&n; */
+multiline_comment|/*&n; * Internal UARTs need to be initialized for the 8250 autoconfig to work&n; * properly. Note that the TX watermark initialization may not be needed&n; * once the 8250.c watermark handling code is merged.&n; */
 DECL|function|omap_serial_reset
 r_static
 r_void
@@ -1563,6 +1562,17 @@ l_int|0x07
 )paren
 suffix:semicolon
 multiline_comment|/* disable UART */
+id|omap_serial_outp
+c_func
+(paren
+id|p
+comma
+id|UART_OMAP_SCR
+comma
+l_int|0x08
+)paren
+suffix:semicolon
+multiline_comment|/* TX watermark */
 id|omap_serial_outp
 c_func
 (paren
