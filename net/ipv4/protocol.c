@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;INET protocol dispatch tables.&n; *&n; * Version:&t;$Id: protocol.c,v 1.14 2001/05/18 02:25:49 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;: Ahah! udp icmp errors don&squot;t work because&n; *&t;&t;&t;&t;  udp_err is never called!&n; *&t;&t;Alan Cox&t;: Added new fields for init and ready for&n; *&t;&t;&t;&t;  proper fragmentation (_NO_ 4K limits!)&n; *&t;&t;Richard Colella&t;: Hang on hash collision&n; *&t;&t;Vince Laviano&t;: Modified inet_del_protocol() to correctly&n; *&t;&t;&t;&t;  maintain copy bit.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -199,4 +200,18 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|inet_add_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_add_protocol
+)paren
+suffix:semicolon
+DECL|variable|inet_del_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_del_protocol
+)paren
+suffix:semicolon
 eof

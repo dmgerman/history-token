@@ -20,7 +20,6 @@ macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef CONFIG_INET
-macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
@@ -114,21 +113,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-multiline_comment|/* Internet layer registration */
-DECL|variable|inet_add_protocol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_add_protocol
-)paren
-suffix:semicolon
-DECL|variable|inet_del_protocol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_del_protocol
-)paren
-suffix:semicolon
 DECL|variable|ip_options_compile
 id|EXPORT_SYMBOL
 c_func
