@@ -238,6 +238,20 @@ id|a-&gt;attr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sysdev_create_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_create_file
+)paren
+suffix:semicolon
+DECL|variable|sysdev_remove_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_remove_file
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * declare system_subsys &n; */
 id|decl_subsys
 c_func
