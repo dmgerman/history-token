@@ -13716,12 +13716,12 @@ DECL|member|vol
 r_int
 id|vol
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 )brace
 id|initvol
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -13802,7 +13802,7 @@ id|pciid
 (brace
 r_static
 r_char
-id|__initdata
+id|__devinitdata
 id|sv_ddma_name
 (braket
 )braket
