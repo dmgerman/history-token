@@ -3420,6 +3420,7 @@ id|itimerval
 op_star
 )paren
 suffix:semicolon
+r_extern
 id|asmlinkage
 r_int
 id|sys_utimes

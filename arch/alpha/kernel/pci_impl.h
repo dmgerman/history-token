@@ -133,6 +133,11 @@ id|pci_controller
 op_star
 id|pci_isa_hose
 suffix:semicolon
+multiline_comment|/* Indicate that we trust the console to configure things properly.  */
+r_extern
+r_int
+id|pci_probe_only
+suffix:semicolon
 r_extern
 r_void
 id|common_init_pci

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if   defined(CONFIG_ALPHA_GENERIC)
 multiline_comment|/* Here NR_IRQS is not exact, but rather an upper bound.  This is used&n;   many places throughout the kernel to size static arrays.  That&squot;s ok,&n;   we&squot;ll use alpha_mv.nr_irqs when we want the real thing.  */
 DECL|macro|NR_IRQS
-macro_line|# define NR_IRQS&t;2048 /* enuff for WILDFIRE with 8 QBBs */
+macro_line|# define NR_IRQS&t;(32768 + 16) &t;/* marvel - 32 pids*/
 macro_line|#elif defined(CONFIG_ALPHA_CABRIOLET) || &bslash;&n;      defined(CONFIG_ALPHA_EB66P)     || &bslash;&n;      defined(CONFIG_ALPHA_EB164)     || &bslash;&n;      defined(CONFIG_ALPHA_PC164)     || &bslash;&n;      defined(CONFIG_ALPHA_LX164)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;35
@@ -32,6 +32,9 @@ macro_line|# define NR_IRQS&t;128
 macro_line|#elif defined(CONFIG_ALPHA_WILDFIRE)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;2048 /* enuff for 8 QBBs */
+macro_line|#elif defined(CONFIG_ALPHA_MARVEL)
+DECL|macro|NR_IRQS
+macro_line|# define NR_IRQS&t;(32768 + 16) &t;/* marvel - 32 pids*/
 macro_line|#else /* everyone else */
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;16
