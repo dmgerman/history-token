@@ -1992,6 +1992,12 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cls
+)paren
+(brace
 id|cls
 op_rshift_assign
 l_int|3
@@ -2038,6 +2044,22 @@ comma
 id|mmio_base
 op_plus
 id|SIL_FIFO_W2
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;(%s): cache line size not set.  Driver may not function&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_if
