@@ -709,6 +709,8 @@ op_amp
 id|transport-&gt;transmitted
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|chunk
@@ -892,6 +894,8 @@ c_func
 id|q
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* Mark as send failure. */
@@ -933,6 +937,8 @@ op_amp
 id|q-&gt;control
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 id|sctp_chunk_free
 c_func
@@ -2111,6 +2117,8 @@ c_func
 id|queue
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* Pick the right transport to use. */
@@ -2507,6 +2515,8 @@ c_func
 id|q
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* RFC 2960 6.5 Every DATA chunk MUST carry a valid&n;&t;&t;&t; * stream identifier.&n;&t;&t;&t; */
@@ -2678,7 +2688,7 @@ ques
 c_cond
 id|chunk-&gt;skb-&gt;head
 suffix:colon
-l_int|0
+l_int|NULL
 comma
 id|chunk-&gt;skb
 ques

@@ -2877,7 +2877,7 @@ multiline_comment|/* Implementor&squot;s Guide - Sectin 5.2.2&n;&t; * ...&n;&t; 
 multiline_comment|/* Search through all current addresses and make sure&n;&t; * we aren&squot;t adding any new ones.&n;&t; */
 id|new_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|found
 op_assign
