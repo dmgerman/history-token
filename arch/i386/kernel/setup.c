@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
@@ -1962,6 +1963,53 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
+DECL|variable|eddnr
+r_int
+r_char
+id|eddnr
+suffix:semicolon
+DECL|variable|edd
+r_struct
+id|edd_info
+id|edd
+(braket
+id|EDDNR
+)braket
+suffix:semicolon
+multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information into a safe place.&n; *&n; */
+DECL|function|copy_edd
+r_static
+r_inline
+r_void
+id|copy_edd
+c_func
+(paren
+r_void
+)paren
+(brace
+id|eddnr
+op_assign
+id|EDD_NR
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|edd
+comma
+id|EDD_BUF
+comma
+r_sizeof
+(paren
+id|edd
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|copy_edd
+mdefine_line|#define copy_edd() do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * Do NOT EVER look at the BIOS memory size location.&n; * It does not work on many machines.&n; */
 DECL|macro|LOWMEMSIZE
 mdefine_line|#define LOWMEMSIZE()&t;(0x9f000)
@@ -3531,6 +3579,11 @@ suffix:semicolon
 macro_line|#endif
 id|ARCH_SETUP
 id|setup_memory_region
+c_func
+(paren
+)paren
+suffix:semicolon
+id|copy_edd
 c_func
 (paren
 )paren

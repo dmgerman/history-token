@@ -477,6 +477,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do {} while(0)
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;barrier()
@@ -484,6 +486,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;barrier()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do {} while(0)
 macro_line|#endif
 multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; */
 DECL|macro|mb
@@ -492,6 +496,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb()&t;asm volatile(&quot;lfence&quot;:::&quot;memory&quot;)
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;asm volatile(&quot;sfence&quot;:::&quot;memory&quot;)
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do {} while(0)
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value) do { xchg(&amp;var, value); } while (0)
 DECL|macro|set_wmb

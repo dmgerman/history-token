@@ -535,6 +535,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb() mb()
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends() do { } while(0)
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value)  do { var = value; mb(); } while (0)
 DECL|macro|set_wmb
@@ -546,6 +548,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()       rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()       wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()     read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()        barrier()
@@ -553,6 +557,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()       barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()       barrier()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()     do { } while(0)
 macro_line|#endif
 DECL|macro|iret
 mdefine_line|#define iret()

@@ -1263,7 +1263,7 @@ comma
 multiline_comment|/* a */
 l_int|NULL
 comma
-multiline_comment|/* Don&squot;t use for system provided sysrqs,&n;&t;&t; it is handled specially on the spark&n;&t;&t; and will never arive */
+multiline_comment|/* Don&squot;t use for system provided sysrqs,&n;&t;&t; it is handled specially on the sparc&n;&t;&t; and will never arrive */
 multiline_comment|/* b */
 op_amp
 id|sysrq_reboot_op
