@@ -987,6 +987,10 @@ id|last_bit
 op_assign
 id|next_bit
 suffix:semicolon
+id|nbits
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
