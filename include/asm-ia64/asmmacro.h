@@ -41,10 +41,20 @@ macro_line|#else
 macro_line|# define EX(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.;&t;&bslash;&n;  99:&t;x
 macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.+4;&t;&bslash;&n;  99:&t;x
 macro_line|#endif
-macro_line|#ifdef CONFIG_MCKINLEY
+multiline_comment|/*&n; * For now, we always put in the McKinley E9 workaround.  On CPUs that don&squot;t need it,&n; * we&squot;ll patch out the work-around bundles with NOPs, so their impact is minimal.&n; */
+DECL|macro|DO_MCKINLEY_E9_WORKAROUND
+mdefine_line|#define DO_MCKINLEY_E9_WORKAROUND
+macro_line|#ifdef DO_MCKINLEY_E9_WORKAROUND
+dot
+id|section
+l_string|&quot;__mckinley_e9_bundles&quot;
+comma
+l_string|&quot;a&quot;
+dot
+id|previous
 multiline_comment|/* workaround for Itanium 2 Errata 9: */
 DECL|macro|MCKINLEY_E9_WORKAROUND
-macro_line|# define MCKINLEY_E9_WORKAROUND&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;1:
+macro_line|# define MCKINLEY_E9_WORKAROUND&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__mckinley_e9_bundles&quot;, 1f-.;&t;&bslash;&n;1:{ .mib;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&bslash;&n;&t;nop.i 0;&t;&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;  };&t;&t;&t;&t;&t;&t;&bslash;&n;1:
 macro_line|#else
 macro_line|# define MCKINLEY_E9_WORKAROUND
 macro_line|#endif
