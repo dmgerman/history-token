@@ -298,8 +298,8 @@ id|offset
 suffix:semicolon
 )brace
 multiline_comment|/* We do nothing. */
-DECL|macro|dma_unmap_single
-mdefine_line|#define dma_unmap_single(dev, addr, size, dir)&t;do { } while (0)
+DECL|macro|dma_unmap_page
+mdefine_line|#define dma_unmap_page(dev, addr, size, dir)&t;do { } while (0)
 r_static
 r_inline
 r_int
