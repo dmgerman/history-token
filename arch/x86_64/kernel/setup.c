@@ -1396,11 +1396,6 @@ id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-id|exception_table_check
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_X86_TSC
 DECL|variable|__initdata
