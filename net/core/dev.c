@@ -3980,15 +3980,10 @@ op_amp
 id|IFF_UP
 )paren
 (brace
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -4009,7 +4004,7 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|preempt_enable
+id|put_cpu
 c_func
 (paren
 )paren
@@ -4098,7 +4093,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|preempt_enable
+id|put_cpu
 c_func
 (paren
 )paren
