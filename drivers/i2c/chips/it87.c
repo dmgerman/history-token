@@ -1149,7 +1149,6 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* more like overshoot temperature */
 DECL|function|show_temp_max
 r_static
 id|ssize_t
@@ -1218,7 +1217,6 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* more like hysteresis temperature */
 DECL|function|show_temp_min
 r_static
 id|ssize_t

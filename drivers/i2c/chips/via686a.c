@@ -2459,11 +2459,10 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* more like overshoot temperature */
-DECL|function|show_temp_max
+DECL|function|show_temp_over
 r_static
 id|ssize_t
-id|show_temp_max
+id|show_temp_over
 c_func
 (paren
 r_struct
@@ -2528,11 +2527,10 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* more like hysteresis temperature */
-DECL|function|show_temp_min
+DECL|function|show_temp_hyst
 r_static
 id|ssize_t
-id|show_temp_min
+id|show_temp_hyst
 c_func
 (paren
 r_struct
@@ -2597,10 +2595,10 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
-DECL|function|set_temp_max
+DECL|function|set_temp_over
 r_static
 id|ssize_t
-id|set_temp_max
+id|set_temp_over
 c_func
 (paren
 r_struct
@@ -2689,10 +2687,10 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|function|set_temp_min
+DECL|function|set_temp_hyst
 r_static
 id|ssize_t
-id|set_temp_min
+id|set_temp_hyst
 c_func
 (paren
 r_struct
@@ -2782,7 +2780,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_temp_offset
-mdefine_line|#define show_temp_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_temp_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_max (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_max(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_min (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_max (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_max(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_min (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp_input##offset, S_IRUGO, show_temp_##offset, NULL) &bslash;&n;static DEVICE_ATTR(temp_max##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_max, set_temp_##offset##_max) &t;&bslash;&n;static DEVICE_ATTR(temp_min##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_min, set_temp_##offset##_min)&t;
+mdefine_line|#define show_temp_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_temp_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_over (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_over(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_hyst (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_hyst(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_over (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_over(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_hyst (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_hyst(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp_input##offset, S_IRUGO, show_temp_##offset, NULL) &bslash;&n;static DEVICE_ATTR(temp_max##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_over, set_temp_##offset##_over) &t;&bslash;&n;static DEVICE_ATTR(temp_hyst##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_hyst, set_temp_##offset##_hyst)&t;
 id|show_temp_offset
 c_func
 (paren
@@ -3987,7 +3985,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min1
+id|dev_attr_temp_hyst1
 )paren
 suffix:semicolon
 id|device_create_file
@@ -3997,7 +3995,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min2
+id|dev_attr_temp_hyst2
 )paren
 suffix:semicolon
 id|device_create_file
@@ -4007,7 +4005,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min3
+id|dev_attr_temp_hyst3
 )paren
 suffix:semicolon
 id|device_create_file

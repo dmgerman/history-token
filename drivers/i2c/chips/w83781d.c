@@ -633,14 +633,14 @@ DECL|member|temp
 id|u8
 id|temp
 suffix:semicolon
-DECL|member|temp_min
-id|u8
-id|temp_min
-suffix:semicolon
-multiline_comment|/* Register value */
 DECL|member|temp_max
 id|u8
 id|temp_max
+suffix:semicolon
+multiline_comment|/* Register value */
+DECL|member|temp_hyst
+id|u8
+id|temp_hyst
 suffix:semicolon
 multiline_comment|/* Register value */
 DECL|member|temp_add
@@ -659,9 +659,9 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
-DECL|member|temp_min_add
+DECL|member|temp_hyst_add
 id|u16
-id|temp_min_add
+id|temp_hyst_add
 (braket
 l_int|2
 )braket
@@ -1172,18 +1172,18 @@ c_func
 id|temp
 )paren
 suffix:semicolon
-DECL|variable|temp_min
-id|show_temp_reg
-c_func
-(paren
-id|temp_min
-)paren
-suffix:semicolon
 DECL|variable|temp_max
 id|show_temp_reg
 c_func
 (paren
 id|temp_max
+)paren
+suffix:semicolon
+DECL|variable|temp_hyst
+id|show_temp_reg
+c_func
+(paren
+id|temp_hyst
 )paren
 suffix:semicolon
 DECL|macro|store_temp_reg
@@ -1193,7 +1193,7 @@ c_func
 (paren
 id|OVER
 comma
-id|min
+id|max
 )paren
 suffix:semicolon
 id|store_temp_reg
@@ -1201,7 +1201,7 @@ c_func
 (paren
 id|HYST
 comma
-id|max
+id|hyst
 )paren
 suffix:semicolon
 DECL|macro|sysfs_temp_offset
@@ -1209,7 +1209,7 @@ mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash
 DECL|macro|sysfs_temp_reg_offset
 mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp_##reg##offset, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset)
 DECL|macro|sysfs_temp_offsets
-mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(min, offset); &bslash;&n;sysfs_temp_reg_offset(max, offset);
+mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(max, offset); &bslash;&n;sysfs_temp_reg_offset(hyst, offset);
 id|sysfs_temp_offsets
 c_func
 (paren
@@ -1229,7 +1229,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_max##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_min##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_max##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_hyst##offset); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_vid_reg
@@ -8008,7 +8008,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_min
+id|data-&gt;temp_max
 op_assign
 id|w83781d_read_value
 c_func
@@ -8022,7 +8022,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_max
+id|data-&gt;temp_hyst
 op_assign
 id|w83781d_read_value
 c_func
@@ -8070,7 +8070,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_min_add
+id|data-&gt;temp_hyst_add
 (braket
 l_int|0
 )braket
@@ -8133,7 +8133,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_min_add
+id|data-&gt;temp_hyst_add
 (braket
 l_int|1
 )braket
