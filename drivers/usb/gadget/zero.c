@@ -78,7 +78,7 @@ macro_line|#ifdef&t;CONFIG_USB_ZERO_NET2280
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
 DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;cpu_to_le16(0x0101)
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0101
 DECL|macro|EP0_MAXPACKET
 mdefine_line|#define EP0_MAXPACKET&t;&t;64
 DECL|variable|EP_OUT_NAME
@@ -151,7 +151,7 @@ macro_line|#ifdef&t;CONFIG_USB_ZERO_PXA250
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;pxa250&quot;
 DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;cpu_to_le16(0x0103)
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
 DECL|macro|EP0_MAXPACKET
 mdefine_line|#define EP0_MAXPACKET&t;&t;16
 DECL|variable|EP_OUT_NAME
@@ -191,7 +191,7 @@ macro_line|#ifdef&t;CONFIG_USB_ZERO_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;cpu_to_le16(0x0105)
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0105
 DECL|macro|EP0_MAXPACKET
 mdefine_line|#define EP0_MAXPACKET&t;&t;8
 DECL|variable|EP_OUT_NAME
@@ -415,7 +415,7 @@ comma
 dot
 id|bcdUSB
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|0x0200
 )paren
@@ -433,7 +433,7 @@ comma
 dot
 id|idVendor
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 id|DRIVER_VENDOR_NUM
 )paren
@@ -441,7 +441,7 @@ comma
 dot
 id|idProduct
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 id|DRIVER_PRODUCT_NUM
 )paren
@@ -449,7 +449,7 @@ comma
 dot
 id|bcdDevice
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 id|DRIVER_VERSION_NUM
 )paren
@@ -697,7 +697,7 @@ comma
 dot
 id|wMaxPacketSize
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|64
 )paren
@@ -735,7 +735,7 @@ comma
 dot
 id|wMaxPacketSize
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|64
 )paren
@@ -777,7 +777,7 @@ comma
 dot
 id|wMaxPacketSize
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|512
 )paren
@@ -815,7 +815,7 @@ comma
 dot
 id|wMaxPacketSize
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|512
 )paren
@@ -844,7 +844,7 @@ comma
 dot
 id|bcdUSB
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|0x0200
 )paren
@@ -1083,7 +1083,7 @@ id|buf
 op_member_access_from_pointer
 id|wTotalLength
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 id|config_len
 )paren

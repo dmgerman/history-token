@@ -165,9 +165,9 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;net2280.h&quot;
 DECL|macro|valid_bit
-mdefine_line|#define valid_bit&t;cpu_to_le32 (1 &lt;&lt; VALID_BIT)
+mdefine_line|#define valid_bit&t;__constant_cpu_to_le32 (1 &lt;&lt; VALID_BIT)
 DECL|macro|dma_done_ie
-mdefine_line|#define dma_done_ie&t;cpu_to_le32 (1 &lt;&lt; DMA_DONE_INTERRUPT_ENABLE)
+mdefine_line|#define dma_done_ie&t;__constant_cpu_to_le32 (1 &lt;&lt; DMA_DONE_INTERRUPT_ENABLE)
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
 r_int
@@ -1362,7 +1362,7 @@ suffix:semicolon
 multiline_comment|/* not VALID */
 id|td-&gt;dmaaddr
 op_assign
-id|cpu_to_le32
+id|__constant_cpu_to_le32
 (paren
 id|DMA_ADDR_INVALID
 )paren
@@ -2843,7 +2843,7 @@ suffix:semicolon
 macro_line|#else
 id|req-&gt;td-&gt;dmacount
 op_or_assign
-id|cpu_to_le32
+id|__constant_cpu_to_le32
 (paren
 l_int|1
 op_lshift
@@ -8846,7 +8846,7 @@ id|SET_ENDPOINT_HALT
 )paren
 id|status
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|1
 )paren
@@ -8854,7 +8854,7 @@ suffix:semicolon
 r_else
 id|status
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 (paren
 l_int|0
 )paren
@@ -10560,7 +10560,7 @@ suffix:semicolon
 multiline_comment|/* not VALID */
 id|td-&gt;dmaaddr
 op_assign
-id|cpu_to_le32
+id|__constant_cpu_to_le32
 (paren
 id|DMA_ADDR_INVALID
 )paren
