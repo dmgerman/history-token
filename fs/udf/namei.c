@@ -5059,6 +5059,11 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5868,6 +5873,11 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

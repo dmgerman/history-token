@@ -491,6 +491,11 @@ id|sb-&gt;s_blocksize
 r_goto
 id|out
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|inode
 op_assign
 id|ufs_new_inode
@@ -617,6 +622,11 @@ id|inode
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

@@ -4338,6 +4338,11 @@ r_return
 op_minus
 id|ENAMETOOLONG
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -4359,6 +4364,12 @@ c_func
 id|handle
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|PTR_ERR
 c_func
@@ -4366,6 +4377,7 @@ c_func
 id|handle
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4534,6 +4546,11 @@ c_func
 id|handle
 comma
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -5378,7 +5395,6 @@ id|link
 suffix:colon
 id|ext3_link
 comma
-multiline_comment|/* BKL held */
 id|unlink
 suffix:colon
 id|ext3_unlink
@@ -5387,17 +5403,14 @@ id|symlink
 suffix:colon
 id|ext3_symlink
 comma
-multiline_comment|/* BKL held */
 id|mkdir
 suffix:colon
 id|ext3_mkdir
 comma
-multiline_comment|/* BKL held */
 id|rmdir
 suffix:colon
 id|ext3_rmdir
 comma
-multiline_comment|/* BKL held */
 id|mknod
 suffix:colon
 id|ext3_mknod

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
 multiline_comment|/* these magic numbers must appear in the symlink file -- this makes it a bit&n;   more resilient against the magic attributes being set on random files. */
 DECL|macro|NCP_SYMLINK_MAGIC0
@@ -475,6 +476,11 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -639,6 +645,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -664,6 +675,11 @@ id|inode
 suffix:semicolon
 id|failfree
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

@@ -5134,6 +5134,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|D1
 c_func
 (paren
@@ -5268,6 +5273,11 @@ l_string|&quot;jffs_symlink(): No reference to a &quot;
 l_string|&quot;jffs_file struct in inode.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -5302,6 +5312,11 @@ c_func
 (paren
 l_string|&quot;jffs_symlink(): Allocation failed: node = NULL&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -5570,6 +5585,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

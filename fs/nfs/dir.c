@@ -3828,6 +3828,11 @@ c_func
 id|symname
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|nfs_zap_caches
 c_func
 (paren
@@ -3922,6 +3927,11 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

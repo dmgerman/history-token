@@ -6480,11 +6480,6 @@ c_func
 id|dir
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|dir-&gt;i_op
@@ -6497,11 +6492,6 @@ comma
 id|dentry
 comma
 id|oldname
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
