@@ -41,8 +41,10 @@ DECL|macro|NFSEXP_NOAUTHNLM
 mdefine_line|#define&t;NFSEXP_NOAUTHNLM&t;0x0800&t;&t;/* Don&squot;t authenticate NLM requests - just trust */
 DECL|macro|NFSEXP_MSNFS
 mdefine_line|#define NFSEXP_MSNFS&t;&t;0x1000&t;/* do silly things that MS clients expect */
+DECL|macro|NFSEXP_FSID
+mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
 DECL|macro|NFSEXP_ALLFLAGS
-mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x1FFF
+mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x3FFF
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* The following are hashtable sizes and must be powers of 2 */
 DECL|macro|NFSCLNT_EXPMAX
@@ -94,6 +96,14 @@ id|cl_export
 id|NFSCLNT_EXPMAX
 )braket
 suffix:semicolon
+DECL|member|cl_expfsid
+r_struct
+id|list_head
+id|cl_expfsid
+(braket
+id|NFSCLNT_EXPMAX
+)braket
+suffix:semicolon
 DECL|member|cl_list
 r_struct
 id|list_head
@@ -109,6 +119,11 @@ DECL|member|ex_hash
 r_struct
 id|list_head
 id|ex_hash
+suffix:semicolon
+DECL|member|ex_fsid_hash
+r_struct
+id|list_head
+id|ex_fsid_hash
 suffix:semicolon
 DECL|member|ex_list
 r_struct
@@ -167,6 +182,10 @@ suffix:semicolon
 DECL|member|ex_anon_gid
 id|gid_t
 id|ex_anon_gid
+suffix:semicolon
+DECL|member|ex_fsid
+r_int
+id|ex_fsid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -249,6 +268,21 @@ id|dev
 comma
 id|ino_t
 id|ino
+)paren
+suffix:semicolon
+r_struct
+id|svc_export
+op_star
+id|exp_get_fsid
+c_func
+(paren
+r_struct
+id|svc_client
+op_star
+id|clp
+comma
+r_int
+id|fsid
 )paren
 suffix:semicolon
 r_struct
