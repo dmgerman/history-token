@@ -19605,8 +19605,8 @@ id|AHC_SHOW_MISC
 id|printf
 c_func
 (paren
-l_string|&quot;%s: hardware scb %d bytes; kernel scb %d bytes; &quot;
-l_string|&quot;ahc_dma %d bytes&bslash;n&quot;
+l_string|&quot;%s: hardware scb %Zu bytes; kernel scb %Zu bytes; &quot;
+l_string|&quot;ahc_dma %Zu bytes&bslash;n&quot;
 comma
 id|ahc_name
 c_func
