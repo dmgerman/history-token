@@ -5193,7 +5193,7 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|1

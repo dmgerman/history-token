@@ -6124,11 +6124,11 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|baycom_epp_setup
+DECL|function|baycom_epp_dev_setup
 r_static
 r_void
 id|__init
-id|baycom_epp_setup
+id|baycom_epp_dev_setup
 c_func
 (paren
 r_struct
@@ -6225,7 +6225,7 @@ id|baycom_state
 comma
 l_string|&quot;bce%d&quot;
 comma
-id|baycom_epp_setup
+id|baycom_epp_dev_setup
 )paren
 suffix:semicolon
 r_if
