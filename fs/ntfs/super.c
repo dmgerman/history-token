@@ -376,7 +376,7 @@ op_star
 id|v
 op_increment
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 id|NTFS_GETOPT
 c_func

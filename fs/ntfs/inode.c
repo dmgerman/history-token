@@ -301,8 +301,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|L
-l_char|&squot;&bslash;0&squot;
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -7939,7 +7938,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We don&squot;t support i_size changes yet.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
+multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We don&squot;t support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
 DECL|function|ntfs_truncate
 r_void
 id|ntfs_truncate
@@ -7957,10 +7956,10 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Eeek: i_size may have changed! If you see &quot;
+l_string|&quot;Eeek: i_size may have changed!  If you see &quot;
 l_string|&quot;this right after a message from &quot;
-l_string|&quot;ntfs_{prepare,commit}_{,nonresident_}write() then &quot;
-l_string|&quot;just ignore it. Otherwise it is bad news.&quot;
+l_string|&quot;ntfs_prepare_{,nonresident_}write() then just ignore &quot;
+l_string|&quot;it.  Otherwise it is bad news.&quot;
 )paren
 suffix:semicolon
 singleline_comment|// TODO: reset i_size now!

@@ -1031,7 +1031,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-l_char|&squot;&bslash;0&squot;
+l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -1390,7 +1390,7 @@ id|ns
 id|o
 )braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 op_star
 id|outs
