@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k7.c,v 1.31 2003/02/12 21:16:35 davej Exp $&n; *&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
+multiline_comment|/*&n; *  $Id: powernow-k7.c,v 1.34 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -232,12 +232,6 @@ op_minus
 l_int|1
 comma
 )brace
-suffix:semicolon
-DECL|variable|powernow_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|powernow_driver
 suffix:semicolon
 DECL|variable|powernow_table
 r_static
@@ -1613,15 +1607,10 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|latency
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|powernow_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|maximum_speed
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func
@@ -1632,6 +1621,35 @@ id|powernow_table
 )paren
 suffix:semicolon
 )brace
+DECL|variable|powernow_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|powernow_driver
+op_assign
+(brace
+dot
+id|verify
+op_assign
+id|powernow_verify
+comma
+dot
+id|target
+op_assign
+id|powernow_target
+comma
+dot
+id|init
+op_assign
+id|powernow_cpu_init
+comma
+dot
+id|name
+op_assign
+l_string|&quot;powernow-k7&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|powernow_init
 r_static
 r_int
@@ -1692,35 +1710,6 @@ id|powernow_table
 )paren
 suffix:semicolon
 )brace
-DECL|variable|powernow_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|powernow_driver
-op_assign
-(brace
-dot
-id|verify
-op_assign
-id|powernow_verify
-comma
-dot
-id|target
-op_assign
-id|powernow_target
-comma
-dot
-id|init
-op_assign
-id|powernow_cpu_init
-comma
-dot
-id|name
-op_assign
-l_string|&quot;powernow-k7&quot;
-comma
-)brace
-suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Dave Jones &lt;davej@suse.de&gt;&quot;
