@@ -107,18 +107,10 @@ DECL|macro|SIDUNKNOWN
 mdefine_line|#define SIDUNKNOWN -1
 DECL|macro|radioNodeIdUNKNOWN
 mdefine_line|#define radioNodeIdUNKNOWN -1
-DECL|macro|encryptionKeyUNKNOWN
-mdefine_line|#define encryptionKeyUNKNOWN &squot;&bslash;0&squot;;
 DECL|macro|irqUNKNOWN
 mdefine_line|#define irqUNKNOWN 0
-DECL|macro|memUNKNOWN
-mdefine_line|#define memUNKNOWN 0
 DECL|macro|debugUNKNOWN
 mdefine_line|#define debugUNKNOWN 0
-DECL|macro|probeUNKNOWN
-mdefine_line|#define probeUNKNOWN 1
-DECL|macro|numDevicesUNKNOWN
-mdefine_line|#define numDevicesUNKNOWN 1
 DECL|macro|testMemoryUNKNOWN
 mdefine_line|#define testMemoryUNKNOWN 1
 DECL|macro|spreadingCodeUNKNOWN
@@ -146,6 +138,8 @@ macro_line|#else
 DECL|macro|ARLAN_DEBUG
 mdefine_line|#define ARLAN_DEBUG(a,b) 
 macro_line|#endif
+DECL|macro|ARLAN_SHMEM_SIZE
+mdefine_line|#define ARLAN_SHMEM_SIZE&t;0x2000
 DECL|struct|arlan_shmem
 r_struct
 id|arlan_shmem

@@ -770,7 +770,7 @@ id|ABYSS_IO_EXTENT
 suffix:semicolon
 id|err_out_trdev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

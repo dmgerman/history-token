@@ -9392,7 +9392,7 @@ id|pdev
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

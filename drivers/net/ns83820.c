@@ -8427,10 +8427,11 @@ id|pci_dev
 suffix:semicolon
 id|out_free
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
-id|dev
+op_amp
+id|dev-&gt;net_dev
 )paren
 suffix:semicolon
 id|pci_set_drvdata
