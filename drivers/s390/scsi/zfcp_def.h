@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
+multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *            Volker Sameske &lt;sameske@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 macro_line|#ifndef ZFCP_DEF_H
 DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
@@ -778,6 +778,9 @@ multiline_comment|/******************** LOGGING MACROS AND DEFINES *************
 multiline_comment|/*&n; * Logging may be applied on certain kinds of driver operations&n; * independently. Additionally, different log-levels are supported for&n; * each of these areas.&n; */
 DECL|macro|ZFCP_NAME
 mdefine_line|#define ZFCP_NAME               &quot;zfcp&quot;
+multiline_comment|/* read-only LUN sharing switch initial value */
+DECL|macro|ZFCP_RO_LUN_SHARING_DEFAULTS
+mdefine_line|#define ZFCP_RO_LUN_SHARING_DEFAULTS 0
 multiline_comment|/* independent log areas */
 DECL|macro|ZFCP_LOG_AREA_OTHER
 mdefine_line|#define ZFCP_LOG_AREA_OTHER&t;0
@@ -929,12 +932,20 @@ DECL|macro|ZFCP_STATUS_PORT_NO_SCSI_ID
 mdefine_line|#define ZFCP_STATUS_PORT_NO_SCSI_ID&t;&t;0x00000010
 DECL|macro|ZFCP_STATUS_PORT_INVALID_WWPN
 mdefine_line|#define ZFCP_STATUS_PORT_INVALID_WWPN&t;&t;0x00000020
+DECL|macro|ZFCP_STATUS_PORT_ACCESS_DENIED
+mdefine_line|#define ZFCP_STATUS_PORT_ACCESS_DENIED&t;&t;0x00000040
 multiline_comment|/* for ports with well known addresses */
 DECL|macro|ZFCP_STATUS_PORT_WKA
 mdefine_line|#define ZFCP_STATUS_PORT_WKA &bslash;&n;&t;&t;(ZFCP_STATUS_PORT_NO_WWPN | &bslash;&n;&t;&t; ZFCP_STATUS_PORT_NO_SCSI_ID)
 multiline_comment|/* logical unit status */
 DECL|macro|ZFCP_STATUS_UNIT_NOTSUPPUNITRESET
 mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET       0x00000001
+DECL|macro|ZFCP_STATUS_UNIT_ACCESS_DENIED
+mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_DENIED          0x00000002
+DECL|macro|ZFCP_STATUS_UNIT_ACCESS_SHARED
+mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_SHARED          0x00000004
+DECL|macro|ZFCP_STATUS_UNIT_ACCESS_READONLY
+mdefine_line|#define ZFCP_STATUS_UNIT_ACCESS_READONLY        0x00000008
 DECL|macro|ZFCP_STATUS_UNIT_TEMPORARY
 mdefine_line|#define ZFCP_STATUS_UNIT_TEMPORARY&t;&t;0x00000010
 multiline_comment|/* FSF request status (this does not have a common part) */
