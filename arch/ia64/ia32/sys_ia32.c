@@ -12691,7 +12691,7 @@ suffix:semicolon
 )brace
 id|out_tsk
 suffix:colon
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|child

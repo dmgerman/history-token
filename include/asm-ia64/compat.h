@@ -100,6 +100,26 @@ r_typedef
 id|__kernel_fsid_t
 id|compat_fsid_t
 suffix:semicolon
+DECL|typedef|compat_int_t
+r_typedef
+id|s32
+id|compat_int_t
+suffix:semicolon
+DECL|typedef|compat_long_t
+r_typedef
+id|s32
+id|compat_long_t
+suffix:semicolon
+DECL|typedef|compat_uint_t
+r_typedef
+id|u32
+id|compat_uint_t
+suffix:semicolon
+DECL|typedef|compat_ulong_t
+r_typedef
+id|u32
+id|compat_ulong_t
+suffix:semicolon
 DECL|struct|compat_timespec
 r_struct
 id|compat_timespec
@@ -349,21 +369,20 @@ DECL|macro|COMPAT_OFF_T_MAX
 mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
 DECL|macro|COMPAT_LOFF_T_MAX
 mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
-multiline_comment|/*&n; * A pointer passed in from user mode. This should not&n; * be used for syscall parameters, just declare them&n; * as pointers because the syscall entry code will have&n; * appropriately comverted them already.&n; */
+multiline_comment|/*&n; * A pointer passed in from user mode. This should not be used for syscall parameters,&n; * just declare them as pointers because the syscall entry code will have appropriately&n; * comverted them already.&n; */
 DECL|typedef|compat_uptr_t
 r_typedef
 id|u32
 id|compat_uptr_t
 suffix:semicolon
-DECL|function|compat_ptr
 r_static
 r_inline
 r_void
 op_star
+DECL|function|compat_ptr
 id|compat_ptr
-c_func
 (paren
-id|compat_ptr_t
+id|compat_uptr_t
 id|uptr
 )paren
 (brace
@@ -371,6 +390,10 @@ r_return
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 id|uptr
 suffix:semicolon
