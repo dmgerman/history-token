@@ -2,19 +2,8 @@ multiline_comment|/* $Id: esp.h,v 1.29 2001/12/11 04:55:47 davem Exp $&n; * esp.
 macro_line|#ifndef _SPARC_ESP_H
 DECL|macro|_SPARC_ESP_H
 mdefine_line|#define _SPARC_ESP_H
-macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* #include &quot;scsi.h&quot; */
-macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
-macro_line|#include &lt;scsi/scsi_device.h&gt;
-macro_line|#include &lt;scsi/scsi_eh.h&gt;
-macro_line|#include &lt;scsi/scsi_request.h&gt;
-macro_line|#include &lt;scsi/scsi_tcq.h&gt;
-macro_line|#include &lt;scsi/scsi.h&gt;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/* For dvma controller register definitions. */
 macro_line|#include &lt;asm/dma.h&gt;
-DECL|macro|scsi_to_sbus_dma_dir
-mdefine_line|#define scsi_to_sbus_dma_dir(scsi_dir)&t;((int)(scsi_dir))
 multiline_comment|/* The ESP SCSI controllers have their register sets in three&n; * &quot;classes&quot;:&n; *&n; * 1) Registers which are both read and write.&n; * 2) Registers which are read only.&n; * 3) Registers which are write only.&n; *&n; * Yet, they all live within the same IO space.&n; */
 multiline_comment|/* All the ESP registers are one byte each and are accessed longwords&n; * apart with a big-endian ordering to the bytes.&n; */
 multiline_comment|/* Access    Description              Offset */
@@ -148,6 +137,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|scsi_cmnd
 suffix:semicolon
 multiline_comment|/* We get one of these for each ESP probed. */
 DECL|struct|esp
