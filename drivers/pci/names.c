@@ -207,7 +207,7 @@ c_func
 id|name
 comma
 l_string|&quot;PCI device %04x:%04x (%.&quot;
-id|DEVICE_NAME_HALF
+id|PCI_NAME_HALF
 l_string|&quot;s)&quot;
 comma
 id|dev-&gt;vendor
@@ -235,9 +235,9 @@ c_func
 id|name
 comma
 l_string|&quot;%.&quot;
-id|DEVICE_NAME_HALF
+id|PCI_NAME_HALF
 l_string|&quot;s %.&quot;
-id|DEVICE_NAME_HALF
+id|PCI_NAME_HALF
 l_string|&quot;s&quot;
 comma
 id|vendor_p-&gt;name
