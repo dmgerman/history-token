@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NET_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;asm/socket.h&gt;
 r_struct
 id|poll_table_struct
 suffix:semicolon
@@ -84,7 +85,8 @@ DECL|macro|SOCK_ASYNC_WAITDATA
 mdefine_line|#define SOCK_ASYNC_WAITDATA&t;1
 DECL|macro|SOCK_NOSPACE
 mdefine_line|#define SOCK_NOSPACE&t;&t;2
-multiline_comment|/** sock_type - Socket types&n; *&n; * @SOCK_STREAM - stream (connection) socket&n; * @SOCK_DGRAM - datagram (conn.less) socket&n; * @SOCK_RAW - raw socket&n; * @SOCK_RDM - reliably-delivered message&n; * @SOCK_SEQPACKET - sequential packet socket &n; * @SOCK_PACKET - linux specific way of getting packets at the dev level.&n; *&t;&t;  For writing rarp and other similar things on the user level.&n; */
+macro_line|#ifndef ARCH_HAS_SOCKET_TYPES
+multiline_comment|/** sock_type - Socket types&n; * &n; * When adding some new socket type please&n; * grep ARCH_HAS_SOCKET_TYPE include/asm-* /socket.h, at least MIPS&n; * overrides this enum for binary compat reasons.&n; * &n; * @SOCK_STREAM - stream (connection) socket&n; * @SOCK_DGRAM - datagram (conn.less) socket&n; * @SOCK_RAW - raw socket&n; * @SOCK_RDM - reliably-delivered message&n; * @SOCK_SEQPACKET - sequential packet socket &n; * @SOCK_PACKET - linux specific way of getting packets at the dev level.&n; *&t;&t;  For writing rarp and other similar things on the user level.&n; */
 DECL|enum|sock_type
 r_enum
 id|sock_type
@@ -123,6 +125,7 @@ comma
 suffix:semicolon
 DECL|macro|SOCK_MAX
 mdefine_line|#define SOCK_MAX (SOCK_PACKET + 1)
+macro_line|#endif /* ARCH_HAS_SOCKET_TYPES */
 multiline_comment|/**&n; *  struct socket - general BSD socket&n; *  @state - socket state (%SS_CONNECTED, etc)&n; *  @flags - socket flags (%SOCK_ASYNC_NOSPACE, etc)&n; *  @ops - protocol specific socket operations&n; *  @fasync_list - Asynchronous wake up list&n; *  @file - File back pointer for gc&n; *  @sk - internal networking protocol agnostic socket representation&n; *  @wait - wait queue for several uses&n; *  @type - socket type (%SOCK_STREAM, etc)&n; *  @passcred - credentials (used only in Unix Sockets (aka PF_LOCAL))&n; */
 DECL|struct|socket
 r_struct
