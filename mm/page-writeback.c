@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -368,6 +369,11 @@ id|nr_to_write
 op_assign
 l_int|0
 comma
+dot
+id|nonblocking
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 id|CHECK_EMERGENCY_SYNC
@@ -381,7 +387,12 @@ id|total_pages
 op_div
 l_int|100
 suffix:semicolon
-r_do
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
 (brace
 r_struct
 id|page_state
@@ -407,6 +418,10 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+id|wbc.encountered_congestion
+op_assign
+l_int|0
+suffix:semicolon
 id|wbc.nr_to_write
 op_assign
 id|MAX_WRITEBACK_PAGES
@@ -424,15 +439,35 @@ id|MAX_WRITEBACK_PAGES
 op_minus
 id|wbc.nr_to_write
 suffix:semicolon
-)brace
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|wbc.nr_to_write
-op_le
-l_int|0
+op_eq
+id|MAX_WRITEBACK_PAGES
+)paren
+(brace
+multiline_comment|/* Wrote nothing */
+r_if
+c_cond
+(paren
+id|wbc.encountered_congestion
+)paren
+id|blk_congestion_wait
+c_func
+(paren
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
+r_else
+r_break
+suffix:semicolon
+)brace
+)brace
 id|blk_run_queues
 c_func
 (paren
@@ -498,6 +533,9 @@ r_int
 r_int
 id|next_jif
 suffix:semicolon
+r_int
+id|nr_to_write
+suffix:semicolon
 r_struct
 id|page_state
 id|ps
@@ -527,6 +565,11 @@ dot
 id|nr_to_write
 op_assign
 l_int|0
+comma
+dot
+id|nonblocking
+op_assign
+l_int|1
 comma
 )brace
 suffix:semicolon
@@ -570,9 +613,25 @@ id|HZ
 op_div
 l_int|100
 suffix:semicolon
-id|wbc.nr_to_write
+id|nr_to_write
 op_assign
 id|ps.nr_dirty
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|nr_to_write
+OG
+l_int|0
+)paren
+(brace
+id|wbc.encountered_congestion
+op_assign
+l_int|0
+suffix:semicolon
+id|wbc.nr_to_write
+op_assign
+id|MAX_WRITEBACK_PAGES
 suffix:semicolon
 id|writeback_inodes
 c_func
@@ -581,12 +640,40 @@ op_amp
 id|wbc
 )paren
 suffix:semicolon
-id|blk_run_queues
+r_if
+c_cond
+(paren
+id|wbc.nr_to_write
+op_eq
+id|MAX_WRITEBACK_PAGES
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|wbc.encountered_congestion
+)paren
+id|blk_congestion_wait
 c_func
 (paren
+id|WRITE
+comma
+id|HZ
 )paren
 suffix:semicolon
-id|yield
+r_else
+r_break
+suffix:semicolon
+multiline_comment|/* All the old data is written */
+)brace
+id|nr_to_write
+op_sub_assign
+id|MAX_WRITEBACK_PAGES
+op_minus
+id|wbc.nr_to_write
+suffix:semicolon
+)brace
+id|blk_run_queues
 c_func
 (paren
 )paren

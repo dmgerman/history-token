@@ -84,6 +84,16 @@ r_int
 id|nr_to_write
 suffix:semicolon
 multiline_comment|/* Write this many pages, and decrement&n;&t;&t;&t;&t;&t;   this for each page written */
+DECL|member|nonblocking
+r_int
+id|nonblocking
+suffix:semicolon
+multiline_comment|/* Don&squot;t get stuck on request queues */
+DECL|member|encountered_congestion
+r_int
+id|encountered_congestion
+suffix:semicolon
+multiline_comment|/* An output: a queue is full */
 )brace
 suffix:semicolon
 r_void
