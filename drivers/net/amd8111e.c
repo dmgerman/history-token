@@ -1,4 +1,4 @@
-multiline_comment|/* Advanced  Micro Devices Inc. AMD8111E Linux Network Driver &n; * Copyright (C) 2003 Advanced Micro Devices &n; *&n; * &n; * Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; [ 8139cp.c,tg3.c ]&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)[ tg3.c]&n; * Copyright 1996-1999 Thomas Bogendoerfer [ pcnet32.c ]&n; * Derived from the lance driver written 1993,1994,1995 by Donald Becker.&n; * Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.[ pcnet32.c ]&n; * Carsten Langgaard, carstenl@mips.com [ pcnet32.c ]&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 &n; * USA&n;  &n;Module Name:&n;&n;&t;amd8111e.c&n;&n;Abstract:&n;&t;&n; &t; AMD8111 based 10/100 Ethernet Controller Driver. &n;&n;Environment:&n;&n;&t;Kernel Mode&n;&n;Revision History:&n; &t;3.0.0&n;&t;   Initial Revision.&n;&t;3.0.1&n;&t; 1. Dynamic interrupt coalescing.&n;&t; 2. Removed prev_stats.&n;&t; 3. MII support.&n;&t; 4. Dynamic IPG support&n;&t;3.0.2  05/29/2003&n;&t; 1. Bug fix: Fixed failure to send jumbo packets larger than 4k.&n;&t; 2. Bug fix: Fixed VLAN support failure.&n;&t; 3. Bug fix: Fixed receive interrupt coalescing bug.&n;&t; 4. Dynamic IPG support is disabled by default.&n;&n;*/
+multiline_comment|/* Advanced  Micro Devices Inc. AMD8111E Linux Network Driver &n; * Copyright (C) 2003 Advanced Micro Devices &n; *&n; * &n; * Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; [ 8139cp.c,tg3.c ]&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)[ tg3.c]&n; * Copyright 1996-1999 Thomas Bogendoerfer [ pcnet32.c ]&n; * Derived from the lance driver written 1993,1994,1995 by Donald Becker.&n; * Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.[ pcnet32.c ]&n; * Carsten Langgaard, carstenl@mips.com [ pcnet32.c ]&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 &n; * USA&n;  &n;Module Name:&n;&n;&t;amd8111e.c&n;&n;Abstract:&n;&t;&n; &t; AMD8111 based 10/100 Ethernet Controller Driver. &n;&n;Environment:&n;&n;&t;Kernel Mode&n;&n;Revision History:&n; &t;3.0.0&n;&t;   Initial Revision.&n;&t;3.0.1&n;&t; 1. Dynamic interrupt coalescing.&n;&t; 2. Removed prev_stats.&n;&t; 3. MII support.&n;&t; 4. Dynamic IPG support&n;&t;3.0.2  05/29/2003&n;&t; 1. Bug fix: Fixed failure to send jumbo packets larger than 4k.&n;&t; 2. Bug fix: Fixed VLAN support failure.&n;&t; 3. Bug fix: Fixed receive interrupt coalescing bug.&n;&t; 4. Dynamic IPG support is disabled by default.&n;&t;3.0.3 06/05/2003&n;&t; 1. Bug fix: Fixed failure to close the interface if SMP is enabled.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -32,7 +32,7 @@ macro_line|#include &quot;amd8111e.h&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME&t;&quot;amd8111e&quot;
 DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION&t;&quot;3.0.2&quot;
+mdefine_line|#define MODULE_VERSION&t;&quot;3.0.3&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -41,7 +41,7 @@ l_string|&quot;Advanced Micro Devices, Inc.&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;AMD8111 based 10/100 Ethernet Controller. Driver Version 3.0.2&quot;
+l_string|&quot;AMD8111 based 10/100 Ethernet Controller. Driver Version 3.0.3&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -4844,13 +4844,6 @@ id|lp-&gt;ipg_data.ipg_timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Update the statistics before closing */
-id|amd8111e_get_stats
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -4863,6 +4856,13 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Update the statistics before closing */
+id|amd8111e_get_stats
+c_func
+(paren
 id|dev
 )paren
 suffix:semicolon
