@@ -4,7 +4,7 @@ DECL|macro|__USER_UTIL_H__
 mdefine_line|#define __USER_UTIL_H__
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 DECL|macro|CATCH_EINTR
-mdefine_line|#define CATCH_EINTR(expr) while (((expr) &lt; 0) &amp;&amp; (errno == EINTR))
+mdefine_line|#define CATCH_EINTR(expr) while ((errno = 0, ((expr) &lt; 0)) &amp;&amp; (errno == EINTR))
 r_extern
 r_int
 id|mode_tt
