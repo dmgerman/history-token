@@ -1609,7 +1609,7 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/* set up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;write_urb

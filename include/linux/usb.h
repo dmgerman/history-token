@@ -1716,13 +1716,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * old style macros to enable 2.4 and 2.2 drivers to build&n; * properly.  Please do not use these for new USB drivers.&n; */
-DECL|macro|FILL_CONTROL_URB
-mdefine_line|#define FILL_CONTROL_URB(URB,DEV,PIPE,SETUP_PACKET,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT) &bslash;&n;    usb_fill_control_urb(URB,DEV,PIPE,SETUP_PACKET,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT)
-DECL|macro|FILL_BULK_URB
-mdefine_line|#define FILL_BULK_URB(URB,DEV,PIPE,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT) &bslash;&n;    usb_fill_bulk_urb(URB,DEV,PIPE,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT)
-DECL|macro|FILL_INT_URB
-mdefine_line|#define FILL_INT_URB(URB,DEV,PIPE,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT,INTERVAL) &bslash;&n;    usb_fill_int_urb(URB,DEV,PIPE,TRANSFER_BUFFER,BUFFER_LENGTH,COMPLETE,CONTEXT,INTERVAL)
 r_extern
 r_struct
 id|urb

@@ -1940,7 +1940,7 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|priv-&gt;intr_urb

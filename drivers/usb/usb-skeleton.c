@@ -1218,7 +1218,7 @@ id|dev-&gt;write_urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 multiline_comment|/* set up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;write_urb
@@ -1826,7 +1826,7 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;write_urb

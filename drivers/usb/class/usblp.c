@@ -4098,7 +4098,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|usblp-&gt;writeurb
@@ -4145,7 +4145,7 @@ c_cond
 (paren
 id|usblp-&gt;bidir
 )paren
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|usblp-&gt;readurb

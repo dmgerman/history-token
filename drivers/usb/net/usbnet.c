@@ -976,7 +976,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 singleline_comment|// fill irq urb
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|priv-&gt;irq_urb
 comma
@@ -4870,7 +4870,7 @@ id|entry-&gt;length
 op_assign
 l_int|0
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -6880,7 +6880,7 @@ l_int|0
 id|skb-&gt;len
 op_increment
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma

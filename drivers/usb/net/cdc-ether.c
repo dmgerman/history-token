@@ -298,7 +298,7 @@ suffix:semicolon
 id|goon
 suffix:colon
 singleline_comment|// Prep the USB to wait for another frame
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb
@@ -750,7 +750,7 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 singleline_comment|// Fill in the URB for shipping it out.
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;tx_urb
@@ -931,7 +931,7 @@ id|EIO
 suffix:semicolon
 )brace
 singleline_comment|// Prep a receive URB
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb

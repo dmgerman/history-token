@@ -969,7 +969,7 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/* fill and submit the URB */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|us-&gt;current_urb
@@ -1051,7 +1051,7 @@ r_int
 id|status
 suffix:semicolon
 multiline_comment|/* fill and submit the URB */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|us-&gt;current_urb

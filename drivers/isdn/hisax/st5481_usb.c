@@ -1084,7 +1084,7 @@ op_assign
 id|urb
 suffix:semicolon
 singleline_comment|// Fill the control URB
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|urb
 comma
@@ -1182,7 +1182,7 @@ l_int|1
 )braket
 suffix:semicolon
 singleline_comment|// Fill the interrupt URB
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|urb

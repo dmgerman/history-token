@@ -424,7 +424,7 @@ id|pegasus-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 id|size
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
@@ -695,7 +695,7 @@ id|pegasus-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 id|size
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
@@ -957,7 +957,7 @@ id|pegasus-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 l_int|1
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
@@ -1107,7 +1107,7 @@ id|pegasus-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 l_int|3
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
@@ -2954,7 +2954,7 @@ id|tl_sched
 suffix:semicolon
 id|goon
 suffix:colon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|pegasus-&gt;rx_urb
@@ -3133,7 +3133,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|pegasus-&gt;rx_urb
@@ -3600,7 +3600,7 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|pegasus-&gt;tx_urb
@@ -4151,7 +4151,7 @@ op_amp
 id|pegasus-&gt;sem
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|pegasus-&gt;rx_urb
@@ -4202,7 +4202,7 @@ comma
 id|res
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|pegasus-&gt;intr_urb

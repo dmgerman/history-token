@@ -3701,7 +3701,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|catc-&gt;ctrl_urb
@@ -3727,7 +3727,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;tx_urb
@@ -3751,7 +3751,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;rx_urb
@@ -3775,7 +3775,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|catc-&gt;irq_urb

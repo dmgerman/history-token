@@ -2669,7 +2669,7 @@ comma
 id|have_intr
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|scn-&gt;scn_irq

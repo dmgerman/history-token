@@ -1318,7 +1318,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Setup URB Structs */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|mdc800-&gt;irq_urb
 comma
@@ -1345,7 +1345,7 @@ comma
 id|irq_interval
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|mdc800-&gt;write_urb
 comma
@@ -1370,7 +1370,7 @@ comma
 id|mdc800
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|mdc800-&gt;download_urb
 comma

@@ -336,7 +336,7 @@ id|pipe
 )paren
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|urb
@@ -574,7 +574,7 @@ comma
 id|husb-&gt;bulk_in_ep
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -1156,7 +1156,7 @@ c_func
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|urb
@@ -1334,7 +1334,7 @@ comma
 id|husb-&gt;bulk_out_ep
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb

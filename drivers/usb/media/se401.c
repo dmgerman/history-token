@@ -2606,7 +2606,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -6969,7 +6969,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|se401-&gt;inturb

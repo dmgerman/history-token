@@ -4450,7 +4450,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Fill URB using supplied data. */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb

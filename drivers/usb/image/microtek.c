@@ -1490,7 +1490,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|transfer
@@ -2467,7 +2467,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|desc-&gt;urb

@@ -594,7 +594,7 @@ id|dev-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 id|size
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|dev-&gt;ctrl_urb
@@ -1758,7 +1758,7 @@ id|skb
 suffix:semicolon
 id|goon
 suffix:colon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -1935,7 +1935,7 @@ id|dev-&gt;rx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -2815,7 +2815,7 @@ id|dev-&gt;tx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;tx_urb
@@ -2959,7 +2959,7 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -3008,7 +3008,7 @@ comma
 id|res
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|dev-&gt;intr_urb

@@ -744,7 +744,7 @@ op_assign
 id|URBDATA_SIZE
 suffix:semicolon
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -1199,7 +1199,7 @@ id|urb-&gt;actual_length
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -1867,7 +1867,7 @@ id|URBDATA_SIZE
 op_minus
 id|room
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;write_urb

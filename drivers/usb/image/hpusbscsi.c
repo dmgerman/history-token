@@ -957,7 +957,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* build and submit an interrupt URB for status byte handling */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|desc-&gt;controlurb
@@ -1247,7 +1247,7 @@ suffix:semicolon
 id|TRACE_STATE
 suffix:semicolon
 multiline_comment|/* We prepare the urb for writing out the scsi command */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|hpusbscsi-&gt;dataurb
@@ -1869,7 +1869,7 @@ id|HP_STATE_WORKING
 suffix:semicolon
 id|TRACE_STATE
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|u
@@ -2116,7 +2116,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|u
@@ -2221,7 +2221,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|u
@@ -2289,7 +2289,7 @@ op_star
 id|hpusbscsi
 )paren
 (brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|hpusbscsi-&gt;dataurb

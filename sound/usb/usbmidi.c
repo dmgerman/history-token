@@ -2678,7 +2678,7 @@ c_cond
 (paren
 id|int_epd
 )paren
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -2699,7 +2699,7 @@ id|int_epd-&gt;bInterval
 )paren
 suffix:semicolon
 r_else
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -2983,7 +2983,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb

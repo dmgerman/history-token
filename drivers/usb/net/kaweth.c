@@ -1743,7 +1743,7 @@ id|mem_flags
 r_int
 id|result
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
@@ -2186,7 +2186,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|kaweth-&gt;irq_urb
@@ -2705,7 +2705,7 @@ id|kaweth-&gt;tx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|kaweth-&gt;tx_urb
@@ -4589,7 +4589,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|urb

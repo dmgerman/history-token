@@ -1729,7 +1729,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|hub-&gt;urb

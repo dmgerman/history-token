@@ -2083,7 +2083,7 @@ id|ss-&gt;irqbuf
 )paren
 suffix:semicolon
 multiline_comment|/* fill in the URB with our data */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|ss-&gt;irq_urb

@@ -721,7 +721,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Submit the 0 length IrDA frame to trigger new speed settings */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -1188,7 +1188,7 @@ id|context
 op_assign
 id|self
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -2176,7 +2176,7 @@ op_assign
 id|self
 suffix:semicolon
 multiline_comment|/* Reinitialize URB */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb

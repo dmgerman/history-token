@@ -911,7 +911,7 @@ comma
 id|ep-&gt;endpoint
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -3944,7 +3944,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb

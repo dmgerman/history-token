@@ -365,7 +365,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|urb
@@ -616,7 +616,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb

@@ -2216,7 +2216,7 @@ id|cpu_to_le16
 id|size
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|urb
 comma
@@ -3002,7 +3002,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Retry Flag */
 multiline_comment|/* bp-&gt;dr-&gt;index    = channel id;          remains */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3241,7 +3241,7 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/* &gt;= 8 bytes */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3729,7 +3729,7 @@ id|cpu_to_le16
 id|bytecount
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3999,7 +3999,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* setup urb */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|cp-&gt;inturbp
 comma
@@ -6675,7 +6675,7 @@ op_plus
 id|AUH_SIZE
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma

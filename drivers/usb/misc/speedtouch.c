@@ -2177,7 +2177,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -2596,7 +2596,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* submit packet */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -2875,7 +2875,7 @@ multiline_comment|/* &n;&t;&t; * we don&squot;t do anything here and we don&squo
 r_return
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -3101,7 +3101,7 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|ctx-&gt;urb
 comma
