@@ -1171,7 +1171,7 @@ id|sg
 suffix:semicolon
 op_star
 (paren
-id|u64
+id|__le64
 op_star
 )paren
 id|prd
@@ -1199,7 +1199,7 @@ id|sg
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|prd
@@ -1355,7 +1355,7 @@ id|hflags
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 (paren
@@ -1376,7 +1376,7 @@ id|ATA_SECT_SIZE
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 (paren
@@ -1406,7 +1406,7 @@ id|QS_CPB_BYTES
 suffix:semicolon
 op_star
 (paren
-id|u64
+id|__le64
 op_star
 )paren
 (paren
@@ -2786,7 +2786,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffffffffffULL
+id|DMA_64BIT_MASK
 )paren
 )paren
 (brace
@@ -2797,7 +2797,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffffffffffULL
+id|DMA_64BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -2813,7 +2813,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -2851,7 +2851,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -2885,7 +2885,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
