@@ -1188,9 +1188,9 @@ id|fd
 )paren
 (brace
 r_int
-id|err
+r_new
 suffix:semicolon
-id|err
+r_new
 op_assign
 id|accept
 c_func
@@ -1205,7 +1205,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+r_new
+OL
+l_int|0
 )paren
 (brace
 r_return
@@ -1214,7 +1216,7 @@ id|errno
 suffix:semicolon
 )brace
 r_return
-l_int|0
+r_new
 suffix:semicolon
 )brace
 macro_line|#ifndef SHUT_RD
