@@ -4721,33 +4721,27 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|c4_remove_ctr
+DECL|function|c4_remove
 r_static
 r_void
-id|c4_remove_ctr
+id|c4_remove
 c_func
 (paren
 r_struct
-id|capi_ctr
+id|pci_dev
 op_star
-id|ctrl
+id|pdev
 )paren
 (brace
 id|avmcard
 op_star
 id|card
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-(paren
-id|avmctrl_info
-op_star
+id|pdev
 )paren
-(paren
-id|ctrl-&gt;driverdata
-)paren
-)paren
-op_member_access_from_pointer
-id|card
 suffix:semicolon
 id|avmctrl_info
 op_star
@@ -4824,10 +4818,6 @@ id|card-&gt;port
 comma
 id|AVMB1_PORTLEN
 )paren
-suffix:semicolon
-id|ctrl-&gt;driverdata
-op_assign
-l_int|0
 suffix:semicolon
 id|avmcard_dma_free
 c_func
@@ -6568,10 +6558,6 @@ id|reset_ctr
 suffix:colon
 id|c4_reset_ctr
 comma
-id|remove_ctr
-suffix:colon
-id|c4_remove_ctr
-comma
 id|register_appl
 suffix:colon
 id|c4_register_appl
@@ -6597,11 +6583,6 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
-id|add_card
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* no add_card function */
 )brace
 suffix:semicolon
 DECL|variable|c4_driver
@@ -6631,10 +6612,6 @@ id|reset_ctr
 suffix:colon
 id|c4_reset_ctr
 comma
-id|remove_ctr
-suffix:colon
-id|c4_remove_ctr
-comma
 id|register_appl
 suffix:colon
 id|c4_register_appl
@@ -6660,11 +6637,6 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
-id|add_card
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* no add_card function */
 )brace
 suffix:semicolon
 DECL|function|c4_probe
@@ -6860,6 +6832,10 @@ comma
 id|probe
 suffix:colon
 id|c4_probe
+comma
+id|remove
+suffix:colon
+id|c4_remove
 comma
 )brace
 suffix:semicolon

@@ -159,7 +159,7 @@ mdefine_line|#define&t;AVMB1_ADDCARD_WITH_TYPE&t;4&t;/* add a new card, with car
 DECL|macro|AVMB1_GET_CARDINFO
 mdefine_line|#define AVMB1_GET_CARDINFO&t;5&t;/* get cardtype */
 DECL|macro|AVMB1_REMOVECARD
-mdefine_line|#define AVMB1_REMOVECARD&t;6&t;/* remove a card (useful for T1) */
+mdefine_line|#define AVMB1_REMOVECARD&t;6&t;/* remove a card - OBSOLETE */
 DECL|macro|AVMB1_REGISTERCARD_IS_OBSOLETE
 mdefine_line|#define&t;AVMB1_REGISTERCARD_IS_OBSOLETE
 macro_line|#endif&t;&t;&t;&t;/* _B1LLI_H_ */

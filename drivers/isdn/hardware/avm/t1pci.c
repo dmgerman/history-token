@@ -99,7 +99,7 @@ comma
 r_struct
 id|pci_dev
 op_star
-id|dev
+id|pdev
 )paren
 (brace
 id|avmcard
@@ -153,7 +153,7 @@ c_func
 (paren
 id|driver-&gt;name
 comma
-id|dev
+id|pdev
 comma
 l_int|2048
 op_plus
@@ -464,6 +464,14 @@ comma
 id|card-&gt;membase
 )paren
 suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|card
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -518,35 +526,33 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|function|t1pci_remove_ctr
+DECL|function|t1pci_remove
 r_static
 r_void
-id|t1pci_remove_ctr
+id|t1pci_remove
 c_func
 (paren
 r_struct
-id|capi_ctr
+id|pci_dev
 op_star
-id|ctrl
+id|pdev
 )paren
 (brace
-id|avmctrl_info
-op_star
-id|cinfo
-op_assign
-(paren
-id|avmctrl_info
-op_star
-)paren
-(paren
-id|ctrl-&gt;driverdata
-)paren
-suffix:semicolon
 id|avmcard
 op_star
 id|card
 op_assign
-id|cinfo-&gt;card
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|avmctrl_info
+op_star
+id|cinfo
+op_assign
+id|card-&gt;ctrlinfo
 suffix:semicolon
 id|b1dma_reset
 c_func
@@ -557,7 +563,7 @@ suffix:semicolon
 id|detach_capi_ctr
 c_func
 (paren
-id|ctrl
+id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
 id|free_irq
@@ -581,10 +587,6 @@ id|card-&gt;port
 comma
 id|AVMB1_PORTLEN
 )paren
-suffix:semicolon
-id|ctrl-&gt;driverdata
-op_assign
-l_int|0
 suffix:semicolon
 id|avmcard_dma_free
 c_func
@@ -718,10 +720,6 @@ id|reset_ctr
 suffix:colon
 id|b1dma_reset_ctr
 comma
-id|remove_ctr
-suffix:colon
-id|t1pci_remove_ctr
-comma
 id|register_appl
 suffix:colon
 id|b1dma_register_appl
@@ -747,11 +745,6 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
-id|add_card
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* no add_card function */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
@@ -923,6 +916,10 @@ comma
 id|probe
 suffix:colon
 id|t1pci_probe
+comma
+id|remove
+suffix:colon
+id|t1pci_remove
 comma
 )brace
 suffix:semicolon

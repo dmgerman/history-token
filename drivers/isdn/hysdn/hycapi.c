@@ -3277,10 +3277,6 @@ id|reset_ctr
 suffix:colon
 id|hycapi_reset_ctr
 comma
-id|remove_ctr
-suffix:colon
-id|hycapi_remove_ctr
-comma
 id|register_appl
 suffix:colon
 id|hycapi_register_appl

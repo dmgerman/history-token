@@ -583,10 +583,6 @@ id|reset_ctr
 suffix:colon
 id|b1_reset_ctr
 comma
-id|remove_ctr
-suffix:colon
-id|b1pcmcia_remove_ctr
-comma
 id|register_appl
 suffix:colon
 id|b1_register_appl
@@ -612,10 +608,6 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
-id|add_card
-suffix:colon
-l_int|0
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
