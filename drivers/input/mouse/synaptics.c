@@ -587,7 +587,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; Firware: %ld.%ld&bslash;n&quot;
+l_string|&quot; Firmware: %ld.%ld&bslash;n&quot;
 comma
 id|SYN_ID_MAJOR
 c_func
@@ -1031,7 +1031,7 @@ r_goto
 id|init_fail
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The x/y limits are taken from the Synaptics TouchPad interfacing Guide,&n;&t; * which says that they should be valid regardless of the actual size of&n;&t; * the senser.&n;&t; */
+multiline_comment|/*&n;&t; * The x/y limits are taken from the Synaptics TouchPad interfacing Guide,&n;&t; * which says that they should be valid regardless of the actual size of&n;&t; * the sensor.&n;&t; */
 id|set_bit
 c_func
 (paren
@@ -1206,6 +1206,15 @@ op_assign
 id|psmouse
 op_member_access_from_pointer
 r_private
+suffix:semicolon
+multiline_comment|/* Restore touchpad to power on default state */
+id|synaptics_set_mode
+c_func
+(paren
+id|psmouse
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|kfree
 c_func
