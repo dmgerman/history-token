@@ -18,9 +18,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -242,9 +239,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 r_if
@@ -483,9 +477,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 id|activate_context

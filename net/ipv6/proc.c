@@ -1040,7 +1040,7 @@ id|__alignof__
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|icmpv6_mib
 )paren
 )paren
 OL

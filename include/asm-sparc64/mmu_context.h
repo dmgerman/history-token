@@ -36,9 +36,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -123,9 +120,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 r_int
@@ -205,7 +199,10 @@ op_assign
 (paren
 l_int|1UL
 op_lshift
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Even if (mm == old_mm) we _must_ check&n;&t;&t; * the cpu_vm_mask.  If we do not we could&n;&t;&t; * corrupt the TLB state because of how&n;&t;&t; * smp_flush_tlb_{page,range,mm} on sparc64&n;&t;&t; * and lazy tlb switches work. -DaveM&n;&t;&t; */

@@ -5189,21 +5189,32 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OG
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Software Suspend has a malfunctioning SMP support. Disabled :(&bslash;n&quot;
+l_string|&quot;Software Suspend has malfunctioning SMP support. Disabled :(&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* We enable the possibility of machine suspend */
 id|software_suspend_enabled
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

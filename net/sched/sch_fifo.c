@@ -205,6 +205,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+r_int
 DECL|function|fifo_drop
 id|fifo_drop
 c_func
@@ -235,9 +236,15 @@ c_cond
 id|skb
 )paren
 (brace
+r_int
+r_int
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|sch-&gt;stats.backlog
 op_sub_assign
-id|skb-&gt;len
+id|len
 suffix:semicolon
 id|kfree_skb
 c_func
@@ -246,7 +253,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|len
 suffix:semicolon
 )brace
 r_return

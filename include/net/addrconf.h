@@ -7,6 +7,8 @@ DECL|macro|MAX_RTR_SOLICITATIONS
 mdefine_line|#define MAX_RTR_SOLICITATIONS&t;&t;3
 DECL|macro|RTR_SOLICITATION_INTERVAL
 mdefine_line|#define RTR_SOLICITATION_INTERVAL&t;(4*HZ)
+DECL|macro|MIN_VALID_LIFETIME
+mdefine_line|#define MIN_VALID_LIFETIME&t;&t;(2*3600)&t;/* 2 hours */
 DECL|macro|TEMP_VALID_LIFETIME
 mdefine_line|#define TEMP_VALID_LIFETIME&t;&t;(7*86400)
 DECL|macro|TEMP_PREFERRED_LIFETIME

@@ -243,9 +243,6 @@ r_struct
 id|task_struct
 op_star
 id|next
-comma
-r_int
-id|cpu
 )paren
 (brace
 multiline_comment|/* Check if our ASN is of an older version, and thus invalid. */
@@ -256,6 +253,14 @@ suffix:semicolon
 r_int
 r_int
 id|mmc
+suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|cpu_data
@@ -359,9 +364,6 @@ r_struct
 id|task_struct
 op_star
 id|next
-comma
-r_int
-id|cpu
 )paren
 (brace
 multiline_comment|/* As described, ASN&squot;s are broken for TLB usage.  But we can&n;&t;   optimize for switching between threads -- if the mm is&n;&t;   unchanged from current we needn&squot;t flush.  */
@@ -387,8 +389,6 @@ comma
 id|next_mm
 comma
 id|next
-comma
-id|cpu
 )paren
 suffix:semicolon
 )brace
@@ -466,18 +466,18 @@ DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
 DECL|macro|switch_mm
-macro_line|# define switch_mm(a,b,c,d)&t;alpha_mv.mv_switch_mm((a),(b),(c),(d))
+macro_line|# define switch_mm(a,b,c)&t;alpha_mv.mv_switch_mm((a),(b),(c))
 DECL|macro|activate_mm
 macro_line|# define activate_mm(x,y)&t;alpha_mv.mv_activate_mm((x),(y))
 macro_line|#else
 macro_line|# ifdef CONFIG_ALPHA_EV4
 DECL|macro|switch_mm
-macro_line|#  define switch_mm(a,b,c,d)&t;ev4_switch_mm((a),(b),(c),(d))
+macro_line|#  define switch_mm(a,b,c)&t;ev4_switch_mm((a),(b),(c))
 DECL|macro|activate_mm
 macro_line|#  define activate_mm(x,y)&t;ev4_activate_mm((x),(y))
 macro_line|# else
 DECL|macro|switch_mm
-macro_line|#  define switch_mm(a,b,c,d)&t;ev5_switch_mm((a),(b),(c),(d))
+macro_line|#  define switch_mm(a,b,c)&t;ev5_switch_mm((a),(b),(c))
 DECL|macro|activate_mm
 macro_line|#  define activate_mm(x,y)&t;ev5_activate_mm((x),(y))
 macro_line|# endif
@@ -589,9 +589,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 id|tsk-&gt;thread_info-&gt;pcb.ptbr

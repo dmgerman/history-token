@@ -1409,8 +1409,6 @@ op_amp
 id|init_mm
 comma
 id|current
-comma
-id|cpunum
 )paren
 suffix:semicolon
 id|init_IRQ

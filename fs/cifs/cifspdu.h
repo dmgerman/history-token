@@ -414,6 +414,24 @@ id|__u16
 id|PidHigh
 suffix:semicolon
 multiline_comment|/* note: le */
+r_union
+(brace
+r_struct
+(brace
+DECL|member|SequenceNumber
+id|__u32
+id|SequenceNumber
+suffix:semicolon
+multiline_comment|/* le */
+DECL|member|Reserved
+id|__u32
+id|Reserved
+suffix:semicolon
+multiline_comment|/* zero */
+DECL|member|Sequence
+)brace
+id|Sequence
+suffix:semicolon
 DECL|member|SecuritySignature
 id|__u8
 id|SecuritySignature
@@ -421,7 +439,11 @@ id|SecuritySignature
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* note le */
+multiline_comment|/* le */
+DECL|member|Signature
+)brace
+id|Signature
+suffix:semicolon
 DECL|member|pad
 id|__u8
 id|pad

@@ -1594,12 +1594,14 @@ id|neigh_table
 id|clip_tbl
 op_assign
 (brace
-l_int|NULL
-comma
-multiline_comment|/* next */
+dot
+id|family
+op_assign
 id|AF_INET
 comma
-multiline_comment|/* family */
+dot
+id|entry_size
+op_assign
 r_sizeof
 (paren
 r_struct
@@ -1612,89 +1614,97 @@ r_struct
 id|atmarp_entry
 )paren
 comma
-multiline_comment|/* entry_size */
+dot
+id|key_len
+op_assign
 l_int|4
 comma
-multiline_comment|/* key_len */
+dot
+id|hash
+op_assign
 id|clip_hash
 comma
+dot
+id|constructor
+op_assign
 id|clip_constructor
 comma
-multiline_comment|/* constructor */
-l_int|NULL
-comma
-multiline_comment|/* pconstructor */
-l_int|NULL
-comma
-multiline_comment|/* pdestructor */
-l_int|NULL
-comma
-multiline_comment|/* proxy_redo */
+dot
+id|id
+op_assign
 l_string|&quot;clip_arp_cache&quot;
 comma
+multiline_comment|/* parameters are copied from ARP ... */
+dot
+id|parms
+op_assign
 (brace
-multiline_comment|/* neigh_parms */
-l_int|NULL
-comma
-multiline_comment|/* next */
-l_int|NULL
-comma
-multiline_comment|/* neigh_setup */
+dot
+id|tbl
+op_assign
 op_amp
 id|clip_tbl
 comma
-multiline_comment|/* tbl */
-l_int|0
-comma
-multiline_comment|/* entries */
-l_int|NULL
-comma
-multiline_comment|/* priv */
-l_int|NULL
-comma
-multiline_comment|/* sysctl_table */
+dot
+id|base_reachable_time
+op_assign
 l_int|30
 op_star
 id|HZ
 comma
-multiline_comment|/* base_reachable_time */
+dot
+id|retrans_time
+op_assign
 l_int|1
 op_star
 id|HZ
 comma
-multiline_comment|/* retrans_time */
+dot
+id|gc_staletime
+op_assign
 l_int|60
 op_star
 id|HZ
 comma
-multiline_comment|/* gc_staletime */
+dot
+id|reachable_time
+op_assign
 l_int|30
 op_star
 id|HZ
 comma
-multiline_comment|/* reachable_time */
+dot
+id|delay_probe_time
+op_assign
 l_int|5
 op_star
 id|HZ
 comma
-multiline_comment|/* delay_probe_time */
+dot
+id|queue_len
+op_assign
 l_int|3
 comma
-multiline_comment|/* queue_len */
+dot
+id|ucast_probes
+op_assign
 l_int|3
 comma
-multiline_comment|/* ucast_probes */
-l_int|0
-comma
-multiline_comment|/* app_probes */
+dot
+id|mcast_probes
+op_assign
 l_int|3
 comma
-multiline_comment|/* mcast_probes */
+dot
+id|anycast_delay
+op_assign
 l_int|1
 op_star
 id|HZ
 comma
-multiline_comment|/* anycast_delay */
+dot
+id|proxy_delay
+op_assign
 (paren
 l_int|8
 op_star
@@ -1703,26 +1713,42 @@ id|HZ
 op_div
 l_int|10
 comma
-multiline_comment|/* proxy_delay */
+dot
+id|proxy_qlen
+op_assign
+l_int|64
+comma
+dot
+id|locktime
+op_assign
 l_int|1
 op_star
 id|HZ
 comma
-multiline_comment|/* proxy_qlen */
-l_int|64
-multiline_comment|/* locktime */
 )brace
 comma
+dot
+id|gc_interval
+op_assign
 l_int|30
 op_star
 id|HZ
 comma
+dot
+id|gc_thresh1
+op_assign
 l_int|128
 comma
+dot
+id|gc_thresh2
+op_assign
 l_int|512
 comma
+dot
+id|gc_thresh3
+op_assign
 l_int|1024
-multiline_comment|/* copied from ARP ... */
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* @@@ copy bh locking from arp.c -- need to bh-enable atm code before */

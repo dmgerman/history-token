@@ -981,9 +981,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|gred_drop
 r_static
 r_int
-DECL|function|gred_drop
+r_int
 id|gred_drop
 c_func
 (paren
@@ -1030,9 +1031,15 @@ c_cond
 id|skb
 )paren
 (brace
+r_int
+r_int
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|sch-&gt;stats.backlog
 op_sub_assign
-id|skb-&gt;len
+id|len
 suffix:semicolon
 id|sch-&gt;stats.drops
 op_increment
@@ -1056,7 +1063,7 @@ id|q
 (brace
 id|q-&gt;backlog
 op_sub_assign
-id|skb-&gt;len
+id|len
 suffix:semicolon
 id|q-&gt;other
 op_increment
@@ -1097,7 +1104,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|len
 suffix:semicolon
 )brace
 id|q

@@ -332,11 +332,25 @@ r_enum
 id|statusEnum
 id|status
 suffix:semicolon
+DECL|member|sequence_number
+id|__u32
+id|sequence_number
+suffix:semicolon
+multiline_comment|/* needed for CIFS PDU signature */
 DECL|member|ipc_tid
 id|__u16
 id|ipc_tid
 suffix:semicolon
 multiline_comment|/* special tid for connection to IPC share */
+DECL|member|mac_signing_key
+r_char
+id|mac_signing_key
+(braket
+id|CIFS_SESSION_KEY_SIZE
+op_plus
+l_int|16
+)braket
+suffix:semicolon
 DECL|member|serverOS
 r_char
 op_star
@@ -714,6 +728,11 @@ id|__u16
 id|pid
 suffix:semicolon
 multiline_comment|/* process id */
+DECL|member|sequence_number
+id|__u32
+id|sequence_number
+suffix:semicolon
+multiline_comment|/* for CIFS signing */
 DECL|member|command
 id|__u16
 id|command

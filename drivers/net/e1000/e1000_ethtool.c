@@ -5548,6 +5548,7 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
+r_else
 id|e1000_reset
 c_func
 (paren

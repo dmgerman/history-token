@@ -2704,6 +2704,14 @@ id|ipv6_txoptions
 )paren
 )paren
 suffix:semicolon
+id|opt-&gt;tot_len
+op_assign
+r_sizeof
+(paren
+r_struct
+id|ipv6_txoptions
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|datagram_send_ctl
@@ -4180,7 +4188,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|raw6_seq_private
-mdefine_line|#define raw6_seq_private(seq) ((struct raw6_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define raw6_seq_private(seq) ((struct raw6_iter_state *)(seq)-&gt;private)
 DECL|function|raw6_get_first
 r_static
 r_struct

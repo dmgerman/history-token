@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Unlike ARM32 this is NOT automatically generated. DONT delete it&n; */
+multiline_comment|/*&n; * Unlike ARM32 this is NOT automatically generated. DONT delete it&n; * Instead, consider FIXME-ing it so its auto-detected.&n; */
 macro_line|#ifndef __ASM_ARM_MACH_TYPE_H
 DECL|macro|__ASM_ARM_MACH_TYPE_H
 mdefine_line|#define __ASM_ARM_MACH_TYPE_H

@@ -1301,14 +1301,6 @@ op_amp
 l_int|0xff
 suffix:semicolon
 multiline_comment|/* high bits used in ret_from_ code  */
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irq_desc_t
 op_star
 id|desc
@@ -1396,13 +1388,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|irq
 )braket

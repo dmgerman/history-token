@@ -2038,6 +2038,15 @@ op_amp
 id|ei-&gt;i_orphan
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_XATTR
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|ei-&gt;xattr_sem
+)paren
+suffix:semicolon
+macro_line|#endif
 id|init_rwsem
 c_func
 (paren

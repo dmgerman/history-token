@@ -282,8 +282,10 @@ DECL|macro|XFRM_MSG_UPDPOLICY
 mdefine_line|#define XFRM_MSG_UPDPOLICY&t;(XFRM_MSG_BASE + 9)
 DECL|macro|XFRM_MSG_UPDSA
 mdefine_line|#define XFRM_MSG_UPDSA&t;&t;(XFRM_MSG_BASE + 10)
+DECL|macro|XFRM_MSG_POLEXPIRE
+mdefine_line|#define XFRM_MSG_POLEXPIRE&t;(XFRM_MSG_BASE + 11)
 DECL|macro|XFRM_MSG_MAX
-mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_UPDSA+1)
+mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_POLEXPIRE+1)
 DECL|struct|xfrm_user_tmpl
 r_struct
 id|xfrm_user_tmpl
@@ -601,6 +603,21 @@ DECL|member|state
 r_struct
 id|xfrm_usersa_info
 id|state
+suffix:semicolon
+DECL|member|hard
+id|__u8
+id|hard
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|xfrm_user_polexpire
+r_struct
+id|xfrm_user_polexpire
+(brace
+DECL|member|pol
+r_struct
+id|xfrm_userpolicy_info
+id|pol
 suffix:semicolon
 DECL|member|hard
 id|__u8

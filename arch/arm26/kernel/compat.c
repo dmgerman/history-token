@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/arch.h&gt;
+singleline_comment|//#include &lt;asm/arch.h&gt;
 singleline_comment|//#include &lt;asm/mach/irq.h&gt;
 multiline_comment|/*&n; * Usage:&n; *  - do not go blindly adding fields, add them at the end&n; *  - when adding fields, don&squot;t rely on the address until&n; *    a patch from me has been released&n; *  - unused fields should be zero (for future expansion)&n; *  - this structure is relatively short-lived - only&n; *    guaranteed to contain useful data in setup_arch()&n; *&n; * This is the old deprecated way to pass parameters to the kernel&n; */
 DECL|struct|param_struct

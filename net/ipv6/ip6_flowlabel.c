@@ -2639,7 +2639,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ip6fl_seq_private
-mdefine_line|#define ip6fl_seq_private(seq)&t;((struct ip6fl_iter_state *)&amp;(seq)-&gt;private)
+mdefine_line|#define ip6fl_seq_private(seq)&t;((struct ip6fl_iter_state *)(seq)-&gt;private)
 DECL|function|ip6fl_get_first
 r_static
 r_struct

@@ -2113,8 +2113,6 @@ op_amp
 id|init_mm
 comma
 id|current
-comma
-id|cpu
 )paren
 suffix:semicolon
 id|load_esp0

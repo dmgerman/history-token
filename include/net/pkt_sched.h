@@ -355,6 +355,7 @@ op_star
 suffix:semicolon
 DECL|member|drop
 r_int
+r_int
 (paren
 op_star
 id|drop

@@ -595,8 +595,7 @@ suffix:semicolon
 multiline_comment|/* undefined */
 id|buf-&gt;f_ffree
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/* unlimited */
 id|rc

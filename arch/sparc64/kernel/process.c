@@ -6,6 +6,7 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -1357,6 +1358,14 @@ id|print_tainted
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;TPC: &lt;%s&gt;&bslash;n&quot;
+comma
+id|regs-&gt;tpc
 )paren
 suffix:semicolon
 id|printk

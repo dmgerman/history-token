@@ -374,6 +374,7 @@ id|int_irq_list
 id|NR_IRQS
 )braket
 suffix:semicolon
+macro_line|#if !defined(CONFIG_DRAGEN2)
 id|asm
 (paren
 "&quot;"
@@ -540,6 +541,7 @@ id|rte
 "&quot;"
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * This function should be called during kernel startup to initialize&n; * the IRQ handling routines.&n; */
 DECL|function|init_IRQ
 r_void
@@ -1118,7 +1120,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;   : %10u   spurious&quot;
+l_string|&quot;   : %10u   spurious&bslash;n&quot;
 comma
 id|num_spurious
 )paren

@@ -703,15 +703,5 @@ id|mach_reset
 op_assign
 id|BSP_reset
 suffix:semicolon
-singleline_comment|//Kendrick&squot;s Change
-id|mach_trap_init
-op_assign
-id|M68360_init_IRQ
-suffix:semicolon
-id|config_M68360_irq
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 eof

@@ -4558,6 +4558,7 @@ suffix:semicolon
 DECL|function|cbq_drop
 r_static
 r_int
+r_int
 id|cbq_drop
 c_func
 (paren
@@ -4589,6 +4590,10 @@ id|cl_head
 suffix:semicolon
 r_int
 id|prio
+suffix:semicolon
+r_int
+r_int
+id|len
 suffix:semicolon
 r_for
 c_loop
@@ -4632,6 +4637,9 @@ c_cond
 (paren
 id|cl-&gt;q-&gt;ops-&gt;drop
 op_logical_and
+(paren
+id|len
+op_assign
 id|cl-&gt;q-&gt;ops
 op_member_access_from_pointer
 id|drop
@@ -4640,12 +4648,13 @@ c_func
 id|cl-&gt;q
 )paren
 )paren
+)paren
 (brace
 id|sch-&gt;q.qlen
 op_decrement
 suffix:semicolon
 r_return
-l_int|1
+id|len
 suffix:semicolon
 )brace
 )brace

@@ -122,9 +122,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-comma
-r_int
-id|cpu
 )paren
 (brace
 )brace
@@ -617,7 +614,7 @@ id|next
 suffix:semicolon
 )brace
 DECL|macro|switch_mm
-mdefine_line|#define switch_mm(prev_mm,next_mm,next_task,cpu)&t;activate_mm(prev_mm, next_mm)
+mdefine_line|#define switch_mm(prev_mm,next_mm,next_task)&t;activate_mm(prev_mm, next_mm)
 macro_line|# endif /* ! __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MMU_CONTEXT_H */
 eof

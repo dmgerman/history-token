@@ -196,7 +196,10 @@ op_star
 id|alloc_thread_info
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+id|task
 )paren
 suffix:semicolon
 r_extern
