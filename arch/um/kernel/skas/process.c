@@ -23,6 +23,14 @@ macro_line|#include &quot;proc_mm.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
+macro_line|#ifdef PTRACE_SYSEMU
+DECL|variable|use_sysemu
+r_int
+id|use_sysemu
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 DECL|function|is_skas_winch
 r_int
 id|is_skas_winch
@@ -226,6 +234,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef PTRACE_SYSEMU
+r_if
+c_cond
+(paren
+op_logical_neg
+id|use_sysemu
+)paren
+(brace
+macro_line|#endif
 id|err
 op_assign
 id|ptrace
@@ -341,6 +358,9 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef PTRACE_SYSEMU
+)brace
+macro_line|#endif
 id|handle_syscall
 c_func
 (paren
@@ -673,6 +693,28 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifdef PTRACE_SYSEMU
+r_if
+c_cond
+(paren
+id|use_sysemu
+)paren
+id|err
+op_assign
+id|ptrace
+c_func
+(paren
+id|PTRACE_SYSEMU
+comma
+id|pid
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
 id|err
 op_assign
 id|ptrace
@@ -852,6 +894,26 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifdef PTRACE_SYSEMU
+r_if
+c_cond
+(paren
+id|use_sysemu
+)paren
+id|op
+op_assign
+id|singlestepping_skas
+c_func
+(paren
+)paren
+ques
+c_cond
+id|PTRACE_SINGLESTEP
+suffix:colon
+id|PTRACE_SYSEMU
+suffix:semicolon
+r_else
+macro_line|#endif
 id|op
 op_assign
 id|singlestepping_skas
