@@ -37,7 +37,6 @@ id|half_md4_transform
 c_func
 (paren
 id|__u32
-r_const
 id|buf
 (braket
 l_int|4
