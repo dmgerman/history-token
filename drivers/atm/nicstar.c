@@ -75,10 +75,6 @@ DECL|macro|XPRINTK
 mdefine_line|#define XPRINTK(args...)
 macro_line|#endif /* EXTRA_DEBUG */
 multiline_comment|/* Macros *********************************************************************/
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 DECL|macro|CMD_BUSY
 mdefine_line|#define CMD_BUSY(card) (readl((card)-&gt;membase + STAT) &amp; NS_STAT_CMDBZ)
 DECL|macro|NS_DELAY
@@ -11781,9 +11777,11 @@ id|iov-&gt;iov_base
 suffix:semicolon
 id|tocopy
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|remaining
 comma
 id|iov-&gt;iov_len
