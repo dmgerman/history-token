@@ -7,7 +7,6 @@ r_int
 r_int
 DECL|function|from64to16
 id|from64to16
-c_func
 (paren
 r_int
 r_int
@@ -79,12 +78,11 @@ id|x
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented.&n; */
+r_int
+r_int
+r_int
 DECL|function|csum_tcpudp_magic
-r_int
-r_int
-r_int
 id|csum_tcpudp_magic
-c_func
 (paren
 r_int
 r_int
@@ -144,11 +142,10 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+r_int
+r_int
 DECL|function|csum_tcpudp_nofold
-r_int
-r_int
 id|csum_tcpudp_nofold
-c_func
 (paren
 r_int
 r_int
@@ -257,42 +254,11 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; */
-DECL|function|ip_fast_csum
-r_int
-r_int
-id|ip_fast_csum
-c_func
-(paren
-r_int
-r_char
-op_star
-id|iph
-comma
-r_int
-r_int
-id|ihl
-)paren
-(brace
-r_return
-op_complement
-id|do_csum
-c_func
-(paren
-id|iph
-comma
-id|ihl
-op_star
-l_int|4
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
+r_int
+r_int
 DECL|function|csum_partial
-r_int
-r_int
 id|csum_partial
-c_func
 (paren
 r_const
 r_int
@@ -345,11 +311,10 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
+r_int
+r_int
 DECL|function|ip_compute_csum
-r_int
-r_int
 id|ip_compute_csum
-c_func
 (paren
 r_int
 r_char
