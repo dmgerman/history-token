@@ -5077,15 +5077,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|command_info-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5104,6 +5095,15 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|command_info-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* wait for the command to complete */
 id|wait_event_interruptible_timeout
 c_func
