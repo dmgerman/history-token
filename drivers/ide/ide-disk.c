@@ -9911,13 +9911,6 @@ id|g
 op_assign
 id|drive-&gt;disk
 suffix:semicolon
-id|device_unregister
-c_func
-(paren
-op_amp
-id|drive-&gt;gendev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
