@@ -197,9 +197,9 @@ id|ORC_HCS
 op_star
 id|hcsp
 comma
-id|ORC_SCB
+id|Scsi_Cmnd
 op_star
-id|scbp
+id|cmnd
 )paren
 suffix:semicolon
 r_extern
@@ -1594,8 +1594,15 @@ suffix:semicolon
 )brace
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;request_bufflen
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* Non SG                       */
+multiline_comment|/* Non SG */
 id|pSCB-&gt;SCB_SGLen
 op_assign
 l_int|0x8
@@ -1635,6 +1642,21 @@ op_assign
 id|U32
 )paren
 id|SCpnt-&gt;request_bufflen
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pSCB-&gt;SCB_SGLen
+op_assign
+l_int|0
+suffix:semicolon
+id|pSG-&gt;SG_Ptr
+op_assign
+l_int|0
+suffix:semicolon
+id|pSG-&gt;SG_Len
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2000,14 +2022,6 @@ c_func
 l_string|&quot;inia100SCBPost: SRB pointer is empty&bslash;n&quot;
 )paren
 suffix:semicolon
-id|orc_release_dma
-c_func
-(paren
-id|pHCB
-comma
-id|pSCB
-)paren
-suffix:semicolon
 id|orc_release_scb
 c_func
 (paren
@@ -2157,6 +2171,15 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
+id|orc_release_dma
+c_func
+(paren
+id|pHCB
+comma
+id|pSRB
+)paren
+suffix:semicolon
+multiline_comment|/* release DMA before we call scsi_done */
 id|pSRB
 op_member_access_from_pointer
 id|scsi_done
@@ -2184,15 +2207,6 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* Assume resend will success   */
-multiline_comment|/*&n;&t;&t; * We must free the pci DMA mappings before reusing the scb&n;&t;&t; */
-id|orc_release_dma
-c_func
-(paren
-id|pHCB
-comma
-id|pSCB
-)paren
-suffix:semicolon
 id|inia100BuildSCB
 c_func
 (paren
@@ -2216,14 +2230,6 @@ multiline_comment|/* Start execute SCB            */
 )brace
 r_else
 (brace
-id|orc_release_dma
-c_func
-(paren
-id|pHCB
-comma
-id|pSCB
-)paren
-suffix:semicolon
 id|orc_release_scb
 c_func
 (paren
