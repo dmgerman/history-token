@@ -42,7 +42,7 @@ mdefine_line|#define DRIVER_DESC &quot;USB PocketPC PDA driver&quot;
 DECL|variable|product
 DECL|variable|vendor
 r_static
-r_int
+id|__u16
 id|product
 comma
 id|vendor
@@ -2750,12 +2750,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2766,12 +2770,14 @@ comma
 l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vendor
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2782,12 +2788,14 @@ comma
 l_string|&quot;User specified USB idVendor&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|product
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

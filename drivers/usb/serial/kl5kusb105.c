@@ -4018,12 +4018,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4034,6 +4038,5 @@ comma
 l_string|&quot;enable extensive debugging messages&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: implement&n;MODULE_PARM(num_urbs, &quot;i&quot;);&n;MODULE_PARM_DESC(num_urbs, &quot;number of URBs to use in write pool&quot;);&n;*/
 multiline_comment|/* vim: set sts=8 ts=8 sw=8: */
 eof

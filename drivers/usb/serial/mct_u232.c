@@ -3469,12 +3469,14 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef FIX_WRITE_RETURN_CODE_PROBLEM
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|write_blocking
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3486,12 +3488,16 @@ l_string|&quot;The write function will block to write out all data&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
