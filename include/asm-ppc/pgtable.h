@@ -275,7 +275,9 @@ mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_BASE | _PAGE_USER)
 DECL|macro|PAGE_COPY_X
 mdefine_line|#define PAGE_COPY_X&t;__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_RAM)
+mdefine_line|#define PAGE_KERNEL&t;&t;__pgprot(_PAGE_RAM)
+DECL|macro|PAGE_KERNEL_NOCACHE
+mdefine_line|#define PAGE_KERNEL_NOCACHE&t;__pgprot(_PAGE_IO)
 multiline_comment|/*&n; * The PowerPC can only do execute protection on a segment (256MB) basis,&n; * not on a page basis.  So we consider execute permission the same as read.&n; * Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
@@ -1200,7 +1202,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_page is assembler (for speed) in hashtable.S.&n; */
+multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_pages is assembler (for speed) in hashtable.S.&n; */
 r_extern
 r_int
 id|flush_hash_pages
