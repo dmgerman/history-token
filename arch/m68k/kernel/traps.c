@@ -2562,18 +2562,11 @@ id|ssw
 op_assign
 id|fp-&gt;un.fmtb.ssw
 suffix:semicolon
-r_int
-id|user_space_fault
-op_assign
-l_int|1
-suffix:semicolon
 macro_line|#if DEBUG
 r_int
 r_int
 id|desc
 suffix:semicolon
-macro_line|#endif
-macro_line|#if DEBUG
 id|printk
 (paren
 l_string|&quot;pid = %x  &quot;
@@ -2666,162 +2659,6 @@ id|fp-&gt;ptregs.pc
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|fp-&gt;ptregs.sr
-op_amp
-id|PS_S
-)paren
-(brace
-multiline_comment|/* kernel fault must be a data fault to user space */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|ssw
-op_amp
-id|DF
-)paren
-op_logical_and
-(paren
-(paren
-id|ssw
-op_amp
-id|DFC
-)paren
-op_eq
-id|USER_DATA
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/* instruction fault or kernel data fault! */
-r_if
-c_cond
-(paren
-id|ssw
-op_amp
-(paren
-id|FC
-op_or
-id|FB
-)paren
-)paren
-id|printk
-(paren
-l_string|&quot;Instruction fault at %#010lx&bslash;n&quot;
-comma
-id|fp-&gt;ptregs.pc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ssw
-op_amp
-id|DF
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Data %s fault at %#010lx in %s (pc=%#lx)&bslash;n&quot;
-comma
-id|ssw
-op_amp
-id|RW
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;write&quot;
-comma
-id|fp-&gt;un.fmtb.daddr
-comma
-id|space_names
-(braket
-id|ssw
-op_amp
-id|DFC
-)braket
-comma
-id|fp-&gt;ptregs.pc
-)paren
-suffix:semicolon
-)brace
-id|printk
-(paren
-l_string|&quot;BAD KERNEL BUSERR&bslash;n&quot;
-)paren
-suffix:semicolon
-id|die_if_kernel
-c_func
-(paren
-l_string|&quot;Oops&quot;
-comma
-op_amp
-id|fp-&gt;ptregs
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|force_sig
-c_func
-(paren
-id|SIGKILL
-comma
-id|current
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* user fault */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ssw
-op_amp
-(paren
-id|FC
-op_or
-id|FB
-)paren
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|ssw
-op_amp
-id|DF
-)paren
-)paren
-multiline_comment|/* not an instruction fault or data fault! BAD */
-id|panic
-(paren
-l_string|&quot;USER BUSERR w/o instruction or data fault&quot;
-)paren
-suffix:semicolon
-id|user_space_fault
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#if DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;User space bus-error&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/* ++andreas: If a data fault and an instruction fault happen&n;&t;   at the same time map in both pages.  */
 multiline_comment|/* First handle the data fault, if any.  */
 r_if
@@ -2836,22 +2673,12 @@ id|addr
 op_assign
 id|fp-&gt;un.fmtb.daddr
 suffix:semicolon
-id|mmusr
-op_assign
-id|MMU_I
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|user_space_fault
-)paren
-(brace
 macro_line|#if DEBUG
 id|asm
 r_volatile
 (paren
-l_string|&quot;ptestr #1,%2@,#7,%0&bslash;n&bslash;t&quot;
-l_string|&quot;pmove %/psr,%1@&quot;
+l_string|&quot;ptestr %3,%2@,#7,%0&bslash;n&bslash;t&quot;
+l_string|&quot;pmove %%psr,%1@&quot;
 suffix:colon
 l_string|&quot;=a&amp;&quot;
 (paren
@@ -2868,14 +2695,19 @@ l_string|&quot;a&quot;
 (paren
 id|addr
 )paren
+comma
+l_string|&quot;d&quot;
+(paren
+id|ssw
+)paren
 )paren
 suffix:semicolon
 macro_line|#else
 id|asm
 r_volatile
 (paren
-l_string|&quot;ptestr #1,%1@,#7&bslash;n&bslash;t&quot;
-l_string|&quot;pmove %/psr,%0@&quot;
+l_string|&quot;ptestr %2,%1@,#7&bslash;n&bslash;t&quot;
+l_string|&quot;pmove %%psr,%0@&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -2888,6 +2720,11 @@ l_string|&quot;a&quot;
 (paren
 id|addr
 )paren
+comma
+l_string|&quot;d&quot;
+(paren
+id|ssw
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2895,9 +2732,9 @@ id|mmusr
 op_assign
 id|temp
 suffix:semicolon
-)brace
 macro_line|#if DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;mmusr is %#x for addr %#lx in task %p&bslash;n&quot;
 comma
@@ -2909,6 +2746,7 @@ id|current
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;descriptor address is %#lx, contents %#lx&bslash;n&quot;
 comma
@@ -2977,7 +2815,45 @@ id|MMU_WP
 )paren
 )paren
 (brace
-multiline_comment|/* Don&squot;t try to do anything further if an exception was&n;&t;&t;   handled. */
+r_if
+c_cond
+(paren
+id|ssw
+op_amp
+l_int|4
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Data %s fault at %#010lx in %s (pc=%#lx)&bslash;n&quot;
+comma
+id|ssw
+op_amp
+id|RW
+ques
+c_cond
+l_string|&quot;read&quot;
+suffix:colon
+l_string|&quot;write&quot;
+comma
+id|fp-&gt;un.fmtb.daddr
+comma
+id|space_names
+(braket
+id|ssw
+op_amp
+id|DFC
+)braket
+comma
+id|fp-&gt;ptregs.pc
+)paren
+suffix:semicolon
+r_goto
+id|buserr
+suffix:semicolon
+)brace
+multiline_comment|/* Don&squot;t try to do anything further if an exception was&n;&t;&t;&t;   handled. */
 r_if
 c_cond
 (paren
@@ -3000,6 +2876,40 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|mmusr
+op_amp
+id|MMU_I
+)paren
+)paren
+(brace
+multiline_comment|/* propably a 020 cas fault */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ssw
+op_amp
+id|RM
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;unexpected bus error (%#x,%#x)&bslash;n&quot;
+comma
+id|ssw
+comma
+id|mmusr
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|mmusr
 op_amp
 (paren
@@ -3012,6 +2922,7 @@ id|MMU_S
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;invalid %s access at %#lx from pc %#lx&bslash;n&quot;
 comma
@@ -3064,6 +2975,7 @@ id|tlong
 suffix:semicolon
 macro_line|#endif
 id|printk
+c_func
 (paren
 l_string|&quot;weird %s access at %#lx from pc %#lx (ssw is %#x)&bslash;n&quot;
 comma
@@ -3090,7 +3002,7 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;ptestr #1,%1@,#0&bslash;n&bslash;t&quot;
-l_string|&quot;pmove %/psr,%0@&quot;
+l_string|&quot;pmove %%psr,%0@&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -3121,7 +3033,7 @@ macro_line|#if 0
 id|asm
 r_volatile
 (paren
-l_string|&quot;pmove %/tt0,%0@&quot;
+l_string|&quot;pmove %%tt0,%0@&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -3133,6 +3045,7 @@ id|tlong
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;tt0 is %#lx, &quot;
 comma
@@ -3142,7 +3055,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;pmove %/tt1,%0@&quot;
+l_string|&quot;pmove %%tt1,%0@&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -3154,6 +3067,7 @@ id|tlong
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;tt1 is %#lx&bslash;n&quot;
 comma
@@ -3200,6 +3114,12 @@ op_logical_neg
 id|ssw
 op_amp
 id|RW
+)paren
+op_logical_or
+(paren
+id|ssw
+op_amp
+id|RM
 )paren
 )paren
 id|asm
@@ -3257,6 +3177,51 @@ id|FB
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fp-&gt;ptregs.sr
+op_amp
+id|PS_S
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Instruction fault at %#010lx&bslash;n&quot;
+comma
+id|fp-&gt;ptregs.pc
+)paren
+suffix:semicolon
+id|buserr
+suffix:colon
+id|printk
+(paren
+l_string|&quot;BAD KERNEL BUSERR&bslash;n&quot;
+)paren
+suffix:semicolon
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;Oops&quot;
+comma
+op_amp
+id|fp-&gt;ptregs
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGKILL
+comma
+id|current
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* get the fault address */
 r_if
 c_cond
@@ -3312,22 +3277,12 @@ multiline_comment|/* Insn fault on same page as data fault.  But we&n;&t;&t;   s
 r_goto
 id|create_atc_entry
 suffix:semicolon
-id|mmusr
-op_assign
-id|MMU_I
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|user_space_fault
-)paren
-(brace
 macro_line|#if DEBUG
 id|asm
 r_volatile
 (paren
 l_string|&quot;ptestr #1,%2@,#7,%0&bslash;n&bslash;t&quot;
-l_string|&quot;pmove %/psr,%1@&quot;
+l_string|&quot;pmove %%psr,%1@&quot;
 suffix:colon
 l_string|&quot;=a&amp;&quot;
 (paren
@@ -3351,7 +3306,7 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;ptestr #1,%1@,#7&bslash;n&bslash;t&quot;
-l_string|&quot;pmove %/psr,%0@&quot;
+l_string|&quot;pmove %%psr,%0@&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -3371,7 +3326,6 @@ id|mmusr
 op_assign
 id|temp
 suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG
 id|printk
 (paren
