@@ -287,6 +287,8 @@ c_func
 (paren
 id|msecs
 )paren
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
