@@ -107,6 +107,15 @@ r_struct
 id|riva_regs
 id|current_state
 suffix:semicolon
+DECL|member|state
+r_struct
+id|fb_vgastate
+id|state
+suffix:semicolon
+DECL|member|ref_count
+id|atomic_t
+id|ref_count
+suffix:semicolon
 DECL|member|cmap
 id|riva_cfb8_cmap_t
 id|cmap

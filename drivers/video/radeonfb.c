@@ -11,8 +11,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -22,7 +20,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if defined(__powerpc__)
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
+macro_line|#include &quot;macmodes.h&quot;
 macro_line|#ifdef CONFIG_NVRAM
 macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#endif
@@ -2426,15 +2424,6 @@ id|val2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * globals&n; */
-DECL|variable|__initdata
-r_static
-r_char
-id|fontname
-(braket
-l_int|40
-)braket
-id|__initdata
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
@@ -6428,9 +6417,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -9936,11 +9922,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_check_var
 op_assign
 id|radeonfb_check_var
@@ -9949,16 +9930,6 @@ dot
 id|fb_set_par
 op_assign
 id|radeonfb_set_par
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -10097,42 +10068,6 @@ r_char
 op_star
 )paren
 id|rinfo-&gt;fb_base
-suffix:semicolon
-id|strncpy
-(paren
-id|info-&gt;fontname
-comma
-id|fontname
-comma
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-)paren
-suffix:semicolon
-id|info-&gt;fontname
-(braket
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 multiline_comment|/* Fill fix common fields */
 id|strncpy
@@ -14198,85 +14133,6 @@ id|this_opt
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-(paren
-id|this_opt
-comma
-l_string|&quot;font:&quot;
-comma
-l_int|5
-)paren
-)paren
-(brace
-r_char
-op_star
-id|p
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|p
-op_assign
-id|this_opt
-op_plus
-l_int|5
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-id|fontname
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-op_star
-id|p
-op_logical_or
-op_star
-id|p
-op_eq
-l_char|&squot; &squot;
-op_logical_or
-op_star
-id|p
-op_eq
-l_char|&squot;,&squot;
-)paren
-r_break
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|fontname
-comma
-id|this_opt
-op_plus
-l_int|5
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
