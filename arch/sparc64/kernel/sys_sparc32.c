@@ -11066,6 +11066,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|sched_balance_exec
+c_func
+(paren
+)paren
+suffix:semicolon
 id|file
 op_assign
 id|open_exec
