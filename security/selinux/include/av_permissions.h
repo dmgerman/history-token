@@ -464,6 +464,8 @@ DECL|macro|TCP_SOCKET__NEWCONN
 mdefine_line|#define TCP_SOCKET__NEWCONN                       0x00800000UL
 DECL|macro|TCP_SOCKET__ACCEPTFROM
 mdefine_line|#define TCP_SOCKET__ACCEPTFROM                    0x01000000UL
+DECL|macro|TCP_SOCKET__NODE_BIND
+mdefine_line|#define TCP_SOCKET__NODE_BIND                     0x02000000UL
 DECL|macro|UDP_SOCKET__RELABELTO
 mdefine_line|#define UDP_SOCKET__RELABELTO                     0x00000100UL
 DECL|macro|UDP_SOCKET__RECV_MSG
@@ -508,6 +510,8 @@ DECL|macro|UDP_SOCKET__RECVFROM
 mdefine_line|#define UDP_SOCKET__RECVFROM                      0x00020000UL
 DECL|macro|UDP_SOCKET__GETATTR
 mdefine_line|#define UDP_SOCKET__GETATTR                       0x00000010UL
+DECL|macro|UDP_SOCKET__NODE_BIND
+mdefine_line|#define UDP_SOCKET__NODE_BIND                     0x00400000UL
 DECL|macro|RAWIP_SOCKET__RELABELTO
 mdefine_line|#define RAWIP_SOCKET__RELABELTO                   0x00000100UL
 DECL|macro|RAWIP_SOCKET__RECV_MSG
@@ -552,6 +556,8 @@ DECL|macro|RAWIP_SOCKET__RECVFROM
 mdefine_line|#define RAWIP_SOCKET__RECVFROM                    0x00020000UL
 DECL|macro|RAWIP_SOCKET__GETATTR
 mdefine_line|#define RAWIP_SOCKET__GETATTR                     0x00000010UL
+DECL|macro|RAWIP_SOCKET__NODE_BIND
+mdefine_line|#define RAWIP_SOCKET__NODE_BIND                   0x00400000UL
 DECL|macro|NODE__TCP_RECV
 mdefine_line|#define NODE__TCP_RECV                            0x00000001UL
 DECL|macro|NODE__TCP_SEND

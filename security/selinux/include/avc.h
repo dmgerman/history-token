@@ -150,6 +150,10 @@ DECL|member|daddr
 id|u32
 id|daddr
 suffix:semicolon
+DECL|member|saddr
+id|u32
+id|saddr
+suffix:semicolon
 DECL|member|net
 )brace
 id|net
