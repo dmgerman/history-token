@@ -673,7 +673,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
+id|err
 )paren
 (brace
 id|kfree

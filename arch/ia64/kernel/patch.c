@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * This was adapted from code written by Tony Luck:&n; *&n; * The 64-bit value in a &quot;movl reg=value&quot; is scattered between the two words of the bundle&n; * like this:&n; *&n; * 6  6         5         4         3         2         1&n; * 3210987654321098765432109876543210987654321098765432109876543210&n; * ABBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCDEEEEEFFFFFFFFFGGGGGGG&n; *&n; * CCCCCCCCCCCCCCCCCCxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&n; * xxxxAFFFFFFFFFEEEEEDxGGGGGGGxxxxxxxxxxxxxBBBBBBBBBBBBBBBBBBBBBBB&n; */
@@ -922,42 +923,10 @@ id|ia64_patch_gate
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|__start_gate_mckinley_e9_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__end_gate_mckinley_e9_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__start_gate_vtop_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__end_gate_vtop_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__start_gate_fsyscall_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__end_gate_fsyscall_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__start_gate_brl_fsys_bubble_down_patchlist
-suffix:semicolon
-r_extern
-r_char
-id|__end_gate_brl_fsys_bubble_down_patchlist
-suffix:semicolon
 DECL|macro|START
-macro_line|#&t;define START(name)&t;((unsigned long) &amp;__start_gate_##name##_patchlist)
+macro_line|#&t;define START(name)&t;((unsigned long) __start_gate_##name##_patchlist)
 DECL|macro|END
-macro_line|#&t;define END(name)&t;((unsigned long)&amp;__end_gate_##name##_patchlist)
+macro_line|#&t;define END(name)&t;((unsigned long)__end_gate_##name##_patchlist)
 id|patch_fsyscall_table
 c_func
 (paren
