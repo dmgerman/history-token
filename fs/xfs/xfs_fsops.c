@@ -395,6 +395,11 @@ suffix:semicolon
 id|xfs_agnumber_t
 id|nagcount
 suffix:semicolon
+id|xfs_agnumber_t
+id|nagimax
+op_assign
+l_int|0
+suffix:semicolon
 id|xfs_rfsblock_t
 id|nb
 comma
@@ -646,6 +651,8 @@ id|mp-&gt;m_flags
 op_or_assign
 id|XFS_MOUNT_32BITINODES
 suffix:semicolon
+id|nagimax
+op_assign
 id|xfs_initialize_perag
 c_func
 (paren
@@ -1956,6 +1963,16 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/* New allocation groups fully initialized, so update mount struct */
+r_if
+c_cond
+(paren
+id|nagimax
+)paren
+id|mp-&gt;m_maxagi
+op_assign
+id|nagimax
+suffix:semicolon
 r_if
 c_cond
 (paren
