@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Detection routine for the NCR53c710 based MVME16x SCSI Controllers for Linux.&n; *&n; * Based on work by Alan Hourihane&n; */
+multiline_comment|/*&n; * Detection routine for the NCR53c710 based BVME6000 SCSI Controllers for Linux.&n; *&n; * Based on work by Alan Hourihane&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -113,10 +113,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|mvme6000_scsi_release
+DECL|function|bvme6000_scsi_release
 r_static
 r_int
-id|mvme6000_scsi_release
+id|bvme6000_scsi_release
 c_func
 (paren
 r_struct
