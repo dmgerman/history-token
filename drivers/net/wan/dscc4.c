@@ -518,6 +518,8 @@ DECL|macro|SccBusy
 mdefine_line|#define SccBusy&t;&t;0x10000000
 DECL|macro|PowerUp
 mdefine_line|#define PowerUp&t;&t;0x80000000
+DECL|macro|Vis
+mdefine_line|#define Vis&t;&t;0x00001000
 DECL|macro|FrameOk
 mdefine_line|#define FrameOk&t;&t;(FrameVfr | FrameCrc)
 DECL|macro|FrameVfr
@@ -589,6 +591,14 @@ DECL|macro|NeedIDT
 mdefine_line|#define NeedIDT&t;&t;0x00000002
 DECL|macro|RdoSet
 mdefine_line|#define RdoSet&t;&t;0x00000004
+multiline_comment|/* Don&squot;t mask RDO. Ever. */
+macro_line|#ifdef DSCC4_POLLING
+DECL|macro|EventsMask
+mdefine_line|#define EventsMask&t;0xfffeef7f
+macro_line|#else
+DECL|macro|EventsMask
+mdefine_line|#define EventsMask&t;0xfffa8f7a
+macro_line|#endif
 multiline_comment|/* Functions prototypes */
 r_static
 r_inline
@@ -2063,19 +2073,12 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-id|scc_writel
+id|scc_patchl
 c_func
 (paren
-op_complement
 id|PowerUp
-op_amp
-id|scc_readl
-c_func
-(paren
-id|dpriv
 comma
-id|CCR0
-)paren
+l_int|0
 comma
 id|dpriv
 comma
@@ -2146,19 +2149,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Cf errata DS5 p.7 */
-id|scc_writel
+id|scc_patchl
 c_func
 (paren
-op_complement
 id|PowerUp
-op_amp
-id|scc_readl
-c_func
-(paren
-id|dpriv
 comma
-id|CCR0
-)paren
+l_int|0
 comma
 id|dpriv
 comma
@@ -3444,10 +3440,11 @@ op_star
 id|dev
 )paren
 (brace
+multiline_comment|/* No interrupts, SCC core disabled. Let&squot;s relax */
 id|scc_writel
 c_func
 (paren
-l_int|0x80001000
+l_int|0x00000000
 comma
 id|dpriv
 comma
@@ -3505,38 +3502,6 @@ id|CCR2
 suffix:semicolon
 singleline_comment|// crc forwarded
 singleline_comment|//scc_writel(0x00250008 &amp; ~RxActivate, dpriv, dev, CCR2);
-multiline_comment|/* Don&squot;t mask RDO. Ever. */
-macro_line|#ifdef DSCC4_POLLING
-id|scc_writel
-c_func
-(paren
-l_int|0xfffeef7f
-comma
-id|dpriv
-comma
-id|dev
-comma
-id|IMR
-)paren
-suffix:semicolon
-multiline_comment|/* Interrupt mask */
-macro_line|#else
-singleline_comment|//scc_writel(0xfffaef7f, dpriv, dev, IMR); /* Interrupt mask */
-singleline_comment|//scc_writel(0xfffaef7e, dpriv, dev, IMR); /* Interrupt mask */
-id|scc_writel
-c_func
-(paren
-l_int|0xfffa8f7a
-comma
-id|dpriv
-comma
-id|dev
-comma
-id|IMR
-)paren
-suffix:semicolon
-multiline_comment|/* Interrupt mask */
-macro_line|#endif
 )brace
 DECL|function|dscc4_found1
 r_static
@@ -4150,6 +4115,22 @@ id|NeedIDR
 op_or
 id|NeedIDT
 suffix:semicolon
+id|scc_patchl
+c_func
+(paren
+l_int|0
+comma
+id|PowerUp
+op_or
+id|Vis
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The following is a bit paranoid...&n;&t; *&n;&t; * NB: the datasheet &quot;...CEC will stay active if the SCC is in&n;&t; * power-down mode or...&quot; and CCR2.RAC = 1 are two different&n;&t; * situations.&n;&t; */
 r_if
 c_cond
@@ -4193,6 +4174,18 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|scc_writel
+c_func
+(paren
+id|EventsMask
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
+)paren
+suffix:semicolon
 multiline_comment|/* Posted write is flushed in the wait_ack loop */
 id|scc_writel
 c_func
@@ -4228,7 +4221,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|err_free_ring
+id|err_disable_scc_events
 suffix:semicolon
 multiline_comment|/*&n;&t; * I would expect XPR near CE completion (before ? after ?).&n;&t; * At worst, this code won&squot;t see a late XPR and people&n;&t; * will have to re-issue an ifconfig (this is harmless).&n;&t; * WARNING, a really missing XPR usually means a hardware&n;&t; * reset is needed. Suggestions anyone ?&n;&t; */
 r_if
@@ -4259,7 +4252,7 @@ l_string|&quot;XPR&quot;
 )paren
 suffix:semicolon
 r_goto
-id|err_free_ring
+id|err_disable_scc_events
 suffix:semicolon
 )brace
 r_if
@@ -4329,8 +4322,38 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_disable_scc_events
+suffix:colon
+id|scc_writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
+)paren
+suffix:semicolon
 id|err_free_ring
 suffix:colon
+id|scc_patchl
+c_func
+(paren
+id|PowerUp
+op_or
+id|Vis
+comma
+l_int|0
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR0
+)paren
+suffix:semicolon
 id|dscc4_release_ring
 c_func
 (paren
@@ -4647,6 +4670,34 @@ c_func
 id|dpriv
 comma
 id|dev
+)paren
+suffix:semicolon
+id|scc_patchl
+c_func
+(paren
+id|PowerUp
+op_or
+id|Vis
+comma
+l_int|0
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR0
+)paren
+suffix:semicolon
+id|scc_writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
 )paren
 suffix:semicolon
 id|hdlc_close
@@ -5385,7 +5436,9 @@ r_else
 multiline_comment|/* DTE */
 id|state
 op_or_assign
-l_int|0x80001000
+id|PowerUp
+op_or
+id|Vis
 suffix:semicolon
 id|printk
 c_func
@@ -6673,8 +6726,28 @@ id|scc_addr
 comma
 id|ring
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * - the busy condition happens (sometimes);&n;&t;&t;&t; * - it doesn&squot;t seem to make the handler unreliable.&n;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+suffix:semicolon
+id|i
+op_lshift_assign
+l_int|1
+)paren
+(brace
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 id|scc_readl_star
 c_func
@@ -6686,11 +6759,21 @@ id|dev
 op_amp
 id|SccBusy
 )paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i
+)paren
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s busy. Fatal&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s busy in irq&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
