@@ -3126,7 +3126,7 @@ suffix:colon
 id|sync_blockdev
 c_func
 (paren
-id|bd_inode-&gt;i_bdev
+id|bdev
 )paren
 suffix:semicolon
 r_break
