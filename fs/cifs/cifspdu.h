@@ -481,7 +481,7 @@ DECL|macro|BCC
 mdefine_line|#define BCC(smb_var) ( *(__u16 *)((char *)smb_var + sizeof(struct smb_hdr) + (2* smb_var-&gt;WordCount) ) )
 multiline_comment|/* given a pointer to an smb_hdr retrieve the pointer to the byte area */
 DECL|macro|pByteArea
-mdefine_line|#define pByteArea(smb_var) ((char *)smb_var + sizeof(struct smb_hdr) + (2* smb_var-&gt;WordCount) + 2 )
+mdefine_line|#define pByteArea(smb_var) ((unsigned char *)smb_var + sizeof(struct smb_hdr) + (2* smb_var-&gt;WordCount) + 2 )
 multiline_comment|/*&n; * Computer Name Length&n; */
 DECL|macro|CNLEN
 mdefine_line|#define CNLEN 15
@@ -1042,20 +1042,20 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|Flags
-id|__u16
+id|__le16
 id|Flags
 suffix:semicolon
 multiline_comment|/* see below */
 DECL|member|PasswordLength
-id|__u16
+id|__le16
 id|PasswordLength
 suffix:semicolon
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|Password
@@ -1095,11 +1095,11 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|OptionalSupport
-id|__u16
+id|__le16
 id|OptionalSupport
 suffix:semicolon
 multiline_comment|/* see below */
