@@ -799,12 +799,19 @@ op_star
 id|urb
 )paren
 (brace
+multiline_comment|/* FIXME&n;&t; * We should not care about the state here, but the host controllers&n;&t; * die a horrible death if we submit a urb for a device that has been&n;&t; * physically removed.&n;&t; */
 r_if
 c_cond
 (paren
 id|urb
 op_logical_and
 id|urb-&gt;dev
+op_logical_and
+(paren
+id|urb-&gt;dev-&gt;state
+op_ge
+id|USB_STATE_DEFAULT
+)paren
 op_logical_and
 id|urb-&gt;dev-&gt;bus
 op_logical_and
