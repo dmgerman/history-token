@@ -2065,21 +2065,6 @@ id|W_D_EXI_XCOL
 )paren
 (brace
 multiline_comment|/* Transmit underrun/collision */
-id|debugl1
-c_func
-(paren
-id|cs
-comma
-l_string|&quot;W6692 D-chan underrun/collision&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: W6692 XDUN/XCOL&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2119,62 +2104,14 @@ comma
 id|D_CLEARBUSY
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;tx_skb
-)paren
-(brace
-multiline_comment|/* Restart frame */
-id|skb_push
-c_func
-(paren
-id|cs-&gt;tx_skb
-comma
-id|cs-&gt;tx_cnt
-)paren
-suffix:semicolon
-id|cs-&gt;tx_cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|W6692_fill_fifo
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: W6692 XDUN/XCOL no skb&bslash;n&quot;
-)paren
-suffix:semicolon
-id|debugl1
+id|xmit_xdu_d
 c_func
 (paren
 id|cs
 comma
-l_string|&quot;W6692 XDUN/XCOL no skb&quot;
+l_int|NULL
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|writeW6692
-c_func
-(paren
-id|cs
-comma
-id|W_D_CMDR
-comma
-id|W_D_CMDR_XRST
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

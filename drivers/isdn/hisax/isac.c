@@ -1378,26 +1378,6 @@ l_int|0x40
 )paren
 (brace
 multiline_comment|/* XDU */
-id|debugl1
-c_func
-(paren
-id|cs
-comma
-l_string|&quot;ISAC XDU&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: ISAC XDU&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef ERROR_STATISTIC
-id|cs-&gt;err_tx
-op_increment
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1437,50 +1417,14 @@ comma
 id|D_CLEARBUSY
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;tx_skb
-)paren
-(brace
-multiline_comment|/* Restart frame */
-id|skb_push
-c_func
-(paren
-id|cs-&gt;tx_skb
-comma
-id|cs-&gt;tx_cnt
-)paren
-suffix:semicolon
-id|cs-&gt;tx_cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|isac_fill_fifo
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: ISAC XDU no skb&bslash;n&quot;
-)paren
-suffix:semicolon
-id|debugl1
+id|xmit_xdu_d
 c_func
 (paren
 id|cs
 comma
-l_string|&quot;ISAC XDU no skb&quot;
+l_int|NULL
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

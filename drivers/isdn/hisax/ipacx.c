@@ -2289,65 +2289,14 @@ l_int|0x0C
 )paren
 (brace
 singleline_comment|// XDU or XMR
-r_if
-c_cond
-(paren
-id|cs-&gt;debug
-op_amp
-id|L1_DEB_WARN
-)paren
-id|debugl1
+id|xmit_xdu_d
 c_func
 (paren
 id|cs
 comma
-l_string|&quot;dch_int(): XDU&quot;
+l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;tx_skb
-)paren
-(brace
-id|skb_push
-c_func
-(paren
-id|cs-&gt;tx_skb
-comma
-id|cs-&gt;tx_cnt
-)paren
-suffix:semicolon
-singleline_comment|// retransmit
-id|cs-&gt;tx_cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|dch_fill_fifo
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: ISAC XDU no skb&bslash;n&quot;
-)paren
-suffix:semicolon
-id|debugl1
-c_func
-(paren
-id|cs
-comma
-l_string|&quot;ISAC XDU no skb&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 singleline_comment|//----------------------------------------------------------
