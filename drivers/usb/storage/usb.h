@@ -9,149 +9,6 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-multiline_comment|/* &n; * GUID definitions&n; */
-DECL|macro|GUID
-mdefine_line|#define GUID(x) __u32 x[3]
-DECL|macro|GUID_EQUAL
-mdefine_line|#define GUID_EQUAL(x, y) (x[0] == y[0] &amp;&amp; x[1] == y[1] &amp;&amp; x[2] == y[2])
-DECL|macro|GUID_CLEAR
-mdefine_line|#define GUID_CLEAR(x) x[0] = x[1] = x[2] = 0;
-DECL|macro|GUID_NONE
-mdefine_line|#define GUID_NONE(x) (!x[0] &amp;&amp; !x[1] &amp;&amp; !x[2])
-DECL|macro|GUID_FORMAT
-mdefine_line|#define GUID_FORMAT &quot;%08x%08x%08x&quot;
-DECL|macro|GUID_ARGS
-mdefine_line|#define GUID_ARGS(x) x[0], x[1], x[2]
-DECL|function|make_guid
-r_static
-r_inline
-r_void
-id|make_guid
-c_func
-(paren
-id|__u32
-op_star
-id|pg
-comma
-id|__u16
-id|vendor
-comma
-id|__u16
-id|product
-comma
-r_char
-op_star
-id|serial
-)paren
-(brace
-id|pg
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|vendor
-op_lshift
-l_int|16
-)paren
-op_or
-id|product
-suffix:semicolon
-id|pg
-(braket
-l_int|1
-)braket
-op_assign
-id|pg
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|serial
-)paren
-(brace
-id|pg
-(braket
-l_int|1
-)braket
-op_lshift_assign
-l_int|4
-suffix:semicolon
-id|pg
-(braket
-l_int|1
-)braket
-op_or_assign
-id|pg
-(braket
-l_int|2
-)braket
-op_rshift
-l_int|28
-suffix:semicolon
-id|pg
-(braket
-l_int|2
-)braket
-op_lshift_assign
-l_int|4
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|serial
-op_ge
-l_char|&squot;a&squot;
-)paren
-op_star
-id|serial
-op_sub_assign
-l_char|&squot;a&squot;
-op_minus
-l_char|&squot;A&squot;
-suffix:semicolon
-id|pg
-(braket
-l_int|2
-)braket
-op_or_assign
-(paren
-op_star
-id|serial
-op_le
-l_char|&squot;9&squot;
-op_logical_and
-op_star
-id|serial
-op_ge
-l_char|&squot;0&squot;
-)paren
-ques
-c_cond
-op_star
-id|serial
-op_minus
-l_char|&squot;0&squot;
-suffix:colon
-op_star
-id|serial
-op_minus
-l_char|&squot;A&squot;
-op_plus
-l_int|10
-suffix:semicolon
-id|serial
-op_increment
-suffix:semicolon
-)brace
-)brace
 r_struct
 id|us_data
 suffix:semicolon
@@ -294,13 +151,6 @@ DECL|struct|us_data
 r_struct
 id|us_data
 (brace
-DECL|member|next
-r_struct
-id|us_data
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* next device */
 multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) DEV_ATTACHED in flags should change whenever pusb_dev does&n;&t; */
 DECL|member|dev_semaphore
 r_struct
@@ -434,13 +284,6 @@ id|proto_handler
 suffix:semicolon
 multiline_comment|/* protocol handler&t;   */
 multiline_comment|/* SCSI interfaces */
-id|GUID
-c_func
-(paren
-id|guid
-)paren
-suffix:semicolon
-multiline_comment|/* unique dev id&t;*/
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -448,21 +291,6 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* our dummy host data */
-DECL|member|htmplt
-id|Scsi_Host_Template
-id|htmplt
-suffix:semicolon
-multiline_comment|/* own host template&t;*/
-DECL|member|host_number
-r_int
-id|host_number
-suffix:semicolon
-multiline_comment|/* to find us&t;&t;*/
-DECL|member|host_no
-r_int
-id|host_no
-suffix:semicolon
-multiline_comment|/* allocated by scsi&t;*/
 DECL|member|srb
 id|Scsi_Cmnd
 op_star
@@ -545,18 +373,6 @@ id|extra_destructor
 suffix:semicolon
 multiline_comment|/* extra data destructor   */
 )brace
-suffix:semicolon
-multiline_comment|/* The list of structures and the protective lock for them */
-r_extern
-r_struct
-id|us_data
-op_star
-id|us_list
-suffix:semicolon
-r_extern
-r_struct
-id|semaphore
-id|us_list_semaphore
 suffix:semicolon
 multiline_comment|/* The structure which defines our driver */
 r_extern

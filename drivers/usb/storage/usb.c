@@ -56,24 +56,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Per device data&n; */
-DECL|variable|my_host_number
-r_static
-r_int
-id|my_host_number
-suffix:semicolon
-multiline_comment|/* The list of structures and the protective lock for them */
-DECL|variable|us_list
-r_struct
-id|us_data
-op_star
-id|us_list
-suffix:semicolon
-DECL|variable|us_list_semaphore
-r_struct
-id|semaphore
-id|us_list_semaphore
-suffix:semicolon
 r_static
 r_int
 id|storage_probe
@@ -1049,9 +1031,7 @@ c_func
 (paren
 id|current-&gt;comm
 comma
-l_string|&quot;usb-storage-%d&quot;
-comma
-id|us-&gt;host_number
+l_string|&quot;usb-storage&quot;
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -2022,13 +2002,6 @@ id|USB_STOR_STRING_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* serial number */
-id|GUID
-c_func
-(paren
-id|guid
-)paren
-suffix:semicolon
-multiline_comment|/* Global Unique Identifier */
 r_int
 r_int
 id|flags
@@ -2047,11 +2020,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|result
-suffix:semicolon
-r_int
-id|new_device
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* these are temporary copies -- we test on these, then put them&n;&t; * in the us-data structure &n;&t; */
 r_struct
@@ -2476,13 +2444,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* clear the GUID and fetch the strings */
-id|GUID_CLEAR
-c_func
-(paren
-id|guid
-)paren
-suffix:semicolon
+multiline_comment|/* fetch the strings */
 r_if
 c_cond
 (paren
@@ -2550,222 +2512,7 @@ id|serial
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Create a GUID for this device */
-r_if
-c_cond
-(paren
-id|dev-&gt;descriptor.iSerialNumber
-op_logical_and
-id|serial
-(braket
-l_int|0
-)braket
-)paren
-(brace
-multiline_comment|/* If we have a serial number, and it&squot;s a non-NULL string */
-id|make_guid
-c_func
-(paren
-id|guid
-comma
-id|dev-&gt;descriptor.idVendor
-comma
-id|dev-&gt;descriptor.idProduct
-comma
-id|serial
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* We don&squot;t have a serial number, so we use 0 */
-id|make_guid
-c_func
-(paren
-id|guid
-comma
-id|dev-&gt;descriptor.idVendor
-comma
-id|dev-&gt;descriptor.idProduct
-comma
-l_string|&quot;0&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Now check if we have seen this GUID before&n;&t; * We&squot;re looking for a device with a matching GUID that isn&squot;t&n;&t; * already on the system&n;&t; */
-id|ss
-op_assign
-id|us_list
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|ss
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-(paren
-id|ss-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-)paren
-op_logical_or
-op_logical_neg
-id|GUID_EQUAL
-c_func
-(paren
-id|guid
-comma
-id|ss-&gt;guid
-)paren
-)paren
-)paren
-id|ss
-op_assign
-id|ss-&gt;next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ss
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* Existing device -- re-connect */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Found existing GUID &quot;
-id|GUID_FORMAT
-l_string|&quot;&bslash;n&quot;
-comma
-id|GUID_ARGS
-c_func
-(paren
-id|guid
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* lock the device pointers */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|ss-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* establish the connection to the new device upon reconnect */
-id|ss-&gt;ifnum
-op_assign
-id|ifnum
-suffix:semicolon
-id|ss-&gt;pusb_dev
-op_assign
-id|dev
-suffix:semicolon
-id|ss-&gt;flags
-op_or_assign
-id|US_FL_DEV_ATTACHED
-suffix:semicolon
-multiline_comment|/* copy over the endpoint data */
-id|ss-&gt;ep_in
-op_assign
-id|ep_in-&gt;bEndpointAddress
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
-suffix:semicolon
-id|ss-&gt;ep_out
-op_assign
-id|ep_out-&gt;bEndpointAddress
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep_int
-)paren
-(brace
-id|ss-&gt;ep_int
-op_assign
-id|ep_int-&gt;bEndpointAddress
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
-suffix:semicolon
-id|ss-&gt;ep_bInterval
-op_assign
-id|ep_int-&gt;bInterval
-suffix:semicolon
-)brace
-r_else
-id|ss-&gt;ep_int
-op_assign
-id|ss-&gt;ep_bInterval
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* allocate the URB, the usb_ctrlrequest, and the IRQ URB */
-r_if
-c_cond
-(paren
-id|usb_stor_allocate_urbs
-c_func
-(paren
-id|ss
-)paren
-)paren
-r_goto
-id|BadDevice
-suffix:semicolon
-multiline_comment|/* Re-Initialize the device if it needs it */
-r_if
-c_cond
-(paren
-id|unusual_dev
-op_logical_and
-id|unusual_dev-&gt;initFunction
-)paren
-(paren
-id|unusual_dev-&gt;initFunction
-)paren
-(paren
-id|ss
-)paren
-suffix:semicolon
-multiline_comment|/* unlock the device pointers */
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|ss-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 multiline_comment|/* New device -- allocate memory and initialize */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;New GUID &quot;
-id|GUID_FORMAT
-l_string|&quot;&bslash;n&quot;
-comma
-id|GUID_ARGS
-c_func
-(paren
-id|guid
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2825,10 +2572,6 @@ r_struct
 id|us_data
 )paren
 )paren
-suffix:semicolon
-id|new_device
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* Initialize the mutexes only when the struct is new */
 id|init_completion
@@ -3044,21 +2787,7 @@ comma
 id|USB_STOR_STRING_LEN
 )paren
 suffix:semicolon
-multiline_comment|/* copy the GUID we created before */
-id|memcpy
-c_func
-(paren
-id|ss-&gt;guid
-comma
-id|guid
-comma
-r_sizeof
-(paren
-id|guid
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Set the handler pointers based on the protocol&n;&t;&t; * Again, this data is persistant across reattachments&n;&t;&t; */
+multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&t; * Again, this data is persistant across reattachments&n;&t; */
 r_switch
 c_cond
 (paren
@@ -3459,42 +3188,8 @@ id|ss
 r_goto
 id|BadDevice
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Since this is a new device, we need to generate a scsi &n;&t;&t; * host definition, and register with the higher SCSI layers&n;&t;&t; */
-multiline_comment|/* Initialize the host template based on the default one */
-id|memcpy
-c_func
-(paren
-op_amp
-(paren
-id|ss-&gt;htmplt
-)paren
-comma
-op_amp
-id|usb_stor_host_template
-comma
-r_sizeof
-(paren
-id|usb_stor_host_template
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Grab the next host number */
-id|ss-&gt;host_number
-op_assign
-id|my_host_number
-op_increment
-suffix:semicolon
-multiline_comment|/* We abuse this pointer so we can pass the ss pointer to &n;&t;&t; * the host controller thread in us_detect.  But how else are&n;&t;&t; * we to do it?&n;&t;&t; */
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|ss-&gt;htmplt.proc_dir
-op_assign
-id|ss
-suffix:semicolon
-multiline_comment|/* Just before we start our control thread, initialize&n;&t;&t; * the device if it needs initialization */
+multiline_comment|/*&n;&t; * Since this is a new device, we need to generate a scsi &n;&t; * host definition, and register with the higher SCSI layers&n;&t; */
+multiline_comment|/* Just before we start our control thread, initialize&n;&t; * the device if it needs initialization */
 r_if
 c_cond
 (paren
@@ -3572,26 +3267,25 @@ id|ss-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* now register&t; - our detect function will be called */
-id|ss-&gt;htmplt.module
+multiline_comment|/* now register&t;*/
+id|ss-&gt;host
 op_assign
-id|THIS_MODULE
-suffix:semicolon
-id|result
-op_assign
-id|scsi_register_host
+id|scsi_register
 c_func
 (paren
 op_amp
+id|usb_stor_host_template
+comma
+r_sizeof
 (paren
-id|ss-&gt;htmplt
+id|ss
 )paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|ss-&gt;host
 )paren
 (brace
 id|printk
@@ -3633,32 +3327,82 @@ r_goto
 id|BadDevice
 suffix:semicolon
 )brace
-multiline_comment|/* lock access to the data structures */
-id|down
+multiline_comment|/* now add the host */
+id|result
+op_assign
+id|scsi_add_host
 c_func
 (paren
-op_amp
-id|us_list_semaphore
+id|ss-&gt;host
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* put us in the list */
-id|ss-&gt;next
-op_assign
-id|us_list
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|USB_STORAGE
+l_string|&quot;Unable to add the scsi host&bslash;n&quot;
+)paren
 suffix:semicolon
-id|us_list
+multiline_comment|/* tell the control thread to exit */
+id|ss-&gt;srb
 op_assign
-id|ss
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* release the data structure lock */
 id|up
 c_func
 (paren
 op_amp
-id|us_list_semaphore
+id|ss-&gt;sema
 )paren
 suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|ss-&gt;notify
+)paren
+suffix:semicolon
+multiline_comment|/* re-lock the device pointers */
+id|down
+c_func
+(paren
+op_amp
+id|ss-&gt;dev_semaphore
+)paren
+suffix:semicolon
+r_goto
+id|BadDevice
+suffix:semicolon
 )brace
+id|ss-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ss
+suffix:semicolon
+id|scsi_set_device
+c_func
+(paren
+id|ss-&gt;host
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3710,11 +3454,6 @@ op_amp
 id|ss-&gt;dev_semaphore
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|new_device
-)paren
 id|kfree
 c_func
 (paren
@@ -3781,6 +3520,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
 id|down
 c_func
 (paren
@@ -3790,19 +3530,148 @@ id|ss-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-id|usb_stor_deallocate_urbs
+multiline_comment|/* remove the pointer to the data structure we were using */
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|ss-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* begin SCSI host removal sequence */
+r_if
+c_cond
+(paren
+id|scsi_remove_host
 c_func
 (paren
-id|ss
+id|ss-&gt;host
 )paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- SCSI refused to unregister&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* finish SCSI host removal sequence */
+id|scsi_unregister
+c_func
+(paren
+id|ss-&gt;host
+)paren
+suffix:semicolon
+multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it has exited.&n;&t; */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- sending exit command to thread&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ss-&gt;sm_state
+)paren
+op_ne
+id|US_STATE_IDLE
+)paren
+suffix:semicolon
+id|ss-&gt;srb
+op_assign
+l_int|NULL
 suffix:semicolon
 id|up
 c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;dev_semaphore
+id|ss-&gt;sema
 )paren
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+(paren
+id|ss-&gt;notify
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* free allocated urbs */
+id|usb_stor_deallocate_urbs
+c_func
+(paren
+id|ss
+)paren
+suffix:semicolon
+multiline_comment|/* If there&squot;s extra data in the us_data structure then&n;&t; * free that first */
+r_if
+c_cond
+(paren
+id|ss-&gt;extra
+)paren
+(brace
+multiline_comment|/* call the destructor routine, if it exists */
+r_if
+c_cond
+(paren
+id|ss-&gt;extra_destructor
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- calling extra_destructor()&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ss
+op_member_access_from_pointer
+id|extra_destructor
+c_func
+(paren
+id|ss-&gt;extra
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* destroy the extra data */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- freeing the data structure&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ss-&gt;extra
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* free the structure itself */
+id|kfree
+(paren
+id|ss
 )paren
 suffix:semicolon
 )brace
@@ -3822,22 +3691,6 @@ c_func
 id|KERN_INFO
 l_string|&quot;Initializing USB Mass Storage driver...&bslash;n&quot;
 )paren
-suffix:semicolon
-multiline_comment|/* initialize internal global data elements */
-id|us_list
-op_assign
-l_int|NULL
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|us_list_semaphore
-)paren
-suffix:semicolon
-id|my_host_number
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* register the driver, return -1 if error */
 r_if
@@ -3877,18 +3730,13 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|us_data
-op_star
-id|next
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;usb_stor_exit() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Deregister the driver&n;&t; * This eliminates races with probes and disconnects &n;&t; */
+multiline_comment|/* Deregister the driver&n;&t; * This will cause disconnect() to be called for each&n;&t; * attached unit&n;&t; */
 id|US_DEBUGP
 c_func
 (paren
@@ -3902,6 +3750,7 @@ op_amp
 id|usb_storage_driver
 )paren
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* While there are still virtual hosts, unregister them&n;&t; * Note that it&squot;s important to do this completely before removing&n;&t; * the structures because of possible races with the /proc&n;&t; * interface&n;&t; */
 r_for
 c_loop
@@ -3927,9 +3776,7 @@ id|scsi_unregister_host
 c_func
 (paren
 op_amp
-(paren
-id|next-&gt;htmplt
-)paren
+id|usb_stor_host_template
 )paren
 suffix:semicolon
 )brace
@@ -4000,6 +3847,7 @@ op_assign
 id|next
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|variable|usb_stor_init
 id|module_init
