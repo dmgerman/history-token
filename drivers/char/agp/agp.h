@@ -1153,8 +1153,21 @@ id|u32
 id|minor
 )paren
 suffix:semicolon
+multiline_comment|/* Standard agp registers */
+DECL|macro|AGPSTAT
+mdefine_line|#define AGPSTAT&t;&t;&t;0x4
+DECL|macro|AGPCMD
+mdefine_line|#define AGPCMD&t;&t;&t;0x8
+DECL|macro|AGPNEPG
+mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+DECL|macro|AGP_MAJOR_VERSION_SHIFT
+mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
+DECL|macro|AGP_MINOR_VERSION_SHIFT
+mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
 DECL|macro|AGPSTAT_RQ_DEPTH
 mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_ARQSZ_SHIFT
+mdefine_line|#define AGPSTAT_ARQSZ_SHIFT&t;13
 DECL|macro|AGPSTAT_AGP_ENABLE
 mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
 DECL|macro|AGPSTAT_SBA

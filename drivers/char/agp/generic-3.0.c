@@ -453,7 +453,7 @@ id|td
 comma
 id|agp_bridge-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|tstatus
@@ -1088,7 +1088,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 op_amp
 id|mcmd
@@ -1161,7 +1161,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 id|mcmd
 )paren
@@ -1322,7 +1322,7 @@ id|cur-&gt;dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 op_amp
 id|mcmd
@@ -1363,7 +1363,7 @@ id|cur-&gt;dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 id|mcmd
 )paren
@@ -1848,7 +1848,7 @@ op_assign
 (paren
 id|ncapid
 op_rshift
-l_int|20
+id|AGP_MAJOR_VERSION_SHIFT
 )paren
 op_amp
 l_int|0xf
@@ -1858,7 +1858,7 @@ op_assign
 (paren
 id|ncapid
 op_rshift
-l_int|16
+id|AGP_MINOR_VERSION_SHIFT
 )paren
 op_amp
 l_int|0xf
@@ -2095,7 +2095,7 @@ id|td
 comma
 id|agp_bridge-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 op_amp
 id|tcmd
@@ -2138,7 +2138,7 @@ id|td
 comma
 id|agp_bridge-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 id|tcmd
 )paren
@@ -2180,7 +2180,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 op_amp
 id|mcmd
@@ -2192,7 +2192,7 @@ op_complement
 (paren
 l_int|0x7
 op_lshift
-l_int|13
+id|AGPSTAT_ARQSZ_SHIFT
 )paren
 suffix:semicolon
 id|mcmd
@@ -2208,9 +2208,7 @@ l_int|13
 suffix:semicolon
 id|mcmd
 op_or_assign
-l_int|0x1
-op_lshift
-l_int|8
+id|AGPSTAT_AGP_ENABLE
 suffix:semicolon
 id|mcmd
 op_or_assign
@@ -2223,7 +2221,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x08
+id|AGPCMD
 comma
 id|mcmd
 )paren
