@@ -33,7 +33,7 @@ DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.6&quot;
+mdefine_line|#define VERSION &quot;2.7&quot;
 DECL|variable|hci_usb_driver
 r_static
 r_struct
@@ -161,6 +161,22 @@ c_func
 l_int|0x0a5c
 comma
 l_int|0x200a
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_RESET
+)brace
+comma
+multiline_comment|/* ISSC Bluetooth Adapter v3.1 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1131
+comma
+l_int|0x1001
 )paren
 comma
 dot
