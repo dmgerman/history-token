@@ -1015,8 +1015,6 @@ DECL|macro|PCI_DEVICE_ID_SI_ACPI
 mdefine_line|#define PCI_DEVICE_ID_SI_ACPI&t;&t;0x0009
 DECL|macro|PCI_DEVICE_ID_SI_LPC
 mdefine_line|#define PCI_DEVICE_ID_SI_LPC&t;&t;0x0018
-DECL|macro|PCI_DEVICE_ID_SI_180
-mdefine_line|#define PCI_DEVICE_ID_SI_180&t;&t;0x0180
 DECL|macro|PCI_DEVICE_ID_SI_5597_VGA
 mdefine_line|#define PCI_DEVICE_ID_SI_5597_VGA&t;0x0200
 DECL|macro|PCI_DEVICE_ID_SI_6205
