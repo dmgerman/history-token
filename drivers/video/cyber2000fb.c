@@ -5664,6 +5664,16 @@ comma
 id|v_sync
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cfb-&gt;dev
+)paren
+id|cfb-&gt;fb.device
+op_assign
+op_amp
+id|cfb-&gt;dev-&gt;dev
+suffix:semicolon
 id|err
 op_assign
 id|register_framebuffer

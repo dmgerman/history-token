@@ -1835,6 +1835,12 @@ id|fb_ops
 op_star
 id|fbops
 suffix:semicolon
+DECL|member|device
+r_struct
+id|device
+op_star
+id|device
+suffix:semicolon
 DECL|member|screen_base
 r_char
 id|__iomem

@@ -10104,6 +10104,23 @@ id|video.len
 )paren
 suffix:semicolon
 multiline_comment|/* We do not have to set currcon to 0... register_framebuffer do it for us on first console&n; * and we do not want currcon == 0 for subsequent framebuffers */
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|device
+op_assign
+op_amp
+id|ACCESS_FBINFO
+c_func
+(paren
+id|pcidev
+)paren
+op_member_access_from_pointer
+id|dev
+suffix:semicolon
 r_if
 c_cond
 (paren

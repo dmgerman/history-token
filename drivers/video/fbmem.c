@@ -5651,7 +5651,7 @@ comma
 id|i
 )paren
 comma
-l_int|NULL
+id|fb_info-&gt;device
 comma
 l_string|&quot;fb%d&quot;
 comma
