@@ -5,7 +5,7 @@ singleline_comment|// yura_hash
 singleline_comment|// r5_hash
 singleline_comment|//
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 DECL|macro|DELTA
 mdefine_line|#define DELTA 0x9E3779B9
 DECL|macro|FULLROUNDS
