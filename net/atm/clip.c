@@ -21,10 +21,8 @@ macro_line|#include &lt;linux/in.h&gt; /* for struct sockaddr_in */
 macro_line|#include &lt;linux/if.h&gt; /* for IFF_UP */
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#endif
 macro_line|#include &lt;net/route.h&gt; /* for struct rtable and routing */
 macro_line|#include &lt;net/icmp.h&gt; /* icmp_send */
 macro_line|#include &lt;asm/param.h&gt; /* for HZ */
