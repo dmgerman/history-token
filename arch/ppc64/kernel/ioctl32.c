@@ -23256,6 +23256,18 @@ c_func
 id|LOOP_CLR_FD
 )paren
 comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_SET_STATUS64
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_GET_STATUS64
+)paren
+comma
 multiline_comment|/* Big Q for sound/OSS */
 id|COMPATIBLE_IOCTL
 c_func
