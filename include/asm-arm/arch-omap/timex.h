@@ -2,9 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/timex.h&n; *&n; * Copy
 macro_line|#if !defined(__ASM_ARCH_OMAP_TIMEX_H)
 DECL|macro|__ASM_ARCH_OMAP_TIMEX_H
 mdefine_line|#define __ASM_ARCH_OMAP_TIMEX_H
-macro_line|#include &lt;asm/arch/clocks.h&gt;
-multiline_comment|/* TC clock */
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;&t;((OMAP_CK_MAX_RATE*1000000)/2)
+mdefine_line|#define CLOCK_TICK_RATE&t;&t;(HZ * 100000UL)
 macro_line|#endif /* __ASM_ARCH_OMAP_TIMEX_H */
 eof
