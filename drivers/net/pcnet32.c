@@ -3951,6 +3951,15 @@ op_star
 id|buff
 op_increment
 op_assign
+(paren
+id|i
+op_eq
+l_int|34
+)paren
+ques
+c_cond
+l_int|0xdead
+suffix:colon
 id|a
 op_member_access_from_pointer
 id|read_bcr
