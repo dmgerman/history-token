@@ -3847,6 +3847,12 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
+id|ide_unregister_region
+c_func
+(paren
+id|g
+)paren
+suffix:semicolon
 id|drive-&gt;driver_data
 op_assign
 l_int|NULL
@@ -5796,6 +5802,12 @@ id|g-&gt;private_data
 op_assign
 id|idescsi
 suffix:semicolon
+id|ide_register_region
+c_func
+(paren
+id|g
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|scsi_add_host
@@ -5825,6 +5837,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* fall through on error */
+id|ide_unregister_region
+c_func
+(paren
+id|g
+)paren
+suffix:semicolon
 id|ide_unregister_subdriver
 c_func
 (paren

@@ -18058,6 +18058,12 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+id|ide_unregister_region
+c_func
+(paren
+id|drive-&gt;disk
+)paren
+suffix:semicolon
 id|ide_tape_put
 c_func
 (paren
@@ -19002,6 +19008,12 @@ suffix:semicolon
 id|g-&gt;private_data
 op_assign
 id|tape
+suffix:semicolon
+id|ide_register_region
+c_func
+(paren
+id|g
+)paren
 suffix:semicolon
 r_return
 l_int|0
