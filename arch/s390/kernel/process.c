@@ -24,7 +24,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#ifdef CONFIG_VIRT_TIMER
+macro_line|#if defined(CONFIG_VIRT_TIMER) || defined (CONFIG_NO_IDLE_HZ)
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#endif
 id|asmlinkage
@@ -119,6 +119,11 @@ r_int
 r_int
 id|reg
 suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -128,6 +133,11 @@ c_func
 )paren
 )paren
 (brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
@@ -136,7 +146,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_VIRT_TIMER
+macro_line|#if defined(CONFIG_VIRT_TIMER) || defined (CONFIG_NO_IDLE_HZ)
 multiline_comment|/*&n;&t; * hook to stop timers that should not tick while CPU is idle&n;&t; */
 r_if
 c_cond
@@ -146,8 +156,15 @@ c_func
 (paren
 )paren
 )paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/* &n;&t; * Wait for external, I/O or machine check interrupt and&n;&t; * switch off machine check bit after the wait has ended.&n;&t; */
 id|wait_psw.mask

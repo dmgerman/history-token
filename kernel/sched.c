@@ -9110,6 +9110,13 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; * In a system that switches off the HZ timer idle_cpu_mask&n; * indicates which cpus entered this state. This is used&n; * in the rcu update to wait only for active cpus. For system&n; * which do not switch off the HZ timer idle_cpu_mask should&n; * always be CPU_MASK_NONE.&n; */
+DECL|variable|idle_cpu_mask
+id|cpumask_t
+id|idle_cpu_mask
+op_assign
+id|CPU_MASK_NONE
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * This is how migration works:&n; *&n; * 1) we queue a migration_req_t structure in the source CPU&squot;s&n; *    runqueue and wake up that CPU&squot;s migration thread.&n; * 2) we down() the locked semaphore =&gt; thread blocks.&n; * 3) migration thread wakes up (implicitly it forces the migrated&n; *    thread off the CPU)&n; * 4) it gets the migration request and checks whether the migrated&n; *    task is still in the wrong runqueue.&n; * 5) if it&squot;s in the wrong runqueue then the migration thread removes&n; *    it and puts it into the right queue.&n; * 6) migration thread up()s the semaphore.&n; * 7) we wake up and the migration is done.&n; */
 multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the thread to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */

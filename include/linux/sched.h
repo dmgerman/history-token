@@ -231,6 +231,10 @@ id|cpu
 )paren
 suffix:semicolon
 r_extern
+id|cpumask_t
+id|idle_cpu_mask
+suffix:semicolon
+r_extern
 r_void
 id|show_state
 c_func

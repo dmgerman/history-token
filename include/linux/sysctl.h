@@ -468,6 +468,12 @@ op_assign
 l_int|64
 comma
 multiline_comment|/* int: serial console power-off halt */
+DECL|enumerator|KERN_HZ_TIMER
+id|KERN_HZ_TIMER
+op_assign
+l_int|65
+comma
+multiline_comment|/* int: hz timer on or off */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

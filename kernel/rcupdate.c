@@ -227,6 +227,9 @@ r_int
 id|newbatch
 )paren
 (brace
+id|cpumask_t
+id|active
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -267,9 +270,25 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Can&squot;t change, since spin lock held. */
-id|rcu_ctrlblk.rcu_cpu_mask
+id|active
 op_assign
+id|idle_cpu_mask
+suffix:semicolon
+id|cpus_complement
+c_func
+(paren
+id|active
+)paren
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|rcu_ctrlblk.rcu_cpu_mask
+comma
 id|cpu_online_map
+comma
+id|active
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check if the cpu has gone through a quiescent state (say context&n; * switch). If so and if it already hasn&squot;t done so in this RCU&n; * quiescent cycle, then indicate that it has done so.&n; */

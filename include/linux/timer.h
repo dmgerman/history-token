@@ -164,6 +164,15 @@ r_int
 id|expires
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|next_timer_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/***&n; * add_timer - start a timer&n; * @timer: the timer to be added&n; *&n; * The kernel will do a -&gt;function(-&gt;data) callback from the&n; * timer interrupt at the -&gt;expired point in the future. The&n; * current time is &squot;jiffies&squot;.&n; *&n; * The timer&squot;s -&gt;expired, -&gt;function (and if the handler uses it, -&gt;data)&n; * fields must be set prior calling this function.&n; *&n; * Timers with an -&gt;expired field in the past will be executed in the next&n; * timer tick.&n; */
 DECL|function|add_timer
 r_static

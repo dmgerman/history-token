@@ -130,7 +130,7 @@ id|ext_int_info_t
 id|ext_int_pfault
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VIRT_TIMER
+macro_line|#if defined(CONFIG_NO_IDLE_HZ) || defined(CONFIG_VIRT_TIMER)
 r_extern
 id|pgm_check_handler_t
 id|do_monitor_call
@@ -3400,7 +3400,7 @@ op_assign
 op_amp
 id|privileged_op
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIRT_TIMER
+macro_line|#if defined(CONFIG_VIRT_TIMER) || defined(CONFIG_NO_IDLE_HZ)
 id|pgm_check_table
 (braket
 l_int|0x40
