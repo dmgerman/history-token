@@ -4718,6 +4718,14 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|irq
+op_ge
+id|NR_IRQS
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
