@@ -43,11 +43,14 @@ suffix:semicolon
 multiline_comment|/* ignored for input, zeroed for output */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * SIGEV_THREAD implementation:&n; * SIGEV_THREAD must be implemented in user space. If SIGEV_THREAD is passed&n; * to mq_notify, then&n; * - sigev_signo must be the file descriptor of an AF_NETLINK socket. It&squot;s not&n; *   necessary that the socket is bound.&n; * - sigev_value.sival_ptr must point to a cookie that is NOTIFY_COOKIE_LEN&n; *   bytes long.&n; * If the notification is triggered, then the cookie is sent to the netlink&n; * socket. The last byte of the cookie is replaced with the NOTIFY_?? codes:&n; * NOTIFY_WOKENUP if the notification got triggered, NOTIFY_REMOVED if it was&n; * removed, either due to a close() on the message queue fd or due to a&n; * mq_notify() that removed the notification.&n; */
 DECL|macro|NOTIFY_NONE
 mdefine_line|#define NOTIFY_NONE&t;0
 DECL|macro|NOTIFY_WOKENUP
 mdefine_line|#define NOTIFY_WOKENUP&t;1
 DECL|macro|NOTIFY_REMOVED
 mdefine_line|#define NOTIFY_REMOVED&t;2
+DECL|macro|NOTIFY_COOKIE_LEN
+mdefine_line|#define NOTIFY_COOKIE_LEN&t;32
 macro_line|#endif
 eof
