@@ -769,11 +769,9 @@ id|len
 op_plus
 id|alen
 op_minus
-r_sizeof
-(paren
-r_struct
-id|iphdr
-)paren
+id|iph-&gt;ihl
+op_star
+l_int|4
 )paren
 suffix:semicolon
 id|uh-&gt;check
