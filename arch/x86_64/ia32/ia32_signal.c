@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/x86_64/ia32/ia32_signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; *  2000-12-*   x86-64 compatibility mode signal handling by Andi Kleen&n; * &n; *  $Id: ia32_signal.c,v 1.17 2002/03/21 14:16:32 ak Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/x86_64/ia32/ia32_signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; *  2000-12-*   x86-64 compatibility mode signal handling by Andi Kleen&n; * &n; *  $Id: ia32_signal.c,v 1.22 2002/07/29 10:34:03 ak Exp $&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -39,6 +39,24 @@ comma
 id|sigset_t
 op_star
 id|oldset
+)paren
+suffix:semicolon
+r_void
+id|signal_fault
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_void
+op_star
+id|frame
+comma
+r_char
+op_star
+id|where
 )paren
 suffix:semicolon
 DECL|function|ia32_copy_siginfo_to_user
@@ -655,12 +673,13 @@ macro_line|#endif
 DECL|macro|COPY
 mdefine_line|#define COPY(x)&t;&t;{ &bslash;&n;&t;unsigned int reg;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;e ##x);&t;&bslash;&n;&t;regs-&gt;r ## x = reg;&t;&t;&t;&bslash;&n;}
 DECL|macro|RELOAD_SEG
-mdefine_line|#define RELOAD_SEG(seg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned int cur; &t;&t;&t;&t;&bslash;&n;&t;  unsigned short pre;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(pre, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;    &t;  asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=r&quot; (cur));&t;&t;&bslash;&n;&t;  if (pre != cur) loadsegment(seg,pre); }
-multiline_comment|/* Reload fs and gs if they have changed in the signal handler. */
+mdefine_line|#define RELOAD_SEG(seg,mask)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned int cur; &t;&t;&t;&t;&bslash;&n;&t;  unsigned short pre;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(pre, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;    &t;  asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=r&quot; (cur));&t;&t;&bslash;&n;&t;  pre |= mask; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  if (pre != cur) loadsegment(seg,pre); }
+multiline_comment|/* Reload fs and gs if they have changed in the signal handler.&n;&t;   This does not handle long fs/gs base changes in the handler, but &n;&t;   does not clobber them at least in the normal case. */
 (brace
 r_int
-r_int
 id|gs
+comma
+id|oldgs
 suffix:semicolon
 id|err
 op_or_assign
@@ -673,6 +692,28 @@ op_amp
 id|sc-&gt;gs
 )paren
 suffix:semicolon
+id|gs
+op_or_assign
+l_int|3
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;movl %%gs,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|oldgs
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gs
+op_ne
+id|oldgs
+)paren
 id|load_gs_index
 c_func
 (paren
@@ -684,18 +725,24 @@ id|RELOAD_SEG
 c_func
 (paren
 id|fs
+comma
+l_int|3
 )paren
 suffix:semicolon
 id|RELOAD_SEG
 c_func
 (paren
 id|ds
+comma
+l_int|3
 )paren
 suffix:semicolon
 id|RELOAD_SEG
 c_func
 (paren
 id|es
+comma
+l_int|3
 )paren
 suffix:semicolon
 id|COPY
@@ -760,7 +807,7 @@ id|sc-&gt;cs
 suffix:semicolon
 id|regs-&gt;cs
 op_or_assign
-l_int|2
+l_int|3
 suffix:semicolon
 id|err
 op_or_assign
@@ -775,7 +822,7 @@ id|sc-&gt;ss
 suffix:semicolon
 id|regs-&gt;ss
 op_or_assign
-l_int|2
+l_int|3
 suffix:semicolon
 (brace
 r_int
@@ -2251,7 +2298,7 @@ id|regs
 comma
 id|frame
 comma
-l_string|&quot;32bit signal setup&quot;
+l_string|&quot;32bit signal deliver&quot;
 )paren
 suffix:semicolon
 )brace

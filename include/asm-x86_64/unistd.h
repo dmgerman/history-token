@@ -1916,8 +1916,17 @@ id|__NR_get_thread_area
 comma
 id|sys_get_thread_area
 )paren
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;212
+id|__SYSCALL
+c_func
+(paren
+id|__NR_lookup_dcookie
+comma
+id|sys_lookup_dcookie
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_get_thread_area
+mdefine_line|#define __NR_syscall_max __NR_lookup_dcookie
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber
@@ -1927,7 +1936,6 @@ mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;i
 macro_line|#ifndef __KERNEL_SYSCALLS__
 DECL|macro|__syscall
 mdefine_line|#define __syscall &quot;syscall&quot;
-multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (__syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name) : __syscall_clobber ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
 DECL|macro|_syscall1

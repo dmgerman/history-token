@@ -2425,7 +2425,7 @@ id|PAGE_SHIFT
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: base(%lx) exceeds the MTRR width(%lx)&bslash;n&quot;
+l_string|&quot;mtrr: base(%Lx) exceeds the MTRR width(%Lx)&bslash;n&quot;
 comma
 id|base
 comma
