@@ -4,7 +4,7 @@ DECL|macro|_LINUX_TQUEUE_H
 mdefine_line|#define _LINUX_TQUEUE_H
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * New proposed &quot;bottom half&quot; handlers:&n; * (C) 1994 Kai Petzke, wpp@marie.physik.tu-berlin.de&n; *&n; * Advantages:&n; * - Bottom halfs are implemented as a linked list.  You can have as many&n; *   of them, as you want.&n; * - No more scanning of a bit field is required upon call of a bottom half.&n; * - Support for chained bottom half lists.  The run_task_queue() function can be&n; *   used as a bottom half handler.  This is for example useful for bottom&n; *   halfs, which want to be delayed until the next clock tick.&n; *&n; * Notes:&n; * - Bottom halfs are called in the reverse order that they were linked into&n; *   the list.&n; */
 DECL|struct|tq_struct

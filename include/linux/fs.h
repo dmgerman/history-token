@@ -18,8 +18,8 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 r_struct
 id|poll_table_struct
 suffix:semicolon
