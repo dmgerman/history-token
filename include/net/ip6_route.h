@@ -130,6 +130,10 @@ r_struct
 id|in6_rtmsg
 op_star
 id|rtmsg
+comma
+r_struct
+id|nlmsghdr
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -139,6 +143,10 @@ c_func
 (paren
 r_struct
 id|rt6_info
+op_star
+comma
+r_struct
+id|nlmsghdr
 op_star
 )paren
 suffix:semicolon

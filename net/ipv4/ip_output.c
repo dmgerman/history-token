@@ -5514,6 +5514,16 @@ comma
 id|ip_mc_procinfo
 )paren
 suffix:semicolon
+id|proc_net_create
+c_func
+(paren
+l_string|&quot;mcfilter&quot;
+comma
+l_int|0
+comma
+id|ip_mcf_procinfo
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 eof

@@ -184,6 +184,20 @@ DECL|macro|IP_ADD_MEMBERSHIP
 mdefine_line|#define IP_ADD_MEMBERSHIP&t;&t;35
 DECL|macro|IP_DROP_MEMBERSHIP
 mdefine_line|#define IP_DROP_MEMBERSHIP&t;&t;36
+DECL|macro|IP_UNBLOCK_SOURCE
+mdefine_line|#define IP_UNBLOCK_SOURCE&t;&t;37
+DECL|macro|IP_BLOCK_SOURCE
+mdefine_line|#define IP_BLOCK_SOURCE&t;&t;&t;38
+DECL|macro|IP_ADD_SOURCE_MEMBERSHIP
+mdefine_line|#define IP_ADD_SOURCE_MEMBERSHIP&t;39
+DECL|macro|IP_DROP_SOURCE_MEMBERSHIP
+mdefine_line|#define IP_DROP_SOURCE_MEMBERSHIP&t;40
+DECL|macro|IP_MSFILTER
+mdefine_line|#define IP_MSFILTER&t;&t;&t;41
+DECL|macro|MCAST_EXCLUDE
+mdefine_line|#define MCAST_EXCLUDE&t;0
+DECL|macro|MCAST_INCLUDE
+mdefine_line|#define MCAST_INCLUDE&t;1
 multiline_comment|/* These need to appear somewhere around here */
 DECL|macro|IP_DEFAULT_MULTICAST_TTL
 mdefine_line|#define IP_DEFAULT_MULTICAST_TTL        1
@@ -231,6 +245,55 @@ suffix:semicolon
 multiline_comment|/* Interface index */
 )brace
 suffix:semicolon
+DECL|struct|ip_mreq_source
+r_struct
+id|ip_mreq_source
+(brace
+DECL|member|imr_multiaddr
+id|__u32
+id|imr_multiaddr
+suffix:semicolon
+DECL|member|imr_interface
+id|__u32
+id|imr_interface
+suffix:semicolon
+DECL|member|imr_sourceaddr
+id|__u32
+id|imr_sourceaddr
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ip_msfilter
+r_struct
+id|ip_msfilter
+(brace
+DECL|member|imsf_multiaddr
+id|__u32
+id|imsf_multiaddr
+suffix:semicolon
+DECL|member|imsf_interface
+id|__u32
+id|imsf_interface
+suffix:semicolon
+DECL|member|imsf_fmode
+id|__u32
+id|imsf_fmode
+suffix:semicolon
+DECL|member|imsf_numsrc
+id|__u32
+id|imsf_numsrc
+suffix:semicolon
+DECL|member|imsf_slist
+id|__u32
+id|imsf_slist
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|IP_MSFILTER_SIZE
+mdefine_line|#define IP_MSFILTER_SIZE(numsrc) &bslash;&n;&t;(sizeof(struct ip_msfilter) - sizeof(__u32) &bslash;&n;&t;+ (numsrc) * sizeof(__u32))
 DECL|struct|in_pktinfo
 r_struct
 id|in_pktinfo
