@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ctrlchar.h&quot;
 macro_line|#include &quot;sclp.h&quot;
@@ -1273,6 +1274,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+id|sclp_sync_wait
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|wait_event
 c_func
 (paren
@@ -1411,6 +1426,14 @@ id|sclp_ttybuf
 op_ne
 l_int|NULL
 op_logical_and
+id|sclp_chars_in_buffer
+c_func
+(paren
+id|sclp_ttybuf
+)paren
+op_ne
+l_int|0
+op_logical_and
 op_logical_neg
 id|timer_pending
 c_func
@@ -1454,16 +1477,55 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__sclp_ttybuf_emit
+r_if
+c_cond
+(paren
+id|sclp_ttybuf
+op_ne
+l_int|NULL
+op_logical_and
+id|sclp_chars_in_buffer
 c_func
 (paren
 id|sclp_ttybuf
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|buf
+op_assign
+id|sclp_ttybuf
 suffix:semicolon
 id|sclp_ttybuf
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__sclp_ttybuf_emit
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -1798,7 +1860,7 @@ op_add_assign
 id|sclp_chars_in_buffer
 c_func
 (paren
-id|sclp_ttybuf
+id|t
 )paren
 suffix:semicolon
 )brace

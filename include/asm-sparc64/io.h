@@ -45,6 +45,10 @@ r_extern
 r_int
 r_int
 id|phys_base
+comma
+id|kern_base
+comma
+id|kern_size
 suffix:semicolon
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base)

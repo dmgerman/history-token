@@ -1,7 +1,6 @@
 macro_line|#ifndef __ARCH_S390_ATOMIC__
 DECL|macro|__ARCH_S390_ATOMIC__
 mdefine_line|#define __ARCH_S390_ATOMIC__
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; *  include/asm-s390/atomic.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999-2003 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Denis Joseph Barrow,&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&n; *  Derived from &quot;include/asm-i386/bitops.h&quot;&n; *    Copyright (C) 1992, Linus Torvalds&n; *&n; */
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; * S390 uses &squot;Compare And Swap&squot; for atomicity in SMP enviroment&n; */
 r_typedef
@@ -27,8 +26,9 @@ id|atomic_t
 suffix:semicolon
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)  { (i) }
+macro_line|#ifdef __KERNEL__
 DECL|macro|__CS_LOOP
-mdefine_line|#define __CS_LOOP(ptr, op_val, op_string) ({&t;&t;&t;&t;&bslash;&n;&t;typeof(ptr-&gt;counter) old_val, new_val;&t;&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&quot;   l     %0,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;0: lr    %1,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;                             op_string &quot;  %1,%4&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   cs    %0,%1,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   jl    0b&quot;&t;&t;&t;&t;&bslash;&n;                             : &quot;=&amp;d&quot; (old_val), &quot;=&amp;d&quot; (new_val),&t;&bslash;&n;&t;&t;&t;       &quot;+m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;a&quot; (ptr), &quot;d&quot; (op_val) : &quot;cc&quot; );&t;&bslash;&n;&t;new_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __CS_LOOP(ptr, op_val, op_string) ({&t;&t;&t;&t;&bslash;&n;&t;typeof(ptr-&gt;counter) old_val, new_val;&t;&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&quot;   l     %0,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;0: lr    %1,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;                             op_string &quot;  %1,%4&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   cs    %0,%1,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   jl    0b&quot;&t;&t;&t;&t;&bslash;&n;                             : &quot;=&amp;d&quot; (old_val), &quot;=&amp;d&quot; (new_val),&t;&bslash;&n;&t;&t;&t;       &quot;=m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;a&quot; (ptr), &quot;d&quot; (op_val),&t;&t;&t;&bslash;&n;&t;&t;&t;       &quot;m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;cc&quot;, &quot;memory&quot; );&t;&t;&t;&bslash;&n;&t;new_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)          ((v)-&gt;counter)
 DECL|macro|atomic_set
@@ -376,7 +376,7 @@ suffix:semicolon
 DECL|macro|ATOMIC64_INIT
 mdefine_line|#define ATOMIC64_INIT(i)  { (i) }
 DECL|macro|__CSG_LOOP
-mdefine_line|#define __CSG_LOOP(ptr, op_val, op_string) ({&t;&t;&t;&t;&bslash;&n;&t;typeof(ptr-&gt;counter) old_val, new_val;&t;&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&quot;   lg    %0,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;0: lgr   %1,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;                             op_string &quot;  %1,%4&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   csg   %0,%1,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   jl    0b&quot;&t;&t;&t;&t;&bslash;&n;                             : &quot;=&amp;d&quot; (old_val), &quot;=&amp;d&quot; (new_val),&t;&bslash;&n;&t;&t;&t;       &quot;+m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;a&quot; (ptr), &quot;d&quot; (op_val) : &quot;cc&quot; );&t;&bslash;&n;&t;new_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __CSG_LOOP(ptr, op_val, op_string) ({&t;&t;&t;&t;&bslash;&n;&t;typeof(ptr-&gt;counter) old_val, new_val;&t;&t;&t;&t;&bslash;&n;        __asm__ __volatile__(&quot;   lg    %0,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;0: lgr   %1,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;                             op_string &quot;  %1,%4&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   csg   %0,%1,0(%3)&bslash;n&quot;&t;&t;&t;&bslash;&n;                             &quot;   jl    0b&quot;&t;&t;&t;&t;&bslash;&n;                             : &quot;=&amp;d&quot; (old_val), &quot;=&amp;d&quot; (new_val),&t;&bslash;&n;&t;&t;&t;       &quot;=m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;a&quot; (ptr), &quot;d&quot; (op_val),&t;&t;&t;&bslash;&n;&t;&t;&t;       &quot;m&quot; (((atomic_t *)(ptr))-&gt;counter)&t;&bslash;&n;&t;&t;&t;     : &quot;cc&quot;, &quot;memory&quot; );&t;&t;&t;&bslash;&n;&t;new_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|atomic64_read
 mdefine_line|#define atomic64_read(v)          ((v)-&gt;counter)
 DECL|macro|atomic64_set
@@ -742,7 +742,7 @@ l_string|&quot;=&amp;d&quot;
 id|retval
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|v-&gt;counter
 )paren
@@ -761,8 +761,15 @@ l_string|&quot;d&quot;
 (paren
 id|new_val
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|v-&gt;counter
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

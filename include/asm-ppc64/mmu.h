@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PowerPC memory management structures&n; *&n; * Dave En
 macro_line|#ifndef _PPC64_MMU_H_
 DECL|macro|_PPC64_MMU_H_
 mdefine_line|#define _PPC64_MMU_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Default &quot;unsigned long&quot; context */
@@ -18,9 +19,6 @@ macro_line|#else
 DECL|macro|CONTEXT_LOW_HPAGES
 mdefine_line|#define CONTEXT_LOW_HPAGES&t;0
 macro_line|#endif
-multiline_comment|/*&n; * Define the size of the cache used for segment table entries.  The first&n; * entry is used as a cache pointer, therefore the actual number of entries&n; * stored is one less than defined here.  Do not change this value without&n; * considering the impact it will have on the layout of the paca in paca.h.&n; */
-DECL|macro|STAB_CACHE_SIZE
-mdefine_line|#define STAB_CACHE_SIZE 16
 multiline_comment|/*&n; * Hardware Segment Lookaside Buffer Entry&n; * This structure has been padded out to two 64b doublewords (actual SLBE&squot;s are&n; * 94 bits).  This padding facilites use by the segment management&n; * instructions.&n; */
 r_typedef
 r_struct

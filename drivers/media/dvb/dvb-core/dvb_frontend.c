@@ -124,9 +124,9 @@ r_int
 r_int
 id|lost_sync_jiffies
 suffix:semicolon
-DECL|member|aquire_signal
+DECL|member|acquire_signal
 r_int
-id|aquire_signal
+id|acquire_signal
 suffix:semicolon
 DECL|member|bending
 r_int
@@ -1065,7 +1065,7 @@ id|fe-&gt;lnb_drift
 op_assign
 l_int|0
 suffix:semicolon
-id|fe-&gt;aquire_signal
+id|fe-&gt;acquire_signal
 op_assign
 l_int|1
 suffix:semicolon
@@ -1718,7 +1718,7 @@ id|fe-&gt;lost_sync_count
 op_assign
 l_int|0
 suffix:semicolon
-id|fe-&gt;aquire_signal
+id|fe-&gt;acquire_signal
 op_assign
 l_int|0
 suffix:semicolon
@@ -1761,7 +1761,7 @@ l_int|10
 r_if
 c_cond
 (paren
-id|fe-&gt;aquire_signal
+id|fe-&gt;acquire_signal
 )paren
 id|dvb_frontend_internal_ioctl
 c_func

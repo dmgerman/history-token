@@ -1847,7 +1847,7 @@ comma
 l_int|0x01
 )paren
 suffix:semicolon
-multiline_comment|/* restart aquire */
+multiline_comment|/* restart acquire */
 r_break
 suffix:semicolon
 )brace

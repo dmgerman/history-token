@@ -1,7 +1,12 @@
+macro_line|#ifndef _PPC64_HVCALL_H
+DECL|macro|_PPC64_HVCALL_H
+mdefine_line|#define _PPC64_HVCALL_H
 DECL|macro|H_Success
 mdefine_line|#define H_Success&t;0
 DECL|macro|H_Busy
 mdefine_line|#define H_Busy&t;&t;1&t;/* Hardware busy -- retry later */
+DECL|macro|H_Constrained
+mdefine_line|#define H_Constrained&t;4&t;/* Resource request constrained to max allowed */
 DECL|macro|H_Hardware
 mdefine_line|#define H_Hardware&t;-1&t;/* Hardware error */
 DECL|macro|H_Function
@@ -300,4 +305,5 @@ op_star
 id|out4
 )paren
 suffix:semicolon
+macro_line|#endif /* _PPC64_HVCALL_H */
 eof

@@ -31,7 +31,7 @@ r_struct
 id|xfs_trans
 suffix:semicolon
 multiline_comment|/*========================================================================&n; * Attribute structure when equal to XFS_LBSIZE(mp) bytes.&n; *========================================================================*/
-multiline_comment|/*&n; * This is the structure of the leaf nodes in the Btree.&n; *&n; * Struct leaf_entry&squot;s are packed from the top.  Name/values grow from the&n; * bottom but are not packed.  The freemap contains run-length-encoded entries&n; * for the free bytes after the leaf_entry&squot;s, but only the N largest such,&n; * smaller runs are dropped.  When the freemap doesn&squot;t show enough space&n; * for an allocation, we compact the name/value area and try again.  If we&n; * still don&squot;t have enough space, then we have to split the block.  The&n; * name/value structs (both local and remote versions) must be 32bit aligned.&n; *&n; * Since we have duplicate hash keys, for each key that matches, compare&n; * the actual name string.  The root and intermediate node search always&n; * takes the first-in-the-block key match found, so we should only have&n; * to work &quot;forw&quot;ard.  If none matches, continue with the &quot;forw&quot;ard leaf&n; * nodes until the hash key changes or the attribute name is found.&n; *&n; * We store the fact that an attribute is a ROOT versus USER attribute in&n; * the leaf_entry.  The namespaces are independent only because we also look&n; * at the root/user bit when we are looking for a matching attribute name.&n; *&n; * We also store a &quot;incomplete&quot; bit in the leaf_entry.  It shows that an&n; * attribute is in the middle of being created and should not be shown to&n; * the user if we crash during the time that the bit is set.  We clear the&n; * bit when we have finished setting up the attribute.  We do this because&n; * we cannot create some large attributes inside a single transaction, and we&n; * need some indication that we weren&squot;t finished if we crash in the middle.&n; */
+multiline_comment|/*&n; * This is the structure of the leaf nodes in the Btree.&n; *&n; * Struct leaf_entry&squot;s are packed from the top.  Name/values grow from the&n; * bottom but are not packed.  The freemap contains run-length-encoded entries&n; * for the free bytes after the leaf_entry&squot;s, but only the N largest such,&n; * smaller runs are dropped.  When the freemap doesn&squot;t show enough space&n; * for an allocation, we compact the name/value area and try again.  If we&n; * still don&squot;t have enough space, then we have to split the block.  The&n; * name/value structs (both local and remote versions) must be 32bit aligned.&n; *&n; * Since we have duplicate hash keys, for each key that matches, compare&n; * the actual name string.  The root and intermediate node search always&n; * takes the first-in-the-block key match found, so we should only have&n; * to work &quot;forw&quot;ard.  If none matches, continue with the &quot;forw&quot;ard leaf&n; * nodes until the hash key changes or the attribute name is found.&n; *&n; * We store the fact that an attribute is a ROOT/USER/SECURE attribute in&n; * the leaf_entry.  The namespaces are independent only because we also look&n; * at the namespace bit when we are looking for a matching attribute name.&n; *&n; * We also store a &quot;incomplete&quot; bit in the leaf_entry.  It shows that an&n; * attribute is in the middle of being created and should not be shown to&n; * the user if we crash during the time that the bit is set.  We clear the&n; * bit when we have finished setting up the attribute.  We do this because&n; * we cannot create some large attributes inside a single transaction, and we&n; * need some indication that we weren&squot;t finished if we crash in the middle.&n; */
 DECL|macro|XFS_ATTR_LEAF_MAPSIZE
 mdefine_line|#define XFS_ATTR_LEAF_MAPSIZE&t;3&t;/* how many freespace slots */
 DECL|struct|xfs_attr_leafblock
@@ -119,7 +119,7 @@ DECL|member|flags
 id|__uint8_t
 id|flags
 suffix:semicolon
-multiline_comment|/* LOCAL, ROOT and INCOMPLETE flags */
+multiline_comment|/* LOCAL/ROOT/SECURE/INCOMPLETE flag */
 DECL|member|pad2
 id|__uint8_t
 id|pad2
@@ -231,12 +231,16 @@ DECL|macro|XFS_ATTR_LOCAL_BIT
 mdefine_line|#define&t;XFS_ATTR_LOCAL_BIT&t;0&t;/* attr is stored locally */
 DECL|macro|XFS_ATTR_ROOT_BIT
 mdefine_line|#define&t;XFS_ATTR_ROOT_BIT&t;1&t;/* limit access to trusted attrs */
+DECL|macro|XFS_ATTR_SECURE_BIT
+mdefine_line|#define&t;XFS_ATTR_SECURE_BIT&t;2&t;/* limit access to secure attrs */
 DECL|macro|XFS_ATTR_INCOMPLETE_BIT
 mdefine_line|#define&t;XFS_ATTR_INCOMPLETE_BIT&t;7&t;/* attr in middle of create/delete */
 DECL|macro|XFS_ATTR_LOCAL
 mdefine_line|#define XFS_ATTR_LOCAL&t;&t;(1 &lt;&lt; XFS_ATTR_LOCAL_BIT)
 DECL|macro|XFS_ATTR_ROOT
 mdefine_line|#define XFS_ATTR_ROOT&t;&t;(1 &lt;&lt; XFS_ATTR_ROOT_BIT)
+DECL|macro|XFS_ATTR_SECURE
+mdefine_line|#define XFS_ATTR_SECURE&t;&t;(1 &lt;&lt; XFS_ATTR_SECURE_BIT)
 DECL|macro|XFS_ATTR_INCOMPLETE
 mdefine_line|#define XFS_ATTR_INCOMPLETE&t;(1 &lt;&lt; XFS_ATTR_INCOMPLETE_BIT)
 multiline_comment|/*&n; * Alignment for namelist and valuelist entries (since they are mixed&n; * there can be only one alignment value)&n; */
