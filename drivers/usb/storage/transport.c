@@ -1590,6 +1590,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_GOOD
+suffix:semicolon
 multiline_comment|/* Determine if we need to auto-sense&n;&t; *&n;&t; * I normally don&squot;t use a flag like this, but it&squot;s almost impossible&n;&t; * to understand what&squot;s going on here if I don&squot;t.&n;&t; */
 id|need_auto_sense
 op_assign
@@ -1645,7 +1649,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Also, if we have a short transfer on a command that can&squot;t have&n;&t; * a short transfer, we&squot;re going to do this.&n;&t; */
+multiline_comment|/*&n;&t; * A short transfer on a command where we don&squot;t expect it&n;&t; * is unusual, but it doesn&squot;t mean we need to auto-sense.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1709,10 +1713,6 @@ c_func
 (paren
 l_string|&quot;-- unexpectedly short transfer&bslash;n&quot;
 )paren
-suffix:semicolon
-id|need_auto_sense
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Now, if we need to do the auto-sense, let&squot;s do it */
@@ -2066,65 +2066,14 @@ id|srb-&gt;result
 op_assign
 id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
-multiline_comment|/* If things are really okay, then let&squot;s show that */
+multiline_comment|/* If things are really okay, then let&squot;s show that.  Zero&n;&t;&t; * out the sense buffer so the higher layers won&squot;t realize&n;&t;&t; * we did an unsolicited auto-sense. */
 r_if
 c_cond
-(paren
-(paren
-id|srb-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_eq
-l_int|0x0
-)paren
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_GOOD
-suffix:semicolon
-)brace
-r_else
-multiline_comment|/* if (need_auto_sense) */
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_GOOD
-suffix:semicolon
-multiline_comment|/* Regardless of auto-sense, if we _know_ we have an error&n;&t; * condition, show that in the result code&n;&t; */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_TRANSPORT_FAILED
-)paren
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_CHECK_CONDITION
-suffix:semicolon
-multiline_comment|/* If we think we&squot;re good, then make sure the sense data shows it.&n;&t; * This is necessary because the auto-sense for some devices always&n;&t; * sets byte 0 == 0x70, even if there is no error&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|us-&gt;protocol
-op_eq
-id|US_PR_CB
-op_logical_or
-id|us-&gt;protocol
-op_eq
-id|US_PR_DPCM_USB
-)paren
-op_logical_and
 (paren
 id|result
 op_eq
 id|USB_STOR_TRANSPORT_GOOD
-)paren
 op_logical_and
-(paren
 (paren
 id|srb-&gt;sense_buffer
 (braket
@@ -2136,7 +2085,11 @@ l_int|0xf
 op_eq
 l_int|0x0
 )paren
-)paren
+(brace
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_GOOD
+suffix:semicolon
 id|srb-&gt;sense_buffer
 (braket
 l_int|0
@@ -2144,6 +2097,8 @@ l_int|0
 op_assign
 l_int|0x0
 suffix:semicolon
+)brace
+)brace
 r_return
 suffix:semicolon
 multiline_comment|/* abort processing: the bulk-only transport requires a reset&n;&t; * following an abort */
