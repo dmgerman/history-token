@@ -4066,6 +4066,7 @@ multiline_comment|/*************************************************************
 DECL|function|udsl_usb_init
 r_static
 r_int
+id|__init
 id|udsl_usb_init
 (paren
 r_void
@@ -4123,6 +4124,7 @@ suffix:semicolon
 DECL|function|udsl_usb_cleanup
 r_static
 r_void
+id|__exit
 id|udsl_usb_cleanup
 (paren
 r_void
