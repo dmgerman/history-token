@@ -48,6 +48,8 @@ DECL|macro|MAX_SLEEP_AVG
 mdefine_line|#define MAX_SLEEP_AVG&t;&t;(10*HZ)
 DECL|macro|STARVATION_LIMIT
 mdefine_line|#define STARVATION_LIMIT&t;(10*HZ)
+DECL|macro|NODE_THRESHOLD
+mdefine_line|#define NODE_THRESHOLD&t;&t;125
 multiline_comment|/*&n; * If a task is &squot;interactive&squot; then we reinsert it in the active&n; * array after it has expired its current timeslice. (it will not&n; * continue to run immediately, it will still roundrobin with&n; * other interactive tasks.)&n; *&n; * This part scales the interactivity limit depending on niceness.&n; *&n; * We scale it linearly, offset by the INTERACTIVE_DELTA delta.&n; * Here are a few examples of different nice levels:&n; *&n; *  TASK_INTERACTIVE(-20): [1,1,1,1,1,1,1,1,1,0,0]&n; *  TASK_INTERACTIVE(-10): [1,1,1,1,1,1,1,0,0,0,0]&n; *  TASK_INTERACTIVE(  0): [1,1,1,1,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 10): [1,1,0,0,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 19): [0,0,0,0,0,0,0,0,0,0,0]&n; *&n; * (the X axis represents the possible -5 ... 0 ... +5 dynamic&n; *  priority range a task can explore, a value of &squot;1&squot; means the&n; *  task is rated interactive.)&n; *&n; * Ie. nice +19 tasks can never get &squot;interactive&squot; enough to be&n; * reinserted into the active array. And only heavily CPU-hog nice -20&n; * tasks will be expired. Default nice 0 tasks are somewhere between,&n; * it takes some effort for them to get interactive, but it&squot;s not&n; * too hard.&n; */
 DECL|macro|SCALE
 mdefine_line|#define SCALE(v1,v1_max,v2_max) &bslash;&n;&t;(v1) * (v2_max) / (v1_max)
