@@ -569,6 +569,7 @@ id|USER_DS
 )paren
 suffix:semicolon
 multiline_comment|/* establish new task-size as the address-limit */
+)brace
 id|out
 suffix:colon
 id|kfree
@@ -577,7 +578,6 @@ c_func
 id|av
 )paren
 suffix:semicolon
-)brace
 r_return
 id|r
 suffix:semicolon
