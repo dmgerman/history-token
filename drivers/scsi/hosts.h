@@ -118,7 +118,8 @@ op_star
 id|ioctl
 )paren
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -138,7 +139,8 @@ op_star
 id|command
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -150,7 +152,8 @@ op_star
 id|queuecommand
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -159,7 +162,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -184,7 +188,8 @@ op_star
 id|eh_abort_handler
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -195,7 +200,8 @@ op_star
 id|eh_device_reset_handler
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -206,7 +212,8 @@ op_star
 id|eh_bus_reset_handler
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -217,7 +224,8 @@ op_star
 id|eh_host_reset_handler
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -252,11 +260,12 @@ op_star
 id|slave_alloc
 )paren
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * slave_configure()  -  Optional&n;     * &n;     * Once the device has responded to an INQUIRY and we know the device&n;     * is online, we call into the low level driver with the Scsi_Device *&n;     * If the low level device driver implements this function, it *must*&n;     * perform the task of setting the queue depth on the device.  All other&n;     * tasks are optional and depend on what the driver supports and various&n;     * implementation details.&n;     * &n;     * Things currently recommended to be handled at this time include:&n;     *&n;     * 1.  Setting the device queue depth.  Proper setting of this is&n;     *     described in the comments for scsi_adjust_queue_depth.&n;     * 2.  Determining if the device supports the various synchronous&n;     *     negotiation protocols.  The device struct will already have&n;     *     responded to INQUIRY and the results of the standard items&n;     *     will have been shoved into the various device flag bits, eg.&n;     *     device-&gt;sdtr will be true if the device supports SDTR messages.&n;     * 3.  Allocating command structs that the device will need.&n;     * 4.  Setting the default timeout on this device (if needed).&n;     * 5.  Anything else the low level driver might want to do on a device&n;     *     specific setup basis...&n;     * 6.  Return 0 on success, non-0 on error.  The device will be marked&n;     *     as offline on error so that no access will occur.  If you return&n;     *     non-0, your slave_detach routine will never get called for this&n;     *     device, so don&squot;t leave any loose memory hanging around, clean&n;     *     up after yourself before returning non-0&n;     */
+multiline_comment|/*&n;     * slave_configure()  -  Optional&n;     * &n;     * Once the device has responded to an INQUIRY and we know the device&n;     * is online, we call into the low level driver with the struct scsi_device *&n;     * If the low level device driver implements this function, it *must*&n;     * perform the task of setting the queue depth on the device.  All other&n;     * tasks are optional and depend on what the driver supports and various&n;     * implementation details.&n;     * &n;     * Things currently recommended to be handled at this time include:&n;     *&n;     * 1.  Setting the device queue depth.  Proper setting of this is&n;     *     described in the comments for scsi_adjust_queue_depth.&n;     * 2.  Determining if the device supports the various synchronous&n;     *     negotiation protocols.  The device struct will already have&n;     *     responded to INQUIRY and the results of the standard items&n;     *     will have been shoved into the various device flag bits, eg.&n;     *     device-&gt;sdtr will be true if the device supports SDTR messages.&n;     * 3.  Allocating command structs that the device will need.&n;     * 4.  Setting the default timeout on this device (if needed).&n;     * 5.  Anything else the low level driver might want to do on a device&n;     *     specific setup basis...&n;     * 6.  Return 0 on success, non-0 on error.  The device will be marked&n;     *     as offline on error so that no access will occur.  If you return&n;     *     non-0, your slave_detach routine will never get called for this&n;     *     device, so don&squot;t leave any loose memory hanging around, clean&n;     *     up after yourself before returning non-0&n;     */
 DECL|member|slave_configure
 r_int
 (paren
@@ -264,7 +273,8 @@ op_star
 id|slave_configure
 )paren
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -276,7 +286,8 @@ op_star
 id|slave_destroy
 )paren
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -410,12 +421,6 @@ id|list_head
 id|legacy_hosts
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|typedef|Scsi_Host_Template
-r_typedef
-r_struct
-id|scsi_host_template
-id|Scsi_Host_Template
 suffix:semicolon
 DECL|struct|Scsi_Host
 r_struct
@@ -735,12 +740,14 @@ r_void
 id|scsi_free_host_dev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
 r_extern
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|scsi_get_host_dev
 c_func
@@ -1026,7 +1033,8 @@ multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * 
 DECL|function|scsi_find_device
 r_static
 r_inline
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|scsi_find_device
 c_func
@@ -1046,7 +1054,8 @@ r_int
 id|lun
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 suffix:semicolon

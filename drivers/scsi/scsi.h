@@ -295,11 +295,14 @@ mdefine_line|#define SYNC_RESET      0x40
 multiline_comment|/*&n; * This specifies &quot;machine infinity&quot; for host templates which don&squot;t&n; * limit the transfer size.  Note this limit represents an absolute&n; * maximum, and may be over the transfer limits allowed for individual&n; * devices (e.g. 256 for SCSI-1)&n; */
 DECL|macro|SCSI_DEFAULT_MAX_SECTORS
 mdefine_line|#define SCSI_DEFAULT_MAX_SECTORS&t;1024
-multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
-macro_line|#include &quot;scsi_obsolete.h&quot;
-multiline_comment|/*&n; * Forward-declaration of structs for prototypes.&n; */
 r_struct
 id|Scsi_Host
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
+r_struct
+id|scsi_device
 suffix:semicolon
 r_struct
 id|scsi_target
@@ -307,45 +310,25 @@ suffix:semicolon
 r_struct
 id|scatterlist
 suffix:semicolon
-multiline_comment|/*&n; * Add some typedefs so that we can prototyope a bunch of the functions.&n; */
-DECL|typedef|Scsi_Device
-r_typedef
-r_struct
-id|scsi_device
-id|Scsi_Device
-suffix:semicolon
-DECL|typedef|Scsi_Cmnd
-r_typedef
-r_struct
-id|scsi_cmnd
-id|Scsi_Cmnd
-suffix:semicolon
-DECL|typedef|Scsi_Request
-r_typedef
-r_struct
-id|scsi_request
-id|Scsi_Request
-suffix:semicolon
 multiline_comment|/*&n; * These are the error handling functions defined in scsi_error.c&n; */
 r_extern
 r_void
 id|scsi_add_timer
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
-id|SCset
 comma
 r_int
-id|timeout
 comma
 r_void
 (paren
 op_star
-id|complete
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -355,9 +338,9 @@ r_int
 id|scsi_delete_timer
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
-id|SCset
 )paren
 suffix:semicolon
 r_extern
@@ -365,7 +348,8 @@ r_int
 id|scsi_block_when_processing_errors
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -414,15 +398,13 @@ r_void
 id|scsi_io_completion
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
-id|SCpnt
 comma
 r_int
-id|good_sectors
 comma
 r_int
-id|block_sectors
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi.c&n; */
@@ -458,7 +440,8 @@ r_void
 id|scsi_adjust_queue_depth
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 comma
 r_int
@@ -471,7 +454,8 @@ r_int
 id|scsi_track_queue_full
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 comma
 r_int
@@ -509,12 +493,14 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */
 r_extern
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|scsi_allocate_request
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -523,7 +509,8 @@ r_void
 id|scsi_release_request
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 )paren
 suffix:semicolon
@@ -532,7 +519,8 @@ r_void
 id|scsi_wait_req
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 comma
 r_const
@@ -559,7 +547,8 @@ r_void
 id|scsi_do_req
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 comma
 r_const
@@ -635,8 +624,10 @@ multiline_comment|/*&n; * Prototypes for functions in constants.c&n; * Some of t
 r_extern
 r_void
 id|print_Scsi_Cmnd
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -659,7 +650,8 @@ r_const
 r_char
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -672,7 +664,8 @@ r_const
 r_char
 op_star
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 )paren
 suffix:semicolon
@@ -770,7 +763,8 @@ op_star
 id|host
 suffix:semicolon
 DECL|member|request_queue
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|request_queue
 suffix:semicolon
@@ -802,7 +796,8 @@ id|list_head
 id|starved_entry
 suffix:semicolon
 DECL|member|current_cmnd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_cmnd
 suffix:semicolon
@@ -1107,7 +1102,6 @@ suffix:semicolon
 DECL|macro|to_scsi_device
 mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_driverfs_dev)
 DECL|struct|scsi_pointer
-r_typedef
 r_struct
 id|scsi_pointer
 (brace
@@ -1163,9 +1157,7 @@ r_volatile
 r_int
 id|phase
 suffix:semicolon
-DECL|typedef|Scsi_Pointer
 )brace
-id|Scsi_Pointer
 suffix:semicolon
 multiline_comment|/*&n; * This is essentially a slimmed down version of Scsi_Cmnd.  The point of&n; * having this is that requests that are injected into the queue as result&n; * of things like ioctls and character devices shouldn&squot;t be using a&n; * Scsi_Cmnd until such a time that the command is actually at the head&n; * of the queue and being sent to the driver.&n; */
 DECL|struct|scsi_request
@@ -1197,12 +1189,14 @@ op_star
 id|sr_host
 suffix:semicolon
 DECL|member|sr_device
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sr_device
 suffix:semicolon
 DECL|member|sr_command
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sr_command
 suffix:semicolon
@@ -1314,7 +1308,8 @@ r_int
 id|owner
 suffix:semicolon
 DECL|member|sc_request
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|sc_request
 suffix:semicolon
@@ -1536,7 +1531,8 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n;&t; * The following fields can be written to by the host specific code. &n;&t; * Everything else should be left alone. &n;&t; */
 DECL|member|SCp
-id|Scsi_Pointer
+r_struct
+id|scsi_pointer
 id|SCp
 suffix:semicolon
 multiline_comment|/* Scratchpad used by some host adapters */
@@ -1585,7 +1581,8 @@ r_int
 id|scsi_reset_provider
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 comma
 r_int
@@ -1607,9 +1604,10 @@ r_void
 id|scsi_activate_tcq
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|SDpnt
+id|sdev
 comma
 r_int
 id|depth
@@ -1618,7 +1616,7 @@ id|depth
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;tagged_supported
+id|sdev-&gt;tagged_supported
 )paren
 (brace
 r_if
@@ -1628,23 +1626,21 @@ op_logical_neg
 id|blk_queue_tagged
 c_func
 (paren
-id|SDpnt-&gt;request_queue
+id|sdev-&gt;request_queue
 )paren
 )paren
-(brace
 id|blk_queue_init_tags
 c_func
 (paren
-id|SDpnt-&gt;request_queue
+id|sdev-&gt;request_queue
 comma
 id|depth
 )paren
 suffix:semicolon
-)brace
 id|scsi_adjust_queue_depth
 c_func
 (paren
-id|SDpnt
+id|sdev
 comma
 id|MSG_ORDERED_TAG
 comma
@@ -1661,9 +1657,10 @@ r_void
 id|scsi_deactivate_tcq
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|SDpnt
+id|sdev
 comma
 r_int
 id|depth
@@ -1675,21 +1672,19 @@ c_cond
 id|blk_queue_tagged
 c_func
 (paren
-id|SDpnt-&gt;request_queue
+id|sdev-&gt;request_queue
 )paren
 )paren
-(brace
 id|blk_queue_free_tags
 c_func
 (paren
-id|SDpnt-&gt;request_queue
+id|sdev-&gt;request_queue
 )paren
 suffix:semicolon
-)brace
 id|scsi_adjust_queue_depth
 c_func
 (paren
-id|SDpnt
+id|sdev
 comma
 l_int|0
 comma
@@ -1705,9 +1700,10 @@ r_int
 id|scsi_populate_tag_msg
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
-id|SCpnt
+id|cmd
 comma
 r_char
 op_star
@@ -1719,12 +1715,11 @@ id|request
 op_star
 id|req
 op_assign
-id|SCpnt-&gt;request
+id|cmd-&gt;request
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|blk_rq_tagged
 c_func
 (paren
@@ -1732,10 +1727,6 @@ id|req
 )paren
 )paren
 (brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1760,24 +1751,30 @@ op_star
 id|msg
 op_increment
 op_assign
-id|SCpnt-&gt;request-&gt;tag
+id|req-&gt;tag
 suffix:semicolon
 r_return
 l_int|2
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_find_tag - find a tagged command by device&n; * @SDpnt:&t;pointer to the ScSI device&n; * @tag:&t;the tag number&n; *&n; * Notes:&n; *&t;Only works with tags allocated by the generic blk layer.&n; **/
 DECL|function|scsi_find_tag
 r_static
 r_inline
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsi_find_tag
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|SDpnt
+id|sdev
 comma
 r_int
 id|tag
@@ -1792,50 +1789,45 @@ r_if
 c_cond
 (paren
 id|tag
-op_eq
+op_ne
 id|SCSI_NO_TAG
 )paren
 (brace
-multiline_comment|/* single command, look in space */
-r_return
-id|SDpnt-&gt;current_cmnd
-suffix:semicolon
-)brace
 id|req
 op_assign
 id|blk_queue_find_tag
 c_func
 (paren
-id|SDpnt-&gt;request_queue
+id|sdev-&gt;request_queue
 comma
 id|tag
 )paren
 suffix:semicolon
-r_if
+r_return
+id|req
+ques
 c_cond
 (paren
-id|req
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_return
-(paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|req-&gt;special
+suffix:colon
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* single command, look in space */
+r_return
+id|sdev-&gt;current_cmnd
 suffix:semicolon
 )brace
 r_int
 id|scsi_set_medium_removal
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -1879,5 +1871,9 @@ op_star
 id|attr
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
+macro_line|#include &quot;scsi_obsolete.h&quot;
+multiline_comment|/* obsolete typedef junk. */
+macro_line|#include &quot;scsi_typedefs.h&quot;
 macro_line|#endif /* _SCSI_H */
 eof
