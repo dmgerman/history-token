@@ -3498,7 +3498,7 @@ id|pskb
 op_member_access_from_pointer
 id|nh.iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_MF

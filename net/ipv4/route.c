@@ -5339,7 +5339,7 @@ id|saddr
 op_logical_or
 id|skb-&gt;protocol
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -6274,7 +6274,7 @@ c_cond
 (paren
 id|skb-&gt;protocol
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -6552,7 +6552,7 @@ c_cond
 (paren
 id|skb-&gt;protocol
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -9520,7 +9520,7 @@ id|out
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP

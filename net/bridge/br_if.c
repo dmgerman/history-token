@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 DECL|variable|bridge_list
@@ -81,7 +82,7 @@ r_return
 l_int|100
 suffix:semicolon
 )brace
-multiline_comment|/* called under bridge lock */
+multiline_comment|/* called under BR_NETPROTO_LOCK and bridge lock */
 DECL|function|__br_del_if
 r_static
 r_int
@@ -296,7 +297,13 @@ op_star
 id|br
 )paren
 (brace
-id|write_lock_bh
+id|br_write_lock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+id|write_lock
 c_func
 (paren
 op_amp
@@ -318,11 +325,17 @@ comma
 id|br-&gt;port_list-&gt;dev
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|write_unlock
 c_func
 (paren
 op_amp
 id|br-&gt;lock
+)paren
+suffix:semicolon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
@@ -1052,7 +1065,13 @@ id|dev
 r_int
 id|retval
 suffix:semicolon
-id|write_lock_bh
+id|br_write_lock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+id|write_lock
 c_func
 (paren
 op_amp
@@ -1075,11 +1094,17 @@ c_func
 id|br
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|write_unlock
 c_func
 (paren
 op_amp
 id|br-&gt;lock
+)paren
+suffix:semicolon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 r_return

@@ -2061,21 +2061,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|net_call_rx_atomic
-c_func
-(paren
-r_void
-(paren
-op_star
-id|fn
-)paren
-(paren
-r_void
-)paren
-)paren
-suffix:semicolon
 DECL|macro|HAVE_NETIF_RX
 mdefine_line|#define HAVE_NETIF_RX 1
 r_extern

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
@@ -94,20 +95,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__br_clear_frame_hook
-r_static
-r_void
-id|__br_clear_frame_hook
-c_func
-(paren
-r_void
-)paren
-(brace
-id|br_handle_frame_hook
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|__br_clear_ioctl_hook
 r_static
 r_void
@@ -145,10 +132,20 @@ c_func
 id|__br_clear_ioctl_hook
 )paren
 suffix:semicolon
-id|net_call_rx_atomic
+id|br_write_lock_bh
 c_func
 (paren
-id|__br_clear_frame_hook
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+id|br_handle_frame_hook
+op_assign
+l_int|NULL
+suffix:semicolon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)

@@ -46,6 +46,11 @@ macro_line|#else /* static! */
 DECL|macro|SCTP_PROTOSW_FLAG
 mdefine_line|#define SCTP_PROTOSW_FLAG INET_PROTOSW_PERMANENT
 macro_line|#endif
+multiline_comment|/* Certain internal static functions need to be exported when &n; * compiled into the test frame.&n; */
+macro_line|#ifndef SCTP_STATIC
+DECL|macro|SCTP_STATIC
+mdefine_line|#define SCTP_STATIC static
+macro_line|#endif
 multiline_comment|/* &n; * Function declarations. &n; */
 multiline_comment|/*&n; * sctp_protocol.c &n; */
 r_extern

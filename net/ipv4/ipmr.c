@@ -5965,7 +5965,7 @@ id|ip_options
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -6383,7 +6383,7 @@ id|ip_options
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
