@@ -1597,6 +1597,9 @@ l_int|2
 r_int
 id|direction
 suffix:semicolon
+r_int
+id|size
+suffix:semicolon
 multiline_comment|/* for ctrl unmap twice: SETUP and DATA;&n;&t;&t;&t; * else (bulk, intr) just once: DATA&n;&t;&t;&t; */
 r_if
 c_cond
@@ -1610,10 +1613,20 @@ id|usb_pipecontrol
 id|urb-&gt;pipe
 )paren
 )paren
+(brace
 id|direction
 op_assign
 id|PCI_DMA_TODEVICE
 suffix:semicolon
+id|size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|usb_ctrlrequest
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 id|direction
@@ -1627,6 +1640,10 @@ c_cond
 id|PCI_DMA_FROMDEVICE
 suffix:colon
 id|PCI_DMA_TODEVICE
+suffix:semicolon
+id|size
+op_assign
+id|qtd-&gt;urb-&gt;transfer_buffer_length
 suffix:semicolon
 id|unmapped
 op_increment
@@ -1643,7 +1660,7 @@ id|ehci-&gt;hcd.pdev
 comma
 id|qtd-&gt;buf_dma
 comma
-id|qtd-&gt;urb-&gt;transfer_buffer_length
+id|size
 comma
 id|direction
 )paren
