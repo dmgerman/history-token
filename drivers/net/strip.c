@@ -8089,6 +8089,10 @@ op_add_assign
 id|packetlen
 suffix:semicolon
 macro_line|#endif
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
