@@ -5612,7 +5612,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* TLan_HandleDummy */
-multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleTxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurances by&n;&t; *&t;reading the CSTAT member of the list structure.  Tx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;functionality, so process EOC events if this is the&n;&t; *&t;case.&n;&t; *&n;&t; **************************************************************/
+multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleTxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurrences by&n;&t; *&t;reading the CSTAT member of the list structure.  Tx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;functionality, so process EOC events if this is the&n;&t; *&t;case.&n;&t; *&n;&t; **************************************************************/
 DECL|function|TLan_HandleTxEOC
 id|u32
 id|TLan_HandleTxEOC
@@ -6038,7 +6038,7 @@ id|ack
 suffix:semicolon
 )brace
 multiline_comment|/* TLan_HandleStatusCheck */
-multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleRxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurances by&n;&t; *&t;reading the CSTAT member of the list structure.  Rx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;CSTAT member or a INTDIS register, so if this chip is&n;&t; *&t;pre-3.0, process EOC interrupts normally.&n;&t; *&n;&t; **************************************************************/
+multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleRxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurrences by&n;&t; *&t;reading the CSTAT member of the list structure.  Rx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;CSTAT member or a INTDIS register, so if this chip is&n;&t; *&t;pre-3.0, process EOC interrupts normally.&n;&t; *&n;&t; **************************************************************/
 DECL|function|TLan_HandleRxEOC
 id|u32
 id|TLan_HandleRxEOC

@@ -541,7 +541,7 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * mc32_probe &t;-&t;Search for supported boards&n; * @dev: device to probe&n; *&n; * Because MCA bus is a real bus and we can scan for cards we could do a&n; * single scan for all boards here. Right now we use the passed in device&n; * structure and scan for only one board. This needs fixing for modules&n; * in paticular.&n; */
+multiline_comment|/**&n; * mc32_probe &t;-&t;Search for supported boards&n; * @dev: device to probe&n; *&n; * Because MCA bus is a real bus and we can scan for cards we could do a&n; * single scan for all boards here. Right now we use the passed in device&n; * structure and scan for only one board. This needs fixing for modules&n; * in particular.&n; */
 DECL|function|mc32_probe
 r_int
 id|__init

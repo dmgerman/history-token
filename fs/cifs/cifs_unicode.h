@@ -209,7 +209,7 @@ r_return
 id|anchor
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * UniStrchr:  Find a character in a string&n; *&n; * Returns:&n; *     Address of first occurance of character in string&n; *     or NULL if the character is not in the string&n; */
+multiline_comment|/*&n; * UniStrchr:  Find a character in a string&n; *&n; * Returns:&n; *     Address of first occurrence of character in string&n; *     or NULL if the character is not in the string&n; */
 r_static
 r_inline
 m_wchar_t
