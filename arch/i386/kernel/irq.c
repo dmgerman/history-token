@@ -1216,7 +1216,7 @@ r_void
 r_int
 id|cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -1238,6 +1238,11 @@ id|cpu
 )paren
 suffix:semicolon
 id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|put_cpu
 c_func
 (paren
 )paren
