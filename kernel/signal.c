@@ -63,8 +63,6 @@ DECL|macro|SIG_KERNEL_ONLY_MASK
 mdefine_line|#define SIG_KERNEL_ONLY_MASK (&bslash;&n;&t;M(SIGKILL)   |  M(SIGSTOP)                                   )
 DECL|macro|SIG_KERNEL_STOP_MASK
 mdefine_line|#define SIG_KERNEL_STOP_MASK (&bslash;&n;&t;M(SIGSTOP)   |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   )
-DECL|macro|SIG_KERNEL_CONT_MASK
-mdefine_line|#define SIG_KERNEL_CONT_MASK (&bslash;&n;&t;M(SIGCONT)   |  M(SIGKILL)   )
 DECL|macro|SIG_KERNEL_COREDUMP_MASK
 mdefine_line|#define SIG_KERNEL_COREDUMP_MASK (&bslash;&n;        M(SIGQUIT)   |  M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   | &bslash;&n;        M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGBUS)    |  M(SIGSYS)    | &bslash;&n;        M(SIGXCPU)   |  M(SIGXFSZ)   |  M_SIGEMT                     )
 DECL|macro|SIG_KERNEL_IGNORE_MASK
@@ -77,8 +75,6 @@ DECL|macro|sig_kernel_ignore
 mdefine_line|#define sig_kernel_ignore(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_IGNORE_MASK))
 DECL|macro|sig_kernel_stop
 mdefine_line|#define sig_kernel_stop(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_STOP_MASK))
-DECL|macro|sig_kernel_cont
-mdefine_line|#define sig_kernel_cont(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_CONT_MASK))
 DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_ignored
@@ -1506,6 +1502,10 @@ r_int
 id|resume
 )paren
 (brace
+r_int
+r_int
+id|mask
+suffix:semicolon
 id|set_tsk_thread_flag
 c_func
 (paren
@@ -1529,22 +1529,25 @@ id|t
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If resume is set, we want to wake it up in the TASK_STOPPED case.&n;&t; * We don&squot;t check for TASK_STOPPED because there is a race with it&n;&t; * executing another processor and just now entering stopped state.&n;&t; * By calling wake_up_process any time resume is set, we ensure&n;&t; * the process will wake up and handle its stop or death signal.&n;&t; */
+id|mask
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|resume
+)paren
+id|mask
+op_or_assign
+id|TASK_STOPPED
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|t-&gt;state
 op_amp
-id|TASK_INTERRUPTIBLE
-)paren
-op_logical_or
-(paren
-id|resume
-op_logical_and
-id|t-&gt;state
-OL
-id|TASK_ZOMBIE
-)paren
+id|mask
 )paren
 (brace
 id|wake_up_process
@@ -1925,11 +1928,9 @@ r_else
 r_if
 c_cond
 (paren
-id|sig_kernel_cont
-c_func
-(paren
 id|sig
-)paren
+op_eq
+id|SIGCONT
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Remove all stop signals from all queues,&n;&t;&t; * and wake all threads.&n;&t;&t; */
@@ -1999,7 +2000,31 @@ op_amp
 id|t-&gt;pending
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * This wakeup is only need if in TASK_STOPPED,&n;&t;&t;&t; * but there can be SMP races with testing for that.&n;&t;&t;&t; * In the normal SIGCONT case, all will be stopped.&n;&t;&t;&t; * A spuriously sent SIGCONT will interrupt all running&n;&t;&t;&t; * threads to check signals even if it&squot;s ignored.&n;&t;&t;&t; *&n;&t;&t;&t; * If there is a handler for SIGCONT, we must make&n;&t;&t;&t; * sure that no thread returns to user mode before&n;&t;&t;&t; * we post the signal, in case it was the only&n;&t;&t;&t; * thread eligible to run the signal handler--then&n;&t;&t;&t; * it must not do anything between resuming and&n;&t;&t;&t; * running the handler.  With the TIF_SIGPENDING&n;&t;&t;&t; * flag set, the thread will pause and acquire the&n;&t;&t;&t; * siglock that we hold now and until we&squot;ve queued&n;&t;&t;&t; * the pending signal.  For SIGKILL, we likewise&n;&t;&t;&t; * don&squot;t want anybody doing anything but taking the&n;&t;&t;&t; * SIGKILL.  The only case in which a thread would&n;&t;&t;&t; * not already be in the signal dequeuing loop is&n;&t;&t;&t; * non-signal (e.g. syscall) ptrace tracing, so we&n;&t;&t;&t; * don&squot;t worry about an unnecessary trip through&n;&t;&t;&t; * the signal code and just keep this code path&n;&t;&t;&t; * simpler by unconditionally setting the flag.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This wakeup is only need if in TASK_STOPPED,&n;&t;&t;&t; * but there can be SMP races with testing for that.&n;&t;&t;&t; * In the normal SIGCONT case, all will be stopped.&n;&t;&t;&t; * A spuriously sent SIGCONT will interrupt all running&n;&t;&t;&t; * threads to check signals even if it&squot;s ignored.&n;&t;&t;&t; *&n;&t;&t;&t; * If there is a handler for SIGCONT, we must make&n;&t;&t;&t; * sure that no thread returns to user mode before&n;&t;&t;&t; * we post the signal, in case it was the only&n;&t;&t;&t; * thread eligible to run the signal handler--then&n;&t;&t;&t; * it must not do anything between resuming and&n;&t;&t;&t; * running the handler.  With the TIF_SIGPENDING&n;&t;&t;&t; * flag set, the thread will pause and acquire the&n;&t;&t;&t; * siglock that we hold now and until we&squot;ve queued&n;&t;&t;&t; * the pending signal. &n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|t-&gt;flags
+op_amp
+id|PF_EXITING
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sigismember
+c_func
+(paren
+op_amp
+id|t-&gt;blocked
+comma
+id|SIGCONT
+)paren
+)paren
 id|set_tsk_thread_flag
 c_func
 (paren
@@ -2014,6 +2039,7 @@ c_func
 id|t
 )paren
 suffix:semicolon
+)brace
 id|t
 op_assign
 id|next_thread
@@ -2569,7 +2595,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Test if P wants to take SIG.  After we&squot;ve checked all threads with this,&n; * it&squot;s equivalent to finding no threads not blocking SIG.  Any threads not&n; * blocking SIG were ruled out because they are not running and already&n; * have pending signals.  Such threads will dequeue from the shared queue&n; * as soon as they&squot;re available, so putting the signal on the shared queue&n; * will be equivalent to sending it to one such thread.&n; */
 DECL|macro|wants_signal
-mdefine_line|#define wants_signal(sig, p)&t;(!sigismember(&amp;(p)-&gt;blocked, sig) &bslash;&n;&t;&t;&t;&t; &amp;&amp; (p)-&gt;state &lt; TASK_STOPPED &bslash;&n;&t;&t;&t;&t; &amp;&amp; !((p)-&gt;flags &amp; PF_EXITING) &bslash;&n;&t;&t;&t;&t; &amp;&amp; (task_curr(p) || !signal_pending(p)))
+mdefine_line|#define wants_signal(sig, p, mask) &t;&t;&t;&bslash;&n;&t;(!sigismember(&amp;(p)-&gt;blocked, sig)&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;state &amp; mask)&t;&t;&t;&bslash;&n;&t; &amp;&amp; !((p)-&gt;flags &amp; PF_EXITING)&t;&t;&t;&bslash;&n;&t; &amp;&amp; (task_curr(p) || !signal_pending(p)))
 r_static
 r_inline
 r_int
@@ -2595,6 +2621,10 @@ r_struct
 id|task_struct
 op_star
 id|t
+suffix:semicolon
+r_int
+r_int
+id|mask
 suffix:semicolon
 r_int
 id|ret
@@ -2656,6 +2686,24 @@ multiline_comment|/* This is a non-RT signal and we already have one queued.  */
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t bother zombies and stopped tasks (but&n;&t; * SIGKILL will punch through stopped state)&n;&t; */
+id|mask
+op_assign
+id|TASK_DEAD
+op_or
+id|TASK_ZOMBIE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sig
+op_ne
+id|SIGKILL
+)paren
+id|mask
+op_or_assign
+id|TASK_STOPPED
+suffix:semicolon
 multiline_comment|/*&n;&t; * Put this signal on the shared-pending queue, or fail with EAGAIN.&n;&t; * We always use the shared queue for process-wide signals,&n;&t; * to avoid several races.&n;&t; */
 id|ret
 op_assign
@@ -2692,6 +2740,8 @@ c_func
 id|sig
 comma
 id|p
+comma
+id|mask
 )paren
 )paren
 id|t
@@ -2751,6 +2801,8 @@ c_func
 id|sig
 comma
 id|t
+comma
+id|mask
 )paren
 )paren
 (brace
