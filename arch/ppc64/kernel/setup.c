@@ -29,6 +29,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 r_extern
 r_int
@@ -79,6 +80,32 @@ id|r7
 suffix:semicolon
 r_extern
 r_void
+id|pmac_init
+c_func
+(paren
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|iSeries_init
 c_func
 (paren
@@ -104,6 +131,14 @@ suffix:semicolon
 r_extern
 r_void
 id|pSeriesLP_init_early
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_init_early
 c_func
 (paren
 r_void
@@ -527,8 +562,58 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_PMAC
+r_case
+id|PLATFORM_POWERMAC
+suffix:colon
+id|pmac_init_early
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+id|initrd_start
+op_assign
+id|initrd_end
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
+id|parse_bootinfo
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+id|map_boot_text
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+(brace
+id|early_console_initialized
+op_assign
+l_int|1
+suffix:semicolon
+id|register_console
+c_func
+(paren
+op_amp
+id|udbg_console
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
@@ -662,9 +747,39 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_SMP */
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_PMAC
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+(brace
+id|finish_device_tree
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pmac_init
+c_func
+(paren
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Finish initializing the hash table (do the dynamic&n;&t; * patching for the fast-path hashtable.S code)&n;&t; */
 id|htab_finish_init
 c_func
@@ -720,7 +835,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg                      = 0x%p&bslash;n&quot;
+l_string|&quot;systemcfg                     = 0x%p&bslash;n&quot;
 comma
 id|systemcfg
 )paren
