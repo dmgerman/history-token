@@ -10952,28 +10952,18 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nAttached devices:%s&bslash;n&quot;
-comma
-id|instance-&gt;host_queue
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot; none&quot;
+l_string|&quot;&bslash;nAttached devices:&bslash;n&quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|scd
-op_assign
-id|instance-&gt;host_queue
-suffix:semicolon
-id|scd
-suffix:semicolon
-id|scd
-op_assign
-id|scd-&gt;next
+comma
+op_amp
+id|instance-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_int
