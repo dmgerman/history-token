@@ -971,6 +971,8 @@ DECL|macro|SND_CLICK
 mdefine_line|#define SND_CLICK&t;&t;0x00
 DECL|macro|SND_BELL
 mdefine_line|#define SND_BELL&t;&t;0x01
+DECL|macro|SND_TONE
+mdefine_line|#define SND_TONE&t;&t;0x02
 DECL|macro|SND_MAX
 mdefine_line|#define SND_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * IDs.&n; */
@@ -1331,6 +1333,8 @@ DECL|macro|BIT
 mdefine_line|#define BIT(x)&t;(1UL&lt;&lt;((x)%BITS_PER_LONG))
 DECL|macro|LONG
 mdefine_line|#define LONG(x) ((x)/BITS_PER_LONG)
+DECL|macro|INPUT_KEYCODE
+mdefine_line|#define INPUT_KEYCODE(dev, scancode) ((dev-&gt;keycodesize == 1) ? ((u8*)dev-&gt;keycode)[scancode] : &bslash;&n;&t;((dev-&gt;keycodesize == 1) ? ((u16*)dev-&gt;keycode)[scancode] : (((u32*)dev-&gt;keycode)[scancode])))
 DECL|struct|input_dev
 r_struct
 id|input_dev

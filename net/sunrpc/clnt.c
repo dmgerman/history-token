@@ -510,11 +510,18 @@ id|clnt
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: shutting down %s client for %s&bslash;n&quot;
+l_string|&quot;RPC: shutting down %s client for %s, tasks=%d&bslash;n&quot;
 comma
 id|clnt-&gt;cl_protname
 comma
 id|clnt-&gt;cl_server
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|clnt-&gt;cl_users
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -526,25 +533,10 @@ c_func
 op_amp
 id|clnt-&gt;cl_users
 )paren
+OG
+l_int|0
 )paren
 (brace
-macro_line|#ifdef RPC_DEBUG
-id|dprintk
-c_func
-(paren
-l_string|&quot;RPC: rpc_shutdown_client: client %s, tasks=%d&bslash;n&quot;
-comma
-id|clnt-&gt;cl_protname
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|clnt-&gt;cl_users
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Don&squot;t let rpc_release_client destroy us */
 id|clnt-&gt;cl_oneshot
 op_assign
@@ -569,6 +561,48 @@ comma
 l_int|1
 op_star
 id|HZ
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|clnt-&gt;cl_users
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;RPC: rpc_shutdown_client clnt %p tasks=%d&bslash;n&quot;
+comma
+id|clnt
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|clnt-&gt;cl_users
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef RPC_DEBUG
+id|rpc_show_tasks
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

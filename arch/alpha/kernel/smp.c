@@ -81,13 +81,6 @@ id|IPI_CPU_STOP
 comma
 )brace
 suffix:semicolon
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* Set to a secondary&squot;s cpuid when it comes online.  */
 DECL|variable|__initdata
 r_static

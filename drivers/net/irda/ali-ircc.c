@@ -100,20 +100,6 @@ l_int|0
 suffix:semicolon
 r_static
 r_int
-id|ali_ircc_probe_43
-c_func
-(paren
-id|ali_chip_t
-op_star
-id|chip
-comma
-id|chipio_t
-op_star
-id|info
-)paren
-suffix:semicolon
-r_static
-r_int
 id|ali_ircc_probe_53
 c_func
 (paren
@@ -1137,9 +1123,6 @@ r_int
 id|dongle_id
 suffix:semicolon
 r_int
-id|ret
-suffix:semicolon
-r_int
 id|err
 suffix:semicolon
 id|IRDA_DEBUG
@@ -1865,26 +1848,6 @@ id|info
 )paren
 (brace
 multiline_comment|/* All controller information like I/O address, DMA channel, IRQ&n;&t; * are set by BIOS&n;&t; */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function ali_ircc_probe_43 (chip, info)&n; *    &t;&n; *&t;Probes for the ALi M1543&n; */
-DECL|function|ali_ircc_probe_43
-r_static
-r_int
-id|ali_ircc_probe_43
-c_func
-(paren
-id|ali_chip_t
-op_star
-id|chip
-comma
-id|chipio_t
-op_star
-id|info
-)paren
-(brace
 r_return
 l_int|0
 suffix:semicolon

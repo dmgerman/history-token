@@ -200,13 +200,6 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 DECL|variable|register_ioctl32_conversion
 id|EXPORT_SYMBOL

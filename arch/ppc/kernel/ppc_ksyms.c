@@ -320,15 +320,6 @@ c_func
 id|probe_irq_mask
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 DECL|variable|ISA_DMA_THRESHOLD
 id|EXPORT_SYMBOL
 c_func

@@ -431,7 +431,6 @@ id|dev-&gt;dir
 suffix:semicolon
 )brace
 DECL|function|get_devpath_length
-r_static
 r_int
 id|get_devpath_length
 c_func
@@ -483,7 +482,6 @@ id|length
 suffix:semicolon
 )brace
 DECL|function|fill_devpath
-r_static
 r_void
 id|fill_devpath
 c_func

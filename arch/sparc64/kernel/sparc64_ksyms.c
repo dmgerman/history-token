@@ -544,12 +544,7 @@ op_star
 id|fpregs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_extern
-id|spinlock_t
-id|kernel_flag
-suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_DEBUG_SPINLOCK)
 r_extern
 r_void
 id|_do_spin_lock
@@ -634,7 +629,6 @@ id|rw
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
 r_extern
 r_int
 r_int
@@ -678,14 +672,6 @@ id|__write_unlock
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Kernel wide locking */
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 multiline_comment|/* Hard IRQ locking */
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|synchronize_irq
