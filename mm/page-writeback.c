@@ -140,6 +140,11 @@ suffix:semicolon
 r_int
 id|dirty
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|tsk
+suffix:semicolon
 id|get_page_state
 c_func
 (paren
@@ -225,12 +230,22 @@ id|total_pages
 op_div
 l_int|100
 suffix:semicolon
+id|tsk
+op_assign
+id|current
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
+id|tsk-&gt;flags
 op_amp
 id|PF_LESS_THROTTLE
+op_logical_or
+id|rt_task
+c_func
+(paren
+id|tsk
+)paren
 )paren
 (brace
 id|background
@@ -259,6 +274,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are generating dirty&n; * data.  It looks at the number of dirty pages in the machine and will force&n; * the caller to perform writeback if the system is over `vm_dirty_ratio&squot;.&n; * If we&squot;re over `background_thresh&squot; then pdflush is woken to perform some&n; * writeout.&n; */
 DECL|function|balance_dirty_pages
+r_static
 r_void
 id|balance_dirty_pages
 c_func
@@ -519,6 +535,7 @@ id|ratelimit
 op_assign
 l_int|8
 suffix:semicolon
+multiline_comment|/*&n;&t; * Check the rate limiting. Also, we do not want to throttle real-time&n;&t; * tasks in balance_dirty_pages(). Period.&n;&t; */
 r_if
 c_cond
 (paren

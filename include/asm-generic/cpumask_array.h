@@ -42,7 +42,7 @@ mdefine_line|#define cpus_promote(map)&t;({ cpumask_t __cpu_mask = CPU_MASK_NONE
 DECL|macro|cpumask_of_cpu
 mdefine_line|#define cpumask_of_cpu(cpu)&t;({ cpumask_t __cpu_mask = CPU_MASK_NONE;&bslash;&n;&t;&t;&t;&t;&t;cpu_set(cpu, __cpu_mask);&t;&bslash;&n;&t;&t;&t;&t;&t;__cpu_mask;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;})
 DECL|macro|any_online_cpu
-mdefine_line|#define any_online_cpu(map)&t;find_first_bit((map).mask, NR_CPUS)
+mdefine_line|#define any_online_cpu(map)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cpumask_t __tmp__;&t;&t;&t;&bslash;&n;&t;cpus_and(__tmp__, map, cpu_online_map);&t;&bslash;&n;&t;find_first_bit(__tmp__.mask, NR_CPUS);&t;&bslash;&n;})
 multiline_comment|/*&n; * um, these need to be usable as static initializers&n; */
 DECL|macro|CPU_MASK_ALL
 mdefine_line|#define CPU_MASK_ALL&t;{ {[0 ... CPU_ARRAY_SIZE-1] = ~0UL} }

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for inb(), outb(), etc. */
@@ -266,10 +267,10 @@ id|atomic_t
 id|bh_buff_used
 suffix:semicolon
 multiline_comment|/* Polling task queue. Each interface&n;         * has its own task queue, which is used&n;         * to defer events from the interrupt */
-DECL|member|fr_poll_task
+DECL|member|fr_poll_work
 r_struct
-id|tq_struct
-id|fr_poll_task
+id|work_struct
+id|fr_poll_work
 suffix:semicolon
 DECL|member|fr_arp_timer
 r_struct
@@ -3327,25 +3328,20 @@ op_assign
 id|chan
 suffix:semicolon
 multiline_comment|/* Initialize FR Polling Task Queue&n;         * We need a poll routine for each network&n;         * interface. &n;         */
-id|chan-&gt;fr_poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;fr_poll_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;fr_poll_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|fr_poll
-suffix:semicolon
-id|chan-&gt;fr_poll_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -4075,25 +4071,20 @@ id|chan-&gt;tq_working
 op_assign
 l_int|0
 suffix:semicolon
-id|chan-&gt;common.wanpipe_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;common.wanpipe_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|fr_bh
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and initialize BH circular buffer */
 id|chan-&gt;bh_head
@@ -7541,7 +7532,7 @@ op_assign
 id|skb-&gt;data
 suffix:semicolon
 )brace
-multiline_comment|/* Send a packed up the IP stack */
+multiline_comment|/* Send a packet up the IP stack */
 id|skb-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -7598,7 +7589,7 @@ op_assign
 id|card-&gt;u.f.rxmb_base
 suffix:semicolon
 )brace
-multiline_comment|/*==================================================================&n; * tx_intr:&t;Transmit interrupt handler.&n; *&n; * Rationale:&n; *      If the board is busy transmitting, if_send() will&n; *      buffers a single packet and turn on&n; *      the tx interrupt. Tx interrupt will be called&n; *      by the board, once the firmware can send more&n; *      data. Thus, no polling is required.&t; &n; *&n; * Description:&n; *&t;Tx interrupt is called for each &n; *      configured dlci channel. Thus: &n; * &t;1. Obtain the netowrk interface based on the&n; *         dlci number.&n; *      2. Check that network interface is up and&n; *         properly setup.&n; * &t;3. Check for a buffered packed.&n; *      4. Transmit the packed.&n; *&t;5. If we are in WANPIPE mode, mark the &n; *         NET_BH handler. &n; *      6. If we are in API mode, kick&n; *         the AF_WANPIPE socket for more data. &n; *&t;   &n; */
+multiline_comment|/*==================================================================&n; * tx_intr:&t;Transmit interrupt handler.&n; *&n; * Rationale:&n; *      If the board is busy transmitting, if_send() will&n; *      buffers a single packet and turn on&n; *      the tx interrupt. Tx interrupt will be called&n; *      by the board, once the firmware can send more&n; *      data. Thus, no polling is required.&t; &n; *&n; * Description:&n; *&t;Tx interrupt is called for each &n; *      configured dlci channel. Thus: &n; * &t;1. Obtain the netowrk interface based on the&n; *         dlci number.&n; *      2. Check that network interface is up and&n; *         properly setup.&n; * &t;3. Check for a buffered packet.&n; *      4. Transmit the packet.&n; *&t;5. If we are in WANPIPE mode, mark the &n; *         NET_BH handler. &n; *      6. If we are in API mode, kick&n; *         the AF_WANPIPE socket for more data. &n; *&t;   &n; */
 DECL|function|tx_intr
 r_static
 r_void
@@ -15419,7 +15410,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------&n;                  RECEIVE INTERRUPT: BOTTOM HALF HANDLERS &n; ----------------------------------------------------------------------*/
-multiline_comment|/*========================================================&n; * bh_enqueue&n; *&n; * Description:&n; *&t;Insert a received packed into a circular&n; *      rx queue.  This packed will be picked up &n; *      by fr_bh() and sent up the stack to the&n; *      user.&n; *       &t;&n; * Usage: &n; *&t;This function is called by rx interrupt,&n; *      in API mode.&n; *&n; */
+multiline_comment|/*========================================================&n; * bh_enqueue&n; *&n; * Description:&n; *&t;Insert a received packet into a circular&n; *      rx queue.  This packet will be picked up &n; *      by fr_bh() and sent up the stack to the&n; *      user.&n; *       &t;&n; * Usage: &n; *&t;This function is called by rx interrupt,&n; *      in API mode.&n; *&n; */
 DECL|function|bh_enqueue
 r_static
 r_int
@@ -15551,21 +15542,16 @@ id|chan-&gt;tq_working
 )paren
 )paren
 (brace
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 c_func
 (paren
 op_amp
-id|chan-&gt;common.wanpipe_task
-)paren
-suffix:semicolon
-id|wanpipe_mark_bh
-c_func
-(paren
+id|chan-&gt;common.wanpipe_work
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*========================================================&n; * fr_bh&n; *&n; * Description:&n; *&t;Frame relay receive BH handler. &n; *&t;Dequeue data from the BH circular &n; *&t;buffer and pass it up the API sock.&n; *       &t;&n; * Rationale: &n; *&t;This fuction is used to offload the &n; *&t;rx_interrupt during API operation mode.  &n; *&t;The fr_bh() function executes for each &n; *&t;dlci/interface.  &n; * &n; *      Once receive interrupt copies data from the&n; *      card into an skb buffer, the skb buffer&n; *  &t;is appended to a circular BH buffer.&n; *  &t;Then the interrupt kicks fr_bh() to finish the&n; *      job at a later time (no within the interrupt).&n; *       &n; * Usage:&n; * &t;Interrupts use this to defer a taks to &n; *      a polling routine.&n; *&n; */
+multiline_comment|/*========================================================&n; * fr_bh&n; *&n; * Description:&n; *&t;Frame relay receive BH handler. &n; *&t;Dequeue data from the BH circular &n; *&t;buffer and pass it up the API sock.&n; *       &t;&n; * Rationale: &n; *&t;This fuction is used to offload the &n; *&t;rx_interrupt during API operation mode.  &n; *&t;The fr_bh() function executes for each &n; *&t;dlci/interface.  &n; * &n; *      Once receive interrupt copies data from the&n; *      card into an skb buffer, the skb buffer&n; *  &t;is appended to a circular BH buffer.&n; *  &t;Then the interrupt kicks fr_bh() to finish the&n; *      job at a later time (not within the interrupt).&n; *       &n; * Usage:&n; * &t;Interrupts use this to defer a task to &n; *      a polling routine.&n; *&n; */
 DECL|function|fr_bh
 r_static
 r_void
@@ -15863,11 +15849,11 @@ id|chan
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|chan-&gt;fr_poll_task
+id|chan-&gt;fr_poll_work
 )paren
 suffix:semicolon
 r_return

@@ -2354,11 +2354,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c /dev entries driver module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+l_string|&quot;i2c /dev entries driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

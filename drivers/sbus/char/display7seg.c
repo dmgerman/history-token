@@ -1,7 +1,6 @@
 multiline_comment|/* $Id: display7seg.c,v 1.6 2002/01/08 16:00:16 davem Exp $&n; *&n; * display7seg - Driver implementation for the 7-segment display&n; * present on Sun Microsystems CP1400 and CP1500&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;

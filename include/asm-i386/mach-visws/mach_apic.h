@@ -8,6 +8,8 @@ DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (0)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (0)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK (0)
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
 DECL|macro|INT_DEST_MODE

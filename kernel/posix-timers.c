@@ -766,6 +766,8 @@ op_amp
 id|MIPS_SIGEV
 )paren
 op_logical_and
+id|event-&gt;sigev_signo
+op_logical_and
 (paren
 (paren
 r_int

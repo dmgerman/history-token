@@ -142,7 +142,7 @@ multiline_comment|/* These should not be considered constants from userland.  */
 DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN&t;32
 DECL|macro|SIGRTMAX
-mdefine_line|#define SIGRTMAX&t;(_NSIG-1)
+mdefine_line|#define SIGRTMAX&t;_NSIG
 multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK indicates that a registered stack_t will be used.&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.&n; * SA_RESETHAND clears the handler when the signal is delivered.&n; * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.&n; * SA_NODEFER prevents the current signal from being masked in the handler.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001

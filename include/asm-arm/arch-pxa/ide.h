@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-pxa/ide.h&n; *&n; * Author:&t;George Davis&n; * Created:&t;Jan 10, 2002&n; * Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *&n; * Originally based upon linux/include/asm-arm/arch-sa1100/ide.h&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

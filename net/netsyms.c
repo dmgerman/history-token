@@ -2386,11 +2386,11 @@ c_func
 id|__dev_remove_pack
 )paren
 suffix:semicolon
-DECL|variable|dev_get
+DECL|variable|__dev_get
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|dev_get
+id|__dev_get
 )paren
 suffix:semicolon
 DECL|variable|dev_alloc

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;&t;/* Experimental delay */
@@ -2833,25 +2834,20 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.routine
-op_assign
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|card-&gt;u.x.x25_poll_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|wpx_poll
-suffix:semicolon
-id|card-&gt;u.x.x25_poll_task.data
-op_assign
+comma
 id|card
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -3800,7 +3796,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*===================================================================&n; * Name:&t;if_open(),   Open/Bring up the Netowrk Interface &n; *&n; * Purpose:&t;To bring up a network interface.&n; * &n; * Rationale:&t;&n; *                &n; * Description:&t;Open network interface.&n; * &t;&t;o prevent module from unloading by incrementing use count&n; * &t;&t;o if link is disconnected then initiate connection&n; *&n; * Called by:&t;Kernel (/usr/src/linux/net/core/dev.c)&n; * &t;&t;(dev-&gt;open())&n; *&n; * Assumptions: None&n; *&t;&n; * Warnings:&t;None&n; *&n; * Return: &t;0 &t;Ok&n; * &t;&t;&lt;0 &t;Failur: Interface will not come up.&n; */
+multiline_comment|/*===================================================================&n; * Name:&t;if_open(),   Open/Bring up the Netowrk Interface &n; *&n; * Purpose:&t;To bring up a network interface.&n; * &n; * Rationale:&t;&n; *                &n; * Description:&t;Open network interface.&n; * &t;&t;o prevent module from unloading by incrementing use count&n; * &t;&t;o if link is disconnected then initiate connection&n; *&n; * Called by:&t;Kernel (/usr/src/linux/net/core/dev.c)&n; * &t;&t;(dev-&gt;open())&n; *&n; * Assumptions: None&n; *&t;&n; * Warnings:&t;None&n; *&n; * Return: &t;0 &t;Ok&n; * &t;&t;&lt;0 &t;Failure: Interface will not come up.&n; */
 DECL|function|if_open
 r_static
 r_int
@@ -3850,26 +3846,21 @@ id|chan-&gt;tq_working
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the task queue */
-id|chan-&gt;common.wanpipe_task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.routine
-op_assign
+multiline_comment|/* Initialize the workqueue */
+id|INIT_WORK
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|chan-&gt;common.wanpipe_work
+comma
 (paren
 r_void
 op_star
 )paren
 id|x25api_bh
-suffix:semicolon
-id|chan-&gt;common.wanpipe_task.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and initialize BH circular buffer */
 multiline_comment|/* Add 1 to MAX_BH_BUFF so we don&squot;t have test with (MAX_BH_BUFF-1) */
@@ -5551,16 +5542,11 @@ id|chan-&gt;tq_working
 )paren
 )paren
 (brace
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 c_func
 (paren
 op_amp
-id|chan-&gt;common.wanpipe_task
-)paren
-suffix:semicolon
-id|wanpipe_mark_bh
-c_func
-(paren
+id|chan-&gt;common.wanpipe_work
 )paren
 suffix:semicolon
 )brace
@@ -7217,7 +7203,7 @@ id|card-&gt;devname
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Background Polling Routines  &n; */
-multiline_comment|/*====================================================================&n; * &t;Main polling routine.&n; * &t;This routine is repeatedly called by the WANPIPE &squot;thead&squot; to allow for&n; * &t;time-dependent housekeeping work.&n; *&n; * &t;Notes:&n; * &t;1. This routine may be called on interrupt context with all interrupts&n; *    &t;enabled. Beware!&n; *====================================================================*/
+multiline_comment|/*====================================================================&n; * &t;Main polling routine.&n; * &t;This routine is repeatedly called by the WANPIPE &squot;thread&squot; to allow for&n; * &t;time-dependent housekeeping work.&n; *&n; * &t;Notes:&n; * &t;1. This routine may be called on interrupt context with all interrupts&n; *    &t;enabled. Beware!&n; *====================================================================*/
 DECL|function|wpx_poll
 r_static
 r_void
@@ -7350,11 +7336,11 @@ op_star
 id|card
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|card-&gt;u.x.x25_poll_task
+id|card-&gt;u.x.x25_poll_work
 )paren
 suffix:semicolon
 )brace

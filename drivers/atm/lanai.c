@@ -10207,9 +10207,6 @@ r_goto
 id|error_vcctable
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* At this point we can&squot;t fail */
 id|mb
 c_func
 (paren
@@ -10588,8 +10585,6 @@ c_func
 (paren
 id|lanai
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* close a vcc */
@@ -12868,6 +12863,11 @@ dot
 id|proc_read
 op_assign
 id|lanai_proc_read
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/* initialize one probed card */

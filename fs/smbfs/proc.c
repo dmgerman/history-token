@@ -831,20 +831,21 @@ id|nls_table
 id|unicode_table
 op_assign
 (brace
+dot
+id|charset
+op_assign
 l_string|&quot;unicode&quot;
 comma
+dot
+id|uni2char
+op_assign
 id|uni2char
 comma
+dot
+id|char2uni
+op_assign
 id|char2uni
 comma
-l_int|NULL
-comma
-multiline_comment|/* not used by smbfs */
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* not a module */
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */

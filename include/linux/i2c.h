@@ -10,10 +10,6 @@ multiline_comment|/* $Id: i2c.h,v 1.68 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#ifndef _LINUX_I2C_H
 DECL|macro|_LINUX_I2C_H
 mdefine_line|#define _LINUX_I2C_H
-DECL|macro|I2C_DATE
-mdefine_line|#define I2C_DATE &quot;20021208&quot;
-DECL|macro|I2C_VERSION
-mdefine_line|#define I2C_VERSION &quot;2.7.0&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/i2c-id.h&gt;
@@ -462,6 +458,8 @@ r_struct
 id|bus_type
 id|i2c_bus_type
 suffix:semicolon
+DECL|macro|I2C_NAME_SIZE
+mdefine_line|#define I2C_NAME_SIZE&t;50
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
 DECL|struct|i2c_client
 r_struct
@@ -521,7 +519,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )braket
 suffix:semicolon
 DECL|member|released
@@ -869,7 +867,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )braket
 suffix:semicolon
 DECL|member|dev_released

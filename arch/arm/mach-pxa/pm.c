@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * PXA250/210 Power Management Routines&n; *&n; * Original code for the SA11x0:&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * Modified for the PXA250 by Nicolas Pitre:&n; * Copyright (c) 2002 Monta Vista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;

@@ -868,6 +868,24 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; *&n; * This is wrong, but my CPUs run at 1GHz, so nyer nyer.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|get_tb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
 DECL|function|do_gettimeofday
 r_void

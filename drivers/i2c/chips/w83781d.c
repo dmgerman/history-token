@@ -919,7 +919,7 @@ id|in_max
 )paren
 suffix:semicolon
 DECL|macro|store_in_reg
-mdefine_line|#define store_in_reg(REG, reg) &bslash;&n;static ssize_t store_in_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;u32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;data-&gt;in_##reg[nr] = (IN_TO_REG(val) / 10); &bslash;&n;&t;w83781d_write_value(client, W83781D_REG_IN_##REG(nr), data-&gt;in_##reg[nr]); &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define store_in_reg(REG, reg) &bslash;&n;static ssize_t store_in_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;u32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtoul(buf, NULL, 10) / 10; &bslash;&n;&t;data-&gt;in_##reg[nr] = IN_TO_REG(val); &bslash;&n;&t;w83781d_write_value(client, W83781D_REG_IN_##REG(nr), data-&gt;in_##reg[nr]); &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
 id|store_in_reg
 c_func
 (paren
@@ -3812,7 +3812,7 @@ id|w83781d
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83781D subclient&quot;
+l_string|&quot;w83781d subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3824,7 +3824,7 @@ id|w83782d
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83782D subclient&quot;
+l_string|&quot;w83782d subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3836,7 +3836,7 @@ id|w83783s
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83783S subclient&quot;
+l_string|&quot;w83783s subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3848,7 +3848,7 @@ id|w83627hf
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83627HF subclient&quot;
+l_string|&quot;w83627hf subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3860,7 +3860,7 @@ id|as99127f
 )paren
 id|client_name
 op_assign
-l_string|&quot;AS99127F subclient&quot;
+l_string|&quot;as99127f subclient&quot;
 suffix:semicolon
 r_else
 id|client_name
@@ -3934,7 +3934,7 @@ id|name
 comma
 id|client_name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -4907,7 +4907,7 @@ id|w83781d
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83781D chip&quot;
+l_string|&quot;w83781d&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4921,7 +4921,7 @@ id|w83782d
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83782D chip&quot;
+l_string|&quot;w83782d&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4935,7 +4935,7 @@ id|w83783s
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83783S chip&quot;
+l_string|&quot;w83783s&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4956,12 +4956,12 @@ l_int|0x90
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83627THF chip&quot;
+l_string|&quot;w83627thf&quot;
 suffix:semicolon
 r_else
 id|client_name
 op_assign
-l_string|&quot;W83627HF chip&quot;
+l_string|&quot;w83627hf&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4975,7 +4975,7 @@ id|as99127f
 (brace
 id|client_name
 op_assign
-l_string|&quot;AS99127F chip&quot;
+l_string|&quot;as99127f&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4989,7 +4989,7 @@ id|w83697hf
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83697HF chip&quot;
+l_string|&quot;w83697hf&quot;
 suffix:semicolon
 )brace
 r_else
@@ -5023,7 +5023,7 @@ id|new_client-&gt;name
 comma
 id|client_name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 id|data-&gt;type

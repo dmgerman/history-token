@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pnpbios.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;pnpbios.h&quot;
 DECL|variable|proc_pnp
 r_static
 r_struct
@@ -1019,6 +1020,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|proc_pnp
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|pnpbios_dont_use_current_config
 )paren
 (brace
@@ -1063,6 +1074,16 @@ id|node-&gt;handle
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc_pnp_boot
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 id|ent
 op_assign
 id|create_proc_entry

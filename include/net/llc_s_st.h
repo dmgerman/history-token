@@ -2,11 +2,6 @@ macro_line|#ifndef LLC_S_ST_H
 DECL|macro|LLC_S_ST_H
 mdefine_line|#define LLC_S_ST_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
-multiline_comment|/* Defines SAP component states */
-DECL|macro|LLC_SAP_STATE_INACTIVE
-mdefine_line|#define LLC_SAP_STATE_INACTIVE&t;1
-DECL|macro|LLC_SAP_STATE_ACTIVE
-mdefine_line|#define LLC_SAP_STATE_ACTIVE&t;2
 DECL|macro|LLC_NR_SAP_STATES
 mdefine_line|#define LLC_NR_SAP_STATES&t;2       /* size of state table */
 multiline_comment|/* structures and types */

@@ -505,6 +505,11 @@ dot
 id|proc_read
 op_assign
 id|idt77252_proc_read
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|variable|idt77252_chain
@@ -12450,8 +12455,6 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -12870,8 +12873,6 @@ id|vc-&gt;scq
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
