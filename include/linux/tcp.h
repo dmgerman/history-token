@@ -964,13 +964,6 @@ op_star
 id|af_specific
 suffix:semicolon
 multiline_comment|/* Operations which are AF_INET{4,6} specific&t;*/
-DECL|member|send_head
-r_struct
-id|sk_buff
-op_star
-id|send_head
-suffix:semicolon
-multiline_comment|/* Front of stuff to transmit&t;&t;&t;*/
 DECL|member|rcv_wnd
 id|__u32
 id|rcv_wnd

@@ -1672,9 +1672,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 id|skb
 suffix:semicolon
@@ -1771,7 +1771,7 @@ id|nonagle
 r_if
 c_cond
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 (brace
 r_struct
@@ -2041,7 +2041,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_logical_or
 (paren
 id|copy
@@ -2322,7 +2322,7 @@ c_cond
 (paren
 id|skb
 op_eq
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 id|tcp_push_one
 c_func
@@ -2870,7 +2870,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_logical_or
 (paren
 id|copy
@@ -3486,7 +3486,7 @@ c_cond
 (paren
 id|skb
 op_eq
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 id|tcp_push_one
 c_func
@@ -3619,11 +3619,11 @@ id|skb-&gt;len
 r_if
 c_cond
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_eq
 id|skb
 )paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6831,7 +6831,7 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -3921,8 +3921,6 @@ multiline_comment|/* Sequence number ACK&squot;d&t;*/
 suffix:semicolon
 DECL|macro|TCP_SKB_CB
 mdefine_line|#define TCP_SKB_CB(__skb)&t;((struct tcp_skb_cb *)&amp;((__skb)-&gt;cb[0]))
-DECL|macro|for_retrans_queue
-mdefine_line|#define for_retrans_queue(skb, sk, tp) &bslash;&n;&t;&t;for (skb = (sk)-&gt;sk_write_queue.next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (tp)-&gt;send_head) &amp;&amp;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)&amp;(sk)-&gt;sk_write_queue);&t;&bslash;&n;&t;&t;     skb=skb-&gt;next)
 macro_line|#include &lt;net/tcp_ecn.h&gt;
 multiline_comment|/* This determines how many packets are &quot;in the network&quot; to the best&n; * of our knowledge.  In many cases it is conservative, but where&n; * detailed information is available from the receiver (via SACK&n; * blocks etc.) we can make more aggressive calculations.&n; *&n; * Use this for decisions involving congestion control, use just&n; * tp-&gt;packets_out to determine if the send queue is empty or not.&n; *&n; * Read this equation as:&n; *&n; *&t;&quot;Packets sent once on transmission queue&quot; MINUS&n; *&t;&quot;Packets left network, but not honestly ACKed yet&quot; PLUS&n; *&t;&quot;Packets fast retransmitted&quot;&n; */
 DECL|function|tcp_packets_in_flight
@@ -4591,7 +4589,7 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This checks if the data bearing packet SKB (usually tp-&gt;send_head)&n; * should be put on the wire right now.&n; */
+multiline_comment|/* This checks if the data bearing packet SKB (usually sk-&gt;sk_send_head)&n; * should be put on the wire right now.&n; */
 DECL|function|tcp_snd_test
 r_static
 id|__inline__
@@ -4784,7 +4782,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 suffix:semicolon
 r_if
 c_cond
@@ -4910,7 +4908,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 suffix:semicolon
 r_return
 (paren
@@ -7466,7 +7464,7 @@ r_return
 (paren
 id|sysctl_tcp_frto
 op_logical_and
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_logical_and
 op_logical_neg
 id|after
@@ -7475,7 +7473,7 @@ c_func
 id|TCP_SKB_CB
 c_func
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 op_member_access_from_pointer
 id|end_seq

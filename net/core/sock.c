@@ -4222,6 +4222,10 @@ op_amp
 id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
+id|sk-&gt;sk_send_head
+op_assign
+l_int|NULL
+suffix:semicolon
 id|init_timer
 c_func
 (paren
