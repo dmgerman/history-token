@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -14,12 +15,14 @@ id|preallocate_dma
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|preallocate_dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -45,12 +48,14 @@ id|maximum_substreams
 op_assign
 l_int|4
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|maximum_substreams
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -800,6 +805,7 @@ c_cond
 op_logical_neg
 id|subs-&gt;dma_device.id
 )paren
+(brace
 id|subs-&gt;dma_device.id
 op_assign
 id|subs-&gt;pcm-&gt;device
@@ -816,6 +822,28 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|subs-&gt;dma_device.type
+op_eq
+id|SNDRV_DMA_TYPE_CONTINUOUS
+op_logical_or
+id|subs-&gt;dma_device.dev
+op_eq
+l_int|NULL
+)paren
+id|subs-&gt;dma_device.id
+op_or_assign
+(paren
+id|subs-&gt;pcm-&gt;card-&gt;number
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|24
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * snd_pcm_lib_preallocate_pages - pre-allocation for the given DMA type&n; * @substream: the pcm substream instance&n; * @type: DMA type (SNDRV_DMA_TYPE_*)&n; * @data: DMA type dependant data&n; * @size: the requested pre-allocation size in bytes&n; * @max: the max. allowed pre-allocation size&n; *&n; * Do pre-allocation for the given DMA type.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_lib_preallocate_pages

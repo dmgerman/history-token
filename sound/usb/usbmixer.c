@@ -1026,7 +1026,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|usb_control_msg
+id|snd_usb_ctl_msg
 c_func
 (paren
 id|cval-&gt;chip-&gt;dev
@@ -1277,7 +1277,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|usb_control_msg
+id|snd_usb_ctl_msg
 c_func
 (paren
 id|cval-&gt;chip-&gt;dev

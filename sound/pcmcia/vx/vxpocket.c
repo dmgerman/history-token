@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for Digigram VXpocket V2/440 soundcards&n; *&n;
 multiline_comment|/*&n; please add the following as /etc/pcmcia/vxpocket.conf:&n; &n;  device &quot;snd-vxpocket&quot;&n;     class &quot;audio&quot; module &quot;snd-vxpocket&quot;&n;&n;  card &quot;Digigram VX-POCKET&quot;&n;    manfid 0x01f1, 0x0100&n;    bind &quot;snd-vxpocket&quot;&n;&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
@@ -110,18 +111,21 @@ id|ibl
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|index
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -142,18 +146,16 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|id
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -174,18 +176,16 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -206,12 +206,14 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq_mask
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -224,12 +226,16 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -242,18 +248,16 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ibl
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

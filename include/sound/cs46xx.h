@@ -2617,14 +2617,6 @@ id|snd_cs46xx_gameport
 op_star
 id|gameport
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm_dev
-r_struct
-id|pm_dev
-op_star
-id|pm_dev
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SND_CS46XX_DEBUG_GPIO
 DECL|member|current_gpio
 r_int
@@ -2808,25 +2800,5 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-r_void
-id|snd_cs46xx_suspend
-c_func
-(paren
-id|cs46xx_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-r_void
-id|snd_cs46xx_resume
-c_func
-(paren
-id|cs46xx_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __SOUND_CS46XX_H */
 eof

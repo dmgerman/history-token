@@ -7,13 +7,23 @@ macro_line|#include &quot;seq_oss_readq.h&quot;
 macro_line|#include &quot;seq_oss_timer.h&quot;
 macro_line|#include &quot;seq_oss_event.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 multiline_comment|/*&n; * common variables&n; */
-id|MODULE_PARM
+DECL|variable|maxqlen
+r_static
+r_int
+id|maxqlen
+op_assign
+id|SNDRV_SEQ_OSS_MAX_QLEN
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|maxqlen
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -40,12 +50,6 @@ id|system_port
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-DECL|variable|maxqlen
-r_int
-id|maxqlen
-op_assign
-id|SNDRV_SEQ_OSS_MAX_QLEN
 suffix:semicolon
 DECL|variable|num_clients
 r_static

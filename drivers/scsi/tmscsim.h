@@ -564,16 +564,6 @@ id|PSRB
 id|pTmpSRB
 suffix:semicolon
 multiline_comment|/* 0x2c: */
-DECL|member|QueryCnt
-id|ULONG
-id|QueryCnt
-suffix:semicolon
-DECL|member|cmdq
-r_struct
-id|list_head
-id|cmdq
-suffix:semicolon
-multiline_comment|/* 0x38: */
 DECL|member|msgin123
 id|UCHAR
 id|msgin123
@@ -596,7 +586,7 @@ DECL|member|pad
 id|UCHAR
 id|pad
 suffix:semicolon
-multiline_comment|/* 0x3c: */
+multiline_comment|/* 0x30: */
 macro_line|#if defined(USE_SPINLOCKS) &amp;&amp; USE_SPINLOCKS &gt; 1 &amp;&amp; (defined(CONFIG_SMP) || DEBUG_SPINLOCKS &gt; 0)
 DECL|member|lock
 id|spinlock_t
@@ -624,7 +614,7 @@ DECL|member|PDEVDECL1
 id|PDEVDECL1
 suffix:semicolon
 multiline_comment|/* Pointer to PCI cfg. space */
-multiline_comment|/* 0x4c/0x48: */
+multiline_comment|/* 0x40/0x3c: */
 DECL|member|Cmds
 id|ULONG
 id|Cmds
@@ -645,18 +635,18 @@ DECL|member|CmdOutOfSRB
 id|UINT
 id|CmdOutOfSRB
 suffix:semicolon
-multiline_comment|/* 0x60/0x5c: */
+multiline_comment|/* 0x54/0x50: */
 DECL|member|Waiting_Timer
 r_struct
 id|timer_list
 id|Waiting_Timer
 suffix:semicolon
-multiline_comment|/* 0x74/0x70: */
+multiline_comment|/* 0x68/0x64: */
 DECL|member|TmpSRB
 id|DC390_SRB
 id|TmpSRB
 suffix:semicolon
-multiline_comment|/* 0xd8/0xd4: */
+multiline_comment|/* 0xcc/0xc8: */
 DECL|member|SRB_array
 id|DC390_SRB
 id|SRB_array
@@ -665,7 +655,7 @@ id|MAX_SRB_CNT
 )braket
 suffix:semicolon
 multiline_comment|/* 50 SRBs */
-multiline_comment|/* 0xfb0/0xfac: */
+multiline_comment|/* 0xfa4/0xfa0: */
 )brace
 suffix:semicolon
 DECL|typedef|DC390_ACB
@@ -929,11 +919,6 @@ multiline_comment|/*&n; *&t;SISC query queue&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 DECL|member|saved_dma_handle
 id|dma_addr_t
 id|saved_dma_handle
@@ -941,29 +926,6 @@ suffix:semicolon
 DECL|typedef|dc390_cmd_scp_t
 )brace
 id|dc390_cmd_scp_t
-suffix:semicolon
-DECL|struct|scsi_cmnd_list
-r_struct
-id|scsi_cmnd_list
-(brace
-DECL|member|dummy
-r_char
-id|dummy
-(braket
-m_offsetof
-(paren
-r_struct
-id|scsi_cmnd
-comma
-id|SCp
-)paren
-)braket
-suffix:semicolon
-DECL|member|scp
-id|dc390_cmd_scp_t
-id|scp
-suffix:semicolon
-)brace
 suffix:semicolon
 multiline_comment|/*&n;**  Inquiry Data format&n;*/
 DECL|struct|_SCSIInqData

@@ -105,6 +105,7 @@ id|val
 )paren
 suffix:semicolon
 multiline_comment|/* WT */
+multiline_comment|/* Put 2 WT channels together for one stereo interlaced channel. */
 DECL|function|vortex_wt_setstereo
 r_static
 r_void
@@ -170,6 +171,7 @@ id|temp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Join to mixdown route. */
 DECL|function|vortex_wt_setdsout
 r_static
 r_void
@@ -269,7 +271,7 @@ id|temp
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// WT routing is still a mistery.
+multiline_comment|/* Setup WT route. */
 DECL|function|vortex_wt_allocroute
 r_static
 r_int
@@ -316,7 +318,7 @@ id|vortex
 comma
 id|wt
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 id|vortex_fifo_setwtvalid
@@ -353,6 +355,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Set mixdown mode. */
 id|vortex_wt_setdsout
 c_func
 (paren
@@ -360,9 +363,10 @@ id|vortex
 comma
 id|wt
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Set other parameter registers. */
 id|hwwrite
 c_func
 (paren
@@ -467,22 +471,7 @@ comma
 id|temp
 )paren
 suffix:semicolon
-id|hwwrite
-c_func
-(paren
-id|vortex-&gt;mmio
-comma
-id|WT_PARM
-c_func
-(paren
-id|wt
-comma
-l_int|3
-)paren
-comma
-id|temp
-)paren
-suffix:semicolon
+singleline_comment|//hwwrite(vortex-&gt;mmio, WT_PARM(wt, 3), temp);
 id|hwwrite
 c_func
 (paren
@@ -806,9 +795,7 @@ id|en
 comma
 id|mix
 comma
-id|vortex
-op_member_access_from_pointer
-id|mixplayb
+id|vortex-&gt;mixplayb
 (braket
 l_int|2
 op_plus

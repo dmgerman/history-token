@@ -3106,6 +3106,16 @@ op_star
 id|mix
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mix-&gt;i2c.client
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 r_return
 id|snd_pmac_keywest_write_byte
 c_func
@@ -3992,6 +4002,7 @@ comma
 id|devid
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_if

@@ -77,7 +77,6 @@ comma
 l_string|&quot;last scsi LUN (should be between 1 and 2^32-1)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SCSI_REPORT_LUNS
 multiline_comment|/*&n; * max_scsi_report_luns: the maximum number of LUNS that will be&n; * returned from the REPORT LUNS command. 8 times this value must&n; * be allocated. In theory this could be up to an 8 byte value, but&n; * in practice, the maximum number of LUNs suppored by any device&n; * is about 16k.&n; */
 DECL|variable|max_scsi_report_luns
 r_static
@@ -85,7 +84,7 @@ r_int
 r_int
 id|max_scsi_report_luns
 op_assign
-l_int|128
+l_int|511
 suffix:semicolon
 id|module_param_named
 c_func
@@ -110,7 +109,41 @@ l_string|&quot;REPORT LUNS maximum number of LUNS received (should be&quot;
 l_string|&quot; between 1 and 16384)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+DECL|variable|scsi_inq_timeout
+r_static
+r_int
+r_int
+id|scsi_inq_timeout
+op_assign
+id|SCSI_TIMEOUT
+op_div
+id|HZ
+op_plus
+l_int|3
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|inq_timeout
+comma
+id|scsi_inq_timeout
+comma
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|inq_timeout
+comma
+l_string|&quot;Timeout (in seconds) waiting for devices to answer INQUIRY.&quot;
+l_string|&quot; Default is 5. Some non-compliant devices need more.&quot;
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_unlock_floptical - unlock device via a special MODE SENSE command&n; * @sreq:&t;used to send the command&n; * @result:&t;area to store the result of the MODE SENSE&n; *&n; * Description:&n; *     Send a vendor specific MODE SENSE (not a MODE SELECT) command using&n; *     @sreq to unlock a device, storing the (unused) results into result.&n; *     Called for BLIST_KEY devices.&n; **/
 DECL|function|scsi_unlock_floptical
 r_static
@@ -628,6 +661,11 @@ op_amp
 id|sdev-&gt;list_lock
 )paren
 suffix:semicolon
+multiline_comment|/* if the device needs this changing, it may do so in the&n;&t; * slave_configure function */
+id|sdev-&gt;max_device_blocked
+op_assign
+id|SCSI_DEFAULT_DEVICE_BLOCKED
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some low level driver could use device-&gt;type&n;&t; */
 id|sdev-&gt;type
 op_assign
@@ -1124,11 +1162,13 @@ id|inq_result
 comma
 l_int|36
 comma
-id|SCSI_TIMEOUT
-op_plus
-l_int|4
-op_star
 id|HZ
+op_div
+l_int|2
+op_plus
+id|HZ
+op_star
+id|scsi_inq_timeout
 comma
 l_int|3
 )paren
@@ -1381,11 +1421,17 @@ id|inq_result
 comma
 id|possible_inq_resp_len
 comma
-id|SCSI_TIMEOUT
+(paren
+l_int|1
 op_plus
-l_int|4
+id|scsi_inq_timeout
+)paren
 op_star
+(paren
 id|HZ
+op_div
+l_int|2
+)paren
 comma
 l_int|3
 )paren
@@ -2046,11 +2092,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if the device needs this changing, it may do so in the detect&n;&t; * function */
-id|sdev-&gt;max_device_blocked
-op_assign
-id|SCSI_DEFAULT_DEVICE_BLOCKED
-suffix:semicolon
 id|sdev-&gt;use_10_for_rw
 op_assign
 l_int|1
@@ -2752,7 +2793,6 @@ id|sparse_lun
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SCSI_REPORT_LUNS
 multiline_comment|/**&n; * scsilun_to_int: convert a scsi_lun to an int&n; * @scsilun:&t;struct scsi_lun to be converted.&n; *&n; * Description:&n; *     Convert @scsilun from a struct scsi_lun to a four byte host byte-ordered&n; *     integer, and return the result. The caller must check for&n; *     truncation before using this function.&n; *&n; * Notes:&n; *     The struct scsi_lun is assumed to be four levels, with each level&n; *     effectively containing a SCSI byte-ordered (big endian) short; the&n; *     addressing bits of each level are ignored (the highest two bits).&n; *     For a description of the LUN format, post SCSI-3 see the SCSI&n; *     Architecture Model, for SCSI-3 see the SCSI Controller Commands.&n; *&n; *     Given a struct scsi_lun of: 0a 04 0b 03 00 00 00 00, this function returns&n; *     the integer: 0x0b030a04&n; **/
 DECL|function|scsilun_to_int
 r_static
@@ -2894,13 +2934,38 @@ id|u8
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only support SCSI-3 and up devices.&n;&t; */
+multiline_comment|/*&n;&t; * Only support SCSI-3 and up devices if BLIST_NOREPORTLUN is not set.&n;&t; * Also allow SCSI-2 if BLIST_REPORTLUN2 is set and host adapter does&n;&t; * support more than 8 LUNs.&n;&t; */
 r_if
 c_cond
+(paren
+(paren
+id|bflags
+op_amp
+id|BLIST_NOREPORTLUN
+)paren
+op_logical_or
+id|sdev-&gt;scsi_level
+OL
+id|SCSI_2
+op_logical_or
 (paren
 id|sdev-&gt;scsi_level
 OL
 id|SCSI_3
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|bflags
+op_amp
+id|BLIST_REPORTLUN2
+)paren
+op_logical_or
+id|sdev-&gt;host-&gt;max_lun
+op_le
+l_int|8
+)paren
+)paren
 )paren
 r_return
 l_int|1
@@ -3561,10 +3626,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|scsi_report_lun_scan
-macro_line|# define scsi_report_lun_scan(sdev, blags, rescan)&t;(1)
-macro_line|#endif&t;/* CONFIG_SCSI_REPORT_LUNS */
 DECL|function|scsi_add_device
 r_struct
 id|scsi_device

@@ -114,6 +114,8 @@ DECL|macro|SNDRV_TIMER_IFLG_CALLBACK
 mdefine_line|#define SNDRV_TIMER_IFLG_CALLBACK 0x00000020&t;/* timer callback is active */
 DECL|macro|SNDRV_TIMER_IFLG_EXCLUSIVE
 mdefine_line|#define SNDRV_TIMER_IFLG_EXCLUSIVE 0x00000040&t;/* exclusive owner - no more instances */
+DECL|macro|SNDRV_TIMER_IFLG_EARLY_EVENT
+mdefine_line|#define SNDRV_TIMER_IFLG_EARLY_EVENT 0x00000080&t;/* write early event to the poll queue */
 DECL|macro|SNDRV_TIMER_FLG_CHANGE
 mdefine_line|#define SNDRV_TIMER_FLG_CHANGE&t;0x00000001
 DECL|macro|SNDRV_TIMER_FLG_RESCHED

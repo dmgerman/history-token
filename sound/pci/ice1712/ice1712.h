@@ -863,6 +863,37 @@ id|vt1724
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|vt1720
+r_int
+r_int
+id|vt1720
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_spdif
+r_int
+r_int
+id|has_spdif
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* VT1720/4 - has SPDIF I/O */
+DECL|member|force_pdma4
+r_int
+r_int
+id|force_pdma4
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* VT1720/4 - PDMA4 as non-spdif */
+DECL|member|force_rdma1
+r_int
+r_int
+id|force_rdma1
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* VT1720/4 - RDMA1 as non-spdif */
 DECL|member|num_total_dacs
 r_int
 r_int
@@ -1542,6 +1573,16 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|model
+r_char
+op_star
+id|model
+suffix:semicolon
+DECL|member|driver
+r_char
+op_star
+id|driver
 suffix:semicolon
 DECL|member|chip_init
 r_int

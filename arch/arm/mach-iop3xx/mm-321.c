@@ -6,7 +6,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * Standard IO mapping for all IOP321 based systems&n; */
 DECL|variable|__initdata
 r_static

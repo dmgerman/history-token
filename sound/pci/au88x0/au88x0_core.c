@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU Library General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n;    Vortex core low level functions.&n;&t;&n; Author: Manuel Jander (mjander@users.sourceforge.cl)&n; These functions are mainly the result of translations made&n; from the original disassembly of the au88x0 binary drivers,&n; written by Aureal before they went down.&n; Many thanks to the Jeff Muizelar, Kester Maddock, and whoever&n; contributed to the OpenVortex project.&n; The author of this file, put the few available pieces together&n; and translated the rest of the riddle (Mix, Src and connection stuff).&n; Some things are still to be discovered, and their meanings are unclear.&n;&n; Some of these functions aren&squot;t intended to be really used, rather&n; to help to understand how does the AU88X0 chips work. Keep them in, because&n; they could be used somewhere in the future.&n;&n; This code hasn&squot;t been tested or proof read thoroughly. If you wanna help,&n; take a look at the AU88X0 assembly and check if this matches.&n; Functions tested ok so far are (they show the desired effect&n; at least):&n;   vortex_routes(); (1 bug fixed).&n;   vortex_adb_addroute();&n;   vortex_adb_addroutes();&n;   vortex_connect_codecplay();&n;   vortex_src_flushbuffers();&n;   vortex_adbdma_setmode();  note: still some unknown arguments!&n;   vortex_adbdma_startfifo();&n;   vortex_adbdma_stopfifo();&n;   vortex_fifo_setadbctrl(); note: still some unknown arguments!&n;   vortex_mix_setinputvolumebyte();&n;   vortex_mix_enableinput();&n;   vortex_mixer_addWTD(); (fixed)&n;   vortex_connection_adbdma_src_src();&n;   vortex_connection_adbdma_src();&n;   vortex_src_change_convratio();&n;   vortex_src_addWTD(); (fixed)&n;&n; History:&n;&n; 01-03-2003 First revision.&n; 01-21-2003 Some bug fixes.&n; 17-02-2003 many bugfixes after a big versioning mess.&n; 18-02-2003 JAAAAAHHHUUUUUU!!!! The mixer works !! I&squot;m just so happy !&n;&t;&t;&t; (2 hours later...) I cant believe it! Im really lucky today.&n;&t;&t;&t; Now the SRC is working too! Yeah! XMMS works !&n; 20-02-2003 First steps into the ALSA world.&n; 28-02-2003 As my birthday present, i discovered how the DMA buffer pages really&n;            work :-). It was all wrong.&n; 12-03-2003 ALSA driver starts working (2 channels).&n; 16-03-2003 More srcblock_setupchannel discoveries.&n; 12-04-2003 AU8830 playback support. Recording in the works.&n; 17-04-2003 vortex_route() and vortex_routes() bug fixes. AU8830 recording&n; &t;&t;&t;works now, but chipn&squot; dale effect is still there.&n; 16-05-2003 SrcSetupChannel cleanup. Moved the Src setup stuff entirely&n;            into au88x0_pcm.c .&n; 06-06-2003 Buffer shifter bugfix. Mixer volume fix.&n; 07-12-2003 A3D routing finally fixed. Believed to be OK.&n; &n;*/
+multiline_comment|/*&n;    Vortex core low level functions.&n;&t;&n; Author: Manuel Jander (mjander@users.sourceforge.cl)&n; These functions are mainly the result of translations made&n; from the original disassembly of the au88x0 binary drivers,&n; written by Aureal before they went down.&n; Many thanks to the Jeff Muizelar, Kester Maddock, and whoever&n; contributed to the OpenVortex project.&n; The author of this file, put the few available pieces together&n; and translated the rest of the riddle (Mix, Src and connection stuff).&n; Some things are still to be discovered, and their meanings are unclear.&n;&n; Some of these functions aren&squot;t intended to be really used, rather&n; to help to understand how does the AU88X0 chips work. Keep them in, because&n; they could be used somewhere in the future.&n;&n; This code hasn&squot;t been tested or proof read thoroughly. If you wanna help,&n; take a look at the AU88X0 assembly and check if this matches.&n; Functions tested ok so far are (they show the desired effect&n; at least):&n;   vortex_routes(); (1 bug fixed).&n;   vortex_adb_addroute();&n;   vortex_adb_addroutes();&n;   vortex_connect_codecplay();&n;   vortex_src_flushbuffers();&n;   vortex_adbdma_setmode();  note: still some unknown arguments!&n;   vortex_adbdma_startfifo();&n;   vortex_adbdma_stopfifo();&n;   vortex_fifo_setadbctrl(); note: still some unknown arguments!&n;   vortex_mix_setinputvolumebyte();&n;   vortex_mix_enableinput();&n;   vortex_mixer_addWTD(); (fixed)&n;   vortex_connection_adbdma_src_src();&n;   vortex_connection_adbdma_src();&n;   vortex_src_change_convratio();&n;   vortex_src_addWTD(); (fixed)&n;&n; History:&n;&n; 01-03-2003 First revision.&n; 01-21-2003 Some bug fixes.&n; 17-02-2003 many bugfixes after a big versioning mess.&n; 18-02-2003 JAAAAAHHHUUUUUU!!!! The mixer works !! I&squot;m just so happy !&n;&t;&t;&t; (2 hours later...) I cant believe it! Im really lucky today.&n;&t;&t;&t; Now the SRC is working too! Yeah! XMMS works !&n; 20-02-2003 First steps into the ALSA world.&n; 28-02-2003 As my birthday present, i discovered how the DMA buffer pages really&n;            work :-). It was all wrong.&n; 12-03-2003 ALSA driver starts working (2 channels).&n; 16-03-2003 More srcblock_setupchannel discoveries.&n; 12-04-2003 AU8830 playback support. Recording in the works.&n; 17-04-2003 vortex_route() and vortex_routes() bug fixes. AU8830 recording&n; &t;&t;&t;works now, but chipn&squot; dale effect is still there.&n; 16-05-2003 SrcSetupChannel cleanup. Moved the Src setup stuff entirely&n;            into au88x0_pcm.c .&n; 06-06-2003 Buffer shifter bugfix. Mixer volume fix.&n; 07-12-2003 A3D routing finally fixed. Believed to be OK.&n; 25-03-2004 Many thanks to Claudia, for such valuable bug reports.&n; &n;*/
 macro_line|#include &quot;au88x0.h&quot;
 macro_line|#include &quot;au88x0_a3d.h&quot;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -7047,9 +7047,6 @@ id|dma-&gt;sgbuf
 op_assign
 id|sgbuf
 suffix:semicolon
-id|psize
-op_decrement
-suffix:semicolon
 id|dma-&gt;cfg0
 op_assign
 l_int|0
@@ -7078,7 +7075,11 @@ l_int|0x44000000
 op_or
 l_int|0x30000000
 op_or
+(paren
 id|psize
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|hwwrite
 c_func
@@ -7092,6 +7093,8 @@ id|wtdma
 op_lshift
 l_int|4
 )paren
+op_plus
+l_int|0xc
 comma
 id|snd_sgbuf_get_addr
 c_func
@@ -7119,7 +7122,11 @@ op_or
 l_int|0x40000000
 op_or
 (paren
+(paren
 id|psize
+op_minus
+l_int|1
+)paren
 op_lshift
 l_int|0xc
 )paren
@@ -7136,6 +7143,8 @@ id|wtdma
 op_lshift
 l_int|4
 )paren
+op_plus
+l_int|0x8
 comma
 id|snd_sgbuf_get_addr
 c_func
@@ -7160,7 +7169,11 @@ l_int|0x44000000
 op_or
 l_int|0x10000000
 op_or
+(paren
 id|psize
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|hwwrite
 c_func
@@ -7174,6 +7187,8 @@ id|wtdma
 op_lshift
 l_int|4
 )paren
+op_plus
+l_int|0x4
 comma
 id|snd_sgbuf_get_addr
 c_func
@@ -7195,7 +7210,11 @@ op_or
 l_int|0x40000000
 op_or
 (paren
+(paren
 id|psize
+op_minus
+l_int|1
+)paren
 op_lshift
 l_int|0xc
 )paren
@@ -8320,7 +8339,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|VORTEX_ADB_RTBASE_SIZE
+id|VORTEX_ADB_RTBASE_COUNT
 suffix:semicolon
 id|i
 op_increment
@@ -8364,7 +8383,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|VORTEX_ADB_CHNBASE_SIZE
+id|VORTEX_ADB_CHNBASE_COUNT
 suffix:semicolon
 id|i
 op_increment
@@ -10585,6 +10604,33 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Lower volume, since EQ has some gain. */
+id|vortex_mix_setvolumebyte
+c_func
+(paren
+id|vortex
+comma
+id|mixers
+(braket
+l_int|0
+)braket
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|vortex_mix_setvolumebyte
+c_func
+(paren
+id|vortex
+comma
+id|mixers
+(braket
+l_int|1
+)braket
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|vortex_route
 c_func
 (paren
@@ -11048,6 +11094,28 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Default Connections  */
+r_static
+r_int
+id|vortex_adb_allocroute
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+comma
+r_int
+id|dma
+comma
+r_int
+id|nr_ch
+comma
+r_int
+id|dir
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
 DECL|function|vortex_connect_default
 r_static
 r_void
@@ -11062,7 +11130,6 @@ r_int
 id|en
 )paren
 (brace
-singleline_comment|// FIXME: check if checkout was succesful.
 singleline_comment|// Connect AC97 codec.
 id|vortex-&gt;mixplayb
 (braket
@@ -11297,7 +11364,7 @@ id|en
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// A3D (crosstalk canceler and A3D slices).
+singleline_comment|// A3D (crosstalk canceler and A3D slices). AU8810 disabled for now.
 macro_line|#ifndef CHIP_AU8820
 id|vortex_Vort3D_connect
 c_func
@@ -11311,54 +11378,6 @@ macro_line|#endif
 singleline_comment|// Connect I2S
 singleline_comment|// Connect DSP interface for SQ3500 turbo (not here i think...)
 singleline_comment|// Connect AC98 modem codec
-multiline_comment|/* Fast Play Workaround. Revision 0xFE does not seem to need it. */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;vortex: revision = 0x%x, device = %d&bslash;n&quot;
-comma
-id|vortex-&gt;rev
-comma
-id|vortex-&gt;device
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_BAD_CHIP
-c_func
-(paren
-id|vortex
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;vortex: Erratum workaround enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifndef CHIP_AU8820
-id|vortex-&gt;fixed_res
-(braket
-id|VORTEX_RESOURCE_DMA
-)braket
-op_assign
-l_int|0x00000001
-suffix:semicolon
-macro_line|#endif
-singleline_comment|// Channel swapping workaround. We are nuking registers somewhere, or
-singleline_comment|// its a hardware bug.
-id|vortex-&gt;fixed_res
-(braket
-id|VORTEX_RESOURCE_SRC
-)braket
-op_assign
-l_int|0x00000001
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;  Allocate nr_ch pcm audio routes if dma &lt; 0. If dma &gt;= 0, existing routes&n;  are deallocated.&n;  dma: DMA engine routes to be deallocated when dma &gt;= 0.&n;  nr_ch: Number of channels to be de/allocated.&n;  dir: direction of stream. Uses same values as substream-&gt;stream.&n;  type: Type of audio output/source (codec, spdif, i2s, dsp, etc)&n;  Return: Return allocated DMA or same DMA passed as &quot;dma&quot; when dma &gt;= 0.&n;*/
 r_static
@@ -11509,7 +11528,6 @@ id|stream-&gt;type
 op_assign
 id|type
 suffix:semicolon
-singleline_comment|// FIXME: check for success of checkout or checkin.
 multiline_comment|/* PLAYBACK ROUTES. */
 r_if
 c_cond
@@ -11845,7 +11863,6 @@ op_minus
 l_int|1
 )braket
 comma
-singleline_comment|//src[0], 
 id|dma
 comma
 id|src
@@ -11960,7 +11977,9 @@ id|en
 comma
 id|src
 (braket
-l_int|0
+id|nr_ch
+op_minus
+l_int|1
 )braket
 comma
 id|dma
@@ -12457,9 +12476,7 @@ id|en
 comma
 id|src
 (braket
-id|nr_ch
-op_minus
-l_int|1
+l_int|0
 )braket
 comma
 id|src
@@ -12523,7 +12540,7 @@ id|en
 comma
 id|src
 (braket
-l_int|0
+l_int|1
 )braket
 comma
 id|src

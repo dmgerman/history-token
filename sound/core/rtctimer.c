@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -570,12 +571,14 @@ c_func
 (paren
 id|rtctimer_exit
 )paren
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rtctimer_freq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -592,49 +595,5 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-rtctimer=freq */
-DECL|function|rtctimer_setup
-r_static
-r_int
-id|__init
-id|rtctimer_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|rtctimer_freq
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-rtctimer=&quot;
-comma
-id|rtctimer_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef MODULE */
 macro_line|#endif /* CONFIG_RTC || CONFIG_RTC_MODULE */
 eof

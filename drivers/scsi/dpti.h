@@ -151,7 +151,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &quot;dpt/dpti_i2o.h&quot;
 macro_line|#include &quot;dpt/dpti_ioctl.h&quot;
 DECL|macro|DPT_I2O_VERSION
-mdefine_line|#define DPT_I2O_VERSION &quot;2.4 Build 5&quot;
+mdefine_line|#define DPT_I2O_VERSION &quot;2.4 Build 5go&quot;
 DECL|macro|DPT_VERSION
 mdefine_line|#define DPT_VERSION     2
 DECL|macro|DPT_REVISION
@@ -690,7 +690,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|adpt_isr
 c_func
 (paren
