@@ -951,6 +951,13 @@ l_string|&quot;0 to probe common ports (unsafe), or the I/O base of the board&qu
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
+DECL|variable|SK_dev
+r_static
+r_struct
+id|net_device
+op_star
+id|SK_dev
+suffix:semicolon
 DECL|function|SK_init_module
 r_static
 r_int
