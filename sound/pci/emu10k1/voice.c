@@ -147,22 +147,10 @@ c_cond
 (paren
 id|voice-&gt;use
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;voice %d: use=1!&bslash;n&quot;
-comma
-id|i
-op_plus
-id|k
-)paren
-suffix:semicolon
 id|skip
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
