@@ -343,7 +343,7 @@ op_star
 id|compat_ptr
 c_func
 (paren
-id|compat_ptr_t
+id|compat_uptr_t
 id|uptr
 )paren
 (brace
