@@ -59,7 +59,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 (paren
@@ -81,7 +81,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 (paren
@@ -118,7 +118,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
@@ -155,7 +155,7 @@ c_func
 (paren
 op_star
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 (paren
@@ -174,7 +174,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
