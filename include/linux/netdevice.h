@@ -21,6 +21,9 @@ suffix:semicolon
 r_struct
 id|vlan_group
 suffix:semicolon
+r_struct
+id|ethtool_ops
+suffix:semicolon
 DECL|macro|HAVE_ALLOC_NETDEV
 mdefine_line|#define HAVE_ALLOC_NETDEV&t;&t;/* feature macro: alloc_xxxdev&n;&t;&t;&t;&t;&t;   functions are available. */
 DECL|macro|NET_XMIT_SUCCESS
@@ -583,6 +586,12 @@ r_struct
 id|iw_handler_def
 op_star
 id|wireless_handlers
+suffix:semicolon
+DECL|member|ethtool_ops
+r_struct
+id|ethtool_ops
+op_star
+id|ethtool_ops
 suffix:semicolon
 multiline_comment|/*&n;&t; * This marks the end of the &quot;visible&quot; part of the structure. All&n;&t; * fields hereafter are internal to the system, and may change at&n;&t; * will (read: may be cleaned up at will).&n;&t; */
 multiline_comment|/* These may be needed for future network-power-down code. */
@@ -2193,6 +2202,16 @@ r_int
 id|cmd
 comma
 r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dev_ethtool
+c_func
+(paren
+r_struct
+id|ifreq
 op_star
 )paren
 suffix:semicolon
