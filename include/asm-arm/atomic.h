@@ -28,7 +28,7 @@ DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v,i)&t;(((v)-&gt;counter) = (i))
 DECL|function|atomic_add
 r_static
-id|__inline__
+r_inline
 r_void
 id|atomic_add
 c_func
@@ -65,7 +65,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_sub
 r_static
-id|__inline__
+r_inline
 r_void
 id|atomic_sub
 c_func
@@ -102,7 +102,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_inc
 r_static
-id|__inline__
+r_inline
 r_void
 id|atomic_inc
 c_func
@@ -136,7 +136,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_dec
 r_static
-id|__inline__
+r_inline
 r_void
 id|atomic_dec
 c_func
@@ -170,7 +170,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_dec_and_test
 r_static
-id|__inline__
+r_inline
 r_int
 id|atomic_dec_and_test
 c_func
@@ -269,7 +269,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_clear_mask
 r_static
-id|__inline__
+r_inline
 r_void
 id|atomic_clear_mask
 c_func
