@@ -1173,6 +1173,7 @@ id|copy_shmid_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1311,6 +1312,7 @@ op_star
 id|out
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1431,6 +1433,7 @@ id|copy_shminfo_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1709,6 +1712,7 @@ id|cmd
 comma
 r_struct
 id|shmid_ds
+id|__user
 op_star
 id|buf
 )paren
@@ -2740,16 +2744,17 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Fix shmaddr, allocate descriptor, map shm, add attach descriptor to lists.&n; */
+multiline_comment|/*&n; * Fix shmaddr, allocate descriptor, map shm, add attach descriptor to lists.&n; *&n; * NOTE! Despite the name, this is NOT a direct system call entrypoint. The&n; * &quot;raddr&quot; thing points to kernel space, and there has to be a wrapper around&n; * this.&n; */
 DECL|function|sys_shmat
-id|asmlinkage
 r_int
 id|sys_shmat
+c_func
 (paren
 r_int
 id|shmid
 comma
 r_char
+id|__user
 op_star
 id|shmaddr
 comma
@@ -3259,6 +3264,7 @@ id|sys_shmdt
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|shmaddr
 )paren
