@@ -500,12 +500,6 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* and our access routines&t;*/
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* for the clients&t;&t;*/
 DECL|member|usage_count
 r_int
 id|usage_count
@@ -522,6 +516,53 @@ multiline_comment|/* the device structure&t;&t;*/
 suffix:semicolon
 DECL|macro|to_i2c_client
 mdefine_line|#define to_i2c_client(d) container_of(d, struct i2c_client, dev)
+DECL|function|i2c_get_clientdata
+r_static
+r_inline
+r_void
+op_star
+id|i2c_get_clientdata
+(paren
+r_struct
+id|i2c_client
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|i2c_set_clientdata
+r_static
+r_inline
+r_void
+id|i2c_set_clientdata
+(paren
+r_struct
+id|i2c_client
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The following structs are for those who like to implement new bus drivers:&n; * i2c_algorithm is the interface to a class of hardware solutions which can&n; * be addressed using the same bus algorithms - i.e. bit-banging or the PCF8584&n; * to name two of the most common.&n; */
 DECL|struct|i2c_algorithm
 r_struct
