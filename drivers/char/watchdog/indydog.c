@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;IndyDog&t;0.3&t;A Hardware Watchdog Device for SGI IP22&n; *&n; *&t;(c) Copyright 2002 Guido Guenther &lt;agx@sigxcpu.org&gt;, All Rights Reserved.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -215,29 +216,12 @@ c_cond
 op_logical_neg
 id|nowayout
 )paren
-(brace
-id|u32
-id|mc_ctrl0
-op_assign
-id|sgimc-&gt;cpuctrl0
-suffix:semicolon
-id|mc_ctrl0
-op_and_assign
-op_complement
-id|SGIMC_CCTRL0_WDOG
-suffix:semicolon
-id|sgimc-&gt;cpuctrl0
-op_assign
-id|mc_ctrl0
-suffix:semicolon
-id|printk
+id|indydog_stop
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Stopped watchdog timer.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* Turn the WDT off */
 id|indydog_alive
 op_assign
 l_int|0
