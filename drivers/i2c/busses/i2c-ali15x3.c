@@ -1848,7 +1848,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ali15x3 smbus&quot;
+l_string|&quot;ali15x3_smbus&quot;
 comma
 dot
 id|id_table

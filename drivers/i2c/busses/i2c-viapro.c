@@ -1865,7 +1865,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;vt596 smbus&quot;
+l_string|&quot;vt596_smbus&quot;
 comma
 dot
 id|id_table

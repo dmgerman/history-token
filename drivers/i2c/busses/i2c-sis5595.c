@@ -1567,7 +1567,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;sis5595 smbus&quot;
+l_string|&quot;sis5595_smbus&quot;
 comma
 dot
 id|id_table

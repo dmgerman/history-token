@@ -1589,7 +1589,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;amd756 smbus&quot;
+l_string|&quot;amd756_smbus&quot;
 comma
 dot
 id|id_table

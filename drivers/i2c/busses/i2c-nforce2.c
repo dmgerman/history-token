@@ -1517,7 +1517,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;nForce2 SMBus&quot;
+l_string|&quot;nForce2_smbus&quot;
 comma
 dot
 id|id_table

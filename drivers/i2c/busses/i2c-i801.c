@@ -2723,7 +2723,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;i801 smbus&quot;
+l_string|&quot;i801_smbus&quot;
 comma
 dot
 id|id_table
