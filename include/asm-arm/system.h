@@ -96,7 +96,7 @@ DECL|macro|cache_is_vipt_nonaliasing
 mdefine_line|#define cache_is_vipt_nonaliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_present(__val) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t; __cacheid_vipt_nonaliasing(__val);&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|cache_is_vipt_aliasing
 mdefine_line|#define cache_is_vipt_aliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_present(__val) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t; __cacheid_vipt_aliasing(__val);&t;&t;&t;&bslash;&n;&t;})
-multiline_comment|/*&n; * This is used to ensure the compiler did actually allocate the register we&n; * asked it for some inline assembly sequences.  Apparently we can&squot;t trust&n; * the compiler from one version to another so a bit of paranoia won&squot;t hurt.&n; * This string is meant to be concatenated with the inline asm string and&n; * will cause compilation to stop on mismatch.&n; */
+multiline_comment|/*&n; * This is used to ensure the compiler did actually allocate the register we&n; * asked it for some inline assembly sequences.  Apparently we can&squot;t trust&n; * the compiler from one version to another so a bit of paranoia won&squot;t hurt.&n; * This string is meant to be concatenated with the inline asm string and&n; * will cause compilation to stop on mismatch.&n; * (for details, see gcc PR 15089)&n; */
 DECL|macro|__asmeq
 mdefine_line|#define __asmeq(x, y)  &quot;.ifnc &quot; x &quot;,&quot; y &quot; ; .err ; .endif&bslash;n&bslash;t&quot;
 macro_line|#ifndef __ASSEMBLY__
