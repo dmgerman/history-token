@@ -5926,6 +5926,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* found freespace entry idx */
+r_int
+id|foundhole
+suffix:semicolon
+multiline_comment|/* found hole in freespace */
 id|xfs_dir2_free_t
 op_star
 id|free
@@ -5993,6 +5997,10 @@ c_func
 (paren
 id|args-&gt;namelen
 )paren
+suffix:semicolon
+id|foundhole
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we came in with a freespace block that means that lookup&n;&t; * found an entry with our hash value.&t;This is the freespace&n;&t; * block for that data entry.&n;&t; */
 r_if
@@ -6275,7 +6283,7 @@ id|fbno
 )paren
 comma
 op_minus
-l_int|1
+l_int|2
 comma
 op_amp
 id|fbp
@@ -6292,11 +6300,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|fbp
 op_eq
 l_int|NULL
 )paren
+)paren
 (brace
+id|foundhole
+op_assign
+l_int|1
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -6388,6 +6404,9 @@ id|ARCH_CONVERT
 )paren
 op_eq
 id|NULLDATAOFF
+op_logical_and
+op_logical_neg
+id|foundhole
 )paren
 (brace
 id|foundindex
@@ -6431,6 +6450,9 @@ c_func
 (paren
 id|mp
 )paren
+op_logical_and
+op_logical_neg
+id|foundhole
 )paren
 (brace
 id|foundindex
