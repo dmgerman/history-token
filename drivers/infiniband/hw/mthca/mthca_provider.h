@@ -247,11 +247,6 @@ DECL|member|wqe_shift
 r_int
 id|wqe_shift
 suffix:semicolon
-DECL|member|policy
-r_enum
-id|ib_sig_type
-id|policy
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|mthca_qp
@@ -309,6 +304,11 @@ DECL|member|sq
 r_struct
 id|mthca_wq
 id|sq
+suffix:semicolon
+DECL|member|sq_policy
+r_enum
+id|ib_sig_type
+id|sq_policy
 suffix:semicolon
 DECL|member|send_wqe_offset
 r_int

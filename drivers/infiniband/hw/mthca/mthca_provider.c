@@ -1674,8 +1674,6 @@ id|init_attr-&gt;qp_type
 comma
 id|init_attr-&gt;sq_sig_type
 comma
-id|init_attr-&gt;rq_sig_type
-comma
 id|qp
 )paren
 suffix:semicolon
@@ -1778,8 +1776,6 @@ id|init_attr-&gt;recv_cq
 )paren
 comma
 id|init_attr-&gt;sq_sig_type
-comma
-id|init_attr-&gt;rq_sig_type
 comma
 id|qp-&gt;ibqp.qp_num
 comma

@@ -9245,10 +9245,6 @@ id|recv_wr.num_sge
 op_assign
 l_int|1
 suffix:semicolon
-id|recv_wr.recv_flags
-op_assign
-id|IB_RECV_SIGNALED
-suffix:semicolon
 r_do
 (brace
 multiline_comment|/* Allocate and map receive buffer */
@@ -10135,10 +10131,6 @@ op_assign
 id|qp_info-&gt;port_priv-&gt;cq
 suffix:semicolon
 id|qp_init_attr.sq_sig_type
-op_assign
-id|IB_SIGNAL_ALL_WR
-suffix:semicolon
-id|qp_init_attr.rq_sig_type
 op_assign
 id|IB_SIGNAL_ALL_WR
 suffix:semicolon

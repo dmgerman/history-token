@@ -1468,10 +1468,6 @@ r_enum
 id|ib_sig_type
 id|send_policy
 comma
-r_enum
-id|ib_sig_type
-id|recv_policy
-comma
 r_struct
 id|mthca_qp
 op_star
@@ -1505,10 +1501,6 @@ comma
 r_enum
 id|ib_sig_type
 id|send_policy
-comma
-r_enum
-id|ib_sig_type
-id|recv_policy
 comma
 r_int
 id|qpn

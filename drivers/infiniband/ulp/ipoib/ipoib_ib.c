@@ -321,10 +321,6 @@ id|num_sge
 op_assign
 l_int|1
 comma
-dot
-id|recv_flags
-op_assign
-id|IB_RECV_SIGNALED
 )brace
 suffix:semicolon
 r_struct
