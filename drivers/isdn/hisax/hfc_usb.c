@@ -5943,9 +5943,12 @@ id|usb_host_interface
 op_star
 id|iface
 op_assign
-id|intf-&gt;altsetting
-op_plus
-id|intf-&gt;act_altsetting
+id|intf-&gt;cur_altsetting
+suffix:semicolon
+r_struct
+id|usb_host_interface
+op_star
+id|iface_used
 suffix:semicolon
 r_struct
 id|usb_host_endpoint
@@ -5953,9 +5956,16 @@ op_star
 id|ep
 suffix:semicolon
 r_int
+id|ifnum
+op_assign
+id|iface-&gt;desc.bInterfaceNumber
+suffix:semicolon
+r_int
 id|i
 comma
 id|idx
+comma
+id|alt_idx
 comma
 id|probe_alt_setting
 comma
@@ -6050,9 +6060,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;HFC-USB: probing interface(%d) actalt(%d) minor(%d)&bslash;n&quot;
 comma
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+id|ifnum
 comma
-id|intf-&gt;act_altsetting
+id|iface-&gt;desc.bAlternateSetting
 comma
 id|intf-&gt;minor
 )paren
@@ -6085,7 +6095,7 @@ id|vend_name
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* if vendor and product ID is OK, start probing a matching alternate setting ... */
-id|probe_alt_setting
+id|alt_idx
 op_assign
 l_int|0
 suffix:semicolon
@@ -6105,7 +6115,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|probe_alt_setting
+id|alt_idx
 OL
 id|intf-&gt;num_altsetting
 )paren
@@ -6114,7 +6124,11 @@ id|iface
 op_assign
 id|intf-&gt;altsetting
 op_plus
+id|alt_idx
+suffix:semicolon
 id|probe_alt_setting
+op_assign
+id|iface-&gt;desc.bAlternateSetting
 suffix:semicolon
 id|cfg_used
 op_assign
@@ -6167,9 +6181,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;HFC-USB: (if=%d alt=%d cfg_used=%d)&bslash;n&quot;
 comma
-id|probe_alt_setting
+id|ifnum
 comma
-id|intf-&gt;act_altsetting
+id|probe_alt_setting
 comma
 id|cfg_used
 )paren
@@ -6444,6 +6458,10 @@ id|alt_used
 op_assign
 id|probe_alt_setting
 suffix:semicolon
+id|iface_used
+op_assign
+id|iface
+suffix:semicolon
 )brace
 macro_line|#ifdef VERBOSE_USB_DEBUG
 id|printk
@@ -6463,11 +6481,11 @@ id|cfg_used
 op_increment
 suffix:semicolon
 )brace
-id|probe_alt_setting
+id|alt_idx
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* (probe_alt_setting &lt; intf-&gt;num_altsetting) */
+multiline_comment|/* (alt_idx &lt; intf-&gt;num_altsetting) */
 macro_line|#ifdef VERBOSE_USB_DEBUG
 id|printk
 c_func
@@ -6490,15 +6508,9 @@ op_ne
 l_int|0xffff
 )paren
 (brace
-id|intf-&gt;act_altsetting
-op_assign
-id|alt_used
-suffix:semicolon
 id|iface
 op_assign
-id|intf-&gt;altsetting
-op_plus
-id|intf-&gt;act_altsetting
+id|iface_used
 suffix:semicolon
 r_if
 c_cond
@@ -6928,12 +6940,12 @@ suffix:semicolon
 multiline_comment|/* save device */
 id|context-&gt;if_used
 op_assign
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+id|ifnum
 suffix:semicolon
 multiline_comment|/* save used interface */
 id|context-&gt;alt_used
 op_assign
-id|intf-&gt;act_altsetting
+id|alt_used
 suffix:semicolon
 multiline_comment|/* and alternate config */
 id|context-&gt;ctrl_paksize
