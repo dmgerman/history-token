@@ -460,6 +460,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|sun3_82586_probe
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|apne_probe
 c_func
 (paren
@@ -1308,6 +1318,14 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SUN3LANCE         /* sun3 onboard Lance chip */
 (brace
 id|sun3lance_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_SUN3_82586        /* sun3 onboard Intel 82586 chip */
+(brace
+id|sun3_82586_probe
 comma
 l_int|0
 )brace
