@@ -127,20 +127,24 @@ id|block_device_operations
 id|ataraid_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|ataraid_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|ataraid_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ataraid_ioctl
 comma
 )brace
@@ -383,6 +387,7 @@ DECL|function|ataraid_make_request
 r_static
 r_int
 id|ataraid_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -1073,7 +1078,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|ataraid_readahead
 (braket
 id|i
@@ -1081,7 +1085,6 @@ id|i
 op_assign
 l_int|1023
 suffix:semicolon
-)brace
 multiline_comment|/* setup the gendisk structure */
 id|ataraid_gendisk.part
 op_assign

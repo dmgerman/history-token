@@ -70,12 +70,13 @@ id|base
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ide_interrupt_ack
+c_func
 (paren
-r_void
+r_struct
+id|ata_channel
 op_star
-id|dev
 )paren
 suffix:semicolon
 r_static
@@ -1074,10 +1075,6 @@ id|m8xx_ide_tuneproc
 suffix:semicolon
 id|hw-&gt;ack_intr
 op_assign
-(paren
-id|ide_ack_intr_t
-op_star
-)paren
 id|ide_interrupt_ack
 suffix:semicolon
 multiline_comment|/* Enable Harddisk Interrupt,&n;&t; * and make it edge sensitive&n;&t; */
@@ -1386,10 +1383,6 @@ id|m8xx_ide_tuneproc
 suffix:semicolon
 id|hw-&gt;ack_intr
 op_assign
-(paren
-id|ide_ack_intr_t
-op_star
-)paren
 id|ide_interrupt_ack
 suffix:semicolon
 multiline_comment|/* Enable Harddisk Interrupt,&n;&t; * and make it edge sensitive&n;&t; */
@@ -1417,7 +1410,7 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/* m8xx_ide_init_hwif_ports() for CONFIG_IDE_8xx_DIRECT */
-macro_line|#endif&t;/* CONFIG_IDE_8xx_DIRECT */
+macro_line|#endif
 multiline_comment|/* -------------------------------------------------------------------- */
 multiline_comment|/* PCMCIA Timing */
 macro_line|#ifndef&t;PCMCIA_SHT
@@ -1746,16 +1739,18 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(CONFIG_IDE_8xx_PCCARD) || defined(CONFIG_IDE_8xx_PCMCIA */
+macro_line|#endif
 )brace
-r_static
-r_void
 DECL|function|ide_interrupt_ack
+r_static
+r_int
 id|ide_interrupt_ack
+c_func
 (paren
-r_void
+r_struct
+id|ata_channel
 op_star
-id|dev
+id|ch
 )paren
 (brace
 macro_line|#ifdef CONFIG_IDE_8xx_PCCARD
@@ -1864,9 +1859,12 @@ id|im_pcmcia.pcmc_pscr
 op_assign
 id|pscr
 suffix:semicolon
-macro_line|#else /* ! CONFIG_IDE_8xx_PCCARD */
+macro_line|#else
 multiline_comment|/*&n;&t; * Only CONFIG_IDE_8xx_PCCARD is using the interrupt of the&n;&t; * MPC8xx&squot;s PCMCIA controller, so there is nothing to be done here&n;&t; * for CONFIG_IDE_8xx_DIRECT and CONFIG_IDE_EXT_DIRECT.&n;&t; * The interrupt is handled somewhere else.&t;-- Steven&n;&t; */
-macro_line|#endif /* CONFIG_IDE_8xx_PCCARD */
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * CIS Tupel codes&n; */
 DECL|macro|CISTPL_NULL
@@ -2165,7 +2163,7 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;/* DEBUG_PCMCIA */
+macro_line|#endif
 r_switch
 c_cond
 (paren

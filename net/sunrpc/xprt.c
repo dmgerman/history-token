@@ -1027,9 +1027,9 @@ id|result
 op_ge
 l_int|0
 op_logical_and
-id|xprt-&gt;cong
-op_le
 id|cwnd
+op_le
+id|xprt-&gt;cong
 )paren
 (brace
 multiline_comment|/* The (cwnd &gt;&gt; 1) term makes sure&n;&t;&t; * the result gets rounded properly. */

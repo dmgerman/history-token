@@ -1481,13 +1481,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only -- for jiffies */
 id|result
 op_assign
 id|wait_for_ready
@@ -1502,7 +1500,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|ata_irq_enable
 c_func
 (paren

@@ -212,19 +212,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 multiline_comment|/*&n;&t; * This enables the second interface&n;&t; */
 id|outb_p
 c_func
@@ -273,13 +266,12 @@ l_int|0xa0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|ide_hwifs
 (braket
 l_int|0

@@ -168,7 +168,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* There used to be code here that assigned drive-&gt;id-&gt;CHS&n;&t;   to drive-&gt;CHS and that to drive-&gt;bios_CHS. However, some disks have&n;&t;   id-&gt;C/H/S = 4092/16/63 but are larger than 2.1 GB.  In such cases&n;&t;   that code was wrong.  Moreover, there seems to be no reason to do&n;&t;   any of these things. */
+multiline_comment|/* There used to be code here that assigned drive-&gt;id-&gt;CHS to&n;&t; * drive-&gt;CHS and that to drive-&gt;bios_CHS. However, some disks have&n;&t; * id-&gt;C/H/S = 4092/16/63 but are larger than 2.1 GB.  In such cases&n;&t; * that code was wrong.  Moreover, there seems to be no reason to do&n;&t; * any of these things.&n;&t; *&n;&t; * Please note that recent RedHat changes to the disk utils are bogous&n;&t; * and will report spurious errors.&n;&t; */
 multiline_comment|/* translate? */
 r_if
 c_cond
@@ -436,7 +436,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hd_driveid data come as little endian, it needs to be converted on big&n; * endian machines.&n; */
+multiline_comment|/*&n; * Drive ID data come as little endian, it needs to be converted on big endian&n; * machines.&n; */
 DECL|function|ata_fix_driveid
 r_void
 id|ata_fix_driveid
@@ -1569,7 +1569,7 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Don&squot;t use ide_wait_cmd here - it will attempt to set_geometry and&n;&t; * recalibrate, but for some reason these don&squot;t work at this point&n;&t; * (lost interrupt).&n;         *&n;         * Select the drive, and issue the SETFEATURES command&n;         */
+multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command.&n;         */
 id|disable_irq
 c_func
 (paren
@@ -2002,12 +2002,11 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 id|ata_fix_driveid
 c_func
 (paren
@@ -2934,19 +2933,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only; some systems need this */
+multiline_comment|/* some systems need this */
 id|do_identify
 c_func
 (paren
@@ -2972,7 +2965,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear drive IRQ */
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3471,13 +3464,12 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only; needed for jiffies and irq probing */
+multiline_comment|/* needed for jiffies and irq probing */
 multiline_comment|/*&n;&t; * Check for the presence of a channel by probing for drives on it.&n;&t; */
 r_for
 c_loop
@@ -4018,7 +4010,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 multiline_comment|/*&n;&t; * Now setup the PIO transfer modes of the drives on this channel.&n;&t; */
 r_for
 c_loop
@@ -5088,6 +5079,24 @@ id|gd-&gt;sizes
 )paren
 r_goto
 id|err_kmalloc_gd_sizes
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|gd-&gt;sizes
+comma
+l_int|0
+comma
+id|ATA_MINORS
+op_star
+r_sizeof
+(paren
+id|gd-&gt;sizes
+(braket
+l_int|0
+)braket
+)paren
+)paren
 suffix:semicolon
 id|gd-&gt;part
 op_assign

@@ -43,19 +43,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|inb
 c_func
 (paren
@@ -84,13 +77,12 @@ comma
 id|wcount
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 )brace
 DECL|function|write_vlb
 r_static
@@ -116,19 +108,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|inb
 c_func
 (paren
@@ -157,13 +142,12 @@ comma
 id|wcount
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 )brace
 DECL|function|read_16
 r_static
@@ -1578,7 +1562,7 @@ id|nsect
 op_le
 l_int|0
 )paren
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -1800,7 +1784,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2342,7 +2326,7 @@ comma
 l_string|&quot;pdc4030 bad flags&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2575,12 +2559,11 @@ c_cond
 op_logical_neg
 id|drive-&gt;channel-&gt;unmask
 )paren
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 r_return
 id|promise_do_write
 c_func
@@ -2600,7 +2583,7 @@ id|KERN_ERR
 l_string|&quot;pdc4030: command not READ or WRITE! Huh?&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive

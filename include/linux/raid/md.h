@@ -164,15 +164,6 @@ id|thread
 suffix:semicolon
 r_extern
 r_void
-id|md_update_sb
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|md_done_sync
 c_func
 (paren

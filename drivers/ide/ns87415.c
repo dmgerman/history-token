@@ -85,19 +85,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 r_new
 op_assign
 op_star
@@ -275,13 +268,12 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 )brace
 DECL|function|ns87415_selectproc
 r_static
@@ -841,20 +833,24 @@ id|chipset
 id|__initdata
 op_assign
 (brace
+dot
 id|vendor
-suffix:colon
+op_assign
 id|PCI_VENDOR_ID_NS
 comma
+dot
 id|device
-suffix:colon
+op_assign
 id|PCI_DEVICE_ID_NS_87415
 comma
+dot
 id|init_channel
-suffix:colon
+op_assign
 id|ide_init_ns87415
 comma
+dot
 id|bootable
-suffix:colon
+op_assign
 id|ON_BOARD
 comma
 )brace
