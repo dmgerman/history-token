@@ -1657,31 +1657,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Fetch the next Stream Sequence Number for stream number &squot;sid&squot;.  */
-DECL|function|__sctp_association_get_next_ssn
-id|__u16
-id|__sctp_association_get_next_ssn
-c_func
-(paren
-id|sctp_association_t
-op_star
-id|asoc
-comma
-id|__u16
-id|sid
-)paren
-(brace
-r_return
-id|sctp_ssn_next
-c_func
-(paren
-op_amp
-id|asoc-&gt;ssnmap-&gt;out
-comma
-id|sid
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
 DECL|function|sctp_cmp_addr_exact
 r_int

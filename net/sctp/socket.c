@@ -1988,6 +1988,10 @@ id|sinfo_flags
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|sk_buff_head
+id|chunks
+suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -2743,46 +2747,6 @@ r_goto
 id|out_free
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: In the current implementation, a single chunk is created&n;&t; * for the entire message initially, even if it has to be fragmented&n;&t; * later.  As the length field in the chunkhdr is used to set&n;&t; * the chunk length, the maximum size of the chunk and hence the&n;&t; * message is limited by its type(__u16).&n;&t; * The real fix is to fragment the message before creating the chunks.&n;&t; */
-r_if
-c_cond
-(paren
-id|msg_len
-OG
-(paren
-(paren
-id|__u16
-)paren
-(paren
-op_complement
-(paren
-id|__u16
-)paren
-l_int|0
-)paren
-op_minus
-id|WORD_ROUND
-c_func
-(paren
-r_sizeof
-(paren
-id|sctp_data_chunk_t
-)paren
-op_plus
-l_int|1
-)paren
-)paren
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|EMSGSIZE
-suffix:semicolon
-r_goto
-id|out_free
-suffix:semicolon
-)brace
 multiline_comment|/* If fragmentation is disabled and the message length exceeds the&n;&t; * association fragmentation point, return EMSGSIZE.  The I-D&n;&t; * does not specify what this error is, but this looks like&n;&t; * a great fit.&n;&t; */
 r_if
 c_cond
@@ -2898,35 +2862,6 @@ r_goto
 id|out_free
 suffix:semicolon
 )brace
-multiline_comment|/* Get enough memory for the whole message.  */
-id|chunk
-op_assign
-id|sctp_make_data_empty
-c_func
-(paren
-id|asoc
-comma
-id|sinfo
-comma
-id|msg_len
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|chunk
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out_free
-suffix:semicolon
-)brace
 macro_line|#if 0
 multiline_comment|/* FIXME: This looks wrong so I&squot;ll comment out.&n;&t; * We should be able to use this same technique for&n;&t; * primary address override!  --jgrimm&n;&t; */
 multiline_comment|/* If the user gave us an address, copy it in.  */
@@ -2965,63 +2900,40 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* 0 */
-multiline_comment|/* Copy the message from the user.  */
-id|err
-op_assign
-id|sctp_user_addto_chunk
+multiline_comment|/* Break the message into multiple chunks of maximum size. */
+id|skb_queue_head_init
 c_func
 (paren
-id|chunk
+op_amp
+id|chunks
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|sctp_datachunks_from_user
+c_func
+(paren
+id|asoc
+comma
+id|sinfo
+comma
+id|msg
 comma
 id|msg_len
 comma
-id|msg-&gt;msg_iov
+op_amp
+id|chunks
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|err
-OL
-l_int|0
 )paren
 r_goto
 id|out_free
 suffix:semicolon
-id|SCTP_DEBUG_PRINTK
-c_func
-(paren
-l_string|&quot;Copied message to chunk: %p.&bslash;n&quot;
-comma
-id|chunk
-)paren
-suffix:semicolon
-multiline_comment|/* Put the chunk-&gt;skb back into the form expected by send.  */
-id|__skb_pull
-c_func
-(paren
-id|chunk-&gt;skb
-comma
-(paren
-id|__u8
-op_star
-)paren
-id|chunk-&gt;chunk_hdr
-op_minus
-(paren
-id|__u8
-op_star
-)paren
-id|chunk-&gt;skb-&gt;data
-)paren
-suffix:semicolon
-multiline_comment|/* Do accounting for the write space.  */
-id|sctp_set_owner_w
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
+multiline_comment|/* Auto-connect, if we aren&squot;t connected already. */
 r_if
 c_cond
 (paren
@@ -3057,9 +2969,34 @@ l_string|&quot;We associated primitively.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Send it to the lower layers.  */
-id|err
+multiline_comment|/* Now send the (possibly) fragmented message. */
+r_while
+c_loop
+(paren
+(paren
+id|chunk
 op_assign
+(paren
+id|sctp_chunk_t
+op_star
+)paren
+id|__skb_dequeue
+c_func
+(paren
+op_amp
+id|chunks
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Do accounting for the write space.  */
+id|sctp_set_owner_w
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
+multiline_comment|/* Send it to the lower layers.  */
 id|sctp_primitive_SEND
 c_func
 (paren
@@ -3074,7 +3011,7 @@ c_func
 l_string|&quot;We sent primitively.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* BUG: SCTP_CHECK_TIMER(sk); */
+)brace
 r_if
 c_cond
 (paren
@@ -3090,7 +3027,7 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-multiline_comment|/* If we are already past ASSOCIATE, the lower&n;&t; * layers are responsible for its cleanup.&n;&t; */
+multiline_comment|/* If we are already past ASSOCIATE, the lower&n;&t; * layers are responsible for association cleanup.&n;&t; */
 r_goto
 id|out_free_chunk
 suffix:semicolon

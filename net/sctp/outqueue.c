@@ -1822,6 +1822,11 @@ suffix:semicolon
 r_int
 id|nfrags
 suffix:semicolon
+id|__u8
+id|old_flags
+comma
+id|flags
+suffix:semicolon
 multiline_comment|/* nfrags = no. of max size fragments + any smaller last fragment. */
 id|nfrags
 op_assign
@@ -1854,6 +1859,27 @@ r_sizeof
 id|sctp_datahdr_t
 )paren
 suffix:semicolon
+multiline_comment|/* Are we fragmenting an already fragmented large message? */
+id|old_flags
+op_assign
+id|chunk-&gt;chunk_hdr-&gt;flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_flags
+op_amp
+id|SCTP_DATA_FIRST_FRAG
+)paren
+id|flags
+op_assign
+id|SCTP_DATA_FIRST_FRAG
+suffix:semicolon
+r_else
+id|flags
+op_assign
+id|SCTP_DATA_MIDDLE_FRAG
+suffix:semicolon
 multiline_comment|/* Make the first fragment. */
 id|first_frag
 op_assign
@@ -1868,7 +1894,7 @@ id|max_frag_data_len
 comma
 id|data_ptr
 comma
-id|SCTP_DATA_FIRST_FRAG
+id|flags
 comma
 id|ssn
 )paren
@@ -1959,6 +1985,22 @@ op_add_assign
 id|max_frag_data_len
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|old_flags
+op_amp
+id|SCTP_DATA_LAST_FRAG
+)paren
+id|flags
+op_assign
+id|SCTP_DATA_LAST_FRAG
+suffix:semicolon
+r_else
+id|flags
+op_assign
+id|SCTP_DATA_MIDDLE_FRAG
+suffix:semicolon
 multiline_comment|/* Make the last fragment. */
 id|frag
 op_assign
@@ -1973,7 +2015,7 @@ id|chunk_data_len
 comma
 id|data_ptr
 comma
-id|SCTP_DATA_LAST_FRAG
+id|flags
 comma
 id|ssn
 )paren

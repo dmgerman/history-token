@@ -1478,18 +1478,6 @@ id|sctp_chunk_t
 op_star
 )paren
 suffix:semicolon
-id|sctp_chunk_t
-op_star
-id|sctp_copy_chunk
-c_func
-(paren
-id|sctp_chunk_t
-op_star
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
 r_void
 op_star
 id|sctp_addto_chunk
@@ -1504,23 +1492,6 @@ id|len
 comma
 r_const
 r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_int
-id|sctp_user_addto_chunk
-c_func
-(paren
-id|sctp_chunk_t
-op_star
-id|chunk
-comma
-r_int
-id|len
-comma
-r_struct
-id|iovec
 op_star
 id|data
 )paren
@@ -2818,10 +2789,9 @@ id|sctp_endpoint_t
 op_star
 id|ep
 suffix:semicolon
-multiline_comment|/* We are not really a list, but the list_entry() macro is&n;&t; * really quite generic to find the address of an outter struct.&n;&t; */
 id|ep
 op_assign
-id|list_entry
+id|container_of
 c_func
 (paren
 id|base
@@ -3508,10 +3478,9 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-multiline_comment|/* We are not really a list, but the list_entry() macro is&n;&t; * really quite generic find the address of an outter struct.&n;&t; */
 id|asoc
 op_assign
-id|list_entry
+id|container_of
 c_func
 (paren
 id|base
