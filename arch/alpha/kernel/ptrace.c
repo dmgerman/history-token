@@ -1878,12 +1878,11 @@ id|_NSIG
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Set single stepping.  */
-id|ptrace_set_bpt
-c_func
-(paren
-id|child
-)paren
+multiline_comment|/* Mark single stepping.  */
+id|child-&gt;thread_info-&gt;bpt_nsaved
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|clear_tsk_thread_flag
 c_func

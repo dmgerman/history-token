@@ -411,7 +411,7 @@ id|__unused
 r_int
 id|i
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 id|smp_halt
 c_func
 (paren

@@ -445,9 +445,6 @@ id|RXD_LENGTH
 )paren
 suffix:semicolon
 )brace
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
 DECL|function|qe_init
 r_static
