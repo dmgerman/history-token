@@ -81,16 +81,30 @@ id|init_task
 )paren
 suffix:semicolon
 multiline_comment|/* .text section in head.S is aligned at 8k boundary and this gets linked&n; * right after that so that the init_thread_union is aligned properly as well.&n; * If this is not aligned on a 8k boundry, then you should change code&n; * in etrap.S which assumes it.&n; */
-id|__asm__
-c_func
-(paren
-l_string|&quot;.section &bslash;&quot;.text&bslash;&quot;,#alloc&bslash;n&quot;
-)paren
-suffix:semicolon
 DECL|variable|init_thread_union
 r_union
 id|thread_union
 id|init_thread_union
+id|__attribute__
+c_func
+(paren
+(paren
+id|section
+(paren
+l_string|&quot;.text&quot;
+)paren
+)paren
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+(paren
+id|THREAD_SIZE
+)paren
+)paren
+)paren
 op_assign
 (brace
 id|INIT_THREAD_INFO
