@@ -4,6 +4,7 @@ mdefine_line|#define LINUX_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; *&n; * The hardirq count can be overridden per architecture, the default is:&n; *&n; * - bits 16-27 are the hardirq count (max # of hardirqs: 4096)&n; * - ( bit 28 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0x0fff0000&n; */
 DECL|macro|PREEMPT_BITS
 mdefine_line|#define PREEMPT_BITS&t;8
@@ -87,8 +88,38 @@ DECL|macro|nmi_enter
 mdefine_line|#define nmi_enter()&t;&t;irq_enter()
 DECL|macro|nmi_exit
 mdefine_line|#define nmi_exit()&t;&t;sub_preempt_count(HARDIRQ_OFFSET)
+macro_line|#ifndef CONFIG_VIRT_CPU_ACCOUNTING
+DECL|function|account_user_vtime
+r_static
+r_inline
+r_void
+id|account_user_vtime
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+)brace
+DECL|function|account_system_vtime
+r_static
+r_inline
+r_void
+id|account_system_vtime
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+)brace
+macro_line|#endif
 DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;add_preempt_count(HARDIRQ_OFFSET)
+mdefine_line|#define irq_enter()&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;account_system_vtime(current);&t;&t;&bslash;&n;&t;&t;add_preempt_count(HARDIRQ_OFFSET);&t;&bslash;&n;&t;} while (0)
 r_extern
 r_void
 id|irq_exit

@@ -4,10 +4,78 @@ DECL|macro|__SYSDEP_I386_PTRACE_H
 mdefine_line|#define __SYSDEP_I386_PTRACE_H
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_TT
-macro_line|#include &quot;ptrace-tt.h&quot;
+macro_line|#include &quot;sysdep/sc.h&quot;
 macro_line|#endif
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
-macro_line|#include &quot;ptrace-skas.h&quot;
+multiline_comment|/* syscall emulation path in ptrace */
+macro_line|#ifndef PTRACE_SYSEMU
+DECL|macro|PTRACE_SYSEMU
+mdefine_line|#define PTRACE_SYSEMU 31
+macro_line|#endif
+r_void
+id|set_using_sysemu
+c_func
+(paren
+r_int
+id|value
+)paren
+suffix:semicolon
+r_int
+id|get_using_sysemu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sysemu_supported
+suffix:semicolon
+macro_line|#include &quot;skas_ptregs.h&quot;
+DECL|macro|HOST_FRAME_SIZE
+mdefine_line|#define HOST_FRAME_SIZE 17
+DECL|macro|REGS_IP
+mdefine_line|#define REGS_IP(r) ((r)[HOST_IP])
+DECL|macro|REGS_SP
+mdefine_line|#define REGS_SP(r) ((r)[HOST_SP])
+DECL|macro|REGS_EFLAGS
+mdefine_line|#define REGS_EFLAGS(r) ((r)[HOST_EFLAGS])
+DECL|macro|REGS_EAX
+mdefine_line|#define REGS_EAX(r) ((r)[HOST_EAX])
+DECL|macro|REGS_EBX
+mdefine_line|#define REGS_EBX(r) ((r)[HOST_EBX])
+DECL|macro|REGS_ECX
+mdefine_line|#define REGS_ECX(r) ((r)[HOST_ECX])
+DECL|macro|REGS_EDX
+mdefine_line|#define REGS_EDX(r) ((r)[HOST_EDX])
+DECL|macro|REGS_ESI
+mdefine_line|#define REGS_ESI(r) ((r)[HOST_ESI])
+DECL|macro|REGS_EDI
+mdefine_line|#define REGS_EDI(r) ((r)[HOST_EDI])
+DECL|macro|REGS_EBP
+mdefine_line|#define REGS_EBP(r) ((r)[HOST_EBP])
+DECL|macro|REGS_CS
+mdefine_line|#define REGS_CS(r) ((r)[HOST_CS])
+DECL|macro|REGS_SS
+mdefine_line|#define REGS_SS(r) ((r)[HOST_SS])
+DECL|macro|REGS_DS
+mdefine_line|#define REGS_DS(r) ((r)[HOST_DS])
+DECL|macro|REGS_ES
+mdefine_line|#define REGS_ES(r) ((r)[HOST_ES])
+DECL|macro|REGS_FS
+mdefine_line|#define REGS_FS(r) ((r)[HOST_FS])
+DECL|macro|REGS_GS
+mdefine_line|#define REGS_GS(r) ((r)[HOST_GS])
+DECL|macro|REGS_SET_SYSCALL_RETURN
+mdefine_line|#define REGS_SET_SYSCALL_RETURN(r, res) REGS_EAX(r) = (res)
+DECL|macro|REGS_RESTART_SYSCALL
+mdefine_line|#define REGS_RESTART_SYSCALL(r) IP_RESTART_SYSCALL(REGS_IP(r))
+DECL|macro|REGS_SEGV_IS_FIXABLE
+mdefine_line|#define REGS_SEGV_IS_FIXABLE(r) SEGV_IS_FIXABLE((r)-&gt;trap_type)
+DECL|macro|REGS_FAULT_ADDR
+mdefine_line|#define REGS_FAULT_ADDR(r) ((r)-&gt;fault_addr)
+DECL|macro|REGS_FAULT_WRITE
+mdefine_line|#define REGS_FAULT_WRITE(r) FAULT_WRITE((r)-&gt;fault_type)
 macro_line|#endif
 macro_line|#ifndef PTRACE_SYSEMU_SINGLESTEP
 DECL|macro|PTRACE_SYSEMU_SINGLESTEP

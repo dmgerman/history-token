@@ -347,6 +347,12 @@ comma
 id|ap
 )paren
 suffix:semicolon
+id|va_end
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 id|printf
 c_func
 (paren

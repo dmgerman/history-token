@@ -12380,6 +12380,11 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+comma
+r_struct
+id|device
+op_star
+id|dmdev
 )paren
 (brace
 r_struct
@@ -12676,23 +12681,14 @@ id|dev-&gt;base_addr
 op_assign
 id|port
 suffix:semicolon
-multiline_comment|/* what is with PCMCIA ??? */
-r_if
-c_cond
-(paren
-id|pci
-)paren
-(brace
 id|SET_NETDEV_DEV
 c_func
 (paren
 id|dev
 comma
-op_amp
-id|pci-&gt;dev
+id|dmdev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13191,6 +13187,11 @@ id|port
 comma
 r_int
 id|is_pcmcia
+comma
+r_struct
+id|device
+op_star
+id|dmdev
 )paren
 (brace
 r_return
@@ -13203,6 +13204,8 @@ comma
 id|is_pcmcia
 comma
 l_int|NULL
+comma
+id|dmdev
 )paren
 suffix:semicolon
 )brace
@@ -28454,6 +28457,9 @@ comma
 l_int|0
 comma
 id|pdev
+comma
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 r_else
@@ -28474,6 +28480,9 @@ comma
 l_int|0
 comma
 id|pdev
+comma
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -29083,6 +29092,8 @@ id|i
 )braket
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 )paren
 id|have_isa_dev

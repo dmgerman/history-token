@@ -4,7 +4,7 @@ DECL|macro|__ASM_I386_CPUFEATURE_H
 mdefine_line|#define __ASM_I386_CPUFEATURE_H
 macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|NCAPINTS
-mdefine_line|#define NCAPINTS&t;6&t;/* Currently we have 6 32-bit words worth of info */
+mdefine_line|#define NCAPINTS&t;7&t;/* N 32-bit words worth of info */
 multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (edx), word 0 */
 DECL|macro|X86_FEATURE_FPU
 mdefine_line|#define X86_FEATURE_FPU&t;&t;(0*32+ 0) /* Onboard FPU */
@@ -120,6 +120,8 @@ DECL|macro|X86_FEATURE_TM2
 mdefine_line|#define X86_FEATURE_TM2&t;&t;(4*32+ 8) /* Thermal Monitor 2 */
 DECL|macro|X86_FEATURE_CID
 mdefine_line|#define X86_FEATURE_CID&t;&t;(4*32+10) /* Context ID */
+DECL|macro|X86_FEATURE_CX16
+mdefine_line|#define X86_FEATURE_CX16        (4*32+13) /* CMPXCHG16B */
 DECL|macro|X86_FEATURE_XTPR
 mdefine_line|#define X86_FEATURE_XTPR&t;(4*32+14) /* Send Task Priority Messages */
 multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
@@ -131,6 +133,11 @@ DECL|macro|X86_FEATURE_XCRYPT
 mdefine_line|#define X86_FEATURE_XCRYPT&t;(5*32+ 6) /* on-CPU crypto (xcrypt insn) */
 DECL|macro|X86_FEATURE_XCRYPT_EN
 mdefine_line|#define X86_FEATURE_XCRYPT_EN&t;(5*32+ 7) /* on-CPU crypto enabled */
+multiline_comment|/* More extended AMD flags: CPUID level 0x80000001, ecx, word 6 */
+DECL|macro|X86_FEATURE_LAHF_LM
+mdefine_line|#define X86_FEATURE_LAHF_LM&t;(5*32+ 0) /* LAHF/SAHF in long mode */
+DECL|macro|X86_FEATURE_CMP_LEGACY
+mdefine_line|#define X86_FEATURE_CMP_LEGACY&t;(5*32+ 1) /* If yes HyperThreading not valid */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)&t;&t;test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has

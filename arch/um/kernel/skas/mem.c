@@ -38,6 +38,18 @@ op_amp
 id|arg
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOST_TASK_SIZE
+op_star
+id|host_size_out
+op_assign
+id|CONFIG_HOST_TASK_SIZE
+suffix:semicolon
+op_star
+id|task_size_out
+op_assign
+id|CONFIG_HOST_TASK_SIZE
+suffix:semicolon
+macro_line|#else
 op_star
 id|host_size_out
 op_assign
@@ -48,6 +60,7 @@ id|task_size_out
 op_assign
 id|top
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 (paren

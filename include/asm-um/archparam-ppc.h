@@ -44,13 +44,6 @@ DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA        ELFDATA2MSB
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_PPC
-multiline_comment|/********* Bits for asm-um/delay.h **********/
-DECL|typedef|um_udelay_t
-r_typedef
-r_int
-r_int
-id|um_udelay_t
-suffix:semicolon
 multiline_comment|/********* Bits for asm-um/hw_irq.h **********/
 r_struct
 id|hw_interrupt_type

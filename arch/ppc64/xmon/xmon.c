@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/sstep.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
 DECL|macro|scanhex
@@ -6278,6 +6279,94 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|print_bug_trap
+r_static
+r_void
+id|print_bug_trap
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_struct
+id|bug_entry
+op_star
+id|bug
+suffix:semicolon
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_PR
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* not in kernel */
+id|addr
+op_assign
+id|regs-&gt;nip
+suffix:semicolon
+multiline_comment|/* address of trap instruction */
+r_if
+c_cond
+(paren
+id|addr
+OL
+id|PAGE_OFFSET
+)paren
+r_return
+suffix:semicolon
+id|bug
+op_assign
+id|find_bug
+c_func
+(paren
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bug
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bug-&gt;line
+op_amp
+id|BUG_WARNING_TRAP
+)paren
+r_return
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;kernel BUG in %s at %s:%d!&bslash;n&quot;
+comma
+id|bug-&gt;function
+comma
+id|bug-&gt;file
+comma
+(paren
+r_int
+r_int
+)paren
+id|bug-&gt;line
+)paren
+suffix:semicolon
+)brace
 DECL|function|excprint
 r_void
 id|excprint
@@ -6459,6 +6548,19 @@ id|current-&gt;comm
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|trap
+op_eq
+l_int|0x700
+)paren
+id|print_bug_trap
+c_func
+(paren
+id|fp
+)paren
+suffix:semicolon
 )brace
 DECL|function|prregs
 r_void

@@ -2448,7 +2448,7 @@ c_func
 (paren
 id|ab
 comma
-l_string|&quot; exit=%u&quot;
+l_string|&quot; exit=%d&quot;
 comma
 id|context-&gt;return_code
 )paren

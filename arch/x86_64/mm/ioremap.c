@@ -817,11 +817,12 @@ c_func
 id|phys_addr
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n;&t; * Don&squot;t allow anybody to remap normal RAM that we&squot;re using..&n;&t; */
 r_if
 c_cond
 (paren
-id|phys_addr
+id|last_addr
 OL
 id|virt_to_phys
 c_func
@@ -830,7 +831,6 @@ id|high_memory
 )paren
 )paren
 (brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_char
 op_star
 id|t_addr
@@ -898,8 +898,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Mappings have to be page-aligned&n;&t; */
 id|offset
 op_assign
@@ -937,7 +937,7 @@ op_or
 (paren
 id|flags
 op_lshift
-l_int|24
+l_int|20
 )paren
 )paren
 suffix:semicolon
@@ -1196,7 +1196,7 @@ c_cond
 (paren
 id|p-&gt;flags
 op_rshift
-l_int|24
+l_int|20
 )paren
 op_logical_and
 id|p-&gt;phys_addr

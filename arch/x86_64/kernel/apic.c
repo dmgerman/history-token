@@ -759,6 +759,31 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* Unsupported on P4 - see Intel Dev. Manual Vol. 3, Ch. 8.6.1 */
+r_int
+r_int
+id|ver
+op_assign
+id|GET_APIC_VERSION
+c_func
+(paren
+id|apic_read
+c_func
+(paren
+id|APIC_LVR
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ver
+op_ge
+l_int|0x14
+)paren
+multiline_comment|/* P4 or higher */
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for idle.&n;&t; */
 id|apic_wait_icr_idle
 c_func

@@ -417,13 +417,6 @@ c_func
 id|kernel_thread
 )paren
 suffix:semicolon
-DECL|variable|flush_instruction_cache
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flush_instruction_cache
-)paren
-suffix:semicolon
 DECL|variable|giveup_fpu
 id|EXPORT_SYMBOL
 c_func

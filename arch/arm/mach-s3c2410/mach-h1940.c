@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-h1940.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/h1940.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     17-Feb-2003 BJD  Copied to mach-ipaq.c&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     04-Sep-2004 BJD  Changed uart init, renamed ipaq_ -&gt; h1940_&n; *     18-Oct-2004 BJD  Updated new board structure name&n; *     04-Nov-2004 BJD  Change for new serial clock&n; *     04-Jan-2005 BJD  Updated uart init call&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-h1940.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/h1940.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     17-Feb-2003 BJD  Copied to mach-ipaq.c&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     04-Sep-2004 BJD  Changed uart init, renamed ipaq_ -&gt; h1940_&n; *     18-Oct-2004 BJD  Updated new board structure name&n; *     04-Nov-2004 BJD  Change for new serial clock&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
@@ -252,7 +251,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_init_irq
+id|s3c24xx_init_irq
 c_func
 (paren
 )paren
@@ -300,7 +299,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|s3c2410_timer
+id|s3c24xx_timer
 comma
 id|MACHINE_END
 eof

@@ -61,9 +61,17 @@ multiline_comment|/*&n;&t; * CPU time is in tens of seconds and run time is in t
 id|cpu_time
 op_assign
 (paren
+id|cputime_to_jiffies
+c_func
+(paren
 id|p-&gt;utime
+)paren
 op_plus
+id|cputime_to_jiffies
+c_func
+(paren
 id|p-&gt;stime
+)paren
 )paren
 op_rshift
 (paren

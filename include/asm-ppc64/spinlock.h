@@ -628,8 +628,6 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|_raw_read_trylock
-mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 multiline_comment|/*&n; * This returns the old value in the lock,&n; * so we got the write lock if the return value is 0.&n; */
 DECL|function|__write_trylock
 r_static

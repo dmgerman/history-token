@@ -178,18 +178,20 @@ mdefine_line|#define ELF_PLATFORM  (&quot;PARISC32&bslash;0&quot;)
 multiline_comment|/*&n; * We should probably use this macro to set a flag somewhere to indicate&n; * this is a 32 on 64 process. We could use PER_LINUX_32BIT, or we&n; * could set a processor dependent flag in the thread_struct.&n; */
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX32; &bslash;&n;&t;current-&gt;thread.map_base = DEFAULT_MAP_BASE32; &bslash;&n;&t;current-&gt;thread.task_size = DEFAULT_TASK_SIZE32 &bslash;&n;
-DECL|macro|jiffies_to_timeval
-mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval 
+DECL|macro|cputime_to_timeval
+macro_line|#undef cputime_to_timeval
+DECL|macro|cputime_to_timeval
+mdefine_line|#define cputime_to_timeval cputime_to_compat_timeval
 r_static
 id|__inline__
 r_void
-DECL|function|jiffies_to_compat_timeval
-id|jiffies_to_compat_timeval
+DECL|function|cputime_to_compat_timeval
+id|cputime_to_compat_timeval
 c_func
 (paren
-r_int
-r_int
-id|jiffies
+r_const
+id|cputime_t
+id|cputime
 comma
 r_struct
 id|compat_timeval
@@ -197,6 +199,16 @@ op_star
 id|value
 )paren
 (brace
+r_int
+r_int
+id|jiffies
+op_assign
+id|cputime_to_jiffies
+c_func
+(paren
+id|cputime
+)paren
+suffix:semicolon
 id|value-&gt;tv_usec
 op_assign
 (paren

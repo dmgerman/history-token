@@ -651,6 +651,16 @@ op_assign
 op_amp
 id|i82092aa_operations
 suffix:semicolon
+id|sockets
+(braket
+id|i
+)braket
+dot
+id|socket.resource_ops
+op_assign
+op_amp
+id|pccard_nonstatic_ops
+suffix:semicolon
 id|ret
 op_assign
 id|pcmcia_register_socket

@@ -1403,7 +1403,9 @@ id|rq
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|in_len
 comma
 id|out_len

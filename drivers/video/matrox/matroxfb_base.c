@@ -14454,6 +14454,7 @@ comma
 l_string|&quot;Memory type for G200/G400 (see Documentation/fb/matroxfb.txt for explanation) (default=3 for G200, 0 for G400)&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTRR
 id|module_param
 c_func
 (paren
@@ -14472,6 +14473,7 @@ comma
 l_string|&quot;This speeds up video memory accesses (0=disabled or 1) (default=1)&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|module_param
 c_func
 (paren

@@ -788,16 +788,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_void
-id|arcdev_setup
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_struct
 id|net_device
 op_star

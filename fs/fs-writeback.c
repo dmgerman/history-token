@@ -1739,7 +1739,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_inode_now&t;-&t;write an inode to disk&n; *&t;@inode: inode to write to disk&n; *&t;@sync: whether the write should be synchronous or not&n; *&n; *&t;This function commits an inode to disk immediately if it is&n; *&t;dirty. This is primarily needed by knfsd.&n; */
 DECL|function|write_inode_now
-r_void
+r_int
 id|write_inode_now
 c_func
 (paren
@@ -1752,6 +1752,9 @@ r_int
 id|sync
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_struct
 id|writeback_control
 id|wbc
@@ -1775,6 +1778,7 @@ c_cond
 id|inode-&gt;i_mapping-&gt;backing_dev_info-&gt;memory_backed
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|might_sleep
 c_func
@@ -1788,6 +1792,8 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|__writeback_single_inode
 c_func
 (paren
@@ -1814,6 +1820,9 @@ c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|write_inode_now
@@ -2039,6 +2048,9 @@ c_cond
 (paren
 id|need_write_inode_now
 )paren
+(brace
+id|err2
+op_assign
 id|write_inode_now
 c_func
 (paren
@@ -2047,6 +2059,17 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|err
+op_assign
+id|err2
+suffix:semicolon
+)brace
 r_else
 id|wait_on_inode
 c_func

@@ -866,11 +866,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|ptr
 suffix:semicolon
 r_struct
@@ -1322,11 +1317,6 @@ id|simeth_local
 op_star
 id|local
 op_assign
-(paren
-r_struct
-id|simeth_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 macro_line|#if 0
@@ -1509,11 +1499,6 @@ id|SIMETH_RECV_MAX
 suffix:semicolon
 id|local
 op_assign
-(paren
-r_struct
-id|simeth_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/*&n;&t; * the loop concept has been borrowed from other drivers&n;&t; * looks to me like it&squot;s a throttling thing to avoid pushing to many&n;&t; * packets at one time into the stack. Making sure we can process them&n;&t; * upstream and make forward progress overall&n;&t; */
@@ -1744,11 +1729,6 @@ id|simeth_local
 op_star
 id|local
 op_assign
-(paren
-r_struct
-id|simeth_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_return

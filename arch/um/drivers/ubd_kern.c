@@ -425,7 +425,7 @@ c_func
 (paren
 l_string|&quot;ide&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_ide
@@ -5004,12 +5004,14 @@ id|arg
 (brace
 r_struct
 id|hd_geometry
+id|__user
 op_star
 id|loc
 op_assign
 (paren
 r_struct
 id|hd_geometry
+id|__user
 op_star
 )paren
 id|arg
@@ -5144,6 +5146,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -5184,6 +5187,7 @@ id|volume
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -5224,6 +5228,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg

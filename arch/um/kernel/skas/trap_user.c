@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;user_util.h&quot;

@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
-macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;user_util.h&quot;

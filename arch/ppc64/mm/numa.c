@@ -1362,12 +1362,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|node_set_online
-c_func
-(paren
-id|numa_domain
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1421,20 +1415,28 @@ id|PAGE_SIZE
 )paren
 )paren
 (brace
+multiline_comment|/* Revert to non-numa for now */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;WARNING: Hole in node, &quot;
-l_string|&quot;disabling region start %lx &quot;
-l_string|&quot;length %lx&bslash;n&quot;
+l_string|&quot;WARNING: Unexpected node layout: &quot;
+l_string|&quot;region start %lx length %lx&bslash;n&quot;
 comma
 id|start
 comma
 id|size
 )paren
 suffix:semicolon
-r_continue
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NUMA is disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|init_node_data
@@ -1451,6 +1453,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|node_set_online
+c_func
+(paren
+id|numa_domain
+)paren
+suffix:semicolon
 id|init_node_data
 (braket
 id|numa_domain
@@ -1536,6 +1544,44 @@ id|i
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+multiline_comment|/* Something has gone wrong; revert any setup we&squot;ve done */
+id|for_each_node
+c_func
+(paren
+id|i
+)paren
+(brace
+id|node_set_offline
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+id|init_node_data
+(braket
+id|i
+)braket
+dot
+id|node_start_pfn
+op_assign
+l_int|0
+suffix:semicolon
+id|init_node_data
+(braket
+id|i
+)braket
+dot
+id|node_spanned_pages
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|setup_nonnuma

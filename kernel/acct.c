@@ -1739,6 +1739,15 @@ id|tsk-&gt;stime
 op_minus
 id|tsk-&gt;acct_stimexpd
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|delta
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|tsk-&gt;acct_stimexpd
 op_assign
 id|tsk-&gt;stime

@@ -9,14 +9,10 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
@@ -24,6 +20,7 @@ macro_line|#include &quot;process.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
@@ -36,6 +33,7 @@ macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
+macro_line|#include &quot;registers.h&quot;
 macro_line|#endif
 DECL|function|init_new_thread_stack
 r_void
@@ -1783,11 +1781,9 @@ c_func
 id|status
 )paren
 op_ne
-(paren
 id|SIGTRAP
 op_plus
 l_int|0x80
-)paren
 )paren
 )paren
 (brace

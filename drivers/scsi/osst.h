@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Header: /cvsroot/osst/Driver/osst.h,v 1.14 2003/12/14 14:34:38 wriede Exp $&n; */
+multiline_comment|/*&n; *&t;$Header: /cvsroot/osst/Driver/osst.h,v 1.16 2005/01/01 21:13:35 wriede Exp $&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -252,7 +252,7 @@ mdefine_line|#define BLOCK_SIZE_PAGE_LENGTH     4
 DECL|macro|BUFFER_FILLING_PAGE
 mdefine_line|#define BUFFER_FILLING_PAGE        0x33
 DECL|macro|BUFFER_FILLING_PAGE_LENGTH
-mdefine_line|#define BUFFER_FILLING_PAGE_LENGTH 
+mdefine_line|#define BUFFER_FILLING_PAGE_LENGTH 4
 DECL|macro|VENDOR_IDENT_PAGE
 mdefine_line|#define VENDOR_IDENT_PAGE          0x36
 DECL|macro|VENDOR_IDENT_PAGE_LENGTH
@@ -1892,8 +1892,9 @@ DECL|macro|OS_AUX_SIZE
 mdefine_line|#define OS_AUX_SIZE     (512)
 singleline_comment|//#define OSST_MAX_SG      2
 multiline_comment|/* The OnStream tape buffer descriptor. */
-r_typedef
+DECL|struct|osst_buffer
 r_struct
+id|osst_buffer
 (brace
 DECL|member|in_use
 r_int
@@ -1978,13 +1979,12 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* MUST BE last item                               */
-DECL|typedef|OSST_buffer
 )brace
-id|OSST_buffer
 suffix:semicolon
 multiline_comment|/* The OnStream tape drive descriptor */
-r_typedef
+DECL|struct|osst_tape
 r_struct
+id|osst_tape
 (brace
 DECL|member|driver
 r_struct
@@ -2014,7 +2014,8 @@ id|wait
 suffix:semicolon
 multiline_comment|/* for SCSI commands */
 DECL|member|buffer
-id|OSST_buffer
+r_struct
+id|osst_buffer
 op_star
 id|buffer
 suffix:semicolon
@@ -2202,6 +2203,10 @@ r_int
 id|recover_count
 suffix:semicolon
 multiline_comment|/* from tape opening */
+DECL|member|abort_count
+r_int
+id|abort_count
+suffix:semicolon
 DECL|member|write_count
 r_int
 id|write_count
@@ -2405,9 +2410,7 @@ id|gendisk
 op_star
 id|drive
 suffix:semicolon
-DECL|typedef|OS_Scsi_Tape
 )brace
-id|OS_Scsi_Tape
 suffix:semicolon
 multiline_comment|/* Values of write_type */
 DECL|macro|OS_WRITE_DATA

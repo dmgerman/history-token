@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arch/mach-ixp4xx/ixdpg425-pci.c&n; *&n; * PCI setup routines for Intel IXDPG425 Platform&n; *&n; * Copyright (C) 2004 MontaVista Softwrae, Inc.&n; *&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

@@ -531,10 +531,12 @@ c_cond
 (paren
 id|p
 )paren
-id|bzero
+id|memset
 c_func
 (paren
 id|p
+comma
+l_int|0
 comma
 id|size
 )paren

@@ -595,10 +595,10 @@ id|s3c2410_timer_irq
 )paren
 suffix:semicolon
 )brace
-DECL|variable|s3c2410_timer
+DECL|variable|s3c24xx_timer
 r_struct
 id|sys_timer
-id|s3c2410_timer
+id|s3c24xx_timer
 op_assign
 (brace
 dot

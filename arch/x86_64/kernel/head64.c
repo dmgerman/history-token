@@ -210,6 +210,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|dummy
 comma
 id|eax
@@ -220,10 +221,16 @@ c_func
 (paren
 l_int|0
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|boot_cpu_data.cpuid_level
 comma
 (paren
+r_int
 r_int
 op_star
 )paren
@@ -235,6 +242,7 @@ l_int|0
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 op_amp
@@ -244,6 +252,7 @@ l_int|8
 )braket
 comma
 (paren
+r_int
 r_int
 op_star
 )paren
@@ -270,6 +279,7 @@ op_amp
 id|dummy
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

@@ -1936,16 +1936,10 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-(paren
-id|u64
-)paren
 id|ret
 op_lshift_assign
 l_int|32
 suffix:semicolon
-(paren
-id|u64
-)paren
 id|ret
 op_or_assign
 id|readl

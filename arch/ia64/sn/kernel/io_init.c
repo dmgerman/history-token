@@ -718,11 +718,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|SN_PCIDEV_INFO
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;sysdata
 op_assign
 id|kmalloc
 c_func
@@ -1279,19 +1275,17 @@ suffix:semicolon
 multiline_comment|/* fixup failed or not applicable */
 )brace
 multiline_comment|/*&n;&t; * Generic bus fixup goes here.  Don&squot;t reference prom_bussoft_ptr&n;&t; * after this point.&n;&t; */
+id|bus-&gt;sysdata
+op_assign
+id|controller
+suffix:semicolon
 id|PCI_CONTROLLER
 c_func
 (paren
 id|bus
 )paren
-op_assign
-id|controller
-suffix:semicolon
-id|SN_PCIBUS_BUSSOFT
-c_func
-(paren
-id|bus
-)paren
+op_member_access_from_pointer
+id|platform_data
 op_assign
 id|provider_soft
 suffix:semicolon

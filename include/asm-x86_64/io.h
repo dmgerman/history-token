@@ -731,9 +731,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-DECL|function|memset_io
-r_static
-r_inline
 r_void
 id|memset_io
 c_func
@@ -750,23 +747,7 @@ comma
 r_int
 id|c
 )paren
-(brace
-id|memset
-c_func
-(paren
-(paren
-id|__force
-r_void
-op_star
-)paren
-id|a
-comma
-id|b
-comma
-id|c
-)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on a typical x86 system, no need to&n; * explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
 mdefine_line|#define __ISA_IO_base ((char __iomem *)(PAGE_OFFSET))

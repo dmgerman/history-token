@@ -248,6 +248,10 @@ DECL|macro|FC_FC4_LIST_SIZE
 mdefine_line|#define FC_FC4_LIST_SIZE&t;&t;32
 DECL|macro|FC_SYMBOLIC_NAME_SIZE
 mdefine_line|#define FC_SYMBOLIC_NAME_SIZE&t;&t;256
+DECL|macro|FC_VERSION_STRING_SIZE
+mdefine_line|#define FC_VERSION_STRING_SIZE&t;&t;64
+DECL|macro|FC_SERIAL_NUMBER_SIZE
+mdefine_line|#define FC_SERIAL_NUMBER_SIZE&t;&t;80
 DECL|struct|fc_host_attrs
 r_struct
 id|fc_host_attrs
@@ -286,6 +290,41 @@ suffix:semicolon
 DECL|member|maxframe_size
 id|u32
 id|maxframe_size
+suffix:semicolon
+DECL|member|hardware_version
+r_char
+id|hardware_version
+(braket
+id|FC_VERSION_STRING_SIZE
+)braket
+suffix:semicolon
+DECL|member|firmware_version
+r_char
+id|firmware_version
+(braket
+id|FC_VERSION_STRING_SIZE
+)braket
+suffix:semicolon
+DECL|member|serial_number
+r_char
+id|serial_number
+(braket
+id|FC_SERIAL_NUMBER_SIZE
+)braket
+suffix:semicolon
+DECL|member|opt_rom_version
+r_char
+id|opt_rom_version
+(braket
+id|FC_VERSION_STRING_SIZE
+)braket
+suffix:semicolon
+DECL|member|driver_version
+r_char
+id|driver_version
+(braket
+id|FC_VERSION_STRING_SIZE
+)braket
 suffix:semicolon
 multiline_comment|/* Dynamic Attributes */
 DECL|member|port_id
@@ -350,6 +389,16 @@ DECL|macro|fc_host_supported_speeds
 mdefine_line|#define fc_host_supported_speeds(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;supported_speeds)
 DECL|macro|fc_host_maxframe_size
 mdefine_line|#define fc_host_maxframe_size(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;maxframe_size)
+DECL|macro|fc_host_hardware_version
+mdefine_line|#define fc_host_hardware_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;hardware_version)
+DECL|macro|fc_host_firmware_version
+mdefine_line|#define fc_host_firmware_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;firmware_version)
+DECL|macro|fc_host_serial_number
+mdefine_line|#define fc_host_serial_number(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;serial_number)
+DECL|macro|fc_host_opt_rom_version
+mdefine_line|#define fc_host_opt_rom_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;opt_rom_version)
+DECL|macro|fc_host_driver_version
+mdefine_line|#define fc_host_driver_version(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;driver_version)
 DECL|macro|fc_host_port_id
 mdefine_line|#define fc_host_port_id(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_id)
 DECL|macro|fc_host_port_type
@@ -635,6 +684,41 @@ DECL|member|show_host_maxframe_size
 r_int
 r_int
 id|show_host_maxframe_size
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_hardware_version
+r_int
+r_int
+id|show_host_hardware_version
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_firmware_version
+r_int
+r_int
+id|show_host_firmware_version
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_serial_number
+r_int
+r_int
+id|show_host_serial_number
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_opt_rom_version
+r_int
+r_int
+id|show_host_opt_rom_version
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_driver_version
+r_int
+r_int
+id|show_host_driver_version
 suffix:colon
 l_int|1
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-rx3715.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/rx3715.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;16-Sep-2004 BJD Copied from mach-h1940.c&n; *&t;25-Oct-2004 BJD Updates for 2.6.10-rc1&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-rx3715.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/rx3715.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;16-Sep-2004 BJD Copied from mach-h1940.c&n; *&t;25-Oct-2004 BJD Updates for 2.6.10-rc1&n; *&t;10-Jan-2005 BJD Removed include of s3c2410.h s3c2440.h&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
-macro_line|#include &quot;s3c2410.h&quot;
-macro_line|#include &quot;s3c2440.h&quot;
 macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
@@ -270,7 +268,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_init_irq
+id|s3c24xx_init_irq
 c_func
 (paren
 )paren
@@ -344,7 +342,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|s3c2410_timer
+id|s3c24xx_timer
 comma
 id|MACHINE_END
 eof

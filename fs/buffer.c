@@ -1071,8 +1071,12 @@ id|sb
 suffix:semicolon
 r_int
 id|ret
+comma
+id|err
 suffix:semicolon
 multiline_comment|/* sync the inode to buffers */
+id|ret
+op_assign
 id|write_inode_now
 c_func
 (paren
@@ -1112,13 +1116,23 @@ id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* .. finally sync the buffers to disk */
-id|ret
+id|err
 op_assign
 id|sync_blockdev
 c_func
 (paren
 id|sb-&gt;s_bdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
 suffix:semicolon
 r_return
 id|ret

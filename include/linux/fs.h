@@ -6016,7 +6016,7 @@ id|mapping
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|write_inode_now
 c_func
 (paren

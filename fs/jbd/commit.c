@@ -1167,6 +1167,17 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|__journal_abort_hard
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
 id|journal_write_revoke_records
 c_func
 (paren

@@ -481,11 +481,12 @@ op_amp
 id|vxp_cs_driver
 )paren
 suffix:semicolon
-id|snd_vxpocket_detach_all
+id|BUG_ON
 c_func
 (paren
-op_amp
-id|hw_entry
+id|hw_entry.dev_list
+op_ne
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

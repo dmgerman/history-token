@@ -4,25 +4,19 @@ DECL|macro|_IXGB_IDS_H_
 mdefine_line|#define _IXGB_IDS_H_
 multiline_comment|/**********************************************************************&n;** The Device and Vendor IDs for 10 Gigabit MACs&n;**********************************************************************/
 DECL|macro|INTEL_VENDOR_ID
-mdefine_line|#define INTEL_VENDOR_ID         0x8086
+mdefine_line|#define INTEL_VENDOR_ID             0x8086
 DECL|macro|INTEL_SUBVENDOR_ID
-mdefine_line|#define INTEL_SUBVENDOR_ID      0x8086
+mdefine_line|#define INTEL_SUBVENDOR_ID          0x8086
 DECL|macro|IXGB_DEVICE_ID_82597EX
-mdefine_line|#define IXGB_DEVICE_ID_82597EX      0x1048
+mdefine_line|#define IXGB_DEVICE_ID_82597EX      0x1048   
 DECL|macro|IXGB_DEVICE_ID_82597EX_SR
-mdefine_line|#define IXGB_DEVICE_ID_82597EX_SR   0x1A48
+mdefine_line|#define IXGB_DEVICE_ID_82597EX_SR   0x1A48   
+DECL|macro|IXGB_DEVICE_ID_82597EX_LR
+mdefine_line|#define IXGB_DEVICE_ID_82597EX_LR   0x1B48
 DECL|macro|IXGB_SUBDEVICE_ID_A11F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A11F  0xA11F
+mdefine_line|#define IXGB_SUBDEVICE_ID_A11F      0xA11F   
 DECL|macro|IXGB_SUBDEVICE_ID_A01F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A01F  0xA01F
-DECL|macro|IXGB_SUBDEVICE_ID_A15F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A15F  0xA15F
-DECL|macro|IXGB_SUBDEVICE_ID_A05F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A05F  0xA05F
-DECL|macro|IXGB_SUBDEVICE_ID_A12F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A12F  0xA12F
-DECL|macro|IXGB_SUBDEVICE_ID_A02F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A02F  0xA02F
-macro_line|#endif&t;&t;&t;&t;/* #ifndef _IXGB_IDS_H_ */
+mdefine_line|#define IXGB_SUBDEVICE_ID_A01F      0xA01F   
+macro_line|#endif /* #ifndef _IXGB_IDS_H_ */
 multiline_comment|/* End of File */
 eof

@@ -40,7 +40,7 @@ DECL|variable|swapper_pg_dir
 id|pgd_t
 id|swapper_pg_dir
 (braket
-l_int|1024
+id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 DECL|variable|highmem
@@ -600,7 +600,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap_pte
 id|pte_t
 op_star
@@ -611,7 +611,7 @@ id|pgprot_t
 id|kmap_prot
 suffix:semicolon
 DECL|macro|kmap_get_fixmap_pte
-mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
+mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset_kernel(pmd_offset(pud_offset(pgd_offset_k(vaddr), (vaddr)),&bslash;&n; &t;&t;&t;  (vaddr)), (vaddr))
 DECL|function|kmap_init
 r_void
 id|__init
@@ -742,6 +742,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if FIXADDR_USER_START != 0
 r_int
 id|size
 op_assign
@@ -890,6 +891,7 @@ id|PAGE_READONLY
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|paging_init
 r_void
@@ -1144,6 +1146,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -1665,7 +1668,7 @@ id|pte
 suffix:semicolon
 id|pte
 op_assign
-id|alloc_pages
+id|alloc_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -1673,8 +1676,6 @@ op_or
 id|__GFP_REPEAT
 op_or
 id|__GFP_ZERO
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return

@@ -74,11 +74,6 @@ DECL|macro|__fix_to_virt
 mdefine_line|#define __fix_to_virt(x)&t;(FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))
 DECL|macro|__virt_to_fix
 mdefine_line|#define __virt_to_fix(x)      ((FIXADDR_TOP - ((x)&amp;PAGE_MASK)) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * This is the range that is readable by user mode, and things&n; * acting like user mode such as get_user_pages.&n; */
-DECL|macro|FIXADDR_USER_START
-mdefine_line|#define FIXADDR_USER_START&t;VSYSCALL_BASE
-DECL|macro|FIXADDR_USER_END
-mdefine_line|#define FIXADDR_USER_END&t;VSYSCALL_END
 r_extern
 r_void
 id|__this_fixmap_does_not_exist

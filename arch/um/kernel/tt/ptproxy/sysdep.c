@@ -6,7 +6,6 @@ macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;user_util.h&quot;

@@ -710,7 +710,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_void
-id|set_ethtool_ops
+id|e1000_set_ethtool_ops
 c_func
 (paren
 r_struct
@@ -2101,7 +2101,7 @@ op_assign
 op_amp
 id|e1000_ioctl
 suffix:semicolon
-id|set_ethtool_ops
+id|e1000_set_ethtool_ops
 c_func
 (paren
 id|netdev

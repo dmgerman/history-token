@@ -33,6 +33,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -54,12 +55,10 @@ comma
 id|bytecount
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|modify_ldt
 c_func
@@ -78,6 +77,7 @@ r_extern
 r_int
 id|userspace_pid
 suffix:semicolon
+macro_line|#include &quot;skas_ptrace.h&quot;
 DECL|function|sys_modify_ldt_skas
 r_int
 id|sys_modify_ldt_skas
@@ -87,6 +87,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -307,6 +308,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma

@@ -13,6 +13,7 @@ macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 DECL|macro|SPI_PRINTK
@@ -1504,9 +1505,25 @@ DECL|macro|DV_TIMEOUT
 mdefine_line|#define DV_TIMEOUT&t;(10*HZ)
 DECL|macro|DV_RETRIES
 mdefine_line|#define DV_RETRIES&t;3&t;/* should only need at most &n;&t;&t;&t;&t; * two cc/ua clears */
+DECL|enum|spi_compare_returns
+r_enum
+id|spi_compare_returns
+(brace
+DECL|enumerator|SPI_COMPARE_SUCCESS
+id|SPI_COMPARE_SUCCESS
+comma
+DECL|enumerator|SPI_COMPARE_FAILURE
+id|SPI_COMPARE_FAILURE
+comma
+DECL|enumerator|SPI_COMPARE_SKIP_TEST
+id|SPI_COMPARE_SKIP_TEST
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* This is for read/write Domain Validation:  If the device supports&n; * an echo buffer, we do read/write tests to it */
 r_static
-r_int
+r_enum
+id|spi_compare_returns
 DECL|function|spi_dv_device_echo_buffer
 id|spi_dv_device_echo_buffer
 c_func
@@ -1895,6 +1912,10 @@ id|sdev
 )paren
 )paren
 (brace
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
 id|scsi_device_set_state
 c_func
 (paren
@@ -1902,6 +1923,35 @@ id|sdev
 comma
 id|SDEV_QUIESCE
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_request_normalize_sense
+c_func
+(paren
+id|sreq
+comma
+op_amp
+id|sshdr
+)paren
+op_logical_and
+id|sshdr.sense_key
+op_eq
+id|ILLEGAL_REQUEST
+multiline_comment|/* INVALID FIELD IN CDB */
+op_logical_and
+id|sshdr.asc
+op_eq
+l_int|0x24
+op_logical_and
+id|sshdr.ascq
+op_eq
+l_int|0x00
+)paren
+multiline_comment|/* This would mean that the drive lied&n;&t;&t;&t;&t; * to us about supporting an echo&n;&t;&t;&t;&t; * buffer (unfortunately some Western&n;&t;&t;&t;&t; * Digital drives do precisely this)&n;&t;&t;&t;&t; */
+r_return
+id|SPI_COMPARE_SKIP_TEST
 suffix:semicolon
 id|SPI_PRINTK
 c_func
@@ -1916,7 +1966,7 @@ id|sreq-&gt;sr_result
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SPI_COMPARE_FAILURE
 suffix:semicolon
 )brace
 id|memset
@@ -1978,16 +2028,17 @@ op_ne
 l_int|0
 )paren
 r_return
-l_int|0
+id|SPI_COMPARE_FAILURE
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|SPI_COMPARE_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* This is for the simplest form of Domain Validation: a read test&n; * on the inquiry data from the device */
 r_static
-r_int
+r_enum
+id|spi_compare_returns
 DECL|function|spi_dv_device_compare_inquiry
 id|spi_dv_device_compare_inquiry
 c_func
@@ -2118,7 +2169,7 @@ id|SDEV_QUIESCE
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SPI_COMPARE_FAILURE
 suffix:semicolon
 )brace
 multiline_comment|/* If we don&squot;t have the inquiry data already, the&n;&t;&t; * first read gets it */
@@ -2157,15 +2208,16 @@ l_int|0
 )paren
 multiline_comment|/* failure */
 r_return
-l_int|0
+id|SPI_COMPARE_FAILURE
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|SPI_COMPARE_SUCCESS
 suffix:semicolon
 )brace
 r_static
-r_int
+r_enum
+id|spi_compare_returns
 DECL|function|spi_dv_retrain
 id|spi_dv_retrain
 c_func
@@ -2183,7 +2235,8 @@ id|u8
 op_star
 id|ptr
 comma
-r_int
+r_enum
+id|spi_compare_returns
 (paren
 op_star
 id|compare_fn
@@ -2230,6 +2283,10 @@ id|prevperiod
 op_assign
 l_int|0
 suffix:semicolon
+r_enum
+id|spi_compare_returns
+id|retval
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2240,9 +2297,8 @@ suffix:semicolon
 r_int
 id|newperiod
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|compare_fn
 c_func
 (paren
@@ -2254,8 +2310,18 @@ id|ptr
 comma
 id|DV_LOOPS
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+id|SPI_COMPARE_SUCCESS
+op_logical_or
+id|retval
+op_eq
+id|SPI_COMPARE_SKIP_TEST
 )paren
-multiline_comment|/* Successful DV */
 r_break
 suffix:semicolon
 multiline_comment|/* OK, retrain, fallback */
@@ -2344,7 +2410,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SPI_COMPARE_FAILURE
 suffix:semicolon
 )brace
 id|SPI_PRINTK
@@ -2371,7 +2437,7 @@ id|period
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|retval
 suffix:semicolon
 )brace
 r_static
@@ -2617,7 +2683,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|spi_dv_device_compare_inquiry
 c_func
 (paren
@@ -2629,6 +2694,8 @@ id|buffer
 comma
 id|DV_LOOPS
 )paren
+op_ne
+id|SPI_COMPARE_SUCCESS
 )paren
 (brace
 id|SPI_PRINTK
@@ -2667,7 +2734,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|spi_dv_device_compare_inquiry
 c_func
 (paren
@@ -2681,6 +2747,8 @@ id|len
 comma
 id|DV_LOOPS
 )paren
+op_ne
+id|SPI_COMPARE_SUCCESS
 )paren
 (brace
 id|SPI_PRINTK
@@ -2727,6 +2795,28 @@ id|sdev-&gt;sdtr
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* see if the device has an echo buffer.  If it does we can&n;&t; * do the SPI pattern write tests */
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdev-&gt;ppr
+)paren
+id|len
+op_assign
+id|spi_dv_device_get_echo_buffer
+c_func
+(paren
+id|sreq
+comma
+id|buffer
+)paren
+suffix:semicolon
+id|retry
+suffix:colon
 multiline_comment|/* now set up to the maximum */
 id|DV_SET
 c_func
@@ -2747,46 +2837,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|spi_dv_retrain
-c_func
-(paren
-id|sreq
-comma
-id|buffer
-comma
-id|buffer
-op_plus
-id|len
-comma
-id|spi_dv_device_compare_inquiry
-)paren
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* OK, now we have our initial speed set by the read only inquiry&n;&t; * test, now try an echo buffer test (if the device allows it) */
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;ppr
-)paren
-id|len
-op_assign
-id|spi_dv_device_get_echo_buffer
-c_func
-(paren
-id|sreq
-comma
-id|buffer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|len
 op_eq
 l_int|0
@@ -2800,6 +2850,20 @@ comma
 id|KERN_INFO
 comma
 l_string|&quot;Domain Validation skipping write tests&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spi_dv_retrain
+c_func
+(paren
+id|sreq
+comma
+id|buffer
+comma
+id|buffer
+op_plus
+id|len
+comma
+id|spi_dv_device_compare_inquiry
 )paren
 suffix:semicolon
 r_return
@@ -2832,6 +2896,9 @@ op_assign
 id|SPI_MAX_ECHO_BUFFER_SIZE
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|spi_dv_retrain
 c_func
 (paren
@@ -2845,7 +2912,19 @@ id|len
 comma
 id|spi_dv_device_echo_buffer
 )paren
+op_eq
+id|SPI_COMPARE_SKIP_TEST
+)paren
+(brace
+multiline_comment|/* OK, the stupid drive can&squot;t do a write echo buffer&n;&t;&t; * test after all, fall back to the read tests */
+id|len
+op_assign
+l_int|0
 suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&t;spi_dv_device - Do Domain Validation on the device&n; *&t;@sdev:&t;&t;scsi device to validate&n; *&n; *&t;Performs the domain validation on the given device in the&n; *&t;current execution thread.  Since DV operations may sleep,&n; *&t;the current thread must have user context.  Also no SCSI&n; *&t;related locks that would deadlock I/O issued by the DV may&n; *&t;be held.&n; */
 r_void

@@ -1502,7 +1502,6 @@ id|skb
 comma
 id|nlh
 comma
-op_minus
 id|err
 )paren
 suffix:semicolon

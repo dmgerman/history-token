@@ -17,11 +17,6 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;tempfile.h&quot;
 macro_line|#include &quot;kern_constants.h&quot;
-r_extern
-r_struct
-id|mem_region
-id|physmem_region
-suffix:semicolon
 DECL|macro|TEMPNAME_TEMPLATE
 mdefine_line|#define TEMPNAME_TEMPLATE &quot;vm_file-XXXXXX&quot;
 DECL|function|create_tmp_file
@@ -443,14 +438,9 @@ op_eq
 id|MAP_FAILED
 )paren
 (brace
-id|os_print_error
+id|perror
 c_func
 (paren
-(paren
-r_int
-)paren
-id|addr
-comma
 l_string|&quot;mapping physmem file&quot;
 )paren
 suffix:semicolon

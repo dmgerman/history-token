@@ -110,7 +110,9 @@ id|time_t
 op_star
 id|mtime_out
 comma
-id|__u64
+r_int
+r_int
+r_int
 op_star
 id|size_out
 comma
@@ -149,6 +151,7 @@ comma
 r_int
 id|alignment
 comma
+r_int
 r_int
 r_int
 op_star

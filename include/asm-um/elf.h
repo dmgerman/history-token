@@ -1,6 +1,7 @@
 macro_line|#ifndef __UM_ELF_H
 DECL|macro|__UM_ELF_H
 mdefine_line|#define __UM_ELF_H
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;asm/archparam.h&quot;
 r_extern
 r_int
@@ -14,8 +15,13 @@ DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE 4096
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x) (1)
+macro_line|#ifdef CONFIG_64_BIT
+DECL|macro|ELF_CLASS
+mdefine_line|#define ELF_CLASS ELFCLASS64
+macro_line|#else
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS ELFCLASS32
+macro_line|#endif
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|R_386_NONE

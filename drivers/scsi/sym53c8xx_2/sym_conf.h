@@ -17,11 +17,6 @@ multiline_comment|/*&n; *  Max number of IO control blocks queued to the control
 multiline_comment|/* #define SYM_CONF_MAX_START&t;(PAGE_SIZE/8 - 16) */
 multiline_comment|/*&n; *  Support for Immediate Arbitration.&n; *  Not advised.&n; */
 multiline_comment|/* #define SYM_CONF_IARB_SUPPORT */
-multiline_comment|/*&n; *  Number of lists for the optimization of the IO timeout handling.&n; *  Not used under FreeBSD and Linux.&n; */
-macro_line|#ifndef SYM_CONF_TIMEOUT_ORDER_MAX
-DECL|macro|SYM_CONF_TIMEOUT_ORDER_MAX
-mdefine_line|#define SYM_CONF_TIMEOUT_ORDER_MAX&t;(8)
-macro_line|#endif
 multiline_comment|/*&n; *  Only relevant if IARB support configured.&n; *  - Max number of successive settings of IARB hints.&n; *  - Set IARB on arbitration lost.&n; */
 DECL|macro|SYM_CONF_IARB_MAX
 mdefine_line|#define SYM_CONF_IARB_MAX 3

@@ -263,8 +263,6 @@ id|u32
 id|zalon_vers
 suffix:semicolon
 r_int
-id|irq
-comma
 id|error
 op_assign
 op_minus
@@ -358,7 +356,7 @@ op_rshift_assign
 l_int|24
 suffix:semicolon
 multiline_comment|/* Setup the interrupts first.&n;&t;** Later on request_irq() will register the handler.&n;&t;*/
-id|irq
+id|dev-&gt;irq
 op_assign
 id|gsc_alloc_irq
 c_func
@@ -376,7 +374,7 @@ id|__FUNCTION__
 comma
 id|zalon_vers
 comma
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|__raw_writel
@@ -486,7 +484,7 @@ id|io_port
 suffix:semicolon
 id|device.slot.irq
 op_assign
-id|irq
+id|dev-&gt;irq
 suffix:semicolon
 id|device.differential
 op_assign
@@ -521,13 +519,13 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 comma
 id|ncr53c8xx_intr
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;dev.bus_id
+l_string|&quot;zalon&quot;
 comma
 id|host
 )paren
@@ -541,7 +539,7 @@ l_string|&quot;%s: irq problem with %d, detaching&bslash;n &quot;
 comma
 id|dev-&gt;dev.bus_id
 comma
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_goto
@@ -593,7 +591,7 @@ suffix:colon
 id|free_irq
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 comma
 id|host
 )paren
@@ -668,11 +666,6 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-r_int
-id|irq
-op_assign
-id|host-&gt;irq
-suffix:semicolon
 id|scsi_remove_host
 c_func
 (paren
@@ -688,7 +681,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 comma
 id|host
 )paren
@@ -707,7 +700,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;GSC SCSI (Zalon)&quot;
+l_string|&quot;zalon&quot;
 comma
 dot
 id|id_table
@@ -792,6 +785,11 @@ c_func
 (paren
 op_amp
 id|zalon_driver
+)paren
+suffix:semicolon
+id|ncr53c8xx_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

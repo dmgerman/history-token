@@ -732,10 +732,9 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-id|UM_KERN_ERR
 l_string|&quot;The debugger is already running&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1077,10 +1076,9 @@ r_int
 id|stop
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-id|UM_KERN_ERR
 l_string|&quot;debug requested when CONFIG_PT_PROXY is off&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1105,10 +1103,9 @@ r_int
 id|sig
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-id|UM_KERN_ERR
 l_string|&quot;debug requested when CONFIG_PT_PROXY is off&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1128,10 +1125,9 @@ r_int
 id|stop
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-id|UM_KERN_ERR
 l_string|&quot;attach_debugger called when CONFIG_PT_PROXY &quot;
 l_string|&quot;is off&bslash;n&quot;
 )paren

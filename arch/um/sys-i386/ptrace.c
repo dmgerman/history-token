@@ -1,4 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/elf.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -49,6 +51,7 @@ id|instr
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -738,6 +741,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 comma
@@ -771,6 +775,7 @@ l_int|7
 suffix:semicolon
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -956,6 +961,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 comma
@@ -996,6 +1002,7 @@ id|regs
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1029,6 +1036,7 @@ id|to
 suffix:semicolon
 r_struct
 id|_fpreg
+id|__user
 op_star
 id|from
 suffix:semicolon
@@ -1238,6 +1246,7 @@ id|regs
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -1284,6 +1293,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -1337,6 +1347,7 @@ comma
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 )paren
 id|buf
@@ -1407,6 +1418,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf
@@ -1519,6 +1531,7 @@ id|fxsave
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf

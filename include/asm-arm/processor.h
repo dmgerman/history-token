@@ -6,7 +6,6 @@ multiline_comment|/*&n; * Default implementation of macro that returns current&n
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/types.h&gt;

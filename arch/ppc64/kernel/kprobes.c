@@ -300,6 +300,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -315,6 +316,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Not one of ours: let kernel handle it */
 r_goto
 id|no_kprobe

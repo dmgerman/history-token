@@ -3208,6 +3208,11 @@ id|SS_CAP_STATIC_MAP
 op_or
 id|SS_CAP_PCCARD
 suffix:semicolon
+id|skt-&gt;socket.resource_ops
+op_assign
+op_amp
+id|pccard_static_ops
+suffix:semicolon
 id|skt-&gt;socket.irq_mask
 op_assign
 l_int|0

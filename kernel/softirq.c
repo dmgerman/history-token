@@ -380,6 +380,12 @@ c_func
 r_void
 )paren
 (brace
+id|account_system_vtime
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|sub_preempt_count
 c_func
 (paren

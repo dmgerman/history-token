@@ -12,6 +12,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -62,6 +63,7 @@ id|copy_to_user_tt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -122,6 +124,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -193,6 +196,7 @@ id|__clear_user_tt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|mem
 comma
@@ -222,6 +226,7 @@ id|clear_user_tt
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|mem
 comma
@@ -271,6 +276,7 @@ c_func
 (paren
 r_const
 r_void
+id|__user
 op_star
 id|str
 comma

@@ -34,6 +34,17 @@ id|function
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|bug_entry
+op_star
+id|find_bug
+c_func
+(paren
+r_int
+r_int
+id|bugaddr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * If this bit is set in the line number it means that the trap&n; * is for WARN_ON rather than BUG or BUG_ON.&n; */
 DECL|macro|BUG_WARNING_TRAP
 mdefine_line|#define BUG_WARNING_TRAP&t;0x1000000

@@ -59,7 +59,13 @@ r_void
 id|init_memory_mapping
 c_func
 (paren
-r_void
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
 )paren
 suffix:semicolon
 r_extern

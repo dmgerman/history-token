@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/um/drivers/mmapper_kern.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Author: RidgeRun, Inc.&n; *         Greg Lonnon glonnon@ridgerun.com or info@ridgerun.com&n; *&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;

@@ -77,7 +77,9 @@ c_func
 r_int
 id|fd
 comma
-id|__u64
+r_int
+r_int
+r_int
 id|offset
 )paren
 (brace
@@ -102,7 +104,9 @@ r_char
 op_star
 id|file
 comma
-id|__u64
+r_int
+r_int
+r_int
 op_star
 id|size_out
 )paren
