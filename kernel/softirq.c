@@ -1598,7 +1598,6 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|spawn_ksoftirqd
-r_static
 id|__init
 r_int
 id|spawn_ksoftirqd
@@ -1636,11 +1635,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|spawn_ksoftirqd
-id|__initcall
-c_func
-(paren
-id|spawn_ksoftirqd
-)paren
-suffix:semicolon
 eof
