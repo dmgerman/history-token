@@ -46,6 +46,10 @@ op_star
 id|proc_info
 )paren
 (paren
+r_struct
+id|Scsi_Host
+op_star
+comma
 r_char
 op_star
 comma
@@ -54,8 +58,6 @@ op_star
 op_star
 comma
 id|off_t
-comma
-r_int
 comma
 r_int
 comma
@@ -387,6 +389,22 @@ suffix:semicolon
 multiline_comment|/*&n;     * Default value for the blocking.  If the queue is empty, host_blocked&n;     * counts down in the request_fn until it restarts host operations as&n;     * zero is reached.  &n;     *&n;     * FIXME: This should probably be a value in the template */
 DECL|macro|SCSI_DEFAULT_HOST_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_HOST_BLOCKED&t;7
+multiline_comment|/*&n;     * pointer to the sysfs class properties for this host&n;     */
+DECL|member|shost_attrs
+r_struct
+id|class_device_attribute
+op_star
+op_star
+id|shost_attrs
+suffix:semicolon
+multiline_comment|/*&n;     * Pointer to the SCSI device properties for this host&n;     */
+DECL|member|sdev_attrs
+r_struct
+id|device_attribute
+op_star
+op_star
+id|sdev_attrs
+suffix:semicolon
 DECL|typedef|Scsi_Host_Template
 )brace
 id|Scsi_Host_Template
@@ -1002,27 +1020,6 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_host_hn_get
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_put
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
 r_static
@@ -1082,5 +1079,16 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|scsi_sysfs_release_attributes
+c_func
+(paren
+r_struct
+id|SHT
+op_star
+id|hostt
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
