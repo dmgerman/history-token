@@ -71,6 +71,46 @@ comma
 l_int|0000
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * bm_history -- bit-mask with a bit per jiffy of bus-master activity&n; * 1000 HZ: 0xFFFFFFFF: 32 jiffies = 32ms&n; * 800 HZ: 0xFFFFFFFF: 32 jiffies = 40ms&n; * 100 HZ: 0x0000000F: 4 jiffies = 40ms&n; * reduce history for more aggressive entry into C3&n; */
+DECL|variable|bm_history
+r_static
+r_int
+r_int
+id|bm_history
+op_assign
+(paren
+id|HZ
+op_ge
+l_int|800
+ques
+c_cond
+l_int|0xFFFFFFFF
+suffix:colon
+(paren
+(paren
+l_int|1U
+op_lshift
+(paren
+id|HZ
+op_div
+l_int|25
+)paren
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|bm_history
+comma
+id|uint
+comma
+l_int|0644
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Power Management&n;   -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * IBM ThinkPad R40e crashes mysteriously when going into C2 or C3.&n; * For now disable this. Probably a bug somewhere else.&n; *&n; * To skip this limit, boot/load with a large max_cstate limit.&n; */
 DECL|function|no_c2c3
@@ -1183,7 +1223,7 @@ id|ACPI_STATE_C3
 )paren
 id|cx-&gt;demotion.threshold.bm
 op_assign
-l_int|0x0F
+id|bm_history
 suffix:semicolon
 )brace
 id|lower
@@ -1266,7 +1306,7 @@ id|ACPI_STATE_C3
 )paren
 id|cx-&gt;promotion.threshold.bm
 op_assign
-l_int|0x0F
+id|bm_history
 suffix:semicolon
 )brace
 id|higher
