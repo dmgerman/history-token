@@ -5468,6 +5468,7 @@ id|_naca-&gt;platform
 op_assign
 id|PLATFORM_PSERIES
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* Reset klimit to take into account the embedded system map */
 r_if
 c_cond
@@ -5498,6 +5499,7 @@ id|embedded_sysmap_end
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Get a handle to the prom entry point before anything else */
 id|_prom-&gt;entry
 op_assign
