@@ -13,9 +13,6 @@ id|acpi_status
 DECL|function|acpi_ex_store_buffer_to_buffer
 id|acpi_ex_store_buffer_to_buffer
 (paren
-id|acpi_object_type
-id|original_src_type
-comma
 r_union
 id|acpi_operand_object
 op_star
@@ -41,7 +38,7 @@ comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that source_desc is a buffer by now&n;&t; */
+multiline_comment|/* We know that source_desc is a buffer by now */
 id|buffer
 op_assign
 (paren
@@ -124,8 +121,9 @@ comma
 id|length
 )paren
 suffix:semicolon
-macro_line|#if ACPI_STRICT_CONFORMANCE
-multiline_comment|/*&n;&t;&t; * If the original source was a string, we must truncate the buffer,&n;&t;&t; * according to the ACPI spec.  Integer-to-Buffer and Buffer-to-Buffer&n;&t;&t; * copy must not truncate the original buffer.&n;&t;&t; */
+macro_line|#ifdef ACPI_OBSOLETE_BEHAVIOR
+multiline_comment|/*&n;&t;&t; * NOTE: ACPI versions up to 3.0 specified that the buffer must be&n;&t;&t; * truncated if the string is smaller than the buffer.  However, &quot;other&quot;&n;&t;&t; * implementations of ACPI never did this and thus became the defacto&n;&t;&t; * standard. ACPi 3.0_a changes this behavior such that the buffer&n;&t;&t; * is no longer truncated.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * OBSOLETE BEHAVIOR:&n;&t;&t; * If the original source was a string, we must truncate the buffer,&n;&t;&t; * according to the ACPI spec.  Integer-to-Buffer and Buffer-to-Buffer&n;&t;&t; * copy must not truncate the original buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -214,7 +212,7 @@ comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that source_desc is a string by now.&n;&t; */
+multiline_comment|/* We know that source_desc is a string by now */
 id|buffer
 op_assign
 (paren
@@ -290,7 +288,7 @@ id|AOPOBJ_STATIC_POINTER
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Only free if not a pointer into the DSDT&n;&t;&t;&t; */
+multiline_comment|/* Only free if not a pointer into the DSDT */
 id|ACPI_MEM_FREE
 (paren
 id|target_desc-&gt;string.pointer
