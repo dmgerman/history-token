@@ -43,7 +43,7 @@ suffix:semicolon
 multiline_comment|/* service for this socket */
 DECL|member|sk_inuse
 r_int
-r_char
+r_int
 id|sk_inuse
 suffix:semicolon
 multiline_comment|/* use count */
