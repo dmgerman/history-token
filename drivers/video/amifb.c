@@ -8161,7 +8161,7 @@ op_assign
 id|DIVUL
 c_func
 (paren
-l_float|200E9
+l_int|200000000000ULL
 comma
 id|amiga_eclock
 )paren
