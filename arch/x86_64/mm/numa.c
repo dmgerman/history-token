@@ -23,7 +23,7 @@ id|pglist_data
 op_star
 id|node_data
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|plat_node_bdata
@@ -72,7 +72,7 @@ DECL|variable|node_to_cpumask
 id|cpumask_t
 id|node_to_cpumask
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|__initdata
@@ -787,7 +787,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+id|MAX_NUMNODES
 suffix:semicolon
 id|i
 op_increment
@@ -910,7 +910,7 @@ r_struct
 id|node
 id|nodes
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 r_int

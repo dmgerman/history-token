@@ -9,8 +9,6 @@ macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|VIRTUAL_BUG_ON
 mdefine_line|#define VIRTUAL_BUG_ON(x) 
 macro_line|#include &lt;asm/smp.h&gt;
-DECL|macro|MAXNODE
-mdefine_line|#define MAXNODE 8 
 DECL|macro|NODEMAPSIZE
 mdefine_line|#define NODEMAPSIZE 0xff
 multiline_comment|/* Simple perfect hash to map physical addresses to node numbers */

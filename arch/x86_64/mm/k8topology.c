@@ -137,7 +137,7 @@ r_struct
 id|node
 id|nodes
 (braket
-id|MAXNODE
+l_int|8
 )braket
 suffix:semicolon
 r_int
@@ -683,7 +683,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+l_int|8
 suffix:semicolon
 id|i
 op_increment
