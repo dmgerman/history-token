@@ -39,6 +39,7 @@ macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -1116,6 +1117,14 @@ c_func
 l_string|&quot;Found, Initializing memory management...&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_U3_DART
+multiline_comment|/*&n;&t; * On U3, the DART (iommu) must be allocated now since it&n;&t; * has an impact on htab_initialize (due to the large page it&n;&t; * occupies having to be broken up so the DART itself is not&n;&t; * part of the cacheable linar mapping&n;&t; */
+id|alloc_u3_dart_table
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_U3_DART */
 multiline_comment|/*&n;&t; * Initialize stab / SLB management&n;&t; */
 id|stab_initialize
 c_func

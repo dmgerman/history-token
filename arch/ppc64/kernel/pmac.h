@@ -144,13 +144,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|pmac_iommu_alloc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __PMAC_H__ */
 eof
