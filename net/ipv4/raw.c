@@ -1671,7 +1671,14 @@ op_amp
 id|RTCF_BROADCAST
 op_logical_and
 op_logical_neg
-id|sk-&gt;broadcast
+id|test_bit
+c_func
+(paren
+id|SOCK_BROADCAST
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 r_goto
 id|done

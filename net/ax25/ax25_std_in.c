@@ -196,7 +196,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ax25-&gt;sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|ax25-&gt;sk-&gt;flags
+)paren
 )paren
 id|ax25-&gt;sk
 op_member_access_from_pointer

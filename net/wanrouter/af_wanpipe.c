@@ -3183,9 +3183,14 @@ id|sk-&gt;socket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;dead
-op_assign
-l_int|1
+id|__set_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 suffix:semicolon
 multiline_comment|/* Purge queues */
 macro_line|#ifdef LINUX_2_4
@@ -3561,9 +3566,14 @@ id|KERN_INFO
 l_string|&quot;wansock: RELEASE: FOUND DEAD SOCK&bslash;n&quot;
 )paren
 suffix:semicolon
-id|deadsk-&gt;dead
-op_assign
-l_int|1
+id|__set_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|deadsk-&gt;flags
+)paren
 suffix:semicolon
 id|start_cleanup_timer
 c_func

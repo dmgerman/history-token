@@ -100,7 +100,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 (brace
 id|printk

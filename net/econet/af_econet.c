@@ -1923,9 +1923,14 @@ id|sk-&gt;socket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;dead
-op_assign
-l_int|1
+id|__set_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 suffix:semicolon
 multiline_comment|/* Purge queues */
 id|skb_queue_purge
