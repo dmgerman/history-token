@@ -55,9 +55,9 @@ mdefine_line|#define EBONY_LARGE_FLASH_BASE&t;0x00000001ff800000ULL
 multiline_comment|/*&n; * Serial port defines&n; */
 multiline_comment|/* OpenBIOS defined UART mappings, used before early_serial_setup */
 DECL|macro|UART0_IO_BASE
-mdefine_line|#define UART0_IO_BASE&t;(u8 *) 0xE0000200
+mdefine_line|#define UART0_IO_BASE&t;0xE0000200
 DECL|macro|UART1_IO_BASE
-mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xE0000300
+mdefine_line|#define UART1_IO_BASE&t;0xE0000300
 multiline_comment|/* external Epson SG-615P */
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;691200
