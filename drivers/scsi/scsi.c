@@ -2996,6 +2996,10 @@ id|next
 )paren
 r_break
 suffix:semicolon
+id|next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|list
 op_assign
 id|list-&gt;next
