@@ -38,14 +38,11 @@ r_int
 id|xlog_find_zeroed
 c_func
 (paren
-r_struct
-id|log
+id|xlog_t
 op_star
-id|log
 comma
 id|xfs_daddr_t
 op_star
-id|blk_no
 )paren
 suffix:semicolon
 id|STATIC
@@ -55,10 +52,8 @@ c_func
 (paren
 id|xlog_t
 op_star
-id|log
 comma
 id|xfs_lsn_t
-id|tail_lsn
 )paren
 suffix:semicolon
 id|STATIC
@@ -84,7 +79,6 @@ c_func
 (paren
 id|xlog_t
 op_star
-id|log
 )paren
 suffix:semicolon
 id|STATIC
@@ -94,14 +88,11 @@ c_func
 (paren
 id|xfs_mount_t
 op_star
-id|mp
 comma
 id|xfs_log_item_t
 op_star
-id|lip
 comma
 r_int
-id|gen
 )paren
 suffix:semicolon
 macro_line|#else
@@ -109,7 +100,7 @@ DECL|macro|xlog_recover_check_summary
 mdefine_line|#define&t;xlog_recover_check_summary(log)
 DECL|macro|xlog_recover_check_ail
 mdefine_line|#define&t;xlog_recover_check_ail(mp, lip, gen)
-macro_line|#endif /* DEBUG */
+macro_line|#endif
 multiline_comment|/*&n; * Sector aligned buffer routines for buffer create/read/write/access&n; */
 DECL|macro|XLOG_SECTOR_ROUNDUP_BBCOUNT
 mdefine_line|#define XLOG_SECTOR_ROUNDUP_BBCOUNT(log, bbs)&t;&bslash;&n;&t;( ((log)-&gt;l_sectbb_mask &amp;&amp; (bbs &amp; (log)-&gt;l_sectbb_mask)) ? &bslash;&n;&t;((bbs + (log)-&gt;l_sectbb_mask + 1) &amp; ~(log)-&gt;l_sectbb_mask) : (bbs) )
@@ -614,8 +605,8 @@ id|ptr
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG
-multiline_comment|/*&n; * check log record header for recovery&n; */
-r_static
+multiline_comment|/*&n; * dump debug superblock and log record information&n; */
+id|STATIC
 r_void
 DECL|function|xlog_header_check_dump
 id|xlog_header_check_dump
@@ -736,6 +727,9 @@ id|ARCH_CONVERT
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|xlog_header_check_dump
+mdefine_line|#define xlog_header_check_dump(mp, head)
 macro_line|#endif
 multiline_comment|/*&n; * check log record header for recovery&n; */
 id|STATIC
@@ -767,7 +761,7 @@ op_eq
 id|XLOG_HEADER_MAGIC_NUM
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * IRIX doesn&squot;t write the h_fmt field and leaves it zeroed&n;     * (XLOG_FMT_UNKNOWN). This stops us from trying to recover&n;     * a dirty log created in IRIX.&n;     */
+multiline_comment|/*&n;&t; * IRIX doesn&squot;t write the h_fmt field and leaves it zeroed&n;&t; * (XLOG_FMT_UNKNOWN). This stops us from trying to recover&n;&t; * a dirty log created in IRIX.&n;&t; */
 r_if
 c_cond
 (paren
@@ -792,7 +786,6 @@ c_func
 l_string|&quot;XFS: dirty log written in incompatible format - can&squot;t recover&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
 id|xlog_header_check_dump
 c_func
 (paren
@@ -801,7 +794,6 @@ comma
 id|head
 )paren
 suffix:semicolon
-macro_line|#endif
 id|XFS_ERROR_REPORT
 c_func
 (paren
@@ -846,7 +838,6 @@ c_func
 l_string|&quot;XFS: dirty log entry has mismatched uuid - can&squot;t recover&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
 id|xlog_header_check_dump
 c_func
 (paren
@@ -855,7 +846,6 @@ comma
 id|head
 )paren
 suffix:semicolon
-macro_line|#endif
 id|XFS_ERROR_REPORT
 c_func
 (paren
@@ -919,7 +909,7 @@ id|head-&gt;h_fs_uuid
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t; * IRIX doesn&squot;t write the h_fs_uuid or h_fmt fields. If&n;&t; * h_fs_uuid is nil, we assume this log was last mounted&n;&t; * by IRIX and continue.&n;&t; */
+multiline_comment|/*&n;&t;&t; * IRIX doesn&squot;t write the h_fs_uuid or h_fmt fields. If&n;&t;&t; * h_fs_uuid is nil, we assume this log was last mounted&n;&t;&t; * by IRIX and continue.&n;&t;&t; */
 id|xlog_warn
 c_func
 (paren
@@ -953,7 +943,6 @@ c_func
 l_string|&quot;XFS: log has mismatched uuid - can&squot;t recover&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
 id|xlog_header_check_dump
 c_func
 (paren
@@ -962,7 +951,6 @@ comma
 id|head
 )paren
 suffix:semicolon
-macro_line|#endif
 id|XFS_ERROR_REPORT
 c_func
 (paren
@@ -1258,7 +1246,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_cycle_start */
 multiline_comment|/*&n; * Check that the range of blocks does not contain the cycle number&n; * given.  The scan needs to occur from front to back and the ptr into the&n; * region must be updated since a later routine will need to perform another&n; * test.  If the region is completely good, we end up returning the same&n; * last block number.&n; *&n; * Set blkno to -1 if we encounter no errors.  This is an invalid block number&n; * since we don&squot;t ever expect logs to get this large.&n; */
 id|STATIC
 r_int
@@ -1296,8 +1283,10 @@ id|xfs_buf_t
 op_star
 id|bp
 suffix:semicolon
-r_char
-op_star
+id|xfs_daddr_t
+id|bufblks
+suffix:semicolon
+id|xfs_caddr_t
 id|buf
 op_assign
 l_int|NULL
@@ -1306,9 +1295,6 @@ r_int
 id|error
 op_assign
 l_int|0
-suffix:semicolon
-id|xfs_daddr_t
-id|bufblks
 suffix:semicolon
 id|bufblks
 op_assign
@@ -1494,7 +1480,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_verify_cycle */
 multiline_comment|/*&n; * Potentially backup over partial log record write.&n; *&n; * In the typical case, last_blk is the number of the block directly after&n; * a good log record.  Therefore, we subtract one to get the block number&n; * of the last block in the given buffer.  extra_bblks contains the number&n; * of blocks we would have read on a previous read.  This happens when the&n; * last log record is split over the end of the physical log.&n; *&n; * extra_bblks is the number of blocks potentially verified on a previous&n; * call to this routine.&n; */
 id|STATIC
 r_int
@@ -1768,6 +1753,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|XLOG_HEADER_MAGIC_NUM
+op_eq
 id|INT_GET
 c_func
 (paren
@@ -1775,8 +1762,6 @@ id|head-&gt;h_magicno
 comma
 id|ARCH_CONVERT
 )paren
-op_eq
-id|XLOG_HEADER_MAGIC_NUM
 )paren
 r_break
 suffix:semicolon
@@ -1791,7 +1776,7 @@ op_sub_assign
 id|BBSIZE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * We hit the beginning of the physical log &amp; still no header.  Return&n;     * to caller.  If caller can handle a return of -1, then this routine&n;     * will be called again for the end of the physical log.&n;     */
+multiline_comment|/*&n;&t; * We hit the beginning of the physical log &amp; still no header.  Return&n;&t; * to caller.  If caller can handle a return of -1, then this routine&n;&t; * will be called again for the end of the physical log.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1810,7 +1795,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* we have the final block of the good log (the first block&n;     * of the log record _before_ the head. So we check the uuid.&n;     */
+multiline_comment|/*&n;&t; * We have the final block of the good log (the first block&n;&t; * of the log record _before_ the head. So we check the uuid.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1829,7 +1814,7 @@ id|head
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;     * We may have found a log record header before we expected one.&n;     * last_blk will be the 1st block # with a given cycle #.  We may end&n;     * up reading an entire log record.  In this case, we don&squot;t want to&n;     * reset last_blk.  Only when last_blk points in the middle of a log&n;     * record do we update last_blk.&n;     */
+multiline_comment|/*&n;&t; * We may have found a log record header before we expected one.&n;&t; * last_blk will be the 1st block # with a given cycle #.  We may end&n;&t; * up reading an entire log record.  In this case, we don&squot;t want to&n;&t; * reset last_blk.  Only when last_blk points in the middle of a log&n;&t; * record do we update last_blk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1917,8 +1902,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_verify_log_record */
-multiline_comment|/*&n; * Head is defined to be the point of the log where the next log write&n; * write could go.  This means that incomplete LR writes at the end are&n; * eliminated when calculating the head.  We aren&squot;t guaranteed that previous&n; * LR have complete transactions.  We only know that a cycle number of&n; * current cycle number -1 won&squot;t be present in the log if we start writing&n; * from our current block number.&n; *&n; * last_blk contains the block number of the first block with a given&n; * cycle number.&n; *&n; * Also called from xfs_log_print.c&n; *&n; * Return: zero if normal, non-zero if error.&n; */
+multiline_comment|/*&n; * Head is defined to be the point of the log where the next log write&n; * write could go.  This means that incomplete LR writes at the end are&n; * eliminated when calculating the head.  We aren&squot;t guaranteed that previous&n; * LR have complete transactions.  We only know that a cycle number of&n; * current cycle number -1 won&squot;t be present in the log if we start writing&n; * from our current block number.&n; *&n; * last_blk contains the block number of the first block with a given&n; * cycle number.&n; *&n; * Return: zero if normal, non-zero if error.&n; */
 r_int
 DECL|function|xlog_find_head
 id|xlog_find_head
@@ -3446,15 +3430,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_tail */
 multiline_comment|/*&n; * Is the log zeroed at all?&n; *&n; * The last binary search should be changed to perform an X block read&n; * once X becomes small enough.  You can then search linearly through&n; * the X blocks.  This will cut down on the number of reads we need to do.&n; *&n; * If the log is partially zeroed, this routine will pass back the blkno&n; * of the first block with cycle number 0.  It won&squot;t have a complete LR&n; * preceding it.&n; *&n; * Return:&n; *&t;0  =&gt; the log is completely written to&n; *&t;-1 =&gt; use *blk_no as the first block of the log&n; *&t;&gt;0 =&gt; error has occurred&n; */
 r_int
 DECL|function|xlog_find_zeroed
 id|xlog_find_zeroed
 c_func
 (paren
-r_struct
-id|log
+id|xlog_t
 op_star
 id|log
 comma
@@ -3856,7 +3838,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_zeroed */
 multiline_comment|/*&n; * These are simple subroutines used by xlog_clear_stale_blocks() below&n; * to initialize a buffer full of empty log record headers and write&n; * them into the log.&n; */
 id|STATIC
 r_void
@@ -4764,7 +4745,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_find_tid */
 id|STATIC
 r_void
 DECL|function|xlog_recover_put_hashq
@@ -4792,7 +4772,6 @@ op_assign
 id|trans
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_put_hashq */
 id|STATIC
 r_void
 DECL|function|xlog_recover_add_item
@@ -4831,7 +4810,6 @@ id|item
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_add_item */
 id|STATIC
 r_int
 DECL|function|xlog_recover_add_to_cont_trans
@@ -4994,8 +4972,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_add_to_cont_trans */
-multiline_comment|/* The next region to add is the start of a new region.  It could be&n; * a whole region or it could be the first part of a new region.  Because&n; * of this, the assumption here is that the type and size fields of all&n; * format structures fit into the first 32 bits of the structure.&n; *&n; * This works because all regions must be 32 bit aligned.  Therefore, we&n; * either have both fields or we have neither field.  In the case we have&n; * neither field, the data part of the region is zero length.  We only have&n; * a log_op_header and can throw away the header since a new one will appear&n; * later.  If we have at least 4 bytes, then we can determine how many regions&n; * will appear in the current log item.&n; */
+multiline_comment|/*&n; * The next region to add is the start of a new region.  It could be&n; * a whole region or it could be the first part of a new region.  Because&n; * of this, the assumption here is that the type and size fields of all&n; * format structures fit into the first 32 bits of the structure.&n; *&n; * This works because all regions must be 32 bit aligned.  Therefore, we&n; * either have both fields or we have neither field.  In the case we have&n; * neither field, the data part of the region is zero length.  We only have&n; * a log_op_header and can throw away the header since a new one will appear&n; * later.  If we have at least 4 bytes, then we can determine how many regions&n; * will appear in the current log item.&n; */
 id|STATIC
 r_int
 DECL|function|xlog_recover_add_to_trans
@@ -5099,7 +5076,7 @@ c_func
 (paren
 id|len
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 id|memcpy
@@ -5221,7 +5198,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_add_to_trans */
 id|STATIC
 r_void
 DECL|function|xlog_recover_new_tid
@@ -5254,7 +5230,7 @@ r_sizeof
 id|xlog_recover_t
 )paren
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 id|trans-&gt;r_log_tid
@@ -5274,7 +5250,6 @@ id|trans
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_new_tid */
 id|STATIC
 r_int
 DECL|function|xlog_recover_unlink_tid
@@ -5399,7 +5374,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_unlink_tid */
 id|STATIC
 r_void
 DECL|function|xlog_recover_insert_item_backq
@@ -5468,7 +5442,6 @@ id|item
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* xlog_recover_insert_item_backq */
 id|STATIC
 r_void
 DECL|function|xlog_recover_insert_item_frontq
@@ -5499,7 +5472,6 @@ op_assign
 id|item
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_insert_item_frontq */
 id|STATIC
 r_int
 DECL|function|xlog_recover_reorder_trans
@@ -5560,7 +5532,6 @@ suffix:colon
 r_case
 id|XFS_LI_5_3_BUF
 suffix:colon
-(brace
 id|xlog_recover_insert_item_frontq
 c_func
 (paren
@@ -5572,7 +5543,6 @@ id|itemq
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|XFS_LI_INODE
 suffix:colon
@@ -5594,7 +5564,6 @@ suffix:colon
 r_case
 id|XFS_LI_EFI
 suffix:colon
-(brace
 id|xlog_recover_insert_item_backq
 c_func
 (paren
@@ -5606,12 +5575,8 @@ id|itemq
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|xlog_warn
 c_func
 (paren
@@ -5632,7 +5597,6 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-)brace
 id|itemq
 op_assign
 id|itemq_next
@@ -5650,7 +5614,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_reorder_trans */
 multiline_comment|/*&n; * Build up the table of buf cancel records so that we don&squot;t replay&n; * cancelled data in the second pass.  For buffer records that are&n; * not cancel records, there is nothing to do here so we just return.&n; *&n; * If we get a cancel record which is already in the table, this indicates&n; * that the buffer was cancelled multiple times.  In order to ensure&n; * that during pass 2 we keep the record in the table until we reach its&n; * last occurrence in the log, we keep a reference count in the cancel&n; * record in the table to tell us how many times we expect to see this&n; * record during the second pass.&n; */
 id|STATIC
 r_void
@@ -5769,10 +5732,8 @@ op_amp
 id|XFS_BLI_CANCEL
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Insert an xfs_buf_cancel record into the hash table of&n;&t; * them.  If there is already an identical record, bump&n;&t; * its reference count.&n;&t; */
 id|bucket
 op_assign
@@ -6620,7 +6581,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_inode_buffer */
 multiline_comment|/*&n; * Perform a &squot;normal&squot; buffer recovery.  Each logged region of the&n; * buffer should be copied over the corresponding region in the&n; * given buffer.  The bitmap in the buf log format structure indicates&n; * where to place the logged data.&n; */
 multiline_comment|/*ARGSUSED*/
 id|STATIC
@@ -6920,7 +6880,6 @@ id|item-&gt;ri_total
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_reg_buffer */
 multiline_comment|/*&n; * Do some primitive error checking on ondisk dquot data structures.&n; */
 r_int
 DECL|function|xfs_qm_dqcheck
@@ -8030,7 +7989,6 @@ id|error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_buffer_trans */
 id|STATIC
 r_int
 DECL|function|xlog_recover_do_inode_trans
@@ -9258,7 +9216,6 @@ id|error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_inode_trans */
 multiline_comment|/*&n; * Recover QUOTAOFF records. We simply make a note of it in the xlog_t&n; * structure, so that we know not to do any dquot item or dquot buffer recovery,&n; * of that type.&n; */
 id|STATIC
 r_int
@@ -9709,7 +9666,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_dquot_trans */
 multiline_comment|/*&n; * This routine is called to create an in-core extent free intent&n; * item from the efi format structure which was logged on disk.&n; * It allocates an in-core efi, copies the extents from the format&n; * structure into it, and adds the efi to the AIL with the given&n; * LSN.&n; */
 id|STATIC
 r_void
@@ -9890,7 +9846,6 @@ id|s
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_efi_trans */
 multiline_comment|/*&n; * This routine is called when an efd format structure is found in&n; * a committed transaction in the log.  It&squot;s purpose is to cancel&n; * the corresponding efi if it was still in the log.  To do this&n; * it searches the AIL for the efi with an id equal to that in the&n; * efd format structure.  If we find it, we remove the efi from the&n; * AIL and free it.&n; */
 id|STATIC
 r_void
@@ -10165,7 +10120,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* xlog_recover_do_efd_trans */
 multiline_comment|/*&n; * Perform the transaction&n; *&n; * If the transaction modifies a buffer or inode, do it now.  Otherwise,&n; * EFIs and EFDs get queued up by adding entries into the AIL for them.&n; */
 id|STATIC
 r_int
@@ -10493,7 +10447,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_do_trans */
 multiline_comment|/*&n; * Free up any resources allocated by the transaction&n; *&n; * Remember that EFIs, EFDs, and IUNLINKs are handled later.&n; */
 id|STATIC
 r_void
@@ -10619,7 +10572,6 @@ id|xlog_recover_t
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_free_trans */
 id|STATIC
 r_int
 DECL|function|xlog_recover_commit_trans
@@ -10695,8 +10647,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_commit_trans */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xlog_recover_unmount_trans
@@ -10719,7 +10669,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_unmount_trans */
 multiline_comment|/*&n; * There are two valid states of the r_state field.  0 indicates that the&n; * transaction structure is in a normal state.  We have either seen the&n; * start of the transaction or the last operation we added was not a partial&n; * operation.  If the last operation we added to the transaction was a&n; * partial operation, we need to mark r_state with XLOG_WAS_CONT_TRANS.&n; *&n; * NOTE: skip LRs with 0 data length.&n; */
 id|STATIC
 r_int
@@ -10750,27 +10699,9 @@ id|pass
 (brace
 id|xfs_caddr_t
 id|lp
-op_assign
-id|dp
-op_plus
-id|INT_GET
-c_func
-(paren
-id|rhead-&gt;h_len
-comma
-id|ARCH_CONVERT
-)paren
 suffix:semicolon
 r_int
 id|num_logops
-op_assign
-id|INT_GET
-c_func
-(paren
-id|rhead-&gt;h_num_logops
-comma
-id|ARCH_CONVERT
-)paren
 suffix:semicolon
 id|xlog_op_header_t
 op_star
@@ -10792,6 +10723,28 @@ id|hash
 suffix:semicolon
 id|uint
 id|flags
+suffix:semicolon
+id|lp
+op_assign
+id|dp
+op_plus
+id|INT_GET
+c_func
+(paren
+id|rhead-&gt;h_len
+comma
+id|ARCH_CONVERT
+)paren
+suffix:semicolon
+id|num_logops
+op_assign
+id|INT_GET
+c_func
+(paren
+id|rhead-&gt;h_num_logops
+comma
+id|ARCH_CONVERT
+)paren
 suffix:semicolon
 multiline_comment|/* check the log format matches our own - else we can&squot;t recover */
 r_if
@@ -11002,7 +10955,6 @@ id|flags
 r_case
 id|XLOG_COMMIT_TRANS
 suffix:colon
-(brace
 id|error
 op_assign
 id|xlog_recover_commit_trans
@@ -11023,11 +10975,9 @@ id|pass
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|XLOG_UNMOUNT_TRANS
 suffix:colon
-(brace
 id|error
 op_assign
 id|xlog_recover_unmount_trans
@@ -11038,11 +10988,9 @@ id|trans
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|XLOG_WAS_CONT_TRANS
 suffix:colon
-(brace
 id|error
 op_assign
 id|xlog_recover_add_to_cont_trans
@@ -11063,11 +11011,9 @@ id|ARCH_CONVERT
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|XLOG_START_TRANS
 suffix:colon
-(brace
 id|xlog_warn
 c_func
 (paren
@@ -11090,14 +11036,12 @@ id|EIO
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 l_int|0
 suffix:colon
 r_case
 id|XLOG_CONTINUE_TRANS
 suffix:colon
-(brace
 id|error
 op_assign
 id|xlog_recover_add_to_trans
@@ -11118,12 +11062,8 @@ id|ARCH_CONVERT
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|xlog_warn
 c_func
 (paren
@@ -11147,8 +11087,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* switch */
 r_if
 c_cond
 (paren
@@ -11158,7 +11096,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* if */
 id|dp
 op_add_assign
 id|INT_GET
@@ -11177,7 +11114,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_process_data */
 multiline_comment|/*&n; * Process an extent free intent item that was recovered from&n; * the log.  We need to free the extents that it describes.&n; */
 id|STATIC
 r_void
@@ -11411,7 +11347,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_process_efi */
 multiline_comment|/*&n; * Verify that once we&squot;ve encountered something other than an EFI&n; * in the AIL that there are no more EFIs in the AIL.&n; */
 macro_line|#if defined(DEBUG)
 id|STATIC
@@ -11433,8 +11368,6 @@ id|gen
 )paren
 (brace
 r_int
-id|orig_gen
-suffix:semicolon
 id|orig_gen
 op_assign
 id|gen
@@ -11654,7 +11587,6 @@ id|s
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_process_efis */
 multiline_comment|/*&n; * This routine performs a transaction to null out a bad inode pointer&n; * in an agi unlinked inode hash bucket.&n; */
 id|STATIC
 r_void
@@ -11890,7 +11822,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_clear_agi_bucket */
 multiline_comment|/*&n; * xlog_iunlink_recover&n; *&n; * This is called during recovery to process any inodes which&n; * we unlinked but not freed when the system crashed.  These&n; * inodes will be on the lists in the AGI blocks.  What we do&n; * here is scan all the AGIs and fully truncate and free any&n; * inodes found on the lists.  Each inode is removed from the&n; * lists when it has been fully truncated and is freed.  The&n; * freeing of the inode and its removal from the list must be&n; * atomic.&n; */
 r_void
 DECL|function|xlog_recover_process_iunlinks
@@ -12377,7 +12308,6 @@ op_assign
 id|mp_dmevmask
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_process_iunlinks */
 macro_line|#ifdef DEBUG
 id|STATIC
 r_void
@@ -14973,7 +14903,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_do_recover */
 multiline_comment|/*&n; * Perform recovery and re-initialize some log variables in xlog_find_tail.&n; *&n; * Return error or zero.&n; */
 r_int
 DECL|function|xlog_recover
@@ -15093,7 +15022,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover */
 multiline_comment|/*&n; * In the first part of recovery we replay inodes and buffers and build&n; * up the list of extent free items which need to be processed.  Here&n; * we process the extent free items and clean up the on disk unlinked&n; * inode lists.  This is separated from the first part of recovery so&n; * that the root and real-time bitmap inodes can be read in from disk in&n; * between the two stages.  This is necessary so that we can free space&n; * in the real-time portion of the file system.&n; */
 r_int
 DECL|function|xlog_recover_finish
@@ -15211,7 +15139,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_recover_finish */
 macro_line|#if defined(DEBUG)
 multiline_comment|/*&n; * Read all of the agf and agi counters and check that they&n; * are consistent with the superblock counters.&n; */
 r_void
