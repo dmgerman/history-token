@@ -912,7 +912,7 @@ l_string|&quot;iSeries_pcibios_fixup Entry.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Fix up at the device node and pci_dev relationship */
-id|mf_displaySrc
+id|mf_display_src
 c_func
 (paren
 l_int|0xC9000100
@@ -1048,7 +1048,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mf_displaySrc
+id|mf_display_src
 c_func
 (paren
 l_int|0xC9000200
@@ -2498,7 +2498,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|mf_displaySrc
+id|mf_display_src
 c_func
 (paren
 l_int|0xB6000103

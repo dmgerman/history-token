@@ -705,7 +705,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|mf_allocateLpEvents
+id|mf_allocate_lp_events
 c_func
 (paren
 id|rlp
@@ -2507,7 +2507,7 @@ id|cnx-&gt;num_events
 OG
 l_int|0
 )paren
-id|mf_deallocateLpEvents
+id|mf_deallocate_lp_events
 c_func
 (paren
 id|cnx-&gt;remote_lp
@@ -2528,7 +2528,7 @@ id|cnx-&gt;num_ack_events
 OG
 l_int|0
 )paren
-id|mf_deallocateLpEvents
+id|mf_deallocate_lp_events
 c_func
 (paren
 id|cnx-&gt;remote_lp

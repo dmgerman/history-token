@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mf.h&n; * Copyright (C) 2001  Troy D. Armstrong IBM Corporation&n; *&n; * This modules exists as an interface between a Linux secondary partition&n; * running on an iSeries and the primary partition&squot;s Virtual Service&n; * Processor (VSP) object.  The VSP has final authority over powering on/off&n; * all partitions in the iSeries.  It also provides miscellaneous low-level&n; * machine facility type operations.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * mf.h&n; * Copyright (C) 2001  Troy D. Armstrong IBM Corporation&n; * Copyright (C) 2004  Stephen Rothwell IBM Corporation&n; *&n; * This modules exists as an interface between a Linux secondary partition&n; * running on an iSeries and the primary partition&squot;s Virtual Service&n; * Processor (VSP) object.  The VSP has final authority over powering on/off&n; * all partitions in the iSeries.  It also provides miscellaneous low-level&n; * machine facility type operations.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#ifndef MF_H_INCLUDED
 DECL|macro|MF_H_INCLUDED
 mdefine_line|#define MF_H_INCLUDED
@@ -26,7 +26,7 @@ id|returnCode
 suffix:semicolon
 r_extern
 r_void
-id|mf_allocateLpEvents
+id|mf_allocate_lp_events
 c_func
 (paren
 id|HvLpIndex
@@ -51,7 +51,7 @@ id|userToken
 suffix:semicolon
 r_extern
 r_void
-id|mf_deallocateLpEvents
+id|mf_deallocate_lp_events
 c_func
 (paren
 id|HvLpIndex
@@ -73,7 +73,7 @@ id|userToken
 suffix:semicolon
 r_extern
 r_void
-id|mf_powerOff
+id|mf_power_off
 c_func
 (paren
 r_void
@@ -89,7 +89,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|mf_displaySrc
+id|mf_display_src
 c_func
 (paren
 id|u32
@@ -98,7 +98,7 @@ id|word
 suffix:semicolon
 r_extern
 r_void
-id|mf_displayProgress
+id|mf_display_progress
 c_func
 (paren
 id|u16
@@ -107,7 +107,7 @@ id|value
 suffix:semicolon
 r_extern
 r_void
-id|mf_clearSrc
+id|mf_clear_src
 c_func
 (paren
 r_void
@@ -227,28 +227,7 @@ id|side
 suffix:semicolon
 r_extern
 r_int
-id|mf_setRtcTime
-c_func
-(paren
-r_int
-r_int
-id|time
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mf_getRtcTime
-c_func
-(paren
-r_int
-r_int
-op_star
-id|time
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mf_getRtc
+id|mf_get_rtc
 c_func
 (paren
 r_struct
@@ -259,7 +238,7 @@ id|tm
 suffix:semicolon
 r_extern
 r_int
-id|mf_setRtc
+id|mf_set_rtc
 c_func
 (paren
 r_struct
