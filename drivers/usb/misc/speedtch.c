@@ -5296,6 +5296,10 @@ suffix:semicolon
 id|finish
 suffix:colon
 multiline_comment|/* ready for ATM callbacks */
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|instance-&gt;atm_dev-&gt;dev_data
 op_assign
 id|instance
@@ -5946,6 +5950,10 @@ id|i
 )braket
 dot
 id|base
+)paren
+suffix:semicolon
+id|wmb
+(paren
 )paren
 suffix:semicolon
 id|instance-&gt;usb_dev
