@@ -1936,7 +1936,8 @@ r_int
 id|syscall_result
 suffix:semicolon
 DECL|member|last_SRpnt
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|last_SRpnt
 suffix:semicolon
@@ -1997,7 +1998,8 @@ r_int
 id|capacity
 suffix:semicolon
 DECL|member|device
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 suffix:semicolon
