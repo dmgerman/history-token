@@ -29,10 +29,16 @@ DECL|macro|CBROADCAST
 mdefine_line|#define CBROADCAST 0xfe       /* Connection broadcast address */
 DECL|macro|XID_FORMAT
 mdefine_line|#define XID_FORMAT 0x01       /* Discovery XID format */
+multiline_comment|/* Nobody seems to use this constant. */
 DECL|macro|LAP_WINDOW_SIZE
 mdefine_line|#define LAP_WINDOW_SIZE 8
+multiline_comment|/* We keep the LAP queue very small to minimise the amount of buffering.&n; * this improve latency and reduce resource consumption.&n; * This work only because we have synchronous refilling of IrLAP through&n; * the flow control mechanism (via scheduler and IrTTP).&n; * 2 buffers is the minimum we can work with, one that we send while polling&n; * IrTTP, and another to know that we should not send the pf bit.&n; * Jean II */
+DECL|macro|LAP_HIGH_THRESHOLD
+mdefine_line|#define LAP_HIGH_THRESHOLD     2
+multiline_comment|/* Some rare non TTP clients don&squot;t implement flow control, and&n; * so don&squot;t comply with the above limit (and neither with this one).&n; * For IAP and management, it doesn&squot;t matter, because they never transmit much.&n; *.For IrLPT, this should be fixed.&n; * - Jean II */
 DECL|macro|LAP_MAX_QUEUE
-mdefine_line|#define LAP_MAX_QUEUE  10
+mdefine_line|#define LAP_MAX_QUEUE 10
+multiline_comment|/* Please note that all IrDA management frames (LMP/TTP conn req/disc and&n; * IAS queries) fall in the second category and are sent to LAP even if TTP&n; * is stopped. This means that those frames will wait only a maximum of&n; * two (2) data frames before beeing sent on the &quot;wire&quot;, which speed up&n; * new socket setup when the link is saturated.&n; * Same story for two sockets competing for the medium : if one saturates&n; * the LAP, when the other want to transmit it only has to wait for&n; * maximum three (3) packets (2 + one scheduling), which improve performance&n; * of delay sensitive applications.&n; * Jean II */
 DECL|macro|NR_EXPECTED
 mdefine_line|#define NR_EXPECTED     1
 DECL|macro|NR_UNEXPECTED
