@@ -6137,6 +6137,10 @@ DECL|macro|USB_DEVICE_ID_WACOM_PL
 mdefine_line|#define USB_DEVICE_ID_WACOM_PL&t;&t;0x0030
 DECL|macro|USB_DEVICE_ID_WACOM_INTUOS2
 mdefine_line|#define USB_DEVICE_ID_WACOM_INTUOS2&t;0x0040
+DECL|macro|USB_DEVICE_ID_WACOM_VOLITO
+mdefine_line|#define USB_DEVICE_ID_WACOM_VOLITO      0x0060
+DECL|macro|USB_DEVICE_ID_WACOM_PTU
+mdefine_line|#define USB_DEVICE_ID_WACOM_PTU         0x0003
 DECL|macro|USB_VENDOR_ID_KBGEAR
 mdefine_line|#define USB_VENDOR_ID_KBGEAR            0x084e
 DECL|macro|USB_DEVICE_ID_KBGEAR_JAMSTUDIO
@@ -6411,6 +6415,16 @@ comma
 (brace
 id|USB_VENDOR_ID_WACOM
 comma
+id|USB_DEVICE_ID_WACOM_GRAPHIRE
+op_plus
+l_int|4
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
 id|USB_DEVICE_ID_WACOM_INTUOS
 comma
 id|HID_QUIRK_IGNORE
@@ -6518,14 +6532,6 @@ comma
 id|USB_VENDOR_ID_WACOM
 comma
 id|USB_DEVICE_ID_WACOM_INTUOS2
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_WACOM
-comma
-id|USB_DEVICE_ID_WACOM_INTUOS2
 op_plus
 l_int|1
 comma
@@ -6558,6 +6564,42 @@ comma
 id|USB_DEVICE_ID_WACOM_INTUOS2
 op_plus
 l_int|4
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
+id|USB_DEVICE_ID_WACOM_INTUOS2
+op_plus
+l_int|5
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
+id|USB_DEVICE_ID_WACOM_INTUOS2
+op_plus
+l_int|7
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
+id|USB_DEVICE_ID_WACOM_VOLITO
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
+id|USB_DEVICE_ID_WACOM_PTU
 comma
 id|HID_QUIRK_IGNORE
 )brace
