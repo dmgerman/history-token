@@ -151,6 +151,18 @@ id|xfrm_encap_tmpl
 op_star
 id|encap
 suffix:semicolon
+multiline_comment|/* IPComp needs an IPIP tunnel for handling uncompressed packets */
+DECL|member|tunnel
+r_struct
+id|xfrm_state
+op_star
+id|tunnel
+suffix:semicolon
+multiline_comment|/* If a tunnel, number of users + 1 */
+DECL|member|tunnel_users
+id|atomic_t
+id|tunnel_users
+suffix:semicolon
 multiline_comment|/* State for replay detection */
 DECL|member|replay
 r_struct
@@ -548,6 +560,17 @@ r_struct
 id|xfrm_state_afinfo
 op_star
 id|afinfo
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfrm_state_delete_tunnel
+c_func
+(paren
+r_struct
+id|xfrm_state
+op_star
+id|x
 )paren
 suffix:semicolon
 r_struct
@@ -3086,6 +3109,28 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|xfrm_state_kern
+r_static
+r_inline
+r_int
+id|xfrm_state_kern
+c_func
+(paren
+r_struct
+id|xfrm_state
+op_star
+id|x
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|x-&gt;tunnel_users
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfrm algorithm information&n; */

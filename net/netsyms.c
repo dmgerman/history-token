@@ -1315,6 +1315,13 @@ c_func
 id|xfrm_state_put_afinfo
 )paren
 suffix:semicolon
+DECL|variable|xfrm_state_delete_tunnel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_state_delete_tunnel
+)paren
+suffix:semicolon
 DECL|variable|xfrm_replay_check
 id|EXPORT_SYMBOL
 c_func
