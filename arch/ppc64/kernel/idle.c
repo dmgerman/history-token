@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 r_extern
 r_void
 id|power4_idle

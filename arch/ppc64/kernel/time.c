@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 DECL|variable|__cacheline_aligned_in_smp
 id|u64
 id|jiffies_64

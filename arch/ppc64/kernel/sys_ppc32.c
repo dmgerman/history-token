@@ -56,6 +56,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* readdir &amp; getdents */
 DECL|macro|NAME_OFFSET

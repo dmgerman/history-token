@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 multiline_comment|/* Machine State Register (MSR) Fields */
 DECL|macro|MSR_SF_LG
 mdefine_line|#define MSR_SF_LG&t;63              /* Enable 64 bit mode */

@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 DECL|variable|rtas_firmware_flash_list
 r_struct
 id|flash_block_list_header

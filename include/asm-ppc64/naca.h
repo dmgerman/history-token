@@ -9,7 +9,7 @@ DECL|struct|naca_struct
 r_struct
 id|naca_struct
 (brace
-multiline_comment|/*==================================================================&n;&t; * Cache line 1: 0x0000 - 0x007F&n;&t; * Kernel only data - undefined for user space&n;&t; *==================================================================&n;&t; */
+multiline_comment|/* Kernel only data - undefined for user space */
 DECL|member|xItVpdAreas
 r_void
 op_star
@@ -69,40 +69,6 @@ id|u64
 id|pftSize
 suffix:semicolon
 multiline_comment|/* Log 2 of page table size  0x50 */
-DECL|member|systemcfg
-r_void
-op_star
-id|systemcfg
-suffix:semicolon
-multiline_comment|/* Pointer to systemcfg data 0x58 */
-DECL|member|dCacheL1LogLineSize
-id|u32
-id|dCacheL1LogLineSize
-suffix:semicolon
-multiline_comment|/* L1 d-cache line size Log2 0x60 */
-DECL|member|dCacheL1LinesPerPage
-id|u32
-id|dCacheL1LinesPerPage
-suffix:semicolon
-multiline_comment|/* L1 d-cache lines / page   0x64 */
-DECL|member|iCacheL1LogLineSize
-id|u32
-id|iCacheL1LogLineSize
-suffix:semicolon
-multiline_comment|/* L1 i-cache line size Log2 0x68 */
-DECL|member|iCacheL1LinesPerPage
-id|u32
-id|iCacheL1LinesPerPage
-suffix:semicolon
-multiline_comment|/* L1 i-cache lines / page   0x6c */
-DECL|member|resv0
-id|u8
-id|resv0
-(braket
-l_int|15
-)braket
-suffix:semicolon
-multiline_comment|/* Reserved           0x71 - 0x7F */
 )brace
 suffix:semicolon
 r_extern

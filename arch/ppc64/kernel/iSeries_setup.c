@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;iSeries_setup.h&quot;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
@@ -1958,7 +1959,9 @@ c_func
 op_member_access_from_pointer
 id|lppaca.xDynHvPhysicalProcIndex
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1Size
+id|systemcfg-&gt;icache_size
+op_assign
+id|ppc64_caches.isize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1969,7 +1972,9 @@ id|xInstCacheSize
 op_star
 l_int|1024
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1LineSize
+id|systemcfg-&gt;icache_line_size
+op_assign
+id|ppc64_caches.iline_size
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1978,7 +1983,9 @@ id|procIx
 dot
 id|xInstCacheOperandSize
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1Size
+id|systemcfg-&gt;dcache_size
+op_assign
+id|ppc64_caches.dsize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1989,7 +1996,9 @@ id|xDataL1CacheSizeKB
 op_star
 l_int|1024
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dcache_line_size
+op_assign
+id|ppc64_caches.dline_size
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -1998,21 +2007,21 @@ id|procIx
 dot
 id|xDataCacheOperandSize
 suffix:semicolon
-id|naca-&gt;iCacheL1LinesPerPage
+id|ppc64_caches.ilines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
-id|naca-&gt;dCacheL1LinesPerPage
+id|ppc64_caches.dlines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|i
 op_assign
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
 id|n
 op_assign
@@ -2034,13 +2043,13 @@ l_int|2
 op_increment
 id|n
 suffix:semicolon
-id|naca-&gt;iCacheL1LogLineSize
+id|ppc64_caches.log_iline_size
 op_assign
 id|n
 suffix:semicolon
 id|i
 op_assign
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|n
 op_assign
@@ -2062,7 +2071,7 @@ l_int|2
 op_increment
 id|n
 suffix:semicolon
-id|naca-&gt;dCacheL1LogLineSize
+id|ppc64_caches.log_dline_size
 op_assign
 id|n
 suffix:semicolon
@@ -2075,7 +2084,7 @@ comma
 r_int
 r_int
 )paren
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 )paren
 suffix:semicolon
 id|printk
@@ -2087,7 +2096,7 @@ comma
 r_int
 r_int
 )paren
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 )paren
 suffix:semicolon
 )brace

@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -291,9 +292,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|systemcfg
+id|ppc64_caches
 comma
-id|dCacheL1LineSize
+id|dline_size
 )paren
 )paren
 suffix:semicolon
@@ -305,9 +306,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|dCacheL1LogLineSize
+id|log_dline_size
 )paren
 )paren
 suffix:semicolon
@@ -319,9 +320,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|dCacheL1LinesPerPage
+id|dlines_per_page
 )paren
 )paren
 suffix:semicolon
@@ -333,9 +334,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|systemcfg
+id|ppc64_caches
 comma
-id|iCacheL1LineSize
+id|iline_size
 )paren
 )paren
 suffix:semicolon
@@ -347,9 +348,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|iCacheL1LogLineSize
+id|log_iline_size
 )paren
 )paren
 suffix:semicolon
@@ -361,9 +362,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|ppc64_caches
 comma
-id|iCacheL1LinesPerPage
+id|ilines_per_page
 )paren
 )paren
 suffix:semicolon

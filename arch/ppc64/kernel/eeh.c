@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

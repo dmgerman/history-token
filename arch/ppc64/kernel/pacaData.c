@@ -2,6 +2,7 @@ multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; *      This progr
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -15,11 +16,25 @@ id|naca_struct
 op_star
 id|naca
 suffix:semicolon
+DECL|variable|naca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|naca
+)paren
+suffix:semicolon
 DECL|variable|systemcfg
 r_struct
 id|systemcfg
 op_star
 id|systemcfg
+suffix:semicolon
+DECL|variable|systemcfg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|systemcfg
+)paren
 suffix:semicolon
 multiline_comment|/* This symbol is provided by the linker - let it fill in the paca&n; * field correctly */
 r_extern

@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 DECL|macro|DEBUG_NVRAM
 macro_line|#undef DEBUG_NVRAM
 r_static

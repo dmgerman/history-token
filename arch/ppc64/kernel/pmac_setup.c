@@ -46,6 +46,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;mpic.h&quot;
 macro_line|#ifdef DEBUG

@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 r_static
 id|DEFINE_PER_CPU
 c_func

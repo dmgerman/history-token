@@ -43,6 +43,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -216,6 +217,11 @@ suffix:semicolon
 DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
+suffix:semicolon
+DECL|variable|ppc64_caches
+r_struct
+id|ppc64_caches
+id|ppc64_caches
 suffix:semicolon
 multiline_comment|/*&n; * These are used in binfmt_elf.c to put aux entries on the stack&n; * for each elf executable being started.&n; */
 DECL|variable|dcache_bsize
@@ -1439,15 +1445,19 @@ comma
 id|lsizep
 )paren
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1Size
+id|systemcfg-&gt;dcache_size
+op_assign
+id|ppc64_caches.dsize
 op_assign
 id|size
 suffix:semicolon
-id|systemcfg-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dcache_line_size
+op_assign
+id|ppc64_caches.dline_size
 op_assign
 id|lsize
 suffix:semicolon
-id|naca-&gt;dCacheL1LogLineSize
+id|ppc64_caches.log_dline_size
 op_assign
 id|__ilog2
 c_func
@@ -1455,13 +1465,11 @@ c_func
 id|lsize
 )paren
 suffix:semicolon
-id|naca-&gt;dCacheL1LinesPerPage
+id|ppc64_caches.dlines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
 id|lsize
-)paren
 suffix:semicolon
 id|size
 op_assign
@@ -1549,15 +1557,19 @@ comma
 id|lsizep
 )paren
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1Size
+id|systemcfg-&gt;icache_size
+op_assign
+id|ppc64_caches.isize
 op_assign
 id|size
 suffix:semicolon
-id|systemcfg-&gt;iCacheL1LineSize
+id|systemcfg-&gt;icache_line_size
+op_assign
+id|ppc64_caches.iline_size
 op_assign
 id|lsize
 suffix:semicolon
-id|naca-&gt;iCacheL1LogLineSize
+id|ppc64_caches.log_iline_size
 op_assign
 id|__ilog2
 c_func
@@ -1565,13 +1577,11 @@ c_func
 id|lsize
 )paren
 suffix:semicolon
-id|naca-&gt;iCacheL1LinesPerPage
+id|ppc64_caches.ilines_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
 id|lsize
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1973,17 +1983,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg-&gt;dCacheL1LineSize   = 0x%x&bslash;n&quot;
+l_string|&quot;ppc64_caches.dcache_line_size = 0x%x&bslash;n&quot;
 comma
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg-&gt;iCacheL1LineSize   = 0x%x&bslash;n&quot;
+l_string|&quot;ppc64_caches.icache_line_size = 0x%x&bslash;n&quot;
 comma
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 )paren
 suffix:semicolon
 id|printk
@@ -3382,11 +3392,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize
 op_assign
-id|systemcfg-&gt;dCacheL1LineSize
+id|ppc64_caches.dline_size
 suffix:semicolon
 id|icache_bsize
 op_assign
-id|systemcfg-&gt;iCacheL1LineSize
+id|ppc64_caches.iline_size
 suffix:semicolon
 multiline_comment|/* reboot on panic */
 id|panic_timeout
