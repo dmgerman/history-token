@@ -9,123 +9,6 @@ macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
-multiline_comment|/*&n; * These are the values that the SCpnt-&gt;sc_data_direction and &n; * SRpnt-&gt;sr_data_direction can take.  These need to be set&n; * The SCSI_DATA_UNKNOWN value is essentially the default.&n; * In the event that the command creator didn&squot;t bother to&n; * set a value, you will see SCSI_DATA_UNKNOWN.&n; */
-DECL|macro|SCSI_DATA_UNKNOWN
-mdefine_line|#define SCSI_DATA_UNKNOWN       0
-DECL|macro|SCSI_DATA_WRITE
-mdefine_line|#define SCSI_DATA_WRITE         1
-DECL|macro|SCSI_DATA_READ
-mdefine_line|#define SCSI_DATA_READ          2
-DECL|macro|SCSI_DATA_NONE
-mdefine_line|#define SCSI_DATA_NONE          3
-macro_line|#ifdef CONFIG_PCI
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#if ((SCSI_DATA_UNKNOWN == PCI_DMA_BIDIRECTIONAL) &amp;&amp; (SCSI_DATA_WRITE == PCI_DMA_TODEVICE) &amp;&amp; (SCSI_DATA_READ == PCI_DMA_FROMDEVICE) &amp;&amp; (SCSI_DATA_NONE == PCI_DMA_NONE))
-DECL|macro|scsi_to_pci_dma_dir
-mdefine_line|#define scsi_to_pci_dma_dir(scsi_dir)&t;((int)(scsi_dir))
-macro_line|#else
-DECL|function|scsi_to_pci_dma_dir
-r_extern
-id|__inline__
-r_int
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-r_int
-r_char
-id|scsi_dir
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_UNKNOWN
-)paren
-r_return
-id|PCI_DMA_BIDIRECTIONAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_WRITE
-)paren
-r_return
-id|PCI_DMA_TODEVICE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_READ
-)paren
-r_return
-id|PCI_DMA_FROMDEVICE
-suffix:semicolon
-r_return
-id|PCI_DMA_NONE
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_SBUS) &amp;&amp; !defined(CONFIG_SUN3) &amp;&amp; !defined(CONFIG_SUN3X)
-macro_line|#include &lt;asm/sbus.h&gt;
-macro_line|#if ((SCSI_DATA_UNKNOWN == SBUS_DMA_BIDIRECTIONAL) &amp;&amp; (SCSI_DATA_WRITE == SBUS_DMA_TODEVICE) &amp;&amp; (SCSI_DATA_READ == SBUS_DMA_FROMDEVICE) &amp;&amp; (SCSI_DATA_NONE == SBUS_DMA_NONE))
-DECL|macro|scsi_to_sbus_dma_dir
-mdefine_line|#define scsi_to_sbus_dma_dir(scsi_dir)&t;((int)(scsi_dir))
-macro_line|#else
-DECL|function|scsi_to_sbus_dma_dir
-r_extern
-id|__inline__
-r_int
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
-r_int
-r_char
-id|scsi_dir
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_UNKNOWN
-)paren
-r_return
-id|SBUS_DMA_BIDIRECTIONAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_WRITE
-)paren
-r_return
-id|SBUS_DMA_TODEVICE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|scsi_dir
-op_eq
-id|SCSI_DATA_READ
-)paren
-r_return
-id|SBUS_DMA_FROMDEVICE
-suffix:semicolon
-r_return
-id|SBUS_DMA_NONE
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n; * Some defs, in case these are not defined elsewhere.&n; */
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
@@ -445,6 +328,19 @@ op_star
 id|attr
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Legacy dma direction interfaces.&n; *&n; * This assumes the pci/sbus dma mapping flags have the same numercial&n; * values as the generic dma-mapping ones.  Currently they have but there&squot;s&n; * no way to check.  Better don&squot;t use these interfaces!&n; */
+DECL|macro|SCSI_DATA_UNKNOWN
+mdefine_line|#define SCSI_DATA_UNKNOWN&t;(DMA_BIDIRECTIONAL)
+DECL|macro|SCSI_DATA_WRITE
+mdefine_line|#define SCSI_DATA_WRITE&t;&t;(DMA_TO_DEVICE)
+DECL|macro|SCSI_DATA_READ
+mdefine_line|#define SCSI_DATA_READ&t;&t;(DMA_FROM_DEVICE)
+DECL|macro|SCSI_DATA_NONE
+mdefine_line|#define SCSI_DATA_NONE&t;&t;(DMA_NONE)
+DECL|macro|scsi_to_pci_dma_dir
+mdefine_line|#define scsi_to_pci_dma_dir(scsi_dir)&t;((int)(scsi_dir))
+DECL|macro|scsi_to_sbus_dma_dir
+mdefine_line|#define scsi_to_sbus_dma_dir(scsi_dir)&t;((int)(scsi_dir))
 multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
 macro_line|#include &quot;scsi_obsolete.h&quot;
 multiline_comment|/* obsolete typedef junk. */

@@ -371,7 +371,27 @@ c_func
 id|MCFSIM_IMR_MASKALL
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_NETtel) || defined(CONFIG_eLIA) || &bslash;&n;    defined(CONFIG_DISKtel) || defined(CONFIG_SECUREEDGEMP3) || &bslash;&n;    defined(CONFIG_CLEOPATRA)
+macro_line|#if defined(CONFIG_BOOTPARAM)
+id|strncpy
+c_func
+(paren
+id|commandp
+comma
+id|CONFIG_BOOTPARAM_STRING
+comma
+id|size
+)paren
+suffix:semicolon
+id|commandp
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#elif defined(CONFIG_NETtel) || defined(CONFIG_eLIA) || &bslash;&n;      defined(CONFIG_DISKtel) || defined(CONFIG_SECUREEDGEMP3) || &bslash;&n;      defined(CONFIG_CLEOPATRA)
 multiline_comment|/* Copy command line from FLASH to local buffer... */
 id|memcpy
 c_func

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
@@ -354,6 +355,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|scsi_set_device_offline
+)paren
+suffix:semicolon
+DECL|variable|__scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_mode_sense
+)paren
+suffix:semicolon
+DECL|variable|scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_mode_sense
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */

@@ -1016,16 +1016,6 @@ c_func
 l_int|0xf813
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|show_stack
-c_func
-(paren
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: assume dump switch pressed */
 multiline_comment|/* check to see if the dump switch was pressed */
 id|VDEBUG
@@ -1110,6 +1100,8 @@ suffix:semicolon
 id|show_stack
 c_func
 (paren
+l_int|NULL
+comma
 l_int|NULL
 )paren
 suffix:semicolon

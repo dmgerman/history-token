@@ -2,71 +2,7 @@ macro_line|#ifndef ZALON7XX_H
 DECL|macro|ZALON7XX_H
 mdefine_line|#define ZALON7XX_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &quot;sym53c8xx_defs.h&quot;
-r_extern
-r_int
-id|zalon7xx_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
 macro_line|#include &lt;scsi/scsicam.h&gt;
-r_extern
-r_struct
-id|proc_dir_entry
-id|proc_scsi_zalon7xx
-suffix:semicolon
-multiline_comment|/* borrowed from drivers/scsi/ncr53c8xx.h */
-r_int
-id|zalon7xx_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-)paren
-suffix:semicolon
-r_const
-r_char
-op_star
-id|ncr53c8xx_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_int
-id|ncr53c8xx_queue_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|zalon7xx_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 DECL|macro|GSC_SCSI_ZALON_OFFSET
 mdefine_line|#define GSC_SCSI_ZALON_OFFSET 0x800
 DECL|macro|IO_MODULE_EIM

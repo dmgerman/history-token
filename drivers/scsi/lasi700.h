@@ -5,15 +5,6 @@ DECL|macro|_LASI700_H
 mdefine_line|#define _LASI700_H
 r_static
 r_int
-id|lasi700_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|lasi700_driver_callback
 c_func
 (paren
@@ -25,13 +16,13 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|lasi700_release
+id|lasi700_driver_remove
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|parisc_device
 op_star
-id|host
+id|dev
 )paren
 suffix:semicolon
 DECL|macro|LASI_710_SVERSION
