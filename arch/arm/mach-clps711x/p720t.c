@@ -85,9 +85,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tag
 comma
 r_char
 op_star
@@ -100,18 +100,6 @@ op_star
 id|mi
 )paren
 (brace
-r_struct
-id|tag
-op_star
-id|tag
-op_assign
-(paren
-r_struct
-id|tag
-op_star
-)paren
-id|params
-suffix:semicolon
 multiline_comment|/*&n;&t; * Our bootloader doesn&squot;t setup any tags (yet).&n;&t; */
 r_if
 c_cond

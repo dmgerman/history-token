@@ -657,13 +657,6 @@ c_func
 id|strpbrk
 )paren
 suffix:semicolon
-DECL|variable|strsep
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|strsep
-)paren
-suffix:semicolon
 DECL|variable|strrchr
 id|EXPORT_SYMBOL_NOVERS
 c_func
