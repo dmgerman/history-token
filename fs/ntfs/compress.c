@@ -1893,7 +1893,7 @@ op_increment
 suffix:semicolon
 id|lcn
 op_assign
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -3317,8 +3317,8 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn() failed. Cannot read compression &quot;
-l_string|&quot;block.&quot;
+l_string|&quot;ntfs_vcn_to_lcn() failed. Cannot read &quot;
+l_string|&quot;compression block.&quot;
 )paren
 suffix:semicolon
 r_goto

@@ -928,7 +928,7 @@ op_increment
 suffix:semicolon
 id|lcn
 op_assign
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -1067,8 +1067,8 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%llx) failed &quot;
-l_string|&quot;with error code 0x%llx%s.&quot;
+l_string|&quot;ntfs_vcn_to_lcn(vcn = 0x%llx) &quot;
+l_string|&quot;failed with error code 0x%llx%s.&quot;
 comma
 (paren
 r_int
@@ -1095,7 +1095,7 @@ l_string|&quot;&quot;
 suffix:semicolon
 singleline_comment|// FIXME: Depending on vol-&gt;on_errors, do something.
 )brace
-multiline_comment|/*&n;&t;&t; * Either iblock was outside lblock limits or vcn_to_lcn()&n;&t;&t; * returned error. Just zero that portion of the page and set&n;&t;&t; * the buffer uptodate.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Either iblock was outside lblock limits or ntfs_vcn_to_lcn()&n;&t;&t; * returned error. Just zero that portion of the page and set&n;&t;&t; * the buffer uptodate.&n;&t;&t; */
 id|handle_hole
 suffix:colon
 id|bh-&gt;b_blocknr
@@ -2275,7 +2275,7 @@ op_increment
 suffix:semicolon
 id|lcn
 op_assign
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -2417,7 +2417,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%llx) failed &quot;
+l_string|&quot;ntfs_vcn_to_lcn(vcn = 0x%llx) failed &quot;
 l_string|&quot;with error code 0x%llx%s.&quot;
 comma
 (paren
@@ -5222,7 +5222,7 @@ op_increment
 suffix:semicolon
 id|lcn
 op_assign
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -5364,9 +5364,9 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%llx) &quot;
-l_string|&quot;failed with error code &quot;
-l_string|&quot;0x%llx%s.&quot;
+l_string|&quot;ntfs_vcn_to_lcn(vcn = &quot;
+l_string|&quot;0x%llx) failed with error &quot;
+l_string|&quot;code 0x%llx%s.&quot;
 comma
 (paren
 r_int

@@ -438,8 +438,6 @@ l_string|&quot;LCN_RL_NOT_MAPPED&quot;
 comma
 l_string|&quot;LCN_ENOENT       &quot;
 comma
-l_string|&quot;LCN_EINVAL       &quot;
-comma
 l_string|&quot;LCN_unknown      &quot;
 )brace
 suffix:semicolon
@@ -531,7 +529,7 @@ c_cond
 id|index
 OG
 op_minus
-id|LCN_EINVAL
+id|LCN_ENOENT
 op_minus
 l_int|1
 )paren

@@ -3855,7 +3855,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_map_runlist - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list&n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; */
+multiline_comment|/**&n; * ntfs_map_runlist - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list&n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Locking: - The runlist must be unlocked on entry and is unlocked on return.&n; *&t;    - This function takes the lock for writing and modifies the runlist.&n; */
 DECL|function|ntfs_map_runlist
 r_int
 id|ntfs_map_runlist
@@ -4022,7 +4022,7 @@ c_cond
 id|likely
 c_func
 (paren
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|ni-&gt;runlist.rl
@@ -4102,10 +4102,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * vcn_to_lcn - convert a vcn into a lcn given a run list&n; * @rl:&t;&t;run list to use for conversion&n; * @vcn:&t;vcn to convert&n; *&n; * Convert the virtual cluster number @vcn of an attribute into a logical&n; * cluster number (lcn) of a device using the run list @rl to map vcns to their&n; * corresponding lcns.&n; *&n; * It is up to the caller to serialize access to the run list @rl.&n; *&n; * Since lcns must be &gt;= 0, we use negative return values with special meaning:&n; *&n; * Return value&t;&t;&t;Meaning / Description&n; * ==================================================&n; *  -1 = LCN_HOLE&t;&t;Hole / not allocated on disk.&n; *  -2 = LCN_RL_NOT_MAPPED&t;This is part of the run list which has not been&n; *&t;&t;&t;&t;inserted into the run list yet.&n; *  -3 = LCN_ENOENT&t;&t;There is no such vcn in the attribute.&n; *  -4 = LCN_EINVAL&t;&t;Input parameter error (if debug enabled).&n; */
-DECL|function|vcn_to_lcn
+multiline_comment|/**&n; * ntfs_vcn_to_lcn - convert a vcn into a lcn given a run list&n; * @rl:&t;&t;run list to use for conversion&n; * @vcn:&t;vcn to convert&n; *&n; * Convert the virtual cluster number @vcn of an attribute into a logical&n; * cluster number (lcn) of a device using the run list @rl to map vcns to their&n; * corresponding lcns.&n; *&n; * It is up to the caller to serialize access to the run list @rl.&n; *&n; * Since lcns must be &gt;= 0, we use negative return values with special meaning:&n; *&n; * Return value&t;&t;&t;Meaning / Description&n; * ==================================================&n; *  -1 = LCN_HOLE&t;&t;Hole / not allocated on disk.&n; *  -2 = LCN_RL_NOT_MAPPED&t;This is part of the run list which has not been&n; *&t;&t;&t;&t;inserted into the run list yet.&n; *  -3 = LCN_ENOENT&t;&t;There is no such vcn in the attribute.&n; *&n; * Locking: - The caller must have locked the runlist (for reading or writing).&n; *&t;    - This function does not touch the lock.&n; */
+DECL|function|ntfs_vcn_to_lcn
 id|LCN
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 r_const
@@ -4976,7 +4976,7 @@ id|rl-&gt;length
 (brace
 id|lcn
 op_assign
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -5018,7 +5018,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;vcn_to_lcn() failed. Cannot read &quot;
+l_string|&quot;ntfs_vcn_to_lcn() failed. Cannot read &quot;
 l_string|&quot;attribute list.&quot;
 )paren
 suffix:semicolon

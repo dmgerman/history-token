@@ -52,12 +52,6 @@ op_assign
 op_minus
 l_int|3
 comma
-DECL|enumerator|LCN_EINVAL
-id|LCN_EINVAL
-op_assign
-op_minus
-l_int|4
-comma
 DECL|typedef|LCN_SPECIAL_VALUES
 )brace
 id|LCN_SPECIAL_VALUES
@@ -145,7 +139,7 @@ id|vcn
 suffix:semicolon
 r_extern
 id|LCN
-id|vcn_to_lcn
+id|ntfs_vcn_to_lcn
 c_func
 (paren
 r_const
