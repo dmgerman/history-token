@@ -6174,6 +6174,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|complete_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|complete_all
+)paren
+suffix:semicolon
 DECL|function|wait_for_completion
 r_void
 id|fastcall
