@@ -3932,6 +3932,62 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|patch_ad1980_specific
+r_static
+r_int
+id|patch_ad1980_specific
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+multiline_comment|/* rename 0x04 as &quot;Master&quot; and 0x02 as &quot;Master Surround&quot; */
+id|snd_ac97_rename_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Master Playback Switch&quot;
+comma
+l_string|&quot;Master Surround Playback Switch&quot;
+)paren
+suffix:semicolon
+id|snd_ac97_rename_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Master Playback Volume&quot;
+comma
+l_string|&quot;Master Surround Playback Volume&quot;
+)paren
+suffix:semicolon
+id|snd_ac97_rename_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Headphone Playback Switch&quot;
+comma
+l_string|&quot;Master Playback Switch&quot;
+)paren
+suffix:semicolon
+id|snd_ac97_rename_ctl
+c_func
+(paren
+id|ac97
+comma
+l_string|&quot;Headphone Playback Volume&quot;
+comma
+l_string|&quot;Headphone Playback Volume&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|patch_ad1980_build_ops
 r_static
 r_struct
@@ -3942,8 +3998,12 @@ op_assign
 dot
 id|build_post_spdif
 op_assign
-op_amp
 id|patch_ad1980_post_spdif
+comma
+dot
+id|build_specific
+op_assign
+id|patch_ad1980_specific
 )brace
 suffix:semicolon
 DECL|function|patch_ad1980
@@ -3973,6 +4033,7 @@ id|patch_ad1980_build_ops
 suffix:semicolon
 multiline_comment|/* Switch FRONT/SURROUND LINE-OUT/HP-OUT default connection */
 multiline_comment|/* it seems that most vendors connect line-out connector to headphone out of AC&squot;97 */
+multiline_comment|/* AD-compatible mode */
 multiline_comment|/* Stereo mutes enabled */
 id|misc
 op_assign
@@ -3998,6 +4059,8 @@ op_or
 id|AC97_AD198X_HPSEL
 op_or
 id|AC97_AD198X_MSPLT
+op_or
+id|AC97_AD198X_AC97NC
 )paren
 suffix:semicolon
 id|ac97-&gt;flags

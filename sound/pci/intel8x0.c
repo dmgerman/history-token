@@ -7525,6 +7525,7 @@ id|name
 op_assign
 l_string|&quot;Dell Precision 530&quot;
 comma
+multiline_comment|/* AD1885 */
 dot
 id|type
 op_assign
@@ -7547,54 +7548,11 @@ id|name
 op_assign
 l_string|&quot;Dell Optiplex GX260&quot;
 comma
+multiline_comment|/* AD1981A */
 dot
 id|type
 op_assign
 id|AC97_TUNE_HP_ONLY
-)brace
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x1028
-comma
-dot
-id|device
-op_assign
-l_int|0x0157
-comma
-dot
-id|name
-op_assign
-l_string|&quot;Dell Dimension 8300&quot;
-comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_SWAP_SURROUND
-)brace
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x1043
-comma
-dot
-id|device
-op_assign
-l_int|0x80b0
-comma
-dot
-id|name
-op_assign
-l_string|&quot;ASUS P4PE Mobo&quot;
-comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_SWAP_SURROUND
 )brace
 comma
 (brace
@@ -7633,8 +7591,9 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Fujitsu-Siemens Celcius&quot;
+l_string|&quot;Fujitsu-Siemens Celsius&quot;
 comma
+multiline_comment|/* AD1981? */
 dot
 id|type
 op_assign
@@ -7657,28 +7616,7 @@ id|name
 op_assign
 l_string|&quot;Fujitsu-Siemens Scenic&quot;
 comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_HP_ONLY
-)brace
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x11d4
-comma
-dot
-id|device
-op_assign
-l_int|0x5375
-comma
-dot
-id|name
-op_assign
-l_string|&quot;ADI AD1985 (discrete)&quot;
-comma
+multiline_comment|/* AD1981? */
 dot
 id|type
 op_assign
@@ -7701,58 +7639,7 @@ id|name
 op_assign
 l_string|&quot;Fujitsu-Siemens D1522&quot;
 comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_HP_ONLY
-)brace
-comma
-macro_line|#if 0
-multiline_comment|/* FIXME: this seems invalid */
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x4144
-comma
-dot
-id|device
-op_assign
-l_int|0x5360
-comma
-dot
-id|type
-op_assign
-l_string|&quot;AMD64 Motherboard&quot;
-comma
-dot
-id|name
-op_assign
-id|AC97_TUNE_HP_ONLY
-)brace
-comma
-macro_line|#endif
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x8086
-comma
-dot
-id|device
-op_assign
-l_int|0x2000
-comma
-dot
-id|mask
-op_assign
-l_int|0xfff0
-comma
-dot
-id|name
-op_assign
-l_string|&quot;Intel ICH5/AD1985 (discrete)&quot;
-comma
+multiline_comment|/* AD1981 */
 dot
 id|type
 op_assign
@@ -7802,6 +7689,7 @@ id|name
 op_assign
 l_string|&quot;Intel D850EMV2&quot;
 comma
+multiline_comment|/* AD1885 */
 dot
 id|type
 op_assign
@@ -7863,33 +7751,7 @@ id|AC97_TUNE_AD_SHARING
 )brace
 comma
 (brace
-dot
-id|vendor
-op_assign
-l_int|0x8086
-comma
-dot
-id|device
-op_assign
-l_int|0xa000
-comma
-dot
-id|mask
-op_assign
-l_int|0xfff0
-comma
-dot
-id|name
-op_assign
-l_string|&quot;Intel ICH5/AD1985 (discrete)&quot;
-comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_HP_ONLY
-)brace
-comma
-(brace
+multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
 op_assign

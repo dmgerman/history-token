@@ -7076,6 +7076,7 @@ id|ac97_quirks
 op_assign
 (brace
 (brace
+multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
 op_assign
@@ -7095,28 +7096,6 @@ dot
 id|type
 op_assign
 id|AC97_TUNE_HP_ONLY
-)brace
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x1043
-comma
-dot
-id|device
-op_assign
-l_int|0x80a1
-comma
-dot
-id|name
-op_assign
-l_string|&quot;ASUS A7V8-X&quot;
-comma
-dot
-id|type
-op_assign
-id|AC97_TUNE_SWAP_SURROUND
 )brace
 comma
 (brace

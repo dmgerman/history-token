@@ -13535,10 +13535,9 @@ multiline_comment|/* turn on again */
 )brace
 macro_line|#endif
 multiline_comment|/*&n; */
-DECL|function|remove_ctl
-r_static
+DECL|function|snd_ac97_remove_ctl
 r_int
-id|remove_ctl
+id|snd_ac97_remove_ctl
 c_func
 (paren
 id|ac97_t
@@ -13648,10 +13647,9 @@ id|sid
 )paren
 suffix:semicolon
 )brace
-DECL|function|rename_ctl
-r_static
+DECL|function|snd_ac97_rename_ctl
 r_int
-id|rename_ctl
+id|snd_ac97_rename_ctl
 c_func
 (paren
 id|ac97_t
@@ -13704,10 +13702,9 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
-DECL|function|swap_ctl
-r_static
+DECL|function|snd_ac97_swap_ctl
 r_int
-id|swap_ctl
+id|snd_ac97_swap_ctl
 c_func
 (paren
 id|ac97_t
@@ -13806,7 +13803,7 @@ c_cond
 id|remove_master
 )paren
 (brace
-id|remove_ctl
+id|snd_ac97_remove_ctl
 c_func
 (paren
 id|ac97
@@ -13814,7 +13811,7 @@ comma
 l_string|&quot;Master Playback Switch&quot;
 )paren
 suffix:semicolon
-id|remove_ctl
+id|snd_ac97_remove_ctl
 c_func
 (paren
 id|ac97
@@ -13825,7 +13822,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|rename_ctl
+id|snd_ac97_rename_ctl
 c_func
 (paren
 id|ac97
@@ -13835,7 +13832,7 @@ comma
 l_string|&quot;Line-Out Playback Switch&quot;
 )paren
 suffix:semicolon
-id|rename_ctl
+id|snd_ac97_rename_ctl
 c_func
 (paren
 id|ac97
@@ -13846,7 +13843,7 @@ l_string|&quot;Line-Out Playback Volume&quot;
 )paren
 suffix:semicolon
 )brace
-id|rename_ctl
+id|snd_ac97_rename_ctl
 c_func
 (paren
 id|ac97
@@ -13856,7 +13853,7 @@ comma
 l_string|&quot;Master Playback Switch&quot;
 )paren
 suffix:semicolon
-id|rename_ctl
+id|snd_ac97_rename_ctl
 c_func
 (paren
 id|ac97
@@ -13882,7 +13879,7 @@ id|ac97
 )paren
 (brace
 multiline_comment|/* FIXME: error checks.. */
-id|swap_ctl
+id|snd_ac97_swap_ctl
 c_func
 (paren
 id|ac97
@@ -13892,7 +13889,7 @@ comma
 l_string|&quot;Surround Playback Switch&quot;
 )paren
 suffix:semicolon
-id|swap_ctl
+id|snd_ac97_swap_ctl
 c_func
 (paren
 id|ac97
@@ -13945,13 +13942,7 @@ l_int|0x0200
 )paren
 suffix:semicolon
 r_return
-id|swap_headphone
-c_func
-(paren
-id|ac97
-comma
-l_int|1
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snd_ac97_tune_hardware - tune up the hardware&n; * @ac97: the ac97 instance&n; * @quirk: quirk list&n; *&n; * Do some workaround for each pci device, such as renaming of the&n; * headphone (true line-out) control as &quot;Master&quot;.&n; * The quirk-list must be terminated with a zero-filled entry.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
