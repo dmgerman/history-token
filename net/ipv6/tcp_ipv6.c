@@ -212,7 +212,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1974,7 +1974,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2559,7 +2559,7 @@ op_star
 id|uaddr
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3671,7 +3671,7 @@ l_int|NULL
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -6360,7 +6360,7 @@ op_star
 id|newtcp6sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|newinet
 suffix:semicolon
@@ -6425,7 +6425,7 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newtcp6sk-&gt;pinet6
+id|newtcp6sk-&gt;inet.pinet6
 op_assign
 op_amp
 id|newtcp6sk-&gt;inet6
@@ -6875,7 +6875,7 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newtcp6sk-&gt;pinet6
+id|newtcp6sk-&gt;inet.pinet6
 op_assign
 op_amp
 id|newtcp6sk-&gt;inet6
@@ -8457,7 +8457,7 @@ l_int|NULL
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -8719,7 +8719,7 @@ op_assign
 id|skb-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -9646,7 +9646,7 @@ r_int
 id|timer_expires
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

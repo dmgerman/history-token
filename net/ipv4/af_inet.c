@@ -98,7 +98,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -267,7 +267,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon
@@ -494,7 +494,7 @@ op_star
 id|answer
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon
@@ -1041,7 +1041,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1961,7 +1961,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

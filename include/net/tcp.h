@@ -373,7 +373,7 @@ id|__u16
 id|tw_sport
 suffix:semicolon
 multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
-multiline_comment|/* these five are in inet_opt */
+multiline_comment|/* these five are in inet_sock */
 DECL|member|tw_daddr
 id|__u32
 id|tw_daddr

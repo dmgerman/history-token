@@ -1568,22 +1568,9 @@ DECL|struct|sctp_sock
 r_struct
 id|sctp_sock
 (brace
-DECL|member|sk
-r_struct
-id|sock
-id|sk
-suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-DECL|member|pinet6
-r_struct
-id|ipv6_pinfo
-op_star
-id|pinet6
-suffix:semicolon
-macro_line|#endif /* CONFIG_IPV6 */
 DECL|member|inet
 r_struct
-id|inet_opt
+id|inet_sock
 id|inet
 suffix:semicolon
 DECL|member|sctp
@@ -1598,20 +1585,9 @@ DECL|struct|sctp6_sock
 r_struct
 id|sctp6_sock
 (brace
-DECL|member|sk
-r_struct
-id|sock
-id|sk
-suffix:semicolon
-DECL|member|pinet6
-r_struct
-id|ipv6_pinfo
-op_star
-id|pinet6
-suffix:semicolon
 DECL|member|inet
 r_struct
-id|inet_opt
+id|inet_sock
 id|inet
 suffix:semicolon
 DECL|member|sctp
@@ -1630,7 +1606,7 @@ macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
 DECL|macro|sctp_opt2sk
-mdefine_line|#define sctp_opt2sk(__sp) &amp;container_of(__sp, struct sctp_sock, sctp)-&gt;sk
+mdefine_line|#define sctp_opt2sk(__sp) &amp;container_of(__sp, struct sctp_sock, sctp)-&gt;inet.sk
 multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
