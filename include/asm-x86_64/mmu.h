@@ -2,6 +2,7 @@ macro_line|#ifndef __x86_64_MMU_H
 DECL|macro|__x86_64_MMU_H
 mdefine_line|#define __x86_64_MMU_H
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * The x86_64 doesn&squot;t have a mmu context, but&n; * we put the segment information here.&n; *&n; * cpu_vm_mask is used to optimize ldt flushing.&n; */
 r_typedef
 r_struct
