@@ -5672,6 +5672,7 @@ c_func
 (paren
 r_sizeof
 (paren
+op_star
 id|newpoolinfo
 )paren
 comma
