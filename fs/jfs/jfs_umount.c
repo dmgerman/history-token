@@ -215,14 +215,21 @@ id|log
 )paren
 (brace
 multiline_comment|/* log = NULL if read-only mount */
-id|rc
-op_assign
 id|updateSuper
 c_func
 (paren
 id|sb
 comma
 id|FM_CLEAN
+)paren
+suffix:semicolon
+multiline_comment|/* Restore default gfp_mask for bdev */
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|bdev_mapping
+comma
+id|GFP_USER
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * close log: &n;&t;&t; *&n;&t;&t; * remove file system from log active file system list.&n;&t;&t; */
@@ -333,6 +340,15 @@ c_func
 id|sb
 comma
 id|FM_CLEAN
+)paren
+suffix:semicolon
+multiline_comment|/* Restore default gfp_mask for bdev */
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|bdev_mapping
+comma
+id|GFP_USER
 )paren
 suffix:semicolon
 r_return

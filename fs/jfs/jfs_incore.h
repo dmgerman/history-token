@@ -434,6 +434,12 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* 128-bit uuid for log&t;*/
+multiline_comment|/*&n;&t; * commit_state is used for synchronization of the jfs_commit&n;&t; * threads.  It is protected by LAZY_LOCK().&n;&t; */
+DECL|member|commit_state
+r_int
+id|commit_state
+suffix:semicolon
+multiline_comment|/* commit state */
 multiline_comment|/* Formerly in ipimap */
 DECL|member|gengen
 id|uint
@@ -478,6 +484,9 @@ suffix:semicolon
 multiline_comment|/* state prior to going no integrity */
 )brace
 suffix:semicolon
+multiline_comment|/* jfs_sb_info commit_state */
+DECL|macro|IN_LAZYCOMMIT
+mdefine_line|#define IN_LAZYCOMMIT 1
 DECL|function|JFS_IP
 r_static
 r_inline

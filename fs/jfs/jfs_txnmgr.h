@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef _H_JFS_TXNMGR
 DECL|macro|_H_JFS_TXNMGR
 mdefine_line|#define _H_JFS_TXNMGR
@@ -70,13 +70,12 @@ id|logtid
 suffix:semicolon
 multiline_comment|/* log transaction id */
 multiline_comment|/* commit management */
-DECL|member|cqnext
+DECL|member|cqueue
 r_struct
-id|tblock
-op_star
-id|cqnext
+id|list_head
+id|cqueue
 suffix:semicolon
-multiline_comment|/* commit queue link */
+multiline_comment|/* commit queue list */
 DECL|member|clsn
 id|s32
 id|clsn
@@ -174,12 +173,12 @@ DECL|member|next
 id|lid_t
 id|next
 suffix:semicolon
-multiline_comment|/* index next lockword on tid locklist&n;&t;&t;&t;&t; *          next lockword on freelist&n;&t;&t;&t;&t; */
+multiline_comment|/* 2: index next lockword on tid locklist&n;&t;&t;&t;&t; *          next lockword on freelist&n;&t;&t;&t;&t; */
 DECL|member|tid
 id|tid_t
 id|tid
 suffix:semicolon
-multiline_comment|/* transaction id holding lock */
+multiline_comment|/* 2: transaction id holding lock */
 DECL|member|flag
 id|u16
 id|flag
@@ -196,14 +195,14 @@ id|metapage
 op_star
 id|mp
 suffix:semicolon
-multiline_comment|/* 4: object page buffer locked */
+multiline_comment|/* 4/8: object page buffer locked */
 DECL|member|ip
 r_struct
 id|inode
 op_star
 id|ip
 suffix:semicolon
-multiline_comment|/* 4: object */
+multiline_comment|/* 4/8: object */
 multiline_comment|/* (16) */
 DECL|member|lock
 id|s16
@@ -314,7 +313,7 @@ r_struct
 id|linelock
 (brace
 DECL|member|next
-id|u16
+id|lid_t
 id|next
 suffix:semicolon
 multiline_comment|/* 2: next linelock */
@@ -363,7 +362,7 @@ r_struct
 id|xtlock
 (brace
 DECL|member|next
-id|u16
+id|lid_t
 id|next
 suffix:semicolon
 multiline_comment|/* 2: */
@@ -435,7 +434,7 @@ r_struct
 id|maplock
 (brace
 DECL|member|next
-id|u16
+id|lid_t
 id|next
 suffix:semicolon
 multiline_comment|/* 2: */
@@ -501,7 +500,7 @@ r_struct
 id|xdlistlock
 (brace
 DECL|member|next
-id|u16
+id|lid_t
 id|next
 suffix:semicolon
 multiline_comment|/* 2: */
