@@ -133,8 +133,6 @@ op_star
 id|irq_action
 (braket
 id|NR_IRQS
-op_plus
-l_int|1
 )braket
 op_assign
 (brace
@@ -239,11 +237,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
 id|NR_IRQS
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|i
 op_increment
