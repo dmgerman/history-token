@@ -1,11 +1,7 @@
 multiline_comment|/*&n; * IPVS:        Destination Hashing scheduling module&n; *&n; * Version:     $Id: ip_vs_dh.c,v 1.5 2002/09/15 08:14:08 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@gnuchina.org&gt;&n; *&n; *              Inspired by the consistent hashing scheduler patch from&n; *              Thomas Proell &lt;proellt@gmx.de&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *&n; */
 multiline_comment|/*&n; * The dh algorithm is to select server by the hash key of destination IP&n; * address. The pseudo code is as follows:&n; *&n; *       n &lt;- servernode[dest_ip];&n; *       if (n is dead) OR&n; *          (n is overloaded) OR (n.weight &lt;= 0) then&n; *                 return NULL;&n; *&n; *       return n;&n; *&n; * Notes that servernode is a 256-bucket hash table that maps the hash&n; * index derived from packet destination IP address to the current server&n; * array. If the dh scheduler is used in cache cluster, it is good to&n; * combine it with cache_bypass feature. When the statically assigned&n; * server is dead or overloaded, the load balancer can bypass the cache&n; * server and send requests to the original server directly.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 multiline_comment|/*&n; *      IPVS DH bucket&n; */
 DECL|struct|ip_vs_dh_bucket

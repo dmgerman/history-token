@@ -1,16 +1,10 @@
 multiline_comment|/*&n; * ip_vs_app.c: Application module support for IPVS&n; *&n; * Version:     $Id: ip_vs_app.c,v 1.17 2003/03/22 06:31:21 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Most code here is taken from ip_masq_app.c in kernel 2.2. The difference&n; * is that ip_vs_app module handles the reverse direction (incoming requests&n; * and outgoing responses).&n; *&n; *&t;&t;IP_MASQ_APP application masquerading module&n; *&n; * Author:&t;Juan Jose Ciarlante, &lt;jjciarla@raiz.uncu.edu.ar&gt;&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -1,12 +1,8 @@
 multiline_comment|/*&n; * IPVS:        Locality-Based Least-Connection with Replication scheduler&n; *&n; * Version:     $Id: ip_vs_lblcr.c,v 1.11 2002/09/15 08:14:08 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@gnuchina.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *     Julian Anastasov        :    Added the missing (dest-&gt;weight&gt;0)&n; *                                  condition in the ip_vs_dest_set_max.&n; *&n; */
 multiline_comment|/*&n; * The lblc/r algorithm is as follows (pseudo code):&n; *&n; *       if serverSet[dest_ip] is null then&n; *               n, serverSet[dest_ip] &lt;- {weighted least-conn node};&n; *       else&n; *               n &lt;- {least-conn (alive) node in serverSet[dest_ip]};&n; *               if (n is null) OR&n; *                  (n.conns&gt;n.weight AND&n; *                   there is a node m with m.conns&lt;m.weight/2) then&n; *                   n &lt;- {weighted least-conn node};&n; *                   add n to serverSet[dest_ip];&n; *               if |serverSet[dest_ip]| &gt; 1 AND&n; *                   now - serverSet[dest_ip].lastMod &gt; T then&n; *                   m &lt;- {most conn node in serverSet[dest_ip]};&n; *                   remove m from serverSet[dest_ip];&n; *       if serverSet[dest_ip] changed then&n; *               serverSet[dest_ip].lastMod &lt;- now;&n; *&n; *       return n;&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-multiline_comment|/* for systcl */
+multiline_comment|/* for sysctl */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/* for proc_net_create/proc_net_remove */
@@ -21,6 +17,7 @@ multiline_comment|/*&n; *    It is for full expiration check.&n; *    When there
 DECL|macro|COUNT_FOR_FULL_EXPIRATION
 mdefine_line|#define COUNT_FOR_FULL_EXPIRATION   30
 DECL|variable|sysctl_ip_vs_lblcr_expiration
+r_static
 r_int
 id|sysctl_ip_vs_lblcr_expiration
 op_assign

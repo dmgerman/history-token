@@ -1,8 +1,5 @@
 multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the Netfilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_conn.c,v 1.31 2003/04/18 09:03:16 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *              Peter Kese &lt;peter.kese@ijs.si&gt;&n; *              Julian Anastasov &lt;ja@ssi.bg&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * The IPVS code for kernel 2.2 was done by Wensong Zhang and Peter Kese,&n; * with changes/fixes from Julian Anastasov, Lars Marowsky-Bree, Horms&n; * and others. Many code here is taken from IP MASQ code of kernel 2.2.&n; *&n; * Changes:&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;&t;&t;/* for proc_net_* */
 macro_line|#include &lt;linux/seq_file.h&gt;

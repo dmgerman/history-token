@@ -2124,9 +2124,11 @@ id|len
 r_int
 id|size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|len
 comma
 id|d-&gt;mtu

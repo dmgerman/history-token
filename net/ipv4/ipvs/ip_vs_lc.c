@@ -1,10 +1,6 @@
 multiline_comment|/*&n; * IPVS:        Least-Connection Scheduling module&n; *&n; * Version:     $Id: ip_vs_lc.c,v 1.10 2003/04/18 09:03:16 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *     Wensong Zhang            :     added the ip_vs_lc_update_svc&n; *     Wensong Zhang            :     added any dest with weight=0 is quiesced&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 DECL|function|ip_vs_lc_init_svc
 r_static

@@ -1,12 +1,7 @@
 multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the NetFilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_sync.c,v 1.13 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * ip_vs_sync:  sync connection info from master load balancer to backups&n; *              through multicast&n; *&n; * Changes:&n; *&t;Alexandre Cassen&t;:&t;Added master &amp; backup support at a time.&n; *&t;Alexandre Cassen&t;:&t;Added SyncID support for incoming sync&n; *&t;&t;&t;&t;&t;messages filtering.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;

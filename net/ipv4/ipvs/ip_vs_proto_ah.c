@@ -1,11 +1,6 @@
 multiline_comment|/*&n; * ip_vs_proto_ah.c:&t;AH IPSec load balancing support for IPVS&n; *&n; * Version:     $Id: ip_vs_proto_ah.c,v 1.1 2003/07/04 15:04:37 wensong Exp $&n; *&n; * Authors:&t;Julian Anastasov &lt;ja@ssi.bg&gt;, February 2002&n; *&t;&t;Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;version 2 as published by the Free Software Foundation;&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
