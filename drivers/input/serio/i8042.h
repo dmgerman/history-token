@@ -4,7 +4,7 @@ mdefine_line|#define _I8042_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 multiline_comment|/*&n; * Arch-dependent inline functions and defines.&n; */
-macro_line|#if defined(CONFIG_MIPS_JAZZ)
+macro_line|#if defined(CONFIG_MACH_JAZZ)
 macro_line|#include &quot;i8042-jazzio.h&quot;
 macro_line|#elif defined(CONFIG_SGI_IP22)
 macro_line|#include &quot;i8042-ip22io.h&quot;
