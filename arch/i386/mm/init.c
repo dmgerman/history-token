@@ -1879,20 +1879,19 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if CONFIG_X86_PAE
 macro_line|#include &lt;linux/slab.h&gt;
-DECL|variable|pae_pmd_cachep
+DECL|variable|pmd_cache
 id|kmem_cache_t
 op_star
-id|pae_pmd_cachep
+id|pmd_cache
 suffix:semicolon
-DECL|variable|pae_pgd_cachep
+DECL|variable|pgd_cache
 id|kmem_cache_t
 op_star
-id|pae_pgd_cachep
+id|pgd_cache
 suffix:semicolon
 r_void
-id|pae_pmd_ctor
+id|pmd_ctor
 c_func
 (paren
 r_void
@@ -1906,7 +1905,7 @@ r_int
 )paren
 suffix:semicolon
 r_void
-id|pae_pgd_ctor
+id|pgd_ctor
 c_func
 (paren
 r_void
@@ -1928,15 +1927,27 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;         * PAE pgds must be 16-byte aligned:&n;         */
-id|pae_pmd_cachep
+r_if
+c_cond
+(paren
+id|PTRS_PER_PMD
+OG
+l_int|1
+)paren
+(brace
+id|pmd_cache
 op_assign
 id|kmem_cache_create
 c_func
 (paren
 l_string|&quot;pae_pmd&quot;
 comma
-l_int|4096
+id|PTRS_PER_PMD
+op_star
+r_sizeof
+(paren
+id|pmd_t
+)paren
 comma
 l_int|0
 comma
@@ -1944,7 +1955,7 @@ id|SLAB_HWCACHE_ALIGN
 op_or
 id|SLAB_MUST_HWCACHE_ALIGN
 comma
-id|pae_pmd_ctor
+id|pmd_ctor
 comma
 l_int|NULL
 )paren
@@ -1953,22 +1964,29 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pae_pmd_cachep
+id|pmd_cache
 )paren
 id|panic
 c_func
 (paren
-l_string|&quot;init_pae(): cannot allocate pae_pmd SLAB cache&quot;
+l_string|&quot;pgtable_cache_init(): cannot create pmd cache&quot;
 )paren
 suffix:semicolon
-id|pae_pgd_cachep
+)brace
+multiline_comment|/*&n;         * PAE pgds must be 16-byte aligned:&n;         */
+id|pgd_cache
 op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;pae_pgd&quot;
+l_string|&quot;pgd&quot;
 comma
-l_int|32
+id|PTRS_PER_PGD
+op_star
+r_sizeof
+(paren
+id|pgd_t
+)paren
 comma
 l_int|0
 comma
@@ -1976,7 +1994,7 @@ id|SLAB_HWCACHE_ALIGN
 op_or
 id|SLAB_MUST_HWCACHE_ALIGN
 comma
-id|pae_pgd_ctor
+id|pgd_ctor
 comma
 l_int|NULL
 )paren
@@ -1985,16 +2003,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pae_pgd_cachep
+id|pgd_cache
 )paren
 id|panic
 c_func
 (paren
-l_string|&quot;init_pae(): Cannot alloc pae_pgd SLAB cache&quot;
+l_string|&quot;pgtable_cache_init(): Cannot create pgd cache&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Put this after the callers, so that it cannot be inlined */
 DECL|function|do_test_wp_bit
 r_static
