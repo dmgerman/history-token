@@ -277,7 +277,6 @@ suffix:semicolon
 r_int
 id|rvalue
 suffix:semicolon
-multiline_comment|/* TRACE(DRV_NAME); */
 multiline_comment|/* Enable the pci device */
 r_if
 c_cond
