@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *  linux/arch/mips/dec/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 2000  Maciej W. Rozycki&n; *&n; * This file contains the time handling details for PC-style clocks as&n; * found in some MIPS systems.&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/mips/dec/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2003  Maciej W. Rozycki&n; *&n; * This file contains the time handling details for PC-style clocks as&n; * found in some MIPS systems.&n; *&n; */
+macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -46,7 +48,9 @@ multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
-mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000ULL &lt;&lt; 32) / HZ &amp; 0xffffffff)
+mdefine_line|#define USECS_PER_JIFFY_FRAC ((u32)((1000000ULL &lt;&lt; 32) / HZ))
+DECL|macro|TICK_SIZE
+mdefine_line|#define TICK_SIZE&t;(tick_nsec / 1000)
 multiline_comment|/* Cycle counter value at the previous timer interrupt.. */
 DECL|variable|timerhi
 DECL|variable|timerlo
@@ -192,10 +196,9 @@ suffix:semicolon
 multiline_comment|/* Get last timer tick in absolute kernel time */
 id|count
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_count
 c_func
 (paren
-id|CP0_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
@@ -230,7 +233,7 @@ id|quotient
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check &n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
+multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
 r_if
 c_cond
 (paren
@@ -339,7 +342,7 @@ op_assign
 id|ioasic_read
 c_func
 (paren
-id|FCTR
+id|IO_REG_FCTR
 )paren
 suffix:semicolon
 multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
@@ -392,9 +395,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* This function must be called with interrupts disabled &n; * It was inspired by Steve McCanne&squot;s microtime-i386 for BSD.  -- jrs&n; * &n; * However, the pc-audio speaker driver changes the divisor so that&n; * it gets interrupted rather more often - it loads 64 into the&n; * counter rather than 11932! This has an adverse impact on&n; * do_gettimeoffset() -- it stops working! What is also not&n; * good is that the interval that our timer function gets called&n; * is no longer 10.0002 ms, but 9.9767 ms. To get around this&n; * would require using a different timing source. Maybe someone&n; * could use the RTC - I know that this can interrupt at frequencies&n; * ranging from 8192Hz to 2Hz. If I had the energy, I&squot;d somehow fix&n; * it so that at startup, the timer code in sched.c would select&n; * using either the RTC or the 8253 timer. The decision would be&n; * based on whether there was any other device around that needed&n; * to trample on the 8253. I&squot;d set up the RTC to interrupt at 1024 Hz,&n; * and then do some jiggery to have a version of do_timer that &n; * advanced the clock by 1/1024 s. Every time that reached over 1/100&n; * of a second, then do all the old code. If the time was kept correct&n; * then do_gettimeoffset could just return 0 - there is no low order&n; * divider that can be accessed.&n; *&n; * Ideally, you would be able to use the RTC for the speaker driver,&n; * but it appears that the speaker driver really needs interrupt more&n; * often than every 120 us or so.&n; *&n; * Anyway, this needs more thought....          pjsg (1993-08-28)&n; * &n; * If you are really that interested, you should be reading&n; * comp.protocols.time.ntp!&n; */
-DECL|macro|TICK_SIZE
-mdefine_line|#define TICK_SIZE tick
+multiline_comment|/* This function must be called with interrupts disabled&n; * It was inspired by Steve McCanne&squot;s microtime-i386 for BSD.  -- jrs&n; *&n; * However, the pc-audio speaker driver changes the divisor so that&n; * it gets interrupted rather more often - it loads 64 into the&n; * counter rather than 11932! This has an adverse impact on&n; * do_gettimeoffset() -- it stops working! What is also not&n; * good is that the interval that our timer function gets called&n; * is no longer 10.0002 ms, but 9.9767 ms. To get around this&n; * would require using a different timing source. Maybe someone&n; * could use the RTC - I know that this can interrupt at frequencies&n; * ranging from 8192Hz to 2Hz. If I had the energy, I&squot;d somehow fix&n; * it so that at startup, the timer code in sched.c would select&n; * using either the RTC or the 8253 timer. The decision would be&n; * based on whether there was any other device around that needed&n; * to trample on the 8253. I&squot;d set up the RTC to interrupt at 1024 Hz,&n; * and then do some jiggery to have a version of do_timer that&n; * advanced the clock by 1/1024 s. Every time that reached over 1/100&n; * of a second, then do all the old code. If the time was kept correct&n; * then do_gettimeoffset could just return 0 - there is no low order&n; * divider that can be accessed.&n; *&n; * Ideally, you would be able to use the RTC for the speaker driver,&n; * but it appears that the speaker driver really needs interrupt more&n; * often than every 120 us or so.&n; *&n; * Anyway, this needs more thought....          pjsg (1993-08-28)&n; *&n; * If you are really that interested, you should be reading&n; * comp.protocols.time.ntp!&n; */
 DECL|function|do_slow_gettimeoffset
 r_static
 r_int
@@ -424,7 +425,7 @@ r_void
 op_assign
 id|do_slow_gettimeoffset
 suffix:semicolon
-multiline_comment|/*&n; * This version of gettimeofday has near microsecond resolution.&n; */
+multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution&n; * and better than microsecond precision on fast x86 machines with TSC.&n; */
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -438,81 +439,107 @@ id|tv
 (brace
 r_int
 r_int
-id|flags
+id|seq
 suffix:semicolon
 r_int
 r_int
-id|seq
+id|usec
+comma
+id|sec
 suffix:semicolon
 r_do
 (brace
 id|seq
 op_assign
-id|read_seqbegin_irqsave
+id|read_seqbegin
 c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|flags
 )paren
 suffix:semicolon
-op_star
-id|tv
+id|usec
 op_assign
-id|xtime
-suffix:semicolon
-id|tv-&gt;tv_usec
-op_add_assign
 id|do_gettimeoffset
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t;&t; */
-r_if
-c_cond
-(paren
+(brace
+r_int
+r_int
+id|lost
+op_assign
 id|jiffies
 op_minus
 id|wall_jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lost
 )paren
-id|tv-&gt;tv_usec
+id|usec
 op_add_assign
-id|USECS_PER_JIFFY
+id|lost
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
+id|sec
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+id|usec
+op_add_assign
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-id|read_seqretry_irqrestore
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
 id|seq
-comma
-id|flags
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
-id|tv-&gt;tv_usec
+id|usec
 op_ge
 l_int|1000000
 )paren
 (brace
-id|tv-&gt;tv_usec
+id|usec
 op_sub_assign
 l_int|1000000
 suffix:semicolon
-id|tv-&gt;tv_sec
+id|sec
 op_increment
 suffix:semicolon
 )brace
+id|tv-&gt;tv_sec
+op_assign
+id|sec
+suffix:semicolon
+id|tv-&gt;tv_usec
+op_assign
+id|usec
+suffix:semicolon
 )brace
 DECL|function|do_settimeofday
 r_void
@@ -532,7 +559,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|do_gettimeoffset
@@ -540,8 +567,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|tv-&gt;tv_usec
+op_sub_assign
+(paren
+id|jiffies
+op_minus
+id|wall_jiffies
+)paren
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+r_while
+c_loop
 (paren
 id|tv-&gt;tv_usec
 OL
@@ -556,10 +597,17 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+(paren
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
+)paren
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -678,7 +726,9 @@ id|RTC_DM_BINARY
 op_logical_or
 id|RTC_ALWAYS_BCD
 )paren
-id|BCD_TO_BIN
+id|cmos_minutes
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|cmos_minutes
@@ -754,13 +804,17 @@ op_logical_or
 id|RTC_ALWAYS_BCD
 )paren
 (brace
-id|BIN_TO_BCD
+id|real_seconds
+op_assign
+id|BIN2BCD
 c_func
 (paren
 id|real_seconds
 )paren
 suffix:semicolon
-id|BIN_TO_BCD
+id|real_minutes
+op_assign
+id|BIN2BCD
 c_func
 (paren
 id|real_minutes
@@ -978,19 +1032,37 @@ id|last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_ge
 l_int|500000
 op_minus
-id|tick
+(paren
+(paren
+r_int
+)paren
+id|TICK_SIZE
+)paren
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_le
 l_int|500000
 op_plus
-id|tick
+(paren
+(paren
+r_int
+)paren
+id|TICK_SIZE
+)paren
 op_div
 l_int|2
 )paren
@@ -1035,6 +1107,13 @@ id|seq
 suffix:semicolon
 multiline_comment|/* As we return to user mode fire off the other CPU schedulers.. this is&n;&t;   basically because we don&squot;t yet share IRQ&squot;s around. This message is&n;&t;   rigged to be safe on the 386 - basically it&squot;s a hack, so don&squot;t look&n;&t;   closely for now.. */
 multiline_comment|/*smp_message_pass(MSG_ALL_BUT_SELF, MSG_RESCHEDULE, 0L, 0); */
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|r4k_timer_interrupt
 r_static
@@ -1062,10 +1141,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * The cycle counter is only 32 bit which is good for about&n;&t; * a minute at current count rates of upto 150MHz or so.&n;&t; */
 id|count
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_count
 c_func
 (paren
-id|CP0_COUNT
 )paren
 suffix:semicolon
 id|timerhi
@@ -1091,11 +1169,9 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If jiffies is to overflow in this timer_interrupt we must&n;&t;&t; * update the timer[hi]/[lo] to make do_fast_gettimeoffset()&n;&t;&t; * quotient calc still valid. -arca&n;&t;&t; */
-id|write_32bit_cp0_register
+id|write_c0_count
 c_func
 (paren
-id|CP0_COUNT
-comma
 l_int|0
 )paren
 suffix:semicolon
@@ -1146,7 +1222,7 @@ op_assign
 id|ioasic_read
 c_func
 (paren
-id|FCTR
+id|IO_REG_FCTR
 )paren
 suffix:semicolon
 id|timerhi
@@ -1175,7 +1251,7 @@ multiline_comment|/*&n;&t;&t; * If jiffies is to overflow in this timer_interrup
 id|ioasic_write
 c_func
 (paren
-id|FCTR
+id|IO_REG_FCTR
 comma
 l_int|0
 )paren
@@ -1204,17 +1280,21 @@ id|irqaction
 id|irq0
 op_assign
 (brace
+dot
+id|handler
+op_assign
 id|timer_interrupt
 comma
+dot
+id|flags
+op_assign
 id|SA_INTERRUPT
 comma
-l_int|0
-comma
+dot
+id|name
+op_assign
 l_string|&quot;timer&quot;
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|time_init
@@ -1387,37 +1467,49 @@ op_logical_or
 id|RTC_ALWAYS_BCD
 )paren
 (brace
-id|BCD_TO_BIN
+id|sec
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|sec
 )paren
 suffix:semicolon
-id|BCD_TO_BIN
+id|min
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|min
 )paren
 suffix:semicolon
-id|BCD_TO_BIN
+id|hour
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|hour
 )paren
 suffix:semicolon
-id|BCD_TO_BIN
+id|day
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|day
 )paren
 suffix:semicolon
-id|BCD_TO_BIN
+id|mon
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|mon
 )paren
 suffix:semicolon
-id|BCD_TO_BIN
+id|year
+op_assign
+id|BCD2BIN
 c_func
 (paren
 id|year
@@ -1466,7 +1558,7 @@ comma
 id|sec
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -1480,16 +1572,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
+id|cpu_has_counter
 )paren
 (brace
-id|write_32bit_cp0_register
+id|write_c0_count
 c_func
 (paren
-id|CP0_COUNT
-comma
 l_int|0
 )paren
 suffix:semicolon
@@ -1512,7 +1600,7 @@ id|IOASIC
 id|ioasic_write
 c_func
 (paren
-id|FCTR
+id|IO_REG_FCTR
 comma
 l_int|0
 )paren
