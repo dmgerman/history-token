@@ -1,10 +1,4 @@
 multiline_comment|/*&n; *  fs/partitions/osf.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;osf.h&quot;
 DECL|function|osf_partition
@@ -13,25 +7,23 @@ id|osf_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|current_minor
 )paren
 (brace
 r_int
 id|i
+suffix:semicolon
+r_int
+id|slot
+op_assign
+l_int|1
 suffix:semicolon
 id|Sector
 id|sect
@@ -40,17 +32,6 @@ r_int
 r_char
 op_star
 id|data
-suffix:semicolon
-r_int
-id|mask
-op_assign
-(paren
-l_int|1
-op_lshift
-id|hd-&gt;minor_shift
-)paren
-op_minus
-l_int|1
 suffix:semicolon
 r_struct
 id|disklabel
@@ -289,13 +270,9 @@ op_increment
 r_if
 c_cond
 (paren
-(paren
-id|current_minor
-op_amp
-id|mask
-)paren
+id|slot
 op_eq
-l_int|0
+id|state-&gt;limit
 )paren
 r_break
 suffix:semicolon
@@ -308,15 +285,14 @@ c_func
 id|partition-&gt;p_size
 )paren
 )paren
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|current_minor
+id|slot
+op_increment
 comma
-id|first_sector
-op_plus
 id|le32_to_cpu
 c_func
 (paren
@@ -329,9 +305,6 @@ c_func
 id|partition-&gt;p_size
 )paren
 )paren
-suffix:semicolon
-id|current_minor
-op_increment
 suffix:semicolon
 )brace
 id|printk

@@ -1,9 +1,4 @@
 multiline_comment|/*&n; *  fs/partitions/ultrix.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *&n; *  Re-organised Jul 1999 Russell King&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;check.h&quot;
 DECL|function|ultrix_partition
 r_int
@@ -11,21 +6,14 @@ id|ultrix_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|first_part_minor
 )paren
 (brace
 r_int
@@ -152,9 +140,6 @@ l_int|8
 suffix:semicolon
 id|i
 op_increment
-comma
-id|first_part_minor
-op_increment
 )paren
 r_if
 c_cond
@@ -166,12 +151,14 @@ id|i
 dot
 id|pi_nblocks
 )paren
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|first_part_minor
+id|i
+op_plus
+l_int|1
 comma
 id|label-&gt;pt_part
 (braket
