@@ -556,7 +556,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if 0
-mdefine_line|#define DEBUG_ENT(fmt, arg...) printk(KERN_DEBUG &quot;random: &quot; fmt, ## arg)
+mdefine_line|#define DEBUG_ENT(fmt, arg...) printk(KERN_DEBUG &quot;random %04d %04d %04d: &quot; &bslash;&n;&t;fmt,&bslash;&n;&t;random_state-&gt;entropy_count,&bslash;&n;&t;sec_random_state-&gt;entropy_count,&bslash;&n;&t;urandom_state-&gt;entropy_count,&bslash;&n;&t;## arg)
 macro_line|#else
 DECL|macro|DEBUG_ENT
 mdefine_line|#define DEBUG_ENT(fmt, arg...) do {} while (0)
@@ -1313,13 +1313,11 @@ id|nbits
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;Added %d entropy credits to %s, now %d&bslash;n&quot;
+l_string|&quot;added %d entropy credits to %s&bslash;n&quot;
 comma
 id|nbits
 comma
 id|r-&gt;name
-comma
-id|r-&gt;entropy_count
 )paren
 suffix:semicolon
 )brace
@@ -2120,6 +2118,12 @@ r_char
 id|last_scancode
 suffix:semicolon
 multiline_comment|/* ignore autorepeat (multiple key down w/o key up) */
+id|DEBUG_ENT
+c_func
+(paren
+l_string|&quot;keyboard event&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2152,6 +2156,12 @@ id|__u32
 id|mouse_data
 )paren
 (brace
+id|DEBUG_ENT
+c_func
+(paren
+l_string|&quot;mouse event&bslash;n&quot;
+)paren
+suffix:semicolon
 id|add_timer_randomness
 c_func
 (paren
@@ -2194,6 +2204,14 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+id|DEBUG_ENT
+c_func
+(paren
+l_string|&quot;irq event %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|add_timer_randomness
 c_func
 (paren
@@ -2231,6 +2249,16 @@ id|disk-&gt;random
 r_return
 suffix:semicolon
 multiline_comment|/* first major is 1, so we get &gt;= 0x200 here */
+id|DEBUG_ENT
+c_func
+(paren
+l_string|&quot;disk event %d:%d&bslash;n&quot;
+comma
+id|disk-&gt;major
+comma
+id|disk-&gt;first_minor
+)paren
+suffix:semicolon
 id|add_timer_randomness
 c_func
 (paren
@@ -7003,12 +7031,8 @@ suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;%04d %04d : going to reseed %s with %d bits &quot;
+l_string|&quot;going to reseed %s with %d bits &quot;
 l_string|&quot;(%d of %d requested)&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
 comma
 id|r-&gt;name
 comma
@@ -7147,11 +7171,7 @@ suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;%04d %04d : trying to extract %d bits from %s&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
+l_string|&quot;trying to extract %d bits from %s&bslash;n&quot;
 comma
 id|nbytes
 op_star
@@ -7216,7 +7236,7 @@ suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;Debiting %d entropy credits from %s%s&bslash;n&quot;
+l_string|&quot;debiting %d entropy credits from %s%s&bslash;n&quot;
 comma
 id|nbytes
 op_star
@@ -7294,31 +7314,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEBUG_ENT
-c_func
-(paren
-l_string|&quot;%04d %04d : extract feeling sleepy (%d bytes left)&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
-comma
-id|nbytes
-)paren
-suffix:semicolon
 id|schedule
 c_func
 (paren
-)paren
-suffix:semicolon
-id|DEBUG_ENT
-c_func
-(paren
-l_string|&quot;%04d %04d : extract woke up&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
 )paren
 suffix:semicolon
 )brace
@@ -8259,19 +8257,11 @@ suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;%04d %04d : reading %d bits, p: %d s: %d&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
+l_string|&quot;reading %d bits&bslash;n&quot;
 comma
 id|n
 op_star
 l_int|8
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
 )paren
 suffix:semicolon
 id|n
@@ -8295,11 +8285,7 @@ suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
-l_string|&quot;%04d %04d : read got %d bits (%d still needed)&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
+l_string|&quot;read got %d bits (%d still needed)&bslash;n&quot;
 comma
 id|n
 op_star
@@ -8356,16 +8342,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEBUG_ENT
-c_func
-(paren
-l_string|&quot;%04d %04d : sleeping?&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -8410,16 +8386,6 @@ id|random_read_wait
 comma
 op_amp
 id|wait
-)paren
-suffix:semicolon
-id|DEBUG_ENT
-c_func
-(paren
-l_string|&quot;%04d %04d : waking up&bslash;n&quot;
-comma
-id|random_state-&gt;entropy_count
-comma
-id|sec_random_state-&gt;entropy_count
 )paren
 suffix:semicolon
 r_continue
