@@ -7809,6 +7809,14 @@ r_sizeof
 op_star
 id|conf
 )paren
+op_plus
+id|mddev-&gt;raid_disks
+op_star
+r_sizeof
+(paren
+r_struct
+id|disk_info
+)paren
 )paren
 suffix:semicolon
 id|conf-&gt;mddev

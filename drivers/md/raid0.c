@@ -312,6 +312,24 @@ op_star
 id|conf-&gt;nr_strip_zones
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|conf-&gt;devlist
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|mdk_rdev_t
+op_star
+)paren
+op_star
+id|conf-&gt;nr_strip_zones
+op_star
+id|mddev-&gt;raid_disks
+)paren
+suffix:semicolon
 multiline_comment|/* The first zone must contain all devices, so here we check that&n;&t; * there is a proper alignment of slots to devices and find them all&n;&t; */
 id|zone
 op_assign
