@@ -628,7 +628,7 @@ id|md-&gt;block_bits
 suffix:semicolon
 id|brq.data.blocks
 op_assign
-id|req-&gt;current_nr_sectors
+id|req-&gt;nr_sectors
 op_rshift
 (paren
 id|md-&gt;block_bits
