@@ -1930,7 +1930,6 @@ id|hdsp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|snd_hdsp_enable_io
 (paren
@@ -1940,7 +1939,6 @@ id|hdsp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|snd_hdsp_initialize_midi_flush
 (paren
@@ -1950,7 +1948,6 @@ id|hdsp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|snd_hdsp_initialize_channels
 (paren
@@ -1960,7 +1957,6 @@ id|hdsp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|hdsp_fifo_wait
 c_func
@@ -1997,7 +1993,6 @@ id|hdsp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|snd_hdsp_9652_enable_mixer
 (paren
@@ -2008,7 +2003,6 @@ id|hdsp
 suffix:semicolon
 DECL|function|hdsp_playback_to_output_key
 r_static
-r_inline
 r_int
 id|hdsp_playback_to_output_key
 (paren
@@ -2089,7 +2083,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_input_to_output_key
 r_static
-r_inline
 r_int
 id|hdsp_input_to_output_key
 (paren
@@ -2152,7 +2145,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_write
 r_static
-r_inline
 r_void
 id|hdsp_write
 c_func
@@ -2181,7 +2173,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_read
 r_static
-r_inline
 r_int
 r_int
 id|hdsp_read
@@ -2206,7 +2197,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_check_for_iobox
 r_static
-r_inline
 r_int
 id|hdsp_check_for_iobox
 (paren
@@ -2543,7 +2533,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_get_iobox_version
 r_static
-r_inline
 r_int
 id|hdsp_get_iobox_version
 (paren
@@ -2751,7 +2740,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_check_for_firmware
 r_static
-r_inline
 r_int
 id|hdsp_check_for_firmware
 (paren
@@ -2813,7 +2801,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_fifo_wait
 r_static
-r_inline
 r_int
 id|hdsp_fifo_wait
 c_func
@@ -2893,7 +2880,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_read_gain
 r_static
-r_inline
 r_int
 id|hdsp_read_gain
 (paren
@@ -2927,7 +2913,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_write_gain
 r_static
-r_inline
 r_int
 id|hdsp_write_gain
 c_func
@@ -3112,7 +3097,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_use_is_exclusive
 r_static
-r_inline
 r_int
 id|snd_hdsp_use_is_exclusive
 c_func
@@ -3182,7 +3166,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_external_sample_rate
 r_static
-r_inline
 r_int
 id|hdsp_external_sample_rate
 (paren
@@ -3262,7 +3245,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_spdif_sample_rate
 r_static
-r_inline
 r_int
 id|hdsp_spdif_sample_rate
 c_func
@@ -3413,7 +3395,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_compute_period_size
 r_static
-r_inline
 r_void
 id|hdsp_compute_period_size
 c_func
@@ -3514,7 +3495,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_reset_hw_pointer
 r_static
-r_inline
 r_void
 id|hdsp_reset_hw_pointer
 c_func
@@ -3536,7 +3516,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_start_audio
 r_static
-r_inline
 r_void
 id|hdsp_start_audio
 c_func
@@ -3567,7 +3546,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_stop_audio
 r_static
-r_inline
 r_void
 id|hdsp_stop_audio
 c_func
@@ -3599,7 +3577,6 @@ suffix:semicolon
 )brace
 DECL|function|hdsp_silence_playback
 r_static
-r_inline
 r_void
 id|hdsp_silence_playback
 c_func
@@ -4554,7 +4531,6 @@ suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------------------&n;   MIDI&n;  ----------------------------------------------------------------------------*/
 DECL|function|snd_hdsp_midi_read_byte
 r_static
-r_inline
 r_int
 r_char
 id|snd_hdsp_midi_read_byte
@@ -4599,7 +4575,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_midi_write_byte
 r_static
-r_inline
 r_void
 id|snd_hdsp_midi_write_byte
 (paren
@@ -4648,7 +4623,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_midi_input_available
 r_static
-r_inline
 r_int
 id|snd_hdsp_midi_input_available
 (paren
@@ -4699,7 +4673,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_midi_output_possible
 r_static
-r_inline
 r_int
 id|snd_hdsp_midi_output_possible
 (paren
@@ -4771,7 +4744,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_flush_midi_input
 r_static
-r_inline
 r_void
 id|snd_hdsp_flush_midi_input
 (paren
@@ -21981,7 +21953,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_9652_enable_mixer
 r_static
-r_inline
 r_void
 id|snd_hdsp_9652_enable_mixer
 (paren
@@ -22004,35 +21975,8 @@ id|hdsp-&gt;control2_register
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_hdsp_9652_disable_mixer
-r_static
-r_inline
-r_void
-id|snd_hdsp_9652_disable_mixer
-(paren
-id|hdsp_t
-op_star
-id|hdsp
-)paren
-(brace
-id|hdsp-&gt;control2_register
-op_and_assign
-op_complement
-id|HDSP_9652_ENABLE_MIXER
-suffix:semicolon
-id|hdsp_write
-(paren
-id|hdsp
-comma
-id|HDSP_control2Reg
-comma
-id|hdsp-&gt;control2_register
-)paren
-suffix:semicolon
-)brace
 DECL|function|snd_hdsp_enable_io
 r_static
-r_inline
 r_int
 id|snd_hdsp_enable_io
 (paren
@@ -22114,7 +22058,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_initialize_channels
 r_static
-r_inline
 r_void
 id|snd_hdsp_initialize_channels
 c_func
@@ -22291,7 +22234,6 @@ suffix:semicolon
 )brace
 DECL|function|snd_hdsp_initialize_midi_flush
 r_static
-r_inline
 r_void
 id|snd_hdsp_initialize_midi_flush
 (paren
