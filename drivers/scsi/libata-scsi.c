@@ -3581,6 +3581,10 @@ l_int|0
 (brace
 multiline_comment|/* no-op&squot;s, complete with success */
 r_case
+id|SYNCHRONIZE_CACHE
+suffix:colon
+multiline_comment|/* FIXME: temporary */
+r_case
 id|REZERO_UNIT
 suffix:colon
 r_case
