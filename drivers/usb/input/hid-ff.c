@@ -201,7 +201,7 @@ op_logical_neg
 id|init
 )paren
 (brace
-id|warn
+id|dbg
 c_func
 (paren
 l_string|&quot;hid_ff_init could not find initializer&quot;
