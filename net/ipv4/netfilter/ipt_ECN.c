@@ -1,4 +1,4 @@
-multiline_comment|/* iptables module for the IPv4 and TCP ECN bits, Version 1.5&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &n; * This software is distributed under GNU GPL v2, 1991&n; * &n; * ipt_ECN.c,v 1.5 2002/08/18 19:36:51 laforge Exp&n;*/
+multiline_comment|/* iptables module for the IPv4 and TCP ECN bits, Version 1.5&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as &n; * published by the Free Software Foundation.&n; *&n; * ipt_ECN.c,v 1.5 2002/08/18 19:36:51 laforge Exp&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;

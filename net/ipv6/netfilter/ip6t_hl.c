@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Hop Limit matching module&n; * Maciej Soltysiak &lt;solt@dns.toxicfilms.tv&gt;&n; * Based on HW&squot;s ttl module&n; *&n; * This software is distributed under the terms  GNU GPL&n; */
+multiline_comment|/* Hop Limit matching module */
+multiline_comment|/* (C) 2001-2002 Maciej Soltysiak &lt;solt@dns.toxicfilms.tv&gt;&n; * Based on HW&squot;s ttl module&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6t_hl.h&gt;

@@ -1,5 +1,5 @@
 multiline_comment|/* This file contains all the functions required for the standalone&n;   ip_conntrack module.&n;&n;   These are not required by the compatibility layer.&n;*/
-multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n;   Public Licence. */
+multiline_comment|/* (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
