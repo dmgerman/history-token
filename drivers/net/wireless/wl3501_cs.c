@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * WL3501 Wireless LAN PCMCIA Card Driver for Linux&n; * Written originally for Linux 2.0.30 by Fox Chen, mhchen@golf.ccl.itri.org.tw&n; * Ported to 2.2, 2.4 &amp; 2.5 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Wireless extensions in 2.4 by Gustavo Niemeyer &lt;niemeyer@conectiva.com&gt;&n; *&n; * References used by Fox Chen while writing the original driver for 2.0.30:&n; *&n; *   1. WL24xx packet drivers (tooasm.asm)&n; *   2. Access Point Firmware Interface Specification for IEEE 802.11 SUTRO&n; *   3. IEEE 802.11&n; *   4. Linux network driver (/usr/src/linux/drivers/net)&n; *   5. ISA card driver - wl24.c&n; *   6. Linux PCMCIA skeleton driver - skeleton.c&n; *   7. Linux PCMCIA 3c589 network driver - 3c589_cs.c&n; *&n; * Tested with WL2400 firmware 1.2, Linux 2.0.30, and pcmcia-cs-2.9.12&n; *   1. Performance: about 165 Kbytes/sec in TCP/IP with Ad-Hoc mode.&n; *      rsh 192.168.1.3 &quot;dd if=/dev/zero bs=1k count=1000&quot; &gt; /dev/null&n; *      (Specification 2M bits/sec. is about 250 Kbytes/sec., but we must deduct&n; *       ETHER/IP/UDP/TCP header, and acknowledgement overhead)&n; *&n; * Tested with Planet AP in 2.4.17, 184 Kbytes/s in UDP in Infrastructure mode,&n; * 173 Kbytes/s in TCP.&n; *&n; * Tested with Planet AP in 2.5.73-bk, 216 Kbytes/s in Infrastructure mode&n; * with a SMP machine (dual pentium 100), using pktgen, 432 pps (pkt_size = 60)&n; */
+DECL|macro|REALLY_SLOW_IO
+macro_line|#undef REALLY_SLOW_IO&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -132,11 +134,11 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|wl3501_outb
-mdefine_line|#define wl3501_outb(a, b) { outb(a, b); WL3501_SLOW_DOWN_IO; }
+mdefine_line|#define wl3501_outb(a, b) { outb(a, b); slow_down_io(); }
 DECL|macro|wl3501_outb_p
-mdefine_line|#define wl3501_outb_p(a, b) { outb_p(a, b); WL3501_SLOW_DOWN_IO; }
+mdefine_line|#define wl3501_outb_p(a, b) { outb_p(a, b); slow_down_io(); }
 DECL|macro|wl3501_outsb
-mdefine_line|#define wl3501_outsb(a, b, c) { outsb(a, b, c); WL3501_SLOW_DOWN_IO; }
+mdefine_line|#define wl3501_outsb(a, b, c) { outsb(a, b, c); slow_down_io(); }
 DECL|macro|WL3501_RELEASE_TIMEOUT
 mdefine_line|#define WL3501_RELEASE_TIMEOUT (25 * HZ)
 DECL|macro|WL3501_MAX_ADHOC_TRIES
@@ -2532,8 +2534,8 @@ id|addr
 (brace
 id|u16
 id|i
-comma
-id|j
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|matchflag
@@ -2965,15 +2967,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|j
+id|i
 op_assign
 id|this-&gt;join_sta_bss
 suffix:semicolon
-id|j
+id|i
 OL
 id|this-&gt;bss_cnt
 suffix:semicolon
-id|j
+id|i
 op_increment
 )paren
 r_if
@@ -2985,14 +2987,14 @@ c_func
 (paren
 id|this
 comma
-id|j
+id|i
 )paren
 )paren
 r_break
 suffix:semicolon
 id|this-&gt;join_sta_bss
 op_assign
-id|j
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -4141,11 +4143,6 @@ id|u16
 id|addr
 )paren
 (brace
-id|u16
-id|i
-comma
-id|j
-suffix:semicolon
 r_struct
 id|wl3501_card
 op_star
@@ -4210,6 +4207,8 @@ OL
 id|this-&gt;bss_cnt
 )paren
 (brace
+r_const
+r_int
 id|i
 op_assign
 id|this-&gt;join_sta_bss
@@ -4288,6 +4287,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_const
+r_int
 id|i
 op_assign
 id|this-&gt;join_sta_bss
@@ -4366,21 +4367,24 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+id|i
+suffix:semicolon
 id|this-&gt;join_sta_bss
 op_increment
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|j
+id|i
 op_assign
 id|this-&gt;join_sta_bss
 suffix:semicolon
-id|j
+id|i
 OL
 id|this-&gt;bss_cnt
 suffix:semicolon
-id|j
+id|i
 op_increment
 )paren
 r_if
@@ -4392,14 +4396,14 @@ c_func
 (paren
 id|this
 comma
-id|j
+id|i
 )paren
 )paren
 r_break
 suffix:semicolon
 id|this-&gt;join_sta_bss
 op_assign
-id|j
+id|i
 suffix:semicolon
 r_if
 c_cond

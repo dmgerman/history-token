@@ -2,8 +2,6 @@ macro_line|#ifndef __WL3501_H__
 DECL|macro|__WL3501_H__
 mdefine_line|#define __WL3501_H__
 macro_line|#include &lt;linux/spinlock.h&gt;
-DECL|macro|WL3501_SLOW_DOWN_IO
-mdefine_line|#define WL3501_SLOW_DOWN_IO __asm__ __volatile__(&quot;outb %al,$0x80&quot;)
 multiline_comment|/* define for WLA 2.0 */
 DECL|macro|WL3501_BLKSZ
 mdefine_line|#define WL3501_BLKSZ 256
@@ -1522,7 +1520,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* For rough constant delay */
 DECL|macro|WL3501_NOPLOOP
-mdefine_line|#define WL3501_NOPLOOP(n) { int x = 0; while (x++ &lt; n) WL3501_SLOW_DOWN_IO; }
+mdefine_line|#define WL3501_NOPLOOP(n) { int x = 0; while (x++ &lt; n) slow_down_io(); }
 multiline_comment|/* Ethernet MAC addr, BSS_ID, or ESS_ID */
 multiline_comment|/* With this, we may simply write &quot;x=y;&quot; instead of &quot;memcpy(x, y, 6);&quot; */
 multiline_comment|/* It&squot;s more efficiency with compiler&squot;s optimization and more clearly  */
