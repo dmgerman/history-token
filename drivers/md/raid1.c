@@ -4757,6 +4757,10 @@ id|mddev-&gt;raid_disks
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, everything is just fine now&n;&t; */
+id|mddev-&gt;array_size
+op_assign
+id|mddev-&gt;size
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

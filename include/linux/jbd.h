@@ -18,6 +18,9 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#endif
 DECL|macro|journal_oom_retry
 mdefine_line|#define journal_oom_retry 1
+multiline_comment|/*&n; * Define JBD_PARANIOD_IOFAIL to cause a kernel BUG() if ext3 finds&n; * certain classes of error which can occur due to failed IOs.  Under&n; * normal use we want ext3 to continue after such errors, because&n; * hardware _can_ fail, but for debugging purposes when running tests on&n; * known-good hardware we may want to trap these errors.&n; */
+DECL|macro|JBD_PARANOID_IOFAIL
+macro_line|#undef JBD_PARANOID_IOFAIL
 macro_line|#ifdef CONFIG_JBD_DEBUG
 multiline_comment|/*&n; * Define JBD_EXPENSIVE_CHECKING to enable more expensive internal&n; * consistency checks.  By default we don&squot;t do this unless&n; * CONFIG_JBD_DEBUG is on.&n; */
 DECL|macro|JBD_EXPENSIVE_CHECKING
@@ -328,6 +331,23 @@ macro_line|#else
 DECL|macro|J_ASSERT
 mdefine_line|#define J_ASSERT(assert)&t;do { } while (0)
 macro_line|#endif&t;&t;/* JBD_ASSERTIONS */
+macro_line|#if defined(JBD_PARANOID_IOFAIL)
+DECL|macro|J_EXPECT
+mdefine_line|#define J_EXPECT(expr, why...)&t;&t;J_ASSERT(expr)
+DECL|macro|J_EXPECT_BH
+mdefine_line|#define J_EXPECT_BH(bh, expr, why...)&t;J_ASSERT_BH(bh, expr)
+DECL|macro|J_EXPECT_JH
+mdefine_line|#define J_EXPECT_JH(jh, expr, why...)&t;J_ASSERT_JH(jh, expr)
+macro_line|#else
+DECL|macro|__journal_expect
+mdefine_line|#define __journal_expect(expr, why...)&t;&t;&t;&t;&t;     &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;if (!(expr)) {&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;EXT3-fs unexpected failure: %s;&bslash;n&quot;, # expr); &bslash;&n;&t;&t;&t;printk(KERN_ERR ## why);&t;&t;&t;     &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;} while (0)
+DECL|macro|J_EXPECT
+mdefine_line|#define J_EXPECT(expr, why...)&t;&t;__journal_expect(expr, ## why)
+DECL|macro|J_EXPECT_BH
+mdefine_line|#define J_EXPECT_BH(bh, expr, why...)&t;__journal_expect(expr, ## why)
+DECL|macro|J_EXPECT_JH
+mdefine_line|#define J_EXPECT_JH(jh, expr, why...)&t;__journal_expect(expr, ## why)
+macro_line|#endif
 DECL|enum|jbd_state_bits
 r_enum
 id|jbd_state_bits
@@ -1747,6 +1767,55 @@ op_star
 id|jh
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * handle management&n; */
+r_extern
+id|kmem_cache_t
+op_star
+id|jbd_handle_cache
+suffix:semicolon
+DECL|function|jbd_alloc_handle
+r_static
+r_inline
+id|handle_t
+op_star
+id|jbd_alloc_handle
+c_func
+(paren
+r_int
+id|gfp_flags
+)paren
+(brace
+r_return
+id|kmem_cache_alloc
+c_func
+(paren
+id|jbd_handle_cache
+comma
+id|gfp_flags
+)paren
+suffix:semicolon
+)brace
+DECL|function|jbd_free_handle
+r_static
+r_inline
+r_void
+id|jbd_free_handle
+c_func
+(paren
+id|handle_t
+op_star
+id|handle
+)paren
+(brace
+id|kmem_cache_free
+c_func
+(paren
+id|jbd_handle_cache
+comma
+id|handle
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Primary revoke support */
 DECL|macro|JOURNAL_REVOKE_DEFAULT_HASH
 mdefine_line|#define JOURNAL_REVOKE_DEFAULT_HASH 256
@@ -1902,7 +1971,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|log_wait_commit
 (paren
 id|journal_t

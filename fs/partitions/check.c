@@ -1163,6 +1163,10 @@ c_func
 id|p-&gt;de
 )paren
 suffix:semicolon
+id|p-&gt;de
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kobject_unregister
 c_func
 (paren

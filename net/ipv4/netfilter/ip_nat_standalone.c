@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_nat_lock)
 DECL|macro|ASSERT_WRITE_LOCK
@@ -1121,16 +1120,9 @@ id|ip_nat_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Someone could be still looking at the proto in a bh. */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace

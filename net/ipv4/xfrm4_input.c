@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * xfrm4_input.c&n; *&n; * Changes:&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;Split up af-specific portion&n; * &t;&n; */
+multiline_comment|/*&n; * xfrm4_input.c&n; *&n; * Changes:&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add Encapsulation support&n; * &t;&n; */
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|secpath_cachep
@@ -18,6 +18,30 @@ op_star
 id|skb
 )paren
 (brace
+r_return
+id|xfrm4_rcv_encap
+c_func
+(paren
+id|skb
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|xfrm4_rcv_encap
+r_int
+id|xfrm4_rcv_encap
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+id|__u16
+id|encap_type
+)paren
+(brace
 r_int
 id|err
 suffix:semicolon
@@ -27,8 +51,7 @@ comma
 id|seq
 suffix:semicolon
 r_struct
-id|xfrm_state
-op_star
+id|sec_decap_state
 id|xfrm_vec
 (braket
 id|XFRM_MAX_DEPTH
@@ -160,6 +183,15 @@ id|seq
 r_goto
 id|drop_unlock
 suffix:semicolon
+id|xfrm_vec
+(braket
+id|xfrm_nr
+)braket
+dot
+id|decap.decap_type
+op_assign
+id|encap_type
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -170,11 +202,26 @@ c_func
 (paren
 id|x
 comma
+op_amp
+(paren
+id|xfrm_vec
+(braket
+id|xfrm_nr
+)braket
+dot
+id|decap
+)paren
+comma
 id|skb
 )paren
 )paren
 r_goto
 id|drop_unlock
+suffix:semicolon
+multiline_comment|/* only the first xfrm gets the encap type */
+id|encap_type
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -208,6 +255,8 @@ id|xfrm_vec
 id|xfrm_nr
 op_increment
 )braket
+dot
+id|xvec
 op_assign
 id|x
 suffix:semicolon
@@ -422,7 +471,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|skb-&gt;sp-&gt;xvec
+id|skb-&gt;sp-&gt;x
 op_plus
 id|skb-&gt;sp-&gt;len
 comma
@@ -432,8 +481,8 @@ id|xfrm_nr
 op_star
 r_sizeof
 (paren
-r_void
-op_star
+r_struct
+id|sec_decap_state
 )paren
 )paren
 suffix:semicolon
@@ -518,6 +567,8 @@ id|xfrm_vec
 (braket
 id|xfrm_nr
 )braket
+dot
+id|xvec
 )paren
 suffix:semicolon
 id|kfree_skb

@@ -489,14 +489,9 @@ id|handle_t
 op_star
 id|handle
 op_assign
-id|jbd_kmalloc
+id|jbd_alloc_handle
 c_func
 (paren
-r_sizeof
-(paren
-id|handle_t
-)paren
-comma
 id|GFP_NOFS
 )paren
 suffix:semicolon
@@ -518,7 +513,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|handle_t
+op_star
+id|handle
 )paren
 )paren
 suffix:semicolon
@@ -647,7 +643,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|jbd_free_handle
 c_func
 (paren
 id|handle
@@ -1808,7 +1804,7 @@ r_char
 op_star
 id|source
 suffix:semicolon
-id|J_ASSERT_JH
+id|J_EXPECT_JH
 c_func
 (paren
 id|jh
@@ -1822,6 +1818,8 @@ c_func
 id|jh
 )paren
 )paren
+comma
+l_string|&quot;Possible IO failure.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|page
@@ -3893,6 +3891,8 @@ op_amp
 id|PF_MEMALLOC
 )paren
 )paren
+id|err
+op_assign
 id|log_wait_commit
 c_func
 (paren
@@ -3902,7 +3902,7 @@ id|tid
 )paren
 suffix:semicolon
 )brace
-id|kfree
+id|jbd_free_handle
 c_func
 (paren
 id|handle
@@ -3929,8 +3929,6 @@ id|handle
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -3973,6 +3971,8 @@ id|handle-&gt;h_sync
 op_assign
 l_int|1
 suffix:semicolon
+id|ret
+op_assign
 id|journal_stop
 c_func
 (paren

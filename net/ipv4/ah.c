@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-DECL|macro|AH_HLEN_NOICV
-mdefine_line|#define AH_HLEN_NOICV&t;12
 multiline_comment|/* Clear mutable options and find final destination to substitute&n; * into IP header for icv calculation. Options are already checked&n; * for validity, so paranoia is not required. */
 DECL|function|ip_clear_mutable_options
 r_static
@@ -580,9 +578,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ip_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 op_rshift
 l_int|2
@@ -794,6 +796,11 @@ op_star
 id|x
 comma
 r_struct
+id|xfrm_decap_state
+op_star
+id|decap
+comma
+r_struct
 id|sk_buff
 op_star
 id|skb
@@ -873,9 +880,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_full_len
+r_sizeof
+(paren
+r_struct
+id|ip_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_full_len
 )paren
 op_logical_and
 id|ah_hlen
@@ -883,9 +894,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ip_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 )paren
 r_goto
@@ -1452,9 +1467,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ip_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 suffix:semicolon
 r_if

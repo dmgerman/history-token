@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|DEFLATE_DEF_LEVEL
 mdefine_line|#define DEFLATE_DEF_LEVEL&t;&t;Z_DEFAULT_COMPRESSION
 DECL|macro|DEFLATE_DEF_WINBITS
@@ -661,9 +662,48 @@ c_func
 (paren
 id|stream
 comma
+id|Z_SYNC_FLUSH
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Work around a bug in zlib, which sometimes wants to taste an extra&n;&t; * byte when being used in the (undocumented) raw deflate mode.&n;&t; * (From USAGI).&n;&t; */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|Z_OK
+op_logical_and
+op_logical_neg
+id|stream-&gt;avail_in
+op_logical_and
+id|stream-&gt;avail_out
+)paren
+(brace
+id|u8
+id|zerostuff
+op_assign
+l_int|0
+suffix:semicolon
+id|stream-&gt;next_in
+op_assign
+op_amp
+id|zerostuff
+suffix:semicolon
+id|stream-&gt;avail_in
+op_assign
+l_int|1
+suffix:semicolon
+id|ret
+op_assign
+id|zlib_inflate
+c_func
+(paren
+id|stream
+comma
 id|Z_FINISH
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

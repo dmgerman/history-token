@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific functions&n; * &t;&n; */
+multiline_comment|/*&n; * xfrm_state.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific functions&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add UDP Encapsulation&n; * &t;&n; */
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Each xfrm_state may be linked to two tables:&n;&n;   1. Hash table by (spi,daddr,ah/esp) to find SA by SPI. (input,ctl)&n;   2. Hash table by daddr to find what SAs exist for given&n;      destination/tunnel endpoint. (output)&n; */
 DECL|variable|xfrm_state_lock
 r_static
@@ -643,6 +644,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|x-&gt;encap
+)paren
+id|kfree
+c_func
+(paren
+id|x-&gt;encap
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|x-&gt;type
 )paren
 id|xfrm_put_type
@@ -757,6 +769,7 @@ op_amp
 id|x-&gt;refcnt
 )paren
 suffix:semicolon
+multiline_comment|/* The number two in this test is the reference&n;&t;&t; * mentioned in the comment below plus the reference&n;&t;&t; * our caller holds.  A larger value means that&n;&t;&t; * there are DSTs attached to this xfrm_state.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -766,8 +779,8 @@ c_func
 op_amp
 id|x-&gt;refcnt
 )paren
-op_ne
-l_int|1
+OG
+l_int|2
 )paren
 id|xfrm_flush_bundles
 c_func
@@ -776,6 +789,14 @@ id|x
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* All xfrm_state objects are created by one of two possible&n;&t; * paths:&n;&t; *&n;&t; * 1) xfrm_state_alloc --&gt; xfrm_state_insert&n;&t; * 2) xfrm_state_lookup --&gt; xfrm_state_insert&n;&t; *&n;&t; * The xfrm_state_lookup or xfrm_state_alloc call gives a&n;&t; * reference, and that is what we are dropping here.&n;&t; */
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|x-&gt;refcnt
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2987,6 +3008,92 @@ comma
 id|pol
 comma
 id|XFRM_POLICY_OUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+r_break
+suffix:semicolon
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|xfrm_km_lock
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+DECL|function|km_new_mapping
+r_int
+id|km_new_mapping
+c_func
+(paren
+r_struct
+id|xfrm_state
+op_star
+id|x
+comma
+id|xfrm_address_t
+op_star
+id|ipaddr
+comma
+id|u16
+id|sport
+)paren
+(brace
+r_int
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_struct
+id|xfrm_mgr
+op_star
+id|km
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|xfrm_km_lock
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|km
+comma
+op_amp
+id|xfrm_km_list
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|km-&gt;new_mapping
+)paren
+id|err
+op_assign
+id|km
+op_member_access_from_pointer
+id|new_mapping
+c_func
+(paren
+id|x
+comma
+id|ipaddr
+comma
+id|sport
 )paren
 suffix:semicolon
 r_if

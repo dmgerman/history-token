@@ -16278,7 +16278,7 @@ id|ahc_linux_target
 op_star
 id|targ
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp

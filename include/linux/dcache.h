@@ -86,11 +86,11 @@ multiline_comment|/* Hash courtesy of the R5 hash in reiserfs modulo sign bits *
 DECL|macro|init_name_hash
 mdefine_line|#define init_name_hash()&t;&t;0
 multiline_comment|/* partial hash update function. Assume roughly 4 bits per character */
-DECL|function|partial_name_hash
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
+DECL|function|partial_name_hash
 id|partial_name_hash
 c_func
 (paren
@@ -123,10 +123,10 @@ op_star
 l_int|11
 suffix:semicolon
 )brace
-multiline_comment|/* Finally: cut down the number of bits to a int value (and try to avoid losing bits) */
+multiline_comment|/*&n; * Finally: cut down the number of bits to a int value (and try to avoid&n; * losing bits)&n; */
 DECL|function|end_name_hash
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|end_name_hash
@@ -146,11 +146,11 @@ id|hash
 suffix:semicolon
 )brace
 multiline_comment|/* Compute the hash for a name string. */
-DECL|function|full_name_hash
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
+DECL|function|full_name_hash
 id|full_name_hash
 c_func
 (paren
@@ -468,14 +468,10 @@ r_extern
 id|spinlock_t
 id|dcache_lock
 suffix:semicolon
-r_extern
-id|rwlock_t
-id|dparent_lock
-suffix:semicolon
 multiline_comment|/**&n; * d_drop - drop a dentry&n; * @dentry: dentry to drop&n; *&n; * d_drop() unhashes the entry from the parent&n; * dentry hashes, so that it won&squot;t be found through&n; * a VFS lookup any more. Note that this is different&n; * from deleting the dentry - d_delete will try to&n; * mark the dentry negative if possible, giving a&n; * successful _negative_ lookup, while d_drop will&n; * just make the cache lookup fail.&n; *&n; * d_drop() is used mainly for stuff that wants&n; * to invalidate a dentry for some reason (NFS&n; * timeouts or autofs deletes).&n; */
 DECL|function|__d_drop
 r_static
-id|__inline__
+r_inline
 r_void
 id|__d_drop
 c_func
@@ -500,7 +496,7 @@ suffix:semicolon
 )brace
 DECL|function|d_drop
 r_static
-id|__inline__
+r_inline
 r_void
 id|d_drop
 c_func
@@ -534,7 +530,7 @@ suffix:semicolon
 )brace
 DECL|function|dname_external
 r_static
-id|__inline__
+r_inline
 r_int
 id|dname_external
 c_func
@@ -733,7 +729,7 @@ suffix:semicolon
 multiline_comment|/**&n; * d_add - add dentry to hash queues&n; * @entry: dentry to add&n; * @inode: The inode to attach to this dentry&n; *&n; * This adds the entry to the hash queues and initializes @inode.&n; * The entry was actually filled in earlier during d_alloc().&n; */
 DECL|function|d_add
 r_static
-id|__inline__
+r_inline
 r_void
 id|d_add
 c_func
@@ -796,6 +792,22 @@ id|qstr
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|__d_lookup
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|qstr
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* validate &quot;insecure&quot; dentry pointer */
 r_extern
 r_int
@@ -835,7 +847,7 @@ multiline_comment|/* Allocation counts.. */
 multiline_comment|/**&n; *&t;dget, dget_locked&t;-&t;get a reference to a dentry&n; *&t;@dentry: dentry to get a reference to&n; *&n; *&t;Given a dentry or %NULL pointer increment the reference count&n; *&t;if appropriate and return the dentry. A dentry will not be &n; *&t;destroyed when it has references. dget() should never be&n; *&t;called for dentries with zero reference counter. For these cases&n; *&t;(preferably none, functions in dcache.c are sufficient for normal&n; *&t;needs and they take necessary precautions) you should hold dcache_lock&n; *&t;and call dget_locked() instead of dget().&n; */
 DECL|function|dget
 r_static
-id|__inline__
+r_inline
 r_struct
 id|dentry
 op_star
@@ -901,7 +913,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;d_unhashed -&t;is dentry hashed&n; *&t;@dentry: entry to check&n; *&n; *&t;Returns true if the dentry passed is not currently hashed.&n; */
 DECL|function|d_unhashed
 r_static
-id|__inline__
+r_inline
 r_int
 id|d_unhashed
 c_func
@@ -920,6 +932,52 @@ id|DCACHE_UNHASHED
 )paren
 suffix:semicolon
 )brace
+DECL|function|dget_parent
+r_static
+r_inline
+r_struct
+id|dentry
+op_star
+id|dget_parent
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
+r_struct
+id|dentry
+op_star
+id|ret
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|dget
+c_func
+(paren
+id|dentry-&gt;d_parent
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|dput
@@ -932,7 +990,7 @@ op_star
 suffix:semicolon
 DECL|function|d_mountpoint
 r_static
-id|__inline__
+r_inline
 r_int
 id|d_mountpoint
 c_func

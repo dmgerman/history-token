@@ -494,6 +494,9 @@ DECL|macro|R_MIPS_LOVENDOR
 mdefine_line|#define R_MIPS_LOVENDOR&t;&t;100
 DECL|macro|R_MIPS_HIVENDOR
 mdefine_line|#define R_MIPS_HIVENDOR&t;&t;127
+multiline_comment|/*&n; * Sparc section types&n; */
+DECL|macro|STT_REGISTER
+mdefine_line|#define STT_REGISTER&t;&t;13
 multiline_comment|/*&n; * Sparc ELF relocation types&n; */
 DECL|macro|R_SPARC_NONE
 mdefine_line|#define&t;R_SPARC_NONE&t;&t;0
@@ -561,6 +564,8 @@ DECL|macro|R_SPARC_11
 mdefine_line|#define R_SPARC_11&t;&t;31
 DECL|macro|R_SPARC_64
 mdefine_line|#define R_SPARC_64&t;&t;32
+DECL|macro|R_SPARC_OLO10
+mdefine_line|#define R_SPARC_OLO10&t;&t;33
 DECL|macro|R_SPARC_WDISP16
 mdefine_line|#define R_SPARC_WDISP16&t;&t;40
 DECL|macro|R_SPARC_WDISP19

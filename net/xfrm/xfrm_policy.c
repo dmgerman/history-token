@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * xfrm_policy.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;YOSHIFUJI Hideaki&n; * &t;&t;Split up af-specific portion&n; * &t;&n; */
+multiline_comment|/* &n; * xfrm_policy.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;YOSHIFUJI Hideaki&n; * &t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&t;&t;Add the post_input processor&n; * &t;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -4236,10 +4236,12 @@ c_func
 (paren
 id|tmpl
 comma
-id|sp-&gt;xvec
+id|sp-&gt;x
 (braket
 id|idx
 )braket
+dot
+id|xvec
 comma
 id|family
 )paren
@@ -4399,6 +4401,19 @@ id|i
 op_decrement
 )paren
 (brace
+r_struct
+id|sec_decap_state
+op_star
+id|xvec
+op_assign
+op_amp
+(paren
+id|skb-&gt;sp-&gt;x
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4407,18 +4422,38 @@ id|xfrm_selector_match
 c_func
 (paren
 op_amp
-id|skb-&gt;sp-&gt;xvec
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|sel
+id|xvec-&gt;xvec-&gt;sel
 comma
 op_amp
 id|fl
 comma
 id|family
 )paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* If there is a post_input processor, try running it */
+r_if
+c_cond
+(paren
+id|xvec-&gt;xvec-&gt;type-&gt;post_input
+op_logical_and
+(paren
+id|xvec-&gt;xvec-&gt;type-&gt;post_input
+)paren
+(paren
+id|xvec-&gt;xvec
+comma
+op_amp
+(paren
+id|xvec-&gt;decap
+)paren
+comma
+id|skb
+)paren
+op_ne
+l_int|0
 )paren
 r_return
 l_int|0
