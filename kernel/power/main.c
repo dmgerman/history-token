@@ -23,7 +23,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|pm_disk_mode
-id|u32
+id|suspend_disk_method_t
 id|pm_disk_mode
 op_assign
 id|PM_DISK_SHUTDOWN
@@ -66,7 +66,7 @@ r_int
 id|suspend_prepare
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -261,7 +261,7 @@ r_void
 id|suspend_finish
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -333,7 +333,7 @@ r_int
 id|enter_state
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -478,7 +478,7 @@ r_int
 id|pm_suspend
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -618,7 +618,7 @@ r_int
 id|n
 )paren
 (brace
-id|u32
+id|suspend_state_t
 id|state
 op_assign
 id|PM_SUSPEND_STANDBY
