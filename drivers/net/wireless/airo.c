@@ -9914,10 +9914,33 @@ c_cond
 id|status
 op_ne
 id|SUCCESS
+op_logical_or
+(paren
+id|rsp.status
+op_amp
+l_int|0xFF00
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;airo: Bad MAC enable reason = %x, rid = %x, offset = %d&bslash;n&quot;
+comma
+id|rsp.rsp0
+comma
+id|rsp.rsp1
+comma
+id|rsp.rsp2
+)paren
+suffix:semicolon
 r_return
 id|ERROR
 suffix:semicolon
+)brace
 multiline_comment|/* Grab the initial wep key, we gotta save it for auto_wep */
 id|rc
 op_assign
