@@ -7027,9 +7027,13 @@ r_struct
 id|metapage
 op_star
 id|amp
+op_assign
+l_int|NULL
 comma
 op_star
 id|bmp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|iag
@@ -7059,12 +7063,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|amp
-op_assign
-id|bmp
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren

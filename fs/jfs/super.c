@@ -1718,6 +1718,10 @@ id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
+id|sbi-&gt;sb
+op_assign
+id|sb
+suffix:semicolon
 multiline_comment|/* initialize the mount flag and determine the default error handler */
 id|flag
 op_assign

@@ -193,7 +193,7 @@ id|fpqdepth
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|SWITCH_ENTER
-mdefine_line|#define SWITCH_ENTER(prv) &bslash;&n;&t;do {&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(prv, TIF_USEDFPU) { &bslash;&n;&t;&t;put_psr(get_psr() | PSR_EF); &bslash;&n;&t;&t;fpsave(&amp;(prv)-&gt;thread.float_regs[0], &amp;(prv)-&gt;thread.fsr, &bslash;&n;&t;&t;       &amp;(prv)-&gt;thread.fpqueue[0], &amp;(prv)-&gt;thread.fpqdepth); &bslash;&n;&t;&t;clear_tsk_thread_flag(prv, TIF_USEDFPU); &bslash;&n;&t;&t;(prv)-&gt;thread.kregs-&gt;psr &amp;= ~PSR_EF; &bslash;&n;&t;} &bslash;&n;&t;} while(0)
+mdefine_line|#define SWITCH_ENTER(prv) &bslash;&n;&t;do {&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(prv, TIF_USEDFPU)) { &bslash;&n;&t;&t;put_psr(get_psr() | PSR_EF); &bslash;&n;&t;&t;fpsave(&amp;(prv)-&gt;thread.float_regs[0], &amp;(prv)-&gt;thread.fsr, &bslash;&n;&t;&t;       &amp;(prv)-&gt;thread.fpqueue[0], &amp;(prv)-&gt;thread.fpqdepth); &bslash;&n;&t;&t;clear_tsk_thread_flag(prv, TIF_USEDFPU); &bslash;&n;&t;&t;(prv)-&gt;thread.kregs-&gt;psr &amp;= ~PSR_EF; &bslash;&n;&t;} &bslash;&n;&t;} while(0)
 DECL|macro|SWITCH_DO_LAZY_FPU
 mdefine_line|#define SWITCH_DO_LAZY_FPU(next)&t;/* */
 macro_line|#else

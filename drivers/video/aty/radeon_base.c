@@ -255,7 +255,7 @@ comma
 id|CHIP_DEF
 c_func
 (paren
-id|PCI_CHIP_RADEON_LW
+id|PCI_CHIP_RADEON_LX
 comma
 id|RV200
 comma
@@ -5759,6 +5759,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Check if the DVO port is enabled and sourced from the primary CRTC. I&squot;m&n;&t; * not sure which model starts having FP2_GEN_CNTL, I assume anything more&n;&t; * recent than an r(v)100...&n;&t; */
+macro_line|#if 0
+multiline_comment|/* XXX I had reports of flicker happening with the cinema display&n;&t; * on TMDS1 that seem to be fixed if I also forbit odd dividers in&n;&t; * this case. This could just be a bandwidth calculation issue, I&n;&t; * haven&squot;t implemented the bandwidth code yet, but in the meantime,&n;&t; * forcing uses_dvo to 1 fixes it and shouln&squot;t have bad side effects,&n;&t; * I haven&squot;t seen a case were were absolutely needed an odd PLL&n;&t; * divider. I&squot;ll find a better fix once I have more infos on the&n;&t; * real cause of the problem.&n;&t; */
 r_while
 c_loop
 (paren
@@ -5883,6 +5885,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#else
+id|uses_dvo
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

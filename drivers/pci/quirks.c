@@ -2805,6 +2805,9 @@ r_case
 l_int|0x25b0
 suffix:colon
 r_case
+l_int|0x2651
+suffix:colon
+r_case
 l_int|0x2652
 suffix:colon
 r_break

@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: parport_ieee1284.c,v 1.4 1997/10/19 21:37:21 philip Exp $&n; * IEEE-1284 implementation for parport.&n; *&n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Carsten Gross &lt;carsten@sol.wohnheim.uni-ulm.de&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt; (largely rewritten)&n; *&n; * This file is responsible for IEEE 1284 negotiation, and for handing&n; * read/write requests to low-level drivers.&n; *&n; * Any part of this program may be used in documents licensed under&n; * the GNU Free Documentation License, Version 1.1 or any later version&n; * published by the Free Software Foundation.&n; *&n; * Various hacks, Fred Barnes &lt;frmb2@ukc.ac.uk&gt;, 04/2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -2131,4 +2132,68 @@ r_return
 id|old
 suffix:semicolon
 )brace
+multiline_comment|/* Exported symbols for modules. */
+DECL|variable|parport_negotiate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_negotiate
+)paren
+suffix:semicolon
+DECL|variable|parport_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_write
+)paren
+suffix:semicolon
+DECL|variable|parport_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_read
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_wakeup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_wakeup
+)paren
+suffix:semicolon
+DECL|variable|parport_wait_peripheral
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_wait_peripheral
+)paren
+suffix:semicolon
+DECL|variable|parport_poll_peripheral
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_poll_peripheral
+)paren
+suffix:semicolon
+DECL|variable|parport_wait_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_wait_event
+)paren
+suffix:semicolon
+DECL|variable|parport_set_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_set_timeout
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_interrupt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_interrupt
+)paren
+suffix:semicolon
 eof

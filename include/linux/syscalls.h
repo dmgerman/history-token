@@ -3214,6 +3214,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -3255,6 +3256,7 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
@@ -3269,6 +3271,7 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
@@ -3283,9 +3286,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3298,9 +3303,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3313,9 +3320,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3327,6 +3336,7 @@ c_func
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -3342,6 +3352,7 @@ c_func
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -3350,6 +3361,7 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
@@ -3381,6 +3393,7 @@ c_func
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -3396,6 +3409,7 @@ c_func
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -3404,9 +3418,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3452,9 +3468,8 @@ comma
 r_int
 comma
 r_int
-(braket
-l_int|2
-)braket
+id|__user
+op_star
 )paren
 suffix:semicolon
 id|asmlinkage

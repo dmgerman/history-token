@@ -13,17 +13,24 @@ DECL|macro|HCI_MAX_FRAME_SIZE
 mdefine_line|#define HCI_MAX_FRAME_SIZE&t;(HCI_MAX_ACL_SIZE + 4)
 multiline_comment|/* HCI dev events */
 DECL|macro|HCI_DEV_REG
-mdefine_line|#define HCI_DEV_REG&t;1
+mdefine_line|#define HCI_DEV_REG&t;&t;&t;1
 DECL|macro|HCI_DEV_UNREG
-mdefine_line|#define HCI_DEV_UNREG   2
+mdefine_line|#define HCI_DEV_UNREG&t;&t;&t;2
 DECL|macro|HCI_DEV_UP
-mdefine_line|#define HCI_DEV_UP&t;3
+mdefine_line|#define HCI_DEV_UP&t;&t;&t;3
 DECL|macro|HCI_DEV_DOWN
-mdefine_line|#define HCI_DEV_DOWN&t;4
+mdefine_line|#define HCI_DEV_DOWN&t;&t;&t;4
 DECL|macro|HCI_DEV_SUSPEND
-mdefine_line|#define HCI_DEV_SUSPEND 5
+mdefine_line|#define HCI_DEV_SUSPEND&t;&t;&t;5
 DECL|macro|HCI_DEV_RESUME
-mdefine_line|#define HCI_DEV_RESUME  6
+mdefine_line|#define HCI_DEV_RESUME&t;&t;&t;6
+multiline_comment|/* HCI notify events */
+DECL|macro|HCI_NOTIFY_CONN_ADD
+mdefine_line|#define HCI_NOTIFY_CONN_ADD&t;&t;1
+DECL|macro|HCI_NOTIFY_CONN_DEL
+mdefine_line|#define HCI_NOTIFY_CONN_DEL&t;&t;2
+DECL|macro|HCI_NOTIFY_VOICE_SETTING
+mdefine_line|#define HCI_NOTIFY_VOICE_SETTING&t;3
 multiline_comment|/* HCI device types */
 DECL|macro|HCI_VHCI
 mdefine_line|#define HCI_VHCI&t;0
@@ -32,11 +39,18 @@ mdefine_line|#define HCI_USB&t;&t;1
 DECL|macro|HCI_PCCARD
 mdefine_line|#define HCI_PCCARD&t;2
 DECL|macro|HCI_UART
-mdefine_line|#define HCI_UART &t;3
+mdefine_line|#define HCI_UART&t;3
 DECL|macro|HCI_RS232
-mdefine_line|#define HCI_RS232 &t;4
+mdefine_line|#define HCI_RS232&t;4
 DECL|macro|HCI_PCI
 mdefine_line|#define HCI_PCI&t;&t;5
+multiline_comment|/* HCI device quirks */
+r_enum
+(brace
+DECL|enumerator|HCI_QUIRK_RESET_ON_INIT
+id|HCI_QUIRK_RESET_ON_INIT
+)brace
+suffix:semicolon
 multiline_comment|/* HCI device flags */
 r_enum
 (brace
@@ -109,35 +123,35 @@ DECL|macro|HCIINQUIRY
 mdefine_line|#define HCIINQUIRY&t;_IOR(&squot;H&squot;, 240, int)
 multiline_comment|/* HCI timeouts */
 DECL|macro|HCI_CONN_TIMEOUT
-mdefine_line|#define HCI_CONN_TIMEOUT &t;(HZ * 40)
+mdefine_line|#define HCI_CONN_TIMEOUT&t;(HZ * 40)
 DECL|macro|HCI_DISCONN_TIMEOUT
-mdefine_line|#define HCI_DISCONN_TIMEOUT &t;(HZ * 2)
+mdefine_line|#define HCI_DISCONN_TIMEOUT&t;(HZ * 2)
 DECL|macro|HCI_CONN_IDLE_TIMEOUT
 mdefine_line|#define HCI_CONN_IDLE_TIMEOUT&t;(HZ * 60)
 multiline_comment|/* HCI Packet types */
 DECL|macro|HCI_COMMAND_PKT
 mdefine_line|#define HCI_COMMAND_PKT&t;&t;0x01
 DECL|macro|HCI_ACLDATA_PKT
-mdefine_line|#define HCI_ACLDATA_PKT &t;0x02
+mdefine_line|#define HCI_ACLDATA_PKT&t;&t;0x02
 DECL|macro|HCI_SCODATA_PKT
-mdefine_line|#define HCI_SCODATA_PKT &t;0x03
+mdefine_line|#define HCI_SCODATA_PKT&t;&t;0x03
 DECL|macro|HCI_EVENT_PKT
 mdefine_line|#define HCI_EVENT_PKT&t;&t;0x04
 DECL|macro|HCI_UNKNOWN_PKT
 mdefine_line|#define HCI_UNKNOWN_PKT&t;&t;0xff
 multiline_comment|/* HCI Packet types */
 DECL|macro|HCI_DM1
-mdefine_line|#define HCI_DM1 &t;0x0008
+mdefine_line|#define HCI_DM1&t;&t;0x0008
 DECL|macro|HCI_DM3
-mdefine_line|#define HCI_DM3 &t;0x0400
+mdefine_line|#define HCI_DM3&t;&t;0x0400
 DECL|macro|HCI_DM5
-mdefine_line|#define HCI_DM5 &t;0x4000
+mdefine_line|#define HCI_DM5&t;&t;0x4000
 DECL|macro|HCI_DH1
-mdefine_line|#define HCI_DH1 &t;0x0010
+mdefine_line|#define HCI_DH1&t;&t;0x0010
 DECL|macro|HCI_DH3
-mdefine_line|#define HCI_DH3 &t;0x0800
+mdefine_line|#define HCI_DH3&t;&t;0x0800
 DECL|macro|HCI_DH5
-mdefine_line|#define HCI_DH5 &t;0x8000
+mdefine_line|#define HCI_DH5&t;&t;0x8000
 DECL|macro|HCI_HV1
 mdefine_line|#define HCI_HV1&t;&t;0x0020
 DECL|macro|HCI_HV2

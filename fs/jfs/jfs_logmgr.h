@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef&t;_H_JFS_LOGMGR
 DECL|macro|_H_JFS_LOGMGR
 mdefine_line|#define _H_JFS_LOGMGR
@@ -512,13 +512,18 @@ DECL|struct|jfs_log
 r_struct
 id|jfs_log
 (brace
-DECL|member|sb
+DECL|member|sb_list
 r_struct
-id|super_block
-op_star
-id|sb
+id|list_head
+id|sb_list
 suffix:semicolon
-multiline_comment|/* 4: This is used to sync metadata&n;&t;&t;&t;&t; *    before writing syncpt.  Will&n;&t;&t;&t;&t; *    need to be a list if we share&n;&t;&t;&t;&t; *    the log between fs&squot;s&n;&t;&t;&t;&t; */
+multiline_comment|/*  This is used to sync metadata&n;&t;&t;&t;&t; *    before writing syncpt.&n;&t;&t;&t;&t; */
+DECL|member|journal_list
+r_struct
+id|list_head
+id|journal_list
+suffix:semicolon
+multiline_comment|/* Global list */
 DECL|member|bdev
 r_struct
 id|block_device
@@ -718,16 +723,6 @@ r_int
 id|no_integrity
 suffix:semicolon
 multiline_comment|/* 3: flag to disable journaling to disk */
-DECL|member|ni_page
-r_int
-id|ni_page
-suffix:semicolon
-multiline_comment|/* 4: backup of page for nointegrity option */
-DECL|member|ni_eor
-r_int
-id|ni_eor
-suffix:semicolon
-multiline_comment|/* 4: backup of eor for nointegrity option */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Log flag&n; */
@@ -892,12 +887,6 @@ r_struct
 id|super_block
 op_star
 id|sb
-comma
-r_struct
-id|jfs_log
-op_star
-op_star
-id|log
 )paren
 suffix:semicolon
 r_extern
@@ -909,11 +898,6 @@ r_struct
 id|super_block
 op_star
 id|sb
-comma
-r_struct
-id|jfs_log
-op_star
-id|log
 )paren
 suffix:semicolon
 r_extern
