@@ -657,12 +657,6 @@ l_string|&quot; =======================&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|show_stack
 r_void
