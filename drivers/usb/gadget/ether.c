@@ -339,6 +339,56 @@ multiline_comment|/* no hw optimizations to apply */
 DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g) do {} while (0)
 macro_line|#endif
+multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
+macro_line|#ifdef&t;CONFIG_USB_ETH_GOKU
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
+DECL|macro|DRIVER_VERSION_NUM
+mdefine_line|#define DRIVER_VERSION_NUM&t;0x0106
+DECL|macro|EP0_MAXPACKET
+mdefine_line|#define EP0_MAXPACKET&t;&t;8
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+id|EP_OUT_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep1-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_OUT_NUM
+mdefine_line|#define EP_OUT_NUM&t;1
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+id|EP_IN_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep2-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_IN_NUM
+mdefine_line|#define EP_IN_NUM&t;2
+DECL|variable|EP_STATUS_NAME
+r_static
+r_const
+r_char
+id|EP_STATUS_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep3-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_STATUS_NUM
+mdefine_line|#define EP_STATUS_NUM&t;3
+DECL|macro|SELFPOWER
+mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
+multiline_comment|/* doesn&squot;t support remote wakeup */
+DECL|macro|hw_optimize
+mdefine_line|#define hw_optimize(g) do {} while (0)
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifndef EP0_MAXPACKET
 macro_line|#&t;error Configure some USB peripheral controller driver!
