@@ -2074,6 +2074,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x3A00
+suffix:colon
+id|what
+op_assign
+l_string|&quot;medium not present&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x3B0F
 suffix:colon
 id|what

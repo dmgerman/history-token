@@ -350,7 +350,6 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
-macro_line|#endif
 multiline_comment|/* This entry is from Andries.Brouwer@cwi.nl */
 id|UNUSUAL_DEV
 c_func
@@ -371,11 +370,12 @@ id|US_SC_SCSI
 comma
 id|US_PR_DPCM_USB
 comma
-l_int|NULL
+id|sddr09_init
 comma
 id|US_FL_START_STOP
 )paren
 comma
+macro_line|#endif
 id|UNUSUAL_DEV
 c_func
 (paren
