@@ -213,7 +213,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The CPDO functions always set the destination type&n;      to be the same as their working size. */
+multiline_comment|/* The CPDO functions used to always set the destination type&n;      to be the same as their working size. */
 r_if
 c_cond
 (paren
@@ -399,6 +399,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|nRc
+op_ne
+l_int|0
+)paren
+(brace
 id|fpa11-&gt;fType
 (braket
 id|Fd

@@ -678,13 +678,6 @@ id|fExtended
 op_assign
 id|rFd
 suffix:semicolon
-id|fpa11-&gt;fType
-(braket
-id|Fd
-)braket
-op_assign
-id|typeExtended
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
