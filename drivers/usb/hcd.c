@@ -4262,7 +4262,7 @@ multiline_comment|/*&n;&t; * FIXME:  make urb timeouts be generic, keeping the H
 singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
 singleline_comment|// hcd_monitor_hook(MONITOR_URB_SUBMIT, urb)
 singleline_comment|// It would catch submission paths for all urbs.
-multiline_comment|/* increment the reference count of the urb, as we now also control it. */
+multiline_comment|/* increment urb&squot;s reference count, we now control it. */
 id|urb
 op_assign
 id|usb_get_urb
