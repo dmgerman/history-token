@@ -5364,14 +5364,6 @@ id|ide_delay_50ms
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_BLK_DEV_IDECS
-id|mdelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-macro_line|#else
 id|__set_current_state
 c_func
 (paren
@@ -5388,7 +5380,6 @@ op_div
 l_int|20
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECS */
 )brace
 DECL|variable|ide_delay_50ms
 id|EXPORT_SYMBOL
