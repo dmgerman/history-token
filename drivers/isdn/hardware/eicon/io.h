@@ -617,7 +617,7 @@ DECL|member|a
 id|ADAPTER
 id|a
 suffix:semicolon
-multiline_comment|/* not a seperate structure */
+multiline_comment|/* not a separate structure */
 DECL|member|out
 r_void
 (paren

@@ -224,7 +224,7 @@ id|SNDRV_ENABLED
 l_string|&quot;,default:32,allows:{{1,32}}&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  Debug part definations&n; */
+multiline_comment|/*&n; *  Debug part definitions&n; */
 singleline_comment|//#define ALI_DEBUG
 macro_line|#ifdef ALI_DEBUG
 DECL|macro|snd_ali_printk
@@ -233,7 +233,7 @@ macro_line|#else
 DECL|macro|snd_ali_printk
 mdefine_line|#define snd_ali_printk(format, args...)
 macro_line|#endif
-multiline_comment|/*&n; *  Constants defination&n; */
+multiline_comment|/*&n; *  Constants definition&n; */
 macro_line|#ifndef PCI_VENDOR_ID_ALI
 DECL|macro|PCI_VENDOR_ID_ALI
 mdefine_line|#define PCI_VENDOR_ID_ALI&t;0x10b9

@@ -2420,7 +2420,7 @@ op_plus
 l_int|0x11
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the control register to use the 66Mhz system&n;&t; * clock for UDMA 3/4 mode operation. If one drive on&n;&t; * a channel is U66 capable but the other isn&squot;t we&n;&t; * fall back to U33 mode. The BIOS INT 13 hooks turn&n;&t; * the clock on then off for each read/write issued. I don&squot;t&n;&t; * do that here because it would require modifying the&n;&t; * kernel, seperating the fop routines from the kernel or&n;&t; * somehow hooking the fops calls. It may also be possible to&n;&t; * leave the 66Mhz clock on and readjust the timing&n;&t; * parameters.&n;&t; */
+multiline_comment|/*&n;&t; * Set the control register to use the 66Mhz system&n;&t; * clock for UDMA 3/4 mode operation. If one drive on&n;&t; * a channel is U66 capable but the other isn&squot;t we&n;&t; * fall back to U33 mode. The BIOS INT 13 hooks turn&n;&t; * the clock on then off for each read/write issued. I don&squot;t&n;&t; * do that here because it would require modifying the&n;&t; * kernel, separating the fop routines from the kernel or&n;&t; * somehow hooking the fops calls. It may also be possible to&n;&t; * leave the 66Mhz clock on and readjust the timing&n;&t; * parameters.&n;&t; */
 r_if
 c_cond
 (paren

@@ -270,7 +270,7 @@ id|tmp
 op_assign
 id|nents
 suffix:semicolon
-multiline_comment|/* KISS: map each buffer seperately. */
+multiline_comment|/* KISS: map each buffer separately. */
 r_while
 c_loop
 (paren

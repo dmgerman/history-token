@@ -2368,7 +2368,7 @@ r_return
 id|n_mappings
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** First pass is to walk the SG list and determine where the breaks are&n;** in the DMA stream. Allocates PDIR entries but does not fill them.&n;** Returns the number of DMA chunks.&n;**&n;** Doing the fill seperate from the coalescing/allocation keeps the&n;** code simpler. Future enhancement could make one pass through&n;** the sglist do both.&n;*/
+multiline_comment|/*&n;** First pass is to walk the SG list and determine where the breaks are&n;** in the DMA stream. Allocates PDIR entries but does not fill them.&n;** Returns the number of DMA chunks.&n;**&n;** Doing the fill separate from the coalescing/allocation keeps the&n;** code simpler. Future enhancement could make one pass through&n;** the sglist do both.&n;*/
 r_static
 id|CCIO_INLINE
 r_int

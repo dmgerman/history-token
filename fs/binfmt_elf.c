@@ -4348,7 +4348,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fill up all the fields in prstatus from the given task struct, except registers&n; * which need to be filled up seperately.&n; */
+multiline_comment|/*&n; * fill up all the fields in prstatus from the given task struct, except registers&n; * which need to be filled up separately.&n; */
 DECL|function|fill_prstatus
 r_static
 r_inline

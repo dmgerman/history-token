@@ -645,7 +645,7 @@ DECL|macro|MBOX_SEND_CHANGE_REQUEST
 mdefine_line|#define MBOX_SEND_CHANGE_REQUEST        0x0070
 DECL|macro|MBOX_PORT_LOGOUT
 mdefine_line|#define MBOX_PORT_LOGOUT                0x0071
-multiline_comment|/*&n; *&t;Firmware if needed (note this is a hack, it belongs in a seperate&n; *&t;module.&n; */
+multiline_comment|/*&n; *&t;Firmware if needed (note this is a hack, it belongs in a separate&n; *&t;module.&n; */
 macro_line|#ifdef CONFIG_SCSI_QLOGIC_FC_FIRMWARE
 macro_line|#include &quot;qlogicfc_asm.c&quot;
 macro_line|#else
