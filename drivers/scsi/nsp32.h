@@ -1017,8 +1017,9 @@ r_int
 id|NumAddress
 suffix:semicolon
 DECL|member|MmioAddress
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|MmioAddress
 suffix:semicolon
 DECL|macro|NSP32_MMIO_OFFSET
