@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * numa.c - Low-level PCI access for NUMA-Q machines&n; */
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#inclued &quot;pci.h&quot;
+macro_line|#include &quot;pci.h&quot;
 DECL|macro|BUS2QUAD
 mdefine_line|#define BUS2QUAD(global) (mp_bus_id_to_node[global])
 DECL|macro|BUS2LOCAL
@@ -593,6 +593,14 @@ r_void
 r_int
 id|quad
 suffix:semicolon
+id|pci_config_read
+op_assign
+id|pci_conf1_read
+suffix:semicolon
+id|pci_config_write
+op_assign
+id|pci_conf1_write
+suffix:semicolon
 id|pci_root_bus
 op_assign
 id|pcibios_scan_root
@@ -666,4 +674,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pci_numa_init
+id|subsys_initcall
+c_func
+(paren
+id|pci_numa_init
+)paren
+suffix:semicolon
 eof
