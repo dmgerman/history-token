@@ -36,9 +36,9 @@ mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
 DECL|macro|PSMOUSE_FLAG_CMD
 mdefine_line|#define PSMOUSE_FLAG_CMD&t;1&t;/* Waiting for command to finish */
 DECL|macro|PSMOUSE_FLAG_CMD1
-mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* First byte of command response */
-DECL|macro|PSMOUSE_FLAG_ID
-mdefine_line|#define PSMOUSE_FLAG_ID&t;&t;3&t;/* First byte is not keyboard ID */
+mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* Waiting for the first byte of command response */
+DECL|macro|PSMOUSE_FLAG_WAITID
+mdefine_line|#define PSMOUSE_FLAG_WAITID&t;3&t;/* Command execiting is GET ID */
 DECL|enum|psmouse_state
 r_enum
 id|psmouse_state
