@@ -1,5 +1,6 @@
-multiline_comment|/*&n; *&t;ALi M7101 PMU Computer Watchdog Timer driver for Linux 2.4.x&n; *&n; *&t;Based on w83877f_wdt.c by Scott Jennings &lt;management@oro.net&gt;&n; *&t;and the Cobalt kernel WDT timer driver by Tim Hockin&n; *&t;                                      &lt;thockin@cobaltnet.com&gt;&n; *&n; *&t;(c)2002 Steve Hill &lt;steve@navaho.co.uk&gt;&n; * &n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; */
+multiline_comment|/*&n; *&t;ALi M7101 PMU Computer Watchdog Timer driver&n; *&n; *&t;Based on w83877f_wdt.c by Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *&t;and the Cobalt kernel WDT timer driver by Tim Hockin&n; *&t;                                      &lt;thockin@cobaltnet.com&gt;&n; *&n; *&t;(c)2002 Steve Hill &lt;steve@navaho.co.uk&gt;&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -8,13 +9,14 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|OUR_NAME
 mdefine_line|#define OUR_NAME &quot;alim7101_wdt&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX OUR_NAME &quot;: &quot;
 DECL|macro|WDT_ENABLE
 mdefine_line|#define WDT_ENABLE 0x9C
 DECL|macro|WDT_DISABLE
@@ -115,7 +117,7 @@ r_int
 id|data
 )paren
 (brace
-multiline_comment|/* If we got a heartbeat pulse within the WDT_US_INTERVAL&n;&t; * we agree to ping the WDT &n;&t; */
+multiline_comment|/* If we got a heartbeat pulse within the WDT_US_INTERVAL&n;&t; * we agree to ping the WDT&n;&t; */
 r_char
 id|tmp
 suffix:semicolon
@@ -178,9 +180,9 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
+id|KERN_WARNING
+id|PFX
+l_string|&quot;Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -199,7 +201,7 @@ id|timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Utility routines&n; */
+multiline_comment|/*&n; * Utility routines&n; */
 DECL|function|wdt_change
 r_static
 r_void
@@ -302,8 +304,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: Watchdog timer is now enabled.&bslash;n&quot;
+id|PFX
+l_string|&quot;Watchdog timer is now enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -334,8 +336,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: Watchdog timer is now disabled...&bslash;n&quot;
+id|PFX
+l_string|&quot;Watchdog timer is now disabled...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -446,7 +448,7 @@ l_char|&squot;V&squot;
 )paren
 id|wdt_expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -457,13 +459,9 @@ id|jiffies
 op_plus
 id|WDT_HEARTBEAT
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-suffix:semicolon
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 DECL|function|fop_open
@@ -533,6 +531,8 @@ r_if
 c_cond
 (paren
 id|wdt_expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|wdt_turnoff
@@ -542,14 +542,16 @@ c_func
 suffix:semicolon
 )brace
 r_else
+(brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
+id|KERN_CRIT
+id|PFX
+l_string|&quot;device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 id|clear_bit
 c_func
 (paren
@@ -558,6 +560,10 @@ comma
 op_amp
 id|wdt_is_open
 )paren
+suffix:semicolon
+id|wdt_expect_close
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -608,6 +614,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;ALiM7101&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -700,6 +707,7 @@ dot
 id|ioctl
 op_assign
 id|fop_ioctl
+comma
 )brace
 suffix:semicolon
 DECL|variable|wdt_miscdev
@@ -724,6 +732,7 @@ id|fops
 op_assign
 op_amp
 id|wdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Notifier for system down&n; */
@@ -782,8 +791,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: Watchdog timer is now enabled with no heartbeat - should reboot in ~1 second.&bslash;n&quot;
+id|PFX
+l_string|&quot;Watchdog timer is now enabled with no heartbeat - should reboot in ~1 second.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -791,7 +800,7 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off. &n; */
+multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
 DECL|variable|wdt_notifier
 r_static
 r_struct
@@ -813,6 +822,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|alim7101_wdt_unload
@@ -874,8 +884,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: Steve Hill &lt;steve@navaho.co.uk&gt;.&bslash;n&quot;
+id|PFX
+l_string|&quot;Steve Hill &lt;steve@navaho.co.uk&gt;.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|alim7101_pmu
@@ -901,8 +911,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: ALi M7101 PMU not present - WDT not set&bslash;n&quot;
+id|PFX
+l_string|&quot;ALi M7101 PMU not present - WDT not set&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -944,8 +954,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: ALi 1543 South-Bridge not present - WDT not set&bslash;n&quot;
+id|PFX
+l_string|&quot;ALi 1543 South-Bridge not present - WDT not set&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -980,8 +990,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: ALi 1543 South-Bridge does not have the correct revision number (???1001?) - WDT not set&bslash;n&quot;
+id|PFX
+l_string|&quot;ALi 1543 South-Bridge does not have the correct revision number (???1001?) - WDT not set&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1018,9 +1028,23 @@ c_cond
 (paren
 id|rc
 )paren
-r_return
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+comma
+id|wdt_miscdev.minor
+comma
 id|rc
+)paren
 suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|register_reboot_notifier
@@ -1036,6 +1060,35 @@ c_cond
 id|rc
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register reboot notifier (err=%d)&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+r_goto
+id|err_out_miscdev
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;WDT driver for ALi M7101 initialised. (nowayout=%d)&bslash;n&quot;
+comma
+id|nowayout
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err_out_miscdev
+suffix:colon
 id|misc_deregister
 c_func
 (paren
@@ -1043,20 +1096,10 @@ op_amp
 id|wdt_miscdev
 )paren
 suffix:semicolon
+id|err_out
+suffix:colon
 r_return
 id|rc
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: WDT driver for ALi M7101 initialised.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|alim7101_wdt_init
@@ -1077,6 +1120,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Steve Hill&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ALi M7101 PMU Computer Watchdog Timer driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
