@@ -1668,6 +1668,18 @@ id|old_tracing
 op_assign
 id|tracing
 suffix:semicolon
+multiline_comment|/* Assume: no syscall, when coming from user */
+r_if
+c_cond
+(paren
+id|tracing
+)paren
+id|do_sigtrap
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
 id|local_using_sysemu
 op_assign
 id|get_using_sysemu
@@ -1909,12 +1921,6 @@ suffix:semicolon
 id|tracing
 op_assign
 l_int|0
-suffix:semicolon
-id|do_sigtrap
-c_func
-(paren
-id|task
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -194,6 +194,7 @@ id|err
 comma
 id|status
 suffix:semicolon
+multiline_comment|/* Mark this as a syscall */
 id|UPT_SYSCALL_NR
 c_func
 (paren
@@ -810,6 +811,16 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+id|UPT_SYSCALL_NR
+c_func
+(paren
+id|regs
+)paren
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Assume: It&squot;s not a syscall */
 r_if
 c_cond
 (paren
@@ -861,15 +872,6 @@ suffix:semicolon
 r_case
 id|SIGTRAP
 suffix:colon
-id|UPT_SYSCALL_NR
-c_func
-(paren
-id|regs
-)paren
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|relay_signal
 c_func
 (paren
@@ -932,6 +934,16 @@ id|interrupt_end
 c_func
 (paren
 )paren
+suffix:semicolon
+multiline_comment|/* Avoid -ERESTARTSYS handling in host */
+id|PT_SYSCALL_NR
+c_func
+(paren
+id|regs-&gt;skas.regs
+)paren
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|restore_registers

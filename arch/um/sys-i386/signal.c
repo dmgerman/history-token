@@ -1929,6 +1929,17 @@ r_goto
 id|segfault
 suffix:semicolon
 )brace
+multiline_comment|/* Avoid ERESTART handling */
+id|PT_REGS_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs
+)paren
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_return
 id|PT_REGS_SYSCALL_RET
 c_func
@@ -2084,6 +2095,17 @@ r_goto
 id|segfault
 suffix:semicolon
 )brace
+multiline_comment|/* Avoid ERESTART handling */
+id|PT_REGS_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs
+)paren
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_return
 id|PT_REGS_SYSCALL_RET
 c_func
