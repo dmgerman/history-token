@@ -3,18 +3,6 @@ multiline_comment|/* @(#) $Id$ */
 macro_line|#ifndef _ZCONF_H
 DECL|macro|_ZCONF_H
 mdefine_line|#define _ZCONF_H
-macro_line|#if defined(__GNUC__) || defined(__386__) || defined(i386)
-macro_line|#  ifndef __32BIT__
-DECL|macro|__32BIT__
-macro_line|#    define __32BIT__
-macro_line|#  endif
-macro_line|#endif
-macro_line|#if defined(__STDC__) || defined(__cplusplus)
-macro_line|#  ifndef STDC
-DECL|macro|STDC
-macro_line|#    define STDC
-macro_line|#  endif
-macro_line|#endif
 multiline_comment|/* The memory requirements for deflate are (in bytes):&n;            (1 &lt;&lt; (windowBits+2)) +  (1 &lt;&lt; (memLevel+9))&n; that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)&n; plus a few kilobytes for small objects. For example, if you want to reduce&n; the default memory requirements from 256K to 128K, compile with&n;     make CFLAGS=&quot;-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7&quot;&n; Of course this will generally degrade compression (there&squot;s no free lunch).&n;&n;   The memory requirements for inflate are (in bytes) 1 &lt;&lt; windowBits&n; that is, 32K for windowBits=15 (default value) plus a few kilobytes&n; for small objects.&n;*/
 multiline_comment|/* Maximum value for memLevel in deflateInit2 */
 macro_line|#ifndef MAX_MEM_LEVEL
@@ -27,15 +15,8 @@ DECL|macro|MAX_WBITS
 macro_line|#  define MAX_WBITS   15 /* 32K LZ77 window */
 macro_line|#endif
 multiline_comment|/* Type declarations */
-macro_line|#ifndef OF /* function prototypes */
-macro_line|#  ifdef STDC
 DECL|macro|OF
 macro_line|#    define OF(args)  args
-macro_line|#  else
-DECL|macro|OF
-macro_line|#    define OF(args)  ()
-macro_line|#  endif
-macro_line|#endif
 macro_line|#ifndef ZEXPORT
 DECL|macro|ZEXPORT
 macro_line|#  define ZEXPORT
