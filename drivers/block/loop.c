@@ -2234,10 +2234,6 @@ op_assign
 id|q-&gt;queuedata
 suffix:semicolon
 r_int
-r_int
-id|IV
-suffix:semicolon
-r_int
 id|rw
 op_assign
 id|bio_rw
@@ -2380,16 +2376,6 @@ c_func
 id|lo
 comma
 id|old_bio
-)paren
-suffix:semicolon
-id|IV
-op_assign
-id|loop_get_iv
-c_func
-(paren
-id|lo
-comma
-id|old_bio-&gt;bi_sector
 )paren
 suffix:semicolon
 r_if
