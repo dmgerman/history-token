@@ -1182,6 +1182,7 @@ id|siginfo_t
 id|info
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|pc
 suffix:semicolon
@@ -1194,6 +1195,7 @@ id|pc
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|instruction_pointer
@@ -1219,6 +1221,7 @@ id|instr
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|pc
@@ -1234,6 +1237,7 @@ id|instr
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|pc
@@ -1614,6 +1618,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|instruction_pointer
@@ -2040,6 +2045,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|instruction_pointer
@@ -2218,6 +2224,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
