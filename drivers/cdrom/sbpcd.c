@@ -27963,6 +27963,8 @@ r_return
 id|cdrom_ioctl
 c_func
 (paren
+id|file
+comma
 id|p-&gt;sbpcd_infop
 comma
 id|inode
