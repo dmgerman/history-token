@@ -46,10 +46,14 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|wake_up
+id|vcc-&gt;sk
+op_member_access_from_pointer
+id|sk_data_ready
 c_func
 (paren
-id|vcc-&gt;sk-&gt;sk_sleep
+id|vcc-&gt;sk
+comma
+id|skb-&gt;len
 )paren
 suffix:semicolon
 )brace

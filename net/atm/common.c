@@ -1368,10 +1368,12 @@ op_assign
 op_minus
 id|reply
 suffix:semicolon
-id|wake_up
+id|vcc-&gt;sk
+op_member_access_from_pointer
+id|sk_state_change
 c_func
 (paren
-id|vcc-&gt;sk-&gt;sk_sleep
+id|vcc-&gt;sk
 )paren
 suffix:semicolon
 )brace
