@@ -3162,9 +3162,17 @@ c_cond
 (paren
 id|rc
 )paren
-r_goto
-id|errout2
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|rcmp
+)paren
 suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * The new key entry goes ONE AFTER the index of parent entry,&n;&t;&t; * because the split was to the right.&n;&t;&t; */
 id|skip
 op_assign
@@ -3285,9 +3293,17 @@ c_cond
 (paren
 id|rc
 )paren
-r_goto
-id|errout1
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|smp
+)paren
 suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 id|XT_PUTPAGE
 c_func
 (paren
@@ -3487,26 +3503,6 @@ id|rmp
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * If something fails in the above loop we were already walking back&n;&t; * up the tree and the tree is now inconsistent.&n;&t; * release all pages we&squot;re holding.&n;&t; */
-id|errout1
-suffix:colon
-id|XT_PUTPAGE
-c_func
-(paren
-id|smp
-)paren
-suffix:semicolon
-id|errout2
-suffix:colon
-id|XT_PUTPAGE
-c_func
-(paren
-id|rcmp
-)paren
-suffix:semicolon
-r_return
-id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      xtSplitPage()&n; *&n; * function:&n; *      split a full non-root page into&n; *      original/split/left page and new right page&n; *      i.e., the original/split page remains as left page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      struct xtsplit  *split,&n; *      struct metapage&t;**rmpp,&n; *      u64&t;&t;*rbnp,&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
