@@ -41,8 +41,6 @@ DECL|macro|IPR_SUBS_DEV_ID_572E
 mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x02D3
 DECL|macro|IPR_SUBS_DEV_ID_573D
 mdefine_line|#define IPR_SUBS_DEV_ID_573D  0x02D4
-DECL|macro|IPR_SUBS_DEV_ID_570F
-mdefine_line|#define IPR_SUBS_DEV_ID_570F&t;0x02BD
 DECL|macro|IPR_SUBS_DEV_ID_571B
 mdefine_line|#define IPR_SUBS_DEV_ID_571B&t;0x02BE
 DECL|macro|IPR_NAME
