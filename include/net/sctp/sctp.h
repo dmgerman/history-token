@@ -420,15 +420,14 @@ mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST
 mdefine_line|#define SCTP_SOCK_SLEEP_POST(sk) SOCK_SLEEP_POST(sk)
 multiline_comment|/* SCTP SNMP MIB stats handlers */
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|sctp_mib
+comma
 id|sctp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|SCTP_INC_STATS
 mdefine_line|#define SCTP_INC_STATS(field)&t;&t;SNMP_INC_STATS(sctp_statistics, field)
