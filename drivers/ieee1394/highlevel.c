@@ -306,7 +306,7 @@ id|hi
 op_plus
 id|data_size
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

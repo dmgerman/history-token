@@ -2497,9 +2497,9 @@ suffix:colon
 id|release_region
 c_func
 (paren
-id|fir_base
+id|sir_base
 comma
-id|SMSC_IRCC2_FIR_CHIP_IO_EXTENT
+id|SMSC_IRCC2_SIR_CHIP_IO_EXTENT
 )paren
 suffix:semicolon
 id|out2

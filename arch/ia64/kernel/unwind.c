@@ -9318,7 +9318,7 @@ c_cond
 (paren
 id|ip
 OL
-id|GATE_ADDR
+id|FIXADDR_USER_END
 )paren
 r_return
 l_int|0

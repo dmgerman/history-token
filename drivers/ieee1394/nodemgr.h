@@ -266,6 +266,10 @@ id|bus_options
 id|busopt
 suffix:semicolon
 multiline_comment|/* Bus Options */
+DECL|member|needs_probe
+r_int
+id|needs_probe
+suffix:semicolon
 DECL|member|generation
 r_int
 r_int

@@ -2134,6 +2134,32 @@ op_amp
 l_int|0x1fffff
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Returns nanoseconds&n; * XXX This is a suboptimal implementation.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Ok, my cute asm atomicity trick doesn&squot;t work anymore.&n; * There are just too many variables that need to be protected&n; * now (both members of xtime, wall_jiffies, et al.)&n; */
 DECL|function|do_gettimeofday
 r_void
