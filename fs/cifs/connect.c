@@ -4764,9 +4764,6 @@ suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
 )brace
 r_int
 DECL|function|cifs_mount
