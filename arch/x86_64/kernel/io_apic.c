@@ -87,7 +87,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|macro|vector_to_irq
 mdefine_line|#define vector_to_irq(vector) &t;&bslash;&n;&t;(platform_legacy_irq(vector) ? vector : vector_irq[vector])
 macro_line|#else
@@ -2384,7 +2384,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|function|assign_irq_vector
 r_int
 id|assign_irq_vector
@@ -5832,7 +5832,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|function|startup_edge_ioapic_vector
 r_static
 r_int

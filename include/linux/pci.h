@@ -2742,7 +2742,7 @@ suffix:semicolon
 multiline_comment|/* driver uses to specify entry, OS writes */
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_PCI_USE_VECTOR
+macro_line|#ifndef CONFIG_PCI_MSI
 DECL|function|pci_scan_msi_device
 r_static
 r_inline
