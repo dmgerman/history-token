@@ -1827,13 +1827,6 @@ id|copy_from_user_toio
 )paren
 suffix:semicolon
 multiline_comment|/* init.c */
-DECL|variable|snd_cards_count
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_cards_count
-)paren
-suffix:semicolon
 DECL|variable|snd_cards
 id|EXPORT_SYMBOL
 c_func
