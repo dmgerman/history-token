@@ -2690,21 +2690,15 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/* Issue the command -- use usb_control_msg() because this is&n;&t; * not a scsi queued-command.  Also note that at this point the&n;&t; * cached pipe values have not yet been stored. */
+multiline_comment|/* issue the command */
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
+id|us-&gt;recv_ctrl_pipe
 comma
 id|US_BULK_GET_MAX_LUN
 comma
@@ -3254,7 +3248,14 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* long wait for reset */
+multiline_comment|/* long wait for reset, so unlock to allow disconnects */
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -3273,6 +3274,13 @@ id|set_current_state
 c_func
 (paren
 id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 id|US_DEBUGP

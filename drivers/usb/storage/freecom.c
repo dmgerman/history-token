@@ -1380,10 +1380,10 @@ suffix:semicolon
 )brace
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;recv_ctrl_pipe
 comma
@@ -1423,10 +1423,10 @@ multiline_comment|/* Special thanks to the people at Freecom for providing me wi
 multiline_comment|/* send reset */
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;send_ctrl_pipe
 comma
@@ -1465,10 +1465,10 @@ suffix:semicolon
 multiline_comment|/* clear reset */
 id|result
 op_assign
-id|usb_control_msg
+id|usb_stor_control_msg
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|us-&gt;send_ctrl_pipe
 comma
