@@ -60,7 +60,7 @@ mdefine_line|#define CLONE_PARENT_SETTID&t;0x00100000&t;/* set the TID in the pa
 DECL|macro|CLONE_CHILD_CLEARTID
 mdefine_line|#define CLONE_CHILD_CLEARTID&t;0x00200000&t;/* clear the TID in the child */
 DECL|macro|CLONE_DETACHED
-mdefine_line|#define CLONE_DETACHED&t;&t;0x00400000&t;/* parent wants no child-exit signal */
+mdefine_line|#define CLONE_DETACHED&t;&t;0x00400000&t;/* Not used - CLONE_THREAD implies detached uniquely */
 DECL|macro|CLONE_UNTRACED
 mdefine_line|#define CLONE_UNTRACED&t;&t;0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 DECL|macro|CLONE_CHILD_SETTID
