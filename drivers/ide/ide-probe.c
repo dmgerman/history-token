@@ -2354,6 +2354,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+r_int
+id|irqd
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2494,12 +2498,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We must always disable IRQ, as probe_for_drive will assert IRQ, but&n;&t; * we&squot;ll install our IRQ driver much later...&n;&t; */
+id|irqd
+op_assign
+id|hwif-&gt;irq
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwif-&gt;hw.ack_intr
-op_logical_and
-id|hwif-&gt;irq
+id|irqd
 )paren
 id|disable_irq
 c_func
@@ -2724,17 +2731,16 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Use cached IRQ number. It might be (and is...) changed by probe&n;&t; * code above&n;&t; */
 r_if
 c_cond
 (paren
-id|hwif-&gt;hw.ack_intr
-op_logical_and
-id|hwif-&gt;irq
+id|irqd
 )paren
 id|enable_irq
 c_func
 (paren
-id|hwif-&gt;irq
+id|irqd
 )paren
 suffix:semicolon
 r_for
