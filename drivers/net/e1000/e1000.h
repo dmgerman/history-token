@@ -72,6 +72,18 @@ DECL|macro|E1000_RXBUFFER_8192
 mdefine_line|#define E1000_RXBUFFER_8192  8192
 DECL|macro|E1000_RXBUFFER_16384
 mdefine_line|#define E1000_RXBUFFER_16384 16384
+multiline_comment|/* SmartSpeed delimiters */
+DECL|macro|E1000_SMARTSPEED_DOWNSHIFT
+mdefine_line|#define E1000_SMARTSPEED_DOWNSHIFT 3
+DECL|macro|E1000_SMARTSPEED_MAX
+mdefine_line|#define E1000_SMARTSPEED_MAX       15
+multiline_comment|/* Packet Buffer allocations */
+DECL|macro|E1000_TX_FIFO_SIZE_SHIFT
+mdefine_line|#define E1000_TX_FIFO_SIZE_SHIFT 0xA
+DECL|macro|E1000_TX_HEAD_ADDR_SHIFT
+mdefine_line|#define E1000_TX_HEAD_ADDR_SHIFT 7
+DECL|macro|E1000_PBA_TX_MASK
+mdefine_line|#define E1000_PBA_TX_MASK 0xFFFF0000
 multiline_comment|/* Flow Control High-Watermark: 43464 bytes */
 DECL|macro|E1000_FC_HIGH_THRESH
 mdefine_line|#define E1000_FC_HIGH_THRESH 0xA9C8
@@ -87,10 +99,6 @@ mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16
 multiline_comment|/* How many Rx Buffers do we bundle into one write to the hardware ? */
 DECL|macro|E1000_RX_BUFFER_WRITE
 mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16
-DECL|macro|E1000_JUMBO_PBA
-mdefine_line|#define E1000_JUMBO_PBA      0x00000028
-DECL|macro|E1000_DEFAULT_PBA
-mdefine_line|#define E1000_DEFAULT_PBA    0x00000030
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
 DECL|macro|E1000_EEPROM_APME
@@ -188,6 +196,11 @@ DECL|struct|e1000_adapter
 r_struct
 id|e1000_adapter
 (brace
+DECL|member|tx_fifo_stall_timer
+r_struct
+id|timer_list
+id|tx_fifo_stall_timer
+suffix:semicolon
 DECL|member|watchdog_timer
 r_struct
 id|timer_list
@@ -224,6 +237,10 @@ suffix:semicolon
 DECL|member|wol
 r_uint32
 id|wol
+suffix:semicolon
+DECL|member|smartspeed
+r_uint32
+id|smartspeed
 suffix:semicolon
 DECL|member|link_speed
 r_uint16
@@ -277,6 +294,22 @@ suffix:semicolon
 DECL|member|max_data_per_txd
 r_int
 id|max_data_per_txd
+suffix:semicolon
+DECL|member|tx_fifo_head
+r_uint32
+id|tx_fifo_head
+suffix:semicolon
+DECL|member|tx_head_addr
+r_uint32
+id|tx_head_addr
+suffix:semicolon
+DECL|member|tx_fifo_size
+r_uint32
+id|tx_fifo_size
+suffix:semicolon
+DECL|member|tx_fifo_stall
+id|atomic_t
+id|tx_fifo_stall
 suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
