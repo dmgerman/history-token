@@ -1265,14 +1265,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|rs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|sbus_init
 r_static
 r_int
@@ -2338,11 +2330,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|rs_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef __sparc_v9__
 r_if
 c_cond
