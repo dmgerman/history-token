@@ -5886,7 +5886,7 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#else
-id|use_dvo
+id|uses_dvo
 op_assign
 l_int|1
 suffix:semicolon
