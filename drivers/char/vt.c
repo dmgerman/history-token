@@ -14320,6 +14320,7 @@ c_func
 r_int
 id|currcons
 comma
+r_int
 r_char
 op_star
 id|p
@@ -14348,6 +14349,7 @@ c_func
 r_int
 id|currcons
 comma
+r_int
 r_char
 op_star
 id|p
