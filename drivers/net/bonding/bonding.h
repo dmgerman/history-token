@@ -22,10 +22,13 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, args...)
 macro_line|#endif /* BONDING_DEBUG */
 DECL|macro|IS_UP
-mdefine_line|#define IS_UP(dev)  ((((dev)-&gt;flags &amp; (IFF_UP)) == (IFF_UP)) &amp;&amp; &bslash;&n;&t;&t;     (netif_running(dev) &amp;&amp; netif_carrier_ok(dev)))
-multiline_comment|/* Checks whether the dev is ready for transmit. We do not check netif_running&n; * since a device can be stopped by the driver for short periods of time for&n; * maintainance. dev_queue_xmit() handles this by queing the packet until the&n; * the dev is running again. Keeping packets ordering requires sticking the&n; * same dev as much as possible&n; */
+mdefine_line|#define IS_UP(dev)&t;&t;&t;&t;&t;   &bslash;&n;&t;      ((((dev)-&gt;flags &amp; IFF_UP) == IFF_UP)&t;&amp;&amp; &bslash;&n;&t;       netif_running(dev)&t;&t;&t;&amp;&amp; &bslash;&n;&t;       netif_carrier_ok(dev))
+multiline_comment|/*&n; * Checks whether bond is ready for transmit.&n; * &n; * Caller must hold bond-&gt;lock&n; */
+DECL|macro|BOND_IS_OK
+mdefine_line|#define BOND_IS_OK(bond)&t;&t;&t;     &bslash;&n;&t;&t;   (((bond)-&gt;dev-&gt;flags &amp; IFF_UP) &amp;&amp; &bslash;&n;&t;&t;    netif_running((bond)-&gt;dev)&t;  &amp;&amp; &bslash;&n;&t;&t;    ((bond)-&gt;slave_cnt &gt; 0))
+multiline_comment|/*&n; * Checks whether slave is ready for transmit.&n; */
 DECL|macro|SLAVE_IS_OK
-mdefine_line|#define SLAVE_IS_OK(slave) &bslash;&n;&t;&t;     ((((slave)-&gt;dev-&gt;flags &amp; (IFF_UP)) == (IFF_UP)) &amp;&amp; &bslash;&n;&t;&t;     netif_carrier_ok((slave)-&gt;dev) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;link == BOND_LINK_UP) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;state == BOND_STATE_ACTIVE))
+mdefine_line|#define SLAVE_IS_OK(slave)&t;&t;&t;        &bslash;&n;&t;&t;    (((slave)-&gt;dev-&gt;flags &amp; IFF_UP)  &amp;&amp; &bslash;&n;&t;&t;     netif_running((slave)-&gt;dev)     &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;link == BOND_LINK_UP) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;state == BOND_STATE_ACTIVE))
 DECL|struct|slave
 r_struct
 id|slave
