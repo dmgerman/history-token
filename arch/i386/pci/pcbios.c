@@ -2455,7 +2455,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pci_pcbios_init
-id|subsys_initcall
+id|arch_initcall
 c_func
 (paren
 id|pci_pcbios_init

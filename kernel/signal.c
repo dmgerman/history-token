@@ -4354,6 +4354,10 @@ op_logical_or
 id|sig
 op_eq
 id|SIGWINCH
+op_logical_or
+id|sig
+op_eq
+id|SIGURG
 )paren
 )paren
 )paren
