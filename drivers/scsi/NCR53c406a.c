@@ -1526,7 +1526,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a BIOS found at %X&bslash;n&quot;
+l_string|&quot;NCR53c406a BIOS found at 0x%x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1629,7 +1629,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: port %x in use&bslash;n&quot;
+l_string|&quot;NCR53c406a: port 0x%x in use&bslash;n&quot;
 comma
 id|ports
 (braket
@@ -1647,7 +1647,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: port %x available&bslash;n&quot;
+l_string|&quot;NCR53c406a: port 0x%x available&bslash;n&quot;
 comma
 id|ports
 (braket
@@ -1766,7 +1766,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;port_base=%x&bslash;n&quot;
+l_string|&quot;port_base=0x%x&bslash;n&quot;
 comma
 id|port_base
 )paren
@@ -1874,7 +1874,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: using port_base %x&bslash;n&quot;
+l_string|&quot;NCR53c406a: using port_base 0x%x&bslash;n&quot;
 comma
 id|port_base
 )paren
@@ -2289,7 +2289,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: Specified port_base 0x%X&bslash;n&quot;
+l_string|&quot;NCR53c406a: Specified port_base 0x%x&bslash;n&quot;
 comma
 id|port_base
 )paren
@@ -2306,7 +2306,7 @@ id|port_base
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: Invalid PORTBASE 0x%X specified&bslash;n&quot;
+l_string|&quot;NCR53c406a: Invalid PORTBASE 0x%x specified&bslash;n&quot;
 comma
 id|ints
 (braket
@@ -2451,7 +2451,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;NCR53c406a: port_base=0x%X, irq=%d, fast_pio=%d&bslash;n&quot;
+l_string|&quot;NCR53c406a: port_base=0x%x, irq=%d, fast_pio=%d&bslash;n&quot;
 comma
 id|port_base
 comma
