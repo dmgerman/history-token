@@ -1038,30 +1038,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_X86_LOCAL_APIC)
-r_if
-c_cond
-(paren
-id|cpu_has_apic
-)paren
-(brace
-id|local_irq_disable
+macro_line|#endif /* CONFIG_SMP */
+id|lapic_shutdown
 c_func
 (paren
 )paren
 suffix:semicolon
-id|disable_local_APIC
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 id|disable_IO_APIC
 c_func
@@ -1231,6 +1213,11 @@ c_func
 r_void
 )paren
 (brace
+id|lapic_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
