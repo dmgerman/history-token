@@ -1501,6 +1501,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|__ipoib_reap_ah
+r_static
 r_void
 id|__ipoib_reap_ah
 c_func

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &quot;ipoib.h&quot;
 macro_line|#ifdef CONFIG_INFINIBAND_IPOIB_DEBUG
 DECL|variable|mcast_debug_level
+r_static
 r_int
 id|mcast_debug_level
 suffix:semicolon
@@ -2649,6 +2650,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ipoib_mcast_leave
+r_static
 r_int
 id|ipoib_mcast_leave
 c_func

@@ -2753,6 +2753,7 @@ id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 DECL|function|ipoib_get_stats
+r_static
 r_struct
 id|net_device_stats
 op_star

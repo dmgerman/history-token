@@ -997,6 +997,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ib_cache_setup_one
+r_static
 r_void
 id|ib_cache_setup_one
 c_func
@@ -1239,6 +1240,7 @@ id|device-&gt;cache.gid_cache
 suffix:semicolon
 )brace
 DECL|function|ib_cache_cleanup_one
+r_static
 r_void
 id|ib_cache_cleanup_one
 c_func
@@ -1322,6 +1324,7 @@ id|device-&gt;cache.gid_cache
 suffix:semicolon
 )brace
 DECL|variable|cache_client
+r_static
 r_struct
 id|ib_client
 id|cache_client
