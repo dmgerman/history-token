@@ -10851,8 +10851,6 @@ multiline_comment|/* End if clear_bit */
 )brace
 )brace
 multiline_comment|/* End EPCA_MAGIC */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* End do_softint */
 multiline_comment|/* ------------------------------------------------------------&n;&t;pc_stop and pc_start provide software flow control to the &n;&t;routine and the pc_ioctl routine.&n;---------------------------------------------------------------- */
