@@ -660,6 +660,17 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|tty_driver
+op_star
+id|console_device
+c_func
+(paren
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|is_console_locked
 c_func
