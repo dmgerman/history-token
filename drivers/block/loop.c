@@ -2287,15 +2287,6 @@ r_goto
 id|err
 suffix:semicolon
 )brace
-id|blk_queue_bounce
-c_func
-(paren
-id|q
-comma
-op_amp
-id|old_bio
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * file backed, queue for loop_thread to handle&n;&t; */
 r_if
 c_cond
@@ -3003,15 +2994,6 @@ op_amp
 id|lo-&gt;lo_queue
 comma
 id|loop_make_request
-)paren
-suffix:semicolon
-id|blk_queue_bounce_limit
-c_func
-(paren
-op_amp
-id|lo-&gt;lo_queue
-comma
-id|BLK_BOUNCE_HIGH
 )paren
 suffix:semicolon
 id|lo-&gt;lo_queue.queuedata
