@@ -2549,7 +2549,7 @@ multiline_comment|/* Adjust fw RISC transfer size */
 r_if
 c_cond
 (paren
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 OG
 l_int|1024
 )paren
@@ -2564,7 +2564,7 @@ id|ha-&gt;fw_transfer_size
 op_assign
 id|REQUEST_ENTRY_SIZE
 op_star
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 suffix:semicolon
 r_if
 c_cond
@@ -3245,7 +3245,7 @@ l_int|0
 suffix:semicolon
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 suffix:semicolon
 id|ha-&gt;response_ring_ptr
 op_assign
@@ -5747,10 +5747,10 @@ l_int|0
 suffix:semicolon
 id|icb-&gt;request_q_length
 op_assign
-id|__constant_cpu_to_le16
+id|cpu_to_le16
 c_func
 (paren
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 )paren
 suffix:semicolon
 id|icb-&gt;response_q_length

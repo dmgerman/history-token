@@ -236,25 +236,14 @@ multiline_comment|/* Maximum outstanding commands in ISP queues (1-65535) */
 DECL|macro|MAX_OUTSTANDING_COMMANDS
 mdefine_line|#define MAX_OUTSTANDING_COMMANDS&t;1024
 multiline_comment|/* ISP request and response entry counts (37-65535) */
-DECL|macro|REQUEST_ENTRY_CNT
-mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;2048&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2100
+mdefine_line|#define REQUEST_ENTRY_CNT_2100&t;&t;128&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2200
+mdefine_line|#define REQUEST_ENTRY_CNT_2200&t;&t;2048&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300
 mdefine_line|#define RESPONSE_ENTRY_CNT_2300&t;&t;512&t;/* Number of response entries.*/
-multiline_comment|/* Calculations for SG segments */
-DECL|macro|SEGS_PER_REQUEST_32
-mdefine_line|#define SEGS_PER_REQUEST_32&t;3 
-DECL|macro|SEGS_PER_CONT_32
-mdefine_line|#define SEGS_PER_CONT_32&t;7
-DECL|macro|SG_SEGMENTS_32
-mdefine_line|#define SG_SEGMENTS_32 (SEGS_PER_REQUEST_32 + &bslash;&n;    (SEGS_PER_CONT_32 * (REQUEST_ENTRY_CNT - 2)))     
-DECL|macro|SEGS_PER_REQUEST_64
-mdefine_line|#define SEGS_PER_REQUEST_64&t;2 
-DECL|macro|SEGS_PER_CONT_64
-mdefine_line|#define SEGS_PER_CONT_64&t;5
-DECL|macro|SG_SEGMENTS_64
-mdefine_line|#define SG_SEGMENTS_64 (SEGS_PER_REQUEST_64 + &bslash;&n;    (SEGS_PER_CONT_64 * (REQUEST_ENTRY_CNT - 2)))     
 multiline_comment|/*&n; * SCSI Request Block &n; */
 DECL|struct|srb
 r_typedef
@@ -5106,6 +5095,10 @@ r_uint16
 id|req_q_cnt
 suffix:semicolon
 multiline_comment|/* Number of available entries. */
+DECL|member|request_q_length
+r_uint16
+id|request_q_length
+suffix:semicolon
 DECL|member|response_dma
 id|dma_addr_t
 id|response_dma

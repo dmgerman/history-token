@@ -576,13 +576,6 @@ op_minus
 l_int|1
 comma
 dot
-id|can_queue
-op_assign
-id|REQUEST_ENTRY_CNT
-op_plus
-l_int|128
-comma
-dot
 id|cmd_per_lun
 op_assign
 l_int|3
@@ -7169,6 +7162,10 @@ id|ha-&gt;mbx_count
 op_assign
 id|MAILBOX_REGISTER_COUNT_2100
 suffix:semicolon
+id|ha-&gt;request_q_length
+op_assign
+id|REQUEST_ENTRY_CNT_2100
+suffix:semicolon
 id|ha-&gt;response_q_length
 op_assign
 id|RESPONSE_ENTRY_CNT_2100
@@ -7176,6 +7173,10 @@ suffix:semicolon
 id|ha-&gt;last_loop_id
 op_assign
 id|SNS_LAST_LOOP_ID_2100
+suffix:semicolon
+id|host-&gt;sg_tablesize
+op_assign
+l_int|32
 suffix:semicolon
 )brace
 r_else
@@ -7197,6 +7198,10 @@ id|ha-&gt;mbx_count
 op_assign
 id|MAILBOX_REGISTER_COUNT
 suffix:semicolon
+id|ha-&gt;request_q_length
+op_assign
+id|REQUEST_ENTRY_CNT_2200
+suffix:semicolon
 id|ha-&gt;response_q_length
 op_assign
 id|RESPONSE_ENTRY_CNT_2100
@@ -7217,6 +7222,10 @@ id|ha-&gt;mbx_count
 op_assign
 id|MAILBOX_REGISTER_COUNT
 suffix:semicolon
+id|ha-&gt;request_q_length
+op_assign
+id|REQUEST_ENTRY_CNT_2200
+suffix:semicolon
 id|ha-&gt;response_q_length
 op_assign
 id|RESPONSE_ENTRY_CNT_2300
@@ -7226,6 +7235,12 @@ op_assign
 id|SNS_LAST_LOOP_ID_2300
 suffix:semicolon
 )brace
+id|host-&gt;can_queue
+op_assign
+id|ha-&gt;request_q_length
+op_plus
+l_int|128
+suffix:semicolon
 multiline_comment|/* load the F/W, read paramaters, and init the H/W */
 id|ha-&gt;instance
 op_assign
@@ -8730,16 +8745,10 @@ c_func
 op_amp
 id|info
 comma
-l_string|&quot;Request Queue count = %ld, Response Queue count = %ld&bslash;n&quot;
+l_string|&quot;Request Queue count = %d, Response Queue count = %d&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;response_q_length
 )paren
 suffix:semicolon
@@ -10341,7 +10350,7 @@ id|ha-&gt;pdev
 comma
 (paren
 (paren
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_plus
 l_int|1
 )paren
@@ -11232,7 +11241,7 @@ id|ha-&gt;pdev
 comma
 (paren
 (paren
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_plus
 l_int|1
 )paren

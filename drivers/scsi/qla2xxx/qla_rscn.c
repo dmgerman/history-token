@@ -1141,7 +1141,7 @@ suffix:semicolon
 r_else
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_minus
 (paren
 id|ha-&gt;req_ring_index
