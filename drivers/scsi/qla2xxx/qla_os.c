@@ -6035,6 +6035,7 @@ multiline_comment|/* Waiting for our command in done_queue to be returned to OS.
 r_if
 c_cond
 (paren
+op_logical_neg
 id|qla2x00_eh_wait_for_pending_commands
 c_func
 (paren
@@ -6391,12 +6392,10 @@ id|ql2xmaxqdepth
 op_assign
 id|queue_depth
 suffix:semicolon
-id|scsi_adjust_queue_depth
+id|scsi_activate_tcq
 c_func
 (paren
 id|sdev
-comma
-id|MSG_ORDERED_TAG
 comma
 id|queue_depth
 )paren
@@ -16440,6 +16439,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|QLA2XXX_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|QLA2XXX_VERSION
 )paren
 suffix:semicolon
 eof

@@ -3195,7 +3195,6 @@ op_star
 id|ha
 )paren
 (brace
-multiline_comment|/* Setup seriallink options */
 r_uint16
 id|swing
 comma
@@ -3410,7 +3409,7 @@ l_int|3
 op_or_assign
 id|BIT_13
 suffix:semicolon
-multiline_comment|/* Update Serial Link options. */
+multiline_comment|/* Update firmware options. */
 id|qla2x00_set_fw_options
 c_func
 (paren
@@ -3599,6 +3598,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Update any ISP specific firmware options before initialization. */
+id|qla2x00_update_fw_options
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -3645,13 +3651,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Update any ISP specific firmware options. */
-id|qla2x00_update_fw_options
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 id|DEBUG3
 c_func
 (paren

@@ -8701,6 +8701,13 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|SYM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|SYM_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Driver host template.&n; */
 DECL|variable|sym2_template
 r_static

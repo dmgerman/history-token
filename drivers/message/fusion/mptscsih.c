@@ -10991,11 +10991,9 @@ suffix:semicolon
 id|sector_t
 id|cylinders
 suffix:semicolon
-macro_line|#ifdef CONFIG_LBD
 id|ulong
 id|dummy
 suffix:semicolon
-macro_line|#endif
 id|heads
 op_assign
 l_int|64
@@ -11004,7 +11002,6 @@ id|sectors
 op_assign
 l_int|32
 suffix:semicolon
-macro_line|#ifdef CONFIG_LBD
 id|dummy
 op_assign
 id|heads
@@ -11023,21 +11020,6 @@ comma
 id|dummy
 )paren
 suffix:semicolon
-macro_line|#else
-id|cylinders
-op_assign
-(paren
-id|ulong
-)paren
-id|capacity
-op_div
-(paren
-id|heads
-op_star
-id|sectors
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Handle extended translation size for logical drives&n;&t; * &gt; 1Gb&n;&t; */
 r_if
 c_cond
@@ -11058,7 +11040,6 @@ id|sectors
 op_assign
 l_int|63
 suffix:semicolon
-macro_line|#ifdef CONFIG_LBD
 id|dummy
 op_assign
 id|heads
@@ -11077,21 +11058,6 @@ comma
 id|dummy
 )paren
 suffix:semicolon
-macro_line|#else
-id|cylinders
-op_assign
-(paren
-id|ulong
-)paren
-id|capacity
-op_div
-(paren
-id|heads
-op_star
-id|sectors
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* return result */
 id|geom

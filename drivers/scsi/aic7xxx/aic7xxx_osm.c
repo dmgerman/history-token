@@ -372,7 +372,6 @@ r_uint32
 id|aic7xxx_periodic_otag
 suffix:semicolon
 multiline_comment|/*&n; * Module information and settable options.&n; */
-macro_line|#ifdef MODULE
 DECL|variable|aic7xxx
 r_static
 r_char
@@ -404,14 +403,19 @@ c_func
 l_string|&quot;Adaptec Aic77XX/78XX SCSI Host Bus Adapter driver&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+DECL|variable|AIC7XXX_DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AIC7XXX_DRIVER_VERSION
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -453,7 +457,6 @@ l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;options aic7xxx &squot;aic7xxx=probe_eisa_vl.tag_info:{{}.{.10}}.seltime:1&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|ahc_linux_handle_scsi_status

@@ -183,11 +183,37 @@ r_uint16
 id|cfg_0
 suffix:semicolon
 multiline_comment|/* Configuration 0 */
+DECL|macro|ISP_CFG0_HWMSK
+mdefine_line|#define ISP_CFG0_HWMSK   0x000f&t;/* Hardware revision mask */
+DECL|macro|ISP_CFG0_1020
+mdefine_line|#define ISP_CFG0_1020    BIT_0&t;/* ISP1020 */
+DECL|macro|ISP_CFG0_1020A
+mdefine_line|#define ISP_CFG0_1020A&t; BIT_1&t;/* ISP1020A */
+DECL|macro|ISP_CFG0_1040
+mdefine_line|#define ISP_CFG0_1040&t; BIT_2&t;/* ISP1040 */
+DECL|macro|ISP_CFG0_1040A
+mdefine_line|#define ISP_CFG0_1040A&t; BIT_3&t;/* ISP1040A */
+DECL|macro|ISP_CFG0_1040B
+mdefine_line|#define ISP_CFG0_1040B&t; BIT_4&t;/* ISP1040B */
+DECL|macro|ISP_CFG0_1040C
+mdefine_line|#define ISP_CFG0_1040C&t; BIT_5&t;/* ISP1040C */
 DECL|member|cfg_1
 r_uint16
 id|cfg_1
 suffix:semicolon
 multiline_comment|/* Configuration 1 */
+DECL|macro|ISP_CFG1_F128
+mdefine_line|#define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
+DECL|macro|ISP_CFG1_F64
+mdefine_line|#define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
+DECL|macro|ISP_CFG1_F32
+mdefine_line|#define ISP_CFG1_F32     BIT_5  /* 128-byte FIFO threshold */
+DECL|macro|ISP_CFG1_F16
+mdefine_line|#define ISP_CFG1_F16     BIT_4  /* 128-byte FIFO threshold */
+DECL|macro|ISP_CFG1_BENAB
+mdefine_line|#define ISP_CFG1_BENAB   BIT_2  /* Global Bus burst enable */
+DECL|macro|ISP_CFG1_SXP
+mdefine_line|#define ISP_CFG1_SXP     BIT_0  /* SXP register select */
 DECL|member|ictrl
 r_uint16
 id|ictrl
@@ -248,10 +274,120 @@ DECL|member|unused_1
 r_uint16
 id|unused_1
 (braket
-l_int|0x2e
+l_int|0x06
 )braket
 suffix:semicolon
-multiline_comment|/* 0x14-0x6f Gap */
+multiline_comment|/* cdma_* and ddma_* are 1040 only */
+DECL|member|cdma_cfg
+r_uint16
+id|cdma_cfg
+suffix:semicolon
+DECL|macro|CDMA_CONF_SENAB
+mdefine_line|#define CDMA_CONF_SENAB  BIT_3&t;/* SXP to DMA Data enable */
+DECL|macro|CDMA_CONF_RIRQ
+mdefine_line|#define CDMA_CONF_RIRQ   BIT_2&t;/* RISC interrupt enable */
+DECL|macro|CDMA_CONF_BENAB
+mdefine_line|#define CDMA_CONF_BENAB  BIT_1&t;/* Bus burst enable */
+DECL|macro|CDMA_CONF_DIR
+mdefine_line|#define CDMA_CONF_DIR    BIT_0&t;/* DMA direction (0=fifo-&gt;host 1=host-&gt;fifo) */
+DECL|member|cdma_ctrl
+r_uint16
+id|cdma_ctrl
+suffix:semicolon
+DECL|member|cdma_status
+r_uint16
+id|cdma_status
+suffix:semicolon
+DECL|member|cdma_fifo_status
+r_uint16
+id|cdma_fifo_status
+suffix:semicolon
+DECL|member|cdma_count
+r_uint16
+id|cdma_count
+suffix:semicolon
+DECL|member|cdma_reserved
+r_uint16
+id|cdma_reserved
+suffix:semicolon
+DECL|member|cdma_address_count_0
+r_uint16
+id|cdma_address_count_0
+suffix:semicolon
+DECL|member|cdma_address_count_1
+r_uint16
+id|cdma_address_count_1
+suffix:semicolon
+DECL|member|cdma_address_count_2
+r_uint16
+id|cdma_address_count_2
+suffix:semicolon
+DECL|member|cdma_address_count_3
+r_uint16
+id|cdma_address_count_3
+suffix:semicolon
+DECL|member|unused_2
+r_uint16
+id|unused_2
+(braket
+l_int|0x06
+)braket
+suffix:semicolon
+DECL|member|ddma_cfg
+r_uint16
+id|ddma_cfg
+suffix:semicolon
+DECL|macro|DDMA_CONF_SENAB
+mdefine_line|#define DDMA_CONF_SENAB  BIT_3&t;/* SXP to DMA Data enable */
+DECL|macro|DDMA_CONF_RIRQ
+mdefine_line|#define DDMA_CONF_RIRQ   BIT_2&t;/* RISC interrupt enable */
+DECL|macro|DDMA_CONF_BENAB
+mdefine_line|#define DDMA_CONF_BENAB  BIT_1&t;/* Bus burst enable */
+DECL|macro|DDMA_CONF_DIR
+mdefine_line|#define DDMA_CONF_DIR    BIT_0&t;/* DMA direction (0=fifo-&gt;host 1=host-&gt;fifo) */
+DECL|member|ddma_ctrl
+r_uint16
+id|ddma_ctrl
+suffix:semicolon
+DECL|member|ddma_status
+r_uint16
+id|ddma_status
+suffix:semicolon
+DECL|member|ddma_fifo_status
+r_uint16
+id|ddma_fifo_status
+suffix:semicolon
+DECL|member|ddma_xfer_count_low
+r_uint16
+id|ddma_xfer_count_low
+suffix:semicolon
+DECL|member|ddma_xfer_count_high
+r_uint16
+id|ddma_xfer_count_high
+suffix:semicolon
+DECL|member|ddma_addr_count_0
+r_uint16
+id|ddma_addr_count_0
+suffix:semicolon
+DECL|member|ddma_addr_count_1
+r_uint16
+id|ddma_addr_count_1
+suffix:semicolon
+DECL|member|ddma_addr_count_2
+r_uint16
+id|ddma_addr_count_2
+suffix:semicolon
+DECL|member|ddma_addr_count_3
+r_uint16
+id|ddma_addr_count_3
+suffix:semicolon
+DECL|member|unused_3
+r_uint16
+id|unused_3
+(braket
+l_int|0x0e
+)braket
+suffix:semicolon
 DECL|member|mailbox0
 r_uint16
 id|mailbox0
@@ -292,9 +428,9 @@ r_uint16
 id|mailbox7
 suffix:semicolon
 multiline_comment|/* Mailbox 7 */
-DECL|member|unused_2
+DECL|member|unused_4
 r_uint16
-id|unused_2
+id|unused_4
 (braket
 l_int|0x20
 )braket
@@ -309,9 +445,9 @@ DECL|macro|HOST_INT
 mdefine_line|#define HOST_INT      BIT_7&t;/* host interrupt bit */
 DECL|macro|BIOS_ENABLE
 mdefine_line|#define BIOS_ENABLE   BIT_0
-DECL|member|unused_6
+DECL|member|unused_5
 r_uint16
-id|unused_6
+id|unused_5
 (braket
 l_int|0x5
 )braket
@@ -325,9 +461,9 @@ DECL|member|gpio_enable
 r_uint16
 id|gpio_enable
 suffix:semicolon
-DECL|member|unused_7
+DECL|member|unused_6
 r_uint16
-id|unused_7
+id|unused_6
 (braket
 l_int|0x11
 )braket

@@ -47,6 +47,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|AAC_DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AAC_DRIVER_VERSION
+)paren
+suffix:semicolon
 DECL|variable|nondasd
 r_int
 id|nondasd
@@ -2093,7 +2100,15 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can exit If all the commands are complete&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|active
+)paren
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * We can exit If all the commands are complete&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2104,7 +2119,6 @@ l_int|0
 r_return
 id|SUCCESS
 suffix:semicolon
-)brace
 id|spin_unlock_irq
 c_func
 (paren

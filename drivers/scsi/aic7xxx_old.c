@@ -42426,6 +42426,13 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|AIC7XXX_H_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AIC7XXX_H_VERSION
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template

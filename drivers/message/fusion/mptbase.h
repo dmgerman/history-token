@@ -31,9 +31,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.09&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.10&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.09&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.10&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -1124,6 +1124,11 @@ id|timer_list
 id|TMtimer
 suffix:semicolon
 multiline_comment|/* timer function for this adapter */
+DECL|member|sem_ioc
+r_struct
+id|semaphore
+id|sem_ioc
+suffix:semicolon
 DECL|typedef|MPT_IOCTL
 )brace
 id|MPT_IOCTL
@@ -1733,6 +1738,12 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|netdev
+r_struct
+id|net_device
+op_star
+id|netdev
 suffix:semicolon
 DECL|typedef|MPT_ADAPTER
 )brace

@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#include &quot;qla_def.h&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 r_static
 r_inline
 r_uint16
@@ -1067,6 +1068,12 @@ id|device_reg_t
 op_star
 id|reg
 suffix:semicolon
+r_char
+id|tag
+(braket
+l_int|2
+)braket
+suffix:semicolon
 multiline_comment|/* Setup device pointers. */
 id|ret
 op_assign
@@ -1430,6 +1437,30 @@ id|fclun-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* Update tagged queuing modifier */
+r_if
+c_cond
+(paren
+id|scsi_populate_tag_msg
+c_func
+(paren
+id|cmd
+comma
+id|tag
+)paren
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|tag
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+id|MSG_SIMPLE_TAG
+suffix:colon
 id|cmd_pkt-&gt;control_flags
 op_assign
 id|__constant_cpu_to_le16
@@ -1438,20 +1469,10 @@ c_func
 id|CF_SIMPLE_TAG
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd-&gt;device-&gt;tagged_supported
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cmd-&gt;tag
-)paren
-(brace
+r_break
+suffix:semicolon
 r_case
-id|HEAD_OF_QUEUE_TAG
+id|MSG_HEAD_TAG
 suffix:colon
 id|cmd_pkt-&gt;control_flags
 op_assign
@@ -1464,7 +1485,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ORDERED_QUEUE_TAG
+id|MSG_ORDERED_TAG
 suffix:colon
 id|cmd_pkt-&gt;control_flags
 op_assign
