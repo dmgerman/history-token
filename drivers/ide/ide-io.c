@@ -3754,15 +3754,6 @@ r_goto
 id|kill_rq
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * bail early if we&squot;ve sent a device to sleep, however how to wake&n;&t; * this needs to be a masked flag.  FIXME for proper operations.&n;&t; */
-r_if
-c_cond
-(paren
-id|drive-&gt;suspend_reset
-)paren
-r_goto
-id|kill_rq
-suffix:semicolon
 id|block
 op_assign
 id|rq-&gt;sector

@@ -5848,25 +5848,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;suspend_reset
-)paren
-(brace
-multiline_comment|/*&n; *&t;&t;&t;&t;APM WAKE UP todo !!&n; *&t;&t;&t;&t;int nogoodpower = 1;&n; *&t;&t;&t;&t;while(nogoodpower) {&n; *&t;&t;&t;&t;&t;check_power1() or check_power2()&n; *&t;&t;&t;&t;&t;nogoodpower = 0;&n; *&t;&t;&t;&t;} &n; *&t;&t;&t;&t;HWIF(drive)-&gt;multiproc(drive);&n; */
-r_return
-id|ioctl_by_bdev
-c_func
-(paren
-id|bdev
-comma
-id|BLKRRPART
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8468,10 +8449,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|drive-&gt;suspend_reset
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond

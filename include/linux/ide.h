@@ -1814,11 +1814,6 @@ id|u8
 id|quirk_list
 suffix:semicolon
 multiline_comment|/* considered quirky, set for a specific host */
-DECL|member|suspend_reset
-id|u8
-id|suspend_reset
-suffix:semicolon
-multiline_comment|/* drive suspend mode flag, soft-reset recovers */
 DECL|member|init_speed
 id|u8
 id|init_speed
