@@ -32,24 +32,8 @@ macro_line|#ifdef CONFIG_SA1100_CERF
 id|pcmcia_cerf_init
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_FLEXANET
-id|pcmcia_flexanet_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_FREEBIRD
-id|pcmcia_freebird_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_GRAPHICSCLIENT
-id|pcmcia_gcplus_init
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_H3600
 id|pcmcia_h3600_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PANGOLIN
-id|pcmcia_pangolin_init
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_SHANNON
@@ -58,18 +42,6 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_SIMPAD
 id|pcmcia_simpad_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_STORK
-id|pcmcia_stork_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_TRIZEPS
-id|pcmcia_trizeps_init
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_YOPY
-id|pcmcia_yopy_init
 comma
 macro_line|#endif
 )brace
