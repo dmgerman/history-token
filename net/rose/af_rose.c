@@ -1409,7 +1409,7 @@ id|sk-&gt;sk_timer
 suffix:semicolon
 )brace
 r_else
-id|sk_free
+id|sock_put
 c_func
 (paren
 id|sk
@@ -2522,11 +2522,6 @@ id|sock-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;sk_socket
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Not used, but we should do this. **/
 r_return
 l_int|0
 suffix:semicolon
