@@ -477,6 +477,15 @@ op_lshift
 l_int|1
 )paren
 comma
+DECL|enumerator|AMASK_CIX
+id|AMASK_CIX
+op_assign
+(paren
+l_int|1UL
+op_lshift
+l_int|2
+)paren
+comma
 DECL|enumerator|AMASK_MAX
 id|AMASK_MAX
 op_assign

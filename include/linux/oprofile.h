@@ -63,6 +63,9 @@ comma
 DECL|enumerator|OPROFILE_CPU_AXP_EV6
 id|OPROFILE_CPU_AXP_EV6
 comma
+DECL|enumerator|OPROFILE_CPU_AXP_EV67
+id|OPROFILE_CPU_AXP_EV67
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Operations structure to be filled in */
