@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.1.11&t;5/6/03&n; *   o Feature: Added support for 82546EB (Quad-port) hardware.&n; *   o Feature: Added support for Diagnostics through Ethtool.&n; *   o Cleanup: Removed /proc support.&n; *   o Cleanup: Removed proprietary IDIAG interface.&n; *   o Bug fix: TSO bug fixes.&n; *&n; * 5.0.42&t;3/5/03&n; *   o Feature: Added support for 82541 and 82547 hardware.&n; *   o Feature: Added support for Intel Gigabit PHY (IGP) and a variety of&n; *   eeproms.&n; *   o Feature: Added support for TCP Segmentation Offload (TSO).&n; *   o Feature: Added MII ioctl.&n; *   o Feature: Added support for statistics reporting through ethtool.&n; *   o Cleanup: Removed proprietary hooks for ANS.&n; *   o Cleanup: Miscellaneous code changes to improve CPU utilization.&n; *   &t;- Replaced &quot;%&quot; with conditionals and &quot;+-&quot; operators.&n; *   &t;- Implemented dynamic Interrupt Throttle Rate (ITR).&n; *   &t;- Reduced expensive PCI reads of ICR in interrupt.&n; *   o Bug fix: Request IRQ after descriptor ring setup to avoid panic in&n; *   shared interrupt instances.&n; *&n; * 4.4.18       11/27/02&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.1.13&t;5/28/03&n; *   o Bug fix: request_irq() failure resulted in freeing resources twice!&n; *     [Don Fry (brazilnut@us.ibm.com)]&n; *   o Bug fix: fix VLAN support on ppc64 [Mark Rakes (mrakes@vivato.net)]&n; *   o Bug fix: missing Tx cleanup opportunities during interrupt handling.&n; *   o Bug fix: alloc_etherdev failure didn&squot;t cleanup regions in probe.&n; *   o Cleanup: s/int/unsigned int/ for descriptor ring indexes.&n; *   &n; * 5.1.11&t;5/6/03&n; *   o Feature: Added support for 82546EB (Quad-port) hardware.&n; *   o Feature: Added support for Diagnostics through Ethtool.&n; *   o Cleanup: Removed /proc support.&n; *   o Cleanup: Removed proprietary IDIAG interface.&n; *   o Bug fix: TSO bug fixes.&n; *&n; * 5.0.42&t;3/5/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.1.11-k1&quot;
+l_string|&quot;5.1.13-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -720,6 +720,17 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_static
+id|boolean_t
+id|e1000_clean_tx_irq
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_E1000_NAPI
 r_static
 r_int
@@ -767,17 +778,6 @@ id|adapter
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
-id|boolean_t
-id|e1000_clean_tx_irq
-c_func
-(paren
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
 r_static
 r_void
 id|e1000_alloc_rx_buffers

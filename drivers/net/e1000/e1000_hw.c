@@ -1121,14 +1121,28 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-r_if
+r_switch
 c_cond
 (paren
 id|hw-&gt;mac_type
-OG
-id|e1000_82543
 )paren
 (brace
+r_case
+id|e1000_82544
+suffix:colon
+r_case
+id|e1000_82540
+suffix:colon
+r_case
+id|e1000_82545
+suffix:colon
+r_case
+id|e1000_82546
+suffix:colon
+r_case
+id|e1000_82541
+suffix:colon
+multiline_comment|/* These controllers can&squot;t ack the 64-bit write when issuing the&n;             * reset, so use IO-mapping as a workaround to issue the reset */
 id|E1000_WRITE_REG_IO
 c_func
 (paren
@@ -1143,8 +1157,10 @@ id|E1000_CTRL_RST
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|E1000_WRITE_REG
 c_func
 (paren
@@ -1159,6 +1175,9 @@ id|E1000_CTRL_RST
 )paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Force a reload from the EEPROM if necessary */
 r_if
 c_cond
@@ -2572,7 +2591,8 @@ id|hw
 (brace
 r_uint32
 id|ctrl
-comma
+suffix:semicolon
+r_uint32
 id|led_ctrl
 suffix:semicolon
 r_int32
@@ -7536,7 +7556,8 @@ r_uint32
 id|ctrl
 comma
 id|ctrl_ext
-comma
+suffix:semicolon
+r_uint32
 id|led_ctrl
 suffix:semicolon
 id|DEBUGFUNC
