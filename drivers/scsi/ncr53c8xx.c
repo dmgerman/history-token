@@ -2,7 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;**&t;Supported SCSI-II features:&n;**&t;    Synchronous negotiation&n;**&t;    Wide negotiation        (depends on the NCR Chip)&n;**&t;    Enable disconnection&n;**&t;    Tagged command queuing&n;**&t;    Parity checking&n;**&t;    Etc...&n;**&n;**&t;Supported NCR/SYMBIOS chips:&n;**&t;&t;53C720&t;&t;(Wide,   Fast SCSI-2, intfly problems)&n;*/
 multiline_comment|/* Name and version of the driver */
 DECL|macro|SCSI_NCR_DRIVER_NAME
-mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3f&quot;
+mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3g&quot;
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
@@ -2212,11 +2212,10 @@ id|ncb
 op_star
 id|np
 comma
-id|u_char
-id|tn
-comma
-id|u_char
-id|ln
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
 )paren
 suffix:semicolon
 r_static
@@ -2469,33 +2468,6 @@ id|wide
 comma
 id|u_char
 id|ack
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ncr_show_msg
-(paren
-id|u_char
-op_star
-id|msg
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ncr_print_msg
-(paren
-r_struct
-id|ccb
-op_star
-id|cp
-comma
-r_char
-op_star
-id|label
-comma
-id|u_char
-op_star
-id|msg
 )paren
 suffix:semicolon
 r_static
@@ -6114,7 +6086,6 @@ id|idle
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -6293,7 +6264,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -6382,7 +6352,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -6469,7 +6438,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -6558,7 +6526,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -6705,7 +6672,6 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6935,7 +6901,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7138,7 +7103,6 @@ op_increment
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/*&n;**&t;Linux host data structure&n;*/
 DECL|struct|host_data
@@ -7153,106 +7117,128 @@ id|ncb
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;**&t;Print something which allows to retrieve the controller type, unit,&n;**&t;target, lun concerned by a kernel message.&n;*/
-DECL|function|PRINT_TARGET
+DECL|macro|PRINT_ADDR
+mdefine_line|#define PRINT_ADDR(cmd, arg...) dev_info(&amp;cmd-&gt;device-&gt;sdev_gendev , ## arg)
+DECL|function|ncr_print_msg
 r_static
 r_void
-id|PRINT_TARGET
+id|ncr_print_msg
 c_func
 (paren
 r_struct
-id|ncb
+id|ccb
 op_star
-id|np
+id|cp
 comma
-r_int
-id|target
+r_char
+op_star
+id|label
+comma
+id|u_char
+op_star
+id|msg
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s-&lt;%d,*&gt;: &quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|target
-)paren
-suffix:semicolon
-)brace
-DECL|function|PRINT_LUN
-r_static
-r_void
-id|PRINT_LUN
-c_func
-(paren
-r_struct
-id|ncb
-op_star
-id|np
-comma
 r_int
-id|target
-comma
-r_int
-id|lun
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s-&lt;%d,%d&gt;: &quot;
-comma
-id|ncr_name
-c_func
-(paren
-id|np
-)paren
-comma
-id|target
-comma
-id|lun
-)paren
+id|i
 suffix:semicolon
-)brace
-DECL|function|PRINT_ADDR
-r_static
-r_void
 id|PRINT_ADDR
 c_func
 (paren
-r_struct
-id|scsi_cmnd
+id|cp-&gt;cmd
+comma
+l_string|&quot;%s: &quot;
+comma
+id|label
+)paren
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;%x&quot;
+comma
 op_star
-id|cmd
+id|msg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|msg
+op_eq
+id|M_EXTENDED
 )paren
 (brace
-r_struct
-id|host_data
-op_star
-id|host_data
-op_assign
+r_for
+c_loop
 (paren
-r_struct
-id|host_data
-op_star
-)paren
-id|cmd-&gt;device-&gt;host-&gt;hostdata
+id|i
+op_assign
+l_int|1
 suffix:semicolon
-id|PRINT_LUN
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_minus
+l_int|1
+OG
+id|msg
+(braket
+l_int|1
+)braket
+)paren
+r_break
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;-%x&quot;
+comma
+id|msg
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|msg
+op_amp
+l_int|0xf0
+)paren
+op_eq
+l_int|0x20
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;-%x&quot;
+comma
+id|msg
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+)brace
+id|printk
 c_func
 (paren
-id|host_data-&gt;ncb
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
+l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8515,17 +8501,7 @@ id|starget
 op_assign
 id|tp-&gt;starget
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|starget
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;**&t;negotiate wide transfers ?&n;&t;&t;*/
+multiline_comment|/* negotiate wide transfers ?  */
 r_if
 c_cond
 (paren
@@ -8554,8 +8530,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;negotiate synchronous transfers?&n;&t;&t;*/
+multiline_comment|/* negotiate synchronous transfers?  */
 r_if
 c_cond
 (paren
@@ -8587,25 +8562,17 @@ id|tp-&gt;period
 op_assign
 l_int|0xffff
 suffix:semicolon
-id|PRINT_TARGET
+id|dev_info
 c_func
 (paren
-id|np
+op_amp
+id|starget-&gt;dev
 comma
-id|cp-&gt;target
-)paren
-suffix:semicolon
-id|printk
-(paren
 l_string|&quot;target did not report SYNC.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
-)brace
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8700,7 +8667,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 id|cp-&gt;nego_status
 op_assign
 id|nego
@@ -8741,9 +8707,7 @@ id|msgptr
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 id|msglen
 suffix:semicolon
@@ -8765,7 +8729,13 @@ op_star
 id|cmd
 )paren
 (brace
-multiline_comment|/*&t;struct scsi_device        *device    = cmd-&gt;device; */
+r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|cmd-&gt;device
+suffix:semicolon
 r_struct
 id|tcb
 op_star
@@ -8774,7 +8744,7 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;device-&gt;id
+id|sdev-&gt;id
 )braket
 suffix:semicolon
 r_struct
@@ -8784,7 +8754,7 @@ id|lp
 op_assign
 id|tp-&gt;lp
 (braket
-id|cmd-&gt;device-&gt;lun
+id|sdev-&gt;lun
 )braket
 suffix:semicolon
 r_struct
@@ -8817,19 +8787,19 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;device-&gt;id
+id|sdev-&gt;id
 op_eq
 id|np-&gt;myaddr
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;device-&gt;id
+id|sdev-&gt;id
 op_ge
 id|MAX_TARGET
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;device-&gt;lun
+id|sdev-&gt;lun
 op_ge
 id|MAX_LUN
 )paren
@@ -8887,10 +8857,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;CMD=%x &quot;
 comma
 id|cmd-&gt;cmnd
@@ -8953,9 +8920,7 @@ id|ncr_get_ccb
 (paren
 id|np
 comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
+id|cmd
 )paren
 )paren
 )paren
@@ -8981,7 +8946,7 @@ id|idmsg
 op_assign
 id|M_IDENTIFY
 op_or
-id|cmd-&gt;device-&gt;lun
+id|sdev-&gt;lun
 suffix:semicolon
 r_if
 c_cond
@@ -9081,11 +9046,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
+comma
 l_string|&quot;ordered tag forced.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9527,7 +9488,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;**&t;select&n;&t;*/
 id|cp-&gt;phys.select.sel_id
 op_assign
-id|cmd-&gt;device-&gt;id
+id|sdev-&gt;id
 suffix:semicolon
 id|cp-&gt;phys.select.sel_scntl3
 op_assign
@@ -9642,7 +9603,7 @@ id|tp-&gt;wval
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*----------------------------------------------------&n;&t;**&n;&t;**&t;Critical region: start this job.&n;&t;**&n;&t;**----------------------------------------------------&n;&t;*/
-multiline_comment|/*&n;&t;**&t;activate this job.&n;&t;*/
+multiline_comment|/* activate this job.  */
 id|cp-&gt;magic
 op_assign
 id|CCB_MAGIC
@@ -9676,7 +9637,7 @@ comma
 id|cp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Command is successfully queued.&n;&t;*/
+multiline_comment|/* Command is successfully queued.  */
 r_return
 id|DID_OK
 suffix:semicolon
@@ -11341,10 +11302,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;%d parity error(s).&bslash;n&quot;
 comma
 id|cp-&gt;parity_status
@@ -11360,12 +11318,6 @@ op_ne
 id|XE_OK
 )paren
 (brace
-id|PRINT_ADDR
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -11375,8 +11327,11 @@ id|cp-&gt;xerr_status
 r_case
 id|XE_EXTRA_DATA
 suffix:colon
-id|printk
+id|PRINT_ADDR
+c_func
 (paren
+id|cmd
+comma
 l_string|&quot;extraneous data discarded.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11385,8 +11340,11 @@ suffix:semicolon
 r_case
 id|XE_BAD_PHASE
 suffix:colon
-id|printk
+id|PRINT_ADDR
+c_func
 (paren
+id|cmd
+comma
 l_string|&quot;invalid scsi phase (4/5).&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11394,8 +11352,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|PRINT_ADDR
+c_func
 (paren
+id|cmd
+comma
 l_string|&quot;extended error %d.&bslash;n&quot;
 comma
 id|cp-&gt;xerr_status
@@ -11445,11 +11406,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;ERROR: cmd=%x host_status=%x scsi_status=%x&bslash;n&quot;
+comma
+l_string|&quot;ERROR: cmd=%x host_status=%x &quot;
+l_string|&quot;scsi_status=%x&bslash;n&quot;
 comma
 id|cmd-&gt;cmnd
 (braket
@@ -11642,10 +11601,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;sense data:&quot;
 )paren
 suffix:semicolon
@@ -11819,10 +11775,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;COMMAND FAILED (%x %x) @%p.&bslash;n&quot;
 comma
 id|cp-&gt;host_status
@@ -11863,10 +11816,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot; CMD:&quot;
 )paren
 suffix:semicolon
@@ -13018,7 +12968,6 @@ op_assign
 l_int|255
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13582,7 +13531,6 @@ op_assign
 id|tp-&gt;sval
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&t;Switch sync mode for current job and it&squot;s target&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_setsync
@@ -13741,7 +13689,7 @@ id|tp-&gt;period
 op_assign
 l_int|0xffff
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t; Stop there if sync parameters are unchanged&n;&t;*/
+multiline_comment|/* Stop there if sync parameters are unchanged */
 r_if
 c_cond
 (paren
@@ -13763,15 +13711,6 @@ id|tp-&gt;wval
 op_assign
 id|scntl3
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Bells and whistles   ;-)&n;&t;*/
-id|PRINT_TARGET
-c_func
-(paren
-id|np
-comma
-id|target
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13780,40 +13719,7 @@ op_amp
 l_int|0x01f
 )paren
 (brace
-r_int
-id|f10
-op_assign
-l_int|100000
-op_lshift
-(paren
-id|tp-&gt;widedone
-ques
-c_cond
-id|tp-&gt;widedone
-op_minus
-l_int|1
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-r_int
-id|mb10
-op_assign
-(paren
-id|f10
-op_plus
-id|tp-&gt;period
-op_div
-l_int|2
-)paren
-op_div
-id|tp-&gt;period
-suffix:semicolon
-r_char
-op_star
-id|scsi
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;**  Disable extended Sreq/Sack filtering&n;&t;&t;*/
+multiline_comment|/* Disable extended Sreq/Sack filtering */
 r_if
 c_cond
 (paren
@@ -13822,99 +13728,18 @@ op_le
 l_int|2000
 )paren
 id|OUTOFFB
+c_func
 (paren
 id|nc_stest2
 comma
 id|EXT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;Bells and whistles   ;-)&n;&t;&t;*/
-r_if
-c_cond
-(paren
-id|tp-&gt;period
-OL
-l_int|500
-)paren
-id|scsi
-op_assign
-l_string|&quot;FAST-40&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|tp-&gt;period
-OL
-l_int|1000
-)paren
-id|scsi
-op_assign
-l_string|&quot;FAST-20&quot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|tp-&gt;period
-OL
-l_int|2000
-)paren
-id|scsi
-op_assign
-l_string|&quot;FAST-10&quot;
-suffix:semicolon
-r_else
-id|scsi
-op_assign
-l_string|&quot;FAST-5&quot;
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;%s %sSCSI %d.%d MB/s (%d ns, offset %d)&bslash;n&quot;
-comma
-id|scsi
-comma
-id|tp-&gt;widedone
-OG
-l_int|1
-ques
-c_cond
-l_string|&quot;WIDE &quot;
-suffix:colon
-l_string|&quot;&quot;
-comma
-id|mb10
-op_div
-l_int|10
-comma
-id|mb10
-op_mod
-l_int|10
-comma
-id|tp-&gt;period
-op_div
-l_int|10
-comma
-id|sxfer
-op_amp
-l_int|0x1f
-)paren
-suffix:semicolon
 )brace
-r_else
-id|printk
+id|spi_display_xfer_agreement
+c_func
 (paren
-l_string|&quot;%sasynchronous.&bslash;n&quot;
-comma
-id|tp-&gt;widedone
-OG
-l_int|1
-ques
-c_cond
-l_string|&quot;wide &quot;
-suffix:colon
-l_string|&quot;&quot;
+id|tp-&gt;starget
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;set actual value and sync_status&n;&t;**&t;patch ALL ccbs of this target.&n;&t;*/
@@ -14064,30 +13889,24 @@ op_ge
 l_int|2
 )paren
 (brace
-id|PRINT_TARGET
+id|dev_info
 c_func
 (paren
-id|np
+op_amp
+id|cmd-&gt;device-&gt;sdev_target-&gt;dev
 comma
-id|target
-)paren
-suffix:semicolon
-r_if
-c_cond
+l_string|&quot;WIDE SCSI %sabled.&bslash;n&quot;
+comma
 (paren
 id|scntl3
 op_amp
 id|EWS
 )paren
-id|printk
-(paren
-l_string|&quot;WIDE SCSI (16 bit) enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|printk
-(paren
-l_string|&quot;WIDE SCSI disabled.&bslash;n&quot;
+ques
+c_cond
+l_string|&quot;en&quot;
+suffix:colon
+l_string|&quot;dis&quot;
 )paren
 suffix:semicolon
 )brace
@@ -14243,7 +14062,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Update max number of tags&n;&t;*/
 id|lp-&gt;numtags
 op_assign
@@ -14371,25 +14189,18 @@ c_cond
 id|bootverbose
 )paren
 (brace
-id|PRINT_LUN
-c_func
-(paren
-id|np
-comma
-id|tn
-comma
-id|ln
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|lp-&gt;usetags
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
+op_amp
+id|sdev-&gt;sdev_gendev
+comma
 l_string|&quot;tagged command queue depth set to %d&bslash;n&quot;
 comma
 id|reqtags
@@ -14398,9 +14209,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
+op_amp
+id|sdev-&gt;sdev_gendev
+comma
 l_string|&quot;tagged command queueing disabled&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -14991,7 +14805,6 @@ id|np
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15253,7 +15066,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*========================================================&n;&t;**&t;Now, interrupts that need some fixing up.&n;&t;**&t;Order and multiple interrupts is so less important.&n;&t;**&n;&t;**&t;If SRST has been asserted, we just reset the chip.&n;&t;**&n;&t;**&t;Selection is intirely handled by the chip. If the &n;&t;**&t;chip says STO, we trust it. Seems some other &n;&t;**&t;interrupts may occur at the same time (UDC, IID), so &n;&t;**&t;we ignore them. In any case we do enough fix-up &n;&t;**&t;in the service routine.&n;&t;**&t;We just exclude some fatal dma errors.&n;&t;**=========================================================&n;&t;*/
 r_if
 c_cond
@@ -15282,7 +15094,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15322,7 +15133,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*=========================================================&n;&t;**&t;Now, interrupts we are not able to recover cleanly.&n;&t;**&t;(At least for the moment).&n;&t;**&n;&t;**&t;Do the register dump.&n;&t;**&t;Log message for real hard errors.&n;&t;**&t;Clear all fifos.&n;&t;**&t;For MDPE, BF, ABORT, IID, SGE and HTH we reset the &n;&t;**&t;BUS and the chip.&n;&t;**&t;We are more soft for UDC.&n;&t;**=========================================================&n;&t;*/
 r_if
 c_cond
@@ -15388,7 +15198,6 @@ op_assign
 id|sist
 suffix:semicolon
 )brace
-suffix:semicolon
 id|ncr_log_hard_error
 c_func
 (paren
@@ -15460,7 +15269,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15489,7 +15297,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15529,7 +15336,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*=========================================================&n;&t;**&t;We just miss the cause of the interrupt. :(&n;&t;**&t;Print a message. The timeout will do the real work.&n;&t;**=========================================================&n;&t;*/
 id|printk
 (paren
@@ -15626,7 +15432,6 @@ id|cp
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;repair start queue and jump to start point.&n;&t;*/
 id|OUTL_DSP
 (paren
@@ -16179,7 +15984,6 @@ id|rest
 op_increment
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16547,7 +16351,6 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;cp=0 means that the DSA does not point to a valid control &n;&t;**&t;block. This should not happen since we donnot use multi-byte &n;&t;**&t;move while we are being reselected ot after command complete.&n;&t;**&t;We are not able to recover from such a phase error.&n;&t;*/
 r_if
 c_cond
@@ -16661,7 +16464,6 @@ op_amp
 l_int|0xffffff
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16704,7 +16506,6 @@ id|oadr
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;check cmd against assumed interrupted script command.&n;&t;*/
 r_if
 c_cond
@@ -16729,20 +16530,12 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;internal error: cmd=%02x != %02x=(vdsp[0] &gt;&gt; 24)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
+l_string|&quot;internal error: cmd=%02x != %02x=(vdsp[0] &quot;
+l_string|&quot;&gt;&gt; 24)&bslash;n&quot;
+comma
 id|cmd
 comma
-(paren
-r_int
-)paren
 id|scr_to_cpu
 c_func
 (paren
@@ -16803,10 +16596,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;phase change %x-%x %d@%08x resid=%d.&bslash;n&quot;
 comma
 id|cmd
@@ -16837,7 +16627,6 @@ r_goto
 id|unexpected_phase
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;choose the correct patch area.&n;&t;**&t;if savep points to one, choose the other.&n;&t;*/
 id|newcmd
 op_assign
@@ -16956,10 +16745,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;newcmd[%d] %x %x %x %x.&bslash;n&quot;
 comma
 (paren
@@ -17402,11 +17188,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;QUEUE FULL! %d busy, %d disconnected CCBs&bslash;n&quot;
+comma
+l_string|&quot;QUEUE FULL! %d busy, %d disconnected &quot;
+l_string|&quot;CCBs&bslash;n&quot;
 comma
 id|busy_cnt
 comma
@@ -17510,9 +17294,13 @@ id|cp-&gt;scsi_smsg2
 l_int|0
 )braket
 op_assign
-id|M_IDENTIFY
-op_or
+id|IDENTIFY
+c_func
+(paren
+l_int|0
+comma
 id|cmd-&gt;device-&gt;lun
+)paren
 suffix:semicolon
 id|cp-&gt;phys.smsg.addr
 op_assign
@@ -17739,180 +17527,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**      ncr chip exception handler for programmed interrupts.&n;**&n;**&n;**==========================================================&n;*/
-DECL|function|ncr_show_msg
-r_static
-r_int
-id|ncr_show_msg
-(paren
-id|u_char
-op_star
-id|msg
-)paren
-(brace
-id|u_char
-id|i
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;%x&quot;
-comma
-op_star
-id|msg
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|msg
-op_eq
-id|M_EXTENDED
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-op_minus
-l_int|1
-OG
-id|msg
-(braket
-l_int|1
-)braket
-)paren
-r_break
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;-%x&quot;
-comma
-id|msg
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-r_return
-(paren
-id|i
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-op_star
-id|msg
-op_amp
-l_int|0xf0
-)paren
-op_eq
-l_int|0x20
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;-%x&quot;
-comma
-id|msg
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|2
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-DECL|function|ncr_print_msg
-r_static
-r_void
-id|ncr_print_msg
-(paren
-r_struct
-id|ccb
-op_star
-id|cp
-comma
-r_char
-op_star
-id|label
-comma
-id|u_char
-op_star
-id|msg
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cp
-)paren
-id|PRINT_ADDR
-c_func
-(paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|label
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: &quot;
-comma
-id|label
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
-id|msg
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|function|ncr_int_sir
 r_void
 id|ncr_int_sir
@@ -18270,11 +17884,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;negotiation failed sir=%x status=%x.&bslash;n&quot;
+comma
+l_string|&quot;negotiation failed sir=%x &quot;
+l_string|&quot;status=%x.&bslash;n&quot;
 comma
 id|num
 comma
@@ -18282,7 +17894,6 @@ id|cp-&gt;nego_status
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;any error in negotiation:&n;&t;&t;**&t;fall back to default mode.&n;&t;&t;*/
 r_switch
 c_cond
@@ -18293,17 +17904,6 @@ id|cp-&gt;nego_status
 r_case
 id|NS_SYNC
 suffix:colon
-id|ncr_setsync
-(paren
-id|np
-comma
-id|cp
-comma
-l_int|0
-comma
-l_int|0xe0
-)paren
-suffix:semicolon
 id|spi_period
 c_func
 (paren
@@ -18320,11 +17920,30 @@ id|starget
 op_assign
 l_int|0
 suffix:semicolon
+id|ncr_setsync
+(paren
+id|np
+comma
+id|cp
+comma
+l_int|0
+comma
+l_int|0xe0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|NS_WIDE
 suffix:colon
+id|spi_width
+c_func
+(paren
+id|starget
+)paren
+op_assign
+l_int|0
+suffix:semicolon
 id|ncr_setwide
 (paren
 id|np
@@ -18336,18 +17955,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spi_width
-c_func
-(paren
-id|starget
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 id|np-&gt;msgin
 (braket
 l_int|0
@@ -18371,7 +17981,6 @@ suffix:semicolon
 r_case
 id|SIR_NEGO_SYNC
 suffix:colon
-multiline_comment|/*&n;&t;&t;**&t;Synchronous request message received.&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -18380,33 +17989,17 @@ op_amp
 id|DEBUG_NEGO
 )paren
 (brace
-id|PRINT_ADDR
+id|ncr_print_msg
 c_func
 (paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;sync msgin: &quot;
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
+id|cp
+comma
+l_string|&quot;sync msgin&quot;
+comma
 id|np-&gt;msgin
 )paren
 suffix:semicolon
-id|printk
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;get requested values.&n;&t;&t;*/
 id|chg
 op_assign
 l_int|0
@@ -18442,12 +18035,12 @@ c_cond
 (paren
 id|ofs
 op_logical_and
-id|tp-&gt;starget
+id|starget
 )paren
 id|spi_support_sync
 c_func
 (paren
-id|tp-&gt;starget
+id|starget
 )paren
 op_assign
 l_int|1
@@ -18590,11 +18183,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;sync: per=%d scntl3=0x%x ofs=%d fak=%d chg=%d.&bslash;n&quot;
+comma
+l_string|&quot;sync: per=%d scntl3=0x%x ofs=%d &quot;
+l_string|&quot;fak=%d chg=%d.&bslash;n&quot;
 comma
 id|per
 comma
@@ -18635,25 +18226,14 @@ id|cp-&gt;nego_status
 r_case
 id|NS_SYNC
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t;**      This was an answer message&n;&t;&t;&t;&t;*/
+multiline_comment|/* This was an answer message */
 r_if
 c_cond
 (paren
 id|chg
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;**&t;Answer wasn&squot;t acceptable.&n;&t;&t;&t;&t;&t;*/
-id|ncr_setsync
-(paren
-id|np
-comma
-id|cp
-comma
-l_int|0
-comma
-l_int|0xe0
-)paren
-suffix:semicolon
+multiline_comment|/* Answer wasn&squot;t acceptable.  */
 id|spi_period
 c_func
 (paren
@@ -18670,7 +18250,20 @@ id|starget
 op_assign
 l_int|0
 suffix:semicolon
+id|ncr_setsync
+c_func
+(paren
+id|np
+comma
+id|cp
+comma
+l_int|0
+comma
+l_int|0xe0
+)paren
+suffix:semicolon
 id|OUTL_DSP
+c_func
 (paren
 id|NCB_SCRIPT_PHYS
 (paren
@@ -18683,24 +18276,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;**&t;Answer is ok.&n;&t;&t;&t;&t;&t;*/
-id|ncr_setsync
-(paren
-id|np
-comma
-id|cp
-comma
-id|scntl3
-comma
-(paren
-id|fak
-op_lshift
-l_int|5
-)paren
-op_or
-id|ofs
-)paren
-suffix:semicolon
+multiline_comment|/* Answer is ok.  */
 id|spi_period
 c_func
 (paren
@@ -18717,7 +18293,26 @@ id|starget
 op_assign
 id|ofs
 suffix:semicolon
+id|ncr_setsync
+c_func
+(paren
+id|np
+comma
+id|cp
+comma
+id|scntl3
+comma
+(paren
+id|fak
+op_lshift
+l_int|5
+)paren
+op_or
+id|ofs
+)paren
+suffix:semicolon
 id|OUTL_DSP
+c_func
 (paren
 id|NCB_SCRIPT_PHYS
 (paren
@@ -18728,23 +18323,11 @@ id|clrack
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 suffix:semicolon
 r_case
 id|NS_WIDE
 suffix:colon
-id|ncr_setwide
-(paren
-id|np
-comma
-id|cp
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|spi_width
 c_func
 (paren
@@ -18753,30 +18336,23 @@ id|starget
 op_assign
 l_int|0
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;**&t;It was a request. Set value and&n;&t;&t;**      prepare an answer message&n;&t;&t;*/
-id|ncr_setsync
+id|ncr_setwide
+c_func
 (paren
 id|np
 comma
 id|cp
 comma
-id|scntl3
+l_int|0
 comma
-(paren
-id|fak
-op_lshift
-l_int|5
-)paren
-op_or
-id|ofs
+l_int|0
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t;**&t;It was a request. Set value and&n;&t;&t;**      prepare an answer message&n;&t;&t;*/
 id|spi_period
 c_func
 (paren
@@ -18792,6 +18368,24 @@ id|starget
 )paren
 op_assign
 id|ofs
+suffix:semicolon
+id|ncr_setsync
+c_func
+(paren
+id|np
+comma
+id|cp
+comma
+id|scntl3
+comma
+(paren
+id|fak
+op_lshift
+l_int|5
+)paren
+op_or
+id|ofs
+)paren
 suffix:semicolon
 id|np-&gt;msgout
 (braket
@@ -18840,28 +18434,14 @@ op_amp
 id|DEBUG_NEGO
 )paren
 (brace
-id|PRINT_ADDR
+id|ncr_print_msg
 c_func
 (paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;sync msgout: &quot;
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
+id|cp
+comma
+l_string|&quot;sync msgout&quot;
+comma
 id|np-&gt;msgout
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -18906,32 +18486,17 @@ op_amp
 id|DEBUG_NEGO
 )paren
 (brace
-id|PRINT_ADDR
+id|ncr_print_msg
 c_func
 (paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;wide msgin: &quot;
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
+id|cp
+comma
+l_string|&quot;wide msgin&quot;
+comma
 id|np-&gt;msgin
 )paren
 suffix:semicolon
-id|printk
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;get requested values.&n;&t;&t;*/
 id|chg
 op_assign
@@ -18950,12 +18515,12 @@ c_cond
 (paren
 id|wide
 op_logical_and
-id|tp-&gt;starget
+id|starget
 )paren
 id|spi_support_wide
 c_func
 (paren
-id|tp-&gt;starget
+id|starget
 )paren
 op_assign
 l_int|1
@@ -18990,10 +18555,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;wide: wide=%d chg=%d.&bslash;n&quot;
 comma
 id|wide
@@ -19036,8 +18598,17 @@ c_cond
 id|chg
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;**&t;Answer wasn&squot;t acceptable.&n;&t;&t;&t;&t;&t;*/
+multiline_comment|/* Answer wasn&squot;t acceptable.  */
+id|spi_width
+c_func
+(paren
+id|starget
+)paren
+op_assign
+l_int|0
+suffix:semicolon
 id|ncr_setwide
+c_func
 (paren
 id|np
 comma
@@ -19047,14 +18618,6 @@ l_int|0
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|spi_width
-c_func
-(paren
-id|starget
-)paren
-op_assign
-l_int|0
 suffix:semicolon
 id|OUTL_DSP
 (paren
@@ -19069,8 +18632,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;**&t;Answer is ok.&n;&t;&t;&t;&t;&t;*/
+multiline_comment|/* Answer is ok.  */
+id|spi_width
+c_func
+(paren
+id|starget
+)paren
+op_assign
+id|wide
+suffix:semicolon
 id|ncr_setwide
+c_func
 (paren
 id|np
 comma
@@ -19080,14 +18652,6 @@ id|wide
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|spi_width
-c_func
-(paren
-id|starget
-)paren
-op_assign
-id|wide
 suffix:semicolon
 id|OUTL_DSP
 (paren
@@ -19100,23 +18664,11 @@ id|clrack
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 suffix:semicolon
 r_case
 id|NS_SYNC
 suffix:colon
-id|ncr_setsync
-(paren
-id|np
-comma
-id|cp
-comma
-l_int|0
-comma
-l_int|0xe0
-)paren
-suffix:semicolon
 id|spi_period
 c_func
 (paren
@@ -19133,14 +18685,33 @@ id|starget
 op_assign
 l_int|0
 suffix:semicolon
+id|ncr_setsync
+c_func
+(paren
+id|np
+comma
+id|cp
+comma
+l_int|0
+comma
+l_int|0xe0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;It was a request, set value and&n;&t;&t;**      prepare an answer message&n;&t;&t;*/
+id|spi_width
+c_func
+(paren
+id|starget
+)paren
+op_assign
+id|wide
+suffix:semicolon
 id|ncr_setwide
+c_func
 (paren
 id|np
 comma
@@ -19150,14 +18721,6 @@ id|wide
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|spi_width
-c_func
-(paren
-id|starget
-)paren
-op_assign
-id|wide
 suffix:semicolon
 id|np-&gt;msgout
 (braket
@@ -19206,28 +18769,14 @@ op_amp
 id|DEBUG_NEGO
 )paren
 (brace
-id|PRINT_ADDR
+id|ncr_print_msg
 c_func
 (paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;wide msgout: &quot;
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
+id|cp
+comma
+l_string|&quot;wide msgout&quot;
+comma
 id|np-&gt;msgin
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -19242,10 +18791,7 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
+comma
 l_string|&quot;M_REJECT received (%x:%x).&bslash;n&quot;
 comma
 (paren
@@ -19269,28 +18815,14 @@ r_case
 id|SIR_REJECT_SENT
 suffix:colon
 multiline_comment|/*-----------------------------------------------&n;&t;&t;**&n;&t;&t;**&t;We received an unknown message&n;&t;&t;**&n;&t;&t;**-----------------------------------------------&n;&t;&t;*/
-id|PRINT_ADDR
+id|ncr_print_msg
 c_func
 (paren
-id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;M_REJECT sent for &quot;
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ncr_show_msg
-(paren
+id|cp
+comma
+l_string|&quot;M_REJECT sent for&quot;
+comma
 id|np-&gt;msgin
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -19304,11 +18836,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;M_IGN_RESIDUE received, but not yet implemented.&bslash;n&quot;
+comma
+l_string|&quot;M_IGN_RESIDUE received, but not yet &quot;
+l_string|&quot;implemented.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -19322,12 +18852,9 @@ id|PRINT_ADDR
 c_func
 (paren
 id|cp-&gt;cmd
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;M_DISCONNECT received, but datapointer not saved: &quot;
-l_string|&quot;data=%x save=%x goal=%x.&bslash;n&quot;
+comma
+l_string|&quot;M_DISCONNECT received, but datapointer &quot;
+l_string|&quot;not saved: data=%x save=%x goal=%x.&bslash;n&quot;
 comma
 (paren
 r_int
@@ -19360,7 +18887,6 @@ r_break
 suffix:semicolon
 macro_line|#endif
 )brace
-suffix:semicolon
 id|out
 suffix:colon
 id|OUTONB_STD
@@ -19375,19 +18901,29 @@ r_struct
 id|ccb
 op_star
 id|ncr_get_ccb
+c_func
 (paren
 r_struct
 id|ncb
 op_star
 id|np
 comma
-id|u_char
-id|tn
-comma
-id|u_char
-id|ln
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
 )paren
 (brace
+id|u_char
+id|tn
+op_assign
+id|cmd-&gt;device-&gt;id
+suffix:semicolon
+id|u_char
+id|ln
+op_assign
+id|cmd-&gt;device-&gt;lun
+suffix:semicolon
 r_struct
 id|tcb
 op_star
@@ -19502,19 +19038,13 @@ c_cond
 id|cp-&gt;magic
 )paren
 (brace
-id|PRINT_LUN
+id|PRINT_ADDR
 c_func
 (paren
-id|np
+id|cmd
 comma
-id|tn
-comma
-id|ln
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;ccb free list corrupted (@%p)&bslash;n&quot;
+l_string|&quot;ccb free list corrupted &quot;
+l_string|&quot;(@%p)&bslash;n&quot;
 comma
 id|cp
 )paren
@@ -19622,7 +19152,6 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 r_if
 c_cond
@@ -19701,18 +19230,11 @@ op_amp
 id|DEBUG_TAGS
 )paren
 (brace
-id|PRINT_LUN
+id|PRINT_ADDR
 c_func
 (paren
-id|np
+id|cmd
 comma
-id|tn
-comma
-id|ln
-)paren
-suffix:semicolon
-id|printk
-(paren
 l_string|&quot;ccb @%p using tag %d.&bslash;n&quot;
 comma
 id|cp
@@ -19771,18 +19293,11 @@ op_amp
 id|DEBUG_TAGS
 )paren
 (brace
-id|PRINT_LUN
+id|PRINT_ADDR
 c_func
 (paren
-id|np
+id|cp-&gt;cmd
 comma
-id|cp-&gt;target
-comma
-id|cp-&gt;lun
-)paren
-suffix:semicolon
-id|printk
-(paren
 l_string|&quot;ccb @%p freeing tag %d.&bslash;n&quot;
 comma
 id|cp
@@ -21054,9 +20569,9 @@ id|scsi_target
 op_star
 id|starget
 op_assign
-id|tp-&gt;starget
+id|sdev-&gt;sdev_target
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;If no lcb, try to allocate it.&n;&t;*/
+multiline_comment|/* If no lcb, try to allocate it.  */
 r_if
 c_cond
 (paren
@@ -21081,7 +20596,7 @@ id|ln
 r_goto
 id|fail
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Prepare negotiation&n;&t;*/
+multiline_comment|/* Prepare negotiation */
 r_if
 c_cond
 (paren
@@ -21631,7 +21146,6 @@ l_int|0x10
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -21828,7 +21342,6 @@ l_int|0x20
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Check termination position.&n;&t;*/
 r_if
 c_cond
@@ -21888,7 +21401,6 @@ l_int|0x40
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Show results.&n;&t;*/
 r_if
 c_cond
@@ -21918,7 +21430,6 @@ op_or_assign
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -21947,7 +21458,6 @@ op_or_assign
 l_int|2
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -21976,7 +21486,6 @@ op_or_assign
 l_int|4
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|err
@@ -22650,6 +22159,60 @@ id|f1
 suffix:semicolon
 )brace
 multiline_comment|/*===================== LINUX ENTRY POINTS SECTION ==========================*/
+DECL|function|ncr53c8xx_slave_alloc
+r_static
+r_int
+id|ncr53c8xx_slave_alloc
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|device
+)paren
+(brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|device-&gt;host
+suffix:semicolon
+r_struct
+id|ncb
+op_star
+id|np
+op_assign
+(paren
+(paren
+r_struct
+id|host_data
+op_star
+)paren
+id|host-&gt;hostdata
+)paren
+op_member_access_from_pointer
+id|ncb
+suffix:semicolon
+r_struct
+id|tcb
+op_star
+id|tp
+op_assign
+op_amp
+id|np-&gt;target
+(braket
+id|device-&gt;id
+)braket
+suffix:semicolon
+id|tp-&gt;starget
+op_assign
+id|device-&gt;sdev_target
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|ncr53c8xx_slave_configure
 r_static
 r_int
@@ -22710,10 +22273,6 @@ r_int
 id|numtags
 comma
 id|depth_to_use
-suffix:semicolon
-id|tp-&gt;starget
-op_assign
-id|device-&gt;sdev_target
 suffix:semicolon
 id|ncr_setup_lcb
 c_func
@@ -24066,6 +23625,10 @@ id|tpnt-&gt;slave_configure
 op_assign
 id|ncr53c8xx_slave_configure
 suffix:semicolon
+id|tpnt-&gt;slave_alloc
+op_assign
+id|ncr53c8xx_slave_alloc
+suffix:semicolon
 id|tpnt-&gt;eh_bus_reset_handler
 op_assign
 id|ncr53c8xx_bus_reset
@@ -24789,7 +24352,6 @@ r_goto
 id|attach_error
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Install the interrupt handler.  */
 id|np-&gt;irq
 op_assign
@@ -25374,6 +24936,80 @@ id|tp
 )paren
 suffix:semicolon
 )brace
+DECL|function|ncr53c8xx_get_signalling
+r_static
+r_void
+id|ncr53c8xx_get_signalling
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+)paren
+(brace
+r_struct
+id|ncb
+op_star
+id|np
+op_assign
+(paren
+(paren
+r_struct
+id|host_data
+op_star
+)paren
+id|shost-&gt;hostdata
+)paren
+op_member_access_from_pointer
+id|ncb
+suffix:semicolon
+r_enum
+id|spi_signal_type
+id|type
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|np-&gt;scsi_mode
+)paren
+(brace
+r_case
+id|SMODE_SE
+suffix:colon
+id|type
+op_assign
+id|SPI_SIGNAL_SE
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SMODE_HVD
+suffix:colon
+id|type
+op_assign
+id|SPI_SIGNAL_HVD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|type
+op_assign
+id|SPI_SIGNAL_UNKNOWN
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spi_signalling
+c_func
+(paren
+id|shost
+)paren
+op_assign
+id|type
+suffix:semicolon
+)brace
 DECL|variable|ncr53c8xx_transport_functions
 r_static
 r_struct
@@ -25410,6 +25046,11 @@ dot
 id|show_width
 op_assign
 l_int|1
+comma
+dot
+id|get_signalling
+op_assign
+id|ncr53c8xx_get_signalling
 comma
 )brace
 suffix:semicolon
