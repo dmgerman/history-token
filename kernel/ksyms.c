@@ -679,11 +679,11 @@ c_func
 id|d_lookup
 )paren
 suffix:semicolon
-DECL|variable|__d_path
+DECL|variable|d_path
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__d_path
+id|d_path
 )paren
 suffix:semicolon
 DECL|variable|mark_buffer_dirty
