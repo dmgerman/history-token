@@ -1915,12 +1915,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_else
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 id|ibmphp_unlock_operations
 (paren
 )paren
@@ -2106,12 +2100,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_else
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 id|ibmphp_unlock_operations
 (paren
 )paren
