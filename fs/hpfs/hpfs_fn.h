@@ -277,6 +277,11 @@ r_int
 id|sb_c_bitmap
 suffix:semicolon
 multiline_comment|/* current bitmap */
+DECL|member|sb_max_fwd_alloc
+r_int
+id|sb_max_fwd_alloc
+suffix:semicolon
+multiline_comment|/* max forwad allocation */
 DECL|member|hpfs_creation_de
 r_struct
 id|semaphore
@@ -504,6 +509,8 @@ op_star
 id|fnode
 op_plus
 id|fnode-&gt;ea_offs
+op_plus
+id|fnode-&gt;acl_size_s
 )paren
 suffix:semicolon
 )brace
@@ -536,6 +543,8 @@ op_star
 id|fnode
 op_plus
 id|fnode-&gt;ea_offs
+op_plus
+id|fnode-&gt;acl_size_s
 op_plus
 id|fnode-&gt;ea_size_s
 )paren

@@ -1280,6 +1280,7 @@ suffix:semicolon
 multiline_comment|/* unused */
 DECL|member|ea_offs
 r_int
+r_int
 id|ea_offs
 suffix:semicolon
 multiline_comment|/* offset from start of fnode&n;&t;&t;&t;&t;&t;   to first fnode-resident ea */
