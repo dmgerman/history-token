@@ -4216,12 +4216,12 @@ id|UART_NR
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIO
-DECL|variable|sunsu_serio_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sunsu_serio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sunsu_serio_write
 r_static
