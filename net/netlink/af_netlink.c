@@ -1596,7 +1596,7 @@ id|nladdr-&gt;nl_groups
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|netlink_getname
