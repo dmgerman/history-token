@@ -1532,40 +1532,6 @@ suffix:semicolon
 multiline_comment|/* For rough constant delay */
 DECL|macro|WL3501_NOPLOOP
 mdefine_line|#define WL3501_NOPLOOP(n) { int x = 0; while (x++ &lt; n) slow_down_io(); }
-multiline_comment|/* Ethernet MAC addr, BSS_ID, or ESS_ID */
-multiline_comment|/* With this, we may simply write &quot;x=y;&quot; instead of &quot;memcpy(x, y, 6);&quot; */
-multiline_comment|/* It&squot;s more efficiency with compiler&squot;s optimization and more clearly  */
-DECL|struct|wl3501_mac_addr
-r_struct
-id|wl3501_mac_addr
-(brace
-DECL|member|b0
-DECL|member|b1
-DECL|member|b2
-DECL|member|b3
-DECL|member|b4
-DECL|member|b5
-id|u8
-id|b0
-comma
-id|b1
-comma
-id|b2
-comma
-id|b3
-comma
-id|b4
-comma
-id|b5
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Definitions for supporting clone adapters. */
 multiline_comment|/* System Interface Registers (SIR space) */
 DECL|macro|WL3501_NIC_GCR
@@ -1693,9 +1659,12 @@ r_int
 id|base_addr
 suffix:semicolon
 DECL|member|mac_addr
-r_struct
-id|wl3501_mac_addr
+r_int
+r_char
 id|mac_addr
+(braket
+id|ETH_ALEN
+)braket
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -1766,9 +1735,12 @@ id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|bssid
-r_struct
-id|wl3501_mac_addr
+r_int
+r_char
 id|bssid
+(braket
+id|ETH_ALEN
+)braket
 suffix:semicolon
 DECL|member|ether_type
 r_int
