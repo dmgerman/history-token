@@ -328,7 +328,8 @@ mdefine_line|#define __NR_setdomainname      163 /* Common                      
 multiline_comment|/* #define __NR_ni_syscall&t;164    ENOSYS under SunOS&t;&t;&t;   */
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl           165 /* Common                                      */
-multiline_comment|/* #define __NR_exportfs        166    SunOS Specific                              */
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address    166 /* Linux specific, exportfs under SunOS        */
 DECL|macro|__NR_mount
 mdefine_line|#define __NR_mount              167 /* Common                                      */
 DECL|macro|__NR_ustat
