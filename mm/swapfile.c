@@ -5143,9 +5143,15 @@ c_func
 id|name
 )paren
 )paren
+(brace
+id|name
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
 id|bad_swap_2
 suffix:semicolon
+)brace
 id|swap_file
 op_assign
 id|filp_open
