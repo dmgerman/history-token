@@ -2072,17 +2072,17 @@ op_ne
 id|cifs_sb_target-&gt;tcon
 )paren
 (brace
-r_return
-op_minus
-id|EXDEV
-suffix:semicolon
-multiline_comment|/* BB actually could be allowed if same server, but&n;                     different share. Might eventually add support for this */
 id|FreeXid
 c_func
 (paren
 id|xid
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EXDEV
+suffix:semicolon
+multiline_comment|/* BB actually could be allowed if same server, but&n;                     different share. Might eventually add support for this */
 )brace
 id|fromName
 op_assign
@@ -2300,6 +2300,12 @@ op_logical_or
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_eq
 l_int|1
+)paren
+op_logical_or
+(paren
+id|lookupCacheEnabled
+op_eq
+l_int|0
 )paren
 )paren
 (brace
