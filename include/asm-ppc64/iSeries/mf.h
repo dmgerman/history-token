@@ -2,6 +2,7 @@ multiline_comment|/*&n; * mf.h&n; * Copyright (C) 2001  Troy D. Armstrong IBM Co
 macro_line|#ifndef MF_H_INCLUDED
 DECL|macro|MF_H_INCLUDED
 mdefine_line|#define MF_H_INCLUDED
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 r_struct
@@ -265,6 +266,17 @@ r_struct
 id|rtc_time
 op_star
 id|tm
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mf_proc_init
+c_func
+(paren
+r_struct
+id|proc_dir_entry
+op_star
+id|iSeries_proc
 )paren
 suffix:semicolon
 macro_line|#endif /* MF_H_INCLUDED */

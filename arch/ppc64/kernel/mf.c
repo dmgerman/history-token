@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
-macro_line|#include &lt;asm/iSeries/mf_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
