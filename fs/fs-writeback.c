@@ -1657,6 +1657,13 @@ id|WB_SYNC_ALL
 comma
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_mapping-&gt;backing_dev_info-&gt;memory_backed
+)paren
+r_return
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
