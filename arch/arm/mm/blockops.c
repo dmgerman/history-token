@@ -287,6 +287,12 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+id|err_pos
+op_assign
+l_int|1
+suffix:semicolon
+r_int
+r_int
 id|cache_type
 suffix:semicolon
 r_int
@@ -376,8 +382,8 @@ suffix:semicolon
 id|i
 op_increment
 comma
-id|err
-op_rshift_assign
+id|err_pos
+op_lshift_assign
 l_int|1
 )paren
 id|printk
@@ -392,7 +398,7 @@ id|i
 comma
 id|err
 op_amp
-l_int|1
+id|err_pos
 ques
 c_cond
 l_string|&quot;not &quot;
