@@ -693,10 +693,6 @@ comma
 r_void
 op_star
 id|ptr
-comma
-r_int
-r_int
-id|fifth
 )paren
 (brace
 r_struct
@@ -737,7 +733,6 @@ id|SEMTIMEDOP
 suffix:colon
 r_return
 id|sys_semtimedop
-c_func
 (paren
 id|first
 comma
@@ -756,7 +751,7 @@ r_struct
 id|timespec
 op_star
 )paren
-id|fifth
+id|third
 )paren
 suffix:semicolon
 r_case
