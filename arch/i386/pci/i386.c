@@ -399,7 +399,7 @@ c_cond
 op_logical_neg
 id|pr
 op_logical_or
-id|insert_resource
+id|request_resource
 c_func
 (paren
 id|pr
