@@ -8869,9 +8869,17 @@ id|open_stp
 op_eq
 l_int|NULL
 )paren
+(brace
+id|release_stateowner
+c_func
+(paren
+id|lock-&gt;lk_stateowner
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/* bump the open seqid used to create the lock */
 id|open_sop-&gt;so_seqid
 op_increment
