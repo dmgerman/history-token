@@ -4576,12 +4576,12 @@ c_cond
 (paren
 id|chip-&gt;dxs_fixed
 op_logical_and
-id|viadev-&gt;direction
-op_eq
-l_int|0
+id|viadev-&gt;reg_offset
+OL
+l_int|0x40
 )paren
 (brace
-multiline_comment|/* fixed playback rate */
+multiline_comment|/* fixed DXS playback rate */
 id|runtime-&gt;hw.rates
 op_assign
 id|SNDRV_PCM_RATE_48000
@@ -9893,6 +9893,11 @@ l_int|0
 r_goto
 id|__error
 suffix:semicolon
+id|chip-&gt;dxs_fixed
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* use 48k for DXS #3 */
 )brace
 r_else
 (brace
