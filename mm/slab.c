@@ -31,7 +31,7 @@ mdefine_line|#define&t;BYTES_PER_WORD&t;&t;sizeof(void *)
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN)
+macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN | SLAB_STORE_USER)
 macro_line|#else
 DECL|macro|CREATE_MASK
 macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN)
@@ -384,9 +384,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* internal c_flags */
 DECL|macro|CFLGS_OFF_SLAB
-mdefine_line|#define&t;CFLGS_OFF_SLAB&t;0x010000UL&t;/* slab management in own cache */
+mdefine_line|#define CFLGS_OFF_SLAB&t;&t;(0x80000000UL)
 DECL|macro|OFF_SLAB
 mdefine_line|#define&t;OFF_SLAB(x)&t;((x)-&gt;flags &amp; CFLGS_OFF_SLAB)
 DECL|macro|BATCHREFILL_LIMIT
@@ -2185,6 +2184,19 @@ op_star
 id|BYTES_PER_WORD
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|size
+op_sub_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -2329,6 +2341,19 @@ op_star
 id|BYTES_PER_WORD
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|size
+op_sub_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+)brace
 id|end
 op_assign
 id|fprob
@@ -2366,6 +2391,63 @@ comma
 id|end
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_RED_ZONE
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Last user: [&lt;%p&gt;]&bslash;n&quot;
+comma
+op_star
+(paren
+r_void
+op_star
+op_star
+)paren
+(paren
+id|addr
+op_plus
+id|size
+op_plus
+id|BYTES_PER_WORD
+)paren
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Last user: [&lt;%p&gt;]&bslash;n&quot;
+comma
+op_star
+(paren
+r_void
+op_star
+op_star
+)paren
+(paren
+id|addr
+op_plus
+id|size
+)paren
+)paren
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2607,6 +2689,11 @@ id|cachep-&gt;objsize
 op_star
 id|i
 suffix:semicolon
+r_int
+id|objlen
+op_assign
+id|cachep-&gt;objsize
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2621,6 +2708,17 @@ id|cachep
 comma
 id|objp
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+id|objlen
+op_sub_assign
+id|BYTES_PER_WORD
 suffix:semicolon
 r_if
 c_cond
@@ -2669,7 +2767,7 @@ op_star
 (paren
 id|objp
 op_plus
-id|cachep-&gt;objsize
+id|objlen
 op_minus
 id|BYTES_PER_WORD
 )paren
@@ -2973,6 +3071,8 @@ multiline_comment|/*&n;&t;&t; * do not red zone large object, causes severe&n;&t
 id|flags
 op_or_assign
 id|SLAB_RED_ZONE
+op_or
+id|SLAB_STORE_USER
 suffix:semicolon
 id|flags
 op_or_assign
@@ -3095,6 +3195,25 @@ op_star
 id|BYTES_PER_WORD
 suffix:semicolon
 multiline_comment|/* words for redzone */
+)brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|flags
+op_and_assign
+op_complement
+id|SLAB_HWCACHE_ALIGN
+suffix:semicolon
+id|size
+op_add_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+multiline_comment|/* word for kfree caller address */
 )brace
 macro_line|#endif
 id|align
@@ -4537,6 +4656,11 @@ op_star
 id|i
 suffix:semicolon
 macro_line|#if DEBUG
+r_int
+id|objlen
+op_assign
+id|cachep-&gt;objsize
+suffix:semicolon
 multiline_comment|/* need to poison the objs? */
 r_if
 c_cond
@@ -4560,6 +4684,37 @@ c_cond
 (paren
 id|cachep-&gt;flags
 op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|objlen
+op_sub_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|objp
+op_plus
+id|objlen
+)paren
+)paren
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
 id|SLAB_RED_ZONE
 )paren
 (brace
@@ -4577,6 +4732,16 @@ id|objp
 op_assign
 id|RED_INACTIVE
 suffix:semicolon
+id|objp
+op_add_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+id|objlen
+op_sub_assign
+l_int|2
+op_star
+id|BYTES_PER_WORD
+suffix:semicolon
 op_star
 (paren
 (paren
@@ -4587,17 +4752,11 @@ op_star
 (paren
 id|objp
 op_plus
-id|cachep-&gt;objsize
-op_minus
-id|BYTES_PER_WORD
+id|objlen
 )paren
 )paren
 op_assign
 id|RED_INACTIVE
-suffix:semicolon
-id|objp
-op_add_assign
-id|BYTES_PER_WORD
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Constructors are not allowed to allocate memory from&n;&t;&t; * the same cache which they are a constructor for.&n;&t;&t; * Otherwise, deadlock. They must also be threaded.&n;&t;&t; */
@@ -4633,6 +4792,34 @@ op_amp
 id|SLAB_RED_ZONE
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|objp
+op_plus
+id|objlen
+)paren
+)paren
+op_ne
+id|RED_INACTIVE
+)paren
+id|slab_error
+c_func
+(paren
+id|cachep
+comma
+l_string|&quot;constructor overwrote the&quot;
+l_string|&quot; end of an object&quot;
+)paren
+suffix:semicolon
 id|objp
 op_sub_assign
 id|BYTES_PER_WORD
@@ -4661,36 +4848,6 @@ id|cachep
 comma
 l_string|&quot;constructor overwrote the&quot;
 l_string|&quot; start of an object&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|objp
-op_plus
-id|cachep-&gt;objsize
-op_minus
-id|BYTES_PER_WORD
-)paren
-)paren
-op_ne
-id|RED_INACTIVE
-)paren
-id|slab_error
-c_func
-(paren
-id|cachep
-comma
-l_string|&quot;constructor overwrote the&quot;
-l_string|&quot; end of an object&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5272,6 +5429,10 @@ comma
 r_void
 op_star
 id|objp
+comma
+r_void
+op_star
+id|caller
 )paren
 (brace
 macro_line|#if DEBUG
@@ -5283,6 +5444,11 @@ suffix:semicolon
 r_int
 r_int
 id|objnr
+suffix:semicolon
+r_int
+id|objlen
+op_assign
+id|cachep-&gt;objsize
 suffix:semicolon
 r_struct
 id|slab
@@ -5323,6 +5489,19 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|objlen
+op_sub_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5376,7 +5555,7 @@ op_star
 (paren
 id|objp
 op_plus
-id|cachep-&gt;objsize
+id|objlen
 op_minus
 id|BYTES_PER_WORD
 )paren
@@ -5394,6 +5573,31 @@ comma
 l_string|&quot;double free, or memory after &quot;
 l_string|&quot; object was overwritten&quot;
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+op_star
+(paren
+(paren
+r_void
+op_star
+op_star
+)paren
+(paren
+id|objp
+op_plus
+id|objlen
+)paren
+)paren
+op_assign
+id|caller
 suffix:semicolon
 )brace
 id|objnr
@@ -6105,9 +6309,18 @@ comma
 r_void
 op_star
 id|objp
+comma
+r_void
+op_star
+id|caller
 )paren
 (brace
 macro_line|#if DEBUG
+r_int
+id|objlen
+op_assign
+id|cachep-&gt;objsize
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6137,6 +6350,35 @@ c_cond
 (paren
 id|cachep-&gt;flags
 op_amp
+id|SLAB_STORE_USER
+)paren
+(brace
+id|objlen
+op_sub_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+op_star
+(paren
+(paren
+r_void
+op_star
+op_star
+)paren
+(paren
+id|objp
+op_plus
+id|objlen
+)paren
+)paren
+op_assign
+id|caller
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cachep-&gt;flags
+op_amp
 id|SLAB_RED_ZONE
 )paren
 (brace
@@ -6159,6 +6401,7 @@ id|RED_ACTIVE
 op_ne
 id|RED_INACTIVE
 )paren
+(brace
 id|slab_error
 c_func
 (paren
@@ -6168,6 +6411,7 @@ l_string|&quot;memory before object was &quot;
 l_string|&quot;overwritten&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6182,7 +6426,7 @@ op_star
 (paren
 id|objp
 op_plus
-id|cachep-&gt;objsize
+id|objlen
 op_minus
 id|BYTES_PER_WORD
 )paren
@@ -6192,6 +6436,7 @@ id|RED_ACTIVE
 op_ne
 id|RED_INACTIVE
 )paren
+(brace
 id|slab_error
 c_func
 (paren
@@ -6201,6 +6446,7 @@ l_string|&quot;memory after object was &quot;
 l_string|&quot;overwritten&quot;
 )paren
 suffix:semicolon
+)brace
 id|objp
 op_add_assign
 id|BYTES_PER_WORD
@@ -6372,6 +6618,12 @@ comma
 id|flags
 comma
 id|objp
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6848,6 +7100,12 @@ c_func
 id|cachep
 comma
 id|objp
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 r_if
