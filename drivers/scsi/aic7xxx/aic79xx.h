@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#61 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#76 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_H_
 DECL|macro|_AIC79XX_H_
 mdefine_line|#define _AIC79XX_H_
@@ -66,6 +66,13 @@ DECL|macro|SCB_GET_TARGET_OFFSET
 mdefine_line|#define SCB_GET_TARGET_OFFSET(ahd, scb)&t;&bslash;&n;&t;SCB_GET_TARGET(ahd, scb)
 DECL|macro|SCB_GET_TARGET_MASK
 mdefine_line|#define SCB_GET_TARGET_MASK(ahd, scb) &bslash;&n;&t;(0x01 &lt;&lt; (SCB_GET_TARGET_OFFSET(ahd, scb)))
+macro_line|#ifdef AHD_DEBUG
+DECL|macro|SCB_IS_SILENT
+mdefine_line|#define SCB_IS_SILENT(scb)&t;&t;&t;&t;&t;&bslash;&n;&t;((ahd_debug &amp; AHD_SHOW_MASKED_ERRORS) == 0&t;&t;&bslash;&n;      &amp;&amp; (((scb)-&gt;flags &amp; SCB_SILENT) != 0))
+macro_line|#else
+DECL|macro|SCB_IS_SILENT
+mdefine_line|#define SCB_IS_SILENT(scb)&t;&t;&t;&t;&t;&bslash;&n;&t;(((scb)-&gt;flags &amp; SCB_SILENT) != 0)
+macro_line|#endif
 multiline_comment|/*&n; * TCLs have the following format: TTTTLLLLLLLL&n; */
 DECL|macro|TCL_TARGET_OFFSET
 mdefine_line|#define TCL_TARGET_OFFSET(tcl) &bslash;&n;&t;((((tcl) &gt;&gt; 4) &amp; TID) &gt;&gt; 4)
@@ -197,7 +204,7 @@ id|AHD_MULTI_FUNC
 op_assign
 l_int|0x00100
 comma
-multiline_comment|/* Multi-Function Twin Channel Device */
+multiline_comment|/* Multi-Function/Channel Device */
 DECL|enumerator|AHD_TARGETMODE
 id|AHD_TARGETMODE
 op_assign
@@ -210,6 +217,24 @@ op_assign
 l_int|0x02000
 comma
 multiline_comment|/* Space for two roles at a time */
+DECL|enumerator|AHD_RTI
+id|AHD_RTI
+op_assign
+l_int|0x04000
+comma
+multiline_comment|/* Retained Training Support */
+DECL|enumerator|AHD_NEW_IOCELL_OPTS
+id|AHD_NEW_IOCELL_OPTS
+op_assign
+l_int|0x08000
+comma
+multiline_comment|/* More Signal knobs in the IOCELL */
+DECL|enumerator|AHD_NEW_DFCNTRL_OPTS
+id|AHD_NEW_DFCNTRL_OPTS
+op_assign
+l_int|0x10000
+comma
+multiline_comment|/* SCSIENWRDIS bit */
 DECL|enumerator|AHD_REMOVABLE
 id|AHD_REMOVABLE
 op_assign
@@ -238,41 +263,49 @@ id|AHD_BUGNONE
 op_assign
 l_int|0x0000
 comma
+multiline_comment|/*&n;&t; * Rev A hardware fails to update LAST/CURR/NEXTSCB&n;&t; * correctly in certain packetized selection cases.&n;&t; */
 DECL|enumerator|AHD_SENT_SCB_UPDATE_BUG
 id|AHD_SENT_SCB_UPDATE_BUG
 op_assign
 l_int|0x0001
 comma
+multiline_comment|/* The wrong SCB is accessed to check the abort pending bit. */
 DECL|enumerator|AHD_ABORT_LQI_BUG
 id|AHD_ABORT_LQI_BUG
 op_assign
 l_int|0x0002
 comma
+multiline_comment|/* Packetized bitbucket crosses packet boundaries. */
 DECL|enumerator|AHD_PKT_BITBUCKET_BUG
 id|AHD_PKT_BITBUCKET_BUG
 op_assign
 l_int|0x0004
 comma
+multiline_comment|/* The selection timer runs twice as long as its setting. */
 DECL|enumerator|AHD_LONG_SETIMO_BUG
 id|AHD_LONG_SETIMO_BUG
 op_assign
 l_int|0x0008
 comma
+multiline_comment|/* The Non-LQ CRC error status is delayed until phase change. */
 DECL|enumerator|AHD_NLQICRC_DELAYED_BUG
 id|AHD_NLQICRC_DELAYED_BUG
 op_assign
 l_int|0x0010
 comma
+multiline_comment|/* The chip must be reset for all outgoing bus resets.  */
 DECL|enumerator|AHD_SCSIRST_BUG
 id|AHD_SCSIRST_BUG
 op_assign
 l_int|0x0020
 comma
+multiline_comment|/* Some PCIX fields must be saved and restored across chip reset. */
 DECL|enumerator|AHD_PCIX_CHIPRST_BUG
 id|AHD_PCIX_CHIPRST_BUG
 op_assign
 l_int|0x0040
 comma
+multiline_comment|/* MMAPIO is not functional in PCI-X mode.  */
 DECL|enumerator|AHD_PCIX_MMAPIO_BUG
 id|AHD_PCIX_MMAPIO_BUG
 op_assign
@@ -286,50 +319,83 @@ id|AHD_PCIX_CHIPRST_BUG
 op_or
 id|AHD_PCIX_MMAPIO_BUG
 comma
+multiline_comment|/*&n;&t; * LQOSTOP0 status set even for forced selections with ATN&n;&t; * to perform non-packetized message delivery.&n;&t; */
 DECL|enumerator|AHD_LQO_ATNO_BUG
 id|AHD_LQO_ATNO_BUG
 op_assign
 l_int|0x0100
 comma
+multiline_comment|/* FIFO auto-flush does not always trigger.  */
 DECL|enumerator|AHD_AUTOFLUSH_BUG
 id|AHD_AUTOFLUSH_BUG
 op_assign
 l_int|0x0200
 comma
+multiline_comment|/* The CLRLQO registers are not self-clearing. */
 DECL|enumerator|AHD_CLRLQO_AUTOCLR_BUG
 id|AHD_CLRLQO_AUTOCLR_BUG
 op_assign
 l_int|0x0400
 comma
+multiline_comment|/* The PACKETIZED status bit refers to the previous connection. */
 DECL|enumerator|AHD_PKTIZED_STATUS_BUG
 id|AHD_PKTIZED_STATUS_BUG
 op_assign
 l_int|0x0800
 comma
+multiline_comment|/* &quot;Short Luns&quot; are not placed into outgoing LQ packets correctly. */
 DECL|enumerator|AHD_PKT_LUN_BUG
 id|AHD_PKT_LUN_BUG
 op_assign
 l_int|0x1000
 comma
-DECL|enumerator|AHD_MDFF_WSCBPTR_BUG
-id|AHD_MDFF_WSCBPTR_BUG
+multiline_comment|/*&n;&t; * Only the FIFO allocated to the non-packetized connection may&n;&t; * be in use during a non-packetzied connection.&n;&t; */
+DECL|enumerator|AHD_NONPACKFIFO_BUG
+id|AHD_NONPACKFIFO_BUG
 op_assign
 l_int|0x2000
 comma
-DECL|enumerator|AHD_REG_SLOW_SETTLE_BUG
-id|AHD_REG_SLOW_SETTLE_BUG
+multiline_comment|/*&n;&t; * Writing to a DFF SCBPTR register may fail if concurent with&n;&t; * a hardware write to the other DFF SCBPTR register.  This is&n;&t; * not currently a concern in our sequencer since all chips with&n;&t; * this bug have the AHD_NONPACKFIFO_BUG and all writes of concern&n;&t; * occur in non-packetized connections.&n;&t; */
+DECL|enumerator|AHD_MDFF_WSCBPTR_BUG
+id|AHD_MDFF_WSCBPTR_BUG
 op_assign
 l_int|0x4000
 comma
-DECL|enumerator|AHD_SET_MODE_BUG
-id|AHD_SET_MODE_BUG
+multiline_comment|/* SGHADDR updates are slow. */
+DECL|enumerator|AHD_REG_SLOW_SETTLE_BUG
+id|AHD_REG_SLOW_SETTLE_BUG
 op_assign
 l_int|0x8000
 comma
+multiline_comment|/*&n;&t; * Changing the MODE_PTR coincident with an interrupt that&n;&t; * switches to a different mode will cause the interrupt to&n;&t; * be in the mode written outside of interrupt context.&n;&t; */
+DECL|enumerator|AHD_SET_MODE_BUG
+id|AHD_SET_MODE_BUG
+op_assign
+l_int|0x10000
+comma
+multiline_comment|/* Non-packetized busfree revision does not work. */
 DECL|enumerator|AHD_BUSFREEREV_BUG
 id|AHD_BUSFREEREV_BUG
 op_assign
-l_int|0x10000
+l_int|0x20000
+comma
+multiline_comment|/*&n;&t; * Paced transfers are indicated with a non-standard PPR&n;&t; * option bit in the neg table, 160MHz is indicated by&n;&t; * sync factor 0x7, and the offset if off by a factor of 2.&n;&t; */
+DECL|enumerator|AHD_PACED_NEGTABLE_BUG
+id|AHD_PACED_NEGTABLE_BUG
+op_assign
+l_int|0x40000
+comma
+multiline_comment|/* LQOOVERRUN false positives. */
+DECL|enumerator|AHD_LQOOVERRUN_BUG
+id|AHD_LQOOVERRUN_BUG
+op_assign
+l_int|0x80000
+comma
+multiline_comment|/*&n;&t; * Controller write to INTSTAT will lose to a host&n;&t; * write to CLRINT.&n;&t; */
+DECL|enumerator|AHD_INTCOLLISION_BUG
+id|AHD_INTCOLLISION_BUG
+op_assign
+l_int|0x100000
 DECL|typedef|ahd_bug
 )brace
 id|ahd_bug
@@ -447,8 +513,8 @@ op_assign
 l_int|0x80000
 comma
 multiline_comment|/* No SEEPROM but SCB had info. */
-DECL|enumerator|AHD_CPQ_BOARD
-id|AHD_CPQ_BOARD
+DECL|enumerator|AHD_HP_BOARD
+id|AHD_HP_BOARD
 op_assign
 l_int|0x100000
 comma
@@ -843,37 +909,43 @@ comma
 DECL|enumerator|SCB_ACTIVE
 id|SCB_ACTIVE
 op_assign
-l_int|0x00400
+l_int|0x00200
 comma
 DECL|enumerator|SCB_TARGET_IMMEDIATE
 id|SCB_TARGET_IMMEDIATE
 op_assign
-l_int|0x00800
+l_int|0x00400
 comma
 DECL|enumerator|SCB_PACKETIZED
 id|SCB_PACKETIZED
 op_assign
-l_int|0x01000
+l_int|0x00800
 comma
 DECL|enumerator|SCB_EXPECT_PPR_BUSFREE
 id|SCB_EXPECT_PPR_BUSFREE
 op_assign
-l_int|0x02000
+l_int|0x01000
 comma
 DECL|enumerator|SCB_PKT_SENSE
 id|SCB_PKT_SENSE
 op_assign
-l_int|0x04000
+l_int|0x02000
 comma
 DECL|enumerator|SCB_CMDPHASE_ABORT
 id|SCB_CMDPHASE_ABORT
 op_assign
-l_int|0x08000
+l_int|0x04000
 comma
 DECL|enumerator|SCB_ON_COL_LIST
 id|SCB_ON_COL_LIST
 op_assign
+l_int|0x08000
+comma
+DECL|enumerator|SCB_SILENT
+id|SCB_SILENT
+op_assign
 l_int|0x10000
+multiline_comment|/*&n;&t;&t;&t;&t;&t;   * Be quiet about transmission type&n;&t;&t;&t;&t;&t;   * errors.  They are expected and we&n;&t;&t;&t;&t;&t;   * don&squot;t want to upset the user.  This&n;&t;&t;&t;&t;&t;   * flag is typically used during DV.&n;&t;&t;&t;&t;&t;   */
 DECL|typedef|scb_flag
 )brace
 id|scb_flag
@@ -1019,6 +1091,12 @@ id|u_int
 id|sg_count
 suffix:semicolon
 multiline_comment|/* How full ahd_dma_seg is */
+DECL|macro|AHD_MAX_LQ_CRC_ERRORS
+mdefine_line|#define&t;AHD_MAX_LQ_CRC_ERRORS 5
+DECL|member|crc_retry_count
+id|u_int
+id|crc_retry_count
+suffix:semicolon
 )brace
 suffix:semicolon
 id|TAILQ_HEAD
@@ -1261,10 +1339,16 @@ DECL|macro|AHD_TRANS_GOAL
 mdefine_line|#define AHD_TRANS_GOAL&t;&t;0x04&t;/* Modify negotiation goal */
 DECL|macro|AHD_TRANS_USER
 mdefine_line|#define AHD_TRANS_USER&t;&t;0x08&t;/* Modify user negotiation settings */
-DECL|macro|AHD_PERIOD_ASYNC
-mdefine_line|#define AHD_PERIOD_ASYNC&t;0xFF
 DECL|macro|AHD_PERIOD_10MHz
 mdefine_line|#define AHD_PERIOD_10MHz&t;0x19
+DECL|macro|AHD_WIDTH_UNKNOWN
+mdefine_line|#define AHD_WIDTH_UNKNOWN&t;0xFF
+DECL|macro|AHD_PERIOD_UNKNOWN
+mdefine_line|#define AHD_PERIOD_UNKNOWN&t;0xFF
+DECL|macro|AHD_OFFSET_UNKNOWN
+mdefine_line|#define AHD_OFFSET_UNKNOWN&t;0x0
+DECL|macro|AHD_PPR_OPTS_UNKNOWN
+mdefine_line|#define AHD_PPR_OPTS_UNKNOWN&t;0xFF
 multiline_comment|/*&n; * Transfer Negotiation Information.&n; */
 DECL|struct|ahd_transinfo
 r_struct
@@ -1365,8 +1449,6 @@ multiline_comment|/* Tagged Queuing allowed */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Points of interest along the negotiated transfer scale.&n; */
-DECL|macro|AHD_SYNCRATE_MAX
-mdefine_line|#define AHD_SYNCRATE_MAX&t;0x8
 DECL|macro|AHD_SYNCRATE_160
 mdefine_line|#define AHD_SYNCRATE_160&t;0x8
 DECL|macro|AHD_SYNCRATE_PACED
@@ -1387,6 +1469,11 @@ DECL|macro|AHD_SYNCRATE_MIN
 mdefine_line|#define AHD_SYNCRATE_MIN&t;0x60
 DECL|macro|AHD_SYNCRATE_ASYNC
 mdefine_line|#define&t;AHD_SYNCRATE_ASYNC&t;0xFF
+DECL|macro|AHD_SYNCRATE_MAX
+mdefine_line|#define AHD_SYNCRATE_MAX&t;AHD_SYNCRATE_160
+multiline_comment|/* Safe and valid period for async negotiations. */
+DECL|macro|AHD_ASYNC_XFER_PERIOD
+mdefine_line|#define&t;AHD_ASYNC_XFER_PERIOD&t;0x44
 multiline_comment|/*&n; * In RevA, the synctable uses a 120MHz rate for the period&n; * factor 8 and 160MHz for the period factor 7.  The 120MHz&n; * rate never made it into the official SCSI spec, so we must&n; * compensate when setting the negotiation table for Rev A&n; * parts.&n; */
 DECL|macro|AHD_SYNCRATE_REVA_120
 mdefine_line|#define AHD_SYNCRATE_REVA_120&t;0x8
@@ -1721,10 +1808,15 @@ id|MSG_FLAG_EXPECT_IDE_BUSFREE
 op_assign
 l_int|0x04
 comma
+DECL|enumerator|MSG_FLAG_EXPECT_QASREJ_BUSFREE
+id|MSG_FLAG_EXPECT_QASREJ_BUSFREE
+op_assign
+l_int|0x08
+comma
 DECL|enumerator|MSG_FLAG_PACKETIZED
 id|MSG_FLAG_PACKETIZED
 op_assign
-l_int|0x08
+l_int|0x10
 DECL|typedef|ahd_msg_flags
 )brace
 id|ahd_msg_flags
@@ -2128,11 +2220,6 @@ DECL|member|our_id
 r_uint8
 id|our_id
 suffix:semicolon
-multiline_comment|/*&n;&t; * PCI error detection.&n;&t; */
-DECL|member|unsolicited_ints
-r_int
-id|unsolicited_ints
-suffix:semicolon
 multiline_comment|/*&n;&t; * Target incoming command FIFO.&n;&t; */
 DECL|member|targetcmds
 r_struct
@@ -2226,6 +2313,23 @@ DECL|member|pci_cachesize
 id|u_int
 id|pci_cachesize
 suffix:semicolon
+multiline_comment|/* IO Cell Parameters */
+DECL|member|iocell_opts
+r_uint8
+id|iocell_opts
+(braket
+id|AHD_NUM_PER_DEV_ANNEXCOLS
+)braket
+suffix:semicolon
+DECL|member|stack_size
+id|u_int
+id|stack_size
+suffix:semicolon
+DECL|member|saved_stack
+r_uint16
+op_star
+id|saved_stack
+suffix:semicolon
 multiline_comment|/* Per-Unit descriptive information */
 DECL|member|description
 r_const
@@ -2278,6 +2382,17 @@ r_struct
 id|ahd_softc_tailq
 id|ahd_tailq
 suffix:semicolon
+multiline_comment|/*************************** IO Cell Configuration ****************************/
+DECL|macro|AHD_PRECOMP_SLEW_INDEX
+mdefine_line|#define&t;AHD_PRECOMP_SLEW_INDEX&t;&t;&t;&t;&t;&t;&bslash;&n;    (AHD_ANNEXCOL_PRECOMP_SLEW - AHD_ANNEXCOL_PER_DEV0)
+DECL|macro|AHD_AMPLITUDE_INDEX
+mdefine_line|#define&t;AHD_AMPLITUDE_INDEX&t;&t;&t;&t;&t;&t;&bslash;&n;    (AHD_ANNEXCOL_AMPLITUDE - AHD_ANNEXCOL_PER_DEV0)
+DECL|macro|AHD_SET_SLEWRATE
+mdefine_line|#define AHD_SET_SLEWRATE(ahd, new_slew)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_PRECOMP_SLEW_INDEX] &amp;= ~AHD_SLEWRATE_MASK;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_PRECOMP_SLEW_INDEX] |=&t;&t;&t;&bslash;&n;&t;(((new_slew) &lt;&lt; AHD_SLEWRATE_SHIFT) &amp; AHD_SLEWRATE_MASK);&t;&bslash;&n;} while (0)
+DECL|macro|AHD_SET_PRECOMP
+mdefine_line|#define AHD_SET_PRECOMP(ahd, new_pcomp)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_PRECOMP_SLEW_INDEX] &amp;= ~AHD_PRECOMP_MASK;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_PRECOMP_SLEW_INDEX] |=&t;&t;&t;&bslash;&n;&t;(((new_pcomp) &lt;&lt; AHD_PRECOMP_SHIFT) &amp; AHD_PRECOMP_MASK);&t;&bslash;&n;} while (0)
+DECL|macro|AHD_SET_AMPLITUDE
+mdefine_line|#define AHD_SET_AMPLITUDE(ahd, new_amp)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_AMPLITUDE_INDEX] &amp;= ~AHD_AMPLITUDE_MASK;&t;&bslash;&n;    (ahd)-&gt;iocell_opts[AHD_AMPLITUDE_INDEX] |=&t;&t;&t;&t;&bslash;&n;&t;(((new_amp) &lt;&lt; AHD_AMPLITUDE_SHIFT) &amp; AHD_AMPLITUDE_MASK);&t;&bslash;&n;} while (0)
 multiline_comment|/************************ Active Device Information ***************************/
 r_typedef
 r_enum
@@ -2521,27 +2636,12 @@ id|ahd_pci_identity
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*************************** EISA/VL Front End ********************************/
-r_struct
-id|aic7770_identity
-op_star
-id|aic7770_find_device
-c_func
-(paren
-r_uint32
-)paren
-suffix:semicolon
 r_int
-id|aic7770_config
+id|ahd_pci_test_register_access
 c_func
 (paren
 r_struct
 id|ahd_softc
-op_star
-id|ahd
-comma
-r_struct
-id|aic7770_identity
 op_star
 )paren
 suffix:semicolon
@@ -3281,6 +3381,25 @@ id|role_t
 id|role
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Negotiation types.  These are used to qualify if we should renegotiate&n; * even if our goal and current transport parameters are identical.&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|AHD_NEG_TO_GOAL
+id|AHD_NEG_TO_GOAL
+comma
+multiline_comment|/* Renegotiate only if goal and curr differ. */
+DECL|enumerator|AHD_NEG_IF_NON_ASYNC
+id|AHD_NEG_IF_NON_ASYNC
+comma
+multiline_comment|/* Renegotiate so long as goal is non-async. */
+DECL|enumerator|AHD_NEG_ALWAYS
+id|AHD_NEG_ALWAYS
+multiline_comment|/* Renegotiat even if goal is async. */
+DECL|typedef|ahd_neg_type
+)brace
+id|ahd_neg_type
+suffix:semicolon
 r_int
 id|ahd_update_neg_request
 c_func
@@ -3301,8 +3420,7 @@ r_struct
 id|ahd_initiator_tinfo
 op_star
 comma
-r_int
-multiline_comment|/*force*/
+id|ahd_neg_type
 )paren
 suffix:semicolon
 r_void
@@ -3474,33 +3592,39 @@ r_uint32
 id|ahd_debug
 suffix:semicolon
 DECL|macro|AHD_SHOW_MISC
-mdefine_line|#define AHD_SHOW_MISC&t;&t;0x0001
+mdefine_line|#define AHD_SHOW_MISC&t;&t;0x00001
 DECL|macro|AHD_SHOW_SENSE
-mdefine_line|#define AHD_SHOW_SENSE&t;&t;0x0002
+mdefine_line|#define AHD_SHOW_SENSE&t;&t;0x00002
+DECL|macro|AHD_SHOW_RECOVERY
+mdefine_line|#define AHD_SHOW_RECOVERY&t;0x00004
 DECL|macro|AHD_DUMP_SEEPROM
-mdefine_line|#define AHD_DUMP_SEEPROM&t;0x0004
+mdefine_line|#define AHD_DUMP_SEEPROM&t;0x00008
 DECL|macro|AHD_SHOW_TERMCTL
-mdefine_line|#define AHD_SHOW_TERMCTL&t;0x0008
+mdefine_line|#define AHD_SHOW_TERMCTL&t;0x00010
 DECL|macro|AHD_SHOW_MEMORY
-mdefine_line|#define AHD_SHOW_MEMORY&t;&t;0x0010
+mdefine_line|#define AHD_SHOW_MEMORY&t;&t;0x00020
 DECL|macro|AHD_SHOW_MESSAGES
-mdefine_line|#define AHD_SHOW_MESSAGES&t;0x0020
+mdefine_line|#define AHD_SHOW_MESSAGES&t;0x00040
 DECL|macro|AHD_SHOW_MODEPTR
-mdefine_line|#define AHD_SHOW_MODEPTR&t;0x0040
+mdefine_line|#define AHD_SHOW_MODEPTR&t;0x00080
 DECL|macro|AHD_SHOW_SELTO
-mdefine_line|#define AHD_SHOW_SELTO&t;&t;0x0080
+mdefine_line|#define AHD_SHOW_SELTO&t;&t;0x00100
 DECL|macro|AHD_SHOW_FIFOS
-mdefine_line|#define AHD_SHOW_FIFOS&t;&t;0x0100
+mdefine_line|#define AHD_SHOW_FIFOS&t;&t;0x00200
 DECL|macro|AHD_SHOW_QFULL
-mdefine_line|#define AHD_SHOW_QFULL&t;&t;0x0200
+mdefine_line|#define AHD_SHOW_QFULL&t;&t;0x00400
+DECL|macro|AHD_SHOW_DV
+mdefine_line|#define&t;AHD_SHOW_DV&t;&t;0x00800
+DECL|macro|AHD_SHOW_MASKED_ERRORS
+mdefine_line|#define AHD_SHOW_MASKED_ERRORS&t;0x01000
 DECL|macro|AHD_SHOW_QUEUE
-mdefine_line|#define AHD_SHOW_QUEUE&t;&t;0x0400
+mdefine_line|#define AHD_SHOW_QUEUE&t;&t;0x02000
 DECL|macro|AHD_SHOW_TQIN
-mdefine_line|#define AHD_SHOW_TQIN&t;&t;0x0800
+mdefine_line|#define AHD_SHOW_TQIN&t;&t;0x04000
 DECL|macro|AHD_SHOW_SG
-mdefine_line|#define AHD_SHOW_SG&t;&t;0x1000
+mdefine_line|#define AHD_SHOW_SG&t;&t;0x08000
 DECL|macro|AHD_DEBUG_SEQUENCER
-mdefine_line|#define AHD_DEBUG_SEQUENCER&t;0x2000
+mdefine_line|#define AHD_DEBUG_SEQUENCER&t;0x10000
 macro_line|#endif
 r_void
 id|ahd_print_scb
@@ -3510,6 +3634,21 @@ r_struct
 id|scb
 op_star
 id|scb
+)paren
+suffix:semicolon
+r_void
+id|ahd_print_devinfo
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+comma
+r_struct
+id|ahd_devinfo
+op_star
+id|devinfo
 )paren
 suffix:semicolon
 r_void
