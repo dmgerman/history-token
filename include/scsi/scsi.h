@@ -3,6 +3,7 @@ DECL|macro|_LINUX_SCSI_H
 mdefine_line|#define _LINUX_SCSI_H
 multiline_comment|/*&n; * This header file contains public constants and structures used by&n; * the scsi code for linux.&n; */
 multiline_comment|/*&n;    $Header: /usr/src/linux/include/linux/RCS/scsi.h,v 1.3 1993/09/24 12:20:33 drew Exp $&n;&n;    For documentation on the OPCODES, MESSAGES, and SENSE values,&n;    please consult the SCSI standard.&n;&n;*/
+macro_line|#include &lt;linux/types.h&gt; 
 multiline_comment|/*&n; * SCSI command lengths&n; */
 r_extern
 r_const
