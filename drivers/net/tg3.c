@@ -15830,7 +15830,14 @@ id|tp-&gt;tg3_flags
 op_assign
 id|flags_save
 suffix:semicolon
-multiline_comment|/* Flush PCI posted writes.  The normal MMIO registers&n;&t; * are inaccessible at this time so this is the only&n;&t; * way to make this reliably.  I tried to use indirect&n;&t; * register read/write but this upset some 5701 variants.&n;&t; */
+multiline_comment|/* Unfortunately, we have to delay before the PCI read back.&n;&t; * Some 575X chips even will not respond to a PCI cfg access&n;&t; * when the reset command is given to the chip.&n;&t; *&n;&t; * How do these hardware designers expect things to work&n;&t; * properly if the PCI write is posted for a long period&n;&t; * of time?  It is always necessary to have some method by&n;&t; * which a register read back can occur to push the write&n;&t; * out which does the reset.&n;&t; *&n;&t; * For most tg3 variants the trick below was working.&n;&t; * Ho hum...&n;&t; */
+id|udelay
+c_func
+(paren
+l_int|120
+)paren
+suffix:semicolon
+multiline_comment|/* Flush PCI posted writes.  The normal MMIO registers&n;&t; * are inaccessible at this time so this is the only&n;&t; * way to make this reliably (actually, this is no longer&n;&t; * the case, see above).  I tried to use indirect&n;&t; * register read/write but this upset some 5701 variants.&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
