@@ -1040,8 +1040,10 @@ op_star
 id|blk_get_ra_pages
 c_func
 (paren
-id|kdev_t
-id|kdev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 suffix:semicolon
 r_extern

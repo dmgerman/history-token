@@ -957,7 +957,7 @@ op_assign
 id|blk_get_ra_pages
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if
@@ -1006,7 +1006,7 @@ op_assign
 id|blk_get_ra_pages
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if
