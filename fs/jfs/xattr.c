@@ -2494,17 +2494,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-id|value
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * We&squot;re changing the ACL.  Get rid of the cached one&n;&t;&t; */
 id|acl
@@ -2521,12 +2510,8 @@ r_if
 c_cond
 (paren
 id|acl
-op_logical_and
-(paren
-id|acl
 op_ne
 id|JFS_ACL_NOT_CACHED
-)paren
 )paren
 id|posix_acl_release
 c_func
@@ -2544,6 +2529,9 @@ id|i_acl
 op_assign
 id|JFS_ACL_NOT_CACHED
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -2560,6 +2548,53 @@ op_eq
 l_int|0
 )paren
 (brace
+id|acl
+op_assign
+id|posix_acl_from_xattr
+c_func
+(paren
+id|value
+comma
+id|value_len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|acl
+)paren
+)paren
+(brace
+id|rc
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|acl
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;posix_acl_from_xattr returned %d&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+id|posix_acl_release
+c_func
+(paren
+id|acl
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We&squot;re changing the default ACL.  Get rid of the cached one&n;&t;&t; */
 id|acl
 op_assign
@@ -2598,22 +2633,15 @@ id|i_default_acl
 op_assign
 id|JFS_ACL_NOT_CACHED
 suffix:semicolon
-)brace
-r_else
-multiline_comment|/* Invalid xattr name */
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else&t;&t;&t;/* CONFIG_JFS_POSIX_ACL */
+)brace
+macro_line|#endif&t;&t;&t;/* CONFIG_JFS_POSIX_ACL */
 r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
-macro_line|#endif&t;&t;&t;/* CONFIG_JFS_POSIX_ACL */
 )brace
 DECL|function|can_set_xattr
 r_static
