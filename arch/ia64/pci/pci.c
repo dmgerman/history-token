@@ -472,15 +472,13 @@ id|pci_acpi_init
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_pci_irq_init
-c_func
-(paren
-)paren
-)paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -488,12 +486,30 @@ id|KERN_INFO
 l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
 )paren
 suffix:semicolon
-r_else
-id|printk
+multiline_comment|/*&n;&t; * PCI IRQ routing is set up by pci_enable_device(), but we&n;&t; * also do it here in case there are still broken drivers that&n;&t; * don&squot;t use pci_enable_device().&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+id|dev
+op_assign
+id|pci_find_device
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+id|acpi_pci_irq_enable
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return

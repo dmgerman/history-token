@@ -1,6 +1,8 @@
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|function|pci_acpi_scan_root
 r_struct
@@ -59,6 +61,13 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -70,25 +79,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|acpi_noirq
 )paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_pci_irq_init
-c_func
-(paren
-)paren
-)paren
-(brace
+r_return
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
+)paren
+suffix:semicolon
+id|acpi_irq_penalty_init
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pcibios_scanned
@@ -98,16 +103,44 @@ id|pcibios_enable_irq
 op_assign
 id|acpi_pci_irq_enable
 suffix:semicolon
-)brace
-r_else
-id|printk
+multiline_comment|/*&n;&t; * PCI IRQ routing is set up by pci_enable_device(), but we&n;&t; * also do it here in case there are still broken drivers that&n;&t; * don&squot;t use pci_enable_device().&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+id|dev
+op_assign
+id|pci_find_device
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+id|acpi_pci_irq_enable
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
-)brace
+macro_line|#ifdef CONFIG_X86_IO_APIC
+r_if
+c_cond
+(paren
+id|acpi_ioapic
+)paren
+id|print_IO_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

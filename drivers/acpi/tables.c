@@ -435,7 +435,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;IOAPIC (id[0x%02x] address[0x%08x] global_irq_base[0x%x])&bslash;n&quot;
+l_string|&quot;IOAPIC (id[0x%02x] address[0x%08x] gsi_base[%d])&bslash;n&quot;
 comma
 id|p-&gt;id
 comma
@@ -645,11 +645,9 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;IOSAPIC (id[0x%x] global_irq_base[0x%x] address[%p])&bslash;n&quot;
+l_string|&quot;IOSAPIC (id[0x%x] address[%p] gsi_base[%d])&bslash;n&quot;
 comma
 id|p-&gt;id
-comma
-id|p-&gt;global_irq_base
 comma
 (paren
 r_void
@@ -660,6 +658,8 @@ r_int
 r_int
 )paren
 id|p-&gt;address
+comma
+id|p-&gt;global_irq_base
 )paren
 suffix:semicolon
 )brace
