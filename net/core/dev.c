@@ -2042,6 +2042,34 @@ id|nb
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;call_netdevice_notifiers - call all network notifier blocks&n; *&n; *&t;Call all network notifier blocks.  Parameters and return value&n; *&t;are as for notifier_call_chain().&n; */
+DECL|function|call_netdevice_notifiers
+r_int
+id|call_netdevice_notifiers
+c_func
+(paren
+r_int
+r_int
+id|val
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+r_return
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|netdev_chain
+comma
+id|val
+comma
+id|v
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Support routine. Sends outgoing frames to any network&n; *&t;taps currently in use.&n; */
 DECL|function|dev_queue_xmit_nit
 r_void
