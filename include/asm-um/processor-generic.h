@@ -10,9 +10,9 @@ id|task_struct
 suffix:semicolon
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/signal.h&quot;
-macro_line|#include &quot;asm/segment.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/siginfo.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
 r_struct
 id|mm_struct
 suffix:semicolon
@@ -20,9 +20,10 @@ DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ((void *) 0)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do ; while (0)
-DECL|struct|thread_struct
+macro_line|#ifdef CONFIG_MODE_TT
+DECL|struct|proc_tt_mode
 r_struct
-id|thread_struct
+id|proc_tt_mode
 (brace
 DECL|member|extern_pid
 r_int
@@ -32,6 +33,46 @@ DECL|member|tracing
 r_int
 id|tracing
 suffix:semicolon
+DECL|member|switch_pipe
+r_int
+id|switch_pipe
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|singlestep_syscall
+r_int
+id|singlestep_syscall
+suffix:semicolon
+DECL|member|vm_seq
+r_int
+id|vm_seq
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|struct|proc_skas_mode
+r_struct
+id|proc_skas_mode
+(brace
+DECL|member|switch_buf
+r_void
+op_star
+id|switch_buf
+suffix:semicolon
+DECL|member|fork_buf
+r_void
+op_star
+id|fork_buf
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
+DECL|struct|thread_struct
+r_struct
+id|thread_struct
+(brace
 DECL|member|forking
 r_int
 id|forking
@@ -69,10 +110,6 @@ r_void
 op_star
 id|fault_catcher
 suffix:semicolon
-DECL|member|vm_seq
-r_int
-id|vm_seq
-suffix:semicolon
 DECL|member|prev_sched
 r_struct
 id|task_struct
@@ -84,26 +121,35 @@ r_int
 r_int
 id|temp_stack
 suffix:semicolon
-DECL|member|switch_pipe
-r_int
-id|switch_pipe
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|jmp
+DECL|member|exec_buf
 r_void
 op_star
-id|jmp
+id|exec_buf
 suffix:semicolon
 DECL|member|arch
 r_struct
 id|arch_thread
 id|arch
 suffix:semicolon
-DECL|member|singlestep_syscall
-r_int
-id|singlestep_syscall
+r_union
+(brace
+macro_line|#ifdef CONFIG_MODE_TT
+DECL|member|tt
+r_struct
+id|proc_tt_mode
+id|tt
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|member|skas
+r_struct
+id|proc_skas_mode
+id|skas
+suffix:semicolon
+macro_line|#endif
+DECL|member|mode
+)brace
+id|mode
 suffix:semicolon
 r_struct
 (brace
@@ -181,7 +227,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD &bslash;&n;{ &bslash;&n;&t;extern_pid:&t;&t;-1, &bslash;&n;&t;tracing:&t;&t;0, &bslash;&n;&t;forking:&t;&t;0, &bslash;&n;&t;kernel_stack:&t;&t;0, &bslash;&n;&t;nsyscalls:&t;&t;0, &bslash;&n;        regs:&t;&t;   &t;EMPTY_REGS, &bslash;&n;&t;cr2:&t;&t;&t;0, &bslash;&n;&t;err:&t;&t;&t;0, &bslash;&n;&t;fault_addr:&t;&t;NULL, &bslash;&n;&t;vm_seq:&t;&t;&t;0, &bslash;&n;&t;prev_sched:&t;&t;NULL, &bslash;&n;&t;temp_stack:&t;&t;0, &bslash;&n;&t;switch_pipe:&t;&t;{ -1, -1 }, &bslash;&n;&t;jmp:&t;&t;&t;NULL, &bslash;&n;&t;arch:&t;&t;&t;INIT_ARCH_THREAD, &bslash;&n;&t;singlestep_syscall:&t;0, &bslash;&n;&t;request:&t;&t;{ 0 } &bslash;&n;}
+mdefine_line|#define INIT_THREAD &bslash;&n;{ &bslash;&n;&t;forking:&t;&t;0, &bslash;&n;&t;kernel_stack:&t;&t;0, &bslash;&n;&t;nsyscalls:&t;&t;0, &bslash;&n;        regs:&t;&t;   &t;EMPTY_REGS, &bslash;&n;&t;cr2:&t;&t;&t;0, &bslash;&n;&t;err:&t;&t;&t;0, &bslash;&n;&t;fault_addr:&t;&t;NULL, &bslash;&n;&t;prev_sched:&t;&t;NULL, &bslash;&n;&t;temp_stack:&t;&t;0, &bslash;&n;&t;exec_buf:&t;&t;NULL, &bslash;&n;&t;arch:&t;&t;&t;INIT_ARCH_THREAD, &bslash;&n;&t;request:&t;&t;{ 0 } &bslash;&n;}
 DECL|macro|INIT_THREAD_SIZE
 mdefine_line|#define INIT_THREAD_SIZE (4 * PAGE_SIZE)
 r_typedef
