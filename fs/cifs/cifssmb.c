@@ -1474,6 +1474,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ses-&gt;server
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
@@ -1487,6 +1493,7 @@ id|pSMB-&gt;hdr.Flags2
 op_or_assign
 id|SMBFLG2_SECURITY_SIGNATURE
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -11091,6 +11098,24 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|targetUNCs
+op_eq
+l_int|NULL
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|GetDFSRefExit
+suffix:semicolon
+)brace
 multiline_comment|/* copy the ref strings */
 id|referrals
 op_assign
@@ -11200,6 +11225,8 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|GetDFSRefExit
+suffix:colon
 r_if
 c_cond
 (paren

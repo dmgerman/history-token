@@ -908,13 +908,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|cifs_sb-&gt;tcon-&gt;ses
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
 id|cifs_sb-&gt;tcon-&gt;ses-&gt;userName
-)paren
 )paren
 id|seq_printf
 c_func
@@ -942,6 +942,7 @@ comma
 id|cifs_sb-&gt;tcon-&gt;ses-&gt;domainName
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|seq_printf
