@@ -1855,6 +1855,19 @@ id|postcore_initcall
 id|eisa_init
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_EISA_ALWAYS
+DECL|variable|EISA_bus
+r_int
+id|EISA_bus
+suffix:semicolon
+DECL|variable|EISA_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|EISA_bus
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|eisa_bus_type
 id|EXPORT_SYMBOL
 (paren

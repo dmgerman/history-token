@@ -9,6 +9,7 @@ op_assign
 l_string|&quot;lne390.c: Driver revision v0.99.1, 01/09/2000&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

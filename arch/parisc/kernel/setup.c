@@ -49,13 +49,6 @@ id|proc_gsc_root
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-suffix:semicolon
-multiline_comment|/* This has to go somewhere in architecture specific code. */
-macro_line|#endif
 DECL|function|setup_cmdline
 r_void
 id|__init
