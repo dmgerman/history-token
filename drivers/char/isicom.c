@@ -5785,7 +5785,7 @@ suffix:semicolon
 multiline_comment|/* 3rd October 2000 : Vinayak P Risbud */
 id|port-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
