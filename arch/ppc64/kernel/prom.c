@@ -11027,6 +11027,9 @@ r_struct
 id|bi_record
 op_star
 )paren
+(paren
+r_int
+)paren
 id|bi_recs-&gt;data
 (braket
 l_int|0
@@ -11052,6 +11055,9 @@ op_assign
 r_struct
 id|bi_record
 op_star
+)paren
+(paren
+r_int
 )paren
 id|last-&gt;data
 (braket

@@ -16,10 +16,6 @@ op_star
 id|pci_alloc_pci_controller
 c_func
 (paren
-r_char
-op_star
-id|model
-comma
 r_enum
 id|phb_types
 id|controller_type
