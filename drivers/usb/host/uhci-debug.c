@@ -3048,7 +3048,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|MAX_OUTPUT
-mdefine_line|#define MAX_OUTPUT&t;(PAGE_SIZE * 16)
+mdefine_line|#define MAX_OUTPUT&t;(64 * 1024)
 DECL|variable|uhci_proc_root
 r_static
 r_struct
