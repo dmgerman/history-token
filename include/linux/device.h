@@ -1206,6 +1206,29 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c &n; * for information on use.&n; */
+r_extern
+r_void
+id|device_bind_driver
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_release_driver
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* driverfs interface for exporting device attributes */
 DECL|struct|device_attribute
 r_struct
