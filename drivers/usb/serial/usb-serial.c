@@ -4214,6 +4214,8 @@ id|iface_desc-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
