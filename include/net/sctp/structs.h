@@ -237,22 +237,22 @@ DECL|member|ep_hashsize
 r_int
 id|ep_hashsize
 suffix:semicolon
-DECL|member|ep_hashbucket
+DECL|member|ep_hashtable
 r_struct
 id|sctp_hashbucket
 op_star
-id|ep_hashbucket
+id|ep_hashtable
 suffix:semicolon
 multiline_comment|/* This is the hash of all associations. */
 DECL|member|assoc_hashsize
 r_int
 id|assoc_hashsize
 suffix:semicolon
-DECL|member|assoc_hashbucket
+DECL|member|assoc_hashtable
 r_struct
 id|sctp_hashbucket
 op_star
-id|assoc_hashbucket
+id|assoc_hashtable
 suffix:semicolon
 multiline_comment|/* This is the sctp port control hash.&t;*/
 DECL|member|port_hashsize
@@ -319,12 +319,12 @@ DECL|macro|sctp_address_families
 mdefine_line|#define sctp_address_families&t;&t;(sctp_globals.address_families)
 DECL|macro|sctp_ep_hashsize
 mdefine_line|#define sctp_ep_hashsize&t;&t;(sctp_globals.ep_hashsize)
-DECL|macro|sctp_ep_hashbucket
-mdefine_line|#define sctp_ep_hashbucket&t;&t;(sctp_globals.ep_hashbucket)
+DECL|macro|sctp_ep_hashtable
+mdefine_line|#define sctp_ep_hashtable&t;&t;(sctp_globals.ep_hashtable)
 DECL|macro|sctp_assoc_hashsize
 mdefine_line|#define sctp_assoc_hashsize&t;&t;(sctp_globals.assoc_hashsize)
-DECL|macro|sctp_assoc_hashbucket
-mdefine_line|#define sctp_assoc_hashbucket&t;&t;(sctp_globals.assoc_hashbucket)
+DECL|macro|sctp_assoc_hashtable
+mdefine_line|#define sctp_assoc_hashtable&t;&t;(sctp_globals.assoc_hashtable)
 DECL|macro|sctp_port_hashsize
 mdefine_line|#define sctp_port_hashsize&t;&t;(sctp_globals.port_hashsize)
 DECL|macro|sctp_port_rover
