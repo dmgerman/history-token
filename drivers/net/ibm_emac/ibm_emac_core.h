@@ -42,7 +42,7 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;&t;(2*HZ)
 multiline_comment|/* MDIO latency delay */
 DECL|macro|MDIO_DELAY
-mdefine_line|#define MDIO_DELAY&t;&t;50
+mdefine_line|#define MDIO_DELAY&t;&t;250
 multiline_comment|/* Power managment shift registers */
 DECL|macro|IBM_CPM_EMMII
 mdefine_line|#define IBM_CPM_EMMII&t;0&t;/* Shift value for MII */
