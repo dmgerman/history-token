@@ -2076,6 +2076,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/* Copy page is dangerous: it likes to mess with&n;&t;&t;   preempt count on specific cpus. Wrong preempt count is then copied,&n;&t;&t;   oops. */
 id|copy_page
 c_func
 (paren
@@ -3786,10 +3787,15 @@ comma
 op_star
 id|f
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Relocating pagedir&quot;
+l_string|&quot;Relocating pagedir &quot;
 )paren
 suffix:semicolon
 r_if
@@ -3897,10 +3903,21 @@ c_cond
 op_logical_neg
 id|m
 )paren
-r_return
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
+r_else
+(brace
 id|pagedir_nosave
 op_assign
 id|new_pagedir
@@ -3915,6 +3932,7 @@ comma
 id|old_pagedir
 )paren
 suffix:semicolon
+)brace
 id|c
 op_assign
 id|eaten_memory
@@ -3933,7 +3951,6 @@ l_string|&quot;:&quot;
 suffix:semicolon
 id|f
 op_assign
-op_star
 id|c
 suffix:semicolon
 id|c
@@ -3941,11 +3958,6 @@ op_assign
 op_star
 id|c
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|f
-)paren
 id|free_pages
 c_func
 (paren
@@ -3966,7 +3978,7 @@ l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sanity check if this image makes sense with this kernel/swap context&n; * I really don&squot;t think that it&squot;s foolproof but more than nothing..&n; */
