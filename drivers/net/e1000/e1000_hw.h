@@ -824,6 +824,23 @@ id|hw
 )paren
 suffix:semicolon
 r_void
+id|e1000_read_pci_cfg
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|reg
+comma
+r_uint16
+op_star
+id|value
+)paren
+suffix:semicolon
+r_void
 id|e1000_write_pci_cfg
 c_func
 (paren
@@ -3265,6 +3282,21 @@ DECL|macro|FC_DEFAULT_LO_THRESH
 mdefine_line|#define FC_DEFAULT_LO_THRESH        (0x4000)    /* 16KB */
 DECL|macro|FC_DEFAULT_TX_TIMER
 mdefine_line|#define FC_DEFAULT_TX_TIMER         (0x100)     /* ~130 us */
+multiline_comment|/* PCIX Config space */
+DECL|macro|PCIX_COMMAND_REGISTER
+mdefine_line|#define PCIX_COMMAND_REGISTER    0xE6
+DECL|macro|PCIX_STATUS_REGISTER_LO
+mdefine_line|#define PCIX_STATUS_REGISTER_LO  0xE8
+DECL|macro|PCIX_STATUS_REGISTER_HI
+mdefine_line|#define PCIX_STATUS_REGISTER_HI  0xEA
+DECL|macro|PCIX_COMMAND_MMRBC_MASK
+mdefine_line|#define PCIX_COMMAND_MMRBC_MASK      0x000C
+DECL|macro|PCIX_COMMAND_MMRBC_SHIFT
+mdefine_line|#define PCIX_COMMAND_MMRBC_SHIFT     0x2
+DECL|macro|PCIX_STATUS_HI_MMRBC_MASK
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_MASK    0x0060
+DECL|macro|PCIX_STATUS_HI_MMRBC_SHIFT
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_SHIFT   0x5
 multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register &n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5

@@ -808,7 +808,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
 id|max_len
+op_rshift
+l_int|1
+)paren
 suffix:semicolon
 id|i
 op_increment
