@@ -3571,8 +3571,6 @@ suffix:semicolon
 id|u64
 id|base
 comma
-id|vbase
-comma
 id|align
 suffix:semicolon
 id|u32
@@ -3997,18 +3995,6 @@ id|local_alloc_bottom
 op_assign
 id|base
 suffix:semicolon
-id|vbase
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|abs_to_virt
-c_func
-(paren
-id|base
-)paren
-suffix:semicolon
 multiline_comment|/* Save away the TCE table attributes for later use. */
 id|prom_setprop
 c_func
@@ -4018,11 +4004,11 @@ comma
 l_string|&quot;linux,tce-base&quot;
 comma
 op_amp
-id|vbase
+id|base
 comma
 r_sizeof
 (paren
-id|vbase
+id|base
 )paren
 )paren
 suffix:semicolon
@@ -4040,18 +4026,6 @@ r_sizeof
 (paren
 id|minsize
 )paren
-)paren
-suffix:semicolon
-id|prom_setprop
-c_func
-(paren
-id|node
-comma
-l_string|&quot;linux,has-tce-table&quot;
-comma
-l_int|NULL
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* It seems OF doesn&squot;t null-terminate the path :-( */
