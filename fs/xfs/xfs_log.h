@@ -251,6 +251,11 @@ comma
 id|xfs_log_ticket_t
 id|ticket
 comma
+r_void
+op_star
+op_star
+id|iclog
+comma
 id|uint
 id|flags
 )paren
@@ -322,7 +327,7 @@ id|xfs_lsn_t
 id|tail_lsn
 )paren
 suffix:semicolon
-r_void
+r_int
 id|xfs_log_notify
 c_func
 (paren
@@ -331,8 +336,9 @@ id|xfs_mount
 op_star
 id|mp
 comma
-id|xfs_lsn_t
-id|lsn
+r_void
+op_star
+id|iclog
 comma
 id|xfs_log_callback_t
 op_star

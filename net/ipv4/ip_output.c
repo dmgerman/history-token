@@ -948,6 +948,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|ipfragok
 )paren
 (brace
 r_struct
@@ -1264,6 +1267,9 @@ comma
 op_amp
 id|rt-&gt;u.dst
 )paren
+op_logical_and
+op_logical_neg
+id|ipfragok
 )paren
 id|iph-&gt;frag_off
 op_assign

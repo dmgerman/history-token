@@ -9234,7 +9234,7 @@ id|default_par-&gt;riva.Architecture
 r_case
 id|NV_ARCH_03
 suffix:colon
-multiline_comment|/* Riva128&squot;s PRAMIN is in the &quot;framebuffer&quot; space&n;&t;&t; * Since these cards were never made with more than 8 megabytes&n;&t;&t; * we can safely allocate this seperately.&n;&t;&t; */
+multiline_comment|/* Riva128&squot;s PRAMIN is in the &quot;framebuffer&quot; space&n;&t;&t; * Since these cards were never made with more than 8 megabytes&n;&t;&t; * we can safely allocate this separately.&n;&t;&t; */
 r_if
 c_cond
 (paren

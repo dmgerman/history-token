@@ -6647,7 +6647,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* This routine is logically part of the interrupt handler, but seperated&n;   for clarity and better register allocation. */
+multiline_comment|/* This routine is logically part of the interrupt handler, but separated&n;   for clarity and better register allocation. */
 DECL|function|netdev_rx
 r_static
 r_int

@@ -1925,7 +1925,7 @@ r_struct
 id|fcal
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -1933,7 +1933,7 @@ c_cond
 op_logical_neg
 id|f-&gt;map
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 )paren
 r_return
@@ -1945,7 +1945,7 @@ id|fcmd-&gt;did
 op_assign
 id|target2alpa
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|FCALD

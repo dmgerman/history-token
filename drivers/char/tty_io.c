@@ -1710,6 +1710,16 @@ comma
 id|f_list
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If this file descriptor has been closed, ignore it; it&n;&t;&t; * will be going away shortly. (We don&squot;t test filp-&gt;f_count&n;&t;&t; * for zero since that could open another race.) --rmk&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|filp-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren

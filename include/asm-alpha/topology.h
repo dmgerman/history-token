@@ -5,11 +5,11 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#ifdef CONFIG_NUMA
-DECL|function|__cpu_to_node
+DECL|function|cpu_to_node
 r_static
 r_inline
 r_int
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 r_int
@@ -56,11 +56,11 @@ r_return
 id|node
 suffix:semicolon
 )brace
-DECL|function|__node_to_cpu_mask
+DECL|function|node_to_cpumask
 r_static
 r_inline
 r_int
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 r_int
@@ -101,7 +101,7 @@ id|cpu
 )paren
 op_logical_and
 (paren
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 id|cpu
@@ -133,10 +133,13 @@ r_return
 id|node_cpu_mask
 suffix:semicolon
 )brace
-DECL|macro|__node_to_memblk
-macro_line|# define __node_to_memblk(node)&t;&t;(node)
-DECL|macro|__memblk_to_node
-macro_line|# define __memblk_to_node(memblk)&t;(memblk)
+DECL|macro|node_to_memblk
+macro_line|# define node_to_memblk(node)&t;&t;(node)
+DECL|macro|memblk_to_node
+macro_line|# define memblk_to_node(memblk)&t;(memblk)
+multiline_comment|/* Cross-node load balancing interval. */
+DECL|macro|NODE_BALANCE_RATE
+macro_line|# define NODE_BALANCE_RATE 10
 macro_line|#else /* CONFIG_NUMA */
 macro_line|# include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* !CONFIG_NUMA */

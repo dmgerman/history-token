@@ -482,8 +482,16 @@ comma
 r_char
 op_star
 id|wildcard_spec
+comma
+r_char
+id|requested_file_type
 )paren
 suffix:semicolon
+multiline_comment|/* requeste_file_type values */
+DECL|macro|REQUEST_FILE_ONLY
+mdefine_line|#define REQUEST_FILE_ONLY                   0
+DECL|macro|REQUEST_DIR_ONLY
+mdefine_line|#define REQUEST_DIR_ONLY                    1
 r_char
 op_star
 id|acpi_os_get_next_filename

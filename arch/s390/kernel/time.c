@@ -48,10 +48,6 @@ r_uint64
 id|init_timer_cc
 suffix:semicolon
 r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|wall_jiffies
@@ -193,11 +189,19 @@ id|flags
 suffix:semicolon
 r_int
 r_int
+id|seq
+suffix:semicolon
+r_int
+r_int
 id|usec
 comma
 id|sec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -221,13 +225,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -266,7 +277,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -324,7 +335,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -492,7 +503,7 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * Do not rely on the boot cpu to do the calls to do_timer.&n;&t; * Spread it over all cpus instead.&n;&t; */
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -574,7 +585,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp

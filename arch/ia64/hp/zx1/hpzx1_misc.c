@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Misc. support for HP zx1 chipset support&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co&n; * Copyright (C) 2002 Alex Williamson &lt;alex_williamson@hp.com&gt;&n; * Copyright (C) 2002 Bjorn Helgaas &lt;bjorn_helgaas@hp.com&gt;&n; */
+multiline_comment|/*&n; * Misc. support for HP zx1 chipset support&n; *&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;Alex Williamson &lt;alex_williamson@hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn_helgaas@hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,6 +15,7 @@ id|acpi_handle
 comma
 id|acpi_string
 comma
+r_struct
 id|acpi_object_list
 op_star
 comma
@@ -977,8 +978,9 @@ id|hpzx1_devices
 op_increment
 suffix:semicolon
 )brace
-r_typedef
+DECL|struct|acpi_hp_vendor_long
 r_struct
+id|acpi_hp_vendor_long
 (brace
 DECL|member|guid_id
 id|u8
@@ -1005,9 +1007,7 @@ id|csr_length
 l_int|8
 )braket
 suffix:semicolon
-DECL|typedef|acpi_hp_vendor_long
 )brace
-id|acpi_hp_vendor_long
 suffix:semicolon
 DECL|macro|HP_CCSR_LENGTH
 mdefine_line|#define HP_CCSR_LENGTH&t;0x21
@@ -1022,16 +1022,19 @@ c_func
 (paren
 id|acpi_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 )paren
 suffix:semicolon
 r_extern
+r_struct
 id|acpi_resource
 op_star
 id|acpi_get_crs_next
 c_func
 (paren
+r_struct
 id|acpi_buffer
 op_star
 comma
@@ -1040,11 +1043,13 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_union
 id|acpi_resource_data
 op_star
 id|acpi_get_crs_type
 c_func
 (paren
+r_struct
 id|acpi_buffer
 op_star
 comma
@@ -1059,6 +1064,7 @@ r_void
 id|acpi_dispose_crs
 c_func
 (paren
+r_struct
 id|acpi_buffer
 op_star
 )paren
@@ -1091,13 +1097,16 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buf
 suffix:semicolon
+r_struct
 id|acpi_resource_vendor
 op_star
 id|res
 suffix:semicolon
+r_struct
 id|acpi_hp_vendor_long
 op_star
 id|hp_res
@@ -1151,6 +1160,7 @@ suffix:semicolon
 id|res
 op_assign
 (paren
+r_struct
 id|acpi_resource_vendor
 op_star
 )paren
@@ -1195,6 +1205,7 @@ suffix:semicolon
 id|hp_res
 op_assign
 (paren
+r_struct
 id|acpi_hp_vendor_long
 op_star
 )paren
@@ -1508,7 +1519,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|NATIVE_UINT
+id|acpi_native_uint
 id|busnum
 suffix:semicolon
 r_char

@@ -3,6 +3,7 @@ macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
+macro_line|#include &quot;linux/time.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
@@ -17,10 +18,6 @@ macro_line|#include &quot;mode.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
 suffix:semicolon
 DECL|function|hz
 r_int
@@ -63,7 +60,7 @@ r_void
 id|timer_irq
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -128,9 +125,42 @@ r_struct
 id|pt_regs
 id|regs
 suffix:semicolon
-id|regs.regs.is_user
+id|CHOOSE_MODE
+c_func
+(paren
+(paren
+r_void
+)paren
+(paren
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|regs.regs
+)paren
+op_assign
+(paren
+r_struct
+id|sigcontext
+op_star
+)paren
+(paren
+op_amp
+id|sig
+op_plus
+l_int|1
+)paren
+)paren
+comma
+(paren
+r_void
+)paren
+(paren
+id|regs.regs.skas.is_user
 op_assign
 l_int|0
+)paren
+)paren
 suffix:semicolon
 id|do_timer
 c_func
@@ -164,7 +194,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -176,7 +206,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -419,7 +449,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -465,19 +495,29 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|time_lock
-r_void
+r_int
+r_int
 id|time_lock
 c_func
 (paren
 r_void
 )paren
 (brace
-id|spin_lock
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|timer_spinlock
+comma
+id|flags
 )paren
+suffix:semicolon
+r_return
+id|flags
 suffix:semicolon
 )brace
 DECL|function|time_unlock
@@ -485,14 +525,18 @@ r_void
 id|time_unlock
 c_func
 (paren
-r_void
+r_int
+r_int
+id|flags
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|timer_spinlock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace

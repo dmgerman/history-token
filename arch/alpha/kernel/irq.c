@@ -2192,12 +2192,12 @@ comma
 id|kstat_cpu
 c_func
 (paren
-id|i
+id|j
 )paren
 dot
 id|irqs
 (braket
-id|j
+id|i
 )braket
 )paren
 suffix:semicolon

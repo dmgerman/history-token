@@ -515,6 +515,13 @@ c_func
 id|udelay
 )paren
 suffix:semicolon
+DECL|variable|ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ndelay
+)paren
+suffix:semicolon
 DECL|variable|mostek_lock
 id|EXPORT_SYMBOL
 c_func

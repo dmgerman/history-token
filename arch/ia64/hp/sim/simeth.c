@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated Ethernet Driver&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Simulated Ethernet Driver&n; *&n; * Copyright (C) 1999-2001, 2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -258,6 +258,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simeth: v%s&bslash;n&quot;
 comma
 id|simeth_version
@@ -699,6 +700,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: hosteth=%s simfd=%d, HwAddr&quot;
 comma
 id|dev-&gt;name
@@ -779,7 +781,9 @@ id|dev
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;simeth: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|dev-&gt;irq
@@ -1000,6 +1004,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;simeth_open: can&squot;t find device %s&squot;s ifa&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1012,6 +1017,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simeth_device_event: %s ipaddr=0x%x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1059,6 +1065,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;simeth: netdev_attach/detach: event=%s -&gt;%d&bslash;n&quot;
 comma
 id|event

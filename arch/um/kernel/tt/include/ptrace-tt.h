@@ -3,7 +3,7 @@ macro_line|#ifndef __PTRACE_TT_H
 DECL|macro|__PTRACE_TT_H
 mdefine_line|#define __PTRACE_TT_H
 macro_line|#include &quot;uml-config.h&quot;
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 macro_line|#include &quot;sysdep/sc.h&quot;
 macro_line|#endif
 macro_line|#endif

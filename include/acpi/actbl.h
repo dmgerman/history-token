@@ -356,8 +356,8 @@ DECL|macro|ACPI_TABLE_PRIMARY
 mdefine_line|#define ACPI_TABLE_PRIMARY      0x10
 DECL|macro|ACPI_TABLE_SECONDARY
 mdefine_line|#define ACPI_TABLE_SECONDARY    0x20
-DECL|macro|ACPI_TABLE_OTHER
-mdefine_line|#define ACPI_TABLE_OTHER        0x30
+DECL|macro|ACPI_TABLE_ALL
+mdefine_line|#define ACPI_TABLE_ALL          0x30
 DECL|macro|ACPI_TABLE_TYPE_MASK
 mdefine_line|#define ACPI_TABLE_TYPE_MASK    0x30
 multiline_comment|/* Data about each known table type */

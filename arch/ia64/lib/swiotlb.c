@@ -239,6 +239,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Placing software IO TLB between 0x%p - 0x%p&bslash;n&quot;
 comma
 (paren

@@ -580,10 +580,6 @@ id|pluto-&gt;fc
 op_assign
 id|fc
 suffix:semicolon
-id|SCpnt-&gt;host
-op_assign
-id|host
-suffix:semicolon
 id|SCpnt-&gt;cmnd
 (braket
 l_int|0
@@ -603,6 +599,10 @@ id|SCpnt-&gt;device
 op_assign
 op_amp
 id|dev
+suffix:semicolon
+id|dev.host
+op_assign
+id|host
 suffix:semicolon
 id|SCpnt-&gt;cmd_len
 op_assign
@@ -1482,9 +1482,9 @@ c_func
 (paren
 l_string|&quot;encode addr %d %d %d&bslash;n&quot;
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;cmnd
 (braket
@@ -1513,13 +1513,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 r_return
 op_minus
@@ -1554,7 +1554,7 @@ id|addr
 l_int|1
 )braket
 op_assign
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 op_minus
 l_int|1
 suffix:semicolon
@@ -1563,7 +1563,7 @@ id|addr
 l_int|2
 )braket
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|addr
 (braket

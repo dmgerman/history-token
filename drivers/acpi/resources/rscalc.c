@@ -1505,6 +1505,9 @@ id|temp_size_needed
 op_add_assign
 (paren
 (paren
+id|acpi_size
+)paren
+(paren
 op_star
 id|sub_object_list
 )paren

@@ -29,7 +29,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_ARCH_THREAD
-mdefine_line|#define INIT_ARCH_THREAD { debugregs : &t;&t;{ [ 0 ... 7 ] = 0 }, &bslash;&n;                           debugregs_seq :&t;0 }
+mdefine_line|#define INIT_ARCH_THREAD { .debugregs  &t;&t;= { [ 0 ... 7 ] = 0 }, &bslash;&n;                           .debugregs_seq&t;= 0 }
 macro_line|#include &quot;asm/arch/user.h&quot;
 macro_line|#include &quot;asm/processor-generic.h&quot;
 macro_line|#endif

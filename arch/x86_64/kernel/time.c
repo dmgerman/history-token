@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -15,15 +16,26 @@ DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
 suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 DECL|variable|rtc_lock
 id|spinlock_t
 id|rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+r_extern
+r_int
+id|using_apic_timer
+suffix:semicolon
+r_extern
+r_void
+id|smp_local_timer_interrupt
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
 suffix:semicolon
 DECL|variable|cpu_khz
 r_int
@@ -151,6 +163,8 @@ r_int
 id|flags
 comma
 id|t
+comma
+id|seq
 suffix:semicolon
 r_int
 r_int
@@ -158,20 +172,24 @@ id|sec
 comma
 id|usec
 suffix:semicolon
-id|read_lock_irqsave
-c_func
-(paren
-op_amp
-id|xtime_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|time_offset_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 id|sec
@@ -218,18 +236,25 @@ id|usec
 op_add_assign
 id|timeoffset
 suffix:semicolon
-id|spin_unlock
-c_func
+)brace
+r_while
+c_loop
 (paren
-op_amp
-id|time_offset_lock
-)paren
-suffix:semicolon
-id|read_unlock_irqrestore
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|time_offset_lock
 comma
 id|flags
 )paren
@@ -261,7 +286,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -338,7 +363,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -580,7 +605,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Here we are in the timer irq handler. We have irqs locally disabled (so we&n; * don&squot;t need spin_lock_irqsave()) but we don&squot;t know if the timer_bh is running&n; * on the other CPU, so we need a lock. We also need to lock the vsyscall&n; * variables, because both do_timer() and us change them -arca+vojtech&n;&t; */
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -696,6 +721,10 @@ id|hpet.last_tsc
 op_assign
 id|t
 suffix:semicolon
+id|timeoffset
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do the timer stuff.&n; */
 id|do_timer
@@ -772,7 +801,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp

@@ -643,7 +643,7 @@ id|mib-&gt;fddiSMTStationStatus
 op_assign
 id|MIB_SMT_STASTA_SEPA
 suffix:semicolon
-multiline_comment|/* seperated */
+multiline_comment|/* separated */
 id|mib-&gt;m
 (braket
 id|MAC0

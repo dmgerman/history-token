@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/ad1848.h&gt;
+macro_line|#include &lt;sound/control.h&gt;
 DECL|macro|SNDRV_LEGACY_FIND_FREE_IRQ
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
 DECL|macro|SNDRV_LEGACY_FIND_FREE_DMA
@@ -884,14 +885,12 @@ id|dma
 )paren
 suffix:semicolon
 )brace
-DECL|macro|SGALAXY_CONTROLS
-mdefine_line|#define SGALAXY_CONTROLS 2
 DECL|variable|snd_sgalaxy_controls
 r_static
-id|snd_kcontrol_new_t
+r_struct
+id|ad1848_mix_elem
 id|snd_sgalaxy_controls
 (braket
-l_int|2
 )braket
 op_assign
 (brace
@@ -1174,7 +1173,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|SGALAXY_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_sgalaxy_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -1186,22 +1189,16 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_ctl_add
+id|snd_ad1848_add_ctl_elem
 c_func
 (paren
-id|card
+id|chip
 comma
-id|snd_ctl_new1
-c_func
-(paren
 op_amp
 id|snd_sgalaxy_controls
 (braket
 id|idx
 )braket
-comma
-id|chip
-)paren
 )paren
 )paren
 OL

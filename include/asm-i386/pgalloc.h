@@ -64,7 +64,6 @@ id|PAGE_SHIFT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
-r_extern
 id|pgd_t
 op_star
 id|pgd_alloc
@@ -75,7 +74,6 @@ id|mm_struct
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|pgd_free
 c_func
@@ -85,7 +83,6 @@ op_star
 id|pgd
 )paren
 suffix:semicolon
-r_extern
 id|pte_t
 op_star
 id|pte_alloc_one_kernel
@@ -99,7 +96,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
 r_struct
 id|page
 op_star

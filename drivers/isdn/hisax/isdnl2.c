@@ -8254,8 +8254,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|l2_st14_persistant_da
-id|l2_st14_persistant_da
+DECL|function|l2_st14_persistent_da
+id|l2_st14_persistent_da
 c_func
 (paren
 r_struct
@@ -8319,8 +8319,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|l2_st5_persistant_da
-id|l2_st5_persistant_da
+DECL|function|l2_st5_persistent_da
+id|l2_st5_persistent_da
 c_func
 (paren
 r_struct
@@ -8388,8 +8388,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|l2_st6_persistant_da
-id|l2_st6_persistant_da
+DECL|function|l2_st6_persistent_da
+id|l2_st6_persistent_da
 c_func
 (paren
 r_struct
@@ -8450,8 +8450,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|l2_persistant_da
-id|l2_persistant_da
+DECL|function|l2_persistent_da
+id|l2_persistent_da
 c_func
 (paren
 r_struct
@@ -9410,7 +9410,7 @@ id|ST_L2_1
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_st14_persistant_da
+id|l2_st14_persistent_da
 )brace
 comma
 (brace
@@ -9434,7 +9434,7 @@ id|ST_L2_4
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_st14_persistant_da
+id|l2_st14_persistent_da
 )brace
 comma
 (brace
@@ -9442,7 +9442,7 @@ id|ST_L2_5
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_st5_persistant_da
+id|l2_st5_persistent_da
 )brace
 comma
 (brace
@@ -9450,7 +9450,7 @@ id|ST_L2_6
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_st6_persistant_da
+id|l2_st6_persistent_da
 )brace
 comma
 (brace
@@ -9458,7 +9458,7 @@ id|ST_L2_7
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_persistant_da
+id|l2_persistent_da
 )brace
 comma
 (brace
@@ -9466,7 +9466,7 @@ id|ST_L2_8
 comma
 id|EV_L1_DEACTIVATE
 comma
-id|l2_persistant_da
+id|l2_persistent_da
 )brace
 comma
 )brace

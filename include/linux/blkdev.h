@@ -4,6 +4,8 @@ mdefine_line|#define _LINUX_BLKDEV_H
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -572,6 +574,28 @@ id|merge_bvec_fn
 op_star
 id|merge_bvec_fn
 suffix:semicolon
+multiline_comment|/*&n;&t; * Auto-unplugging state&n;&t; */
+DECL|member|unplug_timer
+r_struct
+id|timer_list
+id|unplug_timer
+suffix:semicolon
+DECL|member|unplug_thresh
+r_int
+id|unplug_thresh
+suffix:semicolon
+multiline_comment|/* After this many requests */
+DECL|member|unplug_delay
+r_int
+r_int
+id|unplug_delay
+suffix:semicolon
+multiline_comment|/* After this many jiffies */
+DECL|member|unplug_work
+r_struct
+id|work_struct
+id|unplug_work
+suffix:semicolon
 DECL|member|backing_dev_info
 r_struct
 id|backing_dev_info
@@ -723,9 +747,9 @@ id|blk_max_pfn
 suffix:semicolon
 multiline_comment|/*&n; * standard bounce addresses:&n; *&n; * BLK_BOUNCE_HIGH&t;: bounce all highmem pages&n; * BLK_BOUNCE_ANY&t;: don&squot;t bounce anything&n; * BLK_BOUNCE_ISA&t;: bounce pages above ISA DMA boundary&n; */
 DECL|macro|BLK_BOUNCE_HIGH
-mdefine_line|#define BLK_BOUNCE_HIGH&t;&t;(blk_max_low_pfn &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_HIGH&t;&t;((u64)blk_max_low_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ANY
-mdefine_line|#define BLK_BOUNCE_ANY&t;&t;(blk_max_pfn &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((u64)blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
 r_extern
@@ -736,7 +760,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_inline
+r_extern
 r_void
 id|blk_queue_bounce
 c_func

@@ -26353,6 +26353,9 @@ multiline_comment|/* 0x2 */
 l_string|&quot;sync unlock&quot;
 comma
 multiline_comment|/* 0x4 */
+l_string|&quot;buf stale&quot;
+comma
+multiline_comment|/* 0x8 */
 l_int|0
 )brace
 suffix:semicolon

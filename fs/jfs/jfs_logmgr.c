@@ -413,13 +413,10 @@ id|mp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLog: log:0x%p tblk:0x%p, lrd:0x%p tlck:0x%p&bslash;n&quot;
+l_string|&quot;lmLog: log:0x%p tblk:0x%p, lrd:0x%p tlck:0x%p&quot;
 comma
 id|log
 comma
@@ -428,7 +425,6 @@ comma
 id|lrd
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 id|LOG_LOCK
@@ -924,16 +920,12 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _JFS_WIP */
 r_else
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|2
-comma
-(paren
-l_string|&quot;lmWriteRecord: UFO tlck:0x%p&bslash;n&quot;
+l_string|&quot;lmWriteRecord: UFO tlck:0x%p&quot;
 comma
 id|tlck
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1189,18 +1181,14 @@ id|dstoffset
 op_add_assign
 l_int|4
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmWriteRecord: lv offset:%d length:%d&bslash;n&quot;
+l_string|&quot;lmWriteRecord: lv offset:%d length:%d&quot;
 comma
 id|lv-&gt;offset
 comma
 id|lv-&gt;length
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1353,18 +1341,14 @@ id|tblk-&gt;clsn
 op_assign
 id|lsn
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;wr: tclsn:0x%x, beor:0x%x&bslash;n&quot;
+l_string|&quot;wr: tclsn:0x%x, beor:0x%x&quot;
 comma
 id|tblk-&gt;clsn
 comma
 id|bp-&gt;l_eor
-)paren
 )paren
 suffix:semicolon
 id|INCREMENT
@@ -1439,13 +1423,10 @@ id|log
 )paren
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmWriteRecord: lrd:0x%04x bp:0x%p pn:%d eor:0x%x&bslash;n&quot;
+l_string|&quot;lmWriteRecord: lrd:0x%04x bp:0x%p pn:%d eor:0x%x&quot;
 comma
 id|le16_to_cpu
 c_func
@@ -1458,7 +1439,6 @@ comma
 id|log-&gt;page
 comma
 id|dstoffset
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* page not full ? */
@@ -1554,16 +1534,6 @@ r_struct
 id|tblock
 op_star
 id|tblk
-suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmNextPage&bslash;n&quot;
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* get current log page number and log sequence page number */
 id|pn
@@ -1782,16 +1752,6 @@ c_func
 id|LOGPHDRSIZE
 )paren
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmNextPage done&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1854,18 +1814,14 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmGroup Commit: tblk = 0x%p, gcrtc = %d&bslash;n&quot;
+l_string|&quot;lmGroup Commit: tblk = 0x%p, gcrtc = %d&quot;
 comma
 id|tblk
 comma
 id|log-&gt;gcrtc
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2138,20 +2094,6 @@ c_func
 id|bp-&gt;l_ceor
 )paren
 suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;gc: tclsn:0x%x, bceor:0x%x&bslash;n&quot;
-comma
-id|tblk-&gt;clsn
-comma
-id|bp-&gt;l_ceor
-)paren
-)paren
-suffix:semicolon
 id|lbmWrite
 c_func
 (paren
@@ -2191,20 +2133,6 @@ id|cpu_to_le16
 c_func
 (paren
 id|bp-&gt;l_ceor
-)paren
-suffix:semicolon
-id|jEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;gc: tclsn:0x%x, bceor:0x%x&bslash;n&quot;
-comma
-id|tblk-&gt;clsn
-comma
-id|bp-&gt;l_ceor
-)paren
 )paren
 suffix:semicolon
 id|lbmWrite
@@ -2326,18 +2254,14 @@ id|tblk-&gt;cqnext
 op_assign
 l_int|0
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmPostGC: tblk = 0x%p, flag = 0x%x&bslash;n&quot;
+l_string|&quot;lmPostGC: tblk = 0x%p, flag = 0x%x&quot;
 comma
 id|tblk
 comma
 id|tblk-&gt;flag
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2431,14 +2355,10 @@ c_func
 id|bp-&gt;l_eor
 )paren
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmPostGC: calling lbmWrite&bslash;n&quot;
-)paren
+l_string|&quot;lmPostGC: calling lbmWrite&quot;
 )paren
 suffix:semicolon
 id|lbmWrite
@@ -2805,14 +2725,10 @@ op_star
 id|LOGPSIZE
 )paren
 (brace
-id|jEVENT
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;n ... Log Wrap ... Log Wrap ... Log Wrap ...&bslash;n&bslash;n&quot;
-)paren
+l_string|&quot;&bslash;n ... Log Wrap ... Log Wrap ... Log Wrap ...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *      log wrapping&n;&t;&t; *&n;&t;&t; * option 1 - panic ? No.!&n;&t;&t; * option 2 - shutdown file systems&n;&t;&t; *            associated with log ?&n;&t;&t; * option 3 - extend log ?&n;&t;&t; */
@@ -2876,18 +2792,14 @@ op_amp
 id|log-&gt;flag
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;log barrier on: lsn=0x%x syncpt=0x%x&bslash;n&quot;
+l_string|&quot;log barrier on: lsn=0x%x syncpt=0x%x&quot;
 comma
 id|lsn
 comma
 id|log-&gt;syncpt
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We may have to initiate group commit&n;&t;&t; */
@@ -3242,16 +3154,6 @@ id|shutdown
 suffix:semicolon
 id|out
 suffix:colon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogOpen: exit(0)&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 op_star
 id|logptr
 op_assign
@@ -3298,16 +3200,12 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogOpen: exit(%d)&bslash;n&quot;
+l_string|&quot;lmLogOpen: exit(%d)&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -3358,16 +3256,12 @@ suffix:semicolon
 r_int
 id|lsn
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogInit: log:0x%p&bslash;n&quot;
+l_string|&quot;lmLogInit: log:0x%p&quot;
 comma
 id|log
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * log inode is overlaid on generic inode where&n;&t; * dinode have been zeroed out by iRead();&n;&t; */
@@ -3449,14 +3343,10 @@ id|LOGMAGIC
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;*** Log Format Error ! ***&bslash;n&quot;
-)paren
+l_string|&quot;*** Log Format Error ! ***&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3480,14 +3370,10 @@ id|LOGREDONE
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;*** Log Is Dirty ! ***&bslash;n&quot;
-)paren
+l_string|&quot;*** Log Is Dirty ! ***&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3532,13 +3418,10 @@ r_goto
 id|errout20
 suffix:semicolon
 )brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmLogInit: inline log:0x%p base:0x%Lx size:0x%x&bslash;n&quot;
+l_string|&quot;lmLogInit: inline log:0x%p base:0x%Lx size:0x%x&quot;
 comma
 id|log
 comma
@@ -3550,7 +3433,6 @@ r_int
 id|log-&gt;base
 comma
 id|log-&gt;size
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3570,14 +3452,10 @@ l_int|16
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;wrong uuid on JFS log device&bslash;n&quot;
-)paren
+l_string|&quot;wrong uuid on JFS log device&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3600,13 +3478,10 @@ c_func
 id|logsuper-&gt;l2bsize
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmLogInit: external log:0x%p base:0x%Lx size:0x%x&bslash;n&quot;
+l_string|&quot;lmLogInit: external log:0x%p base:0x%Lx size:0x%x&quot;
 comma
 id|log
 comma
@@ -3618,7 +3493,6 @@ r_int
 id|log-&gt;base
 comma
 id|log-&gt;size
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3678,13 +3552,10 @@ op_star
 )paren
 id|bp-&gt;l_ldata
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogInit: lsn:0x%x page:%d eor:%d:%d&bslash;n&quot;
+l_string|&quot;lmLogInit: lsn:0x%x page:%d eor:%d:%d&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -3700,7 +3571,6 @@ id|le16_to_cpu
 c_func
 (paren
 id|lp-&gt;h.eor
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3878,20 +3748,16 @@ c_func
 id|log-&gt;logsize
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogInit: lsn:0x%x syncpt:0x%x sync:0x%x&bslash;n&quot;
+l_string|&quot;lmLogInit: lsn:0x%x syncpt:0x%x sync:0x%x&quot;
 comma
 id|log-&gt;lsn
 comma
 id|log-&gt;syncpt
 comma
 id|log-&gt;sync
-)paren
 )paren
 suffix:semicolon
 id|LOGSYNC_LOCK_INIT
@@ -3981,18 +3847,6 @@ id|lbmFREE
 r_goto
 id|errout30
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogInit: exit(%d)&bslash;n&quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4024,16 +3878,12 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogInit: exit(%d)&bslash;n&quot;
+l_string|&quot;lmLogInit: exit(%d)&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4067,16 +3917,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogClose: log:0x%p&bslash;n&quot;
+l_string|&quot;lmLogClose: log:0x%p&quot;
 comma
 id|log
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4150,16 +3996,12 @@ id|BDEV_FS
 suffix:semicolon
 id|out
 suffix:colon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmLogClose: exit(%d)&bslash;n&quot;
+l_string|&quot;lmLogClose: exit(%d)&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4184,18 +4026,14 @@ id|wait
 r_int
 id|i
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_flush_journal: log:0x%p wait=%d&bslash;n&quot;
+l_string|&quot;jfs_flush_journal: log:0x%p wait=%d&quot;
 comma
 id|log
 comma
 id|wait
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This ensures that we will keep writing to the journal as long&n;&t; * as there are unwritten commit records&n;&t; */
@@ -4387,16 +4225,12 @@ id|logpage
 op_star
 id|lp
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogShutdown: log:0x%p&bslash;n&quot;
+l_string|&quot;lmLogShutdown: log:0x%p&quot;
 comma
 id|log
-)paren
 )paren
 suffix:semicolon
 id|jfs_flush_journal
@@ -4572,20 +4406,16 @@ comma
 id|lbmFREE
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogShutdown: lsn:0x%x page:%d eor:%d&bslash;n&quot;
+l_string|&quot;lmLogShutdown: lsn:0x%x page:%d eor:%d&quot;
 comma
 id|lsn
 comma
 id|log-&gt;page
 comma
 id|log-&gt;eor
-)paren
 )paren
 suffix:semicolon
 id|out
@@ -4603,16 +4433,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jFYI
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lmLogShutdown: exit(%d)&bslash;n&quot;
+l_string|&quot;lmLogShutdown: exit(%d)&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4755,14 +4581,10 @@ op_eq
 id|MAX_ACTIVE
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Too many file systems sharing journal!&bslash;n&quot;
-)paren
+l_string|&quot;Too many file systems sharing journal!&quot;
 )paren
 suffix:semicolon
 id|lbmFree
@@ -4839,14 +4661,10 @@ op_eq
 id|MAX_ACTIVE
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Somebody stomped on the journal!&bslash;n&quot;
-)paren
+l_string|&quot;Somebody stomped on the journal!&quot;
 )paren
 suffix:semicolon
 id|lbmFree
@@ -4912,16 +4730,12 @@ id|lbuf
 op_star
 id|lbuf
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmLogInit: log:0x%p&bslash;n&quot;
+l_string|&quot;lbmLogInit: log:0x%p&quot;
 comma
 id|log
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* initialize current buffer cursor */
@@ -5072,16 +4886,12 @@ id|lbuf
 op_star
 id|lbuf
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmLogShutdown: log:0x%p&bslash;n&quot;
+l_string|&quot;lbmLogShutdown: log:0x%p&quot;
 comma
 id|log
-)paren
 )paren
 suffix:semicolon
 id|lbuf
@@ -5402,18 +5212,14 @@ comma
 id|pn
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmRead: bp:0x%p pn:0x%x&bslash;n&quot;
+l_string|&quot;lbmRead: bp:0x%p pn:0x%x&quot;
 comma
 id|bp
 comma
 id|pn
-)paren
 )paren
 suffix:semicolon
 id|bp-&gt;l_flag
@@ -5557,20 +5363,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmWrite: bp:0x%p flag:0x%x pn:0x%x&bslash;n&quot;
+l_string|&quot;lbmWrite: bp:0x%p flag:0x%x pn:0x%x&quot;
 comma
 id|bp
 comma
 id|flag
 comma
 id|bp-&gt;l_pn
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* map the logical block address to physical block address */
@@ -5755,20 +5557,16 @@ r_int
 id|flag
 )paren
 (brace
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lbmDirectWrite: bp:0x%p flag:0x%x pn:0x%x&bslash;n&quot;
+l_string|&quot;lbmDirectWrite: bp:0x%p flag:0x%x pn:0x%x&quot;
 comma
 id|bp
 comma
 id|flag
 comma
 id|bp-&gt;l_pn
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * initialize buffer for device driver&n;&t; */
@@ -5826,14 +5624,10 @@ id|log
 op_assign
 id|bp-&gt;l_log
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
 l_string|&quot;lbmStartIO&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|bio
@@ -5930,16 +5724,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmStartIO done&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;lbmIOWait()&n; */
 DECL|function|lbmIOWait
@@ -5966,20 +5750,16 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmIOWait1: bp:0x%p flag:0x%x:0x%x&bslash;n&quot;
+l_string|&quot;lbmIOWait1: bp:0x%p flag:0x%x:0x%x&quot;
 comma
 id|bp
 comma
 id|bp-&gt;l_flag
 comma
 id|flag
-)paren
 )paren
 suffix:semicolon
 id|LCACHE_LOCK
@@ -6036,20 +5816,16 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* unlock+enable */
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmIOWait2: bp:0x%p flag:0x%x:0x%x&bslash;n&quot;
+l_string|&quot;lbmIOWait2: bp:0x%p flag:0x%x:0x%x&quot;
 comma
 id|bp
 comma
 id|bp-&gt;l_flag
 comma
 id|flag
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -6109,18 +5885,14 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * get back jfs buffer bound to the i/o buffer&n;&t; */
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lbmIODone: bp:0x%p flag:0x%x&bslash;n&quot;
+l_string|&quot;lbmIODone: bp:0x%p flag:0x%x&quot;
 comma
 id|bp
 comma
 id|bp-&gt;l_flag
-)paren
 )paren
 suffix:semicolon
 id|LCACHE_LOCK
@@ -6152,14 +5924,10 @@ id|bp-&gt;l_flag
 op_or_assign
 id|lbmERROR
 suffix:semicolon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;lbmIODone: I/O error in JFS log&bslash;n&quot;
-)paren
+l_string|&quot;lbmIODone: I/O error in JFS log&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6425,16 +6193,6 @@ id|lbuf
 op_star
 id|bp
 suffix:semicolon
-id|jFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfsIOWait is here!&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -6462,7 +6220,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -6481,7 +6239,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|complete
@@ -6622,14 +6380,10 @@ op_logical_neg
 id|jfs_stop_threads
 )paren
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfsIOWait being killed!&bslash;n&quot;
-)paren
+l_string|&quot;jfsIOWait being killed!&quot;
 )paren
 suffix:semicolon
 id|complete
@@ -6707,13 +6461,10 @@ id|lbuf
 op_star
 id|bp
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;lmLogFormat: logAddress:%Ld logSize:%d&bslash;n&quot;
+l_string|&quot;lmLogFormat: logAddress:%Ld logSize:%d&quot;
 comma
 (paren
 r_int
@@ -6722,7 +6473,6 @@ r_int
 id|logAddress
 comma
 id|logSize
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* allocate a log buffer */

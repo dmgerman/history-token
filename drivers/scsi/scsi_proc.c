@@ -1612,18 +1612,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; %d %d %d : %d %d&bslash;n&quot;
+l_string|&quot; %d %d : %d %d&bslash;n&quot;
 comma
 id|shpnt-&gt;host_failed
 comma
 id|shpnt-&gt;host_busy
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|shpnt-&gt;host_active
-)paren
 comma
 id|shpnt-&gt;host_blocked
 comma
@@ -1710,13 +1703,13 @@ comma
 id|i
 op_increment
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|SCpnt-&gt;request-&gt;rq_disk
 ques

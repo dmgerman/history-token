@@ -1426,8 +1426,6 @@ l_int|9
 op_plus
 id|lo-&gt;lo_offset
 suffix:semicolon
-r_do
-(brace
 r_if
 c_cond
 (paren
@@ -1466,16 +1464,6 @@ comma
 id|lo-&gt;lo_blocksize
 comma
 id|pos
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_increment
-id|bio-&gt;bi_idx
-OL
-id|bio-&gt;bi_vcnt
 )paren
 suffix:semicolon
 r_return
@@ -2443,7 +2431,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -2463,7 +2451,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|set_user_nice

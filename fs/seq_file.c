@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/**&n; *&t;seq_open -&t;initialize sequential file&n; *&t;@file: file we initialize&n; *&t;@op: method table describing the sequence&n; *&n; *&t;seq_open() sets @file, associating it with a sequence described&n; *&t;by @op.  @op-&gt;start() sets the iterator up and returns the first&n; *&t;element of sequence. @op-&gt;stop() shuts it down.  @op-&gt;next()&n; *&t;returns the next element of sequence.  @op-&gt;show() prints element&n; *&t;into the buffer.  In case of error -&gt;start() and -&gt;next() return&n; *&t;ERR_PTR(error).  In the end of sequence they return %NULL. -&gt;show()&n; *&t;returns 0 in case of success and negative number in case of error.&n; */
 DECL|function|seq_open
 r_int

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
@@ -2458,10 +2459,6 @@ r_return
 id|current-&gt;gid
 suffix:semicolon
 )brace
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 DECL|function|irix_stime
 id|asmlinkage
 r_int
@@ -2486,7 +2483,7 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -2509,7 +2506,7 @@ id|time_esterror
 op_assign
 id|MAXPHASE
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp

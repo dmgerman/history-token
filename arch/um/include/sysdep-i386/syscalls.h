@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;asm/unistd.h&quot;
+macro_line|#include &quot;sysdep/ptrace.h&quot;
 DECL|typedef|syscall_handler_t
 r_typedef
 r_int
@@ -11,7 +12,7 @@ id|pt_regs
 )paren
 suffix:semicolon
 DECL|macro|EXECUTE_SYSCALL
-mdefine_line|#define EXECUTE_SYSCALL(syscall, regs) (*sys_call_table[syscall])(*regs);
+mdefine_line|#define EXECUTE_SYSCALL(syscall, regs) &bslash;&n;&t;((long (*)(struct syscall_args)) (*sys_call_table[syscall]))(SYSCALL_ARGS(&amp;regs-&gt;regs))
 r_extern
 id|syscall_handler_t
 id|sys_modify_ldt

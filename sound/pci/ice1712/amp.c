@@ -30,6 +30,39 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_vt1724_amp_add_controls
+r_static
+r_int
+id|__devinit
+id|snd_vt1724_amp_add_controls
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+)paren
+(brace
+multiline_comment|/* we use pins 39 and 41 of the VT1616 for left and right read outputs */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ice-&gt;ac97
+comma
+l_int|0x5a
+comma
+id|snd_ac97_read
+c_func
+(paren
+id|ice-&gt;ac97
+comma
+l_int|0x5a
+)paren
+op_amp
+op_complement
+l_int|0x8000
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* entry point */
 DECL|variable|__devinitdata
 r_struct
@@ -46,6 +79,8 @@ comma
 l_string|&quot;AMP Ltd AUDIO2000&quot;
 comma
 id|snd_vt1724_amp_init
+comma
+id|snd_vt1724_amp_add_controls
 comma
 )brace
 comma

@@ -133,15 +133,6 @@ id|get_pci_node_path
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IOMMU_CCIO
-DECL|variable|ccio_get_fake
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ccio_get_fake
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|variable|enable_irq

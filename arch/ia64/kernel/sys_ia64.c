@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;&t;&t;/* doh, must come after sched.h...
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_int
@@ -72,6 +73,78 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|COLOR_HALIGN
+mdefine_line|#define COLOR_HALIGN(addr) ((addr + HPAGE_SIZE - 1) &amp; ~(HPAGE_SIZE - 1))
+DECL|macro|TASK_HPAGE_BASE
+mdefine_line|#define TASK_HPAGE_BASE ((REGION_HPAGE &lt;&lt; REGION_SHIFT) | HPAGE_SIZE)
+r_if
+c_cond
+(paren
+id|filp
+op_logical_and
+id|is_file_hugepages
+c_func
+(paren
+id|filp
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|REGION_NUMBER
+c_func
+(paren
+id|addr
+)paren
+op_ne
+id|REGION_HPAGE
+)paren
+op_logical_or
+(paren
+id|addr
+op_amp
+(paren
+id|HPAGE_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+)paren
+id|addr
+op_assign
+id|TASK_HPAGE_BASE
+suffix:semicolon
+id|addr
+op_assign
+id|COLOR_HALIGN
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|REGION_NUMBER
+c_func
+(paren
+id|addr
+)paren
+op_eq
+id|REGION_HPAGE
+)paren
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

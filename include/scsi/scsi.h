@@ -165,7 +165,30 @@ mdefine_line|#define SERVICE_ACTION_IN     0x9e
 multiline_comment|/* values for service action in */
 DECL|macro|SAI_READ_CAPACITY_16
 mdefine_line|#define&t;SAI_READ_CAPACITY_16  0x10
-multiline_comment|/*&n; *  Status codes&n; */
+multiline_comment|/*&n; *  SCSI Architecture Model (SAM) Status codes. Taken from SAM-3 draft&n; *  T10/1561-D Revision 4 Draft dated 7th November 2002.&n; */
+DECL|macro|SAM_STAT_GOOD
+mdefine_line|#define SAM_STAT_GOOD            0x00
+DECL|macro|SAM_STAT_CHECK_CONDITION
+mdefine_line|#define SAM_STAT_CHECK_CONDITION 0x02
+DECL|macro|SAM_STAT_CONDITION_MET
+mdefine_line|#define SAM_STAT_CONDITION_MET   0x04
+DECL|macro|SAM_STAT_BUSY
+mdefine_line|#define SAM_STAT_BUSY            0x08
+DECL|macro|SAM_STAT_IMMEDIATE
+mdefine_line|#define SAM_STAT_IMMEDIATE       0x10
+DECL|macro|SAM_STAT_IMMEDIATE_CONDITION_MET
+mdefine_line|#define SAM_STAT_IMMEDIATE_CONDITION_MET 0x14
+DECL|macro|SAM_STAT_RESERVATION_CONFLICT
+mdefine_line|#define SAM_STAT_RESERVATION_CONFLICT 0x18
+DECL|macro|SAM_STAT_COMMAND_TERMINATED
+mdefine_line|#define SAM_STAT_COMMAND_TERMINATED 0x22&t;/* obsolete in SAM-3 */
+DECL|macro|SAM_STAT_TASK_SET_FULL
+mdefine_line|#define SAM_STAT_TASK_SET_FULL   0x28
+DECL|macro|SAM_STAT_ACA_ACTIVE
+mdefine_line|#define SAM_STAT_ACA_ACTIVE      0x30
+DECL|macro|SAM_STAT_TASK_ABORTED
+mdefine_line|#define SAM_STAT_TASK_ABORTED    0x40
+multiline_comment|/*&n; *  Status codes. These are deprecated as they are shifted 1 bit right&n; *  from those found in the SCSI standards. This causes confusion for&n; *  applications that are ported to several OSes. Prefer SAM Status codes&n; *  above.&n; */
 DECL|macro|GOOD
 mdefine_line|#define GOOD                 0x00
 DECL|macro|CHECK_CONDITION

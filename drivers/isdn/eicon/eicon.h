@@ -1006,7 +1006,7 @@ DECL|member|hwif
 id|eicon_hwif
 id|hwif
 suffix:semicolon
-multiline_comment|/* Hardware dependant interface     */
+multiline_comment|/* Hardware dependent interface     */
 DECL|member|d
 id|DESCRIPTOR
 op_star

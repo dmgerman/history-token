@@ -2936,21 +2936,6 @@ c_func
 id|dio
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|dio_cleanup
-c_func
-(paren
-id|dio
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|dio-&gt;result
 op_add_assign
 id|iov
@@ -2970,6 +2955,21 @@ op_lshift
 id|blkbits
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|dio_cleanup
+c_func
+(paren
+id|dio
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* end iovec loop */
 multiline_comment|/*&n;&t; * There may be some unwritten disk at the end of a part-written&n;&t; * fs-block-sized block.  Go zero that now.&n;&t; */

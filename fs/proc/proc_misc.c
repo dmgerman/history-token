@@ -25,11 +25,13 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 DECL|macro|LOAD_INT
 mdefine_line|#define LOAD_INT(x) ((x) &gt;&gt; FSHIFT)
 DECL|macro|LOAD_FRAC
@@ -387,29 +389,64 @@ op_star
 id|data
 )paren
 (brace
-r_int
-r_int
+id|u64
 id|uptime
 suffix:semicolon
 r_int
 r_int
-id|idle
+id|uptime_remainder
 suffix:semicolon
 r_int
 id|len
 suffix:semicolon
 id|uptime
 op_assign
-id|jiffies
+id|get_jiffies_64
+c_func
+(paren
+)paren
 suffix:semicolon
+id|uptime_remainder
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|do_div
+c_func
+(paren
+id|uptime
+comma
+id|HZ
+)paren
+suffix:semicolon
+macro_line|#if HZ!=100
+(brace
+id|u64
 id|idle
 op_assign
 id|init_task.utime
 op_plus
 id|init_task.stime
 suffix:semicolon
-multiline_comment|/* The formula for the fraction parts really is ((t * 100) / HZ) % 100, but&n;&t;   that would overflow about every five days at HZ == 100.&n;&t;   Therefore the identity a = (a / b) * b + a % b is used so that it is&n;&t;   calculated as (((t / HZ) * 100) + ((t % HZ) * 100) / HZ) % 100.&n;&t;   The part in front of the &squot;+&squot; always evaluates as 0 (mod 100). All divisions&n;&t;   in the above formulas are truncating. For HZ being a power of 10, the&n;&t;   calculations simplify to the version in the #else part (if the printf&n;&t;   format is adapted to the same number of digits as zeroes in HZ.&n;&t; */
-macro_line|#if HZ!=100
+r_int
+r_int
+id|idle_remainder
+suffix:semicolon
+id|idle_remainder
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|do_div
+c_func
+(paren
+id|idle
+comma
+id|HZ
+)paren
+suffix:semicolon
 id|len
 op_assign
 id|sprintf
@@ -419,48 +456,46 @@ id|page
 comma
 l_string|&quot;%lu.%02lu %lu.%02lu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|uptime
-op_div
-id|HZ
 comma
 (paren
-(paren
-(paren
-id|uptime
-op_mod
-id|HZ
-)paren
+id|uptime_remainder
 op_star
 l_int|100
 )paren
 op_div
 id|HZ
-)paren
-op_mod
-l_int|100
-comma
-id|idle
-op_div
-id|HZ
 comma
 (paren
-(paren
-(paren
-id|idle
-op_mod
-id|HZ
+r_int
+r_int
 )paren
+id|idle
+comma
+(paren
+id|idle_remainder
 op_star
 l_int|100
 )paren
 op_div
 id|HZ
-)paren
-op_mod
-l_int|100
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
+(brace
+r_int
+r_int
+id|idle
+op_assign
+id|init_task.utime
+op_plus
+id|init_task.stime
+suffix:semicolon
 id|len
 op_assign
 id|sprintf
@@ -470,13 +505,13 @@ id|page
 comma
 l_string|&quot;%lu.%02lu %lu.%02lu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|uptime
-op_div
-id|HZ
 comma
-id|uptime
-op_mod
-id|HZ
+id|uptime_remainder
 comma
 id|idle
 op_div
@@ -487,6 +522,7 @@ op_mod
 id|HZ
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 id|proc_calc_metrics
@@ -1428,11 +1464,13 @@ r_int
 r_int
 id|total_forks
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|jif
 op_assign
-id|jiffies
+id|get_jiffies_64
+c_func
+(paren
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -1762,6 +1800,14 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
+id|do_div
+c_func
+(paren
+id|jif
+comma
+id|HZ
+)paren
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -1784,9 +1830,11 @@ c_func
 comma
 id|xtime.tv_sec
 op_minus
+(paren
+r_int
+r_int
+)paren
 id|jif
-op_div
-id|HZ
 comma
 id|total_forks
 comma

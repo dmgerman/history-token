@@ -4286,6 +4286,11 @@ id|fb_blank
 op_assign
 id|sa1100fb_blank
 comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Calculate the PCD value from the clock rate (in picoseconds).&n; * We take account of the PPCR clock setting.&n; */

@@ -69,7 +69,7 @@ macro_line|#endif&t;&t;&t;&t;&t;&t;&t;
 DECL|macro|FCP_CMND
 mdefine_line|#define FCP_CMND(SCpnt) ((fcp_cmnd *)&amp;(SCpnt-&gt;SCp))
 DECL|macro|FC_SCMND
-mdefine_line|#define FC_SCMND(SCpnt) ((fc_channel *)(SCpnt-&gt;host-&gt;hostdata[0]))
+mdefine_line|#define FC_SCMND(SCpnt) ((fc_channel *)(SCpnt-&gt;device-&gt;host-&gt;hostdata[0]))
 DECL|macro|SC_FCMND
 mdefine_line|#define SC_FCMND(fcmnd) ((Scsi_Cmnd *)((long)fcmnd - (long)&amp;(((Scsi_Cmnd *)0)-&gt;SCp)))
 r_static
@@ -2310,9 +2310,9 @@ l_string|&quot;%s: (%d,%d) Received rsp_status 0x%x&bslash;n&quot;
 comma
 id|fc-&gt;name
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|rsp_status
 )paren
@@ -4253,7 +4253,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4284,7 +4284,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4420,11 +4420,11 @@ id|jiffies
 op_minus
 id|fc-&gt;ages
 (braket
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 op_star
 id|fc-&gt;targets
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 OG
 (paren
@@ -4438,11 +4438,11 @@ id|HZ
 (brace
 id|fc-&gt;ages
 (braket
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 op_star
 id|fc-&gt;targets
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 op_assign
 id|jiffies
@@ -5022,7 +5022,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5038,7 +5038,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5093,7 +5093,7 @@ suffix:semicolon
 id|up
 c_func
 (paren
-id|fc-&gt;rst_pkt-&gt;host-&gt;eh_action
+id|fc-&gt;rst_pkt-&gt;device-&gt;host-&gt;eh_action
 )paren
 suffix:semicolon
 )brace
@@ -5202,17 +5202,9 @@ comma
 id|fcmd
 )paren
 suffix:semicolon
-id|fc-&gt;rst_pkt-&gt;channel
+id|fc-&gt;rst_pkt-&gt;device
 op_assign
-id|SCpnt-&gt;channel
-suffix:semicolon
-id|fc-&gt;rst_pkt-&gt;target
-op_assign
-id|SCpnt-&gt;target
-suffix:semicolon
-id|fc-&gt;rst_pkt-&gt;lun
-op_assign
-l_int|0
+id|SCpnt-&gt;device
 suffix:semicolon
 id|fc-&gt;rst_pkt-&gt;cmd_len
 op_assign
@@ -5397,7 +5389,7 @@ id|fc-&gt;rst_pkt-&gt;eh_timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the semaphore so we wait for the command to complete.&n;&t; */
-id|fc-&gt;rst_pkt-&gt;host-&gt;eh_action
+id|fc-&gt;rst_pkt-&gt;device-&gt;host-&gt;eh_action
 op_assign
 op_amp
 id|sem
@@ -5429,7 +5421,7 @@ op_amp
 id|sem
 )paren
 suffix:semicolon
-id|fc-&gt;rst_pkt-&gt;host-&gt;eh_action
+id|fc-&gt;rst_pkt-&gt;device-&gt;host-&gt;eh_action
 op_assign
 l_int|NULL
 suffix:semicolon

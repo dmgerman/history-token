@@ -147,14 +147,11 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
-DECL|member|enabled
+DECL|member|disable_depth
 r_int
 r_int
-id|enabled
-suffix:colon
-l_int|1
+id|disable_depth
 suffix:semicolon
-multiline_comment|/* IRQ is currently enabled   */
 DECL|member|triggered
 r_int
 r_int
@@ -216,14 +213,8 @@ r_int
 r_int
 id|unused
 suffix:colon
-l_int|23
+l_int|25
 suffix:semicolon
-DECL|member|depth
-r_int
-r_int
-id|depth
-suffix:semicolon
-multiline_comment|/* disable depth&t;      */
 multiline_comment|/*&n;&t; * IRQ lock detection&n;&t; */
 DECL|member|lck_cnt
 r_int

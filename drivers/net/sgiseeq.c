@@ -2289,7 +2289,7 @@ id|sp-&gt;srings.tx_desc
 id|entry
 )braket
 suffix:semicolon
-multiline_comment|/* Create entry.  There are so many races with adding a new&n;&t; * descriptor to the chain:&n;&t; * 1) Assume that the HPC is off processing a DMA chain while&n;&t; *    we are changing all of the following.&n;&t; * 2) Do no allow the HPC to look at a new descriptor until&n;&t; *    we have completely set up it&squot;s state.  This means, do&n;&t; *    not clear HPCDMA_EOX in the current last descritptor&n;&t; *    until the one we are adding looks consistant and could&n;&t; *    be processes right now.&n;&t; * 3) The tx interrupt code must notice when we&squot;ve added a new&n;&t; *    entry and the HPC got to the end of the chain before we&n;&t; *    added this new entry and restarted it.&n;&t; */
+multiline_comment|/* Create entry.  There are so many races with adding a new&n;&t; * descriptor to the chain:&n;&t; * 1) Assume that the HPC is off processing a DMA chain while&n;&t; *    we are changing all of the following.&n;&t; * 2) Do no allow the HPC to look at a new descriptor until&n;&t; *    we have completely set up it&squot;s state.  This means, do&n;&t; *    not clear HPCDMA_EOX in the current last descritptor&n;&t; *    until the one we are adding looks consistent and could&n;&t; *    be processes right now.&n;&t; * 3) The tx interrupt code must notice when we&squot;ve added a new&n;&t; *    entry and the HPC got to the end of the chain before we&n;&t; *    added this new entry and restarted it.&n;&t; */
 id|memcpy
 c_func
 (paren

@@ -304,14 +304,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|marvel_srmcons_allowed
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|_alpha_agp_info
 op_star
@@ -709,10 +701,8 @@ r_extern
 r_int
 id|boot_cpuid
 suffix:semicolon
-r_extern
-r_int
-id|srmcons_output
-suffix:semicolon
+multiline_comment|/* srmcons.c */
+macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_SRM)
 r_extern
 r_void
 id|register_srm_console
@@ -729,6 +719,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|register_srm_console
+mdefine_line|#define register_srm_console()
+DECL|macro|unregister_srm_console
+mdefine_line|#define unregister_srm_console()
+macro_line|#endif
 multiline_comment|/* smp.c */
 r_extern
 r_void

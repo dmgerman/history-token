@@ -114,7 +114,7 @@ id|entry-&gt;card-&gt;id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_new: create and initialize a soundcard structure&n; *  @idx: card index (address) [0 ... (SNDRV_CARDS-1)]&n; *  @xid: card identification (ASCII string)&n; *  @module: top level module for locking&n; *  @extra_size: allocate this extra size after the main soundcard structure&n; *&n; *  Returns kmallocated snd_card_t structure. Creates the ALSA control interface&n; *  (which is blocked until #snd_card_register function is called).&n; */
+multiline_comment|/**&n; *  snd_card_new - create and initialize a soundcard structure&n; *  @idx: card index (address) [0 ... (SNDRV_CARDS-1)]&n; *  @xid: card identification (ASCII string)&n; *  @module: top level module for locking&n; *  @extra_size: allocate this extra size after the main soundcard structure&n; *&n; *  Creates and initializes a soundcard structure.&n; *&n; *  Returns kmallocated snd_card_t structure. Creates the ALSA control interface&n; *  (which is blocked until snd_card_register function is called).&n; */
 DECL|function|snd_card_new
 id|snd_card_t
 op_star
@@ -274,6 +274,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|idx
+OL
+l_int|0
+op_logical_and
+id|snd_ecards_limit
+OL
+id|SNDRV_CARDS
+)paren
+multiline_comment|/* for dynamically additional devices like hotplug:&n;&t;&t;&t; * increment the limit if still free slot exists.&n;&t;&t;&t; */
+id|idx
+op_assign
+id|snd_ecards_limit
+op_increment
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -302,16 +319,33 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* invalid */
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|idx
+OL
+id|SNDRV_CARDS
+)paren
+id|snd_ecards_limit
+op_assign
+id|idx
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* increase the limit */
+r_else
+id|idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|idx
 OL
 l_int|0
-op_logical_or
-id|idx
-op_ge
-id|snd_ecards_limit
 )paren
 (brace
 id|write_unlock
@@ -552,7 +586,7 @@ op_or
 id|POLLNVAL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_disconnect: disconnect all APIs from the file-operations (user space)&n; *  @card: soundcard structure&n; *&n; *  Returns - zero, otherwise a negative error code.&n; *&n; *  Note: The current implementation replaces all active file-&gt;f_op with special&n; *        dummy file operations (they do nothing except release).&n; */
+multiline_comment|/**&n; *  snd_card_disconnect - disconnect all APIs from the file-operations (user space)&n; *  @card: soundcard structure&n; *&n; *  Disconnects all APIs from the file-operations (user space).&n; *&n; *  Returns zero, otherwise a negative error code.&n; *&n; *  Note: The current implementation replaces all active file-&gt;f_op with special&n; *        dummy file operations (they do nothing except release).&n; */
 DECL|function|snd_card_disconnect
 r_int
 id|snd_card_disconnect
@@ -825,7 +859,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_free: frees given soundcard structure&n; *  @card: soundcard structure&n; *&n; *  This function releases the soundcard structure and the all assigned&n; *  devices automatically.  That is, you don&squot;t have to release the devices&n; *  by yourself.&n; *&n; *  Returns - zero. Frees all associated devices and frees the control&n; *  interface associated to given soundcard.&n; */
+multiline_comment|/**&n; *  snd_card_free - frees given soundcard structure&n; *  @card: soundcard structure&n; *&n; *  This function releases the soundcard structure and the all assigned&n; *  devices automatically.  That is, you don&squot;t have to release the devices&n; *  by yourself.&n; *&n; *  Returns zero. Frees all associated devices and frees the control&n; *  interface associated to given soundcard.&n; */
 DECL|function|snd_card_free
 r_int
 id|snd_card_free
@@ -836,9 +870,6 @@ op_star
 id|card
 )paren
 (brace
-id|wait_queue_t
-id|wait
-suffix:semicolon
 r_struct
 id|snd_shutdown_f_ops
 op_star
@@ -880,54 +911,14 @@ id|snd_card_rwlock
 )paren
 suffix:semicolon
 multiline_comment|/* wait, until all devices are ready for the free operation */
-id|init_waitqueue_entry
+id|wait_event
 c_func
 (paren
-op_amp
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
 id|card-&gt;shutdown_sleep
 comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
 id|card-&gt;files
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|30
-op_star
-id|HZ
-)paren
-suffix:semicolon
-)brace
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|card-&gt;shutdown_sleep
-comma
-op_amp
-id|wait
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
@@ -1150,6 +1141,8 @@ r_struct
 id|module
 op_star
 id|module
+op_assign
+id|card-&gt;module
 suffix:semicolon
 r_if
 c_cond
@@ -1159,8 +1152,6 @@ id|try_module_get
 c_func
 (paren
 id|module
-op_assign
-id|card-&gt;module
 )paren
 )paren
 (brace
@@ -1178,16 +1169,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|wait_event
-c_func
-(paren
-id|card-&gt;shutdown_sleep
-comma
-id|card-&gt;files
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
 id|snd_card_free
 c_func
 (paren
@@ -1201,7 +1182,7 @@ id|module
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_free_in_thread: call snd_card_free() in thread&n; *  @card: soundcard structure&n; *&n; *  This function schedules the call of #snd_card_free function in a&n; *  work queue.  When all devices are released (non-busy), the work&n; *  is woken up and calls #snd_card_free.&n; *&n; *  When a card can be disconnected at any time by hotplug service,&n; *  this function should be used in disconnect (or detach) callback&n; *  instead of calling #snd_card_free directly.&n; *  &n; *  Returns - zero otherwise a negative error code if the start of thread failed.&n; */
+multiline_comment|/**&n; *  snd_card_free_in_thread - call snd_card_free() in thread&n; *  @card: soundcard structure&n; *&n; *  This function schedules the call of snd_card_free() function in a&n; *  work queue.  When all devices are released (non-busy), the work&n; *  is woken up and calls snd_card_free().&n; *&n; *  When a card can be disconnected at any time by hotplug service,&n; *  this function should be used in disconnect (or detach) callback&n; *  instead of calling snd_card_free() directly.&n; *  &n; *  Returns - zero otherwise a negative error code if the start of thread failed.&n; */
 DECL|function|snd_card_free_in_thread
 r_int
 id|snd_card_free_in_thread
@@ -1581,7 +1562,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; *  snd_card_register: register the soundcard&n; *  @card: soundcard structure&n; *&n; *  This function registers all the devices assigned to the soundcard.&n; *  Until calling this, the ALSA control interface is blocked from the&n; *  external accesses.  Thus, you should call this function at the end&n; *  of the initialization of the card.&n; *&n; *  Returns - zero otherwise a negative error code if the registrain failed.&n; */
+multiline_comment|/**&n; *  snd_card_register - register the soundcard&n; *  @card: soundcard structure&n; *&n; *  This function registers all the devices assigned to the soundcard.&n; *  Until calling this, the ALSA control interface is blocked from the&n; *  external accesses.  Thus, you should call this function at the end&n; *  of the initialization of the card.&n; *&n; *  Returns zero otherwise a negative error code if the registrain failed.&n; */
 DECL|function|snd_card_register
 r_int
 id|snd_card_register
@@ -2132,7 +2113,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_component_add: add a component string&n; *  @card: soundcard structure&n; *  @component: the component id string&n; *&n; *  This function adds the component id string to the supported list.&n; *  The component can be referred from the alsa-lib.&n; *&n; *  Returns - zero otherwise a negative error code.&n; */
+multiline_comment|/**&n; *  snd_component_add - add a component string&n; *  @card: soundcard structure&n; *  @component: the component id string&n; *&n; *  This function adds the component id string to the supported list.&n; *  The component can be referred from the alsa-lib.&n; *&n; *  Returns zero otherwise a negative error code.&n; */
 DECL|function|snd_component_add
 r_int
 id|snd_component_add
@@ -2262,7 +2243,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_file_add: add the file to the file list of the card&n; *  @card: soundcard structure&n; *  @file: file pointer&n; *&n; *  This function adds the file to the file linked-list of the card.&n; *  This linked-list is used to keep tracking the connection state,&n; *  and to avoid the release of busy resources by hotplug.&n; *&n; *  Returns zero or a negative error code.&n; */
+multiline_comment|/**&n; *  snd_card_file_add - add the file to the file list of the card&n; *  @card: soundcard structure&n; *  @file: file pointer&n; *&n; *  This function adds the file to the file linked-list of the card.&n; *  This linked-list is used to keep tracking the connection state,&n; *  and to avoid the release of busy resources by hotplug.&n; *&n; *  Returns zero or a negative error code.&n; */
 DECL|function|snd_card_file_add
 r_int
 id|snd_card_file_add
@@ -2366,7 +2347,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  snd_card_file_remove: remove the file from the file list&n; *  @card: soundcard structure&n; *  @file: file pointer&n; *&n; *  This function removes the file formerly added to the card via&n; *  #snd_card_file_add function.&n; *  If all files are removed and the release of the card is&n; *  scheduled, it will wake up the the thread to call #snd_card_free&n; *  (see #snd_card_free_in_thread function).&n; *&n; *  Returns zero or a negative error code.&n; */
+multiline_comment|/**&n; *  snd_card_file_remove - remove the file from the file list&n; *  @card: soundcard structure&n; *  @file: file pointer&n; *&n; *  This function removes the file formerly added to the card via&n; *  snd_card_file_add() function.&n; *  If all files are removed and the release of the card is&n; *  scheduled, it will wake up the the thread to call snd_card_free()&n; *  (see snd_card_free_in_thread() function).&n; *&n; *  Returns zero or a negative error code.&n; */
 DECL|function|snd_card_file_remove
 r_int
 id|snd_card_file_remove
@@ -2498,7 +2479,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/**&n; *  snd_power_wait: wait until the power-state is changed.&n; *  @card: soundcard structure&n; *&n; *  Note: the power lock must be active before call.&n; */
+multiline_comment|/**&n; *  snd_power_wait - wait until the power-state is changed.&n; *  @card: soundcard structure&n; *&n; *  Waits until the power-state is changed.&n; *&n; *  Note: the power lock must be active before call.&n; */
 DECL|function|snd_power_wait
 r_void
 id|snd_power_wait

@@ -15069,7 +15069,7 @@ macro_line|#ifdef __BIG_ENDIAN
 r_if
 c_cond
 (paren
-id|info-&gt;cursor
+id|par-&gt;cursor
 op_logical_and
 id|par-&gt;cursor-&gt;ram
 )paren
@@ -15084,12 +15084,12 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|info-&gt;cursor
+id|par-&gt;cursor
 )paren
 id|kfree
 c_func
 (paren
-id|info-&gt;cursor
+id|par-&gt;cursor
 )paren
 suffix:semicolon
 macro_line|#ifdef __sparc__

@@ -262,10 +262,6 @@ id|out
 suffix:semicolon
 id|error
 op_assign
-l_int|0
-suffix:semicolon
-id|error
-op_assign
 id|security_file_ioctl
 c_func
 (paren

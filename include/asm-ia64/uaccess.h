@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UACCESS_H
 DECL|macro|_ASM_IA64_UACCESS_H
 mdefine_line|#define _ASM_IA64_UACCESS_H
-multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing saftey checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Copyright (C) 1998, 1999, 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing saftey checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Copyright (C) 1998, 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -107,23 +107,12 @@ id|asm
 l_string|&quot;.section &bslash;&quot;__ex_table&bslash;&quot;, &bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t.previous&quot;
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &gt;= 3
-DECL|macro|GAS_HAS_LOCAL_TAGS
-macro_line|#  define GAS_HAS_LOCAL_TAGS&t;/* define if gas supports local tags a la [1:] */
-macro_line|#endif
-macro_line|#ifdef GAS_HAS_LOCAL_TAGS
-DECL|macro|_LL
-macro_line|# define _LL&t;&quot;[1:]&quot;
-macro_line|#else
-DECL|macro|_LL
-macro_line|# define _LL&t;&quot;1:&quot;
-macro_line|#endif
 DECL|macro|__get_user_64
-mdefine_line|#define __get_user_64(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld8 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_64(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld8 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)+4&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -152,11 +141,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_32
-mdefine_line|#define __get_user_32(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld4 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_32(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld4 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)+4&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -185,11 +174,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_16
-mdefine_line|#define __get_user_16(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld2 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_16(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld2 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)+4&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -218,11 +207,11 @@ id|__gu_err
 )paren
 suffix:semicolon
 DECL|macro|__get_user_8
-mdefine_line|#define __get_user_8(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n&quot;_LL&quot;&bslash;tld1 %0=%2%P2&bslash;t
+mdefine_line|#define __get_user_8(addr)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;&bslash;n[1:]&bslash;tld1 %0=%2%P2&bslash;t
 singleline_comment|// %0 and %1 get overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)+4&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.+4&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -263,11 +252,11 @@ DECL|macro|__put_user_check
 mdefine_line|#define __put_user_check(x,ptr,size,segment)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __pu_err asm (&quot;r8&quot;) = -EFAULT;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__pu_addr,size,segment)) {&t;&bslash;&n;&t;&t;__pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  case 1: __put_user_8(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 2: __put_user_16(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 4: __put_user_32(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  case 8: __put_user_64(x,__pu_addr); break;&t;&bslash;&n;&t;&t;  default: __put_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * The &quot;__put_user_xx()&quot; macros tell gcc they read from memory&n; * instead of writing: this is because they do not write to&n; * any memory gcc knows about, so there are no aliasing issues&n; */
 DECL|macro|__put_user_64
-mdefine_line|#define __put_user_64(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst8 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_64(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst8 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -295,11 +284,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_32
-mdefine_line|#define __put_user_32(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst4 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_32(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst4 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -327,11 +316,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_16
-mdefine_line|#define __put_user_16(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst2 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_16(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst2 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -359,11 +348,11 @@ id|__pu_err
 )paren
 )paren
 DECL|macro|__put_user_8
-mdefine_line|#define __put_user_8(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n&quot;_LL&quot;&bslash;tst1 %1=%r2%P1&bslash;t
+mdefine_line|#define __put_user_8(x,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;n[1:]&bslash;tst1 %1=%r2%P1&bslash;t
 singleline_comment|// %0 gets overwritten by exception handler&bslash;n&quot;&t;&bslash;
-l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, @gprel(1b), @gprel(1f)&bslash;n&quot;
+l_string|&quot;&bslash;t.xdata4 &bslash;&quot;__ex_table&bslash;&quot;, 1b-., 1f-.&bslash;n&quot;
 "&bslash;"
-id|_LL
+l_string|&quot;[1:]&quot;
 "&bslash;"
 suffix:colon
 l_string|&quot;=r&quot;
@@ -500,28 +489,6 @@ suffix:semicolon
 multiline_comment|/* gp-relative continuation address; if bit 2 is set, r9 is set to 0 */
 )brace
 suffix:semicolon
-DECL|struct|exception_fixup
-r_struct
-id|exception_fixup
-(brace
-DECL|member|cont
-r_int
-r_int
-id|cont
-suffix:semicolon
-multiline_comment|/* continuation point (bit 2: clear r9 if set) */
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|exception_fixup
-id|search_exception_table
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|handle_exception
@@ -531,17 +498,31 @@ id|pt_regs
 op_star
 id|regs
 comma
+r_const
 r_struct
-id|exception_fixup
-id|fixup
+id|exception_table_entry
+op_star
+id|e
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_exception_tables
+(paren
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 macro_line|#ifdef GAS_HAS_LOCAL_TAGS
 DECL|macro|SEARCH_EXCEPTION_TABLE
-mdefine_line|#define SEARCH_EXCEPTION_TABLE(regs) search_exception_table(regs-&gt;cr_iip + ia64_psr(regs)-&gt;ri);
+macro_line|# define SEARCH_EXCEPTION_TABLE(regs) search_exception_tables(regs-&gt;cr_iip + ia64_psr(regs)-&gt;ri)
 macro_line|#else
 DECL|macro|SEARCH_EXCEPTION_TABLE
-mdefine_line|#define SEARCH_EXCEPTION_TABLE(regs) search_exception_table(regs-&gt;cr_iip);
+macro_line|# define SEARCH_EXCEPTION_TABLE(regs) search_exception_tables(regs-&gt;cr_iip)
 macro_line|#endif
 r_static
 r_inline
@@ -555,11 +536,13 @@ op_star
 id|regs
 )paren
 (brace
+r_const
 r_struct
-id|exception_fixup
-id|fix
+id|exception_table_entry
+op_star
+id|e
 suffix:semicolon
-id|fix
+id|e
 op_assign
 id|SEARCH_EXCEPTION_TABLE
 c_func
@@ -570,7 +553,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fix.cont
+id|e
 )paren
 (brace
 id|handle_exception
@@ -578,7 +561,7 @@ c_func
 (paren
 id|regs
 comma
-id|fix
+id|e
 )paren
 suffix:semicolon
 r_return

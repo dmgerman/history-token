@@ -1,9 +1,9 @@
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Preserved registers that are shared between code in ivt.S and entry.S.  Be&n; * careful not to step on these!&n; */
-DECL|macro|pKern
-mdefine_line|#define pKern&t;&t;p2&t;/* will leave_kernel return to kernel-mode? */
-DECL|macro|pUser
-mdefine_line|#define pUser&t;&t;p3&t;/* will leave_kernel return to user-mode? */
+DECL|macro|pKStk
+mdefine_line|#define pKStk&t;&t;p2&t;/* will leave_kernel return to kernel-stacks? */
+DECL|macro|pUStk
+mdefine_line|#define pUStk&t;&t;p3&t;/* will leave_kernel return to user-stacks? */
 DECL|macro|pSys
 mdefine_line|#define pSys&t;&t;p4&t;/* are we processing a (synchronous) system call? */
 DECL|macro|pNonSys

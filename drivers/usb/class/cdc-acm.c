@@ -721,7 +721,7 @@ c_cond
 (paren
 op_logical_neg
 id|urb-&gt;status
-op_amp
+op_logical_and
 op_logical_neg
 id|acm-&gt;throttle
 )paren
@@ -3168,6 +3168,18 @@ c_func
 id|USB_CLASS_COMM
 comma
 l_int|0
+comma
+l_int|0
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE_INFO
+c_func
+(paren
+id|USB_CLASS_COMM
+comma
+l_int|2
 comma
 l_int|0
 )paren

@@ -22,7 +22,8 @@ l_int|18
 )braket
 suffix:semicolon
 r_extern
-id|Scsi_Host_Template
+r_struct
+id|SHT
 id|usb_stor_host_template
 suffix:semicolon
 r_extern

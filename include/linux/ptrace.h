@@ -36,6 +36,10 @@ DECL|macro|PTRACE_SETOPTIONS
 mdefine_line|#define PTRACE_SETOPTIONS&t;0x4200
 DECL|macro|PTRACE_GETEVENTMSG
 mdefine_line|#define PTRACE_GETEVENTMSG&t;0x4201
+DECL|macro|PTRACE_GETSIGINFO
+mdefine_line|#define PTRACE_GETSIGINFO&t;0x4202
+DECL|macro|PTRACE_SETSIGINFO
+mdefine_line|#define PTRACE_SETSIGINFO&t;0x4203
 multiline_comment|/* options set using PTRACE_SETOPTIONS */
 DECL|macro|PTRACE_O_TRACESYSGOOD
 mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
@@ -47,6 +51,10 @@ DECL|macro|PTRACE_O_TRACECLONE
 mdefine_line|#define PTRACE_O_TRACECLONE&t;0x00000008
 DECL|macro|PTRACE_O_TRACEEXEC
 mdefine_line|#define PTRACE_O_TRACEEXEC&t;0x00000010
+DECL|macro|PTRACE_O_TRACEVFORKDONE
+mdefine_line|#define PTRACE_O_TRACEVFORKDONE&t;0x00000020
+DECL|macro|PTRACE_O_TRACEEXIT
+mdefine_line|#define PTRACE_O_TRACEEXIT&t;0x00000040
 multiline_comment|/* Wait extended result codes for the above trace options.  */
 DECL|macro|PTRACE_EVENT_FORK
 mdefine_line|#define PTRACE_EVENT_FORK&t;1
@@ -56,6 +64,10 @@ DECL|macro|PTRACE_EVENT_CLONE
 mdefine_line|#define PTRACE_EVENT_CLONE&t;3
 DECL|macro|PTRACE_EVENT_EXEC
 mdefine_line|#define PTRACE_EVENT_EXEC&t;4
+DECL|macro|PTRACE_EVENT_VFORK_DONE
+mdefine_line|#define PTRACE_EVENT_VFORK_DONE&t;5
+DECL|macro|PTRACE_EVENT_EXIT
+mdefine_line|#define PTRACE_EVENT_EXIT&t;6
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 r_extern

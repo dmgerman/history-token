@@ -541,8 +541,8 @@ r_if
 c_cond
 (paren
 id|loc
-OL
-l_int|0
+op_eq
+id|MAP_FAILED
 )paren
 (brace
 r_return

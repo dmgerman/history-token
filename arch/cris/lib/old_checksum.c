@@ -265,7 +265,7 @@ op_add_assign
 op_star
 id|buff
 suffix:semicolon
-multiline_comment|/* add extra byte seperately */
+multiline_comment|/* add extra byte separately */
 )brace
 id|BITOFF
 suffix:semicolon

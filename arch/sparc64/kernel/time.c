@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -25,10 +26,6 @@ macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 DECL|variable|mostek_lock
 id|spinlock_t
 id|mostek_lock
@@ -476,7 +473,7 @@ id|ticks
 comma
 id|pstate
 suffix:semicolon
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -613,7 +610,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -633,7 +630,7 @@ op_star
 id|regs
 )paren
 (brace
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -699,7 +696,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -2919,7 +2916,7 @@ id|this_is_starfire
 )paren
 r_return
 suffix:semicolon
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -2993,7 +2990,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -3019,11 +3016,19 @@ id|flags
 suffix:semicolon
 r_int
 r_int
+id|seq
+suffix:semicolon
+r_int
+r_int
 id|usec
 comma
 id|sec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -3076,13 +3081,20 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_while

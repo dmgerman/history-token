@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+r_struct
+id|scsi_host_cmd_pool
+suffix:semicolon
 multiline_comment|/* It is senseless to set SG_ALL any higher than this - the performance&n; *  does not get any better, and it wastes memory&n; */
 DECL|macro|SG_NONE
 mdefine_line|#define SG_NONE 0
@@ -406,6 +409,22 @@ r_struct
 id|list_head
 id|my_devices
 suffix:semicolon
+DECL|member|cmd_pool
+r_struct
+id|scsi_host_cmd_pool
+op_star
+id|cmd_pool
+suffix:semicolon
+DECL|member|free_list_lock
+id|spinlock_t
+id|free_list_lock
+suffix:semicolon
+DECL|member|free_list
+r_struct
+id|list_head
+id|free_list
+suffix:semicolon
+multiline_comment|/* backup store of cmd structs */
 DECL|member|default_lock
 id|spinlock_t
 id|default_lock
@@ -468,11 +487,6 @@ id|Scsi_Host_Template
 op_star
 id|hostt
 suffix:semicolon
-DECL|member|host_active
-id|atomic_t
-id|host_active
-suffix:semicolon
-multiline_comment|/* commands checked out */
 DECL|member|host_busy
 r_volatile
 r_int
@@ -1154,10 +1168,11 @@ id|sdev-&gt;lun
 op_eq
 id|lun
 )paren
-r_break
-suffix:semicolon
 r_return
 id|sdev
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sysfs support&n; */

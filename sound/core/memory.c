@@ -1167,6 +1167,7 @@ macro_line|#else
 DECL|macro|_snd_kmalloc
 mdefine_line|#define _snd_kmalloc kmalloc
 macro_line|#endif /* CONFIG_SND_DEBUG_MEMORY */
+multiline_comment|/**&n; * snd_malloc_pages - allocate pages with the given size&n; * @size: the size to allocate in bytes&n; * @dma_flags: the allocation conditions, GFP_XXX&n; *&n; * Allocates the physically contiguous pages with the given size.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_pages
 r_void
 op_star
@@ -1305,6 +1306,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_malloc_pages_fallback - allocate pages with the given size with fallback&n; * @size: the requested size to allocate in bytes&n; * @dma_flags: the allocation conditions, GFP_XXX&n; * @res_size: the pointer to store the size of buffer actually allocated&n; *&n; * Allocates the physically contiguous pages with the given request&n; * size.  When no space is left, this function reduces the size and&n; * tries to allocate again.  The size actually allocated is stored in&n; * res_size argument.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_pages_fallback
 r_void
 op_star
@@ -1397,6 +1399,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_free_pages - release the pages&n; * @ptr: the buffer pointer to release&n; * @size: the allocated buffer size&n; *&n; * Releases the buffer allocated via snd_malloc_pages().&n; */
 DECL|function|snd_free_pages
 r_void
 id|snd_free_pages
@@ -1506,6 +1509,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#if defined(CONFIG_ISA) &amp;&amp; ! defined(CONFIG_PCI)
+multiline_comment|/**&n; * snd_malloc_isa_pages - allocate pages for ISA bus with the given size&n; * @size: the size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; *&n; * Allocates the physically contiguous pages with the given size for&n; * ISA bus.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_isa_pages
 r_void
 op_star
@@ -1555,6 +1559,7 @@ r_return
 id|dma_area
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_malloc_isa_pages_fallback - allocate pages with the given size with fallback for ISA bus&n; * @size: the requested size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; * @res_size: the pointer to store the size of buffer actually allocated&n; *&n; * Allocates the physically contiguous pages with the given request&n; * size for PCI bus.  When no space is left, this function reduces the size and&n; * tries to allocate again.  The size actually allocated is stored in&n; * res_size argument.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_isa_pages_fallback
 r_void
 op_star
@@ -1613,6 +1618,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ISA &amp;&amp; !CONFIG_PCI */
 macro_line|#ifdef CONFIG_PCI
+multiline_comment|/**&n; * snd_malloc_pci_pages - allocate pages for PCI bus with the given size&n; * @pci: the pci device pointer&n; * @size: the size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; *&n; * Allocates the physically contiguous pages with the given size for&n; * PCI bus.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_pci_pages
 r_void
 op_star
@@ -1760,6 +1766,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_malloc_pci_pages_fallback - allocate pages with the given size with fallback for PCI bus&n; * @pci: pci device pointer&n; * @size: the requested size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; * @res_size: the pointer to store the size of buffer actually allocated&n; *&n; * Allocates the physically contiguous pages with the given request&n; * size for PCI bus.  When no space is left, this function reduces the size and&n; * tries to allocate again.  The size actually allocated is stored in&n; * res_size argument.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_pci_pages_fallback
 r_void
 op_star
@@ -1848,6 +1855,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_free_pci_pages - release the pages&n; * @pci: pci device pointer&n; * @size: the allocated buffer size&n; * @ptr: the buffer pointer to release&n; * @dma_addr: the physical address of the buffer&n; *&n; * Releases the buffer allocated via snd_malloc_pci_pages().&n; */
 DECL|function|snd_free_pci_pages
 r_void
 id|snd_free_pci_pages
@@ -1972,6 +1980,7 @@ macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_PCI */
 macro_line|#ifdef CONFIG_SBUS
+multiline_comment|/**&n; * snd_malloc_sbus_pages - allocate pages for SBUS with the given size&n; * @sdev: sbus device pointer&n; * @size: the size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; *&n; * Allocates the physically contiguous pages with the given size for&n; * SBUS.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_sbus_pages
 r_void
 op_star
@@ -2119,6 +2128,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_malloc_pci_pages_fallback - allocate pages with the given size with fallback for SBUS&n; * @sdev: sbus device pointer&n; * @size: the requested size to allocate in bytes&n; * @dma_addr: the pointer to store the physical address of the buffer&n; * @res_size: the pointer to store the size of buffer actually allocated&n; *&n; * Allocates the physically contiguous pages with the given request&n; * size for SBUS.  When no space is left, this function reduces the size and&n; * tries to allocate again.  The size actually allocated is stored in&n; * res_size argument.&n; *&n; * Returns the pointer of the buffer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_malloc_sbus_pages_fallback
 r_void
 op_star
@@ -2207,6 +2217,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_free_sbus_pages - release the pages&n; * @sdev: sbus device pointer&n; * @size: the allocated buffer size&n; * @ptr: the buffer pointer to release&n; * @dma_addr: the physical address of the buffer&n; *&n; * Releases the buffer allocated via snd_malloc_pci_pages().&n; */
 DECL|function|snd_free_sbus_pages
 r_void
 id|snd_free_sbus_pages
@@ -2330,6 +2341,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_SBUS */
+multiline_comment|/**&n; * snd_kcalloc - memory allocation and zero-clear&n; * @size: the size to allocate in bytes&n; * @flags: allocation conditions, GFP_XXX&n; *&n; * Allocates a memory chunk via kmalloc() and initializes it to zero.&n; *&n; * Returns the pointer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_kcalloc
 r_void
 op_star
@@ -2376,6 +2388,7 @@ r_return
 id|ptr
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_kmalloc_strdup - copy the string&n; * @string: the original string&n; * @flags: allocation conditions, GFP_XXX&n; *&n; * Allocates a memory chunk via kmalloc() and copies the string to it.&n; *&n; * Returns the pointer, or NULL if no enoguh memory.&n; */
 DECL|function|snd_kmalloc_strdup
 r_char
 op_star
@@ -2446,6 +2459,7 @@ r_return
 id|ptr
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * copy_to_user_fromio - copy data from mmio-space to user-space&n; * @dst: the destination pointer on user-space&n; * @src: the source pointer on mmio&n; * @count: the data size to copy in bytes&n; *&n; * Copies the data from mmio-space to user-space.&n; *&n; * Returns zero if successful, or non-zero on failure.&n; */
 DECL|function|copy_to_user_fromio
 r_int
 id|copy_to_user_fromio
@@ -2570,6 +2584,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/**&n; * copy_from_user_toio - copy data from user-space to mmio-space&n; * @dst: the destination pointer on mmio-space&n; * @src: the source pointer on user-space&n; * @count: the data size to copy in bytes&n; *&n; * Copies the data from user-space to mmio-space.&n; *&n; * Returns zero if successful, or non-zero on failure.&n; */
 DECL|function|copy_from_user_toio
 r_int
 id|copy_from_user_toio
@@ -2694,4 +2709,246 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_PCI
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0) &amp;&amp; defined(__i386__)
+multiline_comment|/*&n; * on ix86, we allocate a page with GFP_KERNEL to assure the&n; * allocation.  the code is almost same with kernel/i386/pci-dma.c but&n; * it allocates only a single page and checks the validity of the&n; * page address with the given pci dma mask.&n; */
+multiline_comment|/**&n; * snd_malloc_pci_page - allocate a page in the valid pci dma mask&n; * @pci: pci device pointer&n; * @addrp: the pointer to store the physical address of the buffer&n; *&n; * Allocates a single page for the given PCI device and returns&n; * the virtual address and stores the physical address on addrp.&n; * &n; * This function cannot be called from interrupt handlers or&n; * within spinlocks.&n; */
+DECL|function|snd_malloc_pci_page
+r_void
+op_star
+id|snd_malloc_pci_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+id|dma_addr_t
+op_star
+id|addrp
+)paren
+(brace
+r_void
+op_star
+id|ptr
+suffix:semicolon
+id|dma_addr_t
+id|addr
+suffix:semicolon
+r_int
+r_int
+id|rmask
+suffix:semicolon
+id|rmask
+op_assign
+op_complement
+(paren
+r_int
+r_int
+)paren
+(paren
+id|pci
+ques
+c_cond
+id|pci-&gt;dma_mask
+suffix:colon
+l_int|0x00ffffff
+)paren
+suffix:semicolon
+id|ptr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+)paren
+(brace
+id|addr
+op_assign
+id|virt_to_phys
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|addr
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+op_amp
+id|rmask
+)paren
+(brace
+multiline_comment|/* try to reallocate with the GFP_DMA */
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ptr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+)paren
+multiline_comment|/* ok, the address must be within lower 16MB... */
+id|addr
+op_assign
+id|virt_to_phys
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+r_else
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|ptr
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|SetPageReserved
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
+id|snd_alloc_pages
+op_increment
+suffix:semicolon
+macro_line|#endif
+)brace
+op_star
+id|addrp
+op_assign
+id|addr
+suffix:semicolon
+r_return
+id|ptr
+suffix:semicolon
+)brace
+macro_line|#else
+multiline_comment|/* on other architectures, call snd_malloc_pci_pages() helper function&n; * which uses pci_alloc_consistent().&n; */
+DECL|function|snd_malloc_pci_page
+r_void
+op_star
+id|snd_malloc_pci_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+id|dma_addr_t
+op_star
+id|addrp
+)paren
+(brace
+r_return
+id|snd_malloc_pci_pages
+c_func
+(paren
+id|pci
+comma
+id|PAGE_SIZE
+comma
+id|addrp
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* 2.4 &amp;&amp; i386 */
+macro_line|#if 0 /* for kernel-doc */
+multiline_comment|/**&n; * snd_free_pci_page - release a page&n; * @pci: pci device pointer&n; * @ptr: the buffer pointer to release&n; * @dma_addr: the physical address of the buffer&n; *&n; * Releases the buffer allocated via snd_malloc_pci_page().&n; */
+r_void
+id|snd_free_pci_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+r_void
+op_star
+id|ptr
+comma
+id|dma_addr_t
+id|dma_addr
+)paren
+suffix:semicolon
+macro_line|#endif /* for kernel-doc */
+macro_line|#endif /* CONFIG_PCI */
 eof

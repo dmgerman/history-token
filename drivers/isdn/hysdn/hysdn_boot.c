@@ -187,7 +187,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* DecryptBuf */
 multiline_comment|/********************************************************************************/
-multiline_comment|/* pof_handle_data executes the required actions dependant on the active record */
+multiline_comment|/* pof_handle_data executes the required actions dependent on the active record */
 multiline_comment|/* id. If successful 0 is returned, a negative value shows an error.           */
 multiline_comment|/********************************************************************************/
 r_static

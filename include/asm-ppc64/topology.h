@@ -3,11 +3,11 @@ DECL|macro|_ASM_PPC64_TOPOLOGY_H
 mdefine_line|#define _ASM_PPC64_TOPOLOGY_H
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#ifdef CONFIG_NUMA
-DECL|function|__cpu_to_node
+DECL|function|cpu_to_node
 r_static
 r_inline
 r_int
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 r_int
@@ -43,11 +43,11 @@ r_return
 id|node
 suffix:semicolon
 )brace
-DECL|function|__node_to_first_cpu
+DECL|function|node_to_first_cpu
 r_static
 r_inline
 r_int
-id|__node_to_first_cpu
+id|node_to_first_cpu
 c_func
 (paren
 r_int
@@ -95,12 +95,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|__node_to_cpu_mask
+DECL|function|node_to_cpumask
 r_static
 r_inline
 r_int
 r_int
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 r_int
@@ -172,18 +172,7 @@ multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 10
 macro_line|#else /* !CONFIG_NUMA */
-DECL|macro|__cpu_to_node
-mdefine_line|#define __cpu_to_node(cpu)&t;&t;(0)
-DECL|macro|__memblk_to_node
-mdefine_line|#define __memblk_to_node(memblk)&t;(0)
-DECL|macro|__parent_node
-mdefine_line|#define __parent_node(nid)&t;&t;(0)
-DECL|macro|__node_to_first_cpu
-mdefine_line|#define __node_to_first_cpu(node)&t;(0)
-DECL|macro|__node_to_cpu_mask
-mdefine_line|#define __node_to_cpu_mask(node)&t;(cpu_online_map)
-DECL|macro|__node_to_memblk
-mdefine_line|#define __node_to_memblk(node)&t;&t;(0)
+macro_line|#include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* _ASM_PPC64_TOPOLOGY_H */
 eof

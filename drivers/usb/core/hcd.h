@@ -178,6 +178,26 @@ mdefine_line|#define&t;HCD_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
 multiline_comment|/* more shared queuing code would be good; it should support&n;&t; * smarter scheduling, handle transaction translators, etc;&n;&t; * input size of periodic table to an interrupt scheduler. &n;&t; * (ohci 32, uhci 1024, ehci 256/512/1024).&n;&t; */
 )brace
 suffix:semicolon
+multiline_comment|/* 2.4 does this a bit differently ... */
+DECL|function|hcd_to_bus
+r_static
+r_inline
+r_struct
+id|usb_bus
+op_star
+id|hcd_to_bus
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+op_amp
+id|hcd-&gt;self
+suffix:semicolon
+)brace
 DECL|struct|hcd_dev
 r_struct
 id|hcd_dev
@@ -1071,6 +1091,33 @@ op_star
 id|parent_dev
 )paren
 suffix:semicolon
+multiline_comment|/* for portability to 2.4, hcds should call this */
+DECL|function|hcd_register_root
+r_static
+r_inline
+r_int
+id|hcd_register_root
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+id|usb_register_root_hub
+(paren
+id|hcd_to_bus
+(paren
+id|hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
+comma
+id|hcd-&gt;controller
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* exported only within usbcore */
 r_extern

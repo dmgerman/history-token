@@ -54,9 +54,65 @@ mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x1000000)
 multiline_comment|/* $0 is set by ld.so to a pointer to a function which might be &n;   registered using atexit.  This provides a mean for the dynamic&n;   linker to call DT_FINI functions for shared libraries that have&n;   been loaded before the code runs.&n;&n;   So that we can use the same startup file with static executables,&n;   we start programs with a value of 0 to indicate that there is no&n;   such function.  */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r)       _r-&gt;r0 = 0
-multiline_comment|/* Use the same format as the OSF/1 procfs interface.  The register&n;   layout is sane.  However, since dump_thread() creates the funky&n;   layout that ECOFF coredumps want, we need to undo that layout here.&n;   Eventually, it would be nice if the ECOFF core-dump had to do the&n;   translation, then ELF_CORE_COPY_REGS() would become trivial and&n;   faster.  */
+multiline_comment|/* The registers are layed out in pt_regs for PAL and syscall&n;   convenience.  Re-order them for the linear elf_gregset_t.  */
+r_extern
+r_void
+id|dump_elf_thread
+c_func
+(paren
+id|elf_greg_t
+op_star
+id|dest
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt
+comma
+r_struct
+id|thread_info
+op_star
+id|ti
+)paren
+suffix:semicolon
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(_dest,_regs)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void dump_thread(struct pt_regs *, struct user *);&t;&bslash;&n;&t;struct user _dump;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dump_thread(_regs, &amp;_dump);&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 0] = _dump.regs[EF_V0];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 1] = _dump.regs[EF_T0];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 2] = _dump.regs[EF_T1];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 3] = _dump.regs[EF_T2];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 4] = _dump.regs[EF_T3];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 5] = _dump.regs[EF_T4];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 6] = _dump.regs[EF_T5];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 7] = _dump.regs[EF_T6];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 8] = _dump.regs[EF_T7];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[ 9] = _dump.regs[EF_S0];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[10] = _dump.regs[EF_S1];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[11] = _dump.regs[EF_S2];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[12] = _dump.regs[EF_S3];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[13] = _dump.regs[EF_S4];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[14] = _dump.regs[EF_S5];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[15] = _dump.regs[EF_S6];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[16] = _dump.regs[EF_A0];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[17] = _dump.regs[EF_A1];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[18] = _dump.regs[EF_A2];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[19] = _dump.regs[EF_A3];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[20] = _dump.regs[EF_A4];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[21] = _dump.regs[EF_A5];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[22] = _dump.regs[EF_T8];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[23] = _dump.regs[EF_T9];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[24] = _dump.regs[EF_T10];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[25] = _dump.regs[EF_T11];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[26] = _dump.regs[EF_RA];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[27] = _dump.regs[EF_T12];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[28] = _dump.regs[EF_AT];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[29] = _dump.regs[EF_GP];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[30] = _dump.regs[EF_SP];&t;&t;&t;&t;&t;&bslash;&n;&t;_dest[31] = _dump.regs[EF_PC];&t;/* store PC here */&t;&t;&bslash;&n;&t;_dest[32] = _dump.regs[EF_PS];&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define ELF_CORE_COPY_REGS(DEST, REGS) &bslash;&n;&t;dump_elf_thread(DEST, REGS, current_thread_info());
+multiline_comment|/* Similar, but for a thread other than current.  */
+r_extern
+r_int
+id|dump_elf_task
+c_func
+(paren
+id|elf_greg_t
+op_star
+id|dest
+comma
+r_struct
+id|task_struct
+op_star
+id|task
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(TASK, DEST) &bslash;&n;&t;dump_elf_task(*(DEST), TASK)
+multiline_comment|/* Similar, but for the FP registers.  */
+r_extern
+r_int
+id|dump_elf_task_fp
+c_func
+(paren
+id|elf_fpreg_t
+op_star
+id|dest
+comma
+r_struct
+id|task_struct
+op_star
+id|task
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(TASK, DEST) &bslash;&n;&t;dump_elf_task_fp(*(DEST), TASK)
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  This is trivial on Alpha, &n;   but not so on other machines. */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Sadly, most folks don&squot;t yet have assemblers that know about&t;&bslash;&n;&t;   amask.  This is &quot;amask v0, v0&quot; */&t;&t;&t;&t;&bslash;&n;&t;register long _v0 __asm(&quot;$0&quot;) = -1;&t;&t;&t;&t;&bslash;&n;&t;__asm(&quot;.long 0x47e00c20&quot; : &quot;=r&quot;(_v0) : &quot;0&quot;(_v0));&t;&t;&bslash;&n;&t;~_v0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

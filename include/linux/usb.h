@@ -1113,8 +1113,6 @@ DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET&t;&t;0x0040&t;/* Finish bulk OUTs with short packet */
 DECL|macro|URB_NO_INTERRUPT
 mdefine_line|#define URB_NO_INTERRUPT&t;0x0080&t;/* HINT: no non-error interrupt needed */
-DECL|macro|URB_TIMEOUT_KILLED
-mdefine_line|#define URB_TIMEOUT_KILLED&t;0x1000&t;/* only set by HCD! */
 DECL|struct|usb_iso_packet_descriptor
 r_struct
 id|usb_iso_packet_descriptor

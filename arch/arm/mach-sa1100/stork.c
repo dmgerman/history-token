@@ -669,7 +669,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* hmm wait 200ns (min) - ok this ought to be udelay(1) but that doesn&squot;t get */
-multiline_comment|/* consistant values so I&squot;m using 10 (urgh) */
+multiline_comment|/* consistent values so I&squot;m using 10 (urgh) */
 id|storkClearLatchB
 c_func
 (paren

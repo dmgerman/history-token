@@ -7,6 +7,8 @@ macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;helper.h&quot;
 macro_line|#include &quot;mconsole.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|struct|dog_data
 r_struct
 id|dog_data
@@ -308,6 +310,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* XXX The os_getpid() is not SMP correct */
 id|sprintf
 c_func
 (paren
@@ -315,7 +318,16 @@ id|pid_buf
 comma
 l_string|&quot;%d&quot;
 comma
+id|CHOOSE_MODE
+c_func
+(paren
 id|tracing_pid
+comma
+id|os_getpid
+c_func
+(paren
+)paren
+)paren
 )paren
 suffix:semicolon
 id|args
