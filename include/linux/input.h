@@ -731,6 +731,10 @@ DECL|macro|BTN_STYLUS
 mdefine_line|#define BTN_STYLUS&t;&t;0x14b
 DECL|macro|BTN_STYLUS2
 mdefine_line|#define BTN_STYLUS2&t;&t;0x14c
+DECL|macro|BTN_TOOL_DOUBLETAP
+mdefine_line|#define BTN_TOOL_DOUBLETAP&t;0x14d
+DECL|macro|BTN_TOOL_TRIPLETAP
+mdefine_line|#define BTN_TOOL_TRIPLETAP&t;0x14e
 DECL|macro|BTN_WHEEL
 mdefine_line|#define BTN_WHEEL&t;&t;0x150
 DECL|macro|BTN_GEAR_DOWN
@@ -939,6 +943,8 @@ DECL|macro|ABS_TILT_X
 mdefine_line|#define ABS_TILT_X&t;&t;0x1a
 DECL|macro|ABS_TILT_Y
 mdefine_line|#define ABS_TILT_Y&t;&t;0x1b
+DECL|macro|ABS_TOOL_WIDTH
+mdefine_line|#define ABS_TOOL_WIDTH&t;&t;0x1c
 DECL|macro|ABS_VOLUME
 mdefine_line|#define ABS_VOLUME&t;&t;0x20
 DECL|macro|ABS_MISC
