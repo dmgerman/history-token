@@ -1170,7 +1170,6 @@ c_cond
 op_logical_neg
 id|sb-&gt;s_op-&gt;sync_fs
 )paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 r_if
