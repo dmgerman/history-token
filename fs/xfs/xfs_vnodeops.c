@@ -135,6 +135,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_getattr&n; */
+id|STATIC
 r_int
 DECL|function|xfs_getattr
 id|xfs_getattr
