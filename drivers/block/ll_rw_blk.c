@@ -2788,7 +2788,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * __blk_stop_queue: see blk_stop_queue()&n; *&n; * Description:&n; *  Like blk_stop_queue(), bust queue_lock must be held&n; **/
+multiline_comment|/**&n; * __blk_stop_queue: see blk_stop_queue()&n; *&n; * Description:&n; *  Like blk_stop_queue(), but queue_lock must be held&n; **/
 DECL|function|__blk_stop_queue
 r_void
 id|__blk_stop_queue
