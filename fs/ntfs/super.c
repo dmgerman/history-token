@@ -2470,7 +2470,6 @@ l_int|1ULL
 op_lshift
 l_int|32
 )paren
-)paren
 (brace
 id|ntfs_error
 c_func
