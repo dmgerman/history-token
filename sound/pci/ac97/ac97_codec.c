@@ -603,6 +603,18 @@ l_int|NULL
 )brace
 comma
 (brace
+l_int|0x41445374
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;AD1981B&quot;
+comma
+id|patch_ad1881
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x41445375
 comma
 l_int|0xffffffff
@@ -704,6 +716,18 @@ comma
 l_int|0xfffffff0
 comma
 l_string|&quot;ALC250&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|0x414c4770
+comma
+l_int|0xfffffff0
+comma
+l_string|&quot;ALC203&quot;
 comma
 l_int|NULL
 comma
@@ -831,6 +855,18 @@ l_int|NULL
 )brace
 comma
 (brace
+l_int|0x43525970
+comma
+l_int|0xfffffff8
+comma
+l_string|&quot;CS4202&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x43585421
 comma
 l_int|0xffffffff
@@ -931,6 +967,18 @@ l_int|NULL
 comma
 singleline_comment|// alias VIA VT1611A?
 (brace
+l_int|0x49434514
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;ICE1232A&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x49434551
 comma
 l_int|0xffffffff
@@ -942,6 +990,19 @@ comma
 l_int|NULL
 )brace
 comma
+(brace
+l_int|0x49434552
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;VT1616i&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+singleline_comment|// VT1616 compatible (chipset integrated)
 (brace
 l_int|0x49544520
 comma
@@ -973,6 +1034,18 @@ comma
 l_int|0xffffffff
 comma
 l_string|&quot;LM4549&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|0x4e534350
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;LM4550&quot;
 comma
 l_int|NULL
 comma
@@ -1284,6 +1357,19 @@ l_int|NULL
 comma
 singleline_comment|// patch?
 (brace
+l_int|0x83847652
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;STAC9752/53&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+singleline_comment|// patch?
+(brace
 l_int|0x83847656
 comma
 l_int|0xffffffff
@@ -1383,7 +1469,7 @@ multiline_comment|/*  16 */
 l_string|&quot;Harman International VMAx&quot;
 comma
 multiline_comment|/*  17 */
-l_string|&quot;Nvidea 3D Stereo Enhancement&quot;
+l_string|&quot;Nvidea/IC Ensemble/KS Waves 3D Stereo Enhancement&quot;
 comma
 multiline_comment|/*  18 */
 l_string|&quot;Philips Incredible Sound&quot;
@@ -10497,6 +10583,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+r_int
+id|pcm_ctrls
+op_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/* FIXME: C-Media chips have no PCM volume!! */
 r_if
 c_cond
@@ -10510,8 +10602,9 @@ id|ac97-&gt;id
 op_eq
 l_int|0x434d4961
 )paren
-r_goto
-id|no_pcm
+id|pcm_ctrls
+op_assign
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -10522,7 +10615,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-l_int|2
+id|pcm_ctrls
 suffix:semicolon
 id|idx
 op_increment
@@ -10568,8 +10661,6 @@ comma
 l_int|0x9f1f
 )paren
 suffix:semicolon
-id|no_pcm
-suffix:colon
 multiline_comment|/* build Capture controls */
 r_for
 c_loop
@@ -13298,6 +13389,35 @@ op_amp
 id|ac97-&gt;reg_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ac97-&gt;pci
+)paren
+(brace
+id|pci_read_config_word
+c_func
+(paren
+id|ac97-&gt;pci
+comma
+id|PCI_SUBSYSTEM_VENDOR_ID
+comma
+op_amp
+id|ac97-&gt;subsystem_vendor
+)paren
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|ac97-&gt;pci
+comma
+id|PCI_SUBSYSTEM_ID
+comma
+op_amp
+id|ac97-&gt;subsystem_device
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -17421,7 +17541,6 @@ id|ac97-&gt;regs
 id|reg
 )braket
 op_amp
-op_complement
 id|mask
 suffix:semicolon
 id|spin_unlock
