@@ -659,7 +659,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MODULES */
-macro_line|#if defined(MODULE) &amp;&amp; defined(KBUILD_MODNAME)
+macro_line|#ifdef MODULE
+r_extern
+r_struct
+id|module
+id|__this_module
+suffix:semicolon
+macro_line|#ifdef KBUILD_MODNAME
 multiline_comment|/* We make the linker do some of the work. */
 DECL|variable|__this_module
 r_struct
@@ -712,7 +718,8 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif /* MODULE &amp;&amp; KBUILD_MODNAME */
+macro_line|#endif /* KBUILD_MODNAME */
+macro_line|#endif /* MODULE */
 multiline_comment|/* For archs to search exception tables */
 r_extern
 r_struct
