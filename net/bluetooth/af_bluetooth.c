@@ -70,6 +70,10 @@ r_if
 c_cond
 (paren
 id|proto
+OL
+l_int|0
+op_logical_or
+id|proto
 op_ge
 id|BT_MAX_PROTO
 )paren
@@ -119,6 +123,10 @@ id|proto
 r_if
 c_cond
 (paren
+id|proto
+OL
+l_int|0
+op_logical_or
 id|proto
 op_ge
 id|BT_MAX_PROTO
@@ -181,6 +189,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|proto
+OL
+l_int|0
+op_logical_or
 id|proto
 op_ge
 id|BT_MAX_PROTO
