@@ -5,8 +5,8 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+r_static
 r_int
 id|make_ste
 c_func
@@ -24,6 +24,7 @@ r_int
 id|vsid
 )paren
 suffix:semicolon
+r_static
 r_void
 id|make_slbe
 c_func
@@ -210,6 +211,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Segment table stuff&n; */
 multiline_comment|/*&n; * Create a segment table entry for the given esid/vsid pair.&n; */
 DECL|function|make_ste
+r_static
 r_int
 id|make_ste
 c_func
@@ -350,9 +352,11 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
+(paren
 id|global_entry
 op_or
 id|entry
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1225,15 +1229,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;sync; slbia; sync&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1300,6 +1295,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+)brace
 id|asm
 r_volatile
 (paren
@@ -1309,7 +1305,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-)brace
 op_star
 id|offset
 op_assign
@@ -1327,6 +1322,7 @@ suffix:semicolon
 multiline_comment|/*&n; * SLB stuff&n; */
 multiline_comment|/*&n; * Create a segment buffer entry for the given esid/vsid pair.&n; *&n; * NOTE: A context syncronising instruction is required before and after&n; * this, in the common case we use exception entry and rfid.&n; */
 DECL|function|make_slbe
+r_static
 r_void
 id|make_slbe
 c_func
@@ -1502,7 +1498,7 @@ id|esid_data.data.index
 op_assign
 id|entry
 suffix:semicolon
-multiline_comment|/*&n;&t; * No need for an isync before or after this slbmte. The exception&n;         * we enter with and the rfid we exit with are context synchronizing.&n;&t; */
+multiline_comment|/*&n;&t; * No need for an isync before or after this slbmte. The exception&n;&t; * we enter with and the rfid we exit with are context synchronizing.&n;&t; */
 id|asm
 r_volatile
 (paren
