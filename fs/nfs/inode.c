@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/nfs_idmap.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -539,6 +540,21 @@ id|rpc_clnt
 op_star
 id|rpc
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_V4
+r_if
+c_cond
+(paren
+id|server-&gt;idmap
+op_ne
+l_int|NULL
+)paren
+id|nfs_idmap_delete
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4 */
 r_if
 c_cond
 (paren
@@ -6034,6 +6050,28 @@ id|data
 r_goto
 id|out_shutdown
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|server-&gt;idmap
+op_assign
+id|nfs_idmap_new
+c_func
+(paren
+id|server
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NFS: couldn&squot;t start IDmap&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|nfs_sb_init
@@ -6058,6 +6096,19 @@ c_func
 )paren
 suffix:semicolon
 id|destroy_nfsv4_state
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|server-&gt;idmap
+op_ne
+l_int|NULL
+)paren
+id|nfs_idmap_delete
 c_func
 (paren
 id|server
