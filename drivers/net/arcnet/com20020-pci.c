@@ -818,6 +818,7 @@ c_func
 (paren
 id|com20020pci_remove
 )paren
+comma
 )brace
 suffix:semicolon
 DECL|function|com20020pci_init
