@@ -50,6 +50,32 @@ r_struct
 id|ehci_hcd
 (brace
 multiline_comment|/* one per controller */
+multiline_comment|/* glue to PCI and HCD framework */
+DECL|member|hcd
+r_struct
+id|usb_hcd
+id|hcd
+suffix:semicolon
+multiline_comment|/* must come first! */
+DECL|member|caps
+r_struct
+id|ehci_caps
+id|__iomem
+op_star
+id|caps
+suffix:semicolon
+DECL|member|regs
+r_struct
+id|ehci_regs
+id|__iomem
+op_star
+id|regs
+suffix:semicolon
+DECL|member|hcs_params
+id|__u32
+id|hcs_params
+suffix:semicolon
+multiline_comment|/* cached register copy */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -127,31 +153,6 @@ id|reset_done
 id|EHCI_MAX_ROOT_PORTS
 )braket
 suffix:semicolon
-multiline_comment|/* glue to PCI and HCD framework */
-DECL|member|hcd
-r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
-DECL|member|caps
-r_struct
-id|ehci_caps
-id|__iomem
-op_star
-id|caps
-suffix:semicolon
-DECL|member|regs
-r_struct
-id|ehci_regs
-id|__iomem
-op_star
-id|regs
-suffix:semicolon
-DECL|member|hcs_params
-id|__u32
-id|hcs_params
-suffix:semicolon
-multiline_comment|/* cached register copy */
 multiline_comment|/* per-HC memory pools (could be per-bus, but ...) */
 DECL|member|qh_pool
 r_struct

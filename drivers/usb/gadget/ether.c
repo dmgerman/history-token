@@ -2275,7 +2275,7 @@ r_static
 r_char
 id|manufacturer
 (braket
-l_int|40
+l_int|50
 )braket
 suffix:semicolon
 DECL|variable|product_desc
@@ -7491,9 +7491,7 @@ multiline_comment|/* ensure there are no more active requests */
 r_if
 c_cond
 (paren
-id|dev-&gt;gadget-&gt;speed
-op_ne
-id|USB_SPEED_UNKNOWN
+id|dev-&gt;config
 )paren
 (brace
 id|usb_ep_disable

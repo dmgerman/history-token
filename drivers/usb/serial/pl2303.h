@@ -4,7 +4,9 @@ mdefine_line|#define PL2303_VENDOR_ID&t;0x067b
 DECL|macro|PL2303_PRODUCT_ID
 mdefine_line|#define PL2303_PRODUCT_ID&t;0x2303
 DECL|macro|PL2303_PRODUCT_ID_RSAQ2
-mdefine_line|#define PL2303_PRODUCT_ID_RSAQ2&t;0x04bb
+mdefine_line|#define PL2303_PRODUCT_ID_RSAQ2&t;&t;0x04bb
+DECL|macro|PL2303_PRODUCT_ID_PHAROS
+mdefine_line|#define PL2303_PRODUCT_ID_PHAROS&t;0xaaa0
 DECL|macro|ATEN_VENDOR_ID
 mdefine_line|#define ATEN_VENDOR_ID&t;&t;0x0557
 DECL|macro|ATEN_VENDOR_ID2
@@ -54,12 +56,11 @@ DECL|macro|ALCATEL_PRODUCT_ID
 mdefine_line|#define ALCATEL_PRODUCT_ID&t;0x02df
 multiline_comment|/* Samsung I330 phone cradle */
 DECL|macro|SAMSUNG_VENDOR_ID
-mdefine_line|#define SAMSUNG_VENDOR_ID       0x04e8
+mdefine_line|#define SAMSUNG_VENDOR_ID&t;0x04e8
 DECL|macro|SAMSUNG_PRODUCT_ID
-mdefine_line|#define SAMSUNG_PRODUCT_ID      0x8001
-multiline_comment|/* Pharos / Microsoft GPS puck */
-DECL|macro|PHAROS_VENDOR_ID
-mdefine_line|#define PHAROS_VENDOR_ID       0x067b
-DECL|macro|PHAROS_PRODUCT_ID
-mdefine_line|#define PHAROS_PRODUCT_ID      0xaaa0
+mdefine_line|#define SAMSUNG_PRODUCT_ID&t;0x8001
+DECL|macro|SIEMENS_VENDOR_ID
+mdefine_line|#define SIEMENS_VENDOR_ID&t;0x11f5
+DECL|macro|SIEMENS_PRODUCT_ID_X65
+mdefine_line|#define SIEMENS_PRODUCT_ID_X65&t;0x0003
 eof
