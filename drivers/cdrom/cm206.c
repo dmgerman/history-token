@@ -586,6 +586,12 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|variable|cm206_tasklet
+r_static
+r_struct
+id|tasklet_struct
+id|cm206_tasklet
+suffix:semicolon
 multiline_comment|/* The interrupt handler. When the cm260 generates an interrupt, very&n;   much care has to be taken in reading out the registers in the right&n;   order; in case of a receive_buffer_full interrupt, first the&n;   uart_receive must be read, and then the line status again to&n;   de-assert the interrupt line. It took me a couple of hours to find&n;   this out:-( &n;&n;   The function reset_cm206 appears to cause an interrupt, because&n;   pulling up the INIT line clears both the uart-write-buffer /and/&n;   the uart-write-buffer-empty mask. We call this a `lost interrupt,&squot;&n;   as there seems so reason for this to happen.&n;*/
 DECL|function|cm206_interrupt
 r_static
@@ -1033,10 +1039,11 @@ op_logical_or
 id|cd-&gt;fifo_overflowed
 )paren
 )paren
-id|mark_bh
+id|tasklet_schedule
 c_func
 (paren
-id|CM206_BH
+op_amp
+id|cm206_tasklet
 )paren
 suffix:semicolon
 multiline_comment|/* issue a stop read command */
@@ -2344,12 +2351,15 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* The function of bottom-half is to send a stop command to the drive&n;   This isn&squot;t easy because the routine is not `owned&squot; by any process;&n;   we can&squot;t go to sleep! The variable cd-&gt;background gives the status:&n;   0 no read pending&n;   1 a read is pending&n;   2 c_stop waits for write_buffer_empty&n;   3 c_stop waits for receive_buffer_full: echo&n;   4 c_stop waits for receive_buffer_full: 0xff&n;*/
-DECL|function|cm206_bh
+DECL|function|cm206_tasklet_func
+r_static
 r_void
-id|cm206_bh
+id|cm206_tasklet_func
 c_func
 (paren
-r_void
+r_int
+r_int
+id|ignore
 )paren
 (brace
 id|debug
@@ -2551,6 +2561,17 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+r_static
+id|DECLARE_TASKLET
+c_func
+(paren
+id|cm206_tasklet
+comma
+id|cm206_tasklet_func
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* This command clears the dsb_possible_media_change flag, so we must &n; * retain it.&n; */
 DECL|function|get_drive_status
 r_void
@@ -6358,14 +6379,6 @@ id|MAJOR_NR
 )paren
 comma
 l_int|2048
-)paren
-suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|CM206_BH
-comma
-id|cm206_bh
 )paren
 suffix:semicolon
 id|memset
