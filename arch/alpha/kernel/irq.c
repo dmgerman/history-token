@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -1258,13 +1259,6 @@ id|init_irq_proc
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-suffix:semicolon
-macro_line|#endif
 r_int
 id|i
 suffix:semicolon
