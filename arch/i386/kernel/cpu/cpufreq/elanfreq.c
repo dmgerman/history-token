@@ -457,7 +457,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;elanfreq_validatespeed: test if frequency range is valid &n; *&n; *&t;This function checks if a given frequency range in kHz is valid &n; *      for the hardware supported by the driver. &n; */
 DECL|function|elanfreq_verify
 r_static
-r_void
+r_int
 id|elanfreq_verify
 (paren
 r_struct
@@ -486,6 +486,8 @@ op_logical_neg
 id|max_freq
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|policy-&gt;cpu
 op_assign
@@ -562,6 +564,7 @@ c_cond
 id|number_states
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -616,11 +619,12 @@ dot
 id|clock
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|elanfreq_setpolicy
 r_static
-r_void
+r_int
 id|elanfreq_setpolicy
 (paren
 r_struct
@@ -650,6 +654,8 @@ op_logical_neg
 id|elanfreq_driver
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_for
 c_loop
@@ -727,6 +733,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_switch
@@ -860,6 +867,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -874,10 +883,9 @@ id|clock
 OG
 id|max_freq
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|elanfreq_set_cpu_state
 c_func
@@ -886,6 +894,7 @@ id|j
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Module init and exit code&n; */
@@ -1049,6 +1058,9 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 l_int|1000
 suffix:semicolon
@@ -1118,6 +1130,10 @@ id|max_cpu_freq
 op_assign
 id|max_freq
 suffix:semicolon
+id|elanfreq_driver
+op_assign
+id|driver
+suffix:semicolon
 id|ret
 op_assign
 id|cpufreq_register
@@ -1132,22 +1148,19 @@ c_cond
 id|ret
 )paren
 (brace
+id|elanfreq_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
+)brace
 r_return
 id|ret
-suffix:semicolon
-)brace
-id|elanfreq_driver
-op_assign
-id|driver
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|elanfreq_exit

@@ -271,6 +271,10 @@ DECL|macro|ATTR_ENCRYPTED
 mdefine_line|#define ATTR_ENCRYPTED  0x4000
 DECL|macro|ATTR_POSIX_SEMANTICS
 mdefine_line|#define ATTR_POSIX_SEMANTICS 0x01000000
+DECL|macro|ATTR_BACKUP_SEMANTICS
+mdefine_line|#define ATTR_BACKUP_SEMANTICS 0x02000000
+DECL|macro|ATTR_DELETE_ON_CLOSE
+mdefine_line|#define ATTR_DELETE_ON_CLOSE 0x04000000
 DECL|macro|ATTR_SEQUENTIAL_SCAN
 mdefine_line|#define ATTR_SEQUENTIAL_SCAN 0x08000000
 DECL|macro|ATTR_RANDOM_ACCESS
@@ -305,9 +309,17 @@ DECL|macro|FILE_OVERWRITE_IF
 mdefine_line|#define FILE_OVERWRITE_IF 0x00000005
 multiline_comment|/* CreateOptions */
 DECL|macro|CREATE_NOT_FILE
-mdefine_line|#define CREATE_NOT_FILE   0x00000001&t;/* if set, indicates must not be file */
+mdefine_line|#define CREATE_NOT_FILE&t;&t;0x00000001&t;/* if set must not be file */
+DECL|macro|CREATE_WRITE_THROUGH
+mdefine_line|#define CREATE_WRITE_THROUGH&t;0x00000002
 DECL|macro|CREATE_NOT_DIR
-mdefine_line|#define CREATE_NOT_DIR    0x00000040&t;/* if set, indicates must not be directory */
+mdefine_line|#define CREATE_NOT_DIR&t;&t;0x00000040&t;/* if set must not be directory */
+DECL|macro|CREATE_RANDOM_ACCESS
+mdefine_line|#define CREATE_RANDOM_ACCESS&t;0x00000800
+DECL|macro|CREATE_DELETE_ON_CLOSE
+mdefine_line|#define CREATE_DELETE_ON_CLOSE&t;0x00001000
+DECL|macro|OPEN_REPARSE_POINT
+mdefine_line|#define OPEN_REPARSE_POINT&t;0x00200000
 multiline_comment|/* ImpersonationLevel flags */
 DECL|macro|SECURITY_ANONYMOUS
 mdefine_line|#define SECURITY_ANONYMOUS      0
@@ -1850,7 +1862,11 @@ DECL|typedef|RENAME_REQ
 id|RENAME_REQ
 suffix:semicolon
 DECL|macro|CREATE_HARD_LINK
-mdefine_line|#define CREATE_HARD_LINK 0x103
+mdefine_line|#define CREATE_HARD_LINK&t;&t;0x103
+DECL|macro|MOVEFILE_COPY_ALLOWED
+mdefine_line|#define MOVEFILE_COPY_ALLOWED&t;&t;0x0002
+DECL|macro|MOVEFILE_REPLACE_EXISTING
+mdefine_line|#define MOVEFILE_REPLACE_EXISTING&t;0x0001
 DECL|struct|smb_com_nt_rename_req
 r_typedef
 r_struct
@@ -2080,10 +2096,10 @@ DECL|typedef|CREATE_DIRECTORY_RSP
 )brace
 id|CREATE_DIRECTORY_RSP
 suffix:semicolon
-DECL|struct|smb_com_nt_transaction_ioctl_req
+DECL|struct|smb_com_transaction_ioctl_req
 r_typedef
 r_struct
-id|smb_com_nt_transaction_ioctl_req
+id|smb_com_transaction_ioctl_req
 (brace
 DECL|member|hdr
 r_struct
@@ -2150,16 +2166,16 @@ DECL|member|Fid
 id|__u16
 id|Fid
 suffix:semicolon
-DECL|member|IsFSCTLFlag
+DECL|member|IsFsctl
 id|__u8
-id|IsFSCTLFlag
+id|IsFsctl
 suffix:semicolon
-multiline_comment|/* 1 = File System Control, 0 = device control (IOCTL)    */
+multiline_comment|/* 1 = File System Control, 0 = device control (IOCTL)*/
 DECL|member|IsRootFlag
 id|__u8
 id|IsRootFlag
 suffix:semicolon
-multiline_comment|/* 1 = apply command to root of share (must be DFS share) */
+multiline_comment|/* 1 = apply command to root of share (must be DFS share)*/
 DECL|member|ByteCount
 id|__u16
 id|ByteCount
@@ -2255,6 +2271,47 @@ suffix:semicolon
 DECL|typedef|TRANSACT_IOCTL_RSP
 )brace
 id|TRANSACT_IOCTL_RSP
+suffix:semicolon
+DECL|struct|reparse_data
+r_struct
+id|reparse_data
+(brace
+DECL|member|ReparseTag
+id|__u32
+id|ReparseTag
+suffix:semicolon
+DECL|member|ReparseDataLength
+id|__u16
+id|ReparseDataLength
+suffix:semicolon
+DECL|member|Reserved
+id|__u16
+id|Reserved
+suffix:semicolon
+DECL|member|AltNameOffset
+id|__u16
+id|AltNameOffset
+suffix:semicolon
+DECL|member|AltNameLen
+id|__u16
+id|AltNameLen
+suffix:semicolon
+DECL|member|TargetNameOffset
+id|__u16
+id|TargetNameOffset
+suffix:semicolon
+DECL|member|TargetNameLen
+id|__u16
+id|TargetNameLen
+suffix:semicolon
+DECL|member|LinkNamesBuf
+r_char
+id|LinkNamesBuf
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|union|smb_com_transaction2
 r_typedef
@@ -2442,7 +2499,7 @@ mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC    0x200
 DECL|macro|SMB_QUERY_FILE_UNIX_LINK
 mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK     0x201
 DECL|macro|SMB_SET_FILE_BASIC_INFO
-mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;&t;0x101
+mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;&t;&t;0x101
 DECL|macro|SMB_SET_FILE_DISPOSITION_INFO
 mdefine_line|#define SMB_SET_FILE_DISPOSITION_INFO&t;0x102
 DECL|macro|SMB_SET_FILE_ALLOCATION_INFO
@@ -2467,7 +2524,7 @@ mdefine_line|#define SMB_FIND_FILE_DIRECTORY_INFO&t;  0x101
 DECL|macro|SMB_FIND_FILE_FULL_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_FULL_DIRECTORY_INFO 0x102
 DECL|macro|SMB_FIND_FILE_NAMES_INFO
-mdefine_line|#define SMB_FIND_FILE_NAMES_INFO&t;  0x103
+mdefine_line|#define SMB_FIND_FILE_NAMES_INFO&t;&t;0x103
 DECL|macro|SMB_FIND_FILE_BOTH_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_BOTH_DIRECTORY_INFO 0x104
 DECL|macro|SMB_FIND_FILE_UNIX

@@ -1261,7 +1261,7 @@ comma
 (brace
 id|ERRDOS
 comma
-l_int|183
+id|ERRalreadyexists
 comma
 id|NT_STATUS_OBJECT_NAME_COLLISION
 )brace
@@ -1525,7 +1525,7 @@ comma
 (brace
 id|ERRDOS
 comma
-id|ERRnoaccess
+id|ERRbadfile
 comma
 id|NT_STATUS_DELETE_PENDING
 )brace
@@ -5060,7 +5060,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nStatus code returned: 0x%08x&quot;
+l_string|&quot;&bslash;nStatus code returned: 0x%08x &quot;
 comma
 id|status_code
 )paren

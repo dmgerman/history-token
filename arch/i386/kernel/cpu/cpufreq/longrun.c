@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longrun.c,v 1.12 2002/09/29 23:43:10 db Exp $&n; *&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longrun.c,v 1.14 2002/10/31 21:17:40 db Exp $&n; *&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -134,7 +134,7 @@ suffix:semicolon
 multiline_comment|/**&n; * longrun_set_policy - sets a new CPUFreq policy&n; * @policy - new policy&n; *&n; * Sets a new CPUFreq policy on LongRun-capable processors. This function&n; * has to be called with cpufreq_driver locked.&n; */
 DECL|function|longrun_set_policy
 r_static
-r_void
+r_int
 id|longrun_set_policy
 c_func
 (paren
@@ -164,6 +164,8 @@ op_logical_neg
 id|policy
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|pctg_lo
 op_assign
@@ -307,12 +309,13 @@ id|msr_hi
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * longrun_verify_poliy - verifies a new CPUFreq policy&n; *&n; * Validates a new CPUFreq policy. This function has to be called with &n; * cpufreq_driver locked.&n; */
 DECL|function|longrun_verify_policy
 r_static
-r_void
+r_int
 id|longrun_verify_policy
 c_func
 (paren
@@ -332,6 +335,8 @@ op_logical_neg
 id|longrun_driver
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|policy-&gt;cpu
 op_assign
@@ -353,6 +358,7 @@ id|max_cpu_freq
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * longrun_determine_freqs - determines the lowest and highest possible core frequency&n; *&n; * Determines the lowest and highest possible core frequencies on this CPU.&n; * This is neccessary to calculate the performance percentage according to&n; * TMTA rules:&n; * performance_pctg = (target_freq - low_freq)/(high_freq - low_freq)&n; */
@@ -861,6 +867,9 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 id|longrun_low_freq
 suffix:semicolon
@@ -883,6 +892,10 @@ op_assign
 op_amp
 id|longrun_set_policy
 suffix:semicolon
+id|longrun_driver
+op_assign
+id|driver
+suffix:semicolon
 id|result
 op_assign
 id|cpufreq_register
@@ -897,22 +910,19 @@ c_cond
 id|result
 )paren
 (brace
+id|longrun_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
+)brace
 r_return
 id|result
-suffix:semicolon
-)brace
-id|longrun_driver
-op_assign
-id|driver
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * longrun_exit - unregisters LongRun support&n; */

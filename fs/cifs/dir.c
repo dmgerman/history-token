@@ -542,7 +542,7 @@ comma
 id|GENERIC_ALL
 multiline_comment|/* 0x20197 was used previously */
 comma
-id|mode
+id|CREATE_NOT_DIR
 comma
 op_amp
 id|fileHandle
@@ -1095,28 +1095,6 @@ c_cond
 id|direntry-&gt;d_inode
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;In cifs_d_revalidate, name = %s and inode = 0x%p with count %d with time %ld and dentry 0x%p with time %ld&bslash;n&quot;
-comma
-id|direntry-&gt;d_name.name
-comma
-id|direntry-&gt;d_inode
-comma
-id|direntry-&gt;d_inode-&gt;i_count.counter
-comma
-id|direntry-&gt;d_inode-&gt;i_atime.tv_sec
-comma
-id|direntry
-comma
-id|direntry-&gt;d_time
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

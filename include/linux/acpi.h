@@ -1451,6 +1451,31 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI*/
+macro_line|#ifdef CONFIG_ACPI_EC
+r_int
+id|ec_read
+c_func
+(paren
+id|u8
+id|addr
+comma
+id|u8
+op_star
+id|val
+)paren
+suffix:semicolon
+r_int
+id|ec_write
+c_func
+(paren
+id|u8
+id|addr
+comma
+id|u8
+id|val
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_ACPI_EC*/
 macro_line|#ifdef CONFIG_ACPI
 r_int
 id|acpi_blacklisted

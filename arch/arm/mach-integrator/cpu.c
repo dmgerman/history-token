@@ -220,7 +220,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Validate the speed in khz.  If it is outside our&n; * range, then return the lowest.&n; */
 DECL|function|integrator_verify_speed
 r_static
-r_void
+r_int
 id|integrator_verify_speed
 c_func
 (paren
@@ -310,6 +310,9 @@ id|vco
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|do_set_policy
@@ -411,7 +414,7 @@ suffix:semicolon
 )brace
 DECL|function|integrator_set_policy
 r_static
-r_void
+r_int
 id|integrator_set_policy
 c_func
 (paren
@@ -496,6 +499,9 @@ comma
 id|cpus_allowed
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|integrator_policy
 r_static
@@ -543,11 +549,6 @@ id|policy
 op_assign
 op_amp
 id|integrator_policy
-comma
-dot
-id|cpu_min_freq
-op_assign
-l_int|12000
 comma
 )brace
 suffix:semicolon
@@ -823,6 +824,27 @@ id|cpus_allowed
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+id|integrator_driver.cpu_min_freq
+(braket
+id|cpu
+)braket
+op_assign
+l_int|12000
+suffix:semicolon
 id|integrator_driver.policy
 op_assign
 id|policies
