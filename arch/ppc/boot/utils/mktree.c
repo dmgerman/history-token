@@ -335,7 +335,7 @@ suffix:semicolon
 id|cp
 op_assign
 (paren
-id|uint
+r_void
 op_star
 )paren
 op_amp
