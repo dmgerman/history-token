@@ -1564,7 +1564,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * sys32_ipc() is the de-multiplexer for the SysV IPC calls in 32bit emulation..&n; *&n; * This is really horribly ugly.&n; */
 DECL|macro|IPCOP_MASK
-mdefine_line|#define IPCOP_MASK(__x)&t;(1UL &lt;&lt; (__x))
+mdefine_line|#define IPCOP_MASK(__x)&t;(1UL &lt;&lt; ((__x)&amp;~IPC_64))
 DECL|function|do_sys32_semctl
 r_static
 r_int
@@ -1632,11 +1632,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|third
+op_amp
+op_complement
+id|IPC_64
+)paren
 op_eq
 id|SETVAL
 )paren
-(brace
 id|fourth.val
 op_assign
 (paren
@@ -1644,7 +1648,6 @@ r_int
 )paren
 id|pad
 suffix:semicolon
-)brace
 r_else
 id|fourth.__pad
 op_assign
