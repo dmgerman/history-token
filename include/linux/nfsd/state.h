@@ -74,6 +74,132 @@ DECL|macro|ZERO_STATEID
 mdefine_line|#define ZERO_STATEID(stateid)       (!memcmp((stateid), &amp;zerostateid, sizeof(stateid_t)))
 DECL|macro|ONE_STATEID
 mdefine_line|#define ONE_STATEID(stateid)        (!memcmp((stateid), &amp;onestateid, sizeof(stateid_t)))
+multiline_comment|/* Delegation recall states */
+DECL|macro|NFS4_NO_RECALL
+mdefine_line|#define NFS4_NO_RECALL&t;&t;&t;0x000
+DECL|macro|NFS4_RECALL_IN_PROGRESS
+mdefine_line|#define NFS4_RECALL_IN_PROGRESS&t;&t;0x001
+DECL|macro|NFS4_RECALL_COMPLETE
+mdefine_line|#define NFS4_RECALL_COMPLETE&t;&t;0x002
+DECL|macro|NFS4_REAP_DELEG
+mdefine_line|#define NFS4_REAP_DELEG&t;&t;&t;0x004
+DECL|struct|nfs4_cb_recall
+r_struct
+id|nfs4_cb_recall
+(brace
+DECL|member|cbr_ident
+id|u32
+id|cbr_ident
+suffix:semicolon
+DECL|member|cbr_trunc
+r_int
+id|cbr_trunc
+suffix:semicolon
+DECL|member|cbr_stateid
+id|stateid_t
+id|cbr_stateid
+suffix:semicolon
+DECL|member|cbr_fhlen
+id|u32
+id|cbr_fhlen
+suffix:semicolon
+DECL|member|cbr_fhval
+id|u32
+id|cbr_fhval
+(braket
+id|NFS4_FHSIZE
+)braket
+suffix:semicolon
+DECL|member|cbr_dp
+r_struct
+id|nfs4_delegation
+op_star
+id|cbr_dp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_delegation
+r_struct
+id|nfs4_delegation
+(brace
+DECL|member|dl_del_perfile
+r_struct
+id|list_head
+id|dl_del_perfile
+suffix:semicolon
+multiline_comment|/* nfs4_file-&gt;fi_del_perfile */
+DECL|member|dl_del_perclnt
+r_struct
+id|list_head
+id|dl_del_perclnt
+suffix:semicolon
+multiline_comment|/* nfs4_client-&gt;cl_del_perclnt*/
+DECL|member|dl_recall_lru
+r_struct
+id|list_head
+id|dl_recall_lru
+suffix:semicolon
+multiline_comment|/* delegation recalled */
+DECL|member|dl_recall_cnt
+id|atomic_t
+id|dl_recall_cnt
+suffix:semicolon
+multiline_comment|/* resend cb_recall only once */
+DECL|member|dl_count
+id|atomic_t
+id|dl_count
+suffix:semicolon
+multiline_comment|/* ref count */
+DECL|member|dl_state
+id|atomic_t
+id|dl_state
+suffix:semicolon
+multiline_comment|/* recall state */
+DECL|member|dl_client
+r_struct
+id|nfs4_client
+op_star
+id|dl_client
+suffix:semicolon
+DECL|member|dl_file
+r_struct
+id|nfs4_file
+op_star
+id|dl_file
+suffix:semicolon
+DECL|member|dl_flock
+r_struct
+id|file_lock
+op_star
+id|dl_flock
+suffix:semicolon
+DECL|member|dl_stp
+r_struct
+id|nfs4_stateid
+op_star
+id|dl_stp
+suffix:semicolon
+DECL|member|dl_type
+id|u32
+id|dl_type
+suffix:semicolon
+DECL|member|dl_time
+id|time_t
+id|dl_time
+suffix:semicolon
+DECL|member|dl_recall
+r_struct
+id|nfs4_cb_recall
+id|dl_recall
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|dl_stateid
+mdefine_line|#define dl_stateid      dl_recall.cbr_stateid
+DECL|macro|dl_fhlen
+mdefine_line|#define dl_fhlen        dl_recall.cbr_fhlen
+DECL|macro|dl_fhval
+mdefine_line|#define dl_fhval        dl_recall.cbr_fhval
 multiline_comment|/* client delegation callback info */
 DECL|struct|nfs4_callback
 r_struct
@@ -149,6 +275,12 @@ id|list_head
 id|cl_perclient
 suffix:semicolon
 multiline_comment|/* list: stateowners */
+DECL|member|cl_del_perclnt
+r_struct
+id|list_head
+id|cl_del_perclnt
+suffix:semicolon
+multiline_comment|/* list: delegations */
 DECL|member|cl_lru
 r_struct
 id|list_head
@@ -406,6 +538,12 @@ id|list_head
 id|fi_perfile
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
+DECL|member|fi_del_perfile
+r_struct
+id|list_head
+id|fi_del_perfile
+suffix:semicolon
+multiline_comment|/* list: nfs4_delegation */
 DECL|member|fi_inode
 r_struct
 id|inode
