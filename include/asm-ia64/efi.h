@@ -495,6 +495,8 @@ DECL|macro|SMBIOS_TABLE_GUID
 mdefine_line|#define SMBIOS_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d31, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 DECL|macro|SAL_SYSTEM_TABLE_GUID
 mdefine_line|#define SAL_SYSTEM_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d32, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
+DECL|macro|HCDP_TABLE_GUID
+mdefine_line|#define HCDP_TABLE_GUID&t;&bslash;&n;    EFI_GUID(  0xf951938d, 0x620b, 0x42ef, 0x82, 0x79, 0xa8, 0x4b, 0x79, 0x61, 0x78, 0x98 )
 r_typedef
 r_struct
 (brace
@@ -622,6 +624,12 @@ op_star
 id|boot_info
 suffix:semicolon
 multiline_comment|/* boot info table */
+DECL|member|hcdp
+r_void
+op_star
+id|hcdp
+suffix:semicolon
+multiline_comment|/* HCDP table */
 DECL|member|get_time
 id|efi_get_time_t
 op_star

@@ -280,6 +280,19 @@ id|port
 )paren
 suffix:semicolon
 )brace
+r_void
+DECL|function|ia64_mmiob
+id|ia64_mmiob
+(paren
+r_void
+)paren
+(brace
+id|__ia64_mmiob
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* define aliases: */
 id|asm
 (paren
@@ -319,6 +332,16 @@ suffix:semicolon
 id|asm
 (paren
 l_string|&quot;__ia64_outl = ia64_outl&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;.global __ia64_mmiob&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;__ia64_mmiob = ia64_mmiob&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_IA64_GENERIC */

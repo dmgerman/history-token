@@ -11,6 +11,11 @@ DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
 mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS&t;0
 r_extern
 r_int
+r_char
+id|acpi_kbd_controller_present
+suffix:semicolon
+r_extern
+r_int
 id|pckbd_setkeycode
 c_func
 (paren
@@ -100,6 +105,8 @@ id|pckbd_sysrq_xlate
 l_int|128
 )braket
 suffix:semicolon
+DECL|macro|kbd_controller_present
+mdefine_line|#define kbd_controller_present() acpi_kbd_controller_present
 DECL|macro|kbd_setkeycode
 mdefine_line|#define kbd_setkeycode&t;&t;pckbd_setkeycode
 DECL|macro|kbd_getkeycode
