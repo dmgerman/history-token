@@ -107,6 +107,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+DECL|member|hub6
+r_int
+r_char
+id|hub6
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SERIAL_DEBUG_PCI
