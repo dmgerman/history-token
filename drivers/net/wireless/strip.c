@@ -8,7 +8,7 @@ id|StripVersion
 (braket
 )braket
 op_assign
-l_string|&quot;1.3-STUART.CHESHIRE-MODULAR&quot;
+l_string|&quot;1.3A-STUART.CHESHIRE-MODULAR&quot;
 suffix:semicolon
 macro_line|#else
 DECL|variable|StripVersion
@@ -19,7 +19,7 @@ id|StripVersion
 (braket
 )braket
 op_assign
-l_string|&quot;1.3-STUART.CHESHIRE&quot;
+l_string|&quot;1.3A-STUART.CHESHIRE&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|macro|TICKLE_TIMERS
@@ -35,15 +35,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-multiline_comment|/*&n; * isdigit() and isspace() use the ctype[] array, which is not available&n; * to kernel modules.  If compiling as a module,  use  a local definition&n; * of isdigit() and isspace() until  _ctype is added to ksyms.&n; */
-macro_line|#ifdef MODULE
-DECL|macro|isdigit
-macro_line|# define isdigit(c) (&squot;0&squot; &lt;= (c) &amp;&amp; (c)  &lt;= &squot;9&squot;)
-DECL|macro|isspace
-macro_line|# define isspace(c) ((c) == &squot; &squot; || (c)  == &squot;&bslash;t&squot;)
-macro_line|#else
 macro_line|# include &lt;linux/ctype.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -287,21 +279,21 @@ DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
-multiline_comment|/*&n;     * These are pointers to the malloc()ed frame buffers.&n;     */
+multiline_comment|/*&n;&t; * These are pointers to the malloc()ed frame buffers.&n;&t; */
 DECL|member|rx_buff
 r_int
 r_char
 op_star
 id|rx_buff
 suffix:semicolon
-multiline_comment|/* buffer for received IP packet*/
+multiline_comment|/* buffer for received IP packet */
 DECL|member|sx_buff
 r_int
 r_char
 op_star
 id|sx_buff
 suffix:semicolon
-multiline_comment|/* buffer for received serial data*/
+multiline_comment|/* buffer for received serial data */
 DECL|member|sx_count
 r_int
 id|sx_count
@@ -311,7 +303,7 @@ DECL|member|sx_size
 r_int
 id|sx_size
 suffix:semicolon
-multiline_comment|/* Serial buffer size&t;&t;*/
+multiline_comment|/* Serial buffer size           */
 DECL|member|tx_buff
 r_int
 r_char
@@ -335,44 +327,44 @@ DECL|member|tx_size
 r_int
 id|tx_size
 suffix:semicolon
-multiline_comment|/* Serial buffer size&t;&t;*/
-multiline_comment|/*&n;     * STRIP interface statistics.&n;     */
+multiline_comment|/* Serial buffer size           */
+multiline_comment|/*&n;&t; * STRIP interface statistics.&n;&t; */
 DECL|member|rx_packets
 r_int
 r_int
 id|rx_packets
 suffix:semicolon
-multiline_comment|/* inbound frames counter&t;*/
+multiline_comment|/* inbound frames counter       */
 DECL|member|tx_packets
 r_int
 r_int
 id|tx_packets
 suffix:semicolon
-multiline_comment|/* outbound frames counter&t;*/
+multiline_comment|/* outbound frames counter      */
 DECL|member|rx_errors
 r_int
 r_int
 id|rx_errors
 suffix:semicolon
-multiline_comment|/* Parity, etc. errors&t;&t;*/
+multiline_comment|/* Parity, etc. errors          */
 DECL|member|tx_errors
 r_int
 r_int
 id|tx_errors
 suffix:semicolon
-multiline_comment|/* Planned stuff&t;&t;*/
+multiline_comment|/* Planned stuff                */
 DECL|member|rx_dropped
 r_int
 r_int
 id|rx_dropped
 suffix:semicolon
-multiline_comment|/* No memory for skb&t;&t;*/
+multiline_comment|/* No memory for skb            */
 DECL|member|tx_dropped
 r_int
 r_int
 id|tx_dropped
 suffix:semicolon
-multiline_comment|/* When MTU change&t;&t;*/
+multiline_comment|/* When MTU change              */
 DECL|member|rx_over_errors
 r_int
 r_int
@@ -384,43 +376,43 @@ r_int
 r_int
 id|pps_timer
 suffix:semicolon
-multiline_comment|/* Timer to determine pps&t;*/
+multiline_comment|/* Timer to determine pps       */
 DECL|member|rx_pps_count
 r_int
 r_int
 id|rx_pps_count
 suffix:semicolon
-multiline_comment|/* Counter to determine pps&t;*/
+multiline_comment|/* Counter to determine pps     */
 DECL|member|tx_pps_count
 r_int
 r_int
 id|tx_pps_count
 suffix:semicolon
-multiline_comment|/* Counter to determine pps&t;*/
+multiline_comment|/* Counter to determine pps     */
 DECL|member|sx_pps_count
 r_int
 r_int
 id|sx_pps_count
 suffix:semicolon
-multiline_comment|/* Counter to determine pps&t;*/
+multiline_comment|/* Counter to determine pps     */
 DECL|member|rx_average_pps
 r_int
 r_int
 id|rx_average_pps
 suffix:semicolon
-multiline_comment|/* rx packets per second * 8&t;*/
+multiline_comment|/* rx packets per second * 8    */
 DECL|member|tx_average_pps
 r_int
 r_int
 id|tx_average_pps
 suffix:semicolon
-multiline_comment|/* tx packets per second * 8&t;*/
+multiline_comment|/* tx packets per second * 8    */
 DECL|member|sx_average_pps
 r_int
 r_int
 id|sx_average_pps
 suffix:semicolon
-multiline_comment|/* sent packets per second * 8&t;*/
+multiline_comment|/* sent packets per second * 8  */
 macro_line|#ifdef EXT_COUNTERS
 DECL|member|rx_bytes
 r_int
@@ -471,14 +463,14 @@ id|tx_ebytes
 suffix:semicolon
 multiline_comment|/* tot stat/err bytes */
 macro_line|#endif
-multiline_comment|/*&n;     * Internal variables.&n;     */
+multiline_comment|/*&n;&t; * Internal variables.&n;&t; */
 DECL|member|next
 r_struct
 id|strip
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* The next struct in the list&t;*/
+multiline_comment|/* The next struct in the list  */
 DECL|member|referrer
 r_struct
 id|strip
@@ -486,27 +478,27 @@ op_star
 op_star
 id|referrer
 suffix:semicolon
-multiline_comment|/* The pointer that points to us*/
+multiline_comment|/* The pointer that points to us */
 DECL|member|discard
 r_int
 id|discard
 suffix:semicolon
-multiline_comment|/* Set if serial error&t;&t;*/
+multiline_comment|/* Set if serial error          */
 DECL|member|working
 r_int
 id|working
 suffix:semicolon
-multiline_comment|/* Is radio working correctly?&t;*/
+multiline_comment|/* Is radio working correctly?  */
 DECL|member|firmware_level
 r_int
 id|firmware_level
 suffix:semicolon
-multiline_comment|/* Message structuring level&t;*/
+multiline_comment|/* Message structuring level    */
 DECL|member|next_command
 r_int
 id|next_command
 suffix:semicolon
-multiline_comment|/* Next periodic command&t;*/
+multiline_comment|/* Next periodic command        */
 DECL|member|user_baud
 r_int
 r_int
@@ -517,38 +509,38 @@ DECL|member|mtu
 r_int
 id|mtu
 suffix:semicolon
-multiline_comment|/* Our mtu (to spot changes!)&t;*/
+multiline_comment|/* Our mtu (to spot changes!)   */
 DECL|member|watchdog_doprobe
 r_int
 id|watchdog_doprobe
 suffix:semicolon
-multiline_comment|/* Next time to test the radio&t;*/
+multiline_comment|/* Next time to test the radio  */
 DECL|member|watchdog_doreset
 r_int
 id|watchdog_doreset
 suffix:semicolon
-multiline_comment|/* Time to do next reset&t;*/
+multiline_comment|/* Time to do next reset        */
 DECL|member|gratuitous_arp
 r_int
 id|gratuitous_arp
 suffix:semicolon
-multiline_comment|/* Time to send next ARP refresh*/
+multiline_comment|/* Time to send next ARP refresh */
 DECL|member|arp_interval
 r_int
 id|arp_interval
 suffix:semicolon
-multiline_comment|/* Next ARP interval&t;&t;*/
+multiline_comment|/* Next ARP interval            */
 DECL|member|idle_timer
 r_struct
 id|timer_list
 id|idle_timer
 suffix:semicolon
-multiline_comment|/* For periodic wakeup calls&t;*/
+multiline_comment|/* For periodic wakeup calls    */
 DECL|member|true_dev_addr
 id|MetricomAddress
 id|true_dev_addr
 suffix:semicolon
-multiline_comment|/* True address of radio&t;*/
+multiline_comment|/* True address of radio        */
 DECL|member|manual_dev_addr
 r_int
 id|manual_dev_addr
@@ -569,21 +561,21 @@ id|BatteryVoltage
 id|battery_voltage
 suffix:semicolon
 multiline_comment|/* The radio&squot;s battery voltage  */
-multiline_comment|/*&n;     * Other useful structures.&n;     */
+multiline_comment|/*&n;&t; * Other useful structures.&n;&t; */
 DECL|member|tty
 r_struct
 id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-multiline_comment|/* ptr to TTY structure&t;&t;*/
+multiline_comment|/* ptr to TTY structure         */
 DECL|member|dev
 r_struct
 id|net_device
 id|dev
 suffix:semicolon
-multiline_comment|/* Our device structure&t;&t;*/
-multiline_comment|/*&n;     * Neighbour radio records&n;     */
+multiline_comment|/* Our device structure         */
+multiline_comment|/*&n;&t; * Neighbour radio records&n;&t; */
 DECL|member|portables
 id|MetricomNodeTable
 id|portables
@@ -680,20 +672,20 @@ op_assign
 l_string|&quot;*&amp;COMMAND*AT~LA&quot;
 suffix:semicolon
 multiline_comment|/* Query portables list */
-DECL|member|string
-DECL|member|length
-DECL|typedef|StringDescriptor
 r_typedef
 r_struct
 (brace
+DECL|member|string
 r_const
 r_char
 op_star
 id|string
 suffix:semicolon
+DECL|member|length
 r_int
 id|length
 suffix:semicolon
+DECL|typedef|StringDescriptor
 )brace
 id|StringDescriptor
 suffix:semicolon
@@ -951,6 +943,11 @@ id|strip
 op_star
 id|struct_strip_list
 suffix:semicolon
+DECL|variable|strip_lock
+r_static
+id|spinlock_t
+id|strip_lock
+suffix:semicolon
 multiline_comment|/************************************************************************/
 multiline_comment|/* Macros&t;&t;&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/* Returns TRUE if text T begins with prefix P */
@@ -977,58 +974,6 @@ DECL|macro|JIFFIE_TO_SEC
 mdefine_line|#define JIFFIE_TO_SEC(X) ((X) / HZ)
 multiline_comment|/************************************************************************/
 multiline_comment|/* Utility routines&t;&t;&t;&t;&t;&t;&t;*/
-DECL|typedef|InterruptStatus
-r_typedef
-r_int
-r_int
-id|InterruptStatus
-suffix:semicolon
-DECL|function|DisableInterrupts
-r_static
-r_inline
-id|InterruptStatus
-id|DisableInterrupts
-c_func
-(paren
-r_void
-)paren
-(brace
-id|InterruptStatus
-id|x
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|x
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|x
-suffix:semicolon
-)brace
-DECL|function|RestoreInterrupts
-r_static
-r_inline
-r_void
-id|RestoreInterrupts
-c_func
-(paren
-id|InterruptStatus
-id|x
-)paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|x
-)paren
-suffix:semicolon
-)brace
 DECL|function|arp_query
 r_static
 r_int
@@ -1249,14 +1194,12 @@ id|ptr
 op_eq
 id|end
 )paren
-(brace
 op_star
 id|p
 op_increment
 op_assign
 l_char|&squot;&bslash;&quot;&squot;
 suffix:semicolon
-)brace
 op_star
 id|p
 op_increment
@@ -1277,151 +1220,6 @@ id|pkt_text
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_static
-r_void
-id|HexDump
-c_func
-(paren
-r_char
-op_star
-id|msg
-comma
-r_struct
-id|strip
-op_star
-id|strip_info
-comma
-id|__u8
-op_star
-id|start
-comma
-id|__u8
-op_star
-id|end
-)paren
-(brace
-id|__u8
-op_star
-id|ptr
-op_assign
-id|start
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %s: %d bytes&bslash;n&quot;
-comma
-id|strip_info-&gt;dev.name
-comma
-id|msg
-comma
-id|end
-op_minus
-id|ptr
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|ptr
-OL
-id|end
-)paren
-(brace
-r_int
-id|offset
-op_assign
-id|ptr
-op_minus
-id|start
-suffix:semicolon
-id|__u8
-id|text
-(braket
-l_int|80
-)braket
-comma
-op_star
-id|p
-op_assign
-id|text
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|ptr
-OL
-id|end
-op_logical_and
-id|p
-OL
-op_amp
-id|text
-(braket
-l_int|16
-op_star
-l_int|3
-)braket
-)paren
-(brace
-op_star
-id|p
-op_increment
-op_assign
-id|hextable
-(braket
-op_star
-id|ptr
-op_rshift
-l_int|4
-)braket
-suffix:semicolon
-op_star
-id|p
-op_increment
-op_assign
-id|hextable
-(braket
-op_star
-id|ptr
-op_increment
-op_amp
-l_int|0xF
-)braket
-suffix:semicolon
-op_star
-id|p
-op_increment
-op_assign
-l_char|&squot; &squot;
-suffix:semicolon
-)brace
-id|p
-(braket
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %4lX %s&bslash;n&quot;
-comma
-id|strip_info-&gt;dev.name
-comma
-id|offset
-comma
-id|text
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 multiline_comment|/************************************************************************/
 multiline_comment|/* Byte stuffing/unstuffing routines&t;&t;&t;&t;&t;*/
 multiline_comment|/* Stuffing scheme:&n; * 00    Unused (reserved character)&n; * 01-3F Run of 2-64 different characters&n; * 40-7F Run of 1-64 different characters plus a single zero at the end&n; * 80-BF Run of 1-64 of the same character&n; * C0-FF Run of 1-64 zeroes (ASCII 0)&n; */
@@ -1536,7 +1334,9 @@ op_logical_neg
 id|length
 )paren
 r_return
+(paren
 id|dst
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1544,7 +1344,7 @@ c_cond
 id|code_ptr
 )paren
 (brace
-multiline_comment|/*&n;         * Recover state from last call, if applicable&n;         */
+multiline_comment|/*&n;&t;&t; * Recover state from last call, if applicable&n;&t;&t; */
 id|code
 op_assign
 (paren
@@ -1725,7 +1525,7 @@ id|code
 op_assign
 id|Stuff_Diff
 suffix:semicolon
-multiline_comment|/* and fall through to Stuff_Diff case below&n;                 * Note cunning cleverness here: case Stuff_Diff compares &n;                 * the current character with the previous two to see if it&n;                 * has a run of three the same. Won&squot;t this be an error if&n;                 * there aren&squot;t two previous characters stored to compare with?&n;                 * No. Because we know the current character is *not* the same&n;                 * as the previous one, the first test below will necessarily&n;                 * fail and the send half of the &quot;if&quot; won&squot;t be executed.&n;                 */
+multiline_comment|/* and fall through to Stuff_Diff case below&n;&t;&t;&t; * Note cunning cleverness here: case Stuff_Diff compares &n;&t;&t;&t; * the current character with the previous two to see if it&n;&t;&t;&t; * has a run of three the same. Won&squot;t this be an error if&n;&t;&t;&t; * there aren&squot;t two previous characters stored to compare with?&n;&t;&t;&t; * No. Because we know the current character is *not* the same&n;&t;&t;&t; * as the previous one, the first test below will necessarily&n;&t;&t;&t; * fail and the send half of the &quot;if&quot; won&squot;t be executed.&n;&t;&t;&t; */
 multiline_comment|/* Stuff_Diff: We have at least two *different* bytes encoded */
 r_case
 id|Stuff_Diff
@@ -1900,7 +1700,9 @@ id|count
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dst
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * UnStuffData decodes the data at &quot;src&quot;, up to (but not including) &quot;end&quot;.&n; * It writes the decoded data into the buffer pointed to by &quot;dst&quot;, up to a&n; * maximum of &quot;dst_length&quot;, and returns the new value of &quot;src&quot; so that a&n; * follow-on call can read more data, continuing from where the first left off.&n; * &n; * There are three types of results:&n; * 1. The source data runs out before extracting &quot;dst_length&quot; bytes:&n; *    UnStuffData returns NULL to indicate failure.&n; * 2. The source data produces exactly &quot;dst_length&quot; bytes:&n; *    UnStuffData returns new_src = end to indicate that all bytes were consumed.&n; * 3. &quot;dst_length&quot; bytes are extracted, with more remaining.&n; *    UnStuffData returns new_src &lt; end to indicate that there are more bytes&n; *    to be read.&n; * &n; * Note: The decoding may be destructive, in that it may alter the source&n; * data in the process of decoding it (this is necessary to allow a follow-on&n; * call to resume correctly).&n; */
@@ -1952,7 +1754,9 @@ op_logical_neg
 id|dst_length
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2006,7 +1810,9 @@ op_ge
 id|end
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 r_do
 (brace
@@ -2033,9 +1839,7 @@ id|dst
 OL
 id|dst_end
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2093,7 +1897,9 @@ op_ge
 id|end
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 r_do
 (brace
@@ -2120,9 +1926,7 @@ id|dst
 OL
 id|dst_end
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2164,7 +1968,9 @@ op_ge
 id|end
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 r_do
 (brace
@@ -2192,9 +1998,7 @@ id|dst
 OL
 id|dst_end
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2244,9 +2048,7 @@ id|dst
 OL
 id|dst_end
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2282,11 +2084,15 @@ OL
 id|dst_end
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 r_else
 r_return
+(paren
 id|src
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
@@ -2315,7 +2121,9 @@ op_logical_neg
 id|tty-&gt;termios
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2355,7 +2163,9 @@ op_eq
 id|ASYNC_SPD_HI
 )paren
 r_return
+(paren
 id|B57600
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2369,13 +2179,17 @@ op_eq
 id|ASYNC_SPD_VHI
 )paren
 r_return
+(paren
 id|B115200
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 id|tty-&gt;termios-&gt;c_cflag
 op_amp
 id|CBAUD
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set_baud sets the baud rate to the rate defined by baudcode&n; * Note: The rate B38400 should be avoided, because the user may have&n; * issued a &squot;setserial&squot; speed override to map that to a different speed.&n; * We could achieve a true rate of 38400 if we needed to by cancelling&n; * any user speed override that is in place, but that might annoy the&n; * user, so it is simplest to just avoid using 38400.&n; */
@@ -2456,7 +2270,9 @@ id|p
 )paren
 )paren
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 id|addr-&gt;c
 (braket
@@ -2573,7 +2389,9 @@ l_int|8
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert a Metricom Address to a string.&n; */
@@ -2623,7 +2441,9 @@ l_int|5
 )paren
 suffix:semicolon
 r_return
+(paren
 id|p-&gt;c
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: Must make sure sx_size is big enough to receive a stuffed&n; * MAX_RECV_MTU packet. Additionally, we also want to ensure that it&squot;s&n; * big enough to receive a large radio neighbour list (currently 4K).&n; */
@@ -2744,7 +2564,9 @@ op_assign
 id|dev-&gt;mtu
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -2781,10 +2603,12 @@ id|t
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MTU has been changed by the IP layer. Unfortunately we are not told&n; * about this, but we spot it ourselves and fix things up. We could be in&n; * an upcall from the tty driver, or in an ip packet queue.&n; */
+multiline_comment|/*&n; * MTU has been changed by the IP layer. Unfortunately we are not told&n; * about this, but we spot it ourselves and fix things up. We could be in&n; * an upcall from the tty driver, or in an ip packet queue.&n; *&n; * Caller must hold the strip_lock&n; */
 DECL|function|strip_changedmtu
 r_static
 r_void
@@ -2831,9 +2655,6 @@ id|otbuff
 op_assign
 id|strip_info-&gt;tx_buff
 suffix:semicolon
-id|InterruptStatus
-id|intstat
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2860,14 +2681,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Have to disable interrupts here because we&squot;re reallocating and resizing&n;     * the serial buffers, and we can&squot;t have data arriving in them while we&squot;re&n;     * moving them around in memory. This may cause data to be lost on the serial&n;     * port, but hopefully people won&squot;t change MTU that often.&n;     * Also note, this may not work on a symmetric multi-processor system.&n;     */
-id|intstat
-op_assign
-id|DisableInterrupts
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2879,12 +2692,6 @@ id|strip_info
 )paren
 )paren
 (brace
-id|RestoreInterrupts
-c_func
-(paren
-id|intstat
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2973,12 +2780,6 @@ id|strip_info-&gt;tx_head
 op_assign
 id|strip_info-&gt;tx_buff
 suffix:semicolon
-id|RestoreInterrupts
-c_func
-(paren
-id|intstat
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3038,7 +2839,7 @@ op_star
 id|strip_info
 )paren
 (brace
-multiline_comment|/*&n;     * Set the timer to go off in one second.&n;     */
+multiline_comment|/*&n;&t; * Set the timer to go off in one second.&n;&t; */
 id|strip_info-&gt;idle_timer.expires
 op_assign
 id|jiffies
@@ -3098,7 +2899,7 @@ id|buf
 r_int
 id|printed
 suffix:semicolon
-multiline_comment|/* printk(KERN_DEBUG &quot;shift: buffer: %d o: %d l: %d t: %d buf: %d&bslash;n&quot;,&n;           (int) buffer, requested_offset, requested_len, *total,&n;           (int) *buf); */
+multiline_comment|/* printk(KERN_DEBUG &quot;shift: buffer: %d o: %d l: %d t: %d buf: %d&bslash;n&quot;,&n;&t;   (int) buffer, requested_offset, requested_len, *total,&n;&t;   (int) *buf); */
 id|printed
 op_assign
 op_star
@@ -3238,7 +3039,7 @@ l_string|&quot;STRIP: exceeded /proc buffer size&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * There may be bytes before and after the&n;     * chunk that was actually requested.&n;     */
+multiline_comment|/*&n;&t; * There may be bytes before and after the&n;&t; * chunk that was actually requested.&n;&t; */
 id|return_len
 op_assign
 id|total
@@ -3314,7 +3115,9 @@ op_div
 l_int|2
 )paren
 r_return
+(paren
 l_string|&quot;Not scheduled&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3323,12 +3126,10 @@ id|time
 OL
 l_int|0
 )paren
-(brace
 id|time
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t print negative times */
 id|sprintf
 c_func
@@ -3343,7 +3144,9 @@ id|HZ
 )paren
 suffix:semicolon
 r_return
+(paren
 id|buffer
+)paren
 suffix:semicolon
 )brace
 DECL|function|sprintf_neighbours
@@ -3374,6 +3177,10 @@ suffix:semicolon
 r_char
 op_star
 id|ptr
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_do
 (brace
@@ -3420,12 +3227,13 @@ id|i
 op_increment
 )paren
 (brace
-id|InterruptStatus
-id|intstat
-op_assign
-id|DisableInterrupts
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|strip_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|MetricomNode
@@ -3436,10 +3244,13 @@ id|table-&gt;node
 id|i
 )braket
 suffix:semicolon
-id|RestoreInterrupts
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|intstat
+op_amp
+id|strip_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ptr
@@ -3475,9 +3286,9 @@ id|buffer
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function prints radio status information into the specified buffer.&n; * I think the buffer size is 4K, so this routine should never print more&n; * than 4K of data into it. With the maximum of 32 portables and 32 poletops&n; * reported, the routine outputs 3107 bytes into the buffer.&n; */
+DECL|function|sprintf_status_info
 r_static
 r_int
-DECL|function|sprintf_status_info
 id|sprintf_status_info
 c_func
 (paren
@@ -3508,14 +3319,6 @@ id|addr_string
 suffix:semicolon
 multiline_comment|/* First, we must copy all of our data to a safe place, */
 multiline_comment|/* in case a serial interrupt comes in and changes it.  */
-id|InterruptStatus
-id|intstat
-op_assign
-id|DisableInterrupts
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|tx_left
 op_assign
@@ -3660,12 +3463,6 @@ op_assign
 id|strip_info-&gt;tx_ebytes
 suffix:semicolon
 macro_line|#endif
-id|RestoreInterrupts
-c_func
-(paren
-id|intstat
-)paren
-suffix:semicolon
 id|p
 op_add_assign
 id|sprintf
@@ -3926,7 +3723,6 @@ c_cond
 (paren
 op_logical_neg
 id|memcmp
-c_func
 (paren
 id|strip_info-&gt;dev.dev_addr
 comma
@@ -4196,7 +3992,6 @@ r_if
 c_cond
 (paren
 id|shift_buffer
-c_func
 (paren
 id|buffer
 comma
@@ -4224,8 +4019,8 @@ suffix:semicolon
 m_exit
 suffix:colon
 r_return
+(paren
 id|calc_start_len
-c_func
 (paren
 id|buffer
 comma
@@ -4238,6 +4033,7 @@ comma
 id|total
 comma
 id|buf
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4285,7 +4081,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-multiline_comment|/* &n;     * If the radio isn&squot;t working anymore,&n;     * we should clear the old status information.&n;     */
+multiline_comment|/* &n;&t; * If the radio isn&squot;t working anymore,&n;&t; * we should clear the old status information.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4436,7 +4232,7 @@ OG
 id|B38400
 )paren
 (brace
-multiline_comment|/*&n;         * Subtle stuff: Pay attention :-)&n;         * If the serial port is currently at the user&squot;s selected (&gt;38.4) rate,&n;         * then we temporarily switch to 19.2 and issue the ATS304 command&n;         * to tell the radio to switch to the user&squot;s selected rate.&n;         * If the serial port is not currently at that rate, that means we just&n;         * issued the ATS304 command last time through, so this time we restore&n;         * the user&squot;s selected rate and issue the normal starmode reset string.&n;         */
+multiline_comment|/*&n;&t;&t; * Subtle stuff: Pay attention :-)&n;&t;&t; * If the serial port is currently at the user&squot;s selected (&gt;38.4) rate,&n;&t;&t; * then we temporarily switch to 19.2 and issue the ATS304 command&n;&t;&t; * to tell the radio to switch to the user&squot;s selected rate.&n;&t;&t; * If the serial port is not currently at that rate, that means we just&n;&t;&t; * issued the ATS304 command last time through, so this time we restore&n;&t;&t; * the user&squot;s selected rate and issue the normal starmode reset string.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4631,15 +4427,6 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;         * If some data left, send it&n;         * Note: There&squot;s a kernel design bug here. The write_wakeup routine has to&n;         * know how many bytes were written in the previous call, but the number of&n;         * bytes written is returned as the result of the tty-&gt;driver.write call,&n;         * and there&squot;s no guarantee that the tty-&gt;driver.write routine will have&n;         * returned before the write_wakeup routine is invoked. If the PC has fast&n;         * Serial DMA hardware, then it&squot;s quite possible that the write could complete&n;         * almost instantaneously, meaning that my write_wakeup routine could be&n;         * called immediately, before tty-&gt;driver.write has had a chance to return&n;         * the number of bytes that it wrote. In an attempt to guard against this,&n;         * I disable interrupts around the call to tty-&gt;driver.write, although even&n;         * this might not work on a symmetric multi-processor system.&n;         */
-id|InterruptStatus
-id|intstat
-op_assign
-id|DisableInterrupts
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|num_written
 op_assign
@@ -4671,16 +4458,10 @@ op_add_assign
 id|num_written
 suffix:semicolon
 macro_line|#endif
-id|RestoreInterrupts
-c_func
-(paren
-id|intstat
-)paren
-suffix:semicolon
 )brace
 r_else
-multiline_comment|/* Else start transmission of another packet */
 (brace
+multiline_comment|/* Else start transmission of another packet */
 id|tty-&gt;flags
 op_and_assign
 op_complement
@@ -4799,9 +4580,11 @@ l_int|0xF
 )braket
 suffix:semicolon
 r_return
+(paren
 id|end
 op_plus
 l_int|4
+)paren
 suffix:semicolon
 )brace
 DECL|function|strip_make_packet
@@ -4868,7 +4651,7 @@ suffix:semicolon
 id|MetricomKey
 id|key
 suffix:semicolon
-multiline_comment|/*HexDump(&quot;strip_make_packet&quot;, strip_info, skb-&gt;data, skb-&gt;data + skb-&gt;len);*/
+multiline_comment|/*HexDump(&quot;strip_make_packet&quot;, strip_info, skb-&gt;data, skb-&gt;data + skb-&gt;len); */
 r_if
 c_cond
 (paren
@@ -4918,7 +4701,9 @@ id|header-&gt;protocol
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -4941,10 +4726,12 @@ id|len
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * If we&squot;re sending to ourselves, discard the packet.&n;     * (Metricom radios choke if they try to send a packet to their own address.)&n;     */
+multiline_comment|/*&n;&t; * If we&squot;re sending to ourselves, discard the packet.&n;&t; * (Metricom radios choke if they try to send a packet to their own address.)&n;&t; */
 r_if
 c_cond
 (paren
@@ -4973,10 +4760,12 @@ id|strip_info-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * If this is a broadcast packet, send it to our designated Metricom&n;     * &squot;broadcast hub&squot; radio (First byte of address being 0xFF means broadcast)&n;     */
+multiline_comment|/*&n;&t; * If this is a broadcast packet, send it to our designated Metricom&n;&t; * &squot;broadcast hub&squot; radio (First byte of address being 0xFF means broadcast)&n;&t; */
 r_if
 c_cond
 (paren
@@ -5071,16 +4860,17 @@ id|strip_info-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we are the broadcast hub, don&squot;t bother sending to ourselves.&n;&t; * (Metricom radios choke if they try to send a packet to their own address.)&n;&t; */
+multiline_comment|/*&n;&t;&t; * If we are the broadcast hub, don&squot;t bother sending to ourselves.&n;&t;&t; * (Metricom radios choke if they try to send a packet to their own address.)&n;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|memcmp
-c_func
 (paren
 id|haddr.c
 comma
@@ -5093,7 +4883,9 @@ id|haddr
 )paren
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 op_star
@@ -5314,7 +5106,9 @@ op_assign
 l_int|0x0D
 suffix:semicolon
 r_return
+(paren
 id|ptr
+)paren
 suffix:semicolon
 )brace
 DECL|function|strip_send
@@ -5376,7 +5170,7 @@ id|addr
 comma
 id|brd
 suffix:semicolon
-multiline_comment|/*&n;     * 1. If we have a packet, encapsulate it and put it in the buffer&n;     */
+multiline_comment|/*&n;&t; * 1. If we have a packet, encapsulate it and put it in the buffer&n;&t; */
 r_if
 c_cond
 (paren
@@ -5434,11 +5228,11 @@ op_minus
 id|strip_info-&gt;tx_buff
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*DumpData(&quot;Sending:&quot;, strip_info, strip_info-&gt;tx_buff, ptr);*/
-multiline_comment|/*HexDump(&quot;Sending&quot;, strip_info, strip_info-&gt;tx_buff, ptr);*/
+multiline_comment|/*DumpData(&quot;Sending:&quot;, strip_info, strip_info-&gt;tx_buff, ptr); */
+multiline_comment|/*HexDump(&quot;Sending&quot;, strip_info, strip_info-&gt;tx_buff, ptr); */
 )brace
 )brace
-multiline_comment|/*&n;     * 2. If it is time for another tickle, tack it on, after the packet&n;     */
+multiline_comment|/*&n;&t; * 2. If it is time for another tickle, tack it on, after the packet&n;&t; */
 r_if
 c_cond
 (paren
@@ -5598,9 +5392,9 @@ l_int|1
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/*printk(KERN_INFO &quot;%s: Routine radio test.&bslash;n&quot;, strip_info-&gt;dev.name);*/
+multiline_comment|/*printk(KERN_INFO &quot;%s: Routine radio test.&bslash;n&quot;, strip_info-&gt;dev.name); */
 )brace
-multiline_comment|/*&n;     * 3. Set up the strip_info ready to send the data (if any).&n;     */
+multiline_comment|/*&n;&t; * 3. Set up the strip_info ready to send the data (if any).&n;&t; */
 id|strip_info-&gt;tx_head
 op_assign
 id|strip_info-&gt;tx_buff
@@ -5619,7 +5413,7 @@ op_lshift
 id|TTY_DO_WRITE_WAKEUP
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * 4. Debugging check to make sure we&squot;re not overflowing the buffer.&n;     */
+multiline_comment|/*&n;&t; * 4. Debugging check to make sure we&squot;re not overflowing the buffer.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5644,7 +5438,7 @@ op_minus
 id|strip_info-&gt;tx_left
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * 5. If watchdog has expired, reset the radio. Note: if there&squot;s data waiting in&n;     * the buffer, strip_write_some_more will send it after the reset has finished&n;     */
+multiline_comment|/*&n;&t; * 5. If watchdog has expired, reset the radio. Note: if there&squot;s data waiting in&n;&t; * the buffer, strip_write_some_more will send it after the reset has finished&n;&t; */
 r_if
 c_cond
 (paren
@@ -5727,7 +5521,7 @@ id|in_dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     * 6. If it is time for a periodic ARP, queue one up to be sent.&n;     * We only do this if:&n;     *  1. The radio is working&n;     *  2. It&squot;s time to send another periodic ARP&n;     *  3. We really know what our address is (and it is not manually set to zero)&n;     *  4. We have a designated broadcast address configured&n;     * If we queue up an ARP packet when we don&squot;t have a designated broadcast&n;     * address configured, then the packet will just have to be discarded in&n;     * strip_make_packet. This is not fatal, but it causes misleading information&n;     * to be displayed in tcpdump. tcpdump will report that periodic APRs are&n;     * being sent, when in fact they are not, because they are all being dropped&n;     * in the strip_make_packet routine.&n;     */
+multiline_comment|/*&n;&t; * 6. If it is time for a periodic ARP, queue one up to be sent.&n;&t; * We only do this if:&n;&t; *  1. The radio is working&n;&t; *  2. It&squot;s time to send another periodic ARP&n;&t; *  3. We really know what our address is (and it is not manually set to zero)&n;&t; *  4. We have a designated broadcast address configured&n;&t; * If we queue up an ARP packet when we don&squot;t have a designated broadcast&n;&t; * address configured, then the packet will just have to be discarded in&n;&t; * strip_make_packet. This is not fatal, but it causes misleading information&n;&t; * to be displayed in tcpdump. tcpdump will report that periodic APRs are&n;&t; * being sent, when in fact they are not, because they are all being dropped&n;&t; * in the strip_make_packet routine.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5767,7 +5561,7 @@ id|strip_info-&gt;dev
 )paren
 )paren
 (brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Sending gratuitous ARP with interval %ld&bslash;n&quot;,&n;            strip_info-&gt;dev.name, strip_info-&gt;arp_interval / HZ);*/
+multiline_comment|/*printk(KERN_INFO &quot;%s: Sending gratuitous ARP with interval %ld&bslash;n&quot;,&n;&t;&t;   strip_info-&gt;dev.name, strip_info-&gt;arp_interval / HZ); */
 id|strip_info-&gt;gratuitous_arp
 op_assign
 id|jiffies
@@ -5822,7 +5616,7 @@ id|strip_info-&gt;dev.dev_addr
 suffix:semicolon
 multiline_comment|/* Target HW address is our HW address (redundant) */
 )brace
-multiline_comment|/*&n;     * 7. All ready. Start the transmission&n;     */
+multiline_comment|/*&n;&t; * 7. All ready. Start the transmission&n;&t; */
 id|strip_write_some_more
 c_func
 (paren
@@ -5862,6 +5656,10 @@ op_star
 id|dev-&gt;priv
 )paren
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5883,7 +5681,9 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 id|netif_stop_queue
@@ -5897,20 +5697,6 @@ c_func
 (paren
 op_amp
 id|strip_info-&gt;idle_timer
-)paren
-suffix:semicolon
-multiline_comment|/* See if someone has been ifconfigging */
-r_if
-c_cond
-(paren
-id|strip_info-&gt;mtu
-op_ne
-id|strip_info-&gt;dev.mtu
-)paren
-id|strip_changedmtu
-c_func
-(paren
-id|strip_info
 )paren
 suffix:semicolon
 r_if
@@ -6104,12 +5890,44 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|strip_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* See if someone has been ifconfigging */
+r_if
+c_cond
+(paren
+id|strip_info-&gt;mtu
+op_ne
+id|strip_info-&gt;dev.mtu
+)paren
+id|strip_changedmtu
+c_func
+(paren
+id|strip_info
+)paren
+suffix:semicolon
 id|strip_send
 c_func
 (paren
 id|strip_info
 comma
 id|skb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|strip_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -6219,7 +6037,7 @@ id|STRIP_Header
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*printk(KERN_INFO &quot;%s: strip_header 0x%04X %s&bslash;n&quot;, dev-&gt;name, type,&n;        type == ETH_P_IP ? &quot;IP&quot; : type == ETH_P_ARP ? &quot;ARP&quot; : &quot;&quot;);*/
+multiline_comment|/*printk(KERN_INFO &quot;%s: strip_header 0x%04X %s&bslash;n&quot;, dev-&gt;name, type,&n;&t;   type == ETH_P_IP ? &quot;IP&quot; : type == ETH_P_ARP ? &quot;ARP&quot; : &quot;&quot;); */
 id|header-&gt;src_addr
 op_assign
 id|strip_info-&gt;true_dev_addr
@@ -6232,7 +6050,7 @@ c_func
 id|type
 )paren
 suffix:semicolon
-multiline_comment|/*HexDump(&quot;strip_header&quot;, (struct strip *)(dev-&gt;priv), skb-&gt;data, skb-&gt;data + skb-&gt;len);*/
+multiline_comment|/*HexDump(&quot;strip_header&quot;, (struct strip *)(dev-&gt;priv), skb-&gt;data, skb-&gt;data + skb-&gt;len); */
 r_if
 c_cond
 (paren
@@ -6240,8 +6058,10 @@ op_logical_neg
 id|daddr
 )paren
 r_return
+(paren
 op_minus
 id|dev-&gt;hard_header_len
+)paren
 suffix:semicolon
 id|header-&gt;dst_addr
 op_assign
@@ -6253,7 +6073,9 @@ op_star
 id|daddr
 suffix:semicolon
 r_return
+(paren
 id|dev-&gt;hard_header_len
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Rebuild the MAC header. This is called after an ARP&n; * (or in future other address resolution) has completed on this&n; * sk_buff. We now let ARP fill in the other fields.&n; * I think this should return zero if packet is ready to send,&n; * or non-zero if it needs more time to do an address lookup&n; */
@@ -6801,7 +6623,9 @@ id|p
 )paren
 )paren
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* See if our radio address has changed */
 r_if
@@ -6881,7 +6705,9 @@ id|HZ
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|verify_checksum
@@ -7005,9 +6831,11 @@ id|strip_info-&gt;dev.name
 suffix:semicolon
 )brace
 r_return
+(paren
 id|sum
 op_eq
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|RecvErr
@@ -7093,8 +6921,8 @@ comma
 l_string|&quot;001&quot;
 )paren
 )paren
-multiline_comment|/* Not in StarMode! */
 (brace
+multiline_comment|/* Not in StarMode! */
 id|RecvErr
 c_func
 (paren
@@ -7129,8 +6957,8 @@ comma
 l_string|&quot;002&quot;
 )paren
 )paren
-multiline_comment|/* Remap handle */
 (brace
+multiline_comment|/* Remap handle */
 multiline_comment|/* We ignore &quot;Remap handle&quot; messages for now */
 )brace
 r_else
@@ -7147,8 +6975,8 @@ comma
 l_string|&quot;003&quot;
 )paren
 )paren
-multiline_comment|/* Can&squot;t resolve name */
 (brace
+multiline_comment|/* Can&squot;t resolve name */
 id|RecvErr
 c_func
 (paren
@@ -7181,8 +7009,8 @@ comma
 l_string|&quot;004&quot;
 )paren
 )paren
-multiline_comment|/* Name too small or missing */
 (brace
+multiline_comment|/* Name too small or missing */
 id|strip_info-&gt;watchdog_doreset
 op_assign
 id|jiffies
@@ -7237,7 +7065,7 @@ comma
 id|strip_info-&gt;dev.name
 )paren
 suffix:semicolon
-multiline_comment|/*&n;             * If the radio has just entered a working state, we should do our first&n;             * probe ASAP, so that we find out our radio address etc. without delay.&n;             */
+multiline_comment|/*&n;&t;&t;&t; * If the radio has just entered a working state, we should do our first&n;&t;&t;&t; * probe ASAP, so that we find out our radio address etc. without delay.&n;&t;&t;&t; */
 id|strip_info-&gt;watchdog_doprobe
 op_assign
 id|jiffies
@@ -7280,14 +7108,14 @@ op_ge
 id|StructuredMessages
 )paren
 (brace
-multiline_comment|/*&n;             * If this message has a valid checksum on the end, then the call to verify_checksum&n;             * will elevate the firmware_level to ChecksummedMessages for us. (The actual return&n;             * code from verify_checksum is ignored here.)&n;             */
+multiline_comment|/*&n;&t;&t;&t; * If this message has a valid checksum on the end, then the call to verify_checksum&n;&t;&t;&t; * will elevate the firmware_level to ChecksummedMessages for us. (The actual return&n;&t;&t;&t; * code from verify_checksum is ignored here.)&n;&t;&t;&t; */
 id|verify_checksum
 c_func
 (paren
 id|strip_info
 )paren
 suffix:semicolon
-multiline_comment|/*&n;             * If the radio has structured messages but we don&squot;t yet have all our information about it,&n;             * we should do probes without delay, until we have gathered all the information&n;             */
+multiline_comment|/*&n;&t;&t;&t; * If the radio has structured messages but we don&squot;t yet have all our information about it,&n;&t;&t;&t; * we should do probes without delay, until we have gathered all the information&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7364,8 +7192,8 @@ comma
 l_string|&quot;007&quot;
 )paren
 )paren
-multiline_comment|/* Body too big */
 (brace
+multiline_comment|/* Body too big */
 id|RecvErr
 c_func
 (paren
@@ -7398,8 +7226,8 @@ comma
 l_string|&quot;008&quot;
 )paren
 )paren
-multiline_comment|/* Bad character in name */
 (brace
+multiline_comment|/* Bad character in name */
 id|RecvErr
 c_func
 (paren
@@ -7929,7 +7757,9 @@ id|dev_base_lock
 )paren
 suffix:semicolon
 r_return
+(paren
 id|dev
+)paren
 suffix:semicolon
 )brace
 id|dev
@@ -7946,8 +7776,10 @@ id|dev_base_lock
 suffix:semicolon
 )brace
 r_return
+(paren
 op_amp
 id|strip_info-&gt;dev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send one completely decapsulated datagram to the next layer.&n; */
@@ -8205,7 +8037,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte IP packet&bslash;n&quot;, strip_info-&gt;dev.name, packetlen);*/
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte IP packet&bslash;n&quot;, strip_info-&gt;dev.name, packetlen); */
 multiline_comment|/* Decode remainder of the IP packet */
 id|ptr
 op_assign
@@ -8390,7 +8222,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte ARP %s&bslash;n&quot;,&n;        strip_info-&gt;dev.name, packetlen,&n;        ntohs(arphdr-&gt;ar_op) == ARPOP_REQUEST ? &quot;request&quot; : &quot;reply&quot;);*/
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte ARP %s&bslash;n&quot;,&n;&t;   strip_info-&gt;dev.name, packetlen,&n;&t;   ntohs(arphdr-&gt;ar_op) == ARPOP_REQUEST ? &quot;request&quot; : &quot;reply&quot;); */
 multiline_comment|/* Decode remainder of the ARP packet */
 id|ptr
 op_assign
@@ -8657,7 +8489,7 @@ suffix:semicolon
 id|MetricomKey
 id|key
 suffix:semicolon
-multiline_comment|/*HexDump(&quot;Receiving&quot;, strip_info, ptr, end);*/
+multiline_comment|/*HexDump(&quot;Receiving&quot;, strip_info, ptr, end); */
 multiline_comment|/* Check for start of address marker, and then skip over it */
 r_if
 c_cond
@@ -8887,8 +8719,8 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got packet from &bslash;&quot;%s&bslash;&quot;.&bslash;n&quot;, strip_info-&gt;dev.name, sendername);*/
-multiline_comment|/*&n;     * Fill in (pseudo) source and destination addresses in the packet.&n;     * We assume that the destination address was our address (the radio does not&n;     * tell us this). If the radio supplies a source address, then we use it.&n;     */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got packet from &bslash;&quot;%s&bslash;&quot;.&bslash;n&quot;, strip_info-&gt;dev.name, sendername); */
+multiline_comment|/*&n;&t; * Fill in (pseudo) source and destination addresses in the packet.&n;&t; * We assume that the destination address was our address (the radio does not&n;&t; * tell us this). If the radio supplies a source address, then we use it.&n;&t; */
 id|header.dst_addr
 op_assign
 id|strip_info-&gt;true_dev_addr
@@ -9098,6 +8930,7 @@ op_eq
 id|SIP0Key.l
 )paren
 id|process_IP_packet
+c_func
 (paren
 id|strip_info
 comma
@@ -9118,6 +8951,7 @@ op_eq
 id|ARP0Key.l
 )paren
 id|process_ARP_packet
+c_func
 (paren
 id|strip_info
 comma
@@ -9156,6 +8990,7 @@ op_eq
 id|ACK_Key.l
 )paren
 id|process_ACK
+c_func
 (paren
 id|strip_info
 comma
@@ -9173,6 +9008,7 @@ op_eq
 id|INF_Key.l
 )paren
 id|process_Info
+c_func
 (paren
 id|strip_info
 comma
@@ -9190,6 +9026,7 @@ op_eq
 id|ERR_Key.l
 )paren
 id|RecvErr_Message
+c_func
 (paren
 id|strip_info
 comma
@@ -9216,9 +9053,9 @@ macro_line|#endif
 DECL|macro|TTYERROR
 mdefine_line|#define TTYERROR(X) ((X) == TTY_BREAK   ? &quot;Break&quot;            : &bslash;&n;                     (X) == TTY_FRAME   ? &quot;Framing Error&quot;    : &bslash;&n;                     (X) == TTY_PARITY  ? &quot;Parity Error&quot;     : &bslash;&n;                     (X) == TTY_OVERRUN ? &quot;Hardware Overrun&quot; : &quot;Unknown Error&quot;)
 multiline_comment|/*&n; * Handle the &squot;receiver data ready&squot; interrupt.&n; * This function is called by the &squot;tty_io&squot; module in the kernel when&n; * a block of STRIP data has been received, which can now be decapsulated&n; * and sent on to some IP layer for further processing.&n; */
+DECL|function|strip_receive_buf
 r_static
 r_void
-DECL|function|strip_receive_buf
 id|strip_receive_buf
 c_func
 (paren
@@ -9263,6 +9100,10 @@ id|cp
 op_plus
 id|count
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9282,6 +9123,15 @@ id|strip_info-&gt;dev
 )paren
 )paren
 r_return
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|strip_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* Argh! mtu change time! - costs us the packet part received at the change */
 r_if
@@ -9378,8 +9228,8 @@ op_logical_and
 op_logical_neg
 id|strip_info-&gt;discard
 )paren
-multiline_comment|/* If there&squot;s a serial error, record it */
 (brace
+multiline_comment|/* If there&squot;s a serial error, record it */
 multiline_comment|/* If we have some characters in the buffer, discard them */
 id|strip_info-&gt;discard
 op_assign
@@ -9411,8 +9261,8 @@ id|cp
 op_eq
 l_int|0x0D
 )paren
-multiline_comment|/* If end of packet, decide what to do with it */
 (brace
+multiline_comment|/* If end of packet, decide what to do with it */
 r_if
 c_cond
 (paren
@@ -9436,7 +9286,9 @@ id|cp
 op_minus
 l_int|1
 comma
-id|strip_info-&gt;discard
+id|strip_info
+op_member_access_from_pointer
+id|discard
 ques
 c_cond
 l_string|&quot; (discarded)&quot;
@@ -9514,7 +9366,9 @@ id|strip_info-&gt;sx_size
 )paren
 id|strip_info-&gt;sx_buff
 (braket
-id|strip_info-&gt;sx_count
+id|strip_info
+op_member_access_from_pointer
+id|sx_count
 )braket
 op_assign
 op_star
@@ -9529,6 +9383,15 @@ id|cp
 op_increment
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|strip_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
 multiline_comment|/* General control routines&t;&t;&t;&t;&t;&t;*/
@@ -9548,7 +9411,7 @@ op_star
 id|addr
 )paren
 (brace
-multiline_comment|/*&n;     * We&squot;re using a manually specified address if the address is set&n;     * to anything other than all ones. Setting the address to all ones&n;     * disables manual mode and goes back to automatic address determination&n;     * (tracking the true address that the radio has).&n;     */
+multiline_comment|/*&n;&t; * We&squot;re using a manually specified address if the address is set&n;&t; * to anything other than all ones. Setting the address to all ones&n;&t; * disables manual mode and goes back to automatic address determination&n;&t; * (tracking the true address that the radio has).&n;&t; */
 id|strip_info-&gt;manual_dev_addr
 op_assign
 id|memcmp
@@ -9732,8 +9595,10 @@ op_assign
 id|strip_info-&gt;rx_over_errors
 suffix:semicolon
 r_return
+(paren
 op_amp
 id|stats
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
@@ -9766,15 +9631,6 @@ op_star
 id|dev-&gt;priv
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_struct
-id|in_device
-op_star
-id|in_dev
-op_assign
-id|dev-&gt;ip_ptr
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9783,8 +9639,10 @@ op_eq
 l_int|NULL
 )paren
 r_return
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -9797,8 +9655,10 @@ id|strip_info
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|ENOMEM
+)paren
 suffix:semicolon
 id|strip_info-&gt;sx_count
 op_assign
@@ -9832,24 +9692,6 @@ c_func
 id|strip_info-&gt;tty
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;     * Needed because address &squot;0&squot; is special&n;     *&n;     * --ANK Needed it or not needed, it does not matter at all.&n;     *&t;     Make it at user level, guys.&n;     */
-r_if
-c_cond
-(paren
-id|in_dev-&gt;ifa_list-&gt;ifa_address
-op_eq
-l_int|0
-)paren
-id|in_dev-&gt;ifa_list-&gt;ifa_address
-op_assign
-id|ntohl
-c_func
-(paren
-l_int|0xC0A80001
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -9887,7 +9729,9 @@ id|dev
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close the low-level part of the STRIP channel. Easy!&n; */
@@ -9943,7 +9787,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Free all STRIP frame buffers.&n;     */
+multiline_comment|/*&n;&t; * Free all STRIP frame buffers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10019,7 +9863,7 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/*&n;     * Finish setting up the DEVICE info.&n;     */
+multiline_comment|/*&n;&t; * Finish setting up the DEVICE info.&n;&t; */
 id|dev-&gt;trans_start
 op_assign
 l_int|0
@@ -10053,7 +9897,7 @@ r_sizeof
 id|STRIP_Header
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     *  dev-&gt;priv             Already holds a pointer to our struct strip&n;     */
+multiline_comment|/*&n;&t; *  dev-&gt;priv             Already holds a pointer to our struct strip&n;&t; */
 op_star
 (paren
 id|MetricomAddress
@@ -10078,7 +9922,7 @@ r_sizeof
 id|MetricomAddress
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Pointers to interface service routines.&n;     */
+multiline_comment|/*&n;&t; * Pointers to interface service routines.&n;&t; */
 id|dev-&gt;open
 op_assign
 id|strip_open_low
@@ -10209,7 +10053,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* If no more memory, return */
-multiline_comment|/*&n;     * Clear the allocated memory&n;     */
+multiline_comment|/*&n;&t; * Clear the allocated memory&n;&t; */
 id|memset
 c_func
 (paren
@@ -10224,7 +10068,7 @@ id|strip
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Search the list to find where to put our new entry&n;     * (and in the process decide what channel number it is&n;     * going to be)&n;     */
+multiline_comment|/*&n;&t; * Search the list to find where to put our new entry&n;&t; * (and in the process decide what channel number it is&n;&t; * going to be)&n;&t; */
 r_while
 c_loop
 (paren
@@ -10255,7 +10099,7 @@ op_member_access_from_pointer
 id|next
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Fill in the link pointers&n;     */
+multiline_comment|/*&n;&t; * Fill in the link pointers&n;&t; */
 id|strip_info-&gt;next
 op_assign
 op_star
@@ -10383,7 +10227,7 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
-multiline_comment|/*&n;     * First make sure we&squot;re not already connected.&n;     */
+multiline_comment|/*&n;&t; * First make sure we&squot;re not already connected.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10397,7 +10241,7 @@ r_return
 op_minus
 id|EEXIST
 suffix:semicolon
-multiline_comment|/*&n;     * OK.  Find a free STRIP channel to use.&n;     */
+multiline_comment|/*&n;&t; * OK.  Find a free STRIP channel to use.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10416,7 +10260,7 @@ r_return
 op_minus
 id|ENFILE
 suffix:semicolon
-multiline_comment|/*&n;     * Register our newly created device so it can be ifconfig&squot;d&n;     * strip_dev_init() will be called as a side-effect&n;     */
+multiline_comment|/*&n;&t; * Register our newly created device so it can be ifconfig&squot;d&n;&t; * strip_dev_init() will be called as a side-effect&n;&t; */
 r_if
 c_cond
 (paren
@@ -10482,13 +10326,13 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Restore default settings&n;     */
+multiline_comment|/*&n;&t; * Restore default settings&n;&t; */
 id|strip_info-&gt;dev.type
 op_assign
 id|ARPHRD_METRICOM
 suffix:semicolon
 multiline_comment|/* dtang */
-multiline_comment|/*&n;     * Set tty options&n;     */
+multiline_comment|/*&n;&t; * Set tty options&n;&t; */
 id|tty-&gt;termios-&gt;c_iflag
 op_or_assign
 id|IGNBRK
@@ -10518,9 +10362,11 @@ comma
 id|strip_info-&gt;dev.name
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Done.  We have linked the TTY line to a channel.&n;     */
+multiline_comment|/*&n;&t; * Done.  We have linked the TTY line to a channel.&n;&t; */
 r_return
+(paren
 id|strip_info-&gt;dev.base_addr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close down a STRIP channel.&n; * This means flushing out any pending queues, and then restoring the&n; * TTY line discipline to what it was before it got hooked to STRIP&n; * (which usually is TTY again).&n; */
@@ -10548,7 +10394,7 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
-multiline_comment|/*&n;     * First make sure we&squot;re connected.&n;     */
+multiline_comment|/*&n;&t; * First make sure we&squot;re connected.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10637,7 +10483,7 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
-multiline_comment|/*&n;     * First make sure we&squot;re connected.&n;     */
+multiline_comment|/*&n;&t; * First make sure we&squot;re connected.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10661,7 +10507,9 @@ id|cmd
 r_case
 id|SIOCGIFNAME
 suffix:colon
-r_return
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -10681,13 +10529,13 @@ id|strip_info-&gt;dev.name
 op_plus
 l_int|1
 )paren
-ques
-c_cond
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -10697,16 +10545,10 @@ suffix:colon
 id|MetricomAddress
 id|addr
 suffix:semicolon
-id|printk
-c_func
+singleline_comment|//printk(KERN_INFO &quot;%s: SIOCSIFHWADDR&bslash;n&quot;, strip_info-&gt;dev.name);
+r_if
+c_cond
 (paren
-id|KERN_INFO
-l_string|&quot;%s: SIOCSIFHWADDR&bslash;n&quot;
-comma
-id|strip_info-&gt;dev.name
-)paren
-suffix:semicolon
-r_return
 id|copy_from_user
 c_func
 (paren
@@ -10724,11 +10566,14 @@ r_sizeof
 id|MetricomAddress
 )paren
 )paren
-ques
-c_cond
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-suffix:colon
+suffix:semicolon
+)brace
+r_return
 id|set_mac_address
 c_func
 (paren
@@ -10738,10 +10583,8 @@ op_amp
 id|addr
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-multiline_comment|/*&n;         * Allow stty to read, but not set, the serial port&n;         */
+multiline_comment|/*&n;&t; * Allow stty to read, but not set, the serial port&n;&t; */
 r_case
 id|TCGETS
 suffix:colon
@@ -10781,6 +10624,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
 multiline_comment|/* Initialization&t;&t;&t;&t;&t;&t;&t;*/
@@ -10866,7 +10712,14 @@ comma
 id|StripVersion
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Fill in our line protocol discipline, and register it&n;     */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|strip_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Fill in our line protocol discipline, and register it&n;&t; */
 r_if
 c_cond
 (paren
@@ -10892,7 +10745,7 @@ comma
 id|status
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Register the status file with /proc&n;     */
+multiline_comment|/*&n;&t; * Register the status file with /proc&n;&t; */
 id|proc_net_create
 c_func
 (paren
