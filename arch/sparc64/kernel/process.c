@@ -182,7 +182,6 @@ id|reboot_command
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_extern
 r_void
 (paren
@@ -197,7 +196,6 @@ r_extern
 r_int
 id|serial_console
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 (paren
@@ -216,7 +214,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -230,7 +227,6 @@ id|prom_palette
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -261,7 +257,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -276,7 +271,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -332,7 +326,6 @@ id|p
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -346,7 +339,6 @@ id|prom_palette
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

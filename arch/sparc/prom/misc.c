@@ -163,7 +163,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* We want to do this more nicely some day. */
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_extern
 r_void
 (paren
@@ -178,7 +177,6 @@ r_extern
 r_int
 id|serial_console
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Drop into the prom, with the chance to continue with the &squot;go&squot;&n; * prom command.&n; */
 r_void
 DECL|function|prom_cmdline
@@ -221,7 +219,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -237,7 +234,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|install_obp_ticker
 c_func
 (paren
@@ -284,7 +280,6 @@ macro_line|#ifdef CONFIG_SUN_AUXIO
 id|TURN_ON_LED
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -300,7 +295,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 multiline_comment|/* Drop into the prom, but completely terminate the program.&n; * No chance of continuing.&n; */
 r_void

@@ -79,7 +79,6 @@ multiline_comment|/* orig-video-points */
 )brace
 suffix:semicolon
 multiline_comment|/* Typing sync at the prom prompt calls the function pointed to by&n; * the sync callback which I set to the following function.&n; * This should sync all filesystems and return, for now it just&n; * prints out pretty messages and returns.&n; */
-macro_line|#if CONFIG_SUN_CONSOLE
 DECL|variable|prom_palette
 r_void
 (paren
@@ -90,7 +89,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|prom_keyboard
 r_void
 (paren
@@ -1275,7 +1273,6 @@ DECL|macro|BOOTME_SINGLE
 mdefine_line|#define BOOTME_SINGLE 0x2
 DECL|macro|BOOTME_KGDB
 mdefine_line|#define BOOTME_KGDB   0x4
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 DECL|variable|__initdata
 r_static
 r_int
@@ -1284,7 +1281,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Exported for mm/init.c:paging_init. */
 DECL|variable|cmdline_memory_size
 r_int
@@ -1621,7 +1617,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -1755,7 +1750,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif
 r_if
 c_cond
 (paren

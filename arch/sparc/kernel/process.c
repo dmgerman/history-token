@@ -376,7 +376,6 @@ r_extern
 r_int
 id|serial_console
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_extern
 r_void
 (paren
@@ -387,7 +386,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -412,7 +410,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -426,7 +423,6 @@ id|prom_palette
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 id|prom_halt
 c_func
 (paren
@@ -488,7 +484,6 @@ id|p
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -502,7 +497,6 @@ id|prom_palette
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -98,7 +98,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SUN_CONSOLE
 DECL|variable|prom_palette
 r_void
 (paren
@@ -109,7 +108,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 id|asmlinkage
 r_void
 id|sys_sync
@@ -170,7 +168,6 @@ id|trapbase
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -182,7 +179,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 id|prom_printf
 c_func
 (paren
@@ -277,7 +273,6 @@ DECL|macro|BOOTME_KGDBB
 mdefine_line|#define BOOTME_KGDBB  0x8
 DECL|macro|BOOTME_KGDB
 mdefine_line|#define BOOTME_KGDB   0xc
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 DECL|variable|__initdata
 r_static
 r_int
@@ -286,7 +281,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Exported for mm/init.c:paging_init. */
 DECL|variable|__initdata
 r_int
@@ -682,7 +676,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -816,7 +809,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif
 r_if
 c_cond
 (paren
