@@ -701,13 +701,9 @@ DECL|member|i_size
 id|u32
 id|i_size
 suffix:semicolon
-r_union
-(brace
-multiline_comment|/* directories, regular files, ... */
-DECL|member|i_addb
-r_int
-r_char
-id|i_addb
+DECL|member|i_data
+id|u8
+id|i_data
 (braket
 l_int|3
 op_star
@@ -720,40 +716,11 @@ l_int|1
 op_plus
 l_int|1
 )paren
-op_plus
-l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* zone numbers: max. 10 data blocks,&n;&t;&t;&t;&t;&t;      * then 1 indirection block,&n;&t;&t;&t;&t;&t;      * then 1 double indirection block,&n;&t;&t;&t;&t;&t;      * then 1 triple indirection block.&n;&t;&t;&t;&t;&t;      * Then maybe a &quot;file generation number&quot; ??&n;&t;&t;&t;&t;&t;      */
-multiline_comment|/* named pipes on Coherent */
-r_struct
-(brace
-DECL|member|p_addp
-r_char
-id|p_addp
-(braket
-l_int|30
-)braket
-suffix:semicolon
-DECL|member|p_pnc
-id|s16
-id|p_pnc
-suffix:semicolon
-DECL|member|p_prx
-id|s16
-id|p_prx
-suffix:semicolon
-DECL|member|p_pwx
-id|s16
-id|p_pwx
-suffix:semicolon
-DECL|member|i_p
-)brace
-id|i_p
-suffix:semicolon
-DECL|member|i_a
-)brace
-id|i_a
+DECL|member|i_gen
+id|u8
+id|i_gen
 suffix:semicolon
 DECL|member|i_atime
 id|u32
@@ -772,8 +739,6 @@ suffix:semicolon
 multiline_comment|/* time of creation */
 )brace
 suffix:semicolon
-multiline_comment|/* The number of inodes per block is&n;   sb-&gt;sv_inodes_per_block = block_size / sizeof(struct sysv_inode) */
-multiline_comment|/* The number of indirect pointers per block is&n;   sb-&gt;sv_ind_per_block = block_size / sizeof(u32) */
 multiline_comment|/* SystemV/Coherent directory entry on disk */
 DECL|macro|SYSV_NAMELEN
 mdefine_line|#define SYSV_NAMELEN&t;14&t;/* max size of name in struct sysv_dir_entry */

@@ -942,7 +942,7 @@ c_func
 id|sbi
 comma
 op_amp
-id|raw_inode-&gt;i_a.i_addb
+id|raw_inode-&gt;i_data
 (braket
 l_int|3
 op_star
@@ -950,8 +950,7 @@ id|block
 )braket
 comma
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 op_amp
@@ -1289,8 +1288,7 @@ c_func
 id|sbi
 comma
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 op_amp
@@ -1300,7 +1298,7 @@ id|block
 )braket
 comma
 op_amp
-id|raw_inode-&gt;i_a.i_addb
+id|raw_inode-&gt;i_data
 (braket
 l_int|3
 op_star
