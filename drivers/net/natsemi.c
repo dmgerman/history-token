@@ -8469,6 +8469,17 @@ op_assign
 id|ETHTOOL_GLINK
 )brace
 suffix:semicolon
+multiline_comment|/* LSTATUS is latched low until a read - so read twice */
+id|mdio_read
+c_func
+(paren
+id|dev
+comma
+l_int|1
+comma
+id|MII_BMSR
+)paren
+suffix:semicolon
 id|edata.data
 op_assign
 (paren
