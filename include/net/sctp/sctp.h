@@ -393,7 +393,8 @@ r_union
 id|sctp_addr
 op_star
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 )paren

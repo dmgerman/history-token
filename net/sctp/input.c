@@ -757,7 +757,8 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -894,7 +895,8 @@ id|asoc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon

@@ -2431,7 +2431,7 @@ r_struct
 id|sctp_transport
 op_star
 comma
-id|__u8
+id|sctp_retransmit_reason_t
 )paren
 suffix:semicolon
 r_void

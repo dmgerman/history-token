@@ -2609,7 +2609,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 suffix:semicolon
@@ -2648,7 +2649,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
