@@ -18,6 +18,14 @@ id|mode
 )paren
 suffix:semicolon
 r_int
+id|agp_generic_agp_3_0_enable
+c_func
+(paren
+id|u32
+id|mode
+)paren
+suffix:semicolon
+r_int
 id|agp_generic_create_gatt_table
 c_func
 (paren
@@ -882,6 +890,9 @@ DECL|macro|VIA_APSIZE
 mdefine_line|#define VIA_APSIZE&t;0x84
 DECL|macro|VIA_ATTBASE
 mdefine_line|#define VIA_ATTBASE&t;0x88
+multiline_comment|/* VIA KT400 */
+DECL|macro|VIA_AGPSEL
+mdefine_line|#define VIA_AGPSEL&t;0xfd
 multiline_comment|/* SiS registers */
 DECL|macro|SIS_APBASE
 mdefine_line|#define SIS_APBASE&t;0x10
