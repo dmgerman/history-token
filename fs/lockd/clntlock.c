@@ -543,6 +543,8 @@ id|host
 comma
 id|CLONE_KERNEL
 )paren
+OL
+l_int|0
 )paren
 id|module_put
 c_func

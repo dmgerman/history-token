@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/mm/swap.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; */
 multiline_comment|/*&n; * This file contains the default values for the opereation of the&n; * Linux VM subsystem. Fine-tuning documentation can be found in&n; * linux/Documentation/sysctl/vm.txt.&n; * Started 18.12.91&n; * Swap aging added 23.2.95, Stephen Tweedie.&n; * Buffermem limits added 12.3.98, Rik van Riel.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -10,6 +11,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page() */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/* How many pages do we try to swap or page in/out together? */
 DECL|variable|page_cluster
@@ -1522,6 +1525,102 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|vm_acct_memory
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
+DECL|function|percpu_counter_mod
+r_void
+id|percpu_counter_mod
+c_func
+(paren
+r_struct
+id|percpu_counter
+op_star
+id|fbc
+comma
+r_int
+id|amount
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|count
+op_assign
+id|fbc-&gt;counters
+(braket
+id|cpu
+)braket
+dot
+id|count
+suffix:semicolon
+id|count
+op_add_assign
+id|amount
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_ge
+id|FBC_BATCH
+op_logical_or
+id|count
+op_le
+op_minus
+id|FBC_BATCH
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|fbc-&gt;lock
+)paren
+suffix:semicolon
+id|fbc-&gt;count
+op_add_assign
+id|count
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|fbc-&gt;lock
+)paren
+suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|fbc-&gt;counters
+(braket
+id|cpu
+)braket
+dot
+id|count
+op_assign
+id|count
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|percpu_counter_mod
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|percpu_counter_mod
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1920,7 +1920,13 @@ id|fail
 suffix:semicolon
 id|ino
 op_assign
-id|ext3_find_first_zero_bit
+l_int|0
+suffix:semicolon
+id|repeat_in_this_group
+suffix:colon
+id|ino
+op_assign
+id|ext3_find_next_zero_bit
 c_func
 (paren
 (paren
@@ -1935,6 +1941,8 @@ c_func
 (paren
 id|sb
 )paren
+comma
+id|ino
 )paren
 suffix:semicolon
 r_if
@@ -2045,6 +2053,21 @@ id|bitmap_bh
 comma
 id|credits
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|ino
+OL
+id|EXT3_INODES_PER_GROUP
+c_func
+(paren
+id|sb
+)paren
+)paren
+r_goto
+id|repeat_in_this_group
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * This case is possible in concurrent environment.  It is very&n;&t;&t; * rare.  We cannot repeat the find_group_xxx() call because&n;&t;&t; * that will simply return the same blockgroup, because the&n;&t;&t; * group descriptor metadata has not yet been updated.&n;&t;&t; * So we just go onto the next blockgroup.&n;&t;&t; */

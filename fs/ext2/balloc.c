@@ -1404,7 +1404,7 @@ id|ret_block
 suffix:semicolon
 multiline_comment|/* j */
 r_int
-id|bit
+id|group_idx
 suffix:semicolon
 multiline_comment|/* k */
 r_int
@@ -1463,6 +1463,9 @@ comma
 id|es_alloc
 comma
 id|dq_alloc
+suffix:semicolon
+r_int
+id|nr_scanned_groups
 suffix:semicolon
 r_if
 c_cond
@@ -1763,23 +1766,27 @@ id|group_no
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now search the rest of the groups.  We assume that &n;&t; * i and desc correctly point to the last group visited.&n;&t; */
+id|nr_scanned_groups
+op_assign
+l_int|0
+suffix:semicolon
 id|retry
 suffix:colon
 r_for
 c_loop
 (paren
-id|bit
+id|group_idx
 op_assign
 l_int|0
 suffix:semicolon
 op_logical_neg
 id|group_alloc
 op_logical_and
-id|bit
+id|group_idx
 OL
 id|sbi-&gt;s_groups_count
 suffix:semicolon
-id|bit
+id|group_idx
 op_increment
 )paren
 (brace
@@ -1906,7 +1913,49 @@ OL
 l_int|0
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * If a free block counter is corrupted we can loop inifintely.&n;&t;&t; * Detect that here.&n;&t;&t; */
+id|nr_scanned_groups
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr_scanned_groups
+OG
+l_int|2
+op_star
+id|sbi-&gt;s_groups_count
+)paren
+(brace
+id|ext2_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;ext2_new_block&quot;
+comma
+l_string|&quot;corrupted free blocks counters&quot;
+)paren
+suffix:semicolon
+r_goto
+id|io_error
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Someone else grabbed the last free block in this blockgroup&n;&t;&t; * before us.  Retry the scan.&n;&t;&t; */
+id|group_release_blocks
+c_func
+(paren
+id|sb
+comma
+id|group_no
+comma
+id|desc
+comma
+id|gdp_bh
+comma
+id|group_alloc
+)paren
+suffix:semicolon
 id|group_alloc
 op_assign
 l_int|0

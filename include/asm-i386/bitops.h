@@ -546,7 +546,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|constant_test_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|constant_test_bit
 c_func
@@ -575,16 +575,7 @@ l_int|31
 )paren
 op_amp
 (paren
-(paren
-(paren
-r_const
-r_volatile
-r_int
-r_int
-op_star
-)paren
 id|addr
-)paren
 (braket
 id|nr
 op_rshift

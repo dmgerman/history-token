@@ -876,6 +876,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1373,6 +1383,16 @@ id|i
 suffix:semicolon
 id|mm_segment_t
 id|old_fs
+suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
 suffix:semicolon
 multiline_comment|/* Adjust the inputted reg1 to point to the first rt signal frame */
 id|rt_sf

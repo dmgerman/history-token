@@ -333,12 +333,8 @@ macro_line|#ifndef CONFIG_NUMA
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 op_logical_neg
-id|cpu_has_tsc
-)paren
+id|use_tsc
 )paren
 macro_line|#endif
 r_return

@@ -1673,27 +1673,15 @@ l_int|4
 id|printk
 c_func
 (paren
-l_string|&quot;SMP mptable: bad signature [%c%c%c%c]!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;SMP mptable: bad signature [0x%x]!&bslash;n&quot;
 comma
+op_star
+(paren
+id|u32
+op_star
+)paren
 id|mpc-&gt;mpc_signature
-(braket
-l_int|0
-)braket
-comma
-id|mpc-&gt;mpc_signature
-(braket
-l_int|1
-)braket
-comma
-id|mpc-&gt;mpc_signature
-(braket
-l_int|2
-)braket
-comma
-id|mpc-&gt;mpc_signature
-(braket
-l_int|3
-)braket
 )paren
 suffix:semicolon
 r_return
@@ -1720,6 +1708,7 @@ id|mpc-&gt;mpc_length
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SMP mptable: checksum error!&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -872,6 +872,16 @@ suffix:semicolon
 id|stack_t
 id|st
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1626,16 +1636,6 @@ r_case
 op_minus
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
-multiline_comment|/* fallthrough */
 r_case
 op_minus
 id|ERESTARTNOHAND

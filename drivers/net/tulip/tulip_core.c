@@ -5644,6 +5644,7 @@ comma
 id|hash_table
 )paren
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -5688,7 +5689,6 @@ op_star
 l_int|6
 )braket
 suffix:semicolon
-)brace
 multiline_comment|/* Fill the final entry with our physical address. */
 id|eaddrs
 op_assign
@@ -6409,6 +6409,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|u32
+id|tx_flags
+op_assign
+l_int|0x08000000
+op_or
+l_int|192
+suffix:semicolon
 multiline_comment|/* Note that only the low-address shortword of setup_frame is valid!&n;&t;&t;   The values are doubled for big-endian architectures. */
 r_if
 c_cond
@@ -6426,6 +6433,12 @@ id|tp-&gt;setup_frame
 comma
 id|dev
 )paren
+suffix:semicolon
+id|tx_flags
+op_assign
+l_int|0x08400000
+op_or
+l_int|192
 suffix:semicolon
 )brace
 r_else
@@ -6464,13 +6477,6 @@ multiline_comment|/* Same setup recently queued, we need not add it. */
 )brace
 r_else
 (brace
-id|u32
-id|tx_flags
-op_assign
-l_int|0x08000000
-op_or
-l_int|192
-suffix:semicolon
 r_int
 r_int
 id|entry
