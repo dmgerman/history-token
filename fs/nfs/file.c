@@ -1523,6 +1523,11 @@ comma
 id|fl
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rpc_clnt_sigunmask
 c_func
 (paren
