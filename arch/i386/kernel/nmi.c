@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -520,7 +521,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/device.h&gt;
 DECL|variable|nmi_pm_active
 r_static
 r_int
