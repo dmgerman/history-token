@@ -2407,5 +2407,12 @@ id|IOSAPIC_LEVEL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_register_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_register_irq
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BOOT */
 eof
