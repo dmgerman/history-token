@@ -5135,6 +5135,22 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|devfs_mk_symlink
+c_func
+(paren
+l_int|NULL
+comma
+l_string|&quot;ide&quot;
+comma
+id|DEVFS_FL_DEFAULT
+comma
+l_string|&quot;ata&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Because most of the ATA adapters represent the timings in unit of&n;&t; * bus clocks, and there is no known reliable way to detect the bus&n;&t; * clock frequency, we assume 50 MHz for non-PCI (VLB, EISA) and 33 MHz&n;&t; * for PCI based systems. Since assuming only hurts performance and not&n;&t; * stability, this is OK. The user can change this on the command line&n;&t; * by using the &quot;idebus=XX&quot; parameter. While the system_bus_speed&n;&t; * variable is in kHz units, we accept both MHz and kHz entry on the&n;&t; * command line for backward compatibility.&n;&t; */
 id|system_bus_speed
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 2002&t;&t;Marcin Dalecki &lt;martin@dalecki.de&gt;&n; *  Copyright (C) 2000&t;&t;Michael Cornwell &lt;cornwell@acm.org&gt;&n; *  Copyright (C) 2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  Copyright (C) 2002&t;&t;Marcin Dalecki &lt;martin@dalecki.de&gt;&n; *  Copyright (C) 2000&t;&t;Michael Cornwell &lt;cornwell@acm.org&gt;&n; *  Copyright (C) 2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -590,11 +590,6 @@ op_star
 id|drive
 )paren
 (brace
-id|byte
-id|stat
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -616,6 +611,7 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FIXME: promote this to the general status read method perhaps */
 macro_line|#ifdef CONFIG_IDEPCI_SHARE_IRQ
 multiline_comment|/*&n;&t; * We do a passive status test under shared PCI interrupts on&n;&t; * cards that truly share the ATA side interrupt, but may also share&n;&t; * an interrupt with another pci card/device.  We make no assumptions&n;&t; * about possible isa-pnp and pci-pnp issues yet.&n;&t; */
 r_if
@@ -623,7 +619,7 @@ c_cond
 (paren
 id|IDE_CONTROL_REG
 )paren
-id|stat
+id|drive-&gt;status
 op_assign
 id|GET_ALTSTAT
 c_func
@@ -632,18 +628,21 @@ c_func
 suffix:semicolon
 r_else
 macro_line|#endif
-id|stat
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Note: this may clear a pending IRQ!! */
 r_if
 c_cond
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 id|BUSY_STAT
 )paren
@@ -796,13 +795,8 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
+r_int
+id|ok
 suffix:semicolon
 r_int
 id|mcount
@@ -812,10 +806,25 @@ suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
-multiline_comment|/*&n;&t; * (ks/hs): Handle last IRQ on multi-sector transfer,&n;&t; * occurs after all data was sent in this chunk&n;&t; */
+multiline_comment|/*&n;&t; * FIXME: the drive-&gt;status checks here seem to be messy.&n;&t; *&n;&t; * (ks/hs): Handle last IRQ on multi-sector transfer,&n;&t; * occurs after all data was sent in this chunk&n;&t; */
+id|ok
+op_assign
+id|ata_status
+c_func
+(paren
+id|drive
+comma
+id|DATA_READY
+comma
+id|BAD_R_STAT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ok
+op_logical_or
 op_logical_neg
 id|rq-&gt;nr_sectors
 )paren
@@ -823,7 +832,7 @@ id|rq-&gt;nr_sectors
 r_if
 c_cond
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 (paren
 id|ERR_STAT
@@ -841,15 +850,23 @@ id|drive
 comma
 id|rq
 comma
-l_string|&quot;task_mulout_intr&quot;
+id|__FUNCTION__
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 r_return
 id|startstop
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rq-&gt;nr_sectors
+)paren
+(brace
 id|__ide_end_request
 c_func
 (paren
@@ -874,47 +891,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
-c_func
-(paren
-id|stat
-comma
-id|DATA_READY
-comma
-id|BAD_R_STAT
-)paren
+id|ok
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|stat
-op_amp
-(paren
-id|ERR_STAT
-op_or
-id|DRQ_STAT
-)paren
-)paren
-(brace
-id|startstop
-op_assign
-id|ide_error
-c_func
-(paren
-id|drive
-comma
-id|rq
-comma
-l_string|&quot;task_mulout_intr&quot;
-comma
-id|stat
-)paren
-suffix:semicolon
-r_return
-id|startstop
-suffix:semicolon
-)brace
 multiline_comment|/* no data yet, so wait for another interrupt */
 r_if
 c_cond
@@ -1226,14 +1205,10 @@ id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 multiline_comment|/* clear nIEN */
-id|SELECT_MASK
+id|ata_mask
 c_func
 (paren
-id|drive-&gt;channel
-comma
 id|drive
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1528,22 +1503,14 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
+id|drive
 comma
 id|READY_STAT
 comma
@@ -1560,7 +1527,7 @@ id|rq
 comma
 l_string|&quot;recal_intr&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 r_return
@@ -1584,9 +1551,6 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-suffix:semicolon
 r_struct
 id|ata_taskfile
 op_star
@@ -1604,15 +1568,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
+id|drive
 comma
 id|READY_STAT
 comma
@@ -1640,7 +1599,7 @@ id|rq
 comma
 l_string|&quot;task_no_data_intr&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -1655,8 +1614,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|stat
 comma
 id|GET_ERR
 c_func
@@ -1686,14 +1643,6 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
-suffix:semicolon
 r_char
 op_star
 id|pBuf
@@ -1708,10 +1657,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
+id|drive
 comma
 id|DATA_READY
 comma
@@ -1722,7 +1671,7 @@ id|BAD_R_STAT
 r_if
 c_cond
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 (paren
 id|ERR_STAT
@@ -1730,7 +1679,6 @@ op_or
 id|DRQ_STAT
 )paren
 )paren
-(brace
 r_return
 id|ide_error
 c_func
@@ -1739,18 +1687,17 @@ id|drive
 comma
 id|rq
 comma
-l_string|&quot;task_in_intr&quot;
+id|__FUNCTION__
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 id|BUSY_STAT
 )paren
@@ -1784,7 +1731,7 @@ c_func
 (paren
 l_string|&quot;stat: %02x&bslash;n&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 id|pBuf
@@ -1832,7 +1779,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * first segment of the request is complete. note that this does not&n;&t; * necessarily mean that the entire request is done!! this is only&n;&t; * true if ide_end_request() returns 0.&n;&t; */
+multiline_comment|/* First segment of the request is complete. note that this does not&n;&t; * necessarily mean that the entire request is done!! this is only true&n;&t; * if ide_end_request() returns 0.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1847,10 +1794,7 @@ c_func
 (paren
 l_string|&quot;Request Ended stat: %02x&bslash;n&quot;
 comma
-id|GET_STAT
-c_func
-(paren
-)paren
+id|drive-&gt;status
 )paren
 suffix:semicolon
 r_if
@@ -1871,7 +1815,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * still data left to transfer&n;&t; */
+multiline_comment|/* still data left to transfer */
 id|ide_set_handler
 c_func
 (paren
@@ -2058,14 +2002,6 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
-suffix:semicolon
 r_char
 op_star
 id|pBuf
@@ -2080,10 +2016,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
+id|drive
 comma
 id|DRIVE_READY
 comma
@@ -2098,9 +2034,9 @@ id|drive
 comma
 id|rq
 comma
-l_string|&quot;task_out_intr&quot;
+id|__FUNCTION__
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 r_if
@@ -2136,7 +2072,7 @@ l_int|1
 )paren
 op_ne
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 id|DRQ_STAT
 )paren
@@ -2229,9 +2165,6 @@ op_star
 id|rq
 )paren
 (brace
-id|u8
-id|stat
-suffix:semicolon
 r_char
 op_star
 id|pBuf
@@ -2252,15 +2185,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
+id|drive
 comma
 id|DATA_READY
 comma
@@ -2271,7 +2199,7 @@ id|BAD_R_STAT
 r_if
 c_cond
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 (paren
 id|ERR_STAT
@@ -2288,9 +2216,9 @@ id|drive
 comma
 id|rq
 comma
-l_string|&quot;task_mulin_intr&quot;
+id|__FUNCTION__
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace

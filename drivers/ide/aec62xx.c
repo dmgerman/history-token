@@ -21,6 +21,14 @@ DECL|macro|AEC_IDE_ENABLE
 mdefine_line|#define AEC_IDE_ENABLE&t;&t;0x4a
 DECL|macro|AEC_UDMA_OLD
 mdefine_line|#define AEC_UDMA_OLD&t;&t;0x54
+DECL|macro|AEC_BM_STAT_PCH
+mdefine_line|#define AEC_BM_STAT_PCH&t;&t;0x02
+DECL|macro|AEC_BM_STAT_SCH
+mdefine_line|#define AEC_BM_STAT_SCH&t;&t;0x0a
+DECL|macro|AEC_PLLCLK_ATA133
+mdefine_line|#define AEC_PLLCLK_ATA133&t;0x10
+DECL|macro|AEC_CABLEPINS_INPUT
+mdefine_line|#define AEC_CABLEPINS_INPUT&t;0x10
 DECL|variable|aec_cyc2udma
 r_static
 r_int
@@ -565,6 +573,17 @@ op_star
 id|drive
 )paren
 (brace
+id|u32
+id|bmide
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|drive-&gt;channel-&gt;pci_dev
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_int
 id|speed
 suffix:semicolon
@@ -602,11 +621,22 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_ARTOP_ATP865
 suffix:colon
+multiline_comment|/* Can&squot;t use these modes simultaneously,&n;&t;&t;&t;&t;   based on which PLL clock was chosen. */
 id|map
 op_or_assign
-id|XFER_UDMA_100
-op_or
+id|inb
+(paren
+id|bmide
+op_plus
+id|AEC_BM_STAT_PCH
+)paren
+op_amp
+id|AEC_PLLCLK_ATA133
+ques
+c_cond
 id|XFER_UDMA_133
+suffix:colon
+id|XFER_UDMA_100
 suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_ARTOP_ATP860R
@@ -660,7 +690,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * The initialization callback. Here we determine the IDE chip type&n; * and initialize its drive independent registers.&n; */
+multiline_comment|/*&n; * The initialization callback. Here we determine the IDE chip type&n; * and initialize its drive independent registers.&n; * We return the IRQ assigned to the chip.&n; */
 DECL|function|aec62xx_init_chipset
 r_static
 r_int
@@ -675,6 +705,17 @@ op_star
 id|dev
 )paren
 (brace
+id|u32
+id|bmide
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|dev
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_int
 r_char
 id|t
@@ -779,6 +820,23 @@ l_int|0x80
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* switch cable detection pins to input-only. */
+id|outb
+(paren
+id|inb
+(paren
+id|bmide
+op_plus
+id|AEC_BM_STAT_SCH
+)paren
+op_or
+id|AEC_CABLEPINS_INPUT
+comma
+id|bmide
+op_plus
+id|AEC_BM_STAT_SCH
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Print the boot message.&n; */
 id|pci_read_config_byte
@@ -806,7 +864,7 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|dev-&gt;irq
 suffix:semicolon
 )brace
 DECL|function|aec62xx_ata66_check

@@ -1836,8 +1836,6 @@ comma
 id|rq
 comma
 l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -2788,12 +2786,19 @@ suffix:semicolon
 macro_line|# endif
 )brace
 macro_line|#endif
-id|status.all
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
+suffix:semicolon
+id|status.all
+op_assign
+id|drive-&gt;status
 suffix:semicolon
 multiline_comment|/* Clear the interrupt */
 r_if
@@ -6178,12 +6183,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|status.all
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
+suffix:semicolon
+id|status.all
+op_assign
+id|drive-&gt;status
 suffix:semicolon
 id|__restore_flags
 c_func

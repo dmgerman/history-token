@@ -39,8 +39,6 @@ id|rq
 )paren
 (brace
 id|u8
-id|stat
-comma
 id|dma_stat
 suffix:semicolon
 id|dma_stat
@@ -54,15 +52,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
+id|drive
 comma
 id|DRIVE_READY
 comma
@@ -117,7 +110,7 @@ id|rq
 comma
 l_string|&quot;dma_intr&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -499,12 +492,14 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* ERROR */
-id|u8
-id|stat
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -517,7 +512,7 @@ id|rq
 comma
 l_string|&quot;dma_timer_expiry&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace

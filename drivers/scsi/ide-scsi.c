@@ -1117,8 +1117,6 @@ comma
 id|rq
 comma
 l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1394,9 +1392,7 @@ id|host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-id|byte
-id|status
-comma
+id|u8
 id|ireason
 suffix:semicolon
 r_int
@@ -1453,24 +1449,19 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Clear the interrupt */
 r_if
 c_cond
 (paren
+id|ata_status
+c_func
 (paren
-id|status
-op_amp
+id|drive
+comma
+l_int|0
+comma
 id|DRQ_STAT
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* No more interrupts */
@@ -1502,7 +1493,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|status
+id|drive-&gt;status
 op_amp
 id|ERR_STAT
 )paren
@@ -2082,12 +2073,12 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-id|SELECT_DRIVE
+id|ata_select
 c_func
 (paren
-id|drive-&gt;channel
-comma
 id|drive
+comma
+l_int|10
 )paren
 suffix:semicolon
 r_if

@@ -2513,6 +2513,7 @@ DECL|function|etrax_dma_intr
 r_static
 id|ide_startstop_t
 id|etrax_dma_intr
+c_func
 (paren
 r_struct
 id|ata_device
@@ -2529,9 +2530,6 @@ r_int
 id|i
 comma
 id|dma_stat
-suffix:semicolon
-id|byte
-id|stat
 suffix:semicolon
 id|LED_DISK_READ
 c_func
@@ -2559,21 +2557,14 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* get drive status */
 r_if
 c_cond
 (paren
-id|OK_STAT
+id|ata_status
 c_func
 (paren
-id|stat
+id|drive
 comma
 id|DRIVE_READY
 comma
@@ -2639,7 +2630,7 @@ id|drive
 comma
 l_string|&quot;dma_intr&quot;
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace

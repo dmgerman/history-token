@@ -800,7 +800,7 @@ l_int|0xee
 )paren
 suffix:semicolon
 macro_line|#ifdef __sparc_v9__
-multiline_comment|/*&n;&t;&t; * XXX: Reset the device, if we don&squot;t it will not respond&n;&t;&t; *      to SELECT_DRIVE() properly during first probe_hwif().&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XXX: Reset the device, if we don&squot;t it will not respond&n;&t;&t; *      to select properly during first probe.&n;&t;&t; */
 id|timeout
 op_assign
 l_int|10000

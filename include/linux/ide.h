@@ -157,8 +157,6 @@ DECL|macro|GET_ALTSTAT
 mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(IDE_CONTROL_REG)
 DECL|macro|GET_FEAT
 mdefine_line|#define GET_FEAT()&t;&t;IN_BYTE(IDE_NSECTOR_REG)
-DECL|macro|OK_STAT
-mdefine_line|#define OK_STAT(stat,good,bad)&t;(((stat)&amp;((good)|(bad)))==(good))
 DECL|macro|BAD_R_STAT
 mdefine_line|#define BAD_R_STAT&t;&t;(BUSY_STAT   | ERR_STAT)
 DECL|macro|BAD_W_STAT
@@ -202,10 +200,6 @@ DECL|macro|WAIT_CMD
 mdefine_line|#define WAIT_CMD&t;(10*HZ)&t;&t;/* 10sec  - maximum wait for an IRQ to happen */
 DECL|macro|WAIT_MIN_SLEEP
 mdefine_line|#define WAIT_MIN_SLEEP&t;(2*HZ/100)&t;/* 20msec - minimum sleep time */
-DECL|macro|SELECT_DRIVE
-mdefine_line|#define SELECT_DRIVE(channel, drive)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (channel-&gt;selectproc)&t;&t;&t;&t;&bslash;&n;&t;&t;channel-&gt;selectproc(drive);&t;&t;&t;&bslash;&n;&t;OUT_BYTE((drive)-&gt;select.all, channel-&gt;io_ports[IDE_SELECT_OFFSET]); &bslash;&n;}
-DECL|macro|SELECT_MASK
-mdefine_line|#define SELECT_MASK(channel, drive, mask)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (channel-&gt;maskproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;channel-&gt;maskproc(drive,mask);&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
 r_struct
 id|ata_channel
@@ -770,10 +764,15 @@ id|select
 suffix:semicolon
 multiline_comment|/* basic drive/head select reg value */
 DECL|member|ctl
-id|byte
+id|u8
 id|ctl
 suffix:semicolon
 multiline_comment|/* &quot;normal&quot; value for IDE_CONTROL_REG */
+DECL|member|status
+id|u8
+id|status
+suffix:semicolon
+multiline_comment|/* last retrived status value for device */
 DECL|member|ready_stat
 id|byte
 id|ready_stat
@@ -1261,8 +1260,6 @@ id|maskproc
 r_struct
 id|ata_device
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* check host&squot;s drive quirk list */
@@ -2355,8 +2352,6 @@ id|request
 op_star
 comma
 id|u8
-comma
-id|u8
 )paren
 suffix:semicolon
 DECL|struct|ata_taskfile
@@ -3283,6 +3278,44 @@ r_struct
 id|ata_device
 op_star
 id|drive
+)paren
+suffix:semicolon
+multiline_comment|/* Low level device access functions. */
+r_extern
+r_void
+id|ata_select
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_mask
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_status
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -4605,8 +4605,6 @@ comma
 id|rq
 comma
 l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -5028,12 +5026,19 @@ l_string|&quot;ide-tape: Reached idetape_pc_intr interrupt handler&bslash;n&quot
 )paren
 suffix:semicolon
 macro_line|#endif
-id|status.all
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
+suffix:semicolon
+id|status.all
+op_assign
+id|drive-&gt;status
 suffix:semicolon
 multiline_comment|/* Clear the interrupt */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
@@ -7115,12 +7120,19 @@ id|KERN_INFO
 l_string|&quot;ide-tape: bug: onstream, media_access_finished&bslash;n&quot;
 )paren
 suffix:semicolon
-id|status.all
-op_assign
-id|GET_STAT
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
+suffix:semicolon
+id|status.all
+op_assign
+id|drive-&gt;status
 suffix:semicolon
 r_if
 c_cond
@@ -8041,13 +8053,20 @@ id|tape-&gt;postponed_rq
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;If the tape is still busy, postpone our request and service&n;&t; *&t;the other device meanwhile.&n;&t; */
-id|status.all
-op_assign
-id|GET_STAT
+multiline_comment|/*&n;&t; * If the tape is still busy, postpone our request and service&n;&t; * the other device meanwhile.&n;&t; */
+id|ata_status
 c_func
 (paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
 )paren
+suffix:semicolon
+id|status.all
+op_assign
+id|drive-&gt;status
 suffix:semicolon
 multiline_comment|/*&n;&t; * The OnStream tape drive doesn&squot;t support DSC. Assume&n;&t; * that DSC is always set.&n;&t; */
 r_if
