@@ -3267,23 +3267,6 @@ id|rec_is_dirty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Attempting to write outside the initialized size is a bug. */
-id|BUG_ON
-c_func
-(paren
-(paren
-(paren
-id|block
-op_plus
-l_int|1
-)paren
-op_lshift
-id|bh_size_bits
-)paren
-OG
-id|ni-&gt;initialized_size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
