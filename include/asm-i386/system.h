@@ -745,5 +745,7 @@ DECL|macro|BROKEN_ACPI_Sx
 mdefine_line|#define BROKEN_ACPI_Sx&t;&t;0x0001
 DECL|macro|BROKEN_INIT_AFTER_S1
 mdefine_line|#define BROKEN_INIT_AFTER_S1&t;0x0002
+DECL|macro|BROKEN_PNP_BIOS
+mdefine_line|#define BROKEN_PNP_BIOS&t;&t;0x0004
 macro_line|#endif
 eof
