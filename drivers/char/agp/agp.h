@@ -3,90 +3,23 @@ macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
 macro_line|#include &lt;asm/agp.h&gt;&t;/* for flush_agp_cache() */
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;agpgart: &quot;
+DECL|macro|AGP_DEBUG
+mdefine_line|#define AGP_DEBUG 1
+macro_line|#ifdef AGP_DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) printk (KERN_DEBUG PFX &quot;%s: &quot; x &quot;&bslash;n&quot;, __FUNCTION__ , ## y)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) do { } while (0)
+macro_line|#endif
 r_extern
 r_struct
 id|agp_bridge_data
 op_star
 id|agp_bridge
 suffix:semicolon
-DECL|macro|PFX
-mdefine_line|#define PFX &quot;agpgart: &quot;
-macro_line|#ifdef CONFIG_SMP
-DECL|function|ipi_handler
-r_static
-r_void
-id|ipi_handler
-c_func
-(paren
-r_void
-op_star
-id|null
-)paren
-(brace
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|global_cache_flush
-r_static
-r_void
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
-id|global_cache_flush
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|on_each_cpu
-c_func
-(paren
-id|ipi_handler
-comma
-l_int|NULL
-comma
-l_int|1
-comma
-l_int|1
-)paren
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-id|PFX
-l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|global_cache_flush
-r_static
-r_void
-id|global_cache_flush
-c_func
-(paren
-r_void
-)paren
-(brace
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* !CONFIG_SMP */
 DECL|enum|aper_size_type
 r_enum
 id|aper_size_type
@@ -225,41 +158,37 @@ id|page_order
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|agp_bridge_data
+DECL|struct|agp_bridge_driver
 r_struct
-id|agp_bridge_data
+id|agp_bridge_driver
 (brace
-DECL|member|version
+DECL|member|owner
 r_struct
-id|agp_version
+id|module
 op_star
-id|version
+id|owner
 suffix:semicolon
 DECL|member|aperture_sizes
 r_void
 op_star
 id|aperture_sizes
 suffix:semicolon
-DECL|member|previous_size
-r_void
-op_star
-id|previous_size
+DECL|member|num_aperture_sizes
+r_int
+id|num_aperture_sizes
 suffix:semicolon
-DECL|member|current_size
-r_void
-op_star
-id|current_size
+DECL|member|size_type
+r_enum
+id|aper_size_type
+id|size_type
 suffix:semicolon
-DECL|member|dev_private_data
-r_void
-op_star
-id|dev_private_data
+DECL|member|cant_use_aperture
+r_int
+id|cant_use_aperture
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
+DECL|member|needs_scratch_page
+r_int
+id|needs_scratch_page
 suffix:semicolon
 DECL|member|masks
 r_struct
@@ -267,96 +196,6 @@ id|gatt_mask
 op_star
 id|masks
 suffix:semicolon
-DECL|member|gatt_table
-id|u32
-op_star
-id|gatt_table
-suffix:semicolon
-DECL|member|gatt_table_real
-id|u32
-op_star
-id|gatt_table_real
-suffix:semicolon
-DECL|member|scratch_page
-r_int
-r_int
-id|scratch_page
-suffix:semicolon
-DECL|member|scratch_page_real
-r_int
-r_int
-id|scratch_page_real
-suffix:semicolon
-DECL|member|gart_bus_addr
-r_int
-r_int
-id|gart_bus_addr
-suffix:semicolon
-DECL|member|gatt_bus_addr
-r_int
-r_int
-id|gatt_bus_addr
-suffix:semicolon
-DECL|member|mode
-id|u32
-id|mode
-suffix:semicolon
-DECL|member|type
-r_enum
-id|chipset_type
-id|type
-suffix:semicolon
-DECL|member|size_type
-r_enum
-id|aper_size_type
-id|size_type
-suffix:semicolon
-DECL|member|key_list
-r_int
-r_int
-op_star
-id|key_list
-suffix:semicolon
-DECL|member|current_memory_agp
-id|atomic_t
-id|current_memory_agp
-suffix:semicolon
-DECL|member|agp_in_use
-id|atomic_t
-id|agp_in_use
-suffix:semicolon
-DECL|member|max_memory_agp
-r_int
-id|max_memory_agp
-suffix:semicolon
-multiline_comment|/* in number of pages */
-DECL|member|needs_scratch_page
-r_int
-id|needs_scratch_page
-suffix:semicolon
-DECL|member|aperture_size_idx
-r_int
-id|aperture_size_idx
-suffix:semicolon
-DECL|member|num_aperture_sizes
-r_int
-id|num_aperture_sizes
-suffix:semicolon
-DECL|member|capndx
-r_int
-id|capndx
-suffix:semicolon
-DECL|member|cant_use_aperture
-r_int
-id|cant_use_aperture
-suffix:semicolon
-DECL|member|vm_ops
-r_struct
-id|vm_operations_struct
-op_star
-id|vm_ops
-suffix:semicolon
-multiline_comment|/* Links to driver specific functions */
 DECL|member|fetch_size
 r_int
 (paren
@@ -550,6 +389,117 @@ r_void
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|agp_bridge_data
+r_struct
+id|agp_bridge_data
+(brace
+DECL|member|version
+r_struct
+id|agp_version
+op_star
+id|version
+suffix:semicolon
+DECL|member|driver
+r_struct
+id|agp_bridge_driver
+op_star
+id|driver
+suffix:semicolon
+DECL|member|vm_ops
+r_struct
+id|vm_operations_struct
+op_star
+id|vm_ops
+suffix:semicolon
+DECL|member|previous_size
+r_void
+op_star
+id|previous_size
+suffix:semicolon
+DECL|member|current_size
+r_void
+op_star
+id|current_size
+suffix:semicolon
+DECL|member|dev_private_data
+r_void
+op_star
+id|dev_private_data
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+DECL|member|gatt_table
+id|u32
+op_star
+id|gatt_table
+suffix:semicolon
+DECL|member|gatt_table_real
+id|u32
+op_star
+id|gatt_table_real
+suffix:semicolon
+DECL|member|scratch_page
+r_int
+r_int
+id|scratch_page
+suffix:semicolon
+DECL|member|scratch_page_real
+r_int
+r_int
+id|scratch_page_real
+suffix:semicolon
+DECL|member|gart_bus_addr
+r_int
+r_int
+id|gart_bus_addr
+suffix:semicolon
+DECL|member|gatt_bus_addr
+r_int
+r_int
+id|gatt_bus_addr
+suffix:semicolon
+DECL|member|mode
+id|u32
+id|mode
+suffix:semicolon
+DECL|member|type
+r_enum
+id|chipset_type
+id|type
+suffix:semicolon
+DECL|member|key_list
+r_int
+r_int
+op_star
+id|key_list
+suffix:semicolon
+DECL|member|current_memory_agp
+id|atomic_t
+id|current_memory_agp
+suffix:semicolon
+DECL|member|agp_in_use
+id|atomic_t
+id|agp_in_use
+suffix:semicolon
+DECL|member|max_memory_agp
+r_int
+id|max_memory_agp
+suffix:semicolon
+multiline_comment|/* in number of pages */
+DECL|member|aperture_size_idx
+r_int
+id|aperture_size_idx
+suffix:semicolon
+DECL|member|capndx
+r_int
+id|capndx
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|OUTREG64
 mdefine_line|#define OUTREG64(mmap, addr, val)&t;__raw_writeq((val), (mmap)+(addr))
 DECL|macro|OUTREG32
@@ -572,8 +522,6 @@ DECL|macro|MB
 mdefine_line|#define MB(x)&t;(KB (KB (x)))
 DECL|macro|GB
 mdefine_line|#define GB(x)&t;(MB (KB (x)))
-DECL|macro|CACHE_FLUSH
-mdefine_line|#define CACHE_FLUSH&t;agp_bridge-&gt;cache_flush
 DECL|macro|A_SIZE_8
 mdefine_line|#define A_SIZE_8(x)&t;((struct aper_size_info_8 *) x)
 DECL|macro|A_SIZE_16
@@ -585,19 +533,15 @@ mdefine_line|#define A_SIZE_LVL2(x)&t;((struct aper_size_info_lvl2 *) x)
 DECL|macro|A_SIZE_FIX
 mdefine_line|#define A_SIZE_FIX(x)&t;((struct aper_size_info_fixed *) x)
 DECL|macro|A_IDX8
-mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX8(bridge)&t;(A_SIZE_8((bridge)-&gt;driver-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX16
-mdefine_line|#define A_IDX16()&t;(A_SIZE_16(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX16(bridge)&t;(A_SIZE_16((bridge)-&gt;driver-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX32
-mdefine_line|#define A_IDX32()&t;(A_SIZE_32(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXLVL2
-mdefine_line|#define A_IDXLVL2()&t;(A_SIZE_LVL2(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXFIX
-mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX32(bridge)&t;(A_SIZE_32((bridge)-&gt;driver-&gt;aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
 DECL|macro|PGE_EMPTY
-mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge-&gt;scratch_page)
+mdefine_line|#define PGE_EMPTY(b, p)&t;(!(p) || (p) == (unsigned long) (b)-&gt;scratch_page)
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
 mdefine_line|#define INTEL_APBASE&t;0x10
@@ -935,23 +879,60 @@ suffix:semicolon
 multiline_comment|/* used to override generic */
 )brace
 suffix:semicolon
-DECL|struct|agp_driver
+multiline_comment|/* Driver registration */
 r_struct
-id|agp_driver
-(brace
-DECL|member|owner
-r_struct
-id|module
+id|agp_bridge_data
 op_star
-id|owner
+id|agp_alloc_bridge
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
-DECL|member|dev
+r_void
+id|agp_put_bridge
+c_func
+(paren
 r_struct
-id|pci_dev
+id|agp_bridge_data
 op_star
-id|dev
+id|bridge
+)paren
 suffix:semicolon
-)brace
+r_int
+id|agp_add_bridge
+c_func
+(paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+)paren
+suffix:semicolon
+r_void
+id|agp_remove_bridge
+c_func
+(paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+)paren
+suffix:semicolon
+multiline_comment|/* Frontend routines. */
+r_int
+id|agp_frontend_initialize
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|agp_frontend_cleanup
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* Generic routines. */
 r_void
@@ -1082,25 +1063,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-id|agp_register_driver
-(paren
-r_struct
-id|agp_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
-r_int
-id|agp_unregister_driver
-c_func
-(paren
-r_struct
-id|agp_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
 id|u32
 id|agp_collect_device_status
 c_func
@@ -1127,6 +1089,11 @@ r_int
 id|agp_3_0_node_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 comma
@@ -1134,5 +1101,39 @@ id|u32
 id|minor
 )paren
 suffix:semicolon
+r_void
+id|global_cache_flush
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Standard agp registers */
+DECL|macro|AGPSTAT
+mdefine_line|#define AGPSTAT&t;&t;&t;0x4
+DECL|macro|AGPCMD
+mdefine_line|#define AGPCMD&t;&t;&t;0x8
+DECL|macro|AGPNEPG
+mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+DECL|macro|AGP_MAJOR_VERSION_SHIFT
+mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
+DECL|macro|AGP_MINOR_VERSION_SHIFT
+mdefine_line|#define AGP_MINOR_VERSION_SHIFT&t;(16)
+DECL|macro|AGPSTAT_RQ_DEPTH
+mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_ARQSZ_SHIFT
+mdefine_line|#define AGPSTAT_ARQSZ_SHIFT&t;13
+DECL|macro|AGPSTAT_AGP_ENABLE
+mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
+DECL|macro|AGPSTAT_SBA
+mdefine_line|#define AGPSTAT_SBA&t;&t;(1&lt;&lt;9)
+DECL|macro|AGPSTAT2_1X
+mdefine_line|#define AGPSTAT2_1X&t;&t;(1&lt;&lt;0)
+DECL|macro|AGPSTAT2_2X
+mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
+DECL|macro|AGPSTAT2_4X
+mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT_FW
+mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof
