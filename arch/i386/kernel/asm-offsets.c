@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Generate definitions needed by assembly language modul
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &quot;sigframe.h&quot;
 macro_line|#include &lt;asm/fixmap.h&gt;
@@ -304,6 +305,41 @@ comma
 id|rt_sigframe
 comma
 id|uc.uc_mcontext
+)paren
+suffix:semicolon
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|OFFSET
+c_func
+(paren
+id|pbe_address
+comma
+id|pbe
+comma
+id|address
+)paren
+suffix:semicolon
+id|OFFSET
+c_func
+(paren
+id|pbe_orig_address
+comma
+id|pbe
+comma
+id|orig_address
+)paren
+suffix:semicolon
+id|OFFSET
+c_func
+(paren
+id|pbe_next
+comma
+id|pbe
+comma
+id|next
 )paren
 suffix:semicolon
 multiline_comment|/* Offset from the sysenter stack to tss.esp0 */
