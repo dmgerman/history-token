@@ -239,12 +239,14 @@ id|notifier_block
 id|ppc64_panic_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|ppc64_panic_event
 comma
+dot
 id|priority
-suffix:colon
+op_assign
 id|INT_MIN
 multiline_comment|/* may not return; must be done last */
 )brace
