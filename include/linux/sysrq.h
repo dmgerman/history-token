@@ -57,9 +57,8 @@ id|tty_struct
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Nonlocking version of handle sysrq, used by sysrq handlers that need to&n; * call sysrq handlers&n; */
 r_void
-id|__handle_sysrq_nolock
+id|__handle_sysrq
 c_func
 (paren
 r_int

@@ -3224,7 +3224,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|handle_sysrq
+id|__handle_sysrq
 c_func
 (paren
 id|c
