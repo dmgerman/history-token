@@ -1164,7 +1164,7 @@ l_string|&quot;Digital Camera EX-20 DSC&quot;
 comma
 id|US_SC_8070
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
