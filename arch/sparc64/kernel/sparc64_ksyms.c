@@ -707,6 +707,16 @@ id|mcount
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Uniprocessor clock frequency */
+macro_line|#ifndef CONFIG_SMP
+DECL|variable|up_clock_tick
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|up_clock_tick
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Per-CPU information table */
 DECL|variable|cpu_data
 id|EXPORT_SYMBOL
