@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -4507,6 +4508,7 @@ id|pc-&gt;actually_transferred
 suffix:semicolon
 macro_line|#endif
 id|clear_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -4514,12 +4516,11 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-id|ide__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 macro_line|#if SIMULATE_ERRORS
 r_if
 c_cond
@@ -7300,7 +7301,7 @@ comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -24632,48 +24633,59 @@ id|ata_operations
 id|idetape_driver
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|attach
-suffix:colon
+op_assign
 id|idetape_attach
 comma
+dot
 id|cleanup
-suffix:colon
+op_assign
 id|idetape_cleanup
 comma
+dot
 id|standby
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|do_request
-suffix:colon
+op_assign
 id|idetape_do_request
 comma
+dot
 id|end_request
-suffix:colon
+op_assign
 id|idetape_end_request
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|idetape_blkdev_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|idetape_blkdev_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|idetape_blkdev_release
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 id|idetape_revalidate
 comma
 )brace
@@ -24686,28 +24698,34 @@ id|file_operations
 id|idetape_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|idetape_chrdev_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|idetape_chrdev_write
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|idetape_chrdev_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|idetape_chrdev_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|idetape_chrdev_release
 comma
 )brace

@@ -92,10 +92,10 @@ c_func
 (paren
 l_string|&quot;raid0: looking at %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev1-&gt;dev
+id|rdev1-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -118,18 +118,18 @@ c_func
 (paren
 l_string|&quot;raid0:   comparing %s(%ld) with %s(%ld)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev1-&gt;dev
+id|rdev1-&gt;bdev
 )paren
 comma
 id|rdev1-&gt;size
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev2-&gt;dev
+id|rdev2-&gt;bdev
 )paren
 comma
 id|rdev2-&gt;size
@@ -295,7 +295,7 @@ l_int|0
 op_logical_or
 id|j
 op_ge
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 (brace
 id|printk
@@ -363,7 +363,7 @@ c_cond
 (paren
 id|cnt
 op_ne
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 (brace
 id|printk
@@ -373,7 +373,7 @@ l_string|&quot;raid0: too few disks (%d of %d) - aborting!&bslash;n&quot;
 comma
 id|cnt
 comma
-id|mddev-&gt;sb-&gt;raid_disks
+id|mddev-&gt;raid_disks
 )paren
 suffix:semicolon
 r_goto
@@ -480,10 +480,10 @@ c_func
 (paren
 l_string|&quot;raid0: checking %s ...&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1103,7 +1103,7 @@ id|rsect
 suffix:semicolon
 id|chunk_size
 op_assign
-id|mddev-&gt;sb-&gt;chunk_size
+id|mddev-&gt;chunk_size
 op_rshift
 l_int|10
 suffix:semicolon
@@ -1536,7 +1536,7 @@ id|sz
 comma
 l_string|&quot;%s/&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
 id|conf-&gt;strip_zone
@@ -1549,7 +1549,7 @@ id|dev
 id|k
 )braket
 op_member_access_from_pointer
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon
@@ -1601,7 +1601,7 @@ id|sz
 comma
 l_string|&quot; %dk chunks&quot;
 comma
-id|mddev-&gt;sb-&gt;chunk_size
+id|mddev-&gt;chunk_size
 op_div
 l_int|1024
 )paren

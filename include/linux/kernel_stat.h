@@ -105,6 +105,46 @@ id|pswpin
 comma
 id|pswpout
 suffix:semicolon
+DECL|member|pgalloc
+DECL|member|pgfree
+r_int
+r_int
+id|pgalloc
+comma
+id|pgfree
+suffix:semicolon
+DECL|member|pgactivate
+DECL|member|pgdeactivate
+r_int
+r_int
+id|pgactivate
+comma
+id|pgdeactivate
+suffix:semicolon
+DECL|member|pgfault
+DECL|member|pgmajfault
+r_int
+r_int
+id|pgfault
+comma
+id|pgmajfault
+suffix:semicolon
+DECL|member|pgscan
+DECL|member|pgsteal
+r_int
+r_int
+id|pgscan
+comma
+id|pgsteal
+suffix:semicolon
+DECL|member|pageoutrun
+DECL|member|allocstall
+r_int
+r_int
+id|pageoutrun
+comma
+id|allocstall
+suffix:semicolon
 macro_line|#if !defined(CONFIG_ARCH_S390)
 DECL|member|irqs
 r_int
@@ -134,6 +174,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Maybe we need to smp-ify kernel_stat some day. It would be nice to do&n; * that without having to modify all the code that increments the stats.&n; */
+DECL|macro|KERNEL_STAT_INC
+mdefine_line|#define KERNEL_STAT_INC(x) kstat.x++
+DECL|macro|KERNEL_STAT_ADD
+mdefine_line|#define KERNEL_STAT_ADD(x, y) kstat.x += y
 macro_line|#if !defined(CONFIG_ARCH_S390)
 multiline_comment|/*&n; * Number of interrupts per specific IRQ source, since bootup&n; */
 DECL|function|kstat_irqs

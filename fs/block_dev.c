@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|max_block
 r_static
@@ -780,6 +781,12 @@ id|vfsmount
 op_star
 id|bd_mnt
 suffix:semicolon
+DECL|variable|blockdev_superblock
+r_struct
+id|super_block
+op_star
+id|blockdev_superblock
+suffix:semicolon
 multiline_comment|/*&n; * bdev cache handling - shamelessly stolen from inode.c&n; * We use smaller hashtable, though.&n; */
 DECL|macro|HASH_BITS
 mdefine_line|#define HASH_BITS&t;6
@@ -1025,6 +1032,11 @@ c_func
 l_string|&quot;Cannot create bdev pseudo-fs&quot;
 )paren
 suffix:semicolon
+id|blockdev_superblock
+op_assign
+id|bd_mnt-&gt;mnt_sb
+suffix:semicolon
+multiline_comment|/* For writeback */
 )brace
 multiline_comment|/*&n; * Most likely _very_ bad one - but then it&squot;s hardly critical for small&n; * /dev and can be fixed when somebody will need really large one.&n; */
 DECL|function|hash
@@ -2656,43 +2668,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bdev-&gt;bd_inode-&gt;i_data.backing_dev_info
-op_eq
-op_amp
-id|default_backing_dev_info
-)paren
-(brace
-r_struct
-id|backing_dev_info
-op_star
-id|bdi
-op_assign
-id|blk_get_backing_dev_info
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bdi
-op_eq
-l_int|NULL
-)paren
-id|bdi
-op_assign
-op_amp
-id|default_backing_dev_info
-suffix:semicolon
-id|inode-&gt;i_data.backing_dev_info
-op_assign
-id|bdi
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|bdev-&gt;bd_op-&gt;open
 )paren
 (brace
@@ -2809,6 +2784,49 @@ op_assign
 op_amp
 id|p-&gt;request_queue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdev-&gt;bd_inode-&gt;i_data.backing_dev_info
+op_eq
+op_amp
+id|default_backing_dev_info
+)paren
+(brace
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+suffix:semicolon
+id|bdi
+op_assign
+id|blk_get_backing_dev_info
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdi
+op_eq
+l_int|NULL
+)paren
+id|bdi
+op_assign
+op_amp
+id|default_backing_dev_info
+suffix:semicolon
+id|inode-&gt;i_data.backing_dev_info
+op_assign
+id|bdi
+suffix:semicolon
+id|bdev-&gt;bd_inode-&gt;i_data.backing_dev_info
+op_assign
+id|bdi
+suffix:semicolon
+)brace
 )brace
 id|bdev-&gt;bd_openers
 op_increment

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   pdcraid.c  Copyright (C) 2001 Red Hat, Inc. All rights reserved.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;   &n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n;   &n;   Authors: &t;Arjan van de Ven &lt;arjanv@redhat.com&gt;&n;   &t;&t;&n;   Based on work done by S&#xfffd;ren Schmidt for FreeBSD  &n;&n;*/
+multiline_comment|/*&n;   pdcraid.c  Copyright (C) 2001 Red Hat, Inc. All rights reserved.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;   &n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n;   &n;   Authors: &t;Arjan van de Ven &lt;arjanv@redhat.com&gt;&n;   &t;&t;&n;   Based on work done by S&oslash;ren Schmidt for FreeBSD  &n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -70,6 +70,7 @@ suffix:semicolon
 r_static
 r_int
 id|pdcraid0_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -87,6 +88,7 @@ suffix:semicolon
 r_static
 r_int
 id|pdcraid1_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -339,20 +341,24 @@ id|raid_device_operations
 id|pdcraid0_ops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|pdcraid_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|pdcraid_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|pdcraid_ioctl
 comma
+dot
 id|make_request
-suffix:colon
+op_assign
 id|pdcraid0_make_request
 )brace
 suffix:semicolon
@@ -363,20 +369,24 @@ id|raid_device_operations
 id|pdcraid1_ops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|pdcraid_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|pdcraid_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|pdcraid_ioctl
 comma
+dot
 id|make_request
-suffix:colon
+op_assign
 id|pdcraid1_make_request
 )brace
 suffix:semicolon
@@ -569,7 +579,6 @@ r_if
 c_cond
 (paren
 id|put_user
-c_func
 (paren
 id|raid
 (braket
@@ -594,7 +603,6 @@ r_if
 c_cond
 (paren
 id|put_user
-c_func
 (paren
 id|raid
 (braket
@@ -619,7 +627,6 @@ r_if
 c_cond
 (paren
 id|put_user
-c_func
 (paren
 id|bios_cyl
 comma
@@ -640,12 +647,13 @@ r_if
 c_cond
 (paren
 id|put_user
-c_func
 (paren
 (paren
 r_int
 )paren
-id|ataraid_gendisk.part
+id|ataraid_gendisk
+dot
+id|part
 (braket
 id|minor
 c_func
@@ -965,6 +973,7 @@ DECL|function|pdcraid0_make_request
 r_static
 r_int
 id|pdcraid0_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -1530,6 +1539,7 @@ DECL|function|pdcraid1_read_request
 r_static
 r_int
 id|pdcraid1_read_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -1793,6 +1803,7 @@ DECL|function|pdcraid1_make_request
 r_static
 r_int
 id|pdcraid1_make_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -2089,6 +2100,7 @@ r_static
 r_int
 r_int
 id|calc_sb_csum
+c_func
 (paren
 r_int
 r_int
@@ -3067,6 +3079,7 @@ r_static
 r_void
 id|__exit
 id|pdcraid_exit
+c_func
 (paren
 r_void
 )paren

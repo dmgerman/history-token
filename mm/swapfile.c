@@ -1580,6 +1580,14 @@ id|vma-&gt;vm_page_prot
 )paren
 )paren
 suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|page
+comma
+id|dir
+)paren
+suffix:semicolon
 id|swap_free
 c_func
 (paren

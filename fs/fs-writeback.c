@@ -5,8 +5,15 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+r_extern
+r_struct
+id|super_block
+op_star
+id|blockdev_superblock
+suffix:semicolon
 multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; *&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but move it onto the&n; * dirty list only if it is hashed or if it refers to a blockdev.&n; * If it was not hashed, it will never be added to the dirty list&n; * even if it is later hashed, as it will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_ you start marking&n; * them dirty.&n; *&n; * This function *must* be atomic for the I_DIRTY_PAGES case -&n; * set_page_dirty() is called under spinlock in several places.&n; */
 DECL|function|__mark_inode_dirty
 r_void
@@ -168,15 +175,7 @@ c_cond
 op_logical_neg
 id|was_dirty
 )paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -186,7 +185,6 @@ op_amp
 id|sb-&gt;s_dirty
 )paren
 suffix:semicolon
-)brace
 )brace
 id|out
 suffix:colon
@@ -279,14 +277,7 @@ id|sb
 op_assign
 id|inode-&gt;i_sb
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -592,13 +583,18 @@ id|nr_to_write
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out mappings which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdlfush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; */
-DECL|function|sync_sb_inodes
+multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out mappings which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdlfush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; *&n; * If `bdi&squot; is non-zero then we&squot;re being asked to writeback a specific queue.&n; * This function assumes that the blockdev superblock&squot;s inodes are backed by&n; * a variety of queues, so all inodes are searched.  For other superblocks,&n; * assume that all inodes are backed by the same queue.&n; *&n; * FIXME: this linear search could get expensive with many fileystems.  But&n; * how to fix?  We need to go from an address_space to all inodes which share&n; * a queue with that address_space.&n; */
 r_static
 r_void
+DECL|function|sync_sb_inodes
 id|sync_sb_inodes
 c_func
 (paren
+r_struct
+id|backing_dev_info
+op_star
+id|single_bdi
+comma
 r_struct
 id|super_block
 op_star
@@ -693,7 +689,41 @@ suffix:semicolon
 r_int
 id|really_sync
 suffix:semicolon
-multiline_comment|/* Was this inode dirtied after __sync_list was called? */
+r_if
+c_cond
+(paren
+id|single_bdi
+op_logical_and
+id|mapping-&gt;backing_dev_info
+op_ne
+id|single_bdi
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sb
+op_ne
+id|blockdev_superblock
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* inappropriate superblock */
+id|list_move
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|inode-&gt;i_sb-&gt;s_dirty
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+multiline_comment|/* not this blockdev */
+)brace
+multiline_comment|/* Was this inode dirtied after sync_sb_inodes was called? */
 r_if
 c_cond
 (paren
@@ -808,14 +838,7 @@ id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -888,12 +911,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start writeback of dirty pagecache data against all unlocked inodes.&n; *&n; * Note:&n; * We don&squot;t need to grab a reference to superblock here. If it has non-empty&n; * -&gt;s_dirty it&squot;s hadn&squot;t been killed yet and kill_super() won&squot;t proceed&n; * past sync_inodes_sb() until both -&gt;s_dirty and -&gt;s_locked_inodes are&n; * empty. Since __sync_single_inode() regains inode_lock before it finally moves&n; * inode from superblock lists we are OK.&n; *&n; * If `older_than_this&squot; is non-zero then only flush inodes which have a&n; * flushtime older than *older_than_this.&n; *&n; * This is a &quot;memory cleansing&quot; operation, not a &quot;data integrity&quot; operation.&n; */
-DECL|function|writeback_unlocked_inodes
+multiline_comment|/*&n; * If `bdi&squot; is non-zero then we will scan the first inode against each&n; * superblock until we find the matching ones.  One group will be the dirty&n; * inodes against a filesystem.  Then when we hit the dummy blockdev superblock,&n; * sync_sb_inodes will seekout the blockdev which matches `bdi&squot;.  Maybe not&n; * super-efficient but we&squot;re about to do a ton of I/O...&n; */
+r_static
 r_void
-id|writeback_unlocked_inodes
+DECL|function|__writeback_unlocked_inodes
+id|__writeback_unlocked_inodes
 c_func
 (paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+comma
 r_int
 op_star
 id|nr_to_write
@@ -979,6 +1008,8 @@ suffix:semicolon
 id|sync_sb_inodes
 c_func
 (paren
+id|bdi
+comma
 id|sb
 comma
 id|sync_mode
@@ -1021,6 +1052,77 @@ c_func
 (paren
 op_amp
 id|inode_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Start writeback of dirty pagecache data against all unlocked inodes.&n; *&n; * Note:&n; * We don&squot;t need to grab a reference to superblock here. If it has non-empty&n; * -&gt;s_dirty it&squot;s hadn&squot;t been killed yet and kill_super() won&squot;t proceed&n; * past sync_inodes_sb() until both -&gt;s_dirty and -&gt;s_locked_inodes are&n; * empty. Since __sync_single_inode() regains inode_lock before it finally moves&n; * inode from superblock lists we are OK.&n; *&n; * If `older_than_this&squot; is non-zero then only flush inodes which have a&n; * flushtime older than *older_than_this.&n; *&n; * This is a &quot;memory cleansing&quot; operation, not a &quot;data integrity&quot; operation.&n; */
+DECL|function|writeback_unlocked_inodes
+r_void
+id|writeback_unlocked_inodes
+c_func
+(paren
+r_int
+op_star
+id|nr_to_write
+comma
+r_enum
+id|writeback_sync_modes
+id|sync_mode
+comma
+r_int
+r_int
+op_star
+id|older_than_this
+)paren
+(brace
+id|__writeback_unlocked_inodes
+c_func
+(paren
+l_int|NULL
+comma
+id|nr_to_write
+comma
+id|sync_mode
+comma
+id|older_than_this
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Perform writeback of dirty data against a particular queue.&n; *&n; * This is for writer throttling.  We don&squot;t want processes to write back&n; * other process&squot;s data, espsecially when the other data belongs to a&n; * different spindle.&n; */
+DECL|function|writeback_backing_dev
+r_void
+id|writeback_backing_dev
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+comma
+r_int
+op_star
+id|nr_to_write
+comma
+r_enum
+id|writeback_sync_modes
+id|sync_mode
+comma
+r_int
+r_int
+op_star
+id|older_than_this
+)paren
+(brace
+id|__writeback_unlocked_inodes
+c_func
+(paren
+id|bdi
+comma
+id|nr_to_write
+comma
+id|sync_mode
+comma
+id|older_than_this
 )paren
 suffix:semicolon
 )brace
@@ -1150,6 +1252,8 @@ suffix:semicolon
 id|sync_sb_inodes
 c_func
 (paren
+l_int|NULL
+comma
 id|sb
 comma
 id|wait

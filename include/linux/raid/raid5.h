@@ -155,14 +155,6 @@ DECL|member|operational
 r_int
 id|operational
 suffix:semicolon
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
-DECL|member|raid_disk
-r_int
-id|raid_disk
-suffix:semicolon
 DECL|member|write_only
 r_int
 id|write_only

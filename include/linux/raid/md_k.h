@@ -20,6 +20,10 @@ DECL|macro|MULTIPATH
 mdefine_line|#define MULTIPATH         7UL
 DECL|macro|MAX_PERSONALITY
 mdefine_line|#define MAX_PERSONALITY   8UL
+DECL|macro|LEVEL_MULTIPATH
+mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
+DECL|macro|LEVEL_LINEAR
+mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
 DECL|function|pers_to_level
 r_static
 r_inline
@@ -40,8 +44,7 @@ r_case
 id|MULTIPATH
 suffix:colon
 r_return
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 suffix:semicolon
 r_case
 id|HSM
@@ -61,8 +64,7 @@ r_case
 id|LINEAR
 suffix:colon
 r_return
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:semicolon
 r_case
 id|RAID0
@@ -109,8 +111,7 @@ id|level
 )paren
 (brace
 r_case
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 suffix:colon
 r_return
 id|MULTIPATH
@@ -130,8 +131,7 @@ r_return
 id|TRANSLUCENT
 suffix:semicolon
 r_case
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:colon
 r_return
 id|LINEAR
@@ -468,28 +468,6 @@ id|list_head
 id|same_set
 suffix:semicolon
 multiline_comment|/* RAID devices within the same set */
-DECL|member|all
-r_struct
-id|list_head
-id|all
-suffix:semicolon
-multiline_comment|/* all RAID devices */
-DECL|member|pending
-r_struct
-id|list_head
-id|pending
-suffix:semicolon
-multiline_comment|/* undetected RAID devices */
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
-multiline_comment|/* Device number */
-DECL|member|old_dev
-id|kdev_t
-id|old_dev
-suffix:semicolon
-multiline_comment|/*  &quot;&quot; when it was last imported */
 DECL|member|size
 r_int
 r_int
@@ -541,11 +519,21 @@ r_int
 id|faulty
 suffix:semicolon
 multiline_comment|/* if faulty do not issue IO requests */
+DECL|member|in_sync
+r_int
+id|in_sync
+suffix:semicolon
+multiline_comment|/* device is a full member of the array */
 DECL|member|desc_nr
 r_int
 id|desc_nr
 suffix:semicolon
 multiline_comment|/* descriptor index in the superblock */
+DECL|member|raid_disk
+r_int
+id|raid_disk
+suffix:semicolon
+multiline_comment|/* role of device in array */
 )brace
 suffix:semicolon
 DECL|typedef|mdk_personality_t
@@ -572,11 +560,6 @@ DECL|member|__minor
 r_int
 id|__minor
 suffix:semicolon
-DECL|member|sb
-id|mdp_super_t
-op_star
-id|sb
-suffix:semicolon
 DECL|member|disks
 r_struct
 id|list_head
@@ -589,6 +572,64 @@ suffix:semicolon
 DECL|member|ro
 r_int
 id|ro
+suffix:semicolon
+multiline_comment|/* Superblock information */
+DECL|member|major_version
+r_int
+id|major_version
+comma
+DECL|member|minor_version
+id|minor_version
+comma
+DECL|member|patch_version
+id|patch_version
+suffix:semicolon
+DECL|member|persistent
+r_int
+id|persistent
+suffix:semicolon
+DECL|member|chunk_size
+r_int
+id|chunk_size
+suffix:semicolon
+DECL|member|ctime
+DECL|member|utime
+id|time_t
+id|ctime
+comma
+id|utime
+suffix:semicolon
+DECL|member|level
+DECL|member|layout
+r_int
+id|level
+comma
+id|layout
+suffix:semicolon
+DECL|member|raid_disks
+r_int
+id|raid_disks
+suffix:semicolon
+DECL|member|state
+r_int
+r_int
+id|state
+suffix:semicolon
+DECL|member|size
+id|sector_t
+id|size
+suffix:semicolon
+multiline_comment|/* used size of component devices */
+DECL|member|events
+id|__u64
+id|events
+suffix:semicolon
+DECL|member|uuid
+r_char
+id|uuid
+(braket
+l_int|16
+)braket
 suffix:semicolon
 DECL|member|sync_thread
 r_struct
@@ -635,10 +676,15 @@ id|atomic_t
 id|active
 suffix:semicolon
 DECL|member|spare
-id|mdp_disk_t
+id|mdk_rdev_t
 op_star
 id|spare
 suffix:semicolon
+DECL|member|degraded
+r_int
+id|degraded
+suffix:semicolon
+multiline_comment|/* whether md should consider&n;&t;&t;&t;&t;&t;&t;&t; * adding a spare&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|recovery_active
 id|atomic_t
 id|recovery_active
@@ -754,10 +800,6 @@ id|mddev_t
 op_star
 id|mddev
 comma
-id|mdp_disk_t
-op_star
-id|descriptor
-comma
 id|mdk_rdev_t
 op_star
 id|rdev
@@ -788,9 +830,6 @@ id|spare_write
 id|mddev_t
 op_star
 id|mddev
-comma
-r_int
-id|number
 )paren
 suffix:semicolon
 DECL|member|spare_inactive
@@ -815,11 +854,6 @@ id|spare_active
 id|mddev_t
 op_star
 id|mddev
-comma
-id|mdp_disk_t
-op_star
-op_star
-id|descriptor
 )paren
 suffix:semicolon
 DECL|member|sync_request
@@ -887,20 +921,6 @@ suffix:semicolon
 r_extern
 id|mdk_rdev_t
 op_star
-id|find_rdev
-c_func
-(paren
-id|mddev_t
-op_star
-id|mddev
-comma
-id|kdev_t
-id|dev
-)paren
-suffix:semicolon
-r_extern
-id|mdk_rdev_t
-op_star
 id|find_rdev_nr
 c_func
 (paren
@@ -913,7 +933,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-id|mdp_disk_t
+id|mdk_rdev_t
 op_star
 id|get_spare
 c_func
@@ -925,16 +945,13 @@ id|mddev
 suffix:semicolon
 multiline_comment|/*&n; * iterates through some rdev ringlist. It&squot;s safe to remove the&n; * current &squot;rdev&squot;. Dont touch &squot;tmp&squot; though.&n; */
 DECL|macro|ITERATE_RDEV_GENERIC
-mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, field)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )
+mdefine_line|#define ITERATE_RDEV_GENERIC(head,rdev,tmp)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, same_set)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )
 multiline_comment|/*&n; * iterates through the &squot;same array disks&squot; ringlist&n; */
 DECL|macro|ITERATE_RDEV
-mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,same_set,rdev,tmp)
-multiline_comment|/*&n; * Iterates through all &squot;RAID managed disks&squot;&n; */
-DECL|macro|ITERATE_RDEV_ALL
-mdefine_line|#define ITERATE_RDEV_ALL(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(all_raid_disks,all,rdev,tmp)
+mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,rdev,tmp)
 multiline_comment|/*&n; * Iterates through &squot;pending RAID disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_PENDING
-mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,pending,rdev,tmp)
+mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,rdev,tmp)
 DECL|macro|xchg_values
 mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s

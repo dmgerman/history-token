@@ -73,6 +73,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|KERNEL_STAT_INC
+c_func
+(paren
+id|pgactivate
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|activate_page

@@ -5,7 +5,7 @@ mdefine_line|#define PAGE_FLAGS_H
 multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped out. Some&n; * of them might not even exist (eg empty_bad_page)...&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid value.&n; *&n; * During disk I/O, PG_locked is used. This bit is set before I/O and&n; * reset when I/O completes. page_waitqueue(page) is a wait queue of all tasks&n; * waiting for the I/O on this page to complete.&n; *&n; * PG_uptodate tells whether the page&squot;s contents is valid.  When a read&n; * completes, the page becomes uptodate, unless a disk I/O error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a PG_referenced bit,&n; * which is set any time the system accesses that page through the (mapping,&n; * index) hash table.  This referenced bit, together with the referenced bit&n; * in the page tables, is used to manipulate page-&gt;age and move the page across&n; * the active, inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the active,&n; * inactive_dirty and inactive_clean lists are protected by the&n; * pagemap_lru_lock, and *NOT* by the usual PG_locked bit!&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic code&n; * guarantees that this bit is cleared for a page when it first is entered into&n; * the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual address&n; * space, they need to be kmapped separately for doing IO on the pages.  The&n; * struct page (these bits with information) are always mapped into kernel&n; * address space...&n; */
 multiline_comment|/*&n; * Don&squot;t use the *_dontuse flags.  Use the macros.  Otherwise you&squot;ll break&n; * locked- and dirty-page accounting.  The top eight bits of page-&gt;flags are&n; * used for page-&gt;zone, so putting flag bits there doesn&squot;t work.&n; */
 DECL|macro|PG_locked
-mdefine_line|#define PG_locked&t; 0&t;/* Page is locked. Don&squot;t touch. */
+mdefine_line|#define PG_locked&t; &t; 0&t;/* Page is locked. Don&squot;t touch. */
 DECL|macro|PG_error
 mdefine_line|#define PG_error&t;&t; 1
 DECL|macro|PG_referenced
@@ -33,7 +33,11 @@ mdefine_line|#define PG_private&t;&t;12&t;/* Has something at -&gt;private */
 DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
-mdefine_line|#define PG_nosave&t;&t;15&t;/* Used for system suspend/resume */
+mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
+DECL|macro|PG_chainlock
+mdefine_line|#define PG_chainlock&t;&t;15&t;/* lock bit for -&gt;pte_chain */
+DECL|macro|PG_direct
+mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.&n; */
 DECL|struct|page_state
 r_extern
@@ -67,6 +71,21 @@ r_int
 id|nr_inactive
 suffix:semicolon
 multiline_comment|/* on inactive_list LRU */
+DECL|member|nr_page_table_pages
+r_int
+r_int
+id|nr_page_table_pages
+suffix:semicolon
+DECL|member|nr_pte_chain_pages
+r_int
+r_int
+id|nr_pte_chain_pages
+suffix:semicolon
+DECL|member|used_pte_chains_bytes
+r_int
+r_int
+id|used_pte_chains_bytes
+suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp
 id|page_states
@@ -193,6 +212,96 @@ DECL|macro|ClearPageNosave
 mdefine_line|#define ClearPageNosave(page)&t;&t;clear_bit(PG_nosave, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageNosave
 mdefine_line|#define TestClearPageNosave(page)&t;test_and_clear_bit(PG_nosave, &amp;(page)-&gt;flags)
+DECL|macro|PageDirect
+mdefine_line|#define PageDirect(page)&t;test_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|SetPageDirect
+mdefine_line|#define SetPageDirect(page)&t;set_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageDirect
+mdefine_line|#define TestSetPageDirect(page)&t;test_and_set_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageDirect
+mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageDirect
+mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
+multiline_comment|/*&n; * inlines for acquisition and release of PG_chainlock&n; */
+DECL|function|pte_chain_lock
+r_static
+r_inline
+r_void
+id|pte_chain_lock
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+multiline_comment|/*&n;&t; * Assuming the lock is uncontended, this never enters&n;&t; * the body of the outer loop. If it is contended, then&n;&t; * within the inner loop a non-atomic test is used to&n;&t; * busywait with less bus contention for a good time to&n;&t; * attempt to acquire the lock bit.&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|PG_chainlock
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|test_bit
+c_func
+(paren
+id|PG_chainlock
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|pte_chain_unlock
+r_static
+r_inline
+r_void
+id|pte_chain_unlock
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|clear_bit
+c_func
+(paren
+id|PG_chainlock
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
 r_extern
 r_struct

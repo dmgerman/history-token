@@ -140,10 +140,9 @@ id|HP_ZX1
 comma
 )brace
 suffix:semicolon
-DECL|struct|_agp_version
-r_typedef
+DECL|struct|agp_version
 r_struct
-id|_agp_version
+id|agp_version
 (brace
 DECL|member|major
 id|u16
@@ -153,9 +152,7 @@ DECL|member|minor
 id|u16
 id|minor
 suffix:semicolon
-DECL|typedef|agp_version
 )brace
-id|agp_version
 suffix:semicolon
 DECL|struct|_agp_kern_info
 r_typedef
@@ -163,6 +160,7 @@ r_struct
 id|_agp_kern_info
 (brace
 DECL|member|version
+r_struct
 id|agp_version
 id|version
 suffix:semicolon
