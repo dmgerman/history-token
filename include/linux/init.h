@@ -11,13 +11,13 @@ mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.init.data&
 DECL|macro|__exitdata
 mdefine_line|#define __exitdata&t;__attribute__ ((__section__(&quot;.exit.data&quot;)))
 DECL|macro|__exit_call
-mdefine_line|#define __exit_call&t;__attribute__ ((unused,__section__ (&quot;.exitcall.exit&quot;)))
+mdefine_line|#define __exit_call&t;__attribute_used__ __attribute__ ((__section__ (&quot;.exitcall.exit&quot;)))
 macro_line|#ifdef MODULE
 DECL|macro|__exit
 mdefine_line|#define __exit&t;&t;__attribute__ ((__section__(&quot;.exit.text&quot;)))
 macro_line|#else
 DECL|macro|__exit
-mdefine_line|#define __exit&t;&t;__attribute__ ((unused,__section__(&quot;.exit.text&quot;)))
+mdefine_line|#define __exit&t;&t;__attribute_used__ __attribute__ ((__section__(&quot;.exit.text&quot;)))
 macro_line|#endif
 multiline_comment|/* For assembly routines */
 DECL|macro|__INIT
@@ -67,7 +67,7 @@ macro_line|#ifndef MODULE
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* initcalls are now grouped by functionality into separate &n; * subsections. Ordering inside the subsections is determined&n; * by link order. &n; * For backwards compatibility, initcall() puts the call in &n; * the device init subsection.&n; */
 DECL|macro|__define_initcall
-mdefine_line|#define __define_initcall(level,fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.initcall&quot; level &quot;.init&quot;))) = fn
+mdefine_line|#define __define_initcall(level,fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute_used__ &bslash;&n;&t;__attribute__((__section__(&quot;.initcall&quot; level &quot;.init&quot;))) = fn
 DECL|macro|core_initcall
 mdefine_line|#define core_initcall(fn)&t;&t;__define_initcall(&quot;1&quot;,fn)
 DECL|macro|postcore_initcall
@@ -85,11 +85,11 @@ mdefine_line|#define late_initcall(fn)&t;&t;__define_initcall(&quot;7&quot;,fn)
 DECL|macro|__initcall
 mdefine_line|#define __initcall(fn) device_initcall(fn)
 DECL|macro|__exitcall
-mdefine_line|#define __exitcall(fn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static exitcall_t __exitcall_##fn __exit_call = fn
+mdefine_line|#define __exitcall(fn) &bslash;&n;&t;static exitcall_t __exitcall_##fn __exit_call = fn
 DECL|macro|console_initcall
-mdefine_line|#define console_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.con_initcall.init&quot;)))=fn
+mdefine_line|#define console_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn &bslash;&n;&t;__attribute_used__ __attribute__((__section__(&quot;.con_initcall.init&quot;)))=fn
 DECL|macro|security_initcall
-mdefine_line|#define security_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.security_initcall.init&quot;))) = fn
+mdefine_line|#define security_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn &bslash;&n;&t;__attribute_used__ __attribute__((__section__(&quot;.security_initcall.init&quot;))) = fn
 DECL|struct|obs_kernel_param
 r_struct
 id|obs_kernel_param
@@ -115,7 +115,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* OBSOLETE: see moduleparam.h for the right way. */
 DECL|macro|__setup
-mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##fn&t;&t;&t;&bslash;&n;&t;&t; __attribute__((unused,__section__ (&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
+mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##fn&t;&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module.&n; */
 DECL|macro|module_init
