@@ -1336,6 +1336,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|build_all_zonelists
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

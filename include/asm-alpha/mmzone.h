@@ -54,16 +54,12 @@ macro_line|#ifdef CONFIG_ALPHA_WILDFIRE
 DECL|macro|ALPHA_PA_TO_NID
 macro_line|# define ALPHA_PA_TO_NID(pa)&t;((pa) &gt;&gt; 36)&t;/* 16 nodes max due 43bit kseg */
 DECL|macro|NODE_MAX_MEM_SIZE
-mdefine_line|#define NODE_MAX_MEM_SIZE&t;(64L * 1024L * 1024L * 1024L) /* 64 GB */
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;&t;WILDFIRE_MAX_QBB
+macro_line|# define NODE_MAX_MEM_SIZE&t;(64L * 1024L * 1024L * 1024L) /* 64 GB */
 macro_line|#else
 DECL|macro|ALPHA_PA_TO_NID
 macro_line|# define ALPHA_PA_TO_NID(pa)&t;(0)
 DECL|macro|NODE_MAX_MEM_SIZE
-mdefine_line|#define NODE_MAX_MEM_SIZE&t;(~0UL)
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;&t;1
+macro_line|# define NODE_MAX_MEM_SIZE&t;(~0UL)
 macro_line|#endif
 DECL|macro|PHYSADDR_TO_NID
 mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;ALPHA_PA_TO_NID(pa)

@@ -9,7 +9,14 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#include &lt;asm/numnodes.h&gt;
+macro_line|#endif
+macro_line|#ifndef MAX_NUMNODES
+DECL|macro|MAX_NUMNODES
+mdefine_line|#define MAX_NUMNODES 1
+macro_line|#endif
+multiline_comment|/* Free memory management - zoned buddy allocator.  */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER 11
@@ -203,6 +210,8 @@ id|zone
 op_star
 id|zones
 (braket
+id|MAX_NUMNODES
+op_star
 id|MAX_NR_ZONES
 op_plus
 l_int|1
@@ -393,6 +402,14 @@ r_int
 r_int
 op_star
 id|inactive
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|build_all_zonelists
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern

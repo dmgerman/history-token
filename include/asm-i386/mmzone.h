@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Written by Pat Gaughen (gone@us.ibm.com) Mar 2002&n; *
 macro_line|#ifndef _ASM_MMZONE_H_
 DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#ifdef CONFIG_X86_NUMAQ
 macro_line|#include &lt;asm/numaq.h&gt;

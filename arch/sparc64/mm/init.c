@@ -8729,7 +8729,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the zero page, mark it reserved, so that page count&n;&t; * is not manipulated when freeing the page from user ptes.&n;&t; */
 id|mem_map_zero
 op_assign
-id|_alloc_pages
+id|alloc_pages
 c_func
 (paren
 id|GFP_KERNEL
