@@ -1570,6 +1570,8 @@ id|NET_IPV4_CONF_ARP_IGNORE
 op_assign
 l_int|19
 comma
+DECL|enumerator|__NET_IPV4_CONF_MAX
+id|__NET_IPV4_CONF_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */
@@ -1813,6 +1815,11 @@ DECL|enumerator|NET_IPV6_ROUTE_MIN_ADVMSS
 id|NET_IPV6_ROUTE_MIN_ADVMSS
 op_assign
 l_int|9
+comma
+DECL|enumerator|NET_IPV6_ROUTE_GC_MIN_INTERVAL_MS
+id|NET_IPV6_ROUTE_GC_MIN_INTERVAL_MS
+op_assign
+l_int|10
 )brace
 suffix:semicolon
 r_enum
@@ -1901,6 +1908,9 @@ DECL|enumerator|NET_IPV6_FORCE_MLD_VERSION
 id|NET_IPV6_FORCE_MLD_VERSION
 op_assign
 l_int|17
+comma
+DECL|enumerator|__NET_IPV6_MAX
+id|__NET_IPV6_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */
@@ -1994,6 +2004,19 @@ DECL|enumerator|NET_NEIGH_GC_THRESH3
 id|NET_NEIGH_GC_THRESH3
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_NEIGH_RETRANS_TIME_MS
+id|NET_NEIGH_RETRANS_TIME_MS
+op_assign
+l_int|17
+comma
+DECL|enumerator|NET_NEIGH_REACHABLE_TIME_MS
+id|NET_NEIGH_REACHABLE_TIME_MS
+op_assign
+l_int|18
+comma
+DECL|enumerator|__NET_NEIGH_MAX
+id|__NET_NEIGH_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipx */

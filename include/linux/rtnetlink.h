@@ -676,6 +676,8 @@ DECL|macro|RTAX_FEATURE_SACK
 mdefine_line|#define RTAX_FEATURE_SACK&t;0x00000002
 DECL|macro|RTAX_FEATURE_TIMESTAMP
 mdefine_line|#define RTAX_FEATURE_TIMESTAMP&t;0x00000004
+DECL|macro|RTAX_FEATURE_ALLFRAG
+mdefine_line|#define RTAX_FEATURE_ALLFRAG&t;0x00000008
 DECL|struct|rta_session
 r_struct
 id|rta_session

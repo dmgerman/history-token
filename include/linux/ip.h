@@ -385,6 +385,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|IPCORK_OPT
 mdefine_line|#define IPCORK_OPT&t;1&t;/* ip-options has been held in ipcork.opt */
+DECL|macro|IPCORK_ALLFRAG
+mdefine_line|#define IPCORK_ALLFRAG&t;2&t;/* always fragment (for ipv6 for now) */
 DECL|function|inet_sk
 r_static
 r_inline
