@@ -5708,7 +5708,11 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* lock ourselves into memory with a module &n;&t; * count of -1 so that no one can unload us. */
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 m_exit
 suffix:colon
