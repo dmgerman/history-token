@@ -35,7 +35,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Time out? --RR */
 DECL|function|help
 r_static
 r_int

@@ -575,8 +575,11 @@ id|i
 dot
 id|timeout
 op_assign
-l_int|0
+l_int|5
+op_star
+l_int|60
 suffix:semicolon
+multiline_comment|/* 5 minutes */
 id|tftp
 (braket
 id|i
