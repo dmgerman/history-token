@@ -737,6 +737,13 @@ c_func
 id|__arch_strnlen_user
 )paren
 suffix:semicolon
+DECL|variable|__arch_strncpy_from_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__arch_strncpy_from_user
+)paren
+suffix:semicolon
 multiline_comment|/* consistent area handling */
 DECL|variable|consistent_alloc
 id|EXPORT_SYMBOL
