@@ -11,12 +11,8 @@ DECL|macro|DEVFS_SUPER_MAGIC
 mdefine_line|#define DEVFS_SUPER_MAGIC                0x1373
 DECL|macro|DEVFS_FL_NONE
 mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;       */
-DECL|macro|DEVFS_FL_HIDE
-mdefine_line|#define DEVFS_FL_HIDE           0x001 /* Do not show entry in directory list */
 DECL|macro|DEVFS_FL_AUTO_DEVNUM
 mdefine_line|#define DEVFS_FL_AUTO_DEVNUM    0x002 /* Automatically generate device number&n;&t;&t;&t;&t;       */
-DECL|macro|DEVFS_FL_AOPEN_NOTIFY
-mdefine_line|#define DEVFS_FL_AOPEN_NOTIFY   0x004 /* Asynchronously notify devfsd on open&n;&t;&t;&t;&t;       */
 DECL|macro|DEVFS_FL_REMOVABLE
 mdefine_line|#define DEVFS_FL_REMOVABLE      0x008 /* This is a removable media device    */
 DECL|macro|DEVFS_FL_WAIT
@@ -219,31 +215,6 @@ id|name
 comma
 r_int
 id|traverse_symlinks
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|devfs_get_flags
-(paren
-id|devfs_handle_t
-id|de
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|devfs_set_flags
-(paren
-id|devfs_handle_t
-id|de
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_extern
@@ -671,43 +642,6 @@ dot
 dot
 )paren
 (brace
-)brace
-DECL|function|devfs_get_flags
-r_static
-r_inline
-r_int
-id|devfs_get_flags
-(paren
-id|devfs_handle_t
-id|de
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|devfs_set_flags
-r_static
-r_inline
-r_int
-id|devfs_set_flags
-(paren
-id|devfs_handle_t
-id|de
-comma
-r_int
-r_int
-id|flags
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|devfs_get_handle_from_inode
 r_static
