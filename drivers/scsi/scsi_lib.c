@@ -1707,6 +1707,11 @@ id|req
 op_assign
 id|cmd-&gt;request
 suffix:semicolon
+r_int
+id|clear_errors
+op_assign
+l_int|1
+suffix:semicolon
 r_struct
 id|scsi_sense_hdr
 id|sshdr
@@ -1853,6 +1858,10 @@ c_cond
 id|result
 )paren
 (brace
+id|clear_errors
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1920,32 +1929,6 @@ id|cmd-&gt;request_bufflen
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|blk_pc_request
-c_func
-(paren
-id|req
-)paren
-)paren
-(brace
-multiline_comment|/* SG_IO ioctl from block level */
-id|scsi_end_request
-c_func
-(paren
-id|cmd
-comma
-l_int|1
-comma
-id|good_bytes
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Next deal with any sectors which we were able to correctly&n;&t; * handle.&n;&t; */
 r_if
 c_cond
@@ -1985,6 +1968,11 @@ id|cmd-&gt;use_sg
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clear_errors
+)paren
 id|req-&gt;errors
 op_assign
 l_int|0
