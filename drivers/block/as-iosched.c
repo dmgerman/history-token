@@ -7273,7 +7273,7 @@ comma
 dot
 id|elevator_name
 op_assign
-l_string|&quot;anticipatory scheduling&quot;
+l_string|&quot;anticipatory&quot;
 comma
 )brace
 suffix:semicolon
