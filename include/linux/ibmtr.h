@@ -315,8 +315,15 @@ r_char
 id|mapped_ram_size
 suffix:semicolon
 multiline_comment|/* size of RAM page */
-DECL|member|sram_virt
+DECL|member|sram_phys
 id|__u32
+id|sram_phys
+suffix:semicolon
+multiline_comment|/* Shared memory base address */
+DECL|member|sram_virt
+r_void
+id|__iomem
+op_star
 id|sram_virt
 suffix:semicolon
 multiline_comment|/* Shared memory base address */
