@@ -25,8 +25,6 @@ macro_line|#endif&t;/* OPTi93X */
 macro_line|#endif&t;/* CS4231 */
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
-DECL|macro|SNDRV_LEGACY_FIND_FREE_IOPORT
-mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IOPORT
 DECL|macro|SNDRV_LEGACY_FIND_FREE_IRQ
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
 DECL|macro|SNDRV_LEGACY_FIND_FREE_DMA
@@ -943,6 +941,56 @@ comma
 l_string|&quot;82C933&quot;
 )brace
 suffix:semicolon
+DECL|function|snd_legacy_find_free_ioport
+r_static
+r_int
+id|snd_legacy_find_free_ioport
+c_func
+(paren
+r_int
+op_star
+id|port_table
+comma
+r_int
+id|size
+)paren
+(brace
+r_while
+c_loop
+(paren
+op_star
+id|port_table
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|check_region
+c_func
+(paren
+op_star
+id|port_table
+comma
+id|size
+)paren
+)paren
+r_return
+op_star
+id|port_table
+suffix:semicolon
+id|port_table
+op_increment
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|snd_opti9xx_init
 r_static
 r_int
