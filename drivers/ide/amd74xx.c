@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: amd74xx.c,v 2.7 2002/09/01 17:37:00 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Andre Hedrick&n; */
+multiline_comment|/*&n; * $Id: amd74xx.c,v 2.8 2002/03/14 11:52:20 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Andre Hedrick&n; */
 multiline_comment|/*&n; * AMD 755/756/766/8111 IDE driver for Linux.&n; *&n; * UDMA66 and higher modes are autoenabled only in case the BIOS has detected a&n; * 80 wire cable. To ignore the BIOS data and assume the cable is present, use&n; * &squot;ide0=ata66&squot; or &squot;ide1=ata66&squot; on the kernel command line.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -11,19 +11,19 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|AMD_IDE_ENABLE
-mdefine_line|#define AMD_IDE_ENABLE&t;&t;0x40
+mdefine_line|#define AMD_IDE_ENABLE&t;&t;(0x00 + amd_config-&gt;base)
 DECL|macro|AMD_IDE_CONFIG
-mdefine_line|#define AMD_IDE_CONFIG&t;&t;0x41
+mdefine_line|#define AMD_IDE_CONFIG&t;&t;(0x01 + amd_config-&gt;base)
 DECL|macro|AMD_CABLE_DETECT
-mdefine_line|#define AMD_CABLE_DETECT&t;0x42
+mdefine_line|#define AMD_CABLE_DETECT&t;(0x02 + amd_config-&gt;base)
 DECL|macro|AMD_DRIVE_TIMING
-mdefine_line|#define AMD_DRIVE_TIMING&t;0x48
+mdefine_line|#define AMD_DRIVE_TIMING&t;(0x08 + amd_config-&gt;base)
 DECL|macro|AMD_8BIT_TIMING
-mdefine_line|#define AMD_8BIT_TIMING&t;&t;0x4e
+mdefine_line|#define AMD_8BIT_TIMING&t;&t;(0x0e + amd_config-&gt;base)
 DECL|macro|AMD_ADDRESS_SETUP
-mdefine_line|#define AMD_ADDRESS_SETUP&t;0x4c
+mdefine_line|#define AMD_ADDRESS_SETUP&t;(0x0c + amd_config-&gt;base)
 DECL|macro|AMD_UDMA_TIMING
-mdefine_line|#define AMD_UDMA_TIMING&t;&t;0x50
+mdefine_line|#define AMD_UDMA_TIMING&t;&t;(0x10 + amd_config-&gt;base)
 DECL|macro|AMD_UDMA
 mdefine_line|#define AMD_UDMA&t;&t;0x07
 DECL|macro|AMD_UDMA_33
@@ -42,11 +42,6 @@ r_static
 r_struct
 id|amd_ide_chip
 (brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
 DECL|member|id
 r_int
 r_int
@@ -56,6 +51,11 @@ DECL|member|rev
 r_int
 r_char
 id|rev
+suffix:semicolon
+DECL|member|base
+r_int
+r_int
+id|base
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -70,73 +70,90 @@ id|amd_ide_chips
 op_assign
 (brace
 (brace
-l_string|&quot;8111&quot;
-comma
 id|PCI_DEVICE_ID_AMD_8111_IDE
 comma
 l_int|0x00
 comma
+l_int|0x40
+comma
 id|AMD_UDMA_100
 )brace
 comma
+multiline_comment|/* AMD-8111 */
 (brace
-l_string|&quot;768 Opus&quot;
-comma
 id|PCI_DEVICE_ID_AMD_OPUS_7441
 comma
 l_int|0x00
 comma
+l_int|0x40
+comma
 id|AMD_UDMA_100
 )brace
 comma
+multiline_comment|/* AMD-768 Opus */
 (brace
-l_string|&quot;766 Viper&quot;
-comma
 id|PCI_DEVICE_ID_AMD_VIPER_7411
 comma
 l_int|0x00
+comma
+l_int|0x40
 comma
 id|AMD_UDMA_100
 op_or
 id|AMD_BAD_FIFO
 )brace
 comma
+multiline_comment|/* AMD-766 Viper */
 (brace
-l_string|&quot;756/c4+ Viper&quot;
-comma
 id|PCI_DEVICE_ID_AMD_VIPER_7409
 comma
 l_int|0x07
 comma
+l_int|0x40
+comma
 id|AMD_UDMA_66
 )brace
 comma
+multiline_comment|/* AMD-756/c4+ Viper */
 (brace
-l_string|&quot;756 Viper&quot;
-comma
 id|PCI_DEVICE_ID_AMD_VIPER_7409
 comma
 l_int|0x00
+comma
+l_int|0x40
 comma
 id|AMD_UDMA_66
 op_or
 id|AMD_BAD_SWDMA
 )brace
 comma
+multiline_comment|/* AMD-756 Viper */
 (brace
-l_string|&quot;755 Cobra&quot;
-comma
 id|PCI_DEVICE_ID_AMD_COBRA_7401
 comma
 l_int|0x00
+comma
+l_int|0x40
 comma
 id|AMD_UDMA_33
 op_or
 id|AMD_BAD_SWDMA
 )brace
 comma
+multiline_comment|/* AMD-755 Cobra */
 (brace
-l_int|NULL
+id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
+comma
+l_int|0x00
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_100
+)brace
+comma
+multiline_comment|/* nVidia nForce */
+(brace
+l_int|0
 )brace
 )brace
 suffix:semicolon
@@ -397,15 +414,15 @@ suffix:semicolon
 id|amd_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     2.7&quot;
+l_string|&quot;Driver Version:                     2.8&quot;
 )paren
 suffix:semicolon
 id|amd_print
 c_func
 (paren
-l_string|&quot;South Bridge:                       AMD-%s&quot;
+l_string|&quot;South Bridge:                       %s&quot;
 comma
-id|amd_config-&gt;name
+id|bmide_dev-&gt;name
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -2432,9 +2449,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AMD_IDE: AMD-%s (rev %02x) IDE %s controller on pci%s&bslash;n&quot;
+l_string|&quot;AMD_IDE: %s (rev %02x) %s controller on pci%s&bslash;n&quot;
 comma
-id|amd_config-&gt;name
+id|dev-&gt;name
 comma
 id|t
 comma
