@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/*  MIXER (CAsp4Mix.s and CAsp4Mixer.s) */
 singleline_comment|// FIXME: get rid of this.
 DECL|variable|mchannels
+r_static
 r_int
 id|mchannels
 (braket
@@ -13,6 +14,7 @@ id|NR_MIXIN
 )braket
 suffix:semicolon
 DECL|variable|rampchs
+r_static
 r_int
 id|rampchs
 (braket
