@@ -401,6 +401,9 @@ id|mem
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * /proc interface&n; *&n; ***************************************************************************/
+macro_line|#warning please convert me from procfs to sysfs
+DECL|macro|CONFIG_VIDEO_PROC_FS
+macro_line|#undef CONFIG_VIDEO_PROC_FS
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 DECL|variable|se401_proc_entry
 r_static

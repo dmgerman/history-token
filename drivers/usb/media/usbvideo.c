@@ -32,6 +32,9 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+macro_line|#warning please convert me from procfs to sysfs
+DECL|macro|USES_PROC_FS
+mdefine_line|#define USES_PROC_FS 0
 multiline_comment|/*&n; * Local prototypes.&n; */
 macro_line|#if USES_PROC_FS
 r_static
