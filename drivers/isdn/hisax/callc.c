@@ -84,6 +84,13 @@ r_static
 r_int
 id|chancount
 suffix:semicolon
+DECL|variable|callc_lock
+r_static
+id|spinlock_t
+id|callc_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* experimental REJECT after ALERTING for CALLBACK to beat the 4s delay */
 DECL|macro|ALERT_REJECT
 mdefine_line|#define ALERT_REJECT 0
@@ -9619,15 +9626,13 @@ comma
 id|MAX_DATA_MEM
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|callc_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|nskb
@@ -9712,9 +9717,12 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|callc_lock
+comma
 id|flags
 )paren
 suffix:semicolon
