@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/vga.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -362,6 +363,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_memset_c_io
+)paren
+suffix:semicolon
+DECL|variable|scr_memcpyw
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scr_memcpyw
 )paren
 suffix:semicolon
 DECL|variable|insb
