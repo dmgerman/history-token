@@ -4850,6 +4850,17 @@ op_amp
 id|xattr_handlers
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_FS_SECURITY
+id|list_add_tail
+(paren
+op_amp
+id|security_handler.handlers
+comma
+op_amp
+id|xattr_handlers
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_REISERFS_FS_POSIX_ACL
 id|list_add_tail
 (paren

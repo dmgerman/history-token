@@ -363,6 +363,13 @@ r_struct
 id|reiserfs_xattr_handler
 id|trusted_handler
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_FS_SECURITY
+r_extern
+r_struct
+id|reiserfs_xattr_handler
+id|security_handler
+suffix:semicolon
+macro_line|#endif
 r_int
 id|reiserfs_xattr_register_handlers
 (paren
