@@ -1069,6 +1069,10 @@ id|card_index
 op_assign
 op_minus
 l_int|1
+comma
+id|done
+op_assign
+l_int|0
 suffix:semicolon
 id|handle
 op_assign
@@ -1227,8 +1231,9 @@ id|card_index
 op_assign
 id|i
 suffix:semicolon
-r_goto
 id|done
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -1239,6 +1244,10 @@ id|CISTPL_VERS_1
 suffix:semicolon
 r_if
 c_cond
+(paren
+op_logical_neg
+id|done
+op_logical_and
 (paren
 id|CardServices
 c_func
@@ -1252,6 +1261,7 @@ id|tuple
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 r_int
@@ -1491,14 +1501,17 @@ id|card_index
 op_assign
 id|i
 suffix:semicolon
-r_goto
-id|done
+r_break
 suffix:semicolon
+multiline_comment|/* done */
 id|mismatch
 suffix:colon
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* dummy stmt to shut up compiler */
 )brace
-id|done
-suffix:colon
 )brace
 multiline_comment|/*&n;&t;  This reads the card&squot;s CONFIG tuple to find its configuration&n;&t;  registers.&n;&t;*/
 id|tuple.DesiredTuple
