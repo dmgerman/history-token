@@ -328,6 +328,8 @@ r_int
 id|ioaddr
 comma
 id|irq
+op_assign
+l_int|0
 suffix:semicolon
 r_static
 r_int
@@ -895,7 +897,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|sun3scsi_release
 r_int
 id|sun3scsi_release
@@ -923,6 +924,10 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|sun3_scsi_regp
 )paren
 suffix:semicolon
@@ -930,7 +935,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef RESET_BOOT
 multiline_comment|/*&n; * Our &squot;bus reset on boot&squot; function&n; */
 DECL|function|sun3_scsi_reset_boot
