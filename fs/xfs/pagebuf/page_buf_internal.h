@@ -312,15 +312,6 @@ id|pbstats
 suffix:semicolon
 DECL|macro|PB_STATS_INC
 mdefine_line|#define PB_STATS_INC(count)&t;( count ++ )
-DECL|macro|assert
-macro_line|#undef assert
-macro_line|#ifdef PAGEBUF_DEBUG
-DECL|macro|assert
-macro_line|# define assert(expr) &bslash;&n;&t;if (!(expr)) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;Assertion failed: %s&bslash;n%s::%s line %d&bslash;n&quot;,&bslash;&n;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
-macro_line|#else
-DECL|macro|assert
-macro_line|# define assert(x)&t;do { } while (0)
-macro_line|#endif
 macro_line|#ifndef STATIC
 DECL|macro|STATIC
 macro_line|# define STATIC static

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
 DECL|macro|SECTOR_SHIFT
@@ -1861,14 +1862,16 @@ id|nbytes
 op_rshift
 id|SECTOR_SHIFT
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 id|blocksize
 OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 op_logical_neg
 (paren
@@ -4729,14 +4732,16 @@ id|j
 comma
 id|range
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 id|blocksize
 OL
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 op_logical_neg
 (paren
@@ -5823,7 +5828,8 @@ op_amp
 id|csize
 )paren
 suffix:semicolon
-m_assert
+id|ASSERT
+c_func
 (paren
 (paren
 (paren
