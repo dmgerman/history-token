@@ -27,6 +27,7 @@ multiline_comment|/**&n; * longrun_get_policy - get the current LongRun policy&n
 DECL|function|longrun_get_policy
 r_static
 r_void
+id|__init
 id|longrun_get_policy
 c_func
 (paren
