@@ -3454,7 +3454,6 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|copy_mount_options
-r_static
 r_int
 id|copy_mount_options
 (paren
