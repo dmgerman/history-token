@@ -7487,11 +7487,6 @@ op_star
 id|skb
 suffix:semicolon
 r_int
-id|reserve_len
-op_assign
-l_int|2
-suffix:semicolon
-r_int
 r_int
 id|i
 suffix:semicolon
@@ -7559,7 +7554,7 @@ c_func
 (paren
 id|adapter-&gt;rx_buffer_len
 op_plus
-id|reserve_len
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -7583,7 +7578,7 @@ c_func
 (paren
 id|skb
 comma
-id|reserve_len
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|skb-&gt;dev
