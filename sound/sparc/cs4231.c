@@ -354,13 +354,13 @@ multiline_comment|/* IO ports */
 DECL|macro|CS4231P
 mdefine_line|#define CS4231P(chip, x)&t;((chip)-&gt;port + c_d_c_CS4231##x)
 DECL|macro|c_d_c_CS4231REGSEL
-mdefine_line|#define c_d_c_CS4231REGSEL&t;0
+mdefine_line|#define c_d_c_CS4231REGSEL&t;0x0
 DECL|macro|c_d_c_CS4231REG
-mdefine_line|#define c_d_c_CS4231REG&t;&t;1
+mdefine_line|#define c_d_c_CS4231REG&t;&t;0x4
 DECL|macro|c_d_c_CS4231STATUS
-mdefine_line|#define c_d_c_CS4231STATUS&t;2
+mdefine_line|#define c_d_c_CS4231STATUS&t;0x8
 DECL|macro|c_d_c_CS4231PIO
-mdefine_line|#define c_d_c_CS4231PIO&t;&t;3
+mdefine_line|#define c_d_c_CS4231PIO&t;&t;0xc
 multiline_comment|/* codec registers */
 DECL|macro|CS4231_LEFT_INPUT
 mdefine_line|#define CS4231_LEFT_INPUT&t;0x00&t;/* left input control */
@@ -1441,6 +1441,10 @@ id|reg
 r_int
 id|timeout
 suffix:semicolon
+r_int
+r_char
+id|ret
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1531,7 +1535,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|__cs4231_readb
 c_func
 (paren
@@ -1545,6 +1550,23 @@ comma
 id|REG
 )paren
 )paren
+suffix:semicolon
+macro_line|#if 0
+id|printk
+c_func
+(paren
+l_string|&quot;codec in - reg 0x%x = 0x%x&bslash;n&quot;
+comma
+id|chip-&gt;mce_bit
+op_or
+id|reg
+comma
+id|ret
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SND_DEBUG
@@ -6422,10 +6444,6 @@ c_cond
 id|id
 op_eq
 l_int|0x0a
-op_logical_or
-id|id
-op_eq
-l_int|0x0c
 )paren
 r_break
 suffix:semicolon
@@ -6448,10 +6466,6 @@ c_cond
 id|id
 op_ne
 l_int|0x0a
-op_logical_and
-id|id
-op_ne
-l_int|0x0c
 )paren
 r_return
 op_minus
