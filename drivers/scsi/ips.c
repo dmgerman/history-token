@@ -129,6 +129,7 @@ multiline_comment|/* 5.10.12  - use pci_dma interfaces, update for 2.5 kernel ch
 multiline_comment|/* 5.10.15  - remove unused code (sem, macros, etc.)                         */
 multiline_comment|/* 5.30.00  - use __devexit_p()                                              */
 multiline_comment|/* 6.00.00  - Add 6x Adapters and Battery Flash                              */
+multiline_comment|/* 6.10.00  - Remove 1G Addressing Limitations                               */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Conditional Compilation directives for this driver:&n; *&n; * IPS_DEBUG            - Turn on debugging info&n; *&n; * Parameters:&n; *&n; * debug:&lt;number&gt;       - Set debug level to &lt;number&gt;&n; *                        NOTE: only works when IPS_DEBUG compile directive is used.&n; *       1              - Normal debug messages&n; *       2              - Verbose debug messages&n; *       11             - Method trace (non interrupt)&n; *       12             - Method trace (includes interrupt)&n; *&n; * noi2o                - Don&squot;t use I2O Queues (ServeRAID 4 only)&n; * nommap               - Don&squot;t use memory mapped I/O&n; * ioctlsize            - Initial size of the IOCTL buffer&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -185,6 +186,7 @@ macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__)
 macro_line|#error &quot;This driver has only been tested on the x86/ia64 platforms&quot;
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;sd.h&quot;
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)       ((sg)-&gt;address)
@@ -381,13 +383,28 @@ id|eh_host_reset_handler
 op_assign
 id|ips_eh_reset
 comma
+dot
+id|proc_name
+op_assign
+l_string|&quot;ips&quot;
+comma
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+dot
+id|proc_info
+op_assign
+id|ips_proc_info
+comma
 dot
 id|slave_configure
 op_assign
 id|ips_slave_configure
 comma
 macro_line|#else
+dot
+id|proc_info
+op_assign
+id|ips_proc24_info
+comma
 dot
 id|select_queue_depths
 op_assign
@@ -632,9 +649,9 @@ l_string|&quot;ServeRAID 5i&quot;
 comma
 l_string|&quot;ServeRAID 5i&quot;
 comma
-l_string|&quot;ServeRAID 00&quot;
+l_string|&quot;ServeRAID 6M&quot;
 comma
-l_string|&quot;ServeRAID 00&quot;
+l_string|&quot;ServeRAID 6i&quot;
 )brace
 suffix:semicolon
 DECL|variable|ips_notifier
@@ -2733,14 +2750,6 @@ l_string|&quot;ERROR: Can&squot;t Allocate Large Buffer for Flashing&bslash;n&qu
 suffix:semicolon
 )brace
 )brace
-id|SHT-&gt;proc_info
-op_assign
-id|ips_proc_info
-suffix:semicolon
-id|SHT-&gt;proc_name
-op_assign
-l_string|&quot;ips&quot;
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4642,7 +4651,7 @@ id|ips_copp_wait_item_t
 op_star
 id|scratch
 suffix:semicolon
-multiline_comment|/* A Reset IOCTL is only sent by the ServeRAID boot CD in extreme cases. */
+multiline_comment|/* A Reset IOCTL is only sent by the boot CD in extreme cases.           */
 multiline_comment|/* There can never be any system activity ( network or disk ), but check */
 multiline_comment|/* anyway just as a good practice.                                       */
 id|pt
@@ -5042,6 +5051,98 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/* ips_proc24_info is a wrapper around ips_proc_info *&n; * for compatibility with the 2.4 scsi parameters    */
+r_static
+r_int
+DECL|function|ips_proc24_info
+id|ips_proc24_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|func
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ips_next_controller
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ips_sh
+(braket
+id|i
+)braket
+op_logical_and
+id|ips_sh
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|host_no
+op_eq
+id|hostno
+)paren
+(brace
+r_return
+id|ips_proc_info
+c_func
+(paren
+id|ips_sh
+(braket
+id|i
+)braket
+comma
+id|buffer
+comma
+id|start
+comma
+id|offset
+comma
+id|length
+comma
+id|func
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_select_queue_depth                                     */
@@ -13304,7 +13405,7 @@ multiline_comment|/* Routine Name: ips_map_status                               
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*                                                                          */
-multiline_comment|/*   Map ServeRAID error codes to Linux Error Codes                         */
+multiline_comment|/*   Map Controller Error codes to Linux Error Codes                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
 r_static
@@ -14266,8 +14367,8 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* ServeRAID commands can&squot;t be issued */
-multiline_comment|/* to real devices -- fail them       */
+multiline_comment|/* Controller commands can&squot;t be issued */
+multiline_comment|/* to real devices -- fail them        */
 r_if
 c_cond
 (paren
@@ -18355,6 +18456,15 @@ comma
 id|IPS_BIT_EI
 )paren
 suffix:semicolon
+id|inb
+c_func
+(paren
+id|ha-&gt;io_addr
+op_plus
+id|IPS_REG_HISR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -18393,6 +18503,15 @@ op_plus
 id|IPS_REG_HISR
 )paren
 suffix:semicolon
+id|readb
+c_func
+(paren
+id|ha-&gt;mem_ptr
+op_plus
+id|IPS_REG_HISR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -18449,6 +18568,15 @@ op_plus
 id|IPS_REG_I960_OIMR
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|ha-&gt;mem_ptr
+op_plus
+id|IPS_REG_I960_OIMR
+)paren
+suffix:semicolon
+multiline_comment|/*Ensure PCI Posting Completes*/
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -23028,7 +23156,7 @@ l_int|0
 suffix:semicolon
 id|scb-&gt;cmd.ffdc.reset_type
 op_assign
-l_int|0x80
+l_int|0
 suffix:semicolon
 multiline_comment|/* convert time to what the card wants */
 id|ips_fix_ffdc_time
@@ -25457,7 +25585,7 @@ multiline_comment|/*   Dependencies:                                            
 multiline_comment|/*     Assumes that ips_read_adapter_status() is called first filling in     */
 multiline_comment|/*     the data for SubSystem Parameters.                                    */
 multiline_comment|/*     Called from ips_write_driver_status() so it also assumes NVRAM Page 5 */
-multiline_comment|/*     Data is availaible.                                                   */
+multiline_comment|/*     Data is available.                                                    */
 multiline_comment|/*                                                                           */
 multiline_comment|/*---------------------------------------------------------------------------*/
 r_static
@@ -25804,7 +25932,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*   Routine Name: ips_get_version_info                                      */
 multiline_comment|/*                                                                           */
 multiline_comment|/*   Routine Description:                                                    */
-multiline_comment|/*     Issue an internal GETVERSION ServeRAID Command                        */
+multiline_comment|/*     Issue an internal GETVERSION Command                                  */
 multiline_comment|/*                                                                           */
 multiline_comment|/*   Return Value:                                                           */
 multiline_comment|/*     0 if Successful, else non-zero                                        */

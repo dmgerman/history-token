@@ -175,7 +175,11 @@ mdefine_line|#define IPS_REMOVE_HOST(shost)
 DECL|macro|IPS_SCSI_SET_DEVICE
 mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_pci_device(sh, (ha)-&gt;pcidev)
 DECL|macro|IPS_PRINTK
-mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , (pcidev)-&gt;driver-&gt;name ,     &bslash;&n;            pci_name(pcidev) , ## arg)
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , &quot;ips&quot; ,     &bslash;&n;            (pcidev)-&gt;slot_name , ## arg)
+DECL|macro|scsi_host_alloc
+mdefine_line|#define scsi_host_alloc(sh,size)         scsi_register(sh,size)
+DECL|macro|scsi_host_put
+mdefine_line|#define scsi_host_put(sh)             scsi_unregister(sh)
 macro_line|#else
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
@@ -688,6 +692,27 @@ mdefine_line|#define IPS_EPOCH_YEAR               1970
 multiline_comment|/*&n;    * Scsi_Host Template&n;    */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_static
+r_int
+id|ips_proc24_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
 r_void
 id|ips_select_queue_depth
 c_func
@@ -719,6 +744,28 @@ id|geom
 )paren
 suffix:semicolon
 macro_line|#else
+r_int
+id|ips_proc_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 r_static
 r_int
 id|ips_biosparam
