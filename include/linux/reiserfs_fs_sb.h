@@ -1157,7 +1157,7 @@ id|list
 )paren
 suffix:semicolon
 r_int
-id|reiserfs_is_super
+id|is_reiserfs_super
 c_func
 (paren
 r_struct

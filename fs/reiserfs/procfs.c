@@ -52,7 +52,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|reiserfs_is_super
+id|is_reiserfs_super
 c_func
 (paren
 id|result
