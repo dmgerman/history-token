@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -134,9 +135,19 @@ DECL|macro|_PAGE_SZBITS
 mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ512K
 macro_line|#elif PAGE_SHIFT == 22
 DECL|macro|_PAGE_SZBITS
-mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ4M
+mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ4MB
 macro_line|#else
 macro_line|#error Wrong PAGE_SHIFT specified
+macro_line|#endif
+macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_4MB)
+DECL|macro|_PAGE_SZHUGE
+mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_SZ4MB
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_512K)
+DECL|macro|_PAGE_SZHUGE
+mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_512K
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
+DECL|macro|_PAGE_SZHUGE
+mdefine_line|#define _PAGE_SZHUGE&t;_PAGE_64K
 macro_line|#endif
 DECL|macro|_PAGE_CACHE
 mdefine_line|#define _PAGE_CACHE&t;(_PAGE_CP | _PAGE_CV)

@@ -268,8 +268,16 @@ mdefine_line|#define __pgprot(x)&t;(x)
 DECL|macro|__iopgprot
 mdefine_line|#define __iopgprot(x)&t;(x)
 macro_line|#endif /* (STRICT_MM_TYPECHECKS) */
+macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_4MB)
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;&t;22
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_512K)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;&t;19
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;&t;16
+macro_line|#endif
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|HPAGE_SIZE
 mdefine_line|#define HPAGE_SIZE&t;&t;((1UL) &lt;&lt; HPAGE_SHIFT)
