@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#if 0
+DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP printk
 macro_line|#else
 DECL|macro|DEBUGP
@@ -3221,34 +3222,16 @@ id|modversion_info
 op_star
 id|versions
 suffix:semicolon
+multiline_comment|/* Exporting module didn&squot;t supply crcs?  OK, we&squot;re already tainted. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|ksg-&gt;crcs
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: no CRC for &bslash;&quot;%s&bslash;&quot; [%s] found: kernel tainted.&bslash;n&quot;
-comma
-id|mod-&gt;name
-comma
-id|symname
-comma
-id|ksg-&gt;owner
-ques
-c_cond
-id|ksg-&gt;owner-&gt;name
-suffix:colon
-l_string|&quot;kernel&quot;
-)paren
+r_return
+l_int|1
 suffix:semicolon
-r_goto
-id|taint
-suffix:semicolon
-)brace
 id|crc
 op_assign
 id|ksg-&gt;crcs
@@ -3364,6 +3347,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Not in module&squot;s version table.  OK, but that taints the kernel. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tainted
+op_amp
+id|TAINT_FORCED_MODULE
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -3374,12 +3368,11 @@ comma
 id|symname
 )paren
 suffix:semicolon
-id|taint
-suffix:colon
 id|tainted
 op_or_assign
 id|TAINT_FORCED_MODULE
 suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -6273,6 +6266,11 @@ id|exportindex
 dot
 id|sh_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|crcindex
+)paren
 id|mod-&gt;symbols.crcs
 op_assign
 (paren
@@ -6316,6 +6314,11 @@ id|gplindex
 dot
 id|sh_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gplcrcindex
+)paren
 id|mod-&gt;gpl_symbols.crcs
 op_assign
 (paren
@@ -6329,6 +6332,40 @@ id|gplcrcindex
 dot
 id|sh_addr
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODVERSIONS
+r_if
+c_cond
+(paren
+(paren
+id|mod-&gt;symbols.num_syms
+op_logical_and
+op_logical_neg
+id|crcindex
+)paren
+op_logical_or
+(paren
+id|mod-&gt;gpl_symbols.num_syms
+op_logical_and
+op_logical_neg
+id|gplcrcindex
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: No versions for exported symbols.&quot;
+l_string|&quot; Tainting kernel.&bslash;n&quot;
+comma
+id|mod-&gt;name
+)paren
+suffix:semicolon
+id|tainted
+op_or_assign
+id|TAINT_FORCED_MODULE
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Set up exception table */
 r_if
 c_cond
