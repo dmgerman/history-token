@@ -1634,6 +1634,13 @@ r_int
 r_int
 id|blocknr
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|J_ASSERT
 c_func
 (paren
@@ -1662,6 +1669,13 @@ id|journal-&gt;j_last
 id|journal-&gt;j_head
 op_assign
 id|journal-&gt;j_first
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
 suffix:semicolon
 r_return
 id|journal_bmap
@@ -2356,6 +2370,7 @@ DECL|function|journal_reset
 r_static
 r_int
 id|journal_reset
+c_func
 (paren
 id|journal_t
 op_star
