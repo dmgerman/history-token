@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/s390dyn.h&gt;
 macro_line|#include &lt;asm/queue.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
@@ -598,11 +598,26 @@ r_int
 r_int
 id|chandev_last_machine_check
 suffix:semicolon
-DECL|variable|chandev_msck_task_tq
 r_static
-r_struct
-id|tq_struct
-id|chandev_msck_task_tq
+r_void
+id|chandev_msck_task
+c_func
+(paren
+r_void
+op_star
+id|unused
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|chandev_msck_work
+comma
+id|chandev_msck_task
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|chandev_msck_thread_lock
 r_static
@@ -2300,11 +2315,11 @@ id|chandev_msck_thread_lock
 )paren
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|chandev_msck_task_tq
+id|chandev_msck_work
 )paren
 suffix:semicolon
 )brace
@@ -2407,11 +2422,11 @@ id|chandev_msck_thread_lock
 )paren
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|chandev_msck_task_tq
+id|chandev_msck_work
 )paren
 suffix:semicolon
 )brace
@@ -14633,27 +14648,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|chandev_msck_task_tq.routine
-op_assign
-id|chandev_msck_task
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,3,0)
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|chandev_msck_task_tq.list
-)paren
-suffix:semicolon
-id|chandev_msck_task_tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-id|chandev_msck_task_tq.data
-op_assign
-l_int|NULL
-suffix:semicolon
 id|chandev_last_startmsck_list_update
 op_assign
 id|chandev_last_machine_check

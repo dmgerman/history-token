@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -657,10 +658,10 @@ r_struct
 id|tasklet_struct
 id|tasklet
 suffix:semicolon
-DECL|member|kick_tq
+DECL|member|kick_work
 r_struct
-id|tq_struct
-id|kick_tq
+id|work_struct
+id|kick_work
 suffix:semicolon
 DECL|member|timer
 r_struct

@@ -3,6 +3,7 @@ macro_line|#include &quot;fsm.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 id|fsm_instance
 op_star
 DECL|function|init_fsm
@@ -818,53 +819,6 @@ id|millisec
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
-r_if
-c_cond
-(paren
-id|this-&gt;tl.list.next
-op_logical_or
-id|this-&gt;tl.list.prev
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;fsm(%s): timer already active!&bslash;n&quot;
-comma
-id|this-&gt;fi-&gt;name
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|this-&gt;tl.next
-op_logical_or
-id|this-&gt;tl.prev
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;fsm(%s): timer already active!&bslash;n&quot;
-comma
-id|this-&gt;fi-&gt;name
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 id|init_timer
 c_func
 (paren
@@ -954,14 +908,6 @@ id|millisec
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
-r_if
-c_cond
-(paren
-id|this-&gt;tl.list.next
-op_logical_or
-id|this-&gt;tl.list.prev
-)paren
 id|del_timer
 c_func
 (paren
@@ -969,22 +915,6 @@ op_amp
 id|this-&gt;tl
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|this-&gt;tl.next
-op_logical_or
-id|this-&gt;tl.prev
-)paren
-id|del_timer
-c_func
-(paren
-op_amp
-id|this-&gt;tl
-)paren
-suffix:semicolon
-macro_line|#endif
 id|init_timer
 c_func
 (paren

@@ -969,7 +969,7 @@ suffix:semicolon
 DECL|macro|LCS_MAGIC
 mdefine_line|#define LCS_MAGIC&t;&t;&t;0x05A22A05&t;/* OSA2 to you */
 DECL|macro|LCS_CHAN_GLOBALS
-mdefine_line|#define LCS_CHAN_GLOBALS(num_io_buffs)      &bslash;&n;u32                  irq_allocated_magic;   &bslash;&n;u16 subchannel;                             &bslash;&n;u16 devno;                                  &bslash;&n;struct lcs_drvr_globals *drvr_globals;      &bslash;&n;atomic_t             sleeping_on_io;        &bslash;&n;unsigned long        flags;                 &bslash;&n;int                  rc;                    &bslash;&n;int                  lock_owner;            &bslash;&n;int                  lock_cnt;              &bslash;&n;wait_queue_head_t    wait;                  &bslash;&n;struct  tq_struct    retry_task;            &bslash;&n;devstat_t&t;     devstat;               &bslash;&n;lcs_chan_busy_state  chan_busy_state;       &bslash;&n;ccw1_t               ccw[num_io_buffs+1];   &bslash;&n;
+mdefine_line|#define LCS_CHAN_GLOBALS(num_io_buffs)      &bslash;&n;u32                  irq_allocated_magic;   &bslash;&n;u16 subchannel;                             &bslash;&n;u16 devno;                                  &bslash;&n;struct lcs_drvr_globals *drvr_globals;      &bslash;&n;atomic_t             sleeping_on_io;        &bslash;&n;unsigned long        flags;                 &bslash;&n;int                  rc;                    &bslash;&n;int                  lock_owner;            &bslash;&n;int                  lock_cnt;              &bslash;&n;wait_queue_head_t    wait;                  &bslash;&n;struct work_struct   retry_task;            &bslash;&n;devstat_t&t;     devstat;               &bslash;&n;lcs_chan_busy_state  chan_busy_state;       &bslash;&n;ccw1_t               ccw[num_io_buffs+1];   &bslash;&n;
 r_typedef
 r_struct
 (brace
@@ -1077,7 +1077,7 @@ id|bytes_still_being_txed
 suffix:semicolon
 DECL|member|resume_task
 r_struct
-id|tq_struct
+id|work_struct
 id|resume_task
 suffix:semicolon
 DECL|member|resume_queued
@@ -1258,7 +1258,7 @@ id|drvr_globals
 suffix:semicolon
 DECL|member|kernel_thread_task
 r_struct
-id|tq_struct
+id|work_struct
 id|kernel_thread_task
 suffix:semicolon
 DECL|member|lgw_sequence_no
@@ -3200,11 +3200,13 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE&lt;KERNEL_VERSION(2,5,41)
 r_struct
 id|tq_struct
 op_star
 id|lcs_tq
 suffix:semicolon
+macro_line|#endif
 id|lcs_debug_event
 c_func
 (paren
@@ -3410,6 +3412,68 @@ c_func
 id|drvr_globals
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,5,41)
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|drvr_globals-&gt;kernel_thread_task
+comma
+id|lcs_kernel_thread
+comma
+(paren
+r_int
+r_int
+)paren
+id|drvr_globals
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|read-&gt;retry_task
+comma
+id|lcs_queued_restartreadio
+comma
+(paren
+r_int
+r_int
+)paren
+id|drvr_globals
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|write-&gt;retry_task
+comma
+id|lcs_queued_restartwriteio
+comma
+(paren
+r_int
+r_int
+)paren
+id|drvr_globals
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|resume_task
+comma
+id|lcs_resume_writetask
+comma
+(paren
+r_int
+r_int
+)paren
+id|write
+)paren
+suffix:semicolon
+macro_line|#else
 id|lcs_tq
 op_assign
 op_amp
@@ -3530,6 +3594,7 @@ op_star
 )paren
 id|write
 suffix:semicolon
+macro_line|#endif
 id|read-&gt;chan_busy_state
 op_assign
 id|write-&gt;chan_busy_state
@@ -3623,6 +3688,15 @@ id|chan_globals-&gt;subchannel
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,5,41)
+id|schedule_work
+c_func
+(paren
+op_amp
+id|chan_globals-&gt;retry_task
+)paren
+suffix:semicolon
+macro_line|#else
 macro_line|#if LINUX_VERSION_CODE&gt;KERNEL_VERSION(2,2,16)
 id|schedule_task
 c_func
@@ -3642,6 +3716,7 @@ op_amp
 id|tq_scheduler
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 )brace
 r_static
@@ -5077,6 +5152,15 @@ id|write-&gt;resume_queued
 op_assign
 id|TRUE
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,5,41)
+id|schedule_work
+c_func
+(paren
+op_amp
+id|write-&gt;resume_task
+)paren
+suffix:semicolon
+macro_line|#else
 id|queue_task
 c_func
 (paren
@@ -5087,6 +5171,7 @@ op_amp
 id|tq_immediate
 )paren
 suffix:semicolon
+macro_line|#endif
 id|mark_bh
 c_func
 (paren
@@ -5942,6 +6027,15 @@ id|drvr_globals-&gt;kernel_thread_routine
 op_assign
 id|routine
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,5,41)
+id|schedule_work
+c_func
+(paren
+op_amp
+id|drvr_globals-&gt;kernel_thread_task
+)paren
+suffix:semicolon
+macro_line|#else
 macro_line|#if LINUX_VERSION_CODE&lt;=KERNEL_VERSION(2,2,16)
 id|queue_task
 c_func
@@ -5961,6 +6055,7 @@ op_amp
 id|drvr_globals-&gt;kernel_thread_task
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 )brace
 r_else

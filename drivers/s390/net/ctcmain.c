@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -313,12 +312,6 @@ DECL|member|devstat
 id|devstat_t
 op_star
 id|devstat
-suffix:semicolon
-multiline_comment|/**&n;&t; * Bottom half task queue.&n;&t; */
-DECL|member|tq
-r_struct
-id|tq_struct
-id|tq
 suffix:semicolon
 multiline_comment|/**&n;&t; * RX/TX buffer size&n;&t; */
 DECL|member|max_bufsize
@@ -1749,46 +1742,6 @@ id|LL_HEADER_LENGTH
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/**&n; * Bottom half routine.&n; *&n; * @param ch The channel to work on.&n; */
-DECL|function|ctc_bh
-r_static
-r_void
-id|ctc_bh
-c_func
-(paren
-id|channel
-op_star
-id|ch
-)paren
-(brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|ch-&gt;io_queue
-)paren
-)paren
-)paren
-id|ctc_unpack_skb
-c_func
-(paren
-id|ch
-comma
-id|skb
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * Check return code of a preceeding do_IO, halt_IO etc...&n; *&n; * @param ch          The channel, the error belongs to.&n; * @param return_code The error code to inspect.&n; */
 DECL|function|ccw_check_return_code
@@ -4314,33 +4267,6 @@ l_string|&quot;RX&quot;
 suffix:colon
 l_string|&quot;TX&quot;
 )paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|ch-&gt;tq.list
-)paren
-suffix:semicolon
-id|ch-&gt;tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|ch-&gt;tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|ctc_bh
-suffix:semicolon
-id|ch-&gt;tq.data
-op_assign
-id|ch
 suffix:semicolon
 id|ch-&gt;ccw
 (braket
