@@ -1311,16 +1311,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-multiline_comment|/*&n;  this is the last interrupt for any drive access, happens after&n;  release (from floppy_off). So we have to wait until now to decrease&n;  the use count.&n;*/
-r_if
-c_cond
-(paren
-id|decusecount
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|floppy_off
 r_static
@@ -8511,22 +8501,6 @@ id|drive
 op_assign
 id|system
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_if
-c_cond
-(paren
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|motor
-op_eq
-l_int|0
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|local_irq_restore
 c_func
 (paren
@@ -9773,7 +9747,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+macro_line|#if 0 /* not safe to unload */
 r_void
 id|cleanup_module
 c_func
@@ -9913,5 +9887,6 @@ l_string|&quot;fd&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif
 eof
