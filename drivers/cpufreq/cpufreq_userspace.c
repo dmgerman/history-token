@@ -311,6 +311,15 @@ id|cpufreq_setmax
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
+DECL|variable|warning_print
+r_static
+r_int
+r_int
+id|warning_print
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*********************** cpufreq_sysctl interface ********************/
 r_static
 r_int
@@ -394,6 +403,24 @@ l_int|0
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and will be removed from (new) 2.6. kernels soon after 2005-01-01&quot;
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -602,6 +629,24 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/sys/cpu/ is deprecated and will be removed from (new) 2.6. kernels soon after 2005-01-01&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
