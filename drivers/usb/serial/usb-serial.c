@@ -3023,11 +3023,7 @@ multiline_comment|/* descriptor matches, let&squot;s find the endpoints needed *
 multiline_comment|/* check out the endpoints */
 id|iface_desc
 op_assign
-op_amp
-id|interface-&gt;altsetting
-(braket
-l_int|0
-)braket
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 r_for
 c_loop
