@@ -525,6 +525,17 @@ id|dma_dac2
 comma
 id|dma_adc
 suffix:semicolon
+multiline_comment|/* The following buffer is used to point the phantom write channel to. */
+DECL|member|bugbuf_cpu
+r_int
+r_char
+op_star
+id|bugbuf_cpu
+suffix:semicolon
+DECL|member|bugbuf_dma
+id|dma_addr_t
+id|bugbuf_dma
+suffix:semicolon
 multiline_comment|/* midi stuff */
 r_struct
 (brace
@@ -594,25 +605,6 @@ id|LIST_HEAD
 c_func
 (paren
 id|devs
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * The following buffer is used to point the phantom write channel to,&n; * so that it cannot wreak havoc. The attribute makes sure it doesn&squot;t&n; * cross a page boundary and ensures dword alignment for the DMA engine&n; */
-DECL|variable|bugbuf
-r_static
-r_int
-r_char
-id|bugbuf
-(braket
-l_int|16
-)braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|16
-)paren
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -14594,6 +14586,19 @@ id|ES1370_REG_SERIAL_CONTROL
 )paren
 suffix:semicolon
 multiline_comment|/* point phantom write channel to &quot;bugbuf&quot; */
+id|s-&gt;bugbuf_cpu
+op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|pcidev
+comma
+l_int|16
+comma
+op_amp
+id|s-&gt;bugbuf_dma
+)paren
+suffix:semicolon
 id|outl
 c_func
 (paren
@@ -14613,11 +14618,7 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|virt_to_bus
-c_func
-(paren
-id|bugbuf
-)paren
+id|s-&gt;bugbuf_dma
 comma
 id|s-&gt;io
 op_plus
@@ -15049,6 +15050,18 @@ id|unregister_sound_midi
 c_func
 (paren
 id|s-&gt;dev_midi
+)paren
+suffix:semicolon
+id|pci_free_consistent
+c_func
+(paren
+id|dev
+comma
+l_int|16
+comma
+id|s-&gt;bugbuf_cpu
+comma
+id|s-&gt;bugbuf_dma
 )paren
 suffix:semicolon
 id|kfree
