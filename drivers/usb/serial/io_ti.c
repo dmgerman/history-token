@@ -1564,6 +1564,10 @@ id|__u16
 id|address_type
 comma
 singleline_comment|// wValue (Address type)
+(paren
+id|__force
+id|__u16
+)paren
 id|be_start_address
 comma
 singleline_comment|// wIndex (Address to read)
@@ -2066,6 +2070,10 @@ id|__u16
 id|address_type
 comma
 singleline_comment|// wValue
+(paren
+id|__force
+id|__u16
+)paren
 id|be_start_address
 comma
 singleline_comment|// wIndex
@@ -2178,6 +2186,10 @@ id|__u16
 id|address_type
 comma
 singleline_comment|// wValue
+(paren
+id|__force
+id|__u16
+)paren
 id|be_start_address
 comma
 singleline_comment|// wIndex
