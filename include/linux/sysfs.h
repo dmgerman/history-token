@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * driverfs_fs.h - definitions for the device driver filesystem&n; *&n; * Copyright (c) 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * This is a simple, ram-based filesystem, which allows kernel&n; * callbacks for read/write of files.&n; *&n; * Please see Documentation/filesystems/driverfs.txt for more information.&n; */
-macro_line|#ifndef _DRIVER_FS_H_
-DECL|macro|_DRIVER_FS_H_
-mdefine_line|#define _DRIVER_FS_H_
+multiline_comment|/*&n; * sysfs.h - definitions for the device driver filesystem&n; *&n; * Copyright (c) 2001,2002 Patrick Mochel&n; *&n; * Please see Documentation/filesystems/sysfs.txt for more information.&n; */
+macro_line|#ifndef _SYSFS_H_
+DECL|macro|_SYSFS_H_
+mdefine_line|#define _SYSFS_H_
 r_struct
 id|driver_dir_entry
 suffix:semicolon
@@ -202,5 +202,5 @@ op_star
 id|name
 )paren
 suffix:semicolon
-macro_line|#endif /* _DDFS_H_ */
+macro_line|#endif /* _SYSFS_H_ */
 eof
