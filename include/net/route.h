@@ -683,7 +683,7 @@ id|fl
 comma
 id|sk
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 )brace
