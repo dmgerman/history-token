@@ -244,6 +244,13 @@ c_func
 id|scsi_report_bus_reset
 )paren
 suffix:semicolon
+DECL|variable|scsi_report_device_reset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_report_device_reset
+)paren
+suffix:semicolon
 DECL|variable|scsi_block_requests
 id|EXPORT_SYMBOL
 c_func

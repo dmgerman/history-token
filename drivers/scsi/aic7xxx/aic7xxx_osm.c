@@ -15691,25 +15691,33 @@ r_case
 id|AC_SENT_BDR
 suffix:colon
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+id|WARN_ON
+c_func
+(paren
+id|lun
+op_ne
+id|CAM_LUN_WILDCARD
+)paren
+suffix:semicolon
+id|scsi_report_device_reset
+c_func
+(paren
+id|ahc-&gt;platform_data-&gt;host
+comma
+id|channel
+op_minus
+l_char|&squot;A&squot;
+comma
+id|target
+)paren
+suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 id|Scsi_Device
 op_star
 id|scsi_dev
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Find the SCSI device associated with this&n;&t;&t; * request and indicate that a UA is expected.&n;&t;&t; * XXX This should really be handled by the mid-layer.&n;&t;&t; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-id|list_for_each_entry
-c_func
-(paren
-id|scsi_dev
-comma
-op_amp
-id|ahc-&gt;platform_data-&gt;host-&gt;my_devices
-comma
-id|siblings
-)paren
-(brace
-macro_line|#else
+multiline_comment|/*&n;&t;&t; * Find the SCSI device associated with this&n;&t;&t; * request and indicate that a UA is expected.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -15726,7 +15734,6 @@ op_assign
 id|scsi_dev-&gt;next
 )paren
 (brace
-macro_line|#endif
 r_if
 c_cond
 (paren
