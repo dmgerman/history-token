@@ -2921,16 +2921,6 @@ id|flag
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Eligible but we cannot release it yet:&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-l_int|2
-)paren
-r_continue
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3066,6 +3056,16 @@ suffix:semicolon
 r_case
 id|TASK_ZOMBIE
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * Eligible but we cannot release it yet:&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|2
+)paren
+r_continue
+suffix:semicolon
 id|read_unlock
 c_func
 (paren

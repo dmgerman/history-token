@@ -4061,6 +4061,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|tsk-&gt;ptrace
+op_logical_and
 id|delay_group_leader
 c_func
 (paren
