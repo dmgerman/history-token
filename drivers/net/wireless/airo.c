@@ -5304,6 +5304,11 @@ suffix:semicolon
 id|u8
 op_star
 id|cipher
+comma
+id|plain
+(braket
+l_int|16
+)braket
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -5411,6 +5416,15 @@ suffix:semicolon
 id|counter
 op_increment
 suffix:semicolon
+id|memcpy
+(paren
+id|plain
+comma
+id|aes_counter
+comma
+l_int|16
+)paren
+suffix:semicolon
 id|sg
 (braket
 l_int|0
@@ -5421,7 +5435,7 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-id|aes_counter
+id|plain
 )paren
 suffix:semicolon
 id|sg
@@ -5435,7 +5449,7 @@ op_assign
 (paren
 r_int
 )paren
-id|aes_counter
+id|plain
 op_amp
 op_complement
 id|PAGE_MASK
