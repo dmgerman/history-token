@@ -42,6 +42,8 @@ mdefine_line|#define SD_MOD_TIMEOUT&t;&t;(75 * HZ)
 multiline_comment|/*&n; * Number of allowed retries&n; */
 DECL|macro|SD_MAX_RETRIES
 mdefine_line|#define SD_MAX_RETRIES&t;&t;5
+DECL|macro|SD_PASSTHROUGH_RETRIES
+mdefine_line|#define SD_PASSTHROUGH_RETRIES&t;1
 r_static
 r_void
 id|scsi_disk_release
@@ -588,19 +590,6 @@ id|sdp
 op_assign
 id|SCpnt-&gt;device
 suffix:semicolon
-id|timeout
-op_assign
-id|sdp-&gt;timeout
-suffix:semicolon
-multiline_comment|/*&n;&t; * these are already setup, just copy cdb basically&n;&t; */
-r_if
-c_cond
-(paren
-id|SCpnt-&gt;request-&gt;flags
-op_amp
-id|REQ_BLOCK_PC
-)paren
-(brace
 r_struct
 id|request
 op_star
@@ -608,6 +597,21 @@ id|rq
 op_assign
 id|SCpnt-&gt;request
 suffix:semicolon
+id|timeout
+op_assign
+id|sdp-&gt;timeout
+suffix:semicolon
+multiline_comment|/*&n;&t; * SG_IO from block layer already setup, just copy cdb basically&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_pc_request
+c_func
+(paren
+id|rq
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -684,6 +688,10 @@ id|SCpnt-&gt;transfersize
 op_assign
 id|rq-&gt;data_len
 suffix:semicolon
+id|SCpnt-&gt;allowed
+op_assign
+id|SD_PASSTHROUGH_RETRIES
+suffix:semicolon
 r_goto
 id|queue
 suffix:semicolon
@@ -693,10 +701,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|blk_fs_request
+c_func
 (paren
-id|SCpnt-&gt;request-&gt;flags
-op_amp
-id|REQ_CMD
+id|rq
 )paren
 )paren
 r_return
@@ -704,11 +712,11 @@ l_int|0
 suffix:semicolon
 id|disk
 op_assign
-id|SCpnt-&gt;request-&gt;rq_disk
+id|rq-&gt;rq_disk
 suffix:semicolon
 id|block
 op_assign
-id|SCpnt-&gt;request-&gt;sector
+id|rq-&gt;sector
 suffix:semicolon
 id|this_count
 op_assign
@@ -755,7 +763,7 @@ id|sdp
 op_logical_or
 id|block
 op_plus
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 OG
 id|get_capacity
 c_func
@@ -774,7 +782,7 @@ c_func
 (paren
 l_string|&quot;Finishing %ld sectors&bslash;n&quot;
 comma
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -848,7 +856,7 @@ l_int|1
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 op_amp
 l_int|1
 )paren
@@ -899,7 +907,7 @@ l_int|3
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 op_amp
 l_int|3
 )paren
@@ -950,7 +958,7 @@ l_int|7
 )paren
 op_logical_or
 (paren
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 op_amp
 l_int|7
 )paren
@@ -989,7 +997,7 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|SCpnt-&gt;request
+id|rq
 )paren
 op_eq
 id|WRITE
@@ -1025,7 +1033,7 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|SCpnt-&gt;request
+id|rq
 )paren
 op_eq
 id|READ
@@ -1051,10 +1059,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;sd: Unknown command %lx&bslash;n&quot;
 comma
-id|SCpnt-&gt;request-&gt;flags
+id|rq-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* overkill &t;panic(&quot;Unknown sd command %lx&bslash;n&quot;, SCpnt-&gt;request-&gt;flags); */
+multiline_comment|/* overkill &t;panic(&quot;Unknown sd command %lx&bslash;n&quot;, rq-&gt;flags); */
 r_return
 l_int|0
 suffix:semicolon
@@ -1075,7 +1083,7 @@ comma
 id|rq_data_dir
 c_func
 (paren
-id|SCpnt-&gt;request
+id|rq
 )paren
 op_eq
 id|WRITE
@@ -1088,7 +1096,7 @@ l_string|&quot;reading&quot;
 comma
 id|this_count
 comma
-id|SCpnt-&gt;request-&gt;nr_sectors
+id|rq-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -1613,12 +1621,12 @@ id|this_count
 op_lshift
 l_int|9
 suffix:semicolon
-id|queue
-suffix:colon
 id|SCpnt-&gt;allowed
 op_assign
 id|SD_MAX_RETRIES
 suffix:semicolon
+id|queue
+suffix:colon
 id|SCpnt-&gt;timeout_per_command
 op_assign
 id|timeout
@@ -2944,7 +2952,21 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t;   Handle MEDIUM ERRORs that indicate partial success.  Since this is a&n;&t;   relatively rare error condition, no care is taken to avoid&n;&t;   unnecessary additional work such as memcpy&squot;s that could be avoided.&n;&t; */
-multiline_comment|/* An error occurred */
+multiline_comment|/* &n;&t; * If SG_IO from block layer then set good_bytes to stop retries;&n;&t; * else if errors, check them, and if necessary prepare for&n;&t; * (partial) retries.&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_pc_request
+c_func
+(paren
+id|SCpnt-&gt;request
+)paren
+)paren
+id|good_bytes
+op_assign
+id|this_count
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -2956,7 +2978,6 @@ id|result
 op_ne
 l_int|0
 op_logical_and
-multiline_comment|/* An error occurred */
 (paren
 id|SCpnt-&gt;sense_buffer
 (braket
@@ -2969,7 +2990,6 @@ op_eq
 l_int|0x70
 )paren
 (brace
-multiline_comment|/* Sense current */
 r_switch
 c_cond
 (paren
