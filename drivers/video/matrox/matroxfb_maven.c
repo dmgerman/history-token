@@ -4343,13 +4343,12 @@ r_struct
 id|my_timming
 op_star
 id|mt
-comma
-r_struct
-id|matrox_hw_state
-op_star
-id|mr
 )paren
 (brace
+DECL|macro|mdinfo
+mdefine_line|#define mdinfo ((struct maven_data*)md)
+DECL|macro|minfo
+mdefine_line|#define minfo (mdinfo-&gt;primary_head)
 r_return
 id|maven_compute_timming
 c_func
@@ -4359,9 +4358,19 @@ comma
 id|mt
 comma
 op_amp
-id|mr-&gt;maven
+id|ACCESS_FBINFO
+c_func
+(paren
+id|hw
+)paren
+dot
+id|maven
 )paren
 suffix:semicolon
+DECL|macro|minfo
+macro_line|#undef minfo
+DECL|macro|mdinfo
+macro_line|#undef mdinfo
 )brace
 DECL|function|maven_out_program
 r_static
@@ -4372,14 +4381,12 @@ c_func
 r_void
 op_star
 id|md
-comma
-r_const
-r_struct
-id|matrox_hw_state
-op_star
-id|mr
 )paren
 (brace
+DECL|macro|mdinfo
+mdefine_line|#define mdinfo ((struct maven_data*)md)
+DECL|macro|minfo
+mdefine_line|#define minfo (mdinfo-&gt;primary_head)
 r_return
 id|maven_program_timming
 c_func
@@ -4387,9 +4394,19 @@ c_func
 id|md
 comma
 op_amp
-id|mr-&gt;maven
+id|ACCESS_FBINFO
+c_func
+(paren
+id|hw
+)paren
+dot
+id|maven
 )paren
 suffix:semicolon
+DECL|macro|minfo
+macro_line|#undef minfo
+DECL|macro|mdinfo
+macro_line|#undef mdinfo
 )brace
 DECL|function|maven_out_start
 r_static

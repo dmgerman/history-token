@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.52 2001/05/25&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; */
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_crtc2.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
@@ -1940,16 +1940,6 @@ r_struct
 id|my_timming
 id|mt
 suffix:semicolon
-r_struct
-id|matrox_hw_state
-op_star
-id|hw
-suffix:semicolon
-r_struct
-id|matrox_hw_state
-op_star
-id|ohw
-suffix:semicolon
 r_int
 r_int
 id|pos
@@ -1967,37 +1957,6 @@ multiline_comment|/* CRTC2 delay */
 id|mt.delay
 op_assign
 l_int|34
-suffix:semicolon
-id|hw
-op_assign
-id|ACCESS_FBINFO
-c_func
-(paren
-id|newhw
-)paren
-suffix:semicolon
-id|ohw
-op_assign
-id|ACCESS_FBINFO
-c_func
-(paren
-id|currenthw
-)paren
-suffix:semicolon
-multiline_comment|/* copy last setting... */
-id|memcpy
-c_func
-(paren
-id|hw
-comma
-id|ohw
-comma
-r_sizeof
-(paren
-op_star
-id|hw
-)paren
-)paren
 suffix:semicolon
 id|pos
 op_assign
@@ -2020,8 +1979,7 @@ suffix:semicolon
 id|DAC1064_global_init
 c_func
 (paren
-id|PMINFO
-id|hw
+id|PMINFO2
 )paren
 suffix:semicolon
 r_if
@@ -2058,8 +2016,6 @@ id|MINFO
 comma
 op_amp
 id|mt
-comma
-id|hw
 )paren
 suffix:semicolon
 )brace
@@ -2112,8 +2068,6 @@ id|altout.device
 comma
 op_amp
 id|mt
-comma
-id|hw
 )paren
 suffix:semicolon
 id|up_read
@@ -2146,8 +2100,7 @@ suffix:semicolon
 id|DAC1064_global_restore
 c_func
 (paren
-id|PMINFO
-id|hw
+id|PMINFO2
 )paren
 suffix:semicolon
 r_if
@@ -2181,8 +2134,6 @@ id|program
 c_func
 (paren
 id|MINFO
-comma
-id|hw
 )paren
 suffix:semicolon
 )brace
@@ -2232,8 +2183,6 @@ c_func
 (paren
 id|altout.device
 )paren
-comma
-id|hw
 )paren
 suffix:semicolon
 id|up_read
@@ -3592,8 +3541,7 @@ l_int|NULL
 suffix:semicolon
 id|m2info-&gt;fbcon.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|m2info-&gt;fbcon.fbops
 op_assign
