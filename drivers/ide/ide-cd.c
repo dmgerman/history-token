@@ -2356,6 +2356,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Set up the controller registers. */
+multiline_comment|/* FIXME: for Virtual DMA we must check harder */
 id|HWIF
 c_func
 (paren
@@ -2460,48 +2461,19 @@ op_member_access_from_pointer
 id|drq_interrupt
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|HWGROUP
+multiline_comment|/* packet command */
+id|ide_execute_command
 c_func
 (paren
 id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-op_ne
-l_int|NULL
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ide_set_handler
-(paren
-id|drive
+comma
+id|WIN_PACKETCMD
 comma
 id|handler
 comma
 id|WAIT_CMD
 comma
 id|cdrom_timer_expiry
-)paren
-suffix:semicolon
-multiline_comment|/* packet command */
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|OUTB
-c_func
-(paren
-id|WIN_PACKETCMD
-comma
-id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 r_return
@@ -4076,16 +4048,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * this condition is far too common, to bother&n;&t;&t;&t; * users about it&n;&t;&t;&t; */
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;%s: disabled DSC seek overlap&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* printk(&quot;%s: disabled DSC seek overlap&bslash;n&quot;, drive-&gt;name);*/
 id|drive-&gt;dsc_overlap
 op_assign
 l_int|0
@@ -11622,6 +11585,7 @@ id|cap.buffer_size
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -11642,6 +11606,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|printk
 c_func
 (paren
@@ -13151,19 +13116,11 @@ id|busy
 op_assign
 l_int|0
 comma
-macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
-dot
-id|supports_dma
-op_assign
-l_int|0
-comma
-macro_line|#else
 dot
 id|supports_dma
 op_assign
 l_int|1
 comma
-macro_line|#endif
 dot
 id|supports_dsc_overlap
 op_assign

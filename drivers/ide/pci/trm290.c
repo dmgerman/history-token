@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
 multiline_comment|/*&n; * This module provides support for the bus-master IDE DMA function&n; * of the Tekram TRM290 chip, used on a variety of PCI IDE add-on boards,&n; * including a &quot;Precision Instruments&quot; board.  The TRM290 pre-dates&n; * the sff-8038 standard (ide-dma.c) by a few months, and differs&n; * significantly enough to warrant separate routines for some functions,&n; * while re-using others from ide-dma.c.&n; *&n; * EXPERIMENTAL!  It works for me (a sample of one).&n; *&n; * Works reliably for me in DMA mode (READs only),&n; * DMA WRITEs are disabled by default (see #define below);&n; *&n; * DMA is not enabled automatically for this chipset,&n; * but can be turned on manually (with &quot;hdparm -d1&quot;) at run time.&n; *&n; * I need volunteers with &quot;spare&quot; drives for further testing&n; * and development, and maybe to help figure out the peculiarities.&n; * Even knowing the registers (below), some things behave strangely.&n; */
 DECL|macro|TRM290_NO_DMA_WRITES
 mdefine_line|#define TRM290_NO_DMA_WRITES&t;/* DMA writes seem unreliable sometimes */
@@ -191,6 +191,7 @@ id|drive-&gt;using_dma
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|trm290_ide_dma_write
 r_static
 r_int
@@ -806,6 +807,7 @@ l_int|0x00ff
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|init_hwif_trm290
 r_void
@@ -1041,6 +1043,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_write
 op_assign
 op_amp
@@ -1066,6 +1069,7 @@ op_assign
 op_amp
 id|trm290_ide_dma_test_irq
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|hwif-&gt;selectproc
 op_assign
 op_amp

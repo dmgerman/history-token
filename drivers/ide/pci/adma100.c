@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/adma100.c -- basic support for Pacific Digital ADMA-100 boards&n; *&n; *     Created 09 Apr 2002 by Mark Lord&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/adma100.c -- basic support for Pacific Digital ADMA-100 boards&n; *&n; *     Created 09 Apr 2002 by Mark Lord&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;

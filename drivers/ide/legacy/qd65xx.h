@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/qd65xx.h&n; *&n; * Copyright (c) 2000&t;Linus Torvalds &amp; authors&n; */
+multiline_comment|/*&n; * linux/drivers/ide/legacy/qd65xx.h&n; *&n; * Copyright (c) 2000&t;Linus Torvalds &amp; authors&n; */
 multiline_comment|/*&n; * Authors:&t;Petr Soucek &lt;petr@ryston.cz&gt;&n; * &t;&t;Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
 multiline_comment|/* truncates a in [b,c] */
 DECL|macro|IDE_IN

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/pdcadma.c&t;&t;Version 0.05&t;Sept 10, 2002&n; *&n; * Copyright (C) 1999-2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/pdcadma.c&t;&t;Version 0.05&t;Sept 10, 2002&n; *&n; * Copyright (C) 1999-2000&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/cs5530.c&t;&t;Version 0.7&t;Sept 10, 2002&n; *&n; * Copyright (C) 2000&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Ditto of GNU General Public License.&n; *&n; * Copyright (C) 2000&t;&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/cs5530.c&t;&t;Version 0.7&t;Sept 10, 2002&n; *&n; * Copyright (C) 2000&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Ditto of GNU General Public License.&n; *&n; * Copyright (C) 2000&t;&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; *&n; * Documentation:&n; *&t;CS5530 documentation available from National Semiconductor.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/generic.c&t;&t;Version 0.10&t;Sept 11, 2002&n; *&n; *  Copyright (C) 2001-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/generic.c&t;Version 0.11&t;December 30, 2002&n; *&n; *  Copyright (C) 2001-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Portions (C) Copyright 2002  Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_BLK_DEV_IDEPCI */
@@ -243,6 +243,9 @@ id|generic_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+id|u16
+id|command
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -318,6 +321,41 @@ l_int|1
 r_return
 l_int|1
 suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|command
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|command
+op_amp
+id|PCI_COMMAND_IO
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Skipping disabled %s IDE controller.&bslash;n&quot;
+comma
+id|d-&gt;name
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|ide_setup_pci_device
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/pdc4030.h&n; *&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; authors&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/legacy/pdc4030.h&n; *&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; authors&n; */
 multiline_comment|/*&n; * Principal author: Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; */
 macro_line|#ifndef IDE_PROMISE_H
 DECL|macro|IDE_PROMISE_H

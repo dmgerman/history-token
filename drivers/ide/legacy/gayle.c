@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/gayle.c -- Amiga Gayle IDE Driver&n; *&n; *     Created 9 Jul 1997 by Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/legacy/gayle.c -- Amiga Gayle IDE Driver&n; *&n; *     Created 9 Jul 1997 by Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -274,7 +274,8 @@ id|i
 op_increment
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 comma
 id|ctrlport
@@ -312,7 +313,8 @@ suffix:semicolon
 id|irqport
 op_assign
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|ZTWO_VADDR
 c_func
@@ -334,7 +336,8 @@ suffix:semicolon
 id|irqport
 op_assign
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|ZTWO_VADDR
 c_func
@@ -394,7 +397,8 @@ suffix:semicolon
 id|base
 op_assign
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|ZTWO_VADDR
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/ns87415.c&t;&t;Version 2.00  Sep. 10, 2002&n; *&n; * Copyright (C) 1997-1998&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * Copyright (C) 1998&t;&t;Eddie C. Dost &lt;ecd@skynet.be&gt;&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * Inspired by an earlier effort from David S. Miller &lt;davem@redhat.com&gt;&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/ns87415.c&t;&t;Version 2.00  Sep. 10, 2002&n; *&n; * Copyright (C) 1997-1998&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * Copyright (C) 1998&t;&t;Eddie C. Dost &lt;ecd@skynet.be&gt;&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * Inspired by an earlier effort from David S. Miller &lt;davem@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/sc1200.c&t;&t;Version 0.9&t;24-Oct-2002&n; *&n; * Copyright (C) 2000-2002&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/sc1200.c&t;&t;Version 0.91&t;28-Jan-2003&n; *&n; * Copyright (C) 2000-2002&t;&t;Mark Lord &lt;mlord@pobox.com&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Development of this chipset driver was funded&n; * by the nice folks at National Semiconductor.&n; *&n; * Documentation:&n; *&t;Available from National Semiconductor&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/macide.c -- Macintosh IDE Driver&n; *&n; *     Copyright (C) 1998 by Michael Schmitz&n; *&n; *  This driver was written based on information obtained from the MacOS IDE&n; *  driver binary by Mikael Forselius&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/legacy/macide.c -- Macintosh IDE Driver&n; *&n; *     Copyright (C) 1998 by Michael Schmitz&n; *&n; *  This driver was written based on information obtained from the MacOS IDE&n; *  driver binary by Mikael Forselius&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -191,9 +191,6 @@ c_func
 op_amp
 id|hw
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|IDE_BASE
 comma
 id|macide_offsets
@@ -230,9 +227,6 @@ c_func
 op_amp
 id|hw
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|IDE_BASE
 comma
 id|macide_offsets
@@ -269,9 +263,6 @@ c_func
 op_amp
 id|hw
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|BABOON_BASE
 comma
 id|macide_offsets

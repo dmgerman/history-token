@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cmd64x.c,v 1.21 2000/01/30 23:23:16&n; *&n; * linux/drivers/ide/cmd64x.c&t;&t;Version 1.30&t;Sept 10, 2002&n; *&n; * cmd64x.c: Enable interrupts at initialization time on Ultra/PCI machines.&n; *           Note, this driver is not used at all on other systems because&n; *           there the &quot;BIOS&quot; has done all of the following already.&n; *           Due to massive hardware bugs, UltraDMA is only supported&n; *           on the 646U2 and not on the 646U.&n; *&n; * Copyright (C) 1998&t;&t;Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * Copyright (C) 1999-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; */
+multiline_comment|/* $Id: cmd64x.c,v 1.21 2000/01/30 23:23:16&n; *&n; * linux/drivers/ide/pci/cmd64x.c&t;&t;Version 1.30&t;Sept 10, 2002&n; *&n; * cmd64x.c: Enable interrupts at initialization time on Ultra/PCI machines.&n; *           Note, this driver is not used at all on other systems because&n; *           there the &quot;BIOS&quot; has done all of the following already.&n; *           Due to massive hardware bugs, UltraDMA is only supported&n; *           on the 646U2 and not on the 646U.&n; *&n; * Copyright (C) 1998&t;&t;Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * Copyright (C) 1999-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3714,6 +3714,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
 id|name
@@ -3745,6 +3746,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: chipset revision 0x%02X, &quot;
 comma
 id|name

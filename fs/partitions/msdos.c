@@ -1535,7 +1535,7 @@ id|subtypes
 op_assign
 (brace
 (brace
-id|BSD_PARTITION
+id|FREEBSD_PARTITION
 comma
 id|parse_freebsd
 )brace
