@@ -2783,13 +2783,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ticks
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2811,6 +2804,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+r_while
+c_loop
+(paren
+id|ticks
+)paren
+suffix:semicolon
 )brace
 DECL|function|do_process_times
 r_static
