@@ -5,7 +5,7 @@ DECL|macro|_53C700_H
 mdefine_line|#define _53C700_H
 multiline_comment|/* Turn on for general debugging---too verbose for normal use */
 DECL|macro|NCR_700_DEBUG
-macro_line|#undef NCR_700_DEBUG
+macro_line|#undef&t;NCR_700_DEBUG
 multiline_comment|/* Debug the tag queues, checking hash queue allocation and deallocation&n; * and search for duplicate tags */
 DECL|macro|NCR_700_TAG_DEBUG
 macro_line|#undef NCR_700_TAG_DEBUG
@@ -504,10 +504,8 @@ DECL|member|state
 id|__u8
 id|state
 suffix:semicolon
-DECL|macro|NCR_700_NO_TAG
-mdefine_line|#define NCR_700_NO_TAG&t;0xdead
 DECL|member|tag
-id|__u16
+r_int
 id|tag
 suffix:semicolon
 DECL|member|resume_offset
