@@ -11,17 +11,6 @@ r_extern
 r_struct
 id|processor
 (brace
-multiline_comment|/* check for any bugs */
-DECL|member|_check_bugs
-r_void
-(paren
-op_star
-id|_check_bugs
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Set up any processor specifics */
 DECL|member|_proc_init
 r_void
@@ -45,11 +34,11 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* set the MEMC hardware mappings */
-DECL|member|_set_pgd
+DECL|member|_switch_mm
 r_void
 (paren
 op_star
-id|_set_pgd
+id|_switch_mm
 )paren
 (paren
 id|pgd_t
@@ -115,8 +104,6 @@ r_struct
 id|processor
 id|arm3_processor_functions
 suffix:semicolon
-DECL|macro|cpu_check_bugs
-mdefine_line|#define cpu_check_bugs()&t;&t;&t;processor._check_bugs()
 DECL|macro|cpu_proc_init
 mdefine_line|#define cpu_proc_init()&t;&t;&t;&t;processor._proc_init()
 DECL|macro|cpu_proc_fin
@@ -124,7 +111,7 @@ mdefine_line|#define cpu_proc_fin()&t;&t;&t;&t;processor._proc_fin()
 DECL|macro|cpu_do_idle
 mdefine_line|#define cpu_do_idle()&t;&t;&t;&t;do { } while (0)
 DECL|macro|cpu_switch_mm
-mdefine_line|#define cpu_switch_mm(pgd,mm)&t;&t;&t;processor._set_pgd(pgd)
+mdefine_line|#define cpu_switch_mm(pgd,mm)&t;&t;&t;processor._switch_mm(pgd)
 DECL|macro|cpu_xchg_1
 mdefine_line|#define cpu_xchg_1(x,ptr)&t;&t;&t;processor._xchg_1(x,ptr)
 DECL|macro|cpu_xchg_4

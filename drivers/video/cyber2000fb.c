@@ -16,6 +16,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef __arm__
+macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#endif
 macro_line|#include &quot;cyber2000fb.h&quot;
 DECL|struct|cfb_info
 r_struct
