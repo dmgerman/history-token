@@ -192,14 +192,6 @@ r_void
 suffix:semicolon
 id|asmlinkage
 r_void
-id|double_fault
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|asmlinkage
-r_void
 id|coprocessor_segment_overrun
 c_func
 (paren
@@ -1461,28 +1453,6 @@ comma
 id|ILL_ILLOPN
 comma
 id|regs-&gt;eip
-)paren
-id|DO_VM86_ERROR
-c_func
-(paren
-l_int|7
-comma
-id|SIGSEGV
-comma
-l_string|&quot;device not available&quot;
-comma
-id|device_not_available
-)paren
-id|DO_ERROR
-c_func
-(paren
-l_int|8
-comma
-id|SIGSEGV
-comma
-l_string|&quot;double fault&quot;
-comma
-id|double_fault
 )paren
 id|DO_ERROR
 c_func
