@@ -1,7 +1,4 @@
-multiline_comment|/*&n; *&n; * Alchemy Semi Au1000 IrDA driver&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * &n; */
-macro_line|#ifndef __mips__
-macro_line|#error This driver only works with MIPS architectures!
-macro_line|#endif
+multiline_comment|/*&n; * Alchemy Semi Au1000 IrDA driver&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -16,7 +13,13 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_PB1100)
 macro_line|#include &lt;asm/pb1000.h&gt;
+macro_line|#elif defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+macro_line|#include &lt;asm/db1x00.h&gt;
+macro_line|#else 
+macro_line|#error au1k_ir: unsupported board
+macro_line|#endif
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
@@ -193,10 +196,25 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;au1k_ircc:1.0 ppopov@mvista.com&bslash;n&quot;
+l_string|&quot;au1k_ircc:1.2 ppopov@mvista.com&bslash;n&quot;
 suffix:semicolon
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
+macro_line|#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+DECL|variable|bcsr
+r_static
+id|BCSR
+op_star
+r_const
+id|bcsr
+op_assign
+(paren
+id|BCSR
+op_star
+)paren
+l_int|0xAE000000
+suffix:semicolon
+macro_line|#endif
 DECL|variable|ir_lock
 r_static
 id|spinlock_t
@@ -375,6 +393,10 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|KSEG0ADDR
 c_func
 (paren
@@ -402,6 +424,10 @@ id|size
 (brace
 id|vaddr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|KSEG0ADDR
 c_func
 (paren
@@ -645,7 +671,11 @@ id|out1
 suffix:colon
 id|aup
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dma_free
 c_func
@@ -786,7 +816,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -804,8 +838,7 @@ comma
 op_star
 id|pDBfree
 suffix:semicolon
-r_int
-r_int
+id|dma_addr_t
 id|temp
 suffix:semicolon
 id|err
@@ -1335,6 +1368,23 @@ op_assign
 id|pDB
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+multiline_comment|/* power on */
+id|bcsr-&gt;resets
+op_and_assign
+op_complement
+id|BCSR_RESETS_IRDA_MODE_MASK
+suffix:semicolon
+id|bcsr-&gt;resets
+op_or_assign
+id|BCSR_RESETS_IRDA_MODE_FULL
+suffix:semicolon
+id|au_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1404,12 +1454,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
@@ -1628,14 +1677,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -1659,8 +1705,6 @@ l_string|&quot;%s: error in au1k_init&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -1699,8 +1743,6 @@ id|dev-&gt;name
 comma
 id|dev-&gt;irq
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -1747,8 +1789,6 @@ id|dev-&gt;name
 comma
 id|dev-&gt;irq
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -1840,12 +1880,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* disable interrupts */
 id|writel
@@ -1936,8 +1975,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1967,12 +2004,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -2062,12 +2098,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|net_device_stats
@@ -2117,12 +2152,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_volatile
 id|ring_dest_t
@@ -2321,12 +2355,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|speed
@@ -2437,7 +2470,7 @@ id|AU_OWN
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: tx_full&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2481,7 +2514,7 @@ id|aup-&gt;tx_tail
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: tx_full&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2614,6 +2647,25 @@ id|ptxd-&gt;flags
 op_or_assign
 id|IR_DIS_CRC
 suffix:semicolon
+id|au_writel
+c_func
+(paren
+id|au_readl
+c_func
+(paren
+l_int|0xae00000c
+)paren
+op_amp
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|13
+)paren
+comma
+l_int|0xae00000c
+)paren
+suffix:semicolon
 )brace
 id|ptxd-&gt;flags
 op_or_assign
@@ -2703,12 +2755,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|net_device_stats
@@ -2791,12 +2842,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -3128,12 +3178,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|printk
 c_func
@@ -3196,12 +3245,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|u32
 id|control
@@ -3222,6 +3270,12 @@ id|ring_dest_t
 op_star
 id|ptxd
 suffix:semicolon
+macro_line|#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+r_int
+r_int
+id|irda_resets
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3434,6 +3488,13 @@ id|speed
 op_eq
 l_int|4000000
 )paren
+(brace
+macro_line|#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+id|bcsr-&gt;resets
+op_or_assign
+id|BCSR_RESETS_FIR_SEL
+suffix:semicolon
+macro_line|#else /* Pb1000 and Pb1100 */
 id|writel
 c_func
 (paren
@@ -3444,7 +3505,17 @@ comma
 id|CPLD_AUX1
 )paren
 suffix:semicolon
+macro_line|#endif
+)brace
 r_else
+(brace
+macro_line|#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
+id|bcsr-&gt;resets
+op_and_assign
+op_complement
+id|BCSR_RESETS_FIR_SEL
+suffix:semicolon
+macro_line|#else /* Pb1000 and Pb1100 */
 id|writel
 c_func
 (paren
@@ -3464,6 +3535,8 @@ comma
 id|CPLD_AUX1
 )paren
 suffix:semicolon
+macro_line|#endif
+)brace
 r_switch
 c_cond
 (paren
@@ -3729,7 +3802,7 @@ l_int|11
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s Valid SIR config&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3749,7 +3822,7 @@ l_int|12
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s Valid MIR config&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3769,7 +3842,7 @@ l_int|13
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s Valid FIR config&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3789,7 +3862,7 @@ l_int|10
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s TX enabled&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3809,7 +3882,7 @@ l_int|9
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s RX enabled&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3866,7 +3939,11 @@ id|au1k_private
 op_star
 id|aup
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -3998,19 +4075,17 @@ id|au1k_private
 op_star
 id|aup
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|au1k_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_return
 op_amp
 id|aup-&gt;stats
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -4037,5 +4112,4 @@ c_func
 id|au1k_irda_exit
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 eof
