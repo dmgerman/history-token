@@ -1,0 +1,62 @@
+multiline_comment|/*&n; * Support for 32-bit Linux for S390 personality.&n; *&n; * Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Gerhard Tonn (ton@de.ibm.com)&n; *&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+DECL|variable|s390_exec_domain
+r_struct
+id|exec_domain
+id|s390_exec_domain
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|s390_init
+id|s390_init
+(paren
+r_void
+)paren
+(brace
+id|s390_exec_domain.name
+op_assign
+l_string|&quot;Linux/s390&quot;
+suffix:semicolon
+id|s390_exec_domain.handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|s390_exec_domain.pers_low
+op_assign
+id|PER_LINUX32
+suffix:semicolon
+id|s390_exec_domain.pers_high
+op_assign
+id|PER_LINUX32
+suffix:semicolon
+id|s390_exec_domain.signal_map
+op_assign
+id|default_exec_domain.signal_map
+suffix:semicolon
+id|s390_exec_domain.signal_invmap
+op_assign
+id|default_exec_domain.signal_invmap
+suffix:semicolon
+id|register_exec_domain
+c_func
+(paren
+op_amp
+id|s390_exec_domain
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|s390_init
+id|__initcall
+c_func
+(paren
+id|s390_init
+)paren
+suffix:semicolon
+eof
