@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/h8300h/kernel/setup.c&n; *&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1999,2000  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com) &n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *&n; *  H8/300H porting Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; */
+multiline_comment|/*&n; *  linux/arch/h8300/kernel/setup.c&n; *&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1999,2000  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com) &n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *&n; *  H8/300 porting Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of system setup&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,10 +19,23 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_H8300H)
+macro_line|#if defined(__H8300H__)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;H8/300H&quot;
 macro_line|#endif
+macro_line|#if defined(__H8300S__)
+DECL|macro|CPU
+mdefine_line|#define CPU &quot;H8S&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_INTELFLASH)
+DECL|macro|BLKOFFSET
+mdefine_line|#define BLKOFFSET 512
+macro_line|#else
+DECL|macro|BLKOFFSET
+mdefine_line|#define BLKOFFSET 0
+macro_line|#endif
+DECL|macro|STUBSIZE
+mdefine_line|#define STUBSIZE 0xc000;
 DECL|variable|rom_length
 r_int
 r_int
@@ -86,7 +99,15 @@ id|_target_name
 (braket
 )braket
 suffix:semicolon
-macro_line|#if defined(CONFIG_H8300H_SIM) &amp;&amp; defined(CONFIG_GDB_MAGICPRINT)
+r_extern
+r_void
+id|h8300_gpio_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#if (defined(CONFIG_H8300H_SIM) || defined(CONFIG_H8S_SIM)) &bslash;&n;    &amp;&amp; defined(CONFIG_GDB_MAGICPRINT)
 multiline_comment|/* printk with gdb service */
 DECL|function|gdb_console_output
 r_static
@@ -99,6 +120,7 @@ id|console
 op_star
 id|c
 comma
+r_const
 r_char
 op_star
 id|msg
@@ -169,7 +191,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;gdb&quot;
+l_string|&quot;gdb_con&quot;
 comma
 id|write
 suffix:colon
@@ -197,6 +219,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|setup_arch
 r_void
+id|__init
 id|setup_arch
 c_func
 (paren
@@ -211,25 +234,138 @@ id|bootmap_size
 suffix:semicolon
 id|memory_start
 op_assign
-id|PAGE_ALIGN
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_ramstart
+suffix:semicolon
+multiline_comment|/* allow for ROMFS on the end of the kernel */
+r_if
+c_cond
+(paren
+id|memcmp
 c_func
 (paren
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 (paren
-op_amp
-id|_ramstart
+id|memory_start
+op_plus
+id|BLKOFFSET
 )paren
+comma
+l_string|&quot;-rom1fs-&quot;
+comma
+l_int|8
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
+id|initrd_start
+op_assign
+id|memory_start
+op_add_assign
+id|BLKOFFSET
+suffix:semicolon
+id|initrd_end
+op_assign
+id|memory_start
+op_add_assign
+id|be32_to_cpu
+c_func
+(paren
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|memory_start
+)paren
+)paren
+(braket
+l_int|2
+)braket
 )paren
 suffix:semicolon
+macro_line|#else
+id|memory_start
+op_add_assign
+id|BLKOFFSET
+suffix:semicolon
+id|memory_start
+op_add_assign
+id|be32_to_cpu
+c_func
+(paren
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|memory_start
+)paren
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+id|memory_start
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|memory_start
+)paren
+suffix:semicolon
+macro_line|#if !defined(CONFIG_BLKDEV_RESERVE)
 id|memory_end
 op_assign
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|_ramend
 suffix:semicolon
 multiline_comment|/* by now the stack is part of the init task */
+macro_line|#if defined(CONFIG_GDB_DEBUG)
+id|memory_end
+op_sub_assign
+id|STUBSIZE
+suffix:semicolon
+macro_line|#endif
+macro_line|#else
+r_if
+c_cond
+(paren
+(paren
+id|memory_end
+OL
+id|CONFIG_BLKDEV_RESERVE_ADDRESS
+)paren
+op_logical_and
+(paren
+id|memory_end
+OG
+id|CONFIG_BLKDEV_RESERVE_ADDRESS
+)paren
+multiline_comment|/* overlap userarea */
+id|memory_end
+op_assign
+id|CONFIG_BLKDEV_RESERVE_ADDRESS
+suffix:semicolon
+macro_line|#endif
 id|init_mm.start_code
 op_assign
 (paren
@@ -265,7 +401,7 @@ r_int
 )paren
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_H8300H_SIM) &amp;&amp; defined(CONFIG_GDB_MAGICPRINT)
+macro_line|#if (defined(CONFIG_H8300H_SIM) || defined(CONFIG_H8S_SIM)) &amp;&amp; defined(CONFIG_GDB_MAGICPRINT)
 id|register_console
 c_func
 (paren
@@ -277,7 +413,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;x0F&bslash;r&bslash;n&bslash;nuClinux &quot;
+l_string|&quot;&bslash;r&bslash;n&bslash;nuClinux &quot;
 id|CPU
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -299,7 +435,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;H8/300H support by Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&bslash;n&quot;
+l_string|&quot;H8/300 series support by Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -521,6 +657,11 @@ id|bootmap_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * get kmalloc into gear&n;&t; */
 id|paging_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|h8300_gpio_init
 c_func
 (paren
 )paren
