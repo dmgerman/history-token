@@ -2713,19 +2713,10 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* interrupt stacks must be under 256MB, we cannot afford to take SLB misses on them */
-r_for
-c_loop
+id|for_each_cpu
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|softirq_ctx
