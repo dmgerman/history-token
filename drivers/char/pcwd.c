@@ -587,8 +587,6 @@ id|arg
 )paren
 (brace
 r_int
-id|i
-comma
 id|cdat
 comma
 id|rv
@@ -623,8 +621,9 @@ suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
 suffix:colon
-id|i
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -642,14 +641,14 @@ r_sizeof
 id|ident
 )paren
 )paren
-suffix:semicolon
+)paren
+(brace
 r_return
-id|i
-ques
-c_cond
 op_minus
 id|EFAULT
-suffix:colon
+suffix:semicolon
+)brace
+r_return
 l_int|0
 suffix:semicolon
 r_case
@@ -2023,15 +2022,6 @@ id|WD_VER
 )paren
 suffix:semicolon
 multiline_comment|/* Initial variables */
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|open_allowed
-)paren
-suffix:semicolon
 id|supports_temp
 op_assign
 l_int|0
