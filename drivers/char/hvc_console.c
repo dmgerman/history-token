@@ -360,11 +360,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-comma
-r_struct
-id|file
-op_star
-id|filp
 )paren
 (brace
 r_struct
