@@ -78,6 +78,16 @@ op_star
 suffix:semicolon
 r_void
 id|fastcall
+id|page_add_file_rmap
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_void
+id|fastcall
 id|page_remove_rmap
 c_func
 (paren

@@ -356,6 +356,12 @@ DECL|member|direct
 id|pte_addr_t
 id|direct
 suffix:semicolon
+DECL|member|mapcount
+r_int
+r_int
+id|mapcount
+suffix:semicolon
+multiline_comment|/* Count ptes mapped into mms */
 DECL|member|pte
 )brace
 id|pte

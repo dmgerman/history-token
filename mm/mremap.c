@@ -410,6 +410,16 @@ c_func
 id|pfn
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|PageAnon
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
 id|page_remove_rmap
 c_func
 (paren
@@ -432,6 +442,7 @@ op_star
 id|pte_chainp
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
