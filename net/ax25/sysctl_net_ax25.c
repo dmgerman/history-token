@@ -2,6 +2,7 @@ multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_ax25.c: sysctl interface to
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 DECL|variable|min_ipdefmode
 DECL|variable|max_ipdefmode
@@ -822,6 +823,10 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ax25_dev
 op_star
 id|ax25_dev
@@ -830,6 +835,15 @@ r_int
 id|n
 comma
 id|k
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -954,6 +968,15 @@ c_func
 id|ax25_table
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1063,6 +1086,15 @@ id|n
 op_increment
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ax25_dir_table
 (braket
 l_int|0
