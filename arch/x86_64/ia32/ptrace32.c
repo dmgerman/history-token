@@ -1091,6 +1091,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+r_if
+c_cond
+(paren
+id|child
+)paren
 id|put_task_struct
 c_func
 (paren

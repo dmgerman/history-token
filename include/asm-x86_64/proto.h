@@ -291,17 +291,6 @@ id|cpu_initialized
 suffix:semicolon
 r_extern
 r_void
-id|show_stack
-c_func
-(paren
-r_int
-r_int
-op_star
-id|rsp
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|show_trace
 c_func
 (paren
