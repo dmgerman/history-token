@@ -986,23 +986,23 @@ c_func
 id|pci_domain_nr
 )paren
 suffix:semicolon
-multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
-DECL|function|pci_name_bus
+multiline_comment|/* Decide whether to display the domain number in /proc */
+DECL|function|pci_proc_domain
 r_int
-id|pci_name_bus
+id|pci_proc_domain
 c_func
 (paren
-r_char
-op_star
-id|name
-comma
 r_struct
 id|pci_bus
 op_star
 id|bus
 )paren
 (brace
-macro_line|#ifndef CONFIG_PPC_ISERIES
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#else
 r_struct
 id|pci_controller
 op_star
@@ -1014,42 +1014,10 @@ c_func
 id|bus
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hose-&gt;buid
-)paren
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;%04x:%02x&quot;
-comma
-id|pci_domain_nr
-c_func
-(paren
-id|bus
-)paren
-comma
-id|bus-&gt;number
-)paren
-suffix:semicolon
-r_else
-macro_line|#endif
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;%02x&quot;
-comma
-id|bus-&gt;number
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|hose-&gt;buid
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Platform support for /proc/bus/pci/X/Y mmap()s,&n; * modelled on the sparc64 implementation by Dave Miller.&n; *  -- paulus.&n; */
 multiline_comment|/*&n; * Adjust vm_pgoff of VMA such that it is the physical page offset&n; * corresponding to the 32-bit pci bus offset for DEV requested by the user.&n; *&n; * Basically, the user finds the base address for his device which he wishes&n; * to mmap.  They read the 32-bit value from the config space base register,&n; * add whatever PAGE_SIZE multiple offset they wish, and feed this into the&n; * offset parameter of mmap on /proc/bus/pci/XXX for that device.&n; *&n; * Returns negative error code on failure, zero on success.&n; */

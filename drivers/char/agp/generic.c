@@ -2277,7 +2277,11 @@ id|agp_bridge-&gt;major_version
 comma
 id|agp_bridge-&gt;minor_version
 comma
-id|agp_bridge-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|agp_bridge-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|pci_read_config_dword
