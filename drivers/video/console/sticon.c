@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;../sticore.h&quot;
 multiline_comment|/* switching to graphics mode */
@@ -16,6 +17,14 @@ DECL|variable|vga_is_gfx
 r_static
 r_int
 id|vga_is_gfx
+suffix:semicolon
+multiline_comment|/* this is the sti_struct used for this console */
+DECL|variable|sticon_sti
+r_static
+r_struct
+id|sti_struct
+op_star
+id|sticon_sti
 suffix:semicolon
 multiline_comment|/* Software scrollback */
 DECL|variable|softback_buf
@@ -224,7 +233,7 @@ macro_line|#endif
 id|sti_putc
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 id|c
 comma
@@ -351,7 +360,7 @@ op_decrement
 id|sti_putc
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 id|scr_readw
 c_func
@@ -419,7 +428,7 @@ suffix:colon
 id|sti_putc
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 id|car1
 comma
@@ -462,7 +471,7 @@ suffix:colon
 id|sti_putc
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 (paren
 id|car1
@@ -494,9 +503,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|function|sticon_scroll
 r_static
 r_int
-DECL|function|sticon_scroll
 id|sticon_scroll
 c_func
 (paren
@@ -523,7 +532,7 @@ id|sti_struct
 op_star
 id|sti
 op_assign
-id|default_sti
+id|sticon_sti
 suffix:semicolon
 r_if
 c_cond
@@ -644,9 +653,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|sticon_bmove
 r_static
 r_void
-DECL|function|sticon_bmove
 id|sticon_bmove
 c_func
 (paren
@@ -762,7 +771,7 @@ macro_line|#endif
 id|sti_bmove
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 id|sy
 comma
@@ -798,7 +807,7 @@ id|sti_struct
 op_star
 id|sti
 op_assign
-id|default_sti
+id|sticon_sti
 suffix:semicolon
 r_int
 id|vc_cols
@@ -936,7 +945,7 @@ suffix:semicolon
 id|sti_clear
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 id|sy
 comma
@@ -1042,7 +1051,7 @@ suffix:semicolon
 id|sti_clear
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 l_int|0
 comma
@@ -1066,7 +1075,7 @@ multiline_comment|/* Entering graphic mode */
 id|sti_clear
 c_func
 (paren
-id|default_sti
+id|sticon_sti
 comma
 l_int|0
 comma
@@ -1507,6 +1516,7 @@ id|attr
 suffix:semicolon
 )brace
 DECL|function|sticon_invert_region
+r_static
 r_void
 id|sticon_invert_region
 c_func
@@ -1615,6 +1625,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|sticon_save_screen
+r_static
 r_void
 id|sticon_save_screen
 c_func
@@ -1627,6 +1638,7 @@ id|conp
 (brace
 )brace
 DECL|variable|sti_con
+r_static
 r_struct
 id|consw
 id|sti_con
@@ -1743,15 +1755,33 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* already initialized ? */
 r_if
 c_cond
 (paren
-id|sti_init_roms
+id|sticon_sti
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|sticon_sti
+op_assign
+id|sti_get_rom
 c_func
 (paren
+l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sticon_sti
 )paren
-(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1788,17 +1818,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 DECL|variable|sticonsole_init
 id|module_init
 c_func
 (paren
 id|sticonsole_init
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
