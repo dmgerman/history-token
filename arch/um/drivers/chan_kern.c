@@ -2050,7 +2050,7 @@ op_star
 id|chans
 comma
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 id|task
 comma
@@ -2144,13 +2144,10 @@ id|TTY_FLIPBUF_SIZE
 )paren
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 id|task
-comma
-op_amp
-id|tq_timer
 )paren
 suffix:semicolon
 r_goto

@@ -8,7 +8,7 @@ macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/ctype.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/sysrq.h&quot;
-macro_line|#include &quot;linux/tqueue.h&quot;
+macro_line|#include &quot;linux/workqueue.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/proc_fs.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
@@ -73,9 +73,9 @@ c_func
 id|mc_requests
 )paren
 suffix:semicolon
-DECL|function|mc_task_proc
+DECL|function|mc_work_proc
 r_void
-id|mc_task_proc
+id|mc_work_proc
 c_func
 (paren
 r_void
@@ -164,20 +164,15 @@ id|done
 suffix:semicolon
 )brace
 )brace
-DECL|variable|mconsole_task
-r_struct
-id|tq_struct
-id|mconsole_task
-op_assign
-(brace
-id|routine
-suffix:colon
-id|mc_task_proc
+id|DECLARE_WORK
+c_func
+(paren
+id|mconsole_work
 comma
-id|data
-suffix:colon
+id|mc_work_proc
+comma
 l_int|NULL
-)brace
+)paren
 suffix:semicolon
 DECL|function|mconsole_interrupt
 r_void
@@ -317,11 +312,11 @@ id|mc_requests
 )paren
 )paren
 (brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|mconsole_task
+id|mconsole_work
 )paren
 suffix:semicolon
 )brace

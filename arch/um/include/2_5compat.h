@@ -7,10 +7,6 @@ DECL|macro|INIT_CONSOLE
 mdefine_line|#define INIT_CONSOLE(dev_name, write_proc, device_proc, setup_proc, f) { &bslash;&n;&t;name :&t;&t;dev_name, &bslash;&n;&t;write :&t;&t;write_proc, &bslash;&n;&t;read :&t;&t;NULL, &bslash;&n;&t;device :&t;device_proc, &bslash;&n;&t;setup :&t;&t;setup_proc, &bslash;&n;&t;flags :&t;&t;f, &bslash;&n;&t;index :&t;&t;-1, &bslash;&n;&t;cflag :&t;&t;0, &bslash;&n;&t;next :&t;&t;NULL &bslash;&n;}
 DECL|macro|INIT_QUEUE
 mdefine_line|#define INIT_QUEUE(queue, request, lock) blk_init_queue(queue, request, lock)
-DECL|macro|ELV_NOOP
-mdefine_line|#define ELV_NOOP elevator_noop
-DECL|macro|INIT_ELV
-mdefine_line|#define INIT_ELV(queue, elv) elevator_init(queue, elv, ELV_NOOP)
 DECL|macro|INIT_HARDSECT
 mdefine_line|#define INIT_HARDSECT(arr, maj, sizes)
 DECL|macro|SET_PRI
