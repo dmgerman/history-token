@@ -955,8 +955,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* device is busmaster */
 DECL|member|saved_config_space
-r_int
-r_int
+id|u32
 id|saved_config_space
 (braket
 l_int|16
