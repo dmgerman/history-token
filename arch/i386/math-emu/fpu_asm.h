@@ -4,7 +4,7 @@ DECL|macro|_FPU_ASM_H_
 mdefine_line|#define _FPU_ASM_H_
 macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|EXCEPTION
-mdefine_line|#define&t;EXCEPTION&t;SYMBOL_NAME(FPU_exception)
+mdefine_line|#define&t;EXCEPTION&t;FPU_exception
 DECL|macro|PARAM1
 mdefine_line|#define PARAM1&t;8(%ebp)
 DECL|macro|PARAM2
