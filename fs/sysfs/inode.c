@@ -317,6 +317,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|driverfs_get_inode
+r_static
 r_struct
 id|inode
 op_star
@@ -1841,11 +1842,11 @@ id|driverfs_fill_super
 )paren
 suffix:semicolon
 )brace
-DECL|variable|driverfs_fs_type
+DECL|variable|sysfs_fs_type
 r_static
 r_struct
 id|file_system_type
-id|driverfs_fs_type
+id|sysfs_fs_type
 op_assign
 (brace
 dot
@@ -1856,7 +1857,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;driverfs&quot;
+l_string|&quot;sysfs&quot;
 comma
 dot
 id|get_sb
@@ -1930,7 +1931,7 @@ id|kern_mount
 c_func
 (paren
 op_amp
-id|driverfs_fs_type
+id|sysfs_fs_type
 )paren
 suffix:semicolon
 r_if
@@ -2077,10 +2078,11 @@ id|mount_count
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_driverfs_fs
+DECL|function|sysfs_init
+r_static
 r_int
 id|__init
-id|init_driverfs_fs
+id|sysfs_init
 c_func
 (paren
 r_void
@@ -2091,10 +2093,17 @@ id|register_filesystem
 c_func
 (paren
 op_amp
-id|driverfs_fs_type
+id|sysfs_fs_type
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sysfs_init
+id|core_initcall
+c_func
+(paren
+id|sysfs_init
+)paren
+suffix:semicolon
 DECL|function|get_dentry
 r_static
 r_struct
@@ -2151,10 +2160,10 @@ id|parent
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_create_dir - create a directory in the filesystem&n; * @entry:&t;directory entry&n; * @parent:&t;parent directory entry&n; */
+multiline_comment|/**&n; * sysfs_create_dir - create a directory in the filesystem&n; * @entry:&t;directory entry&n; * @parent:&t;parent directory entry&n; */
 r_int
-DECL|function|driverfs_create_dir
-id|driverfs_create_dir
+DECL|function|sysfs_create_dir
+id|sysfs_create_dir
 c_func
 (paren
 r_struct
@@ -2326,10 +2335,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_create_file - create a file&n; * @entry:&t;structure describing the file&n; * @parent:&t;directory to create it in&n; */
+multiline_comment|/**&n; * sysfs_create_file - create a file&n; * @entry:&t;structure describing the file&n; * @parent:&t;directory to create it in&n; */
 r_int
-DECL|function|driverfs_create_file
-id|driverfs_create_file
+DECL|function|sysfs_create_file
+id|sysfs_create_file
 c_func
 (paren
 r_struct
@@ -2452,10 +2461,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_create_symlink - make a symlink&n; * @parent:&t;directory we&squot;re creating in &n; * @entry:&t;entry describing link&n; * @target:&t;place we&squot;re symlinking to&n; * &n; */
-DECL|function|driverfs_create_symlink
+multiline_comment|/**&n; * sysfs_create_symlink - make a symlink&n; * @parent:&t;directory we&squot;re creating in &n; * @entry:&t;entry describing link&n; * @target:&t;place we&squot;re symlinking to&n; * &n; */
+DECL|function|sysfs_create_symlink
 r_int
-id|driverfs_create_symlink
+id|sysfs_create_symlink
 c_func
 (paren
 r_struct
@@ -2568,10 +2577,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_remove_file - exported file removal&n; * @dir:&t;directory the file supposedly resides in&n; * @name:&t;name of the file&n; *&n; * Try and find the file in the dir&squot;s list.&n; * If it&squot;s there, call __remove_file() (above) for the dentry.&n; */
-DECL|function|driverfs_remove_file
+multiline_comment|/**&n; * sysfs_remove_file - exported file removal&n; * @dir:&t;directory the file supposedly resides in&n; * @name:&t;name of the file&n; *&n; * Try and find the file in the dir&squot;s list.&n; * If it&squot;s there, call __remove_file() (above) for the dentry.&n; */
+DECL|function|sysfs_remove_file
 r_void
-id|driverfs_remove_file
+id|sysfs_remove_file
 c_func
 (paren
 r_struct
@@ -2657,10 +2666,10 @@ id|dir-&gt;dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_remove_dir - exportable directory removal&n; * @dir:&t;directory to remove&n; *&n; * To make sure we don&squot;t orphan anyone, first remove&n; * all the children in the list, then do clean up the directory.&n; */
-DECL|function|driverfs_remove_dir
+multiline_comment|/**&n; * sysfs_remove_dir - exportable directory removal&n; * @dir:&t;directory to remove&n; *&n; * To make sure we don&squot;t orphan anyone, first remove&n; * all the children in the list, then do clean up the directory.&n; */
+DECL|function|sysfs_remove_dir
 r_void
-id|driverfs_remove_dir
+id|sysfs_remove_dir
 c_func
 (paren
 r_struct
@@ -2824,39 +2833,39 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|driverfs_create_file
+DECL|variable|sysfs_create_file
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|driverfs_create_file
+id|sysfs_create_file
 )paren
 suffix:semicolon
-DECL|variable|driverfs_create_symlink
+DECL|variable|sysfs_create_symlink
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|driverfs_create_symlink
+id|sysfs_create_symlink
 )paren
 suffix:semicolon
-DECL|variable|driverfs_create_dir
+DECL|variable|sysfs_create_dir
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|driverfs_create_dir
+id|sysfs_create_dir
 )paren
 suffix:semicolon
-DECL|variable|driverfs_remove_file
+DECL|variable|sysfs_remove_file
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|driverfs_remove_file
+id|sysfs_remove_file
 )paren
 suffix:semicolon
-DECL|variable|driverfs_remove_dir
+DECL|variable|sysfs_remove_dir
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|driverfs_remove_dir
+id|sysfs_remove_dir
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
