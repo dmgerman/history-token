@@ -3144,10 +3144,10 @@ id|hidinput-&gt;input
 suffix:semicolon
 )brace
 )brace
-DECL|function|hid_find_field
+DECL|function|hidinput_find_field
 r_static
 r_int
-id|hid_find_field
+id|hidinput_find_field
 c_func
 (paren
 r_struct
@@ -3358,7 +3358,7 @@ c_cond
 (paren
 id|offset
 op_assign
-id|hid_find_field
+id|hidinput_find_field
 c_func
 (paren
 id|hid
