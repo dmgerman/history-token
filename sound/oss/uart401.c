@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/uart401.c&n; *&n; * MPU-401 UART driver (formerly uart401_midi.c)&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; * Changes:&n; *&t;Alan Cox&t;&t;Reformatted, removed sound_mem usage, use normal Linux&n; *&t;&t;&t;&t;interrupt allocation. Protect against bogus unload&n; *&t;&t;&t;&t;Fixed to allow IRQ &gt; 15&n; *&t;Christoph Hellwig&t;Adapted to module_init/module_exit&n; *&t;Arnaldo C. de Melo&t;got rid of check_region&n; *&n; * Status:&n; *&t;&t;Untested&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;mpu401.h&quot;
 DECL|struct|uart401_devc
@@ -56,6 +57,10 @@ suffix:semicolon
 DECL|member|share_irq
 r_int
 id|share_irq
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 )brace
 DECL|typedef|uart401_devc
@@ -519,15 +524,13 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Test for input since pending input seems to block the output.&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -545,9 +548,12 @@ c_func
 id|devc
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -771,15 +777,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -873,9 +877,12 @@ id|ok
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1204,15 +1211,20 @@ id|devc-&gt;share_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|spin_lock_init
 c_func
 (paren
-id|flags
+op_amp
+id|devc-&gt;lock
 )paren
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ok
@@ -1223,9 +1235,12 @@ c_func
 id|devc
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
