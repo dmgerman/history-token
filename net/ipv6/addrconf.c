@@ -3735,15 +3735,7 @@ id|rt-&gt;rt6i_dev
 suffix:semicolon
 id|onlink
 op_assign
-(paren
-id|rt
-op_logical_and
-(paren
-id|rt-&gt;rt6i_flags
-op_amp
-id|RTF_ALLONLINK
-)paren
-)paren
+l_int|0
 suffix:semicolon
 r_return
 id|ipv6_dev_get_saddr

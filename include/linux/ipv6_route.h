@@ -5,7 +5,7 @@ mdefine_line|#define _LINUX_IPV6_ROUTE_H
 DECL|macro|RTF_DEFAULT
 mdefine_line|#define RTF_DEFAULT&t;0x00010000&t;/* default - learned via ND&t;*/
 DECL|macro|RTF_ALLONLINK
-mdefine_line|#define RTF_ALLONLINK&t;0x00020000&t;/* fallback, no routers on link&t;*/
+mdefine_line|#define RTF_ALLONLINK&t;0x00020000&t;/* (deprecated and will be removed)&n;&t;&t;&t;&t;&t;   fallback, no routers on link */
 DECL|macro|RTF_ADDRCONF
 mdefine_line|#define RTF_ADDRCONF&t;0x00040000&t;/* addrconf route - RA&t;&t;*/
 DECL|macro|RTF_PREFIX_RT
