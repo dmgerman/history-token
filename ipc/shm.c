@@ -704,10 +704,6 @@ id|shp-&gt;shm_perm.security
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_shm_alloc
@@ -715,7 +711,11 @@ c_func
 (paren
 id|shp
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 (brace
 id|ipc_rcu_free

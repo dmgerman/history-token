@@ -71,10 +71,6 @@ id|statfs
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_sb_statfs
@@ -82,7 +78,11 @@ c_func
 (paren
 id|sb
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_return
 id|retval

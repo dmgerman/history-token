@@ -6036,10 +6036,6 @@ id|f-&gt;f_op-&gt;write
 r_goto
 id|out_f
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_quota_on
@@ -6047,7 +6043,11 @@ c_func
 (paren
 id|f
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out_f
