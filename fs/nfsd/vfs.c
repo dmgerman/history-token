@@ -4309,7 +4309,7 @@ id|inode-&gt;i_op-&gt;readlink
 r_goto
 id|out
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

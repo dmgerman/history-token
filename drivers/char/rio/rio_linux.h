@@ -75,18 +75,6 @@ multiline_comment|/* Allow others to gather this into &quot;major.h&quot; or som
 DECL|macro|RIOCTL_MISC_MINOR
 mdefine_line|#define RIOCTL_MISC_MINOR    169
 macro_line|#endif
-r_void
-id|rio_dec_mod_count
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|rio_inc_mod_count
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Allow us to debug &quot;in the field&quot; without requiring clients to&n;   recompile.... */
 macro_line|#if 1
 DECL|macro|rio_spin_lock_irqsave

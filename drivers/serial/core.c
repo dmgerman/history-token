@@ -8381,6 +8381,8 @@ c_func
 id|drv-&gt;tty_driver
 comma
 id|port-&gt;line
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|out

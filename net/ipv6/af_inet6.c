@@ -2220,6 +2220,11 @@ id|create
 op_assign
 id|inet6_create
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

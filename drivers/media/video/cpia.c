@@ -6601,10 +6601,10 @@ l_string|&quot;Unable to initialise /proc/cpia&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|proc_cpia_destroy
 r_static
 r_void
+id|__exit
 id|proc_cpia_destroy
 c_func
 (paren
@@ -6620,7 +6620,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /*MODULE*/
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* ----------------------- debug functions ---------------------- */
 DECL|macro|printstatus

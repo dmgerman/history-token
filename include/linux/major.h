@@ -44,6 +44,8 @@ DECL|macro|QIC02_TAPE_MAJOR
 mdefine_line|#define QIC02_TAPE_MAJOR&t;12
 DECL|macro|XT_DISK_MAJOR
 mdefine_line|#define XT_DISK_MAJOR&t;&t;13
+DECL|macro|INPUT_MAJOR
+mdefine_line|#define INPUT_MAJOR&t;&t;13
 DECL|macro|SOUND_MAJOR
 mdefine_line|#define SOUND_MAJOR&t;&t;14
 DECL|macro|CDU31A_CDROM_MAJOR

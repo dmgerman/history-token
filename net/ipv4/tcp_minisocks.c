@@ -1556,6 +1556,15 @@ id|tcp_tw_death_row_slot
 op_assign
 id|tw-&gt;next_death
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tw-&gt;next_death
+)paren
+id|tw-&gt;next_death-&gt;pprev_death
+op_assign
+id|tw-&gt;pprev_death
+suffix:semicolon
 id|tw-&gt;pprev_death
 op_assign
 l_int|NULL

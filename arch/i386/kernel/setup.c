@@ -228,6 +228,15 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|generic_apic_probe
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|root_mountflags
 suffix:semicolon
@@ -4067,6 +4076,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|dmi_scan_machine
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_GENERICARCH
+id|generic_apic_probe
+c_func
+(paren
+op_star
+id|cmdline_p
+)paren
+suffix:semicolon
+macro_line|#endif&t;
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
 r_if
@@ -4114,11 +4137,6 @@ id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-id|dmi_scan_machine
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|highio_setup
 r_static

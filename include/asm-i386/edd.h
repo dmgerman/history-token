@@ -435,8 +435,7 @@ id|reserved2
 suffix:semicolon
 DECL|member|raid
 )brace
-id|__attribute
-c_func
+id|__attribute__
 (paren
 (paren
 id|packed

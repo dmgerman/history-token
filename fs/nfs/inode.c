@@ -3021,7 +3021,7 @@ id|inode-&gt;i_ino
 op_assign
 id|hash
 suffix:semicolon
-multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
+multiline_comment|/* We can&squot;t support update_atime(), since the server will reset it */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_NOATIME

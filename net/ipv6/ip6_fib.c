@@ -1737,7 +1737,7 @@ r_return
 id|err
 suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_SUBTREES
-multiline_comment|/* Subtree creation failed, probably main tree node&n;&t;   is orphan. If it is, shot it.&n;&t; */
+multiline_comment|/* Subtree creation failed, probably main tree node&n;&t;   is orphan. If it is, shoot it.&n;&t; */
 id|st_failure
 suffix:colon
 r_if
@@ -3255,10 +3255,6 @@ c_func
 id|fn
 op_eq
 l_int|NULL
-op_logical_or
-id|rt-&gt;u.dst.obsolete
-op_le
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -3361,7 +3357,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Tree transversal function.&n; *&n; *&t;Certainly, it is not interrupt safe.&n; *&t;However, it is internally reenterable wrt itself and fib6_add/fib6_del.&n; *&t;It means, that we can modify tree during walking&n; *&t;and use this function for garbage collection, clone pruning,&n; *&t;cleaning tree when a device goes down etc. etc.&t;&n; *&n; *&t;It guarantees that every node will be traversed,&n; *&t;and that it will be traversed only once.&n; *&n; *&t;Callback function w-&gt;func may return:&n; *&t;0 -&gt; continue walking.&n; *&t;positive value -&gt; walking is suspended (used by tree dumps,&n; *&t;and probably by gc, if it will be split to several slices)&n; *&t;negative value -&gt; terminate walking.&n; *&n; *&t;The function itself returns:&n; *&t;0   -&gt; walk is complete.&n; *&t;&gt;0  -&gt; walk is incomplete (i.e. suspended)&n; *&t;&lt;0  -&gt; walk is terminated by an error.&n; */
+multiline_comment|/*&n; *&t;Tree traversal function.&n; *&n; *&t;Certainly, it is not interrupt safe.&n; *&t;However, it is internally reenterable wrt itself and fib6_add/fib6_del.&n; *&t;It means, that we can modify tree during walking&n; *&t;and use this function for garbage collection, clone pruning,&n; *&t;cleaning tree when a device goes down etc. etc.&t;&n; *&n; *&t;It guarantees that every node will be traversed,&n; *&t;and that it will be traversed only once.&n; *&n; *&t;Callback function w-&gt;func may return:&n; *&t;0 -&gt; continue walking.&n; *&t;positive value -&gt; walking is suspended (used by tree dumps,&n; *&t;and probably by gc, if it will be split to several slices)&n; *&t;negative value -&gt; terminate walking.&n; *&n; *&t;The function itself returns:&n; *&t;0   -&gt; walk is complete.&n; *&t;&gt;0  -&gt; walk is incomplete (i.e. suspended)&n; *&t;&lt;0  -&gt; walk is terminated by an error.&n; */
 DECL|function|fib6_walk_continue
 r_int
 id|fib6_walk_continue
@@ -4020,16 +4016,13 @@ id|rt-&gt;rt6i_expires
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
+id|time_after
+c_func
 (paren
 id|now
-op_minus
+comma
 id|rt-&gt;rt6i_expires
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|RT6_TRACE
@@ -4070,16 +4063,15 @@ id|rt-&gt;u.dst.__refcnt
 op_eq
 l_int|0
 op_logical_and
-(paren
-r_int
-)paren
+id|time_after_eq
+c_func
 (paren
 id|now
-op_minus
+comma
 id|rt-&gt;u.dst.lastuse
-)paren
-op_ge
+op_plus
 id|gc_args.timeout
+)paren
 )paren
 (brace
 id|RT6_TRACE

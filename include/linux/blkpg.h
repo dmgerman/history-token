@@ -79,17 +79,5 @@ suffix:semicolon
 multiline_comment|/* volume label */
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_extern
-r_char
-op_star
-id|partition_name
-c_func
-(paren
-id|dev_t
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_BLKPG_H */
 eof

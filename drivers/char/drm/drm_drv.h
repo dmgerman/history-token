@@ -1536,13 +1536,6 @@ id|dev-&gt;last_checked
 op_assign
 l_int|0
 suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|dev-&gt;timer
-)paren
-suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -2750,6 +2743,13 @@ suffix:semicolon
 id|dev-&gt;count_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|dev-&gt;timer
+)paren
 suffix:semicolon
 id|sema_init
 c_func

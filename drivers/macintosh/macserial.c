@@ -9137,8 +9137,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -9225,8 +9223,6 @@ c_cond
 id|info-&gt;count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -9532,8 +9528,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * rs_wait_until_sent() --- wait until the transmitter is empty&n; */
@@ -10371,8 +10365,6 @@ r_int
 r_int
 id|page
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -10393,8 +10385,6 @@ id|zs_channels_found
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -10413,8 +10403,6 @@ c_cond
 id|info-&gt;kgdb_channel
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -12248,6 +12236,10 @@ suffix:semicolon
 id|serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|serial_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|serial_driver.driver_name
 op_assign
