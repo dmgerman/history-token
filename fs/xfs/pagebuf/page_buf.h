@@ -95,6 +95,105 @@ DECL|typedef|bmap_flags_t
 )brace
 id|bmap_flags_t
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+multiline_comment|/* base extent manipulation calls */
+DECL|enumerator|BMAP_READ
+id|BMAP_READ
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+multiline_comment|/* read extents */
+DECL|enumerator|BMAP_WRITE
+id|BMAP_WRITE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* create extents */
+DECL|enumerator|BMAP_ALLOCATE
+id|BMAP_ALLOCATE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+multiline_comment|/* delayed allocate to real extents */
+DECL|enumerator|BMAP_UNWRITTEN
+id|BMAP_UNWRITTEN
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+comma
+multiline_comment|/* unwritten extents to real extents */
+multiline_comment|/* modifiers */
+DECL|enumerator|BMAP_IGNSTATE
+id|BMAP_IGNSTATE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+comma
+multiline_comment|/* ignore unwritten state on read */
+DECL|enumerator|BMAP_DIRECT
+id|BMAP_DIRECT
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|5
+)paren
+comma
+multiline_comment|/* direct instead of buffered write */
+DECL|enumerator|BMAP_MMAP
+id|BMAP_MMAP
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|6
+)paren
+comma
+multiline_comment|/* allocate for mmap write */
+DECL|enumerator|BMAP_SYNC
+id|BMAP_SYNC
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|7
+)paren
+comma
+multiline_comment|/* sync write */
+DECL|enumerator|BMAP_TRYLOCK
+id|BMAP_TRYLOCK
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|8
+)paren
+comma
+multiline_comment|/* non-blocking request */
+DECL|typedef|bmapi_flags_t
+)brace
+id|bmapi_flags_t
+suffix:semicolon
 DECL|enum|page_buf_flags_e
 r_typedef
 r_enum
@@ -252,8 +351,8 @@ l_int|14
 )paren
 comma
 multiline_comment|/* lock requested, but do not wait&t;   */
-DECL|enumerator|PBF_FILE_ALLOCATE
-id|PBF_FILE_ALLOCATE
+DECL|enumerator|PBF_DONT_BLOCK
+id|PBF_DONT_BLOCK
 op_assign
 (paren
 l_int|1
@@ -261,37 +360,7 @@ op_lshift
 l_int|15
 )paren
 comma
-multiline_comment|/* allocate all file space&t;   */
-DECL|enumerator|PBF_DONT_BLOCK
-id|PBF_DONT_BLOCK
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-comma
 multiline_comment|/* do not block in current thread&t;   */
-DECL|enumerator|PBF_DIRECT
-id|PBF_DIRECT
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|17
-)paren
-comma
-multiline_comment|/* direct I/O desired&t;&t;&t;   */
-DECL|enumerator|PBF_FILE_UNWRITTEN
-id|PBF_FILE_UNWRITTEN
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|18
-)paren
-comma
-multiline_comment|/* convert unwritten extent space  */
 multiline_comment|/* flags used only internally */
 DECL|enumerator|_PBF_LOCKABLE
 id|_PBF_LOCKABLE
@@ -299,17 +368,27 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|19
+l_int|16
 )paren
 comma
 multiline_comment|/* page_buf_t may be locked&t;&t;   */
+DECL|enumerator|_PBF_PRIVATE_BH
+id|_PBF_PRIVATE_BH
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|17
+)paren
+comma
+multiline_comment|/* do not use public buffer heads&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|21
+l_int|18
 )paren
 comma
 multiline_comment|/* all pages in range mapped&t;   */
@@ -319,7 +398,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|22
+l_int|19
 )paren
 comma
 multiline_comment|/* pb_addr space was allocated&t;   */
@@ -329,7 +408,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|23
+l_int|20
 )paren
 comma
 multiline_comment|/* pb_mem+underlying pages alloc&squot;d */
@@ -339,7 +418,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|24
+l_int|21
 )paren
 comma
 DECL|enumerator|PBF_FLUSH
@@ -348,7 +427,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|25
+l_int|22
 )paren
 comma
 multiline_comment|/* flush disk write cache&t;&t;   */
@@ -358,7 +437,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|26
+l_int|23
 )paren
 comma
 DECL|typedef|page_buf_flags_t

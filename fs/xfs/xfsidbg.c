@@ -7904,42 +7904,24 @@ comma
 l_string|&quot;TRYLOCK&quot;
 comma
 multiline_comment|/* 15 */
-l_string|&quot;FILE_ALLOCATE&quot;
-comma
 l_string|&quot;DONT_BLOCK&quot;
-comma
-l_string|&quot;DIRECT&quot;
-comma
-l_string|&quot;INVALID18&quot;
 comma
 l_string|&quot;LOCKABLE&quot;
 comma
-multiline_comment|/* 20 */
 l_string|&quot;PRIVATE_BH&quot;
 comma
 l_string|&quot;ALL_PAGES_MAPPED&quot;
 comma
 l_string|&quot;ADDR_ALLOCATED&quot;
 comma
+multiline_comment|/* 20 */
 l_string|&quot;MEM_ALLOCATED&quot;
 comma
 l_string|&quot;FORCEIO&quot;
 comma
-multiline_comment|/* 25 */
 l_string|&quot;FLUSH&quot;
 comma
 l_string|&quot;READ_AHEAD&quot;
-comma
-l_string|&quot;INVALID27&quot;
-comma
-l_string|&quot;INVALID28&quot;
-comma
-l_string|&quot;INVALID29&quot;
-comma
-multiline_comment|/* 30 */
-l_string|&quot;INVALID30&quot;
-comma
-l_string|&quot;INVALID31&quot;
 comma
 l_int|NULL
 )brace
