@@ -1550,6 +1550,19 @@ op_star
 id|nr_to_write
 )paren
 suffix:semicolon
+r_int
+id|write_one_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
 multiline_comment|/* readahead.c */
 DECL|macro|VM_MAX_READAHEAD
 mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */

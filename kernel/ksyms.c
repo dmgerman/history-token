@@ -1129,13 +1129,6 @@ c_func
 id|generic_ro_fops
 )paren
 suffix:semicolon
-DECL|variable|generic_buffer_fdatasync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|generic_buffer_fdatasync
-)paren
-suffix:semicolon
 DECL|variable|file_lock_list
 id|EXPORT_SYMBOL
 c_func
