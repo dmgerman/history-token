@@ -68,6 +68,7 @@ r_void
 id|setup_replication_mask
 c_func
 (paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -75,6 +76,7 @@ r_void
 id|replicate_kernel_text
 c_func
 (paren
+r_void
 )paren
 suffix:semicolon
 r_extern

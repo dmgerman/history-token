@@ -7,12 +7,12 @@ c_func
 id|dbe_list
 )paren
 suffix:semicolon
-DECL|variable|dbe_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dbe_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Given an address, look for it in the module exception tables. */
 DECL|function|search_module_dbetables

@@ -4318,7 +4318,7 @@ op_eq
 id|PTY_TYPE_SLAVE
 ques
 c_cond
-l_string|&quot;tty&quot;
+l_string|&quot;pty&quot;
 suffix:colon
 id|driver-&gt;name
 comma

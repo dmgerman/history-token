@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 DECL|variable|au1xxx_irq_map
 id|au1xxx_irq_map_t
 id|au1xxx_irq_map

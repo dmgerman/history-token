@@ -733,7 +733,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|finit
@@ -741,9 +744,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|1
+id|set_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|SETUP_DATA_AREA

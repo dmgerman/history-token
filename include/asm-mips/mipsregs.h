@@ -747,26 +747,26 @@ mdefine_line|#define CEB_KERNEL&t;2&t;/* Count events in kernel mode EXL = ERL =
 DECL|macro|CEB_EXL
 mdefine_line|#define CEB_EXL&t;&t;1&t;/* Count events with EXL = 1, ERL = 0 */
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Functions to access the r10k performance counter and control registers&n; */
+multiline_comment|/*&n; * Functions to access the R10000 performance counters.  These are basically&n; * mfc0 and mtc0 instructions from and to coprocessor register with a 5-bit&n; * performance counter number encoded into bits 1 ... 5 of the instruction.&n; * Only performance counters 0 to 1 actually exist, so for a non-R10000 aware&n; * disassembler these will look like an access to sel 0 or 1.&n; */
 DECL|macro|read_r10k_perf_cntr
-mdefine_line|#define read_r10k_perf_cntr(counter)                            &bslash;&n;({ unsigned int __res;                                          &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mfpc&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
+mdefine_line|#define read_r10k_perf_cntr(counter)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __res;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mfpc&bslash;t%0, %1&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;i&quot; (counter));&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|write_r10k_perf_cntr
-mdefine_line|#define write_r10k_perf_cntr(counter,val)                       &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mtpc&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : : &quot;r&quot; (val));
-DECL|macro|read_r10k_perf_cntl
-mdefine_line|#define read_r10k_perf_cntl(counter)                            &bslash;&n;({ unsigned int __res;                                          &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mfps&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
+mdefine_line|#define write_r10k_perf_cntr(counter,val)                       &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mtpc&bslash;t%0, %1&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (val), &quot;i&quot; (counter));&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|read_r10k_perf_event
+mdefine_line|#define read_r10k_perf_event(counter)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __res;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mfps&bslash;t%0, %1&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;i&quot; (counter));&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|write_r10k_perf_cntl
-mdefine_line|#define write_r10k_perf_cntl(counter,val)                       &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mtps&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : : &quot;r&quot; (val));
+mdefine_line|#define write_r10k_perf_cntl(counter,val)                       &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mtps&bslash;t%0, %1&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (val), &quot;i&quot; (counter));&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Macros to access the system control coprocessor&n; */
 DECL|macro|__read_32bit_c0_register
 mdefine_line|#define __read_32bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ int __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__read_64bit_c0_register
-mdefine_line|#define __read_64bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ unsigned long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __read_64bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ unsigned long long __res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = __read_64bit_c0_split(source, sel);&t;&t;&bslash;&n;&t;else if (sel == 0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__write_32bit_c0_register
 mdefine_line|#define __write_32bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; ((unsigned int)value));&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; ((unsigned int)value));&t;&t;&bslash;&n;} while (0)
 DECL|macro|__write_64bit_c0_register
-mdefine_line|#define __write_64bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __write_64bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_64bit_c0_split(register, sel, value);&t;&t;&bslash;&n;&t;else if (sel == 0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__read_ulong_c0_register
-mdefine_line|#define __read_ulong_c0_register(reg, sel)&t;&t;&t;&t;&bslash;&n;&t;((sizeof(unsigned long) == 4) ?&t;&t;&t;&t;&t;&bslash;&n;&t;__read_32bit_c0_register(reg, sel) :&t;&t;&t;&t;&bslash;&n;&t;__read_64bit_c0_register(reg, sel))
+mdefine_line|#define __read_ulong_c0_register(reg, sel)&t;&t;&t;&t;&bslash;&n;&t;((sizeof(unsigned long) == 4) ?&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __read_32bit_c0_register(reg, sel) :&t;&t;&bslash;&n;&t;(unsigned long) __read_64bit_c0_register(reg, sel))
 DECL|macro|__write_ulong_c0_register
 mdefine_line|#define __write_ulong_c0_register(reg, sel, val)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_32bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_64bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * On RM7000/RM9000 these are uses to access cop0 set 1 registers&n; */
@@ -933,6 +933,11 @@ DECL|macro|read_c0_framemask
 mdefine_line|#define read_c0_framemask()&t;__read_32bit_c0_register($21, 0)
 DECL|macro|write_c0_framemask
 mdefine_line|#define write_c0_framemask(val)&t;__write_32bit_c0_register($21, 0, val)
+multiline_comment|/* RM9000 PerfControl performance counter control register */
+DECL|macro|read_c0_perfcontrol
+mdefine_line|#define read_c0_perfcontrol()&t;__read_32bit_c0_register($22, 0)
+DECL|macro|write_c0_perfcontrol
+mdefine_line|#define write_c0_perfcontrol(val) __write_32bit_c0_register($22, 0, val)
 DECL|macro|read_c0_diag
 mdefine_line|#define read_c0_diag()&t;&t;__read_32bit_c0_register($22, 0)
 DECL|macro|write_c0_diag
@@ -965,6 +970,44 @@ DECL|macro|read_c0_depc
 mdefine_line|#define read_c0_depc()&t;&t;__read_ulong_c0_register($24, 0)
 DECL|macro|write_c0_depc
 mdefine_line|#define write_c0_depc(val)&t;__write_ulong_c0_register($24, 0, val)
+multiline_comment|/*&n; * MIPS32 / MIPS64 performance counters&n; */
+DECL|macro|read_c0_perfctrl0
+mdefine_line|#define read_c0_perfctrl0()&t;__read_32bit_c0_register($25, 0)
+DECL|macro|write_c0_perfctrl0
+mdefine_line|#define write_c0_perfctrl0(val)&t;__write_32bit_c0_register($25, 0, val)
+DECL|macro|read_c0_perfcntr0
+mdefine_line|#define read_c0_perfcntr0()&t;__read_32bit_c0_register($25, 1)
+DECL|macro|write_c0_perfcntr0
+mdefine_line|#define write_c0_perfcntr0(val)&t;__write_32bit_c0_register($25, 1, val)
+DECL|macro|read_c0_perfctrl1
+mdefine_line|#define read_c0_perfctrl1()&t;__read_32bit_c0_register($25, 2)
+DECL|macro|write_c0_perfctrl1
+mdefine_line|#define write_c0_perfctrl1(val)&t;__write_32bit_c0_register($25, 2, val)
+DECL|macro|read_c0_perfcntr1
+mdefine_line|#define read_c0_perfcntr1()&t;__read_32bit_c0_register($25, 3)
+DECL|macro|write_c0_perfcntr1
+mdefine_line|#define write_c0_perfcntr1(val)&t;__write_32bit_c0_register($25, 3, val)
+DECL|macro|read_c0_perfctrl2
+mdefine_line|#define read_c0_perfctrl2()&t;__read_32bit_c0_register($25, 4)
+DECL|macro|write_c0_perfctrl2
+mdefine_line|#define write_c0_perfctrl2(val)&t;__write_32bit_c0_register($25, 4, val)
+DECL|macro|read_c0_perfcntr2
+mdefine_line|#define read_c0_perfcntr2()&t;__read_32bit_c0_register($25, 5)
+DECL|macro|write_c0_perfcntr2
+mdefine_line|#define write_c0_perfcntr2(val)&t;__write_32bit_c0_register($25, 5, val)
+DECL|macro|read_c0_perfctrl3
+mdefine_line|#define read_c0_perfctrl3()&t;__read_32bit_c0_register($25, 6)
+DECL|macro|write_c0_perfctrl3
+mdefine_line|#define write_c0_perfctrl3(val)&t;__write_32bit_c0_register($25, 6, val)
+DECL|macro|read_c0_perfcntr3
+mdefine_line|#define read_c0_perfcntr3()&t;__read_32bit_c0_register($25, 7)
+DECL|macro|write_c0_perfcntr3
+mdefine_line|#define write_c0_perfcntr3(val)&t;__write_32bit_c0_register($25, 7, val)
+multiline_comment|/* RM9000 PerfCount performance counter register */
+DECL|macro|read_c0_perfcount
+mdefine_line|#define read_c0_perfcount()&t;__read_64bit_c0_register($25, 0)
+DECL|macro|write_c0_perfcount
+mdefine_line|#define write_c0_perfcount(val)&t;__write_64bit_c0_register($25, 0, val)
 DECL|macro|read_c0_ecc
 mdefine_line|#define read_c0_ecc()&t;&t;__read_32bit_c0_register($26, 0)
 DECL|macro|write_c0_ecc

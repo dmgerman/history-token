@@ -1504,21 +1504,21 @@ l_int|8
 )braket
 op_assign
 (brace
-l_int|0x0738C808099264FFL
+l_int|0x0738C808099264FFULL
 comma
-l_int|0x38C808099264FF07L
+l_int|0x38C808099264FF07ULL
 comma
-l_int|0xC808099264FF0738L
+l_int|0xC808099264FF0738ULL
 comma
-l_int|0x08099264FF0738C8L
+l_int|0x08099264FF0738C8ULL
 comma
-l_int|0x099264FF0738C808L
+l_int|0x099264FF0738C808ULL
 comma
-l_int|0x9264FF0738C80809L
+l_int|0x9264FF0738C80809ULL
 comma
-l_int|0x64FF0738C8080992L
+l_int|0x64FF0738C8080992ULL
 comma
-l_int|0xFF0738C808099264L
+l_int|0xFF0738C808099264ULL
 )brace
 suffix:semicolon
 multiline_comment|/* Calculate the parity on a range of bits */
@@ -1886,7 +1886,7 @@ op_assign
 (paren
 id|taglo
 op_amp
-l_int|0xC0000FFFFFFFE000
+l_int|0xC0000FFFFFFFE000ULL
 )paren
 op_or
 id|addr
@@ -1920,7 +1920,7 @@ l_int|3
 )paren
 id|va
 op_or_assign
-l_int|0x3FFFF00000000000
+l_int|0x3FFFF00000000000ULL
 suffix:semicolon
 id|valid
 op_assign
@@ -2681,7 +2681,7 @@ op_assign
 (paren
 id|taglo
 op_amp
-l_int|0xFFFFFFE000
+l_int|0xFFFFFFE000ULL
 )paren
 op_or
 id|addr

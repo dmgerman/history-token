@@ -124,6 +124,9 @@ suffix:semicolon
 id|loff_t
 id|offset
 op_assign
+(paren
+id|loff_t
+)paren
 id|page-&gt;index
 op_lshift
 id|PAGE_CACHE_SHIFT

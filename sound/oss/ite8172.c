@@ -46,6 +46,23 @@ DECL|macro|info
 mdefine_line|#define info(format, arg...) printk(KERN_INFO PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+DECL|macro|IT8172_MODULE_NAME
+mdefine_line|#define IT8172_MODULE_NAME &quot;IT8172 audio&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX IT8172_MODULE_NAME
+macro_line|#ifdef IT8172_DEBUG
+DECL|macro|dbg
+mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+macro_line|#else
+DECL|macro|dbg
+mdefine_line|#define dbg(format, arg...) do {} while (0)
+macro_line|#endif
+DECL|macro|err
+mdefine_line|#define err(format, arg...) printk(KERN_ERR PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+DECL|macro|info
+mdefine_line|#define info(format, arg...) printk(KERN_INFO PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+DECL|macro|warn
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING PFX &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|variable|sample_shift
 r_static
 r_const
@@ -370,7 +387,6 @@ macro_line|#endif /* IT8172_DEBUG */
 DECL|member|codec
 r_struct
 id|ac97_codec
-op_star
 id|codec
 suffix:semicolon
 DECL|member|pcc
@@ -2121,7 +2137,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
@@ -2298,7 +2314,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -3106,29 +3122,6 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|it8172_llseek
-r_static
-id|loff_t
-id|it8172_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|it8172_open_mixdev
 r_static
 r_int
@@ -3206,7 +3199,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;codec-&gt;dev_mixer
+id|s-&gt;codec.dev_mixer
 op_eq
 id|minor
 )paren
@@ -3862,6 +3855,7 @@ id|ac97_codec
 op_star
 id|codec
 op_assign
+op_amp
 id|s-&gt;codec
 suffix:semicolon
 r_return
@@ -3892,7 +3886,7 @@ comma
 dot
 id|llseek
 op_assign
-id|it8172_llseek
+id|no_llseek
 comma
 dot
 id|ioctl
@@ -5861,6 +5855,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.count
@@ -5893,6 +5888,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.count
@@ -7194,7 +7190,9 @@ id|count
 op_rshift
 id|s-&gt;dma_adc.fragshift
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -7212,11 +7210,12 @@ r_sizeof
 id|cinfo
 )paren
 )paren
-ques
-c_cond
+)paren
+r_return
 op_minus
 id|EFAULT
-suffix:colon
+suffix:semicolon
+r_return
 l_int|0
 suffix:semicolon
 r_case
@@ -7341,7 +7340,9 @@ id|count
 op_rshift
 id|s-&gt;dma_dac.fragshift
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -7359,11 +7360,12 @@ r_sizeof
 id|cinfo
 )paren
 )paren
-ques
-c_cond
+)paren
+r_return
 op_minus
 id|EFAULT
-suffix:colon
+suffix:semicolon
+r_return
 l_int|0
 suffix:semicolon
 r_case
@@ -7878,6 +7880,7 @@ r_return
 id|mixdev_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|cmd
@@ -8515,7 +8518,7 @@ comma
 dot
 id|llseek
 op_assign
-id|it8172_llseek
+id|no_llseek
 comma
 dot
 id|read
@@ -8807,6 +8810,7 @@ comma
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|cnt
@@ -9125,42 +9129,23 @@ op_amp
 id|s-&gt;rev
 )paren
 suffix:semicolon
-id|s-&gt;codec
-op_assign
-id|ac97_alloc_codec
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;codec
-op_eq
-l_int|NULL
-)paren
-(brace
-r_goto
-id|err_codec
-suffix:semicolon
-)brace
-id|s-&gt;codec-&gt;private_data
+id|s-&gt;codec.private_data
 op_assign
 id|s
 suffix:semicolon
-id|s-&gt;codec-&gt;id
+id|s-&gt;codec.id
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_read
+id|s-&gt;codec.codec_read
 op_assign
 id|rdcodec
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_write
+id|s-&gt;codec.codec_write
 op_assign
 id|wrcodec
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_wait
+id|s-&gt;codec.codec_wait
 op_assign
 id|waitcodec
 suffix:semicolon
@@ -9276,7 +9261,7 @@ r_if
 c_cond
 (paren
 (paren
-id|s-&gt;codec-&gt;dev_mixer
+id|s-&gt;codec.dev_mixer
 op_assign
 id|register_sound_mixer
 c_func
@@ -9295,7 +9280,7 @@ r_goto
 id|err_dev2
 suffix:semicolon
 macro_line|#ifdef IT8172_DEBUG
-multiline_comment|/* intialize the debug proc device */
+multiline_comment|/* initialize the debug proc device */
 id|s-&gt;ps
 op_assign
 id|create_proc_read_entry
@@ -9606,6 +9591,7 @@ op_logical_neg
 id|ac97_probe_codec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 )paren
 )paren
@@ -9613,7 +9599,7 @@ r_goto
 id|err_dev3
 suffix:semicolon
 multiline_comment|/* add I2S as allowable recording source */
-id|s-&gt;codec-&gt;record_sources
+id|s-&gt;codec.record_sources
 op_or_assign
 id|SOUND_MASK_I2S
 suffix:semicolon
@@ -9721,6 +9707,7 @@ suffix:semicolon
 id|mixdev_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|SOUND_MIXER_WRITE_RECSRC
@@ -9748,10 +9735,11 @@ op_assign
 l_int|0x0000
 suffix:semicolon
 id|s-&gt;codec
-op_member_access_from_pointer
+dot
 id|mixer_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|SOUND_MIXER_WRITE_VOLUME
@@ -9765,10 +9753,11 @@ id|val
 )paren
 suffix:semicolon
 id|s-&gt;codec
-op_member_access_from_pointer
+dot
 id|mixer_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|SOUND_MIXER_WRITE_PCM
@@ -9792,7 +9781,7 @@ l_string|&quot;driver/%s/%d/ac97&quot;
 comma
 id|IT8172_MODULE_NAME
 comma
-id|s-&gt;codec-&gt;id
+id|s-&gt;codec.id
 )paren
 suffix:semicolon
 id|s-&gt;ac97_ps
@@ -9807,6 +9796,7 @@ l_int|NULL
 comma
 id|ac97_read_proc
 comma
+op_amp
 id|s-&gt;codec
 )paren
 suffix:semicolon
@@ -9856,7 +9846,7 @@ suffix:colon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec-&gt;dev_mixer
+id|s-&gt;codec.dev_mixer
 )paren
 suffix:semicolon
 id|err_dev2
@@ -9900,14 +9890,6 @@ l_int|0
 )paren
 suffix:semicolon
 id|err_region
-suffix:colon
-id|ac97_release_codec
-c_func
-(paren
-id|s-&gt;codec
-)paren
-suffix:semicolon
-id|err_codec
 suffix:colon
 id|kfree
 c_func
@@ -9977,6 +9959,7 @@ macro_line|#endif /* IT8172_DEBUG */
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq
@@ -10010,13 +9993,7 @@ suffix:semicolon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec-&gt;dev_mixer
-)paren
-suffix:semicolon
-id|ac97_codec_release
-c_func
-(paren
-id|s-&gt;codec
+id|s-&gt;codec.dev_mixer
 )paren
 suffix:semicolon
 id|kfree
@@ -10113,20 +10090,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* No PCI bus in this machine! */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|info
 c_func
 (paren

@@ -830,9 +830,11 @@ id|tsk-&gt;thread.i387.fxsave.mxcsr
 op_and_assign
 id|mxcsr_feature_mask
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|1
+id|set_stopped_child_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 )brace
 r_return

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -422,30 +423,22 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* proceed only after everybody is ready */
-r_while
-c_loop
+id|wait_event_timeout
+c_func
 (paren
-op_logical_neg
+id|pendown_wait
+comma
 id|wm97xx_ts_ready
 c_func
 (paren
 id|ts
 )paren
-)paren
-(brace
-multiline_comment|/* give a little time for initializations to complete */
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|pendown_wait
 comma
 id|HZ
 op_div
 l_int|4
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* board-specific calibration */
 id|wm97xx_ts_set_cal
 c_func

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 2001 MIPS Technologies, Inc.&n; * Copyright (C) 2001 Ralf Baechle&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines for generic manipulation of the interrupts found on the MIPS&n; * Malta board.&n; * The interrupt controller is located in the South Bridge a PIIX4 device&n; * with two internal 82C95 interrupt controllers.&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.&n; * Copyright (C) 2001 Ralf Baechle&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines for generic manipulation of the interrupts found on the MIPS&n; * Malta board.&n; * The interrupt controller is located in the South Bridge a PIIX4 device&n; * with two internal 82C95 interrupt controllers.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -24,12 +23,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mips_irq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mips_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|mips_pcibios_iack
 r_static
@@ -417,7 +416,7 @@ op_assign
 id|GT_READ
 c_func
 (paren
-l_int|0x70
+id|GT_CPUERR_ADDRLO_OFS
 )paren
 suffix:semicolon
 id|datahi
@@ -425,13 +424,13 @@ op_assign
 id|GT_READ
 c_func
 (paren
-l_int|0x78
+id|GT_CPUERR_ADDRHI_OFS
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;GT_CPU_ERR_ADDR = %02x%08x&bslash;n&quot;
+l_string|&quot;GT_CPUERR_ADDR = %02x%08x&bslash;n&quot;
 comma
 id|datahi
 comma

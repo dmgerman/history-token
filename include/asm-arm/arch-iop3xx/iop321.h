@@ -14,7 +14,7 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * IOP321 I/O and Mem space regions for PCI autoconfiguration&n; */
 DECL|macro|IOP321_PCI_IO_WINDOW_SIZE
-mdefine_line|#define IOP321_PCI_IO_WINDOW_SIZE   0x10000
+mdefine_line|#define IOP321_PCI_IO_WINDOW_SIZE   0x00010000
 DECL|macro|IOP321_PCI_LOWER_IO_PA
 mdefine_line|#define IOP321_PCI_LOWER_IO_PA      0x90000000
 DECL|macro|IOP321_PCI_LOWER_IO_VA
@@ -29,22 +29,19 @@ DECL|macro|IOP321_PCI_UPPER_IO_BA
 mdefine_line|#define IOP321_PCI_UPPER_IO_BA      (IOP321_PCI_LOWER_IO_BA + IOP321_PCI_IO_WINDOW_SIZE - 1)
 DECL|macro|IOP321_PCI_IO_OFFSET
 mdefine_line|#define IOP321_PCI_IO_OFFSET        (IOP321_PCI_LOWER_IO_VA - IOP321_PCI_LOWER_IO_BA)
+singleline_comment|//#define IOP321_PCI_MEM_WINDOW_SIZE  (~*IOP321_IALR1 + 1)
 DECL|macro|IOP321_PCI_MEM_WINDOW_SIZE
-mdefine_line|#define IOP321_PCI_MEM_WINDOW_SIZE  (~*IOP321_IALR1 + 1)
+mdefine_line|#define IOP321_PCI_MEM_WINDOW_SIZE  0x04000000 /* 64M outbound window */
 DECL|macro|IOP321_PCI_LOWER_MEM_PA
 mdefine_line|#define IOP321_PCI_LOWER_MEM_PA     0x80000000
-DECL|macro|IOP321_PCI_LOWER_MEM_VA
-mdefine_line|#define IOP321_PCI_LOWER_MEM_VA     0x80000000
 DECL|macro|IOP321_PCI_LOWER_MEM_BA
 mdefine_line|#define IOP321_PCI_LOWER_MEM_BA     (*IOP321_OMWTVR0)
 DECL|macro|IOP321_PCI_UPPER_MEM_PA
 mdefine_line|#define IOP321_PCI_UPPER_MEM_PA     (IOP321_PCI_LOWER_MEM_PA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
-DECL|macro|IOP321_PCI_UPPER_MEM_VA
-mdefine_line|#define IOP321_PCI_UPPER_MEM_VA     (IOP321_PCI_LOWER_MEM_VA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
 DECL|macro|IOP321_PCI_UPPER_MEM_BA
 mdefine_line|#define IOP321_PCI_UPPER_MEM_BA     (IOP321_PCI_LOWER_MEM_BA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
 DECL|macro|IOP321_PCI_MEM_OFFSET
-mdefine_line|#define IOP321_PCI_MEM_OFFSET       (IOP321_PCI_LOWER_MEM_VA - IOP321_PCI_LOWER_MEM_BA)
+mdefine_line|#define IOP321_PCI_MEM_OFFSET       (IOP321_PCI_LOWER_MEM_PA - IOP321_PCI_LOWER_MEM_BA)
 multiline_comment|/*&n; * IOP321 chipset registers&n; */
 DECL|macro|IOP321_VIRT_MEM_BASE
 mdefine_line|#define IOP321_VIRT_MEM_BASE 0xfeffe000  /* chip virtual mem address*/

@@ -348,7 +348,7 @@ id|tc_pagesize
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function is executed in the uncached segment KSEG1.&n; * It must not touch the stack, because the stack pointer still points&n; * into KSEG0.&n; *&n; * Three options:&n; *&t;- Write it in assembly and guarantee that we don&squot;t use the stack.&n; *&t;- Disable caching for KSEG0 before calling it.&n; *&t;- Pray that GCC doesn&squot;t randomly start using the stack.&n; *&n; * This being Linux, we obviously take the least sane of those options -&n; * following DaveM&squot;s lead in c-r4k.c&n; *&n; * It seems we get our kicks from relying on unguaranteed behaviour in GCC&n; */
+multiline_comment|/*&n; * This function is executed in the uncached segment CKSEG1.&n; * It must not touch the stack, because the stack pointer still points&n; * into CKSEG0.&n; *&n; * Three options:&n; *&t;- Write it in assembly and guarantee that we don&squot;t use the stack.&n; *&t;- Disable caching for CKSEG0 before calling it.&n; *&t;- Pray that GCC doesn&squot;t randomly start using the stack.&n; *&n; * This being Linux, we obviously take the least sane of those options -&n; * following DaveM&squot;s lead in c-r4k.c&n; *&n; * It seems we get our kicks from relying on unguaranteed behaviour in GCC&n; */
 DECL|function|__rm7k_sc_enable
 r_static
 id|__init

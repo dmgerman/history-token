@@ -6,8 +6,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ip32/mace.h&gt;
 DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(x)&t;(0x70 + (x))
-DECL|macro|RTC_IRQ
-mdefine_line|#define RTC_IRQ&t;&t;MACEISA_RTC_IRQ
 DECL|function|CMOS_READ
 r_static
 r_int

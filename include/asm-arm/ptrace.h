@@ -13,6 +13,8 @@ DECL|macro|PTRACE_SETFPREGS
 mdefine_line|#define PTRACE_SETFPREGS&t;15
 DECL|macro|PTRACE_OLDSETOPTIONS
 mdefine_line|#define PTRACE_OLDSETOPTIONS&t;21
+DECL|macro|PTRACE_GET_THREAD_AREA
+mdefine_line|#define PTRACE_GET_THREAD_AREA&t;22
 multiline_comment|/*&n; * PSR bits&n; */
 DECL|macro|USR26_MODE
 mdefine_line|#define USR26_MODE&t;0x00000000

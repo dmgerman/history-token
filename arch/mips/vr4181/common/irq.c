@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * linux/arch/mips/vr4181/common/irq.c&n; *&t;Completely re-written to use the new irq.c&n; *&n; * Credits to Bradley D. LaRonde and Michael Klar for writing the original&n; * irq.c file which was derived from the common irq.c file.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)&n; *&n; * linux/arch/mips/vr4181/common/irq.c&n; *&t;Completely re-written to use the new irq.c&n; *&n; * Credits to Bradley D. LaRonde and Michael Klar for writing the original&n; * irq.c file which was derived from the common irq.c file.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;

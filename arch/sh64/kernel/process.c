@@ -3663,9 +3663,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Force FPU state to be reinitialised after exec */
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* if we are a kernel thread, about to change to user thread,&n;         * update kreg&n;         */
@@ -3747,7 +3748,13 @@ id|current
 suffix:semicolon
 id|fpvalid
 op_assign
-id|tsk-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|tsk_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 r_if
 c_cond

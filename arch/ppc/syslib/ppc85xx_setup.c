@@ -7,11 +7,13 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;&t;/* for linux/serial_core.h */
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial_8250.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#include &lt;asm/immap_85xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#include &lt;asm/ppc_sys.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
 multiline_comment|/* Return the amount of memory */
@@ -149,9 +151,16 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
 r_struct
 id|uart_port
 id|serial_req
+suffix:semicolon
+macro_line|#endif
+r_struct
+id|plat_serial8250_port
+op_star
+id|pdata
 suffix:semicolon
 id|bd_t
 op_star
@@ -163,14 +172,59 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-id|phys_addr_t
-id|duart_paddr
+id|pdata
 op_assign
-id|binfo-&gt;bi_immr_base
-op_plus
-id|MPC85xx_UART0_OFFSET
+(paren
+r_struct
+id|plat_serial8250_port
+op_star
+)paren
+id|ppc_sys_get_pdata
+c_func
+(paren
+id|MPC85xx_DUART
+)paren
 suffix:semicolon
 multiline_comment|/* Setup serial port access */
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|uartclk
+op_assign
+id|binfo-&gt;bi_busfreq
+suffix:semicolon
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|mapbase
+op_add_assign
+id|binfo-&gt;bi_immr_base
+suffix:semicolon
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|membase
+op_assign
+id|ioremap
+c_func
+(paren
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|mapbase
+comma
+id|MPC85xx_UART0_SIZE
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
 id|memset
 c_func
 (paren
@@ -185,47 +239,32 @@ id|serial_req
 )paren
 )paren
 suffix:semicolon
-id|serial_req.uartclk
-op_assign
-id|binfo-&gt;bi_busfreq
-suffix:semicolon
-id|serial_req.line
-op_assign
-l_int|0
-suffix:semicolon
-id|serial_req.irq
-op_assign
-id|MPC85xx_IRQ_DUART
-suffix:semicolon
-id|serial_req.flags
-op_assign
-id|ASYNC_BOOT_AUTOCONF
-op_or
-id|ASYNC_SKIP_TEST
-suffix:semicolon
 id|serial_req.iotype
 op_assign
 id|SERIAL_IO_MEM
 suffix:semicolon
-id|serial_req.membase
-op_assign
-id|ioremap
-c_func
-(paren
-id|duart_paddr
-comma
-id|MPC85xx_UART0_SIZE
-)paren
-suffix:semicolon
 id|serial_req.mapbase
 op_assign
-id|duart_paddr
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|mapbase
+suffix:semicolon
+id|serial_req.membase
+op_assign
+id|pdata
+(braket
+l_int|0
+)braket
+dot
+id|membase
 suffix:semicolon
 id|serial_req.regshift
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
 id|gen550_init
 c_func
 (paren
@@ -236,50 +275,64 @@ id|serial_req
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|early_serial_setup
-c_func
-(paren
-op_amp
-id|serial_req
-)paren
-op_ne
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Assume early_serial_setup() doesn&squot;t modify serial_req */
-id|duart_paddr
-op_assign
-id|binfo-&gt;bi_immr_base
-op_plus
-id|MPC85xx_UART1_OFFSET
-suffix:semicolon
-id|serial_req.line
-op_assign
+id|pdata
+(braket
 l_int|1
-suffix:semicolon
-id|serial_req.mapbase
+)braket
+dot
+id|uartclk
 op_assign
-id|duart_paddr
+id|binfo-&gt;bi_busfreq
 suffix:semicolon
-id|serial_req.membase
+id|pdata
+(braket
+l_int|1
+)braket
+dot
+id|mapbase
+op_add_assign
+id|binfo-&gt;bi_immr_base
+suffix:semicolon
+id|pdata
+(braket
+l_int|1
+)braket
+dot
+id|membase
 op_assign
 id|ioremap
 c_func
 (paren
-id|duart_paddr
+id|pdata
+(braket
+l_int|1
+)braket
+dot
+id|mapbase
 comma
-id|MPC85xx_UART1_SIZE
+id|MPC85xx_UART0_SIZE
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
+multiline_comment|/* Assume gen550_init() doesn&squot;t modify serial_req */
+id|serial_req.mapbase
+op_assign
+id|pdata
+(braket
+l_int|1
+)braket
+dot
+id|mapbase
+suffix:semicolon
+id|serial_req.membase
+op_assign
+id|pdata
+(braket
+l_int|1
+)braket
+dot
+id|membase
+suffix:semicolon
 id|gen550_init
 c_func
 (paren
@@ -290,24 +343,6 @@ id|serial_req
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|early_serial_setup
-c_func
-(paren
-op_amp
-id|serial_req
-)paren
-op_ne
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Early serial init of port 1 failed&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 r_void

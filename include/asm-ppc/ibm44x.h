@@ -341,7 +341,7 @@ DECL|macro|MALOBISR_CH0
 mdefine_line|#define MALOBISR_CH0&t;&t;0x80000000&t;/* EOB channel 1 bit */
 DECL|macro|MALOBISR_CH2
 mdefine_line|#define MALOBISR_CH2&t;&t;0x40000000&t;/* EOB channel 2 bit */
-multiline_comment|/* 440GP PLB Arbiter DCRs */
+multiline_comment|/* 440GP/GX PLB Arbiter DCRs */
 DECL|macro|DCRN_PLB0_REVID
 mdefine_line|#define DCRN_PLB0_REVID&t;&t;0x082&t;&t;/* PLB Arbiter Revision ID */
 DECL|macro|DCRN_PLB0_ACR
@@ -354,6 +354,22 @@ DECL|macro|DCRN_PLB0_BEAR
 mdefine_line|#define DCRN_PLB0_BEAR&t;&t;DCRN_PLB0_BEARL&t;/* 40x compatibility */
 DECL|macro|DCRN_PLB0_BEARH
 mdefine_line|#define DCRN_PLB0_BEARH&t;&t;0x087&t;&t;/* PLB Error Address High */
+multiline_comment|/* 440GP/GX PLB to OPB bridge DCRs */
+DECL|macro|DCRN_POB0_BESR0
+mdefine_line|#define DCRN_POB0_BESR0&t;&t;0x090
+DECL|macro|DCRN_POB0_BESR1
+mdefine_line|#define DCRN_POB0_BESR1&t;&t;0x094
+DECL|macro|DCRN_POB0_BEARL
+mdefine_line|#define DCRN_POB0_BEARL&t;&t;0x092
+DECL|macro|DCRN_POB0_BEARH
+mdefine_line|#define DCRN_POB0_BEARH&t;&t;0x093
+multiline_comment|/* 440GP/GX OPB to PLB bridge DCRs */
+DECL|macro|DCRN_OPB0_BSTAT
+mdefine_line|#define DCRN_OPB0_BSTAT&t;&t;0x0a9
+DECL|macro|DCRN_OPB0_BEARL
+mdefine_line|#define DCRN_OPB0_BEARL&t;&t;0x0aa
+DECL|macro|DCRN_OPB0_BEARH
+mdefine_line|#define DCRN_OPB0_BEARH&t;&t;0x0ab
 multiline_comment|/* 440GP Clock, PM, chip control */
 DECL|macro|DCRN_CPC0_SR
 mdefine_line|#define DCRN_CPC0_SR&t;&t;0x0b0

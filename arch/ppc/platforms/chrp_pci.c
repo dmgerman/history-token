@@ -1546,7 +1546,7 @@ r_if
 c_cond
 (paren
 id|is_pegasos
-op_ne
+op_eq
 l_int|0
 )paren
 id|ppc_md.pcibios_fixup

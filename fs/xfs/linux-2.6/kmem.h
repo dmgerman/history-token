@@ -107,14 +107,14 @@ id|KM_NOSLEEP
 )paren
 (brace
 id|lflags
-op_assign
+op_or_assign
 id|GFP_ATOMIC
 suffix:semicolon
 )brace
 r_else
 (brace
 id|lflags
-op_assign
+op_or_assign
 id|GFP_KERNEL
 suffix:semicolon
 multiline_comment|/* avoid recusive callbacks to filesystem during transactions */

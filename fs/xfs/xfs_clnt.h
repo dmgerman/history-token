@@ -77,6 +77,11 @@ id|uchar_t
 id|iosizelog
 suffix:semicolon
 multiline_comment|/* log2 of the preferred I/O size */
+DECL|member|ihashsize
+r_int
+id|ihashsize
+suffix:semicolon
+multiline_comment|/* inode hash table size (buckets) */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * XFS mount option flags&n; */

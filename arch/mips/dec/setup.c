@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Setup the interrupt stuff.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2000, 2001, 2002, 2003  Maciej W. Rozycki&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/param.h&gt;

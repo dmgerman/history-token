@@ -605,12 +605,12 @@ op_assign
 l_int|19
 comma
 multiline_comment|/* Tendency to steal mapped memory */
-DECL|enumerator|VM_LOWER_ZONE_PROTECTION
-id|VM_LOWER_ZONE_PROTECTION
+DECL|enumerator|VM_LOWMEM_RESERVE_RATIO
+id|VM_LOWMEM_RESERVE_RATIO
 op_assign
 l_int|20
 comma
-multiline_comment|/* Amount of protection of lower zones */
+multiline_comment|/* reservation ratio for lower memory zones */
 DECL|enumerator|VM_MIN_FREE_KBYTES
 id|VM_MIN_FREE_KBYTES
 op_assign
