@@ -257,7 +257,6 @@ suffix:semicolon
 multiline_comment|/* Set up the missing parts of the file_lock structure */
 id|lock-&gt;fl.fl_file
 op_assign
-op_amp
 id|file-&gt;f_file
 suffix:semicolon
 id|lock-&gt;fl.fl_owner

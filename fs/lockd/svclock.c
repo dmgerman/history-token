@@ -861,7 +861,6 @@ suffix:semicolon
 id|posix_unblock_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 id|fl
@@ -1112,9 +1111,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_lock(%s/%ld, ty=%d, pi=%d, %Ld-%Ld, bl=%d)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_type
 comma
@@ -1172,7 +1171,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1186,7 +1184,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1427,9 +1424,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_type
 comma
@@ -1455,7 +1452,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1534,9 +1530,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_unlock(%s/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_pid
 comma
@@ -1571,7 +1567,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1618,9 +1613,9 @@ c_func
 (paren
 l_string|&quot;lockd: nlmsvc_cancel(%s/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_id
 comma
-id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 comma
 id|lock-&gt;fl.fl_pid
 comma
@@ -1860,7 +1855,6 @@ op_assign
 id|posix_test_lock
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp
@@ -1915,7 +1909,6 @@ op_assign
 id|posix_lock_file
 c_func
 (paren
-op_amp
 id|file-&gt;f_file
 comma
 op_amp

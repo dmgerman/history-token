@@ -3871,24 +3871,11 @@ suffix:semicolon
 id|nfsd_close
 c_func
 (paren
-op_amp
 id|stp-&gt;st_vfs_file
 )paren
 suffix:semicolon
 id|vfsclose
 op_increment
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|stp-&gt;st_vfs_file.f_dentry
-)paren
-suffix:semicolon
-id|mntput
-c_func
-(paren
-id|stp-&gt;st_vfs_file.f_vfsmnt
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3911,7 +3898,6 @@ id|file
 op_star
 id|filp
 op_assign
-op_amp
 id|stp-&gt;st_vfs_file
 suffix:semicolon
 id|locks_remove_posix
@@ -5361,18 +5347,6 @@ suffix:semicolon
 id|vfsopen
 op_increment
 suffix:semicolon
-id|dget
-c_func
-(paren
-id|stp-&gt;st_vfs_file.f_dentry
-)paren
-suffix:semicolon
-id|mntget
-c_func
-(paren
-id|stp-&gt;st_vfs_file.f_vfsmnt
-)paren
-suffix:semicolon
 id|init_stateid
 c_func
 (paren
@@ -5425,7 +5399,6 @@ op_assign
 id|nfs4_file_upgrade
 c_func
 (paren
-op_amp
 id|stp-&gt;st_vfs_file
 comma
 id|share_access
@@ -6185,7 +6158,7 @@ l_int|0
 op_logical_or
 id|fhp-&gt;fh_dentry-&gt;d_inode
 op_ne
-id|stp-&gt;st_vfs_file.f_dentry-&gt;d_inode
+id|stp-&gt;st_vfs_file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 )brace
@@ -7379,7 +7352,6 @@ suffix:semicolon
 id|nfs4_file_downgrade
 c_func
 (paren
-op_amp
 id|stp-&gt;st_vfs_file
 comma
 id|share_access
@@ -8538,6 +8510,7 @@ id|stp-&gt;st_vfs_file
 op_assign
 id|open_stp-&gt;st_vfs_file
 suffix:semicolon
+multiline_comment|/* FIXME refcount?? */
 id|stp-&gt;st_vfs_set
 op_assign
 id|open_stp-&gt;st_vfs_set
@@ -8990,7 +8963,6 @@ suffix:semicolon
 multiline_comment|/* lock-&gt;lk_stateowner and lock_stp have been created or found */
 id|filp
 op_assign
-op_amp
 id|lock_stp-&gt;st_vfs_file
 suffix:semicolon
 r_if
@@ -9830,7 +9802,6 @@ id|out
 suffix:semicolon
 id|filp
 op_assign
-op_amp
 id|stp-&gt;st_vfs_file
 suffix:semicolon
 id|BUG_ON
@@ -10231,7 +10202,6 @@ c_cond
 id|check_for_locks
 c_func
 (paren
-op_amp
 id|stp-&gt;st_vfs_file
 comma
 id|local

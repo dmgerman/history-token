@@ -200,6 +200,7 @@ multiline_comment|/* NFS file handle */
 DECL|member|f_file
 r_struct
 id|file
+op_star
 id|f_file
 suffix:semicolon
 multiline_comment|/* VFS file pointer */
@@ -772,7 +773,7 @@ id|file
 )paren
 (brace
 r_return
-id|file-&gt;f_file.f_dentry-&gt;d_inode
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compare two host addresses (needs modifying for ipv6)&n; */
