@@ -25,7 +25,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.4&quot;
+mdefine_line|#define VERSION &quot;2.5&quot;
 DECL|variable|proc_bt
 r_struct
 id|proc_dir_entry
@@ -41,7 +41,7 @@ id|proc_bt
 suffix:semicolon
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
-mdefine_line|#define BT_MAX_PROTO&t;6
+mdefine_line|#define BT_MAX_PROTO&t;7
 DECL|variable|bt_proto
 r_static
 r_struct
