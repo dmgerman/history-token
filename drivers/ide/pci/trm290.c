@@ -513,6 +513,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|init_hwif_trm290
+r_static
 r_void
 id|__devinit
 id|init_hwif_trm290

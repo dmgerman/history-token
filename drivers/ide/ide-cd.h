@@ -1488,6 +1488,7 @@ mdefine_line|#define MISCOMPARE              0x0e
 multiline_comment|/* This stuff should be in cdrom.h, since it is now generic... */
 macro_line|#if VERBOSE_IDE_CD_ERRORS
 multiline_comment|/* The generic packet command opcodes for CD/DVD Logical Units,&n; * From Table 57 of the SFF8090 Ver. 3 (Mt. Fuji) draft standard. */
+r_static
 r_const
 r_struct
 (brace
@@ -1808,6 +1809,7 @@ comma
 suffix:semicolon
 multiline_comment|/* From Table 303 of the SFF8090 Ver. 3 (Mt. Fuji) draft standard. */
 DECL|variable|sense_key_texts
+r_static
 r_const
 r_char
 op_star
@@ -1853,6 +1855,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* From Table 304 of the SFF8090 Ver. 3 (Mt. Fuji) draft standard. */
+r_static
 r_const
 r_struct
 (brace

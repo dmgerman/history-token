@@ -132,6 +132,7 @@ id|xfer_rate
 suffix:semicolon
 multiline_comment|/*&n; * Set a new transfer mode at the drive&n; */
 DECL|function|sc1200_set_xfer_mode
+r_static
 r_int
 id|sc1200_set_xfer_mode
 (paren
@@ -1019,6 +1020,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*  Replacement for the standard ide_dma_end action in&n; *  dma_proc.&n; *&n; *  returns 1 on error, 0 otherwise&n; */
 DECL|function|sc1200_ide_dma_end
+r_static
 r_int
 id|sc1200_ide_dma_end
 (paren

@@ -605,6 +605,41 @@ id|len
 )paren
 suffix:semicolon
 )brace
+DECL|function|proc_ide_settings_warn
+r_static
+r_void
+id|proc_ide_settings_warn
+c_func
+(paren
+r_void
+)paren
+(brace
+r_static
+r_int
+id|warned
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|warned
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Warning: /proc/ide/hd?/settings interface is &quot;
+l_string|&quot;obsolete, and will be removed soon!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|warned
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|proc_ide_read_settings
 r_static
 r_int
@@ -669,12 +704,9 @@ id|mul_factor
 comma
 id|div_factor
 suffix:semicolon
-id|printk
+id|proc_ide_settings_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Warning: /proc/ide/hd?/settings interface is &quot;
-l_string|&quot;obsolete, and will be removed soon!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -949,14 +981,6 @@ comma
 op_star
 id|s
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Warning: /proc/ide/hd?/settings interface is &quot;
-l_string|&quot;obsolete, and will be removed soon!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -970,6 +994,11 @@ id|CAP_SYS_ADMIN
 r_return
 op_minus
 id|EACCES
+suffix:semicolon
+id|proc_ide_settings_warn
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

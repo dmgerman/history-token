@@ -4115,6 +4115,7 @@ id|ide_driver_t
 id|idedefault_driver
 suffix:semicolon
 DECL|function|ata_probe
+r_static
 r_struct
 id|kobject
 op_star

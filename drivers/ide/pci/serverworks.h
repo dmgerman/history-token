@@ -12,6 +12,7 @@ DECL|macro|SVWKS_CSB6_REVISION
 mdefine_line|#define SVWKS_CSB6_REVISION&t;0xa0 /* min PCI_REVISION_ID for UDMA4 (A1.0) */
 multiline_comment|/* Seagate Barracuda ATA IV Family drives in UDMA mode 5&n; * can overrun their FIFOs when used with the CSB5 */
 DECL|variable|svwks_bad_ata100
+r_static
 r_const
 r_char
 op_star

@@ -135,6 +135,12 @@ op_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* maximum wait in s for external process */
+DECL|variable|divert_lock
+id|spinlock_t
+id|divert_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/***************************/
 multiline_comment|/* timer callback function */
 multiline_comment|/***************************/
@@ -151,11 +157,6 @@ id|arg
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_struct
 id|call_struc
@@ -432,11 +433,6 @@ id|procid
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
 id|retval
@@ -1020,11 +1016,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1410,11 +1401,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1612,11 +1598,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_if
 c_cond
@@ -1881,11 +1862,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_struct
 id|call_struc
@@ -2690,11 +2666,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3791,11 +3762,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 id|cs
 op_assign
 id|divert_head
@@ -4129,11 +4095,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
 id|retval
