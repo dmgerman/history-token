@@ -60,9 +60,6 @@ comma
 DECL|enumerator|PROC_PID_MAPS
 id|PROC_PID_MAPS
 comma
-DECL|enumerator|PROC_PID_CPU
-id|PROC_PID_CPU
-comma
 DECL|enumerator|PROC_PID_MOUNTS
 id|PROC_PID_MOUNTS
 comma
@@ -185,20 +182,6 @@ op_or
 id|S_IRUGO
 )paren
 comma
-macro_line|#ifdef CONFIG_SMP
-id|E
-c_func
-(paren
-id|PROC_PID_CPU
-comma
-l_string|&quot;cpu&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-)paren
-comma
-macro_line|#endif
 id|E
 c_func
 (paren
@@ -4909,22 +4892,6 @@ id|proc_maps_operations
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_case
-id|PROC_PID_CPU
-suffix:colon
-id|inode-&gt;i_fop
-op_assign
-op_amp
-id|proc_info_file_operations
-suffix:semicolon
-id|ei-&gt;op.proc_read
-op_assign
-id|proc_pid_cpu
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
 r_case
 id|PROC_PID_MEM
 suffix:colon

@@ -931,19 +931,6 @@ r_int
 r_int
 id|start_time
 suffix:semicolon
-DECL|member|per_cpu_utime
-DECL|member|per_cpu_stime
-r_int
-id|per_cpu_utime
-(braket
-id|NR_CPUS
-)braket
-comma
-id|per_cpu_stime
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
