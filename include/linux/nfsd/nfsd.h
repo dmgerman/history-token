@@ -914,6 +914,8 @@ DECL|macro|nfserr_reclaim_bad
 mdefine_line|#define&t;nfserr_reclaim_bad&t;__constant_htonl(NFSERR_RECLAIM_BAD)
 DECL|macro|nfserr_badname
 mdefine_line|#define&t;nfserr_badname&t;&t;__constant_htonl(NFSERR_BADNAME)
+DECL|macro|nfserr_cb_path_down
+mdefine_line|#define&t;nfserr_cb_path_down&t;__constant_htonl(NFSERR_CB_PATH_DOWN)
 multiline_comment|/* error codes for internal use */
 multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit
