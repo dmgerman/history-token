@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/irqs.h&n; *&n; * Copyright (c) 2003 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  08-Jan-2003 BJD  Linux 2.6.0 version, moved BAST bits out&n; *  12-Mar-2004 BJD  Fixed bug in header protection&n; *  10-Feb-2005 BJD  Added camera IRQ from guillaume.gourat@nexvision.tv&n; */
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/irqs.h&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  08-Jan-2003 BJD  Linux 2.6.0 version, moved BAST bits out&n; *  12-Mar-2004 BJD  Fixed bug in header protection&n; *  10-Feb-2005 BJD  Added camera IRQ from guillaume.gourat@nexvision.tv&n; *  28-Feb-2005 BJD  Updated s3c2440 IRQs&n; */
 macro_line|#ifndef __ASM_ARCH_IRQS_H
 DECL|macro|__ASM_ARCH_IRQS_H
 mdefine_line|#define __ASM_ARCH_IRQS_H __FILE__
@@ -21,9 +21,9 @@ mdefine_line|#define IRQ_EINT4t7    S3C2410_IRQ(4)&t;    /* 20 */
 DECL|macro|IRQ_EINT8t23
 mdefine_line|#define IRQ_EINT8t23   S3C2410_IRQ(5)
 DECL|macro|IRQ_RESERVED6
-mdefine_line|#define IRQ_RESERVED6  S3C2410_IRQ(6)&t;&t;/* for s3c2410 */
+mdefine_line|#define IRQ_RESERVED6  S3C2410_IRQ(6)&t;    /* for s3c2410 */
 DECL|macro|IRQ_CAM
-mdefine_line|#define IRQ_CAM        S3C2410_IRQ(6)&t;&t;/* for s3c2440 */
+mdefine_line|#define IRQ_CAM        S3C2410_IRQ(6)&t;    /* for s3c2440 */
 DECL|macro|IRQ_BATT_FLT
 mdefine_line|#define IRQ_BATT_FLT   S3C2410_IRQ(7)
 DECL|macro|IRQ_TICK
@@ -60,6 +60,8 @@ DECL|macro|IRQ_UART1
 mdefine_line|#define IRQ_UART1      S3C2410_IRQ(23)
 DECL|macro|IRQ_RESERVED24
 mdefine_line|#define IRQ_RESERVED24 S3C2410_IRQ(24)&t;    /* 40 */
+DECL|macro|IRQ_NFCON
+mdefine_line|#define IRQ_NFCON      S3C2410_IRQ(24)&t;    /* for s3c2440 */
 DECL|macro|IRQ_USBD
 mdefine_line|#define IRQ_USBD       S3C2410_IRQ(25)
 DECL|macro|IRQ_USBH
@@ -144,7 +146,16 @@ DECL|macro|IRQ_TC
 mdefine_line|#define IRQ_TC&t;&t; S3C2410_IRQ(63)
 DECL|macro|IRQ_ADC
 mdefine_line|#define IRQ_ADC&t;&t; S3C2410_IRQ(64)
+multiline_comment|/* extra irqs for s3c2440 */
+DECL|macro|IRQ_S3C2440_CAM_C
+mdefine_line|#define IRQ_S3C2440_CAM_C&t;S3C2410_IRQ(65)
+DECL|macro|IRQ_S3C2440_CAM_P
+mdefine_line|#define IRQ_S3C2440_CAM_P&t;S3C2410_IRQ(66)
+DECL|macro|IRQ_S3C2440_WDT
+mdefine_line|#define IRQ_S3C2440_WDT&t;&t;S3C2410_IRQ(67)
+DECL|macro|IRQ_S3C2440_AC97
+mdefine_line|#define IRQ_S3C2440_AC97&t;S3C2410_IRQ(68)
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS (IRQ_ADC+1)
+mdefine_line|#define NR_IRQS (IRQ_S3C2440_AC97+1)
 macro_line|#endif /* __ASM_ARCH_IRQ_H */
 eof
