@@ -901,6 +901,19 @@ comma
 id|unit
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If device already registered then return base of 1&n;&t; * to indicate not to probe for this interface&n;&t; */
+r_if
+c_cond
+(paren
+id|__dev_get_by_name
+c_func
+(paren
+id|name
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
