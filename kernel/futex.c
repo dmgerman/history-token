@@ -1685,9 +1685,9 @@ id|signal
 )paren
 (brace
 r_int
-id|ret
+id|err
 suffix:semicolon
-id|ret
+id|err
 op_assign
 id|f_setown
 c_func
@@ -1702,7 +1702,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|err
+OL
+l_int|0
 )paren
 (brace
 id|put_unused_fd
@@ -1716,6 +1718,10 @@ c_func
 (paren
 id|filp
 )paren
+suffix:semicolon
+id|ret
+op_assign
+id|err
 suffix:semicolon
 r_goto
 id|out
