@@ -2912,6 +2912,12 @@ comma
 op_star
 id|shmdnext
 suffix:semicolon
+r_int
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -2958,6 +2964,7 @@ id|ulong
 )paren
 id|shmaddr
 )paren
+(brace
 id|do_munmap
 c_func
 (paren
@@ -2970,6 +2977,11 @@ op_minus
 id|shmd-&gt;vm_start
 )paren
 suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 id|up_write
 c_func
@@ -2979,7 +2991,7 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
