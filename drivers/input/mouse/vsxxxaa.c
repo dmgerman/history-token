@@ -1848,6 +1848,11 @@ id|mouse-&gt;dev.id.bustype
 op_assign
 id|BUS_RS232
 suffix:semicolon
+id|mouse-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|mouse-&gt;serio
 op_assign
 id|serio

@@ -4114,6 +4114,11 @@ r_private
 op_assign
 id|atkbd
 suffix:semicolon
+id|atkbd-&gt;dev.dev
+op_assign
+op_amp
+id|atkbd-&gt;ps2dev.serio-&gt;dev
+suffix:semicolon
 id|atkbd-&gt;dev.evbit
 (braket
 l_int|0

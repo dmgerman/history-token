@@ -1267,6 +1267,11 @@ id|spaceball-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|spaceball-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 id|serio
 op_member_access_from_pointer
 r_private

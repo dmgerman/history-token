@@ -1354,6 +1354,11 @@ id|sermouse-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|sermouse-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

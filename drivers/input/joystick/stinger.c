@@ -733,6 +733,11 @@ id|stinger-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
+id|stinger-&gt;dev.dev
+op_assign
+op_amp
+id|serio-&gt;dev
+suffix:semicolon
 r_for
 c_loop
 (paren
