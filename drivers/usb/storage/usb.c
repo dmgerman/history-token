@@ -2,6 +2,7 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -2931,12 +2932,8 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-l_string|&quot;usb-stor&quot;
+l_string|&quot;usb-stor-scan&quot;
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_NOFREEZE
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -2969,6 +2966,8 @@ l_string|&quot;usb-storage: waiting for device &quot;
 l_string|&quot;to settle before scanning&bslash;n&quot;
 )paren
 suffix:semicolon
+id|retry
+suffix:colon
 id|wait_event_interruptible_timeout
 c_func
 (paren
@@ -2988,6 +2987,24 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If the device is still connected, perform the scanning */
 r_if
