@@ -859,19 +859,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INTERRUPTS
 comma
-l_string|&quot;GPE pair: Status %8.8X%8.8X = %02X, Enable %8.8X%8.8X = %02X&bslash;n&quot;
+l_string|&quot;Read GPE Register at GPE%X: Status=%02X, Enable=%02X&bslash;n&quot;
 comma
-id|ACPI_FORMAT_UINT64
-(paren
-id|gpe_register_info-&gt;status_address.address
-)paren
+id|gpe_register_info-&gt;base_gpe_number
 comma
 id|status_reg
-comma
-id|ACPI_FORMAT_UINT64
-(paren
-id|gpe_register_info-&gt;enable_address.address
-)paren
 comma
 id|enable_reg
 )paren

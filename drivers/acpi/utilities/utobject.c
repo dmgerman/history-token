@@ -279,7 +279,7 @@ id|buffer_desc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_string_object&n; *&n; * PARAMETERS:  string_size            - Size of string to be created, plus one&n; *                                       for the NULL terminater.  Actual sting&n; *                                       length will be this size minus one.&n; *&n; * RETURN:      Pointer to a new String object&n; *&n; * DESCRIPTION: Create a fully initialized string object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_string_object&n; *&n; * PARAMETERS:  string_size            - Size of string to be created.  Does not&n; *                                       include NULL terminator, this is added&n; *                                       automatically.&n; *&n; * RETURN:      Pointer to a new String object&n; *&n; * DESCRIPTION: Create a fully initialized string object&n; *&n; ******************************************************************************/
 r_union
 id|acpi_operand_object
 op_star
@@ -298,8 +298,6 @@ suffix:semicolon
 r_char
 op_star
 id|string
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
@@ -329,21 +327,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create an actual string only if size &gt; 0 */
-r_if
-c_cond
-(paren
-id|string_size
-OG
-l_int|0
-)paren
-(brace
-multiline_comment|/* Allocate the actual string */
+multiline_comment|/*&n;&t; * Allocate the actual string buffer -- (Size + 1) for NULL terminator.&n;&t; * NOTE: Zero-length strings are NULL terminated&n;&t; */
 id|string
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 id|string_size
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -376,7 +367,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/* Complete string object initialization */
 id|string_desc-&gt;string.pointer
 op_assign
@@ -388,8 +378,6 @@ op_assign
 id|u32
 )paren
 id|string_size
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/* Return the new string descriptor */
 id|return_PTR

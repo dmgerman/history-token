@@ -156,7 +156,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Destination is not a Reference or Constant object [%p]&bslash;n&quot;
+l_string|&quot;Target is not a Reference or Constant object - %s [%p]&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|dest_desc
+)paren
 comma
 id|dest_desc
 )paren
@@ -269,7 +274,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;**** Write to Debug Object: ****:&bslash;n&bslash;n&quot;
+l_string|&quot;**** Write to Debug Object: Object %p %s ****:&bslash;n&bslash;n&quot;
+comma
+id|source_desc
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|source_desc
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -287,6 +299,30 @@ id|source_desc
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ut_valid_internal_object
+(paren
+id|source_desc
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DEBUG_OBJECT
+comma
+l_string|&quot;%X, Invalid Internal Object!&bslash;n&quot;
+comma
+id|source_desc
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren

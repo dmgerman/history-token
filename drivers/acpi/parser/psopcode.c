@@ -4086,7 +4086,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown extended opcode [%X]&bslash;n&quot;
+l_string|&quot;Unknown AML opcode [%4.4X]&bslash;n&quot;
 comma
 id|opcode
 )paren

@@ -443,6 +443,9 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+id|acpi_size
+id|new_length
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ex_do_concatenate&quot;
@@ -618,10 +621,8 @@ r_case
 id|ACPI_TYPE_STRING
 suffix:colon
 multiline_comment|/* Result of two Strings is a String */
-id|return_desc
+id|new_length
 op_assign
-id|acpi_ut_create_string_object
-(paren
 (paren
 id|acpi_size
 )paren
@@ -631,8 +632,28 @@ op_plus
 id|acpi_size
 )paren
 id|local_operand1-&gt;string.length
-op_plus
-l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_length
+OG
+id|ACPI_MAX_STRING_CONVERSION
+)paren
+(brace
+id|status
+op_assign
+id|AE_AML_STRING_LIMIT
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|return_desc
+op_assign
+id|acpi_ut_create_string_object
+(paren
+id|new_length
 )paren
 suffix:semicolon
 r_if
@@ -1274,7 +1295,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * 2) Both operands are Strings or both are Buffers&n;&t;&t; *    Note: Code below takes advantage of common Buffer/String&n;&t;&t; *          object fields. local_operand1 may have changed above&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 2) Both operands are Strings or both are Buffers&n;&t;&t; *    Note: Code below takes advantage of common Buffer/String&n;&t;&t; *          object fields. local_operand1 may have changed above. Use&n;&t;&t; *          memcmp to handle nulls in buffers.&n;&t;&t; */
 id|length0
 op_assign
 id|operand0-&gt;buffer.length
@@ -1286,7 +1307,7 @@ suffix:semicolon
 multiline_comment|/* Lexicographic compare: compare the data bytes */
 id|compare
 op_assign
-id|ACPI_STRNCMP
+id|ACPI_MEMCMP
 (paren
 (paren
 r_const

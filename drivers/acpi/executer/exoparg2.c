@@ -712,14 +712,12 @@ id|cleanup
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Allocate a new string (Length + 1 for null terminator) */
+multiline_comment|/* Allocate a new string object */
 id|return_desc
 op_assign
 id|acpi_ut_create_string_object
 (paren
 id|length
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 r_if

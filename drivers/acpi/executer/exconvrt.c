@@ -846,7 +846,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Create a new String&n;&t;&t; * Need enough space for one ASCII integer plus null terminator&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Create a new String&n;&t;&t; * Need enough space for one ASCII integer (plus null terminator)&n;&t;&t; */
 id|return_desc
 op_assign
 id|acpi_ut_create_string_object
@@ -855,8 +855,6 @@ id|acpi_ut_create_string_object
 id|acpi_size
 )paren
 id|string_length
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -983,6 +981,8 @@ id|acpi_ut_create_string_object
 id|acpi_size
 )paren
 id|string_length
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1053,6 +1053,14 @@ op_star
 id|new_buf
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Recalculate length */
+id|return_desc-&gt;string.length
+op_assign
+id|ACPI_STRLEN
+(paren
+id|return_desc-&gt;string.pointer
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

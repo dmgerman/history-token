@@ -629,7 +629,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;obj %p op %X, ref count = %d [%s]&bslash;n&quot;
+l_string|&quot;new_obj %p Opcode %X, Refs=%d [%s]&bslash;n&quot;
 comma
 id|object
 comma
@@ -1133,7 +1133,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Opcode=%d Idx=%d Obj=%p&bslash;n&quot;
+l_string|&quot;Opcode=%X Index=%d Obj=%p&bslash;n&quot;
 comma
 id|opcode
 comma

@@ -1778,8 +1778,6 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Get a local copy of the address.  Handles possible alignment issues */
-id|address
-op_assign
 id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
@@ -1944,8 +1942,6 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Get a local copy of the address.  Handles possible alignment issues */
-id|address
-op_assign
 id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
