@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * The low performance USB storage driver (ub).&n; *&n; * Copyright (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; * Copyright (C) 2004 Pete Zaitcev (zaitcev@yahoo.com)&n; *&n; * This work is a part of Linux kernel, is derived from it,&n; * and is not licensed separately. See file COPYING for details.&n; *&n; * TODO (sorted by decreasing priority)&n; *  -- ZIP does &quot;ub: resid 18 len 0 act 0&quot; and whole transport quits (toggles?)&n; *  -- set readonly flag for CDs, set removable flag for CF readers&n; *  -- do inquiry and verify we got a disk and not a tape (for LUN mismatch)&n; *  -- support pphaneuf&squot;s SDDR-75 with two LUNs (also broken capacity...)&n; *  -- special case some senses, e.g. 3a/0 -&gt; no media present, reduce retries&n; *  -- do something about spin-down devices, they are extremely dangerous&n; *     (ZIP is one. Needs spin-up command as well.)&n; *  -- verify the 13 conditions and do bulk resets&n; *  -- normal pool of commands instead of cmdv[]?&n; *  -- kill last_pipe and simply do two-state clearing on both pipes&n; *  -- verify protocol (bulk) from USB descriptors (maybe...)&n; *  -- highmem and sg&n; *  -- move top_sense and work_bcs into separate allocations (if they survive)&n; *     for cache purists and esoteric architectures.&n; *  -- prune comments, they are too volumnous&n; *  -- Exterminate P3 printks&n; *  -- Resove XXX&squot;s&n; *  -- Redo &quot;benh&squot;s retries&quot;, perhaps have spin-up code to handle them. V:D=?&n; */
+multiline_comment|/*&n; * The low performance USB storage driver (ub).&n; *&n; * Copyright (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; * Copyright (C) 2004 Pete Zaitcev (zaitcev@yahoo.com)&n; *&n; * This work is a part of Linux kernel, is derived from it,&n; * and is not licensed separately. See file COPYING for details.&n; *&n; * TODO (sorted by decreasing priority)&n; *  -- Do resets with usb_device_reset (needs a thread context, use khubd)&n; *  -- set readonly flag for CDs, set removable flag for CF readers&n; *  -- do inquiry and verify we got a disk and not a tape (for LUN mismatch)&n; *  -- support pphaneuf&squot;s SDDR-75 with two LUNs (also broken capacity...)&n; *  -- special case some senses, e.g. 3a/0 -&gt; no media present, reduce retries&n; *  -- verify the 13 conditions and do bulk resets&n; *  -- normal pool of commands instead of cmdv[]?&n; *  -- kill last_pipe and simply do two-state clearing on both pipes&n; *  -- verify protocol (bulk) from USB descriptors (maybe...)&n; *  -- highmem and sg&n; *  -- move top_sense and work_bcs into separate allocations (if they survive)&n; *     for cache purists and esoteric architectures.&n; *  -- prune comments, they are too volumnous&n; *  -- Exterminate P3 printks&n; *  -- Resove XXX&squot;s&n; *  -- Redo &quot;benh&squot;s retries&quot;, perhaps have spin-up code to handle them. V:D=?&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -133,9 +133,11 @@ DECL|macro|UB_MAX_REQ_SG
 mdefine_line|#define UB_MAX_REQ_SG&t;1
 DECL|macro|UB_MAX_SECTORS
 mdefine_line|#define UB_MAX_SECTORS 64
-multiline_comment|/*&n; * A second ought to be enough for a 32K transfer (UB_MAX_SECTORS)&n; * even if a webcam hogs the bus (famous last words).&n; * Some CDs need a second to spin up though.&n; * ZIP drive rejects commands when it&squot;s not spinning,&n; * so it does not need long timeouts either.&n; */
+multiline_comment|/*&n; * A second is more than enough for a 32K transfer (UB_MAX_SECTORS)&n; * even if a webcam hogs the bus, but some devices need time to spin up.&n; */
 DECL|macro|UB_URB_TIMEOUT
 mdefine_line|#define UB_URB_TIMEOUT&t;(HZ*2)
+DECL|macro|UB_DATA_TIMEOUT
+mdefine_line|#define UB_DATA_TIMEOUT&t;(HZ*5)&t;/* ZIP does spin-ups in the data phase */
 DECL|macro|UB_CTRL_TIMEOUT
 mdefine_line|#define UB_CTRL_TIMEOUT&t;(HZ/2) /* 500ms ought to be enough to clear a stall */
 multiline_comment|/*&n; * An instance of a SCSI command in transit.&n; */
@@ -350,7 +352,7 @@ multiline_comment|/*&n; * The SCSI command tracing structure.&n; */
 DECL|macro|SCMD_ST_HIST_SZ
 mdefine_line|#define SCMD_ST_HIST_SZ   8
 DECL|macro|SCMD_TRACE_SZ
-mdefine_line|#define SCMD_TRACE_SZ    15&t;/* No more than 256 (trace_index) */
+mdefine_line|#define SCMD_TRACE_SZ    63&t;&t;/* Less than 4KB of 61-byte lines */
 DECL|struct|ub_scsi_cmd_trace
 r_struct
 id|ub_scsi_cmd_trace
@@ -613,6 +615,11 @@ DECL|member|readonly
 r_int
 id|readonly
 suffix:semicolon
+DECL|member|first_open
+r_int
+id|first_open
+suffix:semicolon
+multiline_comment|/* Kludge. See ub_bd_open. */
 DECL|member|name
 r_char
 id|name
@@ -3411,8 +3418,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* P3 */
-multiline_comment|/** printk(&quot;ub: urb status %d pipe 0x%08x len %d act %d&bslash;n&quot;,&n; urb-&gt;status, urb-&gt;pipe, urb-&gt;transfer_buffer_length, urb-&gt;actual_length); **/
 r_if
 c_cond
 (paren
@@ -3639,9 +3644,22 @@ id|urb-&gt;status
 op_ne
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ub: cmd #%d cmd status (%d)&bslash;n&quot;
+comma
+id|cmd-&gt;tag
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+multiline_comment|/* P3 */
 r_goto
 id|Bad_End
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3650,6 +3668,17 @@ op_ne
 id|US_BULK_CB_WRAP_LEN
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;ub: cmd #%d xferred %d&bslash;n&quot;
+comma
+id|cmd-&gt;tag
+comma
+id|urb-&gt;actual_length
+)paren
+suffix:semicolon
+multiline_comment|/* P3 */
 multiline_comment|/* XXX Must do reset here to unconfuse the device */
 r_goto
 id|Bad_End
@@ -3790,7 +3819,7 @@ id|sc-&gt;work_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|UB_URB_TIMEOUT
+id|UB_DATA_TIMEOUT
 suffix:semicolon
 id|add_timer
 c_func
@@ -5217,10 +5246,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XXX Query this from the device */
-multiline_comment|/*&n;&t; * XXX sd.c sets capacity to zero in such case. However, it doesn&squot;t&n;&t; * work for us. In case of zero capacity, block layer refuses to&n;&t; * have the /dev/uba opened (why?) Set capacity to some random value.&n;&t; */
 id|sc-&gt;capacity.nsec
 op_assign
-l_int|50
+l_int|0
 suffix:semicolon
 id|sc-&gt;capacity.bsize
 op_assign
@@ -5281,7 +5309,7 @@ l_int|0
 (brace
 id|sc-&gt;capacity.nsec
 op_assign
-l_int|100
+l_int|0
 suffix:semicolon
 id|sc-&gt;capacity.bsize
 op_assign
@@ -5392,6 +5420,33 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This is a workaround for a specific problem in our block layer.&n;&t; * In 2.6.9, register_disk duplicates the code from rescan_partitions.&n;&t; * However, if we do add_disk with a device which persistently reports&n;&t; * a changed media, add_disk calls register_disk, which does do_open,&n;&t; * which will call rescan_paritions for changed media. After that,&n;&t; * register_disk attempts to do it all again and causes double kobject&n;&t; * registration and a eventually an oops on module removal.&n;&t; *&n;&t; * The bottom line is, Al Viro says that we should not allow&n;&t; * bdev-&gt;bd_invalidated to be set when doing add_disk no matter what.&n;&t; */
+r_if
+c_cond
+(paren
+id|sc-&gt;first_open
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sc-&gt;changed
+)paren
+(brace
+id|sc-&gt;first_open
+op_assign
+l_int|0
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ENOMEDIUM
+suffix:semicolon
+r_goto
+id|err_open
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -5548,6 +5603,17 @@ id|flags
 suffix:semicolon
 op_decrement
 id|sc-&gt;openc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sc-&gt;openc
+op_eq
+l_int|0
+)paren
+id|sc-&gt;first_open
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5803,36 +5869,10 @@ id|sc-&gt;changed
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* P3 */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: made changed&bslash;n&quot;
-comma
-id|sc-&gt;name
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* The sd.c clears this before returning (one-shot flag). Why? */
-multiline_comment|/* P3 */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %s changed&bslash;n&quot;
-comma
-id|sc-&gt;name
-comma
-id|sc-&gt;changed
-ques
-c_cond
-l_string|&quot;is&quot;
-suffix:colon
-l_string|&quot;was not&quot;
-)paren
-suffix:semicolon
 r_return
 id|sc-&gt;changed
 suffix:semicolon
@@ -7330,6 +7370,15 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* XXX Query this from the device */
+id|sc-&gt;changed
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* ub_revalidate clears only */
+id|sc-&gt;first_open
+op_assign
+l_int|1
+suffix:semicolon
 id|ub_revalidate
 c_func
 (paren
