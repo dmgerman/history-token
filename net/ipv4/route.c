@@ -648,7 +648,7 @@ id|seq
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -3043,6 +3043,12 @@ id|rthp
 op_assign
 id|rth-&gt;u.rt_next
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Since lookup is lockfree, the deletion&n;&t;&t;&t; * must be visible to another weakly ordered CPU before&n;&t;&t;&t; * the insertion at the start of the hash chain.&n;&t;&t;&t; */
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rth-&gt;u.rt_next
 op_assign
 id|rt_hash_table
@@ -3051,6 +3057,12 @@ id|hash
 )braket
 dot
 id|chain
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Since lookup is lockfree, the update writes&n;&t;&t;&t; * must be ordered for consistency on SMP.&n;&t;&t;&t; */
+id|smp_wmb
+c_func
+(paren
+)paren
 suffix:semicolon
 id|rt_hash_table
 (braket
@@ -3957,7 +3969,7 @@ id|rtable
 op_star
 id|rt
 suffix:semicolon
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -4969,7 +4981,7 @@ op_assign
 id|rth-&gt;u.rt_next
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -7763,7 +7775,7 @@ op_assign
 id|rth-&gt;u.rt_next
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -9251,7 +9263,7 @@ op_assign
 id|rth-&gt;u.rt_next
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren
@@ -10686,7 +10698,7 @@ id|idx
 op_increment
 )paren
 (brace
-id|read_barrier_depends
+id|smp_read_barrier_depends
 c_func
 (paren
 )paren

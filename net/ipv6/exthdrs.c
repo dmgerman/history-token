@@ -1400,6 +1400,7 @@ l_int|8
 r_goto
 id|fail
 suffix:semicolon
+multiline_comment|/*&n;&t; * RFC2402 2.2 Payload Length&n;&t; * The 8-bit field specifies the length of AH in 32-bit words &n;&t; * (4-byte units), minus &quot;2&quot;.&n;&t; * -- Noriaki Takamiya @USAGI Project&n;&t; */
 id|len
 op_assign
 (paren
@@ -1408,7 +1409,7 @@ id|skb-&gt;h.raw
 l_int|1
 )braket
 op_plus
-l_int|1
+l_int|2
 )paren
 op_lshift
 l_int|2
