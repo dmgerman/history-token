@@ -18,6 +18,11 @@ id|device_lock
 suffix:semicolon
 r_extern
 r_struct
+id|semaphore
+id|device_sem
+suffix:semicolon
+r_extern
+r_struct
 id|device
 op_star
 id|get_device_locked
