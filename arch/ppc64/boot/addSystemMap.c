@@ -332,9 +332,11 @@ OL
 l_int|2
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;Name of System Map file missing.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -352,9 +354,11 @@ OL
 l_int|3
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;Name of vmlinux file missing.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -372,9 +376,11 @@ OL
 l_int|4
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;Name of vmlinux output file missing.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -404,9 +410,11 @@ op_logical_neg
 id|sysmap
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;System Map file &bslash;&quot;%s&bslash;&quot; failed to open.&bslash;n&quot;
 comma
 id|argv
@@ -441,9 +449,11 @@ op_logical_neg
 id|inputVmlinux
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;vmlinux file &bslash;&quot;%s&bslash;&quot; failed to open.&bslash;n&quot;
 comma
 id|argv
@@ -478,9 +488,11 @@ op_logical_neg
 id|outputVmlinux
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;output vmlinux file &bslash;&quot;%s&bslash;&quot; failed to open.&bslash;n&quot;
 comma
 id|argv
@@ -539,9 +551,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;You must have a linux kernel specified as argv[2]&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -714,30 +728,21 @@ comma
 id|sysmapPages
 )paren
 suffix:semicolon
-r_for
+multiline_comment|/* read the whole file line by line, expect that it doesnt fail */
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|sysmapPages
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|get4k
+id|fgets
 c_func
 (paren
-id|sysmap
-comma
 id|inbuf
+comma
+l_int|4096
+comma
+id|sysmap
+)paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* search for _end in the last page of the system map */
 id|ptr_end
 op_assign
@@ -756,21 +761,27 @@ op_logical_neg
 id|ptr_end
 )paren
 (brace
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;Unable to find _end in the sysmap file &bslash;n&quot;
 )paren
 suffix:semicolon
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;inbuf: &bslash;n&quot;
 )paren
 suffix:semicolon
-id|printf
+id|fprintf
 c_func
 (paren
+id|stderr
+comma
 l_string|&quot;%s &bslash;n&quot;
 comma
 id|inbuf

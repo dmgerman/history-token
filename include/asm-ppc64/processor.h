@@ -993,7 +993,7 @@ id|regs
 comma
 r_int
 r_int
-id|nip
+id|fdptr
 comma
 r_int
 r_int
