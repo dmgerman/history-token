@@ -229,7 +229,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;Interface&t;  Address   Networks   &quot;
+l_string|&quot;Interface        Address   Networks  &quot;
 l_string|&quot;Status&bslash;n&quot;
 )paren
 suffix:semicolon
