@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dcookies.c&n; *&n; * Copyright 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Persistent cookie-path mappings. These are used by&n; * profilers to convert a per-task EIP value into something&n; * non-transitory that can be processed at a later date.&n; * This is done by locking the dentry/vfsmnt pair in the&n; * kernel until released by the tasks needing the persistent&n; * objects. The tag is simply an u32 that refers&n; * to the pair and can be looked up from userspace.&n; */
+multiline_comment|/*&n; * dcookies.c&n; *&n; * Copyright 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Persistent cookie-path mappings. These are used by&n; * profilers to convert a per-task EIP value into something&n; * non-transitory that can be processed at a later date.&n; * This is done by locking the dentry/vfsmnt pair in the&n; * kernel until released by the tasks needing the persistent&n; * objects. The tag is simply an unsigned long that refers&n; * to the pair and can be looked up from userspace.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -91,7 +91,8 @@ multiline_comment|/* The dentry is locked, its address will do for the cookie */
 DECL|function|dcookie_value
 r_static
 r_inline
-id|u32
+r_int
+r_int
 id|dcookie_value
 c_func
 (paren
@@ -103,7 +104,8 @@ id|dcs
 (brace
 r_return
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|dcs-&gt;dentry
 suffix:semicolon
@@ -114,7 +116,8 @@ r_int
 id|dcookie_hash
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|dcookie
 )paren
 (brace
@@ -122,7 +125,7 @@ r_return
 (paren
 id|dcookie
 op_rshift
-l_int|2
+id|L1_CACHE_SHIFT
 )paren
 op_amp
 (paren
@@ -140,7 +143,8 @@ op_star
 id|find_dcookie
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|dcookie
 )paren
 (brace
@@ -353,7 +357,8 @@ id|vfsmount
 op_star
 id|vfsmnt
 comma
-id|u32
+r_int
+r_int
 op_star
 id|cookie
 )paren
@@ -459,8 +464,8 @@ r_int
 id|sys_lookup_dcookie
 c_func
 (paren
-id|u32
-id|cookie
+id|u64
+id|cookie64
 comma
 r_char
 op_star
@@ -470,6 +475,22 @@ r_int
 id|len
 )paren
 (brace
+r_int
+r_int
+id|cookie
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|cookie64
+suffix:semicolon
+r_int
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_char
 op_star
 id|kbuf
@@ -477,12 +498,6 @@ suffix:semicolon
 r_char
 op_star
 id|path
-suffix:semicolon
-r_int
-id|err
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 r_int
 id|pathlen
@@ -574,16 +589,6 @@ id|kbuf
 r_goto
 id|out
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|kbuf
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: (deleted) ? */
 id|path
 op_assign
@@ -601,7 +606,8 @@ id|PAGE_SIZE
 suffix:semicolon
 id|err
 op_assign
-l_int|0
+op_minus
+id|ERANGE
 suffix:semicolon
 id|pathlen
 op_assign
@@ -614,11 +620,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|len
-OG
 id|pathlen
-)paren
+op_le
 id|len
+)paren
+(brace
+id|err
 op_assign
 id|pathlen
 suffix:semicolon
@@ -632,7 +639,7 @@ id|buf
 comma
 id|path
 comma
-id|len
+id|pathlen
 )paren
 )paren
 id|err
@@ -640,6 +647,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
