@@ -66,19 +66,14 @@ op_star
 id|rl
 suffix:semicolon
 DECL|member|lock
-id|rwlock_t
+r_struct
+id|rw_semaphore
 id|lock
 suffix:semicolon
 DECL|typedef|run_list
 )brace
 id|run_list
 suffix:semicolon
-DECL|macro|RUN_LIST_INIT
-mdefine_line|#define RUN_LIST_INIT&t;&t;{ NULL, RW_LOCK_UNLOCKED }
-DECL|macro|RUN_LIST
-mdefine_line|#define RUN_LIST(name)&t;&t;run_list name = RUN_LIST_INIT
-DECL|macro|INIT_RUN_LIST
-mdefine_line|#define INIT_RUN_LIST(runlist)&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;run_list *___rl = runlist;&t;&bslash;&n;&t;&t;&t;&t;&t;___rl-&gt;rl = NULL;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;___rl-&gt;lock = RW_LOCK_UNLOCKED; &bslash;&n;&t;&t;&t;&t;} while (0)
 r_typedef
 r_enum
 (brace

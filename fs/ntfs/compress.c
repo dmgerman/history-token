@@ -1806,7 +1806,7 @@ multiline_comment|/* Overflow, just zero this region. */
 singleline_comment|// TODO: AIA
 )brace
 multiline_comment|/* Find lcn of vcn and convert it into blocks. */
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -1823,7 +1823,7 @@ comma
 id|vcn
 )paren
 suffix:semicolon
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp

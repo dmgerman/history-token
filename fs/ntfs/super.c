@@ -4836,7 +4836,7 @@ op_amp
 id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -4853,7 +4853,7 @@ id|vol-&gt;mftbmp_rl.rl
 op_assign
 l_int|NULL
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -6197,7 +6197,7 @@ op_amp
 id|vol-&gt;mftbmp_mapping.i_shared_lock
 )paren
 suffix:semicolon
-id|INIT_RUN_LIST
+id|init_run_list
 c_func
 (paren
 op_amp

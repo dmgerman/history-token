@@ -127,7 +127,7 @@ multiline_comment|/*&n;&t; * Further, we need to be checking i_size and be just 
 id|retry_remap
 suffix:colon
 multiline_comment|/* Convert the vcn to the corresponding logical cluster number (lcn). */
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -144,7 +144,7 @@ comma
 id|vcn
 )paren
 suffix:semicolon
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
@@ -809,7 +809,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -826,7 +826,7 @@ comma
 id|vcn
 )paren
 suffix:semicolon
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp

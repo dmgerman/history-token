@@ -6,6 +6,30 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;endian.h&quot;
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
+DECL|function|init_run_list
+r_static
+r_inline
+r_void
+id|init_run_list
+c_func
+(paren
+id|run_list
+op_star
+id|rl
+)paren
+(brace
+id|rl-&gt;rl
+op_assign
+l_int|NULL
+suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|rl-&gt;lock
+)paren
+suffix:semicolon
+)brace
 r_typedef
 r_enum
 (brace

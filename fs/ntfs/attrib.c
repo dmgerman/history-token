@@ -3649,7 +3649,7 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Lock the run list. */
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -3721,7 +3721,7 @@ id|rl
 suffix:semicolon
 )brace
 multiline_comment|/* Unlock the run list. */
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp

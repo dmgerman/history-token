@@ -271,7 +271,7 @@ id|ni-&gt;vol
 op_assign
 l_int|NULL
 suffix:semicolon
-id|INIT_RUN_LIST
+id|init_run_list
 c_func
 (paren
 op_amp
@@ -302,14 +302,14 @@ id|ni-&gt;attr_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|INIT_RUN_LIST
+id|init_run_list
 c_func
 (paren
 op_amp
 id|ni-&gt;attr_list_rl
 )paren
 suffix:semicolon
-id|INIT_RUN_LIST
+id|init_run_list
 c_func
 (paren
 op_amp
@@ -4943,7 +4943,7 @@ id|extent_ntfs_inos
 suffix:semicolon
 )brace
 multiline_comment|/* Free all alocated memory. */
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -4960,7 +4960,7 @@ id|ni-&gt;run_list.rl
 op_assign
 l_int|NULL
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -4973,7 +4973,7 @@ c_func
 id|ni-&gt;attr_list
 )paren
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -4990,7 +4990,7 @@ id|ni-&gt;attr_list_rl.rl
 op_assign
 l_int|NULL
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -5060,7 +5060,7 @@ id|vi-&gt;i_mode
 )paren
 )paren
 (brace
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -5089,7 +5089,7 @@ dot
 id|rl
 )paren
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp

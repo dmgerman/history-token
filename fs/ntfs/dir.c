@@ -2188,20 +2188,13 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Calling filldir for .. with len 2, f_pos 0x1, &quot;
-l_string|&quot;inode 0x%Lx, DT_DIR.&quot;
+l_string|&quot;inode 0x%lx, DT_DIR.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|NTFS_I
+id|parent_ino
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode
+id|filp-&gt;f_dentry
 )paren
-op_member_access_from_pointer
-id|mft_no
 )paren
 suffix:semicolon
 id|rc
@@ -2217,7 +2210,11 @@ l_int|2
 comma
 id|filp-&gt;f_pos
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 comma
 id|DT_DIR
 )paren

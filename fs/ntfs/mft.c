@@ -735,7 +735,7 @@ op_amp
 id|vol-&gt;cluster_size_mask
 suffix:semicolon
 multiline_comment|/* Convert the vcn to the corresponding lcn. */
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -752,7 +752,7 @@ comma
 id|vcn
 )paren
 suffix:semicolon
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
