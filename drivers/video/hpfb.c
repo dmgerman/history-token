@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/dio.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/blinken.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|variable|fb_info
 r_static
 r_struct
@@ -195,12 +194,6 @@ op_assign
 id|FB_VMODE_NONINTERLACED
 comma
 )brace
-suffix:semicolon
-DECL|variable|display
-r_static
-r_struct
-id|display
-id|display
 suffix:semicolon
 multiline_comment|/*&n; * Set the palette.  This may not work on all boards but only experimentation &n; * will tell.&n; * XXX Doesn&squot;t work at all.&n; */
 DECL|function|hpfb_setcolreg
@@ -458,16 +451,6 @@ op_assign
 id|gen_set_var
 comma
 dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|hpfb_setcolreg
@@ -722,33 +705,6 @@ op_star
 id|hpfb_fix.smem_start
 suffix:semicolon
 singleline_comment|// FIXME
-multiline_comment|/* The below feilds will go away !!!! */
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|display
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
@@ -758,16 +714,6 @@ comma
 l_int|256
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if

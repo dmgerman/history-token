@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/*&n; *&t;Some technical notes:&n; *&n; *&t;The BSC FrameMaster II (or Rainbow II) is a simple very dumb&n; *&t;frame buffer which allows to display 24 bit true color images.&n; *&t;Each pixel is 32 bit width so it&squot;s very easy to maintain the&n; *&t;frame buffer. One long word has the following layout:&n; *&t;AARRGGBB which means: AA the alpha channel byte, RR the red&n; *&t;channel, GG the green channel and BB the blue channel.&n; *&n; *&t;The FrameMaster II supports the following video modes.&n; *&t;- PAL/NTSC&n; *&t;- interlaced/non interlaced&n; *&t;- composite sync/sync/sync over green&n; *&n; *&t;The resolution is to the following both ones:&n; *&t;- 768x576 (PAL)&n; *&t;- 768x480 (NTSC)&n; *&n; *&t;This means that pixel access per line is fixed due to the&n; *&t;fixed line width. In case of maximal resolution the frame&n; *&t;buffer needs an amount of memory of 1.769.472 bytes which&n; *&t;is near to 2 MByte (the allocated address space of Zorro2).&n; *&t;The memory is channel interleaved. That means every channel&n; *&t;owns four VRAMs. Unfortunatly most FrameMasters II are&n; *&t;not assembled with memory for the alpha channel. In this&n; *&t;case it could be possible to add the frame buffer into the&n; *&t;normal memory pool.&n; *&t;&n; *&t;At relative address 0x1ffff8 of the frame buffers base address&n; *&t;there exists a control register with the number of&n; *&t;four control bits. They have the following meaning:&n; *&t;bit value meaning&n; *&n; *&t; 0    1   0=interlaced/1=non interlaced&n; *&t; 1    2   0=video out disabled/1=video out enabled&n; *&t; 2    4   0=normal mode as jumpered via JP8/1=complement mode&n; *&t; 3    8   0=read  onboard ROM/1 normal operation (required)&n; *&n; *&t;As mentioned above there are several jumper. I think there&n; *&t;is not very much information about the FrameMaster II in&n; *&t;the world so I add these information for completeness.&n; *&n; *&t;JP1  interlace selection (1-2 non interlaced/2-3 interlaced) &n; *&t;JP2  wait state creation (leave as is!)&n; *&t;JP3  wait state creation (leave as is!)&n; *&t;JP4  modulate composite sync on green output (1-2 composite&n; *&t;     sync on green channel/2-3 normal composite sync)&n; *&t;JP5  create test signal, shorting this jumper will create&n; *&t;     a white screen&n; *&t;JP6  sync creation (1-2 composite sync/2-3 H-sync output)&n; *&t;JP8  video mode (1-2 PAL/2-3 NTSC)&n; *&n; *&t;With the following jumpering table you can connect the&n; *&t;FrameMaster II to a normal TV via SCART connector:&n; *&t;JP1:  2-3&n; *&t;JP4:  2-3&n; *&t;JP6:  2-3&n; *&t;JP8:  1-2 (means PAL for Europe)&n; *&n; *&t;NOTE:&n; *&t;There is no other possibility to change the video timings&n; *&t;except the interlaced/non interlaced, sync control and the&n; *&t;video mode PAL (50 Hz)/NTSC (60 Hz). Inside this&n; *&t;FrameMaster II driver are assumed values to avoid anomalies&n; *&t;to a future X server. Except the pixel clock is really&n; *&t;constant at 30 MHz.&n; *&n; *&t;9 pin female video connector:&n; *&n; *&t;1  analog red 0.7 Vss&n; *&t;2  analog green 0.7 Vss&n; *&t;3  analog blue 0.7 Vss&n; *&t;4  H-sync TTL&n; *&t;5  V-sync TTL&n; *&t;6  ground&n; *&t;7  ground&n; *&t;8  ground&n; *&t;9  ground&n; *&n; *&t;Some performance notes:&n; *&t;The FrameMaster II was not designed to display a console&n; *&t;this driver would do! It was designed to display still true&n; *&t;color images. Imagine: When scroll up a text line there&n; *&t;must copied ca. 1.7 MBytes to another place inside this&n; *&t;frame buffer. This means 1.7 MByte read and 1.7 MByte write&n; *&t;over the slow 16 bit wide Zorro2 bus! A scroll of one&n; *&t;line needs 1 second so do not expect to much from this&n; *&t;driver - he is at the limit!&n; *&n; */
 multiline_comment|/*&n; *&t;definitions&n; */
 DECL|macro|FRAMEMASTER_SIZE
@@ -43,12 +42,6 @@ id|pseudo_palette
 (braket
 l_int|17
 )braket
-suffix:semicolon
-DECL|variable|display
-r_static
-r_struct
-id|display
-id|display
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -346,16 +339,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -859,14 +842,6 @@ id|fm2fb_mode
 op_assign
 id|FM2FB_MODE_PAL
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_fix.id
-)paren
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -904,32 +879,6 @@ op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
 multiline_comment|/* The below feilds will go away !!!! */
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|display
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
@@ -939,16 +888,6 @@ comma
 l_int|16
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if
