@@ -215,12 +215,6 @@ DECL|struct|net_bridge
 r_struct
 id|net_bridge
 (brace
-DECL|member|next
-r_struct
-id|net_bridge
-op_star
-id|next
-suffix:semicolon
 DECL|member|lock
 id|rwlock_t
 id|lock
@@ -360,23 +354,6 @@ id|bridge_ula
 (braket
 l_int|6
 )braket
-suffix:semicolon
-multiline_comment|/* br.c */
-r_extern
-r_void
-id|br_dec_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|br_inc_use_count
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* br_device.c */
 r_extern
@@ -624,6 +601,7 @@ r_int
 id|br_add_bridge
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -634,9 +612,18 @@ r_int
 id|br_del_bridge
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_cleanup_bridges
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -723,21 +710,6 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* br_ioctl.c */
-r_extern
-r_void
-id|br_call_ioctl_atomic
-c_func
-(paren
-r_void
-(paren
-op_star
-id|fn
-)paren
-(paren
-r_void
-)paren
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|br_ioctl

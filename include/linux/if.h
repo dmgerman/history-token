@@ -45,6 +45,8 @@ mdefine_line|#define IFF_DYNAMIC&t;0x8000&t;&t;/* dialup device with changing ad
 multiline_comment|/* Private (from user) interface flags (netdevice-&gt;priv_flags). */
 DECL|macro|IFF_802_1Q_VLAN
 mdefine_line|#define IFF_802_1Q_VLAN 0x1             /* 802.1Q VLAN device.          */
+DECL|macro|IFF_EBRIDGE
+mdefine_line|#define IFF_EBRIDGE&t;0x2&t;&t;/* Ethernet bridging device.&t;*/
 DECL|macro|IF_GET_IFACE
 mdefine_line|#define IF_GET_IFACE&t;0x0001&t;&t;/* for querying only */
 DECL|macro|IF_GET_PROTO

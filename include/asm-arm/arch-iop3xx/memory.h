@@ -4,6 +4,7 @@ DECL|macro|__ASM_ARCH_MEMORY_H
 mdefine_line|#define __ASM_ARCH_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch/iop310.h&gt;
+macro_line|#include &lt;asm/arch/iop321.h&gt;
 multiline_comment|/*&n; * Task size: 3GB&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0xbf000000UL)
@@ -32,12 +33,19 @@ DECL|macro|__virt_to_bus__is_a_macro
 mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__bus_to_virt__is_a_macro
 mdefine_line|#define __bus_to_virt__is_a_macro
+macro_line|#ifdef CONFIG_ARCH_IOP310
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;(((__virt_to_phys(x)) &amp; ~(*IOP310_SIATVR)) | ((*IOP310_SIABAR) &amp; 0xfffffff0))
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)    (__phys_to_virt(((x) &amp; ~(*IOP310_SIALR)) | ( *IOP310_SIATVR)))
+macro_line|#elif defined(CONFIG_ARCH_IOP321)
+DECL|macro|__virt_to_bus
+mdefine_line|#define __virt_to_bus(x)&t;(((__virt_to_phys(x)) &amp; ~(*IOP321_IATVR2)) | ((*IOP321_IABAR2) &amp; 0xfffffff0))
+DECL|macro|__bus_to_virt
+mdefine_line|#define __bus_to_virt(x)    (__phys_to_virt(((x) &amp; ~(*IOP321_IALR2)) | ( *IOP321_IATVR2)))
+macro_line|#endif
 multiline_comment|/* boot mem allocate global pointer for MU circular queues QBAR */
-macro_line|#ifdef CONFIG_IOP310_MU
+macro_line|#ifdef CONFIG_IOP3XX_MU
 r_extern
 r_void
 op_star

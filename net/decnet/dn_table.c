@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/route.h&gt; /* RTF_xxx */
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/dn.h&gt;
 macro_line|#include &lt;net/dn_route.h&gt;
 macro_line|#include &lt;net/dn_fib.h&gt;
@@ -58,7 +59,7 @@ r_int
 id|dz_order
 suffix:semicolon
 DECL|member|dz_mask
-id|u32
+id|u16
 id|dz_mask
 suffix:semicolon
 DECL|macro|DZ_MASK
@@ -104,6 +105,8 @@ DECL|macro|DN_FIB_SCAN
 mdefine_line|#define DN_FIB_SCAN(f, fp) &bslash;&n;for( ; ((f) = *(fp)) != NULL; (fp) = &amp;(f)-&gt;fn_next)
 DECL|macro|DN_FIB_SCAN_KEY
 mdefine_line|#define DN_FIB_SCAN_KEY(f, fp, key) &bslash;&n;for( ; ((f) = *(fp)) != NULL &amp;&amp; dn_key_eq((f)-&gt;fn_key, (key)); (fp) = &amp;(f)-&gt;fn_next)
+DECL|macro|RT_TABLE_MIN
+mdefine_line|#define RT_TABLE_MIN 1
 DECL|variable|dn_fib_tables_lock
 r_static
 id|rwlock_t
@@ -112,13 +115,12 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|dn_fib_tables
-r_static
 r_struct
 id|dn_fib_table
 op_star
 id|dn_fib_tables
 (braket
-id|DN_NUM_TABLES
+id|RT_TABLE_MAX
 op_plus
 l_int|1
 )braket
@@ -136,7 +138,7 @@ id|dn_fib_hash_zombies
 suffix:semicolon
 DECL|function|dn_hash
 r_static
-id|__inline__
+r_inline
 id|dn_fib_idx_t
 id|dn_hash
 c_func
@@ -150,7 +152,7 @@ op_star
 id|dz
 )paren
 (brace
-id|u32
+id|u16
 id|h
 op_assign
 id|ntohs
@@ -182,14 +184,6 @@ l_int|6
 )paren
 suffix:semicolon
 id|h
-op_xor_assign
-(paren
-id|h
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-id|h
 op_and_assign
 id|DZ_HASHMASK
 c_func
@@ -209,7 +203,7 @@ suffix:semicolon
 )brace
 DECL|function|dz_key
 r_static
-id|__inline__
+r_inline
 id|dn_fib_key_t
 id|dz_key
 c_func
@@ -242,7 +236,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_chain_p
 r_static
-id|__inline__
+r_inline
 r_struct
 id|dn_fib_node
 op_star
@@ -277,7 +271,7 @@ suffix:semicolon
 )brace
 DECL|function|dz_chain
 r_static
-id|__inline__
+r_inline
 r_struct
 id|dn_fib_node
 op_star
@@ -310,7 +304,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_key_eq
 r_static
-id|__inline__
+r_inline
 r_int
 id|dn_key_eq
 c_func
@@ -330,7 +324,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_key_leq
 r_static
-id|__inline__
+r_inline
 r_int
 id|dn_key_leq
 c_func
@@ -350,7 +344,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_rebuild_zone
 r_static
-id|__inline__
+r_inline
 r_void
 id|dn_rebuild_zone
 c_func
@@ -1296,6 +1290,22 @@ comma
 op_amp
 id|fi-&gt;fib_priority
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtnetlink_put_metrics
+c_func
+(paren
+id|skb
+comma
+id|fi-&gt;fib_metrics
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|rtattr_failure
 suffix:semicolon
 r_if
 c_cond
@@ -3369,7 +3379,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_flush_list
 r_static
-id|__inline__
+r_inline
 r_int
 id|dn_flush_list
 c_func
@@ -3604,9 +3614,9 @@ id|tb
 comma
 r_const
 r_struct
-id|dn_fib_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|dn_fib_res
@@ -3666,7 +3676,7 @@ op_assign
 id|dz_key
 c_func
 (paren
-id|key-&gt;dst
+id|flp-&gt;fld_dst
 comma
 id|dz
 )paren
@@ -3695,6 +3705,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|dn_key_eq
+c_func
+(paren
+id|k
+comma
+id|f-&gt;fn_key
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|dn_key_leq
 c_func
 (paren
@@ -3708,6 +3730,7 @@ suffix:semicolon
 r_else
 r_continue
 suffix:semicolon
+)brace
 id|f-&gt;fn_state
 op_or_assign
 id|DN_S_ACCESSED
@@ -3726,7 +3749,7 @@ c_cond
 (paren
 id|f-&gt;fn_scope
 OL
-id|key-&gt;scope
+id|flp-&gt;fld_scope
 )paren
 r_continue
 suffix:semicolon
@@ -3743,7 +3766,7 @@ c_func
 id|f
 )paren
 comma
-id|key
+id|flp
 comma
 id|res
 )paren
@@ -3962,10 +3985,10 @@ id|buffer
 comma
 l_string|&quot;%s&bslash;t%04x&bslash;t%04x&bslash;t%04x&bslash;t%d&bslash;t%u&bslash;t%d&bslash;t%04x&bslash;t%d&bslash;t%u&bslash;t%u&quot;
 comma
-id|fi-&gt;fib_dev
+id|fi-&gt;dn_fib_dev
 ques
 c_cond
-id|fi-&gt;fib_dev-&gt;name
+id|fi-&gt;dn_fib_dev-&gt;name
 suffix:colon
 l_string|&quot;*&quot;
 comma
@@ -4294,7 +4317,7 @@ c_cond
 (paren
 id|n
 OL
-id|DN_MIN_TABLE
+id|RT_TABLE_MIN
 )paren
 r_return
 l_int|NULL
@@ -4304,7 +4327,7 @@ c_cond
 (paren
 id|n
 OG
-id|DN_NUM_TABLES
+id|RT_TABLE_MAX
 )paren
 r_return
 l_int|NULL
@@ -4371,6 +4394,12 @@ r_sizeof
 r_struct
 id|dn_fib_table
 )paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|dn_hash
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -4426,6 +4455,20 @@ macro_line|#endif
 id|t-&gt;dump
 op_assign
 id|dn_fib_table_dump
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|t-&gt;data
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|dn_hash
+)paren
+)paren
 suffix:semicolon
 id|dn_fib_tables
 (braket
@@ -4513,11 +4556,11 @@ c_loop
 (paren
 id|id
 op_assign
-id|DN_MIN_TABLE
+id|RT_TABLE_MIN
 suffix:semicolon
 id|id
 op_le
-id|DN_NUM_TABLES
+id|RT_TABLE_MAX
 suffix:semicolon
 id|id
 op_increment
@@ -4594,13 +4637,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|RT_TABLE_MIN
 suffix:semicolon
 id|i
-OL
-id|DN_NUM_TABLES
-op_plus
-l_int|1
+op_le
+id|RT_TABLE_MAX
 suffix:semicolon
 op_increment
 id|i

@@ -13728,9 +13728,13 @@ id|g-&gt;minor_shift
 op_assign
 l_int|0
 suffix:semicolon
-id|g-&gt;de
-op_assign
-id|drive-&gt;de
+id|strcpy
+c_func
+(paren
+id|g-&gt;devfs_name
+comma
+id|drive-&gt;devfs_name
+)paren
 suffix:semicolon
 id|g-&gt;driverfs_dev
 op_assign

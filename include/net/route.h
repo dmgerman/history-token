@@ -722,7 +722,7 @@ op_star
 id|rp
 )paren
 op_member_access_from_pointer
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_logical_or
 id|dport
 op_ne
@@ -731,7 +731,7 @@ op_star
 id|rp
 )paren
 op_member_access_from_pointer
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 )paren
 (brace
 r_struct
@@ -758,11 +758,11 @@ id|fl
 )paren
 )paren
 suffix:semicolon
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_assign
 id|sport
 suffix:semicolon
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 op_assign
 id|dport
 suffix:semicolon

@@ -2180,9 +2180,13 @@ c_func
 id|cd
 )paren
 suffix:semicolon
-id|disk-&gt;de
-op_assign
-id|sdev-&gt;de
+id|strcpy
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+id|sdev-&gt;devfs_name
+)paren
 suffix:semicolon
 id|disk-&gt;driverfs_dev
 op_assign

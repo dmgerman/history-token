@@ -178,7 +178,7 @@ id|packed
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;&t;/* we don&squot;t need any devfs crap&n;&t;&t;&t;&t;&t;   here, but some of the implicitly&n;&t;&t;&t;&t;&t;   included headers.   will clean&n;&t;&t;&t;&t;&t;   this mess up later.&t;--hch */
 DECL|struct|hd_struct
 r_struct
 id|hd_struct
@@ -191,11 +191,6 @@ DECL|member|nr_sects
 id|sector_t
 id|nr_sects
 suffix:semicolon
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
-multiline_comment|/* primary (master) devfs entry  */
 DECL|member|kobj
 r_struct
 id|kobject
@@ -224,8 +219,6 @@ DECL|macro|GENHD_FL_REMOVABLE
 mdefine_line|#define GENHD_FL_REMOVABLE  1
 DECL|macro|GENHD_FL_DRIVERFS
 mdefine_line|#define GENHD_FL_DRIVERFS  2
-DECL|macro|GENHD_FL_DEVFS
-mdefine_line|#define GENHD_FL_DEVFS&t;4
 DECL|macro|GENHD_FL_CD
 mdefine_line|#define GENHD_FL_CD&t;8
 DECL|macro|GENHD_FL_UP
@@ -338,21 +331,19 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* devfs crap */
 DECL|member|number
 r_int
 id|number
 suffix:semicolon
-multiline_comment|/* devfs crap */
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
 multiline_comment|/* more of the same */
-DECL|member|disk_de
-id|devfs_handle_t
-id|disk_de
-suffix:semicolon
-multiline_comment|/* piled higher and deeper */
 DECL|member|driverfs_dev
 r_struct
 id|device

@@ -399,7 +399,7 @@ id|fl.oif
 op_assign
 id|sk-&gt;bound_dev_if
 suffix:semicolon
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_assign
 id|inet_sk
 c_func
@@ -409,7 +409,7 @@ id|sk
 op_member_access_from_pointer
 id|sport
 suffix:semicolon
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 op_assign
 id|transport-&gt;ipaddr.v6.sin6_port
 suffix:semicolon

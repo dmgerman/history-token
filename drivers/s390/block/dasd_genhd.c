@@ -425,10 +425,6 @@ op_assign
 op_amp
 id|dasd_device_operations
 suffix:semicolon
-id|gdp-&gt;flags
-op_or_assign
-id|GENHD_FL_DEVFS
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set device name.&n;&t; *   dasda - dasdz : 26 devices&n;&t; *   dasdaa - dasdzz : 676 devices, added up = 702&n;&t; *   dasdaaa - dasdzzz : 17576 devices, added up = 18278&n;&t; */
 id|len
 op_assign

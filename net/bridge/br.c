@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
@@ -29,34 +28,6 @@ id|pskb
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|function|br_dec_use_count
-r_void
-id|br_dec_use_count
-c_func
-(paren
-)paren
-(brace
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
-)brace
-DECL|function|br_inc_use_count
-r_void
-id|br_inc_use_count
-c_func
-(paren
-)paren
-(brace
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
-)brace
 DECL|function|br_init
 r_static
 r_int
@@ -153,7 +124,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
-multiline_comment|/* FIX ME. move into hook structure with ref count */
 id|br_fdb_get_hook
 op_assign
 l_int|NULL
@@ -163,6 +133,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+id|br_cleanup_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|br_should_route_hook
 id|EXPORT_SYMBOL

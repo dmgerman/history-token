@@ -21,15 +21,6 @@ r_int
 r_int
 id|vlan_name_type
 suffix:semicolon
-r_int
-id|vlan_ioctl_handler
-c_func
-(paren
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|macro|VLAN_GRP_HASH_SHIFT
 mdefine_line|#define VLAN_GRP_HASH_SHIFT&t;5
 DECL|macro|VLAN_GRP_HASH_SIZE

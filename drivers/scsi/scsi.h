@@ -3,7 +3,6 @@ macro_line|#ifndef _SCSI_H
 DECL|macro|_SCSI_H
 mdefine_line|#define _SCSI_H
 macro_line|#include &lt;linux/config.h&gt;&t;    /* for CONFIG_SCSI_LOGGING */
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;  /* some morons don&squot;t know struct pointers */
 macro_line|#include &lt;scsi/scsi.h&gt;
 multiline_comment|/*&n; * These are the values that the SCpnt-&gt;sc_data_direction and &n; * SRpnt-&gt;sr_data_direction can take.  These need to be set&n; * The SCSI_DATA_UNKNOWN value is essentially the default.&n; * In the event that the command creator didn&squot;t bother to&n; * set a value, you will see SCSI_DATA_UNKNOWN.&n; */
 DECL|macro|SCSI_DATA_UNKNOWN
@@ -1502,11 +1501,14 @@ op_star
 id|hostdata
 suffix:semicolon
 multiline_comment|/* available to low-level driver */
-DECL|member|de
-id|devfs_handle_t
-id|de
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|256
+)braket
 suffix:semicolon
-multiline_comment|/* directory for the device      */
+multiline_comment|/* devfs junk */
 DECL|member|type
 r_char
 id|type

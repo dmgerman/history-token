@@ -47,7 +47,7 @@ id|fl-&gt;fl4_src
 suffix:semicolon
 id|x-&gt;sel.dport
 op_assign
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 suffix:semicolon
 id|x-&gt;sel.dport_mask
 op_assign
@@ -56,7 +56,7 @@ l_int|0
 suffix:semicolon
 id|x-&gt;sel.sport
 op_assign
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 suffix:semicolon
 id|x-&gt;sel.sport_mask
 op_assign

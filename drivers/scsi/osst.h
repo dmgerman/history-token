@@ -2,9 +2,6 @@ multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.12 2001/10/
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 multiline_comment|/*&t;FIXME - rename and use the following two types or delete them!&n; *              and the types really should go to st.h anyway...&n; *&t;INQUIRY packet command - Data Format (From Table 6-8 of QIC-157C)&n; */
 r_typedef
 r_struct
@@ -2100,22 +2097,6 @@ DECL|member|current_mode
 r_int
 id|current_mode
 suffix:semicolon
-DECL|member|de_r
-id|devfs_handle_t
-id|de_r
-(braket
-id|ST_NBR_MODES
-)braket
-suffix:semicolon
-multiline_comment|/*  Rewind entries     */
-DECL|member|de_n
-id|devfs_handle_t
-id|de_n
-(braket
-id|ST_NBR_MODES
-)braket
-suffix:semicolon
-multiline_comment|/*  No-rewind entries  */
 DECL|member|driverfs_dev_r
 r_struct
 id|device
