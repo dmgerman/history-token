@@ -3999,7 +3999,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#warning pol-&gt;policy is in undefined state here
 id|res
 op_assign
 id|find_match
@@ -4014,14 +4013,7 @@ comma
 op_amp
 id|max
 comma
-id|pol-&gt;policy
-op_eq
-id|CPUFREQ_POLICY_POWERSAVE
-ques
-c_cond
 id|SEARCH_DOWN
-suffix:colon
-id|SEARCH_UP
 comma
 l_int|0
 comma
