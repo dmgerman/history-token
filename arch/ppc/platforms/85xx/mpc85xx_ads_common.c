@@ -439,16 +439,6 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;chip&bslash;t&bslash;t: MPC%s&bslash;n&quot;
-comma
-id|cur_ppc_sys_spec-&gt;ppc_sys_name
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
 l_string|&quot;Vendor&bslash;t&bslash;t: Freescale Semiconductor&bslash;n&quot;
 )paren
 suffix:semicolon

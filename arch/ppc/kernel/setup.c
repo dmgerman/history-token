@@ -36,6 +36,9 @@ macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#if defined(CONFIG_85xx) || defined(CONFIG_83xx)
+macro_line|#include &lt;asm/ppc_sys.h&gt;
+macro_line|#endif
 macro_line|#if defined CONFIG_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
@@ -995,6 +998,23 @@ op_mod
 l_int|100
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_85xx) || defined(CONFIG_83xx)
+r_if
+c_cond
+(paren
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;chipset&bslash;t&bslash;t: %s&bslash;n&quot;
+comma
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|seq_printf
 c_func
