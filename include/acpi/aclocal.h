@@ -659,6 +659,24 @@ suffix:semicolon
 multiline_comment|/* System interrupt level */
 )brace
 suffix:semicolon
+DECL|struct|acpi_gpe_walk_info
+r_struct
+id|acpi_gpe_walk_info
+(brace
+DECL|member|gpe_device
+r_struct
+id|acpi_namespace_node
+op_star
+id|gpe_device
+suffix:semicolon
+DECL|member|gpe_block
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|typedef|ACPI_GPE_CALLBACK
 r_typedef
 id|acpi_status

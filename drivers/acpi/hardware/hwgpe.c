@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwgpe&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_gpe&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_gpe&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be enabled&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_enable_gpe
 id|acpi_hw_enable_gpe
@@ -81,7 +81,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_gpe_for_wakeup&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Keep track of which GPEs the OS has requested not be&n; *              disabled when going to sleep.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_gpe_for_wakeup&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be enabled&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Keep track of which GPEs the OS has requested not be&n; *              disabled when going to sleep.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_hw_enable_gpe_for_wakeup
 id|acpi_hw_enable_gpe_for_wakeup
@@ -116,13 +116,21 @@ id|gpe_register_info
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Set the bit so we will not disable this when sleeping&n;&t; */
+multiline_comment|/*&n;&t; * Set the bit so we will not enable this GPE when sleeping (and disable&n;&t; * it upon wake)&n;&t; */
 id|gpe_register_info-&gt;wake_enable
 op_or_assign
 id|gpe_event_info-&gt;bit_mask
 suffix:semicolon
+id|gpe_event_info-&gt;flags
+op_or_assign
+(paren
+id|ACPI_GPE_TYPE_WAKE
+op_or
+id|ACPI_GPE_ENABLED
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be disabled&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_disable_gpe
 id|acpi_hw_disable_gpe
@@ -230,6 +238,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Make sure this GPE is disabled for wake, also */
 id|acpi_hw_disable_gpe_for_wakeup
 (paren
 id|gpe_event_info
@@ -241,7 +250,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe_for_wakeup&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Keep track of which GPEs the OS has requested not be&n; *              disabled when going to sleep.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe_for_wakeup&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be disabled&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Keep track of which GPEs the OS has requested not be&n; *              disabled when going to sleep.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_hw_disable_gpe_for_wakeup
 id|acpi_hw_disable_gpe_for_wakeup
@@ -276,7 +285,7 @@ id|gpe_register_info
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Clear the bit so we will disable this when sleeping&n;&t; */
+multiline_comment|/* Clear the bit so we will disable this when sleeping */
 id|gpe_register_info-&gt;wake_enable
 op_and_assign
 op_complement
@@ -285,7 +294,7 @@ id|gpe_event_info-&gt;bit_mask
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Clear a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be cleared&n; *&n; * RETURN:      status_status&n; *&n; * DESCRIPTION: Clear the status bit for a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_gpe
 id|acpi_hw_clear_gpe
@@ -322,7 +331,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_gpe_status&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Return the status of a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_gpe_status&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to queried&n; *              event_status        - Where the GPE status is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the status of a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_get_gpe_status
 id|acpi_hw_get_gpe_status
@@ -571,7 +580,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear all GPEs within a GPE block&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear status bits for all GPEs within a GPE block&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_gpe_block
 id|acpi_hw_clear_gpe_block
@@ -609,7 +618,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Clear all GPEs in this register */
+multiline_comment|/* Clear status on all GPEs in this register */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -649,11 +658,11 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_non_wakeup_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable all GPEs except wakeup GPEs in a GPE block&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_prepare_gpe_block_for_sleep&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable all runtime GPEs and enable all wakeup GPEs -- within&n; *              a single GPE block&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
-DECL|function|acpi_hw_disable_non_wakeup_gpe_block
-id|acpi_hw_disable_non_wakeup_gpe_block
+DECL|function|acpi_hw_prepare_gpe_block_for_sleep
+id|acpi_hw_prepare_gpe_block_for_sleep
 (paren
 r_struct
 id|acpi_gpe_xrupt_info
@@ -701,7 +710,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Read the enabled status of all GPEs. We&n;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Read the enabled/disabled status of all GPEs. We&n;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t; *&n;&t;&t; * NOTE:  Wake GPEs are are ALL disabled at this time, so when we wake&n;&t;&t; * and restore this register, they will be automatically disabled.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_read
@@ -737,7 +746,7 @@ id|u8
 )paren
 id|in_value
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable all GPEs except wakeup GPEs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 1) Disable all runtime GPEs&n;&t;&t; * 2) Enable all wakeup GPEs&n;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -765,6 +774,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Point to next GPE register */
 id|gpe_register_info
 op_increment
 suffix:semicolon
@@ -775,10 +785,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Called with interrupts disabled. The interrupt handler also&n; *              modifies gpe_register_info-&gt;Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_prepare_gpes_for_sleep&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable all runtime GPEs, enable all wake GPEs.&n; *              Called with interrupts disabled. The interrupt handler also&n; *              modifies gpe_register_info-&gt;Enable, so it should not be&n; *              given the chance to run until after the runtime GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_hw_disable_non_wakeup_gpes
-id|acpi_hw_disable_non_wakeup_gpes
+DECL|function|acpi_hw_prepare_gpes_for_sleep
+id|acpi_hw_prepare_gpes_for_sleep
 (paren
 r_void
 )paren
@@ -794,7 +804,7 @@ id|status
 op_assign
 id|acpi_ev_walk_gpe_list
 (paren
-id|acpi_hw_disable_non_wakeup_gpe_block
+id|acpi_hw_prepare_gpe_block_for_sleep
 )paren
 suffix:semicolon
 r_return
@@ -803,11 +813,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_non_wakeup_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_restore_gpe_block_on_wake&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all runtime GPEs and disable all wake GPEs -- in one&n; *              GPE block&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
-DECL|function|acpi_hw_enable_non_wakeup_gpe_block
-id|acpi_hw_enable_non_wakeup_gpe_block
+DECL|function|acpi_hw_restore_gpe_block_on_wake
+id|acpi_hw_restore_gpe_block_on_wake
 (paren
 r_struct
 id|acpi_gpe_xrupt_info
@@ -886,7 +896,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We previously stored the enabled status of all GPEs.&n;&t;&t; * Blast them back in.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Restore the GPE Enable register, which will do the following:&n;&t;&t; *&n;&t;&t; * 1) Disable all wakeup GPEs&n;&t;&t; * 2) Enable all runtime GPEs&n;&t;&t; *&n;&t;&t; *  (On sleep, we saved the enabled status of all GPEs)&n;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -914,6 +924,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Point to next GPE register */
 id|gpe_register_info
 op_increment
 suffix:semicolon
@@ -924,10 +935,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable all non-wakeup GPEs we previously enabled.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_restore_gpes_on_wake&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all runtime GPEs and disable all wake GPEs -- in all&n; *              GPE blocks&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_hw_enable_non_wakeup_gpes
-id|acpi_hw_enable_non_wakeup_gpes
+DECL|function|acpi_hw_restore_gpes_on_wake
+id|acpi_hw_restore_gpes_on_wake
 (paren
 r_void
 )paren
@@ -943,7 +954,7 @@ id|status
 op_assign
 id|acpi_ev_walk_gpe_list
 (paren
-id|acpi_hw_enable_non_wakeup_gpe_block
+id|acpi_hw_restore_gpe_block_on_wake
 )paren
 suffix:semicolon
 r_return

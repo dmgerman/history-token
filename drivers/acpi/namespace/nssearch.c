@@ -120,6 +120,29 @@ op_eq
 id|target_name
 )paren
 (brace
+multiline_comment|/* Resolve a control method alias if any */
+r_if
+c_cond
+(paren
+id|acpi_ns_get_type
+(paren
+id|next_node
+)paren
+op_eq
+id|ACPI_TYPE_LOCAL_METHOD_ALIAS
+)paren
+(brace
+id|next_node
+op_assign
+id|ACPI_CAST_PTR
+(paren
+r_struct
+id|acpi_namespace_node
+comma
+id|next_node-&gt;object
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * Found matching entry.&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren

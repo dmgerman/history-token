@@ -554,9 +554,10 @@ id|status
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * 1) Disable all runtime GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_disable_non_wakeup_gpes
+id|acpi_hw_prepare_gpes_for_sleep
 (paren
 )paren
 suffix:semicolon
@@ -919,9 +920,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * 1) Disable all runtime GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_disable_non_wakeup_gpes
+id|acpi_hw_prepare_gpes_for_sleep
 (paren
 )paren
 suffix:semicolon
@@ -1313,10 +1315,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* _WAK returns stuff - do we want to look at it? */
+multiline_comment|/* TBD: _WAK &quot;sometimes&quot; returns stuff - do we want to look at it? */
+multiline_comment|/*&n;&t; * Restore the GPEs:&n;&t; * 1) Disable all wakeup GPEs&n;&t; * 2) Enable all runtime GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_enable_non_wakeup_gpes
+id|acpi_hw_restore_gpes_on_wake
 (paren
 )paren
 suffix:semicolon
