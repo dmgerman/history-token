@@ -7358,6 +7358,10 @@ l_int|0
 op_assign
 id|GPCMD_TEST_UNIT_READY
 suffix:semicolon
+id|req.flags
+op_or_assign
+id|REQ_QUIET
+suffix:semicolon
 macro_line|#if ! STANDARD_ATAPI
 multiline_comment|/* the Sanyo 3 CD changer uses byte 7 of TEST_UNIT_READY to &n;           switch CDs instead of supporting the LOAD_UNLOAD opcode   */
 id|req.cmd
