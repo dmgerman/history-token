@@ -12,9 +12,9 @@ multiline_comment|/*&n; * 0 - no debugging messages&n; * 1 - rare events and bug
 DECL|macro|RT_CACHE_DEBUG
 mdefine_line|#define RT_CACHE_DEBUG&t;&t;0
 DECL|macro|DST_GC_MIN
-mdefine_line|#define DST_GC_MIN&t;(1*HZ)
+mdefine_line|#define DST_GC_MIN&t;(HZ/10)
 DECL|macro|DST_GC_INC
-mdefine_line|#define DST_GC_INC&t;(5*HZ)
+mdefine_line|#define DST_GC_INC&t;(HZ/2)
 DECL|macro|DST_GC_MAX
 mdefine_line|#define DST_GC_MAX&t;(120*HZ)
 multiline_comment|/* Each dst_entry has reference count and sits in some parent list(s).&n; * When it is removed from parent list, it is &quot;freed&quot; (dst_free).&n; * After this it enters dead state (dst-&gt;obsolete &gt; 0) and if its refcnt&n; * is zero, it can be destroyed immediately, otherwise it is added&n; * to gc list and garbage collector periodically checks the refcnt.&n; */

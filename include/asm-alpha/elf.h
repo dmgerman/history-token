@@ -127,6 +127,15 @@ multiline_comment|/* $0 is set by ld.so to a pointer to a function which might b
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;_r-&gt;r0 = 0
 multiline_comment|/* The registers are layed out in pt_regs for PAL and syscall&n;   convenience.  Re-order them for the linear elf_gregset_t.  */
+r_struct
+id|pt_regs
+suffix:semicolon
+r_struct
+id|thread_info
+suffix:semicolon
+r_struct
+id|task_struct
+suffix:semicolon
 r_extern
 r_void
 id|dump_elf_thread

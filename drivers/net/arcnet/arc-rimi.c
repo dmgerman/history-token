@@ -200,6 +200,9 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 id|BUGLVL
 c_func
 (paren
@@ -265,15 +268,19 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Grab the memory region at mem_start for BUFFER_SIZE bytes.&n;&t; * Later in arcrimi_found() the real size will be determined&n;&t; * and this reserve will be released and the correct size&n;&t; * will be taken.&n;&t; */
 r_if
 c_cond
 (paren
-id|check_mem_region
+op_logical_neg
+id|request_mem_region
 c_func
 (paren
 id|dev-&gt;mem_start
 comma
 id|BUFFER_SIZE
+comma
+l_string|&quot;arcnet (90xx)&quot;
 )paren
 )paren
 (brace
@@ -301,6 +308,14 @@ op_eq
 l_int|0
 )paren
 (brace
+id|release_mem_region
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+id|BUFFER_SIZE
+)paren
+suffix:semicolon
 id|BUGMSG
 c_func
 (paren
@@ -315,12 +330,33 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-r_return
+id|retval
+op_assign
 id|arcrimi_found
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+id|release_mem_region
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+id|BUFFER_SIZE
+)paren
+suffix:semicolon
+)brace
+r_return
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up the struct net_device associated with this card.  Called after&n; * probing succeeds.&n; */
@@ -634,7 +670,19 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* reserve the memory region - guaranteed to work by check_region */
+multiline_comment|/*&n;&t; * re-reserve the memory region - arcrimi_probe() alloced this reqion&n;&t; * but didn&squot;t know the real size.  Free that region and then re-get&n;&t; * with the correct size.  There is a VERY slim chance this could&n;&t; * fail.&n;&t; */
+id|release_mem_region
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+id|BUFFER_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_mem_region
 c_func
 (paren
@@ -648,7 +696,20 @@ l_int|1
 comma
 l_string|&quot;arcnet (90xx)&quot;
 )paren
+)paren
+(brace
+id|BUGMSG
+c_func
+(paren
+id|D_NORMAL
+comma
+l_string|&quot;Card memory already allocated&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|err_free_dev_priv
+suffix:semicolon
+)brace
 id|BUGMSG
 c_func
 (paren
