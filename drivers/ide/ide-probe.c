@@ -2286,7 +2286,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;Probing IDE interface %s...&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2595,7 +2595,7 @@ id|hwif
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;%s: Wait for ready failed before probe !&bslash;n&quot;
 comma
 id|hwif-&gt;name
