@@ -85,16 +85,6 @@ r_int
 op_star
 id|mem_write_status_addr
 suffix:semicolon
-DECL|member|cpu_bte_if
-r_struct
-id|bteinfo_s
-op_star
-id|cpu_bte_if
-(braket
-id|BTES_PER_NODE
-)braket
-suffix:semicolon
-multiline_comment|/* cpu interface order */
 DECL|member|sn_soft_irr
 r_int
 r_int
