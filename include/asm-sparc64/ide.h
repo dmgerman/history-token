@@ -228,13 +228,9 @@ DECL|macro|ide_request_region
 mdefine_line|#define ide_request_region(from,extent,name)&t;request_region((from), (extent), (name))
 DECL|macro|ide_release_region
 mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from), (extent))
-multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
+multiline_comment|/*&n; * The following is not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 multiline_comment|/* XXX Known to be broken.  Axboe will fix the problems this&n; * XXX has by making seperate IN/OUT macros for IDE_DATA&n; * XXX register and rest of IDE regs and also using&n; * XXX ide_ioreg_t instead of u32 for ports. -DaveM&n; */
 DECL|macro|HAVE_ARCH_IN_BYTE
 mdefine_line|#define HAVE_ARCH_IN_BYTE

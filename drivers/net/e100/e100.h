@@ -348,6 +348,8 @@ DECL|macro|SCB_CUC_START
 mdefine_line|#define SCB_CUC_START           BIT_4&t;/* CU Start */
 DECL|macro|SCB_CUC_RESUME
 mdefine_line|#define SCB_CUC_RESUME          BIT_5&t;/* CU Resume */
+DECL|macro|SCB_CUC_UNKNOWN
+mdefine_line|#define SCB_CUC_UNKNOWN         BIT_7&t;/* CU unknown command */
 multiline_comment|/* Changed for 82558 enhancements */
 DECL|macro|SCB_CUC_STATIC_RESUME
 mdefine_line|#define SCB_CUC_STATIC_RESUME   (BIT_5 | BIT_7)&t;/* 82558/9 Static Resume */
@@ -2411,6 +2413,16 @@ id|ifname
 id|IFNAMSIZ
 )braket
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;
+DECL|member|last_cmd
+id|u8
+id|last_cmd
+suffix:semicolon
+DECL|member|last_sub_cmd
+id|u8
+id|last_sub_cmd
+suffix:semicolon
+macro_line|#endif&t;
 )brace
 suffix:semicolon
 DECL|macro|E100_AUTONEG
@@ -2450,7 +2462,7 @@ id|reset_cmd
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|u8
 id|e100_start_cu
 c_func
 (paren
@@ -2568,18 +2580,29 @@ suffix:semicolon
 r_extern
 r_int
 r_char
-id|e100_hw_reset_recover
+id|e100_configure_device
 c_func
 (paren
 r_struct
 id|e100_private
 op_star
 id|bdp
-comma
-id|u32
-id|reset_cmd
 )paren
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG
+r_extern
+r_int
+r_char
+id|e100_cu_unknown_state
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|macro|ROM_TEST_FAIL
 mdefine_line|#define ROM_TEST_FAIL&t;&t;0x01
 DECL|macro|REGISTER_TEST_FAIL

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_COMPAT
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
+macro_line|#include &lt;linux/fcntl.h&gt;&t;/* for struct flock */
 macro_line|#include &lt;asm/compat.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
 mdefine_line|#define compat_jiffies_to_clock_t(x)&t;&bslash;&n;&t;&t;(((unsigned long)(x) * COMPAT_USER_HZ) / HZ)
@@ -72,6 +73,34 @@ op_star
 comma
 r_struct
 id|compat_stat
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_compat_flock
+c_func
+(paren
+r_struct
+id|flock
+op_star
+comma
+r_struct
+id|compat_flock
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|put_compat_flock
+c_func
+(paren
+r_struct
+id|flock
+op_star
+comma
+r_struct
+id|compat_flock
 op_star
 )paren
 suffix:semicolon
