@@ -500,7 +500,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_async_unlink - asynchronous unlinking of a file&n; * @dir: directory in which the file resides.&n; * @name: name of the file to unlink.&n; */
+multiline_comment|/**&n; * nfs_async_unlink - asynchronous unlinking of a file&n; * @dentry: dentry to unlink&n; */
 r_int
 DECL|function|nfs_async_unlink
 id|nfs_async_unlink
@@ -673,7 +673,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_complete_remove - Initialize completion of the sillydelete&n; * @dentry: dentry to delete&n; *&n; * Since we&squot;re most likely to be called by dentry_iput(), we&n; * only use the dentry to find the sillydelete. We then copy the name&n; * into the qstr.&n; */
+multiline_comment|/**&n; * nfs_complete_unlink - Initialize completion of the sillydelete&n; * @dentry: dentry to delete&n; *&n; * Since we&squot;re most likely to be called by dentry_iput(), we&n; * only use the dentry to find the sillydelete. We then copy the name&n; * into the qstr.&n; */
 r_void
 DECL|function|nfs_complete_unlink
 id|nfs_complete_unlink
