@@ -96,6 +96,8 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static
@@ -127,7 +129,11 @@ suffix:colon
 l_string|&quot;0&quot;
 (paren
 op_complement
-l_int|8191UL
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -136,8 +142,6 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|macro|alloc_thread_info
 mdefine_line|#define alloc_thread_info(task) ((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
 DECL|macro|free_thread_info
@@ -147,9 +151,11 @@ mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#else /* !__ASSEMBLY__ */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE&t;8192
 multiline_comment|/* how to get the thread information struct from ASM */
 DECL|macro|GET_THREAD_INFO
-mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movl $-8192, reg; &bslash;&n;&t;andl %esp, reg
+mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movl $-THREAD_SIZE, reg; &bslash;&n;&t;andl %esp, reg
 macro_line|#endif
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; */
 DECL|macro|TIF_SYSCALL_TRACE

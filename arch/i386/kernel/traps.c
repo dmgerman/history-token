@@ -427,9 +427,10 @@ r_int
 id|tsk-&gt;thread_info
 )paren
 op_amp
+op_complement
 (paren
-id|PAGE_MASK
-op_lshift
+id|THREAD_SIZE
+op_minus
 l_int|1
 )paren
 )paren
