@@ -1553,17 +1553,6 @@ id|id
 op_assign
 l_int|0
 comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;tcic-pcmcia&quot;
-comma
-)brace
-comma
 )brace
 suffix:semicolon
 DECL|function|init_tcic
