@@ -1,8 +1,7 @@
-multiline_comment|/*&n; *&t;../include/linux/pci_msi.h&n; *&n; */
-macro_line|#ifndef PCI_MSI_H
-DECL|macro|PCI_MSI_H
-mdefine_line|#define PCI_MSI_H
-macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/*&n; *&t;msi.h&n; *&n; */
+macro_line|#ifndef MSI_H
+DECL|macro|MSI_H
+mdefine_line|#define MSI_H
 DECL|macro|MSI_AUTO
 mdefine_line|#define MSI_AUTO -1
 DECL|macro|NR_REPEATS
@@ -449,5 +448,5 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* PCI_MSI_H */
+macro_line|#endif /* MSI_H */
 eof
