@@ -283,6 +283,14 @@ r_extern
 r_int
 id|acpi_skip_timer_override
 suffix:semicolon
+r_extern
+r_void
+id|check_acpi_pci
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|disable_ioapic_setup
 r_static
 r_inline
