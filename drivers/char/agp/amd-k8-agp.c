@@ -161,10 +161,6 @@ suffix:semicolon
 id|u64
 id|addr
 suffix:semicolon
-id|temp
-op_assign
-id|agp_bridge.current_size
-suffix:semicolon
 id|num_entries
 op_assign
 id|agp_num_entries
