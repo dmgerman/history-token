@@ -482,6 +482,12 @@ id|offset
 )paren
 )paren
 suffix:semicolon
+id|nfs_begin_data_update
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_do
 (brace
 r_if
@@ -622,6 +628,12 @@ id|page
 suffix:semicolon
 id|io_error
 suffix:colon
+id|nfs_end_data_update
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -642,9 +654,9 @@ suffix:colon
 id|result
 suffix:semicolon
 )brace
+DECL|function|nfs_writepage_async
 r_static
 r_int
-DECL|function|nfs_writepage_async
 id|nfs_writepage_async
 c_func
 (paren
@@ -1220,12 +1232,20 @@ c_cond
 op_logical_neg
 id|nfsi-&gt;npages
 )paren
+(brace
 id|igrab
 c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
+id|nfs_begin_data_update
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 id|nfsi-&gt;npages
 op_increment
 suffix:semicolon
@@ -1313,6 +1333,12 @@ c_func
 (paren
 op_amp
 id|nfs_wreq_lock
+)paren
+suffix:semicolon
+id|nfs_end_data_update
+c_func
+(paren
+id|inode
 )paren
 suffix:semicolon
 id|iput
@@ -3644,7 +3670,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Update attributes as result of writeback.&n;&t; * FIXME: There is an inherent race with invalidate_inode_pages and&n;&t; *&t;  writebacks since the page-&gt;count is kept &gt; 1 for as long&n;&t; *&t;  as the page has a write request pending.&n;&t; */
+multiline_comment|/*&n;&t; * Process the nfs_page list&n;&t; */
 r_while
 c_loop
 (paren
