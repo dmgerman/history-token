@@ -1,5 +1,5 @@
 multiline_comment|/*&n;    w83781d.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;,&n;    and Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;    Supports following chips:&n;&n;    Chip&t;#vin&t;#fanin&t;#pwm&t;#temp&t;wchipid&t;vendid&t;i2c&t;ISA&n;    as99127f&t;7&t;3&t;1?&t;3&t;0x30&t;0x12c3&t;yes&t;no&n;    asb100 &quot;bach&quot; (type_name = as99127f)&t;0x30&t;0x0694&t;yes&t;no&n;    w83781d&t;7&t;3&t;0&t;3&t;0x10&t;0x5ca3&t;yes&t;yes&n;    w83627hf&t;9&t;3&t;2&t;3&t;0x20&t;0x5ca3&t;yes&t;yes(LPC)&n;    w83782d&t;9&t;3&t;2-4&t;3&t;0x30&t;0x5ca3&t;yes&t;yes&n;    w83783s&t;5-6&t;3&t;2&t;1-2&t;0x40&t;0x5ca3&t;yes&t;no&n;    w83697hf&t;8&t;2&t;2&t;2&t;0x60&t;0x5ca3&t;no&t;yes(LPC)&n;&n;*/
+multiline_comment|/*&n;    Supports following chips:&n;&n;    Chip&t;#vin&t;#fanin&t;#pwm&t;#temp&t;wchipid&t;vendid&t;i2c&t;ISA&n;    as99127f&t;7&t;3&t;1?&t;3&t;0x30&t;0x12c3&t;yes&t;no&n;    asb100 &quot;bach&quot; (type_name = as99127f)&t;0x30&t;0x0694&t;yes&t;no&n;    w83781d&t;7&t;3&t;0&t;3&t;0x10&t;0x5ca3&t;yes&t;yes&n;    w83627hf&t;9&t;3&t;2&t;3&t;0x20&t;0x5ca3&t;yes&t;yes(LPC)&n;    w83627thf&t;9&t;3&t;2&t;3&t;0x90&t;0x5ca3&t;no&t;yes(LPC)&n;    w83782d&t;9&t;3&t;2-4&t;3&t;0x30&t;0x5ca3&t;yes&t;yes&n;    w83783s&t;5-6&t;3&t;2&t;1-2&t;0x40&t;0x5ca3&t;yes&t;no&n;    w83697hf&t;8&t;2&t;2&t;2&t;0x60&t;0x5ca3&t;no&t;yes(LPC)&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -4812,7 +4812,7 @@ l_int|0x20
 op_logical_or
 id|val1
 op_eq
-l_int|0x72
+l_int|0x90
 )paren
 op_logical_and
 id|vendid
@@ -4947,6 +4947,18 @@ op_eq
 id|w83627hf
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|val1
+op_eq
+l_int|0x90
+)paren
+id|client_name
+op_assign
+l_string|&quot;W83627THF chip&quot;
+suffix:semicolon
+r_else
 id|client_name
 op_assign
 l_string|&quot;W83627HF chip&quot;
