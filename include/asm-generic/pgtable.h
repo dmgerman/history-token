@@ -4,7 +4,7 @@ mdefine_line|#define _ASM_GENERIC_PGTABLE_H
 macro_line|#ifndef __HAVE_ARCH_PTEP_ESTABLISH
 multiline_comment|/*&n; * Establish a new mapping:&n; *  - flush the old one&n; *  - update the page tables&n; *  - inform the TLB about the new one&n; *&n; * We hold the mm semaphore for reading and vma-&gt;vm_mm-&gt;page_table_lock&n; */
 DECL|macro|ptep_establish
-mdefine_line|#define ptep_establish(__vma, __address, __ptep, __entry)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(__ptep, __entry);&t;&t;&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ptep_establish(__vma, __address, __ptep, __entry, __dirty)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(__ptep, __entry);&t;&t;&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 DECL|function|ptep_test_and_clear_young
