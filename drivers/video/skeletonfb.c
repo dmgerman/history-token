@@ -92,7 +92,49 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *      xxxfb_check_var - Optional function. Validates a var passed in. &n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer &n; *&n; *&t;Checks to see if the hardware supports the state requested by&n; *&t;var passed in. This function does not alter the hardware state!!! &n; *&t;This means the data stored in struct fb_info and struct xxx_par do &n; *      not change. This includes the var inside of struct fb_info. &n; *&t;Do NOT change these. This function can be called on its own if we&n; *&t;intent to only test a mode and not actually set it. The stuff in &n; *&t;modedb.c is a example of this. If the var passed in is slightly &n; *&t;off by what the hardware can support then we alter the var PASSED in&n; *&t;to what we can do. If the hardware doesn&squot;t support mode change &n; * &t;a -EINVAL will be returned by the upper layers. You don&squot;t need to &n; *&t;implement this function then.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
+multiline_comment|/**&n; *&t;xxxfb_open - Optional function. Called when the framebuffer is&n; *&t;&t;     first accessed.&n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&n; *&t;This function is the first function called in the framebuffer api.&n; *&t;Usually you don&squot;t need to provide this function. The case where it &n; *&t;is used is to change from a text mode hardware state to a graphics&n; * &t;mode state. &n; */
+DECL|function|xxxfb_open
+r_static
+r_int
+id|xxxfb_open
+c_func
+(paren
+r_const
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|user
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;xxxfb_release - Optional function. Called when the framebuffer &n; *&t;&t;&t;device is closed. &n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&t;&n; *&t;Thus function is called when we close /dev/fb or the framebuffer &n; *&t;console system is released. Usually you don&squot;t need this function.&n; *&t;The case where it is usually used is to go from a graphics state&n; *&t;to a text mode state.&n; */
+DECL|function|xxxfb_release
+r_static
+r_int
+id|xxxfb_release
+c_func
+(paren
+r_const
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|user
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *      xxxfb_check_var - Optional function. Validates a var passed in. &n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer &n; *&n; *&t;Checks to see if the hardware supports the state requested by&n; *&t;var passed in. This function does not alter the hardware state!!! &n; *&t;This means the data stored in struct fb_info and struct xxx_par do &n; *      not change. This includes the var inside of struct fb_info. &n; *&t;Do NOT change these. This function can be called on its own if we&n; *&t;intent to only test a mode and not actually set it. The stuff in &n; *&t;modedb.c is a example of this. If the var passed in is slightly &n; *&t;off by what the hardware can support then we alter the var PASSED in&n; *&t;to what we can do. If the hardware doesn&squot;t support mode change &n; * &t;a -EINVAL will be returned by the upper layers. You don&squot;t need to &n; *&t;implement this function then. If you hardware doesn&squot;t support &n; *&t;changing the resolution then this function is not needed. In this&n; *&t;case the driver woudl just provide a var that represents the static&n; *&t;state the screen is in.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_check_var
 r_static
 r_int
@@ -129,7 +171,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      xxxfb_set_par - Optional function. Alters the hardware state.&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Using the fb_var_screeninfo in fb_info we set the resolution of the&n; *&t;this particular framebuffer. This function alters the par AND the&n; *&t;fb_fix_screeninfo stored in fb_info. It doesn&squot;t not alter var in &n; *&t;fb_info since we are using that data. This means we depend on the&n; *&t;data in var inside fb_info to be supported by the hardware. &n; *&t;xxxfb_check_var is always called before xxxfb_set_par to ensure this.&n; *&n; */
+multiline_comment|/**&n; *      xxxfb_set_par - Optional function. Alters the hardware state.&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Using the fb_var_screeninfo in fb_info we set the resolution of the&n; *&t;this particular framebuffer. This function alters the par AND the&n; *&t;fb_fix_screeninfo stored in fb_info. It doesn&squot;t not alter var in &n; *&t;fb_info since we are using that data. This means we depend on the&n; *&t;data in var inside fb_info to be supported by the hardware. &n; *&t;xxxfb_check_var is always called before xxxfb_set_par to ensure this.&n; *&t;Again if you can&squot;t can&squot;t the resolution you don&squot;t need this function.&n; *&n; */
 DECL|function|xxxfb_set_par
 r_static
 r_int
@@ -159,7 +201,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  &t;xxxfb_setcolreg - Optional function. Sets a color register.&n; *      @regno: boolean, 0 copy local, 1 get_user() function&n; *      @red: frame buffer colormap structure&n; *&t;@green: The green value which can be up to 16 bits wide &n; *&t;@blue:  The blue value which can be up to 16 bits wide.&n; *&t;@transp: If supported the alpha value which can be up to 16 bits wide.&t;&n; *      @info: frame buffer info structure&n; * &n; *  &t;Set a single color register. The values supplied have a 16 bit&n; *  &t;magnitude which needs to be scaled in this function for the hardware. &n; *&t;Things to take into consideration are how many color registers, if&n; *&t;any, are supported with the current color visual. With truecolor mode&n; *&t;no color palettes are supported. Here a psuedo palette is created &n; *&t;which we store the value in pseudo_palette in struct fb_info. For&n; *&t;pseudocolor mode we have a limited color palette. To deal with this&n; *&t;we can program what color is displayed for a particular pixel value.&n; *&t;DirectColor is similar in that we can program each color field. If&n; *&t;we have a static colormap we don&squot;t need to implement this function. &n; * &n; *&t;Returns negative errno on error, or zero on success.&n; */
+multiline_comment|/**&n; *  &t;xxxfb_setcolreg - Optional function. Sets a color register.&n; *      @regno: Which register in the CLUT we are programming &n; *      @red: The red value which can be up to 16 bits wide &n; *&t;@green: The green value which can be up to 16 bits wide &n; *&t;@blue:  The blue value which can be up to 16 bits wide.&n; *&t;@transp: If supported the alpha value which can be up to 16 bits wide.&t;&n; *      @info: frame buffer info structure&n; * &n; *  &t;Set a single color register. The values supplied have a 16 bit&n; *  &t;magnitude which needs to be scaled in this function for the hardware. &n; *&t;Things to take into consideration are how many color registers, if&n; *&t;any, are supported with the current color visual. With truecolor mode&n; *&t;no color palettes are supported. Here a psuedo palette is created &n; *&t;which we store the value in pseudo_palette in struct fb_info. For&n; *&t;pseudocolor mode we have a limited color palette. To deal with this&n; *&t;we can program what color is displayed for a particular pixel value.&n; *&t;DirectColor is similar in that we can program each color field. If&n; *&t;we have a static colormap we don&squot;t need to implement this function. &n; * &n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_setcolreg
 r_static
 r_int
@@ -466,8 +508,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;xxxfb_cursor -&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
-multiline_comment|/**&n; *      xxxfb_pan_display - NOT a required function. Pans the display.&n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Pan (or wrap, depending on the `vmode&squot; field) the display using the&n; *  &t;`xoffset&squot; and `yoffset&squot; fields of the `var&squot; structure.&n; *  &t;If the values don&squot;t fit, return -EINVAL.&n; *&n; *      Returns negative errno on error, or zero on success.&n; *&n; */
+multiline_comment|/**&n; *      xxxfb_pan_display - NOT a required function. Pans the display.&n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Pan (or wrap, depending on the `vmode&squot; field) the display using the&n; *  &t;`xoffset&squot; and `yoffset&squot; fields of the `var&squot; structure.&n; *  &t;If the values don&squot;t fit, return -EINVAL.&n; *&n; *      Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_pan_display
 r_static
 r_int
@@ -514,11 +555,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ------------ Accelerated Functions --------------------- */
-multiline_comment|/*&n; * We provide our own functions if we have hardware acceleration&n; * or non packed pixel format layouts. If we have no hardware &n; * acceleration, we use a generic unaccelerated function. If using&n; * a pack pixel format just use the functions in cfb*.c. Each file &n; * has one of the three different accel functions we support. You   &n; * can use these functions as fallbacks if hardware unsupported&n; * action is requested. Also if you have non pack pixel modes and&n; * non accelerated cards you have to provide your own functions.&n; */
-multiline_comment|/**&n; *      xxxfb_fillrect - REQUIRED function. Can use generic routines if &n; *&t;&t; &t; non acclerated hardware and packed pixel based.&n; *&t;&t;&t; Draws a rectangle on the screen.&t;&t;&n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@x1: The x and y corrdinates of the upper left hand corner of the &n; *&t;@y1: area we want to draw to. &n; *&t;@width: How wide the rectangle is we want to draw.&n; *&t;@height: How tall the rectangle is we want to draw.&n; *&t;@color:&t;The color to fill in the rectangle with. &n; *&t;@rop: The rater operation. We can draw the rectangle with a COPY&n; *&t;      of XOR which provides erasing effect. &n; *&n; *&t;This drawing operation places/removes a retangle on the screen &n; *&t;depending on the rastering operation with the value of color which&n; *&t;is in the current color depth format.&n; */
-DECL|function|xxxfb_fillrect
+multiline_comment|/*&n; * We provide our own functions if we have hardware acceleration&n; * or non packed pixel format layouts. If we have no hardware &n; * acceleration, we can use a generic unaccelerated function. If using&n; * a pack pixel format just use the functions in cfb_*.c. Each file &n; * has one of the three different accel functions we support.&n; */
+multiline_comment|/**&n; *      xxxfb_fillrect - REQUIRED function. Can use generic routines if &n; *&t;&t; &t; non acclerated hardware and packed pixel based.&n; *&t;&t;&t; Draws a rectangle on the screen.&t;&t;&n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@region: The structure representing the rectangular region we &n; *&t;&t; wish to draw to.&n; *&n; *&t;This drawing operation places/removes a retangle on the screen &n; *&t;depending on the rastering operation with the value of color which&n; *&t;is in the current color depth format.&n; */
+DECL|function|xxfb_fillrect
 r_void
-id|xxxfb_fillrect
+id|xxfb_fillrect
 c_func
 (paren
 r_struct
@@ -532,8 +573,9 @@ op_star
 id|region
 )paren
 (brace
+multiline_comment|/*&t;Meaning of struct fb_fillrect&n; *&n; *&t;@dx: The x and y corrdinates of the upper left hand corner of the &n; *&t;@dy: area we want to draw to. &n; *&t;@width: How wide the rectangle is we want to draw.&n; *&t;@height: How tall the rectangle is we want to draw.&n; *&t;@color:&t;The color to fill in the rectangle with. &n; *&t;@rop: The raster operation. We can draw the rectangle with a COPY&n; *&t;      of XOR which provides erasing effect. &n; */
 )brace
-multiline_comment|/**&n; *      xxxfb_copyarea - REQUIRED function. Can use generic routines if&n; *                       non acclerated hardware and packed pixel based.&n; *                       Copies on area of the screen to another area.&n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *      @sx: The x and y corrdinates of the upper left hand corner of the&n; *      @sy: source area on the screen.&n; *      @width: How wide the rectangle is we want to copy.&n; *      @height: How tall the rectangle is we want to copy.&n; *      @dx: The x and y coordinates of the destination area on the screen.&n; *&n; *      This drawing operation copies a rectangular area from one area of the&n; *&t;screen to another area.&n; */
+multiline_comment|/**&n; *      xxxfb_copyarea - REQUIRED function. Can use generic routines if&n; *                       non acclerated hardware and packed pixel based.&n; *                       Copies one area of the screen to another area.&n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *      @area: Structure providing the data to copy the framebuffer contents&n; *&t;       from one region to another.&n; *&n; *      This drawing operation copies a rectangular area from one area of the&n; *&t;screen to another area.&n; */
 DECL|function|xxxfb_copyarea
 r_void
 id|xxxfb_copyarea
@@ -550,6 +592,7 @@ op_star
 id|area
 )paren
 (brace
+multiline_comment|/*&n; *      @dx: The x and y coordinates of the upper left hand corner of the&n; *&t;@dy: destination area on the screen.&n; *      @width: How wide the rectangle is we want to copy.&n; *      @height: How tall the rectangle is we want to copy.&n; *      @sx: The x and y coordinates of the upper left hand corner of the&n; *      @sy: source area on the screen.&n; */
 )brace
 multiline_comment|/**&n; *      xxxfb_imageblit - REQUIRED function. Can use generic routines if&n; *                        non acclerated hardware and packed pixel based.&n; *                        Copies a image from system memory to the screen. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@image:&t;structure defining the image.&n; *&n; *      This drawing operation draws a image on the screen. It can be a &n; *&t;mono image (needed for font handling) or a color image (needed for&n; *&t;tux). &n; */
 DECL|function|xxxfb_imageblit
@@ -568,8 +611,73 @@ op_star
 id|image
 )paren
 (brace
+multiline_comment|/*&n; *      @dx: The x and y coordinates of the upper left hand corner of the&n; *&t;@dy: destination area to place the image on the screen.&n; *      @width: How wide the image is we want to copy.&n; *      @height: How tall the image is we want to copy.&n; *      @fg_color: For mono bitmap images this is color data for     &n; *      @bg_color: the foreground and background of the image to&n; *&t;&t;   write directly to the frmaebuffer.&n; *&t;@depth:&t;How many bits represent a single pixel for this image.&n; *&t;@data: The actual data used to construct the image on the display.&n; *&t;@cmap: The colormap used for color images.   &n; */
 )brace
-multiline_comment|/* ------------ Hardware Independent Functions ------------ */
+multiline_comment|/**&n; *&t;xxxfb_cursor - &t;REQUIRED function. If your hardware lacks support&n; *&t;&t;&t;for a cursor you can use the default cursor whose&n; *&t;&t;&t;function is called soft_cursor. It will always &n; *&t;&t;&t;work since it uses xxxfb_imageblit function which &n; *&t;&t;&t;is required. &t;  &t; &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@cursor: structure defining the cursor to draw.&n; *&n; *      This operation is used to set or alter the properities of the&n; *&t;cursor.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
+DECL|function|xxxfb_cursor
+r_int
+id|xxxfb_cursor
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_cursor
+op_star
+id|cursor
+)paren
+(brace
+multiline_comment|/*&n; *      @set: &t;Which fields we are altering in struct fb_cursor &n; *&t;@enable: Disable or enable the cursor &n; *      @rop: &t;The bit operation we want to do. &n; *      @mask:  This is the cursor mask bitmap. &n; *      @dest:  A image of the area we are going to display the cursor.&n; *&t;&t;Used internally by the driver.&t; &n; *      @hot:&t;The hot spot. &n; *&t;@image:&t;The actual data for the cursor image.&n; */
+)brace
+multiline_comment|/**&n; *&t;xxxfb_rotate -  NOT a required function. If your hardware&n; *&t;&t;&t;supports rotation the whole screen then &n; *&t;&t;&t;you would provide a hook for this. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@angle: The angle we rotate the screen.   &n; *&n; *      This operation is used to set or alter the properities of the&n; *&t;cursor.&n; */
+DECL|function|xxxfb_rotate
+r_void
+id|xxxfb_rotate
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|angle
+)paren
+(brace
+)brace
+multiline_comment|/**&n; *&t;xxxfb_poll - NOT a required function. The purpose of this&n; *&t;&t;     function is to provide a way for some process&n; *&t;&t;     to wait until a specific hardware event occurs&n; *&t;&t;     for the framebuffer device.&n; * &t;&t;&t;&t; &n; *      @info: frame buffer structure that represents a single frame buffer&n; *&t;@wait: poll table where we store process that await a event.     &n; */
+DECL|function|xxxfb_poll
+r_void
+id|xxxfb_poll
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+id|poll_table
+op_star
+id|wait
+)paren
+(brace
+)brace
+multiline_comment|/**&n; *&t;xxxfb_sync - NOT a required function. Normally the accel engine &n; *&t;&t;     for a graphics card take a specific amount of time.&n; *&t;&t;     Often we have to wait for the accelerator to finish&n; *&t;&t;     its operation before we can write to the framebuffer&n; *&t;&t;     so we can have consistant display output. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; */
+DECL|function|xxxfb_sync
+r_void
+id|xxxfb_sync
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+(brace
+)brace
 multiline_comment|/*&n;     *  Initialization&n;     */
 DECL|function|xxxfb_init
 r_int
@@ -751,48 +859,6 @@ multiline_comment|/* Parse user speficied options (`video=xxxfb:&squot;) */
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;     *  Frame buffer operations&n;     */
-multiline_comment|/* If all you need is that - just don&squot;t define -&gt;fb_open */
-DECL|function|xxxfb_open
-r_static
-r_int
-id|xxxfb_open
-c_func
-(paren
-r_const
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_int
-id|user
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* If all you need is that - just don&squot;t define -&gt;fb_release */
-DECL|function|xxxfb_release
-r_static
-r_int
-id|xxxfb_release
-c_func
-(paren
-r_const
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_int
-id|user
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|variable|xxxfb_ops
 r_static
 r_struct
@@ -810,13 +876,21 @@ id|fb_open
 op_assign
 id|xxxfb_open
 comma
-multiline_comment|/* only if you need it to do something */
+dot
+id|fb_read
+op_assign
+id|xxxfb_read
+comma
+dot
+id|fb_write
+op_assign
+id|xxxfb_write
+comma
 dot
 id|fb_release
 op_assign
 id|xxxfb_release
 comma
-multiline_comment|/* only if you need it to do something */
 dot
 id|fb_check_var
 op_assign
@@ -827,7 +901,6 @@ id|fb_set_par
 op_assign
 id|xxxfb_set_par
 comma
-multiline_comment|/* optional */
 dot
 id|fb_setcolreg
 op_assign
@@ -838,40 +911,60 @@ id|fb_blank
 op_assign
 id|xxxfb_blank
 comma
-multiline_comment|/* optional */
 dot
 id|fb_pan_display
 op_assign
 id|xxxfb_pan_display
 comma
-multiline_comment|/* optional */
 dot
 id|fb_fillrect
 op_assign
 id|xxxfb_fillrect
 comma
+multiline_comment|/* Needed !!! */
 dot
 id|fb_copyarea
 op_assign
 id|xxxfb_copyarea
 comma
+multiline_comment|/* Needed !!! */
 dot
 id|fb_imageblit
 op_assign
 id|xxxfb_imageblit
+comma
+multiline_comment|/* Needed !!! */
+dot
+id|fb_cursor
+op_assign
+id|xxxfb_cursor
+comma
+multiline_comment|/* Needed !!! */
+dot
+id|fb_rotate
+op_assign
+id|xxxfb_rotate
+comma
+dot
+id|fb_poll
+op_assign
+id|xxxfb_poll
+comma
+dot
+id|fb_sync
+op_assign
+id|xxxfb_sync
 comma
 dot
 id|fb_ioctl
 op_assign
 id|xxxfb_ioctl
 comma
-multiline_comment|/* optional */
 dot
 id|fb_mmap
 op_assign
 id|xxxfb_mmap
 comma
-multiline_comment|/* optional */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- */
