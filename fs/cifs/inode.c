@@ -2772,7 +2772,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Revalidate full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
+l_string|&quot;Revalidate: %s inode 0x%p count %d dentry: 0x%p d_time %ld jiffies %ld&quot;
 comma
 id|full_path
 comma
@@ -2788,6 +2788,17 @@ id|jiffies
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifsInode-&gt;time
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* was set to zero previously to force revalidate */
+)brace
+r_else
 r_if
 c_cond
 (paren
