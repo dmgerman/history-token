@@ -10491,6 +10491,11 @@ op_assign
 l_string|&quot;Edgeport TI 1 port adapter&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_ti_1&quot;
+comma
+dot
 id|id_table
 op_assign
 id|edgeport_1port_id_table
@@ -10593,6 +10598,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Edgeport TI 2 port adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;edgeport_ti_2&quot;
 comma
 dot
 id|id_table
