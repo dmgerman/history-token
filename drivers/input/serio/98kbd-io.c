@@ -35,9 +35,9 @@ DECL|macro|KBD98_IRQ
 mdefine_line|#define KBD98_IRQ&t;1
 multiline_comment|/*&n; * Register numbers.&n; */
 DECL|macro|KBD98_COMMAND_REG
-mdefine_line|#define KBD98_COMMAND_REG&t;0x43&t;
+mdefine_line|#define KBD98_COMMAND_REG&t;0x43
 DECL|macro|KBD98_STATUS_REG
-mdefine_line|#define KBD98_STATUS_REG&t;0x43&t;
+mdefine_line|#define KBD98_STATUS_REG&t;0x43
 DECL|macro|KBD98_DATA_REG
 mdefine_line|#define KBD98_DATA_REG&t;&t;0x41
 DECL|variable|kbd98io_lock
@@ -59,7 +59,7 @@ op_star
 id|kbd_pt_regs
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|kbd98io_interrupt
 c_func
 (paren
@@ -388,7 +388,7 @@ suffix:semicolon
 multiline_comment|/*&n; * kbd98io_interrupt() is the most important function in this driver -&n; * it handles the interrupts from keyboard, and sends incoming bytes&n; * to the upper layers.&n; */
 DECL|function|kbd98io_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|kbd98io_interrupt
 c_func
 (paren
@@ -451,6 +451,9 @@ l_int|0
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|kbd98io_init
