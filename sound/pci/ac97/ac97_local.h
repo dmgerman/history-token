@@ -7,6 +7,14 @@ DECL|macro|AC97_SINGLE
 mdefine_line|#define AC97_SINGLE(xname, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_get_volsw, .put = snd_ac97_put_volsw, &bslash;&n;  .private_value =  AC97_SINGLE_VALUE(reg, shift, mask, invert) }
 DECL|macro|AC97_PAGE_SINGLE
 mdefine_line|#define AC97_PAGE_SINGLE(xname, reg, shift, mask, invert, page)&t;&t;&bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_get_volsw, .put = snd_ac97_put_volsw, &bslash;&n;  .private_value =  AC97_PAGE_SINGLE_VALUE(reg, shift, mask, invert, page) }
+DECL|macro|AC97_DOUBLE
+mdefine_line|#define AC97_DOUBLE(xname, reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = (xname), .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_get_volsw, .put = snd_ac97_put_volsw, &bslash;&n;  .private_value = (reg) | ((shift_left) &lt;&lt; 8) | ((shift_right) &lt;&lt; 12) | ((mask) &lt;&lt; 16) | ((invert) &lt;&lt; 24) }
+DECL|macro|AC97_ENUM_DOUBLE
+mdefine_line|#define AC97_ENUM_DOUBLE(xreg, xshift_l, xshift_r, xmask, xtexts) &bslash;&n;{ .reg = xreg, .shift_l = xshift_l, .shift_r = xshift_r, &bslash;&n;  .mask = xmask, .texts = xtexts }
+DECL|macro|AC97_ENUM_SINGLE
+mdefine_line|#define AC97_ENUM_SINGLE(xreg, xshift, xmask, xtexts) &bslash;&n;&t;AC97_ENUM_DOUBLE(xreg, xshift, xshift, xmask, xtexts)
+DECL|macro|AC97_ENUM
+mdefine_line|#define AC97_ENUM(xname, xenum) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_enum_double, &bslash;&n;  .get = snd_ac97_get_enum_double, .put = snd_ac97_put_enum_double, &bslash;&n;  .private_value = (unsigned long)&amp;xenum }
 multiline_comment|/* ac97_codec.c */
 r_extern
 r_const
@@ -221,6 +229,45 @@ c_func
 id|ac97_t
 op_star
 id|ac97
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_info_enum_double
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_info_t
+op_star
+id|uinfo
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_get_enum_double
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_put_enum_double
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
 )paren
 suffix:semicolon
 r_int
