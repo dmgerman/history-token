@@ -11423,9 +11423,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;dcdb.cmd_attribute
 op_amp
 l_int|0x3
+)paren
 )paren
 id|scb-&gt;dcdb.transfer_length
 op_assign
@@ -13104,9 +13106,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|scb-&gt;dcdb.cmd_attribute
 op_amp
 l_int|0x3
+)paren
 )paren
 id|scb-&gt;dcdb.transfer_length
 op_assign
