@@ -2475,9 +2475,9 @@ id|PF_INET6
 comma
 id|GFP_KERNEL
 comma
-id|sk-&gt;sk_prot-&gt;slab_obj_size
+id|sk-&gt;sk_prot
 comma
-id|sk-&gt;sk_prot-&gt;slab
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2495,14 +2495,6 @@ c_func
 l_int|NULL
 comma
 id|newsk
-)paren
-suffix:semicolon
-id|sk_set_owner
-c_func
-(paren
-id|newsk
-comma
-id|THIS_MODULE
 )paren
 suffix:semicolon
 id|newsk-&gt;sk_type
@@ -4063,13 +4055,13 @@ r_void
 r_int
 id|rc
 op_assign
-id|sk_alloc_slab
+id|proto_register
 c_func
 (paren
 op_amp
 id|sctpv6_prot
 comma
-l_string|&quot;sctpv6_sock&quot;
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4101,7 +4093,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_sctp_free_slab
+id|out_unregister_sctp_proto
 suffix:semicolon
 multiline_comment|/* Add SCTPv6(UDP and TCP style) to inetsw6 linked list. */
 id|inet6_register_protosw
@@ -4153,9 +4145,9 @@ suffix:colon
 r_return
 id|rc
 suffix:semicolon
-id|out_sctp_free_slab
+id|out_unregister_sctp_proto
 suffix:colon
-id|sk_free_slab
+id|proto_unregister
 c_func
 (paren
 op_amp
@@ -4212,7 +4204,7 @@ op_amp
 id|sctp_inet6addr_notifier
 )paren
 suffix:semicolon
-id|sk_free_slab
+id|proto_unregister
 c_func
 (paren
 op_amp

@@ -2481,6 +2481,8 @@ c_func
 id|parent-&gt;sk_family
 comma
 id|GFP_ATOMIC
+comma
+id|parent-&gt;sk_prot
 )paren
 suffix:semicolon
 r_if
@@ -3041,6 +3043,11 @@ id|family
 comma
 r_int
 id|priority
+comma
+r_struct
+id|proto
+op_star
+id|prot
 )paren
 (brace
 r_struct
@@ -3055,13 +3062,9 @@ id|family
 comma
 id|priority
 comma
-r_sizeof
-(paren
-r_struct
-id|llc_sock
-)paren
+id|prot
 comma
-l_int|NULL
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -3085,14 +3088,6 @@ c_func
 l_int|NULL
 comma
 id|sk
-)paren
-suffix:semicolon
-id|sk_set_owner
-c_func
-(paren
-id|sk
-comma
-id|THIS_MODULE
 )paren
 suffix:semicolon
 macro_line|#ifdef LLC_REFCNT_DEBUG

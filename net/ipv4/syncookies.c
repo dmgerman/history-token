@@ -695,15 +695,6 @@ c_cond
 (paren
 id|child
 )paren
-(brace
-id|sk_set_owner
-c_func
-(paren
-id|child
-comma
-id|sk-&gt;sk_owner
-)paren
-suffix:semicolon
 id|tcp_acceptq_queue
 c_func
 (paren
@@ -714,7 +705,6 @@ comma
 id|child
 )paren
 suffix:semicolon
-)brace
 r_else
 id|tcp_openreq_free
 c_func

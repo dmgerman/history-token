@@ -16851,7 +16851,7 @@ op_assign
 id|sctp_get_port
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren
@@ -16964,7 +16964,7 @@ op_assign
 id|sctp_get_port
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren
