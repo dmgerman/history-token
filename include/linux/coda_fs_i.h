@@ -34,6 +34,11 @@ r_int
 id|c_mapcount
 suffix:semicolon
 multiline_comment|/* nr of times this inode is mapped */
+DECL|member|c_cached_epoch
+r_int
+r_int
+id|c_cached_epoch
+suffix:semicolon
 DECL|member|c_cached_cred
 r_struct
 id|coda_cred

@@ -20,11 +20,6 @@ id|venus_comm
 op_star
 id|sbi_vcomm
 suffix:semicolon
-DECL|member|sbi_cihead
-r_struct
-id|list_head
-id|sbi_cihead
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* communication pending/processing queues */
