@@ -355,6 +355,30 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|m68328_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mcfrs_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rs_360_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|tx3912_console_init
 c_func
 (paren
@@ -9592,6 +9616,27 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARC_CONSOLE
 id|arc_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_68328
+id|m68328_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_COLDFIRE
+id|mcfrs_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_68360
+id|rs_360_init
 c_func
 (paren
 )paren
