@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -13,7 +14,6 @@ macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/mcbsp.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
-macro_line|#include &lt;linux/err.h&gt;
 macro_line|#ifdef CONFIG_MCBSP_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)&t;printk(x)
