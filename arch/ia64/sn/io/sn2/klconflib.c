@@ -1698,7 +1698,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#include &quot;asm/sn/sn_private.h&quot;
-multiline_comment|/*&n; * Format a module id for printing.&n; */
+multiline_comment|/*&n; * Format a module id for printing.&n; *&n; * There are three possible formats:&n; *&n; *   MODULE_FORMAT_BRIEF&t;is the brief 6-character format, including&n; *&t;&t;&t;&t;the actual brick-type as recorded in the &n; *&t;&t;&t;&t;moduleid_t, eg. 002c15 for a C-brick, or&n; *&t;&t;&t;&t;101#17 for a PX-brick.&n; *&n; *   MODULE_FORMAT_LONG&t;&t;is the hwgraph format, eg. rack/002/bay/15&n; *&t;&t;&t;&t;of rack/101/bay/17 (note that the brick&n; *&t;&t;&t;&t;type does not appear in this format).&n; *&n; *   MODULE_FORMAT_LCD&t;&t;is like MODULE_FORMAT_BRIEF, except that it&n; *&t;&t;&t;&t;ensures that the module id provided appears&n; *&t;&t;&t;&t;exactly as it would on the LCD display of&n; *&t;&t;&t;&t;the corresponding brick, eg. still 002c15&n; *&t;&t;&t;&t;for a C-brick, but 101p17 for a PX-brick.&n; */
 r_void
 DECL|function|format_module_id
 id|format_module_id
@@ -1751,6 +1751,41 @@ c_func
 id|m
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fmt
+op_eq
+id|MODULE_FORMAT_LCD
+)paren
+(brace
+multiline_comment|/* Be sure we use the same brick type character as displayed&n;&t;     * on the brick&squot;s LCD&n;&t;     */
+r_switch
+c_cond
+(paren
+id|brickchar
+)paren
+(brace
+r_case
+id|L1_BRICKTYPE_PX
+suffix:colon
+id|brickchar
+op_assign
+id|L1_BRICKTYPE_P
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_IX
+suffix:colon
+id|brickchar
+op_assign
+id|L1_BRICKTYPE_I
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 id|position
 op_assign
 id|MODULE_GET_BPOS
@@ -1762,9 +1797,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|fmt
 op_eq
 id|MODULE_FORMAT_BRIEF
+)paren
+op_logical_or
+(paren
+id|fmt
+op_eq
+id|MODULE_FORMAT_LCD
+)paren
 )paren
 (brace
 multiline_comment|/* Brief module number format, eg. 002c15 */

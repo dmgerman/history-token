@@ -29,6 +29,8 @@ DECL|macro|MODULE_FORMAT_BRIEF
 mdefine_line|#define MODULE_FORMAT_BRIEF&t;1
 DECL|macro|MODULE_FORMAT_LONG
 mdefine_line|#define MODULE_FORMAT_LONG&t;2
+DECL|macro|MODULE_FORMAT_LCD
+mdefine_line|#define MODULE_FORMAT_LCD&t;3
 multiline_comment|/*&n; *&t;Module id format&n; *&n; *&t;31-16&t;Rack ID (encoded class, group, number - 16-bit unsigned int)&n; *&t; 15-8&t;Brick type (8-bit ascii character)&n; *&t;  7-0&t;Bay (brick position in rack (0-63) - 8-bit unsigned int)&n; *&n; */
 multiline_comment|/*&n; * Macros for getting the brick type&n; */
 DECL|macro|MODULE_BTYPE_MASK
