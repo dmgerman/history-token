@@ -1466,9 +1466,9 @@ id|command
 suffix:semicolon
 )brace
 )brace
-DECL|function|agp_generic_agp_enable
+DECL|function|agp_generic_enable
 r_void
-id|agp_generic_agp_enable
+id|agp_generic_enable
 c_func
 (paren
 id|u32
@@ -3088,11 +3088,11 @@ c_func
 id|agp_generic_resume
 )paren
 suffix:semicolon
-DECL|variable|agp_generic_agp_enable
+DECL|variable|agp_generic_enable
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|agp_generic_agp_enable
+id|agp_generic_enable
 )paren
 suffix:semicolon
 DECL|variable|agp_generic_create_gatt_table
