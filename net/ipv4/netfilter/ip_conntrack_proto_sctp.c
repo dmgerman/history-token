@@ -1777,6 +1777,7 @@ l_string|&quot;Setting vtag %x for dir %d&bslash;n&quot;
 comma
 id|ih-&gt;init_tag
 comma
+op_logical_neg
 id|CTINFO2DIR
 c_func
 (paren
@@ -1786,7 +1787,12 @@ id|ctinfo
 suffix:semicolon
 id|conntrack-&gt;proto.sctp.vtag
 (braket
-id|IP_CT_DIR_ORIGINAL
+op_logical_neg
+id|CTINFO2DIR
+c_func
+(paren
+id|ctinfo
+)paren
 )braket
 op_assign
 id|ih-&gt;init_tag
