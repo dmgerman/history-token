@@ -192,6 +192,15 @@ DECL|member|stamp
 r_int
 id|stamp
 suffix:semicolon
+DECL|member|next_statechange
+r_int
+r_int
+id|next_statechange
+suffix:semicolon
+DECL|member|command
+id|u32
+id|command
+suffix:semicolon
 DECL|member|is_arc_rh_tt
 r_int
 id|is_arc_rh_tt
@@ -217,9 +226,6 @@ suffix:semicolon
 multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
 DECL|macro|hcd_to_ehci
 mdefine_line|#define hcd_to_ehci(hcd_ptr) container_of(hcd_ptr, struct ehci_hcd, hcd)
-multiline_comment|/* NOTE:  urb-&gt;transfer_flags expected to not use this bit !!! */
-DECL|macro|EHCI_STATE_UNLINK
-mdefine_line|#define EHCI_STATE_UNLINK&t;0x8000&t;&t;/* urb being unlinked */
 DECL|enum|ehci_timer_action
 r_enum
 id|ehci_timer_action
@@ -522,7 +528,7 @@ id|u32
 id|frame_list
 suffix:semicolon
 multiline_comment|/* points to periodic list */
-multiline_comment|/* ASYNCICLISTADDR: offset 0x18 */
+multiline_comment|/* ASYNCLISTADDR: offset 0x18 */
 DECL|member|async_next
 id|u32
 id|async_next
@@ -559,7 +565,14 @@ mdefine_line|#define PORT_WKDISC_E&t;(1&lt;&lt;21)&t;&t;/* wake on disconnect (e
 DECL|macro|PORT_WKCONN_E
 mdefine_line|#define PORT_WKCONN_E&t;(1&lt;&lt;20)&t;&t;/* wake on connect (enable) */
 multiline_comment|/* 19:16 for port testing */
-multiline_comment|/* 15:14 for using port indicator leds (if HCS_INDICATOR allows) */
+DECL|macro|PORT_LED_OFF
+mdefine_line|#define PORT_LED_OFF&t;(0&lt;&lt;14)
+DECL|macro|PORT_LED_AMBER
+mdefine_line|#define PORT_LED_AMBER&t;(1&lt;&lt;14)
+DECL|macro|PORT_LED_GREEN
+mdefine_line|#define PORT_LED_GREEN&t;(2&lt;&lt;14)
+DECL|macro|PORT_LED_MASK
+mdefine_line|#define PORT_LED_MASK&t;(3&lt;&lt;14)
 DECL|macro|PORT_OWNER
 mdefine_line|#define PORT_OWNER&t;(1&lt;&lt;13)&t;&t;/* true: companion hc owns this port */
 DECL|macro|PORT_POWER
@@ -1460,6 +1473,36 @@ DECL|macro|ehci_port_speed
 mdefine_line|#define&t;ehci_port_speed(ehci, portsc)&t;(1&lt;&lt;USB_PORT_FEAT_HIGHSPEED)
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|macro|MSEC_TO_JIFFIES
+mdefine_line|#define&t;MSEC_TO_JIFFIES(msec) ((HZ * (msec) + 999) / 1000)
+DECL|function|msec_delay
+r_static
+r_inline
+r_void
+id|msec_delay
+c_func
+(paren
+r_int
+id|msec
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|MSEC_TO_JIFFIES
+c_func
+(paren
+id|msec
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES
