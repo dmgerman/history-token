@@ -96,6 +96,15 @@ id|device
 id|dev
 suffix:semicolon
 multiline_comment|/* generic device */
+macro_line|#ifdef CONFIG_EISA_NAMES
+DECL|member|pretty_name
+r_char
+id|pretty_name
+(braket
+id|DEVICE_NAME_SIZE
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|to_eisa_device
