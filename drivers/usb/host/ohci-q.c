@@ -734,7 +734,6 @@ l_int|0
 (brace
 id|dev_dbg
 (paren
-op_star
 id|ohci-&gt;hcd.controller
 comma
 l_string|&quot;ERR %d, interval %d msecs, load %d&bslash;n&quot;
@@ -2876,6 +2875,7 @@ suffix:semicolon
 multiline_comment|/* help for troubleshooting: */
 id|dev_dbg
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&bslash;n&quot;

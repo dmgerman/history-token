@@ -804,6 +804,11 @@ op_star
 id|last
 op_assign
 l_int|0
+comma
+op_star
+id|end
+op_assign
+id|qh-&gt;dummy
 suffix:semicolon
 r_struct
 id|list_head
@@ -923,6 +928,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* ignore urbs submitted during completions we reported */
+r_if
+c_cond
+(paren
+id|qtd
+op_eq
+id|end
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* hardware copies qtd out of qh overlay */
 id|rmb
 (paren
@@ -3675,18 +3690,23 @@ id|ehci_qh
 op_star
 id|qh
 suffix:semicolon
-r_int
-id|count
+r_if
+c_cond
+(paren
+op_logical_neg
+op_increment
+(paren
+id|ehci-&gt;stamp
+)paren
+)paren
+id|ehci-&gt;stamp
+op_increment
 suffix:semicolon
 id|rescan
 suffix:colon
 id|qh
 op_assign
 id|ehci-&gt;async-&gt;qh_next.qh
-suffix:semicolon
-id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3711,18 +3731,26 @@ id|list_empty
 op_amp
 id|qh-&gt;qtd_list
 )paren
+op_logical_and
+id|qh-&gt;stamp
+op_ne
+id|ehci-&gt;stamp
 )paren
 (brace
 r_int
 id|temp
 suffix:semicolon
-multiline_comment|/* unlinks could happen here; completion&n;&t;&t;&t;&t; * reporting drops the lock.&n;&t;&t;&t;&t; */
+multiline_comment|/* unlinks could happen here; completion&n;&t;&t;&t;&t; * reporting drops the lock.  rescan using&n;&t;&t;&t;&t; * the latest schedule, but don&squot;t rescan&n;&t;&t;&t;&t; * qhs we already finished (no looping).&n;&t;&t;&t;&t; */
 id|qh
 op_assign
 id|qh_get
 (paren
 id|qh
 )paren
+suffix:semicolon
+id|qh-&gt;stamp
+op_assign
+id|ehci-&gt;stamp
 suffix:semicolon
 id|temp
 op_assign
@@ -3750,10 +3778,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|count
-op_add_assign
-id|temp
-suffix:semicolon
 r_goto
 id|rescan
 suffix:semicolon

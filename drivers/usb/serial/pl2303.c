@@ -771,6 +771,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
@@ -972,6 +973,7 @@ id|buf
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -1338,6 +1340,7 @@ suffix:colon
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;pl2303 driver does not support the baudrate requested (fix it)&bslash;n&quot;
@@ -2000,6 +2003,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
@@ -2051,6 +2055,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting interrupt urb, error %d&bslash;n&quot;
@@ -2986,6 +2991,7 @@ id|status
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
@@ -3172,6 +3178,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -3296,6 +3303,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -3426,6 +3434,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting write urb, error %d&bslash;n&quot;

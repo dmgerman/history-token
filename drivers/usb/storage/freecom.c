@@ -934,11 +934,7 @@ c_func
 (paren
 l_string|&quot;SCSI requested %d&bslash;n&quot;
 comma
-id|usb_stor_transfer_length
-c_func
-(paren
-id|srb
-)paren
+id|srb-&gt;request_bufflen
 )paren
 suffix:semicolon
 multiline_comment|/* Find the length we desire to read. */
@@ -974,10 +970,7 @@ r_default
 suffix:colon
 id|length
 op_assign
-id|usb_stor_transfer_length
-(paren
-id|srb
-)paren
+id|srb-&gt;request_bufflen
 suffix:semicolon
 )brace
 multiline_comment|/* verify that this amount is legal */

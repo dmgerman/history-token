@@ -352,6 +352,12 @@ r_struct
 id|usb_serial
 op_star
 id|serial
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id
 )paren
 suffix:semicolon
 DECL|member|attach
