@@ -614,7 +614,7 @@ op_star
 id|desc
 )paren
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|dbg
