@@ -755,46 +755,143 @@ mdefine_line|#define ERROR -1
 DECL|macro|NO_PACKET
 mdefine_line|#define NO_PACKET -2
 multiline_comment|/* Commands */
-DECL|macro|NOP
-mdefine_line|#define NOP 0x0010
+DECL|macro|NOP2
+mdefine_line|#define NOP2 0x00    
 DECL|macro|MAC_ENABLE
-mdefine_line|#define MAC_ENABLE 0x0001
-DECL|macro|MAC_DISABLE
-mdefine_line|#define MAC_DISABLE 0x0002
-DECL|macro|CMD_LOSE_SYNC
-mdefine_line|#define CMD_LOSE_SYNC 0x0003 /* Not sure what this does... */
-DECL|macro|CMD_MAGIC_PKT
-mdefine_line|#define CMD_MAGIC_PKT 0x0006
-DECL|macro|CMD_ACCESS
-mdefine_line|#define CMD_ACCESS 0x0021
-DECL|macro|CMD_ALLOCATETX
-mdefine_line|#define CMD_ALLOCATETX 0x000a
-DECL|macro|CMD_TRANSMIT
-mdefine_line|#define CMD_TRANSMIT 0x000b
-DECL|macro|CMD_DEALLOCATETX
-mdefine_line|#define CMD_DEALLOCATETX 0x000c
-DECL|macro|HOSTSLEEP
-mdefine_line|#define HOSTSLEEP 0x85
-DECL|macro|CMD_SETMODE
-mdefine_line|#define CMD_SETMODE 0x0009
+mdefine_line|#define MAC_ENABLE 0x01
+DECL|macro|MAC_ENABLETX
+mdefine_line|#define MAC_ENABLETX 0x101
 DECL|macro|CMD_ENABLEAUX
-mdefine_line|#define CMD_ENABLEAUX 0x0111
+mdefine_line|#define CMD_ENABLEAUX 0x111
+DECL|macro|MAC_ENABLERX
+mdefine_line|#define MAC_ENABLERX 0x201   
+DECL|macro|MAC_DISABLE
+mdefine_line|#define MAC_DISABLE 0x02    
+DECL|macro|CMD_LOSE_SYNC
+mdefine_line|#define CMD_LOSE_SYNC 0x03    
+DECL|macro|CMD_LOSE_SYNC_BSS
+mdefine_line|#define CMD_LOSE_SYNC_BSS 0x103
 DECL|macro|CMD_SOFTRESET
-mdefine_line|#define CMD_SOFTRESET 0x0004
-DECL|macro|CMD_ALLOCBUF
-mdefine_line|#define CMD_ALLOCBUF 0x0028
-DECL|macro|CMD_PSPNODES
-mdefine_line|#define CMD_PSPNODES 0x0030
-DECL|macro|CMD_SETPHYREG
-mdefine_line|#define CMD_SETPHYREG 0x003e
-DECL|macro|CMD_TXTEST
-mdefine_line|#define CMD_TXTEST 0x003f
-DECL|macro|CMD_READCFG
-mdefine_line|#define CMD_READCFG 0x0008
-DECL|macro|CMD_SAVECFG
-mdefine_line|#define CMD_SAVECFG 0x0108
+mdefine_line|#define CMD_SOFTRESET 0x04    
+DECL|macro|HOSTSLEEP
+mdefine_line|#define HOSTSLEEP 0x05    
+DECL|macro|CMD_MAGICPACKET
+mdefine_line|#define CMD_MAGICPACKET 0x06
+DECL|macro|CMD_SETWAKEMASK
+mdefine_line|#define CMD_SETWAKEMASK 0x07
+DECL|macro|CMD_SAVECONFIG
+mdefine_line|#define CMD_SAVECONFIG 0x108   
+DECL|macro|CMD_READCONFIG
+mdefine_line|#define CMD_READCONFIG 0x08
+DECL|macro|CMD_SETMODE
+mdefine_line|#define CMD_SETMODE 0x09    
+DECL|macro|CMD_ALLOCATETX
+mdefine_line|#define CMD_ALLOCATETX 0x0A
+DECL|macro|CMD_TRANSMIT
+mdefine_line|#define CMD_TRANSMIT 0x0B    
+DECL|macro|CMD_DEALLOC
+mdefine_line|#define CMD_DEALLOC 0x0C
 DECL|macro|CMD_LISTBSS
-mdefine_line|#define CMD_LISTBSS 0x0103
+mdefine_line|#define CMD_LISTBSS 0x103
+DECL|macro|NOP
+mdefine_line|#define NOP 0x10    
+DECL|macro|CMD_WORKAROUND
+mdefine_line|#define CMD_WORKAROUND 0x11
+DECL|macro|CMD_ACCESS
+mdefine_line|#define CMD_ACCESS 0x21
+DECL|macro|CMD_WRITERID
+mdefine_line|#define CMD_WRITERID 0x121
+DECL|macro|CMD_PCIBAP
+mdefine_line|#define CMD_PCIBAP 0x22
+DECL|macro|CMD_PCIAUX
+mdefine_line|#define CMD_PCIAUX 0x23
+DECL|macro|CMD_ALLOCTLV
+mdefine_line|#define CMD_ALLOCTLV 0x28
+DECL|macro|CMD_GETTLV
+mdefine_line|#define CMD_GETTLV 0x29
+DECL|macro|CMD_PUTTLV
+mdefine_line|#define CMD_PUTTLV 0x2A
+DECL|macro|CMD_DELTLV
+mdefine_line|#define CMD_DELTLV 0x2B    
+DECL|macro|CMD_FINDNEXTTLV
+mdefine_line|#define CMD_FINDNEXTTLV 0x2C    
+DECL|macro|CMD_SETPHYREG
+mdefine_line|#define CMD_SETPHYREG 0x3E
+DECL|macro|CMD_TXTEST
+mdefine_line|#define CMD_TXTEST 0x3F    
+DECL|macro|CMD_NOPSPNODES
+mdefine_line|#define CMD_NOPSPNODES 0x30    
+DECL|macro|CMD_USEPSPNODES
+mdefine_line|#define CMD_USEPSPNODES 0x130
+DECL|macro|CMD_SETCW
+mdefine_line|#define CMD_SETCW 0x31    
+DECL|macro|CMD_SETPCF
+mdefine_line|#define CMD_SETPCF 0x32    
+multiline_comment|/* Command errors */
+DECL|macro|ERROR_QUALIF
+mdefine_line|#define ERROR_QUALIF 0x00
+DECL|macro|ERROR_ILLCMD
+mdefine_line|#define ERROR_ILLCMD 0x01
+DECL|macro|ERROR_ILLFMT
+mdefine_line|#define ERROR_ILLFMT 0x02
+DECL|macro|ERROR_INVFID
+mdefine_line|#define ERROR_INVFID 0x03
+DECL|macro|ERROR_INVRID
+mdefine_line|#define ERROR_INVRID 0x04
+DECL|macro|ERROR_LARGE
+mdefine_line|#define ERROR_LARGE 0x05
+DECL|macro|ERROR_NDISABL
+mdefine_line|#define ERROR_NDISABL 0x06
+DECL|macro|ERROR_ALLOCBSY
+mdefine_line|#define ERROR_ALLOCBSY 0x07
+DECL|macro|ERROR_NORD
+mdefine_line|#define ERROR_NORD 0x0B
+DECL|macro|ERROR_NOWR
+mdefine_line|#define ERROR_NOWR 0x0C
+DECL|macro|ERROR_INVFIDTX
+mdefine_line|#define ERROR_INVFIDTX 0x0D
+DECL|macro|ERROR_TESTACT
+mdefine_line|#define ERROR_TESTACT 0x0E
+DECL|macro|ERROR_TAGNFND
+mdefine_line|#define ERROR_TAGNFND 0x12
+DECL|macro|ERROR_DECODE
+mdefine_line|#define ERROR_DECODE 0x20
+DECL|macro|ERROR_DESCUNAV
+mdefine_line|#define ERROR_DESCUNAV 0x21
+DECL|macro|ERROR_BADLEN
+mdefine_line|#define ERROR_BADLEN 0x22
+DECL|macro|ERROR_MODE
+mdefine_line|#define ERROR_MODE 0x80
+DECL|macro|ERROR_HOP
+mdefine_line|#define ERROR_HOP 0x81
+DECL|macro|ERROR_BINTER
+mdefine_line|#define ERROR_BINTER 0x82
+DECL|macro|ERROR_RXMODE
+mdefine_line|#define ERROR_RXMODE 0x83
+DECL|macro|ERROR_MACADDR
+mdefine_line|#define ERROR_MACADDR 0x84
+DECL|macro|ERROR_RATES
+mdefine_line|#define ERROR_RATES 0x85
+DECL|macro|ERROR_ORDER
+mdefine_line|#define ERROR_ORDER 0x86
+DECL|macro|ERROR_SCAN
+mdefine_line|#define ERROR_SCAN 0x87
+DECL|macro|ERROR_AUTH
+mdefine_line|#define ERROR_AUTH 0x88
+DECL|macro|ERROR_PSMODE
+mdefine_line|#define ERROR_PSMODE 0x89
+DECL|macro|ERROR_RTYPE
+mdefine_line|#define ERROR_RTYPE 0x8A
+DECL|macro|ERROR_DIVER
+mdefine_line|#define ERROR_DIVER 0x8B
+DECL|macro|ERROR_SSID
+mdefine_line|#define ERROR_SSID 0x8C
+DECL|macro|ERROR_APLIST
+mdefine_line|#define ERROR_APLIST 0x8D
+DECL|macro|ERROR_AUTOWAKE
+mdefine_line|#define ERROR_AUTOWAKE 0x8E
+DECL|macro|ERROR_LEAP
+mdefine_line|#define ERROR_LEAP 0x8F
 multiline_comment|/* Registers */
 DECL|macro|COMMAND
 mdefine_line|#define COMMAND 0x00
@@ -960,10 +1057,10 @@ DECL|macro|RID_STATSDELTA
 mdefine_line|#define RID_STATSDELTA 0xFF69
 DECL|macro|RID_STATSDELTACLEAR
 mdefine_line|#define RID_STATSDELTACLEAR 0xFF6A
-DECL|macro|RID_UNKNOWN70
-mdefine_line|#define RID_UNKNOWN70  0xFF70
-DECL|macro|RID_UNKNOWN71
-mdefine_line|#define RID_UNKNOWN71  0xFF71
+DECL|macro|RID_ECHOTEST_RID
+mdefine_line|#define RID_ECHOTEST_RID 0xFF70
+DECL|macro|RID_ECHOTEST_RESULTS
+mdefine_line|#define RID_ECHOTEST_RESULTS 0xFF71
 DECL|macro|RID_BSSLISTFIRST
 mdefine_line|#define RID_BSSLISTFIRST 0xFF72
 DECL|macro|RID_BSSLISTNEXT
