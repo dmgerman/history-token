@@ -6907,6 +6907,11 @@ op_eq
 l_int|0x0000
 )paren
 (brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* No MII device or no link partner report */
 )brace
@@ -6940,6 +6945,12 @@ multiline_comment|/* 10T-FD, but not 100-HD */
 id|vp-&gt;full_duplex
 op_assign
 l_int|1
+suffix:semicolon
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 id|vp-&gt;partner_flow_ctrl
@@ -8243,6 +8254,12 @@ op_amp
 id|Media_LnkBeat
 )paren
 (brace
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|ok
 op_assign
 l_int|1
@@ -8281,6 +8298,13 @@ id|vortex_debug
 OG
 l_int|1
 )paren
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8299,6 +8323,7 @@ comma
 id|media_status
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -8350,7 +8375,7 @@ c_cond
 (paren
 id|mii_status
 op_amp
-l_int|0x0004
+id|BMSR_LSTATUS
 )paren
 (brace
 r_int
@@ -8506,6 +8531,21 @@ suffix:semicolon
 multiline_comment|/* AKPM: bug: should reset Tx and Rx after setting Duplex.  Page 180 */
 )brace
 )brace
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 )brace
 r_break
