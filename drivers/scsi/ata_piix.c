@@ -322,6 +322,25 @@ comma
 id|ich5_sata
 )brace
 comma
+multiline_comment|/* ICH6 operates in two modes, &quot;looks-like-ICH5&quot; mode,&n;&t; * and enhanced mode, with queueing and other fancy stuff.&n;&t; * This is distinguished by PCI class code.&n;&t; */
+(brace
+l_int|0x8086
+comma
+l_int|0x2562
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_STORAGE_IDE
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
+comma
+id|ich5_sata
+)brace
+comma
 (brace
 )brace
 multiline_comment|/* terminate list */
