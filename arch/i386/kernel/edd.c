@@ -3398,11 +3398,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|device
-op_star
-id|sdev_dev
-suffix:semicolon
-r_struct
 id|pci_dev
 op_star
 id|pci_dev
@@ -3455,9 +3450,12 @@ c_func
 id|sdev_node
 comma
 op_amp
-id|shost_dev-&gt;children
+id|pci_dev-&gt;dev.children
 )paren
 (brace
+r_struct
+id|device
+op_star
 id|sdev_dev
 op_assign
 id|children_to_dev
