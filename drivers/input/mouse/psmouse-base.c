@@ -1672,6 +1672,10 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
+comma
+r_int
+r_int
+id|max_proto
 )paren
 (brace
 r_int
@@ -1695,7 +1699,7 @@ multiline_comment|/*&n; * Try Synaptics TouchPad&n; */
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 OG
 id|PSMOUSE_PS2
 op_logical_and
@@ -1721,7 +1725,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 OG
 id|PSMOUSE_IMEX
 )paren
@@ -1741,7 +1745,7 @@ r_return
 id|PSMOUSE_SYNAPTICS
 suffix:semicolon
 multiline_comment|/*&n; * Some Synaptics touchpads can emulate extended protocols (like IMPS/2).&n; * Unfortunately Logitech/Genius probes confuse some firmware versions so&n; * we&squot;ll have to skip them.&n; */
-id|psmouse_max_proto
+id|max_proto
 op_assign
 id|PSMOUSE_IMEX
 suffix:semicolon
@@ -1757,7 +1761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 OG
 id|PSMOUSE_IMEX
 op_logical_and
@@ -1807,7 +1811,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 OG
 id|PSMOUSE_IMEX
 )paren
@@ -1833,7 +1837,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 op_ge
 id|PSMOUSE_IMPS
 op_logical_and
@@ -1855,7 +1859,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|psmouse_max_proto
+id|max_proto
 op_ge
 id|PSMOUSE_IMEX
 op_logical_and
@@ -2031,6 +2035,8 @@ id|psmouse_extensions
 c_func
 (paren
 id|psmouse
+comma
+id|psmouse_max_proto
 )paren
 suffix:semicolon
 )brace
