@@ -43,11 +43,6 @@ mdefine_line|#define DRIVER_AUTHOR&t;&quot;Greg Kroah-Hartman &lt;greg@kroah.com
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;PCI Hot Plug PCI Core&quot;
 singleline_comment|//////////////////////////////////////////////////////////////////
-DECL|variable|list_lock
-r_static
-id|spinlock_t
-id|list_lock
-suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -2171,35 +2166,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* make sure we have not already registered this slot */
-id|spin_lock
-(paren
-op_amp
-id|list_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_slot_from_name
-(paren
-id|slot-&gt;name
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|spin_unlock
-(paren
-op_amp
-id|list_lock
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|strncpy
 c_func
 (paren
@@ -2218,6 +2184,7 @@ comma
 id|hotplug_slots_subsys
 )paren
 suffix:semicolon
+multiline_comment|/* this can fail if we have already registered a slot with the same name */
 r_if
 c_cond
 (paren
@@ -2247,12 +2214,6 @@ id|slot-&gt;slot_list
 comma
 op_amp
 id|pci_hotplug_slot_list
-)paren
-suffix:semicolon
-id|spin_unlock
-(paren
-op_amp
-id|list_lock
 )paren
 suffix:semicolon
 id|result
@@ -2300,13 +2261,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* make sure we have this slot in our list before trying to delete it */
-id|spin_lock
-(paren
-op_amp
-id|list_lock
-)paren
-suffix:semicolon
 id|temp
 op_assign
 id|get_slot_from_name
@@ -2322,12 +2276,6 @@ op_ne
 id|slot
 )paren
 (brace
-id|spin_unlock
-(paren
-op_amp
-id|list_lock
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -2337,12 +2285,6 @@ id|list_del
 (paren
 op_amp
 id|slot-&gt;slot_list
-)paren
-suffix:semicolon
-id|spin_unlock
-(paren
-op_amp
-id|list_lock
 )paren
 suffix:semicolon
 id|fs_remove_slot
@@ -2606,13 +2548,6 @@ r_void
 (brace
 r_int
 id|result
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|list_lock
-)paren
 suffix:semicolon
 id|kset_set_kset_s
 c_func
