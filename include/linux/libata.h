@@ -1117,6 +1117,27 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* WARNING: shorter than&n;&t;&t;&t;&t;&t;&t; * ATAPI7 spec size, 40 ASCII&n;&t;&t;&t;&t;&t;&t; * characters&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* cache info about current transfer mode */
+DECL|member|r_protocol
+id|u8
+id|r_protocol
+suffix:semicolon
+multiline_comment|/* taskfile read protocol */
+DECL|member|w_protocol
+id|u8
+id|w_protocol
+suffix:semicolon
+multiline_comment|/* taskfile write protocol */
+DECL|member|read_cmd
+id|u8
+id|read_cmd
+suffix:semicolon
+multiline_comment|/* opcode to use on read */
+DECL|member|write_cmd
+id|u8
+id|write_cmd
+suffix:semicolon
+multiline_comment|/* opcode to use on write */
 )brace
 suffix:semicolon
 DECL|struct|ata_engine
