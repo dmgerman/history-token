@@ -234,6 +234,15 @@ comma
 id|neponset_irq_handler
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We would set IRQ_GPIO25 to be a wake-up IRQ, but&n;&t; * unfortunately something on the Neponset activates&n;&t; * this IRQ on sleep (ethernet?)&n;&t; */
+macro_line|#if 0
+id|enable_irq_wake
+c_func
+(paren
+id|IRQ_GPIO25
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Setup other Neponset IRQs.  SA1111 will be done by the&n;&t; * generic SA1111 code.&n;&t; */
 id|set_irq_handler
 c_func
@@ -675,7 +684,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;NEPONSET&quot;
+l_string|&quot;neponset&quot;
 comma
 dot
 id|bus

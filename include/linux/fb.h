@@ -1341,6 +1341,8 @@ DECL|macro|fb_readw
 mdefine_line|#define fb_readw __raw_readw
 DECL|macro|fb_readl
 mdefine_line|#define fb_readl __raw_readl
+DECL|macro|fb_readq
+mdefine_line|#define fb_readq __raw_readq
 DECL|macro|fb_writeb
 mdefine_line|#define fb_writeb __raw_writeb
 DECL|macro|fb_writew

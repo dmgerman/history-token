@@ -881,9 +881,6 @@ id|dead_task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Save a segment.&n; */
-DECL|macro|savesegment
-mdefine_line|#define savesegment(seg,value) &bslash;&n;&t;asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot;:&quot;=m&quot; (*(int *)&amp;(value)))
 DECL|function|copy_thread
 r_int
 id|copy_thread

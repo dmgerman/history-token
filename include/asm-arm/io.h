@@ -514,56 +514,6 @@ mdefine_line|#define ioremap_nocache(cookie,size)&t;__arch_ioremap((cookie),(siz
 DECL|macro|iounmap
 mdefine_line|#define iounmap(cookie)&t;&t;&t;__arch_iounmap(cookie)
 macro_line|#endif
-multiline_comment|/*&n; * DMA-consistent mapping functions.  These allocate/free a region of&n; * uncached, unwrite-buffered mapped memory space for use with DMA&n; * devices.  This is the &quot;generic&quot; version.  The PCI specific version&n; * is in pci.h&n; */
-r_extern
-r_void
-op_star
-id|consistent_alloc
-c_func
-(paren
-r_int
-id|gfp
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|handle
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|consistent_free
-c_func
-(paren
-r_void
-op_star
-id|vaddr
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-id|handle
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|consistent_sync
-c_func
-(paren
-r_void
-op_star
-id|vaddr
-comma
-r_int
-id|size
-comma
-r_int
-id|rw
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * can the hardware map this into one segment or not, given no other&n; * constraints.&n; */
 DECL|macro|BIOVEC_MERGEABLE
 mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))

@@ -90,9 +90,6 @@ mdefine_line|#define APM_CHECK_TIMEOUT&t;(HZ)
 multiline_comment|/*&n; * Ignore suspend events for this amount of time after a resume&n; */
 DECL|macro|DEFAULT_BOUNCE_INTERVAL
 mdefine_line|#define DEFAULT_BOUNCE_INTERVAL&t;&t;(3 * HZ)
-multiline_comment|/*&n; * Save a segment register away&n; */
-DECL|macro|savesegment
-mdefine_line|#define savesegment(seg, where) &bslash;&n;&t;&t;__asm__ __volatile__(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=m&quot; (where))
 multiline_comment|/*&n; * Maximum number of events stored&n; */
 DECL|macro|APM_MAX_EVENTS
 mdefine_line|#define APM_MAX_EVENTS&t;&t;20

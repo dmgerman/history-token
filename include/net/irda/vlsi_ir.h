@@ -2,13 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef IRDA_VLSI_FIR_H
 DECL|macro|IRDA_VLSI_FIR_H
 mdefine_line|#define IRDA_VLSI_FIR_H
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,4)
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* PDE() introduced in 2.5.4 */
-DECL|macro|PDE
-mdefine_line|#define PDE(inode) ((inode)-&gt;u.generic_ip)
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n; * #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,xx)&n; *&n; * missing pci-dma api call to give streaming dma buffer back to hw&n; * patch floating on lkml - probably present in 2.5.26 or later&n; * otherwise defining it as noop is ok, since the vlsi-ir is only&n; * used on two oldish x86-based notebooks which are cache-coherent&n; */
 DECL|macro|pci_dma_prep_single
 mdefine_line|#define pci_dma_prep_single(dev, addr, size, direction)&t;/* nothing */

@@ -5,14 +5,6 @@ macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 multiline_comment|/*&n; * Data types and macros for providing 32b PowerPC support.&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#ifndef __KERNEL_STRICT_NAMES
-macro_line|#include &lt;linux/types.h&gt;
-DECL|typedef|__kernel_fsid_t32
-r_typedef
-id|__kernel_fsid_t
-id|__kernel_fsid_t32
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Use this to get at 32-bit user passed pointers. */
 multiline_comment|/* Things to consider: the low-level assembly stub does&n;   srl x, 0, x for first four arguments, so if you have&n;   pointer to something in the first four arguments, just&n;   declare it as a pointer, not u32. On the other side, &n;   arguments from 5th onwards should be declared as u32&n;   for pointers, and need AA() around each usage.&n;   A() macro should be used for places where you e.g.&n;   have some internal variable u32 and just want to get&n;   rid of a compiler warning. AA() has to be used in&n;   places where you want to convert a function argument&n;   to 32bit pointer or when you e.g. access pt_regs&n;   structure and want to consider 32bit registers only.&n;   -&n; */
 DECL|macro|A
@@ -20,89 +12,6 @@ mdefine_line|#define A(__x) ((unsigned long)(__x))
 DECL|macro|AA
 mdefine_line|#define AA(__x)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __ret;&t;&t;&bslash;&n;&t;__asm__ (&quot;clrldi&t;%0, %0, 32&quot;&t;&bslash;&n;&t;&t; : &quot;=r&quot; (__ret)&t;&t;&bslash;&n;&t;&t; : &quot;0&quot; (__x));&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* These are here to support 32-bit syscalls on a 64-bit kernel. */
-DECL|typedef|__kernel_ptrdiff_t32
-r_typedef
-r_int
-id|__kernel_ptrdiff_t32
-suffix:semicolon
-DECL|typedef|__kernel_clock_t32
-r_typedef
-r_int
-id|__kernel_clock_t32
-suffix:semicolon
-DECL|typedef|__kernel_pid_t32
-r_typedef
-r_int
-id|__kernel_pid_t32
-suffix:semicolon
-DECL|typedef|__kernel_ipc_pid_t32
-r_typedef
-r_int
-r_int
-id|__kernel_ipc_pid_t32
-suffix:semicolon
-DECL|typedef|__kernel_uid_t32
-r_typedef
-r_int
-r_int
-id|__kernel_uid_t32
-suffix:semicolon
-DECL|typedef|__kernel_gid_t32
-r_typedef
-r_int
-r_int
-id|__kernel_gid_t32
-suffix:semicolon
-DECL|typedef|__kernel_dev_t32
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t32
-suffix:semicolon
-DECL|typedef|__kernel_ino_t32
-r_typedef
-r_int
-r_int
-id|__kernel_ino_t32
-suffix:semicolon
-DECL|typedef|__kernel_mode_t32
-r_typedef
-r_int
-r_int
-id|__kernel_mode_t32
-suffix:semicolon
-DECL|typedef|__kernel_umode_t32
-r_typedef
-r_int
-r_int
-id|__kernel_umode_t32
-suffix:semicolon
-DECL|typedef|__kernel_nlink_t32
-r_typedef
-r_int
-id|__kernel_nlink_t32
-suffix:semicolon
-DECL|typedef|__kernel_daddr_t32
-r_typedef
-r_int
-id|__kernel_daddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_off_t32
-r_typedef
-r_int
-id|__kernel_off_t32
-suffix:semicolon
-DECL|typedef|__kernel_caddr_t32
-r_typedef
-r_int
-r_int
-id|__kernel_caddr_t32
-suffix:semicolon
-DECL|typedef|__kernel_loff_t32
-r_typedef
-r_int
-id|__kernel_loff_t32
-suffix:semicolon
 DECL|struct|statfs32
 r_struct
 id|statfs32
@@ -136,7 +45,7 @@ r_int
 id|f_ffree
 suffix:semicolon
 DECL|member|f_fsid
-id|__kernel_fsid_t32
+id|compat_fsid_t
 id|f_fsid
 suffix:semicolon
 DECL|member|f_namelen
@@ -201,12 +110,12 @@ multiline_comment|/* kill() */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|__kernel_uid_t32
+id|compat_uid_t
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -235,12 +144,12 @@ multiline_comment|/* POSIX.1b signals */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|__kernel_uid_t32
+id|compat_uid_t
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -256,12 +165,12 @@ multiline_comment|/* SIGCHLD */
 r_struct
 (brace
 DECL|member|_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* which child */
 DECL|member|_uid
-id|__kernel_uid_t32
+id|compat_uid_t
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -271,11 +180,11 @@ id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
 DECL|member|_utime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_utime
 suffix:semicolon
 DECL|member|_stime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_stime
 suffix:semicolon
 DECL|member|_sigchld
@@ -437,119 +346,21 @@ r_int
 id|l_whence
 suffix:semicolon
 DECL|member|l_start
-id|__kernel_off_t32
+id|compat_off_t
 id|l_start
 suffix:semicolon
 DECL|member|l_len
-id|__kernel_off_t32
+id|compat_off_t
 id|l_len
 suffix:semicolon
 DECL|member|l_pid
-id|__kernel_pid_t32
+id|compat_pid_t
 id|l_pid
 suffix:semicolon
 DECL|member|__unused
 r_int
 id|__unused
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|stat32
-r_struct
-id|stat32
-(brace
-DECL|member|st_dev
-id|__kernel_dev_t32
-id|st_dev
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|st_ino
-id|__kernel_ino_t32
-id|st_ino
-suffix:semicolon
-multiline_comment|/* 4  */
-DECL|member|st_mode
-id|__kernel_mode_t32
-id|st_mode
-suffix:semicolon
-multiline_comment|/* 2  */
-DECL|member|st_nlink
-r_int
-id|st_nlink
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|st_uid
-id|__kernel_uid_t32
-id|st_uid
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|st_gid
-id|__kernel_gid_t32
-id|st_gid
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|st_rdev
-id|__kernel_dev_t32
-id|st_rdev
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|st_size
-id|__kernel_off_t32
-id|st_size
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|st_blksize
-id|__kernel_off_t32
-id|st_blksize
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|st_blocks
-id|__kernel_off_t32
-id|st_blocks
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|st_atime
-id|compat_time_t
-id|st_atime
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|__unused1
-r_int
-r_int
-id|__unused1
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|st_mtime
-id|compat_time_t
-id|st_mtime
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|__unused2
-r_int
-r_int
-id|__unused2
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|st_ctime
-id|compat_time_t
-id|st_ctime
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|__unused3
-r_int
-r_int
-id|__unused3
-suffix:semicolon
-multiline_comment|/* 4 */
-DECL|member|__unused4
-r_int
-r_int
-id|__unused4
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 2*4 */
 )brace
 suffix:semicolon
 DECL|struct|sigcontext32

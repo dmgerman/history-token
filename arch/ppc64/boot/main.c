@@ -5,6 +5,8 @@ macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 r_void
 id|memmove
 c_func
@@ -448,6 +450,7 @@ op_add_assign
 l_int|0x100000
 )paren
 (brace
+macro_line|#ifdef DEBUG
 id|printf
 c_func
 (paren
@@ -456,6 +459,7 @@ comma
 id|claim_addr
 )paren
 suffix:semicolon
+macro_line|#endif
 id|dst
 op_assign
 id|claim
@@ -646,6 +650,7 @@ id|kernel_entry_t
 )paren
 id|dst
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printf
 c_func
 (paren
@@ -679,6 +684,7 @@ r_int
 id|bi_recs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kernel_entry
 c_func
 (paren

@@ -34,15 +34,15 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#if WAITQUEUE_DEBUG
 DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name) &bslash;&n;&t;&t;, (long)&amp;(name).__magic
+macro_line|# define __SEM_DEBUG_INIT(name)&t;.__magic = (long)&amp;(name).__magic
 macro_line|#else
 DECL|macro|__SEM_DEBUG_INIT
 macro_line|# define __SEM_DEBUG_INIT(name)
 macro_line|#endif
 DECL|macro|__SEMAPHORE_INIT
-mdefine_line|#define __SEMAPHORE_INIT(name,count)&t;&t;&t;&bslash;&n;&t;{ ATOMIC_INIT(count), 0,&t;&t;&t;&bslash;&n;&t;  __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;&t;  __SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INIT(name,cnt) {&t;&t;&t;&t;&bslash;&n;&t;.count&t;= ATOMIC_INIT(cnt),&t;&t;&t;&t;&bslash;&n;&t;.wait&t;= __WAIT_QUEUE_HEAD_INITIALIZER((name).wait),&t;&bslash;&n;&t;__SEM_DEBUG_INIT(name)&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|__MUTEX_INITIALIZER
-mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INIT(name,1)
+mdefine_line|#define __MUTEX_INITIALIZER(name) __SEMAPHORE_INIT(name,1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
 mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name,count)&t;&bslash;&n;&t;struct semaphore name = __SEMAPHORE_INIT(name,count)
 DECL|macro|DECLARE_MUTEX
@@ -137,6 +137,28 @@ c_func
 id|sem
 comma
 l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|sema_count
+r_static
+r_inline
+r_int
+id|sema_count
+c_func
+(paren
+r_struct
+id|semaphore
+op_star
+id|sem
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sem-&gt;count
 )paren
 suffix:semicolon
 )brace

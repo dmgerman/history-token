@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASMARM_CURRENT_H
 DECL|macro|_ASMARM_CURRENT_H
 mdefine_line|#define _ASMARM_CURRENT_H
-macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 r_static
 r_inline
 r_struct

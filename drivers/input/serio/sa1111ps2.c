@@ -601,6 +601,15 @@ id|ps2if-&gt;open
 op_assign
 l_int|1
 suffix:semicolon
+id|enable_irq_wake
+c_func
+(paren
+id|ps2if-&gt;dev-&gt;irq
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 id|sa1111_writel
 c_func
 (paren
@@ -642,6 +651,15 @@ comma
 id|ps2if-&gt;base
 op_plus
 id|SA1111_PS2CR
+)paren
+suffix:semicolon
+id|disable_irq_wake
+c_func
+(paren
+id|ps2if-&gt;dev-&gt;irq
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|ps2if-&gt;open
@@ -1309,7 +1327,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SA1111 PS2&quot;
+l_string|&quot;sa1111-ps2&quot;
 comma
 dot
 id|bus
