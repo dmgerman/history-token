@@ -340,6 +340,17 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+op_amp
+id|i8259_irq
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

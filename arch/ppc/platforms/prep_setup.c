@@ -3061,12 +3061,25 @@ id|OpenPIC_Addr
 op_ne
 l_int|NULL
 )paren
+(brace
 id|openpic_init
 c_func
 (paren
 id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
+multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
