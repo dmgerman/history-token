@@ -695,7 +695,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_scsi_host
-mdefine_line|#define&t;to_scsi_host(d)&t;d-&gt;class_data
+mdefine_line|#define&t;to_scsi_host(d)&t;d-&gt;driver_data&t;/* Major logical breakage, but we compile again... */
 multiline_comment|/*&n; * These two functions are used to allocate and free a pseudo device&n; * which will connect to the host adapter itself rather than any&n; * physical device.  You must deallocate when you are done with the&n; * thing.  This physical pseudo-device isn&squot;t real and won&squot;t be available&n; * from any high-level drivers.&n; */
 r_extern
 r_void
@@ -1153,8 +1153,8 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|device_class
-id|shost_devclass
+r_class
+id|shost_class
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
