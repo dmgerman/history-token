@@ -8,10 +8,11 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+multiline_comment|/* Due to XFree86 brain-damage, we can&squot;t go to 1.0 until they&n; * fix some real stupidity. It&squot;s only by chance we can bump&n; * past 0.99 at all due to some boolean logic error. */
 DECL|macro|AGPGART_VERSION_MAJOR
-mdefine_line|#define AGPGART_VERSION_MAJOR 1
+mdefine_line|#define AGPGART_VERSION_MAJOR 0
 DECL|macro|AGPGART_VERSION_MINOR
-mdefine_line|#define AGPGART_VERSION_MINOR 0
+mdefine_line|#define AGPGART_VERSION_MINOR 100
 DECL|variable|agp_bridge
 r_struct
 id|agp_bridge_data
