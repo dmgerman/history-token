@@ -4984,10 +4984,17 @@ id|NUM_TCE_LEVELS
 id|printk
 c_func
 (paren
-l_string|&quot;PCI_DMA: pci_unmap_single 0x%lx size to large: 0x%lx &bslash;n&quot;
+l_string|&quot;PCI_DMA: pci_unmap_single 0x%lx size too&quot;
+l_string|&quot; large: 0x%lx &bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|dma_handle
 comma
+(paren
+r_int
+)paren
 id|size
 )paren
 suffix:semicolon
