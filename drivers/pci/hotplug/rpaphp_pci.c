@@ -25,8 +25,6 @@ l_int|NULL
 comma
 op_star
 id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_char
 id|bus_id
@@ -184,8 +182,6 @@ suffix:colon
 l_string|&quot;bridge&quot;
 suffix:semicolon
 r_int
-id|err
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -438,7 +434,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_pci_adapter_status - get  the status of a slot&n; * &n; * 0-- slot is empty&n; * 1-- adapter is configured&n; * 2-- adapter is not configured&n; * 3-- not valid&n; */
+multiline_comment|/**&n; * get_pci_adapter_status - get the status of a slot&n; * &n; * 0-- slot is empty&n; * 1-- adapter is configured&n; * 2-- adapter is not configured&n; * 3-- not valid&n; */
 DECL|function|rpaphp_get_pci_adapter_status
 r_int
 id|rpaphp_get_pci_adapter_status
@@ -501,7 +497,7 @@ op_logical_neg
 id|is_init
 )paren
 multiline_comment|/* at run-time slot-&gt;state can be changed by */
-multiline_comment|/* config/unconfig adapter                        */
+multiline_comment|/* config/unconfig adapter */
 op_star
 id|value
 op_assign
@@ -696,9 +692,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|rpaphp_pci_config_device
 r_static
 r_void
+DECL|function|rpaphp_pci_config_device
 id|rpaphp_pci_config_device
 c_func
 (paren
@@ -755,8 +751,6 @@ id|pci_bus
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -775,11 +769,11 @@ id|dn
 )paren
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; rpaphp_pci_config_dn() will recursively configure all devices under the &n; given slot-&gt;dn and return the dn&squot;s pci_dev.&n; *****************************************************************************/
-DECL|function|rpaphp_pci_config_dn
 r_static
 r_struct
 id|pci_dev
 op_star
+DECL|function|rpaphp_pci_config_dn
 id|rpaphp_pci_config_dn
 c_func
 (paren
@@ -1064,9 +1058,6 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
 )brace
 m_exit
 suffix:colon
@@ -1245,16 +1236,12 @@ id|slot-&gt;dn-&gt;full_name
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|setup_pci_slot
