@@ -24651,7 +24651,17 @@ comma
 id|DRV_STATE_SUSPEND
 )paren
 suffix:semicolon
-multiline_comment|/* This works around an issue with Athlon chipsets on&n;&t; * B3 tigon3 silicon.  This bit has no effect on any&n;&t; * other revision.&n;&t; */
+multiline_comment|/* This works around an issue with Athlon chipsets on&n;&t; * B3 tigon3 silicon.  This bit has no effect on any&n;&t; * other revision.  But do not set this on PCI Express&n;&t; * chips.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_PCI_EXPRESS
+)paren
+)paren
 id|tp-&gt;pci_clock_ctrl
 op_or_assign
 id|CLOCK_CTRL_DELAY_PCI_GRANT
