@@ -5833,7 +5833,7 @@ r_else
 id|retval
 op_assign
 op_minus
-id|EINVAL
+id|ENODATA
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -983,33 +983,39 @@ DECL|macro|E1000_WRITE_REG_IO
 mdefine_line|#define E1000_WRITE_REG_IO(a, reg, val) &bslash;&n;    e1000_write_reg_io((a), E1000_##reg, val)
 multiline_comment|/* PCI Device IDs */
 DECL|macro|E1000_DEV_ID_82542
-mdefine_line|#define E1000_DEV_ID_82542          0x1000
+mdefine_line|#define E1000_DEV_ID_82542               0x1000
 DECL|macro|E1000_DEV_ID_82543GC_FIBER
-mdefine_line|#define E1000_DEV_ID_82543GC_FIBER  0x1001
+mdefine_line|#define E1000_DEV_ID_82543GC_FIBER       0x1001
 DECL|macro|E1000_DEV_ID_82543GC_COPPER
-mdefine_line|#define E1000_DEV_ID_82543GC_COPPER 0x1004
+mdefine_line|#define E1000_DEV_ID_82543GC_COPPER      0x1004
 DECL|macro|E1000_DEV_ID_82544EI_COPPER
-mdefine_line|#define E1000_DEV_ID_82544EI_COPPER 0x1008
+mdefine_line|#define E1000_DEV_ID_82544EI_COPPER      0x1008
 DECL|macro|E1000_DEV_ID_82544EI_FIBER
-mdefine_line|#define E1000_DEV_ID_82544EI_FIBER  0x1009
+mdefine_line|#define E1000_DEV_ID_82544EI_FIBER       0x1009
 DECL|macro|E1000_DEV_ID_82544GC_COPPER
-mdefine_line|#define E1000_DEV_ID_82544GC_COPPER 0x100C
+mdefine_line|#define E1000_DEV_ID_82544GC_COPPER      0x100C
 DECL|macro|E1000_DEV_ID_82544GC_LOM
-mdefine_line|#define E1000_DEV_ID_82544GC_LOM    0x100D
+mdefine_line|#define E1000_DEV_ID_82544GC_LOM         0x100D
 DECL|macro|E1000_DEV_ID_82540EM
-mdefine_line|#define E1000_DEV_ID_82540EM        0x100E
+mdefine_line|#define E1000_DEV_ID_82540EM             0x100E
 DECL|macro|E1000_DEV_ID_82540EM_LOM
-mdefine_line|#define E1000_DEV_ID_82540EM_LOM    0x1015
+mdefine_line|#define E1000_DEV_ID_82540EM_LOM         0x1015
+DECL|macro|E1000_DEV_ID_82540EP_LOM
+mdefine_line|#define E1000_DEV_ID_82540EP_LOM         0x1016
+DECL|macro|E1000_DEV_ID_82540EP
+mdefine_line|#define E1000_DEV_ID_82540EP             0x1017
+DECL|macro|E1000_DEV_ID_82540EP_LP
+mdefine_line|#define E1000_DEV_ID_82540EP_LP          0x101E
 DECL|macro|E1000_DEV_ID_82545EM_COPPER
-mdefine_line|#define E1000_DEV_ID_82545EM_COPPER 0x100F
+mdefine_line|#define E1000_DEV_ID_82545EM_COPPER      0x100F
 DECL|macro|E1000_DEV_ID_82545EM_FIBER
-mdefine_line|#define E1000_DEV_ID_82545EM_FIBER  0x1011
+mdefine_line|#define E1000_DEV_ID_82545EM_FIBER       0x1011
 DECL|macro|E1000_DEV_ID_82546EB_COPPER
-mdefine_line|#define E1000_DEV_ID_82546EB_COPPER 0x1010
+mdefine_line|#define E1000_DEV_ID_82546EB_COPPER      0x1010
 DECL|macro|E1000_DEV_ID_82546EB_FIBER
-mdefine_line|#define E1000_DEV_ID_82546EB_FIBER  0x1012
+mdefine_line|#define E1000_DEV_ID_82546EB_FIBER       0x1012
 DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 13
+mdefine_line|#define NUM_DEV_IDS 16
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS
@@ -2349,6 +2355,10 @@ suffix:semicolon
 DECL|member|phy_id
 r_uint32
 id|phy_id
+suffix:semicolon
+DECL|member|phy_revision
+r_uint32
+id|phy_revision
 suffix:semicolon
 DECL|member|phy_addr
 r_uint32
@@ -3827,6 +3837,8 @@ DECL|macro|M88E1000_12_PHY_ID
 mdefine_line|#define M88E1000_12_PHY_ID M88E1000_E_PHY_ID
 DECL|macro|M88E1000_14_PHY_ID
 mdefine_line|#define M88E1000_14_PHY_ID M88E1000_E_PHY_ID
+DECL|macro|M88E1011_I_REV_4
+mdefine_line|#define M88E1011_I_REV_4   0x04
 multiline_comment|/* Miscellaneous PHY bit definitions. */
 DECL|macro|PHY_PREAMBLE
 mdefine_line|#define PHY_PREAMBLE        0xFFFFFFFF

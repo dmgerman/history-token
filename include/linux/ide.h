@@ -4501,8 +4501,6 @@ DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
 r_extern
 r_int
@@ -4642,8 +4640,11 @@ multiline_comment|/*&n; * This routine is called from the partition-table code i
 r_extern
 r_int
 id|ide_xlate_1024
+c_func
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 comma
@@ -4652,16 +4653,6 @@ comma
 r_const
 r_char
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Convert kdev_t structure into ide_drive_t * one.&n; */
-r_extern
-id|ide_drive_t
-op_star
-id|get_info_ptr
-(paren
-id|kdev_t
-id|i_rdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
@@ -5620,16 +5611,6 @@ comma
 r_int
 r_int
 id|timeout
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * ide_get_queue() returns the queue which corresponds to a given device.&n; */
-r_extern
-id|request_queue_t
-op_star
-id|ide_get_queue
-(paren
-id|kdev_t
-id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate&n; * config bits.&n; */

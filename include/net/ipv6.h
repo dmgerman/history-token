@@ -60,6 +60,23 @@ DECL|macro|IPV6_ADDR_MAPPED
 mdefine_line|#define IPV6_ADDR_MAPPED&t;0x1000U
 DECL|macro|IPV6_ADDR_RESERVED
 mdefine_line|#define IPV6_ADDR_RESERVED&t;0x2000U&t;/* reserved address space */
+multiline_comment|/*&n; *&t;Addr scopes&n; */
+macro_line|#ifdef __KERNEL__
+DECL|macro|IPV6_ADDR_MC_SCOPE
+mdefine_line|#define IPV6_ADDR_MC_SCOPE(a)&t;&bslash;&n;&t;((a)-&gt;s6_addr[1] &amp; 0x0f)&t;/* nonstandard */
+DECL|macro|__IPV6_ADDR_SCOPE_INVALID
+mdefine_line|#define __IPV6_ADDR_SCOPE_INVALID&t;-1
+macro_line|#endif
+DECL|macro|IPV6_ADDR_SCOPE_NODELOCAL
+mdefine_line|#define IPV6_ADDR_SCOPE_NODELOCAL&t;0x01
+DECL|macro|IPV6_ADDR_SCOPE_LINKLOCAL
+mdefine_line|#define IPV6_ADDR_SCOPE_LINKLOCAL&t;0x02
+DECL|macro|IPV6_ADDR_SCOPE_SITELOCAL
+mdefine_line|#define IPV6_ADDR_SCOPE_SITELOCAL&t;0x05
+DECL|macro|IPV6_ADDR_SCOPE_ORGLOCAL
+mdefine_line|#define IPV6_ADDR_SCOPE_ORGLOCAL&t;0x08
+DECL|macro|IPV6_ADDR_SCOPE_GLOBAL
+mdefine_line|#define IPV6_ADDR_SCOPE_GLOBAL&t;&t;0x0e
 multiline_comment|/*&n; *&t;fragmentation header&n; */
 DECL|struct|frag_hdr
 r_struct

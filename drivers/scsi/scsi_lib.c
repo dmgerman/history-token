@@ -1971,7 +1971,11 @@ c_cond
 (paren
 id|req-&gt;flags
 op_amp
+(paren
 id|REQ_CMD
+op_or
+id|REQ_BLOCK_PC
+)paren
 )paren
 (brace
 id|SRpnt
@@ -2124,7 +2128,11 @@ c_cond
 (paren
 id|SCpnt-&gt;request-&gt;flags
 op_amp
+(paren
 id|REQ_CMD
+op_or
+id|REQ_BLOCK_PC
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * This will do a couple of things:&n;&t;&t;&t; *  1) Fill in the actual SCSI command.&n;&t;&t;&t; *  2) Fill in any other upper-level specific fields&n;&t;&t;&t; * (timeout).&n;&t;&t;&t; *&n;&t;&t;&t; * If this returns 0, it means that the request failed&n;&t;&t;&t; * (reading past end of disk, reading offline device,&n;&t;&t;&t; * etc).   This won&squot;t actually talk to the device, but&n;&t;&t;&t; * some kinds of consistency checking may cause the&t;&n;&t;&t;&t; * request to be rejected immediately.&n;&t;&t;&t; */

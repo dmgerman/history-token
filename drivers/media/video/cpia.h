@@ -1012,12 +1012,12 @@ mdefine_line|#define ERROR_FLICKER_BELOW_MIN_EXP     0x01 /*flicker exposure got
 DECL|macro|ALOG
 mdefine_line|#define ALOG(fmt,args...) printk(fmt, ##args)
 DECL|macro|LOG
-mdefine_line|#define LOG(fmt,args...) ALOG(KERN_INFO __FILE__ &quot;:%s(%d):&quot; fmt, __FUNCTION__, __LINE__, ##args)
+mdefine_line|#define LOG(fmt,args...) ALOG(KERN_INFO __FILE__ &quot;:%s(%d):&quot; fmt, __FUNCTION__ , __LINE__ , ##args)
 macro_line|#ifdef _CPIA_DEBUG_
 DECL|macro|ADBG
 mdefine_line|#define ADBG(lineno,fmt,args...) printk(fmt, jiffies, lineno, ##args)
 DECL|macro|DBG
-mdefine_line|#define DBG(fmt,args...) ADBG((__LINE__),KERN_DEBUG __FILE__&quot;(%ld):&quot;__FUNCTION__&quot;(%d):&quot;fmt,##args)
+mdefine_line|#define DBG(fmt,args...) ADBG((__LINE__), KERN_DEBUG __FILE__&quot; (%ld):&quot; __FUNCTION__ &quot;(%d):&quot; fmt, ##args)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmn,args...) do {} while(0)

@@ -4878,10 +4878,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|arg.n_iov
-op_assign
-l_int|1
-suffix:semicolon
 id|arg.csumoffset
 op_assign
 m_offsetof
@@ -5035,10 +5031,6 @@ r_sizeof
 (paren
 id|rep.th
 )paren
-suffix:semicolon
-id|arg.n_iov
-op_assign
-l_int|1
 suffix:semicolon
 r_if
 c_cond

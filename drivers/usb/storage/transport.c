@@ -1601,11 +1601,19 @@ id|USB_STOR_XFER_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/* no error code, so we must have transferred some data, &n;&t; * just not all of it */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+comma
+id|partial
+)paren
+suffix:semicolon
 r_return
 id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_transfer_buf to achieve its goals -- this&n; * function simply determines if we&squot;re going to use scatter-gather or not,&n; * and acts appropriately.  For now, it also re-interprets the error codes.&n; */
+multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_bulk_transfer_buf to achieve its goals --&n; * this function simply determines if we&squot;re going to use scatter-gather or not,&n; * and acts appropriately.&n; */
 DECL|function|usb_stor_bulk_transfer_sg
 r_int
 id|usb_stor_bulk_transfer_sg
@@ -1642,8 +1650,7 @@ suffix:semicolon
 r_int
 id|result
 op_assign
-op_minus
-l_int|1
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -2994,10 +3001,21 @@ r_if
 c_cond
 (paren
 id|transfer_length
-OG
-l_int|0
 )paren
 (brace
+r_int
+r_int
+id|pipe
+op_assign
+id|srb-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_READ
+ques
+c_cond
+id|us-&gt;recv_bulk_pipe
+suffix:colon
+id|us-&gt;send_bulk_pipe
+suffix:semicolon
 id|result
 op_assign
 id|usb_stor_bulk_transfer_srb
@@ -3005,7 +3023,7 @@ c_func
 (paren
 id|us
 comma
-id|us-&gt;send_bulk_pipe
+id|pipe
 comma
 id|srb
 comma
@@ -3309,6 +3327,7 @@ suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3329,6 +3348,20 @@ c_cond
 (paren
 id|transfer_length
 )paren
+(brace
+r_int
+r_int
+id|pipe
+op_assign
+id|srb-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_READ
+ques
+c_cond
+id|us-&gt;recv_bulk_pipe
+suffix:colon
+id|us-&gt;send_bulk_pipe
+suffix:semicolon
 id|result
 op_assign
 id|usb_stor_bulk_transfer_srb
@@ -3336,7 +3369,7 @@ c_func
 (paren
 id|us
 comma
-id|us-&gt;send_bulk_pipe
+id|pipe
 comma
 id|srb
 comma

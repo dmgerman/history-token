@@ -668,6 +668,8 @@ DECL|macro|blk_queue_empty
 mdefine_line|#define blk_queue_empty(q)&t;elv_queue_empty(q)
 DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
+DECL|macro|blk_pc_request
+mdefine_line|#define blk_pc_request(rq)&t;((rq)-&gt;flags &amp; REQ_BLOCK_PC)
 DECL|macro|list_entry_rq
 mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queuelist)
 DECL|macro|rq_data_dir

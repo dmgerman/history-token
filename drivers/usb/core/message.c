@@ -2642,7 +2642,7 @@ id|ep
 op_assign
 id|iface_as-&gt;endpoint
 (braket
-id|ep
+id|i
 )braket
 dot
 id|wMaxPacketSize

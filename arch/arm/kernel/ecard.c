@@ -4170,7 +4170,7 @@ op_star
 id|drv
 )paren
 (brace
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp

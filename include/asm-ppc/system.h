@@ -7,13 +7,15 @@ macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
-multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
+multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; * read_barrier_depends() prevents data-dependant loads being reordered&n; *&t;across this point (nop on PPC).&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
 DECL|macro|mb
 mdefine_line|#define mb()  __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb()  __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
 DECL|macro|wmb
 mdefine_line|#define wmb()  __asm__ __volatile__ (&quot;eieio&quot; : : : &quot;memory&quot;)
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()  do { } while(0)
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value)&t;do { var = value; mb(); } while (0)
 DECL|macro|set_wmb
@@ -25,6 +27,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
@@ -32,6 +36,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#ifdef __KERNEL__
 r_extern
@@ -485,6 +491,7 @@ r_int
 r_int
 id|x
 comma
+r_volatile
 r_void
 op_star
 id|ptr

@@ -22,8 +22,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU535_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|sony535_cd_base_io
 mdefine_line|#define sony535_cd_base_io sonycd535 /* for compatible parameter passing with &quot;insmod&quot; */
@@ -207,6 +205,12 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* queue lock */
+DECL|variable|sonycd535_queue
+r_static
+r_struct
+id|request_queue
+id|sonycd535_queue
+suffix:semicolon
 DECL|variable|initialized
 r_static
 r_int
@@ -344,37 +348,14 @@ DECL|function|cdu535_check_media_change
 id|cdu535_check_media_change
 c_func
 (paren
-id|kdev_t
-id|full_dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|full_dev
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|CDU535_MESSAGE_NAME
-l_string|&quot; request error: invalid device.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* if driver is not initialized, always return 0 */
+r_int
 id|retval
 op_assign
 id|initialized
@@ -2263,9 +2244,10 @@ op_star
 id|q
 )paren
 (brace
-r_int
-r_int
-id|dev
+r_struct
+id|request
+op_star
+id|req
 suffix:semicolon
 r_int
 r_int
@@ -2313,39 +2295,56 @@ c_cond
 id|blk_queue_empty
 c_func
 (paren
-id|QUEUE
+id|q
 )paren
 )paren
 r_return
 suffix:semicolon
-id|dev
+id|req
 op_assign
-id|minor
+id|elv_next_request
 c_func
 (paren
-id|CURRENT-&gt;rq_dev
+id|q
 )paren
 suffix:semicolon
 id|block
 op_assign
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 suffix:semicolon
 id|nsect
 op_assign
-id|CURRENT-&gt;nr_sectors
+id|req-&gt;nr_sectors
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
-op_ne
-l_int|0
+op_logical_neg
+(paren
+id|req-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* FIXME */
+r_if
+c_cond
+(paren
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
+op_eq
+id|WRITE
 )paren
 (brace
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
@@ -2356,25 +2355,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;flags
-op_amp
-id|REQ_CMD
-)paren
-(brace
-r_switch
-c_cond
-(paren
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|req
 )paren
-)paren
-(brace
-r_case
+op_ne
 id|READ
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t;&t; * the media, return an error.&n;&t;&t;&t;&t; */
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Unknown SONY CD cmd&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If the block address is invalid or the request goes beyond&n;&t;&t; * the end of the media, return an error.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2390,7 +2385,7 @@ l_int|4
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
@@ -2417,7 +2412,7 @@ l_int|4
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
@@ -2433,7 +2428,7 @@ OL
 id|nsect
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the requested sector is not currently in the read-ahead buffer,&n;&t;&t;&t;&t;&t; * it must be read in.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If the requested sector is not currently in&n;&t;&t;&t; * the read-ahead buffer, it must be read in.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2470,7 +2465,7 @@ comma
 id|params
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * If the full read-ahead would go beyond the end of the media, trim&n;&t;&t;&t;&t;&t;&t; * it back to read just till the end of the media.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If the full read-ahead would go beyond the end of the media, trim&n;&t;&t;&t;&t; * it back to read just till the end of the media.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2539,7 +2534,7 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Read the data.  If the drive was not spinning,&n;&t;&t;&t;&t;&t;&t; * spin it up and try some more.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Read the data.  If the drive was not spinning,&n;&t;&t;&t;&t; * spin it up and try some more.&n;&t;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2552,9 +2547,9 @@ op_increment
 id|spin_up_retry
 )paren
 (brace
-multiline_comment|/* This loop has been modified to support the Sony&n;&t;&t;&t;&t;&t;&t;&t; * CDU-510/515 series, thanks to Claudio Porfiri &n;&t;&t;&t;&t;&t;&t;&t; * &lt;C.Porfiri@nisms.tei.ericsson.se&gt;.&n;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * This part is to deal with very slow hardware.  We&n;&t;&t;&t;&t;&t;&t;&t; * try at most MAX_SPINUP_RETRY times to read the same&n;&t;&t;&t;&t;&t;&t;&t; * block.  A check for seek_and_read_N_blocks&squot; result is&n;&t;&t;&t;&t;&t;&t;&t; * performed; if the result is wrong, the CDROM&squot;s engine&n;&t;&t;&t;&t;&t;&t;&t; * is restarted and the operation is tried again.&n;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;&t; * 1995-06-01: The system got problems when downloading&n;&t;&t;&t;&t;&t;&t;&t; * from Slackware CDROM, the problem seems to be:&n;&t;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks returns BAD_STATUS and we&n;&t;&t;&t;&t;&t;&t;&t; * should wait for a while before retrying, so a new&n;&t;&t;&t;&t;&t;&t;&t; * part was added to discriminate the return value from&n;&t;&t;&t;&t;&t;&t;&t; * seek_and_read_N_blocks for the various cases.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* This loop has been modified to support the Sony&n;&t;&t;&t;&t;&t; * CDU-510/515 series, thanks to Claudio Porfiri &n;&t;&t;&t;&t;&t; * &lt;C.Porfiri@nisms.tei.ericsson.se&gt;.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * This part is to deal with very slow hardware.  We&n;&t;&t;&t;&t;&t; * try at most MAX_SPINUP_RETRY times to read the same&n;&t;&t;&t;&t;&t; * block.  A check for seek_and_read_N_blocks&squot; result is&n;&t;&t;&t;&t;&t; * performed; if the result is wrong, the CDROM&squot;s engine&n;&t;&t;&t;&t;&t; * is restarted and the operation is tried again.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * 1995-06-01: The system got problems when downloading&n;&t;&t;&t;&t;&t; * from Slackware CDROM, the problem seems to be:&n;&t;&t;&t;&t;&t; * seek_and_read_N_blocks returns BAD_STATUS and we&n;&t;&t;&t;&t;&t; * should wait for a while before retrying, so a new&n;&t;&t;&t;&t;&t; * part was added to discriminate the return value from&n;&t;&t;&t;&t;&t; * seek_and_read_N_blocks for the various cases.&n;&t;&t;&t;&t;&t; */
 r_int
 id|readStatus
 op_assign
@@ -2639,7 +2634,7 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
@@ -2705,7 +2700,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * The data is in memory now, copy it to the buffer and advance to the&n;&t;&t;&t;&t;&t; * next block to read.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The data is in memory now, copy it to the buffer and advance to the&n;&t;&t;&t; * next block to read.&n;&t;&t;&t; */
 id|copyoff
 op_assign
 id|block
@@ -2715,7 +2710,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|sony_buffer
 (braket
@@ -2743,7 +2738,7 @@ id|nsect
 op_sub_assign
 l_int|1
 suffix:semicolon
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 op_add_assign
 l_int|512
 suffix:semicolon
@@ -2751,36 +2746,11 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|WRITE
-suffix:colon
-id|end_request
-c_func
-(paren
-id|CURRENT
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|panic
-c_func
-(paren
-l_string|&quot;Unknown SONY CD cmd&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 multiline_comment|/*&n; * Read the table of contents from the drive and set sony_toc_read if&n; * successful.&n; */
@@ -3335,10 +3305,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-r_int
-id|dev
-suffix:semicolon
 id|Byte
 id|status
 (braket
@@ -3365,41 +3331,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-id|dev
-op_assign
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-op_rshift
-l_int|6
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-op_ne
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5444,7 +5375,7 @@ op_assign
 id|cdu_ioctl
 comma
 dot
-id|check_media_change
+id|media_changed
 op_assign
 id|cdu535_check_media_change
 comma
@@ -6040,11 +5971,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sonycd535_queue
 comma
 id|do_cdu535_request
 comma
@@ -6055,18 +5983,15 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sonycd535_queue
 comma
 id|CDU535_BLOCK_SIZE
 )paren
 suffix:semicolon
 id|sony_toc
 op_assign
-id|kamlloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -6270,6 +6195,11 @@ r_goto
 id|out7
 suffix:semicolon
 )brace
+id|cdu_disk-&gt;queue
+op_assign
+op_amp
+id|sonycd535_queue
+suffix:semicolon
 id|add_disk
 c_func
 (paren
@@ -6349,11 +6279,8 @@ suffix:colon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sonycd535_queue
 )paren
 suffix:semicolon
 id|unregister_blkdev
@@ -6626,6 +6553,13 @@ id|put_disk
 c_func
 (paren
 id|cdu_disk
+)paren
+suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+op_amp
+id|sonycd535_queue
 )paren
 suffix:semicolon
 r_if

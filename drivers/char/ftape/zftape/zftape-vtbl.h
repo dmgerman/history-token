@@ -343,7 +343,7 @@ op_star
 id|pos
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 id|zft_tape_at_eod
@@ -354,7 +354,7 @@ op_star
 id|pos
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 id|zft_tape_at_lbot
@@ -365,7 +365,7 @@ op_star
 id|pos
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_void
 id|zft_position_before_eof
@@ -380,7 +380,7 @@ op_star
 id|volume
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 id|__s64
 id|zft_check_for_eof
@@ -399,7 +399,7 @@ id|pos
 suffix:semicolon
 multiline_comment|/* this function decrements the zft_seg_pos counter if we are right&n; * at the beginning of a segment. This is to handel fsfm/bsfm -- we&n; * need to position before the eof mark.  NOTE: zft_tape_pos is not&n; * changed &n; */
 DECL|function|zft_position_before_eof
-r_extern
+r_static
 r_inline
 r_void
 id|zft_position_before_eof
@@ -452,7 +452,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*  Mmmh. Is the position at the end of the last volume, that is right&n; *  before the last EOF mark also logical an EOD condition?&n; */
 DECL|function|zft_tape_at_eod
-r_extern
+r_static
 r_inline
 r_int
 id|zft_tape_at_eod
@@ -496,7 +496,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|zft_tape_at_lbot
-r_extern
+r_static
 r_inline
 r_int
 id|zft_tape_at_lbot
@@ -543,7 +543,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This one checks for EOF.  return remaing space (may be negative) &n; */
 DECL|function|zft_check_for_eof
-r_extern
+r_static
 r_inline
 id|__s64
 id|zft_check_for_eof

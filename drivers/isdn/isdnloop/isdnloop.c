@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: isdnloop.c,v 1.11.6.7 2001/11/11 19:54:31 kai Exp $&n; *&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;isdnloop.h&quot;
 DECL|variable|revision
@@ -16,6 +17,8 @@ r_static
 r_char
 op_star
 id|isdnloop_id
+op_assign
+l_string|&quot;loop0&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -259,11 +262,6 @@ id|cmd.parm.length
 op_assign
 id|len
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ack
-)paren
 id|card-&gt;interface
 dot
 id|statcallb
@@ -1822,12 +1820,10 @@ c_func
 suffix:semicolon
 id|nskb
 op_assign
-id|skb_clone
+id|dev_alloc_skb
 c_func
 (paren
-id|skb
-comma
-id|GFP_ATOMIC
+id|skb-&gt;len
 )paren
 suffix:semicolon
 r_if
@@ -1836,6 +1832,22 @@ c_cond
 id|nskb
 )paren
 (brace
+id|memcpy
+c_func
+(paren
+id|skb_put
+c_func
+(paren
+id|nskb
+comma
+id|len
+)paren
+comma
+id|skb-&gt;data
+comma
+id|len
+)paren
+suffix:semicolon
 id|skb_queue_tail
 c_func
 (paren

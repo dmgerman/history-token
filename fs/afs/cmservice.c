@@ -504,20 +504,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,3)
 id|recalc_sigpending
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|recalc_sigpending
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_unlock_irq
 c_func
 (paren
@@ -1349,6 +1340,30 @@ id|ESRCH
 )paren
 suffix:semicolon
 multiline_comment|/* abort, dequeue and put */
+id|_debug
+c_func
+(paren
+l_string|&quot;nuking active call %08x.%d&quot;
+comma
+id|ntohl
+c_func
+(paren
+id|call-&gt;conn-&gt;conn_id
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|call-&gt;call_id
+)paren
+)paren
+suffix:semicolon
+id|rxrpc_put_call
+c_func
+(paren
+id|call
+)paren
+suffix:semicolon
 id|rxrpc_put_call
 c_func
 (paren

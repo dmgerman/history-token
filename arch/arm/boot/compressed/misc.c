@@ -1053,9 +1053,6 @@ op_star
 id|x
 )paren
 (brace
-r_int
-id|ptr
-suffix:semicolon
 id|puts
 c_func
 (paren
