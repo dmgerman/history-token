@@ -3535,14 +3535,6 @@ id|cs-&gt;debug
 op_or_assign
 id|L1_DEB_IPAC
 suffix:semicolon
-id|inithscxisac
-c_func
-(paren
-id|cs
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3585,8 +3577,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_return

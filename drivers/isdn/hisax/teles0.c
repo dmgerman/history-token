@@ -1270,8 +1270,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|3
 )paren
 suffix:semicolon
 r_return
