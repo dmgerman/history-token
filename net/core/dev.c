@@ -4123,7 +4123,7 @@ macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|function|handle_diverter
 r_static
 r_inline
-r_void
+r_int
 id|handle_diverter
 c_func
 (paren
@@ -4146,6 +4146,9 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif   /* CONFIG_NET_DIVERT */
