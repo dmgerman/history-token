@@ -189,13 +189,6 @@ c_func
 id|x
 )paren
 suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|km_waitq
-)paren
-suffix:semicolon
 )brace
 DECL|function|xfrm_state_gc_task
 r_static
@@ -286,6 +279,13 @@ id|x
 )paren
 suffix:semicolon
 )brace
+id|wake_up
+c_func
+(paren
+op_amp
+id|km_waitq
+)paren
+suffix:semicolon
 )brace
 DECL|function|make_jiffies
 r_static
