@@ -1279,13 +1279,15 @@ id|ip_map_show
 comma
 )brace
 suffix:semicolon
-DECL|function|DefineSimpleCacheLookup
 r_static
 id|DefineSimpleCacheLookup
 c_func
 (paren
 id|ip_map
+comma
+l_int|0
 )paren
+DECL|function|auth_unix_add_addr
 r_int
 id|auth_unix_add_addr
 c_func

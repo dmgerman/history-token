@@ -740,7 +740,7 @@ c_func
 op_amp
 id|key
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -850,7 +850,7 @@ c_func
 op_amp
 id|key
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1135,7 +1135,10 @@ id|DefineSimpleCacheLookup
 c_func
 (paren
 id|svc_expkey
+comma
+l_int|0
 )paren
+multiline_comment|/* no inplace updates */
 DECL|macro|EXPORT_HASHBITS
 mdefine_line|#define&t;EXPORT_HASHBITS&t;&t;8
 DECL|macro|EXPORT_HASHMAX
@@ -2145,16 +2148,19 @@ op_assign
 id|item-&gt;ex_fsid
 suffix:semicolon
 )brace
-DECL|function|DefineSimpleCacheLookup
 r_static
 id|DefineSimpleCacheLookup
 c_func
 (paren
 id|svc_export
+comma
+l_int|1
 )paren
+multiline_comment|/* allow inplace updates */
 r_struct
 id|svc_expkey
 op_star
+DECL|function|exp_find_key
 id|exp_find_key
 c_func
 (paren
