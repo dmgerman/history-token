@@ -68,6 +68,8 @@ DECL|macro|HPAGE_MASK
 macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+DECL|macro|ARCH_HAS_VALID_HUGEPAGE_RANGE
+macro_line|# define ARCH_HAS_VALID_HUGEPAGE_RANGE
 macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa
@@ -194,7 +196,7 @@ DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 r_extern
 r_int
-id|is_invalid_hugepage_range
+id|check_valid_hugepage_range
 c_func
 (paren
 r_int
@@ -206,9 +208,6 @@ r_int
 id|len
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|is_invalid_hugepage_range
-mdefine_line|#define is_invalid_hugepage_range(addr, len) 0
 macro_line|#endif
 r_static
 id|__inline__

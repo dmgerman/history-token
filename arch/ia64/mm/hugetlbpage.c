@@ -500,9 +500,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This function checks if the address and address+len falls out of HugeTLB region.  It&n; * return -EINVAL if any part of address range falls in HugeTLB region.&n; */
-DECL|function|is_invalid_hugepage_range
+DECL|function|check_valid_hugepage_range
 r_int
-id|is_invalid_hugepage_range
+id|check_valid_hugepage_range
 c_func
 (paren
 r_int
