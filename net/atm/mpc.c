@@ -6634,15 +6634,11 @@ r_static
 r_int
 r_int
 id|previous_resolving_check_time
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
 r_int
 id|previous_refresh_time
-op_assign
-l_int|0
 suffix:semicolon
 r_while
 c_loop

@@ -42,8 +42,6 @@ macro_line|#if 0 /*def MODULE*/
 r_static
 r_int
 id|unloadable
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* XX: Turn to one when all is ok within the&n;&t;&t;&t;      module for allowing unload */
 id|MODULE_PARM

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -891,6 +892,10 @@ id|RX_BUF_PAGES
 )braket
 suffix:semicolon
 multiline_comment|/* packing */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */
@@ -1626,6 +1631,13 @@ suffix:semicolon
 id|root_tc35815_dev
 op_assign
 id|dev
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3413,9 +3425,12 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3458,9 +3473,12 @@ id|lp-&gt;tbusy
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3683,9 +3701,12 @@ id|length
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3938,9 +3959,12 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5848,9 +5872,12 @@ id|dev
 )paren
 )paren
 (brace
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5864,9 +5891,12 @@ op_amp
 id|tr-&gt;Miss_Cnt
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6489,6 +6519,11 @@ id|tc_phy_read
 c_func
 (paren
 r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
 id|tc35815_regs
 op_star
 id|tr
@@ -6500,6 +6535,18 @@ r_int
 id|phy_reg
 )paren
 (brace
+r_struct
+id|tc35815_local
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|tc35815_local
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 r_int
 id|data
@@ -6507,9 +6554,12 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6552,9 +6602,12 @@ op_amp
 id|tr-&gt;MD_Data
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6568,6 +6621,11 @@ r_void
 id|tc_phy_write
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|d
@@ -6584,12 +6642,27 @@ r_int
 id|phy_reg
 )paren
 (brace
+r_struct
+id|tc35815_local
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|tc35815_local
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6634,9 +6707,12 @@ op_amp
 id|MD_CA_Busy
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6710,6 +6786,8 @@ multiline_comment|/* first data written to the PHY will be an ID number */
 id|tc_phy_write
 c_func
 (paren
+id|dev
+comma
 l_int|0
 comma
 id|tr
@@ -6724,6 +6802,8 @@ macro_line|#if 0
 id|tc_phy_write
 c_func
 (paren
+id|dev
+comma
 id|MIICNTL_RESET
 comma
 id|tr
@@ -6748,6 +6828,8 @@ c_loop
 id|tc_phy_read
 c_func
 (paren
+id|dev
+comma
 id|tr
 comma
 l_int|0
@@ -6767,6 +6849,8 @@ suffix:semicolon
 id|tc_phy_write
 c_func
 (paren
+id|dev
+comma
 id|MIICNTL_AUTO
 op_or
 id|MIICNTL_SPEED
@@ -6786,6 +6870,8 @@ op_assign
 id|tc_phy_read
 c_func
 (paren
+id|dev
+comma
 id|tr
 comma
 l_int|0
@@ -6798,6 +6884,8 @@ op_assign
 id|tc_phy_read
 c_func
 (paren
+id|dev
+comma
 id|tr
 comma
 l_int|0
@@ -6875,6 +6963,8 @@ suffix:semicolon
 id|tc_phy_write
 c_func
 (paren
+id|dev
+comma
 id|MIICNTL_AUTO
 op_or
 id|MIICNTL_RST_AUTO
@@ -6907,6 +6997,8 @@ op_logical_neg
 id|tc_phy_read
 c_func
 (paren
+id|dev
+comma
 id|tr
 comma
 l_int|0
@@ -6978,6 +7070,8 @@ op_assign
 id|tc_phy_read
 c_func
 (paren
+id|dev
+comma
 id|tr
 comma
 l_int|0
@@ -7057,6 +7151,8 @@ suffix:semicolon
 id|tc_phy_write
 c_func
 (paren
+id|dev
+comma
 id|ctl
 comma
 id|tr
@@ -7355,9 +7451,12 @@ op_amp
 id|tr-&gt;CAM_Ctl
 )paren
 suffix:semicolon
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7515,9 +7614,12 @@ id|tr-&gt;TxFrmPtr
 suffix:semicolon
 multiline_comment|/* start DMA transmitter */
 macro_line|#endif
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

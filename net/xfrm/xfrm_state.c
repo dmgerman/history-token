@@ -2210,6 +2210,13 @@ id|XFRM_STATE_VALID
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|x-&gt;encap
+op_logical_and
+id|x1-&gt;encap
+)paren
 id|memcpy
 c_func
 (paren

@@ -546,20 +546,6 @@ id|br_mac_zero
 (braket
 l_int|6
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 multiline_comment|/* called under bridge lock */
 DECL|function|br_stp_recalculate_bridge_id
