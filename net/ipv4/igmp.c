@@ -9430,7 +9430,7 @@ op_logical_neg
 id|pmc
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 id|psl
 op_assign
@@ -9483,11 +9483,11 @@ op_eq
 id|MCAST_INCLUDE
 op_logical_and
 id|i
-OL
+op_ge
 id|psl-&gt;sl_count
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -9497,14 +9497,14 @@ op_eq
 id|MCAST_EXCLUDE
 op_logical_and
 id|i
-op_ge
+OL
 id|psl-&gt;sl_count
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A socket is closing.&n; */
