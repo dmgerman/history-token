@@ -2843,6 +2843,14 @@ r_goto
 id|out_putfd
 suffix:semicolon
 )brace
+id|set_close_on_exec
+c_func
+(paren
+id|fd
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|fd_install
 c_func
 (paren
