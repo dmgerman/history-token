@@ -59,6 +59,7 @@ id|highend_pfn
 suffix:semicolon
 r_static
 r_int
+id|noinline
 id|do_test_wp_bit
 c_func
 (paren
@@ -2680,6 +2681,7 @@ multiline_comment|/*&n; * This function cannot be __init, since exceptions don&s
 DECL|function|do_test_wp_bit
 r_static
 r_int
+id|noinline
 id|do_test_wp_bit
 c_func
 (paren
