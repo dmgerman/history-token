@@ -6776,10 +6776,6 @@ op_assign
 op_amp
 id|acsi_fops
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

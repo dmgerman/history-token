@@ -329,10 +329,6 @@ op_assign
 op_amp
 id|xd_fops
 comma
-dot
-id|nr_real
-op_assign
-l_int|1
 )brace
 comma
 (brace
@@ -369,10 +365,6 @@ op_assign
 op_amp
 id|xd_fops
 comma
-dot
-id|nr_real
-op_assign
-l_int|1
 )brace
 )brace
 suffix:semicolon

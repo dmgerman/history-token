@@ -5059,10 +5059,6 @@ suffix:semicolon
 id|sd_template.nr_dev
 op_increment
 suffix:semicolon
-id|gd-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|gd-&gt;de_arr
 (braket
 l_int|0

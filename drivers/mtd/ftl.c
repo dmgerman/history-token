@@ -5408,10 +5408,6 @@ op_assign
 op_amp
 id|ftl_blk_fops
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|partition-&gt;mtd
 op_assign
 id|mtd

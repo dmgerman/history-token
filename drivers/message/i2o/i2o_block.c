@@ -6572,10 +6572,6 @@ op_assign
 op_amp
 id|i2ob_fops
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;major_name
 op_assign
 id|i2o_names

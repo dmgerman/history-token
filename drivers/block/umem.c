@@ -5094,10 +5094,6 @@ op_lshift
 id|MM_SHIFT
 )paren
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;major
 op_assign
 id|major_nr

@@ -529,10 +529,6 @@ id|gd-&gt;major_name
 op_assign
 id|name
 suffix:semicolon
-id|gd-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|nftl-&gt;disk
 op_assign
 id|gd

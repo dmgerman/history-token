@@ -3878,15 +3878,6 @@ id|drive
 op_increment
 )paren
 (brace
-id|hd_gendisk
-(braket
-id|drive
-)braket
-dot
-id|nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

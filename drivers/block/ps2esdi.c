@@ -585,9 +585,6 @@ suffix:colon
 op_amp
 id|ps2esdi_fops
 comma
-id|nr_real
-suffix:colon
-l_int|1
 )brace
 comma
 (brace
@@ -618,9 +615,6 @@ suffix:colon
 op_amp
 id|ps2esdi_fops
 comma
-id|nr_real
-suffix:colon
-l_int|1
 )brace
 )brace
 suffix:semicolon

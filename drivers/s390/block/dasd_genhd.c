@@ -356,10 +356,6 @@ id|disk-&gt;minor_shift
 op_assign
 id|DASD_PARTN_BITS
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;fops
 op_assign
 op_amp

@@ -250,11 +250,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* [indexed by minor] */
-DECL|member|nr_real
-r_int
-id|nr_real
-suffix:semicolon
-multiline_comment|/* number of real devices */
 DECL|member|next
 r_struct
 id|gendisk

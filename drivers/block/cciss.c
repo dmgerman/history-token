@@ -12426,10 +12426,6 @@ op_lshift
 id|NWD_SHIFT
 )paren
 suffix:semicolon
-id|disk-&gt;nr_real
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -3262,10 +3262,6 @@ op_assign
 op_amp
 id|pd_fops
 suffix:semicolon
-id|PD.gd.nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|PD.gd.major
 op_assign
 id|major

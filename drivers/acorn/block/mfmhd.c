@@ -5324,15 +5324,6 @@ id|i
 op_increment
 )paren
 (brace
-id|mfm_gendisk
-(braket
-id|i
-)braket
-dot
-id|nr_real
-op_assign
-l_int|1
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren
