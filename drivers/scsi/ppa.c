@@ -699,12 +699,6 @@ l_int|0x80
 )paren
 suffix:semicolon
 multiline_comment|/* Done configuration */
-id|ppa_pb_release
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -715,6 +709,12 @@ id|dev
 )paren
 )paren
 (brace
+id|ppa_pb_release
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|parport_unregister_device
 c_func
 (paren
@@ -724,6 +724,12 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|ppa_pb_release
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* now the glue ... */
 r_switch
 c_cond
@@ -2677,28 +2683,6 @@ id|ppb
 op_assign
 id|dev-&gt;base
 suffix:semicolon
-macro_line|#if defined(CONFIG_PARPORT) || defined(CONFIG_PARPORT_MODULE)
-r_if
-c_cond
-(paren
-id|ppa_pb_claim
-c_func
-(paren
-id|dev
-)paren
-)paren
-r_while
-c_loop
-(paren
-id|dev-&gt;p_busy
-)paren
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* We can safe schedule here */
-macro_line|#endif
 id|ppa_disconnect
 c_func
 (paren
@@ -2811,12 +2795,6 @@ id|retv
 id|retv
 op_assign
 id|device_check
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|ppa_pb_release
 c_func
 (paren
 id|dev
