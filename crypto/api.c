@@ -83,6 +83,15 @@ id|alg
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|name
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|down_read
 c_func
 (paren
