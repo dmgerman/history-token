@@ -871,10 +871,11 @@ DECL|member|callback
 id|ata_qc_cb_t
 id|callback
 suffix:semicolon
-DECL|member|sem
+DECL|member|waiting
 r_struct
-id|semaphore
-id|sem
+id|completion
+op_star
+id|waiting
 suffix:semicolon
 DECL|member|private_data
 r_void

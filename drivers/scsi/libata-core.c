@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
@@ -7950,13 +7951,6 @@ id|qc-&gt;cursg_ofs
 op_assign
 l_int|0
 suffix:semicolon
-id|init_MUTEX_LOCKED
-c_func
-(paren
-op_amp
-id|qc-&gt;sem
-)paren
-suffix:semicolon
 id|ata_tf_init
 c_func
 (paren
@@ -8178,11 +8172,15 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|up
+r_if
+c_cond
+(paren
+id|qc-&gt;waiting
+)paren
+id|complete
 c_func
 (paren
-op_amp
-id|qc-&gt;sem
+id|qc-&gt;waiting
 )paren
 suffix:semicolon
 r_if
