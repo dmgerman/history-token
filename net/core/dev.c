@@ -5671,11 +5671,6 @@ op_star
 id|dev_get_idx
 c_func
 (paren
-r_struct
-id|seq_file
-op_star
-id|seq
-comma
 id|loff_t
 id|pos
 )paren
@@ -5755,8 +5750,6 @@ c_cond
 id|dev_get_idx
 c_func
 (paren
-id|seq
-comma
 op_star
 id|pos
 op_minus
