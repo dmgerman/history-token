@@ -8593,11 +8593,13 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|user_instruction_dump
+r_static
 r_void
 id|user_instruction_dump
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|pc
 )paren
@@ -9175,6 +9177,7 @@ id|user_instruction_dump
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -9306,6 +9309,7 @@ id|insn
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|pc
@@ -9460,7 +9464,6 @@ r_int
 id|sfsr
 )paren
 suffix:semicolon
-r_return
 id|kernel_unaligned_trap
 c_func
 (paren
@@ -9480,6 +9483,8 @@ id|sfar
 comma
 id|sfsr
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 id|info.si_signo

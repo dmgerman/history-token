@@ -495,6 +495,7 @@ id|TIF_32BIT
 (brace
 r_struct
 id|reg_window32
+id|__user
 op_star
 id|win32
 suffix:semicolon
@@ -503,6 +504,7 @@ op_assign
 (paren
 r_struct
 id|reg_window32
+id|__user
 op_star
 )paren
 (paren
@@ -540,6 +542,7 @@ r_else
 (brace
 r_struct
 id|reg_window
+id|__user
 op_star
 id|win
 suffix:semicolon
@@ -548,6 +551,7 @@ op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -1730,6 +1734,7 @@ id|TIF_32BIT
 (brace
 r_struct
 id|reg_window32
+id|__user
 op_star
 id|win32
 suffix:semicolon
@@ -1738,6 +1743,7 @@ op_assign
 (paren
 r_struct
 id|reg_window32
+id|__user
 op_star
 )paren
 (paren
@@ -1775,6 +1781,7 @@ r_else
 (brace
 r_struct
 id|reg_window
+id|__user
 op_star
 id|win
 suffix:semicolon
@@ -1783,6 +1790,7 @@ op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren
@@ -2153,6 +2161,7 @@ l_int|32
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|addr
@@ -2167,6 +2176,7 @@ id|first
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -2184,6 +2194,7 @@ l_int|32
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -2202,6 +2213,7 @@ id|second
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -2362,6 +2374,7 @@ l_int|0
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|addr
@@ -2399,6 +2412,7 @@ id|i
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -2825,6 +2839,7 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|reg
@@ -2849,6 +2864,7 @@ comma
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|reg
@@ -2865,6 +2881,12 @@ c_func
 (paren
 l_int|0
 comma
+(paren
+r_int
+r_int
+id|__user
+op_star
+)paren
 id|reg
 )paren
 suffix:semicolon
@@ -2884,6 +2906,12 @@ c_func
 (paren
 l_int|0
 comma
+(paren
+r_int
+r_int
+id|__user
+op_star
+)paren
 id|reg
 op_plus
 l_int|1
@@ -2995,6 +3023,7 @@ id|insn
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|pc
@@ -3038,6 +3067,7 @@ id|first
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|sfar
@@ -3050,6 +3080,7 @@ id|second
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -3404,6 +3435,7 @@ id|insn
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|pc
@@ -3557,6 +3589,7 @@ l_int|32
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|sfar
@@ -3571,6 +3604,7 @@ id|value
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
