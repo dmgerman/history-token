@@ -392,10 +392,10 @@ comma
 id|ULPD_SOFT_REQ_REG
 )paren
 suffix:semicolon
-id|outl
+id|writel
 c_func
 (paren
-id|inl
+id|readl
 c_func
 (paren
 id|ULPD_STATUS_REQ_REG
@@ -840,7 +840,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Disable pulldown on integraded transceiver DP */
-id|outl
+id|writel
 c_func
 (paren
 id|val
@@ -882,7 +882,7 @@ l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* 0 or 3, 6-wire DAT/SE0, TRM p 15-159 */
-id|outl
+id|writel
 c_func
 (paren
 id|val
@@ -950,7 +950,7 @@ id|val
 op_or_assign
 id|SRP_VBUS
 suffix:semicolon
-id|outl
+id|writel
 c_func
 (paren
 id|val
@@ -959,7 +959,7 @@ id|OTG_SYSCON_2
 )paren
 suffix:semicolon
 multiline_comment|/* Enable OTG idle */
-singleline_comment|//outl(inl(OTG_SYSCON_1) | OTG_IDLE_EN, OTG_SYSCON_1);
+singleline_comment|//writel(readl(OTG_SYSCON_1) | OTG_IDLE_EN, OTG_SYSCON_1);
 r_return
 l_int|0
 suffix:semicolon
@@ -2072,7 +2072,7 @@ dot
 id|irq
 op_assign
 (brace
-id|INT_OHCI
+id|INT_USB_HHC_1
 comma
 )brace
 comma
