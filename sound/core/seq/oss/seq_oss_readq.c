@@ -164,13 +164,6 @@ c_cond
 id|q
 )paren
 (brace
-id|snd_seq_oss_readq_clear
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-multiline_comment|/* to be sure */
 r_if
 c_cond
 (paren
