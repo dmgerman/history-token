@@ -4180,6 +4180,12 @@ id|error
 op_eq
 op_minus
 id|EEXIST
+op_logical_and
+id|S_ISDIR
+c_func
+(paren
+id|old-&gt;mode
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * devfs_mk_dir() of an already-existing directory will&n;&t;&t; * return success.&n;&t;&t; */
@@ -4187,11 +4193,8 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|devfs_put
-c_func
-(paren
-id|old
-)paren
+r_goto
+id|out_put
 suffix:semicolon
 )brace
 r_else
