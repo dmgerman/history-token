@@ -2926,6 +2926,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Converts a frequency (that might not necessarily be a multiple of 200) */
 multiline_comment|/* to a fid.                                                              */
+r_static
 id|u32
 DECL|function|find_closest_fid
 id|find_closest_fid
