@@ -18,6 +18,7 @@ singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;devs.h&quot;
+macro_line|#include &quot;cpu.h&quot;
 multiline_comment|/* macros for virtual address mods for the io space entries */
 DECL|macro|VA_C5
 mdefine_line|#define VA_C5(item) ((item) + BAST_VAM_CS5)
@@ -1029,6 +1030,88 @@ comma
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* NOR Flash on BAST board */
+DECL|variable|bast_nor_resource
+r_static
+r_struct
+id|resource
+id|bast_nor_resource
+(braket
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|S3C2410_CS1
+op_plus
+l_int|0x4000000
+comma
+dot
+id|end
+op_assign
+id|S3C2410_CS1
+op_plus
+l_int|0x4000000
+op_plus
+(paren
+l_int|32
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|bast_device_nor
+r_static
+r_struct
+id|platform_device
+id|bast_device_nor
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bast-nor&quot;
+comma
+dot
+id|id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|num_resources
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_nor_resource
+)paren
+comma
+dot
+id|resource
+op_assign
+id|bast_nor_resource
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Standard BAST devices */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -1055,6 +1138,11 @@ comma
 op_amp
 id|s3c_device_iis
 comma
+op_amp
+id|s3c_device_rtc
+comma
+op_amp
+id|bast_device_nor
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -1089,7 +1177,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_map_io
+id|s3c24xx_init_io
 c_func
 (paren
 id|bast_iodesc
@@ -1101,9 +1189,17 @@ id|bast_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_uartcfgs
-op_assign
+id|s3c2410_init_uarts
+c_func
+(paren
 id|bast_uartcfgs
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_uartcfgs
+)paren
+)paren
 suffix:semicolon
 id|s3c2410_set_board
 c_func
