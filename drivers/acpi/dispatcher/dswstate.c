@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 71 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -69,7 +69,7 @@ c_cond
 (paren
 id|index
 op_ge
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -232,7 +232,7 @@ c_cond
 (paren
 id|index
 op_ge
-id|OBJ_MAX_OPERAND
+id|ACPI_OBJ_MAX_OPERAND
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -417,7 +417,7 @@ c_loop
 (paren
 id|index
 op_assign
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 suffix:semicolon
 id|index
 suffix:semicolon
@@ -760,7 +760,7 @@ c_cond
 (paren
 id|state-&gt;results.num_results
 op_eq
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1037,7 +1037,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 suffix:semicolon
 id|i
 op_increment
@@ -1100,7 +1100,7 @@ c_cond
 (paren
 id|walk_state-&gt;num_operands
 op_ge
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -2019,7 +2019,7 @@ id|acpi_ds_method_data_init_args
 (paren
 id|params
 comma
-id|MTH_NUM_ARGS
+id|ACPI_METHOD_NUM_ARGS
 comma
 id|walk_state
 )paren

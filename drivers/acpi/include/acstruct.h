@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 20 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -117,7 +117,7 @@ r_struct
 id|acpi_node
 id|arguments
 (braket
-id|MTH_NUM_ARGS
+id|ACPI_METHOD_NUM_ARGS
 )braket
 suffix:semicolon
 multiline_comment|/* Control method arguments */
@@ -139,7 +139,7 @@ r_struct
 id|acpi_node
 id|local_variables
 (braket
-id|MTH_NUM_LOCALS
+id|ACPI_METHOD_NUM_LOCALS
 )braket
 suffix:semicolon
 multiline_comment|/* Control method locals */
@@ -182,7 +182,7 @@ id|acpi_operand_obj
 op_star
 id|operands
 (braket
-id|OBJ_NUM_OPERANDS
+id|ACPI_OBJ_NUM_OPERANDS
 op_plus
 l_int|1
 )braket

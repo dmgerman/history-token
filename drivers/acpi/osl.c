@@ -1550,7 +1550,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* TODO: Rewrite this code!!! */
+multiline_comment|/* TODO: Change code to take advantage of driver model more */
 r_void
 DECL|function|acpi_os_derive_pci_id
 id|acpi_os_derive_pci_id
@@ -2150,13 +2150,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|schedule_work
 c_func
 (paren
 id|task
 )paren
-OL
-l_int|0
 )paren
 (brace
 id|ACPI_DEBUG_PRINT

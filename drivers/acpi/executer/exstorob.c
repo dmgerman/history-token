@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 46 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -47,13 +47,21 @@ id|length
 op_assign
 id|source_desc-&gt;buffer.length
 suffix:semicolon
-multiline_comment|/*&n;&t; * If target is a buffer of length zero, allocate a new&n;&t; * buffer of the proper length&n;&t; */
+multiline_comment|/*&n;&t; * If target is a buffer of length zero or is a static buffer,&n;&t; * allocate a new buffer of the proper length&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|target_desc-&gt;buffer.length
 op_eq
 l_int|0
+)paren
+op_logical_or
+(paren
+id|target_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
 )paren
 (brace
 id|target_desc-&gt;buffer.pointer
@@ -76,6 +84,11 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+id|target_desc-&gt;common.flags
+op_and_assign
+op_complement
+id|AOPOBJ_STATIC_POINTER
+suffix:semicolon
 id|target_desc-&gt;buffer.length
 op_assign
 id|length
@@ -185,16 +198,27 @@ id|length
 op_assign
 id|source_desc-&gt;string.length
 suffix:semicolon
-multiline_comment|/*&n;&t; * Setting a string value replaces the old string&n;&t; */
+multiline_comment|/*&n;&t; * Replace existing string value if it will fit and the string&n;&t; * pointer is not a static pointer (part of an ACPI table)&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|length
 OL
 id|target_desc-&gt;string.length
 )paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|target_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
+)paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t; * String will fit in existing buffer.&n;&t;&t; * Clear old string and copy in the new one&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * String will fit in existing non-static buffer.&n;&t;&t; * Clear old string and copy in the new one&n;&t;&t; */
 id|ACPI_MEMSET
 (paren
 id|target_desc-&gt;string.pointer
@@ -269,6 +293,11 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+id|target_desc-&gt;common.flags
+op_and_assign
+op_complement
+id|AOPOBJ_STATIC_POINTER
+suffix:semicolon
 id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;string.pointer

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -63,9 +63,9 @@ id|ACPI_SYS_MODE_ACPI
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_OK
+id|ACPI_DB_INIT
 comma
-l_string|&quot;Already in ACPI mode.&bslash;n&quot;
+l_string|&quot;System is already in ACPI mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -89,11 +89,9 @@ id|status
 )paren
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_FATAL
-comma
 l_string|&quot;Could not transition to ACPI mode.&bslash;n&quot;
 )paren
 )paren
@@ -107,7 +105,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_OK
+id|ACPI_DB_INIT
 comma
 l_string|&quot;Transition to ACPI mode successful&bslash;n&quot;
 )paren
@@ -174,9 +172,9 @@ id|ACPI_SYS_MODE_LEGACY
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_OK
+id|ACPI_DB_INIT
 comma
-l_string|&quot;Already in LEGACY mode.&bslash;n&quot;
+l_string|&quot;System is already in legacy (non-ACPI) mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -205,7 +203,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not transition to LEGACY mode.&quot;
+l_string|&quot;Could not exit ACPI mode to legacy mode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -218,9 +216,9 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_OK
+id|ACPI_DB_INIT
 comma
-l_string|&quot;Transition to LEGACY mode successful&bslash;n&quot;
+l_string|&quot;ACPI mode disabled&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
