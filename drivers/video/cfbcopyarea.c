@@ -76,6 +76,8 @@ comma
 id|end_mask
 comma
 id|last
+comma
+id|tmp
 suffix:semicolon
 r_int
 r_int
@@ -97,8 +99,6 @@ op_star
 id|dst1
 suffix:semicolon
 r_int
-id|tmp
-comma
 id|height
 suffix:semicolon
 multiline_comment|/* clip the destination */
