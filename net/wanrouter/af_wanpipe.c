@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* af_wanpipe.c&t;WANPIPE(tm) Secure Socket Layer.&n;*&n;* Author:&t;Nenad Corbic&t;&lt;ncorbic@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Due Credit:&n;*               Wanpipe socket layer is based on Packet and &n;*               the X25 socket layers. The above sockets were &n;*               used for the specific use of Sangoma Technoloiges &n;*               API programs. &n;*               Packet socket Authors: Ross Biro, Fred N. van Kempen and &n;*                                      Alan Cox.&n;*               X25 socket Author: Jonathan Naylor.&n;* ============================================================================&n;* Apr 25, 2000  Nenad Corbic     o Added the ability to send zero length packets.&n;* Mar 13, 2000  Nenad Corbic&t; o Added a tx buffer check via ioctl call.&n;* Mar 06, 2000  Nenad Corbic     o Fixed the corrupt sock lcn problem.&n;*                                  Server and client applicaton can run&n;*                                  simultaneously without conflicts.&n;* Feb 29, 2000  Nenad Corbic     o Added support for PVC protocols, such as&n;*                                  CHDLC, Frame Relay and HDLC API.&n;* Jan 17, 2000 &t;Nenad Corbic&t; o Initial version, based on AF_PACKET socket.&n;*&t;&t;&t;           X25API support only. &n;*&n;******************************************************************************/
+multiline_comment|/*****************************************************************************&n;* af_wanpipe.c&t;WANPIPE(tm) Secure Socket Layer.&n;*&n;* Author:&t;Nenad Corbic&t;&lt;ncorbic@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Due Credit:&n;*               Wanpipe socket layer is based on Packet and &n;*               the X25 socket layers. The above sockets were &n;*               used for the specific use of Sangoma Technoloiges &n;*               API programs. &n;*               Packet socket Authors: Ross Biro, Fred N. van Kempen and &n;*                                      Alan Cox.&n;*               X25 socket Author: Jonathan Naylor.&n;* ============================================================================&n;* Mar 15, 2002  Arnaldo C. Melo  o Use wp_sk()-&gt;num, as it isnt anymore in sock&n;* Apr 25, 2000  Nenad Corbic     o Added the ability to send zero length packets.&n;* Mar 13, 2000  Nenad Corbic&t; o Added a tx buffer check via ioctl call.&n;* Mar 06, 2000  Nenad Corbic     o Fixed the corrupt sock lcn problem.&n;*                                  Server and client applicaton can run&n;*                                  simultaneously without conflicts.&n;* Feb 29, 2000  Nenad Corbic     o Added support for PVC protocols, such as&n;*                                  CHDLC, Frame Relay and HDLC API.&n;* Jan 17, 2000 &t;Nenad Corbic&t; o Initial version, based on AF_PACKET socket.&n;*&t;&t;&t;           X25API support only. &n;*&n;******************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -62,8 +62,6 @@ r_struct
 id|sock
 op_star
 id|wanpipe_sklist
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|wanpipe_sklist_lock
 r_static
@@ -81,8 +79,6 @@ r_static
 r_int
 r_int
 id|wanpipe_tx_critical
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* Private wanpipe socket structures. */
@@ -141,8 +137,6 @@ DECL|variable|sk_count
 r_static
 r_int
 id|sk_count
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_struct
@@ -154,8 +148,6 @@ r_static
 r_int
 r_int
 id|find_free_critical
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void
@@ -916,7 +908,7 @@ id|newsk-&gt;zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|newsk-&gt;num
+id|newwp-&gt;num
 op_assign
 id|htons
 c_func
@@ -934,7 +926,7 @@ id|newsk
 comma
 id|dev
 comma
-id|newsk-&gt;num
+id|newwp-&gt;num
 )paren
 )paren
 (brace
@@ -1122,9 +1114,21 @@ id|sk-&gt;protocol
 op_assign
 id|osk-&gt;protocol
 suffix:semicolon
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_assign
-id|osk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|osk
+)paren
+op_member_access_from_pointer
+id|num
 suffix:semicolon
 id|sk-&gt;rcvbuf
 op_assign
@@ -1401,6 +1405,14 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|wp
+op_assign
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1415,7 +1427,7 @@ id|sk-&gt;bound_dev_if
 suffix:semicolon
 id|proto
 op_assign
-id|sk-&gt;num
+id|wp-&gt;num
 suffix:semicolon
 id|addr
 op_assign
@@ -1759,14 +1771,6 @@ op_amp
 id|sk-&gt;write_queue
 comma
 id|skb
-)paren
-suffix:semicolon
-id|wp
-op_assign
-id|wp_sk
-c_func
-(paren
-id|sk
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -3000,7 +3004,7 @@ multiline_comment|/*&n;&t; *&t;Unhook packet receive handler.&n;&t; */
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp-&gt;num
 op_eq
 id|htons
 c_func
@@ -3811,7 +3815,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|htons
 c_func
@@ -4444,6 +4454,16 @@ r_int
 id|protocol
 )paren
 (brace
+id|wanpipe_opt
+op_star
+id|wp
+op_assign
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|wanpipe_common_t
 op_star
 id|chan
@@ -4470,7 +4490,7 @@ r_goto
 id|bind_unlock_exit
 suffix:semicolon
 )brace
-id|sk-&gt;num
+id|wp-&gt;num
 op_assign
 id|protocol
 suffix:semicolon
@@ -4522,7 +4542,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp-&gt;num
 op_eq
 id|htons
 c_func
@@ -4579,7 +4599,7 @@ multiline_comment|/* X25 Specific option */
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp-&gt;num
 op_eq
 id|htons
 c_func
@@ -4679,6 +4699,16 @@ op_star
 id|sk
 op_assign
 id|sock-&gt;sk
+suffix:semicolon
+id|wanpipe_opt
+op_star
+id|wp
+op_assign
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|netdevice_t
 op_star
@@ -4845,7 +4875,7 @@ c_cond
 (paren
 id|sll-&gt;sll_protocol
 )paren
-id|sk-&gt;num
+id|wp-&gt;num
 op_assign
 id|sll-&gt;sll_protocol
 suffix:semicolon
@@ -5039,7 +5069,7 @@ id|sll-&gt;sll_protocol
 ques
 c_cond
 suffix:colon
-id|sk-&gt;num
+id|wp-&gt;num
 )paren
 suffix:semicolon
 )brace
@@ -5372,7 +5402,13 @@ id|sk-&gt;family
 op_assign
 id|PF_WANPIPE
 suffix:semicolon
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_assign
 id|protocol
 suffix:semicolon
@@ -5845,7 +5881,13 @@ id|sk-&gt;bound_dev_if
 suffix:semicolon
 id|sll-&gt;sll_protocol
 op_assign
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 suffix:semicolon
 id|dev
 op_assign
@@ -6087,7 +6129,7 @@ id|dev-&gt;ifindex
 op_eq
 id|sk-&gt;bound_dev_if
 op_logical_and
-id|sk-&gt;num
+id|po-&gt;num
 op_logical_and
 op_logical_neg
 id|sk-&gt;zapped
@@ -7965,7 +8007,13 @@ multiline_comment|/* This check blocks the user process if there is   &n;&t; * a
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|htons
 c_func
@@ -8064,7 +8112,13 @@ multiline_comment|/* This is x25 specific area if protocol doesn&squot;t&n;     
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_ne
 id|htons
 c_func
@@ -8306,7 +8360,7 @@ multiline_comment|/* This is x25 specific area if protocol doesn&squot;t&n;     
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp-&gt;num
 op_ne
 id|htons
 c_func
@@ -8932,7 +8986,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_ne
 id|htons
 c_func
@@ -9268,7 +9328,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|wp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_ne
 id|htons
 c_func

@@ -297,6 +297,11 @@ DECL|member|packet_sent
 id|atomic_t
 id|packet_sent
 suffix:semicolon
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|wp_sk
