@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/arch/i386/kernel/edd.c&n; *  Copyright (C) 2002 Dell Computer Corporation&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * BIOS Enhanced Disk Drive Services (EDD)&n; * conformant to T13 Committee www.t13.org&n; *   projects 1572D, 1484D, 1386D, 1226DT&n; *&n; * This code takes information provided by BIOS EDD calls&n; * fn41 - Check Extensions Present and&n; * fn48 - Get Device Parametes with EDD extensions&n; * made in setup.S, copied to safe structures in setup.c,&n; * and presents it in driverfs.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
-multiline_comment|/*&n; * Known issues:&n; * - module unload leaves a directory around.  Seems related to&n; *   creating symlinks in that directory.  Seen on kernel 2.5.41.&n; * - refcounting of struct device objects could be improved.&n; *&n; * TODO:&n; * - Add IDE and USB disk device support&n; * - when driverfs model of discs and partitions changes,&n; *   update symlink accordingly.&n; * - Get symlink creator helper functions exported from&n; *   drivers/base instead of duplicating them here.&n; * - move edd.[ch] to better locations if/when one is decided&n; */
+multiline_comment|/*&n; * Known issues:&n; * - module unload leaves directories around if a symlink was&n; *   created in that directory.  Confirmed is a driverfs bug, not&n; *   ours.  Seen on kernel 2.5.41.&n; * - refcounting of struct device objects could be improved.&n; *&n; * TODO:&n; * - Add IDE and USB disk device support&n; * - Get symlink creator helper functions exported from&n; *   drivers/base instead of duplicating them here.&n; * - move edd.[ch] to better locations if/when one is decided&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -88,11 +88,6 @@ r_struct
 id|edd_info
 op_star
 id|info
-suffix:semicolon
-DECL|member|node
-r_struct
-id|list_head
-id|node
 suffix:semicolon
 DECL|member|dir
 r_struct
@@ -4107,36 +4102,11 @@ op_star
 id|edev
 )paren
 (brace
-id|driverfs_remove_file
-c_func
-(paren
-op_amp
-id|edev-&gt;dir
-comma
-l_string|&quot;pci_dev&quot;
-)paren
-suffix:semicolon
-id|driverfs_remove_file
-c_func
-(paren
-op_amp
-id|edev-&gt;dir
-comma
-l_string|&quot;disc&quot;
-)paren
-suffix:semicolon
 id|driverfs_remove_dir
 c_func
 (paren
 op_amp
 id|edev-&gt;dir
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|edev-&gt;node
 )paren
 suffix:semicolon
 )brace
