@@ -772,14 +772,62 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
-multiline_comment|/* the urb might have been killed. */
-r_if
+r_int
+id|retval
+suffix:semicolon
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - urb shutting down with status: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -972,7 +1020,31 @@ id|BELKIN_SA_LSR_BI
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/* INT urbs are automatically re-submitted */
+m_exit
+suffix:colon
+id|retval
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|retval
+)paren
+suffix:semicolon
 )brace
 DECL|function|belkin_sa_set_termios
 r_static
