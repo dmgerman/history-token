@@ -32,10 +32,10 @@ DECL|macro|PCI_ID_SYM53C895A
 mdefine_line|#define PCI_ID_SYM53C895A&t;0x12
 DECL|macro|PCI_ID_SYM53C875A
 mdefine_line|#define PCI_ID_SYM53C875A&t;0x13
-DECL|macro|PCI_ID_LSI53C1010
-mdefine_line|#define PCI_ID_LSI53C1010&t;0x20
-DECL|macro|PCI_ID_LSI53C1010_2
-mdefine_line|#define PCI_ID_LSI53C1010_2&t;0x21
+DECL|macro|PCI_ID_LSI53C1010_33
+mdefine_line|#define PCI_ID_LSI53C1010_33&t;0x20
+DECL|macro|PCI_ID_LSI53C1010_66
+mdefine_line|#define PCI_ID_LSI53C1010_66&t;0x21
 DECL|macro|PCI_ID_LSI53C1510D
 mdefine_line|#define PCI_ID_LSI53C1510D&t;0xa
 multiline_comment|/*&n; *&t;SYM53C8XX device features descriptor.&n; */
