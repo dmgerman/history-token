@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/arch/sh/boards/systemh/setup.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; * Copyright (C) 2003  Paul Mundt&n; *&n; * Hitachi SystemH Support.&n; *&n; * Modified for 7751 SystemH by Jonathan Short.&n; *&n; * Rewritten for 2.6 by Paul Mundt.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/arch/sh/boards/systemh/setup.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; * Copyright (C) 2003  Paul Mundt&n; *&n; * Hitachi SystemH Support.&n; *&n; * Modified for 7751 SystemH by Jonathan Short.&n; *&n; * Rewritten for 2.6 by Paul Mundt.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach/7751systemh.h&gt;
 macro_line|#include &lt;asm/mach/io.h&gt;

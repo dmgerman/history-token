@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/arch/sh/boards/systemh/irq.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Hitachi SystemH Support.&n; *&n; * Modified for 7751 SystemH by&n; * Jonathan Short.&n; */
+multiline_comment|/*&n; * linux/arch/sh/boards/systemh/irq.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Hitachi SystemH Support.&n; *&n; * Modified for 7751 SystemH by&n; * Jonathan Short.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;

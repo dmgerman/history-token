@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/arch/sh/boards/systemh/io.c&n; *&n; * Copyright (C) 2001  Ian da Silva, Jeremy Siegel&n; * Based largely on io_se.c.&n; *&n; * I/O routine for Hitachi 7751 Systemh.&n; *&n; */
+multiline_comment|/*&n; * linux/arch/sh/boards/systemh/io.c&n; *&n; * Copyright (C) 2001  Ian da Silva, Jeremy Siegel&n; * Based largely on io_se.c.&n; *&n; * I/O routine for Hitachi 7751 Systemh.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/systemh/7751systemh.h&gt;
@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;../../drivers/pci/pci-sh7751.h&quot;
-multiline_comment|/*&n; * The 7751 SystemH Engine uses the built-in PCI controller (PCIC)&n; * of the 7751 processor, and has a SuperIO accessible on its memory &n; * bus.&n; */
+multiline_comment|/*&n; * The 7751 SystemH Engine uses the built-in PCI controller (PCIC)&n; * of the 7751 processor, and has a SuperIO accessible on its memory&n; * bus.&n; */
 DECL|macro|PCIIOBR
 mdefine_line|#define PCIIOBR&t;&t;(volatile long *)PCI_REG(SH7751_PCIIOBR)
 DECL|macro|PCIMBR
@@ -18,7 +18,7 @@ mdefine_line|#define PCI_MEM_AREA&t;SH7751_PCI_CONFIG_BASE
 DECL|macro|PCI_IOMAP
 mdefine_line|#define PCI_IOMAP(adr)&t;(PCI_IO_AREA + (adr &amp; ~SH7751_PCIIOBR_MASK))
 DECL|macro|ETHER_IOMAP
-mdefine_line|#define ETHER_IOMAP(adr) (0xB3000000 + (adr)) /*map to 16bits access area&n;                                                of smc lan chip*/ 
+mdefine_line|#define ETHER_IOMAP(adr) (0xB3000000 + (adr)) /*map to 16bits access area&n;                                                of smc lan chip*/
 DECL|macro|maybebadio
 mdefine_line|#define maybebadio(name,port) &bslash;&n;  printk(&quot;bad PC-like io %s for port 0x%lx at 0x%08x&bslash;n&quot;, &bslash;&n;&t; #name, (port), (__u32) __builtin_return_address(0))
 DECL|function|delay
