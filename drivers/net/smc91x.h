@@ -46,6 +46,36 @@ DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __port = (a) + (r);&t;&t;&t;&bslash;&n;&t;&t;u16 *__p = (u16 *)(p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __l = (l);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;while (__l &gt; 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;/* Believe it or not, the swab isn&squot;t needed. */&t;&bslash;&n;&t;&t;&t;outw( /* swab16 */ (*__p++), __port);&t;&t;&bslash;&n;&t;&t;&t;__l--;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|set_irq_type
 mdefine_line|#define set_irq_type(irq, type)
+macro_line|#elif defined(CONFIG_SA1100_PLEB)
+multiline_comment|/* We can only do 16-bit reads and writes in the static memory space. */
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;1
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_IO_SHIFT
+mdefine_line|#define SMC_IO_SHIFT&t;&t;0
+DECL|macro|SMC_NOWAIT
+mdefine_line|#define SMC_NOWAIT&t;&t;1
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;inb((a) + (r))
+DECL|macro|SMC_insb
+mdefine_line|#define SMC_insb(a, r, p, l)&t;insb((a) + (r), p, (l))
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;inw((a) + (r))
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r), p, l)
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;outb(v, (a) + (r))
+DECL|macro|SMC_outsb
+mdefine_line|#define SMC_outsb(a, r, p, l)&t;outsb((a) + (r), p, (l))
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;outw(v, (a) + (r))
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r), p, l)
+DECL|macro|set_irq_type
+mdefine_line|#define set_irq_type(irq, type) do {} while (0)
 macro_line|#elif defined(CONFIG_SA1100_ASSABET)
 macro_line|#include &lt;asm/arch/neponset.h&gt;
 multiline_comment|/* We can only do 8-bit reads and writes in the static memory space. */
@@ -217,6 +247,89 @@ DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r) - 0xa0000000, p, l)
 DECL|macro|set_irq_type
 mdefine_line|#define set_irq_type(irq, type)&t;do {} while(0)
+DECL|macro|RPC_LSA_DEFAULT
+mdefine_line|#define RPC_LSA_DEFAULT&t;&t;RPC_LED_TX_RX
+DECL|macro|RPC_LSB_DEFAULT
+mdefine_line|#define RPC_LSB_DEFAULT&t;&t;RPC_LED_100_10
+macro_line|#elif&t;defined(CONFIG_MACH_LPD7A400) || defined(CONFIG_MACH_LPD7A404)
+multiline_comment|/* The LPD7A40X_IOBARRIER is necessary to overcome a mismatch between&n; * the way that the CPU handles chip selects and the way that the SMC&n; * chip expects the chip select to operate.  Refer to&n; * Documentation/arm/Sharp-LH/IOBarrier for details.  The read from&n; * IOBARRIER is a byte as a least-common denominator of possible&n; * regions to use as the barrier.  It would be wasteful to read 32&n; * bits from a byte oriented region.&n; *&n; * There is no explicit protection against interrupts intervening&n; * between the writew and the IOBARRIER.  In SMC ISR there is a&n; * preamble that performs an IOBARRIER in the extremely unlikely event&n; * that the driver interrupts itself between a writew to the chip an&n; * the IOBARRIER that follows *and* the cache is large enough that the&n; * first off-chip access while handing the interrupt is to the SMC&n; * chip.  Other devices in the same address space as the SMC chip must&n; * be aware of the potential for trouble and perform a similar&n; * IOBARRIER on entry to their ISR.&n; */
+macro_line|#include &lt;asm/arch/constants.h&gt;&t;/* IOBARRIER_VIRT */
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;0
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_NOWAIT
+mdefine_line|#define SMC_NOWAIT&t;&t;0
+DECL|macro|LPD7A40X_IOBARRIER
+mdefine_line|#define LPD7A40X_IOBARRIER&t;readb (IOBARRIER_VIRT)
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a,r)&t;&t;readw ((void*) ((a) + (r)))
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a,r,p,l)&t;readsw ((void*) ((a) + (r)), p, l)
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v,a,r)&t;     ({ writew ((v), (a) + (r)); LPD7A40X_IOBARRIER; })
+DECL|function|SMC_outsw
+r_static
+r_inline
+r_void
+id|SMC_outsw
+(paren
+r_int
+r_int
+id|a
+comma
+r_int
+id|r
+comma
+r_int
+r_char
+op_star
+id|p
+comma
+r_int
+id|l
+)paren
+(brace
+r_int
+r_int
+op_star
+id|ps
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|p
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|l
+op_decrement
+OG
+l_int|0
+)paren
+(brace
+id|writew
+(paren
+op_star
+id|ps
+op_increment
+comma
+id|a
+op_plus
+id|r
+)paren
+suffix:semicolon
+id|LPD7A40X_IOBARRIER
+suffix:semicolon
+)brace
+)brace
+DECL|macro|SMC_INTERRUPT_PREAMBLE
+mdefine_line|#define SMC_INTERRUPT_PREAMBLE&t;LPD7A40X_IOBARRIER
 DECL|macro|RPC_LSA_DEFAULT
 mdefine_line|#define RPC_LSA_DEFAULT&t;&t;RPC_LED_TX_RX
 DECL|macro|RPC_LSB_DEFAULT
@@ -1494,6 +1607,10 @@ DECL|macro|SMC_outw
 mdefine_line|#define SMC_outw(x, ioaddr, reg)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val16 = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outb( __val16, ioaddr, reg );&t;&t;&t;&bslash;&n;&t;&t;SMC_outb( __val16 &gt;&gt; 8, ioaddr, reg + (1 &lt;&lt; SMC_IO_SHIFT));&bslash;&n;&t;} while (0)
 DECL|macro|SMC_inw
 mdefine_line|#define SMC_inw(ioaddr, reg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val16;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val16 =  SMC_inb( ioaddr, reg );&t;&t;&t;&bslash;&n;&t;&t;__val16 |= SMC_inb( ioaddr, reg + (1 &lt;&lt; SMC_IO_SHIFT)) &lt;&lt; 8; &bslash;&n;&t;&t;__val16;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#endif
+macro_line|#if !defined (SMC_INTERRUPT_PREAMBLE)
+DECL|macro|SMC_INTERRUPT_PREAMBLE
+macro_line|# define SMC_INTERRUPT_PREAMBLE
 macro_line|#endif
 macro_line|#endif  /* _SMC91X_H_ */
 eof

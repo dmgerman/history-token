@@ -232,7 +232,7 @@ mdefine_line|#define IRQ_NAME(nr) IRQ_NAME2(IRQ##nr)
 multiline_comment|/*&n; *&t;SMP has a few special interrupts for IPI messages&n; */
 DECL|macro|BUILD_IRQ
 mdefine_line|#define BUILD_IRQ(nr) &bslash;&n;asmlinkage void IRQ_NAME(nr); &bslash;&n;__asm__( &bslash;&n;&quot;&bslash;n.p2align&bslash;n&quot; &bslash;&n;&quot;IRQ&quot; #nr &quot;_interrupt:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;push $&quot; #nr &quot;-256 ; &quot; &bslash;&n;&t;&quot;jmp common_interrupt&quot;);
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP)
+macro_line|#if defined(CONFIG_X86_IO_APIC)
 DECL|function|hw_resend_irq
 r_static
 r_inline

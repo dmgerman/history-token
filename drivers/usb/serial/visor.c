@@ -2032,22 +2032,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev_dbg
+id|dbg
 c_func
 (paren
-op_amp
-id|port-&gt;dev
+l_string|&quot;%s - write limit hit&bslash;n&quot;
 comma
-l_string|&quot;write limit hit&bslash;n&quot;
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-op_increment
-id|priv-&gt;outstanding_urbs
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3925,8 +3921,8 @@ op_eq
 l_int|0
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|generic_startup
 suffix:semicolon
 id|dbg
 c_func
@@ -4005,6 +4001,8 @@ c_func
 id|swap_port
 )paren
 suffix:semicolon
+id|generic_startup
+suffix:colon
 r_return
 id|generic_startup
 c_func

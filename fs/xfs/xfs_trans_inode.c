@@ -56,6 +56,9 @@ id|xfs_ino_t
 id|ino
 comma
 id|uint
+id|flags
+comma
+id|uint
 id|lock_flags
 comma
 id|xfs_inode_t
@@ -83,9 +86,7 @@ id|tp
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
-(paren
 id|xfs_iget
 c_func
 (paren
@@ -95,15 +96,15 @@ l_int|NULL
 comma
 id|ino
 comma
+id|flags
+comma
 id|lock_flags
 comma
 id|ipp
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If we find the inode in core with this transaction&n;&t; * pointer in its i_transp field, then we know we already&n;&t; * have it locked.  In this case we just increment the lock&n;&t; * recursion count and return the inode to the caller.&n;&t; * Assert that the inode is already locked in the mode requested&n;&t; * by the caller.  We cannot do lock promotions yet, so&n;&t; * die if someone gets this wrong.&n;&t; */
 r_if
 c_cond
@@ -296,6 +297,8 @@ comma
 id|tp
 comma
 id|ino
+comma
+id|flags
 comma
 id|lock_flags
 comma

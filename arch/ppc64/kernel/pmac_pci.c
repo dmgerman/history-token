@@ -3097,10 +3097,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Tell pci.c to use the common resource allocation mecanism */
+multiline_comment|/* Tell pci.c to not use the common resource allocation mecanism */
 id|pci_probe_only
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 multiline_comment|/* Allow all IO */
 id|io_page_mask

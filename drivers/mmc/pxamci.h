@@ -120,6 +120,20 @@ DECL|macro|BUF_PART_FULL
 mdefine_line|#define BUF_PART_FULL&t;&t;(1 &lt;&lt; 0)
 DECL|macro|MMC_I_MASK
 mdefine_line|#define MMC_I_MASK&t;0x0028
+multiline_comment|/*PXA27x MMC interrupts*/
+DECL|macro|SDIO_SUSPEND_ACK
+mdefine_line|#define SDIO_SUSPEND_ACK  &t;(1 &lt;&lt; 12)
+DECL|macro|SDIO_INT
+mdefine_line|#define SDIO_INT          &t;(1 &lt;&lt; 11)
+DECL|macro|RD_STALLED
+mdefine_line|#define RD_STALLED        &t;(1 &lt;&lt; 10)
+DECL|macro|RES_ERR
+mdefine_line|#define RES_ERR           &t;(1 &lt;&lt; 9)
+DECL|macro|DAT_ERR
+mdefine_line|#define DAT_ERR           &t;(1 &lt;&lt; 8)
+DECL|macro|TINT
+mdefine_line|#define TINT              &t;(1 &lt;&lt; 7)
+multiline_comment|/*PXA2xx MMC interrupts*/
 DECL|macro|TXFIFO_WR_REQ
 mdefine_line|#define TXFIFO_WR_REQ&t;&t;(1 &lt;&lt; 6)
 DECL|macro|RXFIFO_RD_REQ
@@ -134,6 +148,13 @@ DECL|macro|PRG_DONE
 mdefine_line|#define PRG_DONE&t;&t;(1 &lt;&lt; 1)
 DECL|macro|DATA_TRAN_DONE
 mdefine_line|#define DATA_TRAN_DONE&t;&t;(1 &lt;&lt; 0)
+macro_line|#ifdef CONFIG_PXA27x
+DECL|macro|MMC_I_MASK_ALL
+mdefine_line|#define MMC_I_MASK_ALL          0x00001fff
+macro_line|#else
+DECL|macro|MMC_I_MASK_ALL
+mdefine_line|#define MMC_I_MASK_ALL          0x0000007f
+macro_line|#endif
 DECL|macro|MMC_I_REG
 mdefine_line|#define MMC_I_REG&t;0x002c
 multiline_comment|/* same as MMC_I_MASK */
@@ -149,4 +170,18 @@ DECL|macro|MMC_RXFIFO
 mdefine_line|#define MMC_RXFIFO&t;0x0040&t;/* 8 bit */
 DECL|macro|MMC_TXFIFO
 mdefine_line|#define MMC_TXFIFO&t;0x0044&t;/* 8 bit */
+multiline_comment|/*&n; * The base MMC clock rate&n; */
+macro_line|#ifdef CONFIG_PXA27x
+DECL|macro|CLOCKRATE_MIN
+mdefine_line|#define CLOCKRATE_MIN&t;304688
+DECL|macro|CLOCKRATE_MAX
+mdefine_line|#define CLOCKRATE_MAX&t;19500000
+macro_line|#else
+DECL|macro|CLOCKRATE_MIN
+mdefine_line|#define CLOCKRATE_MIN&t;312500
+DECL|macro|CLOCKRATE_MAX
+mdefine_line|#define CLOCKRATE_MAX&t;20000000
+macro_line|#endif
+DECL|macro|CLOCKRATE
+mdefine_line|#define CLOCKRATE&t;CLOCKRATE_MAX
 eof

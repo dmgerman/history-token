@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle&n; * Copyright (C) 2000, 2002  Maciej W. Rozycki&n; * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.&n; */
-macro_line|#ifndef _ASM_MACH_SPACES_H
-DECL|macro|_ASM_MACH_SPACES_H
-mdefine_line|#define _ASM_MACH_SPACES_H
+macro_line|#ifndef _ASM_MACH_GENERIC_SPACES_H
+DECL|macro|_ASM_MACH_GENERIC_SPACES_H
+mdefine_line|#define _ASM_MACH_GENERIC_SPACES_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|CAC_BASE

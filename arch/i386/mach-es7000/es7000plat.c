@@ -422,7 +422,7 @@ id|es7000_plat
 op_assign
 l_int|1
 suffix:semicolon
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 op_assign
 id|es7000_rename_gsi
 suffix:semicolon
@@ -774,7 +774,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|printk
+id|Dprintk
 c_func
 (paren
 l_string|&quot;ES7000: did not find Unisys ACPI OEM table!&bslash;n&quot;

@@ -3272,6 +3272,21 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+r_static
+r_int
+id|ia_pkt_tx
+(paren
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 DECL|function|ia_que_tx
 r_static
 r_int
@@ -3299,21 +3314,6 @@ r_struct
 id|ia_vcc
 op_star
 id|iavcc
-suffix:semicolon
-r_static
-r_int
-id|ia_pkt_tx
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
 suffix:semicolon
 id|num_desc
 op_assign
@@ -5133,9 +5133,12 @@ comma
 id|tcq_ed_ptr
 suffix:semicolon
 id|u32
-id|tmp
-comma
 id|i
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|tmp
 suffix:semicolon
 singleline_comment|// regval = readl((u32)ia_cmds-&gt;maddr);
 id|tcq_wr_ptr
@@ -5235,7 +5238,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TCQ slot %d desc = %d  Addr = 0x%x&bslash;n&quot;
+l_string|&quot;TCQ slot %d desc = %d  Addr = %p&bslash;n&quot;
 comma
 id|i
 op_increment
@@ -5580,6 +5583,7 @@ id|status
 suffix:semicolon
 r_struct
 id|rx_buf_desc
+id|__iomem
 op_star
 id|buf_desc_ptr
 suffix:semicolon
@@ -5664,7 +5668,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;reass_ram = 0x%x iadev-&gt;rfL.pcq_rd = 0x%x desc = %d&bslash;n&quot;
+l_string|&quot;reass_ram = %p iadev-&gt;rfL.pcq_rd = 0x%x desc = %d&bslash;n&quot;
 comma
 id|iadev-&gt;reass_ram
 comma
@@ -5720,11 +5724,6 @@ suffix:semicolon
 multiline_comment|/* get the buffer desc entry.  &n;&t;&t;update stuff. - doesn&squot;t seem to be any update necessary  &n;&t;*/
 id|buf_desc_ptr
 op_assign
-(paren
-r_struct
-id|rx_buf_desc
-op_star
-)paren
 id|iadev-&gt;RX_DESC_BASE_ADDR
 suffix:semicolon
 multiline_comment|/* make the ptr point to the corresponding buffer desc entry */
@@ -6956,10 +6955,12 @@ op_star
 id|iadev
 suffix:semicolon
 id|u_short
+id|__iomem
 op_star
 id|vc_table
 suffix:semicolon
 id|u_short
+id|__iomem
 op_star
 id|reass_ptr
 suffix:semicolon
@@ -7026,17 +7027,11 @@ suffix:semicolon
 multiline_comment|/* Make only this VCI in the vc table valid and let all   &n;&t;&t;others be invalid entries */
 id|vc_table
 op_assign
-(paren
-id|u_short
-op_star
-)paren
-(paren
 id|iadev-&gt;reass_ram
 op_plus
 id|RX_VC_TABLE
 op_star
 id|iadev-&gt;memSize
-)paren
 suffix:semicolon
 id|vc_table
 op_add_assign
@@ -7098,17 +7093,11 @@ r_else
 multiline_comment|/* for UBR  later may need to add CBR logic */
 id|reass_ptr
 op_assign
-(paren
-id|u_short
-op_star
-)paren
-(paren
 id|iadev-&gt;reass_ram
 op_plus
 id|REASS_TABLE
 op_star
 id|iadev-&gt;memSize
-)paren
 suffix:semicolon
 id|reass_ptr
 op_add_assign
@@ -7169,6 +7158,7 @@ id|iadev
 suffix:semicolon
 r_struct
 id|rx_buf_desc
+id|__iomem
 op_star
 id|buf_desc_ptr
 suffix:semicolon
@@ -7430,19 +7420,11 @@ id|iadev-&gt;memSize
 suffix:semicolon
 id|buf_desc_ptr
 op_assign
-(paren
-r_struct
-id|rx_buf_desc
-op_star
-)paren
 id|iadev-&gt;RX_DESC_BASE_ADDR
 suffix:semicolon
-id|memset
+id|memset_io
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|buf_desc_ptr
 comma
 l_int|0
@@ -7476,12 +7458,9 @@ id|i
 op_increment
 )paren
 (brace
-id|memset
+id|memset_io
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|buf_desc_ptr
 comma
 l_int|0
@@ -10745,30 +10724,15 @@ l_int|1
 )paren
 suffix:semicolon
 )paren
-id|tmp16
-op_assign
-(paren
-id|iadev-&gt;seg_ram
-op_plus
-id|CBR_SCHED_TABLE
-op_star
-id|iadev-&gt;memSize
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize the CBR Schedualing Table */
-id|memset
+id|memset_io
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
-(paren
 id|iadev-&gt;seg_ram
 op_plus
 id|CBR_SCHED_TABLE
 op_star
 id|iadev-&gt;memSize
-)paren
 comma
 l_int|0
 comma
@@ -12057,7 +12021,10 @@ suffix:semicolon
 r_int
 r_int
 id|real_base
-comma
+suffix:semicolon
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 r_int
@@ -12277,17 +12244,9 @@ suffix:semicolon
 multiline_comment|/* mapping the physical address to a virtual address in address space */
 id|base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|real_base
 comma
 id|iadev-&gt;pci_map_size
@@ -12321,7 +12280,7 @@ id|printk
 c_func
 (paren
 id|DEV_LABEL
-l_string|&quot; (itf %d): rev.%d,base=0x%lx,irq=%d&bslash;n&quot;
+l_string|&quot; (itf %d): rev.%d,base=%p,irq=%d&bslash;n&quot;
 comma
 id|dev-&gt;number
 comma
@@ -12340,12 +12299,6 @@ id|iadev-&gt;pci_map_size
 op_div
 l_int|2
 suffix:semicolon
-id|iadev-&gt;base_diff
-op_assign
-id|real_base
-op_minus
-id|base
-suffix:semicolon
 id|iadev-&gt;real_base
 op_assign
 id|real_base
@@ -12357,95 +12310,55 @@ suffix:semicolon
 multiline_comment|/* Bus Interface Control Registers */
 id|iadev-&gt;reg
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|REG_BASE
-)paren
 suffix:semicolon
 multiline_comment|/* Segmentation Control Registers */
 id|iadev-&gt;seg_reg
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|SEG_BASE
-)paren
 suffix:semicolon
 multiline_comment|/* Reassembly Control Registers */
 id|iadev-&gt;reass_reg
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|REASS_BASE
-)paren
 suffix:semicolon
 multiline_comment|/* Front end/ DMA control registers */
 id|iadev-&gt;phy
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|PHY_BASE
-)paren
 suffix:semicolon
 id|iadev-&gt;dma
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|PHY_BASE
-)paren
 suffix:semicolon
 multiline_comment|/* RAM - Segmentation RAm and Reassembly RAM */
 id|iadev-&gt;ram
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|base
 op_plus
 id|ACTUAL_RAM_BASE
-)paren
 suffix:semicolon
 id|iadev-&gt;seg_ram
 op_assign
-(paren
 id|base
 op_plus
 id|ACTUAL_SEG_RAM_BASE
-)paren
 suffix:semicolon
 id|iadev-&gt;reass_ram
 op_assign
-(paren
 id|base
 op_plus
 id|ACTUAL_REASS_RAM_BASE
-)paren
 suffix:semicolon
 multiline_comment|/* lets print out the above */
 id|IF_INIT
@@ -12454,41 +12367,20 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;Base addrs: %08x %08x %08x &bslash;n %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;Base addrs: %p %p %p &bslash;n %p %p %p %p&bslash;n&quot;
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;reg
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;seg_reg
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;reass_reg
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;phy
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;ram
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;seg_ram
 comma
-(paren
-id|u32
-)paren
 id|iadev-&gt;reass_ram
 )paren
 suffix:semicolon
@@ -12511,10 +12403,6 @@ id|error
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|iadev-&gt;base
 )paren
 suffix:semicolon
@@ -12580,10 +12468,6 @@ id|dev
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|iadev-&gt;base
 )paren
 suffix:semicolon
@@ -14119,14 +14003,10 @@ id|ATM_ABR
 (brace
 r_struct
 id|abr_vc_table
+id|__iomem
 op_star
 id|abr_vc_table
 op_assign
-(paren
-r_struct
-id|abr_vc_table
-op_star
-)paren
 (paren
 id|iadev-&gt;reass_ram
 op_plus
@@ -15537,6 +15417,7 @@ id|wr_ptr
 suffix:semicolon
 r_struct
 id|tx_buf_desc
+id|__iomem
 op_star
 id|buf_desc_ptr
 suffix:semicolon
@@ -16046,16 +15927,9 @@ suffix:semicolon
 multiline_comment|/* Build the buffer descriptor */
 id|buf_desc_ptr
 op_assign
-(paren
-r_struct
-id|tx_buf_desc
-op_star
-)paren
-(paren
 id|iadev-&gt;seg_ram
 op_plus
 id|TX_DESC_BASE
-)paren
 suffix:semicolon
 id|buf_desc_ptr
 op_add_assign
@@ -17419,10 +17293,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|iadev-&gt;base
 )paren
 suffix:semicolon

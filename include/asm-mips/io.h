@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_IO_H
 DECL|macro|_ASM_IO_H
 mdefine_line|#define _ASM_IO_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
@@ -206,7 +207,9 @@ r_void
 id|__iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -219,8 +222,7 @@ op_star
 id|__ioremap_mode
 c_func
 (paren
-r_int
-r_int
+id|phys_t
 id|offset
 comma
 r_int
@@ -304,7 +306,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -324,20 +328,20 @@ id|addr
 suffix:semicolon
 )brace
 DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(addr)&t;(*(volatile unsigned char *)(addr))
+mdefine_line|#define __raw_readb(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned char *) __swizzle_addr_b((unsigned long)(addr)))
 DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(addr)&t;(*(volatile unsigned short *)(addr))
+mdefine_line|#define __raw_readw(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned short *) __swizzle_addr_w((unsigned long)(addr)))
 DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(addr)&t;(*(volatile unsigned int *)(addr))
+mdefine_line|#define __raw_readl(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned int *) __swizzle_addr_l((unsigned long)(addr)))
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|____raw_readq
-mdefine_line|#define ____raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;# ____raw_readq&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;ld&t;%L0, (%1)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsra32&t;%M0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sll&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (addr));&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ____raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;# ____raw_readq&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;ld&t;%L0, (%1)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsra32&t;%M0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sll&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (__swizzle_addr_q((unsigned long)(addr))));&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;__res = ____raw_readq(addr);&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|____raw_readq
-mdefine_line|#define ____raw_readq(addr)&t;(*(volatile unsigned long *)(addr))
+mdefine_line|#define ____raw_readq(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned long *)__swizzle_addr_q((unsigned long)(addr)))
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq(addr)&t;____raw_readq(addr)
 macro_line|#endif
@@ -358,23 +362,20 @@ mdefine_line|#define readl_relaxed(addr)&t;readl(addr)
 DECL|macro|readq_relaxed
 mdefine_line|#define readq_relaxed(addr)&t;readq(addr)
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(b,addr)&t;((*(volatile unsigned char *)(addr)) = (b))
+mdefine_line|#define __raw_writeb(b,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((*(volatile unsigned char *)__swizzle_addr_b((unsigned long)(addr))) = (b));&t;&bslash;&n;} while (0)
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(w,addr)&t;((*(volatile unsigned short *)(addr)) = (w))
+mdefine_line|#define __raw_writew(w,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((*(volatile unsigned short *)__swizzle_addr_w((unsigned long)(addr))) = (w));&t;&bslash;&n;} while (0)
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(l,addr)&t;((*(volatile unsigned int *)(addr)) = (l))
-multiline_comment|/* Depends on MIPS III instruction set */
-DECL|macro|mmiowb
-mdefine_line|#define mmiowb() asm volatile (&quot;sync&quot; ::: &quot;memory&quot;)
+mdefine_line|#define __raw_writel(l,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((*(volatile unsigned int *)__swizzle_addr_l((unsigned long)(addr))) = (l));&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|____raw_writeq
-mdefine_line|#define ____raw_writeq(val,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%L0, %L0, 0&t;# ____raw_writeq&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsrl32&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%M0, %M0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;or&t;%L0, %L0, %M0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sd&t;%L0, (%2)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; ((unsigned long long)val), &quot;r&quot; (addr));&t;&t;&bslash;&n;})
+mdefine_line|#define ____raw_writeq(val,addr)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u64 __tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips3&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%L0, %L0, 0&t;# ____raw_writeq&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsrl32&t;%L0, %L0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;dsll32&t;%M0, %M0, 0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;or&t;%L0, %L0, %M0&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;sd&t;%L0, (%2)&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;&t;.set&t;mips0&t;&t;&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (__tmp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; ((unsigned long long)val),&t;&t;&t;&bslash;&n;&t;&t;  &quot;r&quot; (__swizzle_addr_q((unsigned long)(addr))));&t;&bslash;&n;} while (0)
 DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(val,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;____raw_writeq(val, addr);&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(__flags);&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __raw_writeq(val,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(__flags);&t;&t;&t;&t;&t;&bslash;&n;&t;____raw_writeq(val, addr);&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(__flags);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|____raw_writeq
-mdefine_line|#define ____raw_writeq(q,addr)&t;((*(volatile unsigned long *)(addr)) = (q))
+mdefine_line|#define ____raw_writeq(q,addr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile unsigned long *)__swizzle_addr_q((unsigned long)(addr)) = (q);&t;&bslash;&n;} while (0)
 DECL|macro|__raw_writeq
 mdefine_line|#define __raw_writeq(q,addr)&t;____raw_writeq(q, addr)
 macro_line|#endif
@@ -386,6 +387,9 @@ DECL|macro|writel
 mdefine_line|#define writel(l,addr)&t;&t;__raw_writel(__ioswab32(l),(addr))
 DECL|macro|writeq
 mdefine_line|#define writeq(q,addr)&t;&t;__raw_writeq(__ioswab64(q),(addr))
+multiline_comment|/* Depends on MIPS II instruction set */
+DECL|macro|mmiowb
+mdefine_line|#define mmiowb() asm volatile (&quot;sync&quot; ::: &quot;memory&quot;)
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
@@ -492,9 +496,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *     isa_check_signature             -       find BIOS signatures&n; *     @io_addr: mmio address to check&n; *     @signature:  signature block&n; *     @length: length of signature&n; *&n; *     Perform a signature comparison with the ISA mmio address io_addr.&n; *     Returns 1 on a match.&n; *&n; *     This function is deprecated. New drivers should use ioremap and&n; *     check_signature.&n; */
-DECL|macro|isa_check_signature
-mdefine_line|#define isa_check_signature(io, s, l)&t;check_signature(i,s,l)
 DECL|function|__outb
 r_static
 r_inline

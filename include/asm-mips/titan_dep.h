@@ -4,23 +4,18 @@ DECL|macro|__TITAN_DEP_H__
 mdefine_line|#define __TITAN_DEP_H__
 macro_line|#include &lt;asm/addrspace.h&gt;              /* for KSEG1ADDR() */
 macro_line|#include &lt;asm/byteorder.h&gt;              /* for cpu_to_le32() */
-multiline_comment|/* PCI */
-DECL|macro|TITAN_PCI_BASE
-mdefine_line|#define&t;TITAN_PCI_BASE&t;&t;&t;0xbb000000
-DECL|macro|TITAN_WRITE
-mdefine_line|#define TITAN_WRITE(ofs, data)  &bslash;&n;        *(volatile u32 *)(TITAN_PCI_BASE+(ofs)) = cpu_to_le32(data)
 DECL|macro|TITAN_READ
-mdefine_line|#define TITAN_READ(ofs, data)   &bslash;&n;        *(data) = le32_to_cpu(*(volatile u32 *)(TITAN_PCI_BASE+(ofs)))
-DECL|macro|TITAN_READ_DATA
-mdefine_line|#define TITAN_READ_DATA(ofs)    &bslash;&n;        le32_to_cpu(*(volatile u32 *)(TITAN_PCI_BASE+(ofs)))
-DECL|macro|TITAN_WRITE_16
-mdefine_line|#define TITAN_WRITE_16(ofs, data)  &bslash;&n;        *(volatile u16 *)(TITAN_PCI_BASE+(ofs)) = cpu_to_le16(data)
+mdefine_line|#define TITAN_READ(ofs)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile u32 *)(ocd_base+(ofs)))
 DECL|macro|TITAN_READ_16
-mdefine_line|#define TITAN_READ_16(ofs, data)   &bslash;&n;        *(data) = le16_to_cpu(*(volatile u16 *)(TITAN_PCI_BASE+(ofs)))
-DECL|macro|TITAN_WRITE_8
-mdefine_line|#define TITAN_WRITE_8(ofs, data)  &bslash;&n;        *(volatile u8 *)(TITAN_PCI_BASE+(ofs)) = data
+mdefine_line|#define TITAN_READ_16(ofs)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile u16 *)(ocd_base+(ofs)))
 DECL|macro|TITAN_READ_8
-mdefine_line|#define TITAN_READ_8(ofs, data)   &bslash;&n;        *(data) = *(volatile u8 *)(TITAN_PCI_BASE+(ofs))
+mdefine_line|#define TITAN_READ_8(ofs)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile u8 *)(ocd_base+(ofs)))
+DECL|macro|TITAN_WRITE
+mdefine_line|#define TITAN_WRITE(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { *(volatile u32 *)(ocd_base+(ofs)) = (data); } while (0)
+DECL|macro|TITAN_WRITE_16
+mdefine_line|#define TITAN_WRITE_16(ofs, data)&t;&t;&t;&t;&t;&bslash;&n;&t;do { *(volatile u16 *)(ocd_base+(ofs)) = (data); } while (0)
+DECL|macro|TITAN_WRITE_8
+mdefine_line|#define TITAN_WRITE_8(ofs, data)&t;&t;&t;&t;&t;&bslash;&n;&t;do { *(volatile u8 *)(ocd_base+(ofs)) = (data); } while (0)
 multiline_comment|/*&n; * PCI specific defines&n; */
 DECL|macro|TITAN_PCI_0_CONFIG_ADDRESS
 mdefine_line|#define&t;TITAN_PCI_0_CONFIG_ADDRESS&t;0x780
@@ -28,13 +23,13 @@ DECL|macro|TITAN_PCI_0_CONFIG_DATA
 mdefine_line|#define&t;TITAN_PCI_0_CONFIG_DATA&t;&t;0x784
 multiline_comment|/*&n; * HT specific defines&n; */
 DECL|macro|RM9000x2_HTLINK_REG
-mdefine_line|#define RM9000x2_HTLINK_REG     0xbb000644
+mdefine_line|#define RM9000x2_HTLINK_REG&t;&t;0xbb000644
 DECL|macro|RM9000x2_BASE_ADDR
-mdefine_line|#define RM9000x2_BASE_ADDR      0xbb000000
+mdefine_line|#define RM9000x2_BASE_ADDR&t;&t;0xbb000000
 DECL|macro|OCD_BASE
-mdefine_line|#define OCD_BASE                0xfb000000UL
+mdefine_line|#define OCD_BASE&t;&t;&t;0xfb000000UL
 DECL|macro|OCD_SIZE
-mdefine_line|#define OCD_SIZE                0x3000UL
+mdefine_line|#define OCD_SIZE&t;&t;&t;0x3000UL
 r_extern
 r_int
 r_int

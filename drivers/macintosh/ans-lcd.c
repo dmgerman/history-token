@@ -39,6 +39,7 @@ r_static
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|anslcd_ptr
 suffix:semicolon
@@ -573,12 +574,6 @@ id|ENODEV
 suffix:semicolon
 id|anslcd_ptr
 op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -614,10 +609,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|anslcd_ptr
 )paren
 suffix:semicolon
@@ -708,10 +699,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|anslcd_ptr
 )paren
 suffix:semicolon

@@ -2,6 +2,8 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef __ASM_CPU_FEATURES_H
 DECL|macro|__ASM_CPU_FEATURES_H
 mdefine_line|#define __ASM_CPU_FEATURES_H
+macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/cpu-info.h&gt;
 macro_line|#include &lt;cpu-feature-overrides.h&gt;
 multiline_comment|/*&n; * SMP assumption: Options of CPU 0 are a superset of all processors.&n; * This is true for all known MIPS systems.&n; */
 macro_line|#ifndef cpu_has_tlb
@@ -78,7 +80,12 @@ mdefine_line|#define cpu_has_dc_aliases&t;(cpu_data[0].dcache.flags &amp; MIPS_C
 macro_line|#endif
 macro_line|#ifndef cpu_has_ic_fills_f_dc
 DECL|macro|cpu_has_ic_fills_f_dc
-mdefine_line|#define cpu_has_ic_fills_f_dc&t;(cpu_data[0].dcache.flags &amp; MIPS_CACHE_IC_F_DC)
+mdefine_line|#define cpu_has_ic_fills_f_dc&t;(cpu_data[0].icache.flags &amp; MIPS_CACHE_IC_F_DC)
+macro_line|#endif
+multiline_comment|/*&n; * Certain CPUs may throw bizarre exceptions if not the whole cacheline&n; * contains valid instructions.  For these we ensure proper alignment of&n; * signal trampolines and pad them to the size of a full cache lines with&n; * nops.  This is also used in structure definitions so can&squot;t be a test macro&n; * like the others.&n; */
+macro_line|#ifndef PLAT_TRAMPOLINE_STUFF_LINE
+DECL|macro|PLAT_TRAMPOLINE_STUFF_LINE
+mdefine_line|#define PLAT_TRAMPOLINE_STUFF_LINE&t;0UL
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS32
 macro_line|# ifndef cpu_has_nofpuex

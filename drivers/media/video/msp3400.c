@@ -7304,6 +7304,7 @@ id|msp_command
 comma
 dot
 id|driver
+op_assign
 (brace
 dot
 id|suspend
@@ -7743,6 +7744,7 @@ op_eq
 id|msp-&gt;opmode
 )paren
 (brace
+macro_line|#if 0 /* seems to work for ivtv only, disable by default for now ... */
 r_if
 c_cond
 (paren
@@ -7757,6 +7759,7 @@ op_assign
 id|OPMODE_SIMPLER
 suffix:semicolon
 r_else
+macro_line|#endif
 r_if
 c_cond
 (paren

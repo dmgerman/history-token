@@ -378,10 +378,10 @@ id|_unused0
 l_int|2
 )braket
 suffix:semicolon
-DECL|member|serport
+DECL|member|uart
 r_struct
 id|sgioc_uart_regs
-id|serport
+id|uart
 suffix:semicolon
 DECL|member|kbdmouse
 r_struct

@@ -81,7 +81,7 @@ r_void
 id|power_down
 c_func
 (paren
-id|u32
+id|suspend_disk_method_t
 id|mode
 )paren
 (brace

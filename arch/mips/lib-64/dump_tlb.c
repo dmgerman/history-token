@@ -974,7 +974,7 @@ suffix:semicolon
 id|paddr
 op_assign
 (paren
-id|KSEG1
+id|CKSEG1
 op_or
 (paren
 r_int

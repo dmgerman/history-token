@@ -1939,7 +1939,7 @@ l_string|&quot;PIO4&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_udma_string - convert UDMA bit offset to string&n; *&t;@udma_mask: mask of bits supported; only highest bit counts.&n; *&n; *&t;Determine string which represents the highest speed&n; *&t;(highest bit in @udma_mask).&n; *&n; *&t;LOCKING:&n; *&t;None.&n; *&n; *&t;RETURNS:&n; *&t;Constant C string representing highest speed listed in&n; *&t;@udma_mask, or the constant C string &quot;&lt;n/a&gt;&quot;.&n; */
+multiline_comment|/**&n; *&t;ata_udma_string - convert UDMA bit offset to string&n; *&t;@mask: mask of bits supported; only highest bit counts.&n; *&n; *&t;Determine string which represents the highest speed&n; *&t;(highest bit in @udma_mask).&n; *&n; *&t;LOCKING:&n; *&t;None.&n; *&n; *&t;RETURNS:&n; *&t;Constant C string representing highest speed listed in&n; *&t;@udma_mask, or the constant C string &quot;&lt;n/a&gt;&quot;.&n; */
 DECL|function|ata_mode_string
 r_static
 r_const
@@ -2678,7 +2678,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@dev: Device whose IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return. must be an even number.&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
+multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@id: IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return. must be an even number.&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_id_string
 r_void
 id|ata_dev_id_string
@@ -6349,7 +6349,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_choose_xfer_mode -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
+multiline_comment|/**&n; *&t;ata_choose_xfer_mode - attempt to find best transfer mode&n; *&t;@ap: Port for which an xfer mode will be selected&n; *&t;@xfer_mode_out: (output) SET FEATURES - XFER MODE code&n; *&t;@xfer_shift_out: (output) bit shift that selects this mode&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
 DECL|function|ata_choose_xfer_mode
 r_static
 r_int
@@ -7053,14 +7053,6 @@ id|sg
 )paren
 op_assign
 id|buflen
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-id|buflen
-OG
-id|PAGE_SIZE
-)paren
 suffix:semicolon
 )brace
 DECL|function|ata_sg_init
@@ -9778,6 +9770,69 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|ata_should_dma_map
+r_static
+r_inline
+r_int
+id|ata_should_dma_map
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+r_struct
+id|ata_port
+op_star
+id|ap
+op_assign
+id|qc-&gt;ap
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|qc-&gt;tf.protocol
+)paren
+(brace
+r_case
+id|ATA_PROT_DMA
+suffix:colon
+r_case
+id|ATA_PROT_ATAPI_DMA
+suffix:colon
+r_return
+l_int|1
+suffix:semicolon
+r_case
+id|ATA_PROT_ATAPI
+suffix:colon
+r_case
+id|ATA_PROT_PIO
+suffix:colon
+r_case
+id|ATA_PROT_PIO_MULT
+suffix:colon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|ATA_FLAG_PIO_DMA
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* fall through */
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* never reached */
+)brace
 multiline_comment|/**&n; *&t;ata_qc_issue - issue taskfile to device&n; *&t;@qc: command to issue to device&n; *&n; *&t;Prepare an ATA command to submission to device.&n; *&t;This includes mapping the data into a DMA-able&n; *&t;area, filling in the S/G table, and finally&n; *&t;writing the taskfile to hardware, starting the command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
 DECL|function|ata_qc_issue
 r_int
@@ -9797,6 +9852,16 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ata_should_dma_map
+c_func
+(paren
+id|qc
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -9838,6 +9903,15 @@ id|qc
 )paren
 r_goto
 id|err_out
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|qc-&gt;flags
+op_and_assign
+op_complement
+id|ATA_QCFLAG_DMAMAP
 suffix:semicolon
 )brace
 id|ap-&gt;ops

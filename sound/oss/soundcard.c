@@ -387,8 +387,8 @@ op_amp
 (paren
 (paren
 id|mixer_vol_table
-op_star
 id|__user
+op_star
 )paren
 id|arg
 )paren

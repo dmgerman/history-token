@@ -77,11 +77,13 @@ id|lock
 suffix:semicolon
 DECL|member|i2c_bussel_reg
 r_void
+id|__iomem
 op_star
 id|i2c_bussel_reg
 suffix:semicolon
 DECL|member|i2c_control_regs
 r_void
+id|__iomem
 op_star
 id|i2c_control_regs
 suffix:semicolon

@@ -4,33 +4,17 @@ mdefine_line|#define __NET_ACT_API_H
 multiline_comment|/*&n; * Public police action API for classifiers/qdiscs&n; */
 macro_line|#include &lt;net/sch_generic.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
+DECL|macro|tca_gen
+mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct gnet_stats_basic bstats; &bslash;&n;&t;struct gnet_stats_queue qstats; &bslash;&n;&t;struct gnet_stats_rate_est rate_est; &bslash;&n;&t;spinlock_t *stats_lock; &bslash;&n;&t;spinlock_t lock
 DECL|struct|tcf_police
 r_struct
 id|tcf_police
 (brace
-DECL|member|next
-r_struct
-id|tcf_police
-op_star
-id|next
-suffix:semicolon
-DECL|member|refcnt
-r_int
-id|refcnt
-suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-DECL|member|bindcnt
-r_int
-id|bindcnt
-suffix:semicolon
-macro_line|#endif
-DECL|member|index
-id|u32
-id|index
-suffix:semicolon
-DECL|member|action
-r_int
-id|action
+id|tca_gen
+c_func
+(paren
+id|police
+)paren
 suffix:semicolon
 DECL|member|result
 r_int
@@ -60,10 +44,6 @@ DECL|member|t_c
 id|psched_time_t
 id|t_c
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|R_tab
 r_struct
 id|qdisc_rate_table
@@ -76,26 +56,6 @@ id|qdisc_rate_table
 op_star
 id|P_tab
 suffix:semicolon
-DECL|member|bstats
-r_struct
-id|gnet_stats_basic
-id|bstats
-suffix:semicolon
-DECL|member|qstats
-r_struct
-id|gnet_stats_queue
-id|qstats
-suffix:semicolon
-DECL|member|rate_est
-r_struct
-id|gnet_stats_rate_est
-id|rate_est
-suffix:semicolon
-DECL|member|stats_lock
-id|spinlock_t
-op_star
-id|stats_lock
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
@@ -103,8 +63,6 @@ DECL|macro|ACT_P_CREATED
 mdefine_line|#define ACT_P_CREATED 1
 DECL|macro|ACT_P_DELETED
 mdefine_line|#define ACT_P_DELETED 1
-DECL|macro|tca_gen
-mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct gnet_stats_basic bstats; &bslash;&n;&t;struct gnet_stats_queue qstats; &bslash;&n;&t;struct gnet_stats_rate_est rate_est; &bslash;&n;&t;spinlock_t *stats_lock; &bslash;&n;&t;spinlock_t lock
 DECL|struct|tcf_act_hdr
 r_struct
 id|tcf_act_hdr
@@ -372,7 +330,9 @@ id|res
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_struct
+id|tc_action
+op_star
 id|tcf_action_init
 c_func
 (paren
@@ -386,11 +346,6 @@ id|rtattr
 op_star
 id|est
 comma
-r_struct
-id|tc_action
-op_star
-id|a
-comma
 r_char
 op_star
 id|n
@@ -400,10 +355,16 @@ id|ovr
 comma
 r_int
 id|bind
+comma
+r_int
+op_star
+id|err
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_struct
+id|tc_action
+op_star
 id|tcf_action_init_1
 c_func
 (paren
@@ -417,11 +378,6 @@ id|rtattr
 op_star
 id|est
 comma
-r_struct
-id|tc_action
-op_star
-id|a
-comma
 r_char
 op_star
 id|n
@@ -431,6 +387,10 @@ id|ovr
 comma
 r_int
 id|bind
+comma
+r_int
+op_star
+id|err
 )paren
 suffix:semicolon
 r_extern

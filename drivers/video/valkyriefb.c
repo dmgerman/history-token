@@ -109,6 +109,7 @@ suffix:semicolon
 DECL|member|cmap_regs
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 suffix:semicolon
@@ -120,6 +121,7 @@ suffix:semicolon
 DECL|member|valkyrie_regs
 r_struct
 id|valkyrie_regs
+id|__iomem
 op_star
 id|valkyrie_regs
 suffix:semicolon
@@ -130,6 +132,7 @@ id|valkyrie_regs_phys
 suffix:semicolon
 DECL|member|frame_buffer
 id|__u8
+id|__iomem
 op_star
 id|frame_buffer
 suffix:semicolon
@@ -413,6 +416,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|valkyrie_regs
+id|__iomem
 op_star
 id|valkyrie_regs
 op_assign
@@ -781,6 +785,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 op_assign
@@ -1296,6 +1301,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 multiline_comment|/* IOMAP_WRITETHROUGH?? */
 macro_line|#else /* ppc (!CONFIG_MAC) */
+(brace
 r_struct
 id|device_node
 op_star
@@ -1364,6 +1370,7 @@ id|flags
 op_assign
 id|_PAGE_WRITETHRU
 suffix:semicolon
+)brace
 macro_line|#endif /* ppc (!CONFIG_MAC) */
 id|p
 op_assign
@@ -2242,10 +2249,6 @@ id|valkyriefb_ops
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|p-&gt;frame_buffer
 op_plus
 l_int|0x1000

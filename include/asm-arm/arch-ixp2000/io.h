@@ -9,7 +9,7 @@ mdefine_line|#define __mem_pci(a)&t;&t;(a)
 multiline_comment|/*&n; * Pick up VMALLOC_END&n; */
 DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((unsigned long)((p)+IXP2000_PCI_IO_VIRT_BASE))
-multiline_comment|/*&n; * IXP200 does not do proper byte-lane conversion for PCI addresses,&n; * so we need to override standard functions.&n; */
+multiline_comment|/*&n; * IXP2000 does not do proper byte-lane conversion for PCI addresses,&n; * so we need to override standard functions.&n; */
 DECL|macro|alignb
 mdefine_line|#define alignb(addr)&t;&t;((addr &amp; ~3) + (3 - (addr &amp; 3)))
 DECL|macro|alignw

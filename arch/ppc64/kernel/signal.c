@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -241,10 +242,7 @@ id|regs
 )paren
 )paren
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1605,7 +1603,7 @@ suffix:semicolon
 )brace
 DECL|function|setup_rt_frame
 r_static
-r_void
+r_int
 id|setup_rt_frame
 c_func
 (paren
@@ -2043,7 +2041,23 @@ id|err
 r_goto
 id|badframe
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -2069,11 +2083,14 @@ comma
 id|current
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
 DECL|function|handle_signal
 r_static
-r_void
+r_int
 id|handle_signal
 c_func
 (paren
@@ -2100,7 +2117,12 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* Set up Signal Frame */
+id|ret
+op_assign
 id|setup_rt_frame
 c_func
 (paren
@@ -2118,6 +2140,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ret
+op_logical_and
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -2168,6 +2192,9 @@ id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|syscall_restart
 r_static
@@ -2362,6 +2389,7 @@ op_amp
 id|ka
 )paren
 suffix:semicolon
+r_return
 id|handle_signal
 c_func
 (paren
@@ -2377,9 +2405,6 @@ id|oldset
 comma
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 r_if

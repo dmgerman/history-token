@@ -509,8 +509,9 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify&t;&t;275
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;276
+multiline_comment|/* Number 277 is reserved for new sys_kexec_load */
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 277
+mdefine_line|#define NR_syscalls 278
 multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
 macro_line|#ifdef __s390x__
 DECL|macro|__NR_time

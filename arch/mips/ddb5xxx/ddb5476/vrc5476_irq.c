@@ -173,12 +173,6 @@ id|u32
 id|base
 )paren
 (brace
-r_extern
-id|irq_desc_t
-id|irq_desc
-(braket
-)braket
-suffix:semicolon
 id|u32
 id|i
 suffix:semicolon

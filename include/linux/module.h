@@ -1462,7 +1462,6 @@ DECL|function|MODULE_PARM_
 r_static
 r_inline
 r_void
-id|__deprecated
 id|MODULE_PARM_
 c_func
 (paren

@@ -1796,29 +1796,6 @@ id|direntry
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nd
-)paren
-(brace
-multiline_comment|/* BB removeme */
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;In lookup nd flags 0x%x open intent flags 0x%x&quot;
-comma
-id|nd-&gt;flags
-comma
-id|nd-&gt;intent.open.flags
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* BB removeme BB */
 multiline_comment|/* BB Add check of incoming data - e.g. frame not longer than maximum SMB - let server check the namelen BB */
 multiline_comment|/* check whether path exists */
 id|cifs_sb

@@ -3956,7 +3956,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_HOST_BUSY
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* check target ID is not same as this initiator ID */
@@ -3989,7 +3989,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_DEVICE_BUSY
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* check target LUN is allowable value */
@@ -4022,7 +4022,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_DEVICE_BUSY
+l_int|0
 suffix:semicolon
 )brace
 id|show_command
@@ -4154,7 +4154,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SCSI_MLQUEUE_HOST_BUSY
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Build IDENTIFY */
@@ -4405,9 +4405,6 @@ c_func
 (paren
 id|SCpnt
 )paren
-suffix:semicolon
-r_return
-id|SCSI_MLQUEUE_DEVICE_BUSY
 suffix:semicolon
 )brace
 r_return

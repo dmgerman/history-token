@@ -189,6 +189,14 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * On SMP it&squot;s slightly faster (but much more power-consuming!)&n; * to poll the -&gt;work.need_resched flag instead of waiting for the&n; * cross-CPU IPI to arrive. Use this option with caution.&n; */
 DECL|function|poll_idle

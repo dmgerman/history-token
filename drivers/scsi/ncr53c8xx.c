@@ -1091,8 +1091,9 @@ suffix:semicolon
 multiline_comment|/* Target data&t;&t;&t;*/
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Virtual and physical bus addresses of the chip.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|vaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|vaddr
 suffix:semicolon
 multiline_comment|/* Virtual and bus address of&t;*/
@@ -1113,6 +1114,7 @@ multiline_comment|/* Pointer to volatile for &t;*/
 DECL|member|reg
 r_struct
 id|ncr_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -23022,6 +23024,10 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
+id|sts
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|sts
@@ -24348,10 +24354,6 @@ suffix:semicolon
 r_else
 id|np-&gt;vaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -24418,6 +24420,7 @@ op_assign
 (paren
 r_struct
 id|ncr_reg
+id|__iomem
 op_star
 )paren
 id|np-&gt;vaddr

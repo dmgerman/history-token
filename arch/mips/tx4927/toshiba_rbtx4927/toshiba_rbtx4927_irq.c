@@ -23,10 +23,10 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#ifdef CONFIG_RTC_DS1742
-macro_line|#include &lt;asm/rtc_ds1742.h&gt;
+macro_line|#include &lt;linux/ds1742rtc.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_TOSHIBA_FPCIB0
-macro_line|#include &lt;asm/smsc_fdc37m81x.h&gt;
+macro_line|#include &lt;asm/tx4927/smsc_fdc37m81x.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/tx4927/toshiba_rbtx4927.h&gt;
 DECL|macro|TOSHIBA_RBTX4927_IRQ_DEBUG
@@ -1716,10 +1716,10 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -1762,23 +1762,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
-(brace
-r_extern
-r_void
-id|toshiba_rbtx4927_pci_irq_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|toshiba_rbtx4927_pci_irq_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 id|wbflush

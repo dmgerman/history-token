@@ -337,10 +337,10 @@ id|IE_IRQ2
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void

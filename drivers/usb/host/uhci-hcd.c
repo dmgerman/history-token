@@ -6683,7 +6683,6 @@ id|td
 suffix:semicolon
 )brace
 )brace
-DECL|function|uhci_finish_urb
 r_static
 r_void
 id|uhci_finish_urb
@@ -6703,6 +6702,16 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+id|__releases
+c_func
+(paren
+id|uhci-&gt;schedule_lock
+)paren
+id|__acquires
+c_func
+(paren
+id|uhci-&gt;schedule_lock
 )paren
 (brace
 r_struct

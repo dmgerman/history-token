@@ -8,41 +8,27 @@ macro_line|#include &quot;pc300-falc-lh.h&quot;
 macro_line|#ifndef CY_TYPES
 DECL|macro|CY_TYPES
 mdefine_line|#define CY_TYPES
-macro_line|#if defined(__alpha__)
 DECL|typedef|ucdouble
 r_typedef
-r_int
-r_int
+id|__u64
 id|ucdouble
 suffix:semicolon
 multiline_comment|/* 64 bits, unsigned */
 DECL|typedef|uclong
 r_typedef
-r_int
-r_int
+id|__u32
 id|uclong
 suffix:semicolon
 multiline_comment|/* 32 bits, unsigned */
-macro_line|#else
-DECL|typedef|uclong
-r_typedef
-r_int
-r_int
-id|uclong
-suffix:semicolon
-multiline_comment|/* 32 bits, unsigned */
-macro_line|#endif
 DECL|typedef|ucshort
 r_typedef
-r_int
-r_int
+id|__u16
 id|ucshort
 suffix:semicolon
 multiline_comment|/* 16 bits, unsigned */
 DECL|typedef|ucchar
 r_typedef
-r_int
-r_char
+id|__u8
 id|ucchar
 suffix:semicolon
 multiline_comment|/* 8 bits, unsigned */

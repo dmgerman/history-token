@@ -1364,6 +1364,7 @@ op_star
 id|state_list
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ut_create_pkg_state_and_push
 (paren
@@ -1385,6 +1386,7 @@ op_star
 id|state_list
 )paren
 suffix:semicolon
+macro_line|#endif
 r_union
 id|acpi_generic_state
 op_star
@@ -1494,6 +1496,7 @@ suffix:semicolon
 multiline_comment|/* Values for Base above (16=Hex, 10=Decimal) */
 DECL|macro|ACPI_ANY_BASE
 mdefine_line|#define ACPI_ANY_BASE        0
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_char
 op_star
 id|acpi_ut_strupr
@@ -1503,6 +1506,7 @@ op_star
 id|src_string
 )paren
 suffix:semicolon
+macro_line|#endif
 id|u8
 op_star
 id|acpi_ut_get_resource_end_tag
@@ -1759,12 +1763,14 @@ id|u32
 id|line
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 id|acpi_ut_dump_allocation_info
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|acpi_ut_dump_allocations
 (paren

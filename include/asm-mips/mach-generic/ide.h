@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * IDE routines for typical pc-like legacy IDE configurations.&n; *&n; * Copyright (C) 1998, 1999, 2001, 2003 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; *&n; * Copied from i386; many of the especially older MIPS or ISA-based platforms&n; * are basically identical.  Using this file probably implies i8259 PIC&n; * support in a system but the very least interrupt numbers 0 - 15 need to&n; * be put aside for legacy devices.&n; */
 macro_line|#ifndef __ASM_MACH_GENERIC_IDE_H
 DECL|macro|__ASM_MACH_GENERIC_IDE_H
 mdefine_line|#define __ASM_MACH_GENERIC_IDE_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef MAX_HWIFS
 macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
@@ -16,7 +17,7 @@ DECL|macro|IDE_ARCH_OBSOLETE_DEFAULTS
 mdefine_line|#define IDE_ARCH_OBSOLETE_DEFAULTS
 DECL|function|ide_default_irq
 r_static
-r_inline
+id|__inline__
 r_int
 id|ide_default_irq
 c_func
@@ -77,7 +78,7 @@ suffix:semicolon
 )brace
 DECL|function|ide_default_io_base
 r_static
-r_inline
+id|__inline__
 r_int
 r_int
 id|ide_default_io_base
@@ -147,5 +148,7 @@ macro_line|#else
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;ide_default_irq(base)
 macro_line|#endif
+macro_line|#include &lt;asm-generic/ide_iops.h&gt;
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_MACH_GENERIC_IDE_H */
 eof

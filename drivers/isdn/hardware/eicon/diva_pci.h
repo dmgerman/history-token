@@ -3,6 +3,7 @@ macro_line|#ifndef __DIVA_PCI_INTERFACE_H__
 DECL|macro|__DIVA_PCI_INTERFACE_H__
 mdefine_line|#define __DIVA_PCI_INTERFACE_H__
 r_void
+id|__iomem
 op_star
 id|divasa_remap_pci_bar
 c_func
@@ -28,6 +29,7 @@ id|divasa_unmap_pci_bar
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|bar
 )paren

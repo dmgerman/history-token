@@ -2,32 +2,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/************************************************************************&n; * &t;           --- ISP12160A Initiator Firmware ---                 *&n; *&t;&t;&t;      32 LUN Support                            *&n; ************************************************************************/
 multiline_comment|/*&n; *&t;Firmware Version 10.04.32 (12:03 May 09, 2001)&n; */
 macro_line|#ifdef UNIQUE_FW_NAME
-DECL|variable|fw12160i_version
-r_int
-r_int
-id|fw12160i_version
-op_assign
-l_int|10
-op_star
-l_int|1024
-op_plus
-l_int|4
-suffix:semicolon
-macro_line|#else
-DECL|variable|risc_code_version
-r_int
-r_int
-id|risc_code_version
-op_assign
-l_int|10
-op_star
-l_int|1024
-op_plus
-l_int|4
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef UNIQUE_FW_NAME
 DECL|variable|fw12160i_version_str
+r_static
 r_int
 r_char
 id|fw12160i_version_str
@@ -44,6 +20,7 @@ l_int|32
 suffix:semicolon
 macro_line|#else
 DECL|variable|firmware_version
+r_static
 r_int
 r_char
 id|firmware_version
@@ -68,6 +45,7 @@ mdefine_line|#define FW_VERSION_STRING &quot;10.04.32&quot;
 macro_line|#endif
 macro_line|#ifdef UNIQUE_FW_NAME
 DECL|variable|fw12160i_addr01
+r_static
 r_int
 r_int
 id|fw12160i_addr01
@@ -76,6 +54,7 @@ l_int|0x1000
 suffix:semicolon
 macro_line|#else
 DECL|variable|risc_code_addr01
+r_static
 r_int
 r_int
 id|risc_code_addr01
@@ -85,6 +64,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef UNIQUE_FW_NAME
 DECL|variable|fw12160i_code01
+r_static
 r_int
 r_int
 id|fw12160i_code01
@@ -93,6 +73,7 @@ id|fw12160i_code01
 op_assign
 (brace
 macro_line|#else
+r_static
 r_int
 r_int
 id|risc_code01
@@ -27700,6 +27681,7 @@ l_int|0x7c12
 suffix:semicolon
 macro_line|#ifdef UNIQUE_FW_NAME
 DECL|variable|fw12160i_length01
+r_static
 r_int
 r_int
 id|fw12160i_length01
@@ -27708,6 +27690,7 @@ l_int|0x35e6
 suffix:semicolon
 macro_line|#else
 DECL|variable|risc_code_length01
+r_static
 r_int
 r_int
 id|risc_code_length01

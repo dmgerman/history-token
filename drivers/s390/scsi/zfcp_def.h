@@ -2,9 +2,8 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * F
 macro_line|#ifndef ZFCP_DEF_H
 DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
-multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.107 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.111 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -34,6 +33,7 @@ multiline_comment|/************************ DEBUG FLAGS ************************
 DECL|macro|ZFCP_PRINT_FLAGS
 mdefine_line|#define&t;ZFCP_PRINT_FLAGS
 multiline_comment|/********************* GENERAL DEFINES *********************************/
+multiline_comment|/* zfcp version number, it consists of major, minor, and patch-level number */
 DECL|macro|ZFCP_VERSION
 mdefine_line|#define ZFCP_VERSION&t;&t;&quot;4.2.0&quot;
 multiline_comment|/**&n; * zfcp_sg_to_address - determine kernel address from struct scatterlist&n; * @list: struct scatterlist&n; * Return: kernel address&n; */
@@ -2772,130 +2772,5 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  stuff needed for callback handling&n; */
-DECL|typedef|zfcp_cb_incoming_els_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_incoming_els_t
-)paren
-(paren
-r_struct
-id|zfcp_adapter
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|zfcp_cb_link_down_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_link_down_t
-)paren
-(paren
-r_struct
-id|zfcp_adapter
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|zfcp_cb_link_up_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_link_up_t
-)paren
-(paren
-r_struct
-id|zfcp_adapter
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|zfcp_cb_adapter_add_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_adapter_add_t
-)paren
-(paren
-r_struct
-id|zfcp_adapter
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|zfcp_cb_port_add_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_port_add_t
-)paren
-(paren
-r_struct
-id|zfcp_port
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|zfcp_cb_unit_add_t
-r_typedef
-r_void
-(paren
-op_star
-id|zfcp_cb_unit_add_t
-)paren
-(paren
-r_struct
-id|zfcp_unit
-op_star
-)paren
-suffix:semicolon
-DECL|struct|zfcp_callbacks
-r_struct
-id|zfcp_callbacks
-(brace
-DECL|member|refcount
-id|atomic_t
-id|refcount
-suffix:semicolon
-DECL|member|wq
-id|wait_queue_head_t
-id|wq
-suffix:semicolon
-DECL|member|incoming_els
-id|zfcp_cb_incoming_els_t
-id|incoming_els
-suffix:semicolon
-DECL|member|link_down
-id|zfcp_cb_link_down_t
-id|link_down
-suffix:semicolon
-DECL|member|link_up
-id|zfcp_cb_link_up_t
-id|link_up
-suffix:semicolon
-DECL|member|adapter_add
-id|zfcp_cb_adapter_add_t
-id|adapter_add
-suffix:semicolon
-DECL|member|port_add
-id|zfcp_cb_port_add_t
-id|port_add
-suffix:semicolon
-DECL|member|unit_add
-id|zfcp_cb_unit_add_t
-id|unit_add
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|zfcp_callbacks
-id|zfcp_callbacks
-suffix:semicolon
 macro_line|#endif /* ZFCP_DEF_H */
 eof

@@ -311,6 +311,7 @@ id|est_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gen_new_estimator - create a new rate estimator&n; * @bstats: basic statistics&n; * @rate_est: rate estimator statistics&n; * @stats_lock: statistics lock&n; * @opt: rate estimator configuration TLV&n; *&n; * Creates a new rate estimator with &amp;bstats as source and &amp;rate_est&n; * as destination. A new timer with the interval specified in the&n; * configuration TLV is created. Upon each interval, the latest statistics&n; * will be read from &amp;bstats and the estimated rate will be stored in&n; * &amp;rate_est with the statistics lock grabed during this period.&n; * &n; * Returns 0 on success or a negative error code.&n; */
 DECL|function|gen_new_estimator
 r_int
 id|gen_new_estimator
@@ -569,6 +570,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * gen_kill_estimator - remove a rate estimator&n; * @bstats: basic statistics&n; * @rate_est: rate estimator statistics&n; *&n; * Removes the rate estimator specified by &amp;bstats and &amp;rate_est&n; * and deletes the timer.&n; */
 DECL|function|gen_kill_estimator
 r_void
 id|gen_kill_estimator
@@ -717,6 +719,7 @@ id|timer
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * gen_replace_estimator - replace rate estimator configruation&n; * @bstats: basic statistics&n; * @rate_est: rate estimator statistics&n; * @stats_lock: statistics lock&n; * @opt: rate estimator configuration TLV&n; *&n; * Replaces the configuration of a rate estimator by calling&n; * gen_kill_estimator() and gen_new_estimator().&n; * &n; * Returns 0 on success or a negative error code.&n; */
 r_int
 DECL|function|gen_replace_estimator
 id|gen_replace_estimator

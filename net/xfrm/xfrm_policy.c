@@ -1598,6 +1598,11 @@ id|delpol
 )paren
 r_break
 suffix:semicolon
+id|p
+op_assign
+op_amp
+id|pol-&gt;next
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2637,6 +2642,13 @@ id|pol
 suffix:semicolon
 )brace
 )brace
+DECL|variable|xfrm_policy_delete
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_delete
+)paren
+suffix:semicolon
 DECL|function|xfrm_sk_policy_insert
 r_int
 id|xfrm_sk_policy_insert

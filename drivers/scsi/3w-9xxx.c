@@ -8093,6 +8093,10 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|retval

@@ -8924,7 +8924,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %p&bslash;n&quot;
+l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %d&bslash;n&quot;
 comma
 id|len
 comma
@@ -14334,20 +14334,22 @@ id|cmsg
 )paren
 )paren
 (brace
-multiline_comment|/* Check for minimum length.  The SCM code has this check.  */
 r_if
 c_cond
 (paren
-id|cmsg-&gt;cmsg_len
-template_param
-id|msg-&gt;msg_controllen
+op_logical_neg
+id|CMSG_OK
+c_func
+(paren
+id|msg
+comma
+id|cmsg
 )paren
-(brace
+)paren
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* Should we parse this header or ignore?  */
 r_if
 c_cond

@@ -929,38 +929,6 @@ id|u32
 id|event
 )paren
 suffix:semicolon
-DECL|member|adapter_enable_int
-r_void
-(paren
-op_star
-id|adapter_enable_int
-)paren
-(paren
-r_struct
-id|aac_dev
-op_star
-id|dev
-comma
-id|u32
-id|event
-)paren
-suffix:semicolon
-DECL|member|adapter_disable_int
-r_void
-(paren
-op_star
-id|adapter_disable_int
-)paren
-(paren
-r_struct
-id|aac_dev
-op_star
-id|dev
-comma
-id|u32
-id|event
-)paren
-suffix:semicolon
 DECL|member|adapter_sync_cmd
 r_int
 (paren
@@ -2049,6 +2017,10 @@ DECL|macro|AAC_OPT_ALARM
 mdefine_line|#define AAC_OPT_ALARM&t;&t;&t;cpu_to_le32(1&lt;&lt;11)
 DECL|macro|AAC_OPT_NONDASD
 mdefine_line|#define AAC_OPT_NONDASD&t;&t;&t;cpu_to_le32(1&lt;&lt;12)
+DECL|macro|AAC_OPT_SCSI_MANAGED
+mdefine_line|#define AAC_OPT_SCSI_MANAGED    &t;cpu_to_le32(1&lt;&lt;13)
+DECL|macro|AAC_OPT_RAID_SCSI_MODE
+mdefine_line|#define AAC_OPT_RAID_SCSI_MODE&t;&t;cpu_to_le32(1&lt;&lt;14)
 DECL|struct|aac_dev
 r_struct
 id|aac_dev
@@ -2256,20 +2228,16 @@ DECL|member|dac_support
 id|u8
 id|dac_support
 suffix:semicolon
+DECL|member|raid_scsi_mode
+id|u8
+id|raid_scsi_mode
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|AllocateAndMapFibSpace
-mdefine_line|#define AllocateAndMapFibSpace(dev, MapFibContext) &bslash;&n;&t;(dev)-&gt;a_ops.AllocateAndMapFibSpace(dev, MapFibContext)
-DECL|macro|UnmapAndFreeFibSpace
-mdefine_line|#define UnmapAndFreeFibSpace(dev, MapFibContext) &bslash;&n;&t;(dev)-&gt;a_ops.UnmapAndFreeFibSpace(dev, MapFibContext)
 DECL|macro|aac_adapter_interrupt
 mdefine_line|#define aac_adapter_interrupt(dev) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_interrupt(dev)
 DECL|macro|aac_adapter_notify
 mdefine_line|#define aac_adapter_notify(dev, event) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_notify(dev, event)
-DECL|macro|aac_adapter_enable_int
-mdefine_line|#define aac_adapter_enable_int(dev, event) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_enable_int(dev, event)
-DECL|macro|aac_adapter_disable_int
-mdefine_line|#define aac_adapter_disable_int(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_disable_int(dev, event)
 DECL|macro|aac_adapter_check_health
 mdefine_line|#define aac_adapter_check_health(dev) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_check_health(dev)
 DECL|macro|FIB_CONTEXT_FLAG_TIMED_OUT

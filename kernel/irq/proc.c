@@ -260,15 +260,7 @@ c_func
 (paren
 id|irq
 comma
-id|cpumask_of_cpu
-c_func
-(paren
-id|first_cpu
-c_func
-(paren
 id|new_value
-)paren
-)paren
 )paren
 suffix:semicolon
 r_return

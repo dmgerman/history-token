@@ -182,6 +182,8 @@ DECL|macro|__CMSG_FIRSTHDR
 mdefine_line|#define __CMSG_FIRSTHDR(ctl,len) ((len) &gt;= sizeof(struct cmsghdr) ? &bslash;&n;&t;&t;&t;&t;  (struct cmsghdr *)(ctl) : &bslash;&n;&t;&t;&t;&t;  (struct cmsghdr *)NULL)
 DECL|macro|CMSG_FIRSTHDR
 mdefine_line|#define CMSG_FIRSTHDR(msg)&t;__CMSG_FIRSTHDR((msg)-&gt;msg_control, (msg)-&gt;msg_controllen)
+DECL|macro|CMSG_OK
+mdefine_line|#define CMSG_OK(mhdr, cmsg) ((cmsg)-&gt;cmsg_len &gt;= sizeof(struct cmsghdr) &amp;&amp; &bslash;&n;&t;&t;&t;     (cmsg)-&gt;cmsg_len &lt;= (unsigned long) &bslash;&n;&t;&t;&t;     ((mhdr)-&gt;msg_controllen - &bslash;&n;&t;&t;&t;      ((char *)(cmsg) - (char *)(mhdr)-&gt;msg_control)))
 multiline_comment|/*&n; *&t;This mess will go away with glibc&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|__KINLINE

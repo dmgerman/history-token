@@ -401,6 +401,7 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 op_star
 id|s
 op_ge
@@ -410,6 +411,12 @@ op_star
 id|s
 op_le
 l_char|&squot;9&squot;
+)paren
+op_logical_or
+op_star
+id|s
+op_eq
+l_char|&squot;,&squot;
 )paren
 r_break
 suffix:semicolon

@@ -22,6 +22,8 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/open_pic.h&gt;
 multiline_comment|/* WARNING !!! This will cause calibrate_delay() to be called,&n; * but this is an __init function ! So you MUST go edit&n; * init/main.c to make it non-init before enabling DEBUG_FREQ&n; */
 DECL|macro|DEBUG_FREQ
 macro_line|#undef DEBUG_FREQ
@@ -50,47 +52,6 @@ suffix:semicolon
 r_extern
 r_void
 id|low_sleep_handler
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|openpic_suspend
-c_func
-(paren
-r_struct
-id|sys_device
-op_star
-id|sysdev
-comma
-id|u32
-id|state
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|openpic_resume
-c_func
-(paren
-r_struct
-id|sys_device
-op_star
-id|sysdev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_kernel_altivec
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_kernel_fp
 c_func
 (paren
 r_void
@@ -585,12 +546,10 @@ id|SPRN_HID1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Disable all interrupt sources on openpic */
-id|openpic_suspend
+id|openpic_set_priority
 c_func
 (paren
-l_int|NULL
-comma
-l_int|1
+l_int|0xf
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the decrementer won&squot;t interrupt us */
@@ -866,10 +825,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupts */
-id|openpic_resume
+id|openpic_set_priority
 c_func
 (paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Let interrupts flow again ... */

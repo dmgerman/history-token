@@ -358,33 +358,15 @@ l_string|&quot;ddb_8254timer_irq called&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|ddb_irq_setup
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|ddb_irq_setup
+id|arch_init_irq
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_KGDB
-r_if
-c_cond
-(paren
-id|remote_debug
-)paren
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* you may move this line to whereever you want :-) */
-macro_line|#endif
 multiline_comment|/* setup cascade interrupts */
 id|setup_irq
 c_func

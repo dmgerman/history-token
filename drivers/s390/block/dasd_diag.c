@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.38 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.39 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1851,6 +1851,44 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|dasd_diag_free_cp
+id|dasd_diag_free_cp
+c_func
+(paren
+r_struct
+id|dasd_ccw_req
+op_star
+id|cqr
+comma
+r_struct
+id|request
+op_star
+id|req
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|cqr-&gt;status
+op_eq
+id|DASD_CQR_DONE
+suffix:semicolon
+id|dasd_sfree_request
+c_func
+(paren
+id|cqr
+comma
+id|cqr-&gt;device
+)paren
+suffix:semicolon
+r_return
+id|status
+suffix:semicolon
+)brace
+r_static
+r_int
 DECL|function|dasd_diag_fill_info
 id|dasd_diag_fill_info
 c_func
@@ -2091,6 +2129,11 @@ dot
 id|build_cp
 op_assign
 id|dasd_diag_build_cp
+comma
+dot
+id|free_cp
+op_assign
+id|dasd_diag_free_cp
 comma
 dot
 id|dump_sense

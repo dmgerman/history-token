@@ -149,6 +149,8 @@ id|outb
 c_func
 (paren
 id|val
+op_amp
+l_int|255
 comma
 l_int|0x371
 )paren
@@ -1622,6 +1624,8 @@ c_func
 l_int|0x61
 comma
 id|base
+op_amp
+l_int|255
 )paren
 suffix:semicolon
 id|i
@@ -1754,6 +1758,8 @@ c_func
 l_int|0x61
 comma
 id|sb_base
+op_amp
+l_int|255
 )paren
 suffix:semicolon
 id|i
@@ -1858,6 +1864,8 @@ c_func
 l_int|0x63
 comma
 id|al_base
+op_amp
+l_int|255
 )paren
 suffix:semicolon
 id|i

@@ -1,5 +1,6 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsxface - Public interfaces to the resource manager&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acresrc.h&gt;
 DECL|macro|_COMPONENT
@@ -154,7 +155,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_current_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_current_resources
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_possible_resources&n; *&n; * PARAMETERS:  device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              ret_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get a list of the possible resources&n; *              for a specific device.  The caller must first acquire a handle&n; *              for the desired device.  The resource data is placed in the&n; *              buffer pointed to by the ret_buffer variable.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of ret_buffer is undefined.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_get_possible_resources
 id|acpi_get_possible_resources
@@ -227,6 +236,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_possible_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_possible_resources
+)paren
+suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_walk_resources&n; *&n; * PARAMETERS:  device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              Path            - method name of the resources we want&n; *                                (METHOD_NAME__CRS or METHOD_NAME__PRS)&n; *              user_function   - called for each resource&n; *              Context         - passed to user_function&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieves the current or possible resource list for the&n; *              specified device.  The user_function is called once for&n; *              each resource in the list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_walk_resources
@@ -472,6 +489,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_walk_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_walk_resources
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_set_current_resources&n; *&n; * PARAMETERS:  device_handle   - a handle to the device object for the&n; *                                device we are changing the resources of&n; *              in_buffer       - a pointer to a buffer containing the&n; *                                resources to be set for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to set the current resources for a&n; *              specific device.  The caller must first acquire a handle for&n; *              the desired device.  The resource data is passed to the routine&n; *              the buffer pointed to by the in_buffer variable.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_current_resources
@@ -540,6 +564,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_set_current_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_set_current_resources
+)paren
+suffix:semicolon
 DECL|macro|ACPI_COPY_FIELD
 mdefine_line|#define ACPI_COPY_FIELD(out, in, field)  ((out)-&gt;field = (in)-&gt;field)
 DECL|macro|ACPI_COPY_ADDRESS
@@ -656,4 +687,11 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_resource_to_address64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_resource_to_address64
+)paren
+suffix:semicolon
 eof

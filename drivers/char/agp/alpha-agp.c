@@ -779,6 +779,15 @@ r_void
 r_if
 c_cond
 (paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|alpha_mv.agp_info
 )paren
 r_return

@@ -2820,8 +2820,6 @@ r_void
 r_int
 r_int
 id|nr_needed_pages
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|error
@@ -2846,6 +2844,11 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;Suspend machine: Not enough free pages for highmem&bslash;n&quot;
+)paren
+suffix:semicolon
+id|restore_highmem
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -3550,6 +3553,14 @@ id|pagedir_order
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4156,7 +4167,7 @@ id|pr_debug
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;swsusp: Invalid partition type.&bslash;n&quot;
+l_string|&quot;swsusp: Suspend partition has wrong signature?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -3531,6 +3531,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|info-&gt;monspecs.hfmax
+op_logical_or
+op_logical_neg
+id|info-&gt;monspecs.vfmax
+op_logical_or
+op_logical_neg
+id|info-&gt;monspecs.dclkmax
+op_logical_or
+op_logical_neg
 id|fb_validate_mode
 c_func
 (paren
@@ -8714,7 +8723,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 SuperSavage&quot;
+l_string|&quot;SuperSavage&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8732,7 +8741,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage4&quot;
+l_string|&quot;Savage4&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8750,7 +8759,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage3D&quot;
+l_string|&quot;Savage3D&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8768,7 +8777,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage3D-MV&quot;
+l_string|&quot;Savage3D-MV&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8786,7 +8795,7 @@ id|info-&gt;fix.id
 comma
 l_int|16
 comma
-l_string|&quot;S3 Savage2000&quot;
+l_string|&quot;Savage2000&quot;
 )paren
 suffix:semicolon
 r_break
@@ -9060,6 +9069,8 @@ op_or
 id|FBINFO_HWACCEL_YPAN
 op_or
 id|FBINFO_HWACCEL_XPAN
+op_or
+id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign

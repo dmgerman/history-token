@@ -125,15 +125,6 @@ r_int
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Detect available CPUs, populate phys_cpu_present_map&n; */
-r_extern
-r_void
-id|prom_build_cpu_map
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Firmware CPU startup hook&n; */
 r_extern
 r_void
@@ -158,7 +149,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Callout to firmware before smp_init&n; */
+multiline_comment|/*&n; * Detect available CPUs, populate phys_cpu_present_map before smp_init&n; */
 r_extern
 r_void
 id|prom_prepare_cpus

@@ -3648,6 +3648,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -3738,6 +3744,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Different cardbus controllers have slightly different&n; * initialization sequences etc details. List them here..&n; */
 DECL|variable|cardbus_type
+r_static
 r_struct
 id|cardbus_type
 id|cardbus_type
@@ -4363,18 +4370,10 @@ comma
 id|CB_FCARDSTS
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* disable interrupts */
@@ -5189,14 +5188,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|pci_set_power_state
-c_func
-(paren
-id|dev
-comma
-l_int|3
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Some laptops (IBM T22) do not like us putting the Cardbus&n;&t;&t; * bridge into D3.  At a guess, some other laptop will&n;&t;&t; * probably require this, so leave it commented out for now.&n;&t;&t; */
+multiline_comment|/* pci_set_power_state(dev, 3); */
 )brace
 r_return
 id|ret

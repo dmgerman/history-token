@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#if SHMLBA &gt; 16384
 macro_line|#error FIX ME
 macro_line|#endif

@@ -57,6 +57,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME : we should not need this, because instances should be automatically&n; * managed by the PCI layer. Especially that we seem to only be using the&n; * first entry. Jean II */
 multiline_comment|/* Max 4 instances for now */
 DECL|variable|dev_self
 r_static
@@ -589,7 +590,7 @@ c_cond
 (paren
 id|rc
 OL
-l_int|1
+l_int|0
 )paren
 (brace
 id|IRDA_DEBUG
@@ -602,19 +603,6 @@ comma
 id|__FUNCTION__
 comma
 id|rc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-id|pci_unregister_driver
-(paren
-op_amp
-id|via_driver
 )paren
 suffix:semicolon
 r_return
@@ -1435,9 +1423,17 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME : This is ugly. We should use pci_get_drvdata(pdev);&n;&t; * to get our driver instance and call directly via_ircc_close().&n;&t; * See vlsi_ir for details...&n;&t; * Jean II */
 id|via_ircc_clean
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME : This should be in via_ircc_close(), because here we may&n;&t; * theoritically disable still configured devices :-( - Jean II */
+id|pci_disable_device
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 )brace
@@ -1461,11 +1457,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME : This should be redundant, as pci_unregister_driver()&n;&t; * should call via_remove_one() on each device.&n;&t; * Jean II */
 id|via_ircc_clean
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Cleanup all instances of the driver */
 id|pci_unregister_driver
 (paren
 op_amp
@@ -1555,6 +1553,8 @@ op_amp
 id|self-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME : We should store our driver instance in the PCI layer,&n;&t; * using pci_set_drvdata(), not in this array.&n;&t; * See vlsi_ir for details... - Jean II */
+multiline_comment|/* FIXME : &squot;i&squot; is always 0 (see via_init_one()) :-( - Jean II */
 multiline_comment|/* Need to store self somewhere */
 id|dev_self
 (braket

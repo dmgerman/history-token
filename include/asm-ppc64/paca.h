@@ -212,7 +212,7 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* used for linear mapping hash table misses */
-multiline_comment|/*&n;&t; * iSeries structues which the hypervisor knows about - Not&n;&t; * sure if these particularly need to be cacheline aligned.&n;&t; * The lppaca is also used on POWER5 pSeries boxes.&n;&t; */
+multiline_comment|/*&n;&t; * iSeries structure which the hypervisor knows about -&n;&t; * this structure should not cross a page boundary.&n;&t; * The vpa_init/register_vpa call is now known to fail if the&n;&t; * lppaca structure crosses a page boundary.&n;&t; * The lppaca is also used on POWER5 pSeries boxes.&n;&t; * The lppaca is 640 bytes long, and cannot readily change&n;&t; * since the hypervisor knows its layout, so a 1kB&n;&t; * alignment will suffice to ensure that it doesn&squot;t&n;&t; * cross a page boundary.&n;&t; */
 DECL|member|lppaca
 r_struct
 id|ItLpPaca
@@ -221,10 +221,10 @@ id|__attribute__
 c_func
 (paren
 (paren
-id|aligned
+id|__aligned__
 c_func
 (paren
-l_int|0x80
+l_int|0x400
 )paren
 )paren
 )paren

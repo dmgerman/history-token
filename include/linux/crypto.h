@@ -49,6 +49,10 @@ DECL|macro|CRYPTO_UNSPEC
 mdefine_line|#define CRYPTO_UNSPEC&t;&t;&t;0
 DECL|macro|CRYPTO_MAX_ALG_NAME
 mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;&t;64
+DECL|macro|CRYPTO_DIR_ENCRYPT
+mdefine_line|#define CRYPTO_DIR_ENCRYPT&t;&t;1
+DECL|macro|CRYPTO_DIR_DECRYPT
+mdefine_line|#define CRYPTO_DIR_DECRYPT&t;&t;0
 r_struct
 id|scatterlist
 suffix:semicolon

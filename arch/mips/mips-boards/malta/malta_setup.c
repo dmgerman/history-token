@@ -5,6 +5,12 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#ifdef CONFIG_MTD
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
+macro_line|#include &lt;linux/mtd/physmap.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -124,6 +130,81 @@ id|IORESOURCE_BUSY
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD
+DECL|variable|malta_mtd_partitions
+r_static
+r_struct
+id|mtd_partition
+id|malta_mtd_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;YAMON&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0x0
+comma
+dot
+id|size
+op_assign
+l_int|0x100000
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;User FS&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0x100000
+comma
+dot
+id|size
+op_assign
+l_int|0x2e0000
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Board Config&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0x3e0000
+comma
+dot
+id|size
+op_assign
+l_int|0x020000
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+)brace
+)brace
+suffix:semicolon
+DECL|macro|number_partitions
+mdefine_line|#define number_partitions&t;(sizeof(malta_mtd_partitions)/sizeof(struct mtd_partition))
+macro_line|#endif
 DECL|function|get_system_type
 r_const
 r_char
@@ -405,8 +486,9 @@ suffix:semicolon
 )brace
 r_else
 id|panic
+c_func
 (paren
-l_string|&quot;Hardware DMA cache coherency not supported&bslash;n&quot;
+l_string|&quot;Hardware DMA cache coherency not supported&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -415,8 +497,9 @@ macro_line|#ifdef CONFIG_DMA_COHERENT
 r_else
 (brace
 id|panic
+c_func
 (paren
-l_string|&quot;Hardware DMA cache coherency not supported&bslash;n&quot;
+l_string|&quot;Hardware DMA cache coherency not supported&quot;
 )paren
 suffix:semicolon
 )brace
@@ -603,6 +686,29 @@ multiline_comment|/* orig-video-points */
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD
+multiline_comment|/*&n;&t; * Support for MTD on Malta. Use the generic physmap driver&n;&t; */
+id|physmap_configure
+c_func
+(paren
+l_int|0x1e000000
+comma
+l_int|0x400000
+comma
+l_int|4
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|physmap_set_partitions
+c_func
+(paren
+id|malta_mtd_partitions
+comma
+id|number_partitions
+)paren
+suffix:semicolon
 macro_line|#endif
 id|mips_reboot_setup
 c_func

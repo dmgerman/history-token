@@ -1608,11 +1608,45 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * If Linux enabled the LAPIC against the BIOS default&n; * disable it down before re-entering the BIOS on shutdown.&n; * Otherwise the BIOS may get confused and not power-off.&n; */
+r_void
+DECL|function|lapic_shutdown
+id|lapic_shutdown
+c_func
+(paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_apic
+op_logical_or
+op_logical_neg
+id|enabled_via_apicbase
+)paren
+r_return
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|disable_local_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PM
 r_static
 r_struct
 (brace
-multiline_comment|/* &squot;active&squot; is true if the local APIC was enabled by us and&n;&t;   not the BIOS; this signifies that we are also responsible&n;&t;   for disabling it before entering apm/acpi suspend */
 DECL|member|active
 r_int
 id|active
@@ -2061,6 +2095,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This device has no shutdown method - fully functioning local APICs&n; * are needed on every CPU up until machine_halt/restart/poweroff.&n; */
 DECL|variable|lapic_sysclass
 r_static
 r_struct
@@ -3715,12 +3750,14 @@ multiline_comment|/*&n;&t; * We take the &squot;long&squot; return path, and the
 )brace
 multiline_comment|/*&n; * Local APIC timer interrupt. This is the most natural way for doing&n; * local interrupts, but local timer interrupts can be emulated by&n; * broadcast interrupts too. [in case the hw doesn&squot;t support APIC timers]&n; *&n; * [ if a single-CPU system runs an SMP kernel then we call the local&n; *   interrupt as well. Thus we cannot inline the local irq ... ]&n; */
 DECL|function|smp_apic_timer_interrupt
+id|fastcall
 r_void
 id|smp_apic_timer_interrupt
 c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -3756,7 +3793,6 @@ suffix:semicolon
 id|smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -3768,12 +3804,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should _never_ happen with our APIC/SMP architecture&n; */
 DECL|function|smp_spurious_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_spurious_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3846,12 +3885,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should never happen with our APIC/SMP architecture&n; */
 DECL|function|smp_error_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_error_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int

@@ -995,6 +995,12 @@ op_amp
 id|timer-&gt;entry
 )paren
 suffix:semicolon
+multiline_comment|/* Need to make sure that anybody who sees a NULL base also sees the list ops */
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|timer-&gt;base
 op_assign
 l_int|NULL

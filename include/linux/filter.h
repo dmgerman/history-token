@@ -4,7 +4,9 @@ DECL|macro|__LINUX_FILTER_H__
 mdefine_line|#define __LINUX_FILTER_H__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * Current version of the filter code architecture.&n; */
 DECL|macro|BPF_MAJOR_VERSION
 mdefine_line|#define BPF_MAJOR_VERSION 1

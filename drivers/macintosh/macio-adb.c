@@ -124,6 +124,7 @@ r_static
 r_volatile
 r_struct
 id|adb_regs
+id|__iomem
 op_star
 id|adb
 suffix:semicolon
@@ -388,12 +389,6 @@ suffix:semicolon
 macro_line|#endif
 id|adb
 op_assign
-(paren
-r_volatile
-r_struct
-id|adb_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren

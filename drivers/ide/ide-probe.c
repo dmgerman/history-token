@@ -5036,7 +5036,6 @@ id|index
 dot
 id|present
 suffix:semicolon
-multiline_comment|/*&n;&t; * Probe for drives in the usual way.. CMOS/BIOS, then poke at ports&n;&t; */
 r_for
 c_loop
 (paren

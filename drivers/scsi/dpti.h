@@ -524,11 +524,15 @@ l_int|55
 )braket
 suffix:semicolon
 DECL|member|base_addr_virt
-id|ulong
+r_void
+id|__iomem
+op_star
 id|base_addr_virt
 suffix:semicolon
 DECL|member|msg_addr_virt
-id|ulong
+r_void
+id|__iomem
+op_star
 id|msg_addr_virt
 suffix:semicolon
 DECL|member|base_addr_phys
@@ -536,15 +540,21 @@ id|ulong
 id|base_addr_phys
 suffix:semicolon
 DECL|member|post_port
-id|ulong
+r_void
+id|__iomem
+op_star
 id|post_port
 suffix:semicolon
 DECL|member|reply_port
-id|ulong
+r_void
+id|__iomem
+op_star
 id|reply_port
 suffix:semicolon
 DECL|member|irq_mask
-id|ulong
+r_void
+id|__iomem
+op_star
 id|irq_mask
 suffix:semicolon
 DECL|member|post_count
@@ -622,7 +632,9 @@ id|proc_entry
 suffix:semicolon
 multiline_comment|/* /proc dir */
 DECL|member|FwDebugBuffer_P
-id|ulong
+r_void
+id|__iomem
+op_star
 id|FwDebugBuffer_P
 suffix:semicolon
 singleline_comment|// Virtual Address Of FW Debug Buffer
@@ -632,22 +644,30 @@ id|FwDebugBufferSize
 suffix:semicolon
 singleline_comment|// FW Debug Buffer Size In Bytes
 DECL|member|FwDebugStrLength_P
-id|ulong
+r_void
+id|__iomem
+op_star
 id|FwDebugStrLength_P
 suffix:semicolon
 singleline_comment|// Virtual Addr Of FW Debug String Len
 DECL|member|FwDebugFlags_P
-id|ulong
+r_void
+id|__iomem
+op_star
 id|FwDebugFlags_P
 suffix:semicolon
 singleline_comment|// Virtual Address Of FW Debug Flags 
 DECL|member|FwDebugBLEDflag_P
-id|ulong
+r_void
+id|__iomem
+op_star
 id|FwDebugBLEDflag_P
 suffix:semicolon
 singleline_comment|// Virtual Addr Of FW Debug BLED
 DECL|member|FwDebugBLEDvalue_P
-id|ulong
+r_void
+id|__iomem
+op_star
 id|FwDebugBLEDvalue_P
 suffix:semicolon
 singleline_comment|// Virtual Addr Of FW Debug BLED

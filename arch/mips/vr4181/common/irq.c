@@ -611,10 +611,10 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -622,12 +622,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-r_extern
-id|irq_desc_t
-id|irq_desc
-(braket
-)braket
 suffix:semicolon
 id|set_except_vector
 c_func
@@ -835,24 +829,5 @@ op_amp
 id|reserved
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
-id|printk
-c_func
-(paren
-l_string|&quot;Setting debug traps - please connect the remote debugger.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// you may move this line to whereever you want
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

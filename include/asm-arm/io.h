@@ -304,8 +304,9 @@ DECL|function|check_signature
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const
@@ -406,75 +407,6 @@ DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;_memcpy_toio(__mem_isa((a)),(b),(c))
 DECL|macro|isa_eth_io_copy_and_sum
 mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d) &bslash;&n;&t;&t;&t;&t;eth_copy_and_sum((a),__mem_isa(b),(c),(d))
-r_static
-r_inline
-r_int
-DECL|function|isa_check_signature
-id|isa_check_signature
-c_func
-(paren
-r_int
-r_int
-id|io_addr
-comma
-r_const
-r_int
-r_char
-op_star
-id|signature
-comma
-r_int
-id|length
-)paren
-(brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_do
-(brace
-r_if
-c_cond
-(paren
-id|isa_readb
-c_func
-(paren
-id|io_addr
-)paren
-op_ne
-op_star
-id|signature
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|io_addr
-op_increment
-suffix:semicolon
-id|signature
-op_increment
-suffix:semicolon
-id|length
-op_decrement
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|length
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|1
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|retval
-suffix:semicolon
-)brace
 macro_line|#else&t;/* __mem_isa */
 DECL|macro|isa_readb
 mdefine_line|#define isa_readb(addr)&t;&t;&t;(__readwrite_bug(&quot;isa_readb&quot;),0)
@@ -496,8 +428,6 @@ DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;__readwrite_bug(&quot;isa_memcpy_toio&quot;)
 DECL|macro|isa_eth_io_copy_and_sum
 mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d) &bslash;&n;&t;&t;&t;&t;__readwrite_bug(&quot;isa_eth_io_copy_and_sum&quot;)
-DECL|macro|isa_check_signature
-mdefine_line|#define isa_check_signature(io,sig,len)&t;(0)
 macro_line|#endif&t;/* __mem_isa */
 multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * Documentation/IO-mapping.txt.&n; */
 r_extern

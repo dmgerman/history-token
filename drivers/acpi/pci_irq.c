@@ -654,6 +654,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                          PCI Interrupt Routing Support&n;   -------------------------------------------------------------------------- */
+multiline_comment|/*&n; * acpi_pci_irq_lookup&n; * success: return IRQ &gt;= 0&n; * failure: return -1&n; */
 r_static
 r_int
 DECL|function|acpi_pci_irq_lookup
@@ -765,7 +766,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -792,8 +794,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|irq
+OL
+l_int|0
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -809,7 +812,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -850,6 +854,7 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_pci_irq_derive&n; * success: return IRQ &gt;= 0&n; * failure: return &lt; 0&n; */
 r_static
 r_int
 DECL|function|acpi_pci_irq_derive
@@ -882,7 +887,8 @@ suffix:semicolon
 r_int
 id|irq
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 id|u8
 id|bridge_pin
@@ -912,8 +918,9 @@ multiline_comment|/* &n;&t; * Attempt to derive an IRQ for this device from a pa
 r_while
 c_loop
 (paren
-op_logical_neg
 id|irq
+OL
+l_int|0
 op_logical_and
 id|bridge-&gt;bus-&gt;self
 )paren
@@ -988,7 +995,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1025,8 +1033,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|irq
+OL
+l_int|0
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1048,7 +1057,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1083,6 +1093,7 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_pci_irq_enable&n; * success: return 0&n; * failure: return &lt; 0&n; */
 r_int
 DECL|function|acpi_pci_irq_enable
 id|acpi_pci_irq_enable
@@ -1228,8 +1239,9 @@ multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to deriv
 r_if
 c_cond
 (paren
-op_logical_neg
 id|irq
+OL
+l_int|0
 )paren
 id|irq
 op_assign
@@ -1251,8 +1263,9 @@ multiline_comment|/*&n;&t; * No IRQ known to the ACPI subsystem - maybe the BIOS
 r_if
 c_cond
 (paren
-op_logical_neg
 id|irq
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -1280,6 +1293,8 @@ r_if
 c_cond
 (paren
 id|dev-&gt;irq
+op_ge
+l_int|0
 op_logical_and
 (paren
 id|dev-&gt;irq
@@ -1299,7 +1314,7 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-id|dev-&gt;irq
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1379,8 +1394,15 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-id|dev-&gt;irq
+l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_pci_irq_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_irq_enable
+)paren
+suffix:semicolon
 eof

@@ -580,16 +580,17 @@ DECL|macro|mmiowb
 mdefine_line|#define mmiowb()
 DECL|macro|flush_write_buffers
 mdefine_line|#define flush_write_buffers() do { } while (0)  /* M32R_FIXME */
-multiline_comment|/**&n; *&t;isa_check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check&n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */
-DECL|function|isa_check_signature
+multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check&n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */
+DECL|function|check_signature
 r_static
 r_inline
 r_int
-id|isa_check_signature
+id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const
@@ -611,7 +612,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;isa_check_signature&bslash;n&quot;
+l_string|&quot;check_signature&bslash;n&quot;
 )paren
 suffix:semicolon
 r_do
@@ -619,7 +620,7 @@ r_do
 r_if
 c_cond
 (paren
-id|isa_readb
+id|readb
 c_func
 (paren
 id|io_addr

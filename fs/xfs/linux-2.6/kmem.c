@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;time.h&quot;
 macro_line|#include &quot;kmem.h&quot;
 DECL|macro|MAX_VMALLOCS
@@ -27,7 +28,8 @@ r_int
 id|retries
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
 id|lflags
 op_assign
 id|kmem_flags_convert
@@ -105,11 +107,22 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;possible deadlock in %s (mode:0x%x)&bslash;n&quot;
+l_string|&quot;XFS: possible memory allocation &quot;
+l_string|&quot;deadlock in %s (mode:0x%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|lflags
+)paren
+suffix:semicolon
+id|blk_congestion_wait
+c_func
+(paren
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -324,7 +337,8 @@ r_int
 id|retries
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
 id|lflags
 op_assign
 id|kmem_flags_convert
@@ -382,11 +396,22 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;possible deadlock in %s (mode:0x%x)&bslash;n&quot;
+l_string|&quot;XFS: possible memory allocation &quot;
+l_string|&quot;deadlock in %s (mode:0x%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|lflags
+)paren
+suffix:semicolon
+id|blk_congestion_wait
+c_func
+(paren
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|50
 )paren
 suffix:semicolon
 )brace

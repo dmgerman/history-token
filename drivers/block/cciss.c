@@ -4050,11 +4050,13 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
 OL
 id|MAX_PART
+op_minus
+l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -5577,7 +5579,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EBADRQC
+id|ENOTTY
 suffix:semicolon
 )brace
 )brace

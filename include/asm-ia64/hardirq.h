@@ -11,20 +11,8 @@ DECL|macro|__ARCH_IRQ_STAT
 mdefine_line|#define __ARCH_IRQ_STAT&t;1
 DECL|macro|softirq_pending
 mdefine_line|#define softirq_pending(cpu)&t;&t;(cpu_data(cpu)-&gt;softirq_pending)
-DECL|macro|syscall_count
-mdefine_line|#define syscall_count(cpu)&t;&t;/* unused on IA-64 */
-DECL|macro|ksoftirqd_task
-mdefine_line|#define ksoftirqd_task(cpu)&t;&t;(cpu_data(cpu)-&gt;ksoftirqd)
-DECL|macro|nmi_count
-mdefine_line|#define nmi_count(cpu)&t;&t;&t;0
 DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending()&t;&t;(local_cpu_data-&gt;softirq_pending)
-DECL|macro|local_syscall_count
-mdefine_line|#define local_syscall_count()&t;&t;/* unused on IA-64 */
-DECL|macro|local_ksoftirqd_task
-mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
-DECL|macro|local_nmi_count
-mdefine_line|#define local_nmi_count()&t;&t;0
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS&t;14
 multiline_comment|/*&n; * The hardirq mask has to be large enough to have space for potentially all IRQ sources&n; * in the system nesting on a single CPU:&n; */

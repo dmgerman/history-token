@@ -1160,8 +1160,6 @@ r_struct
 id|sysfs_dirent
 op_star
 id|parent_sd
-op_assign
-id|dentry-&gt;d_fsdata
 suffix:semicolon
 r_struct
 id|sysfs_dirent
@@ -1193,6 +1191,10 @@ c_func
 op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
+suffix:semicolon
+id|parent_sd
+op_assign
+id|dentry-&gt;d_fsdata
 suffix:semicolon
 id|list_for_each_entry_safe
 c_func
@@ -1560,6 +1562,12 @@ c_func
 (paren
 op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
+id|release_sysfs_dirent
+c_func
+(paren
+id|cursor
 )paren
 suffix:semicolon
 r_return

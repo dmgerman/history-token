@@ -543,19 +543,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
-r_extern
-r_int
-r_int
-id|__rd_start
-comma
-id|__rd_end
-comma
-id|initrd_start
-comma
-id|initrd_end
-suffix:semicolon
-macro_line|#endif
 singleline_comment|//#undef DO_WRITE_THROUGH
 DECL|macro|DO_WRITE_THROUGH
 mdefine_line|#define DO_WRITE_THROUGH
@@ -574,14 +561,6 @@ suffix:semicolon
 r_static
 r_void
 id|jmr3927_board_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|jmr3927_irq_setup
 c_func
 (paren
 r_void
@@ -614,10 +593,6 @@ suffix:semicolon
 r_char
 op_star
 id|argptr
-suffix:semicolon
-id|irq_setup
-op_assign
-id|jmr3927_irq_setup
 suffix:semicolon
 id|set_io_port_base
 c_func

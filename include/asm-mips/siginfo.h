@@ -7,8 +7,8 @@ DECL|macro|SIGEV_HEAD_SIZE
 mdefine_line|#define SIGEV_HEAD_SIZE&t;(sizeof(long) + 2*sizeof(int))
 DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE-SIGEV_HEAD_SIZE) / sizeof(int))
-DECL|macro|SI_PAD_SIZE
-mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 4)
+DECL|macro|__ARCH_SI_TRAPNO
+macro_line|#undef __ARCH_SI_TRAPNO&t;/* exception code needs to fill this ...  */
 DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
 multiline_comment|/*&n; * We duplicate the generic versions - &lt;asm-generic/siginfo.h&gt; is just borked&n; * by design ...&n; */
@@ -17,8 +17,16 @@ mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
 r_struct
 id|siginfo
 suffix:semicolon
+multiline_comment|/*&n; * Careful to keep union _sifields from shifting ...&n; */
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|__ARCH_SI_PREAMBLE_SIZE
+mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE (3 * sizeof(int))
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|__ARCH_SI_PREAMBLE_SIZE
+mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE (4 * sizeof(int))
+macro_line|#endif
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
-multiline_comment|/* This structure matches the 32/n32 ABIs for source compatibility but&n;   has Linux extensions.  */
 DECL|struct|siginfo
 r_typedef
 r_struct
@@ -35,6 +43,22 @@ suffix:semicolon
 DECL|member|si_errno
 r_int
 id|si_errno
+suffix:semicolon
+DECL|member|__pad0
+r_int
+id|__pad0
+(braket
+id|SI_MAX_SIZE
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+op_minus
+id|SI_PAD_SIZE
+op_minus
+l_int|3
+)braket
 suffix:semicolon
 r_union
 (brace
@@ -54,106 +78,13 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
 DECL|member|_kill
 )brace
 id|_kill
-suffix:semicolon
-multiline_comment|/* SIGCHLD */
-r_struct
-(brace
-DECL|member|_pid
-id|pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* which child */
-DECL|member|_uid
-id|uid_t
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_status
-r_int
-id|_status
-suffix:semicolon
-multiline_comment|/* exit code */
-DECL|member|_utime
-id|clock_t
-id|_utime
-suffix:semicolon
-DECL|member|_stime
-id|clock_t
-id|_stime
-suffix:semicolon
-DECL|member|_sigchld
-)brace
-id|_sigchld
-suffix:semicolon
-multiline_comment|/* IRIX SIGCHLD */
-r_struct
-(brace
-DECL|member|_pid
-id|pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* which child */
-DECL|member|_utime
-id|clock_t
-id|_utime
-suffix:semicolon
-DECL|member|_status
-r_int
-id|_status
-suffix:semicolon
-multiline_comment|/* exit code */
-DECL|member|_stime
-id|clock_t
-id|_stime
-suffix:semicolon
-DECL|member|_irix_sigchld
-)brace
-id|_irix_sigchld
-suffix:semicolon
-multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
-r_struct
-(brace
-DECL|member|_addr
-r_void
-op_star
-id|_addr
-suffix:semicolon
-multiline_comment|/* faulting insn/memory ref. */
-DECL|member|_sigfault
-)brace
-id|_sigfault
-suffix:semicolon
-multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
-r_struct
-(brace
-macro_line|#ifdef CONFIG_MIPS32
-DECL|member|_band
-r_int
-id|_band
-suffix:semicolon
-multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
-macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
-DECL|member|_band
-r_int
-id|_band
-suffix:semicolon
-multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
-macro_line|#endif
-DECL|member|_fd
-r_int
-id|_fd
-suffix:semicolon
-DECL|member|_sigpoll
-)brace
-id|_sigpoll
 suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
@@ -206,7 +137,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -218,102 +149,30 @@ DECL|member|_rt
 )brace
 id|_rt
 suffix:semicolon
-DECL|member|_sifields
-)brace
-id|_sifields
-suffix:semicolon
-DECL|typedef|siginfo_t
-)brace
-id|siginfo_t
-suffix:semicolon
-macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT)
-macro_line|#include &lt;linux/compat.h&gt;
-DECL|macro|SI_PAD_SIZE32
-mdefine_line|#define SI_PAD_SIZE32   ((SI_MAX_SIZE/sizeof(int)) - 3)
-DECL|union|sigval32
-r_typedef
-r_union
-id|sigval32
-(brace
-DECL|member|sival_int
-r_int
-id|sival_int
-suffix:semicolon
-DECL|member|sival_ptr
-id|s32
-id|sival_ptr
-suffix:semicolon
-DECL|typedef|sigval_t32
-)brace
-id|sigval_t32
-suffix:semicolon
-DECL|struct|siginfo32
-r_typedef
-r_struct
-id|siginfo32
-(brace
-DECL|member|si_signo
-r_int
-id|si_signo
-suffix:semicolon
-DECL|member|si_code
-r_int
-id|si_code
-suffix:semicolon
-DECL|member|si_errno
-r_int
-id|si_errno
-suffix:semicolon
-r_union
-(brace
-DECL|member|_pad
-r_int
-id|_pad
-(braket
-id|SI_PAD_SIZE32
-)braket
-suffix:semicolon
-multiline_comment|/* kill() */
-r_struct
-(brace
-DECL|member|_pid
-id|compat_pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* sender&squot;s pid */
-DECL|member|_uid
-id|compat_uid_t
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_kill
-)brace
-id|_kill
-suffix:semicolon
 multiline_comment|/* SIGCHLD */
 r_struct
 (brace
 DECL|member|_pid
-id|compat_pid_t
+id|pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* which child */
 DECL|member|_uid
-id|compat_uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
-DECL|member|_utime
-id|compat_clock_t
-id|_utime
-suffix:semicolon
 DECL|member|_status
 r_int
 id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
+DECL|member|_utime
+id|clock_t
+id|_utime
+suffix:semicolon
 DECL|member|_stime
-id|compat_clock_t
+id|clock_t
 id|_stime
 suffix:semicolon
 DECL|member|_sigchld
@@ -324,12 +183,12 @@ multiline_comment|/* IRIX SIGCHLD */
 r_struct
 (brace
 DECL|member|_pid
-id|compat_pid_t
+id|pid_t
 id|_pid
 suffix:semicolon
 multiline_comment|/* which child */
 DECL|member|_utime
-id|compat_clock_t
+id|clock_t
 id|_utime
 suffix:semicolon
 DECL|member|_status
@@ -338,7 +197,7 @@ id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
 DECL|member|_stime
-id|compat_clock_t
+id|clock_t
 id|_stime
 suffix:semicolon
 DECL|member|_irix_sigchld
@@ -349,10 +208,19 @@ multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
 r_struct
 (brace
 DECL|member|_addr
-id|s32
+r_void
+id|__user
+op_star
 id|_addr
 suffix:semicolon
 multiline_comment|/* faulting insn/memory ref. */
+macro_line|#ifdef __ARCH_SI_TRAPNO
+DECL|member|_trapno
+r_int
+id|_trapno
+suffix:semicolon
+multiline_comment|/* TRAP # which caused the signal */
+macro_line|#endif
 DECL|member|_sigfault
 )brace
 id|_sigfault
@@ -361,7 +229,7 @@ multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
 r_struct
 (brace
 DECL|member|_band
-r_int
+id|__ARCH_SI_BAND_T
 id|_band
 suffix:semicolon
 multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
@@ -373,53 +241,14 @@ DECL|member|_sigpoll
 )brace
 id|_sigpoll
 suffix:semicolon
-multiline_comment|/* POSIX.1b timers */
-r_struct
-(brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
-suffix:semicolon
-DECL|member|_timer2
-r_int
-r_int
-id|_timer2
-suffix:semicolon
-DECL|member|_timer
-)brace
-id|_timer
-suffix:semicolon
-multiline_comment|/* POSIX.1b signals */
-r_struct
-(brace
-DECL|member|_pid
-id|compat_pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* sender&squot;s pid */
-DECL|member|_uid
-id|compat_uid_t
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_sigval
-id|sigval_t32
-id|_sigval
-suffix:semicolon
-DECL|member|_rt
-)brace
-id|_rt
-suffix:semicolon
 DECL|member|_sifields
 )brace
 id|_sifields
 suffix:semicolon
-DECL|typedef|siginfo_t32
+DECL|typedef|siginfo_t
 )brace
-id|siginfo_t32
+id|siginfo_t
 suffix:semicolon
-macro_line|#endif /* defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT) */
 multiline_comment|/*&n; * si_code values&n; * Again these have been choosen to be IRIX compatible.&n; */
 DECL|macro|SI_ASYNCIO
 macro_line|#undef SI_ASYNCIO

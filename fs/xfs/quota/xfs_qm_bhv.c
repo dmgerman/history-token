@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_fs.h&quot;
 macro_line|#include &quot;xfs_inum.h&quot;
@@ -748,8 +748,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When xfsquotas isn&squot;t installed and the superblock had quotas, we need to&n; * clear the quotaflags from superblock.&n; */
-id|STATIC
+multiline_comment|/*&n; * Clear the quotaflags in memory and in the superblock.&n; */
 r_void
 DECL|function|xfs_mount_reset_sbqflags
 id|xfs_mount_reset_sbqflags
@@ -868,6 +867,16 @@ c_func
 id|tp
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|xfs_fs_cmn_err
+c_func
+(paren
+id|CE_ALERT
+comma
+id|mp
+comma
+l_string|&quot;xfs_mount_reset_sbqflags: Superblock update failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1098,20 +1107,13 @@ id|mp
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If the xfs quota code isn&squot;t installed,&n;&t;&t;&t; * we have to reset the quotachk&squot;d bit.&n;&t;&t;&t; * If an error occured, qm_mount_quotas code&n;&t;&t;&t; * has already disabled quotas. So, just finish&n;&t;&t;&t; * mounting, and get on with the boring life&n;&t;&t;&t; * without disk quotas.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
+multiline_comment|/*&n;&t;&t;&t; * If an error occured, qm_mount_quotas code&n;&t;&t;&t; * has already disabled quotas. So, just finish&n;&t;&t;&t; * mounting, and get on with the boring life&n;&t;&t;&t; * without disk quotas.&n;&t;&t;&t; */
 id|xfs_qm_mount_quotas
 c_func
 (paren
 id|mp
-)paren
-)paren
-id|xfs_mount_reset_sbqflags
-c_func
-(paren
-id|mp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1153,6 +1155,9 @@ id|needquotamount
 comma
 id|uint
 id|quotaflags
+comma
+r_int
+id|mfsi_flags
 )paren
 (brace
 r_if
@@ -1173,19 +1178,12 @@ id|mp-&gt;m_qflags
 op_assign
 id|quotaflags
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|xfs_qm_mount_quotas
 c_func
 (paren
 id|mp
-)paren
-)paren
-id|xfs_mount_reset_sbqflags
-c_func
-(paren
-id|mp
+comma
+id|mfsi_flags
 )paren
 suffix:semicolon
 )brace

@@ -170,6 +170,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_get_prs_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _PRS value of an object&n; *              contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_rs_get_prs_method_data
 id|acpi_rs_get_prs_method_data
@@ -249,6 +250,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_get_method_data&n; *&n; * PARAMETERS:  Handle          - a handle to the containing object&n; *              ret_buffer      - a pointer to a buffer structure for the&n; *                                  results&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the _CRS or _PRS value of an&n; *              object contained in an object specified by the handle passed in&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the contents of the callers buffer is undefined.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_get_method_data

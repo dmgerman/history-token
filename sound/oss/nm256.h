@@ -105,6 +105,7 @@ suffix:semicolon
 multiline_comment|/* Our mapped-in pointer. */
 DECL|member|ptr
 r_char
+id|__iomem
 op_star
 id|ptr
 suffix:semicolon
@@ -385,7 +386,7 @@ multiline_comment|/* This is a common code portion used to fix up the port offse
 DECL|macro|NM_FIX_PORT
 mdefine_line|#define NM_FIX_PORT &bslash;&n;  if (port &lt; 1 || port &gt; 2 || card == NULL) &bslash;&n;      return -1; &bslash;&n;&bslash;&n;    if (offset &lt; card-&gt;port[port - 1].start_offset &bslash;&n;&t;|| offset &gt;= card-&gt;port[port - 1].end_offset) { &bslash;&n;&t;printk (KERN_ERR &quot;Bad access: port %d, offset 0x%x&bslash;n&quot;, port, offset); &bslash;&n;&t;return -1; &bslash;&n;    } &bslash;&n;    offset -= card-&gt;port[port - 1].start_offset;
 DECL|macro|DEFwritePortX
-mdefine_line|#define DEFwritePortX(X, func) &bslash;&n;static inline int nm256_writePort##X (struct nm256_info *card,&bslash;&n;&t;&t;&t;&t;      int port, int offset, int value)&bslash;&n;{&bslash;&n;    u##X *addr;&bslash;&n;&bslash;&n;    if (nm256_debug &gt; 1)&bslash;&n;        printk (KERN_DEBUG &quot;Writing 0x%x to %d:0x%x&bslash;n&quot;, value, port, offset);&bslash;&n;&bslash;&n;    NM_FIX_PORT;&bslash;&n;&bslash;&n;    addr = (u##X *)(card-&gt;port[port - 1].ptr + offset);&bslash;&n;    func (value, addr);&bslash;&n;    return 0;&bslash;&n;}
+mdefine_line|#define DEFwritePortX(X, func) &bslash;&n;static inline int nm256_writePort##X (struct nm256_info *card,&bslash;&n;&t;&t;&t;&t;      int port, int offset, int value)&bslash;&n;{&bslash;&n;    u##X __iomem *addr;&bslash;&n;&bslash;&n;    if (nm256_debug &gt; 1)&bslash;&n;        printk (KERN_DEBUG &quot;Writing 0x%x to %d:0x%x&bslash;n&quot;, value, port, offset);&bslash;&n;&bslash;&n;    NM_FIX_PORT;&bslash;&n;&bslash;&n;    addr = (u##X __iomem *)(card-&gt;port[port - 1].ptr + offset);&bslash;&n;    func (value, addr);&bslash;&n;    return 0;&bslash;&n;}
 id|DEFwritePortX
 (paren
 l_int|8
@@ -405,7 +406,7 @@ comma
 id|writel
 )paren
 DECL|macro|DEFreadPortX
-mdefine_line|#define DEFreadPortX(X, func) &bslash;&n;static inline u##X nm256_readPort##X (struct nm256_info *card,&bslash;&n;&t;&t;&t;&t;&t;int port, int offset)&bslash;&n;{&bslash;&n;    u##X *addr;&bslash;&n;&bslash;&n;    NM_FIX_PORT&bslash;&n;&bslash;&n;    addr = (u##X *)(card-&gt;port[port - 1].ptr + offset);&bslash;&n;    return func(addr);&bslash;&n;}
+mdefine_line|#define DEFreadPortX(X, func) &bslash;&n;static inline u##X nm256_readPort##X (struct nm256_info *card,&bslash;&n;&t;&t;&t;&t;&t;int port, int offset)&bslash;&n;{&bslash;&n;    u##X __iomem *addr;&bslash;&n;&bslash;&n;    NM_FIX_PORT&bslash;&n;&bslash;&n;    addr = (u##X __iomem *)(card-&gt;port[port - 1].ptr + offset);&bslash;&n;    return func(addr);&bslash;&n;}
 id|DEFreadPortX
 (paren
 l_int|8

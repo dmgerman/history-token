@@ -10034,9 +10034,12 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Initialize spinlock. */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|boardp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n;             * Handle both narrow and wide boards.&n;             *&n;             * If a Wide board was detected, set the board structure&n;             * wide board flag. Set-up the board structure based on&n;             * the board type.&n;             */
 macro_line|#ifdef CONFIG_PCI

@@ -758,6 +758,7 @@ r_struct
 (brace
 DECL|member|hw_cq
 id|soc_hw_cq
+id|__iomem
 op_star
 id|hw_cq
 suffix:semicolon

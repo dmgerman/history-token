@@ -927,6 +927,26 @@ c_func
 (paren
 id|buf
 comma
+l_string|&quot;SMB Small Req/Resp Buffer: %d&bslash;n&quot;
+comma
+id|smBufAllocCount.counter
+)paren
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
 l_string|&quot;Operations (MIDs): %d&bslash;n&quot;
 comma
 id|midCount.counter
@@ -1576,7 +1596,7 @@ op_assign
 id|create_proc_read_entry
 c_func
 (paren
-l_string|&quot;QuotaEnabled&quot;
+l_string|&quot;ReenableOldCifsReaddirCode&quot;
 comma
 l_int|0
 comma
@@ -1849,7 +1869,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;QuotaEnabled&quot;
+l_string|&quot;ReenableOldCifsReaddirCode&quot;
 comma
 id|proc_fs_cifs
 )paren
@@ -2275,7 +2295,7 @@ id|page
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|quotaEnabled
+id|experimEnabled
 )paren
 suffix:semicolon
 multiline_comment|/* could also check if quotas are enabled in kernel&n;&t;as a whole first */
@@ -2387,7 +2407,7 @@ id|c
 op_eq
 l_char|&squot;N&squot;
 )paren
-id|quotaEnabled
+id|experimEnabled
 op_assign
 l_int|0
 suffix:semicolon
@@ -2407,7 +2427,7 @@ id|c
 op_eq
 l_char|&squot;Y&squot;
 )paren
-id|quotaEnabled
+id|experimEnabled
 op_assign
 l_int|1
 suffix:semicolon

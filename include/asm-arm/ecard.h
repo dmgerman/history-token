@@ -363,6 +363,8 @@ DECL|macro|ecard_resource_end
 mdefine_line|#define ecard_resource_end(ec,nr)&t;((ec)-&gt;resource[nr].end)
 DECL|macro|ecard_resource_len
 mdefine_line|#define ecard_resource_len(ec,nr)&t;((ec)-&gt;resource[nr].end - &bslash;&n;&t;&t;&t;&t;&t; (ec)-&gt;resource[nr].start + 1)
+DECL|macro|ecard_resource_flags
+mdefine_line|#define ecard_resource_flags(ec,nr)&t;((ec)-&gt;resource[nr].flags)
 multiline_comment|/*&n; * This contains all the info needed on an expansion card&n; */
 DECL|struct|expansion_card
 r_struct

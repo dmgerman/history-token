@@ -283,10 +283,15 @@ r_struct
 id|mii_if_info
 id|mii
 suffix:semicolon
+multiline_comment|/* work queue */
 DECL|member|phy_configure
 r_struct
 id|work_struct
 id|phy_configure
+suffix:semicolon
+DECL|member|work_pending
+r_int
+id|work_pending
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -2611,10 +2616,10 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Finds and reports the PHY address&n; */
-DECL|function|smc_detect_phy
+DECL|function|smc_phy_detect
 r_static
 r_void
-id|smc_detect_phy
+id|smc_phy_detect
 c_func
 (paren
 r_struct
@@ -3534,6 +3539,10 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|lp-&gt;work_pending
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * smc_phy_interrupt&n; *&n; * Purpose:  Handle interrupts relating to PHY register 18. This is&n; *  called from the &quot;hard&quot; interrupt handler under our private spinlock.&n; */
 DECL|function|smc_phy_interrupt
@@ -3913,6 +3922,9 @@ c_func
 op_amp
 id|lp-&gt;lock
 )paren
+suffix:semicolon
+multiline_comment|/* A preamble may be used when there is a potential race&n;&t; * between the interruptible transmit functions and this&n;&t; * ISR. */
+id|SMC_INTERRUPT_PREAMBLE
 suffix:semicolon
 id|saved_pointer
 op_assign
@@ -4445,7 +4457,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * smc_phy_configure() calls msleep() which calls schedule_timeout()&n;&t; * which calls schedule().  Ence we use a work queue.&n;&t; */
+multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * smc_phy_configure() calls msleep() which calls schedule_timeout()&n;&t; * which calls schedule().  Hence we use a work queue.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4453,13 +4465,24 @@ id|lp-&gt;phy_type
 op_ne
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|schedule_work
 c_func
 (paren
 op_amp
 id|lp-&gt;phy_configure
 )paren
+)paren
+(brace
+id|lp-&gt;work_pending
+op_assign
+l_int|1
 suffix:semicolon
+)brace
+)brace
 multiline_comment|/* We can accept TX packets again */
 id|dev-&gt;trans_start
 op_assign
@@ -5047,11 +5070,19 @@ op_ne
 l_int|0
 )paren
 (brace
-id|flush_scheduled_work
+multiline_comment|/* We need to ensure that no calls to&n;&t;&t;   smc_phy_configure are pending.&n;&n;&t;&t;   flush_scheduled_work() cannot be called because we&n;&t;&t;   are running with the netlink semaphore held (from&n;&t;&t;   devinet_ioctl()) and the pending work queue&n;&t;&t;   contains linkwatch_event() (scheduled by&n;&t;&t;   netif_carrier_off() above). linkwatch_event() also&n;&t;&t;   wants the netlink semaphore.&n;&t;&t;*/
+r_while
+c_loop
+(paren
+id|lp-&gt;work_pending
+)paren
+(brace
+id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|smc_phy_powerdown
 c_func
 (paren
@@ -6278,7 +6309,7 @@ op_lshift
 l_int|4
 )paren
 )paren
-id|smc_detect_phy
+id|smc_phy_detect
 c_func
 (paren
 id|dev

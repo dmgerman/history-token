@@ -41,5 +41,8 @@ DECL|macro|cpu_icache_line_size
 mdefine_line|#define cpu_icache_line_size()&t;32
 DECL|macro|cpu_scache_line_size
 mdefine_line|#define cpu_scache_line_size()&t;32
+multiline_comment|/*&n; * On the RM9000 we need to ensure that I-cache lines being fetches only&n; * contain valid instructions are funny things will happen.&n; */
+DECL|macro|PLAT_TRAMPOLINE_STUFF_LINE
+mdefine_line|#define PLAT_TRAMPOLINE_STUFF_LINE&t;32UL
 macro_line|#endif /* __ASM_MACH_YOSEMITE_CPU_FEATURE_OVERRIDES_H */
 eof

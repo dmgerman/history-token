@@ -538,6 +538,7 @@ id|m
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 )paren

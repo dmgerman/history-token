@@ -1,5 +1,6 @@
 macro_line|#include &lt;asm/types.h&gt;
 DECL|variable|dsp_bootcode
+r_static
 id|u8
 id|dsp_bootcode
 (braket

@@ -2469,7 +2469,7 @@ mdefine_line|#define PVCR_CommandDelay (0xf80)
 DECL|macro|PCFR_PI2C_EN
 mdefine_line|#define PCFR_PI2C_EN&t;(0x1 &lt;&lt; 6)
 DECL|macro|PSSR_OTGPH
-mdefine_line|#define PSSR_OTGPH&t;(1 &lt;&lt; 7)&t;/* OTG Peripheral control Hold */
+mdefine_line|#define PSSR_OTGPH&t;(1 &lt;&lt; 6)&t;/* OTG Peripheral control Hold */
 DECL|macro|PSSR_RDH
 mdefine_line|#define PSSR_RDH&t;(1 &lt;&lt; 5)&t;/* Read Disable Hold */
 DECL|macro|PSSR_PH

@@ -7610,7 +7610,7 @@ comma
 l_string|&quot;Received invalid manufacture info length&quot;
 l_string|&quot; (%d)&bslash;n&quot;
 comma
-id|s-&gt;bca.len
+id|s-&gt;manufact.len
 )paren
 suffix:semicolon
 id|ret
@@ -15713,7 +15713,6 @@ id|cdrom_root_table
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 (brace
 dot
 id|ctl_name
@@ -15742,7 +15741,6 @@ id|cdrom_cdrom_table
 comma
 )brace
 comma
-macro_line|#endif /* CONFIG_PROC_FS */
 (brace
 dot
 id|ctl_name

@@ -1275,10 +1275,6 @@ id|mymtd
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dnpc_map.virt
 )paren
 suffix:semicolon
@@ -1446,10 +1442,6 @@ id|dnpc_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dnpc_map.virt
 )paren
 suffix:semicolon
@@ -1460,7 +1452,7 @@ c_func
 suffix:semicolon
 id|dnpc_map.virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

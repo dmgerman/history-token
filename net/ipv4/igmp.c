@@ -8111,9 +8111,12 @@ c_func
 (paren
 op_amp
 id|psl-&gt;sl_addr
+(braket
+id|i
+)braket
 comma
 op_amp
-id|mreqs-&gt;imr_multiaddr
+id|mreqs-&gt;imr_sourceaddr
 comma
 r_sizeof
 (paren
@@ -8125,7 +8128,7 @@ r_if
 c_cond
 (paren
 id|rv
-op_ge
+op_eq
 l_int|0
 )paren
 r_break
@@ -8134,7 +8137,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|rv
 )paren
 multiline_comment|/* source not found */
@@ -8375,9 +8377,12 @@ c_func
 (paren
 op_amp
 id|psl-&gt;sl_addr
+(braket
+id|i
+)braket
 comma
 op_amp
-id|mreqs-&gt;imr_multiaddr
+id|mreqs-&gt;imr_sourceaddr
 comma
 r_sizeof
 (paren
@@ -8389,7 +8394,7 @@ r_if
 c_cond
 (paren
 id|rv
-op_ge
+op_eq
 l_int|0
 )paren
 r_break

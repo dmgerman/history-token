@@ -114,7 +114,7 @@ DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x10000000
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to&n; *   access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; */
 DECL|macro|TIF_NOTIFY_RESUME
 mdefine_line|#define TIF_NOTIFY_RESUME&t;1&t;/* resumption notification requested */

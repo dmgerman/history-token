@@ -3947,6 +3947,25 @@ l_int|0x0210
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|gadget_is_pxa27x
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0211
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 multiline_comment|/* gadget zero is so simple (for now, no altsettings) that&n;&t;&t; * it SHOULD NOT have problems with bulk-capable hardware.&n;&t;&t; * so warn about unrcognized controllers, don&squot;t panic.&n;&t;&t; *&n;&t;&t; * things like configuration and altsetting numbering&n;&t;&t; * can need hardware-specific attention though.&n;&t;&t; */
 id|printk

@@ -882,6 +882,11 @@ op_assign
 id|DRV_NAME
 comma
 dot
+id|ioctl
+op_assign
+id|ata_scsi_ioctl
+comma
+dot
 id|queuecommand
 op_assign
 id|ata_scsi_queuecmd
@@ -1054,6 +1059,8 @@ op_or
 id|ATA_FLAG_SATA_RESET
 op_or
 id|ATA_FLAG_MMIO
+op_or
+id|ATA_FLAG_PIO_DMA
 comma
 dot
 id|pio_mask
@@ -4617,7 +4624,6 @@ id|DRV_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this driver happens to only be useful on Apple&squot;s K2, then&n;&t; * we should check that here as it has a normal Serverworks ID&n;&t; */
 id|rc
 op_assign
 id|pci_enable_device

@@ -542,7 +542,7 @@ suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be&n; * called 500 ms after the second nowtime has started, because when&n; * nowtime is written into the registers of the CMOS clock, it will&n; * jump to the next second precisely 500 ms later. Check the Motorola&n; * MC146818A or Dallas DS12887 data sheet for details.&n; *&n; * BUG: This routine does not handle hour overflow properly; it just&n; *      sets the minutes. Usually you won&squot;t notice until after reboot!&n; */
 DECL|function|set_rtc_mmss
 r_static
-id|__inline__
+r_inline
 r_int
 id|set_rtc_mmss
 c_func
@@ -565,10 +565,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
-DECL|function|do_timer_interrupt
 r_static
-id|__inline__
+r_inline
 r_void
+DECL|function|do_timer_interrupt
 id|do_timer_interrupt
 c_func
 (paren
@@ -585,12 +585,34 @@ op_star
 id|regs
 )paren
 (brace
+macro_line|#ifndef CONFIG_SMP
+id|profile_tick
+c_func
+(paren
+id|CPU_PROFILING
+comma
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 id|do_timer
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
 r_if
 c_cond
@@ -720,16 +742,6 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|profile_tick
-c_func
-(paren
-id|CPU_PROFILING
-comma
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -872,15 +884,18 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
-id|wall_to_monotonic.tv_sec
-op_assign
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|wall_to_monotonic
+comma
 op_minus
 id|xtime.tv_sec
-suffix:semicolon
-id|wall_to_monotonic.tv_nsec
-op_assign
+comma
 op_minus
 id|xtime.tv_nsec
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;&t;|| defined(CONFIG_CHIP_OPSP)
 multiline_comment|/* M32102 MFT setup */

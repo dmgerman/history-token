@@ -11220,8 +11220,9 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;tcp_parse_options: Illegal window &quot;
-l_string|&quot;scaling value %d &gt;14 received.&quot;
+l_string|&quot;scaling value %d &gt;14 received.&bslash;n&quot;
 comma
 id|tp-&gt;snd_wscale
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporat
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -62,23 +63,6 @@ id|initrd_start
 comma
 id|initrd_end
 suffix:semicolon
-r_extern
-r_void
-op_star
-id|__rd_start
-comma
-op_star
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|reboot_smp
-r_static
-r_int
-id|reboot_smp
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 r_extern
@@ -89,13 +73,25 @@ macro_line|#endif
 DECL|function|cfe_linux_exit
 r_static
 r_void
+id|ATTRIB_NORET
 id|cfe_linux_exit
 c_func
 (paren
 r_void
+op_star
+id|arg
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
+r_int
+id|warm
+op_assign
+op_star
+(paren
+r_int
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -105,22 +101,17 @@ c_func
 )paren
 )paren
 (brace
+r_static
+r_int
+id|reboot_smp
+suffix:semicolon
+multiline_comment|/* Don&squot;t repeat the process from another CPU */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|reboot_smp
 )paren
-(brace
-multiline_comment|/* Don&squot;t repeat the process from another CPU */
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 multiline_comment|/* Get CPU 0 to do the cfe_exit */
 id|reboot_smp
@@ -130,39 +121,29 @@ suffix:semicolon
 id|smp_call_function
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|_machine_restart
+id|cfe_linux_exit
 comma
-l_int|NULL
+id|arg
 comma
 l_int|1
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+r_else
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;passing control back to CFE&bslash;n&quot;
+l_string|&quot;Passing control back to CFE...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cfe_exit
 c_func
 (paren
-l_int|1
+id|warm
 comma
 l_int|0
 )paren
@@ -173,14 +154,71 @@ c_func
 l_string|&quot;cfe_exit returned??&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
 l_int|1
 )paren
-(brace
 suffix:semicolon
 )brace
+DECL|function|cfe_linux_restart
+r_static
+r_void
+id|ATTRIB_NORET
+id|cfe_linux_restart
+c_func
+(paren
+r_char
+op_star
+id|command
+)paren
+(brace
+r_static
+r_const
+r_int
+id|zero
+suffix:semicolon
+id|cfe_linux_exit
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|zero
+)paren
+suffix:semicolon
+)brace
+DECL|function|cfe_linux_halt
+r_static
+r_void
+id|ATTRIB_NORET
+id|cfe_linux_halt
+c_func
+(paren
+r_void
+)paren
+(brace
+r_static
+r_const
+r_int
+id|one
+op_assign
+l_int|1
+suffix:semicolon
+id|cfe_linux_exit
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|one
+)paren
+suffix:semicolon
 )brace
 DECL|function|prom_meminit
 r_static
@@ -221,36 +259,6 @@ r_int
 r_int
 id|initrd_pend
 suffix:semicolon
-macro_line|#ifdef CONFIG_EMBEDDED_RAMDISK
-multiline_comment|/* If we&squot;re using an embedded ramdisk, then __rd_start and __rd_end&n;&t;   are defined by the linker to be on either side of the ramdisk&n;&t;   area.  Otherwise, initrd_start should be defined by kernel command&n;&t;   line arguments */
-r_if
-c_cond
-(paren
-id|initrd_start
-op_eq
-l_int|0
-)paren
-(brace
-id|initrd_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-id|initrd_end
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_end
-suffix:semicolon
-)brace
-macro_line|#endif
 id|initrd_pstart
 op_assign
 id|CPHYSADDR
@@ -850,25 +858,15 @@ suffix:semicolon
 macro_line|#endif
 id|_machine_restart
 op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_char
-op_star
-)paren
-)paren
-id|cfe_linux_exit
+id|cfe_linux_restart
 suffix:semicolon
 id|_machine_halt
 op_assign
-id|cfe_linux_exit
+id|cfe_linux_halt
 suffix:semicolon
 id|_machine_power_off
 op_assign
-id|cfe_linux_exit
+id|cfe_linux_halt
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if a loader was used; if NOT, the 4 arguments are&n;&t; * what CFE gives us (handle, 0, EPT and EPTSEAL)&n;&t; */
 r_if

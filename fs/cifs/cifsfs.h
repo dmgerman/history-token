@@ -301,7 +301,7 @@ id|file
 suffix:semicolon
 r_extern
 id|ssize_t
-id|cifs_read
+id|cifs_user_read
 c_func
 (paren
 r_struct
@@ -310,6 +310,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|read_data
 comma
@@ -323,7 +324,7 @@ id|poffset
 suffix:semicolon
 r_extern
 id|ssize_t
-id|cifs_write
+id|cifs_user_write
 c_func
 (paren
 r_struct
@@ -333,6 +334,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|write_data
 comma
@@ -603,6 +605,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|CIFS_VERSION
-mdefine_line|#define CIFS_VERSION   &quot;1.20&quot;
+mdefine_line|#define CIFS_VERSION   &quot;1.28&quot;
 macro_line|#endif&t;&t;&t;&t;/* _CIFSFS_H */
 eof

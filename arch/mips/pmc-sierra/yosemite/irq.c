@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -252,28 +253,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|set_debug_traps
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Initialize the next level interrupt handler&n; */
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -293,11 +278,6 @@ comma
 id|titan_handle_int
 )paren
 suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
-)paren
-suffix:semicolon
 id|mips_cpu_irq_init
 c_func
 (paren
@@ -313,22 +293,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/* At this point, initialize the second serial port */
 id|init_second_port
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Start kgdb ... &bslash;n&quot;
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
 c_func
 (paren
 )paren

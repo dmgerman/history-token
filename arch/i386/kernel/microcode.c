@@ -1554,7 +1554,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;microcode: No suitable data for CPU%d&bslash;n&quot;
+l_string|&quot;microcode: No new microcode data for CPU%d&bslash;n&quot;
 comma
 id|cpu_num
 )paren

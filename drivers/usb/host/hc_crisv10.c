@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/* Ugly include because we don&squot;t live with the other host drivers. */
 macro_line|#include &lt;../drivers/usb/core/hcd.h&gt;
 macro_line|#include &lt;../drivers/usb/core/usb.h&gt;
-macro_line|#include &quot;usb-host.h&quot;
+macro_line|#include &quot;hc_crisv10.h&quot;
 DECL|macro|ETRAX_USB_HC_IRQ
 mdefine_line|#define ETRAX_USB_HC_IRQ USB_HC_IRQ_NBR
 DECL|macro|ETRAX_USB_RX_IRQ

@@ -3067,6 +3067,28 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82855PM_HB
+)paren
+r_switch
+c_cond
+(paren
+id|dev-&gt;subsystem_device
+)paren
+(brace
+r_case
+l_int|0x186a
+suffix:colon
+multiline_comment|/* M6Ne notebook */
+id|asus_hides_smbus
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -3468,10 +3490,10 @@ DECL|macro|EHCI_USBLEGCTLSTS
 mdefine_line|#define EHCI_USBLEGCTLSTS&t;4&t;&t;/* legacy control/status */
 DECL|macro|EHCI_USBLEGCTLSTS_SOOE
 mdefine_line|#define EHCI_USBLEGCTLSTS_SOOE&t;(1 &lt;&lt; 13)&t;/* SMI on ownership change */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_int
 id|usb_early_handoff
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon

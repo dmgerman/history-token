@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/misc.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
+multiline_comment|/*&n; *   fs/cifs/misc.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2004&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
@@ -8,6 +8,11 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;smberr.h&quot;
 macro_line|#include &quot;nterr.h&quot;
+r_extern
+id|mempool_t
+op_star
+id|cifs_sm_req_poolp
+suffix:semicolon
 r_extern
 id|mempool_t
 op_star
@@ -545,6 +550,7 @@ id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
+multiline_comment|/* for most paths, more is cleared in header_assemble */
 r_if
 c_cond
 (paren
@@ -563,6 +569,8 @@ r_sizeof
 r_struct
 id|smb_hdr
 )paren
+op_plus
+l_int|3
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -595,16 +603,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Null buffer passed to cifs_buf_release&quot;
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* cFYI(1, (&quot;Null buffer passed to cifs_buf_release&quot;));*/
 r_return
 suffix:semicolon
 )brace
@@ -621,6 +620,110 @@ c_func
 (paren
 op_amp
 id|bufAllocCount
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_struct
+id|smb_hdr
+op_star
+DECL|function|cifs_small_buf_get
+id|cifs_small_buf_get
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|smb_hdr
+op_star
+id|ret_buf
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* We could use negotiated size instead of max_msgsize - &n;   but it may be more efficient to always alloc same size &n;   albeit slightly larger than necessary and maxbuffersize &n;   defaults to this and can not be bigger */
+id|ret_buf
+op_assign
+(paren
+r_struct
+id|smb_hdr
+op_star
+)paren
+id|mempool_alloc
+c_func
+(paren
+id|cifs_sm_req_poolp
+comma
+id|SLAB_KERNEL
+op_or
+id|SLAB_NOFS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret_buf
+)paren
+(brace
+multiline_comment|/* No need to clear memory here, cleared in header assemble */
+multiline_comment|/*&t;memset(ret_buf, 0, sizeof(struct smb_hdr) + 27);*/
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|smBufAllocCount
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ret_buf
+suffix:semicolon
+)brace
+r_void
+DECL|function|cifs_small_buf_release
+id|cifs_small_buf_release
+c_func
+(paren
+r_void
+op_star
+id|buf_to_free
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|buf_to_free
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null buffer passed to cifs_small_buf_release&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|mempool_free
+c_func
+(paren
+id|buf_to_free
+comma
+id|cifs_sm_req_poolp
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|smBufAllocCount
 )paren
 suffix:semicolon
 r_return
@@ -651,9 +754,6 @@ id|word_count
 multiline_comment|/* length of fixed section (word count) in two byte units  */
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|list_head
 op_star
@@ -674,30 +774,16 @@ op_star
 )paren
 id|buffer
 suffix:semicolon
-r_for
-c_loop
+id|memset
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_CIFS_HDR_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 id|temp
-(braket
-id|i
-)braket
-op_assign
+comma
 l_int|0
+comma
+id|MAX_CIFS_HDR_SIZE
+)paren
 suffix:semicolon
-multiline_comment|/* BB is this needed ?? */
-)brace
 id|buffer-&gt;smb_buf_length
 op_assign
 (paren
@@ -1253,7 +1339,7 @@ op_logical_or
 (paren
 id|len
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -1324,7 +1410,7 @@ c_cond
 (paren
 id|len
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -1336,7 +1422,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;smb_buf_length greater than CIFS_MAX_MSGSIZE ... &quot;
+l_string|&quot;smb_buf_length greater than MaxBufSize&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1480,17 +1566,138 @@ id|cifsFileInfo
 op_star
 id|netfile
 suffix:semicolon
-multiline_comment|/* could add check for smb response flag 0x80 */
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;Checking for oplock break&quot;
+l_string|&quot;Checking for oplock break or dnotify response&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pSMB-&gt;hdr.Command
+op_eq
+id|SMB_COM_NT_TRANSACT
+)paren
+op_logical_and
+(paren
+id|pSMB-&gt;hdr.Flags
+op_amp
+id|SMBFLG_RESPONSE
+)paren
+)paren
+(brace
+r_struct
+id|smb_com_transaction_change_notify_rsp
+op_star
+id|pSMBr
+op_assign
+(paren
+r_struct
+id|smb_com_transaction_change_notify_rsp
+op_star
+)paren
+id|buf
+suffix:semicolon
+r_struct
+id|file_notify_information
+op_star
+id|pnotify
+suffix:semicolon
+id|__u32
+id|data_offset
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pSMBr-&gt;ByteCount
+OG
+r_sizeof
+(paren
+r_struct
+id|file_notify_information
+)paren
+)paren
+(brace
+id|data_offset
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|pSMBr-&gt;DataOffset
+)paren
+suffix:semicolon
+id|pnotify
+op_assign
+(paren
+r_struct
+id|file_notify_information
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|pSMBr-&gt;hdr.Protocol
+op_plus
+id|data_offset
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;dnotify on %s with action: 0x%x&quot;
+comma
+id|pnotify-&gt;FileName
+comma
+id|pnotify-&gt;Action
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+multiline_comment|/*   cifs_dump_mem(&quot;Received notify Data is: &quot;,buf,sizeof(struct smb_hdr)+60); */
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pSMBr-&gt;hdr.Status.CifsError
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;notify err 0x%d&quot;
+comma
+id|pSMBr-&gt;hdr.Status.CifsError
+)paren
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+r_return
+id|FALSE
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -166,6 +166,7 @@ op_star
 id|gpe_block
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_hw_get_gpe_status
 (paren
@@ -179,6 +180,7 @@ op_star
 id|event_status
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_hw_disable_all_gpes
 (paren
@@ -229,6 +231,7 @@ id|gpe_block
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI Timer prototypes */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_timer_resolution
 (paren
@@ -259,5 +262,6 @@ op_star
 id|time_elapsed
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 macro_line|#endif /* __ACHWARE_H__ */
 eof

@@ -4,7 +4,6 @@ DECL|macro|__SPARC_SIGCONTEXT_H
 mdefine_line|#define __SPARC_SIGCONTEXT_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|__SUNOS_MAXWIN
 mdefine_line|#define __SUNOS_MAXWIN   31
@@ -188,5 +187,6 @@ DECL|typedef|__siginfo_fpu_t
 id|__siginfo_fpu_t
 suffix:semicolon
 macro_line|#endif /* !(__ASSEMBLY__) */
+macro_line|#endif /* (__KERNEL__) */
 macro_line|#endif /* !(__SPARC_SIGCONTEXT_H) */
 eof

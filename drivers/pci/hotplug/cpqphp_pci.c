@@ -721,7 +721,7 @@ op_star
 id|dev_num
 )paren
 (brace
-id|u8
+id|u16
 id|tdevice
 suffix:semicolon
 id|u32

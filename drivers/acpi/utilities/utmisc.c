@@ -1013,6 +1013,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_strupr&n; *&n; * PARAMETERS:  src_string      - The source string to convert to&n; *&n; * RETURN:      src_string&n; *&n; * DESCRIPTION: Convert string to uppercase&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_char
 op_star
 DECL|function|acpi_ut_strupr
@@ -1066,6 +1067,7 @@ id|src_string
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_mutex_initialize&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create the system mutex objects.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_mutex_initialize

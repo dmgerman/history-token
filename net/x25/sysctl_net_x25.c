@@ -1,5 +1,4 @@
 multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_x25.c: sysctl interface to net X.25 subsystem.&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/x25 directory entry (empty =) ). [MS]&n; */
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;

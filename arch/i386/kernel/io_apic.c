@@ -17,6 +17,20 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+DECL|variable|ioapic_renumber_irq
+r_int
+(paren
+op_star
+id|ioapic_renumber_irq
+)paren
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
 DECL|variable|irq_mis_count
 id|atomic_t
 id|irq_mis_count
@@ -4278,16 +4292,15 @@ id|irq
 op_add_assign
 id|pin
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/*&n;&t;&t;&t; * For MPS mode, so far only used by ES7000 platform&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * For MPS mode, so far only needed by ES7000 platform&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 )paren
 id|irq
 op_assign
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 c_func
 (paren
 id|apic
@@ -4295,7 +4308,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace

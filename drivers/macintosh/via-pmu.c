@@ -57,6 +57,7 @@ r_static
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|via
 suffix:semicolon
@@ -290,6 +291,7 @@ DECL|variable|gpio_reg
 r_static
 r_int
 r_char
+id|__iomem
 op_star
 id|gpio_reg
 op_assign
@@ -3049,12 +3051,6 @@ id|PMU_UNKNOWN
 suffix:semicolon
 id|via
 op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -6954,6 +6950,7 @@ id|x
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|v
 op_assign
@@ -7046,6 +7043,7 @@ r_void
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|v
 op_assign
@@ -13886,12 +13884,14 @@ r_struct
 id|adb_request
 id|sleep_req
 suffix:semicolon
-r_char
+r_void
+id|__iomem
 op_star
 id|mem_ctrl
 suffix:semicolon
 r_int
 r_int
+id|__iomem
 op_star
 id|mem_ctrl_sleep
 suffix:semicolon
@@ -13927,16 +13927,9 @@ suffix:semicolon
 )brace
 id|mem_ctrl_sleep
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
 id|mem_ctrl
 op_plus
 id|PB3400_MEM_CTRL_SLEEP
-)paren
 suffix:semicolon
 multiline_comment|/* Allocate room for PCI save */
 id|pbook_alloc_pci_save
@@ -15569,6 +15562,7 @@ c_func
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|via
 )paren
@@ -15640,6 +15634,7 @@ c_func
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|via
 comma
@@ -15691,6 +15686,7 @@ c_func
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|via
 )paren
@@ -15780,6 +15776,7 @@ suffix:semicolon
 r_volatile
 r_int
 r_char
+id|__iomem
 op_star
 id|v
 op_assign

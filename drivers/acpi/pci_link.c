@@ -1863,6 +1863,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_pci_link_get_irq&n; * success: return IRQ &gt;= 0&n; * failure: return -1&n; */
 r_int
 DECL|function|acpi_pci_link_get_irq
 id|acpi_pci_link_get_irq
@@ -1937,7 +1938,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1974,7 +1976,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2000,7 +2003,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2016,7 +2020,8 @@ id|link
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2039,7 +2044,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2715,6 +2721,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We&squot;d like PNP to call this routine for the&n; * single ISA_USED value for each legacy device.&n; * But instead it calls us with each POSSIBLE setting.&n; * There is no ISA_POSSIBLE weight, so we simply use&n; * the (small) PCI_USING penalty.&n; */
 DECL|function|acpi_penalize_isa_irq
 r_void
 id|acpi_penalize_isa_irq
@@ -2729,7 +2736,7 @@ id|acpi_irq_penalty
 id|irq
 )braket
 op_add_assign
-id|PIRQ_PENALTY_ISA_USED
+id|PIRQ_PENALTY_PCI_USING
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Over-ride default table to reserve additional IRQs for use by ISA&n; * e.g. acpi_irq_isa=5&n; * Useful for telling ACPI how not to interfere with your ISA sound card.&n; */

@@ -325,7 +325,7 @@ id|mem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * return a page table pointing to N pages of locked memory&n; *&n; * NOTE: The meye device expects dma_addr_t size to be 32 bits&n; * (the toc must be exactly 1024 entries each of them being 4 bytes&n; * in size, the whole result being 4096 bytes). We&squot;re using here&n; * dma_addr_t for correctness but the compilation of this driver is&n; * disabled for HIGHMEM64G=y, where sizeof(dma_addr_t) != 4&n; */
+multiline_comment|/*&n; * return a page table pointing to N pages of locked memory&n; *&n; * NOTE: The meye device expects DMA addresses on 32 bits, we build&n; * a table of 1024 entries = 4 bytes * 1024 = 4096 bytes.&n; */
 DECL|function|ptable_alloc
 r_static
 r_int
@@ -335,7 +335,7 @@ c_func
 r_void
 )paren
 (brace
-id|dma_addr_t
+id|u32
 op_star
 id|pt
 suffix:semicolon
@@ -354,6 +354,23 @@ r_sizeof
 id|meye.mchip_ptable
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* give only 32 bit DMA addresses */
+r_if
+c_cond
+(paren
+id|dma_set_mask
+c_func
+(paren
+op_amp
+id|meye.mchip_dev-&gt;dev
+comma
+l_int|0xffffffff
+)paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|meye.mchip_ptable_toc
 op_assign
@@ -406,6 +423,9 @@ id|i
 op_increment
 )paren
 (brace
+id|dma_addr_t
+id|dma
+suffix:semicolon
 id|meye.mchip_ptable
 (braket
 id|i
@@ -419,7 +439,8 @@ id|meye.mchip_dev-&gt;dev
 comma
 id|PAGE_SIZE
 comma
-id|pt
+op_amp
+id|dma
 comma
 id|GFP_KERNEL
 )paren
@@ -456,6 +477,14 @@ op_increment
 id|j
 )paren
 (brace
+id|dma
+op_assign
+(paren
+id|dma_addr_t
+)paren
+op_star
+id|pt
+suffix:semicolon
 id|dma_free_coherent
 c_func
 (paren
@@ -469,8 +498,7 @@ id|meye.mchip_ptable
 id|j
 )braket
 comma
-op_star
-id|pt
+id|dma
 )paren
 suffix:semicolon
 id|pt
@@ -503,6 +531,14 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+op_star
+id|pt
+op_assign
+(paren
+id|u32
+)paren
+id|dma
+suffix:semicolon
 id|pt
 op_increment
 suffix:semicolon
@@ -520,7 +556,7 @@ c_func
 r_void
 )paren
 (brace
-id|dma_addr_t
+id|u32
 op_star
 id|pt
 suffix:semicolon
@@ -546,6 +582,15 @@ id|i
 op_increment
 )paren
 (brace
+id|dma_addr_t
+id|dma
+op_assign
+(paren
+id|dma_addr_t
+)paren
+op_star
+id|pt
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -567,8 +612,7 @@ id|meye.mchip_ptable
 id|i
 )braket
 comma
-op_star
-id|pt
+id|dma
 )paren
 suffix:semicolon
 id|pt
@@ -3487,7 +3531,7 @@ r_void
 id|mchip_dma_setup
 c_func
 (paren
-id|u32
+id|dma_addr_t
 id|dma_addr
 )paren
 (brace
@@ -3499,6 +3543,9 @@ c_func
 (paren
 id|MCHIP_MM_PT_ADDR
 comma
+(paren
+id|u32
+)paren
 id|dma_addr
 )paren
 suffix:semicolon
@@ -9595,6 +9642,12 @@ op_assign
 op_amp
 id|meye.mchip_dev-&gt;dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
 id|sonypi_camera_command
 c_func
 (paren
@@ -9602,7 +9655,28 @@ id|SONYPI_COMMAND_SETCAMERA
 comma
 l_int|1
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;meye: unable to power on the camera&bslash;n&quot;
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;meye: did you enable the camera in &quot;
+l_string|&quot;sonypi using the module options ?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|outsonypienable
+suffix:semicolon
+)brace
 id|ret
 op_assign
 op_minus
@@ -10108,6 +10182,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|outsonypienable
+suffix:colon
 id|kfifo_free
 c_func
 (paren

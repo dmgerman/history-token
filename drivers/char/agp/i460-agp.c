@@ -2237,7 +2237,6 @@ id|type
 (brace
 multiline_comment|/* Make sure the returned address is a valid GATT entry */
 r_return
-(paren
 id|agp_bridge-&gt;driver-&gt;masks
 (braket
 l_int|0
@@ -2266,7 +2265,6 @@ l_int|0xffffff000
 )paren
 op_rshift
 l_int|12
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2483,6 +2481,14 @@ id|bridge-&gt;capndx
 op_assign
 id|cap_ptr
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected Intel 460GX chipset&bslash;n&quot;
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -2638,6 +2644,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|pci_module_init
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.35 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.40 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|VERSION_QETH_SYS_C
 op_assign
-l_string|&quot;$Revision: 1.35 $&quot;
+l_string|&quot;$Revision: 1.40 $&quot;
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
@@ -4162,9 +4162,13 @@ suffix:semicolon
 r_char
 id|addr_str
 (braket
-l_int|49
+l_int|40
 )braket
 suffix:semicolon
+r_int
+id|entry_len
+suffix:semicolon
+multiline_comment|/* length of 1 entry string, differs between v4 and v6 */
 r_int
 id|i
 op_assign
@@ -4182,6 +4186,33 @@ id|card
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+id|entry_len
+op_assign
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+ques
+c_cond
+l_int|12
+suffix:colon
+l_int|40
+suffix:semicolon
+multiline_comment|/* add strlen for &quot;/&lt;mask&gt;&bslash;n&quot; */
+id|entry_len
+op_add_assign
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+ques
+c_cond
+l_int|5
+suffix:colon
+l_int|6
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -4213,6 +4244,20 @@ id|proto
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* String must not be longer than PAGE_SIZE. So we check if&n;&t;&t; * string length gets near PAGE_SIZE. Then we can savely display&n;&t;&t; * the next IPv6 address (worst case, compared to IPv4) */
+r_if
+c_cond
+(paren
+(paren
+id|PAGE_SIZE
+op_minus
+id|i
+)paren
+op_le
+id|entry_len
+)paren
+r_break
+suffix:semicolon
 id|qeth_ipaddr_to_string
 c_func
 (paren
@@ -4225,11 +4270,15 @@ id|addr_str
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;%s/%i&bslash;n&quot;
@@ -4252,11 +4301,15 @@ id|flags
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;&bslash;n&quot;
@@ -5355,9 +5408,13 @@ suffix:semicolon
 r_char
 id|addr_str
 (braket
-l_int|49
+l_int|40
 )braket
 suffix:semicolon
+r_int
+id|entry_len
+suffix:semicolon
+multiline_comment|/* length of 1 entry string, differs between v4 and v6 */
 r_int
 r_int
 id|flags
@@ -5380,6 +5437,24 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|entry_len
+op_assign
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+ques
+c_cond
+l_int|12
+suffix:colon
+l_int|40
+suffix:semicolon
+id|entry_len
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* &bslash;n + terminator */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5419,6 +5494,20 @@ id|QETH_IP_TYPE_VIPA
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* String must not be longer than PAGE_SIZE. So we check if&n;&t;&t; * string length gets near PAGE_SIZE. Then we can savely display&n;&t;&t; * the next IPv6 address (worst case, compared to IPv4) */
+r_if
+c_cond
+(paren
+(paren
+id|PAGE_SIZE
+op_minus
+id|i
+)paren
+op_le
+id|entry_len
+)paren
+r_break
+suffix:semicolon
 id|qeth_ipaddr_to_string
 c_func
 (paren
@@ -5437,11 +5526,15 @@ id|addr_str
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;%s&bslash;n&quot;
@@ -5462,11 +5555,15 @@ id|flags
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;&bslash;n&quot;
@@ -6154,9 +6251,13 @@ suffix:semicolon
 r_char
 id|addr_str
 (braket
-l_int|49
+l_int|40
 )braket
 suffix:semicolon
+r_int
+id|entry_len
+suffix:semicolon
+multiline_comment|/* length of 1 entry string, differs between v4 and v6 */
 r_int
 r_int
 id|flags
@@ -6179,6 +6280,24 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|entry_len
+op_assign
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+ques
+c_cond
+l_int|12
+suffix:colon
+l_int|40
+suffix:semicolon
+id|entry_len
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* &bslash;n + terminator */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -6218,6 +6337,20 @@ id|QETH_IP_TYPE_RXIP
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* String must not be longer than PAGE_SIZE. So we check if&n;&t;&t; * string length gets near PAGE_SIZE. Then we can savely display&n;&t;&t; * the next IPv6 address (worst case, compared to IPv4) */
+r_if
+c_cond
+(paren
+(paren
+id|PAGE_SIZE
+op_minus
+id|i
+)paren
+op_le
+id|entry_len
+)paren
+r_break
+suffix:semicolon
 id|qeth_ipaddr_to_string
 c_func
 (paren
@@ -6236,11 +6369,15 @@ id|addr_str
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;%s&bslash;n&quot;
@@ -6261,11 +6398,15 @@ id|flags
 suffix:semicolon
 id|i
 op_add_assign
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|buf
 op_plus
+id|i
+comma
+id|PAGE_SIZE
+op_minus
 id|i
 comma
 l_string|&quot;&bslash;n&quot;

@@ -10,11 +10,12 @@ macro_line|#include &lt;asm/string.h&gt;&t;&t;/* memset(), Linux has no bzero() 
 multiline_comment|/* Probe and map in the Auxiliary I/O register */
 multiline_comment|/* auxio_register is not static because it is referenced &n; * in entry.S::floppy_tdone&n; */
 DECL|variable|auxio_register
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|auxio_register
 op_assign
-l_int|0UL
+l_int|NULL
 suffix:semicolon
 DECL|variable|auxio_lock
 r_static
@@ -277,8 +278,20 @@ id|sun4c
 )paren
 (brace
 id|auxio_register
-op_or_assign
+op_add_assign
+(paren
 l_int|3
+op_minus
+(paren
+(paren
+r_int
+r_int
+)paren
+id|auxio_register
+op_amp
+l_int|3
+)paren
+)paren
 suffix:semicolon
 )brace
 id|set_auxio

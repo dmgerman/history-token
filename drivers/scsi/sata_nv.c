@@ -754,6 +754,7 @@ id|nv_host_stop
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* FIXME: The hardware provides the necessary SATA PHY controls&n; * to support ATA_FLAG_SATA_RESET.  However, it is currently&n; * necessary to disable that flag, to solve misdetection problems.&n; * See http://bugme.osdl.org/show_bug.cgi?id=3352 for more info.&n; *&n; * This problem really needs to be investigated further.  But in the&n; * meantime, we avoid ATA_FLAG_SATA_RESET to get people working.&n; */
 DECL|variable|nv_port_info
 r_static
 r_struct
@@ -772,8 +773,7 @@ id|host_flags
 op_assign
 id|ATA_FLAG_SATA
 op_or
-id|ATA_FLAG_SATA_RESET
-op_or
+multiline_comment|/* ATA_FLAG_SATA_RESET | */
 id|ATA_FLAG_SRST
 op_or
 id|ATA_FLAG_NO_LEGACY

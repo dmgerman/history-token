@@ -5513,6 +5513,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|pci_disable_device
+c_func
+(paren
+id|rme32-&gt;pci
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_rme32_free_spdif_pcm
 r_static

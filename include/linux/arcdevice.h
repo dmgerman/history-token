@@ -44,6 +44,8 @@ DECL|macro|D_SKB_SIZE
 mdefine_line|#define D_SKB_SIZE&t;2048&t;/* show skb sizes&t;&t;&t;  */
 DECL|macro|D_TIMING
 mdefine_line|#define D_TIMING&t;4096&t;/* show time needed to copy buffers to card */
+DECL|macro|D_DEBUG
+mdefine_line|#define D_DEBUG         8192    /* Very detailed debug line for line */
 macro_line|#ifndef ARCNET_DEBUG_MAX
 DECL|macro|ARCNET_DEBUG_MAX
 mdefine_line|#define ARCNET_DEBUG_MAX (127)&t;/* change to ~0 if you want detailed debugging */
@@ -85,6 +87,8 @@ DECL|macro|RECONflag
 mdefine_line|#define RECONflag       0x04&t;/* network reconfigured */
 DECL|macro|TESTflag
 mdefine_line|#define TESTflag        0x08&t;/* test flag */
+DECL|macro|EXCNAKflag
+mdefine_line|#define EXCNAKflag      0x08    /* excesive nak flag */
 DECL|macro|RESETflag
 mdefine_line|#define RESETflag       0x10&t;/* power-on-reset */
 DECL|macro|RES1flag
@@ -120,6 +124,8 @@ DECL|macro|RESETclear
 mdefine_line|#define RESETclear      0x08&t;/* power-on-reset */
 DECL|macro|CONFIGclear
 mdefine_line|#define CONFIGclear     0x10&t;/* system reconfigured */
+DECL|macro|EXCNAKclear
+mdefine_line|#define EXCNAKclear     0x0E    /* Clear and acknowledge the excive nak bit */
 multiline_comment|/* flags for &quot;load test flags&quot; command */
 DECL|macro|TESTload
 mdefine_line|#define TESTload        0x08&t;/* test flag (diagnostic) */
@@ -154,6 +160,11 @@ r_int
 id|mtu
 suffix:semicolon
 multiline_comment|/* largest possible packet */
+DECL|member|is_ip
+r_int
+id|is_ip
+suffix:semicolon
+multiline_comment|/* This is a ip plugin - not a raw thing */
 DECL|member|rx
 r_void
 (paren
@@ -244,6 +255,22 @@ r_int
 id|bufnum
 )paren
 suffix:semicolon
+DECL|member|ack_tx
+r_int
+(paren
+op_star
+id|ack_tx
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|acked
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -260,6 +287,9 @@ id|arc_proto_default
 comma
 op_star
 id|arc_bcast_proto
+comma
+op_star
+id|arc_raw_proto
 suffix:semicolon
 r_extern
 r_struct
@@ -433,6 +463,11 @@ r_int
 id|card_flags
 suffix:semicolon
 multiline_comment|/* special card features */
+multiline_comment|/* On preemtive and SMB a lock is needed */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 multiline_comment|/*&n;&t; * Buffer management: an ARCnet card has 4 x 512-byte buffers, each of&n;&t; * which can be used for either sending or receiving.  The new dynamic&n;&t; * buffer management routines use a simple circular queue of available&n;&t; * buffers, and take them as they&squot;re needed.  This way, we simplify&n;&t; * situations in which we (for example) want to pre-load a transmit&n;&t; * buffer, or start receiving while we copy a received packet to&n;&t; * memory.&n;&t; * &n;&t; * The rules: only the interrupt handler is allowed to _add_ buffers to&n;&t; * the queue; thus, this doesn&squot;t require a lock.  Both the interrupt&n;&t; * handler and the transmit function will want to _remove_ buffers, so&n;&t; * we need to handle the situation where they try to do it at the same&n;&t; * time.&n;&t; * &n;&t; * If next_buf == first_free_buf, the queue is empty.  Since there are&n;&t; * only four possible buffers, the queue should never be full.&n;&t; */
 DECL|member|buf_lock
 id|atomic_t
@@ -472,6 +507,11 @@ r_bool
 id|network_down
 suffix:semicolon
 multiline_comment|/* do we think the network is down? */
+DECL|member|excnak_pending
+r_bool
+id|excnak_pending
+suffix:semicolon
+multiline_comment|/* We just got an excesive nak interrupt */
 r_struct
 (brace
 DECL|member|sequence
@@ -712,11 +752,14 @@ comma
 r_char
 op_star
 id|desc
+comma
+r_int
+id|take_arcnet_lock
 )paren
 suffix:semicolon
 macro_line|#else
 DECL|macro|arcnet_dump_packet
-mdefine_line|#define arcnet_dump_packet(dev, bufnum, desc) ;
+mdefine_line|#define arcnet_dump_packet(dev, bufnum, desc,take_arcnet_lock) ;
 macro_line|#endif
 r_void
 id|arcnet_unregister_proto

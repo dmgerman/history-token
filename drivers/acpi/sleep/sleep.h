@@ -39,4 +39,12 @@ id|u8
 id|sleep_state
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|acpi_wakeup_gpe_poweroff_prepare
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 eof

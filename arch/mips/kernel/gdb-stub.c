@@ -190,6 +190,10 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+DECL|variable|kgdb_enabled
+r_int
+id|kgdb_enabled
+suffix:semicolon
 multiline_comment|/*&n; * spin locks for smp case&n; */
 DECL|variable|kgdb_lock
 r_static

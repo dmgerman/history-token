@@ -5,6 +5,8 @@ mdefine_line|#define __ASM_DB1X00_H
 macro_line|#ifdef CONFIG_MIPS_DB1550
 DECL|macro|BCSR_KSEG1_ADDR
 mdefine_line|#define BCSR_KSEG1_ADDR 0xAF000000
+DECL|macro|NAND_PHYS_ADDR
+mdefine_line|#define NAND_PHYS_ADDR  0x20000000
 macro_line|#else
 DECL|macro|BCSR_KSEG1_ADDR
 mdefine_line|#define BCSR_KSEG1_ADDR 0xAE000000
@@ -219,17 +221,6 @@ mdefine_line|#define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK+1)
 multiline_comment|/* VPP/VCC */
 DECL|macro|SET_VCC_VPP
 mdefine_line|#define SET_VCC_VPP(VCC, VPP, SLOT)&bslash;&n;&t;((((VCC)&lt;&lt;2) | ((VPP)&lt;&lt;0)) &lt;&lt; ((SLOT)*8))
-multiline_comment|/* MTD CONFIG OPTIONS */
-macro_line|#if defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; defined(CONFIG_MTD_DB1X00_USER)
-DECL|macro|DB1X00_BOTH_BANKS
-mdefine_line|#define DB1X00_BOTH_BANKS
-macro_line|#elif defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; !defined(CONFIG_MTD_DB1X00_USER)
-DECL|macro|DB1X00_BOOT_ONLY
-mdefine_line|#define DB1X00_BOOT_ONLY
-macro_line|#elif !defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; defined(CONFIG_MTD_DB1X00_USER)
-DECL|macro|DB1X00_USER_ONLY
-mdefine_line|#define DB1X00_USER_ONLY
-macro_line|#endif
 multiline_comment|/* SD controller macros */
 multiline_comment|/*&n; * Detect card.&n; */
 DECL|macro|mmc_card_inserted
@@ -237,5 +228,26 @@ mdefine_line|#define mmc_card_inserted(_n_, _res_) &bslash;&n;&t;do { &bslash;&n
 multiline_comment|/*&n; * Apply power to card slot(s).&n; */
 DECL|macro|mmc_power_on
 mdefine_line|#define mmc_power_on(_n_) &bslash;&n;&t;do { &bslash;&n;&t;&t;BCSR * const bcsr = (BCSR *)0xAE000000; &bslash;&n;&t;&t;unsigned long mmc_pwr, mmc_wp, board_specific; &bslash;&n;&t;&t;if ((_n_)) { &bslash;&n;&t;&t;&t;mmc_pwr = BCSR_BOARD_SD1_PWR; &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD1_WP; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;mmc_pwr = BCSR_BOARD_SD0_PWR; &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD0_WP; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;board_specific = au_readl((unsigned long)(&amp;bcsr-&gt;specific)); &bslash;&n;&t;&t;if (!(board_specific &amp; mmc_wp)) {/* low means card present */ &bslash;&n;&t;&t;&t;board_specific |= mmc_pwr; &bslash;&n;&t;&t;&t;au_writel(board_specific, (int)(&amp;bcsr-&gt;specific)); &bslash;&n;&t;&t;&t;au_sync(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
+multiline_comment|/* NAND defines */
+multiline_comment|/* Timing values as described in databook, * ns value stripped of&n; * lower 2 bits.&n; * These defines are here rather than an SOC1550 generic file because&n; * the parts chosen on another board may be different and may require&n; * different timings.&n; */
+DECL|macro|NAND_T_H
+mdefine_line|#define NAND_T_H&t;&t;&t;(18 &gt;&gt; 2)
+DECL|macro|NAND_T_PUL
+mdefine_line|#define NAND_T_PUL&t;&t;&t;(30 &gt;&gt; 2)
+DECL|macro|NAND_T_SU
+mdefine_line|#define NAND_T_SU&t;&t;&t;(30 &gt;&gt; 2)
+DECL|macro|NAND_T_WH
+mdefine_line|#define NAND_T_WH&t;&t;&t;(30 &gt;&gt; 2)
+multiline_comment|/* Bitfield shift amounts */
+DECL|macro|NAND_T_H_SHIFT
+mdefine_line|#define NAND_T_H_SHIFT&t;&t;0
+DECL|macro|NAND_T_PUL_SHIFT
+mdefine_line|#define NAND_T_PUL_SHIFT&t;4
+DECL|macro|NAND_T_SU_SHIFT
+mdefine_line|#define NAND_T_SU_SHIFT&t;&t;8
+DECL|macro|NAND_T_WH_SHIFT
+mdefine_line|#define NAND_T_WH_SHIFT&t;&t;12
+DECL|macro|NAND_TIMING
+mdefine_line|#define NAND_TIMING&t;((NAND_T_H   &amp; 0xF)&t;&lt;&lt; NAND_T_H_SHIFT)   | &bslash;&n;&t;&t;&t;((NAND_T_PUL &amp; 0xF)&t;&lt;&lt; NAND_T_PUL_SHIFT) | &bslash;&n;&t;&t;&t;((NAND_T_SU  &amp; 0xF)&t;&lt;&lt; NAND_T_SU_SHIFT)  | &bslash;&n;&t;&t;&t;((NAND_T_WH  &amp; 0xF)&t;&lt;&lt; NAND_T_WH_SHIFT)
 macro_line|#endif /* __ASM_DB1X00_H */
 eof

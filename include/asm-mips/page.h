@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;spaces.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * PAGE_SHIFT determines the page size&n; */
 macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PAGE_SHIFT
@@ -25,7 +26,8 @@ macro_line|#endif
 DECL|macro|PAGE_SIZE
 mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
-mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
+mdefine_line|#define PAGE_MASK       (~((1 &lt;&lt; PAGE_SHIFT) - 1))
+macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -224,6 +226,25 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
+macro_line|#ifdef CONFIG_CPU_MIPS32
+DECL|member|pte_low
+DECL|member|pte_high
+DECL|typedef|pte_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pte_low
+comma
+id|pte_high
+suffix:semicolon
+)brace
+id|pte_t
+suffix:semicolon
+DECL|macro|pte_val
+mdefine_line|#define pte_val(x)    ((x).pte_low | ((unsigned long long)(x).pte_high &lt;&lt; 32))
+macro_line|#else
 DECL|member|pte
 DECL|typedef|pte_t
 r_typedef
@@ -237,6 +258,9 @@ suffix:semicolon
 )brace
 id|pte_t
 suffix:semicolon
+DECL|macro|pte_val
+mdefine_line|#define pte_val(x)&t;((x).pte)
+macro_line|#endif
 macro_line|#else
 DECL|member|pte
 DECL|typedef|pte_t
@@ -250,6 +274,8 @@ suffix:semicolon
 )brace
 id|pte_t
 suffix:semicolon
+DECL|macro|pte_val
+mdefine_line|#define pte_val(x)&t;((x).pte)
 macro_line|#endif
 DECL|member|pmd
 DECL|typedef|pmd_t
@@ -287,8 +313,6 @@ suffix:semicolon
 )brace
 id|pgprot_t
 suffix:semicolon
-DECL|macro|pte_val
-mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pgd_val

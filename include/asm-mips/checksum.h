@@ -83,6 +83,11 @@ op_star
 id|err_ptr
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sum
 op_assign
 id|csum_partial

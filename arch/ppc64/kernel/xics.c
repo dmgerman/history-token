@@ -2239,10 +2239,7 @@ id|ireg
 l_int|0
 )braket
 op_eq
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
+id|boot_cpuid_phys
 )paren
 (brace
 id|ireg

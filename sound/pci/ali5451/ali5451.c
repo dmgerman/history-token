@@ -9541,6 +9541,12 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -9862,6 +9868,12 @@ c_cond
 id|codec-&gt;port
 )paren
 id|pci_release_regions
+c_func
+(paren
+id|codec-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|codec-&gt;pci
@@ -10414,6 +10426,12 @@ c_func
 l_string|&quot;architecture does not support 31bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -10442,10 +10460,18 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|spin_lock_init
 c_func
 (paren

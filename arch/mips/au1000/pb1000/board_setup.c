@@ -56,6 +56,14 @@ op_logical_neg
 op_logical_neg
 op_logical_neg
 macro_line|#endif
+DECL|function|board_reset
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|function|board_setup
 r_void
 id|__init

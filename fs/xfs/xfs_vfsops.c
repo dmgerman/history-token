@@ -5170,6 +5170,8 @@ l_int|NULL
 comma
 id|ino
 comma
+l_int|0
+comma
 id|XFS_ILOCK_SHARED
 comma
 op_amp

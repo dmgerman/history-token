@@ -1725,18 +1725,7 @@ r_return
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
-multiline_comment|/* A spurious wakeup should never happen. */
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* We expect signal_pending(current), but another thread may&n;&t; * have handled it for us already. */
 r_return
 op_minus
 id|EINTR

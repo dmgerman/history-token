@@ -254,6 +254,7 @@ id|arg-&gt;common.next
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_child&n; *&n; * PARAMETERS:  Op              - Get the child of this Op&n; *&n; * RETURN:      Child Op, Null if none is found.&n; *&n; * DESCRIPTION: Get op&squot;s children or NULL if none&n; *&n; ******************************************************************************/
 r_union
 id|acpi_parse_object
@@ -562,4 +563,5 @@ id|next
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 eof

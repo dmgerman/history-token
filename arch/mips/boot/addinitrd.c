@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * addinitrd - program to add a initrd image to an ecoff kernel&n; *&n; * (C) 1999 Thomas Bogendoerfer&n; */
+multiline_comment|/*&n; * addinitrd - program to add a initrd image to an ecoff kernel&n; *&n; * (C) 1999 Thomas Bogendoerfer&n; * minor modifications, cleanup: Guido Guenther &lt;agx@sigxcpu.org&gt;&n; * further cleanup: Maciej W. Rozycki&n; */
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#include &lt;sys/stat.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
@@ -137,7 +137,7 @@ id|argv
 l_int|1
 )braket
 comma
-id|O_RDWR
+id|O_RDONLY
 )paren
 )paren
 OL
@@ -260,6 +260,33 @@ id|MIPSEBMAGIC
 id|swab
 op_assign
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* make sure we have an empty data segment for the initrd */
+r_if
+c_cond
+(paren
+id|eaout.dsize
+op_logical_or
+id|esecs
+(braket
+l_int|1
+)braket
+dot
+id|s_size
+)paren
+(brace
+id|fprintf
+(paren
+id|stderr
+comma
+l_string|&quot;Data segment not empty. Giving up!&bslash;n&quot;
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
 suffix:semicolon
 )brace
 r_if

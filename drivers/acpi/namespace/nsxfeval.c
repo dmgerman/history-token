@@ -1,5 +1,6 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
@@ -10,6 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsxfeval&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object_typed&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **external_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *              return_type         - Expected type of return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_evaluate_object_typed
 id|acpi_evaluate_object_typed
@@ -222,6 +224,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              Pathname            - Object pathname (optional)&n; *              external_params     - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              return_buffer       - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object
@@ -682,6 +685,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_evaluate_object
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_evaluate_object
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_walk_namespace&n; *&n; * PARAMETERS:  Type                - acpi_object_type to search for&n; *              start_object        - Handle in namespace where search begins&n; *              max_depth           - Depth to which search is to reach&n; *              user_function       - Called when an object of &quot;Type&quot; is found&n; *              Context             - Passed to user function&n; *              return_value        - Location where return value of&n; *                                    user_function is put if terminated early&n; *&n; * RETURNS      Return value from the user_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by start_handle.&n; *              The user_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              The point of this procedure is to provide a generic namespace&n; *              walk routine that can be called from multiple places to&n; *              provide multiple services;  the User Function can be tailored&n; *              to each task, whether it is a print function, a compare&n; *              function, etc.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_walk_namespace
@@ -800,6 +810,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_walk_namespace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_walk_namespace
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_device_callback&n; *&n; * PARAMETERS:  Callback from acpi_get_device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes callbacks from walk_namespace and filters out all non-&n; *              present devices, or if they specified a HID, it filters based&n; *              on that.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
@@ -1264,6 +1281,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_devices
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_attach_data&n; *&n; * PARAMETERS:  obj_handle          - Namespace node&n; *              Handler             - Handler for this attachment&n; *              Data                - Pointer to data to be attached&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attach arbitrary data and handler to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_attach_data

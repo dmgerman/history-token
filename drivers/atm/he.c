@@ -7657,10 +7657,6 @@ id|he_dev-&gt;membase
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|he_dev-&gt;membase
 )paren
 suffix:semicolon

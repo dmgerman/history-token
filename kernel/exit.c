@@ -834,17 +834,17 @@ id|INIT_USER-&gt;__count
 )paren
 )paren
 suffix:semicolon
-id|switch_uid
-c_func
-(paren
-id|INIT_USER
-)paren
-suffix:semicolon
 id|write_unlock_irq
 c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|switch_uid
+c_func
+(paren
+id|INIT_USER
 )paren
 suffix:semicolon
 )brace
@@ -2024,9 +2024,6 @@ l_int|1
 id|p-&gt;exit_signal
 op_assign
 id|SIGCHLD
-suffix:semicolon
-id|p-&gt;self_exec_id
-op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -5335,6 +5332,7 @@ id|wait
 suffix:semicolon
 id|repeat
 suffix:colon
+multiline_comment|/*&n;&t; * We will set this flag if we see any child that might later&n;&t; * match our criteria, even if we are not able to reap it yet.&n;&t; */
 id|flag
 op_assign
 l_int|0
@@ -5420,10 +5418,6 @@ id|p-&gt;state
 r_case
 id|TASK_TRACED
 suffix:colon
-id|flag
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5440,6 +5434,7 @@ multiline_comment|/*FALLTHROUGH*/
 r_case
 id|TASK_STOPPED
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * It&squot;s stopped now, so it might later&n;&t;&t;&t;&t; * continue, exit, or stop again.&n;&t;&t;&t;&t; */
 id|flag
 op_assign
 l_int|1
@@ -5593,12 +5588,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|check_continued
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * It&squot;s running now, so it might later&n;&t;&t;&t;&t; * exit, stop, or stop and then continue.&n;&t;&t;&t;&t; */
 id|flag
 op_assign
 l_int|1
 suffix:semicolon
-id|check_continued
-suffix:colon
 r_if
 c_cond
 (paren

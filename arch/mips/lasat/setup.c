@@ -446,8 +446,6 @@ suffix:semicolon
 id|s.flags
 op_assign
 id|STD_COM_FLAGS
-op_or
-id|UPF_RESOURCES
 suffix:semicolon
 id|s.iotype
 op_assign

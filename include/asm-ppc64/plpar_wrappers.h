@@ -101,6 +101,7 @@ r_int
 id|vpa
 )paren
 (brace
+r_return
 id|plpar_hcall_norets
 c_func
 (paren
@@ -113,10 +114,15 @@ comma
 id|vpa
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
+r_void
+id|vpa_init
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 DECL|function|plpar_pte_remove
 r_static
 r_inline

@@ -524,12 +524,6 @@ op_amp
 id|sd_ref_sem
 )paren
 suffix:semicolon
-id|scsi_device_put
-c_func
-(paren
-id|sdkp-&gt;device
-)paren
-suffix:semicolon
 id|kref_put
 c_func
 (paren
@@ -537,6 +531,12 @@ op_amp
 id|sdkp-&gt;kref
 comma
 id|scsi_disk_release
+)paren
+suffix:semicolon
+id|scsi_device_put
+c_func
+(paren
+id|sdkp-&gt;device
 )paren
 suffix:semicolon
 id|up
@@ -4564,6 +4564,15 @@ l_int|11
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/* Some devices return the total number of sectors, not the&n;&t; * highest sector number.  Make the necessary adjustment. */
+r_if
+c_cond
+(paren
+id|sdp-&gt;fix_capacity
+)paren
+op_decrement
+id|sdkp-&gt;capacity
+suffix:semicolon
 id|got_data
 suffix:colon
 r_if

@@ -2937,13 +2937,16 @@ id|current-&gt;thread.eip
 suffix:semicolon
 )brace
 multiline_comment|/* handle a Voyager SYS_INT -- If we don&squot;t, the base board will&n; * panic the system.&n; *&n; * System interrupts occur because some problem was detected on the&n; * various busses.  To find out what you have to probe all the&n; * hardware via the CAT bus.  FIXME: At the moment we do nothing. */
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_vic_sys_interrupt
 id|smp_vic_sys_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_CPI
@@ -2960,13 +2963,16 @@ l_string|&quot;Voyager SYSTEM INTERRUPT&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Handle a voyager CMN_INT; These interrupts occur either because of&n; * a system status change or because a single bit memory error&n; * occurred.  FIXME: At the moment, ignore all this. */
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_vic_cmn_interrupt
 id|smp_vic_cmn_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_static
@@ -3059,7 +3065,7 @@ id|VIC_CMN_INT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reschedule call back. Nothing to do, all the work is done&n; * automatically when we return from the interrupt.  */
-id|asmlinkage
+r_static
 r_void
 DECL|function|smp_reschedule_interrupt
 id|smp_reschedule_interrupt
@@ -3148,7 +3154,7 @@ id|swapper_pg_dir
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Invalidate call-back&n; */
-id|asmlinkage
+r_static
 r_void
 DECL|function|smp_invalidate_interrupt
 id|smp_invalidate_interrupt
@@ -3703,7 +3709,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* enable the requested IRQs */
-id|asmlinkage
+r_static
 r_void
 DECL|function|smp_enable_irq_interrupt
 id|smp_enable_irq_interrupt
@@ -3913,7 +3919,7 @@ op_star
 id|call_data
 suffix:semicolon
 multiline_comment|/* execute a thread on a new CPU.  The function to be called must be&n; * previously set up.  This is used to schedule a function for&n; * execution on all CPU&squot;s - set up the function then broadcast a&n; * function_interrupt CPI to come here on each CPU */
-id|asmlinkage
+r_static
 r_void
 DECL|function|smp_call_function_interrupt
 id|smp_call_function_interrupt
@@ -4190,7 +4196,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Sorry about the name.  In an APIC based system, the APICs&n; * themselves are programmed to send a timer interrupt.  This is used&n; * by linux to reschedule the processor.  Voyager doesn&squot;t have this,&n; * so we use the system clock to interrupt one processor, which in&n; * turn, broadcasts a timer CPI to all the others --- we receive that&n; * CPI here.  We don&squot;t use this actually for counting so losing&n; * ticks doesn&squot;t matter &n; *&n; * FIXME: For those CPU&squot;s which actually have a local APIC, we could&n; * try to use it to trigger this interrupt instead of having to&n; * broadcast the timer tick.  Unfortunately, all my pentium DYADs have&n; * no local APIC, so I can&squot;t do this&n; *&n; * This function is currently a placeholder and is unused in the code */
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_apic_timer_interrupt
 id|smp_apic_timer_interrupt
@@ -4198,19 +4204,19 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
 id|wrapper_smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* All of the QUAD interrupt GATES */
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_qic_timer_interrupt
 id|smp_qic_timer_interrupt
@@ -4218,6 +4224,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -4230,18 +4237,20 @@ suffix:semicolon
 id|wrapper_smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_qic_invalidate_interrupt
 id|smp_qic_invalidate_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_QIC_CPI
@@ -4256,13 +4265,16 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_qic_reschedule_interrupt
 id|smp_qic_reschedule_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_QIC_CPI
@@ -4277,13 +4289,16 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_qic_enable_irq_interrupt
 id|smp_qic_enable_irq_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_QIC_CPI
@@ -4298,13 +4313,16 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_qic_call_function_interrupt
 id|smp_qic_call_function_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_QIC_CPI
@@ -4319,7 +4337,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 DECL|function|smp_vic_cpi_interrupt
 id|smp_vic_cpi_interrupt
@@ -4327,6 +4345,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -4380,7 +4399,6 @@ id|cpu
 id|wrapper_smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon

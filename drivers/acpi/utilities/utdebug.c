@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
@@ -243,6 +244,13 @@ id|args
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_debug_print
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_debug_print
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_debug_print_raw&n; *&n; * PARAMETERS:  requested_debug_level - Requested debug print level&n; *              line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print message with no headers.  Has same interface as&n; *              debug_print so that the same macros can be used.&n; *&n; ****************************************************************************/
 r_void
 id|ACPI_INTERNAL_VAR_XFACE
@@ -308,6 +316,13 @@ id|args
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_debug_print_raw
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_debug_print_raw
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace
@@ -343,6 +358,13 @@ id|acpi_gbl_fn_entry_str
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_trace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_trace
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace_ptr&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Pointer             - Pointer to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace_ptr
@@ -496,6 +518,13 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_status_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Status              - Exit status code&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit status also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_status_exit
@@ -566,6 +595,13 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_status_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_status_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_value_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_value_exit
@@ -605,6 +641,13 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|acpi_ut_value_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_ut_value_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_ptr_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_ptr_exit

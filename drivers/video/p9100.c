@@ -429,6 +429,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|p9100_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -503,6 +504,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|p9100_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -638,6 +640,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|p9100_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1117,11 +1120,6 @@ id|all-&gt;info.var.yres
 suffix:semicolon
 id|all-&gt;par.regs
 op_assign
-(paren
-r_struct
-id|p9100_regs
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1156,6 +1154,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|prom_getintdefault
@@ -1177,10 +1176,6 @@ id|all-&gt;info.screen_base
 )paren
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren

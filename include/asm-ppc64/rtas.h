@@ -313,7 +313,6 @@ id|buffer
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* allocated by klimit bump */
 )brace
 suffix:semicolon
 DECL|struct|flash_block

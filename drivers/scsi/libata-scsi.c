@@ -392,7 +392,7 @@ r_return
 id|qc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_to_sense_error - convert ATA error to SCSI error&n; *&t;@qc: Command that we are erroring out&n; *&n; *&t;Converts an ATA error into a SCSI error. While we are at it&n; *&t;we decode and dump the ATA error for the user so that they&n; *&t;have some idea what really happened at the non make-believe&n; *&t;layer.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_to_sense_error - convert ATA error to SCSI error&n; *&t;@qc: Command that we are erroring out&n; *&t;@drv_stat: value contained in ATA status register&n; *&n; *&t;Converts an ATA error into a SCSI error. While we are at it&n; *&t;we decode and dump the ATA error for the user so that they&n; *&t;have some idea what really happened at the non make-believe&n; *&t;layer.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_to_sense_error
 r_void
 id|ata_to_sense_error
@@ -2840,7 +2840,7 @@ r_return
 id|buflen
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_rbuf_put - Unmap response buffer.&n; *&t;@cmd: SCSI command containing buffer to be unmapped.&n; *&n; *&t;Unmaps response buffer contained within @cmd.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_rbuf_put - Unmap response buffer.&n; *&t;@cmd: SCSI command containing buffer to be unmapped.&n; *&t;@buf: buffer to unmap&n; *&n; *&t;Unmaps response buffer contained within @cmd.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_rbuf_put
 r_static
 r_inline
@@ -3363,6 +3363,8 @@ OG
 id|ATA_SERNO_LEN
 op_plus
 l_int|4
+op_minus
+l_int|1
 )paren
 )paren
 id|ata_dev_id_string
@@ -3458,6 +3460,8 @@ op_plus
 l_int|4
 op_plus
 l_int|4
+op_minus
+l_int|1
 )paren
 )paren
 (brace
@@ -4903,7 +4907,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_find_dev - lookup ata_device from scsi_cmnd&n; *&t;@ap: ATA port to which the device is attached&n; *&t;@cmd: SCSI command to be sent to the device&n; *&n; *&t;Given various information provided in struct scsi_cmnd,&n; *&t;map that onto an ATA bus, and using that mapping&n; *&t;determine which ata_device is associated with the&n; *&t;SCSI command to be sent.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Associated ATA device, or %NULL if not found.&n; */
+multiline_comment|/**&n; *&t;ata_scsi_find_dev - lookup ata_device from scsi_cmnd&n; *&t;@ap: ATA port to which the device is attached&n; *&t;@scsidev: SCSI device from which we derive the ATA device&n; *&n; *&t;Given various information provided in struct scsi_cmnd,&n; *&t;map that onto an ATA bus, and using that mapping&n; *&t;determine which ata_device is associated with the&n; *&t;SCSI command to be sent.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Associated ATA device, or %NULL if not found.&n; */
 r_static
 r_struct
 id|ata_device

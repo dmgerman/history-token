@@ -1751,7 +1751,7 @@ op_logical_neg
 id|mm-&gt;arg_end
 )paren
 r_goto
-id|out
+id|out_mm
 suffix:semicolon
 multiline_comment|/* Shh! No looking before we&squot;re done */
 id|len
@@ -1886,6 +1886,8 @@ id|res
 suffix:semicolon
 )brace
 )brace
+id|out_mm
+suffix:colon
 id|mmput
 c_func
 (paren
@@ -3920,30 +3922,6 @@ op_assign
 id|proc_pid_follow_link
 )brace
 suffix:semicolon
-DECL|function|pid_alive
-r_static
-r_inline
-r_int
-id|pid_alive
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-)paren
-(brace
-r_return
-id|p-&gt;pids
-(braket
-id|PIDTYPE_PID
-)braket
-dot
-id|nr
-op_ne
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|NUMBUF
 mdefine_line|#define NUMBUF 10
 DECL|function|proc_readfd

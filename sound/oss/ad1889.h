@@ -235,8 +235,9 @@ r_struct
 id|ad1889_dev
 (brace
 DECL|member|regbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regbase
 suffix:semicolon
 DECL|member|pci

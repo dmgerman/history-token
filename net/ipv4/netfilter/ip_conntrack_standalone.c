@@ -3235,6 +3235,11 @@ r_goto
 id|cleanup_nothing
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|proc
 op_assign
 id|proc_net_fops_create
@@ -3817,6 +3822,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_conntrack_protocol_unregister
+)paren
+suffix:semicolon
+DECL|variable|ip_ct_get_tuple
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_get_tuple
 )paren
 suffix:semicolon
 DECL|variable|invert_tuplepr

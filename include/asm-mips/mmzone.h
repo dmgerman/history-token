@@ -4,16 +4,6 @@ DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;mmzone.h&gt;
-r_extern
-r_struct
-id|pglist_data
-op_star
-id|node_data
-(braket
-)braket
-suffix:semicolon
-DECL|macro|NODE_DATA
-mdefine_line|#define NODE_DATA(n)&t;&t;(node_data[(n)])
 DECL|macro|kvaddr_to_nid
 mdefine_line|#define kvaddr_to_nid(kvaddr)&t;pa_to_nid(__pa(kvaddr))
 DECL|macro|pfn_to_nid

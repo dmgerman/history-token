@@ -5927,6 +5927,12 @@ c_func
 id|chip-&gt;pci
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -6159,10 +6165,18 @@ id|chip
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|spin_lock_init
 c_func
 (paren
@@ -6214,6 +6228,12 @@ c_func
 l_string|&quot;architecture does not support 24bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -6241,6 +6261,12 @@ id|kfree
 c_func
 (paren
 id|chip
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return

@@ -690,8 +690,11 @@ id|buf
 l_int|80
 )braket
 suffix:semicolon
-id|dma_addr_t
+r_const
+r_uint64
 id|mask_39bit
+op_assign
+l_int|0x7FFFFFFFFFULL
 suffix:semicolon
 r_struct
 id|ahc_softc
@@ -908,10 +911,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|mask_39bit
-op_assign
-l_int|0x7FFFFFFFFFULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -959,7 +958,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+id|DMA_32BIT_MASK
 )paren
 )paren
 (brace
@@ -979,7 +978,7 @@ suffix:semicolon
 )brace
 id|ahc-&gt;platform_data-&gt;hw_dma_mask
 op_assign
-l_int|0xFFFFFFFF
+id|DMA_32BIT_MASK
 suffix:semicolon
 )brace
 macro_line|#endif

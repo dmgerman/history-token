@@ -2863,6 +2863,10 @@ id|i_size
 op_add_assign
 id|le16_to_cpu
 (paren
+(paren
+id|__force
+id|__le16
+)paren
 id|config-&gt;wTotalLength
 )paren
 suffix:semicolon
@@ -2946,6 +2950,13 @@ r_struct
 id|dev_state
 comma
 id|list
+)paren
+suffix:semicolon
+id|wake_up_all
+c_func
+(paren
+op_amp
+id|ds-&gt;wait
 )paren
 suffix:semicolon
 id|list_del_init

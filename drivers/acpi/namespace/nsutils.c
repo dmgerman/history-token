@@ -2073,6 +2073,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_find_parent_name&n; *&n; * PARAMETERS:  *child_node            - Named Obj whose name is to be found&n; *&n; * RETURN:      The ACPI name&n; *&n; * DESCRIPTION: Search for the given obj in its parent scope and return the&n; *              name segment, or &quot;????&quot; if the parent name can&squot;t be found&n; *              (which &quot;should not happen&quot;).&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_name
 DECL|function|acpi_ns_find_parent_name
 id|acpi_ns_find_parent_name
@@ -2175,6 +2176,7 @@ id|ACPI_UNKNOWN_NAME
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_parent_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Parent entry of the given entry&n; *&n; * DESCRIPTION: Obtain the parent entry for a given entry in the namespace.&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_namespace_node

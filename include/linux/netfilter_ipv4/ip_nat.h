@@ -16,15 +16,9 @@ DECL|enumerator|IP_NAT_MANIP_DST
 id|IP_NAT_MANIP_DST
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_IP_NF_NAT_LOCAL
-multiline_comment|/* SRC manip occurs only on POST_ROUTING */
-DECL|macro|HOOK2MANIP
-mdefine_line|#define HOOK2MANIP(hooknum) ((hooknum) != NF_IP_POST_ROUTING)
-macro_line|#else
 multiline_comment|/* SRC manip occurs POST_ROUTING or LOCAL_IN */
 DECL|macro|HOOK2MANIP
 mdefine_line|#define HOOK2MANIP(hooknum) ((hooknum) != NF_IP_POST_ROUTING &amp;&amp; (hooknum) != NF_IP_LOCAL_IN)
-macro_line|#endif
 DECL|macro|IP_NAT_RANGE_MAP_IPS
 mdefine_line|#define IP_NAT_RANGE_MAP_IPS 1
 DECL|macro|IP_NAT_RANGE_PROTO_SPECIFIED

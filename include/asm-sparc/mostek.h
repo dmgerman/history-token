@@ -4,12 +4,13 @@ DECL|macro|_SPARC_MOSTEK_H
 mdefine_line|#define _SPARC_MOSTEK_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*       M48T02 Register Map (adapted from Sun NVRAM/Hostid FAQ)&n; *&n; *                             Data&n; * Address                                                 Function&n; *        Bit 7 Bit 6 Bit 5 Bit 4Bit 3 Bit 2 Bit 1 Bit 0&n; *   7ff  -     -     -     -    -     -     -     -       Year 00-99&n; *   7fe  0     0     0     -    -     -     -     -      Month 01-12&n; *   7fd  0     0     -     -    -     -     -     -       Date 01-31&n; *   7fc  0     FT    0     0    0     -     -     -        Day 01-07&n; *   7fb  KS    0     -     -    -     -     -     -      Hours 00-23&n; *   7fa  0     -     -     -    -     -     -     -    Minutes 00-59&n; *   7f9  ST    -     -     -    -     -     -     -    Seconds 00-59&n; *   7f8  W     R     S     -    -     -     -     -    Control&n; *&n; *   * ST is STOP BIT&n; *   * W is WRITE BIT&n; *   * R is READ BIT&n; *   * S is SIGN BIT&n; *   * FT is FREQ TEST BIT&n; *   * KS is KICK START BIT&n; */
 multiline_comment|/* The Mostek 48t02 real time clock and NVRAM chip. The registers&n; * other than the control register are in binary coded decimal. Some&n; * control bits also live outside the control register.&n; */
 DECL|macro|mostek_read
-mdefine_line|#define mostek_read(_addr)&t;&t;(*((volatile u8 *)(_addr)))
+mdefine_line|#define mostek_read(_addr)&t;&t;readb(_addr)
 DECL|macro|mostek_write
-mdefine_line|#define mostek_write(_addr,_val)&t;((*((volatile u8 *)(_addr))) = (_val))
+mdefine_line|#define mostek_write(_addr,_val)&t;writeb(_val, _addr)
 DECL|macro|MOSTEK_EEPROM
 mdefine_line|#define MOSTEK_EEPROM&t;&t;0x0000UL
 DECL|macro|MOSTEK_IDPROM
@@ -112,8 +113,9 @@ id|spinlock_t
 id|mostek_lock
 suffix:semicolon
 r_extern
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mstk48t02_regs
 suffix:semicolon
 multiline_comment|/* Control register values. */
