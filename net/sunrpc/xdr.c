@@ -1375,7 +1375,7 @@ c_func
 op_star
 id|ppage
 comma
-id|KM_USER0
+id|KM_SKB_SUNRPC_DATA
 )paren
 suffix:semicolon
 r_if
@@ -1449,7 +1449,7 @@ c_func
 (paren
 id|kaddr
 comma
-id|KM_USER0
+id|KM_SKB_SUNRPC_DATA
 )paren
 suffix:semicolon
 r_if

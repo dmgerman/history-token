@@ -23,13 +23,13 @@ l_int|0
 id|KM_BOUNCE_READ
 comma
 DECL|enumerator|D
-DECL|enumerator|KM_SKB_DATA
+DECL|enumerator|KM_SKB_SUNRPC_DATA
 id|D
 c_func
 (paren
 l_int|1
 )paren
-id|KM_SKB_DATA
+id|KM_SKB_SUNRPC_DATA
 comma
 DECL|enumerator|D
 DECL|enumerator|KM_SKB_DATA_SOFTIRQ
