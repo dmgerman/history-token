@@ -776,11 +776,11 @@ multiline_comment|/* signal queue entry. */
 )brace
 suffix:semicolon
 r_struct
-id|as_io_context
+id|io_context
 suffix:semicolon
-multiline_comment|/* Anticipatory scheduler */
+multiline_comment|/* See blkdev.h */
 r_void
-id|exit_as_io_context
+id|exit_io_context
 c_func
 (paren
 r_void
@@ -1338,11 +1338,11 @@ id|backing_dev_info
 op_star
 id|backing_dev_info
 suffix:semicolon
-DECL|member|as_io_context
+DECL|member|io_context
 r_struct
-id|as_io_context
+id|io_context
 op_star
-id|as_io_context
+id|io_context
 suffix:semicolon
 DECL|member|ptrace_message
 r_int
