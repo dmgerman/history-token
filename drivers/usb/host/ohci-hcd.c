@@ -512,7 +512,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -761,7 +761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -897,7 +897,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|hcd-&gt;state
 )paren
@@ -1931,7 +1931,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* wake on ConnectStatusChange, matching external hubs */
 id|ohci_writel
@@ -2126,7 +2126,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 id|ohci_dump
 (paren
@@ -2466,7 +2466,7 @@ id|OHCI_INTR_WDH
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2504,7 +2504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2561,7 +2561,7 @@ op_logical_and
 op_logical_neg
 id|ohci-&gt;ed_rm_list
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2586,7 +2586,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state

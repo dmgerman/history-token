@@ -1716,7 +1716,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 suffix:semicolon
 )brace
 DECL|macro|FI

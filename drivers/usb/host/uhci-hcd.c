@@ -1463,7 +1463,7 @@ id|uhci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* Turn on PIRQ and all interrupts */
 id|pci_write_config_word
@@ -3038,7 +3038,7 @@ suffix:semicolon
 )brace
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 r_return
 l_int|0

@@ -1360,7 +1360,7 @@ id|likely
 op_logical_neg
 id|stopped
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -1388,7 +1388,7 @@ c_cond
 id|unlikely
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -3005,7 +3005,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* posted write need not be known to HC yet ... */
 )brace
@@ -3621,7 +3621,7 @@ op_amp
 id|qh-&gt;qtd_list
 )paren
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -3651,7 +3651,7 @@ multiline_comment|/* it&squot;s not free to turn the async schedule on/off; leav
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -3777,7 +3777,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_ne
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 )paren
 (brace
 id|writel
@@ -3860,7 +3860,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_eq
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 )paren
 )paren
 (brace

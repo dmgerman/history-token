@@ -146,7 +146,7 @@ l_int|0
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 suffix:semicolon
 id|hcd-&gt;self.controller-&gt;power.power_state
 op_assign
@@ -3413,7 +3413,7 @@ id|USB_PORT_FEAT_ENABLE
 )paren
 op_logical_or
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -6760,7 +6760,7 @@ id|USB_SPEED_FULL
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 r_if
 c_cond

@@ -803,7 +803,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 suffix:semicolon
 r_return
 id|status
@@ -836,7 +836,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* make sure ehci_work scans these */
 id|ehci-&gt;next_uframe
@@ -907,7 +907,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 suffix:semicolon
 r_return
 id|status
@@ -7299,7 +7299,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -7445,7 +7445,7 @@ id|live
 suffix:semicolon
 id|live
 op_assign
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -7805,7 +7805,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func

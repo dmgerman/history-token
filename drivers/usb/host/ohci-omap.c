@@ -1777,7 +1777,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 suffix:semicolon
 id|dev-&gt;power.power_state
 op_assign

@@ -144,20 +144,20 @@ DECL|macro|__SUSPEND
 macro_line|#&t;define&t;__SUSPEND&t;&t;0x04
 DECL|macro|__TRANSIENT
 macro_line|#&t;define&t;__TRANSIENT&t;&t;0x80
-DECL|macro|USB_STATE_HALT
-macro_line|#&t;define&t;USB_STATE_HALT&t;&t;0
-DECL|macro|USB_STATE_RUNNING
-macro_line|#&t;define&t;USB_STATE_RUNNING&t;(__ACTIVE)
-DECL|macro|USB_STATE_QUIESCING
-macro_line|#&t;define&t;USB_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
-DECL|macro|USB_STATE_RESUMING
-macro_line|#&t;define&t;USB_STATE_RESUMING&t;(__SUSPEND|__TRANSIENT)
-DECL|macro|HCD_STATE_SUSPENDED
-macro_line|#&t;define&t;HCD_STATE_SUSPENDED&t;(__SUSPEND)
-DECL|macro|HCD_IS_RUNNING
-mdefine_line|#define&t;HCD_IS_RUNNING(state) ((state) &amp; __ACTIVE)
-DECL|macro|HCD_IS_SUSPENDED
-mdefine_line|#define&t;HCD_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
+DECL|macro|HC_STATE_HALT
+macro_line|#&t;define&t;HC_STATE_HALT&t;&t;0
+DECL|macro|HC_STATE_RUNNING
+macro_line|#&t;define&t;HC_STATE_RUNNING&t;(__ACTIVE)
+DECL|macro|HC_STATE_QUIESCING
+macro_line|#&t;define&t;HC_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
+DECL|macro|HC_STATE_RESUMING
+macro_line|#&t;define&t;HC_STATE_RESUMING&t;(__SUSPEND|__TRANSIENT)
+DECL|macro|HC_STATE_SUSPENDED
+macro_line|#&t;define&t;HC_STATE_SUSPENDED&t;(__SUSPEND)
+DECL|macro|HC_IS_RUNNING
+mdefine_line|#define&t;HC_IS_RUNNING(state) ((state) &amp; __ACTIVE)
+DECL|macro|HC_IS_SUSPENDED
+mdefine_line|#define&t;HC_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
 multiline_comment|/* more shared queuing code would be good; it should support&n;&t; * smarter scheduling, handle transaction translators, etc;&n;&t; * input size of periodic table to an interrupt scheduler. &n;&t; * (ohci 32, uhci 1024, ehci 256/512/1024).&n;&t; */
 multiline_comment|/* The HC driver&squot;s private data is stored at the end of&n;&t; * this structure.&n;&t; */
 DECL|member|hcd_priv

@@ -184,7 +184,7 @@ suffix:semicolon
 multiline_comment|/* First stop any processing */
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 suffix:semicolon
 r_if
 c_cond
@@ -395,7 +395,7 @@ l_int|0
 )paren
 id|hcd-&gt;state
 op_assign
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
@@ -520,7 +520,7 @@ c_cond
 (paren
 id|hcd-&gt;state
 op_eq
-id|USB_STATE_RESUMING
+id|HC_STATE_RESUMING
 )paren
 (brace
 id|ohci_dbg
@@ -759,7 +759,7 @@ suffix:semicolon
 multiline_comment|/* Some controllers (lucent) need extra-long delays */
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RESUMING
+id|HC_STATE_RESUMING
 suffix:semicolon
 id|mdelay
 (paren
@@ -1145,7 +1145,7 @@ suffix:semicolon
 )brace
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 r_return
 l_int|0
@@ -1288,7 +1288,7 @@ op_ne
 id|OHCI_USB_OPER
 op_logical_or
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -1576,7 +1576,7 @@ id|hcd
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 id|usb_unlock_device
 (paren
