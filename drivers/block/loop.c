@@ -2722,11 +2722,6 @@ id|file
 r_goto
 id|out
 suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
@@ -2773,7 +2768,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_goto
-id|out
+id|out_putf
 suffix:semicolon
 )brace
 id|lo_blocksize
@@ -2817,6 +2812,11 @@ op_assign
 id|inode-&gt;i_mapping-&gt;a_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we can&squot;t read - sorry. If we only can&squot;t write - well,&n;&t;&t; * it&squot;s going to be read-only.&n;&t;&t; */
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2855,12 +2855,6 @@ suffix:semicolon
 r_else
 r_goto
 id|out_putf
-suffix:semicolon
-id|get_file
-c_func
-(paren
-id|file
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2932,12 +2926,6 @@ id|error
 op_assign
 op_minus
 id|EFBIG
-suffix:semicolon
-id|fput
-c_func
-(paren
-id|file
-)paren
 suffix:semicolon
 r_goto
 id|out_putf
@@ -3090,12 +3078,6 @@ c_func
 (paren
 op_amp
 id|lo-&gt;lo_sem
-)paren
-suffix:semicolon
-id|fput
-c_func
-(paren
-id|file
 )paren
 suffix:semicolon
 r_return
