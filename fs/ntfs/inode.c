@@ -9,35 +9,8 @@ macro_line|#include &quot;dir.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;attrib.h&quot;
 macro_line|#include &quot;time.h&quot;
-multiline_comment|/**&n; * ntfs_attr - ntfs in memory attribute structure&n; * @mft_no:&t;mft record number of the base mft record of this attribute&n; * @name:&t;Unicode name of the attribute (NULL if unnamed)&n; * @name_len:&t;length of @name in Unicode characters (0 if unnamed)&n; * @type:&t;attribute type (see layout.h)&n; *&n; * This structure exists only to provide a small structure for the&n; * ntfs_{attr_}iget()/ntfs_test_inode()/ntfs_init_locked_inode() mechanism.&n; *&n; * NOTE: Elements are ordered by size to make the structure as compact as&n; * possible on all architectures.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|mft_no
-r_int
-r_int
-id|mft_no
-suffix:semicolon
-DECL|member|name
-id|uchar_t
-op_star
-id|name
-suffix:semicolon
-DECL|member|name_len
-id|u32
-id|name_len
-suffix:semicolon
-DECL|member|type
-id|ATTR_TYPES
-id|type
-suffix:semicolon
-DECL|typedef|ntfs_attr
-)brace
-id|ntfs_attr
-suffix:semicolon
 multiline_comment|/**&n; * ntfs_test_inode - compare two (possibly fake) inodes for equality&n; * @vi:&t;&t;vfs inode which to test&n; * @na:&t;&t;ntfs attribute which is being tested with&n; *&n; * Compare the ntfs attribute embedded in the ntfs specific part of the vfs&n; * inode @vi for equality with the ntfs attribute @na.&n; *&n; * If searching for the normal file/directory inode, set @na-&gt;type to AT_UNUSED.&n; * @na-&gt;name and @na-&gt;name_len are then ignored.&n; *&n; * Return 1 if the attributes match and 0 if not.&n; *&n; * NOTE: This function runs with the inode_lock spin lock held so it is not&n; * allowed to sleep.&n; */
 DECL|function|ntfs_test_inode
-r_static
 r_int
 id|ntfs_test_inode
 c_func
@@ -317,22 +290,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|typedef|test_t
-r_typedef
-r_int
-(paren
-op_star
-id|test_t
-)paren
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 DECL|typedef|set_t
 r_typedef
 r_int
