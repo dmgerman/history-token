@@ -494,7 +494,8 @@ id|streamer_private
 op_star
 id|streamer_priv
 suffix:semicolon
-id|__u32
+r_int
+r_int
 id|pio_start
 comma
 id|pio_end
@@ -503,7 +504,8 @@ id|pio_flags
 comma
 id|pio_len
 suffix:semicolon
-id|__u32
+r_int
+r_int
 id|mmio_start
 comma
 id|mmio_end
@@ -810,7 +812,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lanstreamer: unable to get pci io addr %x&bslash;n&quot;
+l_string|&quot;lanstreamer: unable to get pci io addr %lx&bslash;n&quot;
 comma
 id|pio_start
 )paren
@@ -843,7 +845,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lanstreamer: unable to get pci mmio addr %x&bslash;n&quot;
+l_string|&quot;lanstreamer: unable to get pci mmio addr %lx&bslash;n&quot;
 comma
 id|mmio_start
 )paren
@@ -879,7 +881,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;lanstreamer: unable to remap MMIO %x&bslash;n&quot;
+l_string|&quot;lanstreamer: unable to remap MMIO %lx&bslash;n&quot;
 comma
 id|mmio_start
 )paren
@@ -1210,7 +1212,7 @@ r_return
 l_int|0
 suffix:semicolon
 id|err_out_unmap
-suffix:semicolon
+suffix:colon
 id|iounmap
 c_func
 (paren
@@ -1286,19 +1288,6 @@ suffix:semicolon
 r_struct
 id|streamer_private
 op_star
-op_star
-id|p
-op_assign
-op_amp
-id|dev_streamer
-comma
-op_star
-op_star
-id|next
-suffix:semicolon
-r_struct
-id|streamer_private
-op_star
 id|streamer_priv
 suffix:semicolon
 macro_line|#if STREAMER_DEBUG
@@ -1353,6 +1342,17 @@ suffix:semicolon
 )brace
 macro_line|#if STREAMER_NETWORK_MONITOR
 macro_line|#ifdef CONFIG_PROC_FS
+(brace
+r_struct
+id|streamer_private
+op_star
+op_star
+id|p
+comma
+op_star
+op_star
+id|next
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1412,6 +1412,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif
 id|unregister_netdev
