@@ -902,7 +902,6 @@ id|ndevs
 op_minus
 l_int|1
 )paren
-(brace
 id|master
 (braket
 id|cdev
@@ -912,7 +911,6 @@ id|n
 op_add_assign
 id|rem
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Figure the number of isochronous and asynchronous RQ slots the&n;&t; * target is providing. */
 id|rq_isoch
@@ -1725,10 +1723,8 @@ id|PCI_STATUS_CAP_LIST
 op_eq
 l_int|0
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -1954,12 +1950,10 @@ id|tmp
 OL
 id|rate
 )paren
-(brace
 id|rate
 op_assign
 id|tmp
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Turn rate into something we can actually write out to AGPCMD */
 r_switch
