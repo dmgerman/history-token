@@ -1099,7 +1099,7 @@ id|pnp_dev
 op_star
 id|pd
 suffix:semicolon
-id|cs-&gt;subtyp
+id|card-&gt;cs-&gt;subtyp
 op_assign
 l_int|0
 suffix:semicolon
