@@ -340,14 +340,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|flush_scheduled_tasks
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|start_context_thread
 c_func

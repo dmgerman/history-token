@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
 DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
@@ -2513,6 +2514,11 @@ op_star
 id|p
 op_assign
 id|current
+suffix:semicolon
+id|run_local_timers
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7087,31 +7093,7 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_void
-id|init_timervecs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|timer_bh
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tqueue_bh
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|immediate_bh
+id|init_timers
 c_func
 (paren
 r_void
@@ -7285,33 +7267,9 @@ c_func
 id|current
 )paren
 suffix:semicolon
-id|init_timervecs
+id|init_timers
 c_func
 (paren
-)paren
-suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|TIMER_BH
-comma
-id|timer_bh
-)paren
-suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|TQUEUE_BH
-comma
-id|tqueue_bh
-)paren
-suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-comma
-id|immediate_bh
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The boot idle thread does lazy MMU switching as well:&n;&t; */

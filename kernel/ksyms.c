@@ -2257,29 +2257,14 @@ c_func
 id|mod_timer
 )paren
 suffix:semicolon
-DECL|variable|tq_timer
+DECL|variable|tvec_bases
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|tq_timer
-)paren
-suffix:semicolon
-DECL|variable|tq_immediate
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tq_immediate
+id|tvec_bases
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Various random spinlocks we want to export */
-DECL|variable|tqueue_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tqueue_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Big-Reader lock implementation */
 DECL|variable|__brlock_array
 id|EXPORT_SYMBOL
