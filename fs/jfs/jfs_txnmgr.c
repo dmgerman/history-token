@@ -1636,10 +1636,25 @@ op_assign
 id|tid
 suffix:semicolon
 multiline_comment|/*&n;&t; * mark the tblock not active&n;&t; */
+r_if
+c_cond
+(paren
 op_decrement
 id|log-&gt;active
+op_eq
+l_int|0
+)paren
+(brace
+id|clear_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * synchronize with logsync barrier&n;&t; */
+multiline_comment|/*&n;&t;&t; * synchronize with logsync barrier&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1651,10 +1666,6 @@ comma
 op_amp
 id|log-&gt;flag
 )paren
-op_logical_and
-id|log-&gt;active
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* forward log syncpt */
@@ -1662,7 +1673,7 @@ multiline_comment|/* lmSync(log); */
 id|jfs_info
 c_func
 (paren
-l_string|&quot;     log barrier off: 0x%x&quot;
+l_string|&quot;log barrier off: 0x%x&quot;
 comma
 id|log-&gt;lsn
 )paren
@@ -1685,6 +1696,7 @@ op_amp
 id|log-&gt;syncwait
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * wakeup all waitors for a free tblock&n;&t; */
 id|TXN_WAKEUP

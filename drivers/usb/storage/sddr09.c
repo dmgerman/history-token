@@ -55,6 +55,8 @@ suffix:semicolon
 multiline_comment|/*&n; * NAND Flash Manufacturer ID Codes&n; */
 DECL|macro|NAND_MFR_AMD
 mdefine_line|#define NAND_MFR_AMD&t;&t;0x01
+DECL|macro|NAND_MFR_NS
+mdefine_line|#define NAND_MFR_NS&t;&t;0x8f
 DECL|macro|NAND_MFR_TOSHIBA
 mdefine_line|#define NAND_MFR_TOSHIBA&t;0x98
 DECL|macro|NAND_MFR_SAMSUNG
@@ -84,6 +86,12 @@ r_return
 l_string|&quot;AMD&quot;
 suffix:semicolon
 r_case
+id|NAND_MFR_NS
+suffix:colon
+r_return
+l_string|&quot;NS&quot;
+suffix:semicolon
+r_case
 id|NAND_MFR_TOSHIBA
 suffix:colon
 r_return
@@ -102,7 +110,7 @@ l_string|&quot;unknown&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * It looks like it is unnecessary to attach manufacturer to the&n; * remaining data: SSFDC prescribes manufacturer-independent id codes.&n; */
+multiline_comment|/*&n; * It looks like it is unnecessary to attach manufacturer to the&n; * remaining data: SSFDC prescribes manufacturer-independent id codes.&n; *&n; * 256 MB NAND flash has a 5-byte ID with 2nd byte 0xaa, 0xba, 0xca or 0xda.&n; */
 DECL|variable|nand_flash_ids
 r_static
 r_struct
@@ -112,7 +120,7 @@ id|nand_flash_ids
 )braket
 op_assign
 (brace
-multiline_comment|/* NAND flash - these I verified */
+multiline_comment|/* NAND flash */
 (brace
 l_int|0x6e
 comma
@@ -308,8 +316,7 @@ l_int|3
 )brace
 comma
 multiline_comment|/* 128 MB */
-multiline_comment|/* There do also exist 96 MB (from Datafab) and 256 MB cards */
-multiline_comment|/* MASK ROM - from unknown source */
+multiline_comment|/* MASK ROM */
 (brace
 l_int|0x5d
 comma
@@ -355,6 +362,36 @@ l_int|2
 )brace
 comma
 multiline_comment|/* 8 MB */
+(brace
+l_int|0x57
+comma
+l_int|24
+comma
+l_int|9
+comma
+l_int|4
+comma
+l_int|11
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* 16 MB */
+(brace
+l_int|0x58
+comma
+l_int|25
+comma
+l_int|9
+comma
+l_int|4
+comma
+l_int|12
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* 32 MB */
 (brace
 l_int|0
 comma
