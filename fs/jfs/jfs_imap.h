@@ -35,8 +35,9 @@ DECL|macro|INOPBLK
 mdefine_line|#define INOPBLK(pxd,ino,l2nbperpg)    &t;(addressPXD((pxd)) +&t;&t;&bslash;&n;&t;((((ino) &amp; (INOSPEREXT-1)) &gt;&gt; L2INOSPERPAGE) &lt;&lt; (l2nbperpg)))
 multiline_comment|/*&n; *&t;inode allocation map:&n; * &n; * inode allocation map consists of &n; * . the inode map control page and&n; * . inode allocation group pages (per 4096 inodes)&n; * which are addressed by standard JFS xtree.&n; */
 multiline_comment|/*&n; *&t;inode allocation group page (per 4096 inodes of an AG)&n; */
-r_typedef
+DECL|struct|iag
 r_struct
+id|iag
 (brace
 DECL|member|agstart
 id|s64
@@ -134,14 +135,13 @@ id|EXTSPERIAG
 )braket
 suffix:semicolon
 multiline_comment|/* 1024: inode extent addresses */
-DECL|typedef|iag_t
 )brace
-id|iag_t
 suffix:semicolon
 multiline_comment|/* (4096) */
 multiline_comment|/*&n; *&t;per AG control information (in inode map control page)&n; */
-r_typedef
+DECL|struct|iagctl
 r_struct
+id|iagctl
 (brace
 DECL|member|inofree
 id|s32
@@ -163,14 +163,13 @@ id|s32
 id|numfree
 suffix:semicolon
 multiline_comment|/* 4: number of free inodes             */
-DECL|typedef|iagctl_t
 )brace
-id|iagctl_t
 suffix:semicolon
 multiline_comment|/* (16) */
 multiline_comment|/*&n; *&t;per fileset/aggregate inode map control page&n; */
-r_typedef
+DECL|struct|dinomap
 r_struct
+id|dinomap
 (brace
 DECL|member|in_freeiag
 id|s32
@@ -221,26 +220,25 @@ l_int|2016
 suffix:semicolon
 multiline_comment|/* 2016: pad to 2048 */
 DECL|member|in_agctl
-id|iagctl_t
+r_struct
+id|iagctl
 id|in_agctl
 (braket
 id|MAXAG
 )braket
 suffix:semicolon
 multiline_comment|/* 2048: AG control information */
-DECL|typedef|dinomap_t
 )brace
-id|dinomap_t
 suffix:semicolon
 multiline_comment|/* (4096) */
 multiline_comment|/*&n; *&t;In-core inode map control page&n; */
 DECL|struct|inomap
-r_typedef
 r_struct
 id|inomap
 (brace
 DECL|member|im_imap
-id|dinomap_t
+r_struct
+id|dinomap
 id|im_imap
 suffix:semicolon
 multiline_comment|/* 4096: inode allocation control */
@@ -281,9 +279,7 @@ id|atomic_t
 id|im_numfree
 suffix:semicolon
 multiline_comment|/* num of free backed inodes */
-DECL|typedef|imap_t
 )brace
-id|imap_t
 suffix:semicolon
 DECL|macro|im_freeiag
 mdefine_line|#define&t;im_freeiag&t;im_imap.in_freeiag
@@ -354,7 +350,8 @@ comma
 id|boolean_t
 id|is_free
 comma
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 )paren

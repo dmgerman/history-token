@@ -379,7 +379,8 @@ suffix:semicolon
 id|s64
 id|maxinodes
 suffix:semicolon
-id|imap_t
+r_struct
+id|inomap
 op_star
 id|imap
 op_assign
@@ -1517,7 +1518,8 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 op_assign
@@ -1571,7 +1573,8 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 op_assign

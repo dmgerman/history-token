@@ -160,13 +160,14 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|_table
-id|dir_table_slot_t
+r_struct
+id|dir_table_slot
 id|_table
 (braket
 l_int|12
 )braket
 suffix:semicolon
-multiline_comment|/* 96: directory index */
+multiline_comment|/* 96: dir index */
 DECL|member|_dtroot
 id|dtroot_t
 id|_dtroot

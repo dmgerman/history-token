@@ -81,8 +81,9 @@ mdefine_line|#define addressXAD(xad)&bslash;&n;        ( ((s64)((xad)-&gt;addr1)
 DECL|macro|lengthXAD
 mdefine_line|#define lengthXAD(xad)  __le24_to_cpu((xad)-&gt;len)
 multiline_comment|/* xad list */
-r_typedef
+DECL|struct|xadlist
 r_struct
+id|xadlist
 (brace
 DECL|member|maxnxad
 id|s16
@@ -97,9 +98,7 @@ id|xad_t
 op_star
 id|xad
 suffix:semicolon
-DECL|typedef|xadlist_t
 )brace
-id|xadlist_t
 suffix:semicolon
 multiline_comment|/* xad_t flags */
 DECL|macro|XAD_NEW
@@ -231,11 +230,13 @@ id|inode
 op_star
 id|ip
 comma
-id|lxdlist_t
+r_struct
+id|lxdlist
 op_star
 id|lxdlist
 comma
-id|xadlist_t
+r_struct
+id|xadlist
 op_star
 id|xadlist
 comma

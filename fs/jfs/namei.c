@@ -132,11 +132,13 @@ multiline_comment|/* child directory inode */
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 multiline_comment|/* child directory name */
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_struct
@@ -147,7 +149,8 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -593,11 +596,13 @@ multiline_comment|/* child directory inode */
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 multiline_comment|/* child directory name */
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_struct
@@ -608,7 +613,8 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -1083,7 +1089,8 @@ suffix:semicolon
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 r_struct
@@ -1094,7 +1101,8 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -1588,7 +1596,8 @@ suffix:semicolon
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 multiline_comment|/* object name */
@@ -1600,7 +1609,8 @@ id|iplist
 l_int|2
 )braket
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -2245,7 +2255,8 @@ id|ip
 r_int
 id|filetype
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -2544,11 +2555,13 @@ op_member_access_from_pointer
 id|ea
 )paren
 suffix:semicolon
-id|maplock_t
+r_struct
+id|maplock
 id|maplock
 suffix:semicolon
 multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 id|pxdlock
 suffix:semicolon
@@ -2576,7 +2589,8 @@ suffix:semicolon
 id|pxdlock
 op_assign
 (paren
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 )paren
 op_amp
@@ -2664,11 +2678,13 @@ op_member_access_from_pointer
 id|acl
 )paren
 suffix:semicolon
-id|maplock_t
+r_struct
+id|maplock
 id|maplock
 suffix:semicolon
 multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 id|pxdlock
 suffix:semicolon
@@ -2695,7 +2711,8 @@ suffix:semicolon
 id|pxdlock
 op_assign
 (paren
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 )paren
 op_amp
@@ -2798,10 +2815,12 @@ suffix:semicolon
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_struct
@@ -3111,14 +3130,16 @@ id|ino
 op_assign
 l_int|0
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 r_int
 id|ssize
 suffix:semicolon
 multiline_comment|/* source pathname size */
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_struct
@@ -3147,7 +3168,8 @@ suffix:semicolon
 id|s64
 id|xaddr
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -3156,7 +3178,8 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -3946,13 +3969,15 @@ op_star
 id|new_dentry
 )paren
 (brace
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 id|ino_t
 id|ino
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|new_dname
 suffix:semicolon
 r_struct
@@ -3960,7 +3985,8 @@ id|inode
 op_star
 id|new_ip
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|old_dname
 suffix:semicolon
 r_struct
@@ -3974,15 +4000,18 @@ suffix:semicolon
 id|tid_t
 id|tid
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|dtlock_t
+r_struct
+id|dt_lock
 op_star
 id|dtlck
 suffix:semicolon
-id|lv_t
+r_struct
+id|lv
 op_star
 id|lv
 suffix:semicolon
@@ -3997,7 +4026,8 @@ id|iplist
 l_int|4
 )braket
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -4721,7 +4751,8 @@ comma
 id|old_ip
 comma
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 )paren
 op_amp
@@ -4741,7 +4772,8 @@ suffix:semicolon
 id|dtlck
 op_assign
 (paren
-id|dtlock_t
+r_struct
+id|dt_lock
 op_star
 )paren
 op_amp
@@ -4757,10 +4789,6 @@ l_int|0
 suffix:semicolon
 id|lv
 op_assign
-(paren
-id|lv_t
-op_star
-)paren
 op_amp
 id|dtlck-&gt;lv
 (braket
@@ -5236,10 +5264,12 @@ r_int
 id|rdev
 )paren
 (brace
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|dname
 suffix:semicolon
 id|ino_t
@@ -5264,7 +5294,8 @@ suffix:semicolon
 id|tid_t
 id|tid
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
@@ -5616,7 +5647,8 @@ op_star
 id|dentry
 )paren
 (brace
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 id|ino_t
@@ -5627,7 +5659,8 @@ id|inode
 op_star
 id|ip
 suffix:semicolon
-id|component_t
+r_struct
+id|component_name
 id|key
 suffix:semicolon
 r_const

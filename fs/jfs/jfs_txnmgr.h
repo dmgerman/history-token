@@ -10,11 +10,10 @@ DECL|macro|lid_to_tlock
 mdefine_line|#define lid_to_tlock(lid) (&amp;TxLock[lid])
 multiline_comment|/*&n; *&t;transaction block&n; */
 DECL|struct|tblock
-r_typedef
 r_struct
 id|tblock
 (brace
-multiline_comment|/*&n;&t; * tblock_t and jbuf_t common area: struct logsyncblk&n;&t; *&n;&t; * the following 5 fields are the same as struct logsyncblk&n;&t; * which is common to tblock and jbuf to form logsynclist&n;&t; */
+multiline_comment|/*&n;&t; * tblock and jbuf_t common area: struct logsyncblk&n;&t; *&n;&t; * the following 5 fields are the same as struct logsyncblk&n;&t; * which is common to tblock and jbuf to form logsynclist&n;&t; */
 DECL|member|xflag
 id|u16
 id|xflag
@@ -48,29 +47,28 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
-multiline_comment|/* 4: super block */
+multiline_comment|/* super block */
 DECL|member|next
 id|lid_t
 id|next
 suffix:semicolon
-multiline_comment|/* 2: index of first tlock of tid */
+multiline_comment|/* index of first tlock of tid */
 DECL|member|last
 id|lid_t
 id|last
 suffix:semicolon
-multiline_comment|/* 2: index of last tlock of tid */
+multiline_comment|/* index of last tlock of tid */
 DECL|member|waitor
 id|wait_queue_head_t
 id|waitor
 suffix:semicolon
-multiline_comment|/* 4: tids waiting on this tid */
+multiline_comment|/* tids waiting on this tid */
 multiline_comment|/* log management */
 DECL|member|logtid
 id|u32
 id|logtid
 suffix:semicolon
-multiline_comment|/* 4: log transaction id */
-multiline_comment|/* (32) */
+multiline_comment|/* log transaction id */
 multiline_comment|/* commit management */
 DECL|member|cqnext
 r_struct
@@ -78,51 +76,42 @@ id|tblock
 op_star
 id|cqnext
 suffix:semicolon
-multiline_comment|/* 4: commit queue link */
+multiline_comment|/* commit queue link */
 DECL|member|clsn
 id|s32
 id|clsn
 suffix:semicolon
-multiline_comment|/* 4: commit lsn */
+multiline_comment|/* commit lsn */
 DECL|member|bp
 r_struct
 id|lbuf
 op_star
 id|bp
 suffix:semicolon
-multiline_comment|/* 4: */
 DECL|member|pn
 id|s32
 id|pn
 suffix:semicolon
-multiline_comment|/* 4: commit record log page number */
+multiline_comment|/* commit record log page number */
 DECL|member|eor
 id|s32
 id|eor
 suffix:semicolon
-multiline_comment|/* 4: commit record eor */
+multiline_comment|/* commit record eor */
 DECL|member|gcwait
 id|wait_queue_head_t
 id|gcwait
 suffix:semicolon
-multiline_comment|/* 4: group commit event list:&n;&t;&t;&t;&t;&t; *    ready transactions wait on this&n;&t;&t;&t;&t;&t; *    event for group commit completion.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* group commit event list:&n;&t;&t;&t;&t;&t; * ready transactions wait on this&n;&t;&t;&t;&t;&t; * event for group commit completion.&n;&t;&t;&t;&t;&t; */
 DECL|member|ip
 r_struct
 id|inode
 op_star
 id|ip
 suffix:semicolon
-multiline_comment|/* 4: inode being created or deleted */
-DECL|member|rsrvd
-id|s32
-id|rsrvd
-suffix:semicolon
-multiline_comment|/* 4: */
-DECL|typedef|tblock_t
+multiline_comment|/* inode being created or deleted */
 )brace
-id|tblock_t
 suffix:semicolon
-multiline_comment|/* (64) */
 r_extern
 r_struct
 id|tblock
@@ -162,7 +151,6 @@ mdefine_line|#define COMMIT_INODE&t;0x2000&t;/* Identifies element as inode */
 multiline_comment|/* group commit flags tblk-&gt;flag: see jfs_logmgr.h */
 multiline_comment|/*&n; *&t;transaction lock&n; */
 DECL|struct|tlock
-r_typedef
 r_struct
 id|tlock
 (brace
@@ -209,9 +197,7 @@ l_int|24
 )braket
 suffix:semicolon
 multiline_comment|/* 48: overlay area */
-DECL|typedef|tlock_t
 )brace
-id|tlock_t
 suffix:semicolon
 multiline_comment|/* (64) */
 r_extern
@@ -285,9 +271,10 @@ DECL|macro|tlckFREE
 mdefine_line|#define tlckFREE&t;&t;0x0040&t;/* free page */
 DECL|macro|tlckRELINK
 mdefine_line|#define tlckRELINK&t;&t;0x0080&t;/* update sibling pointer */
-multiline_comment|/*&n; *&t;linelock for lmLog()&n; *&n; * note: linelock_t and its variations are overlaid&n; * at tlock.lock: watch for alignment;&n; */
-r_typedef
+multiline_comment|/*&n; *&t;linelock for lmLog()&n; *&n; * note: linelock and its variations are overlaid&n; * at tlock.lock: watch for alignment;&n; */
+DECL|struct|lv
 r_struct
+id|lv
 (brace
 DECL|member|offset
 id|u8
@@ -299,17 +286,16 @@ id|u8
 id|length
 suffix:semicolon
 multiline_comment|/* 1: */
-DECL|typedef|lv_t
 )brace
-id|lv_t
 suffix:semicolon
 multiline_comment|/* (2) */
 DECL|macro|TLOCKSHORT
 mdefine_line|#define&t;TLOCKSHORT&t;20
 DECL|macro|TLOCKLONG
 mdefine_line|#define&t;TLOCKLONG&t;28
-r_typedef
+DECL|struct|linelock
 r_struct
+id|linelock
 (brace
 DECL|member|next
 id|u16
@@ -343,24 +329,22 @@ suffix:semicolon
 multiline_comment|/* 1: log2 of linesize */
 multiline_comment|/* (8) */
 DECL|member|lv
-id|lv_t
+r_struct
+id|lv
 id|lv
 (braket
 l_int|20
 )braket
 suffix:semicolon
 multiline_comment|/* 40: */
-DECL|typedef|linelock_t
 )brace
-id|linelock_t
 suffix:semicolon
 multiline_comment|/* (48) */
-DECL|macro|dtlock_t
-mdefine_line|#define dtlock_t&t;linelock_t
-DECL|macro|itlock_t
-mdefine_line|#define itlock_t&t;linelock_t
-r_typedef
+DECL|macro|dt_lock
+mdefine_line|#define dt_lock&t;linelock
+DECL|struct|xtlock
 r_struct
+id|xtlock
 (brace
 DECL|member|next
 id|u16
@@ -394,22 +378,26 @@ suffix:semicolon
 multiline_comment|/* 1: log2 of linesize */
 multiline_comment|/* (8) */
 DECL|member|header
-id|lv_t
+r_struct
+id|lv
 id|header
 suffix:semicolon
 multiline_comment|/* 2: */
 DECL|member|lwm
-id|lv_t
+r_struct
+id|lv
 id|lwm
 suffix:semicolon
 multiline_comment|/* 2: low water mark */
 DECL|member|hwm
-id|lv_t
+r_struct
+id|lv
 id|hwm
 suffix:semicolon
 multiline_comment|/* 2: high water mark */
 DECL|member|twm
-id|lv_t
+r_struct
+id|lv
 id|twm
 suffix:semicolon
 multiline_comment|/* 2: */
@@ -422,14 +410,13 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* 32: */
-DECL|typedef|xtlock_t
 )brace
-id|xtlock_t
 suffix:semicolon
 multiline_comment|/* (48) */
-multiline_comment|/*&n; *&t;maplock for txUpdateMap()&n; *&n; * note: maplock_t and its variations are overlaid&n; * at tlock.lock/linelock: watch for alignment;&n; * N.B. next field may be set by linelock, and should not&n; * be modified by maplock;&n; * N.B. index of the first pxdlock specifies index of next &n; * free maplock (i.e., number of maplock) in the tlock; &n; */
-r_typedef
+multiline_comment|/*&n; *&t;maplock for txUpdateMap()&n; *&n; * note: maplock and its variations are overlaid&n; * at tlock.lock/linelock: watch for alignment;&n; * N.B. next field may be set by linelock, and should not&n; * be modified by maplock;&n; * N.B. index of the first pxdlock specifies index of next &n; * free maplock (i.e., number of maplock) in the tlock; &n; */
+DECL|struct|maplock
 r_struct
+id|maplock
 (brace
 DECL|member|next
 id|u16
@@ -467,9 +454,7 @@ id|pxd_t
 id|pxd
 suffix:semicolon
 multiline_comment|/* 8: */
-DECL|typedef|maplock_t
 )brace
-id|maplock_t
 suffix:semicolon
 multiline_comment|/* (16): */
 multiline_comment|/* maplock flag */
@@ -493,10 +478,11 @@ DECL|macro|mlckFREEXAD
 mdefine_line|#define&t;mlckFREEXAD&t;&t;0x0002
 DECL|macro|mlckFREEPXD
 mdefine_line|#define&t;mlckFREEPXD&t;&t;0x0001
-DECL|macro|pxdlock_t
-mdefine_line|#define&t;pxdlock_t&t;maplock_t
-r_typedef
+DECL|macro|pxd_lock
+mdefine_line|#define&t;pxd_lock&t;maplock
+DECL|struct|xdlistlock
 r_struct
+id|xdlistlock
 (brace
 DECL|member|next
 id|u16
@@ -529,7 +515,7 @@ id|count
 suffix:semicolon
 multiline_comment|/* 1: number of pxd/xad */
 multiline_comment|/* (8) */
-multiline_comment|/*&n;&t; * We need xdlistlock_t to be 64 bits (8 bytes), regardless of&n;&t; * whether void * is 32 or 64 bits&n;&t; */
+multiline_comment|/*&n;&t; * We need xdlist to be 64 bits (8 bytes), regardless of&n;&t; * whether void * is 32 or 64 bits&n;&t; */
 r_union
 (brace
 DECL|member|_xdlist
@@ -547,16 +533,13 @@ DECL|member|union64
 )brace
 id|union64
 suffix:semicolon
-DECL|typedef|xdlistlock_t
 )brace
-id|xdlistlock_t
 suffix:semicolon
 multiline_comment|/* (16): */
 DECL|macro|xdlist
 mdefine_line|#define xdlist union64._xdlist
 multiline_comment|/*&n; *&t;commit&n; *&n; * parameter to the commit manager routines&n; */
 DECL|struct|commit
-r_typedef
 r_struct
 id|commit
 (brace
@@ -564,30 +547,31 @@ DECL|member|tid
 id|tid_t
 id|tid
 suffix:semicolon
-multiline_comment|/* 4: tid = index of tblock */
+multiline_comment|/* tid = index of tblock */
 DECL|member|flag
 r_int
 id|flag
 suffix:semicolon
-multiline_comment|/* 4: flags */
+multiline_comment|/* flags */
 DECL|member|log
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 suffix:semicolon
-multiline_comment|/* 4: log */
+multiline_comment|/* log */
 DECL|member|sb
 r_struct
 id|super_block
 op_star
 id|sb
 suffix:semicolon
-multiline_comment|/* 4: superblock */
+multiline_comment|/* superblock */
 DECL|member|nip
 r_int
 id|nip
 suffix:semicolon
-multiline_comment|/* 4: number of entries in iplist */
+multiline_comment|/* number of entries in iplist */
 DECL|member|iplist
 r_struct
 id|inode
@@ -595,21 +579,20 @@ op_star
 op_star
 id|iplist
 suffix:semicolon
-multiline_comment|/* 4: list of pointers to inodes */
-multiline_comment|/* (32) */
+multiline_comment|/* list of pointers to inodes */
 multiline_comment|/* log record descriptor on 64-bit boundary */
 DECL|member|lrd
-id|lrd_t
+r_struct
+id|lrd
 id|lrd
 suffix:semicolon
 multiline_comment|/* : log record descriptor */
-DECL|typedef|commit_t
 )brace
-id|commit_t
 suffix:semicolon
 multiline_comment|/*&n; * external declarations&n; */
 r_extern
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|txLock
 c_func
@@ -632,7 +615,8 @@ id|flag
 )paren
 suffix:semicolon
 r_extern
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|txMaplock
 c_func
@@ -717,12 +701,14 @@ id|dirty
 )paren
 suffix:semicolon
 r_extern
-id|linelock_t
+r_struct
+id|linelock
 op_star
 id|txLinelock
 c_func
 (paren
-id|linelock_t
+r_struct
+id|linelock
 op_star
 id|tlock
 )paren
@@ -737,11 +723,13 @@ id|inode
 op_star
 id|ip
 comma
-id|maplock_t
+r_struct
+id|maplock
 op_star
 id|maplock
 comma
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 comma
@@ -787,19 +775,23 @@ r_int
 id|lmLog
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 comma
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 comma
-id|lrd_t
+r_struct
+id|lrd
 op_star
 id|lrd
 comma
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 )paren

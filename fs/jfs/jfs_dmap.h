@@ -149,9 +149,10 @@ mdefine_line|#define BLKTOAG(b,sbi)&t;((b) &gt;&gt; ((sbi)-&gt;bmap-&gt;db_agl2s
 multiline_comment|/* convert allocation group number to starting disk block&n; * number.&n; */
 DECL|macro|AGTOBLK
 mdefine_line|#define AGTOBLK(a,ip)&t;&bslash;&n;&t;((s64)(a) &lt;&lt; (JFS_SBI((ip)-&gt;i_sb)-&gt;bmap-&gt;db_agl2size))
-multiline_comment|/*&n; *&t;dmap summary tree&n; *&n; * dmaptree_t must be consistent with dmapctl_t.&n; */
-r_typedef
+multiline_comment|/*&n; *&t;dmap summary tree&n; *&n; * dmaptree must be consistent with dmapctl.&n; */
+DECL|struct|dmaptree
 r_struct
+id|dmaptree
 (brace
 DECL|member|nleafs
 id|s32
@@ -194,14 +195,13 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* 2: pad to word boundary      */
-DECL|typedef|dmaptree_t
 )brace
-id|dmaptree_t
 suffix:semicolon
 multiline_comment|/* - 360 -                      */
 multiline_comment|/*&n; *&t;dmap page per 8K blocks bitmap&n; */
-r_typedef
+DECL|struct|dmap
 r_struct
+id|dmap
 (brace
 DECL|member|nblocks
 id|s32
@@ -219,7 +219,8 @@ id|start
 suffix:semicolon
 multiline_comment|/* 8: starting blkno for this dmap      */
 DECL|member|tree
-id|dmaptree_t
+r_struct
+id|dmaptree
 id|tree
 suffix:semicolon
 multiline_comment|/* 360: dmap tree                       */
@@ -247,14 +248,13 @@ id|LPERDMAP
 )braket
 suffix:semicolon
 multiline_comment|/* 1024: bits of the persistent map     */
-DECL|typedef|dmap_t
 )brace
-id|dmap_t
 suffix:semicolon
 multiline_comment|/* - 4096 -                             */
-multiline_comment|/*&n; *&t;disk map control page per level.&n; *&n; * dmapctl_t must be consistent with dmaptree_t.&n; */
-r_typedef
+multiline_comment|/*&n; *&t;disk map control page per level.&n; *&n; * dmapctl must be consistent with dmaptree.&n; */
+DECL|struct|dmapctl
 r_struct
+id|dmapctl
 (brace
 DECL|member|nleafs
 id|s32
@@ -297,28 +297,30 @@ l_int|2714
 )braket
 suffix:semicolon
 multiline_comment|/* 2714: pad to 4096            */
-DECL|typedef|dmapctl_t
 )brace
-id|dmapctl_t
 suffix:semicolon
 multiline_comment|/* - 4096 -                     */
-multiline_comment|/*&n; *&t;common definition for dmaptree_t within dmap and dmapctl&n; */
+multiline_comment|/*&n; *&t;common definition for dmaptree within dmap and dmapctl&n; */
+DECL|union|dmtree
 r_typedef
 r_union
+id|dmtree
 (brace
 DECL|member|t1
-id|dmaptree_t
+r_struct
+id|dmaptree
 id|t1
 suffix:semicolon
 DECL|member|t2
-id|dmapctl_t
+r_struct
+id|dmapctl
 id|t2
 suffix:semicolon
 DECL|typedef|dmtree_t
 )brace
 id|dmtree_t
 suffix:semicolon
-multiline_comment|/* macros for accessing fields within dmtree_t */
+multiline_comment|/* macros for accessing fields within dmtree */
 DECL|macro|dmt_nleafs
 mdefine_line|#define&t;dmt_nleafs&t;t1.nleafs
 DECL|macro|dmt_l2nleafs
@@ -332,8 +334,9 @@ mdefine_line|#define&t;dmt_budmin &t;t1.budmin
 DECL|macro|dmt_stree
 mdefine_line|#define&t;dmt_stree &t;t1.stree
 multiline_comment|/* &n; *&t;on-disk aggregate disk allocation map descriptor.&n; */
-r_typedef
+DECL|struct|dbmap
 r_struct
+id|dbmap
 (brace
 DECL|member|dn_mapsize
 id|s64
@@ -421,19 +424,17 @@ l_int|3007
 )braket
 suffix:semicolon
 multiline_comment|/* 3007: pad to 4096                    */
-DECL|typedef|dbmap_t
 )brace
-id|dbmap_t
 suffix:semicolon
 multiline_comment|/* - 4096 -                             */
 multiline_comment|/* &n; *&t;in-memory aggregate disk allocation map descriptor.&n; */
 DECL|struct|bmap
-r_typedef
 r_struct
 id|bmap
 (brace
 DECL|member|db_bmap
-id|dbmap_t
+r_struct
+id|dbmap
 id|db_bmap
 suffix:semicolon
 multiline_comment|/* on-disk aggregate map descriptor */
@@ -455,9 +456,7 @@ id|u32
 op_star
 id|db_DBmap
 suffix:semicolon
-DECL|typedef|bmap_t
 )brace
-id|bmap_t
 suffix:semicolon
 multiline_comment|/* macros for accessing fields within in-memory aggregate map descriptor */
 DECL|macro|db_mapsize
@@ -568,7 +567,8 @@ comma
 id|s64
 id|nblocks
 comma
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 )paren

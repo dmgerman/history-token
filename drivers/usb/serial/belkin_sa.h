@@ -22,6 +22,8 @@ DECL|macro|GOHUBS_VID
 mdefine_line|#define GOHUBS_VID&t;0x0921&t;/* GoHubs vendor id */
 DECL|macro|GOHUBS_PID
 mdefine_line|#define GOHUBS_PID&t;0x1000&t;/* GoHubs single port serial converter&squot;s id (identical to the Peracom device) */
+DECL|macro|HANDYLINK_PID
+mdefine_line|#define HANDYLINK_PID&t;0x1200&t;/* HandyLink USB&squot;s id (identical to the Peracom device) */
 multiline_comment|/* Vendor Request Interface */
 DECL|macro|BELKIN_SA_SET_BAUDRATE_REQUEST
 mdefine_line|#define BELKIN_SA_SET_BAUDRATE_REQUEST&t;0  /* Set baud rate */

@@ -599,11 +599,71 @@ id|USB_DEVICE
 (paren
 l_int|0x0638
 comma
+l_int|0x0268
+)paren
+)brace
+comma
+multiline_comment|/*iVina 1200U */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
 l_int|0x026a
 )paren
 )brace
 comma
 multiline_comment|/*Scan Dual II */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
+l_int|0x0A13
+)paren
+)brace
+comma
+multiline_comment|/*Avision AV600U */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
+l_int|0x0A16
+)paren
+)brace
+comma
+multiline_comment|/*Avision DS610CU Scancopier */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
+l_int|0x0A18
+)paren
+)brace
+comma
+multiline_comment|/*Avision AV600U Plus */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
+l_int|0x0A23
+)paren
+)brace
+comma
+multiline_comment|/*Avision AV220 */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0638
+comma
+l_int|0x0A24
+)paren
+)brace
+comma
+multiline_comment|/*Avision AV210 */
 (brace
 id|USB_DEVICE
 (paren

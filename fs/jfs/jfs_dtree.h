@@ -37,8 +37,9 @@ id|ddata_t
 suffix:semicolon
 multiline_comment|/*&n; *      entry segment/slot&n; *&n; * an entry consists of type dependent head/only segment/slot and&n; * additional segments/slots linked vi next field;&n; * N.B. last/only segment of entry is terminated by next = -1;&n; */
 multiline_comment|/*&n; *&t;directory page slot&n; */
-r_typedef
+DECL|struct|dtslot
 r_struct
+id|dtslot
 (brace
 DECL|member|next
 id|s8
@@ -58,9 +59,7 @@ l_int|15
 )braket
 suffix:semicolon
 multiline_comment|/* 30: */
-DECL|typedef|dtslot_t
 )brace
-id|dtslot_t
 suffix:semicolon
 multiline_comment|/* (32) */
 DECL|macro|DATASLOTSIZE
@@ -78,8 +77,9 @@ mdefine_line|#define DTSLOTDATASIZE&t;30
 DECL|macro|DTSLOTDATALEN
 mdefine_line|#define DTSLOTDATALEN&t;15
 multiline_comment|/*&n; *&t; internal node entry head/only segment&n; */
-r_typedef
+DECL|struct|idtentry
 r_struct
+id|idtentry
 (brace
 DECL|member|xd
 id|pxd_t
@@ -104,9 +104,7 @@ l_int|11
 )braket
 suffix:semicolon
 multiline_comment|/* 22: 2-byte aligned */
-DECL|typedef|idtentry_t
 )brace
-id|idtentry_t
 suffix:semicolon
 multiline_comment|/* (32) */
 DECL|macro|DTIHDRSIZE
@@ -117,8 +115,9 @@ multiline_comment|/* compute number of slots for entry */
 DECL|macro|NDTINTERNAL
 mdefine_line|#define&t;NDTINTERNAL(klen) ( ((4 + (klen)) + (15 - 1)) / 15 )
 multiline_comment|/*&n; *&t;leaf node entry head/only segment&n; *&n; * &t;For legacy filesystems, name contains 13 wchars -- no index field&n; */
-r_typedef
+DECL|struct|ldtentry
 r_struct
+id|ldtentry
 (brace
 DECL|member|inumber
 id|u32
@@ -148,9 +147,7 @@ id|u32
 id|index
 suffix:semicolon
 multiline_comment|/* 4: index into dir_table */
-DECL|typedef|ldtentry_t
 )brace
-id|ldtentry_t
 suffix:semicolon
 multiline_comment|/* (32) */
 DECL|macro|DTLHDRSIZE
@@ -167,7 +164,6 @@ multiline_comment|/*&n; * Maximum entry in inline directory table&n; */
 DECL|macro|MAX_INLINE_DIRTABLE_ENTRY
 mdefine_line|#define MAX_INLINE_DIRTABLE_ENTRY 13
 DECL|struct|dir_table_slot
-r_typedef
 r_struct
 id|dir_table_slot
 (brace
@@ -196,9 +192,7 @@ id|u32
 id|addr2
 suffix:semicolon
 multiline_comment|/* 4: lower 32 bits of leaf page address -OR-&n;&t;&t;&t;&t;   index of next entry when this entry was deleted */
-DECL|typedef|dir_table_slot_t
 )brace
-id|dir_table_slot_t
 suffix:semicolon
 multiline_comment|/* (8) */
 multiline_comment|/*&n; * flag values&n; */
@@ -222,10 +216,11 @@ r_union
 r_struct
 (brace
 DECL|member|DASD
-id|dasd_t
+r_struct
+id|dasd
 id|DASD
 suffix:semicolon
-multiline_comment|/* 16: DASD limit/usage info  F226941 */
+multiline_comment|/* 16: DASD limit/usage info */
 DECL|member|flag
 id|u8
 id|flag
@@ -265,7 +260,8 @@ id|header
 suffix:semicolon
 multiline_comment|/* (32) */
 DECL|member|slot
-id|dtslot_t
+r_struct
+id|dtslot
 id|slot
 (braket
 l_int|9
@@ -346,7 +342,8 @@ id|header
 suffix:semicolon
 multiline_comment|/* (32) */
 DECL|member|slot
-id|dtslot_t
+r_struct
+id|dtslot
 id|slot
 (braket
 l_int|128
@@ -429,7 +426,8 @@ id|inode
 op_star
 id|ip
 comma
-id|component_t
+r_struct
+id|component_name
 op_star
 id|key
 comma
@@ -437,7 +435,8 @@ id|ino_t
 op_star
 id|data
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 comma
@@ -458,7 +457,8 @@ id|inode
 op_star
 id|ip
 comma
-id|component_t
+r_struct
+id|component_name
 op_star
 id|key
 comma
@@ -466,7 +466,8 @@ id|ino_t
 op_star
 id|ino
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 )paren
@@ -484,7 +485,8 @@ id|inode
 op_star
 id|ip
 comma
-id|component_t
+r_struct
+id|component_name
 op_star
 id|key
 comma
@@ -533,7 +535,8 @@ id|inode
 op_star
 id|ip
 comma
-id|component_t
+r_struct
+id|component_name
 op_star
 id|key
 comma

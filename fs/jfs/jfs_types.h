@@ -83,8 +83,9 @@ mdefine_line|#define&t;lengthLXD(lxd)&t;( (lxd)-&gt;len )
 DECL|macro|offsetLXD
 mdefine_line|#define&t;offsetLXD(lxd)&bslash;&n;&t;( ((s64)((lxd)-&gt;off1)) &lt;&lt; 32 | (lxd)-&gt;off2 )
 multiline_comment|/* lxd list */
-r_typedef
+DECL|struct|lxdlist
 r_struct
+id|lxdlist
 (brace
 DECL|member|maxnlxd
 id|s16
@@ -99,9 +100,7 @@ id|lxd_t
 op_star
 id|lxd
 suffix:semicolon
-DECL|typedef|lxdlist_t
 )brace
-id|lxdlist_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;physical xd (pxd)&n; */
 r_typedef
@@ -138,8 +137,9 @@ mdefine_line|#define&t;lengthPXD(pxd)&t;__le24_to_cpu((pxd)-&gt;len)
 DECL|macro|addressPXD
 mdefine_line|#define&t;addressPXD(pxd)&bslash;&n;&t;( ((s64)((pxd)-&gt;addr1)) &lt;&lt; 32 | __le32_to_cpu((pxd)-&gt;addr2))
 multiline_comment|/* pxd list */
-r_typedef
+DECL|struct|pxdlist
 r_struct
+id|pxdlist
 (brace
 DECL|member|maxnpxd
 id|s16
@@ -156,9 +156,7 @@ id|pxd
 l_int|8
 )braket
 suffix:semicolon
-DECL|typedef|pxdlist_t
 )brace
-id|pxdlist_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;data extent descriptor (dxd)&n; */
 r_typedef
@@ -233,7 +231,6 @@ DECL|macro|sizeDXD
 mdefine_line|#define sizeDXD(dxd)&t;le32_to_cpu((dxd)-&gt;size)
 multiline_comment|/*&n; *      directory entry argument&n; */
 DECL|struct|component_name
-r_typedef
 r_struct
 id|component_name
 (brace
@@ -246,13 +243,10 @@ m_wchar_t
 op_star
 id|name
 suffix:semicolon
-DECL|typedef|component_t
 )brace
-id|component_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;DASD limit information - stored in directory inode&n; */
 DECL|struct|dasd
-r_typedef
 r_struct
 id|dasd
 (brace
@@ -297,9 +291,7 @@ id|u32
 id|used_lo
 suffix:semicolon
 multiline_comment|/* DASD usage (in logical blocks)       */
-DECL|typedef|dasd_t
 )brace
-id|dasd_t
 suffix:semicolon
 DECL|macro|DASDLIMIT
 mdefine_line|#define DASDLIMIT(dasdp) &bslash;&n;&t;(((u64)((dasdp)-&gt;limit_hi) &lt;&lt; 32) + __le32_to_cpu((dasdp)-&gt;limit_lo))

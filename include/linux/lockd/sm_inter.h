@@ -43,6 +43,11 @@ DECL|member|proc
 id|u32
 id|proc
 suffix:semicolon
+DECL|member|proto
+id|u32
+id|proto
+suffix:semicolon
+multiline_comment|/* protocol (udp/tcp) plus server/client flag */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Result returned by statd&n; */
