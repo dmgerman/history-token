@@ -1471,13 +1471,6 @@ id|zero
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|one
-r_static
-r_int
-id|one
-op_assign
-l_int|1
-suffix:semicolon
 DECL|variable|one_hundred
 r_static
 r_int
@@ -1637,19 +1630,7 @@ l_int|0644
 comma
 l_int|NULL
 comma
-op_amp
-id|proc_dointvec_minmax
-comma
-op_amp
-id|sysctl_intvec
-comma
-l_int|NULL
-comma
-multiline_comment|/* Here, we define the range of possible values for&n;&t;    dirty_writeback_centisecs.&n;&n;&t;    The default value is 5 seconds (500 centisec).  We will use 1&n;&t;    centisec, the smallest possible value that could make any sort of&n;&t;    sense.  If we allowed the user to set the interval to 0 seconds&n;&t;    (which would presumably mean to chew up all of the CPU looking for&n;&t;    dirty pages and writing them out, without taking a break), the&n;&t;    interval would effectively become 1 second (100 centisecs), due to&n;&t;    some nicely documented throttling code in wb_kupdate().&n;&n;&t;    There is no maximum legal value for dirty_writeback. */
-op_amp
-id|one
-comma
-l_int|NULL
+id|dirty_writeback_centisecs_handler
 )brace
 comma
 (brace
