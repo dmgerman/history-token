@@ -950,6 +950,34 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Make sure we didn&squot;t sync the itc ahead of the next&n;&t;&t; * timer interrupt, if so, just reset it.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+comma
+id|local_cpu_data-&gt;itm_next
+)paren
+)paren
+(brace
+id|Dprintk
+c_func
+(paren
+l_string|&quot;oops, jumped a timer.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ia64_cpu_local_tick
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit
