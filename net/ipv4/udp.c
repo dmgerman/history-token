@@ -4088,70 +4088,6 @@ multiline_comment|/* Must be an IKE packet.. pass it through */
 r_return
 l_int|1
 suffix:semicolon
-id|decaps
-suffix:colon
-multiline_comment|/* At this point we are sure that this is an ESPinUDP packet,&n;&t;&t; * so we need to remove &squot;len&squot; bytes from the packet (the UDP&n;&t;&t; * header and optional ESP marker bytes) and then modify the&n;&t;&t; * protocol to ESP, and then call into the transform receiver.&n;&t;&t; */
-multiline_comment|/* Now we can update and verify the packet length... */
-id|iph
-op_assign
-id|skb-&gt;nh.iph
-suffix:semicolon
-id|iphlen
-op_assign
-id|iph-&gt;ihl
-op_lshift
-l_int|2
-suffix:semicolon
-id|iph-&gt;tot_len
-op_assign
-id|htons
-c_func
-(paren
-id|ntohs
-c_func
-(paren
-id|iph-&gt;tot_len
-)paren
-op_minus
-id|len
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OL
-id|iphlen
-op_plus
-id|len
-)paren
-(brace
-multiline_comment|/* packet is too small!?! */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* pull the data buffer up to the ESP header and set the&n;&t;&t; * transport header to point to ESP.  Keep UDP on the stack&n;&t;&t; * for later.&n;&t;&t; */
-id|skb-&gt;h.raw
-op_assign
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-id|len
-)paren
-suffix:semicolon
-multiline_comment|/* modify the protocol (it&squot;s ESP!) */
-id|iph-&gt;protocol
-op_assign
-id|IPPROTO_ESP
-suffix:semicolon
-multiline_comment|/* and let the caller know to send this into the ESP processor... */
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 r_case
 id|UDP_ENCAP_ESPINUDP_NON_IKE
 suffix:colon
@@ -4225,9 +4161,6 @@ r_sizeof
 id|u32
 )paren
 suffix:semicolon
-r_goto
-id|decaps
-suffix:semicolon
 )brace
 r_else
 multiline_comment|/* Must be an IKE packet.. pass it through */
@@ -4235,6 +4168,68 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* At this point we are sure that this is an ESPinUDP packet,&n;&t; * so we need to remove &squot;len&squot; bytes from the packet (the UDP&n;&t; * header and optional ESP marker bytes) and then modify the&n;&t; * protocol to ESP, and then call into the transform receiver.&n;&t; */
+multiline_comment|/* Now we can update and verify the packet length... */
+id|iph
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
+id|iphlen
+op_assign
+id|iph-&gt;ihl
+op_lshift
+l_int|2
+suffix:semicolon
+id|iph-&gt;tot_len
+op_assign
+id|htons
+c_func
+(paren
+id|ntohs
+c_func
+(paren
+id|iph-&gt;tot_len
+)paren
+op_minus
+id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|iphlen
+op_plus
+id|len
+)paren
+(brace
+multiline_comment|/* packet is too small!?! */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* pull the data buffer up to the ESP header and set the&n;&t; * transport header to point to ESP.  Keep UDP on the stack&n;&t; * for later.&n;&t; */
+id|skb-&gt;h.raw
+op_assign
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/* modify the protocol (it&squot;s ESP!) */
+id|iph-&gt;protocol
+op_assign
+id|IPPROTO_ESP
+suffix:semicolon
+multiline_comment|/* and let the caller know to send this into the ESP processor... */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* returns:&n; *  -1: error&n; *   0: success&n; *  &gt;0: &quot;udp encap&quot; protocol resubmission&n; *&n; * Note that in the success and error cases, the skb is assumed to&n; * have either been requeued or freed.&n; */
