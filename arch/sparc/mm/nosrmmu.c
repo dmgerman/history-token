@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mbus.h&gt;
+macro_line|#include &lt;asm/sbus.h&gt;
 DECL|variable|__initdata
 r_static
 r_char
@@ -17,6 +18,11 @@ DECL|variable|srmmu_modtype
 r_enum
 id|mbus_module
 id|srmmu_modtype
+suffix:semicolon
+DECL|variable|srmmu_nocache_pool
+r_void
+op_star
+id|srmmu_nocache_pool
 suffix:semicolon
 DECL|variable|vac_cache_size
 r_int
@@ -134,26 +140,6 @@ r_int
 id|virt_addr
 )paren
 (brace
-)brace
-DECL|function|srmmu_end_memory
-r_void
-id|__init
-id|srmmu_end_memory
-c_func
-(paren
-r_int
-r_int
-id|memory_size
-comma
-r_int
-r_int
-op_star
-id|mem_end_p
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|iounit_map_dma_init
 id|__u32
