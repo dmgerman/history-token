@@ -1682,15 +1682,6 @@ r_int
 )paren
 suffix:semicolon
 r_void
-id|dasd_gendisk_free
-c_func
-(paren
-r_struct
-id|gendisk
-op_star
-)paren
-suffix:semicolon
-r_void
 id|dasd_setup_partitions
 c_func
 (paren

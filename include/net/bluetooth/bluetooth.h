@@ -28,6 +28,8 @@ DECL|macro|BTPROTO_SCO
 mdefine_line|#define BTPROTO_SCO   &t;2
 DECL|macro|BTPROTO_RFCOMM
 mdefine_line|#define BTPROTO_RFCOMM&t;3
+DECL|macro|BTPROTO_BNEP
+mdefine_line|#define BTPROTO_BNEP    4
 DECL|macro|SOL_HCI
 mdefine_line|#define SOL_HCI     0
 DECL|macro|SOL_L2CAP
@@ -698,13 +700,5 @@ id|__u16
 id|code
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(x)
-macro_line|#endif
-macro_line|#ifndef list_for_each_safe
-DECL|macro|list_for_each_safe
-mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
-macro_line|#endif
 macro_line|#endif /* __BLUETOOTH_H */
 eof

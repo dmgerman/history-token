@@ -429,9 +429,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;    $(wildcard %s/include/config/%s.h) &bslash;&bslash;&bslash;n&quot;
-comma
-id|topdir
+l_string|&quot;    $(wildcard include/config/%s.h) &bslash;&bslash;&bslash;n&quot;
 comma
 id|s
 )paren

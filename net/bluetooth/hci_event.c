@@ -1412,10 +1412,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|acl
-op_logical_or
-op_logical_neg
+op_logical_and
 (paren
 id|sco
 op_assign
@@ -1423,15 +1421,6 @@ id|acl-&gt;link
 )paren
 )paren
 (brace
-id|hci_dev_unlock
-c_func
-(paren
-id|hdev
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|sco-&gt;state
 op_assign
 id|BT_CLOSED
@@ -1450,6 +1439,7 @@ c_func
 id|sco
 )paren
 suffix:semicolon
+)brace
 id|hci_dev_unlock
 c_func
 (paren

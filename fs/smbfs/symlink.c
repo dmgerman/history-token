@@ -248,10 +248,12 @@ op_assign
 (brace
 dot
 id|readlink
+op_assign
 id|smb_read_link
 comma
 dot
 id|follow_link
+op_assign
 id|smb_follow_link
 comma
 )brace

@@ -347,7 +347,7 @@ r_case
 l_int|0x06
 suffix:colon
 r_return
-id|EINVAL
+id|EBADE
 suffix:semicolon
 r_case
 l_int|0x07

@@ -117,7 +117,7 @@ c_func
 (paren
 id|ie
 )paren
-OG
+op_le
 id|INQUIRY_ENTRY_AGE_MAX
 )paren
 (brace
@@ -659,11 +659,6 @@ id|acl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Unacked frames */
-id|hdev-&gt;sco_cnt
-op_add_assign
-id|conn-&gt;sent
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -791,7 +786,7 @@ id|dst
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -904,7 +899,7 @@ c_func
 id|hdev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
