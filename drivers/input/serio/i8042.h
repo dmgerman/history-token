@@ -92,7 +92,7 @@ suffix:semicolon
 DECL|macro|dbg_init
 mdefine_line|#define dbg_init() do { i8042_start = jiffies; } while (0);
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;[%d]&bslash;n&quot; ,&bslash;&n;&t; ## arg, (int) (jiffies - i8042_start))
+mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot; [%d]&bslash;n&quot; ,&bslash;&n;&t; ## arg, (int) (jiffies - i8042_start))
 macro_line|#else
 DECL|macro|dbg_init
 mdefine_line|#define dbg_init() do { } while (0);
