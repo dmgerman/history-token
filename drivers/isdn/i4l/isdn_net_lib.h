@@ -463,7 +463,6 @@ id|ISDN_MSNLEN
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
 multiline_comment|/* per network interface data (dev-&gt;priv) */
 DECL|struct|isdn_net_local_s
 r_struct
@@ -473,12 +472,30 @@ DECL|member|magic
 id|ulong
 id|magic
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+id|dev
+suffix:semicolon
+multiline_comment|/* interface to upper levels        */
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
+DECL|member|ops
+r_struct
+id|isdn_netif_ops
+op_star
+id|ops
+suffix:semicolon
+DECL|member|inl_priv
+r_void
+op_star
+id|inl_priv
+suffix:semicolon
+multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;  private data here                */
 DECL|member|flags
 r_int
 id|flags
@@ -591,71 +608,6 @@ id|atomic_t
 id|refcnt
 suffix:semicolon
 multiline_comment|/* references held by ISDN code     */
-macro_line|#ifdef CONFIG_ISDN_PPP
-DECL|member|mp_cfg
-r_int
-r_int
-id|mp_cfg
-suffix:semicolon
-DECL|member|mp_txseq
-id|u32
-id|mp_txseq
-suffix:semicolon
-DECL|member|mp_frags
-r_struct
-id|sk_buff_head
-id|mp_frags
-suffix:semicolon
-multiline_comment|/* fragments sl list */
-DECL|member|mp_rxseq
-id|u32
-id|mp_rxseq
-suffix:semicolon
-multiline_comment|/* last processed packet seq #: any &n;&t;&t;&t;&t;&t;  packets with smaller seq # will &n;&t;&t;&t;&t;&t;  be dropped unconditionally       */
-DECL|member|ccp
-r_struct
-id|ippp_ccp
-op_star
-id|ccp
-suffix:semicolon
-DECL|member|debug
-r_int
-r_int
-id|debug
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP_VJ
-DECL|member|cbuf
-r_int
-r_char
-op_star
-id|cbuf
-suffix:semicolon
-DECL|member|slcomp
-r_struct
-id|slcompress
-op_star
-id|slcomp
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-DECL|member|inl_priv
-r_void
-op_star
-id|inl_priv
-suffix:semicolon
-multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;   private data here               */
-DECL|member|ops
-r_struct
-id|isdn_netif_ops
-op_star
-id|ops
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-id|dev
-suffix:semicolon
-multiline_comment|/* interface to upper levels        */
 )brace
 suffix:semicolon
 multiline_comment|/* per ISDN channel (ISDN interface) data */
@@ -771,13 +723,6 @@ r_int
 id|pppbind
 suffix:semicolon
 multiline_comment|/* ippp device for bindings         */
-DECL|member|ipppd
-r_struct
-id|ipppd
-op_star
-id|ipppd
-suffix:semicolon
-multiline_comment|/* /dev/ipppX which controls us     */
 DECL|member|super_tx_queue
 r_struct
 id|sk_buff_head
@@ -828,29 +773,6 @@ id|list_head
 id|global_list
 suffix:semicolon
 multiline_comment|/* global list of all isdn_net_devs */
-macro_line|#ifdef CONFIG_ISDN_PPP
-DECL|member|pppcfg
-r_int
-r_int
-id|pppcfg
-suffix:semicolon
-DECL|member|mp_rxseq
-id|u32
-id|mp_rxseq
-suffix:semicolon
-multiline_comment|/* last seq no seen on this channel */
-DECL|member|ccp
-r_struct
-id|ippp_ccp
-op_star
-id|ccp
-suffix:semicolon
-DECL|member|debug
-r_int
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 DECL|member|ind_priv
 r_void
 op_star
