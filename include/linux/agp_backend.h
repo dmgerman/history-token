@@ -126,6 +126,9 @@ comma
 DECL|enumerator|ALI_M1651
 id|ALI_M1651
 comma
+DECL|enumerator|ALI_M1671
+id|ALI_M1671
+comma
 DECL|enumerator|ALI_GENERIC
 id|ALI_GENERIC
 comma
