@@ -16,23 +16,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#ifdef CONFIG_COMPAT
-DECL|union|sigval32
-r_typedef
-r_union
-id|sigval32
-(brace
-DECL|member|sival_int
-r_int
-id|sival_int
-suffix:semicolon
-DECL|member|sival_ptr
-id|u32
-id|sival_ptr
-suffix:semicolon
-DECL|typedef|sigval_t32
-)brace
-id|sigval_t32
-suffix:semicolon
 r_struct
 id|compat_siginfo
 suffix:semicolon
@@ -53,7 +36,7 @@ r_struct
 id|sigevent32
 (brace
 DECL|member|sigev_value
-id|sigval_t32
+id|compat_sigval_t
 id|sigev_value
 suffix:semicolon
 DECL|member|sigev_signo

@@ -56,23 +56,6 @@ suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 )brace
 suffix:semicolon
-DECL|union|sigval32
-r_typedef
-r_union
-id|sigval32
-(brace
-DECL|member|sival_int
-r_int
-id|sival_int
-suffix:semicolon
-DECL|member|sival_ptr
-id|__u32
-id|sival_ptr
-suffix:semicolon
-DECL|typedef|sigval_t32
-)brace
-id|sigval_t32
-suffix:semicolon
 DECL|struct|compat_siginfo
 r_typedef
 r_struct
@@ -141,7 +124,7 @@ id|_overrun
 suffix:semicolon
 multiline_comment|/* overrun count */
 DECL|member|_sigval
-id|sigval_t
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 multiline_comment|/* same as below */
@@ -168,7 +151,7 @@ id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 DECL|member|_rt
