@@ -6707,6 +6707,7 @@ comma
 l_string|&quot;active state:            C%d&bslash;n&quot;
 l_string|&quot;default state:           C%d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
+comma
 id|pr-&gt;power.state
 comma
 id|pr-&gt;power.default_state
