@@ -816,8 +816,9 @@ suffix:semicolon
 )brace
 DECL|macro|LDT_entry_a
 mdefine_line|#define LDT_entry_a(info) &bslash;&n;&t;((((info)-&gt;base_addr &amp; 0x0000ffff) &lt;&lt; 16) | ((info)-&gt;limit &amp; 0x0ffff))
+multiline_comment|/* Don&squot;t allow setting of the lm bit. It is useless anyways because &n;   64bit system calls require __USER_CS. */
 DECL|macro|LDT_entry_b
-mdefine_line|#define LDT_entry_b(info) &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0xff000000) | &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0x00ff0000) &gt;&gt; 16) | &bslash;&n;&t;((info)-&gt;limit &amp; 0xf0000) | &bslash;&n;&t;(((info)-&gt;read_exec_only ^ 1) &lt;&lt; 9) | &bslash;&n;&t;((info)-&gt;contents &lt;&lt; 10) | &bslash;&n;&t;(((info)-&gt;seg_not_present ^ 1) &lt;&lt; 15) | &bslash;&n;&t;((info)-&gt;seg_32bit &lt;&lt; 22) | &bslash;&n;&t;((info)-&gt;limit_in_pages &lt;&lt; 23) | &bslash;&n;&t;((info)-&gt;useable &lt;&lt; 20) | &bslash;&n;&t;((info)-&gt;lm &lt;&lt; 21) | &bslash;&n;&t;0x7000)
+mdefine_line|#define LDT_entry_b(info) &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0xff000000) | &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0x00ff0000) &gt;&gt; 16) | &bslash;&n;&t;((info)-&gt;limit &amp; 0xf0000) | &bslash;&n;&t;(((info)-&gt;read_exec_only ^ 1) &lt;&lt; 9) | &bslash;&n;&t;((info)-&gt;contents &lt;&lt; 10) | &bslash;&n;&t;(((info)-&gt;seg_not_present ^ 1) &lt;&lt; 15) | &bslash;&n;&t;((info)-&gt;seg_32bit &lt;&lt; 22) | &bslash;&n;&t;((info)-&gt;limit_in_pages &lt;&lt; 23) | &bslash;&n;&t;((info)-&gt;useable &lt;&lt; 20) | &bslash;&n;&t;/* ((info)-&gt;lm &lt;&lt; 21) | */ &bslash;&n;&t;0x7000)
 DECL|macro|LDT_empty
 mdefine_line|#define LDT_empty(info) (&bslash;&n;&t;(info)-&gt;base_addr&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;limit&t;&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;contents&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;read_exec_only&t;== 1&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;seg_32bit&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;limit_in_pages&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;seg_not_present&t;== 1&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;useable&t;&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;lm&t;&t;== 0)
 macro_line|#if TLS_SIZE != 24

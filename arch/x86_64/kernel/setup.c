@@ -59,10 +59,9 @@ c_func
 id|mmu_cr4_features
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|acpi_disabled
 r_int
 id|acpi_disabled
-id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
@@ -2143,13 +2142,13 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|0xff
+l_int|0xfff
 )paren
 op_plus
 (paren
 id|ebx
 op_amp
-l_int|0xff
+l_int|0xfff
 )paren
 suffix:semicolon
 id|printk

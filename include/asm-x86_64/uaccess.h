@@ -176,7 +176,7 @@ mdefine_line|#define __put_user(x,ptr) &bslash;&n;  __put_user_nocheck((__typeof
 DECL|macro|__put_user_nocheck
 mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_size((x),(ptr),(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE,__pu_addr,size))&t;&bslash;&n;&t;&t;__put_user_size((x),__pu_addr,(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&bslash;&n;&t;if (likely(access_ok(VERIFY_WRITE,__pu_addr,size)))&t;&bslash;&n;&t;&t;__put_user_size((x),__pu_addr,(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_size
 mdefine_line|#define __put_user_size(x,ptr,size,retval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;retval = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  case 1: __put_user_asm(x,ptr,retval,&quot;b&quot;,&quot;b&quot;,&quot;iq&quot;,-EFAULT); break;&bslash;&n;&t;  case 2: __put_user_asm(x,ptr,retval,&quot;w&quot;,&quot;w&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  case 4: __put_user_asm(x,ptr,retval,&quot;l&quot;,&quot;k&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  case 8: __put_user_asm(x,ptr,retval,&quot;q&quot;,&quot;&quot;,&quot;ir&quot;,-EFAULT); break;&bslash;&n;&t;  default: __put_user_bad();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* FIXME: this hack is definitely wrong -AK */
@@ -508,7 +508,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ret
+)paren
 )paren
 r_return
 id|ret
@@ -592,7 +596,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ret
+)paren
 )paren
 r_return
 id|ret
@@ -875,7 +883,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ret
+)paren
 )paren
 r_return
 id|ret
@@ -956,7 +968,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ret
+)paren
 )paren
 r_return
 id|ret
@@ -1103,8 +1119,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|ret
+)paren
 )paren
 id|__put_user_asm
 c_func
@@ -1164,8 +1184,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|ret
+)paren
 )paren
 id|__put_user_asm
 c_func
@@ -1225,8 +1249,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|ret
+)paren
 )paren
 id|__put_user_asm
 c_func
@@ -1286,8 +1314,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|ret
+)paren
 )paren
 id|__put_user_asm
 c_func
