@@ -2791,7 +2791,7 @@ c_func
 (paren
 id|inode
 comma
-id|mode
+id|inode-&gt;i_mode
 comma
 id|rdev
 )paren
