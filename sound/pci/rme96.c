@@ -885,7 +885,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -947,7 +947,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -1009,7 +1009,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3517,7 +3517,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3845,7 +3845,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4533,7 +4533,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4746,7 +4746,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4920,7 +4920,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5105,7 +5105,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5285,7 +5285,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5401,7 +5401,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5469,7 +5469,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5543,7 +5543,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5620,7 +5620,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5781,7 +5781,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5939,7 +5939,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5968,7 +5968,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -7740,7 +7740,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7805,7 +7805,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7924,7 +7924,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8098,7 +8098,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8269,7 +8269,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8521,7 +8521,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8583,7 +8583,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8744,7 +8744,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8806,7 +8806,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8967,7 +8967,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9029,7 +9029,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9322,7 +9322,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9360,7 +9360,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9463,7 +9463,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9501,7 +9501,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9653,7 +9653,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9702,7 +9702,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9773,7 +9773,7 @@ id|rme96_t
 op_star
 id|rme96
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol

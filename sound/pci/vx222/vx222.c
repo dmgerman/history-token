@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &quot;vx222.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t vx_core_t
 DECL|macro|CARD_NAME
 mdefine_line|#define CARD_NAME &quot;VX222&quot;
 id|MODULE_AUTHOR
@@ -529,7 +527,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -554,17 +552,7 @@ id|vx_core_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_core_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_vx222_free

@@ -366,8 +366,6 @@ mdefine_line|#define MY_INTERRUPTS (INT_RISCI | ERROR_INTERRUPTS)
 multiline_comment|/* SYNC, one WRITE per line, one extra WRITE per page boundary, SYNC, JUMP */
 DECL|macro|MAX_RISC_SIZE
 mdefine_line|#define MAX_RISC_SIZE ((1 + 255 + (PAGE_ALIGN(255 * 4092) / PAGE_SIZE - 1) + 1 + 1) * 8)
-DECL|macro|chip_t
-mdefine_line|#define chip_t bt87x_t
 DECL|typedef|bt87x_t
 r_typedef
 r_struct
@@ -917,16 +915,7 @@ id|bt87x_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|bt87x_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -2974,7 +2963,7 @@ comma
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -2999,17 +2988,7 @@ id|bt87x_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|bt87x_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_bt87x_free
@@ -3193,12 +3172,16 @@ id|err
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|bt87x_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

@@ -14,8 +14,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t es1938_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -5050,18 +5048,10 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
-)paren
-comma
-r_return
 )paren
 suffix:semicolon
 id|chip-&gt;master_volume
@@ -6688,7 +6678,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -6713,17 +6703,7 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_es1938_free
@@ -6836,12 +6816,16 @@ suffix:semicolon
 )brace
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|es1938_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -7388,16 +7372,7 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_char

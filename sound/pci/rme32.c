@@ -723,7 +723,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -785,7 +785,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -854,7 +854,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -2328,7 +2328,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -2625,7 +2625,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3302,7 +3302,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3527,7 +3527,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3714,7 +3714,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -3890,7 +3890,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4052,7 +4052,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4151,7 +4151,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4202,7 +4202,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4298,7 +4298,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4375,7 +4375,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4536,7 +4536,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4694,7 +4694,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -4723,7 +4723,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6156,7 +6156,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6221,7 +6221,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6338,7 +6338,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6458,7 +6458,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6584,7 +6584,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6787,7 +6787,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6849,7 +6849,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7114,7 +7114,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7152,7 +7152,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7255,7 +7255,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7293,7 +7293,7 @@ id|rme32_t
 op_star
 id|rme32
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol

@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t emu10k1_t
 macro_line|#if 0&t;&t;/* for testing purposes - digital out -&gt; capture */
 mdefine_line|#define EMU10K1_CAPTURE_DIGITAL_OUT
 macro_line|#endif
@@ -16846,17 +16844,7 @@ id|emu10k1_t
 op_star
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu10k1_t
-comma
 id|hw-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|emu10k1_fx8010_info_t
 op_star

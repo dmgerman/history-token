@@ -210,8 +210,6 @@ id|SNDRV_ENABLED
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 r_typedef
 r_struct
 (brace
@@ -1503,16 +1501,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -2134,15 +2123,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|chip-&gt;pcm
 op_assign

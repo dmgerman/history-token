@@ -10,8 +10,6 @@ macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &quot;ac97_patch.h&quot;
 macro_line|#include &quot;ac97_id.h&quot;
 macro_line|#include &quot;ac97_local.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t ac97_t
 multiline_comment|/*&n; *  Chip specific initialization&n; */
 DECL|function|patch_build_controls
 r_static

@@ -6227,7 +6227,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6265,7 +6265,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6368,7 +6368,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6406,7 +6406,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6641,7 +6641,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6737,7 +6737,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6777,7 +6777,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7000,7 +7000,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7040,7 +7040,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7215,7 +7215,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7255,7 +7255,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7430,7 +7430,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7470,7 +7470,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7645,7 +7645,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7685,7 +7685,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7818,7 +7818,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7892,7 +7892,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8078,7 +8078,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8116,7 +8116,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8219,7 +8219,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8490,7 +8490,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8851,7 +8851,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8928,7 +8928,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8968,7 +8968,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9319,7 +9319,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9359,7 +9359,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9687,7 +9687,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -9727,7 +9727,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10055,7 +10055,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10095,7 +10095,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10345,7 +10345,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10385,7 +10385,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10598,7 +10598,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10638,7 +10638,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -10930,7 +10930,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11036,7 +11036,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11076,7 +11076,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11387,7 +11387,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11464,7 +11464,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11522,7 +11522,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11747,7 +11747,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11809,7 +11809,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -11952,7 +11952,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -12076,7 +12076,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -12373,7 +12373,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -12474,7 +12474,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -12572,7 +12572,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -12684,7 +12684,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -15981,7 +15981,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16110,7 +16110,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16215,7 +16215,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16315,7 +16315,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16389,7 +16389,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16510,7 +16510,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -16872,7 +16872,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -17023,7 +17023,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -17391,7 +17391,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -18784,7 +18784,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -19102,7 +19102,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -19180,7 +19180,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -19471,7 +19471,7 @@ id|hdsp_t
 op_star
 id|hdsp
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream

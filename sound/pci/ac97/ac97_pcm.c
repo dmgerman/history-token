@@ -11,8 +11,6 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &quot;ac97_patch.h&quot;
 macro_line|#include &quot;ac97_id.h&quot;
 macro_line|#include &quot;ac97_local.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t ac97_t
 multiline_comment|/*&n; *  PCM support&n; */
 DECL|variable|rate_reg_tables
 r_static
