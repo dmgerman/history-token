@@ -215,6 +215,8 @@ DECL|macro|BIO_CLONED
 mdefine_line|#define BIO_CLONED&t;4&t;/* doesn&squot;t own data */
 DECL|macro|BIO_BOUNCED
 mdefine_line|#define BIO_BOUNCED&t;5&t;/* bio is a bounce bio */
+DECL|macro|BIO_USER_MAPPED
+mdefine_line|#define BIO_USER_MAPPED 6&t;/* contains user pages */
 DECL|macro|bio_flagged
 mdefine_line|#define bio_flagged(bio, flag)&t;((bio)-&gt;bi_flags &amp; (1 &lt;&lt; (flag)))
 multiline_comment|/*&n; * top 4 bits of bio flags indicate the pool this bio came from&n; */
@@ -528,8 +530,6 @@ c_func
 r_struct
 id|bio
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -552,6 +552,36 @@ r_struct
 id|bio
 op_star
 id|bio
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|bio
+op_star
+id|bio_copy_user
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|bio_uncopy_user
+c_func
+(paren
+r_struct
+id|bio
+op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM

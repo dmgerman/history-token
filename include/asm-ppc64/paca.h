@@ -144,14 +144,26 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* used for SLB/segment table misses&n;&t;&t;&t;&t; * on the linear mapping */
-DECL|member|exdsi
+DECL|member|slb_r3
 id|u64
-id|exdsi
+id|slb_r3
+suffix:semicolon
+multiline_comment|/* spot to save R3 on SLB miss */
+DECL|member|context
+id|mm_context_t
+id|context
+suffix:semicolon
+DECL|member|slb_cache
+id|u16
+id|slb_cache
 (braket
-l_int|8
+id|SLB_CACHE_ENTRIES
 )braket
 suffix:semicolon
-multiline_comment|/* used for linear mapping hash table misses */
+DECL|member|slb_cache_ptr
+id|u16
+id|slb_cache_ptr
+suffix:semicolon
 multiline_comment|/*&n;&t; * then miscellaneous read-write fields&n;&t; */
 DECL|member|__current
 r_struct
@@ -165,9 +177,9 @@ id|u64
 id|kstack
 suffix:semicolon
 multiline_comment|/* Saved Kernel stack addr */
-DECL|member|stab_next_rr
+DECL|member|stab_rr
 id|u64
-id|stab_next_rr
+id|stab_rr
 suffix:semicolon
 multiline_comment|/* stab/slb round-robin counter */
 DECL|member|next_jiffy_update_tb
@@ -195,6 +207,15 @@ id|u8
 id|proc_enabled
 suffix:semicolon
 multiline_comment|/* irq soft-enable flag */
+multiline_comment|/* not yet used */
+DECL|member|exdsi
+id|u64
+id|exdsi
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* used for linear mapping hash table misses */
 multiline_comment|/*&n;&t; * iSeries structues which the hypervisor knows about - Not&n;&t; * sure if these particularly need to be cacheline aligned.&n;&t; * The lppaca is also used on POWER5 pSeries boxes.&n;&t; */
 DECL|member|lppaca
 r_struct

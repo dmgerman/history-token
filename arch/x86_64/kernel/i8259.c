@@ -104,7 +104,7 @@ c_func
 (paren
 l_int|0xd
 )paren
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 id|BUILD_14_IRQS
 c_func
 (paren
@@ -222,7 +222,7 @@ c_func
 (paren
 l_int|0xd
 )paren
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 comma
 id|IRQLIST_14
 c_func

@@ -1,7 +1,5 @@
 multiline_comment|/*&n;     Driver for Philips tda1004xh OFDM Frontend&n;&n;     (c) 2003, 2004 Andrew de Quincey &amp; Robert Schlabbach&n;&n;     This program is free software; you can redistribute it and/or modify&n;     it under the terms of the GNU General Public License as published by&n;     the Free Software Foundation; either version 2 of the License, or&n;     (at your option) any later version.&n;&n;     This program is distributed in the hope that it will be useful,&n;     but WITHOUT ANY WARRANTY; without even the implied warranty of&n;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;     GNU General Public License for more details.&n;&n;     You should have received a copy of the GNU General Public License&n;     along with this program; if not, write to the Free Software&n;     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;   */
 multiline_comment|/*&n;    This driver needs a copy of the DLL &quot;ttlcdacc.dll&quot; from the Haupauge or Technotrend&n;    windows driver saved as &squot;/usr/lib/hotplug/firmware/tda1004x.bin&squot;.&n;    You can also pass the complete file name with the module parameter &squot;tda1004x_firmware&squot;.&n;&n;    Currently the DLL from v2.15a of the technotrend driver is supported. Other versions can&n;    be added reasonably painlessly.&n;&n;    Windows driver URL: http://www.technotrend.de/&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
@@ -1669,7 +1666,7 @@ c_func
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|tda1004x_firmware
@@ -1704,7 +1701,7 @@ suffix:semicolon
 )brace
 id|filesize
 op_assign
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -1858,7 +1855,7 @@ id|EIO
 suffix:semicolon
 )brace
 singleline_comment|// read it!
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -1871,7 +1868,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read
+id|sys_read
 c_func
 (paren
 id|fd

@@ -723,7 +723,8 @@ DECL|function|sn_irq_to_vector
 id|sn_irq_to_vector
 c_func
 (paren
-id|u8
+r_int
+r_int
 id|irq
 )paren
 (brace

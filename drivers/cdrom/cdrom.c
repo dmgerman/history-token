@@ -7964,6 +7964,10 @@ id|nr
 comma
 id|ret
 suffix:semicolon
+id|cdi-&gt;last_sense
+op_assign
+l_int|0
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -8198,6 +8202,10 @@ id|q
 r_return
 op_minus
 id|ENXIO
+suffix:semicolon
+id|cdi-&gt;last_sense
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -8469,8 +8477,6 @@ c_func
 (paren
 id|rq
 comma
-id|ubuf
-comma
 id|bio
 comma
 id|len
@@ -8495,6 +8501,10 @@ suffix:semicolon
 id|lba
 op_add_assign
 id|nr
+suffix:semicolon
+id|ubuf
+op_add_assign
+id|len
 suffix:semicolon
 )brace
 r_return

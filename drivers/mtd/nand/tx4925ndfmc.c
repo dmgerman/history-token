@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/tx4925ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   Toshiba RBTX4925 reference board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; * Author: MontaVista Software, Inc.  source@mvista.com&n; *&n; * Derived from drivers/mtd/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: tx4925ndfmc.c,v 1.2 2004/03/27 19:55:53 gleixner Exp $&n; *&n; * Copyright (C) 2001 Toshiba Corporation &n; * &n; * 2003 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/tx4925ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   Toshiba RBTX4925 reference board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; * Author: MontaVista Software, Inc.  source@mvista.com&n; *&n; * Derived from drivers/mtd/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: tx4925ndfmc.c,v 1.3 2004/07/20 02:44:26 dwmw2 Exp $&n; *&n; * Copyright (C) 2001 Toshiba Corporation &n; * &n; * 2003 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -23,13 +23,6 @@ id|tx4925ndfmc_mtd
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; * Module stuff&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|tx4925ndfmc_init
-mdefine_line|#define tx4925ndfmc_init init_module
-DECL|macro|tx4925ndfmc_cleanup
-mdefine_line|#define tx4925ndfmc_cleanup cleanup_module
-macro_line|#endif
 multiline_comment|/*&n; * Define partitions for flash devices&n; */
 DECL|variable|partition_info16k
 r_static

@@ -18772,7 +18772,7 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-l_string|&quot;Read linux/Documentation/floppy.txt&bslash;n&quot;
+l_string|&quot;Read Documentation/floppy.txt&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

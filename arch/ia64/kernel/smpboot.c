@@ -935,7 +935,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Setup vector on AP &amp; enable */
+multiline_comment|/* Setup vector on AP */
 macro_line|#ifdef CONFIG_PERFMON
 id|pfm_init_percpu
 c_func
