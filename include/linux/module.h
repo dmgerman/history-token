@@ -1081,8 +1081,6 @@ id|module
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|macro|EXPORT_NO_SYMBOLS
-mdefine_line|#define EXPORT_NO_SYMBOLS
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
 multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */

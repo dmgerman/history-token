@@ -14,8 +14,6 @@ macro_line|#include &quot;datastream.h&quot;
 macro_line|#include &quot;super.h&quot;
 macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;endian.h&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -19,15 +19,11 @@ c_func
 l_string|&quot;Gravis Grip Multiport driver&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-macro_line|#endif
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 macro_line|#ifdef GRIP_DEBUG
 DECL|macro|dbg

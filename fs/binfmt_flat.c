@@ -3063,8 +3063,6 @@ id|flat_format
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|init_flat_binfmt
 id|module_init
 c_func

@@ -8,8 +8,6 @@ macro_line|#include &quot;i4lididrv.h&quot;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;../avmb1/capicmd.h&quot;  /* this should be moved in a common place */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|macro|INCLUDE_INLINE_FUNCS
 mdefine_line|#define INCLUDE_INLINE_FUNCS
 DECL|variable|cards

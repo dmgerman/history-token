@@ -949,8 +949,6 @@ c_func
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_static
 r_int
 id|__init

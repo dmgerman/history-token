@@ -3512,8 +3512,6 @@ c_func
 id|sa1100_serial_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

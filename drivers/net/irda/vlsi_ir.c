@@ -18,8 +18,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;vlsi_ir&quot;
 DECL|macro|DRIVER_VERSION
