@@ -13,7 +13,7 @@ id|coda_inode_info
 (brace
 DECL|member|c_fid
 r_struct
-id|ViceFid
+id|CodaFid
 id|c_fid
 suffix:semicolon
 multiline_comment|/* Coda identifier */
@@ -34,12 +34,17 @@ r_int
 id|c_mapcount
 suffix:semicolon
 multiline_comment|/* nr of times this inode is mapped */
-DECL|member|c_cached_cred
-r_struct
-id|coda_cred
-id|c_cached_cred
+DECL|member|c_cached_epoch
+r_int
+r_int
+id|c_cached_epoch
 suffix:semicolon
-multiline_comment|/* credentials of cached perms */
+multiline_comment|/* epoch for cached permissions */
+DECL|member|c_uid
+id|vuid_t
+id|c_uid
+suffix:semicolon
+multiline_comment|/* fsuid for cached permissions */
 DECL|member|c_cached_perm
 r_int
 r_int
@@ -78,12 +83,6 @@ r_int
 id|cfi_mapcount
 suffix:semicolon
 multiline_comment|/* nr of times this file is mapped */
-DECL|member|cfi_cred
-r_struct
-id|coda_cred
-id|cfi_cred
-suffix:semicolon
-multiline_comment|/* credentials of opener */
 )brace
 suffix:semicolon
 DECL|macro|CODA_FTOC
@@ -107,7 +106,7 @@ op_star
 op_star
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 comma
 r_struct
@@ -127,7 +126,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -159,7 +158,8 @@ op_star
 id|coda_fid_to_inode
 c_func
 (paren
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fid
 comma
@@ -177,10 +177,12 @@ r_struct
 id|inode
 op_star
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 )paren
 suffix:semicolon

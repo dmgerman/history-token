@@ -374,7 +374,7 @@ id|t
 op_assign
 id|exp-&gt;tuple
 suffix:semicolon
-r_int
+id|u_int16_t
 id|port
 suffix:semicolon
 id|MUST_BE_LOCKED
@@ -416,8 +416,6 @@ c_loop
 id|port
 op_assign
 id|ct_amanda_info-&gt;port
-op_plus
-l_int|10
 suffix:semicolon
 id|port
 op_ne

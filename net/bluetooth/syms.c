@@ -209,11 +209,11 @@ c_func
 id|bt_accept_dequeue
 )paren
 suffix:semicolon
-DECL|variable|bt_sock_w4_connect
+DECL|variable|bt_sock_wait_state
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|bt_sock_w4_connect
+id|bt_sock_wait_state
 )paren
 suffix:semicolon
 DECL|variable|proc_bt
