@@ -774,7 +774,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|printk
+id|Dprintk
 c_func
 (paren
 l_string|&quot;ES7000: did not find Unisys ACPI OEM table!&bslash;n&quot;
