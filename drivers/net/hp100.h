@@ -47,37 +47,37 @@ mdefine_line|#define HP100_REG_DATA16&t;0x12&t;/* RW: WORDs must be read from he
 DECL|macro|HP100_REG_TX_MEM_FREE
 mdefine_line|#define HP100_REG_TX_MEM_FREE&t;0x14&t;/* RD: (32) Amount of free Tx mem    */
 DECL|macro|HP100_REG_TX_PDA_L
-mdefine_line|#define HP100_REG_TX_PDA_L      0x14    /* W: (32) BM: Ptr to PDL, Low Pri  */
+mdefine_line|#define HP100_REG_TX_PDA_L      0x14&t;/* W: (32) BM: Ptr to PDL, Low Pri  */
 DECL|macro|HP100_REG_TX_PDA_H
-mdefine_line|#define HP100_REG_TX_PDA_H      0x1c    /* W: (32) BM: Ptr to PDL, High Pri */
+mdefine_line|#define HP100_REG_TX_PDA_H      0x1c&t;/* W: (32) BM: Ptr to PDL, High Pri */
 DECL|macro|HP100_REG_RX_PKT_CNT
 mdefine_line|#define HP100_REG_RX_PKT_CNT&t;0x18&t;/* RD: (8) Rx count of pkts on card  */
 DECL|macro|HP100_REG_TX_PKT_CNT
 mdefine_line|#define HP100_REG_TX_PKT_CNT&t;0x19&t;/* RD: (8) Tx count of pkts on card  */
 DECL|macro|HP100_REG_RX_PDL
-mdefine_line|#define HP100_REG_RX_PDL        0x1a    /* R: (8) BM: # rx pdl not executed */
+mdefine_line|#define HP100_REG_RX_PDL        0x1a&t;/* R: (8) BM: # rx pdl not executed */
 DECL|macro|HP100_REG_TX_PDL
-mdefine_line|#define HP100_REG_TX_PDL        0x1b    /* R: (8) BM: # tx pdl not executed */
+mdefine_line|#define HP100_REG_TX_PDL        0x1b&t;/* R: (8) BM: # tx pdl not executed */
 DECL|macro|HP100_REG_RX_PDA
-mdefine_line|#define HP100_REG_RX_PDA        0x18    /* W: (32) BM: Up to 31 addresses */
+mdefine_line|#define HP100_REG_RX_PDA        0x18&t;/* W: (32) BM: Up to 31 addresses */
 multiline_comment|/*             which point to a PDL */
 DECL|macro|HP100_REG_SL_EARLY
-mdefine_line|#define HP100_REG_SL_EARLY      0x1c    /*    (32) Enhanced Slave Early Rx */
+mdefine_line|#define HP100_REG_SL_EARLY      0x1c&t;/*    (32) Enhanced Slave Early Rx */
 DECL|macro|HP100_REG_STAT_DROPPED
-mdefine_line|#define HP100_REG_STAT_DROPPED  0x20    /* R (12) Dropped Packet Counter */
+mdefine_line|#define HP100_REG_STAT_DROPPED  0x20&t;/* R (12) Dropped Packet Counter */
 DECL|macro|HP100_REG_STAT_ERRORED
-mdefine_line|#define HP100_REG_STAT_ERRORED  0x22    /* R (8) Errored Packet Counter */
+mdefine_line|#define HP100_REG_STAT_ERRORED  0x22&t;/* R (8) Errored Packet Counter */
 DECL|macro|HP100_REG_STAT_ABORT
-mdefine_line|#define HP100_REG_STAT_ABORT    0x23    /* R (8) Abort Counter/OW Coll. Flag */
+mdefine_line|#define HP100_REG_STAT_ABORT    0x23&t;/* R (8) Abort Counter/OW Coll. Flag */
 DECL|macro|HP100_REG_RX_RING
-mdefine_line|#define HP100_REG_RX_RING       0x24    /* W (32) Slave: RX Ring Pointers */
+mdefine_line|#define HP100_REG_RX_RING       0x24&t;/* W (32) Slave: RX Ring Pointers */
 DECL|macro|HP100_REG_32_FRAGMENT_LEN
-mdefine_line|#define HP100_REG_32_FRAGMENT_LEN 0x28  /* W (13) Slave: Fragment Length Reg */
+mdefine_line|#define HP100_REG_32_FRAGMENT_LEN 0x28&t;/* W (13) Slave: Fragment Length Reg */
 DECL|macro|HP100_REG_32_OFFSET
-mdefine_line|#define HP100_REG_32_OFFSET     0x2c    /* W (16) Slave: Offset Register */
+mdefine_line|#define HP100_REG_32_OFFSET     0x2c&t;/* W (16) Slave: Offset Register */
 multiline_comment|/*  Page 1 - MAC Address/Hash Table  */
 DECL|macro|HP100_REG_MAC_ADDR
-mdefine_line|#define HP100_REG_MAC_ADDR&t;0x08&t;/* RW: (8) Cards MAC address&t;     */
+mdefine_line|#define HP100_REG_MAC_ADDR&t;0x08&t;/* RW: (8) Cards MAC address         */
 DECL|macro|HP100_REG_HASH_BYTE0
 mdefine_line|#define HP100_REG_HASH_BYTE0&t;0x10&t;/* RW: (8) Cards multicast filter    */
 multiline_comment|/*  Page 2 - Hardware Mapping  */
@@ -95,23 +95,23 @@ DECL|macro|HP100_REG_BM
 mdefine_line|#define HP100_REG_BM&t;&t;0x0f&t;/* RW: (8) Controls BM functions     */
 multiline_comment|/* New on Page 2 for ETR chips: */
 DECL|macro|HP100_REG_MODECTRL1
-mdefine_line|#define HP100_REG_MODECTRL1     0x10    /* RW: (8) Mode Control 1 */
+mdefine_line|#define HP100_REG_MODECTRL1     0x10&t;/* RW: (8) Mode Control 1 */
 DECL|macro|HP100_REG_MODECTRL2
-mdefine_line|#define HP100_REG_MODECTRL2     0x11    /* RW: (8) Mode Control 2 */
+mdefine_line|#define HP100_REG_MODECTRL2     0x11&t;/* RW: (8) Mode Control 2 */
 DECL|macro|HP100_REG_PCICTRL1
-mdefine_line|#define HP100_REG_PCICTRL1      0x12    /* RW: (8) PCI Cfg 1 */
+mdefine_line|#define HP100_REG_PCICTRL1      0x12&t;/* RW: (8) PCI Cfg 1 */
 DECL|macro|HP100_REG_PCICTRL2
-mdefine_line|#define HP100_REG_PCICTRL2      0x13    /* RW: (8) PCI Cfg 2 */
+mdefine_line|#define HP100_REG_PCICTRL2      0x13&t;/* RW: (8) PCI Cfg 2 */
 DECL|macro|HP100_REG_PCIBUSMLAT
-mdefine_line|#define HP100_REG_PCIBUSMLAT    0x15    /* RW: (8) PCI Bus Master Latency */
+mdefine_line|#define HP100_REG_PCIBUSMLAT    0x15&t;/* RW: (8) PCI Bus Master Latency */
 DECL|macro|HP100_REG_EARLYTXCFG
-mdefine_line|#define HP100_REG_EARLYTXCFG    0x16    /* RW: (16) Early TX Cfg/Cntrl Reg */
+mdefine_line|#define HP100_REG_EARLYTXCFG    0x16&t;/* RW: (16) Early TX Cfg/Cntrl Reg */
 DECL|macro|HP100_REG_EARLYRXCFG
-mdefine_line|#define HP100_REG_EARLYRXCFG    0x18    /* RW: (8) Early RX Cfg/Cntrl Reg */
+mdefine_line|#define HP100_REG_EARLYRXCFG    0x18&t;/* RW: (8) Early RX Cfg/Cntrl Reg */
 DECL|macro|HP100_REG_ISAPNPCFG1
-mdefine_line|#define HP100_REG_ISAPNPCFG1    0x1a    /* RW: (8) ISA PnP Cfg/Cntrl Reg 1 */
+mdefine_line|#define HP100_REG_ISAPNPCFG1    0x1a&t;/* RW: (8) ISA PnP Cfg/Cntrl Reg 1 */
 DECL|macro|HP100_REG_ISAPNPCFG2
-mdefine_line|#define HP100_REG_ISAPNPCFG2    0x1b    /* RW: (8) ISA PnP Cfg/Cntrl Reg 2 */
+mdefine_line|#define HP100_REG_ISAPNPCFG2    0x1b&t;/* RW: (8) ISA PnP Cfg/Cntrl Reg 2 */
 multiline_comment|/*  Page 3 - EEPROM/Boot ROM  */
 DECL|macro|HP100_REG_EEPROM_CTRL
 mdefine_line|#define HP100_REG_EEPROM_CTRL&t;0x08&t;/* RW: (16) Used to load EEPROM      */
@@ -121,38 +121,38 @@ multiline_comment|/*  Page 4 - LAN Configuration  (MAC_CTRL) */
 DECL|macro|HP100_REG_10_LAN_CFG_1
 mdefine_line|#define HP100_REG_10_LAN_CFG_1&t;0x08&t;/* RW: (8) Set 10M XCVR functions   */
 DECL|macro|HP100_REG_10_LAN_CFG_2
-mdefine_line|#define HP100_REG_10_LAN_CFG_2  0x09    /* RW: (8)     10M XCVR functions   */
+mdefine_line|#define HP100_REG_10_LAN_CFG_2  0x09&t;/* RW: (8)     10M XCVR functions   */
 DECL|macro|HP100_REG_VG_LAN_CFG_1
 mdefine_line|#define HP100_REG_VG_LAN_CFG_1&t;0x0a&t;/* RW: (8) Set 100M XCVR functions  */
 DECL|macro|HP100_REG_VG_LAN_CFG_2
-mdefine_line|#define HP100_REG_VG_LAN_CFG_2  0x0b    /* RW: (8) 100M LAN Training cfgregs */
+mdefine_line|#define HP100_REG_VG_LAN_CFG_2  0x0b&t;/* RW: (8) 100M LAN Training cfgregs */
 DECL|macro|HP100_REG_MAC_CFG_1
 mdefine_line|#define HP100_REG_MAC_CFG_1&t;0x0c&t;/* RW: (8) Types of pkts to accept   */
 DECL|macro|HP100_REG_MAC_CFG_2
 mdefine_line|#define HP100_REG_MAC_CFG_2&t;0x0d&t;/* RW: (8) Misc MAC functions        */
 DECL|macro|HP100_REG_MAC_CFG_3
-mdefine_line|#define HP100_REG_MAC_CFG_3     0x0e    /* RW: (8) Misc MAC functions */
+mdefine_line|#define HP100_REG_MAC_CFG_3     0x0e&t;/* RW: (8) Misc MAC functions */
 DECL|macro|HP100_REG_MAC_CFG_4
-mdefine_line|#define HP100_REG_MAC_CFG_4     0x0f    /* R:  (8) Misc MAC states */
+mdefine_line|#define HP100_REG_MAC_CFG_4     0x0f&t;/* R:  (8) Misc MAC states */
 DECL|macro|HP100_REG_DROPPED
-mdefine_line|#define HP100_REG_DROPPED&t;0x10&t;/* R:  (16),11:0 Pkts cant fit in mem*/
+mdefine_line|#define HP100_REG_DROPPED&t;0x10&t;/* R:  (16),11:0 Pkts cant fit in mem */
 DECL|macro|HP100_REG_CRC
 mdefine_line|#define HP100_REG_CRC&t;&t;0x12&t;/* R:  (8) Pkts with CRC             */
 DECL|macro|HP100_REG_ABORT
 mdefine_line|#define HP100_REG_ABORT&t;&t;0x13&t;/* R:  (8) Aborted Tx pkts           */
 DECL|macro|HP100_REG_TRAIN_REQUEST
-mdefine_line|#define HP100_REG_TRAIN_REQUEST 0x14    /* RW: (16) Endnode MAC register.*/
+mdefine_line|#define HP100_REG_TRAIN_REQUEST 0x14&t;/* RW: (16) Endnode MAC register. */
 DECL|macro|HP100_REG_TRAIN_ALLOW
-mdefine_line|#define HP100_REG_TRAIN_ALLOW   0x16    /* R:  (16) Hub allowed register */
+mdefine_line|#define HP100_REG_TRAIN_ALLOW   0x16&t;/* R:  (16) Hub allowed register */
 multiline_comment|/*  Page 5 - MMU  */
 DECL|macro|HP100_REG_RX_MEM_STOP
 mdefine_line|#define HP100_REG_RX_MEM_STOP&t;0x0c&t;/* RW: (16) End of Rx ring addr      */
 DECL|macro|HP100_REG_TX_MEM_STOP
 mdefine_line|#define HP100_REG_TX_MEM_STOP&t;0x0e&t;/* RW: (16) End of Tx ring addr      */
 DECL|macro|HP100_REG_PDL_MEM_STOP
-mdefine_line|#define HP100_REG_PDL_MEM_STOP  0x10    /* Not used by 802.12 devices */
+mdefine_line|#define HP100_REG_PDL_MEM_STOP  0x10&t;/* Not used by 802.12 devices */
 DECL|macro|HP100_REG_ECB_MEM_STOP
-mdefine_line|#define HP100_REG_ECB_MEM_STOP  0x14    /* I&squot;ve no idea what this is */
+mdefine_line|#define HP100_REG_ECB_MEM_STOP  0x14&t;/* I&squot;ve no idea what this is */
 multiline_comment|/*  Page 6 - Card ID/Physical LAN Address  */
 DECL|macro|HP100_REG_BOARD_ID
 mdefine_line|#define HP100_REG_BOARD_ID&t;0x08&t;/* R:  (8) EISA/ISA card ID          */
@@ -184,18 +184,18 @@ mdefine_line|#define HP100_REG_PTR_MEMDEBUG  0x1a
 multiline_comment|/* ------------------------------------------------------------------------ */
 multiline_comment|/* &n; * Hardware ID Register I (Always available, HW_ID, Offset 0x00)&n; */
 DECL|macro|HP100_HW_ID_CASCADE
-mdefine_line|#define HP100_HW_ID_CASCADE     0x4850  /* Identifies Cascade Chip */
+mdefine_line|#define HP100_HW_ID_CASCADE     0x4850&t;/* Identifies Cascade Chip */
 multiline_comment|/* &n; * Hardware ID Register 2 &amp; Paging Register&n; * (Always available, PAGING, Offset 0x02)&n; * Bits 15:4 are for the Chip ID &n; */
 DECL|macro|HP100_CHIPID_MASK
 mdefine_line|#define HP100_CHIPID_MASK        0xFFF0
 DECL|macro|HP100_CHIPID_SHASTA
-mdefine_line|#define HP100_CHIPID_SHASTA      0x5350  /* Not 802.12 compliant */
+mdefine_line|#define HP100_CHIPID_SHASTA      0x5350&t;/* Not 802.12 compliant */
 multiline_comment|/* EISA BM/SL, MCA16/32 SL, ISA SL */
 DECL|macro|HP100_CHIPID_RAINIER
-mdefine_line|#define HP100_CHIPID_RAINIER     0x5360  /* Not 802.12 compliant EISA BM,*/
+mdefine_line|#define HP100_CHIPID_RAINIER     0x5360&t;/* Not 802.12 compliant EISA BM, */
 multiline_comment|/* PCI SL, MCA16/32 SL, ISA SL */
 DECL|macro|HP100_CHIPID_LASSEN
-mdefine_line|#define HP100_CHIPID_LASSEN      0x5370  /* 802.12 compliant PCI BM, PCI SL */
+mdefine_line|#define HP100_CHIPID_LASSEN      0x5370&t;/* 802.12 compliant PCI BM, PCI SL */
 multiline_comment|/* LRF supported */
 multiline_comment|/*&n; *  Option Registers I and II &n; * (Always available, OPTION_LSW, Offset 0x04-0x05)&n; */
 DECL|macro|HP100_DEBUG_EN
@@ -254,13 +254,13 @@ mdefine_line|#define HP100_RX_PACKET&t;&t;0x0400&t;/* 0:No, 1:Yes pkt has been R
 DECL|macro|HP100_RX_ERROR
 mdefine_line|#define HP100_RX_ERROR&t;&t;0x0200&t;/* 0:No, 1:Yes Rx pkt had error */
 DECL|macro|HP100_TX_PDA_ZERO
-mdefine_line|#define HP100_TX_PDA_ZERO       0x0020  /* 1 when PDA count goes to zero */
+mdefine_line|#define HP100_TX_PDA_ZERO       0x0020&t;/* 1 when PDA count goes to zero */
 DECL|macro|HP100_TX_SPACE_AVAIL
 mdefine_line|#define HP100_TX_SPACE_AVAIL&t;0x0010&t;/* 0:&lt;8192, 1:&gt;=8192 Tx free bytes */
 DECL|macro|HP100_TX_COMPLETE
 mdefine_line|#define HP100_TX_COMPLETE&t;0x0008&t;/* 0:No, 1:Yes a Tx has completed */
 DECL|macro|HP100_MISC_ERROR
-mdefine_line|#define HP100_MISC_ERROR        0x0004  /* 0:No, 1:Lan Link down or bus error*/
+mdefine_line|#define HP100_MISC_ERROR        0x0004&t;/* 0:No, 1:Lan Link down or bus error */
 DECL|macro|HP100_TX_ERROR
 mdefine_line|#define HP100_TX_ERROR&t;&t;0x0002&t;/* 0:No, 1:Yes Tx pkt had error */
 multiline_comment|/*&n; * Xmit Memory Free Count&n; * (Page PERFORMANCE, TX_MEM_FREE, Offset 0x14) (Read only, 32bit)&n; */
@@ -284,103 +284,103 @@ multiline_comment|/*&n; * SRAM Parameters&n; * (Page HW_MAP, SRAM, Offset 0x0e)&
 DECL|macro|HP100_RAM_SIZE_MASK
 mdefine_line|#define HP100_RAM_SIZE_MASK&t;0xe0&t;/* AND to get SRAM size index */
 DECL|macro|HP100_RAM_SIZE_SHIFT
-mdefine_line|#define HP100_RAM_SIZE_SHIFT&t;0x05&t;/* Shift count(put index in lwr bits)*/
+mdefine_line|#define HP100_RAM_SIZE_SHIFT&t;0x05&t;/* Shift count(put index in lwr bits) */
 multiline_comment|/*&n; * Bus Master Register&n; * (Page HW_MAP, BM, Offset 0x0f)&n; */
 DECL|macro|HP100_BM_BURST_RD
-mdefine_line|#define HP100_BM_BURST_RD       0x01    /* EISA only: 1=Use burst trans. fm system */
+mdefine_line|#define HP100_BM_BURST_RD       0x01&t;/* EISA only: 1=Use burst trans. fm system */
 multiline_comment|/* memory to chip (tx) */
 DECL|macro|HP100_BM_BURST_WR
-mdefine_line|#define HP100_BM_BURST_WR       0x02    /* EISA only: 1=Use burst trans. fm system */
+mdefine_line|#define HP100_BM_BURST_WR       0x02&t;/* EISA only: 1=Use burst trans. fm system */
 multiline_comment|/* memory to chip (rx) */
 DECL|macro|HP100_BM_MASTER
 mdefine_line|#define HP100_BM_MASTER&t;&t;0x04&t;/* 0:Slave, 1:BM mode */
 DECL|macro|HP100_BM_PAGE_CK
-mdefine_line|#define HP100_BM_PAGE_CK        0x08    /* This bit should be set whenever in*/
+mdefine_line|#define HP100_BM_PAGE_CK        0x08&t;/* This bit should be set whenever in */
 multiline_comment|/* an EISA system */
 DECL|macro|HP100_BM_PCI_8CLK
-mdefine_line|#define HP100_BM_PCI_8CLK       0x40    /* ... cycles 8 clocks apart */
+mdefine_line|#define HP100_BM_PCI_8CLK       0x40&t;/* ... cycles 8 clocks apart */
 multiline_comment|/* &n; * Mode Control Register I&n; * (Page HW_MAP, MODECTRL1, Offset0x10)&n; */
 DECL|macro|HP100_TX_DUALQ
 mdefine_line|#define HP100_TX_DUALQ          0x10
-multiline_comment|/* If set and BM -&gt; dual tx pda queues*/
+multiline_comment|/* If set and BM -&gt; dual tx pda queues */
 DECL|macro|HP100_ISR_CLRMODE
-mdefine_line|#define HP100_ISR_CLRMODE       0x02   /* If set ISR will clear all pending */
+mdefine_line|#define HP100_ISR_CLRMODE       0x02&t;/* If set ISR will clear all pending */
 multiline_comment|/* interrupts on read (etr only?) */
 DECL|macro|HP100_EE_NOLOAD
-mdefine_line|#define HP100_EE_NOLOAD         0x04   /* Status whether res will be loaded */
+mdefine_line|#define HP100_EE_NOLOAD         0x04&t;/* Status whether res will be loaded */
 multiline_comment|/* from the eeprom */
 DECL|macro|HP100_TX_CNT_FLG
-mdefine_line|#define HP100_TX_CNT_FLG        0x08   /* Controls Early TX Reg Cnt Field */
+mdefine_line|#define HP100_TX_CNT_FLG        0x08&t;/* Controls Early TX Reg Cnt Field */
 DECL|macro|HP100_PDL_USE3
-mdefine_line|#define HP100_PDL_USE3          0x10   /* If set BM engine will read only */
+mdefine_line|#define HP100_PDL_USE3          0x10&t;/* If set BM engine will read only */
 multiline_comment|/* first three data elements of a PDL */
 multiline_comment|/* on the first access. */
 DECL|macro|HP100_BUSTYPE_MASK
-mdefine_line|#define HP100_BUSTYPE_MASK      0xe0   /* Three bit bus type info */
+mdefine_line|#define HP100_BUSTYPE_MASK      0xe0&t;/* Three bit bus type info */
 multiline_comment|/*&n; * Mode Control Register II&n; * (Page HW_MAP, MODECTRL2, Offset0x11)&n; */
 DECL|macro|HP100_EE_MASK
-mdefine_line|#define HP100_EE_MASK           0x0f   /* Tell EEPROM circuit not to load */ 
+mdefine_line|#define HP100_EE_MASK           0x0f&t;/* Tell EEPROM circuit not to load */
 multiline_comment|/* certain resources */
 DECL|macro|HP100_DIS_CANCEL
-mdefine_line|#define HP100_DIS_CANCEL        0x20   /* For tx dualq mode operation */
+mdefine_line|#define HP100_DIS_CANCEL        0x20&t;/* For tx dualq mode operation */
 DECL|macro|HP100_EN_PDL_WB
-mdefine_line|#define HP100_EN_PDL_WB         0x40   /* 1: Status of PDL completion may be */
+mdefine_line|#define HP100_EN_PDL_WB         0x40&t;/* 1: Status of PDL completion may be */
 multiline_comment|/* written back to system mem */
 DECL|macro|HP100_EN_BUS_FAIL
-mdefine_line|#define HP100_EN_BUS_FAIL       0x80   /* Enables bus-fail portion of misc */
+mdefine_line|#define HP100_EN_BUS_FAIL       0x80&t;/* Enables bus-fail portion of misc */
 multiline_comment|/* interrupt */
 multiline_comment|/* &n; * PCI Configuration and Control Register I&n; * (Page HW_MAP, PCICTRL1, Offset 0x12)&n; */
 DECL|macro|HP100_LO_MEM
-mdefine_line|#define HP100_LO_MEM            0x01   /* 1: Mapped Mem requested below 1MB */
+mdefine_line|#define HP100_LO_MEM            0x01&t;/* 1: Mapped Mem requested below 1MB */
 DECL|macro|HP100_NO_MEM
-mdefine_line|#define HP100_NO_MEM            0x02   /* 1: Disables Req for sysmem to PCI */ 
+mdefine_line|#define HP100_NO_MEM            0x02&t;/* 1: Disables Req for sysmem to PCI */
 multiline_comment|/* bios */
 DECL|macro|HP100_USE_ISA
-mdefine_line|#define HP100_USE_ISA           0x04   /* 1: isa type decodes will occur */
+mdefine_line|#define HP100_USE_ISA           0x04&t;/* 1: isa type decodes will occur */
 multiline_comment|/* simultaneously with PCI decodes */
 DECL|macro|HP100_IRQ_HI_MASK
-mdefine_line|#define HP100_IRQ_HI_MASK       0xf0   /* pgmed by pci bios */
+mdefine_line|#define HP100_IRQ_HI_MASK       0xf0&t;/* pgmed by pci bios */
 DECL|macro|HP100_PCI_IRQ_HI_MASK
-mdefine_line|#define HP100_PCI_IRQ_HI_MASK   0x78    /* Isolate 4 bits for PCI IRQ  */
+mdefine_line|#define HP100_PCI_IRQ_HI_MASK   0x78&t;/* Isolate 4 bits for PCI IRQ  */
 multiline_comment|/*&n; * PCI Configuration and Control Register II&n; * (Page HW_MAP, PCICTRL2, Offset 0x13)&n; */
 DECL|macro|HP100_RD_LINE_PDL
-mdefine_line|#define HP100_RD_LINE_PDL       0x01   /* 1: PCI command Memory Read Line en */
+mdefine_line|#define HP100_RD_LINE_PDL       0x01&t;/* 1: PCI command Memory Read Line en */
 DECL|macro|HP100_RD_TX_DATA_MASK
-mdefine_line|#define HP100_RD_TX_DATA_MASK   0x06   /* choose PCI memread cmds for TX */ 
+mdefine_line|#define HP100_RD_TX_DATA_MASK   0x06&t;/* choose PCI memread cmds for TX */
 DECL|macro|HP100_MWI
-mdefine_line|#define HP100_MWI               0x08   /* 1: en. PCI memory write invalidate */
+mdefine_line|#define HP100_MWI               0x08&t;/* 1: en. PCI memory write invalidate */
 DECL|macro|HP100_ARB_MODE
-mdefine_line|#define HP100_ARB_MODE          0x10   /* Select PCI arbitor type */
+mdefine_line|#define HP100_ARB_MODE          0x10&t;/* Select PCI arbitor type */
 DECL|macro|HP100_STOP_EN
-mdefine_line|#define HP100_STOP_EN           0x20   /* Enables PCI state machine to issue */
+mdefine_line|#define HP100_STOP_EN           0x20&t;/* Enables PCI state machine to issue */
 multiline_comment|/* pci stop if cascade not ready */
 DECL|macro|HP100_IGNORE_PAR
-mdefine_line|#define HP100_IGNORE_PAR        0x40   /* 1: PCI state machine ignores parity*/
+mdefine_line|#define HP100_IGNORE_PAR        0x40&t;/* 1: PCI state machine ignores parity */
 DECL|macro|HP100_PCI_RESET
-mdefine_line|#define HP100_PCI_RESET         0x80   /* 0-&gt;1: Reset PCI block */
+mdefine_line|#define HP100_PCI_RESET         0x80&t;/* 0-&gt;1: Reset PCI block */
 multiline_comment|/*&n; * Early TX Configuration and Control Register&n; * (Page HW_MAP, EARLYTXCFG, Offset 0x16)&n; */
 DECL|macro|HP100_EN_EARLY_TX
-mdefine_line|#define HP100_EN_EARLY_TX       0x8000  /* 1=Enable Early TX */
+mdefine_line|#define HP100_EN_EARLY_TX       0x8000&t;/* 1=Enable Early TX */
 DECL|macro|HP100_EN_ADAPTIVE
-mdefine_line|#define HP100_EN_ADAPTIVE       0x4000  /* 1=Enable adaptive mode */
+mdefine_line|#define HP100_EN_ADAPTIVE       0x4000&t;/* 1=Enable adaptive mode */
 DECL|macro|HP100_EN_TX_UR_IRQ
-mdefine_line|#define HP100_EN_TX_UR_IRQ      0x2000  /* reserved, must be 0 */
+mdefine_line|#define HP100_EN_TX_UR_IRQ      0x2000&t;/* reserved, must be 0 */
 DECL|macro|HP100_EN_LOW_TX
-mdefine_line|#define HP100_EN_LOW_TX         0x1000  /* reserved, must be 0 */
+mdefine_line|#define HP100_EN_LOW_TX         0x1000&t;/* reserved, must be 0 */
 DECL|macro|HP100_ET_CNT_MASK
-mdefine_line|#define HP100_ET_CNT_MASK       0x0fff  /* bits 11..0: ET counters */
+mdefine_line|#define HP100_ET_CNT_MASK       0x0fff&t;/* bits 11..0: ET counters */
 multiline_comment|/*&n; * Early RX Configuration and Control Register&n; * (Page HW_MAP, EARLYRXCFG, Offset 0x18)&n; */
 DECL|macro|HP100_EN_EARLY_RX
-mdefine_line|#define HP100_EN_EARLY_RX       0x80     /* 1=Enable Early RX */
+mdefine_line|#define HP100_EN_EARLY_RX       0x80&t;/* 1=Enable Early RX */
 DECL|macro|HP100_EN_LOW_RX
-mdefine_line|#define HP100_EN_LOW_RX         0x40     /* reserved, must be 0 */
+mdefine_line|#define HP100_EN_LOW_RX         0x40&t;/* reserved, must be 0 */
 DECL|macro|HP100_RX_TRIP_MASK
-mdefine_line|#define HP100_RX_TRIP_MASK      0x1f     /* bits 4..0: threshold at which the&n;&t;&t;&t;&t;&t;  * early rx circuit will start the&n;&t;&t;&t;&t;&t;  * dma of received packet into system&n;&t;&t;&t;&t;&t;  * memory for BM */
+mdefine_line|#define HP100_RX_TRIP_MASK      0x1f&t;/* bits 4..0: threshold at which the&n;&t;&t;&t;&t;&t; * early rx circuit will start the&n;&t;&t;&t;&t;&t; * dma of received packet into system&n;&t;&t;&t;&t;&t; * memory for BM */
 multiline_comment|/*&n; *  Serial Devices Control Register&n; * (Page EEPROM_CTRL, EEPROM_CTRL, Offset 0x08)&n; */
 DECL|macro|HP100_EEPROM_LOAD
 mdefine_line|#define HP100_EEPROM_LOAD&t;0x0001&t;/* 0-&gt;1 loads EEPROM into registers. */
 multiline_comment|/* When it goes back to 0, load is   */
-multiline_comment|/* complete. This should take ~600us.*/
+multiline_comment|/* complete. This should take ~600us. */
 multiline_comment|/*&n; * 10MB LAN Control and Configuration Register I&n; * (Page MAC_CTRL, 10_LAN_CFG_1, Offset 0x08)&n; */
 DECL|macro|HP100_MAC10_SEL
 mdefine_line|#define HP100_MAC10_SEL&t;&t;0xc0&t;/* Get bits to indicate MAC */
@@ -402,9 +402,9 @@ DECL|macro|HP100_SQU_ST
 mdefine_line|#define HP100_SQU_ST&t;&t;0x01&t;/* 0:No, 1:Yes collision signal sent */
 multiline_comment|/*       after Tx.Only used for AUI. */
 DECL|macro|HP100_FULLDUP
-mdefine_line|#define HP100_FULLDUP           0x02    /* 1: LXT901 XCVR fullduplx enabled */
+mdefine_line|#define HP100_FULLDUP           0x02&t;/* 1: LXT901 XCVR fullduplx enabled */
 DECL|macro|HP100_DOT3_MAC
-mdefine_line|#define HP100_DOT3_MAC          0x04    /* 1: DOT 3 Mac sel. unless Autosel */
+mdefine_line|#define HP100_DOT3_MAC          0x04&t;/* 1: DOT 3 Mac sel. unless Autosel */
 multiline_comment|/*&n; * MAC Selection, use with MAC10_SEL bits&n; */
 DECL|macro|HP100_AUTO_SEL_10
 mdefine_line|#define HP100_AUTO_SEL_10&t;0x0&t;/* Auto select */
@@ -442,7 +442,7 @@ mdefine_line|#define HP100_LINK_CMD&t;&t;0x08&t;/* 0-&gt;1 link will attempt to 
 multiline_comment|/* 100ms later the link status */
 multiline_comment|/* bits are valid */
 DECL|macro|HP100_TRN_DONE
-mdefine_line|#define HP100_TRN_DONE          0x04    /* NEW ETR-Chips only: Will be reset */
+mdefine_line|#define HP100_TRN_DONE          0x04&t;/* NEW ETR-Chips only: Will be reset */
 multiline_comment|/* after LinkUp Cmd is given and set */
 multiline_comment|/* when training has completed. */
 DECL|macro|HP100_LINK_GOOD_ST
@@ -477,7 +477,7 @@ mdefine_line|#define HP100_MAC1MODE3&t;&t;HP100_MAC1MODE2 | HP100_ACC_BC
 DECL|macro|HP100_MAC1MODE4
 mdefine_line|#define HP100_MAC1MODE4&t;&t;HP100_MAC1MODE3 | HP100_ACC_MC
 DECL|macro|HP100_MAC1MODE5
-mdefine_line|#define HP100_MAC1MODE5&t;&t;HP100_MAC1MODE4 /* set mc hash to all ones also */
+mdefine_line|#define HP100_MAC1MODE5&t;&t;HP100_MAC1MODE4&t;/* set mc hash to all ones also */
 DECL|macro|HP100_MAC1MODE6
 mdefine_line|#define HP100_MAC1MODE6&t;&t;HP100_MAC1MODE5 | HP100_ACC_PHY&t;/* Promiscuous */
 multiline_comment|/* Note MODE6 will receive all GOOD packets on the LAN. This really needs&n;   a mode 7 defined to be LAN Analyzer mode, which will receive errored and&n;   runt packets, and keep the CRC bytes. */
@@ -496,12 +496,12 @@ mdefine_line|#define HP100_LBK_MAC&t;&t;0x10&t;/* 0:No, 1:Yes loopback through M
 DECL|macro|HP100_CRC_I
 mdefine_line|#define HP100_CRC_I&t;&t;0x08&t;/* 0:No, 1:Yes inhibit CRC on Tx packets */
 DECL|macro|HP100_ACCNA
-mdefine_line|#define HP100_ACCNA             0x04    /* 1: For 802.5: Accept only token ring&n;&t;&t;&t;&t;&t; * group addr that maches NA mask */
+mdefine_line|#define HP100_ACCNA             0x04&t;/* 1: For 802.5: Accept only token ring&n;&t;&t;&t;&t;&t; * group addr that maches NA mask */
 DECL|macro|HP100_KEEP_CRC
 mdefine_line|#define HP100_KEEP_CRC&t;&t;0x02&t;/* 0:No, 1:Yes keep CRC on Rx packets. */
 multiline_comment|/*   The length will reflect this. */
 DECL|macro|HP100_ACCFA
-mdefine_line|#define HP100_ACCFA             0x01    /* 1: For 802.5: Accept only functional&n;&t;&t;&t;&t;&t; * addrs that match FA mask (page1) */
+mdefine_line|#define HP100_ACCFA             0x01&t;/* 1: For 802.5: Accept only functional&n;&t;&t;&t;&t;&t; * addrs that match FA mask (page1) */
 DECL|macro|HP100_MAC2MODEMASK
 mdefine_line|#define HP100_MAC2MODEMASK&t;0x02
 DECL|macro|HP100_MAC2MODE1
@@ -520,43 +520,43 @@ DECL|macro|HP100_MAC2MODE7
 mdefine_line|#define HP100_MAC2MODE7&t;&t;KEEP_CRC
 multiline_comment|/*&n; * MAC Configuration Register III &n; * (Page MAC_CTRL, MAC_CFG_3, Offset 0x0e) &n; */
 DECL|macro|HP100_PACKET_PACE
-mdefine_line|#define HP100_PACKET_PACE       0x03     /* Packet Pacing:&n;&t;&t;&t;&t;&t;  * 00: No packet pacing&n;                                          * 01: 8 to 16 uS delay&n;                                          * 10: 16 to 32 uS delay&n;                                          * 11: 32 to 64 uS delay&n;&t;&t;&t;&t;&t;  */
+mdefine_line|#define HP100_PACKET_PACE       0x03&t;/* Packet Pacing:&n;&t;&t;&t;&t;&t; * 00: No packet pacing&n;&t;&t;&t;&t;&t; * 01: 8 to 16 uS delay&n;&t;&t;&t;&t;&t; * 10: 16 to 32 uS delay&n;&t;&t;&t;&t;&t; * 11: 32 to 64 uS delay&n;&t;&t;&t;&t;&t; */
 DECL|macro|HP100_LRF_EN
-mdefine_line|#define HP100_LRF_EN            0x04     /* 1: External LAN Rcv Filter and&n;&t;&t;&t;&t;&t;  * TCP/IP Checksumming enabled. */
+mdefine_line|#define HP100_LRF_EN            0x04&t;/* 1: External LAN Rcv Filter and&n;&t;&t;&t;&t;&t; * TCP/IP Checksumming enabled. */
 DECL|macro|HP100_AUTO_MODE
-mdefine_line|#define HP100_AUTO_MODE         0x10     /* 1: AutoSelect between 10/100 */
+mdefine_line|#define HP100_AUTO_MODE         0x10&t;/* 1: AutoSelect between 10/100 */
 multiline_comment|/*&n; * MAC Configuration Register IV &n; * (Page MAC_CTRL, MAC_CFG_4, Offset 0x0f)&n; */
 DECL|macro|HP100_MAC_SEL_ST
-mdefine_line|#define HP100_MAC_SEL_ST        0x01      /* (R): Status of external VGSEL&n;&t;&t;&t;&t;&t;   * Signal, 1=100VG, 0=10Mbit sel. */
+mdefine_line|#define HP100_MAC_SEL_ST        0x01&t;/* (R): Status of external VGSEL&n;&t;&t;&t;&t;&t; * Signal, 1=100VG, 0=10Mbit sel. */
 DECL|macro|HP100_LINK_FAIL_ST
-mdefine_line|#define HP100_LINK_FAIL_ST      0x02      /* (R): Status of Link Fail portion&n;                                           * of the Misc. Interrupt */
+mdefine_line|#define HP100_LINK_FAIL_ST      0x02&t;/* (R): Status of Link Fail portion&n;&t;&t;&t;&t;&t; * of the Misc. Interrupt */
 multiline_comment|/* &n; *  100 MB LAN Training Request/Allowed Registers &n; * (Page MAC_CTRL, TRAIN_REQUEST and TRAIN_ALLOW, Offset 0x14-0x16)(ETR parts only)&n; */
 DECL|macro|HP100_MACRQ_REPEATER
-mdefine_line|#define HP100_MACRQ_REPEATER         0x0001  /* 1: MAC tells HUB it wants to be &n;&t;&t;&t;&t;              *    a cascaded repeater&n;&t;&t;&t;&t;&t;      * 0: ... wants to be a DTE */
+mdefine_line|#define HP100_MACRQ_REPEATER         0x0001&t;/* 1: MAC tells HUB it wants to be &n;&t;&t;&t;&t;&t;&t; *    a cascaded repeater&n;&t;&t;&t;&t;&t;&t; * 0: ... wants to be a DTE */
 DECL|macro|HP100_MACRQ_PROMSC
-mdefine_line|#define HP100_MACRQ_PROMSC           0x0006  /* 2 bits: Promiscious mode&n;&t;&t;&t;&t;&t;      * 00: Rcv only unicast packets&n;&t;&t;&t;&t;&t;      *     specifically addr to this&n;&t;&t;&t;&t;&t;      *     endnode&n;&t;&t;&t;&t;&t;      * 10: Rcv all pckts fwded by &n;&t;&t;&t;&t;&t;      *     the local repeater */
+mdefine_line|#define HP100_MACRQ_PROMSC           0x0006&t;/* 2 bits: Promiscious mode&n;&t;&t;&t;&t;&t;&t; * 00: Rcv only unicast packets&n;&t;&t;&t;&t;&t;&t; *     specifically addr to this&n;&t;&t;&t;&t;&t;&t; *     endnode&n;&t;&t;&t;&t;&t;&t; * 10: Rcv all pckts fwded by &n;&t;&t;&t;&t;&t;&t; *     the local repeater */
 DECL|macro|HP100_MACRQ_FRAMEFMT_EITHER
-mdefine_line|#define HP100_MACRQ_FRAMEFMT_EITHER  0x0018  /* 11: either format allowed */
+mdefine_line|#define HP100_MACRQ_FRAMEFMT_EITHER  0x0018&t;/* 11: either format allowed */
 DECL|macro|HP100_MACRQ_FRAMEFMT_802_3
-mdefine_line|#define HP100_MACRQ_FRAMEFMT_802_3   0x0000  /* 00: 802.3 is requested */
+mdefine_line|#define HP100_MACRQ_FRAMEFMT_802_3   0x0000&t;/* 00: 802.3 is requested */
 DECL|macro|HP100_MACRQ_FRAMEFMT_802_5
-mdefine_line|#define HP100_MACRQ_FRAMEFMT_802_5   0x0010  /* 10: 802.5 format is requested */
+mdefine_line|#define HP100_MACRQ_FRAMEFMT_802_5   0x0010&t;/* 10: 802.5 format is requested */
 DECL|macro|HP100_CARD_MACVER
-mdefine_line|#define HP100_CARD_MACVER            0xe000  /* R: 3 bit Cards 100VG MAC version */
+mdefine_line|#define HP100_CARD_MACVER            0xe000&t;/* R: 3 bit Cards 100VG MAC version */
 DECL|macro|HP100_MALLOW_REPEATER
-mdefine_line|#define HP100_MALLOW_REPEATER        0x0001  /* If reset, requested access as an&n;&t;&t;&t;&t;&t;      * end node is allowed */
+mdefine_line|#define HP100_MALLOW_REPEATER        0x0001&t;/* If reset, requested access as an&n;&t;&t;&t;&t;&t;&t; * end node is allowed */
 DECL|macro|HP100_MALLOW_PROMSC
-mdefine_line|#define HP100_MALLOW_PROMSC          0x0004  /* 2 bits: Promiscious mode&n;&t;&t;&t;&t;&t;      * 00: Rcv only unicast packets&n;&t;&t;&t;&t;&t;      *     specifically addr to this&n;&t;&t;&t;&t;&t;      *     endnode&n;&t;&t;&t;&t;&t;      * 10: Rcv all pckts fwded by &n;&t;&t;&t;&t;&t;      *     the local repeater */
+mdefine_line|#define HP100_MALLOW_PROMSC          0x0004&t;/* 2 bits: Promiscious mode&n;&t;&t;&t;&t;&t;&t; * 00: Rcv only unicast packets&n;&t;&t;&t;&t;&t;&t; *     specifically addr to this&n;&t;&t;&t;&t;&t;&t; *     endnode&n;&t;&t;&t;&t;&t;&t; * 10: Rcv all pckts fwded by &n;&t;&t;&t;&t;&t;&t; *     the local repeater */
 DECL|macro|HP100_MALLOW_FRAMEFMT
-mdefine_line|#define HP100_MALLOW_FRAMEFMT        0x00e0  /* 2 bits: Frame Format&n;&t;&t;&t;&t;&t;      * 00: 802.3 format will be used&n;&t;&t;&t;&t;&t;      * 10: 802.5 format will be used */
+mdefine_line|#define HP100_MALLOW_FRAMEFMT        0x00e0&t;/* 2 bits: Frame Format&n;&t;&t;&t;&t;&t;&t; * 00: 802.3 format will be used&n;&t;&t;&t;&t;&t;&t; * 10: 802.5 format will be used */
 DECL|macro|HP100_MALLOW_ACCDENIED
-mdefine_line|#define HP100_MALLOW_ACCDENIED       0x0400  /* N bit */
+mdefine_line|#define HP100_MALLOW_ACCDENIED       0x0400&t;/* N bit */
 DECL|macro|HP100_MALLOW_CONFIGURE
-mdefine_line|#define HP100_MALLOW_CONFIGURE       0x0f00  /* C bit */
+mdefine_line|#define HP100_MALLOW_CONFIGURE       0x0f00&t;/* C bit */
 DECL|macro|HP100_MALLOW_DUPADDR
-mdefine_line|#define HP100_MALLOW_DUPADDR         0x1000  /* D bit */
+mdefine_line|#define HP100_MALLOW_DUPADDR         0x1000&t;/* D bit */
 DECL|macro|HP100_HUB_MACVER
-mdefine_line|#define HP100_HUB_MACVER             0xe000  /* R: 3 bit 802.12 MAC/RMAC training */
+mdefine_line|#define HP100_HUB_MACVER             0xe000&t;/* R: 3 bit 802.12 MAC/RMAC training */
 multiline_comment|/*    protocol of repeater */
 multiline_comment|/* ****************************************************************************** */
 multiline_comment|/*&n; *  Set/Reset bits&n; */
@@ -570,7 +570,7 @@ DECL|macro|HP100_RESET_LB
 mdefine_line|#define HP100_RESET_LB&t;&t;0x0000&t;/* For readability when resetting bits */
 multiline_comment|/*&n; *  Misc. Constants&n; */
 DECL|macro|HP100_LAN_100
-mdefine_line|#define HP100_LAN_100&t;&t;100     /* lan_type value for VG */
+mdefine_line|#define HP100_LAN_100&t;&t;100&t;/* lan_type value for VG */
 DECL|macro|HP100_LAN_10
 mdefine_line|#define HP100_LAN_10&t;&t;10&t;/* lan_type value for 10BaseT */
 DECL|macro|HP100_LAN_ERR
@@ -581,13 +581,13 @@ DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 multiline_comment|/* &n; * Bus Master Data Structures  ----------------------------------------------&n; */
 DECL|macro|MAX_RX_PDL
-mdefine_line|#define MAX_RX_PDL              30   /* Card limit = 31 */
+mdefine_line|#define MAX_RX_PDL              30&t;/* Card limit = 31 */
 DECL|macro|MAX_RX_FRAG
-mdefine_line|#define MAX_RX_FRAG             2    /* Don&squot;t need more... */
+mdefine_line|#define MAX_RX_FRAG             2&t;/* Don&squot;t need more... */
 DECL|macro|MAX_TX_PDL
 mdefine_line|#define MAX_TX_PDL              29
 DECL|macro|MAX_TX_FRAG
-mdefine_line|#define MAX_TX_FRAG             2   /* Limit = 31 */
+mdefine_line|#define MAX_TX_FRAG             2&t;/* Limit = 31 */
 multiline_comment|/* Define total PDL area size in bytes (should be 4096) */
 multiline_comment|/* This is the size of kernel (dma) memory that will be allocated. */
 DECL|macro|MAX_RINGSIZE
@@ -596,7 +596,7 @@ multiline_comment|/* Ethernet Packet Sizes */
 DECL|macro|MIN_ETHER_SIZE
 mdefine_line|#define MIN_ETHER_SIZE          60
 DECL|macro|MAX_ETHER_SIZE
-mdefine_line|#define MAX_ETHER_SIZE          1514    /* Needed for preallocation of */
+mdefine_line|#define MAX_ETHER_SIZE          1514&t;/* Needed for preallocation of */
 multiline_comment|/* skb buffer when busmastering */
 multiline_comment|/* Tx or Rx Ring Entry */
 DECL|struct|hp100_ring
@@ -609,7 +609,7 @@ id|u_int
 op_star
 id|pdl
 suffix:semicolon
-multiline_comment|/* Address of PDLs PDH, dword before&n;&t;&t;&t;&t;&t; * this address is used for rx hdr */
+multiline_comment|/* Address of PDLs PDH, dword before&n;&t;&t;&t;&t; * this address is used for rx hdr */
 DECL|member|pdl_paddr
 id|u_int
 id|pdl_paddr
@@ -701,6 +701,4 @@ DECL|macro|hp100_mem_map_enable
 mdefine_line|#define hp100_mem_map_enable() &bslash;&n;&t;outw( HP100_MMAP_DIS | HP100_RESET_HB, ioaddr + HP100_REG_OPTION_LSW )
 DECL|macro|hp100_mem_map_disable
 mdefine_line|#define hp100_mem_map_disable() &bslash;&n;&t;outw( HP100_MMAP_DIS | HP100_SET_HB, ioaddr + HP100_REG_OPTION_LSW )
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; *  c-indent-level: 2&n; *  tab-width: 8&n; * End:&n;*/
 eof

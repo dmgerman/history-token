@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: FIB frontend.&n; *&n; * Version:&t;$Id: fib_frontend.c,v 1.23 2001/05/01 23:21:37 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: FIB frontend.&n; *&n; * Version:&t;$Id: fib_frontend.c,v 1.24 2001/05/13 18:14:46 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2554,9 +2554,6 @@ id|net_device
 op_star
 id|dev
 comma
-id|u32
-id|addr
-comma
 r_int
 id|force
 )paren
@@ -2567,7 +2564,7 @@ c_cond
 id|fib_sync_down
 c_func
 (paren
-id|addr
+l_int|0
 comma
 id|dev
 comma
@@ -2651,6 +2648,12 @@ suffix:semicolon
 r_case
 id|NETDEV_DOWN
 suffix:colon
+id|fib_del_ifaddr
+c_func
+(paren
+id|ifa
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2667,20 +2670,12 @@ c_func
 (paren
 id|ifa-&gt;ifa_dev-&gt;dev
 comma
-id|ifa-&gt;ifa_local
-comma
 l_int|1
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|fib_del_ifaddr
-c_func
-(paren
-id|ifa
-)paren
-suffix:semicolon
 id|rt_cache_flush
 c_func
 (paren
@@ -2797,8 +2792,6 @@ c_func
 id|dev
 comma
 l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -2810,8 +2803,6 @@ id|fib_disable_ip
 c_func
 (paren
 id|dev
-comma
-l_int|0
 comma
 l_int|1
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pbm.h,v 1.25 2001/02/28 03:28:55 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pbm.h,v 1.26 2001/05/15 08:54:30 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_PBM_H
 DECL|macro|__SPARC64_PBM_H
 mdefine_line|#define __SPARC64_PBM_H
@@ -344,6 +344,11 @@ multiline_comment|/* Each controller gets a unique index, used mostly for&n;&t; 
 DECL|member|index
 r_int
 id|index
+suffix:semicolon
+multiline_comment|/* Do the PBMs both exist in the same PCI domain? */
+DECL|member|pbms_same_domain
+r_int
+id|pbms_same_domain
 suffix:semicolon
 multiline_comment|/* The PCI bus modules controlled by us. */
 DECL|member|pbm_A

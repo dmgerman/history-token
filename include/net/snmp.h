@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;SNMP MIB entries for the IP subsystem.&n; *&t;&t;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&n; *&t;&t;We don&squot;t chose to implement SNMP in the kernel (this would&n; *&t;&t;be silly as SNMP is a pain in the backside in places). We do&n; *&t;&t;however need to collect the MIB statistics and export them&n; *&t;&t;out of /proc (eventually)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;&t;$Id: snmp.h,v 1.17 2000/09/21 01:31:50 davem Exp $&n; *&n; */
+multiline_comment|/*&n; *&n; *&t;&t;SNMP MIB entries for the IP subsystem.&n; *&t;&t;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&n; *&t;&t;We don&squot;t chose to implement SNMP in the kernel (this would&n; *&t;&t;be silly as SNMP is a pain in the backside in places). We do&n; *&t;&t;however need to collect the MIB statistics and export them&n; *&t;&t;out of /proc (eventually)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;&t;$Id: snmp.h,v 1.18 2001/05/16 16:45:35 davem Exp $&n; *&n; */
 macro_line|#ifndef _SNMP_H
 DECL|macro|_SNMP_H
 mdefine_line|#define _SNMP_H
@@ -704,6 +704,11 @@ DECL|member|LockDroppedIcmps
 r_int
 r_int
 id|LockDroppedIcmps
+suffix:semicolon
+DECL|member|ArpFilter
+r_int
+r_int
+id|ArpFilter
 suffix:semicolon
 DECL|member|TimeWaited
 r_int

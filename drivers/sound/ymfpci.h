@@ -213,6 +213,10 @@ DECL|macro|PCIR_ELEGCTRL
 mdefine_line|#define PCIR_ELEGCTRL&t;&t;&t;0x42
 DECL|macro|PCIR_DSXGCTRL
 mdefine_line|#define PCIR_DSXGCTRL&t;&t;&t;0x48
+DECL|macro|PCIR_DSXPWRCTRL1
+mdefine_line|#define PCIR_DSXPWRCTRL1&t;&t;0x4a
+DECL|macro|PCIR_DSXPWRCTRL2
+mdefine_line|#define PCIR_DSXPWRCTRL2&t;&t;0x4e
 DECL|macro|PCIR_OPLADR
 mdefine_line|#define PCIR_OPLADR&t;&t;&t;0x60
 DECL|macro|PCIR_SBADR

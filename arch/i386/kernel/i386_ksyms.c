@@ -463,6 +463,13 @@ c_func
 id|pcibios_penalize_isa_irq
 )paren
 suffix:semicolon
+DECL|variable|pci_mem_start
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_mem_start
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_USE_3DNOW
 DECL|variable|_mmx_memcpy

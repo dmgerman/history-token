@@ -8,6 +8,7 @@ mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/mpc8xx.h&gt;
 multiline_comment|/* Machine State Register (MSR) Fields */
 macro_line|#ifdef CONFIG_PPC64BRIDGE
 DECL|macro|MSR_SF
@@ -39,6 +40,8 @@ DECL|macro|MSR_FE0
 mdefine_line|#define MSR_FE0&t;&t;(1&lt;&lt;11)&t;&t;/* Floating Exception mode 0 */
 DECL|macro|MSR_SE
 mdefine_line|#define MSR_SE&t;&t;(1&lt;&lt;10)&t;&t;/* Single Step */
+DECL|macro|MSR_DWE
+mdefine_line|#define MSR_DWE&t;&t;(1&lt;&lt;10)&t;&t;/* Debug Wait Enable (4xx) */
 DECL|macro|MSR_BE
 mdefine_line|#define MSR_BE&t;&t;(1&lt;&lt;9)&t;&t;/* Branch Trace */
 DECL|macro|MSR_DE
@@ -126,6 +129,8 @@ mdefine_line|#define FPSCR_NI&t;0x00000004&t;/* FPU non IEEE-Mode */
 DECL|macro|FPSCR_RN
 mdefine_line|#define FPSCR_RN&t;0x00000003&t;/* FPU rounding control */
 multiline_comment|/* Special Purpose Registers (SPRNs)*/
+DECL|macro|SPRN_CCR0
+mdefine_line|#define&t;SPRN_CCR0&t;0x3B3&t;/* Core Configuration Register (4xx) */
 DECL|macro|SPRN_CDBCR
 mdefine_line|#define&t;SPRN_CDBCR&t;0x3D7&t;/* Cache Debug Control Register */
 DECL|macro|SPRN_CTR
@@ -226,6 +231,10 @@ DECL|macro|SPRN_DBCR1
 mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */
 DECL|macro|SPRN_DBSR
 mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */
+DECL|macro|DBSR_IC
+mdefine_line|#define   DBSR_IC&t;    0x80000000&t;/* Instruction Completion             */
+DECL|macro|DBSR_TIE
+mdefine_line|#define   DBSR_TIE&t;    0x10000000&t;/* Trap Instruction debug Event       */
 DECL|macro|SPRN_DCCR
 mdefine_line|#define&t;SPRN_DCCR&t;0x3FA&t;/* Data Cache Cacheability Register */
 DECL|macro|DCCR_NOCACHE
@@ -244,6 +253,46 @@ DECL|macro|SPRN_DEAR
 mdefine_line|#define&t;SPRN_DEAR&t;0x3D5&t;/* Data Error Address Register */
 DECL|macro|SPRN_DEC
 mdefine_line|#define&t;SPRN_DEC&t;0x016&t;/* Decrement Register */
+DECL|macro|SPRN_DER
+mdefine_line|#define&t;SPRN_DER&t;0x095&t;/* Debug Enable Regsiter */
+DECL|macro|DER_RSTE
+mdefine_line|#define   DER_RSTE&t;0x40000000&t;/* Reset Interrupt */
+DECL|macro|DER_CHSTPE
+mdefine_line|#define   DER_CHSTPE&t;0x20000000&t;/* Check Stop */
+DECL|macro|DER_MCIE
+mdefine_line|#define   DER_MCIE&t;0x10000000&t;/* Machine Check Interrupt */
+DECL|macro|DER_EXTIE
+mdefine_line|#define   DER_EXTIE&t;0x02000000&t;/* External Interrupt */
+DECL|macro|DER_ALIE
+mdefine_line|#define   DER_ALIE&t;0x01000000&t;/* Alignment Interrupt */
+DECL|macro|DER_PRIE
+mdefine_line|#define   DER_PRIE&t;0x00800000&t;/* Program Interrupt */
+DECL|macro|DER_FPUVIE
+mdefine_line|#define   DER_FPUVIE&t;0x00400000&t;/* FP Unavailable Interrupt */
+DECL|macro|DER_DECIE
+mdefine_line|#define   DER_DECIE&t;0x00200000&t;/* Decrementer Interrupt */
+DECL|macro|DER_SYSIE
+mdefine_line|#define   DER_SYSIE&t;0x00040000&t;/* System Call Interrupt */
+DECL|macro|DER_TRE
+mdefine_line|#define   DER_TRE&t;0x00020000&t;/* Trace Interrupt */
+DECL|macro|DER_SEIE
+mdefine_line|#define   DER_SEIE&t;0x00004000&t;/* FP SW Emulation Interrupt */
+DECL|macro|DER_ITLBMSE
+mdefine_line|#define   DER_ITLBMSE&t;0x00002000&t;/* Imp. Spec. Instruction TLB Miss */
+DECL|macro|DER_ITLBERE
+mdefine_line|#define   DER_ITLBERE&t;0x00001000&t;/* Imp. Spec. Instruction TLB Error */
+DECL|macro|DER_DTLBMSE
+mdefine_line|#define   DER_DTLBMSE&t;0x00000800&t;/* Imp. Spec. Data TLB Miss */
+DECL|macro|DER_DTLBERE
+mdefine_line|#define   DER_DTLBERE&t;0x00000400&t;/* Imp. Spec. Data TLB Error */
+DECL|macro|DER_LBRKE
+mdefine_line|#define   DER_LBRKE&t;0x00000008&t;/* Load/Store Breakpoint Interrupt */
+DECL|macro|DER_IBRKE
+mdefine_line|#define   DER_IBRKE&t;0x00000004&t;/* Instruction Breakpoint Interrupt */
+DECL|macro|DER_EBRKE
+mdefine_line|#define   DER_EBRKE&t;0x00000002&t;/* External Breakpoint Interrupt */
+DECL|macro|DER_DPIE
+mdefine_line|#define   DER_DPIE&t;0x00000001&t;/* Dev. Port Nonmaskable Request */
 DECL|macro|SPRN_DMISS
 mdefine_line|#define&t;SPRN_DMISS&t;0x3D0&t;/* Data TLB Miss Register */
 DECL|macro|SPRN_DSISR
@@ -318,6 +367,8 @@ DECL|macro|HID0_SGE
 mdefine_line|#define   HID0_SGE&t;(1&lt;&lt;7)&t;&t;/* Store Gathering Enable */
 DECL|macro|HID0_SIED
 mdefine_line|#define&t;  HID0_SIED&t;(1&lt;&lt;7)&t;&t;/* Serial Instr. Execution [Disable] */
+DECL|macro|HID0_DFCA
+mdefine_line|#define&t;  HID0_DFCA&t;(1&lt;&lt;6)&t;&t;/* Data Cache Flush Assist */
 DECL|macro|HID0_BTIC
 mdefine_line|#define   HID0_BTIC&t;(1&lt;&lt;5)&t;&t;/* Branch Target Instruction Cache Enable */
 DECL|macro|HID0_ABE
@@ -368,18 +419,64 @@ DECL|macro|SPRN_IMMR
 mdefine_line|#define&t;SPRN_IMMR&t;0x27E  &t;/* Internal Memory Map Register */
 DECL|macro|SPRN_L2CR
 mdefine_line|#define&t;SPRN_L2CR&t;0x3F9&t;/* Level 2 Cache Control Regsiter */
-DECL|macro|L2CR_PIPE_LATEWR
-mdefine_line|#define   L2CR_PIPE_LATEWR   (0x01800000)   /* late-write SRAM */
-DECL|macro|L2CR_L2CTL
-mdefine_line|#define   L2CR_L2CTL         (0x00100000)   /* RAM control */
-DECL|macro|L2CR_INST_DISABLE
-mdefine_line|#define   L2CR_INST_DISABLE  (0x00400000)   /* disable for insn&squot;s */
-DECL|macro|L2CR_L2I
-mdefine_line|#define   L2CR_L2I           (0x00200000)   /* global invalidate */
 DECL|macro|L2CR_L2E
-mdefine_line|#define   L2CR_L2E           (0x80000000)   /* enable */
+mdefine_line|#define L2CR_L2E&t;&t;0x80000000&t;/* L2 enable */
+DECL|macro|L2CR_L2PE
+mdefine_line|#define L2CR_L2PE&t;&t;0x40000000&t;/* L2 parity enable */
+DECL|macro|L2CR_L2SIZ_MASK
+mdefine_line|#define&t;L2CR_L2SIZ_MASK&t;&t;0x30000000&t;/* L2 size mask */
+DECL|macro|L2CR_L2SIZ_256KB
+mdefine_line|#define L2CR_L2SIZ_256KB&t;0x10000000&t;/* L2 size 256KB */
+DECL|macro|L2CR_L2SIZ_512KB
+mdefine_line|#define L2CR_L2SIZ_512KB&t;0x20000000&t;/* L2 size 512KB */
+DECL|macro|L2CR_L2SIZ_1MB
+mdefine_line|#define L2CR_L2SIZ_1MB&t;&t;0x30000000&t;/* L2 size 1MB */
+DECL|macro|L2CR_L2CLK_MASK
+mdefine_line|#define L2CR_L2CLK_MASK&t;&t;0x0e000000&t;/* L2 clock mask */
+DECL|macro|L2CR_L2CLK_DISABLED
+mdefine_line|#define L2CR_L2CLK_DISABLED&t;0x00000000&t;/* L2 clock disabled */
+DECL|macro|L2CR_L2CLK_DIV1
+mdefine_line|#define L2CR_L2CLK_DIV1&t;&t;0x02000000&t;/* L2 clock / 1 */
+DECL|macro|L2CR_L2CLK_DIV1_5
+mdefine_line|#define L2CR_L2CLK_DIV1_5&t;0x04000000&t;/* L2 clock / 1.5 */
+DECL|macro|L2CR_L2CLK_DIV2
+mdefine_line|#define L2CR_L2CLK_DIV2&t;&t;0x08000000&t;/* L2 clock / 2 */
+DECL|macro|L2CR_L2CLK_DIV2_5
+mdefine_line|#define L2CR_L2CLK_DIV2_5&t;0x0a000000&t;/* L2 clock / 2.5 */
+DECL|macro|L2CR_L2CLK_DIV3
+mdefine_line|#define L2CR_L2CLK_DIV3&t;&t;0x0c000000&t;/* L2 clock / 3 */
+DECL|macro|L2CR_L2RAM_MASK
+mdefine_line|#define L2CR_L2RAM_MASK&t;&t;0x01800000&t;/* L2 RAM type mask */
+DECL|macro|L2CR_L2RAM_FLOW
+mdefine_line|#define L2CR_L2RAM_FLOW&t;&t;0x00000000&t;/* L2 RAM flow through */
+DECL|macro|L2CR_L2RAM_PIPE
+mdefine_line|#define L2CR_L2RAM_PIPE&t;&t;0x01000000&t;/* L2 RAM pipelined */
+DECL|macro|L2CR_L2RAM_PIPE_LW
+mdefine_line|#define L2CR_L2RAM_PIPE_LW&t;0x01800000&t;/* L2 RAM pipelined latewr */
+DECL|macro|L2CR_L2DO
+mdefine_line|#define&t;L2CR_L2DO&t;&t;0x00400000&t;/* L2 data only */
+DECL|macro|L2CR_L2I
+mdefine_line|#define L2CR_L2I&t;&t;0x00200000&t;/* L2 global invalidate */
+DECL|macro|L2CR_L2CTL
+mdefine_line|#define L2CR_L2CTL&t;&t;0x00100000&t;/* L2 RAM control */
 DECL|macro|L2CR_L2WT
-mdefine_line|#define   L2CR_L2WT          (0x00080000)   /* write-through */
+mdefine_line|#define L2CR_L2WT&t;&t;0x00080000&t;/* L2 write-through */
+DECL|macro|L2CR_L2TS
+mdefine_line|#define L2CR_L2TS&t;&t;0x00040000&t;/* L2 test support */
+DECL|macro|L2CR_L2OH_MASK
+mdefine_line|#define L2CR_L2OH_MASK&t;&t;0x00030000&t;/* L2 output hold mask */
+DECL|macro|L2CR_L2OH_0_5
+mdefine_line|#define L2CR_L2OH_0_5&t;&t;0x00000000&t;/* L2 output hold 0.5 ns */
+DECL|macro|L2CR_L2OH_1_0
+mdefine_line|#define L2CR_L2OH_1_0&t;&t;0x00010000&t;/* L2 output hold 1.0 ns */
+DECL|macro|L2CR_L2SL
+mdefine_line|#define L2CR_L2SL&t;&t;0x00008000&t;/* L2 DLL slow */
+DECL|macro|L2CR_L2DF
+mdefine_line|#define L2CR_L2DF&t;&t;0x00004000&t;/* L2 differential clock */
+DECL|macro|L2CR_L2BYP
+mdefine_line|#define L2CR_L2BYP&t;&t;0x00002000&t;/* L2 DLL bypass */
+DECL|macro|L2CR_L2IP
+mdefine_line|#define L2CR_L2IP&t;&t;0x00000001&t;/* L2 GI in progress */
 DECL|macro|SPRN_LR
 mdefine_line|#define&t;SPRN_LR&t;&t;0x008&t;/* Link Register */
 DECL|macro|SPRN_MMCR0
@@ -432,6 +529,14 @@ DECL|macro|SPRN_SPRG2
 mdefine_line|#define&t;SPRN_SPRG2&t;0x112&t;/* Special Purpose Register General 2 */
 DECL|macro|SPRN_SPRG3
 mdefine_line|#define&t;SPRN_SPRG3&t;0x113&t;/* Special Purpose Register General 3 */
+DECL|macro|SPRN_SPRG4
+mdefine_line|#define&t;SPRN_SPRG4&t;0x114&t;/* Special Purpose Register General 4 (4xx) */
+DECL|macro|SPRN_SPRG5
+mdefine_line|#define&t;SPRN_SPRG5&t;0x115&t;/* Special Purpose Register General 5 (4xx) */
+DECL|macro|SPRN_SPRG6
+mdefine_line|#define&t;SPRN_SPRG6&t;0x116&t;/* Special Purpose Register General 6 (4xx) */
+DECL|macro|SPRN_SPRG7
+mdefine_line|#define&t;SPRN_SPRG7&t;0x117&t;/* Special Purpose Register General 7 (4xx) */
 DECL|macro|SPRN_SRR0
 mdefine_line|#define&t;SPRN_SRR0&t;0x01A&t;/* Save/Restore Register 0 */
 DECL|macro|SPRN_SRR1
@@ -448,14 +553,6 @@ DECL|macro|SPRN_TBWL
 mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (supervisor, R/W) */
 DECL|macro|SPRN_TBWU
 mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (supervisor, R/W) */
-DECL|macro|SPRN_TBHI
-mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High (4xx) */
-DECL|macro|SPRN_TBHU
-mdefine_line|#define&t;SPRN_TBHU&t;0x3CC&t;/* Time Base High User-mode (4xx) */
-DECL|macro|SPRN_TBLO
-mdefine_line|#define&t;SPRN_TBLO&t;0x3DD&t;/* Time Base Low (4xx) */
-DECL|macro|SPRN_TBLU
-mdefine_line|#define&t;SPRN_TBLU&t;0x3CD&t;/* Time Base Low User-mode (4xx) */
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
 DECL|macro|TCR_WP
@@ -642,6 +739,14 @@ DECL|macro|SPR2
 mdefine_line|#define&t;SPR2&t;SPRN_SPRG2
 DECL|macro|SPR3
 mdefine_line|#define&t;SPR3&t;SPRN_SPRG3
+DECL|macro|SPR4
+mdefine_line|#define&t;SPR4&t;SPRN_SPRG4&t;/* Supervisor Private Registers (4xx) */
+DECL|macro|SPR5
+mdefine_line|#define&t;SPR5&t;SPRN_SPRG5
+DECL|macro|SPR6
+mdefine_line|#define&t;SPR6&t;SPRN_SPRG6
+DECL|macro|SPR7
+mdefine_line|#define&t;SPR7&t;SPRN_SPRG7
 DECL|macro|SPRG0
 mdefine_line|#define&t;SPRG0   SPRN_SPRG0
 DECL|macro|SPRG1
@@ -650,6 +755,14 @@ DECL|macro|SPRG2
 mdefine_line|#define&t;SPRG2   SPRN_SPRG2
 DECL|macro|SPRG3
 mdefine_line|#define&t;SPRG3   SPRN_SPRG3
+DECL|macro|SPRG4
+mdefine_line|#define&t;SPRG4   SPRN_SPRG4
+DECL|macro|SPRG5
+mdefine_line|#define&t;SPRG5   SPRN_SPRG5
+DECL|macro|SPRG6
+mdefine_line|#define&t;SPRG6   SPRN_SPRG6
+DECL|macro|SPRG7
+mdefine_line|#define&t;SPRG7   SPRN_SPRG7
 DECL|macro|SRR0
 mdefine_line|#define&t;SRR0&t;SPRN_SRR0&t;/* Save and Restore Register 0 */
 DECL|macro|SRR1
@@ -672,153 +785,6 @@ DECL|macro|THRM3
 mdefine_line|#define&t;THRM3&t;SPRN_THRM3&t;/* Thermal Management Register 3 */
 DECL|macro|XER
 mdefine_line|#define&t;XER&t;SPRN_XER
-multiline_comment|/* Device Control Registers */
-DECL|macro|DCRN_BEAR
-mdefine_line|#define&t;DCRN_BEAR&t;0x090&t;/* Bus Error Address Register */
-DECL|macro|DCRN_BESR
-mdefine_line|#define&t;DCRN_BESR&t;0x091&t;/* Bus Error Syndrome Register */
-DECL|macro|BESR_DSES
-mdefine_line|#define&t;  BESR_DSES    &t;0x80000000&t;/* Data-Side Error Status */
-DECL|macro|BESR_DMES
-mdefine_line|#define&t;  BESR_DMES&t;0x40000000&t;/* DMA Error Status */
-DECL|macro|BESR_RWS
-mdefine_line|#define&t;  BESR_RWS&t;0x20000000&t;/* Read/Write Status */
-DECL|macro|BESR_ETMASK
-mdefine_line|#define&t;  BESR_ETMASK&t;0x1C000000&t;/* Error Type */
-DECL|macro|ET_PROT
-mdefine_line|#define&t;    ET_PROT&t;0
-DECL|macro|ET_PARITY
-mdefine_line|#define&t;    ET_PARITY&t;1
-DECL|macro|ET_NCFG
-mdefine_line|#define&t;    ET_NCFG&t;2
-DECL|macro|ET_BUSERR
-mdefine_line|#define&t;    ET_BUSERR&t;4
-DECL|macro|ET_BUSTO
-mdefine_line|#define&t;    ET_BUSTO&t;6
-DECL|macro|DCRN_DMACC0
-mdefine_line|#define&t;DCRN_DMACC0&t;0x0C4&t;/* DMA Chained Count Register 0 */
-DECL|macro|DCRN_DMACC1
-mdefine_line|#define&t;DCRN_DMACC1&t;0x0CC&t;/* DMA Chained Count Register 1 */
-DECL|macro|DCRN_DMACC2
-mdefine_line|#define&t;DCRN_DMACC2&t;0x0D4&t;/* DMA Chained Count Register 2 */
-DECL|macro|DCRN_DMACC3
-mdefine_line|#define&t;DCRN_DMACC3&t;0x0DC    /* DMA Chained Count Register 3 */
-DECL|macro|DCRN_DMACR0
-mdefine_line|#define&t;DCRN_DMACR0&t;0x0C0    /* DMA Channel Control Register 0 */
-DECL|macro|DCRN_DMACR1
-mdefine_line|#define&t;DCRN_DMACR1&t;0x0C8    /* DMA Channel Control Register 1 */
-DECL|macro|DCRN_DMACR2
-mdefine_line|#define&t;DCRN_DMACR2&t;0x0D0    /* DMA Channel Control Register 2 */
-DECL|macro|DCRN_DMACR3
-mdefine_line|#define&t;DCRN_DMACR3&t;0x0D8    /* DMA Channel Control Register 3 */
-DECL|macro|DCRN_DMACT0
-mdefine_line|#define&t;DCRN_DMACT0&t;0x0C1    /* DMA Count Register 0 */
-DECL|macro|DCRN_DMACT1
-mdefine_line|#define&t;DCRN_DMACT1&t;0x0C9    /* DMA Count Register 1 */
-DECL|macro|DCRN_DMACT2
-mdefine_line|#define&t;DCRN_DMACT2&t;0x0D1    /* DMA Count Register 2 */
-DECL|macro|DCRN_DMACT3
-mdefine_line|#define&t;DCRN_DMACT3&t;0x0D9    /* DMA Count Register 3 */
-DECL|macro|DCRN_DMADA0
-mdefine_line|#define&t;DCRN_DMADA0&t;0x0C2    /* DMA Destination Address Register 0 */
-DECL|macro|DCRN_DMADA1
-mdefine_line|#define&t;DCRN_DMADA1&t;0x0CA    /* DMA Destination Address Register 1 */
-DECL|macro|DCRN_DMADA2
-mdefine_line|#define&t;DCRN_DMADA2&t;0x0D2    /* DMA Destination Address Register 2 */
-DECL|macro|DCRN_DMADA3
-mdefine_line|#define&t;DCRN_DMADA3&t;0x0DA    /* DMA Destination Address Register 3 */
-DECL|macro|DCRN_DMASA0
-mdefine_line|#define&t;DCRN_DMASA0&t;0x0C3    /* DMA Source Address Register 0 */
-DECL|macro|DCRN_DMASA1
-mdefine_line|#define&t;DCRN_DMASA1&t;0x0CB    /* DMA Source Address Register 1 */
-DECL|macro|DCRN_DMASA2
-mdefine_line|#define&t;DCRN_DMASA2&t;0x0D3    /* DMA Source Address Register 2 */
-DECL|macro|DCRN_DMASA3
-mdefine_line|#define&t;DCRN_DMASA3&t;0x0DB    /* DMA Source Address Register 3 */
-DECL|macro|DCRN_DMASR
-mdefine_line|#define&t;DCRN_DMASR&t;0x0E0    /* DMA Status Register */
-DECL|macro|DCRN_EXIER
-mdefine_line|#define&t;DCRN_EXIER&t;0x042    /* External Interrupt Enable Register */
-DECL|macro|EXIER_CIE
-mdefine_line|#define&t;  EXIER_CIE&t;0x80000000&t;/* Critical Interrupt Enable */
-DECL|macro|EXIER_SRIE
-mdefine_line|#define&t;  EXIER_SRIE&t;0x08000000&t;/* Serial Port Rx Int. Enable */
-DECL|macro|EXIER_STIE
-mdefine_line|#define&t;  EXIER_STIE&t;0x04000000&t;/* Serial Port Tx Int. Enable */
-DECL|macro|EXIER_JRIE
-mdefine_line|#define&t;  EXIER_JRIE&t;0x02000000&t;/* JTAG Serial Port Rx Int. Enable */
-DECL|macro|EXIER_JTIE
-mdefine_line|#define&t;  EXIER_JTIE&t;0x01000000&t;/* JTAG Serial Port Tx Int. Enable */
-DECL|macro|EXIER_D0IE
-mdefine_line|#define&t;  EXIER_D0IE&t;0x00800000&t;/* DMA Channel 0 Interrupt Enable */
-DECL|macro|EXIER_D1IE
-mdefine_line|#define&t;  EXIER_D1IE&t;0x00400000&t;/* DMA Channel 1 Interrupt Enable */
-DECL|macro|EXIER_D2IE
-mdefine_line|#define&t;  EXIER_D2IE&t;0x00200000&t;/* DMA Channel 2 Interrupt Enable */
-DECL|macro|EXIER_D3IE
-mdefine_line|#define&t;  EXIER_D3IE&t;0x00100000&t;/* DMA Channel 3 Interrupt Enable */
-DECL|macro|EXIER_E0IE
-mdefine_line|#define&t;  EXIER_E0IE&t;0x00000010&t;/* External Interrupt 0 Enable */
-DECL|macro|EXIER_E1IE
-mdefine_line|#define&t;  EXIER_E1IE&t;0x00000008&t;/* External Interrupt 1 Enable */
-DECL|macro|EXIER_E2IE
-mdefine_line|#define&t;  EXIER_E2IE&t;0x00000004&t;/* External Interrupt 2 Enable */
-DECL|macro|EXIER_E3IE
-mdefine_line|#define&t;  EXIER_E3IE&t;0x00000002&t;/* External Interrupt 3 Enable */
-DECL|macro|EXIER_E4IE
-mdefine_line|#define&t;  EXIER_E4IE&t;0x00000001&t;/* External Interrupt 4 Enable */
-DECL|macro|DCRN_EXISR
-mdefine_line|#define&t;DCRN_EXISR&t;0x040    /* External Interrupt Status Register */
-DECL|macro|DCRN_IOCR
-mdefine_line|#define&t;DCRN_IOCR&t;0x0A0    /* Input/Output Configuration Register */
-DECL|macro|IOCR_E0TE
-mdefine_line|#define&t;  IOCR_E0TE&t;0x80000000
-DECL|macro|IOCR_E0LP
-mdefine_line|#define&t;  IOCR_E0LP&t;0x40000000
-DECL|macro|IOCR_E1TE
-mdefine_line|#define&t;  IOCR_E1TE&t;0x20000000
-DECL|macro|IOCR_E1LP
-mdefine_line|#define&t;  IOCR_E1LP&t;0x10000000
-DECL|macro|IOCR_E2TE
-mdefine_line|#define&t;  IOCR_E2TE&t;0x08000000
-DECL|macro|IOCR_E2LP
-mdefine_line|#define&t;  IOCR_E2LP&t;0x04000000
-DECL|macro|IOCR_E3TE
-mdefine_line|#define&t;  IOCR_E3TE&t;0x02000000
-DECL|macro|IOCR_E3LP
-mdefine_line|#define&t;  IOCR_E3LP&t;0x01000000
-DECL|macro|IOCR_E4TE
-mdefine_line|#define&t;  IOCR_E4TE&t;0x00800000
-DECL|macro|IOCR_E4LP
-mdefine_line|#define&t;  IOCR_E4LP&t;0x00400000
-DECL|macro|IOCR_EDT
-mdefine_line|#define&t;  IOCR_EDT     &t;0x00080000
-DECL|macro|IOCR_SOR
-mdefine_line|#define&t;  IOCR_SOR     &t;0x00040000
-DECL|macro|IOCR_EDO
-mdefine_line|#define&t;  IOCR_EDO&t;0x00008000
-DECL|macro|IOCR_2XC
-mdefine_line|#define&t;  IOCR_2XC&t;0x00004000
-DECL|macro|IOCR_ATC
-mdefine_line|#define&t;  IOCR_ATC&t;0x00002000
-DECL|macro|IOCR_SPD
-mdefine_line|#define&t;  IOCR_SPD&t;0x00001000
-DECL|macro|IOCR_BEM
-mdefine_line|#define&t;  IOCR_BEM&t;0x00000800
-DECL|macro|IOCR_PTD
-mdefine_line|#define&t;  IOCR_PTD&t;0x00000400
-DECL|macro|IOCR_ARE
-mdefine_line|#define&t;  IOCR_ARE&t;0x00000080
-DECL|macro|IOCR_DRC
-mdefine_line|#define&t;  IOCR_DRC&t;0x00000020
-DECL|macro|IOCR_RDM
-mdefine_line|#define&t;  IOCR_RDM(x)&t;(((x) &amp; 0x3) &lt;&lt; 3)
-DECL|macro|IOCR_TCS
-mdefine_line|#define&t;  IOCR_TCS&t;0x00000004
-DECL|macro|IOCR_SCS
-mdefine_line|#define&t;  IOCR_SCS&t;0x00000002
-DECL|macro|IOCR_SPC
-mdefine_line|#define&t;  IOCR_SPC&t;0x00000001
 multiline_comment|/* Processor Version Register */
 multiline_comment|/* Processor Version Register (PVR) field extraction */
 DECL|macro|PVR_VER
@@ -911,8 +877,8 @@ DECL|macro|_MACH_bseip
 mdefine_line|#define _MACH_bseip&t;0x00000080&t;/* Bright Star Engineering ip-Engine */
 DECL|macro|_MACH_unused0
 mdefine_line|#define _MACH_unused0&t;0x00000100&t;/* Now free to be used */
-DECL|macro|_MACH_unused1
-mdefine_line|#define _MACH_unused1&t;0x00000200&t;/* Now free to be used */
+DECL|macro|_MACH_gemini
+mdefine_line|#define _MACH_gemini&t;0x00000200      /* Synergy Microsystems gemini board */
 DECL|macro|_MACH_classic
 mdefine_line|#define _MACH_classic&t;0x00000400&t;/* RPCG RPX-Classic 8xx board */
 DECL|macro|_MACH_oak
@@ -925,10 +891,10 @@ DECL|macro|_MACH_tqm860
 mdefine_line|#define _MACH_tqm860&t;0x00004000&t;/* TQM860/L */
 DECL|macro|_MACH_tqm8xxL
 mdefine_line|#define _MACH_tqm8xxL&t;0x00008000&t;/* TQM8xxL */
-DECL|macro|_MACH_spd8xxL
-mdefine_line|#define _MACH_spd8xxL&t;0x00010000&t;/* SPD8xx */
-DECL|macro|_MACH_ibms8
-mdefine_line|#define _MACH_ibms8&t;0x00020000&t;/* IVMS8 */
+DECL|macro|_MACH_spd8xx
+mdefine_line|#define _MACH_spd8xx&t;0x00010000&t;/* SPD8xx */
+DECL|macro|_MACH_ivms8
+mdefine_line|#define _MACH_ivms8&t;0x00020000&t;/* IVMS8 */
 multiline_comment|/* see residual.h for these */
 DECL|macro|_PREP_Motorola
 mdefine_line|#define _PREP_Motorola 0x01  /* motorola prep */
@@ -1327,6 +1293,11 @@ mdefine_line|#define have_of 0
 macro_line|#elif defined(CONFIG_APUS)
 DECL|macro|_machine
 mdefine_line|#define _machine _MACH_apus
+DECL|macro|have_of
+mdefine_line|#define have_of 0
+macro_line|#elif defined(CONFIG_GEMINI)
+DECL|macro|_machine
+mdefine_line|#define _machine _MACH_gemini
 DECL|macro|have_of
 mdefine_line|#define have_of 0
 macro_line|#elif defined(CONFIG_8260)

@@ -951,6 +951,34 @@ c_cond
 (paren
 op_logical_neg
 id|pdentry
+op_logical_and
+id|tdentry-&gt;d_inode
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* File system cannot find &quot;..&quot; ... sad but possible */
+id|dput
+c_func
+(paren
+id|tdentry
+)paren
+suffix:semicolon
+id|pdentry
+op_assign
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pdentry
 )paren
 (brace
 multiline_comment|/* I don&squot;t want to return a &quot;..&quot; dentry.&n;&t;&t; * I would prefer to return an unconnected &quot;IS_ROOT&quot; dentry,&n;&t;&t; * though a properly connected dentry is even better&n;&t;&t; */

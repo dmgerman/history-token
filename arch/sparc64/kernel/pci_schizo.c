@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.15 2001/05/02 00:27:27 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.16 2001/05/15 08:54:30 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -5603,6 +5603,61 @@ op_star
 id|pbm
 )paren
 (brace
+r_struct
+id|pcidev_cookie
+op_star
+id|cookie
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|cookie
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cookie
+)paren
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;SCHIZO: Critical allocation failure.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* All we care about is the PBM. */
+id|memset
+c_func
+(paren
+id|cookie
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|cookie
+)paren
+)paren
+suffix:semicolon
+id|cookie-&gt;pbm
+op_assign
+id|pbm
+suffix:semicolon
 id|pbm-&gt;pci_bus
 op_assign
 id|pci_scan_bus
@@ -5614,6 +5669,16 @@ id|p-&gt;pci_ops
 comma
 id|pbm
 )paren
+suffix:semicolon
+id|pci_fixup_host_bridge_self
+c_func
+(paren
+id|pbm-&gt;pci_bus
+)paren
+suffix:semicolon
+id|pbm-&gt;pci_bus-&gt;self-&gt;sysdata
+op_assign
+id|cookie
 suffix:semicolon
 id|pci_fill_in_pbm_cookies
 c_func
@@ -7585,6 +7650,10 @@ id|p-&gt;index
 op_assign
 id|pci_num_controllers
 op_increment
+suffix:semicolon
+id|p-&gt;pbms_same_domain
+op_assign
+l_int|0
 suffix:semicolon
 id|p-&gt;scan_bus
 op_assign

@@ -82,6 +82,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|macro|pci_controller_num
+mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 macro_line|#endif /* _ASM_IA64_PCI_H */

@@ -2734,4 +2734,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|chr_dev_init
+id|__initcall
+c_func
+(paren
+id|chr_dev_init
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.105 2001/04/14 01:12:02 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.106 2001/05/11 07:46:28 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -40,6 +40,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 DECL|struct|poll
@@ -1018,6 +1019,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ebus_chain
+)paren
+suffix:semicolon
+DECL|variable|isa_chain
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isa_chain
 )paren
 suffix:semicolon
 DECL|variable|pci_memspace_mask

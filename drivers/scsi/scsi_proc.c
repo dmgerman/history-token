@@ -359,6 +359,13 @@ comma
 id|count
 )paren
 suffix:semicolon
+id|page
+(braket
+id|count
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
 r_if
 c_cond
 (paren

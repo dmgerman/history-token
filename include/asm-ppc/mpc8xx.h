@@ -43,13 +43,16 @@ mdefine_line|#define _ISA_MEM_BASE   0
 mdefine_line|#define PCI_DRAM_OFFSET 0
 macro_line|#endif
 macro_line|#else
+macro_line|#if !defined(_IO_BASE)  /* defined in board specific header */
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE        0
+macro_line|#endif
 DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE   0
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET 0
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_int
 r_int
@@ -112,6 +115,7 @@ op_star
 id|dev_id
 )paren
 suffix:semicolon
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* CONFIG_8xx */
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */

@@ -10284,6 +10284,12 @@ id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/* @@@ should release IRQ on error */
+id|pci_set_master
+c_func
+(paren
+id|eni_dev-&gt;pci_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

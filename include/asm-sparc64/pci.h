@@ -2,6 +2,8 @@ macro_line|#ifndef __SPARC64_PCI_H
 DECL|macro|__SPARC64_PCI_H
 mdefine_line|#define __SPARC64_PCI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n; * already-configured bus numbers - to be used for buggy BIOSes&n; * or architectures with incomplete PCI setup by the loader.&n; */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
@@ -230,6 +232,48 @@ id|hwdev
 comma
 id|dma_addr_t
 id|mask
+)paren
+suffix:semicolon
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+r_extern
+r_int
+id|pci_controller_num
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* Platform support for /proc/bus/pci/X/Y mmap()s. */
+DECL|macro|HAVE_PCI_MMAP
+mdefine_line|#define HAVE_PCI_MMAP
+DECL|macro|HAVE_ARCH_PCI_GET_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
+DECL|macro|get_pci_unmapped_area
+mdefine_line|#define get_pci_unmapped_area get_fb_unmapped_area
+r_extern
+r_int
+id|pci_mmap_page_range
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_enum
+id|pci_mmap_state
+id|mmap_state
+comma
+r_int
+id|write_combine
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

@@ -657,6 +657,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|parport_init
+id|__initcall
+c_func
+(paren
+id|parport_init
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Exported symbols for modules. */
 DECL|variable|parport_claim

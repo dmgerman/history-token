@@ -35,14 +35,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;QH @ %p/%08lX:&quot;
+l_string|&quot;QH @ %p/%08X:&quot;
 comma
 id|qh
 comma
-id|virt_to_bus
-(paren
-id|qh
-)paren
+id|qh-&gt;dma_addr
 )paren
 suffix:semicolon
 r_if
@@ -119,7 +116,7 @@ id|UHCI_PTR_BITS
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|uhci_show_td
+macro_line|#if 0
 r_static
 r_void
 id|uhci_show_td
@@ -179,14 +176,11 @@ suffix:semicolon
 id|warn
 c_func
 (paren
-l_string|&quot;  TD @ %p/%08lX, MaxLen=%02x DT%d EP=%x Dev=%x PID=(%s) buf=%08x&quot;
+l_string|&quot;  TD @ %p/%08X, MaxLen=%02x DT%d EP=%x Dev=%x PID=(%s) buf=%08x&quot;
 comma
 id|td
 comma
-id|virt_to_bus
-(paren
-id|td
-)paren
+id|td-&gt;dma_addr
 comma
 id|td-&gt;hw.td.info
 op_rshift
@@ -401,6 +395,7 @@ l_string|&quot;Breadth first&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|function|uhci_show_td_queue
 r_static
@@ -418,7 +413,11 @@ id|puhci_desc_t
 id|td
 )paren
 (brace
-singleline_comment|//dbg(&quot;uhci_show_td_queue %p (%08lX):&quot;, td, virt_to_bus (td));
+singleline_comment|//dbg(&quot;uhci_show_td_queue %p (%08lX):&quot;, td, td-&gt;dma_addr);
+macro_line|#if 1
+r_return
+suffix:semicolon
+macro_line|#else
 r_while
 c_loop
 (paren
@@ -474,6 +473,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 DECL|function|uhci_show_queue
 r_static
@@ -491,12 +491,14 @@ id|puhci_desc_t
 id|qh
 )paren
 (brace
+macro_line|#if 0
 id|uhci_desc_t
 op_star
 id|start_qh
 op_assign
 id|qh
 suffix:semicolon
+macro_line|#endif
 id|dbg
 c_func
 (paren
@@ -505,6 +507,10 @@ comma
 id|qh
 )paren
 suffix:semicolon
+macro_line|#if 1
+r_return
+suffix:semicolon
+macro_line|#else
 r_while
 c_loop
 (paren
@@ -599,6 +605,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 DECL|function|uhci_show_sc
 r_static

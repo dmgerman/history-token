@@ -3964,7 +3964,6 @@ multiline_comment|/* Clear NAT section of all conntracks, in case we&squot;re lo
 DECL|function|clean_nat
 r_static
 r_int
-id|__exit
 id|clean_nat
 c_func
 (paren
@@ -4001,9 +4000,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Not __exit: called from ip_nat_standalone.c:init_or_cleanup() --RR */
 DECL|function|ip_nat_cleanup
 r_void
-id|__exit
 id|ip_nat_cleanup
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux INET6 implementation&n; *&t;FIB front-end.&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: route.c,v 1.50 2001/04/25 20:46:35 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux INET6 implementation&n; *&t;FIB front-end.&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: route.c,v 1.51 2001/05/03 07:02:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3439,8 +3439,6 @@ id|RTF_GATEWAY
 r_goto
 id|out
 suffix:semicolon
-macro_line|#if !defined(CONFIG_IPV6_EUI64) || defined(CONFIG_IPV6_NO_PB)
-multiline_comment|/*&n;&t; *&t;During transition gateways have more than&n;&t; *&t;one link local address. Certainly, it is violation&n;&t; *&t;of basic principles, but it is temporary.&n;&t; */
 multiline_comment|/*&n;&t; *&t;RFC 1970 specifies that redirects should only be&n;&t; *&t;accepted if they come from the nexthop to the target.&n;&t; *&t;Due to the way default routers are chosen, this notion&n;&t; *&t;is a bit fuzzy and one might need to check all default&n;&t; *&t;routers.&n;&t; */
 r_if
 c_cond
@@ -3563,7 +3561,6 @@ suffix:semicolon
 )brace
 id|source_ok
 suffix:colon
-macro_line|#endif
 multiline_comment|/*&n;&t; *&t;We have finally decided to accept it.&n;&t; */
 id|nrt
 op_assign

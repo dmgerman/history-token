@@ -1168,6 +1168,8 @@ DECL|macro|LP_CHIP_ID
 mdefine_line|#define LP_CHIP_ID&t;0x4c50&t;/* RAGE LT PRO */
 DECL|macro|LT_CHIP_ID
 mdefine_line|#define LT_CHIP_ID&t;0x4c54&t;/* RAGE LT */
+DECL|macro|XL_CHIP_ID
+mdefine_line|#define XL_CHIP_ID&t;0x4752&t;/* RAGE (XL) */
 DECL|macro|GT_CHIP_ID
 mdefine_line|#define GT_CHIP_ID&t;0x4754&t;/* RAGE (GT) */
 DECL|macro|GU_CHIP_ID

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_impl.h,v 1.7 2001/03/28 10:56:34 davem Exp $&n; * pci_impl.h: Helper definitions for PCI controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_impl.h,v 1.8 2001/05/15 08:54:30 davem Exp $&n; * pci_impl.h: Helper definitions for PCI controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef PCI_IMPL_H
 DECL|macro|PCI_IMPL_H
 mdefine_line|#define PCI_IMPL_H
@@ -34,6 +34,17 @@ r_int
 id|pci_num_controllers
 suffix:semicolon
 multiline_comment|/* PCI bus scanning and fixup support. */
+r_extern
+r_void
+id|pci_fixup_host_bridge_self
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|pbus
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|pci_fill_in_pbm_cookies

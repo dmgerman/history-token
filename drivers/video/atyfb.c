@@ -2527,6 +2527,14 @@ l_string|&quot;3D RAGE LT&quot;
 )brace
 comma
 (brace
+l_int|0x4752
+comma
+l_int|0x4752
+comma
+l_string|&quot;3D RAGE (XL)&quot;
+)brace
+comma
+(brace
 l_int|0x4754
 comma
 l_int|0x4754
@@ -3329,6 +3337,10 @@ op_logical_or
 id|Gx
 op_eq
 id|LN_CHIP_ID
+op_logical_or
+id|Gx
+op_eq
+id|XL_CHIP_ID
 )paren
 id|reset_GTC_3D_engine
 c_func
@@ -10958,6 +10970,27 @@ l_int|0x07
 r_if
 c_cond
 (paren
+id|Gx
+op_eq
+id|XL_CHIP_ID
+)paren
+(brace
+id|aty_st_pll
+c_func
+(paren
+id|DLL_CNTL
+comma
+l_int|0x80
+comma
+id|info
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|info-&gt;ram_type
 op_ge
 id|SDRAM
@@ -10983,6 +11016,7 @@ comma
 id|info
 )paren
 suffix:semicolon
+)brace
 id|aty_st_pll
 c_func
 (paren
@@ -11708,6 +11742,12 @@ op_logical_or
 id|Gx
 op_eq
 id|GQ_CHIP_ID
+)paren
+op_logical_or
+(paren
+id|Gx
+op_eq
+id|XL_CHIP_ID
 )paren
 op_logical_or
 (paren
@@ -16116,6 +16156,10 @@ op_logical_or
 id|Gx
 op_eq
 id|GQ_CHIP_ID
+op_logical_or
+id|Gx
+op_eq
+id|XL_CHIP_ID
 )paren
 id|tmp
 op_or_assign
@@ -17085,6 +17129,24 @@ suffix:semicolon
 id|mclk
 op_assign
 l_int|100
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|Gx
+op_eq
+id|XL_CHIP_ID
+)paren
+(brace
+id|pll
+op_assign
+l_int|230
+suffix:semicolon
+id|mclk
+op_assign
+l_int|120
 suffix:semicolon
 )brace
 r_else
@@ -19381,7 +19443,15 @@ id|j
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;     * Fix PROMs idea of MEM_CNTL settings...&n;&t;     */
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_ne
+id|XL_CHIP_ID
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;     * Fix PROMs idea of MEM_CNTL settings...&n;&t;&t;     */
 id|mem
 op_assign
 id|aty_ld_le32
@@ -19555,6 +19625,7 @@ comma
 id|info
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;     * If this is the console device, we will set default video&n;&t;     * settings to what the PROM left us with.&n;&t;     */
 id|node
 op_assign
@@ -19660,6 +19731,8 @@ comma
 id|M
 comma
 id|T
+comma
+id|R
 suffix:semicolon
 id|u32
 id|v_total
@@ -19861,7 +19934,7 @@ l_int|3
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * PLL Post Devider P (Dependant on CLOCK_CNTL):&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * PLL Post Divider P (Dependant on CLOCK_CNTL):&n;&t;&t; */
 id|P
 op_assign
 l_int|1
@@ -19890,14 +19963,30 @@ id|N
 op_div
 id|P
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Target Frequency:&n;&t;&t; *&n;&t;&t; *      T * M&n;&t;&t; * Q = -------&n;&t;&t; *      2 * R&n;&t;&t; *&n;&t;&t; * where R is XTALIN (= 14318 kHz).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Target Frequency:&n;&t;&t; *&n;&t;&t; *      T * M&n;&t;&t; * Q = -------&n;&t;&t; *      2 * R&n;&t;&t; *&n;&t;&t; * where R is XTALIN (= 14318 or 29498 kHz).&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+id|XL_CHIP_ID
+)paren
+id|R
+op_assign
+l_int|29498
+suffix:semicolon
+r_else
+id|R
+op_assign
+l_int|14318
+suffix:semicolon
 id|T
 op_assign
 l_int|2
 op_star
 id|Q
 op_star
-l_int|14318
+id|R
 op_div
 id|M
 suffix:semicolon
@@ -21872,6 +21961,10 @@ op_logical_or
 id|Gx
 op_eq
 id|LI_CHIP_ID
+op_logical_or
+id|Gx
+op_eq
+id|XL_CHIP_ID
 )paren
 id|i
 op_or_assign

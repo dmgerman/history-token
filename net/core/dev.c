@@ -915,12 +915,14 @@ id|dev-&gt;next
 r_if
 c_cond
 (paren
-id|strcmp
+id|strncmp
 c_func
 (paren
 id|dev-&gt;name
 comma
 id|name
+comma
+id|IFNAMSIZ
 )paren
 op_eq
 l_int|0

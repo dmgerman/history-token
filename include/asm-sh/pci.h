@@ -287,6 +287,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|macro|pci_controller_num
+mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))

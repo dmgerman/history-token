@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * $Id: system.h,v 1.49 1999/09/11 18:37:54 cort Exp $&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_SYSTEM_H
 DECL|macro|__PPC_SYSTEM_H
 mdefine_line|#define __PPC_SYSTEM_H
@@ -34,6 +33,7 @@ mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;mem
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#ifdef __KERNEL__
 r_extern
 r_void
 id|xmon_irq
@@ -426,6 +426,7 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
+macro_line|#endif /* __KERNEL__ */
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
 r_static
@@ -453,31 +454,7 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|lwarx
-op_mod
-l_int|0
-comma
-l_int|0
-comma
-op_mod
-l_int|2
-id|stwcx
-dot
-op_mod
-l_int|3
-comma
-l_int|0
-comma
-op_mod
-l_int|2
-id|bne
-op_minus
-l_int|1
-id|b
-"&quot;"
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&bslash;&n;&t;stwcx.&t;%3,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -673,43 +650,7 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|lwarx
-op_mod
-l_int|0
-comma
-l_int|0
-comma
-op_mod
-l_int|2
-id|cmpw
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|bne
-l_float|2f
-id|stwcx
-dot
-op_mod
-l_int|4
-comma
-l_int|0
-comma
-op_mod
-l_int|2
-id|bne
-op_minus
-l_int|1
-id|b
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%2 &bslash;n&bslash;&n;&t;cmpw&t;0,%0,%3 &bslash;n&bslash;&n;&t;bne&t;2f &bslash;n&bslash;&n;&t;stwcx.&t;%4,0,%2 &bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&quot;
 macro_line|#ifdef CONFIG_SMP
 l_string|&quot;&t;sync&bslash;n&quot;
 macro_line|#endif /* CONFIG_SMP */
@@ -839,5 +780,4 @@ suffix:semicolon
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
 macro_line|#endif /* __PPC_SYSTEM_H */
-macro_line|#endif /* __KERNEL__ */
 eof

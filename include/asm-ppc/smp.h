@@ -1,4 +1,4 @@
-multiline_comment|/* smp.h: PPC specific SMP stuff.&n; *&n; * Taken from asm-sparc/smp.h&n; */
+multiline_comment|/* smp.h: PPC specific SMP stuff.&n; *&n; * Original was a copy of sparc smp.h.  Now heavily modified&n; * for PPC.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996-2001 Cort Dougan &lt;cort@fsmlabs.com&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_SMP_H
 DECL|macro|_PPC_SMP_H
@@ -51,7 +51,21 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|cpu_online_map
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|smp_proc_in_lock
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_volatile
+r_int
+r_int
+id|cpu_callin_map
 (braket
 id|NR_CPUS
 )braket
@@ -106,15 +120,6 @@ DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu) (cpu)
 DECL|macro|cpu_number_map
 mdefine_line|#define cpu_number_map(x) (x)
-r_extern
-r_volatile
-r_int
-r_int
-id|cpu_callin_map
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current-&gt;processor)
 r_extern

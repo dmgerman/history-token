@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.64 2001/05/01 23:05:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.65 2001/05/03 07:02:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2619,8 +2619,7 @@ id|IFF_NOARP
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef CONFIG_IPV6_NO_PB
-id|addrconf_addr_solict_mult_old
+id|addrconf_addr_solict_mult
 c_func
 (paren
 id|addr
@@ -2638,27 +2637,6 @@ op_amp
 id|maddr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IPV6_EUI64
-id|addrconf_addr_solict_mult_new
-c_func
-(paren
-id|addr
-comma
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-id|ipv6_dev_mc_inc
-c_func
-(paren
-id|dev
-comma
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|addrconf_leave_solict
 r_static
@@ -2694,8 +2672,7 @@ id|IFF_NOARP
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef CONFIG_IPV6_NO_PB
-id|addrconf_addr_solict_mult_old
+id|addrconf_addr_solict_mult
 c_func
 (paren
 id|addr
@@ -2713,29 +2690,7 @@ op_amp
 id|maddr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IPV6_EUI64
-id|addrconf_addr_solict_mult_new
-c_func
-(paren
-id|addr
-comma
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-id|ipv6_dev_mc_dec
-c_func
-(paren
-id|dev
-comma
-op_amp
-id|maddr
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_IPV6_EUI64
 DECL|function|ipv6_generate_eui64
 r_static
 r_int
@@ -2926,7 +2881,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;Add prefix route.&n; */
 r_static
 r_void
@@ -3620,7 +3574,6 @@ id|pinfo-&gt;prefix_len
 op_rshift
 l_int|3
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_EUI64
 r_if
 c_cond
 (paren
@@ -3678,57 +3631,6 @@ r_goto
 id|ok
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifndef CONFIG_IPV6_NO_PB
-r_if
-c_cond
-(paren
-id|pinfo-&gt;prefix_len
-op_eq
-(paren
-(paren
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
-op_minus
-id|dev-&gt;addr_len
-)paren
-op_lshift
-l_int|3
-)paren
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-op_amp
-id|addr
-comma
-op_amp
-id|pinfo-&gt;prefix
-comma
-id|plen
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|addr.s6_addr
-op_plus
-id|plen
-comma
-id|dev-&gt;dev_addr
-comma
-id|dev-&gt;addr_len
-)paren
-suffix:semicolon
-r_goto
-id|ok
-suffix:semicolon
-)brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -5263,7 +5165,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_EUI64
 id|memset
 c_func
 (paren
@@ -5317,67 +5218,6 @@ op_amp
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef CONFIG_IPV6_NO_PB
-id|memset
-c_func
-(paren
-op_amp
-id|addr
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
-)paren
-suffix:semicolon
-id|addr.s6_addr
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0xFE
-suffix:semicolon
-id|addr.s6_addr
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0x80
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|addr.s6_addr
-op_plus
-(paren
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
-op_minus
-id|dev-&gt;addr_len
-)paren
-comma
-id|dev-&gt;dev_addr
-comma
-id|dev-&gt;addr_len
-)paren
-suffix:semicolon
-id|addrconf_add_linklocal
-c_func
-(paren
-id|idev
-comma
-op_amp
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|addrconf_sit_config
 r_static
@@ -6396,8 +6236,7 @@ id|unspec
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_EUI64
-id|addrconf_addr_solict_mult_new
+id|addrconf_addr_solict_mult
 c_func
 (paren
 op_amp
@@ -6424,36 +6263,6 @@ op_amp
 id|unspec
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef CONFIG_IPV6_NO_PB
-id|addrconf_addr_solict_mult_old
-c_func
-(paren
-op_amp
-id|ifp-&gt;addr
-comma
-op_amp
-id|mcaddr
-)paren
-suffix:semicolon
-id|ndisc_send_ns
-c_func
-(paren
-id|ifp-&gt;idev-&gt;dev
-comma
-l_int|NULL
-comma
-op_amp
-id|ifp-&gt;addr
-comma
-op_amp
-id|mcaddr
-comma
-op_amp
-id|unspec
-)paren
-suffix:semicolon
-macro_line|#endif
 id|in6_ifa_put
 c_func
 (paren

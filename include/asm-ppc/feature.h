@@ -160,7 +160,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Additional functions related to Core99 machines&n; */
+multiline_comment|/*&n; * Additional functions related to Core99 machines. We should extend the&n; * feature mecanism to make those fit into it. For now, they are still&n; * separate functions.&n; */
 r_extern
 r_void
 id|feature_set_gmac_power
@@ -178,16 +178,13 @@ suffix:semicolon
 multiline_comment|/* use constants in KeyLargo.h for the reset parameter */
 r_extern
 r_void
-id|feature_set_gmac_phy_reset
+id|feature_gmac_phy_reset
 c_func
 (paren
 r_struct
 id|device_node
 op_star
 id|device
-comma
-r_int
-id|reset
 )paren
 suffix:semicolon
 r_extern
@@ -220,13 +217,42 @@ id|power
 suffix:semicolon
 r_extern
 r_void
-id|feature_core99_kick_cpu1
+id|feature_set_firewire_cable_power
 c_func
 (paren
-r_void
+r_struct
+id|device_node
+op_star
+id|device
+comma
+r_int
+id|power
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Sleep related functions. At term, they should be high-priority notifiers&n; */
+r_extern
+r_void
+id|feature_set_airport_power
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|device
+comma
+r_int
+id|power
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|feature_core99_kick_cpu
+c_func
+(paren
+r_int
+id|cpu_nr
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Sleep related functions. At term, they should be high-priority notifiers,&n; * but this would require some changes to the current sleep scheme that won&squot;t&n; * be done in 2.4.&n; */
 r_extern
 r_void
 id|feature_prepare_for_sleep
@@ -238,6 +264,14 @@ suffix:semicolon
 r_extern
 r_void
 id|feature_wake_up
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|feature_can_sleep
 c_func
 (paren
 r_void

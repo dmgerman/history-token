@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS&t;4
+mdefine_line|#define MAX_HWIFS&t;8
 macro_line|#endif
 macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -667,10 +667,14 @@ DECL|typedef|select_t
 )brace
 id|select_t
 suffix:semicolon
+macro_line|#if !defined(ide_request_irq)
 DECL|macro|ide_request_irq
 mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
+macro_line|#endif
+macro_line|#if !defined(ide_free_irq)
 DECL|macro|ide_free_irq
 mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
+macro_line|#endif
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 macro_line|#ifdef CONFIG_APUS
 DECL|macro|ide_ack_intr

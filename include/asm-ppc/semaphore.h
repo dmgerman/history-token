@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC_SEMAPHORE_H
 DECL|macro|_PPC_SEMAPHORE_H
 mdefine_line|#define _PPC_SEMAPHORE_H
-multiline_comment|/*&n; * Swiped from asm-sparc/semaphore.h and modified&n; * -- Cort (cort@cs.nmt.edu)&n; *&n; * Stole some rw spinlock-based semaphore stuff from asm-alpha/semaphore.h&n; * -- Ani Joshi (ajoshi@unixbox.com)&n; */
+multiline_comment|/*&n; * Swiped from asm-sparc/semaphore.h and modified&n; * -- Cort (cort@cs.nmt.edu)&n; *&n; * Stole some rw spinlock-based semaphore stuff from asm-alpha/semaphore.h&n; * -- Ani Joshi (ajoshi@unixbox.com)&n; *&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -11,13 +11,10 @@ DECL|struct|semaphore
 r_struct
 id|semaphore
 (brace
+multiline_comment|/*&n;&t; * Note that any negative value of count is equivalent to 0,&n;&t; * but additionally indicates that some process(es) might be&n;&t; * sleeping on `wait&squot;.&n;&t; */
 DECL|member|count
 id|atomic_t
 id|count
-suffix:semicolon
-DECL|member|waking
-id|atomic_t
-id|waking
 suffix:semicolon
 DECL|member|wait
 id|wait_queue_head_t
@@ -39,17 +36,17 @@ DECL|macro|__SEM_DEBUG_INIT
 macro_line|# define __SEM_DEBUG_INIT(name)
 macro_line|#endif
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count) &bslash;&n;{ ATOMIC_INIT(count), ATOMIC_INIT(0), __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name, count) &bslash;&n;&t;{ ATOMIC_INIT(count), &bslash;&n;&t;  __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;  __SEM_DEBUG_INIT(name) }
 DECL|macro|__MUTEX_INITIALIZER
-mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name,1)
+mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name, 1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
-mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name,count) &bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
+mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name, count) &bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
 DECL|macro|DECLARE_MUTEX
-mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
+mdefine_line|#define DECLARE_MUTEX(name)&t;&t;__DECLARE_SEMAPHORE_GENERIC(name, 1)
 DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
+mdefine_line|#define DECLARE_MUTEX_LOCKED(name)&t;__DECLARE_SEMAPHORE_GENERIC(name, 0)
 DECL|function|sema_init
-r_extern
+r_static
 r_inline
 r_void
 id|sema_init
@@ -70,15 +67,6 @@ op_amp
 id|sem-&gt;count
 comma
 id|val
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|init_waitqueue_head
@@ -164,17 +152,6 @@ id|sem
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|__down_trylock
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|__up
 c_func
@@ -198,6 +175,15 @@ op_star
 id|sem
 )paren
 (brace
+macro_line|#if WAITQUEUE_DEBUG
+id|CHECK_MAGIC
+c_func
+(paren
+id|sem-&gt;__magic
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t; * Try to get the semaphore, take the slow path if we fail.&n;&t; */
 r_if
 c_cond
 (paren
@@ -207,19 +193,18 @@ c_func
 op_amp
 id|sem-&gt;count
 )paren
-op_ge
+OL
 l_int|0
 )paren
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
 id|__down
 c_func
 (paren
 id|sem
+)paren
+suffix:semicolon
+id|smp_wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -241,6 +226,14 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if WAITQUEUE_DEBUG
+id|CHECK_MAGIC
+c_func
+(paren
+id|sem-&gt;__magic
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -250,21 +243,20 @@ c_func
 op_amp
 id|sem-&gt;count
 )paren
-op_ge
+OL
 l_int|0
 )paren
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
 id|ret
 op_assign
 id|__down_interruptible
 c_func
 (paren
 id|sem
+)paren
+suffix:semicolon
+id|smp_wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -286,33 +278,29 @@ id|sem
 (brace
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
-r_if
-c_cond
+macro_line|#if WAITQUEUE_DEBUG
+id|CHECK_MAGIC
+c_func
 (paren
-id|atomic_dec_return
+id|sem-&gt;__magic
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ret
+op_assign
+id|atomic_dec_if_positive
 c_func
 (paren
 op_amp
 id|sem-&gt;count
 )paren
-op_ge
+OL
 l_int|0
-)paren
-id|wmb
-c_func
-(paren
-)paren
 suffix:semicolon
-r_else
-id|ret
-op_assign
-id|__down_trylock
+id|smp_wmb
 c_func
 (paren
-id|sem
 )paren
 suffix:semicolon
 r_return
@@ -332,7 +320,15 @@ op_star
 id|sem
 )paren
 (brace
-id|mb
+macro_line|#if WAITQUEUE_DEBUG
+id|CHECK_MAGIC
+c_func
+(paren
+id|sem-&gt;__magic
+)paren
+suffix:semicolon
+macro_line|#endif
+id|smp_wmb
 c_func
 (paren
 )paren

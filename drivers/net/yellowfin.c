@@ -1,5 +1,5 @@
 multiline_comment|/* yellowfin.c: A Packet Engines G-NIC ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;*/
+multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&t;&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -193,6 +193,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -214,7 +215,7 @@ l_string|&quot;yellowfin.c:v1.05  1/09/2001  Written by Donald Becker &lt;becker
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/yellowfin.html&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;  (unofficial 2.4.x port, LK1.1.2, January 11, 2001)&bslash;n&quot;
+l_string|&quot;  (unofficial 2.4.x port, LK1.1.3, May 10, 2001)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
@@ -2855,7 +2856,7 @@ id|yp-&gt;mii_cnt
 )paren
 (brace
 r_int
-id|mii_reg1
+id|bmsr
 op_assign
 id|mdio_read
 c_func
@@ -2867,11 +2868,11 @@ id|yp-&gt;phys
 l_int|0
 )braket
 comma
-l_int|1
+id|MII_BMSR
 )paren
 suffix:semicolon
 r_int
-id|mii_reg5
+id|lpa
 op_assign
 id|mdio_read
 c_func
@@ -2883,13 +2884,13 @@ id|yp-&gt;phys
 l_int|0
 )braket
 comma
-l_int|5
+id|MII_LPA
 )paren
 suffix:semicolon
 r_int
 id|negotiated
 op_assign
-id|mii_reg5
+id|lpa
 op_amp
 id|yp-&gt;advertising
 suffix:semicolon
@@ -2914,41 +2915,21 @@ id|yp-&gt;phys
 l_int|0
 )braket
 comma
-id|mii_reg1
+id|bmsr
 comma
-id|mii_reg5
+id|lpa
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|yp-&gt;duplex_lock
-op_logical_and
-(paren
-(paren
-id|negotiated
-op_amp
-l_int|0x0300
-)paren
-op_eq
-l_int|0x0100
-op_logical_or
-(paren
-id|negotiated
-op_amp
-l_int|0x00C0
-)paren
-op_eq
-l_int|0x0040
-)paren
-)paren
-(brace
 id|yp-&gt;full_duplex
 op_assign
-l_int|1
+id|mii_duplex
+c_func
+(paren
+id|yp-&gt;duplex_lock
+comma
+id|negotiated
+)paren
 suffix:semicolon
-)brace
 id|outw
 c_func
 (paren
@@ -2971,9 +2952,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mii_reg1
+id|bmsr
 op_amp
-l_int|0x0004
+id|BMSR_LSTATUS
 )paren
 id|next_tick
 op_assign

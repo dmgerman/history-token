@@ -409,11 +409,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: Failed to allocate resource %d for %s&bslash;n&quot;
+l_string|&quot;PCI: Failed to allocate resource %d(%lx-%lx) for %s&bslash;n&quot;
 comma
 id|i
 comma
-id|dev-&gt;name
+id|res-&gt;start
+comma
+id|res-&gt;end
+comma
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_return

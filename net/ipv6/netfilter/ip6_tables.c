@@ -5625,6 +5625,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|name
+(braket
+id|IP6T_TABLE_MAXNAMELEN
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
 id|t
 op_assign
 id|find_table_lock

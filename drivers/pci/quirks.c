@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * $Id: quirks.c,v 1.5 1998/05/02 19:24:14 mj Exp $&n; *&n; *  This file contains work-arounds for many known PCI hardware&n; *  bugs.  Devices present only on certain architectures (host&n; *  bridges et cetera) should be handled in arch-specific code.&n; *&n; *  Copyright (c) 1999 Martin Mares &lt;mj@suse.cz&gt;&n; *&n; *  The bridge optimization stuff has been removed. If you really&n; *  have a silly BIOS which is unable to set your host bridge right,&n; *  use the PowerTweak utility (see http://powertweak.sourceforge.net).&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -773,6 +774,58 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_IO_APIC 
+r_extern
+r_int
+id|nr_ioapics
+suffix:semicolon
+multiline_comment|/*&n; * VIA 686A/B: If an IO-APIC is active, we need to route all on-chip&n; * devices to the external APIC.&n; */
+DECL|function|quirk_via_ioapic
+r_static
+r_void
+id|__init
+id|quirk_via_ioapic
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|u8
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr_ioapics
+OL
+l_int|1
+)paren
+id|tmp
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* nothing routed to external APIC */
+r_else
+id|tmp
+op_assign
+l_int|0x1f
+suffix:semicolon
+multiline_comment|/* all known bits (4-0) routed to external APIC */
+multiline_comment|/* Offset 0x58: External APIC IRQ output control */
+id|pci_write_config_byte
+(paren
+id|dev
+comma
+l_int|0x58
+comma
+id|tmp
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_X86_IO_APIC */
 multiline_comment|/*&n; * PIIX3 USB: We have to disable USB interrupts that are&n; * hardwired to PIRQD# and may be shared with an&n; * external device.&n; *&n; * Legacy Support Register (LEGSUP):&n; *     bit13:  USB PIRQ Enable (USBPIRQDEN),&n; *     bit4:   Trap/SMI On IRQ Enable (USBSMIEN).&n; *&n; * We mask out all r/wc bits, too.&n; */
 DECL|function|quirk_piix3_usb
 r_static
@@ -1194,6 +1247,18 @@ comma
 id|quirk_cardbus_legacy
 )brace
 comma
+macro_line|#ifdef CONFIG_X86_IO_APIC 
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C686
+comma
+id|quirk_via_ioapic
+)brace
+comma
+macro_line|#endif
 (brace
 l_int|0
 )brace

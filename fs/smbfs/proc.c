@@ -92,52 +92,6 @@ id|fattr
 )paren
 suffix:semicolon
 r_static
-r_inline
-r_void
-DECL|function|smb_lock_server
-id|smb_lock_server
-c_func
-(paren
-r_struct
-id|smb_sb_info
-op_star
-id|server
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|server-&gt;sem
-)paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|smb_unlock_server
-id|smb_unlock_server
-c_func
-(paren
-r_struct
-id|smb_sb_info
-op_star
-id|server
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|server-&gt;sem
-)paren
-)paren
-suffix:semicolon
-)brace
-r_static
 r_void
 DECL|function|str_upper
 id|str_upper
@@ -2691,8 +2645,12 @@ r_if
 c_cond
 (paren
 id|server-&gt;state
-op_ne
-id|CONN_INVALID
+op_eq
+id|CONN_VALID
+op_logical_or
+id|server-&gt;state
+op_eq
+id|CONN_RETRYING
 )paren
 r_goto
 id|out
@@ -2726,10 +2684,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Clear the pid to enable the ioctl.&n;&t; */
-id|server-&gt;conn_pid
+multiline_comment|/*&n;&t; * Change state so that only one retry per server will be started.&n;&t; */
+id|server-&gt;state
 op_assign
-l_int|0
+id|CONN_RETRYING
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: use the &quot;priv&quot; flag, as a user process may need to reconnect.&n;&t; */
 id|error
@@ -2750,6 +2708,7 @@ c_cond
 id|error
 )paren
 (brace
+multiline_comment|/* FIXME: this is fatal */
 id|printk
 c_func
 (paren
@@ -2760,7 +2719,7 @@ id|error
 )paren
 suffix:semicolon
 r_goto
-id|out_restore
+id|out
 suffix:semicolon
 )brace
 id|VERBOSE
@@ -2773,15 +2732,27 @@ id|pid
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for the new connection.&n;&t; */
 macro_line|#ifdef SMB_RETRY_INTR
+id|smb_unlock_server
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
 id|interruptible_sleep_on_timeout
 c_func
 (paren
 op_amp
 id|server-&gt;wait
 comma
-l_int|5
+l_int|30
 op_star
 id|HZ
+)paren
+suffix:semicolon
+id|smb_lock_server
+c_func
+(paren
+id|server
 )paren
 suffix:semicolon
 r_if
@@ -2801,16 +2772,28 @@ l_string|&quot;smb_retry: caught signal&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/*&n;&t; * We don&squot;t want to be interrupted. For example, what if &squot;current&squot;&n;&t; * already has received a signal? sleep_on would terminate immediately&n;&t; * and smbmount would not be able to re-establish connection.&n;&t; *&n;&t; * smbmount should be able to reconnect later, but it can&squot;t because&n;&t; * it will get an -EIO on attempts to open the mountpoint!&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t want to be interrupted. For example, what if &squot;current&squot;&n;&t; * already has received a signal? sleep_on would terminate immediately&n;&t; * and smbmount would not be able to re-establish connection.&n;&t; *&n;&t; * smbmount should be able to reconnect later, but it can&squot;t because&n;&t; * it will get an -EIO on attempts to open the mountpoint!&n;&t; *&n;&t; * FIXME: go back to the interruptable version now that smbmount&n;&t; * can avoid -EIO on the mountpoint when reconnecting?&n;&t; */
+id|smb_unlock_server
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
 id|sleep_on_timeout
 c_func
 (paren
 op_amp
 id|server-&gt;wait
 comma
-l_int|5
+l_int|30
 op_star
 id|HZ
+)paren
+suffix:semicolon
+id|smb_lock_server
+c_func
+(paren
+id|server
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2839,19 +2822,21 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Restore the original pid if we didn&squot;t get a new one.&n;&t; */
-id|out_restore
-suffix:colon
+r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|server-&gt;conn_pid
+id|server-&gt;state
+op_eq
+id|CONN_RETRYING
 )paren
-id|server-&gt;conn_pid
+(brace
+multiline_comment|/* allow further attempts later */
+id|server-&gt;state
 op_assign
-id|pid
+id|CONN_RETRIED
 suffix:semicolon
+)brace
 id|out
 suffix:colon
 r_return
@@ -3021,7 +3006,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This implements the NEWCONN ioctl. It installs the server pid,&n; * sets server-&gt;state to CONN_VALID, and wakes up the waiting process.&n; *&n; * Note that this must be called with the server locked, except for&n; * the first call made after mounting the volume. The server pid&n; * will be set to zero to indicate that smbfs is awaiting a connection.&n; */
+multiline_comment|/*&n; * This implements the NEWCONN ioctl. It installs the server pid,&n; * sets server-&gt;state to CONN_VALID, and wakes up the waiting process.&n; */
 r_int
 DECL|function|smb_newconn
 id|smb_newconn
@@ -3056,7 +3041,13 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure we don&squot;t already have a pid ...&n;&t; */
+id|smb_lock_server
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure we don&squot;t already have a valid connection ...&n;&t; */
 id|error
 op_assign
 op_minus
@@ -3065,7 +3056,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|server-&gt;conn_pid
+id|server-&gt;state
+op_eq
+id|CONN_VALID
 )paren
 r_goto
 id|out
@@ -3205,15 +3198,12 @@ id|server-&gt;mnt-&gt;flags
 op_or_assign
 id|SMB_MOUNT_WIN95
 suffix:semicolon
-macro_line|#ifdef SMBFS_DEBUG_VERBOSE
-id|printk
+id|VERBOSE
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;smb_newconn: detected WIN95 server&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|VERBOSE
 c_func
@@ -3263,6 +3253,17 @@ c_cond
 id|buf
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|server-&gt;packet
+)paren
+id|smb_vfree
+c_func
+(paren
+id|server-&gt;packet
+)paren
+suffix:semicolon
 id|server-&gt;packet
 op_assign
 id|buf
@@ -3294,6 +3295,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|smb_unlock_server
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
 macro_line|#ifdef SMB_RETRY_INTR
 id|wake_up_interruptible
 c_func
@@ -4008,7 +4015,7 @@ id|smb_sb_info
 op_star
 id|server
 op_assign
-id|SMB_SERVER
+id|server_from_inode
 c_func
 (paren
 id|inode
@@ -4314,11 +4321,6 @@ comma
 id|ino-&gt;i_mtime
 )paren
 suffix:semicolon
-id|ino-&gt;u.smbfs_i.flags
-op_and_assign
-op_complement
-id|SMB_F_LOCALWRITE
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Force a revalidation after closing ... some servers&n;&t;&t; * don&squot;t post the size until the file has been closed.&n;&t;&t; */
 r_if
 c_cond
@@ -4371,7 +4373,7 @@ id|smb_sb_info
 op_star
 id|server
 op_assign
-id|SMB_SERVER
+id|server_from_inode
 c_func
 (paren
 id|ino
@@ -4775,6 +4777,11 @@ id|__u8
 op_star
 id|p
 suffix:semicolon
+id|__u16
+id|fileid
+op_assign
+id|inode-&gt;u.smbfs_i.fileid
+suffix:semicolon
 id|VERBOSE
 c_func
 (paren
@@ -4820,7 +4827,7 @@ id|server-&gt;packet
 comma
 id|smb_vwv0
 comma
-id|inode-&gt;u.smbfs_i.fileid
+id|fileid
 )paren
 suffix:semicolon
 id|WSET
@@ -4910,6 +4917,23 @@ c_func
 id|server-&gt;packet
 comma
 id|smb_vwv0
+)paren
+suffix:semicolon
+multiline_comment|/* flush to disk, to trigger win9x to update its filesize */
+multiline_comment|/* FIXME: this will be rather costly, won&squot;t it? */
+r_if
+c_cond
+(paren
+id|server-&gt;mnt-&gt;flags
+op_amp
+id|SMB_MOUNT_WIN95
+)paren
+id|smb_proc_flush
+c_func
+(paren
+id|server
+comma
+id|fileid
 )paren
 suffix:semicolon
 id|smb_unlock_server
@@ -5800,6 +5824,57 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called with the server locked&n; */
+r_int
+DECL|function|smb_proc_flush
+id|smb_proc_flush
+c_func
+(paren
+r_struct
+id|smb_sb_info
+op_star
+id|server
+comma
+id|__u16
+id|fileid
+)paren
+(brace
+id|smb_setup_header
+c_func
+(paren
+id|server
+comma
+id|SMBflush
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|WSET
+c_func
+(paren
+id|server-&gt;packet
+comma
+id|smb_vwv0
+comma
+id|fileid
+)paren
+suffix:semicolon
+r_return
+id|smb_request_ok
+c_func
+(paren
+id|server
+comma
+id|SMBflush
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 r_int
 DECL|function|smb_proc_trunc
 id|smb_proc_trunc
@@ -5940,9 +6015,21 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|result
-op_assign
-l_int|0
+multiline_comment|/*&n;&t; * win9x doesn&squot;t appear to update the size immediately.&n;&t; * It will return the old file size after the truncate,&n;&t; * confusing smbfs.&n;&t; * NT and Samba return the new value immediately.&n;&t; */
+r_if
+c_cond
+(paren
+id|server-&gt;mnt-&gt;flags
+op_amp
+id|SMB_MOUNT_WIN95
+)paren
+id|smb_proc_flush
+c_func
+(paren
+id|server
+comma
+id|fid
+)paren
 suffix:semicolon
 id|out
 suffix:colon

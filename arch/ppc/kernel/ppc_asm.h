@@ -117,4 +117,27 @@ mdefine_line|#define MTMSRD(r)&t;mtmsr&t;r
 DECL|macro|CLR_TOP32
 mdefine_line|#define CLR_TOP32(r)
 macro_line|#endif /* CONFIG_PPC64BRIDGE */
+multiline_comment|/*&n; * Defines for cache-line size etc.&n; */
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_8xx)
+DECL|macro|CACHE_LINE_SIZE
+mdefine_line|#define CACHE_LINE_SIZE&t;&t;16
+DECL|macro|LG_CACHE_LINE_SIZE
+mdefine_line|#define LG_CACHE_LINE_SIZE&t;4
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;1
+macro_line|#elif !defined(CONFIG_PPC64BRIDGE)
+DECL|macro|CACHE_LINE_SIZE
+mdefine_line|#define CACHE_LINE_SIZE&t;&t;32
+DECL|macro|LG_CACHE_LINE_SIZE
+mdefine_line|#define LG_CACHE_LINE_SIZE&t;5
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;4
+macro_line|#else
+DECL|macro|CACHE_LINE_SIZE
+mdefine_line|#define CACHE_LINE_SIZE&t;&t;128
+DECL|macro|LG_CACHE_LINE_SIZE
+mdefine_line|#define LG_CACHE_LINE_SIZE&t;7
+DECL|macro|MAX_COPY_PREFETCH
+mdefine_line|#define MAX_COPY_PREFETCH&t;1
+macro_line|#endif /* CONFIG_4xx || CONFIG_8xx */
 eof

@@ -863,10 +863,20 @@ op_eq
 l_int|0
 )paren
 (brace
-id|DPRINTK
+r_if
+c_cond
+(paren
+id|tulip_debug
+OG
+l_int|0
+)paren
+id|printk
 c_func
 (paren
-l_string|&quot;no phy info, aborting mtable build&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: no phy info, aborting mtable build&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1558,7 +1568,7 @@ c_cond
 (paren
 id|new_advertise
 )paren
-id|tp-&gt;to_advertise
+id|tp-&gt;sym_advertise
 op_assign
 id|new_advertise
 suffix:semicolon

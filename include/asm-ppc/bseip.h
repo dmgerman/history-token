@@ -2,6 +2,7 @@ multiline_comment|/*&n; * A collection of structures, addresses, and values asso
 macro_line|#ifndef __MACH_BSEIP_DEFS
 DECL|macro|__MACH_BSEIP_DEFS
 mdefine_line|#define __MACH_BSEIP_DEFS
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */
 DECL|struct|bd_info
 r_typedef
@@ -62,6 +63,7 @@ DECL|macro|PCMCIA_MEM_ADDR
 mdefine_line|#define PCMCIA_MEM_ADDR&t;&t;((uint)0x04000000)
 DECL|macro|PCMCIA_MEM_SIZE
 mdefine_line|#define PCMCIA_MEM_SIZE&t;&t;((uint)(64 * 1024))
+macro_line|#endif&t;/* !__ASSEMBLY__ */
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.175 2001/04/24 01:09:12 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.176 2001/05/16 15:07:11 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -5707,6 +5707,10 @@ op_amp
 id|empty_zero_page
 )paren
 suffix:semicolon
+r_int
+r_int
+id|real_end
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -5715,6 +5719,38 @@ comma
 id|mmu_context_bmap
 )paren
 suffix:semicolon
+id|real_end
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_end
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|sparc_ramdisk_image
+)paren
+id|real_end
+op_assign
+(paren
+id|PAGE_ALIGN
+c_func
+(paren
+id|real_end
+)paren
+op_plus
+id|PAGE_ALIGN
+c_func
+(paren
+id|sparc_ramdisk_size
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* We assume physical memory starts at some 4mb multiple,&n;&t; * if this were not true we wouldn&squot;t boot up to this point&n;&t; * anyways.&n;&t; */
 id|pt
 op_assign
@@ -5802,14 +5838,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-)paren
+id|real_end
 op_ge
 id|KERNBASE
 op_plus
@@ -5944,14 +5973,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-)paren
+id|real_end
 op_ge
 id|KERNBASE
 op_plus

@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+DECL|macro|MAX
+mdefine_line|#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
 multiline_comment|/*&n; * The swap-out function returns 1 if it successfully&n; * scanned all the pages it was asked to (`count&squot;).&n; * It returns zero if it couldn&squot;t do anything,&n; *&n; * rss may decrease because pages are shared, but this&n; * doesn&squot;t count as having freed a page.&n; */
 multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|try_to_swap_out
@@ -823,6 +825,15 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|count
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Go through process&squot; page directory.&n;&t; */
 multiline_comment|/*&n;&t; * Find the proper vm-area after freezing the vma chain &n;&t; * and ptes.&n;&t; */
 id|spin_lock
@@ -955,14 +966,31 @@ id|mm-&gt;rss
 op_rshift
 id|SWAP_SHIFT
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|nr
 OL
 id|SWAP_MIN
-ques
-c_cond
+)paren
+(brace
+id|nr
+op_assign
 id|SWAP_MIN
-suffix:colon
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+OG
+id|mm-&gt;rss
+)paren
+id|nr
+op_assign
+id|mm-&gt;rss
+suffix:semicolon
+)brace
+r_return
 id|nr
 suffix:semicolon
 )brace
@@ -1018,7 +1046,11 @@ suffix:semicolon
 multiline_comment|/* Then, look at the other mm&squot;s */
 id|counter
 op_assign
+(paren
 id|mmlist_nr
+op_lshift
+id|SWAP_SHIFT
+)paren
 op_rshift
 id|priority
 suffix:semicolon
@@ -1252,7 +1284,7 @@ multiline_comment|/* Page is or was in use?  Move it to the active list. */
 r_if
 c_cond
 (paren
-id|PageTestandClearReferenced
+id|PageReferenced
 c_func
 (paren
 id|page
@@ -1595,7 +1627,7 @@ multiline_comment|/* Page is or was in use?  Move it to the active list. */
 r_if
 c_cond
 (paren
-id|PageTestandClearReferenced
+id|PageReferenced
 c_func
 (paren
 id|page
@@ -2095,7 +2127,7 @@ r_return
 id|cleaned_pages
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * refill_inactive_scan - scan the active list and find pages to deactivate&n; * @priority: the priority at which to scan&n; * @oneshot: exit after deactivating one page&n; *&n; * This function will scan a portion of the active list to find&n; * unused pages, those pages will then be moved to the inactive list.&n; */
+multiline_comment|/**&n; * refill_inactive_scan - scan the active list and find pages to deactivate&n; * @priority: the priority at which to scan&n; * @target: number of pages to deactivate, zero for background aging&n; *&n; * This function will scan a portion of the active list to find&n; * unused pages, those pages will then be moved to the inactive list.&n; */
 DECL|function|refill_inactive_scan
 r_int
 id|refill_inactive_scan
@@ -2106,7 +2138,7 @@ r_int
 id|priority
 comma
 r_int
-id|oneshot
+id|target
 )paren
 (brace
 r_struct
@@ -2121,16 +2153,93 @@ id|page
 suffix:semicolon
 r_int
 id|maxscan
-comma
+op_assign
+id|nr_active_pages
+op_rshift
+id|priority
+suffix:semicolon
+r_int
 id|page_active
 op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|ret
+id|nr_deactivated
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * When we are background aging, we try to increase the page aging&n;&t; * information in the system. When we have too many inactive pages&n;&t; * we don&squot;t do background aging since having all pages on the&n;&t; * inactive list decreases aging information.&n;&t; *&n;&t; * Since not all active pages have to be on the active list, we round&n;&t; * nr_active_pages up to num_physpages/2, if needed.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|target
+)paren
+(brace
+r_int
+id|inactive
+op_assign
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_plus
+id|nr_inactive_clean_pages
+c_func
+(paren
+)paren
+op_plus
+id|nr_inactive_dirty_pages
+suffix:semicolon
+r_int
+id|active
+op_assign
+id|MAX
+c_func
+(paren
+id|nr_active_pages
+comma
+id|num_physpages
+op_div
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|active
+OG
+l_int|10
+op_star
+id|inactive
+)paren
+id|maxscan
+op_assign
+id|nr_active_pages
+op_rshift
+l_int|4
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|active
+OG
+l_int|3
+op_star
+id|inactive
+)paren
+id|maxscan
+op_assign
+id|nr_active_pages
+op_rshift
+l_int|8
+suffix:semicolon
+r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Take the lock while messing with the list... */
 id|spin_lock
 c_func
@@ -2138,12 +2247,6 @@ c_func
 op_amp
 id|pagemap_lru_lock
 )paren
-suffix:semicolon
-id|maxscan
-op_assign
-id|nr_active_pages
-op_rshift
-id|priority
 suffix:semicolon
 r_while
 c_loop
@@ -2279,7 +2382,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * If the page is still on the active list, move it&n;&t;&t; * to the other end of the list. Otherwise it was&n;&t;&t; * deactivated by age_page_down and we exit successfully.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the page is still on the active list, move it&n;&t;&t; * to the other end of the list. Otherwise we exit if&n;&t;&t; * we have done enough work.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2310,14 +2413,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ret
-op_assign
-l_int|1
+id|nr_deactivated
+op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|oneshot
+id|target
+op_logical_and
+id|nr_deactivated
+op_ge
+id|target
 )paren
 r_break
 suffix:semicolon
@@ -2331,7 +2437,7 @@ id|pagemap_lru_lock
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|nr_deactivated
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check if there are zones with a severe shortage of free pages,&n; * or if all zones have a minor shortage.&n; */
@@ -2371,10 +2477,6 @@ r_int
 id|freetarget
 op_assign
 id|freepages.high
-op_plus
-id|inactive_target
-op_div
-l_int|3
 suffix:semicolon
 multiline_comment|/* Are we low on free pages globally? */
 r_if
@@ -2429,17 +2531,12 @@ op_plus
 id|zone-&gt;free_pages
 OL
 id|zone-&gt;pages_min
-op_plus
-l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/* + 1 to have overlap with alloc_pages() !! */
 id|sum
 op_add_assign
 id|zone-&gt;pages_min
-op_plus
-l_int|1
 suffix:semicolon
 id|sum
 op_sub_assign
@@ -2602,7 +2699,7 @@ r_return
 id|shortage
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We need to make the locks finer granularity, but right&n; * now we need this so that we can do page allocations&n; * without holding the kernel lock etc.&n; *&n; * We want to try to free &quot;count&quot; pages, and we want to &n; * cluster them so that we get good swap-out behaviour.&n; *&n; * OTOH, if we&squot;re a user process (and not kswapd), we&n; * really care about latency. In that case we don&squot;t try&n; * to free too many pages.&n; */
+multiline_comment|/*&n; * Refill_inactive is the function used to scan and age the pages on&n; * the active list and in the working set of processes, moving the&n; * little-used pages to the inactive list.&n; *&n; * When called by kswapd, we try to deactivate as many pages as needed&n; * to recover from the inactive page shortage. This makes it possible&n; * for kswapd to keep up with memory demand so user processes can get&n; * low latency on memory allocations.&n; *&n; * However, when the system starts to get overloaded we can get called&n; * by user processes. For user processes we want to both reduce the&n; * latency and make sure that multiple user processes together don&squot;t&n; * deactivate too many pages. To achieve this we simply do less work&n; * when called from a user process.&n; */
 DECL|macro|DEF_PRIORITY
 mdefine_line|#define DEF_PRIORITY (6)
 DECL|function|refill_inactive
@@ -2626,23 +2723,12 @@ id|start_count
 comma
 id|maxtry
 suffix:semicolon
-id|count
-op_assign
-id|inactive_shortage
-c_func
-(paren
-)paren
-op_plus
-id|free_shortage
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|user
 )paren
+(brace
 id|count
 op_assign
 (paren
@@ -2651,13 +2737,30 @@ op_lshift
 id|page_cluster
 )paren
 suffix:semicolon
-id|start_count
-op_assign
-id|count
-suffix:semicolon
 id|maxtry
 op_assign
 l_int|6
+suffix:semicolon
+)brace
+r_else
+(brace
+id|count
+op_assign
+id|inactive_shortage
+c_func
+(paren
+)paren
+suffix:semicolon
+id|maxtry
+op_assign
+l_int|1
+op_lshift
+id|DEF_PRIORITY
+suffix:semicolon
+)brace
+id|start_count
+op_assign
+id|count
 suffix:semicolon
 r_do
 (brace
@@ -2678,23 +2781,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
+r_if
+c_cond
 (paren
+op_logical_neg
+id|inactive_shortage
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|count
+op_sub_assign
 id|refill_inactive_scan
 c_func
 (paren
 id|DEF_PRIORITY
 comma
-l_int|1
+id|count
 )paren
-)paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_decrement
 id|count
 op_le
 l_int|0
@@ -2702,7 +2814,6 @@ l_int|0
 r_goto
 id|done
 suffix:semicolon
-)brace
 multiline_comment|/* If refill_inactive_scan failed, try to page stuff out.. */
 id|swap_out
 c_func
@@ -2767,18 +2878,6 @@ r_if
 c_cond
 (paren
 id|free_shortage
-c_func
-(paren
-)paren
-op_logical_or
-id|nr_inactive_dirty_pages
-OG
-id|nr_free_pages
-c_func
-(paren
-)paren
-op_plus
-id|nr_inactive_clean_pages
 c_func
 (paren
 )paren
@@ -2949,16 +3048,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Do some (very minimal) background scanning. This&n;&t;&t; * will scan all pages on the active list once&n;&t;&t; * every minute. This clears old referenced bits&n;&t;&t; * and moves unused pages to the inactive list.&n;&t;&t; */
-id|refill_inactive_scan
-c_func
-(paren
-id|DEF_PRIORITY
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Once a second, recalculate some VM stats. */
+multiline_comment|/* Once a second ... */
 r_if
 c_cond
 (paren
@@ -2977,9 +3067,19 @@ id|recalc
 op_assign
 id|jiffies
 suffix:semicolon
+multiline_comment|/* Recalculate VM statistics. */
 id|recalculate_vm_stats
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* Do background page aging. */
+id|refill_inactive_scan
+c_func
+(paren
+id|DEF_PRIORITY
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

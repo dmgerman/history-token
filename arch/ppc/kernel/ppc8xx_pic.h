@@ -26,9 +26,6 @@ id|regs
 comma
 r_int
 id|cpu
-comma
-r_int
-id|isfake
 )paren
 suffix:semicolon
 r_int

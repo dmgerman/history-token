@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: su.c,v 1.48 2001/04/27 07:02:42 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
+multiline_comment|/* $Id: su.c,v 1.49 2001/05/11 05:35:02 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
 multiline_comment|/*&n; * Configuration section.&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef SERIAL_PARANOIA_CHECK
@@ -59,6 +59,9 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#ifdef CONFIG_SPARC64
+macro_line|#include &lt;asm/isa.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -9305,7 +9308,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.48 $&quot;
+l_string|&quot;$Revision: 1.49 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -9395,6 +9398,18 @@ id|linux_ebus
 op_star
 id|ebus
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC64
+r_struct
+id|isa_bridge
+op_star
+id|isa_br
+suffix:semicolon
+r_struct
+id|isa_device
+op_star
+id|isa_dev
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef __sparc_v9__
 r_struct
 id|linux_prom_registers
@@ -9461,6 +9476,44 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef CONFIG_SPARC64
+id|for_each_isa
+c_func
+(paren
+id|isa_br
+)paren
+(brace
+id|for_each_isadev
+c_func
+(paren
+id|isa_dev
+comma
+id|isa_br
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|isa_dev-&gt;prom_node
+op_eq
+id|info-&gt;port_node
+)paren
+(brace
+id|info-&gt;port
+op_assign
+id|isa_dev-&gt;resource.start
+suffix:semicolon
+id|info-&gt;irq
+op_assign
+id|isa_dev-&gt;irq
+suffix:semicolon
+r_goto
+id|ebus_done
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
 macro_line|#ifdef __sparc_v9__
 multiline_comment|/*&n;&t; * Not on Ebus, bailing.&n;&t; */
 r_return

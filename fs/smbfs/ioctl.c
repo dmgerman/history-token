@@ -37,7 +37,7 @@ id|smb_sb_info
 op_star
 id|server
 op_assign
-id|SMB_SERVER
+id|server_from_inode
 c_func
 (paren
 id|inode
@@ -104,7 +104,7 @@ suffix:semicolon
 r_case
 id|SMB_IOC_NEWCONN
 suffix:colon
-multiline_comment|/* require an argument == the mount data, else it is EINVAL */
+multiline_comment|/* require an argument == smb_conn_opt, else it is EINVAL */
 r_if
 c_cond
 (paren
@@ -155,6 +155,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+r_break
 suffix:semicolon
 )brace
 r_return

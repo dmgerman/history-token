@@ -11869,6 +11869,8 @@ op_assign
 id|vmalloc
 (paren
 id|user_len
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_int

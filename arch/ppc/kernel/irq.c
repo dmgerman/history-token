@@ -499,13 +499,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This could be promoted to a real free_irq() ... */
-r_static
-r_int
-DECL|function|do_free_irq
-id|do_free_irq
+macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
+multiline_comment|/* Name change so we can catch standard drivers that potentially mess up&n; * the internal interrupt controller on 8xx and 8260.  Just bear with me,&n; * I don&squot;t like this either and I am searching a better solution.  For&n; * now, this is what I need. -- Dan&n; */
+DECL|macro|request_irq
+mdefine_line|#define request_irq&t;request_8xxirq
+macro_line|#elif defined(CONFIG_APUS)
+DECL|macro|request_irq
+mdefine_line|#define request_irq&t;request_sysirq
+DECL|macro|free_irq
+mdefine_line|#define free_irq&t;sys_free_irq
+macro_line|#endif
+DECL|function|free_irq
+r_void
+id|free_irq
 c_func
 (paren
+r_int
 r_int
 id|irq
 comma
@@ -646,7 +655,6 @@ id|action
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|printk
@@ -670,20 +678,8 @@ r_break
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|ENOENT
 suffix:semicolon
 )brace
-macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
-multiline_comment|/* Name change so we can catch standard drivers that potentially mess up&n; * the internal interrupt controller on 8xx and 8260.  Just bear with me,&n; * I don&squot;t like this either and I am searching a better solution.  For&n; * now, this is what I need. -- Dan&n; */
-DECL|macro|request_irq
-mdefine_line|#define request_irq&t;request_8xxirq
-macro_line|#elif defined(CONFIG_APUS)
-DECL|macro|request_irq
-mdefine_line|#define request_irq&t;request_sysirq
-DECL|macro|free_irq
-mdefine_line|#define free_irq&t;sys_free_irq
-macro_line|#endif
 DECL|function|request_irq
 r_int
 id|request_irq
@@ -748,9 +744,9 @@ c_cond
 op_logical_neg
 id|handler
 )paren
-multiline_comment|/* We could implement really free_irq() instead of that... */
-r_return
-id|do_free_irq
+(brace
+multiline_comment|/*&n;&t;&t; * free_irq() used to be implemented as a call to&n;&t;&t; * request_irq() with handler being NULL.  Now we have&n;&t;&t; * a real free_irq() but need to allow the old behavior&n;&t;&t; * for old code that hasn&squot;t caught up yet.&n;&t;&t; *  -- Cort &lt;cort@fsmlabs.com&gt;&n;&t;&t; */
+id|free_irq
 c_func
 (paren
 id|irq
@@ -758,6 +754,10 @@ comma
 id|dev_id
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|action
 op_assign
 (paren
@@ -850,35 +850,6 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|free_irq
-r_void
-id|free_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-)paren
-(brace
-id|request_irq
-c_func
-(paren
-id|irq
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|dev_id
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */
@@ -1970,9 +1941,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|isfake
 )paren
 (brace
 r_int
@@ -2042,21 +2010,6 @@ id|out
 suffix:semicolon
 )brace
 id|ppc_irq_dispatch_handler
-c_func
-(paren
-id|regs
-comma
-id|irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppc_md.post_irq
-)paren
-id|ppc_md
-dot
-id|post_irq
 c_func
 (paren
 id|regs
@@ -3210,6 +3163,12 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
+DECL|macro|DEFAULT_CPU_AFFINITY
+mdefine_line|#define DEFAULT_CPU_AFFINITY 0xffffffff
+macro_line|#else
+DECL|macro|DEFAULT_CPU_AFFINITY
+mdefine_line|#define DEFAULT_CPU_AFFINITY 0x00000001
+macro_line|#endif
 DECL|variable|irq_affinity
 r_int
 r_int
@@ -3229,33 +3188,9 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0xffffffff
+id|DEFAULT_CPU_AFFINITY
 )brace
 suffix:semicolon
-macro_line|#else  /* CONFIG_IRQ_ALL_CPUS */
-DECL|variable|irq_affinity
-r_int
-r_int
-id|irq_affinity
-(braket
-id|NR_IRQS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|NR_IRQS
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0x00000000
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRQ_ALL_CPUS */
 DECL|macro|HEX_DIGITS
 mdefine_line|#define HEX_DIGITS 8
 DECL|function|irq_affinity_read_proc
@@ -3566,9 +3501,7 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
-multiline_comment|/* Why is this disabled ? --BenH */
-macro_line|#if 0/*CONFIG_SMP*/
-multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
+multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; *&n;&t; * We assume a 1-1 logical&lt;-&gt;physical cpu mapping here.  If&n;&t; * we assume that the cpu indices in /proc/irq/../smp_affinity&n;&t; * are actually logical cpu #&squot;s then we have no problem.&n;&t; *  -- Cort &lt;cort@fsmlabs.com&gt;&n;&t; */
 r_if
 c_cond
 (paren
@@ -3583,7 +3516,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif
 id|irq_affinity
 (braket
 id|irq

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.13 2001/02/13 01:17:26 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
+multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.14 2001/05/05 01:01:55 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SYN_COOKIES) 
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -268,12 +268,12 @@ r_struct
 id|or_calltable
 id|or_ipv4
 suffix:semicolon
+DECL|function|get_cookie_sock
 r_static
 r_inline
 r_struct
 id|sock
 op_star
-DECL|function|get_cookie_sock
 id|get_cookie_sock
 c_func
 (paren
@@ -355,10 +355,10 @@ r_return
 id|child
 suffix:semicolon
 )brace
+DECL|function|cookie_v4_check
 r_struct
 id|sock
 op_star
-DECL|function|cookie_v4_check
 id|cookie_v4_check
 c_func
 (paren
@@ -390,6 +390,13 @@ op_minus
 l_int|1
 suffix:semicolon
 r_struct
+id|sock
+op_star
+id|ret
+op_assign
+id|sk
+suffix:semicolon
+r_struct
 id|open_request
 op_star
 id|req
@@ -410,18 +417,12 @@ c_cond
 (paren
 op_logical_neg
 id|sysctl_tcp_syncookies
-)paren
-r_return
-id|sk
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 op_logical_neg
 id|skb-&gt;h.th-&gt;ack
 )paren
-r_return
-id|sk
+r_goto
+id|out
 suffix:semicolon
 id|mss
 op_assign
@@ -436,9 +437,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mss
-op_eq
-l_int|0
 )paren
 (brace
 id|NET_INC_STATS_BH
@@ -447,8 +447,8 @@ c_func
 id|SyncookiesFailed
 )paren
 suffix:semicolon
-r_return
-id|sk
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|NET_INC_STATS_BH
@@ -464,15 +464,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|req
-op_eq
-l_int|NULL
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 id|req-&gt;rcv_isn
 op_assign
@@ -634,8 +637,8 @@ c_func
 id|req
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Try to redo what tcp_v4_send_synack did. */
@@ -671,7 +674,8 @@ id|req-&gt;rcv_wscale
 op_assign
 id|rcv_wscale
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|get_cookie_sock
 c_func
 (paren
@@ -684,6 +688,11 @@ comma
 op_amp
 id|rt-&gt;u.dst
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -1191,10 +1191,10 @@ op_assign
 l_int|0
 comma
 multiline_comment|/* Line 0 - unused */
-l_int|13
+l_int|15
 comma
 multiline_comment|/* Line 1 */
-l_int|10
+l_int|15
 comma
 multiline_comment|/* Line 2 */
 l_int|15

@@ -3,6 +3,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_MBX_DEFS
 DECL|macro|__MACH_MBX_DEFS
 mdefine_line|#define __MACH_MBX_DEFS
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* A Board Information structure that is given to a program when&n; * EPPC-Bug starts it up.&n; */
 DECL|struct|bd_info
 r_typedef
@@ -69,12 +70,20 @@ r_int
 id|bi_dlun
 suffix:semicolon
 multiline_comment|/* Boot device logical dev */
+multiline_comment|/* These fields are not part of the board information structure&n;&t; * provided by the boot rom.  They are filled in by embed_config.c&n;&t; * so we have the information consistent with other platforms.&n;&t; */
+DECL|member|bi_enetaddr
+r_int
+r_char
+id|bi_enetaddr
+(braket
+l_int|6
+)braket
+suffix:semicolon
 DECL|member|bi_baudrate
 r_int
 r_int
 id|bi_baudrate
 suffix:semicolon
-multiline_comment|/* ...to be like everyone else */
 DECL|typedef|bd_t
 )brace
 id|bd_t
@@ -140,6 +149,7 @@ DECL|macro|COMM_L_INT
 mdefine_line|#define COMM_L_INT&t;SIU_IRQ6&t;/* MBX Comm expansion connector pin */
 DECL|macro|STOP_ABRT_INT
 mdefine_line|#define STOP_ABRT_INT&t;SIU_IRQ7&t;/* Stop/Abort header pin */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* The MBX uses the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;16

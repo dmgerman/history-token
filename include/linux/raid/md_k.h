@@ -21,7 +21,7 @@ mdefine_line|#define HSM               6UL
 DECL|macro|MAX_PERSONALITY
 mdefine_line|#define MAX_PERSONALITY   7UL
 DECL|function|pers_to_level
-r_extern
+r_static
 r_inline
 r_int
 id|pers_to_level
@@ -191,7 +191,7 @@ id|MAX_MD_DEVS
 )braket
 suffix:semicolon
 DECL|function|kdev_to_mddev
-r_extern
+r_static
 r_inline
 id|mddev_t
 op_star
@@ -237,7 +237,7 @@ multiline_comment|/*&n; * default readahead&n; */
 DECL|macro|MD_READAHEAD
 mdefine_line|#define MD_READAHEAD&t;MAX_READAHEAD
 DECL|function|disk_faulty
-r_extern
+r_static
 r_inline
 r_int
 id|disk_faulty
@@ -259,7 +259,7 @@ id|MD_DISK_FAULTY
 suffix:semicolon
 )brace
 DECL|function|disk_active
-r_extern
+r_static
 r_inline
 r_int
 id|disk_active
@@ -281,7 +281,7 @@ id|MD_DISK_ACTIVE
 suffix:semicolon
 )brace
 DECL|function|disk_sync
-r_extern
+r_static
 r_inline
 r_int
 id|disk_sync
@@ -303,7 +303,7 @@ id|MD_DISK_SYNC
 suffix:semicolon
 )brace
 DECL|function|disk_spare
-r_extern
+r_static
 r_inline
 r_int
 id|disk_spare
@@ -338,7 +338,7 @@ id|d
 suffix:semicolon
 )brace
 DECL|function|disk_removed
-r_extern
+r_static
 r_inline
 r_int
 id|disk_removed
@@ -360,7 +360,7 @@ id|MD_DISK_REMOVED
 suffix:semicolon
 )brace
 DECL|function|mark_disk_faulty
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_faulty
@@ -381,7 +381,7 @@ id|MD_DISK_FAULTY
 suffix:semicolon
 )brace
 DECL|function|mark_disk_active
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_active
@@ -402,7 +402,7 @@ id|MD_DISK_ACTIVE
 suffix:semicolon
 )brace
 DECL|function|mark_disk_sync
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_sync
@@ -423,7 +423,7 @@ id|MD_DISK_SYNC
 suffix:semicolon
 )brace
 DECL|function|mark_disk_spare
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_spare
@@ -440,7 +440,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|mark_disk_removed
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_removed
@@ -467,7 +467,7 @@ id|MD_DISK_REMOVED
 suffix:semicolon
 )brace
 DECL|function|mark_disk_inactive
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_inactive
@@ -489,7 +489,7 @@ id|MD_DISK_ACTIVE
 suffix:semicolon
 )brace
 DECL|function|mark_disk_nonsync
-r_extern
+r_static
 r_inline
 r_void
 id|mark_disk_nonsync
@@ -862,7 +862,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Currently we index md_array directly, based on the minor&n; * number. This will have to change to dynamic allocation&n; * once we start supporting partitioning of md devices.&n; */
 DECL|function|mdidx
-r_extern
+r_static
 r_inline
 r_int
 id|mdidx
@@ -877,7 +877,7 @@ id|mddev-&gt;__minor
 suffix:semicolon
 )brace
 DECL|function|mddev_to_kdev
-r_extern
+r_static
 r_inline
 id|kdev_t
 id|mddev_to_kdev
@@ -949,7 +949,7 @@ multiline_comment|/*&n; * iterates through all used mddevs in the system.&n; */
 DECL|macro|ITERATE_MDDEV
 mdefine_line|#define ITERATE_MDDEV(mddev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = all_mddevs.next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mddev = md_list_entry(tmp, mddev_t, all_mddevs),&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;all_mddevs&t;&bslash;&n;&t;&t;; )
 DECL|function|lock_mddev
-r_extern
+r_static
 r_inline
 r_int
 id|lock_mddev
@@ -969,7 +969,7 @@ id|mddev-&gt;reconfig_sem
 suffix:semicolon
 )brace
 DECL|function|unlock_mddev
-r_extern
+r_static
 r_inline
 r_void
 id|unlock_mddev

@@ -974,7 +974,7 @@ r_if
 c_cond
 (paren
 id|nbytes
-OG
+op_ge
 id|PAGE_SIZE
 )paren
 id|nbytes

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;The firmware this driver downloads into the Localtalk card is a&n; *&t;separate program and is not GPL&squot;d source code, even though the Linux&n; *&t;side driver and the routine that loads this data into the card are.&n; *&t;&n; *&t;It is taken from the COPS SDK and is under the following license&n; *&n; *&t;This material is licensed to you strictly for use in conjunction with&n; *&t;the use of COPS LocalTalk adapters.&n; *&t;There is no charge for this SDK. And no waranty express or implied&n; *&t;about its fitness for any purpose. However, we will cheerefully&n; *&t;refund every penny you paid for this SDK...&n; *&t;Regards,&n; *&n; *&t;Thomas F. Divine&n; *&t;Chief Scientist&n; */
-multiline_comment|/*      cops_ffdrv.h: LocalTalk driver firmware dump for Linux.&n; *&n; *      Authors:&n; *      - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; */
+multiline_comment|/*      cops_ffdrv.h: LocalTalk driver firmware dump for Linux.&n; *&n; *      Authors:&n; *      - Jay Schulist &lt;jschlst@samba.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_COPS_DAYNA
 DECL|variable|ffdrv_code

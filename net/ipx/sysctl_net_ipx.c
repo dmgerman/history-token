@@ -2,12 +2,14 @@ multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_ipx.c: sysctl interface to 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#ifndef CONFIG_SYSCTL
+macro_line|#error This file should not be compiled without CONFIG_SYSCTL defined
+macro_line|#endif
 multiline_comment|/* From af_ipx.c */
 r_extern
 r_int
 id|sysctl_ipx_pprop_broadcasting
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|ipx_table
 id|ctl_table
 id|ipx_table
@@ -136,24 +138,4 @@ id|ipx_table_header
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|ipx_register_sysctl
-r_void
-id|ipx_register_sysctl
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|function|ipx_unregister_sysctl
-r_void
-id|ipx_unregister_sysctl
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif
 eof

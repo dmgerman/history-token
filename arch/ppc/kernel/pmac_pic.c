@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;pmac_pic.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 DECL|struct|pmac_irq_hw
@@ -114,10 +115,10 @@ id|GATWICK_IRQ_POOL_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Mark an irq as &quot;lost&quot;.  This is only used on the pmac&n; * since it can lose interrupts (see pmac_set_irq_mask).&n; * -- Cort&n; */
-DECL|function|__no_use_set_lost
+DECL|function|__set_lost
 r_void
 id|__pmac
-id|__no_use_set_lost
+id|__set_lost
 c_func
 (paren
 r_int
@@ -137,6 +138,7 @@ comma
 id|ppc_lost_interrupts
 )paren
 )paren
+(brace
 id|atomic_inc
 c_func
 (paren
@@ -144,6 +146,13 @@ op_amp
 id|ppc_n_lost_interrupts
 )paren
 suffix:semicolon
+id|set_dec
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|pmac_mask_and_ack_irq
 r_static
@@ -1775,10 +1784,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|int_control.int_set_lost
-op_assign
-id|__no_use_set_lost
-suffix:semicolon
 multiline_comment|/*&n;&t; * G3 powermacs and 1999 G3 PowerBooks have 64 interrupts,&n;&t; * 1998 G3 Series PowerBooks have 128, &n;&t; * other powermacs have 32.&n;&t; * The combo ethernet/modem card for the Powerstar powerbooks&n;&t; * (2400/3400/3500, ohare based) has a second ohare chip&n;&t; * effectively making a total of 64.&n;&t; */
 id|max_irqs
 op_assign

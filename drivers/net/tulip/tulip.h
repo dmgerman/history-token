@@ -11,15 +11,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* undefine, or define to various debugging levels (&gt;4 == obscene levels) */
 DECL|macro|TULIP_DEBUG
-macro_line|#undef TULIP_DEBUG
-macro_line|#ifdef TULIP_DEBUG
-multiline_comment|/* note: prints function name for you */
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...)
-macro_line|#endif
+mdefine_line|#define TULIP_DEBUG 1
 DECL|struct|tulip_chip_table
 r_struct
 id|tulip_chip_table
@@ -122,6 +114,11 @@ id|COMET_MAC_ADDR
 op_assign
 l_int|0x0800
 comma
+DECL|enumerator|HAS_PCI_MWI
+id|HAS_PCI_MWI
+op_assign
+l_int|0x1000
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* chip types.  careful!  order is VERY IMPORTANT here, as these&n; * are used throughout the driver as indices into arrays */
@@ -184,9 +181,6 @@ id|I21145
 comma
 DECL|enumerator|DM910X
 id|DM910X
-comma
-DECL|enumerator|CONEXANT
-id|CONEXANT
 comma
 )brace
 suffix:semicolon
@@ -419,14 +413,27 @@ l_int|0x01
 comma
 )brace
 suffix:semicolon
-DECL|enum|tulip_rx_modes
+DECL|enum|tulip_mode_bits
 r_enum
-id|tulip_rx_modes
+id|tulip_mode_bits
 (brace
+DECL|enumerator|TxThreshold
+id|TxThreshold
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|22
+)paren
+comma
 DECL|enumerator|FullDuplex
 id|FullDuplex
 op_assign
-l_int|0x0200
+(paren
+l_int|1
+op_lshift
+l_int|9
+)paren
 comma
 DECL|enumerator|AcceptBroadcast
 id|AcceptBroadcast
@@ -447,6 +454,49 @@ DECL|enumerator|AcceptRunt
 id|AcceptRunt
 op_assign
 l_int|0x0008
+comma
+)brace
+suffix:semicolon
+DECL|enum|tulip_busconfig_bits
+r_enum
+id|tulip_busconfig_bits
+(brace
+DECL|enumerator|MWI
+id|MWI
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|24
+)paren
+comma
+DECL|enumerator|MRL
+id|MRL
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|23
+)paren
+comma
+DECL|enumerator|MRM
+id|MRM
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|21
+)paren
+comma
+DECL|enumerator|CALShift
+id|CALShift
+op_assign
+l_int|14
+comma
+DECL|enumerator|BurstLenShift
+id|BurstLenShift
+op_assign
+l_int|8
 comma
 )brace
 suffix:semicolon
@@ -569,8 +619,6 @@ id|csr13_eng
 op_or
 id|csr13_aui
 op_or
-id|csr13_cac
-op_or
 id|csr13_srl
 )paren
 comma
@@ -579,8 +627,6 @@ id|csr13_mask_10bt
 op_assign
 (paren
 id|csr13_eng
-op_or
-id|csr13_cac
 op_or
 id|csr13_srl
 )paren
@@ -941,6 +987,16 @@ DECL|macro|MEDIA_MASK
 mdefine_line|#define MEDIA_MASK     31
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;/* Size of each temporary Rx buffer. */
+DECL|macro|TULIP_MIN_CACHE_LINE
+mdefine_line|#define TULIP_MIN_CACHE_LINE&t;8&t;/* in units of 32-bit words */
+macro_line|#if defined(__sparc__) || defined(__hppa__)
+multiline_comment|/* The UltraSparc PCI controllers will disconnect at every 64-byte&n; * crossing anyways so it makes no sense to tell Tulip to burst&n; * any more than that.&n; */
+DECL|macro|TULIP_MAX_CACHE_LINE
+mdefine_line|#define TULIP_MAX_CACHE_LINE&t;16&t;/* in units of 32-bit words */
+macro_line|#else
+DECL|macro|TULIP_MAX_CACHE_LINE
+mdefine_line|#define TULIP_MAX_CACHE_LINE&t;32&t;/* in units of 32-bit words */
+macro_line|#endif
 multiline_comment|/* Ring-wrap flag in length field, use for last ring entry.&n;&t;0x01000000 means chain on buffer2 address,&n;&t;0x02000000 means use the ring start address in CSR2/3.&n;   Note: Some work-alike chips do not function correctly in chained mode.&n;   The ASIX chip works only in chained mode.&n;   Thus we indicates ring mode, but always write the &squot;next&squot; field for&n;   chained mode as well.&n;*/
 DECL|macro|DESC_RING_WRAP
 mdefine_line|#define DESC_RING_WRAP 0x02000000
@@ -1294,9 +1350,12 @@ r_int
 id|csr5
 )paren
 suffix:semicolon
-DECL|member|to_advertise
+DECL|member|sym_advertise
+DECL|member|mii_advertise
 id|u16
-id|to_advertise
+id|sym_advertise
+comma
+id|mii_advertise
 suffix:semicolon
 multiline_comment|/* NWay capabilities advertised.  */
 DECL|member|lpar
@@ -1445,6 +1504,19 @@ r_int
 id|csr5
 )paren
 suffix:semicolon
+r_void
+id|pnic2_lnk_change
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|csr5
+)paren
+suffix:semicolon
 multiline_comment|/* eeprom.c */
 r_void
 id|tulip_parse_eeprom
@@ -1554,6 +1626,18 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_void
+id|tulip_find_mii
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|board_idx
 )paren
 suffix:semicolon
 multiline_comment|/* pnic.c */

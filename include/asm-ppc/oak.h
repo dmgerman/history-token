@@ -99,6 +99,9 @@ suffix:semicolon
 macro_line|#ifdef __cplusplus
 )brace
 macro_line|#endif
+multiline_comment|/* Generic 4xx type&n;*/
+DECL|macro|_MACH_4xx
+mdefine_line|#define _MACH_4xx (_MACH_oak)
 macro_line|#endif /* __OAK_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

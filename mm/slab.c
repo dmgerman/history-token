@@ -6768,6 +6768,8 @@ r_char
 id|kbuf
 (braket
 id|MAX_SLABINFO_WRITE
+op_plus
+l_int|1
 )braket
 comma
 op_star
@@ -6813,6 +6815,13 @@ id|count
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+id|kbuf
+(braket
+id|MAX_SLABINFO_WRITE
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|tmp
 op_assign

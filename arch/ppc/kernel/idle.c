@@ -132,6 +132,10 @@ r_case
 l_int|12
 suffix:colon
 multiline_comment|/* 7400 */
+r_case
+l_int|0x800c
+suffix:colon
+multiline_comment|/* 7410 */
 id|do_power_save
 op_assign
 l_int|1

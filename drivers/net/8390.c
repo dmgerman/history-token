@@ -1160,6 +1160,17 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* rmk - acknowledge the interrupts */
+id|outb_p
+c_func
+(paren
+id|interrupts
+comma
+id|e8390_base
+op_plus
+id|EN0_ISR
+)paren
+suffix:semicolon
 id|interrupts
 op_assign
 l_int|0

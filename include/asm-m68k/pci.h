@@ -87,5 +87,8 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|macro|pci_controller_num
+mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 macro_line|#endif /* _ASM_M68K_PCI_H */
 eof

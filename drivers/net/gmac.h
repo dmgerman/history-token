@@ -741,10 +741,13 @@ DECL|macro|MII_ANLPA_CSMA
 mdefine_line|#define MII_ANLPA_CSMA 0x0001      /* CSMA-CD Capable */
 DECL|macro|MII_ANLPA_PAUS
 mdefine_line|#define MII_ANLPA_PAUS 0x0400 
+multiline_comment|/* Generic PHYs&n; * &n; * These GENERIC values assumes that the PHY devices follow 802.3u and&n; * allow parallel detection to set the link partner ability register.&n; * Detection of 100Base-TX [H/F Duplex] and 100Base-T4 is supported.&n; */
 multiline_comment|/*&n; * Model-specific PHY registers&n; *&n; * Note: Only the BCM5201 is described here for now. I&squot;ll add the 5400 once&n; *       I see a machine using it in real world.&n; */
 multiline_comment|/* Supported PHYs (phy_type field ) */
 DECL|macro|PHY_B5400
 mdefine_line|#define PHY_B5400&t;0x5400
+DECL|macro|PHY_B5401
+mdefine_line|#define PHY_B5401&t;0x5401
 DECL|macro|PHY_B5201
 mdefine_line|#define PHY_B5201&t;0x5201
 DECL|macro|PHY_LXT971
@@ -762,6 +765,16 @@ DECL|macro|MII_BCM5201_ID
 mdefine_line|#define MII_BCM5201_ID                          ((MII_BCM5201_OUI &lt;&lt; 10) | (MII_BCM5201_MODEL &lt;&lt; 4))
 DECL|macro|MII_BCM5201_MASK
 mdefine_line|#define MII_BCM5201_MASK                        0xfffffff0
+DECL|macro|MII_BCM5221_OUI
+mdefine_line|#define MII_BCM5221_OUI                         0x001018
+DECL|macro|MII_BCM5221_MODEL
+mdefine_line|#define MII_BCM5221_MODEL                       0x1e
+DECL|macro|MII_BCM5221_REV
+mdefine_line|#define MII_BCM5221_REV                         0x00
+DECL|macro|MII_BCM5221_ID
+mdefine_line|#define MII_BCM5221_ID                          ((MII_BCM5221_OUI &lt;&lt; 10) | (MII_BCM5221_MODEL &lt;&lt; 4))
+DECL|macro|MII_BCM5221_MASK
+mdefine_line|#define MII_BCM5221_MASK                        0xfffffff0
 DECL|macro|MII_BCM5400_OUI
 mdefine_line|#define MII_BCM5400_OUI                         0x000818
 DECL|macro|MII_BCM5400_MODEL
@@ -772,6 +785,16 @@ DECL|macro|MII_BCM5400_ID
 mdefine_line|#define MII_BCM5400_ID                          ((MII_BCM5400_OUI &lt;&lt; 10) | (MII_BCM5400_MODEL &lt;&lt; 4))
 DECL|macro|MII_BCM5400_MASK
 mdefine_line|#define MII_BCM5400_MASK                        0xfffffff0
+DECL|macro|MII_BCM5401_OUI
+mdefine_line|#define MII_BCM5401_OUI                         0x000818
+DECL|macro|MII_BCM5401_MODEL
+mdefine_line|#define MII_BCM5401_MODEL                       0x05
+DECL|macro|MII_BCM5401_REV
+mdefine_line|#define MII_BCM5401_REV                         0x01
+DECL|macro|MII_BCM5401_ID
+mdefine_line|#define MII_BCM5401_ID                          ((MII_BCM5401_OUI &lt;&lt; 10) | (MII_BCM5401_MODEL &lt;&lt; 4))
+DECL|macro|MII_BCM5401_MASK
+mdefine_line|#define MII_BCM5401_MASK                        0xfffffff0
 DECL|macro|MII_LXT971_OUI
 mdefine_line|#define MII_LXT971_OUI                          0x0004de
 DECL|macro|MII_LXT971_MODEL
@@ -1044,6 +1067,10 @@ suffix:semicolon
 DECL|member|opened
 r_int
 id|opened
+suffix:semicolon
+DECL|member|sleeping
+r_int
+id|sleeping
 suffix:semicolon
 DECL|member|next_gmac
 r_struct

@@ -3,71 +3,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_HW_IRQ_H
 DECL|macro|_PPC_HW_IRQ_H
 mdefine_line|#define _PPC_HW_IRQ_H
-DECL|struct|int_control_struct
-r_struct
-id|int_control_struct
-(brace
-DECL|member|int_cli
-r_void
-(paren
-op_star
-id|int_cli
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|int_sti
-r_void
-(paren
-op_star
-id|int_sti
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|int_restore_flags
-r_void
-(paren
-op_star
-id|int_restore_flags
-)paren
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|int_save_flags
-r_void
-(paren
-op_star
-id|int_save_flags
-)paren
-(paren
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-DECL|member|int_set_lost
-r_void
-(paren
-op_star
-id|int_set_lost
-)paren
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|int_control_struct
-id|int_control
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -89,7 +24,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|__no_use_sti
+id|__sti
 c_func
 (paren
 r_void
@@ -97,7 +32,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__no_use_cli
+id|__cli
 c_func
 (paren
 r_void
@@ -105,7 +40,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__no_use_restore_flags
+id|__restore_flags
 c_func
 (paren
 r_int
@@ -114,7 +49,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|__no_use_save_flags
+id|__save_flags_ptr
 c_func
 (paren
 r_int
@@ -123,26 +58,20 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|__no_use_set_lost
-c_func
-(paren
 r_int
 r_int
-)paren
+id|__sti_end
+comma
+id|__cli_end
+comma
+id|__restore_flags_end
+comma
+id|__save_flags_ptr_end
 suffix:semicolon
-DECL|macro|__cli
-mdefine_line|#define __cli() int_control.int_cli()
-DECL|macro|__sti
-mdefine_line|#define __sti() int_control.int_sti()
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags) int_control.int_save_flags((unsigned long *)&amp;flags)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags) int_control.int_restore_flags((unsigned long)flags)
+mdefine_line|#define __save_flags(flags) __save_flags_ptr((unsigned long *)&amp;flags)
 DECL|macro|__save_and_cli
 mdefine_line|#define __save_and_cli(flags) ({__save_flags(flags);__cli();})
-DECL|macro|__set_lost
-mdefine_line|#define __set_lost(irq) ({ if ((unsigned long)int_control.int_set_lost) int_control.int_set_lost(irq); })
 r_extern
 r_void
 id|do_lost_interrupts

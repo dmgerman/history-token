@@ -1,4 +1,4 @@
-multiline_comment|/* smctr.h: SMC Token Ring driver header for Linux&n; *&n; * Authors:&n; *  - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; */
+multiline_comment|/* smctr.h: SMC Token Ring driver header for Linux&n; *&n; * Authors:&n; *  - Jay Schulist &lt;jschlst@samba.org&gt;&n; */
 macro_line|#ifndef __LINUX_SMCTR_H
 DECL|macro|__LINUX_SMCTR_H
 mdefine_line|#define __LINUX_SMCTR_H

@@ -31,11 +31,6 @@ id|__u16
 id|access
 suffix:semicolon
 multiline_comment|/* Access mode */
-DECL|member|flags
-id|__u16
-id|flags
-suffix:semicolon
-multiline_comment|/* status flags */
 DECL|member|oldmtime
 r_int
 r_int

@@ -25,7 +25,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_8xx
 macro_line|#include &lt;asm/8xx_immap.h&gt;
@@ -40,6 +39,7 @@ macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
+macro_line|#include &lt;asm/gemini.h&gt;
 macro_line|#include &quot;mem_pieces.h&quot;
 macro_line|#if defined(CONFIG_4xx)
 macro_line|#include &quot;4xx_tlb.h&quot;
@@ -168,12 +168,6 @@ id|__openfirmware_begin
 comma
 id|__openfirmware_end
 suffix:semicolon
-DECL|variable|memory_node
-r_struct
-id|device_node
-op_star
-id|memory_node
-suffix:semicolon
 DECL|variable|ioremap_base
 r_int
 r_int
@@ -245,69 +239,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-r_int
-id|prep_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-r_int
-id|pmac_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-r_int
-id|apus_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_8xx
-r_int
-r_int
-id|m8xx_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_8xx */
-macro_line|#ifdef CONFIG_4xx
-r_int
-r_int
-id|oak_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_8260
-r_int
-r_int
-id|m8260_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_8260 */
 r_static
 r_void
 id|mapin_ram
@@ -1682,13 +1613,6 @@ op_or_assign
 id|_PAGE_GUARDED
 suffix:semicolon
 multiline_comment|/*&n;&t; * Should check if it is a candidate for a BAT mapping&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|init_mm.page_table_lock
-)paren
-suffix:semicolon
 id|err
 op_assign
 l_int|0
@@ -1726,13 +1650,6 @@ op_plus
 id|i
 comma
 id|flags
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|init_mm.page_table_lock
 )paren
 suffix:semicolon
 r_if
@@ -1960,6 +1877,19 @@ id|pte_t
 op_star
 id|pg
 suffix:semicolon
+r_int
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Use upper 10 bits of VA to index the first level map */
 id|pd
 op_assign
@@ -1993,12 +1923,13 @@ r_if
 c_cond
 (paren
 id|pg
-op_eq
+op_ne
 l_int|0
 )paren
-r_return
-op_minus
-id|ENOMEM
+(brace
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|set_pte
 c_func
@@ -2033,8 +1964,16 @@ comma
 id|va
 )paren
 suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_8xx
@@ -2499,123 +2438,6 @@ id|page
 suffix:semicolon
 )brace
 macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
-r_static
-r_void
-id|get_mem_prop
-c_func
-(paren
-r_char
-op_star
-comma
-r_struct
-id|mem_pieces
-op_star
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_ALL_PPC)
-multiline_comment|/*&n; * Read in a property describing some pieces of memory.&n; */
-DECL|function|get_mem_prop
-r_static
-r_void
-id|__init
-id|get_mem_prop
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-r_struct
-id|mem_pieces
-op_star
-id|mp
-)paren
-(brace
-r_struct
-id|reg_property
-op_star
-id|rp
-suffix:semicolon
-r_int
-id|s
-suffix:semicolon
-id|rp
-op_assign
-(paren
-r_struct
-id|reg_property
-op_star
-)paren
-id|get_property
-c_func
-(paren
-id|memory_node
-comma
-id|name
-comma
-op_amp
-id|s
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rp
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;error: couldn&squot;t get %s property on /memory&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-m_abort
-(paren
-)paren
-suffix:semicolon
-)brace
-id|mp-&gt;n_regions
-op_assign
-id|s
-op_div
-r_sizeof
-(paren
-id|mp-&gt;regions
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|mp-&gt;regions
-comma
-id|rp
-comma
-id|s
-)paren
-suffix:semicolon
-multiline_comment|/* Make sure the pieces are sorted. */
-id|mem_pieces_sort
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
-id|mem_pieces_coalesce
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ALL_PPC */
 multiline_comment|/*&n; * Set up one of the I/D BAT (block address translation) register pairs.&n; * The parameters are not checked; in particular size must be a power&n; * of 2 between 128k and 256M.&n; */
 DECL|function|setbat
 r_void
@@ -3507,19 +3329,6 @@ r_int
 id|end
 )paren
 (brace
-id|printk
-(paren
-l_string|&quot;Freeing initrd memory: %ldk freed&bslash;n&quot;
-comma
-(paren
-id|end
-op_minus
-id|start
-)paren
-op_rshift
-l_int|10
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3565,6 +3374,19 @@ id|totalram_pages
 op_increment
 suffix:semicolon
 )brace
+id|printk
+(paren
+l_string|&quot;Freeing initrd memory: %ldk freed&bslash;n&quot;
+comma
+(paren
+id|end
+op_minus
+id|start
+)paren
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 r_extern
@@ -3583,30 +3405,18 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * The Zone Protection Register (ZPR) defines how protection will&n;&t; * be applied to every page which is a member of a given zone. At&n;&t; * present, we utilize only two of the 4xx&squot;s zones. The first, zone&n;&t; * 0, is set at &squot;00b and only allows access in supervisor-mode based&n;&t; * on the EX and WR bits. No user-mode access is allowed. The second,&n;&t; * zone 1, is set at &squot;10b and in supervisor-mode allows access&n;&t; * without regard to the EX and WR bits. In user-mode, access is&n;&t; * allowed based on the EX and WR bits.&n;&t; */
+multiline_comment|/*&n;&t; * The Zone Protection Register (ZPR) defines how protection will&n;&t; * be applied to every page which is a member of a given zone. At&n;&t; * present, we utilize only two of the 4xx&squot;s zones.&n;&t; * The zone index bits (of ZSEL) in the PTE are used for software&n;&t; * indicators, except the LSB.  For user access, zone 15 is used,&n;&t; * for kernel access, zone 14 is used.  We set all but zone 15&n;&t; * to zero, allowing only kernel access as indicated in the PTE.&n;&t; * For zone 15, we set a 10 binary (I guess a 01 would work too)&n;&t; * to allow user access as indicated in the PTE.  This also allows&n;&t; * kernel access as indicated in the PTE.&n;&t; */
 id|mtspr
 c_func
 (paren
 id|SPRN_ZPR
 comma
-l_int|0x2aaaaaaa
+l_int|0x00000002
 )paren
 suffix:semicolon
-multiline_comment|/* Hardwire any TLB entries necessary here. */
-id|PPC4xx_tlb_pin
+id|flush_instruction_cache
 c_func
 (paren
-id|KERNELBASE
-comma
-l_int|0
-comma
-id|TLB_PAGESZ
-c_func
-(paren
-id|PAGESZ_16M
-)paren
-comma
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Find the top of physical memory and map all of it in starting&n;&t; * at KERNELBASE.&n;&t; */
@@ -3614,7 +3424,9 @@ id|total_memory
 op_assign
 id|total_lowmem
 op_assign
-id|oak_find_end_of_memory
+id|ppc_md
+dot
+id|find_end_of_memory
 c_func
 (paren
 )paren
@@ -3624,7 +3436,13 @@ op_assign
 id|__va
 c_func
 (paren
-id|total_memory
+id|total_lowmem
+)paren
+suffix:semicolon
+id|set_phys_avail
+c_func
+(paren
+id|total_lowmem
 )paren
 suffix:semicolon
 id|mapin_ram
@@ -3662,7 +3480,7 @@ l_int|0x80000000
 suffix:semicolon
 multiline_comment|/* 128 MB of instr. space at 0x0. */
 )brace
-macro_line|#elif defined(CONFIG_8xx)
+macro_line|#else /* !CONFIG_4xx */
 DECL|function|MMU_init
 r_void
 id|__init
@@ -3689,43 +3507,49 @@ l_int|0x111
 suffix:semicolon
 id|total_memory
 op_assign
-id|total_lowmem
-op_assign
-id|m8xx_find_end_of_memory
+id|ppc_md
+dot
+id|find_end_of_memory
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HIGHMEM
+r_if
+c_cond
+(paren
+id|__max_memory
+op_logical_and
+id|total_memory
+OG
+id|__max_memory
+)paren
+id|total_memory
+op_assign
+id|__max_memory
+suffix:semicolon
+id|total_lowmem
+op_assign
+id|total_memory
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|total_lowmem
 OG
-id|MAX_LOW_MEM
+id|__max_low_memory
 )paren
 (brace
 id|total_lowmem
 op_assign
-id|MAX_LOW_MEM
+id|__max_low_memory
 suffix:semicolon
-id|mem_pieces_remove
-c_func
-(paren
-op_amp
-id|phys_avail
-comma
-id|total_lowmem
-comma
+macro_line|#ifndef CONFIG_HIGHMEM
 id|total_memory
-op_minus
+op_assign
 id|total_lowmem
-comma
-l_int|0
-)paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_HIGHMEM */
+)brace
 id|end_of_DRAM
 op_assign
 id|__va
@@ -3740,12 +3564,93 @@ c_func
 id|total_lowmem
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_8xx)
+r_if
+c_cond
+(paren
+id|ppc_md.progress
+)paren
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;MMU:hash init&quot;
+comma
+l_int|0x300
+)paren
+suffix:semicolon
+id|hash_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64BRIDGE
+id|_SDR1
+op_assign
+id|__pa
+c_func
+(paren
+id|Hash
+)paren
+op_or
+(paren
+id|Hash_mask
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ioremap_base
+op_assign
+l_int|0xf8000000
+suffix:semicolon
+macro_line|#endif /* CONFIG_8xx */
+r_if
+c_cond
+(paren
+id|ppc_md.progress
+)paren
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;MMU:mapin&quot;
+comma
+l_int|0x301
+)paren
+suffix:semicolon
 multiline_comment|/* Map in all of RAM starting at KERNELBASE */
 id|mapin_ram
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_POWER4)
+id|ioremap_base
+op_assign
+id|ioremap_bot
+op_assign
+l_int|0xfffff000
+suffix:semicolon
+id|isa_io_base
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ioremap
+c_func
+(paren
+l_int|0xffd00000
+comma
+l_int|0x200000
+)paren
+op_plus
+l_int|0x100000
+suffix:semicolon
+macro_line|#elif defined(CONFIG_8xx)
 multiline_comment|/* Now map in some of the I/O space that is generically needed&n;         * or shared with multiple devices.&n;         * All of this fits into the same 4Mbyte region, so it only&n;         * requires one page table page.&n;         */
 id|ioremap
 c_func
@@ -3798,7 +3703,7 @@ l_int|0x4000
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_RPXLITE
+macro_line|#if defined(CONFIG_RPXLITE) || defined(CONFIG_RPXCLASSIC)
 id|ioremap
 c_func
 (paren
@@ -3807,6 +3712,18 @@ comma
 id|RPX_CSR_SIZE
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_PCI)
+id|ioremap
+c_func
+(paren
+id|_IO_BASE
+comma
+id|_IO_BASE_SIZE
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_HTDMSOUND
 id|ioremap
 c_func
 (paren
@@ -3816,7 +3733,17 @@ id|HIOX_CSR_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_RPXCLASSIC
+macro_line|#ifdef CONFIG_FADS
+id|ioremap
+c_func
+(paren
+id|BCSR_ADDR
+comma
+id|BCSR_SIZE
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
 id|ioremap
 c_func
 (paren
@@ -3825,240 +3752,8 @@ comma
 id|PCI_CSR_SIZE
 )paren
 suffix:semicolon
-id|ioremap
-c_func
-(paren
-id|RPX_CSR_ADDR
-comma
-id|RPX_CSR_SIZE
-)paren
-suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|ppc_md.progress
-)paren
-id|ppc_md
-dot
-id|progress
-c_func
-(paren
-l_string|&quot;MMU:exit&quot;
-comma
-l_int|0x211
-)paren
-suffix:semicolon
-)brace
-macro_line|#else /* not 4xx or 8xx */
-DECL|function|MMU_init
-r_void
-id|__init
-id|MMU_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ppc_md.progress
-)paren
-id|ppc_md
-dot
-id|progress
-c_func
-(paren
-l_string|&quot;MMU:enter&quot;
-comma
-l_int|0x111
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|have_of
-)paren
-id|total_memory
-op_assign
-id|pmac_find_end_of_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_APUS
-r_else
-r_if
-c_cond
-(paren
-id|_machine
-op_eq
-id|_MACH_apus
-)paren
-id|total_memory
-op_assign
-id|apus_find_end_of_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_8260)
-r_else
-id|total_memory
-op_assign
-id|m8260_find_end_of_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-r_else
-multiline_comment|/* prep */
-id|total_memory
-op_assign
-id|prep_find_end_of_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|__max_memory
-op_logical_and
-id|total_memory
-OG
-id|__max_memory
-)paren
-id|total_memory
-op_assign
-id|__max_memory
-suffix:semicolon
-id|total_lowmem
-op_assign
-id|total_memory
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|total_lowmem
-OG
-id|__max_low_memory
-)paren
-(brace
-id|total_lowmem
-op_assign
-id|__max_low_memory
-suffix:semicolon
-macro_line|#ifndef CONFIG_HIGHMEM
-id|total_memory
-op_assign
-id|total_lowmem
-suffix:semicolon
-macro_line|#endif /* CONFIG_HIGHMEM */
-)brace
-id|end_of_DRAM
-op_assign
-id|__va
-c_func
-(paren
-id|total_lowmem
-)paren
-suffix:semicolon
-id|set_phys_avail
-c_func
-(paren
-id|total_lowmem
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppc_md.progress
-)paren
-id|ppc_md
-dot
-id|progress
-c_func
-(paren
-l_string|&quot;MMU:hash init&quot;
-comma
-l_int|0x300
-)paren
-suffix:semicolon
-id|hash_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_PPC64BRIDGE
-id|_SDR1
-op_assign
-id|__pa
-c_func
-(paren
-id|Hash
-)paren
-op_or
-(paren
-id|Hash_mask
-op_rshift
-l_int|10
-)paren
-suffix:semicolon
-macro_line|#endif
-id|ioremap_base
-op_assign
-l_int|0xf8000000
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppc_md.progress
-)paren
-id|ppc_md
-dot
-id|progress
-c_func
-(paren
-l_string|&quot;MMU:mapin&quot;
-comma
-l_int|0x301
-)paren
-suffix:semicolon
-multiline_comment|/* Map in all of RAM starting at KERNELBASE */
-id|mapin_ram
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_POWER4
-id|ioremap_base
-op_assign
-id|ioremap_bot
-op_assign
-l_int|0xfffff000
-suffix:semicolon
-id|isa_io_base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ioremap
-c_func
-(paren
-l_int|0xffd00000
-comma
-l_int|0x200000
-)paren
-op_plus
-l_int|0x100000
-suffix:semicolon
-macro_line|#else /* CONFIG_POWER4 */
+macro_line|#else /* !CONFIG_POWER4 &amp;&amp; !CONFIG_8xx */
 multiline_comment|/*&n;&t; * Setup the bat mappings we&squot;re going to load that cover&n;&t; * the io areas.  RAM was mapped by mapin_ram().&n;&t; * -- Cort&n;&t; */
 r_if
 c_cond
@@ -4199,6 +3894,39 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|_MACH_gemini
+suffix:colon
+id|setbat
+c_func
+(paren
+l_int|0
+comma
+l_int|0xf0000000
+comma
+l_int|0xf0000000
+comma
+l_int|0x10000000
+comma
+id|IO_PAGE
+)paren
+suffix:semicolon
+id|setbat
+c_func
+(paren
+l_int|1
+comma
+l_int|0x80000000
+comma
+l_int|0x80000000
+comma
+l_int|0x10000000
+comma
+id|IO_PAGE
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|_MACH_8260
 suffix:colon
 multiline_comment|/* Map the IMMR, plus anything else we can cover&n;&t;&t; * in that upper space according to the memory controller&n;&t;&t; * chip select mapping.  Grab another bunch of space&n;&t;&t; * below that for stuff we can&squot;t cover in the upper.&n;&t;&t; */
@@ -4241,7 +3969,7 @@ id|ioremap_bot
 op_assign
 id|ioremap_base
 suffix:semicolon
-macro_line|#endif /* CONFIG_POWER4 */
+macro_line|#endif /* CONFIG_POWER4 || CONFIG_8xx */
 r_if
 c_cond
 (paren
@@ -5063,378 +4791,6 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
-macro_line|#if defined(CONFIG_ALL_PPC)
-multiline_comment|/*&n; * On systems with Open Firmware, collect information about&n; * physical RAM and which pieces are already in use.&n; * At this point, we have (at least) the first 8MB mapped with a BAT.&n; * Our text, data, bss use something over 1MB, starting at 0.&n; * Open Firmware may be using 1MB at the 4MB point.&n; */
-DECL|function|pmac_find_end_of_memory
-r_int
-r_int
-id|__init
-id|pmac_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|a
-comma
-id|total
-suffix:semicolon
-r_struct
-id|mem_pieces
-id|phys_mem
-suffix:semicolon
-id|memory_node
-op_assign
-id|find_devices
-c_func
-(paren
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|memory_node
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;can&squot;t find memory node&bslash;n&quot;
-)paren
-suffix:semicolon
-m_abort
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Find out where physical memory is, and check that it&n;&t; * starts at 0 and is contiguous.  It seems that RAM is&n;&t; * always physically contiguous on Power Macintoshes.&n;&t; *&n;&t; * Supporting discontiguous physical memory isn&squot;t hard,&n;&t; * it just makes the virtual &lt;-&gt; physical mapping functions&n;&t; * more complicated (or else you end up wasting space&n;&t; * in mem_map).&n;&t; */
-id|get_mem_prop
-c_func
-(paren
-l_string|&quot;reg&quot;
-comma
-op_amp
-id|phys_mem
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|phys_mem.n_regions
-op_eq
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;No RAM??&quot;
-)paren
-suffix:semicolon
-id|a
-op_assign
-id|phys_mem.regions
-(braket
-l_int|0
-)braket
-dot
-id|address
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|a
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;RAM doesn&squot;t start at physical address 0&quot;
-)paren
-suffix:semicolon
-id|total
-op_assign
-id|phys_mem.regions
-(braket
-l_int|0
-)braket
-dot
-id|size
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|phys_mem.n_regions
-OG
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;RAM starting at 0x%x is not contiguous&bslash;n&quot;
-comma
-id|phys_mem.regions
-(braket
-l_int|1
-)braket
-dot
-id|address
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Using RAM from 0 to 0x%lx&bslash;n&quot;
-comma
-id|total
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_return
-id|total
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ALL_PPC */
-macro_line|#if defined(CONFIG_ALL_PPC)
-multiline_comment|/*&n; * This finds the amount of physical ram and does necessary&n; * setup for prep.  This is pretty architecture specific so&n; * this will likely stay separate from the pmac.&n; * -- Cort&n; */
-DECL|function|prep_find_end_of_memory
-r_int
-r_int
-id|__init
-id|prep_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|total
-suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
-id|total
-op_assign
-id|res-&gt;TotalMemory
-suffix:semicolon
-macro_line|#else
-id|total
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|total
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * I need a way to probe the amount of memory if the residual&n;&t;&t; * data doesn&squot;t contain it. -- Cort&n;&t;&t; */
-id|printk
-c_func
-(paren
-l_string|&quot;Ramsize from residual data was 0 -- Probing for value&bslash;n&quot;
-)paren
-suffix:semicolon
-id|total
-op_assign
-l_int|0x02000000
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Ramsize default to be %ldM&bslash;n&quot;
-comma
-id|total
-op_rshift
-l_int|20
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|total
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* defined(CONFIG_ALL_PPC) */
-macro_line|#ifdef CONFIG_8260
-multiline_comment|/*&n; * Same hack as 8xx.&n; */
-DECL|function|m8260_find_end_of_memory
-r_int
-r_int
-id|__init
-id|m8260_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-id|bd_t
-op_star
-id|binfo
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
-suffix:semicolon
-id|binfo
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-r_return
-id|binfo-&gt;bi_memsize
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_8260 */
-macro_line|#ifdef CONFIG_APUS
-DECL|macro|HARDWARE_MAPPED_SIZE
-mdefine_line|#define HARDWARE_MAPPED_SIZE (512*1024)
-DECL|function|apus_find_end_of_memory
-r_int
-r_int
-id|__init
-id|apus_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|shadow
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|total
-suffix:semicolon
-multiline_comment|/* The memory size reported by ADOS excludes the 512KB&n;&t;   reserved for PPC exception registers and possibly 512KB&n;&t;   containing a shadow of the ADOS ROM. */
-(brace
-r_int
-r_int
-id|size
-op_assign
-id|memory
-(braket
-l_int|0
-)braket
-dot
-id|size
-suffix:semicolon
-multiline_comment|/* If 2MB aligned, size was probably user&n;                   specified. We can&squot;t tell anything about shadowing&n;                   in this case so skip shadow assignment. */
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
-id|size
-op_amp
-l_int|0x1fffff
-)paren
-)paren
-(brace
-multiline_comment|/* Align to 512KB to ensure correct handling&n;&t;&t;&t;   of both memfile and system specified&n;&t;&t;&t;   sizes. */
-id|size
-op_assign
-(paren
-(paren
-id|size
-op_plus
-l_int|0x0007ffff
-)paren
-op_amp
-l_int|0xfff80000
-)paren
-suffix:semicolon
-multiline_comment|/* If memory is 1MB aligned, assume&n;                           shadowing. */
-id|shadow
-op_assign
-op_logical_neg
-(paren
-id|size
-op_amp
-l_int|0x80000
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Add the chunk that ADOS does not see. by aligning&n;                   the size to the nearest 2MB limit upwards.  */
-id|memory
-(braket
-l_int|0
-)braket
-dot
-id|size
-op_assign
-(paren
-(paren
-id|size
-op_plus
-l_int|0x001fffff
-)paren
-op_amp
-l_int|0xffe00000
-)paren
-suffix:semicolon
-)brace
-id|total
-op_assign
-id|memory
-(braket
-l_int|0
-)braket
-dot
-id|size
-suffix:semicolon
-multiline_comment|/* Remove the memory chunks that are controlled by special&n;           Phase5 hardware. */
-multiline_comment|/* Remove the upper 512KB if it contains a shadow of&n;&t;   the ADOS ROM. FIXME: It might be possible to&n;&t;   disable this shadow HW. Check the booter&n;&t;   (ppc_boot.c) */
-r_if
-c_cond
-(paren
-id|shadow
-)paren
-id|total
-op_sub_assign
-id|HARDWARE_MAPPED_SIZE
-suffix:semicolon
-multiline_comment|/* Remove the upper 512KB where the PPC exception&n;&t;   vectors are mapped. */
-id|total
-op_sub_assign
-id|HARDWARE_MAPPED_SIZE
-suffix:semicolon
-multiline_comment|/* Linux/APUS only handles one block of memory -- the one on&n;&t;   the PowerUP board. Other system memory is horrible slow in&n;&t;   comparison. The user can use other memory for swapping&n;&t;   using the z2ram device. */
-id|ram_phys_base
-op_assign
-id|memory
-(braket
-l_int|0
-)braket
-dot
-id|addr
-suffix:semicolon
-r_return
-id|total
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_APUS */
 multiline_comment|/*&n; * Initialize the hash table and patch the instructions in head.S.&n; */
 DECL|function|hash_init
 r_static
@@ -5973,81 +5329,7 @@ l_int|0x205
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined(CONFIG_8xx)
-multiline_comment|/*&n; * This is a big hack right now, but it may turn into something real&n; * someday.&n; *&n; * For the 8xx boards (at this time anyway), there is nothing to initialize&n; * associated the PROM.  Rather than include all of the prom.c&n; * functions in the image just to get prom_init, all we really need right&n; * now is the initialization of the physical memory region.&n; */
-DECL|function|m8xx_find_end_of_memory
-r_int
-r_int
-id|__init
-id|m8xx_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-id|bd_t
-op_star
-id|binfo
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
-suffix:semicolon
-id|binfo
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-r_return
-id|binfo-&gt;bi_memsize
-suffix:semicolon
-)brace
 macro_line|#endif /* !CONFIG_4xx &amp;&amp; !CONFIG_8xx */
-macro_line|#ifdef CONFIG_OAK
-multiline_comment|/*&n; * Return the virtual address representing the top of physical RAM&n; * on the Oak board.&n; */
-r_int
-r_int
-id|__init
-DECL|function|oak_find_end_of_memory
-id|oak_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
-suffix:semicolon
-r_int
-r_int
-op_star
-id|ret
-suffix:semicolon
-id|bd_t
-op_star
-id|bip
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-r_return
-id|bip-&gt;bi_memsize
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * Set phys_avail to the amount of physical memory,&n; * less the kernel text/data/bss.&n; */
 r_void
 id|__init

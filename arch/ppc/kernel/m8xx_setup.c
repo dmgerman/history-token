@@ -2033,6 +2033,40 @@ id|dev
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
 multiline_comment|/* -------------------------------------------------------------------- */
+multiline_comment|/*&n; * This is a big hack right now, but it may turn into something real&n; * someday.&n; *&n; * For the 8xx boards (at this time anyway), there is nothing to initialize&n; * associated the PROM.  Rather than include all of the prom.c&n; * functions in the image just to get prom_init, all we really need right&n; * now is the initialization of the physical memory region.&n; */
+DECL|function|m8xx_find_end_of_memory
+r_int
+r_int
+id|__init
+id|m8xx_find_end_of_memory
+c_func
+(paren
+r_void
+)paren
+(brace
+id|bd_t
+op_star
+id|binfo
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|__res
+(braket
+)braket
+suffix:semicolon
+id|binfo
+op_assign
+(paren
+id|bd_t
+op_star
+)paren
+id|__res
+suffix:semicolon
+r_return
+id|binfo-&gt;bi_memsize
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|m8xx_init
@@ -2212,42 +2246,10 @@ id|ppc_md.calibrate_decr
 op_assign
 id|m8xx_calibrate_decr
 suffix:semicolon
-macro_line|#if 0
-id|ppc_md.kbd_setkeycode
+id|ppc_md.find_end_of_memory
 op_assign
-id|pckbd_setkeycode
+id|m8xx_find_end_of_memory
 suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-id|pckbd_getkeycode
-suffix:semicolon
-id|ppc_md.kbd_pretranslate
-op_assign
-id|pckbd_pretranslate
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-id|pckbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|pckbd_unexpected_up
-suffix:semicolon
-id|ppc_md.kbd_leds
-op_assign
-id|pckbd_leds
-suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-id|pckbd_init_hw
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.kbd_sysrq_xlate
-op_assign
-id|pckbd_sysrq_xlate
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
 id|ppc_md.kbd_setkeycode
 op_assign
 l_int|NULL
@@ -2277,7 +2279,6 @@ id|ppc_md.kbd_sysrq_xlate
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ppc_ide_md.insw

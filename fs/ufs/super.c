@@ -1101,16 +1101,6 @@ id|va_end
 id|args
 )paren
 suffix:semicolon
-multiline_comment|/* this is to prevent panic from syncing this filesystem */
-r_if
-c_cond
-(paren
-id|sb-&gt;s_lock
-)paren
-id|sb-&gt;s_lock
-op_assign
-l_int|0
-suffix:semicolon
 id|sb-&gt;s_flags
 op_or_assign
 id|MS_RDONLY

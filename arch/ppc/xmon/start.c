@@ -216,12 +216,23 @@ r_int
 id|addr
 suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;iMac&quot;
+)paren
+)paren
+(brace
 r_extern
 id|boot_infos_t
 op_star
 id|disp_bi
 suffix:semicolon
-multiline_comment|/* see if there is a keyboard in the device tree&n;&t;&t;   with a parent of type &quot;adb&quot; */
+multiline_comment|/* see if there is a keyboard in the device tree&n;&t;&t;&t;   with a parent of type &quot;adb&quot; */
 r_for
 c_loop
 (paren
@@ -258,7 +269,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* needs to be hacked if xmon_printk is to be used&n; &t;&t;   from within find_via_pmu() */
+multiline_comment|/* needs to be hacked if xmon_printk is to be used&n;&t;&t;&t;   from within find_via_pmu() */
 macro_line|#ifdef CONFIG_ADB_PMU
 r_if
 c_cond
@@ -299,6 +310,13 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+)brace
+id|prom_drawstring
+c_func
+(paren
+l_string|&quot;xmon uses &quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -307,9 +325,40 @@ id|use_screen
 id|prom_drawstring
 c_func
 (paren
-l_string|&quot;xmon uses screen and keyboard&bslash;n&quot;
+l_string|&quot;screen and keyboard&bslash;n&quot;
 )paren
 suffix:semicolon
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|via_modem
+)paren
+id|prom_drawstring
+c_func
+(paren
+l_string|&quot;modem on &quot;
+)paren
+suffix:semicolon
+id|prom_drawstring
+c_func
+(paren
+id|xmon_use_sccb
+ques
+c_cond
+l_string|&quot;printer&quot;
+suffix:colon
+l_string|&quot;modem&quot;
+)paren
+suffix:semicolon
+id|prom_drawstring
+c_func
+(paren
+l_string|&quot; port&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 macro_line|#ifdef CHRP_ESCC
 id|addr
@@ -396,6 +445,49 @@ op_assign
 id|sccc
 op_plus
 l_int|0x10
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|_machine
+op_amp
+id|_MACH_gemini
+)paren
+(brace
+multiline_comment|/* should already be mapped by the kernel boot */
+id|sccc
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+l_int|0xffeffb0d
+suffix:semicolon
+id|sccd
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+l_int|0xffeffb08
+suffix:semicolon
+id|TXRDY
+op_assign
+l_int|0x20
+suffix:semicolon
+id|RXRDY
+op_assign
+l_int|1
+suffix:semicolon
+id|console
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else

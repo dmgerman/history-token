@@ -646,7 +646,8 @@ c_func
 (paren
 id|res
 comma
-id|fh.fh_base.fh_pad
+op_amp
+id|fh.fh_base
 comma
 id|fh.fh_size
 )paren
@@ -815,7 +816,8 @@ c_func
 (paren
 id|res
 comma
-id|fh.fh_base.fh_pad
+op_amp
+id|fh.fh_base
 comma
 id|fh.fh_size
 )paren

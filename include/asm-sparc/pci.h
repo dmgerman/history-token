@@ -238,6 +238,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|macro|pci_controller_num
+mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __SPARC_PCI_H */
 eof

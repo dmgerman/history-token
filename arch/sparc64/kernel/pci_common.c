@@ -1,8 +1,89 @@
-multiline_comment|/* $Id: pci_common.c,v 1.14 2001/02/28 03:28:55 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.17 2001/05/15 12:32:52 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
+multiline_comment|/* Fix self device of BUS and hook it into BUS-&gt;self.&n; * The pci_scan_bus does not do this for the host bridge.&n; */
+DECL|function|pci_fixup_host_bridge_self
+r_void
+id|__init
+id|pci_fixup_host_bridge_self
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|pbus
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|walk
+op_assign
+op_amp
+id|pbus-&gt;devices
+suffix:semicolon
+id|walk
+op_assign
+id|walk-&gt;next
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|walk
+op_ne
+op_amp
+id|pbus-&gt;devices
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|pci_dev_b
+c_func
+(paren
+id|walk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+op_eq
+id|PCI_CLASS_BRIDGE_HOST
+)paren
+(brace
+id|pbus-&gt;self
+op_assign
+id|pdev
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|walk
+op_assign
+id|walk-&gt;next
+suffix:semicolon
+)brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;PCI: Critical error, cannot find host bridge PDEV.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Find the OBP PROM device tree node for a PCI device.&n; * Return zero if not found.&n; */
 DECL|function|find_device_prom_node
 r_static
@@ -63,6 +144,18 @@ op_logical_and
 id|pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SUN_PBM
+op_logical_or
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SUN_SCHIZO
+op_logical_or
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SUN_SABRE
+op_logical_or
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SUN_HUMMINGBIRD
 )paren
 )paren
 (brace

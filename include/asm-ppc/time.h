@@ -2,6 +2,7 @@ multiline_comment|/*&n; * $Id: time.h,v 1.12 1999/08/27 04:21:23 cort Exp $&n; *
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* time.c */
 r_extern
@@ -49,7 +50,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Accessor functions for the decrementer register. */
+multiline_comment|/* Accessor functions for the decrementer register.&n; * The 4xx doesn&squot;t even have a decrementer.  I tried to use the&n; * generic timer interrupt code, which seems OK, with the 4xx PIT&n; * in auto-reload mode.  The problem is PIT stops counting when it&n; * hits zero.  If it would wrap, we could use it just like a decrementer.&n; */
 DECL|function|get_dec
 r_static
 id|__inline__
@@ -96,16 +97,10 @@ id|val
 )paren
 (brace
 macro_line|#if defined(CONFIG_4xx)
-id|mtspr
-c_func
-(paren
-id|SPRN_PIT
-comma
-id|val
-)paren
+r_return
 suffix:semicolon
-macro_line|#else
-macro_line|#ifdef CONFIG_8xx_CPU6
+multiline_comment|/* Have to let it auto-reload */
+macro_line|#elif defined(CONFIG_8xx_CPU6)
 id|set_dec_cpu6
 c_func
 (paren
@@ -121,7 +116,6 @@ comma
 id|val
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 )brace
 multiline_comment|/* Accessor functions for the timebase (RTC on 601) registers. */
@@ -175,6 +169,36 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;mftb %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|tbl
+)paren
+)paren
+suffix:semicolon
+r_return
+id|tbl
+suffix:semicolon
+)brace
+DECL|function|get_tbu
+r_extern
+id|__inline__
+r_int
+r_int
+id|get_tbu
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|tbl
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mftbu %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;RAW - implementation of IP &quot;raw&quot; sockets.&n; *&n; * Version:&t;$Id: raw.c,v 1.60 2001/02/23 06:32:11 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixed up&n; *&t;&t;Alan Cox&t;:&t;ICMP error handling&n; *&t;&t;Alan Cox&t;:&t;EMSGSIZE if you send too big a packet&n; *&t;&t;Alan Cox&t;: &t;Now uses generic datagrams and shared skbuff&n; *&t;&t;&t;&t;&t;library. No more peek crashes, no more backlogs&n; *&t;&t;Alan Cox&t;:&t;Checks sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram/skb_copy_datagram&n; *&t;&t;Alan Cox&t;:&t;Raw passes ip options too&n; *&t;&t;Alan Cox&t;:&t;Setsocketopt added&n; *&t;&t;Alan Cox&t;:&t;Fixed error return for broadcasts&n; *&t;&t;Alan Cox&t;:&t;Removed wake_up calls&n; *&t;&t;Alan Cox&t;:&t;Use ttl/tos&n; *&t;&t;Alan Cox&t;:&t;Cleaned up old debugging&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addresses&n; *&t;Arnt Gulbrandsen&t;:&t;Fixed MSG_DONTROUTE in raw sockets.&n; *&t;&t;Alan Cox&t;:&t;BSD style RAW socket demultiplexing.&n; *&t;&t;Alan Cox&t;:&t;Beginnings of mrouted support.&n; *&t;&t;Alan Cox&t;:&t;Added IP_HDRINCL option.&n; *&t;&t;Alan Cox&t;:&t;Skip broadcast check if BSDism set.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;RAW - implementation of IP &quot;raw&quot; sockets.&n; *&n; * Version:&t;$Id: raw.c,v 1.61 2001/05/03 20:56:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixed up&n; *&t;&t;Alan Cox&t;:&t;ICMP error handling&n; *&t;&t;Alan Cox&t;:&t;EMSGSIZE if you send too big a packet&n; *&t;&t;Alan Cox&t;: &t;Now uses generic datagrams and shared&n; *&t;&t;&t;&t;&t;skbuff library. No more peek crashes,&n; *&t;&t;&t;&t;&t;no more backlogs&n; *&t;&t;Alan Cox&t;:&t;Checks sk-&gt;broadcast.&n; *&t;&t;Alan Cox&t;:&t;Uses skb_free_datagram/skb_copy_datagram&n; *&t;&t;Alan Cox&t;:&t;Raw passes ip options too&n; *&t;&t;Alan Cox&t;:&t;Setsocketopt added&n; *&t;&t;Alan Cox&t;:&t;Fixed error return for broadcasts&n; *&t;&t;Alan Cox&t;:&t;Removed wake_up calls&n; *&t;&t;Alan Cox&t;:&t;Use ttl/tos&n; *&t;&t;Alan Cox&t;:&t;Cleaned up old debugging&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addresses&n; *&t;Arnt Gulbrandsen&t;:&t;Fixed MSG_DONTROUTE in raw sockets.&n; *&t;&t;Alan Cox&t;:&t;BSD style RAW socket demultiplexing.&n; *&t;&t;Alan Cox&t;:&t;Beginnings of mrouted support.&n; *&t;&t;Alan Cox&t;:&t;Added IP_HDRINCL option.&n; *&t;&t;Alan Cox&t;:&t;Skip broadcast check if BSDism set.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -243,11 +243,9 @@ id|s-&gt;next
 r_if
 c_cond
 (paren
-(paren
 id|s-&gt;num
 op_eq
 id|num
-)paren
 op_logical_and
 op_logical_neg
 (paren
@@ -276,10 +274,8 @@ op_ne
 id|dif
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* gotcha */
 )brace
 r_return
@@ -405,8 +401,6 @@ r_while
 c_loop
 (paren
 id|sk
-op_ne
-l_int|NULL
 )paren
 (brace
 r_struct
@@ -453,14 +447,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sknext
-op_eq
-l_int|NULL
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|clone
 op_assign
 id|skb_clone
@@ -477,7 +468,6 @@ c_cond
 (paren
 id|clone
 )paren
-(brace
 id|raw_rcv
 c_func
 (paren
@@ -486,7 +476,6 @@ comma
 id|clone
 )paren
 suffix:semicolon
-)brace
 )brace
 id|sk
 op_assign
@@ -647,11 +636,9 @@ id|ICMP_FRAG_NEEDED
 (brace
 id|harderr
 op_assign
-(paren
 id|sk-&gt;protinfo.af_inet.pmtudisc
 op_ne
 id|IP_PMTUDISC_DONT
-)paren
 suffix:semicolon
 id|err
 op_assign
@@ -966,9 +953,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|offset
-op_eq
-l_int|0
 )paren
 (brace
 r_struct
@@ -1005,7 +991,7 @@ c_func
 id|fraglen
 )paren
 suffix:semicolon
-multiline_comment|/* This is right as you can&squot;t frag&n;&t;&t;&t;&t;&t;&t;   RAW packets */
+multiline_comment|/* This is right as you can&squot;t&n;&t;&t;&t;&t;&t;&t;  frag RAW packets */
 multiline_comment|/*&n;&t; &t; *&t;Deliberate breach of modularity to keep &n;&t; &t; *&t;ip_build_xmit clean (well less messy).&n;&t;&t; */
 r_if
 c_cond
@@ -1093,6 +1079,11 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/* This check is ONLY to check for arithmetic overflow&n;&t;   on integer(!) len. Not more! Real check will be made&n;&t;   in ip_build_xmit --ANK&n;&n;&t;   BTW socket.c -&gt; af_*.c -&gt; ... make multiple&n;&t;   invalid conversions size_t -&gt; int. We MUST repair it f.e.&n;&t;   by replacing all of them with size_t and revise all&n;&t;   the places sort of len += sizeof(struct iphdr)&n;&t;   If len was ULONG_MAX-10 it would be cathastrophe  --ANK&n;&t; */
+id|err
+op_assign
+op_minus
+id|EMSGSIZE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1100,11 +1091,15 @@ id|len
 template_param
 l_int|0xFFFF
 )paren
-r_return
-op_minus
-id|EMSGSIZE
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Check the flags.&n;&t; */
+id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1112,11 +1107,11 @@ id|msg-&gt;msg_flags
 op_amp
 id|MSG_OOB
 )paren
-multiline_comment|/* Mirror BSD error message compatibility */
-r_return
-op_minus
-id|EOPNOTSUPP
+multiline_comment|/* Mirror BSD error message */
+r_goto
+id|out
 suffix:semicolon
+multiline_comment|/* compatibility */
 multiline_comment|/*&n;&t; *&t;Get and verify the address. &n;&t; */
 r_if
 c_cond
@@ -1136,6 +1131,11 @@ op_star
 )paren
 id|msg-&gt;msg_name
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1147,9 +1147,8 @@ op_star
 id|usin
 )paren
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -1174,19 +1173,24 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s forgot to set AF_INET in raw sendmsg. Fix it!&bslash;n&quot;
+l_string|&quot;%s forgot to set AF_INET in &quot;
+l_string|&quot;raw sendmsg. Fix it!&bslash;n&quot;
 comma
 id|current-&gt;comm
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|usin-&gt;sin_family
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|daddr
@@ -1197,6 +1201,11 @@ multiline_comment|/* ANK: I did not forget to get protocol from port field.&n;&t
 )brace
 r_else
 (brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1204,9 +1213,8 @@ id|sk-&gt;state
 op_ne
 id|TCP_ESTABLISHED
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 id|daddr
 op_assign
@@ -1231,8 +1239,7 @@ c_cond
 id|msg-&gt;msg_controllen
 )paren
 (brace
-r_int
-id|tmp
+id|err
 op_assign
 id|ip_cmsg_send
 c_func
@@ -1246,10 +1253,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp
+id|err
 )paren
-r_return
-id|tmp
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -1496,6 +1503,8 @@ c_func
 id|rt
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|err
 OL
@@ -1605,18 +1614,21 @@ op_star
 id|uaddr
 suffix:semicolon
 r_int
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_int
 id|chk_addr_ret
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|sk-&gt;state
 op_ne
 id|TCP_CLOSE
-)paren
 op_logical_or
-(paren
 id|addr_len
 OL
 r_sizeof
@@ -1625,13 +1637,9 @@ r_struct
 id|sockaddr_in
 )paren
 )paren
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
-)brace
 id|chk_addr_ret
 op_assign
 id|inet_addr_type
@@ -1640,12 +1648,15 @@ c_func
 id|addr-&gt;sin_addr.s_addr
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|addr-&gt;sin_addr.s_addr
-op_ne
-l_int|0
 op_logical_and
 id|chk_addr_ret
 op_ne
@@ -1659,12 +1670,9 @@ id|chk_addr_ret
 op_ne
 id|RTN_BROADCAST
 )paren
-(brace
-r_return
-op_minus
-id|EADDRNOTAVAIL
+r_goto
+id|out
 suffix:semicolon
-)brace
 id|sk-&gt;rcv_saddr
 op_assign
 id|sk-&gt;saddr
@@ -1682,12 +1690,10 @@ id|chk_addr_ret
 op_eq
 id|RTN_BROADCAST
 )paren
-(brace
 id|sk-&gt;saddr
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* Use device */
 id|sk_dst_reset
 c_func
@@ -1695,8 +1701,14 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This should be easy, if there is something there&n; *&t;we return it, otherwise we block.&n; */
@@ -1734,13 +1746,11 @@ id|copied
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 r_struct
 id|sockaddr_in
@@ -1754,6 +1764,11 @@ op_star
 )paren
 id|msg-&gt;msg_name
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1761,9 +1776,8 @@ id|flags
 op_amp
 id|MSG_OOB
 )paren
-r_return
-op_minus
-id|EOPNOTSUPP
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -1786,7 +1800,9 @@ id|flags
 op_amp
 id|MSG_ERRQUEUE
 )paren
-r_return
+(brace
+id|err
+op_assign
 id|ip_recv_error
 c_func
 (paren
@@ -1797,6 +1813,10 @@ comma
 id|len
 )paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|skb
 op_assign
 id|skb_recv_datagram
@@ -1815,15 +1835,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
-(brace
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
-)brace
 id|copied
 op_assign
 id|skb-&gt;len
@@ -1916,14 +1933,14 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-(paren
 id|err
 ques
 c_cond
 suffix:colon
 id|copied
-)paren
 suffix:semicolon
 )brace
 DECL|function|raw_init
@@ -2055,6 +2072,11 @@ id|optlen
 (brace
 r_int
 id|len
+comma
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -2067,9 +2089,13 @@ comma
 id|optlen
 )paren
 )paren
-r_return
+r_goto
+id|out
+suffix:semicolon
+id|ret
+op_assign
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -2078,9 +2104,8 @@ id|len
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -2101,6 +2126,11 @@ r_struct
 id|icmp_filter
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2111,14 +2141,7 @@ id|len
 comma
 id|optlen
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|copy_to_user
 c_func
 (paren
@@ -2130,12 +2153,17 @@ comma
 id|len
 )paren
 )paren
-r_return
-op_minus
-id|EFAULT
+r_goto
+id|out
 suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|raw_setsockopt
@@ -2185,15 +2213,14 @@ comma
 id|optlen
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|optname
+op_eq
+id|ICMP_FILTER
 )paren
 (brace
-r_case
-id|ICMP_FILTER
-suffix:colon
 r_if
 c_cond
 (paren
@@ -2205,6 +2232,7 @@ r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+r_else
 r_return
 id|raw_seticmpfilter
 c_func
@@ -2217,7 +2245,6 @@ id|optlen
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 op_minus
 id|ENOPROTOOPT
@@ -2271,15 +2298,14 @@ comma
 id|optlen
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|optname
+op_eq
+id|ICMP_FILTER
 )paren
 (brace
-r_case
-id|ICMP_FILTER
-suffix:colon
 r_if
 c_cond
 (paren
@@ -2291,6 +2317,7 @@ r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+r_else
 r_return
 id|raw_geticmpfilter
 c_func
@@ -2303,7 +2330,6 @@ id|optlen
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 op_minus
 id|ENOPROTOOPT
@@ -2468,26 +2494,18 @@ id|i
 r_int
 r_int
 id|dest
-comma
-id|src
-suffix:semicolon
-id|__u16
-id|destp
-comma
-id|srcp
-suffix:semicolon
-id|dest
 op_assign
 id|sp-&gt;daddr
-suffix:semicolon
+comma
 id|src
 op_assign
 id|sp-&gt;rcv_saddr
 suffix:semicolon
+id|__u16
 id|destp
 op_assign
 l_int|0
-suffix:semicolon
+comma
 id|srcp
 op_assign
 id|sp-&gt;num
@@ -2592,7 +2610,7 @@ suffix:semicolon
 id|off_t
 id|pos
 op_assign
-l_int|0
+l_int|128
 suffix:semicolon
 id|off_t
 id|begin
@@ -2620,12 +2638,9 @@ comma
 l_string|&quot;%-127s&bslash;n&quot;
 comma
 l_string|&quot;  sl  local_address rem_address   st tx_queue &quot;
-l_string|&quot;rx_queue tr tm-&gt;when retrnsmt   uid  timeout inode&quot;
+l_string|&quot;rx_queue tr tm-&gt;when retrnsmt   uid  timeout &quot;
+l_string|&quot;inode&quot;
 )paren
-suffix:semicolon
-id|pos
-op_assign
-l_int|128
 suffix:semicolon
 id|read_lock
 c_func
@@ -2727,11 +2742,9 @@ id|len
 op_ge
 id|length
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 )brace
 id|out
@@ -2771,12 +2784,10 @@ id|len
 OG
 id|length
 )paren
-(brace
 id|len
 op_assign
 id|length
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

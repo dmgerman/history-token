@@ -100,6 +100,26 @@ op_star
 id|node
 )paren
 suffix:semicolon
+multiline_comment|/* Fill up host controller resources from the OF node */
+r_extern
+r_void
+id|pci_process_bridge_OF_ranges
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+comma
+r_struct
+id|device_node
+op_star
+id|dev
+comma
+r_int
+id|primary
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Structure of a PCI controller (host bridge)&n; */
 DECL|struct|pci_controller
 r_struct

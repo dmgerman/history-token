@@ -7,22 +7,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_int
-id|parport_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|chr_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|blk_dev_init
 c_func
 (paren
@@ -104,18 +88,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PARPORT
-id|parport_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|chr_dev_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|blk_dev_init
 c_func
 (paren

@@ -18,6 +18,10 @@ macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+r_extern
+id|spinlock_t
+id|rtc_lock
+suffix:semicolon
 DECL|variable|nvram_as1
 r_static
 r_int
@@ -224,6 +228,13 @@ r_struct
 id|rtc_time
 id|tm
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
 id|to_tm
 c_func
 (paren
@@ -412,6 +423,13 @@ id|TIME_BAD
 id|time_state
 op_assign
 id|TIME_OK
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -968,6 +968,13 @@ c_func
 id|generic_block_bmap
 )paren
 suffix:semicolon
+DECL|variable|waitfor_one_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|waitfor_one_page
+)paren
+suffix:semicolon
 DECL|variable|generic_file_read
 id|EXPORT_SYMBOL
 c_func
@@ -2491,13 +2498,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sys_tz
-)paren
-suffix:semicolon
-DECL|variable|__wait_on_super
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__wait_on_super
 )paren
 suffix:semicolon
 DECL|variable|file_fsync

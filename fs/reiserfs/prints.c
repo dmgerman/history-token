@@ -1085,17 +1085,6 @@ r_if
 c_cond
 (paren
 id|sb
-op_logical_and
-id|sb-&gt;s_lock
-)paren
-id|sb-&gt;s_lock
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb
 )paren
 id|sb-&gt;s_flags
 op_or_assign

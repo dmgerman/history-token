@@ -561,7 +561,7 @@ c_func
 id|job-&gt;sk
 )paren
 suffix:semicolon
-id|kfree
+id|smb_kfree
 c_func
 (paren
 id|ptr
@@ -590,7 +590,7 @@ id|job
 suffix:semicolon
 id|job
 op_assign
-id|kmalloc
+id|smb_kmalloc
 c_func
 (paren
 r_sizeof

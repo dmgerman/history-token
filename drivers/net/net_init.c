@@ -513,7 +513,7 @@ id|ether_setup
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * alloc_etherdev - Register ethernet device&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with ethernet-generic values.&n; *&n; * Constructs a new net device, complete with a private data area of&n; * size @sizeof_priv.  A 32-byte (not bit) alignment is enforced for&n; * this private data area.&n; */
+multiline_comment|/**&n; * alloc_etherdev - Allocates and sets up an ethernet device&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with ethernet-generic&n; * values. Basically does everything except registering the device.&n; *&n; * Constructs a new net device, complete with a private data area of&n; * size @sizeof_priv.  A 32-byte (not bit) alignment is enforced for&n; * this private data area.&n; */
 DECL|function|alloc_etherdev
 r_struct
 id|net_device

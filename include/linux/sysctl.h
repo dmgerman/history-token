@@ -1163,6 +1163,11 @@ DECL|enumerator|NET_IPV4_CONF_TAG
 id|NET_IPV4_CONF_TAG
 op_assign
 l_int|12
+comma
+DECL|enumerator|NET_IPV4_CONF_ARPFILTER
+id|NET_IPV4_CONF_ARPFILTER
+op_assign
+l_int|13
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6 */

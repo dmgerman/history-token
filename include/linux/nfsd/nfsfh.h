@@ -16,11 +16,9 @@ DECL|struct|nfs_fhbase_old
 r_struct
 id|nfs_fhbase_old
 (brace
-DECL|member|fb_dentry
-r_struct
-id|dentry
-op_star
-id|fb_dentry
+DECL|member|fb_dcookie
+id|__u32
+id|fb_dcookie
 suffix:semicolon
 multiline_comment|/* dentry cookie - always 0xfeebbaca */
 DECL|member|fb_ino
@@ -123,7 +121,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ofh_dcookie
-mdefine_line|#define ofh_dcookie&t;&t;fh_base.fh_old.fb_dentry
+mdefine_line|#define ofh_dcookie&t;&t;fh_base.fh_old.fb_dcookie
 DECL|macro|ofh_ino
 mdefine_line|#define ofh_ino&t;&t;&t;fh_base.fh_old.fb_ino
 DECL|macro|ofh_dirino

@@ -59,20 +59,20 @@ macro_line|#include &lt;linux/console.h&gt;
 multiline_comment|/* this defines the index into rs_table for the port to use&n;*/
 macro_line|# ifndef CONFIG_SERIAL_CONSOLE_PORT
 macro_line|#  ifdef CONFIG_SCC3_ENET
-macro_line|#   ifdef CONFIG_8xx_CONS_SMC2
+macro_line|#   ifdef CONFIG_CONS_SMC2
 DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
 macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;0&t;/* Console on SMC2 is 1st port */
 macro_line|#   else
 macro_line|#    error &quot;Can&squot;t use SMC1 for console with Ethernet on SCC3&quot;
 macro_line|#   endif
 macro_line|#  else&t;/* ! CONFIG_SCC3_ENET */
-macro_line|#   ifdef CONFIG_8xx_CONS_SMC2&t;&t;&t;/* Console on SMC2 */
+macro_line|#   ifdef CONFIG_CONS_SMC2&t;&t;&t;/* Console on SMC2 */
 DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
 macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;1
 macro_line|#   else&t;&t;&t;&t;&t;/* Console on SMC1 */
 DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
 macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;0
-macro_line|#   endif /* CONFIG_8xx_CONS_SMC2 */
+macro_line|#   endif /* CONFIG_CONS_SMC2 */
 macro_line|#  endif  /* CONFIG_SCC3_ENET */
 macro_line|# endif&t;  /* CONFIG_SERIAL_CONSOLE_PORT */
 macro_line|#endif&t;  /* CONFIG_SERIAL_CONSOLE */
@@ -191,7 +191,7 @@ comma
 multiline_comment|/* SMC1 ttyS0 */
 macro_line|#endif
 macro_line|#if !defined(CONFIG_USB_MPC8xx) &amp;&amp; !defined(CONFIG_USB_CLIENT_MPC8xx)
-macro_line|# ifdef CONFIG_8xxSMC2
+macro_line|# ifdef CONFIG_SMC2_UART
 (brace
 l_int|0
 comma
@@ -208,7 +208,7 @@ l_int|1
 comma
 multiline_comment|/* SMC2 ttyS1 */
 macro_line|# endif
-macro_line|# ifdef CONFIG_8xxSCC
+macro_line|# ifdef CONFIG_USE_SCC_IO
 (brace
 l_int|0
 comma
@@ -249,7 +249,7 @@ comma
 multiline_comment|/* SCC3 ttyS3 */
 macro_line|# endif
 macro_line|#else /* CONFIG_USB_xxx */
-macro_line|# ifdef CONFIG_8xxSCC
+macro_line|# ifdef CONFIG_USE_SCC_IO
 (brace
 l_int|0
 comma
@@ -9213,7 +9213,7 @@ id|IMAP_ADDR
 suffix:semicolon
 multiline_comment|/* and to internal registers */
 multiline_comment|/* Configure SCC2, SCC3, and SCC4 instead of port A parallel I/O.&n;&t; */
-macro_line|#ifdef CONFIG_8xxSCC
+macro_line|#ifdef CONFIG_USE_SCC_IO
 macro_line|#ifndef CONFIG_MBX
 multiline_comment|/* The &quot;standard&quot; configuration through the 860.&n;&t;*/
 id|immap-&gt;im_ioport.iop_papar
@@ -9974,7 +9974,7 @@ macro_line|#endif
 r_else
 (brace
 multiline_comment|/* Configure SMCs Tx/Rx instead of port B&n;&t;&t;&t;&t; * parallel I/O.  On 823/850 these are on&n;&t;&t;&t;&t; * port A for SMC2.&n;&t;&t;&t;&t; */
-macro_line|#ifndef CONFIG_8xx_ALTSMC2
+macro_line|#ifndef CONFIG_ALTSMC2
 id|iobits
 op_assign
 l_int|0xc0

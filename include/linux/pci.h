@@ -425,12 +425,35 @@ DECL|macro|PCI_SLOT
 mdefine_line|#define PCI_SLOT(devfn)&t;&t;(((devfn) &gt;&gt; 3) &amp; 0x1f)
 DECL|macro|PCI_FUNC
 mdefine_line|#define PCI_FUNC(devfn)&t;&t;((devfn) &amp; 0x07)
+multiline_comment|/* Ioctls for /proc/bus/pci/X/Y nodes. */
+DECL|macro|PCIIOC_BASE
+mdefine_line|#define PCIIOC_BASE&t;&t;(&squot;P&squot; &lt;&lt; 24 | &squot;C&squot; &lt;&lt; 16 | &squot;I&squot; &lt;&lt; 8)
+DECL|macro|PCIIOC_CONTROLLER
+mdefine_line|#define PCIIOC_CONTROLLER&t;(PCIIOC_BASE | 0x00)&t;/* Get controller for PCI device. */
+DECL|macro|PCIIOC_MMAP_IS_IO
+mdefine_line|#define PCIIOC_MMAP_IS_IO&t;(PCIIOC_BASE | 0x01)&t;/* Set mmap state to I/O space. */
+DECL|macro|PCIIOC_MMAP_IS_MEM
+mdefine_line|#define PCIIOC_MMAP_IS_MEM&t;(PCIIOC_BASE | 0x02)&t;/* Set mmap state to MEM space. */
+DECL|macro|PCIIOC_WRITE_COMBINE
+mdefine_line|#define PCIIOC_WRITE_COMBINE&t;(PCIIOC_BASE | 0x03)&t;/* Enable/disable write-combining. */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+multiline_comment|/* File state for mmap()s on /proc/bus/pci/X/Y */
+DECL|enum|pci_mmap_state
+r_enum
+id|pci_mmap_state
+(brace
+DECL|enumerator|pci_mmap_io
+id|pci_mmap_io
+comma
+DECL|enumerator|pci_mmap_mem
+id|pci_mmap_mem
+)brace
+suffix:semicolon
 multiline_comment|/* This defines the direction arg to the DMA mapping routines. */
 DECL|macro|PCI_DMA_BIDIRECTIONAL
 mdefine_line|#define PCI_DMA_BIDIRECTIONAL&t;0

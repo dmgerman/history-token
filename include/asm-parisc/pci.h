@@ -564,5 +564,8 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x10
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.c dies */
+multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|macro|pci_controller_num
+mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 macro_line|#endif /* __ASM_PARISC_PCI_H */
 eof

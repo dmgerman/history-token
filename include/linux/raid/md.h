@@ -259,7 +259,8 @@ r_extern
 r_int
 id|md_error
 (paren
-id|kdev_t
+id|mddev_t
+op_star
 id|mddev
 comma
 id|kdev_t

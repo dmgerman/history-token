@@ -1,4 +1,4 @@
-multiline_comment|/*      cops.h: LocalTalk driver for Linux.&n; *&n; *      Authors:&n; *      - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; */
+multiline_comment|/*      cops.h: LocalTalk driver for Linux.&n; *&n; *      Authors:&n; *      - Jay Schulist &lt;jschlst@samba.org&gt;&n; */
 macro_line|#ifndef __LINUX_COPSLTALK_H
 DECL|macro|__LINUX_COPSLTALK_H
 mdefine_line|#define __LINUX_COPSLTALK_H

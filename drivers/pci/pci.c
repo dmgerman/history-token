@@ -6028,8 +6028,7 @@ id|memset
 (paren
 id|page-&gt;bitmap
 comma
-op_complement
-l_int|0
+l_int|0xff
 comma
 id|mapsize
 )paren
@@ -6108,7 +6107,7 @@ id|bitmap
 op_increment
 op_ne
 op_complement
-l_int|0
+l_int|0UL
 )paren
 r_return
 l_int|1
@@ -6430,8 +6429,9 @@ r_continue
 suffix:semicolon
 id|block
 op_assign
-id|ffs
+id|ffz
 (paren
+op_complement
 id|page-&gt;bitmap
 (braket
 id|map
@@ -6446,13 +6446,10 @@ id|i
 op_plus
 id|block
 )paren
-op_le
+OL
 id|pool-&gt;blocks_per_page
 )paren
 (brace
-id|block
-op_decrement
-suffix:semicolon
 id|clear_bit
 (paren
 id|block
@@ -6855,7 +6852,7 @@ id|map
 )braket
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|block
 )paren

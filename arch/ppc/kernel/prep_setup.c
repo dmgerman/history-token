@@ -1222,6 +1222,12 @@ op_assign
 op_amp
 id|vga_con
 suffix:semicolon
+macro_line|#else
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Determine the decrementer frequency from the residual data&n; * This allows for a faster boot as we do not need to calibrate the&n; * decrementer against another clock. This is important for embedded systems.&n; */
@@ -1932,23 +1938,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;&bslash;"
-id|n
-"&bslash;"
-id|mtspr
-l_int|26
-comma
-op_mod
-l_int|1
-multiline_comment|/* SRR0 */
-id|mtspr
-l_int|27
-comma
-op_mod
-l_int|0
-multiline_comment|/* SRR1 */
-id|rfi
-"&quot;"
+l_string|&quot;&bslash;n&bslash;&n;&t;mtspr   26, %1  /* SRR0 */&t;&bslash;n&bslash;&n;&t;mtspr   27, %0  /* SRR1 */&t;&bslash;n&bslash;&n;&t;rfi&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2171,9 +2161,6 @@ id|regs
 comma
 r_int
 id|cpu
-comma
-r_int
-id|isfake
 )paren
 (brace
 r_int
@@ -2654,6 +2641,68 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * This finds the amount of physical ram and does necessary&n; * setup for prep.  This is pretty architecture specific so&n; * this will likely stay separate from the pmac.&n; * -- Cort&n; */
+DECL|function|prep_find_end_of_memory
+r_int
+r_int
+id|__init
+id|prep_find_end_of_memory
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|total
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+id|total
+op_assign
+id|res-&gt;TotalMemory
+suffix:semicolon
+macro_line|#else
+id|total
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif&t;
+r_if
+c_cond
+(paren
+id|total
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * I need a way to probe the amount of memory if the residual&n;&t;&t; * data doesn&squot;t contain it. -- Cort&n;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;Ramsize from residual data was 0 -- Probing for value&bslash;n&quot;
+)paren
+suffix:semicolon
+id|total
+op_assign
+l_int|0x02000000
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Ramsize default to be %ldM&bslash;n&quot;
+comma
+id|total
+op_rshift
+l_int|20
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|total
+)paren
+suffix:semicolon
+)brace
 DECL|variable|MotSave_SmpIar
 r_int
 r_int
@@ -2948,6 +2997,7 @@ id|_prep_type
 op_assign
 id|_PREP_IBM
 suffix:semicolon
+r_else
 id|_prep_type
 op_assign
 id|_PREP_Motorola
@@ -3047,6 +3097,10 @@ op_assign
 id|mk48t59_init
 suffix:semicolon
 )brace
+id|ppc_md.find_end_of_memory
+op_assign
+id|prep_find_end_of_memory
+suffix:semicolon
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ppc_ide_md.insw
 op_assign

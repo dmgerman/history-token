@@ -891,7 +891,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Note: in order to allow the smbmount process to open the&n; * mount point, we don&squot;t revalidate if conn_pid is NULL.&n; */
 r_static
 r_int
 DECL|function|smb_dir_open
@@ -982,10 +981,20 @@ id|dir
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Note: in order to allow the smbmount process to open the&n;&t; * mount point, we only revalidate if the connection is valid or&n;&t; * if the process is trying to access something other than the root.&n;&t; */
 r_if
 c_cond
 (paren
-id|server-&gt;conn_pid
+id|server-&gt;state
+op_eq
+id|CONN_VALID
+op_logical_or
+op_logical_neg
+id|IS_ROOT
+c_func
+(paren
+id|dentry
+)paren
 )paren
 id|error
 op_assign

@@ -2911,6 +2911,8 @@ op_star
 id|regs
 )paren
 (brace
+multiline_comment|/*&n; * Clean up needed. -VAL&n; */
+macro_line|#ifndef CONFIG_GEMINI
 r_extern
 r_int
 id|i8259_irq
@@ -2920,6 +2922,7 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+macro_line|#endif
 r_int
 id|irq
 op_assign
@@ -2929,6 +2932,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Management of the cascade should be moved out of here */
+multiline_comment|/* Yep - because openpic !=&gt; i8259, for one thing. -VAL */
 r_if
 c_cond
 (paren
@@ -2950,6 +2954,7 @@ op_assign
 op_star
 id|chrp_int_ack_special
 suffix:semicolon
+macro_line|#ifndef CONFIG_GEMINI
 r_else
 id|irq
 op_assign
@@ -2962,6 +2967,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|openpic_eoi
 c_func
 (paren

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * The firmware this driver downloads into the tokenring card is a&n; * seperate program and is not GPL&squot;d source code, even though the Linux&n; * side driver and the routine that loads this data into the card are.&n; *&n; * This firmware is licensed to you strictly for use in conjunction&n; * with the use of SMC TokenRing adapters. There is no waranty&n; * expressed or implied about its fitness for any purpose.&n; */
-multiline_comment|/* smctr_firmware.h: SMC TokenRing driver firmware dump for Linux.&n; *&n; * Notes:&n; *  - This is an 8K binary image. (MCT.BIN v6.3C1 03/01/95)&n; *&n; * Authors:&n; *  - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; */
+multiline_comment|/* smctr_firmware.h: SMC TokenRing driver firmware dump for Linux.&n; *&n; * Notes:&n; *  - This is an 8K binary image. (MCT.BIN v6.3C1 03/01/95)&n; *&n; * Authors:&n; *  - Jay Schulist &lt;jschlst@samba.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SMCTR) || defined(CONFIG_SMCTR_MODULE)
 DECL|variable|smctr_code

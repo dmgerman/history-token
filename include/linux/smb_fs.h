@@ -33,6 +33,7 @@ multiline_comment|/* where to find the base of the SMB packet proper */
 DECL|macro|smb_base
 mdefine_line|#define smb_base(buf) ((u8 *)(((u8 *)(buf))+4))
 macro_line|#ifdef DEBUG_SMB_MALLOC
+macro_line|#include &lt;linux/slab.h&gt;
 r_extern
 r_int
 id|smb_malloced
@@ -40,6 +41,10 @@ suffix:semicolon
 r_extern
 r_int
 id|smb_current_vmalloced
+suffix:semicolon
+r_extern
+r_int
+id|smb_current_kmalloced
 suffix:semicolon
 r_static
 r_inline
@@ -93,19 +98,72 @@ id|obj
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+op_star
+DECL|function|smb_kmalloc
+id|smb_kmalloc
+c_func
+(paren
+r_int
+id|size
+comma
+r_int
+id|flags
+)paren
+(brace
+id|smb_malloced
+op_add_assign
+l_int|1
+suffix:semicolon
+id|smb_current_kmalloced
+op_add_assign
+l_int|1
+suffix:semicolon
+r_return
+id|kmalloc
+c_func
+(paren
+id|size
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|smb_kfree
+id|smb_kfree
+c_func
+(paren
+r_void
+op_star
+id|obj
+)paren
+(brace
+id|smb_current_kmalloced
+op_sub_assign
+l_int|1
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|obj
+)paren
+suffix:semicolon
+)brace
 macro_line|#else /* DEBUG_SMB_MALLOC */
 DECL|macro|smb_kmalloc
-mdefine_line|#define smb_kmalloc(s,p) kmalloc(s,p)
-DECL|macro|smb_kfree_s
-mdefine_line|#define smb_kfree_s(o,s) kfree(o)
+mdefine_line|#define smb_kmalloc(s,p)&t;kmalloc(s,p)
+DECL|macro|smb_kfree
+mdefine_line|#define smb_kfree(o)&t;&t;kfree(o)
 DECL|macro|smb_vmalloc
-mdefine_line|#define smb_vmalloc(s)   vmalloc(s)
+mdefine_line|#define smb_vmalloc(s)&t;&t;vmalloc(s)
 DECL|macro|smb_vfree
-mdefine_line|#define smb_vfree(o)     vfree(o)
+mdefine_line|#define smb_vfree(o)&t;&t;vfree(o)
 macro_line|#endif /* DEBUG_SMB_MALLOC */
-multiline_comment|/*&n; * Flags for the in-memory inode&n; */
-DECL|macro|SMB_F_LOCALWRITE
-mdefine_line|#define SMB_F_LOCALWRITE&t;0x02&t;/* file modified locally */
 multiline_comment|/* NT1 protocol capability bits */
 DECL|macro|SMB_CAP_RAW_MODE
 mdefine_line|#define SMB_CAP_RAW_MODE         0x0001
@@ -274,7 +332,7 @@ r_return
 (paren
 id|i-&gt;u.smbfs_i.open
 op_eq
-id|SMB_SERVER
+id|server_from_inode
 c_func
 (paren
 id|i
@@ -734,6 +792,17 @@ comma
 id|__u16
 comma
 id|__u32
+)paren
+suffix:semicolon
+r_int
+id|smb_proc_flush
+c_func
+(paren
+r_struct
+id|smb_sb_info
+op_star
+comma
+id|__u16
 )paren
 suffix:semicolon
 r_void

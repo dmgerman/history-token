@@ -877,6 +877,15 @@ id|parms
 )paren
 )paren
 suffix:semicolon
+id|nt-&gt;parms.name
+(braket
+id|IFNAMSIZ
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
 id|strcpy
 c_func
 (paren

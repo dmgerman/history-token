@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.111 2001/03/27 07:28:43 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.115 2001/05/12 06:41:58 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -40,6 +40,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#if defined(CONFIG_BLK_DEV_LVM) || defined(CONFIG_BLK_DEV_LVM_MODULE)
 multiline_comment|/* Ugh. This header really is not clean */
 DECL|macro|min
@@ -2490,6 +2491,46 @@ id|err
 r_if
 c_cond
 (paren
+id|ifc32.ifcbuf
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Translate from 64-bit structure multiple to&n;&t;&t;&t;&t; * a 32-bit one.&n;&t;&t;&t;&t; */
+id|i
+op_assign
+id|ifc.ifc_len
+suffix:semicolon
+id|i
+op_assign
+(paren
+(paren
+id|i
+op_div
+r_sizeof
+(paren
+r_struct
+id|ifreq
+)paren
+)paren
+op_star
+r_sizeof
+(paren
+r_struct
+id|ifreq32
+)paren
+)paren
+suffix:semicolon
+id|ifc32.ifc_len
+op_assign
+id|i
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|i
 op_le
 id|ifc32.ifc_len
@@ -2509,6 +2550,7 @@ r_struct
 id|ifreq32
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -21178,23 +21220,6 @@ c_func
 (paren
 id|SIOCDARP
 )paren
-macro_line|#if 0 /* XXX No longer exist in new routing code. XXX */
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|OLD_SIOCSARP
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|OLD_SIOCGARP
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|OLD_SIOCDARP
-)paren
-macro_line|#endif
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -22829,6 +22854,39 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|WIOCGSTAT
+)paren
+multiline_comment|/* Misc. */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+l_int|0x41545900
+)paren
+multiline_comment|/* ATYIO_CLKR */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+l_int|0x41545901
+)paren
+multiline_comment|/* ATYIO_CLKW */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PCIIOC_CONTROLLER
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PCIIOC_MMAP_IS_IO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PCIIOC_MMAP_IS_MEM
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PCIIOC_WRITE_COMBINE
 )paren
 multiline_comment|/* And these ioctls need translation */
 id|HANDLE_IOCTL
@@ -24654,8 +24712,12 @@ l_int|20
 id|printk
 c_func
 (paren
-l_string|&quot;sys32_ioctl: Unknown cmd fd(%d) &quot;
+l_string|&quot;sys32_ioctl(%s:%d): Unknown cmd fd(%d) &quot;
 l_string|&quot;cmd(%08x) arg(%08x)&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
 comma
 (paren
 r_int

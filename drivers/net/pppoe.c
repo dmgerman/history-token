@@ -1,4 +1,4 @@
-multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.5&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@xconectiva.com.br&gt;&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.6&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; * 140501 :&t;Use pppoe_rcv_core to handle all backlog. (Alexey)&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@xconectiva.com.br&gt;&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1314,47 +1314,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************&n; *&n; * Receive wrapper called in process context.&n; *&n; ***********************************************************************/
-DECL|function|pppoe_backlog_rcv
-r_int
-id|pppoe_backlog_rcv
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-id|lock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-id|pppoe_rcv_core
-c_func
-(paren
-id|sk
-comma
-id|skb
-)paren
-suffix:semicolon
-id|release_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/************************************************************************&n; *&n; * Receive a PPPoE Discovery frame.&n; * This is solely for detection of PADT frames&n; *&n; ***********************************************************************/
 DECL|function|pppoe_disc_rcv
 r_static
@@ -1605,7 +1564,7 @@ id|PF_PPPOX
 suffix:semicolon
 id|sk-&gt;backlog_rcv
 op_assign
-id|pppoe_backlog_rcv
+id|pppoe_rcv_core
 suffix:semicolon
 id|sk-&gt;next
 op_assign

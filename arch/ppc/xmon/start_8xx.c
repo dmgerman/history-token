@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &quot;commproc.h&quot;
+macro_line|#include &quot;../8xx_io/commproc.h&quot;
 r_extern
 r_void
 id|xmon_printf

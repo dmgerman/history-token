@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -93,6 +94,19 @@ DECL|variable|time_offset
 r_static
 r_int
 id|time_offset
+suffix:semicolon
+DECL|variable|rtc_lock
+id|spinlock_t
+id|rtc_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|rtc_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtc_lock
+)paren
 suffix:semicolon
 multiline_comment|/* Timer interrupt helper function */
 DECL|function|tb_delta
@@ -303,11 +317,62 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|do_IRQ
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ppc_n_lost_interrupts
+)paren
+op_ne
+l_int|0
+)paren
+id|do_IRQ
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 id|hardirq_enter
 c_func
 (paren
 id|cpu
 )paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|next_dec
+op_assign
+id|tb_ticks_per_jiffy
+op_minus
+id|tb_delta
+c_func
+(paren
+op_amp
+id|jiffy_stamp
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|jiffy_stamp
+op_add_assign
+id|tb_ticks_per_jiffy
 suffix:semicolon
 r_if
 c_cond
@@ -328,12 +393,6 @@ c_func
 id|regs
 )paren
 )paren
-suffix:semicolon
-r_do
-(brace
-id|jiffy_stamp
-op_add_assign
-id|tb_ticks_per_jiffy
 suffix:semicolon
 r_if
 c_cond
@@ -442,27 +501,6 @@ c_func
 op_amp
 id|xtime_lock
 )paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|next_dec
-op_assign
-id|tb_ticks_per_jiffy
-op_minus
-id|tb_delta
-c_func
-(paren
-op_amp
-id|jiffy_stamp
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
 suffix:semicolon
 )brace
 r_if
@@ -1033,6 +1071,10 @@ id|tz
 )paren
 suffix:semicolon
 )brace
+id|do_get_fast_time
+op_assign
+id|do_gettimeofday
+suffix:semicolon
 )brace
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick

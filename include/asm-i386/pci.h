@@ -359,6 +359,24 @@ DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
+multiline_comment|/* Return the index of the PCI controller for device. */
+DECL|function|pci_controller_num
+r_static
+r_inline
+r_int
+id|pci_controller_num
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __i386_PCI_H */
 eof

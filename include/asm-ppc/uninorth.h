@@ -28,16 +28,16 @@ multiline_comment|/* &n; * Uni-N memory mapped reg. definitions&n; * &n; * Those
 multiline_comment|/* Version of the UniNorth chip */
 DECL|macro|UNI_N_VERSION
 mdefine_line|#define UNI_N_VERSION&t;&t;&t;0x0000&t;&t;/* Known versions: 3,7 and 8 */
-multiline_comment|/* This register is used to enable/disable various parts */
+multiline_comment|/* This register is used to enable/disable various clocks */
 DECL|macro|UNI_N_CLOCK_CNTL
 mdefine_line|#define UNI_N_CLOCK_CNTL&t;&t;0x0020
 DECL|macro|UNI_N_CLOCK_CNTL_PCI
-mdefine_line|#define UNI_N_CLOCK_CNTL_PCI&t;&t;0x00000001&t;/* guess ? */
+mdefine_line|#define UNI_N_CLOCK_CNTL_PCI&t;&t;0x00000001&t;/* PCI2 clock control */
 DECL|macro|UNI_N_CLOCK_CNTL_GMAC
-mdefine_line|#define UNI_N_CLOCK_CNTL_GMAC&t;&t;0x00000002
+mdefine_line|#define UNI_N_CLOCK_CNTL_GMAC&t;&t;0x00000002&t;/* GMAC clock control */
 DECL|macro|UNI_N_CLOCK_CNTL_FW
-mdefine_line|#define UNI_N_CLOCK_CNTL_FW&t;&t;0x00000004&t;/* guess ? */
-multiline_comment|/* Power Management control ? (from Darwin) */
+mdefine_line|#define UNI_N_CLOCK_CNTL_FW&t;&t;0x00000004&t;/* FireWire clock control */
+multiline_comment|/* Power Management control */
 DECL|macro|UNI_N_POWER_MGT
 mdefine_line|#define UNI_N_POWER_MGT&t;&t;&t;0x0030
 DECL|macro|UNI_N_POWER_MGT_NORMAL
@@ -70,5 +70,6 @@ mdefine_line|#define UNI_N_HWINIT_STATE_RUNNING&t;0x02
 multiline_comment|/* This last bit appear to be used by the bootROM to know the second&n; * CPU has started and will enter it&squot;s sleep loop with IP=0&n; */
 DECL|macro|UNI_N_HWINIT_STATE_CPU1_FLAG
 mdefine_line|#define UNI_N_HWINIT_STATE_CPU1_FLAG&t;0x10000000
+multiline_comment|/* Uninorth 1.5 rev. has additional perf. monitor registers at 0xf00-0xf50 */
 macro_line|#endif /* __KERNEL__ */
 eof

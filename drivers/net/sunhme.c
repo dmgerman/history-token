@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunhme.c,v 1.117 2001/04/19 22:32:41 davem Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
+multiline_comment|/* $Id: sunhme.c,v 1.118 2001/05/11 02:09:30 davem Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
 DECL|variable|version
 r_static
 r_char
@@ -10211,6 +10211,9 @@ id|hp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+id|res
+suffix:semicolon
 id|HMD
 c_func
 (paren
@@ -10306,7 +10309,8 @@ l_string|&quot;to happy_meal_init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|res
+op_assign
 id|happy_meal_init
 c_func
 (paren
@@ -10314,6 +10318,36 @@ id|hp
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+op_logical_and
+(paren
+(paren
+id|hp-&gt;happy_flags
+op_amp
+(paren
+id|HFLAG_QUATTRO
+op_or
+id|HFLAG_PCI
+)paren
+)paren
+op_ne
+id|HFLAG_QUATTRO
+)paren
+)paren
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|res
 suffix:semicolon
 )brace
 DECL|function|happy_meal_close
@@ -11488,7 +11522,7 @@ c_cond
 (paren
 id|ecmd.cmd
 op_eq
-id|SPARC_ETH_GSET
+id|ETHTOOL_GSET
 )paren
 (brace
 id|ecmd.supported
@@ -11682,7 +11716,7 @@ c_cond
 (paren
 id|ecmd.cmd
 op_eq
-id|SPARC_ETH_SSET
+id|ETHTOOL_SSET
 )paren
 (brace
 r_if
@@ -13412,7 +13446,7 @@ id|prom_name
 )paren
 suffix:semicolon
 macro_line|#else
-macro_line|#warning This needs to be corrected... -DaveM
+multiline_comment|/* This needs to be corrected... -DaveM */
 id|strcpy
 c_func
 (paren

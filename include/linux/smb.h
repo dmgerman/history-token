@@ -231,21 +231,18 @@ multiline_comment|/* everything&squot;s fine */
 DECL|enumerator|CONN_INVALID
 id|CONN_INVALID
 comma
-multiline_comment|/* Something went wrong, but did not&n;                                   try to reconnect yet. */
+multiline_comment|/* Something went wrong, but did not&n;&t;&t;&t;&t;   try to reconnect yet. */
 DECL|enumerator|CONN_RETRIED
 id|CONN_RETRIED
+comma
 multiline_comment|/* Tried a reconnection, but was refused */
+DECL|enumerator|CONN_RETRYING
+id|CONN_RETRYING
+multiline_comment|/* Currently trying to reconnect */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The readdir cache size controls how many directory entries are cached.&n; */
-DECL|macro|SMB_READDIR_CACHE_SIZE
-mdefine_line|#define SMB_READDIR_CACHE_SIZE        64
 DECL|macro|SMB_SUPER_MAGIC
 mdefine_line|#define SMB_SUPER_MAGIC               0x517B
-DECL|macro|SMB_SERVER
-mdefine_line|#define SMB_SERVER(inode)    (&amp;(inode-&gt;i_sb-&gt;u.smbfs_sb))
-DECL|macro|SMB_INOP
-mdefine_line|#define SMB_INOP(inode)      (&amp;(inode-&gt;u.smbfs_i))
 DECL|macro|SMB_HEADER_LEN
 mdefine_line|#define SMB_HEADER_LEN   37     /* includes everything up to, but not&n;                                 * including smb_bcc */
 DECL|macro|SMB_INITIAL_PACKET_SIZE

@@ -3,7 +3,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_MMU_CONTEXT_H
 DECL|macro|__PPC_MMU_CONTEXT_H
 mdefine_line|#define __PPC_MMU_CONTEXT_H
-multiline_comment|/* the way contexts are handled on the ppc they are vsid&squot;s and&n;   don&squot;t need any special treatment right now.&n;   perhaps I can defer flushing the tlb by keeping a list of&n;   zombie vsid/context&squot;s and handling that through destroy_context&n;   later -- Cort&n;&n;   The MPC8xx has only 16 contexts.  We rotate through them on each&n;   task switch.  A better way would be to keep track of tasks that&n;   own contexts, and implement an LRU usage.  That way very active&n;   tasks don&squot;t always have to pay the TLB reload overhead.  The&n;   kernel pages are mapped shared, so the kernel can run on behalf&n;   of any task that makes a kernel entry.  Shared does not mean they&n;   are not protected, just that the ASID comparison is not performed.&n;        -- Dan&n; */
+multiline_comment|/* the way contexts are handled on the ppc they are vsid&squot;s and&n;   don&squot;t need any special treatment right now.&n;   perhaps I can defer flushing the tlb by keeping a list of&n;   zombie vsid/context&squot;s and handling that through destroy_context&n;   later -- Cort&n;&n;   The MPC8xx has only 16 contexts.  We rotate through them on each&n;   task switch.  A better way would be to keep track of tasks that&n;   own contexts, and implement an LRU usage.  That way very active&n;   tasks don&squot;t always have to pay the TLB reload overhead.  The&n;   kernel pages are mapped shared, so the kernel can run on behalf&n;   of any task that makes a kernel entry.  Shared does not mean they&n;   are not protected, just that the ASID comparison is not performed.&n;        -- Dan&n;&n;   The IBM4xx has 256 contexts, so we can just rotate through these&n;   as a way of &quot;switching&quot; contexts.  If the TID of the TLB is zero,&n;   the PID/TID comparison is disabled, so we can use a TID of zero&n;   to represent all kernel pages as shared among all contexts.&n;   &t;-- Dan&n; */
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -31,12 +31,29 @@ DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;16
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;15
+DECL|macro|BASE_CONTEXT
+mdefine_line|#define BASE_CONTEXT&t;&t;(-1)
 DECL|macro|MUNGE_CONTEXT
 mdefine_line|#define MUNGE_CONTEXT(n)        (n)
+DECL|macro|flush_hash_segments
+mdefine_line|#define flush_hash_segments(X, Y)&t;do { } while (0)
+macro_line|#elif CONFIG_4xx
+DECL|macro|NO_CONTEXT
+mdefine_line|#define NO_CONTEXT      &t;256
+DECL|macro|LAST_CONTEXT
+mdefine_line|#define LAST_CONTEXT    &t;255
+DECL|macro|BASE_CONTEXT
+mdefine_line|#define BASE_CONTEXT&t;&t;(0)
+DECL|macro|MUNGE_CONTEXT
+mdefine_line|#define MUNGE_CONTEXT(n)        (n)
+DECL|macro|flush_hash_segments
+mdefine_line|#define flush_hash_segments(X, Y)&t;do { } while (0)
 macro_line|#else
 multiline_comment|/* PPC 6xx, 7xx CPUs */
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;0
+DECL|macro|BASE_CONTEXT
+mdefine_line|#define BASE_CONTEXT&t;&t;(0)
 DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;0xfffff
 multiline_comment|/*&n; * Allocating context numbers this way tends to spread out&n; * the entries in the hash table better than a simple linear&n; * allocation.&n; */

@@ -91,20 +91,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|member|post_irq
-r_void
-(paren
-op_star
-id|post_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* A general init function, called by ppc_init in init/main.c.&n;&t;   May be NULL. */
 DECL|member|init
 r_void
@@ -211,6 +197,17 @@ DECL|member|heartbeat_count
 r_int
 r_int
 id|heartbeat_count
+suffix:semicolon
+DECL|member|find_end_of_memory
+r_int
+r_int
+(paren
+op_star
+id|find_end_of_memory
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
 DECL|member|progress
 r_void
@@ -383,6 +380,17 @@ op_star
 comma
 r_int
 id|initial
+)paren
+suffix:semicolon
+multiline_comment|/* Called at then very end of pcibios_init()&n;&t;&t; */
+DECL|member|pcibios_after_init
+r_void
+(paren
+op_star
+id|pcibios_after_init
+)paren
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* this is for modules, since _machine can be a define -- Cort */

@@ -238,9 +238,6 @@ id|regs
 comma
 r_int
 id|cpu
-comma
-r_int
-id|isfake
 )paren
 (brace
 r_int
@@ -570,14 +567,7 @@ macro_line|#ifdef&t;IDE0_INTERRUPT
 r_case
 id|IDE0_INTERRUPT
 suffix:colon
-multiline_comment|/* fall through */
-macro_line|#endif
-macro_line|#ifdef&t;IDE1_INTERRUPT
-r_case
-id|IDE1_INTERRUPT
-suffix:colon
-multiline_comment|/* fall through */
-macro_line|#endif
+multiline_comment|/* IDE0 */
 r_return
 (paren
 id|request_8xxirq
@@ -595,6 +585,30 @@ id|dev_id
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef&t;IDE1_INTERRUPT
+r_case
+id|IDE1_INTERRUPT
+suffix:colon
+multiline_comment|/* IDE1 */
+r_return
+(paren
+id|request_8xxirq
+c_func
+(paren
+id|irq
+comma
+id|handler
+comma
+id|irqflags
+comma
+id|devname
+comma
+id|dev_id
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 multiline_comment|/* unknown IRQ -&gt; panic */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;ipddp.c: IP to Appletalk-IP Encapsulation driver for Linux&n; *&t;&t; Appletalk-IP to IP Decapsulation driver for Linux&n; *&n; *&t;Authors:&n; *      - DDP-IP Encap by: Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *&t;- DDP-IP Decap by: Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *&t;Derived from:&n; *&t;- Almost all code already existed in net/appletalk/ddp.c I just&n; *&t;  moved/reorginized it into a driver file. Original IP-over-DDP code&n; *&t;  was done by Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- dummy.c: A dummy net driver. By Nick Holloway.&n; *&t;- MacGate: A user space Daemon for Appletalk-IP Decap for&n; *&t;  Linux by Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/*&n; *&t;ipddp.c: IP to Appletalk-IP Encapsulation driver for Linux&n; *&t;&t; Appletalk-IP to IP Decapsulation driver for Linux&n; *&n; *&t;Authors:&n; *      - DDP-IP Encap by: Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *&t;- DDP-IP Decap by: Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; *&t;Derived from:&n; *&t;- Almost all code already existed in net/appletalk/ddp.c I just&n; *&t;  moved/reorginized it into a driver file. Original IP-over-DDP code&n; *&t;  was done by Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- dummy.c: A dummy net driver. By Nick Holloway.&n; *&t;- MacGate: A user space Daemon for Appletalk-IP Decap for&n; *&t;  Linux by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -195,7 +195,7 @@ id|IPDDP_DECAP
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Appletalk-IP Decap. mode by Jay Schulist &lt;jschlst@turbolinux.com&gt;&bslash;n&quot;
+l_string|&quot;%s: Appletalk-IP Decap. mode by Jay Schulist &lt;jschlst@samba.org&gt;&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

@@ -288,6 +288,10 @@ DECL|member|type
 id|uhci_desc_type_t
 id|type
 suffix:semicolon
+DECL|member|dma_addr
+id|dma_addr_t
+id|dma_addr
+suffix:semicolon
 DECL|member|horizontal
 r_struct
 id|list_head
@@ -324,6 +328,14 @@ id|list_head
 id|desc_list
 suffix:semicolon
 singleline_comment|// list pointer to all corresponding TDs/QHs associated with this request
+DECL|member|setup_packet_dma
+id|dma_addr_t
+id|setup_packet_dma
+suffix:semicolon
+DECL|member|transfer_buffer_dma
+id|dma_addr_t
+id|transfer_buffer_dma
+suffix:semicolon
 DECL|member|started
 r_int
 r_int
@@ -482,6 +494,10 @@ id|__u32
 op_star
 id|framelist
 suffix:semicolon
+DECL|member|framelist_dma
+id|dma_addr_t
+id|framelist_dma
+suffix:semicolon
 DECL|member|iso_td
 id|uhci_desc_t
 op_star
@@ -570,6 +586,12 @@ id|pci_dev
 op_star
 id|uhci_pci
 suffix:semicolon
+DECL|member|desc_pool
+r_struct
+id|pci_pool
+op_star
+id|desc_pool
+suffix:semicolon
 DECL|typedef|uhci_t
 DECL|typedef|puhci_t
 )brace
@@ -579,9 +601,9 @@ op_star
 id|puhci_t
 suffix:semicolon
 DECL|macro|MAKE_TD_ADDR
-mdefine_line|#define MAKE_TD_ADDR(a) (virt_to_bus(a)&amp;~UHCI_PTR_QH)
+mdefine_line|#define MAKE_TD_ADDR(a) ((a)-&gt;dma_addr&amp;~UHCI_PTR_QH)
 DECL|macro|MAKE_QH_ADDR
-mdefine_line|#define MAKE_QH_ADDR(a) (virt_to_bus(a)|UHCI_PTR_QH)
+mdefine_line|#define MAKE_QH_ADDR(a) ((a)-&gt;dma_addr|UHCI_PTR_QH)
 DECL|macro|UHCI_GET_CURRENT_FRAME
 mdefine_line|#define UHCI_GET_CURRENT_FRAME(uhci) (inw ((uhci)-&gt;io_addr + USBFRNUM))
 multiline_comment|/* ------------------------------------------------------------------------------------ &n;   Virtual Root HUB &n;   ------------------------------------------------------------------------------------ */
