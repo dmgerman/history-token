@@ -743,17 +743,6 @@ r_struct
 id|rpc_task
 op_star
 id|task
-comma
-r_int
-id|stable
-comma
-r_int
-r_int
-id|arg_count
-comma
-r_int
-r_int
-id|res_count
 )paren
 suffix:semicolon
 r_extern
