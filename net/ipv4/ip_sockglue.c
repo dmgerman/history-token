@@ -3536,6 +3536,10 @@ id|err
 )paren
 r_break
 suffix:semicolon
+id|greqs.gsr_interface
+op_assign
+id|mreq.imr_ifindex
+suffix:semicolon
 id|omode
 op_assign
 id|MCAST_INCLUDE
