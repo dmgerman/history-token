@@ -31,8 +31,8 @@ id|SHMEM_NR_DIRECT
 suffix:semicolon
 multiline_comment|/* for the first blocks */
 DECL|member|i_indirect
-r_void
-op_star
+r_struct
+id|page
 op_star
 id|i_indirect
 suffix:semicolon
