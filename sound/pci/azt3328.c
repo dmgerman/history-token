@@ -6433,25 +6433,6 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* create mixer interface &amp; switches */
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|snd_azf3328_mixer_new
-c_func
-(paren
-id|chip
-)paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6485,6 +6466,25 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* create mixer interface &amp; switches */
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_azf3328_mixer_new
+c_func
+(paren
+id|chip
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* set very low bitrate to reduce noise and power consumption? */
 id|snd_azf3328_setfmt

@@ -9603,12 +9603,6 @@ id|ensoniq-&gt;subsystem_device_id
 op_assign
 id|cmdw
 suffix:semicolon
-id|snd_ensoniq_proc_init
-c_func
-(paren
-id|ensoniq
-)paren
-suffix:semicolon
 macro_line|#ifdef CHIP1370
 macro_line|#if 0
 id|ensoniq-&gt;ctrl
@@ -10347,6 +10341,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_ensoniq_proc_init
+c_func
+(paren
+id|ensoniq
+)paren
+suffix:semicolon
 id|snd_card_set_dev
 c_func
 (paren

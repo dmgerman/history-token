@@ -7949,12 +7949,6 @@ id|sonic
 )paren
 )paren
 suffix:semicolon
-id|snd_sonicvibes_proc_init
-c_func
-(paren
-id|sonic
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7988,6 +7982,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_sonicvibes_proc_init
+c_func
+(paren
+id|sonic
+)paren
+suffix:semicolon
 id|snd_card_set_dev
 c_func
 (paren
