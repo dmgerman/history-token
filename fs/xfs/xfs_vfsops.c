@@ -5066,7 +5066,7 @@ id|last_error
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_vget - called by DMAPI to get vnode from file handle&n; */
+multiline_comment|/*&n; * xfs_vget - called by DMAPI and NFSD to get vnode from file handle&n; */
 id|STATIC
 r_int
 DECL|function|xfs_vget
@@ -5233,15 +5233,9 @@ id|ip-&gt;i_d.di_mode
 op_eq
 l_int|0
 op_logical_or
-(paren
-id|igen
-op_logical_and
-(paren
 id|ip-&gt;i_d.di_gen
 op_ne
 id|igen
-)paren
-)paren
 )paren
 (brace
 id|xfs_iput_new
