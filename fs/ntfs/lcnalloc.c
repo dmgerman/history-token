@@ -3317,16 +3317,16 @@ id|VCN
 id|vcn
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Attempt to map runlist, dropping runlist lock for&n;&t;&t;&t; * the duration.&n;&t;&t;&t; */
+id|vcn
+op_assign
+id|rl-&gt;vcn
+suffix:semicolon
 id|up_read
 c_func
 (paren
 op_amp
 id|ni-&gt;runlist.lock
 )paren
-suffix:semicolon
-id|vcn
-op_assign
-id|rl-&gt;vcn
 suffix:semicolon
 id|err
 op_assign
