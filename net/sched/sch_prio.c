@@ -669,8 +669,6 @@ op_amp
 id|noop_qdisc
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|prio_tune
 r_static
@@ -1052,8 +1050,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1894,6 +1890,11 @@ dot
 id|dump
 op_assign
 id|prio_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

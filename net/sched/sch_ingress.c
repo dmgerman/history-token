@@ -904,8 +904,6 @@ op_assign
 op_amp
 id|noop_qdisc
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1049,8 +1047,6 @@ id|p-&gt;q
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|ingress_dump
 r_static
@@ -1267,6 +1263,11 @@ dot
 id|dump
 op_assign
 id|ingress_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
