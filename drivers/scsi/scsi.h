@@ -2,16 +2,9 @@ multiline_comment|/*&n; *  scsi.h Copyright (C) 1992 Drew Eckhardt &n; *        
 macro_line|#ifndef _SCSI_H
 DECL|macro|_SCSI_H
 mdefine_line|#define _SCSI_H
-macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_SCSI_LOGGING */
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/*&n; * Some of the public constants are being moved to this file.&n; * We include it here so that what came from where is transparent.&n; */
+macro_line|#include &lt;linux/config.h&gt;&t;    /* for CONFIG_SCSI_LOGGING */
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;  /* some morons don&squot;t know struct pointers */
 macro_line|#include &lt;scsi/scsi.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/scatterlist.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * These are the values that the SCpnt-&gt;sc_data_direction and &n; * SRpnt-&gt;sr_data_direction can take.  These need to be set&n; * The SCSI_DATA_UNKNOWN value is essentially the default.&n; * In the event that the command creator didn&squot;t bother to&n; * set a value, you will see SCSI_DATA_UNKNOWN.&n; */
 DECL|macro|SCSI_DATA_UNKNOWN
 mdefine_line|#define SCSI_DATA_UNKNOWN       0
@@ -421,6 +414,9 @@ macro_line|#include &quot;scsi_obsolete.h&quot;
 multiline_comment|/*&n; * Forward-declaration of structs for prototypes.&n; */
 r_struct
 id|Scsi_Host
+suffix:semicolon
+r_struct
+id|scatterlist
 suffix:semicolon
 multiline_comment|/*&n; * Add some typedefs so that we can prototyope a bunch of the functions.&n; */
 DECL|typedef|Scsi_Device
@@ -1327,7 +1323,6 @@ id|dev_info
 id|scsi_static_device_list
 (braket
 )braket
-id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
 DECL|struct|scsi_dev_info_list
