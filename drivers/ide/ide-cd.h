@@ -1376,6 +1376,16 @@ DECL|struct|cdrom_info
 r_struct
 id|cdrom_info
 (brace
+DECL|member|drive
+id|ide_drive_t
+op_star
+id|drive
+suffix:semicolon
+DECL|member|kref
+r_struct
+id|kref
+id|kref
+suffix:semicolon
 multiline_comment|/* Buffer for table of contents.  NULL if we haven&squot;t allocated&n;&t;   a TOC buffer for this device yet. */
 DECL|member|toc
 r_struct

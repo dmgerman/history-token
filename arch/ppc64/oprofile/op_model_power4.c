@@ -680,7 +680,7 @@ id|MMCRA_SIPR
 r_return
 id|pc
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_RTAS
 multiline_comment|/* Were we in RTAS? */
 r_if
 c_cond

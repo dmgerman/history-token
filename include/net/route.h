@@ -20,7 +20,10 @@ DECL|macro|RTO_CONN
 mdefine_line|#define RTO_CONN&t;0
 multiline_comment|/* RTO_CONN is not used (being alias for 0), but preserved not to break&n; * some modules referring to it. */
 DECL|macro|RT_CONN_FLAGS
-mdefine_line|#define RT_CONN_FLAGS(sk)   (RT_TOS(inet_sk(sk)-&gt;tos) | sk-&gt;sk_localroute)
+mdefine_line|#define RT_CONN_FLAGS(sk)   (RT_TOS(inet_sk(sk)-&gt;tos) | sock_flag(sk, SOCK_LOCALROUTE))
+r_struct
+id|fib_nh
+suffix:semicolon
 r_struct
 id|inet_peer
 suffix:semicolon
@@ -56,8 +59,12 @@ r_int
 id|rt_flags
 suffix:semicolon
 DECL|member|rt_type
-r_int
+id|__u16
 id|rt_type
+suffix:semicolon
+DECL|member|rt_multipath_alg
+id|__u16
+id|rt_multipath_alg
 suffix:semicolon
 DECL|member|rt_dst
 id|__u32
@@ -773,6 +780,12 @@ id|fl.fl_ip_dport
 op_assign
 id|dport
 suffix:semicolon
+macro_line|#if defined(CONFIG_IP_ROUTE_MULTIPATH_CACHED)
+id|fl.flags
+op_or_assign
+id|FLOWI_FLAG_MULTIPATHOLDROUTE
+suffix:semicolon
+macro_line|#endif
 id|ip_rt_put
 c_func
 (paren

@@ -77,8 +77,8 @@ DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;0x0002 /* matches one of the PP bits */
 DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;0x0002 /* (!present only) software: pte holds file offset */
-DECL|macro|_PAGE_RW
-mdefine_line|#define _PAGE_RW&t;0x0004 /* software: user write access allowed */
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC&t;0x0004 /* No execute on POWER4 and newer (we invert) */
 DECL|macro|_PAGE_GUARDED
 mdefine_line|#define _PAGE_GUARDED&t;0x0008
 DECL|macro|_PAGE_COHERENT
@@ -91,8 +91,8 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x0080 /* C: page changed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x0100 /* R: page referenced */
-DECL|macro|_PAGE_EXEC
-mdefine_line|#define _PAGE_EXEC&t;0x0200 /* software: i-cache coherence required */
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW&t;0x0200 /* software: user write access allowed */
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0x0400 /* software: pte has an associated HPTE */
 DECL|macro|_PAGE_BUSY
@@ -134,37 +134,42 @@ DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_BASE | _PAGE_WRENABLE)
 DECL|macro|PAGE_KERNEL_CI
 mdefine_line|#define PAGE_KERNEL_CI&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED | &bslash;&n;&t;&t;&t;       _PAGE_WRENABLE | _PAGE_NO_CACHE | _PAGE_GUARDED)
-multiline_comment|/*&n; * The PowerPC can only do execute protection on a segment (256MB) basis,&n; * not on a page basis.  So we consider execute permission the same as read.&n; * Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
+DECL|macro|PAGE_KERNEL_EXEC
+mdefine_line|#define PAGE_KERNEL_EXEC __pgprot(_PAGE_BASE | _PAGE_WRENABLE | _PAGE_EXEC)
+multiline_comment|/*&n; * This bit in a hardware PTE indicates that the page is *not* executable.&n; */
+DECL|macro|HW_NO_EXEC
+mdefine_line|#define HW_NO_EXEC&t;_PAGE_EXEC
+multiline_comment|/*&n; * POWER4 and newer have per page execute protection, older chips can only&n; * do this on a segment (256MB) basis.&n; *&n; * Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; *&n; * Note due to the way vm flags are laid out, the bits are XWR&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY_X
+mdefine_line|#define __P001&t;PAGE_READONLY
 DECL|macro|__P010
 mdefine_line|#define __P010&t;PAGE_COPY
 DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY_X
+mdefine_line|#define __P011&t;PAGE_COPY
 DECL|macro|__P100
-mdefine_line|#define __P100&t;PAGE_READONLY
+mdefine_line|#define __P100&t;PAGE_READONLY_X
 DECL|macro|__P101
 mdefine_line|#define __P101&t;PAGE_READONLY_X
 DECL|macro|__P110
-mdefine_line|#define __P110&t;PAGE_COPY
+mdefine_line|#define __P110&t;PAGE_COPY_X
 DECL|macro|__P111
 mdefine_line|#define __P111&t;PAGE_COPY_X
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY_X
+mdefine_line|#define __S001&t;PAGE_READONLY
 DECL|macro|__S010
 mdefine_line|#define __S010&t;PAGE_SHARED
 DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED_X
+mdefine_line|#define __S011&t;PAGE_SHARED
 DECL|macro|__S100
-mdefine_line|#define __S100&t;PAGE_READONLY
+mdefine_line|#define __S100&t;PAGE_READONLY_X
 DECL|macro|__S101
 mdefine_line|#define __S101&t;PAGE_READONLY_X
 DECL|macro|__S110
-mdefine_line|#define __S110&t;PAGE_SHARED
+mdefine_line|#define __S110&t;PAGE_SHARED_X
 DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED_X
 macro_line|#ifndef __ASSEMBLY__
@@ -1355,6 +1360,8 @@ op_or
 id|_PAGE_ACCESSED
 op_or
 id|_PAGE_RW
+op_or
+id|_PAGE_EXEC
 )paren
 suffix:semicolon
 r_int

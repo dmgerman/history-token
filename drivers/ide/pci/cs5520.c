@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|struct|pio_clocks
@@ -730,7 +731,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|0xFFFFFFFF
+id|DMA_32BIT_MASK
 )paren
 )paren
 (brace

@@ -1228,6 +1228,6 @@ macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy&t;(0)
 macro_line|#endif
-macro_line|#endif /* _ASM_DMA_H */
-macro_line|#endif /* __KERNEL__ */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_DMA_H */
+macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof

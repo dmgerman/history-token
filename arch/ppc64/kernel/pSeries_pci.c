@@ -2418,6 +2418,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|isa_io_base
+)paren
+r_return
+suffix:semicolon
 id|request_region
 c_func
 (paren

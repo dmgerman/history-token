@@ -2010,10 +2010,6 @@ id|newsk-&gt;sk_destruct
 op_assign
 id|inet_sock_destruct
 suffix:semicolon
-id|newsk-&gt;sk_zapped
-op_assign
-l_int|0
-suffix:semicolon
 id|newsk-&gt;sk_family
 op_assign
 id|PF_INET
@@ -2025,6 +2021,14 @@ suffix:semicolon
 id|newsk-&gt;sk_backlog_rcv
 op_assign
 id|sk-&gt;sk_prot-&gt;backlog_rcv
+suffix:semicolon
+id|sock_reset_flag
+c_func
+(paren
+id|newsk
+comma
+id|SOCK_ZAPPED
+)paren
 suffix:semicolon
 id|newinet
 op_assign

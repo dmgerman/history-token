@@ -340,7 +340,7 @@ multiline_comment|/* or IPT_CONTINUE ?? */
 r_if
 c_cond
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 (paren
@@ -380,7 +380,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;ipt_tcpmss_target: unknown or invalid path-MTU (%d)&bslash;n&quot;
 comma
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 (paren
@@ -399,7 +399,7 @@ multiline_comment|/* or IPT_CONTINUE ?? */
 )brace
 id|newmss
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 (paren

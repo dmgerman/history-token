@@ -15,12 +15,12 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
-multiline_comment|/* Define this to get the sk-&gt;sk_debug debugging facility. */
+multiline_comment|/* Define this to get the SOCK_DBG debugging facility. */
 DECL|macro|SOCK_DEBUGGING
 mdefine_line|#define SOCK_DEBUGGING
 macro_line|#ifdef SOCK_DEBUGGING
 DECL|macro|SOCK_DEBUG
-mdefine_line|#define SOCK_DEBUG(sk, msg...) do { if ((sk) &amp;&amp; ((sk)-&gt;sk_debug)) &bslash;&n;&t;&t;&t;&t;&t;printk(KERN_DEBUG msg); } while (0)
+mdefine_line|#define SOCK_DEBUG(sk, msg...) do { if ((sk) &amp;&amp; sock_flag((sk), SOCK_DBG)) &bslash;&n;&t;&t;&t;&t;&t;printk(KERN_DEBUG msg); } while (0)
 macro_line|#else
 DECL|macro|SOCK_DEBUG
 mdefine_line|#define SOCK_DEBUG(sk, msg...) do { } while (0)
@@ -96,7 +96,7 @@ id|skc_refcnt
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n;  *&t;struct sock - network layer representation of sockets&n;  *&t;@__sk_common - shared layout with tcp_tw_bucket&n;  *&t;@sk_zapped - ax25 &amp; ipx means !linked&n;  *&t;@sk_shutdown - mask of %SEND_SHUTDOWN and/or %RCV_SHUTDOWN&n;  *&t;@sk_use_write_queue - wheter to call sk-&gt;sk_write_space in sock_wfree&n;  *&t;@sk_userlocks - %SO_SNDBUF and %SO_RCVBUF settings&n;  *&t;@sk_lock -&t;synchronizer&n;  *&t;@sk_rcvbuf - size of receive buffer in bytes&n;  *&t;@sk_sleep - sock wait queue&n;  *&t;@sk_dst_cache - destination cache&n;  *&t;@sk_dst_lock - destination cache lock&n;  *&t;@sk_policy - flow policy&n;  *&t;@sk_rmem_alloc - receive queue bytes committed&n;  *&t;@sk_receive_queue - incoming packets&n;  *&t;@sk_wmem_alloc - transmit queue bytes committed&n;  *&t;@sk_write_queue - Packet sending queue&n;  *&t;@sk_omem_alloc - &quot;o&quot; is &quot;option&quot; or &quot;other&quot;&n;  *&t;@sk_wmem_queued - persistent queue size&n;  *&t;@sk_forward_alloc - space allocated forward&n;  *&t;@sk_allocation - allocation mode&n;  *&t;@sk_sndbuf - size of send buffer in bytes&n;  *&t;@sk_flags - %SO_LINGER (l_onoff), %SO_BROADCAST, %SO_KEEPALIVE, %SO_OOBINLINE settings&n;  *&t;@sk_no_check - %SO_NO_CHECK setting, wether or not checkup packets&n;  *&t;@sk_debug - %SO_DEBUG setting&n;  *&t;@sk_rcvtstamp - %SO_TIMESTAMP setting&n;  *&t;@sk_no_largesend - whether to sent large segments or not&n;  *&t;@sk_route_caps - route capabilities (e.g. %NETIF_F_TSO)&n;  *&t;@sk_lingertime - %SO_LINGER l_linger setting&n;  *&t;@sk_hashent - hash entry in several tables (e.g. tcp_ehash)&n;  *&t;@sk_backlog - always used with the per-socket spinlock held&n;  *&t;@sk_callback_lock - used with the callbacks in the end of this struct&n;  *&t;@sk_error_queue - rarely used&n;  *&t;@sk_prot - protocol handlers inside a network family&n;  *&t;@sk_err - last error&n;  *&t;@sk_err_soft - errors that don&squot;t cause failure but are the cause of a persistent failure not just &squot;timed out&squot;&n;  *&t;@sk_ack_backlog - current listen backlog&n;  *&t;@sk_max_ack_backlog - listen backlog set in listen()&n;  *&t;@sk_priority - %SO_PRIORITY setting&n;  *&t;@sk_type - socket type (%SOCK_STREAM, etc)&n;  *&t;@sk_localroute - route locally only, %SO_DONTROUTE setting&n;  *&t;@sk_protocol - which protocol this socket belongs in this network family&n;  *&t;@sk_peercred - %SO_PEERCRED setting&n;  *&t;@sk_rcvlowat - %SO_RCVLOWAT setting&n;  *&t;@sk_rcvtimeo - %SO_RCVTIMEO setting&n;  *&t;@sk_sndtimeo - %SO_SNDTIMEO setting&n;  *&t;@sk_filter - socket filtering instructions&n;  *&t;@sk_protinfo - private area, net family specific, when not using slab&n;  *&t;@sk_slab - the slabcache this instance was allocated from&n;  *&t;@sk_timer - sock cleanup timer&n;  *&t;@sk_stamp - time stamp of last packet received&n;  *&t;@sk_socket - Identd and reporting IO signals&n;  *&t;@sk_user_data - RPC layer private data&n;  *&t;@sk_owner - module that owns this socket&n;  *&t;@sk_sndmsg_page - cached page for sendmsg&n;  *&t;@sk_sndmsg_off - cached offset for sendmsg&n;  *&t;@sk_send_head - front of stuff to transmit&n;  *&t;@sk_write_pending - a write to stream socket waits to start&n;  *&t;@sk_queue_shrunk - write queue has been shrunk recently&n;  *&t;@sk_state_change - callback to indicate change in the state of the sock&n;  *&t;@sk_data_ready - callback to indicate there is data to be processed&n;  *&t;@sk_write_space - callback to indicate there is bf sending space available&n;  *&t;@sk_error_report - callback to indicate errors (e.g. %MSG_ERRQUEUE)&n;  *&t;@sk_backlog_rcv - callback to process the backlog&n;  *&t;@sk_destruct - called at sock freeing time, i.e. when all refcnt == 0&n; */
+multiline_comment|/**&n;  *&t;struct sock - network layer representation of sockets&n;  *&t;@__sk_common - shared layout with tcp_tw_bucket&n;  *&t;@sk_shutdown - mask of %SEND_SHUTDOWN and/or %RCV_SHUTDOWN&n;  *&t;@sk_userlocks - %SO_SNDBUF and %SO_RCVBUF settings&n;  *&t;@sk_lock -&t;synchronizer&n;  *&t;@sk_rcvbuf - size of receive buffer in bytes&n;  *&t;@sk_sleep - sock wait queue&n;  *&t;@sk_dst_cache - destination cache&n;  *&t;@sk_dst_lock - destination cache lock&n;  *&t;@sk_policy - flow policy&n;  *&t;@sk_rmem_alloc - receive queue bytes committed&n;  *&t;@sk_receive_queue - incoming packets&n;  *&t;@sk_wmem_alloc - transmit queue bytes committed&n;  *&t;@sk_write_queue - Packet sending queue&n;  *&t;@sk_omem_alloc - &quot;o&quot; is &quot;option&quot; or &quot;other&quot;&n;  *&t;@sk_wmem_queued - persistent queue size&n;  *&t;@sk_forward_alloc - space allocated forward&n;  *&t;@sk_allocation - allocation mode&n;  *&t;@sk_sndbuf - size of send buffer in bytes&n;  *&t;@sk_flags - %SO_LINGER (l_onoff), %SO_BROADCAST, %SO_KEEPALIVE, %SO_OOBINLINE settings&n;  *&t;@sk_no_check - %SO_NO_CHECK setting, wether or not checkup packets&n;  *&t;@sk_route_caps - route capabilities (e.g. %NETIF_F_TSO)&n;  *&t;@sk_lingertime - %SO_LINGER l_linger setting&n;  *&t;@sk_hashent - hash entry in several tables (e.g. tcp_ehash)&n;  *&t;@sk_backlog - always used with the per-socket spinlock held&n;  *&t;@sk_callback_lock - used with the callbacks in the end of this struct&n;  *&t;@sk_error_queue - rarely used&n;  *&t;@sk_prot - protocol handlers inside a network family&n;  *&t;@sk_err - last error&n;  *&t;@sk_err_soft - errors that don&squot;t cause failure but are the cause of a persistent failure not just &squot;timed out&squot;&n;  *&t;@sk_ack_backlog - current listen backlog&n;  *&t;@sk_max_ack_backlog - listen backlog set in listen()&n;  *&t;@sk_priority - %SO_PRIORITY setting&n;  *&t;@sk_type - socket type (%SOCK_STREAM, etc)&n;  *&t;@sk_protocol - which protocol this socket belongs in this network family&n;  *&t;@sk_peercred - %SO_PEERCRED setting&n;  *&t;@sk_rcvlowat - %SO_RCVLOWAT setting&n;  *&t;@sk_rcvtimeo - %SO_RCVTIMEO setting&n;  *&t;@sk_sndtimeo - %SO_SNDTIMEO setting&n;  *&t;@sk_filter - socket filtering instructions&n;  *&t;@sk_protinfo - private area, net family specific, when not using slab&n;  *&t;@sk_slab - the slabcache this instance was allocated from&n;  *&t;@sk_timer - sock cleanup timer&n;  *&t;@sk_stamp - time stamp of last packet received&n;  *&t;@sk_socket - Identd and reporting IO signals&n;  *&t;@sk_user_data - RPC layer private data&n;  *&t;@sk_owner - module that owns this socket&n;  *&t;@sk_sndmsg_page - cached page for sendmsg&n;  *&t;@sk_sndmsg_off - cached offset for sendmsg&n;  *&t;@sk_send_head - front of stuff to transmit&n;  *&t;@sk_write_pending - a write to stream socket waits to start&n;  *&t;@sk_state_change - callback to indicate change in the state of the sock&n;  *&t;@sk_data_ready - callback to indicate there is data to be processed&n;  *&t;@sk_write_space - callback to indicate there is bf sending space available&n;  *&t;@sk_error_report - callback to indicate errors (e.g. %MSG_ERRQUEUE)&n;  *&t;@sk_backlog_rcv - callback to process the backlog&n;  *&t;@sk_destruct - called at sock freeing time, i.e. when all refcnt == 0&n; */
 DECL|struct|sock
 r_struct
 id|sock
@@ -121,34 +121,40 @@ DECL|macro|sk_bind_node
 mdefine_line|#define sk_bind_node&t;&t;__sk_common.skc_bind_node
 DECL|macro|sk_refcnt
 mdefine_line|#define sk_refcnt&t;&t;__sk_common.skc_refcnt
-DECL|member|sk_zapped
-r_volatile
-r_int
-r_char
-id|sk_zapped
-suffix:semicolon
 DECL|member|sk_shutdown
 r_int
 r_char
 id|sk_shutdown
-suffix:semicolon
-DECL|member|sk_use_write_queue
-r_int
-r_char
-id|sk_use_write_queue
-suffix:semicolon
+suffix:colon
+l_int|2
+comma
+DECL|member|sk_no_check
+id|sk_no_check
+suffix:colon
+l_int|2
+comma
 DECL|member|sk_userlocks
+id|sk_userlocks
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|sk_protocol
 r_int
 r_char
-id|sk_userlocks
+id|sk_protocol
 suffix:semicolon
-DECL|member|sk_lock
-id|socket_lock_t
-id|sk_lock
+DECL|member|sk_type
+r_int
+r_int
+id|sk_type
 suffix:semicolon
 DECL|member|sk_rcvbuf
 r_int
 id|sk_rcvbuf
+suffix:semicolon
+DECL|member|sk_lock
+id|socket_lock_t
+id|sk_lock
 suffix:semicolon
 DECL|member|sk_sleep
 id|wait_queue_head_t
@@ -161,10 +167,6 @@ id|dst_entry
 op_star
 id|sk_dst_cache
 suffix:semicolon
-DECL|member|sk_dst_lock
-id|rwlock_t
-id|sk_dst_lock
-suffix:semicolon
 DECL|member|sk_policy
 r_struct
 id|xfrm_policy
@@ -174,27 +176,31 @@ id|sk_policy
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|sk_dst_lock
+id|rwlock_t
+id|sk_dst_lock
+suffix:semicolon
 DECL|member|sk_rmem_alloc
 id|atomic_t
 id|sk_rmem_alloc
+suffix:semicolon
+DECL|member|sk_wmem_alloc
+id|atomic_t
+id|sk_wmem_alloc
+suffix:semicolon
+DECL|member|sk_omem_alloc
+id|atomic_t
+id|sk_omem_alloc
 suffix:semicolon
 DECL|member|sk_receive_queue
 r_struct
 id|sk_buff_head
 id|sk_receive_queue
 suffix:semicolon
-DECL|member|sk_wmem_alloc
-id|atomic_t
-id|sk_wmem_alloc
-suffix:semicolon
 DECL|member|sk_write_queue
 r_struct
 id|sk_buff_head
 id|sk_write_queue
-suffix:semicolon
-DECL|member|sk_omem_alloc
-id|atomic_t
-id|sk_omem_alloc
 suffix:semicolon
 DECL|member|sk_wmem_queued
 r_int
@@ -213,42 +219,23 @@ DECL|member|sk_sndbuf
 r_int
 id|sk_sndbuf
 suffix:semicolon
+DECL|member|sk_route_caps
+r_int
+id|sk_route_caps
+suffix:semicolon
+DECL|member|sk_hashent
+r_int
+id|sk_hashent
+suffix:semicolon
 DECL|member|sk_flags
 r_int
 r_int
 id|sk_flags
 suffix:semicolon
-DECL|member|sk_no_check
-r_char
-id|sk_no_check
-suffix:semicolon
-DECL|member|sk_debug
-r_int
-r_char
-id|sk_debug
-suffix:semicolon
-DECL|member|sk_rcvtstamp
-r_int
-r_char
-id|sk_rcvtstamp
-suffix:semicolon
-DECL|member|sk_no_largesend
-r_int
-r_char
-id|sk_no_largesend
-suffix:semicolon
-DECL|member|sk_route_caps
-r_int
-id|sk_route_caps
-suffix:semicolon
 DECL|member|sk_lingertime
 r_int
 r_int
 id|sk_lingertime
-suffix:semicolon
-DECL|member|sk_hashent
-r_int
-id|sk_hashent
 suffix:semicolon
 multiline_comment|/*&n;&t; * The backlog queue is special, it is always used with&n;&t; * the per-socket spinlock held and requires low latency&n;&t; * access. Therefore we special case it&squot;s implementation.&n;&t; */
 r_struct
@@ -269,10 +256,6 @@ DECL|member|sk_backlog
 )brace
 id|sk_backlog
 suffix:semicolon
-DECL|member|sk_callback_lock
-id|rwlock_t
-id|sk_callback_lock
-suffix:semicolon
 DECL|member|sk_error_queue
 r_struct
 id|sk_buff_head
@@ -283,6 +266,10 @@ r_struct
 id|proto
 op_star
 id|sk_prot
+suffix:semicolon
+DECL|member|sk_callback_lock
+id|rwlock_t
+id|sk_callback_lock
 suffix:semicolon
 DECL|member|sk_err
 r_int
@@ -304,21 +291,6 @@ suffix:semicolon
 DECL|member|sk_priority
 id|__u32
 id|sk_priority
-suffix:semicolon
-DECL|member|sk_type
-r_int
-r_int
-id|sk_type
-suffix:semicolon
-DECL|member|sk_localroute
-r_int
-r_char
-id|sk_localroute
-suffix:semicolon
-DECL|member|sk_protocol
-r_int
-r_char
-id|sk_protocol
 suffix:semicolon
 DECL|member|sk_peercred
 r_struct
@@ -386,15 +358,15 @@ id|page
 op_star
 id|sk_sndmsg_page
 suffix:semicolon
-DECL|member|sk_sndmsg_off
-id|__u32
-id|sk_sndmsg_off
-suffix:semicolon
 DECL|member|sk_send_head
 r_struct
 id|sk_buff
 op_star
 id|sk_send_head
+suffix:semicolon
+DECL|member|sk_sndmsg_off
+id|__u32
+id|sk_sndmsg_off
 suffix:semicolon
 DECL|member|sk_write_pending
 r_int
@@ -405,11 +377,6 @@ r_void
 op_star
 id|sk_security
 suffix:semicolon
-DECL|member|sk_queue_shrunk
-id|__u8
-id|sk_queue_shrunk
-suffix:semicolon
-multiline_comment|/* three bytes hole, try to pack */
 DECL|member|sk_state_change
 r_void
 (paren
@@ -962,6 +929,33 @@ comma
 DECL|enumerator|SOCK_TIMESTAMP
 id|SOCK_TIMESTAMP
 comma
+DECL|enumerator|SOCK_ZAPPED
+id|SOCK_ZAPPED
+comma
+DECL|enumerator|SOCK_USE_WRITE_QUEUE
+id|SOCK_USE_WRITE_QUEUE
+comma
+multiline_comment|/* whether to call sk-&gt;sk_write_space in sock_wfree */
+DECL|enumerator|SOCK_DBG
+id|SOCK_DBG
+comma
+multiline_comment|/* %SO_DEBUG setting */
+DECL|enumerator|SOCK_RCVTSTAMP
+id|SOCK_RCVTSTAMP
+comma
+multiline_comment|/* %SO_TIMESTAMP setting */
+DECL|enumerator|SOCK_NO_LARGESEND
+id|SOCK_NO_LARGESEND
+comma
+multiline_comment|/* whether to sent large segments or not */
+DECL|enumerator|SOCK_LOCALROUTE
+id|SOCK_LOCALROUTE
+comma
+multiline_comment|/* route locally only, %SO_DONTROUTE setting */
+DECL|enumerator|SOCK_QUEUE_SHRUNK
+id|SOCK_QUEUE_SHRUNK
+comma
+multiline_comment|/* write queue has been shrunk recently */
 )brace
 suffix:semicolon
 DECL|function|sock_set_flag
@@ -1237,9 +1231,13 @@ op_star
 id|skb
 )paren
 (brace
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 id|sk-&gt;sk_wmem_queued
 op_sub_assign
@@ -1841,29 +1839,6 @@ op_star
 id|prot
 )paren
 suffix:semicolon
-DECL|function|sk_alloc_slab_error
-r_static
-r_inline
-r_void
-id|sk_alloc_slab_error
-c_func
-(paren
-r_struct
-id|proto
-op_star
-id|proto
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;%s: Can&squot;t create sock SLAB cache!&bslash;n&quot;
-comma
-id|proto-&gt;name
-)paren
-suffix:semicolon
-)brace
 DECL|function|sk_set_owner
 r_static
 id|__inline__
@@ -4774,7 +4749,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_rcvtstamp
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_RCVTSTAMP
+)paren
 )paren
 (brace
 multiline_comment|/* Race occurred between timestamp enabling and packet&n;&t;&t;   receiving.  Fill in the current time for now. */

@@ -9525,7 +9525,6 @@ macro_line|#endif
 )brace
 DECL|function|ip6_route_cleanup
 r_void
-id|__exit
 id|ip6_route_cleanup
 c_func
 (paren

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 DECL|struct|ipv4_devconf
 r_struct
 id|ipv4_devconf
@@ -545,6 +546,59 @@ l_int|1
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|inet_ifa_match_local_prefixlen
+r_static
+r_inline
+r_int
+id|inet_ifa_match_local_prefixlen
+c_func
+(paren
+r_struct
+id|ifaddrmsg
+op_star
+id|ifm
+comma
+r_struct
+id|in_ifaddr
+op_star
+id|ifa
+)paren
+(brace
+r_int
+id|real_prefixlen
+op_assign
+id|IFA_REAL_DEL_PREFIX
+c_func
+(paren
+id|ifm-&gt;ifa_prefixlen
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Since the prefix length hasn&squot;t been taken into account in&n;&t; * previous kernel versions, parts of the userspace rely on the fact&n;&t; * that the deletion of an address without specifying a prefix works.&n;&t; * We cannot break this and thus a prefix length of 32 still represents&n;&t; * a wildcard if no exact match is requested.&n;&t; */
+r_if
+c_cond
+(paren
+id|real_prefixlen
+op_ne
+l_int|32
+op_logical_or
+id|ifm-&gt;ifa_prefixlen
+op_amp
+id|IFA_PREFIX_EXACT_DEL
+)paren
+r_if
+c_cond
+(paren
+id|real_prefixlen
+op_ne
+id|ifa-&gt;ifa_prefixlen
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 DECL|macro|for_primary_ifa

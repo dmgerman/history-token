@@ -2030,7 +2030,7 @@ id|pskb
 op_member_access_from_pointer
 id|len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp

@@ -104,11 +104,16 @@ DECL|macro|sco_conn_unlock
 mdefine_line|#define sco_conn_unlock(c)&t;spin_unlock(&amp;c-&gt;lock);
 multiline_comment|/* ----- SCO socket info ----- */
 DECL|macro|sco_pi
-mdefine_line|#define sco_pi(sk)   ((struct sco_pinfo *)sk-&gt;sk_protinfo)
+mdefine_line|#define sco_pi(sk) ((struct sco_pinfo *) sk)
 DECL|struct|sco_pinfo
 r_struct
 id|sco_pinfo
 (brace
+DECL|member|bt
+r_struct
+id|bt_sock
+id|bt
+suffix:semicolon
 DECL|member|flags
 id|__u32
 id|flags

@@ -4216,7 +4216,6 @@ suffix:semicolon
 )brace
 DECL|function|fib6_gc_cleanup
 r_void
-id|__exit
 id|fib6_gc_cleanup
 c_func
 (paren

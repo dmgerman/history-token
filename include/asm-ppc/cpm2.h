@@ -103,6 +103,8 @@ DECL|macro|CPM_CR_HUNT_MODE
 mdefine_line|#define CPM_CR_HUNT_MODE&t;((ushort)0x0003)
 DECL|macro|CPM_CR_STOP_TX
 mdefine_line|#define CPM_CR_STOP_TX&t;&t;((ushort)0x0004)
+DECL|macro|CPM_CR_GRA_STOP_TX
+mdefine_line|#define CPM_CR_GRA_STOP_TX      ((ushort)0x0005)
 DECL|macro|CPM_CR_RESTART_TX
 mdefine_line|#define CPM_CR_RESTART_TX&t;((ushort)0x0006)
 DECL|macro|CPM_CR_SET_GADDR

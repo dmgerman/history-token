@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -128,6 +129,10 @@ r_int
 r_int
 id|step
 suffix:semicolon
+r_int
+r_int
+id|tmp_mode
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -217,6 +222,27 @@ id|va
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+id|tmp_mode
+op_assign
+id|mode
+suffix:semicolon
+multiline_comment|/* Make non-kernel text non-executable */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_kernel_text
+c_func
+(paren
+id|addr
+)paren
+)paren
+id|tmp_mode
+op_assign
+id|mode
+op_or
+id|HW_NO_EXEC
+suffix:semicolon
 id|hash
 op_assign
 id|hpt_hash
@@ -266,7 +292,7 @@ id|PAGE_SHIFT
 comma
 l_int|0
 comma
-id|mode
+id|tmp_mode
 comma
 l_int|1
 comma
@@ -294,7 +320,7 @@ id|PAGE_SHIFT
 comma
 l_int|0
 comma
-id|mode
+id|tmp_mode
 comma
 l_int|1
 comma
@@ -710,8 +736,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-DECL|macro|PPC64_HWNOEXEC
-mdefine_line|#define PPC64_HWNOEXEC (1 &lt;&lt; 2)
 r_if
 c_cond
 (paren
@@ -790,7 +814,7 @@ suffix:semicolon
 r_else
 id|pp
 op_or_assign
-id|PPC64_HWNOEXEC
+id|HW_NO_EXEC
 suffix:semicolon
 )brace
 r_return

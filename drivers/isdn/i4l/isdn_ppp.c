@@ -5524,6 +5524,10 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|skb-&gt;input_dev
+op_assign
+id|dev
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;data

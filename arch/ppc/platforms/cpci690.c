@@ -235,19 +235,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|cpci690_get_bus_speed
-id|cpci690_get_bus_speed
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|133333333
-suffix:semicolon
-)brace
-r_static
-r_int
 DECL|function|cpci690_get_cpu_speed
 id|cpci690_get_cpu_speed
 c_func
@@ -270,10 +257,7 @@ op_rshift
 l_int|28
 suffix:semicolon
 r_return
-id|cpci690_get_bus_speed
-c_func
-(paren
-)paren
+id|CPCI690_BUS_FREQ
 op_star
 id|cpu_7xx
 (braket
@@ -842,8 +826,6 @@ comma
 id|bh.hose_b-&gt;first_busno
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -1169,8 +1151,6 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -1327,8 +1307,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* Platform device data fixup routines. */
 macro_line|#if defined(CONFIG_SERIAL_MPSC)
@@ -1365,17 +1343,15 @@ l_int|40
 suffix:semicolon
 id|pdata-&gt;default_baud
 op_assign
-l_int|9600
+id|CPCI690_MPSC_BAUD
 suffix:semicolon
 id|pdata-&gt;brg_clk_src
 op_assign
-l_int|8
+id|CPCI690_MPSC_CLK_SRC
 suffix:semicolon
 id|pdata-&gt;brg_clk_freq
 op_assign
-l_int|133000000
-suffix:semicolon
-r_return
+id|CPCI690_BUS_FREQ
 suffix:semicolon
 )brace
 r_static
@@ -1420,14 +1396,14 @@ op_assign
 (brace
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;0&quot;
+l_string|&quot;.0&quot;
 comma
 id|cpci690_fixup_mpsc_pdata
 )brace
 comma
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;1&quot;
+l_string|&quot;.1&quot;
 comma
 id|cpci690_fixup_mpsc_pdata
 )brace
@@ -1675,10 +1651,7 @@ id|m
 comma
 l_string|&quot;bus MHz&bslash;t&bslash;t: %d&bslash;n&quot;
 comma
-id|cpci690_get_bus_speed
-c_func
-(paren
-)paren
+id|CPCI690_BUS_FREQ
 op_div
 l_int|1000
 op_div
@@ -1704,10 +1677,7 @@ id|freq
 suffix:semicolon
 id|freq
 op_assign
-id|cpci690_get_bus_speed
-c_func
-(paren
-)paren
+id|CPCI690_BUS_FREQ
 op_div
 l_int|4
 suffix:semicolon
@@ -1741,8 +1711,6 @@ id|freq
 comma
 l_int|1000000
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 r_static
@@ -1814,8 +1782,6 @@ id|mb
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
@@ -2009,7 +1975,5 @@ op_assign
 id|cpci690_platform_notify
 suffix:semicolon
 macro_line|#endif
-r_return
-suffix:semicolon
 )brace
 eof

@@ -42,7 +42,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt; /* do_div */
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION  &quot;pktgen v2.60: Packet Generator for packet performance testing.&bslash;n&quot;
+mdefine_line|#define VERSION  &quot;pktgen v2.61: Packet Generator for packet performance testing.&bslash;n&quot;
 multiline_comment|/* #define PG_DEBUG(a) a */
 DECL|macro|PG_DEBUG
 mdefine_line|#define PG_DEBUG(a) 
@@ -13154,6 +13154,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|pktgen_xmit
+r_static
 id|__inline__
 r_void
 id|pktgen_xmit
@@ -13439,9 +13440,6 @@ id|odev
 )paren
 )paren
 (brace
-id|u64
-id|now
-suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -13552,6 +13550,7 @@ id|pkt_dev-&gt;last_ok
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|pkt_dev-&gt;next_tx_us
 op_assign
 id|getCurUs
@@ -13559,12 +13558,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* TODO */
 id|pkt_dev-&gt;next_tx_ns
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|pkt_dev-&gt;next_tx_us
 op_add_assign
 id|pkt_dev-&gt;delay_us
@@ -13587,36 +13584,6 @@ suffix:semicolon
 id|pkt_dev-&gt;next_tx_ns
 op_sub_assign
 l_int|1000
-suffix:semicolon
-)brace
-id|now
-op_assign
-id|getCurUs
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|now
-OG
-id|pkt_dev-&gt;next_tx_us
-)paren
-(brace
-multiline_comment|/* TODO: this code is slightly wonky.  */
-id|pkt_dev-&gt;errors
-op_increment
-suffix:semicolon
-id|pkt_dev-&gt;next_tx_us
-op_assign
-id|now
-op_minus
-id|pkt_dev-&gt;delay_us
-suffix:semicolon
-id|pkt_dev-&gt;next_tx_ns
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace

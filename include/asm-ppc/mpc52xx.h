@@ -1277,6 +1277,14 @@ id|board_ocp
 )braket
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mpc52xx_find_bridges
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* ========================================================================= */
 multiline_comment|/* Platform configuration                                                    */

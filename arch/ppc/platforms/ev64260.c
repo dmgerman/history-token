@@ -225,7 +225,7 @@ id|pll_ext
 suffix:semicolon
 id|pvr
 op_assign
-id|SPRN_VER
+id|PVR_VER
 c_func
 (paren
 id|mfspr
@@ -1745,14 +1745,14 @@ op_assign
 (brace
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;0&quot;
+l_string|&quot;.0&quot;
 comma
 id|ev64260_fixup_mpsc_pdata
 )brace
 comma
 (brace
 id|MPSC_CTLR_NAME
-l_string|&quot;1&quot;
+l_string|&quot;.1&quot;
 comma
 id|ev64260_fixup_mpsc_pdata
 )brace

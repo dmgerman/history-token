@@ -103,8 +103,10 @@ DECL|macro|pgd_offset_gate
 mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset(mm, addr)
 macro_line|#endif
 multiline_comment|/*&n; * When walking page tables, get the address of the next boundary, or&n; * the end address of the range if that comes earlier.  Although end might&n; * wrap to 0 only in clear_page_range, __boundary may wrap to 0 throughout.&n; */
+macro_line|#ifndef pgd_addr_end
 DECL|macro|pgd_addr_end
 mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
+macro_line|#endif
 macro_line|#ifndef pud_addr_end
 DECL|macro|pud_addr_end
 mdefine_line|#define pud_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PUD_SIZE) &amp; PUD_MASK;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})

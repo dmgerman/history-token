@@ -425,6 +425,7 @@ id|S390_lowcore.int_clock
 op_ge
 id|S390_lowcore.jiffy_timer
 )paren
+multiline_comment|/**&n;&t;&t; * Make sure that the i/o interrupt did not &quot;overtake&quot;&n;&t;&t; * the last HZ timer interrupt.&n;&t;&t; */
 id|account_ticks
 c_func
 (paren

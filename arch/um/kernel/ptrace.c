@@ -5,6 +5,7 @@ macro_line|#include &quot;linux/errno.h&quot;
 macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/security.h&quot;
 macro_line|#include &quot;linux/ptrace.h&quot;
+macro_line|#include &quot;linux/audit.h&quot;
 macro_line|#ifdef CONFIG_PROC_MM
 macro_line|#include &quot;linux/proc_mm.h&quot;
 macro_line|#endif
@@ -1459,15 +1460,40 @@ c_func
 (paren
 id|current
 comma
-id|regs-&gt;orig_eax
+id|UPT_SYSCALL_NR
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
-id|regs-&gt;ebx
+id|UPT_SYSCALL_ARG1
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
-id|regs-&gt;ecx
+id|UPT_SYSCALL_ARG2
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
-id|regs-&gt;edx
+id|UPT_SYSCALL_ARG3
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 comma
-id|regs-&gt;esi
+id|UPT_SYSCALL_ARG4
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -1476,7 +1502,12 @@ c_func
 (paren
 id|current
 comma
-id|regs-&gt;eax
+id|UPT_SYSCALL_RET
+c_func
+(paren
+op_amp
+id|regs-&gt;regs
+)paren
 )paren
 suffix:semicolon
 )brace

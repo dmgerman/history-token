@@ -32,16 +32,16 @@ op_star
 op_star
 id|unused_prevp
 suffix:semicolon
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
-suffix:semicolon
 DECL|member|dtime
 r_int
 r_int
 id|dtime
 suffix:semicolon
 multiline_comment|/* the time of last use of not&n;&t;&t;&t;&t;&t;&t; * referenced entries */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 DECL|member|v4daddr
 id|__u32
 id|v4daddr
@@ -92,12 +92,6 @@ suffix:semicolon
 r_extern
 id|spinlock_t
 id|inet_peer_unused_lock
-suffix:semicolon
-r_extern
-r_struct
-id|inet_peer
-op_star
-id|inet_peer_unused_head
 suffix:semicolon
 r_extern
 r_struct

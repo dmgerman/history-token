@@ -282,6 +282,9 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS
