@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#ifndef Dprintk
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
@@ -22,7 +23,7 @@ id|pglist_data
 op_star
 id|node_data
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|plat_node_bdata
@@ -43,6 +44,8 @@ id|memnodemap
 id|NODEMAPSIZE
 )braket
 suffix:semicolon
+DECL|macro|NUMA_NO_NODE
+mdefine_line|#define NUMA_NO_NODE 0xff
 DECL|variable|cpu_to_node
 r_int
 r_char
@@ -50,16 +53,29 @@ id|cpu_to_node
 (braket
 id|NR_CPUS
 )braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
+)braket
+op_assign
+id|NUMA_NO_NODE
+)brace
 suffix:semicolon
 DECL|variable|node_to_cpumask
 id|cpumask_t
 id|node_to_cpumask
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 id|numa_off
 id|__initdata
@@ -771,7 +787,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -780,11 +796,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|node_online
-c_func
-(paren
+id|cpu_to_node
+(braket
 id|i
-)paren
+)braket
+op_ne
+id|NUMA_NO_NODE
 )paren
 r_continue
 suffix:semicolon
@@ -812,16 +829,6 @@ c_func
 (paren
 id|node_online_map
 )paren
-suffix:semicolon
-id|node_data
-(braket
-id|i
-)braket
-op_assign
-id|node_data
-(braket
-id|rr
-)braket
 suffix:semicolon
 id|cpu_to_node
 (braket
@@ -882,7 +889,7 @@ r_struct
 id|node
 id|nodes
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 r_int
@@ -1216,6 +1223,29 @@ id|end_pfn
 r_return
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_NUMA
+r_if
+c_cond
+(paren
+op_logical_neg
+id|numa_off
+op_logical_and
+op_logical_neg
+id|acpi_scan_nodes
+c_func
+(paren
+id|start_pfn
+op_lshift
+id|PAGE_SHIFT
+comma
+id|end_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_K8_NUMA
 r_if
 c_cond
@@ -1503,6 +1533,27 @@ op_assign
 id|MAX_NUMNODES
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_NUMA
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|opt
+comma
+l_string|&quot;noacpi&quot;
+comma
+l_int|6
+)paren
+)paren
+id|acpi_numa
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 macro_line|#endif
 r_return
 l_int|1

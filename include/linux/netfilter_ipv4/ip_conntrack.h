@@ -655,19 +655,18 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Delete all conntracks which match. */
+multiline_comment|/* Iterate over all conntracks: if iter returns true, it&squot;s deleted. */
 r_extern
 r_void
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 r_int
 (paren
 op_star
-id|kill
+id|iter
 )paren
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star

@@ -1533,6 +1533,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|thermal_interrupt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|setup_timer
 r_static
 r_void
@@ -1812,6 +1819,14 @@ id|call_function_interrupt
 )paren
 suffix:semicolon
 macro_line|#endif&t;
+id|set_intr_gate
+c_func
+(paren
+id|THERMAL_APIC_VECTOR
+comma
+id|thermal_interrupt
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* self generated IPI for local APIC timer */
 id|set_intr_gate

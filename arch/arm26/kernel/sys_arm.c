@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm26/kernel/sys_arm.c&n; *&n; *  Copyright (C) People who wrote linux/arch/i386/kernel/sys_i386.c&n; *  Copyright (C) 1995, 1996 Russell King.&n; *  Copyright (C) 2003 Ian Molton.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains various random system calls that&n; *  have a non-standard calling sequence on the Linux/arm&n; *  platform.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1208,4 +1209,174 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME - see if this is correct for arm26 */
+DECL|function|execve
+r_int
+id|execve
+c_func
+(paren
+r_const
+r_char
+op_star
+id|filename
+comma
+r_char
+op_star
+op_star
+id|argv
+comma
+r_char
+op_star
+op_star
+id|envp
+)paren
+(brace
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|regs
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|pt_regs
+)paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|do_execve
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|filename
+comma
+(paren
+r_char
+id|__user
+op_star
+id|__user
+op_star
+)paren
+id|argv
+comma
+(paren
+r_char
+id|__user
+op_star
+id|__user
+op_star
+)paren
+id|envp
+comma
+op_amp
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/*&n;         * Save argc to the register structure for userspace.&n;         */
+id|regs.ARM_r0
+op_assign
+id|ret
+suffix:semicolon
+multiline_comment|/*&n;         * We were successful.  We won&squot;t be returning to our caller, but&n;         * instead to user space by manipulating the kernel stack.&n;         */
+id|asm
+c_func
+(paren
+l_string|&quot;add    r0, %0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;mov    r1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;mov    r2, %3&bslash;n&bslash;t&quot;
+l_string|&quot;bl     memmove&bslash;n&bslash;t&quot;
+multiline_comment|/* copy regs to top of stack */
+l_string|&quot;mov    r8, #0&bslash;n&bslash;t&quot;
+multiline_comment|/* not a syscall */
+l_string|&quot;mov    r9, %0&bslash;n&bslash;t&quot;
+multiline_comment|/* thread structure */
+l_string|&quot;mov    sp, r0&bslash;n&bslash;t&quot;
+multiline_comment|/* reposition stack pointer */
+l_string|&quot;b      ret_to_user&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|current_thread_info
+c_func
+(paren
+)paren
+)paren
+comma
+l_string|&quot;Ir&quot;
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|8
+op_minus
+r_sizeof
+(paren
+id|regs
+)paren
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+op_amp
+id|regs
+)paren
+comma
+l_string|&quot;Ir&quot;
+(paren
+r_sizeof
+(paren
+id|regs
+)paren
+)paren
+suffix:colon
+l_string|&quot;r0&quot;
+comma
+l_string|&quot;r1&quot;
+comma
+l_string|&quot;r2&quot;
+comma
+l_string|&quot;r3&quot;
+comma
+l_string|&quot;ip&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|variable|execve
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|execve
+)paren
+suffix:semicolon
 eof

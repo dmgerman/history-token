@@ -2,8 +2,12 @@ macro_line|#ifndef __UM_ELF_H
 DECL|macro|__UM_ELF_H
 mdefine_line|#define __UM_ELF_H
 macro_line|#include &quot;asm/archparam.h&quot;
+r_extern
+r_int
+id|elf_aux_hwcap
+suffix:semicolon
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP (0)
+mdefine_line|#define ELF_HWCAP (elf_aux_hwcap)
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) do ; while(0)
 DECL|macro|ELF_EXEC_PAGESIZE

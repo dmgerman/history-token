@@ -605,10 +605,6 @@ id|brq.cmd.flags
 op_assign
 id|MMC_RSP_R1
 suffix:semicolon
-id|brq.data.req
-op_assign
-id|req
-suffix:semicolon
 id|brq.data.timeout_ns
 op_assign
 id|card-&gt;csd.tacc_ns

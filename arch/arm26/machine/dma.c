@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/dma-arc.c&n; *&n; *  Copyright (C) 1998-1999 Dave Gilbert / Russell King&n; *  Copyright (C) 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  DMA functions specific to Archimedes and A5000 architecture&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/dma.c&n; *&n; *  Copyright (C) 1998-1999 Dave Gilbert / Russell King&n; *  Copyright (C) 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  DMA functions specific to Archimedes and A5000 architecture&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

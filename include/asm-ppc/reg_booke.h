@@ -41,6 +41,89 @@ mdefine_line|#define mfpmr(rn)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm vo
 DECL|macro|mtpmr
 mdefine_line|#define mtpmr(rn, v)&t;asm volatile(&quot;mtpmr &quot; __stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
 macro_line|#endif /* __ASSEMBLY__ */
+multiline_comment|/* Freescale Book E Performance Monitor APU Registers */
+DECL|macro|PMRN_PMC0
+mdefine_line|#define PMRN_PMC0&t;0x010&t;/* Performance Monitor Counter 0 */
+DECL|macro|PMRN_PMC1
+mdefine_line|#define PMRN_PMC1&t;0x011&t;/* Performance Monitor Counter 1 */
+DECL|macro|PMRN_PMC2
+mdefine_line|#define PMRN_PMC2&t;0x012&t;/* Performance Monitor Counter 1 */
+DECL|macro|PMRN_PMC3
+mdefine_line|#define PMRN_PMC3&t;0x013&t;/* Performance Monitor Counter 1 */
+DECL|macro|PMRN_PMLCA0
+mdefine_line|#define PMRN_PMLCA0&t;0x090&t;/* PM Local Control A0 */
+DECL|macro|PMRN_PMLCA1
+mdefine_line|#define PMRN_PMLCA1&t;0x091&t;/* PM Local Control A1 */
+DECL|macro|PMRN_PMLCA2
+mdefine_line|#define PMRN_PMLCA2&t;0x092&t;/* PM Local Control A2 */
+DECL|macro|PMRN_PMLCA3
+mdefine_line|#define PMRN_PMLCA3&t;0x093&t;/* PM Local Control A3 */
+DECL|macro|PMLCA_FC
+mdefine_line|#define PMLCA_FC&t;0x80000000&t;/* Freeze Counter */
+DECL|macro|PMLCA_FCS
+mdefine_line|#define PMLCA_FCS&t;0x40000000&t;/* Freeze in Supervisor */
+DECL|macro|PMLCA_FCU
+mdefine_line|#define PMLCA_FCU&t;0x20000000&t;/* Freeze in User */
+DECL|macro|PMLCA_FCM1
+mdefine_line|#define PMLCA_FCM1&t;0x10000000&t;/* Freeze when PMM==1 */
+DECL|macro|PMLCA_FCM0
+mdefine_line|#define PMLCA_FCM0&t;0x08000000&t;/* Freeze when PMM==0 */
+DECL|macro|PMLCA_CE
+mdefine_line|#define PMLCA_CE&t;0x04000000&t;/* Condition Enable */
+DECL|macro|PMLCA_EVENT_MASK
+mdefine_line|#define PMLCA_EVENT_MASK 0x007f0000&t;/* Event field */
+DECL|macro|PMLCA_EVENT_SHIFT
+mdefine_line|#define PMLCA_EVENT_SHIFT&t;16
+DECL|macro|PMRN_PMLCB0
+mdefine_line|#define PMRN_PMLCB0&t;0x110&t;/* PM Local Control B0 */
+DECL|macro|PMRN_PMLCB1
+mdefine_line|#define PMRN_PMLCB1&t;0x111&t;/* PM Local Control B1 */
+DECL|macro|PMRN_PMLCB2
+mdefine_line|#define PMRN_PMLCB2&t;0x112&t;/* PM Local Control B2 */
+DECL|macro|PMRN_PMLCB3
+mdefine_line|#define PMRN_PMLCB3&t;0x113&t;/* PM Local Control B3 */
+DECL|macro|PMLCB_THRESHMUL_MASK
+mdefine_line|#define PMLCB_THRESHMUL_MASK&t;0x0700&t;/* Threshhold Multiple Field */
+DECL|macro|PMLCB_THRESHMUL_SHIFT
+mdefine_line|#define PMLCB_THRESHMUL_SHIFT&t;8
+DECL|macro|PMLCB_THRESHOLD_MASK
+mdefine_line|#define PMLCB_THRESHOLD_MASK&t;0x003f&t;/* Threshold Field */
+DECL|macro|PMLCB_THRESHOLD_SHIFT
+mdefine_line|#define PMLCB_THRESHOLD_SHIFT&t;0
+DECL|macro|PMRN_PMGC0
+mdefine_line|#define PMRN_PMGC0&t;0x190&t;/* PM Global Control 0 */
+DECL|macro|PMGC0_FAC
+mdefine_line|#define PMGC0_FAC&t;0x80000000&t;/* Freeze all Counters */
+DECL|macro|PMGC0_PMIE
+mdefine_line|#define PMGC0_PMIE&t;0x40000000&t;/* Interrupt Enable */
+DECL|macro|PMGC0_FCECE
+mdefine_line|#define PMGC0_FCECE&t;0x20000000&t;/* Freeze countes on&n;&t;&t;&t;&t;&t;   Enabled Condition or&n;&t;&t;&t;&t;&t;   Event */
+DECL|macro|PMRN_UPMC0
+mdefine_line|#define PMRN_UPMC0&t;0x000&t;/* User Performance Monitor Counter 0 */
+DECL|macro|PMRN_UPMC1
+mdefine_line|#define PMRN_UPMC1&t;0x001&t;/* User Performance Monitor Counter 1 */
+DECL|macro|PMRN_UPMC2
+mdefine_line|#define PMRN_UPMC2&t;0x002&t;/* User Performance Monitor Counter 1 */
+DECL|macro|PMRN_UPMC3
+mdefine_line|#define PMRN_UPMC3&t;0x003&t;/* User Performance Monitor Counter 1 */
+DECL|macro|PMRN_UPMLCA0
+mdefine_line|#define PMRN_UPMLCA0&t;0x080&t;/* User PM Local Control A0 */
+DECL|macro|PMRN_UPMLCA1
+mdefine_line|#define PMRN_UPMLCA1&t;0x081&t;/* User PM Local Control A1 */
+DECL|macro|PMRN_UPMLCA2
+mdefine_line|#define PMRN_UPMLCA2&t;0x082&t;/* User PM Local Control A2 */
+DECL|macro|PMRN_UPMLCA3
+mdefine_line|#define PMRN_UPMLCA3&t;0x083&t;/* User PM Local Control A3 */
+DECL|macro|PMRN_UPMLCB0
+mdefine_line|#define PMRN_UPMLCB0&t;0x100&t;/* User PM Local Control B0 */
+DECL|macro|PMRN_UPMLCB1
+mdefine_line|#define PMRN_UPMLCB1&t;0x101&t;/* User PM Local Control B1 */
+DECL|macro|PMRN_UPMLCB2
+mdefine_line|#define PMRN_UPMLCB2&t;0x102&t;/* User PM Local Control B2 */
+DECL|macro|PMRN_UPMLCB3
+mdefine_line|#define PMRN_UPMLCB3&t;0x103&t;/* User PM Local Control B3 */
+DECL|macro|PMRN_UPMGC0
+mdefine_line|#define PMRN_UPMGC0&t;0x180&t;/* User PM Global Control 0 */
 multiline_comment|/* Machine State Register (MSR) Fields */
 DECL|macro|MSR_UCLE
 mdefine_line|#define MSR_UCLE&t;(1&lt;&lt;26)&t;/* User-mode cache lock enable */

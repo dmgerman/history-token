@@ -590,7 +590,7 @@ id|u32
 id|prev_state
 suffix:semicolon
 DECL|member|saved_state
-id|u8
+r_void
 op_star
 id|saved_state
 suffix:semicolon

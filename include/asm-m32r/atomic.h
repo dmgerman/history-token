@@ -3,23 +3,9 @@ DECL|macro|_ASM_M32R_ATOMIC_H
 mdefine_line|#define _ASM_M32R_ATOMIC_H
 multiline_comment|/*&n; *  linux/include/asm-m32r/atomic.h&n; *&n; *  M32R version:&n; *    Copyright (C) 2001, 2002  Hitoshi Yamamoto&n; *    Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/assembler.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; */
-DECL|macro|LOAD
-macro_line|#undef LOAD
-DECL|macro|STORE
-macro_line|#undef STORE
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|LOAD
-mdefine_line|#define LOAD&t;&quot;lock&quot;
-DECL|macro|STORE
-mdefine_line|#define STORE&t;&quot;unlock&quot;
-macro_line|#else
-DECL|macro|LOAD
-mdefine_line|#define LOAD&t;&quot;ld&quot;
-DECL|macro|STORE
-mdefine_line|#define STORE&t;&quot;st&quot;
-macro_line|#endif
 multiline_comment|/*&n; * Make sure gcc doesn&squot;t try to be clever and move things around&n; * on us. We need to use _exactly_ the address the user gave us,&n; * not some alias that contains the same information.&n; */
 DECL|member|counter
 DECL|typedef|atomic_t
@@ -44,7 +30,7 @@ mdefine_line|#define atomic_set(v,i)&t;(((v)-&gt;counter) = (i))
 multiline_comment|/**&n; * atomic_add_return - add integer to atomic variable and return it&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v and return (@i + @v).&n; */
 DECL|function|atomic_add_return
 r_static
-r_inline
+id|__inline__
 r_int
 id|atomic_add_return
 c_func
@@ -83,11 +69,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;add&t;%0, %2;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -125,7 +111,7 @@ suffix:semicolon
 multiline_comment|/**&n; * atomic_sub_return - subtract integer from atomic variable and return it&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v and return (@v - @i).&n; */
 DECL|function|atomic_sub_return
 r_static
-r_inline
+id|__inline__
 r_int
 id|atomic_sub_return
 c_func
@@ -164,11 +150,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;sub&t;%0, %2;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -215,7 +201,7 @@ mdefine_line|#define atomic_sub_and_test(i,v) (atomic_sub_return((i), (v)) == 0)
 multiline_comment|/**&n; * atomic_inc_return - increment atomic variable and return it&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1 and returns the result.&n; */
 DECL|function|atomic_inc_return
 r_static
-r_inline
+id|__inline__
 r_int
 id|atomic_inc_return
 c_func
@@ -251,11 +237,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -288,7 +274,7 @@ suffix:semicolon
 multiline_comment|/**&n; * atomic_dec_return - decrement atomic variable and return it&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1 and returns the result.&n; */
 DECL|function|atomic_dec_return
 r_static
-r_inline
+id|__inline__
 r_int
 id|atomic_dec_return
 c_func
@@ -324,11 +310,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -375,7 +361,7 @@ DECL|macro|atomic_add_negative
 mdefine_line|#define atomic_add_negative(i,v) (atomic_add_return((i), (v)) &lt; 0)
 DECL|function|atomic_clear_mask
 r_static
-r_inline
+id|__inline__
 r_void
 id|atomic_clear_mask
 c_func
@@ -416,11 +402,11 @@ l_string|&quot;r5&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;and&t;%0, %2;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -454,7 +440,7 @@ suffix:semicolon
 )brace
 DECL|function|atomic_set_mask
 r_static
-r_inline
+id|__inline__
 r_void
 id|atomic_set_mask
 c_func
@@ -495,11 +481,11 @@ l_string|&quot;r5&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;%0, %2;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

@@ -748,12 +748,6 @@ comma
 id|ram
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
-id|highmem_start_page
-op_assign
-id|mem_map
-op_plus
-id|highstart_pfn
-suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#error &quot;CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet&quot;
 macro_line|#endif

@@ -4611,7 +4611,7 @@ id|vma-&gt;vm_page_prot
 op_or_assign
 id|_PAGE_NO_CACHE
 suffix:semicolon
-macro_line|#elif defined(__ia64__) || defined(__arm__) || defined(__sh__)
+macro_line|#elif defined(__ia64__) || defined(__arm__) || defined(__sh__) || &bslash;&n;      defined(__m32r__)
 id|vma-&gt;vm_page_prot
 op_assign
 id|pgprot_writecombine

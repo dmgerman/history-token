@@ -401,7 +401,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__tag
-mdefine_line|#define __tag __attribute__((unused, __section__(&quot;.taglist&quot;)))
+mdefine_line|#define __tag __attribute_used__ __attribute__((__section__(&quot;.taglist&quot;)))
 DECL|macro|__tagtable
 mdefine_line|#define __tagtable(tag, fn) &bslash;&n;static struct tagtable __tagtable_##fn __tag = { tag, fn }
 DECL|macro|tag_member_present

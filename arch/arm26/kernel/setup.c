@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/setup.c&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *  Copyright (C) 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/setup.c&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *  Copyright (C) 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -381,7 +381,7 @@ id|proc_info_list
 op_star
 id|list
 suffix:semicolon
-multiline_comment|/*&n;&t; * locate processor in the list of supported processor&n;&t; * types.  The linker builds this table for us from the&n;&t; * entries in arch/arm/mm/proc-*.S&n;&t; */
+multiline_comment|/*&n;&t; * locate processor in the list of supported processor&n;&t; * types.  The linker builds this table for us from the&n;&t; * entries in arch/arm26/mm/proc-*.S&n;&t; */
 r_for
 c_loop
 (paren

@@ -6,6 +6,8 @@ mdefine_line|#define __ASM_SERIAL_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_EV64260)
 macro_line|#include &lt;platforms/ev64260.h&gt;
+macro_line|#elif defined(CONFIG_CHESTNUT)
+macro_line|#include &lt;platforms/chestnut.h&gt;
 macro_line|#elif defined(CONFIG_GEMINI)
 macro_line|#include &lt;platforms/gemini_serial.h&gt;
 macro_line|#elif defined(CONFIG_POWERPMC250)

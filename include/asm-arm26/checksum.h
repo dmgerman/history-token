@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/checksum.h&n; *&n; * IP checksu
 macro_line|#ifndef __ASM_ARM_CHECKSUM_H
 DECL|macro|__ASM_ARM_CHECKSUM_H
 mdefine_line|#define __ASM_ARM_CHECKSUM_H
+macro_line|#include &lt;linux/in6.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_int
 r_int
@@ -51,6 +52,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -69,7 +71,7 @@ op_star
 id|err_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These are the old (and unsafe) way of doing checksums, a warning message will be&n; * printed if they are used and an exception occurs.&n; *&n; * these functions should go away after some time.&n; */
+multiline_comment|/*&n; * This is the old (and unsafe) way of doing checksums, a warning message will&n; * be printed if it is used and an exception occurs.&n; *&n; * this functions should go away after some time.&n; */
 DECL|macro|csum_partial_copy
 mdefine_line|#define csum_partial_copy(src,dst,len,sum)&t;csum_partial_copy_nocheck(src,dst,len,sum)
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; */
@@ -242,15 +244,15 @@ c_func
 (paren
 id|len
 )paren
-op_lshift
-l_int|16
 )paren
 comma
 l_string|&quot;Ir&quot;
 (paren
+id|ntohs
+c_func
+(paren
 id|proto
-op_lshift
-l_int|8
+)paren
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -327,9 +329,11 @@ id|len
 comma
 l_string|&quot;Ir&quot;
 (paren
+id|ntohs
+c_func
+(paren
 id|proto
-op_lshift
-l_int|8
+)paren
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

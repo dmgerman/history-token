@@ -25,7 +25,6 @@ r_int
 id|irq
 )paren
 (brace
-macro_line|#ifdef CONFIG_X86
 id|printk
 c_func
 (paren
@@ -41,7 +40,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 )brace
 macro_line|#endif /* __ASM_HARDIRQ_H */
