@@ -5917,7 +5917,7 @@ suffix:semicolon
 id|ssize_t
 id|written
 suffix:semicolon
-r_int
+id|ssize_t
 id|err
 suffix:semicolon
 r_int
@@ -7123,7 +7123,7 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
 suffix:semicolon
-r_int
+id|ssize_t
 id|err
 suffix:semicolon
 r_struct
@@ -7232,7 +7232,7 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
 suffix:semicolon
-r_int
+id|ssize_t
 id|err
 suffix:semicolon
 r_struct
