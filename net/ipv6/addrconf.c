@@ -768,7 +768,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|addr-&gt;in6_u.u6_addr32
+id|addr-&gt;s6_addr32
 (braket
 l_int|3
 )braket
