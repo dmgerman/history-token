@@ -1047,6 +1047,8 @@ DECL|macro|QUEUE_FLAG_WRITEFULL
 mdefine_line|#define QUEUE_FLAG_WRITEFULL&t;4&t;/* read queue has been filled */
 DECL|macro|QUEUE_FLAG_DEAD
 mdefine_line|#define QUEUE_FLAG_DEAD&t;&t;5&t;/* queue being torn down */
+DECL|macro|QUEUE_FLAG_REENTER
+mdefine_line|#define QUEUE_FLAG_REENTER&t;6&t;/* Re-entrancy avoidance */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
 DECL|macro|blk_queue_tagged
