@@ -6357,6 +6357,8 @@ c_func
 (paren
 id|tmp8
 comma
+id|mmio
+op_plus
 id|CARM_INITC
 )paren
 suffix:semicolon
