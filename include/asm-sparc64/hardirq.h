@@ -21,7 +21,6 @@ r_int
 r_int
 id|__unused_1
 suffix:semicolon
-macro_line|#warning DaveM kill SMP irq brlock... no longer needed...
 DECL|member|__unused_2
 r_int
 r_int
