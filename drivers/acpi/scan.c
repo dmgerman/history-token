@@ -626,12 +626,12 @@ id|cid
 r_goto
 id|Done
 suffix:semicolon
+)brace
 id|error
 op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 id|Done
 suffix:colon
 r_if
@@ -2208,6 +2208,7 @@ r_int
 id|type
 )paren
 (brace
+macro_line|#ifdef CONFIG_ACPI_DEBUG
 r_char
 op_star
 id|type_string
@@ -2238,7 +2239,6 @@ comma
 id|name
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_DEBUG
 id|acpi_get_name
 c_func
 (paren
