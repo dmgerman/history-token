@@ -9800,7 +9800,7 @@ c_func
 (paren
 id|inode
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_if
