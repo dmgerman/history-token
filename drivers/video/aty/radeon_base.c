@@ -819,6 +819,7 @@ id|reg_val
 suffix:semicolon
 multiline_comment|/* these common regs are cleared before mode setting so they do not&n; * interfere with anything&n; */
 DECL|variable|common_regs
+r_static
 id|reg_val
 id|common_regs
 (braket
@@ -882,6 +883,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|common_regs_m6
+r_static
 id|reg_val
 id|common_regs_m6
 (braket
