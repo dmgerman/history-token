@@ -7186,7 +7186,11 @@ id|sb
 op_member_access_from_pointer
 id|integrityType
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|LVID_INTEGRITY_TYPE_CLOSE
+)paren
 suffix:semicolon
 id|UDF_SB_LVID
 c_func
@@ -7849,6 +7853,9 @@ c_func
 (paren
 l_string|&quot;UDF-fs: minUDFReadRev=%x (max is %x)&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|UDF_SB_LVIDIU
 c_func
 (paren
@@ -7856,6 +7863,7 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|minUDFReadRev
+)paren
 comma
 id|UDF_MAX_READ_VERSION
 )paren
@@ -9146,7 +9154,11 @@ id|bh-&gt;b_data
 suffix:semicolon
 id|bytes
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|bm-&gt;numOfBytes
+)paren
 suffix:semicolon
 id|index
 op_assign
