@@ -116,10 +116,11 @@ DECL|member|i_next_alloc_goal
 id|__u32
 id|i_next_alloc_goal
 suffix:semicolon
-multiline_comment|/* block reservation window */
+multiline_comment|/* block reservation info */
 DECL|member|i_rsv_window
 r_struct
 id|ext3_reserve_window_node
+op_star
 id|i_rsv_window
 suffix:semicolon
 DECL|member|i_dir_start_lookup
