@@ -1129,11 +1129,11 @@ id|sa1110_policy
 comma
 dot
 id|cpu_min_freq
-(braket
-l_int|0
-)braket
 op_assign
+(brace
 l_int|59000
+comma
+)brace
 comma
 )brace
 suffix:semicolon

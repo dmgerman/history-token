@@ -92,12 +92,6 @@ id|root_dev_addr
 comma
 id|root_dev_len
 suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;CPU: NEC V850E (GDB simulator)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|simcons_setup
 (paren
 )paren

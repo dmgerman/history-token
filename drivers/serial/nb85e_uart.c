@@ -12,11 +12,11 @@ macro_line|#include &lt;asm/nb85e_utils.h&gt;
 multiline_comment|/* Initial UART state.  This may be overridden by machine-dependent headers. */
 macro_line|#ifndef NB85E_UART_INIT_BAUD
 DECL|macro|NB85E_UART_INIT_BAUD
-mdefine_line|#define NB85E_UART_INIT_BAUD&t;38400
+mdefine_line|#define NB85E_UART_INIT_BAUD&t;115200
 macro_line|#endif
 macro_line|#ifndef NB85E_UART_INIT_CFLAGS
 DECL|macro|NB85E_UART_INIT_CFLAGS
-mdefine_line|#define NB85E_UART_INIT_CFLAGS&t;(B38400 | CS8 | CREAD)
+mdefine_line|#define NB85E_UART_INIT_CFLAGS&t;(B115200 | CS8 | CREAD)
 macro_line|#endif
 multiline_comment|/* A string used for prefixing printed descriptions; since the same UART&n;   macro is actually used on other chips than the V850E/NB85E.  This must&n;   be a constant string.  */
 macro_line|#ifndef NB85E_UART_CHIP_NAME
@@ -898,11 +898,9 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 )brace

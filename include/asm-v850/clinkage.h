@@ -10,6 +10,8 @@ DECL|macro|C_SYMBOL_STRING
 mdefine_line|#define C_SYMBOL_STRING(name)&t;macrology_stringify(C_SYMBOL_NAME(name))
 DECL|macro|C_ENTRY
 mdefine_line|#define C_ENTRY(name)&t;&t;G_ENTRY(C_SYMBOL_NAME(name))
+DECL|macro|C_DATA
+mdefine_line|#define C_DATA(name)&t;&t;G_DATA(C_SYMBOL_NAME(name))
 DECL|macro|C_END
 mdefine_line|#define C_END(name)&t;&t;END(C_SYMBOL_NAME(name))
 macro_line|#endif /* __V850_CLINKAGE_H__ */

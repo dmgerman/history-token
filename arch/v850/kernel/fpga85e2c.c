@@ -252,12 +252,6 @@ op_star
 id|cmdline
 )paren
 (brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;CPU: NEC V850E2 (NA85E2C FPGA implementation)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|memcons_setup
 (paren
 )paren

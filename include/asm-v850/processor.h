@@ -11,6 +11,9 @@ macro_line|#include &lt;asm/segment.h&gt;
 multiline_comment|/*&n; * The only places this is used seem to be horrible bletcherous kludges,&n; * so we just define it to be as large as possible.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0xFFFFFFFF)
+multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.  We won&squot;t be using it.&n; */
+DECL|macro|TASK_UNMAPPED_BASE
+mdefine_line|#define TASK_UNMAPPED_BASE&t;0
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr

@@ -10,9 +10,12 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_V850E_TEG
 macro_line|#include &lt;asm/teg.h&gt;
 macro_line|#endif
-multiline_comment|/* Anna is both a chip _and_ a platform, so put it in the middle... */
+multiline_comment|/* These are both chips _and_ platforms, so put them in the middle... */
 macro_line|#ifdef CONFIG_V850E2_ANNA
 macro_line|#include &lt;asm/anna.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_V850E_AS85EP1
+macro_line|#include &lt;asm/as85ep1.h&gt;
 macro_line|#endif
 multiline_comment|/* platforms */
 macro_line|#ifdef CONFIG_RTE_CB_MA1

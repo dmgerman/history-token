@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/arch/badge4.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 macro_line|#include &quot;sa1111_generic.h&quot;
-multiline_comment|/*&n; * BadgePAD 4 Details&n; *&n; * PCM Vcc:&n; *&n; *  PCM Vcc on BadgePAD 4 can be jumpered for 3.3V (short pins 1 and 3&n; *  on JP6) or 5V (short pins 3 and 5 on JP6).  N.B., 5V supply rail&n; *  is enabled by the SA-1110&squot;s BADGE4_GPIO_PCMEN5V (GPIO 24).&n; *&n; * PCM Vpp:&n; *&n; *  PCM Vpp on BadgePAD 4 can be jumpered for 12V (short pins 2 and 4&n; *  on JP6) or tied to PCM Vcc (short pins 4 and 6 on JP6).  N.B., 12V&n; *  operation requires that the power supply actually supply 12V.&n; *&n; * CF Vcc:&n; *&n; *  CF Vcc on BadgePAD 4 can be jumpered either for 3.3V (short pins 1&n; *  and 2 on JP10) or 5V (short pins 2 and 3 on JP10).  The note above&n; *  about the 5V supply rail applies.&n; *&n; * There&squot;s no way programmatically to determine how a given board is&n; * jumpered.  This code assumes a default jumpering: 5V PCM Vcc (pins&n; * 3 and 5 shorted) and PCM Vpp = PCM Vcc (pins 4 and 6 shorted) and&n; * no jumpering for CF Vcc.  If this isn&squot;t correct, Override these&n; * defaults with a pcmv setup argument: pcmv=&lt;pcm vcc&gt;,&lt;pcm vpp&gt;,&lt;cf&n; * vcc&gt;.  E.g. pcmv=33,120,50 indicates 3.3V PCM Vcc, 12.0V PCM Vpp,&n; * and 5.0V CF Vcc.&n; *&n; */
+multiline_comment|/*&n; * BadgePAD 4 Details&n; *&n; * PCM Vcc:&n; *&n; *  PCM Vcc on BadgePAD 4 can be jumpered for 3v3 (short pins 1 and 3&n; *  on JP6) or 5v0 (short pins 3 and 5 on JP6).&n; *&n; * PCM Vpp:&n; *&n; *  PCM Vpp on BadgePAD 4 can be jumpered for 12v0 (short pins 4 and 6&n; *  on JP6) or tied to PCM Vcc (short pins 2 and 4 on JP6).  N.B.,&n; *  12v0 operation requires that the power supply actually supply 12v0&n; *  via pin 7 of JP7.&n; *&n; * CF Vcc:&n; *&n; *  CF Vcc on BadgePAD 4 can be jumpered either for 3v3 (short pins 1&n; *  and 2 on JP10) or 5v0 (short pins 2 and 3 on JP10).&n; *&n; * Unfortunately there&squot;s no way programmatically to determine how a&n; * given board is jumpered.  This code assumes a default jumpering&n; * as described below.&n; *&n; * If the defaults aren&squot;t correct, you may override them with a pcmv&n; * setup argument: pcmv=&lt;pcm vcc&gt;,&lt;pcm vpp&gt;,&lt;cf vcc&gt;.  The units are&n; * tenths of volts; e.g. pcmv=33,120,50 indicates 3v3 PCM Vcc, 12v0&n; * PCM Vpp, and 5v0 CF Vcc.&n; *&n; */
 DECL|variable|badge4_pcmvcc
 r_static
 r_int
@@ -18,6 +18,7 @@ id|badge4_pcmvcc
 op_assign
 l_int|50
 suffix:semicolon
+multiline_comment|/* pins 3 and 5 jumpered on JP6 */
 DECL|variable|badge4_pcmvpp
 r_static
 r_int
@@ -25,6 +26,7 @@ id|badge4_pcmvpp
 op_assign
 l_int|50
 suffix:semicolon
+multiline_comment|/* pins 2 and 4 jumpered on JP6 */
 DECL|variable|badge4_cfvcc
 r_static
 r_int
@@ -32,6 +34,7 @@ id|badge4_cfvcc
 op_assign
 l_int|33
 suffix:semicolon
+multiline_comment|/* pins 1 and 2 jumpered on JP10 */
 DECL|function|badge4_pcmcia_init
 r_static
 r_int
@@ -48,8 +51,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s: badge4_pcmvcc=%d, badge4_pcmvpp=%d, badge4_cfvcc=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: badge4_pcmvcc=%d, badge4_pcmvpp=%d, badge4_cfvcc=%d&bslash;n&quot;
 comma
 id|badge4_pcmvcc
 comma
@@ -83,7 +87,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* be sure to disable 5V use */
+multiline_comment|/* be sure to disable 5v0 use */
 id|badge4_set_5V
 c_func
 (paren
@@ -211,10 +215,8 @@ comma
 id|conf-&gt;vcc
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
+singleline_comment|// Apply power regardless of the jumpering.
+singleline_comment|// return -1;
 )brace
 r_if
 c_cond
@@ -410,7 +412,6 @@ comma
 suffix:semicolon
 DECL|function|pcmcia_badge4_init
 r_int
-id|__init
 id|pcmcia_badge4_init
 c_func
 (paren
@@ -446,7 +447,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_badge4_exit
 r_void
-id|__exit
+id|__devexit
 id|pcmcia_badge4_exit
 c_func
 (paren

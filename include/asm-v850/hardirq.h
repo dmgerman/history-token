@@ -3,6 +3,7 @@ DECL|macro|__V850_HARDIRQ_H__
 mdefine_line|#define __V850_HARDIRQ_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 r_typedef
 r_struct
 (brace

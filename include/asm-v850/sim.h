@@ -5,7 +5,13 @@ mdefine_line|#define __V850_SIM_H__
 DECL|macro|CPU_ARCH
 mdefine_line|#define CPU_ARCH&t;&t;&quot;v850e&quot;
 DECL|macro|CPU_MODEL
-mdefine_line|#define CPU_MODEL&t;&t;&quot;GDB/v850e simulator&quot;
+mdefine_line|#define CPU_MODEL&t;&t;&quot;v850e&quot;
+DECL|macro|CPU_MODEL_LONG
+mdefine_line|#define CPU_MODEL_LONG&t;&t;&quot;NEC V850E&quot;
+DECL|macro|PLATFORM
+mdefine_line|#define PLATFORM&t;&t;&quot;gdb/v850e&quot;
+DECL|macro|PLATFORM_LONG
+mdefine_line|#define PLATFORM_LONG&t;&t;&quot;GDB V850E simulator&quot;
 multiline_comment|/* We use a wierd value for RAM, not just 0, for testing purposes.&n;   These must match the values used in the linker script.  */
 DECL|macro|RAM_ADDR
 mdefine_line|#define RAM_ADDR&t;&t;0x8F000000

@@ -45,7 +45,9 @@ c_func
 id|CONFIG_CMD
 c_func
 (paren
-id|dev
+id|bus
+comma
+id|devfn
 comma
 id|where
 )paren
@@ -135,6 +137,7 @@ id|devfn
 comma
 r_int
 id|where
+comma
 r_int
 id|size
 comma
@@ -250,11 +253,6 @@ op_star
 id|sysdata
 )paren
 (brace
-r_struct
-id|pci_bus
-op_star
-id|bus
-suffix:semicolon
 id|printk
 c_func
 (paren
