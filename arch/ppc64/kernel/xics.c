@@ -1032,6 +1032,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1062,6 +1063,39 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_XMON
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+id|PPC_MSG_XMON_BREAK
+comma
+op_amp
+id|xics_ipi_message
+(braket
+id|cpu
+)braket
+)paren
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|smp_message_recv
+c_func
+(paren
+id|PPC_MSG_XMON_BREAK
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 )brace
 DECL|function|xics_cause_IPI
