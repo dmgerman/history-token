@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_v110.h&quot;
+macro_line|#include &quot;isdn_common.h&quot;
 DECL|macro|ISDN_V110_DEBUG
 macro_line|#undef ISDN_V110_DEBUG
 DECL|macro|V110_38400
@@ -2783,14 +2784,7 @@ id|skb
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
-(braket
-id|c-&gt;driver
-)braket
-op_member_access_from_pointer
-id|interface
-op_member_access_from_pointer
-id|writebuf_skb
+id|isdn_drv_writebuf_skb
 c_func
 (paren
 id|c-&gt;driver
@@ -2912,22 +2906,20 @@ l_int|NULL
 r_int
 id|hdrlen
 op_assign
-id|dev-&gt;drv
-(braket
+id|isdn_drv_hdrlen
+c_func
+(paren
 id|c-&gt;driver
-)braket
-op_member_access_from_pointer
-id|interface-&gt;hl_hdrlen
+)paren
 suffix:semicolon
 r_int
 id|maxsize
 op_assign
-id|dev-&gt;drv
-(braket
+id|isdn_drv_maxbufsize
+c_func
+(paren
 id|c-&gt;driver
-)braket
-op_member_access_from_pointer
-id|interface-&gt;maxbufsize
+)paren
 suffix:semicolon
 id|atomic_inc
 c_func
@@ -3027,14 +3019,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
-(braket
-id|c-&gt;driver
-)braket
-op_member_access_from_pointer
-id|interface
-op_member_access_from_pointer
-id|writebuf_skb
+id|isdn_drv_writebuf_skb
 c_func
 (paren
 id|c-&gt;driver

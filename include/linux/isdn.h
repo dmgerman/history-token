@@ -1098,105 +1098,6 @@ DECL|typedef|infostruct
 )brace
 id|infostruct
 suffix:semicolon
-DECL|macro|DRV_FLAG_RUNNING
-mdefine_line|#define DRV_FLAG_RUNNING 1
-DECL|macro|DRV_FLAG_REJBUS
-mdefine_line|#define DRV_FLAG_REJBUS  2
-DECL|macro|DRV_FLAG_LOADED
-mdefine_line|#define DRV_FLAG_LOADED  4
-multiline_comment|/* Description of hardware-level-driver */
-r_typedef
-r_struct
-(brace
-DECL|member|online
-id|ulong
-id|online
-suffix:semicolon
-multiline_comment|/* Channel-Online flags             */
-DECL|member|flags
-id|ulong
-id|flags
-suffix:semicolon
-multiline_comment|/* Misc driver Flags                */
-DECL|member|locks
-r_int
-id|locks
-suffix:semicolon
-multiline_comment|/* Number of locks for this driver  */
-DECL|member|channels
-r_int
-id|channels
-suffix:semicolon
-multiline_comment|/* Number of channels               */
-DECL|member|st_waitq
-id|wait_queue_head_t
-id|st_waitq
-suffix:semicolon
-multiline_comment|/* Wait-Queue for status-read&squot;s     */
-DECL|member|maxbufsize
-r_int
-id|maxbufsize
-suffix:semicolon
-multiline_comment|/* Maximum Buffersize supported     */
-DECL|member|pktcount
-r_int
-r_int
-id|pktcount
-suffix:semicolon
-multiline_comment|/* Until now: unused                */
-DECL|member|stavail
-r_int
-id|stavail
-suffix:semicolon
-multiline_comment|/* Chars avail on Status-device     */
-DECL|member|interface
-id|isdn_if
-op_star
-id|interface
-suffix:semicolon
-multiline_comment|/* Interface to driver              */
-DECL|member|rcverr
-r_int
-op_star
-id|rcverr
-suffix:semicolon
-multiline_comment|/* Error-counters for B-Ch.-receive */
-DECL|member|rcvcount
-r_int
-op_star
-id|rcvcount
-suffix:semicolon
-multiline_comment|/* Byte-counters for B-Ch.-receive  */
-macro_line|#ifdef CONFIG_ISDN_AUDIO
-DECL|member|DLEflag
-r_int
-r_int
-id|DLEflag
-suffix:semicolon
-multiline_comment|/* Flags: Insert DLE at next read   */
-macro_line|#endif
-DECL|member|rpqueue
-r_struct
-id|sk_buff_head
-op_star
-id|rpqueue
-suffix:semicolon
-multiline_comment|/* Pointers to start of Rcv-Queue   */
-DECL|member|msn2eaz
-r_char
-id|msn2eaz
-(braket
-l_int|10
-)braket
-(braket
-id|ISDN_MSNLEN
-)braket
-suffix:semicolon
-multiline_comment|/* Mapping-Table MSN-&gt;EAZ   */
-DECL|typedef|driver
-)brace
-id|driver
-suffix:semicolon
 multiline_comment|/* Main driver-data */
 DECL|struct|isdn_devt
 r_typedef
@@ -1257,15 +1158,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|drv
-id|driver
-op_star
-id|drv
-(braket
-id|ISDN_MAX_DRIVERS
-)braket
-suffix:semicolon
-multiline_comment|/* Array of drivers           */
 DECL|member|drvid
 r_char
 id|drvid

@@ -109,6 +109,290 @@ id|slot
 id|ISDN_MAX_CHANNELS
 )braket
 suffix:semicolon
+multiline_comment|/* ====================================================================== */
+DECL|macro|DRV_FLAG_RUNNING
+mdefine_line|#define DRV_FLAG_RUNNING 1
+DECL|macro|DRV_FLAG_REJBUS
+mdefine_line|#define DRV_FLAG_REJBUS  2
+DECL|macro|DRV_FLAG_LOADED
+mdefine_line|#define DRV_FLAG_LOADED  4
+multiline_comment|/* Description of hardware-level-driver */
+DECL|struct|isdn_driver
+r_struct
+id|isdn_driver
+(brace
+DECL|member|online
+r_int
+r_int
+id|online
+suffix:semicolon
+multiline_comment|/* Channel Online flags        */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Misc driver Flags           */
+DECL|member|locks
+r_int
+id|locks
+suffix:semicolon
+multiline_comment|/* Number of locks             */
+DECL|member|channels
+r_int
+id|channels
+suffix:semicolon
+multiline_comment|/* Number of channels          */
+DECL|member|st_waitq
+id|wait_queue_head_t
+id|st_waitq
+suffix:semicolon
+multiline_comment|/* Wait-Queue for status-reads */
+DECL|member|maxbufsize
+r_int
+id|maxbufsize
+suffix:semicolon
+multiline_comment|/* Maximum Buffersize supported*/
+DECL|member|stavail
+r_int
+id|stavail
+suffix:semicolon
+multiline_comment|/* Chars avail on Status-device*/
+DECL|member|interface
+id|isdn_if
+op_star
+id|interface
+suffix:semicolon
+multiline_comment|/* Interface to driver         */
+DECL|member|rcverr
+r_int
+op_star
+id|rcverr
+suffix:semicolon
+multiline_comment|/* Error-counters for B rx     */
+DECL|member|rcvcount
+r_int
+op_star
+id|rcvcount
+suffix:semicolon
+multiline_comment|/* Byte-counters for B rx      */
+macro_line|#ifdef CONFIG_ISDN_AUDIO
+DECL|member|DLEflag
+r_int
+r_int
+id|DLEflag
+suffix:semicolon
+multiline_comment|/* Insert DLE at next read     */
+macro_line|#endif
+DECL|member|rpqueue
+r_struct
+id|sk_buff_head
+op_star
+id|rpqueue
+suffix:semicolon
+multiline_comment|/* Pointers to rx queue        */
+DECL|member|msn2eaz
+r_char
+id|msn2eaz
+(braket
+l_int|10
+)braket
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+multiline_comment|/*  MSN-&gt;EAZ           */
+DECL|member|fi
+r_struct
+id|fsm_inst
+id|fi
+suffix:semicolon
+DECL|variable|driver
+)brace
+id|driver
+suffix:semicolon
+DECL|variable|drivers
+r_struct
+id|isdn_driver
+op_star
+id|drivers
+(braket
+id|ISDN_MAX_DRIVERS
+)braket
+suffix:semicolon
+r_int
+DECL|function|isdn_drv_queue_empty
+id|isdn_drv_queue_empty
+c_func
+(paren
+r_int
+id|di
+comma
+r_int
+id|ch
+)paren
+(brace
+r_return
+id|skb_queue_empty
+c_func
+(paren
+op_amp
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|rpqueue
+(braket
+id|ch
+)braket
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|isdn_drv_queue_tail
+id|isdn_drv_queue_tail
+c_func
+(paren
+r_int
+id|di
+comma
+r_int
+id|ch
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|len
+)paren
+(brace
+id|__skb_queue_tail
+c_func
+(paren
+op_amp
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|rpqueue
+(braket
+id|ch
+)braket
+comma
+id|skb
+)paren
+suffix:semicolon
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|rcvcount
+(braket
+id|ch
+)braket
+op_add_assign
+id|len
+suffix:semicolon
+)brace
+r_int
+DECL|function|isdn_drv_maxbufsize
+id|isdn_drv_maxbufsize
+c_func
+(paren
+r_int
+id|di
+)paren
+(brace
+r_return
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|maxbufsize
+suffix:semicolon
+)brace
+r_int
+DECL|function|isdn_drv_writebuf_skb
+id|isdn_drv_writebuf_skb
+c_func
+(paren
+r_int
+id|di
+comma
+r_int
+id|ch
+comma
+r_int
+id|x
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|interface
+op_member_access_from_pointer
+id|writebuf_skb
+c_func
+(paren
+id|di
+comma
+id|ch
+comma
+l_int|1
+comma
+id|skb
+)paren
+suffix:semicolon
+)brace
+r_int
+DECL|function|isdn_drv_hdrlen
+id|isdn_drv_hdrlen
+c_func
+(paren
+r_int
+id|di
+)paren
+(brace
+r_return
+id|drivers
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|interface-&gt;hl_hdrlen
+suffix:semicolon
+)brace
+r_static
+r_int
+id|isdn_add_channels
+c_func
+(paren
+r_struct
+id|isdn_driver
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* ====================================================================== */
 macro_line|#if defined(CONFIG_ISDN_DIVERSION) || defined(CONFIG_ISDN_DIVERSION_MODULE)
 DECL|variable|divert_if
 r_static
@@ -223,7 +507,7 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|i
 )braket
@@ -277,7 +561,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|i
 )braket
@@ -309,7 +593,7 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|i
 )braket
@@ -1389,7 +1673,7 @@ r_int
 id|features
 op_assign
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|cmd-&gt;driver
 )braket
@@ -1637,7 +1921,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_return
-id|dev-&gt;drv
+id|drivers
 (braket
 id|cmd-&gt;driver
 )braket
@@ -1853,7 +2137,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -1875,7 +2159,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -1888,7 +2172,7 @@ suffix:semicolon
 r_case
 id|ISDN_STAT_RUN
 suffix:colon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -1939,7 +2223,7 @@ suffix:semicolon
 r_case
 id|ISDN_STAT_STOP
 suffix:colon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2076,7 +2360,7 @@ id|retval
 )paren
 op_logical_and
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2536,7 +2820,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2636,7 +2920,7 @@ id|c-&gt;arg
 )paren
 suffix:semicolon
 multiline_comment|/* Signal B-channel-connect to network-devices */
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2720,7 +3004,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2843,7 +3127,7 @@ c_cond
 id|isdn_add_channels
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -2994,7 +3278,7 @@ suffix:colon
 r_while
 c_loop
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3026,7 +3310,7 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3123,7 +3407,7 @@ op_decrement
 suffix:semicolon
 id|dev-&gt;channels
 op_sub_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3133,7 +3417,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3144,7 +3428,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3161,7 +3445,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3175,7 +3459,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3189,7 +3473,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3200,13 +3484,13 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3461,7 +3745,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3476,7 +3760,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3495,7 +3779,7 @@ c_cond
 (paren
 id|len
 OG
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3507,7 +3791,7 @@ id|ch
 )paren
 id|len
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3542,7 +3826,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3588,7 +3872,7 @@ id|skb
 )paren
 op_logical_or
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3651,7 +3935,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3667,7 +3951,7 @@ op_increment
 op_assign
 id|DLE
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3696,7 +3980,7 @@ op_eq
 id|DLE
 )paren
 (brace
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3854,7 +4138,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -3894,7 +4178,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -4264,7 +4548,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|i
 )braket
@@ -4277,7 +4561,7 @@ id|p
 comma
 l_string|&quot;%ld &quot;
 comma
-id|dev-&gt;drv
+id|drivers
 (braket
 id|i
 )braket
@@ -5373,7 +5657,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5394,7 +5678,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5423,7 +5707,7 @@ id|flags
 suffix:semicolon
 id|len
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5498,7 +5782,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5532,7 +5816,7 @@ id|len
 suffix:semicolon
 id|len
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5572,7 +5856,7 @@ c_cond
 id|len
 )paren
 (brace
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5589,7 +5873,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5699,7 +5983,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5718,7 +6002,7 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -5814,14 +6098,12 @@ c_func
 id|file
 comma
 op_amp
-(paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
 op_member_access_from_pointer
 id|st_waitq
-)paren
 comma
 id|wait
 )paren
@@ -5835,7 +6117,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -6158,7 +6440,7 @@ c_cond
 (paren
 id|iocts.arg
 )paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -6168,7 +6450,7 @@ op_or_assign
 id|DRV_FLAG_REJBUS
 suffix:semicolon
 r_else
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -6739,7 +7021,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -6821,7 +7103,7 @@ comma
 id|strlen
 c_func
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -6833,7 +7115,7 @@ id|i
 )paren
 ques
 c_cond
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -7498,11 +7780,12 @@ r_int
 id|di
 )paren
 (brace
-id|driver
+r_struct
+id|isdn_driver
 op_star
 id|this
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -7758,7 +8041,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|d
 )braket
@@ -7774,7 +8057,7 @@ c_cond
 (paren
 (paren
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|d
 )braket
@@ -7790,7 +8073,7 @@ op_logical_or
 (paren
 (paren
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|d
 )braket
@@ -7804,7 +8087,7 @@ id|vfeatures
 )paren
 op_logical_and
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|d
 )braket
@@ -8021,7 +8304,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|dev-&gt;drv
+id|drivers
 (braket
 id|isdn_slot_driver
 c_func
@@ -8204,7 +8487,7 @@ suffix:semicolon
 multiline_comment|/* V.110 must always be acknowledged */
 id|ret
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -8290,7 +8573,7 @@ suffix:semicolon
 multiline_comment|/* 0 better? */
 id|ret
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -8338,7 +8621,7 @@ r_else
 (brace
 id|ret
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -8461,12 +8744,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|isdn_add_channels
 id|isdn_add_channels
 c_func
 (paren
-id|driver
+r_struct
+id|isdn_driver
 op_star
 id|d
 comma
@@ -8964,7 +9249,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -8974,7 +9259,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -8983,7 +9268,7 @@ id|interface
 )paren
 id|dev-&gt;global_features
 op_or_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -9217,7 +9502,8 @@ op_star
 id|i
 )paren
 (brace
-id|driver
+r_struct
+id|isdn_driver
 op_star
 id|d
 suffix:semicolon
@@ -9321,10 +9607,6 @@ id|d-&gt;maxbufsize
 op_assign
 id|i-&gt;maxbufsize
 suffix:semicolon
-id|d-&gt;pktcount
-op_assign
-l_int|0
-suffix:semicolon
 id|d-&gt;stavail
 op_assign
 l_int|0
@@ -9363,7 +9645,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -9478,7 +9760,7 @@ comma
 id|drvidx
 )paren
 suffix:semicolon
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -9590,7 +9872,7 @@ id|sl
 )paren
 suffix:semicolon
 r_return
-id|dev-&gt;drv
+id|drivers
 (braket
 id|di
 )braket
@@ -10238,14 +10520,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
 op_logical_and
 id|max
 OL
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
@@ -10255,7 +10537,7 @@ id|interface-&gt;hl_hdrlen
 (brace
 id|max
 op_assign
-id|dev-&gt;drv
+id|drivers
 (braket
 id|drvidx
 )braket
