@@ -9025,20 +9025,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/* If sendmsg cached page exists, toss it. */
-r_if
-c_cond
-(paren
-id|inet-&gt;sndmsg_page
-op_ne
-l_int|NULL
-)paren
-id|__free_page
-c_func
-(paren
-id|inet-&gt;sndmsg_page
-)paren
-suffix:semicolon
 id|atomic_dec
 c_func
 (paren

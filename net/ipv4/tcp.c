@@ -2571,9 +2571,9 @@ id|res
 suffix:semicolon
 )brace
 DECL|macro|TCP_PAGE
-mdefine_line|#define TCP_PAGE(sk)&t;(inet_sk(sk)-&gt;sndmsg_page)
+mdefine_line|#define TCP_PAGE(sk)&t;(sk-&gt;sk_sndmsg_page)
 DECL|macro|TCP_OFF
-mdefine_line|#define TCP_OFF(sk)&t;(inet_sk(sk)-&gt;sndmsg_off)
+mdefine_line|#define TCP_OFF(sk)&t;(sk-&gt;sk_sndmsg_off)
 DECL|function|select_size
 r_static
 r_inline
