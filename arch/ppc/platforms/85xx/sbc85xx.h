@@ -6,9 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
-r_struct
-id|pci_dev
-suffix:semicolon
 DECL|macro|BOARD_CCSRBAR
 mdefine_line|#define BOARD_CCSRBAR&t;&t;((uint)0xff700000)
 DECL|macro|CCSRBAR_SIZE
