@@ -3639,11 +3639,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rpcauth_deadcred
-c_func
-(paren
-id|task
-)paren
+id|status
+op_eq
+op_minus
+id|EACCES
 )paren
 (brace
 id|rpc_exit
