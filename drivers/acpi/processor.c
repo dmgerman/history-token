@@ -2082,6 +2082,10 @@ c_func
 (paren
 id|status
 )paren
+op_logical_and
+id|status
+op_ne
+id|AE_NOT_FOUND
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
