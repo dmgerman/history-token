@@ -855,6 +855,10 @@ DECL|macro|PROCESS__SETRLIMIT
 mdefine_line|#define PROCESS__SETRLIMIT                        0x00200000UL
 DECL|macro|PROCESS__RLIMITINH
 mdefine_line|#define PROCESS__RLIMITINH                        0x00400000UL
+DECL|macro|PROCESS__DYNTRANSITION
+mdefine_line|#define PROCESS__DYNTRANSITION                    0x00800000UL
+DECL|macro|PROCESS__SETCURRENT
+mdefine_line|#define PROCESS__SETCURRENT                       0x01000000UL
 DECL|macro|IPC__CREATE
 mdefine_line|#define IPC__CREATE                               0x00000001UL
 DECL|macro|IPC__DESTROY
