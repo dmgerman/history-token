@@ -302,7 +302,7 @@ id|ax25-&gt;state
 r_case
 id|AX25_STATE_0
 suffix:colon
-multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
+multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
 r_if
 c_cond
 (paren
@@ -335,7 +335,7 @@ suffix:semicolon
 r_case
 id|AX25_STATE_3
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Check the state of the receive buffer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check the state of the receive buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren

@@ -742,7 +742,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_AX25_DAMA_SLAVE
-multiline_comment|/* &n;&t;&t; * A DAMA slave is _required_ to work as normal AX.25L2V2&n;&t;&t; * if no DAMA master is available.&n;&t;&t; */
+multiline_comment|/* &n;&t; * A DAMA slave is _required_ to work as normal AX.25L2V2&n;&t; * if no DAMA master is available.&n;&t; */
 r_case
 id|AX25_PROTO_DAMA_SLAVE
 suffix:colon
