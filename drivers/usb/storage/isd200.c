@@ -1095,7 +1095,7 @@ l_string|&quot;isd200_transfer_partial(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ISD200_TRANSFER_ABORTED
+id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* uh oh... we have an error code, so something went wrong. */
@@ -1615,7 +1615,7 @@ id|US_STATE_ABORTING
 )paren
 (brace
 r_return
-id|ISD200_TRANSFER_ABORTED
+id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_else
@@ -1744,7 +1744,7 @@ id|US_STATE_ABORTING
 )paren
 (brace
 r_return
-id|ISD200_TRANSFER_ABORTED
+id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* did the attempt to read the CSW fail? */
@@ -1813,7 +1813,7 @@ id|US_STATE_ABORTING
 )paren
 (brace
 r_return
-id|ISD200_TRANSFER_ABORTED
+id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* if it fails again, we need a reset and return an error*/
