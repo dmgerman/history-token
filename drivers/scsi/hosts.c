@@ -280,8 +280,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|shost-&gt;hostt-&gt;present
-op_decrement
+id|scsi_proc_hostdir_rm
+c_func
+(paren
+id|shost-&gt;hostt
+)paren
 suffix:semicolon
 id|scsi_destroy_command_freelist
 c_func
@@ -629,8 +632,11 @@ id|shost-&gt;eh_notify
 op_assign
 l_int|NULL
 suffix:semicolon
-id|shost-&gt;hostt-&gt;present
-op_increment
+id|scsi_proc_hostdir_add
+c_func
+(paren
+id|shost-&gt;hostt
+)paren
 suffix:semicolon
 r_return
 id|shost
