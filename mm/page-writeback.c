@@ -599,11 +599,11 @@ r_if
 c_cond
 (paren
 id|wbc.nr_to_write
-op_eq
-id|MAX_WRITEBACK_PAGES
+OG
+l_int|0
 )paren
 (brace
-multiline_comment|/* Wrote nothing */
+multiline_comment|/* Wrote less than expected */
 r_if
 c_cond
 (paren
