@@ -332,7 +332,6 @@ op_star
 id|tsk
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALTIVEC
 r_if
 c_cond
 (paren
@@ -375,7 +374,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|dump_task_altivec
 r_int
