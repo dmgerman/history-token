@@ -458,6 +458,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if

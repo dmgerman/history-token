@@ -3550,7 +3550,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;tty3215&quot;
+l_string|&quot;ttyS&quot;
 comma
 dot
 id|write
@@ -3581,7 +3581,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * 3215 console initialization code called from console_init().&n; * NOTE: This is called before kmalloc is available.&n; */
 r_static
-r_void
+r_int
 id|__init
 DECL|function|con3215_init
 id|con3215_init
@@ -3616,6 +3616,8 @@ op_logical_neg
 id|CONSOLE_IS_3215
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Set the console mode for VM */
 r_if
@@ -3712,6 +3714,8 @@ op_logical_neg
 id|cdev
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|raw3215
 (braket
@@ -3896,6 +3900,8 @@ l_string|&quot;Couldn&squot;t find a 3215 console device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|register_console
@@ -3905,7 +3911,17 @@ op_amp
 id|con3215
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|con3215_init
+id|console_initcall
+c_func
+(paren
+id|con3215_init
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * tty3215_open&n; *&n; * This routine is called whenever a 3215 tty is opened.&n; */
 r_static
@@ -4517,13 +4533,6 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-DECL|variable|con3215_init
-id|console_initcall
-c_func
-(paren
-id|con3215_init
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Disable writing to a 3215 tty&n; */
 r_static
 r_void

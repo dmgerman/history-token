@@ -311,7 +311,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hwc_tty_init
+id|sclp_tty_init
 c_func
 (paren
 r_void

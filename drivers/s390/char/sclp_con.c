@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/sclp_con.c&n; *    SCLP line mode console driver&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -16,7 +15,7 @@ mdefine_line|#define sclp_console_major 4&t;&t;/* TTYAUX_MAJOR */
 DECL|macro|sclp_console_minor
 mdefine_line|#define sclp_console_minor 64
 DECL|macro|sclp_console_name
-mdefine_line|#define sclp_console_name  &quot;console&quot;
+mdefine_line|#define sclp_console_name  &quot;ttyS&quot;
 multiline_comment|/* Lock to guard over changes to global variables */
 DECL|variable|sclp_con_lock
 r_static
@@ -694,10 +693,17 @@ dot
 id|flags
 op_assign
 id|CON_PRINTBUFFER
+comma
+dot
+id|index
+op_assign
+l_int|0
+multiline_comment|/* ttyS0 */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * called by console_init() in drivers/char/tty_io.c at boot-time.&n; */
-r_void
+r_static
+r_int
 id|__init
 DECL|function|sclp_console_init
 id|sclp_console_init
@@ -720,6 +726,7 @@ op_logical_neg
 id|CONSOLE_IS_SCLP
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -732,6 +739,7 @@ op_ne
 l_int|0
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Allocate pages for output buffering */
 id|INIT_LIST_HEAD
@@ -772,6 +780,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|list_add_tail
 c_func
@@ -844,6 +853,9 @@ c_func
 op_amp
 id|sclp_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sclp_console_init

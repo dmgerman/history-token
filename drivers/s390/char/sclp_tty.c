@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  drivers/s390/char/sclp_tty.c&n; *    SCLP line mode terminal driver.&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;&t; Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
@@ -193,22 +193,6 @@ op_star
 id|filp
 )paren
 (brace
-multiline_comment|/* only 1 SCLP terminal supported */
-r_if
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_ne
-id|tty-&gt;driver.minor_start
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|sclp_tty
 op_assign
 id|tty
@@ -243,20 +227,6 @@ op_star
 id|filp
 )paren
 (brace
-multiline_comment|/* only 1 SCLP terminal supported */
-r_if
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_ne
-id|tty-&gt;driver.minor_start
-)paren
-r_return
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1137,6 +1107,22 @@ op_star
 id|buffer
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|count
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -1147,11 +1133,24 @@ op_amp
 id|sclp_tty_outqueue
 )paren
 suffix:semicolon
+id|count
+op_assign
+id|sclp_tty_buffer_count
+op_increment
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sclp_tty_buffer_count
-op_increment
+id|count
 op_eq
 l_int|0
 )paren
@@ -1180,7 +1179,29 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|sclp_buffer
+op_star
+id|buf
+suffix:semicolon
 id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|buf
+op_assign
+id|sclp_ttybuf
+suffix:semicolon
+id|sclp_ttybuf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1192,7 +1213,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sclp_ttybuf
+id|buf
 op_ne
 l_int|NULL
 )paren
@@ -1200,23 +1221,10 @@ l_int|NULL
 id|__sclp_ttybuf_emit
 c_func
 (paren
-id|sclp_ttybuf
+id|buf
 )paren
-suffix:semicolon
-id|sclp_ttybuf
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|sclp_tty_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write a string to the sclp tty.&n; */
 r_static
@@ -1248,6 +1256,11 @@ id|page
 suffix:semicolon
 r_int
 id|written
+suffix:semicolon
+r_struct
+id|sclp_buffer
+op_star
+id|buf
 suffix:semicolon
 r_if
 c_cond
@@ -1380,15 +1393,37 @@ id|count
 r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Not all characters could be written to the current&n;&t;&t; * output buffer. Emit the buffer, create a new buffer&n;&t;&t; * and then output the rest of the string.&n;&t;&t; */
-id|__sclp_ttybuf_emit
-c_func
-(paren
+id|buf
+op_assign
 id|sclp_ttybuf
-)paren
 suffix:semicolon
 id|sclp_ttybuf
 op_assign
 l_int|NULL
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__sclp_ttybuf_emit
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sclp_tty_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|str
 op_add_assign
@@ -1777,9 +1812,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * push input to tty&n; */
-DECL|function|sclp_tty_input
 r_static
 r_void
+DECL|function|sclp_tty_input
 id|sclp_tty_input
 c_func
 (paren
@@ -2802,6 +2837,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2810,18 +2848,35 @@ id|CONSOLE_IS_SCLP
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|rc
+op_assign
 id|sclp_rw_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
 op_ne
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|SCLP_TTY_PRINT_HEADER
+l_string|&quot;could not register tty - &quot;
+l_string|&quot;sclp_rw_init returned %d&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/* Allocate pages for output buffering */
 id|INIT_LIST_HEAD
 c_func
@@ -2855,6 +2910,8 @@ id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -2984,7 +3041,7 @@ id|THIS_MODULE
 suffix:semicolon
 id|sclp_tty_driver.driver_name
 op_assign
-l_string|&quot;tty_sclp&quot;
+l_string|&quot;sclp_line&quot;
 suffix:semicolon
 id|sclp_tty_driver.name
 op_assign
@@ -3143,28 +3200,32 @@ id|sclp_tty_driver.write_proc
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|rc
+op_assign
 id|tty_register_driver
 c_func
 (paren
 op_amp
 id|sclp_tty_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+l_int|0
 )paren
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t register sclp_tty driver&bslash;n&quot;
+id|KERN_ERR
+id|SCLP_TTY_PRINT_HEADER
+l_string|&quot;could not register tty - &quot;
+l_string|&quot;sclp_drv_register returned %d&bslash;n&quot;
+comma
+id|rc
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sclp_tty_init
-id|console_initcall
-c_func
-(paren
-id|sclp_tty_init
-)paren
-suffix:semicolon
 eof

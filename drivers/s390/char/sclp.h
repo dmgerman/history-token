@@ -357,6 +357,16 @@ id|u16
 id|response_code
 )paren
 suffix:semicolon
+r_int
+id|sclp_remove_processed
+c_func
+(paren
+r_struct
+id|sccb_header
+op_star
+id|sccb
+)paren
+suffix:semicolon
 multiline_comment|/* useful inlines */
 multiline_comment|/* VM uses EBCDIC 037, LPAR+native(SE+HMC) use EBCDIC 500 */
 multiline_comment|/* translate single character from ASCII to EBCDIC */
