@@ -67,8 +67,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_GENERIC
 DECL|function|__ia64_irq_desc
-r_struct
-id|irq_desc
+id|irq_desc_t
 op_star
 id|__ia64_irq_desc
 (paren
@@ -376,7 +375,7 @@ op_increment
 (brace
 id|idesc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -700,7 +699,7 @@ id|irq
 r_while
 c_loop
 (paren
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -1142,7 +1141,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -1231,7 +1230,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -1376,7 +1375,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -1883,7 +1882,7 @@ r_return
 suffix:semicolon
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -2080,7 +2079,7 @@ op_decrement
 (brace
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -2162,7 +2161,7 @@ op_decrement
 (brace
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -2263,7 +2262,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -2389,7 +2388,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -2516,7 +2515,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
@@ -2654,7 +2653,7 @@ id|irq_desc_t
 op_star
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -3276,6 +3275,16 @@ id|buf
 op_assign
 id|buffer
 suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|irq_descp
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 r_int
 id|redir
 suffix:semicolon
@@ -3283,13 +3292,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq_desc
-c_func
-(paren
-id|irq
-)paren
-op_member_access_from_pointer
-id|handler-&gt;set_affinity
+id|desc-&gt;handler-&gt;set_affinity
 )paren
 r_return
 op_minus
@@ -3373,13 +3376,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|irq_desc
-c_func
-(paren
-id|irq
-)paren
-op_member_access_from_pointer
-id|handler
+id|desc-&gt;handler
 op_member_access_from_pointer
 id|set_affinity
 c_func
@@ -3571,7 +3568,7 @@ op_logical_neg
 id|root_irq_dir
 op_logical_or
 (paren
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
@@ -3782,7 +3779,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|i
