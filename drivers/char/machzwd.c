@@ -212,6 +212,11 @@ r_static
 id|spinlock_t
 id|zf_lock
 suffix:semicolon
+DECL|variable|zf_port_lock
+r_static
+id|spinlock_t
+id|zf_port_lock
+suffix:semicolon
 DECL|variable|zf_timer
 r_static
 r_struct
@@ -240,7 +245,7 @@ DECL|macro|dprintk
 macro_line|#&t;define dprintk(format, args...)
 macro_line|#else
 DECL|macro|dprintk
-macro_line|#&t;define dprintk(format, args...) printk(KERN_DEBUG PFX &quot;:&quot; __FUNCTION__ &quot;:%d: &quot; format, __LINE__ , ## args)
+macro_line|#&t;define dprintk(format, args...) printk(KERN_DEBUG PFX; &quot;:&quot; __FUNCTION__ &quot;:%d: &quot; format, __LINE__ , ## args)
 macro_line|#endif
 multiline_comment|/* STATUS register functions */
 DECL|function|zf_get_status
@@ -327,6 +332,7 @@ suffix:semicolon
 multiline_comment|/* WD#? counter functions */
 multiline_comment|/*&n; *&t;Just get current counter value&n; */
 DECL|function|zf_get_timer
+r_static
 r_inline
 r_int
 r_int
@@ -445,12 +451,25 @@ id|ctrl_reg
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* stop internal ping */
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
 id|zf_timer
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* stop watchdog timer */
@@ -485,9 +504,19 @@ c_func
 id|ctrl_reg
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|PFX
 l_string|&quot;: Watchdog timer is now disabled&bslash;n&quot;
 )paren
@@ -508,6 +537,19 @@ r_int
 id|ctrl_reg
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|zf_writeb
 c_func
@@ -568,9 +610,19 @@ c_func
 id|ctrl_reg
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|PFX
 l_string|&quot;: Watchdog timer is now enabled&bslash;n&quot;
 )paren
@@ -592,6 +644,10 @@ r_int
 id|ctrl_reg
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|zf_writeb
 c_func
@@ -624,6 +680,15 @@ id|jiffies
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * reset event is activated by transition from 0 to 1 on&n;&t;&t; * RESET_WD1 bit and we assume that it is already zero...&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ctrl_reg
 op_assign
 id|zf_get_control
@@ -655,6 +720,15 @@ c_func
 id|ctrl_reg
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|zf_port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|zf_timer.expires
 op_assign
 id|jiffies
@@ -674,6 +748,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 id|PFX
 l_string|&quot;: I will reset your machine&bslash;n&quot;
 )paren
@@ -1093,6 +1168,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 id|PFX
 l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
@@ -1175,12 +1251,10 @@ id|file_operations
 id|zf_fops
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,34)
 id|owner
 suffix:colon
 id|THIS_MODULE
 comma
-macro_line|#endif
 id|read
 suffix:colon
 id|zf_read
@@ -1263,6 +1337,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|PFX
 l_string|&quot;: Watchdog using action = %s&bslash;n&quot;
 comma
@@ -1274,6 +1349,7 @@ id|act
 suffix:semicolon
 )brace
 DECL|function|zf_init
+r_static
 r_int
 id|__init
 id|zf_init
@@ -1288,6 +1364,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|PFX
 l_string|&quot;: MachZ ZF-Logic Watchdog driver initializing.&bslash;n&quot;
 )paren
@@ -1325,6 +1402,7 @@ l_int|0xffff
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 id|PFX
 l_string|&quot;: no ZF-Logic found&bslash;n&quot;
 )paren
@@ -1375,6 +1453,13 @@ op_amp
 id|zf_lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|zf_port_lock
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|misc_register
@@ -1403,20 +1488,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,3)
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|ZF_IOBASE
-comma
-l_int|3
-)paren
-)paren
-(brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -1432,7 +1503,6 @@ l_string|&quot;MachZ ZFL WDT&quot;
 )paren
 )paren
 (brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -1451,20 +1521,6 @@ r_goto
 id|no_region
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,3)
-id|request_region
-c_func
-(paren
-id|ZF_IOBASE
-comma
-l_int|3
-comma
-l_string|&quot;MachZ ZFL WDT&quot;
-)paren
-suffix:semicolon
-DECL|macro|__exit
-mdefine_line|#define __exit
-macro_line|#endif
 id|ret
 op_assign
 id|register_reboot_notifier

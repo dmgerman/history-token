@@ -2591,6 +2591,10 @@ r_struct
 id|list_head
 id|usb_bus_list
 suffix:semicolon
+r_extern
+id|rwlock_t
+id|usb_bus_list_lock
+suffix:semicolon
 multiline_comment|/*&n; * USB device fs stuff&n; */
 macro_line|#ifdef CONFIG_USB_DEVICEFS
 multiline_comment|/*&n; * these are expected to be called from the USB core/hub thread&n; * with the kernel lock held&n; */

@@ -668,6 +668,8 @@ DECL|macro|CX86_CCR5
 mdefine_line|#define CX86_CCR5 0xe9
 DECL|macro|CX86_CCR6
 mdefine_line|#define CX86_CCR6 0xea
+DECL|macro|CX86_CCR7
+mdefine_line|#define CX86_CCR7 0xeb
 DECL|macro|CX86_DIR0
 mdefine_line|#define CX86_DIR0 0xfe
 DECL|macro|CX86_DIR1

@@ -44,6 +44,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
 id|h8_display_blank
 c_func
@@ -51,6 +52,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
 id|h8_display_unblank
 c_func
@@ -331,20 +333,24 @@ l_string|&quot;X0.0&quot;
 suffix:semicolon
 multiline_comment|/* no spaces */
 DECL|variable|intrbuf
+r_static
 r_union
 id|intr_buf
 id|intrbuf
 suffix:semicolon
 DECL|variable|intr_buf_ptr
+r_static
 r_int
 id|intr_buf_ptr
 suffix:semicolon
 DECL|variable|xx
+r_static
 r_union
 id|intr_buf
 id|xx
 suffix:semicolon
 DECL|variable|last_temp
+r_static
 id|u_char
 id|last_temp
 suffix:semicolon
@@ -362,6 +368,7 @@ mdefine_line|#define WRITE_DATA(d)&t;H8_WRITE((d), h8_base + H8_DATA_REG_OFF)
 DECL|macro|WRITE_CMD
 mdefine_line|#define WRITE_CMD(d)&t;H8_WRITE((d), h8_base + H8_CMD_REG_OFF)
 DECL|variable|h8_base
+r_static
 r_int
 r_int
 id|h8_base
@@ -369,6 +376,7 @@ op_assign
 id|H8_BASE_ADDR
 suffix:semicolon
 DECL|variable|h8_irq
+r_static
 r_int
 r_int
 id|h8_irq
@@ -376,6 +384,7 @@ op_assign
 id|H8_IRQ
 suffix:semicolon
 DECL|variable|h8_state
+r_static
 r_int
 r_int
 id|h8_state
@@ -383,6 +392,7 @@ op_assign
 id|H8_IDLE
 suffix:semicolon
 DECL|variable|h8_index
+r_static
 r_int
 r_int
 id|h8_index
@@ -391,27 +401,28 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|h8_enabled
+r_static
 r_int
 r_int
 id|h8_enabled
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|h8_actq
+r_static
 id|LIST_HEAD
 c_func
 (paren
 id|h8_actq
 )paren
 suffix:semicolon
-DECL|variable|h8_cmdq
+r_static
 id|LIST_HEAD
 c_func
 (paren
 id|h8_cmdq
 )paren
 suffix:semicolon
-DECL|variable|h8_freeq
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -420,6 +431,7 @@ id|h8_freeq
 suffix:semicolon
 multiline_comment|/* &n; * Globals used in thermal control of Alphabook1.&n; */
 DECL|variable|cpu_speed_divisor
+r_static
 r_int
 id|cpu_speed_divisor
 op_assign
@@ -427,12 +439,13 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|h8_event_mask
+r_static
 r_int
 id|h8_event_mask
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|h8_monitor_wait
+r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
 (paren
@@ -440,6 +453,7 @@ id|h8_monitor_wait
 )paren
 suffix:semicolon
 DECL|variable|h8_command_mask
+r_static
 r_int
 r_int
 id|h8_command_mask
@@ -447,54 +461,62 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|h8_uthermal_threshold
+r_static
 r_int
 id|h8_uthermal_threshold
 op_assign
 id|DEFAULT_UTHERMAL_THRESHOLD
 suffix:semicolon
 DECL|variable|h8_uthermal_window
+r_static
 r_int
 id|h8_uthermal_window
 op_assign
 id|UTH_HYSTERESIS
 suffix:semicolon
 DECL|variable|h8_debug
+r_static
 r_int
 id|h8_debug
 op_assign
 l_int|0xfffffdfc
 suffix:semicolon
 DECL|variable|h8_ldamp
+r_static
 r_int
 id|h8_ldamp
 op_assign
 id|MHZ_115
 suffix:semicolon
 DECL|variable|h8_udamp
+r_static
 r_int
 id|h8_udamp
 op_assign
 id|MHZ_57
 suffix:semicolon
 DECL|variable|h8_current_temp
+r_static
 id|u_char
 id|h8_current_temp
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|h8_system_temp
+r_static
 id|u_char
 id|h8_system_temp
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|h8_sync_channel
+r_static
 r_int
 id|h8_sync_channel
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|h8_sync_wait
+r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
 (paren
@@ -502,11 +524,13 @@ id|h8_sync_wait
 )paren
 suffix:semicolon
 DECL|variable|h8_init_performed
+r_static
 r_int
 id|h8_init_performed
 suffix:semicolon
 multiline_comment|/* CPU speeds and clock divisor values */
 DECL|variable|speed_tab
+r_static
 r_int
 id|speed_tab
 (braket
@@ -527,7 +551,7 @@ comma
 l_int|14
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * H8 interrupt handler&n; */
+multiline_comment|/*&n; * H8 interrupt handler&n;  */
 DECL|function|h8_intr
 r_static
 r_void
@@ -1387,6 +1411,7 @@ macro_line|#endif
 )brace
 multiline_comment|/* Called from console driver -- must make sure h8_enabled. */
 DECL|function|h8_display_blank
+r_static
 r_int
 id|h8_display_blank
 c_func
@@ -1440,6 +1465,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Called from console driver -- must make sure h8_enabled. */
 DECL|function|h8_display_unblank
+r_static
 r_int
 id|h8_display_unblank
 c_func
@@ -1491,8 +1517,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|h8_alloc_queues
+r_static
+r_int
 id|h8_alloc_queues
 c_func
 (paren
@@ -1541,6 +1568,7 @@ id|qp
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;H8: could not allocate memory for command queue&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2102,6 +2130,7 @@ l_int|0x200
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: value 0x%x&bslash;n&quot;
 comma
 id|intrbuf.word
@@ -2128,6 +2157,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: DC_CHANGE&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2158,6 +2188,7 @@ id|H8_POWER_BUTTON
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 "&quot;"
 id|Power
 r_switch
@@ -2209,6 +2240,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: THERMAL_THRESHOLD&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2247,6 +2279,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: DOCKING_STATION_STATUS&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2272,6 +2305,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: EXT_BATT_STATUS&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2296,6 +2330,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: EXT_BATT_CHARGE_STATE&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2320,6 +2355,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: BATT_CHANGE_OVER&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2344,6 +2380,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: WATCHDOG&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2369,6 +2406,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: SHUTDOWN&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2394,6 +2432,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: KEYBOARD&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2419,6 +2458,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: EXT_MOUSE_OR_CASE_SWITCH&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2444,11 +2484,13 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: INT_BATT_LOW&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* post event, warn user */
+id|post
+multiline_comment|/* event, warn user */
 )brace
 r_if
 c_cond
@@ -2469,6 +2511,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: INT_BATT_CHARGE_STATE&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2494,6 +2537,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: INT_BATT_STATUS&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2518,6 +2562,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: INT_BATT_CHARGE_THRESHOLD&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2543,6 +2588,7 @@ l_int|0x4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_read_event_status: EXT_BATT_LOW&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2554,6 +2600,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function called when H8 has performed requested command.&n; */
+r_static
 r_void
 DECL|function|h8_cmd_done
 id|h8_cmd_done
@@ -2587,6 +2634,7 @@ l_int|0x40000
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Sync command done - byte returned was 0x%x&bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2616,6 +2664,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: read Ethernet address: command done - address: %x - %x - %x - %x - %x - %x &bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2673,6 +2722,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Max recorded CPU temp %d, Sys temp %d&bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2704,6 +2754,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Min recorded CPU temp %d, Sys temp %d&bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2784,6 +2835,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; H8: RD_PWR_ON_CYCLES command done&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2795,6 +2847,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: RD_PWR_ON_SECS command done&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2891,6 +2944,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Read int batt status cmd done - returned was %x %x %x&bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2947,6 +3001,7 @@ l_int|0x20000
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Device control cmd done - byte returned was 0x%x&bslash;n&quot;
 comma
 id|qp-&gt;rcvbuf
@@ -2998,6 +3053,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Idle and busy speed command done&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3129,6 +3185,7 @@ id|H8_PWR_OFF
 suffix:colon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: misc command completed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3615,6 +3672,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;H8: Initial CPU temp: %d&bslash;n&quot;
 comma
 id|curr_temp
@@ -3681,6 +3739,7 @@ l_int|0x2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;h8_monitor_thread awakened, mask:%x&bslash;n&quot;
 comma
 id|h8_event_mask
@@ -3780,6 +3839,7 @@ l_int|0x10
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;H8: Thermal threshold %d F reached&bslash;n&quot;
 comma
 id|h8_uthermal_threshold
@@ -3875,6 +3935,7 @@ l_int|0x10
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;H8: CPU cool, applying cpu_divisor: %d &bslash;n&quot;
 comma
 id|h8_ldamp
@@ -4001,6 +4062,7 @@ l_int|0x8
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: Setting CPU speed to %d MHz&bslash;n&quot;
 comma
 id|speed_tab
@@ -4133,6 +4195,7 @@ l_int|0x8
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;H8: CPU speed current setting: %d MHz&bslash;n&quot;
 comma
 id|speed

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 multiline_comment|/* cats host-specific stuff */
 DECL|variable|__initdata
 r_static
@@ -104,9 +105,17 @@ id|cats_pci
 id|__initdata
 op_assign
 (brace
+id|setup_resources
+suffix:colon
+id|dc21285_setup_resources
+comma
 id|init
 suffix:colon
 id|dc21285_init
+comma
+id|mem_offset
+suffix:colon
+id|DC21285_PCI_MEM
 comma
 id|swizzle
 suffix:colon

@@ -93,7 +93,6 @@ op_star
 id|PortP
 )paren
 suffix:semicolon
-r_static
 r_int
 id|RIOShortCommand
 c_func
@@ -1366,6 +1365,27 @@ id|PortP-&gt;State
 op_or_assign
 id|RIO_WOPEN
 suffix:semicolon
+id|rio_spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|PortP-&gt;portSem
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|RIODelay
+(paren
+id|PortP
+comma
+id|HUNDRED_MS
+)paren
+op_eq
+id|RIO_FAIL
+)paren
 macro_line|#if 0
 r_if
 c_cond
@@ -1384,6 +1404,7 @@ op_or
 id|PCATCH
 )paren
 )paren
+macro_line|#endif
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t;** ACTION: verify that this is a good thing&n;&t;&t;&t;&t;&t;** to do here. -- ???&n;&t;&t;&t;&t;&t;** I think it&squot;s OK. -- REW&n;&t;&t;&t;&t;&t;*/
 id|rio_dprintk
@@ -1429,7 +1450,6 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 id|PortP-&gt;State
 op_and_assign
@@ -1562,12 +1582,19 @@ suffix:semicolon
 r_int
 r_try
 op_assign
-l_int|25
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* Disable the timeouts by setting them to -1 */
 r_int
 id|repeat_this
 op_assign
-l_int|0xff
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Congrats to those having 15 years of &n;&t;&t;&t;&t;     uptime! (You get to break the driver.) */
+r_int
+id|end_time
 suffix:semicolon
 r_struct
 id|tty_struct
@@ -1625,6 +1652,24 @@ r_int
 )paren
 id|tty
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PortP-&gt;gs.closing_wait
+)paren
+id|end_time
+op_assign
+id|jiffies
+op_plus
+id|PortP-&gt;gs.closing_wait
+suffix:semicolon
+r_else
+id|end_time
+op_assign
+id|jiffies
+op_plus
+id|MAX_SCHEDULE_TIMEOUT
 suffix:semicolon
 id|Modem
 op_assign
@@ -1726,6 +1771,16 @@ op_complement
 id|RIO_LOPEN
 )paren
 suffix:semicolon
+id|PortP-&gt;State
+op_and_assign
+op_complement
+id|RIO_CARR_ON
+suffix:semicolon
+id|PortP-&gt;ModemState
+op_and_assign
+op_complement
+id|MSVR1_CD
+suffix:semicolon
 multiline_comment|/*&n;&t;** If the device was open as both a Modem and a tty line&n;&t;** then we need to wimp out here, as the port has not really&n;&t;** been finally closed (gee, whizz!) The test here uses the&n;&t;** bit for the OTHER mode of operation, to see if THAT is&n;&t;** still active!&n;&t;*/
 r_if
 c_cond
@@ -1798,7 +1853,6 @@ comma
 l_string|&quot;Timeout 1 starts&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1932,7 +1986,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|PortP-&gt;TxBufferIn
 op_assign
 id|PortP-&gt;TxBufferOut
@@ -2082,9 +2135,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-r_try
-op_eq
-l_int|0
+id|time_after
+(paren
+id|jiffies
+comma
+id|end_time
+)paren
 )paren
 (brace
 id|rio_dprintk
@@ -2134,14 +2190,40 @@ r_goto
 id|close_end
 suffix:semicolon
 )brace
-id|RIODelay_ni
+r_if
+c_cond
+(paren
+id|RIODelay
 c_func
 (paren
 id|PortP
 comma
 id|HUNDRED_MS
 )paren
+op_eq
+id|RIO_FAIL
+)paren
+(brace
+id|rio_dprintk
+(paren
+id|RIO_DEBUG_TTY
+comma
+l_string|&quot;RTA EINTR in delay &bslash;n&quot;
+)paren
 suffix:semicolon
+id|RIOPreemptiveCmd
+c_func
+(paren
+id|p
+comma
+id|PortP
+comma
+id|FCLOSE
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 id|rio_spin_lock_irqsave
 c_func
@@ -2380,7 +2462,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** Put a command onto a port.&n;** The PortPointer, command, length and arg are passed.&n;** The len is the length *inclusive* of the command byte,&n;** and so for a command that takes no data, len==1.&n;** The arg is a single byte, and is only used if len==2.&n;** Other values of len aren&squot;t allowed, and will cause&n;** a panic.&n;*/
 DECL|function|RIOShortCommand
-r_static
 r_int
 id|RIOShortCommand
 c_func

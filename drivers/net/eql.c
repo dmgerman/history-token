@@ -1,13 +1,4 @@
 multiline_comment|/*&n; * Equalizer Load-balancer for serial network interfaces.&n; *&n; * (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; * &n; * The author may be reached as simon@ncm.com, or C/O&n; *    NCM&n; *    Attn: Simon Janes&n; *    6803 Whittier Ave&n; *    McLean VA 22101&n; *    Phone: 1-703-847-0040 ext 103&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;Equalizer1996: $Revision: 1.2.1 $ $Date: 1996/09/22 13:52:00 $ Simon Janes (simon@ncm.com)&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/*&n; * Sources:&n; *   skeleton.c by Donald Becker.&n; * Inspirations:&n; *   The Harried and Overworked Alan Cox&n; * Conspiracies:&n; *   The Alan Cox and Mike McLagan plot to get someone else to do the code, &n; *   which turned out to be me.&n; */
 multiline_comment|/*&n; * $Log: eql.c,v $&n; * Revision 1.2  1996/04/11 17:51:52  guru&n; * Added one-line eql_remove_slave patch.&n; *&n; * Revision 1.1  1996/04/11 17:44:17  guru&n; * Initial revision&n; *&n; * Revision 3.13  1996/01/21  15:17:18  alan&n; * tx_queue_len changes.&n; * reformatted.&n; *&n; * Revision 3.12  1995/03/22  21:07:51  anarchy&n; * Added capable() checks on configuration.&n; * Moved header file.&n; *&n; * Revision 3.11  1995/01/19  23:14:31  guru&n; * &t;&t;      slave_load = (ULONG_MAX - (ULONG_MAX / 2)) -&n; * &t;&t;&t;(priority_Bps) + bytes_queued * 8;&n; *&n; * Revision 3.10  1995/01/19  23:07:53  guru&n; * back to&n; * &t;&t;      slave_load = (ULONG_MAX - (ULONG_MAX / 2)) -&n; * &t;&t;&t;(priority_Bps) + bytes_queued;&n; *&n; * Revision 3.9  1995/01/19  22:38:20  guru&n; * &t;&t;      slave_load = (ULONG_MAX - (ULONG_MAX / 2)) -&n; * &t;&t;&t;(priority_Bps) + bytes_queued * 4;&n; *&n; * Revision 3.8  1995/01/19  22:30:55  guru&n; *       slave_load = (ULONG_MAX - (ULONG_MAX / 2)) -&n; * &t;&t;&t;(priority_Bps) + bytes_queued * 2;&n; *&n; * Revision 3.7  1995/01/19  21:52:35  guru&n; * printk&squot;s trimmed out.&n; *&n; * Revision 3.6  1995/01/19  21:49:56  guru&n; * This is working pretty well. I gained 1 K/s in speed.. now it&squot;s just&n; * robustness and printk&squot;s to be diked out.&n; *&n; * Revision 3.5  1995/01/18  22:29:59  guru&n; * still crashes the kernel when the lock_wait thing is woken up.&n; *&n; * Revision 3.4  1995/01/18  21:59:47  guru&n; * Broken set-bit locking snapshot&n; *&n; * Revision 3.3  1995/01/17  22:09:18  guru&n; * infinite sleep in a lock somewhere..&n; *&n; * Revision 3.2  1995/01/15  16:46:06  guru&n; * Log trimmed of non-pertinent 1.x branch messages&n; *&n; * Revision 3.1  1995/01/15  14:41:45  guru&n; * New Scheduler and timer stuff...&n; *&n; * Revision 1.15  1995/01/15  14:29:02  guru&n; * Will make 1.14 (now 1.15) the 3.0 branch, and the 1.12 the 2.0 branch, the one&n; * with the dumber scheduler&n; *&n; * Revision 1.14  1995/01/15  02:37:08  guru&n; * shock.. the kept-new-versions could have zonked working&n; * stuff.. shudder&n; *&n; * Revision 1.13  1995/01/15  02:36:31  guru&n; * big changes&n; *&n; * &t;scheduler was torn out and replaced with something smarter&n; *&n; * &t;global names not prefixed with eql_ were renamed to protect&n; * &t;against namespace collisions&n; *&n; * &t;a few more abstract interfaces were added to facilitate any&n; * &t;potential change of datastructure.  the driver is still using&n; * &t;a linked list of slaves.  going to a heap would be a bit of&n; * &t;an overkill.&n; *&n; * &t;this compiles fine with no warnings.&n; *&n; * &t;the locking mechanism and timer stuff must be written however,&n; * &t;this version will not work otherwise&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
@@ -19,6 +10,17 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_eql.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;Equalizer1996: $Revision: 1.2.1 $ $Date: 1996/09/22 13:52:00 $ Simon Janes (simon@ncm.com)&bslash;n&quot;
+suffix:semicolon
 macro_line|#ifndef EQL_DEBUG
 multiline_comment|/* #undef EQL_DEBUG      -* print nothing at all, not even a boot-banner */
 multiline_comment|/* #define EQL_DEBUG 1   -* print only the boot-banner */
@@ -1144,6 +1146,10 @@ id|skb-&gt;priority
 op_assign
 l_int|1
 suffix:semicolon
+id|slave-&gt;bytes_queued
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|dev_queue_xmit
 (paren
 id|skb
@@ -1151,10 +1157,6 @@ id|skb
 suffix:semicolon
 id|eql-&gt;stats-&gt;tx_packets
 op_increment
-suffix:semicolon
-id|slave-&gt;bytes_queued
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 )brace
 r_else

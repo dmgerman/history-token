@@ -910,16 +910,7 @@ l_int|0x57
 suffix:semicolon
 singleline_comment|// HW_TEST
 singleline_comment|//static UCHAR ct88[]={ 3, BTH,     0x58,0,0                 }; // RCV_THRESHOLD
-DECL|variable|ct89
-r_static
-id|UCHAR
-id|ct89
-(braket
-)braket
-op_assign
-initialization_block
-suffix:semicolon
-singleline_comment|// DSS_NOW
+singleline_comment|//static UCHAR ct89[]={ 1, BYP,     0x59                     }; // DSS_NOW
 singleline_comment|//static UCHAR ct90[]={ 3, BYP,     0x5A,0,0                 }; // Set SILO
 singleline_comment|//static UCHAR ct91[]={ 2, BYP,     0x5B,0                   }; // timed break
 singleline_comment|// Some composite commands as well

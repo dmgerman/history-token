@@ -1,19 +1,29 @@
-multiline_comment|/* &n;   buz - Iomega Buz driver&n;&n;   Copyright (C) 1999 Rainer Johanni &lt;Rainer@Johanni.de&gt;&n;&n;   based on&n;&n;   buz.0.0.3 Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;   and&n;&n;   bttv - Bt848 frame grabber driver&n;   Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n;    zoran - Iomega Buz driver&n;&n;    Copyright (C) 1999 Rainer Johanni &lt;Rainer@Johanni.de&gt;&n;&n;   based on&n;&n;    zoran.0.0.3 Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;   and&n;&n;    bttv - Bt848 frame grabber driver&n;    Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _BUZ_H_
 DECL|macro|_BUZ_H_
 mdefine_line|#define _BUZ_H_
-multiline_comment|/* The Buz only supports a maximum width of 720, but some V4L&n;   applications (e.g. xawtv are more happy with 768).&n;   If XAWTV_HACK is defined, we try to fake a device with bigger width */
-DECL|macro|XAWTV_HACK
-mdefine_line|#define XAWTV_HACK
-macro_line|#ifdef XAWTV_HACK
-DECL|macro|BUZ_MAX_WIDTH
-mdefine_line|#define   BUZ_MAX_WIDTH   768&t;/* never display more than 768 pixels */
-macro_line|#else
-DECL|macro|BUZ_MAX_WIDTH
-mdefine_line|#define   BUZ_MAX_WIDTH   720&t;/* never display more than 720 pixels */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if LINUX_VERSION_CODE &lt; 0x20212
+DECL|typedef|wait_queue_head_t
+r_typedef
+r_struct
+id|wait_queue
+op_star
+id|wait_queue_head_t
+suffix:semicolon
 macro_line|#endif
+multiline_comment|/* The Buz only supports a maximum width of 720, but some V4L&n;   applications (e.g. xawtv are more happy with 768).&n;   If XAWTV_HACK is defined, we try to fake a device with bigger width */
+singleline_comment|//#define XAWTV_HACK
+singleline_comment|//#ifdef XAWTV_HACK
+singleline_comment|//#define   BUZ_MAX_WIDTH   768   /* never display more than 768 pixels */
+DECL|macro|BUZ_MAX_WIDTH
+mdefine_line|#define   BUZ_MAX_WIDTH   (zr-&gt;timing-&gt;Wa)
+singleline_comment|//#else
+singleline_comment|//#define   BUZ_MAX_WIDTH   720   /* never display more than 720 pixels */
+singleline_comment|//#endif
+singleline_comment|//#define   BUZ_MAX_HEIGHT  576   /* never display more than 576 rows */
 DECL|macro|BUZ_MAX_HEIGHT
-mdefine_line|#define   BUZ_MAX_HEIGHT  576&t;/* never display more than 576 rows */
+mdefine_line|#define   BUZ_MAX_HEIGHT  (zr-&gt;timing-&gt;Ha)
 DECL|macro|BUZ_MIN_WIDTH
 mdefine_line|#define   BUZ_MIN_WIDTH    32&t;/* never display less than 32 pixels */
 DECL|macro|BUZ_MIN_HEIGHT
@@ -239,7 +249,7 @@ suffix:semicolon
 multiline_comment|/* Makes 512 bytes for this structure */
 )brace
 suffix:semicolon
-multiline_comment|/*&n;   Private IOCTL to set up for displaying MJPEG&n; */
+multiline_comment|/*&n;Private IOCTL to set up for displaying MJPEG&n;*/
 DECL|macro|BUZIOC_G_PARAMS
 mdefine_line|#define BUZIOC_G_PARAMS       _IOR (&squot;v&squot;, BASE_VIDIOCPRIVATE+0,  struct zoran_params)
 DECL|macro|BUZIOC_S_PARAMS
@@ -265,16 +275,38 @@ DECL|macro|BUZ_MASK_FRAME
 mdefine_line|#define BUZ_MASK_FRAME    255&t;/* Must be BUZ_MAX_FRAME-1 */
 macro_line|#if VIDEO_MAX_FRAME &lt;= 32
 DECL|macro|V4L_MAX_FRAME
-mdefine_line|#define   V4L_MAX_FRAME   32
+macro_line|#   define   V4L_MAX_FRAME   32
 macro_line|#elif VIDEO_MAX_FRAME &lt;= 64
 DECL|macro|V4L_MAX_FRAME
-mdefine_line|#define   V4L_MAX_FRAME   64
+macro_line|#   define   V4L_MAX_FRAME   64
 macro_line|#else
-macro_line|#error   &quot;Too many video frame buffers to handle&quot;
+macro_line|#   error   &quot;Too many video frame buffers to handle&quot;
 macro_line|#endif
 DECL|macro|V4L_MASK_FRAME
 mdefine_line|#define   V4L_MASK_FRAME   (V4L_MAX_FRAME - 1)
 macro_line|#include &quot;zr36057.h&quot;
+DECL|enum|card_type
+r_enum
+id|card_type
+(brace
+DECL|enumerator|UNKNOWN
+id|UNKNOWN
+op_assign
+l_int|0
+comma
+DECL|enumerator|DC10
+id|DC10
+comma
+DECL|enumerator|DC10plus
+id|DC10plus
+comma
+DECL|enumerator|LML33
+id|LML33
+comma
+DECL|enumerator|BUZ
+id|BUZ
+)brace
+suffix:semicolon
 DECL|enum|zoran_codec_mode
 r_enum
 id|zoran_codec_mode
@@ -380,6 +412,34 @@ suffix:semicolon
 multiline_comment|/* state: unused/pending/done */
 )brace
 suffix:semicolon
+DECL|struct|tvnorm
+r_struct
+id|tvnorm
+(brace
+DECL|member|Wt
+DECL|member|Wa
+DECL|member|HStart
+DECL|member|HSyncStart
+DECL|member|Ht
+DECL|member|Ha
+DECL|member|VStart
+id|u16
+id|Wt
+comma
+id|Wa
+comma
+id|HStart
+comma
+id|HSyncStart
+comma
+id|Ht
+comma
+id|Ha
+comma
+id|VStart
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|zoran
 r_struct
 id|zoran
@@ -404,6 +464,17 @@ r_int
 id|user
 suffix:semicolon
 multiline_comment|/* number of current users (0 or 1) */
+DECL|member|card
+r_enum
+id|card_type
+id|card
+suffix:semicolon
+DECL|member|timing
+r_struct
+id|tvnorm
+op_star
+id|timing
+suffix:semicolon
 DECL|member|id
 r_int
 r_int
@@ -431,15 +502,6 @@ r_char
 id|revision
 suffix:semicolon
 multiline_comment|/* revision of zr36057 */
-DECL|member|board
-r_int
-id|board
-suffix:semicolon
-multiline_comment|/* Board type */
-DECL|macro|BOARD_BUZ
-mdefine_line|#define BOARD_BUZ&t;&t;0
-DECL|macro|BOARD_LML33
-mdefine_line|#define BOARD_LML33&t;&t;1&t;
 DECL|member|zr36057_adr
 r_int
 r_int
@@ -462,7 +524,13 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-multiline_comment|/* Spinlock */
+multiline_comment|/* Spinlock irq and hardware */
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
+multiline_comment|/* Guard parallel ioctls and mmap */
 multiline_comment|/* Video for Linux parameters */
 DECL|member|picture
 r_struct
@@ -504,7 +572,6 @@ DECL|member|v4l_capq
 id|wait_queue_head_t
 id|v4l_capq
 suffix:semicolon
-multiline_comment|/* wait here for grab to finish */
 DECL|member|v4l_overlay_active
 r_int
 id|v4l_overlay_active
@@ -644,7 +711,24 @@ r_int
 r_int
 id|jpg_seq_num
 suffix:semicolon
-multiline_comment|/* count of frames since grab/play started */
+multiline_comment|/* count of frames since grab/play started        */
+DECL|member|jpg_err_seq
+r_int
+r_int
+id|jpg_err_seq
+suffix:semicolon
+multiline_comment|/* last seq_num before error                      */
+DECL|member|jpg_err_shift
+r_int
+r_int
+id|jpg_err_shift
+suffix:semicolon
+DECL|member|jpg_queued_num
+r_int
+r_int
+id|jpg_queued_num
+suffix:semicolon
+multiline_comment|/* count of frames queued since grab/play started */
 multiline_comment|/* zr36057&squot;s code buffer table */
 DECL|member|stat_com
 id|u32
@@ -670,10 +754,106 @@ id|BUZ_MAX_FRAME
 )braket
 suffix:semicolon
 multiline_comment|/* MJPEG buffers&squot; info */
+multiline_comment|/* Additional stuff for testing */
+DECL|member|zoran_proc
+r_struct
+id|proc_dir_entry
+op_star
+id|zoran_proc
+suffix:semicolon
+DECL|member|testing
+r_int
+id|testing
+suffix:semicolon
+DECL|member|jpeg_error
+r_int
+id|jpeg_error
+suffix:semicolon
+DECL|member|intr_counter_GIRQ1
+r_int
+id|intr_counter_GIRQ1
+suffix:semicolon
+DECL|member|intr_counter_GIRQ0
+r_int
+id|intr_counter_GIRQ0
+suffix:semicolon
+DECL|member|intr_counter_CodRepIRQ
+r_int
+id|intr_counter_CodRepIRQ
+suffix:semicolon
+DECL|member|intr_counter_JPEGRepIRQ
+r_int
+id|intr_counter_JPEGRepIRQ
+suffix:semicolon
+DECL|member|field_counter
+r_int
+id|field_counter
+suffix:semicolon
+DECL|member|IRQ1_in
+r_int
+id|IRQ1_in
+suffix:semicolon
+DECL|member|IRQ1_out
+r_int
+id|IRQ1_out
+suffix:semicolon
+DECL|member|JPEG_in
+r_int
+id|JPEG_in
+suffix:semicolon
+DECL|member|JPEG_out
+r_int
+id|JPEG_out
+suffix:semicolon
+DECL|member|JPEG_0
+r_int
+id|JPEG_0
+suffix:semicolon
+DECL|member|JPEG_1
+r_int
+id|JPEG_1
+suffix:semicolon
+DECL|member|END_event_missed
+r_int
+id|END_event_missed
+suffix:semicolon
+DECL|member|JPEG_missed
+r_int
+id|JPEG_missed
+suffix:semicolon
+DECL|member|JPEG_error
+r_int
+id|JPEG_error
+suffix:semicolon
+DECL|member|num_errors
+r_int
+id|num_errors
+suffix:semicolon
+DECL|member|JPEG_max_missed
+r_int
+id|JPEG_max_missed
+suffix:semicolon
+DECL|member|JPEG_min_missed
+r_int
+id|JPEG_min_missed
+suffix:semicolon
+DECL|member|last_isr
+id|u32
+id|last_isr
+suffix:semicolon
+DECL|member|frame_num
+r_int
+r_int
+id|frame_num
+suffix:semicolon
+DECL|member|test_q
+id|wait_queue_head_t
+id|test_q
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*The following should be done in more portable way. It depends on define&n;   of _ALPHA_BUZ in the Makefile. */
+multiline_comment|/*The following should be done in more portable way. It depends on define&n;  of _ALPHA_BUZ in the Makefile.*/
 macro_line|#ifdef _ALPHA_BUZ
 DECL|macro|btwrite
 mdefine_line|#define btwrite(dat,adr)    writel((dat),(char *) (zr-&gt;zr36057_adr+(adr)))
@@ -701,8 +881,13 @@ DECL|macro|I2C_STBEE
 mdefine_line|#define I2C_STBEE          0xae
 DECL|macro|I2C_SAA7111
 mdefine_line|#define   I2C_SAA7111        0x48
+DECL|macro|I2C_SAA7110
+mdefine_line|#define   I2C_SAA7110        0x9c
 DECL|macro|I2C_SAA7185
 mdefine_line|#define   I2C_SAA7185        0x88
+singleline_comment|//#define   I2C_ADV7175        0xd4
+DECL|macro|I2C_ADV7175
+mdefine_line|#define   I2C_ADV7175        0x54
 DECL|macro|TDA9850_CON1
 mdefine_line|#define TDA9850_CON1       0x04
 DECL|macro|TDA9850_CON2

@@ -2838,9 +2838,8 @@ r_case
 id|IDETAPE_ERASE_CMD
 suffix:colon
 r_return
-(paren
 l_string|&quot;ERASE_CMD&quot;
-)paren
+suffix:semicolon
 r_case
 id|IDETAPE_MODE_SENSE_CMD
 suffix:colon

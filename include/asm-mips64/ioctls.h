@@ -82,8 +82,6 @@ DECL|macro|FIOASYNC
 mdefine_line|#define FIOASYNC&t;0x667d
 DECL|macro|FIONBIO
 mdefine_line|#define FIONBIO&t;&t;0x667e
-DECL|macro|FIOQSIZE
-mdefine_line|#define FIOQSIZE&t;0x667f
 macro_line|#if defined(__USE_MISC) || defined (__KERNEL__)
 DECL|macro|TIOCGLTC
 mdefine_line|#define TIOCGLTC&t;(tIOC | 116)&t;&t;/* get special local chars */

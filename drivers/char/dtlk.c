@@ -365,8 +365,6 @@ r_char
 id|ch
 suffix:semicolon
 r_int
-id|retval
-comma
 id|i
 op_assign
 l_int|0
@@ -446,9 +444,6 @@ multiline_comment|/*        printk(&quot;dtlk_read() reads 0x%02x&bslash;n&quot;
 r_if
 c_cond
 (paren
-(paren
-id|retval
-op_assign
 id|put_user
 c_func
 (paren
@@ -458,9 +453,9 @@ id|buf
 op_increment
 )paren
 )paren
-)paren
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 id|i
 op_increment
@@ -544,8 +539,6 @@ id|retries
 op_assign
 l_int|0
 comma
-id|err
-comma
 id|ch
 suffix:semicolon
 id|TRACE_TEXT
@@ -582,8 +575,9 @@ id|i
 op_increment
 )paren
 (brace
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -593,6 +587,10 @@ id|buf
 op_plus
 id|i
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -672,9 +670,7 @@ id|i
 OL
 id|count
 op_logical_and
-(paren
-id|err
-op_assign
+op_logical_neg
 id|get_user
 c_func
 (paren
@@ -682,9 +678,6 @@ id|ch
 comma
 id|buf
 )paren
-)paren
-op_eq
-l_int|0
 op_logical_and
 (paren
 id|ch
@@ -1005,9 +998,6 @@ id|dtlk_settings
 op_star
 id|sp
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 r_char
 id|portval
 suffix:semicolon
@@ -1033,8 +1023,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1056,11 +1047,6 @@ r_struct
 id|dtlk_settings
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
 r_return
 op_minus

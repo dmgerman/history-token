@@ -2711,6 +2711,19 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|rc
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* if we get here, we need to clean up pci driver instance&n;&t; * and return some sort of error */
 id|pci_unregister_driver
@@ -2719,8 +2732,7 @@ id|drv
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|rc
 suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_PCI */

@@ -32,7 +32,7 @@ multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Linus Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Linus &squot;Frodo Rabbit&squot; Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
 multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/uhci/hc*&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
@@ -1069,14 +1069,7 @@ id|td-&gt;link
 op_assign
 id|UHCI_PTR_TERM
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|td-&gt;fl_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -1655,14 +1648,7 @@ id|qh-&gt;link
 op_assign
 id|UHCI_PTR_TERM
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|qh-&gt;list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -2479,14 +2465,7 @@ op_assign
 id|UHCI_PTR_TERM
 suffix:semicolon
 )brace
-id|list_del
-c_func
-(paren
-op_amp
-id|urbp-&gt;queue_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -2780,14 +2759,7 @@ id|td-&gt;list
 )paren
 r_return
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|td-&gt;list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -7177,14 +7149,7 @@ id|urb
 )paren
 suffix:semicolon
 )brace
-id|list_del
-c_func
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -7402,14 +7367,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -9637,14 +9595,7 @@ id|tmp
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|qh-&gt;remove_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -10073,14 +10024,7 @@ id|tmp
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|urbp-&gt;complete_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -10186,14 +10130,7 @@ id|tmp
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp

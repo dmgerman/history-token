@@ -1280,6 +1280,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|SRpnt-&gt;sr_device-&gt;scsi_level
+op_le
+id|SCSI_2
+)paren
 id|cmd
 (braket
 l_int|1
@@ -3439,7 +3446,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* successfull recovery leaves drive ready for frame */
+multiline_comment|/* successful recovery leaves drive ready for frame */
 r_if
 c_cond
 (paren
@@ -7217,8 +7224,12 @@ id|STp-&gt;devt
 suffix:semicolon
 r_int
 id|expected
-op_assign
-l_int|0
+id|__attribute__
+(paren
+(paren
+id|__unused__
+)paren
+)paren
 suffix:semicolon
 r_int
 id|attempts

@@ -1,3 +1,6 @@
+macro_line|#ifndef _LINUX_NLS_H
+DECL|macro|_LINUX_NLS_H
+mdefine_line|#define _LINUX_NLS_H
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* unicode character */
 r_typedef
@@ -192,4 +195,5 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif /* _LINUX_NLS_H */
 eof

@@ -108,9 +108,9 @@ mdefine_line|#define DMFE_TXTH_1K&t;0xC000&t;&t;/* TX TH 1K  byte */
 DECL|macro|DMFE_TIMER_WUT
 mdefine_line|#define DMFE_TIMER_WUT  (jiffies + HZ * 1)/* timer wakeup time : 1 second */
 DECL|macro|DMFE_TX_TIMEOUT
-mdefine_line|#define DMFE_TX_TIMEOUT (HZ * 1.5)&t;/* tx packet time-out time 1.5 s&quot; */
+mdefine_line|#define DMFE_TX_TIMEOUT ((3*HZ)/2)&t;/* tx packet time-out time 1.5 s&quot; */
 DECL|macro|DMFE_TX_KICK
-mdefine_line|#define DMFE_TX_KICK &t;(HZ * 0.5)&t;/* tx packet Kick-out time 0.5 s&quot; */
+mdefine_line|#define DMFE_TX_KICK &t;(HZ/2)&t;/* tx packet Kick-out time 0.5 s&quot; */
 DECL|macro|DMFE_DBUG
 mdefine_line|#define DMFE_DBUG(dbug_now, msg, value) if (dmfe_debug || (dbug_now)) printk(KERN_ERR &quot;&lt;DMFE&gt;: %s %lx&bslash;n&quot;, (msg), (long) (value))
 DECL|macro|SHOW_MEDIA_TYPE

@@ -1,45 +1,9 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/mach/pci.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-DECL|macro|MAX_NR_BUS
-mdefine_line|#define MAX_NR_BUS&t;2
-DECL|struct|arm_bus_sysdata
-r_struct
-id|arm_bus_sysdata
-(brace
-multiline_comment|/*&n;&t; * bitmask of features we can turn.&n;&t; * See PCI command register for more info.&n;&t; */
-DECL|member|features
-id|u16
-id|features
-suffix:semicolon
-multiline_comment|/*&n;&t; * Maximum devsel for this bus.&n;&t; */
-DECL|member|maxdevsel
-id|u16
-id|maxdevsel
-suffix:semicolon
-multiline_comment|/*&n;&t; * The maximum latency that devices on this&n;&t; * bus can withstand.&n;&t; */
-DECL|member|max_lat
-id|u8
-id|max_lat
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|arm_pci_sysdata
-r_struct
-id|arm_pci_sysdata
-(brace
-DECL|member|bus
-r_struct
-id|arm_bus_sysdata
-id|bus
-(braket
-id|MAX_NR_BUS
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|hw_pci
 r_struct
 id|hw_pci
 (brace
+multiline_comment|/* Initialise the hardware */
 DECL|member|init
 r_void
 (paren
@@ -47,11 +11,31 @@ op_star
 id|init
 )paren
 (paren
-r_struct
-id|arm_pci_sysdata
+r_void
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Setup bus resources */
+DECL|member|setup_resources
+r_void
+(paren
+op_star
+id|setup_resources
+)paren
+(paren
+r_struct
+id|resource
+op_star
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is the offset of PCI memory base registers&n;&t; * to physical memory.&n;&t; */
+DECL|member|mem_offset
+r_int
+r_int
+id|mem_offset
+suffix:semicolon
+multiline_comment|/* IRQ swizzle */
 DECL|member|swizzle
 id|u8
 (paren
@@ -69,6 +53,7 @@ op_star
 id|pin
 )paren
 suffix:semicolon
+multiline_comment|/* IRQ mapping */
 DECL|member|map_irq
 r_int
 (paren
@@ -105,24 +90,28 @@ op_star
 id|pin
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__init
+id|dc21285_setup_resources
+c_func
+(paren
+r_struct
+id|resource
+op_star
+op_star
+id|resource
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|__init
 id|dc21285_init
 c_func
 (paren
-r_struct
-id|arm_pci_sysdata
-op_star
-)paren
-suffix:semicolon
 r_void
-id|__init
-id|plx90x0_init
-c_func
-(paren
-r_struct
-id|arm_pci_sysdata
 op_star
+id|sysdata
 )paren
 suffix:semicolon
 eof

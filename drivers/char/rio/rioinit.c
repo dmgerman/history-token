@@ -5956,8 +5956,7 @@ id|rup
 dot
 id|RupLock
 op_assign
-op_minus
-l_int|1
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 )brace
 )brace

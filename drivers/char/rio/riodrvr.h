@@ -2,6 +2,7 @@ multiline_comment|/*&n;** ------------------------------------------------------
 macro_line|#ifndef __riodrvr_h
 DECL|macro|__riodrvr_h
 mdefine_line|#define __riodrvr_h
+macro_line|#include &lt;asm/param.h&gt;&t;/* for HZ */
 macro_line|#ifdef SCCS_LABELS
 DECL|variable|_riodrvr_h_sccs_
 r_static
@@ -14,8 +15,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|MEMDUMP_SIZE
 mdefine_line|#define MEMDUMP_SIZE&t;32
-DECL|macro|HZ
-mdefine_line|#define HZ&t;&t;&t;&t;100
 DECL|macro|MOD_DISABLE
 mdefine_line|#define&t;MOD_DISABLE&t;(RIO_NOREAD|RIO_NOWRITE|RIO_NOXPRINT)
 DECL|struct|rio_info

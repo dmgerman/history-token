@@ -1,10 +1,11 @@
 multiline_comment|/*&n; * (C) 2000 R.E.Wolff@BitWizard.nl&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|disable
 mdefine_line|#define disable(oldspl) save_flags (oldspl)
 DECL|macro|restore
 mdefine_line|#define restore(oldspl) restore_flags (oldspl)
 DECL|macro|sysbrk
-mdefine_line|#define sysbrk(x) kmalloc ((x), GFP_KERNEL)
+mdefine_line|#define sysbrk(x) kmalloc ((x),in_interrupt()? GFP_ATOMIC : GFP_KERNEL)
 DECL|macro|sysfree
 mdefine_line|#define sysfree(p,size) kfree ((p))
 DECL|macro|WBYTE

@@ -14,14 +14,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|strip_init_ctrl_dev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|x25_asy_init_ctrl_dev
 c_func
 (paren
@@ -102,14 +94,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|lapbeth_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|sdla_setup
 c_func
 (paren
@@ -143,6 +127,14 @@ suffix:semicolon
 r_extern
 r_int
 id|madgemc_probe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|uml_net_probe
 c_func
 (paren
 r_void
@@ -216,14 +208,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#if defined(CONFIG_LAPBETHER)
-(brace
-id|lapbeth_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#if defined(CONFIG_ARCNET)
 (brace
 id|arcnet_init
@@ -287,6 +271,14 @@ multiline_comment|/*&n; *&t;Token Ring Drivers&n; */
 macro_line|#ifdef CONFIG_MADGEMC
 (brace
 id|madgemc_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_UML_NET
+(brace
+id|uml_net_probe
 comma
 l_int|0
 )brace
@@ -360,13 +352,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_X25_ASY)
 id|x25_asy_init_ctrl_dev
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_STRIP)
-id|strip_init_ctrl_dev
 c_func
 (paren
 )paren

@@ -1645,6 +1645,7 @@ suffix:semicolon
 multiline_comment|/* End of non-loading portions of the RAM disk driver */
 macro_line|#ifdef RD_LOADER 
 multiline_comment|/*&n; * This routine tries to find a RAM disk image to load, and returns the&n; * number of blocks to read for a non-compressed image, 0 if the image&n; * is a compressed image, and -1 if an image with the right magic&n; * numbers could not be found.&n; *&n; * We currently check for the following magic numbers:&n; * &t;minix&n; * &t;ext2&n; *&t;romfs&n; * &t;gzip&n; */
+r_static
 r_int
 id|__init
 DECL|function|identify_ramdisk_image

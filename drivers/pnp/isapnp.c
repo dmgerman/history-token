@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ISA Plug &amp; Play support&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Changelog:&n; *  2000-01-01&t;Added quirks handling for buggy hardware&n; *&t;&t;Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *  2000-06-14&t;Added isapnp_probe_devs() and isapnp_activate_dev()&n; *&t;&t;Christoph Hellwig &lt;hch@caldera.de&gt;&n; */
+multiline_comment|/*&n; *  ISA Plug &amp; Play support&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Changelog:&n; *  2000-01-01&t;Added quirks handling for buggy hardware&n; *&t;&t;Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *  2000-06-14&t;Added isapnp_probe_devs() and isapnp_activate_dev()&n; *&t;&t;Christoph Hellwig &lt;hch@caldera.de&gt;&n; *  2001-06-03  Added release_region calls to correspond with&n; *&t;&t;request_region calls when a failure occurs.  Also&n; *&t;&t;added KERN_* constants to printk() calls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1812,6 +1812,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;tag = 0x%x, type = 0x%x, size = %i&bslash;n&quot;
 comma
 id|tag
@@ -4322,6 +4323,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: unexpected or unknown tag type 0x%x for logical device %i (device %i), ignored&bslash;n&quot;
 comma
 id|type
@@ -4551,6 +4553,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: unexpected or unknown tag type 0x%x for device %i, ignored&bslash;n&quot;
 comma
 id|type
@@ -4782,6 +4785,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;vendor: %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
 id|header
@@ -4833,6 +4837,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;checksum = 0x%x&bslash;n&quot;
 comma
 id|checksum
@@ -4994,6 +4999,7 @@ l_int|0x00
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: checksum for device %i is not valid (0x%x)&bslash;n&quot;
 comma
 id|csn
@@ -12071,6 +12077,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: ISA Plug &amp; Play support disabled&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12101,6 +12108,7 @@ id|pidxr_res
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: Index Register 0x%x already used&bslash;n&quot;
 comma
 id|_PIDXR
@@ -12134,11 +12142,22 @@ id|pnpwrp_res
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: Write Data Register 0x%x already used&bslash;n&quot;
 comma
 id|_PNPWRP
 )paren
 suffix:semicolon
+macro_line|#ifdef ISAPNP_REGION_OK
+id|release_region
+c_func
+(paren
+id|_PIDXR
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|EBUSY
@@ -12148,6 +12167,7 @@ multiline_comment|/*&n;&t; *&t;Print a message. The existing ISAPnP code is hang
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: Scanning for PnP cards...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12189,9 +12209,28 @@ id|isapnp_rdp_res
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;isapnp: Read Data Register 0x%x already used&bslash;n&quot;
 comma
 id|isapnp_rdp
+)paren
+suffix:semicolon
+macro_line|#ifdef ISAPNP_REGION_OK
+id|release_region
+c_func
+(paren
+id|_PIDXR
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+id|release_region
+c_func
+(paren
+id|isapnp_rdp
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -12250,6 +12289,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: No Plug &amp; Play device found&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12302,6 +12342,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: Card &squot;%s&squot;&bslash;n&quot;
 comma
 id|card-&gt;name
@@ -12355,6 +12396,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp:   Device &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -12380,6 +12422,7 @@ id|cards
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: %i Plug &amp; Play card%s detected total&bslash;n&quot;
 comma
 id|cards
@@ -12400,6 +12443,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;isapnp: No Plug &amp; Play card found&bslash;n&quot;
 )paren
 suffix:semicolon

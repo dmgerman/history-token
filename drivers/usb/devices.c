@@ -1995,6 +1995,12 @@ op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/* enumerate busses */
+id|read_lock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2069,6 +2075,12 @@ op_add_assign
 id|ret
 suffix:semicolon
 )brace
+id|read_unlock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 r_return
 id|total_written
 suffix:semicolon

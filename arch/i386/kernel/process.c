@@ -329,7 +329,6 @@ r_int
 id|reboot_mode
 suffix:semicolon
 DECL|variable|reboot_thru_bios
-r_static
 r_int
 id|reboot_thru_bios
 suffix:semicolon

@@ -736,6 +736,8 @@ id|proc_net
 suffix:semicolon
 )brace
 macro_line|#else
+DECL|macro|proc_root_driver
+mdefine_line|#define proc_root_driver NULL
 DECL|function|proc_net_create
 r_static
 r_inline

@@ -13,7 +13,33 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
-multiline_comment|/*&n; * Constant strings used in inlined functions in header files&n; */
+r_extern
+r_int
+r_int
+id|do_mremap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|old_len
+comma
+r_int
+r_int
+id|new_len
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|new_addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sys_pipe() is the normal C calling standard for creating&n; * a pipe. It&squot;s not the way unix traditionally does this, though.&n; */
 DECL|function|sys_pipe
 id|asmlinkage

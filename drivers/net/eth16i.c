@@ -294,13 +294,14 @@ mdefine_line|#define ID_ROM_7               31
 DECL|macro|RESET
 mdefine_line|#define RESET                  ID_ROM_0
 multiline_comment|/* This is the I/O address list to be probed when seeking the card */
-DECL|variable|eth16i_portlist
+DECL|variable|__initdata
 r_static
 r_int
 r_int
 id|eth16i_portlist
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x260
@@ -322,13 +323,14 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|eth32i_portlist
+DECL|variable|__initdata
 r_static
 r_int
 r_int
 id|eth32i_portlist
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x1000
@@ -365,13 +367,14 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* This is the Interrupt lookup table for Eth16i card */
-DECL|variable|eth16i_irqmap
+DECL|variable|__initdata
 r_static
 r_int
 r_int
 id|eth16i_irqmap
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|9
@@ -388,13 +391,14 @@ suffix:semicolon
 DECL|macro|NUM_OF_ISA_IRQS
 mdefine_line|#define NUM_OF_ISA_IRQS    4
 multiline_comment|/* This is the Interrupt lookup table for Eth32i card */
-DECL|variable|eth32i_irqmap
+DECL|variable|__initdata
 r_static
 r_int
 r_int
 id|eth32i_irqmap
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|3
@@ -831,12 +835,13 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-DECL|variable|cardname
+DECL|variable|__initdata
 r_static
 r_char
 id|cardname
 (braket
 )braket
+id|__initdata
 op_assign
 l_string|&quot;ICL EtherTeam 16i/32&quot;
 suffix:semicolon
@@ -2708,6 +2713,7 @@ macro_line|#endif
 DECL|function|eth16i_get_irq
 r_static
 r_int
+id|__init
 id|eth16i_get_irq
 c_func
 (paren
@@ -2804,6 +2810,7 @@ suffix:semicolon
 DECL|function|eth16i_check_signature
 r_static
 r_int
+id|__init
 id|eth16i_check_signature
 c_func
 (paren

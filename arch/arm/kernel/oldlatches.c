@@ -139,7 +139,7 @@ suffix:semicolon
 )brace
 DECL|function|oldlatch_init
 r_static
-r_void
+r_int
 id|__init
 id|oldlatch_init
 c_func
@@ -174,6 +174,9 @@ id|LATCHB_FDCRESET
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|oldlatch_init
 id|__initcall

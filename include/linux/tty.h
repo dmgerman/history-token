@@ -1021,6 +1021,14 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|a2232board_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|tty_paranoia_check
 c_func
 (paren

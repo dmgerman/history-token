@@ -935,6 +935,25 @@ comma
 id|SLAB_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* We&squot;ll get a `leaked requests&squot; message from blk_cleanup_queue */
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;blk_init_free_list: error allocating requests&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

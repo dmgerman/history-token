@@ -47,13 +47,14 @@ r_struct
 id|display
 id|disp
 suffix:semicolon
-DECL|variable|default_fontname
+DECL|variable|__initdata
 r_static
 r_char
 id|default_fontname
 (braket
 l_int|40
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0
@@ -1949,6 +1950,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE
 r_int
 id|tgafb_setup
 c_func
@@ -1957,23 +1959,7 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_int
-id|tgafb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|tgafb_cleanup
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|tgafb_set_pll
@@ -5214,6 +5200,7 @@ id|tgafb_set_cmap
 comma
 )brace
 suffix:semicolon
+macro_line|#ifndef MODULE
 multiline_comment|/*&n;     *  Setup&n;     */
 DECL|function|tgafb_setup
 r_int
@@ -5391,6 +5378,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;     *  Initialisation&n;     */
 DECL|function|tgafb_init
 r_int
@@ -5739,53 +5727,36 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Cleanup&n;     */
 DECL|function|tgafb_cleanup
 r_void
+id|__exit
 id|tgafb_cleanup
 c_func
 (paren
-r_struct
-id|fb_info
-op_star
-id|info
+r_void
 )paren
 (brace
 id|unregister_framebuffer
 c_func
 (paren
-id|info
+op_amp
+id|fb_info.gen.info
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Modularisation&n;     */
 macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|tgafb_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|tgafb_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+macro_line|#endif
+DECL|variable|tgafb_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|tgafb_cleanup
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

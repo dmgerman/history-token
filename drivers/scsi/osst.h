@@ -2263,7 +2263,7 @@ DECL|member|first_frame_position
 r_int
 id|first_frame_position
 suffix:semicolon
-multiline_comment|/* physical frame to be transfered to/from host */
+multiline_comment|/* physical frame to be transferred to/from host */
 DECL|member|last_frame_position
 r_int
 id|last_frame_position

@@ -5511,16 +5511,35 @@ id|dir1
 OG
 l_int|7
 )paren
+(brace
 id|dir0_msn
 op_increment
 suffix:semicolon
 multiline_comment|/* M II */
+multiline_comment|/* Enable MMX extensions (App note 108) */
+id|setCx86
+c_func
+(paren
+id|CX86_CCR7
+comma
+id|getCx86
+c_func
+(paren
+id|CX86_CCR7
+)paren
+op_or
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
 id|c-&gt;coma_bug
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* 6x86MX, it has the bug. */
+)brace
 id|tmp
 op_assign
 (paren

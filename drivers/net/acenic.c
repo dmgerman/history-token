@@ -9527,17 +9527,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|new_mtu
-OL
-l_int|68
-)paren
-op_logical_or
-(paren
 id|new_mtu
 OG
 id|ACE_JUMBO_MTU
-)paren
 )paren
 r_return
 op_minus

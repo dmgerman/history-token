@@ -14,6 +14,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -1972,7 +1973,9 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
-id|flags
+id|lock_flags
+comma
+id|sem_flags
 suffix:semicolon
 id|rio_dprintk
 (paren
@@ -2014,7 +2017,7 @@ c_func
 op_amp
 id|HostP-&gt;HostLock
 comma
-id|flags
+id|lock_flags
 )paren
 suffix:semicolon
 r_if
@@ -2035,7 +2038,7 @@ c_func
 op_amp
 id|HostP-&gt;HostLock
 comma
-id|flags
+id|lock_flags
 )paren
 suffix:semicolon
 r_continue
@@ -2134,7 +2137,7 @@ c_func
 op_amp
 id|HostP-&gt;HostLock
 comma
-id|flags
+id|lock_flags
 )paren
 suffix:semicolon
 r_return
@@ -2192,7 +2195,7 @@ c_func
 op_amp
 id|PortP-&gt;portSem
 comma
-id|flags
+id|sem_flags
 )paren
 suffix:semicolon
 id|PortP-&gt;Mapped
@@ -2380,7 +2383,7 @@ c_func
 op_amp
 id|PortP-&gt;portSem
 comma
-id|flags
+id|sem_flags
 )paren
 suffix:semicolon
 )brace
@@ -2419,7 +2422,7 @@ c_func
 op_amp
 id|HostP-&gt;HostLock
 comma
-id|flags
+id|lock_flags
 )paren
 suffix:semicolon
 )brace

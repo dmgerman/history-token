@@ -90,13 +90,13 @@ suffix:semicolon
 multiline_comment|/* Allow us to debug &quot;in the field&quot; without requiring clients to&n;   recompile.... */
 macro_line|#if 1
 DECL|macro|rio_spin_lock_irqsave
-mdefine_line|#define rio_spin_lock_irqsave(sem, flags) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinlockirqsave: %p %s:%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;sem, __FILE__, __LINE__);&bslash;&n;        spin_lock_irqsave(sem, flags);&bslash;&n;        } while (0)
+mdefine_line|#define rio_spin_lock_irqsave(sem, flags) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinlockirqsave: %p %s:%d&bslash;n&quot;, &bslash;&n;&t;                                sem, __FILE__, __LINE__);&bslash;&n;&t;spin_lock_irqsave(sem, flags);&bslash;&n;&t;} while (0)
 DECL|macro|rio_spin_unlock_irqrestore
-mdefine_line|#define rio_spin_unlock_irqrestore(sem, flags) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinunlockirqrestore: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;&t;&t;&t;&t;sem, __FILE__, __LINE__);&bslash;&n;        spin_unlock_irqrestore(sem, flags);&bslash;&n;        } while (0)
+mdefine_line|#define rio_spin_unlock_irqrestore(sem, flags) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinunlockirqrestore: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;                                sem, __FILE__, __LINE__);&bslash;&n;&t;spin_unlock_irqrestore(sem, flags);&bslash;&n;&t;} while (0)
 DECL|macro|rio_spin_lock
-mdefine_line|#define rio_spin_lock(sem) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinlock: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;&t;&t;&t;&t;sem, __FILE__, __LINE__);&bslash;&n;        spin_lock(sem);&bslash;&n;        } while (0)
+mdefine_line|#define rio_spin_lock(sem) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinlock: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;                                sem, __FILE__, __LINE__);&bslash;&n;&t;spin_lock(sem);&bslash;&n;&t;} while (0)
 DECL|macro|rio_spin_unlock
-mdefine_line|#define rio_spin_unlock(sem) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinunlock: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;&t;&t;&t;&t;sem, __FILE__, __LINE__);&bslash;&n;        spin_unlock(sem);&bslash;&n;        } while (0)
+mdefine_line|#define rio_spin_unlock(sem) do { &bslash;&n;&t;rio_dprintk (RIO_DEBUG_SPINLOCK, &quot;spinunlock: %p %s:%d&bslash;n&quot;,&bslash;&n;&t;                                sem, __FILE__, __LINE__);&bslash;&n;&t;spin_unlock(sem);&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|rio_spin_lock_irqsave
 mdefine_line|#define rio_spin_lock_irqsave(sem, flags) &bslash;&n;            spin_lock_irqsave(sem, flags)
@@ -231,7 +231,7 @@ DECL|macro|rio_memcpy_fromio
 mdefine_line|#define rio_memcpy_fromio                      memcpy_fromio
 macro_line|#endif
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+mdefine_line|#define DEBUG 1
 multiline_comment|/* &n;   This driver can spew a whole lot of debugging output at you. If you&n;   need maximum performance, you should disable the DEBUG define. To&n;   aid in debugging in the field, I&squot;m leaving the compile-time debug&n;   features enabled, and disable them &quot;runtime&quot;. That allows me to&n;   instruct people with problems to enable debugging without requiring&n;   them to recompile... &n;*/
 macro_line|#ifdef DEBUG
 DECL|macro|rio_dprintk

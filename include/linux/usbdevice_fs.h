@@ -344,19 +344,6 @@ DECL|macro|IDEVNR
 mdefine_line|#define IDEVNR(x)  ((x)&amp;0xff)
 DECL|macro|IROOT
 mdefine_line|#define IROOT      1
-multiline_comment|/*&n; * sigh. rwsemaphores do not (yet) work from modules&n; */
-DECL|macro|rw_semaphore
-mdefine_line|#define rw_semaphore semaphore
-DECL|macro|init_rwsem
-mdefine_line|#define init_rwsem init_MUTEX
-DECL|macro|down_read
-mdefine_line|#define down_read down
-DECL|macro|down_write
-mdefine_line|#define down_write down
-DECL|macro|up_read
-mdefine_line|#define up_read up
-DECL|macro|up_write
-mdefine_line|#define up_write up
 DECL|struct|dev_state
 r_struct
 id|dev_state

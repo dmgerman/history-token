@@ -639,6 +639,10 @@ id|dma-&gt;buf.length
 suffix:semicolon
 id|regs.ARM_r10
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|dma-&gt;buf.address
 suffix:semicolon
 id|regs.ARM_fp

@@ -1099,6 +1099,8 @@ DECL|macro|VID_HARDWARE_SE401
 mdefine_line|#define VID_HARDWARE_SE401&t;30&t;/* SE401 USB webcams */
 DECL|macro|VID_HARDWARE_PWC
 mdefine_line|#define VID_HARDWARE_PWC&t;31&t;/* Philips webcams */
+DECL|macro|VID_HARDWARE_MEYE
+mdefine_line|#define VID_HARDWARE_MEYE&t;32&t;/* Sony Vaio MotionEye cameras */
 multiline_comment|/*&n; *&t;Initialiser list&n; */
 DECL|struct|video_init
 r_struct

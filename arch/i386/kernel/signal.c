@@ -1825,12 +1825,13 @@ id|SA_ONSTACK
 r_if
 c_cond
 (paren
-op_logical_neg
-id|on_sig_stack
+id|sas_ss_flags
 c_func
 (paren
 id|esp
 )paren
+op_eq
+l_int|0
 )paren
 id|esp
 op_assign

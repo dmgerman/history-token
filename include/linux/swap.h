@@ -11,6 +11,7 @@ DECL|macro|SWAP_FLAG_PRIO_SHIFT
 mdefine_line|#define SWAP_FLAG_PRIO_SHIFT&t;0
 DECL|macro|MAX_SWAPFILES
 mdefine_line|#define MAX_SWAPFILES 8
+multiline_comment|/*&n; * Magic header for a swap area. The first part of the union is&n; * what the swap magic looks like for the old (limited to 128MB)&n; * swap area format, the second part of the union adds - in the&n; * old reserved area - some extra information. Note that the first&n; * kilobyte is reserved for boot loader or disk label stuff...&n; *&n; * Having the magic at the end of the PAGE_SIZE makes detecting swap&n; * areas somewhat tricky on machines that support multiple page sizes.&n; * For 2.5 we&squot;ll probably want to move the magic to just beyond the&n; * bootbits...&n; */
 DECL|union|swap_header
 r_union
 id|swap_header
@@ -33,6 +34,7 @@ id|magic
 l_int|10
 )braket
 suffix:semicolon
+multiline_comment|/* SWAP-SPACE or SWAPSPACE2 */
 DECL|member|magic
 )brace
 id|magic
@@ -101,6 +103,7 @@ DECL|macro|SWAP_MAP_MAX
 mdefine_line|#define SWAP_MAP_MAX&t;0x7fff
 DECL|macro|SWAP_MAP_BAD
 mdefine_line|#define SWAP_MAP_BAD&t;0x8000
+multiline_comment|/*&n; * The in-memory structure used to track swap areas.&n; */
 DECL|struct|swap_info_struct
 r_struct
 id|swap_info_struct

@@ -89,11 +89,9 @@ DECL|macro|__arch_getw
 mdefine_line|#define __arch_getw(a)&t;&t;(*(volatile unsigned short *)(a))
 DECL|macro|__arch_putw
 mdefine_line|#define __arch_putw(v,a)&t;(*(volatile unsigned short *)(a) = (v))
-macro_line|#include &lt;asm/hardware/dec21285.h&gt;
-multiline_comment|/*&n; * ioremap support - validate a PCI memory address,&n; * and convert a PCI memory address to a physical&n; * address for the page tables.&n; */
 DECL|macro|iomem_valid_addr
-mdefine_line|#define iomem_valid_addr(iomem,sz) &bslash;&n;&t;((iomem) &lt; 0x80000000 &amp;&amp; (iomem) + (sz) &lt;= 0x80000000)
+mdefine_line|#define iomem_valid_addr(iomem,sz)&t;(1)
 DECL|macro|iomem_to_phys
-mdefine_line|#define iomem_to_phys(iomem)&t;((iomem) + DC21285_PCI_MEM)
+mdefine_line|#define iomem_to_phys(iomem)&t;&t;(iomem)
 macro_line|#endif
 eof

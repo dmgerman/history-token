@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &quot;linux_compat.h&quot;
@@ -127,7 +128,7 @@ multiline_comment|/* The frequency of OUR polls */
 multiline_comment|/* breakinterval */
 l_int|25
 comma
-multiline_comment|/* x10 mS */
+multiline_comment|/* x10 mS XXX: units seem to be 1ms not 10! -- REW*/
 multiline_comment|/* timer */
 l_int|10
 comma
@@ -432,7 +433,6 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#ifndef TWO_ZERO
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -469,7 +469,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 DECL|variable|rio_real_driver
 r_static
@@ -963,16 +962,16 @@ id|MAJOR
 (paren
 id|device
 )paren
-op_ne
+op_eq
 id|RIO_NORMAL_MAJOR0
 )paren
-op_logical_and
+op_logical_or
 (paren
 id|MAJOR
 (paren
 id|device
 )paren
-op_ne
+op_eq
 id|RIO_NORMAL_MAJOR1
 )paren
 suffix:semicolon
@@ -1654,10 +1653,28 @@ op_star
 id|ptr
 )paren
 (brace
+r_struct
+id|Port
+op_star
+id|PortP
+suffix:semicolon
 id|func_enter
 c_func
 (paren
 )paren
+suffix:semicolon
+id|PortP
+op_assign
+(paren
+r_struct
+id|Port
+op_star
+)paren
+id|ptr
+suffix:semicolon
+id|PortP-&gt;gs.tty
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#if 0
 id|port-&gt;gs.flags
@@ -1735,9 +1752,28 @@ op_star
 id|ptr
 )paren
 (brace
+r_struct
+id|Port
+op_star
+id|PortP
+suffix:semicolon
 id|func_enter
+c_func
 (paren
 )paren
+suffix:semicolon
+id|PortP
+op_assign
+(paren
+r_struct
+id|Port
+op_star
+)paren
+id|ptr
+suffix:semicolon
+id|PortP-&gt;gs.tty
+op_assign
+l_int|NULL
 suffix:semicolon
 id|rio_dec_mod_count
 (paren
@@ -1801,6 +1837,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|PortP-&gt;gs.tty
+op_assign
+l_int|NULL
+suffix:semicolon
 id|rio_dec_mod_count
 (paren
 )paren
@@ -1875,6 +1915,31 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|RIOShortCommand
+c_func
+(paren
+r_struct
+id|rio_info
+op_star
+id|p
+comma
+r_struct
+id|Port
+op_star
+id|PortP
+comma
+r_int
+id|command
+comma
+r_int
+id|len
+comma
+r_int
+id|arg
+)paren
+suffix:semicolon
 DECL|function|rio_ioctl
 r_static
 r_int
@@ -1899,21 +1964,31 @@ r_int
 id|arg
 )paren
 (brace
-macro_line|#if 0
 r_int
 id|rc
 suffix:semicolon
 r_struct
-id|rio_port
+id|Port
 op_star
-id|port
-op_assign
-id|tty-&gt;driver_data
+id|PortP
 suffix:semicolon
 r_int
 id|ival
 suffix:semicolon
-multiline_comment|/* func_enter2(); */
+id|func_enter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|PortP
+op_assign
+(paren
+r_struct
+id|Port
+op_star
+)paren
+id|tty-&gt;driver_data
+suffix:semicolon
 id|rc
 op_assign
 l_int|0
@@ -1924,6 +1999,7 @@ c_cond
 id|cmd
 )paren
 (brace
+macro_line|#if 0
 r_case
 id|TIOCGSOFTCAR
 suffix:colon
@@ -1955,6 +2031,7 @@ id|arg
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
@@ -2053,7 +2130,7 @@ id|gs_getserial
 c_func
 (paren
 op_amp
-id|port-&gt;gs
+id|PortP-&gt;gs
 comma
 (paren
 r_struct
@@ -2063,6 +2140,162 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TCSBRK
+suffix:colon
+r_if
+c_cond
+(paren
+id|PortP-&gt;State
+op_amp
+id|RIO_DELETED
+)paren
+(brace
+id|rio_dprintk
+(paren
+id|RIO_DEBUG_TTY
+comma
+l_string|&quot;BREAK on deleted RTA&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|RIOShortCommand
+c_func
+(paren
+id|p
+comma
+id|PortP
+comma
+id|SBREAK
+comma
+l_int|2
+comma
+l_int|250
+)paren
+op_eq
+id|RIO_FAIL
+)paren
+(brace
+id|rio_dprintk
+(paren
+id|RIO_DEBUG_INTR
+comma
+l_string|&quot;SBREAK RIOShortCommand failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+id|TCSBRKP
+suffix:colon
+r_if
+c_cond
+(paren
+id|PortP-&gt;State
+op_amp
+id|RIO_DELETED
+)paren
+(brace
+id|rio_dprintk
+(paren
+id|RIO_DEBUG_TTY
+comma
+l_string|&quot;BREAK on deleted RTA&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+id|l
+suffix:semicolon
+id|l
+op_assign
+id|arg
+ques
+c_cond
+id|arg
+op_star
+l_int|100
+suffix:colon
+l_int|250
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|l
+OG
+l_int|255
+)paren
+id|l
+op_assign
+l_int|255
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|RIOShortCommand
+c_func
+(paren
+id|p
+comma
+id|PortP
+comma
+id|SBREAK
+comma
+l_int|2
+comma
+id|arg
+ques
+c_cond
+id|arg
+op_star
+l_int|100
+suffix:colon
+l_int|250
+)paren
+op_eq
+id|RIO_FAIL
+)paren
+(brace
+id|rio_dprintk
+(paren
+id|RIO_DEBUG_INTR
+comma
+l_string|&quot;SBREAK RIOShortCommand failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -2101,7 +2334,7 @@ id|gs_setserial
 c_func
 (paren
 op_amp
-id|port-&gt;gs
+id|PortP-&gt;gs
 comma
 (paren
 r_struct
@@ -2113,6 +2346,7 @@ id|arg
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if 0
 r_case
 id|TIOCMGET
 suffix:colon
@@ -2409,6 +2643,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|rc
@@ -2419,16 +2654,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* func_exit(); */
+id|func_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|ENOIOCTLCMD
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* The throttle/unthrottle scheme for the Specialix card is different&n; * from other drivers and deserves some explanation. &n; * The Specialix hardware takes care of XON/XOFF&n; * and CTS/RTS flow control itself.  This means that all we have to&n; * do when signalled by the upper tty layer to throttle/unthrottle is&n; * to make a note of it here.  When we come to read characters from the&n; * rx buffers on the card (rio_receive_chars()) we look to see if the&n; * upper layer can accept more (as noted here in rio_rx_throt[]). &n; * If it can&squot;t we simply don&squot;t remove chars from the cards buffer. &n; * When the tty layer can accept chars, we again note that here and when&n; * rio_receive_chars() is called it will remove them from the cards buffer.&n; * The card will notice that a ports buffer has drained below some low&n; * water mark and will unflow control the line itself, using whatever&n; * flow control scheme is in use for that port. -- Simon Allen&n; */
 DECL|function|rio_throttle
@@ -3371,19 +3604,6 @@ id|p-&gt;RIOHosts
 suffix:semicolon
 id|free1
 suffix:colon
-id|kfree
-(paren
-id|p
-)paren
-suffix:semicolon
-id|free0
-suffix:colon
-r_if
-c_cond
-(paren
-id|p
-)paren
-(brace
 id|rio_dprintk
 (paren
 id|RIO_DEBUG_INIT
@@ -3401,16 +3621,23 @@ comma
 id|rio_termios
 )paren
 suffix:semicolon
-)brace
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|free0
+suffix:colon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|rio_release_drivers
 r_static
 r_void
+id|__exit
 id|rio_release_drivers
 c_func
 (paren
@@ -3452,7 +3679,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
 macro_line|#ifdef TWO_ZERO
 DECL|macro|PDEV
 mdefine_line|#define PDEV unsigned char pci_bus, unsigned pci_fun
@@ -3563,12 +3789,10 @@ id|rebase
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef MODULE
-DECL|macro|rio_init
-mdefine_line|#define rio_init init_module
-macro_line|#endif
 DECL|function|rio_init
+r_static
 r_int
+id|__init
 id|rio_init
 c_func
 (paren
@@ -4312,6 +4536,10 @@ id|hp-&gt;Mode
 op_assign
 id|RIO_PCI_BOOT_FROM_RAM
 suffix:semicolon
+id|hp-&gt;HostLock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|rio_dprintk
 (paren
 id|RIO_DEBUG_PROBE
@@ -4634,6 +4862,10 @@ multiline_comment|/* AT card PCI???? - PVDL&n;                             * -- 
 id|hp-&gt;Mode
 op_assign
 l_int|0
+suffix:semicolon
+id|hp-&gt;HostLock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|vpdp
 op_assign
@@ -5049,11 +5281,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|rio_exit
+r_static
 r_void
-id|cleanup_module
-c_func
+id|__exit
+id|rio_exit
 (paren
 r_void
 )paren
@@ -5196,6 +5428,19 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|rio_init
+id|module_init
+c_func
+(paren
+id|rio_init
+)paren
+suffix:semicolon
+DECL|variable|rio_exit
+id|module_exit
+c_func
+(paren
+id|rio_exit
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Anybody who knows why this doesn&squot;t work for me, please tell me -- REW.&n; * Snatched from scsi.c (fixed one spelling error):&n; * Overrides for Emacs so that we follow Linus&squot; tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local Variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;  /* for in_interrupt() */
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -93,6 +94,12 @@ c_func
 (paren
 id|usb_bus_list
 )paren
+suffix:semicolon
+DECL|variable|usb_bus_list_lock
+id|rwlock_t
+id|usb_bus_list_lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|usb_devfs_handle
 id|devfs_handle_t
@@ -218,6 +225,12 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
+id|read_lock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|usb_bus_list.next
@@ -258,6 +271,12 @@ id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 )brace
+id|read_unlock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is part of a depth-first search down the device tree,&n; * removing any instances of a device driver.&n; */
 DECL|function|usb_drivers_purge
@@ -470,6 +489,12 @@ op_amp
 id|driver-&gt;driver_list
 )paren
 suffix:semicolon
+id|read_lock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|usb_bus_list.next
@@ -512,6 +537,12 @@ id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 )brace
+id|read_unlock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|usb_ifnum_to_if
 r_struct
@@ -1368,6 +1399,12 @@ id|bus
 r_int
 id|busnum
 suffix:semicolon
+id|write_lock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|busnum
 op_assign
 id|find_next_zero_bit
@@ -1425,6 +1462,12 @@ op_amp
 id|usb_bus_list
 )paren
 suffix:semicolon
+id|write_unlock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|usbdevfs_add_bus
 c_func
 (paren
@@ -1461,11 +1504,23 @@ id|bus-&gt;busnum
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE: make sure that all the devices are removed by the&n;&t; * controller code, as well as having it call this when cleaning&n;&t; * itself up&n;&t; */
+id|write_lock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
 id|bus-&gt;bus_list
+)paren
+suffix:semicolon
+id|write_unlock_irq
+(paren
+op_amp
+id|usb_bus_list_lock
 )paren
 suffix:semicolon
 id|usbdevfs_remove_bus

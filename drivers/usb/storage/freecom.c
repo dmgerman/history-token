@@ -190,7 +190,7 @@ mdefine_line|#define FCM_PACKET_INPUT  0x81
 multiline_comment|/* Send data to the IDE interface. */
 DECL|macro|FCM_PACKET_OUTPUT
 mdefine_line|#define FCM_PACKET_OUTPUT 0x01
-multiline_comment|/* Write a value to an ide register.  Or the ide register to write after&n; * munging the addres a bit. */
+multiline_comment|/* Write a value to an ide register.  Or the ide register to write after&n; * munging the address a bit. */
 DECL|macro|FCM_PACKET_IDE_WRITE
 mdefine_line|#define FCM_PACKET_IDE_WRITE    0x40
 DECL|macro|FCM_PACKET_IDE_READ
@@ -1454,7 +1454,7 @@ id|partial
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* while we haven&squot;t recieved the IRQ */
+multiline_comment|/* while we haven&squot;t received the IRQ */
 r_while
 c_loop
 (paren

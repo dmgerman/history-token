@@ -1805,6 +1805,11 @@ suffix:semicolon
 multiline_comment|/* If the current line disc. is not multi-threading and&n;&t;   &t;&t;&t;the current processor is not the default, reset rup_intr&n;&t;   &t;&t;&t;and return FALSE to ensure that the command packet is&n;&t;   &t;&t;&t;not freed. */
 multiline_comment|/* Call tmgr HANGUP HERE */
 multiline_comment|/* Fix this later when every thing works !!!! RAMRAJ */
+id|gs_got_break
+(paren
+id|PortP
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2045,6 +2050,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|PortP-&gt;gs.tty-&gt;termios
+op_eq
+l_int|NULL
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|PortP-&gt;gs.tty-&gt;termios-&gt;c_cflag
@@ -2255,6 +2269,11 @@ id|CmdBlk
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|CmdBlkP
+)paren
 id|bzero
 c_func
 (paren

@@ -17,9 +17,9 @@ DECL|macro|__arch_putw
 mdefine_line|#define __arch_putw(v,a)&t;(*(volatile unsigned short *)(a) = (v))
 multiline_comment|/*&n; * Validate the pci memory address for ioremap.&n; */
 DECL|macro|iomem_valid_addr
-mdefine_line|#define iomem_valid_addr(iomem,size)&t;&bslash;&n;&t;((iomem) &gt; 0 &amp;&amp; (iomem) + (size) &lt;= 0x20000000)
+mdefine_line|#define iomem_valid_addr(iomem,size)&t;(1)
 multiline_comment|/*&n; * Convert PCI memory space to a CPU physical address&n; */
 DECL|macro|iomem_to_phys
-mdefine_line|#define iomem_to_phys(iomem)&t;((iomem) + PHYS_PCI_MEM_BASE)
+mdefine_line|#define iomem_to_phys(iomem)&t;(iomem)
 macro_line|#endif
 eof
