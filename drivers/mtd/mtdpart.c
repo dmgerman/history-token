@@ -981,7 +981,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1079,7 +1079,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1164,7 +1164,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1258,7 +1258,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma

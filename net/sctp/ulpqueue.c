@@ -7,7 +7,6 @@ macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Forward declarations for internal helpers.  */
 r_static
-r_inline
 r_struct
 id|sctp_ulpevent
 op_star
@@ -25,7 +24,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_struct
 id|sctp_ulpevent
 op_star
@@ -221,6 +219,8 @@ op_amp
 id|ulpq-&gt;lobby
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|event
@@ -251,6 +251,8 @@ op_amp
 id|ulpq-&gt;reasm
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|event
@@ -1559,7 +1561,6 @@ suffix:semicolon
 multiline_comment|/* Helper function to reassemble chunks.  Hold chunks on the reasm queue that&n; * need reassembling.&n; */
 DECL|function|sctp_ulpq_reasm
 r_static
-r_inline
 r_struct
 id|sctp_ulpevent
 op_star
@@ -2248,7 +2249,6 @@ suffix:semicolon
 )brace
 DECL|function|sctp_ulpq_order
 r_static
-r_inline
 r_struct
 id|sctp_ulpevent
 op_star
@@ -2663,6 +2663,8 @@ op_amp
 id|ulpq-&gt;lobby
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|freed
@@ -2772,6 +2774,8 @@ op_amp
 id|ulpq-&gt;reasm
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|freed

@@ -1109,7 +1109,7 @@ id|raw_inode
 comma
 id|f-&gt;name
 comma
-l_int|0
+l_int|NULL
 comma
 id|recoverable
 comma
@@ -1167,7 +1167,7 @@ comma
 op_amp
 id|raw_inode
 comma
-l_int|0
+l_int|NULL
 comma
 id|new_node
 )paren
@@ -3891,7 +3891,7 @@ id|raw_inode
 comma
 id|dentry-&gt;d_name.name
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -3934,7 +3934,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|raw_inode
@@ -4297,7 +4297,7 @@ id|inode
 op_star
 id|inode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|result
@@ -4671,9 +4671,9 @@ comma
 op_amp
 id|raw_inode
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -4709,7 +4709,7 @@ comma
 op_amp
 id|raw_inode
 comma
-l_int|0
+l_int|NULL
 comma
 id|del_node
 )paren
@@ -4794,7 +4794,7 @@ id|jffs_node
 op_star
 id|node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|jffs_control
@@ -5077,7 +5077,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|raw_inode
@@ -5623,7 +5623,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|raw_inode
@@ -6047,7 +6047,7 @@ id|raw_inode
 comma
 id|dentry-&gt;d_name.name
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -6090,7 +6090,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|raw_inode
@@ -6685,7 +6685,7 @@ comma
 op_amp
 id|raw_inode
 comma
-l_int|0
+l_int|NULL
 comma
 id|node
 )paren
@@ -7811,7 +7811,7 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;u.generic_ip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clear_inode
 c_func

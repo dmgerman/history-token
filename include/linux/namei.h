@@ -214,6 +214,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|path_release_on_umount
+c_func
+(paren
+r_struct
+id|nameidata
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|dentry
 op_star

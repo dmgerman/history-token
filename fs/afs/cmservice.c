@@ -1137,7 +1137,6 @@ l_int|0
 r_goto
 id|kill
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 id|afs_kafstimod_add_timer
 c_func
 (paren
@@ -1149,7 +1148,6 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|afscm_usage
 op_increment
@@ -1444,7 +1442,6 @@ op_amp
 id|kafscmd_attention_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 id|afs_kafstimod_del_timer
 c_func
 (paren
@@ -1452,7 +1449,6 @@ op_amp
 id|afs_mntpt_expiry_timer
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|up_write
 c_func

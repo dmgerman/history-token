@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/scx200.h&gt;
-macro_line|#include &lt;linux/scx200.h&gt;
 DECL|macro|NAME
 mdefine_line|#define NAME &quot;scx200&quot;
 id|MODULE_AUTHOR

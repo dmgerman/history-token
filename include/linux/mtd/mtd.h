@@ -8,6 +8,22 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
+DECL|struct|kvec
+r_struct
+id|kvec
+(brace
+DECL|member|iov_base
+r_void
+op_star
+id|iov_base
+suffix:semicolon
+multiline_comment|/* and that should *never* hold a userland pointer */
+DECL|member|iov_len
+r_int
+id|iov_len
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 DECL|struct|erase_info_user
 r_struct
@@ -742,7 +758,7 @@ op_star
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* iovec-based read/write methods. We need these especially for NAND flash,&n;&t;   with its limited number of write cycles per erase.&n;&t;   NB: The &squot;count&squot; parameter is the number of _vectors_, each of &n;&t;   which contains an (ofs, len) tuple.&n;&t;*/
+multiline_comment|/* kvec-based read/write methods. We need these especially for NAND flash,&n;&t;   with its limited number of write cycles per erase.&n;&t;   NB: The &squot;count&squot; parameter is the number of _vectors_, each of &n;&t;   which contains an (ofs, len) tuple.&n;&t;*/
 DECL|member|readv
 r_int
 (paren
@@ -756,7 +772,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -785,7 +801,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -824,7 +840,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -854,7 +870,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1093,7 +1109,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1119,7 +1135,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma

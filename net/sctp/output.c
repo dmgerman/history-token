@@ -310,6 +310,8 @@ op_amp
 id|packet-&gt;chunks
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 id|sctp_chunk_free
 c_func
@@ -1066,6 +1068,8 @@ op_amp
 id|packet-&gt;chunks
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -1495,6 +1499,8 @@ op_amp
 id|packet-&gt;chunks
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

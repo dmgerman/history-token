@@ -209,7 +209,7 @@ l_string|&quot;jedec_probe&quot;
 comma
 l_string|&quot;map_rom&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 r_const
@@ -270,7 +270,7 @@ id|physmap_map
 suffix:semicolon
 id|mymtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|type
 op_assign

@@ -331,6 +331,16 @@ id|XFRM_MSG_POLEXPIRE
 comma
 DECL|macro|XFRM_MSG_POLEXPIRE
 mdefine_line|#define XFRM_MSG_POLEXPIRE XFRM_MSG_POLEXPIRE
+DECL|enumerator|XFRM_MSG_FLUSHSA
+id|XFRM_MSG_FLUSHSA
+comma
+DECL|macro|XFRM_MSG_FLUSHSA
+mdefine_line|#define XFRM_MSG_FLUSHSA XFRM_MSG_FLUSHSA
+DECL|enumerator|XFRM_MSG_FLUSHPOLICY
+id|XFRM_MSG_FLUSHPOLICY
+comma
+DECL|macro|XFRM_MSG_FLUSHPOLICY
+mdefine_line|#define XFRM_MSG_FLUSHPOLICY XFRM_MSG_FLUSHPOLICY
 DECL|enumerator|XFRM_MSG_MAX
 id|XFRM_MSG_MAX
 )brace
@@ -679,6 +689,16 @@ suffix:semicolon
 DECL|member|hard
 id|__u8
 id|hard
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|xfrm_usersa_flush
+r_struct
+id|xfrm_usersa_flush
+(brace
+DECL|member|proto
+id|__u8
+id|proto
 suffix:semicolon
 )brace
 suffix:semicolon

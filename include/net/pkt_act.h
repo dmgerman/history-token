@@ -1106,7 +1106,7 @@ op_amp
 id|p-&gt;lock
 )paren
 suffix:semicolon
-id|p-&gt;stats.lock
+id|p-&gt;stats_lock
 op_assign
 op_amp
 id|p-&gt;lock

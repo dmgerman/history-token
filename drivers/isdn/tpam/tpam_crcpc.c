@@ -1,6 +1,6 @@
 multiline_comment|/* $Id: tpam_crcpc.c,v 1.1.2.2 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver - CRC encoding)&n; *&n; * Copyright 1998-2000 AUVERTECH T&#xfffd;l&#xfffd;com&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 multiline_comment|/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&n;&n;Module Name:&n;&n;    crcpc.c&n;&n;Abstract:&n;&n;    Modem HDLC coding&n;    Software HDLC coding / decoding&n;&n;Revision History:&n;&n;---------------------------------------------------------------------------*/
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 macro_line|#include &quot;tpam.h&quot;
 DECL|macro|HDLC_CTRL_CHAR_CMPL_MASK
 mdefine_line|#define  HDLC_CTRL_CHAR_CMPL_MASK&t;0x20&t;/* HDLC control character complement mask */
@@ -184,7 +184,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; *   FCS calculation&n;&t;&t; */
 id|fcs
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|fcs
@@ -326,7 +326,7 @@ suffix:semicolon
 multiline_comment|/* calculate FCS */
 id|fcs
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|fcs
@@ -441,7 +441,7 @@ suffix:semicolon
 multiline_comment|/* calculate FCS */
 id|fcs
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|fcs

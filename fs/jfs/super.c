@@ -1880,7 +1880,7 @@ id|MS_RDONLY
 )paren
 id|sbi-&gt;log
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_else
 (brace
@@ -2678,7 +2678,7 @@ c_func
 (paren
 id|jfsIOWait
 comma
-l_int|0
+l_int|NULL
 comma
 id|CLONE_KERNEL
 )paren
@@ -2762,7 +2762,7 @@ c_func
 (paren
 id|jfs_lazycommit
 comma
-l_int|0
+l_int|NULL
 comma
 id|CLONE_KERNEL
 )paren
@@ -2813,7 +2813,7 @@ c_func
 (paren
 id|jfs_sync
 comma
-l_int|0
+l_int|NULL
 comma
 id|CLONE_KERNEL
 )paren
