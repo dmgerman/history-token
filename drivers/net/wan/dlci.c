@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2272,10 +2273,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dlci_setup
+DECL|function|init_dlci
 r_int
 id|__init
-id|dlci_setup
+id|init_dlci
 c_func
 (paren
 r_void
@@ -2283,6 +2284,12 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|dlci_ioctl_set
+c_func
+(paren
+id|dlci_ioctl
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2351,54 +2358,36 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-r_extern
-r_int
-(paren
-op_star
-id|dlci_ioctl_hook
-)paren
-(paren
-r_int
-r_int
-comma
+DECL|function|dlci_exit
 r_void
-op_star
-)paren
-suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+id|__exit
+id|dlci_exit
 c_func
 (paren
 r_void
 )paren
 (brace
-id|dlci_ioctl_hook
-op_assign
-id|dlci_ioctl
-suffix:semicolon
-r_return
-id|dlci_setup
+id|dlci_ioctl_set
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dlci_ioctl_hook
-op_assign
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|init_dlci
+id|module_init
+c_func
+(paren
+id|init_dlci
+)paren
+suffix:semicolon
+DECL|variable|dlci_exit
+id|module_exit
+c_func
+(paren
+id|dlci_exit
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
