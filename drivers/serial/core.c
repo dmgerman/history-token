@@ -8991,6 +8991,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * If the port is already initialised, don&squot;t touch it.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|state-&gt;port-&gt;type
+op_eq
+id|PORT_UNKNOWN
+)paren
+(brace
 id|state-&gt;port-&gt;iobase
 op_assign
 id|port-&gt;iobase
@@ -9039,6 +9048,7 @@ comma
 id|state-&gt;port
 )paren
 suffix:semicolon
+)brace
 id|ret
 op_assign
 id|state-&gt;port-&gt;line
