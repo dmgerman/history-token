@@ -2187,6 +2187,11 @@ r_struct
 id|file
 id|file
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
 id|err
 op_assign
 id|nfsd_open
@@ -2225,6 +2230,10 @@ id|file.f_op-&gt;read
 r_goto
 id|out_close
 suffix:semicolon
+id|inode
+op_assign
+id|file.f_dentry-&gt;d_inode
+suffix:semicolon
 macro_line|#ifdef MSNFS
 r_if
 c_cond
@@ -2240,7 +2249,7 @@ op_logical_neg
 id|lock_may_read
 c_func
 (paren
-id|file.f_dentry-&gt;d_inode
+id|inode
 comma
 id|offset
 comma
@@ -2259,9 +2268,9 @@ op_assign
 id|nfsd_get_raparms
 c_func
 (paren
-id|fhp-&gt;fh_export-&gt;ex_dev
+id|inode-&gt;i_dev
 comma
-id|fhp-&gt;fh_dentry-&gt;d_inode-&gt;i_ino
+id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_if
