@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device registration, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device registration, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -41,9 +41,9 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * sysfs bindings for devices.&n; */
 DECL|macro|to_dev
-mdefine_line|#define to_dev(obj) container_of(obj,struct device,kobj)
+mdefine_line|#define to_dev(obj) container_of(obj, struct device, kobj)
 DECL|macro|to_dev_attr
-mdefine_line|#define to_dev_attr(_attr) container_of(_attr,struct device_attribute,attr)
+mdefine_line|#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
 r_extern
 r_struct
 id|attribute
@@ -619,7 +619,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;device_initialize - init device structure.&n; *&t;@dev:&t;device.&n; *&n; *&t;This prepares the device for use by other layers,&n; *&t;including adding it to the device hierarchy. &n; *&t;It is the first half of device_register(), if called by&n; *&t;that, though it can also be called separately, so one&n; *&t;may use @dev&squot;s fields (e.g. the refcount).&n; */
+multiline_comment|/**&n; *&t;device_initialize - init device structure.&n; *&t;@dev:&t;device.&n; *&n; *&t;This prepares the device for use by other layers,&n; *&t;including adding it to the device hierarchy.&n; *&t;It is the first half of device_register(), if called by&n; *&t;that, though it can also be called separately, so one&n; *&t;may use @dev&squot;s fields (e.g. the refcount).&n; */
 DECL|function|device_initialize
 r_void
 id|device_initialize
@@ -682,7 +682,7 @@ id|dev-&gt;dma_pools
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_add - add device to device hierarchy.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is part 2 of device_register(), though may be called &n; *&t;separately _iff_ device_initialize() has been called separately.&n; *&n; *&t;This adds it to the kobject hierarchy via kobject_add(), adds it&n; *&t;to the global and sibling lists for the device, then&n; *&t;adds it to the other relevant subsystems of the driver model.&n; */
+multiline_comment|/**&n; *&t;device_add - add device to device hierarchy.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is part 2 of device_register(), though may be called&n; *&t;separately _iff_ device_initialize() has been called separately.&n; *&n; *&t;This adds it to the kobject hierarchy via kobject_add(), adds it&n; *&t;to the global and sibling lists for the device, then&n; *&t;adds it to the other relevant subsystems of the driver model.&n; */
 DECL|function|device_add
 r_int
 id|device_add
@@ -898,7 +898,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_register - register a device with the system.&n; *&t;@dev:&t;pointer to the device structure&n; *&n; *&t;This happens in two clean steps - initialize the device&n; *&t;and add it to the system. The two steps can be called &n; *&t;separately, but this is the easiest and most common. &n; *&t;I.e. you should only call the two helpers separately if &n; *&t;have a clearly defined need to use and refcount the device&n; *&t;before it is added to the hierarchy.&n; */
+multiline_comment|/**&n; *&t;device_register - register a device with the system.&n; *&t;@dev:&t;pointer to the device structure&n; *&n; *&t;This happens in two clean steps - initialize the device&n; *&t;and add it to the system. The two steps can be called&n; *&t;separately, but this is the easiest and most common.&n; *&t;I.e. you should only call the two helpers separately if&n; *&t;have a clearly defined need to use and refcount the device&n; *&t;before it is added to the hierarchy.&n; */
 DECL|function|device_register
 r_int
 id|device_register
@@ -976,7 +976,7 @@ id|dev-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_del - delete device from system.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is the first part of the device unregistration &n; *&t;sequence. This removes the device from the lists we control&n; *&t;from here, has it removed from the other driver model &n; *&t;subsystems it was added to in device_add(), and removes it&n; *&t;from the kobject hierarchy.&n; *&n; *&t;NOTE: this should be called manually _iff_ device_add() was &n; *&t;also called manually.&n; */
+multiline_comment|/**&n; *&t;device_del - delete device from system.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is the first part of the device unregistration&n; *&t;sequence. This removes the device from the lists we control&n; *&t;from here, has it removed from the other driver model&n; *&t;subsystems it was added to in device_add(), and removes it&n; *&t;from the kobject hierarchy.&n; *&n; *&t;NOTE: this should be called manually _iff_ device_add() was&n; *&t;also called manually.&n; */
 DECL|function|device_del
 r_void
 id|device_del
@@ -1064,7 +1064,7 @@ id|parent
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_unregister - unregister device from system.&n; *&t;@dev:&t;device going away.&n; *&n; *&t;We do this in two parts, like we do device_register(). First,&n; *&t;we remove it from all the subsystems with device_del(), then&n; *&t;we decrement the reference count via put_device(). If that&n; *&t;is the final reference count, the device will be cleaned up&n; *&t;via device_release() above. Otherwise, the structure will &n; *&t;stick around until the final reference to the device is dropped.&n; */
+multiline_comment|/**&n; *&t;device_unregister - unregister device from system.&n; *&t;@dev:&t;device going away.&n; *&n; *&t;We do this in two parts, like we do device_register(). First,&n; *&t;we remove it from all the subsystems with device_del(), then&n; *&t;we decrement the reference count via put_device(). If that&n; *&t;is the final reference count, the device will be cleaned up&n; *&t;via device_release() above. Otherwise, the structure will&n; *&t;stick around until the final reference to the device is dropped.&n; */
 DECL|function|device_unregister
 r_void
 id|device_unregister
@@ -1097,7 +1097,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_for_each_child - device child iterator.&n; *&t;@dev:&t;parent struct device.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @dev&squot;s child devices, and call @fn for each,&n; *&t;passing it @data. &n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; */
+multiline_comment|/**&n; *&t;device_for_each_child - device child iterator.&n; *&t;@dev:&t;parent struct device.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @dev&squot;s child devices, and call @fn for each,&n; *&t;passing it @data.&n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; */
 DECL|function|device_for_each_child
 r_int
 id|device_for_each_child

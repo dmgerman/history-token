@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * platform.c - platform &squot;pseudo&squot; bus for legacy devices&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; * Please see Documentation/driver-model/platform.txt for more&n; * information.&n; */
+multiline_comment|/*&n; * platform.c - platform &squot;pseudo&squot; bus for legacy devices&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; * Please see Documentation/driver-model/platform.txt for more&n; * information.&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -426,7 +426,7 @@ id|pdev-&gt;dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;platform_match - bind platform device to platform driver.&n; *&t;@dev:&t;device.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Platform device IDs are assumed to be encoded like this: &n; *&t;&quot;&lt;name&gt;&lt;instance&gt;&quot;, where &lt;name&gt; is a short description of the &n; *&t;type of device, like &quot;pci&quot; or &quot;floppy&quot;, and &lt;instance&gt; is the &n; *&t;enumerated instance of the device, like &squot;0&squot; or &squot;42&squot;.&n; *&t;Driver IDs are simply &quot;&lt;name&gt;&quot;. &n; *&t;So, extract the &lt;name&gt; from the platform_device structure, &n; *&t;and compare it against the name of the driver. Return whether &n; *&t;they match or not.&n; */
+multiline_comment|/**&n; *&t;platform_match - bind platform device to platform driver.&n; *&t;@dev:&t;device.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Platform device IDs are assumed to be encoded like this:&n; *&t;&quot;&lt;name&gt;&lt;instance&gt;&quot;, where &lt;name&gt; is a short description of the&n; *&t;type of device, like &quot;pci&quot; or &quot;floppy&quot;, and &lt;instance&gt; is the&n; *&t;enumerated instance of the device, like &squot;0&squot; or &squot;42&squot;.&n; *&t;Driver IDs are simply &quot;&lt;name&gt;&quot;.&n; *&t;So, extract the &lt;name&gt; from the platform_device structure,&n; *&t;and compare it against the name of the driver. Return whether&n; *&t;they match or not.&n; */
 DECL|function|platform_match
 r_static
 r_int

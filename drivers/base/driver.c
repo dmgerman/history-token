@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * driver.c - centralized device driver management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * driver.c - centralized device driver management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -6,9 +6,9 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_dev
-mdefine_line|#define to_dev(node) container_of(node,struct device,driver_list)
+mdefine_line|#define to_dev(node) container_of(node, struct device, driver_list)
 DECL|macro|to_drv
-mdefine_line|#define to_drv(obj) container_of(obj,struct device_driver,kobj)
+mdefine_line|#define to_drv(obj) container_of(obj, struct device_driver, kobj)
 multiline_comment|/**&n; *&t;driver_create_file - create sysfs file for driver.&n; *&t;@drv:&t;driver.&n; *&t;@attr:&t;driver attribute descriptor.&n; */
 DECL|function|driver_create_file
 r_int
@@ -165,7 +165,7 @@ id|drv-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_register - register driver with bus&n; *&t;@drv:&t;driver to register&n; *&n; *&t;We pass off most of the work to the bus_add_driver() call,&n; *&t;since most of the things we have to do deal with the bus &n; *&t;structures.&n; *&n; *&t;The one interesting aspect is that we initialize @drv-&gt;unload_sem&n; *&t;to a locked state here. It will be unlocked when the driver&n; *&t;reference count reaches 0.&n; */
+multiline_comment|/**&n; *&t;driver_register - register driver with bus&n; *&t;@drv:&t;driver to register&n; *&n; *&t;We pass off most of the work to the bus_add_driver() call,&n; *&t;since most of the things we have to do deal with the bus&n; *&t;structures.&n; *&n; *&t;The one interesting aspect is that we initialize @drv-&gt;unload_sem&n; *&t;to a locked state here. It will be unlocked when the driver&n; *&t;reference count reaches 0.&n; */
 DECL|function|driver_register
 r_int
 id|driver_register
@@ -199,7 +199,7 @@ id|drv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_unregister - remove driver from system.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Again, we pass off most of the work to the bus-level call.&n; *&n; *&t;Though, once that is done, we attempt to take @drv-&gt;unload_sem.&n; *&t;This will block until the driver refcount reaches 0, and it is&n; *&t;released. Only modular drivers will call this function, and we &n; *&t;have to guarantee that it won&squot;t complete, letting the driver &n; *&t;unload until all references are gone.&n; */
+multiline_comment|/**&n; *&t;driver_unregister - remove driver from system.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Again, we pass off most of the work to the bus-level call.&n; *&n; *&t;Though, once that is done, we attempt to take @drv-&gt;unload_sem.&n; *&t;This will block until the driver refcount reaches 0, and it is&n; *&t;released. Only modular drivers will call this function, and we&n; *&t;have to guarantee that it won&squot;t complete, letting the driver&n; *&t;unload until all references are gone.&n; */
 DECL|function|driver_unregister
 r_void
 id|driver_unregister
