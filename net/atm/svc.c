@@ -1,7 +1,7 @@
 multiline_comment|/* net/atm/svc.c - ATM SVC sockets */
 multiline_comment|/* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct net_proto,&n;&t;&t;&t;&t;   struct proto_ops */
+macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct proto_ops */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* error codes */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk */
 macro_line|#include &lt;linux/skbuff.h&gt;

@@ -8244,7 +8244,9 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;unix_proto_init: panic&bslash;n&quot;
+l_string|&quot;%s: panic&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

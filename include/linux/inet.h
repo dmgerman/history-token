@@ -3,18 +3,6 @@ macro_line|#ifndef _LINUX_INET_H
 DECL|macro|_LINUX_INET_H
 mdefine_line|#define _LINUX_INET_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/net.h&gt;
-r_extern
-r_void
-id|inet_proto_init
-c_func
-(paren
-r_struct
-id|net_proto
-op_star
-id|pro
-)paren
-suffix:semicolon
 r_extern
 id|__u32
 id|in_aton
