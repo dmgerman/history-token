@@ -1154,6 +1154,7 @@ id|rtl8169_private
 (brace
 DECL|member|mmio_addr
 r_void
+id|__iomem
 op_star
 id|mmio_addr
 suffix:semicolon
@@ -1325,6 +1326,7 @@ id|phy_reset_enable
 )paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -1337,6 +1339,7 @@ id|phy_reset_pending
 )paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -1349,6 +1352,7 @@ id|link_ok
 )paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -1542,6 +1546,7 @@ id|rtl8169_private
 op_star
 comma
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -1634,6 +1639,7 @@ id|mdio_write
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 comma
@@ -1718,6 +1724,7 @@ id|mdio_read
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 comma
@@ -1820,6 +1827,7 @@ id|rtl8169_tbi_reset_pending
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1842,6 +1850,7 @@ id|rtl8169_xmii_reset_pending
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1866,6 +1875,7 @@ id|rtl8169_tbi_link_ok
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1888,6 +1898,7 @@ id|rtl8169_xmii_link_ok
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1909,6 +1920,7 @@ id|rtl8169_tbi_reset_enable
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1935,6 +1947,7 @@ id|rtl8169_xmii_reset_enable
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -1987,6 +2000,7 @@ op_star
 id|tp
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -2352,6 +2366,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -2486,6 +2501,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -2873,6 +2889,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -3008,6 +3025,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -3086,6 +3104,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -3302,6 +3321,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -3396,6 +3416,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -3776,6 +3797,7 @@ id|rtl8169_write_gmii_reg_bit
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 comma
@@ -3853,6 +3875,7 @@ op_star
 id|tp
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -4050,6 +4073,7 @@ op_star
 id|tp
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -4285,6 +4309,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -4669,6 +4694,7 @@ op_amp
 id|tp-&gt;timer
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -4945,6 +4971,7 @@ op_star
 id|dev
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -4993,12 +5020,14 @@ op_star
 id|dev_out
 comma
 r_void
+id|__iomem
 op_star
 op_star
 id|ioaddr_out
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ioaddr
 suffix:semicolon
@@ -5654,6 +5683,7 @@ op_star
 id|tp
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -6300,6 +6330,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -6657,6 +6688,7 @@ id|rtl8169_hw_reset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -6711,6 +6743,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -8469,6 +8502,7 @@ op_plus
 id|entry
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -8843,6 +8877,7 @@ op_assign
 id|tp-&gt;pci_dev
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -9006,6 +9041,7 @@ op_star
 id|tp
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -9416,6 +9452,7 @@ op_star
 id|tp
 comma
 r_void
+id|__iomem
 op_star
 id|ioaddr
 )paren
@@ -9872,6 +9909,7 @@ op_assign
 id|max_interrupt_work
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -10203,6 +10241,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -10321,6 +10360,7 @@ op_assign
 id|tp-&gt;pci_dev
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -10484,6 +10524,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
@@ -10775,6 +10816,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ioaddr
 op_assign
