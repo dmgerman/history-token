@@ -679,7 +679,7 @@ id|blank_mode
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* unblank */
 id|out_8
@@ -694,21 +694,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* get caller to set CLUT to all black */
 r_case
-id|VESA_VSYNC_SUSPEND
-op_plus
-l_int|1
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 r_case
-id|VESA_HSYNC_SUSPEND
-op_plus
-l_int|1
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/*&n;&t;&t; * [kps] Value extracted from MacOS. I don&squot;t know&n;&t;&t; * whether this bit disables hsync or vsync, or&n;&t;&t; * whether the hardware can do the other as well.&n;&t;&t; */
 id|out_8
@@ -725,9 +721,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
-op_plus
-l_int|1
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|out_8
 c_func

@@ -4767,7 +4767,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Screen: On; HSync: On, VSync: On */
 id|state
@@ -4781,7 +4781,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Screen: Off; HSync: On, VSync: On */
 id|state
@@ -4795,7 +4795,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* Screen: Off; HSync: On, VSync: Off */
 id|state
@@ -4813,7 +4813,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* Screen: Off; HSync: Off, VSync: On */
 id|state
@@ -4831,7 +4831,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Screen: Off; HSync: Off, VSync: Off */
 id|state

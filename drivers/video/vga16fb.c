@@ -3643,7 +3643,7 @@ c_cond
 (paren
 id|mode
 op_amp
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 )paren
 (brace
 id|outb_p
@@ -3708,7 +3708,7 @@ c_cond
 (paren
 id|mode
 op_amp
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Set &lt;End of horizontal retrace&gt; to minimum (0) and&n;&t;&t; *  &lt;Start of horizontal Retrace&gt; to maximum&n;&t;&t; * Result: turn off horizontal sync (HSync) pulse.&n;&t;&t; */
@@ -4006,7 +4006,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblank */
 r_if
@@ -4040,7 +4040,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* blank */
 id|vga_pal_blank
@@ -4063,8 +4063,6 @@ c_func
 id|par
 comma
 id|blank
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|par-&gt;vesa_blanked
