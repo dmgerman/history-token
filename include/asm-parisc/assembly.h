@@ -44,7 +44,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_PA20
 DECL|macro|BL
 mdefine_line|#define BL&t;&t;b,l
-macro_line|# ifdef CONFIG_PARISC64
+macro_line|# ifdef CONFIG_64BIT
 DECL|macro|LEVEL
 macro_line|#  define LEVEL&t;&t;2.0w
 macro_line|# else
