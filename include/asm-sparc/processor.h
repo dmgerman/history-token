@@ -69,6 +69,11 @@ id|pt_regs
 op_star
 id|kregs
 suffix:semicolon
+DECL|member|_pad1
+r_int
+r_int
+id|_pad1
+suffix:semicolon
 multiline_comment|/* Special child fork kpsr/kwim values. */
 DECL|member|fork_kpsr
 r_int
@@ -88,48 +93,6 @@ DECL|member|fork_kwim
 r_int
 r_int
 id|fork_kwim
-suffix:semicolon
-multiline_comment|/* A place to store user windows and stack pointers&n;&t; * when the stack needs inspection.&n;&t; */
-DECL|macro|NSWINS
-mdefine_line|#define NSWINS 8
-DECL|member|reg_window
-r_struct
-id|reg_window
-id|reg_window
-(braket
-id|NSWINS
-)braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|member|rwbuf_stkptrs
-r_int
-r_int
-id|rwbuf_stkptrs
-(braket
-id|NSWINS
-)braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|member|w_saved
-r_int
-r_int
-id|w_saved
 suffix:semicolon
 multiline_comment|/* Floating point regs */
 DECL|member|float_regs
@@ -186,11 +149,6 @@ DECL|member|new_signal
 r_int
 id|new_signal
 suffix:semicolon
-DECL|member|refcount
-id|atomic_t
-id|refcount
-suffix:semicolon
-multiline_comment|/* used for sun4c only */
 )brace
 suffix:semicolon
 DECL|macro|SPARC_FLAG_KTHREAD
@@ -198,7 +156,7 @@ mdefine_line|#define SPARC_FLAG_KTHREAD      0x1    /* task is a kernel thread *
 DECL|macro|SPARC_FLAG_UNALIGNED
 mdefine_line|#define SPARC_FLAG_UNALIGNED    0x2    /* is allowed to do unaligned accesses */
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;/* kregs, */ &bslash;&n;   0,  &bslash;&n;/* fork_kpsr, fork_kwim */ &bslash;&n;   0,         0, &bslash;&n;/* reg_window */  &bslash;&n;{ { { 0, }, { 0, } }, }, &bslash;&n;/* rwbuf_stkptrs */  &bslash;&n;{ 0, 0, 0, 0, 0, 0, 0, 0, }, &bslash;&n;/* w_saved */ &bslash;&n;   0, &bslash;&n;/* FPU regs */   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &bslash;&n;                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, &bslash;&n;/* FPU status, FPU qdepth, FPU queue */ &bslash;&n;   0,          0,  { { 0, 0, }, }, &bslash;&n;/* flags,              current_ds, */ &bslash;&n;   SPARC_FLAG_KTHREAD, KERNEL_DS, &bslash;&n;/* core_exec */ &bslash;&n;{ 0, }, &bslash;&n;/* new_signal */ &bslash;&n;  0, &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;/* kregs, _pad1, */ &bslash;&n;   0, 0,  &bslash;&n;/* fork_kpsr, fork_kwim */ &bslash;&n;   0,         0, &bslash;&n;/* FPU regs */   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &bslash;&n;                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, &bslash;&n;/* FPU status, FPU qdepth, FPU queue */ &bslash;&n;   0,          0,  { { 0, 0, }, }, &bslash;&n;/* flags,              current_ds, */ &bslash;&n;   SPARC_FLAG_KTHREAD, KERNEL_DS, &bslash;&n;/* core_exec */ &bslash;&n;{ 0, }, &bslash;&n;/* new_signal */ &bslash;&n;  0, &bslash;&n;}
 multiline_comment|/* Return saved PC of a blocked thread. */
 r_extern
 r_int

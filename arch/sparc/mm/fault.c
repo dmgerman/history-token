@@ -2315,7 +2315,12 @@ id|sp
 suffix:semicolon
 id|sp
 op_assign
-id|current-&gt;thread.rwbuf_stkptrs
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|rwbuf_stkptrs
 (braket
 l_int|0
 )braket
