@@ -550,7 +550,10 @@ r_void
 id|release_resource_db
 c_func
 (paren
-r_void
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 )paren
 suffix:semicolon
 multiline_comment|/* In socket_sysfs.c */

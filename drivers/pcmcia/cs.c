@@ -784,6 +784,17 @@ id|socket-&gt;cis_mem.speed
 op_assign
 id|cis_speed
 suffix:semicolon
+multiline_comment|/* init resource database */
+id|socket-&gt;mem_db.next
+op_assign
+op_amp
+id|socket-&gt;mem_db
+suffix:semicolon
+id|socket-&gt;io_db.next
+op_assign
+op_amp
+id|socket-&gt;io_db
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1022,6 +1033,12 @@ id|pcmcia_socket_list_rwsem
 )paren
 suffix:semicolon
 multiline_comment|/* wait for sysfs to drop all references */
+id|release_resource_db
+c_func
+(paren
+id|socket
+)paren
+suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
@@ -8158,11 +8175,6 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;unloading Kernel Card Services&bslash;n&quot;
-)paren
-suffix:semicolon
-id|release_resource_db
-c_func
-(paren
 )paren
 suffix:semicolon
 id|class_interface_unregister
