@@ -2268,7 +2268,7 @@ id|ctx-&gt;ctx_lock
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 id|info
