@@ -999,6 +999,10 @@ c_func
 r_void
 )paren
 (brace
+id|agp_bridge.type
+op_assign
+id|NOT_SUPPORTED
+suffix:semicolon
 id|pm_unregister_all
 c_func
 (paren
