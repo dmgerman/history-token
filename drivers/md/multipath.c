@@ -478,11 +478,12 @@ id|mp_bh
 )paren
 suffix:semicolon
 )brace
-id|atomic_dec
+id|rdev_dec_pending
 c_func
 (paren
-op_amp
-id|rdev-&gt;nr_pending
+id|rdev
+comma
+id|conf-&gt;mddev
 )paren
 suffix:semicolon
 r_return
