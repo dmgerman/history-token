@@ -54,6 +54,16 @@ macro_line|#undef QL_INT_ACTIVE_HIGH
 DECL|macro|QL_INT_ACTIVE_HIGH
 mdefine_line|#define QL_INT_ACTIVE_HIGH 0
 macro_line|#endif
+r_struct
+id|qlogicfas_priv
+suffix:semicolon
+DECL|typedef|qlogicfas_priv_t
+r_typedef
+r_struct
+id|qlogicfas_priv
+op_star
+id|qlogicfas_priv_t
+suffix:semicolon
 DECL|struct|qlogicfas_priv
 r_struct
 id|qlogicfas_priv
@@ -92,14 +102,19 @@ op_star
 id|qlcmd
 suffix:semicolon
 multiline_comment|/* current command being processed */
-)brace
-suffix:semicolon
-DECL|typedef|qlogicfas_priv_t
-r_typedef
+DECL|member|shost
 r_struct
-id|qlogicfas_priv
+id|Scsi_Host
 op_star
+id|shost
+suffix:semicolon
+multiline_comment|/* pointer back to host */
+DECL|member|next
 id|qlogicfas_priv_t
+id|next
+suffix:semicolon
+multiline_comment|/* next private struct */
+)brace
 suffix:semicolon
 r_extern
 r_int
