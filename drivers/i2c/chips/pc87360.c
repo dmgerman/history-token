@@ -144,18 +144,6 @@ op_assign
 id|normal_isa_range
 comma
 dot
-id|ignore
-op_assign
-id|normal_i2c
-comma
-multiline_comment|/* cheat */
-dot
-id|ignore_range
-op_assign
-id|normal_i2c_range
-comma
-multiline_comment|/* cheat */
-dot
 id|forces
 op_assign
 id|forces
