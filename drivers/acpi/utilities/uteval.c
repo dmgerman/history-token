@@ -350,6 +350,31 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|acpi_gbl_enable_interpreter_slack
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|expected_return_btypes
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * We received a return object, but one was not expected.  This can&n;&t;&t; * happen frequently if the &quot;implicit return&quot; feature is enabled.&n;&t;&t; * Just delete the return object and return AE_OK.&n;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|info.return_object
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Is the return object one of the expected types? */
 r_if
 c_cond
