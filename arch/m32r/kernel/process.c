@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -993,9 +993,6 @@ id|do_fork
 c_func
 (paren
 id|clone_flags
-op_amp
-op_complement
-id|CLONE_IDLETASK
 comma
 id|newsp
 comma

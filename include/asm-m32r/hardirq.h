@@ -1,8 +1,6 @@
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
-multiline_comment|/* $Id$ */
-multiline_comment|/* orig : i386 2.5.67 */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -45,26 +43,6 @@ DECL|macro|SOFTIRQ_SHIFT
 mdefine_line|#define SOFTIRQ_SHIFT&t;(PREEMPT_SHIFT + PREEMPT_BITS)
 DECL|macro|HARDIRQ_SHIFT
 mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-DECL|macro|__MASK
-mdefine_line|#define __MASK(x)&t;((1UL &lt;&lt; (x))-1)
-DECL|macro|PREEMPT_MASK
-mdefine_line|#define PREEMPT_MASK&t;(__MASK(PREEMPT_BITS) &lt;&lt; PREEMPT_SHIFT)
-DECL|macro|HARDIRQ_MASK
-mdefine_line|#define HARDIRQ_MASK&t;(__MASK(HARDIRQ_BITS) &lt;&lt; HARDIRQ_SHIFT)
-DECL|macro|SOFTIRQ_MASK
-mdefine_line|#define SOFTIRQ_MASK&t;(__MASK(SOFTIRQ_BITS) &lt;&lt; SOFTIRQ_SHIFT)
-DECL|macro|hardirq_count
-mdefine_line|#define hardirq_count()&t;(preempt_count() &amp; HARDIRQ_MASK)
-DECL|macro|softirq_count
-mdefine_line|#define softirq_count()&t;(preempt_count() &amp; SOFTIRQ_MASK)
-DECL|macro|irq_count
-mdefine_line|#define irq_count()&t;(preempt_count() &amp; (HARDIRQ_MASK | SOFTIRQ_MASK))
-DECL|macro|PREEMPT_OFFSET
-mdefine_line|#define PREEMPT_OFFSET&t;(1UL &lt;&lt; PREEMPT_SHIFT)
-DECL|macro|SOFTIRQ_OFFSET
-mdefine_line|#define SOFTIRQ_OFFSET&t;(1UL &lt;&lt; SOFTIRQ_SHIFT)
-DECL|macro|HARDIRQ_OFFSET
-mdefine_line|#define HARDIRQ_OFFSET&t;(1UL &lt;&lt; HARDIRQ_SHIFT)
 multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!

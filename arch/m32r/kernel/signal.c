@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/signal.c&n; *    orig : i386 2.5.67&n; *&n; *  Copyright (c) 2003  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/signal.c&n; *&n; *  Copyright (c) 2003  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -32,9 +32,9 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
-DECL|function|sys_sigsuspend
 id|asmlinkage
 r_int
+DECL|function|sys_sigsuspend
 id|sys_sigsuspend
 c_func
 (paren
@@ -147,9 +147,9 @@ id|regs.r0
 suffix:semicolon
 )brace
 )brace
-DECL|function|sys_rt_sigsuspend
 id|asmlinkage
 r_int
+DECL|function|sys_rt_sigsuspend
 id|sys_rt_sigsuspend
 c_func
 (paren
@@ -301,9 +301,9 @@ id|regs.r0
 suffix:semicolon
 )brace
 )brace
-DECL|function|sys_sigaction
 id|asmlinkage
 r_int
+DECL|function|sys_sigaction
 id|sys_sigaction
 c_func
 (paren
@@ -507,9 +507,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|sys_sigaltstack
 id|asmlinkage
 r_int
+DECL|function|sys_sigaltstack
 id|sys_sigaltstack
 c_func
 (paren
@@ -636,9 +636,9 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|restore_sigcontext
 r_static
 r_int
+DECL|function|restore_sigcontext
 id|restore_sigcontext
 c_func
 (paren
@@ -868,9 +868,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|sys_sigreturn
 id|asmlinkage
 r_int
+DECL|function|sys_sigreturn
 id|sys_sigreturn
 c_func
 (paren
@@ -1058,9 +1058,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sys_rt_sigreturn
 id|asmlinkage
 r_int
+DECL|function|sys_rt_sigreturn
 id|sys_rt_sigreturn
 c_func
 (paren
@@ -1264,9 +1264,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up a signal frame.&n; */
-DECL|function|setup_sigcontext
 r_static
 r_int
+DECL|function|setup_sigcontext
 id|setup_sigcontext
 c_func
 (paren
@@ -1484,12 +1484,12 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Determine which stack to use..&n; */
-DECL|function|get_sigframe
 r_static
-id|__inline__
+r_inline
 r_void
 id|__user
 op_star
+DECL|function|get_sigframe
 id|get_sigframe
 c_func
 (paren
@@ -2353,15 +2353,20 @@ id|current
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
-DECL|function|handle_signal
 r_static
 r_void
+DECL|function|handle_signal
 id|handle_signal
 c_func
 (paren
 r_int
 r_int
 id|sig
+comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
 comma
 id|siginfo_t
 op_star
@@ -2377,19 +2382,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 r_int
 r_int
 id|inst
@@ -2616,6 +2608,10 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 r_int
 r_int
 id|inst
@@ -2671,6 +2667,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -2690,6 +2689,9 @@ id|handle_signal
 c_func
 (paren
 id|signr
+comma
+op_amp
+id|ka
 comma
 op_amp
 id|info

@@ -1,7 +1,6 @@
 macro_line|#ifndef _ASM_M32R_PAGE_H
 DECL|macro|_ASM_M32R_PAGE_H
 mdefine_line|#define _ASM_M32R_PAGE_H
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
@@ -203,6 +202,8 @@ DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC )
+DECL|macro|devmem_is_allowed
+mdefine_line|#define devmem_is_allowed(x) 1
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_M32R_PAGE_H */
 eof
