@@ -11798,7 +11798,7 @@ comma
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Serpent test vectors.  These are backwards because Serpent writes&n; * octect sequences in right-to-left mode.&n; */
+multiline_comment|/*&n; * Serpent test vectors.  These are backwards because Serpent writes&n; * octet sequences in right-to-left mode.&n; */
 DECL|macro|SERPENT_ENC_TEST_VECTORS
 mdefine_line|#define SERPENT_ENC_TEST_VECTORS&t;4
 DECL|macro|SERPENT_DEC_TEST_VECTORS

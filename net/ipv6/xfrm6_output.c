@@ -424,13 +424,8 @@ op_member_access_from_pointer
 id|output
 c_func
 (paren
-id|pskb
-)paren
-suffix:semicolon
 id|skb
-op_assign
-op_star
-id|pskb
+)paren
 suffix:semicolon
 r_if
 c_cond

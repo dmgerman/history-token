@@ -7,12 +7,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
-r_extern
-r_struct
-id|net_device
-op_star
-id|clip_devs
-suffix:semicolon
 multiline_comment|/*&n; * Appends all skbs from &quot;from&quot; to &quot;to&quot;. The operation is atomic with respect&n; * to all other skb operations on &quot;from&quot; or &quot;to&quot;.&n; */
 r_void
 id|skb_migrate

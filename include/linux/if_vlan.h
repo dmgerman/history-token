@@ -413,7 +413,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb

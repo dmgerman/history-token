@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
@@ -5549,6 +5550,26 @@ op_plus
 id|iph-&gt;ihl
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb_ip_make_writable
+c_func
+(paren
+id|pskb
+comma
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|len
+)paren
+)paren
+r_return
+id|NF_DROP
+suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
@@ -6088,12 +6109,14 @@ c_func
 id|fini
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0600
 )paren
 suffix:semicolon
 eof

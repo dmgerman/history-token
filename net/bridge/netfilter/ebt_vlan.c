@@ -2,22 +2,24 @@ multiline_comment|/*&n; * Description: EBTables 802.1Q match extension kernelspa
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_vlan.h&gt;
 DECL|variable|debug
 r_static
 r_int
-r_char
 id|debug
 suffix:semicolon
 DECL|macro|MODULE_VERS
 mdefine_line|#define MODULE_VERS &quot;0.6&quot;
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;0-1b&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -105,7 +107,10 @@ id|data
 suffix:semicolon
 r_struct
 id|vlan_hdr
-id|frame
+id|_frame
+comma
+op_star
+id|fp
 suffix:semicolon
 r_int
 r_int
@@ -127,24 +132,30 @@ r_int
 r_int
 id|encap
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|fp
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
 comma
 l_int|0
 comma
-op_amp
-id|frame
-comma
 r_sizeof
 (paren
-id|frame
+id|_frame
 )paren
+comma
+op_amp
+id|_frame
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fp
+op_eq
+l_int|NULL
 )paren
 r_return
 id|EBT_NOMATCH
@@ -155,7 +166,7 @@ op_assign
 id|ntohs
 c_func
 (paren
-id|frame.h_vlan_TCI
+id|fp-&gt;h_vlan_TCI
 )paren
 suffix:semicolon
 id|id
@@ -176,7 +187,7 @@ l_int|0x7
 suffix:semicolon
 id|encap
 op_assign
-id|frame.h_vlan_encapsulated_proto
+id|fp-&gt;h_vlan_encapsulated_proto
 suffix:semicolon
 multiline_comment|/* Checking VLAN Identifier (VID) */
 r_if

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3061,13 +3062,18 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME: is the mask correct? */
 macro_line|#ifdef CONFIG_INET
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|dev
@@ -3077,13 +3083,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3126,20 +3125,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
-id|in_dev_put
-c_func
-(paren
-id|in_dev
-)paren
-suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;
 multiline_comment|/* I hope both addr and mask are in the net order */
 id|sppp_cisco_send

@@ -52,6 +52,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -4690,8 +4691,15 @@ r_struct
 id|in_device
 op_star
 id|in_dev
+suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|strip_info-&gt;dev
@@ -4704,16 +4712,16 @@ id|in_dev
 op_eq
 l_int|NULL
 )paren
+(brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4723,17 +4731,9 @@ id|brd
 op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_broadcast
 suffix:semicolon
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
-id|in_dev_put
-c_func
-(paren
-id|in_dev
 )paren
 suffix:semicolon
 multiline_comment|/* arp_query returns 1 if it succeeds in looking up the address, 0 if it fails */
@@ -5366,12 +5366,6 @@ r_struct
 id|in_device
 op_star
 id|in_dev
-op_assign
-id|in_dev_get
-c_func
-(paren
-id|strip_info-&gt;dev
-)paren
 suffix:semicolon
 id|brd
 op_assign
@@ -5379,19 +5373,25 @@ id|addr
 op_assign
 l_int|0
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in_dev
+op_assign
+id|__in_dev_get
+c_func
+(paren
+id|strip_info-&gt;dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|in_dev
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5407,20 +5407,12 @@ op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_local
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|in_dev-&gt;lock
-)paren
-suffix:semicolon
-id|in_dev_put
-c_func
-(paren
-id|in_dev
-)paren
-suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * 6. If it is time for a periodic ARP, queue one up to be sent.&n;&t; * We only do this if:&n;&t; *  1. The radio is working&n;&t; *  2. It&squot;s time to send another periodic ARP&n;&t; *  3. We really know what our address is (and it is not manually set to zero)&n;&t; *  4. We have a designated broadcast address configured&n;&t; * If we queue up an ARP packet when we don&squot;t have a designated broadcast&n;&t; * address configured, then the packet will just have to be discarded in&n;&t; * strip_make_packet. This is not fatal, but it causes misleading information&n;&t; * to be displayed in tcpdump. tcpdump will report that periodic APRs are&n;&t; * being sent, when in fact they are not, because they are all being dropped&n;&t; * in the strip_make_packet routine.&n;&t; */
 r_if

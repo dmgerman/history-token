@@ -2,12 +2,14 @@ multiline_comment|/* &n; * xfrm4_policy.c&n; *&n; * Changes:&n; *&t;Kazunori MIY
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
-r_extern
+DECL|variable|xfrm4_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm4_dst_ops
 suffix:semicolon
-r_extern
+DECL|variable|xfrm4_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm4_policy_afinfo
@@ -872,6 +874,48 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|IPPROTO_ICMP
+suffix:colon
+r_if
+c_cond
+(paren
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+id|xprth
+op_plus
+l_int|2
+op_minus
+id|skb-&gt;data
+)paren
+)paren
+(brace
+id|u8
+op_star
+id|icmp
+op_assign
+id|xprth
+suffix:semicolon
+id|fl-&gt;fl_icmp_type
+op_assign
+id|icmp
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|fl-&gt;fl_icmp_code
+op_assign
+id|icmp
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 id|IPPROTO_ESP
 suffix:colon
 r_if
@@ -1111,6 +1155,7 @@ id|mtu
 suffix:semicolon
 )brace
 DECL|variable|xfrm4_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm4_dst_ops
@@ -1157,6 +1202,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|xfrm4_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm4_policy_afinfo
@@ -1207,6 +1253,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|xfrm4_policy_init
+r_static
 r_void
 id|__init
 id|xfrm4_policy_init
@@ -1224,6 +1271,7 @@ id|xfrm4_policy_afinfo
 suffix:semicolon
 )brace
 DECL|function|xfrm4_policy_fini
+r_static
 r_void
 id|__exit
 id|xfrm4_policy_fini

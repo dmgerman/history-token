@@ -174,6 +174,7 @@ comma
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|struct|netlink_skb_parms
 r_struct
 id|netlink_skb_parms

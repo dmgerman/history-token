@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ipv6_route.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 r_struct
 id|rt6_info
 suffix:semicolon

@@ -2908,6 +2908,7 @@ id|RTAX_RTT
 OG
 id|tp-&gt;srtt
 )paren
+(brace
 id|tp-&gt;srtt
 op_assign
 id|dst_metric
@@ -2918,6 +2919,11 @@ comma
 id|RTAX_RTT
 )paren
 suffix:semicolon
+id|tp-&gt;rtt_seq
+op_assign
+id|tp-&gt;snd_nxt
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

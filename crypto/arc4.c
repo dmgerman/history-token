@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Cryptographic API&n; *&n; * ARC4 Cipher Algorithm&n; *&n; * Jon Oberheide &lt;jon@focalhost.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; */
+multiline_comment|/* &n; * Cryptographic API&n; *&n; * ARC4 Cipher Algorithm&n; *&n; * Jon Oberheide &lt;jon@oberheide.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
@@ -446,7 +446,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Jon Oberheide &lt;jon@focalhost.com&gt;&quot;
+l_string|&quot;Jon Oberheide &lt;jon@oberheide.org&gt;&quot;
 )paren
 suffix:semicolon
 eof

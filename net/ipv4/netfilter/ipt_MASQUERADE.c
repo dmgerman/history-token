@@ -328,6 +328,12 @@ op_logical_or
 id|ctinfo
 op_eq
 id|IP_CT_RELATED
+op_logical_or
+id|ctinfo
+op_eq
+id|IP_CT_RELATED
+op_plus
+id|IP_CT_IS_REPLY
 )paren
 )paren
 suffix:semicolon

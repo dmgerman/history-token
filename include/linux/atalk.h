@@ -636,7 +636,49 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
+r_extern
+r_void
+id|aarp_probe_network
+c_func
+(paren
+r_struct
+id|atalk_iface
+op_star
+id|atif
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|aarp_proxy_probe_network
+c_func
+(paren
+r_struct
+id|atalk_iface
+op_star
+id|atif
+comma
+r_struct
+id|atalk_addr
+op_star
+id|sa
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|aarp_proxy_remove
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|atalk_addr
+op_star
+id|sa
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|aarp_cleanup_module
@@ -645,7 +687,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 DECL|macro|at_sk
 mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;sk_protinfo)
 r_extern
@@ -683,6 +724,51 @@ id|atalk_route
 id|atrtr_default
 suffix:semicolon
 r_extern
+r_struct
+id|file_operations
+id|atalk_seq_arp_fops
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_aarp_expiry_time
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_aarp_tick_time
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_aarp_retransmit_limit
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_aarp_resolve_time
+suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_void
+id|atalk_register_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|atalk_unregister_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|atalk_register_sysctl
+mdefine_line|#define atalk_register_sysctl()&t;&t;do { } while(0)
+DECL|macro|atalk_unregister_sysctl
+mdefine_line|#define atalk_unregister_sysctl()&t;do { } while(0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+r_extern
 r_int
 id|atalk_proc_init
 c_func
@@ -698,6 +784,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|atalk_proc_init
+mdefine_line|#define atalk_proc_init()&t;0
+DECL|macro|atalk_proc_exit
+mdefine_line|#define atalk_proc_exit()&t;do { } while(0)
+macro_line|#endif /* CONFIG_PROC_FS */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_ATALK_H__ */
 eof
