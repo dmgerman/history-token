@@ -470,6 +470,15 @@ op_assign
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dentry-&gt;d_inode
+)paren
+r_return
+op_minus
+id|EEXIST
+suffix:semicolon
 multiline_comment|/* only allow create if -&gt;d_fsdata is not NULL (so we can assume it &n;&t; * comes from the driverfs API below. */
 r_if
 c_cond
@@ -654,6 +663,15 @@ id|error
 op_assign
 op_minus
 id|ENOSPC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dentry-&gt;d_inode
+)paren
+r_return
+op_minus
+id|EEXIST
 suffix:semicolon
 id|inode
 op_assign
@@ -1734,11 +1752,6 @@ op_assign
 id|driverfs_unlink
 comma
 dot
-id|symlink
-op_assign
-id|driverfs_symlink
-comma
-dot
 id|rmdir
 op_assign
 id|driverfs_rmdir
@@ -2758,7 +2771,7 @@ id|entry
 suffix:semicolon
 id|error
 op_assign
-id|vfs_symlink
+id|driverfs_symlink
 c_func
 (paren
 id|parent-&gt;dentry-&gt;d_inode
