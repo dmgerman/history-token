@@ -7551,8 +7551,8 @@ id|__initdata
 id|probe_qd65xx
 suffix:semicolon
 r_extern
-r_void
-id|init_qd65xx
+r_int
+id|qd65xx_init
 c_func
 (paren
 r_void
@@ -10728,7 +10728,10 @@ c_cond
 (paren
 id|probe_qd65xx
 )paren
-id|init_qd65xx
+(paren
+r_void
+)paren
+id|qd65xx_init
 c_func
 (paren
 )paren
