@@ -13989,12 +13989,10 @@ r_int
 id|xtGather
 c_func
 (paren
-id|t
-)paren
 id|btree_t
 op_star
 id|t
-suffix:semicolon
+)paren
 (brace
 r_int
 id|rc

@@ -8847,6 +8847,7 @@ r_void
 id|fsDirty
 c_func
 (paren
+r_void
 )paren
 (brace
 id|printk
