@@ -3446,7 +3446,7 @@ r_char
 id|__user
 op_star
 )paren
-id|arg3
+id|arg2
 )paren
 suffix:semicolon
 r_case

@@ -3308,10 +3308,9 @@ id|elf_brk
 op_minus
 id|elf_bss
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * This bss-zeroing can fail if the ELF file&n;&t;&t;&t;&t; * specifies odd protections.  So we don&squot;t check&n;&t;&t;&t;&t; * the return value&n;&t;&t;&t;&t; */
+r_if
+c_cond
 (paren
-r_void
-)paren
 id|clear_user
 c_func
 (paren
@@ -3326,7 +3325,10 @@ id|load_bias
 comma
 id|nbyte
 )paren
-suffix:semicolon
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * This bss-zeroing can fail if the ELF&n;&t;&t;&t;&t;&t; * file specifies odd protections.  So&n;&t;&t;&t;&t;&t; * we don&squot;t check the return value&n;&t;&t;&t;&t;&t; */
+)brace
 )brace
 )brace
 r_if

@@ -968,6 +968,7 @@ r_if
 c_cond
 (paren
 id|acm-&gt;used
+op_increment
 )paren
 (brace
 r_goto
@@ -996,13 +997,8 @@ c_func
 l_string|&quot;usb_submit_urb(ctrl irq) failed&quot;
 )paren
 suffix:semicolon
-id|rv
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_goto
-id|err_out
+id|bail_out
 suffix:semicolon
 )brace
 id|acm-&gt;readurb-&gt;dev
@@ -1058,9 +1054,6 @@ l_int|1
 suffix:semicolon
 id|done
 suffix:colon
-id|acm-&gt;used
-op_increment
-suffix:semicolon
 id|err_out
 suffix:colon
 id|up
@@ -1088,6 +1081,11 @@ c_func
 (paren
 id|acm-&gt;ctrlurb
 )paren
+suffix:semicolon
+id|bail_out
+suffix:colon
+id|acm-&gt;used
+op_decrement
 suffix:semicolon
 id|up
 c_func
