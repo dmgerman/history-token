@@ -3796,14 +3796,6 @@ id|proto
 )paren
 (brace
 r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-op_amp
-id|lp-&gt;dev
-suffix:semicolon
-r_struct
 id|ipppd
 op_star
 id|is
@@ -3850,6 +3842,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* all packets need to passed through the compressor */
 id|skb
 op_assign
 id|ippp_ccp_decompress
@@ -3869,9 +3862,9 @@ c_cond
 op_logical_neg
 id|skb
 )paren
-singleline_comment|// decompression error
+multiline_comment|/* decompression error */
 r_goto
-id|out
+id|error
 suffix:semicolon
 r_switch
 c_cond
@@ -3897,12 +3890,18 @@ id|KERN_DEBUG
 l_string|&quot;isdn_ppp: IPX&bslash;n&quot;
 )paren
 suffix:semicolon
-id|skb-&gt;protocol
-op_assign
+id|isdn_netif_rx
+c_func
+(paren
+id|idev
+comma
+id|skb
+comma
 id|htons
 c_func
 (paren
 id|ETH_P_IPX
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -3924,12 +3923,18 @@ id|KERN_DEBUG
 l_string|&quot;isdn_ppp: IP&bslash;n&quot;
 )paren
 suffix:semicolon
-id|skb-&gt;protocol
-op_assign
+id|isdn_netif_rx
+c_func
+(paren
+id|idev
+comma
+id|skb
+comma
 id|htons
 c_func
 (paren
 id|ETH_P_IP
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -3956,32 +3961,16 @@ suffix:colon
 r_case
 id|PPP_VJC_COMP
 suffix:colon
-id|skb
-op_assign
 id|ippp_vj_decompress
 c_func
 (paren
-id|lp-&gt;slcomp
+id|idev
 comma
 id|skb
 comma
 id|proto
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-(brace
-id|lp-&gt;stats.rx_dropped
-op_increment
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -4054,24 +4043,6 @@ r_goto
 id|free
 suffix:semicolon
 )brace
-multiline_comment|/* Reset hangup-timer */
-id|idev-&gt;huptimer
-op_assign
-l_int|0
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
-id|netif_rx
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/* net_dev-&gt;local-&gt;stats.rx_packets++; done in isdn_net.c */
-id|out
-suffix:colon
 r_return
 suffix:semicolon
 id|drop
@@ -4086,6 +4057,13 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|error
+suffix:colon
+id|lp-&gt;stats.rx_dropped
+op_increment
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * send ppp frame .. we expect a PIDCOMPressable proto --&n; *  (here: currently always PPP_IP,PPP_VJC_COMP,PPP_VJC_UNCOMP)&n; *&n; * VJ compression may change skb pointer!!! .. requeue with old&n; * skb isn&squot;t allowed!!&n; */

@@ -9263,6 +9263,45 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * After handling connection-type specific stuff, the receiver function&n; * can use this function to pass the skb on to the network layer.&n; */
+r_void
+DECL|function|isdn_netif_rx
+id|isdn_netif_rx
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|idev
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+id|u16
+id|protocol
+)paren
+(brace
+id|idev-&gt;huptimer
+op_assign
+l_int|0
+suffix:semicolon
+id|skb-&gt;protocol
+op_assign
+id|protocol
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+op_amp
+id|idev-&gt;mlp-&gt;dev
+suffix:semicolon
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* ====================================================================== */
 multiline_comment|/* init / exit                                                            */
 multiline_comment|/* ====================================================================== */
