@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/trizeps.c&n; *&n; * Authors:&n; * Andreas Hofer &lt;ho@dsa-ac.de&gt;,&n; * Peter Lueg &lt;pl@dsa-ac.de&gt;,&n; * Guennadi Liakhovetski &lt;gl@dsa-ac.de&gt;&n; *&n; * This file contains all Trizeps-specific tweaks.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
