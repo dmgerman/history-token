@@ -8330,7 +8330,11 @@ l_int|2
 comma
 id|file-&gt;f_pos
 comma
-id|file-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|file-&gt;f_dentry
+)paren
 comma
 id|DT_DIR
 )paren

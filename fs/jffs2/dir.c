@@ -619,7 +619,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;Dirent 1: &bslash;&quot;..&bslash;&quot;, ino #%lu&bslash;n&quot;
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -637,7 +641,11 @@ l_int|2
 comma
 l_int|1
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 comma
 id|DT_DIR
 )paren

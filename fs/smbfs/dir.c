@@ -354,7 +354,11 @@ l_int|2
 comma
 l_int|1
 comma
-id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|dentry
+)paren
 comma
 id|DT_DIR
 )paren
