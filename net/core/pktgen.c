@@ -42,7 +42,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt; /* do_div */
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION  &quot;pktgen v2.57: Packet Generator for packet performance testing.&bslash;n&quot;
+mdefine_line|#define VERSION  &quot;pktgen v2.58: Packet Generator for packet performance testing.&bslash;n&quot;
 multiline_comment|/* #define PG_DEBUG(a) a */
 DECL|macro|PG_DEBUG
 mdefine_line|#define PG_DEBUG(a) 
@@ -3029,6 +3029,12 @@ id|tmp
 op_assign
 l_int|0
 suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|128
+)braket
+suffix:semicolon
 id|pg_result
 op_assign
 op_amp
@@ -4764,12 +4770,6 @@ l_string|&quot;dst&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -4925,12 +4925,6 @@ l_string|&quot;dst_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5086,12 +5080,6 @@ l_string|&quot;dst6&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5103,7 +5091,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5222,12 +5213,6 @@ l_string|&quot;dst6_min&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5239,7 +5224,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5358,12 +5346,6 @@ l_string|&quot;dst6_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5375,7 +5357,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5484,12 +5469,6 @@ l_string|&quot;src6&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5501,7 +5480,10 @@ id|user_buffer
 id|i
 )braket
 comma
-l_int|128
+r_sizeof
+(paren
+id|buf
+)paren
 op_minus
 l_int|1
 )paren
@@ -5620,12 +5602,6 @@ l_string|&quot;src_min&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
@@ -5781,12 +5757,6 @@ l_string|&quot;src_max&quot;
 )paren
 )paren
 (brace
-r_char
-id|buf
-(braket
-id|IP_NAME_SZ
-)braket
-suffix:semicolon
 id|len
 op_assign
 id|strn_len
