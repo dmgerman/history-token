@@ -1998,6 +1998,7 @@ id|page
 )paren
 )paren
 (brace
+op_star
 id|zone_pfn
 op_add_assign
 id|chunk_size
@@ -2085,10 +2086,7 @@ r_void
 id|copy_data_pages
 c_func
 (paren
-r_struct
-id|pbe
-op_star
-id|pbe
+r_void
 )paren
 (brace
 r_struct
@@ -2099,6 +2097,13 @@ suffix:semicolon
 r_int
 r_int
 id|zone_pfn
+suffix:semicolon
+r_struct
+id|pbe
+op_star
+id|pbe
+op_assign
+id|pagedir_nosave
 suffix:semicolon
 id|for_each_zone
 c_func
@@ -2915,12 +2920,6 @@ l_string|&quot;, &quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;counting pages to copy&quot;
-)paren
-suffix:semicolon
 id|drain_local_pages
 c_func
 (paren
@@ -2929,6 +2928,14 @@ suffix:semicolon
 id|count_data_pages
 c_func
 (paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;swsusp: Need to copy %u pages&bslash;n&quot;
+comma
+id|nr_copy_pages
 )paren
 suffix:semicolon
 id|nr_needed_pages
@@ -2951,7 +2958,6 @@ suffix:semicolon
 id|copy_data_pages
 c_func
 (paren
-id|pagedir_nosave
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; */
