@@ -3626,11 +3626,14 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+multiline_comment|/* note: the hardware is not capable of sg/csum/highdma, however&n;&t; * through the use of skb_copy_and_csum_dev we enable these&n;&t; * features&n;&t; */
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
 op_or
 id|NETIF_F_HW_CSUM
+op_or
+id|NETIF_F_HIGHDMA
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
