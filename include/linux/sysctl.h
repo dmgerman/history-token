@@ -3152,6 +3152,31 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|proc_dointvec_ms_jiffies
+c_func
+(paren
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+id|__user
+op_star
+comma
+r_int
+op_star
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|proc_doulongvec_minmax
 c_func
 (paren
@@ -3283,6 +3308,10 @@ suffix:semicolon
 r_extern
 id|ctl_handler
 id|sysctl_jiffies
+suffix:semicolon
+r_extern
+id|ctl_handler
+id|sysctl_ms_jiffies
 suffix:semicolon
 multiline_comment|/*&n; * Register a set of sysctl names by calling register_sysctl_table&n; * with an initialised array of ctl_table&squot;s.  An entry with zero&n; * ctl_name terminates the table.  table-&gt;de will be set up by the&n; * registration and need not be initialised in advance.&n; *&n; * sysctl names can be mirrored automatically under /proc/sys.  The&n; * procname supplied controls /proc naming.&n; *&n; * The table&squot;s mode will be honoured both for sys_sysctl(2) and&n; * proc-fs access.&n; *&n; * Leaf nodes in the sysctl tree will be represented by a single file&n; * under /proc; non-leaf nodes will be represented by directories.  A&n; * null procname disables /proc mirroring at this node.&n; * &n; * sysctl(2) can automatically manage read and write requests through&n; * the sysctl table.  The data and maxlen fields of the ctl_table&n; * struct enable minimal validation of the values being written to be&n; * performed, and the mode field allows minimal authentication.&n; * &n; * More sophisticated management can be enabled by the provision of a&n; * strategy routine with the table entry.  This will be called before&n; * any automatic read or write of the data is performed.&n; * &n; * The strategy routine may return:&n; * &lt;0: Error occurred (error is passed to user process)&n; * 0:  OK - proceed with automatic read or write.&n; * &gt;0: OK - read or write has been done by the strategy routine, so &n; *     return immediately.&n; * &n; * There must be a proc_handler routine for any terminal nodes&n; * mirrored under /proc/sys (non-terminals are handled by a built-in&n; * directory handler).  Several default handlers are available to&n; * cover common cases.&n; */
 multiline_comment|/* A sysctl table is an array of struct ctl_table: */
