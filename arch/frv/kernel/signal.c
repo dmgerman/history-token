@@ -886,9 +886,6 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
-id|stack_t
-id|st
-suffix:semicolon
 r_int
 id|gr8
 suffix:semicolon
