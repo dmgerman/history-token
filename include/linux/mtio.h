@@ -401,6 +401,7 @@ suffix:semicolon
 multiline_comment|/* result of r/w request, not of the ioctl */
 DECL|member|mt_data
 r_void
+id|__user
 op_star
 id|mt_data
 suffix:semicolon
