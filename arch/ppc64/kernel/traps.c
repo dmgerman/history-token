@@ -1939,6 +1939,9 @@ id|SIGABRT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Ensure exceptions are disabled */
+DECL|macro|MMCR0_PMXE
+mdefine_line|#define MMCR0_PMXE      (1UL &lt;&lt; (31 - 5))
 DECL|function|dummy_perf
 r_static
 r_void
@@ -1951,6 +1954,29 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+r_int
+id|mmcr0
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_MMCR0
+)paren
+suffix:semicolon
+id|mmcr0
+op_and_assign
+op_complement
+id|MMCR0_PMXE
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_MMCR0
+comma
+id|mmcr0
+)paren
+suffix:semicolon
 )brace
 DECL|variable|perf_irq
 r_void

@@ -149,8 +149,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * We need to be sure we have cleared all pending exceptions before&n;&t; * removing the interrupt handler. For the moment we play it safe and&n;&t; * leave it in&n;&t; */
-macro_line|#if 0
 id|mb
 c_func
 (paren
@@ -161,7 +159,6 @@ id|perf_irq
 op_assign
 id|save_perf_irq
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|op_ppc64_cpu_start
 r_static
