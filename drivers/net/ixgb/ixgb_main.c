@@ -498,7 +498,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_void
-id|set_ethtool_ops
+id|ixgb_set_ethtool_ops
 c_func
 (paren
 r_struct
@@ -1733,7 +1733,7 @@ op_assign
 op_amp
 id|ixgb_change_mtu
 suffix:semicolon
-id|set_ethtool_ops
+id|ixgb_set_ethtool_ops
 c_func
 (paren
 id|netdev

@@ -8153,9 +8153,9 @@ id|e1000_get_ethtool_stats
 comma
 )brace
 suffix:semicolon
-DECL|function|set_ethtool_ops
+DECL|function|e1000_set_ethtool_ops
 r_void
-id|set_ethtool_ops
+id|e1000_set_ethtool_ops
 c_func
 (paren
 r_struct
