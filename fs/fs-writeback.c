@@ -72,6 +72,12 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * make sure that changes are seen by all cpus before we test i_state&n;&t; * -- mikulas&n;&t; */
+id|smp_mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* avoid the locking if we can */
 r_if
 c_cond
@@ -297,6 +303,7 @@ op_and_assign
 op_complement
 id|I_DIRTY
 suffix:semicolon
+multiline_comment|/*&n;&t; * smp_rmb(); note: if you remove write_lock below, you must add this.&n;&t; * mark_inode_dirty doesn&squot;t take spinlock, make sure that inode is not&n;&t; * read speculatively by this cpu before &amp;= ~I_DIRTY  -- mikulas&n;&t; */
 id|write_lock
 c_func
 (paren
