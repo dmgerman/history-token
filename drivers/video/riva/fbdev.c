@@ -14,6 +14,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_OF
+macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#endif
 macro_line|#include &quot;rivafb.h&quot;
 macro_line|#include &quot;nvreg.h&quot;
 macro_line|#ifndef CONFIG_PCI&t;&t;/* sanity check */
