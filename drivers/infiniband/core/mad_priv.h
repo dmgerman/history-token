@@ -30,7 +30,7 @@ mdefine_line|#define MAX_MGMT_VERSION&t;8
 DECL|macro|MAX_MGMT_OUI
 mdefine_line|#define MAX_MGMT_OUI&t;&t;8
 DECL|macro|MAX_MGMT_VENDOR_RANGE2
-mdefine_line|#define MAX_MGMT_VENDOR_RANGE2&t;IB_MGMT_CLASS_VENDOR_RANGE2_END - &bslash;&n;&t;&t;&t;&t;IB_MGMT_CLASS_VENDOR_RANGE2_START + 1
+mdefine_line|#define MAX_MGMT_VENDOR_RANGE2&t;(IB_MGMT_CLASS_VENDOR_RANGE2_END - &bslash;&n;&t;&t;&t;&t;IB_MGMT_CLASS_VENDOR_RANGE2_START + 1)
 DECL|struct|ib_mad_list_head
 r_struct
 id|ib_mad_list_head
