@@ -4,12 +4,11 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 multiline_comment|/* Set EXTENT bits starting at BASE in BITMAP to value TURN_ON. */
 DECL|function|set_bitmap
 r_static
@@ -468,34 +467,15 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure we return the long way (not sysenter) */
+id|set_thread_flag
+c_func
+(paren
+id|TIF_IRET
+)paren
+suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|eat_key
-r_void
-id|eat_key
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|inb
-c_func
-(paren
-l_int|0x60
-)paren
-op_amp
-l_int|1
-)paren
-id|inb
-c_func
-(paren
-l_int|0x64
-)paren
 suffix:semicolon
 )brace
 eof

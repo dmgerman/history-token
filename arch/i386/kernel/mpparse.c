@@ -4159,7 +4159,6 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;/* CONFIG_X86_IO_APIC */
 macro_line|#ifdef&t;CONFIG_ACPI
 multiline_comment|/* Ensure the ACPI SCI interrupt level is active low, edge-triggered */
 r_extern
@@ -4718,5 +4717,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
+macro_line|#endif&t;/* CONFIG_X86_IO_APIC */
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof

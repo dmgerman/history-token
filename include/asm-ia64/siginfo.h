@@ -214,8 +214,6 @@ mdefine_line|#define si_flags&t;_sifields._sigfault._flags
 multiline_comment|/*&n; * si_isr is valid for SIGILL, SIGFPE, SIGSEGV, SIGBUS, and SIGTRAP provided that&n; * si_code is non-zero and __ISR_VALID is set in si_flags.&n; */
 DECL|macro|si_isr
 mdefine_line|#define si_isr&t;&t;_sifields._sigfault._isr
-DECL|macro|si_pfm_ovfl
-mdefine_line|#define si_pfm_ovfl&t;_sifields._sigprof._pfm_ovfl_counters
 multiline_comment|/*&n; * Flag values for si_flags:&n; */
 DECL|macro|__ISR_VALID_BIT
 mdefine_line|#define __ISR_VALID_BIT&t;0

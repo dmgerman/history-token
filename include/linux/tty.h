@@ -1014,8 +1014,10 @@ id|tty_struct
 op_star
 id|tty
 comma
-id|kdev_t
-id|device
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_const
 r_char

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/vcache.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -5276,6 +5277,13 @@ id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|invalidate_mmap_range
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|invalidate_mmap_range
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Handle all mappings that got truncated by a &quot;truncate()&quot;&n; * system call.&n; *&n; * NOTE! We have to be ready to update the memory sharing&n; * between the file and the memory map for a potential last&n; * incomplete page.  Ugly, but necessary.&n; */
 DECL|function|vmtruncate
 r_int

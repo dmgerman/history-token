@@ -112,8 +112,15 @@ id|i
 dot
 id|nid
 suffix:colon
+(paren
+id|num_memblks
+ques
+c_cond
 op_minus
 l_int|1
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 )brace
 eof

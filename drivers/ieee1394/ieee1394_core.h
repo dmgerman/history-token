@@ -457,10 +457,10 @@ r_int
 r_char
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 multiline_comment|/* return lower 4 bits */

@@ -2652,22 +2652,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* claim the slot */
-id|strncpy
-c_func
-(paren
-id|device-&gt;name
-comma
-id|el3_mca_adapter_names
-(braket
-id|mdev-&gt;index
-)braket
-comma
-r_sizeof
-(paren
-id|device-&gt;name
-)paren
-)paren
-suffix:semicolon
 id|mca_device_set_claim
 c_func
 (paren

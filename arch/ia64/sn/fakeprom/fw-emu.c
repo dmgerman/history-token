@@ -511,7 +511,7 @@ macro_line|#ifdef SGI_SN2
 DECL|macro|cpu_physical_id
 macro_line|#undef cpu_physical_id
 DECL|macro|cpu_physical_id
-mdefine_line|#define cpu_physical_id(cpuid)                  ((ia64_get_lid() &gt;&gt; 16) &amp; 0xffff)
+mdefine_line|#define cpu_physical_id(cpuid)                  ((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 16) &amp; 0xffff)
 r_void
 DECL|function|fprom_send_cpei
 id|fprom_send_cpei
@@ -618,7 +618,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_static
-r_int
+r_struct
+id|sal_ret_values
 DECL|function|sal_emulator
 id|sal_emulator
 (paren
@@ -654,33 +655,18 @@ r_int
 id|in7
 )paren
 (brace
-r_register
 r_int
 id|r9
-id|asm
-(paren
-l_string|&quot;r9&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
-r_register
 r_int
 id|r10
-id|asm
-(paren
-l_string|&quot;r10&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
-r_register
 r_int
 id|r11
-id|asm
-(paren
-l_string|&quot;r11&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -1180,7 +1166,21 @@ id|r11
 )paren
 suffix:semicolon
 r_return
+(paren
+(paren
+r_struct
+id|sal_ret_values
+)paren
+(brace
 id|status
+comma
+id|r9
+comma
+id|r10
+comma
+id|r11
+)brace
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is here to work around a bug in egcs-1.1.1b that causes the&n; * compiler to crash (seems like a bug in the new alias analysis code.&n; */

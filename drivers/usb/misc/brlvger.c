@@ -1625,9 +1625,10 @@ id|file
 r_int
 id|devnum
 op_assign
-id|minor
+id|iminor
+c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_struct

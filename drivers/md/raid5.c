@@ -7160,8 +7160,11 @@ id|new_sector
 comma
 id|pd_idx
 comma
-l_int|0
-multiline_comment|/*(bi-&gt;bi_rw&amp;RWA_MASK)*/
+(paren
+id|bi-&gt;bi_rw
+op_amp
+id|RWA_MASK
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -7203,6 +7206,21 @@ c_func
 (paren
 id|sh
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* cannot get stripe for read-ahead, just give-up */
+id|clear_bit
+c_func
+(paren
+id|BIO_UPTODATE
+comma
+op_amp
+id|bi-&gt;bi_flags
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace

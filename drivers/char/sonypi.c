@@ -1428,7 +1428,9 @@ op_assign
 id|inb_p
 c_func
 (paren
-id|sonypi_device.ioport2
+id|sonypi_device.ioport1
+op_plus
+id|sonypi_device.evtype_offset
 )paren
 suffix:semicolon
 r_for
@@ -3318,6 +3320,10 @@ id|sonypi_device.region_size
 op_assign
 id|SONYPI_TYPE2_REGION_SIZE
 suffix:semicolon
+id|sonypi_device.evtype_offset
+op_assign
+id|SONYPI_TYPE2_EVTYPE_OFFSET
+suffix:semicolon
 id|irq_list
 op_assign
 id|sonypi_type2_irq_list
@@ -3332,6 +3338,10 @@ suffix:semicolon
 id|sonypi_device.region_size
 op_assign
 id|SONYPI_TYPE1_REGION_SIZE
+suffix:semicolon
+id|sonypi_device.evtype_offset
+op_assign
+id|SONYPI_TYPE1_EVTYPE_OFFSET
 suffix:semicolon
 id|irq_list
 op_assign

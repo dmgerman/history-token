@@ -2666,6 +2666,28 @@ r_int
 r_int
 id|sal_platform_features
 suffix:semicolon
+DECL|struct|sal_ret_values
+r_struct
+id|sal_ret_values
+(brace
+DECL|member|r8
+DECL|member|r9
+DECL|member|r10
+DECL|member|r11
+r_int
+id|r8
+suffix:semicolon
+r_int
+id|r9
+suffix:semicolon
+r_int
+id|r10
+suffix:semicolon
+r_int
+id|r11
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PAL_H */
 eof

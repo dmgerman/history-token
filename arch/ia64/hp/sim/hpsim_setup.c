@@ -16,20 +16,6 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &quot;hpsim_ssc.h&quot;
-multiline_comment|/*&n; * Simulator system call.&n; */
-id|asm
-(paren
-l_string|&quot;.text&bslash;n&quot;
-l_string|&quot;.align 32&bslash;n&quot;
-l_string|&quot;.global ia64_ssc&bslash;n&quot;
-l_string|&quot;.proc ia64_ssc&bslash;n&quot;
-l_string|&quot;ia64_ssc:&bslash;n&quot;
-l_string|&quot;mov r15=r36&bslash;n&quot;
-l_string|&quot;break 0x80001&bslash;n&quot;
-l_string|&quot;br.ret.sptk.many rp&bslash;n&quot;
-l_string|&quot;.endp&bslash;n&quot;
-)paren
-suffix:semicolon
 r_void
 DECL|function|ia64_ssc_connect_irq
 id|ia64_ssc_connect_irq

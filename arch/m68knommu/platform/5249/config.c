@@ -27,7 +27,7 @@ r_void
 id|coldfire_timer_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

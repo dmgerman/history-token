@@ -2034,10 +2034,10 @@ id|fb_set_var
 c_func
 (paren
 op_amp
-id|var
+id|p-&gt;info
 comma
 op_amp
-id|p-&gt;info
+id|var
 )paren
 suffix:semicolon
 r_if

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
@@ -91,7 +92,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|handle_exception
 (paren
 r_struct
@@ -270,6 +271,7 @@ DECL|function|mem2hex
 id|mem2hex
 c_func
 (paren
+r_const
 r_char
 op_star
 id|mem
@@ -1637,14 +1639,12 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb_sstep
@@ -1658,14 +1658,12 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb
@@ -1700,17 +1698,16 @@ id|regs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;kgdb doesn&squot;t support iabr, what?!?&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|kgdb_dabr_match
@@ -1727,17 +1724,16 @@ id|regs
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;kgdb doesn&squot;t support dabr, what?!?&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|handle_exception
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Convert the hardware trap type code to a unix signal number. */
@@ -2032,7 +2028,7 @@ DECL|macro|SP_REGNUM
 mdefine_line|#define SP_REGNUM 1
 multiline_comment|/*&n; * This function does all command processing for interfacing to gdb.&n; */
 r_static
-r_void
+r_int
 DECL|function|handle_exception
 id|handle_exception
 (paren
@@ -2058,6 +2054,19 @@ suffix:semicolon
 r_int
 r_int
 id|msr
+suffix:semicolon
+multiline_comment|/* We don&squot;t handle user-mode breakpoints. */
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2087,10 +2096,12 @@ id|kgdb_active
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;interrupt while in kgdb, returning&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|kgdb_active
@@ -3156,6 +3167,7 @@ id|remcomOutBuffer
 suffix:semicolon
 )brace
 r_return
+l_int|1
 suffix:semicolon
 r_case
 l_char|&squot;s&squot;
@@ -3223,6 +3235,7 @@ id|remcomOutBuffer
 suffix:semicolon
 )brace
 r_return
+l_int|1
 suffix:semicolon
 r_case
 l_char|&squot;r&squot;
@@ -3304,19 +3317,11 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|breakinst
-id|breakinst
-suffix:colon
-dot
-r_int
-l_int|0x7d821008
-"&quot;"
+l_string|&quot;&t;.globl breakinst&t;&bslash;n&bslash;&n;&t;     breakinst: .long 0x7d821008&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_KGDB_CONSOLE
 multiline_comment|/* Output string in GDB O-packet format if GDB has connected. If nothing&n;   output, returns 0 (caller must then handle output). */
 r_int
 DECL|function|kgdb_output_string
@@ -3408,4 +3413,5 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

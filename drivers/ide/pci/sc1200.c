@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;sc1200.h&quot;
 DECL|macro|SC1200_REV_A
 mdefine_line|#define SC1200_REV_A&t;0x00

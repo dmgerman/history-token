@@ -305,7 +305,7 @@ c_func
 suffix:semicolon
 id|shp-&gt;shm_lprid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|shp-&gt;shm_nattch
 op_increment
@@ -471,7 +471,7 @@ suffix:semicolon
 )brace
 id|shp-&gt;shm_lprid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|shp-&gt;shm_dtim
 op_assign
@@ -821,7 +821,7 @@ suffix:semicolon
 )brace
 id|shp-&gt;shm_cprid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|shp-&gt;shm_lprid
 op_assign

@@ -438,10 +438,10 @@ c_func
 id|inode-&gt;i_mode
 )paren
 op_logical_or
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 id|CODA_PSDEV_MAJOR
@@ -473,10 +473,10 @@ suffix:semicolon
 )brace
 id|idx
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 id|fput

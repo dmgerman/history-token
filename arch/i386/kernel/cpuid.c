@@ -381,10 +381,10 @@ suffix:semicolon
 r_int
 id|cpu
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 r_if
@@ -484,10 +484,10 @@ id|file
 r_int
 id|cpu
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 r_struct

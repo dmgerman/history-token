@@ -1,7 +1,13 @@
+multiline_comment|/* H8MAX board depend header */
+multiline_comment|/* TIMER rate define */
+macro_line|#ifdef H8300_TIMER_DEFINE
+DECL|macro|H8300_TIMER_COUNT_DATA
+mdefine_line|#define H8300_TIMER_COUNT_DATA 25000*10/8192
+DECL|macro|H8300_TIMER_FREQ
+mdefine_line|#define H8300_TIMER_FREQ 25000*1000/8192
+macro_line|#endif
 multiline_comment|/* H8MAX RTL8019AS Config */
-macro_line|#ifndef __H8300_H8MAX_NE__
-DECL|macro|__H8300_H8MAX_NE__
-mdefine_line|#define __H8300_H8MAX_NE__
+macro_line|#ifdef H8300_NE_DEFINE
 DECL|macro|NE2000_ADDR
 mdefine_line|#define NE2000_ADDR&t;&t;0x800600
 DECL|macro|NE2000_IRQ

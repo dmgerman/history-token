@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * For the HP simulator, this file gets include in boot/bootloader.c.&n; * For SoftSDV, this file gets included in sys_softsdv.c.&n; */
+multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|# include &lt;linux/pci.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &quot;ssc.h&quot;
 DECL|macro|MB
 mdefine_line|#define MB&t;(1024*1024UL)
 DECL|macro|SIMPLE_MEMMAP
@@ -81,81 +82,6 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_HP_SIM) || defined(CONFIG_IA64_GENERIC)
-multiline_comment|/* Simulator system calls: */
-DECL|macro|SSC_EXIT
-mdefine_line|#define SSC_EXIT&t;66
-multiline_comment|/*&n; * Simulator system call.&n; */
-r_static
-r_int
-DECL|function|ssc
-id|ssc
-(paren
-r_int
-id|arg0
-comma
-r_int
-id|arg1
-comma
-r_int
-id|arg2
-comma
-r_int
-id|arg3
-comma
-r_int
-id|nr
-)paren
-(brace
-r_register
-r_int
-id|r8
-id|asm
-(paren
-l_string|&quot;r8&quot;
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov r15=%1&bslash;n&bslash;t&quot;
-l_string|&quot;break 0x80001&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|r8
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|nr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg0
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg1
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg2
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg3
-)paren
-)paren
-suffix:semicolon
-r_return
-id|r8
-suffix:semicolon
-)brace
 DECL|macro|SECS_PER_HOUR
 mdefine_line|#define SECS_PER_HOUR   (60 * 60)
 DECL|macro|SECS_PER_DAY
@@ -472,110 +398,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_HP_SIM */
-multiline_comment|/*&n; * Very ugly, but we need this in the simulator only.  Once we run on&n; * real hw, this can all go away.&n; */
 r_extern
 r_void
 id|pal_emulator_static
 (paren
 r_void
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;&t;.proc pal_emulator_static&bslash;n&quot;
-l_string|&quot;pal_emulator_static:&quot;
-l_string|&quot;&t;mov r8=-1&bslash;n&quot;
-l_string|&quot;&t;mov r9=256&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;cmp.gtu p6,p7=r9,r28&t;&t;/* r28 &lt;= 255? */&bslash;n&quot;
-l_string|&quot;(p6)&t;br.cond.sptk.few static&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;mov r9=512&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;cmp.gtu p6,p7=r9,r28&bslash;n&quot;
-l_string|&quot;(p6)&t;br.cond.sptk.few stacked&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;static:&t;cmp.eq p6,p7=6,r28&t;&t;/* PAL_PTCE_INFO */&bslash;n&quot;
-l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
-l_string|&quot;&t;movl r9=0x100000000&t;&t;/* tc.base */&bslash;n&quot;
-l_string|&quot;&t;movl r10=0x0000000200000003&t;/* count[0], count[1] */&bslash;n&quot;
-l_string|&quot;&t;movl r11=0x1000000000002000&t;/* stride[0], stride[1] */&bslash;n&quot;
-l_string|&quot;&t;br.cond.sptk.few rp&bslash;n&quot;
-l_string|&quot;1:&t;cmp.eq p6,p7=14,r28&t;&t;/* PAL_FREQ_RATIOS */&bslash;n&quot;
-l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
-l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
-l_string|&quot;&t;movl r9 =0x100000064&t;&t;/* proc_ratio (1/100) */&bslash;n&quot;
-l_string|&quot;&t;movl r10=0x100000100&t;&t;/* bus_ratio&lt;&lt;32 (1/256) */&bslash;n&quot;
-l_string|&quot;&t;movl r11=0x100000064&t;&t;/* itc_ratio&lt;&lt;32 (1/100) */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;1:&t;cmp.eq p6,p7=19,r28&t;&t;/* PAL_RSE_INFO */&bslash;n&quot;
-l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
-l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
-l_string|&quot;&t;mov r9=96&t;&t;&t;/* num phys stacked */&bslash;n&quot;
-l_string|&quot;&t;mov r10=0&t;&t;&t;/* hints */&bslash;n&quot;
-l_string|&quot;&t;mov r11=0&bslash;n&quot;
-l_string|&quot;&t;br.cond.sptk.few rp&bslash;n&quot;
-l_string|&quot;1:&t;cmp.eq p6,p7=1,r28&t;&t;/* PAL_CACHE_FLUSH */&bslash;n&quot;
-l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
-l_string|&quot;&t;mov r9=ar.lc&bslash;n&quot;
-l_string|&quot;&t;movl r8=524288&t;&t;&t;/* flush 512k million cache lines (16MB) */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;mov ar.lc=r8&bslash;n&quot;
-l_string|&quot;&t;movl r8=0xe000000000000000&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;.loop:&t;fc r8&bslash;n&quot;
-l_string|&quot;&t;add r8=32,r8&bslash;n&quot;
-l_string|&quot;&t;br.cloop.sptk.few .loop&bslash;n&quot;
-l_string|&quot;&t;sync.i&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;srlz.i&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;mov ar.lc=r9&bslash;n&quot;
-l_string|&quot;&t;mov r8=r0&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;1:&t;cmp.eq p6,p7=15,r28&t;&t;/* PAL_PERF_MON_INFO */&bslash;n&quot;
-l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
-l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
-l_string|&quot;&t;movl r9 =0x12082004&t;&t;/* generic=4 width=32 retired=8 cycles=18 */&bslash;n&quot;
-l_string|&quot;&t;mov r10=0&t;&t;&t;/* reserved */&bslash;n&quot;
-l_string|&quot;&t;mov r11=0&t;&t;&t;/* reserved */&bslash;n&quot;
-l_string|&quot;&t;mov r16=0xffff&t;&t;&t;/* implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;mov r17=0xffff&t;&t;&t;/* implemented PMD */&bslash;n&quot;
-l_string|&quot;&t;add r18=8,r29&t;&t;&t;/* second index */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r16,16&t;&t;/* store implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r17,16&t;&t;/* store implemented PMD */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;mov r16=0xf0&t;&t;&t;/* cycles count capable PMC */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;mov r17=0x10&t;&t;&t;/* retired bundles capable PMC */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r16,16&t;&t;/* store cycles capable */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r17,16&t;&t;/* store retired bundle capable */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
-l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
-l_string|&quot;&t;;;&bslash;n&quot;
-l_string|&quot;1:&t;br.cond.sptk.few rp&bslash;n&quot;
-l_string|&quot;stacked:&bslash;n&quot;
-l_string|&quot;&t;br.ret.sptk.few rp&bslash;n&quot;
-l_string|&quot;&t;.endp pal_emulator_static&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Macro to emulate SAL call using legacy IN and OUT calls to CF8, CFC etc.. */
@@ -733,7 +560,8 @@ id|EFI_UNSUPPORTED
 suffix:semicolon
 )brace
 r_static
-r_int
+r_struct
+id|sal_ret_values
 DECL|function|sal_emulator
 id|sal_emulator
 (paren
@@ -769,33 +597,18 @@ r_int
 id|in7
 )paren
 (brace
-r_register
 r_int
 id|r9
-id|asm
-(paren
-l_string|&quot;r9&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
-r_register
 r_int
 id|r10
-id|asm
-(paren
-l_string|&quot;r10&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
-r_register
 r_int
 id|r11
-id|asm
-(paren
-l_string|&quot;r11&quot;
-)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -1157,29 +970,22 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-id|r9
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|r10
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|r11
-)paren
-)paren
-suffix:semicolon
 r_return
+(paren
+(paren
+r_struct
+id|sal_ret_values
+)paren
+(brace
 id|status
+comma
+id|r9
+comma
+id|r10
+comma
+id|r11
+)brace
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is here to work around a bug in egcs-1.1.1b that causes the&n; * compiler to crash (seems like a bug in the new alias analysis code.&n; */
@@ -1520,6 +1326,10 @@ l_int|1
 suffix:semicolon
 id|efi_systab-&gt;runtime
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|__pa
 c_func
 (paren

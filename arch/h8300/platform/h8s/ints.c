@@ -17,38 +17,6 @@ macro_line|#include &lt;asm/gpio.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/regs267x.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-DECL|macro|EXT_IRQ0
-mdefine_line|#define EXT_IRQ0 16
-DECL|macro|EXT_IRQ1
-mdefine_line|#define EXT_IRQ1 17
-DECL|macro|EXT_IRQ2
-mdefine_line|#define EXT_IRQ2 18
-DECL|macro|EXT_IRQ3
-mdefine_line|#define EXT_IRQ3 19
-DECL|macro|EXT_IRQ4
-mdefine_line|#define EXT_IRQ4 20
-DECL|macro|EXT_IRQ5
-mdefine_line|#define EXT_IRQ5 21
-DECL|macro|EXT_IRQ6
-mdefine_line|#define EXT_IRQ6 22
-DECL|macro|EXT_IRQ7
-mdefine_line|#define EXT_IRQ7 23
-DECL|macro|EXT_IRQ8
-mdefine_line|#define EXT_IRQ8 24
-DECL|macro|EXT_IRQ9
-mdefine_line|#define EXT_IRQ9 25
-DECL|macro|EXT_IRQ10
-mdefine_line|#define EXT_IRQ10 26
-DECL|macro|EXT_IRQ11
-mdefine_line|#define EXT_IRQ11 27
-DECL|macro|EXT_IRQ12
-mdefine_line|#define EXT_IRQ12 28
-DECL|macro|EXT_IRQ13
-mdefine_line|#define EXT_IRQ13 29
-DECL|macro|EXT_IRQ14
-mdefine_line|#define EXT_IRQ14 30
-DECL|macro|EXT_IRQ15
-mdefine_line|#define EXT_IRQ15 31
 multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
 DECL|struct|irq_handler
 r_typedef
@@ -147,12 +115,21 @@ l_int|16
 op_assign
 initialization_block
 suffix:semicolon
+DECL|variable|use_kmalloc
+r_static
+r_int
+id|use_kmalloc
+suffix:semicolon
 r_extern
 r_int
 r_int
 op_star
 id|interrupt_redirect_table
 suffix:semicolon
+DECL|macro|CPU_VECTOR
+mdefine_line|#define CPU_VECTOR ((unsigned long *)0x000000)
+DECL|macro|ADDR_MASK
+mdefine_line|#define ADDR_MASK (0xffffff)
 DECL|function|get_vector_address
 r_static
 r_inline
@@ -171,12 +148,7 @@ r_int
 op_star
 id|rom_vector
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-l_int|0x000000
+id|CPU_VECTOR
 suffix:semicolon
 r_int
 r_int
@@ -193,6 +165,8 @@ id|rom_vector
 (braket
 id|EXT_IRQ0
 )braket
+op_amp
+id|ADDR_MASK
 suffix:semicolon
 multiline_comment|/* check romvector format */
 r_for
@@ -225,10 +199,14 @@ op_star
 l_int|4
 )paren
 op_ne
+(paren
 id|rom_vector
 (braket
 id|vec_no
 )braket
+op_amp
+id|ADDR_MASK
+)paren
 )paren
 r_return
 l_int|NULL
@@ -484,91 +462,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-multiline_comment|/* special request_irq */
-multiline_comment|/* used bootmem allocater */
-DECL|function|request_irq_boot
-r_void
-id|__init
-id|request_irq_boot
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-id|irqreturn_t
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-id|flags
-comma
-r_const
-r_char
-op_star
-id|devname
-comma
-r_void
-op_star
-id|dev_id
-)paren
-(brace
-id|irq_handler_t
-op_star
-id|irq_handle
-suffix:semicolon
-id|irq_handle
-op_assign
-id|alloc_bootmem
-c_func
-(paren
-r_sizeof
-(paren
-id|irq_handler_t
-)paren
-)paren
-suffix:semicolon
-id|irq_handle-&gt;handler
-op_assign
-id|handler
-suffix:semicolon
-id|irq_handle-&gt;flags
-op_assign
-id|flags
-suffix:semicolon
-id|irq_handle-&gt;count
-op_assign
-l_int|0
-suffix:semicolon
-id|irq_handle-&gt;dev_id
-op_assign
-id|dev_id
-suffix:semicolon
-id|irq_handle-&gt;devname
-op_assign
-id|devname
-suffix:semicolon
-id|irq_list
-(braket
-id|irq
-)braket
-op_assign
-id|irq_handle
-suffix:semicolon
-)brace
 DECL|function|request_irq
 r_int
 id|request_irq
@@ -788,6 +681,11 @@ id|ptn
 suffix:semicolon
 multiline_comment|/* ISR clear */
 )brace
+r_if
+c_cond
+(paren
+id|use_kmalloc
+)paren
 id|irq_handle
 op_assign
 (paren
@@ -805,6 +703,29 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_else
+(brace
+id|irq_handle
+op_assign
+id|alloc_bootmem
+c_func
+(paren
+r_sizeof
+(paren
+id|irq_handler_t
+)paren
+)paren
+suffix:semicolon
+(paren
+r_int
+r_int
+)paren
+id|irq_handle
+op_or_assign
+l_int|0x80000000
+suffix:semicolon
+multiline_comment|/* bootmem allocater */
+)brace
 r_if
 c_cond
 (paren
@@ -1072,6 +993,25 @@ id|bit_no
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|irq_list
+(braket
+id|irq
+)braket
+op_amp
+l_int|0x80000000
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|kfree
 c_func
 (paren
@@ -1088,6 +1028,7 @@ id|irq
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 DECL|function|probe_irq_on
 r_int
@@ -1417,4 +1358,29 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|enable_kmalloc
+r_static
+r_int
+id|__init
+id|enable_kmalloc
+c_func
+(paren
+r_void
+)paren
+(brace
+id|use_kmalloc
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|enable_kmalloc
+id|core_initcall
+c_func
+(paren
+id|enable_kmalloc
+)paren
+suffix:semicolon
 eof

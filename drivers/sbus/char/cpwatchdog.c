@@ -850,10 +850,10 @@ id|f
 r_switch
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 (brace

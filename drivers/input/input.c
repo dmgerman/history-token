@@ -1288,7 +1288,7 @@ c_cond
 (paren
 id|id-&gt;flags
 op_amp
-id|INPUT_DEVICE_ID_MATCH_BUS
+id|INPUT_DEVICE_ID_MATCH_VERSION
 )paren
 r_if
 c_cond
@@ -2424,10 +2424,10 @@ id|handler
 op_assign
 id|input_table
 (braket
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 l_int|5

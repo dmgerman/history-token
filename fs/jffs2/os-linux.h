@@ -46,9 +46,9 @@ DECL|macro|JFFS2_F_I_GID
 mdefine_line|#define JFFS2_F_I_GID(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_gid)
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,1)
 DECL|macro|JFFS2_F_I_RDEV_MIN
-mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (minor(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev))
+mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (iminor(OFNI_EDONI_2SFFJ(f)))
 DECL|macro|JFFS2_F_I_RDEV_MAJ
-mdefine_line|#define JFFS2_F_I_RDEV_MAJ(f) (major(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev))
+mdefine_line|#define JFFS2_F_I_RDEV_MAJ(f) (imajor(OFNI_EDONI_2SFFJ(f)))
 macro_line|#else
 DECL|macro|JFFS2_F_I_RDEV_MIN
 mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (MINOR(to_kdev_t(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev)))

@@ -73,6 +73,7 @@ r_struct
 id|tc_estimator
 (brace
 DECL|member|interval
+r_int
 r_char
 id|interval
 suffix:semicolon

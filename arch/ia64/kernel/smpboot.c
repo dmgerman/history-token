@@ -1863,7 +1863,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Total of %d processors activated (%lu.%02lu BogoMIPS).&bslash;n&quot;
+l_string|&quot;Total of %lu processors activated (%lu.%02lu BogoMIPS).&bslash;n&quot;
 comma
 id|num_online_cpus
 c_func

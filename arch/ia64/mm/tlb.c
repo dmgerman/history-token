@@ -301,24 +301,21 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Flush ALAT entries also.&n;&t;&t;&t; */
-id|asm
-r_volatile
-(paren
-l_string|&quot;ptc.ga %0,%1;;srlz.i;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|ia64_ptcga
+c_func
 (paren
 id|start
-)paren
 comma
-l_string|&quot;r&quot;
 (paren
 id|nbits
 op_lshift
 l_int|2
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 id|start
@@ -440,15 +437,10 @@ op_increment
 id|j
 )paren
 (brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;ptc.e %0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|ia64_ptce
+c_func
 (paren
 id|addr
-)paren
 )paren
 suffix:semicolon
 id|addr
@@ -467,22 +459,12 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_void
 DECL|function|flush_tlb_range
@@ -620,24 +602,16 @@ suffix:semicolon
 macro_line|# else
 r_do
 (brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;ptc.l %0,%1&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|ia64_ptcl
+c_func
 (paren
 id|start
-)paren
 comma
-l_string|&quot;r&quot;
 (paren
 id|nbits
 op_lshift
 l_int|2
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|start
@@ -658,22 +632,12 @@ id|end
 )paren
 suffix:semicolon
 macro_line|# endif
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_void
 id|__init
