@@ -3288,10 +3288,6 @@ id|tp-&gt;mss_cache
 op_assign
 id|tp-&gt;mss_cache_std
 suffix:semicolon
-id|tp-&gt;mss_tso_factor
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_if
 c_cond

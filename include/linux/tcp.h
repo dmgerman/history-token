@@ -811,11 +811,6 @@ id|__u32
 id|mss_cache
 suffix:semicolon
 multiline_comment|/* Cached effective mss, not including SACKS */
-DECL|member|mss_tso_factor
-id|__u32
-id|mss_tso_factor
-suffix:semicolon
-multiline_comment|/* Real packets per TSO packet */
 DECL|member|mss_cache_std
 id|__u16
 id|mss_cache_std
