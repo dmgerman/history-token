@@ -5569,6 +5569,13 @@ c_cond
 (paren
 op_logical_neg
 id|mod-&gt;license_gplok
+op_logical_and
+op_logical_neg
+(paren
+id|tainted
+op_amp
+id|TAINT_PROPRIETARY_MODULE
+)paren
 )paren
 (brace
 id|printk
