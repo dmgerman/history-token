@@ -197,11 +197,18 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* pseudo write in progress */
+DECL|member|mo_drive
+id|__u8
+id|mo_drive
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive is an MO device */
 DECL|member|reserved
 id|__u8
 id|reserved
 suffix:colon
-l_int|3
+l_int|2
 suffix:semicolon
 DECL|member|max_speed
 id|byte

@@ -606,6 +606,8 @@ DECL|macro|CDC_DVD_R
 mdefine_line|#define CDC_DVD_R&t;&t;0x10000&t;/* drive can write DVD-R */
 DECL|macro|CDC_DVD_RAM
 mdefine_line|#define CDC_DVD_RAM&t;&t;0x20000&t;/* drive can write DVD-RAM */
+DECL|macro|CDC_MO_DRIVE
+mdefine_line|#define CDC_MO_DRIVE&t;&t;0x40000 /* drive is an MO device */
 multiline_comment|/* drive status possibilities returned by CDROM_DRIVE_STATUS ioctl */
 DECL|macro|CDS_NO_INFO
 mdefine_line|#define CDS_NO_INFO&t;&t;0&t;/* if not implemented */
