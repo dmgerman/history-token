@@ -7160,11 +7160,8 @@ id|new_sector
 comma
 id|pd_idx
 comma
-(paren
-id|bi-&gt;bi_rw
-op_amp
-id|RWA_MASK
-)paren
+l_int|0
+multiline_comment|/*(bi-&gt;bi_rw&amp;RWA_MASK)*/
 )paren
 suffix:semicolon
 r_if
