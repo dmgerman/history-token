@@ -2345,13 +2345,12 @@ id|regstate
 )paren
 )paren
 suffix:semicolon
-(paren
-r_struct
-id|regstate
-op_star
-)paren
 id|state-&gt;vidstate
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|saved
 suffix:semicolon
 r_if
