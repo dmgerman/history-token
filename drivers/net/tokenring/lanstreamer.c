@@ -1481,6 +1481,7 @@ op_star
 id|streamer_priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 suffix:semicolon
@@ -2389,6 +2390,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -4350,6 +4352,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -5042,6 +5045,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -5751,6 +5755,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -6048,6 +6053,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -6383,6 +6389,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -6817,6 +6824,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -7631,6 +7639,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -8842,6 +8851,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -9353,6 +9363,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign
@@ -9997,6 +10008,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|streamer_mmio
 op_assign

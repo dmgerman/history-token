@@ -419,6 +419,7 @@ id|pci_dev
 suffix:semicolon
 DECL|member|streamer_mmio
 id|__u8
+id|__iomem
 op_star
 id|streamer_mmio
 suffix:semicolon
