@@ -572,6 +572,7 @@ multiline_comment|/* ptr to TTY structure         */
 DECL|member|dev
 r_struct
 id|net_device
+op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* Our device structure         */
@@ -1212,7 +1213,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: %-13s%s&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|msg
 comma
@@ -2464,7 +2465,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-op_amp
 id|strip_info-&gt;dev
 suffix:semicolon
 r_int
@@ -2631,7 +2631,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-op_amp
 id|strip_info-&gt;dev
 suffix:semicolon
 r_int
@@ -2669,7 +2668,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: MTU exceeds maximum allowable (%d), MTU change cancelled.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|MAX_SEND_MTU
 )paren
@@ -2698,7 +2697,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: unable to grow strip buffers, MTU change cancelled.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|dev-&gt;mtu
@@ -2786,7 +2785,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;%s: strip MTU changed fom %d to %d.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|old_mtu
 comma
@@ -2858,7 +2857,6 @@ suffix:semicolon
 id|netif_wake_queue
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 suffix:semicolon
@@ -3393,7 +3391,7 @@ r_char
 op_star
 id|if_name
 op_assign
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 suffix:semicolon
 id|MetricomAddress
 id|true_dev_addr
@@ -3408,7 +3406,7 @@ op_star
 id|MetricomAddress
 op_star
 )paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 suffix:semicolon
 r_int
 id|manual_dev_addr
@@ -3726,7 +3724,7 @@ c_cond
 op_logical_neg
 id|memcmp
 (paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 comma
 id|zero_address.c
 comma
@@ -4096,7 +4094,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: No response: Resetting radio.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|strip_info-&gt;firmware_version.c
@@ -4193,7 +4191,7 @@ op_star
 id|MetricomAddress
 op_star
 )paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 op_assign
 id|zero_address
 suffix:semicolon
@@ -4415,7 +4413,6 @@ op_logical_neg
 id|netif_running
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 )paren
@@ -4693,7 +4690,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: strip_make_packet: Unknown packet type 0x%04X&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|ntohs
 c_func
@@ -4722,7 +4719,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Dropping oversized transmit packet: %d bytes&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|len
 )paren
@@ -4758,7 +4755,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Dropping packet addressed to self&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -4792,7 +4789,6 @@ op_assign
 id|in_dev_get
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 suffix:semicolon
@@ -4847,7 +4843,6 @@ id|haddr.c
 comma
 id|brd
 comma
-op_amp
 id|strip_info-&gt;dev
 )paren
 )paren
@@ -4858,7 +4853,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Unable to send packet (no broadcast hub configured)&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -5394,7 +5389,7 @@ l_int|1
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/*printk(KERN_INFO &quot;%s: Routine radio test.&bslash;n&quot;, strip_info-&gt;dev.name); */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Routine radio test.&bslash;n&quot;, strip_info-&gt;dev-&gt;name); */
 )brace
 multiline_comment|/*&n;&t; * 3. Set up the strip_info ready to send the data (if any).&n;&t; */
 id|strip_info-&gt;tx_head
@@ -5431,7 +5426,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Sending%5d bytes;%5d bytes free.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|strip_info-&gt;tx_left
 comma
@@ -5470,7 +5465,6 @@ op_assign
 id|in_dev_get
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 suffix:semicolon
@@ -5541,7 +5535,7 @@ op_logical_and
 id|memcmp
 c_func
 (paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 comma
 id|zero_address.c
 comma
@@ -5558,12 +5552,11 @@ id|haddr.c
 comma
 id|brd
 comma
-op_amp
 id|strip_info-&gt;dev
 )paren
 )paren
 (brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Sending gratuitous ARP with interval %ld&bslash;n&quot;,&n;&t;&t;   strip_info-&gt;dev.name, strip_info-&gt;arp_interval / HZ); */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Sending gratuitous ARP with interval %ld&bslash;n&quot;,&n;&t;&t;   strip_info-&gt;dev-&gt;name, strip_info-&gt;arp_interval / HZ); */
 id|strip_info-&gt;gratuitous_arp
 op_assign
 id|jiffies
@@ -5600,7 +5593,6 @@ comma
 id|addr
 comma
 multiline_comment|/* Target address of ARP packet is our address */
-op_amp
 id|strip_info-&gt;dev
 comma
 multiline_comment|/* Device to send packet on */
@@ -5610,10 +5602,10 @@ multiline_comment|/* Source IP address this ARP packet comes from */
 l_int|NULL
 comma
 multiline_comment|/* Destination HW address is NULL (broadcast it) */
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 comma
 multiline_comment|/* Source HW address is our HW address */
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Target HW address is our HW address (redundant) */
@@ -5840,7 +5832,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: WARNING: Receiving %ld packets per second.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|rx_pps_count
 op_div
@@ -5862,7 +5854,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: WARNING: Tx        %ld packets per second.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|tx_pps_count
 op_div
@@ -5884,7 +5876,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: WARNING: Sending   %ld packets per second.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|sx_pps_count
 op_div
@@ -5907,7 +5899,7 @@ c_cond
 (paren
 id|strip_info-&gt;mtu
 op_ne
-id|strip_info-&gt;dev.mtu
+id|strip_info-&gt;dev-&gt;mtu
 )paren
 id|strip_changedmtu
 c_func
@@ -6284,7 +6276,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio Firmware: %.*s&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|len
 comma
@@ -6666,7 +6658,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio address = %s&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|addr_string.c
 )paren
@@ -6686,7 +6678,7 @@ op_star
 id|MetricomAddress
 op_star
 )paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 op_assign
 id|addr
 suffix:semicolon
@@ -6828,7 +6820,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio provides message checksums&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -6939,7 +6931,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio %s is not in StarMode&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|sendername
 )paren
@@ -6993,7 +6985,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Destination radio name is unknown&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7064,7 +7056,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio now in starmode&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If the radio has just entered a working state, we should do our first&n;&t;&t;&t; * probe ASAP, so that we find out our radio address etc. without delay.&n;&t;&t;&t; */
@@ -7098,7 +7090,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Radio provides structured messages&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7210,7 +7202,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Error! Packet size too big for radio.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7244,7 +7236,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Radio name contains illegal character&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7670,7 +7662,7 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 comma
 id|zero_address.c
 comma
@@ -7722,7 +7714,7 @@ c_cond
 (paren
 id|dev-&gt;type
 op_eq
-id|strip_info-&gt;dev.type
+id|strip_info-&gt;dev-&gt;type
 op_logical_and
 op_logical_neg
 id|memcmp
@@ -7746,7 +7738,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Transferred packet ownership to %s.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|dev-&gt;name
 )paren
@@ -7779,7 +7771,6 @@ suffix:semicolon
 )brace
 r_return
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 suffix:semicolon
@@ -7833,7 +7824,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: memory squeeze, dropping packet.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|strip_info-&gt;rx_dropped
@@ -8028,7 +8019,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Dropping oversized received IP packet: %d bytes&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|packetlen
 )paren
@@ -8039,7 +8030,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte IP packet&bslash;n&quot;, strip_info-&gt;dev.name, packetlen); */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte IP packet&bslash;n&quot;, strip_info-&gt;dev-&gt;name, packetlen); */
 multiline_comment|/* Decode remainder of the IP packet */
 id|ptr
 op_assign
@@ -8213,7 +8204,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Dropping oversized received ARP packet: %d bytes&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|packetlen
 )paren
@@ -8224,7 +8215,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte ARP %s&bslash;n&quot;,&n;&t;   strip_info-&gt;dev.name, packetlen,&n;&t;   ntohs(arphdr-&gt;ar_op) == ARPOP_REQUEST ? &quot;request&quot; : &quot;reply&quot;); */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got %d byte ARP %s&bslash;n&quot;,&n;&t;   strip_info-&gt;dev-&gt;name, packetlen,&n;&t;   ntohs(arphdr-&gt;ar_op) == ARPOP_REQUEST ? &quot;request&quot; : &quot;reply&quot;); */
 multiline_comment|/* Decode remainder of the ARP packet */
 id|ptr
 op_assign
@@ -8721,7 +8712,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*printk(KERN_INFO &quot;%s: Got packet from &bslash;&quot;%s&bslash;&quot;.&bslash;n&quot;, strip_info-&gt;dev.name, sendername); */
+multiline_comment|/*printk(KERN_INFO &quot;%s: Got packet from &bslash;&quot;%s&bslash;&quot;.&bslash;n&quot;, strip_info-&gt;dev-&gt;name, sendername); */
 multiline_comment|/*&n;&t; * Fill in (pseudo) source and destination addresses in the packet.&n;&t; * We assume that the destination address was our address (the radio does not&n;&t; * tell us this). If the radio supplies a source address, then we use it.&n;&t; */
 id|header.dst_addr
 op_assign
@@ -9120,7 +9111,6 @@ op_logical_neg
 id|netif_running
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 )paren
@@ -9141,7 +9131,7 @@ c_cond
 (paren
 id|strip_info-&gt;mtu
 op_ne
-id|strip_info-&gt;dev.mtu
+id|strip_info-&gt;dev-&gt;mtu
 )paren
 id|strip_changedmtu
 c_func
@@ -9208,7 +9198,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: %s on serial port&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|TTYERROR
 c_func
@@ -9278,7 +9268,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Cut a %d byte packet (%d bytes remaining)%s&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|strip_info-&gt;sx_count
 comma
@@ -9315,7 +9305,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: sx_buff overflow (%d bytes total)&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|strip_info-&gt;sx_count
 )paren
@@ -9333,7 +9323,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Discarding bad packet (%d/%d)&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|strip_info-&gt;discard
 comma
@@ -9439,7 +9429,7 @@ op_star
 id|MetricomAddress
 op_star
 )paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 op_assign
 op_star
 id|addr
@@ -9450,7 +9440,7 @@ op_star
 id|MetricomAddress
 op_star
 )paren
-id|strip_info-&gt;dev.dev_addr
+id|strip_info-&gt;dev-&gt;dev_addr
 op_assign
 id|strip_info-&gt;true_dev_addr
 suffix:semicolon
@@ -9700,7 +9690,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Initializing Radio.&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|ResetRadio
@@ -9990,6 +9980,17 @@ id|strip_info-&gt;magic
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strip_info-&gt;dev
+)paren
+id|kfree
+c_func
+(paren
+id|strip_info-&gt;dev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -10022,6 +10023,11 @@ id|s
 op_assign
 op_amp
 id|struct_strip_list
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|dev
 suffix:semicolon
 r_struct
 id|strip
@@ -10070,6 +10076,48 @@ id|strip
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* allocate the net_device */
+id|dev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|strip_info
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|strip_info-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Search the list to find where to put our new entry&n;&t; * (and in the process decide what channel number it is&n;&t; * going to be)&n;&t; */
 r_while
 c_loop
@@ -10082,7 +10130,7 @@ op_star
 id|s
 )paren
 op_member_access_from_pointer
-id|dev.base_addr
+id|dev-&gt;base_addr
 op_eq
 id|channel_id
 )paren
@@ -10162,8 +10210,7 @@ op_assign
 (paren
 r_int
 )paren
-op_amp
-id|strip_info-&gt;dev
+id|dev
 suffix:semicolon
 id|strip_info-&gt;idle_timer.function
 op_assign
@@ -10173,18 +10220,18 @@ multiline_comment|/* Note: strip_info-&gt;if_name is currently 8 characters long
 id|sprintf
 c_func
 (paren
-id|strip_info-&gt;dev.name
+id|dev-&gt;name
 comma
 l_string|&quot;st%d&quot;
 comma
 id|channel_id
 )paren
 suffix:semicolon
-id|strip_info-&gt;dev.base_addr
+id|dev-&gt;base_addr
 op_assign
 id|channel_id
 suffix:semicolon
-id|strip_info-&gt;dev.priv
+id|dev-&gt;priv
 op_assign
 (paren
 r_void
@@ -10192,11 +10239,11 @@ op_star
 )paren
 id|strip_info
 suffix:semicolon
-id|strip_info-&gt;dev.next
+id|dev-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|strip_info-&gt;dev.init
+id|dev-&gt;init
 op_assign
 id|strip_dev_init
 suffix:semicolon
@@ -10269,7 +10316,6 @@ c_cond
 id|register_netdev
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 op_ne
@@ -10329,7 +10375,7 @@ id|tty
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Restore default settings&n;&t; */
-id|strip_info-&gt;dev.type
+id|strip_info-&gt;dev-&gt;type
 op_assign
 id|ARPHRD_METRICOM
 suffix:semicolon
@@ -10353,21 +10399,19 @@ op_complement
 id|HUPCL
 suffix:semicolon
 multiline_comment|/* Don&squot;t close on hup */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;STRIP: device &bslash;&quot;%s&bslash;&quot; activated&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Done.  We have linked the TTY line to a channel.&n;&t; */
 r_return
 (paren
-id|strip_info-&gt;dev.base_addr
+id|strip_info-&gt;dev-&gt;base_addr
 )paren
 suffix:semicolon
 )brace
@@ -10412,7 +10456,6 @@ suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
-op_amp
 id|strip_info-&gt;dev
 )paren
 suffix:semicolon
@@ -10430,7 +10473,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;STRIP: device &bslash;&quot;%s&bslash;&quot; closed down&bslash;n&quot;
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|strip_free
@@ -10442,8 +10485,6 @@ suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
@@ -10521,12 +10562,12 @@ op_star
 )paren
 id|arg
 comma
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 comma
 id|strlen
 c_func
 (paren
-id|strip_info-&gt;dev.name
+id|strip_info-&gt;dev-&gt;name
 )paren
 op_plus
 l_int|1
@@ -10547,7 +10588,7 @@ suffix:colon
 id|MetricomAddress
 id|addr
 suffix:semicolon
-singleline_comment|//printk(KERN_INFO &quot;%s: SIOCSIFHWADDR&bslash;n&quot;, strip_info-&gt;dev.name);
+singleline_comment|//printk(KERN_INFO &quot;%s: SIOCSIFHWADDR&bslash;n&quot;, strip_info-&gt;dev-&gt;name);
 r_if
 c_cond
 (paren
