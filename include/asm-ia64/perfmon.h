@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_PERFMON_H
 DECL|macro|_ASM_IA64_PERFMON_H
 mdefine_line|#define _ASM_IA64_PERFMON_H

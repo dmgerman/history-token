@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file implements the perfmon subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * Originaly Written by Ganesh Venkitachalam, IBM Corp.&n; * Copyright (C) 1999 Ganesh Venkitachalam &lt;venkitac@us.ibm.com&gt;&n; *&n; * Modifications by Stephane Eranian, Hewlett-Packard Co.&n; * Modifications by David Mosberger-Tang, Hewlett-Packard Co.&n; *&n; * Copyright (C) 1999-2002  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file implements the perfmon subsystem which is used&n; * to program the IA-64 Performance Monitoring Unit (PMU).&n; *&n; * Originaly Written by Ganesh Venkitachalam, IBM Corp.&n; * Copyright (C) 1999 Ganesh Venkitachalam &lt;venkitac@us.ibm.com&gt;&n; *&n; * Modifications by Stephane Eranian, Hewlett-Packard Co.&n; * Modifications by David Mosberger-Tang, Hewlett-Packard Co.&n; *&n; * Copyright (C) 1999-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *               David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -399,17 +399,33 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* exclude idle task in system wide session */
+DECL|member|trap_reason
+r_int
+r_int
+id|trap_reason
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* reason for going into pfm_block_ovfl_reset() */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 suffix:colon
-l_int|23
+l_int|21
 suffix:semicolon
 DECL|typedef|pfm_context_flags_t
 )brace
 id|pfm_context_flags_t
 suffix:semicolon
+DECL|macro|PFM_TRAP_REASON_NONE
+mdefine_line|#define PFM_TRAP_REASON_NONE&t;&t;0x0&t;/* default value */
+DECL|macro|PFM_TRAP_REASON_BLOCKSIG
+mdefine_line|#define PFM_TRAP_REASON_BLOCKSIG&t;0x1&t;/* we need to block on overflow and signal user */
+DECL|macro|PFM_TRAP_REASON_SIG
+mdefine_line|#define PFM_TRAP_REASON_SIG&t;&t;0x2&t;/* we simply need to signal user */
+DECL|macro|PFM_TRAP_REASON_RESET
+mdefine_line|#define PFM_TRAP_REASON_RESET&t;&t;0x3&t;/* we need to reset PMDs */
 multiline_comment|/*&n; * perfmon context: encapsulates all the state of a monitoring session&n; * XXX: probably need to change layout&n; */
 DECL|struct|pfm_context
 r_typedef
@@ -577,6 +593,8 @@ DECL|macro|ctx_fl_using_dbreg
 mdefine_line|#define ctx_fl_using_dbreg&t;ctx_flags.using_dbreg
 DECL|macro|ctx_fl_excl_idle
 mdefine_line|#define ctx_fl_excl_idle&t;ctx_flags.excl_idle
+DECL|macro|ctx_fl_trap_reason
+mdefine_line|#define ctx_fl_trap_reason&t;ctx_flags.trap_reason
 multiline_comment|/*&n; * global information about all sessions&n; * mostly used to synchronize between system wide and per-process&n; */
 r_typedef
 r_struct
@@ -4018,6 +4036,10 @@ id|ctx-&gt;ctx_fl_frozen
 op_assign
 l_int|0
 suffix:semicolon
+id|ctx-&gt;ctx_fl_trap_reason
+op_assign
+id|PFM_TRAP_REASON_NONE
+suffix:semicolon
 multiline_comment|/*&n;&t; * setting this flag to 0 here means, that the creator or the task that the&n;&t; * context is being attached are granted access. Given that a context can only&n;&t; * be created for the calling process this, in effect only allows the creator&n;&t; * to access the context. See pfm_protect() for more.&n;&t; */
 id|ctx-&gt;ctx_fl_protected
 op_assign
@@ -5226,7 +5248,8 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* we don&squot;t quite support this right now */
 r_if
@@ -5256,11 +5279,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* XXX: ctx locking may be required here */
-id|ret
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9093,6 +9111,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|task
+)paren
+id|get_task_struct
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|task
 )paren
@@ -9258,9 +9294,214 @@ r_if
 c_cond
 (paren
 id|task
+op_logical_and
+id|task
 op_ne
 id|current
 )paren
+id|put_task_struct
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * send SIGPROF to register task, must be invoked when it&n; * is safe to send a signal, e.g., not holding any runqueue&n; * related locks.&n; */
+r_static
+r_int
+DECL|function|pfm_notify_user
+id|pfm_notify_user
+c_func
+(paren
+id|pfm_context_t
+op_star
+id|ctx
+)paren
+(brace
+r_struct
+id|siginfo
+id|si
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_eq
+l_int|NULL
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;[%d] no notifier&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|si.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|si.si_addr
+op_assign
+l_int|NULL
+suffix:semicolon
+id|si.si_pid
+op_assign
+id|current-&gt;pid
+suffix:semicolon
+multiline_comment|/* who is sending */
+id|si.si_signo
+op_assign
+id|SIGPROF
+suffix:semicolon
+id|si.si_code
+op_assign
+id|PROF_OVFL
+suffix:semicolon
+id|si.si_pfm_ovfl
+(braket
+l_int|0
+)braket
+op_assign
+id|ctx-&gt;ctx_ovfl_regs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * when the target of the signal is not ourself, we have to be more&n;&t; * careful. The notify_task may being cleared by the target task itself&n;&t; * in release_thread(). We must ensure mutual exclusion here such that&n;&t; * the signal is delivered (even to a dying task) safely.&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_ne
+id|current
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * grab the notification lock for this task&n;&t;&t; * This guarantees that the sequence: test + send_signal&n;&t;&t; * is atomic with regards to the ctx_notify_task field.&n;&t;&t; *&n;&t;&t; * We need a spinlock and not just an atomic variable for this.&n;&t;&t; *&n;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * now notify_task cannot be modified until we&squot;re done&n;&t;&t; * if NULL, they it got modified while we were in the handler&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_eq
+l_int|NULL
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If we&squot;ve lost the notified task, then we will run&n;&t;&t;&t; * to completion wbut keep the PMU frozen. Results&n;&t;&t;&t; * will be incorrect anyway. We do not kill task&n;&t;&t;&t; * to leave it possible to attach perfmon context&n;&t;&t;&t; * to already running task.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon: pfm_notify_user() lost notify_task&bslash;n&quot;
+)paren
+suffix:semicolon
+id|DBprintk_ovfl
+c_func
+(paren
+(paren
+l_string|&quot;notification task has disappeared !&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* we cannot afford to block now */
+id|ctx-&gt;ctx_fl_block
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * required by send_sig_info() to make sure the target&n;&t;&t; * task does not disappear on us.&n;&t;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; &t; * in this case, we don&squot;t stop the task, we let it go on. It will&n; &t; * necessarily go to the signal handler (if any) when it goes back to&n; &t; * user mode.&n; &t; */
+id|DBprintk_ovfl
+c_func
+(paren
+(paren
+l_string|&quot;[%d] sending notification to [%d]&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|ctx-&gt;ctx_notify_task-&gt;pid
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t; * this call is safe in an interrupt handler, so does read_lock() on tasklist_lock&n;&t; */
+id|ret
+op_assign
+id|send_sig_info
+c_func
+(paren
+id|SIGPROF
+comma
+op_amp
+id|si
+comma
+id|ctx-&gt;ctx_notify_task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon: send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
+comma
+id|ctx-&gt;ctx_notify_task-&gt;pid
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * now undo the protections in order&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_ne
+id|current
+)paren
+(brace
 id|read_unlock
 c_func
 (paren
@@ -9268,6 +9509,14 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_lock
+)paren
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -9293,6 +9542,10 @@ op_star
 id|ctx
 op_assign
 id|current-&gt;thread.pfm_context
+suffix:semicolon
+r_int
+r_int
+id|reason
 suffix:semicolon
 r_int
 id|ret
@@ -9322,17 +9575,76 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * extract reason for being here and clear&n;&t; */
+id|reason
+op_assign
+id|ctx-&gt;ctx_fl_trap_reason
+suffix:semicolon
+id|ctx-&gt;ctx_fl_trap_reason
+op_assign
+id|PFM_TRAP_REASON_NONE
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;[%d] reason=%d&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|reason
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * just here for a reset (non-blocking context only)&n;&t; */
 r_if
 c_cond
 (paren
-id|CTX_OVFL_NOBLOCK
+id|reason
+op_eq
+id|PFM_TRAP_REASON_RESET
+)paren
+r_goto
+id|non_blocking
+suffix:semicolon
+multiline_comment|/*&n;&t; * first notify user. This can fail if notify_task has disappeared.&n;&t; */
+r_if
+c_cond
+(paren
+id|reason
+op_eq
+id|PFM_TRAP_REASON_SIG
+op_logical_or
+id|reason
+op_eq
+id|PFM_TRAP_REASON_BLOCKSIG
+)paren
+(brace
+id|ret
+op_assign
+id|pfm_notify_user
 c_func
 (paren
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
-r_goto
-id|non_blocking
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * came here just to signal (non-blocking)&n;&t; */
+r_if
+c_cond
+(paren
+id|reason
+op_eq
+id|PFM_TRAP_REASON_SIG
+)paren
+r_return
 suffix:semicolon
 id|DBprintk
 c_func
@@ -9844,10 +10156,6 @@ id|ret
 op_assign
 l_int|1
 suffix:semicolon
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
 multiline_comment|/*&n;&t; * It is never safe to access the task for which the overflow interrupt is destinated&n;&t; * using the current variable as the interrupt may occur in the middle of a context switch&n;&t; * where current does not hold the task that is running yet.&n;&t; *&n;&t; * For monitoring, however, we do need to get access to the task which caused the overflow&n;&t; * to account for overflow on the counters.&n;&t; *&n;&t; * We accomplish this by maintaining a current owner of the PMU per CPU. During context&n;&t; * switch the ownership is changed in a way such that the reflected owner is always the&n;&t; * valid one, i.e. the one that caused the interrupt.&n;&t; */
 id|t
 op_assign
@@ -10202,7 +10510,7 @@ id|PFM_PMD_SHORT_RESET
 )paren
 suffix:semicolon
 r_return
-l_int|0x0
+l_int|0x0UL
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * keep track of what to reset when unblocking &n;&t; */
@@ -10213,160 +10521,6 @@ l_int|0
 op_assign
 id|ovfl_pmds
 suffix:semicolon
-multiline_comment|/*&n;&t; * we have come to this point because there was an overflow and that notification&n;&t; * was requested. The notify_task may have disappeared, in which case notify_task&n;&t; * is NULL.&n;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_notify_task
-)paren
-(brace
-id|si.si_errno
-op_assign
-l_int|0
-suffix:semicolon
-id|si.si_addr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|si.si_pid
-op_assign
-id|task-&gt;pid
-suffix:semicolon
-multiline_comment|/* who is sending */
-id|si.si_signo
-op_assign
-id|SIGPROF
-suffix:semicolon
-id|si.si_code
-op_assign
-id|PROF_OVFL
-suffix:semicolon
-multiline_comment|/* indicates a perfmon SIGPROF signal */
-multiline_comment|/*&n;&t;&t; * Shift the bitvector such that the user sees bit 4 for PMD4 and so on.&n;&t;&t; * We only use smpl_ovfl[0] for now. It should be fine for quite a while&n;&t;&t; * until we have more than 61 PMD available.&n;&t;&t; */
-id|si.si_pfm_ovfl
-(braket
-l_int|0
-)braket
-op_assign
-id|ovfl_notify
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * when the target of the signal is not ourself, we have to be more&n;&t;&t; * careful. The notify_task may being cleared by the target task itself&n;&t;&t; * in release_thread(). We must ensure mutual exclusion here such that&n;&t;&t; * the signal is delivered (even to a dying task) safely.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_notify_task
-op_ne
-id|current
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * grab the notification lock for this task&n;&t;&t;&t; * This guarantees that the sequence: test + send_signal&n;&t;&t;&t; * is atomic with regards to the ctx_notify_task field.&n;&t;&t;&t; *&n;&t;&t;&t; * We need a spinlock and not just an atomic variable for this.&n;&t;&t;&t; *&n;&t;&t;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|ctx-&gt;ctx_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * now notify_task cannot be modified until we&squot;re done&n;&t;&t;&t; * if NULL, they it got modified while we were in the handler&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_notify_task
-op_eq
-l_int|NULL
-)paren
-(brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ctx-&gt;ctx_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * If we&squot;ve lost the notified task, then we will run&n;&t;&t;&t;&t; * to completion wbut keep the PMU frozen. Results&n;&t;&t;&t;&t; * will be incorrect anyway. We do not kill task&n;&t;&t;&t;&t; * to leave it possible to attach perfmon context&n;&t;&t;&t;&t; * to already running task.&n;&t;&t;&t;&t; */
-r_goto
-id|lost_notify
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * required by send_sig_info() to make sure the target&n;&t;&t;&t; * task does not disappear on us.&n;&t;&t;&t; */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; &t; * in this case, we don&squot;t stop the task, we let it go on. It will&n;&t; &t; * necessarily go to the signal handler (if any) when it goes back to&n;&t; &t; * user mode.&n;&t; &t; */
-id|DBprintk_ovfl
-c_func
-(paren
-(paren
-l_string|&quot;[%d] sending notification to [%d]&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-id|ctx-&gt;ctx_notify_task-&gt;pid
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t;&t; * this call is safe in an interrupt handler, so does read_lock() on tasklist_lock&n;&t;&t; */
-id|ret
-op_assign
-id|send_sig_info
-c_func
-(paren
-id|SIGPROF
-comma
-op_amp
-id|si
-comma
-id|ctx-&gt;ctx_notify_task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_notify_task-&gt;pid
-comma
-id|ret
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * now undo the protections in order&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_notify_task
-op_ne
-id|current
-)paren
-(brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ctx-&gt;ctx_lock
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * if we block set the pfm_must_block bit&n;&t;&t; * when in block mode, we can effectively block only when the notified&n;&t;&t; * task is not self, otherwise we would deadlock. &n;&t;&t; * in this configuration, the notification is sent, the task will not &n;&t;&t; * block on the way back to user mode, but the PMU will be kept frozen&n;&t;&t; * until PFM_RESTART.&n;&t;&t; * Note that here there is still a race condition with notify_task&n;&t;&t; * possibly being nullified behind our back, but this is fine because&n;&t;&t; * it can only be changed to NULL which by construction, can only be&n;&t;&t; * done when notify_task != current. So if it was already different&n;&t;&t; * before, changing it to NULL will still maintain this invariant.&n;&t;&t; * Of course, when it is equal to current it cannot change at this point.&n;&t;&t; */
 id|DBprintk_ovfl
 c_func
 (paren
@@ -10387,15 +10541,17 @@ id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * ctx_notify_task could already be NULL, checked in pfm_notify_user() &n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|CTX_OVFL_NOBLOCK
 c_func
 (paren
 id|ctx
 )paren
+op_eq
+l_int|0
 op_logical_and
 id|ctx-&gt;ctx_notify_task
 op_ne
@@ -10407,28 +10563,24 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* will cause blocking */
-)brace
+id|ctx-&gt;ctx_fl_trap_reason
+op_assign
+id|PFM_TRAP_REASON_BLOCKSIG
+suffix:semicolon
 )brace
 r_else
 (brace
-id|lost_notify
-suffix:colon
-multiline_comment|/* XXX: more to do here, to convert to non-blocking (reset values) */
-id|DBprintk_ovfl
-c_func
-(paren
-(paren
-l_string|&quot;notification task has disappeared !&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * for a non-blocking context, we make sure we do not fall into the &n;&t;&t; * pfm_overflow_notify() trap. Also in the case of a blocking context with lost &n;&t;&t; * notify process, then we do not want to block either (even though it is &n;&t;&t; * interruptible). In this case, the PMU will be kept frozen and the process will &n;&t;&t; * run to completion without monitoring enabled.&n;&t;&t; *&n;&t;&t; * Of course, we cannot loose notify process when self-monitoring.&n;&t;&t; */
 id|t-&gt;pfm_ovfl_block_reset
 op_assign
-l_int|0
+l_int|1
+suffix:semicolon
+multiline_comment|/* will cause blocking */
+id|ctx-&gt;ctx_fl_trap_reason
+op_assign
+id|PFM_TRAP_REASON_SIG
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If notification was successful, then we rely on the pfm_restart()&n;&t; * call to unfreeze and reset (in both blocking or non-blocking mode).&n;&t; *&n;&t; * If notification failed, then we will keep the PMU frozen and run&n;&t; * the task to completion&n;&t; */
+multiline_comment|/*&n;&t; * keep the PMU frozen until either pfm_restart() or &n;&t; * task completes (non-blocking or notify_task gone).&n;&t; */
 id|ctx-&gt;ctx_fl_frozen
 op_assign
 l_int|1
@@ -10437,7 +10589,7 @@ id|DBprintk_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;return pmc0=0x%x must_block=%ld&bslash;n&quot;
+l_string|&quot;return pmc0=0x%x must_block=%ld reason=%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_fl_frozen
 ques
@@ -10447,16 +10599,13 @@ suffix:colon
 l_int|0x0
 comma
 id|t-&gt;pfm_ovfl_block_reset
+comma
+id|ctx-&gt;ctx_fl_trap_reason
 )paren
 )paren
 suffix:semicolon
 r_return
-id|ctx-&gt;ctx_fl_frozen
-ques
-c_cond
-l_int|0x1
-suffix:colon
-l_int|0x0
+l_int|0x1UL
 suffix:semicolon
 )brace
 r_static
@@ -10598,7 +10747,16 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We always clear the overflow status bits and either unfreeze&n;&t;&t; * or keep the PMU frozen.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * we can only update pmc0 when the overflow&n;&t;&t; * is for the current context. In UP the current&n;&t;&t; * task may not be the one owning the PMU&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|task
+op_eq
+id|current
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; &t; * We always clear the overflow status bits and either unfreeze&n;&t;&t; &t; * or keep the PMU frozen.&n;&t;&t; &t; */
 id|ia64_set_pmc
 c_func
 (paren
@@ -10612,6 +10770,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|task-&gt;thread.pmc
+(braket
+l_int|0
+)braket
+op_assign
+id|pmc0
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -11753,6 +11922,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * manually invoke core interrupt handler&n;&t; * if the task had a pending overflow when it was ctxsw out.&n;&t; * Side effect on ctx_fl_frozen is possible.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11765,6 +11935,11 @@ op_complement
 l_int|0x1
 )paren
 (brace
+id|t-&gt;pmc
+(braket
+l_int|0
+)braket
+op_assign
 id|pfm_overflow_handler
 c_func
 (paren
@@ -11781,7 +11956,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * fl_frozen==1 when we are in blocking mode waiting for restart&n;&t; */
+multiline_comment|/*&n;&t; * unfreeze PMU if possible&n;&t; */
 r_if
 c_cond
 (paren
@@ -11789,13 +11964,11 @@ id|ctx-&gt;ctx_fl_frozen
 op_eq
 l_int|0
 )paren
-(brace
 id|pfm_unfreeze_pmu
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|atomic_set
 c_func
 (paren
@@ -12802,6 +12975,10 @@ l_int|0
 )braket
 op_assign
 l_int|0UL
+suffix:semicolon
+id|nctx-&gt;ctx_fl_trap_reason
+op_assign
+id|PFM_TRAP_REASON_NONE
 suffix:semicolon
 id|atomic_set
 c_func
