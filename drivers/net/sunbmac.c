@@ -5885,6 +5885,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|dev-&gt;priv
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
 id|dev
 )paren
 suffix:semicolon
