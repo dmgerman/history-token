@@ -657,14 +657,6 @@ id|pci_bus
 op_star
 id|bus
 suffix:semicolon
-r_struct
-id|pci_controller
-op_star
-id|phb
-suffix:semicolon
-r_int
-id|newnum
-suffix:semicolon
 r_for
 c_loop
 (paren

@@ -781,5 +781,21 @@ r_int
 id|max
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|prom_add_property
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+comma
+r_struct
+id|property
+op_star
+id|prop
+)paren
+suffix:semicolon
 macro_line|#endif /* _PPC64_PROM_H */
 eof
