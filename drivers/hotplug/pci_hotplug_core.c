@@ -1666,7 +1666,7 @@ op_assign
 id|kern_mount
 (paren
 op_amp
-id|pcihpfs_fs_type
+id|pcihpfs_type
 )paren
 suffix:semicolon
 r_if
@@ -4571,7 +4571,7 @@ id|register_filesystem
 c_func
 (paren
 op_amp
-id|pcihpfs_fs_type
+id|pcihpfs_type
 )paren
 suffix:semicolon
 r_if
@@ -4619,7 +4619,7 @@ id|unregister_filesystem
 c_func
 (paren
 op_amp
-id|pcihpfs_fs_type
+id|pcihpfs_type
 )paren
 suffix:semicolon
 )brace
