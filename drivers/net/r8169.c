@@ -7047,6 +7047,9 @@ id|OWNbit
 id|dma_addr_t
 id|mapping
 suffix:semicolon
+id|u32
+id|status
+suffix:semicolon
 id|mapping
 op_assign
 id|pci_map_single
@@ -7081,16 +7084,9 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|tp-&gt;TxDescArray
-(braket
-id|entry
-)braket
-dot
+multiline_comment|/* anti gcc 2.95.3 bugware */
 id|status
 op_assign
-id|cpu_to_le32
-c_func
-(paren
 id|OWNbit
 op_or
 id|FSbit
@@ -7113,6 +7109,18 @@ op_mod
 id|NUM_TX_DESC
 )paren
 )paren
+suffix:semicolon
+id|tp-&gt;TxDescArray
+(braket
+id|entry
+)braket
+dot
+id|status
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|status
 )paren
 suffix:semicolon
 id|RTL_W8
