@@ -235,11 +235,9 @@ op_lshift
 (paren
 id|irq
 op_minus
-(paren
 id|irq_base
 op_minus
 l_int|32
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -325,11 +323,9 @@ op_lshift
 (paren
 id|irq
 op_minus
-(paren
 id|irq_base
 op_minus
 l_int|32
-)paren
 )paren
 suffix:semicolon
 id|MV_WRITE

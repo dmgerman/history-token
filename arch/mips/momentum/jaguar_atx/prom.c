@@ -26,11 +26,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|mv64340_base
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|cpu_clock
 suffix:semicolon
 DECL|function|get_system_type
@@ -857,7 +852,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|mv64340_base
+id|marvell_base
 op_assign
 id|simple_strtol
 c_func
@@ -879,23 +874,23 @@ r_if
 c_cond
 (paren
 (paren
-id|mv64340_base
+id|marvell_base
 op_amp
 l_int|0xffffffff00000000
 )paren
 op_eq
 l_int|0
 )paren
-id|mv64340_base
+id|marvell_base
 op_or_assign
 l_int|0xffffffff00000000
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;mv64340_base set to 0x%016lx&bslash;n&quot;
+l_string|&quot;marvell_base set to 0x%016lx&bslash;n&quot;
 comma
-id|mv64340_base
+id|marvell_base
 )paren
 suffix:semicolon
 )brace
@@ -1062,7 +1057,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|mv64340_base
+id|marvell_base
 op_assign
 id|simple_strtol
 c_func

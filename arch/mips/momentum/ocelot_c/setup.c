@@ -25,10 +25,10 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/mv64340.h&gt;
 macro_line|#include &quot;ocelot_c_fpga.h&quot;
-DECL|variable|mv64340_base
+DECL|variable|marvell_base
 r_int
 r_int
-id|mv64340_base
+id|marvell_base
 suffix:semicolon
 r_extern
 r_int
@@ -216,7 +216,7 @@ comma
 id|PM_16M
 )paren
 suffix:semicolon
-id|mv64340_base
+id|marvell_base
 op_assign
 l_int|0xfffffffff4000000
 suffix:semicolon
@@ -288,7 +288,7 @@ comma
 id|PM_16M
 )paren
 suffix:semicolon
-id|mv64340_base
+id|marvell_base
 op_assign
 l_int|0xf4000000
 suffix:semicolon

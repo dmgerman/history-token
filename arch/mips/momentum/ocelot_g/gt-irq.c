@@ -222,7 +222,7 @@ suffix:semicolon
 multiline_comment|/* get the low interrupt cause register */
 id|irq_src
 op_assign
-id|GT_READ
+id|MV_READ
 c_func
 (paren
 id|LOW_INTERRUPT_CAUSE_REGISTER
@@ -231,7 +231,7 @@ suffix:semicolon
 multiline_comment|/* get the mask register for this pin */
 id|irq_src_mask
 op_assign
-id|GT_READ
+id|MV_READ
 c_func
 (paren
 id|PCI_0INTERRUPT_CAUSE_MASK_REGISTER_LOW
@@ -267,7 +267,7 @@ op_complement
 l_int|0x00000100
 suffix:semicolon
 multiline_comment|/* Clear any pending cause bits */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER_0_3_INTERRUPT_CAUSE
@@ -326,7 +326,7 @@ id|irqaction
 id|timer
 suffix:semicolon
 multiline_comment|/* Stop the timer -- we&squot;ll use timer #0 */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER_0_3_CONTROL
@@ -335,7 +335,7 @@ l_int|0x0
 )paren
 suffix:semicolon
 multiline_comment|/* Load timer value for 100 Hz */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER0
@@ -390,7 +390,7 @@ l_int|6
 )paren
 suffix:semicolon
 multiline_comment|/* Clear any pending cause bits */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER_0_3_INTERRUPT_CAUSE
@@ -399,7 +399,7 @@ l_int|0x0
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the interrupt for timer 0 */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER_0_3_INTERRUPT_MASK
@@ -408,7 +408,7 @@ l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the timer interrupt for GT-64240 pin P0_INT# */
-id|GT_WRITE
+id|MV_WRITE
 (paren
 id|PCI_0INTERRUPT_CAUSE_MASK_REGISTER_LOW
 comma
@@ -416,7 +416,7 @@ l_int|0x100
 )paren
 suffix:semicolon
 multiline_comment|/* Configure and start the timer */
-id|GT_WRITE
+id|MV_WRITE
 c_func
 (paren
 id|TIMER_COUNTER_0_3_CONTROL
