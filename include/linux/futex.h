@@ -10,6 +10,8 @@ DECL|macro|FUTEX_FD
 mdefine_line|#define FUTEX_FD (2)
 DECL|macro|FUTEX_REQUEUE
 mdefine_line|#define FUTEX_REQUEUE (3)
+DECL|macro|FUTEX_CMP_REQUEUE
+mdefine_line|#define FUTEX_CMP_REQUEUE (4)
 r_int
 id|do_futex
 c_func
@@ -34,6 +36,9 @@ id|uaddr2
 comma
 r_int
 id|val2
+comma
+r_int
+id|val3
 )paren
 suffix:semicolon
 macro_line|#endif

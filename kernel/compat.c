@@ -1068,6 +1068,9 @@ id|u32
 id|__user
 op_star
 id|uaddr2
+comma
+r_int
+id|val3
 )paren
 (brace
 r_struct
@@ -1129,7 +1132,7 @@ r_if
 c_cond
 (paren
 id|op
-op_eq
+op_ge
 id|FUTEX_REQUEUE
 )paren
 id|val2
@@ -1165,6 +1168,8 @@ r_int
 id|uaddr2
 comma
 id|val2
+comma
+id|val3
 )paren
 suffix:semicolon
 )brace
