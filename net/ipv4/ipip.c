@@ -782,6 +782,10 @@ id|dev-&gt;init
 op_assign
 id|ipip_tunnel_init
 suffix:semicolon
+id|dev-&gt;tx_queue_len
+op_assign
+l_int|1
+suffix:semicolon
 id|dev-&gt;destructor
 op_assign
 id|free_netdev
@@ -3729,6 +3733,10 @@ suffix:semicolon
 id|ipip_fb_tunnel_dev-&gt;init
 op_assign
 id|ipip_fb_tunnel_init
+suffix:semicolon
+id|ipip_fb_tunnel_dev-&gt;tx_queue_len
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond

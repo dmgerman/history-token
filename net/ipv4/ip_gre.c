@@ -829,6 +829,10 @@ id|dev-&gt;init
 op_assign
 id|ipgre_tunnel_init
 suffix:semicolon
+id|dev-&gt;tx_queue_len
+op_assign
+l_int|1
+suffix:semicolon
 id|nt
 op_assign
 id|dev-&gt;priv
@@ -5562,6 +5566,10 @@ suffix:semicolon
 id|ipgre_fb_tunnel_dev-&gt;init
 op_assign
 id|ipgre_fb_tunnel_init
+suffix:semicolon
+id|ipgre_fb_tunnel_dev-&gt;tx_queue_len
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
