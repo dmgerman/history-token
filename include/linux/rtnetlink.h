@@ -1326,7 +1326,7 @@ id|data
 )paren
 suffix:semicolon
 DECL|macro|RTA_PUT
-mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_fill(skb, attrtype, attrlen, data); })
+mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({&t;if (unlikely(skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen))) &bslash;&n;&t;&t; goto rtattr_failure; &bslash;&n;   &t;__rta_fill(skb, attrtype, attrlen, data); }) 
 r_static
 r_inline
 r_struct
@@ -1394,7 +1394,7 @@ id|rta
 suffix:semicolon
 )brace
 DECL|macro|__RTA_PUT
-mdefine_line|#define __RTA_PUT(skb, attrtype, attrlen) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_reserve(skb, attrtype, attrlen); })
+mdefine_line|#define __RTA_PUT(skb, attrtype, attrlen) &bslash;&n;({ &t;if (unlikely(skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen))) &bslash;&n;&t;&t;goto rtattr_failure; &bslash;&n;   &t;__rta_reserve(skb, attrtype, attrlen); })
 r_extern
 r_void
 id|rtmsg_ifinfo
