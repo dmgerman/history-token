@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|_LINUX_EXT2_FS_H
 mdefine_line|#define _LINUX_EXT2_FS_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ext2_fs_sb.h&gt;
 multiline_comment|/*&n; * The second extended filesystem constants/structures&n; */
 multiline_comment|/*&n; * Define EXT2FS_DEBUG to produce debug messages&n; */
 DECL|macro|EXT2FS_DEBUG
@@ -61,8 +62,7 @@ id|sb
 )paren
 (brace
 r_return
-op_amp
-id|sb-&gt;u.ext2_sb
+id|sb-&gt;u.generic_sbp
 suffix:semicolon
 )brace
 macro_line|#else

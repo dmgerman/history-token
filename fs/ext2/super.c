@@ -666,6 +666,16 @@ id|brelse
 id|sbi-&gt;s_sbh
 )paren
 suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sbi
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2386,11 +2396,31 @@ id|j
 suffix:semicolon
 id|sbi
 op_assign
-id|EXT2_SB
+id|kmalloc
 c_func
 (paren
-id|sb
+r_sizeof
+(paren
+r_struct
+id|ext2_super_block
 )paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbi
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+id|sbi
 suffix:semicolon
 multiline_comment|/*&n;&t; * See what the current blocksize for the device is, and&n;&t; * use that as the blocksize.  Otherwise (or if the blocksize&n;&t; * is smaller than the default) use the default.&n;&t; * This is important for devices that have a hardware&n;&t; * sectorsize that is larger than the default.&n;&t; */
 id|sbi-&gt;s_mount_opt
@@ -2422,9 +2452,8 @@ op_amp
 id|sbi-&gt;s_mount_opt
 )paren
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|failed_sbi
 suffix:semicolon
 id|blocksize
 op_assign
@@ -2448,9 +2477,8 @@ id|printk
 l_string|&quot;EXT2-fs: unable to set blocksize&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|failed_sbi
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If the superblock doesn&squot;t start on a sector boundary,&n;&t; * calculate the offset.  FIXME(eric) this doesn&squot;t make sense&n;&t; * that we would have to do this.&n;&t; */
@@ -2505,9 +2533,8 @@ id|printk
 l_string|&quot;EXT2-fs: unable to read superblock&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|failed_sbi
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Note: s_es must be initialized as soon as possible because&n;&t; *       some ext2 macro-instructions depend on its value&n;&t; */
@@ -2731,9 +2758,8 @@ id|KERN_ERR
 l_string|&quot;EXT2-fs: blocksize too small for device.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|failed_sbi
 suffix:semicolon
 )brace
 id|logic_sb_block
@@ -3563,6 +3589,18 @@ id|brelse
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|failed_sbi
+suffix:colon
+id|sb-&gt;u.generic_sbp
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sbi
 )paren
 suffix:semicolon
 r_return
