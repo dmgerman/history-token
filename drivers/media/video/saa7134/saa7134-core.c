@@ -3475,10 +3475,16 @@ l_int|NULL
 op_eq
 id|dev
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_goto
+id|fail0
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -3921,6 +3927,29 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;lmmio
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Unable to remap memory.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail2
+suffix:semicolon
+)brace
 id|dev-&gt;bmmio
 op_assign
 (paren
@@ -3988,7 +4017,7 @@ id|pci_dev-&gt;irq
 )paren
 suffix:semicolon
 r_goto
-id|fail2
+id|fail3
 suffix:semicolon
 )brace
 multiline_comment|/* load i2c helpers */
@@ -4061,7 +4090,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_goto
-id|fail3
+id|fail4
 suffix:semicolon
 )brace
 id|printk
@@ -4126,7 +4155,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_goto
-id|fail4
+id|fail5
 suffix:semicolon
 )brace
 id|printk
@@ -4172,7 +4201,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|fail5
+id|fail6
 suffix:semicolon
 id|printk
 c_func
@@ -4226,7 +4255,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|fail6
+id|fail7
 suffix:semicolon
 id|printk
 c_func
@@ -4286,7 +4315,7 @@ l_int|0
 )paren
 (brace
 r_goto
-id|fail7
+id|fail8
 suffix:semicolon
 )brace
 id|printk
@@ -4323,7 +4352,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|fail8
+id|fail9
 suffix:semicolon
 id|printk
 c_func
@@ -4367,7 +4396,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|fail8
+id|fail9
 suffix:colon
 r_switch
 c_cond
@@ -4398,7 +4427,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|fail7
+id|fail8
 suffix:colon
 r_if
 c_cond
@@ -4416,7 +4445,7 @@ op_amp
 id|dev-&gt;radio_dev
 )paren
 suffix:semicolon
-id|fail6
+id|fail7
 suffix:colon
 id|video_unregister_device
 c_func
@@ -4425,7 +4454,7 @@ op_amp
 id|dev-&gt;vbi_dev
 )paren
 suffix:semicolon
-id|fail5
+id|fail6
 suffix:colon
 r_if
 c_cond
@@ -4443,7 +4472,7 @@ op_amp
 id|dev-&gt;ts_dev
 )paren
 suffix:semicolon
-id|fail4
+id|fail5
 suffix:colon
 id|video_unregister_device
 c_func
@@ -4452,14 +4481,8 @@ op_amp
 id|dev-&gt;video_dev
 )paren
 suffix:semicolon
-id|fail3
+id|fail4
 suffix:colon
-id|saa7134_i2c_unregister
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -4468,7 +4491,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|fail2
+id|fail3
 suffix:colon
 r_switch
 c_cond
@@ -4527,6 +4550,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|iounmap
+(paren
+id|dev-&gt;lmmio
+)paren
+suffix:semicolon
+id|saa7134_i2c_unregister
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|fail2
+suffix:colon
 id|release_mem_region
 c_func
 (paren
@@ -4555,6 +4591,8 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|fail0
+suffix:colon
 r_return
 id|err
 suffix:semicolon
@@ -4713,10 +4751,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|saa7134_i2c_unregister
+id|iounmap
 c_func
 (paren
-id|dev
+id|dev-&gt;lmmio
 )paren
 suffix:semicolon
 multiline_comment|/* release ressources */
