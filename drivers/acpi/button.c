@@ -79,6 +79,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_button_add
 (paren
@@ -88,6 +89,7 @@ op_star
 id|device
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_button_remove
 (paren
@@ -976,6 +978,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|acpi_button_add
 id|acpi_button_add
@@ -1645,6 +1648,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|acpi_button_remove
 id|acpi_button_remove
