@@ -391,7 +391,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 multiline_comment|/* mapping of the first four bits of the second POS register */
 DECL|variable|mca_iomap
 r_static
@@ -1014,7 +1014,7 @@ op_assign
 l_int|0xff
 suffix:semicolon
 multiline_comment|/* not set */
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 r_if
 c_cond
 (paren

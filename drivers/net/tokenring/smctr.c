@@ -53,7 +53,7 @@ l_string|&quot;smctr&quot;
 suffix:semicolon
 DECL|macro|SMCTR_IO_EXTENT
 mdefine_line|#define SMCTR_IO_EXTENT   20
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 DECL|variable|smctr_posid
 r_static
 r_int
@@ -2790,7 +2790,7 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 r_struct
 id|net_local
 op_star
@@ -3407,7 +3407,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_MCA */
+macro_line|#endif /* CONFIG_MCA_LEGACY */
 )brace
 DECL|function|smctr_chg_rx_mask
 r_static
@@ -16669,7 +16669,7 @@ id|dev
 suffix:semicolon
 id|out1
 suffix:colon
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 (brace
 r_struct
 id|net_local
@@ -25790,7 +25790,7 @@ id|dev
 suffix:semicolon
 id|out1
 suffix:colon
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 (brace
 r_struct
 id|net_local
@@ -25985,7 +25985,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA_LEGACY
 (brace
 r_struct
 id|net_local
