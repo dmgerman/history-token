@@ -882,6 +882,7 @@ c_func
 id|die_chain
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpu_sibling_map
 id|EXPORT_SYMBOL
 c_func
@@ -889,6 +890,7 @@ c_func
 id|cpu_sibling_map
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|do_softirq_thunk
