@@ -175,18 +175,6 @@ l_int|0x7fe00008
 suffix:semicolon
 multiline_comment|/* trap */
 multiline_comment|/* Prototypes */
-r_extern
-r_void
-(paren
-op_star
-id|debugger_fault_handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 r_static
 r_int
 id|cmds
@@ -226,7 +214,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|handle_fault
 c_func
 (paren
@@ -796,7 +784,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-r_void
+r_int
 DECL|function|xmon
 id|xmon
 c_func
@@ -1164,6 +1152,9 @@ id|msr
 )paren
 suffix:semicolon
 multiline_comment|/* restore interrupt enable */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_int
 DECL|function|xmon_bpt
@@ -2384,7 +2375,7 @@ id|cpu
 op_assign
 id|MSG_ALL_BUT_SELF
 suffix:semicolon
-id|smp_send_xmon_break
+id|smp_send_debugger_break
 c_func
 (paren
 id|cpu
@@ -4961,7 +4952,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -5045,7 +5036,7 @@ l_int|200
 )paren
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -5189,7 +5180,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -5229,7 +5220,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -5374,7 +5365,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -5413,7 +5404,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -5838,7 +5829,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -5974,7 +5965,7 @@ op_assign
 id|size
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -6025,7 +6016,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -6174,7 +6165,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -6204,7 +6195,7 @@ l_string|&quot;##&quot;
 )brace
 suffix:semicolon
 r_static
-r_void
+r_int
 DECL|function|handle_fault
 id|handle_fault
 c_func
@@ -6255,6 +6246,9 @@ id|bus_error_jmp
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|macro|SWAP
@@ -9439,7 +9433,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 id|handle_fault
 suffix:semicolon
@@ -9487,7 +9481,7 @@ op_assign
 l_string|&quot;symbol lookup failed&quot;
 suffix:semicolon
 )brace
-id|debugger_fault_handler
+id|__debugger_fault_handler
 op_assign
 l_int|0
 suffix:semicolon
@@ -10188,6 +10182,35 @@ id|b
 suffix:semicolon
 )brace
 )brace
+)brace
+DECL|function|xmon_init
+r_void
+id|xmon_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__debugger
+op_assign
+id|xmon
+suffix:semicolon
+id|__debugger_bpt
+op_assign
+id|xmon_bpt
+suffix:semicolon
+id|__debugger_sstep
+op_assign
+id|xmon_sstep
+suffix:semicolon
+id|__debugger_iabr_match
+op_assign
+id|xmon_iabr_match
+suffix:semicolon
+id|__debugger_dabr_match
+op_assign
+id|xmon_dabr_match
+suffix:semicolon
 )brace
 DECL|function|dump_segments
 r_void
