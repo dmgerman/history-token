@@ -659,7 +659,6 @@ id|magellan_buttons
 id|i
 )braket
 comma
-op_amp
 id|magellan-&gt;dev.keybit
 )paren
 suffix:semicolon
