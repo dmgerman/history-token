@@ -904,7 +904,7 @@ r_struct
 id|xfs_fsop_handlereq
 id|hreq
 suffix:semicolon
-multiline_comment|/* handle interface structure */
+multiline_comment|/* handle information&t;*/
 DECL|member|data
 r_struct
 id|fsdmidata
@@ -912,7 +912,7 @@ id|__user
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/* DMAPI data to set&t;      */
+multiline_comment|/* DMAPI data&t;*/
 DECL|typedef|xfs_fsop_setdm_handlereq_t
 )brace
 id|xfs_fsop_setdm_handlereq_t
@@ -954,18 +954,19 @@ DECL|member|flags
 id|__u32
 id|flags
 suffix:semicolon
-multiline_comment|/* flags, use ROOT/USER names */
+multiline_comment|/* which namespace to use */
 DECL|member|buflen
 id|__u32
 id|buflen
 suffix:semicolon
-multiline_comment|/* length of buffer supplied  */
+multiline_comment|/* length of buffer supplied */
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/* attrlist data to return    */
+multiline_comment|/* returned names */
 DECL|typedef|xfs_fsop_attrlist_handlereq_t
 )brace
 id|xfs_fsop_attrlist_handlereq_t
@@ -985,11 +986,13 @@ id|am_error
 suffix:semicolon
 DECL|member|am_attrname
 r_void
+id|__user
 op_star
 id|am_attrname
 suffix:semicolon
 DECL|member|am_attrvalue
 r_void
+id|__user
 op_star
 id|am_attrvalue
 suffix:semicolon
@@ -1028,7 +1031,7 @@ id|__user
 op_star
 id|ops
 suffix:semicolon
-multiline_comment|/* attr_multi data to get/set */
+multiline_comment|/* attr_multi data */
 DECL|typedef|xfs_fsop_attrmulti_handlereq_t
 )brace
 id|xfs_fsop_attrmulti_handlereq_t

@@ -396,9 +396,6 @@ id|whichfork
 )paren
 suffix:semicolon
 multiline_comment|/* data or attr fork */
-macro_line|#else
-DECL|macro|xfs_bmap_check_extents
-mdefine_line|#define&t;xfs_bmap_check_extents(ip,w)
 macro_line|#endif
 multiline_comment|/*&n; * Called by xfs_bmapi to update extent list structure and the btree&n; * after removing space (or undoing a delayed allocation).&n; */
 id|STATIC

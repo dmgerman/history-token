@@ -198,6 +198,6 @@ op_star
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/* buffer with inode descriptions */
+multiline_comment|/* buffer with inode info */
 macro_line|#endif&t;/* __XFS_ITABLE_H__ */
 eof

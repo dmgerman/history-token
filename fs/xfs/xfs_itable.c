@@ -991,7 +991,7 @@ id|__user
 op_star
 id|ubufp
 suffix:semicolon
-multiline_comment|/* current pointer into user&squot;s buffer */
+multiline_comment|/* pointer into user&squot;s buffer */
 r_int
 id|ubelem
 suffix:semicolon

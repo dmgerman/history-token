@@ -636,21 +636,23 @@ DECL|typedef|xfs_dqtrxops_t
 id|xfs_dqtrxops_t
 suffix:semicolon
 DECL|macro|XFS_DQTRXOP
-mdefine_line|#define XFS_DQTRXOP(mp, tp, op, args...) &bslash;&n;&t;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops ? &bslash;&n;&t;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops-&gt;op)(tp, ## args) : 0)
+mdefine_line|#define XFS_DQTRXOP(mp, tp, op, args...) &bslash;&n;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops ? &bslash;&n;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops-&gt;op)(tp, ## args) : 0)
+DECL|macro|XFS_DQTRXOP_VOID
+mdefine_line|#define XFS_DQTRXOP_VOID(mp, tp, op, args...) &bslash;&n;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops ? &bslash;&n;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops-&gt;op)(tp, ## args) : (void)0)
 DECL|macro|XFS_TRANS_DUP_DQINFO
-mdefine_line|#define XFS_TRANS_DUP_DQINFO(mp, otp, ntp) &bslash;&n;&t;XFS_DQTRXOP(mp, otp, qo_dup_dqinfo, ntp)
+mdefine_line|#define XFS_TRANS_DUP_DQINFO(mp, otp, ntp) &bslash;&n;&t;XFS_DQTRXOP_VOID(mp, otp, qo_dup_dqinfo, ntp)
 DECL|macro|XFS_TRANS_FREE_DQINFO
-mdefine_line|#define XFS_TRANS_FREE_DQINFO(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_free_dqinfo)
+mdefine_line|#define XFS_TRANS_FREE_DQINFO(mp, tp) &bslash;&n;&t;XFS_DQTRXOP_VOID(mp, tp, qo_free_dqinfo)
 DECL|macro|XFS_TRANS_MOD_DQUOT_BYINO
-mdefine_line|#define XFS_TRANS_MOD_DQUOT_BYINO(mp, tp, ip, field, delta) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_mod_dquot_byino, ip, field, delta)
+mdefine_line|#define XFS_TRANS_MOD_DQUOT_BYINO(mp, tp, ip, field, delta) &bslash;&n;&t;XFS_DQTRXOP_VOID(mp, tp, qo_mod_dquot_byino, ip, field, delta)
 DECL|macro|XFS_TRANS_APPLY_DQUOT_DELTAS
-mdefine_line|#define XFS_TRANS_APPLY_DQUOT_DELTAS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_apply_dquot_deltas)
+mdefine_line|#define XFS_TRANS_APPLY_DQUOT_DELTAS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP_VOID(mp, tp, qo_apply_dquot_deltas)
 DECL|macro|XFS_TRANS_RESERVE_QUOTA_NBLKS
 mdefine_line|#define XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, nblks, ninos, fl) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_reserve_quota_nblks, mp, ip, nblks, ninos, fl)
 DECL|macro|XFS_TRANS_RESERVE_QUOTA_BYDQUOTS
 mdefine_line|#define XFS_TRANS_RESERVE_QUOTA_BYDQUOTS(mp, tp, ud, gd, nb, ni, fl) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_reserve_quota_bydquots, mp, ud, gd, nb, ni, fl)
 DECL|macro|XFS_TRANS_UNRESERVE_AND_MOD_DQUOTS
-mdefine_line|#define XFS_TRANS_UNRESERVE_AND_MOD_DQUOTS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_unreserve_and_mod_dquots)
+mdefine_line|#define XFS_TRANS_UNRESERVE_AND_MOD_DQUOTS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP_VOID(mp, tp, qo_unreserve_and_mod_dquots)
 DECL|macro|XFS_TRANS_RESERVE_BLKQUOTA
 mdefine_line|#define XFS_TRANS_RESERVE_BLKQUOTA(mp, tp, ip, nblks) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, nblks, 0, &bslash;&n;&t;&t;&t;&t;XFS_QMOPT_RES_REGBLKS)
 DECL|macro|XFS_TRANS_RESERVE_BLKQUOTA_FORCE
