@@ -228,6 +228,7 @@ id|conf-&gt;device_lock
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;multipath_map(): no more operational IO paths?&bslash;n&quot;
@@ -773,12 +774,6 @@ l_string|&quot;]&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|LAST_DISK
-mdefine_line|#define LAST_DISK KERN_ALERT &bslash;&n;&quot;multipath: only one IO path left and IO error.&bslash;n&quot;
-DECL|macro|NO_SPARE_DISK
-mdefine_line|#define NO_SPARE_DISK KERN_ALERT &bslash;&n;&quot;multipath: no spare IO path left!&bslash;n&quot;
-DECL|macro|DISK_FAILED
-mdefine_line|#define DISK_FAILED KERN_ALERT &bslash;&n;&quot;multipath: IO failure on %s, disabling IO path. &bslash;n&quot; &bslash;&n;&quot;&t;Operation continuing on %d IO paths.&bslash;n&quot;
 multiline_comment|/*&n; * Careful, this can execute in IRQ contexts as well!&n; */
 DECL|function|multipath_error
 r_static
@@ -814,8 +809,10 @@ l_int|1
 (brace
 multiline_comment|/*&n;&t;&t; * Uh oh, we can do nothing if this is our last path, but&n;&t;&t; * first check if this is a queued request for a device&n;&t;&t; * which has just failed.&n;&t;&t; */
 id|printk
+c_func
 (paren
-id|LAST_DISK
+id|KERN_ALERT
+l_string|&quot;multipath: only one IO path left and IO error.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* leave it active... it&squot;s all we have */
@@ -846,8 +843,12 @@ id|conf-&gt;working_disks
 op_decrement
 suffix:semicolon
 id|printk
+c_func
 (paren
-id|DISK_FAILED
+id|KERN_ALERT
+l_string|&quot;multipath: IO failure on %s,&quot;
+l_string|&quot; disabling IO path. &bslash;n&t;Operation continuing&quot;
+l_string|&quot; on %d IO paths.&bslash;n&quot;
 comma
 id|bdev_partition_name
 (paren
@@ -860,12 +861,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|macro|LAST_DISK
-macro_line|#undef LAST_DISK
-DECL|macro|NO_SPARE_DISK
-macro_line|#undef NO_SPARE_DISK
-DECL|macro|DISK_FAILED
-macro_line|#undef DISK_FAILED
 DECL|function|print_multipath_conf
 r_static
 r_void
@@ -1149,7 +1144,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hot-remove-disk, slot %d is identified but is still operational!&bslash;n&quot;
+l_string|&quot;hot-remove-disk, slot %d is identified&quot;
+l_string|&quot; but is still operational!&bslash;n&quot;
 comma
 id|number
 )paren
@@ -1201,10 +1197,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|macro|IO_ERROR
-mdefine_line|#define IO_ERROR KERN_ALERT &bslash;&n;&quot;multipath: %s: unrecoverable IO read error for block %llu&bslash;n&quot;
-DECL|macro|REDIRECT_SECTOR
-mdefine_line|#define REDIRECT_SECTOR KERN_ERR &bslash;&n;&quot;multipath: %s: redirecting sector %llu to another IO path&bslash;n&quot;
 multiline_comment|/*&n; * This is a kernel thread which:&n; *&n; *&t;1.&t;Retries failed read operations on working multipaths.&n; *&t;2.&t;Updates the raid superblock when problems encounter.&n; *&t;3.&t;Performs writes following reads for array syncronising.&n; */
 DECL|function|multipathd
 r_static
@@ -1315,7 +1307,9 @@ l_int|0
 id|printk
 c_func
 (paren
-id|IO_ERROR
+id|KERN_ALERT
+l_string|&quot;multipath: %s: unrecoverable IO read&quot;
+l_string|&quot; error for block %llu&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1345,7 +1339,9 @@ r_else
 id|printk
 c_func
 (paren
-id|REDIRECT_SECTOR
+id|KERN_ERR
+l_string|&quot;multipath: %s: redirecting sector %llu&quot;
+l_string|&quot; to another IO path&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -1383,36 +1379,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|macro|IO_ERROR
-macro_line|#undef IO_ERROR
-DECL|macro|REDIRECT_SECTOR
-macro_line|#undef REDIRECT_SECTOR
-DECL|macro|INVALID_LEVEL
-mdefine_line|#define INVALID_LEVEL KERN_WARNING &bslash;&n;&quot;multipath: md%d: raid level not set to multipath IO (%d)&bslash;n&quot;
-DECL|macro|NO_SB
-mdefine_line|#define NO_SB KERN_ERR &bslash;&n;&quot;multipath: disabled IO path %s (couldn&squot;t access raid superblock)&bslash;n&quot;
-DECL|macro|ERRORS
-mdefine_line|#define ERRORS KERN_ERR &bslash;&n;&quot;multipath: disabled IO path %s (errors detected)&bslash;n&quot;
-DECL|macro|NOT_IN_SYNC
-mdefine_line|#define NOT_IN_SYNC KERN_ERR &bslash;&n;&quot;multipath: making IO path %s a spare path (not in sync)&bslash;n&quot;
-DECL|macro|INCONSISTENT
-mdefine_line|#define INCONSISTENT KERN_ERR &bslash;&n;&quot;multipath: disabled IO path %s (inconsistent descriptor)&bslash;n&quot;
-DECL|macro|ALREADY_RUNNING
-mdefine_line|#define ALREADY_RUNNING KERN_ERR &bslash;&n;&quot;multipath: disabled IO path %s (multipath %d already operational)&bslash;n&quot;
-DECL|macro|OPERATIONAL
-mdefine_line|#define OPERATIONAL KERN_INFO &bslash;&n;&quot;multipath: device %s operational as IO path %d&bslash;n&quot;
-DECL|macro|MEM_ERROR
-mdefine_line|#define MEM_ERROR KERN_ERR &bslash;&n;&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
-DECL|macro|SPARE
-mdefine_line|#define SPARE KERN_INFO &bslash;&n;&quot;multipath: spare IO path %s&bslash;n&quot;
-DECL|macro|NONE_OPERATIONAL
-mdefine_line|#define NONE_OPERATIONAL KERN_ERR &bslash;&n;&quot;multipath: no operational IO paths for md%d&bslash;n&quot;
-DECL|macro|SB_DIFFERENCES
-mdefine_line|#define SB_DIFFERENCES KERN_ERR &bslash;&n;&quot;multipath: detected IO path differences!&bslash;n&quot;
-DECL|macro|ARRAY_IS_ACTIVE
-mdefine_line|#define ARRAY_IS_ACTIVE KERN_INFO &bslash;&n;&quot;multipath: array md%d active with %d out of %d IO paths&bslash;n&quot;
-DECL|macro|THREAD_ERROR
-mdefine_line|#define THREAD_ERROR KERN_ERR &bslash;&n;&quot;multipath: couldn&squot;t allocate thread for md%d&bslash;n&quot;
 DECL|function|multipath_run
 r_static
 r_int
@@ -1444,8 +1410,6 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1457,7 +1421,7 @@ id|LEVEL_MULTIPATH
 id|printk
 c_func
 (paren
-id|INVALID_LEVEL
+l_string|&quot;multipath: md%d: raid level not set to multipath IO (%d)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1502,7 +1466,8 @@ id|conf
 id|printk
 c_func
 (paren
-id|MEM_ERROR
+id|KERN_ERR
+l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1606,7 +1571,8 @@ id|conf-&gt;working_disks
 id|printk
 c_func
 (paren
-id|NONE_OPERATIONAL
+id|KERN_ERR
+l_string|&quot;multipath: no operational IO paths for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1650,7 +1616,8 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|MEM_ERROR
+id|KERN_ERR
+l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1693,7 +1660,9 @@ id|mddev-&gt;thread
 id|printk
 c_func
 (paren
-id|THREAD_ERROR
+id|KERN_ERR
+l_string|&quot;multipath: couldn&squot;t allocate thread&quot;
+l_string|&quot; for md%d&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1710,7 +1679,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|ARRAY_IS_ACTIVE
+id|KERN_INFO
+l_string|&quot;multipath: array md%d active with %d out of %d IO paths&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -1754,35 +1724,11 @@ l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
 )brace
-DECL|macro|INVALID_LEVEL
-macro_line|#undef INVALID_LEVEL
-DECL|macro|NO_SB
-macro_line|#undef NO_SB
-DECL|macro|ERRORS
-macro_line|#undef ERRORS
-DECL|macro|NOT_IN_SYNC
-macro_line|#undef NOT_IN_SYNC
-DECL|macro|INCONSISTENT
-macro_line|#undef INCONSISTENT
-DECL|macro|ALREADY_RUNNING
-macro_line|#undef ALREADY_RUNNING
-DECL|macro|OPERATIONAL
-macro_line|#undef OPERATIONAL
-DECL|macro|SPARE
-macro_line|#undef SPARE
-DECL|macro|NONE_OPERATIONAL
-macro_line|#undef NONE_OPERATIONAL
-DECL|macro|SB_DIFFERENCES
-macro_line|#undef SB_DIFFERENCES
-DECL|macro|ARRAY_IS_ACTIVE
-macro_line|#undef ARRAY_IS_ACTIVE
 DECL|function|multipath_stop
 r_static
 r_int
@@ -1827,8 +1773,6 @@ r_private
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1843,6 +1787,11 @@ dot
 id|name
 op_assign
 l_string|&quot;multipath&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request
