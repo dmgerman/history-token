@@ -186,12 +186,6 @@ id|socket_bind_t
 op_star
 id|bind
 suffix:semicolon
-DECL|member|socket_dev
-r_struct
-id|device
-op_star
-id|socket_dev
-suffix:semicolon
 DECL|member|parent
 r_struct
 id|pcmcia_socket
@@ -3663,10 +3657,6 @@ id|s-&gt;request
 )paren
 suffix:semicolon
 multiline_comment|/* initialize data */
-id|s-&gt;socket_dev
-op_assign
-id|socket-&gt;dev.dev
-suffix:semicolon
 id|INIT_WORK
 c_func
 (paren
