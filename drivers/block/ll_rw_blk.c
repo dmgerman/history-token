@@ -9708,6 +9708,13 @@ id|work
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kblockd_schedule_work
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kblockd_schedule_work
+)paren
+suffix:semicolon
 DECL|function|kblockd_flush
 r_void
 id|kblockd_flush
