@@ -89,11 +89,12 @@ id|enforcing_setup
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 DECL|variable|selinux_enabled
 r_int
 id|selinux_enabled
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 DECL|function|selinux_enabled_setup
 r_static
@@ -131,6 +132,7 @@ comma
 id|selinux_enabled_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Original (dummy) security module. */
 DECL|variable|original_ops
 r_static
@@ -13723,7 +13725,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SELinux:  Not enabled at boot.&bslash;n&quot;
+l_string|&quot;SELinux:  Disabled at boot.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

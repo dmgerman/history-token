@@ -13,10 +13,6 @@ macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
 macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;objsec.h&quot;
-r_extern
-r_int
-id|selinux_enabled
-suffix:semicolon
 multiline_comment|/* Check whether a task is allowed to use a security operation. */
 DECL|function|task_has_security
 r_int
