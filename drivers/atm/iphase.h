@@ -3007,48 +3007,56 @@ id|iadev_t
 multiline_comment|/*-----base pointers into (i)chipSAR+ address space */
 DECL|member|phy
 id|u32
+id|__iomem
 op_star
 id|phy
 suffix:semicolon
 multiline_comment|/* base pointer into phy(SUNI) */
 DECL|member|dma
 id|u32
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
 multiline_comment|/* base pointer into DMA control   &n;&t;&t;&t;&t;&t;&t;registers */
 DECL|member|reg
 id|u32
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
 multiline_comment|/* base pointer to SAR registers  &n;&t;&t;&t;&t;&t;   - Bus Interface Control Regs */
 DECL|member|seg_reg
 id|u32
+id|__iomem
 op_star
 id|seg_reg
 suffix:semicolon
 multiline_comment|/* base pointer to segmentation engine  &n;&t;&t;&t;&t;&t;&t;internal registers */
 DECL|member|reass_reg
 id|u32
+id|__iomem
 op_star
 id|reass_reg
 suffix:semicolon
 multiline_comment|/* base pointer to reassemble engine  &n;&t;&t;&t;&t;&t;&t;internal registers */
 DECL|member|ram
 id|u32
+id|__iomem
 op_star
 id|ram
 suffix:semicolon
 multiline_comment|/* base pointer to SAR RAM */
 DECL|member|seg_ram
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|seg_ram
 suffix:semicolon
 DECL|member|reass_ram
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reass_ram
 suffix:semicolon
 DECL|member|tx_dle_q
@@ -3116,11 +3124,15 @@ suffix:semicolon
 DECL|member|MAIN_VC_TABLE_ADDR
 DECL|member|EXT_VC_TABLE_ADDR
 DECL|member|ABR_SCHED_TABLE_ADDR
-id|u32
+r_void
+id|__iomem
+op_star
 id|MAIN_VC_TABLE_ADDR
 comma
+op_star
 id|EXT_VC_TABLE_ADDR
 comma
+op_star
 id|ABR_SCHED_TABLE_ADDR
 suffix:semicolon
 DECL|member|rx_dle_q
@@ -3175,7 +3187,9 @@ comma
 id|rx_tmp_jif
 suffix:semicolon
 DECL|member|RX_DESC_BASE_ADDR
-id|u32
+r_void
+id|__iomem
+op_star
 id|RX_DESC_BASE_ADDR
 suffix:semicolon
 DECL|member|drop_rxpkt
@@ -3208,21 +3222,18 @@ DECL|member|mem
 r_int
 id|mem
 suffix:semicolon
-DECL|member|base_diff
-r_int
-r_int
-id|base_diff
-suffix:semicolon
-multiline_comment|/* virtual - real base address */
 DECL|member|real_base
-DECL|member|base
 r_int
 r_int
 id|real_base
-comma
-id|base
 suffix:semicolon
 multiline_comment|/* real and virtual base address */
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 DECL|member|pci_map_size
 r_int
 r_int
