@@ -151,7 +151,7 @@ id|idev
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|isdn_net_hangup
 c_func
 (paren
