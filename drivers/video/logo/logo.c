@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Linux logo to be displayed on boot&n; *&n; *  Copyrig
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_M68K
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
@@ -236,4 +237,11 @@ r_return
 id|logo
 suffix:semicolon
 )brace
+DECL|variable|fb_find_logo
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|fb_find_logo
+)paren
+suffix:semicolon
 eof
