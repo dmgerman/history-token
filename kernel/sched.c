@@ -15530,6 +15530,8 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|printk
 c_func
@@ -15579,19 +15581,6 @@ id|KERN_DEBUG
 l_string|&quot;ERROR domain-&gt;groups does not contain CPU%d&bslash;n&quot;
 comma
 id|i
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|group-&gt;cpu_power
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ERROR domain-&gt;cpu_power not set&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -15646,6 +15635,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|group-&gt;cpu_power
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ERROR group-&gt;cpu_power not set&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
