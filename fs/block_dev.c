@@ -3567,6 +3567,10 @@ id|ioctl
 suffix:colon
 id|blkdev_ioctl
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|function|ioctl_by_bdev

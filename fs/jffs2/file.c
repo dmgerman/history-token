@@ -176,6 +176,10 @@ comma
 id|fsync
 suffix:colon
 id|jffs2_fsync
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* jffs2_file_inode_operations */

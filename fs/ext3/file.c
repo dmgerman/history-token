@@ -190,6 +190,11 @@ suffix:colon
 id|ext3_sync_file
 comma
 multiline_comment|/* BKL held */
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
 )brace
 suffix:semicolon
 DECL|variable|ext3_file_inode_operations

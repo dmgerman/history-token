@@ -587,6 +587,10 @@ id|fsync
 suffix:colon
 id|reiserfs_sync_file
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|reiserfs_file_inode_operations

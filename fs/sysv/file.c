@@ -27,6 +27,10 @@ id|fsync
 suffix:colon
 id|sysv_sync_file
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|sysv_file_inode_operations

@@ -51,6 +51,11 @@ id|mmap
 op_assign
 id|generic_file_mmap
 comma
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|vxfs_inode_cachep

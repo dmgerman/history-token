@@ -39,6 +39,10 @@ id|fsync
 suffix:colon
 id|hpfs_file_fsync
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|hpfs_file_iops
