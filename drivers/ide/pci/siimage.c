@@ -1915,9 +1915,7 @@ multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
 r_if
 c_cond
 (paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|drive
@@ -2024,9 +2022,7 @@ r_else
 r_if
 c_cond
 (paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_good_drive
+id|__ide_dma_good_drive
 c_func
 (paren
 id|drive
@@ -2200,8 +2196,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/**&n; *&t;siimage_mmio_ide_dma_count&t;-&t;DMA bytes done&n; *&t;@drive&n; *&n; *&t;If we are doing VDMA the CMD680 requires a little bit&n; *&t;of more careful handling and we have to read the counts&n; *&t;off ourselves. For non VDMA life is normal.&n; */
-DECL|function|siimage_mmio_ide_dma_count
 r_static
 r_int
 id|siimage_mmio_ide_dma_count
@@ -2304,6 +2300,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;siimage_mmio_ide_dma_test_irq&t;-&t;check we caused an IRQ&n; *&t;@drive: drive we are testing&n; *&n; *&t;Check if we caused an IDE DMA interrupt. We may also have caused&n; *&t;SATA status interrupts, if so we clean them up and continue.&n; */
 DECL|function|siimage_mmio_ide_dma_test_irq
 r_static
@@ -4683,11 +4680,6 @@ c_cond
 id|hwif-&gt;mmio
 )paren
 (brace
-id|hwif-&gt;ide_dma_count
-op_assign
-op_amp
-id|siimage_mmio_ide_dma_count
-suffix:semicolon
 id|hwif-&gt;ide_dma_test_irq
 op_assign
 op_amp
