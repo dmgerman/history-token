@@ -1707,13 +1707,6 @@ id|dev
 op_assign
 id|ps-&gt;dev
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 multiline_comment|/* lock against other changes to driver bindings */
 id|down_write
 c_func
@@ -1761,13 +1754,6 @@ c_func
 (paren
 op_amp
 id|usb_bus_type.subsys.rwsem
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
 )paren
 suffix:semicolon
 r_return
