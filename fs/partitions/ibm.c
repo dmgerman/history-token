@@ -128,6 +128,7 @@ id|rc
 op_eq
 l_int|0
 )paren
+(brace
 id|rc
 op_assign
 id|ioctl_by_bdev
@@ -152,6 +153,7 @@ comma
 id|BDEV_FILE
 )paren
 suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -207,6 +209,7 @@ id|rc
 op_eq
 l_int|0
 )paren
+(brace
 id|rc
 op_assign
 id|ioctl_by_bdev
@@ -233,6 +236,7 @@ comma
 id|BDEV_FILE
 )paren
 suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon

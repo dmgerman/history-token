@@ -891,6 +891,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tty_register_ldisc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_register_ldisc
+)paren
+suffix:semicolon
 multiline_comment|/* Set the discipline of a tty line. */
 DECL|function|tty_set_ldisc
 r_static

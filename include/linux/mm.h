@@ -372,8 +372,6 @@ DECL|macro|PG_inactive
 mdefine_line|#define PG_inactive&t;&t; 7
 DECL|macro|PG_slab
 mdefine_line|#define PG_slab&t;&t;&t; 8
-DECL|macro|PG_swap_cache
-mdefine_line|#define PG_swap_cache&t;&t; 9
 DECL|macro|PG_skip
 mdefine_line|#define PG_skip&t;&t;&t;10
 DECL|macro|PG_highmem
@@ -475,22 +473,12 @@ DECL|macro|PageTestandClearDecrAfter
 mdefine_line|#define PageTestandClearDecrAfter(page)&t;test_and_clear_bit(PG_decr_after, &amp;(page)-&gt;flags)
 DECL|macro|PageSlab
 mdefine_line|#define PageSlab(page)&t;&t;test_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageSwapCache
-mdefine_line|#define PageSwapCache(page)&t;test_bit(PG_swap_cache, &amp;(page)-&gt;flags)
-DECL|macro|PageReserved
-mdefine_line|#define PageReserved(page)&t;test_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|PageSetSlab
 mdefine_line|#define PageSetSlab(page)&t;set_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageSetSwapCache
-mdefine_line|#define PageSetSwapCache(page)&t;set_bit(PG_swap_cache, &amp;(page)-&gt;flags)
-DECL|macro|PageTestandSetSwapCache
-mdefine_line|#define PageTestandSetSwapCache(page)&t;test_and_set_bit(PG_swap_cache, &amp;(page)-&gt;flags)
 DECL|macro|PageClearSlab
-mdefine_line|#define PageClearSlab(page)&t;&t;clear_bit(PG_slab, &amp;(page)-&gt;flags)
-DECL|macro|PageClearSwapCache
-mdefine_line|#define PageClearSwapCache(page)&t;clear_bit(PG_swap_cache, &amp;(page)-&gt;flags)
-DECL|macro|PageTestandClearSwapCache
-mdefine_line|#define PageTestandClearSwapCache(page)&t;test_and_clear_bit(PG_swap_cache, &amp;(page)-&gt;flags)
+mdefine_line|#define PageClearSlab(page)&t;clear_bit(PG_slab, &amp;(page)-&gt;flags)
+DECL|macro|PageReserved
+mdefine_line|#define PageReserved(page)&t;test_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|PageActive
 mdefine_line|#define PageActive(page)&t;test_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|SetPageActive
@@ -1238,6 +1226,13 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|address_space
+id|swapper_space
+suffix:semicolon
+DECL|macro|PageSwapCache
+mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
 DECL|function|is_page_cache_freeable
 r_static
 r_inline
@@ -1279,10 +1274,6 @@ op_star
 id|page
 )paren
 (brace
-r_int
-r_int
-id|count
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1311,8 +1302,9 @@ id|page
 r_return
 l_int|0
 suffix:semicolon
-id|count
-op_assign
+r_if
+c_cond
+(paren
 id|page_count
 c_func
 (paren
@@ -1322,23 +1314,23 @@ op_minus
 op_logical_neg
 op_logical_neg
 id|page-&gt;buffers
+op_ne
+l_int|2
+)paren
+multiline_comment|/* 2: us + cache */
+r_return
+l_int|0
 suffix:semicolon
-multiline_comment|/*  2: us + swap cache */
-id|count
-op_add_assign
+r_return
 id|swap_count
 c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-multiline_comment|/* +1: just swap cache */
-r_return
-id|count
 op_eq
-l_int|3
+l_int|1
 suffix:semicolon
-multiline_comment|/* =3: total */
+multiline_comment|/* 1: just cache */
 )brace
 r_extern
 r_void
@@ -1781,13 +1773,13 @@ mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_USER
 mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_HIGHUSER
-mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO &bslash;&n;&t;       &t;| __GFP_FS | __GFP_HIGHMEM)
+mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS | __GFP_HIGHMEM)
 DECL|macro|GFP_KERNEL
 mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_NFS
-mdefine_line|#define GFP_NFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_KSWAPD
-mdefine_line|#define GFP_KSWAPD&t;(                          __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA

@@ -959,14 +959,6 @@ c_func
 id|rdev
 )paren
 suffix:semicolon
-id|inode-&gt;i_bdev
-op_assign
-id|bdget
-c_func
-(paren
-id|rdev
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if

@@ -1789,12 +1789,6 @@ comma
 id|BDEV_FILE
 )paren
 suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
 )brace
 id|destroy_buffers
 c_func
@@ -3168,7 +3162,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blkdev_close
+id|infile.f_op
+op_member_access_from_pointer
+id|release
 c_func
 (paren
 id|inode

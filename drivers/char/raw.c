@@ -378,6 +378,13 @@ id|bdev
 r_goto
 id|out
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_count
+)paren
+suffix:semicolon
 id|rdev
 op_assign
 id|to_kdev_t

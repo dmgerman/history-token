@@ -4268,6 +4268,12 @@ id|MNT_NODEV
 r_goto
 id|out
 suffix:semicolon
+id|bd_acquire
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|bdev
 op_assign
 id|inode-&gt;i_bdev
@@ -4588,14 +4594,6 @@ id|unlock_super
 c_func
 (paren
 id|s
-)paren
-suffix:semicolon
-multiline_comment|/* tell bdcache that we are going to keep this one */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|bdev-&gt;bd_count
 )paren
 suffix:semicolon
 id|get_filesystem
@@ -5331,7 +5329,6 @@ c_cond
 (paren
 id|bdev
 )paren
-(brace
 id|blkdev_put
 c_func
 (paren
@@ -5340,13 +5337,6 @@ comma
 id|BDEV_FS
 )paren
 suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
-)brace
 r_else
 id|put_unnamed_dev
 c_func
@@ -7905,6 +7895,8 @@ c_func
 l_string|&quot;I have no root and I want to scream&quot;
 )paren
 suffix:semicolon
+id|retry
+suffix:colon
 id|bdev
 op_assign
 id|bdget
@@ -8000,19 +7992,8 @@ id|root_mountflags
 op_or_assign
 id|MS_RDONLY
 suffix:semicolon
-id|retval
-op_assign
-id|blkdev_get
-c_func
-(paren
-id|bdev
-comma
-id|FMODE_READ
-comma
-l_int|0
-comma
-id|BDEV_FS
-)paren
+r_goto
+id|retry
 suffix:semicolon
 )brace
 r_if
@@ -9326,6 +9307,13 @@ op_star
 id|ramdisk
 op_assign
 id|old_rootmnt-&gt;mnt_sb-&gt;s_bdev
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ramdisk-&gt;bd_count
+)paren
 suffix:semicolon
 id|blivet
 op_assign

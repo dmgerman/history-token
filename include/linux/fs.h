@@ -954,6 +954,11 @@ id|semaphore
 id|bd_sem
 suffix:semicolon
 multiline_comment|/* open/close mutex */
+DECL|member|bd_inodes
+r_struct
+id|list_head
+id|bd_inodes
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode
@@ -1113,6 +1118,11 @@ id|MAXQUOTAS
 )braket
 suffix:semicolon
 multiline_comment|/* These three should probably be a union */
+DECL|member|i_devices
+r_struct
+id|list_head
+id|i_devices
+suffix:semicolon
 DECL|member|i_pipe
 r_struct
 id|pipe_inode_info
@@ -4201,6 +4211,28 @@ id|bdget
 c_func
 (paren
 id|dev_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|bd_acquire
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bd_forget
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
 )paren
 suffix:semicolon
 r_extern
