@@ -7040,8 +7040,6 @@ c_func
 (paren
 id|req
 )paren
-op_plus
-id|req-&gt;wb_offset
 comma
 id|count
 comma
@@ -7319,8 +7317,6 @@ c_func
 (paren
 id|req
 )paren
-op_plus
-id|req-&gt;wb_offset
 comma
 id|count
 comma

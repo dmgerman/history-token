@@ -2603,8 +2603,6 @@ c_func
 (paren
 id|req
 )paren
-op_plus
-id|req-&gt;wb_offset
 suffix:semicolon
 id|data-&gt;u.v3.args.pgbase
 op_assign
@@ -2824,8 +2822,6 @@ c_func
 (paren
 id|req
 )paren
-op_plus
-id|req-&gt;wb_offset
 suffix:semicolon
 id|data-&gt;u.v3.args.pgbase
 op_assign

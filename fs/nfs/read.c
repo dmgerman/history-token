@@ -719,8 +719,6 @@ c_func
 (paren
 id|req
 )paren
-op_plus
-id|req-&gt;wb_offset
 )paren
 suffix:semicolon
 )brace
@@ -1178,8 +1176,6 @@ c_func
 id|req
 )paren
 op_plus
-id|req-&gt;wb_offset
-op_plus
 id|count
 )paren
 op_ge
@@ -1262,14 +1258,10 @@ comma
 r_int
 r_int
 )paren
-(paren
 id|req_offset
 c_func
 (paren
 id|req
-)paren
-op_plus
-id|req-&gt;wb_offset
 )paren
 )paren
 suffix:semicolon

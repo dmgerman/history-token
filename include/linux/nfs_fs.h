@@ -373,12 +373,16 @@ id|req
 r_return
 (paren
 (paren
+(paren
 id|loff_t
 )paren
 id|req-&gt;wb_index
 )paren
 op_lshift
 id|PAGE_CACHE_SHIFT
+)paren
+op_plus
+id|req-&gt;wb_offset
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
