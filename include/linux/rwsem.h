@@ -194,6 +194,43 @@ l_string|&quot;Leaving up_write&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * downgrade write lock to read lock&n; */
+DECL|function|downgrade_write
+r_static
+r_inline
+r_void
+id|downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Entering downgrade_write&quot;
+)paren
+suffix:semicolon
+id|__downgrade_write
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Leaving downgrade_write&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_RWSEM_H */
 eof

@@ -82,7 +82,7 @@ id|sem-&gt;count
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here, then:&n; *   - the &squot;active part&squot; of the count (&amp;0x0000ffff) reached zero but has been re-incremented&n; *   - the &squot;waiting part&squot; of the count (&amp;0xffff0000) is negative (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having flags zeroised&n; */
+multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here, then:&n; *   - the &squot;active part&squot; of the count (&amp;0x0000ffff) reached zero but has been re-incremented&n; *   - the &squot;waiting part&squot; of the count (&amp;0xffff0000) is negative (and will still be so)&n; *   - there must be someone on the queue&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having flags zeroised&n; * - writers are only woken if wakewrite is non-zero&n; */
 DECL|function|__rwsem_do_wake
 r_static
 r_inline
@@ -96,6 +96,9 @@ r_struct
 id|rw_semaphore
 op_star
 id|sem
+comma
+r_int
+id|wakewrite
 )paren
 (brace
 r_struct
@@ -124,6 +127,15 @@ id|sem
 comma
 l_string|&quot;Entering __rwsem_do_wake&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wakewrite
+)paren
+r_goto
+id|dont_wake_writers
 suffix:semicolon
 multiline_comment|/* only wake someone up if we can transition the active part of the count from 0 -&gt; 1 */
 id|try_again
@@ -194,6 +206,32 @@ c_func
 id|waiter-&gt;task
 )paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* don&squot;t want to wake any writers */
+id|dont_wake_writers
+suffix:colon
+id|waiter
+op_assign
+id|list_entry
+c_func
+(paren
+id|sem-&gt;wait_list.next
+comma
+r_struct
+id|rwsem_waiter
+comma
+id|list
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|waiter-&gt;flags
+op_amp
+id|RWSEM_WAITING_FOR_WRITE
+)paren
 r_goto
 id|out
 suffix:semicolon
@@ -447,6 +485,8 @@ id|__rwsem_do_wake
 c_func
 (paren
 id|sem
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -650,6 +690,8 @@ id|__rwsem_do_wake
 c_func
 (paren
 id|sem
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -665,6 +707,76 @@ c_func
 id|sem
 comma
 l_string|&quot;Leaving rwsem_wake&quot;
+)paren
+suffix:semicolon
+r_return
+id|sem
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * downgrade a write lock into a read lock&n; * - caller incremented waiting part of count, and discovered it to be still negative&n; * - just wake up any readers at the front of the queue&n; */
+DECL|function|rwsem_downgrade_wake
+r_struct
+id|rw_semaphore
+op_star
+id|rwsem_downgrade_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Entering rwsem_downgrade_wake&quot;
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sem-&gt;wait_lock
+)paren
+suffix:semicolon
+multiline_comment|/* do nothing if list empty */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|sem-&gt;wait_list
+)paren
+)paren
+id|sem
+op_assign
+id|__rwsem_do_wake
+c_func
+(paren
+id|sem
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sem-&gt;wait_lock
+)paren
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Leaving rwsem_downgrade_wake&quot;
 )paren
 suffix:semicolon
 r_return
