@@ -5954,6 +5954,13 @@ id|SIGNAL_STOP_DEQUEUED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Another stop or continue happened while we&n;&t;&t;&t; * didn&squot;t have the lock.  We can just swallow this&n;&t;&t;&t; * signal now.  If we raced with a SIGCONT, that&n;&t;&t;&t; * should have just cleared it now.  If we raced&n;&t;&t;&t; * with another processor delivering a stop signal,&n;&t;&t;&t; * then the SIGCONT that wakes us up should clear it.&n;&t;&t;&t; */
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
