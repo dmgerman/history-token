@@ -381,11 +381,6 @@ op_star
 id|phb
 suffix:semicolon
 multiline_comment|/* for pci devices */
-DECL|member|status
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* current status of device */
 DECL|member|tce_table
 r_struct
 id|TceTable
