@@ -144,25 +144,6 @@ c_func
 id|ip_nat_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Hashes for by-source and IP/protocol. */
-DECL|struct|ip_nat_hash
-r_struct
-id|ip_nat_hash
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* conntrack we&squot;re embedded in: NULL if not in hash. */
-DECL|member|conntrack
-r_struct
-id|ip_conntrack
-op_star
-id|conntrack
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* The structure embedded in the conntrack structure. */
 DECL|struct|ip_nat_info
 r_struct
@@ -190,7 +171,7 @@ suffix:semicolon
 DECL|member|bysource
 DECL|member|byipsproto
 r_struct
-id|ip_nat_hash
+id|list_head
 id|bysource
 comma
 id|byipsproto
