@@ -283,6 +283,14 @@ mdefine_line|#define CPU_FTR_ALTIVEC_COMP&t;&t;0
 DECL|macro|PPC_FEATURE_ALTIVEC_COMP
 mdefine_line|#define PPC_FEATURE_ALTIVEC_COMP       &t;0
 macro_line|#endif
+multiline_comment|/* We need to mark all pages as being coherent if we&squot;re SMP or we&n; * have a 754x and an MPC107 host bridge. */
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_MPC10X_BRIDGE)
+DECL|macro|CPU_FTR_COMMON
+mdefine_line|#define CPU_FTR_COMMON                  CPU_FTR_NEED_COHERENT
+macro_line|#else
+DECL|macro|CPU_FTR_COMMON
+mdefine_line|#define CPU_FTR_COMMON                  0
+macro_line|#endif
 DECL|variable|cpu_specs
 r_struct
 id|cpu_spec
@@ -300,6 +308,8 @@ l_int|0x00010000
 comma
 l_string|&quot;601&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_601
 op_or
 id|CPU_FTR_HPTE_TABLE
@@ -325,6 +335,8 @@ l_int|0x00030000
 comma
 l_string|&quot;603&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -350,6 +362,8 @@ l_int|0x00060000
 comma
 l_string|&quot;603e&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -375,6 +389,8 @@ l_int|0x00070000
 comma
 l_string|&quot;603ev&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -400,6 +416,8 @@ l_int|0x00040000
 comma
 l_string|&quot;604&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -425,6 +443,8 @@ l_int|0x00090000
 comma
 l_string|&quot;604e&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -450,6 +470,8 @@ l_int|0x00090000
 comma
 l_string|&quot;604r&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -475,6 +497,8 @@ l_int|0x000a0000
 comma
 l_string|&quot;604ev&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -500,6 +524,8 @@ l_int|0x00084202
 comma
 l_string|&quot;740/750&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -529,6 +555,8 @@ l_int|0x00083000
 comma
 l_string|&quot;745/755&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -560,6 +588,8 @@ l_int|0x00080100
 comma
 l_string|&quot;750CX&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -591,6 +621,8 @@ l_int|0x00082200
 comma
 l_string|&quot;750CX&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -622,6 +654,8 @@ l_int|0x00082210
 comma
 l_string|&quot;750CXe&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -653,6 +687,8 @@ l_int|0x70000100
 comma
 l_string|&quot;750FX&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -688,6 +724,8 @@ l_int|0x70000200
 comma
 l_string|&quot;750FX&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -721,6 +759,8 @@ l_int|0x70000000
 comma
 l_string|&quot;750FX&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -756,6 +796,8 @@ l_int|0x00080000
 comma
 l_string|&quot;740/750&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -787,6 +829,8 @@ l_int|0x000c1101
 comma
 l_string|&quot;7400 (1.1)&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -820,6 +864,8 @@ l_int|0x000c0000
 comma
 l_string|&quot;7400&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -855,6 +901,8 @@ l_int|0x800c0000
 comma
 l_string|&quot;7410&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -890,6 +938,8 @@ l_int|0x80000200
 comma
 l_string|&quot;7450&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -923,6 +973,8 @@ l_int|0x80000201
 comma
 l_string|&quot;7450&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -962,6 +1014,8 @@ l_int|0x80000000
 comma
 l_string|&quot;7450&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -999,6 +1053,8 @@ l_int|0x80010100
 comma
 l_string|&quot;7455&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1034,6 +1090,8 @@ l_int|0x80010200
 comma
 l_string|&quot;7455&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1075,6 +1133,8 @@ l_int|0x80010000
 comma
 l_string|&quot;7455&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1114,6 +1174,8 @@ l_int|0x80020000
 comma
 l_string|&quot;7457&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1153,6 +1215,8 @@ l_int|0x00810000
 comma
 l_string|&quot;82xx&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_CAN_DOZE
@@ -1176,6 +1240,8 @@ l_int|0x00000000
 comma
 l_string|&quot;(generic PPC)&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1201,6 +1267,8 @@ l_int|0x00400000
 comma
 l_string|&quot;Power3 (630)&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1226,6 +1294,8 @@ l_int|0x00410000
 comma
 l_string|&quot;Power3 (630+)&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1251,6 +1321,8 @@ l_int|0x00360000
 comma
 l_string|&quot;I-star&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1276,6 +1348,8 @@ l_int|0x00370000
 comma
 l_string|&quot;S-star&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1303,6 +1377,8 @@ l_int|0x00350000
 comma
 l_string|&quot;Power4&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1328,6 +1404,8 @@ l_int|0x00390000
 comma
 l_string|&quot;PPC970&quot;
 comma
+id|CPU_FTR_COMMON
+op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -1860,7 +1938,7 @@ l_int|0x00000000
 comma
 l_string|&quot;(generic PPC)&quot;
 comma
-l_int|0
+id|CPU_FTR_COMMON
 comma
 id|PPC_FEATURE_32
 comma

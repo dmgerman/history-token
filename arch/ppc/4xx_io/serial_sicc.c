@@ -2414,7 +2414,7 @@ id|cflag
 op_assign
 id|info-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3587,7 +3587,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5500,7 +5500,7 @@ id|state
 op_assign
 id|info-&gt;state
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 singleline_comment|//printk(&quot;siccuart_close() called&bslash;n&quot;);
 macro_line|#endif
 id|save_flags
@@ -5870,7 +5870,7 @@ id|jiffies
 op_plus
 id|timeout
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -7096,7 +7096,7 @@ suffix:semicolon
 r_int
 id|c
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

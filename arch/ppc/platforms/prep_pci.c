@@ -865,19 +865,19 @@ comma
 multiline_comment|/* Slot 9  - unused */
 l_int|0
 comma
-multiline_comment|/* Slot 10 - Ethernet */
+multiline_comment|/* Slot 10 - unused */
 l_int|0
 comma
-multiline_comment|/* Slot 11 - Universe PCI - VME Bridge */
+multiline_comment|/* Slot 11 - IDE */
 l_int|3
 comma
-multiline_comment|/* Slot 12 - unused */
-l_int|0
+multiline_comment|/* Slot 12 - SCSI */
+l_int|5
 comma
-multiline_comment|/* Slot 13 - unused */
+multiline_comment|/* Slot 13 - Universe PCI - VME Bridge */
 l_int|2
 comma
-multiline_comment|/* Slot 14 - SCSI */
+multiline_comment|/* Slot 14 - Ethernet */
 l_int|0
 comma
 multiline_comment|/* Slot 15 - unused */

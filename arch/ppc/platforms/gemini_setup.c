@@ -1610,7 +1610,7 @@ c_func
 id|M48T35_RTC_CONTROL
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_RTC
+macro_line|#ifdef DEBUG_RTC
 id|printk
 c_func
 (paren
@@ -1632,7 +1632,7 @@ comma
 id|M48T35_RTC_CONTROL
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_RTC
+macro_line|#ifdef DEBUG_RTC
 id|printk
 c_func
 (paren
