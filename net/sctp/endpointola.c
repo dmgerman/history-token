@@ -522,8 +522,6 @@ r_if
 c_cond
 (paren
 id|ep-&gt;base.sk-&gt;prev
-op_ne
-l_int|NULL
 )paren
 id|sctp_put_port
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Initialization/cleanup for SCTP protocol support.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Initialization/cleanup for SCTP protocol support.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -11,10 +11,10 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 multiline_comment|/* Global data structures. */
-DECL|variable|sctp_proto
+DECL|variable|sctp_globals
 r_struct
-id|sctp_protocol
-id|sctp_proto
+id|sctp_globals
+id|sctp_globals
 suffix:semicolon
 DECL|variable|proc_net_sctp
 r_struct
@@ -66,6 +66,16 @@ r_struct
 id|sctp_af
 op_star
 id|sctp_af_v6_specific
+suffix:semicolon
+DECL|variable|sctp_chunk_cachep
+id|kmem_cache_t
+op_star
+id|sctp_chunk_cachep
+suffix:semicolon
+DECL|variable|sctp_bucket_cachep
+id|kmem_cache_t
+op_star
+id|sctp_bucket_cachep
 suffix:semicolon
 r_extern
 r_struct
@@ -179,7 +189,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
+multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. &n; * Note: Do not make this __exit as it is used in the init error&n; * path.&n; */
 DECL|function|sctp_proc_exit
 r_void
 id|sctp_proc_exit
@@ -363,10 +373,7 @@ r_void
 id|__sctp_get_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
+r_void
 )paren
 (brace
 r_struct
@@ -405,13 +412,13 @@ op_assign
 id|dev-&gt;next
 )paren
 (brace
-id|list_for_each
+id|__list_for_each
 c_func
 (paren
 id|pos
 comma
 op_amp
-id|proto-&gt;address_families
+id|sctp_address_families
 )paren
 (brace
 id|af
@@ -433,7 +440,7 @@ id|copy_addrlist
 c_func
 (paren
 op_amp
-id|proto-&gt;local_addr_list
+id|sctp_local_addr_list
 comma
 id|dev
 )paren
@@ -454,10 +461,7 @@ r_void
 id|sctp_get_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
+r_void
 )paren
 (brace
 r_int
@@ -468,7 +472,7 @@ id|sctp_spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sctp_proto.local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -476,15 +480,13 @@ suffix:semicolon
 id|__sctp_get_local_addr_list
 c_func
 (paren
-op_amp
-id|sctp_proto
 )paren
 suffix:semicolon
 id|sctp_spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sctp_proto.local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -497,10 +499,7 @@ r_void
 id|__sctp_free_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
+r_void
 )paren
 (brace
 r_struct
@@ -524,7 +523,7 @@ comma
 id|temp
 comma
 op_amp
-id|proto-&gt;local_addr_list
+id|sctp_local_addr_list
 )paren
 (brace
 id|addr
@@ -561,10 +560,7 @@ r_void
 id|sctp_free_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
+r_void
 )paren
 (brace
 r_int
@@ -575,7 +571,7 @@ id|sctp_spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|proto-&gt;local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -583,14 +579,13 @@ suffix:semicolon
 id|__sctp_free_local_addr_list
 c_func
 (paren
-id|proto
 )paren
 suffix:semicolon
 id|sctp_spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|proto-&gt;local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -602,11 +597,6 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-comma
 r_struct
 id|sctp_bind_addr
 op_star
@@ -645,7 +635,7 @@ id|sctp_spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|proto-&gt;local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -656,7 +646,7 @@ c_func
 id|pos
 comma
 op_amp
-id|proto-&gt;local_addr_list
+id|sctp_local_addr_list
 )paren
 (brace
 id|addr
@@ -758,7 +748,7 @@ id|sctp_spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|proto-&gt;local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -2005,7 +1995,7 @@ id|sctp_spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sctp_proto.local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -2013,22 +2003,18 @@ suffix:semicolon
 id|__sctp_free_local_addr_list
 c_func
 (paren
-op_amp
-id|sctp_proto
 )paren
 suffix:semicolon
 id|__sctp_get_local_addr_list
 c_func
 (paren
-op_amp
-id|sctp_proto
 )paren
 suffix:semicolon
 id|sctp_spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sctp_proto.local_addr_lock
+id|sctp_local_addr_lock
 comma
 id|flags
 )paren
@@ -2195,7 +2181,7 @@ op_amp
 id|af-&gt;list
 comma
 op_amp
-id|sctp_proto.address_families
+id|sctp_address_families
 )paren
 suffix:semicolon
 r_return
@@ -3461,6 +3447,69 @@ op_amp
 id|sctp_stream_protosw
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate a cache pools. */
+id|sctp_bucket_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;sctp_bind_bucket&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_bind_bucket
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_bucket_cachep
+)paren
+r_goto
+id|err_bucket_cachep
+suffix:semicolon
+id|sctp_chunk_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;sctp_chunk&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_chunk
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_chunk_cachep
+)paren
+r_goto
+id|err_chunk_cachep
+suffix:semicolon
 multiline_comment|/* Allocate and initialise sctp mibs.  */
 id|status
 op_assign
@@ -3502,62 +3551,62 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * 14. Suggested SCTP Protocol Parameter Values&n;&t; */
 multiline_comment|/* The following protocol parameters are RECOMMENDED:  */
 multiline_comment|/* RTO.Initial              - 3  seconds */
-id|sctp_proto.rto_initial
+id|sctp_rto_initial
 op_assign
 id|SCTP_RTO_INITIAL
 suffix:semicolon
 multiline_comment|/* RTO.Min                  - 1  second */
-id|sctp_proto.rto_min
+id|sctp_rto_min
 op_assign
 id|SCTP_RTO_MIN
 suffix:semicolon
 multiline_comment|/* RTO.Max                 -  60 seconds */
-id|sctp_proto.rto_max
+id|sctp_rto_max
 op_assign
 id|SCTP_RTO_MAX
 suffix:semicolon
 multiline_comment|/* RTO.Alpha                - 1/8 */
-id|sctp_proto.rto_alpha
+id|sctp_rto_alpha
 op_assign
 id|SCTP_RTO_ALPHA
 suffix:semicolon
 multiline_comment|/* RTO.Beta                 - 1/4 */
-id|sctp_proto.rto_beta
+id|sctp_rto_beta
 op_assign
 id|SCTP_RTO_BETA
 suffix:semicolon
 multiline_comment|/* Valid.Cookie.Life        - 60  seconds */
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 op_assign
 l_int|60
 op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* Whether Cookie Preservative is enabled(1) or not(0) */
-id|sctp_proto.cookie_preserve_enable
+id|sctp_cookie_preserve_enable
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Max.Burst&t;&t;    - 4 */
-id|sctp_proto.max_burst
+id|sctp_max_burst
 op_assign
 id|SCTP_MAX_BURST
 suffix:semicolon
 multiline_comment|/* Association.Max.Retrans  - 10 attempts&n;&t; * Path.Max.Retrans         - 5  attempts (per destination address)&n;&t; * Max.Init.Retransmits     - 8  attempts&n;&t; */
-id|sctp_proto.max_retrans_association
+id|sctp_max_retrans_association
 op_assign
 l_int|10
 suffix:semicolon
-id|sctp_proto.max_retrans_path
+id|sctp_max_retrans_path
 op_assign
 l_int|5
 suffix:semicolon
-id|sctp_proto.max_retrans_init
+id|sctp_max_retrans_init
 op_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/* HB.interval              - 30 seconds */
-id|sctp_proto.hb_interval
+id|sctp_hb_interval
 op_assign
 l_int|30
 op_star
@@ -3565,23 +3614,24 @@ id|HZ
 suffix:semicolon
 multiline_comment|/* Implementation specific variables. */
 multiline_comment|/* Initialize default stream count setup information. */
-id|sctp_proto.max_instreams
+id|sctp_max_instreams
 op_assign
 id|SCTP_DEFAULT_INSTREAMS
 suffix:semicolon
-id|sctp_proto.max_outstreams
+id|sctp_max_outstreams
 op_assign
 id|SCTP_DEFAULT_OUTSTREAMS
 suffix:semicolon
 multiline_comment|/* Allocate and initialize the association hash table.  */
-id|sctp_proto.assoc_hashsize
+id|sctp_assoc_hashsize
 op_assign
 l_int|4096
 suffix:semicolon
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 op_assign
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3591,7 +3641,8 @@ l_int|4096
 op_star
 r_sizeof
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3601,7 +3652,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 )paren
 (brace
 id|printk
@@ -3629,13 +3680,13 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sctp_proto.assoc_hashsize
+id|sctp_assoc_hashsize
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|i
 )braket
@@ -3644,7 +3695,7 @@ id|lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|i
 )braket
@@ -3655,14 +3706,15 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate and initialize the endpoint hash table.  */
-id|sctp_proto.ep_hashsize
+id|sctp_ep_hashsize
 op_assign
 l_int|64
 suffix:semicolon
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 op_assign
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3672,7 +3724,8 @@ l_int|64
 op_star
 r_sizeof
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3682,7 +3735,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 )paren
 (brace
 id|printk
@@ -3710,13 +3763,13 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sctp_proto.ep_hashsize
+id|sctp_ep_hashsize
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|i
 )braket
@@ -3725,7 +3778,7 @@ id|lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|i
 )braket
@@ -3736,14 +3789,15 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate and initialize the SCTP port hash table.  */
-id|sctp_proto.port_hashsize
+id|sctp_port_hashsize
 op_assign
 l_int|4096
 suffix:semicolon
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
 op_assign
 (paren
-id|sctp_bind_hashbucket_t
+r_struct
+id|sctp_bind_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3753,7 +3807,8 @@ l_int|4096
 op_star
 r_sizeof
 (paren
-id|sctp_bind_hashbucket_t
+r_struct
+id|sctp_bind_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3763,7 +3818,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
 )paren
 (brace
 id|printk
@@ -3782,11 +3837,11 @@ r_goto
 id|err_bhash_alloc
 suffix:semicolon
 )brace
-id|sctp_proto.port_alloc_lock
+id|sctp_port_alloc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|sctp_proto.port_rover
+id|sctp_port_rover
 op_assign
 id|sysctl_local_port_range
 (braket
@@ -3804,13 +3859,13 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sctp_proto.port_hashsize
+id|sctp_port_hashsize
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
 (braket
 id|i
 )braket
@@ -3819,7 +3874,7 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
 (braket
 id|i
 )braket
@@ -3838,7 +3893,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|sctp_proto.address_families
+id|sctp_address_families
 )paren
 suffix:semicolon
 id|sctp_register_af
@@ -3892,10 +3947,10 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|sctp_proto.local_addr_list
+id|sctp_local_addr_list
 )paren
 suffix:semicolon
-id|sctp_proto.local_addr_lock
+id|sctp_local_addr_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -3910,8 +3965,6 @@ suffix:semicolon
 id|sctp_get_local_addr_list
 c_func
 (paren
-op_amp
-id|sctp_proto
 )paren
 suffix:semicolon
 id|__unsafe
@@ -3947,7 +4000,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
 )paren
 suffix:semicolon
 id|err_bhash_alloc
@@ -3955,7 +4008,7 @@ suffix:colon
 id|kfree
 c_func
 (paren
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 )paren
 suffix:semicolon
 id|err_ehash_alloc
@@ -3963,7 +4016,7 @@ suffix:colon
 id|kfree
 c_func
 (paren
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 )paren
 suffix:semicolon
 id|err_ahash_alloc
@@ -3984,6 +4037,22 @@ c_func
 )paren
 suffix:semicolon
 id|err_init_mibs
+suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_chunk_cachep
+)paren
+suffix:semicolon
+id|err_chunk_cachep
+suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_bucket_cachep
+)paren
+suffix:semicolon
+id|err_bucket_cachep
 suffix:colon
 id|inet_del_protocol
 c_func
@@ -4035,8 +4104,6 @@ multiline_comment|/* Free the local address list.  */
 id|sctp_free_local_addr_list
 c_func
 (paren
-op_amp
-id|sctp_proto
 )paren
 suffix:semicolon
 multiline_comment|/* Free the control endpoint.  */
@@ -4066,19 +4133,31 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|sctp_proto.port_hashtable
+id|sctp_port_hashtable
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_chunk_cachep
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_bucket_cachep
 )paren
 suffix:semicolon
 id|sctp_dbg_objcnt_exit
