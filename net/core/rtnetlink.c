@@ -42,6 +42,7 @@ r_void
 id|rtnl_lock
 c_func
 (paren
+r_void
 )paren
 (brace
 id|rtnl_shlock
