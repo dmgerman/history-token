@@ -8205,9 +8205,19 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|unregister_chrdev
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
+comma
+l_string|&quot;sg&quot;
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|sg_proc_init
 c_func
