@@ -1906,7 +1906,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* API 3.1.4 close() - UDP Style Syntax&n; * Applications use close() to perform graceful shutdown (as described in&n; * Section 10.1 of [SCTP]) on ALL the associations currently represented&n; * by a UDP-style socket.&n; *&n; * The syntax is&n; *&n; *   ret = close(int sd);&n; *&n; *   sd      - the socket descriptor of the associations to be closed.&n; *&n; * To gracefully shutdown a specific association represented by the&n; * UDP-style socket, an application should use the sendmsg() call,&n; * passing no user data, but including the appropriate flag in the&n; * ancillary data (see Section xxxx).&n; *&n; * If sd in the close() call is a branched-off socket representing only&n; * one association, the shutdown is performed on that association only.&n; *&n; * 4.1.6 close() - TCP Style Syntax&n; *&n; * Applications use close() to gracefully close down an association.&n; *&n; * The syntax is:&n; *&n; *    int close(int sd);&n; *&n; *      sd      - the socket descriptor of the association to be closed.&n; *&n; * After an application calls close() on a socket descriptor, no further&n; * socket operations will succeed on that descriptor.&n; *&n; * API 7.1.4 SO_LINGER&n; *&n; * An application using the TCP-style socket can use this option to&n; * perform the SCTP ABORT primitive.  The linger option structure is:&n; *&n; *  struct  linger {&n; *     int     l_onoff;                // option on/off&n; *     int     l_linger;               // linger time &n; * };&n; *&n; * To enable the option, set l_onoff to 1.  If the l_linger value is set&n; * to 0, calling close() is the same as the ABORT primitive.  If the&n; * value is set to a negative value, the setsockopt() call will return&n; * an error.  If the value is set to a positive value linger_time, the&n; * close() can be blocked for at most linger_time ms.  If the graceful&n; * shutdown phase does not finish during this period, close() will&n; * return but the graceful shutdown phase continues in the system.&n; */
+multiline_comment|/* API 3.1.4 close() - UDP Style Syntax&n; * Applications use close() to perform graceful shutdown (as described in&n; * Section 10.1 of [SCTP]) on ALL the associations currently represented&n; * by a UDP-style socket.&n; *&n; * The syntax is&n; *&n; *   ret = close(int sd);&n; *&n; *   sd      - the socket descriptor of the associations to be closed.&n; *&n; * To gracefully shutdown a specific association represented by the&n; * UDP-style socket, an application should use the sendmsg() call,&n; * passing no user data, but including the appropriate flag in the&n; * ancillary data (see Section xxxx).&n; *&n; * If sd in the close() call is a branched-off socket representing only&n; * one association, the shutdown is performed on that association only.&n; *&n; * 4.1.6 close() - TCP Style Syntax&n; *&n; * Applications use close() to gracefully close down an association.&n; *&n; * The syntax is:&n; *&n; *    int close(int sd);&n; *&n; *      sd      - the socket descriptor of the association to be closed.&n; *&n; * After an application calls close() on a socket descriptor, no further&n; * socket operations will succeed on that descriptor.&n; *&n; * API 7.1.4 SO_LINGER&n; *&n; * An application using the TCP-style socket can use this option to&n; * perform the SCTP ABORT primitive.  The linger option structure is:&n; *&n; *  struct  linger {&n; *     int     l_onoff;                // option on/off&n; *     int     l_linger;               // linger time&n; * };&n; *&n; * To enable the option, set l_onoff to 1.  If the l_linger value is set&n; * to 0, calling close() is the same as the ABORT primitive.  If the&n; * value is set to a negative value, the setsockopt() call will return&n; * an error.  If the value is set to a positive value linger_time, the&n; * close() can be blocked for at most linger_time ms.  If the graceful&n; * shutdown phase does not finish during this period, close() will&n; * return but the graceful shutdown phase continues in the system.&n; */
 DECL|function|sctp_close
 id|SCTP_STATIC
 r_void
@@ -7751,10 +7751,20 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-op_star
-id|optlen
-op_assign
+r_if
+c_cond
+(paren
+id|put_user
+c_func
+(paren
 id|len
+comma
+id|optlen
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
