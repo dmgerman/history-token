@@ -2498,7 +2498,7 @@ l_int|16
 suffix:semicolon
 id|free
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Packet matching code.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; * Copyright (C) 2009-2002 Netfilter core team &lt;coreteam@netfilter.org&gt;&n; *&n; * 19 Jan 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- increase module usage count as soon as we have rules inside&n; * &t;  a table&n; */
+multiline_comment|/*&n; * Packet matching code.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; * Copyright (C) 2000-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * 19 Jan 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- increase module usage count as soon as we have rules inside&n; * &t;  a table&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;

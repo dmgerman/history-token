@@ -331,7 +331,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|nmi_watchdog_tick
 (paren

@@ -1194,7 +1194,6 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_put_port
-r_inline
 r_void
 id|tcp_put_port
 c_func

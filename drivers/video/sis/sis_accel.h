@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SiS 300/630/730/540/315/550/650/740 frame buffer driver&n; * for Linux kernels 2.4.x and 2.5.x&n; *&n; * 2D acceleration part&n; *&n; * Based on the X driver&squot;s sis300_accel.h which is&n; *     Copyright Xavier Ducoin &lt;x.ducoin@lectra.com&gt;&n; *     Copyright 2002 by Thomas Winischhofer, Vienna, Austria&n; * and sis310_accel.h which is&n; *     Copyright 2002 by Thomas Winischhofer, Vienna, Austria&n; *&n; * Author:   Thomas Winischhofer &lt;thomas@winischhofer.net&gt;:&n; *&t;&t;&t;(see http://www.winischhofer.net/&n; *&t;&t;&t;for more information and updates)&n; */
+multiline_comment|/*&n; * SiS 300/630/730/540/315/550/650/740 frame buffer driver&n; * for Linux kernels 2.4.x and 2.5.x&n; *&n; * 2D acceleration part&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the named License,&n; * or any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Based on the X driver&squot;s sis300_accel.h which is&n; *     Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; * and sis310_accel.h which is&n; *     Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * Author:   Thomas Winischhofer &lt;thomas@winischhofer.net&gt;:&n; *&t;&t;&t;(see http://www.winischhofer.net/&n; *&t;&t;&t;for more information and updates)&n; */
 macro_line|#ifndef _SISFB_ACCEL_H
 DECL|macro|_SISFB_ACCEL_H
 mdefine_line|#define _SISFB_ACCEL_H
@@ -43,7 +43,7 @@ DECL|macro|TRAPAZOID_FILL
 mdefine_line|#define TRAPAZOID_FILL          0x00000005  /* Fill trapezoid */
 DECL|macro|TRANSPARENT_BITBLT
 mdefine_line|#define TRANSPARENT_BITBLT      0x00000006  /* Transparent Blit */
-multiline_comment|/* Additional engine commands for 310/325 */
+multiline_comment|/* Additional engine commands for 315 */
 DECL|macro|ALPHA_BLEND
 mdefine_line|#define ALPHA_BLEND&t;&t;0x00000007  /* Alpha blend ? */
 DECL|macro|A3D_FUNCTION
@@ -105,12 +105,12 @@ DECL|macro|NO_RESET_COUNTER
 mdefine_line|#define NO_RESET_COUNTER        0x00400000
 DECL|macro|NO_LAST_PIXEL
 mdefine_line|#define NO_LAST_PIXEL           0x00200000
-multiline_comment|/* Subfunctions for Color/Enhanced Color Expansion (310/325 only) */
+multiline_comment|/* Subfunctions for Color/Enhanced Color Expansion (315 only) */
 DECL|macro|COLOR_TO_MONO
 mdefine_line|#define COLOR_TO_MONO&t;&t;0x00100000
 DECL|macro|AA_TEXT
 mdefine_line|#define AA_TEXT&t;&t;&t;0x00200000
-multiline_comment|/* Some general registers for 310/325 series */
+multiline_comment|/* Some general registers for 315 series */
 DECL|macro|SRC_ADDR
 mdefine_line|#define SRC_ADDR&t;&t;0x8200
 DECL|macro|SRC_PITCH
@@ -279,11 +279,12 @@ DECL|macro|SiS300SetupStyleLow
 mdefine_line|#define SiS300SetupStyleLow(ls) &bslash;&n;                if (CmdQueLen &lt;= 0)  SiS300Idle;&bslash;&n;                MMIO_OUT32(ivideo.mmio_vbase, BR(11), ls);&bslash;&n;                CmdQueLen--;
 DECL|macro|SiS300SetupStyleHigh
 mdefine_line|#define SiS300SetupStyleHigh(ls) &bslash;&n;                if (CmdQueLen &lt;= 0)  SiS300Idle;&bslash;&n;                MMIO_OUT32(ivideo.mmio_vbase, BR(12), ls);&bslash;&n;                CmdQueLen--;
-multiline_comment|/* ----------- SiS 310/325 series --------------- */
-multiline_comment|/* Q_STATUS:&n;   bit 31 = 1: All engines idle and all queues empty&n;   bit 30 = 1: Hardware Queue (=HW CQ, 2D queue, 3D queue) empty&n;   bit 29 = 1: 2D engine is idle&n;   bit 28 = 1: 3D engine is idle&n;   bit 27 = 1: HW command queue empty&n;   bit 26 = 1: 2D queue empty&n;   bit 25 = 1: 3D queue empty&n;   bit 24 = 1: SW command queue empty&n;   bits 23:16: 2D counter 3&n;   bits 15:8:  2D counter 2&n;   bits 7:0:   2D counter 1&n;&n;   Where is the command queue length (current amount of commands the queue&n;   can accept) on the 310/325 series? (The current implementation is taken&n;   from 300 series and certainly wrong...)&n;*/
+multiline_comment|/* -------------- SiS 315 series --------------- */
+multiline_comment|/* Q_STATUS:&n;   bit 31 = 1: All engines idle and all queues empty&n;   bit 30 = 1: Hardware Queue (=HW CQ, 2D queue, 3D queue) empty&n;   bit 29 = 1: 2D engine is idle&n;   bit 28 = 1: 3D engine is idle&n;   bit 27 = 1: HW command queue empty&n;   bit 26 = 1: 2D queue empty&n;   bit 25 = 1: 3D queue empty&n;   bit 24 = 1: SW command queue empty&n;   bits 23:16: 2D counter 3&n;   bits 15:8:  2D counter 2&n;   bits 7:0:   2D counter 1&n;&n;   Where is the command queue length (current amount of commands the queue&n;   can accept) on the 315 series?&n;*/
 multiline_comment|/* TW: FIXME: CmdQueLen is... where....? */
+multiline_comment|/* We assume a length of 4 bytes per command; since 512K of&n; * of RAM are allocated, the number of commands is easily&n; * calculated (assuming that there is no 3D support yet)&n; * We calculate it very cautiously (128K only) and let the&n; * rest to the (never?)-to-come (?) 3D engine. (The 3D engine&n; * can use a similar technique, using the remaining 384K,&n; * hence a queue overflow is avoided)&n; * UPDATE: This technique causes a terrible system latency&n; * on integrated chipsets. Disable the queue handling for&n; * now.&n; */
 DECL|macro|SiS310Idle
-mdefine_line|#define SiS310Idle &bslash;&n;  { &bslash;&n;  while( (MMIO_IN16(ivideo.mmio_vbase, Q_STATUS+2) &amp; 0x8000) != 0x8000){}; &bslash;&n;  while( (MMIO_IN16(ivideo.mmio_vbase, Q_STATUS+2) &amp; 0x8000) != 0x8000){}; &bslash;&n;  CmdQueLen=MMIO_IN16(ivideo.mmio_vbase, Q_STATUS); &bslash;&n;  }
+mdefine_line|#define SiS310Idle &bslash;&n;  { &bslash;&n;  while( (MMIO_IN16(ivideo.mmio_vbase, Q_STATUS+2) &amp; 0x8000) != 0x8000){}; &bslash;&n;  while( (MMIO_IN16(ivideo.mmio_vbase, Q_STATUS+2) &amp; 0x8000) != 0x8000){}; &bslash;&n;  CmdQueLen = 0; &bslash;&n;  /*CmdQueLen = ((128 * 1024) / 4) - 64; */ &bslash;&n;  }
 DECL|macro|SiS310SetupSRCBase
 mdefine_line|#define SiS310SetupSRCBase(base) &bslash;&n;      if (CmdQueLen &lt;= 0)  SiS310Idle;&bslash;&n;      MMIO_OUT32(ivideo.mmio_vbase, SRC_ADDR, base);&bslash;&n;      CmdQueLen--;
 DECL|macro|SiS310SetupSRCPitch

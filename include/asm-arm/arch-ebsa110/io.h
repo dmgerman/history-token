@@ -106,6 +106,12 @@ DECL|macro|readw
 mdefine_line|#define readw(b)&t;&t;__readw(b)
 DECL|macro|readl
 mdefine_line|#define readl(b)&t;&t;__readl(b)
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr)&t;readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr)&t;readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr)&t;readl(addr)
 r_void
 id|__writeb
 c_func

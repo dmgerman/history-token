@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_OLT_H_
 DECL|macro|_VXFS_OLT_H_
 mdefine_line|#define _VXFS_OLT_H_
-macro_line|#ident &quot;$Id: vxfs_olt.h,v 1.5 2001/04/25 18:11:23 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - Object Location Table data structures.&n; *&n; * This file contains definitions for the Object Location Table used&n; * by the Veritas Filesystem version 2 and newer.&n; */
 multiline_comment|/*&n; * OLT magic number (vxfs_olt-&gt;olt_magic).&n; */
 DECL|macro|VXFS_OLT_MAGIC

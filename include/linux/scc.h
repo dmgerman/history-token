@@ -541,7 +541,7 @@ suffix:semicolon
 multiline_comment|/* Maximum time to transmit (seconds) */
 DECL|member|mintime
 r_int
-r_char
+r_int
 id|mintime
 suffix:semicolon
 multiline_comment|/* Minimal offtime after MAXKEYUP timeout (seconds) */

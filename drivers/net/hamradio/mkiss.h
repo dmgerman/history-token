@@ -165,6 +165,11 @@ DECL|macro|CRC_MODE_FLEX
 mdefine_line|#define CRC_MODE_FLEX   1
 DECL|macro|CRC_MODE_SMACK
 mdefine_line|#define CRC_MODE_SMACK  2
+DECL|member|buflock
+id|spinlock_t
+id|buflock
+suffix:semicolon
+multiline_comment|/* lock for rbuf and xbuf */
 )brace
 suffix:semicolon
 DECL|macro|AX25_MAGIC

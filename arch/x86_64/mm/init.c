@@ -33,6 +33,8 @@ mdefine_line|#define Dprintk(x...)
 r_extern
 r_char
 id|_stext
+(braket
+)braket
 suffix:semicolon
 id|DEFINE_PER_CPU
 c_func
@@ -228,6 +230,8 @@ comma
 id|__bss_start
 comma
 id|_end
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_char
@@ -2235,10 +2239,8 @@ comma
 op_amp
 id|_stext
 comma
-op_amp
 id|_end
 op_minus
-op_amp
 id|_stext
 )paren
 suffix:semicolon

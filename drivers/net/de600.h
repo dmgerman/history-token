@@ -223,16 +223,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_int
-id|de600_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_static
 r_int
 id|adapter_init

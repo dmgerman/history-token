@@ -2,10 +2,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * Compile time Options:&n; *     0 - Disable and 1 - Enable&n; */
 DECL|macro|DEBUG_QLA2100
 mdefine_line|#define DEBUG_QLA2100&t;&t;0&t;/* For Debug of qla2x00 */
-DECL|macro|MEMORY_MAPPED_IO
-mdefine_line|#define MEMORY_MAPPED_IO&t;1
-DECL|macro|STOP_ON_ERROR
-mdefine_line|#define STOP_ON_ERROR&t;&t;0&t;/* Stop on aborts and resets  */
 DECL|macro|STOP_ON_RESET
 mdefine_line|#define STOP_ON_RESET&t;&t;0
 DECL|macro|USE_ABORT_TGT

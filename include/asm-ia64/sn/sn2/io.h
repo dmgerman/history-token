@@ -55,6 +55,14 @@ DECL|macro|__sn_readl
 mdefine_line|#define __sn_readl ___sn_readl
 DECL|macro|__sn_readq
 mdefine_line|#define __sn_readq ___sn_readq
+DECL|macro|__sn_readb_relaxed
+mdefine_line|#define __sn_readb_relaxed ___sn_readb_relaxed
+DECL|macro|__sn_readw_relaxed
+mdefine_line|#define __sn_readw_relaxed ___sn_readw_relaxed
+DECL|macro|__sn_readl_relaxed
+mdefine_line|#define __sn_readl_relaxed ___sn_readl_relaxed
+DECL|macro|__sn_readq_relaxed
+mdefine_line|#define __sn_readq_relaxed ___sn_readq_relaxed
 multiline_comment|/*&n; * The following routines are SN Platform specific, called when&n; * a reference is made to inX/outX set macros.  SN Platform&n; * inX set of macros ensures that Posted DMA writes on the&n; * Bridge is flushed.&n; *&n; * The routines should be self explainatory.&n; */
 r_static
 r_inline
@@ -708,8 +716,8 @@ r_static
 r_inline
 r_int
 r_char
-DECL|function|sn_readb_fast
-id|sn_readb_fast
+DECL|function|___sn_readb_relaxed
+id|___sn_readb_relaxed
 (paren
 r_void
 op_star
@@ -731,8 +739,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|sn_readw_fast
-id|sn_readw_fast
+DECL|function|___sn_readw_relaxed
+id|___sn_readw_relaxed
 (paren
 r_void
 op_star
@@ -754,8 +762,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|sn_readl_fast
-id|sn_readl_fast
+DECL|function|___sn_readl_relaxed
+id|___sn_readl_relaxed
 (paren
 r_void
 op_star
@@ -777,8 +785,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|sn_readq_fast
-id|sn_readq_fast
+DECL|function|___sn_readq_relaxed
+id|___sn_readq_relaxed
 (paren
 r_void
 op_star

@@ -1520,7 +1520,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when the last reference to the mm&n; * is dropped: either by a lazy thread or by&n; * mmput. Free the page directory and the mm.&n; */
 DECL|function|__mmdrop
-r_inline
 r_void
 id|__mmdrop
 c_func

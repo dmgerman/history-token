@@ -1382,7 +1382,7 @@ id|LPARCFG_BUFF_SIZE
 op_minus
 id|n
 comma
-l_string|&quot;system_active_processors=%d&bslash;n&quot;
+l_string|&quot;system_active_processors=%ld&bslash;n&quot;
 comma
 (paren
 id|h_resource
@@ -1615,7 +1615,7 @@ id|LPARCFG_BUFF_SIZE
 op_minus
 id|n
 comma
-l_string|&quot;pool=%d&bslash;n&quot;
+l_string|&quot;pool=%ld&bslash;n&quot;
 comma
 (paren
 id|h_aggregation
@@ -1641,7 +1641,7 @@ id|LPARCFG_BUFF_SIZE
 op_minus
 id|n
 comma
-l_string|&quot;pool_capacity=%d&bslash;n&quot;
+l_string|&quot;pool_capacity=%ld&bslash;n&quot;
 comma
 (paren
 id|h_resource
@@ -1667,7 +1667,7 @@ id|LPARCFG_BUFF_SIZE
 op_minus
 id|n
 comma
-l_string|&quot;group=%d&bslash;n&quot;
+l_string|&quot;group=%ld&bslash;n&quot;
 comma
 (paren
 id|h_aggregation
@@ -1693,7 +1693,7 @@ id|LPARCFG_BUFF_SIZE
 op_minus
 id|n
 comma
-l_string|&quot;capped=%d&bslash;n&quot;
+l_string|&quot;capped=%ld&bslash;n&quot;
 comma
 (paren
 id|h_resource

@@ -998,13 +998,6 @@ r_int
 id|reason
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|nmi_watchdog_disabled
-)paren
-r_return
-suffix:semicolon
 r_int
 id|sum
 comma
@@ -1014,6 +1007,13 @@ id|safe_smp_processor_id
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nmi_watchdog_disabled
+)paren
+r_return
 suffix:semicolon
 id|sum
 op_assign

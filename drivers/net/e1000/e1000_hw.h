@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 multiline_comment|/* e1000_hw.h&n; * Structures, enums, and macros for the MAC&n; */
 macro_line|#ifndef _E1000_HW_H_
 DECL|macro|_E1000_HW_H_
@@ -1077,6 +1077,9 @@ id|mc_addr_count
 comma
 r_uint32
 id|pad
+comma
+r_uint32
+id|rar_used_count
 )paren
 suffix:semicolon
 r_uint32
@@ -1318,7 +1321,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -1344,7 +1348,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 comma
 r_uint32
@@ -2844,7 +2849,8 @@ id|e1000_ffe_config
 id|ffe_config_state
 suffix:semicolon
 DECL|member|io_base
-r_uint32
+r_int
+r_int
 id|io_base
 suffix:semicolon
 DECL|member|phy_id
@@ -3020,6 +3026,10 @@ suffix:semicolon
 DECL|member|get_link_status
 id|boolean_t
 id|get_link_status
+suffix:semicolon
+DECL|member|serdes_link_down
+id|boolean_t
+id|serdes_link_down
 suffix:semicolon
 DECL|member|tbi_compatibility_en
 id|boolean_t
@@ -3559,6 +3569,8 @@ DECL|macro|E1000_RCTL_PMCF
 mdefine_line|#define E1000_RCTL_PMCF           0x00800000    /* pass MAC control frames */
 DECL|macro|E1000_RCTL_BSEX
 mdefine_line|#define E1000_RCTL_BSEX           0x02000000    /* Buffer size extension */
+DECL|macro|E1000_RCTL_SECRC
+mdefine_line|#define E1000_RCTL_SECRC          0x04000000    /* Strip Ethernet CRC */
 multiline_comment|/* Receive Descriptor */
 DECL|macro|E1000_RDT_DELAY
 mdefine_line|#define E1000_RDT_DELAY 0x0000ffff      /* Delay timer (1=1024us) */

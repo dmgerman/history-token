@@ -5186,6 +5186,8 @@ id|idev-&gt;rndid
 l_int|6
 )braket
 )paren
+op_eq
+l_int|0xff
 op_logical_and
 (paren
 id|idev-&gt;rndid

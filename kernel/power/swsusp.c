@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -837,7 +838,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *    write_suspend_image - Write entire image to disk.&n; *&n; *    After writing suspend signature to the disk, suspend may no&n; *    longer fail: we have ready-to-run image in swap, and rollback&n; *    would happen on next reboot -- corrupting data.&n; *&n; *    Note: The buffer we allocate to use to write the suspend header is&n; *    not freed; its not needed since system is going down anyway&n; *    (plus it causes oops and I&squot;m lazy^H^H^H^Htoo busy).&n; */
+multiline_comment|/**&n; *    write_suspend_image - Write entire image to disk.&n; *&n; *    After writing suspend signature to the disk, suspend may no&n; *    longer fail: we have ready-to-run image in swap, and rollback&n; *    would happen on next reboot -- corrupting data.&n; *&n; *    Note: The buffer we allocate to use to write the suspend header is&n; *    not freed; its not needed since the system is going down anyway&n; *    (plus it causes an oops and I&squot;m lazy^H^H^H^Htoo busy).&n; */
 DECL|function|write_suspend_image
 r_static
 r_int
@@ -1251,6 +1252,17 @@ r_sizeof
 (paren
 r_union
 id|diskpage
+)paren
+op_ne
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|BUG_ON
+(paren
+r_sizeof
+(paren
+r_struct
+id|link
 )paren
 op_ne
 id|PAGE_SIZE
@@ -1992,89 +2004,6 @@ l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make disk drivers accept operations, again */
-DECL|function|drivers_unsuspend
-r_static
-r_void
-id|drivers_unsuspend
-c_func
-(paren
-r_void
-)paren
-(brace
-id|device_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Called from process context */
-DECL|function|drivers_suspend
-r_static
-r_int
-id|drivers_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|device_suspend
-c_func
-(paren
-l_int|4
-)paren
-suffix:semicolon
-)brace
-DECL|macro|RESUME_PHASE1
-mdefine_line|#define RESUME_PHASE1 1 /* Called from interrupts disabled */
-DECL|macro|RESUME_PHASE2
-mdefine_line|#define RESUME_PHASE2 2 /* Called with interrupts enabled */
-DECL|macro|RESUME_ALL_PHASES
-mdefine_line|#define RESUME_ALL_PHASES (RESUME_PHASE1 | RESUME_PHASE2)
-DECL|function|drivers_resume
-r_static
-r_void
-id|drivers_resume
-c_func
-(paren
-r_int
-id|flags
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|RESUME_PHASE1
-)paren
-(brace
-id|device_resume
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|RESUME_PHASE2
-)paren
-(brace
-macro_line|#ifdef SUSPEND_CONSOLE
-id|update_screen
-c_func
-(paren
-id|fg_console
-)paren
-suffix:semicolon
-multiline_comment|/* Hmm, is this the problem? */
-macro_line|#endif
-)brace
-)brace
 DECL|function|suspend_prepare_image
 r_static
 r_int
@@ -2304,7 +2233,7 @@ c_func
 r_void
 )paren
 (brace
-id|drivers_unsuspend
+id|device_resume
 c_func
 (paren
 )paren
@@ -2464,6 +2393,12 @@ id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Done to disable interrupts */
+id|device_power_down
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
 id|PRINTK
 c_func
 (paren
@@ -2522,6 +2457,11 @@ r_int
 id|pagedir_save
 )paren
 suffix:semicolon
+id|device_power_up
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -2529,10 +2469,26 @@ op_amp
 id|suspend_pagedir_lock
 )paren
 suffix:semicolon
-id|drivers_resume
+id|device_resume
 c_func
 (paren
-id|RESUME_ALL_PHASES
+)paren
+suffix:semicolon
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_screen
+c_func
+(paren
+id|fg_console
+)paren
+suffix:semicolon
+multiline_comment|/* Hmm, is this the problem? */
+id|release_console_sem
+c_func
+(paren
 )paren
 suffix:semicolon
 id|PRINTK
@@ -2624,9 +2580,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
 id|is_problem
 op_assign
 id|suspend_prepare_image
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
@@ -2747,15 +2714,37 @@ id|MARK_SWAP_RESUME
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_software_suspend
-r_static
-r_void
-id|do_software_suspend
+multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
+DECL|function|software_suspend
+r_int
+id|software_suspend
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+id|res
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|software_suspend_enabled
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+id|software_suspend_enabled
+op_assign
+l_int|0
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2774,6 +2763,8 @@ id|name_suspend
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EPERM
 suffix:semicolon
 )brace
 r_if
@@ -2818,14 +2809,18 @@ multiline_comment|/* Save state of all device drivers, and stop them. */
 r_if
 c_cond
 (paren
-id|drivers_suspend
+(paren
+id|res
+op_assign
+id|device_suspend
 c_func
 (paren
+l_int|4
+)paren
 )paren
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
@@ -2833,13 +2828,18 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|thaw_processes
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
+r_else
+id|res
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 id|software_suspend_enabled
 op_assign
 l_int|1
@@ -2855,39 +2855,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
-DECL|function|software_suspend
-r_void
-id|software_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|software_suspend_enabled
-)paren
-(brace
 r_return
-suffix:semicolon
-)brace
-id|software_suspend_enabled
-op_assign
-l_int|0
-suffix:semicolon
-id|might_sleep
-c_func
-(paren
-)paren
-suffix:semicolon
-id|do_software_suspend
-c_func
-(paren
-)paren
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/* More restore stuff */
@@ -3395,7 +3364,6 @@ id|sh-&gt;version_code
 op_ne
 id|LINUX_VERSION_CODE
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3403,7 +3371,6 @@ c_func
 l_string|&quot;Incorrect kernel version&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3411,7 +3378,6 @@ id|sh-&gt;num_physpages
 op_ne
 id|num_physpages
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3419,7 +3385,6 @@ c_func
 l_string|&quot;Incorrect memory size&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3433,7 +3398,6 @@ comma
 l_int|8
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3441,7 +3405,6 @@ c_func
 l_string|&quot;Incorrect machine type&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3455,7 +3418,6 @@ comma
 l_int|20
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3463,7 +3425,6 @@ c_func
 l_string|&quot;Incorrect version&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3474,7 +3435,6 @@ c_func
 (paren
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3482,7 +3442,6 @@ c_func
 l_string|&quot;Incorrect number of cpus&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3490,7 +3449,6 @@ id|sh-&gt;page_size
 op_ne
 id|PAGE_SIZE
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3498,7 +3456,6 @@ c_func
 l_string|&quot;Incorrect PAGE_SIZE&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3757,6 +3714,7 @@ suffix:semicolon
 DECL|function|__read_suspend_image
 r_static
 r_int
+id|__init
 id|__read_suspend_image
 c_func
 (paren
@@ -4650,6 +4608,12 @@ l_int|0
 )paren
 r_goto
 id|read_failure
+suffix:semicolon
+id|device_suspend
+c_func
+(paren
+l_int|4
+)paren
 suffix:semicolon
 id|do_magic
 c_func

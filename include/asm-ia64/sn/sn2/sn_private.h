@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_SN2_SN_PRIVATE_H
 DECL|macro|_ASM_IA64_SN_SN2_SN_PRIVATE_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SN_PRIVATE_H
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
@@ -44,7 +45,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|__psunsigned_t
+r_int
+r_int
 id|get_master_bridge_base
 c_func
 (paren
@@ -87,7 +89,8 @@ r_void
 id|poison_state_alter_range
 c_func
 (paren
-id|__psunsigned_t
+r_int
+r_int
 id|start
 comma
 r_int
@@ -510,7 +513,8 @@ id|numnodes
 )paren
 suffix:semicolon
 r_extern
-id|__psunsigned_t
+r_int
+r_int
 id|get_freemem_start
 c_func
 (paren
@@ -654,7 +658,8 @@ op_star
 id|debugger_update
 suffix:semicolon
 r_extern
-id|__psunsigned_t
+r_int
+r_int
 id|debugger_stopped
 suffix:semicolon
 multiline_comment|/* &n; * piomap, created by shub_pio_alloc.&n; * xtalk_info MUST BE FIRST, since this structure is cast to a&n; * xtalk_piomap_s by generic xtalk routines.&n; */
@@ -980,9 +985,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* To redirect the output into the error buffer */
-DECL|macro|errbuf_print
-mdefine_line|#define errbuf_print(_s)&t;printf(&quot;#%s&quot;,_s)
 r_extern
 r_void
 id|crbx

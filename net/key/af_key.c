@@ -546,11 +546,7 @@ id|ENOMEM
 suffix:semicolon
 id|pfk
 op_assign
-id|pfkey_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func

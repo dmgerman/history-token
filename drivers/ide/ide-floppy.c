@@ -4978,6 +4978,14 @@ id|floppy-&gt;wp
 op_assign
 id|header-&gt;wp
 suffix:semicolon
+id|set_disk_ro
+c_func
+(paren
+id|drive-&gt;disk
+comma
+id|floppy-&gt;wp
+)paren
+suffix:semicolon
 id|page
 op_assign
 (paren

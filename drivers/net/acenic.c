@@ -3384,11 +3384,16 @@ macro_line|#ifndef CONFIG_ACENIC_OMIT_TIGON_I
 r_case
 l_int|4
 suffix:colon
+r_case
+l_int|5
+suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;  Tigon I  (Rev. 4), Firmware: %i.%i.%i, &quot;
+l_string|&quot;  Tigon I  (Rev. %i), Firmware: %i.%i.%i, &quot;
+comma
+id|tig_ver
 comma
 id|tigonFwReleaseMajor
 comma
@@ -3495,7 +3500,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;  Unsupported Tigon version detected &quot;
-l_string|&quot;(%i), &quot;
+l_string|&quot;(%i)&bslash;n&quot;
 comma
 id|tig_ver
 )paren

@@ -84,8 +84,9 @@ mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;      ((__pa(kvaddr) &gt;&gt
 multiline_comment|/*&n; * Given a kaddr, LOCAL_BASE_ADDR finds the owning node of the memory&n; * and returns the kaddr corresponding to first physical page in the&n; * node&squot;s mem_map.&n; */
 DECL|macro|LOCAL_BASE_ADDR
 mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;&t;&t;&t;&t;&t;  &bslash;&n;    ((unsigned long)__va(NODE_DATA(kvaddr_to_nid(kaddr))-&gt;node_start_pfn  &bslash;&n;&t;&t;&t; &lt;&lt; PAGE_SHIFT))
+multiline_comment|/* XXX: FIXME -- wli */
 DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(kaddr)&t;&t;&t;&t;&t;&t;  &bslash;&n;    test_bit(local_mapnr(kaddr), &t;&t;&t;&t;&t;  &bslash;&n;&t;     NODE_DATA(kvaddr_to_nid(kaddr))-&gt;valid_addr_bitmap)
+mdefine_line|#define kern_addr_valid(kaddr)&t;(0)
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VALID_PAGE

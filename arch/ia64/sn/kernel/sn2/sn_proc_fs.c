@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 DECL|function|partition_id_read_proc
 r_static

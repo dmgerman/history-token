@@ -1433,7 +1433,7 @@ c_func
 id|xl_priv-&gt;xl_mmio
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1537,7 +1537,7 @@ c_func
 id|xl_priv-&gt;xl_mmio
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

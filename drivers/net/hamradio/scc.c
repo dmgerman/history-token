@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -5677,9 +5678,23 @@ op_amp
 id|scc-&gt;lock
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|scc-&gt;tx_t
+)paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|scc-&gt;tx_wdog
+)paren
+suffix:semicolon
 id|err
 op_assign
-id|register_netdev
+id|register_netdevice
 c_func
 (paren
 id|dev
@@ -6111,6 +6126,10 @@ suffix:semicolon
 id|scc-&gt;dev_stat.rx_packets
 op_increment
 suffix:semicolon
+id|scc-&gt;dev_stat.rx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|scc-&gt;dev
@@ -6209,6 +6228,10 @@ suffix:semicolon
 )brace
 id|scc-&gt;dev_stat.tx_packets
 op_increment
+suffix:semicolon
+id|scc-&gt;dev_stat.tx_bytes
+op_add_assign
+id|skb-&gt;len
 suffix:semicolon
 id|scc-&gt;stat.txframes
 op_increment
@@ -8497,6 +8520,11 @@ comma
 id|SCC_DriverName
 )paren
 suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8509,6 +8537,11 @@ id|SCC_Info
 )paren
 )paren
 (brace
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8521,6 +8554,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|proc_net_fops_create
 c_func
 (paren

@@ -4877,7 +4877,7 @@ l_int|8
 suffix:semicolon
 id|out1
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

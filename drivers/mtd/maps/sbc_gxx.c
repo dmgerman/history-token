@@ -397,10 +397,6 @@ op_amp
 id|sbc_gxx_spin
 )paren
 suffix:semicolon
-(paren
-id|__u8
-op_star
-)paren
 id|to
 op_add_assign
 id|thislen

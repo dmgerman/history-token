@@ -16,7 +16,7 @@ id|NR_IRQ_VECTORS
 )braket
 suffix:semicolon
 DECL|macro|IO_APIC_VECTOR
-mdefine_line|#define IO_APIC_VECTOR(irq)&t;((int)irq_vector[irq])
+mdefine_line|#define IO_APIC_VECTOR(irq)&t;(irq_vector[irq])
 r_extern
 r_void
 (paren

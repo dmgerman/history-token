@@ -40,8 +40,6 @@ r_return
 id|node
 suffix:semicolon
 )brace
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk)&t;(memblk)
 DECL|macro|parent_node
 mdefine_line|#define parent_node(node)&t;(node)
 DECL|function|node_to_cpumask
@@ -92,8 +90,6 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-DECL|macro|node_to_memblk
-mdefine_line|#define node_to_memblk(node)&t;(node)
 DECL|macro|pcibus_to_cpumask
 mdefine_line|#define pcibus_to_cpumask(bus)&t;(cpu_online_map)
 DECL|macro|nr_cpus_node

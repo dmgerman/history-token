@@ -3172,6 +3172,11 @@ c_func
 id|udma_modes
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dev-&gt;n_sectors
 comma
 id|dev-&gt;flags

@@ -34,7 +34,8 @@ id|dmamap
 suffix:semicolon
 DECL|typedef|iobush_t
 r_typedef
-id|__psunsigned_t
+r_int
+r_int
 id|iobush_t
 suffix:semicolon
 multiline_comment|/* interrupt function */

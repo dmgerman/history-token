@@ -129,10 +129,6 @@ r_return
 id|node_cpu_mask
 suffix:semicolon
 )brace
-DECL|macro|node_to_memblk
-macro_line|# define node_to_memblk(node)&t;&t;(node)
-DECL|macro|memblk_to_node
-macro_line|# define memblk_to_node(memblk)&t;(memblk)
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 macro_line|# define NODE_BALANCE_RATE 10

@@ -92,6 +92,12 @@ DECL|macro|readw
 mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr)); __v; })
 DECL|macro|readl
 mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr)); __v; })
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) (addr)) = (b))
 DECL|macro|writew

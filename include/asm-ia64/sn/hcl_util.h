@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_HCL_UTIL_H
 DECL|macro|_ASM_IA64_SN_HCL_UTIL_H
 mdefine_line|#define _ASM_IA64_SN_HCL_UTIL_H
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 r_extern
 r_char
 op_star

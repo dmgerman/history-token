@@ -1063,11 +1063,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|PRIV
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;dev_data
 op_assign
 id|kmalloc
 c_func
@@ -1494,11 +1490,7 @@ id|dev-&gt;phy
 op_assign
 l_int|NULL
 suffix:semicolon
-id|PRIV
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;dev_data
 op_assign
 l_int|NULL
 suffix:semicolon

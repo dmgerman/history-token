@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 multiline_comment|/* Linux PRO/1000 Ethernet Driver main header file */
 macro_line|#ifndef _E1000_H_
 DECL|macro|_E1000_H_
@@ -66,6 +66,23 @@ DECL|macro|E1000_ERR
 mdefine_line|#define E1000_ERR(args...) printk(KERN_ERR &quot;e1000: &quot; args)
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
+multiline_comment|/* How many descriptors for TX and RX ? */
+DECL|macro|E1000_DEFAULT_TXD
+mdefine_line|#define E1000_DEFAULT_TXD                  256
+DECL|macro|E1000_MAX_TXD
+mdefine_line|#define E1000_MAX_TXD                      256
+DECL|macro|E1000_MIN_TXD
+mdefine_line|#define E1000_MIN_TXD                       80
+DECL|macro|E1000_MAX_82544_TXD
+mdefine_line|#define E1000_MAX_82544_TXD               4096
+DECL|macro|E1000_DEFAULT_RXD
+mdefine_line|#define E1000_DEFAULT_RXD                  256
+DECL|macro|E1000_MAX_RXD
+mdefine_line|#define E1000_MAX_RXD                      256
+DECL|macro|E1000_MIN_RXD
+mdefine_line|#define E1000_MIN_RXD                       80
+DECL|macro|E1000_MAX_82544_RXD
+mdefine_line|#define E1000_MAX_82544_RXD               4096
 multiline_comment|/* Supported Rx Buffer Sizes */
 DECL|macro|E1000_RXBUFFER_2048
 mdefine_line|#define E1000_RXBUFFER_2048  2048
@@ -291,6 +308,10 @@ r_struct
 id|e1000_desc_ring
 id|tx_ring
 suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
+suffix:semicolon
 DECL|member|txd_cmd
 r_uint32
 id|txd_cmd
@@ -306,6 +327,18 @@ suffix:semicolon
 DECL|member|gotcl
 r_uint32
 id|gotcl
+suffix:semicolon
+DECL|member|gotcl_old
+r_uint64
+id|gotcl_old
+suffix:semicolon
+DECL|member|tpt_old
+r_uint64
+id|tpt_old
+suffix:semicolon
+DECL|member|colc_old
+r_uint64
+id|colc_old
 suffix:semicolon
 DECL|member|tx_fifo_head
 r_uint32
@@ -356,6 +389,10 @@ suffix:semicolon
 DECL|member|gorcl
 r_uint32
 id|gorcl
+suffix:semicolon
+DECL|member|gorcl_old
+r_uint64
+id|gorcl_old
 suffix:semicolon
 multiline_comment|/* Interrupt Throttle Rate */
 DECL|member|itr

@@ -1,14 +1,4 @@
 multiline_comment|/*&n; *&t;Index to functions.&n; */
-r_int
-id|el1_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_static
 r_int
 id|el1_probe1

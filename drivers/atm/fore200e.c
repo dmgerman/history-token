@@ -5634,11 +5634,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|FORE200E_VCC
-c_func
-(paren
-id|vcc
-)paren
+id|vcc-&gt;dev_data
 op_assign
 id|fore200e_vcc
 suffix:semicolon
@@ -10613,11 +10609,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|FORE200E_DEV
-c_func
-(paren
-id|atm_dev
-)paren
+id|atm_dev-&gt;dev_data
 op_assign
 id|fore200e
 suffix:semicolon

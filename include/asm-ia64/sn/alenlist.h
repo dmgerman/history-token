@@ -77,6 +77,7 @@ id|alenlist_create
 c_func
 (paren
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -177,6 +178,7 @@ id|length
 comma
 multiline_comment|/* length to append */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -204,6 +206,7 @@ op_star
 id|lengthp
 comma
 multiline_comment|/* inout: length */
+r_int
 r_int
 id|flags
 )paren
@@ -236,6 +239,7 @@ op_star
 id|length
 comma
 multiline_comment|/* out: length */
+r_int
 r_int
 id|flags
 )paren
@@ -276,6 +280,7 @@ id|old
 comma
 multiline_comment|/* clone this list */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -288,6 +293,7 @@ c_func
 id|alenlist_t
 id|alenlist
 comma
+r_int
 r_int
 id|flags
 )paren
@@ -363,6 +369,7 @@ r_int
 id|length
 comma
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -381,6 +388,7 @@ comma
 r_int
 id|length
 comma
+r_int
 r_int
 id|flags
 )paren
@@ -402,6 +410,7 @@ id|buf
 op_star
 id|buf
 comma
+r_int
 r_int
 id|flags
 )paren

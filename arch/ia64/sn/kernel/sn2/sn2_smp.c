@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;

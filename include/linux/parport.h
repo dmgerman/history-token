@@ -1112,6 +1112,11 @@ DECL|member|ref_count
 id|atomic_t
 id|ref_count
 suffix:semicolon
+DECL|member|full_list
+r_struct
+id|list_head
+id|full_list
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEFAULT_SPIN_TIME

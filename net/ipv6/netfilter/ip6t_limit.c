@@ -1,4 +1,5 @@
-multiline_comment|/* Kernel module to control the rate&n; *&n; * J&#xfffd;r&#xfffd;me de Vivie   &lt;devivie@info.enserb.u-bordeaux.fr&gt;&n; * Herv&#xfffd; Eychenne   &lt;eychenne@info.enserb.u-bordeaux.fr&gt;&n; *&n; * 2 September 1999: Changed from the target RATE to the match&n; *                   `limit&squot;, removed logging.  Did I mention that&n; *                   Alexey is a fucking genius?&n; *                   Rusty Russell (rusty@rustcorp.com.au).  */
+multiline_comment|/* Kernel module to control the rate&n; *&n; * 2 September 1999: Changed from the target RATE to the match&n; *                   `limit&squot;, removed logging.  Did I mention that&n; *                   Alexey is a fucking genius?&n; *                   Rusty Russell (rusty@rustcorp.com.au).  */
+multiline_comment|/* (C) 1999 J&#xfffd;r&#xfffd;me de Vivie &lt;devivie@info.enserb.u-bordeaux.fr&gt;&n; * (C) 1999 Herv&#xfffd; Eychenne &lt;eychenne@info.enserb.u-bordeaux.fr&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

@@ -1126,7 +1126,7 @@ id|button-&gt;type
 op_assign
 id|ACPI_BUTTON_TYPE_POWER
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -1134,8 +1134,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_BUTTON_DEVICE_NAME_POWER
 )paren
@@ -1179,7 +1177,7 @@ id|button-&gt;type
 op_assign
 id|ACPI_BUTTON_TYPE_POWERF
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -1187,8 +1185,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_BUTTON_DEVICE_NAME_POWERF
 )paren
@@ -1232,7 +1228,7 @@ id|button-&gt;type
 op_assign
 id|ACPI_BUTTON_TYPE_SLEEP
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -1240,8 +1236,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_BUTTON_DEVICE_NAME_SLEEP
 )paren
@@ -1285,7 +1279,7 @@ id|button-&gt;type
 op_assign
 id|ACPI_BUTTON_TYPE_SLEEPF
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -1293,8 +1287,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_BUTTON_DEVICE_NAME_SLEEPF
 )paren
@@ -1338,7 +1330,7 @@ id|button-&gt;type
 op_assign
 id|ACPI_BUTTON_TYPE_LID
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -1346,8 +1338,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_BUTTON_DEVICE_NAME_LID
 )paren

@@ -823,6 +823,7 @@ r_private
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|p
 suffix:semicolon

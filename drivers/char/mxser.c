@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1944,11 +1945,6 @@ id|retval
 comma
 id|b
 suffix:semicolon
-r_int
-id|n
-comma
-id|index
-suffix:semicolon
 r_struct
 id|mxser_hwconf
 id|hwconf
@@ -2434,6 +2430,7 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 id|n
 op_assign
 (paren
@@ -2453,6 +2450,7 @@ l_int|0
 op_minus
 l_int|1
 suffix:semicolon
+r_int
 id|index
 op_assign
 l_int|0

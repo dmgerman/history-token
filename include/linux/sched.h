@@ -495,10 +495,6 @@ r_int
 r_int
 id|def_flags
 suffix:semicolon
-DECL|member|cpu_vm_mask
-id|cpumask_t
-id|cpu_vm_mask
-suffix:semicolon
 DECL|member|saved_auxv
 r_int
 r_int
@@ -520,6 +516,10 @@ r_int
 id|used_hugetlb
 suffix:semicolon
 macro_line|#endif
+DECL|member|cpu_vm_mask
+id|cpumask_t
+id|cpu_vm_mask
+suffix:semicolon
 multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t
@@ -2496,7 +2496,6 @@ r_void
 suffix:semicolon
 multiline_comment|/* mmdrop drops the mm and the page tables */
 r_extern
-r_inline
 r_void
 id|FASTCALL
 c_func

@@ -4211,11 +4211,9 @@ id|version
 suffix:semicolon
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 r_struct
@@ -4239,7 +4237,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * init_etherdev ensures the data structures used by the LANCE&n;&t; * are aligned.&n;&t; */
+multiline_comment|/*&n;&t; * alloc_etherdev ensures the data structures used by the LANCE&n;&t; * are aligned.&n;&t; */
 id|lp
 op_assign
 (paren
@@ -4949,14 +4947,6 @@ id|err_out
 suffix:semicolon
 )brace
 )brace
-id|lp-&gt;next
-op_assign
-id|root_lance_dev
-suffix:semicolon
-id|root_lance_dev
-op_assign
-id|dev
-suffix:semicolon
 multiline_comment|/* Copy the ethernet address to the device structure, later to the&n;&t; * lance initialization block so the lance gets it every time it&squot;s&n;&t; * (re)initialized.&n;&t; */
 r_switch
 c_cond
@@ -5131,17 +5121,35 @@ op_assign
 op_amp
 id|lance_set_multicast_retry
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-id|err_out
-suffix:colon
-id|unregister_netdev
+id|ret
+op_assign
+id|register_netdev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|err_out
+suffix:semicolon
+id|lp-&gt;next
+op_assign
+id|root_lance_dev
+suffix:semicolon
+id|root_lance_dev
+op_assign
+id|dev
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|err_out
+suffix:colon
 id|free_netdev
 c_func
 (paren
@@ -5335,6 +5343,12 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_TC
 r_if
 c_cond
@@ -5353,12 +5367,6 @@ macro_line|#endif
 id|root_lance_dev
 op_assign
 id|lp-&gt;next
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 id|free_netdev
 c_func

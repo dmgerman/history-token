@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_SUPER_H_
 DECL|macro|_VXFS_SUPER_H_
 mdefine_line|#define _VXFS_SUPER_H_
-macro_line|#ident &quot;$Id: vxfs.h 1.12 2001/12/28 19:48:03 hch Exp $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - superblock structure.&n; *&n; * This file contains the definition of the disk and core&n; * superblocks of the Veritas Filesystem.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;vxfs_kcompat.h&quot;

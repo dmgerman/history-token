@@ -11,6 +11,8 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n; * Can be used to override the logic in pci_scan_bus for skipping already-configured bus&n; * numbers - to be used for buggy BIOSes or architectures with incomplete PCI setup by the&n; * loader.&n; */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()     0
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM

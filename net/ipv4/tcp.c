@@ -5827,12 +5827,10 @@ suffix:semicolon
 id|u32
 id|offset
 suffix:semicolon
-multiline_comment|/* Are we at urgent data? Stop if we have read anything. */
+multiline_comment|/* Are we at urgent data? Stop if we have read anything or have SIGURG pending. */
 r_if
 c_cond
 (paren
-id|copied
-op_logical_and
 id|tp-&gt;urg_data
 op_logical_and
 id|tp-&gt;urg_seq
@@ -5840,9 +5838,14 @@ op_eq
 op_star
 id|seq
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|copied
+)paren
 r_break
 suffix:semicolon
-multiline_comment|/* We need to check signals first, to get correct SIGURG&n;&t;&t; * handling. FIXME: Need to check this doesn&squot;t impact 1003.1g&n;&t;&t; * and move it down to the bottom of the loop&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5853,13 +5856,6 @@ id|current
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|copied
-)paren
-r_break
-suffix:semicolon
 id|copied
 op_assign
 id|timeo
@@ -5876,6 +5872,7 @@ id|EAGAIN
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Next get a buffer. */
 id|skb
@@ -6042,6 +6039,12 @@ op_logical_or
 op_logical_neg
 id|timeo
 op_logical_or
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+op_logical_or
 (paren
 id|flags
 op_amp
@@ -6136,6 +6139,27 @@ id|copied
 op_assign
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+id|copied
+op_assign
+id|sock_intr_errno
+c_func
+(paren
+id|timeo
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

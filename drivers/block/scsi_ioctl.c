@@ -58,9 +58,9 @@ op_star
 id|q
 comma
 r_struct
-id|block_device
+id|gendisk
 op_star
-id|bdev
+id|bd_disk
 comma
 r_struct
 id|request
@@ -87,7 +87,7 @@ l_int|0
 suffix:semicolon
 id|rq-&gt;rq_disk
 op_assign
-id|bdev-&gt;bd_disk
+id|bd_disk
 suffix:semicolon
 multiline_comment|/*&n;&t; * we need an extra reference to the request, so we can look at&n;&t; * it after io completion&n;&t; */
 id|rq-&gt;ref_count
@@ -449,9 +449,9 @@ op_star
 id|q
 comma
 r_struct
-id|block_device
+id|gendisk
 op_star
-id|bdev
+id|bd_disk
 comma
 r_struct
 id|sg_io_hdr
@@ -616,7 +616,9 @@ op_assign
 id|bio_map_user
 c_func
 (paren
-id|bdev
+id|q
+comma
+l_int|NULL
 comma
 (paren
 r_int
@@ -848,7 +850,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 id|rq
 )paren
@@ -1054,9 +1056,9 @@ op_star
 id|q
 comma
 r_struct
-id|block_device
+id|gendisk
 op_star
-id|bdev
+id|bd_disk
 comma
 id|Scsi_Ioctl_Command
 op_star
@@ -1374,7 +1376,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 id|rq
 )paren
@@ -1478,9 +1480,9 @@ id|scsi_cmd_ioctl
 c_func
 (paren
 r_struct
-id|block_device
+id|gendisk
 op_star
-id|bdev
+id|bd_disk
 comma
 r_int
 r_int
@@ -1509,11 +1511,7 @@ id|err
 suffix:semicolon
 id|q
 op_assign
-id|bdev_get_queue
-c_func
-(paren
-id|bdev
-)paren
+id|bd_disk-&gt;queue
 suffix:semicolon
 r_if
 c_cond
@@ -1788,7 +1786,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 op_amp
 id|hdr
@@ -2016,7 +2014,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 op_amp
 id|hdr
@@ -2094,7 +2092,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 (paren
 id|Scsi_Ioctl_Command
@@ -2187,7 +2185,7 @@ c_func
 (paren
 id|q
 comma
-id|bdev
+id|bd_disk
 comma
 id|rq
 )paren

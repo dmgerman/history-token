@@ -1163,6 +1163,8 @@ suffix:semicolon
 multiline_comment|/* its small, its on stack */
 r_int
 id|n
+comma
+id|sn
 suffix:semicolon
 r_if
 c_cond
@@ -1198,7 +1200,6 @@ comma
 id|power_on_time
 )paren
 suffix:semicolon
-r_int
 id|sn
 op_assign
 id|strlen
@@ -1404,9 +1405,15 @@ id|ppos
 )paren
 (brace
 r_int
+id|sn
+comma
 id|n
 op_assign
 l_int|0
+suffix:semicolon
+r_char
+op_star
+id|tmpbuf
 suffix:semicolon
 r_if
 c_cond
@@ -1418,8 +1425,6 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-r_char
-op_star
 id|tmpbuf
 op_assign
 id|kmalloc
@@ -1459,7 +1464,6 @@ comma
 id|progress_led
 )paren
 suffix:semicolon
-r_int
 id|sn
 op_assign
 id|strlen
@@ -1800,8 +1804,17 @@ suffix:semicolon
 r_int
 id|n
 comma
+id|sn
+comma
 id|error
 suffix:semicolon
+r_char
+id|stkbuf
+(braket
+l_int|40
+)braket
+suffix:semicolon
+multiline_comment|/* its small, its on stack */
 id|error
 op_assign
 id|rtas_call
@@ -1862,13 +1875,6 @@ id|ret
 l_int|5
 )braket
 suffix:semicolon
-r_char
-id|stkbuf
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* its small, its on stack */
 r_if
 c_cond
 (paren
@@ -1938,7 +1944,6 @@ c_func
 id|ret
 )paren
 suffix:semicolon
-r_int
 id|sn
 op_assign
 id|strlen
@@ -4443,6 +4448,8 @@ id|ppos
 (brace
 r_int
 id|n
+comma
+id|sn
 suffix:semicolon
 r_char
 id|stkbuf
@@ -4465,7 +4472,6 @@ comma
 id|rtas_tone_frequency
 )paren
 suffix:semicolon
-r_int
 id|sn
 op_assign
 id|strlen
@@ -4765,6 +4771,8 @@ id|ppos
 (brace
 r_int
 id|n
+comma
+id|sn
 suffix:semicolon
 r_char
 id|stkbuf
@@ -4787,7 +4795,6 @@ comma
 id|rtas_tone_volume
 )paren
 suffix:semicolon
-r_int
 id|sn
 op_assign
 id|strlen

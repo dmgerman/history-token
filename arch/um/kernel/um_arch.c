@@ -1470,7 +1470,7 @@ op_star
 id|unused2
 )paren
 (brace
-macro_line|#ifdef CONFIG_SYSRQ
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|handle_sysrq
 c_func
 (paren

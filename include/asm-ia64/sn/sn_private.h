@@ -2,10 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_SN_PRIVATE_H
 DECL|macro|_ASM_IA64_SN_SN_PRIVATE_H
 mdefine_line|#define _ASM_IA64_SN_SN_PRIVATE_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/nodepda.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
 macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#endif /* _ASM_IA64_SN_SN_PRIVATE_H */
 eof

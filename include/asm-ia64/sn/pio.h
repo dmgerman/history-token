@@ -2,14 +2,13 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_PIO_H
 DECL|macro|_ASM_IA64_SN_PIO_H
 mdefine_line|#define _ASM_IA64_SN_PIO_H
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/driver.h&gt;
+macro_line|#include &lt;asm/sn/types.h&gt;
 multiline_comment|/*&n; * pioaddr_t&t;- The kernel virtual address that a PIO can be done upon.&n; *&t;&t;  Should probably be (volatile void*) but EVEREST would do PIO&n; *&t;&t;  to long mostly, just cast for other sizes.&n; */
 DECL|typedef|pioaddr_t
 r_typedef
 r_volatile
-id|ulong
+r_int
+r_int
 op_star
 id|pioaddr_t
 suffix:semicolon

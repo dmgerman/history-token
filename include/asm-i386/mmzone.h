@@ -46,8 +46,9 @@ DECL|macro|node_end_pfn
 mdefine_line|#define node_end_pfn(nid)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(nid);&t;&t;&t;&t;&bslash;&n;&t;__pgdat-&gt;node_start_pfn + __pgdat-&gt;node_spanned_pages;&t;&t;&bslash;&n;})
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = __pa(kvaddr) &gt;&gt; PAGE_SHIFT;&t;&t;&bslash;&n;&t;(__pfn - node_start_pfn(pfn_to_nid(__pfn)));&t;&t;&t;&bslash;&n;})
+multiline_comment|/* XXX: FIXME -- wli */
 DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(kaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __kaddr = (unsigned long)(kaddr);&t;&t;&t;&bslash;&n;&t;pg_data_t *__pgdat = NODE_DATA(kvaddr_to_nid(__kaddr));&t;&t;&bslash;&n;&t;test_bit(local_mapnr(__kaddr), __pgdat-&gt;valid_addr_bitmap);&t;&bslash;&n;})
+mdefine_line|#define kern_addr_valid(kaddr)&t;(0)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = pfn;&t;&t;&t;&t;&t;&bslash;&n;&t;int __node  = pfn_to_nid(__pfn);&t;&t;&t;&t;&bslash;&n;&t;&amp;node_mem_map(__node)[node_localnr(__pfn,__node)];&t;&t;&bslash;&n;})
 DECL|macro|page_to_pfn

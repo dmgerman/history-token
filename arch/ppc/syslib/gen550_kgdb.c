@@ -182,8 +182,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: gen550_init() must be called already on the port we are going&n; * to use.&n; */
 r_void
-DECL|function|kgdb_map_scc
-id|kgdb_map_scc
+DECL|function|gen550_kgdb_map_scc
+id|gen550_kgdb_map_scc
 c_func
 (paren
 r_void

@@ -62,14 +62,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|kmalloc_percpu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#else /* CONFIG_SMP */
 DECL|macro|per_cpu_ptr
 mdefine_line|#define per_cpu_ptr(ptr, cpu) (ptr)
@@ -138,17 +130,6 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
-)brace
-DECL|function|kmalloc_percpu_init
-r_static
-r_inline
-r_void
-id|kmalloc_percpu_init
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* Simple wrapper for the common case: zeros memory. */
