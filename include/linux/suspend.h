@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* page backup entry */
 DECL|struct|pbe
 r_typedef
@@ -159,20 +159,37 @@ r_int
 id|resume
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PM */
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+r_extern
+r_int
+r_char
+id|software_suspend_enabled
+suffix:semicolon
+r_extern
+r_void
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
 r_inline
-r_int
+r_void
 id|software_suspend
 c_func
 (paren
 r_void
 )paren
 (brace
-r_return
-op_minus
-id|EPERM
+id|printk
+c_func
+(paren
+l_string|&quot;Warning: fake suspend called&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
