@@ -3030,12 +3030,14 @@ suffix:semicolon
 multiline_comment|/* BOOL: wake us up on timer expiry */
 DECL|member|sleeping
 r_int
+r_int
 id|sleeping
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* BOOL: polling active &amp; poll_timeout field valid */
 DECL|member|polling
+r_int
 r_int
 id|polling
 suffix:colon
