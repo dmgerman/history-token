@@ -5763,16 +5763,6 @@ id|vma-&gt;vm_page_prot
 op_or_assign
 id|_CACHE_UNCACHED
 suffix:semicolon
-macro_line|#elif defined(__sh__)
-id|pgprot_val
-c_func
-(paren
-id|vma-&gt;vm_page_prot
-)paren
-op_and_assign
-op_complement
-id|_PAGE_CACHABLE
-suffix:semicolon
 macro_line|#elif defined(__hppa__)
 id|pgprot_val
 c_func
@@ -5782,7 +5772,7 @@ id|vma-&gt;vm_page_prot
 op_or_assign
 id|_PAGE_NO_CACHE
 suffix:semicolon
-macro_line|#elif defined(__ia64__) || defined(__arm__)
+macro_line|#elif defined(__ia64__) || defined(__arm__) || defined(__sh__)
 id|vma-&gt;vm_page_prot
 op_assign
 id|pgprot_writecombine
