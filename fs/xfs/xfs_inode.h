@@ -1606,6 +1606,17 @@ id|uint
 )paren
 suffix:semicolon
 r_int
+id|xfs_iflush_all
+c_func
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
 id|xfs_iaccess
 c_func
 (paren

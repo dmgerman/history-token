@@ -4389,6 +4389,14 @@ r_int64
 id|fsid
 suffix:semicolon
 macro_line|#endif
+id|xfs_iflush_all
+c_func
+(paren
+id|mp
+comma
+id|XFS_FLUSH_ALL
+)paren
+suffix:semicolon
 id|XFS_QM_DQPURGEALL
 c_func
 (paren
