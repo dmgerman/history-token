@@ -2553,14 +2553,9 @@ op_amp
 l_int|0xf
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * In MUX mode the keyboard translation seems to be always off.&n; */
-id|i8042_direct
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n; * Disable all muxed ports by disabling AUX.&n; */
 id|i8042_ctr
-op_and_assign
+op_or_assign
 id|I8042_CTR_AUXDIS
 suffix:semicolon
 id|i8042_ctr
