@@ -515,16 +515,6 @@ id|page
 )paren
 suffix:semicolon
 r_int
-id|__clear_page_dirty
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_int
 id|test_clear_page_writeback
 c_func
 (paren
