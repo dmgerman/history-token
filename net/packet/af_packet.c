@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -138,8 +139,8 @@ id|stats
 suffix:semicolon
 macro_line|#ifdef CONFIG_PACKET_MMAP
 DECL|member|pg_vec
-r_int
-r_int
+r_char
+op_star
 op_star
 id|pg_vec
 suffix:semicolon
@@ -227,8 +228,8 @@ macro_line|#ifdef CONFIG_PACKET_MMAP
 DECL|function|packet_lookup_frame
 r_static
 r_inline
-r_int
-r_int
+r_char
+op_star
 id|packet_lookup_frame
 c_func
 (paren
@@ -248,8 +249,8 @@ id|pg_vec_pos
 comma
 id|frame_offset
 suffix:semicolon
-r_int
-r_int
+r_char
+op_star
 id|frame
 suffix:semicolon
 id|pg_vec_pos
@@ -266,11 +267,6 @@ id|po-&gt;frames_per_block
 suffix:semicolon
 id|frame
 op_assign
-(paren
-r_int
-r_int
-)paren
-(paren
 id|po-&gt;pg_vec
 (braket
 id|pg_vec_pos
@@ -280,7 +276,6 @@ op_plus
 id|frame_offset
 op_star
 id|po-&gt;frame_size
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5865,14 +5860,48 @@ id|packet_mm_close
 comma
 )brace
 suffix:semicolon
+DECL|function|pg_vec_endpage
+r_static
+r_inline
+r_struct
+id|page
+op_star
+id|pg_vec_endpage
+c_func
+(paren
+r_char
+op_star
+id|one_pg_vec
+comma
+r_int
+r_int
+id|order
+)paren
+(brace
+r_return
+id|virt_to_page
+c_func
+(paren
+id|one_pg_vec
+op_plus
+(paren
+id|PAGE_SIZE
+op_lshift
+id|order
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 DECL|function|free_pg_vec
 r_static
 r_void
 id|free_pg_vec
 c_func
 (paren
-r_int
-r_int
+r_char
+op_star
 op_star
 id|pg_vec
 comma
@@ -5920,21 +5949,15 @@ id|pend
 suffix:semicolon
 id|pend
 op_assign
-id|virt_to_page
+id|pg_vec_endpage
 c_func
 (paren
 id|pg_vec
 (braket
 id|i
 )braket
-op_plus
-(paren
-id|PAGE_SIZE
-op_lshift
+comma
 id|order
-)paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_for
@@ -5967,6 +5990,10 @@ suffix:semicolon
 id|free_pages
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|pg_vec
 (braket
 id|i
@@ -6004,8 +6031,8 @@ r_int
 id|closing
 )paren
 (brace
-r_int
-r_int
+r_char
+op_star
 op_star
 id|pg_vec
 op_assign
@@ -6172,8 +6199,7 @@ id|req-&gt;tp_block_nr
 op_star
 r_sizeof
 (paren
-r_int
-r_int
+r_char
 op_star
 )paren
 comma
@@ -6201,8 +6227,8 @@ id|req-&gt;tp_block_nr
 op_star
 r_sizeof
 (paren
-r_int
-r_int
+r_char
+op_star
 op_star
 )paren
 )paren
@@ -6235,6 +6261,10 @@ id|pg_vec
 id|i
 )braket
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|__get_free_pages
 c_func
 (paren
@@ -6257,21 +6287,15 @@ id|out_free_pgvec
 suffix:semicolon
 id|pend
 op_assign
-id|virt_to_page
+id|pg_vec_endpage
 c_func
 (paren
 id|pg_vec
 (braket
 id|i
 )braket
-op_plus
-(paren
-id|PAGE_SIZE
-op_lshift
+comma
 id|order
-)paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_for
@@ -6322,8 +6346,8 @@ id|i
 op_increment
 )paren
 (brace
-r_int
-r_int
+r_char
+op_star
 id|ptr
 op_assign
 id|pg_vec
