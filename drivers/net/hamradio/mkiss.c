@@ -2753,7 +2753,7 @@ id|ax-&gt;dev
 suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ax-&gt;tty
 op_assign
@@ -3353,6 +3353,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|addr
 )paren
@@ -3435,6 +3436,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3517,6 +3519,7 @@ l_int|4
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -3535,6 +3538,7 @@ id|tmp
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
