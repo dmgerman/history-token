@@ -427,7 +427,7 @@ id|tmpbuf
 comma
 l_int|NULL
 comma
-l_int|10
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock
