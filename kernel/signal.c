@@ -616,6 +616,8 @@ op_star
 id|t
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 comma
 r_int

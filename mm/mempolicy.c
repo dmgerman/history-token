@@ -3157,6 +3157,8 @@ id|zonelist_policy
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp
 comma
 r_struct
@@ -3461,6 +3463,8 @@ id|alloc_page_interleave
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp
 comma
 r_int
@@ -3571,6 +3575,8 @@ id|alloc_page_vma
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp
 comma
 r_struct
@@ -3720,6 +3726,8 @@ id|alloc_pages_current
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp
 comma
 r_int

@@ -2330,6 +2330,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 comma
 r_int
@@ -5768,6 +5770,8 @@ r_int
 id|colour_off
 comma
 r_int
+r_int
+id|__nocast
 id|local_flags
 )paren
 (brace
@@ -6164,6 +6168,7 @@ op_star
 id|cachep
 comma
 r_int
+r_int
 id|flags
 )paren
 (brace
@@ -6291,6 +6296,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 comma
 r_int
@@ -6309,6 +6316,7 @@ suffix:semicolon
 r_int
 id|offset
 suffix:semicolon
+r_int
 r_int
 id|local_flags
 suffix:semicolon
@@ -7309,6 +7317,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -7768,6 +7778,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -8079,6 +8091,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -8835,6 +8849,8 @@ op_star
 id|cachep
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -9421,6 +9437,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace
@@ -9735,6 +9753,8 @@ r_int
 id|size
 comma
 r_int
+r_int
+id|__nocast
 id|flags
 )paren
 (brace

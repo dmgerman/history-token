@@ -317,6 +317,8 @@ r_int
 id|nr_vecs
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 )paren
 (brace

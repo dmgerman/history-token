@@ -12,6 +12,8 @@ id|mempool_alloc_t
 )paren
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_void
@@ -118,6 +120,8 @@ r_int
 id|new_min_nr
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 )paren
 suffix:semicolon
@@ -142,6 +146,8 @@ op_star
 id|pool
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 )paren
 suffix:semicolon
@@ -166,6 +172,8 @@ id|mempool_alloc_slab
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 comma
 r_void

@@ -687,6 +687,8 @@ id|alloc_buffer_head
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 )paren
 suffix:semicolon

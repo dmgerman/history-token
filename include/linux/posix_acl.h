@@ -153,6 +153,8 @@ c_func
 r_int
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 r_extern
@@ -168,6 +170,8 @@ id|posix_acl
 op_star
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 r_extern
@@ -208,6 +212,8 @@ c_func
 id|mode_t
 comma
 r_int
+r_int
+id|__nocast
 )paren
 suffix:semicolon
 r_extern

@@ -2598,6 +2598,8 @@ r_int
 id|order
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 )paren
 (brace
@@ -2667,6 +2669,8 @@ r_int
 id|order
 comma
 r_int
+r_int
+id|__nocast
 id|gfp_flags
 )paren
 (brace
@@ -3053,6 +3057,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -3850,6 +3855,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 comma
 r_int
@@ -3909,6 +3915,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp_mask
 )paren
 (brace

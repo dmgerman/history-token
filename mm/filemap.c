@@ -2202,6 +2202,7 @@ id|index
 )paren
 suffix:semicolon
 r_int
+r_int
 id|gfp_mask
 suffix:semicolon
 r_if

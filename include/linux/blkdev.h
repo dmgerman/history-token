@@ -1094,6 +1094,7 @@ id|bounce_pfn
 suffix:semicolon
 DECL|member|bounce_gfp
 r_int
+r_int
 id|bounce_gfp
 suffix:semicolon
 multiline_comment|/*&n;&t; * various queue flags, see QUEUE_* below&n;&t; */

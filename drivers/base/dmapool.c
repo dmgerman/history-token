@@ -536,6 +536,8 @@ op_star
 id|pool
 comma
 r_int
+r_int
+id|__nocast
 id|mem_flags
 )paren
 (brace

@@ -3947,6 +3947,7 @@ c_func
 (paren
 r_int
 r_int
+id|__nocast
 id|gfp
 comma
 r_struct

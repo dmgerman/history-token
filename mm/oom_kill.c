@@ -752,6 +752,8 @@ id|out_of_memory
 c_func
 (paren
 r_int
+r_int
+id|__nocast
 id|gfp_mask
 )paren
 (brace
