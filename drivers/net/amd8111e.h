@@ -3333,6 +3333,7 @@ suffix:semicolon
 multiline_comment|/* Reg memory mapped address */
 DECL|member|mmio
 r_void
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon

@@ -170,6 +170,7 @@ id|val
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -337,6 +338,7 @@ id|repeat
 op_assign
 id|REPEAT_CNT
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1393,6 +1395,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1661,6 +1664,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2146,6 +2150,7 @@ op_assign
 initialization_block
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -2941,7 +2946,11 @@ id|amd8111e_priv
 op_star
 id|lp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|rx_index
@@ -2951,6 +2960,7 @@ op_amp
 id|RX_RING_DR_MOD_MASK
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -4202,6 +4212,7 @@ id|amd8111e_read_mib
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|mmio
 comma
@@ -4309,6 +4320,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -5232,6 +5244,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -6087,6 +6100,7 @@ id|buf
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -7365,7 +7379,11 @@ id|amd8111e_priv
 op_star
 id|lp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -8217,17 +8235,15 @@ id|iounmap
 c_func
 (paren
 (paren
-r_void
-op_star
-)paren
-(paren
 (paren
 r_struct
 id|amd8111e_priv
 op_star
 )paren
+id|netdev_priv
+c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 )paren
 op_member_access_from_pointer
@@ -8294,6 +8310,7 @@ op_amp
 id|lp-&gt;ipg_data
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -9184,10 +9201,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|lp-&gt;mmio
 )paren
 suffix:semicolon
