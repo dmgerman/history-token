@@ -644,6 +644,7 @@ l_int|100
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot; not found (no reset ack).&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1051,6 +1052,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %s at 0x%08lx, Ethernet Address &quot;
 l_string|&quot;%02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
@@ -1139,6 +1141,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Shutting down ethercard.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1183,7 +1186,8 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;resetting the 8390 t=%ld...&quot;
+id|KERN_DEBUG
+l_string|&quot;resetting the 8390 t=%ld...&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -1247,6 +1251,7 @@ l_int|100
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: ne_reset_8390() did not complete.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1310,6 +1315,7 @@ id|ei_status.dmaing
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMAing conflict in ne_get_8390_hdr &quot;
 l_string|&quot;[DMAstat:%d][irqlock:%d].&bslash;n&quot;
 comma
@@ -1527,6 +1533,7 @@ id|ei_status.dmaing
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMAing conflict in ne_block_input &quot;
 l_string|&quot;[DMAstat:%d][irqlock:%d].&bslash;n&quot;
 comma
@@ -1767,6 +1774,7 @@ id|ei_status.dmaing
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DMAing conflict in ne_block_output.&quot;
 l_string|&quot;[DMAstat:%d][irqlock:%d]&bslash;n&quot;
 comma
@@ -1941,6 +1949,7 @@ multiline_comment|/* 20ms */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: timeout waiting for Tx RDC.&bslash;n&quot;
 comma
 id|dev-&gt;name
