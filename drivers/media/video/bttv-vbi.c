@@ -65,7 +65,7 @@ DECL|macro|dprintk
 macro_line|# undef dprintk
 macro_line|#endif
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (vbi_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;bttv%d/vbi: &quot; fmt, btv-&gt;nr, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (vbi_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;bttv%d/vbi: &quot; fmt, btv-&gt;c.nr , ## arg)
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* vbi risc code + mm                                                      */
 r_static
@@ -303,7 +303,7 @@ op_assign
 id|videobuf_iolock
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 op_amp
 id|buf-&gt;vb
