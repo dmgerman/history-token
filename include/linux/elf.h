@@ -927,8 +927,10 @@ DECL|macro|EI_DATA
 mdefine_line|#define&t;EI_DATA&t;&t;5
 DECL|macro|EI_VERSION
 mdefine_line|#define&t;EI_VERSION&t;6
+DECL|macro|EI_OSABI
+mdefine_line|#define&t;EI_OSABI&t;7
 DECL|macro|EI_PAD
-mdefine_line|#define&t;EI_PAD&t;&t;7
+mdefine_line|#define&t;EI_PAD&t;&t;8
 DECL|macro|ELFMAG0
 mdefine_line|#define&t;ELFMAG0&t;&t;0x7f&t;&t;/* EI_MAG */
 DECL|macro|ELFMAG1
@@ -961,6 +963,14 @@ DECL|macro|EV_CURRENT
 mdefine_line|#define EV_CURRENT&t;1
 DECL|macro|EV_NUM
 mdefine_line|#define EV_NUM&t;&t;2
+DECL|macro|ELFOSABI_NONE
+mdefine_line|#define ELFOSABI_NONE&t;0
+DECL|macro|ELFOSABI_LINUX
+mdefine_line|#define ELFOSABI_LINUX&t;3
+macro_line|#ifndef ELF_OSABI
+DECL|macro|ELF_OSABI
+mdefine_line|#define ELF_OSABI ELFOSABI_NONE
+macro_line|#endif
 multiline_comment|/* Notes used in ET_CORE */
 DECL|macro|NT_PRSTATUS
 mdefine_line|#define NT_PRSTATUS&t;1
