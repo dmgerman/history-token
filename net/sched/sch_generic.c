@@ -1659,11 +1659,6 @@ c_func
 id|ops-&gt;owner
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|qdisc-&gt;dev
-)paren
 id|dev_put
 c_func
 (paren

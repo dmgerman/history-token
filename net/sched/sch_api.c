@@ -3143,12 +3143,7 @@ id|AF_UNSPEC
 suffix:semicolon
 id|tcm-&gt;tcm_ifindex
 op_assign
-id|q-&gt;dev
-ques
-c_cond
 id|q-&gt;dev-&gt;ifindex
-suffix:colon
-l_int|0
 suffix:semicolon
 id|tcm-&gt;tcm_parent
 op_assign
@@ -4215,12 +4210,7 @@ id|AF_UNSPEC
 suffix:semicolon
 id|tcm-&gt;tcm_ifindex
 op_assign
-id|q-&gt;dev
-ques
-c_cond
 id|q-&gt;dev-&gt;ifindex
-suffix:colon
-l_int|0
 suffix:semicolon
 id|tcm-&gt;tcm_parent
 op_assign
