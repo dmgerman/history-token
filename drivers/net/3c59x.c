@@ -293,9 +293,14 @@ op_assign
 l_int|0x4000
 comma
 DECL|enumerator|EXTRA_PREAMBLE
+DECL|enumerator|EEPROM_RESET
 id|EXTRA_PREAMBLE
 op_assign
 l_int|0x8000
+comma
+id|EEPROM_RESET
+op_assign
+l_int|0x10000
 comma
 )brace
 suffix:semicolon
@@ -631,6 +636,8 @@ comma
 id|IS_BOOMERANG
 op_or
 id|HAS_MII
+op_or
+id|EEPROM_RESET
 comma
 l_int|64
 comma
@@ -646,6 +653,8 @@ comma
 id|IS_BOOMERANG
 op_or
 id|HAS_MII
+op_or
+id|EEPROM_RESET
 comma
 l_int|64
 comma
@@ -665,6 +674,8 @@ op_or
 id|HAS_HWCKSM
 op_or
 id|EXTRA_PREAMBLE
+op_or
+id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -682,6 +693,8 @@ op_or
 id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
+op_or
+id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -697,6 +710,8 @@ comma
 id|IS_CYCLONE
 op_or
 id|HAS_HWCKSM
+op_or
+id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -1093,6 +1108,8 @@ op_or
 id|HAS_HWCKSM
 op_or
 id|EXTRA_PREAMBLE
+op_or
+id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -16436,7 +16453,18 @@ c_func
 (paren
 id|TotalReset
 op_or
+(paren
+(paren
+id|vp-&gt;drv_flags
+op_amp
+id|EEPROM_RESET
+)paren
+ques
+c_cond
+l_int|0x04
+suffix:colon
 l_int|0x14
+)paren
 comma
 id|dev-&gt;base_addr
 op_plus
