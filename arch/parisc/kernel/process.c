@@ -3,32 +3,22 @@ multiline_comment|/*&n; * This file handles the architecture-dependent parts of 
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
-macro_line|#include &lt;linux/personality.h&gt;
-macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/offsets.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/offsets.h&gt;
+macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|hlt_counter
 r_int
 id|hlt_counter
@@ -439,11 +429,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
 r_int
 op_star
 id|user_tid
@@ -457,8 +442,7 @@ id|regs-&gt;gr
 l_int|26
 )braket
 suffix:semicolon
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -478,22 +462,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
-suffix:semicolon
 )brace
 r_int
 DECL|function|sys_vfork
@@ -506,13 +474,7 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -535,22 +497,6 @@ l_int|NULL
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
 suffix:semicolon
 )brace
 r_int
@@ -615,12 +561,14 @@ op_star
 r_const
 id|child_return
 suffix:semicolon
+macro_line|#ifdef CONFIG_HPUX
 r_extern
 r_void
 op_star
 r_const
 id|hpux_child_return
 suffix:semicolon
+macro_line|#endif
 op_star
 id|cregs
 op_assign
@@ -751,6 +699,7 @@ op_eq
 id|PER_HPUX
 )paren
 (brace
+macro_line|#ifdef CONFIG_HPUX
 id|cregs-&gt;kpc
 op_assign
 (paren
@@ -760,6 +709,13 @@ r_int
 op_amp
 id|hpux_child_return
 suffix:semicolon
+macro_line|#else
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace

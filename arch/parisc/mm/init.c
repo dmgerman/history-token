@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/parisc/mm/init.c&n; *&n; *  Copyright (C) 1995&t;Linus Torvalds&n; *  Copyright 1999 SuSE GmbH&n; *    changed by Philipp Rumpf&n; *  Copyright 1999 Philipp Rumpf (prumpf@tux.org)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -2915,6 +2916,7 @@ id|PAGE_GATEWAY
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HPUX
 r_void
 DECL|function|map_hpux_gateway_page
 id|map_hpux_gateway_page
@@ -3211,6 +3213,14 @@ id|PAGE_GATEWAY
 )paren
 suffix:semicolon
 )brace
+DECL|variable|map_hpux_gateway_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|map_hpux_gateway_page
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|flush_tlb_all_local

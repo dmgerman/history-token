@@ -778,7 +778,7 @@ macro_line|#ifdef CONFIG_DRAGEN2
 id|printk
 c_func
 (paren
-l_string|&quot;Dragon Engine II board support by Georges Menie&bslash;n&quot;
+l_string|&quot;DragonEngine II board support by Georges Menie&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

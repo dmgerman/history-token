@@ -71,7 +71,7 @@ id|irq
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|superio_interrupt
 id|superio_interrupt
 c_func
@@ -149,6 +149,7 @@ suffix:semicolon
 multiline_comment|/* This shouldn&squot;t happen */
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Check to see which device is interrupting */
@@ -183,6 +184,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -235,6 +237,7 @@ l_string|&quot;SuperIO: spurious interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -271,6 +274,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize Super I/O device */

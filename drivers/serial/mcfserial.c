@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1261,7 +1259,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the serial driver&squot;s generic interrupt routine&n; */
 DECL|function|mcfrs_interrupt
-r_void
+id|irqreturn_t
 id|mcfrs_interrupt
 c_func
 (paren
@@ -1349,6 +1347,7 @@ id|info
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */
@@ -2226,6 +2225,33 @@ c_cond
 (paren
 id|cflag
 op_amp
+id|CMSPAR
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cflag
+op_amp
+id|PARODD
+)paren
+id|mr1
+op_or_assign
+id|MCFUART_MR1_PARITYMARK
+suffix:semicolon
+r_else
+id|mr1
+op_or_assign
+id|MCFUART_MR1_PARITYSPACE
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|cflag
+op_amp
 id|PARODD
 )paren
 id|mr1
@@ -2237,6 +2263,7 @@ id|mr1
 op_or_assign
 id|MCFUART_MR1_PARITYEVEN
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2663,16 +2690,29 @@ c_func
 (paren
 id|count
 comma
+(paren
+r_int
+)paren
 id|min
 c_func
 (paren
+(paren
+(paren
+r_int
+)paren
 id|SERIAL_XMIT_SIZE
+)paren
 op_minus
 id|info-&gt;xmit_cnt
 op_minus
 l_int|1
 comma
+(paren
+(paren
+r_int
+)paren
 id|SERIAL_XMIT_SIZE
+)paren
 op_minus
 id|info-&gt;xmit_head
 )paren
@@ -2736,16 +2776,29 @@ c_func
 (paren
 id|c
 comma
+(paren
+r_int
+)paren
 id|min
 c_func
 (paren
+(paren
+(paren
+r_int
+)paren
 id|SERIAL_XMIT_SIZE
+)paren
 op_minus
 id|info-&gt;xmit_cnt
 op_minus
 l_int|1
 comma
+(paren
+(paren
+r_int
+)paren
 id|SERIAL_XMIT_SIZE
+)paren
 op_minus
 id|info-&gt;xmit_head
 )paren
@@ -6462,10 +6515,12 @@ op_assign
 id|mcfrs_readproc
 comma
 )brace
+suffix:semicolon
 multiline_comment|/* mcfrs_init inits the driver */
 r_static
 r_int
 id|__init
+DECL|function|mcfrs_init
 id|mcfrs_init
 c_func
 (paren
@@ -6790,6 +6845,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mcfrs_init
 id|module_init
 c_func
 (paren

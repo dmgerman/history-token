@@ -4898,4 +4898,29 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
+DECL|variable|sti_get_rom
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sti_get_rom
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Philipp Rumpf, Helge Deller, Thomas Bogendoerfer&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Core STI driver for HP&squot;s NGLE series graphics cards in HP PARISC machines&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL v2&quot;
+)paren
+suffix:semicolon
 eof
