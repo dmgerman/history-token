@@ -672,7 +672,9 @@ id|wan_device
 op_star
 id|wandev
 op_assign
-id|v
+id|m
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond

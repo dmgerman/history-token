@@ -254,4 +254,11 @@ c_func
 id|ipv6_push_nfrag_opts
 )paren
 suffix:semicolon
+DECL|variable|ipv6_skip_exthdr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ipv6_skip_exthdr
+)paren
+suffix:semicolon
 eof

@@ -1472,6 +1472,11 @@ id|NET_IPV4_NF_CONNTRACK_GENERIC_TIMEOUT
 op_assign
 l_int|13
 comma
+DECL|enumerator|NET_IPV4_NF_CONNTRACK_BUCKETS
+id|NET_IPV4_NF_CONNTRACK_BUCKETS
+op_assign
+l_int|14
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6 */

@@ -2820,7 +2820,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock_queue_rcv_skb
+id|udpv6_queue_rcv_skb
 c_func
 (paren
 id|sk2
@@ -2849,7 +2849,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock_queue_rcv_skb
+id|udpv6_queue_rcv_skb
 c_func
 (paren
 id|sk
