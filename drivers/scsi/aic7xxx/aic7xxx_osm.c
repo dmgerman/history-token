@@ -2161,6 +2161,7 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
+macro_line|#if defined(__i386__)
 r_static
 r_int
 id|ahc_linux_biosparam
@@ -2181,6 +2182,7 @@ r_int
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
 r_static
 r_void
@@ -2197,6 +2199,7 @@ op_star
 id|scsi_devs
 )paren
 suffix:semicolon
+macro_line|#if defined(__i386__)
 r_static
 r_int
 id|ahc_linux_biosparam
@@ -2212,6 +2215,7 @@ r_int
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_static
 r_int
@@ -3634,6 +3638,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
+macro_line|#if defined(__i386__)
 r_static
 r_int
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
@@ -3994,6 +3999,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Abort the current SCSI command(s).&n; */
 r_static
 r_int
