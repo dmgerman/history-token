@@ -120,15 +120,6 @@ r_struct
 id|list_head
 id|ex_list
 suffix:semicolon
-DECL|member|ex_path
-r_char
-id|ex_path
-(braket
-id|NFS_MAXPATHLEN
-op_plus
-l_int|1
-)braket
-suffix:semicolon
 DECL|member|ex_client
 r_struct
 id|svc_client
