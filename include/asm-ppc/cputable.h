@@ -22,6 +22,30 @@ mdefine_line|#define PPC_FEATURE_UNIFIED_CACHE&t;0x01000000
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* This structure can grow, it&squot;s real size is used by head.S code&n; * via the mkdefs mecanism.&n; */
+r_struct
+id|cpu_spec
+suffix:semicolon
+DECL|typedef|cpu_setup_t
+r_typedef
+r_void
+(paren
+op_star
+id|cpu_setup_t
+)paren
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+id|cpu_nr
+comma
+r_struct
+id|cpu_spec
+op_star
+id|spec
+)paren
+suffix:semicolon
 DECL|struct|cpu_spec
 r_struct
 id|cpu_spec
@@ -67,15 +91,8 @@ id|dcache_bsize
 suffix:semicolon
 multiline_comment|/* this is called to initialize various CPU bits like L1 cache,&n;&t; * BHT, SPD, etc... from head.S before branching to identify_machine&n;&t; */
 DECL|member|cpu_setup
-r_void
-(paren
-op_star
+id|cpu_setup_t
 id|cpu_setup
-)paren
-(paren
-r_int
-id|cpu_nr
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -120,6 +137,12 @@ DECL|macro|CPU_FTR_CAN_NAP
 mdefine_line|#define CPU_FTR_CAN_NAP&t;&t;&t;0x00000400
 DECL|macro|CPU_FTR_L3CR
 mdefine_line|#define CPU_FTR_L3CR&t;&t;&t;0x00000800
+DECL|macro|CPU_FTR_L3_DISABLE_NAP
+mdefine_line|#define CPU_FTR_L3_DISABLE_NAP&t;&t;0x00001000
+DECL|macro|CPU_FTR_NAP_DISABLE_L2_PR
+mdefine_line|#define CPU_FTR_NAP_DISABLE_L2_PR&t;0x00002000
+DECL|macro|CPU_FTR_DUAL_PLL_750FX
+mdefine_line|#define CPU_FTR_DUAL_PLL_750FX&t;&t;0x00004000
 DECL|macro|CPU_FTR_NO_DPM
 mdefine_line|#define CPU_FTR_NO_DPM&t;&t;&t;0x00008000
 macro_line|#ifdef __ASSEMBLY__
