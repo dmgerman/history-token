@@ -2590,7 +2590,7 @@ id|nfs_fh
 op_star
 comma
 r_struct
-id|nfs_fattr
+id|nfs_fsinfo
 op_star
 )paren
 suffix:semicolon

@@ -353,6 +353,12 @@ l_int|0
 r_goto
 id|out_err
 suffix:semicolon
+id|nfs_begin_data_update
+c_func
+(paren
+id|dir-&gt;d_inode
+)paren
+suffix:semicolon
 id|rpc_call_setup
 c_func
 (paren
@@ -426,7 +432,7 @@ id|dir_i
 op_assign
 id|dir-&gt;d_inode
 suffix:semicolon
-id|nfs_zap_caches
+id|nfs_end_data_update
 c_func
 (paren
 id|dir_i

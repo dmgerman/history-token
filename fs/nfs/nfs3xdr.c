@@ -29,25 +29,25 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * Declare the space requirements for NFS arguments and replies as&n; * number of 32bit-words&n; */
 DECL|macro|NFS3_fhandle_sz
-mdefine_line|#define NFS3_fhandle_sz&t;&t;1+16
+mdefine_line|#define NFS3_fhandle_sz&t;&t;(1+16)
 DECL|macro|NFS3_fh_sz
-mdefine_line|#define NFS3_fh_sz&t;&t;NFS3_fhandle_sz&t;/* shorthand */
+mdefine_line|#define NFS3_fh_sz&t;&t;(NFS3_fhandle_sz)&t;/* shorthand */
 DECL|macro|NFS3_sattr_sz
-mdefine_line|#define NFS3_sattr_sz&t;&t;15
+mdefine_line|#define NFS3_sattr_sz&t;&t;(15)
 DECL|macro|NFS3_filename_sz
-mdefine_line|#define NFS3_filename_sz&t;1+(NFS3_MAXNAMLEN&gt;&gt;2)
+mdefine_line|#define NFS3_filename_sz&t;(1+(NFS3_MAXNAMLEN&gt;&gt;2))
 DECL|macro|NFS3_path_sz
-mdefine_line|#define NFS3_path_sz&t;&t;1+(NFS3_MAXPATHLEN&gt;&gt;2)
+mdefine_line|#define NFS3_path_sz&t;&t;(1+(NFS3_MAXPATHLEN&gt;&gt;2))
 DECL|macro|NFS3_fattr_sz
-mdefine_line|#define NFS3_fattr_sz&t;&t;21
+mdefine_line|#define NFS3_fattr_sz&t;&t;(21)
 DECL|macro|NFS3_wcc_attr_sz
-mdefine_line|#define NFS3_wcc_attr_sz&t;&t;6
+mdefine_line|#define NFS3_wcc_attr_sz&t;&t;(6)
 DECL|macro|NFS3_pre_op_attr_sz
-mdefine_line|#define NFS3_pre_op_attr_sz&t;1+NFS3_wcc_attr_sz
+mdefine_line|#define NFS3_pre_op_attr_sz&t;(1+NFS3_wcc_attr_sz)
 DECL|macro|NFS3_post_op_attr_sz
-mdefine_line|#define NFS3_post_op_attr_sz&t;1+NFS3_fattr_sz
+mdefine_line|#define NFS3_post_op_attr_sz&t;(1+NFS3_fattr_sz)
 DECL|macro|NFS3_wcc_data_sz
-mdefine_line|#define NFS3_wcc_data_sz&t;&t;NFS3_pre_op_attr_sz+NFS3_post_op_attr_sz
+mdefine_line|#define NFS3_wcc_data_sz&t;&t;(NFS3_pre_op_attr_sz+NFS3_post_op_attr_sz)
 DECL|macro|NFS3_fsstat_sz
 mdefine_line|#define NFS3_fsstat_sz&t;&t;
 DECL|macro|NFS3_fsinfo_sz
@@ -55,65 +55,65 @@ mdefine_line|#define NFS3_fsinfo_sz&t;&t;
 DECL|macro|NFS3_pathconf_sz
 mdefine_line|#define NFS3_pathconf_sz&t;&t;
 DECL|macro|NFS3_entry_sz
-mdefine_line|#define NFS3_entry_sz&t;&t;NFS3_filename_sz+3
+mdefine_line|#define NFS3_entry_sz&t;&t;(NFS3_filename_sz+3)
 DECL|macro|NFS3_sattrargs_sz
-mdefine_line|#define NFS3_sattrargs_sz&t;NFS3_fh_sz+NFS3_sattr_sz+3
+mdefine_line|#define NFS3_sattrargs_sz&t;(NFS3_fh_sz+NFS3_sattr_sz+3)
 DECL|macro|NFS3_diropargs_sz
-mdefine_line|#define NFS3_diropargs_sz&t;NFS3_fh_sz+NFS3_filename_sz
+mdefine_line|#define NFS3_diropargs_sz&t;(NFS3_fh_sz+NFS3_filename_sz)
 DECL|macro|NFS3_accessargs_sz
-mdefine_line|#define NFS3_accessargs_sz&t;NFS3_fh_sz+1
+mdefine_line|#define NFS3_accessargs_sz&t;(NFS3_fh_sz+1)
 DECL|macro|NFS3_readlinkargs_sz
-mdefine_line|#define NFS3_readlinkargs_sz&t;NFS3_fh_sz
+mdefine_line|#define NFS3_readlinkargs_sz&t;(NFS3_fh_sz)
 DECL|macro|NFS3_readargs_sz
-mdefine_line|#define NFS3_readargs_sz&t;NFS3_fh_sz+3
+mdefine_line|#define NFS3_readargs_sz&t;(NFS3_fh_sz+3)
 DECL|macro|NFS3_writeargs_sz
-mdefine_line|#define NFS3_writeargs_sz&t;NFS3_fh_sz+5
+mdefine_line|#define NFS3_writeargs_sz&t;(NFS3_fh_sz+5)
 DECL|macro|NFS3_createargs_sz
-mdefine_line|#define NFS3_createargs_sz&t;NFS3_diropargs_sz+NFS3_sattr_sz
+mdefine_line|#define NFS3_createargs_sz&t;(NFS3_diropargs_sz+NFS3_sattr_sz)
 DECL|macro|NFS3_mkdirargs_sz
-mdefine_line|#define NFS3_mkdirargs_sz&t;NFS3_diropargs_sz+NFS3_sattr_sz
+mdefine_line|#define NFS3_mkdirargs_sz&t;(NFS3_diropargs_sz+NFS3_sattr_sz)
 DECL|macro|NFS3_symlinkargs_sz
-mdefine_line|#define NFS3_symlinkargs_sz&t;NFS3_diropargs_sz+NFS3_path_sz+NFS3_sattr_sz
+mdefine_line|#define NFS3_symlinkargs_sz&t;(NFS3_diropargs_sz+NFS3_path_sz+NFS3_sattr_sz)
 DECL|macro|NFS3_mknodargs_sz
-mdefine_line|#define NFS3_mknodargs_sz&t;NFS3_diropargs_sz+2+NFS3_sattr_sz
+mdefine_line|#define NFS3_mknodargs_sz&t;(NFS3_diropargs_sz+2+NFS3_sattr_sz)
 DECL|macro|NFS3_renameargs_sz
-mdefine_line|#define NFS3_renameargs_sz&t;NFS3_diropargs_sz+NFS3_diropargs_sz
+mdefine_line|#define NFS3_renameargs_sz&t;(NFS3_diropargs_sz+NFS3_diropargs_sz)
 DECL|macro|NFS3_linkargs_sz
-mdefine_line|#define NFS3_linkargs_sz&t;&t;NFS3_fh_sz+NFS3_diropargs_sz
+mdefine_line|#define NFS3_linkargs_sz&t;&t;(NFS3_fh_sz+NFS3_diropargs_sz)
 DECL|macro|NFS3_readdirargs_sz
-mdefine_line|#define NFS3_readdirargs_sz&t;NFS3_fh_sz+2
+mdefine_line|#define NFS3_readdirargs_sz&t;(NFS3_fh_sz+2)
 DECL|macro|NFS3_commitargs_sz
-mdefine_line|#define NFS3_commitargs_sz&t;NFS3_fh_sz+3
+mdefine_line|#define NFS3_commitargs_sz&t;(NFS3_fh_sz+3)
 DECL|macro|NFS3_attrstat_sz
-mdefine_line|#define NFS3_attrstat_sz&t;1+NFS3_fattr_sz
+mdefine_line|#define NFS3_attrstat_sz&t;(1+NFS3_fattr_sz)
 DECL|macro|NFS3_wccstat_sz
-mdefine_line|#define NFS3_wccstat_sz&t;&t;1+NFS3_wcc_data_sz
+mdefine_line|#define NFS3_wccstat_sz&t;&t;(1+NFS3_wcc_data_sz)
 DECL|macro|NFS3_lookupres_sz
-mdefine_line|#define NFS3_lookupres_sz&t;1+NFS3_fh_sz+(2 * NFS3_post_op_attr_sz)
+mdefine_line|#define NFS3_lookupres_sz&t;(1+NFS3_fh_sz+(2 * NFS3_post_op_attr_sz))
 DECL|macro|NFS3_accessres_sz
-mdefine_line|#define NFS3_accessres_sz&t;1+NFS3_post_op_attr_sz+1
+mdefine_line|#define NFS3_accessres_sz&t;(1+NFS3_post_op_attr_sz+1)
 DECL|macro|NFS3_readlinkres_sz
-mdefine_line|#define NFS3_readlinkres_sz&t;1+NFS3_post_op_attr_sz
+mdefine_line|#define NFS3_readlinkres_sz&t;(1+NFS3_post_op_attr_sz)
 DECL|macro|NFS3_readres_sz
-mdefine_line|#define NFS3_readres_sz&t;&t;1+NFS3_post_op_attr_sz+3
+mdefine_line|#define NFS3_readres_sz&t;&t;(1+NFS3_post_op_attr_sz+3)
 DECL|macro|NFS3_writeres_sz
-mdefine_line|#define NFS3_writeres_sz&t;1+NFS3_wcc_data_sz+4
+mdefine_line|#define NFS3_writeres_sz&t;(1+NFS3_wcc_data_sz+4)
 DECL|macro|NFS3_createres_sz
-mdefine_line|#define NFS3_createres_sz&t;1+NFS3_fh_sz+NFS3_post_op_attr_sz+NFS3_wcc_data_sz
+mdefine_line|#define NFS3_createres_sz&t;(1+NFS3_fh_sz+NFS3_post_op_attr_sz+NFS3_wcc_data_sz)
 DECL|macro|NFS3_renameres_sz
-mdefine_line|#define NFS3_renameres_sz&t;1+(2 * NFS3_wcc_data_sz)
+mdefine_line|#define NFS3_renameres_sz&t;(1+(2 * NFS3_wcc_data_sz))
 DECL|macro|NFS3_linkres_sz
-mdefine_line|#define NFS3_linkres_sz&t;&t;1+NFS3_post_op_attr_sz+NFS3_wcc_data_sz
+mdefine_line|#define NFS3_linkres_sz&t;&t;(1+NFS3_post_op_attr_sz+NFS3_wcc_data_sz)
 DECL|macro|NFS3_readdirres_sz
-mdefine_line|#define NFS3_readdirres_sz&t;1+NFS3_post_op_attr_sz+2
+mdefine_line|#define NFS3_readdirres_sz&t;(1+NFS3_post_op_attr_sz+2)
 DECL|macro|NFS3_fsstatres_sz
-mdefine_line|#define NFS3_fsstatres_sz&t;1+NFS3_post_op_attr_sz+13
+mdefine_line|#define NFS3_fsstatres_sz&t;(1+NFS3_post_op_attr_sz+13)
 DECL|macro|NFS3_fsinfores_sz
-mdefine_line|#define NFS3_fsinfores_sz&t;1+NFS3_post_op_attr_sz+12
+mdefine_line|#define NFS3_fsinfores_sz&t;(1+NFS3_post_op_attr_sz+12)
 DECL|macro|NFS3_pathconfres_sz
-mdefine_line|#define NFS3_pathconfres_sz&t;1+NFS3_post_op_attr_sz+6
+mdefine_line|#define NFS3_pathconfres_sz&t;(1+NFS3_post_op_attr_sz+6)
 DECL|macro|NFS3_commitres_sz
-mdefine_line|#define NFS3_commitres_sz&t;1+NFS3_wcc_data_sz+2
+mdefine_line|#define NFS3_commitres_sz&t;(1+NFS3_wcc_data_sz+2)
 multiline_comment|/*&n; * Map file type to S_IFMT bits&n; */
 r_static
 r_struct
@@ -209,32 +209,14 @@ op_star
 id|fh
 )paren
 (brace
-op_star
-id|p
-op_increment
-op_assign
-id|htonl
-c_func
-(paren
-id|fh-&gt;size
-)paren
-suffix:semicolon
-id|memcpy
+r_return
+id|xdr_encode_array
 c_func
 (paren
 id|p
 comma
 id|fh-&gt;data
 comma
-id|fh-&gt;size
-)paren
-suffix:semicolon
-r_return
-id|p
-op_plus
-id|XDR_QUADLEN
-c_func
-(paren
 id|fh-&gt;size
 )paren
 suffix:semicolon

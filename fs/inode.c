@@ -4011,6 +4011,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_NOCMTIME
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|IS_RDONLY
 c_func
 (paren

@@ -373,6 +373,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+id|err
+suffix:semicolon
+r_int
 id|len
 suffix:semicolon
 id|dprintk
@@ -387,6 +390,11 @@ comma
 id|xprt
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -394,7 +402,7 @@ op_logical_neg
 id|xprt
 )paren
 r_goto
-id|out
+id|out_err
 suffix:semicolon
 r_if
 c_cond
@@ -414,7 +422,12 @@ id|vers
 )paren
 )paren
 r_goto
-id|out
+id|out_err
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|clnt
 op_assign
@@ -442,7 +455,7 @@ op_logical_neg
 id|clnt
 )paren
 r_goto
-id|out_no_clnt
+id|out_err
 suffix:semicolon
 id|memset
 c_func
@@ -621,9 +634,8 @@ comma
 id|xprt-&gt;timeout.to_initval
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|rpc_setup_pipedir
 c_func
 (paren
@@ -631,11 +643,21 @@ id|clnt
 comma
 id|program-&gt;pipe_dir_name
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
 r_goto
 id|out_no_path
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -693,22 +715,8 @@ comma
 id|clnt-&gt;cl_nodelen
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|clnt
-suffix:semicolon
-id|out_no_clnt
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;RPC: out of memory in rpc_create_client&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 id|out_no_auth
 suffix:colon
@@ -739,12 +747,14 @@ c_func
 id|clnt
 )paren
 suffix:semicolon
-id|clnt
-op_assign
-l_int|NULL
-suffix:semicolon
-r_goto
-id|out
+id|out_err
+suffix:colon
+r_return
+id|ERR_PTR
+c_func
+(paren
+id|err
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function clones the RPC client structure. It allows us to share the&n; * same transport while varying parameters such as the authentication&n; * flavour.&n; */
@@ -855,8 +865,6 @@ op_member_access_from_pointer
 id|cl_auth-&gt;au_count
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 r_new
 suffix:semicolon
@@ -871,8 +879,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Properly shut down an RPC client, terminating all outstanding&n; * requests. Note that we must be certain that cl_oneshot and&n; * cl_dead are cleared, or else the client would be destroyed&n; * when the last task releases it.&n; */
@@ -2401,17 +2414,6 @@ suffix:semicolon
 id|rcvbuf-&gt;len
 op_assign
 id|bufsiz
-suffix:semicolon
-multiline_comment|/* Zero buffer so we have automatic zero-padding of opaque &amp; string */
-id|memset
-c_func
-(paren
-id|task-&gt;tk_buffer
-comma
-l_int|0
-comma
-id|bufsiz
-)paren
 suffix:semicolon
 multiline_comment|/* Encode header and provided arguments */
 id|encode

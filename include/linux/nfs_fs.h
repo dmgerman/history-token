@@ -104,24 +104,15 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * read_cache_jiffies is when we started read-caching this inode,&n;&t; * and read_cache_mtime is the mtime of the inode at that time.&n;&t; * attrtimeo is for how long the cached information is assumed&n;&t; * to be valid. A successful attribute revalidation doubles&n;&t; * attrtimeo (up to acregmax/acdirmax), a failure resets it to&n;&t; * acregmin/acdirmin.&n;&t; *&n;&t; * We need to revalidate the cached attrs for this inode if&n;&t; *&n;&t; *&t;jiffies - read_cache_jiffies &gt; attrtimeo&n;&t; *&n;&t; * and invalidate any cached data/flush out any dirty pages if&n;&t; * we find that&n;&t; *&n;&t; *&t;mtime != read_cache_mtime&n;&t; */
+DECL|member|readdir_timestamp
+r_int
+r_int
+id|readdir_timestamp
+suffix:semicolon
 DECL|member|read_cache_jiffies
 r_int
 r_int
 id|read_cache_jiffies
-suffix:semicolon
-DECL|member|read_cache_ctime
-r_struct
-id|timespec
-id|read_cache_ctime
-suffix:semicolon
-DECL|member|read_cache_mtime
-r_struct
-id|timespec
-id|read_cache_mtime
-suffix:semicolon
-DECL|member|read_cache_isize
-id|__u64
-id|read_cache_isize
 suffix:semicolon
 DECL|member|attrtimeo
 r_int
@@ -138,11 +129,16 @@ id|__u64
 id|change_attr
 suffix:semicolon
 multiline_comment|/* v4 only */
-multiline_comment|/*&n;&t; * Timestamp that dates the change made to read_cache_mtime.&n;&t; * This is of use for dentry revalidation&n;&t; */
-DECL|member|cache_mtime_jiffies
+multiline_comment|/* &quot;Generation counter&quot; for the attribute cache. This is&n;&t; * bumped whenever we update the metadata on the&n;&t; * server.&n;&t; */
+DECL|member|cache_change_attribute
 r_int
 r_int
-id|cache_mtime_jiffies
+id|cache_change_attribute
+suffix:semicolon
+multiline_comment|/*&n;&t; * Counter indicating the number of outstanding requests that&n;&t; * will cause a file data update.&n;&t; */
+DECL|member|data_updates
+id|atomic_t
+id|data_updates
 suffix:semicolon
 DECL|member|cache_access
 r_struct
@@ -217,10 +213,12 @@ DECL|macro|NFS_INO_ADVISE_RDPLUS
 mdefine_line|#define NFS_INO_ADVISE_RDPLUS   0x0002          /* advise readdirplus */
 DECL|macro|NFS_INO_REVALIDATING
 mdefine_line|#define NFS_INO_REVALIDATING&t;0x0004&t;&t;/* revalidating attrs */
-DECL|macro|NFS_INO_FLUSH
-mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0008&t;&t;/* inode is due for flushing */
-DECL|macro|NFS_INO_FAKE_ROOT
-mdefine_line|#define NFS_INO_FAKE_ROOT&t;0x0080&t;&t;/* root inode placeholder */
+DECL|macro|NFS_INO_INVALID_ATTR
+mdefine_line|#define NFS_INO_INVALID_ATTR&t;0x0008&t;&t;/* cached attrs are invalid */
+DECL|macro|NFS_INO_INVALID_DATA
+mdefine_line|#define NFS_INO_INVALID_DATA&t;0x0010&t;&t;/* cached data is invalid */
+DECL|macro|NFS_INO_INVALID_ATIME
+mdefine_line|#define NFS_INO_INVALID_ATIME&t;0x0020&t;&t;/* cached atime is invalid */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -265,18 +263,8 @@ DECL|macro|NFS_COOKIEVERF
 mdefine_line|#define NFS_COOKIEVERF(inode)&t;&t;(NFS_I(inode)-&gt;cookieverf)
 DECL|macro|NFS_READTIME
 mdefine_line|#define NFS_READTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_jiffies)
-DECL|macro|NFS_MTIME_UPDATE
-mdefine_line|#define NFS_MTIME_UPDATE(inode)&t;&t;(NFS_I(inode)-&gt;cache_mtime_jiffies)
-DECL|macro|NFS_CACHE_CTIME
-mdefine_line|#define NFS_CACHE_CTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_ctime)
-DECL|macro|NFS_CACHE_MTIME
-mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_mtime)
-DECL|macro|NFS_CACHE_ISIZE
-mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_isize)
 DECL|macro|NFS_CHANGE_ATTR
 mdefine_line|#define NFS_CHANGE_ATTR(inode)&t;&t;(NFS_I(inode)-&gt;change_attr)
-DECL|macro|NFS_CACHEINV
-mdefine_line|#define NFS_CACHEINV(inode) &bslash;&n;do { &bslash;&n;&t;NFS_READTIME(inode) = jiffies - NFS_MAXATTRTIMEO(inode) - 1; &bslash;&n;} while (0)
 DECL|macro|NFS_ATTRTIMEO
 mdefine_line|#define NFS_ATTRTIMEO(inode)&t;&t;(NFS_I(inode)-&gt;attrtimeo)
 DECL|macro|NFS_MINATTRTIMEO
@@ -291,10 +279,70 @@ DECL|macro|NFS_REVALIDATING
 mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
 DECL|macro|NFS_STALE
 mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
-DECL|macro|NFS_FAKE_ROOT
-mdefine_line|#define NFS_FAKE_ROOT(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_FAKE_ROOT)
 DECL|macro|NFS_FILEID
 mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
+DECL|function|nfs_caches_unstable
+r_static
+r_inline
+r_int
+id|nfs_caches_unstable
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|data_updates
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|NFS_CACHEINV
+r_static
+r_inline
+r_void
+id|NFS_CACHEINV
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nfs_caches_unstable
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_or_assign
+id|NFS_INO_INVALID_ATTR
+suffix:semicolon
+)brace
 DECL|function|nfs_server_capable
 r_static
 r_inline
@@ -370,6 +418,67 @@ op_lshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * nfs_save_change_attribute - Returns the inode attribute change cookie&n; * @inode - pointer to inode&n; * The &quot;change attribute&quot; is updated every time we finish an operation&n; * that will result in a metadata change on the server.&n; */
+DECL|function|nfs_save_change_attribute
+r_static
+r_inline
+r_int
+id|nfs_save_change_attribute
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|cache_change_attribute
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * nfs_verify_change_attribute - Detects NFS inode cache updates&n; * @inode - pointer to inode&n; * @chattr - previously saved change attribute&n; * Return &quot;false&quot; if metadata has been updated (or is in the process of&n; * being updated) since the change attribute was saved.&n; */
+DECL|function|nfs_verify_change_attribute
+r_static
+r_inline
+r_int
+id|nfs_verify_change_attribute
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+r_int
+id|chattr
+)paren
+(brace
+r_return
+op_logical_neg
+id|nfs_caches_unstable
+c_func
+(paren
+id|inode
+)paren
+op_logical_and
+id|chattr
+op_eq
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|cache_change_attribute
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
 r_extern
 r_void
@@ -403,7 +512,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__nfs_refresh_inode
+id|nfs_refresh_inode
 c_func
 (paren
 r_struct
@@ -519,6 +628,58 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nfs_begin_attr_update
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_end_attr_update
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_begin_data_update
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_end_data_update
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* linux/net/ipv4/ipconfig.c: trims ip addr off front of name, too. */
+r_extern
+id|u32
+id|root_nfs_parse_addr
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+multiline_comment|/*__init*/
 multiline_comment|/*&n; * linux/fs/nfs/file.c&n; */
 r_extern
 r_struct
@@ -785,15 +946,11 @@ macro_line|#endif
 multiline_comment|/*&n; * Try to write back everything synchronously (but check the&n; * return value!)&n; */
 r_extern
 r_int
-id|nfs_sync_file
+id|nfs_sync_inode
 c_func
 (paren
 r_struct
 id|inode
-op_star
-comma
-r_struct
-id|file
 op_star
 comma
 r_int
@@ -807,15 +964,11 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|nfs_flush_file
+id|nfs_flush_inode
 c_func
 (paren
 r_struct
 id|inode
-op_star
-comma
-r_struct
-id|file
 op_star
 comma
 r_int
@@ -844,15 +997,11 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_int
-id|nfs_commit_file
+id|nfs_commit_inode
 c_func
 (paren
 r_struct
 id|inode
-op_star
-comma
-r_struct
-id|file
 op_star
 comma
 r_int
@@ -880,8 +1029,8 @@ macro_line|#else
 r_static
 r_inline
 r_int
-DECL|function|nfs_commit_file
-id|nfs_commit_file
+DECL|function|nfs_commit_inode
+id|nfs_commit_inode
 c_func
 (paren
 r_struct
@@ -889,21 +1038,16 @@ id|inode
 op_star
 id|inode
 comma
-r_struct
-id|file
-op_star
-id|file
+r_int
+r_int
+id|idx_start
 comma
 r_int
 r_int
-id|offset
+id|npages
 comma
 r_int
-r_int
-id|len
-comma
-r_int
-id|flags
+id|how
 )paren
 (brace
 r_return
@@ -952,12 +1096,10 @@ id|inode
 r_int
 id|error
 op_assign
-id|nfs_sync_file
+id|nfs_sync_inode
 c_func
 (paren
 id|inode
-comma
-l_int|0
 comma
 l_int|0
 comma
@@ -1001,12 +1143,10 @@ id|page
 r_int
 id|error
 op_assign
-id|nfs_sync_file
+id|nfs_sync_inode
 c_func
 (paren
 id|inode
-comma
-l_int|0
 comma
 id|page-&gt;index
 comma
@@ -1015,55 +1155,6 @@ comma
 id|FLUSH_WAIT
 op_or
 id|FLUSH_STABLE
-)paren
-suffix:semicolon
-r_return
-(paren
-id|error
-OL
-l_int|0
-)paren
-ques
-c_cond
-id|error
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Write back all pending writes for one user.. &n; */
-r_static
-r_inline
-r_int
-DECL|function|nfs_wb_file
-id|nfs_wb_file
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-r_int
-id|error
-op_assign
-id|nfs_sync_file
-c_func
-(paren
-id|inode
-comma
-id|file
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|FLUSH_WAIT
 )paren
 suffix:semicolon
 r_return
@@ -1174,10 +1265,47 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * inline functions&n; */
+DECL|function|nfs_attribute_timeout
 r_static
 r_inline
 r_int
+id|nfs_attribute_timeout
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_struct
+id|nfs_inode
+op_star
+id|nfsi
+op_assign
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|nfsi-&gt;read_cache_jiffies
+op_plus
+id|nfsi-&gt;attrtimeo
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * nfs_revalidate_inode - Revalidate the inode attributes&n; * @server - pointer to nfs_server struct&n; * @inode - pointer to inode struct&n; *&n; * Updates inode attribute information by retrieving the data from the server.&n; */
 DECL|function|nfs_revalidate_inode
+r_static
+r_inline
+r_int
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -1195,22 +1323,26 @@ id|inode
 r_if
 c_cond
 (paren
-id|time_before
-c_func
+op_logical_neg
 (paren
-id|jiffies
-comma
-id|NFS_READTIME
+id|NFS_FLAGS
 c_func
 (paren
 id|inode
 )paren
-op_plus
-id|NFS_ATTRTIMEO
+op_amp
+(paren
+id|NFS_INO_INVALID_ATTR
+op_or
+id|NFS_INO_INVALID_DATA
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|nfs_attribute_timeout
 c_func
 (paren
 id|inode
-)paren
 )paren
 )paren
 r_return
@@ -1233,48 +1365,6 @@ c_func
 id|server
 comma
 id|inode
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|nfs_refresh_inode
-id|nfs_refresh_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|nfs_fattr
-op_star
-id|fattr
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|fattr-&gt;valid
-op_amp
-id|NFS_ATTR_FATTR
-)paren
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-id|__nfs_refresh_inode
-c_func
-(paren
-id|inode
-comma
-id|fattr
 )paren
 suffix:semicolon
 )brace
@@ -2236,7 +2326,7 @@ DECL|macro|ifdebug
 macro_line|# undef ifdebug
 macro_line|# ifdef NFS_DEBUG
 DECL|macro|ifdebug
-macro_line|#  define ifdebug(fac)&t;&t;if (nfs_debug &amp; NFSDBG_##fac)
+macro_line|#  define ifdebug(fac)&t;&t;if (unlikely(nfs_debug &amp; NFSDBG_##fac))
 macro_line|# else
 DECL|macro|ifdebug
 macro_line|#  define ifdebug(fac)&t;&t;if (0)
