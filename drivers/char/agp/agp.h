@@ -691,22 +691,6 @@ DECL|macro|I852_GME
 mdefine_line|#define I852_GME&t;&t;&t;0x2
 DECL|macro|I852_GM
 mdefine_line|#define I852_GM&t;&t;&t;&t;0x5
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82855_HB
-DECL|macro|PCI_DEVICE_ID_INTEL_82855_HB
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82855_HB&t;0x3580
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82855_IG
-DECL|macro|PCI_DEVICE_ID_INTEL_82855_IG
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82855_IG&t;0x3582
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82865_HB
-DECL|macro|PCI_DEVICE_ID_INTEL_82865_HB
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82865_HB&t;0x2570
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82865_IG
-DECL|macro|PCI_DEVICE_ID_INTEL_82865_IG
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82865_IG&t;0x2572
-macro_line|#endif
 multiline_comment|/* intel 815 register */
 DECL|macro|INTEL_815_APCONT
 mdefine_line|#define INTEL_815_APCONT&t;0x51
