@@ -1,11 +1,11 @@
 multiline_comment|/* yellowfin.c: A Packet Engines G-NIC ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&n;&t;LK1.1.4 (val@nmt.edu):&n;&t;* Fix three endian-ness bugs&n;&t;* Support dual function SYM53C885E ethernet chip&n;&t;&n;&t;LK1.1.5 (val@nmt.edu):&n;&t;* Fix forced full-duplex bug I introduced&n;&t;&n;*/
+multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&n;&t;LK1.1.4 (val@nmt.edu):&n;&t;* Fix three endian-ness bugs&n;&t;* Support dual function SYM53C885E ethernet chip&n;&t;&n;&t;LK1.1.5 (val@nmt.edu):&n;&t;* Fix forced full-duplex bug I introduced&n;&n;&t;LK1.1.6 (val@nmt.edu):&n;&t;* Only print warning on truly &quot;oversized&quot; packets&n;&t;* Fix theoretical bug on gigabit cards - return to 1.1.3 behavior&n;&t;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;yellowfin&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.05+LK1.1.5&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.05+LK1.1.6&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;May 10, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Feb 11, 2002&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_NAME &quot;: &quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
@@ -407,7 +407,7 @@ comma
 l_string|&quot;G-NIC: enable GX server chipset bug workaround (0-1)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the Packet Engines &quot;Yellowfin&quot; Gigabit&n;Ethernet adapter.  The only PCA currently supported is the G-NIC 64-bit&n;PCI card.&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS preferably should assign the&n;PCI INTA signal to an otherwise unused system IRQ line.&n;Note: Kernel versions earlier than 1.3.73 do not support shared PCI&n;interrupt lines.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Yellowfin uses the Descriptor Based DMA Architecture specified by Apple.&n;This is a descriptor list scheme similar to that used by the EEPro100 and&n;Tulip.  This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the Yellowfin as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack and replaced by a newly allocated skbuff.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  For small frames the copying cost is negligible (esp. considering&n;that we are pre-loading the cache with immediately useful header&n;information).  For large frames the copying cost is non-trivial, and the&n;larger copy might flush the cache of useful data.&n;&n;IIIC. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and other software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;yp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;yp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;Thanks to Kim Stearns of Packet Engines for providing a pair of G-NIC boards.&n;Thanks to Bruce Faust of Digitalscape for providing both their SYM53C885 board&n;and an AlphaStation to verifty the Alpha port!&n;&n;IVb. References&n;&n;Yellowfin Engineering Design Specification, 4/23/97 Preliminary/Confidential&n;Symbios SYM53C885 PCI-SCSI/Fast Ethernet Multifunction Controller Preliminary&n;   Data Manual v3.0&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;&n;IVc. Errata&n;&n;See Packet Engines confidential appendix (prototype chips only).&n;*/
+multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the Packet Engines &quot;Yellowfin&quot; Gigabit&n;Ethernet adapter.  The G-NIC 64-bit PCI card is supported, as well as the &n;Symbios 53C885E dual function chip.&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS preferably should assign the&n;PCI INTA signal to an otherwise unused system IRQ line.&n;Note: Kernel versions earlier than 1.3.73 do not support shared PCI&n;interrupt lines.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Yellowfin uses the Descriptor Based DMA Architecture specified by Apple.&n;This is a descriptor list scheme similar to that used by the EEPro100 and&n;Tulip.  This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the Yellowfin as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack and replaced by a newly allocated skbuff.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  For small frames the copying cost is negligible (esp. considering&n;that we are pre-loading the cache with immediately useful header&n;information).  For large frames the copying cost is non-trivial, and the&n;larger copy might flush the cache of useful data.&n;&n;IIIC. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and other software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;yp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;yp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;Thanks to Kim Stearns of Packet Engines for providing a pair of G-NIC boards.&n;Thanks to Bruce Faust of Digitalscape for providing both their SYM53C885 board&n;and an AlphaStation to verifty the Alpha port!&n;&n;IVb. References&n;&n;Yellowfin Engineering Design Specification, 4/23/97 Preliminary/Confidential&n;Symbios SYM53C885 PCI-SCSI/Fast Ethernet Multifunction Controller Preliminary&n;   Data Manual v3.0&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;&n;IVc. Errata&n;&n;See Packet Engines confidential appendix (prototype chips only).&n;*/
 "&f;"
 DECL|enum|pci_id_flags_bits
 r_enum
@@ -510,16 +510,17 @@ op_assign
 l_int|16
 comma
 DECL|enumerator|HasMACAddrBug
-DECL|enumerator|DontUseEeprom
 id|HasMACAddrBug
 op_assign
 l_int|32
 comma
+multiline_comment|/* Only on early revs.  */
+DECL|enumerator|DontUseEeprom
 id|DontUseEeprom
 op_assign
 l_int|64
 comma
-multiline_comment|/* Only on early revs.  */
+multiline_comment|/* Don&squot;t read the MAC from the EEPROm. */
 )brace
 suffix:semicolon
 multiline_comment|/* The PCI I/O space extent. */
@@ -617,6 +618,8 @@ op_or
 id|HasMulticastBug
 op_or
 id|HasMACAddrBug
+op_or
+id|DontUseEeprom
 )brace
 comma
 (brace
@@ -5314,16 +5317,25 @@ id|RX_EOP
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|data_size
+op_ne
+l_int|0
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Oversized Ethernet frame spanned multiple buffers,&quot;
-l_string|&quot; status %4.4x!&bslash;n&quot;
+l_string|&quot; status %4.4x, data_size %d!&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|desc_status
+comma
+id|data_size
 )paren
 suffix:semicolon
 id|yp-&gt;stats.rx_length_errors
