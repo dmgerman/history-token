@@ -9413,26 +9413,19 @@ id|dev_ptmx_driver
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
-r_extern
-r_void
-id|con_init_devfs
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|console_map_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|dev_console_driver
 r_static
 r_struct
 id|tty_driver
 id|dev_console_driver
+suffix:semicolon
+r_extern
+r_int
+id|vty_init
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Ok, now we can initialize the rest of the tty devices and can count&n; * on memory allocations, interrupts etc..&n; */
@@ -9561,14 +9554,6 @@ c_func
 l_string|&quot;Couldn&squot;t register /dev/console driver&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* console calls tty_register_driver() before kmalloc() works.&n;&t; * Thus, we can&squot;t devfs_register() then.  Do so now, instead. &n;&t; */
-macro_line|#ifdef CONFIG_VT
-id|con_init_devfs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_UNIX98_PTYS
 id|dev_ptmx_driver
 op_assign
@@ -9660,17 +9645,7 @@ c_func
 l_string|&quot;Couldn&squot;t register /dev/tty0 driver&bslash;n&quot;
 )paren
 suffix:semicolon
-id|vcs_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|kbd_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|console_map_init
+id|vty_init
 c_func
 (paren
 )paren

@@ -143,6 +143,13 @@ id|NPAR
 )braket
 suffix:semicolon
 multiline_comment|/* Parameters of current escape sequence */
+DECL|member|vc_tty
+r_struct
+id|tty_struct
+op_star
+id|vc_tty
+suffix:semicolon
+multiline_comment|/* TTY we are attached to */
 DECL|member|vc_origin
 r_int
 r_int
