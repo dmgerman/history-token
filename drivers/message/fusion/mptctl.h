@@ -67,6 +67,7 @@ id|fwlen
 suffix:semicolon
 DECL|member|bufp
 r_void
+id|__user
 op_star
 id|bufp
 suffix:semicolon
@@ -656,21 +657,25 @@ suffix:semicolon
 multiline_comment|/* optional (seconds) */
 DECL|member|replyFrameBufPtr
 r_char
+id|__user
 op_star
 id|replyFrameBufPtr
 suffix:semicolon
 DECL|member|dataInBufPtr
 r_char
+id|__user
 op_star
 id|dataInBufPtr
 suffix:semicolon
 DECL|member|dataOutBufPtr
 r_char
+id|__user
 op_star
 id|dataOutBufPtr
 suffix:semicolon
 DECL|member|senseDataPtr
 r_char
+id|__user
 op_star
 id|senseDataPtr
 suffix:semicolon

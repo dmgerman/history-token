@@ -180,13 +180,6 @@ c_func
 id|scsi_extd_sense_format
 )paren
 suffix:semicolon
-DECL|variable|kernel_scsi_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_scsi_ioctl
-)paren
-suffix:semicolon
 DECL|variable|scsi_block_when_processing_errors
 id|EXPORT_SYMBOL
 c_func
