@@ -2823,10 +2823,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * 1st function defined in .text section. Calling this function in&n; * init_module() followed by a breakpoint allows a remote debugger&n; * (gdb) to get the .text address for the add-symbol-file command.&n; * This allows remote debugging of dynamically loadable modules.&n; */
 DECL|function|mgsl_get_text_ptr
 r_void
@@ -7617,12 +7613,14 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -7694,12 +7692,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -7795,12 +7795,14 @@ id|flags
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -12080,9 +12082,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -22766,9 +22771,11 @@ id|StartIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|DMABUFFERSIZE
@@ -23350,9 +23357,11 @@ id|CurrentIndex
 dot
 id|virt_addr
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|framesize
 comma
 id|DMABUFFERSIZE
@@ -23539,9 +23548,11 @@ id|info
 comma
 id|Buffer
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|BufferSize
 comma
 id|DMABUFFERSIZE
