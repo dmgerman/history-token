@@ -5558,7 +5558,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|cs-&gt;subtyp
 op_assign
 l_int|0

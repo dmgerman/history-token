@@ -8,7 +8,7 @@ macro_line|#include &quot;hscx.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;bkm_ax.h&quot;
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|ATTEMPT_PCI_REMAPPING
 mdefine_line|#define&t;ATTEMPT_PCI_REMAPPING&t;/* Required for PLX rev 1 */
 r_extern
@@ -1350,7 +1350,7 @@ op_star
 id|card
 )paren
 (brace
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_struct
 id|IsdnCardState
 op_star
