@@ -7274,7 +7274,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;%2d %-10s %8ld %7ld  %8ld %7ld %05X %08X %08X&bslash;n&quot;
+l_string|&quot;%2Zd %-10s %8ld %7ld  %8ld %7ld %05X %08X %08X&bslash;n&quot;
 comma
 id|vif
 op_minus
