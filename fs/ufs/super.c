@@ -3523,6 +3523,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ufs_read_super: fragment size %u is too small&bslash;n&quot;
+comma
 id|uspi-&gt;s_fsize
 )paren
 suffix:semicolon
@@ -3542,6 +3543,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ufs_read_super: fragment size %u is too large&bslash;n&quot;
+comma
 id|uspi-&gt;s_fsize
 )paren
 suffix:semicolon
@@ -3585,6 +3587,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ufs_read_super: block size %u is too small&bslash;n&quot;
+comma
 id|uspi-&gt;s_fsize
 )paren
 suffix:semicolon
@@ -3606,6 +3609,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ufs_read_super: too many fragments per block (%u)&bslash;n&quot;
+comma
 id|uspi-&gt;s_bsize
 op_div
 id|uspi-&gt;s_fsize
