@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.29 2002/11/12 09:51:22 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: read.c,v 1.31 2003/01/14 14:06:22 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -161,7 +161,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short read from 0x%08x: wanted 0x%x bytes, got 0x%x&bslash;n&quot;
+l_string|&quot;Short read from 0x%08x: wanted 0x%zx bytes, got 0x%zx&bslash;n&quot;
 comma
 id|ref_offset
 c_func
@@ -1189,7 +1189,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Reading %d-%d from node at 0x%x&bslash;n&quot;
+l_string|&quot;Reading %d-%d from node at 0x%08x (%d)&bslash;n&quot;
 comma
 id|frag-&gt;ofs
 op_plus
@@ -1202,6 +1202,12 @@ op_plus
 id|readlen
 comma
 id|ref_offset
+c_func
+(paren
+id|frag-&gt;node-&gt;raw
+)paren
+comma
+id|ref_flags
 c_func
 (paren
 id|frag-&gt;node-&gt;raw

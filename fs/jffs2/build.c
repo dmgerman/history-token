@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.42 2002/09/09 16:29:08 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.46 2003/04/29 17:12:26 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_int
@@ -28,8 +29,113 @@ id|jffs2_inode_cache
 op_star
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_struct
+id|jffs2_inode_cache
+op_star
+DECL|function|first_inode_chain
+id|first_inode_chain
+c_func
+(paren
+r_int
+op_star
+id|i
+comma
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+(brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+op_star
+id|i
+OL
+id|INOCACHE_HASHSIZE
+suffix:semicolon
+(paren
+op_star
+id|i
+)paren
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|c-&gt;inocache_list
+(braket
+op_star
+id|i
+)braket
+)paren
+r_return
+id|c-&gt;inocache_list
+(braket
+op_star
+id|i
+)braket
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_struct
+id|jffs2_inode_cache
+op_star
+DECL|function|next_inode
+id|next_inode
+c_func
+(paren
+r_int
+op_star
+id|i
+comma
+r_struct
+id|jffs2_inode_cache
+op_star
+id|ic
+comma
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+(brace
+multiline_comment|/* More in this chain? */
+r_if
+c_cond
+(paren
+id|ic-&gt;next
+)paren
+r_return
+id|ic-&gt;next
+suffix:semicolon
+(paren
+op_star
+id|i
+)paren
+op_increment
+suffix:semicolon
+r_return
+id|first_inode_chain
+c_func
+(paren
+id|i
+comma
+id|c
+)paren
+suffix:semicolon
+)brace
 DECL|macro|for_each_inode
-mdefine_line|#define for_each_inode(i, c, ic) for (i=0; i&lt;INOCACHE_HASHSIZE; i++) for (ic=c-&gt;inocache_list[i]; ic; ic=ic-&gt;next) 
+mdefine_line|#define for_each_inode(i, c, ic)&t;&t;&t;&bslash;&n;&t;for (i = 0, ic = first_inode_chain(&amp;i, (c));&t;&bslash;&n;&t;     ic;&t;&t;&t;&t;&t;&bslash;&n;&t;     ic = next_inode(&amp;i, ic, (c)))
 multiline_comment|/* Scan plan:&n; - Scan physical nodes. Build map of inodes/dirents. Allocate inocaches as we go&n; - Scan directory tree from top down, setting nlink in inocaches&n; - Scan inocaches for inodes with nlink==0&n;*/
 DECL|function|jffs2_build_filesystem
 r_static
@@ -1004,6 +1110,13 @@ c_func
 (paren
 op_amp
 id|c-&gt;erase_wait
+)paren
+suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|c-&gt;inocache_wq
 )paren
 suffix:semicolon
 id|spin_lock_init

@@ -1,19 +1,28 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.20 2002/11/12 11:33:02 dwmw2 Exp $&n; * + some of the dependencies on later MTD NAND code temporarily reverted.&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.30 2003/02/19 17:48:49 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-multiline_comment|/* FIXME duplicated defines in wbuf.c and nand.c&n; * Constants for out of band layout&n; */
-macro_line|#ifndef NAND_BADBLOCK_POS
-DECL|macro|NAND_BADBLOCK_POS
-mdefine_line|#define NAND_BADBLOCK_POS&t;&t;5
-macro_line|#endif
-macro_line|#ifndef NAND_JFFS2_OOB_BADBPOS
-DECL|macro|NAND_JFFS2_OOB_BADBPOS
-mdefine_line|#define NAND_JFFS2_OOB_BADBPOS&t;&t;5
+multiline_comment|/* max. erase failures before we mark a block bad */
+DECL|macro|MAX_ERASE_FAILURES
+mdefine_line|#define MAX_ERASE_FAILURES &t;5
+multiline_comment|/* two seconds timeout for timed wbuf-flushing */
+DECL|macro|WBUF_FLUSH_TIMEOUT
+mdefine_line|#define WBUF_FLUSH_TIMEOUT&t;2 * HZ
+DECL|macro|JFFS2_OOB_ECCPOS0
+mdefine_line|#define JFFS2_OOB_ECCPOS0&t;&t;0
+DECL|macro|JFFS2_OOB_ECCPOS1
+mdefine_line|#define JFFS2_OOB_ECCPOS1&t;&t;1
+DECL|macro|JFFS2_OOB_ECCPOS2
+mdefine_line|#define JFFS2_OOB_ECCPOS2&t;&t;2
+DECL|macro|JFFS2_OOB_ECCPOS3
+mdefine_line|#define JFFS2_OOB_ECCPOS3&t;&t;3
+DECL|macro|JFFS2_OOB_ECCPOS4
+mdefine_line|#define JFFS2_OOB_ECCPOS4&t;&t;6
+DECL|macro|JFFS2_OOB_ECCPOS5
+mdefine_line|#define JFFS2_OOB_ECCPOS5&t;&t;7
 DECL|macro|NAND_JFFS2_OOB8_FSDAPOS
 mdefine_line|#define NAND_JFFS2_OOB8_FSDAPOS&t;&t;6
 DECL|macro|NAND_JFFS2_OOB16_FSDAPOS
@@ -22,13 +31,33 @@ DECL|macro|NAND_JFFS2_OOB8_FSDALEN
 mdefine_line|#define NAND_JFFS2_OOB8_FSDALEN&t;&t;2
 DECL|macro|NAND_JFFS2_OOB16_FSDALEN
 mdefine_line|#define NAND_JFFS2_OOB16_FSDALEN&t;8
-macro_line|#endif
-multiline_comment|/* max. erase failures before we mark a block bad */
-DECL|macro|MAX_ERASE_FAILURES
-mdefine_line|#define MAX_ERASE_FAILURES &t;5
-multiline_comment|/* two seconds timeout for timed wbuf-flushing */
-DECL|macro|WBUF_FLUSH_TIMEOUT
-mdefine_line|#define WBUF_FLUSH_TIMEOUT&t;2 * HZ
+DECL|variable|jffs2_oobinfo
+r_struct
+id|nand_oobinfo
+id|jffs2_oobinfo
+op_assign
+(brace
+id|useecc
+suffix:colon
+l_int|1
+comma
+id|eccpos
+suffix:colon
+(brace
+id|JFFS2_OOB_ECCPOS0
+comma
+id|JFFS2_OOB_ECCPOS1
+comma
+id|JFFS2_OOB_ECCPOS2
+comma
+id|JFFS2_OOB_ECCPOS3
+comma
+id|JFFS2_OOB_ECCPOS4
+comma
+id|JFFS2_OOB_ECCPOS5
+)brace
+)brace
+suffix:semicolon
 DECL|function|jffs2_refile_wbuf_blocks
 r_static
 r_inline
@@ -581,7 +610,7 @@ id|ret
 op_assign
 id|c-&gt;mtd
 op_member_access_from_pointer
-id|write
+id|write_ecc
 c_func
 (paren
 id|c-&gt;mtd
@@ -594,6 +623,11 @@ op_amp
 id|retlen
 comma
 id|c-&gt;wbuf
+comma
+l_int|NULL
+comma
+op_amp
+id|jffs2_oobinfo
 )paren
 suffix:semicolon
 r_if
@@ -625,7 +659,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;jffs2_flush_wbuf(): Write was short %d instead of %d&bslash;n&quot;
+l_string|&quot;jffs2_flush_wbuf(): Write was short: %zd instead of %d&bslash;n&quot;
 comma
 id|retlen
 comma
@@ -663,7 +697,7 @@ l_string|&quot;jffs2_flush_wbuf() adjusting free_size of c-&gt;nextblock&bslash;
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -758,7 +792,7 @@ op_minus
 id|c-&gt;wbuf_len
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -767,7 +801,7 @@ id|c-&gt;erase_completion_lock
 suffix:semicolon
 )brace
 multiline_comment|/* Stick any now-obsoleted blocks on the erase_pending_list */
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -780,7 +814,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1555,10 +1589,12 @@ suffix:semicolon
 multiline_comment|/* We did cross a page boundary, so we write some now */
 id|ret
 op_assign
-id|jffs2_flash_direct_writev
+id|c-&gt;mtd
+op_member_access_from_pointer
+id|writev_ecc
 c_func
 (paren
-id|c
+id|c-&gt;mtd
 comma
 id|outvecs
 comma
@@ -1570,6 +1606,11 @@ id|outvec_to
 comma
 op_amp
 id|wbuf_retlen
+comma
+l_int|NULL
+comma
+op_amp
+id|jffs2_oobinfo
 )paren
 suffix:semicolon
 r_if
@@ -1772,7 +1813,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;This is the entry for NOR-Flash. We use it also for NAND to flush wbuf&n;*/
+multiline_comment|/*&n; *&t;This is the entry for flash write.&n; *&t;Check, if we work on NAND FLASH, if so build an iovec and write it via vritev&n;*/
 DECL|function|jffs2_flash_write
 r_int
 id|jffs2_flash_write
@@ -1799,6 +1840,22 @@ op_star
 id|buf
 )paren
 (brace
+r_struct
+id|iovec
+id|vecs
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|jffs2_can_mark_obsolete
+c_func
+(paren
+id|c
+)paren
+)paren
 r_return
 id|c-&gt;mtd
 op_member_access_from_pointer
@@ -1814,6 +1871,44 @@ comma
 id|retlen
 comma
 id|buf
+)paren
+suffix:semicolon
+id|vecs
+(braket
+l_int|0
+)braket
+dot
+id|iov_base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|buf
+suffix:semicolon
+id|vecs
+(braket
+l_int|0
+)braket
+dot
+id|iov_len
+op_assign
+id|len
+suffix:semicolon
+r_return
+id|jffs2_flash_writev
+c_func
+(paren
+id|c
+comma
+id|vecs
+comma
+l_int|1
+comma
+id|ofs
+comma
+id|retlen
 )paren
 suffix:semicolon
 )brace
@@ -1875,7 +1970,7 @@ id|ret
 op_assign
 id|c-&gt;mtd
 op_member_access_from_pointer
-id|read
+id|read_ecc
 c_func
 (paren
 id|c-&gt;mtd
@@ -1887,6 +1982,11 @@ comma
 id|retlen
 comma
 id|buf
+comma
+l_int|NULL
+comma
+op_amp
+id|jffs2_oobinfo
 )paren
 suffix:semicolon
 r_if
@@ -1911,7 +2011,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;mtd-&gt;read(0x%x bytes from 0x%llx) returned ECC error&bslash;n&quot;
+l_string|&quot;mtd-&gt;read(0x%zx bytes from 0x%llx) returned ECC error&bslash;n&quot;
 comma
 id|len
 comma
@@ -2292,7 +2392,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_check_oob_empty(): Read OOB return short read &quot;
-l_string|&quot;(%d bytes not %d) for block at %08x&bslash;n&quot;
+l_string|&quot;(%zd bytes not %d) for block at %08x&bslash;n&quot;
 comma
 id|retlen
 comma
@@ -2515,10 +2615,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n;*&t;Scan for a valid cleanmarker and for bad blocks&n;*&t;For virtual blocks (concatenated physical blocks) check the cleanmarker&n;*&t;only in the first page of the first physical block, but scan for bad blocks in all&n;*&t;physical blocks&n;*/
 DECL|function|jffs2_check_nand_cleanmarker
 r_int
 id|jffs2_check_nand_cleanmarker
-c_func
 (paren
 r_struct
 id|jffs2_sb_info
@@ -2551,9 +2651,17 @@ r_int
 id|ret
 comma
 id|i
+comma
+id|cnt
+comma
+id|retval
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|retlen
+comma
+id|offset
 suffix:semicolon
 r_int
 id|fsdata_pos
@@ -2563,6 +2671,10 @@ comma
 id|oob_size
 comma
 id|badblock_pos
+suffix:semicolon
+id|offset
+op_assign
+id|jeb-&gt;offset
 suffix:semicolon
 id|oob_size
 op_assign
@@ -2612,10 +2724,8 @@ suffix:semicolon
 r_default
 suffix:colon
 id|D1
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_write_nand_cleanmarker(): Invalid ECC type&bslash;n&quot;
@@ -2627,17 +2737,34 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;*&t;We read oob data from page 0 and 1 of the block.&n;&t;*&t;page 0 contains cleanmarker and badblock info&n;&t;*&t;page 2 contains failure count of this block&n;&t;*/
+multiline_comment|/* Loop through the physical blocks */
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+(paren
+id|c-&gt;sector_size
+op_div
+id|c-&gt;mtd-&gt;erasesize
+)paren
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;   *    We read oob data from page 0 and 1 of the block.&n;&t;&t;   *    page 0 contains cleanmarker and badblock info&n;&t;&t;   *    page 1 contains failure count of this block&n;&t;&t; */
 id|ret
 op_assign
-id|c-&gt;mtd
-op_member_access_from_pointer
-id|read_oob
-c_func
+id|c-&gt;mtd-&gt;read_oob
 (paren
 id|c-&gt;mtd
 comma
-id|jeb-&gt;offset
+id|offset
 comma
 id|oob_size
 op_lshift
@@ -2656,10 +2783,8 @@ id|ret
 )paren
 (brace
 id|D1
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_check_nand_cleanmarker(): Read OOB failed %d for block at %08x&bslash;n&quot;
@@ -2687,13 +2812,11 @@ l_int|1
 )paren
 (brace
 id|D1
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_check_nand_cleanmarker(): Read OOB return short read (%d bytes not %d) for block at %08x&bslash;n&quot;
+l_string|&quot;jffs2_check_nand_cleanmarker(): Read OOB return short read (%zd bytes not %d) for block at %08x&bslash;n&quot;
 comma
 id|retlen
 comma
@@ -2723,10 +2846,8 @@ l_int|0xff
 )paren
 (brace
 id|D1
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_check_nand_cleanmarker(): Bad block at %08x&bslash;n&quot;
@@ -2754,10 +2875,8 @@ l_int|0xff
 )paren
 (brace
 id|D1
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_check_nand_cleanmarker(): Block marked as failed at %08x, fail count:%d&bslash;n&quot;
@@ -2777,10 +2896,17 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
+multiline_comment|/* Check cleanmarker only on the first physical block */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cnt
+)paren
+(brace
 id|n.magic
 op_assign
 id|cpu_to_je16
-c_func
 (paren
 id|JFFS2_MAGIC_BITMASK
 )paren
@@ -2788,7 +2914,6 @@ suffix:semicolon
 id|n.nodetype
 op_assign
 id|cpu_to_je16
-c_func
 (paren
 id|JFFS2_NODETYPE_CLEANMARKER
 )paren
@@ -2796,7 +2921,6 @@ suffix:semicolon
 id|n.totlen
 op_assign
 id|cpu_to_je32
-c_func
 (paren
 l_int|8
 )paren
@@ -2843,10 +2967,8 @@ id|i
 )paren
 (brace
 id|D2
-c_func
 (paren
 id|printk
-c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;jffs2_check_nand_cleanmarker(): Cleanmarker node not detected in block at %08x&bslash;n&quot;
@@ -2855,13 +2977,20 @@ id|jeb-&gt;offset
 )paren
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
+)brace
+id|offset
+op_add_assign
+id|c-&gt;mtd-&gt;erasesize
+suffix:semicolon
+)brace
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|jffs2_write_nand_cleanmarker
@@ -3039,7 +3168,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_write_nand_cleanmarker(): Short write for block at %08x: %d not %d&bslash;n&quot;
+l_string|&quot;jffs2_write_nand_cleanmarker(): Short write for block at %08x: %zd not %d&bslash;n&quot;
 comma
 id|jeb-&gt;offset
 comma
@@ -3190,7 +3319,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_nand_read_failcnt(): Read OOB return short read (%d bytes not %d) for block at %08x&bslash;n&quot;
+l_string|&quot;jffs2_nand_read_failcnt(): Read OOB return short read (%zd bytes not %d) for block at %08x&bslash;n&quot;
 comma
 id|retlen
 comma
@@ -3363,7 +3492,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_write_nand_badblock(): Short write for block at %08x: %d not 1&bslash;n&quot;
+l_string|&quot;jffs2_write_nand_badblock(): Short write for block at %08x: %zd not 1&bslash;n&quot;
 comma
 id|jeb-&gt;offset
 comma

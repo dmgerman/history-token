@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.14 2001/10/02 15:05:12 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.17 2003/05/28 12:51:49 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6,7 +6,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 r_static
 r_int
 id|mapram_read
@@ -125,9 +128,7 @@ id|mtd
 suffix:semicolon
 multiline_comment|/* Check the first byte is RAM */
 macro_line|#if 0
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -140,9 +141,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -155,9 +154,7 @@ l_int|0x55
 r_return
 l_int|NULL
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -170,9 +167,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -186,9 +181,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Check the last byte is RAM */
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -203,9 +196,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -220,9 +211,7 @@ l_int|0x55
 r_return
 l_int|NULL
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map
@@ -237,9 +226,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|map
-op_member_access_from_pointer
-id|read8
+id|map_read8
 c_func
 (paren
 id|map
@@ -357,7 +344,11 @@ op_rshift_assign
 l_int|1
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|mtd
@@ -400,9 +391,7 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -461,9 +450,7 @@ op_star
 )paren
 id|mtd-&gt;priv
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|copy_to
+id|map_copy_to
 c_func
 (paren
 id|map
@@ -531,9 +518,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|map
-op_member_access_from_pointer
-id|write8
+id|map_write8
 c_func
 (paren
 id|map

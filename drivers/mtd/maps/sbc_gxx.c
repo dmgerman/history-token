@@ -1,4 +1,4 @@
-multiline_comment|/* sbc_gxx.c -- MTD map driver for Arcom Control Systems SBC-MediaGX,&n;                SBC-GXm and SBC-GX1 series boards.&n; &n;   Copyright (C) 2001 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: sbc_gxx.c,v 1.19 2001/10/02 15:05:14 dwmw2 Exp $&n;&n;The SBC-MediaGX / SBC-GXx has up to 16 MiB of &n;Intel StrataFlash (28F320/28F640) in x8 mode.  &n;&n;This driver uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   16 kbyte memory window at 0xdc000-0xdffff&n;   &n;   Two IO address locations for paging&n;   &n;   0x258&n;       bit 0-7: address bit 14-21&n;   0x259&n;       bit 0-1: address bit 22-23&n;       bit 7:   0 - reset/powered down&n;                1 - device enabled&n;&n;The single flash device is divided into 3 partition which appear as &n;separate MTD devices.&n;&n;25/04/2001 AJL (Arcom)  Modified signon strings and partition sizes&n;                        (to support bzImages up to 638KiB-ish)&n;*/
+multiline_comment|/* sbc_gxx.c -- MTD map driver for Arcom Control Systems SBC-MediaGX,&n;                SBC-GXm and SBC-GX1 series boards.&n; &n;   Copyright (C) 2001 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: sbc_gxx.c,v 1.26 2003/05/26 08:50:36 dwmw2 Exp $&n;&n;The SBC-MediaGX / SBC-GXx has up to 16 MiB of &n;Intel StrataFlash (28F320/28F640) in x8 mode.  &n;&n;This driver uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   16 KiB memory window at 0xdc000-0xdffff&n;   &n;   Two IO address locations for paging&n;   &n;   0x258&n;       bit 0-7: address bit 14-21&n;   0x259&n;       bit 0-1: address bit 22-23&n;       bit 7:   0 - reset/powered down&n;                1 - device enabled&n;&n;The single flash device is divided into 3 partition which appear as &n;separate MTD devices.&n;&n;25/04/2001 AJL (Arcom)  Modified signon strings and partition sizes&n;                        (to support bzImages up to 638KiB-ish)&n;*/
 singleline_comment|// Includes
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -69,62 +69,7 @@ id|partition_info
 (braket
 )braket
 op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;SBC-GXx flash boot partition&quot;
-comma
-dot
-id|size
-op_assign
-id|BOOT_PARTITION_SIZE_KiB
-op_star
-l_int|1024
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;SBC-GXx flash data partition&quot;
-comma
-dot
-id|offset
-op_assign
-id|BOOT_PARTITION_SIZE_KiB
-op_star
-l_int|1024
-comma
-dot
-id|size
-op_assign
-(paren
-id|DATA_PARTITION_SIZE_KiB
-)paren
-op_star
-l_int|1024
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;SBC-GXx flash application partition&quot;
-comma
-dot
-id|offset
-op_assign
-(paren
-id|BOOT_PARTITION_SIZE_KiB
-op_plus
-id|DATA_PARTITION_SIZE_KiB
-)paren
-op_star
-l_int|1024
-)brace
-)brace
+initialization_block
 suffix:semicolon
 DECL|macro|NUM_PARTITIONS
 mdefine_line|#define NUM_PARTITIONS 3
@@ -764,13 +709,18 @@ op_assign
 l_string|&quot;SBC-GXx flash&quot;
 comma
 dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
 id|size
 op_assign
 id|MAX_SIZE_KiB
 op_star
 l_int|1024
 comma
-multiline_comment|/* this must be set to a maximum&n;&t;&t;&t;&t;&t;&t;possible amount of flash so&n;&t;&t;&t;&t;&t;&t;the cfi probe routines find&n;&t;&t;&t;&t;&t;&t;all the chips */
+multiline_comment|/* this must be set to a maximum possible amount&n;&t;&t;&t; of flash so the cfi probe routines find all&n;&t;&t;&t; the chips */
 dot
 id|buswidth
 op_assign
@@ -881,42 +831,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|PAGE_IO
-comma
-id|PAGE_IO_SIZE
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: IO ports 0x%x-0x%x in use&bslash;n&quot;
-comma
-id|sbc_gxx_map.name
-comma
-id|PAGE_IO
-comma
-id|PAGE_IO
-op_plus
-id|PAGE_IO_SIZE
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
 id|iomapadr
 op_assign
 (paren
@@ -952,6 +866,10 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -961,7 +879,40 @@ id|PAGE_IO_SIZE
 comma
 l_string|&quot;SBC-GXx flash&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: IO ports 0x%x-0x%x in use&bslash;n&quot;
+comma
+id|sbc_gxx_map.name
+comma
+id|PAGE_IO
+comma
+id|PAGE_IO
+op_plus
+id|PAGE_IO_SIZE
+op_minus
+l_int|1
+)paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|iomapadr
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -1016,7 +967,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|all_mtd-&gt;module
+id|all_mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon

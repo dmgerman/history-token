@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: pcmciamtd.c,v 1.36 2002/10/14 18:49:12 rmk Exp $&n; *&n; * pcmciamtd.c - MTD driver for PCMCIA flash memory cards&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; */
+multiline_comment|/*&n; * $Id: pcmciamtd.c,v 1.47 2003/05/28 13:36:14 dwmw2 Exp $&n; *&n; * pcmciamtd.c - MTD driver for PCMCIA flash memory cards&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -10,6 +11,7 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#ifdef CONFIG_MTD_DEBUG
 DECL|variable|debug
 r_static
@@ -61,7 +63,7 @@ mdefine_line|#define warn(format, arg...) printk(KERN_WARNING __FILE__ &quot;: &
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;PCMCIA Flash memory card driver&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;$Revision: 1.36 $&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;$Revision: 1.47 $&quot;
 multiline_comment|/* Size of the PCMCIA address space: 26 bits = 64 MB */
 DECL|macro|MAX_PCMCIA_ADDR
 mdefine_line|#define MAX_PCMCIA_ADDR&t;0x4000000
@@ -2538,6 +2540,10 @@ op_amp
 id|new_name
 )paren
 suffix:semicolon
+id|dev-&gt;pcmcia_map.phys
+op_assign
+id|NO_XIP
+suffix:semicolon
 id|dev-&gt;pcmcia_map.read8
 op_assign
 id|pcmcia_read8_remap
@@ -2575,7 +2581,7 @@ op_assign
 id|pcmciamtd_set_vpp
 suffix:semicolon
 )brace
-multiline_comment|/* Request a memory window for PCMCIA. Some architeures can map windows upto the maximum&n;&t;   that PCMCIA can support (64Mb) - this is ideal and we aim for a window the size of the&n;&t;   whole card - otherwise we try smaller windows until we succeed */
+multiline_comment|/* Request a memory window for PCMCIA. Some architeures can map windows upto the maximum&n;&t;   that PCMCIA can support (64MiB) - this is ideal and we aim for a window the size of the&n;&t;   whole card - otherwise we try smaller windows until we succeed */
 id|req.Attributes
 op_assign
 id|WIN_MEMORY_TYPE_CM
@@ -2637,7 +2643,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;requesting window with size = %dKB memspeed = %d&quot;
+l_string|&quot;requesting window with size = %dKiB memspeed = %d&quot;
 comma
 id|req.Size
 op_rshift
@@ -2697,7 +2703,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Got window of size %dKB&quot;
+l_string|&quot;Got window of size %dKiB&quot;
 comma
 id|req.Size
 op_rshift
@@ -2762,7 +2768,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Allocated a window of %dKB&quot;
+l_string|&quot;Allocated a window of %dKiB&quot;
 comma
 id|dev-&gt;win_size
 op_rshift
@@ -3186,7 +3192,7 @@ id|dev-&gt;mtd_info
 op_assign
 id|mtd
 suffix:semicolon
-id|mtd-&gt;module
+id|mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
@@ -3219,7 +3225,7 @@ OL
 l_int|1048576
 )paren
 (brace
-multiline_comment|/* &lt;1MB in size, show size in K */
+multiline_comment|/* &lt;1MiB in size, show size in KiB */
 id|size
 op_assign
 id|mtd-&gt;size
@@ -3249,7 +3255,7 @@ c_func
 (paren
 id|mtd-&gt;name
 comma
-l_string|&quot;%d%cB %s&quot;
+l_string|&quot;%d%ciB %s&quot;
 comma
 id|size
 comma
