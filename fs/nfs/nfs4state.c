@@ -1535,13 +1535,6 @@ id|state-&gt;inode
 op_assign
 id|inode
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|inode-&gt;i_count
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1721,12 +1714,6 @@ c_func
 (paren
 op_amp
 id|owner-&gt;so_sema
-)paren
-suffix:semicolon
-id|iput
-c_func
-(paren
-id|inode
 )paren
 suffix:semicolon
 id|nfs4_free_open_state

@@ -4494,6 +4494,18 @@ l_int|3
 comma
 multiline_comment|/* protocol version */
 dot
+id|dentry_ops
+op_assign
+op_amp
+id|nfs_dentry_operations
+comma
+dot
+id|dir_inode_ops
+op_assign
+op_amp
+id|nfs_dir_inode_operations
+comma
+dot
 id|getroot
 op_assign
 id|nfs3_proc_get_root

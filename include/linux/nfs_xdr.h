@@ -2361,6 +2361,18 @@ r_int
 id|version
 suffix:semicolon
 multiline_comment|/* Protocol version */
+DECL|member|dentry_ops
+r_struct
+id|dentry_operations
+op_star
+id|dentry_ops
+suffix:semicolon
+DECL|member|dir_inode_ops
+r_struct
+id|inode_operations
+op_star
+id|dir_inode_ops
+suffix:semicolon
 DECL|member|getroot
 r_int
 (paren
