@@ -3219,7 +3219,11 @@ c_cond
 (paren
 id|fattr-&gt;valid
 op_amp
+(paren
 id|NFS_ATTR_FATTR_V3
+op_or
+id|NFS_ATTR_FATTR_V4
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * report the blocks in 512byte units&n;&t;&t;&t; */
@@ -4973,7 +4977,11 @@ c_cond
 (paren
 id|fattr-&gt;valid
 op_amp
+(paren
 id|NFS_ATTR_FATTR_V3
+op_or
+id|NFS_ATTR_FATTR_V4
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * report the blocks in 512byte units&n;&t;&t; */
