@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fsm.h,v 1.3.2.2 2001/09/23 22:24:47 kai Exp $&n; *&n; * Finite state machine&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, finite state machine&n; *&n; * Author       Karsten Keil&n; * Copyright              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              2001-2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef __ISDN_FSM_H__
 DECL|macro|__ISDN_FSM_H__
 mdefine_line|#define __ISDN_FSM_H__

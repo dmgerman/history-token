@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_concap.h,v 1.3.6.1 2001/09/23 22:24:31 kai Exp $&n; *&n; * Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 r_extern
 r_struct
 id|concap_device_ops
