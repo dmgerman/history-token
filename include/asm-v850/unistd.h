@@ -408,8 +408,13 @@ mdefine_line|#define SYSCALL_CLOBBERS&t;&quot;r1&quot;, &quot;r5&quot;, &quot;r1
 multiline_comment|/* Registers clobbered by a `short&squot; syscall.  This includes all clobbers&n;   except the syscall number (r12).  */
 DECL|macro|SYSCALL_SHORT_CLOBBERS
 mdefine_line|#define SYSCALL_SHORT_CLOBBERS&t;SYSCALL_CLOBBERS, &quot;r13&quot;, &quot;r14&quot;
+multiline_comment|/* User programs sometimes end up including this header file&n;   (indirectly, via uClibc header files), so I&squot;m a bit nervous just&n;   including &lt;linux/compiler.h&gt;.  */
+macro_line|#if !defined(__builtin_expect) &amp;&amp; __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 96
+DECL|macro|__builtin_expect
+mdefine_line|#define __builtin_expect(x, expected_value) (x)
+macro_line|#endif
 DECL|macro|__syscall_return
-mdefine_line|#define __syscall_return(type, res)&t;&t;&t;&t;&t;      &bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  /* user-visible error numbers are in the range -1 - -124:&t;      &bslash;&n;&t;     see &lt;asm-v850/errno.h&gt; */&t;&t;&t;&t;&t;      &bslash;&n;&t;  if ((unsigned long)(res) &gt;= (unsigned long)(-125)) {&t;&t;      &bslash;&n;&t;&t;  errno = -(res);&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;  res = -1;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  return (type) (res);&t;&t;&t;&t;&t;&t;      &bslash;&n;  } while (0)
+mdefine_line|#define __syscall_return(type, res)&t;&t;&t;&t;&t;      &bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  /* user-visible error numbers are in the range -1 - -124:&t;      &bslash;&n;&t;     see &lt;asm-v850/errno.h&gt; */&t;&t;&t;&t;&t;      &bslash;&n;&t;  if (__builtin_expect ((unsigned long)(res) &gt;= (unsigned long)(-125), 0)) { &bslash;&n;&t;&t;  errno = -(res);&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;  res = -1;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;  return (type) (res);&t;&t;&t;&t;&t;&t;      &bslash;&n;  } while (0)
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type, name)&t;&t;&t;&t;&t;&t;      &bslash;&n;type name (void)&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;  register unsigned long __syscall __asm__ (SYSCALL_NUM) = __NR_##name;&t;      &bslash;&n;  register unsigned long __ret __asm__ (SYSCALL_RET);&t;&t;&t;      &bslash;&n;  __asm__ __volatile__ (&quot;trap &quot; SYSCALL_SHORT_TRAP&t;&t;&t;      &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__ret), &quot;=r&quot; (__syscall)&t; &t;      &bslash;&n;&t;&t;&t;: &quot;1&quot; (__syscall)&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;: SYSCALL_SHORT_CLOBBERS);&t;&t;&t;      &bslash;&n;  __syscall_return (type, __ret);&t;&t;&t;&t;&t;      &bslash;&n;}
 DECL|macro|_syscall1
