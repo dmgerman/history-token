@@ -1629,6 +1629,16 @@ id|bio
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|blk_rq_prep_restart
+c_func
+(paren
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 DECL|macro|MAX_PHYS_SEGMENTS
 mdefine_line|#define MAX_PHYS_SEGMENTS 128
 DECL|macro|MAX_HW_SEGMENTS
