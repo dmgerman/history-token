@@ -384,7 +384,6 @@ l_int|10
 op_le
 l_int|255
 )paren
-suffix:semicolon
 (brace
 id|data-&gt;aout
 op_assign
