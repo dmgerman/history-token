@@ -769,6 +769,10 @@ c_func
 id|ps.nr_page_table_pages
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|VMALLOC_TOTAL
 op_rshift
 l_int|10
