@@ -2656,6 +2656,11 @@ op_assign
 op_amp
 id|dev-&gt;dev
 suffix:semicolon
+id|interface-&gt;dev.bus
+op_assign
+op_amp
+id|usb_bus_type
+suffix:semicolon
 id|sprintf
 (paren
 op_amp
@@ -2664,7 +2669,9 @@ id|interface-&gt;dev.bus_id
 l_int|0
 )braket
 comma
-l_string|&quot;%03d&quot;
+l_string|&quot;%03d%03d&quot;
+comma
+id|dev-&gt;devnum
 comma
 id|ifnum
 )paren
