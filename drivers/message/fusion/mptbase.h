@@ -30,9 +30,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.17&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.18&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.17&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.18&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -431,53 +431,6 @@ suffix:semicolon
 DECL|typedef|MPT_SGL64_HDR
 )brace
 id|MPT_SGL64_HDR
-suffix:semicolon
-multiline_comment|/*&n; *  Chip-specific stuff... FC929 delineates break between&n; *  FC and Parallel SCSI parts. Do NOT re-order.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|FC919X
-id|FC919X
-op_assign
-l_int|0x0819
-comma
-DECL|enumerator|FC929X
-id|FC929X
-op_assign
-l_int|0x0829
-comma
-DECL|enumerator|FC909
-id|FC909
-op_assign
-l_int|0x0909
-comma
-DECL|enumerator|FC919
-id|FC919
-op_assign
-l_int|0x0919
-comma
-DECL|enumerator|FC929
-id|FC929
-op_assign
-l_int|0x0929
-comma
-DECL|enumerator|C1030
-id|C1030
-op_assign
-l_int|0x1030
-comma
-DECL|enumerator|C1035
-id|C1035
-op_assign
-l_int|0x1035
-comma
-DECL|enumerator|FCUNK
-id|FCUNK
-op_assign
-l_int|0xFBAD
-DECL|typedef|CHIP_TYPE
-)brace
-id|CHIP_TYPE
 suffix:semicolon
 multiline_comment|/*&n; *  System interface register set&n; */
 DECL|struct|_SYSIF_REGS
@@ -1093,6 +1046,10 @@ op_star
 id|pio_chip
 suffix:semicolon
 multiline_comment|/* Programmed IO (downloadboot) */
+DECL|member|bus_type
+id|u8
+id|bus_type
+suffix:semicolon
 DECL|member|mem_phys
 id|u32
 id|mem_phys
@@ -1192,10 +1149,6 @@ suffix:semicolon
 DECL|member|FreeChainQlock
 id|spinlock_t
 id|FreeChainQlock
-suffix:semicolon
-DECL|member|chip_type
-id|CHIP_TYPE
-id|chip_type
 suffix:semicolon
 multiline_comment|/* We (host driver) get to manage our own RequestQueue! */
 DECL|member|req_frames_dma
@@ -1323,24 +1276,6 @@ r_int
 id|eventLogSize
 suffix:semicolon
 multiline_comment|/* Max number of cached events */
-macro_line|#ifdef MPTSCSIH_DBG_TIMEOUT
-DECL|member|timeout_hard
-r_int
-id|timeout_hard
-suffix:semicolon
-DECL|member|timeout_delta
-r_int
-id|timeout_delta
-suffix:semicolon
-DECL|member|timeout_cnt
-r_int
-id|timeout_cnt
-suffix:semicolon
-DECL|member|timeout_maxcnt
-r_int
-id|timeout_maxcnt
-suffix:semicolon
-macro_line|#endif
 DECL|member|events
 r_struct
 id|_mpt_ioctl_events
@@ -1843,6 +1778,21 @@ DECL|macro|TM_STATE_IN_PROGRESS
 mdefine_line|#define&t;TM_STATE_IN_PROGRESS   (1)
 DECL|macro|TM_STATE_ERROR
 mdefine_line|#define&t;TM_STATE_ERROR&t;       (2)
+r_typedef
+r_enum
+(brace
+DECL|enumerator|FC
+id|FC
+comma
+DECL|enumerator|SCSI
+id|SCSI
+comma
+DECL|enumerator|SAS
+id|SAS
+DECL|typedef|BUS_TYPE
+)brace
+id|BUS_TYPE
+suffix:semicolon
 DECL|struct|_MPT_SCSI_HOST
 r_typedef
 r_struct
@@ -1904,11 +1854,6 @@ DECL|member|resetPending
 id|u8
 id|resetPending
 suffix:semicolon
-DECL|member|is_spi
-id|u8
-id|is_spi
-suffix:semicolon
-multiline_comment|/* Parallel SCSI i/f */
 DECL|member|negoNvram
 id|u8
 id|negoNvram

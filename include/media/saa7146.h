@@ -61,10 +61,12 @@ DECL|macro|DEB_INT
 mdefine_line|#define DEB_INT(x)  if (0!=(DEBUG_VARIABLE&amp;0x20)) { DEBUG_PROLOG; printk x; } /* interrupt debug messages */
 DECL|macro|DEB_CAP
 mdefine_line|#define DEB_CAP(x)  if (0!=(DEBUG_VARIABLE&amp;0x40)) { DEBUG_PROLOG; printk x; } /* capture debug messages */
-DECL|macro|IER_DISABLE
-mdefine_line|#define IER_DISABLE(x,y) &bslash;&n;&t;saa7146_write(x, IER, saa7146_read(x, IER) &amp; ~(y));
-DECL|macro|IER_ENABLE
-mdefine_line|#define IER_ENABLE(x,y) &bslash;&n;&t;saa7146_write(x, IER, saa7146_read(x, IER) | (y));
+DECL|macro|SAA7146_IER_DISABLE
+mdefine_line|#define SAA7146_IER_DISABLE(x,y) &bslash;&n;&t;saa7146_write(x, IER, saa7146_read(x, IER) &amp; ~(y));
+DECL|macro|SAA7146_IER_ENABLE
+mdefine_line|#define SAA7146_IER_ENABLE(x,y) &bslash;&n;&t;saa7146_write(x, IER, saa7146_read(x, IER) | (y));
+DECL|macro|SAA7146_ISR_CLEAR
+mdefine_line|#define SAA7146_ISR_CLEAR(x,y) &bslash;&n;&t;saa7146_write(x, ISR, (y));
 r_struct
 id|saa7146_dev
 suffix:semicolon
@@ -568,6 +570,9 @@ r_struct
 id|saa7146_dev
 op_star
 id|dev
+comma
+r_int
+id|nobusyloop
 )paren
 suffix:semicolon
 multiline_comment|/* some memory sizes */

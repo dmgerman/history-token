@@ -621,6 +621,16 @@ comma
 multiline_comment|/* locks up */
 multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; * Note that all USB devices should have the BLIST_INQUIRY_36 flag.&n;&t; */
 (brace
+l_string|&quot;3PARdata&quot;
+comma
+l_string|&quot;VV&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_REPORTLUN2
+)brace
+comma
+(brace
 l_string|&quot;ADAPTEC&quot;
 comma
 l_string|&quot;AACRAID&quot;

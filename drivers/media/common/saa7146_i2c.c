@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 DECL|function|saa7146_i2c_func
+r_static
 id|u32
 id|saa7146_i2c_func
 c_func
@@ -977,7 +978,7 @@ id|dev-&gt;i2c_op
 op_assign
 l_int|1
 suffix:semicolon
-id|IER_ENABLE
+id|SAA7146_IER_ENABLE
 c_func
 (paren
 id|dev

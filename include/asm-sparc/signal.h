@@ -3,6 +3,7 @@ macro_line|#ifndef _ASMSPARC_SIGNAL_H
 DECL|macro|_ASMSPARC_SIGNAL_H
 mdefine_line|#define _ASMSPARC_SIGNAL_H
 macro_line|#include &lt;asm/sigcontext.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/personality.h&gt;
@@ -175,6 +176,7 @@ DECL|typedef|__new_sigset_t
 )brace
 id|__new_sigset_t
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 multiline_comment|/* A SunOS sigstack */
 DECL|struct|sigstack
 r_struct
@@ -191,6 +193,7 @@ id|cur_status
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Sigvec flags */
 DECL|macro|_SV_SSTACK
 mdefine_line|#define _SV_SSTACK    1u    /* This signal handler should use sig-stack */
@@ -286,6 +289,7 @@ DECL|macro|SIG_IGN
 mdefine_line|#define SIG_IGN&t;((__sighandler_t)1)&t;/* ignore signal */
 DECL|macro|SIG_ERR
 mdefine_line|#define SIG_ERR&t;((__sighandler_t)-1)&t;/* error return from signal */
+macro_line|#ifdef __KERNEL__
 DECL|struct|__new_sigaction
 r_struct
 id|__new_sigaction
@@ -316,7 +320,6 @@ id|sa_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|struct|k_sigaction
 r_struct
 id|k_sigaction
@@ -334,7 +337,6 @@ id|ka_restorer
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|struct|__old_sigaction
 r_struct
 id|__old_sigaction
@@ -388,7 +390,6 @@ DECL|typedef|stack_t
 )brace
 id|stack_t
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|struct|sparc_deliver_cookie
 r_struct
 id|sparc_deliver_cookie

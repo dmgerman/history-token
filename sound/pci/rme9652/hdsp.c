@@ -22436,6 +22436,12 @@ c_func
 id|hdsp-&gt;pci
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|hdsp-&gt;pci
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

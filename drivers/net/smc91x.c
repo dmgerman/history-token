@@ -3923,6 +3923,9 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* A preamble may be used when there is a potential race&n;&t; * between the interruptible transmit functions and this&n;&t; * ISR. */
+id|SMC_INTERRUPT_PREAMBLE
+suffix:semicolon
 id|saved_pointer
 op_assign
 id|SMC_GET_PTR

@@ -8,6 +8,7 @@ macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;media/saa7146.h&gt;
 r_extern
 r_int
@@ -141,11 +142,21 @@ DECL|member|feedlock
 id|spinlock_t
 id|feedlock
 suffix:semicolon
+DECL|member|debilock
+id|spinlock_t
+id|debilock
+suffix:semicolon
 DECL|member|dvb_adapter
 r_struct
 id|dvb_adapter
 op_star
 id|dvb_adapter
+suffix:semicolon
+DECL|member|dvb_frontend
+r_struct
+id|dvb_frontend
+op_star
+id|dvb_frontend
 suffix:semicolon
 DECL|member|priv
 r_void
@@ -168,14 +179,22 @@ DECL|macro|BUDGET_TT
 mdefine_line|#define BUDGET_TT&t;&t;   0
 DECL|macro|BUDGET_TT_HW_DISEQC
 mdefine_line|#define BUDGET_TT_HW_DISEQC&t;   1
-DECL|macro|BUDGET_KNC1
-mdefine_line|#define BUDGET_KNC1&t;&t;   2
 DECL|macro|BUDGET_PATCH
 mdefine_line|#define BUDGET_PATCH&t;&t;   3
 DECL|macro|BUDGET_FS_ACTIVY
 mdefine_line|#define BUDGET_FS_ACTIVY&t;   4
-DECL|macro|BUDGET_CIN1200
-mdefine_line|#define BUDGET_CIN1200&t;&t;   5
+DECL|macro|BUDGET_CIN1200S
+mdefine_line|#define BUDGET_CIN1200S&t;&t;   5
+DECL|macro|BUDGET_CIN1200C
+mdefine_line|#define BUDGET_CIN1200C&t;&t;   6
+DECL|macro|BUDGET_CIN1200T
+mdefine_line|#define BUDGET_CIN1200T&t;&t;   7
+DECL|macro|BUDGET_KNC1S
+mdefine_line|#define BUDGET_KNC1S&t;&t;   8
+DECL|macro|BUDGET_KNC1C
+mdefine_line|#define BUDGET_KNC1C&t;&t;   9
+DECL|macro|BUDGET_KNC1T
+mdefine_line|#define BUDGET_KNC1T&t;&t;   10
 DECL|macro|BUDGET_VIDEO_PORTA
 mdefine_line|#define BUDGET_VIDEO_PORTA         0
 DECL|macro|BUDGET_VIDEO_PORTB
@@ -183,6 +202,7 @@ mdefine_line|#define BUDGET_VIDEO_PORTB         1
 r_extern
 r_int
 id|ttpci_budget_init
+c_func
 (paren
 r_struct
 id|budget
@@ -198,6 +218,11 @@ r_struct
 id|saa7146_pci_extension_data
 op_star
 id|info
+comma
+r_struct
+id|module
+op_star
+id|owner
 )paren
 suffix:semicolon
 r_extern
@@ -236,6 +261,61 @@ id|dev
 comma
 r_int
 id|video_port
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ttpci_budget_debiread
+c_func
+(paren
+r_struct
+id|budget
+op_star
+id|budget
+comma
+id|u32
+id|config
+comma
+r_int
+id|addr
+comma
+r_int
+id|count
+comma
+r_int
+id|uselocks
+comma
+r_int
+id|nobusyloop
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ttpci_budget_debiwrite
+c_func
+(paren
+r_struct
+id|budget
+op_star
+id|budget
+comma
+id|u32
+id|config
+comma
+r_int
+id|addr
+comma
+r_int
+id|count
+comma
+id|u32
+id|value
+comma
+r_int
+id|uselocks
+comma
+r_int
+id|nobusyloop
 )paren
 suffix:semicolon
 macro_line|#endif

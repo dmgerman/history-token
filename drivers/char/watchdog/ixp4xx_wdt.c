@@ -776,8 +776,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Deepak Saxena &lt;dsaxena@plexity.net&quot;
-OG
+l_string|&quot;Deepak Saxena &lt;dsaxena@plexity.net&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

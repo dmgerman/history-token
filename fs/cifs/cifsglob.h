@@ -634,6 +634,66 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * One of these for each open instance of a file&n; */
+DECL|struct|cifs_search_info
+r_struct
+id|cifs_search_info
+(brace
+DECL|member|index_of_last_entry
+id|loff_t
+id|index_of_last_entry
+suffix:semicolon
+DECL|member|entries_in_buffer
+id|__u16
+id|entries_in_buffer
+suffix:semicolon
+DECL|member|info_level
+id|__u16
+id|info_level
+suffix:semicolon
+DECL|member|resume_key
+id|__u32
+id|resume_key
+suffix:semicolon
+DECL|member|ntwrk_buf_start
+r_char
+op_star
+id|ntwrk_buf_start
+suffix:semicolon
+DECL|member|srch_entries_start
+r_char
+op_star
+id|srch_entries_start
+suffix:semicolon
+DECL|member|presume_name
+r_char
+op_star
+id|presume_name
+suffix:semicolon
+DECL|member|resume_name_len
+r_int
+r_int
+id|resume_name_len
+suffix:semicolon
+DECL|member|endOfSearch
+r_int
+id|endOfSearch
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|emptyDir
+r_int
+id|emptyDir
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|unicode
+r_int
+id|unicode
+suffix:colon
+l_int|1
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|cifsFileInfo
 r_struct
 id|cifsFileInfo
@@ -683,13 +743,6 @@ op_star
 id|pInode
 suffix:semicolon
 multiline_comment|/* needed for oplock break */
-DECL|member|endOfSearch
-r_int
-id|endOfSearch
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* we have reached end of search */
 DECL|member|closePend
 r_int
 id|closePend
@@ -697,12 +750,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* file is marked to close */
-DECL|member|emptyDir
-r_int
-id|emptyDir
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|invalidHandle
 r_int
 id|invalidHandle
@@ -721,14 +768,17 @@ r_char
 op_star
 id|search_resume_name
 suffix:semicolon
+multiline_comment|/* BB removeme BB */
 DECL|member|resume_name_length
 r_int
 r_int
 id|resume_name_length
 suffix:semicolon
-DECL|member|resume_key
-id|__u32
-id|resume_key
+multiline_comment|/* BB removeme - field renamed and moved BB */
+DECL|member|srch_inf
+r_struct
+id|cifs_search_info
+id|srch_inf
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -944,6 +994,10 @@ DECL|macro|MID_RESPONSE_RECEIVED
 mdefine_line|#define   MID_RESPONSE_RECEIVED 4
 DECL|macro|MID_RETRY_NEEDED
 mdefine_line|#define   MID_RETRY_NEEDED      8 /* session closed while this request out */
+DECL|macro|MID_NO_RESP_NEEDED
+mdefine_line|#define   MID_NO_RESP_NEEDED 0x10
+DECL|macro|MID_SMALL_BUFFER
+mdefine_line|#define   MID_SMALL_BUFFER   0x20 /* 112 byte response buffer instead of 4K */
 multiline_comment|/*&n; *****************************************************************&n; * All constants go here&n; *****************************************************************&n; */
 DECL|macro|UID_HASH
 mdefine_line|#define UID_HASH (16)
@@ -1076,6 +1130,11 @@ id|GLOBAL_EXTERN
 id|atomic_t
 id|bufAllocCount
 suffix:semicolon
+DECL|variable|smBufAllocCount
+id|GLOBAL_EXTERN
+id|atomic_t
+id|smBufAllocCount
+suffix:semicolon
 DECL|variable|midCount
 id|GLOBAL_EXTERN
 id|atomic_t
@@ -1095,11 +1154,11 @@ r_int
 r_int
 id|oplockEnabled
 suffix:semicolon
-DECL|variable|quotaEnabled
+DECL|variable|experimEnabled
 id|GLOBAL_EXTERN
 r_int
 r_int
-id|quotaEnabled
+id|experimEnabled
 suffix:semicolon
 DECL|variable|lookupCacheEnabled
 id|GLOBAL_EXTERN
@@ -1134,5 +1193,33 @@ r_int
 r_int
 id|linuxExtEnabled
 suffix:semicolon
-multiline_comment|/* enable Linux/Unix CIFS extensions */
+multiline_comment|/*enable Linux/Unix CIFS extensions*/
+DECL|variable|CIFSMaxBufSize
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|CIFSMaxBufSize
+suffix:semicolon
+multiline_comment|/* max size not including hdr */
+DECL|variable|cifs_min_rcv
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_min_rcv
+suffix:semicolon
+multiline_comment|/* min size of big ntwrk buf pool */
+DECL|variable|cifs_min_small
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_min_small
+suffix:semicolon
+multiline_comment|/* min size of small buf pool */
+DECL|variable|cifs_max_pending
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|cifs_max_pending
+suffix:semicolon
+multiline_comment|/* MAX requests at once to server*/
 eof

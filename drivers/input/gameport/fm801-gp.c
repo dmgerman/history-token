@@ -415,12 +415,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|gp
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -431,6 +425,12 @@ comma
 id|gp-&gt;gameport.io
 op_plus
 l_int|0x0f
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|gp
 )paren
 suffix:semicolon
 r_return

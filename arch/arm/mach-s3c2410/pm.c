@@ -503,6 +503,17 @@ DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) printk(KERN_DEBUG fmt)
 DECL|macro|s3c2410_pm_debug_init
 mdefine_line|#define s3c2410_pm_debug_init() do { } while(0)
+DECL|variable|uart_save
+r_static
+r_struct
+id|sleep_save
+id|uart_save
+(braket
+)braket
+op_assign
+(brace
+)brace
+suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_S3C2410_PM_CHECK) &amp;&amp; CONFIG_S3C2410_PM_CHECK_CHUNKSIZE != 0
 multiline_comment|/* suspend checking code...&n; *&n; * this next area does a set of crc checks over all the installed&n; * memory, so the system can verify if the resume was ok.&n; *&n; * CONFIG_S3C2410_PM_CHECK_CHUNKSIZE defines the block-size for the CRC,&n; * increasing it will mean that the area corrupted will be less easy to spot,&n; * and reducing the size will cause the CRC save area to grow&n;*/
@@ -1189,17 +1200,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|variable|uart_save
-r_static
-r_struct
-id|sleep_save
-id|uart_save
-(braket
-)braket
-op_assign
-(brace
-)brace
-suffix:semicolon
 DECL|macro|s3c2410_pm_check_prepare
 mdefine_line|#define s3c2410_pm_check_prepare() do { } while(0)
 DECL|macro|s3c2410_pm_check_restore

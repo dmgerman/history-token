@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
+macro_line|#include &lt;asm/mach/irda.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/h3600.h&gt;
@@ -296,6 +297,94 @@ id|IORESOURCE_MEM
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This turns the IRDA power on or off on the Compaq H3600&n; */
+DECL|function|h3600_irda_set_power
+r_static
+r_int
+id|h3600_irda_set_power
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|state
+)paren
+(brace
+id|assign_h3600_egpio
+c_func
+(paren
+id|IPAQ_EGPIO_IR_ON
+comma
+id|state
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|h3600_irda_set_speed
+r_static
+r_void
+id|h3600_irda_set_speed
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+id|speed
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|speed
+OL
+l_int|4000000
+)paren
+(brace
+id|clr_h3600_egpio
+c_func
+(paren
+id|IPAQ_EGPIO_IR_FSEL
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_h3600_egpio
+c_func
+(paren
+id|IPAQ_EGPIO_IR_FSEL
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|variable|h3600_irda_data
+r_static
+r_struct
+id|irda_platform_data
+id|h3600_irda_data
+op_assign
+(brace
+dot
+id|set_power
+op_assign
+id|h3600_irda_set_power
+comma
+dot
+id|set_speed
+op_assign
+id|h3600_irda_set_speed
+comma
+)brace
+suffix:semicolon
 DECL|function|h3xxx_mach_init
 r_static
 r_void
@@ -315,6 +404,13 @@ op_amp
 id|h3xxx_flash_resource
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|sa11x0_set_irda_data
+c_func
+(paren
+op_amp
+id|h3600_irda_data
 )paren
 suffix:semicolon
 )brace

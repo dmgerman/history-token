@@ -1564,7 +1564,11 @@ suffix:semicolon
 )brace
 id|ppid
 op_assign
-id|task-&gt;pid
+id|pid_alive
+c_func
+(paren
+id|task
+)paren
 ques
 c_cond
 id|task-&gt;group_leader-&gt;real_parent-&gt;tgid

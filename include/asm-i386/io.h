@@ -431,6 +431,7 @@ r_void
 op_star
 id|dst
 comma
+r_const
 r_volatile
 r_void
 id|__iomem

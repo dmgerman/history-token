@@ -4189,7 +4189,7 @@ comma
 id|__FUNCTION__
 comma
 l_string|&quot;reading directory #%lu &quot;
-l_string|&quot;offset %lu&bslash;n&quot;
+l_string|&quot;offset %lu&quot;
 comma
 id|dir-&gt;i_ino
 comma

@@ -9628,12 +9628,13 @@ id|zatm_dev-&gt;pci_dev
 op_assign
 id|pci_dev
 suffix:semicolon
-id|ZATM_DEV
-c_func
-(paren
 id|dev
-)paren
 op_assign
+(paren
+r_struct
+id|atm_dev
+op_star
+)paren
 id|zatm_dev
 suffix:semicolon
 id|zatm_dev-&gt;copper

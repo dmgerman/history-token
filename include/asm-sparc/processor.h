@@ -29,6 +29,7 @@ mdefine_line|#define TASK_SIZE&t;PAGE_OFFSET
 r_struct
 id|task_struct
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|fpq
 r_struct
 id|fpq
@@ -46,6 +47,7 @@ id|insn
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 r_typedef
 r_struct
 (brace

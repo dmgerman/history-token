@@ -282,6 +282,16 @@ l_int|7
 )paren
 comma
 multiline_comment|/* use COMRESET */
+DECL|enumerator|ATA_FLAG_PIO_DMA
+id|ATA_FLAG_PIO_DMA
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|8
+)paren
+comma
+multiline_comment|/* PIO cmds via DMA */
 DECL|enumerator|ATA_QCFLAG_ACTIVE
 id|ATA_QCFLAG_ACTIVE
 op_assign

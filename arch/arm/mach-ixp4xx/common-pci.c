@@ -932,7 +932,8 @@ id|pci_bus
 op_star
 id|bus
 comma
-id|u16
+r_int
+r_int
 id|devfn
 comma
 r_int
@@ -1088,7 +1089,8 @@ id|pci_bus
 op_star
 id|bus
 comma
-id|u16
+r_int
+r_int
 id|devfn
 comma
 r_int

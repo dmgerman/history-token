@@ -1,9 +1,8 @@
 multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_erp.c &n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
-multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.83 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.85 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -12399,8 +12398,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Trying to reopen port 0x%016Lx on adapter %s &quot;
-l_string|&quot;due to update to access control table&bslash;n&quot;
+l_string|&quot;reopen of port 0x%016Lx on adapter %s &quot;
+l_string|&quot;(due to ACT update)&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -12427,15 +12426,16 @@ l_int|0
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Reopen of port 0x%016Lx on adapter %s failed&bslash;n&quot;
-comma
-id|port-&gt;wwpn
+l_string|&quot;failed reopen of port&quot;
+l_string|&quot;(adapter %s, wwpn=0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
 )paren
+comma
+id|port-&gt;wwpn
 )paren
 suffix:semicolon
 )brace
@@ -12502,9 +12502,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Trying to reopen unit 0x%016Lx &quot;
-l_string|&quot;on port 0x%016Lx on adapter %s &quot;
-l_string|&quot;due to update to access control table&bslash;n&quot;
+l_string|&quot;reopen of unit 0x%016Lx on port 0x%016Lx &quot;
+l_string|&quot; on adapter %s (due to ACT update)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -12533,18 +12532,18 @@ l_int|0
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Reopen of unit 0x%016Lx &quot;
-l_string|&quot;on port 0x%016Lx on adapter %s failed&bslash;n&quot;
-comma
-id|unit-&gt;fcp_lun
-comma
-id|unit-&gt;port-&gt;wwpn
+l_string|&quot;failed reopen of unit (adapter %s, &quot;
+l_string|&quot;wwpn=0x%016Lx, fcp_lun=0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
 )paren
+comma
+id|unit-&gt;port-&gt;wwpn
+comma
+id|unit-&gt;fcp_lun
 )paren
 suffix:semicolon
 )brace

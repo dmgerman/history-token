@@ -3448,15 +3448,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Select the correct idle loop for the platform. */
-id|idle_setup
+id|ppc_md
+dot
+id|setup_arch
 c_func
 (paren
 )paren
 suffix:semicolon
-id|ppc_md
-dot
-id|setup_arch
+multiline_comment|/* Select the correct idle loop for the platform. */
+id|idle_setup
 c_func
 (paren
 )paren
