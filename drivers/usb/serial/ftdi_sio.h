@@ -54,6 +54,14 @@ DECL|macro|FTDI_MTXORB_5_PID
 mdefine_line|#define FTDI_MTXORB_5_PID      0xFA05  /* Matrix Orbital Product Id */
 DECL|macro|FTDI_MTXORB_6_PID
 mdefine_line|#define FTDI_MTXORB_6_PID      0xFA06  /* Matrix Orbital Product Id */
+multiline_comment|/* Interbiometrics USB I/O Board */
+multiline_comment|/* Developed for Interbiometrics by Rudolf Gugler */
+DECL|macro|INTERBIOMETRICS_VID
+mdefine_line|#define INTERBIOMETRICS_VID              0x1209
+DECL|macro|INTERBIOMETRICS_IOBOARD_PID
+mdefine_line|#define INTERBIOMETRICS_IOBOARD_PID      0x1002
+DECL|macro|INTERBIOMETRICS_MINI_IOBOARD_PID
+mdefine_line|#define INTERBIOMETRICS_MINI_IOBOARD_PID 0x1006
 multiline_comment|/*&n; * The following are the values for the Perle Systems&n; * UltraPort USB serial converters&n; */
 DECL|macro|FTDI_PERLE_ULTRAPORT_PID
 mdefine_line|#define FTDI_PERLE_ULTRAPORT_PID 0xF0C0&t;/* Perle UltraPort Product Id */
@@ -174,6 +182,7 @@ multiline_comment|/*&n; * Definitions for Omnidirectional Control Technology, In
 DECL|macro|OCT_VID
 mdefine_line|#define OCT_VID&t;&t;&t;0x0B39&t;/* OCT vendor ID */
 multiline_comment|/* Note: OCT US101 is also rebadged as Dick Smith Electronics (NZ) XH6381 */
+multiline_comment|/* Also rebadged as SIIG Inc. model US2308 */
 DECL|macro|OCT_US101_PID
 mdefine_line|#define OCT_US101_PID&t;&t;0x0421&t;/* OCT US101 USB to RS-232 */
 multiline_comment|/* an infrared receiver for user access control with IR tags */
@@ -232,8 +241,6 @@ DECL|macro|LINX_FUTURE_1_PID
 mdefine_line|#define LINX_FUTURE_1_PID   0xF44B   /* Linx future device */
 DECL|macro|LINX_FUTURE_2_PID
 mdefine_line|#define LINX_FUTURE_2_PID   0xF44C   /* Linx future device */
-DECL|macro|FTDI_GUDEADS_889_PID
-mdefine_line|#define FTDI_GUDEADS_889_PID    0xe889  /* USB RS323 OptoBridge */ 
 multiline_comment|/* CCS Inc. ICDU/ICDU40 product ID - the FT232BM is used in an in-circuit-debugger */
 multiline_comment|/* unit for PIC16&squot;s/PIC18&squot;s */
 DECL|macro|FTDI_CCSICDU20_0_PID
@@ -243,6 +250,21 @@ mdefine_line|#define FTDI_CCSICDU40_1_PID    0xF9D1
 multiline_comment|/* Inside Accesso contactless reader (http://www.insidefr.com) */
 DECL|macro|INSIDE_ACCESSO
 mdefine_line|#define INSIDE_ACCESSO&t;&t;0xFAD0
+multiline_comment|/*&n; * Intrepid Control Systems (http://www.intrepidcs.com/) ValueCAN and NeoVI&n; */
+DECL|macro|INTREPID_VID
+mdefine_line|#define INTREPID_VID&t;&t;0x093C
+DECL|macro|INTREPID_VALUECAN_PID
+mdefine_line|#define INTREPID_VALUECAN_PID&t;0x0601
+DECL|macro|INTREPID_NEOVI_PID
+mdefine_line|#define INTREPID_NEOVI_PID&t;0x0701
+multiline_comment|/*&n; * Falcom Wireless Communications GmbH&n; */
+DECL|macro|FALCOM_VID
+mdefine_line|#define FALCOM_VID&t;&t;0x0F94&t;/* Vendor Id */
+DECL|macro|FALCOM_TWIST_PID
+mdefine_line|#define FALCOM_TWIST_PID&t;0x0001&t;/* Falcom Twist USB GPRS modem */
+multiline_comment|/*&n; * SUUNTO product ids&n; */
+DECL|macro|FTDI_SUUNTO_SPORTS_PID
+mdefine_line|#define FTDI_SUUNTO_SPORTS_PID&t;0xF680&t;/* Suunto Sports instrument */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
