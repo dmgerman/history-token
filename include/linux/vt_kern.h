@@ -452,13 +452,5 @@ r_int
 id|new_console
 )paren
 suffix:semicolon
-r_int
-id|vt_waitactive
-c_func
-(paren
-r_int
-id|vt
-)paren
-suffix:semicolon
 macro_line|#endif /* _VT_KERN_H */
 eof
