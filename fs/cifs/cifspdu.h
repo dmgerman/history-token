@@ -2919,12 +2919,18 @@ suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
 mdefine_line|#define SMB_INFO_STANDARD                   1
+DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
+mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST        3
+DECL|macro|SMB_INFO_QUERY_ALL_EAS
+mdefine_line|#define SMB_INFO_QUERY_ALL_EAS              4
 DECL|macro|SMB_INFO_IS_NAME_VALID
 mdefine_line|#define SMB_INFO_IS_NAME_VALID              6
 DECL|macro|SMB_QUERY_FILE_BASIC_INFO
 mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO       0x101
 DECL|macro|SMB_QUERY_FILE_STANDARD_INFO
 mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO    0x102
+DECL|macro|SMB_QUERY_FILE_EA_INFO
+mdefine_line|#define SMB_QUERY_FILE_EA_INFO          0x103
 DECL|macro|SMB_QUERY_FILE_NAME_INFO
 mdefine_line|#define SMB_QUERY_FILE_NAME_INFO        0x104
 DECL|macro|SMB_QUERY_FILE_ALLOCATION_INFO
@@ -5093,20 +5099,18 @@ DECL|struct|fea
 r_struct
 id|fea
 (brace
-DECL|member|fEA
+DECL|member|EA_flags
 r_int
 r_char
-id|fEA
+id|EA_flags
 suffix:semicolon
-DECL|member|cbName
-r_int
-r_char
-id|cbName
+DECL|member|name_len
+id|__u8
+id|name_len
 suffix:semicolon
-DECL|member|cbValue
-r_int
-r_int
-id|cbValue
+DECL|member|value_len
+id|__u16
+id|value_len
 suffix:semicolon
 DECL|member|szName
 r_char
@@ -5115,6 +5119,7 @@ id|szName
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* optionally followed by value */
 )brace
 suffix:semicolon
 multiline_comment|/* flags for _FEA.fEA */
@@ -5124,10 +5129,10 @@ DECL|struct|fealist
 r_struct
 id|fealist
 (brace
-DECL|member|cbList
+DECL|member|list_len
 r_int
 r_int
-id|cbList
+id|list_len
 suffix:semicolon
 DECL|member|list
 r_struct
