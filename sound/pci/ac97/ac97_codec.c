@@ -12297,6 +12297,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_DETECT_BY_VENDOR
+)paren
+op_logical_and
+(paren
 id|ac97-&gt;id
 op_eq
 l_int|0x00000000
@@ -12304,6 +12312,7 @@ op_logical_or
 id|ac97-&gt;id
 op_eq
 l_int|0xffffffff
+)paren
 )paren
 (brace
 id|snd_printk
