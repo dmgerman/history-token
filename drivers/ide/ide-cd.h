@@ -22,8 +22,8 @@ macro_line|#endif
 multiline_comment|/*&n; * typical timeout for packet command&n; */
 DECL|macro|ATAPI_WAIT_PC
 mdefine_line|#define ATAPI_WAIT_PC&t;&t;(60 * HZ)
-DECL|macro|ATAPI_WAIT_BUSY
-mdefine_line|#define ATAPI_WAIT_BUSY&t;&t;(5 * HZ)
+DECL|macro|ATAPI_WAIT_WRITE_BUSY
+mdefine_line|#define ATAPI_WAIT_WRITE_BUSY&t;(10 * HZ)
 multiline_comment|/************************************************************************/
 DECL|macro|SECTOR_BITS
 mdefine_line|#define SECTOR_BITS &t;&t;9
