@@ -90,7 +90,7 @@ id|acpi_table_desc
 suffix:semicolon
 id|table_info.type
 op_assign
-l_int|5
+id|ACPI_TABLE_SSDT
 suffix:semicolon
 id|table_info.pointer
 op_assign

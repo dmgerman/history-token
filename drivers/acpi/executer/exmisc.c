@@ -805,7 +805,7 @@ suffix:semicolon
 )brace
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

@@ -817,7 +817,7 @@ l_int|1
 op_member_access_from_pointer
 id|integer.value
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * At this point, the Source operand is either a Package or a Buffer&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * At this point, the Source operand is a Package, Buffer, or String&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -899,7 +899,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Object to be indexed is a Buffer */
+multiline_comment|/* Object to be indexed is a Buffer/String */
 r_if
 c_cond
 (paren

@@ -862,6 +862,18 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * All opcodes require operand resolution, with the only exceptions&n;&t;&t; * being the object_type and size_of operators.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|walk_state-&gt;op_info-&gt;flags
+op_amp
+id|AML_NO_OPERAND_RESOLVE
+)paren
+)paren
+(brace
 multiline_comment|/* Resolve all operands */
 id|status
 op_assign
@@ -907,6 +919,17 @@ comma
 l_string|&quot;after ex_resolve_operands&quot;
 )paren
 suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
 multiline_comment|/*&n;&t;&t;&t; * Dispatch the request to the appropriate interpreter handler&n;&t;&t;&t; * routine.  There is one routine per opcode &quot;type&quot; based upon the&n;&t;&t;&t; * number of opcode arguments and return type.&n;&t;&t;&t; */
 id|status
 op_assign

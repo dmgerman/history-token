@@ -565,8 +565,7 @@ id|index_desc-&gt;reference.target_type
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Storing to a package element is not simple.  The source must be&n;&t;&t; * evaluated and converted to the type of the destination and then the&n;&t;&t; * source is copied into the destination - we can&squot;t just point to the&n;&t;&t; * source object.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * The object at *(index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; * The parent package object is at index_desc-&gt;Reference.Object&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Storing to a package element. Copy the object and replace&n;&t;&t; * any existing object with the new object. No implicit&n;&t;&t; * conversion is performed.&n;&t;&t; *&n;&t;&t; * The object at *(index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; * The parent package object is at index_desc-&gt;Reference.Object&n;&t;&t; */
 id|obj_desc
 op_assign
 op_star
@@ -574,14 +573,11 @@ op_star
 id|index_desc-&gt;reference.where
 )paren
 suffix:semicolon
-multiline_comment|/* Do the conversion/store */
 id|status
 op_assign
-id|acpi_ex_store_object_to_object
+id|acpi_ut_copy_iobject_to_iobject
 (paren
 id|source_desc
-comma
-id|obj_desc
 comma
 op_amp
 id|new_desc
@@ -598,28 +594,41 @@ id|status
 )paren
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Could not store object to indexed package element&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If a new object was created, we must install it as the new&n;&t;&t; * package element&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|new_desc
-op_ne
 id|obj_desc
+)paren
+(brace
+multiline_comment|/* Decrement reference count by the ref count of the parent package */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+(paren
+r_union
+id|acpi_operand_object
+op_star
+)paren
+id|index_desc-&gt;reference.object
+)paren
+op_member_access_from_pointer
+id|common.reference_count
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
 id|acpi_ut_remove_reference
@@ -627,6 +636,8 @@ id|acpi_ut_remove_reference
 id|obj_desc
 )paren
 suffix:semicolon
+)brace
+)brace
 op_star
 (paren
 id|index_desc-&gt;reference.where
@@ -634,21 +645,6 @@ id|index_desc-&gt;reference.where
 op_assign
 id|new_desc
 suffix:semicolon
-multiline_comment|/* If same as the original source, add a reference */
-r_if
-c_cond
-(paren
-id|new_desc
-op_eq
-id|source_desc
-)paren
-(brace
-id|acpi_ut_add_reference
-(paren
-id|new_desc
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Increment reference count by the ref count of the parent package -1 */
 r_for
 c_loop
@@ -680,14 +676,13 @@ id|new_desc
 )paren
 suffix:semicolon
 )brace
-)brace
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Store into a Buffer (not actually a real buffer_field) at a&n;&t;&t; * location defined by an Index.&n;&t;&t; *&n;&t;&t; * The first 8-bit element of the source object is written to the&n;&t;&t; * 8-bit Buffer location defined by the Index destination object,&n;&t;&t; * according to the ACPI 2.0 specification.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * Make sure the target is a Buffer&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store into a Buffer or String (not actually a real buffer_field)&n;&t;&t; * at a location defined by an Index.&n;&t;&t; *&n;&t;&t; * The first 8-bit element of the source object is written to the&n;&t;&t; * 8-bit Buffer location defined by the Index destination object,&n;&t;&t; * according to the ACPI 2.0 specification.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure the target is a Buffer or String. An error should&n;&t;&t; * not happen here, since the reference_object was constructed&n;&t;&t; * by the INDEX_OP code.&n;&t;&t; */
 id|obj_desc
 op_assign
 id|index_desc-&gt;reference.object
@@ -695,12 +690,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
 id|obj_desc
 )paren
 op_ne
 id|ACPI_TYPE_BUFFER
+)paren
+op_logical_and
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+op_ne
+id|ACPI_TYPE_STRING
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -737,24 +743,13 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-id|value
-op_assign
-id|source_desc-&gt;buffer.pointer
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
+multiline_comment|/* Note: Takes advantage of common string/buffer fields */
 id|value
 op_assign
-(paren
-id|u8
-)paren
-id|source_desc-&gt;string.pointer
+id|source_desc-&gt;buffer.pointer
 (braket
 l_int|0
 )braket

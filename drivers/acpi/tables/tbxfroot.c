@@ -932,38 +932,40 @@ id|u32
 id|length
 )paren
 (brace
-id|u32
-id|offset
-suffix:semicolon
 id|u8
 op_star
 id|mem_rover
+suffix:semicolon
+id|u8
+op_star
+id|end_address
+suffix:semicolon
+id|u8
+id|checksum
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;tb_scan_memory_for_rsdp&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Search from given start addr for the requested length  */
+id|end_address
+op_assign
+id|start_address
+op_plus
+id|length
+suffix:semicolon
+multiline_comment|/* Search from given start address for the requested length */
 r_for
 c_loop
 (paren
-id|offset
-op_assign
-l_int|0
-comma
 id|mem_rover
 op_assign
 id|start_address
 suffix:semicolon
-id|offset
+id|mem_rover
 OL
-id|length
+id|end_address
 suffix:semicolon
-id|offset
-op_add_assign
-id|ACPI_RSDP_SCAN_STEP
-comma
 id|mem_rover
 op_add_assign
 id|ACPI_RSDP_SCAN_STEP
@@ -990,20 +992,65 @@ id|RSDP_SIG
 op_minus
 l_int|1
 )paren
-op_eq
+op_ne
 l_int|0
-op_logical_and
+)paren
+(brace
+multiline_comment|/* No signature match, keep looking */
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* Signature matches, check the appropriate checksum */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_struct
+id|rsdp_descriptor
+op_star
+)paren
+id|mem_rover
+)paren
+op_member_access_from_pointer
+id|revision
+OL
+l_int|2
+)paren
+(brace
+multiline_comment|/* ACPI version 1.0 */
+id|checksum
+op_assign
 id|acpi_tb_checksum
 (paren
 id|mem_rover
 comma
 id|ACPI_RSDP_CHECKSUM_LENGTH
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Post ACPI 1.0, use extended_checksum */
+id|checksum
+op_assign
+id|acpi_tb_checksum
+(paren
+id|mem_rover
+comma
+id|ACPI_RSDP_XCHECKSUM_LENGTH
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|checksum
 op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* If so, we have found the RSDP */
+multiline_comment|/* Checksum valid, we have found a valid RSDP */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1021,6 +1068,17 @@ id|mem_rover
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Found an RSDP at physical address %p, but it has a bad checksum&bslash;n&quot;
+comma
+id|mem_rover
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Searched entire block, no RSDP was found */
 id|ACPI_DEBUG_PRINT
@@ -1028,7 +1086,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Searched entire block, no RSDP was found.&bslash;n&quot;
+l_string|&quot;Searched entire block, no valid RSDP was found.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

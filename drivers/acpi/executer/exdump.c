@@ -161,23 +161,27 @@ OG
 l_int|0
 )paren
 (brace
-id|ACPI_DEBUG_PRINT_RAW
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;%*s[%u] &quot;
+l_string|&quot;%*s[%u] %p &quot;
 comma
 id|depth
 comma
 l_string|&quot; &quot;
 comma
 id|depth
+comma
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT_RAW
+r_else
+(brace
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_EXEC
@@ -188,6 +192,7 @@ id|obj_desc
 )paren
 )paren
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -1840,27 +1845,6 @@ id|acpi_ex_out_integer
 l_string|&quot;base_byte_offset&quot;
 comma
 id|obj_desc-&gt;common_field.base_byte_offset
-)paren
-suffix:semicolon
-id|acpi_ex_out_integer
-(paren
-l_string|&quot;datum_valid_bits&quot;
-comma
-id|obj_desc-&gt;common_field.datum_valid_bits
-)paren
-suffix:semicolon
-id|acpi_ex_out_integer
-(paren
-l_string|&quot;end_fld_valid_bits&quot;
-comma
-id|obj_desc-&gt;common_field.end_field_valid_bits
-)paren
-suffix:semicolon
-id|acpi_ex_out_integer
-(paren
-l_string|&quot;end_buf_valid_bits&quot;
-comma
-id|obj_desc-&gt;common_field.end_buffer_valid_bits
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
