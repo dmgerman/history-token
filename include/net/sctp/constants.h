@@ -43,6 +43,12 @@ DECL|macro|SCTP_NUM_BASE_CHUNK_TYPES
 mdefine_line|#define SCTP_NUM_BASE_CHUNK_TYPES&t;(SCTP_CID_BASE_MAX + 1)
 DECL|macro|SCTP_NUM_CHUNK_TYPES
 mdefine_line|#define SCTP_NUM_CHUNK_TYPES&t;&t;(SCTP_NUM_BASE_CHUNKTYPES + 2)
+DECL|macro|SCTP_CID_ADDIP_MIN
+mdefine_line|#define SCTP_CID_ADDIP_MIN&t;&t;SCTP_CID_ASCONF
+DECL|macro|SCTP_CID_ADDIP_MAX
+mdefine_line|#define SCTP_CID_ADDIP_MAX&t;&t;SCTP_CID_ASCONF_ACK
+DECL|macro|SCTP_NUM_ADDIP_CHUNK_TYPES
+mdefine_line|#define SCTP_NUM_ADDIP_CHUNK_TYPES&t;2
 multiline_comment|/* These are the different flavours of event.  */
 r_typedef
 r_enum
@@ -88,6 +94,9 @@ id|SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_T3_RTX
 id|SCTP_EVENT_TIMEOUT_T3_RTX
+comma
+DECL|enumerator|SCTP_EVENT_TIMEOUT_T4_RTO
+id|SCTP_EVENT_TIMEOUT_T4_RTO
 comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 id|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
@@ -146,12 +155,15 @@ comma
 DECL|enumerator|SCTP_PRIMITIVE_REQUESTHEARTBEAT
 id|SCTP_PRIMITIVE_REQUESTHEARTBEAT
 comma
+DECL|enumerator|SCTP_PRIMITIVE_ASCONF
+id|SCTP_PRIMITIVE_ASCONF
+comma
 DECL|typedef|sctp_event_primitive_t
 )brace
 id|sctp_event_primitive_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_PRIMITIVE_MAX
-mdefine_line|#define SCTP_EVENT_PRIMITIVE_MAX&t;SCTP_PRIMITIVE_REQUESTHEARTBEAT
+mdefine_line|#define SCTP_EVENT_PRIMITIVE_MAX&t;SCTP_PRIMITIVE_ASCONF
 DECL|macro|SCTP_NUM_PRIMITIVE_TYPES
 mdefine_line|#define SCTP_NUM_PRIMITIVE_TYPES&t;(SCTP_EVENT_PRIMITIVE_MAX + 1)
 multiline_comment|/* We define here a utility type for manipulating subtypes.&n; * The subtype constructors all work like this:&n; *&n; * &t;sctp_subtype_t foo = SCTP_ST_CHUNK(SCTP_CID_INIT);&n; */

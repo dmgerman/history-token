@@ -1672,6 +1672,12 @@ id|sctp_errhdr
 op_star
 id|err_hdr
 suffix:semicolon
+DECL|member|addip_hdr
+r_struct
+id|sctp_addiphdr
+op_star
+id|addip_hdr
+suffix:semicolon
 DECL|member|subh
 )brace
 id|subh
@@ -3715,8 +3721,7 @@ r_void
 op_star
 id|cookie
 suffix:semicolon
-multiline_comment|/* ADDIP Extention (ADDIP)&t;&t;--xguo */
-multiline_comment|/* &lt;expected peer-serial-number&gt; minus 1 (ADDIP sec. 4.2 C1) */
+multiline_comment|/* ADDIP Section 4.2 Upon reception of an ASCONF Chunk.&n;&t;&t; * C1) ... &quot;Peer-Serial-Number&squot;. This value MUST be initialized to the&n;&t;&t; * Initial TSN Value minus 1&n;&t;&t; */
 DECL|member|addip_serial
 id|__u32
 id|addip_serial
@@ -3946,15 +3951,10 @@ r_struct
 id|sk_buff_head
 id|addip_chunks
 suffix:semicolon
-multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * A2) A serial number should be assigned to the Chunk. The&n;&t; * serial number should be a monotonically increasing&n;&t; * number. All serial numbers are defined to be initialized at&n;&t; * the start of the association to the same value as the&n;&t; * Initial TSN.&n;&t; *&n;&t; * [and]&n;&t; *&n;&t; * ADDIP&n;&t; * 3.1.1  Address/Stream Configuration Change Chunk (ASCONF)&n;&t; *&n;&t; * Serial Number : 32 bits (unsigned integer)&n;&t; *&n;&t; * This value represents a Serial Number for the ASCONF&n;&t; * Chunk. The valid range of Serial Number is from 0 to&n;&t; * 4294967295 (2**32 - 1).  Serial Numbers wrap back to 0&n;&t; * after reaching 4294967295.&n;&t; */
+multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * A2) A serial number should be assigned to the Chunk. The&n;&t; * serial number SHOULD be a monotonically increasing&n;&t; * number. The serial number SHOULD be initialized at&n;&t; * the start of the association to the same value as the&n;&t; * Initial TSN and every time a new ASCONF chunk is created&n;&t; * it is incremented by one after assigning the serial number&n;&t; * to the newly created chunk.&n;&t; *&n;&t; * ADDIP&n;&t; * 3.1.1  Address/Stream Configuration Change Chunk (ASCONF)&n;&t; *&n;&t; * Serial Number : 32 bits (unsigned integer)&n;&t; *&n;&t; * This value represents a Serial Number for the ASCONF&n;&t; * Chunk. The valid range of Serial Number is from 0 to&n;&t; * 4294967295 (2^32 - 1).  Serial Numbers wrap back to 0&n;&t; * after reaching 4294967295.&n;&t; */
 DECL|member|addip_serial
 id|__u32
 id|addip_serial
-suffix:semicolon
-multiline_comment|/* Is the ADDIP extension enabled for this association? */
-DECL|member|addip_enable
-r_char
-id|addip_enable
 suffix:semicolon
 multiline_comment|/* Need to send an ECNE Chunk? */
 DECL|member|need_ecne
