@@ -4119,7 +4119,47 @@ comma
 id|align
 )paren
 suffix:semicolon
-multiline_comment|/* Cal size (in pages) of slabs, and the num of objs per slab.&n;&t; * This could be made much more intelligent.  For now, try to avoid&n;&t; * using high page-orders for slabs.  When the gfp() funcs are more&n;&t; * friendly towards high-order requests, this should be changed.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|SLAB_RECLAIM_ACCOUNT
+)paren
+op_logical_and
+id|size
+op_le
+id|PAGE_SIZE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * A VFS-reclaimable slab tends to have most allocations&n;&t;&t; * as GFP_NOFS and we really don&squot;t want to have to be allocating&n;&t;&t; * higher-order pages when we are unable to shrink dcache.&n;&t;&t; */
+id|cachep-&gt;gfporder
+op_assign
+l_int|0
+suffix:semicolon
+id|cache_estimate
+c_func
+(paren
+id|cachep-&gt;gfporder
+comma
+id|size
+comma
+id|align
+comma
+id|flags
+comma
+op_amp
+id|left_over
+comma
+op_amp
+id|cachep-&gt;num
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Calculate size (in pages) of slabs, and the num of objs per&n;&t;&t; * slab.  This could be made much more intelligent.  For now,&n;&t;&t; * try to avoid using high page-orders for slabs.  When the&n;&t;&t; * gfp() funcs are more friendly towards high-order requests,&n;&t;&t; * this should be changed.&n;&t;&t; */
 r_do
 (brace
 r_int
@@ -4185,7 +4225,7 @@ OG
 id|offslab_limit
 )paren
 (brace
-multiline_comment|/* Oops, this num of objs will cause problems. */
+multiline_comment|/* This num of objs will cause problems. */
 id|cachep-&gt;gfporder
 op_decrement
 suffix:semicolon
@@ -4196,7 +4236,7 @@ r_goto
 id|cal_wastage
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Large num of objs is good, but v. large slabs are currently&n;&t;&t; * bad for the gfp()s.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Large num of objs is good, but v. large slabs are&n;&t;&t;&t; * currently bad for the gfp()s.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4236,6 +4276,7 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
