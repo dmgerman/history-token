@@ -4505,7 +4505,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|dev
+id|ppa_struct
 )paren
 )paren
 suffix:semicolon

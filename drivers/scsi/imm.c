@@ -4913,7 +4913,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|dev
+id|imm_struct
 )paren
 )paren
 suffix:semicolon
