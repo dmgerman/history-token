@@ -58,9 +58,9 @@ DECL|macro|APM_MINOR_DEV
 mdefine_line|#define&t;APM_MINOR_DEV&t;134
 multiline_comment|/*&n; * See Documentation/Config.help for the configuration options.&n; *&n; * Various options can be changed at boot time as follows:&n; * (We allow underscores for compatibility with the modules code)&n; *&t;apm=on/off&t;&t;&t;enable/disable APM&n; *&t;    [no-]allow[-_]ints&t;&t;allow interrupts during BIOS calls&n; *&t;    [no-]broken[-_]psr&t;&t;BIOS has a broken GetPowerStatus call&n; *&t;    [no-]realmode[-_]power[-_]off&t;switch to real mode before&n; *&t;    &t;&t;&t;&t;&t;powering off&n; *&t;    [no-]debug&t;&t;&t;log some debugging messages&n; *&t;    [no-]power[-_]off&t;&t;power off on shutdown&n; *&t;    bounce[-_]interval=&lt;n&gt;&t;number of ticks to ignore suspend&n; *&t;    &t;&t;&t;&t;bounces&n; *          idle[-_]threshold=&lt;n&gt;       System idle percentage above which to&n; *                                      make APM BIOS idle calls. Set it to&n; *                                      100 to disable.&n; *          idle[-_]period=&lt;n&gt;          Period (in 1/100s of a second) over&n; *                                      which the idle percentage is&n; *                                      calculated.&n; */
 multiline_comment|/* KNOWN PROBLEM MACHINES:&n; *&n; * U: TI 4000M TravelMate: BIOS is *NOT* APM compliant&n; *                         [Confirmed by TI representative]&n; * ?: ACER 486DX4/75: uses dseg 0040, in violation of APM specification&n; *                    [Confirmed by BIOS disassembly]&n; *                    [This may work now ...]&n; * P: Toshiba 1950S: battery life information only gets updated after resume&n; * P: Midwest Micro Soundbook Elite DX2/66 monochrome: screen blanking&n; * &t;broken in BIOS [Reported by Garst R. Reese &lt;reese@isn.net&gt;]&n; * ?: AcerNote-950: oops on reading /proc/apm - workaround is a WIP&n; * &t;Neale Banks &lt;neale@lowendale.com.au&gt; December 2000&n; *&n; * Legend: U = unusable with APM patches&n; *         P = partially usable with APM patches&n; */
-multiline_comment|/*&n; * Define to always call the APM BIOS busy routine even if the clock was&n; * not slowed by the idle routine.&n; */
+multiline_comment|/*&n; * Define as 1 to make the driver always call the APM BIOS busy&n; * routine even if the clock was not reported as slowed by the&n; * idle routine.  Otherwise, define as 0.&n; */
 DECL|macro|ALWAYS_CALL_BUSY
-mdefine_line|#define ALWAYS_CALL_BUSY
+mdefine_line|#define ALWAYS_CALL_BUSY   1
 multiline_comment|/*&n; * Define to make the APM BIOS calls zero all data segment registers (so&n; * that an incorrect BIOS implementation will cause a kernel panic if it&n; * tries to write to arbitrary memory).&n; */
 DECL|macro|APM_ZERO_SEGS
 mdefine_line|#define APM_ZERO_SEGS
@@ -1124,9 +1124,6 @@ r_void
 id|u32
 id|eax
 suffix:semicolon
-r_int
-id|slowed
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1190,7 +1187,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|slowed
+id|clock_slowed
 op_assign
 (paren
 id|apm_info.bios.flags
@@ -1200,19 +1197,8 @@ id|APM_IDLE_SLOWS_CLOCK
 op_ne
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ALWAYS_CALL_BUSY
-id|clock_slowed
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-id|clock_slowed
-op_assign
-id|slowed
-suffix:semicolon
-macro_line|#endif
 r_return
-id|slowed
+id|clock_slowed
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;apm_do_busy&t;-&t;inform the BIOS the CPU is busy&n; *&n; *&t;Request that the BIOS brings the CPU back to full performance. &n; */
@@ -1232,6 +1218,8 @@ r_if
 c_cond
 (paren
 id|clock_slowed
+op_logical_or
+id|ALWAYS_CALL_BUSY
 )paren
 (brace
 (paren
