@@ -2059,11 +2059,9 @@ id|pages
 r_int
 id|index
 op_assign
-id|BITS_TO_LONGS
-c_func
-(paren
 id|i
-)paren
+op_div
+id|BITS_PER_LONG
 suffix:semicolon
 r_int
 id|offset
@@ -2166,11 +2164,9 @@ suffix:semicolon
 r_int
 id|index
 op_assign
-id|BITS_TO_LONGS
-c_func
-(paren
 id|pos
-)paren
+op_div
+id|BITS_PER_LONG
 suffix:semicolon
 r_int
 id|offset
@@ -2250,11 +2246,9 @@ suffix:semicolon
 r_int
 id|index
 op_assign
-id|BITS_TO_LONGS
-c_func
-(paren
 id|pos
-)paren
+op_div
+id|BITS_PER_LONG
 suffix:semicolon
 r_int
 id|offset
@@ -2264,6 +2258,15 @@ op_minus
 (paren
 id|index
 op_star
+id|BITS_PER_LONG
+)paren
+suffix:semicolon
+multiline_comment|/* We don&squot;t do regions of pages &gt; BITS_PER_LONG.  The&n;&t; * algorithm would be a simple look for multiple zeros in the&n;&t; * array, but there&squot;s no driver today that needs this.  If you&n;&t; * trip this BUG(), you get to code it... */
+id|BUG_ON
+c_func
+(paren
+id|pages
+OG
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
