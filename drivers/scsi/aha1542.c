@@ -90,7 +90,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;sgpnt[%d:%d] page %p/0x%x length %d&bslash;n&quot;
+l_string|&quot;sgpnt[%d:%d] page %p/0x%x length %ld&bslash;n&quot;
 comma
 id|badseg
 comma

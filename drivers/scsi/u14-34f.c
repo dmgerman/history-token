@@ -9619,6 +9619,7 @@ op_ge
 id|num_boards
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

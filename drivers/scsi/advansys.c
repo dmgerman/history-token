@@ -8484,10 +8484,6 @@ suffix:semicolon
 id|off_t
 id|advoffset
 suffix:semicolon
-id|Scsi_Device
-op_star
-id|scd
-suffix:semicolon
 macro_line|#ifdef ADVANSYS_STATS
 r_int
 id|tgt_id

@@ -2855,6 +2855,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else

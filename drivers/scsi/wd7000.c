@@ -4884,10 +4884,6 @@ id|host
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Scsi_Device
-op_star
-id|scd
-suffix:semicolon
 id|Adapter
 op_star
 id|adapter
