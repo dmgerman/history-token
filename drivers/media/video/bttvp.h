@@ -4,7 +4,7 @@ DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,12)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,14)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -1124,6 +1124,10 @@ DECL|member|gpioirq
 r_int
 id|gpioirq
 suffix:semicolon
+DECL|member|use_i2c_hw
+r_int
+id|use_i2c_hw
+suffix:semicolon
 multiline_comment|/* old gpio interface */
 DECL|member|gpioq
 id|wait_queue_head_t
@@ -1419,6 +1423,16 @@ id|bttv_suspend_state
 id|state
 suffix:semicolon
 multiline_comment|/* stats */
+DECL|member|errors
+r_int
+r_int
+id|errors
+suffix:semicolon
+DECL|member|framedrop
+r_int
+r_int
+id|framedrop
+suffix:semicolon
 DECL|member|irq_total
 r_int
 r_int
@@ -1428,11 +1442,6 @@ DECL|member|irq_me
 r_int
 r_int
 id|irq_me
-suffix:semicolon
-DECL|member|errors
-r_int
-r_int
-id|errors
 suffix:semicolon
 DECL|member|users
 r_int
