@@ -1495,10 +1495,10 @@ c_func
 (paren
 id|NO_SB
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1612,10 +1612,10 @@ c_func
 (paren
 id|BAD_MAGIC
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1636,10 +1636,10 @@ c_func
 (paren
 id|BAD_MINOR
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|sb-&gt;md_minor
@@ -1666,10 +1666,10 @@ c_func
 (paren
 id|BAD_CSUM
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1854,16 +1854,16 @@ c_func
 id|mddev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|same_pdev-&gt;dev
+id|same_pdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1887,10 +1887,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: bind&lt;%s&gt;&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1934,10 +1934,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: unbind&lt;%s&gt;&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -2123,10 +2123,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: export_rdev(%s)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -2570,10 +2570,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: rdev %s, SZ:%08ld F:%d DN:%d &quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|rdev-&gt;size
@@ -2694,10 +2694,10 @@ c_func
 (paren
 l_string|&quot;&lt;%s&gt;&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -2941,11 +2941,6 @@ op_star
 id|rdev
 )paren
 (brace
-id|kdev_t
-id|dev
-op_assign
-id|rdev-&gt;dev
-suffix:semicolon
 r_int
 r_int
 id|sb_offset
@@ -3022,10 +3017,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s&squot;s sb offset has changed from %ld to %ld, skipping&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|rdev-&gt;sb_offset
@@ -3062,10 +3057,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s&squot;s size has changed from %ld to %ld since import, skipping&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|rdev-&gt;size
@@ -3083,10 +3078,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;(write) %s&squot;s sb offset: %ld&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|sb_offset
@@ -3127,10 +3122,10 @@ c_func
 (paren
 l_string|&quot;md: write_disk_sb failed for device %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -3770,10 +3765,10 @@ c_func
 (paren
 l_string|&quot;%s &quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4015,10 +4010,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: %s has zero or unknown size, marking faulty!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|newdev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4057,10 +4052,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: could not read %s&squot;s sb, not importing!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|newdev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4088,10 +4083,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: %s has invalid sb, not importing!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|newdev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4310,10 +4305,10 @@ c_func
 (paren
 id|INCONSISTENT
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4386,10 +4381,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: %s&squot;s event counter: %08lx&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 (paren
@@ -4473,10 +4468,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: freshest: %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|freshest-&gt;dev
+id|freshest-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4634,10 +4629,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: kicking non-fresh %s from array!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -4949,10 +4944,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: Dev %s smaller than chunk_size: %ldk &lt; %dk&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|rdev-&gt;size
@@ -6329,10 +6324,10 @@ c_func
 (paren
 l_string|&quot;&lt;%s&gt;&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -6446,10 +6441,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: considering %s ...&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev0-&gt;dev
+id|rdev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -6499,16 +6494,16 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: %s has same UUID as %s, but superblocks differ ...&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev0-&gt;dev
+id|rdev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -6521,10 +6516,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;md:  adding %s ...&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -6615,10 +6610,10 @@ c_func
 id|mddev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev0-&gt;dev
+id|rdev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -6815,10 +6810,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: can not autostart based on faulty %s!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|startdev
+id|start_rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -7578,16 +7573,16 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: %s has different UUID to %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev0-&gt;dev
+id|rdev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -7621,16 +7616,16 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: %s has same UUID but different superblock to %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev0-&gt;dev
+id|rdev0-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -8129,10 +8124,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: cannot remove active disk %s from md%d ... &bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|mdidx
@@ -8321,10 +8316,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;md: can not hot-add faulty %s disk to md%d!&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|mdidx
@@ -10521,10 +10516,10 @@ id|sz
 comma
 l_string|&quot;%s &quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -11116,10 +11111,10 @@ id|sz
 comma
 l_string|&quot; %s[%d]&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|rdev-&gt;desc_nr
@@ -12725,10 +12720,10 @@ c_func
 id|mddev
 )paren
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|mddev-&gt;spare-&gt;dev
+id|mddev-&gt;spare-&gt;bdev
 )paren
 )paren
 suffix:semicolon

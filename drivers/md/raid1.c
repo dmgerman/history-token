@@ -1198,7 +1198,12 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|bio-&gt;bi_bdev
+id|conf-&gt;mirrors
+(braket
+id|mirror
+)braket
+dot
+id|bdev
 )paren
 comma
 id|r1_bio-&gt;sector

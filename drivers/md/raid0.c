@@ -92,10 +92,10 @@ c_func
 (paren
 l_string|&quot;raid0: looking at %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev1-&gt;dev
+id|rdev1-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -118,18 +118,18 @@ c_func
 (paren
 l_string|&quot;raid0:   comparing %s(%ld) with %s(%ld)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev1-&gt;dev
+id|rdev1-&gt;bdev
 )paren
 comma
 id|rdev1-&gt;size
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev2-&gt;dev
+id|rdev2-&gt;bdev
 )paren
 comma
 id|rdev2-&gt;size
@@ -480,10 +480,10 @@ c_func
 (paren
 l_string|&quot;raid0: checking %s ...&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1536,7 +1536,7 @@ id|sz
 comma
 l_string|&quot;%s/&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
 id|conf-&gt;strip_zone
@@ -1549,7 +1549,7 @@ id|dev
 id|k
 )braket
 op_member_access_from_pointer
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon
