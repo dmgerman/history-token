@@ -1,8 +1,8 @@
-multiline_comment|/*&n; *  linux/include/asm-i386/ide.h&n; *&n; *  Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
+multiline_comment|/*&n; *  linux/include/asm-x86_64/ide.h&n; *&n; *  Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
 multiline_comment|/*&n; *  This file contains the i386 architecture specific IDE code.&n; */
-macro_line|#ifndef __ASMi386_IDE_H
-DECL|macro|__ASMi386_IDE_H
-mdefine_line|#define __ASMi386_IDE_H
+macro_line|#ifndef __ASMx86_64_IDE_H
+DECL|macro|__ASMx86_64_IDE_H
+mdefine_line|#define __ASMx86_64_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef MAX_HWIFS
@@ -292,5 +292,5 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* __ASMi386_IDE_H */
+macro_line|#endif /* __ASMx86_64_IDE_H */
 eof
