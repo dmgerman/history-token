@@ -1360,12 +1360,21 @@ l_int|1
 op_eq
 l_int|1
 op_logical_and
+(paren
 id|rets
 (braket
 l_int|0
 )braket
-op_ge
+op_eq
 l_int|2
+op_logical_or
+id|rets
+(braket
+l_int|0
+)braket
+op_eq
+l_int|4
+)paren
 )paren
 (brace
 r_int
@@ -1463,25 +1472,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;EEH: MMIO failure (%d) on device: %s %s&bslash;n&quot;
 comma
 id|rets
 (braket
 l_int|0
 )braket
 comma
-id|pci_name
-c_func
-(paren
-id|dev
-)paren
+id|dn-&gt;name
 comma
-id|pci_pretty_name
-c_func
-(paren
-id|dev
-)paren
+id|dn-&gt;full_name
 )paren
 suffix:semicolon
 id|WARN_ON
@@ -1500,7 +1501,7 @@ id|panic_on_oops
 id|panic
 c_func
 (paren
-l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
+l_string|&quot;EEH: MMIO failure (%d) on device: %s %s&bslash;n&quot;
 comma
 id|rets
 (braket
@@ -1521,22 +1522,6 @@ c_func
 id|ignored_failures
 )paren
 op_increment
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
-comma
-id|rets
-(braket
-l_int|0
-)braket
-comma
-id|dn-&gt;name
-comma
-id|dn-&gt;full_name
-)paren
 suffix:semicolon
 )brace
 )brace
