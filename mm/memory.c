@@ -1707,16 +1707,12 @@ id|pgd_t
 op_star
 id|dir
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|address
 op_ge
 id|end
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dir
@@ -1788,7 +1784,22 @@ id|vma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * remove user pages in a given range.&n; */
+multiline_comment|/* Dispose of an entire mmu_gather_t per rescheduling point */
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
+DECL|macro|ZAP_BLOCK_SIZE
+mdefine_line|#define ZAP_BLOCK_SIZE&t;(FREE_PTE_NR * PAGE_SIZE)
+macro_line|#endif
+multiline_comment|/* For UP, 256 pages at a time gives nice low latency */
+macro_line|#if !defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
+DECL|macro|ZAP_BLOCK_SIZE
+mdefine_line|#define ZAP_BLOCK_SIZE&t;(256 * PAGE_SIZE)
+macro_line|#endif
+multiline_comment|/* No preempt: go for the best straight-line efficiency */
+macro_line|#if !defined(CONFIG_PREEMPT)
+DECL|macro|ZAP_BLOCK_SIZE
+mdefine_line|#define ZAP_BLOCK_SIZE&t;(~(0UL))
+macro_line|#endif
+multiline_comment|/**&n; * zap_page_range - remove user pages in a given range&n; * @vma: vm_area_struct holding the applicable pages&n; * @address: starting address of pages to zap&n; * @size: number of bytes to zap&n; */
 DECL|function|zap_page_range
 r_void
 id|zap_page_range
@@ -1821,28 +1832,9 @@ id|tlb
 suffix:semicolon
 r_int
 r_int
-id|start
-op_assign
-id|address
+id|end
 comma
-id|end
-op_assign
-id|address
-op_plus
-id|size
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is a long-lived spinlock. That&squot;s fine.&n;&t; * There&squot;s no contention, because the page table&n;&t; * lock only protects against kswapd anyway, and&n;&t; * even if kswapd happened to be looking at this&n;&t; * process we _want_ it to get stuck.&n;&t; */
-r_if
-c_cond
-(paren
-id|address
-op_ge
-id|end
-)paren
-id|BUG
-c_func
-(paren
-)paren
+id|block
 suffix:semicolon
 id|spin_lock
 c_func
@@ -1850,6 +1842,32 @@ c_func
 op_amp
 id|mm-&gt;page_table_lock
 )paren
+suffix:semicolon
+multiline_comment|/*&n; &t; * This was once a long-held spinlock.  Now we break the&n; &t; * work up into ZAP_BLOCK_SIZE units and relinquish the&n; &t; * lock after each interation.  This drastically lowers&n; &t; * lock contention and allows for a preemption point.&n;  &t; */
+r_while
+c_loop
+(paren
+id|size
+)paren
+(brace
+id|block
+op_assign
+(paren
+id|size
+OG
+id|ZAP_BLOCK_SIZE
+)paren
+ques
+c_cond
+id|ZAP_BLOCK_SIZE
+suffix:colon
+id|size
+suffix:semicolon
+id|end
+op_assign
+id|address
+op_plus
+id|block
 suffix:semicolon
 id|flush_cache_range
 c_func
@@ -1888,11 +1906,27 @@ c_func
 (paren
 id|tlb
 comma
-id|start
+id|address
 comma
 id|end
 )paren
 suffix:semicolon
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+id|address
+op_add_assign
+id|block
+suffix:semicolon
+id|size
+op_sub_assign
+id|block
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
