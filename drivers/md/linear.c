@@ -747,6 +747,8 @@ id|tmp_dev-&gt;offset
 op_lshift
 l_int|1
 )paren
+op_plus
+id|tmp_dev-&gt;rdev-&gt;data_offset
 suffix:semicolon
 r_return
 l_int|1

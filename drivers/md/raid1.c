@@ -1966,6 +1966,8 @@ suffix:semicolon
 id|read_bio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
+op_plus
+id|mirror-&gt;rdev-&gt;data_offset
 suffix:semicolon
 id|read_bio-&gt;bi_bdev
 op_assign
@@ -2123,6 +2125,13 @@ suffix:semicolon
 id|mbio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
+op_plus
+id|conf-&gt;mirrors
+(braket
+id|i
+)braket
+dot
+id|rdev-&gt;data_offset
 suffix:semicolon
 id|mbio-&gt;bi_bdev
 op_assign
@@ -3488,6 +3497,13 @@ suffix:semicolon
 id|mbio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
+op_or
+id|conf-&gt;mirrors
+(braket
+id|i
+)braket
+dot
+id|rdev-&gt;data_offset
 suffix:semicolon
 id|mbio-&gt;bi_end_io
 op_assign
@@ -3848,6 +3864,8 @@ suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
+op_plus
+id|rdev-&gt;data_offset
 suffix:semicolon
 id|bio-&gt;bi_rw
 op_assign
@@ -4271,6 +4289,8 @@ suffix:semicolon
 id|read_bio-&gt;bi_sector
 op_assign
 id|sector_nr
+op_plus
+id|mirror-&gt;rdev-&gt;data_offset
 suffix:semicolon
 id|read_bio-&gt;bi_bdev
 op_assign

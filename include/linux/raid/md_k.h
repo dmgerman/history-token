@@ -506,6 +506,11 @@ DECL|member|sb_loaded
 r_int
 id|sb_loaded
 suffix:semicolon
+DECL|member|data_offset
+id|sector_t
+id|data_offset
+suffix:semicolon
+multiline_comment|/* start of data in array */
 DECL|member|sb_offset
 id|sector_t
 id|sb_offset

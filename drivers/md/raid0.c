@@ -1467,6 +1467,8 @@ suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign
 id|rsect
+op_plus
+id|tmp_dev-&gt;data_offset
 suffix:semicolon
 multiline_comment|/*&n;&t; * Let the main block layer submit the IO and resolve recursion:&n;&t; */
 r_return

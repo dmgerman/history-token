@@ -1857,6 +1857,10 @@ id|rdev-&gt;preferred_minor
 op_assign
 id|sb-&gt;md_minor
 suffix:semicolon
+id|rdev-&gt;data_offset
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4463,6 +4467,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|rdev-&gt;in_sync
+op_assign
+l_int|0
+suffix:semicolon
+id|rdev-&gt;data_offset
 op_assign
 l_int|0
 suffix:semicolon

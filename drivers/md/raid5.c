@@ -6561,6 +6561,8 @@ suffix:semicolon
 id|bi-&gt;bi_sector
 op_assign
 id|sh-&gt;sector
+op_plus
+id|rdev-&gt;data_offset
 suffix:semicolon
 id|bi-&gt;bi_flags
 op_assign
