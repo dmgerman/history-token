@@ -66,7 +66,7 @@ id|p-&gt;line_length
 suffix:semicolon
 id|p-&gt;next_line
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:semicolon
 id|p-&gt;next_plane
 op_assign
