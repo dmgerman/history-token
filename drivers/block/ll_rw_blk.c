@@ -3430,10 +3430,7 @@ op_star
 id|q
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|test_and_clear_bit
+id|clear_bit
 c_func
 (paren
 id|QUEUE_FLAG_STOPPED
@@ -3441,7 +3438,7 @@ comma
 op_amp
 id|q-&gt;queue_flags
 )paren
-)paren
+suffix:semicolon
 id|schedule_work
 c_func
 (paren
