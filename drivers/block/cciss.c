@@ -2951,6 +2951,18 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk-&gt;part
+(braket
+id|i
+)braket
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2958,7 +2970,7 @@ id|disk-&gt;part
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|nr_sects
 op_ne
 l_int|0
@@ -2966,6 +2978,7 @@ l_int|0
 id|luninfo.num_parts
 op_increment
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

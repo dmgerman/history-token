@@ -6228,7 +6228,6 @@ r_return
 suffix:semicolon
 id|p
 op_assign
-op_amp
 id|disk-&gt;part
 (braket
 id|bdev-&gt;bd_dev

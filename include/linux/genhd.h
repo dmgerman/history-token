@@ -210,8 +210,11 @@ comma
 id|write_sectors
 suffix:semicolon
 DECL|member|policy
+DECL|member|partno
 r_int
 id|policy
+comma
+id|partno
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -302,6 +305,7 @@ multiline_comment|/* name of major driver */
 DECL|member|part
 r_struct
 id|hd_struct
+op_star
 op_star
 id|part
 suffix:semicolon
