@@ -6199,6 +6199,12 @@ id|data
 l_int|1
 )braket
 suffix:semicolon
+id|reiserfs_write_lock
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|inode
 op_assign
 id|reiserfs_iget
@@ -6248,6 +6254,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|reiserfs_write_unlock
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
