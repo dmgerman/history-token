@@ -517,6 +517,8 @@ op_assign
 id|flags
 op_or
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 suffix:semicolon
 id|retval
 op_assign

@@ -1509,9 +1509,11 @@ l_string|&quot;Ir&quot;
 id|flags
 )paren
 comma
-l_string|&quot;I&quot;
+l_string|&quot;r&quot;
 (paren
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 )paren
 comma
 l_string|&quot;r&quot;
