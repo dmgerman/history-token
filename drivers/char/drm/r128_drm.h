@@ -329,42 +329,82 @@ id|drm_r128_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmR128.h)&n; */
 multiline_comment|/* Rage 128 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_R128_INIT
+mdefine_line|#define DRM_R128_INIT       0x00
+DECL|macro|DRM_R128_CCE_START
+mdefine_line|#define DRM_R128_CCE_START  0x01
+DECL|macro|DRM_R128_CCE_STOP
+mdefine_line|#define DRM_R128_CCE_STOP   0x02
+DECL|macro|DRM_R128_CCE_RESET
+mdefine_line|#define DRM_R128_CCE_RESET  0x03
+DECL|macro|DRM_R128_CCE_IDLE
+mdefine_line|#define DRM_R128_CCE_IDLE   0x04
+multiline_comment|/* 0x05 not used */
+DECL|macro|DRM_R128_RESET
+mdefine_line|#define DRM_R128_RESET      0x06
+DECL|macro|DRM_R128_SWAP
+mdefine_line|#define DRM_R128_SWAP       0x07
+DECL|macro|DRM_R128_CLEAR
+mdefine_line|#define DRM_R128_CLEAR      0x08
+DECL|macro|DRM_R128_VERTEX
+mdefine_line|#define DRM_R128_VERTEX     0x09
+DECL|macro|DRM_R128_INDICES
+mdefine_line|#define DRM_R128_INDICES    0x0a
+DECL|macro|DRM_R128_BLIT
+mdefine_line|#define DRM_R128_BLIT       0x0b
+DECL|macro|DRM_R128_DEPTH
+mdefine_line|#define DRM_R128_DEPTH      0x0c
+DECL|macro|DRM_R128_STIPPLE
+mdefine_line|#define DRM_R128_STIPPLE    0x0d
+multiline_comment|/* 0x0e not used */
+DECL|macro|DRM_R128_INDIRECT
+mdefine_line|#define DRM_R128_INDIRECT   0x0f
+DECL|macro|DRM_R128_FULLSCREEN
+mdefine_line|#define DRM_R128_FULLSCREEN 0x10
+DECL|macro|DRM_R128_CLEAR2
+mdefine_line|#define DRM_R128_CLEAR2     0x11
+DECL|macro|DRM_R128_GETPARAM
+mdefine_line|#define DRM_R128_GETPARAM   0x12
+DECL|macro|DRM_R128_FLIP
+mdefine_line|#define DRM_R128_FLIP       0x13
 DECL|macro|DRM_IOCTL_R128_INIT
-mdefine_line|#define DRM_IOCTL_R128_INIT&t;&t;DRM_IOW( 0x40, drm_r128_init_t)
+mdefine_line|#define DRM_IOCTL_R128_INIT       DRM_IOW( DRM_COMMAND_BASE + DRM_R128_INIT, drm_r128_init_t)
 DECL|macro|DRM_IOCTL_R128_CCE_START
-mdefine_line|#define DRM_IOCTL_R128_CCE_START&t;DRM_IO(  0x41)
+mdefine_line|#define DRM_IOCTL_R128_CCE_START  DRM_IO(  DRM_COMMAND_BASE + DRM_R128_CCE_START)
 DECL|macro|DRM_IOCTL_R128_CCE_STOP
-mdefine_line|#define DRM_IOCTL_R128_CCE_STOP&t;&t;DRM_IOW( 0x42, drm_r128_cce_stop_t)
+mdefine_line|#define DRM_IOCTL_R128_CCE_STOP   DRM_IOW( DRM_COMMAND_BASE + DRM_R128_CCE_STOP, drm_r128_cce_stop_t)
 DECL|macro|DRM_IOCTL_R128_CCE_RESET
-mdefine_line|#define DRM_IOCTL_R128_CCE_RESET&t;DRM_IO(  0x43)
+mdefine_line|#define DRM_IOCTL_R128_CCE_RESET  DRM_IO(  DRM_COMMAND_BASE + DRM_R128_CCE_RESET)
 DECL|macro|DRM_IOCTL_R128_CCE_IDLE
-mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE&t;&t;DRM_IO(  0x44)
+mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE   DRM_IO(  DRM_COMMAND_BASE + DRM_R128_CCE_IDLE)
+multiline_comment|/* 0x05 not used */
 DECL|macro|DRM_IOCTL_R128_RESET
-mdefine_line|#define DRM_IOCTL_R128_RESET&t;&t;DRM_IO(  0x46)
+mdefine_line|#define DRM_IOCTL_R128_RESET      DRM_IO(  DRM_COMMAND_BASE + DRM_R128_RESET)
 DECL|macro|DRM_IOCTL_R128_SWAP
-mdefine_line|#define DRM_IOCTL_R128_SWAP&t;&t;DRM_IO(  0x47)
+mdefine_line|#define DRM_IOCTL_R128_SWAP       DRM_IO(  DRM_COMMAND_BASE + DRM_R128_SWAP)
 DECL|macro|DRM_IOCTL_R128_CLEAR
-mdefine_line|#define DRM_IOCTL_R128_CLEAR&t;&t;DRM_IOW( 0x48, drm_r128_clear_t)
+mdefine_line|#define DRM_IOCTL_R128_CLEAR      DRM_IOW( DRM_COMMAND_BASE + DRM_R128_CLEAR, drm_r128_clear_t)
 DECL|macro|DRM_IOCTL_R128_VERTEX
-mdefine_line|#define DRM_IOCTL_R128_VERTEX&t;&t;DRM_IOW( 0x49, drm_r128_vertex_t)
+mdefine_line|#define DRM_IOCTL_R128_VERTEX     DRM_IOW( DRM_COMMAND_BASE + DRM_R128_VERTEX, drm_r128_vertex_t)
 DECL|macro|DRM_IOCTL_R128_INDICES
-mdefine_line|#define DRM_IOCTL_R128_INDICES&t;&t;DRM_IOW( 0x4a, drm_r128_indices_t)
+mdefine_line|#define DRM_IOCTL_R128_INDICES    DRM_IOW( DRM_COMMAND_BASE + DRM_R128_INDICES, drm_r128_indices_t)
 DECL|macro|DRM_IOCTL_R128_BLIT
-mdefine_line|#define DRM_IOCTL_R128_BLIT&t;&t;DRM_IOW( 0x4b, drm_r128_blit_t)
+mdefine_line|#define DRM_IOCTL_R128_BLIT       DRM_IOW( DRM_COMMAND_BASE + DRM_R128_BLIT, drm_r128_blit_t)
 DECL|macro|DRM_IOCTL_R128_DEPTH
-mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4c, drm_r128_depth_t)
+mdefine_line|#define DRM_IOCTL_R128_DEPTH      DRM_IOW( DRM_COMMAND_BASE + DRM_R128_DEPTH, drm_r128_depth_t)
 DECL|macro|DRM_IOCTL_R128_STIPPLE
-mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4d, drm_r128_stipple_t)
+mdefine_line|#define DRM_IOCTL_R128_STIPPLE    DRM_IOW( DRM_COMMAND_BASE + DRM_R128_STIPPLE, drm_r128_stipple_t)
+multiline_comment|/* 0x0e not used */
 DECL|macro|DRM_IOCTL_R128_INDIRECT
-mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
+mdefine_line|#define DRM_IOCTL_R128_INDIRECT   DRM_IOWR(DRM_COMMAND_BASE + DRM_R128_INDIRECT, drm_r128_indirect_t)
 DECL|macro|DRM_IOCTL_R128_FULLSCREEN
-mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x50, drm_r128_fullscreen_t)
+mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN DRM_IOW( DRM_COMMAND_BASE + DRM_R128_FULLSCREEN, drm_r128_fullscreen_t)
 DECL|macro|DRM_IOCTL_R128_CLEAR2
-mdefine_line|#define DRM_IOCTL_R128_CLEAR2&t;&t;DRM_IOW( 0x51, drm_r128_clear2_t)
+mdefine_line|#define DRM_IOCTL_R128_CLEAR2     DRM_IOW( DRM_COMMAND_BASE + DRM_R128_CLEAR2, drm_r128_clear2_t)
 DECL|macro|DRM_IOCTL_R128_GETPARAM
-mdefine_line|#define DRM_IOCTL_R128_GETPARAM&t;&t;DRM_IOW( 0x52, drm_r128_getparam_t)
+mdefine_line|#define DRM_IOCTL_R128_GETPARAM   DRM_IOW( DRM_COMMAND_BASE + DRM_R128_GETPARAM, drm_r128_getparam_t)
 DECL|macro|DRM_IOCTL_R128_FLIP
-mdefine_line|#define DRM_IOCTL_R128_FLIP&t;&t;DRM_IO(  0x53)
+mdefine_line|#define DRM_IOCTL_R128_FLIP       DRM_IO(  DRM_COMMAND_BASE + DRM_R128_FLIP)
 DECL|struct|drm_r128_init
 r_typedef
 r_struct
@@ -827,7 +867,7 @@ r_int
 id|param
 suffix:semicolon
 DECL|member|value
-r_int
+r_void
 op_star
 id|value
 suffix:semicolon
