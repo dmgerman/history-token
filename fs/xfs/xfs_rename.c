@@ -1639,7 +1639,6 @@ suffix:semicolon
 r_goto
 id|abort_return
 suffix:semicolon
-suffix:semicolon
 )brace
 id|target_ip_dropped
 op_assign

@@ -3669,7 +3669,6 @@ id|log-&gt;l_iclog_bufs
 op_assign
 id|XLOG_MED_ICLOGS
 suffix:semicolon
-suffix:semicolon
 )brace
 r_else
 (brace

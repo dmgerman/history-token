@@ -5175,7 +5175,6 @@ id|dqp-&gt;q_mount
 op_assign
 l_int|NULL
 suffix:semicolon
-suffix:semicolon
 id|dqp-&gt;q_hash
 op_assign
 l_int|NULL
