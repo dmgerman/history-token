@@ -4038,6 +4038,7 @@ id|mode
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -5087,6 +5088,7 @@ id|mode
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -6267,6 +6269,13 @@ id|i
 op_increment
 )paren
 (brace
+id|down_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6284,6 +6293,13 @@ id|emu-&gt;controls
 (braket
 id|i
 )braket
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
 )paren
 suffix:semicolon
 )brace
@@ -6574,6 +6590,19 @@ l_string|&quot;Emu8000-3&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sbawe: can&squot;t grab ports 0x%lx, 0x%lx, 0x%lx&bslash;n&quot;
+comma
+id|hw-&gt;port1
+comma
+id|hw-&gt;port2
+comma
+id|hw-&gt;port3
+)paren
+suffix:semicolon
 id|snd_emu8000_free
 c_func
 (paren

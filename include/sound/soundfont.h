@@ -177,6 +177,7 @@ id|hdr
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -339,6 +340,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -359,6 +361,7 @@ id|sflist
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma

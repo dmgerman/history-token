@@ -31,6 +31,21 @@ c_func
 l_string|&quot;{sound}&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Takashi says this is really only for sound-service-0-, but this is OK. */
+DECL|variable|SNDRV_MINOR_OSS_SEQUENCER
+id|MODULE_ALIAS_SNDRV_MINOR
+c_func
+(paren
+id|SNDRV_MINOR_OSS_SEQUENCER
+)paren
+suffix:semicolon
+DECL|variable|SNDRV_MINOR_OSS_MUSIC
+id|MODULE_ALIAS_SNDRV_MINOR
+c_func
+(paren
+id|SNDRV_MINOR_OSS_MUSIC
+)paren
+suffix:semicolon
 macro_line|#ifdef SNDRV_SEQ_OSS_DEBUG
 id|MODULE_PARM
 c_func

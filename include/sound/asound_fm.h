@@ -255,7 +255,6 @@ mdefine_line|#define SNDRV_DM_FM_IOCTL_SET_MODE&t;_IOW(&squot;H&squot;, 0x25, in
 multiline_comment|/* for OPL3 only */
 DECL|macro|SNDRV_DM_FM_IOCTL_SET_CONNECTION
 mdefine_line|#define SNDRV_DM_FM_IOCTL_SET_CONNECTION&t;_IOW(&squot;H&squot;, 0x26, int)
-macro_line|#ifdef __SND_OSS_COMPAT__
 DECL|macro|SNDRV_DM_FM_OSS_IOCTL_RESET
 mdefine_line|#define SNDRV_DM_FM_OSS_IOCTL_RESET&t;&t;0x20
 DECL|macro|SNDRV_DM_FM_OSS_IOCTL_PLAY_NOTE
@@ -268,6 +267,5 @@ DECL|macro|SNDRV_DM_FM_OSS_IOCTL_SET_MODE
 mdefine_line|#define SNDRV_DM_FM_OSS_IOCTL_SET_MODE&t;&t;0x24
 DECL|macro|SNDRV_DM_FM_OSS_IOCTL_SET_OPL
 mdefine_line|#define SNDRV_DM_FM_OSS_IOCTL_SET_OPL&t;&t;0x25
-macro_line|#endif
 macro_line|#endif /* __SOUND_ASOUND_FM_H */
 eof
