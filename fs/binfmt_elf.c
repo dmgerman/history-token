@@ -3119,7 +3119,7 @@ c_func
 (paren
 id|loc-&gt;elf_ex
 comma
-id|have_pt_gnu_stack
+id|executable_stack
 )paren
 )paren
 id|current-&gt;personality

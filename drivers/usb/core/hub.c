@@ -5409,6 +5409,14 @@ id|status
 r_case
 l_int|0
 suffix:colon
+multiline_comment|/* TRSTRCY = 10 ms */
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* FALL THROUGH */
 r_case
 op_minus
 id|ENOTCONN

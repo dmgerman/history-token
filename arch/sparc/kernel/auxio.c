@@ -163,6 +163,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -181,7 +184,13 @@ r_sizeof
 id|auxregs
 )paren
 )paren
+op_le
+l_int|0
+)paren
+(brace
+r_return
 suffix:semicolon
+)brace
 id|prom_apply_obio_ranges
 c_func
 (paren
@@ -549,6 +558,9 @@ l_int|1
 r_return
 suffix:semicolon
 multiline_comment|/* Map the power control register. */
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -568,6 +580,10 @@ r_sizeof
 id|regs
 )paren
 )paren
+op_le
+l_int|0
+)paren
+r_return
 suffix:semicolon
 id|prom_apply_obio_ranges
 c_func

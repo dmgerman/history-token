@@ -962,7 +962,6 @@ comma
 dot
 id|resource
 op_assign
-op_amp
 id|ixp46x_i2c_resources
 )brace
 suffix:semicolon

@@ -4,6 +4,7 @@ DECL|macro|__SPARC_OPLIB_H
 mdefine_line|#define __SPARC_OPLIB_H
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* The master romvec pointer... */
 r_extern
 r_struct
@@ -591,6 +592,7 @@ suffix:semicolon
 multiline_comment|/* Fetch the requested property using the given buffer.  Returns&n; * the number of bytes the prom put into your buffer or -1 on error.&n; */
 r_extern
 r_int
+id|__must_check
 id|prom_getproperty
 c_func
 (paren

@@ -899,6 +899,16 @@ op_assign
 id|ata_bmdma_start
 comma
 dot
+id|bmdma_stop
+op_assign
+id|ata_bmdma_stop
+comma
+dot
+id|bmdma_status
+op_assign
+id|ata_bmdma_status
+comma
+dot
 id|qc_prep
 op_assign
 id|ata_qc_prep

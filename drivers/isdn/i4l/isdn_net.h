@@ -332,7 +332,7 @@ op_assign
 id|nd-&gt;queue
 suffix:semicolon
 multiline_comment|/* get lp on top of queue */
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -349,7 +349,7 @@ id|nd-&gt;queue
 )paren
 )paren
 (brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -377,7 +377,7 @@ r_goto
 id|errout
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -392,6 +392,11 @@ suffix:semicolon
 id|nd-&gt;queue
 op_assign
 id|nd-&gt;queue-&gt;next
+suffix:semicolon
+id|local_bh_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|errout
 suffix:colon
