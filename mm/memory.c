@@ -7994,7 +7994,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|mark_page_accessed
+id|SetPageReferenced
 c_func
 (paren
 id|page
