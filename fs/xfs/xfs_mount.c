@@ -1677,14 +1677,14 @@ OG
 l_int|0
 )paren
 (brace
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|buf_ptr
+id|mem_ptr
 op_plus
 id|first
 comma
-id|mem_ptr
+id|buf_ptr
 op_plus
 id|first
 comma
@@ -1694,14 +1694,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|mem_ptr
+id|buf_ptr
 op_plus
 id|first
 comma
-id|buf_ptr
+id|mem_ptr
 op_plus
 id|first
 comma
@@ -2971,14 +2971,14 @@ op_amp
 id|sbp-&gt;sb_uuid
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
 op_amp
-id|ret64
+id|vfsp-&gt;vfs_fsid
 comma
 op_amp
-id|vfsp-&gt;vfs_fsid
+id|ret64
 comma
 r_sizeof
 (paren
@@ -4637,9 +4637,12 @@ id|mp
 suffix:semicolon
 macro_line|#if defined(DEBUG) || defined(INDUCE_IO_ERROR)
 multiline_comment|/*&n;&t; * clear all error tags on this filesystem&n;&t; */
-id|bcopy
+id|memcpy
 c_func
 (paren
+op_amp
+id|fsid
+comma
 op_amp
 (paren
 id|XFS_MTOVFS
@@ -4650,9 +4653,6 @@ id|mp
 op_member_access_from_pointer
 id|vfs_fsid
 )paren
-comma
-op_amp
-id|fsid
 comma
 r_sizeof
 (paren

@@ -1140,9 +1140,9 @@ mdefine_line|#define ha_fsid ha_u._ha_fsid
 DECL|macro|XFS_HSIZE
 mdefine_line|#define XFS_HSIZE(handle)&t;(((char *) &amp;(handle).ha_fid.xfs_fid_pad&t; &bslash;&n;&t;&t;&t;&t; - (char *) &amp;(handle))&t;&t;&t;  &bslash;&n;&t;&t;&t;&t; + (handle).ha_fid.xfs_fid_len)
 DECL|macro|XFS_HANDLE_CMP
-mdefine_line|#define XFS_HANDLE_CMP(h1, h2)&t;bcmp(h1, h2, sizeof (xfs_handle_t))
+mdefine_line|#define XFS_HANDLE_CMP(h1, h2)&t;memcmp(h1, h2, sizeof(xfs_handle_t))
 DECL|macro|FSHSIZE
-mdefine_line|#define FSHSIZE&t;&t;sizeof (fsid_t)
+mdefine_line|#define FSHSIZE&t;&t;sizeof(fsid_t)
 multiline_comment|/*&n; * ioctl commands that replace IRIX fcntl()&squot;s&n; * For &squot;documentation&squot; purposed more than anything else,&n; * the &quot;cmd #&quot; field reflects the IRIX fcntl number.&n; */
 DECL|macro|XFS_IOC_ALLOCSP
 mdefine_line|#define XFS_IOC_ALLOCSP&t;&t;_IOW (&squot;X&squot;, 10, struct xfs_flock64)

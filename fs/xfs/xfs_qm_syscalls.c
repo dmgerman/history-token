@@ -2025,10 +2025,12 @@ id|tempgqip
 op_assign
 id|B_FALSE
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|out
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -3535,10 +3537,12 @@ op_star
 id|dst
 )paren
 (brace
-id|bzero
+id|memset
 c_func
 (paren
 id|dst
+comma
+l_int|0
 comma
 r_sizeof
 (paren

@@ -202,7 +202,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|bcmp
+id|memcmp
 c_func
 (paren
 id|iip-&gt;ili_orig_root
@@ -738,7 +738,7 @@ id|ip-&gt;i_d.di_onlink
 op_assign
 l_int|0
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
@@ -748,6 +748,8 @@ id|ip-&gt;i_d.di_pad
 l_int|0
 )braket
 )paren
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -2702,7 +2704,7 @@ id|iip-&gt;ili_inode
 op_assign
 id|ip
 suffix:semicolon
-multiline_comment|/*&n;&t;   We have bzeroed memory. No need ...&n;&t;   iip-&gt;ili_extents_buf = NULL;&n;&t;   iip-&gt;ili_pushbuf_flag = 0;&n;&t; */
+multiline_comment|/*&n;&t;   We have zeroed memory. No need ...&n;&t;   iip-&gt;ili_extents_buf = NULL;&n;&t;   iip-&gt;ili_pushbuf_flag = 0;&n;&t; */
 id|iip-&gt;ili_format.ilf_type
 op_assign
 id|XFS_LI_INODE

@@ -105,7 +105,7 @@ c_func
 id|EFAULT
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -114,6 +114,8 @@ op_star
 )paren
 op_amp
 id|handle
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -777,7 +779,7 @@ op_star
 id|handlep
 )paren
 )paren
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -789,6 +791,8 @@ id|handlep
 )paren
 op_plus
 id|hlen
+comma
+l_int|0
 comma
 r_sizeof
 (paren

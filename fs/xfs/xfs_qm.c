@@ -4795,11 +4795,13 @@ id|error
 )paren
 suffix:semicolon
 )brace
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
 id|zerocr
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -8414,12 +8416,14 @@ c_func
 id|xfsstats.xs_qm_dqreclaims
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Just bzero the core here. The rest will get&n;&t;&t;&t; * reinitialized by caller. XXX we shouldn&squot;t even&n;&t;&t;&t; * do this bzero ...&n;&t;&t;&t; */
-id|bzero
+multiline_comment|/*&n;&t;&t;&t; * Just zero the core here. The rest will get&n;&t;&t;&t; * reinitialized by caller. XXX we shouldn&squot;t even&n;&t;&t;&t; * do this zero ...&n;&t;&t;&t; */
+id|memset
 c_func
 (paren
 op_amp
 id|dqp-&gt;q_core
+comma
+l_int|0
 comma
 r_sizeof
 (paren

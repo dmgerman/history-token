@@ -5969,7 +5969,7 @@ id|xlog_t
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_unalloc_log */
-multiline_comment|/*&n; * Write some region out to in-core log&n; *&n; * This will be called when writing externally provided regions or when&n; * writing out a commit record for a given transaction.&n; *&n; * General algorithm:&n; *&t;1. Find total length of this write.  This may include adding to the&n; *&t;&t;lengths passed in.&n; *&t;2. Check whether we violate the tickets reservation.&n; *&t;3. While writing to this iclog&n; *&t;    A. Reserve as much space in this iclog as can get&n; *&t;    B. If this is first write, save away start lsn&n; *&t;    C. While writing this region:&n; *&t;&t;1. If first write of transaction, write start record&n; *&t;&t;2. Write log operation header (header per region)&n; *&t;&t;3. Find out if we can fit entire region into this iclog&n; *&t;&t;4. Potentially, verify destination bcopy ptr&n; *&t;&t;5. Bcopy (partial) region&n; *&t;&t;6. If partial copy, release iclog; otherwise, continue&n; *&t;&t;&t;copying more regions into current iclog&n; *&t;4. Mark want sync bit (in simulation mode)&n; *&t;5. Release iclog for potential flush to on-disk log.&n; *&n; * ERRORS:&n; * 1.&t;Panic if reservation is overrun.  This should never happen since&n; *&t;reservation amounts are generated internal to the filesystem.&n; * NOTES:&n; * 1. Tickets are single threaded data structures.&n; * 2. The XLOG_END_TRANS &amp; XLOG_CONTINUE_TRANS flags are passed down to the&n; *&t;syncing routine.  When a single log_write region needs to span&n; *&t;multiple in-core logs, the XLOG_CONTINUE_TRANS bit should be set&n; *&t;on all log operation writes which don&squot;t contain the end of the&n; *&t;region.&t; The XLOG_END_TRANS bit is used for the in-core log&n; *&t;operation which contains the end of the continued log_write region.&n; * 3. When xlog_state_get_iclog_space() grabs the rest of the current iclog,&n; *&t;we don&squot;t really know exactly how much space will be used.  As a result,&n; *&t;we don&squot;t update ic_offset until the end when we know exactly how many&n; *&t;bytes have been written out.&n; */
+multiline_comment|/*&n; * Write some region out to in-core log&n; *&n; * This will be called when writing externally provided regions or when&n; * writing out a commit record for a given transaction.&n; *&n; * General algorithm:&n; *&t;1. Find total length of this write.  This may include adding to the&n; *&t;&t;lengths passed in.&n; *&t;2. Check whether we violate the tickets reservation.&n; *&t;3. While writing to this iclog&n; *&t;    A. Reserve as much space in this iclog as can get&n; *&t;    B. If this is first write, save away start lsn&n; *&t;    C. While writing this region:&n; *&t;&t;1. If first write of transaction, write start record&n; *&t;&t;2. Write log operation header (header per region)&n; *&t;&t;3. Find out if we can fit entire region into this iclog&n; *&t;&t;4. Potentially, verify destination memcpy ptr&n; *&t;&t;5. Memcpy (partial) region&n; *&t;&t;6. If partial copy, release iclog; otherwise, continue&n; *&t;&t;&t;copying more regions into current iclog&n; *&t;4. Mark want sync bit (in simulation mode)&n; *&t;5. Release iclog for potential flush to on-disk log.&n; *&n; * ERRORS:&n; * 1.&t;Panic if reservation is overrun.  This should never happen since&n; *&t;reservation amounts are generated internal to the filesystem.&n; * NOTES:&n; * 1. Tickets are single threaded data structures.&n; * 2. The XLOG_END_TRANS &amp; XLOG_CONTINUE_TRANS flags are passed down to the&n; *&t;syncing routine.  When a single log_write region needs to span&n; *&t;multiple in-core logs, the XLOG_CONTINUE_TRANS bit should be set&n; *&t;on all log operation writes which don&squot;t contain the end of the&n; *&t;region.&t; The XLOG_END_TRANS bit is used for the in-core log&n; *&t;operation which contains the end of the continued log_write region.&n; * 3. When xlog_state_get_iclog_space() grabs the rest of the current iclog,&n; *&t;we don&squot;t really know exactly how much space will be used.  As a result,&n; *&t;we don&squot;t update ic_offset until the end when we know exactly how many&n; *&t;bytes have been written out.&n; */
 r_int
 DECL|function|xlog_write
 id|xlog_write
@@ -6055,11 +6055,11 @@ multiline_comment|/* # bytes copied if split region */
 r_int
 id|need_copy
 suffix:semicolon
-multiline_comment|/* # bytes need to bcopy this region */
+multiline_comment|/* # bytes need to memcpy this region */
 r_int
 id|copy_len
 suffix:semicolon
-multiline_comment|/* # bytes actually bcopy&squot;ing */
+multiline_comment|/* # bytes actually memcpy&squot;ing */
 r_int
 id|copy_off
 suffix:semicolon
@@ -6498,7 +6498,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Partial write last time? =&gt; (partial_copy != 0)&n;&t;     * need_copy is the amount we&squot;d like to copy if everything could&n;&t;     * fit in the current bcopy.&n;&t;     */
+multiline_comment|/* Partial write last time? =&gt; (partial_copy != 0)&n;&t;     * need_copy is the amount we&squot;d like to copy if everything could&n;&t;     * fit in the current memcpy.&n;&t;     */
 id|need_copy
 op_assign
 id|reg
@@ -6630,9 +6630,14 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
+(paren
+id|xfs_caddr_t
+)paren
+id|ptr
+comma
 id|reg
 (braket
 id|index
@@ -6641,11 +6646,6 @@ dot
 id|i_addr
 op_plus
 id|copy_off
-comma
-(paren
-id|xfs_caddr_t
-)paren
-id|ptr
 comma
 id|copy_len
 )paren
@@ -6912,10 +6912,12 @@ comma
 id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|iclog-&gt;ic_header.h_cycle_data
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -7851,7 +7853,7 @@ suffix:semicolon
 multiline_comment|/* also cleans log */
 )brace
 multiline_comment|/* xlog_state_done_syncing */
-multiline_comment|/*&n; * Update counters atomically now that bcopy is done.&n; */
+multiline_comment|/*&n; * Update counters atomically now that memcpy is done.&n; */
 multiline_comment|/* ARGSUSED */
 r_static
 r_inline

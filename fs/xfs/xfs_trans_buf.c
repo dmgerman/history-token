@@ -2963,7 +2963,7 @@ id|bip-&gt;bli_format.blf_flags
 op_or_assign
 id|XFS_BLI_CANCEL
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -2973,6 +2973,8 @@ op_star
 (paren
 id|bip-&gt;bli_format.blf_data_map
 )paren
+comma
+l_int|0
 comma
 (paren
 id|bip-&gt;bli_format.blf_map_size
