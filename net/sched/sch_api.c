@@ -4897,7 +4897,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
+macro_line|#ifdef CONFIG_NET_SCH_CLK_GETTIMEOFDAY
 DECL|function|psched_tod_diff
 r_int
 id|psched_tod_diff
@@ -4962,7 +4962,7 @@ id|psched_tod_diff
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#ifdef CONFIG_NET_SCH_CLK_CPU
 DECL|variable|psched_clock_per_hz
 id|psched_tdiff_t
 id|psched_clock_per_hz
@@ -5276,7 +5276,7 @@ id|rtnetlink_link
 op_star
 id|link_p
 suffix:semicolon
-macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#ifdef CONFIG_NET_SCH_CLK_CPU
 r_if
 c_cond
 (paren
@@ -5291,7 +5291,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#elif PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES
+macro_line|#elif defined(CONFIG_NET_SCH_CLK_JIFFIES)
 id|psched_tick_per_us
 op_assign
 id|HZ
