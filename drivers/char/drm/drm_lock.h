@@ -212,7 +212,7 @@ id|prev
 suffix:semicolon
 id|dev-&gt;lock.filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_do
 (brace
@@ -286,7 +286,7 @@ id|prev
 suffix:semicolon
 id|dev-&gt;lock.filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_do
 (brace

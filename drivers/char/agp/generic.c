@@ -3560,7 +3560,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|map_page_into_agp
 c_func
