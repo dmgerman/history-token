@@ -16,19 +16,12 @@ macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/* 4K page size, but our output routines, use some slack for overruns */
 DECL|macro|PROC_BLOCK_SIZE
 mdefine_line|#define PROC_BLOCK_SIZE (3*1024)
-multiline_comment|/* XXX: this shouldn&squot;t really be exposed to drivers. */
 DECL|variable|proc_scsi
+r_static
 r_struct
 id|proc_dir_entry
 op_star
 id|proc_scsi
-suffix:semicolon
-DECL|variable|proc_scsi
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_scsi
-)paren
 suffix:semicolon
 multiline_comment|/* Protect sht-&gt;present and sht-&gt;proc_dir */
 r_static
