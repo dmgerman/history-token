@@ -1585,13 +1585,6 @@ op_amp
 id|req-&gt;a_res
 suffix:semicolon
 r_struct
-id|file
-op_star
-id|filp
-op_assign
-id|argp-&gt;lock.fl.fl_file
-suffix:semicolon
-r_struct
 id|rpc_message
 id|msg
 op_assign
@@ -1622,19 +1615,6 @@ r_int
 id|proc
 comma
 id|host-&gt;h_name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|filp
-)paren
-id|msg.rpc_cred
-op_assign
-id|nfs_file_cred
-c_func
-(paren
-id|filp
 )paren
 suffix:semicolon
 r_do
@@ -2025,13 +2005,6 @@ op_amp
 id|req-&gt;a_res
 suffix:semicolon
 r_struct
-id|file
-op_star
-id|file
-op_assign
-id|argp-&gt;lock.fl.fl_file
-suffix:semicolon
-r_struct
 id|rpc_message
 id|msg
 op_assign
@@ -2092,20 +2065,6 @@ id|clnt-&gt;cl_procinfo
 id|proc
 )braket
 suffix:semicolon
-multiline_comment|/* bootstrap and kick off the async RPC call */
-r_if
-c_cond
-(paren
-id|file
-)paren
-id|msg.rpc_cred
-op_assign
-id|nfs_file_cred
-c_func
-(paren
-id|file
-)paren
-suffix:semicolon
 multiline_comment|/* Increment host refcount */
 id|nlm_get_host
 c_func
@@ -2113,6 +2072,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
+multiline_comment|/* bootstrap and kick off the async RPC call */
 id|status
 op_assign
 id|rpc_call_async

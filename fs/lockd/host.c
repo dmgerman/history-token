@@ -417,10 +417,6 @@ id|host-&gt;h_proto
 op_assign
 id|proto
 suffix:semicolon
-id|host-&gt;h_authflavor
-op_assign
-id|RPC_AUTH_UNIX
-suffix:semicolon
 id|host-&gt;h_rpcclnt
 op_assign
 l_int|NULL
@@ -777,6 +773,7 @@ comma
 id|nlmsvc_timeout
 )paren
 suffix:semicolon
+multiline_comment|/* Existing NLM servers accept AUTH_UNIX only */
 id|clnt
 op_assign
 id|rpc_create_client
@@ -791,7 +788,7 @@ id|nlm_program
 comma
 id|host-&gt;h_version
 comma
-id|host-&gt;h_authflavor
+id|RPC_AUTH_UNIX
 )paren
 suffix:semicolon
 r_if
