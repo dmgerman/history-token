@@ -3965,11 +3965,15 @@ id|s
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Now that we&squot;ve repositioned the item in the AIL,&n;&t;&t; * unpin it so it can be flushed.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Now that we&squot;ve repositioned the item in the AIL,&n;&t;&t; * unpin it so it can be flushed. Pass information&n;&t;&t; * about buffer stale state down from the log item&n;&t;&t; * flags, if anyone else stales the buffer we do not&n;&t;&t; * want to pay any attention to it.&n;&t;&t; */
 id|IOP_UNPIN
 c_func
 (paren
 id|lip
+comma
+id|lidp-&gt;lid_flags
+op_amp
+id|XFS_LID_BUF_STALE
 )paren
 suffix:semicolon
 )brace

@@ -150,6 +150,7 @@ id|s
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Decrement the pin count of the given dquot, and wake up&n; * anyone in xfs_dqwait_unpin() if the count goes to 0.&t; The&n; * dquot must have been previously pinned with a call to xfs_dqpin().&n; */
+multiline_comment|/* ARGSUSED */
 id|STATIC
 r_void
 DECL|function|xfs_qm_dquot_logitem_unpin
@@ -159,6 +160,9 @@ c_func
 id|xfs_dq_logitem_t
 op_star
 id|logitem
+comma
+r_int
+id|stale
 )paren
 (brace
 r_int
@@ -237,6 +241,8 @@ id|xfs_qm_dquot_logitem_unpin
 c_func
 (paren
 id|logitem
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -977,6 +983,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_qm_dquot_logitem_unpin
@@ -1273,6 +1281,9 @@ c_func
 id|xfs_qoff_logitem_t
 op_star
 id|qf
+comma
+r_int
+id|stale
 )paren
 (brace
 r_return
@@ -1577,6 +1588,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_qm_qoff_logitem_unpin
@@ -1768,6 +1781,8 @@ op_star
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 )paren
 id|xfs_qm_qoff_logitem_unpin
