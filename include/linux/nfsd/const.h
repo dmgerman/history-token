@@ -8,9 +8,9 @@ macro_line|#include &lt;linux/nfs3.h&gt;
 multiline_comment|/*&n; * Maximum protocol version supported by knfsd&n; */
 DECL|macro|NFSSVC_MAXVERS
 mdefine_line|#define NFSSVC_MAXVERS&t;&t;3
-multiline_comment|/*&n; * Maximum blocksize supported by daemon currently at 8K&n; */
+multiline_comment|/*&n; * Maximum blocksize supported by daemon currently at 32K&n; */
 DECL|macro|NFSSVC_MAXBLKSIZE
-mdefine_line|#define NFSSVC_MAXBLKSIZE&t;8192
+mdefine_line|#define NFSSVC_MAXBLKSIZE&t;(32*1024)
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef NFS_SUPER_MAGIC
 DECL|macro|NFS_SUPER_MAGIC

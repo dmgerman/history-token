@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_GENERIC__TLB_H
 DECL|macro|_ASM_GENERIC__TLB_H
 mdefine_line|#define _ASM_GENERIC__TLB_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* aim for something that fits in the L1 cache */
 DECL|macro|FREE_PTE_NR

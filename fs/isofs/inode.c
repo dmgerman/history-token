@@ -30,15 +30,11 @@ DECL|variable|check_malloc
 r_static
 r_int
 id|check_malloc
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|check_bread
 r_static
 r_int
 id|check_bread
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 r_static

@@ -1149,13 +1149,18 @@ id|svc_version
 id|nlmsvc_version1
 op_assign
 (brace
+id|vs_vers
+suffix:colon
 l_int|1
 comma
+id|vs_nproc
+suffix:colon
 l_int|17
 comma
+id|vs_proc
+suffix:colon
 id|nlmsvc_procedures
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|nlmsvc_version3
@@ -1165,13 +1170,18 @@ id|svc_version
 id|nlmsvc_version3
 op_assign
 (brace
+id|vs_vers
+suffix:colon
 l_int|3
 comma
+id|vs_nproc
+suffix:colon
 l_int|24
 comma
+id|vs_proc
+suffix:colon
 id|nlmsvc_procedures
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_LOCKD_V4
@@ -1182,13 +1192,18 @@ id|svc_version
 id|nlmsvc_version4
 op_assign
 (brace
+id|vs_vers
+suffix:colon
 l_int|4
 comma
+id|vs_nproc
+suffix:colon
 l_int|24
 comma
+id|vs_proc
+suffix:colon
 id|nlmsvc_procedures4
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -1233,25 +1248,40 @@ id|svc_program
 id|nlmsvc_program
 op_assign
 (brace
+id|pg_prog
+suffix:colon
 id|NLM_PROGRAM
 comma
 multiline_comment|/* program number */
+id|pg_lovers
+suffix:colon
 l_int|1
 comma
+singleline_comment|// version
+id|pg_hivers
+suffix:colon
 id|NLM_NRVERS
 op_minus
 l_int|1
 comma
-multiline_comment|/* version range */
+singleline_comment|// range
+id|pg_nvers
+suffix:colon
 id|NLM_NRVERS
 comma
 multiline_comment|/* number of entries in nlmsvc_version */
+id|pg_vers
+suffix:colon
 id|nlmsvc_version
 comma
 multiline_comment|/* version table */
+id|pg_name
+suffix:colon
 l_string|&quot;lockd&quot;
 comma
 multiline_comment|/* service name */
+id|pg_stats
+suffix:colon
 op_amp
 id|nlmsvc_stats
 comma

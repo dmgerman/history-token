@@ -3248,10 +3248,16 @@ id|rpc_version
 id|nlm_version4
 op_assign
 (brace
+id|number
+suffix:colon
 l_int|4
 comma
+id|nrprocs
+suffix:colon
 l_int|24
 comma
+id|procs
+suffix:colon
 id|nlm4_procedures
 comma
 )brace

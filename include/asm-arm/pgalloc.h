@@ -39,5 +39,7 @@ DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc(mm)&t;&t;&t;get_pgd_slow(mm)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;&t;free_pgd_slow(pgd)
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;&t;do { } while (0)
 macro_line|#endif
 eof

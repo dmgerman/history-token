@@ -1564,7 +1564,7 @@ id|self
 suffix:semicolon
 id|self-&gt;max_header_size
 op_assign
-l_int|5
+id|IRCOMM_TTY_HDR_UNITIALISED
 suffix:semicolon
 id|self-&gt;max_data_size
 op_assign
@@ -2535,6 +2535,29 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* We may receive packets from the TTY even before we have finished&n;&t; * our setup. Not cool.&n;&t; * The problem is that we would allocate a skb with bogus header and&n;&t; * data size, and when adding data to it later we would get&n;&t; * confused.&n;&t; * Better to not accept data until we are properly setup. Use bogus&n;&t; * header size to check that (safest way to detect it).&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;max_header_size
+op_eq
+id|IRCOMM_TTY_HDR_UNITIALISED
+)paren
+(brace
+multiline_comment|/* TTY will retry */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;() : not initialised&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|len
+suffix:semicolon
+)brace
 id|save_flags
 c_func
 (paren
@@ -2799,11 +2822,19 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we are allowed to transmit any data */
+multiline_comment|/* Check if we are allowed to transmit any data.&n;&t; * hw_stopped is the regular flow control.&n;&t; * max_header_size tells us if the channel is initialised or not.&n;&t; * Jean II */
 r_if
 c_cond
 (paren
+(paren
 id|tty-&gt;hw_stopped
+)paren
+op_logical_or
+(paren
+id|self-&gt;max_header_size
+op_eq
+id|IRCOMM_TTY_HDR_UNITIALISED
+)paren
 )paren
 id|ret
 op_assign

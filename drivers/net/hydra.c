@@ -458,7 +458,7 @@ id|j
 suffix:semicolon
 )brace
 multiline_comment|/* We must set the 8390 for word mode. */
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0x4b
@@ -805,7 +805,7 @@ id|ptrs
 op_increment
 )paren
 op_assign
-id|readw
+id|z_readw
 c_func
 (paren
 id|hdr_start
@@ -843,7 +843,7 @@ id|ptrs
 op_increment
 )paren
 op_assign
-id|readw
+id|z_readw
 c_func
 (paren
 id|hdr_start
@@ -968,7 +968,7 @@ l_int|8
 op_minus
 id|xfer_start
 suffix:semicolon
-id|memcpy_fromio
+id|z_memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -982,7 +982,7 @@ id|count
 op_sub_assign
 id|semi_count
 suffix:semicolon
-id|memcpy_fromio
+id|z_memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -996,7 +996,7 @@ id|count
 suffix:semicolon
 )brace
 r_else
-id|memcpy_fromio
+id|z_memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -1055,7 +1055,7 @@ l_int|1
 id|count
 op_increment
 suffix:semicolon
-id|memcpy_toio
+id|z_memcpy_toio
 c_func
 (paren
 id|mem_base

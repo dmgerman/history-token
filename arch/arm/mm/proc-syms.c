@@ -18,13 +18,6 @@ c_func
 id|cpu_cache_clean_invalidate_range
 )paren
 suffix:semicolon
-DECL|variable|cpu_flush_ram_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cpu_flush_ram_page
-)paren
-suffix:semicolon
 DECL|variable|cpu_dcache_clean_page
 id|EXPORT_SYMBOL
 c_func

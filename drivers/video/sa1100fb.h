@@ -316,6 +316,10 @@ DECL|macro|C_ENABLE_CLKCHANGE
 mdefine_line|#define C_ENABLE_CLKCHANGE&t;(3)
 DECL|macro|C_REENABLE
 mdefine_line|#define C_REENABLE&t;&t;(4)
+DECL|macro|C_DISABLE_PM
+mdefine_line|#define C_DISABLE_PM&t;&t;(5)
+DECL|macro|C_ENABLE_PM
+mdefine_line|#define C_ENABLE_PM&t;&t;(6)
 DECL|macro|SA1100_NAME
 mdefine_line|#define SA1100_NAME&t;&quot;SA1100&quot;
 multiline_comment|/*&n; *  Debug macros &n; */

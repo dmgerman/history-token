@@ -1300,6 +1300,8 @@ id|irlmp_discovery_confirm
 c_func
 (paren
 id|irlmp-&gt;cachelog
+comma
+id|DISCOVERY_PASSIVE
 )paren
 suffix:semicolon
 )brace
@@ -1363,6 +1365,8 @@ id|irlmp_discovery_confirm
 c_func
 (paren
 id|irlmp-&gt;cachelog
+comma
+id|DISCOVERY_ACTIVE
 )paren
 suffix:semicolon
 )brace

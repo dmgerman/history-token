@@ -1491,6 +1491,7 @@ id|list
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_struct
@@ -1905,6 +1906,7 @@ op_star
 id|list
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -218,6 +218,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|__umoddi3
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__udivmoddi4
 c_func
 (paren
@@ -274,7 +282,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
-mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
+mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;orig, __kstrtab_##sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
 id|EXPORT_SYMBOL_ALIAS
 c_func
@@ -891,6 +899,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__udivdi3
+)paren
+suffix:semicolon
+DECL|variable|__umoddi3
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__umoddi3
 )paren
 suffix:semicolon
 DECL|variable|__udivmoddi4

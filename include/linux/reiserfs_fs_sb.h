@@ -1114,31 +1114,31 @@ mdefine_line|#define REISERFS_TEST3 13
 DECL|macro|REISERFS_TEST4
 mdefine_line|#define REISERFS_TEST4 14 
 DECL|macro|reiserfs_r5_hash
-mdefine_line|#define reiserfs_r5_hash(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; FORCE_R5_HASH))
+mdefine_line|#define reiserfs_r5_hash(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; FORCE_R5_HASH))
 DECL|macro|reiserfs_rupasov_hash
-mdefine_line|#define reiserfs_rupasov_hash(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; FORCE_RUPASOV_HASH))
+mdefine_line|#define reiserfs_rupasov_hash(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; FORCE_RUPASOV_HASH))
 DECL|macro|reiserfs_tea_hash
-mdefine_line|#define reiserfs_tea_hash(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; FORCE_TEA_HASH))
+mdefine_line|#define reiserfs_tea_hash(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; FORCE_TEA_HASH))
 DECL|macro|reiserfs_hash_detect
-mdefine_line|#define reiserfs_hash_detect(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; FORCE_HASH_DETECT))
+mdefine_line|#define reiserfs_hash_detect(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; FORCE_HASH_DETECT))
 DECL|macro|reiserfs_no_border
-mdefine_line|#define reiserfs_no_border(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_NO_BORDER))
+mdefine_line|#define reiserfs_no_border(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_NO_BORDER))
 DECL|macro|reiserfs_no_unhashed_relocation
-mdefine_line|#define reiserfs_no_unhashed_relocation(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_NO_UNHASHED_RELOCATION))
+mdefine_line|#define reiserfs_no_unhashed_relocation(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_NO_UNHASHED_RELOCATION))
 DECL|macro|reiserfs_hashed_relocation
-mdefine_line|#define reiserfs_hashed_relocation(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_HASHED_RELOCATION))
+mdefine_line|#define reiserfs_hashed_relocation(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_HASHED_RELOCATION))
 DECL|macro|reiserfs_test4
-mdefine_line|#define reiserfs_test4(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_TEST4))
+mdefine_line|#define reiserfs_test4(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_TEST4))
 DECL|macro|dont_have_tails
-mdefine_line|#define dont_have_tails(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; NOTAIL))
+mdefine_line|#define dont_have_tails(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; NOTAIL))
 DECL|macro|replay_only
-mdefine_line|#define replay_only(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REPLAYONLY))
+mdefine_line|#define replay_only(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REPLAYONLY))
 DECL|macro|reiserfs_dont_log
-mdefine_line|#define reiserfs_dont_log(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_NOLOG))
+mdefine_line|#define reiserfs_dont_log(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_NOLOG))
 DECL|macro|old_format_only
-mdefine_line|#define old_format_only(s) ((s)-&gt;u.reiserfs_sb.s_properties &amp; (1 &lt;&lt; REISERFS_3_5))
+mdefine_line|#define old_format_only(s) (REISERFS_SB(s)-&gt;s_properties &amp; (1 &lt;&lt; REISERFS_3_5))
 DECL|macro|convert_reiserfs
-mdefine_line|#define convert_reiserfs(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_CONVERT))
+mdefine_line|#define convert_reiserfs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_CONVERT))
 r_void
 id|reiserfs_file_buffer
 (paren
@@ -1215,9 +1215,9 @@ mdefine_line|#define CARRY_ON                0
 DECL|macro|SCHEDULE_OCCURRED
 mdefine_line|#define SCHEDULE_OCCURRED       1
 DECL|macro|SB_BUFFER_WITH_SB
-mdefine_line|#define SB_BUFFER_WITH_SB(s) ((s)-&gt;u.reiserfs_sb.s_sbh)
+mdefine_line|#define SB_BUFFER_WITH_SB(s) (REISERFS_SB(s)-&gt;s_sbh)
 DECL|macro|SB_JOURNAL
-mdefine_line|#define SB_JOURNAL(s) ((s)-&gt;u.reiserfs_sb.s_journal)
+mdefine_line|#define SB_JOURNAL(s) (REISERFS_SB(s)-&gt;s_journal)
 DECL|macro|SB_JOURNAL_1st_RESERVED_BLOCK
 mdefine_line|#define SB_JOURNAL_1st_RESERVED_BLOCK(s) (SB_JOURNAL(s)-&gt;j_1st_reserved_block)
 DECL|macro|SB_JOURNAL_LIST
@@ -1227,7 +1227,7 @@ mdefine_line|#define SB_JOURNAL_LIST_INDEX(s) (SB_JOURNAL(s)-&gt;j_journal_list_
 DECL|macro|SB_JOURNAL_LEN_FREE
 mdefine_line|#define SB_JOURNAL_LEN_FREE(s) (SB_JOURNAL(s)-&gt;j_journal_len_free) 
 DECL|macro|SB_AP_BITMAP
-mdefine_line|#define SB_AP_BITMAP(s) ((s)-&gt;u.reiserfs_sb.s_ap_bitmap)
+mdefine_line|#define SB_AP_BITMAP(s) (REISERFS_SB(s)-&gt;s_ap_bitmap)
 DECL|macro|SB_DISK_JOURNAL_HEAD
 mdefine_line|#define SB_DISK_JOURNAL_HEAD(s) (SB_JOURNAL(s)-&gt;j_header_bh-&gt;)
 DECL|macro|SB_JOURNAL_TRANS_MAX

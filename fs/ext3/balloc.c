@@ -1894,6 +1894,11 @@ l_int|0
 comma
 id|err
 suffix:semicolon
+r_int
+id|performed_allocation
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|super_block
 op_star
@@ -2362,13 +2367,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* No space left on the device */
-id|unlock_super
-(paren
-id|sb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|search_back
 suffix:colon
@@ -2584,6 +2584,10 @@ id|j
 comma
 id|bh-&gt;b_data
 )paren
+suffix:semicolon
+id|performed_allocation
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_JBD_DEBUG
 (brace
@@ -3089,6 +3093,21 @@ suffix:semicolon
 id|unlock_super
 (paren
 id|sb
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Undo the block allocation&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|performed_allocation
+)paren
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|inode
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return

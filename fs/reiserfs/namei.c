@@ -704,7 +704,13 @@ id|DOT_DOT_OFFSET
 suffix:semicolon
 id|res
 op_assign
-id|s-&gt;u.reiserfs_sb.s_hash_function
+id|REISERFS_SB
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|s_hash_function
 (paren
 id|name
 comma

@@ -503,21 +503,13 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
 id|lp
-op_assign
-id|inode-&gt;i_dentry.next
-suffix:semicolon
-id|lp
-op_ne
+comma
 op_amp
 id|inode-&gt;i_dentry
-suffix:semicolon
-id|lp
-op_assign
-id|lp-&gt;next
 )paren
 (brace
 id|result
@@ -2203,6 +2195,11 @@ c_func
 id|fhp
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* keep this filehandle for possible reference  when encoding attributes */
+id|rqstp-&gt;rq_reffh
+op_assign
+id|fh
 suffix:semicolon
 r_if
 c_cond

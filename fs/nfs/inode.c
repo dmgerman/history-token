@@ -234,6 +234,8 @@ id|rpc_stat
 id|nfs_rpcstat
 op_assign
 (brace
+id|program
+suffix:colon
 op_amp
 id|nfs_program
 )brace
@@ -268,10 +270,16 @@ id|rpc_program
 id|nfs_program
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;nfs&quot;
 comma
+id|number
+suffix:colon
 id|NFS_PROGRAM
 comma
+id|nrvers
+suffix:colon
 r_sizeof
 (paren
 id|nfs_version
@@ -285,8 +293,12 @@ l_int|0
 )braket
 )paren
 comma
+id|version
+suffix:colon
 id|nfs_version
 comma
+id|stats
+suffix:colon
 op_amp
 id|nfs_rpcstat
 comma
@@ -2755,7 +2767,11 @@ id|desc
 op_assign
 (brace
 id|fh
+suffix:colon
+id|fh
 comma
+id|fattr
+suffix:colon
 id|fattr
 )brace
 suffix:semicolon
@@ -3225,6 +3241,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the inode is up-to-date.&n;&t; */
 id|error
 op_assign
@@ -3434,6 +3455,11 @@ id|fattr
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

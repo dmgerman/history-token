@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * EFI Variables - efivars.c&n; *&n; * Copyright (C) 2001 Dell Computer Corporation &lt;Matt_Domsch@dell.com&gt;&n; *&n; * This code takes all variables accessible from EFI runtime and&n; *  exports them via /proc&n; *&n; * Reads to /proc/efi/vars/varname return an efi_variable_t structure.&n; * Writes to /proc/efi/vars/varname must be an efi_variable_t structure.&n; * Writes with DataSize = 0 or Attributes = 0 deletes the variable.&n; * Writes with a new value in VariableName+VendorGuid creates&n; * a new variable.&n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *  12 Feb 2002 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   use list_for_each_safe when deleting vars.&n; *   remove ifdef CONFIG_SMP around include &lt;linux/smp.h&gt;&n; *   v0.04 release to linux-ia64@linuxia64.org&n; *&n; *  20 April 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Moved vars from /proc/efi to /proc/efi/vars, and made&n; *   efi.c own the /proc/efi directory.&n; *   v0.03 release to linux-ia64@linuxia64.org&n; *&n; *  26 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   At the request of Stephane, moved ownership of /proc/efi&n; *   to efi.c, and now efivars lives under /proc/efi/vars.&n; *&n; *  12 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Feedback received from Stephane Eranian incorporated.&n; *   efivar_write() checks copy_from_user() return value.&n; *   efivar_read/write() returns proper errno.&n; *   v0.02 release to linux-ia64@linuxia64.org&n; *&n; *  26 February 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   v0.01 release to linux-ia64@linuxia64.org&n; */
+multiline_comment|/*&n; * EFI Variables - efivars.c&n; *&n; * Copyright (C) 2001 Dell Computer Corporation &lt;Matt_Domsch@dell.com&gt;&n; *&n; * This code takes all variables accessible from EFI runtime and&n; *  exports them via /proc&n; *&n; * Reads to /proc/efi/vars/varname return an efi_variable_t structure.&n; * Writes to /proc/efi/vars/varname must be an efi_variable_t structure.&n; * Writes with DataSize = 0 or Attributes = 0 deletes the variable.&n; * Writes with a new value in VariableName+VendorGuid creates&n; * a new variable.&n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *  25 Mar 2002 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   move uuid_unparse() to include/asm-ia64/efi.h:efi_guid_unparse()&n; *&n; *  12 Feb 2002 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   use list_for_each_safe when deleting vars.&n; *   remove ifdef CONFIG_SMP around include &lt;linux/smp.h&gt;&n; *   v0.04 release to linux-ia64@linuxia64.org&n; *&n; *  20 April 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Moved vars from /proc/efi to /proc/efi/vars, and made&n; *   efi.c own the /proc/efi directory.&n; *   v0.03 release to linux-ia64@linuxia64.org&n; *&n; *  26 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   At the request of Stephane, moved ownership of /proc/efi&n; *   to efi.c, and now efivars lives under /proc/efi/vars.&n; *&n; *  12 March 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   Feedback received from Stephane Eranian incorporated.&n; *   efivar_write() checks copy_from_user() return value.&n; *   efivar_read/write() returns proper errno.&n; *   v0.02 release to linux-ia64@linuxia64.org&n; *&n; *  26 February 2001 - Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *   v0.01 release to linux-ia64@linuxia64.org&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -29,7 +29,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|EFIVARS_VERSION
-mdefine_line|#define EFIVARS_VERSION &quot;0.04 2002-Feb-12&quot;
+mdefine_line|#define EFIVARS_VERSION &quot;0.05 2002-Mar-26&quot;
 r_static
 r_int
 id|efivar_read
@@ -347,76 +347,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-r_static
-r_void
-DECL|function|uuid_unparse
-id|uuid_unparse
-c_func
-(paren
-id|efi_guid_t
-op_star
-id|guid
-comma
-r_char
-op_star
-id|out
-)paren
-(brace
-id|sprintf
-c_func
-(paren
-id|out
-comma
-l_string|&quot;%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x&quot;
-comma
-id|guid-&gt;data1
-comma
-id|guid-&gt;data2
-comma
-id|guid-&gt;data3
-comma
-id|guid-&gt;data4
-(braket
-l_int|0
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|1
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|2
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|3
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|4
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|5
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|6
-)braket
-comma
-id|guid-&gt;data4
-(braket
-l_int|7
-)braket
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * efivar_create_proc_entry()&n; * Requires:&n; *    variable_name_size = number of bytes required to hold&n; *                         variable_name (not counting the NULL&n; *                         character at the end.&n; * Returns 1 on failure, 0 on success&n; */
 r_static
 r_int
@@ -615,7 +545,7 @@ id|short_name
 op_assign
 l_char|&squot;-&squot;
 suffix:semicolon
-id|uuid_unparse
+id|efi_guid_unparse
 c_func
 (paren
 id|vendor_guid

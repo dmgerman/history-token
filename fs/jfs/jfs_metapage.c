@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *   Copyright (c) International Business Machines  Corp., 2000&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Module: jfs/jfs_metapage.c&n; *&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
@@ -2144,6 +2144,70 @@ l_string|&quot;__write_metapage done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|sync_metapage
+r_static
+r_inline
+r_void
+id|sync_metapage
+c_func
+(paren
+id|metapage_t
+op_star
+id|mp
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|mp-&gt;page
+suffix:semicolon
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|lock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* we&squot;re done with this page - no need to check for errors */
+r_if
+c_cond
+(paren
+id|page-&gt;buffers
+)paren
+(brace
+id|writeout_one_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|waitfor_one_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+id|UnlockPage
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 DECL|function|release_metapage
 r_void
 id|release_metapage
@@ -2157,11 +2221,6 @@ id|mp
 id|log_t
 op_star
 id|log
-suffix:semicolon
-r_struct
-id|inode
-op_star
-id|ip
 suffix:semicolon
 id|jFYI
 c_func
@@ -2219,15 +2278,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ip
-op_assign
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|mp-&gt;mapping-&gt;host
-suffix:semicolon
 m_assert
 (paren
 id|mp-&gt;count
