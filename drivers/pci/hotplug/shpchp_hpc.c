@@ -600,18 +600,10 @@ l_int|0x1
 r_break
 suffix:semicolon
 multiline_comment|/*  Check every 0.1 sec for a total of 1 sec*/
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
