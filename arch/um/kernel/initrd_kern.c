@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/bootmem.h&quot;
-macro_line|#include &quot;linux/blk.h&quot;
+macro_line|#include &quot;linux/initrd.h&quot;
 macro_line|#include &quot;asm/types.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;

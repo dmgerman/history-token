@@ -7,9 +7,13 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The RAM disk size is now a parameter */

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -37,9 +38,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
 DECL|variable|m68k_machtype
 r_int

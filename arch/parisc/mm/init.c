@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for hppa_dma_ops and pcxl_dma_ops */
-macro_line|#include &lt;linux/blk.h&gt;          /* for initrd_start and initrd_end */
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
