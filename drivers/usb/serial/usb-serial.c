@@ -3599,10 +3599,6 @@ id|port-&gt;serial
 op_assign
 id|serial
 suffix:semicolon
-id|port-&gt;magic
-op_assign
-id|USB_SERIAL_PORT_MAGIC
-suffix:semicolon
 id|INIT_WORK
 c_func
 (paren
