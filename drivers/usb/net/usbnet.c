@@ -416,17 +416,17 @@ DECL|macro|RUN_CONTEXT
 mdefine_line|#define&t;RUN_CONTEXT (in_irq () ? &quot;in_irq&quot; &bslash;&n;&t;&t;&t;: (in_interrupt () ? &quot;in_interrupt&quot; : &quot;can sleep&quot;))
 macro_line|#ifdef DEBUG
 DECL|macro|devdbg
-mdefine_line|#define devdbg(usbnet, fmt, arg...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;%s:&quot;, (usbnet)-&gt;net.name);&t;&bslash;&n;&t;&t;printk(fmt, ## arg);&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define devdbg(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 macro_line|#else
 DECL|macro|devdbg
 mdefine_line|#define devdbg(usbnet, fmt, arg...) do {} while(0)
 macro_line|#endif
 DECL|macro|deverr
-mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg)
+mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 DECL|macro|devwarn
-mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg)
+mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 DECL|macro|devinfo
-mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg); &bslash;&n;&t;} while (0)
+mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg); &bslash;&n;&t;} while (0)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* mostly for PDA style devices, which are always connected if present */
 DECL|function|always_connected
