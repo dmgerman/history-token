@@ -12284,6 +12284,7 @@ op_amp
 id|rt_periodic_timer
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -12319,6 +12320,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|xfrm_init
 c_func
