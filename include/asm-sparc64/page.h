@@ -17,29 +17,6 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
-r_extern
-r_void
-id|do_BUG
-c_func
-(paren
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
-DECL|macro|BUG
-mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&bslash;&n;&t;do_BUG(__FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__builtin_trap();&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG()&t;&t;__builtin_trap()
-macro_line|#endif
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page)&t;BUG()
 multiline_comment|/* Sparc64 is slow at multiplication, we prefer to use some extra space. */
 DECL|macro|WANT_PAGE_VIRTUAL
 mdefine_line|#define WANT_PAGE_VIRTUAL 1

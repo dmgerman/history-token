@@ -1294,7 +1294,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SERIAL
+macro_line|#ifdef CONFIG_SERIAL_8250
 r_struct
 id|serial_struct
 op_star
@@ -1514,7 +1514,7 @@ id|KERN_WARNING
 l_string|&quot;SuperIO: Register Serial #1 failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL */
+macro_line|#endif /* CONFIG_SERIAL_8250 */
 )brace
 DECL|variable|superio_serial_init
 id|EXPORT_SYMBOL
@@ -1682,7 +1682,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL
+macro_line|#ifdef CONFIG_SERIAL_8250
 id|superio_serial_init
 c_func
 (paren
@@ -1769,6 +1769,21 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SERIAL_8250
+r_extern
+r_int
+id|serial8250_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|serial8250_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func

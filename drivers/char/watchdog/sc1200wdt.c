@@ -1,20 +1,18 @@
 multiline_comment|/*&n; *&t;National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;,&n; *&t;&t;&t;All Rights Reserved.&n; *&t;Based on wdt.c and wdt977.c by Alan Cox and Woody Suwalski respectively.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; *&t;Changelog:&n; *&t;20020220 Zwane Mwaikambo&t;Code based on datasheet, no hardware.&n; *&t;20020221 Zwane Mwaikambo&t;Cleanups as suggested by Jeff Garzik and Alan Cox.&n; *&t;20020222 Zwane Mwaikambo&t;Added probing.&n; *&t;20020225 Zwane Mwaikambo&t;Added ISAPNP support.&n; *&t;20020412 Rob Radez&t;&t;Broke out start/stop functions&n; *&t;&t; &lt;rob@osinvestor.com&gt;&t;Return proper status instead of temperature warning&n; *&t;&t;&t;&t;&t;Add WDIOC_GETBOOTSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;&t;&t;&t;&t;Fix CONFIG_WATCHDOG_NOWAYOUT&n; *&t;20020530 Joel Becker&t;&t;Add Matt Domsch&squot;s nowayout module option&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|SC1200_MODULE_VER
 mdefine_line|#define SC1200_MODULE_VER&t;&quot;build 20020303&quot;
 DECL|macro|SC1200_MODULE_NAME

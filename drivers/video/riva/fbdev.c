@@ -7613,7 +7613,7 @@ comma
 dot
 id|fb_imageblit
 op_assign
-id|rivafb_imageblit
+id|cfb_imageblit
 comma
 dot
 id|fb_cursor

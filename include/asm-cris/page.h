@@ -141,12 +141,6 @@ macro_line|#else
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;KSEG_C   /* kseg_c is mapped to physical ram */
 macro_line|#endif
-macro_line|#ifndef __ASSEMBLY__
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;  printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while (0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;         BUG(); &bslash;&n;} while (0)
-macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* macros to convert between really physical and virtual addresses&n; * by stripping a selected bit, we can convert between KSEG_x and 0x40000000 where&n; * the DRAM really resides&n; */
 macro_line|#ifdef CONFIG_CRIS_LOW_MAP
 multiline_comment|/* we have DRAM virtually at 0x6 */

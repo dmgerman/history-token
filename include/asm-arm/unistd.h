@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001-2003 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
 macro_line|#ifndef __ASM_ARM_UNISTD_H
 DECL|macro|__ASM_ARM_UNISTD_H
 mdefine_line|#define __ASM_ARM_UNISTD_H
@@ -26,7 +26,7 @@ mdefine_line|#define __NR_open&t;&t;&t;(__NR_SYSCALL_BASE+  5)
 DECL|macro|__NR_close
 mdefine_line|#define __NR_close&t;&t;&t;(__NR_SYSCALL_BASE+  6)
 DECL|macro|__NR_waitpid
-mdefine_line|#define __NR_waitpid&t;&t;&t;(__NR_SYSCALL_BASE+  7)
+mdefine_line|#define __NR_waitpid&t;&t;&t;(__NR_SYSCALL_BASE+  7)&t;/* removed */
 DECL|macro|__NR_creat
 mdefine_line|#define __NR_creat&t;&t;&t;(__NR_SYSCALL_BASE+  8)
 DECL|macro|__NR_link
@@ -46,7 +46,8 @@ mdefine_line|#define __NR_chmod&t;&t;&t;(__NR_SYSCALL_BASE+ 15)
 DECL|macro|__NR_lchown
 mdefine_line|#define __NR_lchown&t;&t;&t;(__NR_SYSCALL_BASE+ 16)
 DECL|macro|__NR_break
-mdefine_line|#define __NR_break&t;&t;&t;(__NR_SYSCALL_BASE+ 17)
+mdefine_line|#define __NR_break&t;&t;&t;(__NR_SYSCALL_BASE+ 17)&t;/* removed */
+multiline_comment|/* 18 was sys_stat */
 DECL|macro|__NR_lseek
 mdefine_line|#define __NR_lseek&t;&t;&t;(__NR_SYSCALL_BASE+ 19)
 DECL|macro|__NR_getpid
@@ -70,15 +71,15 @@ mdefine_line|#define __NR_pause&t;&t;&t;(__NR_SYSCALL_BASE+ 29)
 DECL|macro|__NR_utime
 mdefine_line|#define __NR_utime&t;&t;&t;(__NR_SYSCALL_BASE+ 30)
 DECL|macro|__NR_stty
-mdefine_line|#define __NR_stty&t;&t;&t;(__NR_SYSCALL_BASE+ 31)
+mdefine_line|#define __NR_stty&t;&t;&t;(__NR_SYSCALL_BASE+ 31)&t;/* removed */
 DECL|macro|__NR_gtty
-mdefine_line|#define __NR_gtty&t;&t;&t;(__NR_SYSCALL_BASE+ 32)
+mdefine_line|#define __NR_gtty&t;&t;&t;(__NR_SYSCALL_BASE+ 32)&t;/* removed */
 DECL|macro|__NR_access
 mdefine_line|#define __NR_access&t;&t;&t;(__NR_SYSCALL_BASE+ 33)
 DECL|macro|__NR_nice
 mdefine_line|#define __NR_nice&t;&t;&t;(__NR_SYSCALL_BASE+ 34)
 DECL|macro|__NR_ftime
-mdefine_line|#define __NR_ftime&t;&t;&t;(__NR_SYSCALL_BASE+ 35)
+mdefine_line|#define __NR_ftime&t;&t;&t;(__NR_SYSCALL_BASE+ 35)&t;/* removed */
 DECL|macro|__NR_sync
 mdefine_line|#define __NR_sync&t;&t;&t;(__NR_SYSCALL_BASE+ 36)
 DECL|macro|__NR_kill
@@ -96,7 +97,7 @@ mdefine_line|#define __NR_pipe&t;&t;&t;(__NR_SYSCALL_BASE+ 42)
 DECL|macro|__NR_times
 mdefine_line|#define __NR_times&t;&t;&t;(__NR_SYSCALL_BASE+ 43)
 DECL|macro|__NR_prof
-mdefine_line|#define __NR_prof&t;&t;&t;(__NR_SYSCALL_BASE+ 44)
+mdefine_line|#define __NR_prof&t;&t;&t;(__NR_SYSCALL_BASE+ 44)&t;/* removed */
 DECL|macro|__NR_brk
 mdefine_line|#define __NR_brk&t;&t;&t;(__NR_SYSCALL_BASE+ 45)
 DECL|macro|__NR_setgid
@@ -104,7 +105,7 @@ mdefine_line|#define __NR_setgid&t;&t;&t;(__NR_SYSCALL_BASE+ 46)
 DECL|macro|__NR_getgid
 mdefine_line|#define __NR_getgid&t;&t;&t;(__NR_SYSCALL_BASE+ 47)
 DECL|macro|__NR_signal
-mdefine_line|#define __NR_signal&t;&t;&t;(__NR_SYSCALL_BASE+ 48)
+mdefine_line|#define __NR_signal&t;&t;&t;(__NR_SYSCALL_BASE+ 48)&t;/* removed */
 DECL|macro|__NR_geteuid
 mdefine_line|#define __NR_geteuid&t;&t;&t;(__NR_SYSCALL_BASE+ 49)
 DECL|macro|__NR_getegid
@@ -114,17 +115,18 @@ mdefine_line|#define __NR_acct&t;&t;&t;(__NR_SYSCALL_BASE+ 51)
 DECL|macro|__NR_umount2
 mdefine_line|#define __NR_umount2&t;&t;&t;(__NR_SYSCALL_BASE+ 52)
 DECL|macro|__NR_lock
-mdefine_line|#define __NR_lock&t;&t;&t;(__NR_SYSCALL_BASE+ 53)
+mdefine_line|#define __NR_lock&t;&t;&t;(__NR_SYSCALL_BASE+ 53)&t;/* removed */
 DECL|macro|__NR_ioctl
 mdefine_line|#define __NR_ioctl&t;&t;&t;(__NR_SYSCALL_BASE+ 54)
 DECL|macro|__NR_fcntl
 mdefine_line|#define __NR_fcntl&t;&t;&t;(__NR_SYSCALL_BASE+ 55)
 DECL|macro|__NR_mpx
-mdefine_line|#define __NR_mpx&t;&t;&t;(__NR_SYSCALL_BASE+ 56)
+mdefine_line|#define __NR_mpx&t;&t;&t;(__NR_SYSCALL_BASE+ 56)&t;/* removed */
 DECL|macro|__NR_setpgid
 mdefine_line|#define __NR_setpgid&t;&t;&t;(__NR_SYSCALL_BASE+ 57)
 DECL|macro|__NR_ulimit
-mdefine_line|#define __NR_ulimit&t;&t;&t;(__NR_SYSCALL_BASE+ 58)
+mdefine_line|#define __NR_ulimit&t;&t;&t;(__NR_SYSCALL_BASE+ 58)&t;/* removed */
+multiline_comment|/* 59 was sys_olduname */
 DECL|macro|__NR_umask
 mdefine_line|#define __NR_umask&t;&t;&t;(__NR_SYSCALL_BASE+ 60)
 DECL|macro|__NR_chroot
@@ -142,9 +144,9 @@ mdefine_line|#define __NR_setsid&t;&t;&t;(__NR_SYSCALL_BASE+ 66)
 DECL|macro|__NR_sigaction
 mdefine_line|#define __NR_sigaction&t;&t;&t;(__NR_SYSCALL_BASE+ 67)
 DECL|macro|__NR_sgetmask
-mdefine_line|#define __NR_sgetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 68)
+mdefine_line|#define __NR_sgetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 68)&t;/* removed */
 DECL|macro|__NR_ssetmask
-mdefine_line|#define __NR_ssetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 69)
+mdefine_line|#define __NR_ssetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 69)&t;/* removed */
 DECL|macro|__NR_setreuid
 mdefine_line|#define __NR_setreuid&t;&t;&t;(__NR_SYSCALL_BASE+ 70)
 DECL|macro|__NR_setregid
@@ -173,6 +175,7 @@ DECL|macro|__NR_select
 mdefine_line|#define __NR_select&t;&t;&t;(__NR_SYSCALL_BASE+ 82)
 DECL|macro|__NR_symlink
 mdefine_line|#define __NR_symlink&t;&t;&t;(__NR_SYSCALL_BASE+ 83)
+multiline_comment|/* 84 was sys_lstat */
 DECL|macro|__NR_readlink
 mdefine_line|#define __NR_readlink&t;&t;&t;(__NR_SYSCALL_BASE+ 85)
 DECL|macro|__NR_uselib
@@ -200,7 +203,7 @@ mdefine_line|#define __NR_getpriority&t;&t;(__NR_SYSCALL_BASE+ 96)
 DECL|macro|__NR_setpriority
 mdefine_line|#define __NR_setpriority&t;&t;(__NR_SYSCALL_BASE+ 97)
 DECL|macro|__NR_profil
-mdefine_line|#define __NR_profil&t;&t;&t;(__NR_SYSCALL_BASE+ 98)
+mdefine_line|#define __NR_profil&t;&t;&t;(__NR_SYSCALL_BASE+ 98)&t;/* removed */
 DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs&t;&t;&t;(__NR_SYSCALL_BASE+ 99)
 DECL|macro|__NR_fstatfs
@@ -221,6 +224,8 @@ DECL|macro|__NR_lstat
 mdefine_line|#define __NR_lstat&t;&t;&t;(__NR_SYSCALL_BASE+107)
 DECL|macro|__NR_fstat
 mdefine_line|#define __NR_fstat&t;&t;&t;(__NR_SYSCALL_BASE+108)
+multiline_comment|/* 109 was sys_uname */
+multiline_comment|/* 110 was sys_iopl */
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup&t;&t;&t;(__NR_SYSCALL_BASE+111)
 DECL|macro|__NR_idle
@@ -254,13 +259,13 @@ mdefine_line|#define __NR_mprotect&t;&t;&t;(__NR_SYSCALL_BASE+125)
 DECL|macro|__NR_sigprocmask
 mdefine_line|#define __NR_sigprocmask&t;&t;(__NR_SYSCALL_BASE+126)
 DECL|macro|__NR_create_module
-mdefine_line|#define __NR_create_module&t;&t;(__NR_SYSCALL_BASE+127)
+mdefine_line|#define __NR_create_module&t;&t;(__NR_SYSCALL_BASE+127)&t;/* removed */
 DECL|macro|__NR_init_module
 mdefine_line|#define __NR_init_module&t;&t;(__NR_SYSCALL_BASE+128)
 DECL|macro|__NR_delete_module
 mdefine_line|#define __NR_delete_module&t;&t;(__NR_SYSCALL_BASE+129)
 DECL|macro|__NR_get_kernel_syms
-mdefine_line|#define __NR_get_kernel_syms&t;&t;(__NR_SYSCALL_BASE+130)
+mdefine_line|#define __NR_get_kernel_syms&t;&t;(__NR_SYSCALL_BASE+130)&t;/* removed */
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl&t;&t;&t;(__NR_SYSCALL_BASE+131)
 DECL|macro|__NR_getpgid
@@ -332,9 +337,9 @@ mdefine_line|#define __NR_setresuid&t;&t;&t;(__NR_SYSCALL_BASE+164)
 DECL|macro|__NR_getresuid
 mdefine_line|#define __NR_getresuid&t;&t;&t;(__NR_SYSCALL_BASE+165)
 DECL|macro|__NR_vm86
-mdefine_line|#define __NR_vm86&t;&t;&t;(__NR_SYSCALL_BASE+166)
+mdefine_line|#define __NR_vm86&t;&t;&t;(__NR_SYSCALL_BASE+166)&t;/* removed */
 DECL|macro|__NR_query_module
-mdefine_line|#define __NR_query_module&t;&t;(__NR_SYSCALL_BASE+167)
+mdefine_line|#define __NR_query_module&t;&t;(__NR_SYSCALL_BASE+167)&t;/* removed */
 DECL|macro|__NR_poll
 mdefine_line|#define __NR_poll&t;&t;&t;(__NR_SYSCALL_BASE+168)
 DECL|macro|__NR_nfsservctl
@@ -473,6 +478,39 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_SYSCALL_BASE+237)
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_SYSCALL_BASE+238)
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;&t;(__NR_SYSCALL_BASE+239)
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;&t;(__NR_SYSCALL_BASE+240)
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;&t;(__NR_SYSCALL_BASE+241)
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;&t;(__NR_SYSCALL_BASE+242)
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;&t;(__NR_SYSCALL_BASE+243)
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;&t;(__NR_SYSCALL_BASE+244)
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;&t;(__NR_SYSCALL_BASE+245)
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;&t;(__NR_SYSCALL_BASE+246)
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;&t;(__NR_SYSCALL_BASE+247)
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;&t;(__NR_SYSCALL_BASE+248)
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;&t;(__NR_SYSCALL_BASE+249)
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;&t;(__NR_SYSCALL_BASE+250)
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;&t;(__NR_SYSCALL_BASE+251)
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;&t;(__NR_SYSCALL_BASE+252)
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;&t;(__NR_SYSCALL_BASE+253)
+multiline_comment|/* 254 for set_thread_area */
+multiline_comment|/* 255 for get_thread_area */
+multiline_comment|/* 256 for set_tid_address */
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)

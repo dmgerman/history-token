@@ -276,7 +276,6 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 multiline_comment|/******************************************/
 multiline_comment|/* free hardware resources used by driver */
 multiline_comment|/******************************************/
@@ -370,12 +369,6 @@ op_amp
 id|cs-&gt;hw.hfcpci.timer
 )paren
 suffix:semicolon
-id|iounmap
-c_func
-(paren
-id|cs-&gt;hw.hfcpci.pci_io
-)paren
-suffix:semicolon
 id|pci_free_consistent
 c_func
 (paren
@@ -386,6 +379,12 @@ comma
 id|cs-&gt;hw.hfcpci.fifos
 comma
 id|cs-&gt;hw.hfcpci.fifos_dma
+)paren
+suffix:semicolon
+id|hisax_release_resources
+c_func
+(paren
+id|cs
 )paren
 suffix:semicolon
 )brace
@@ -7688,34 +7687,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************/
-multiline_comment|/* handle card messages from control layer */
-multiline_comment|/*******************************************/
-r_static
-r_int
-DECL|function|hfcpci_card_msg
-id|hfcpci_card_msg
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-r_int
-id|mt
-comma
-r_void
-op_star
-id|arg
-)paren
-(brace
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_static
 r_void
 DECL|function|hfcpci_init
@@ -7821,7 +7792,6 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 r_int
 id|__init
 DECL|function|setup_hfcpci
@@ -7878,7 +7848,6 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 id|cs-&gt;hw.hfcpci.int_s1
 op_assign
 l_int|0
@@ -7891,14 +7860,6 @@ id|cs-&gt;hw.hfcpci.fifo
 op_assign
 l_int|255
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;typ
-op_eq
-id|ISDN_CTYPE_HFC_PCI
-)paren
-(brace
 id|i
 op_assign
 l_int|0
@@ -8039,19 +8000,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|cs-&gt;hw.hfcpci.pci_io
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|dev_hfcpci-&gt;resource
-(braket
-l_int|1
-)braket
-dot
-id|start
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8081,26 +8029,6 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;HFC-PCI: No PCI card found&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs-&gt;hw.hfcpci.pci_io
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HFC-PCI: No IO-Mem for PCI card found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8156,16 +8084,32 @@ id|cs-&gt;hw.hfcpci.fifos_dma
 suffix:semicolon
 id|cs-&gt;hw.hfcpci.pci_io
 op_assign
-id|ioremap
+id|request_mmio
 c_func
 (paren
-(paren
-id|ulong
-)paren
-id|cs-&gt;hw.hfcpci.pci_io
+op_amp
+id|cs-&gt;rs
+comma
+id|dev_hfcpci-&gt;resource
+(braket
+l_int|1
+)braket
+dot
+id|start
 comma
 l_int|256
+comma
+l_string|&quot;hfc_pci&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cs-&gt;hw.hfcpci.pci_io
+)paren
+r_goto
+id|err
 suffix:semicolon
 id|printk
 c_func
@@ -8238,14 +8182,6 @@ id|cs-&gt;hw.hfcpci.int_m2
 suffix:semicolon
 multiline_comment|/* At this point the needed PCI config is done */
 multiline_comment|/* fifos are still not enabled */
-)brace
-r_else
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* no valid card type */
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ
@@ -8278,11 +8214,6 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|cs-&gt;cardmsg
-op_assign
-op_amp
-id|hfcpci_card_msg
-suffix:semicolon
 id|cs-&gt;auxcmd
 op_assign
 op_amp
@@ -8294,23 +8225,18 @@ op_amp
 id|hfcpci_ops
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
-macro_line|#else
-id|printk
+id|err
+suffix:colon
+id|hisax_release_resources
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;HFC-PCI: NO_PCI_BIOS&bslash;n&quot;
+id|cs
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 )brace
 eof

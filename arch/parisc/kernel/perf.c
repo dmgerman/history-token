@@ -1,13 +1,13 @@
 multiline_comment|/*&n; *  Parisc performance counters&n; *  Copyright (C) 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *  This code is derived, with permission, from HP/UX sources.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; *  Edited comment from original sources:&n; *&n; *  This driver programs the PCX-U/PCX-W performance counters&n; *  on the PA-RISC 2.0 chips.  The driver keeps all images now&n; *  internally to the kernel to hopefully eliminate the possiblity&n; *  of a bad image halting the CPU.  Also, there are different&n; *  images for the PCX-W and later chips vs the PCX-U chips.&n; *&n; *  Only 1 process is allowed to access the driver at any time,&n; *  so the only protection that is needed is at open and close.&n; *  A variable &quot;perf_enabled&quot; is used to hold the state of the&n; *  driver.  The spinlock &quot;perf_lock&quot; is used to protect the&n; *  modification of the state during open/close operations so&n; *  multiple processes don&squot;t get into the driver simultaneously.&n; *&n; *  This driver accesses the processor directly vs going through&n; *  the PDC INTRIGUE calls.  This is done to eliminate bugs introduced&n; *  in various PDC revisions.  The code is much more maintainable&n; *  and reliable this way vs having to debug on every version of PDC&n; *  on every box. &n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/perf.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for __raw_read() */
@@ -1235,8 +1235,6 @@ op_amp
 id|perf_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1276,8 +1274,6 @@ c_func
 op_amp
 id|perf_lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2307,7 +2303,7 @@ r_void
 )paren
 (brace
 r_int
-id|retval
+id|ret
 suffix:semicolon
 multiline_comment|/* Determine correct processor interface to use */
 id|bitmask_array
@@ -2381,7 +2377,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|retval
+id|ret
 op_assign
 id|misc_register
 c_func
@@ -2393,9 +2389,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|retval
-OL
-l_int|0
+id|ret
 )paren
 (brace
 id|printk
@@ -2407,7 +2401,7 @@ l_string|&quot;cannot register misc device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Patch the images to match the system */

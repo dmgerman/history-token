@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/eisa_bus.h&gt;
 macro_line|#if 0
@@ -1496,6 +1497,21 @@ comma
 id|name
 comma
 id|dev-&gt;hpa
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s EISA&quot;
+comma
+id|name
 )paren
 suffix:semicolon
 id|eisa_dev.hba.dev

@@ -1339,8 +1339,46 @@ DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead          (__NR_Linux + 207)
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;(__NR_Linux + 208)
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;(__NR_Linux + 209)
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;(__NR_Linux + 210)
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;(__NR_Linux + 211)
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;(__NR_Linux + 212)
+DECL|macro|__NR_set_thread_area
+mdefine_line|#define __NR_set_thread_area&t;(__NR_Linux + 213)
+DECL|macro|__NR_get_thread_area
+mdefine_line|#define __NR_get_thread_area&t;(__NR_Linux + 214)
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;(__NR_Linux + 215)
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;(__NR_Linux + 216)
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;(__NR_Linux + 217)
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;(__NR_Linux + 218)
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;(__NR_Linux + 219)
+DECL|macro|__NR_alloc_hugepages
+mdefine_line|#define __NR_alloc_hugepages&t;(__NR_Linux + 220)
+DECL|macro|__NR_free_hugepages
+mdefine_line|#define __NR_free_hugepages&t;(__NR_Linux + 221)
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;(__NR_Linux + 222)
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;(__NR_Linux + 223)
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;(__NR_Linux + 224)
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;(__NR_Linux + 225)
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;(__NR_Linux + 226)
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;(__NR_Linux + 227)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     208
+mdefine_line|#define __NR_Linux_syscalls     228
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR

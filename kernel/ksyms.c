@@ -57,6 +57,10 @@ r_struct
 id|timezone
 id|sys_tz
 suffix:semicolon
+r_extern
+r_int
+id|panic_timeout
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODVERSIONS
 DECL|variable|__export_Using_Versions
 r_const
@@ -2620,6 +2624,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|panic
+)paren
+suffix:semicolon
+DECL|variable|panic_notifier_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|panic_notifier_list
+)paren
+suffix:semicolon
+DECL|variable|panic_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|panic_timeout
 )paren
 suffix:semicolon
 DECL|variable|sprintf

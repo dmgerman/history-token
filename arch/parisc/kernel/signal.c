@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/rt_sigframe.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 macro_line|#if DEBUG_SIG
@@ -26,6 +27,9 @@ mdefine_line|#define DBG(x)
 macro_line|#endif
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
+multiline_comment|/* Use this to get at 32-bit user passed pointers. &n; *    See sys_sparc32.c for description about these. */
+DECL|macro|A
+mdefine_line|#define A(__x)&t;((unsigned long)(__x))
 r_int
 id|do_signal
 c_func
@@ -1443,7 +1447,7 @@ l_int|4
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* It should *always* be cache line-aligned, but the compiler&n;           sometimes screws up. */
+multiline_comment|/* It should *always* be cache line-aligned, but the compiler&n;&t;sometimes screws up. */
 id|asm
 r_volatile
 (paren
@@ -1483,20 +1487,20 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-macro_line|#ifdef __LP64__
 multiline_comment|/* Much more has to happen with signals than this -- but it&squot;ll at least */
 multiline_comment|/* provide a pointer to some places which definitely need a look. */
 DECL|macro|HACK
-mdefine_line|#define HACK unsigned int
-macro_line|#else
-mdefine_line|#define HACK unsigned long
-macro_line|#endif
+mdefine_line|#define HACK u32
 id|haddr
 op_assign
 (paren
 id|HACK
 )paren
+id|A
+c_func
+(paren
 id|ka-&gt;sa.sa_handler
+)paren
 suffix:semicolon
 multiline_comment|/* ARGH!  Fucking brain damage.  You don&squot;t want to know. */
 r_if
@@ -1639,8 +1643,12 @@ op_assign
 (paren
 id|HACK
 )paren
+id|A
+c_func
+(paren
 op_amp
 id|frame-&gt;info
+)paren
 suffix:semicolon
 multiline_comment|/* siginfo pointer */
 id|regs-&gt;gr
@@ -1651,8 +1659,12 @@ op_assign
 (paren
 id|HACK
 )paren
+id|A
+c_func
+(paren
 op_amp
 id|frame-&gt;uc
+)paren
 suffix:semicolon
 multiline_comment|/* ucontext pointer */
 id|DBG
@@ -1687,7 +1699,11 @@ op_assign
 (paren
 id|HACK
 )paren
+id|A
+c_func
+(paren
 id|frame
+)paren
 op_plus
 id|PARISC_RT_SIGFRAME_SIZE
 )paren

@@ -21,16 +21,24 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|gfp
 )paren
 (brace
 r_void
 op_star
 id|ret
 suffix:semicolon
-r_int
+multiline_comment|/* ignore region specifiers */
 id|gfp
-op_assign
-id|GFP_ATOMIC
+op_and_assign
+op_complement
+(paren
+id|__GFP_DMA
+op_or
+id|__GFP_HIGHMEM
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * drivers/parisc/gsc.h&n; * Declarations for functions in gsc.c&n; * Copyright (c) 2000-2002 Helge Deller, Matthew Wilcox&n; *&n; * Distributed under the terms of the GPL, version 2&n; */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|macro|OFFSET_IRR
 mdefine_line|#define OFFSET_IRR 0x0000   /* Interrupt request register */
 DECL|macro|OFFSET_IMR

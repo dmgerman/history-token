@@ -25046,78 +25046,12 @@ id|EFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* Fix sizeof(sizeof()) breakage */
-DECL|macro|BLKELVGET_32
-mdefine_line|#define BLKELVGET_32&t;_IOR(0x12,106,int)
-DECL|macro|BLKELVSET_32
-mdefine_line|#define BLKELVSET_32&t;_IOW(0x12,107,int)
 DECL|macro|BLKBSZGET_32
 mdefine_line|#define BLKBSZGET_32&t;_IOR(0x12,112,int)
 DECL|macro|BLKBSZSET_32
 mdefine_line|#define BLKBSZSET_32&t;_IOW(0x12,113,int)
 DECL|macro|BLKGETSIZE64_32
 mdefine_line|#define BLKGETSIZE64_32&t;_IOR(0x12,114,int)
-DECL|function|do_blkelvget
-r_static
-r_int
-id|do_blkelvget
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-r_return
-id|sys_ioctl
-c_func
-(paren
-id|fd
-comma
-id|BLKELVGET
-comma
-id|arg
-)paren
-suffix:semicolon
-)brace
-DECL|function|do_blkelvset
-r_static
-r_int
-id|do_blkelvset
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-r_return
-id|sys_ioctl
-c_func
-(paren
-id|fd
-comma
-id|BLKELVSET
-comma
-id|arg
-)paren
-suffix:semicolon
-)brace
 DECL|function|do_blkbszget
 r_static
 r_int
@@ -29961,21 +29895,6 @@ comma
 id|do_usbdevfs_discsignal
 )paren
 multiline_comment|/* take care of sizeof(sizeof()) breakage */
-multiline_comment|/* elevator */
-id|HANDLE_IOCTL
-c_func
-(paren
-id|BLKELVGET_32
-comma
-id|do_blkelvget
-)paren
-id|HANDLE_IOCTL
-c_func
-(paren
-id|BLKELVSET_32
-comma
-id|do_blkelvset
-)paren
 multiline_comment|/* block stuff */
 id|HANDLE_IOCTL
 c_func

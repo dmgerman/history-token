@@ -786,10 +786,15 @@ comma
 id|GFP_KERNEL
 )paren
 )paren
+(brace
+id|xpad-&gt;open_count
+op_decrement
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

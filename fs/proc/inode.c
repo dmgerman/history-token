@@ -26,6 +26,8 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|de_get
+r_static
+r_inline
 r_struct
 id|proc_dir_entry
 op_star
@@ -56,6 +58,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Decrements the use count and checks for deferred deletion.&n; */
 DECL|function|de_put
+r_static
 r_void
 id|de_put
 c_func
@@ -952,11 +955,6 @@ id|inode
 op_star
 id|root_inode
 suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
 id|s-&gt;s_blocksize
 op_assign
 l_int|1024
@@ -997,31 +995,11 @@ r_goto
 id|out_no_root
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fixup the root inode&squot;s nlink value&n;&t; */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|for_each_process
-c_func
-(paren
-id|p
-)paren
-r_if
-c_cond
-(paren
-id|p-&gt;pid
-)paren
 id|root_inode-&gt;i_nlink
-op_increment
-suffix:semicolon
-id|read_unlock
+op_add_assign
+id|nr_processes
 c_func
 (paren
-op_amp
-id|tasklist_lock
 )paren
 suffix:semicolon
 id|s-&gt;s_root

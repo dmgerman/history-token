@@ -2,18 +2,17 @@ multiline_comment|/*&n; * arch/parisc/lib/io.c&n; *&n; * Copyright (c) Matthew W
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Copies a block of memory to a device in an efficient manner.&n; * Assumes the device can cope with 32-bit transfers.  If it can&squot;t,&n; * don&squot;t use this function.&n; */
-DECL|function|memcpy_toio
+DECL|function|__memcpy_toio
 r_void
-id|memcpy_toio
+id|__memcpy_toio
 c_func
 (paren
 r_int
 r_int
 id|dest
 comma
-r_const
-r_void
-op_star
+r_int
+r_int
 id|src
 comma
 r_int
@@ -30,10 +29,6 @@ l_int|3
 )paren
 op_ne
 (paren
-(paren
-r_int
-r_int
-)paren
 id|src
 op_amp
 l_int|3
@@ -98,10 +93,6 @@ comma
 id|dest
 )paren
 suffix:semicolon
-(paren
-r_int
-r_int
-)paren
 id|src
 op_add_assign
 l_int|4
@@ -150,13 +141,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;** Copies a block of memory from a device in an efficient manner.&n;** Assumes the device can cope with 32-bit transfers.  If it can&squot;t,&n;** don&squot;t use this function.&n;**&n;** CR16 counts on C3000 reading 256 bytes from Symbios 896 RAM:&n;**&t;27341/64    = 427 cyc per int&n;**&t;61311/128   = 478 cyc per short&n;**&t;122637/256  = 479 cyc per byte&n;** Ergo bus latencies dominant (not transfer size).&n;**      Minimize total number of transfers at cost of CPU cycles.&n;**&t;TODO: only look at src alignment and adjust the stores to dest.&n;*/
-DECL|function|memcpy_fromio
+DECL|function|__memcpy_fromio
 r_void
-id|memcpy_fromio
+id|__memcpy_fromio
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|dest
 comma
 r_int
@@ -173,10 +164,6 @@ c_cond
 (paren
 (paren
 (paren
-(paren
-r_int
-r_int
-)paren
 id|dest
 op_xor
 id|src
@@ -199,10 +186,6 @@ c_cond
 (paren
 (paren
 (paren
-(paren
-r_int
-r_int
-)paren
 id|dest
 op_xor
 id|src
@@ -441,9 +424,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Sets a block of memory on a device to a given value.&n; * Assumes the device can cope with 32-bit transfers.  If it can&squot;t,&n; * don&squot;t use this function.&n; */
-DECL|function|memset_io
+DECL|function|__memset_io
 r_void
-id|memset_io
+id|__memset_io
 c_func
 (paren
 r_int

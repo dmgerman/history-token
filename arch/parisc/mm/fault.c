@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 DECL|macro|PRINT_USER_FAULTS
@@ -559,7 +560,7 @@ id|regs
 (brace
 id|fix
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;iaoq

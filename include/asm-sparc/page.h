@@ -25,16 +25,6 @@ multiline_comment|/* #include &lt;asm/head.h&gt; XXX */
 multiline_comment|/* for KERNBASE */
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * XXX I am hitting compiler bugs with __builtin_trap. This has&n; * hit me before and rusty was blaming his netfilter bugs on&n; * this so lets disable it. - Anton&n; */
-macro_line|#if 0
-multiline_comment|/* We need the mb()&squot;s so we don&squot;t trigger a compiler bug - Anton */
-mdefine_line|#define BUG() do { &bslash;&n;&t;mb(); &bslash;&n;&t;__builtin_trap(); &bslash;&n;&t;mb(); &bslash;&n;} while(0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); *(int *)0=0; &bslash;&n;} while (0)
-macro_line|#endif
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page)&t;BUG()
 DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t; memset((void *)(page), 0, PAGE_SIZE)
 DECL|macro|copy_page

@@ -453,6 +453,7 @@ comma
 suffix:semicolon
 macro_line|#else
 DECL|variable|io
+r_static
 r_int
 id|io
 (braket
@@ -460,13 +461,9 @@ id|MAX_CARDS
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|dma
+r_static
 r_int
 id|dma
 (braket
@@ -474,11 +471,6 @@ id|MAX_CARDS
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* IRQ can be safely autoprobed */

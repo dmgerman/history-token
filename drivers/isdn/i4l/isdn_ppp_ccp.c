@@ -814,6 +814,15 @@ id|GFP_ATOMIC
 )paren
 suffix:semicolon
 singleline_comment|// FIXME
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpp
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|memset
 c_func
 (paren

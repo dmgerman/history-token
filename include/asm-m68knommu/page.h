@@ -194,21 +194,6 @@ DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;virt_to_pfn(page_to_virt(page))
 DECL|macro|virt_addr_valid
 mdefine_line|#define&t;virt_addr_valid(kaddr)&t;(((void *)(kaddr) &gt;= (void *)PAGE_OFFSET) &amp;&amp; &bslash;&n;&t;&t;&t;&t;((void *)(kaddr) &lt; (void *)memory_end))
-macro_line|#ifdef CONFIG_NO_KERNEL_MSG
-DECL|macro|BUG_PRINT
-mdefine_line|#define&t;BUG_PRINT()
-macro_line|#else
-DECL|macro|BUG_PRINT
-mdefine_line|#define&t;BUG_PRINT() printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__)
-macro_line|#endif
-singleline_comment|// #define BUG_PANIC()&t;asm volatile (&quot;halt&quot;) /* drop to debugger */
-singleline_comment|// #define BUG_PANIC()&t;while(1)
-DECL|macro|BUG_PANIC
-mdefine_line|#define BUG_PANIC()&t;panic(&quot;BUG!&quot;)
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;BUG_PRINT(); &bslash;&n;&t;BUG_PANIC(); &bslash;&n;} while (0)
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68KNOMMU_PAGE_H */

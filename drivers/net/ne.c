@@ -816,13 +816,13 @@ OL
 l_int|0
 )paren
 (brace
-id|__again
-suffix:colon
 id|pnp_device_detach
 c_func
 (paren
 id|idev
 )paren
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* if no io and irq, search for next */
@@ -847,9 +847,16 @@ comma
 l_int|0
 )paren
 )paren
-r_goto
-id|__again
+(brace
+id|pnp_device_detach
+c_func
+(paren
+id|idev
+)paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* found it */
 id|dev-&gt;base_addr
 op_assign
@@ -3709,13 +3716,13 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|idev
 op_assign
 (paren
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 )paren
 id|ei_status.priv
@@ -3725,9 +3732,7 @@ c_cond
 (paren
 id|idev
 )paren
-id|idev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_device_detach
 c_func
 (paren
 id|idev

@@ -6617,7 +6617,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pDev
+id|pDev-&gt;next_lun
 op_eq
 l_int|NULL
 )paren

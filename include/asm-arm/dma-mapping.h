@@ -259,13 +259,11 @@ comma
 id|dma_addr_t
 op_star
 id|handle
-)paren
-(brace
+comma
 r_int
 id|gfp
-op_assign
-id|GFP_ATOMIC
-suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren

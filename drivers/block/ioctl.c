@@ -720,17 +720,6 @@ id|cmd
 )paren
 (brace
 r_case
-id|BLKELVGET
-suffix:colon
-r_case
-id|BLKELVSET
-suffix:colon
-multiline_comment|/* deprecated, use the /proc/iosched interface instead */
-r_return
-op_minus
-id|ENOTTY
-suffix:semicolon
-r_case
 id|BLKRAGET
 suffix:colon
 r_case

@@ -1066,12 +1066,15 @@ singleline_comment|// and lower), check them both
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 comma
 l_int|0xff
+comma
+id|DEV_NAME
 )paren
 )paren
 (brace
@@ -1103,12 +1106,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
 comma
 l_int|0xff
+comma
+id|DEV_NAME
 )paren
 )paren
 (brace
@@ -1118,6 +1124,14 @@ c_func
 l_string|&quot;  cpqfcTS address in use: %x&bslash;n&quot;
 comma
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
+comma
+l_int|0xff
 )paren
 suffix:semicolon
 id|free_irq
@@ -1137,34 +1151,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|// OK, we should be able to grab everything we need now.
-id|request_region
-c_func
-(paren
-id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
-comma
-l_int|0xff
-comma
-id|DEV_NAME
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
-comma
-l_int|0xff
-comma
-id|DEV_NAME
-)paren
-suffix:semicolon
+singleline_comment|// OK, we have grabbed everything we need now.
 id|DEBUG_PCI
 c_func
 (paren
 id|printk
 c_func
 (paren
-l_string|&quot;  Requesting 255 I/O addresses @ %x&bslash;n&quot;
+l_string|&quot;  Reserved 255 I/O addresses @ %x&bslash;n&quot;
 comma
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
 )paren
@@ -1176,7 +1170,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;  Requesting 255 I/O addresses @ %x&bslash;n&quot;
+l_string|&quot;  Reserved 255 I/O addresses @ %x&bslash;n&quot;
 comma
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 )paren

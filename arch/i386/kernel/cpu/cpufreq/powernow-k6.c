@@ -676,6 +676,26 @@ op_assign
 op_amp
 id|powernow_k6_setpolicy
 suffix:semicolon
+id|driver-&gt;init
+op_assign
+l_int|NULL
+suffix:semicolon
+id|driver
+op_member_access_from_pointer
+m_exit
+op_assign
+l_int|NULL
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|driver-&gt;name
+comma
+l_string|&quot;powernow-k6&quot;
+comma
+id|CPUFREQ_NAME_LEN
+)paren
+suffix:semicolon
 multiline_comment|/* cpuinfo and default policy values */
 id|driver-&gt;policy
 (braket

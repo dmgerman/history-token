@@ -191,20 +191,6 @@ r_struct
 id|termios
 id|callout_termios
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020100
-DECL|member|open_wait
-r_struct
-id|wait_queue
-op_star
-id|open_wait
-suffix:semicolon
-DECL|member|close_wait
-r_struct
-id|wait_queue
-op_star
-id|close_wait
-suffix:semicolon
-macro_line|#else
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait
@@ -213,7 +199,6 @@ DECL|member|close_wait
 id|wait_queue_head_t
 id|close_wait
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

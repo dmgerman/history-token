@@ -27,6 +27,9 @@ r_struct
 id|rpc_clnt
 op_star
 id|clnt
+comma
+id|rpc_authflavor_t
+id|flavor
 )paren
 (brace
 r_struct
@@ -146,6 +149,16 @@ DECL|function|nul_create_cred
 id|nul_create_cred
 c_func
 (paren
+r_struct
+id|rpc_auth
+op_star
+id|auth
+comma
+r_struct
+id|auth_cred
+op_star
+id|acred
+comma
 r_int
 id|flags
 )paren
@@ -198,7 +211,7 @@ id|RPCAUTH_CRED_UPTODATE
 suffix:semicolon
 id|cred-&gt;cr_uid
 op_assign
-id|current-&gt;uid
+id|acred-&gt;uid
 suffix:semicolon
 id|cred-&gt;cr_ops
 op_assign
@@ -236,6 +249,11 @@ DECL|function|nul_match
 id|nul_match
 c_func
 (paren
+r_struct
+id|auth_cred
+op_star
+id|acred
+comma
 r_struct
 id|rpc_cred
 op_star

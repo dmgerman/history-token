@@ -4586,12 +4586,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|macro|PCI_DEVICE_ID_VISUALIZE_EG
-mdefine_line|#define PCI_DEVICE_ID_VISUALIZE_EG&t;0x1005
-DECL|macro|PCI_DEVICE_ID_VISUALIZE_FX
-mdefine_line|#define PCI_DEVICE_ID_VISUALIZE_FX&t;0x1008
-DECL|macro|PCI_DEVICE_ID_VISUALIZE_FX_NEW
-mdefine_line|#define PCI_DEVICE_ID_VISUALIZE_FX_NEW&t;0x108b
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -4605,7 +4599,7 @@ op_assign
 (brace
 id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_VISUALIZE_EG
+id|PCI_DEVICE_ID_HP_VISUALIZE_EG
 comma
 id|PCI_ANY_ID
 comma
@@ -4621,7 +4615,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_VISUALIZE_FX
+id|PCI_DEVICE_ID_HP_VISUALIZE_FX6
 comma
 id|PCI_ANY_ID
 comma
@@ -4637,7 +4631,39 @@ comma
 (brace
 id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_VISUALIZE_FX_NEW
+id|PCI_DEVICE_ID_HP_VISUALIZE_FX4
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_VISUALIZE_FX2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_VISUALIZE_FXE
 comma
 id|PCI_ANY_ID
 comma

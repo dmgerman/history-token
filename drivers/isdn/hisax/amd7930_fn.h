@@ -5,7 +5,6 @@ DECL|macro|AMD_DR
 mdefine_line|#define AMD_DR&t;&t;0x01
 DECL|macro|DBUSY_TIMER_VALUE
 mdefine_line|#define DBUSY_TIMER_VALUE 80
-r_extern
 r_void
 id|Amd7930_interrupt
 c_func
@@ -20,7 +19,6 @@ r_char
 id|irflags
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|Amd7930_init
 c_func
@@ -29,6 +27,35 @@ r_struct
 id|IsdnCardState
 op_star
 id|cs
+)paren
+suffix:semicolon
+r_int
+id|amd7930_setup
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_struct
+id|dc_hw_ops
+op_star
+id|amd7930_ops
+comma
+r_void
+(paren
+op_star
+id|set_irq_mask
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+comma
+id|u8
+id|val
+)paren
 )paren
 suffix:semicolon
 eof

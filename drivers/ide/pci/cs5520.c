@@ -582,6 +582,9 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+r_return
+id|error
+suffix:semicolon
 )brace
 DECL|function|cs5520_tune_drive
 r_static

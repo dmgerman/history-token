@@ -67,7 +67,7 @@ op_star
 id|errp
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Optimized for IP headers, which always checksum on 4 octet boundaries.&n; *&n; *&t;Written by Randolph Chung &lt;tausq@debian.org&gt;&n; */
+multiline_comment|/*&n; *&t;Optimized for IP headers, which always checksum on 4 octet boundaries.&n; *&n; *&t;Written by Randolph Chung &lt;tausq@debian.org&gt;, and then mucked with by&n; *&t;LaMont Jones &lt;lamont@debian.org&gt;&n; */
 DECL|function|ip_fast_csum
 r_static
 r_inline
@@ -94,27 +94,23 @@ id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;&t;ldws,ma&t;&t;4(%1), %0&bslash;n&quot;
-l_string|&quot;&t;addi&t;&t;-4, %2, %2&bslash;n&quot;
-l_string|&quot;&t;comib,&gt;=&t;0, %2, 2f&bslash;n&quot;
+l_string|&quot;&t;addib,&lt;=&t;-4, %2, 2f&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
-l_string|&quot;&t;add&t;&t;%0, %%r19, %0&bslash;n&quot;
-l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
-l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
-l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;ldws&t;&t;4(%1), %%r20&bslash;n&quot;
+l_string|&quot;&t;ldws&t;&t;8(%1), %%r21&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%0, %%r20, %0&bslash;n&quot;
+l_string|&quot;&t;ldws,ma&t;&t;12(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%0, %%r21, %0&bslash;n&quot;
 l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
 l_string|&quot;1:&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
-l_string|&quot;&t;addib,&lt;&gt;&t;-1, %2, 1b&bslash;n&quot;
+l_string|&quot;&t;addib,&lt;&t;&t;0, %2, 1b&bslash;n&quot;
 l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
-l_string|&quot;&t;addc&t;&t;%0, %%r0, %0&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;zdepi&t;&t;-1, 31, 16, %%r19&bslash;n&quot;
-l_string|&quot;&t;and&t;&t;%0, %%r19, %%r20&bslash;n&quot;
+l_string|&quot;&t;extru&t;&t;%0, 31, 16, %%r20&bslash;n&quot;
 l_string|&quot;&t;extru&t;&t;%0, 15, 16, %%r21&bslash;n&quot;
-l_string|&quot;&t;add&t;&t;%%r20, %%r21, %0&bslash;n&quot;
-l_string|&quot;&t;and&t;&t;%0, %%r19, %%r20&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%%r20, %%r21, %0&bslash;n&quot;
 l_string|&quot;&t;extru&t;&t;%0, 15, 16, %%r21&bslash;n&quot;
-l_string|&quot;&t;add&t;&t;%%r20, %%r21, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%0, %%r21, %0&bslash;n&quot;
 l_string|&quot;&t;subi&t;&t;-1, %0, %0&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 suffix:colon

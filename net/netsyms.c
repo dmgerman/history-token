@@ -2623,6 +2623,13 @@ c_func
 id|skb_copy
 )paren
 suffix:semicolon
+DECL|variable|skb_pad
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_pad
+)paren
+suffix:semicolon
 DECL|variable|netif_rx
 id|EXPORT_SYMBOL
 c_func

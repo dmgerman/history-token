@@ -121,6 +121,8 @@ id|CBAR
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 r_case
 l_int|5
 suffix:colon

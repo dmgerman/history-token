@@ -124,19 +124,6 @@ suffix:semicolon
 multiline_comment|/* Attribute value */
 )brace
 suffix:semicolon
-r_char
-op_star
-id|strndup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-id|max
-)paren
-suffix:semicolon
 r_struct
 id|ias_object
 op_star
@@ -368,7 +355,7 @@ suffix:semicolon
 r_extern
 id|hashbin_t
 op_star
-id|objects
+id|irias_objects
 suffix:semicolon
 macro_line|#endif
 eof

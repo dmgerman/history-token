@@ -851,7 +851,12 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Digi USB&quot;
+l_string|&quot;Digi 2 port USB adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;digi_2&quot;
 comma
 dot
 id|id_table
@@ -965,7 +970,12 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Digi USB&quot;
+l_string|&quot;Digi 4 port USB adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;digi_4&quot;
 comma
 dot
 id|id_table

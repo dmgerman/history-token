@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  File: linux/xattr.h&n;&n;  Extended attributes handling.&n;&n;  Copyright (C) 2001 by Andreas Gruenbacher &lt;a.gruenbacher@computer.org&gt;&n;  Copyright (C) 2001 SGI - Silicon Graphics, Inc &lt;linux-xfs@oss.sgi.com&gt;&n;*/
+multiline_comment|/*&n;  File: linux/xattr.h&n;&n;  Extended attributes handling.&n;&n;  Copyright (C) 2001 by Andreas Gruenbacher &lt;a.gruenbacher@computer.org&gt;&n;  Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n;*/
 macro_line|#ifndef _LINUX_XATTR_H
 DECL|macro|_LINUX_XATTR_H
 mdefine_line|#define _LINUX_XATTR_H

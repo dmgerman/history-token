@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 multiline_comment|/* Optimization barrier */
 multiline_comment|/* The &quot;volatile&quot; is due to gcc bugs */
 DECL|macro|barrier

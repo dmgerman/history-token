@@ -3397,6 +3397,11 @@ r_int
 r_int
 op_star
 id|inactive
+comma
+r_int
+r_int
+op_star
+id|free
 )paren
 (brace
 r_struct
@@ -3411,6 +3416,11 @@ l_int|0
 suffix:semicolon
 op_star
 id|inactive
+op_assign
+l_int|0
+suffix:semicolon
+op_star
+id|free
 op_assign
 l_int|0
 suffix:semicolon
@@ -3429,6 +3439,11 @@ op_star
 id|inactive
 op_add_assign
 id|zone-&gt;nr_inactive
+suffix:semicolon
+op_star
+id|free
+op_add_assign
+id|zone-&gt;free_pages
 suffix:semicolon
 )brace
 )brace
@@ -3605,6 +3620,10 @@ r_int
 r_int
 id|inactive
 suffix:semicolon
+r_int
+r_int
+id|free
+suffix:semicolon
 r_struct
 id|zone
 op_star
@@ -3744,6 +3763,9 @@ id|active
 comma
 op_amp
 id|inactive
+comma
+op_amp
+id|free
 )paren
 suffix:semicolon
 id|printk

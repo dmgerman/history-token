@@ -480,6 +480,15 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
+r_int
+id|xprt_prepare_transmit
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+)paren
+suffix:semicolon
 r_void
 id|xprt_transmit
 c_func

@@ -3432,7 +3432,7 @@ id|card
 dot
 id|io_base
 op_assign
-id|dev-&gt;resource
+id|dev-&gt;io_resource
 (braket
 l_int|4
 )braket
@@ -3489,7 +3489,7 @@ id|card
 dot
 id|io_base
 op_assign
-id|dev-&gt;resource
+id|dev-&gt;io_resource
 (braket
 l_int|1
 )braket
@@ -3555,7 +3555,7 @@ id|card
 dot
 id|io_base
 op_assign
-id|dev-&gt;resource
+id|dev-&gt;io_resource
 (braket
 l_int|3
 )braket

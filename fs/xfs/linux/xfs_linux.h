@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
@@ -172,8 +173,6 @@ DECL|macro|DEFAULT_PROJID
 mdefine_line|#define DEFAULT_PROJID&t;0
 DECL|macro|dfltprid
 mdefine_line|#define dfltprid&t;DEFAULT_PROJID
-DECL|macro|MAXNAMELEN
-mdefine_line|#define MAXNAMELEN&t;256
 DECL|macro|MAXPATHLEN
 mdefine_line|#define MAXPATHLEN&t;1024
 DECL|macro|FINVIS

@@ -206,6 +206,20 @@ multiline_comment|/* We&squot;re not really convinced we want to reset the onboa
 multiline_comment|/* Resets */
 multiline_comment|/* gsc_writel(0xFFFFFFFF, lasi_base+0x2000);*/
 multiline_comment|/* Parallel */
+r_if
+c_cond
+(paren
+id|pdc_add_valid
+c_func
+(paren
+id|lasi_base
+op_plus
+l_int|0x4004
+)paren
+op_eq
+id|PDC_OK
+)paren
+(brace
 id|gsc_writel
 c_func
 (paren
@@ -216,6 +230,7 @@ op_plus
 l_int|0x4004
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Audio */
 multiline_comment|/* gsc_writel(0xFFFFFFFF, lasi_base+0x5000);*/
 multiline_comment|/* Serial */
@@ -500,6 +515,23 @@ comma
 id|lasi-&gt;version
 comma
 id|lasi-&gt;hpa
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %d&quot;
+comma
+id|lasi-&gt;name
+comma
+id|lasi-&gt;version
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the chassis LEDs really early */

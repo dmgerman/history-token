@@ -295,6 +295,7 @@ mdefine_line|#define JFS_KNOWN_INCOMPAT_FEATURES&t;JFS_FEATURE_INCOMPAT_REVOKE
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 DECL|macro|JBD_ASSERTIONS
 mdefine_line|#define JBD_ASSERTIONS
 macro_line|#ifdef JBD_ASSERTIONS
@@ -594,13 +595,6 @@ r_struct
 id|journal_head
 op_star
 id|t_sync_datalist
-suffix:semicolon
-multiline_comment|/*&n;&t; * Doubly-linked circular list of all writepage data buffers&n;&t; * still to be written before this transaction can be committed.&n;&t; * Protected by journal_datalist_lock.&n;&t; */
-DECL|member|t_async_datalist
-r_struct
-id|journal_head
-op_star
-id|t_async_datalist
 suffix:semicolon
 multiline_comment|/* Doubly-linked circular list of all forget buffers (superseded&n;           buffers which we can un-checkpoint once this transaction&n;           commits) */
 DECL|member|t_forget
@@ -1319,9 +1313,6 @@ comma
 r_struct
 id|buffer_head
 op_star
-comma
-r_int
-id|async
 )paren
 suffix:semicolon
 r_extern
@@ -2025,11 +2016,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Not all architectures define BUG() */
-macro_line|#ifndef BUG
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;        printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;* ((char *) 0) = 0; &bslash;&n; } while (0)
-macro_line|#endif /* BUG */
 macro_line|#endif /* __KERNEL__   */
 multiline_comment|/* Comparison functions for transaction IDs: perform comparisons using&n; * modulo arithmetic so that they work over sequence number wraps. */
 DECL|function|tid_gt
@@ -2111,22 +2097,20 @@ DECL|macro|BJ_None
 mdefine_line|#define BJ_None&t;&t;0&t;/* Not journaled */
 DECL|macro|BJ_SyncData
 mdefine_line|#define BJ_SyncData&t;1&t;/* Normal data: flush before commit */
-DECL|macro|BJ_AsyncData
-mdefine_line|#define BJ_AsyncData&t;2&t;/* writepage data: wait on it before commit */
 DECL|macro|BJ_Metadata
-mdefine_line|#define BJ_Metadata&t;3&t;/* Normal journaled metadata */
+mdefine_line|#define BJ_Metadata&t;2&t;/* Normal journaled metadata */
 DECL|macro|BJ_Forget
-mdefine_line|#define BJ_Forget&t;4&t;/* Buffer superseded by this transaction */
+mdefine_line|#define BJ_Forget&t;3&t;/* Buffer superseded by this transaction */
 DECL|macro|BJ_IO
-mdefine_line|#define BJ_IO&t;&t;5&t;/* Buffer is for temporary IO use */
+mdefine_line|#define BJ_IO&t;&t;4&t;/* Buffer is for temporary IO use */
 DECL|macro|BJ_Shadow
-mdefine_line|#define BJ_Shadow&t;6&t;/* Buffer contents being shadowed to the log */
+mdefine_line|#define BJ_Shadow&t;5&t;/* Buffer contents being shadowed to the log */
 DECL|macro|BJ_LogCtl
-mdefine_line|#define BJ_LogCtl&t;7&t;/* Buffer contains log descriptors */
+mdefine_line|#define BJ_LogCtl&t;6&t;/* Buffer contains log descriptors */
 DECL|macro|BJ_Reserved
-mdefine_line|#define BJ_Reserved&t;8&t;/* Buffer is reserved for access by journal */
+mdefine_line|#define BJ_Reserved&t;7&t;/* Buffer is reserved for access by journal */
 DECL|macro|BJ_Types
-mdefine_line|#define BJ_Types&t;9
+mdefine_line|#define BJ_Types&t;8
 r_extern
 r_int
 id|jbd_blocks_per_page
@@ -2247,16 +2231,6 @@ op_member_access_from_pointer
 id|b_jlist
 op_eq
 id|BJ_SyncData
-op_logical_or
-id|bh2jh
-c_func
-(paren
-id|bh
-)paren
-op_member_access_from_pointer
-id|b_jlist
-op_eq
-id|BJ_AsyncData
 )paren
 suffix:semicolon
 )brace

@@ -26,6 +26,7 @@ DECL|variable|data
 DECL|variable|wren
 DECL|variable|mo_st
 DECL|variable|power
+r_static
 r_const
 r_int
 id|clk

@@ -918,9 +918,9 @@ DECL|macro|XFS_ITRUNC_DEFINITE
 mdefine_line|#define XFS_ITRUNC_DEFINITE&t;0x1
 DECL|macro|XFS_ITRUNC_MAYBE
 mdefine_line|#define XFS_ITRUNC_MAYBE&t;0x2
-multiline_comment|/*&n; * max file offset is 2^(31+PAGE_SHIFT) - 1 (due to linux page cache)&n; *&n; * NOTE: XFS itself can handle 2^63 - 1 (largest positive value of xfs_fsize_t)&n; * but Linux can&squot;t go above 2^(31+PAGE_SHIFT)-1: the Linux VM uses a 32 bit&n; * signed variable to index cache data, so 2^31 * PAGE_SIZE is as big as&n; * you can go.&n; */
+multiline_comment|/*&n; * max file offset is 2^(31+PAGE_SHIFT) - 1 (due to linux page cache)&n; *&n; * NOTE: XFS itself can handle 2^63 - 1 (largest positive value of xfs_fsize_t)&n; * but this is the Linux limit.&n; */
 DECL|macro|XFS_MAX_FILE_OFFSET
-mdefine_line|#define XFS_MAX_FILE_OFFSET&t;((long long)((1ULL&lt;&lt;(31+PAGE_SHIFT))-1ULL))
+mdefine_line|#define XFS_MAX_FILE_OFFSET&t;MAX_LFS_FILESIZE
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ITOV)
 r_struct
 id|vnode
@@ -1193,6 +1193,15 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_int
+id|xfs_finish_reclaim_all
+c_func
+(paren
+r_struct
+id|xfs_mount
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * xfs_inode.c prototypes.&n; */

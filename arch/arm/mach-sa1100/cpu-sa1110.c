@@ -1143,6 +1143,11 @@ op_assign
 op_amp
 id|sa1110_policy
 comma
+dot
+id|name
+op_assign
+l_string|&quot;sa1110&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|sa1110_clk_init
@@ -1276,7 +1281,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sa1110_clk_init
-id|core_initcall
+id|arch_initcall
 c_func
 (paren
 id|sa1110_clk_init

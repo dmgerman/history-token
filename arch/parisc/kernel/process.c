@@ -432,6 +432,8 @@ comma
 l_int|0
 comma
 id|user_tid
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -486,6 +488,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -730,6 +734,22 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|thread_saved_pc
+r_int
+r_int
+id|thread_saved_pc
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+)paren
+(brace
+r_return
+id|t-&gt;thread.regs.kpc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sys_execve() executes a new program.&n; */

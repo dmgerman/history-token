@@ -9746,11 +9746,14 @@ singleline_comment|// check IO region
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 (paren
 id|iobase
 comma
 id|AMB_EXTENT
+comma
+id|DEV_LABEL
 )paren
 )paren
 (brace
@@ -9789,6 +9792,13 @@ id|PRINTK
 id|KERN_ERR
 comma
 l_string|&quot;out of memory!&quot;
+)paren
+suffix:semicolon
+id|release_region
+(paren
+id|iobase
+comma
+id|AMB_EXTENT
 )paren
 suffix:semicolon
 r_return
@@ -9852,16 +9862,6 @@ singleline_comment|// free_irq is at &quot;endif&quot;
 )brace
 r_else
 (brace
-singleline_comment|// reserve IO region
-id|request_region
-(paren
-id|iobase
-comma
-id|AMB_EXTENT
-comma
-id|DEV_LABEL
-)paren
-suffix:semicolon
 id|dev-&gt;atm_dev
 op_assign
 id|atm_dev_register
@@ -9961,13 +9961,6 @@ id|dev-&gt;atm_dev
 suffix:semicolon
 )brace
 multiline_comment|/* atm_dev_register */
-id|release_region
-(paren
-id|iobase
-comma
-id|AMB_EXTENT
-)paren
-suffix:semicolon
 id|free_irq
 (paren
 id|irq
@@ -9976,7 +9969,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* request_region, request_irq */
+multiline_comment|/* request_irq */
 id|amb_reset
 (paren
 id|dev
@@ -9989,6 +9982,13 @@ multiline_comment|/* amb_init */
 id|kfree
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|release_region
+(paren
+id|iobase
+comma
+id|AMB_EXTENT
 )paren
 suffix:semicolon
 )brace

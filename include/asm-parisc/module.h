@@ -2,6 +2,21 @@ macro_line|#ifndef _ASM_PARISC_MODULE_H
 DECL|macro|_ASM_PARISC_MODULE_H
 mdefine_line|#define _ASM_PARISC_MODULE_H
 multiline_comment|/*&n; * This file contains the parisc architecture specific module code.&n; */
+macro_line|#ifdef __LP64__
+DECL|macro|Elf_Shdr
+mdefine_line|#define Elf_Shdr Elf64_Shdr
+DECL|macro|Elf_Sym
+mdefine_line|#define Elf_Sym Elf64_Sym
+DECL|macro|Elf_Ehdr
+mdefine_line|#define Elf_Ehdr Elf64_Ehdr
+macro_line|#else
+DECL|macro|Elf_Shdr
+mdefine_line|#define Elf_Shdr Elf32_Shdr
+DECL|macro|Elf_Sym
+mdefine_line|#define Elf_Sym Elf32_Sym
+DECL|macro|Elf_Ehdr
+mdefine_line|#define Elf_Ehdr Elf32_Ehdr
+macro_line|#endif
 DECL|macro|module_map
 mdefine_line|#define module_map(x)&t;&t;vmalloc(x)
 DECL|macro|module_unmap
@@ -10,5 +25,11 @@ DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;(0)
 DECL|macro|arch_init_modules
 mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
+DECL|struct|mod_arch_specific
+r_struct
+id|mod_arch_specific
+(brace
+)brace
+suffix:semicolon
 macro_line|#endif /* _ASM_PARISC_MODULE_H */
 eof

@@ -1711,12 +1711,14 @@ DECL|macro|VN_HOLD
 mdefine_line|#define VN_HOLD(vp)&t;&t;((void)vn_hold(vp))
 DECL|macro|VN_RELE
 mdefine_line|#define VN_RELE(vp)&t;&t;(iput(LINVFS_GET_IP(vp)))
-macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING) */
+macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
 multiline_comment|/*&n; * Vname handling macros.&n; */
 DECL|macro|VNAME
 mdefine_line|#define VNAME(dentry)&t;&t;((char *) (dentry)-&gt;d_name.name)
 DECL|macro|VNAMELEN
 mdefine_line|#define VNAMELEN(dentry)&t;((dentry)-&gt;d_name.len)
+DECL|macro|VNAME_TO_VNODE
+mdefine_line|#define VNAME_TO_VNODE(dentry)&t;(LINVFS_GET_VP((dentry)-&gt;d_inode))
 multiline_comment|/*&n; * Vnode spinlock manipulation.&n; */
 DECL|macro|VN_LOCK
 mdefine_line|#define VN_LOCK(vp)&t;&t;mutex_spinlock(&amp;(vp)-&gt;v_lock)

@@ -547,6 +547,11 @@ op_assign
 op_amp
 id|sa1100_policy
 comma
+dot
+id|name
+op_assign
+l_string|&quot;sa1100&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|sa1100_dram_init
@@ -606,7 +611,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|sa1100_dram_init
-id|core_initcall
+id|arch_initcall
 c_func
 (paren
 id|sa1100_dram_init

@@ -746,14 +746,6 @@ multiline_comment|/* set at initialization */
 multiline_comment|/*&n; * function prototypes&n; */
 r_static
 r_int
-id|awe_check_port
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
 id|awe_request_region
 c_func
 (paren
@@ -2734,11 +2726,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* check AWE32 ports are available */
+multiline_comment|/* reserve I/O ports for awedrv */
 r_if
 c_cond
 (paren
-id|awe_check_port
+op_logical_neg
+id|awe_request_region
 c_func
 (paren
 )paren
@@ -2785,6 +2778,11 @@ id|KERN_ERR
 l_string|&quot;AWE32 Error: too many synthesizers&bslash;n&quot;
 )paren
 suffix:semicolon
+id|awe_release_region
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2820,12 +2818,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* reserve I/O ports for awedrv */
-id|awe_request_region
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* clear all samples */
 id|awe_reset_samples
 c_func
@@ -3509,65 +3501,9 @@ macro_line|#endif /* wait by loop */
 multiline_comment|/* write a word data */
 DECL|macro|awe_write_dram
 mdefine_line|#define awe_write_dram(c)&t;awe_poke(AWE_SMLD, c)
-multiline_comment|/*&n; * port check / request&n; *  0x620-623, 0xA20-A23, 0xE20-E23&n; */
+multiline_comment|/*&n; * port request&n; *  0x620-623, 0xA20-A23, 0xE20-E23&n; */
 r_static
 r_int
-id|__init
-DECL|function|awe_check_port
-id|awe_check_port
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port_setuped
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-(paren
-id|check_region
-c_func
-(paren
-id|awe_ports
-(braket
-l_int|0
-)braket
-comma
-l_int|4
-)paren
-op_logical_or
-id|check_region
-c_func
-(paren
-id|awe_ports
-(braket
-l_int|1
-)braket
-comma
-l_int|4
-)paren
-op_logical_or
-id|check_region
-c_func
-(paren
-id|awe_ports
-(braket
-l_int|3
-)braket
-comma
-l_int|4
-)paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
 id|__init
 DECL|function|awe_request_region
 id|awe_request_region
@@ -3583,7 +3519,12 @@ op_logical_neg
 id|port_setuped
 )paren
 r_return
+l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3596,7 +3537,14 @@ l_int|4
 comma
 l_string|&quot;sound driver (AWE32)&quot;
 )paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3609,7 +3557,14 @@ l_int|4
 comma
 l_string|&quot;sound driver (AWE32)&quot;
 )paren
+)paren
+r_goto
+id|err_out
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3622,6 +3577,41 @@ l_int|4
 comma
 l_string|&quot;sound driver (AWE32)&quot;
 )paren
+)paren
+r_goto
+id|err_out1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+id|err_out1
+suffix:colon
+id|release_region
+c_func
+(paren
+id|awe_ports
+(braket
+l_int|1
+)braket
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
+id|release_region
+c_func
+(paren
+id|awe_ports
+(braket
+l_int|0
+)braket
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

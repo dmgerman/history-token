@@ -1508,7 +1508,8 @@ r_struct
 id|super_block
 op_star
 comma
-id|ino_t
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
