@@ -4864,7 +4864,7 @@ op_increment
 (brace
 id|ret
 op_assign
-id|isapnp_read_dword
+id|isapnp_read_word
 c_func
 (paren
 id|ISAPNP_CFG_MEM
@@ -4875,6 +4875,8 @@ op_lshift
 l_int|3
 )paren
 )paren
+op_lshift
+l_int|8
 suffix:semicolon
 r_if
 c_cond
