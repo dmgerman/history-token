@@ -3990,8 +3990,6 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/*cERROR(1,(&quot;copy_cache_pages page %p index %ld data %p&quot;,page,page-&gt;index,data));*/
-multiline_comment|/* BB removeme */
 id|list_del
 c_func
 (paren
@@ -4409,7 +4407,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&t;&t;cERROR(1,(&quot;ended with contig_pages %d since expected_index %d not matched&quot;,contig_pages,expected_index)); */
 r_if
 c_cond
 (paren
@@ -4420,7 +4417,6 @@ OG
 id|num_pages
 )paren
 (brace
-multiline_comment|/*&t;&t;&t;cERROR(1,(&quot;reducing contig_pages from %d with i: %d&quot;,contig_pages,i));*/
 id|contig_pages
 op_assign
 id|num_pages
@@ -4429,8 +4425,6 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* for reads over a certain size could initiate async read ahead */
-multiline_comment|/*&t;&t;cERROR(1,(&quot;Read %d pages out of %d into cache at offset %ld &quot;,&n;&t;&t;&t;contig_pages, num_pages-i, (unsigned long) offset));*/
-multiline_comment|/* BB removeme BB */
 id|read_size
 op_assign
 id|contig_pages
@@ -4526,8 +4520,6 @@ id|smb_read_data
 )paren
 suffix:semicolon
 multiline_comment|/* BB need to check return code here */
-multiline_comment|/*&t;&t;&t;cERROR(1,(&quot;read size: %d bytes read: %d rc: %d&quot;,read_size,bytes_read,rc)); */
-multiline_comment|/* BB removeme BB */
 )brace
 r_if
 c_cond

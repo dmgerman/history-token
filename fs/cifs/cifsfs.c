@@ -2542,6 +2542,16 @@ c_cond
 id|oplock_item
 )paren
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;found oplock item to write out&quot;
+)paren
+)paren
+suffix:semicolon
 id|pTcon
 op_assign
 id|oplock_item-&gt;tcon
@@ -2567,13 +2577,8 @@ c_func
 id|oplock_item
 )paren
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
+multiline_comment|/* can not grab inode sem here since it would&n;&t;&t;&t;&t;deadlock when oplock received on delete &n;&t;&t;&t;&t;since vfs_unlink holds the i_sem across&n;&t;&t;&t;&t;the call */
+multiline_comment|/* down(&amp;inode-&gt;i_sem);*/
 r_if
 c_cond
 (paren
@@ -2619,13 +2624,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
+multiline_comment|/* up(&amp;inode-&gt;i_sem);*/
 r_if
 c_cond
 (paren
