@@ -44,6 +44,7 @@ mdefine_line|#define DEBC(a)
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|ST_KILOBYTE
 mdefine_line|#define ST_KILOBYTE 1024

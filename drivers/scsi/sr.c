@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;&t;/* For the door lock/unlock commands */
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;sr.h&quot;
