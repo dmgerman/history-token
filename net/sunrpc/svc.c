@@ -1668,7 +1668,7 @@ macro_line|#ifdef RPC_PARANOIA
 id|printk
 c_func
 (paren
-l_string|&quot;svc: short len %d, dropping request&bslash;n&quot;
+l_string|&quot;svc: short len %Zd, dropping request&bslash;n&quot;
 comma
 id|argv-&gt;iov_len
 )paren
