@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
-multiline_comment|/* Change Log&n; * &n; * 2.3.30       09/21/03&n; * o Bug fix (Bugzilla 97908): Loading e100 was causing crash on Itanium2&n; *   with HP chipset&n; * o Bug fix (Bugzilla 101583): e100 can&squot;t pass traffic with ipv6&n; * o Bug fix (Bugzilla 101360): PRO/10+ can&squot;t pass traffic&n; * &n; * 2.3.27       08/08/03&n; * o Bug fix: read skb-&gt;len after freeing skb&n; *   [Andrew Morton] akpm@zip.com.au&n; * o Bug fix: 82557 (with National PHY) timeout during init&n; *   [Adam Kropelin] akropel1@rochester.rr.com&n; * o Feature add: allow to change Wake On LAN when EEPROM disabled&n; * &n; * 2.3.13       05/08/03&n; */
+multiline_comment|/* Change Log&n; * &n; * 2.3.36       11/13/03&n; * o Moved to 2.6 APIs: pci_name() and free_netdev().&n; * o Removed some __devinit from some functions that shouldn&squot;t be marked&n; *   as such (Anton Blanchard [anton@samba.org]).&n; * &n; * 2.3.33       10/21/03&n; * o Bug fix (Bugzilla 97908): Loading e100 was causing crash on Itanium2&n; *   with HP chipset&n; * o Bug fix (Bugzilla 101583): e100 can&squot;t pass traffic with ipv6&n; * o Bug fix (Bugzilla 101360): PRO/10+ can&squot;t pass traffic&n; * &n; * 2.3.27       08/08/03&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -431,7 +431,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.3.30-k1&quot;
+l_string|&quot;2.3.36-k1&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -3032,7 +3032,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
