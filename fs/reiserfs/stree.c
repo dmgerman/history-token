@@ -4949,13 +4949,15 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* We are in direct2indirect conversion, so move tail contents&n;           to the unformatted node */
-multiline_comment|/* note, we do the copy before preparing the buffer because we&n;&t;** don&squot;t care about the contents of the unformatted node yet.&n;&t;** the only thing we really care about is the direct item&squot;s data&n;&t;** is in the unformatted node.&n;&t;**&n;&t;** Otherwise, we would have to call reiserfs_prepare_for_journal on&n;&t;** the unformatted node, which might schedule, meaning we&squot;d have to&n;&t;** loop all the way back up to the start of the while loop.&n;&t;**&n;&t;** The unformatted node must be dirtied later on.  We can&squot;t be&n;&t;** sure here if the entire tail has been deleted yet.&n;        **&n;        ** p_s_un_bh is from the page cache (all unformatted nodes are&n;        ** from the page cache) and might be a highmem page.  So, we&n;        ** can&squot;t use p_s_un_bh-&gt;b_data.  But, the page has already been&n;        ** kmapped, so we can use page_address()&n;&t;** -clm&n;&t;*/
+multiline_comment|/* note, we do the copy before preparing the buffer because we&n;&t;** don&squot;t care about the contents of the unformatted node yet.&n;&t;** the only thing we really care about is the direct item&squot;s data&n;&t;** is in the unformatted node.&n;&t;**&n;&t;** Otherwise, we would have to call reiserfs_prepare_for_journal on&n;&t;** the unformatted node, which might schedule, meaning we&squot;d have to&n;&t;** loop all the way back up to the start of the while loop.&n;&t;**&n;&t;** The unformatted node must be dirtied later on.  We can&squot;t be&n;&t;** sure here if the entire tail has been deleted yet.&n;        **&n;        ** p_s_un_bh is from the page cache (all unformatted nodes are&n;        ** from the page cache) and might be a highmem page.  So, we&n;        ** can&squot;t use p_s_un_bh-&gt;b_data.&n;&t;** -clm&n;&t;*/
 id|data
 op_assign
-id|page_address
+id|kmap_atomic
 c_func
 (paren
 id|p_s_un_bh-&gt;b_page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|off
@@ -4999,6 +5001,14 @@ id|s_ih
 )paren
 comma
 id|n_ret_value
+)paren
+suffix:semicolon
+id|kunmap_atomic
+c_func
+(paren
+id|data
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

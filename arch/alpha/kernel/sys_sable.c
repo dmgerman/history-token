@@ -1101,7 +1101,7 @@ id|t2_machine_check
 comma
 id|max_dma_address
 suffix:colon
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_SABLE_MAX_DMA_ADDRESS
 comma
 id|min_io_address
 suffix:colon
@@ -1109,7 +1109,7 @@ id|EISA_DEFAULT_IO_BASE
 comma
 id|min_mem_address
 suffix:colon
-id|DEFAULT_MEM_BASE
+id|T2_DEFAULT_MEM_BASE
 comma
 id|nr_irqs
 suffix:colon
@@ -1195,7 +1195,7 @@ id|t2_machine_check
 comma
 id|max_dma_address
 suffix:colon
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_SABLE_MAX_DMA_ADDRESS
 comma
 id|min_io_address
 suffix:colon
@@ -1203,7 +1203,7 @@ id|EISA_DEFAULT_IO_BASE
 comma
 id|min_mem_address
 suffix:colon
-id|DEFAULT_MEM_BASE
+id|T2_DEFAULT_MEM_BASE
 comma
 id|nr_irqs
 suffix:colon

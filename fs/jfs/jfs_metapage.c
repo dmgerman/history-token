@@ -1727,12 +1727,6 @@ c_func
 id|mp-&gt;page
 )paren
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|mp-&gt;page
-)paren
-suffix:semicolon
 id|unlock_page
 c_func
 (paren

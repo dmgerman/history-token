@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -7222,13 +7223,6 @@ id|error
 r_goto
 id|unlock
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* mapped by block_prepare_write */
 id|head
 op_assign
 id|page_buffers
@@ -7579,24 +7573,30 @@ c_cond
 id|length
 )paren
 (brace
+r_char
+op_star
+id|kaddr
+suffix:semicolon
 id|length
 op_assign
 id|blocksize
 op_minus
 id|length
 suffix:semicolon
-id|memset
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|kmap
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|offset
 comma
@@ -7611,10 +7611,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 r_if
@@ -8416,7 +8418,6 @@ c_func
 id|page
 )paren
 )paren
-(brace
 id|block_prepare_write
 c_func
 (paren
@@ -8429,13 +8430,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* last page in the file, zero out any contents past the&n;    ** last byte in the file&n;    */
 r_if
 c_cond
@@ -8445,6 +8439,10 @@ op_ge
 id|end_index
 )paren
 (brace
+r_char
+op_star
+id|kaddr
+suffix:semicolon
 id|last_offset
 op_assign
 id|inode-&gt;i_size
@@ -8478,18 +8476,20 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|kmap
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|last_offset
 comma
@@ -8506,10 +8506,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
@@ -1959,7 +1960,12 @@ id|ri-&gt;mtime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon
-multiline_comment|/* We rely on the fact that generic_file_write() currently kmaps the page for us. */
+id|kmap
+c_func
+(paren
+id|pg
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|jffs2_write_inode_range
@@ -1993,6 +1999,12 @@ id|start
 comma
 op_amp
 id|writtenlen
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|pg
 )paren
 suffix:semicolon
 r_if
