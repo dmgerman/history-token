@@ -794,7 +794,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;IRMISC:%s%s%s UART%s&quot;
+l_string|&quot;IRMISC:%s%s%s uart%s&quot;
 comma
 (paren
 id|byte
@@ -836,7 +836,7 @@ id|IRMISC_UARTEN
 )paren
 ques
 c_cond
-l_string|&quot;&quot;
+l_string|&quot;@&quot;
 suffix:colon
 l_string|&quot; disabled&bslash;n&quot;
 )paren
@@ -856,7 +856,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;@0x%s&bslash;n&quot;
+l_string|&quot;0x%s&bslash;n&quot;
 comma
 (paren
 id|byte
@@ -2228,10 +2228,9 @@ op_logical_neg
 id|ndev-&gt;priv
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: invalid ptr!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3322,10 +3321,9 @@ op_logical_neg
 id|busaddr
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
 comma
 id|__FUNCTION__
@@ -3531,10 +3529,9 @@ op_logical_neg
 id|ringarea
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: insufficient memory for descriptor rings&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3909,10 +3906,9 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: strange frame (len=%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3933,10 +3929,9 @@ op_logical_neg
 id|rd-&gt;skb
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: rx packet dropped&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4354,10 +4349,9 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* we are in big trouble, if this should ever happen */
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: rx ring exhausted!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4465,10 +4459,11 @@ id|rd
 )paren
 )paren
 (brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s - dropping rx packet&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4808,11 +4803,11 @@ id|iobase
 op_assign
 id|ndev-&gt;base_addr
 suffix:semicolon
-macro_line|#if 0
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|2
+comma
 l_string|&quot;%s: %d -&gt; %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4822,7 +4817,6 @@ comma
 id|idev-&gt;new_baud
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4896,10 +4890,9 @@ id|baudrate
 (brace
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: undefined baudrate %d - fallback to 9600!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5010,10 +5003,11 @@ c_cond
 op_logical_neg
 id|idle_retry
 )paren
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_WARNING
+l_int|0
+comma
 l_string|&quot;%s: waiting for rx fifo to become empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5067,10 +5061,11 @@ id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_ERR
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5203,10 +5198,9 @@ id|IRENABLE_ENRXST
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to set %s mode!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5256,10 +5250,9 @@ op_ne
 id|nphyctl
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to apply baudrate %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5549,10 +5542,9 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: dropping len=0 packet&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5677,10 +5669,9 @@ id|r-&gt;len
 op_minus
 l_int|5
 )paren
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5707,10 +5698,9 @@ OG
 id|r-&gt;len
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: no space - skb too big (%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5914,10 +5904,12 @@ id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_WARNING
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5925,6 +5917,7 @@ comma
 id|fifocnt
 )paren
 suffix:semicolon
+)brace
 id|config
 op_assign
 id|inw
@@ -5990,10 +5983,11 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|3
+comma
 l_string|&quot;%s: tx ring full - queue stopped&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6264,10 +6258,12 @@ id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_WARNING
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6275,6 +6271,7 @@ comma
 id|fifocnt
 )paren
 suffix:semicolon
+)brace
 id|outw
 c_func
 (paren
@@ -6317,10 +6314,11 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|3
+comma
 l_string|&quot;%s: queue awoken&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6442,10 +6440,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s - dropping tx packet&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6654,10 +6653,9 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* explicitly asked for PLL hence bail out */
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: no PLL or failed to lock!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6689,10 +6687,11 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* fallback to 40MHz XCLK (OB800) */
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s: PLL not locked, fallback to clksrc=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -7708,10 +7707,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: notsupp - cmd=%04x&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -7911,10 +7909,11 @@ id|IRINTR_ACTIVITY
 )paren
 )paren
 (brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|1
+comma
 l_string|&quot;%s: IRINTR = %02x&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -7951,10 +7950,9 @@ id|boguscount
 op_le
 l_int|0
 )paren
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: too much work in interrupt!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8011,10 +8009,9 @@ id|drivername
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: io resource busy&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8067,10 +8064,9 @@ id|ndev
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t get IRQ: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8172,10 +8168,9 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: device %s operational&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8291,10 +8286,9 @@ c_func
 id|idev-&gt;pdev
 )paren
 suffix:semicolon
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: device %s stopped&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8372,10 +8366,9 @@ id|DMA_MASK_MSTRPAGE
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: aborting due to PCI BM-DMA address limitations&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8571,10 +8564,9 @@ id|IORESOURCE_IO
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: bar 0 invalid&quot;
 comma
 id|__FUNCTION__
@@ -8620,10 +8612,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: Unable to allocate device memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8710,10 +8701,9 @@ id|ndev
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: register_netdev failed&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8723,6 +8713,10 @@ r_goto
 id|out_freedev
 suffix:semicolon
 )brace
+id|idev-&gt;proc_entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8757,19 +8751,21 @@ op_logical_neg
 id|ent
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to create proc entry&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-id|out_unregister
+id|idev-&gt;proc_entry
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
+r_else
+(brace
 id|ent-&gt;data
 op_assign
 id|ndev
@@ -8787,15 +8783,10 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
-r_else
-id|idev-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-id|printk
+)brace
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: registered device %s&bslash;n&quot;
 comma
 id|drivername
@@ -8820,24 +8811,6 @@ id|idev-&gt;sem
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|out_unregister
-suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|idev-&gt;sem
-)paren
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-r_goto
-id|out_disable
 suffix:semicolon
 id|out_freedev
 suffix:colon
@@ -8912,10 +8885,9 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;%s: lost netdevice?&bslash;n&quot;
 comma
 id|drivername
@@ -9381,10 +9353,9 @@ id|idev-&gt;resume_ok
 )paren
 (brace
 multiline_comment|/* should be obsolete now - but used to happen due to:&n;&t;&t; * - pci layer initially setting pdev-&gt;current_state = 4 (unknown)&n;&t;&t; * - pci layer did not walk the save_state-tree (might be APM problem)&n;&t;&t; *   so we could not refuse to suspend from undefined state&n;&t;&t; * - vlsi_irda_suspend detected invalid state and refused to save&n;&t;&t; *   configuration for resume - but was too late to stop suspending&n;&t;&t; * - vlsi_irda_resume got screwed when trying to resume from garbage&n;&t;&t; *&n;&t;&t; * now we explicitly set pdev-&gt;current_state = 0 after enabling the&n;&t;&t; * device and independently resume_ok should catch any garbage config.&n;&t;&t; */
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - hm, nothing to resume?&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -9524,10 +9495,9 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: invalid clksrc=%d&bslash;n&quot;
 comma
 id|drivername
@@ -9583,11 +9553,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: invalid %s ringsize %d&quot;
+l_string|&quot;%s: invalid %s ringsize %d, using default=8&quot;
 comma
 id|drivername
 comma
@@ -9604,12 +9573,6 @@ id|ringsize
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;, using default=8&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ringsize
