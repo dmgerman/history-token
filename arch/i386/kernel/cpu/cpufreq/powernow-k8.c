@@ -16,59 +16,15 @@ mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;version 1.00.08a&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
-DECL|variable|vstable
-r_static
-id|u32
-id|vstable
-suffix:semicolon
-multiline_comment|/* voltage stabalization time, from PSB, units 20 us */
-DECL|variable|plllock
-r_static
-id|u32
-id|plllock
-suffix:semicolon
-multiline_comment|/* pll lock time, from PSB, units 1 us */
-DECL|variable|numps
-r_static
-id|u32
-id|numps
-suffix:semicolon
-multiline_comment|/* number of p-states, from PSB */
-DECL|variable|rvo
-r_static
-id|u32
-id|rvo
-suffix:semicolon
-multiline_comment|/* ramp voltage offset, from PSB */
-DECL|variable|irt
-r_static
-id|u32
-id|irt
-suffix:semicolon
-multiline_comment|/* isochronous relief time, from PSB */
-DECL|variable|vidmvs
-r_static
-id|u32
-id|vidmvs
-suffix:semicolon
-multiline_comment|/* usable value calculated from mvs, from PSB */
-DECL|variable|currvid
-r_static
-id|u32
-id|currvid
-suffix:semicolon
-multiline_comment|/* keep track of the current fid / vid */
-DECL|variable|currfid
-r_static
-id|u32
-id|currfid
-suffix:semicolon
-DECL|variable|powernow_table
+DECL|variable|powernow_data
 r_static
 r_struct
-id|cpufreq_frequency_table
+id|powernow_k8_data
 op_star
-id|powernow_table
+id|powernow_data
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 multiline_comment|/*&n;The PSB table supplied by BIOS allows for the definition of the number of&n;p-states that can be used when running on a/c, and the number of p-states&n;that can be used when running on battery. This allows laptop manufacturers&n;to force the system to save power when running from battery. The relationship &n;is :&n;   1 &lt;= number_of_battery_p_states &lt;= maximum_number_of_p_states&n;&n;This driver does NOT have the support in it to detect transitions from&n;a/c power to battery power, and thus trigger the transition to a lower&n;p-state if required. This is because I need ACPI and the 2.6 kernel to do &n;this, and this is a 2.4 kernel driver. Check back for a new improved driver&n;for the 2.6 kernel soon.&n;&n;This code therefore assumes it is on battery at all times, and thus&n;restricts performance to number_of_battery_p_states. For desktops, &n;  number_of_battery_p_states == maximum_number_of_pstates, &n;so this is not actually a restriction.&n;*/
 DECL|variable|batps
@@ -173,13 +129,16 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update the global current fid / vid values from the status msr.&n; * Returns 1 on error.&n; */
+DECL|function|query_current_values_with_pending_wait
 r_static
 r_int
-DECL|function|query_current_values_with_pending_wait
 id|query_current_values_with_pending_wait
 c_func
 (paren
-r_void
+r_struct
+id|powernow_k8_data
+op_star
+id|data
 )paren
 (brace
 id|u32
@@ -236,13 +195,13 @@ id|hi
 )paren
 suffix:semicolon
 )brace
-id|currvid
+id|data-&gt;currvid
 op_assign
 id|hi
 op_amp
 id|MSR_S_HI_CURRENT_VID
 suffix:semicolon
-id|currfid
+id|data-&gt;currfid
 op_assign
 id|lo
 op_amp
@@ -253,14 +212,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* the isochronous relief time */
+DECL|function|count_off_irt
 r_static
 r_inline
 r_void
-DECL|function|count_off_irt
 id|count_off_irt
 c_func
 (paren
-r_void
+r_struct
+id|powernow_k8_data
+op_star
+id|data
 )paren
 (brace
 id|udelay
@@ -269,7 +231,7 @@ c_func
 (paren
 l_int|1
 op_lshift
-id|irt
+id|data-&gt;irt
 )paren
 op_star
 l_int|10
@@ -279,20 +241,23 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* the voltage stabalization time */
+DECL|function|count_off_vst
 r_static
 r_inline
 r_void
-DECL|function|count_off_vst
 id|count_off_vst
 c_func
 (paren
-r_void
+r_struct
+id|powernow_k8_data
+op_star
+id|data
 )paren
 (brace
 id|udelay
 c_func
 (paren
-id|vstable
+id|data-&gt;vstable
 op_star
 id|VST_UNITS_20US
 )paren
@@ -301,12 +266,17 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* write the new fid value along with the other control fields to the msr */
+DECL|function|write_new_fid
 r_static
 r_int
-DECL|function|write_new_fid
 id|write_new_fid
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|fid
 )paren
@@ -317,7 +287,7 @@ suffix:semicolon
 id|u32
 id|savevid
 op_assign
-id|currvid
+id|data-&gt;currvid
 suffix:semicolon
 r_if
 c_cond
@@ -329,7 +299,7 @@ id|INVALID_FID_MASK
 )paren
 op_logical_or
 (paren
-id|currvid
+id|data-&gt;currvid
 op_amp
 id|INVALID_VID_MASK
 )paren
@@ -352,7 +322,7 @@ op_assign
 id|fid
 op_or
 (paren
-id|currvid
+id|data-&gt;currvid
 op_lshift
 id|MSR_C_LO_VID_SHIFT
 )paren
@@ -370,7 +340,7 @@ id|fid
 comma
 id|lo
 comma
-id|plllock
+id|data-&gt;plllock
 op_star
 id|PLL_LOCK_CONVERSION
 )paren
@@ -382,7 +352,7 @@ id|MSR_FIDVID_CTL
 comma
 id|lo
 comma
-id|plllock
+id|data-&gt;plllock
 op_star
 id|PLL_LOCK_CONVERSION
 )paren
@@ -393,6 +363,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -401,6 +372,7 @@ suffix:semicolon
 id|count_off_irt
 c_func
 (paren
+id|data
 )paren
 suffix:semicolon
 r_if
@@ -408,7 +380,7 @@ c_cond
 (paren
 id|savevid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 (brace
 id|printk
@@ -416,11 +388,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;vid changed on fid transition, save %x, currvid %x&bslash;n&quot;
+l_string|&quot;vid change on fid trans, old %x, new %x&bslash;n&quot;
 comma
 id|savevid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -432,7 +404,7 @@ c_cond
 (paren
 id|fid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 id|printk
@@ -440,11 +412,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;fid transition failed, fid %x, currfid %x&bslash;n&quot;
+l_string|&quot;fid trans failed, fid %x, curr %x&bslash;n&quot;
 comma
 id|fid
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -456,12 +428,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Write a new vid to the hardware */
+DECL|function|write_new_vid
 r_static
 r_int
-DECL|function|write_new_vid
 id|write_new_vid
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|vid
 )paren
@@ -472,13 +449,13 @@ suffix:semicolon
 id|u32
 id|savefid
 op_assign
-id|currfid
+id|data-&gt;currfid
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|currfid
+id|data-&gt;currfid
 op_amp
 id|INVALID_FID_MASK
 )paren
@@ -504,7 +481,7 @@ suffix:semicolon
 )brace
 id|lo
 op_assign
-id|currfid
+id|data-&gt;currfid
 op_or
 (paren
 id|vid
@@ -544,19 +521,18 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|savefid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 id|printk
@@ -564,11 +540,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;fid changed on vid transition, save %x currfid %x&bslash;n&quot;
+l_string|&quot;fid changed on vid trans, old %x new %x&bslash;n&quot;
 comma
 id|savefid
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -580,7 +556,7 @@ c_cond
 (paren
 id|vid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 (brace
 id|printk
@@ -588,11 +564,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;vid transition failed, vid %x, currvid %x&bslash;n&quot;
+l_string|&quot;vid trans failed, vid %x, curr %x&bslash;n&quot;
 comma
 id|vid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -604,12 +580,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reduce the vid by the max of step or reqvid.&n; * Decreasing vid codes represent increasing voltages:&n; * vid of 0 is 1.550V, vid of 0x1e is 0.800V, vid of 0x1f is off.&n; */
+DECL|function|decrease_vid_code_by_step
 r_static
 r_int
-DECL|function|decrease_vid_code_by_step
 id|decrease_vid_code_by_step
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqvid
 comma
@@ -621,7 +602,7 @@ r_if
 c_cond
 (paren
 (paren
-id|currvid
+id|data-&gt;currvid
 op_minus
 id|reqvid
 )paren
@@ -630,7 +611,7 @@ id|step
 )paren
 id|reqvid
 op_assign
-id|currvid
+id|data-&gt;currvid
 op_minus
 id|step
 suffix:semicolon
@@ -640,6 +621,8 @@ c_cond
 id|write_new_vid
 c_func
 (paren
+id|data
+comma
 id|reqvid
 )paren
 )paren
@@ -649,6 +632,7 @@ suffix:semicolon
 id|count_off_vst
 c_func
 (paren
+id|data
 )paren
 suffix:semicolon
 r_return
@@ -656,13 +640,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Change the fid and vid, by the 3 phases. */
-r_static
-r_inline
-r_int
 DECL|function|transition_fid_vid
+r_static
+r_int
 id|transition_fid_vid
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqfid
 comma
@@ -676,6 +664,8 @@ c_cond
 id|core_voltage_pre_transition
 c_func
 (paren
+id|data
+comma
 id|reqvid
 )paren
 )paren
@@ -688,6 +678,8 @@ c_cond
 id|core_frequency_transition
 c_func
 (paren
+id|data
+comma
 id|reqfid
 )paren
 )paren
@@ -700,6 +692,8 @@ c_cond
 id|core_voltage_post_transition
 c_func
 (paren
+id|data
+comma
 id|reqvid
 )paren
 )paren
@@ -712,6 +706,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -723,13 +718,13 @@ c_cond
 (paren
 id|reqfid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 op_logical_or
 (paren
 id|reqvid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 )paren
 (brace
@@ -738,15 +733,20 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;failed: req 0x%x 0x%x, curr 0x%x 0x%x&bslash;n&quot;
+l_string|&quot;failed (cpu%d): req 0x%x 0x%x, curr 0x%x 0x%x&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|reqfid
 comma
 id|reqvid
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -758,25 +758,34 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;transitioned: new fid 0x%x, vid 0x%x&bslash;n&quot;
+l_string|&quot;transitioned (cpu%d): new fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
-id|currvid
+id|data-&gt;currfid
+comma
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Phase 1 - core voltage transition ... setup appropriate voltage for the&n; * fid transition.&n; */
-r_static
-r_inline
-r_int
+multiline_comment|/* Phase 1 - core voltage transition ... setup voltage */
 DECL|function|core_voltage_pre_transition
+r_static
+r_int
 id|core_voltage_pre_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqvid
 )paren
@@ -784,33 +793,38 @@ id|reqvid
 id|u32
 id|rvosteps
 op_assign
-id|rvo
+id|data-&gt;rvo
 suffix:semicolon
 id|u32
 id|savefid
 op_assign
-id|currfid
+id|data-&gt;currfid
 suffix:semicolon
 id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;ph1: start, currfid 0x%x, currvid 0x%x, reqvid 0x%x, rvo %x&bslash;n&quot;
+l_string|&quot;ph1 (cpu%d): start, currfid 0x%x, currvid 0x%x, reqvid 0x%x, rvo 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 comma
 id|reqvid
 comma
-id|rvo
+id|data-&gt;rvo
 )paren
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|currvid
+id|data-&gt;currvid
 OG
 id|reqvid
 )paren
@@ -820,9 +834,9 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;ph1: curr 0x%x, requesting vid 0x%x&bslash;n&quot;
+l_string|&quot;ph1: curr 0x%x, req vid 0x%x&bslash;n&quot;
 comma
-id|currvid
+id|data-&gt;currvid
 comma
 id|reqvid
 )paren
@@ -833,9 +847,11 @@ c_cond
 id|decrease_vid_code_by_step
 c_func
 (paren
+id|data
+comma
 id|reqvid
 comma
-id|vidmvs
+id|data-&gt;vidmvs
 )paren
 )paren
 r_return
@@ -853,7 +869,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|currvid
+id|data-&gt;currvid
 op_eq
 l_int|0
 )paren
@@ -870,9 +886,9 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;ph1: changing vid for rvo, requesting 0x%x&bslash;n&quot;
+l_string|&quot;ph1: changing vid for rvo, req 0x%x&bslash;n&quot;
 comma
-id|currvid
+id|data-&gt;currvid
 op_minus
 l_int|1
 )paren
@@ -883,7 +899,9 @@ c_cond
 id|decrease_vid_code_by_step
 c_func
 (paren
-id|currvid
+id|data
+comma
+id|data-&gt;currvid
 op_minus
 l_int|1
 comma
@@ -904,6 +922,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -914,7 +933,7 @@ c_cond
 (paren
 id|savefid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 id|printk
@@ -924,7 +943,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;ph1 err, currfid changed 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -938,9 +957,9 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;ph1 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -948,13 +967,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Phase 2 - core frequency transition */
-r_static
-r_inline
-r_int
 DECL|function|core_frequency_transition
+r_static
+r_int
 id|core_frequency_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqfid
 )paren
@@ -971,7 +994,7 @@ suffix:semicolon
 id|u32
 id|savevid
 op_assign
-id|currvid
+id|data-&gt;currvid
 suffix:semicolon
 r_if
 c_cond
@@ -983,7 +1006,7 @@ id|HI_FID_TABLE_BOTTOM
 )paren
 op_logical_and
 (paren
-id|currfid
+id|data-&gt;currfid
 OL
 id|HI_FID_TABLE_BOTTOM
 )paren
@@ -994,11 +1017,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph2 illegal lo-lo transition 0x%x 0x%x&bslash;n&quot;
+l_string|&quot;ph2: illegal lo-lo transition 0x%x 0x%x&bslash;n&quot;
 comma
 id|reqfid
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -1008,7 +1031,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|currfid
+id|data-&gt;currfid
 op_eq
 id|reqfid
 )paren
@@ -1020,7 +1043,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;ph2 null fid transition 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -1032,11 +1055,16 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;ph2 starting, currfid 0x%x, currvid 0x%x, reqfid 0x%x&bslash;n&quot;
+l_string|&quot;ph2 (cpu%d): starting, currfid 0x%x, currvid 0x%x, reqfid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
-id|currvid
+id|data-&gt;currfid
+comma
+id|data-&gt;currvid
 comma
 id|reqfid
 )paren
@@ -1054,7 +1082,7 @@ op_assign
 id|convert_fid_to_vco_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 id|vcofiddiff
@@ -1085,13 +1113,13 @@ c_cond
 (paren
 id|reqfid
 OG
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|currfid
+id|data-&gt;currfid
 OG
 id|LO_FID_TABLE_TOP
 )paren
@@ -1102,7 +1130,9 @@ c_cond
 id|write_new_fid
 c_func
 (paren
-id|currfid
+id|data
+comma
+id|data-&gt;currfid
 op_plus
 l_int|2
 )paren
@@ -1120,12 +1150,14 @@ c_cond
 (paren
 id|write_new_fid
 (paren
+id|data
+comma
 l_int|2
 op_plus
 id|convert_fid_to_vco_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 )paren
 )paren
@@ -1144,7 +1176,9 @@ c_cond
 id|write_new_fid
 c_func
 (paren
-id|currfid
+id|data
+comma
+id|data-&gt;currfid
 op_minus
 l_int|2
 )paren
@@ -1158,7 +1192,7 @@ op_assign
 id|convert_fid_to_vco_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 id|vcofiddiff
@@ -1183,6 +1217,8 @@ c_cond
 id|write_new_fid
 c_func
 (paren
+id|data
+comma
 id|reqfid
 )paren
 )paren
@@ -1195,6 +1231,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -1203,7 +1240,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|currfid
+id|data-&gt;currfid
 op_ne
 id|reqfid
 )paren
@@ -1213,9 +1250,9 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph2 mismatch, failed fid transition, curr %x, req %x&bslash;n&quot;
+l_string|&quot;ph2: mismatch, failed fid transition, curr 0x%x, req 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
 id|reqfid
 )paren
@@ -1229,7 +1266,7 @@ c_cond
 (paren
 id|savevid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 (brace
 id|printk
@@ -1237,11 +1274,11 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;ph2 vid changed, save %x, curr %x&bslash;n&quot;
+l_string|&quot;ph2: vid changed, save %x, curr %x&bslash;n&quot;
 comma
 id|savevid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -1255,9 +1292,9 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;ph2 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -1265,13 +1302,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Phase 3 - core voltage transition flow ... jump to the final vid. */
-r_static
-r_inline
-r_int
 DECL|function|core_voltage_post_transition
+r_static
+r_int
 id|core_voltage_post_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqvid
 )paren
@@ -1279,7 +1320,7 @@ id|reqvid
 id|u32
 id|savefid
 op_assign
-id|currfid
+id|data-&gt;currfid
 suffix:semicolon
 id|u32
 id|savereqvid
@@ -1291,11 +1332,16 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;ph3 starting, currfid 0x%x, currvid 0x%x&bslash;n&quot;
+l_string|&quot;ph3 (cpu%d): starting, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
-id|currvid
+id|data-&gt;currfid
+comma
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_if
@@ -1303,7 +1349,7 @@ c_cond
 (paren
 id|reqvid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 (brace
 r_if
@@ -1312,6 +1358,8 @@ c_cond
 id|write_new_vid
 c_func
 (paren
+id|data
+comma
 id|reqvid
 )paren
 )paren
@@ -1323,7 +1371,7 @@ c_cond
 (paren
 id|savefid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 id|printk
@@ -1335,7 +1383,7 @@ l_string|&quot;ph3: bad fid change, save %x, curr %x&bslash;n&quot;
 comma
 id|savefid
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -1345,7 +1393,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|currvid
+id|data-&gt;currvid
 op_ne
 id|reqvid
 )paren
@@ -1359,7 +1407,7 @@ l_string|&quot;ph3: failed vid transition&bslash;n, req %x, curr %x&quot;
 comma
 id|reqvid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -1373,6 +1421,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -1383,7 +1432,7 @@ c_cond
 (paren
 id|savereqvid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 (brace
 id|dprintk
@@ -1393,7 +1442,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;ph3 failed, currvid 0x%x&bslash;n&quot;
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -1405,7 +1454,7 @@ c_cond
 (paren
 id|savefid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 (brace
 id|dprintk
@@ -1415,7 +1464,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;ph3 failed, currfid changed 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -1429,9 +1478,9 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;ph3 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_return
@@ -1691,6 +1740,11 @@ id|check_pst_table
 c_func
 (paren
 r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
+r_struct
 id|pst_s
 op_star
 id|pst
@@ -1717,7 +1771,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|numps
+id|data-&gt;numps
 suffix:semicolon
 id|j
 op_increment
@@ -1768,7 +1822,7 @@ id|j
 dot
 id|vid
 OL
-id|rvo
+id|data-&gt;rvo
 )paren
 (brace
 multiline_comment|/* vid + rvo &gt;= 0 */
@@ -1799,7 +1853,7 @@ id|vid
 OL
 id|maxvid
 op_plus
-id|rvo
+id|data-&gt;rvo
 )paren
 (brace
 multiline_comment|/* vid + rvo &gt;= maxvid */
@@ -1947,16 +2001,23 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Find and validate the PSB/PST table in BIOS. */
-r_static
-r_inline
-r_int
 DECL|function|find_psb_table
+r_static
+r_int
 id|find_psb_table
 c_func
 (paren
-r_void
+r_struct
+id|powernow_k8_data
+op_star
+id|data
 )paren
 (brace
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|powernow_table
+suffix:semicolon
 r_struct
 id|psb_s
 op_star
@@ -2092,9 +2153,19 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|vstable
+id|data-&gt;vstable
 op_assign
 id|psb-&gt;voltagestabilizationtime
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;voltage stabilization time: %d(*20us)&bslash;n&quot;
+comma
+id|data-&gt;vstable
+)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -2106,13 +2177,13 @@ comma
 id|psb-&gt;flags2
 )paren
 suffix:semicolon
-id|rvo
+id|data-&gt;rvo
 op_assign
 id|psb-&gt;flags2
 op_amp
 l_int|3
 suffix:semicolon
-id|irt
+id|data-&gt;irt
 op_assign
 (paren
 (paren
@@ -2136,13 +2207,13 @@ l_int|4
 op_amp
 l_int|3
 suffix:semicolon
-id|vidmvs
+id|data-&gt;vidmvs
 op_assign
 l_int|1
 op_lshift
 id|mvs
 suffix:semicolon
-id|batps
+id|data-&gt;batps
 op_assign
 (paren
 (paren
@@ -2161,7 +2232,7 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;voltage stable in %d usec&quot;
 comma
-id|vstable
+id|data-&gt;vstable
 op_star
 l_int|20
 )paren
@@ -2169,7 +2240,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|batps
+id|data-&gt;batps
 )paren
 id|printk
 c_func
@@ -2184,7 +2255,7 @@ c_func
 (paren
 l_string|&quot;, ramp voltage offset: %d&quot;
 comma
-id|rvo
+id|data-&gt;rvo
 )paren
 suffix:semicolon
 id|printk
@@ -2192,7 +2263,7 @@ c_func
 (paren
 l_string|&quot;, isochronous relief time: %d&quot;
 comma
-id|irt
+id|data-&gt;irt
 )paren
 suffix:semicolon
 id|printk
@@ -2244,7 +2315,7 @@ comma
 id|psb-&gt;cpuid
 )paren
 suffix:semicolon
-id|plllock
+id|data-&gt;plllock
 op_assign
 id|psb-&gt;plllocktime
 suffix:semicolon
@@ -2255,7 +2326,7 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;pll lock time: 0x%x, &quot;
 comma
-id|plllock
+id|data-&gt;plllock
 )paren
 suffix:semicolon
 id|maxvid
@@ -2278,14 +2349,14 @@ comma
 id|maxvid
 )paren
 suffix:semicolon
-id|numps
+id|data-&gt;numps
 op_assign
 id|psb-&gt;numpstates
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|numps
+id|data-&gt;numps
 OL
 l_int|2
 )paren
@@ -2313,7 +2384,7 @@ l_int|0
 (brace
 id|batps
 op_assign
-id|numps
+id|data-&gt;numps
 suffix:semicolon
 )brace
 r_else
@@ -2322,7 +2393,7 @@ c_cond
 (paren
 id|batps
 OG
-id|numps
+id|data-&gt;numps
 )paren
 (brace
 id|printk
@@ -2335,7 +2406,7 @@ l_string|&quot;batterypstates &gt; numpstates&bslash;n&quot;
 suffix:semicolon
 id|batps
 op_assign
-id|numps
+id|data-&gt;numps
 suffix:semicolon
 )brace
 r_else
@@ -2358,14 +2429,14 @@ id|PFX
 l_string|&quot;Check for an updated driver to access all &quot;
 l_string|&quot;%d p-states&bslash;n&quot;
 comma
-id|numps
+id|data-&gt;numps
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|numps
+id|data-&gt;numps
 op_le
 l_int|1
 )paren
@@ -2402,6 +2473,8 @@ c_cond
 id|check_pst_table
 c_func
 (paren
+id|data
+comma
 id|pst
 comma
 id|maxvid
@@ -2424,7 +2497,7 @@ id|cpufreq_frequency_table
 )paren
 op_star
 (paren
-id|numps
+id|data-&gt;numps
 op_plus
 l_int|1
 )paren
@@ -2513,7 +2586,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|numps
+id|data-&gt;numps
 suffix:semicolon
 id|j
 op_increment
@@ -2581,7 +2654,7 @@ suffix:semicolon
 )brace
 id|powernow_table
 (braket
-id|numps
+id|data-&gt;numps
 )braket
 dot
 id|frequency
@@ -2590,7 +2663,7 @@ id|CPUFREQ_TABLE_END
 suffix:semicolon
 id|powernow_table
 (braket
-id|numps
+id|data-&gt;numps
 )braket
 dot
 id|index
@@ -2603,6 +2676,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 (brace
@@ -2624,15 +2698,15 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;currfid 0x%x (%d MHz), currvid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
 id|find_freq_from_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_for
@@ -2644,7 +2718,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|numps
+id|data-&gt;numps
 suffix:semicolon
 id|j
 op_increment
@@ -2660,7 +2734,7 @@ id|j
 dot
 id|fid
 op_eq
-id|currfid
+id|data-&gt;currfid
 )paren
 op_logical_and
 (paren
@@ -2671,7 +2745,7 @@ id|j
 dot
 id|vid
 op_eq
-id|currvid
+id|data-&gt;currvid
 )paren
 )paren
 r_return
@@ -2703,13 +2777,17 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Take a frequency, and issue the fid/vid transition command */
-r_static
-r_inline
-r_int
 DECL|function|transition_frequency
+r_static
+r_int
 id|transition_frequency
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 r_int
 r_int
 id|index
@@ -2731,7 +2809,7 @@ suffix:semicolon
 multiline_comment|/* fid are the lower 8 bits of the index we stored into&n;&t; * the cpufreq frequency table in find_psb_table, vid are &n;&t; * the upper 8 bits.&n;&t; */
 id|fid
 op_assign
-id|powernow_table
+id|data-&gt;powernow_table
 (braket
 id|index
 )braket
@@ -2743,7 +2821,7 @@ suffix:semicolon
 id|vid
 op_assign
 (paren
-id|powernow_table
+id|data-&gt;powernow_table
 (braket
 id|index
 )braket
@@ -2773,6 +2851,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -2782,13 +2861,13 @@ r_if
 c_cond
 (paren
 (paren
-id|currvid
+id|data-&gt;currvid
 op_eq
 id|vid
 )paren
 op_logical_and
 (paren
-id|currfid
+id|data-&gt;currfid
 op_eq
 id|fid
 )paren
@@ -2820,7 +2899,7 @@ id|HI_FID_TABLE_BOTTOM
 )paren
 op_logical_and
 (paren
-id|currfid
+id|data-&gt;currfid
 OL
 id|HI_FID_TABLE_BOTTOM
 )paren
@@ -2833,7 +2912,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;ignoring illegal change in lo freq table-%x to %x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
 id|fid
 )paren
@@ -2856,15 +2935,14 @@ id|vid
 suffix:semicolon
 id|freqs.cpu
 op_assign
-l_int|0
+id|data-&gt;cpu
 suffix:semicolon
-multiline_comment|/* only true because SMP not supported */
 id|freqs.old
 op_assign
 id|find_freq_from_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 id|freqs
@@ -2891,6 +2969,8 @@ op_assign
 id|transition_fid_vid
 c_func
 (paren
+id|data
+comma
 id|fid
 comma
 id|vid
@@ -2903,7 +2983,7 @@ op_assign
 id|find_freq_from_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 id|cpufreq_notify_transition
@@ -2938,15 +3018,25 @@ r_int
 id|relation
 )paren
 (brace
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+op_assign
+id|powernow_data
+(braket
+id|pol-&gt;cpu
+)braket
+suffix:semicolon
 id|u32
 id|checkfid
 op_assign
-id|currfid
+id|data-&gt;currfid
 suffix:semicolon
 id|u32
 id|checkvid
 op_assign
-id|currvid
+id|data-&gt;currvid
 suffix:semicolon
 r_int
 r_int
@@ -2996,6 +3086,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -3009,9 +3100,9 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;targ: curr fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 r_if
@@ -3020,13 +3111,13 @@ c_cond
 (paren
 id|checkvid
 op_ne
-id|currvid
+id|data-&gt;currvid
 )paren
 op_logical_or
 (paren
 id|checkfid
 op_ne
-id|currfid
+id|data-&gt;currfid
 )paren
 )paren
 (brace
@@ -3039,11 +3130,11 @@ l_string|&quot;error - out of sync, fid 0x%x 0x%x, vid 0x%x 0x%x&bslash;n&quot;
 comma
 id|checkfid
 comma
-id|currfid
+id|data-&gt;currfid
 comma
 id|checkvid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
 suffix:semicolon
 )brace
@@ -3055,7 +3146,7 @@ c_func
 (paren
 id|pol
 comma
-id|powernow_table
+id|data-&gt;powernow_table
 comma
 id|targfreq
 comma
@@ -3075,6 +3166,8 @@ c_cond
 id|transition_frequency
 c_func
 (paren
+id|data
+comma
 id|newstate
 )paren
 )paren
@@ -3098,7 +3191,7 @@ op_star
 id|find_freq_from_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 r_return
@@ -3106,9 +3199,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Driver entry point to verify the policy and range of frequencies */
+DECL|function|powernowk8_verify
 r_static
 r_int
-DECL|function|powernowk8_verify
 id|powernowk8_verify
 c_func
 (paren
@@ -3118,6 +3211,16 @@ op_star
 id|pol
 )paren
 (brace
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+op_assign
+id|powernow_data
+(braket
+id|pol-&gt;cpu
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3146,15 +3249,15 @@ c_func
 (paren
 id|pol
 comma
-id|powernow_table
+id|data-&gt;powernow_table
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* per CPU init entry point to the driver */
+DECL|function|powernowk8_cpu_init
 r_static
 r_int
 id|__init
-DECL|function|powernowk8_cpu_init
 id|powernowk8_cpu_init
 c_func
 (paren
@@ -3164,8 +3267,65 @@ op_star
 id|pol
 )paren
 (brace
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+suffix:semicolon
 r_int
 id|rc
+suffix:semicolon
+id|data
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|powernow_k8_data
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|data
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;unable to alloc powernow_k8_data&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|data
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|powernow_k8_data
+)paren
+)paren
+suffix:semicolon
+id|data-&gt;cpu
+op_assign
+id|pol-&gt;cpu
 suffix:semicolon
 r_if
 c_cond
@@ -3183,6 +3343,12 @@ id|PFX
 l_string|&quot;init not cpu 0&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3197,6 +3363,7 @@ op_assign
 id|find_psb_table
 c_func
 (paren
+id|data
 )paren
 suffix:semicolon
 r_if
@@ -3204,10 +3371,18 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3235,12 +3410,12 @@ op_assign
 (paren
 (paren
 (paren
-id|rvo
+id|data-&gt;rvo
 op_plus
 l_int|8
 )paren
 op_star
-id|vstable
+id|data-&gt;vstable
 op_star
 id|VST_UNITS_20US
 )paren
@@ -3251,7 +3426,7 @@ op_star
 (paren
 l_int|1
 op_lshift
-id|irt
+id|data-&gt;irt
 )paren
 op_star
 l_int|10
@@ -3266,6 +3441,7 @@ c_cond
 id|query_current_values_with_pending_wait
 c_func
 (paren
+id|data
 )paren
 )paren
 r_return
@@ -3279,7 +3455,7 @@ op_star
 id|find_freq_from_fid
 c_func
 (paren
-id|currfid
+id|data-&gt;currfid
 )paren
 suffix:semicolon
 id|dprintk
@@ -3301,7 +3477,7 @@ c_func
 (paren
 id|pol
 comma
-id|powernow_table
+id|data-&gt;powernow_table
 )paren
 )paren
 (brace
@@ -3316,7 +3492,13 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|powernow_table
+id|data-&gt;powernow_table
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|data
 )paren
 suffix:semicolon
 r_return
@@ -3327,7 +3509,7 @@ suffix:semicolon
 id|cpufreq_frequency_table_get_attr
 c_func
 (paren
-id|powernow_table
+id|data-&gt;powernow_table
 comma
 id|pol-&gt;cpu
 )paren
@@ -3339,16 +3521,29 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;cpu_init done, current fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
-id|currfid
+id|data-&gt;currfid
 comma
-id|currvid
+id|data-&gt;currvid
 )paren
+suffix:semicolon
+id|powernow_data
+(braket
+id|pol-&gt;cpu
+)braket
+op_assign
+id|data
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|err_out
 suffix:colon
+id|kfree
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3366,12 +3561,21 @@ op_star
 id|pol
 )paren
 (brace
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+op_assign
+id|powernow_data
+(braket
+id|pol-&gt;cpu
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pol-&gt;cpu
-op_ne
-l_int|0
+op_logical_neg
+id|data
 )paren
 r_return
 op_minus
@@ -3383,15 +3587,16 @@ c_func
 id|pol-&gt;cpu
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|powernow_table
-)paren
 id|kfree
 c_func
 (paren
-id|powernow_table
+id|data-&gt;powernow_table
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|data
 )paren
 suffix:semicolon
 r_return

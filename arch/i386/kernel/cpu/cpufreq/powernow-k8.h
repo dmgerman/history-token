@@ -1,4 +1,67 @@
 multiline_comment|/*&n; *   (c) 2003 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;../../../COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; */
+DECL|struct|powernow_k8_data
+r_struct
+id|powernow_k8_data
+(brace
+DECL|member|cpu
+r_int
+r_int
+id|cpu
+suffix:semicolon
+DECL|member|numps
+id|u32
+id|numps
+suffix:semicolon
+multiline_comment|/* number of p-states */
+DECL|member|batps
+id|u32
+id|batps
+suffix:semicolon
+multiline_comment|/* number of p-states supported on battery */
+multiline_comment|/* these values are constant when the PSB is used to determine&n;&t; * vid/fid pairings, but are modified during the -&gt;target() call&n;&t; * when ACPI is used */
+DECL|member|rvo
+id|u32
+id|rvo
+suffix:semicolon
+multiline_comment|/* ramp voltage offset */
+DECL|member|irt
+id|u32
+id|irt
+suffix:semicolon
+multiline_comment|/* isochronous relief time */
+DECL|member|vidmvs
+id|u32
+id|vidmvs
+suffix:semicolon
+multiline_comment|/* usable value calculated from mvs */
+DECL|member|vstable
+id|u32
+id|vstable
+suffix:semicolon
+multiline_comment|/* voltage stabilization time, units 20 us */
+DECL|member|plllock
+id|u32
+id|plllock
+suffix:semicolon
+multiline_comment|/* pll lock time, units 1 us */
+multiline_comment|/* keep track of the current fid / vid */
+DECL|member|currvid
+id|u32
+id|currvid
+suffix:semicolon
+DECL|member|currfid
+id|u32
+id|currfid
+suffix:semicolon
+multiline_comment|/* the powernow_table includes all frequency and vid/fid pairings:&n;&t; * fid are the lower 8 bits of the index, vid are the upper 8 bits.&n;&t; * frequency is in kHz */
+DECL|member|powernow_table
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|powernow_table
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* processor&squot;s cpuid instruction support */
 DECL|macro|CPUID_PROCESSOR_SIGNATURE
 mdefine_line|#define CPUID_PROCESSOR_SIGNATURE             1&t;/* function 1               */
@@ -181,6 +244,11 @@ r_int
 id|core_voltage_pre_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqvid
 )paren
@@ -191,6 +259,11 @@ r_int
 id|core_voltage_post_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqvid
 )paren
@@ -201,6 +274,11 @@ r_int
 id|core_frequency_transition
 c_func
 (paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
 id|u32
 id|reqfid
 )paren
