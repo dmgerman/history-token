@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn_helgaas@hp.com&gt;&n; * Copyright (C) 2004 Silicon Graphics, Inc.&n; *&n; * Note: Above list of copyright holders is incomplete...&n; */
+multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; *&n; * (c) Copyright 2002, 2005 Hewlett-Packard Development Company, L.P.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; * Copyright (C) 2004 Silicon Graphics, Inc.&n; *&n; * Note: Above list of copyright holders is incomplete...&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -15,22 +15,9 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
-macro_line|#ifdef CONFIG_SMP
-macro_line|# include &lt;asm/smp.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 DECL|variable|pci_routeirq
 r_static
 r_int
@@ -38,21 +25,24 @@ id|pci_routeirq
 suffix:semicolon
 multiline_comment|/*&n; * Low-level SAL-based PCI configuration access functions. Note that SAL&n; * calls are already serialized (via sal_lock), so we don&squot;t need another&n; * synchronization mechanism here.&n; */
 DECL|macro|PCI_SAL_ADDRESS
-mdefine_line|#define PCI_SAL_ADDRESS(seg, bus, devfn, reg)&t;&bslash;&n;&t;((u64)(seg &lt;&lt; 24) | (u64)(bus &lt;&lt; 16) |&t;&bslash;&n;&t; (u64)(devfn &lt;&lt; 8) | (u64)(reg))
+mdefine_line|#define PCI_SAL_ADDRESS(seg, bus, devfn, reg)&t;&t;&bslash;&n;&t;(((u64) seg &lt;&lt; 24) | (bus &lt;&lt; 16) | (devfn &lt;&lt; 8) | (reg))
 multiline_comment|/* SAL 3.2 adds support for extended config space. */
 DECL|macro|PCI_SAL_EXT_ADDRESS
-mdefine_line|#define PCI_SAL_EXT_ADDRESS(seg, bus, devfn, reg)&t;&bslash;&n;&t;((u64)(seg &lt;&lt; 28) | (u64)(bus &lt;&lt; 20) |&t;&t;&bslash;&n;&t; (u64)(devfn &lt;&lt; 12) | (u64)(reg))
+mdefine_line|#define PCI_SAL_EXT_ADDRESS(seg, bus, devfn, reg)&t;&bslash;&n;&t;(((u64) seg &lt;&lt; 28) | (bus &lt;&lt; 20) | (devfn &lt;&lt; 12) | (reg))
 r_static
 r_int
 DECL|function|pci_sal_read
 id|pci_sal_read
 (paren
 r_int
+r_int
 id|seg
 comma
 r_int
+r_int
 id|bus
 comma
+r_int
 r_int
 id|devfn
 comma
@@ -70,20 +60,21 @@ id|value
 id|u64
 id|addr
 comma
-id|mode
-comma
 id|data
 op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|mode
+comma
 id|result
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|value
+op_logical_or
 (paren
 id|seg
 OG
@@ -179,6 +170,17 @@ op_amp
 id|data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 op_star
 id|value
 op_assign
@@ -188,7 +190,7 @@ id|u32
 id|data
 suffix:semicolon
 r_return
-id|result
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -197,11 +199,14 @@ DECL|function|pci_sal_write
 id|pci_sal_write
 (paren
 r_int
+r_int
 id|seg
 comma
 r_int
+r_int
 id|bus
 comma
+r_int
 r_int
 id|devfn
 comma
@@ -217,8 +222,11 @@ id|value
 (brace
 id|u64
 id|addr
-comma
+suffix:semicolon
+r_int
 id|mode
+comma
+id|result
 suffix:semicolon
 r_if
 c_cond
@@ -303,7 +311,8 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_return
+id|result
+op_assign
 id|ia64_sal_pci_config_write
 c_func
 (paren
@@ -315,6 +324,20 @@ id|len
 comma
 id|value
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pci_sal_ops
