@@ -468,7 +468,7 @@ suffix:semicolon
 DECL|macro|VIDEO_TYPE_TV
 mdefine_line|#define VIDEO_TYPE_TV&t;&t;1
 DECL|macro|VIDEO_TYPE_CAMERA
-mdefine_line|#define VIDEO_TYPE_CAMERA&t;2&t;
+mdefine_line|#define VIDEO_TYPE_CAMERA&t;2
 DECL|member|norm
 id|__u16
 id|norm
@@ -584,7 +584,7 @@ mdefine_line|#define VIDEO_PALETTE_RGB565&t;3&t;/* 565 16 bit RGB */
 DECL|macro|VIDEO_PALETTE_RGB24
 mdefine_line|#define VIDEO_PALETTE_RGB24&t;4&t;/* 24bit RGB */
 DECL|macro|VIDEO_PALETTE_RGB32
-mdefine_line|#define VIDEO_PALETTE_RGB32&t;5&t;/* 32bit RGB */&t;
+mdefine_line|#define VIDEO_PALETTE_RGB32&t;5&t;/* 32bit RGB */
 DECL|macro|VIDEO_PALETTE_RGB555
 mdefine_line|#define VIDEO_PALETTE_RGB555&t;6&t;/* 555 15bit RGB */
 DECL|macro|VIDEO_PALETTE_YUV422
@@ -647,7 +647,7 @@ mdefine_line|#define VIDEO_AUDIO_VOLUME&t;4
 DECL|macro|VIDEO_AUDIO_BASS
 mdefine_line|#define VIDEO_AUDIO_BASS&t;8
 DECL|macro|VIDEO_AUDIO_TREBLE
-mdefine_line|#define VIDEO_AUDIO_TREBLE&t;16&t;
+mdefine_line|#define VIDEO_AUDIO_TREBLE&t;16
 DECL|macro|VIDEO_AUDIO_BALANCE
 mdefine_line|#define VIDEO_AUDIO_BALANCE&t;32
 DECL|member|name
@@ -1223,7 +1223,7 @@ mdefine_line|#define VID_HARDWARE_ZR36120&t;25&t;/* Zoran ZR36120/ZR36125 */
 DECL|macro|VID_HARDWARE_ZR36067
 mdefine_line|#define VID_HARDWARE_ZR36067&t;26&t;/* Zoran ZR36067/36060 */
 DECL|macro|VID_HARDWARE_OV511
-mdefine_line|#define VID_HARDWARE_OV511&t;27&t;
+mdefine_line|#define VID_HARDWARE_OV511&t;27
 DECL|macro|VID_HARDWARE_ZR356700
 mdefine_line|#define VID_HARDWARE_ZR356700&t;28&t;/* Zoran 36700 series */
 DECL|macro|VID_HARDWARE_W9966
