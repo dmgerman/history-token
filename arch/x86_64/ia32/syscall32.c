@@ -331,9 +331,9 @@ c_func
 id|init_syscall32
 )paren
 suffix:semicolon
+multiline_comment|/* May not be __init: called during resume */
 DECL|function|syscall32_cpu_init
 r_void
-id|__init
 id|syscall32_cpu_init
 c_func
 (paren

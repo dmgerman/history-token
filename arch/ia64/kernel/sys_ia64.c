@@ -315,6 +315,7 @@ r_int
 id|shmid
 comma
 r_void
+id|__user
 op_star
 id|shmaddr
 comma
@@ -706,7 +707,7 @@ id|file
 op_star
 id|file
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|flags
 op_and_assign

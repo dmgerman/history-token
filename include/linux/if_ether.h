@@ -147,5 +147,33 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
+DECL|function|eth_hdr
+r_static
+r_inline
+r_struct
+id|ethhdr
+op_star
+id|eth_hdr
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ethhdr
+op_star
+)paren
+id|skb-&gt;mac.raw
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif&t;/* _LINUX_IF_ETHER_H */
 eof

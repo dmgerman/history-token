@@ -186,7 +186,11 @@ id|path
 comma
 r_int
 op_star
-id|rdev
+id|maj
+comma
+r_int
+op_star
+id|min
 )paren
 suffix:semicolon
 r_extern
