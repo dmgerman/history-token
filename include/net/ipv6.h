@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 DECL|macro|SIN6_LEN_RFC2133
 mdefine_line|#define SIN6_LEN_RFC2133&t;24
 multiline_comment|/*&n; *&t;NextHeader field of IPv6 header&n; */
@@ -110,15 +111,14 @@ r_extern
 r_int
 id|sysctl_ipv6_bindv6only
 suffix:semicolon
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|ipv6_mib
+comma
 id|ipv6_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|IP6_INC_STATS
 mdefine_line|#define IP6_INC_STATS(field)&t;&t;SNMP_INC_STATS(ipv6_statistics, field)
@@ -126,15 +126,14 @@ DECL|macro|IP6_INC_STATS_BH
 mdefine_line|#define IP6_INC_STATS_BH(field)&t;&t;SNMP_INC_STATS_BH(ipv6_statistics, field)
 DECL|macro|IP6_INC_STATS_USER
 mdefine_line|#define IP6_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(ipv6_statistics, field)
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|icmpv6_mib
+comma
 id|icmpv6_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|ICMP6_INC_STATS
 mdefine_line|#define ICMP6_INC_STATS(field)&t;&t;SNMP_INC_STATS(icmpv6_statistics, field)
@@ -142,15 +141,16 @@ DECL|macro|ICMP6_INC_STATS_BH
 mdefine_line|#define ICMP6_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(icmpv6_statistics, field)
 DECL|macro|ICMP6_INC_STATS_USER
 mdefine_line|#define ICMP6_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(icmpv6_statistics, field)
-r_extern
+DECL|macro|ICMP6_STATS_PTR_BH
+mdefine_line|#define ICMP6_STATS_PTR_BH(field) &t;&t;&t;&t;&t;&bslash;&n;&t;(&amp;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; ((per_cpu_ptr(icmpv6_statistics[0], smp_processor_id()))-&gt;&t;&bslash;&n;&t;  field))
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|udp_mib
+comma
 id|udp_stats_in6
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|UDP6_INC_STATS
 mdefine_line|#define UDP6_INC_STATS(field)&t;&t;SNMP_INC_STATS(udp_stats_in6, field)

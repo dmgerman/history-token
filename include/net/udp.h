@@ -5,6 +5,7 @@ mdefine_line|#define _UDP_H
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 DECL|macro|UDP_HTABLE_SIZE
 mdefine_line|#define UDP_HTABLE_SIZE&t;&t;128
 multiline_comment|/* udp.c: This needs to be shared by v4 and v6 because the lookup&n; *        and hashing code needs to work with different AF&squot;s yet&n; *        the port space is shared.&n; */
@@ -198,15 +199,14 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-r_extern
+id|DECLARE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|udp_mib
+comma
 id|udp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|macro|UDP_INC_STATS
 mdefine_line|#define UDP_INC_STATS(field)&t;&t;SNMP_INC_STATS(udp_statistics, field)

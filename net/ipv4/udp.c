@@ -28,15 +28,14 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 multiline_comment|/*&n; *&t;Snmp MIB for the UDP layer&n; */
-DECL|variable|udp_statistics
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|udp_mib
+comma
 id|udp_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|variable|udp_hash
 r_struct

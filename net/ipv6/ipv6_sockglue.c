@@ -27,15 +27,14 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|ipv6_statistics
+id|DEFINE_SNMP_STAT
+c_func
+(paren
 r_struct
 id|ipv6_mib
+comma
 id|ipv6_statistics
-(braket
-id|NR_CPUS
-op_star
-l_int|2
-)braket
+)paren
 suffix:semicolon
 DECL|variable|ipv6_packet_type
 r_static
