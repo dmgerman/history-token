@@ -759,10 +759,17 @@ id|elf-&gt;e_shoff
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_H8300)
+id|elf-&gt;e_flags
+op_assign
+id|ELF_FLAGS
+suffix:semicolon
+macro_line|#else
 id|elf-&gt;e_flags
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 id|elf-&gt;e_ehsize
 op_assign
 r_sizeof
