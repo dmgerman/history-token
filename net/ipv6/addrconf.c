@@ -1306,6 +1306,10 @@ comma
 id|ndev-&gt;nd_parms
 )paren
 suffix:semicolon
+id|ndev-&gt;dead
+op_assign
+l_int|1
+suffix:semicolon
 id|in6_dev_finish_destroy
 c_func
 (paren
