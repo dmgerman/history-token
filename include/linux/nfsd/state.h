@@ -102,11 +102,6 @@ DECL|member|cb_ident
 id|u32
 id|cb_ident
 suffix:semicolon
-DECL|member|cb_netid
-r_struct
-id|xdr_netobj
-id|cb_netid
-suffix:semicolon
 multiline_comment|/* RPC client info */
 DECL|member|cb_set
 id|u32
