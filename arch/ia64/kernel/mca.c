@@ -204,6 +204,9 @@ id|buffer
 comma
 id|u64
 id|size
+comma
+r_int
+id|irqsafe
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * IA64_MCA log support&n; */
@@ -358,7 +361,7 @@ id|max_size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_get&n; *&n; *&t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; *&n; *  Inputs  :   info_type   (SAL_INFO_TYPE_{MCA,INIT,CMC,CPE})&n; *  Outputs :   size        (total record length)&n; *              *buffer     (ptr to error record)&n; *&n; */
+multiline_comment|/*&n; * ia64_log_get&n; *&n; *&t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; *&n; *  Inputs  :   info_type   (SAL_INFO_TYPE_{MCA,INIT,CMC,CPE})&n; *              irq_safe    whether you can use printk at this point&n; *  Outputs :   size        (total record length)&n; *              *buffer     (ptr to error record)&n; *&n; */
 r_static
 id|u64
 DECL|function|ia64_log_get
@@ -372,6 +375,9 @@ id|u8
 op_star
 op_star
 id|buffer
+comma
+r_int
+id|irq_safe
 )paren
 (brace
 id|sal_log_record_header_t
@@ -385,17 +391,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|s
-suffix:semicolon
-r_int
-id|irq_safe
-op_assign
-id|sal_info_type
-op_ne
-id|SAL_INFO_TYPE_MCA
-op_logical_and
-id|sal_info_type
-op_ne
-id|SAL_INFO_TYPE_INIT
 suffix:semicolon
 id|IA64_LOG_LOCK
 c_func
@@ -550,6 +545,8 @@ id|sal_info_type
 comma
 op_amp
 id|buffer
+comma
+id|irq_safe
 )paren
 suffix:semicolon
 r_if
@@ -568,6 +565,8 @@ comma
 id|buffer
 comma
 id|size
+comma
+id|irq_safe
 )paren
 suffix:semicolon
 r_if

@@ -458,6 +458,9 @@ id|buffer
 comma
 id|u64
 id|size
+comma
+r_int
+id|irqsafe
 )paren
 (brace
 r_struct
@@ -482,16 +485,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|i
-comma
-id|irqsafe
-op_assign
-id|type
-op_ne
-id|SAL_INFO_TYPE_MCA
-op_logical_and
-id|type
-op_ne
-id|SAL_INFO_TYPE_INIT
 suffix:semicolon
 r_int
 id|saved_size
