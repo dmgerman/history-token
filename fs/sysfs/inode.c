@@ -3189,6 +3189,13 @@ c_func
 id|sysfs_create_file
 )paren
 suffix:semicolon
+DECL|variable|sysfs_update_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysfs_update_file
+)paren
+suffix:semicolon
 DECL|variable|sysfs_remove_file
 id|EXPORT_SYMBOL
 c_func
