@@ -715,10 +715,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|timer_pending
 c_func
 (paren
 id|timer
+)paren
 )paren
 )paren
 r_goto
