@@ -19,7 +19,10 @@ r_int
 id|i8259_irq
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_int

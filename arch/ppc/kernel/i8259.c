@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/i8259.h&gt;
 DECL|variable|pci_intack
 r_static
 r_volatile
+r_int
 r_char
 op_star
 id|pci_intack
@@ -50,7 +51,10 @@ r_int
 id|i8259_irq
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -68,8 +72,6 @@ id|irq
 op_assign
 op_star
 id|pci_intack
-op_amp
-l_int|0xff
 suffix:semicolon
 r_if
 c_cond
