@@ -2436,12 +2436,13 @@ id|BH_New
 suffix:semicolon
 id|got_it
 suffix:colon
-id|bh_result-&gt;b_dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
-id|bh_result-&gt;b_blocknr
-op_assign
+id|map_bh
+c_func
+(paren
+id|bh_result
+comma
+id|inode-&gt;i_sb
+comma
 id|le32_to_cpu
 c_func
 (paren
@@ -2454,13 +2455,6 @@ l_int|1
 dot
 id|key
 )paren
-suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
-(paren
-l_int|1UL
-op_lshift
-id|BH_Mapped
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up and exit */
@@ -4306,8 +4300,6 @@ c_func
 (paren
 id|page
 comma
-id|inode-&gt;i_dev
-comma
 id|inode-&gt;i_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
@@ -4733,8 +4725,6 @@ id|create_empty_buffers
 c_func
 (paren
 id|page
-comma
-id|inode-&gt;i_dev
 comma
 id|blocksize
 )paren

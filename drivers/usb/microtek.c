@@ -1093,15 +1093,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|scsi_unregister_module
+id|scsi_unregister_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
-(paren
 id|to_remove-&gt;ctempl
-)paren
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -3408,15 +3404,11 @@ id|THIS_MODULE
 suffix:semicolon
 id|result
 op_assign
-id|scsi_register_module
+id|scsi_register_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
-(paren
 id|new_desc-&gt;ctempl
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Will get hit back in microtek_detect by this func */
@@ -3429,7 +3421,7 @@ id|result
 id|MTS_ERROR
 c_func
 (paren
-l_string|&quot;error %d from scsi_register_module! Help!&bslash;n&quot;
+l_string|&quot;error %d from scsi_register_host! Help!&bslash;n&quot;
 comma
 (paren
 r_int

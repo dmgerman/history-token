@@ -3116,12 +3116,10 @@ op_assign
 id|reiserfs_getblk
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb
 comma
 op_star
 id|p_n_blocknr
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -8172,8 +8170,6 @@ c_func
 id|p_s_sb
 comma
 id|n_son_number
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -8418,8 +8414,6 @@ c_func
 id|p_s_sb
 comma
 id|n_son_number
-comma
-id|p_s_sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if

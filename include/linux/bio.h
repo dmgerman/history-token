@@ -19,6 +19,8 @@ mdefine_line|#define BIO_BUG_ON
 macro_line|#endif
 DECL|macro|BIO_MAX_SECTORS
 mdefine_line|#define BIO_MAX_SECTORS&t;128
+DECL|macro|BIO_MAX_SIZE
+mdefine_line|#define BIO_MAX_SIZE&t;(BIO_MAX_SECTORS &lt;&lt; 9)
 multiline_comment|/*&n; * was unsigned short, but we might as well be ready for &gt; 64kB I/O pages&n; */
 DECL|struct|bio_vec
 r_struct

@@ -232,6 +232,17 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|expire_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+)paren
+suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
 mdefine_line|#define&t;MAX_SCHEDULE_TIMEOUT&t;LONG_MAX
 r_extern
@@ -627,9 +638,9 @@ id|lock_depth
 suffix:semicolon
 multiline_comment|/* Lock depth */
 multiline_comment|/*&n; * offset 32 begins here on 32-bit platforms. We keep&n; * all fields in a single cacheline that are needed for&n; * the goodness() loop in schedule().&n; */
-DECL|member|counter
+DECL|member|dyn_prio
 r_int
-id|counter
+id|dyn_prio
 suffix:semicolon
 DECL|member|nice
 r_int
@@ -665,10 +676,20 @@ r_struct
 id|list_head
 id|run_list
 suffix:semicolon
+DECL|member|time_slice
+r_int
+id|time_slice
+suffix:semicolon
 DECL|member|sleep_time
 r_int
 r_int
 id|sleep_time
+suffix:semicolon
+multiline_comment|/* recalculation loop checkpoint */
+DECL|member|rcl_last
+r_int
+r_int
+id|rcl_last
 suffix:semicolon
 DECL|member|next_task
 DECL|member|prev_task
@@ -1145,10 +1166,12 @@ mdefine_line|#define PT_PTRACE_CAP&t;0x00000010&t;/* ptracer can follow suid-exe
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
-DECL|macro|DEF_COUNTER
-mdefine_line|#define DEF_COUNTER&t;(10*HZ/100)&t;/* 100 ms time slice */
-DECL|macro|MAX_COUNTER
-mdefine_line|#define MAX_COUNTER&t;(20*HZ/100)
+DECL|macro|MAX_DYNPRIO
+mdefine_line|#define MAX_DYNPRIO&t;100
+DECL|macro|DEF_TSLICE
+mdefine_line|#define DEF_TSLICE&t;(6 * HZ / 100)
+DECL|macro|MAX_TSLICE
+mdefine_line|#define MAX_TSLICE&t;(20 * HZ / 100)
 DECL|macro|DEF_NICE
 mdefine_line|#define DEF_NICE&t;(0)
 multiline_comment|/*&n; * The default (Linux) execution domain.&n; */
@@ -1159,7 +1182,7 @@ id|default_exec_domain
 suffix:semicolon
 multiline_comment|/*&n; *  INIT_TASK is used to set up the first task table, touch at&n; * your own risk!. Base=0, limit=0x1fffff (=2MB)&n; */
 DECL|macro|INIT_TASK
-mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    counter:&t;&t;DEF_COUNTER,&t;&t;&t;&t;&t;&bslash;&n;    nice:&t;&t;DEF_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    cpus_runnable:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;LIST_HEAD_INIT(tsk.run_list),&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    dyn_prio:&t;&t;0,&t;&t;&t;&t;&t;&bslash;&n;    nice:&t;&t;DEF_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    cpus_runnable:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;{ NULL, NULL },&t;&t;&t;&bslash;&n;    rcl_last:&t;&t;0,&t;&t;&t;&t;&t;&bslash;&n;    time_slice:&t;&t;DEF_TSLICE,&t;&t;&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifndef INIT_TASK_SIZE
 DECL|macro|INIT_TASK_SIZE
 macro_line|# define INIT_TASK_SIZE&t;2048*sizeof(long)

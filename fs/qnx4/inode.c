@@ -936,20 +936,14 @@ id|phys
 )paren
 (brace
 singleline_comment|// logical block is before EOF
-id|bh-&gt;b_dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
-id|bh-&gt;b_blocknr
-op_assign
-id|phys
-suffix:semicolon
-id|bh-&gt;b_state
-op_or_assign
+id|map_bh
+c_func
 (paren
-l_int|1UL
-op_lshift
-id|BH_Mapped
+id|bh
+comma
+id|inode-&gt;i_sb
+comma
+id|phys
 )paren
 suffix:semicolon
 )brace

@@ -170,20 +170,20 @@ op_plus
 id|p-&gt;cnswap
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Potentially available timeslices are retrieved&n;&t;&t; * here - this way the parent does not get penalized&n;&t;&t; * for creating too many processes.&n;&t;&t; *&n;&t;&t; * (this cannot be used to artificially &squot;generate&squot;&n;&t;&t; * timeslices, because any timeslice recovered here&n;&t;&t; * was given away by the parent in the first place.)&n;&t;&t; */
-id|current-&gt;counter
+id|current-&gt;time_slice
 op_add_assign
-id|p-&gt;counter
+id|p-&gt;time_slice
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;counter
-op_ge
-id|MAX_COUNTER
+id|current-&gt;time_slice
+OG
+id|MAX_TSLICE
 )paren
-id|current-&gt;counter
+id|current-&gt;time_slice
 op_assign
-id|MAX_COUNTER
+id|MAX_TSLICE
 suffix:semicolon
 id|p-&gt;pid
 op_assign

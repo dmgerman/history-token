@@ -481,11 +481,13 @@ DECL|struct|fat_cache
 r_struct
 id|fat_cache
 (brace
-DECL|member|device
-id|kdev_t
-id|device
+DECL|member|sb
+r_struct
+id|super_block
+op_star
+id|sb
 suffix:semicolon
-multiline_comment|/* device number. 0 means unused. */
+multiline_comment|/* fs in question.  NULL means unused */
 DECL|member|start_cluster
 r_int
 id|start_cluster
@@ -871,8 +873,10 @@ r_void
 id|fat_cache_inval_dev
 c_func
 (paren
-id|kdev_t
-id|device
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern

@@ -6569,7 +6569,7 @@ id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
 suffix:semicolon
-multiline_comment|/*&t;&t;current-&gt;counter = 0;&t; make us low-priority */
+multiline_comment|/*&t;&t;current-&gt;dyn_prio = 0;&t; make us low-priority */
 id|schedule_timeout
 c_func
 (paren

@@ -226,14 +226,12 @@ op_minus
 id|ENOTTY
 suffix:semicolon
 )brace
-macro_line|#if 0
 id|blk_put_queue
 c_func
 (paren
 id|q
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon

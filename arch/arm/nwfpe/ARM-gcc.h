@@ -1,6 +1,3 @@
-multiline_comment|/*&n;-------------------------------------------------------------------------------&n;One of the macros `BIGENDIAN&squot; or `LITTLEENDIAN&squot; must be defined.&n;-------------------------------------------------------------------------------&n;*/
-DECL|macro|LITTLEENDIAN
-mdefine_line|#define LITTLEENDIAN
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;The macro `BITS64&squot; can be defined to indicate that 64-bit integer types are&n;supported by the compiler.&n;-------------------------------------------------------------------------------&n;*/
 DECL|macro|BITS64
 mdefine_line|#define BITS64

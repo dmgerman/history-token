@@ -139,11 +139,6 @@ c_loop
 l_int|1
 )paren
 (brace
-id|current-&gt;counter
-op_assign
-op_minus
-l_int|100
-suffix:semicolon
 id|schedule
 c_func
 (paren

@@ -1708,7 +1708,7 @@ suffix:semicolon
 id|acct_auto_close
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 suffix:semicolon
 id|unlock_kernel

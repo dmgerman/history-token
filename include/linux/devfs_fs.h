@@ -37,6 +37,7 @@ DECL|struct|devfsd_notify_struct
 r_struct
 id|devfsd_notify_struct
 (brace
+multiline_comment|/*  Use native C types to ensure same types in kernel and user space     */
 DECL|member|type
 r_int
 r_int

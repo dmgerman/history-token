@@ -753,7 +753,7 @@ comma
 r_struct
 id|buffer_head
 op_star
-id|bh_result
+id|bh
 comma
 r_int
 id|create
@@ -841,12 +841,13 @@ id|partial
 (brace
 id|got_it
 suffix:colon
-id|bh_result-&gt;b_dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
-id|bh_result-&gt;b_blocknr
-op_assign
+id|map_bh
+c_func
+(paren
+id|bh
+comma
+id|inode-&gt;i_sb
+comma
 id|block_to_cpu
 c_func
 (paren
@@ -859,13 +860,6 @@ l_int|1
 dot
 id|key
 )paren
-suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
-(paren
-l_int|1UL
-op_lshift
-id|BH_Mapped
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up and exit */
@@ -996,7 +990,7 @@ l_int|0
 r_goto
 id|changed
 suffix:semicolon
-id|bh_result-&gt;b_state
+id|bh-&gt;b_state
 op_or_assign
 (paren
 l_int|1UL

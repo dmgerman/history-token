@@ -2356,11 +2356,9 @@ id|bh
 op_assign
 id|reiserfs_getblk
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|blocknr
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 r_if
@@ -2433,10 +2431,6 @@ id|SB_TREE_HEIGHT
 (paren
 id|p_s_sb
 )paren
-comma
-id|n_block_size
-op_assign
-id|p_s_sb-&gt;s_blocksize
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -2566,8 +2560,6 @@ c_func
 id|p_s_sb
 comma
 id|n_block_number
-comma
-id|n_block_size
 )paren
 )paren
 )paren

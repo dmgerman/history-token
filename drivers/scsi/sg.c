@@ -183,6 +183,10 @@ id|Scsi_Device_Template
 id|sg_template
 op_assign
 (brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
 id|tag
 suffix:colon
 l_string|&quot;sg&quot;
@@ -7618,16 +7622,10 @@ id|sg_big_buff
 op_assign
 id|def_reserved_size
 suffix:semicolon
-id|sg_template.module
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 r_return
-id|scsi_register_module
+id|scsi_register_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|sg_template
 )paren
@@ -7650,11 +7648,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif  /* CONFIG_PROC_FS */
-id|scsi_unregister_module
+id|scsi_unregister_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|sg_template
 )paren

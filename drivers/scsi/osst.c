@@ -427,6 +427,10 @@ id|Scsi_Device_Template
 id|osst_template
 op_assign
 (brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;OnStream tape&quot;
@@ -29820,16 +29824,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|osst_template.module
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 r_return
-id|scsi_register_module
+id|scsi_register_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|osst_template
 )paren
@@ -29851,11 +29849,9 @@ id|OS_Scsi_Tape
 op_star
 id|STp
 suffix:semicolon
-id|scsi_unregister_module
+id|scsi_unregister_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|osst_template
 )paren

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -520,10 +520,8 @@ DECL|macro|RQ_SCSI_DISCONNECTING
 mdefine_line|#define RQ_SCSI_DISCONNECTING&t;0xffe0
 DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;0&t;/* queue is plugged */
-DECL|macro|QUEUE_FLAG_NOSPLIT
-mdefine_line|#define QUEUE_FLAG_NOSPLIT&t;1&t;/* can process bio over several goes */
 DECL|macro|QUEUE_FLAG_CLUSTER
-mdefine_line|#define QUEUE_FLAG_CLUSTER&t;2&t;/* cluster several segments into 1 */
+mdefine_line|#define QUEUE_FLAG_CLUSTER&t;1&t;/* cluster several segments into 1 */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_mark_plugged
@@ -534,6 +532,9 @@ DECL|macro|list_entry_rq
 mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queuelist)
 DECL|macro|rq_data_dir
 mdefine_line|#define rq_data_dir(rq)&t;&t;((rq)-&gt;flags &amp; 1)
+multiline_comment|/*&n; * mergeable request must not have _NOMERGE or _BARRIER bit set, nor may&n; * it already be started by driver.&n; */
+DECL|macro|rq_mergeable
+mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; (REQ_NOMERGE | REQ_STARTED | REQ_BARRIER))&t;&bslash;&n;&t;&amp;&amp; ((rq)-&gt;flags &amp; REQ_CMD))
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
@@ -867,6 +868,9 @@ id|request
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * get ready for proper ref counting&n; */
+DECL|macro|blk_put_queue
+mdefine_line|#define blk_put_queue(q)&t;do { } while (0)
 multiline_comment|/*&n; * Access functions for manipulating queue properties&n; */
 r_extern
 r_int
@@ -1323,6 +1327,54 @@ suffix:semicolon
 )brace
 r_return
 id|retval
+suffix:semicolon
+)brace
+DECL|member|v
+DECL|typedef|Sector
+r_typedef
+r_struct
+(brace
+r_struct
+id|page
+op_star
+id|v
+suffix:semicolon
+)brace
+id|Sector
+suffix:semicolon
+r_int
+r_char
+op_star
+id|read_dev_sector
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+r_int
+r_int
+comma
+id|Sector
+op_star
+)paren
+suffix:semicolon
+DECL|function|put_dev_sector
+r_static
+r_inline
+r_void
+id|put_dev_sector
+c_func
+(paren
+id|Sector
+id|p
+)paren
+(brace
+id|page_cache_release
+c_func
+(paren
+id|p.v
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -1270,23 +1270,7 @@ multiline_comment|/* scale priority and nice values from timeslices to -20..20 *
 multiline_comment|/* to make it look like a &quot;normal&quot; Unix priority/nice value  */
 id|priority
 op_assign
-id|task-&gt;counter
-suffix:semicolon
-id|priority
-op_assign
-l_int|20
-op_minus
-(paren
-id|priority
-op_star
-l_int|10
-op_plus
-id|DEF_COUNTER
-op_div
-l_int|2
-)paren
-op_div
-id|DEF_COUNTER
+id|task-&gt;dyn_prio
 suffix:semicolon
 id|nice
 op_assign

@@ -478,15 +478,13 @@ op_assign
 id|reiserfs_getblk
 c_func
 (paren
-id|s-&gt;s_dev
+id|s
 comma
 id|i
 op_star
 id|s-&gt;s_blocksize
 op_star
 l_int|8
-comma
-id|s-&gt;s_blocksize
 )paren
 suffix:semicolon
 id|memset

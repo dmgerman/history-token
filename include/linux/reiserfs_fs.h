@@ -4828,14 +4828,14 @@ singleline_comment|//void lock_inode_to_convert (struct inode * p_s_inode);
 singleline_comment|//void unlock_inode_after_convert (struct inode * p_s_inode);
 singleline_comment|//void increment_i_read_sync_counter (struct inode * p_s_inode);
 singleline_comment|//void decrement_i_read_sync_counter (struct inode * p_s_inode);
-DECL|macro|block_size
-mdefine_line|#define block_size(inode) ((inode)-&gt;i_sb-&gt;s_blocksize)
+DECL|macro|i_block_size
+mdefine_line|#define i_block_size(inode) ((inode)-&gt;i_sb-&gt;s_blocksize)
 DECL|macro|file_size
 mdefine_line|#define file_size(inode) ((inode)-&gt;i_size)
 DECL|macro|tail_size
-mdefine_line|#define tail_size(inode) (file_size (inode) &amp; (block_size (inode) - 1))
+mdefine_line|#define tail_size(inode) (file_size (inode) &amp; (i_block_size (inode) - 1))
 DECL|macro|tail_has_to_be_packed
-mdefine_line|#define tail_has_to_be_packed(inode) (!dont_have_tails ((inode)-&gt;i_sb) &amp;&amp;&bslash;&n;!STORE_TAIL_IN_UNFM(file_size (inode), tail_size(inode), block_size (inode)))
+mdefine_line|#define tail_has_to_be_packed(inode) (!dont_have_tails ((inode)-&gt;i_sb) &amp;&amp;&bslash;&n;!STORE_TAIL_IN_UNFM(file_size (inode), tail_size(inode), i_block_size (inode)))
 multiline_comment|/*&n;int get_buffer_by_range (struct super_block * p_s_sb, struct key * p_s_range_begin, struct key * p_s_range_end, &n;&t;&t;&t; struct buffer_head ** pp_s_buf, unsigned long * p_n_objectid);&n;int get_buffers_from_range (struct super_block * p_s_sb, struct key * p_s_range_start, struct key * p_s_range_end, &n;                            struct buffer_head ** p_s_range_buffers,&n;&t;&t;&t;    int n_max_nr_buffers_to_return);&n;*/
 r_void
 id|padd_item
@@ -5959,14 +5959,13 @@ id|buffer_head
 op_star
 id|reiserfs_getblk
 (paren
-id|kdev_t
-id|n_dev
+r_struct
+id|super_block
+op_star
+id|super
 comma
 r_int
 id|n_block
-comma
-r_int
-id|n_size
 )paren
 suffix:semicolon
 r_void
@@ -5991,9 +5990,6 @@ id|super
 comma
 r_int
 id|n_block
-comma
-r_int
-id|n_size
 )paren
 suffix:semicolon
 multiline_comment|/* fix_nodes.c */

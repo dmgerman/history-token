@@ -1362,8 +1362,6 @@ id|tty-&gt;link-&gt;driver
 comma
 id|DEVFS_FL_CURRENT_OWNER
 op_or
-id|DEVFS_FL_NO_PERSISTENCE
-op_or
 id|DEVFS_FL_WAIT
 comma
 id|tty-&gt;link-&gt;driver.minor_start

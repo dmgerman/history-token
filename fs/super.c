@@ -2039,7 +2039,7 @@ id|MS_RDONLY
 id|acct_auto_close
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 suffix:semicolon
 id|shrink_dcache_sb
@@ -2482,6 +2482,9 @@ id|block_device_operations
 op_star
 id|bdops
 suffix:semicolon
+id|devfs_handle_t
+id|de
+suffix:semicolon
 r_struct
 id|super_block
 op_star
@@ -2615,16 +2618,21 @@ id|bdev
 op_assign
 id|inode-&gt;i_bdev
 suffix:semicolon
-id|bdops
+id|de
 op_assign
-id|devfs_get_ops
-(paren
 id|devfs_get_handle_from_inode
 (paren
 id|inode
 )paren
+suffix:semicolon
+id|bdops
+op_assign
+id|devfs_get_ops
+(paren
+id|de
 )paren
 suffix:semicolon
+multiline_comment|/*  Increments module use count  */
 r_if
 c_cond
 (paren
@@ -2671,6 +2679,12 @@ comma
 id|BDEV_FS
 )paren
 suffix:semicolon
+id|devfs_put_ops
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/*  Decrement module use count now we&squot;re safe  */
 r_if
 c_cond
 (paren

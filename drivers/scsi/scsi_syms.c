@@ -21,18 +21,32 @@ macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
-DECL|variable|scsi_register_module
+DECL|variable|scsi_register_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_register_module
+id|scsi_register_device
 )paren
 suffix:semicolon
-DECL|variable|scsi_unregister_module
+DECL|variable|scsi_unregister_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_unregister_module
+id|scsi_unregister_device
+)paren
+suffix:semicolon
+DECL|variable|scsi_register_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_register_host
+)paren
+suffix:semicolon
+DECL|variable|scsi_unregister_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_unregister_host
 )paren
 suffix:semicolon
 DECL|variable|scsi_register
@@ -61,6 +75,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|scsi_partsize
+)paren
+suffix:semicolon
+DECL|variable|scsi_bios_ptable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_bios_ptable
 )paren
 suffix:semicolon
 DECL|variable|scsi_allocate_device

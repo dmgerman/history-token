@@ -24,10 +24,10 @@ r_int
 id|scsi_partsize
 c_func
 (paren
-r_struct
-id|buffer_head
+r_int
+r_char
 op_star
-id|bh
+id|buf
 comma
 r_int
 r_int
@@ -47,6 +47,17 @@ r_int
 r_int
 op_star
 id|secs
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+op_star
+id|scsi_bios_ptable
+c_func
+(paren
+id|kdev_t
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif /* def SCSICAM_H */

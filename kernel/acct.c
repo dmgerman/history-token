@@ -602,8 +602,10 @@ r_void
 id|acct_auto_close
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 (brace
 id|lock_kernel
@@ -616,9 +618,9 @@ c_cond
 (paren
 id|acct_file
 op_logical_and
-id|acct_file-&gt;f_dentry-&gt;d_inode-&gt;i_dev
+id|acct_file-&gt;f_dentry-&gt;d_inode-&gt;i_sb
 op_eq
-id|dev
+id|sb
 )paren
 id|sys_acct
 c_func

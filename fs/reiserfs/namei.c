@@ -4891,7 +4891,7 @@ id|current-&gt;policy
 op_or_assign
 id|SCHED_YIELD
 suffix:semicolon
-multiline_comment|/*current-&gt;counter = 0;*/
+multiline_comment|/*current-&gt;time_slice = 0;*/
 id|schedule
 c_func
 (paren

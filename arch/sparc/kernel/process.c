@@ -106,11 +106,6 @@ id|current-&gt;nice
 op_assign
 l_int|20
 suffix:semicolon
-id|current-&gt;counter
-op_assign
-op_minus
-l_int|100
-suffix:semicolon
 id|init_idle
 c_func
 (paren
@@ -304,11 +299,6 @@ multiline_comment|/* endless idle loop with no priority at all */
 id|current-&gt;nice
 op_assign
 l_int|20
-suffix:semicolon
-id|current-&gt;counter
-op_assign
-op_minus
-l_int|100
 suffix:semicolon
 id|init_idle
 c_func

@@ -3609,15 +3609,11 @@ id|ss-&gt;htmplt.module
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|scsi_register_module
+id|scsi_register_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
-(paren
 id|ss-&gt;htmplt
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* lock access to the data structures */
@@ -3954,18 +3950,14 @@ id|next-&gt;next
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- calling scsi_unregister_module()&bslash;n&quot;
+l_string|&quot;-- calling scsi_unregister_host()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|scsi_unregister_module
+id|scsi_unregister_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
-(paren
 id|next-&gt;htmplt
-)paren
 )paren
 suffix:semicolon
 )brace

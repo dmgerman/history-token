@@ -159,6 +159,10 @@ id|Scsi_Device_Template
 id|sd_template
 op_assign
 (brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;disk&quot;
@@ -5695,11 +5699,9 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 r_return
-id|scsi_register_module
+id|scsi_register_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|sd_template
 )paren
@@ -5718,11 +5720,9 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|scsi_unregister_module
+id|scsi_unregister_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|sd_template
 )paren

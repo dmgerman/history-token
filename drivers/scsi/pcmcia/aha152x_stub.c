@@ -1150,11 +1150,9 @@ comma
 id|ints
 )paren
 suffix:semicolon
-id|scsi_register_module
+id|scsi_register_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
 id|driver_template
 )paren
@@ -1499,11 +1497,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|scsi_unregister_module
+id|scsi_unregister_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
 id|driver_template
 )paren

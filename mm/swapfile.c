@@ -3752,6 +3752,9 @@ id|block_device_operations
 op_star
 id|bdops
 suffix:semicolon
+id|devfs_handle_t
+id|de
+suffix:semicolon
 id|p-&gt;swap_device
 op_assign
 id|dev
@@ -3774,18 +3777,23 @@ id|bdev
 op_assign
 id|swap_inode-&gt;i_bdev
 suffix:semicolon
-id|bdops
+id|de
 op_assign
-id|devfs_get_ops
-c_func
-(paren
 id|devfs_get_handle_from_inode
 c_func
 (paren
 id|swap_inode
 )paren
+suffix:semicolon
+id|bdops
+op_assign
+id|devfs_get_ops
+c_func
+(paren
+id|de
 )paren
 suffix:semicolon
+multiline_comment|/*  Increments module use count  */
 r_if
 c_cond
 (paren
@@ -3811,6 +3819,13 @@ comma
 id|BDEV_SWAP
 )paren
 suffix:semicolon
+id|devfs_put_ops
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/*Decrement module use count now we&squot;re safe*/
 r_if
 c_cond
 (paren

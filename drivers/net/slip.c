@@ -5315,7 +5315,7 @@ c_cond
 id|busy
 )paren
 (brace
-id|current-&gt;counter
+id|current-&gt;time_slice
 op_assign
 l_int|0
 suffix:semicolon

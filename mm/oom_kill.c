@@ -341,11 +341,17 @@ id|p-&gt;comm
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We give our sacrificial lamb high priority and access to&n;&t; * all the memory it needs. That way it should be able to&n;&t; * exit() and clear out its resources quickly...&n;&t; */
-id|p-&gt;counter
+id|p-&gt;time_slice
 op_assign
-l_int|5
+l_int|2
 op_star
-id|HZ
+id|MAX_TSLICE
+suffix:semicolon
+id|p-&gt;dyn_prio
+op_assign
+id|MAX_DYNPRIO
+op_plus
+l_int|1
 suffix:semicolon
 id|p-&gt;flags
 op_or_assign

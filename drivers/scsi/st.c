@@ -20508,11 +20508,9 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 r_return
-id|scsi_register_module
+id|scsi_register_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|st_template
 )paren
@@ -20531,11 +20529,9 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|scsi_unregister_module
+id|scsi_unregister_device
 c_func
 (paren
-id|MODULE_SCSI_DEV
-comma
 op_amp
 id|st_template
 )paren

@@ -2775,17 +2775,17 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * &quot;share&quot; dynamic priority between parent and child, thus the&n;&t; * total amount of dynamic priorities in the system doesnt change,&n;&t; * more scheduling fairness. This is only important in the first&n;&t; * timeslice, on the long run the scheduling behaviour is unchanged.&n;&t; */
-id|p-&gt;counter
+id|p-&gt;time_slice
 op_assign
 (paren
-id|current-&gt;counter
+id|current-&gt;time_slice
 op_plus
 l_int|1
 )paren
 op_rshift
 l_int|1
 suffix:semicolon
-id|current-&gt;counter
+id|current-&gt;time_slice
 op_rshift_assign
 l_int|1
 suffix:semicolon
@@ -2793,7 +2793,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;counter
+id|current-&gt;time_slice
 )paren
 id|current-&gt;need_resched
 op_assign

@@ -51,8 +51,10 @@ r_int
 id|sync_dquots
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_int
 id|type
@@ -809,7 +811,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|DQUOT_SYNC
-mdefine_line|#define DQUOT_SYNC(dev)&t;sync_dquots(dev, -1)
+mdefine_line|#define DQUOT_SYNC(sb)&t;sync_dquots(sb, -1)
 DECL|macro|DQUOT_OFF
 mdefine_line|#define DQUOT_OFF(sb)&t;quota_off(sb, -1)
 macro_line|#else
@@ -823,7 +825,7 @@ mdefine_line|#define DQUOT_ALLOC_INODE(inode)&t;&t;(0)
 DECL|macro|DQUOT_FREE_INODE
 mdefine_line|#define DQUOT_FREE_INODE(inode)&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_SYNC
-mdefine_line|#define DQUOT_SYNC(dev)&t;&t;&t;&t;do { } while(0)
+mdefine_line|#define DQUOT_SYNC(sb)&t;&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_OFF
 mdefine_line|#define DQUOT_OFF(sb)&t;&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_TRANSFER

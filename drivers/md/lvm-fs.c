@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * kernel/lvm-fs.c&n; *&n; * Copyright (C) 2001 Sistina Software&n; *&n; * January,February 2001&n; *&n; * LVM driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * LVM driver is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; */
-multiline_comment|/*&n; * Changelog&n; *&n; *    11/01/2001 - First version (Joe Thornber)&n; *    21/03/2001 - added display of stripes and stripe size (HM)&n; *    04/10/2001 - corrected devfs_register() call in lvm_init_fs()&n; *    11/04/2001 - don&squot;t devfs_register(&quot;lvm&quot;) as user-space always does it&n; *    10/05/2001 - show more of PV name in /proc/lvm/global&n; *&n; */
+multiline_comment|/*&n; * Changelog&n; *&n; *    11/01/2001 - First version (Joe Thornber)&n; *    21/03/2001 - added display of stripes and stripe size (HM)&n; *    04/10/2001 - corrected devfs_register() call in lvm_init_fs()&n; *    11/04/2001 - don&squot;t devfs_register(&quot;lvm&quot;) as user-space always does it&n; *    10/05/2001 - show more of PV name in /proc/lvm/global&n; *    16/12/2001 - fix devfs unregister order and prevent duplicate unreg (REG)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -192,12 +192,11 @@ op_star
 id|e
 )paren
 suffix:semicolon
-macro_line|#if 0
+DECL|variable|lvm_devfs_handle
 r_static
 id|devfs_handle_t
 id|lvm_devfs_handle
 suffix:semicolon
-macro_line|#endif
 DECL|variable|vg_devfs_handle
 r_static
 id|devfs_handle_t
@@ -255,8 +254,7 @@ id|proc_dir_entry
 op_star
 id|pde
 suffix:semicolon
-multiline_comment|/* User-space has already registered this */
-macro_line|#if 0
+multiline_comment|/*  Must create device node. Think about &quot;devfs=only&quot; situation  */
 id|lvm_devfs_handle
 op_assign
 id|devfs_register
@@ -286,7 +284,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|lvm_proc_dir
 op_assign
 id|create_proc_entry
@@ -350,13 +347,11 @@ c_func
 (paren
 )paren
 (brace
-macro_line|#if 0
 id|devfs_unregister
 (paren
 id|lvm_devfs_handle
 )paren
 suffix:semicolon
-macro_line|#endif
 id|remove_proc_entry
 c_func
 (paren
@@ -534,14 +529,12 @@ id|vg_ptr-&gt;vg_number
 )braket
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|vg_devfs_handle
+id|ch_devfs_handle
 (braket
 id|vg_ptr-&gt;vg_number
 )braket
-)paren
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* remove lv&squot;s */
 r_for
@@ -615,6 +608,23 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* must not remove directory before leaf nodes */
+id|devfs_unregister
+c_func
+(paren
+id|vg_devfs_handle
+(braket
+id|vg_ptr-&gt;vg_number
+)braket
+)paren
+suffix:semicolon
+id|vg_devfs_handle
+(braket
+id|vg_ptr-&gt;vg_number
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -849,6 +859,17 @@ id|lv-&gt;lv_dev
 )paren
 )braket
 )paren
+suffix:semicolon
+id|lv_devfs_handle
+(braket
+id|MINOR
+c_func
+(paren
+id|lv-&gt;lv_dev
+)paren
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

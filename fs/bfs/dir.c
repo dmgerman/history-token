@@ -98,11 +98,6 @@ id|bfs_dirent
 op_star
 id|de
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|dir-&gt;i_dev
-suffix:semicolon
 r_int
 r_int
 id|offset
@@ -136,7 +131,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|dir-&gt;i_dev
 )paren
 comma
 id|dir-&gt;i_ino
@@ -1271,9 +1266,6 @@ id|eblock
 comma
 id|off
 suffix:semicolon
-id|kdev_t
-id|dev
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1307,10 +1299,6 @@ id|BFS_NAMELEN
 r_return
 op_minus
 id|ENAMETOOLONG
-suffix:semicolon
-id|dev
-op_assign
-id|dir-&gt;i_dev
 suffix:semicolon
 id|sblock
 op_assign

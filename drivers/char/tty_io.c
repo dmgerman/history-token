@@ -5366,7 +5366,7 @@ id|pts_driver
 id|major
 )braket
 comma
-id|DEVFS_FL_NO_PERSISTENCE
+id|DEVFS_FL_DEFAULT
 comma
 id|pts_driver
 (braket

@@ -572,10 +572,10 @@ r_int
 id|scsi_partsize
 c_func
 (paren
-r_struct
-id|buffer_head
+r_int
+r_char
 op_star
-id|bh
+id|buf
 comma
 r_int
 r_int

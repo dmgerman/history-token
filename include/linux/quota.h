@@ -234,11 +234,6 @@ r_int
 id|dq_id
 suffix:semicolon
 multiline_comment|/* ID this applies to (uid, gid) */
-DECL|member|dq_dev
-id|kdev_t
-id|dq_dev
-suffix:semicolon
-multiline_comment|/* Device this applies to */
 DECL|member|dq_type
 r_int
 id|dq_type

@@ -726,7 +726,7 @@ suffix:semicolon
 id|fat_cache_inval_dev
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 suffix:semicolon
 id|set_blocksize

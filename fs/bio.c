@@ -1559,6 +1559,11 @@ op_amp
 id|bio-&gt;bi_flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_end_io
+)paren
 r_return
 id|bio
 op_member_access_from_pointer
@@ -1569,6 +1574,9 @@ id|bio
 comma
 id|nr_sectors
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|biovec_init_pool

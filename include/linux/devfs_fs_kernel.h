@@ -27,10 +27,8 @@ DECL|macro|DEVFS_FL_REMOVABLE
 mdefine_line|#define DEVFS_FL_REMOVABLE      0x010 /* This is a removable media device    */
 DECL|macro|DEVFS_FL_WAIT
 mdefine_line|#define DEVFS_FL_WAIT           0x020 /* Wait for devfsd to finish           */
-DECL|macro|DEVFS_FL_NO_PERSISTENCE
-mdefine_line|#define DEVFS_FL_NO_PERSISTENCE 0x040 /* Forget changes after unregister     */
 DECL|macro|DEVFS_FL_CURRENT_OWNER
-mdefine_line|#define DEVFS_FL_CURRENT_OWNER  0x080 /* Set initial ownership to current    */
+mdefine_line|#define DEVFS_FL_CURRENT_OWNER  0x040 /* Set initial ownership to current    */
 DECL|macro|DEVFS_FL_DEFAULT
 mdefine_line|#define DEVFS_FL_DEFAULT        DEVFS_FL_NONE
 DECL|macro|DEVFS_SPECIAL_CHR
@@ -84,6 +82,14 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {SPIN_LOCK_UNLOCKED, 0, 0, 0, NULL}
+r_extern
+r_void
+id|devfs_put
+(paren
+id|devfs_handle_t
+id|de
+)paren
+suffix:semicolon
 r_extern
 id|devfs_handle_t
 id|devfs_register
@@ -173,6 +179,33 @@ comma
 r_void
 op_star
 id|info
+)paren
+suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|devfs_get_handle
+(paren
+id|devfs_handle_t
+id|dir
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+r_int
+id|major
+comma
+r_int
+r_int
+id|minor
+comma
+r_char
+id|type
+comma
+r_int
+id|traverse_symlinks
 )paren
 suffix:semicolon
 r_extern
@@ -274,6 +307,14 @@ r_extern
 r_void
 op_star
 id|devfs_get_ops
+(paren
+id|devfs_handle_t
+id|de
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|devfs_put_ops
 (paren
 id|devfs_handle_t
 id|de
@@ -565,6 +606,19 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {0}
+DECL|function|devfs_put
+r_static
+r_inline
+r_void
+id|devfs_put
+(paren
+id|devfs_handle_t
+id|de
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 DECL|function|devfs_register
 r_static
 r_inline
@@ -673,6 +727,39 @@ comma
 r_void
 op_star
 id|info
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|devfs_get_handle
+r_static
+r_inline
+id|devfs_handle_t
+id|devfs_get_handle
+(paren
+id|devfs_handle_t
+id|dir
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+r_int
+id|major
+comma
+r_int
+r_int
+id|minor
+comma
+r_char
+id|type
+comma
+r_int
+id|traverse_symlinks
 )paren
 (brace
 r_return
@@ -824,6 +911,19 @@ id|de
 (brace
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|devfs_put_ops
+r_static
+r_inline
+r_void
+id|devfs_put_ops
+(paren
+id|devfs_handle_t
+id|de
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|devfs_set_file_size

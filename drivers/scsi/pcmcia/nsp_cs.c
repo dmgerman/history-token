@@ -5848,11 +5848,9 @@ r_goto
 id|cs_failed
 suffix:semicolon
 )brace
-id|scsi_register_module
+id|scsi_register_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
 id|driver_template
 )paren
@@ -6300,11 +6298,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Unlink the device chain */
-id|scsi_unregister_module
+id|scsi_unregister_host
 c_func
 (paren
-id|MODULE_SCSI_HA
-comma
 op_amp
 id|driver_template
 )paren

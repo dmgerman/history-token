@@ -2911,18 +2911,33 @@ id|devfs_handle_t
 id|de
 )paren
 (brace
-r_return
+r_struct
+id|file_operations
+op_star
+id|fops
+op_assign
 id|devfs_get_ops
 c_func
 (paren
 id|de
 )paren
 suffix:semicolon
+id|devfs_put_ops
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/*  FIXME: this may need to be moved to callers  */
+r_return
+id|fops
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * hwgraph_bdevsw_get - returns the fops of the given devfs entry.&n;*/
 r_struct
 id|file_operations
 op_star
+multiline_comment|/*  FIXME: shouldn&squot;t this be a blkdev?  */
 DECL|function|hwgraph_bdevsw_get
 id|hwgraph_bdevsw_get
 c_func
@@ -2931,12 +2946,26 @@ id|devfs_handle_t
 id|de
 )paren
 (brace
-r_return
+r_struct
+id|file_operations
+op_star
+id|fops
+op_assign
 id|devfs_get_ops
 c_func
 (paren
 id|de
 )paren
+suffix:semicolon
+id|devfs_put_ops
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/*  FIXME: this may need to be moved to callers  */
+r_return
+id|fops
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Inventory is now associated with a vertex in the graph.  For items that&n;** belong in the inventory but have no vertex &n;** (e.g. old non-graph-aware drivers), we create a bogus vertex under the &n;** INFO_LBL_INVENT name.&n;**&n;** For historical reasons, we prevent exact duplicate entries from being added&n;** to a single vertex.&n;*/

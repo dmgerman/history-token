@@ -1,4 +1,4 @@
-multiline_comment|/*  devfs (Device FileSystem) driver.&n;&n;    Copyright (C) 1998-2001  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19980110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Original version.&n;  v0.1&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created per-fs inode table rather than using inode-&gt;u.generic_ip&n;  v0.2&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created .epoch inode which has a ctime of 0.&n;&t;       Fixed loss of named pipes when dentries lost.&n;&t;       Fixed loss of inode data when devfs_register() follows mknod().&n;  v0.3&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fix for when compiling with CONFIG_KERNELD.&n;    19980112   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fix for readdir() which sometimes didn&squot;t show entries.&n;&t;       Added &lt;&lt;tolerant&gt;&gt; option to &lt;devfs_register&gt;.&n;  v0.4&n;    19980113   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_fill_file&gt; function.&n;  v0.5&n;    19980115   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added subdirectory support. Major restructuring.&n;    19980116   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed &lt;find_by_dev&gt; to not search major=0,minor=0.&n;&t;       Added symlink support.&n;  v0.6&n;    19980120   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_mk_dir&gt; function and support directory unregister&n;    19980120   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Auto-ownership uses real uid/gid rather than effective uid/gid.&n;  v0.7&n;    19980121   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Supported creation of sockets.&n;  v0.8&n;    19980122   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added DEVFS_FL_HIDE_UNREG flag.&n;&t;       Interface change to &lt;devfs_mk_symlink&gt;.&n;               Created &lt;devfs_symlink&gt; to support symlink(2).&n;  v0.9&n;    19980123   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added check to &lt;devfs_fill_file&gt; to check inode is in devfs.&n;&t;       Added optional traversal of symlinks.&n;  v0.10&n;    19980124   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_get_flags&gt; and &lt;devfs_set_flags&gt;.&n;  v0.11&n;    19980125   C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;&n;               Created &lt;devfs_find_handle&gt;.&n;    19980125   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Allow removal of symlinks.&n;  v0.12&n;    19980125   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_set_symlink_destination&gt;.&n;    19980126   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Moved DEVFS_SUPER_MAGIC into header file.&n;&t;       Added DEVFS_FL_HIDE flag.&n;&t;       Created &lt;devfs_get_maj_min&gt;.&n;&t;       Created &lt;devfs_get_handle_from_inode&gt;.&n;&t;       Fixed minor bug in &lt;find_by_dev&gt;.&n;    19980127   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed interface to &lt;find_by_dev&gt;, &lt;find_entry&gt;,&n;&t;       &lt;devfs_unregister&gt;, &lt;devfs_fill_file&gt; and &lt;devfs_find_handle&gt;.&n;&t;       Fixed inode times when symlink created with symlink(2).&n;  v0.13&n;    19980129   C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;&n;               Exported &lt;devfs_set_symlink_destination&gt;, &lt;devfs_get_maj_min&gt;&n;&t;       and &lt;devfs_get_handle_from_inode&gt;.&n;    19980129   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_unlink&gt; to support unlink(2).&n;  v0.14&n;    19980129   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed kerneld support for entries in devfs subdirectories.&n;    19980130   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Bugfixes in &lt;call_kerneld&gt;.&n;  v0.15&n;    19980207   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Call kerneld when looking up unregistered entries.&n;  v0.16&n;    19980326   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Modified interface to &lt;devfs_find_handle&gt; for symlink traversal.&n;  v0.17&n;    19980331   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed persistence bug with device numbers for manually created&n;&t;       device files.&n;&t;       Fixed problem with recreating symlinks with different content.&n;  v0.18&n;    19980401   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed to CONFIG_KMOD.&n;&t;       Hide entries which are manually unlinked.&n;&t;       Always invalidate devfs dentry cache when registering entries.&n;&t;       Created &lt;devfs_rmdir&gt; to support rmdir(2).&n;&t;       Ensure directories created by &lt;devfs_mk_dir&gt; are visible.&n;  v0.19&n;    19980402   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Invalidate devfs dentry cache when making directories.&n;&t;       Invalidate devfs dentry cache when removing entries.&n;&t;       Fixed persistence bug with fifos.&n;  v0.20&n;    19980421   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Print process command when debugging kerneld/kmod.&n;&t;       Added debugging for register/unregister/change operations.&n;    19980422   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;devfs=&quot; boot options.&n;  v0.21&n;    19980426   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer lock/unlock superblock in &lt;devfs_put_super&gt;.&n;&t;       Drop negative dentries when they are released.&n;&t;       Manage dcache more efficiently.&n;  v0.22&n;    19980427   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_AUTO_DEVNUM flag.&n;  v0.23&n;    19980430   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer set unnecessary methods.&n;  v0.24&n;    19980504   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added PID display to &lt;call_kerneld&gt; debugging message.&n;&t;       Added &quot;after&quot; debugging message to &lt;call_kerneld&gt;.&n;    19980519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;diread&quot; and &quot;diwrite&quot; boot options.&n;    19980520   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed persistence problem with permissions.&n;  v0.25&n;    19980602   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support legacy device nodes.&n;&t;       Fixed bug where recreated inodes were hidden.&n;  v0.26&n;    19980602   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;get_vfs_inode&gt;.&n;    19980607   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer free old dentries in &lt;devfs_mk_dir&gt;.&n;&t;       Free all dentries for a given entry when deleting inodes.&n;  v0.27&n;    19980627   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Limit auto-device numbering to majors 128 to 239.&n;  v0.28&n;    19980629   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed inode times persistence problem.&n;  v0.29&n;    19980704   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed spelling in &lt;devfs_readlink&gt; debug.&n;&t;       Fixed bug in &lt;devfs_setup&gt; parsing &quot;dilookup&quot;.&n;  v0.30&n;    19980705   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed devfs inode leak when manually recreating inodes.&n;&t;       Fixed permission persistence problem when recreating inodes.&n;  v0.31&n;    19980727   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed harmless &quot;unused variable&quot; compiler warning.&n;&t;       Fixed modes for manually recreated device nodes.&n;  v0.32&n;    19980728   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added NULL devfs inode warning in &lt;devfs_read_inode&gt;.&n;&t;       Force all inode nlink values to 1.&n;  v0.33&n;    19980730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;dimknod&quot; boot option.&n;&t;       Set inode nlink to 0 when freeing dentries.&n;&t;       Fixed modes for manually recreated symlinks.&n;  v0.34&n;    19980802   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in recreated directories and symlinks.&n;  v0.35&n;    19980806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in recreated device nodes.&n;    19980807   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in currently unused &lt;devfs_get_handle_from_inode&gt;.&n;&t;       Defined new &lt;devfs_handle_t&gt; type.&n;&t;       Improved debugging when getting entries.&n;&t;       Fixed bug where directories could be emptied.&n;  v0.36&n;    19980809   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced dummy .epoch inode with .devfsd character device.&n;    19980810   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Implemented devfsd protocol revision 0.&n;  v0.37&n;    19980819   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added soothing message to warning in &lt;devfs_d_iput&gt;.&n;  v0.38&n;    19980829   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Use GCC extensions for structure initialisations.&n;&t;       Implemented async open notification.&n;&t;       Incremented devfsd protocol revision to 1.&n;  v0.39&n;    19980908   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Moved async open notification to end of &lt;devfs_open&gt;.&n;  v0.40&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Prepended &quot;/dev/&quot; to module load request.&n;&t;       Renamed &lt;call_kerneld&gt; to &lt;call_kmod&gt;.&n;  v0.41&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed typo &quot;AYSNC&quot; -&gt; &quot;ASYNC&quot;.&n;  v0.42&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added open flag for files.&n;  v0.43&n;    19980927   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set i_blocks=0 and i_blksize=1024 in &lt;devfs_read_inode&gt;.&n;  v0.44&n;    19981005   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added test for empty &lt;&lt;name&gt;&gt; in &lt;devfs_find_handle&gt;.&n;&t;       Renamed &lt;generate_path&gt; to &lt;devfs_generate_path&gt; and published.&n;  v0.45&n;    19981006   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_fops&gt;.&n;  v0.46&n;    19981007   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Limit auto-device numbering to majors 144 to 239.&n;  v0.47&n;    19981010   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_follow_link&gt; for VFS change in 2.1.125.&n;  v0.48&n;    19981022   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created DEVFS_ FL_COMPAT flag.&n;  v0.49&n;    19981023   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;nocompat&quot; boot option.&n;  v0.50&n;    19981025   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced &quot;mount&quot; boot option with &quot;nomount&quot;.&n;  v0.51&n;    19981110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;only&quot; boot option.&n;  v0.52&n;    19981112   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_REMOVABLE flag.&n;  v0.53&n;    19981114   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Only call &lt;scan_dir_for_removable&gt; on first call to&n;&t;       &lt;devfs_readdir&gt;.&n;  v0.54&n;    19981205   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_rmdir&gt; for VFS change in 2.1.131.&n;  v0.55&n;    19981218   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_mk_compat&gt;.&n;    19981220   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Check for partitions on removable media in &lt;devfs_lookup&gt;.&n;  v0.56&n;    19990118   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added support for registering regular files.&n;&t;       Created &lt;devfs_set_file_size&gt;.&n;&t;       Update devfs inodes from entries if not changed through FS.&n;  v0.57&n;    19990124   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed &lt;devfs_fill_file&gt; to only initialise temporary inodes.&n;&t;       Trap for NULL fops in &lt;devfs_register&gt;.&n;&t;       Return -ENODEV in &lt;devfs_fill_file&gt; for non-driver inodes.&n;  v0.58&n;    19990126   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched from PATH_MAX to DEVFS_PATHLEN.&n;  v0.59&n;    19990127   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;nottycompat&quot; boot option.&n;  v0.60&n;    19990318   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed &lt;devfsd_read&gt; to not overrun event buffer.&n;  v0.61&n;    19990329   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_auto_unregister&gt;.&n;  v0.62&n;    19990330   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t return unregistred entries in &lt;devfs_find_handle&gt;.&n;&t;       Panic in &lt;devfs_unregister&gt; if entry unregistered.&n;    19990401   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t panic in &lt;devfs_auto_unregister&gt; for duplicates.&n;  v0.63&n;    19990402   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t unregister already unregistered entries in &lt;unregister&gt;.&n;  v0.64&n;    19990510   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Disable warning messages when unable to read partition table for&n;&t;       removable media.&n;  v0.65&n;    19990512   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_lookup&gt; for VFS change in 2.3.1-pre1.&n;&t;       Created &quot;oops-on-panic&quot; boot option.&n;&t;       Improved debugging in &lt;devfs_register&gt; and &lt;devfs_unregister&gt;.&n;  v0.66&n;    19990519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added documentation for some functions.&n;    19990525   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed &quot;oops-on-panic&quot; boot option: now always Oops.&n;  v0.67&n;    19990531   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;devfs_register&gt;.&n;  v0.68&n;    19990604   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;diunlink&quot; and &quot;nokmod&quot; boot options.&n;&t;       Removed superfluous warning message in &lt;devfs_d_iput&gt;.&n;  v0.69&n;    19990611   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Took account of change to &lt;d_alloc_root&gt;.&n;  v0.70&n;    19990614   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created separate event queue for each mounted devfs.&n;&t;       Removed &lt;devfs_invalidate_dcache&gt;.&n;&t;       Created new ioctl()s.&n;&t;       Incremented devfsd protocol revision to 3.&n;&t;       Fixed bug when re-creating directories: contents were lost.&n;&t;       Block access to inodes until devfsd updates permissions.&n;    19990615   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support 2.2.x kernels.&n;  v0.71&n;    19990623   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched to sending process uid/gid to devfsd.&n;&t;       Renamed &lt;call_kmod&gt; to &lt;try_modload&gt;.&n;&t;       Added DEVFSD_NOTIFY_LOOKUP event.&n;    19990624   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFSD_NOTIFY_CHANGE event.&n;&t;       Incremented devfsd protocol revision to 4.&n;  v0.72&n;    19990713   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Return EISDIR rather than EINVAL for read(2) on directories.&n;  v0.73&n;    19990809   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed &lt;devfs_setup&gt; to new __init scheme.&n;  v0.74&n;    19990901   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed remaining function declarations to new __init scheme.&n;  v0.75&n;    19991013   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_info&gt;, &lt;devfs_set_info&gt;,&n;&t;       &lt;devfs_get_first_child&gt; and &lt;devfs_get_next_sibling&gt;.&n;&t;       Added &lt;&lt;dir&gt;&gt; parameter to &lt;devfs_register&gt;, &lt;devfs_mk_compat&gt;,&n;&t;       &lt;devfs_mk_dir&gt; and &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.76&n;    19991017   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Allow multiple unregistrations.&n;&t;       Work sponsored by SGI.&n;  v0.77&n;    19991026   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added major and minor number to devfsd protocol.&n;&t;       Incremented devfsd protocol revision to 5.&n;&t;       Work sponsored by SGI.&n;  v0.78&n;    19991030   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support info pointer for all devfs entry types.&n;&t;       Added &lt;&lt;info&gt;&gt; parameter to &lt;devfs_mk_dir&gt; and&n;&t;       &lt;devfs_mk_symlink&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.79&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support &quot;../&quot; when searching devfs namespace.&n;&t;       Work sponsored by SGI.&n;  v0.80&n;    19991101   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_unregister_slave&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.81&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Exported &lt;devfs_get_parent&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.82&n;    19991104   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Removed unused &lt;devfs_set_symlink_destination&gt;.&n;    19991105   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Do not hide entries from devfsd or children.&n;&t;       Removed DEVFS_ FL_TTY_COMPAT flag.&n;&t;       Removed &quot;nottycompat&quot; boot option.&n;&t;       Removed &lt;devfs_mk_compat&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.83&n;    19991107   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_WAIT flag.&n;&t;       Work sponsored by SGI.&n;  v0.84&n;    19991107   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support new &quot;disc&quot; naming scheme in &lt;get_removable_partition&gt;.&n;&t;       Allow NULL fops in &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.85&n;    19991110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fall back to major table if NULL fops given to &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.86&n;    19991204   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support fifos when unregistering.&n;&t;       Work sponsored by SGI.&n;  v0.87&n;    19991209   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed obsolete DEVFS_ FL_COMPAT and DEVFS_ FL_TOLERANT flags.&n;&t;       Work sponsored by SGI.&n;  v0.88&n;    19991214   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed kmod support.&n;&t;       Work sponsored by SGI.&n;  v0.89&n;    19991216   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;get_vfs_inode&gt;.&n;&t;       Ensure dentries created by devfsd will be cleaned up.&n;&t;       Work sponsored by SGI.&n;  v0.90&n;    19991223   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_name&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.91&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Ported to kernel 2.3.42.&n;&t;       Removed &lt;devfs_fill_file&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.92&n;    20000306   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_NO_PERSISTENCE flag.&n;&t;       Removed unnecessary call to &lt;update_devfs_inode_from_entry&gt; in&n;&t;       &lt;devfs_readdir&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.93&n;    20000413   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set inode-&gt;i_size to correct size for symlinks.&n;    20000414   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Only give lookup() method to directories to comply with new VFS&n;&t;       assumptions.&n;&t;       Work sponsored by SGI.&n;    20000415   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Remove unnecessary tests in symlink methods.&n;&t;       Don&squot;t kill existing block ops in &lt;devfs_read_inode&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.94&n;    20000424   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t create missing directories in &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.95&n;    20000430   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added CONFIG_DEVFS_MOUNT.&n;&t;       Work sponsored by SGI.&n;  v0.96&n;    20000608   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Disabled multi-mount capability (use VFS bindings instead).&n;&t;       Work sponsored by SGI.&n;  v0.97&n;    20000610   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched to FS_SINGLE to disable multi-mounts.&n;    20000612   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed module support.&n;&t;       Removed multi-mount code.&n;&t;       Removed compatibility macros: VFS has changed too much.&n;&t;       Work sponsored by SGI.&n;  v0.98&n;    20000614   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Merged devfs inode into devfs entry.&n;&t;       Work sponsored by SGI.&n;  v0.99&n;    20000619   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed dead code in &lt;devfs_register&gt; which used to call&n;&t;       &lt;free_dentries&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.100&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed interface to &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.101&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Simplified interface to &lt;devfs_mk_symlink&gt; and &lt;devfs_mk_dir&gt;.&n;&t;       Simplified interface to &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.102&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Ensure &lt;devfs_generate_path&gt; terminates string for root entry.&n;&t;       Exported &lt;devfs_get_name&gt; to modules.&n;    20010520   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Make &lt;devfs_mk_symlink&gt; send events to devfsd.&n;&t;       Cleaned up option processing in &lt;devfs_setup&gt;.&n;    20010521   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in handling symlinks: could leak or cause Oops.&n;    20010522   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Cleaned up directory handling by separating fops.&n;  v0.103&n;    20010601   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed handling of inverted options in &lt;devfs_setup&gt;.&n;  v0.104&n;    20010604   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Adjusted &lt;try_modload&gt; to account for &lt;devfs_generate_path&gt; fix.&n;  v0.105&n;    20010617   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Answered question posed by Al Viro and removed his comments.&n;&t;       Moved setting of registered flag after other fields are changed.&n;&t;       Fixed race between &lt;devfsd_close&gt; and &lt;devfsd_notify_one&gt;.&n;&t;       Global VFS changes added bogus BKL to &lt;devfsd_close&gt;: removed.&n;&t;       Widened locking in &lt;devfs_readlink&gt; and &lt;devfs_follow_link&gt;.&n;&t;       Replaced &lt;devfsd_read&gt; stack usage with &lt;devfsd_ioctl&gt; kmalloc.&n;&t;       Simplified locking in &lt;devfsd_ioctl&gt; and fixed memory leak.&n;  v0.106&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed broken devnum allocation and use &lt;devfs_alloc_devnum&gt;.&n;&t;       Fixed old devnum leak by calling new &lt;devfs_dealloc_devnum&gt;.&n;  v0.107&n;    20010712   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in &lt;devfs_setup&gt; which could hang boot process.&n;  v0.108&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFSD_NOTIFY_DELETE event.&n;    20010801   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed #include &lt;asm/segment.h&gt;.&n;  v0.109&n;    20010807   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed inode table races by removing it and using&n;&t;       inode-&gt;u.generic_ip instead.&n;&t;       Moved &lt;devfs_read_inode&gt; into &lt;get_vfs_inode&gt;.&n;&t;       Moved &lt;devfs_write_inode&gt; into &lt;devfs_notify_change&gt;.&n;  v0.110&n;    20010808   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed race in &lt;devfs_do_symlink&gt; for uni-processor.&n;  v0.111&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed remnant of multi-mount support in &lt;devfs_mknod&gt;.&n;               Removed unused DEVFS_FL_SHOW_UNREG flag.&n;  v0.112&n;    20010820   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed nlink field from struct devfs_inode.&n;  v0.113&n;    20010823   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced BKL with global rwsem to protect symlink data (quick&n;&t;       and dirty hack).&n;  v0.114&n;    20010827   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced global rwsem for symlink with per-link refcount.&n;  v0.115&n;    20010919   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set inode-&gt;i_mapping-&gt;a_ops for block nodes in &lt;get_vfs_inode&gt;.&n;  v0.116&n;    20011008   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed overrun in &lt;devfs_link&gt; by removing function (not needed).&n;    20011009   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed buffer underrun in &lt;try_modload&gt;.&n;    20011029   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed race in &lt;devfsd_ioctl&gt; when setting event mask.&n;    20011114   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       First release of new locking code.&n;  v1.0&n;    20011117   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Discard temporary buffer, now use &quot;%s&quot; for dentry names.&n;    20011118   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t generate path in &lt;try_modload&gt;: use fake entry instead.&n;&t;       Use &quot;existing&quot; directory in &lt;_devfs_make_parent_for_leaf&gt;.&n;    20011122   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Use slab cache rather than fixed buffer for devfsd events.&n;  v1.1&n;*/
+multiline_comment|/*  devfs (Device FileSystem) driver.&n;&n;    Copyright (C) 1998-2001  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19980110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Original version.&n;  v0.1&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created per-fs inode table rather than using inode-&gt;u.generic_ip&n;  v0.2&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created .epoch inode which has a ctime of 0.&n;&t;       Fixed loss of named pipes when dentries lost.&n;&t;       Fixed loss of inode data when devfs_register() follows mknod().&n;  v0.3&n;    19980111   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fix for when compiling with CONFIG_KERNELD.&n;    19980112   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fix for readdir() which sometimes didn&squot;t show entries.&n;&t;       Added &lt;&lt;tolerant&gt;&gt; option to &lt;devfs_register&gt;.&n;  v0.4&n;    19980113   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_fill_file&gt; function.&n;  v0.5&n;    19980115   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added subdirectory support. Major restructuring.&n;    19980116   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed &lt;find_by_dev&gt; to not search major=0,minor=0.&n;&t;       Added symlink support.&n;  v0.6&n;    19980120   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_mk_dir&gt; function and support directory unregister&n;    19980120   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Auto-ownership uses real uid/gid rather than effective uid/gid.&n;  v0.7&n;    19980121   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Supported creation of sockets.&n;  v0.8&n;    19980122   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added DEVFS_FL_HIDE_UNREG flag.&n;&t;       Interface change to &lt;devfs_mk_symlink&gt;.&n;               Created &lt;devfs_symlink&gt; to support symlink(2).&n;  v0.9&n;    19980123   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Added check to &lt;devfs_fill_file&gt; to check inode is in devfs.&n;&t;       Added optional traversal of symlinks.&n;  v0.10&n;    19980124   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_get_flags&gt; and &lt;devfs_set_flags&gt;.&n;  v0.11&n;    19980125   C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;&n;               Created &lt;devfs_find_handle&gt;.&n;    19980125   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Allow removal of symlinks.&n;  v0.12&n;    19980125   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_set_symlink_destination&gt;.&n;    19980126   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Moved DEVFS_SUPER_MAGIC into header file.&n;&t;       Added DEVFS_FL_HIDE flag.&n;&t;       Created &lt;devfs_get_maj_min&gt;.&n;&t;       Created &lt;devfs_get_handle_from_inode&gt;.&n;&t;       Fixed minor bug in &lt;find_by_dev&gt;.&n;    19980127   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed interface to &lt;find_by_dev&gt;, &lt;find_entry&gt;,&n;&t;       &lt;devfs_unregister&gt;, &lt;devfs_fill_file&gt; and &lt;devfs_find_handle&gt;.&n;&t;       Fixed inode times when symlink created with symlink(2).&n;  v0.13&n;    19980129   C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;&n;               Exported &lt;devfs_set_symlink_destination&gt;, &lt;devfs_get_maj_min&gt;&n;&t;       and &lt;devfs_get_handle_from_inode&gt;.&n;    19980129   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_unlink&gt; to support unlink(2).&n;  v0.14&n;    19980129   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed kerneld support for entries in devfs subdirectories.&n;    19980130   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Bugfixes in &lt;call_kerneld&gt;.&n;  v0.15&n;    19980207   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Call kerneld when looking up unregistered entries.&n;  v0.16&n;    19980326   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Modified interface to &lt;devfs_find_handle&gt; for symlink traversal.&n;  v0.17&n;    19980331   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed persistence bug with device numbers for manually created&n;&t;       device files.&n;&t;       Fixed problem with recreating symlinks with different content.&n;  v0.18&n;    19980401   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed to CONFIG_KMOD.&n;&t;       Hide entries which are manually unlinked.&n;&t;       Always invalidate devfs dentry cache when registering entries.&n;&t;       Created &lt;devfs_rmdir&gt; to support rmdir(2).&n;&t;       Ensure directories created by &lt;devfs_mk_dir&gt; are visible.&n;  v0.19&n;    19980402   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Invalidate devfs dentry cache when making directories.&n;&t;       Invalidate devfs dentry cache when removing entries.&n;&t;       Fixed persistence bug with fifos.&n;  v0.20&n;    19980421   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Print process command when debugging kerneld/kmod.&n;&t;       Added debugging for register/unregister/change operations.&n;    19980422   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;devfs=&quot; boot options.&n;  v0.21&n;    19980426   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer lock/unlock superblock in &lt;devfs_put_super&gt;.&n;&t;       Drop negative dentries when they are released.&n;&t;       Manage dcache more efficiently.&n;  v0.22&n;    19980427   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_AUTO_DEVNUM flag.&n;  v0.23&n;    19980430   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer set unnecessary methods.&n;  v0.24&n;    19980504   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added PID display to &lt;call_kerneld&gt; debugging message.&n;&t;       Added &quot;after&quot; debugging message to &lt;call_kerneld&gt;.&n;    19980519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;diread&quot; and &quot;diwrite&quot; boot options.&n;    19980520   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed persistence problem with permissions.&n;  v0.25&n;    19980602   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support legacy device nodes.&n;&t;       Fixed bug where recreated inodes were hidden.&n;  v0.26&n;    19980602   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;get_vfs_inode&gt;.&n;    19980607   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       No longer free old dentries in &lt;devfs_mk_dir&gt;.&n;&t;       Free all dentries for a given entry when deleting inodes.&n;  v0.27&n;    19980627   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Limit auto-device numbering to majors 128 to 239.&n;  v0.28&n;    19980629   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed inode times persistence problem.&n;  v0.29&n;    19980704   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed spelling in &lt;devfs_readlink&gt; debug.&n;&t;       Fixed bug in &lt;devfs_setup&gt; parsing &quot;dilookup&quot;.&n;  v0.30&n;    19980705   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed devfs inode leak when manually recreating inodes.&n;&t;       Fixed permission persistence problem when recreating inodes.&n;  v0.31&n;    19980727   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed harmless &quot;unused variable&quot; compiler warning.&n;&t;       Fixed modes for manually recreated device nodes.&n;  v0.32&n;    19980728   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added NULL devfs inode warning in &lt;devfs_read_inode&gt;.&n;&t;       Force all inode nlink values to 1.&n;  v0.33&n;    19980730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;dimknod&quot; boot option.&n;&t;       Set inode nlink to 0 when freeing dentries.&n;&t;       Fixed modes for manually recreated symlinks.&n;  v0.34&n;    19980802   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in recreated directories and symlinks.&n;  v0.35&n;    19980806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in recreated device nodes.&n;    19980807   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in currently unused &lt;devfs_get_handle_from_inode&gt;.&n;&t;       Defined new &lt;devfs_handle_t&gt; type.&n;&t;       Improved debugging when getting entries.&n;&t;       Fixed bug where directories could be emptied.&n;  v0.36&n;    19980809   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced dummy .epoch inode with .devfsd character device.&n;    19980810   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Implemented devfsd protocol revision 0.&n;  v0.37&n;    19980819   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added soothing message to warning in &lt;devfs_d_iput&gt;.&n;  v0.38&n;    19980829   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Use GCC extensions for structure initialisations.&n;&t;       Implemented async open notification.&n;&t;       Incremented devfsd protocol revision to 1.&n;  v0.39&n;    19980908   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Moved async open notification to end of &lt;devfs_open&gt;.&n;  v0.40&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Prepended &quot;/dev/&quot; to module load request.&n;&t;       Renamed &lt;call_kerneld&gt; to &lt;call_kmod&gt;.&n;  v0.41&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed typo &quot;AYSNC&quot; -&gt; &quot;ASYNC&quot;.&n;  v0.42&n;    19980910   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added open flag for files.&n;  v0.43&n;    19980927   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set i_blocks=0 and i_blksize=1024 in &lt;devfs_read_inode&gt;.&n;  v0.44&n;    19981005   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added test for empty &lt;&lt;name&gt;&gt; in &lt;devfs_find_handle&gt;.&n;&t;       Renamed &lt;generate_path&gt; to &lt;devfs_generate_path&gt; and published.&n;  v0.45&n;    19981006   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_fops&gt;.&n;  v0.46&n;    19981007   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Limit auto-device numbering to majors 144 to 239.&n;  v0.47&n;    19981010   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_follow_link&gt; for VFS change in 2.1.125.&n;  v0.48&n;    19981022   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created DEVFS_ FL_COMPAT flag.&n;  v0.49&n;    19981023   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;nocompat&quot; boot option.&n;  v0.50&n;    19981025   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced &quot;mount&quot; boot option with &quot;nomount&quot;.&n;  v0.51&n;    19981110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;only&quot; boot option.&n;  v0.52&n;    19981112   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_REMOVABLE flag.&n;  v0.53&n;    19981114   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Only call &lt;scan_dir_for_removable&gt; on first call to&n;&t;       &lt;devfs_readdir&gt;.&n;  v0.54&n;    19981205   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_rmdir&gt; for VFS change in 2.1.131.&n;  v0.55&n;    19981218   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_mk_compat&gt;.&n;    19981220   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Check for partitions on removable media in &lt;devfs_lookup&gt;.&n;  v0.56&n;    19990118   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added support for registering regular files.&n;&t;       Created &lt;devfs_set_file_size&gt;.&n;&t;       Update devfs inodes from entries if not changed through FS.&n;  v0.57&n;    19990124   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed &lt;devfs_fill_file&gt; to only initialise temporary inodes.&n;&t;       Trap for NULL fops in &lt;devfs_register&gt;.&n;&t;       Return -ENODEV in &lt;devfs_fill_file&gt; for non-driver inodes.&n;  v0.58&n;    19990126   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched from PATH_MAX to DEVFS_PATHLEN.&n;  v0.59&n;    19990127   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &quot;nottycompat&quot; boot option.&n;  v0.60&n;    19990318   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed &lt;devfsd_read&gt; to not overrun event buffer.&n;  v0.61&n;    19990329   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_auto_unregister&gt;.&n;  v0.62&n;    19990330   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t return unregistred entries in &lt;devfs_find_handle&gt;.&n;&t;       Panic in &lt;devfs_unregister&gt; if entry unregistered.&n;    19990401   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t panic in &lt;devfs_auto_unregister&gt; for duplicates.&n;  v0.63&n;    19990402   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t unregister already unregistered entries in &lt;unregister&gt;.&n;  v0.64&n;    19990510   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Disable warning messages when unable to read partition table for&n;&t;       removable media.&n;  v0.65&n;    19990512   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Updated &lt;devfs_lookup&gt; for VFS change in 2.3.1-pre1.&n;&t;       Created &quot;oops-on-panic&quot; boot option.&n;&t;       Improved debugging in &lt;devfs_register&gt; and &lt;devfs_unregister&gt;.&n;  v0.66&n;    19990519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added documentation for some functions.&n;    19990525   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed &quot;oops-on-panic&quot; boot option: now always Oops.&n;  v0.67&n;    19990531   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;devfs_register&gt;.&n;  v0.68&n;    19990604   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added &quot;diunlink&quot; and &quot;nokmod&quot; boot options.&n;&t;       Removed superfluous warning message in &lt;devfs_d_iput&gt;.&n;  v0.69&n;    19990611   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Took account of change to &lt;d_alloc_root&gt;.&n;  v0.70&n;    19990614   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created separate event queue for each mounted devfs.&n;&t;       Removed &lt;devfs_invalidate_dcache&gt;.&n;&t;       Created new ioctl()s.&n;&t;       Incremented devfsd protocol revision to 3.&n;&t;       Fixed bug when re-creating directories: contents were lost.&n;&t;       Block access to inodes until devfsd updates permissions.&n;    19990615   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support 2.2.x kernels.&n;  v0.71&n;    19990623   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched to sending process uid/gid to devfsd.&n;&t;       Renamed &lt;call_kmod&gt; to &lt;try_modload&gt;.&n;&t;       Added DEVFSD_NOTIFY_LOOKUP event.&n;    19990624   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFSD_NOTIFY_CHANGE event.&n;&t;       Incremented devfsd protocol revision to 4.&n;  v0.72&n;    19990713   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Return EISDIR rather than EINVAL for read(2) on directories.&n;  v0.73&n;    19990809   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed &lt;devfs_setup&gt; to new __init scheme.&n;  v0.74&n;    19990901   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed remaining function declarations to new __init scheme.&n;  v0.75&n;    19991013   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_info&gt;, &lt;devfs_set_info&gt;,&n;&t;       &lt;devfs_get_first_child&gt; and &lt;devfs_get_next_sibling&gt;.&n;&t;       Added &lt;&lt;dir&gt;&gt; parameter to &lt;devfs_register&gt;, &lt;devfs_mk_compat&gt;,&n;&t;       &lt;devfs_mk_dir&gt; and &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.76&n;    19991017   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Allow multiple unregistrations.&n;&t;       Work sponsored by SGI.&n;  v0.77&n;    19991026   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added major and minor number to devfsd protocol.&n;&t;       Incremented devfsd protocol revision to 5.&n;&t;       Work sponsored by SGI.&n;  v0.78&n;    19991030   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support info pointer for all devfs entry types.&n;&t;       Added &lt;&lt;info&gt;&gt; parameter to &lt;devfs_mk_dir&gt; and&n;&t;       &lt;devfs_mk_symlink&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.79&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support &quot;../&quot; when searching devfs namespace.&n;&t;       Work sponsored by SGI.&n;  v0.80&n;    19991101   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_unregister_slave&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.81&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Exported &lt;devfs_get_parent&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.82&n;    19991104   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Removed unused &lt;devfs_set_symlink_destination&gt;.&n;    19991105   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Do not hide entries from devfsd or children.&n;&t;       Removed DEVFS_ FL_TTY_COMPAT flag.&n;&t;       Removed &quot;nottycompat&quot; boot option.&n;&t;       Removed &lt;devfs_mk_compat&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.83&n;    19991107   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_FL_WAIT flag.&n;&t;       Work sponsored by SGI.&n;  v0.84&n;    19991107   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support new &quot;disc&quot; naming scheme in &lt;get_removable_partition&gt;.&n;&t;       Allow NULL fops in &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.85&n;    19991110   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fall back to major table if NULL fops given to &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.86&n;    19991204   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Support fifos when unregistering.&n;&t;       Work sponsored by SGI.&n;  v0.87&n;    19991209   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed obsolete DEVFS_ FL_COMPAT and DEVFS_ FL_TOLERANT flags.&n;&t;       Work sponsored by SGI.&n;  v0.88&n;    19991214   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed kmod support.&n;&t;       Work sponsored by SGI.&n;  v0.89&n;    19991216   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Improved debugging in &lt;get_vfs_inode&gt;.&n;&t;       Ensure dentries created by devfsd will be cleaned up.&n;&t;       Work sponsored by SGI.&n;  v0.90&n;    19991223   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_name&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.91&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Ported to kernel 2.3.42.&n;&t;       Removed &lt;devfs_fill_file&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.92&n;    20000306   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFS_ FL_NO_PERSISTENCE flag.&n;&t;       Removed unnecessary call to &lt;update_devfs_inode_from_entry&gt; in&n;&t;       &lt;devfs_readdir&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.93&n;    20000413   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set inode-&gt;i_size to correct size for symlinks.&n;    20000414   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Only give lookup() method to directories to comply with new VFS&n;&t;       assumptions.&n;&t;       Work sponsored by SGI.&n;    20000415   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Remove unnecessary tests in symlink methods.&n;&t;       Don&squot;t kill existing block ops in &lt;devfs_read_inode&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.94&n;    20000424   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t create missing directories in &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.95&n;    20000430   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added CONFIG_DEVFS_MOUNT.&n;&t;       Work sponsored by SGI.&n;  v0.96&n;    20000608   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Disabled multi-mount capability (use VFS bindings instead).&n;&t;       Work sponsored by SGI.&n;  v0.97&n;    20000610   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Switched to FS_SINGLE to disable multi-mounts.&n;    20000612   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed module support.&n;&t;       Removed multi-mount code.&n;&t;       Removed compatibility macros: VFS has changed too much.&n;&t;       Work sponsored by SGI.&n;  v0.98&n;    20000614   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Merged devfs inode into devfs entry.&n;&t;       Work sponsored by SGI.&n;  v0.99&n;    20000619   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed dead code in &lt;devfs_register&gt; which used to call&n;&t;       &lt;free_dentries&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.100&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Changed interface to &lt;devfs_register&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.101&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Simplified interface to &lt;devfs_mk_symlink&gt; and &lt;devfs_mk_dir&gt;.&n;&t;       Simplified interface to &lt;devfs_find_handle&gt;.&n;&t;       Work sponsored by SGI.&n;  v0.102&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Ensure &lt;devfs_generate_path&gt; terminates string for root entry.&n;&t;       Exported &lt;devfs_get_name&gt; to modules.&n;    20010520   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Make &lt;devfs_mk_symlink&gt; send events to devfsd.&n;&t;       Cleaned up option processing in &lt;devfs_setup&gt;.&n;    20010521   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bugs in handling symlinks: could leak or cause Oops.&n;    20010522   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Cleaned up directory handling by separating fops.&n;  v0.103&n;    20010601   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed handling of inverted options in &lt;devfs_setup&gt;.&n;  v0.104&n;    20010604   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Adjusted &lt;try_modload&gt; to account for &lt;devfs_generate_path&gt; fix.&n;  v0.105&n;    20010617   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Answered question posed by Al Viro and removed his comments.&n;&t;       Moved setting of registered flag after other fields are changed.&n;&t;       Fixed race between &lt;devfsd_close&gt; and &lt;devfsd_notify_one&gt;.&n;&t;       Global VFS changes added bogus BKL to &lt;devfsd_close&gt;: removed.&n;&t;       Widened locking in &lt;devfs_readlink&gt; and &lt;devfs_follow_link&gt;.&n;&t;       Replaced &lt;devfsd_read&gt; stack usage with &lt;devfsd_ioctl&gt; kmalloc.&n;&t;       Simplified locking in &lt;devfsd_ioctl&gt; and fixed memory leak.&n;  v0.106&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed broken devnum allocation and use &lt;devfs_alloc_devnum&gt;.&n;&t;       Fixed old devnum leak by calling new &lt;devfs_dealloc_devnum&gt;.&n;  v0.107&n;    20010712   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in &lt;devfs_setup&gt; which could hang boot process.&n;  v0.108&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added DEVFSD_NOTIFY_DELETE event.&n;    20010801   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed #include &lt;asm/segment.h&gt;.&n;  v0.109&n;    20010807   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed inode table races by removing it and using&n;&t;       inode-&gt;u.generic_ip instead.&n;&t;       Moved &lt;devfs_read_inode&gt; into &lt;get_vfs_inode&gt;.&n;&t;       Moved &lt;devfs_write_inode&gt; into &lt;devfs_notify_change&gt;.&n;  v0.110&n;    20010808   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed race in &lt;devfs_do_symlink&gt; for uni-processor.&n;  v0.111&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed remnant of multi-mount support in &lt;devfs_mknod&gt;.&n;               Removed unused DEVFS_FL_SHOW_UNREG flag.&n;  v0.112&n;    20010820   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Removed nlink field from struct devfs_inode.&n;  v0.113&n;    20010823   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced BKL with global rwsem to protect symlink data (quick&n;&t;       and dirty hack).&n;  v0.114&n;    20010827   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Replaced global rwsem for symlink with per-link refcount.&n;  v0.115&n;    20010919   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Set inode-&gt;i_mapping-&gt;a_ops for block nodes in &lt;get_vfs_inode&gt;.&n;  v0.116&n;    20011008   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed overrun in &lt;devfs_link&gt; by removing function (not needed).&n;    20011009   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed buffer underrun in &lt;try_modload&gt;.&n;    20011029   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed race in &lt;devfsd_ioctl&gt; when setting event mask.&n;    20011114   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       First release of new locking code.&n;  v1.0&n;    20011117   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Discard temporary buffer, now use &quot;%s&quot; for dentry names.&n;    20011118   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Don&squot;t generate path in &lt;try_modload&gt;: use fake entry instead.&n;&t;       Use &quot;existing&quot; directory in &lt;_devfs_make_parent_for_leaf&gt;.&n;    20011122   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Use slab cache rather than fixed buffer for devfsd events.&n;  v1.1&n;    20011125   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Send DEVFSD_NOTIFY_REGISTERED events in &lt;devfs_mk_dir&gt;.&n;    20011127   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed locking bug in &lt;devfs_d_revalidate_wait&gt; due to typo.&n;&t;       Do not send CREATE, CHANGE, ASYNC_OPEN or DELETE events from&n;&t;       devfsd or children.&n;  v1.2&n;    20011202   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in &lt;devfsd_read&gt;: was dereferencing freed pointer.&n;  v1.3&n;    20011203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Fixed bug in &lt;devfsd_close&gt;: was dereferencing freed pointer.&n;&t;       Added process group check for devfsd privileges.&n;  v1.4&n;    20011204   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Use SLAB_ATOMIC in &lt;devfsd_notify_de&gt; from &lt;devfs_d_delete&gt;.&n;  v1.5&n;    20011211   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Return old entry in &lt;devfs_mk_dir&gt; for 2.4.x kernels.&n;    20011212   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Increment refcount on module in &lt;check_disc_changed&gt;.&n;    20011215   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Created &lt;devfs_get_handle&gt; and exported &lt;devfs_put&gt;.&n;&t;       Increment refcount on module in &lt;devfs_get_ops&gt;.&n;&t;       Created &lt;devfs_put_ops&gt;.&n;  v1.6&n;    20011216   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added poisoning to &lt;devfs_put&gt;.&n;&t;       Improved debugging messages.&n;  v1.7&n;    20011221   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Corrected (made useful) debugging message in &lt;unregister&gt;.&n;&t;       Moved &lt;kmem_cache_create&gt; in &lt;mount_devfs_fs&gt; to &lt;init_devfs_fs&gt;&n;    20011224   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Added magic number to guard against scribbling drivers.&n;    20011226   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&t;       Only return old entry in &lt;devfs_mk_dir&gt; if a directory.&n;&t;       Defined macros for error and debug messages.&n;  v1.8&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -29,13 +29,19 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVFS_VERSION
-mdefine_line|#define DEVFS_VERSION            &quot;1.1 (20011122)&quot;
+mdefine_line|#define DEVFS_VERSION            &quot;1.8 (20011226)&quot;
 DECL|macro|DEVFS_NAME
 mdefine_line|#define DEVFS_NAME &quot;devfs&quot;
 DECL|macro|FIRST_INODE
 mdefine_line|#define FIRST_INODE 1
 DECL|macro|STRING_LENGTH
 mdefine_line|#define STRING_LENGTH 256
+DECL|macro|FAKE_BLOCK_SIZE
+mdefine_line|#define FAKE_BLOCK_SIZE 1024
+DECL|macro|POISON_PTR
+mdefine_line|#define POISON_PTR ( *(void **) poison_array )
+DECL|macro|MAGIC_VALUE
+mdefine_line|#define MAGIC_VALUE 0x327db823
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|#  define TRUE 1
@@ -94,8 +100,25 @@ DECL|macro|OPTION_MOUNT
 mdefine_line|#define OPTION_MOUNT            0x01
 DECL|macro|OPTION_ONLY
 mdefine_line|#define OPTION_ONLY             0x02
+DECL|macro|PRINTK
+mdefine_line|#define PRINTK(format, args...) &bslash;&n;   {printk (KERN_ERR &quot;%s&quot; format, __FUNCTION__ , ## args);}
 DECL|macro|OOPS
-mdefine_line|#define OOPS(format, args...) {printk (format, ## args); &bslash;&n;                               printk (&quot;Forcing Oops&bslash;n&quot;); &bslash;&n;                               BUG();}
+mdefine_line|#define OOPS(format, args...) &bslash;&n;   {printk (KERN_CRIT &quot;%s&quot; format, __FUNCTION__ , ## args); &bslash;&n;    printk (&quot;Forcing Oops&bslash;n&quot;); &bslash;&n;    BUG();}
+macro_line|#ifdef CONFIG_DEVFS_DEBUG
+DECL|macro|VERIFY_ENTRY
+macro_line|#  define VERIFY_ENTRY(de) &bslash;&n;   {if ((de) &amp;&amp; (de)-&gt;magic_number != MAGIC_VALUE) &bslash;&n;        OOPS (&quot;(%p): bad magic value: %x&bslash;n&quot;, (de), (de)-&gt;magic_number);}
+DECL|macro|WRITE_ENTRY_MAGIC
+macro_line|#  define WRITE_ENTRY_MAGIC(de,magic) (de)-&gt;magic_number = (magic)
+DECL|macro|DPRINTK
+macro_line|#  define DPRINTK(flag, format, args...) &bslash;&n;   {if (devfs_debug &amp; flag) &bslash;&n;&t;printk (KERN_INFO &quot;%s&quot; format, __FUNCTION__ , ## args);}
+macro_line|#else
+DECL|macro|VERIFY_ENTRY
+macro_line|#  define VERIFY_ENTRY(de)
+DECL|macro|WRITE_ENTRY_MAGIC
+macro_line|#  define WRITE_ENTRY_MAGIC(de,magic)
+DECL|macro|DPRINTK
+macro_line|#  define DPRINTK(flag, format, args...)
+macro_line|#endif
 DECL|struct|directory_type
 r_struct
 id|directory_type
@@ -286,6 +309,13 @@ DECL|struct|devfs_entry
 r_struct
 id|devfs_entry
 (brace
+macro_line|#ifdef CONFIG_DEVFS_DEBUG
+DECL|member|magic_number
+r_int
+r_int
+id|magic_number
+suffix:semicolon
+macro_line|#endif
 DECL|member|info
 r_void
 op_star
@@ -477,6 +507,11 @@ id|task_struct
 op_star
 id|devfsd_task
 suffix:semicolon
+DECL|member|devfsd_pgrp
+r_volatile
+id|pid_t
+id|devfsd_pgrp
+suffix:semicolon
 DECL|member|devfsd_file
 r_volatile
 r_struct
@@ -568,6 +603,33 @@ r_int
 id|stat_num_bytes
 suffix:semicolon
 macro_line|#endif
+DECL|variable|poison_array
+r_static
+r_int
+r_char
+id|poison_array
+(braket
+l_int|8
+)braket
+op_assign
+(brace
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+comma
+l_int|0x5a
+)brace
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_MOUNT
 DECL|variable|boot_options
 r_static
@@ -741,6 +803,11 @@ op_star
 id|de
 )paren
 (brace
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -757,15 +824,12 @@ id|de
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_get  */
-multiline_comment|/**&n; *&t;devfs_put - Put (release) a reference to a devfs entry.&n; *&t;@de:  The devfs entry.&n; */
+multiline_comment|/**&n; *&t;devfs_put - Put (release) a reference to a devfs entry.&n; *&t;@de:  The handle to the devfs entry.&n; */
 DECL|function|devfs_put
-r_static
 r_void
 id|devfs_put
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|devfs_handle_t
 id|de
 )paren
 (brace
@@ -776,6 +840,25 @@ op_logical_neg
 id|de
 )paren
 r_return
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de-&gt;info
+op_eq
+id|POISON_PTR
+)paren
+id|OOPS
+(paren
+l_string|&quot;(%p): poisoned pointer&bslash;n&quot;
+comma
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -798,24 +881,16 @@ id|root_entry
 )paren
 id|OOPS
 (paren
-l_string|&quot;%s: devfs_put(): root entry being freed&bslash;n&quot;
+l_string|&quot;(%p): root entry being freed&bslash;n&quot;
 comma
-id|DEVFS_NAME
+id|de
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_FREE
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_put(%s): de: %p, parent: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): de: %p, parent: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|de-&gt;name
 comma
@@ -831,7 +906,6 @@ suffix:colon
 l_string|&quot;no parent&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -884,6 +958,13 @@ id|de-&gt;u.fcb.u.device.minor
 )paren
 suffix:semicolon
 )brace
+id|WRITE_ENTRY_MAGIC
+(paren
+id|de
+comma
+l_int|0
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|spin_lock
 (paren
@@ -923,6 +1004,10 @@ id|stat_lock
 )paren
 suffix:semicolon
 macro_line|#endif
+id|de-&gt;info
+op_assign
+id|POISON_PTR
+suffix:semicolon
 id|kfree
 (paren
 id|de
@@ -968,11 +1053,9 @@ id|dir-&gt;mode
 )paren
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: search_dir(%s): not a directory&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): not a directory&bslash;n&quot;
 comma
 id|dir-&gt;name
 )paren
@@ -1125,6 +1208,7 @@ op_plus
 id|namelen
 )paren
 suffix:semicolon
+multiline_comment|/*  Will set &squot;&bslash;0&squot; on name  */
 r_new
 op_member_access_from_pointer
 id|mode
@@ -1198,6 +1282,13 @@ id|namelen
 op_assign
 id|namelen
 suffix:semicolon
+id|WRITE_ENTRY_MAGIC
+(paren
+r_new
+comma
+id|MAGIC_VALUE
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|spin_lock
 (paren
@@ -1228,7 +1319,7 @@ r_new
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function _devfs_alloc_entry  */
-multiline_comment|/**&n; *&t;_devfs_append_entry - Append a devfs entry to a directory&squot;s child list.&n; *&t;@dir:  The directory to add to.&n; *&t;@de:  The devfs entry to append.&n; *&t;@removable: If TRUE, increment the count of removable devices for %dir.&n; *&t;@old_de: If an existing entry exists, it will be written here. This may&n; *&t;&t; be %NULL.&n; *&n; *  Append a devfs entry to a directory&squot;s list of children, checking first to&n; *   see if an entry of the same name exists. The directory will be locked.&n; *   The value 0 is returned on success, else a negative error code.&n; *   On failure, an implicit devfs_put() is performed on %de.&n; */
+multiline_comment|/**&n; *&t;_devfs_append_entry - Append a devfs entry to a directory&squot;s child list.&n; *&t;@dir:  The directory to add to.&n; *&t;@de:  The devfs entry to append.&n; *&t;@removable: If TRUE, increment the count of removable devices for %dir.&n; *&t;@old_de: If an existing entry exists, it will be written here. This may&n; *&t;&t; be %NULL. An implicit devfs_get() is performed on this entry.&n; *&n; *  Append a devfs entry to a directory&squot;s list of children, checking first to&n; *   see if an entry of the same name exists. The directory will be locked.&n; *   The value 0 is returned on success, else a negative error code.&n; *   On failure, an implicit devfs_put() is performed on %de.&n; */
 DECL|function|_devfs_append_entry
 r_static
 r_int
@@ -1271,11 +1362,9 @@ id|dir-&gt;mode
 )paren
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: append_entry(%s): dir: &bslash;&quot;%s&bslash;&quot; is not a directory&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): dir: &bslash;&quot;%s&bslash;&quot; is not a directory&bslash;n&quot;
 comma
 id|de-&gt;name
 comma
@@ -2133,11 +2222,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: prepare_leaf(%s): could not create parent path&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not create parent path&bslash;n&quot;
 comma
 id|name
 )paren
@@ -2169,11 +2256,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: prepare_leaf(%s): could not allocate entry&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not allocate entry&bslash;n&quot;
 comma
 id|name
 )paren
@@ -2383,13 +2468,13 @@ id|dir
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function _devfs_walk_path  */
-multiline_comment|/**&n; *&t;find_by_dev - Find a devfs entry in a directory.&n; *&t;@dir: The directory where to search&n; *&t;@major: The major number to search for.&n; *&t;@minor: The minor number to search for.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&n; *&t;Returns the devfs_entry pointer on success, else %NULL.&n; */
-DECL|function|find_by_dev
+multiline_comment|/**&n; *&t;_devfs_find_by_dev - Find a devfs entry in a directory.&n; *&t;@dir: The directory where to search&n; *&t;@major: The major number to search for.&n; *&t;@minor: The minor number to search for.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&n; *&t;Returns the devfs_entry pointer on success, else %NULL. An implicit&n; *&t;devfs_get() is performed.&n; */
+DECL|function|_devfs_find_by_dev
 r_static
 r_struct
 id|devfs_entry
 op_star
-id|find_by_dev
+id|_devfs_find_by_dev
 (paren
 r_struct
 id|devfs_entry
@@ -2441,11 +2526,11 @@ id|dir-&gt;mode
 )paren
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: find_by_dev(): not a directory&bslash;n&quot;
+l_string|&quot;(%p): not a directory&bslash;n&quot;
 comma
-id|DEVFS_NAME
+id|dir
 )paren
 suffix:semicolon
 id|devfs_put
@@ -2597,7 +2682,7 @@ r_continue
 suffix:semicolon
 id|de
 op_assign
-id|find_by_dev
+id|_devfs_find_by_dev
 (paren
 id|entry
 comma
@@ -2645,14 +2730,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function find_by_dev  */
-multiline_comment|/**&n; *&t;find_entry - Find a devfs entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;name is relative to the root of the devfs.&n; *&t;@name: The name of the entry. This is ignored if @handle is not %NULL.&n; *&t;@namelen: The number of characters in @name, not including a %NULL&n; *&t;&t;terminator. If this is 0, then @name must be %NULL-terminated and the&n; *&t;&t;length is computed internally.&n; *&t;@major: The major number. This is used if @handle and @name are %NULL.&n; *&t;@minor: The minor number. This is used if @handle and @name are %NULL.&n; *&t;&t;NOTE: If @major and @minor are both 0, searching by major and minor&n; *&t;&t;numbers is disabled.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&t;@traverse_symlink: If %TRUE then symbolic links are traversed.&n; *&n; *&t;Returns the devfs_entry pointer on success, else %NULL.&n; */
-DECL|function|find_entry
+multiline_comment|/*  End Function _devfs_find_by_dev  */
+multiline_comment|/**&n; *&t;_devfs_find_entry - Find a devfs entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;name is relative to the root of the devfs.&n; *&t;@name: The name of the entry. This may be %NULL.&n; *&t;@major: The major number. This is used if lookup by @name fails.&n; *&t;@minor: The minor number. This is used if lookup by @name fails.&n; *&t;&t;NOTE: If @major and @minor are both 0, searching by major and minor&n; *&t;&t;numbers is disabled.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&t;@traverse_symlink: If %TRUE then symbolic links are traversed.&n; *&n; *&t;Returns the devfs_entry pointer on success, else %NULL. An implicit&n; *&t;devfs_get() is performed.&n; */
+DECL|function|_devfs_find_entry
 r_static
 r_struct
 id|devfs_entry
 op_star
-id|find_entry
+id|_devfs_find_entry
 (paren
 id|devfs_handle_t
 id|dir
@@ -2661,10 +2746,6 @@ r_const
 r_char
 op_star
 id|name
-comma
-r_int
-r_int
-id|namelen
 comma
 r_int
 r_int
@@ -2694,13 +2775,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|namelen
-OL
-l_int|1
-)paren
+r_int
+r_int
 id|namelen
 op_assign
 id|strlen
@@ -2728,11 +2804,9 @@ OL
 l_int|2
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: find_entry(%s): too short&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): too short&bslash;n&quot;
 comma
 id|name
 )paren
@@ -2778,11 +2852,9 @@ OL
 l_int|2
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: find_entry(%s): too short&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): too short&bslash;n&quot;
 comma
 id|name
 )paren
@@ -2842,7 +2914,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-id|find_by_dev
+id|_devfs_find_by_dev
 (paren
 id|root_entry
 comma
@@ -2854,7 +2926,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function find_entry  */
+multiline_comment|/*  End Function _devfs_find_entry  */
 DECL|function|get_devfs_entry_from_vfs_inode
 r_static
 r_struct
@@ -2877,6 +2949,16 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+(paren
+r_struct
+id|devfs_entry
+op_star
+)paren
+id|inode-&gt;u.generic_ip
+)paren
 suffix:semicolon
 r_return
 id|inode-&gt;u.generic_ip
@@ -2968,12 +3050,37 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current
+op_eq
+id|fs_info-&gt;devfsd_task
+)paren
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;pgrp
+op_eq
+id|fs_info-&gt;devfsd_pgrp
+)paren
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,1)
 r_for
 c_loop
 (paren
 id|p
 op_assign
-id|current
+id|current-&gt;p_opptr
 suffix:semicolon
 id|p
 op_ne
@@ -2998,6 +3105,7 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 (paren
 id|FALSE
@@ -3169,6 +3277,9 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+comma
+r_int
+id|atomic
 )paren
 (brace
 r_struct
@@ -3210,7 +3321,12 @@ id|kmem_cache_alloc
 (paren
 id|devfsd_buf_cache
 comma
-l_int|0
+id|atomic
+ques
+c_cond
+id|SLAB_ATOMIC
+suffix:colon
+id|SLAB_KERNEL
 )paren
 )paren
 op_eq
@@ -3357,6 +3473,8 @@ id|current-&gt;egid
 comma
 op_amp
 id|fs_info
+comma
+l_int|0
 )paren
 op_logical_and
 id|wait
@@ -3440,11 +3558,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(): NULL name pointer&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(): NULL name pointer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3486,11 +3602,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): NULL ops pointer&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): NULL ops pointer&bslash;n&quot;
 comma
 id|name
 )paren
@@ -3499,11 +3613,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): NULL ops, got %p from major table&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): NULL ops, got %p from major table&bslash;n&quot;
 comma
 id|name
 comma
@@ -3520,12 +3632,9 @@ id|mode
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): creating directories is not allowed&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): creating directories is not allowed&bslash;n&quot;
 comma
 id|name
 )paren
@@ -3543,11 +3652,9 @@ id|mode
 )paren
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): creating symlinks is not allowed&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): creating symlinks is not allowed&bslash;n&quot;
 comma
 id|name
 )paren
@@ -3593,11 +3700,9 @@ op_eq
 id|NODEV
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): exhausted %s device numbers&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): exhausted %s device numbers&bslash;n&quot;
 comma
 id|name
 comma
@@ -3651,11 +3756,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): could not prepare leaf&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not prepare leaf&bslash;n&quot;
 comma
 id|name
 )paren
@@ -3725,11 +3828,9 @@ id|mode
 )paren
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): illegal mode: %x&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): illegal mode: %x&bslash;n&quot;
 comma
 id|name
 comma
@@ -3859,12 +3960,9 @@ op_ne
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_register(%s): could not append to parent, err: %d&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not append to parent, err: %d&bslash;n&quot;
 comma
 id|name
 comma
@@ -3894,19 +3992,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_REGISTER
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_register(%s): de: %p dir: %p &bslash;&quot;%s&bslash;&quot;  pp: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): de: %p dir: %p &bslash;&quot;%s&bslash;&quot;  pp: %p&bslash;n&quot;
 comma
 id|name
 comma
@@ -3919,7 +4009,6 @@ comma
 id|dir-&gt;parent
 )paren
 suffix:semicolon
-macro_line|#endif
 id|devfsd_notify
 (paren
 id|de
@@ -4049,11 +4138,11 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function _devfs_unhook  */
-multiline_comment|/**&n; *&t;unregister - Unregister a device entry from it&squot;s parent.&n; *&t;@dir: The parent directory.&n; *&t;@de: The entry to unregister.&n; *&n; *&t;The caller must have a write lock on the parent directory, which is&n; *&t;unlocked by this function.&n; */
-DECL|function|unregister
+multiline_comment|/**&n; *&t;_devfs_unregister - Unregister a device entry from it&squot;s parent.&n; *&t;@dir: The parent directory.&n; *&t;@de: The entry to unregister.&n; *&n; *&t;The caller must have a write lock on the parent directory, which is&n; *&t;unlocked by this function.&n; */
+DECL|function|_devfs_unregister
 r_static
 r_void
-id|unregister
+id|_devfs_unregister
 (paren
 r_struct
 id|devfs_entry
@@ -4155,7 +4244,12 @@ id|child
 op_assign
 id|de-&gt;u.dir.first
 suffix:semicolon
-id|unregister
+id|VERIFY_ENTRY
+(paren
+id|child
+)paren
+suffix:semicolon
+id|_devfs_unregister
 (paren
 id|de
 comma
@@ -4170,26 +4264,23 @@ id|child
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_UNREGISTER
-)paren
-id|printk
-(paren
-l_string|&quot;%s: unregister(): child-&gt;name: &bslash;&quot;%s&bslash;&quot; child: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): child: %p  refcount: %d&bslash;n&quot;
 comma
 id|child-&gt;name
 comma
 id|child
+comma
+id|atomic_read
+(paren
+op_amp
+id|child-&gt;refcount
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|devfs_put
 (paren
 id|child
@@ -4197,8 +4288,8 @@ id|child
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  End Function unregister  */
-multiline_comment|/**&n; *&t;devfs_unregister - Unregister a device entry.&n; *&t;@de: A handle previously created by devfs_register() or returned from&n; *&t;&t;devfs_find_handle(). If this is %NULL the routine does nothing.&n; */
+multiline_comment|/*  End Function _devfs_unregister  */
+multiline_comment|/**&n; *&t;devfs_unregister - Unregister a device entry.&n; *&t;@de: A handle previously created by devfs_register() or returned from&n; *&t;&t;devfs_get_handle(). If this is %NULL the routine does nothing.&n; */
 DECL|function|devfs_unregister
 r_void
 id|devfs_unregister
@@ -4207,6 +4298,11 @@ id|devfs_handle_t
 id|de
 )paren
 (brace
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4224,33 +4320,30 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_UNREGISTER
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_unregister(): de-&gt;name: &bslash;&quot;%s&bslash;&quot; de: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): de: %p  refcount: %d&bslash;n&quot;
 comma
 id|de-&gt;name
 comma
 id|de
+comma
+id|atomic_read
+(paren
+op_amp
+id|de-&gt;refcount
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|write_lock
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
 )paren
 suffix:semicolon
-id|unregister
+id|_devfs_unregister
 (paren
 id|de-&gt;parent
 comma
@@ -4331,11 +4424,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_do_symlink(): NULL name pointer&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(): NULL name pointer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4343,24 +4434,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
-(paren
-id|devfs_debug
-op_amp
-id|DEBUG_REGISTER
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_do_symlink(%s)&bslash;n&quot;
-comma
-id|DEVFS_NAME
-comma
-id|name
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4369,11 +4442,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_do_symlink(): NULL link pointer&bslash;n&quot;
+l_string|&quot;(%s): NULL link pointer&bslash;n&quot;
 comma
-id|DEVFS_NAME
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -4450,11 +4523,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_do_symlink(%s): could not prepare leaf&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not prepare leaf&bslash;n&quot;
 comma
 id|name
 )paren
@@ -4515,11 +4586,9 @@ op_ne
 l_int|0
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_do_symlink(%s): could not append to parent, err: %d&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not append to parent, err: %d&bslash;n&quot;
 comma
 id|name
 comma
@@ -4626,6 +4695,15 @@ id|handle
 op_assign
 l_int|NULL
 suffix:semicolon
+id|DPRINTK
+(paren
+id|DEBUG_REGISTER
+comma
+l_string|&quot;(%s)&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|devfs_do_symlink
@@ -4705,6 +4783,9 @@ r_struct
 id|devfs_entry
 op_star
 id|de
+comma
+op_star
+id|old
 suffix:semicolon
 r_if
 c_cond
@@ -4714,11 +4795,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_mk_dir(): NULL name pointer&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(): NULL name pointer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4745,11 +4824,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_mk_dir(%s): could not prepare leaf&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): could not prepare leaf&bslash;n&quot;
 comma
 id|name
 )paren
@@ -4776,18 +4853,54 @@ id|de
 comma
 id|FALSE
 comma
-l_int|NULL
+op_amp
+id|old
 )paren
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-id|printk
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,1)
+r_if
+c_cond
 (paren
-l_string|&quot;%s: devfs_mk_dir(%s): could not append to dir: %p &bslash;&quot;%s&bslash;&quot;, err: %d&bslash;n&quot;
+id|old
+op_logical_and
+id|S_ISDIR
+(paren
+id|old-&gt;mode
+)paren
+)paren
+(brace
+id|PRINTK
+(paren
+l_string|&quot;(%s): using old entry in dir: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|DEVFS_NAME
+id|name
+comma
+id|dir
+comma
+id|dir-&gt;name
+)paren
+suffix:semicolon
+id|old-&gt;vfs_created
+op_assign
+id|FALSE
+suffix:semicolon
+id|devfs_put
+(paren
+id|dir
+)paren
+suffix:semicolon
+r_return
+id|old
+suffix:semicolon
+)brace
+macro_line|#endif
+id|PRINTK
+(paren
+l_string|&quot;(%s): could not append to dir: %p &bslash;&quot;%s&bslash;&quot;, err: %d&bslash;n&quot;
 comma
 id|name
 comma
@@ -4800,6 +4913,11 @@ id|err
 suffix:semicolon
 id|devfs_put
 (paren
+id|old
+)paren
+suffix:semicolon
+id|devfs_put
+(paren
 id|dir
 )paren
 suffix:semicolon
@@ -4807,19 +4925,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_REGISTER
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_mk_dir(%s): de: %p dir: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): de: %p dir: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|name
 comma
@@ -4830,7 +4940,15 @@ comma
 id|dir-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
+id|devfsd_notify
+(paren
+id|de
+comma
+id|DEVFSD_NOTIFY_REGISTERED
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|devfs_put
 (paren
 id|dir
@@ -4841,7 +4959,75 @@ id|de
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_mk_dir  */
-multiline_comment|/**&n; *&t;devfs_find_handle - Find the handle of a devfs entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@major: The major number. This is used if @name is %NULL.&n; *&t;@minor: The minor number. This is used if @name is %NULL.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&t;@traverse_symlinks: If %TRUE then symlink entries in the devfs namespace are&n; *&t;&t;traversed. Symlinks pointing out of the devfs namespace will cause a&n; *&t;&t;failure. Symlink traversal consumes stack space.&n; *&n; *&t;Returns a handle which may later be used in a call to devfs_unregister(),&n; *&t;devfs_get_flags(), or devfs_set_flags(). On failure %NULL is returned.&n; */
+multiline_comment|/**&n; *&t;devfs_get_handle - Find the handle of a devfs entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@major: The major number. This is used if @name is %NULL.&n; *&t;@minor: The minor number. This is used if @name is %NULL.&n; *&t;@type: The type of special file to search for. This may be either&n; *&t;&t;%DEVFS_SPECIAL_CHR or %DEVFS_SPECIAL_BLK.&n; *&t;@traverse_symlinks: If %TRUE then symlink entries in the devfs namespace are&n; *&t;&t;traversed. Symlinks pointing out of the devfs namespace will cause a&n; *&t;&t;failure. Symlink traversal consumes stack space.&n; *&n; *&t;Returns a handle which may later be used in a call to&n; *&t;devfs_unregister(), devfs_get_flags(), or devfs_set_flags(). A&n; *&t;subsequent devfs_put() is required to decrement the refcount.&n; *&t;On failure %NULL is returned.&n; */
+DECL|function|devfs_get_handle
+id|devfs_handle_t
+id|devfs_get_handle
+(paren
+id|devfs_handle_t
+id|dir
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+r_int
+id|major
+comma
+r_int
+r_int
+id|minor
+comma
+r_char
+id|type
+comma
+r_int
+id|traverse_symlinks
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|name
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+id|name
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+)paren
+id|name
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+id|_devfs_find_entry
+(paren
+id|dir
+comma
+id|name
+comma
+id|major
+comma
+id|minor
+comma
+id|type
+comma
+id|traverse_symlinks
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*  End Function devfs_get_handle  */
+multiline_comment|/*  Compatibility function. Will be removed in sometime in 2.5  */
 DECL|function|devfs_find_handle
 id|devfs_handle_t
 id|devfs_find_handle
@@ -4872,37 +5058,13 @@ id|traverse_symlinks
 id|devfs_handle_t
 id|de
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|name
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|name
-(braket
-l_int|0
-)braket
-op_eq
-l_char|&squot;&bslash;0&squot;
-)paren
-)paren
-id|name
-op_assign
-l_int|NULL
-suffix:semicolon
 id|de
 op_assign
-id|find_entry
+id|devfs_get_handle
 (paren
 id|dir
 comma
 id|name
-comma
-l_int|0
 comma
 id|major
 comma
@@ -4918,7 +5080,6 @@ id|devfs_put
 id|de
 )paren
 suffix:semicolon
-multiline_comment|/*  FIXME: in 2.5 consider dropping this and require a&n;&t;&t;&t; call to devfs_put()  */
 r_return
 id|de
 suffix:semicolon
@@ -4954,6 +5115,11 @@ l_int|NULL
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5045,24 +5211,22 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|VERIFY_ENTRY
 (paren
-id|devfs_debug
-op_amp
-id|DEBUG_SET_FLAGS
-)paren
-id|printk
-(paren
-l_string|&quot;%s: devfs_set_flags(): de-&gt;name: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|DEVFS_NAME
-comma
-id|de-&gt;name
+id|de
 )paren
 suffix:semicolon
-macro_line|#endif
+id|DPRINTK
+(paren
+id|DEBUG_SET_FLAGS
+comma
+l_string|&quot;(%s): flags: %x&bslash;n&quot;
+comma
+id|de-&gt;name
+comma
+id|flags
+)paren
+suffix:semicolon
 id|de-&gt;hide
 op_assign
 (paren
@@ -5156,6 +5320,11 @@ l_int|NULL
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5290,6 +5459,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5409,7 +5583,7 @@ id|pos
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_generate_path  */
-multiline_comment|/**&n; *&t;devfs_get_ops - Get the device operations for a devfs entry.&n; *&t;@de: The handle to the device entry.&n; *&n; *&t;Returns a pointer to the device operations on success, else NULL.&n; */
+multiline_comment|/**&n; *&t;devfs_get_ops - Get the device operations for a devfs entry.&n; *&t;@de: The handle to the device entry.&n; *&n; *&t;Returns a pointer to the device operations on success, else NULL.&n; *&t;The use count for the module owning the operations will be incremented.&n; */
 DECL|function|devfs_get_ops
 r_void
 op_star
@@ -5419,6 +5593,11 @@ id|devfs_handle_t
 id|de
 )paren
 (brace
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5429,15 +5608,69 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|S_ISCHR
 (paren
 id|de-&gt;mode
 )paren
-op_logical_or
+op_logical_and
+op_logical_neg
 id|S_ISBLK
+(paren
+id|de-&gt;mode
+)paren
+op_logical_and
+op_logical_neg
+id|S_ISREG
+(paren
+id|de-&gt;mode
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de-&gt;u.fcb.ops
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|read_lock
+(paren
+op_amp
+id|de-&gt;parent-&gt;u.dir.lock
+)paren
+suffix:semicolon
+multiline_comment|/*  Prevent module from unloading  */
+r_if
+c_cond
+(paren
+id|de-&gt;next
+op_eq
+id|de
+)paren
+id|owner
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/*  Ops pointer is already stale   */
+r_else
+r_if
+c_cond
+(paren
+id|S_ISCHR
 (paren
 id|de-&gt;mode
 )paren
@@ -5447,14 +5680,184 @@ id|S_ISREG
 id|de-&gt;mode
 )paren
 )paren
-r_return
+id|owner
+op_assign
+(paren
+(paren
+r_struct
+id|file_operations
+op_star
+)paren
 id|de-&gt;u.fcb.ops
+)paren
+op_member_access_from_pointer
+id|owner
+suffix:semicolon
+r_else
+id|owner
+op_assign
+(paren
+(paren
+r_struct
+id|block_device_operations
+op_star
+)paren
+id|de-&gt;u.fcb.ops
+)paren
+op_member_access_from_pointer
+id|owner
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|de-&gt;next
+op_eq
+id|de
+)paren
+op_logical_or
+op_logical_neg
+id|try_inc_mod_count
+(paren
+id|owner
+)paren
+)paren
+(brace
+multiline_comment|/*  Entry is already unhooked or module is unloading  */
+id|read_unlock
+(paren
+op_amp
+id|de-&gt;parent-&gt;u.dir.lock
+)paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|read_unlock
+(paren
+op_amp
+id|de-&gt;parent-&gt;u.dir.lock
+)paren
+suffix:semicolon
+multiline_comment|/*  Module can continue unloading*/
+r_return
+id|de-&gt;u.fcb.ops
+suffix:semicolon
+)brace
 multiline_comment|/*  End Function devfs_get_ops  */
+multiline_comment|/**&n; *&t;devfs_put_ops - Put the device operations for a devfs entry.&n; *&t;@de: The handle to the device entry.&n; *&n; *&t;The use count for the module owning the operations will be decremented.&n; */
+DECL|function|devfs_put_ops
+r_void
+id|devfs_put_ops
+(paren
+id|devfs_handle_t
+id|de
+)paren
+(brace
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|S_ISCHR
+(paren
+id|de-&gt;mode
+)paren
+op_logical_and
+op_logical_neg
+id|S_ISBLK
+(paren
+id|de-&gt;mode
+)paren
+op_logical_and
+op_logical_neg
+id|S_ISREG
+(paren
+id|de-&gt;mode
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de-&gt;u.fcb.ops
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S_ISCHR
+(paren
+id|de-&gt;mode
+)paren
+op_logical_or
+id|S_ISREG
+(paren
+id|de-&gt;mode
+)paren
+)paren
+id|owner
+op_assign
+(paren
+(paren
+r_struct
+id|file_operations
+op_star
+)paren
+id|de-&gt;u.fcb.ops
+)paren
+op_member_access_from_pointer
+id|owner
+suffix:semicolon
+r_else
+id|owner
+op_assign
+(paren
+(paren
+r_struct
+id|block_device_operations
+op_star
+)paren
+id|de-&gt;u.fcb.ops
+)paren
+op_member_access_from_pointer
+id|owner
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+)paren
+id|__MOD_DEC_USE_COUNT
+(paren
+id|owner
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*  End Function devfs_put_ops  */
 multiline_comment|/**&n; *&t;devfs_set_file_size - Set the file size for a devfs regular file.&n; *&t;@de: The handle to the device entry.&n; *&t;@size: The new file size.&n; *&n; *&t;Returns 0 on success, else a negative error code.&n; */
 DECL|function|devfs_set_file_size
 r_int
@@ -5478,6 +5881,11 @@ l_int|NULL
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5555,6 +5963,11 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_return
 id|de-&gt;info
 suffix:semicolon
@@ -5584,6 +5997,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 id|de-&gt;info
 op_assign
 id|info
@@ -5612,6 +6030,11 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_return
 id|de-&gt;parent
 suffix:semicolon
@@ -5635,6 +6058,11 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5672,6 +6100,11 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
+suffix:semicolon
 r_return
 id|de-&gt;next
 suffix:semicolon
@@ -5698,6 +6131,16 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|master
+)paren
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|slave
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5716,18 +6159,16 @@ id|slave
 )paren
 r_return
 suffix:semicolon
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: devfs_auto_unregister(): only one slave allowed&bslash;n&quot;
+l_string|&quot;(%s): only one slave allowed&bslash;n&quot;
 comma
-id|DEVFS_NAME
+id|master-&gt;name
 )paren
 suffix:semicolon
 id|OOPS
 (paren
-l_string|&quot;  master: &bslash;&quot;%s&bslash;&quot;  old slave: &bslash;&quot;%s&bslash;&quot;  new slave: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|master-&gt;name
+l_string|&quot;():  old slave: &bslash;&quot;%s&bslash;&quot;  new slave: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|master-&gt;slave-&gt;name
 comma
@@ -5760,6 +6201,11 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|master
+)paren
+suffix:semicolon
 r_return
 id|master-&gt;slave
 suffix:semicolon
@@ -5790,6 +6236,11 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|VERIFY_ENTRY
+(paren
+id|de
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6328,6 +6779,13 @@ comma
 id|devfs_setup
 )paren
 suffix:semicolon
+DECL|variable|devfs_put
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devfs_put
+)paren
+suffix:semicolon
 DECL|variable|devfs_register
 id|EXPORT_SYMBOL
 c_func
@@ -6354,6 +6812,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_mk_dir
+)paren
+suffix:semicolon
+DECL|variable|devfs_get_handle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devfs_get_handle
 )paren
 suffix:semicolon
 DECL|variable|devfs_find_handle
@@ -6587,6 +7052,13 @@ id|buf-&gt;u.name
 op_assign
 id|name
 suffix:semicolon
+id|WRITE_ENTRY_MAGIC
+(paren
+id|buf
+comma
+id|MAGIC_VALUE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6604,6 +7076,8 @@ comma
 id|current-&gt;egid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 )paren
 r_return
@@ -6631,6 +7105,11 @@ id|de
 r_int
 id|tmp
 suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 id|kdev_t
 id|dev
 op_assign
@@ -6645,8 +7124,6 @@ r_struct
 id|block_device_operations
 op_star
 id|bdops
-op_assign
-id|de-&gt;u.fcb.ops
 suffix:semicolon
 r_extern
 r_int
@@ -6664,12 +7141,18 @@ id|de-&gt;mode
 r_return
 l_int|0
 suffix:semicolon
+id|bdops
+op_assign
+id|devfs_get_ops
+(paren
+id|de
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bdops
-op_eq
-l_int|NULL
 )paren
 r_return
 l_int|0
@@ -6681,8 +7164,8 @@ id|bdops-&gt;check_media_change
 op_eq
 l_int|NULL
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -6693,8 +7176,12 @@ id|bdops-&gt;check_media_change
 id|dev
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|out
+suffix:semicolon
+id|retval
+op_assign
+l_int|1
 suffix:semicolon
 id|printk
 (paren
@@ -6747,8 +7234,15 @@ id|warn_no_part
 op_assign
 id|tmp
 suffix:semicolon
+id|out
+suffix:colon
+id|devfs_put_ops
+(paren
+id|de
+)paren
+suffix:semicolon
 r_return
-l_int|1
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function check_disc_changed  */
@@ -7063,20 +7557,11 @@ l_int|0
 r_return
 id|retval
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_CHANGE
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%s: notify_change(%d): VFS inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%d): VFS inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7088,11 +7573,11 @@ comma
 id|de
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 (paren
-l_string|&quot;%s:   mode: 0%o  uid: %d  gid: %d&bslash;n&quot;
+id|DEBUG_I_CHANGE
 comma
-id|DEVFS_NAME
+l_string|&quot;():   mode: 0%o  uid: %d  gid: %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7110,8 +7595,6 @@ r_int
 id|inode-&gt;i_gid
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*  Inode is not on hash chains, thus must save permissions here rather&n;&t;than in a write_inode() method  */
 r_if
 c_cond
@@ -7168,6 +7651,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|iattr-&gt;ia_valid
 op_amp
 (paren
@@ -7176,6 +7660,13 @@ op_or
 id|ATTR_UID
 op_or
 id|ATTR_GID
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
@@ -7191,6 +7682,8 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7220,12 +7713,7 @@ id|DEVFS_SUPER_MAGIC
 suffix:semicolon
 id|buf-&gt;f_bsize
 op_assign
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_int
-)paren
+id|FAKE_BLOCK_SIZE
 suffix:semicolon
 id|buf-&gt;f_bfree
 op_assign
@@ -7295,13 +7783,13 @@ id|devfs_statfs
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;get_vfs_inode - Get a VFS inode.&n; *&t;@sb: The super block.&n; *&t;@de: The devfs inode.&n; *&t;@dentry: The dentry to register with the devfs inode.&n; *&n; *&t;Returns the inode on success, else %NULL. An implicit devfs_get() is&n; *       performed if the inode is created.&n; */
-DECL|function|get_vfs_inode
+multiline_comment|/**&n; *&t;_devfs_get_vfs_inode - Get a VFS inode.&n; *&t;@sb: The super block.&n; *&t;@de: The devfs inode.&n; *&t;@dentry: The dentry to register with the devfs inode.&n; *&n; *&t;Returns the inode on success, else %NULL. An implicit devfs_get() is&n; *       performed if the inode is created.&n; */
+DECL|function|_devfs_get_vfs_inode
 r_static
 r_struct
 id|inode
 op_star
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 r_struct
 id|super_block
@@ -7355,11 +7843,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: get_vfs_inode(%s): new_inode() failed, de: %p&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): new_inode() failed, de: %p&bslash;n&quot;
 comma
 id|de-&gt;name
 comma
@@ -7436,19 +7922,11 @@ id|inode-&gt;i_ino
 op_assign
 id|de-&gt;inode.ino
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_GET
-)paren
-id|printk
-(paren
-l_string|&quot;%s: get_vfs_inode(%d): VFS inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%d): VFS inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7460,14 +7938,13 @@ comma
 id|de
 )paren
 suffix:semicolon
-macro_line|#endif
 id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
-l_int|1024
+id|FAKE_BLOCK_SIZE
 suffix:semicolon
 id|inode-&gt;i_op
 op_assign
@@ -7560,11 +8037,9 @@ id|de-&gt;u.fcb.ops
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|PRINTK
 (paren
-l_string|&quot;%s: get_vfs_inode(%d): no block device from bdget()&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%d): no block device from bdget()&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7695,19 +8170,11 @@ id|inode-&gt;i_ctime
 op_assign
 id|de-&gt;inode.ctime
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_GET
-)paren
-id|printk
-(paren
-l_string|&quot;%s:   mode: 0%o  uid: %d  gid: %d&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;():   mode: 0%o  uid: %d  gid: %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -7725,12 +8192,11 @@ r_int
 id|inode-&gt;i_gid
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|inode
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function get_vfs_inode  */
+multiline_comment|/*  End Function _devfs_get_vfs_inode  */
 multiline_comment|/*  File operations for device entries follow  */
 DECL|function|devfs_readdir
 r_static
@@ -7810,19 +8276,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_F_READDIR
-)paren
-id|printk
-(paren
-l_string|&quot;%s: readdir(): fs_info: %p  pos: %ld&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): fs_info: %p  pos: %ld&bslash;n&quot;
+comma
+id|parent-&gt;name
 comma
 id|fs_info
 comma
@@ -7832,7 +8292,6 @@ r_int
 id|file-&gt;f_pos
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -8328,6 +8787,12 @@ r_if
 c_cond
 (paren
 id|df-&gt;aopen_notify
+op_logical_and
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
 )paren
 id|devfsd_notify_de
 (paren
@@ -8342,6 +8807,8 @@ comma
 id|current-&gt;egid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -8396,33 +8863,17 @@ op_star
 id|dentry
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_D_RELEASE
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_release(): dentry: %p inode: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%p): inode: %p&bslash;n&quot;
 comma
 id|dentry
 comma
-id|inode
+id|dentry-&gt;d_inode
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*  End Function devfs_d_release  */
 multiline_comment|/**&n; *&t;devfs_d_iput - Callback for when a dentry loses its inode.&n; *&t;@dentry: The dentry.&n; *&t;@inode:&t;The inode.&n; */
@@ -8454,19 +8905,13 @@ id|get_devfs_entry_from_vfs_inode
 id|inode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_D_IPUT
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_iput(): dentry: %p inode: %p de: %p  de-&gt;dentry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): dentry: %p inode: %p de: %p de-&gt;dentry: %p&bslash;n&quot;
+comma
+id|de-&gt;name
 comma
 id|dentry
 comma
@@ -8477,7 +8922,6 @@ comma
 id|de-&gt;inode.dentry
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8491,9 +8935,7 @@ id|dentry
 )paren
 id|OOPS
 (paren
-l_string|&quot;%s: d_iput(%s): de: %p dentry: %p de-&gt;dentry: %p&bslash;n&quot;
-comma
-id|DEVFS_NAME
+l_string|&quot;(%s): de: %p dentry: %p de-&gt;dentry: %p&bslash;n&quot;
 comma
 id|de-&gt;name
 comma
@@ -8640,24 +9082,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_D_DELETE
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_delete(): dropping negative dentry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%p): dropping negative dentry&bslash;n&quot;
 comma
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -8673,19 +9106,11 @@ id|get_devfs_entry_from_vfs_inode
 id|inode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_D_DELETE
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_delete(): dentry: %p  inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%p): inode: %p  devfs_entry: %p&bslash;n&quot;
 comma
 id|dentry
 comma
@@ -8694,7 +9119,6 @@ comma
 id|de
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8760,6 +9184,8 @@ comma
 id|current-&gt;egid
 comma
 id|fs_info
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -8853,19 +9279,11 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_LOOKUP
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_revalidate(%s): dentry: %p by: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): dentry: %p by: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
@@ -8874,7 +9292,6 @@ comma
 id|current-&gt;comm
 )paren
 suffix:semicolon
-macro_line|#endif
 id|read_lock
 (paren
 op_amp
@@ -8892,7 +9309,7 @@ comma
 id|dentry-&gt;d_name.len
 )paren
 suffix:semicolon
-id|read_lock
+id|read_unlock
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -8911,7 +9328,7 @@ suffix:semicolon
 multiline_comment|/*  Create an inode, now that the driver information is available  */
 id|inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|dir-&gt;i_sb
 comma
@@ -8934,19 +9351,13 @@ id|inode
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_LOOKUP
-)paren
-id|printk
-(paren
-l_string|&quot;%s: d_revalidate(): new VFS inode(%u): %p  devfs_entry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): new VFS inode(%u): %p  de: %p&bslash;n&quot;
+comma
+id|de-&gt;name
 comma
 id|de-&gt;inode.ino
 comma
@@ -8955,7 +9366,6 @@ comma
 id|de
 )paren
 suffix:semicolon
-macro_line|#endif
 id|d_instantiate
 (paren
 id|dentry
@@ -9008,6 +9418,8 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -9028,10 +9440,6 @@ op_assign
 op_amp
 id|devfs_dops
 suffix:semicolon
-id|fs_info
-op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
-suffix:semicolon
 multiline_comment|/*  First try to get the devfs entry for this directory  */
 id|parent
 op_assign
@@ -9040,19 +9448,11 @@ id|get_devfs_entry_from_vfs_inode
 id|dir
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_LOOKUP
-)paren
-id|printk
-(paren
-l_string|&quot;%s: lookup(%s): dentry: %p parent: %p by: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): dentry: %p parent: %p by: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
@@ -9063,7 +9463,6 @@ comma
 id|current-&gt;comm
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9293,7 +9692,7 @@ multiline_comment|/*  Open the floodgates  */
 multiline_comment|/*  Create an inode, now that the driver information is available  */
 id|inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|dir-&gt;i_sb
 comma
@@ -9320,19 +9719,13 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_LOOKUP
-)paren
-id|printk
-(paren
-l_string|&quot;%s: lookup(): new VFS inode(%u): %p  devfs_entry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): new VFS inode(%u): %p  de: %p&bslash;n&quot;
+comma
+id|de-&gt;name
 comma
 id|de-&gt;inode.ino
 comma
@@ -9341,7 +9734,6 @@ comma
 id|de
 )paren
 suffix:semicolon
-macro_line|#endif
 id|d_instantiate
 (paren
 id|dentry
@@ -9417,29 +9809,29 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
-(paren
-id|devfs_debug
-op_amp
-id|DEBUG_I_UNLINK
-)paren
-id|printk
-(paren
-l_string|&quot;%s: unlink(%s)&bslash;n&quot;
-comma
-id|DEVFS_NAME
-comma
-id|dentry-&gt;d_name.name
-)paren
+r_struct
+id|fs_info
+op_star
+id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
-macro_line|#endif
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|DPRINTK
+(paren
+id|DEBUG_I_UNLINK
+comma
+l_string|&quot;(%s): de: %p&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
+comma
+id|de
 )paren
 suffix:semicolon
 r_if
@@ -9492,6 +9884,15 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
+)paren
 id|devfsd_notify_de
 (paren
 id|de
@@ -9504,7 +9905,9 @@ id|inode-&gt;i_uid
 comma
 id|inode-&gt;i_gid
 comma
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|free_dentry
@@ -9550,6 +9953,8 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -9563,10 +9968,6 @@ r_struct
 id|inode
 op_star
 id|inode
-suffix:semicolon
-id|fs_info
-op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 multiline_comment|/*  First try to get the devfs entry for this directory  */
 id|parent
@@ -9605,24 +10006,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_DISABLED
-)paren
-id|printk
-(paren
-l_string|&quot;%s: symlink(): errcode from &lt;devfs_do_symlink&gt;: %d&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): errcode from &lt;devfs_do_symlink&gt;: %d&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
 comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9663,7 +10057,7 @@ c_cond
 (paren
 id|inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|dir-&gt;i_sb
 comma
@@ -9679,19 +10073,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_DISABLED
-)paren
-id|printk
-(paren
-l_string|&quot;%s: symlink(): new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
 comma
 id|de-&gt;inode.ino
 comma
@@ -9700,7 +10088,6 @@ comma
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#endif
 id|d_instantiate
 (paren
 id|dentry
@@ -9708,6 +10095,15 @@ comma
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
+)paren
 id|devfsd_notify_de
 (paren
 id|de
@@ -9721,6 +10117,8 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -9754,6 +10152,8 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -9780,10 +10180,6 @@ op_or
 id|S_IFDIR
 suffix:semicolon
 multiline_comment|/*  VFS doesn&squot;t pass S_IFMT part  */
-id|fs_info
-op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
-suffix:semicolon
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
@@ -9876,7 +10272,7 @@ c_cond
 (paren
 id|inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|dir-&gt;i_sb
 comma
@@ -9892,19 +10288,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_DISABLED
-)paren
-id|printk
-(paren
-l_string|&quot;%s: mkdir(): new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
 comma
 id|de-&gt;inode.ino
 comma
@@ -9913,7 +10303,6 @@ comma
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#endif
 id|d_instantiate
 (paren
 id|dentry
@@ -9921,6 +10310,15 @@ comma
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
+)paren
 id|devfsd_notify_de
 (paren
 id|de
@@ -9934,6 +10332,8 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -9971,6 +10371,8 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 r_struct
 id|inode
@@ -9989,10 +10391,6 @@ id|inode-&gt;i_sb-&gt;u.generic_sbp
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|fs_info
-op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 id|de
 op_assign
@@ -10105,6 +10503,15 @@ id|err
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
+)paren
 id|devfsd_notify_de
 (paren
 id|de
@@ -10118,6 +10525,8 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|free_dentry
@@ -10164,6 +10573,8 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
+op_assign
+id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -10178,19 +10589,11 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_MKNOD
-)paren
-id|printk
-(paren
-l_string|&quot;%s: mknod(%s): mode: 0%o  dev: %d&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(%s): mode: 0%o  dev: %d&bslash;n&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
@@ -10198,11 +10601,6 @@ id|mode
 comma
 id|rdev
 )paren
-suffix:semicolon
-macro_line|#endif
-id|fs_info
-op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
 suffix:semicolon
 id|parent
 op_assign
@@ -10325,7 +10723,7 @@ c_cond
 (paren
 id|inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|dir-&gt;i_sb
 comma
@@ -10341,19 +10739,11 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_I_MKNOD
-)paren
-id|printk
-(paren
-l_string|&quot;%s:   new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;:   new VFS inode(%u): %p  dentry: %p&bslash;n&quot;
 comma
 id|de-&gt;inode.ino
 comma
@@ -10362,7 +10752,6 @@ comma
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#endif
 id|d_instantiate
 (paren
 id|dentry
@@ -10370,6 +10759,15 @@ comma
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_devfsd_or_child
+(paren
+id|fs_info
+)paren
+)paren
 id|devfsd_notify_de
 (paren
 id|de
@@ -10383,6 +10781,8 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -10668,7 +11068,7 @@ c_cond
 (paren
 id|root_inode
 op_assign
-id|get_vfs_inode
+id|_devfs_get_vfs_inode
 (paren
 id|sb
 comma
@@ -10699,24 +11099,15 @@ id|sb-&gt;s_root
 r_goto
 id|out_no_root
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_DEBUG
-r_if
-c_cond
+id|DPRINTK
 (paren
-id|devfs_debug
-op_amp
 id|DEBUG_S_READ
-)paren
-id|printk
-(paren
-l_string|&quot;%s: read super, made devfs ptr: %p&bslash;n&quot;
 comma
-id|DEVFS_NAME
+l_string|&quot;(): made devfs ptr: %p&bslash;n&quot;
 comma
 id|sb-&gt;u.generic_sbp
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|sb
 suffix:semicolon
@@ -11202,6 +11593,9 @@ c_cond
 id|done
 )paren
 (brace
+id|devfs_handle_t
+id|parent
+suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -11239,13 +11633,19 @@ l_int|NULL
 suffix:semicolon
 id|de
 op_assign
-id|de-&gt;parent
+id|parent
 )paren
+(brace
+id|parent
+op_assign
+id|de-&gt;parent
+suffix:semicolon
 id|devfs_put
 (paren
 id|de
 )paren
 suffix:semicolon
+)brace
 id|kmem_cache_free
 (paren
 id|devfsd_buf_cache
@@ -11418,6 +11818,19 @@ op_amp
 id|lock
 )paren
 suffix:semicolon
+id|fs_info-&gt;devfsd_pgrp
+op_assign
+(paren
+id|current-&gt;pgrp
+op_eq
+id|current-&gt;pid
+)paren
+ques
+c_cond
+id|current-&gt;pgrp
+suffix:colon
+l_int|0
+suffix:semicolon
 id|fs_info-&gt;devfsd_file
 op_assign
 id|file
@@ -11560,6 +11973,9 @@ r_struct
 id|devfsd_buf_entry
 op_star
 id|entry
+comma
+op_star
+id|next
 suffix:semicolon
 r_struct
 id|fs_info
@@ -11626,6 +12042,10 @@ op_amp
 id|fs_info-&gt;devfsd_buffer_lock
 )paren
 suffix:semicolon
+id|fs_info-&gt;devfsd_pgrp
+op_assign
+l_int|0
+suffix:semicolon
 id|fs_info-&gt;devfsd_task
 op_assign
 l_int|NULL
@@ -11644,8 +12064,13 @@ id|entry
 suffix:semicolon
 id|entry
 op_assign
-id|entry-&gt;next
+id|next
 )paren
+(brace
+id|next
+op_assign
+id|entry-&gt;next
+suffix:semicolon
 id|kmem_cache_free
 (paren
 id|devfsd_buf_cache
@@ -11653,6 +12078,7 @@ comma
 id|entry
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -11797,6 +12223,38 @@ comma
 id|DEVFS_VERSION
 )paren
 suffix:semicolon
+id|devfsd_buf_cache
+op_assign
+id|kmem_cache_create
+(paren
+l_string|&quot;devfsd_event&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|devfsd_buf_entry
+)paren
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|devfsd_buf_cache
+)paren
+id|OOPS
+(paren
+l_string|&quot;(): unable to allocate event slab&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|devfs_debug
 op_assign
@@ -11819,27 +12277,6 @@ comma
 id|DEVFS_NAME
 comma
 id|boot_options
-)paren
-suffix:semicolon
-id|devfsd_buf_cache
-op_assign
-id|kmem_cache_create
-(paren
-l_string|&quot;devfsd_event&quot;
-comma
-r_sizeof
-(paren
-r_struct
-id|devfsd_buf_entry
-)paren
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|err

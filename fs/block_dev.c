@@ -2503,6 +2503,7 @@ c_cond
 (paren
 id|de
 )paren
+(brace
 id|bdops
 op_assign
 id|devfs_get_ops
@@ -2510,6 +2511,13 @@ id|devfs_get_ops
 id|de
 )paren
 suffix:semicolon
+id|devfs_put_ops
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/* We&squot;re running in owner module */
+)brace
 )brace
 r_if
 c_cond

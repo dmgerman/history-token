@@ -70,11 +70,6 @@ id|ino
 op_assign
 id|inode-&gt;i_ino
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 r_struct
 id|bfs_inode
 op_star
@@ -106,7 +101,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|inode-&gt;i_dev
 )paren
 comma
 id|ino
@@ -158,7 +153,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|inode-&gt;i_dev
 )paren
 comma
 id|ino
@@ -337,11 +332,6 @@ id|ino
 op_assign
 id|inode-&gt;i_ino
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 r_struct
 id|bfs_inode
 op_star
@@ -373,7 +363,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|inode-&gt;i_dev
 )paren
 comma
 id|ino
@@ -424,7 +414,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|inode-&gt;i_dev
 )paren
 comma
 id|ino
@@ -561,11 +551,6 @@ id|ino
 op_assign
 id|inode-&gt;i_ino
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 r_struct
 id|bfs_inode
 op_star
@@ -675,7 +660,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|inode-&gt;i_dev
 )paren
 comma
 id|ino
@@ -1098,9 +1083,6 @@ r_int
 id|silent
 )paren
 (brace
-id|kdev_t
-id|dev
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -1120,10 +1102,6 @@ r_int
 id|i
 comma
 id|imap_len
-suffix:semicolon
-id|dev
-op_assign
-id|s-&gt;s_dev
 suffix:semicolon
 id|sb_set_blocksize
 c_func
@@ -1185,7 +1163,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|s-&gt;s_dev
 )paren
 comma
 id|bfs_sb-&gt;s_magic
@@ -1217,7 +1195,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|s-&gt;s_dev
 )paren
 )paren
 suffix:semicolon

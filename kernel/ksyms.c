@@ -1677,6 +1677,13 @@ c_func
 id|register_disk
 )paren
 suffix:semicolon
+DECL|variable|read_dev_sector
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_dev_sector
+)paren
+suffix:semicolon
 DECL|variable|tq_disk
 id|EXPORT_SYMBOL
 c_func

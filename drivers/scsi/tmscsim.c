@@ -4453,17 +4453,17 @@ multiline_comment|/* We ignore mapping problems, as we expect everybody to respe
 macro_line|#ifdef CONFIG_SCSI_DC390T_TRADMAP
 multiline_comment|/* &n; * The next function, partsize(), is copied from scsicam.c.&n; *&n; * This is ugly code duplication, but I didn&squot;t find another way to solve it:&n; * We want to respect the partition table and if it fails, we apply the &n; * DC390 BIOS heuristic. Too bad, just calling scsicam_bios_param() doesn&squot;t do&n; * the job, because we don&squot;t know, whether the values returned are from&n; * the part. table or determined by setsize(). Unfortunately the setsize() &n; * values differ from the ones chosen by the DC390 BIOS.&n; *&n; * Looking forward to seeing suggestions for a better solution! KG, 98/10/14&n; */
 macro_line|#include &lt;asm/unaligned.h&gt;
-multiline_comment|/*&n; * Function : static int partsize(struct buffer_head *bh, unsigned long &n; *     capacity,unsigned int *cyls, unsigned int *hds, unsigned int *secs);&n; *&n; * Purpose : to determine the BIOS mapping used to create the partition&n; *&t;table, storing the results in *cyls, *hds, and *secs &n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
+multiline_comment|/*&n; * Function : static int partsize(unsigned char *buf, unsigned long &n; *     capacity,unsigned int *cyls, unsigned int *hds, unsigned int *secs);&n; *&n; * Purpose : to determine the BIOS mapping used to create the partition&n; *&t;table, storing the results in *cyls, *hds, and *secs &n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
 DECL|function|partsize
 r_static
 r_int
 id|partsize
 c_func
 (paren
-r_struct
-id|buffer_head
+r_int
+r_char
 op_star
-id|bh
+id|buf
 comma
 r_int
 r_int
@@ -4529,9 +4529,9 @@ r_int
 op_star
 )paren
 (paren
-id|bh-&gt;b_data
+id|buf
 op_plus
-l_int|510
+l_int|64
 )paren
 op_eq
 l_int|0xAA55
@@ -4552,11 +4552,7 @@ r_struct
 id|partition
 op_star
 )paren
-(paren
-l_int|0x1BE
-op_plus
-id|bh-&gt;b_data
-)paren
+id|buf
 comma
 id|i
 op_assign
@@ -4810,11 +4806,6 @@ id|PACB
 )paren
 id|disk-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-r_struct
-id|buffer_head
-op_star
-id|bh
-suffix:semicolon
 r_int
 id|ret_code
 op_assign
@@ -4826,37 +4817,21 @@ id|size
 op_assign
 id|disk-&gt;capacity
 suffix:semicolon
+r_int
+r_char
+op_star
+id|buf
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|bh
+id|buf
 op_assign
-id|bread
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|MAJOR
+id|scsi_bios_ptable
 c_func
 (paren
 id|devno
-)paren
-comma
-id|MINOR
-c_func
-(paren
-id|devno
-)paren
-op_amp
-op_complement
-l_int|0xf
-)paren
-comma
-l_int|0
-comma
-l_int|1024
 )paren
 )paren
 )paren
@@ -4866,7 +4841,7 @@ id|ret_code
 op_assign
 id|partsize
 (paren
-id|bh
+id|buf
 comma
 (paren
 r_int
@@ -4902,9 +4877,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|brelse
+id|kfree
 (paren
-id|bh
+id|buf
 )paren
 suffix:semicolon
 )brace

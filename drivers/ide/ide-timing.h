@@ -1,15 +1,13 @@
 macro_line|#ifndef _IDE_TIMING_H
 DECL|macro|_IDE_TIMING_H
 mdefine_line|#define _IDE_TIMING_H
-multiline_comment|/*&n; * $Id: ide-timing.h,v 1.5 2001/01/15 21:48:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: ide-timing.h,v 1.6 2001/12/23 22:47:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#ifndef XFER_PIO_5
 DECL|macro|XFER_PIO_5
 mdefine_line|#define XFER_PIO_5&t;&t;0x0d
 DECL|macro|XFER_UDMA_SLOW
 mdefine_line|#define XFER_UDMA_SLOW&t;&t;0x4f
-macro_line|#endif
 DECL|struct|ide_timing
 r_struct
 id|ide_timing
@@ -60,7 +58,7 @@ suffix:semicolon
 multiline_comment|/* t2CYCTYP/2 */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * PIO 0-5, MWDMA 0-2 and UDMA 0-5 timings (in nanoseconds).&n; * These were taken from ATA/ATAPI-6 standard, rev 0a, except&n; * for PIO 5, which is a nonstandard extension.&n; */
+multiline_comment|/*&n; * PIO 0-5, MWDMA 0-2 and UDMA 0-6 timings (in nanoseconds).&n; * These were taken from ATA/ATAPI-6 standard, rev 0a, except&n; * for PIO 5, which is a nonstandard extension and UDMA6, which&n; * is currently supported only by Maxtor drives. &n; */
 DECL|variable|ide_timing
 r_static
 r_struct
@@ -70,6 +68,26 @@ id|ide_timing
 )braket
 op_assign
 (brace
+(brace
+id|XFER_UDMA_6
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|15
+)brace
+comma
 (brace
 id|XFER_UDMA_5
 comma
@@ -508,6 +526,8 @@ DECL|macro|EZ
 mdefine_line|#define EZ(v,unit)&t;((v)?ENOUGH(v,unit):0)
 DECL|macro|XFER_MODE
 mdefine_line|#define XFER_MODE&t;0xf0
+DECL|macro|XFER_UDMA_133
+mdefine_line|#define XFER_UDMA_133&t;0x48
 DECL|macro|XFER_UDMA_100
 mdefine_line|#define XFER_UDMA_100&t;0x44
 DECL|macro|XFER_UDMA_66
@@ -574,6 +594,38 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Want UDMA and UDMA bitmap valid */
+r_if
+c_cond
+(paren
+(paren
+id|map
+op_amp
+id|XFER_UDMA_133
+)paren
+op_eq
+id|XFER_UDMA_133
+)paren
+r_if
+c_cond
+(paren
+(paren
+id|best
+op_assign
+(paren
+id|id-&gt;dma_ultra
+op_amp
+l_int|0x0040
+)paren
+ques
+c_cond
+id|XFER_UDMA_6
+suffix:colon
+l_int|0
+)paren
+)paren
+r_return
+id|best
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -969,6 +1021,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;setup
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -979,6 +1033,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;act8b
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -989,6 +1045,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;rec8b
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -999,6 +1057,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;cyc8b
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -1009,6 +1069,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;active
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -1019,6 +1081,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;recover
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -1029,6 +1093,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;cycle
+op_star
+l_int|1000
 comma
 id|T
 )paren
@@ -1039,6 +1105,8 @@ id|EZ
 c_func
 (paren
 id|t-&gt;udma
+op_star
+l_int|1000
 comma
 id|UT
 )paren
