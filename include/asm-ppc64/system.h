@@ -219,16 +219,6 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_void
-id|print_backtrace
-c_func
-(paren
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|show_regs
 c_func
 (paren

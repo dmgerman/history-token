@@ -4,6 +4,7 @@ DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/preempt.h&gt;
 r_typedef
 r_struct
@@ -114,7 +115,5 @@ id|irq
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
-DECL|macro|show_stack
-mdefine_line|#define show_stack(SP)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (SP)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(SP);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(_get_SP());&t;&bslash;&n;} while (0)
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

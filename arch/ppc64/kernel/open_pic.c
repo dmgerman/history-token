@@ -2,9 +2,10 @@ multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.c -- OpenPIC Interrupt Handl
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -242,8 +243,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= (NumSources+open_pic_irq_offset)){ &bslash;&n;      printk(KERN_ERR &quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      print_backtrace(_get_SP()); }
-mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= OPENPIC_MAX_PROCESSORS){ &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;print_backtrace(_get_SP()); }
+mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= (NumSources+open_pic_irq_offset)){ &bslash;&n;      printk(KERN_ERR &quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      dump_stack(); }
+mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= OPENPIC_MAX_PROCESSORS){ &bslash;&n;&t;printk(KERN_ERR &quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;dump_stack(); }
 macro_line|#else
 DECL|macro|check_arg_ipi
 mdefine_line|#define check_arg_ipi(ipi)&t;do {} while (0)
