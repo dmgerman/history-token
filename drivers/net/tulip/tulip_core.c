@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.0&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.11&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Dec 11, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Feb 08, 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
@@ -555,6 +555,21 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* RS7112 */
+(brace
+l_string|&quot;Conexant LANfinity&quot;
+comma
+l_int|256
+comma
+l_int|0x0001ebef
+comma
+id|HAS_MII
+op_or
+id|HAS_ACPI
+comma
+id|tulip_timer
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -918,6 +933,22 @@ comma
 l_int|0
 comma
 id|COMET
+)brace
+comma
+(brace
+l_int|0x14f1
+comma
+l_int|0x1803
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CONEXANT
 )brace
 comma
 (brace
@@ -2352,6 +2383,10 @@ c_cond
 id|tp-&gt;chip_id
 op_eq
 id|COMET
+op_logical_or
+id|tp-&gt;chip_id
+op_eq
+id|CONEXANT
 )paren
 (brace
 multiline_comment|/* Enable automatic Tx underrun recovery. */
@@ -7027,11 +7062,10 @@ r_int
 r_int
 id|sum
 suffix:semicolon
-id|u8
+r_int
+r_char
+op_star
 id|ee_data
-(braket
-id|EEPROM_SIZE
-)braket
 suffix:semicolon
 r_struct
 id|net_device
@@ -7703,6 +7737,10 @@ id|CSR8
 )paren
 suffix:semicolon
 multiline_comment|/* The station address ROM is read byte serially.  The register must&n;&t;   be polled, waiting for the value to be read bit serially from the&n;&t;   EEPROM.&n;&t;   */
+id|ee_data
+op_assign
+id|tp-&gt;eeprom
+suffix:semicolon
 id|sum
 op_assign
 l_int|0
@@ -7907,7 +7945,7 @@ id|i
 OL
 r_sizeof
 (paren
-id|ee_data
+id|tp-&gt;eeprom
 )paren
 op_div
 l_int|2
@@ -7941,7 +7979,7 @@ id|ee_addr_size
 )paren
 suffix:semicolon
 multiline_comment|/* DEC now has a specification (see Notes) but early board makers&n;&t;&t;   just put the address in the first EEPROM locations. */
-multiline_comment|/* This does  memcmp(eedata, eedata+16, 8) */
+multiline_comment|/* This does  memcmp(ee_data, ee_data+16, 8) */
 r_for
 c_loop
 (paren
@@ -7975,6 +8013,38 @@ id|sa_offset
 op_assign
 l_int|20
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip_idx
+op_eq
+id|CONEXANT
+)paren
+(brace
+multiline_comment|/* Check that the tuple type and length is correct. */
+r_if
+c_cond
+(paren
+id|ee_data
+(braket
+l_int|0x198
+)braket
+op_eq
+l_int|0x04
+op_logical_and
+id|ee_data
+(braket
+l_int|0x199
+)braket
+op_eq
+l_int|6
+)paren
+id|sa_offset
+op_assign
+l_int|0x19A
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -8523,19 +8593,6 @@ op_amp
 id|HAS_MEDIA_TABLE
 )paren
 (brace
-id|memcpy
-c_func
-(paren
-id|tp-&gt;eeprom
-comma
-id|ee_data
-comma
-r_sizeof
-(paren
-id|tp-&gt;eeprom
-)paren
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren

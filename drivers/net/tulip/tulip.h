@@ -192,6 +192,9 @@ comma
 DECL|enumerator|DM910X
 id|DM910X
 comma
+DECL|enumerator|CONEXANT
+id|CONEXANT
+comma
 )brace
 suffix:semicolon
 DECL|enum|MediaIs
@@ -1010,7 +1013,7 @@ multiline_comment|/* Ring-wrap flag in length field, use for last ring entry.&n;
 DECL|macro|DESC_RING_WRAP
 mdefine_line|#define DESC_RING_WRAP 0x02000000
 DECL|macro|EEPROM_SIZE
-mdefine_line|#define EEPROM_SIZE 128 &t;/* 2 &lt;&lt; EEPROM_ADDRLEN */
+mdefine_line|#define EEPROM_SIZE 512 &t;/* 2 &lt;&lt; EEPROM_ADDRLEN */
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
 macro_line|#if defined(__i386__)&t;&t;&t;/* AKA get_unaligned() */
