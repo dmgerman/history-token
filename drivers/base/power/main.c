@@ -10,13 +10,6 @@ c_func
 id|dpm_active
 )paren
 suffix:semicolon
-DECL|variable|dpm_suspended
-id|LIST_HEAD
-c_func
-(paren
-id|dpm_suspended
-)paren
-suffix:semicolon
 DECL|variable|dpm_off
 id|LIST_HEAD
 c_func
