@@ -13,8 +13,13 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
+macro_line|#ifdef CONFIG_4xx
 DECL|macro|MSR_DEBUGCHANGE
-mdefine_line|#define MSR_DEBUGCHANGE&t;(MSR_FE0 | MSR_SE | MSR_BE | MSR_FE1)
+mdefine_line|#define MSR_DEBUGCHANGE&t;0
+macro_line|#else
+DECL|macro|MSR_DEBUGCHANGE
+mdefine_line|#define MSR_DEBUGCHANGE&t;(MSR_SE | MSR_BE)
+macro_line|#endif
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
 multiline_comment|/*&n; * Get contents of register REGNO in task TASK.&n; */
 DECL|function|get_reg
@@ -499,10 +504,22 @@ id|regs
 op_ne
 l_int|NULL
 )paren
+(brace
+macro_line|#ifdef CONFIG_4xx
+id|task-&gt;thread.dbcr0
+op_assign
+id|DBCR0_IDM
+op_or
+id|DBCR0_IC
+suffix:semicolon
+multiline_comment|/* MSR.DE should already be set */
+macro_line|#else
 id|regs-&gt;msr
 op_or_assign
 id|MSR_SE
 suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 r_static
 r_inline
@@ -531,11 +548,20 @@ id|regs
 op_ne
 l_int|NULL
 )paren
+(brace
+macro_line|#ifdef CONFIG_4xx
+id|task-&gt;thread.dbcr0
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 id|regs-&gt;msr
 op_and_assign
 op_complement
 id|MSR_SE
 suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 multiline_comment|/*&n; * Called by kernel/ptrace.c when detaching..&n; *&n; * Make sure single step bits etc are not set.&n; */
 DECL|function|ptrace_disable
