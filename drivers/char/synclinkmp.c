@@ -1744,6 +1744,7 @@ id|info
 comma
 r_struct
 id|mgsl_icount
+id|__user
 op_star
 id|user_icount
 )paren
@@ -1758,6 +1759,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|params
 )paren
@@ -1772,6 +1774,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|params
 )paren
@@ -1786,6 +1789,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|idle_mode
 )paren
@@ -1871,6 +1875,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|mask_ptr
 )paren
@@ -2752,6 +2757,7 @@ op_star
 id|synclinkmp_get_text_ptr
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -5452,6 +5458,7 @@ suffix:semicolon
 multiline_comment|/* kernel counter temps */
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 id|p_cuser
 suffix:semicolon
@@ -5459,6 +5466,18 @@ multiline_comment|/* user space */
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -5557,11 +5576,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-id|MGSL_PARAMS
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5573,11 +5588,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-id|MGSL_PARAMS
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5589,11 +5600,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5660,12 +5667,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_struct
-id|mgsl_icount
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5677,11 +5679,7 @@ c_func
 (paren
 id|info
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -5735,12 +5733,7 @@ id|flags
 suffix:semicolon
 id|p_cuser
 op_assign
-(paren
-r_struct
-id|serial_icounter_struct
-op_star
-)paren
-id|arg
+id|argp
 suffix:semicolon
 id|PUT_USER
 c_func
@@ -11930,6 +11923,7 @@ id|info
 comma
 r_struct
 id|mgsl_icount
+id|__user
 op_star
 id|user_icount
 )paren
@@ -12018,6 +12012,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|user_params
 )paren
@@ -12105,6 +12100,7 @@ op_star
 id|info
 comma
 id|MGSL_PARAMS
+id|__user
 op_star
 id|new_params
 )paren
@@ -12238,6 +12234,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|idle_mode
 )paren
@@ -12797,6 +12794,7 @@ op_star
 id|info
 comma
 r_int
+id|__user
 op_star
 id|mask_ptr
 )paren
