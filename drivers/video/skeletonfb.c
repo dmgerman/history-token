@@ -77,13 +77,6 @@ id|xxx_par
 id|__initdata
 id|current_par
 suffix:semicolon
-multiline_comment|/* To go away in the near future */
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 r_int
 id|xxxfb_init
 c_func
@@ -473,6 +466,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;xxxfb_cursor -&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 multiline_comment|/**&n; *      xxxfb_pan_display - NOT a required function. Pans the display.&n; *      @var: frame buffer variable screen structure&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Pan (or wrap, depending on the `vmode&squot; field) the display using the&n; *  &t;`xoffset&squot; and `yoffset&squot; fields of the `var&squot; structure.&n; *  &t;If the values don&squot;t fit, return -EINVAL.&n; *&n; *      Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|xxxfb_pan_display
 r_static
@@ -484,9 +478,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_const
 r_struct
@@ -624,37 +615,6 @@ id|info.par
 op_assign
 id|current_par
 suffix:semicolon
-multiline_comment|/* The following has to be set but in th efuture will go away */
-id|strcpy
-c_func
-(paren
-id|info.modename
-comma
-id|xxxfb_fix.id
-)paren
-suffix:semicolon
-id|info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 multiline_comment|/*&n;     * This should give a reasonable default video mode. The following is&n;     * done when we can set a video mode. &n;     */
 r_if
 c_cond
@@ -718,16 +678,6 @@ multiline_comment|/* &n;     * The following is done in the case of having hardw
 id|info.var
 op_assign
 id|xxxfb_var
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -867,22 +817,6 @@ op_assign
 id|xxxfb_release
 comma
 multiline_comment|/* only if you need it to do something */
-multiline_comment|/* Stuff to go away. Use generic functions for now */
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
 dot
 id|fb_check_var
 op_assign

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -30,12 +29,6 @@ id|cfb8
 (braket
 l_int|16
 )braket
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -291,21 +284,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|tx3912fb_setcolreg
@@ -324,6 +302,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
 comma
 )brace
 suffix:semicolon
@@ -771,6 +754,20 @@ id|tx3912fb_paddr
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|size
+op_assign
+(paren
+id|info-&gt;var.bits_per_pixel
+op_eq
+l_int|8
+)paren
+ques
+c_cond
+l_int|256
+suffix:colon
+l_int|16
+suffix:semicolon
 multiline_comment|/* Disable the video logic */
 id|outl
 c_func
@@ -1088,26 +1085,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|tx3912fb_fix.id
-)paren
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|fb_info.fbops
 op_assign
@@ -1125,19 +1105,6 @@ suffix:semicolon
 id|fb_info.pseudo_palette
 op_assign
 id|pseudo_palette
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_info.flags
 op_assign
@@ -1173,16 +1140,6 @@ comma
 id|size
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|disp
 )paren
 suffix:semicolon
 r_if
