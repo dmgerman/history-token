@@ -684,6 +684,7 @@ DECL|macro|MB
 macro_line|#undef MB
 DECL|macro|GB
 macro_line|#undef GB
+r_static
 r_void
 id|__init
 DECL|function|pcibios_init
@@ -709,6 +710,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 r_char
 op_star
 id|__init
