@@ -178,12 +178,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ch-&gt;hwgroup
-suffix:semicolon
 id|request_queue_t
 op_star
 id|q
@@ -286,7 +280,7 @@ op_amp
 id|ch-&gt;active
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -474,16 +468,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -522,7 +506,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ATA: %s: hwgroup not busy&bslash;n&quot;
+l_string|&quot;ATA: %s: IRQ handler not busy&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -530,15 +514,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;handler
-op_eq
-l_int|NULL
+op_logical_neg
+id|ch-&gt;handler
 )paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ATA: %s: missing isr!&bslash;n&quot;
+l_string|&quot;ATA: %s: missing ISR!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -621,16 +604,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -670,7 +643,7 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 id|handler
 suffix:semicolon

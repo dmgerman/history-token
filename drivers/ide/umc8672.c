@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/drivers/ide/umc8672.c&t;&t;Version 0.05&t;Jul 31, 1996&n; *&n; *  Copyright (C) 1995-1996  Linus Torvalds &amp; author (see below)&n; */
 multiline_comment|/*&n; *  Principal Author/Maintainer:  PODIEN@hml2.atlas.de (Wolfram Podien)&n; *&n; *  This file provides support for the advanced features&n; *  of the UMC 8672 IDE interface.&n; *&n; *  Version 0.01&t;Initial version, hacked out of ide.c,&n; *&t;&t;&t;and #include&squot;d rather than compiled separately.&n; *&t;&t;&t;This will get cleaned up in a subsequent release.&n; *&n; *  Version 0.02&t;now configs/compiles separate from ide.c  -ml&n; *  Version 0.03&t;enhanced auto-tune, fix display bug&n; *  Version 0.05&t;replace sti() with restore_flags()  -ml&n; *&t;&t;&t;add detection of possible race condition  -ml&n; */
-multiline_comment|/*&n; * VLB Controller Support from &n; * Wolfram Podien&n; * Rohoefe 3&n; * D28832 Achim&n; * Germany&n; *&n; * To enable UMC8672 support there must a lilo line like&n; * append=&quot;ide0=umc8672&quot;...&n; * To set the speed according to the abilities of the hardware there must be a&n; * line like&n; * #define UMC_DRIVE0 11&n; * in the beginning of the driver, which sets the speed of drive 0 to 11 (there&n; * are some lines present). 0 - 11 are allowed speed values. These values are&n; * the results from the DOS speed test program supplied from UMC. 11 is the &n; * highest speed (about PIO mode 3)&n; */
+multiline_comment|/*&n; * VLB Controller Support from&n; * Wolfram Podien&n; * Rohoefe 3&n; * D28832 Achim&n; * Germany&n; *&n; * To enable UMC8672 support there must a lilo line like&n; * append=&quot;ide0=umc8672&quot;...&n; * To set the speed according to the abilities of the hardware there must be a&n; * line like&n; * #define UMC_DRIVE0 11&n; * in the beginning of the driver, which sets the speed of drive 0 to 11 (there&n; * are some lines present). 0 - 11 are allowed speed values. These values are&n; * the results from the DOS speed test program supplied from UMC. 11 is the&n; * highest speed (about PIO mode 3)&n; */
 DECL|macro|REALLY_SLOW_IO
 mdefine_line|#define REALLY_SLOW_IO&t;&t;/* some systems can safely undef this */
 macro_line|#include &lt;linux/types.h&gt;
@@ -434,8 +434,10 @@ DECL|function|tune_umc
 r_static
 r_void
 id|tune_umc
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -446,19 +448,6 @@ id|pio
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ide_hwifs
-(braket
-id|drive-&gt;channel-&gt;index
-op_xor
-l_int|1
-)braket
-dot
-id|hwgroup
 suffix:semicolon
 r_if
 c_cond
@@ -522,25 +511,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* all CPUs */
-r_if
-c_cond
-(paren
-id|hwgroup
-op_logical_and
-id|hwgroup-&gt;handler
-op_ne
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;umc8672: other interface is busy: exiting tune_umc()&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|current_speeds
 (braket
 id|drive-&gt;name
@@ -561,7 +531,6 @@ id|umc_set_speeds
 id|current_speeds
 )paren
 suffix:semicolon
-)brace
 id|restore_flags
 c_func
 (paren
@@ -574,6 +543,7 @@ DECL|function|init_umc8672
 r_void
 id|__init
 id|init_umc8672
+c_func
 (paren
 r_void
 )paren

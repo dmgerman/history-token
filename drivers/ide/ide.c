@@ -806,8 +806,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -931,8 +930,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -974,17 +972,10 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ch-&gt;hwgroup
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -992,7 +983,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_ne
 l_int|NULL
 )paren
@@ -1004,7 +995,7 @@ l_string|&quot;%s: ide_set_handler: handler not null; old=%p, new=%p, from %p&bs
 comma
 id|drive-&gt;name
 comma
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 comma
 id|handler
 comma
@@ -1016,7 +1007,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
@@ -1040,8 +1031,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -4436,12 +4426,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ch-&gt;hwgroup
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -4449,13 +4433,12 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4469,8 +4452,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -4485,7 +4467,7 @@ id|drive-&gt;rq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back to the hwgroup by&n; * sleeping for timeout jiffies.&n; */
+multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back by sleeping for&n; * timeout jiffies.&n; */
 DECL|function|ide_stall_queue
 r_void
 id|ide_stall_queue
@@ -4540,53 +4522,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_HWIFS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_int
 id|unit
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ch-&gt;present
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ch-&gt;hwgroup
-op_ne
-id|channel-&gt;hwgroup
-)paren
-r_continue
 suffix:semicolon
 r_for
 c_loop
@@ -4609,7 +4545,7 @@ op_star
 id|drive
 op_assign
 op_amp
-id|ch-&gt;drives
+id|channel-&gt;drives
 (braket
 id|unit
 )braket
@@ -4622,7 +4558,7 @@ id|drive-&gt;present
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* This device is sleeping and waiting to be serviced&n;&t;&t;&t; * later than any other device we checked thus far.&n;&t;&t;&t; */
+multiline_comment|/* This device is sleeping and waiting to be serviced&n;&t;&t; * later than any other device we checked thus far.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4646,12 +4582,11 @@ op_assign
 id|drive-&gt;sleep
 suffix:semicolon
 )brace
-)brace
 r_return
 id|sleep
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Select the next device which will be serviced.&n; */
+multiline_comment|/*&n; * Select the next device which will be serviced.  This selects onlt between&n; * devices on the same channel, since everything else will be scheduled on the&n; * queue level.&n; */
 DECL|function|choose_urgent_device
 r_static
 r_struct
@@ -4680,53 +4615,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_HWIFS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_int
 id|unit
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ch-&gt;present
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ch-&gt;hwgroup
-op_ne
-id|channel-&gt;hwgroup
-)paren
-r_continue
 suffix:semicolon
 r_for
 c_loop
@@ -4749,7 +4638,7 @@ op_star
 id|drive
 op_assign
 op_amp
-id|ch-&gt;drives
+id|channel-&gt;drives
 (braket
 id|unit
 )braket
@@ -4762,7 +4651,7 @@ id|drive-&gt;present
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* There are no request pending for this device.&n;&t;&t;&t; */
+multiline_comment|/* There are no request pending for this device.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4775,7 +4664,7 @@ id|drive-&gt;queue.queue_head
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* This device still wants to remain idle.&n;&t;&t;&t; */
+multiline_comment|/* This device still wants to remain idle.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4791,7 +4680,7 @@ id|jiffies
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Take this device, if there is no device choosen thus far or&n;&t;&t;&t; * it&squot;s more urgent.&n;&t;&t;&t; */
+multiline_comment|/* Take this device, if there is no device choosen thus far or&n;&t;&t; * it&squot;s more urgent.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4831,7 +4720,6 @@ id|choice
 op_assign
 id|drive
 suffix:semicolon
-)brace
 )brace
 )brace
 r_if
@@ -5171,8 +5059,7 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 id|ide__sti
@@ -5194,8 +5081,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -5244,7 +5130,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-multiline_comment|/*&n; * Issue a new request.&n; * Caller must have already done spin_lock_irqsave(&amp;ide_lock, ...)&n; *&n; * A hwgroup is a serialized group of IDE interfaces.  Usually there is&n; * exactly one hwif (interface) per hwgroup, but buggy controllers (eg. CMD640)&n; * may have both interfaces in a single hwgroup to &quot;serialize&quot; access.&n; * Or possibly multiple ISA interfaces can share a common IRQ by being grouped&n; * together into one hwgroup for serialized access.&n; *&n; * Note also that several hwgroups can end up sharing a single IRQ,&n; * possibly along with many other devices.  This is especially common in&n; * PCI-based systems with off-board IDE controller cards.&n; *&n; * The IDE driver uses the queue spinlock to protect access to the request&n; * queues.&n; *&n; * The first thread into the driver for a particular hwgroup sets the&n; * hwgroup-&gt;flags IDE_BUSY flag to indicate that this hwgroup is now active,&n; * and then initiates processing of the top request from the request queue.&n; *&n; * Other threads attempting entry notice the busy setting, and will simply&n; * queue their new requests and exit immediately.  Note that hwgroup-&gt;flags&n; * remains busy even when the driver is merely awaiting the next interrupt.&n; * Thus, the meaning is &quot;this hwgroup is busy processing a request&quot;.&n; *&n; * When processing of a request completes, the completing thread or IRQ-handler&n; * will start the next request from the queue.  If no more work remains,&n; * the driver will clear the hwgroup-&gt;flags IDE_BUSY flag and exit.&n; */
+multiline_comment|/*&n; * Issue a new request.&n; * Caller must have already done spin_lock_irqsave(channel-&gt;lock, ...)&n; */
 DECL|function|ide_do_request
 r_static
 r_void
@@ -5272,12 +5158,7 @@ id|hwgroup
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only: POSSIBLY BROKEN HERE(?) */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* necessary paranoia: ensure IRQs are masked on local CPU */
+singleline_comment|//&t;__cli();&t;/* necessary paranoia: ensure IRQs are masked on local CPU */
 r_while
 c_loop
 (paren
@@ -5515,12 +5396,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ch-&gt;hwgroup
-suffix:semicolon
 id|ata_handler_t
 op_star
 id|handler
@@ -5541,8 +5416,7 @@ multiline_comment|/*&n;&t; * A global lock protects timers etc -- shouldn&squot;
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -5554,16 +5428,15 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
+id|handler
+op_assign
+id|ch-&gt;handler
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|handler
-op_assign
-id|hwgroup-&gt;handler
-)paren
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Either a marginal timeout occurred (got the interrupt just&n;&t;&t; * as timer expired), or we were &quot;sleeping&quot; to give other&n;&t;&t; * devices a chance.  Either way, we don&squot;t really want to&n;&t;&t; * complain about anything.&n;&t;&t; */
@@ -5608,10 +5481,11 @@ id|drive
 id|printk
 c_func
 (paren
-l_string|&quot;ide_timer_expiry: hwgroup-&gt;drive was NULL&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ide_timer_expiry: IRQ handler was NULL&bslash;n&quot;
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5638,7 +5512,8 @@ id|ch-&gt;active
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ide_timer_expiry: hwgroup was not busy??&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: ide_timer_expiry: IRQ handler was not busy??&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
@@ -5691,8 +5566,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -5701,7 +5575,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5709,8 +5583,7 @@ multiline_comment|/*&n;&t;&t;&t; * We need to simulate a real interrupt when inv
 id|spin_unlock
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 id|ch
@@ -5863,8 +5736,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -5896,8 +5768,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -6062,12 +5933,6 @@ id|ch
 op_assign
 id|data
 suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|ch-&gt;hwgroup
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6081,7 +5946,7 @@ id|ata_handler_t
 op_star
 id|handler
 op_assign
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
@@ -6089,8 +5954,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -6217,7 +6081,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|hwgroup-&gt;handler
+id|ch-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6231,8 +6095,7 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -6260,8 +6123,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note that handler() may have set things up for another&n;&t; * interrupt to occur soon, but it cannot happen until&n;&t; * we exit from this routine, because it will be the&n;&t; * same irq as is currently being serviced here, and Linux&n;&t; * won&squot;t allow another of the same (on any CPU) until we return.&n;&t; */
@@ -6282,9 +6144,8 @@ id|ide_stopped
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;handler
-op_eq
-l_int|NULL
+op_logical_neg
+id|ch-&gt;handler
 )paren
 (brace
 multiline_comment|/* paranoia */
@@ -6341,8 +6202,7 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -6591,8 +6451,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -6670,8 +6529,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 comma
 id|flags
 )paren
@@ -6748,6 +6606,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* FIXME: The locking here doesn&squot;t make the slightest sense! */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7366,9 +7225,9 @@ id|ata_device
 op_star
 id|d
 suffix:semicolon
-id|ide_hwgroup_t
+id|spinlock_t
 op_star
-id|hwgroup
+id|lock
 suffix:semicolon
 r_int
 id|unit
@@ -7730,10 +7589,10 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Remove us from the hwgroup.&n;&t; */
-id|hwgroup
+multiline_comment|/*&n;&t; * Remove us from the lock group.&n;&t; */
+id|lock
 op_assign
-id|ch-&gt;hwgroup
+id|ch-&gt;lock
 suffix:semicolon
 id|d
 op_assign
@@ -7841,7 +7700,7 @@ id|ch-&gt;drive
 op_assign
 id|d
 suffix:semicolon
-multiline_comment|/*&n;&t; * Free the irq if we were the only channel using it.&n;&t; *&n;&t; * Free the hwgroup if we were the only member.&n;&t; */
+multiline_comment|/*&n;&t; * Free the irq if we were the only channel using it.&n;&t; *&n;&t; * Free the lock group if we were the only member.&n;&t; */
 id|n_irq
 op_assign
 id|n_ch
@@ -7895,9 +7754,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp-&gt;hwgroup
+id|tmp-&gt;lock
 op_eq
-id|ch-&gt;hwgroup
+id|ch-&gt;lock
 )paren
 op_increment
 id|n_ch
@@ -7915,7 +7774,7 @@ c_func
 (paren
 id|ch-&gt;irq
 comma
-id|ch-&gt;hwgroup
+id|ch
 )paren
 suffix:semicolon
 r_if
@@ -7929,10 +7788,10 @@ l_int|1
 id|kfree
 c_func
 (paren
-id|ch-&gt;hwgroup
+id|ch-&gt;lock
 )paren
 suffix:semicolon
-id|ch-&gt;hwgroup
+id|ch-&gt;lock
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -8051,9 +7910,9 @@ comma
 id|ch-&gt;index
 )paren
 suffix:semicolon
-id|ch-&gt;hwgroup
+id|ch-&gt;lock
 op_assign
-id|old.hwgroup
+id|old.lock
 suffix:semicolon
 id|ch-&gt;tuneproc
 op_assign
@@ -8687,8 +8546,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_while
@@ -8707,8 +8565,7 @@ id|drive-&gt;channel-&gt;active
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -8739,8 +8596,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -8863,22 +8719,6 @@ id|drive-&gt;channel-&gt;tuneproc
 r_return
 op_minus
 id|ENOSYS
-suffix:semicolon
-multiline_comment|/* FIXME: This is very much the same kind of problem as we have with&n;&t; * set_mutlmode() see for a edscription there.&n;&t; */
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-)paren
-r_return
-op_minus
-id|EBUSY
 suffix:semicolon
 r_if
 c_cond
@@ -9094,12 +8934,6 @@ c_cond
 id|arg
 template_param
 l_int|1
-op_plus
-(paren
-id|SUPPORT_VLB_SYNC
-op_lshift
-l_int|1
-)paren
 )paren
 r_return
 op_minus
@@ -9131,8 +8965,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -9183,8 +9016,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -9269,8 +9101,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -9355,8 +9186,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|ide_lock
+id|drive-&gt;channel-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -13389,18 +13219,7 @@ id|IDE_DATA_OFFSET
 )braket
 )paren
 (brace
-id|ide_get_lock
-c_func
-(paren
-op_amp
-id|irq_lock
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only */
+singleline_comment|// ide_get_lock(&amp;irq_lock, NULL, NULL);/* for atari only */
 id|disable_irq
 c_func
 (paren

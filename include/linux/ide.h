@@ -24,10 +24,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|# define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
 multiline_comment|/* Right now this is only needed by a promise controlled.&n; */
-macro_line|#ifndef SUPPORT_VLB_SYNC&t;&t;/* 1 to support weird 32-bit chips */
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|# define SUPPORT_VLB_SYNC&t;1&t;/* 0 to reduce kernel size */
-macro_line|#endif
 macro_line|#ifndef DISK_RECOVERY_TIME&t;&t;/* off=0; on=access_delay_time */
 DECL|macro|DISK_RECOVERY_TIME
 macro_line|# define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
@@ -62,8 +58,6 @@ mdefine_line|#define ERROR_RECAL&t;1&t;/* Recalibrate every 2nd retry */
 multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
-DECL|macro|HWGROUP
-mdefine_line|#define HWGROUP(drive)&t;&t;(drive-&gt;channel-&gt;hwgroup)
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
 DECL|macro|IDE_NR_PORTS
 mdefine_line|#define IDE_NR_PORTS&t;&t;(10)
@@ -1038,12 +1032,27 @@ id|IDE_DMA
 multiline_comment|/* DMA in progress */
 )brace
 suffix:semicolon
-DECL|struct|hwgroup_s
-r_typedef
+DECL|struct|ata_channel
 r_struct
-id|hwgroup_s
+id|ata_channel
 (brace
-multiline_comment|/* FIXME: We should look for busy request queues instead of looking at&n;&t; * the !NULL state of this field.&n;&t; */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* device handle */
+DECL|member|unit
+r_int
+id|unit
+suffix:semicolon
+multiline_comment|/* channel number */
+multiline_comment|/* This lock is used to serialize requests on the same device queue or&n;&t; * between differen queues sharing the same irq line.&n;&t; */
+DECL|member|lock
+id|spinlock_t
+op_star
+id|lock
+suffix:semicolon
 DECL|member|handler
 id|ide_startstop_t
 (paren
@@ -1061,32 +1070,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* irq handler, if active */
-DECL|typedef|ide_hwgroup_t
-)brace
-id|ide_hwgroup_t
-suffix:semicolon
-DECL|struct|ata_channel
-r_struct
-id|ata_channel
-(brace
-DECL|member|dev
-r_struct
-id|device
-id|dev
-suffix:semicolon
-multiline_comment|/* device handle */
-DECL|member|unit
-r_int
-id|unit
-suffix:semicolon
-multiline_comment|/* channel number */
-DECL|member|hwgroup
-r_struct
-id|hwgroup_s
-op_star
-id|hwgroup
-suffix:semicolon
-multiline_comment|/* actually (ide_hwgroup_t *) */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -2609,7 +2592,7 @@ r_extern
 r_int
 id|system_bus_speed
 suffix:semicolon
-multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
+r_extern
 r_void
 id|ide_stall_queue
 c_func

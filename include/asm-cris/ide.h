@@ -275,10 +275,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* some configuration options we don&squot;t need */
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 0
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS

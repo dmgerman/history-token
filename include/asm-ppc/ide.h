@@ -76,10 +76,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef&t;SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define&t;SUPPORT_SLOW_DATA_PORTS&t;0
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef&t;SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC&t;0
 DECL|macro|ide__sti
 mdefine_line|#define ide__sti()&t;__sti()
 DECL|function|ide_default_irq

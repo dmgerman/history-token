@@ -224,10 +224,6 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef  SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define SUPPORT_SLOW_DATA_PORTS 0
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef  SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 0
 DECL|macro|HD_DATA
 macro_line|#undef  HD_DATA
 DECL|macro|HD_DATA

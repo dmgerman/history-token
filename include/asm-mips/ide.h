@@ -224,10 +224,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|macro|SUPPORT_VLB_SYNC
-macro_line|#undef  SUPPORT_VLB_SYNC
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 0
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_IDE_H */
 eof

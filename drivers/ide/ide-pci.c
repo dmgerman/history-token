@@ -2255,11 +2255,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ATA: %s: controller on PCI bus %02x dev %02x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
+id|dev-&gt;slot_name
 comma
 id|dev-&gt;devfn
 )paren
@@ -2287,11 +2288,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ATA: %s: controller on PCI bus %02x dev %02x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
-id|dev2-&gt;bus-&gt;number
+id|dev2-&gt;slot_name
 comma
 id|dev2-&gt;devfn
 )paren
@@ -2405,11 +2407,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
+id|dev-&gt;slot_name
 comma
 id|dev-&gt;devfn
 )paren
@@ -2504,11 +2507,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s dev %02x&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
-id|dev2-&gt;bus-&gt;number
+id|dev2-&gt;slot_name
 comma
 id|dev2-&gt;devfn
 )paren
@@ -2614,7 +2618,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2723,7 +2728,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: onboard version of chipset, pin1=%d pin2=%d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATAL: %s: onboard version of chipset, pin1=%d pin2=%d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2740,7 +2746,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2770,7 +2777,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: controller on PCI slot %s&bslash;n&quot;
 comma
 id|dev2-&gt;name
 comma
@@ -2857,6 +2865,7 @@ op_logical_neg
 id|d
 )paren
 (brace
+multiline_comment|/* Only check the device calls, if it wasn&squot;t listed, since&n;&t;&t; * there are in esp. some pdc202xx chips which &quot;work around&quot;&n;&t;&t; * beeing grabbed by generic drivers.&n;&t;&t; */
 r_if
 c_cond
 (paren
