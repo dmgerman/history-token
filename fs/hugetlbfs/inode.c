@@ -17,9 +17,9 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
+macro_line|#include &lt;linux/statfs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/statfs.h&gt;
 multiline_comment|/* some random number */
 DECL|macro|HUGETLBFS_MAGIC
 mdefine_line|#define HUGETLBFS_MAGIC&t;0x958458f6
@@ -2205,7 +2205,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
