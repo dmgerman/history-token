@@ -425,6 +425,11 @@ comma
 l_int|3
 )brace
 suffix:semicolon
+r_struct
+id|resource
+op_star
+id|ports
+suffix:semicolon
 r_int
 id|config_port
 op_assign
@@ -580,10 +585,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Check if the IO port returns valid signature. The original MS Sound&n;&t; * system returns 0x04 while some cards (AudioTrix Pro for example)&n;&t; * return 0x00.&n;&t; */
-r_if
-c_cond
-(paren
-id|check_region
+id|ports
+op_assign
+id|request_region
 c_func
 (paren
 id|hw_config-&gt;io_base
@@ -591,7 +595,15 @@ op_plus
 l_int|4
 comma
 l_int|4
+comma
+l_string|&quot;ad1848&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ports
 )paren
 (brace
 id|printk
@@ -629,6 +641,16 @@ id|KERN_ERR
 l_string|&quot;AudioTrix: MSS I/O port conflict (%x)&bslash;n&quot;
 comma
 id|hw_config-&gt;io_base
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+op_plus
+l_int|4
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -741,9 +763,7 @@ op_assign
 id|ad1848_detect
 c_func
 (paren
-id|hw_config-&gt;io_base
-op_plus
-l_int|4
+id|ports
 comma
 l_int|NULL
 comma
@@ -894,9 +914,7 @@ c_func
 (paren
 l_string|&quot;AudioTrix Pro&quot;
 comma
-id|hw_config-&gt;io_base
-op_plus
-l_int|4
+id|ports
 comma
 id|hw_config-&gt;irq
 comma
@@ -965,6 +983,16 @@ id|release_region
 c_func
 (paren
 id|hw_config-&gt;io_base
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+op_plus
+l_int|4
 comma
 l_int|4
 )paren

@@ -6222,6 +6222,11 @@ id|ad_flags
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|resource
+op_star
+id|ports
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6334,6 +6339,36 @@ op_assign
 l_int|0x87654321
 suffix:semicolon
 multiline_comment|/* Tell that we have a soundscape pnp with 1845 chip */
+id|ports
+op_assign
+id|request_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+comma
+l_int|4
+comma
+l_string|&quot;ad1848&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ports
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;soundscape: ports busy&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6341,7 +6376,7 @@ op_logical_neg
 id|ad1848_detect
 c_func
 (paren
-id|hw_config-&gt;io_base
+id|ports
 comma
 op_amp
 id|ad_flags
@@ -6349,9 +6384,19 @@ comma
 id|hw_config-&gt;osp
 )paren
 )paren
+(brace
+id|release_region
+c_func
+(paren
+id|hw_config-&gt;io_base
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6435,7 +6480,7 @@ l_string|&quot;SoundScape&quot;
 suffix:colon
 l_string|&quot;SoundScape PNP&quot;
 comma
-id|hw_config-&gt;io_base
+id|ports
 comma
 id|hw_config-&gt;irq
 comma
