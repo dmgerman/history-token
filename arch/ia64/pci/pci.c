@@ -437,7 +437,6 @@ id|value
 suffix:semicolon
 )brace
 DECL|variable|pci_root_ops
-r_static
 r_struct
 id|pci_ops
 id|pci_root_ops
