@@ -1878,6 +1878,17 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|path-&gt;len
+OG
+id|NFS2_MAXPATHLEN
+)paren
+r_return
+op_minus
+id|ENAMETOOLONG
+suffix:semicolon
 id|dprintk
 c_func
 (paren

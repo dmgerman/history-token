@@ -5103,7 +5103,7 @@ op_assign
 op_amp
 id|nfs4_procedures
 (braket
-id|NFSPROC4_CLNT_CREATE
+id|NFSPROC4_CLNT_SYMLINK
 )braket
 comma
 dot
@@ -5122,6 +5122,17 @@ comma
 suffix:semicolon
 r_int
 id|status
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|path-&gt;len
+OG
+id|NFS4_MAXPATHLEN
+)paren
+r_return
+op_minus
+id|ENAMETOOLONG
 suffix:semicolon
 id|arg.u.symlink
 op_assign

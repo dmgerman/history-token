@@ -63,6 +63,8 @@ DECL|macro|encode_getattr_maxsz
 mdefine_line|#define encode_getattr_maxsz    (op_encode_hdr_maxsz + 3)
 DECL|macro|nfs4_name_maxsz
 mdefine_line|#define nfs4_name_maxsz&t;&t;(1 + ((3 + NFS4_MAXNAMLEN) &gt;&gt; 2))
+DECL|macro|nfs4_path_maxsz
+mdefine_line|#define nfs4_path_maxsz&t;&t;(1 + ((3 + NFS4_MAXPATHLEN) &gt;&gt; 2))
 DECL|macro|nfs4_fattr_bitmap_maxsz
 mdefine_line|#define nfs4_fattr_bitmap_maxsz (36 + 2 * nfs4_name_maxsz)
 DECL|macro|decode_getattr_maxsz
@@ -99,8 +101,12 @@ DECL|macro|encode_link_maxsz
 mdefine_line|#define encode_link_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_name_maxsz)
 DECL|macro|decode_link_maxsz
 mdefine_line|#define decode_link_maxsz&t;(op_decode_hdr_maxsz + 5)
+DECL|macro|encode_symlink_maxsz
+mdefine_line|#define encode_symlink_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;1 + nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_path_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
+DECL|macro|decode_symlink_maxsz
+mdefine_line|#define decode_symlink_maxsz&t;(op_decode_hdr_maxsz + 8)
 DECL|macro|encode_create_maxsz
-mdefine_line|#define encode_create_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + 2 * nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
+mdefine_line|#define encode_create_maxsz&t;(op_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;2 + nfs4_name_maxsz + &bslash;&n;&t;&t;&t;&t;nfs4_fattr_bitmap_maxsz)
 DECL|macro|decode_create_maxsz
 mdefine_line|#define decode_create_maxsz&t;(op_decode_hdr_maxsz + 8)
 DECL|macro|NFS4_enc_compound_sz
@@ -207,6 +213,10 @@ DECL|macro|NFS4_enc_link_sz
 mdefine_line|#define NFS4_enc_link_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_savefh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_link_maxsz)
 DECL|macro|NFS4_dec_link_sz
 mdefine_line|#define NFS4_dec_link_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_savefh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_link_maxsz)
+DECL|macro|NFS4_enc_symlink_sz
+mdefine_line|#define NFS4_enc_symlink_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_symlink_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getfh_maxsz)
+DECL|macro|NFS4_dec_symlink_sz
+mdefine_line|#define NFS4_dec_symlink_sz&t;(compound_decode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;decode_symlink_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;decode_getfh_maxsz)
 DECL|macro|NFS4_enc_create_sz
 mdefine_line|#define NFS4_enc_create_sz&t;(compound_encode_hdr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_putfh_maxsz + &bslash;&n;&t;&t;&t;&t;encode_create_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getattr_maxsz + &bslash;&n;&t;&t;&t;&t;encode_getfh_maxsz)
 DECL|macro|NFS4_dec_create_sz
@@ -4507,6 +4517,41 @@ id|out
 suffix:colon
 r_return
 id|status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Encode SYMLINK request&n; */
+DECL|function|nfs4_xdr_enc_symlink
+r_static
+r_int
+id|nfs4_xdr_enc_symlink
+c_func
+(paren
+r_struct
+id|rpc_rqst
+op_star
+id|req
+comma
+r_uint32
+op_star
+id|p
+comma
+r_const
+r_struct
+id|nfs4_create_arg
+op_star
+id|args
+)paren
+(brace
+r_return
+id|nfs4_xdr_enc_create
+c_func
+(paren
+id|req
+comma
+id|p
+comma
+id|args
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Encode GETATTR request&n; */
@@ -15714,6 +15759,40 @@ r_return
 id|status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Decode SYMLINK response&n; */
+DECL|function|nfs4_xdr_dec_symlink
+r_static
+r_int
+id|nfs4_xdr_dec_symlink
+c_func
+(paren
+r_struct
+id|rpc_rqst
+op_star
+id|rqstp
+comma
+r_uint32
+op_star
+id|p
+comma
+r_struct
+id|nfs4_create_res
+op_star
+id|res
+)paren
+(brace
+r_return
+id|nfs4_xdr_dec_create
+c_func
+(paren
+id|rqstp
+comma
+id|p
+comma
+id|res
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Decode GETATTR response&n; */
 DECL|function|nfs4_xdr_dec_getattr
 r_static
@@ -18642,6 +18721,16 @@ comma
 id|enc_link
 comma
 id|dec_link
+)paren
+comma
+id|PROC
+c_func
+(paren
+id|SYMLINK
+comma
+id|enc_symlink
+comma
+id|dec_symlink
 )paren
 comma
 id|PROC
