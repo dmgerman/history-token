@@ -1691,9 +1691,6 @@ id|usb_serial_port
 op_star
 id|port
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -1932,38 +1929,6 @@ id|count
 )paren
 (brace
 multiline_comment|/* now transfer data */
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|port-&gt;write_urb-&gt;transfer_buffer
-comma
-id|buf
-comma
-id|count
-)paren
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
 id|memcpy
 (paren
 id|port-&gt;write_urb-&gt;transfer_buffer
@@ -1973,7 +1938,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* send the data out the bulk port */
 id|port-&gt;write_urb-&gt;transfer_buffer_length
 op_assign

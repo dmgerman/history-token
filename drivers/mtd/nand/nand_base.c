@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.115 2004/08/09 13:19:45 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; *  09-24-2004  tglx: add support for hardware controllers (e.g. ECC) shared&n; *&t;&t;among multiple independend devices. Suggestions and initial patch&n; *&t;&t;from Ben Dooks &lt;ben-mtd@fluff.org&gt;&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.121 2004/10/06 19:53:11 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -712,7 +712,7 @@ mdefine_line|#define nand_verify_pages(...) (0)
 macro_line|#endif
 r_static
 r_void
-id|nand_get_chip
+id|nand_get_device
 (paren
 r_struct
 id|nand_chip
@@ -728,11 +728,11 @@ r_int
 id|new_state
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * nand_release_chip - [GENERIC] release chip&n; * @mtd:&t;MTD device structure&n; * &n; * Deselect, release chip lock and wake up anyone waiting on the device &n; */
-DECL|function|nand_release_chip
+multiline_comment|/**&n; * nand_release_device - [GENERIC] release chip&n; * @mtd:&t;MTD device structure&n; * &n; * Deselect, release chip lock and wake up anyone waiting on the device &n; */
+DECL|function|nand_release_device
 r_static
 r_void
-id|nand_release_chip
+id|nand_release_device
 (paren
 r_struct
 id|mtd_info
@@ -759,8 +759,34 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Do we have a hardware controller ? */
+r_if
+c_cond
+(paren
+id|this-&gt;controller
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|this-&gt;controller-&gt;lock
+)paren
+suffix:semicolon
+id|this-&gt;controller-&gt;active
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|this-&gt;controller-&gt;lock
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Release the chip */
-id|spin_lock_bh
+id|spin_lock
 (paren
 op_amp
 id|this-&gt;chip_lock
@@ -776,7 +802,7 @@ op_amp
 id|this-&gt;wq
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 (paren
 op_amp
 id|this-&gt;chip_lock
@@ -1515,7 +1541,7 @@ id|this-&gt;chip_shift
 )paren
 suffix:semicolon
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -1648,7 +1674,7 @@ id|getchip
 )paren
 (brace
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -2120,13 +2146,17 @@ l_int|0xff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* One more address cycle for higher density devices */
+multiline_comment|/* One more address cycle for devices &gt; 32MiB */
 r_if
 c_cond
 (paren
 id|this-&gt;chipsize
-op_amp
-l_int|0x0c000000
+OG
+(paren
+l_int|32
+op_lshift
+l_int|20
+)paren
 )paren
 id|this
 op_member_access_from_pointer
@@ -2714,11 +2744,11 @@ id|mtd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nand_get_chip - [GENERIC] Get chip for selected access&n; * @this:&t;the nand chip descriptor&n; * @mtd:&t;MTD device structure&n; * @new_state:&t;the state which is requested &n; *&n; * Get the device and lock it for exclusive access&n; */
-DECL|function|nand_get_chip
+multiline_comment|/**&n; * nand_get_device - [GENERIC] Get chip for selected access&n; * @this:&t;the nand chip descriptor&n; * @mtd:&t;MTD device structure&n; * @new_state:&t;the state which is requested &n; *&n; * Get the device and lock it for exclusive access&n; */
+DECL|function|nand_get_device
 r_static
 r_void
-id|nand_get_chip
+id|nand_get_device
 (paren
 r_struct
 id|nand_chip
@@ -2734,6 +2764,13 @@ r_int
 id|new_state
 )paren
 (brace
+r_struct
+id|nand_chip
+op_star
+id|active
+op_assign
+id|this
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 (paren
 id|wait
@@ -2744,7 +2781,49 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * Grab the lock and see if the device is available &n;&t;*/
 id|retry
 suffix:colon
-id|spin_lock_bh
+multiline_comment|/* Hardware controller shared among independend devices */
+r_if
+c_cond
+(paren
+id|this-&gt;controller
+)paren
+(brace
+id|spin_lock
+(paren
+op_amp
+id|this-&gt;controller-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|this-&gt;controller-&gt;active
+)paren
+id|active
+op_assign
+id|this-&gt;controller-&gt;active
+suffix:semicolon
+r_else
+id|this-&gt;controller-&gt;active
+op_assign
+id|this
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|this-&gt;controller-&gt;lock
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|active
+op_eq
+id|this
+)paren
+(brace
+id|spin_lock
 (paren
 op_amp
 id|this-&gt;chip_lock
@@ -2762,7 +2841,7 @@ id|this-&gt;state
 op_assign
 id|new_state
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 (paren
 op_amp
 id|this-&gt;chip_lock
@@ -2770,6 +2849,7 @@ id|this-&gt;chip_lock
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 id|set_current_state
 (paren
@@ -2779,16 +2859,16 @@ suffix:semicolon
 id|add_wait_queue
 (paren
 op_amp
-id|this-&gt;wq
+id|active-&gt;wq
 comma
 op_amp
 id|wait
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 (paren
 op_amp
-id|this-&gt;chip_lock
+id|active-&gt;chip_lock
 )paren
 suffix:semicolon
 id|schedule
@@ -2798,7 +2878,7 @@ suffix:semicolon
 id|remove_wait_queue
 (paren
 op_amp
-id|this-&gt;wq
+id|active-&gt;wq
 comma
 op_amp
 id|wait
@@ -2872,12 +2952,6 @@ id|ndelay
 l_int|100
 )paren
 suffix:semicolon
-id|spin_lock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2940,17 +3014,9 @@ id|this-&gt;state
 op_ne
 id|state
 )paren
-(brace
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2971,6 +3037,8 @@ id|mtd
 r_break
 suffix:semicolon
 )brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -2986,20 +3054,9 @@ id|NAND_STATUS_READY
 )paren
 r_break
 suffix:semicolon
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
+)brace
 id|yield
 (paren
-)paren
-suffix:semicolon
-id|spin_lock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
 )paren
 suffix:semicolon
 )brace
@@ -3014,12 +3071,6 @@ id|read_byte
 c_func
 (paren
 id|mtd
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
 )paren
 suffix:semicolon
 r_return
@@ -4183,7 +4234,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -5233,7 +5284,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -5401,7 +5452,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -5603,7 +5654,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -5732,7 +5783,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -5854,7 +5905,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -6267,7 +6318,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -6752,7 +6803,7 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -6894,7 +6945,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -7176,7 +7227,7 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -7443,7 +7494,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -7965,7 +8016,7 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -8291,7 +8342,7 @@ op_assign
 l_int|0xffffffff
 suffix:semicolon
 multiline_comment|/* Grab the lock and see if the device is available */
-id|nand_get_chip
+id|nand_get_device
 (paren
 id|this
 comma
@@ -8588,7 +8639,7 @@ id|instr
 )paren
 suffix:semicolon
 multiline_comment|/* Deselect and wake up anyone waiting on the device */
-id|nand_release_chip
+id|nand_release_device
 c_func
 (paren
 id|mtd
@@ -8618,13 +8669,6 @@ id|this
 op_assign
 id|mtd-&gt;priv
 suffix:semicolon
-id|DECLARE_WAITQUEUE
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 id|DEBUG
 (paren
 id|MTD_DEBUG_LEVEL3
@@ -8632,107 +8676,20 @@ comma
 l_string|&quot;nand_sync: called&bslash;n&quot;
 )paren
 suffix:semicolon
-id|retry
-suffix:colon
-multiline_comment|/* Grab the spinlock */
-id|spin_lock_bh
+multiline_comment|/* Grab the lock and see if the device is available */
+id|nand_get_device
 (paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
-multiline_comment|/* See what&squot;s going on */
-r_switch
-c_cond
-(paren
-id|this-&gt;state
-)paren
-(brace
-r_case
-id|FL_READY
-suffix:colon
-r_case
-id|FL_SYNCING
-suffix:colon
-id|this-&gt;state
-op_assign
-id|FL_SYNCING
-suffix:semicolon
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* Not an idle state */
-id|add_wait_queue
-(paren
-op_amp
-id|this-&gt;wq
+id|this
 comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
-id|schedule
-(paren
-)paren
-suffix:semicolon
-id|remove_wait_queue
-(paren
-op_amp
-id|this-&gt;wq
+id|mtd
 comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-r_goto
-id|retry
-suffix:semicolon
-)brace
-multiline_comment|/* Lock the device */
-id|spin_lock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Set the device to be ready again */
-r_if
-c_cond
-(paren
-id|this-&gt;state
-op_eq
 id|FL_SYNCING
 )paren
-(brace
-id|this-&gt;state
-op_assign
-id|FL_READY
 suffix:semicolon
-id|wake_up
+multiline_comment|/* Release it and go back */
+id|nand_release_device
 (paren
-op_amp
-id|this-&gt;wq
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Unlock the device */
-id|spin_unlock_bh
-(paren
-op_amp
-id|this-&gt;chip_lock
+id|mtd
 )paren
 suffix:semicolon
 )brace

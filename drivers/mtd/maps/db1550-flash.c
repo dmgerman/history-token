@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Db1550 board&n; * &n; * $Id: db1550-flash.c,v 1.3 2004/07/14 17:45:40 dwmw2 Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on db1550-flash.c:&n; * (C) 2003 Pete Popov &lt;pete_popov@yahoo.com&gt;&n; * &n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Db1550 board&n; * &n; * $Id: db1550-flash.c,v 1.6 2004/10/20 05:50:19 ppopov Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on db1550-flash.c:&n; * (C) 2003, 2004 Pete Popov &lt;ppopov@embeddedalley.com&gt;&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#ifdef &t;DEBUG_RW
 DECL|macro|DBG
 mdefine_line|#define&t;DBG(x...)&t;printk(x)
@@ -308,7 +307,7 @@ suffix:semicolon
 macro_line|#else /* USER ONLY */
 id|window_addr
 op_assign
-l_int|0x1E000000
+l_int|0x18000000
 suffix:semicolon
 id|window_size
 op_assign
@@ -377,7 +376,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Pb1550 flash: probing %d-bit flash bus&bslash;n&quot;
+l_string|&quot;Db1550 flash: probing %d-bit flash bus&bslash;n&quot;
 comma
 id|db1550_map.bankwidth
 op_star
@@ -387,8 +386,9 @@ suffix:semicolon
 id|db1550_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -463,6 +463,16 @@ id|map_destroy
 c_func
 (paren
 id|mymtd
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|db1550_map.virt
 )paren
 suffix:semicolon
 )brace

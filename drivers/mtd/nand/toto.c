@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/toto.c&n; *&n; *  Copyright (c) 2003 Texas Instruments&n; *&n; *  Derived from drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   TI fido board. It supports 32MiB and 64MiB cards&n; *&n; * $Id: toto.c,v 1.2 2003/10/21 10:04:58 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/toto.c&n; *&n; *  Copyright (c) 2003 Texas Instruments&n; *&n; *  Derived from drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   TI fido board. It supports 32MiB and 64MiB cards&n; *&n; * $Id: toto.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -24,6 +24,7 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|toto_io_base
 r_static
+r_int
 r_int
 id|toto_io_base
 op_assign
@@ -498,47 +499,6 @@ r_goto
 id|out_mtd
 suffix:semicolon
 )brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|toto_mtd-&gt;oobblock
-op_plus
-id|toto_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-(paren
-id|KERN_WARNING
-l_string|&quot;Unable to allocate NAND data buffer for toto.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out_mtd
-suffix:semicolon
-)brace
 multiline_comment|/* Register the partitions */
 r_switch
 c_cond
@@ -653,39 +613,10 @@ id|toto_cleanup
 r_void
 )paren
 (brace
-r_struct
-id|nand_chip
-op_star
-id|this
-op_assign
-(paren
-r_struct
-id|nand_chip
-op_star
-)paren
-op_amp
-id|toto_mtd
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Unregister partitions */
-id|del_mtd_partitions
-c_func
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
 id|toto_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
-(paren
-id|toto_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffers */
-id|kfree
-(paren
-id|this-&gt;data_buf
 )paren
 suffix:semicolon
 multiline_comment|/* Free the MTD device structure */

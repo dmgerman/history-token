@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.22 2004/07/12 12:35:28 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.23 2004/08/19 01:54:36 tpoynor Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -288,6 +288,8 @@ multiline_comment|/* we might get involved when memory gets low, so use PF_MEMAL
 id|current-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
+op_or
+id|PF_NOFREEZE
 suffix:semicolon
 id|daemonize
 c_func

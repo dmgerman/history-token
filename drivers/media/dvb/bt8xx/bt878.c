@@ -2051,7 +2051,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|bt878_remove
+)paren
 comma
 )brace
 suffix:semicolon

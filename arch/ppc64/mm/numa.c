@@ -305,6 +305,15 @@ op_amp
 id|len
 )paren
 suffix:semicolon
+id|len
+op_assign
+id|len
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -330,8 +339,6 @@ c_cond
 id|interrupt_server
 (braket
 id|len
-op_minus
-l_int|1
 )braket
 op_eq
 id|hw_cpuid

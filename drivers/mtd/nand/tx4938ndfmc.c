@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/mtd/nand/tx4938ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device connected to&n; *   TX4938 internal NAND Memory Controller.&n; *   TX4938 NDFMC is almost same as TX4925 NDFMC, but register size are 64 bit.&n; *&n; * Author: source@mvista.com&n; *&n; * Based on spia.c by Steven J. Hill&n; *&n; * $Id: tx4938ndfmc.c,v 1.2 2004/03/27 19:55:53 gleixner Exp $&n; *&n; * Copyright (C) 2000-2001 Toshiba Corporation &n; *&n; * 2003 (c) MontaVista Software, Inc. This file is licensed under the&n; * terms of the GNU General Public License version 2. This program is&n; * licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * drivers/mtd/nand/tx4938ndfmc.c&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device connected to&n; *   TX4938 internal NAND Memory Controller.&n; *   TX4938 NDFMC is almost same as TX4925 NDFMC, but register size are 64 bit.&n; *&n; * Author: source@mvista.com&n; *&n; * Based on spia.c by Steven J. Hill&n; *&n; * $Id: tx4938ndfmc.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * Copyright (C) 2000-2001 Toshiba Corporation &n; *&n; * 2003 (c) MontaVista Software, Inc. This file is licensed under the&n; * terms of the GNU General Public License version 2. This program is&n; * licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1347,47 +1347,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|tx4938ndfmc_mtd-&gt;oobblock
-op_plus
-id|tx4938ndfmc_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Unable to allocate NAND data buffer for TX4938.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|tx4938ndfmc_mtd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1496,28 +1455,8 @@ id|tx4938ndfmc_cleanup
 r_void
 )paren
 (brace
-r_struct
-id|nand_chip
-op_star
-id|this
-op_assign
-(paren
-r_struct
-id|nand_chip
-op_star
-)paren
-id|tx4938ndfmc_mtd-&gt;priv
-suffix:semicolon
-multiline_comment|/* Unregister the device */
-macro_line|#ifdef CONFIG_MTD_CMDLINE_PARTS
-id|del_mtd_partitions
-c_func
-(paren
-id|tx4938ndfmc_mtd
-)paren
-suffix:semicolon
-macro_line|#endif
-id|del_mtd_device
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
 id|tx4938ndfmc_mtd
 )paren
@@ -1526,12 +1465,6 @@ multiline_comment|/* Free the MTD device structure */
 id|kfree
 (paren
 id|tx4938ndfmc_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffer */
-id|kfree
-(paren
-id|this-&gt;data_buf
 )paren
 suffix:semicolon
 )brace

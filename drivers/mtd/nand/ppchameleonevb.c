@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/ppchameleonevb.c&n; *&n; *  Copyright (C) 2003 DAVE Srl (info@wawnet.biz)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *&n; *&n; * $Id: ppchameleonevb.c,v 1.2 2004/05/05 22:09:54 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash devices found on the&n; *   PPChameleon/PPChameleonEVB system.&n; *   PPChameleon options (autodetected):&n; *   - BA model: no NAND&n; *   - ME model: 32MB (Samsung K9F5608U0B)&n; *   - HI model: 128MB (Samsung K9F1G08UOM)&n; *   PPChameleonEVB options:&n; *   - 32MB (Samsung K9F5608U0B)&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/ppchameleonevb.c&n; *&n; *  Copyright (C) 2003 DAVE Srl (info@wawnet.biz)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *&n; *&n; * $Id: ppchameleonevb.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash devices found on the&n; *   PPChameleon/PPChameleonEVB system.&n; *   PPChameleon options (autodetected):&n; *   - BA model: no NAND&n; *   - ME model: 32MB (Samsung K9F5608U0B)&n; *   - HI model: 128MB (Samsung K9F1G08UOM)&n; *   PPChameleonEVB options:&n; *   - 32MB (Samsung K9F5608U0B)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -111,47 +111,6 @@ id|ppchameleonevb_fio_pbase
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Internal buffers. Page buffer and oob buffer for one block */
-DECL|variable|data_buf
-r_static
-id|u_char
-id|data_buf
-(braket
-l_int|2048
-op_plus
-l_int|64
-)braket
-suffix:semicolon
-DECL|variable|oob_buf
-r_static
-id|u_char
-id|oob_buf
-(braket
-l_int|64
-op_star
-l_int|64
-)braket
-suffix:semicolon
-DECL|variable|data_buf_evb
-r_static
-id|u_char
-id|data_buf_evb
-(braket
-l_int|512
-op_plus
-l_int|16
-)braket
-suffix:semicolon
-DECL|variable|oob_buf_evb
-r_static
-id|u_char
-id|oob_buf_evb
-(braket
-l_int|16
-op_star
-l_int|32
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
 multiline_comment|/*&n; * Define static partitions for flash devices&n; */
 DECL|variable|partition_info_hi
@@ -627,10 +586,14 @@ id|mtd_parts
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ppchameleon_fio_base
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ppchameleonevb_fio_base
 suffix:semicolon
 multiline_comment|/*********************************&n;&t;* Processor module NAND (if any) *&n;&t;*********************************/
@@ -677,8 +640,9 @@ multiline_comment|/* map physical address */
 id|ppchameleon_fio_base
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -964,15 +928,6 @@ id|this-&gt;eccmode
 op_assign
 id|NAND_ECC_SOFT
 suffix:semicolon
-multiline_comment|/* Set internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|data_buf
-suffix:semicolon
-id|this-&gt;oob_buf
-op_assign
-id|oob_buf
-suffix:semicolon
 multiline_comment|/* Scan to find existence of the device (it could not be mounted) */
 r_if
 c_cond
@@ -1154,8 +1109,9 @@ multiline_comment|/* map physical address */
 id|ppchameleonevb_fio_base
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -1489,15 +1445,6 @@ id|this-&gt;eccmode
 op_assign
 id|NAND_ECC_SOFT
 suffix:semicolon
-multiline_comment|/* Set internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|data_buf_evb
-suffix:semicolon
-id|this-&gt;oob_buf
-op_assign
-id|oob_buf_evb
-suffix:semicolon
 multiline_comment|/* Scan to find existence of the device */
 r_if
 c_cond
@@ -1634,6 +1581,41 @@ r_struct
 id|nand_chip
 op_star
 id|this
+suffix:semicolon
+multiline_comment|/* Release resources, unregister device(s) */
+id|nand_release
+(paren
+id|ppchameleon_mtd
+)paren
+suffix:semicolon
+id|nand_release
+(paren
+id|ppchameleonevb_mtd
+)paren
+suffix:semicolon
+multiline_comment|/* Release iomaps */
+id|this
+op_assign
+(paren
+r_struct
+id|nand_chip
+op_star
+)paren
+op_amp
+id|ppchameleon_mtd
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|iounmap
+(paren
+(paren
+r_void
+op_star
+)paren
+id|this-&gt;IO_ADDR_R
+suffix:semicolon
+id|this
 op_assign
 (paren
 r_struct
@@ -1646,19 +1628,20 @@ id|ppchameleonevb_mtd
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
+id|iounmap
 (paren
-id|ppchameleonevb_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffer */
-id|kfree
 (paren
-id|this-&gt;data_buf
+r_void
+op_star
 )paren
+id|this-&gt;IO_ADDR_R
 suffix:semicolon
 multiline_comment|/* Free the MTD device structure */
+id|kfree
+(paren
+id|ppchameleon_mtd
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|ppchameleonevb_mtd

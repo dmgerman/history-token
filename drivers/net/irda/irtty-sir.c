@@ -657,8 +657,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|ptr
 comma
 id|writelen

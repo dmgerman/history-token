@@ -4265,8 +4265,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|s.string
 comma
 id|s.length
@@ -4341,8 +4339,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|strip_info-&gt;tx_head
 comma

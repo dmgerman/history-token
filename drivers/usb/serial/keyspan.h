@@ -92,9 +92,6 @@ id|usb_serial_port
 op_star
 id|port
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char

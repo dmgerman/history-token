@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;syslib/gen550.h&gt;
 DECL|function|fixup_bigphys_addr
 id|phys_addr_t
