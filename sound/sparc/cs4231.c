@@ -951,6 +951,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; *  Basic I/O functions&n; */
 DECL|function|snd_cs4231_outm
+r_static
 r_void
 id|snd_cs4231_outm
 c_func
@@ -1536,8 +1537,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_cs4231_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_cs4231_debug
 c_func
