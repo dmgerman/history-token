@@ -4,9 +4,7 @@ macro_line|#include &quot;minix.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
 r_static
 r_void
 id|minix_read_inode
@@ -88,20 +86,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|minix_free_inode
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1459,7 +1447,7 @@ op_assign
 id|minix_count_free_blocks
 c_func
 (paren
-id|sb
+id|sbi
 )paren
 suffix:semicolon
 id|buf-&gt;f_bavail
@@ -1475,7 +1463,7 @@ op_assign
 id|minix_count_free_inodes
 c_func
 (paren
-id|sb
+id|sbi
 )paren
 suffix:semicolon
 id|buf-&gt;f_namelen
@@ -2504,33 +2492,14 @@ r_int
 id|wait
 )paren
 (brace
-r_struct
-id|buffer_head
-op_star
-id|bh
-suffix:semicolon
-id|lock_kernel
+id|brelse
 c_func
 (paren
-)paren
-suffix:semicolon
-id|bh
-op_assign
 id|minix_update_inode
 c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|brelse
-c_func
-(paren
-id|bh
 )paren
 suffix:semicolon
 )brace

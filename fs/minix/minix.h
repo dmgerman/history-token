@@ -206,9 +206,9 @@ id|minix_count_free_inodes
 c_func
 (paren
 r_struct
-id|super_block
+id|minix_sb_info
 op_star
-id|sb
+id|sbi
 )paren
 suffix:semicolon
 r_extern
@@ -243,9 +243,9 @@ id|minix_count_free_blocks
 c_func
 (paren
 r_struct
-id|super_block
+id|minix_sb_info
 op_star
-id|sb
+id|sbi
 )paren
 suffix:semicolon
 r_extern
