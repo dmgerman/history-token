@@ -262,13 +262,14 @@ id|unit
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ac3200_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|ac3200_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -867,14 +868,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_AC3200&t;
-(brace
-id|ac3200_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -893,6 +886,14 @@ id|eisa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_AC3200&t;
+(brace
+id|ac3200_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_ES3210
 (brace
 id|es_probe
