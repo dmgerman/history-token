@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
 DECL|variable|smp_b_stepping
 r_static
@@ -4309,6 +4311,89 @@ suffix:colon
 id|zap_low_mappings
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_void
+(paren
+op_star
+id|interrupt
+(braket
+id|NR_IRQS
+)braket
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * The following vectors are part of the Linux architecture, there&n; * is no hardware IRQ pin equivalent for them, they are triggered&n; * through the ICC by us (IPIs)&n; */
+DECL|function|BUILD_SMP_INTERRUPT
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|reschedule_interrupt
+comma
+id|RESCHEDULE_VECTOR
+)paren
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|invalidate_interrupt
+comma
+id|INVALIDATE_TLB_VECTOR
+)paren
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|call_function_interrupt
+comma
+id|CALL_FUNCTION_VECTOR
+)paren
+r_void
+id|__init
+id|smp_intr_init
+c_func
+(paren
+)paren
+(brace
+multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|FIRST_DEVICE_VECTOR
+comma
+id|interrupt
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The reschedule interrupt is a CPU-to-CPU reschedule-helper&n;&t; * IPI, driven by wakeup.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|RESCHEDULE_VECTOR
+comma
+id|reschedule_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for invalidation */
+id|set_intr_gate
+c_func
+(paren
+id|INVALIDATE_TLB_VECTOR
+comma
+id|invalidate_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for generic function call */
+id|set_intr_gate
+c_func
+(paren
+id|CALL_FUNCTION_VECTOR
+comma
+id|call_function_interrupt
 )paren
 suffix:semicolon
 )brace
