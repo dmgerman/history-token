@@ -1,10 +1,11 @@
 multiline_comment|/*&n; * Xpram.c -- the S/390 expanded memory RAM-disk&n; *           &n; * significant parts of this code are based on&n; * the sbull device driver presented in&n; * A. Rubini: Linux Device Drivers&n; *&n; * Author of XPRAM specific coding: Reinhard Buendgen&n; *                                  buendgen@de.ibm.com&n; * Rewrite for 2.5: Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; * External interfaces:&n; *   Interfaces to linux kernel&n; *        xpram_setup: read kernel parameters&n; *   Device specific file operations&n; *        xpram_iotcl&n; *        xpram_open&n; *&n; * &quot;ad-hoc&quot; partitioning:&n; *    the expanded memory can be partitioned among several devices &n; *    (with different minors). The partitioning set up can be&n; *    set by kernel or module parameters (int devs &amp; int sizes[])&n; *&n; * Potential future improvements:&n; *   generic hard disk support to replace ad-hoc partitioning&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;  /* isdigit, isxdigit */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
 macro_line|#include &lt;linux/sysdev.h&gt;
@@ -90,6 +91,7 @@ suffix:semicolon
 DECL|variable|xpram_sizes
 r_static
 r_int
+r_int
 id|xpram_sizes
 (braket
 id|XPRAM_MAX_DEVS
@@ -133,12 +135,14 @@ id|sizes
 id|XPRAM_MAX_DEVS
 )braket
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|devs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -513,7 +517,7 @@ l_int|1
 id|PRINT_ERR
 c_func
 (paren
-l_string|&quot;page in failed for page index %ld.&bslash;n&quot;
+l_string|&quot;page in failed for page index %u.&bslash;n&quot;
 comma
 id|xpage_index
 )paren
@@ -631,7 +635,7 @@ l_int|1
 id|PRINT_ERR
 c_func
 (paren
-l_string|&quot;page out failed for page index %ld.&bslash;n&quot;
+l_string|&quot;page out failed for page index %u.&bslash;n&quot;
 comma
 id|xpage_index
 )paren
@@ -674,6 +678,16 @@ c_func
 (paren
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mem_page
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|rc
 op_assign
@@ -734,6 +748,15 @@ c_func
 (paren
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mem_page
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|page_index
 op_assign
@@ -874,6 +897,22 @@ OG
 id|xdev-&gt;size
 )paren
 multiline_comment|/* Request size is no page-aligned. */
+r_goto
+id|fail
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|bio-&gt;bi_sector
+op_rshift
+l_int|3
+)paren
+OG
+l_int|0xffffffffU
+op_minus
+id|xdev-&gt;offset
+)paren
 r_goto
 id|fail
 suffix:semicolon
@@ -1331,7 +1370,7 @@ id|i
 id|PRINT_INFO
 c_func
 (paren
-l_string|&quot;  size of partition %d: %d kB&bslash;n&quot;
+l_string|&quot;  size of partition %d: %u kB&bslash;n&quot;
 comma
 id|i
 comma
@@ -1355,7 +1394,7 @@ suffix:semicolon
 id|PRINT_DEBUG
 c_func
 (paren
-l_string|&quot;  memory needed (for sized partitions): %ld kB&bslash;n&quot;
+l_string|&quot;  memory needed (for sized partitions): %lu kB&bslash;n&quot;
 comma
 id|mem_needed
 )paren
@@ -1416,7 +1455,7 @@ id|PRINT_INFO
 c_func
 (paren
 l_string|&quot;  automatically determined &quot;
-l_string|&quot;partition size: %ld kB&bslash;n&quot;
+l_string|&quot;partition size: %lu kB&bslash;n&quot;
 comma
 id|mem_auto
 )paren
@@ -1849,10 +1888,14 @@ suffix:semicolon
 id|PRINT_INFO
 c_func
 (paren
-l_string|&quot;  %li pages expanded memory found (%li KB).&bslash;n&quot;
+l_string|&quot;  %u pages expanded memory found (%lu KB).&bslash;n&quot;
 comma
 id|xpram_pages
 comma
+(paren
+r_int
+r_int
+)paren
 id|xpram_pages
 op_star
 l_int|4
