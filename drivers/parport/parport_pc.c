@@ -11024,7 +11024,7 @@ multiline_comment|/* VIA 8231 support by Pavel Fedin &lt;sonic_amiga@rambler.ru&
 DECL|variable|parport_init_mode
 r_static
 r_int
-id|__initdata
+id|__devinitdata
 id|parport_init_mode
 op_assign
 l_int|0
