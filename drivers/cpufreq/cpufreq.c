@@ -1818,7 +1818,6 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1828,10 +1827,6 @@ comma
 id|cpu_policy-&gt;cpu
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|out
 suffix:colon
 id|cpufreq_cpu_put
