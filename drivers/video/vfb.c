@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/*&n;     *  RAM we reserve for the frame buffer. This defines the maximum screen&n;     *  size&n;     *&n;     *  The default can be overridden if the driver is compiled as a module&n;     */
 DECL|macro|VIDEOMEMSIZE
 mdefine_line|#define VIDEOMEMSIZE&t;(1*1024*1024)&t;/* 1 MB */
@@ -60,12 +59,6 @@ id|vfb_pseudo_palette
 (braket
 l_int|17
 )braket
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -373,14 +366,6 @@ op_assign
 dot
 id|fb_set_var
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-id|gen_set_cmap
-comma
-dot
-id|fb_set_cmap
-id|gen_set_cmap
 comma
 dot
 id|fb_check_var
@@ -1531,31 +1516,10 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|vfb_fix.id
-)paren
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|fb_info.updatevar
 op_assign
