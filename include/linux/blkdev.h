@@ -253,6 +253,8 @@ l_int|2
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|BLK_MAX_CDB
+mdefine_line|#define BLK_MAX_CDB&t;16
 multiline_comment|/*&n; * try to put the fields that are referenced together in the same cacheline&n; */
 DECL|struct|request
 r_struct
@@ -420,7 +422,7 @@ r_int
 r_char
 id|cmd
 (braket
-l_int|16
+id|BLK_MAX_CDB
 )braket
 suffix:semicolon
 DECL|member|data_len
