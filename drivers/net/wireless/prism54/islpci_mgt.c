@@ -1602,6 +1602,11 @@ c_func
 id|wait
 )paren
 suffix:semicolon
+op_star
+id|recvframe
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
