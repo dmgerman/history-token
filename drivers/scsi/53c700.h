@@ -71,11 +71,6 @@ comma
 r_struct
 id|device
 op_star
-comma
-r_int
-r_int
-comma
-id|u8
 )paren
 suffix:semicolon
 r_int
