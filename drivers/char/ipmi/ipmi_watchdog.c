@@ -548,7 +548,7 @@ id|send_heartbeat_now
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_int
@@ -1214,7 +1214,7 @@ r_void
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_int
@@ -1444,7 +1444,7 @@ r_void
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_struct
