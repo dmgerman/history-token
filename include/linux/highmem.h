@@ -68,7 +68,7 @@ id|page
 suffix:semicolon
 )brace
 DECL|macro|kunmap
-mdefine_line|#define kunmap(page) do { } while (0)
+mdefine_line|#define kunmap(page) do { (void) (page); } while (0)
 DECL|macro|kmap_atomic
 mdefine_line|#define kmap_atomic(page,idx)&t;&t;kmap(page)
 DECL|macro|kunmap_atomic

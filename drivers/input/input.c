@@ -107,6 +107,13 @@ c_func
 id|input_event
 )paren
 suffix:semicolon
+DECL|variable|input_devclass
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|input_devclass
+)paren
+suffix:semicolon
 DECL|macro|INPUT_MAJOR
 mdefine_line|#define INPUT_MAJOR&t;13
 DECL|macro|INPUT_DEVICES
