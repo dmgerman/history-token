@@ -488,7 +488,27 @@ DECL|macro|__NR_nfsservctl
 mdefine_line|#define __NR_nfsservctl         254
 DECL|macro|__NR_aplib
 mdefine_line|#define __NR_aplib              255
-multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 255, since&n; *          all of the syscall tables in the Sparc64 kernel are&n; *          sized to have 256 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-255 range.&n; */
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;256
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;257
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;258
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;259
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;260
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;261
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;262
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;263
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;264
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;265
+multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 265, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 266 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-265 range.&n; */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x6d&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;movcc %%xcc, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 DECL|macro|_syscall1
