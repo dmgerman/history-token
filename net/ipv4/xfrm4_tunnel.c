@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
-macro_line|#include &lt;net/inet_ecn.h&gt;
 DECL|function|xfrm4_tunnel_check_size
 r_int
 id|xfrm4_tunnel_check_size
