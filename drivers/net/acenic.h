@@ -862,8 +862,26 @@ DECL|macro|BD_FLG_IP_SUM
 mdefine_line|#define BD_FLG_IP_SUM&t;&t;0x02
 DECL|macro|BD_FLG_END
 mdefine_line|#define BD_FLG_END&t;&t;0x04
+DECL|macro|BD_FLG_MORE
+mdefine_line|#define BD_FLG_MORE&t;&t;0x08
 DECL|macro|BD_FLG_JUMBO
 mdefine_line|#define BD_FLG_JUMBO&t;&t;0x10
+DECL|macro|BD_FLG_UCAST
+mdefine_line|#define BD_FLG_UCAST&t;&t;0x20
+DECL|macro|BD_FLG_MCAST
+mdefine_line|#define BD_FLG_MCAST&t;&t;0x40
+DECL|macro|BD_FLG_BCAST
+mdefine_line|#define BD_FLG_BCAST&t;&t;0x60
+DECL|macro|BD_FLG_TYP_MASK
+mdefine_line|#define BD_FLG_TYP_MASK&t;&t;0x60
+DECL|macro|BD_FLG_IP_FRAG
+mdefine_line|#define BD_FLG_IP_FRAG&t;&t;0x80
+DECL|macro|BD_FLG_IP_FRAG_END
+mdefine_line|#define BD_FLG_IP_FRAG_END&t;0x100
+DECL|macro|BD_FLG_VLAN_TAG
+mdefine_line|#define BD_FLG_VLAN_TAG&t;&t;0x200
+DECL|macro|BD_FLG_FRAME_ERROR
+mdefine_line|#define BD_FLG_FRAME_ERROR&t;0x400
 DECL|macro|BD_FLG_COAL_NOW
 mdefine_line|#define BD_FLG_COAL_NOW&t;&t;0x800
 DECL|macro|BD_FLG_MINI
@@ -1395,6 +1413,14 @@ id|dma_addr_t
 id|info_dma
 suffix:semicolon
 multiline_comment|/* 32/64 bit */
+macro_line|#if ACENIC_DO_VLAN
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
+macro_line|#endif
 DECL|member|version
 DECL|member|link
 r_int
@@ -2098,5 +2124,38 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+r_static
+r_void
+id|ace_vlan_rx_register
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ace_vlan_rx_kill_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ACENIC_H_ */
 eof

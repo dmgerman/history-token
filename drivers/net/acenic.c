@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#ifdef SIOCETHTOOL
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#endif
@@ -594,6 +595,13 @@ DECL|macro|BOARD_IDX_STATIC
 mdefine_line|#define BOARD_IDX_STATIC&t;0
 DECL|macro|BOARD_IDX_OVERFLOW
 mdefine_line|#define BOARD_IDX_OVERFLOW&t;-1
+macro_line|#if (defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)) &amp;&amp; &bslash;&n;&t;defined(NETIF_F_HW_VLAN_RX)
+DECL|macro|ACENIC_DO_VLAN
+mdefine_line|#define ACENIC_DO_VLAN&t;1
+macro_line|#else
+DECL|macro|ACENIC_DO_VLAN
+mdefine_line|#define ACENIC_DO_VLAN&t;0
+macro_line|#endif
 macro_line|#include &quot;acenic.h&quot;
 multiline_comment|/*&n; * These must be defined before the firmware is included.&n; */
 DECL|macro|MAX_TEXT_LEN
@@ -1066,6 +1074,22 @@ id|NETIF_F_SG
 op_or
 id|NETIF_F_IP_CSUM
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_HW_VLAN_TX
+op_or
+id|NETIF_F_HW_VLAN_RX
+suffix:semicolon
+id|dev-&gt;vlan_rx_register
+op_assign
+id|ace_vlan_rx_register
+suffix:semicolon
+id|dev-&gt;vlan_rx_kill_vid
+op_assign
+id|ace_vlan_rx_kill_vid
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4485,6 +4509,12 @@ id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|info-&gt;rx_std_ctrl.flags
+op_or_assign
+id|RCB_FLG_VLAN_ASSIST
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -4568,6 +4598,12 @@ id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|info-&gt;rx_jumbo_ctrl.flags
+op_or_assign
+id|RCB_FLG_VLAN_ASSIST
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -4681,6 +4717,12 @@ id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|info-&gt;rx_mini_ctrl.flags
+op_or_assign
+id|RCB_FLG_VLAN_ASSIST
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -4950,6 +4992,12 @@ op_or_assign
 id|RCB_FLG_COAL_INT_ONLY
 suffix:semicolon
 macro_line|#endif
+macro_line|#if ACENIC_DO_VLAN
+id|tmp
+op_or_assign
+id|RCB_FLG_VLAN_ASSIST
+suffix:semicolon
+macro_line|#endif
 id|info-&gt;tx_ctrl.flags
 op_assign
 id|tmp
@@ -5068,7 +5116,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: more than %i NICs detected, &quot;
+l_string|&quot;%s: more then %i NICs detected, &quot;
 l_string|&quot;ignoring module parameters!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7676,6 +7724,40 @@ r_return
 id|evtcsm
 suffix:semicolon
 )brace
+macro_line|#if ACENIC_DO_VLAN
+DECL|function|ace_vlan_rx
+r_static
+r_int
+id|ace_vlan_rx
+c_func
+(paren
+r_struct
+id|ace_private
+op_star
+id|ap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+id|u16
+id|vlan_tag
+)paren
+(brace
+r_return
+id|vlan_hwaccel_rx
+c_func
+(paren
+id|skb
+comma
+id|ap-&gt;vlgrp
+comma
+id|vlan_tag
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|ace_rx_int
 r_static
 r_void
@@ -8009,13 +8091,41 @@ op_assign
 id|CHECKSUM_NONE
 suffix:semicolon
 )brace
+multiline_comment|/* send it up */
+macro_line|#if ACENIC_DO_VLAN
+r_if
+c_cond
+(paren
+id|ap-&gt;vlgrp
+op_ne
+l_int|NULL
+op_logical_and
+(paren
+id|bd_flags
+op_amp
+id|BD_FLG_VLAN_TAG
+)paren
+)paren
+(brace
+id|ace_vlan_rx
+c_func
+(paren
+id|ap
+comma
+id|skb
+comma
+id|retdesc-&gt;vlan
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|netif_rx
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* send it up */
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -8740,6 +8850,115 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#if ACENIC_DO_VLAN
+DECL|function|ace_vlan_rx_register
+r_static
+r_void
+id|ace_vlan_rx_register
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+(brace
+r_struct
+id|ace_private
+op_star
+id|ap
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ap-&gt;vlgrp
+op_assign
+id|grp
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+DECL|function|ace_vlan_rx_kill_vid
+r_static
+r_void
+id|ace_vlan_rx_kill_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+(brace
+r_struct
+id|ace_private
+op_star
+id|ap
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;vlgrp
+)paren
+id|ap-&gt;vlgrp-&gt;vlan_devices
+(braket
+id|vid
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* ACENIC_DO_VLAN */
 DECL|function|ace_open
 r_static
 r_int
@@ -9431,6 +9650,9 @@ id|addr
 comma
 id|u32
 id|flagsize
+comma
+id|u32
+id|vlan_tag
 )paren
 (brace
 macro_line|#if !USE_TX_COAL_NOW
@@ -9482,6 +9704,17 @@ op_amp
 id|desc-&gt;flagsize
 )paren
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|writel
+c_func
+(paren
+id|vlan_tag
+comma
+op_amp
+id|desc-&gt;vlanres
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -9499,6 +9732,12 @@ id|desc-&gt;flagsize
 op_assign
 id|flagsize
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+id|desc-&gt;vlanres
+op_assign
+id|vlan_tag
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|ace_start_xmit
@@ -9595,6 +9834,11 @@ macro_line|#endif
 id|dma_addr_t
 id|mapping
 suffix:semicolon
+id|u32
+id|vlan_tag
+op_assign
+l_int|0
+suffix:semicolon
 id|mapping
 op_assign
 id|ace_map_tx_skb
@@ -9632,6 +9876,31 @@ id|flagsize
 op_or_assign
 id|BD_FLG_TCP_UDP_SUM
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+r_if
+c_cond
+(paren
+id|vlan_tx_tag_present
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|flagsize
+op_or_assign
+id|BD_FLG_VLAN_TAG
+suffix:semicolon
+id|vlan_tag
+op_assign
+id|vlan_tx_tag_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|desc
 op_assign
 id|ap-&gt;tx_ring
@@ -9680,6 +9949,8 @@ comma
 id|mapping
 comma
 id|flagsize
+comma
+id|vlan_tag
 )paren
 suffix:semicolon
 )brace
@@ -9688,6 +9959,11 @@ r_else
 (brace
 id|dma_addr_t
 id|mapping
+suffix:semicolon
+id|u32
+id|vlan_tag
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -9733,6 +10009,31 @@ id|flagsize
 op_or_assign
 id|BD_FLG_TCP_UDP_SUM
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+r_if
+c_cond
+(paren
+id|vlan_tx_tag_present
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|flagsize
+op_or_assign
+id|BD_FLG_VLAN_TAG
+suffix:semicolon
+id|vlan_tag
+op_assign
+id|vlan_tx_tag_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|ace_load_tx_bd
 c_func
 (paren
@@ -9745,6 +10046,8 @@ comma
 id|mapping
 comma
 id|flagsize
+comma
+id|vlan_tag
 )paren
 suffix:semicolon
 id|idx
@@ -9948,6 +10251,8 @@ comma
 id|mapping
 comma
 id|flagsize
+comma
+id|vlan_tag
 )paren
 suffix:semicolon
 )brace
