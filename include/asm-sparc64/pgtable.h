@@ -310,11 +310,11 @@ mdefine_line|#define pmd_set(pmdp, ptep)&t;&bslash;&n;&t;(pmd_val(*(pmdp)) = (__
 DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp, pmdp)&t;&bslash;&n;&t;(pgd_val(*(pgdp)) = (__pa((unsigned long) (pmdp)) &gt;&gt; 11UL))
 DECL|macro|__pmd_page
-mdefine_line|#define __pmd_page(pmd)&t;&t;&t;((unsigned long) __va((pmd_val(pmd)&lt;&lt;11UL)))
+mdefine_line|#define __pmd_page(pmd)&t;&t;&bslash;&n;&t;((unsigned long) __va((((unsigned long)pmd_val(pmd))&lt;&lt;11UL)))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd) &t;&t;&t;virt_to_page((void *)__pmd_page(pmd))
 DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd)&t;&t;&t;((unsigned long) __va((pgd_val(pgd)&lt;&lt;11UL)))
+mdefine_line|#define pgd_page(pgd)&t;&t;&bslash;&n;&t;((unsigned long) __va((((unsigned long)pgd_val(pgd))&lt;&lt;11UL)))
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte) &t;&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
@@ -326,17 +326,17 @@ mdefine_line|#define pmd_none(pmd)&t;&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;&t;(0)
 DECL|macro|pmd_present
-mdefine_line|#define pmd_present(pmd)&t;&t;(pmd_val(pmd) != 0UL)
+mdefine_line|#define pmd_present(pmd)&t;&t;(pmd_val(pmd) != 0U)
 DECL|macro|pmd_clear
-mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;(pmd_val(*(pmdp)) = 0UL)
+mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;(pmd_val(*(pmdp)) = 0U)
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
 DECL|macro|pgd_bad
 mdefine_line|#define pgd_bad(pgd)&t;&t;&t;(0)
 DECL|macro|pgd_present
-mdefine_line|#define pgd_present(pgd)&t;&t;(pgd_val(pgd) != 0UL)
+mdefine_line|#define pgd_present(pgd)&t;&t;(pgd_val(pgd) != 0U)
 DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0UL)
+mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0U)
 multiline_comment|/* The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|macro|pte_read
 mdefine_line|#define pte_read(pte)&t;&t;(pte_val(pte) &amp; _PAGE_READ)

@@ -7639,6 +7639,11 @@ l_int|0
 )braket
 op_or_assign
 (paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|pgd_val
 c_func
 (paren
@@ -7646,6 +7651,7 @@ id|init_mm.pgd
 (braket
 l_int|0
 )braket
+)paren
 )paren
 op_rshift
 l_int|10
@@ -7657,6 +7663,11 @@ l_int|0
 )braket
 op_or_assign
 (paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|pgd_val
 c_func
 (paren
@@ -7664,6 +7675,7 @@ id|init_mm.pgd
 (braket
 l_int|0
 )braket
+)paren
 )paren
 op_amp
 l_int|0x3ff
