@@ -495,6 +495,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|function|filemap_sync
 r_static
+r_inline
 r_void
 id|filemap_sync
 c_func
@@ -581,6 +582,7 @@ suffix:semicolon
 macro_line|#else
 DECL|function|filemap_sync
 r_static
+r_inline
 r_void
 id|filemap_sync
 c_func

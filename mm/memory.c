@@ -1385,6 +1385,7 @@ suffix:semicolon
 )brace
 DECL|function|copy_pmd_range
 r_static
+r_inline
 r_int
 id|copy_pmd_range
 c_func
@@ -1537,6 +1538,7 @@ suffix:semicolon
 )brace
 DECL|function|copy_pud_range
 r_static
+r_inline
 r_int
 id|copy_pud_range
 c_func
@@ -2205,6 +2207,7 @@ suffix:semicolon
 )brace
 DECL|function|zap_pmd_range
 r_static
+r_inline
 r_void
 id|zap_pmd_range
 c_func
@@ -2306,6 +2309,7 @@ suffix:semicolon
 )brace
 DECL|function|zap_pud_range
 r_static
+r_inline
 r_void
 id|zap_pud_range
 c_func
@@ -4878,7 +4882,6 @@ suffix:semicolon
 multiline_comment|/*&n; * maps a range of physical memory into the requested pages. the old&n; * mappings are removed. any references to nonexistent pages results&n; * in null mappings (currently treated as &quot;copy-on-access&quot;)&n; */
 DECL|function|remap_pte_range
 r_static
-r_inline
 r_int
 id|remap_pte_range
 c_func

@@ -1827,6 +1827,7 @@ suffix:semicolon
 )brace
 DECL|function|unuse_pmd_range
 r_static
+r_inline
 r_int
 id|unuse_pmd_range
 c_func
@@ -1942,6 +1943,7 @@ suffix:semicolon
 )brace
 DECL|function|unuse_pud_range
 r_static
+r_inline
 r_int
 id|unuse_pud_range
 c_func

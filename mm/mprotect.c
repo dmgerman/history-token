@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|change_pte_range
 r_static
-r_inline
 r_void
 id|change_pte_range
 c_func

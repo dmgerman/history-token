@@ -107,6 +107,7 @@ suffix:semicolon
 )brace
 DECL|function|vunmap_pmd_range
 r_static
+r_inline
 r_void
 id|vunmap_pmd_range
 c_func
@@ -194,6 +195,7 @@ suffix:semicolon
 )brace
 DECL|function|vunmap_pud_range
 r_static
+r_inline
 r_void
 id|vunmap_pud_range
 c_func
@@ -538,6 +540,7 @@ suffix:semicolon
 )brace
 DECL|function|vmap_pmd_range
 r_static
+r_inline
 r_int
 id|vmap_pmd_range
 c_func
@@ -651,6 +654,7 @@ suffix:semicolon
 )brace
 DECL|function|vmap_pud_range
 r_static
+r_inline
 r_int
 id|vmap_pud_range
 c_func
