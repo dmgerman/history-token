@@ -14314,6 +14314,16 @@ comma
 op_amp
 id|mddev-&gt;recovery
 )paren
+op_logical_and
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|MD_RECOVERY_INTR
+comma
+op_amp
+id|mddev-&gt;recovery
+)paren
 )paren
 (brace
 multiline_comment|/* success...*/
