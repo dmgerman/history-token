@@ -11737,6 +11737,11 @@ c_cond
 id|len
 OG
 id|RX_COPY_THRESHOLD
+op_logical_and
+id|tp-&gt;rx_offset
+op_eq
+l_int|2
+multiline_comment|/* rx_offset != 2 iff this is a 5701 card running&n;&t;&t;&t; * in PCI-X mode [see tg3_get_invariants()] */
 )paren
 (brace
 r_int
