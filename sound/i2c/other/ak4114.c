@@ -1978,7 +1978,7 @@ op_assign
 id|snd_ak4114_spdif_playback_get
 comma
 dot
-id|get
+id|put
 op_assign
 id|snd_ak4114_spdif_playback_put
 comma
