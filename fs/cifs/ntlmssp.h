@@ -30,7 +30,7 @@ singleline_comment|// Request confidentiality
 DECL|macro|NTLMSSP_NEGOTIATE_DGRAM
 mdefine_line|#define NTLMSSP_NEGOTIATE_DGRAM       0x0040
 DECL|macro|NTLMSSP_NEGOTIATE_LM_KEY
-mdefine_line|#define NTLMSSP_NEGOTIATE_LM_KEY      0x0080&t;
+mdefine_line|#define NTLMSSP_NEGOTIATE_LM_KEY      0x0080 
 singleline_comment|// Use LM session key for sign/seal
 DECL|macro|NTLMSSP_NEGOTIATE_NTLM
 mdefine_line|#define NTLMSSP_NEGOTIATE_NTLM        0x0200&t;

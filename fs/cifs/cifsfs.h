@@ -605,6 +605,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|CIFS_VERSION
-mdefine_line|#define CIFS_VERSION   &quot;1.30&quot;
+mdefine_line|#define CIFS_VERSION   &quot;1.31&quot;
 macro_line|#endif&t;&t;&t;&t;/* _CIFSFS_H */
 eof

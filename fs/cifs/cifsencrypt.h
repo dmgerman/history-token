@@ -86,17 +86,14 @@ c_func
 r_int
 r_char
 op_star
-id|p14
 comma
 r_int
 r_char
 op_star
-id|in
 comma
 r_int
 r_char
 op_star
-id|out
 )paren
 suffix:semicolon
 eof
