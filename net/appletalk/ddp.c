@@ -4047,11 +4047,7 @@ id|out
 suffix:semicolon
 id|at
 op_assign
-id|at_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func

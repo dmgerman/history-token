@@ -5105,6 +5105,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|clip_tbl.kmem_cachep
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/* so neigh_ifdown() doesn&squot;t complain */
 id|clip_tbl.proxy_timer.data
 op_assign

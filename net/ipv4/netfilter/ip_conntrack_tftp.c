@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Licensed under GNU GPL version 2 Copyright Magnus Boden &lt;mb@ozaba.mine.nu&gt;&n; * Version: 0.0.7&n; *&n; * Thu 21 Mar 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- port to newnat API&n; *&n; */
+multiline_comment|/* (C) 2001-2002 Magnus Boden &lt;mb@ozaba.mine.nu&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Version: 0.0.7&n; *&n; * Thu 21 Mar 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- port to newnat API&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;

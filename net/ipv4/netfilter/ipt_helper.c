@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * iptables module to match on related connections&n; *   (c) 2001 Martin Josefsson &lt;gandalf@wlug.westbo.se&gt;&n; *&n; * Released under the terms of GNU GPLv2.&n; *&n; *   19 Mar 2002 Harald Welte &lt;laforge@gnumonks.org&gt;:&n; *   &t;&t; - Port to newnat infrastructure&n; */
+multiline_comment|/* iptables module to match on related connections */
+multiline_comment|/*&n; * (C) 2001 Martin Josefsson &lt;gandalf@wlug.westbo.se&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *   19 Mar 2002 Harald Welte &lt;laforge@gnumonks.org&gt;:&n; *   &t;&t; - Port to newnat infrastructure&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;

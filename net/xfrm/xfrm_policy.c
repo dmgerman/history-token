@@ -3734,7 +3734,6 @@ op_eq
 op_minus
 id|EAGAIN
 op_logical_and
-op_logical_neg
 id|flags
 )paren
 (brace
