@@ -1,4 +1,4 @@
-multiline_comment|/*&n;* cycx_main.c&t;Cyclades Cyclom 2X WAN Link Driver. Main module.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2001 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlamain.c by Gene Kozin &lt;genek@compuserve.com&gt; &amp;&n;*&t;&t;&t; Jaspreet Singh&t;&lt;jaspreet@sangoma.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2001/05/09&t;acme&t;&t;Fix MODULE_DESC for debug, .bss nitpicks,&n;* &t;&t;&t;&t;some cleanups&n;* 2000/07/13&t;acme&t;&t;remove useless #ifdef MODULE and crap&n;*&t;&t;&t;&t;#if KERNEL_VERSION &gt; blah&n;* 2000/07/06&t;acme&t;&t;__exit at cyclomx_cleanup&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* &t;&t;&t;&t;module_init/module_exit&n;* 2000/01/21&t;acme&t;&t;rename cyclomx_open to cyclomx_mod_inc_use_count&n;*&t;&t;&t;&t;and cyclomx_close to cyclomx_mod_dec_use_count&n;* 2000/01/08&t;acme&t;&t;cleanup&n;* 1999/11/06&t;acme&t;&t;cycx_down back to life (it needs to be&n;*&t;&t;&t;&t;called to iounmap the dpmbase)&n;* 1999/08/09&t;acme&t;&t;removed references to enable_tx_int&n;*&t;&t;&t;&t;use spinlocks instead of cli/sti in&n;*&t;&t;&t;&t;cyclomx_set_state&n;* 1999/05/19&t;acme&t;&t;works directly linked into the kernel&n;*&t;&t;&t;&t;init_waitqueue_head for 2.3.* kernel&n;* 1999/05/18&t;acme&t;&t;major cleanup (polling not needed), etc&n;* 1998/08/28&t;acme&t;&t;minor cleanup (ioctls for firmware deleted)&n;*&t;&t;&t;&t;queue_task activated&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
+multiline_comment|/*&n;* cycx_main.c&t;Cyclades Cyclom 2X WAN Link Driver. Main module.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlamain.c by Gene Kozin &lt;genek@compuserve.com&gt; &amp;&n;*&t;&t;&t; Jaspreet Singh&t;&lt;jaspreet@sangoma.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2001/05/09&t;acme&t;&t;Fix MODULE_DESC for debug, .bss nitpicks,&n;* &t;&t;&t;&t;some cleanups&n;* 2000/07/13&t;acme&t;&t;remove useless #ifdef MODULE and crap&n;*&t;&t;&t;&t;#if KERNEL_VERSION &gt; blah&n;* 2000/07/06&t;acme&t;&t;__exit at cyclomx_cleanup&n;* 2000/04/02&t;acme&t;&t;dprintk and cycx_debug&n;* &t;&t;&t;&t;module_init/module_exit&n;* 2000/01/21&t;acme&t;&t;rename cyclomx_open to cyclomx_mod_inc_use_count&n;*&t;&t;&t;&t;and cyclomx_close to cyclomx_mod_dec_use_count&n;* 2000/01/08&t;acme&t;&t;cleanup&n;* 1999/11/06&t;acme&t;&t;cycx_down back to life (it needs to be&n;*&t;&t;&t;&t;called to iounmap the dpmbase)&n;* 1999/08/09&t;acme&t;&t;removed references to enable_tx_int&n;*&t;&t;&t;&t;use spinlocks instead of cli/sti in&n;*&t;&t;&t;&t;cyclomx_set_state&n;* 1999/05/19&t;acme&t;&t;works directly linked into the kernel&n;*&t;&t;&t;&t;init_waitqueue_head for 2.3.* kernel&n;* 1999/05/18&t;acme&t;&t;major cleanup (polling not needed), etc&n;* 1998/08/28&t;acme&t;&t;minor cleanup (ioctls for firmware deleted)&n;*&t;&t;&t;&t;queue_task activated&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
 macro_line|#include &lt;linux/config.h&gt;&t;/* OS configuration options */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
@@ -110,6 +110,7 @@ multiline_comment|/* Miscellaneous functions */
 r_static
 id|irqreturn_t
 id|cycx_isr
+c_func
 (paren
 r_int
 id|irq
@@ -175,6 +176,7 @@ DECL|function|cyclomx_init
 r_int
 id|__init
 id|cyclomx_init
+c_func
 (paren
 r_void
 )paren
@@ -418,6 +420,7 @@ r_static
 r_void
 id|__exit
 id|cyclomx_cleanup
+c_func
 (paren
 r_void
 )paren
@@ -808,7 +811,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Shut down WAN link driver. &n; * o shut down adapter hardware&n; * o release system resources.&n; *&n; * This function is called by the router when device is being unregistered or&n; * when it handles ROUTER_DOWN IOCTL.&n; */
+multiline_comment|/*&n; * Shut down WAN link driver.&n; * o shut down adapter hardware&n; * o release system resources.&n; *&n; * This function is called by the router when device is being unregistered or&n; * when it handles ROUTER_DOWN IOCTL.&n; */
 DECL|function|shutdown
 r_static
 r_int
@@ -903,7 +906,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Driver I/O control. &n; * o verify arguments&n; * o perform requested action&n; *&n; * This function is called when router handles one of the reserved user&n; * IOCTLs.  Note that &squot;arg&squot; still points to user address space.&n; *&n; * no reserved ioctls for the cyclom 2x up to now&n; */
+multiline_comment|/*&n; * Driver I/O control.&n; * o verify arguments&n; * o perform requested action&n; *&n; * This function is called when router handles one of the reserved user&n; * IOCTLs.  Note that &squot;arg&squot; still points to user address space.&n; *&n; * no reserved ioctls for the cyclom 2x up to now&n; */
 DECL|function|ioctl
 r_static
 r_int
@@ -934,6 +937,7 @@ DECL|function|cycx_isr
 r_static
 id|irqreturn_t
 id|cycx_isr
+c_func
 (paren
 r_int
 id|irq
