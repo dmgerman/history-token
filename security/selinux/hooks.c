@@ -10810,6 +10810,11 @@ id|tsec2-&gt;create_sid
 op_assign
 id|tsec1-&gt;create_sid
 suffix:semicolon
+multiline_comment|/* Retain ptracer SID across fork, if any.&n;&t;   This will be reset by the ptrace hook upon any&n;&t;   subsequent ptrace_attach operations. */
+id|tsec2-&gt;ptrace_sid
+op_assign
+id|tsec1-&gt;ptrace_sid
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
