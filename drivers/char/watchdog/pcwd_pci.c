@@ -19,9 +19,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Module and version information */
 DECL|macro|WATCHDOG_VERSION
-mdefine_line|#define WATCHDOG_VERSION &quot;1.00&quot;
+mdefine_line|#define WATCHDOG_VERSION &quot;1.01&quot;
 DECL|macro|WATCHDOG_DATE
-mdefine_line|#define WATCHDOG_DATE &quot;12 Jun 2004&quot;
+mdefine_line|#define WATCHDOG_DATE &quot;15 Mar 2005&quot;
 DECL|macro|WATCHDOG_DRIVER_NAME
 mdefine_line|#define WATCHDOG_DRIVER_NAME &quot;PCI-PC Watchdog&quot;
 DECL|macro|WATCHDOG_NAME
@@ -2354,7 +2354,7 @@ id|pcipcwd_private.io_lock
 )paren
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
