@@ -1093,7 +1093,7 @@ comma
 dot
 id|mode
 op_assign
-l_int|0644
+l_int|0444
 comma
 dot
 id|proc_handler
