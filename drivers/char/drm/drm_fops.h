@@ -156,6 +156,14 @@ id|priv-&gt;lock_count
 op_assign
 l_int|0
 suffix:semicolon
+id|DRIVER_OPEN_HELPER
+c_func
+(paren
+id|priv
+comma
+id|dev
+)paren
+suffix:semicolon
 id|down
 c_func
 (paren

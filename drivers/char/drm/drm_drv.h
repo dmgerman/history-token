@@ -93,6 +93,10 @@ macro_line|#ifndef DRIVER_IOCTLS
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS
 macro_line|#endif
+macro_line|#ifndef DRIVER_OPEN_HELPER
+DECL|macro|DRIVER_OPEN_HELPER
+mdefine_line|#define DRIVER_OPEN_HELPER( priv, dev )
+macro_line|#endif
 macro_line|#ifndef DRIVER_FOPS
 DECL|macro|DRIVER_FOPS
 mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;}

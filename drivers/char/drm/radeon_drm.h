@@ -901,6 +901,8 @@ mdefine_line|#define DRM_IOCTL_RADEON_IRQ_WAIT   DRM_IOW( 0x57, drm_radeon_irq_w
 multiline_comment|/* added by Charl P. Botha - see radeon_cp.c for details */
 DECL|macro|DRM_IOCTL_RADEON_CP_RESUME
 mdefine_line|#define DRM_IOCTL_RADEON_CP_RESUME  DRM_IO(0x58)
+DECL|macro|DRM_IOCTL_RADEON_SETPARAM
+mdefine_line|#define DRM_IOCTL_RADEON_SETPARAM   DRM_IOW( 0x59, drm_radeon_setparam_t)
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct
@@ -1297,6 +1299,7 @@ id|drm_radeon_texture
 (brace
 DECL|member|offset
 r_int
+r_int
 id|offset
 suffix:semicolon
 DECL|member|pitch
@@ -1504,5 +1507,26 @@ DECL|typedef|drm_radeon_irq_wait_t
 )brace
 id|drm_radeon_irq_wait_t
 suffix:semicolon
+multiline_comment|/* 1.10: Clients tell the DRM where they think the framebuffer is located in&n; * the card&squot;s address space, via a new generic ioctl to set parameters&n; */
+DECL|struct|drm_radeon_setparam
+r_typedef
+r_struct
+id|drm_radeon_setparam
+(brace
+DECL|member|param
+r_int
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int64
+id|value
+suffix:semicolon
+DECL|typedef|drm_radeon_setparam_t
+)brace
+id|drm_radeon_setparam_t
+suffix:semicolon
+DECL|macro|RADEON_SETPARAM_FB_LOCATION
+mdefine_line|#define RADEON_SETPARAM_FB_LOCATION    1 /* determined framebuffer location */
 macro_line|#endif
 eof

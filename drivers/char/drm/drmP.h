@@ -893,6 +893,11 @@ r_int
 r_int
 id|lock_count
 suffix:semicolon
+macro_line|#ifdef DRIVER_FILE_FIELDS
+DECL|member|DRIVER_FILE_FIELDS
+id|DRIVER_FILE_FIELDS
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|drm_file_t
 )brace
 id|drm_file_t

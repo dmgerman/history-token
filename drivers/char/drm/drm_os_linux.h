@@ -66,8 +66,12 @@ DECL|macro|DRM_VERIFYAREA_READ
 mdefine_line|#define DRM_VERIFYAREA_READ( uaddr, size ) &t;&t;&bslash;&n;&t;verify_area( VERIFY_READ, uaddr, size )
 DECL|macro|DRM_COPY_FROM_USER_UNCHECKED
 mdefine_line|#define DRM_COPY_FROM_USER_UNCHECKED(arg1, arg2, arg3) &t;&bslash;&n;&t;__copy_from_user(arg1, arg2, arg3)
+DECL|macro|DRM_COPY_TO_USER_UNCHECKED
+mdefine_line|#define DRM_COPY_TO_USER_UNCHECKED(arg1, arg2, arg3)&t;&bslash;&n;&t;__copy_to_user(arg1, arg2, arg3)
 DECL|macro|DRM_GET_USER_UNCHECKED
 mdefine_line|#define DRM_GET_USER_UNCHECKED(val, uaddr)&t;&t;&bslash;&n;&t;__get_user(val, uaddr)
+DECL|macro|DRM_PUT_USER_UNCHECKED
+mdefine_line|#define DRM_PUT_USER_UNCHECKED(uaddr, val)&t;&t;&bslash;&n;&t;__put_user(val, uaddr)
 multiline_comment|/** &squot;malloc&squot; without the overhead of DRM(alloc)() */
 DECL|macro|DRM_MALLOC
 mdefine_line|#define DRM_MALLOC(x) kmalloc(x, GFP_KERNEL)
