@@ -872,7 +872,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|pr_debug

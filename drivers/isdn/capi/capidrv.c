@@ -755,7 +755,7 @@ suffix:colon
 r_default
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_case
 id|ISDN_PROTO_L2_V11096
@@ -1464,7 +1464,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -1559,7 +1559,7 @@ r_return
 id|p
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|find_plci_by_msgid
@@ -1605,7 +1605,7 @@ r_return
 id|p
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|find_plci_by_ncci
@@ -1655,7 +1655,7 @@ r_return
 id|p
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|free_plci
@@ -1726,7 +1726,7 @@ id|plcip-&gt;chan
 dot
 id|plcip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|card-&gt;bchans
 (braket
@@ -1820,7 +1820,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -1918,7 +1918,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -1944,7 +1944,7 @@ r_return
 id|p
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|find_ncci_by_msgid
@@ -1992,7 +1992,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -2018,7 +2018,7 @@ r_return
 id|p
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|free_ncci
@@ -2097,7 +2097,7 @@ id|nccip-&gt;chan
 dot
 id|nccip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kfree
 c_func
@@ -2173,7 +2173,7 @@ suffix:semicolon
 )brace
 id|n-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|n-&gt;datahandle
 op_assign
@@ -2592,7 +2592,7 @@ id|plci-&gt;chan
 dot
 id|contr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cmd.command
 op_assign
@@ -2676,7 +2676,7 @@ id|ST_PLCI_OUTGOING
 comma
 id|EV_PLCI_CONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2686,7 +2686,7 @@ id|ST_PLCI_ALLOCATED
 comma
 id|EV_PLCI_FACILITY_IND_UP
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2696,7 +2696,7 @@ id|ST_PLCI_INCOMING
 comma
 id|EV_PLCI_CONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2706,7 +2706,7 @@ id|ST_PLCI_RESUMEING
 comma
 id|EV_PLCI_RESUME_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-0.1 */
@@ -2727,7 +2727,7 @@ id|ST_PLCI_ALLOCATED
 comma
 id|EV_PLCI_CONNECT_CONF_OK
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-1 */
@@ -2738,7 +2738,7 @@ id|ST_PLCI_ACTIVE
 comma
 id|EV_PLCI_CONNECT_ACTIVE_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2748,7 +2748,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_DISCONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2758,7 +2758,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_FACILITY_IND_DOWN
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2768,7 +2768,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-ACT */
@@ -2779,7 +2779,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_DISCONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2789,7 +2789,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_FACILITY_IND_DOWN
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2799,7 +2799,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2809,7 +2809,7 @@ id|ST_PLCI_HELD
 comma
 id|EV_PLCI_HOLD_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2819,7 +2819,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_SUSPEND_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-2 */
@@ -2830,7 +2830,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_CONNECT_REJECT
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2840,7 +2840,7 @@ id|ST_PLCI_FACILITY_IND
 comma
 id|EV_PLCI_FACILITY_IND_UP
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2850,7 +2850,7 @@ id|ST_PLCI_ACCEPTING
 comma
 id|EV_PLCI_CONNECT_RESP
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2860,7 +2860,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_DISCONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2870,7 +2870,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_FACILITY_IND_DOWN
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2880,7 +2880,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2890,7 +2890,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_CD_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-3 */
@@ -2901,7 +2901,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_CONNECT_REJECT
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2911,7 +2911,7 @@ id|ST_PLCI_ACCEPTING
 comma
 id|EV_PLCI_CONNECT_ACTIVE_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2921,7 +2921,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_DISCONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2931,7 +2931,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_FACILITY_IND_DOWN
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2941,7 +2941,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-4 */
@@ -2952,7 +2952,7 @@ id|ST_PLCI_ACTIVE
 comma
 id|EV_PLCI_CONNECT_ACTIVE_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2962,7 +2962,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_DISCONNECT_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2972,7 +2972,7 @@ id|ST_PLCI_DISCONNECTING
 comma
 id|EV_PLCI_FACILITY_IND_DOWN
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -2982,7 +2982,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-5 */
@@ -2993,7 +2993,7 @@ id|ST_PLCI_DISCONNECTED
 comma
 id|EV_PLCI_DISCONNECT_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-6 */
@@ -3025,7 +3025,7 @@ id|ST_PLCI_RESUME
 comma
 id|EV_PLCI_RESUME_CONF_OK
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-RES */
@@ -3036,7 +3036,7 @@ id|ST_PLCI_ACTIVE
 comma
 id|EV_PLCI_RESUME_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* P-HELD */
@@ -3047,7 +3047,7 @@ id|ST_PLCI_ACTIVE
 comma
 id|EV_PLCI_RETRIEVE_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3197,17 +3197,17 @@ op_increment
 comma
 id|ncci-&gt;plcip-&gt;plci
 comma
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* BChannelinformation */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Keypadfacility */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Useruserdata */
 multiline_comment|/* $$$$ */
-l_int|0
+l_int|NULL
 multiline_comment|/* Facilitydataarray */
 )paren
 suffix:semicolon
@@ -3312,7 +3312,7 @@ id|ST_NCCI_OUTGOING
 comma
 id|EV_NCCI_CONNECT_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3322,7 +3322,7 @@ id|ST_NCCI_INCOMING
 comma
 id|EV_NCCI_CONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-0.1 */
@@ -3333,7 +3333,7 @@ id|ST_NCCI_ALLOCATED
 comma
 id|EV_NCCI_CONNECT_B3_CONF_OK
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3354,7 +3354,7 @@ id|ST_NCCI_DISCONNECTING
 comma
 id|EV_NCCI_CONNECT_B3_REJECT
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3364,7 +3364,7 @@ id|ST_NCCI_ALLOCATED
 comma
 id|EV_NCCI_CONNECT_B3_RESP
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3374,7 +3374,7 @@ id|ST_NCCI_DISCONNECTED
 comma
 id|EV_NCCI_DISCONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3384,7 +3384,7 @@ id|ST_NCCI_DISCONNECTING
 comma
 id|EV_NCCI_DISCONNECT_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-2 */
@@ -3395,7 +3395,7 @@ id|ST_NCCI_ACTIVE
 comma
 id|EV_NCCI_CONNECT_B3_ACTIVE_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3405,7 +3405,7 @@ id|ST_NCCI_DISCONNECTED
 comma
 id|EV_NCCI_DISCONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3415,7 +3415,7 @@ id|ST_NCCI_DISCONNECTING
 comma
 id|EV_NCCI_DISCONNECT_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-ACT */
@@ -3426,7 +3426,7 @@ id|ST_NCCI_ACTIVE
 comma
 id|EV_NCCI_RESET_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3436,7 +3436,7 @@ id|ST_NCCI_RESETING
 comma
 id|EV_NCCI_RESET_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3446,7 +3446,7 @@ id|ST_NCCI_DISCONNECTED
 comma
 id|EV_NCCI_DISCONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3456,7 +3456,7 @@ id|ST_NCCI_DISCONNECTING
 comma
 id|EV_NCCI_DISCONNECT_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-3 */
@@ -3467,7 +3467,7 @@ id|ST_NCCI_ACTIVE
 comma
 id|EV_NCCI_RESET_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3477,7 +3477,7 @@ id|ST_NCCI_DISCONNECTED
 comma
 id|EV_NCCI_DISCONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3487,7 +3487,7 @@ id|ST_NCCI_DISCONNECTING
 comma
 id|EV_NCCI_DISCONNECT_B3_REQ
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-4 */
@@ -3498,7 +3498,7 @@ id|ST_NCCI_DISCONNECTED
 comma
 id|EV_NCCI_DISCONNECT_B3_IND
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -3508,7 +3508,7 @@ id|ST_NCCI_PREVIOUS
 comma
 id|EV_NCCI_DISCONNECT_B3_CONF_ERROR
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 multiline_comment|/* N-5 */
@@ -4102,7 +4102,7 @@ r_char
 op_star
 id|s
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
@@ -4609,16 +4609,16 @@ comma
 id|plcip-&gt;plci
 comma
 multiline_comment|/* adr */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* BChannelinformation */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Keypadfacility */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Useruserdata */
-l_int|0
+l_int|NULL
 multiline_comment|/* Facilitydataarray */
 )paren
 suffix:semicolon
@@ -5258,7 +5258,7 @@ comma
 id|plcip-&gt;plci
 comma
 multiline_comment|/* adr */
-l_int|0
+l_int|NULL
 multiline_comment|/* NCPI */
 )paren
 suffix:semicolon
@@ -5804,7 +5804,7 @@ multiline_comment|/* adr */
 l_int|0
 comma
 multiline_comment|/* Reject */
-l_int|0
+l_int|NULL
 multiline_comment|/* NCPI */
 )paren
 suffix:semicolon
@@ -5876,7 +5876,7 @@ comma
 l_int|2
 comma
 multiline_comment|/* Reject */
-l_int|0
+l_int|NULL
 multiline_comment|/* NCPI */
 )paren
 suffix:semicolon
@@ -8020,10 +8020,10 @@ multiline_comment|/* CalledPartyNumber */
 id|calling
 comma
 multiline_comment|/* CallingPartyNumber */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* CalledPartySubaddress */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* CallingPartySubaddress */
 id|b1prot
@@ -8062,19 +8062,19 @@ id|bchan-&gt;l3
 )paren
 comma
 multiline_comment|/* B1configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* B2configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* B3configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* BC */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* LLC */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* HLC */
 multiline_comment|/* BChannelinformation */
@@ -8085,13 +8085,13 @@ id|AdditionalInfo
 suffix:colon
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Keypadfacility */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Useruserdata */
-l_int|0
+l_int|NULL
 multiline_comment|/* Facilitydataarray */
 )paren
 suffix:semicolon
@@ -8264,31 +8264,31 @@ id|bchan-&gt;l3
 )paren
 comma
 multiline_comment|/* B1configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* B2configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* B3configuration */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* ConnectedNumber */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* ConnectedSubaddress */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* LLC */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* BChannelinformation */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Keypadfacility */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Useruserdata */
-l_int|0
+l_int|NULL
 multiline_comment|/* Facilitydataarray */
 )paren
 suffix:semicolon
@@ -8424,7 +8424,7 @@ op_increment
 comma
 id|bchan-&gt;nccip-&gt;ncci
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* NCPI */
 )paren
 suffix:semicolon
@@ -8499,16 +8499,16 @@ op_increment
 comma
 id|bchan-&gt;plcip-&gt;plci
 comma
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* BChannelinformation */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Keypadfacility */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* Useruserdata */
-l_int|0
+l_int|NULL
 multiline_comment|/* Facilitydataarray */
 )paren
 suffix:semicolon
@@ -9774,9 +9774,9 @@ id|card-&gt;cipmask
 comma
 id|card-&gt;cipmask2
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|send_message
@@ -10076,7 +10076,7 @@ id|if_sendbuf
 suffix:semicolon
 id|card-&gt;interface.writecmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|card-&gt;interface.readstat
 op_assign
@@ -10636,7 +10636,7 @@ id|card-&gt;bchans
 suffix:semicolon
 id|card-&gt;bchans
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -10739,7 +10739,7 @@ id|next
 suffix:semicolon
 id|card-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|global.ncontr
 op_decrement
@@ -11097,7 +11097,7 @@ id|p-&gt;name
 comma
 id|p-&gt;mode
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -11177,12 +11177,12 @@ c_func
 (paren
 id|p-&gt;name
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p-&gt;procent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

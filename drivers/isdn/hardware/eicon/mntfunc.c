@@ -433,7 +433,7 @@ id|didd_callback
 suffix:semicolon
 id|req.didd_notify.info.context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DAdapter
 dot
@@ -1116,7 +1116,7 @@ id|byte
 op_star
 id|pbuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|written

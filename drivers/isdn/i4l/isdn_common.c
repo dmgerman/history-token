@@ -4517,7 +4517,7 @@ c_func
 suffix:semicolon
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4707,7 +4707,7 @@ id|chidx
 comma
 id|p
 comma
-l_int|0
+l_int|NULL
 comma
 id|count
 comma

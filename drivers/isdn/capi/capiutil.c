@@ -1318,481 +1318,340 @@ id|cpars
 )braket
 op_assign
 (brace
-multiline_comment|/*00 */
-l_int|0
-comma
-multiline_comment|/*01 ALERT_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* ALERT_REQ */
+(braket
+l_int|0x01
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*02 CONNECT_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_REQ */
+(braket
+l_int|0x02
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x14&bslash;x0e&bslash;x10&bslash;x0f&bslash;x11&bslash;x0d&bslash;x06&bslash;x08&bslash;x0a&bslash;x05&bslash;x07&bslash;x09&bslash;x01&bslash;x0b&bslash;x28&bslash;x22&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*03 */
-l_int|0
-comma
-multiline_comment|/*04 DISCONNECT_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_REQ */
+(braket
+l_int|0x04
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*05 LISTEN_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* LISTEN_REQ */
+(braket
+l_int|0x05
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x25&bslash;x12&bslash;x13&bslash;x10&bslash;x11&bslash;x01&quot;
 comma
-multiline_comment|/*06 */
-l_int|0
-comma
-multiline_comment|/*07 */
-l_int|0
-comma
-multiline_comment|/*08 INFO_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* INFO_REQ */
+(braket
+l_int|0x08
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x0e&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*09 FACILITY_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* FACILITY_REQ */
+(braket
+l_int|0x09
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x1f&bslash;x1e&bslash;x01&quot;
 comma
-multiline_comment|/*0a SELECT_B_PROTOCOL_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* SELECT_B_PROTOCOL_REQ */
+(braket
+l_int|0x0a
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x0d&bslash;x06&bslash;x08&bslash;x0a&bslash;x05&bslash;x07&bslash;x09&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*0b CONNECT_B3_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_REQ */
+(braket
+l_int|0x0b
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*0c */
-l_int|0
-comma
-multiline_comment|/*0d DISCONNECT_B3_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_B3_REQ */
+(braket
+l_int|0x0d
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*0e */
-l_int|0
-comma
-multiline_comment|/*0f DATA_B3_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DATA_B3_REQ */
+(braket
+l_int|0x0f
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x18&bslash;x1a&bslash;x19&bslash;x20&bslash;x01&quot;
 comma
-multiline_comment|/*10 RESET_B3_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* RESET_B3_REQ */
+(braket
+l_int|0x10
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*11 */
-l_int|0
-comma
-multiline_comment|/*12 */
-l_int|0
-comma
-multiline_comment|/*13 ALERT_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* ALERT_CONF */
+(braket
+l_int|0x13
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*14 CONNECT_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_CONF */
+(braket
+l_int|0x14
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*15 */
-l_int|0
-comma
-multiline_comment|/*16 DISCONNECT_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_CONF */
+(braket
+l_int|0x16
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*17 LISTEN_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* LISTEN_CONF */
+(braket
+l_int|0x17
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*18 MANUFACTURER_REQ */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* MANUFACTURER_REQ */
+(braket
+l_int|0x18
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2a&bslash;x15&bslash;x21&bslash;x29&bslash;x01&quot;
 comma
-multiline_comment|/*19 */
-l_int|0
-comma
-multiline_comment|/*1a INFO_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* INFO_CONF */
+(braket
+l_int|0x1a
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*1b FACILITY_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* FACILITY_CONF */
+(braket
+l_int|0x1b
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x1f&bslash;x1b&bslash;x01&quot;
 comma
-multiline_comment|/*1c SELECT_B_PROTOCOL_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* SELECT_B_PROTOCOL_CONF */
+(braket
+l_int|0x1c
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*1d CONNECT_B3_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_CONF */
+(braket
+l_int|0x1d
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*1e */
-l_int|0
-comma
-multiline_comment|/*1f DISCONNECT_B3_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_B3_CONF */
+(braket
+l_int|0x1f
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*20 */
-l_int|0
-comma
-multiline_comment|/*21 DATA_B3_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DATA_B3_CONF */
+(braket
+l_int|0x21
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x19&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*22 RESET_B3_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* RESET_B3_CONF */
+(braket
+l_int|0x22
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x23&bslash;x01&quot;
 comma
-multiline_comment|/*23 */
-l_int|0
-comma
-multiline_comment|/*24 */
-l_int|0
-comma
-multiline_comment|/*25 */
-l_int|0
-comma
-multiline_comment|/*26 CONNECT_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_IND */
+(braket
+l_int|0x26
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x14&bslash;x0e&bslash;x10&bslash;x0f&bslash;x11&bslash;x0b&bslash;x28&bslash;x22&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*27 CONNECT_ACTIVE_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_ACTIVE_IND */
+(braket
+l_int|0x27
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x16&bslash;x17&bslash;x28&bslash;x01&quot;
 comma
-multiline_comment|/*28 DISCONNECT_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_IND */
+(braket
+l_int|0x28
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2c&bslash;x01&quot;
 comma
-multiline_comment|/*29 */
-l_int|0
-comma
-multiline_comment|/*2a MANUFACTURER_CONF */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* MANUFACTURER_CONF */
+(braket
+l_int|0x2a
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2a&bslash;x15&bslash;x21&bslash;x29&bslash;x01&quot;
 comma
-multiline_comment|/*2b */
-l_int|0
-comma
-multiline_comment|/*2c INFO_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* INFO_IND */
+(braket
+l_int|0x2c
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x26&bslash;x24&bslash;x01&quot;
 comma
-multiline_comment|/*2d FACILITY_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* FACILITY_IND */
+(braket
+l_int|0x2d
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x1f&bslash;x1d&bslash;x01&quot;
 comma
-multiline_comment|/*2e */
-l_int|0
-comma
-multiline_comment|/*2f CONNECT_B3_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_IND */
+(braket
+l_int|0x2f
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*30 CONNECT_B3_ACTIVE_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_ACTIVE_IND */
+(braket
+l_int|0x30
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*31 DISCONNECT_B3_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_B3_IND */
+(braket
+l_int|0x31
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2d&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*32 */
-l_int|0
-comma
-multiline_comment|/*33 DATA_B3_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DATA_B3_IND */
+(braket
+l_int|0x33
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x18&bslash;x1a&bslash;x19&bslash;x20&bslash;x01&quot;
 comma
-multiline_comment|/*34 RESET_B3_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* RESET_B3_IND */
+(braket
+l_int|0x34
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*35 CONNECT_B3_T90_ACTIVE_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_T90_ACTIVE_IND */
+(braket
+l_int|0x35
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*36 */
-l_int|0
-comma
-multiline_comment|/*37 */
-l_int|0
-comma
-multiline_comment|/*38 CONNECT_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_RESP */
+(braket
+l_int|0x38
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2e&bslash;x0d&bslash;x06&bslash;x08&bslash;x0a&bslash;x05&bslash;x07&bslash;x09&bslash;x01&bslash;x16&bslash;x17&bslash;x28&bslash;x04&bslash;x0c&bslash;x27&bslash;x2f&bslash;x1c&bslash;x01&bslash;x01&quot;
 comma
-multiline_comment|/*39 CONNECT_ACTIVE_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_ACTIVE_RESP */
+(braket
+l_int|0x39
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*3a DISCONNECT_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_RESP */
+(braket
+l_int|0x3a
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*3b */
-l_int|0
-comma
-multiline_comment|/*3c MANUFACTURER_IND */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* MANUFACTURER_IND */
+(braket
+l_int|0x3c
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2a&bslash;x15&bslash;x21&bslash;x29&bslash;x01&quot;
 comma
-multiline_comment|/*3d */
-l_int|0
-comma
-multiline_comment|/*3e INFO_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* INFO_RESP */
+(braket
+l_int|0x3e
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*3f FACILITY_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* FACILITY_RESP */
+(braket
+l_int|0x3f
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x1f&bslash;x01&quot;
 comma
-multiline_comment|/*40 */
-l_int|0
-comma
-multiline_comment|/*41 CONNECT_B3_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_RESP */
+(braket
+l_int|0x41
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2e&bslash;x2b&bslash;x01&quot;
 comma
-multiline_comment|/*42 CONNECT_B3_ACTIVE_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_ACTIVE_RESP */
+(braket
+l_int|0x42
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*43 DISCONNECT_B3_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DISCONNECT_B3_RESP */
+(braket
+l_int|0x43
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*44 */
-l_int|0
-comma
-multiline_comment|/*45 DATA_B3_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* DATA_B3_RESP */
+(braket
+l_int|0x45
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x19&bslash;x01&quot;
 comma
-multiline_comment|/*46 RESET_B3_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* RESET_B3_RESP */
+(braket
+l_int|0x46
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*47 CONNECT_B3_T90_ACTIVE_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* CONNECT_B3_T90_ACTIVE_RESP */
+(braket
+l_int|0x47
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x01&quot;
 comma
-multiline_comment|/*48 */
-l_int|0
-comma
-multiline_comment|/*49 */
-l_int|0
-comma
-multiline_comment|/*4a */
-l_int|0
-comma
-multiline_comment|/*4b */
-l_int|0
-comma
-multiline_comment|/*4c */
-l_int|0
-comma
-multiline_comment|/*4d */
-l_int|0
-comma
-multiline_comment|/*4e MANUFACTURER_RESP */
-(paren
-r_int
-r_char
-op_star
-)paren
+multiline_comment|/* MANUFACTURER_RESP */
+(braket
+l_int|0x4e
+)braket
+op_assign
 l_string|&quot;&bslash;x03&bslash;x2a&bslash;x15&bslash;x21&bslash;x29&bslash;x01&quot;
 comma
 )brace
@@ -2846,162 +2705,292 @@ id|mnames
 )braket
 op_assign
 (brace
-l_int|0
-comma
+(braket
+l_int|0x01
+)braket
+op_assign
 l_string|&quot;ALERT_REQ&quot;
 comma
+(braket
+l_int|0x02
+)braket
+op_assign
 l_string|&quot;CONNECT_REQ&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x04
+)braket
+op_assign
 l_string|&quot;DISCONNECT_REQ&quot;
 comma
+(braket
+l_int|0x05
+)braket
+op_assign
 l_string|&quot;LISTEN_REQ&quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
+(braket
+l_int|0x08
+)braket
+op_assign
 l_string|&quot;INFO_REQ&quot;
 comma
+(braket
+l_int|0x09
+)braket
+op_assign
 l_string|&quot;FACILITY_REQ&quot;
 comma
+(braket
+l_int|0x0a
+)braket
+op_assign
 l_string|&quot;SELECT_B_PROTOCOL_REQ&quot;
 comma
+(braket
+l_int|0x0b
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_REQ&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x0d
+)braket
+op_assign
 l_string|&quot;DISCONNECT_B3_REQ&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x0f
+)braket
+op_assign
 l_string|&quot;DATA_B3_REQ&quot;
 comma
+(braket
+l_int|0x10
+)braket
+op_assign
 l_string|&quot;RESET_B3_REQ&quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
+(braket
+l_int|0x13
+)braket
+op_assign
 l_string|&quot;ALERT_CONF&quot;
 comma
+(braket
+l_int|0x14
+)braket
+op_assign
 l_string|&quot;CONNECT_CONF&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x16
+)braket
+op_assign
 l_string|&quot;DISCONNECT_CONF&quot;
 comma
+(braket
+l_int|0x17
+)braket
+op_assign
 l_string|&quot;LISTEN_CONF&quot;
 comma
+(braket
+l_int|0x18
+)braket
+op_assign
 l_string|&quot;MANUFACTURER_REQ&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x1a
+)braket
+op_assign
 l_string|&quot;INFO_CONF&quot;
 comma
+(braket
+l_int|0x1b
+)braket
+op_assign
 l_string|&quot;FACILITY_CONF&quot;
 comma
+(braket
+l_int|0x1c
+)braket
+op_assign
 l_string|&quot;SELECT_B_PROTOCOL_CONF&quot;
 comma
+(braket
+l_int|0x1d
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_CONF&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x1f
+)braket
+op_assign
 l_string|&quot;DISCONNECT_B3_CONF&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x21
+)braket
+op_assign
 l_string|&quot;DATA_B3_CONF&quot;
 comma
+(braket
+l_int|0x22
+)braket
+op_assign
 l_string|&quot;RESET_B3_CONF&quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
+(braket
+l_int|0x26
+)braket
+op_assign
 l_string|&quot;CONNECT_IND&quot;
 comma
+(braket
+l_int|0x27
+)braket
+op_assign
 l_string|&quot;CONNECT_ACTIVE_IND&quot;
 comma
+(braket
+l_int|0x28
+)braket
+op_assign
 l_string|&quot;DISCONNECT_IND&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x2a
+)braket
+op_assign
 l_string|&quot;MANUFACTURER_CONF&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x2c
+)braket
+op_assign
 l_string|&quot;INFO_IND&quot;
 comma
+(braket
+l_int|0x2d
+)braket
+op_assign
 l_string|&quot;FACILITY_IND&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x2f
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_IND&quot;
 comma
+(braket
+l_int|0x30
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_ACTIVE_IND&quot;
 comma
+(braket
+l_int|0x31
+)braket
+op_assign
 l_string|&quot;DISCONNECT_B3_IND&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x33
+)braket
+op_assign
 l_string|&quot;DATA_B3_IND&quot;
 comma
+(braket
+l_int|0x34
+)braket
+op_assign
 l_string|&quot;RESET_B3_IND&quot;
 comma
+(braket
+l_int|0x35
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_T90_ACTIVE_IND&quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
+(braket
+l_int|0x38
+)braket
+op_assign
 l_string|&quot;CONNECT_RESP&quot;
 comma
+(braket
+l_int|0x39
+)braket
+op_assign
 l_string|&quot;CONNECT_ACTIVE_RESP&quot;
 comma
+(braket
+l_int|0x3a
+)braket
+op_assign
 l_string|&quot;DISCONNECT_RESP&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x3c
+)braket
+op_assign
 l_string|&quot;MANUFACTURER_IND&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x3e
+)braket
+op_assign
 l_string|&quot;INFO_RESP&quot;
 comma
+(braket
+l_int|0x3f
+)braket
+op_assign
 l_string|&quot;FACILITY_RESP&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x41
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_RESP&quot;
 comma
+(braket
+l_int|0x42
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_ACTIVE_RESP&quot;
 comma
+(braket
+l_int|0x43
+)braket
+op_assign
 l_string|&quot;DISCONNECT_B3_RESP&quot;
 comma
-l_int|0
-comma
+(braket
+l_int|0x45
+)braket
+op_assign
 l_string|&quot;DATA_B3_RESP&quot;
 comma
+(braket
+l_int|0x46
+)braket
+op_assign
 l_string|&quot;RESET_B3_RESP&quot;
 comma
+(braket
+l_int|0x47
+)braket
+op_assign
 l_string|&quot;CONNECT_B3_T90_ACTIVE_RESP&quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
+(braket
+l_int|0x4e
+)braket
+op_assign
 l_string|&quot;MANUFACTURER_RESP&quot;
 )brace
 suffix:semicolon
@@ -3043,13 +3032,13 @@ id|pnames
 op_assign
 (brace
 multiline_comment|/*00 */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/*01 */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/*02 */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/*03 */
 l_string|&quot;Controller/PLCI/NCCI&quot;
@@ -3201,7 +3190,7 @@ r_char
 op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#include &lt;stdarg.h&gt;
 multiline_comment|/*-------------------------------------------------------*/

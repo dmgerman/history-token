@@ -372,8 +372,6 @@ multiline_comment|/*&n;&t;   EOL&n;&t; */
 (brace
 op_minus
 l_int|1
-comma
-l_int|0
 )brace
 )brace
 suffix:semicolon
@@ -594,9 +592,7 @@ id|pdev
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_switch
@@ -905,16 +901,12 @@ id|pdiva
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;    Called on driver load, MAIN, main, DriverEntry&n;   -------------------------------------------------------------------------- */
@@ -1100,7 +1092,7 @@ id|a
 l_int|3
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_enter_spin_lock
 c_func
@@ -1289,7 +1281,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|remove_adapter_proc
 c_func
@@ -1398,9 +1390,7 @@ l_string|&quot;A: can&squot;t alloc adapter&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset
@@ -1550,9 +1540,7 @@ l_string|&quot;A: can&squot;t get adapter resources&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1617,7 +1605,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|remove_adapter_proc
 c_func
@@ -1711,9 +1699,7 @@ id|diva_xdi_um_cfg_cmd_t
 )paren
 )paren
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -1748,9 +1734,7 @@ l_string|&quot;A: A(?) open, write error&quot;
 )paren
 )paren
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|diva_os_enter_spin_lock
@@ -1884,7 +1868,7 @@ id|a-&gt;xdi_mbox.data
 suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -2254,7 +2238,7 @@ id|a-&gt;xdi_mbox.data
 suffix:semicolon
 id|a-&gt;xdi_mbox.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;xdi_mbox.status
 op_and_assign
@@ -2333,7 +2317,7 @@ id|a
 suffix:semicolon
 id|a-&gt;clear_interrupts_proc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|IRQ_HANDLED

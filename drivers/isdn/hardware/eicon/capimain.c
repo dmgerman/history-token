@@ -372,11 +372,11 @@ id|DRIVERLNAME
 suffix:semicolon
 id|ctrl-&gt;load_firmware
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ctrl-&gt;reset_ctr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ctrl-&gt;ctr_read_proc
 op_assign

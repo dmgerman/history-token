@@ -416,7 +416,7 @@ suffix:semicolon
 )brace
 id|n-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|n-&gt;datahandle
 op_assign
@@ -673,7 +673,7 @@ l_string|&quot;capi: can&squot;t alloc capiminor&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset
@@ -838,7 +838,7 @@ id|mp
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -899,7 +899,7 @@ id|mp-&gt;ttyskb
 suffix:semicolon
 id|mp-&gt;ttyskb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb_queue_purge
 c_func
@@ -1047,7 +1047,7 @@ id|capiminor
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 id|np
@@ -1071,7 +1071,7 @@ op_logical_neg
 id|np
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -1098,7 +1098,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1287,7 +1287,7 @@ id|mp-&gt;tty
 (brace
 id|mp-&gt;nccip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef _DEBUG_REFCOUNT
 id|printk
@@ -1440,7 +1440,7 @@ op_logical_neg
 id|cdev
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -1983,7 +1983,7 @@ id|mp-&gt;tty
 comma
 id|skb-&gt;data
 comma
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;len
 )paren
@@ -4686,15 +4686,11 @@ suffix:semicolon
 macro_line|#endif
 id|tty-&gt;driver_data
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mp-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef _DEBUG_REFCOUNT
@@ -4829,7 +4825,7 @@ id|skb
 (brace
 id|mp-&gt;ttyskb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb_queue_tail
 c_func
@@ -4890,10 +4886,6 @@ c_cond
 id|from_user
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|copy_from_user
@@ -4911,7 +4903,11 @@ id|buf
 comma
 id|count
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
 id|kfree_skb
@@ -5097,7 +5093,7 @@ suffix:semicolon
 )brace
 id|mp-&gt;ttyskb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb_queue_tail
 c_func
@@ -5251,7 +5247,7 @@ id|skb
 (brace
 id|mp-&gt;ttyskb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb_queue_tail
 c_func
@@ -6717,7 +6713,7 @@ id|p-&gt;name
 comma
 id|p-&gt;mode
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6797,12 +6793,12 @@ c_func
 (paren
 id|p-&gt;name
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|p-&gt;procent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -1323,7 +1323,7 @@ id|handle
 dot
 id|callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NotificationTable
 (braket
@@ -1332,7 +1332,7 @@ id|handle
 dot
 id|context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_leave_spin_lock
 (paren

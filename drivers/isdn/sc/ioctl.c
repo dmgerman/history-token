@@ -679,7 +679,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -855,7 +855,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -1204,7 +1204,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -1707,7 +1707,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma

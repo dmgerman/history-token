@@ -146,7 +146,7 @@ multiline_comment|/**********/
 multiline_comment|/* macros */
 multiline_comment|/**********/
 DECL|macro|write_usb
-mdefine_line|#define write_usb(a,b,c) usb_control_msg((a)-&gt;dev,(a)-&gt;ctrl_out_pipe,0,0x40,(c),(b),0,0,HFC_CTRL_TIMEOUT)
+mdefine_line|#define write_usb(a,b,c) usb_control_msg((a)-&gt;dev,(a)-&gt;ctrl_out_pipe,0,0x40,(c),(b),NULL,0,HFC_CTRL_TIMEOUT)
 DECL|macro|read_usb
 mdefine_line|#define read_usb(a,b,c) usb_control_msg((a)-&gt;dev,(a)-&gt;ctrl_in_pipe,1,0xC0,0,(b),(c),1,HFC_CTRL_TIMEOUT)
 multiline_comment|/*************************************************/
@@ -1081,10 +1081,6 @@ l_int|0x10
 comma
 multiline_comment|/* Bewan TA   */
 (brace
-l_int|0
-comma
-l_int|0
-comma
 l_int|0
 )brace
 singleline_comment|// EOL element

@@ -544,7 +544,7 @@ id|tty-&gt;flip.flag_buf_ptr
 comma
 id|c
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* CISCO AsyncPPP Hack */
@@ -7458,7 +7458,7 @@ id|tty
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|info-&gt;ncarrier
 op_assign
@@ -7587,7 +7587,7 @@ id|ISDN_ASYNC_CALLOUT_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -8498,7 +8498,7 @@ id|i
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|info-&gt;x_char
 op_assign
@@ -10397,13 +10397,13 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_char
 op_star
 id|sp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

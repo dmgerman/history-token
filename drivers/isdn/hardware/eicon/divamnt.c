@@ -552,7 +552,7 @@ id|diva_dbg_entry_head_t
 op_star
 id|pmsg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_spin_lock_magic_t
 id|old_irql
@@ -1054,7 +1054,7 @@ id|str_msg
 suffix:semicolon
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 (paren
@@ -1098,7 +1098,7 @@ id|str_msg
 suffix:semicolon
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1258,7 +1258,7 @@ id|opened_sem
 suffix:semicolon
 id|filep-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 (paren
@@ -1299,7 +1299,7 @@ id|filep-&gt;private_data
 suffix:semicolon
 id|filep-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|down
@@ -1714,7 +1714,7 @@ r_void
 op_star
 id|buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|do_gettimeofday
 c_func

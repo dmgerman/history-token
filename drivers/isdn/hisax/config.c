@@ -6505,7 +6505,7 @@ id|i
 comma
 id|id
 comma
-l_int|0
+l_int|NULL
 comma
 id|hisax_d_if-&gt;owner
 )paren

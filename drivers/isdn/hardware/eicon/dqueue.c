@@ -48,7 +48,7 @@ id|q-&gt;data
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|q-&gt;length
 (braket
@@ -177,7 +177,7 @@ id|q-&gt;data
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|q-&gt;length
 (braket
@@ -260,9 +260,7 @@ id|q-&gt;write
 suffix:semicolon
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_void
@@ -345,9 +343,7 @@ id|q-&gt;read
 suffix:semicolon
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|diva_data_q_get_segment_length
