@@ -3873,6 +3873,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hd_init
+r_static
 r_int
 id|__init
 id|hd_init
