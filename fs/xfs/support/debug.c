@@ -94,7 +94,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
+macro_line|#if (defined(DEBUG) || defined(INDUCE_IO_ERRROR))
 r_int
 r_int
 DECL|function|random
