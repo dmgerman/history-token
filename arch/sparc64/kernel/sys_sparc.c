@@ -1058,7 +1058,7 @@ id|current-&gt;thread.flags
 op_or_assign
 id|SPARC_FLAG_MMAPSHARED
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1083,7 +1083,7 @@ comma
 id|off
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1152,7 +1152,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1171,7 +1171,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1286,7 +1286,7 @@ id|PAGE_OFFSET
 r_goto
 id|out
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1415,7 +1415,7 @@ op_complement
 id|SPARC_FLAG_MMAPSHARED
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -177,7 +177,7 @@ id|mm
 r_goto
 id|no_context
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -341,7 +341,7 @@ r_goto
 id|out_of_memory
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -479,7 +479,7 @@ id|good_area
 suffix:semicolon
 id|bad_area
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -660,7 +660,7 @@ r_return
 suffix:semicolon
 id|out_of_memory
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

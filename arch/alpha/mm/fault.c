@@ -251,7 +251,7 @@ r_goto
 id|vmalloc_fault
 suffix:semicolon
 macro_line|#endif
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -399,7 +399,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -431,7 +431,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Something tried to access memory that isn&squot;t in our memory map..&n; * Fix it, but check if it&squot;s kernel or user first..&n; */
 id|bad_area
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

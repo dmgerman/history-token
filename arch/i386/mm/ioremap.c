@@ -221,9 +221,12 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc_kernel
+id|pte_alloc
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|pmd
 comma
 id|address
@@ -362,9 +365,12 @@ id|pmd
 suffix:semicolon
 id|pmd
 op_assign
-id|pmd_alloc_kernel
+id|pmd_alloc
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|dir
 comma
 id|address

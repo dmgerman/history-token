@@ -948,7 +948,7 @@ comma
 id|s
 )paren
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -985,7 +985,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

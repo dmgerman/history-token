@@ -928,7 +928,7 @@ r_int
 r_int
 id|map_addr
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -969,7 +969,7 @@ id|eppnt-&gt;p_vaddr
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3213,7 +3213,7 @@ id|PER_SVR4
 (brace
 multiline_comment|/* Why this, you ask???  Well SVr4 maps page 0 as read-only,&n;&t;&t;   and some applications &quot;depend&quot; upon this behavior.&n;&t;&t;   Since we do not have the power to recompile these, we&n;&t;&t;   emulate the SVr4 behavior.  Sigh.  */
 multiline_comment|/* N.B. Shouldn&squot;t the size here be PAGE_SIZE?? */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -3242,7 +3242,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3608,7 +3608,7 @@ id|elf_phdata
 op_increment
 suffix:semicolon
 multiline_comment|/* Now use mmap to map the library into memory. */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -3661,7 +3661,7 @@ id|elf_phdata-&gt;p_vaddr
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -5459,7 +5459,7 @@ id|addr
 suffix:semicolon
 id|pmd
 op_assign
-id|pmd_alloc
+id|pmd_offset
 c_func
 (paren
 id|pgd
@@ -5474,11 +5474,11 @@ op_logical_neg
 id|pmd
 )paren
 r_goto
-id|end_coredump
+id|nextpage_coredump
 suffix:semicolon
 id|pte
 op_assign
-id|pte_alloc
+id|pte_offset
 c_func
 (paren
 id|pmd
@@ -5493,19 +5493,11 @@ op_logical_neg
 id|pte
 )paren
 r_goto
-id|end_coredump
+id|nextpage_coredump
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pte_present
-c_func
-(paren
-op_star
-id|pte
-)paren
-op_logical_and
 id|pte_none
 c_func
 (paren
@@ -5514,6 +5506,8 @@ id|pte
 )paren
 )paren
 (brace
+id|nextpage_coredump
+suffix:colon
 id|DUMP_SEEK
 (paren
 id|file-&gt;f_pos

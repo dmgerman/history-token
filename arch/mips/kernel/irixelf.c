@@ -1494,7 +1494,7 @@ l_int|0xfffff000
 )paren
 suffix:semicolon
 macro_line|#endif
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1527,7 +1527,7 @@ op_amp
 l_int|0xfffff000
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -2322,7 +2322,7 @@ id|PROT_EXEC
 suffix:colon
 l_int|0
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2364,7 +2364,7 @@ l_int|0xfffff000
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3481,7 +3481,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if 0 /* XXX No fucking way dude... */
 multiline_comment|/* Why this, you ask???  Well SVr4 maps page 0 as read-only,&n;&t; * and some applications &quot;depend&quot; upon this behavior.&n;&t; * Since we do not have the power to recompile these, we&n;&t; * emulate the SVr4 behavior.  Sigh.&n;&t; */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -3511,7 +3511,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3874,7 +3874,7 @@ op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* Now use mmap to map the library into memory. */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -3917,7 +3917,7 @@ op_amp
 l_int|0xfffff000
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -4257,7 +4257,7 @@ id|PROT_EXEC
 suffix:colon
 l_int|0
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -4304,7 +4304,7 @@ l_int|0xfffff000
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

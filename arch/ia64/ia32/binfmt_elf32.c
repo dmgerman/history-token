@@ -1216,7 +1216,7 @@ multiline_comment|/* doesn&squot;t work yet... */
 macro_line|#&t;define IA32_PAGESTART(_v) ((_v) &amp; ~(unsigned long)(ELF_EXEC_PAGESIZE-1))
 macro_line|#&t;define IA32_PAGEOFFSET(_v) ((_v) &amp; (ELF_EXEC_PAGESIZE-1))
 macro_line|#&t;define IA32_PAGEALIGN(_v) (((_v) + ELF_EXEC_PAGESIZE - 1) &amp; ~(ELF_EXEC_PAGESIZE - 1))
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1257,7 +1257,7 @@ id|eppnt-&gt;p_vaddr
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -599,14 +599,6 @@ id|serv
 op_assign
 id|svsk-&gt;sk_server
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|svsk
-)paren
-r_return
-suffix:semicolon
 id|svc_release_skb
 c_func
 (paren

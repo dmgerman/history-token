@@ -844,7 +844,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -869,7 +869,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

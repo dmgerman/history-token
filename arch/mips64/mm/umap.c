@@ -320,7 +320,7 @@ id|pgd_t
 op_star
 id|dir
 suffix:semicolon
-id|down
+id|down_write
 (paren
 op_amp
 id|task-&gt;mm-&gt;mmap_sem
@@ -386,7 +386,7 @@ comma
 id|end
 )paren
 suffix:semicolon
-id|up
+id|up_write
 (paren
 op_amp
 id|task-&gt;mm-&gt;mmap_sem

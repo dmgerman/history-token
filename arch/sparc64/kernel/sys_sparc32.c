@@ -22936,7 +22936,7 @@ id|old_len
 r_goto
 id|out
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -23067,7 +23067,7 @@ op_complement
 id|SPARC_FLAG_MMAPSHARED
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -1893,7 +1893,7 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -1985,7 +1985,7 @@ id|pageno
 suffix:semicolon
 )brace
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2167,7 +2167,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2375,7 +2375,7 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -4889,7 +4889,7 @@ op_or
 id|MAP_DENYWRITE
 )paren
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -4914,7 +4914,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -7904,7 +7904,7 @@ op_or
 id|MAP_DENYWRITE
 )paren
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -7929,7 +7929,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

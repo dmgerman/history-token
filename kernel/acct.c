@@ -939,7 +939,7 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -967,7 +967,7 @@ op_assign
 id|vma-&gt;vm_next
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp

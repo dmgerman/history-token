@@ -722,9 +722,14 @@ id|ohci
 DECL|member|hcca
 r_struct
 id|ohci_hcca
+op_star
 id|hcca
 suffix:semicolon
 multiline_comment|/* hcca */
+DECL|member|hcca_dma
+id|u32
+id|hcca_dma
+suffix:semicolon
 DECL|member|irq
 r_int
 id|irq

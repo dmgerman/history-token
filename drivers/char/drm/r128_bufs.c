@@ -1053,7 +1053,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1084,7 +1084,7 @@ r_int
 id|map-&gt;offset
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1094,7 +1094,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1121,7 +1121,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

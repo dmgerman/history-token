@@ -4123,6 +4123,16 @@ comma
 id|num_interrupt_in
 )paren
 suffix:semicolon
+id|max_endpoints
+op_assign
+id|MAX
+c_func
+(paren
+id|max_endpoints
+comma
+id|serial-&gt;num_ports
+)paren
+suffix:semicolon
 id|dbg
 (paren
 id|__FUNCTION__

@@ -540,7 +540,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -633,7 +633,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -701,7 +701,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -751,7 +751,7 @@ id|buf-&gt;total
 )paren
 suffix:semicolon
 macro_line|#endif
-id|up
+id|up_write
 c_func
 (paren
 op_amp

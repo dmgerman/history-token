@@ -331,7 +331,7 @@ suffix:semicolon
 DECL|macro|NUM_URBS
 mdefine_line|#define NUM_URBS&t;&t;&t;24
 DECL|macro|URB_TRANSFER_BUFFER_SIZE
-mdefine_line|#define URB_TRANSFER_BUFFER_SIZE&t;64
+mdefine_line|#define URB_TRANSFER_BUFFER_SIZE&t;768
 DECL|variable|write_urb_pool
 r_static
 r_struct

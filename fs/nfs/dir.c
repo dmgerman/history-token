@@ -4456,6 +4456,17 @@ id|access
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+op_minus
+id|EROFS
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/*&n;&t; * Trust UNIX mode bits except:&n;&t; *&n;&t; * 1) When override capabilities may have been invoked&n;&t; * 2) When root squashing may be involved&n;&t; * 3) When ACLs may overturn a negative answer */
 r_if
 c_cond

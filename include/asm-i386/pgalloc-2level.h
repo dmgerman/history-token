@@ -1,87 +1,18 @@
 macro_line|#ifndef _I386_PGALLOC_2LEVEL_H
 DECL|macro|_I386_PGALLOC_2LEVEL_H
 mdefine_line|#define _I386_PGALLOC_2LEVEL_H
-multiline_comment|/*&n; * traditional i386 two-level paging, page table allocation routines:&n; */
-DECL|function|get_pmd_fast
-r_extern
-id|__inline__
-id|pmd_t
-op_star
-id|get_pmd_fast
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|pmd_t
-op_star
-)paren
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|free_pmd_fast
-r_extern
-id|__inline__
-r_void
-id|free_pmd_fast
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-(brace
-)brace
-DECL|function|free_pmd_slow
-r_extern
-id|__inline__
-r_void
-id|free_pmd_slow
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-(brace
-)brace
-DECL|function|pmd_alloc
-r_extern
-r_inline
-id|pmd_t
-op_star
-id|pmd_alloc
-c_func
-(paren
-id|pgd_t
-op_star
-id|pgd
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pgd
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|pmd_t
-op_star
-)paren
-id|pgd
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * traditional i386 two-level paging, page table allocation routines:&n; * We don&squot;t have any real pmd&squot;s, and this code never triggers because&n; * the pgd will always be present..&n; */
+DECL|macro|pmd_alloc_one_fast
+mdefine_line|#define pmd_alloc_one_fast()&t;&t;({ BUG(); ((pmd_t *)1); })
+DECL|macro|pmd_alloc_one
+mdefine_line|#define pmd_alloc_one()&t;&t;&t;({ BUG(); ((pmd_t *)2); })
+DECL|macro|pmd_free_slow
+mdefine_line|#define pmd_free_slow(x)&t;&t;do { } while (0)
+DECL|macro|pmd_free_fast
+mdefine_line|#define pmd_free_fast(x)&t;&t;do { } while (0)
+DECL|macro|pmd_free
+mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
+DECL|macro|pgd_populate
+mdefine_line|#define pgd_populate(pmd, pte)&t;&t;BUG()
 macro_line|#endif /* _I386_PGALLOC_2LEVEL_H */
 eof

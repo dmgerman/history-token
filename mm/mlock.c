@@ -982,7 +982,7 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1070,7 +1070,7 @@ l_int|1
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1098,7 +1098,7 @@ id|len
 r_int
 id|ret
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1136,7 +1136,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1291,7 +1291,7 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1370,7 +1370,7 @@ id|flags
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1393,7 +1393,7 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1408,7 +1408,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

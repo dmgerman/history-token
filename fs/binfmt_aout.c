@@ -1782,7 +1782,7 @@ r_goto
 id|beyond_if
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1819,7 +1819,7 @@ comma
 id|fd_offset
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -1852,7 +1852,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1893,7 +1893,7 @@ op_plus
 id|ex.a_text
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -2323,7 +2323,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Now use mmap to map the library into memory. */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2362,7 +2362,7 @@ id|ex
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

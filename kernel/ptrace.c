@@ -674,7 +674,7 @@ id|mm
 r_return
 l_int|0
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -718,7 +718,7 @@ comma
 id|write
 )paren
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

@@ -307,7 +307,7 @@ id|mm
 r_goto
 id|no_context
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -546,7 +546,7 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -649,7 +649,7 @@ id|address
 suffix:semicolon
 id|send_sig
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

@@ -198,6 +198,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_read_entry
 c_func
 (paren
@@ -212,6 +213,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|shm_checkid
 r_static
@@ -2602,7 +2604,7 @@ c_func
 id|shmid
 )paren
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2630,7 +2632,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -2757,7 +2759,7 @@ comma
 op_star
 id|shmdnext
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2816,7 +2818,7 @@ id|shmd-&gt;vm_start
 )paren
 suffix:semicolon
 )brace
-id|up
+id|up_write
 c_func
 (paren
 op_amp

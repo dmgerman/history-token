@@ -1474,7 +1474,7 @@ op_assign
 id|current-&gt;mm
 suffix:semicolon
 multiline_comment|/* Oops, this was forgotten before. -ben */
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -1550,18 +1550,6 @@ id|count
 op_assign
 id|size
 suffix:semicolon
-id|flush_cache_range
-c_func
-(paren
-id|mm
-comma
-id|addr
-comma
-id|addr
-op_plus
-id|count
-)paren
-suffix:semicolon
 id|zap_page_range
 c_func
 (paren
@@ -1580,18 +1568,6 @@ comma
 id|count
 comma
 id|PAGE_COPY
-)paren
-suffix:semicolon
-id|flush_tlb_range
-c_func
-(paren
-id|mm
-comma
-id|addr
-comma
-id|addr
-op_plus
-id|count
 )paren
 suffix:semicolon
 id|size
@@ -1617,7 +1593,7 @@ r_goto
 id|out_up
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -1681,7 +1657,7 @@ id|size
 suffix:semicolon
 id|out_up
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

@@ -1280,7 +1280,8 @@ id|start
 r_return
 l_int|0
 suffix:semicolon
-id|down
+multiline_comment|/* XXX: maybe this could be down_read ??? - Rik */
+id|down_write
 c_func
 (paren
 op_amp
@@ -1456,7 +1457,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

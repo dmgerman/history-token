@@ -247,7 +247,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we search the VMAs&n;&t; */
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -443,7 +443,7 @@ r_goto
 id|out_of_memory
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -455,7 +455,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Something tried to access memory that isn&squot;t in our memory map..&n; * Fix it, but check if it&squot;s kernel or user first..&n; */
 id|bad_area
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -642,7 +642,7 @@ suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n;*/
 id|out_of_memory
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -675,7 +675,7 @@ id|no_context
 suffix:semicolon
 id|do_sigbus
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

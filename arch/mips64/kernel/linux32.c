@@ -2016,7 +2016,7 @@ id|av
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  kmalloc won&squot;t work because the `sys_exec&squot; code will attempt&n;&t; *  to do a `get_user&squot; on the arg list and `get_user&squot; will fail&n;&t; *  on a kernel address (simplifies `get_user&squot;).  Instead we&n;&t; *  do an mmap to get a user address.  Note that since a successful&n;&t; *  `execve&squot; frees all current memory we only have to do an&n;&t; *  `munmap&squot; if the `execve&squot; failes.&n;&t; */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -2050,7 +2050,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -1238,7 +1238,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot; %s: %016Lx @ %016Lx &quot;
+l_string|&quot; %s: %016Lx - %016Lx &quot;
 comma
 id|who
 comma
@@ -1247,7 +1247,7 @@ id|e820.map
 id|i
 )braket
 dot
-id|size
+id|addr
 comma
 id|e820.map
 (braket
@@ -1255,6 +1255,13 @@ id|i
 )braket
 dot
 id|addr
+op_plus
+id|e820.map
+(braket
+id|i
+)braket
+dot
+id|size
 )paren
 suffix:semicolon
 r_switch

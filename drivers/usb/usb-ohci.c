@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * URB OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000 David Brownell &lt;david-b@pacbell.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * History:&n; * &n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips.&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; */
+multiline_comment|/*&n; * URB OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000 David Brownell &lt;david-b@pacbell.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * History:&n; * &n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips.&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -591,7 +591,7 @@ id|ed_p
 op_assign
 op_amp
 (paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|i
 )braket
@@ -1628,7 +1628,7 @@ id|dbg
 (paren
 l_string|&quot;hcca frame #%04x&quot;
 comma
-id|controller-&gt;hcca.frame_no
+id|controller-&gt;hcca-&gt;frame_no
 )paren
 suffix:semicolon
 id|ohci_dump_roothub
@@ -2399,7 +2399,7 @@ suffix:colon
 (paren
 id|le16_to_cpu
 (paren
-id|ohci-&gt;hcca.frame_no
+id|ohci-&gt;hcca-&gt;frame_no
 )paren
 op_plus
 l_int|10
@@ -3108,7 +3108,7 @@ c_cond
 id|ohci-&gt;disabled
 )paren
 (brace
-multiline_comment|/* FIXME: Something like this should kick in,&n;&t;&t;&t;&t; * though it&squot;s currently an exotic case ...&n;&t;&t;&t;&t; * the controller won&squot;t ever be touching&n;&t;&t;&t;&t; * these lists again!!&n;&t;&t;&t;&t;dl_del_list (ohci,&n;&t;&t;&t;&t;&t;le16_to_cpu (ohci-&gt;hcca.frame_no) &amp; 1);&n;&t;&t;&t;&t; */
+multiline_comment|/* FIXME: Something like this should kick in,&n;&t;&t;&t;&t; * though it&squot;s currently an exotic case ...&n;&t;&t;&t;&t; * the controller won&squot;t ever be touching&n;&t;&t;&t;&t; * these lists again!!&n;&t;&t;&t;&t;dl_del_list (ohci,&n;&t;&t;&t;&t;&t;le16_to_cpu (ohci-&gt;hcca-&gt;frame_no) &amp; 1);&n;&t;&t;&t;&t; */
 id|warn
 (paren
 l_string|&quot;TD leak, %d&quot;
@@ -3262,7 +3262,7 @@ suffix:semicolon
 r_return
 id|le16_to_cpu
 (paren
-id|ohci-&gt;hcca.frame_no
+id|ohci-&gt;hcca-&gt;frame_no
 )paren
 suffix:semicolon
 )brace
@@ -3762,7 +3762,7 @@ id|ed_p
 op_assign
 op_amp
 (paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|ep_rev
 (paren
@@ -3937,7 +3937,7 @@ id|ed_p
 op_assign
 op_amp
 (paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|ep_rev
 (paren
@@ -4296,7 +4296,7 @@ id|ed_p
 op_assign
 op_amp
 (paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|ep_rev
 (paren
@@ -4512,7 +4512,7 @@ id|ed_p
 op_assign
 op_amp
 (paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|ep_rev
 (paren
@@ -5026,7 +5026,7 @@ id|frame
 op_assign
 id|le16_to_cpu
 (paren
-id|ohci-&gt;hcca.frame_no
+id|ohci-&gt;hcca-&gt;frame_no
 )paren
 op_amp
 l_int|0x1
@@ -6176,12 +6176,12 @@ op_assign
 id|le32_to_cpup
 (paren
 op_amp
-id|ohci-&gt;hcca.done_head
+id|ohci-&gt;hcca-&gt;done_head
 )paren
 op_amp
 l_int|0xfffffff0
 suffix:semicolon
-id|ohci-&gt;hcca.done_head
+id|ohci-&gt;hcca-&gt;done_head
 op_assign
 l_int|0
 suffix:semicolon
@@ -9138,11 +9138,7 @@ id|ohci-&gt;regs-&gt;ed_bulkhead
 suffix:semicolon
 id|writel
 (paren
-id|virt_to_bus
-(paren
-op_amp
-id|ohci-&gt;hcca
-)paren
+id|ohci-&gt;hcca_dma
 comma
 op_amp
 id|ohci-&gt;regs-&gt;hcca
@@ -9411,7 +9407,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ohci-&gt;hcca.done_head
+id|ohci-&gt;hcca-&gt;done_head
 op_ne
 l_int|0
 )paren
@@ -9421,7 +9417,7 @@ op_logical_neg
 id|le32_to_cpup
 (paren
 op_amp
-id|ohci-&gt;hcca.done_head
+id|ohci-&gt;hcca-&gt;done_head
 )paren
 op_amp
 l_int|0x01
@@ -9461,7 +9457,7 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// dbg(&quot;Interrupt: %x frame: %x&quot;, ints, le16_to_cpu (ohci-&gt;hcca.frame_no));
+singleline_comment|// dbg(&quot;Interrupt: %x frame: %x&quot;, ints, le16_to_cpu (ohci-&gt;hcca-&gt;frame_no));
 r_if
 c_cond
 (paren
@@ -9568,7 +9564,7 @@ id|frame
 op_assign
 id|le16_to_cpu
 (paren
-id|ohci-&gt;hcca.frame_no
+id|ohci-&gt;hcca-&gt;frame_no
 )paren
 op_amp
 l_int|1
@@ -9700,6 +9696,49 @@ comma
 r_sizeof
 (paren
 id|ohci_t
+)paren
+)paren
+suffix:semicolon
+id|ohci-&gt;hcca
+op_assign
+id|pci_alloc_consistent
+(paren
+id|dev
+comma
+r_sizeof
+op_star
+id|ohci-&gt;hcca
+comma
+op_amp
+id|ohci-&gt;hcca_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ohci-&gt;hcca
+)paren
+(brace
+id|kfree
+(paren
+id|ohci
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
+(paren
+id|ohci-&gt;hcca
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|ohci_hcca
 )paren
 )paren
 suffix:semicolon
@@ -9872,6 +9911,19 @@ multiline_comment|/* unmap the IO address space */
 id|iounmap
 (paren
 id|ohci-&gt;regs
+)paren
+suffix:semicolon
+id|pci_free_consistent
+(paren
+id|ohci-&gt;ohci_dev
+comma
+r_sizeof
+op_star
+id|ohci-&gt;hcca
+comma
+id|ohci-&gt;hcca
+comma
+id|ohci-&gt;hcca_dma
 )paren
 suffix:semicolon
 id|kfree
@@ -10272,7 +10324,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|ohci-&gt;hcca.int_table
+id|ohci-&gt;hcca-&gt;int_table
 (braket
 id|i
 )braket

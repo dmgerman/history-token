@@ -463,7 +463,7 @@ id|lib
 op_assign
 l_int|0
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -609,7 +609,7 @@ comma
 id|lib
 )paren
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -1226,7 +1226,7 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -1270,7 +1270,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2063,7 +2063,7 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -2195,7 +2195,7 @@ op_assign
 id|vma-&gt;vm_next
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2426,7 +2426,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* quickly go to line lineno */
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -2779,13 +2779,6 @@ id|i
 op_assign
 id|count
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|mm-&gt;mmap_sem
-)paren
-suffix:semicolon
 id|copy_to_user
 c_func
 (paren
@@ -2799,13 +2792,6 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* may have slept */
-id|down
-c_func
-(paren
-op_amp
-id|mm-&gt;mmap_sem
-)paren
-suffix:semicolon
 id|destptr
 op_add_assign
 id|i
@@ -2854,7 +2840,7 @@ id|volatile_task
 r_break
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp

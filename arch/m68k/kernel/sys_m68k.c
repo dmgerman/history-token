@@ -166,7 +166,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -191,7 +191,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -551,7 +551,7 @@ op_or
 id|MAP_DENYWRITE
 )paren
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -576,7 +576,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

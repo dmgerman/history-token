@@ -847,7 +847,7 @@ id|mm
 r_goto
 id|no_context
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -1031,7 +1031,7 @@ r_goto
 id|out_of_memory
 suffix:semicolon
 )brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -1043,7 +1043,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Something tried to access memory that isn&squot;t in our memory map..&n;&t; * Fix it, but check if it&squot;s kernel or user first..&n;&t; */
 id|bad_area
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -1293,7 +1293,7 @@ suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
 id|out_of_memory
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -1324,7 +1324,7 @@ id|no_context
 suffix:semicolon
 id|do_sigbus
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2022,7 +2022,7 @@ id|address
 )paren
 suffix:semicolon
 macro_line|#endif
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -2162,7 +2162,7 @@ id|write
 r_goto
 id|do_sigbus
 suffix:semicolon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2173,7 +2173,7 @@ r_return
 suffix:semicolon
 id|bad_area
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -2229,7 +2229,7 @@ r_return
 suffix:semicolon
 id|do_sigbus
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

@@ -356,7 +356,7 @@ op_assign
 l_int|0x40000000
 suffix:semicolon
 )brace
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -397,7 +397,7 @@ id|eppnt-&gt;p_vaddr
 )paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -6638,7 +6638,7 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -6852,7 +6852,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -8049,7 +8049,7 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -8242,7 +8242,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -8628,7 +8628,7 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|down_read
 c_func
 (paren
 op_amp
@@ -8839,7 +8839,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp

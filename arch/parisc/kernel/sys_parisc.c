@@ -171,7 +171,7 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -264,7 +264,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -434,7 +434,7 @@ op_assign
 id|current-&gt;mm
 suffix:semicolon
 multiline_comment|/*&n;&t; * Most of this replicates the code in sys_brk() except for an additional safety&n;&t; * check and the clearing of r8.  However, we can&squot;t call sys_brk() because we need&n;&t; * to acquire the mmap_sem before we can do the test...&n;&t; */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -622,7 +622,7 @@ id|retval
 op_assign
 id|mm-&gt;brk
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -887,7 +887,7 @@ id|current-&gt;thread.flags
 op_or_assign
 id|IA64_THREAD_MAP_SHARED
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -912,7 +912,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -796,7 +796,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|init_rwsem
 c_func
 (paren
 op_amp
@@ -1166,7 +1166,7 @@ id|mm
 r_goto
 id|fail_nomem
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -1181,7 +1181,7 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

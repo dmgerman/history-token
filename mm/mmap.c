@@ -359,7 +359,7 @@ id|mm
 op_assign
 id|current-&gt;mm
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -524,7 +524,7 @@ id|retval
 op_assign
 id|mm-&gt;brk
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3035,7 +3035,7 @@ id|mm
 op_assign
 id|current-&gt;mm
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -3054,7 +3054,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -224,7 +224,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Horrible dependencies! Try to get rid of this. This is wrong,&n;&t; * as it only reloads the ldt for the first process with this&n;&t; * mm. The implications are that you should really make sure that&n;&t; * you have a ldt before you do the first clone(), otherwise&n;&t; * you get strange behaviour (the kernel is safe, it&squot;s just user&n;&t; * space strangeness).&n;&t; *&n;&t; * we have two choices: either we preallocate the LDT descriptor&n;&t; * and can do a shared modify_ldt(), or we postallocate it and do&n;&t; * an smp message pass to update it. Currently we are a bit&n;&t; * un-nice to user-space and reload the LDT only on the next&n;&t; * schedule. (only an issue on SMP)&n;&t; *&n;&t; * the GDT index of the LDT is allocated dynamically, and is&n;&t; * limited by MAX_LDT_DESCRIPTORS.&n;&t; */
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -498,7 +498,7 @@ l_int|0
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|up
+id|up_write
 c_func
 (paren
 op_amp

@@ -112,7 +112,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|down
+id|down_write
 c_func
 (paren
 op_amp
@@ -242,7 +242,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|up
+id|up_write
 c_func
 (paren
 op_amp
