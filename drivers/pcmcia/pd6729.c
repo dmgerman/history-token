@@ -2248,9 +2248,9 @@ r_if
 c_cond
 (paren
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 OG
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 )paren
 op_logical_or
 (paren
@@ -2266,7 +2266,7 @@ c_func
 l_string|&quot;pd6729_set_mem_map: invalid address / speed&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;invalid mem map for socket %i : %lx to %lx with a start of %x&bslash;n&quot;,&n;&t;&t;&t; sock, mem-&gt;sys_start, mem-&gt;sys_stop, mem-&gt;card_start); */
+multiline_comment|/* printk(&quot;invalid mem map for socket %i : %lx to %lx with a start of %x&bslash;n&quot;,&n;&t;&t;&t; sock, mem-&gt;res-&gt;start, mem-&gt;res-&gt;end, mem-&gt;card_start); */
 r_return
 op_minus
 id|EINVAL
@@ -2316,7 +2316,7 @@ suffix:semicolon
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 op_rshift
 l_int|12
 )paren
@@ -2361,7 +2361,7 @@ multiline_comment|/* write the stop address */
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 op_rshift
 l_int|12
 )paren
@@ -2446,7 +2446,7 @@ id|socket
 comma
 id|PD67_EXT_DATA
 comma
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 op_rshift
 l_int|24
 )paren
@@ -2458,7 +2458,7 @@ op_assign
 (paren
 id|mem-&gt;card_start
 op_minus
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 )paren
 op_rshift
 l_int|12

@@ -6655,9 +6655,9 @@ id|mem-&gt;flags
 comma
 id|mem-&gt;speed
 comma
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 comma
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 comma
 id|mem-&gt;card_start
 )paren
@@ -6682,9 +6682,9 @@ l_int|0x3ffffff
 )paren
 op_logical_or
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 OG
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 )paren
 op_logical_or
 (paren
@@ -6701,13 +6701,13 @@ r_if
 c_cond
 (paren
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 OG
 l_int|0xffffff
 )paren
 op_logical_or
 (paren
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 OG
 l_int|0xffffff
 )paren
@@ -6759,7 +6759,7 @@ suffix:semicolon
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 op_rshift
 l_int|12
 )paren
@@ -6803,7 +6803,7 @@ suffix:semicolon
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_stop
+id|mem-&gt;res-&gt;end
 op_rshift
 l_int|12
 )paren
@@ -6872,7 +6872,7 @@ op_assign
 (paren
 id|mem-&gt;card_start
 op_minus
-id|mem-&gt;sys_start
+id|mem-&gt;res-&gt;start
 )paren
 op_rshift
 l_int|12
