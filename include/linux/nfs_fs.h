@@ -429,7 +429,7 @@ id|nfs_fhget
 c_func
 (paren
 r_struct
-id|dentry
+id|super_block
 op_star
 comma
 r_struct

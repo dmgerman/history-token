@@ -29,26 +29,6 @@ mdefine_line|#define NFS_PARANOIA 1
 multiline_comment|/* Maximum number of readahead requests&n; * FIXME: this should really be a sysctl so that users may tune it to suit&n; *        their needs. People that do NFS over a slow network, might for&n; *        instance want to reduce it to something closer to 1 for improved&n; *        interactive response.&n; *&n; *        For the moment, though, we instead set it to RPC_MAXREQS, which&n; *        is the maximum number of simultaneous RPC requests on the wire.&n; */
 DECL|macro|NFS_MAX_READAHEAD
 mdefine_line|#define NFS_MAX_READAHEAD&t;RPC_MAXREQS
-r_static
-r_struct
-id|inode
-op_star
-id|__nfs_fhget
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_struct
-id|nfs_fh
-op_star
-comma
-r_struct
-id|nfs_fattr
-op_star
-)paren
-suffix:semicolon
 r_void
 id|nfs_zap_caches
 c_func
@@ -986,7 +966,7 @@ suffix:semicolon
 op_star
 id|rooti
 op_assign
-id|__nfs_fhget
+id|nfs_fhget
 c_func
 (paren
 id|sb
@@ -3045,75 +3025,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is our own version of iget that looks up inodes by file handle&n; * instead of inode number.  We use this technique instead of using&n; * the vfs read_inode function because there is no way to pass the&n; * file handle or current attributes into the read_inode function.&n; *&n; */
+multiline_comment|/* Don&squot;t use READDIRPLUS on directories that we believe are too large */
+DECL|macro|NFS_LIMIT_READDIRPLUS
+mdefine_line|#define NFS_LIMIT_READDIRPLUS (8*PAGE_SIZE)
+multiline_comment|/*&n; * This is our front-end to iget that looks up inodes by file handle&n; * instead of inode number.&n; */
 r_struct
 id|inode
 op_star
 DECL|function|nfs_fhget
 id|nfs_fhget
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|nfs_fh
-op_star
-id|fhandle
-comma
-r_struct
-id|nfs_fattr
-op_star
-id|fattr
-)paren
-(brace
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|dentry-&gt;d_sb
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;NFS: nfs_fhget(%s/%s fileid=%Ld)&bslash;n&quot;
-comma
-id|dentry-&gt;d_parent-&gt;d_name.name
-comma
-id|dentry-&gt;d_name.name
-comma
-(paren
-r_int
-r_int
-)paren
-id|fattr-&gt;fileid
-)paren
-suffix:semicolon
-r_return
-id|__nfs_fhget
-c_func
-(paren
-id|sb
-comma
-id|fhandle
-comma
-id|fattr
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Don&squot;t use READDIRPLUS on directories that we believe are too large */
-DECL|macro|NFS_LIMIT_READDIRPLUS
-mdefine_line|#define NFS_LIMIT_READDIRPLUS (8*PAGE_SIZE)
-multiline_comment|/*&n; * Look up the inode by super block and fattr-&gt;fileid.&n; */
-r_static
-r_struct
-id|inode
-op_star
-DECL|function|__nfs_fhget
-id|__nfs_fhget
 c_func
 (paren
 r_struct
@@ -3514,7 +3434,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: __nfs_fhget(%s/%Ld ct=%d)&bslash;n&quot;
+l_string|&quot;NFS: nfs_fhget(%s/%Ld ct=%d)&bslash;n&quot;
 comma
 id|inode-&gt;i_sb-&gt;s_id
 comma
@@ -3546,7 +3466,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;__nfs_fhget: iget failed&bslash;n&quot;
+l_string|&quot;nfs_fhget: iget failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

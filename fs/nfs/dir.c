@@ -2907,7 +2907,7 @@ op_assign
 id|nfs_fhget
 c_func
 (paren
-id|dentry
+id|dentry-&gt;d_sb
 comma
 op_amp
 id|fhandle
@@ -3396,7 +3396,7 @@ op_assign
 id|nfs_fhget
 c_func
 (paren
-id|dentry
+id|dentry-&gt;d_sb
 comma
 id|fhandle
 comma
