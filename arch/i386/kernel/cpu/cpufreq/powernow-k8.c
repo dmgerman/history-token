@@ -3356,6 +3356,37 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* verify voltage is OK - BIOSs are using &quot;off&quot; to indicate invalid */
+r_if
+c_cond
+(paren
+id|vid
+op_eq
+l_int|0x1f
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;invalid vid %u, ignoring&bslash;n&quot;
+comma
+id|vid
+)paren
+suffix:semicolon
+id|powernow_table
+(braket
+id|i
+)braket
+dot
+id|frequency
+op_assign
+id|CPUFREQ_ENTRY_INVALID
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* verify only 1 entry from the lo frequency table */
 r_if
 c_cond
