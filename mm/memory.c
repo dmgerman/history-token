@@ -4682,8 +4682,6 @@ comma
 id|page_table
 comma
 id|entry
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|update_mmu_cache
@@ -4859,7 +4857,7 @@ comma
 id|vma
 )paren
 suffix:semicolon
-id|ptep_establish
+id|ptep_set_access_flags
 c_func
 (paren
 id|vma
@@ -7385,7 +7383,7 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-id|ptep_establish
+id|ptep_set_access_flags
 c_func
 (paren
 id|vma
