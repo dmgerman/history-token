@@ -4461,6 +4461,7 @@ OG
 l_int|0
 )paren
 (brace
+multiline_comment|/* Create an Ethernet device instance.&n;&t;&t;*/
 id|dev
 op_assign
 id|alloc_etherdev
@@ -4497,21 +4498,6 @@ suffix:semicolon
 id|cep-&gt;fip
 op_assign
 id|fip
-suffix:semicolon
-multiline_comment|/* Create an Ethernet device instance.&n;&t;&t;*/
-id|dev
-op_assign
-id|init_etherdev
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|cep
 suffix:semicolon
 id|init_fcc_shutdown
 c_func
