@@ -3439,7 +3439,7 @@ id|hd_drive_hob_hdr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* We can&squot;t call ide_cmd_type_parser here, since it won&squot;t understand&n;&t;   our command, but that doesn&squot;t matter, since we don&squot;t use the&n;&t;   generic interrupt handlers either. Setup the bits of args that we&n;&t;   do need.&n;&t;*/
+multiline_comment|/*&n;&t; * Setup the bits of args that we do need.&n;&t; * Note that we don&squot;t use the generic interrupt handlers.&n;&t; */
 id|args.handler
 op_assign
 l_int|NULL

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  sata_vsc.c - Vitesse VSC7174 4 port DPA SATA&n; *&n; *  Copyright 2004 SGI&n; *&n; *  Bits from Jeff Garzik, Copyright RedHat, Inc.&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *  sata_vsc.c - Vitesse VSC7174 4 port DPA SATA&n; *&n; *  Copyright 2004 SGI&n; *&n; *  Bits from Jeff Garzik, Copyright RedHat, Inc.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -927,6 +926,7 @@ suffix:semicolon
 DECL|function|vsc_sata_setup_port
 r_static
 r_void
+id|__devinit
 id|vsc_sata_setup_port
 c_func
 (paren
@@ -1034,6 +1034,7 @@ suffix:semicolon
 DECL|function|vsc_sata_init_one
 r_static
 r_int
+id|__devinit
 id|vsc_sata_init_one
 (paren
 r_struct
@@ -1456,6 +1457,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * 0x1725/0x7174 is the Vitesse VSC-7174&n; * 0x8086/0x3200 is the Intel 31244, which is supposed to be identical&n; * compatibility is untested as of yet&n; */
 DECL|variable|vsc_sata_pci_tbl
 r_static
 r_struct
@@ -1540,28 +1542,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|rc
-suffix:semicolon
-id|rc
-op_assign
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|vsc_sata_pci_driver
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|vsc_sata_exit

@@ -3539,6 +3539,7 @@ suffix:semicolon
 DECL|function|piix_ide_init
 r_static
 r_int
+id|__init
 id|piix_ide_init
 c_func
 (paren
