@@ -808,7 +808,7 @@ DECL|macro|NO_MATCH
 mdefine_line|#define NO_MATCH&t;{ NONE, NULL}
 DECL|macro|MATCH
 mdefine_line|#define MATCH(a,b)&t;{ a, b }
-multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Computer Corporation so their systems &quot;just work&quot;. :-)&n; */
+multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Inc. so their systems &quot;just work&quot;. :-)&n; */
 multiline_comment|/* &n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
 DECL|function|set_bios_reboot
 r_static
