@@ -4135,6 +4135,13 @@ id|pci_state
 l_int|16
 )braket
 suffix:semicolon
+DECL|member|proc_name
+r_char
+id|proc_name
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|bap_read
@@ -14793,6 +14800,8 @@ op_plus
 id|hdrlen
 op_plus
 l_int|2
+op_plus
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -14809,6 +14818,15 @@ r_goto
 id|badrx
 suffix:semicolon
 )brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* This way the IP header is aligned */
 id|buffer
 op_assign
 (paren
@@ -21574,12 +21592,20 @@ op_star
 id|entry
 suffix:semicolon
 multiline_comment|/* First setup the device directory */
+id|strcpy
+c_func
+(paren
+id|apriv-&gt;proc_name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 id|apriv-&gt;proc_entry
 op_assign
 id|create_proc_entry
 c_func
 (paren
-id|dev-&gt;name
+id|apriv-&gt;proc_name
 comma
 id|S_IFDIR
 op_or
@@ -22021,7 +22047,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-id|dev-&gt;name
+id|apriv-&gt;proc_name
 comma
 id|airo_entry
 )paren
