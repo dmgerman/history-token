@@ -888,7 +888,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* ======================================================================&n; * initialization&n; */
+DECL|function|st5481_setup_usb
 r_int
+id|st5481_setup_usb
+c_func
 (paren
 r_struct
 id|st5481_adapter
