@@ -6073,11 +6073,6 @@ id|releasepage
 op_assign
 id|ext3_releasepage
 comma
-dot
-id|direct_IO
-op_assign
-id|ext3_direct_IO
-comma
 )brace
 suffix:semicolon
 DECL|function|ext3_set_aops
