@@ -1824,6 +1824,17 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buffer_heads_over_limit
+)paren
+id|try_to_free_buffers
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 id|bvec
 op_assign
