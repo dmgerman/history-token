@@ -173,7 +173,7 @@ macro_line|#ifdef CONFIG_X86_SPEEDSTEP_CENTRINO_TABLE
 multiline_comment|/* Computes the correct form for IA32_PERF_CTL MSR for a particular&n;   frequency/voltage operating point; frequency in MHz, volts in mV.&n;   This is stored as &quot;index&quot; in the structure. */
 DECL|macro|OP
 mdefine_line|#define OP(mhz, mv)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.frequency = (mhz) * 1000,&t;&t;&t;&t;&bslash;&n;&t;&t;.index = (((mhz)/100) &lt;&lt; 8) | ((mv - 700) / 16)&t;&t;&bslash;&n;&t;}
-multiline_comment|/* &n; * These voltage tables were derived from the Intel Pentium M&n; * datasheet, document 25261202.pdf, Table 5.  I have verified they&n; * are consistent with my IBM ThinkPad X31, which has a 1.3GHz Pentium&n; * M.&n; */
+multiline_comment|/*&n; * These voltage tables were derived from the Intel Pentium M&n; * datasheet, document 25261202.pdf, Table 5.  I have verified they&n; * are consistent with my IBM ThinkPad X31, which has a 1.3GHz Pentium&n; * M.&n; */
 multiline_comment|/* Ultra Low Voltage Intel Pentium M processor 900MHz (Banias) */
 DECL|variable|banias_900
 r_static
@@ -1052,7 +1052,7 @@ id|msr
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* &n;&t; * Extract clock in kHz from PERF_CTL value&n;&t; * for centrino, as some DSDTs are buggy.&n;&t; * Ideally, this can be done using the acpi_data structure.&n;&t; */
+multiline_comment|/*&n;&t; * Extract clock in kHz from PERF_CTL value&n;&t; * for centrino, as some DSDTs are buggy.&n;&t; * Ideally, this can be done using the acpi_data structure.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1223,7 +1223,7 @@ r_struct
 id|acpi_processor_performance
 id|p
 suffix:semicolon
-multiline_comment|/*&n; * centrino_cpu_init_acpi - register with ACPI P-States library &n; *&n; * Register with the ACPI P-States library (part of drivers/acpi/processor.c)&n; * in order to determine correct frequency and voltage pairings by reading&n; * the _PSS of the ACPI DSDT or SSDT tables.&n; */
+multiline_comment|/*&n; * centrino_cpu_init_acpi - register with ACPI P-States library&n; *&n; * Register with the ACPI P-States library (part of drivers/acpi/processor.c)&n; * in order to determine correct frequency and voltage pairings by reading&n; * the _PSS of the ACPI DSDT or SSDT tables.&n; */
 DECL|function|centrino_cpu_init_acpi
 r_static
 r_int
@@ -2363,7 +2363,7 @@ r_goto
 id|migrate_end
 suffix:semicolon
 )brace
-multiline_comment|/* Hm, old frequency can either be the last value we put in&n;&t;   PERF_CTL, or whatever it is now. The trouble is that TM2&n;&t;   can change it behind our back, which means we never get to&n;&t;   see the speed change.  Reading back the current speed would&n;&t;   tell us something happened, but it may leave the things on&n;&t;   the notifier chain confused; we therefore stick to using&n;&t;   the last programmed speed rather than the current speed for&n;&t;   &quot;old&quot;. &n;&n;&t;   TODO: work out how the TCC interrupts work, and try to&n;&t;   catch the CPU changing things under us.&n;&t;*/
+multiline_comment|/* Hm, old frequency can either be the last value we put in&n;&t;   PERF_CTL, or whatever it is now. The trouble is that TM2&n;&t;   can change it behind our back, which means we never get to&n;&t;   see the speed change.  Reading back the current speed would&n;&t;   tell us something happened, but it may leave the things on&n;&t;   the notifier chain confused; we therefore stick to using&n;&t;   the last programmed speed rather than the current speed for&n;&t;   &quot;old&quot;.&n;&n;&t;   TODO: work out how the TCC interrupts work, and try to&n;&t;   catch the CPU changing things under us.&n;&t;*/
 id|freqs.cpu
 op_assign
 id|policy-&gt;cpu
@@ -2495,7 +2495,7 @@ id|name
 op_assign
 l_string|&quot;centrino&quot;
 comma
-multiline_comment|/* should be speedstep-centrino, &n;&t;&t;&t;&t;&t; but there&squot;s a 16 char limit */
+multiline_comment|/* should be speedstep-centrino,&n;&t;&t;&t;&t;&t; but there&squot;s a 16 char limit */
 dot
 id|init
 op_assign
