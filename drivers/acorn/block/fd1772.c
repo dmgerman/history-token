@@ -4302,10 +4302,19 @@ r_int
 id|invalidate_drive
 c_func
 (paren
-r_int
-id|rdev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
+r_struct
+id|archy_floppy_struct
+op_star
+id|p
+op_assign
+id|bdev-&gt;bd_disk-&gt;private_data
+suffix:semicolon
 multiline_comment|/* invalidate the buffer track to force a reread */
 macro_line|#ifdef TRACKBUFFER
 id|BufferDrive
@@ -4317,9 +4326,9 @@ macro_line|#endif
 id|set_bit
 c_func
 (paren
-id|rdev
-op_amp
-l_int|3
+id|p
+op_minus
+id|unit
 comma
 op_amp
 id|fake_change
@@ -4361,15 +4370,6 @@ id|bdev
 op_assign
 id|inode-&gt;i_bdev
 suffix:semicolon
-r_int
-id|drive
-op_assign
-id|MINOR
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4385,7 +4385,7 @@ suffix:colon
 id|invalidate_drive
 c_func
 (paren
-id|drive
+id|bdev
 )paren
 suffix:semicolon
 id|check_disk_change
