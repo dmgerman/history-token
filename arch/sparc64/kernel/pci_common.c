@@ -2406,16 +2406,6 @@ id|num_intmap
 comma
 id|map_slot
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pbm-&gt;num_pbm_intmap
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|intmap
 op_assign
 op_amp
@@ -2772,7 +2762,16 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Print it both to OBP console and kernel one so that if bootup&n;&t; * hangs here the user has the information to report.&n;&t; */
+multiline_comment|/* We will run this code even if pbm-&gt;num_pbm_intmap is zero, just so&n;&t; * we can apply the slot mapping to the PROM interrupt property value.&n;&t; * So do not spit out these warnings in that case.&n;&t; */
+r_if
+c_cond
+(paren
+id|num_intmap
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Print it both to OBP console and kernel one so that if bootup&n;&t;&t; * hangs here the user has the information to report.&n;&t;&t; */
 id|prom_printf
 c_func
 (paren
@@ -2835,6 +2834,7 @@ c_func
 l_string|&quot;Please email this information to davem@redhat.com&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
