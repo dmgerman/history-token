@@ -25,5 +25,16 @@ op_star
 id|psmouse
 )paren
 suffix:semicolon
+DECL|struct|alps_data
+r_struct
+id|alps_data
+(brace
+DECL|member|prev_fin
+r_int
+id|prev_fin
+suffix:semicolon
+multiline_comment|/* Finger bit from previous packet */
+)brace
+suffix:semicolon
 macro_line|#endif
 eof
