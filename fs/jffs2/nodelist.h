@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.121 2004/11/14 17:07:07 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.122 2004/11/16 15:45:13 dedekind Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -866,7 +866,7 @@ mdefine_line|#define frag_right(frag) rb_entry((frag)-&gt;rb.rb_right, struct jf
 DECL|macro|frag_erase
 mdefine_line|#define frag_erase(frag, list) rb_erase(&amp;frag-&gt;rb, list);
 multiline_comment|/* nodelist.c */
-id|D1
+id|D2
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.109 2004/10/07 15:08:47 havasi Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.110 2004/11/16 15:45:13 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -3078,7 +3078,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt; 0
+macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt;= 2
 DECL|function|jffs2_dump_block_lists
 r_void
 id|jffs2_dump_block_lists

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.140 2004/11/13 10:59:22 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.142 2004/11/16 17:52:10 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -595,7 +595,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|D1
+id|D2
 c_func
 (paren
 id|jffs2_dump_block_lists
@@ -705,7 +705,7 @@ comma
 id|c-&gt;unchecked_size
 )paren
 suffix:semicolon
-id|D1
+id|D2
 c_func
 (paren
 id|jffs2_dump_block_lists
