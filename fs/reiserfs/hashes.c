@@ -4,6 +4,7 @@ singleline_comment|// keyed_hash
 singleline_comment|// yura_hash
 singleline_comment|// r5_hash
 singleline_comment|//
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 DECL|macro|DELTA

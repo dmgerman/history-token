@@ -6,7 +6,7 @@ r_int
 id|x86_summit
 suffix:semicolon
 DECL|macro|esr_disable
-mdefine_line|#define esr_disable (1)
+mdefine_line|#define esr_disable (x86_summit ? 1 : 0)
 DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (0)
 DECL|macro|XAPIC_DEST_CPUS_MASK
@@ -20,16 +20,16 @@ mdefine_line|#define APIC_DFR_VALUE&t;(x86_summit ? APIC_DFR_CLUSTER : APIC_DFR_
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;(x86_summit ? XAPIC_DEST_CPUS_MASK : cpu_online_map)
 DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE dest_Fixed
+mdefine_line|#define INT_DELIVERY_MODE (x86_summit ? dest_Fixed : dest_LowestPrio)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID     (x86_summit ? 0xFF : 0x0F)
 DECL|macro|check_apicid_used
-mdefine_line|#define check_apicid_used(bitmap, apicid) (0)
+mdefine_line|#define check_apicid_used(bitmap, apicid) (x86_summit ? 0 : (bitmap &amp; (1 &lt;&lt; apicid)))
 multiline_comment|/* we don&squot;t use the phys_cpu_present_map to indicate apicid presence */
 DECL|macro|check_apicid_present
-mdefine_line|#define check_apicid_present(bit) (1) 
+mdefine_line|#define check_apicid_present(bit) (x86_summit ? 1 : (phys_cpu_present_map &amp; (1 &lt;&lt; bit))) 
 r_extern
 id|u8
 id|bios_cpu_apicid
@@ -375,9 +375,25 @@ r_int
 id|boot_cpu_physical_apicid
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|x86_summit
+)paren
 r_return
 (paren
 l_int|1
+)paren
+suffix:semicolon
+r_else
+r_return
+id|test_bit
+c_func
+(paren
+id|boot_cpu_physical_apicid
+comma
+op_amp
+id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace

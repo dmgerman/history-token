@@ -2559,9 +2559,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after_eq
+c_func
+(paren
 id|jiffies
-op_ge
+comma
 id|timeout
+)paren
 )paren
 (brace
 id|printk

@@ -1480,6 +1480,9 @@ id|page
 comma
 l_string|&quot;%04x&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|base
 )paren
 suffix:semicolon

@@ -1333,9 +1333,14 @@ id|page
 comma
 l_string|&quot;%04x&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
+(paren
 id|base
 op_plus
 id|part
+)paren
 )paren
 suffix:semicolon
 )brace
