@@ -150,6 +150,13 @@ DECL|variable|dmasound
 r_struct
 id|sound_settings
 id|dmasound
+op_assign
+(brace
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+)brace
 suffix:semicolon
 DECL|function|sound_silence
 r_static
@@ -737,7 +744,6 @@ suffix:semicolon
 DECL|function|mixer_init
 r_static
 r_void
-id|__init
 id|mixer_init
 c_func
 (paren
@@ -4047,7 +4053,6 @@ suffix:semicolon
 DECL|function|sq_init
 r_static
 r_int
-id|__init
 id|sq_init
 c_func
 (paren
@@ -4070,13 +4075,6 @@ op_assign
 id|sq_read
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|dmasound.lock
-)paren
-suffix:semicolon
 id|sq_unit
 op_assign
 id|register_sound_dsp
@@ -4874,7 +4872,6 @@ suffix:semicolon
 DECL|function|state_init
 r_static
 r_int
-id|__init
 id|state_init
 c_func
 (paren
@@ -4918,7 +4915,6 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Config &amp; Setup&n;     *&n;     *  This function is called by _one_ chipset-specific driver&n;     */
 DECL|function|dmasound_init
 r_int
-id|__init
 id|dmasound_init
 c_func
 (paren
@@ -5181,7 +5177,6 @@ macro_line|#else /* !MODULE */
 DECL|function|dmasound_setup
 r_static
 r_int
-id|__init
 id|dmasound_setup
 c_func
 (paren
