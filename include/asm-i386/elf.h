@@ -95,7 +95,10 @@ DECL|macro|AT_SYSINFO_EHDR
 mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2) do { } while (0)
+multiline_comment|/*&n; * A legacy binary, when loaded by the ELF loader, will have the&n; * READ_IMPLIES_EXEC personality flag set automatically:&n; */
+DECL|macro|LEGACY_BINARIES
+mdefine_line|#define LEGACY_BINARIES
 r_extern
 r_int
 id|dump_task_regs
