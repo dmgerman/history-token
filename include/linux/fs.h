@@ -3160,6 +3160,11 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* These macros are for out of kernel modules to test that&n; * the kernel supports the unlocked_ioctl and compat_ioctl&n; * fields in struct file_operations. */
+DECL|macro|HAVE_COMPAT_IOCTL
+mdefine_line|#define HAVE_COMPAT_IOCTL 1
+DECL|macro|HAVE_UNLOCKED_IOCTL
+mdefine_line|#define HAVE_UNLOCKED_IOCTL 1
 multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev, unlocked_ioctl and compat_ioctl&n; * can be called without the big kernel lock held in all filesystems.&n; */
 DECL|struct|file_operations
 r_struct
