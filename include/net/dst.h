@@ -68,6 +68,8 @@ DECL|macro|DST_NOPOLICY
 mdefine_line|#define DST_NOPOLICY&t;&t;4
 DECL|macro|DST_NOHASH
 mdefine_line|#define DST_NOHASH&t;&t;8
+DECL|macro|DST_BALANCED
+mdefine_line|#define DST_BALANCED            0x10
 DECL|member|lastuse
 r_int
 r_int

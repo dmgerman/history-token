@@ -61,6 +61,12 @@ id|fib_result
 op_star
 id|res
 comma
+id|__u32
+id|zone
+comma
+id|__u32
+id|mask
+comma
 r_int
 id|prefixlen
 )paren

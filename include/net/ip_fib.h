@@ -250,6 +250,16 @@ r_int
 r_char
 id|scope
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_WRANDOM
+DECL|member|network
+id|__u32
+id|network
+suffix:semicolon
+DECL|member|netmask
+id|__u32
+id|netmask
+suffix:semicolon
+macro_line|#endif
 DECL|member|fi
 r_struct
 id|fib_info
@@ -285,6 +295,17 @@ DECL|macro|FIB_RES_DEV
 mdefine_line|#define FIB_RES_DEV(res)&t;&t;(FIB_RES_NH(res).nh_dev)
 DECL|macro|FIB_RES_OIF
 mdefine_line|#define FIB_RES_OIF(res)&t;&t;(FIB_RES_NH(res).nh_oif)
+macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH_WRANDOM
+DECL|macro|FIB_RES_NETWORK
+mdefine_line|#define FIB_RES_NETWORK(res)&t;&t;((res).network)
+DECL|macro|FIB_RES_NETMASK
+mdefine_line|#define FIB_RES_NETMASK(res)&t;        ((res).netmask)
+macro_line|#else /* CONFIG_IP_ROUTE_MULTIPATH_WRANDOM */
+DECL|macro|FIB_RES_NETWORK
+mdefine_line|#define FIB_RES_NETWORK(res)&t;&t;(0)
+DECL|macro|FIB_RES_NETMASK
+mdefine_line|#define FIB_RES_NETMASK(res)&t;        (0)
+macro_line|#endif /* CONFIG_IP_ROUTE_MULTIPATH_WRANDOM */
 DECL|struct|fib_table
 r_struct
 id|fib_table

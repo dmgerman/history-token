@@ -122,6 +122,8 @@ DECL|member|flags
 id|__u8
 id|flags
 suffix:semicolon
+DECL|macro|FLOWI_FLAG_MULTIPATHOLDROUTE
+mdefine_line|#define FLOWI_FLAG_MULTIPATHOLDROUTE 0x01
 r_union
 (brace
 r_struct
