@@ -491,7 +491,7 @@ id|O_NONBLOCK
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We know that we are going to sleep: signal&n;&t;&t; * writers synchronously that there is more&n;&t;&t; * room.&n;&t;&t; */
-id|wake_up_interruptible
+id|wake_up_interruptible_sync
 c_func
 (paren
 id|PIPE_WAIT
@@ -970,7 +970,7 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Synchronous wake-up: it knows that this process&n;&t;&t;&t; * is going to give up this CPU, so it doesnt have&n;&t;&t;&t; * to do idle reschedules.&n;&t;&t;&t; */
-id|wake_up_interruptible
+id|wake_up_interruptible_sync
 c_func
 (paren
 id|PIPE_WAIT

@@ -2470,6 +2470,16 @@ c_func
 id|__wake_up
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_SMP
+DECL|variable|__wake_up_sync
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__wake_up_sync
+)paren
+suffix:semicolon
+multiline_comment|/* internal use only */
+macro_line|#endif
 DECL|variable|wake_up_process
 id|EXPORT_SYMBOL
 c_func
