@@ -851,6 +851,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;dgrs_rcv_frame()&n; *&n; *&t;Process a received frame.  This is called from the interrupt&n; *&t;routine, and works for both switch mode and multi-NIC mode.&n; *&n; *&t;Note that when in multi-NIC mode, we want to always access the&n; *&t;hardware using the dev and priv structures of the first port,&n; *&t;so that we are using only one set of variables to maintain&n; *&t;the board interface status, but we want to use the Nth port&n; *&t;dev and priv structures to maintain statistics and to pass&n; *&t;the packet up.&n; *&n; *&t;Only the first device structure is attached to the interrupt.&n; *&t;We use the special &quot;chan&quot; variable at the end of the first RBD&n; *&t;to select the Nth device in multi-NIC mode.&n; *&n; *&t;We currently do chained DMA on a per-packet basis when the&n; *&t;packet is &quot;long&quot;, and we spin the CPU a short time polling&n; *&t;for DMA completion.  This avoids a second interrupt overhead,&n; *&t;and gives the best performance for light traffic to the host.&n; *&n; *&t;However, a better scheme that could be implemented would be&n; *&t;to see how many packets are outstanding for the host, and if&n; *&t;the number is &quot;large&quot;, create a long chain to DMA several&n; *&t;packets into the host in one go.  In this case, we would set&n; *&t;up some state variables to let the host CPU continue doing&n; *&t;other things until a DMA completion interrupt comes along.&n; */
+r_static
 r_void
 DECL|function|dgrs_rcv_frame
 id|dgrs_rcv_frame
@@ -3460,6 +3461,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Probe (init) a board&n; */
+r_static
 r_int
 id|__init
 DECL|function|dgrs_probe1
@@ -3774,6 +3776,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|dgrs_initclone
