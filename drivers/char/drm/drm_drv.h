@@ -2490,11 +2490,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if __HAVE_CTX_BITMAP
 r_int
 id|retcode
 suffix:semicolon
-macro_line|#endif
 id|DRM_DEBUG
 c_func
 (paren
@@ -2922,6 +2920,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#if (__REALLY_HAVE_AGP &amp;&amp; __MUST_HAVE_AGP) || __HAVE_CTX_BITMAP
 id|fail
 suffix:colon
 id|DRM
@@ -2949,6 +2948,7 @@ id|takedown
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|fail_reg
 suffix:colon
 id|kfree
