@@ -39,10 +39,6 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/backlight.h&gt;
-macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;asm/smplock.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#endif /* CONFIG_SMP */
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
