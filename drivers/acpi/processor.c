@@ -6128,13 +6128,6 @@ l_string|&quot;Error removing notify handler&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|return_VALUE
-c_func
-(paren
-op_minus
-id|ENODEV
-)paren
-suffix:semicolon
 )brace
 id|acpi_processor_remove_fs
 c_func

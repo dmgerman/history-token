@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  pci_irq.c - ACPI PCI Interrupt Routing ($Revision: 11 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,6 +11,9 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#ifdef CONFIG_X86_IO_APIC
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSAPIC
+macro_line|# include &lt;asm/iosapic.h&gt;
 macro_line|#endif
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
@@ -777,6 +781,10 @@ c_func
 id|entry-&gt;link.handle
 comma
 id|entry-&gt;link.index
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1346,11 +1354,23 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Make sure all link devices have a valid IRQ. */
+r_if
+c_cond
+(paren
 id|acpi_pci_link_check
 c_func
 (paren
 )paren
+)paren
+(brace
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_X86_IO_APIC
 multiline_comment|/* Program IOAPICs using data from PRT entries. */
 r_if

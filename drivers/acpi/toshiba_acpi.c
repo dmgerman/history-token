@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  toshiba_acpi.c - Toshiba Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002-2003 John Belmonte&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The devolpment page for this driver is located at&n; *  http://memebeam.org/toys/ToshibaAcpiDriver.&n; *&n; *  Credits:&n; *&t;Jonathan A. Buzzard - Toshiba HCI info, and critical tips on reverse&n; *&t;&t;engineering the Windows drivers&n; *&t;Yasushi Nagato - changes for linux kernel 2.4 -&gt; 2.5&n; *&t;Rob Miller - TV out and hotkeys help&n; *&n; *&n; *  TODO&n; *&n; */
 DECL|macro|TOSHIBA_ACPI_VERSION
-mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.15&quot;
+mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.16&quot;
 DECL|macro|PROC_INTERFACE_VERSION
 mdefine_line|#define PROC_INTERFACE_VERSION&t;1
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -168,6 +168,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* NOTE: don&squot;t even _think_ about replacing this with strlcpy */
 id|strncpy
 c_func
 (paren

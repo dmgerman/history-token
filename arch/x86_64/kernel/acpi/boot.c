@@ -776,6 +776,14 @@ c_cond
 id|result
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
+)paren
+suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|1
@@ -790,7 +798,7 @@ c_func
 (paren
 id|KERN_NOTICE
 id|PREFIX
-l_string|&quot;BIOS passes blacklist&bslash;n&quot;
+l_string|&quot;BIOS not listed in blacklist&bslash;n&quot;
 )paren
 suffix:semicolon
 r_extern

@@ -9686,6 +9686,12 @@ id|pin
 comma
 r_int
 id|irq
+comma
+r_int
+id|edge_level
+comma
+r_int
+id|active_high_low
 )paren
 (brace
 r_struct
@@ -9752,21 +9758,18 @@ c_func
 id|TARGET_CPUS
 )paren
 suffix:semicolon
+id|entry.trigger
+op_assign
+id|edge_level
+suffix:semicolon
+id|entry.polarity
+op_assign
+id|active_high_low
+suffix:semicolon
 id|entry.mask
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Disabled (masked) */
-id|entry.trigger
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Level sensitive */
-id|entry.polarity
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Low active */
 id|add_pin_to_irq
 c_func
 (paren
@@ -9790,7 +9793,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;IOAPIC[%d]: Set PCI routing entry (%d-%d -&gt; 0x%x -&gt; &quot;
-l_string|&quot;IRQ %d)&bslash;n&quot;
+l_string|&quot;IRQ %d Mode:%i Active:%i)&bslash;n&quot;
 comma
 id|ioapic
 comma
@@ -9806,8 +9809,18 @@ comma
 id|entry.vector
 comma
 id|irq
+comma
+id|edge_level
+comma
+id|active_high_low
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|edge_level
+)paren
+(brace
 id|irq_desc
 (braket
 id|irq
@@ -9818,6 +9831,20 @@ op_assign
 op_amp
 id|ioapic_level_irq_type
 suffix:semicolon
+)brace
+r_else
+(brace
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|handler
+op_assign
+op_amp
+id|ioapic_edge_irq_type
+suffix:semicolon
+)brace
 id|set_intr_gate
 c_func
 (paren

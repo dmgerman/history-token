@@ -582,6 +582,12 @@ id|pin
 comma
 r_int
 id|irq
+comma
+r_int
+id|edge_level
+comma
+r_int
+id|active_high_low
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/

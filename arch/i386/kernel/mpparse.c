@@ -4349,8 +4349,13 @@ comma
 id|ioapic_pin
 comma
 id|irq
+comma
+l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
+singleline_comment|// Active low, level triggered
 )brace
 macro_line|#endif /*CONFIG_ACPI_HT_ONLY*/
 macro_line|#ifdef CONFIG_ACPI_PCI
@@ -4399,6 +4404,16 @@ id|bit
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|edge_level
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|active_high_low
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Parsing through the PCI Interrupt Routing Table (PRT) and program&n;&t; * routing for all entries.&n;&t; */
 id|list_for_each
 c_func
@@ -4437,6 +4452,12 @@ c_func
 id|entry-&gt;link.handle
 comma
 id|entry-&gt;link.index
+comma
+op_amp
+id|edge_level
+comma
+op_amp
+id|active_high_low
 )paren
 suffix:semicolon
 r_if
@@ -4449,10 +4470,21 @@ r_continue
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* Hardwired IRQ. Assume PCI standard settings */
 id|irq
 op_assign
 id|entry-&gt;link.index
 suffix:semicolon
+id|edge_level
+op_assign
+l_int|1
+suffix:semicolon
+id|active_high_low
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Don&squot;t set up the ACPI SCI because it&squot;s already set up */
 r_if
 c_cond
@@ -4630,6 +4662,10 @@ comma
 id|ioapic_pin
 comma
 id|irq
+comma
+id|edge_level
+comma
+id|active_high_low
 )paren
 )paren
 id|entry-&gt;irq
@@ -4667,8 +4703,6 @@ id|entry-&gt;irq
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 macro_line|#endif /*CONFIG_X86_IO_APIC*/

@@ -60,6 +60,14 @@ id|handle
 comma
 r_int
 id|index
+comma
+r_int
+op_star
+id|edge_level
+comma
+r_int
+op_star
+id|active_high_low
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI PCI Interrupt Routing (pci_irq.c) */
