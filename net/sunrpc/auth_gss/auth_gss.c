@@ -3375,6 +3375,12 @@ op_amp
 id|bufout
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bufout.data
+)paren
+suffix:semicolon
 r_return
 id|p
 suffix:semicolon
