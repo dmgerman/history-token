@@ -2561,7 +2561,7 @@ l_int|NULL
 suffix:semicolon
 id|agp_bridge-&gt;gatt_bus_addr
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
