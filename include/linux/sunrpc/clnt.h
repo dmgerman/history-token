@@ -33,6 +33,9 @@ id|pm_port
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|rpc_inode
+suffix:semicolon
 multiline_comment|/*&n; * The high-level client handle&n; */
 DECL|struct|rpc_clnt
 r_struct
@@ -168,6 +171,21 @@ id|cl_nodename
 id|UNX_MAXNODENAME
 )braket
 suffix:semicolon
+DECL|member|cl_pathname
+r_char
+id|cl_pathname
+(braket
+l_int|30
+)braket
+suffix:semicolon
+multiline_comment|/* Path in rpc_pipe_fs */
+DECL|member|cl_dentry
+r_struct
+id|dentry
+op_star
+id|cl_dentry
+suffix:semicolon
+multiline_comment|/* inode */
 )brace
 suffix:semicolon
 DECL|macro|cl_timeout
