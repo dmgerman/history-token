@@ -374,7 +374,7 @@ multiline_comment|/* finally seconds */
 )brace
 r_extern
 r_struct
-id|timeval
+id|timespec
 id|xtime
 suffix:semicolon
 DECL|macro|CURRENT_TIME

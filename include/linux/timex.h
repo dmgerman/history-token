@@ -76,6 +76,19 @@ macro_line|#include &lt;asm/timex.h&gt;
 multiline_comment|/* LATCH is used in the interval timer and ftape setup. */
 DECL|macro|LATCH
 mdefine_line|#define LATCH  ((CLOCK_TICK_RATE + HZ/2) / HZ)&t;/* For divider */
+multiline_comment|/* Suppose we want to devide two numbers NOM and DEN: NOM/DEN, the we can&n; * improve accuracy by shifting LSH bits, hence calculating:&n; *     (NOM &lt;&lt; LSH) / DEN&n; * This however means trouble for large NOM, because (NOM &lt;&lt; LSH) may no&n; * longer fit in 32 bits. The following way of calculating this gives us&n; * some slack, under the following onditions:&n; *   - (NOM / DEN) fits in (32 - LSH) bits.&n; *   - (NOM % DEN) fits in (32 - LSH) bits.&n; */
+DECL|macro|SH_DIV
+mdefine_line|#define SH_DIV(NOM,DEN,LSH) (   ((NOM / DEN) &lt;&lt; LSH)                    &bslash;&n;                             + (((NOM % DEN) &lt;&lt; LSH) + DEN / 2) / DEN)
+multiline_comment|/* HZ is the requested value. ACTHZ is actual HZ (&quot;&lt;&lt; 8&quot; is for accuracy) */
+DECL|macro|ACTHZ
+mdefine_line|#define ACTHZ (SH_DIV (CLOCK_TICK_RATE, LATCH, 8))
+multiline_comment|/* TICK_USEC is the time between ticks in usec assuming fake USER_HZ */
+DECL|macro|TICK_USEC
+mdefine_line|#define TICK_USEC ((1000000UL + USER_HZ/2) / USER_HZ)
+multiline_comment|/* TICK_NSEC is the time between ticks in nsec assuming real ACTHZ and&t;*/
+multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
+DECL|macro|TICK_NSEC
+mdefine_line|#define TICK_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
 multiline_comment|/*&n; * syscall interface - used (mainly by NTP daemon)&n; * to discipline kernel clock oscillator&n; */
 DECL|struct|timex
 r_struct
@@ -310,9 +323,16 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * kernel variables&n; * Note: maximum error = NTP synch distance = dispersion + delay / 2;&n; * estimated error = NTP dispersion.&n; */
 r_extern
 r_int
-id|tick
+r_int
+id|tick_usec
 suffix:semicolon
-multiline_comment|/* timer interrupt period */
+multiline_comment|/* USER_HZ period (usec) */
+r_extern
+r_int
+r_int
+id|tick_nsec
+suffix:semicolon
+multiline_comment|/* ACTHZ          period (nsec) */
 r_extern
 r_int
 id|tickadj
