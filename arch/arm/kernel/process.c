@@ -1479,6 +1479,8 @@ comma
 l_string|&quot;I&quot;
 (paren
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 )paren
 comma
 l_string|&quot;r&quot;

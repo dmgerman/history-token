@@ -64,6 +64,8 @@ DECL|macro|CLONE_CLEARTID
 mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
 DECL|macro|CLONE_DETACHED
 mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
+DECL|macro|CLONE_UNTRACED
+mdefine_line|#define CLONE_UNTRACED  0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
