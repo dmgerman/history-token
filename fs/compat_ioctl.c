@@ -10372,17 +10372,25 @@ suffix:semicolon
 )brace
 multiline_comment|/* Bluetooth ioctls */
 DECL|macro|HCIUARTSETPROTO
-mdefine_line|#define HCIUARTSETPROTO        _IOW(&squot;U&squot;, 200, int)
+mdefine_line|#define HCIUARTSETPROTO&t;_IOW(&squot;U&squot;, 200, int)
 DECL|macro|HCIUARTGETPROTO
-mdefine_line|#define HCIUARTGETPROTO        _IOR(&squot;U&squot;, 201, int)
+mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
 DECL|macro|BNEPCONNADD
-mdefine_line|#define BNEPCONNADD    _IOW(&squot;B&squot;, 200, int)
+mdefine_line|#define BNEPCONNADD&t;_IOW(&squot;B&squot;, 200, int)
 DECL|macro|BNEPCONNDEL
-mdefine_line|#define BNEPCONNDEL    _IOW(&squot;B&squot;, 201, int)
+mdefine_line|#define BNEPCONNDEL&t;_IOW(&squot;B&squot;, 201, int)
 DECL|macro|BNEPGETCONNLIST
-mdefine_line|#define BNEPGETCONNLIST        _IOR(&squot;B&squot;, 210, int)
+mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
 DECL|macro|BNEPGETCONNINFO
-mdefine_line|#define BNEPGETCONNINFO        _IOR(&squot;B&squot;, 211, int)
+mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
+DECL|macro|CMTPCONNADD
+mdefine_line|#define CMTPCONNADD&t;_IOW(&squot;C&squot;, 200, int)
+DECL|macro|CMTPCONNDEL
+mdefine_line|#define CMTPCONNDEL&t;_IOW(&squot;C&squot;, 201, int)
+DECL|macro|CMTPGETCONNLIST
+mdefine_line|#define CMTPGETCONNLIST&t;_IOR(&squot;C&squot;, 210, int)
+DECL|macro|CMTPGETCONNINFO
+mdefine_line|#define CMTPGETCONNINFO&t;_IOR(&squot;C&squot;, 211, int)
 DECL|struct|floppy_struct32
 r_struct
 id|floppy_struct32

@@ -2930,6 +2930,26 @@ c_func
 (paren
 id|BNEPGETCONNINFO
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CMTPCONNADD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CMTPCONNDEL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CMTPGETCONNLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CMTPGETCONNINFO
+)paren
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL
 c_func
