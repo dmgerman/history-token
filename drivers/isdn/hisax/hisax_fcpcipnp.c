@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Driver for AVM Fritz!PCI, Fritz!PCI v2, Fritz!PnP ISDN cards&n; *&n; * Author       Kai Germaschewski&n; * Copyright    2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; *              2001 by Karsten Keil       &lt;keil@isdn4linux.de&gt;&n; * &n; * based upon Karsten Keil&squot;s original avm_pci.c driver&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Wizard Computersysteme GmbH, Bremervoerde and&n; *           SoHaNet Technology GmbH, Berlin&n; * for supporting the development of this driver&n; */
-multiline_comment|/* TODO:&n; *&n; * o POWER PC&n; * o clean up debugging&n; */
+multiline_comment|/* TODO:&n; *&n; * o POWER PC&n; * o clean up debugging&n; * o tx_skb at PH_DEACTIVATE time&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1659,18 +1659,7 @@ c_func
 (paren
 l_int|0x40
 comma
-l_string|&quot;hdlc_fill_fifo&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-id|BUG
-c_func
-(paren
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2780,43 +2769,33 @@ suffix:semicolon
 r_case
 id|L1_MODE_TRANS
 suffix:colon
+r_case
+id|L1_MODE_HDLC
+suffix:colon
+id|bcs-&gt;rcvidx
+op_assign
+l_int|0
+suffix:semicolon
+id|bcs-&gt;tx_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|bcs-&gt;tx_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode
+op_eq
+id|L1_MODE_TRANS
+)paren
 id|bcs-&gt;ctrl.sr.mode
 op_assign
 id|HDLC_MODE_TRANS
 suffix:semicolon
-id|adapter
-op_member_access_from_pointer
-id|write_ctrl
-c_func
-(paren
-id|bcs
-comma
-l_int|5
-)paren
-suffix:semicolon
-id|bcs-&gt;ctrl.sr.cmd
-op_assign
-id|HDLC_CMD_XRS
-suffix:semicolon
-id|adapter
-op_member_access_from_pointer
-id|write_ctrl
-c_func
-(paren
-id|bcs
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|bcs-&gt;ctrl.sr.cmd
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|L1_MODE_HDLC
-suffix:colon
+r_else
 id|bcs-&gt;ctrl.sr.mode
 op_assign
 id|HDLC_MODE_ITF_FLG
