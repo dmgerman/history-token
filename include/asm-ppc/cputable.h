@@ -147,6 +147,8 @@ DECL|macro|CPU_FTR_NO_DPM
 mdefine_line|#define CPU_FTR_NO_DPM&t;&t;&t;0x00008000
 DECL|macro|CPU_FTR_HAS_HIGH_BATS
 mdefine_line|#define CPU_FTR_HAS_HIGH_BATS&t;&t;0x00010000
+DECL|macro|CPU_FTR_NEED_COHERENT
+mdefine_line|#define CPU_FTR_NEED_COHERENT           0x00020000
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|BEGIN_FTR_SECTION
 mdefine_line|#define BEGIN_FTR_SECTION&t;&t;98:
