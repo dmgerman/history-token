@@ -558,7 +558,6 @@ op_star
 id|data
 )paren
 (brace
-r_return
 id|dev_set_drvdata
 (paren
 op_amp
@@ -891,7 +890,6 @@ op_star
 id|data
 )paren
 (brace
-r_return
 id|dev_set_drvdata
 (paren
 op_amp
