@@ -2694,9 +2694,11 @@ id|oldsig-&gt;group_exit_task
 op_assign
 id|current
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
