@@ -1,4 +1,8 @@
-multiline_comment|/*&n;   net-3-driver for the 3c523 Etherlink/MC card (i82586 Ethernet chip)&n;&n;&n;   This is an extension to the Linux operating system, and is covered by the&n;   same GNU General Public License that covers that work.&n;&n;   Copyright 1995, 1996 by Chris Beauregard (cpbeaure@undergrad.math.uwaterloo.ca)&n;&n;   This is basically Michael Hipp&squot;s ni52 driver, with a new probing&n;   algorithm and some minor changes to the 82586 CA and reset routines.&n;   Thanks a lot Michael for a really clean i82586 implementation!  Unless&n;   otherwise documented in ni52.c, any bugs are mine.&n;&n;   Contrary to the Ethernet-HOWTO, this isn&squot;t based on the 3c507 driver in&n;   any way.  The ni52 is a lot easier to modify.&n;&n;   sources:&n;   ni52.c&n;&n;   Crynwr packet driver collection was a great reference for my first&n;   attempt at this sucker.  The 3c507 driver also helped, until I noticed&n;   that ni52.c was a lot nicer.&n;&n;   EtherLink/MC: Micro Channel Ethernet Adapter Technical Reference&n;   Manual, courtesy of 3Com CardFacts, documents the 3c523-specific&n;   stuff.  Information on CardFacts is found in the Ethernet HOWTO.&n;   Also see &lt;a href=&quot;http://www.3com.com/&quot;&gt;&n;&n;   Microprocessor Communications Support Chips, T.J. Byers, ISBN&n;   0-444-01224-9, has a section on the i82586.  It tells you just enough&n;   to know that you really don&squot;t want to learn how to program the chip.&n;&n;   The original device probe code was stolen from ps2esdi.c&n;&n;   Known Problems:&n;   Since most of the code was stolen from ni52.c, you&squot;ll run across the&n;   same bugs in the 0.62 version of ni52.c, plus maybe a few because of&n;   the 3c523 idiosynchacies.  The 3c523 has 16K of RAM though, so there&n;   shouldn&squot;t be the overrun problem that the 8K ni52 has.&n;&n;   This driver is for a 16K adapter.  It should work fine on the 64K&n;   adapters, but it will only use one of the 4 banks of RAM.  Modifying&n;   this for the 64K version would require a lot of heinous bank&n;   switching, which I&squot;m sure not interested in doing.  If you try to&n;   implement a bank switching version, you&squot;ll basically have to remember&n;   what bank is enabled and do a switch everytime you access a memory&n;   location that&squot;s not current.  You&squot;ll also have to remap pointers on&n;   the driver side, because it only knows about 16K of the memory.&n;   Anyone desperate or masochistic enough to try?&n;&n;   It seems to be stable now when multiple transmit buffers are used.  I&n;   can&squot;t see any performance difference, but then I&squot;m working on a 386SX.&n;&n;   Multicast doesn&squot;t work.  It doesn&squot;t even pretend to work.  Don&squot;t use&n;   it.  Don&squot;t compile your kernel with multicast support.  I don&squot;t know&n;   why.&n;&n;   Features:&n;   This driver is useable as a loadable module.  If you try to specify an&n;   IRQ or a IO address (via insmod 3c523.o irq=xx io=0xyyy), it will&n;   search the MCA slots until it finds a 3c523 with the specified&n;   parameters.&n;&n;   This driver does support multiple ethernet cards when used as a module&n;   (up to MAX_3C523_CARDS, the default being 4)&n;&n;   This has been tested with both BNC and TP versions, internal and&n;   external transceivers.  Haven&squot;t tested with the 64K version (that I&n;   know of).&n;&n;   History:&n;   Jan 1st, 1996&n;   first public release&n;   Feb 4th, 1996&n;   update to 1.3.59, incorporated multicast diffs from ni52.c&n;   Feb 15th, 1996&n;   added shared irq support&n;   Apr 1999&n;   added support for multiple cards when used as a module&n;   added option to disable multicast as is causes problems&n;       Ganesh Sittampalam &lt;ganesh.sittampalam@magdalen.oxford.ac.uk&gt;&n;       Stuart Adamson &lt;stuart.adamson@compsoc.net&gt;&n;&t;&n;   $Header: /fsys2/home/chrisb/linux-1.3.59-MCA/drivers/net/RCS/3c523.c,v 1.1 1996/02/05 01:53:46 chrisb Exp chrisb $&n; */
+multiline_comment|/*&n;   net-3-driver for the 3c523 Etherlink/MC card (i82586 Ethernet chip)&n;&n;&n;   This is an extension to the Linux operating system, and is covered by the&n;   same GNU General Public License that covers that work.&n;&n;   Copyright 1995, 1996 by Chris Beauregard (cpbeaure@undergrad.math.uwaterloo.ca)&n;&n;   This is basically Michael Hipp&squot;s ni52 driver, with a new probing&n;   algorithm and some minor changes to the 82586 CA and reset routines.&n;   Thanks a lot Michael for a really clean i82586 implementation!  Unless&n;   otherwise documented in ni52.c, any bugs are mine.&n;&n;   Contrary to the Ethernet-HOWTO, this isn&squot;t based on the 3c507 driver in&n;   any way.  The ni52 is a lot easier to modify.&n;&n;   sources:&n;   ni52.c&n;&n;   Crynwr packet driver collection was a great reference for my first&n;   attempt at this sucker.  The 3c507 driver also helped, until I noticed&n;   that ni52.c was a lot nicer.&n;&n;   EtherLink/MC: Micro Channel Ethernet Adapter Technical Reference&n;   Manual, courtesy of 3Com CardFacts, documents the 3c523-specific&n;   stuff.  Information on CardFacts is found in the Ethernet HOWTO.&n;   Also see &lt;a href=&quot;http://www.3com.com/&quot;&gt;&n;&n;   Microprocessor Communications Support Chips, T.J. Byers, ISBN&n;   0-444-01224-9, has a section on the i82586.  It tells you just enough&n;   to know that you really don&squot;t want to learn how to program the chip.&n;&n;   The original device probe code was stolen from ps2esdi.c&n;&n;   Known Problems:&n;   Since most of the code was stolen from ni52.c, you&squot;ll run across the&n;   same bugs in the 0.62 version of ni52.c, plus maybe a few because of&n;   the 3c523 idiosynchacies.  The 3c523 has 16K of RAM though, so there&n;   shouldn&squot;t be the overrun problem that the 8K ni52 has.&n;&n;   This driver is for a 16K adapter.  It should work fine on the 64K&n;   adapters, but it will only use one of the 4 banks of RAM.  Modifying&n;   this for the 64K version would require a lot of heinous bank&n;   switching, which I&squot;m sure not interested in doing.  If you try to&n;   implement a bank switching version, you&squot;ll basically have to remember&n;   what bank is enabled and do a switch everytime you access a memory&n;   location that&squot;s not current.  You&squot;ll also have to remap pointers on&n;   the driver side, because it only knows about 16K of the memory.&n;   Anyone desperate or masochistic enough to try?&n;&n;   It seems to be stable now when multiple transmit buffers are used.  I&n;   can&squot;t see any performance difference, but then I&squot;m working on a 386SX.&n;&n;   Multicast doesn&squot;t work.  It doesn&squot;t even pretend to work.  Don&squot;t use&n;   it.  Don&squot;t compile your kernel with multicast support.  I don&squot;t know&n;   why.&n;&n;   Features:&n;   This driver is useable as a loadable module.  If you try to specify an&n;   IRQ or a IO address (via insmod 3c523.o irq=xx io=0xyyy), it will&n;   search the MCA slots until it finds a 3c523 with the specified&n;   parameters.&n;&n;   This driver does support multiple ethernet cards when used as a module&n;   (up to MAX_3C523_CARDS, the default being 4)&n;&n;   This has been tested with both BNC and TP versions, internal and&n;   external transceivers.  Haven&squot;t tested with the 64K version (that I&n;   know of).&n;&n;   History:&n;   Jan 1st, 1996&n;   first public release&n;   Feb 4th, 1996&n;   update to 1.3.59, incorporated multicast diffs from ni52.c&n;   Feb 15th, 1996&n;   added shared irq support&n;   Apr 1999&n;   added support for multiple cards when used as a module&n;   added option to disable multicast as is causes problems&n;       Ganesh Sittampalam &lt;ganesh.sittampalam@magdalen.oxford.ac.uk&gt;&n;       Stuart Adamson &lt;stuart.adamson@compsoc.net&gt;&n;   Nov 2001&n;   added support for ethtool (jgarzik)&n;&t;&n;   $Header: /fsys2/home/chrisb/linux-1.3.59-MCA/drivers/net/RCS/3c523.c,v 1.1 1996/02/05 01:53:46 chrisb Exp chrisb $&n; */
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&t;&quot;3c523&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&t;&quot;17-Nov-2001&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,6 +13,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -201,6 +207,24 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
 multiline_comment|/* helper-functions */
 r_static
 r_int
@@ -2011,6 +2035,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
+suffix:semicolon
 id|ether_setup
 c_func
 (paren
@@ -5350,6 +5378,185 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;MCA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
+suffix:semicolon
+)brace
 multiline_comment|/*************************************************************************/
 macro_line|#ifdef MODULE
 multiline_comment|/* Increase if needed ;) */

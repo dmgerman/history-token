@@ -1,5 +1,11 @@
 multiline_comment|/* 3c503.c: A shared-memory NS8390 ethernet driver for linux. */
-multiline_comment|/*&n;    Written 1992-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;    This driver should work with the 3c503 and 3c503/16.  It should be used&n;    in shared memory mode for best performance, although it may also work&n;    in programmed-I/O mode.&n;&n;    Sources:&n;    EtherLink II Technical Reference Manual,&n;    EtherLink II/16 Technical Reference Manual Supplement,&n;    3Com Corporation, 5400 Bayfront Plaza, Santa Clara CA 95052-8145&n;&n;    The Crynwr 3c503 packet driver.&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t;: add support for the 2nd 8kB of RAM on 16 bit cards.&n;    Paul Gortmaker&t;: multiple card support for module users.&n;    rjohnson@analogic.com : Fix up PIO interface for efficient operation.&n;&n;*/
+multiline_comment|/*&n;    Written 1992-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;    This driver should work with the 3c503 and 3c503/16.  It should be used&n;    in shared memory mode for best performance, although it may also work&n;    in programmed-I/O mode.&n;&n;    Sources:&n;    EtherLink II Technical Reference Manual,&n;    EtherLink II/16 Technical Reference Manual Supplement,&n;    3Com Corporation, 5400 Bayfront Plaza, Santa Clara CA 95052-8145&n;&n;    The Crynwr 3c503 packet driver.&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t;: add support for the 2nd 8kB of RAM on 16 bit cards.&n;    Paul Gortmaker&t;: multiple card support for module users.&n;    rjohnson@analogic.com : Fix up PIO interface for efficient operation.&n;    Jeff Garzik&t;&t;: ethtool support&n;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;3c503&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.10a&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;11/17/2001&quot;
 DECL|variable|version
 r_static
 r_const
@@ -8,7 +14,12 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;3c503.c:v1.10 9/23/93  Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot;  Donald Becker (becker@scyld.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,6 +30,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -199,6 +212,24 @@ id|hdr
 comma
 r_int
 id|ring_page
+)paren
+suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 "&f;"
@@ -1251,6 +1282,11 @@ id|dev-&gt;stop
 op_assign
 op_amp
 id|el2_close
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+op_amp
+id|netdev_ioctl
 suffix:semicolon
 r_if
 c_cond
@@ -2704,6 +2740,185 @@ id|E33G_CNTRL
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;ISA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

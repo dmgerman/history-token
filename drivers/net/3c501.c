@@ -1,6 +1,10 @@
 multiline_comment|/* 3c501.c: A 3Com 3c501 Ethernet driver for Linux. */
 multiline_comment|/*&n;    Written 1992,1993,1994  Donald Becker&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;&n;    This is a device driver for the 3Com Etherlink 3c501.&n;    Do not purchase this card, even as a joke.  It&squot;s performance is horrible,&n;    and it breaks in many ways.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;    Fixed (again!) the missing interrupt locking on TX/RX shifting.&n;    &t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n;&n;    Removed calls to init_etherdev since they are no longer needed, and&n;    cleaned up modularization just a bit. The driver still allows only&n;    the default address for cards when loaded as a module, but that&squot;s&n;    really less braindead than anyone using a 3c501 board. :)&n;&t;&t;    19950208 (invid@msen.com)&n;&n;    Added traps for interrupts hitting the window as we clear and TX load&n;    the board. Now getting 150K/second FTP with a 3c501 card. Still playing&n;    with a TX-TX optimisation to see if we can touch 180-200K/second as seems&n;    theoretically maximum.&n;    &t;&t;19950402 Alan Cox &lt;Alan.Cox@linux.org&gt;&n;    &t;&t;&n;    Cleaned up for 2.3.x because we broke SMP now. &n;    &t;&t;20000208 Alan Cox &lt;alan@redhat.com&gt;&n;    &t;&t;&n;*/
 multiline_comment|/**&n; * DOC: 3c501 Card Notes&n; *&n; *  Some notes on this thing if you have to hack it.  [Alan]&n; *&n; *  Some documentation is available from 3Com. Due to the boards age&n; *  standard responses when you ask for this will range from &squot;be serious&squot;&n; *  to &squot;give it to a museum&squot;. The documentation is incomplete and mostly&n; *  of historical interest anyway. &n; *&n; *  The basic system is a single buffer which can be used to receive or&n; *  transmit a packet. A third command mode exists when you are setting&n; *  things up.&n; *&n; *  If it&squot;s transmitting it&squot;s not receiving and vice versa. In fact the&n; *  time to get the board back into useful state after an operation is&n; *  quite large.&n; *&n; *  The driver works by keeping the board in receive mode waiting for a&n; *  packet to arrive. When one arrives it is copied out of the buffer&n; *  and delivered to the kernel. The card is reloaded and off we go.&n; *&n; *  When transmitting lp-&gt;txing is set and the card is reset (from&n; *  receive mode) [possibly losing a packet just received] to command&n; *  mode. A packet is loaded and transmit mode triggered. The interrupt&n; *  handler runs different code for transmit interrupts and can handle&n; *  returning to receive mode or retransmissions (yes you have to help&n; *  out with those too).&n; *&n; * DOC: Problems&n; *  &n; *  There are a wide variety of undocumented error returns from the card&n; *  and you basically have to kick the board and pray if they turn up. Most&n; *  only occur under extreme load or if you do something the board doesn&squot;t&n; *  like (eg touching a register at the wrong time).&n; *&n; *  The driver is less efficient than it could be. It switches through&n; *  receive mode even if more transmits are queued. If this worries you buy&n; *  a real Ethernet card.&n; *&n; *  The combination of slow receive restart and no real multicast&n; *  filter makes the board unusable with a kernel compiled for IP&n; *  multicasting in a real multicast environment. That&squot;s down to the board,&n; *  but even with no multicast programs running a multicast IP kernel is&n; *  in group 224.0.0.1 and you will therefore be listening to all multicasts.&n; *  One nv conference running over that Ethernet and you can give up.&n; *&n; */
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;3c501&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;2001/11/17&quot;
 DECL|variable|version
 r_static
 r_const
@@ -9,7 +13,10 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;3c501.c: 2000/02/08 Alan Cox (alan@redhat.com).&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c: &quot;
+id|DRV_VERSION
+l_string|&quot; Alan Cox (alan@redhat.com).&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/*&n; *&t;Braindamage remaining:&n; *&t;The 3c501 board.&n; */
 macro_line|#include &lt;linux/module.h&gt;
@@ -24,6 +31,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_IP_MULTICAST */
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -187,12 +196,32 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
 DECL|macro|EL1_IO_EXTENT
 mdefine_line|#define EL1_IO_EXTENT&t;16
 macro_line|#ifndef EL_DEBUG
 DECL|macro|EL_DEBUG
 mdefine_line|#define EL_DEBUG  0&t;/* use 0 for production, 1 for devel., &gt;2 for debug */
 macro_line|#endif&t;&t;&t;/* Anything above 5 is wordy death! */
+DECL|macro|debug
+mdefine_line|#define debug el_debug
 DECL|variable|el_debug
 r_static
 r_int
@@ -858,6 +887,10 @@ id|dev-&gt;set_multicast_list
 op_assign
 op_amp
 id|set_multicast_list
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Setup the generic properties&n;&t; */
 id|ether_setup
@@ -2497,6 +2530,265 @@ id|RX_STATUS
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;ISA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
+suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 DECL|variable|dev_3c501

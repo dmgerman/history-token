@@ -1,4 +1,10 @@
 multiline_comment|/* 3c527.c: 3Com Etherlink/MC32 driver for Linux 2.4&n; *&n; *&t;(c) Copyright 1998 Red Hat Software Inc&n; *&t;Written by Alan Cox. &n; *&t;Further debugging by Carl Drougge.&n; *      Modified by Richard Procter (rnp@netlink.co.nz)&n; *&n; *&t;Based on skeleton.c written 1993-94 by Donald Becker and ne2.c&n; *&t;(for the MCA stuff) written by Wim Dumon.&n; *&n; *&t;Thanks to 3Com for making this possible by providing me with the&n; *&t;documentation.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&t;&quot;3c527&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.6a&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;2001/11/17&quot;
 DECL|variable|version
 r_static
 r_const
@@ -6,7 +12,12 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;3c527.c:v0.6 2001/03/03 Richard Proctor (rnp@netlink.co.nz)&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot; Richard Proctor (rnp@netlink.co.nz)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/**&n; * DOC: Traps for the unwary&n; *&n; *&t;The diagram (Figure 1-1) and the POS summary disagree with the&n; *&t;&quot;Interrupt Level&quot; section in the manual.&n; *&n; *&t;The manual contradicts itself when describing the minimum number &n; *&t;buffers in the &squot;configure lists&squot; command. &n; *&t;My card accepts a buffer config of 4/4. &n; *&n; *&t;Setting the SAV BP bit does not save bad packets, but&n; *&t;only enables RX on-card stats collection. &n; *&n; *&t;The documentation in places seems to miss things. In actual fact&n; *&t;I&squot;ve always eventually found everything is documented, it just&n; *&t;requires careful study.&n; *&n; * DOC: Theory Of Operation&n; *&n; *&t;The 3com 3c527 is a 32bit MCA bus mastering adapter with a large&n; *&t;amount of on board intelligence that housekeeps a somewhat dumber&n; *&t;Intel NIC. For performance we want to keep the transmit queue deep&n; *&t;as the card can transmit packets while fetching others from main&n; *&t;memory by bus master DMA. Transmission and reception are driven by&n; *&t;circular buffer queues.&n; *&n; *&t;The mailboxes can be used for controlling how the card traverses&n; *&t;its buffer rings, but are used only for inital setup in this&n; *&t;implementation.  The exec mailbox allows a variety of commands to&n; *&t;be executed. Each command must complete before the next is&n; *&t;executed. Primarily we use the exec mailbox for controlling the&n; *&t;multicast lists.  We have to do a certain amount of interesting&n; *&t;hoop jumping as the multicast list changes can occur in interrupt&n; *&t;state when the card has an exec command pending. We defer such&n; *&t;events until the command completion interrupt.&n; *&n; *&t;A copy break scheme (taken from 3c59x.c) is employed whereby&n; *&t;received frames exceeding a configurable length are passed&n; *&t;directly to the higher networking layers without incuring a copy,&n; *&t;in what amounts to a time/space trade-off.&n; *&t; &n; *&t;The card also keeps a large amount of statistical information&n; *&t;on-board. In a perfect world, these could be used safely at no&n; *&t;cost. However, lacking information to the contrary, processing&n; *&t;them without races would involve so much extra complexity as to&n; *&t;make it unworthwhile to do so. In the end, a hybrid SW/HW&n; *&t;implementation was made necessary --- see mc32_update_stats().  &n; *&n; * DOC: Notes&n; *&t;&n; *&t;It should be possible to use two or more cards, but at this stage&n; *&t;only by loading two copies of the same module.&n; *&n; *&t;The on-board 82586 NIC has trouble receiving multiple&n; *&t;back-to-back frames and so is likely to drop packets from fast&n; *&t;senders.&n;**/
 macro_line|#include &lt;linux/module.h&gt;
@@ -21,6 +32,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -40,7 +53,7 @@ r_char
 op_star
 id|cardname
 op_assign
-l_string|&quot;3c527&quot;
+id|DRV_NAME
 suffix:semicolon
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug */
 macro_line|#ifndef NET_DEBUG
@@ -509,6 +522,24 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * mc32_probe &t;-&t;Search for supported boards&n; * @dev: device to probe&n; *&n; * Because MCA bus is a real bus and we can scan for cards we could do a&n; * single scan for all boards here. Right now we use the passed in device&n; * structure and scan for only one board. This needs fixing for modules&n; * in paticular.&n; */
@@ -1630,6 +1661,10 @@ op_star
 l_int|5
 suffix:semicolon
 multiline_comment|/* Board does all the work */
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
+suffix:semicolon
 id|lp-&gt;xceiver_state
 op_assign
 id|HALTED
@@ -4887,6 +4922,265 @@ id|dev
 comma
 l_int|1
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;MCA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|mc32_debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|mc32_debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

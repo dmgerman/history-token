@@ -1,5 +1,11 @@
 multiline_comment|/* 3c507.c: An EtherLink16 device driver for Linux. */
 multiline_comment|/*&n;&t;Written 1993,1994 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;Thanks go to jennings@Montrouge.SMR.slb.com ( Patrick Jennings)&n;&t;and jrs@world.std.com (Rick Sladkey) for testing and bugfixes.&n;&t;Mark Salazar &lt;leslie@access.digex.net&gt; made the changes for cards with&n;&t;only 16K packet buffers.&n;&n;&t;Things remaining to do:&n;&t;Verify that the tx and rx buffers don&squot;t have fencepost errors.&n;&t;Move the theory of operation and memory map documentation.&n;&t;The statistics need to be updated correctly.&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&t;&quot;3c507&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&t;&quot;1.10a&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;11/17/2001&quot;
 DECL|variable|version
 r_static
 r_const
@@ -8,7 +14,12 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;3c507.c:v1.10 9/23/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot; Donald Becker (becker@scyld.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n;  Sources:&n;&t;This driver wouldn&squot;t have been written with the availability of the&n;&t;Crynwr driver source code.&t;It provided a known-working implementation&n;&t;that filled in the gaping holes of the Intel documentation.  Three cheers&n;&t;for Russ Nelson.&n;&n;&t;Intel Microcommunications Databook, Vol. 1, 1990.  It provides just enough&n;&t;info that the casual reader might think that it documents the i82586 :-&lt;.&n;*/
@@ -22,6 +33,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -45,6 +58,8 @@ id|net_debug
 op_assign
 id|NET_DEBUG
 suffix:semicolon
+DECL|macro|debug
+mdefine_line|#define debug net_debug
 multiline_comment|/* A zero-terminated list of common I/O addresses to be probed. */
 DECL|variable|__initdata
 r_static
@@ -527,6 +542,24 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 "&f;"
@@ -1218,6 +1251,10 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+id|netdev_ioctl
 suffix:semicolon
 id|ether_setup
 c_func
@@ -3365,6 +3402,265 @@ suffix:semicolon
 id|lp-&gt;rx_tail
 op_assign
 id|rx_tail
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ethtool_ioctl: Handle network interface SIOCETHTOOL ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @useraddr: userspace address to which data is to be read and returned&n; *&n; * Process the various commands of the SIOCETHTOOL interface.&n; */
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+multiline_comment|/* dev_ioctl() in ../../net/core/dev.c has already checked&n;&t;   capable(CAP_NET_ADMIN), so don&squot;t bother with that here.  */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;ISA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* get message-level */
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+op_assign
+(brace
+id|ETHTOOL_GMSGLVL
+)brace
+suffix:semicolon
+id|edata.data
+op_assign
+id|debug
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|edata
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* set message-level */
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+(brace
+r_struct
+id|ethtool_value
+id|edata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|edata
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|edata
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|debug
+op_assign
+id|edata.data
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * netdev_ioctl: Handle network interface ioctls&n; * @dev: network interface on which out-of-band action is to be performed&n; * @rq: user request data&n; * @cmd: command issued by user&n; *&n; * Process the various out-of-band ioctls passed to this driver.&n; */
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+id|rc
+op_assign
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
