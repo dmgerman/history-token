@@ -958,12 +958,6 @@ id|DEVICE_COUNT_RESOURCE
 )braket
 suffix:semicolon
 multiline_comment|/* I/O and memory regions + expansion ROMs */
-DECL|member|slot_name
-r_char
-op_star
-id|slot_name
-suffix:semicolon
-multiline_comment|/* pointer to dev.bus_id */
 multiline_comment|/* These fields are used by common fixups */
 DECL|member|transparent
 r_int
