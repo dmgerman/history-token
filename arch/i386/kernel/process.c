@@ -1897,7 +1897,7 @@ id|childregs-&gt;esp
 op_assign
 id|esp
 suffix:semicolon
-id|p-&gt;user_vm_lock
+id|p-&gt;user_tid
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2021,7 +2021,7 @@ id|CLONE_SETTLS
 op_or
 id|CLONE_SETTID
 op_or
-id|CLONE_RELEASE_VM
+id|CLONE_CLEARTID
 )paren
 )paren
 )paren
@@ -2157,21 +2157,21 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * Does the userspace VM want any unlock on mm_release()?&n;&t; */
+multiline_comment|/*&n;&t; * Does the userspace VM want the TID cleared on mm_release()?&n;&t; */
 r_if
 c_cond
 (paren
 id|clone_flags
 op_amp
-id|CLONE_RELEASE_VM
+id|CLONE_CLEARTID
 )paren
-id|p-&gt;user_vm_lock
+id|p-&gt;user_tid
 op_assign
 (paren
 r_int
 op_star
 )paren
-id|childregs-&gt;edi
+id|childregs-&gt;edx
 suffix:semicolon
 r_return
 l_int|0

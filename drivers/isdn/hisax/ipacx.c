@@ -384,9 +384,6 @@ comma
 id|cs-&gt;dc.isac.ph_state
 )paren
 suffix:semicolon
-singleline_comment|//###################################  
-singleline_comment|//&t;printk(KERN_INFO &quot;ph_command (%#x)&bslash;n&quot;, command);
-singleline_comment|//###################################  
 id|cs
 op_member_access_from_pointer
 id|writeisac
@@ -456,9 +453,6 @@ comma
 id|event
 )paren
 suffix:semicolon
-singleline_comment|//#########################################  
-singleline_comment|//&t;printk(KERN_INFO &quot;cic_int(%x)&bslash;n&quot;, event);
-singleline_comment|//#########################################  
 id|cs-&gt;dc.isac.ph_state
 op_assign
 id|event
@@ -2170,9 +2164,6 @@ comma
 id|IPACX_ISTAD
 )paren
 suffix:semicolon
-singleline_comment|//##############################################  
-singleline_comment|//&t;printk(KERN_WARNING &quot;dch_int(istad=%02x)&bslash;n&quot;, istad);
-singleline_comment|//##############################################  
 r_if
 c_cond
 (paren
@@ -3751,9 +3742,6 @@ comma
 id|IPACX_ISTAB
 )paren
 suffix:semicolon
-singleline_comment|//##############################################  
-singleline_comment|//&t;printk(KERN_WARNING &quot;bch_int(istab=%02x)&bslash;n&quot;, istab);
-singleline_comment|//##############################################  
 r_if
 c_cond
 (paren
@@ -5190,9 +5178,6 @@ id|IPACX_ISTA
 )paren
 )paren
 (brace
-singleline_comment|//#################################################  
-singleline_comment|//&t;&t;printk(KERN_WARNING &quot;interrupt_ipacx(ista=%02x)&bslash;n&quot;, ista);
-singleline_comment|//#################################################  
 r_if
 c_cond
 (paren
@@ -5439,9 +5424,6 @@ l_int|1
 )paren
 (brace
 singleline_comment|// initialise chip
-singleline_comment|//##################################################  
-singleline_comment|//&t;printk(KERN_INFO &quot;init_ipacx(%x)&bslash;n&quot;, part);
-singleline_comment|//##################################################  
 id|clear_pending_ints
 c_func
 (paren
