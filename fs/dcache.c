@@ -3135,11 +3135,6 @@ comma
 id|d_hash
 )paren
 suffix:semicolon
-id|smp_rmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3191,14 +3186,11 @@ id|parent
 r_goto
 id|next
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * It is safe to compare names since d_move() cannot&n;&t;&t; * change the qstr (protected by d_lock).&n;&t;&t; */
 id|qstr
 op_assign
-id|rcu_dereference
-c_func
-(paren
 op_amp
 id|dentry-&gt;d_name
-)paren
 suffix:semicolon
 r_if
 c_cond
