@@ -8455,7 +8455,6 @@ suffix:semicolon
 DECL|function|serial8250_console_setup
 r_static
 r_int
-id|__init
 id|serial8250_console_setup
 c_func
 (paren
