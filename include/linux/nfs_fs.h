@@ -64,6 +64,32 @@ mdefine_line|#define FLUSH_WAIT&t;&t;2&t;/* wait for completion */
 DECL|macro|FLUSH_STABLE
 mdefine_line|#define FLUSH_STABLE&t;&t;4&t;/* commit to stable storage */
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * NFSv3 Access mode cache&n; */
+DECL|struct|nfs_access_cache
+r_struct
+id|nfs_access_cache
+(brace
+DECL|member|jiffies
+r_int
+r_int
+id|jiffies
+suffix:semicolon
+DECL|member|cred
+r_struct
+id|rpc_cred
+op_star
+id|cred
+suffix:semicolon
+DECL|member|mask
+r_int
+id|mask
+suffix:semicolon
+DECL|member|err
+r_int
+id|err
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * nfs fs inode data in memory&n; */
 DECL|struct|nfs_inode
 r_struct
@@ -119,6 +145,11 @@ DECL|member|cache_mtime_jiffies
 r_int
 r_int
 id|cache_mtime_jiffies
+suffix:semicolon
+DECL|member|cache_access
+r_struct
+id|nfs_access_cache
+id|cache_access
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is the cookie verifier used for NFSv3 readdir&n;&t; * operations&n;&t; */
 DECL|member|cookieverf
