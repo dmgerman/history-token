@@ -275,6 +275,7 @@ id|dst
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_lookup - fetch tunnel matching the end-point addresses&n; *   @remote: the address of the tunnel exit-point &n; *   @local: the address of the tunnel entry-point &n; *&n; * Return:  &n; *   tunnel matching given end-points if found,&n; *   else fallback tunnel if its device is up, &n; *   else %NULL&n; **/
+r_static
 r_struct
 id|ip6_tnl
 op_star
@@ -1305,8 +1306,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_err - tunnel error handler&n; *&n; * Description:&n; *   ip6ip6_err() should handle errors in the tunnel according&n; *   to the specifications in RFC 2473.&n; **/
-DECL|function|ip6ip6_err
+r_static
 r_void
+DECL|function|ip6ip6_err
 id|ip6ip6_err
 c_func
 (paren
@@ -1778,8 +1780,9 @@ id|ip6ip6_lock
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_rcv - decapsulate IPv6 packet and retransmit it locally&n; *   @skb: received socket buffer&n; *&n; * Return: 0&n; **/
-DECL|function|ip6ip6_rcv
+r_static
 r_int
+DECL|function|ip6ip6_rcv
 id|ip6ip6_rcv
 c_func
 (paren
@@ -2173,8 +2176,9 @@ id|hdr-&gt;saddr
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_xmit - encapsulate packet and send &n; *   @skb: the outgoing socket buffer&n; *   @dev: the outgoing tunnel device &n; *&n; * Description:&n; *   Build new header and do some sanity checks on the packet before sending&n; *   it.&n; *&n; * Return: &n; *   0&n; **/
-DECL|function|ip6ip6_tnl_xmit
+r_static
 r_int
+DECL|function|ip6ip6_tnl_xmit
 id|ip6ip6_tnl_xmit
 c_func
 (paren
@@ -4265,8 +4269,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_fb_tnl_dev_init - initializer for fallback tunnel device&n; *   @dev: fallback device&n; *&n; * Return: 0&n; **/
-DECL|function|ip6ip6_fb_tnl_dev_init
+r_static
 r_int
+DECL|function|ip6ip6_fb_tnl_dev_init
 id|ip6ip6_fb_tnl_dev_init
 c_func
 (paren
