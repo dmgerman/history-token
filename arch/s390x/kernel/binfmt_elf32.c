@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Support for 32-bit Linux for S390 ELF binaries.&n; *&n; * Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Gerhard Tonn (ton@de.ibm.com)&n; *&n; * Heavily inspired by the 32-bit Sparc compat code which is&n; * Copyright (C) 1995, 1996, 1997, 1998 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1995, 1996, 1997, 1998 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 DECL|macro|__ASMS390_ELF_H
 mdefine_line|#define __ASMS390_ELF_H
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
@@ -22,14 +23,14 @@ DECL|macro|TASK31_SIZE
 mdefine_line|#define TASK31_SIZE&t;&t;(0x80000000UL)
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;current-&gt;thread.flags |= S390_FLAG_31BIT; &bslash;&n;&t;} while(0)
+mdefine_line|#define ELF_PLAT_INIT(_r) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;set_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE       4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         ((TASK31_SIZE &amp; 0x80000000) &bslash;&n;                                ? TASK31_SIZE / 3 * 2 &bslash;&n;                                : 2 * TASK31_SIZE / 3)     
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK31_SIZE / 3 * 2)
 multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
@@ -40,10 +41,8 @@ mdefine_line|#define ELF_HWCAP (0)
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.&n;&n;   For the moment, we have only optimizations for the Intel generations,&n;   but that could change... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM (NULL)
-macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)                                      &bslash;&n;&t;&t;set_personality(PER_SVR4);              &bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)   &bslash;&n;&t;&t;set_personality(PER_LINUX);             &bslash;&n;} while (0)
-macro_line|#endif 
 macro_line|#include &quot;linux32.h&quot;
 DECL|typedef|elf_fpregset_t
 r_typedef
@@ -299,6 +298,46 @@ DECL|macro|MODULE_DESCRIPTION
 macro_line|#undef MODULE_DESCRIPTION
 DECL|macro|MODULE_AUTHOR
 macro_line|#undef MODULE_AUTHOR
+DECL|macro|jiffies_to_timeval
+mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval
+r_static
+id|__inline__
+r_void
+DECL|function|jiffies_to_compat_timeval
+id|jiffies_to_compat_timeval
+c_func
+(paren
+r_int
+r_int
+id|jiffies
+comma
+r_struct
+id|compat_timeval
+op_star
+id|value
+)paren
+(brace
+id|value-&gt;tv_usec
+op_assign
+(paren
+id|jiffies
+op_mod
+id|HZ
+)paren
+op_star
+(paren
+l_int|1000000L
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|value-&gt;tv_sec
+op_assign
+id|jiffies
+op_div
+id|HZ
+suffix:semicolon
+)brace
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 r_static
 r_int
@@ -337,12 +376,21 @@ c_cond
 op_logical_neg
 id|addr
 )paren
-(brace
 id|addr
 op_assign
 l_int|0x40000000
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|prot
+op_amp
+id|PROT_READ
+)paren
+id|prot
+op_or_assign
+id|PROT_EXEC
+suffix:semicolon
 id|down_write
 c_func
 (paren

@@ -2091,9 +2091,11 @@ macro_line|#ifdef CONFIG_S390_SUPPORT
 r_if
 c_cond
 (paren
-id|current-&gt;thread.flags
-op_amp
-id|S390_FLAG_31BIT
+id|test_thread_flag
+c_func
+(paren
+id|TIF_31BIT
+)paren
 )paren
 (brace
 r_extern

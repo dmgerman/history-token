@@ -1239,5 +1239,7 @@ mdefine_line|#define kern_addr_valid(addr)   (1)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#endif /* _S390_PAGE_H */
 eof

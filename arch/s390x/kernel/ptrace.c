@@ -77,9 +77,11 @@ macro_line|#ifdef CONFIG_S390_SUPPORT
 r_if
 c_cond
 (paren
-id|current-&gt;thread.flags
-op_amp
-id|S390_FLAG_31BIT
+id|test_thread_flag
+c_func
+(paren
+id|TIF_31BIT
+)paren
 )paren
 id|per_info-&gt;control_regs.bits.ending_addr
 op_assign
@@ -1057,10 +1059,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_thread_flag
+c_func
 (paren
-id|child-&gt;thread.flags
-op_amp
-id|S390_FLAG_31BIT
+id|TIF_31BIT
 )paren
 op_logical_or
 (paren
@@ -1425,17 +1427,14 @@ suffix:semicolon
 id|__u32
 id|tmp
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+id|test_thread_flag
+c_func
 (paren
-id|child-&gt;thread.flags
-op_amp
-id|S390_FLAG_31BIT
+id|TIF_31BIT
 )paren
 op_logical_or
 (paren
@@ -1631,7 +1630,7 @@ id|FPC_VALID_MASK
 op_ne
 l_int|0
 )paren
-multiline_comment|/* Invalid floating pointer control. */
+multiline_comment|/* Invalid floating point control. */
 r_return
 op_minus
 id|EINVAL
@@ -2352,9 +2351,11 @@ macro_line|#ifdef CONFIG_S390_SUPPORT
 r_if
 c_cond
 (paren
-id|current-&gt;thread.flags
-op_amp
-id|S390_FLAG_31BIT
+id|test_thread_flag
+c_func
+(paren
+id|TIF_31BIT
+)paren
 )paren
 r_return
 id|do_ptrace_emu31
