@@ -1594,20 +1594,6 @@ comma
 id|bufp-&gt;nriov
 )paren
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|error
-op_eq
-op_minus
-id|EAGAIN
-)paren
-multiline_comment|/* Ignore and wait for re-xmit */
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -2525,12 +2511,11 @@ l_int|0x80000000
 )paren
 (brace
 multiline_comment|/* FIXME: technically, a record can be fragmented,&n;&t;&t;&t; *  and non-terminal fragments will not have the top&n;&t;&t;&t; *  bit set in the fragment length header.&n;&t;&t;&t; *  But apparently no known nfs clients send fragmented&n;&t;&t;&t; *  records. */
-multiline_comment|/* FIXME: shutdown socket */
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;RPC: bad TCP reclen %08lx&quot;
+l_string|&quot;RPC: bad TCP reclen 0x%08lx (non-terminal)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -2539,9 +2524,8 @@ r_int
 id|svsk-&gt;sk_reclen
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EIO
+r_goto
+id|err_delete
 suffix:semicolon
 )brace
 id|svsk-&gt;sk_reclen
@@ -2556,6 +2540,35 @@ comma
 id|svsk-&gt;sk_reclen
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|svsk-&gt;sk_reclen
+OG
+(paren
+id|bufp-&gt;buflen
+op_lshift
+l_int|2
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;RPC: bad TCP reclen 0x%08lx (large)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|svsk-&gt;sk_reclen
+)paren
+suffix:semicolon
+r_goto
+id|err_delete
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Check whether enough data is available */
 id|len
@@ -2584,7 +2597,6 @@ OL
 id|svsk-&gt;sk_reclen
 )paren
 (brace
-multiline_comment|/* FIXME: if sk_reclen &gt; window-size, then we will&n;&t;&t; * never be able to receive the record, so should&n;&t;&t; * shutdown the connection&n;&t;&t; */
 id|dprintk
 c_func
 (paren
@@ -2722,6 +2734,18 @@ op_increment
 suffix:semicolon
 r_return
 id|len
+suffix:semicolon
+id|err_delete
+suffix:colon
+id|svc_delete_socket
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
 suffix:semicolon
 id|error
 suffix:colon
@@ -2875,7 +2899,17 @@ op_lshift
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: should shutdown the socket, or allocate more memort&n;&t;&t; * or wait and try again or something.  Otherwise&n;&t;&t; * client will get confused&n;&t;&t; */
+id|svc_delete_socket
+c_func
+(paren
+id|rqstp-&gt;rq_sock
+)paren
+suffix:semicolon
+id|sent
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
 )brace
 r_return
 id|sent
