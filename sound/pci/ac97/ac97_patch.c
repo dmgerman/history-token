@@ -5005,6 +5005,12 @@ r_int
 r_int
 id|misc
 suffix:semicolon
+id|patch_ad1881
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
 id|ac97-&gt;build_ops
 op_assign
 op_amp
