@@ -6821,16 +6821,10 @@ id|type
 op_ne
 id|HARDDISK
 )paren
-(brace
-id|disk-&gt;minor_shift
-op_assign
-l_int|0
-suffix:semicolon
 id|disk-&gt;minors
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|disk-&gt;fops
 op_assign
 op_amp

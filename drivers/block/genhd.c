@@ -2712,16 +2712,6 @@ id|disk-&gt;minors
 op_assign
 id|minors
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|minors
-op_rshift_assign
-l_int|1
-)paren
-id|disk-&gt;minor_shift
-op_increment
-suffix:semicolon
 id|kobj_set_kset_s
 c_func
 (paren
