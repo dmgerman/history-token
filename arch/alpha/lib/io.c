@@ -1943,6 +1943,7 @@ op_logical_and
 (paren
 (paren
 r_int
+r_int
 )paren
 id|to
 op_amp
@@ -2011,6 +2012,7 @@ op_logical_and
 (paren
 (paren
 r_int
+r_int
 )paren
 id|to
 op_amp
@@ -2078,6 +2080,7 @@ l_int|2
 op_logical_and
 (paren
 (paren
+r_int
 r_int
 )paren
 id|to
@@ -2206,6 +2209,7 @@ op_eq
 (paren
 (paren
 r_int
+r_int
 )paren
 id|from
 op_amp
@@ -2275,6 +2279,7 @@ op_eq
 (paren
 (paren
 r_int
+r_int
 )paren
 id|from
 op_amp
@@ -2343,6 +2348,7 @@ l_int|1
 op_eq
 (paren
 (paren
+r_int
 r_int
 )paren
 id|from

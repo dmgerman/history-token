@@ -3,6 +3,7 @@ DECL|macro|_ALPHA_HARDIRQ_H
 mdefine_line|#define _ALPHA_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct

@@ -649,8 +649,20 @@ DECL|macro|__NR_free_hugepages
 mdefine_line|#define __NR_free_hugepages&t;&t;404
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;405
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;&t;406
+DECL|macro|__NR_sys_epoll_create
+mdefine_line|#define __NR_sys_epoll_create&t;&t;407
+DECL|macro|__NR_sys_epoll_ctl
+mdefine_line|#define __NR_sys_epoll_ctl&t;&t;408
+DECL|macro|__NR_sys_epoll_wait
+mdefine_line|#define __NR_sys_epoll_wait&t;&t;409
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;&t;410
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;&t;411
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;406
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;412
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
