@@ -57,10 +57,10 @@ mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@free.fr&gt;&quot;
-DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;1.7&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;1.8&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver version &quot; DRIVER_VERSION
 DECL|variable|udsl_driver_name
 r_static
 r_const
@@ -5959,6 +5959,12 @@ suffix:semicolon
 id|MODULE_LICENSE
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_VERSION
+id|MODULE_VERSION
+(paren
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/************&n;**  debug  **&n;************/
