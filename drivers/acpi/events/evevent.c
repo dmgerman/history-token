@@ -47,7 +47,7 @@ id|AE_NO_ACPI_TABLES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose acpi_events prior. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from occurring&n;&t; * before handers are installed.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose Events. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from&n;&t; * occurring before handers are installed.&n;&t; */
 id|status
 op_assign
 id|acpi_ev_fixed_event_initialize
@@ -374,7 +374,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INTERRUPTS
 comma
-l_string|&quot;Fixed acpi_event Block: Enable %08X Status %08X&bslash;n&quot;
+l_string|&quot;Fixed Event Block: Enable %08X Status %08X&bslash;n&quot;
 comma
 id|fixed_enable
 comma
@@ -509,7 +509,7 @@ suffix:semicolon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;ev_gpe_dispatch: No installed handler for fixed event [%08X]&bslash;n&quot;
+l_string|&quot;No installed handler for fixed event [%08X]&bslash;n&quot;
 comma
 id|event
 )paren
