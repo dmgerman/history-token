@@ -7987,6 +7987,11 @@ id|up-&gt;mcr_force
 op_assign
 id|ALPHA_KLUDGE_MCR
 suffix:semicolon
+id|up-&gt;port.ops
+op_assign
+op_amp
+id|serial8250_pops
+suffix:semicolon
 )brace
 r_for
 c_loop
@@ -8092,11 +8097,6 @@ id|i
 dot
 id|iomem_reg_shift
 suffix:semicolon
-id|up-&gt;port.ops
-op_assign
-op_amp
-id|serial8250_pops
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8159,11 +8159,6 @@ id|serial8250_ports
 (braket
 id|i
 )braket
-suffix:semicolon
-id|up-&gt;port.ops
-op_assign
-op_amp
-id|serial8250_pops
 suffix:semicolon
 id|up-&gt;port.dev
 op_assign
@@ -8530,7 +8525,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;ops
+id|port-&gt;iobase
+op_logical_and
+op_logical_neg
+id|port-&gt;membase
 )paren
 r_return
 op_minus
