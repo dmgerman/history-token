@@ -5,11 +5,19 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+multiline_comment|/* Used to synchronize acceses to NatSemi SUPER I/O chip configure&n; * operations in asm/ns87303.h&n; */
+DECL|variable|ns87303_lock
+id|spinlock_t
+id|ns87303_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|__initdata
 r_struct
 id|prom_cpuinfo

@@ -107,8 +107,13 @@ mdefine_line|#define CS1CF0_RESERVED&t;0x00
 DECL|macro|CS1CF1_RESERVED
 mdefine_line|#define CS1CF1_RESERVED&t;0x08
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+r_extern
+id|spinlock_t
+id|ns87303_lock
+suffix:semicolon
 DECL|function|ns87303_modify
 r_static
 id|__inline__
@@ -189,15 +194,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ns87303_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -254,9 +257,12 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ns87303_lock
+comma
 id|flags
 )paren
 suffix:semicolon
