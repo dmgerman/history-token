@@ -2957,8 +2957,17 @@ id|ifnum
 op_assign
 id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
+r_struct
+id|udsl_instance_data
+op_star
+id|instance
+suffix:semicolon
 r_int
-id|i
+r_char
+id|mac_str
+(braket
+l_int|13
+)braket
 suffix:semicolon
 r_int
 r_char
@@ -2968,18 +2977,9 @@ l_int|6
 )braket
 suffix:semicolon
 r_int
-r_char
-id|mac_str
-(braket
-l_int|13
-)braket
-suffix:semicolon
-r_struct
-id|udsl_instance_data
-op_star
-id|instance
-op_assign
-l_int|NULL
+id|i
+comma
+id|err
 suffix:semicolon
 id|PDEBUG
 (paren
@@ -3023,14 +3023,17 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|PDEBUG
 (paren
 l_string|&quot;Device Accepted&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* device init */
+multiline_comment|/* instance init */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|instance
 op_assign
 id|kmalloc
@@ -3043,12 +3046,7 @@ id|udsl_instance_data
 comma
 id|GFP_KERNEL
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|instance
+)paren
 )paren
 (brace
 id|PDEBUG
@@ -3056,12 +3054,15 @@ id|PDEBUG
 l_string|&quot;No memory for Instance data!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_goto
+id|fail_instance
+suffix:semicolon
 )brace
-multiline_comment|/* initialize structure */
 id|memset
 (paren
 id|instance
@@ -3079,6 +3080,12 @@ id|instance-&gt;usb_dev
 op_assign
 id|dev
 suffix:semicolon
+id|skb_queue_head_init
+(paren
+op_amp
+id|instance-&gt;recvqueue
+)paren
+suffix:semicolon
 id|tasklet_init
 (paren
 op_amp
@@ -3093,6 +3100,12 @@ r_int
 id|instance
 )paren
 suffix:semicolon
+multiline_comment|/* atm init */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|instance-&gt;atm_dev
 op_assign
 id|atm_dev_register
@@ -3107,7 +3120,23 @@ l_int|1
 comma
 l_int|0
 )paren
+)paren
+)paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;failed to register ATM device!&bslash;n&quot;
+)paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail_atm
+suffix:semicolon
+)brace
 id|instance-&gt;atm_dev-&gt;dev_data
 op_assign
 id|instance
@@ -3123,12 +3152,6 @@ suffix:semicolon
 id|instance-&gt;atm_dev-&gt;signal
 op_assign
 id|ATM_PHY_SIG_LOST
-suffix:semicolon
-id|skb_queue_head_init
-(paren
-op_amp
-id|instance-&gt;recvqueue
-)paren
 suffix:semicolon
 multiline_comment|/* tmp init atm device, set to 128kbit */
 id|instance-&gt;atm_dev-&gt;link_rate
@@ -3252,6 +3275,18 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|fail_atm
+suffix:colon
+id|kfree
+(paren
+id|instance
+)paren
+suffix:semicolon
+id|fail_instance
+suffix:colon
+r_return
+id|err
+suffix:semicolon
 )brace
 DECL|function|udsl_usb_disconnect
 r_static
@@ -3313,8 +3348,6 @@ id|kfree
 (paren
 id|instance
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
