@@ -286,9 +286,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: MODE SELECT 0x%x/%d&bslash;n&quot;
+l_string|&quot;%s: MODE SELECT 0x%x/%d&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|density
 comma
@@ -440,9 +440,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: switching blocklength to %d bytes failed&bslash;n&quot;
+l_string|&quot;%s: switching blocklength to %d bytes failed&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|blocklength
 )paren
@@ -675,10 +675,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the drive &quot;
+l_string|&quot;%s: Hmm, seems the drive &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -856,10 +856,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the cdrom &quot;
+l_string|&quot;%s: Hmm, seems the cdrom &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -1009,10 +1009,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the drive &quot;
+l_string|&quot;%s: Hmm, seems the drive &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -1202,9 +1202,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sr%d: No finished session&bslash;n&quot;
+l_string|&quot;%s: No finished session&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 )paren
 suffix:semicolon
 r_break
@@ -1337,9 +1337,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sr%d: unknown vendor code (%i), not initialized ?&bslash;n&quot;
+l_string|&quot;%s: unknown vendor code (%i), not initialized ?&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|SCp-&gt;vendor
 )paren
@@ -1422,9 +1422,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sr%d: multisession offset=%lu&bslash;n&quot;
+l_string|&quot;%s: multisession offset=%lu&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|sector
 )paren

@@ -292,6 +292,16 @@ op_star
 id|sense
 )paren
 (brace
+id|Scsi_CD
+op_star
+id|cd
+op_assign
+op_amp
+id|scsi_CDs
+(braket
+id|target
+)braket
+suffix:semicolon
 id|Scsi_Request
 op_star
 id|SRpnt
@@ -322,12 +332,7 @@ id|bounce_buffer
 suffix:semicolon
 id|SDev
 op_assign
-id|scsi_CDs
-(braket
-id|target
-)braket
-dot
-id|device
+id|cd-&gt;device
 suffix:semicolon
 id|SRpnt
 op_assign
@@ -560,9 +565,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: disc change detected.&bslash;n&quot;
+l_string|&quot;%s: disc change detected.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -616,9 +621,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: CDROM not ready yet.&bslash;n&quot;
+l_string|&quot;%s: CDROM not ready yet.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -665,9 +670,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: CDROM not ready.  Make sure there is a disc in the drive.&bslash;n&quot;
+l_string|&quot;%s: CDROM not ready.  Make sure there is a disc in the drive.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -700,10 +705,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sr%d: CDROM (ioctl) reports ILLEGAL &quot;
+l_string|&quot;%s: CDROM (ioctl) reports ILLEGAL &quot;
 l_string|&quot;REQUEST.&bslash;n&quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_if
@@ -763,9 +768,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sr%d: CDROM (ioctl) error, command: &quot;
+l_string|&quot;%s: CDROM (ioctl) error, command: &quot;
 comma
-id|target
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 id|print_command
@@ -2231,9 +2236,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_read_cd lba=%d format=%d blksize=%d&bslash;n&quot;
+l_string|&quot;%s: sr_read_cd lba=%d format=%d blksize=%d&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|lba
 comma
@@ -2563,9 +2568,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_read_sector lba=%d blksize=%d&bslash;n&quot;
+l_string|&quot;%s: sr_read_sector lba=%d blksize=%d&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|lba
 comma
@@ -2825,9 +2830,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: sr_is_xa: %d&bslash;n&quot;
+l_string|&quot;%s: sr_is_xa: %d&bslash;n&quot;
 comma
-id|minor
+id|SCp-&gt;cdi.name
 comma
 id|is_xa
 )paren

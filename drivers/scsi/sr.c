@@ -1137,9 +1137,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d : %s %d/%ld 512 byte blocks.&bslash;n&quot;
+l_string|&quot;%s : %s %d/%ld 512 byte blocks.&bslash;n&quot;
 comma
-id|devm
+id|SCp-&gt;cdi.name
 comma
 (paren
 id|rq_data_dir
@@ -1687,9 +1687,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Attached scsi CD-ROM sr%d at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
+l_string|&quot;Attached scsi CD-ROM %s at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
 comma
+id|scsi_CDs
+(braket
 id|i
+)braket
+dot
+id|cdi.name
 comma
 id|SDp-&gt;host-&gt;host_no
 comma
@@ -2066,9 +2071,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: unsupported sector size %d.&bslash;n&quot;
+l_string|&quot;%s: unsupported sector size %d.&bslash;n&quot;
 comma
-id|i
+id|SCp-&gt;cdi.name
 comma
 id|sector_size
 )paren
@@ -2363,9 +2368,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sr%i: scsi-1 drive&bslash;n&quot;
+l_string|&quot;%s: scsi-1 drive&bslash;n&quot;
 comma
-id|i
+id|SCp-&gt;cdi.name
 )paren
 suffix:semicolon
 r_return
@@ -2423,9 +2428,9 @@ multiline_comment|/* print some capability bits */
 id|printk
 c_func
 (paren
-l_string|&quot;sr%i: scsi3-mmc drive: %dx/%dx %s%s%s%s%s%s&bslash;n&quot;
+l_string|&quot;%s: scsi3-mmc drive: %dx/%dx %s%s%s%s%s%s&bslash;n&quot;
 comma
-id|i
+id|SCp-&gt;cdi.name
 comma
 (paren
 (paren
@@ -2840,6 +2845,9 @@ c_func
 (paren
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2939,6 +2947,35 @@ r_sizeof
 (paren
 id|Scsi_CD
 )paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|sr_template.dev_max
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|sprintf
+c_func
+(paren
+id|scsi_CDs
+(braket
+id|i
+)braket
+dot
+id|cdi.name
+comma
+l_string|&quot;sr%d&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 id|sr_sizes
@@ -3133,12 +3170,6 @@ c_func
 r_int
 id|i
 suffix:semicolon
-r_char
-id|name
-(braket
-l_int|6
-)braket
-suffix:semicolon
 id|blk_dev
 (braket
 id|MAJOR_NR
@@ -3294,24 +3325,6 @@ id|sr_vendor_init
 c_func
 (paren
 id|SCp
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;sr%d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|SCp-&gt;cdi.name
-comma
-id|name
 )paren
 suffix:semicolon
 id|sprintf
