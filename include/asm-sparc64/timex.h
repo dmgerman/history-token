@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-sparc64/timex.h&n; *&n; * sparc64 ar
 macro_line|#ifndef _ASMsparc64_TIMEX_H
 DECL|macro|_ASMsparc64_TIMEX_H
 mdefine_line|#define _ASMsparc64_TIMEX_H
+macro_line|#include &lt;asm/timer.h&gt;
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;1193180 /* Underlying HZ */
 DECL|macro|CLOCK_TICK_FACTOR
@@ -16,6 +17,6 @@ r_int
 id|cycles_t
 suffix:semicolon
 DECL|macro|get_cycles
-mdefine_line|#define get_cycles() &bslash;&n;({&t;cycles_t ret; &bslash;&n;&t;__asm__ __volatile__(&quot;rd&t;%%tick, %0&quot; : &quot;=r&quot; (ret)); &bslash;&n;&t;ret; &bslash;&n;})
+mdefine_line|#define get_cycles()&t;tick_ops-&gt;get_tick()
 macro_line|#endif
 eof
