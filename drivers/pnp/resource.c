@@ -937,9 +937,12 @@ id|dev-&gt;active
 r_if
 c_cond
 (paren
-id|check_region
+id|__check_region
 c_func
 (paren
+op_amp
+id|ioport_resource
+comma
 op_star
 id|port
 comma
@@ -1266,12 +1269,9 @@ id|dev-&gt;active
 r_if
 c_cond
 (paren
-id|__check_region
+id|check_mem_region
 c_func
 (paren
-op_amp
-id|iomem_resource
-comma
 op_star
 id|addr
 comma
