@@ -623,6 +623,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 multiline_comment|/*&n; * Forking from kernel space will result in the child getting a new,&n; * empty kernel stack area.  Thus the child cannot access automatic&n; * variables set in the parent unless they are in registers, and the&n; * procedure where the fork was done cannot return to its caller in&n; * the child.&n; */
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
