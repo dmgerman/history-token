@@ -10729,6 +10729,10 @@ id|region_start
 op_assign
 id|info-&gt;port
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -10744,7 +10748,19 @@ l_int|8
 comma
 l_string|&quot;esp serial&quot;
 )paren
+)paren
+(brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* put card in enhanced mode */
 multiline_comment|/* this prevents access through */
 multiline_comment|/* the &quot;old&quot; IO ports */

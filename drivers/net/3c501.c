@@ -707,6 +707,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s probe at %#x failed to detect IRQ line.&bslash;n&quot;
 comma
 id|mname
@@ -814,6 +815,7 @@ id|el_debug
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&quot;
 comma
 id|version
@@ -977,6 +979,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Doing el_open()...&quot;
 comma
 id|dev-&gt;name
@@ -1370,6 +1373,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; queued xmit.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1394,6 +1398,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: burped during tx load.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1572,6 +1577,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; txsr=%02x gp=%04x rp=%04x]&bslash;n&quot;
 comma
 id|txsr
@@ -1663,6 +1669,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Unusual interrupt during Tx, txsr=%02x axsr=%02x&quot;
 l_string|&quot; gp=%03x rp=%03x.&bslash;n&quot;
 comma
@@ -1717,8 +1724,8 @@ c_cond
 id|el_debug
 )paren
 id|printk
-c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Transmit failed 16 times, Ethernet jammed?&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1766,6 +1773,7 @@ l_int|6
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; retransmitting after a collision.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1823,6 +1831,7 @@ l_int|6
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; Tx succeeded %s&bslash;n&quot;
 comma
 (paren
@@ -1873,6 +1882,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; rxsr=%02x txsr=%02x rp=%04x&quot;
 comma
 id|rxsr
@@ -1924,6 +1934,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; runt.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1958,6 +1969,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: No packet seen, rxsr=%02x **resetting 3c501***&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1982,6 +1994,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2082,6 +2095,7 @@ l_int|4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; el_receive %d.&bslash;n&quot;
 comma
 id|pkt_len
@@ -2111,6 +2125,7 @@ id|el_debug
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: bogus packet, length=%d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2163,6 +2178,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Memory squeeze, dropping packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2277,6 +2293,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;3c501 reset...&quot;
 )paren
 suffix:semicolon
@@ -2404,6 +2421,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Shutting down Ethernet card at %#x.&bslash;n&quot;
 comma
 id|dev-&gt;name

@@ -198,6 +198,31 @@ l_string|&quot; XEBEC&quot;
 )brace
 comma
 multiline_comment|/* Andrzej Krzysztofowicz, ankry@mif.pg.gda.pl */
+(brace
+l_int|0x0008
+comma
+l_string|&quot;(C) Copyright 1984 Western Digital Corp&quot;
+comma
+id|xd_wd_init_controller
+comma
+id|xd_wd_init_drive
+comma
+l_string|&quot; Western Dig. 1002s-wx2&quot;
+)brace
+comma
+(brace
+l_int|0x0008
+comma
+l_string|&quot;(C) Copyright 1986 Western Digital Corporation&quot;
+comma
+id|xd_wd_init_controller
+comma
+id|xd_wd_init_drive
+comma
+l_string|&quot; 1986 Western Digital&quot;
+)brace
+comma
+multiline_comment|/* jfree@sovereign.org */
 )brace
 suffix:semicolon
 DECL|variable|__initdata
