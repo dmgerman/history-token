@@ -1393,6 +1393,8 @@ OG
 id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
+op_minus
+l_int|4
 )paren
 op_logical_or
 (paren
@@ -1405,6 +1407,8 @@ id|smb_hdr
 )paren
 op_minus
 l_int|1
+op_minus
+l_int|4
 )paren
 )paren
 (brace
@@ -1481,21 +1485,6 @@ op_add_assign
 id|length
 )paren
 (brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;trying to read %d bytes&quot;
-comma
-id|pdu_length
-op_minus
-id|total_read
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|length
 op_assign
 id|kernel_recvmsg
@@ -1560,19 +1549,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;received rest of smb (length 0x%x&quot;
-comma
-id|length
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 )brace
 id|length
 op_add_assign
