@@ -2341,9 +2341,12 @@ id|fl
 comma
 id|sk
 comma
+op_logical_neg
+(paren
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3653,6 +3656,8 @@ comma
 id|inet-&gt;sport
 comma
 id|usin-&gt;sin_port
+comma
+id|sk
 )paren
 suffix:semicolon
 r_if

@@ -31,9 +31,11 @@ id|XFRM_DST_HSIZE
 )braket
 suffix:semicolon
 DECL|variable|km_waitq
-id|wait_queue_head_t
-op_star
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
 id|km_waitq
+)paren
 suffix:semicolon
 DECL|macro|ACQ_EXPIRES
 mdefine_line|#define ACQ_EXPIRES 30
@@ -738,6 +740,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
+op_amp
 id|km_waitq
 )paren
 suffix:semicolon
@@ -888,6 +891,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
+op_amp
 id|km_waitq
 )paren
 suffix:semicolon
@@ -995,6 +999,10 @@ c_cond
 id|daddr
 op_eq
 id|x-&gt;id.daddr.xfrm4_addr
+op_logical_and
+id|x-&gt;props.reqid
+op_eq
+id|tmpl-&gt;reqid
 op_logical_and
 (paren
 id|saddr
@@ -1249,6 +1257,10 @@ suffix:semicolon
 id|x-&gt;props.mode
 op_assign
 id|tmpl-&gt;mode
+suffix:semicolon
+id|x-&gt;props.reqid
+op_assign
+id|tmpl-&gt;reqid
 suffix:semicolon
 r_if
 c_cond
@@ -1556,6 +1568,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
+op_amp
 id|km_waitq
 )paren
 suffix:semicolon
@@ -1939,14 +1952,9 @@ id|saddr
 op_eq
 id|x-&gt;props.saddr.xfrm4_addr
 op_logical_and
-(paren
-op_logical_neg
-id|reqid
-op_logical_or
 id|reqid
 op_eq
 id|x-&gt;props.reqid
-)paren
 )paren
 (brace
 r_if
@@ -2101,6 +2109,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
+op_amp
 id|km_waitq
 )paren
 suffix:semicolon
@@ -2454,6 +2463,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
+op_amp
 id|km_waitq
 )paren
 suffix:semicolon
