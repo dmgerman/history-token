@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -4356,31 +4357,22 @@ suffix:semicolon
 )brace
 macro_line|#endif /* IPCONFIG_DYNAMIC */
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|function|pnp_get_info
+DECL|function|pnp_seq_show
 r_static
 r_int
-id|pnp_get_info
+id|pnp_seq_show
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|seq
 comma
-r_char
+r_void
 op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
+id|v
 )paren
 (brace
-r_int
-id|len
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -4391,10 +4383,10 @@ id|ic_proto_used
 op_amp
 id|IC_PROTO
 )paren
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|seq
 comma
 l_string|&quot;#PROTO: %s&bslash;n&quot;
 comma
@@ -4420,20 +4412,12 @@ l_string|&quot;BOOTP&quot;
 )paren
 suffix:semicolon
 r_else
-id|strcpy
+id|seq_puts
 c_func
 (paren
-id|buffer
+id|seq
 comma
 l_string|&quot;#MANUAL&bslash;n&quot;
-)paren
-suffix:semicolon
-id|len
-op_assign
-id|strlen
-c_func
-(paren
-id|buffer
 )paren
 suffix:semicolon
 r_if
@@ -4444,14 +4428,10 @@ id|ic_domain
 l_int|0
 )braket
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;domain %s&bslash;n&quot;
 comma
@@ -4483,14 +4463,10 @@ id|i
 op_ne
 id|INADDR_NONE
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;nameserver %u.%u.%u.%u&bslash;n&quot;
 comma
@@ -4512,14 +4488,10 @@ id|ic_servaddr
 op_ne
 id|INADDR_NONE
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;bootserver %u.%u.%u.%u&bslash;n&quot;
 comma
@@ -4530,43 +4502,73 @@ id|ic_servaddr
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-OG
-id|len
-)paren
-id|offset
-op_assign
-id|len
-suffix:semicolon
-op_star
-id|start
-op_assign
-id|buffer
-op_plus
-id|offset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-op_plus
-id|length
-OG
-id|len
-)paren
-id|length
-op_assign
-id|len
-op_minus
-id|offset
-suffix:semicolon
 r_return
-id|length
+l_int|0
 suffix:semicolon
 )brace
+DECL|function|pnp_seq_open
+r_static
+r_int
+id|pnp_seq_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|indoe
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+id|single_open
+c_func
+(paren
+id|file
+comma
+id|pnp_seq_show
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|pnp_seq_fops
+r_static
+r_struct
+id|file_operations
+id|pnp_seq_fops
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|open
+op_assign
+id|pnp_seq_open
+comma
+dot
+id|read
+op_assign
+id|seq_read
+comma
+dot
+id|llseek
+op_assign
+id|seq_lseek
+comma
+dot
+id|release
+op_assign
+id|single_release
+comma
+)brace
+suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; *&t;IP Autoconfig dispatcher.&n; */
 DECL|function|ip_auto_config
@@ -4584,14 +4586,15 @@ r_int
 id|jiff
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-id|proc_net_create
+id|proc_net_fops_create
 c_func
 (paren
 l_string|&quot;pnp&quot;
 comma
-l_int|0
+id|S_IRUGO
 comma
-id|pnp_get_info
+op_amp
+id|pnp_seq_fops
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
