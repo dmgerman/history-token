@@ -855,7 +855,7 @@ id|irq
 (brace
 r_return
 (paren
-id|_irq_desc
+id|irq_desc
 op_plus
 id|irq
 )paren
@@ -915,7 +915,7 @@ id|irq_desc_t
 op_star
 id|base_desc
 op_assign
-id|_irq_desc
+id|irq_desc
 suffix:semicolon
 r_for
 c_loop
