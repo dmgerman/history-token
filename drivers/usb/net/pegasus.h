@@ -32,8 +32,6 @@ DECL|macro|DEFAULT_GPIO_SET
 mdefine_line|#define&t;DEFAULT_GPIO_SET&t;0x26
 DECL|macro|PEGASUS_PRESENT
 mdefine_line|#define&t;PEGASUS_PRESENT&t;&t;0x00000001
-DECL|macro|PEGASUS_RUNNING
-mdefine_line|#define&t;PEGASUS_RUNNING&t;&t;0x00000002
 DECL|macro|PEGASUS_TX_BUSY
 mdefine_line|#define&t;PEGASUS_TX_BUSY&t;&t;0x00000004
 DECL|macro|PEGASUS_RX_BUSY
@@ -201,6 +199,12 @@ id|usb_device
 op_star
 id|usb
 suffix:semicolon
+DECL|member|intf
+r_struct
+id|usb_interface
+op_star
+id|intf
+suffix:semicolon
 DECL|member|net
 r_struct
 id|net_device
@@ -225,9 +229,9 @@ DECL|member|features
 r_int
 id|features
 suffix:semicolon
-DECL|member|msg_level
+DECL|member|msg_enable
 id|u32
-id|msg_level
+id|msg_enable
 suffix:semicolon
 DECL|member|wolopts
 id|u32
