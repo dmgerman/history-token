@@ -7766,8 +7766,7 @@ id|aic_option_callback_t
 op_star
 id|callback
 comma
-r_void
-op_star
+id|u_long
 id|callback_arg
 )paren
 (brace
