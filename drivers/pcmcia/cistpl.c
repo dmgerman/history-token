@@ -226,16 +226,6 @@ op_eq
 l_int|0
 )paren
 (brace
-r_int
-id|low
-op_assign
-op_logical_neg
-(paren
-id|s-&gt;features
-op_amp
-id|SS_CAP_PAGE_REGS
-)paren
-suffix:semicolon
 id|validate_mem
 c_func
 (paren
@@ -259,7 +249,7 @@ id|s-&gt;map_size
 comma
 id|s-&gt;map_size
 comma
-id|low
+l_int|0
 comma
 l_string|&quot;card services&quot;
 comma
