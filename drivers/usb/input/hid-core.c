@@ -6145,6 +6145,10 @@ DECL|macro|USB_VENDOR_ID_BERKSHIRE
 mdefine_line|#define USB_VENDOR_ID_BERKSHIRE&t;&t;0x0c98
 DECL|macro|USB_DEVICE_ID_BERKSHIRE_PCWD
 mdefine_line|#define USB_DEVICE_ID_BERKSHIRE_PCWD&t;0x1140
+DECL|macro|USB_VENDOR_ID_ALPS
+mdefine_line|#define USB_VENDOR_ID_ALPS&t;&t;0x0433
+DECL|macro|USB_DEVICE_ID_IBM_GAMEPAD
+mdefine_line|#define USB_DEVICE_ID_IBM_GAMEPAD&t;0x1101
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6572,6 +6576,14 @@ comma
 id|USB_DEVICE_ID_BERKSHIRE_PCWD
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ALPS
+comma
+id|USB_DEVICE_ID_IBM_GAMEPAD
+comma
+id|HID_QUIRK_BADPAD
 )brace
 comma
 (brace
