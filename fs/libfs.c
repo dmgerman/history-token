@@ -1656,8 +1656,9 @@ id|super_operations
 id|s_ops
 op_assign
 (brace
+dot
 id|statfs
-suffix:colon
+op_assign
 id|simple_statfs
 )brace
 suffix:semicolon

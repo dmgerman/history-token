@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; * Copyright (c) 2001-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This is a relatively simple centralized driver model.&n; * The data structures were mainly lifted directly from the PCI&n; * driver model. These are thought to be the common fields that&n; * are relevant to all device buses.&n; *&n; * All the devices are arranged in a tree. All devices should&n; * have some sort of parent bus of whom they are children of.&n; * Devices should not be direct children of the system root.&n; *&n; * Device drivers should not directly call the device_* routines&n; * or access the contents of struct device directly. Instead,&n; * abstract that from the drivers and write bus-specific wrappers&n; * that do it for you.&n; *&n; * See Documentation/driver-model.txt for more information.&n; */
+multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; * Copyright (c) 2001-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This file is released under the GPLv2&n; *&n; * See Documentation/driver-model/ for more information.&n; */
 macro_line|#ifndef _DEVICE_H_
 DECL|macro|_DEVICE_H_
 mdefine_line|#define _DEVICE_H_
@@ -674,6 +674,19 @@ r_int
 id|buffer_size
 )paren
 suffix:semicolon
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|class_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -837,6 +850,19 @@ id|BUS_ID_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* unique to this class */
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|class_device
+op_star
+id|class_dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static

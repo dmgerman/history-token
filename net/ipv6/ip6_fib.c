@@ -18,8 +18,6 @@ macro_line|#include &lt;net/ip6_fib.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 DECL|macro|RT6_DEBUG
 mdefine_line|#define RT6_DEBUG 2
-DECL|macro|CONFIG_IPV6_SUBTREES
-macro_line|#undef CONFIG_IPV6_SUBTREES
 macro_line|#if RT6_DEBUG &gt;= 3
 DECL|macro|RT6_TRACE
 mdefine_line|#define RT6_TRACE(x...) printk(KERN_DEBUG x)
@@ -1756,12 +1754,14 @@ op_logical_neg
 (paren
 id|fn-&gt;fn_flags
 op_amp
+(paren
 id|RTN_RTINFO
 op_or
 id|RTN_ROOT
 )paren
 )paren
-id|fib_repair_tree
+)paren
+id|fib6_repair_tree
 c_func
 (paren
 id|fn
@@ -3019,6 +3019,9 @@ l_int|NULL
 suffix:semicolon
 id|rt6_stats.fib_rt_entries
 op_decrement
+suffix:semicolon
+id|rt6_stats.fib_discarded_routes
+op_increment
 suffix:semicolon
 multiline_comment|/* Adjust walkers */
 id|read_lock

@@ -239,6 +239,7 @@ c_cond
 op_logical_neg
 id|error
 )paren
+(brace
 id|d_instantiate
 c_func
 (paren
@@ -247,6 +248,14 @@ comma
 id|inode
 )paren
 suffix:semicolon
+id|dget
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+multiline_comment|/* Extra count - pin the dentry in core */
+)brace
 r_else
 id|iput
 c_func
