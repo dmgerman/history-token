@@ -352,6 +352,13 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
 DECL|variable|ia64_cpu_to_sapicid
 id|EXPORT_SYMBOL
 c_func
@@ -533,7 +540,7 @@ c_func
 id|__umoddi3
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MD_RAID5
+macro_line|#if defined(CONFIG_MD_RAID5) || defined(CONFIG_MD_RAID5_MODULE)
 r_extern
 r_void
 id|xor_ia64_2
@@ -845,4 +852,19 @@ id|ia64_spinlock_contention
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
+DECL|variable|ia64_max_iommu_merge_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_max_iommu_merge_mask
+)paren
+suffix:semicolon
+macro_line|#include &lt;linux/pm.h&gt;
+DECL|variable|pm_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_idle
+)paren
+suffix:semicolon
 eof
