@@ -17,6 +17,7 @@ macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 macro_line|#include &quot;NCR_D700.h&quot;
 DECL|variable|NCR_D700
+r_static
 r_char
 op_star
 id|NCR_D700
@@ -1259,6 +1260,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|NCR_D700_driver
+r_static
 r_struct
 id|mca_driver
 id|NCR_D700_driver
