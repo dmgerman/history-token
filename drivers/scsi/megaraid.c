@@ -2211,7 +2211,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -2248,19 +2249,19 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Try to issue Inquiry3 command&n;&t; * if not succeeded, then issue MEGA_MBOXCMD_ADAPTERINQ command and&n;&t; * update enquiry3 structure&n;&t; */
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -2362,7 +2363,7 @@ op_assign
 op_amp
 id|ext_inq-&gt;raid_inq
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -2370,7 +2371,7 @@ id|u32
 id|dma_handle
 suffix:semicolon
 multiline_comment|/*issue old 0x04 command to adapter */
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_ADPEXTINQ
 suffix:semicolon
@@ -2444,7 +2445,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 id|prod_info_dma_handle
 suffix:semicolon
@@ -3525,14 +3526,14 @@ c_cond
 id|adapter-&gt;has_64bit_addr
 )paren
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_PASSTHRU64
 suffix:semicolon
 )brace
 r_else
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_PASSTHRU
 suffix:semicolon
@@ -3557,7 +3558,7 @@ op_amp
 id|pthru-&gt;dataxferlen
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 id|scb-&gt;pthru_dma_addr
 suffix:semicolon
@@ -3646,7 +3647,7 @@ id|scb-&gt;raw_mbox
 )paren
 )paren
 suffix:semicolon
-id|mbox-&gt;logdrv
+id|mbox-&gt;m_out.logdrv
 op_assign
 id|ldrv_num
 suffix:semicolon
@@ -3657,7 +3658,7 @@ c_cond
 id|adapter-&gt;has_64bit_addr
 )paren
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 (paren
 op_star
@@ -3674,7 +3675,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 (paren
 op_star
@@ -3698,7 +3699,7 @@ op_eq
 l_int|6
 )paren
 (brace
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 op_assign
 (paren
 id|u32
@@ -3708,7 +3709,7 @@ id|cmd-&gt;cmnd
 l_int|4
 )braket
 suffix:semicolon
-id|mbox-&gt;lba
+id|mbox-&gt;m_out.lba
 op_assign
 (paren
 (paren
@@ -3742,7 +3743,7 @@ id|cmd-&gt;cmnd
 l_int|3
 )braket
 suffix:semicolon
-id|mbox-&gt;lba
+id|mbox-&gt;m_out.lba
 op_and_assign
 l_int|0x1FFFFF
 suffix:semicolon
@@ -3772,7 +3773,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 r_else
@@ -3792,7 +3793,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -3806,7 +3807,7 @@ op_eq
 l_int|10
 )paren
 (brace
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 op_assign
 (paren
 id|u32
@@ -3828,7 +3829,7 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
-id|mbox-&gt;lba
+id|mbox-&gt;m_out.lba
 op_assign
 (paren
 (paren
@@ -3899,7 +3900,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 r_else
@@ -3919,7 +3920,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -3933,7 +3934,7 @@ op_eq
 l_int|12
 )paren
 (brace
-id|mbox-&gt;lba
+id|mbox-&gt;m_out.lba
 op_assign
 (paren
 (paren
@@ -3979,7 +3980,7 @@ id|cmd-&gt;cmnd
 l_int|5
 )braket
 suffix:semicolon
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 op_assign
 (paren
 (paren
@@ -4050,7 +4051,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 r_else
@@ -4070,7 +4071,7 @@ op_mod
 l_int|0x80
 )braket
 op_add_assign
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -4102,7 +4103,7 @@ id|PCI_DMA_TODEVICE
 suffix:semicolon
 )brace
 multiline_comment|/* Calculate Scatter-Gather info */
-id|mbox-&gt;numsgelements
+id|mbox-&gt;m_out.numsgelements
 op_assign
 id|mega_build_sglist
 c_func
@@ -4116,7 +4117,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 comma
 (paren
 id|u32
@@ -4359,11 +4360,11 @@ comma
 id|target
 )paren
 suffix:semicolon
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_EXTPTHRU
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 id|scb-&gt;epthru_dma_addr
 suffix:semicolon
@@ -4393,19 +4394,19 @@ c_cond
 id|adapter-&gt;has_64bit_addr
 )paren
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_PASSTHRU64
 suffix:semicolon
 )brace
 r_else
 (brace
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_assign
 id|MEGA_MBOXCMD_PASSTHRU
 suffix:semicolon
 )brace
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 id|scb-&gt;pthru_dma_addr
 suffix:semicolon
@@ -5063,7 +5064,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 )paren
 )paren
 (brace
@@ -5082,7 +5083,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 op_logical_and
 (paren
 id|i
@@ -5096,7 +5097,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 )paren
 (brace
 r_return
@@ -5113,7 +5114,8 @@ c_func
 r_char
 op_star
 )paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 (paren
 r_char
@@ -5121,15 +5123,19 @@ op_star
 )paren
 id|scb-&gt;raw_mbox
 comma
-l_int|16
+r_sizeof
+(paren
+r_struct
+id|mbox_out
+)paren
 )paren
 suffix:semicolon
-id|mbox-&gt;cmdid
+id|mbox-&gt;m_out.cmdid
 op_assign
 id|scb-&gt;idx
 suffix:semicolon
 multiline_comment|/* Set cmdid */
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 op_assign
 l_int|1
 suffix:semicolon
@@ -5145,7 +5151,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 )paren
 (brace
 r_case
@@ -5162,13 +5168,13 @@ id|MEGA_MBOXCMD_EXTPTHRU
 suffix:colon
 id|mbox64-&gt;xfer_segment_lo
 op_assign
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 suffix:semicolon
 id|mbox64-&gt;xfer_segment_hi
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
@@ -5202,11 +5208,11 @@ id|BOARD_MEMMAP
 )paren
 )paren
 (brace
-id|mbox-&gt;poll
+id|mbox-&gt;m_in.poll
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;ack
+id|mbox-&gt;m_in.ack
 op_assign
 l_int|0
 suffix:semicolon
@@ -5273,22 +5279,6 @@ suffix:semicolon
 id|u8
 id|byte
 suffix:semicolon
-id|raw_mbox
-(braket
-l_int|0x1
-)braket
-op_assign
-l_int|0xFE
-suffix:semicolon
-multiline_comment|/* Set cmdid */
-id|raw_mbox
-(braket
-l_int|0xF
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Set busy */
 multiline_comment|/* Wait until mailbox is free */
 r_if
 c_cond
@@ -5315,8 +5305,20 @@ id|mbox
 comma
 id|raw_mbox
 comma
-l_int|16
+r_sizeof
+(paren
+r_struct
+id|mbox_out
 )paren
+)paren
+suffix:semicolon
+id|mbox-&gt;m_out.cmdid
+op_assign
+l_int|0xFE
+suffix:semicolon
+id|mbox-&gt;m_in.busy
+op_assign
+l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -5341,13 +5343,13 @@ id|MEGA_MBOXCMD_EXTPTHRU
 suffix:colon
 id|mbox64-&gt;xfer_segment_lo
 op_assign
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 suffix:semicolon
 id|mbox64-&gt;xfer_segment_hi
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
@@ -5376,19 +5378,19 @@ id|BOARD_MEMMAP
 )paren
 )paren
 (brace
-id|mbox-&gt;poll
+id|mbox-&gt;m_in.poll
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;ack
+id|mbox-&gt;m_in.ack
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;numstatus
+id|mbox-&gt;m_in.numstatus
 op_assign
 l_int|0xFF
 suffix:semicolon
-id|mbox-&gt;status
+id|mbox-&gt;m_in.status
 op_assign
 l_int|0xFF
 suffix:semicolon
@@ -5409,7 +5411,7 @@ c_loop
 r_volatile
 id|u8
 )paren
-id|mbox-&gt;numstatus
+id|mbox-&gt;m_in.numstatus
 op_eq
 l_int|0xFF
 )paren
@@ -5420,7 +5422,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|mbox-&gt;numstatus
+id|mbox-&gt;m_in.numstatus
 op_assign
 l_int|0xFF
 suffix:semicolon
@@ -5431,7 +5433,7 @@ c_loop
 r_volatile
 id|u8
 )paren
-id|mbox-&gt;poll
+id|mbox-&gt;m_in.poll
 op_ne
 l_int|0x77
 )paren
@@ -5442,11 +5444,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|mbox-&gt;poll
+id|mbox-&gt;m_in.poll
 op_assign
 l_int|0
 suffix:semicolon
-id|mbox-&gt;ack
+id|mbox-&gt;m_in.ack
 op_assign
 l_int|0x77
 suffix:semicolon
@@ -5538,7 +5540,7 @@ id|adapter
 suffix:semicolon
 )brace
 r_return
-id|mbox-&gt;status
+id|mbox-&gt;m_in.status
 suffix:semicolon
 id|bug_blocked_mailbox
 suffix:colon
@@ -5665,7 +5667,7 @@ op_assign
 r_volatile
 id|u8
 )paren
-id|adapter-&gt;mbox-&gt;numstatus
+id|adapter-&gt;mbox-&gt;m_in.numstatus
 )paren
 op_eq
 l_int|0xFF
@@ -5677,13 +5679,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|adapter-&gt;mbox-&gt;numstatus
+id|adapter-&gt;mbox-&gt;m_in.numstatus
 op_assign
 l_int|0xFF
 suffix:semicolon
 id|status
 op_assign
-id|adapter-&gt;mbox-&gt;status
+id|adapter-&gt;mbox-&gt;m_in.status
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * decrement the pending queue counter&n;&t;&t; */
 id|atomic_sub
@@ -5704,7 +5706,7 @@ comma
 r_void
 op_star
 )paren
-id|adapter-&gt;mbox-&gt;completed
+id|adapter-&gt;mbox-&gt;m_in.completed
 comma
 id|nstatus
 )paren
@@ -5891,7 +5893,7 @@ op_assign
 r_volatile
 id|u8
 )paren
-id|adapter-&gt;mbox-&gt;numstatus
+id|adapter-&gt;mbox-&gt;m_in.numstatus
 )paren
 op_eq
 l_int|0xFF
@@ -5903,13 +5905,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|adapter-&gt;mbox-&gt;numstatus
+id|adapter-&gt;mbox-&gt;m_in.numstatus
 op_assign
 l_int|0xFF
 suffix:semicolon
 id|status
 op_assign
-id|adapter-&gt;mbox-&gt;status
+id|adapter-&gt;mbox-&gt;m_in.status
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * decrement the pending queue counter&n;&t;&t; */
 id|atomic_sub
@@ -5930,7 +5932,7 @@ comma
 r_void
 op_star
 )paren
-id|adapter-&gt;mbox-&gt;completed
+id|adapter-&gt;mbox-&gt;m_in.completed
 comma
 id|nstatus
 )paren
@@ -6333,7 +6335,7 @@ macro_line|#if MEGA_HAVE_STATS
 r_int
 id|logdrv
 op_assign
-id|mbox-&gt;logdrv
+id|mbox-&gt;m_out.logdrv
 suffix:semicolon
 id|islogical
 op_assign
@@ -6593,11 +6595,11 @@ multiline_comment|/* set sense_buffer and result fields */
 r_if
 c_cond
 (paren
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_eq
 id|MEGA_MBOXCMD_PASSTHRU
 op_logical_or
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_eq
 id|MEGA_MBOXCMD_PASSTHRU64
 )paren
@@ -6638,7 +6640,7 @@ r_else
 r_if
 c_cond
 (paren
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 op_eq
 id|MEGA_MBOXCMD_EXTPTHRU
 )paren
@@ -7077,7 +7079,7 @@ id|adapter
 r_if
 c_cond
 (paren
-id|adapter-&gt;mbox-&gt;busy
+id|adapter-&gt;mbox-&gt;m_in.busy
 )paren
 r_return
 id|__mega_busywait_mbox
@@ -7129,7 +7131,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 )paren
 r_return
 l_int|0
@@ -7688,7 +7690,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -7729,14 +7732,14 @@ multiline_comment|/* Flush adapter cache */
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -7774,14 +7777,14 @@ multiline_comment|/* Flush disks cache */
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -9630,7 +9633,7 @@ id|len
 comma
 l_string|&quot;  Fw Command   = 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;cmd
+id|mbox-&gt;m_out.cmd
 )paren
 suffix:semicolon
 id|len
@@ -9644,7 +9647,7 @@ id|len
 comma
 l_string|&quot;  Cmd Sequence = 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;cmdid
+id|mbox-&gt;m_out.cmdid
 )paren
 suffix:semicolon
 id|len
@@ -9658,7 +9661,7 @@ id|len
 comma
 l_string|&quot;  No of Sectors= %04d&bslash;n&quot;
 comma
-id|mbox-&gt;numsectors
+id|mbox-&gt;m_out.numsectors
 )paren
 suffix:semicolon
 id|len
@@ -9672,7 +9675,7 @@ id|len
 comma
 l_string|&quot;  LBA          = 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;lba
+id|mbox-&gt;m_out.lba
 )paren
 suffix:semicolon
 id|len
@@ -9686,7 +9689,7 @@ id|len
 comma
 l_string|&quot;  DTA          = 0x%08x&bslash;n&quot;
 comma
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 )paren
 suffix:semicolon
 id|len
@@ -9700,7 +9703,7 @@ id|len
 comma
 l_string|&quot;  Logical Drive= 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;logdrv
+id|mbox-&gt;m_out.logdrv
 )paren
 suffix:semicolon
 id|len
@@ -9714,7 +9717,7 @@ id|len
 comma
 l_string|&quot;  No of SG Elmt= 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;numsgelements
+id|mbox-&gt;m_out.numsgelements
 )paren
 suffix:semicolon
 id|len
@@ -9728,7 +9731,7 @@ id|len
 comma
 l_string|&quot;  Busy         = %01x&bslash;n&quot;
 comma
-id|mbox-&gt;busy
+id|mbox-&gt;m_in.busy
 )paren
 suffix:semicolon
 id|len
@@ -9742,7 +9745,7 @@ id|len
 comma
 l_string|&quot;  Status       = 0x%02x&bslash;n&quot;
 comma
-id|mbox-&gt;status
+id|mbox-&gt;m_in.status
 )paren
 suffix:semicolon
 op_star
@@ -13034,7 +13037,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -13101,14 +13105,14 @@ multiline_comment|/* Flush adapter cache */
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -13146,14 +13150,14 @@ multiline_comment|/* Flush disks cache */
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -15535,7 +15539,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -15557,14 +15562,14 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -15582,7 +15587,7 @@ comma
 id|MEGA_BUFFER_SIZE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -15640,7 +15645,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -15662,14 +15668,14 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -15702,7 +15708,7 @@ comma
 id|MEGA_BUFFER_SIZE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -15815,7 +15821,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -15849,7 +15856,8 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
@@ -15887,7 +15895,7 @@ comma
 id|MEGA_BUFFER_SIZE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -16055,7 +16063,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -16077,14 +16086,14 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -16136,7 +16145,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -16158,14 +16168,14 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|mbox
+op_amp
+id|mbox-&gt;m_out
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-op_star
-id|mbox
+id|raw_mbox
 )paren
 )paren
 suffix:semicolon
@@ -16477,7 +16487,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -16520,7 +16531,7 @@ comma
 id|MEGA_BUFFER_SIZE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
@@ -16606,7 +16617,8 @@ id|raw_mbox
 (braket
 r_sizeof
 (paren
-id|mbox_t
+r_struct
+id|mbox_out
 )paren
 )braket
 suffix:semicolon
@@ -16649,7 +16661,7 @@ comma
 id|MEGA_BUFFER_SIZE
 )paren
 suffix:semicolon
-id|mbox-&gt;xferaddr
+id|mbox-&gt;m_out.xferaddr
 op_assign
 (paren
 id|u32
