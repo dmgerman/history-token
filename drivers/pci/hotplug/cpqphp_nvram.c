@@ -201,6 +201,7 @@ suffix:semicolon
 DECL|variable|compaq_int15_entry_point
 r_static
 r_void
+id|__iomem
 op_star
 id|compaq_int15_entry_point
 suffix:semicolon

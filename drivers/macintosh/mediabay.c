@@ -36,7 +36,7 @@ macro_line|#endif
 DECL|macro|MB_FCR32
 mdefine_line|#define MB_FCR32(bay, r)&t;((bay)-&gt;base + ((r) &gt;&gt; 2))
 DECL|macro|MB_FCR8
-mdefine_line|#define MB_FCR8(bay, r)&t;&t;(((volatile __iomem u8*)((bay)-&gt;base)) + (r))
+mdefine_line|#define MB_FCR8(bay, r)&t;&t;(((volatile u8 __iomem *)((bay)-&gt;base)) + (r))
 DECL|macro|MB_IN32
 mdefine_line|#define MB_IN32(bay,r)&t;&t;(in_le32(MB_FCR32(bay,r)))
 DECL|macro|MB_OUT32

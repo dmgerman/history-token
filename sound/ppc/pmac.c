@@ -178,6 +178,7 @@ id|rec-&gt;cmds
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|DBDMA_ALIGN
@@ -675,6 +676,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_cmd
+id|__iomem
 op_star
 id|cp
 suffix:semicolon
@@ -974,6 +976,7 @@ id|cmd
 r_volatile
 r_struct
 id|dbdma_cmd
+id|__iomem
 op_star
 id|cp
 suffix:semicolon
@@ -1216,6 +1219,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_cmd
+id|__iomem
 op_star
 id|cp
 op_assign
@@ -1515,6 +1519,7 @@ id|rec
 r_volatile
 r_struct
 id|dbdma_cmd
+id|__iomem
 op_star
 id|cp
 suffix:semicolon
@@ -3549,10 +3554,6 @@ id|chip-&gt;awacs
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;awacs
 )paren
 suffix:semicolon
@@ -3564,10 +3565,6 @@ id|chip-&gt;playback.dma
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;playback.dma
 )paren
 suffix:semicolon
@@ -3579,10 +3576,6 @@ id|chip-&gt;capture.dma
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;capture.dma
 )paren
 suffix:semicolon
@@ -5033,12 +5026,6 @@ suffix:semicolon
 )brace
 id|chip-&gt;awacs
 op_assign
-(paren
-r_volatile
-r_struct
-id|awacs_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -5054,12 +5041,6 @@ l_int|0x1000
 suffix:semicolon
 id|chip-&gt;playback.dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -5075,12 +5056,6 @@ l_int|0x100
 suffix:semicolon
 id|chip-&gt;capture.dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -5309,11 +5284,6 @@ multiline_comment|/* Enable CD and PC-card sound inputs. */
 multiline_comment|/* This is done by reading from address&n;&t;&t; * f301a000, + 0x10 to enable the expansion-bay&n;&t;&t; * CD sound input, + 0x80 to enable the PC-card&n;&t;&t; * sound input.  The 0x100 enables the SCSI bus&n;&t;&t; * terminator power.&n;&t;&t; */
 id|chip-&gt;latch_base
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 (paren
 l_int|0xf301a000
@@ -5376,12 +5346,8 @@ l_int|0
 (brace
 id|chip-&gt;macio_base
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|ioremap
+c_func
 (paren
 id|mio-&gt;addrs
 (braket

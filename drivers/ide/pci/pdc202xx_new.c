@@ -1182,8 +1182,9 @@ id|class_rev
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mmio
 suffix:semicolon
 id|u8
@@ -1257,10 +1258,6 @@ suffix:semicolon
 )brace
 id|mmio
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -1334,10 +1331,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mmio
 )paren
 suffix:semicolon

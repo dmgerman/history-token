@@ -42,6 +42,7 @@ multiline_comment|/* Generic UART port&t;*/
 DECL|member|regs
 r_union
 id|sab82532_async_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

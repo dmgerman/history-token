@@ -121,6 +121,7 @@ mdefine_line|#define WDT_ENB&t;&t;0x8000&t;/* [15] Watchdog Timer Enable */
 DECL|variable|wdtmrctl
 r_static
 id|__u16
+id|__iomem
 op_star
 id|wdtmrctl
 suffix:semicolon

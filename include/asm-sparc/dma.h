@@ -139,8 +139,9 @@ op_star
 id|sdev
 suffix:semicolon
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* Status, misc info */

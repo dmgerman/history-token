@@ -669,18 +669,21 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|cg14_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
 DECL|member|clut
 r_struct
 id|cg14_clut
+id|__iomem
 op_star
 id|clut
 suffix:semicolon
 DECL|member|cursor
 r_struct
 id|cg14_cursor
+id|__iomem
 op_star
 id|cursor
 suffix:semicolon
@@ -748,6 +751,7 @@ id|par
 (brace
 r_struct
 id|cg14_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -899,6 +903,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|cg14_clut
+id|__iomem
 op_star
 id|clut
 op_assign
@@ -1079,6 +1084,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|cg14_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2047,11 +2053,6 @@ id|which_io
 suffix:semicolon
 id|all-&gt;par.regs
 op_assign
-(paren
-r_struct
-id|cg14_regs
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2074,11 +2075,6 @@ l_string|&quot;cg14 regs&quot;
 suffix:semicolon
 id|all-&gt;par.clut
 op_assign
-(paren
-r_struct
-id|cg14_clut
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2101,11 +2097,6 @@ l_string|&quot;cg14 clut&quot;
 suffix:semicolon
 id|all-&gt;par.cursor
 op_assign
-(paren
-r_struct
-id|cg14_cursor
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2128,10 +2119,6 @@ l_string|&quot;cg14 cursor&quot;
 suffix:semicolon
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2191,6 +2178,7 @@ op_assign
 (paren
 r_struct
 id|cg14_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -2207,6 +2195,7 @@ op_assign
 (paren
 r_struct
 id|cg14_clut
+id|__iomem
 op_star
 )paren
 (paren
@@ -2227,6 +2216,7 @@ op_assign
 (paren
 r_struct
 id|cg14_cursor
+id|__iomem
 op_star
 )paren
 (paren
@@ -2246,6 +2236,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 (paren

@@ -525,6 +525,7 @@ multiline_comment|/* token to our ioremap&squot;d RNG register area */
 DECL|variable|rng_mem
 r_static
 r_void
+id|__iomem
 op_star
 id|rng_mem
 suffix:semicolon

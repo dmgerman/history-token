@@ -19,6 +19,7 @@ mdefine_line|#define SCB2_WINDOW&t;0x00100000
 DECL|variable|scb2_ioaddr
 r_static
 r_void
+id|__iomem
 op_star
 id|scb2_ioaddr
 suffix:semicolon
@@ -359,11 +360,6 @@ id|SCB2_ADDR
 suffix:semicolon
 id|scb2_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|scb2_ioaddr
 suffix:semicolon
 id|scb2_map.size
