@@ -406,6 +406,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* controller state:  unknown --&gt; reset */
 multiline_comment|/* EHCI spec section 4.1 */
+singleline_comment|// FIXME require STS_HALT before reset...
 id|ehci_reset
 (paren
 id|ehci
@@ -427,7 +428,7 @@ op_amp
 id|ehci-&gt;regs-&gt;frame_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * By default, pci_alloc_consistent() won&squot;t hand out addresses&n;&t; * above 4GB (via pdev-&gt;dma_mask) so we know this value.&n;&t; *&n;&t; * NOTE:  that pdev-&gt;dma_mask setting means that all DMA mappings&n;&t; * for I/O buffers will have the same restriction, though it&squot;s&n;&t; * neither necessary nor desirable in that case.&n;&t; */
+multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; */
 r_if
 c_cond
 (paren
@@ -445,9 +446,10 @@ op_amp
 id|ehci-&gt;regs-&gt;segment
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME Enlarge pci_set_dma_mask() when possible.  The DMA&n;&t;&t; * mapping API spec now says that&squot;ll affect only single shot&n;&t;&t; * mappings, and the pci_pool data will stay safe in seg 0.&n;&t;&t; * That&squot;s what we want:  no extra copies for USB transfers.&n;&t;&t; */
 id|info
 (paren
-l_string|&quot;using segment 0 for 64bit DMA addresses ...&quot;
+l_string|&quot;restricting 64bit DMA mappings to segment 0 ...&quot;
 )paren
 suffix:semicolon
 )brace
@@ -495,6 +497,12 @@ op_or
 id|CMD_PSE
 )paren
 comma
+singleline_comment|// Philips, Intel, and maybe others need CMD_RUN before the
+singleline_comment|// root hub will detect new devices (why?); NEC doesn&squot;t
+id|temp
+op_or_assign
+id|CMD_RUN
+suffix:semicolon
 id|writel
 (paren
 id|temp
@@ -578,7 +586,6 @@ suffix:semicolon
 multiline_comment|/* unblock posted write */
 multiline_comment|/* PCI Serial Bus Release Number is at 0x60 offset */
 id|pci_read_config_byte
-c_func
 (paren
 id|hcd-&gt;pdev
 comma
@@ -1079,6 +1086,8 @@ id|hcd-&gt;state
 op_assign
 id|USB_STATE_READY
 suffix:semicolon
+singleline_comment|// FIXME Philips/Intel/... etc don&squot;t really have a &quot;READY&quot;
+singleline_comment|// state ... turn on CMD_RUN too
 r_for
 c_loop
 (paren
