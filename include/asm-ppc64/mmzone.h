@@ -15,12 +15,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Following are specific to this numa platform.&n; */
 r_extern
 r_int
-id|numa_node_exists
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
 id|numa_cpu_lookup_table
 (braket
 )braket
@@ -28,6 +22,13 @@ suffix:semicolon
 r_extern
 r_int
 id|numa_memory_lookup_table
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|numa_cpumask_lookup_table
 (braket
 )braket
 suffix:semicolon
