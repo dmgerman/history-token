@@ -648,10 +648,8 @@ suffix:semicolon
 multiline_comment|/* flags for neigh_update() */
 DECL|macro|NEIGH_UPDATE_F_OVERRIDE
 mdefine_line|#define NEIGH_UPDATE_F_OVERRIDE&t;&t;&t;0x00000001
-DECL|macro|NEIGH_UPDATE_F_SUSPECT_CONNECTED
-mdefine_line|#define NEIGH_UPDATE_F_SUSPECT_CONNECTED&t;0x00000002
-DECL|macro|NEIGH_UPDATE_F_RETAIN_STATE
-mdefine_line|#define NEIGH_UPDATE_F_RETAIN_STATE&t;&t;0x00000004
+DECL|macro|NEIGH_UPDATE_F_WEAK_OVERRIDE
+mdefine_line|#define NEIGH_UPDATE_F_WEAK_OVERRIDE&t;&t;0x00000002
 DECL|macro|NEIGH_UPDATE_F_ADMIN
 mdefine_line|#define NEIGH_UPDATE_F_ADMIN&t;&t;&t;0x80000000
 r_extern
