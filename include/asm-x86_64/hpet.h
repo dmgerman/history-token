@@ -80,6 +80,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|oem_force_hpet_timer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HPET_EMULATE_RTC
 r_extern
 r_int
@@ -140,14 +148,6 @@ suffix:semicolon
 r_extern
 r_int
 id|hpet_rtc_timer_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|oem_force_hpet_timer
 c_func
 (paren
 r_void
