@@ -9366,10 +9366,6 @@ suffix:semicolon
 id|dev_t
 id|dev
 suffix:semicolon
-r_char
-op_star
-id|s
-suffix:semicolon
 r_void
 op_star
 op_star
