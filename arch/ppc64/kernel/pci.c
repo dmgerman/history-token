@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|variable|pci_probe_only
 r_int
@@ -100,6 +101,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|fixup_k2_sata
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 r_void
 id|iSeries_pcibios_init
 c_func
@@ -122,6 +134,18 @@ id|hose_tail
 op_assign
 op_amp
 id|hose_head
+suffix:semicolon
+DECL|variable|pci_dma_ops
+r_struct
+id|pci_dma_ops
+id|pci_dma_ops
+suffix:semicolon
+DECL|variable|pci_dma_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_dma_ops
+)paren
 suffix:semicolon
 DECL|variable|global_phb_number
 r_int
@@ -175,6 +199,18 @@ comma
 id|pcibios_name_device
 )brace
 comma
+macro_line|#ifdef CONFIG_PPC_PMAC
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+l_int|0x0240
+comma
+id|fixup_k2_sata
+)brace
+comma
+macro_line|#endif
 (brace
 l_int|0
 )brace
@@ -927,6 +963,15 @@ l_string|&quot;PHB WP&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|phb_type_apple
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB APPLE&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|model
@@ -1257,8 +1302,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Call machine dependent fixup */
-id|pcibios_final_fixup
+multiline_comment|/* Call machine dependent final fixup */
+r_if
+c_cond
+(paren
+id|ppc_md.pcibios_fixup
+)paren
+id|ppc_md
+dot
+id|pcibios_fixup
 c_func
 (paren
 )paren

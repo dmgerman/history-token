@@ -119,9 +119,6 @@ DECL|macro|node_end_pfn
 mdefine_line|#define node_end_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_end_pfn)
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) 
-multiline_comment|/* XXX fix - Anton - and wli */
-DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(kaddr)&t;(0)
 multiline_comment|/* Written this way to avoid evaluating arguments twice */
 DECL|macro|discontigmem_pfn_to_page
 mdefine_line|#define discontigmem_pfn_to_page(pfn) &bslash;&n;({ &bslash;&n;&t;unsigned long __tmp = pfn; &bslash;&n;&t;(node_mem_map(pfn_to_nid(__tmp)) + &bslash;&n;&t; node_localnr(__tmp, pfn_to_nid(__tmp))); &bslash;&n;})

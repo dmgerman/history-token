@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_PPC
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/hydra.h&gt;
 macro_line|#endif
 DECL|variable|adb_controller
 id|EXPORT_SYMBOL
@@ -1030,7 +1029,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
+macro_line|#ifdef CONFIG_PPC32
 r_if
 c_cond
 (paren

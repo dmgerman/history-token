@@ -24,14 +24,8 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/pmac_low_i2c.h&gt;
 macro_line|#include &quot;i2c-keywest.h&quot;
-multiline_comment|/* Currently, we don&squot;t deal with the weird interrupt cascade of the G5&n; * machines with the ppc64 kernel, so use Polled mode on these&n; */
-macro_line|#ifdef CONFIG_PPC64
-DECL|macro|POLLED_MODE
-mdefine_line|#define POLLED_MODE
-macro_line|#else
 DECL|macro|POLLED_MODE
 macro_line|#undef POLLED_MODE
-macro_line|#endif
 multiline_comment|/* Some debug macros */
 DECL|macro|WRONG_STATE
 mdefine_line|#define WRONG_STATE(name) do {&bslash;&n;&t;&t;pr_debug(&quot;KW: wrong state. Got %s, state: %s (isr: %02x)&bslash;n&quot;, &bslash;&n;&t;&t;&t; name, __kw_state_names[iface-&gt;state], isr);&t;&bslash;&n;&t;} while(0)

@@ -35,6 +35,14 @@ id|addr64
 id|MAX_LMB_REGIONS
 )braket
 suffix:semicolon
+DECL|member|addrPM
+r_struct
+id|reg_property_pmac
+id|addrPM
+(braket
+id|MAX_LMB_REGIONS
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|LMB_MEMORY_AREA
