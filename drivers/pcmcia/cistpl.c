@@ -136,7 +136,7 @@ op_and_assign
 op_complement
 id|MAP_ACTIVE
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -295,7 +295,7 @@ id|mem-&gt;flags
 op_assign
 id|flags
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func

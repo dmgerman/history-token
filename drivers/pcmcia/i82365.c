@@ -7966,7 +7966,7 @@ id|socket
 id|i
 )braket
 dot
-id|socket.ss_entry
+id|socket.ops
 op_assign
 op_amp
 id|pcic_operations

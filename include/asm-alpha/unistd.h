@@ -680,8 +680,10 @@ DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;&t;422
 DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop&t;&t;&t;423
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;&t;424
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;424
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;425
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
