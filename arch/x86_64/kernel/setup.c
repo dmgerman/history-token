@@ -3350,6 +3350,42 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|function|sched_cmp_hack
+r_static
+r_void
+id|__init
+id|sched_cmp_hack
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* AMD dual core looks like HT but isn&squot;t really. Hide it from the&n;&t;   scheduler. This works around problems with the domain scheduler.&n;&t;   Also probably gives slightly better scheduling and disables&n;&t;   SMT nice which is harmful on dual core.&n;&t;   TBD tune the domain scheduler for dual core. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+op_logical_and
+id|cpu_has
+c_func
+(paren
+id|c
+comma
+id|X86_FEATURE_CMP_LEGACY
+)paren
+)paren
+id|smp_num_siblings
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+)brace
 DECL|function|init_intel
 r_static
 r_void
@@ -3967,6 +4003,12 @@ id|c
 )paren
 suffix:semicolon
 id|detect_ht
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+id|sched_cmp_hack
 c_func
 (paren
 id|c
@@ -4676,15 +4718,7 @@ comma
 id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_HT
-r_if
-c_cond
-(paren
-id|smp_num_siblings
-OG
-l_int|1
-)paren
-(brace
+macro_line|#ifdef CONFIG_SMP
 id|seq_printf
 c_func
 (paren
@@ -4707,10 +4741,11 @@ id|m
 comma
 l_string|&quot;siblings&bslash;t: %d&bslash;n&quot;
 comma
+id|c-&gt;x86_num_cores
+op_star
 id|smp_num_siblings
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif&t;
 id|seq_printf
 c_func
