@@ -543,6 +543,10 @@ DECL|member|seqid
 id|__u32
 id|seqid
 suffix:semicolon
+DECL|member|share_access
+id|__u32
+id|share_access
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs_closeres
