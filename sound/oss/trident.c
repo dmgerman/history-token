@@ -13860,9 +13860,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|wcontrol
 op_amp
 l_int|0x8000
+)paren
 )paren
 (brace
 r_break
