@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: os_4bri.c,v 1.28 2004/03/21 17:26:01 armin Exp $ */
+multiline_comment|/* $Id: os_4bri.c,v 1.28.4.4 2005/02/11 19:40:25 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;cardtype.h&quot;
@@ -15,6 +15,7 @@ macro_line|#include &quot;diva_pci.h&quot;
 macro_line|#include &quot;mi_pc.h&quot;
 macro_line|#include &quot;dsrv4bri.h&quot;
 DECL|variable|diva_xdiLoadFileFile
+r_static
 r_void
 op_star
 id|diva_xdiLoadFileFile
@@ -22,6 +23,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|diva_xdiLoadFileLength
+r_static
 id|dword
 id|diva_xdiLoadFileLength
 op_assign
