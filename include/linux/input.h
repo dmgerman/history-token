@@ -1713,11 +1713,10 @@ r_int
 id|effect_id
 )paren
 suffix:semicolon
-DECL|member|handle
+DECL|member|h_list
 r_struct
-id|input_handle
-op_star
-id|handle
+id|list_head
+id|h_list
 suffix:semicolon
 DECL|member|node
 r_struct
@@ -1872,6 +1871,9 @@ id|driver_info
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|input_handle
+suffix:semicolon
 DECL|struct|input_handler
 r_struct
 id|input_handler
@@ -1964,11 +1966,10 @@ id|input_device_id
 op_star
 id|id_table
 suffix:semicolon
-DECL|member|handle
+DECL|member|h_list
 r_struct
-id|input_handle
-op_star
-id|handle
+id|list_head
+id|h_list
 suffix:semicolon
 DECL|member|node
 r_struct
@@ -2007,20 +2008,26 @@ id|input_handler
 op_star
 id|handler
 suffix:semicolon
-DECL|member|dnext
+DECL|member|d_node
 r_struct
-id|input_handle
-op_star
-id|dnext
+id|list_head
+id|d_node
 suffix:semicolon
-DECL|member|hnext
+DECL|member|h_node
 r_struct
-id|input_handle
-op_star
-id|hnext
+id|list_head
+id|h_node
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_dev
+mdefine_line|#define to_dev(n) container_of(n,struct input_dev,node)
+DECL|macro|to_handler
+mdefine_line|#define to_handler(n) container_of(n,struct input_handler,node);
+DECL|macro|to_handle
+mdefine_line|#define to_handle(n) container_of(n,struct input_handle,d_node)
+DECL|macro|to_handle_h
+mdefine_line|#define to_handle_h(n) container_of(n,struct input_handle,h_node)
 r_void
 id|input_register_device
 c_func
