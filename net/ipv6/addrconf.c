@@ -6028,7 +6028,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Two things going on here:&n;&t; *&t;1) Add routes for on-link prefixes&n;&t; *&t;2) Configure prefixes with the auto flag set&n;&t; */
-multiline_comment|/* Avoid arithemtic overflow. Really, we could&n;&t;   save rt_expires in seconds, likely valid_lft,&n;&t;   but it would require division in fib gc, that it&n;&t;   not good.&n;&t; */
+multiline_comment|/* Avoid arithmetic overflow. Really, we could&n;&t;   save rt_expires in seconds, likely valid_lft,&n;&t;   but it would require division in fib gc, that it&n;&t;   not good.&n;&t; */
 r_if
 c_cond
 (paren
