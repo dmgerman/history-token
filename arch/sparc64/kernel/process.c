@@ -2971,9 +2971,9 @@ c_cond
 id|clone_flags
 op_amp
 (paren
-id|CLONE_SETTID
+id|CLONE_CHILD_SETTID
 op_or
-id|CLONE_CLEARTID
+id|CLONE_CHILD_CLEARTID
 )paren
 )paren
 (brace
