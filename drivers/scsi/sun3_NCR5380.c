@@ -2274,8 +2274,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Function : void NCR5380_init (struct Scsi_Host *instance)&n; *&n; * Purpose : initializes *instance and corresponding 5380 chip.&n; *&n; * Inputs : instance - instantiation of the 5380 driver.  &n; *&n; * Notes : I assume that the host, hostno, and id bits have been&n; * &t;set correctly.  I don&squot;t care about the irq and other fields. &n; * &n; */
 DECL|function|NCR5380_init
 r_static
-r_void
-id|__init
+r_int
 id|NCR5380_init
 (paren
 r_struct
@@ -2470,6 +2469,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_queue_command (Scsi_Cmnd *cmd, &n; *&t;void (*done)(Scsi_Cmnd *)) &n; *&n; * Purpose :  enqueues a SCSI command&n; *&n; * Inputs : cmd - SCSI command, done - function called on completion, with&n; *&t;a pointer to the command descriptor.&n; * &n; * Returns : 0&n; *&n; * Side effects : &n; *      cmd is added to the per instance issue_queue, with minor &n; *&t;twiddling done to the host specific fields of cmd.  If the &n; *&t;main coroutine is not running, it is restarted.&n; *&n; */
 multiline_comment|/* Only make static if a wrapper function is used */
@@ -2506,19 +2508,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_extern
-r_int
-id|update_timeout
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCset
-comma
-r_int
-id|timeout
-)paren
 suffix:semicolon
 macro_line|#if (NDEBUG &amp; NDEBUG_NO_WRITE)
 r_switch
@@ -2844,6 +2833,7 @@ r_else
 id|NCR5380_main
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -2857,6 +2847,8 @@ r_void
 id|NCR5380_main
 (paren
 r_void
+op_star
+id|bl
 )paren
 (brace
 id|Scsi_Cmnd
@@ -2915,7 +2907,6 @@ r_do
 id|local_irq_disable
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Freeze request queues */
@@ -8922,20 +8913,16 @@ r_return
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd, unsigned int reset_flags)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
-DECL|function|NCR5380_reset
+multiline_comment|/* &n; * Function : int NCR5380_bus_reset (Scsi_Cmnd *cmd)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
+DECL|function|NCR5380_bus_reset
 r_static
 r_int
-id|NCR5380_reset
+id|NCR5380_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 id|SETUP_HOSTDATA

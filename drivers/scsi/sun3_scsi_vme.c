@@ -1837,14 +1837,14 @@ op_assign
 id|sun3scsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|sun3scsi_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
-id|sun3scsi_reset
+id|sun3scsi_bus_reset
 comma
 dot
 id|can_queue

@@ -5,13 +5,6 @@ mdefine_line|#define ATARI_SCSI_H
 multiline_comment|/* (I_HAVE_OVERRUNS stuff removed) */
 macro_line|#ifndef ASM
 r_int
-id|atari_scsi_abort
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
 id|atari_scsi_detect
 (paren
 id|Scsi_Host_Template
@@ -26,23 +19,6 @@ id|atari_scsi_info
 r_struct
 id|Scsi_Host
 op_star
-)paren
-suffix:semicolon
-r_int
-id|atari_scsi_queue_command
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
 )paren
 suffix:semicolon
 r_int
