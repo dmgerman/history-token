@@ -16,6 +16,11 @@ r_int
 id|node_id
 suffix:semicolon
 multiline_comment|/* The node which contains the CPU */
+DECL|member|no_control
+r_int
+id|no_control
+suffix:semicolon
+multiline_comment|/* Should the sysfs control file be created? */
 DECL|member|sysdev
 r_struct
 id|sys_device
