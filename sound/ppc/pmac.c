@@ -5764,7 +5764,7 @@ c_func
 (paren
 id|chip-&gt;card
 comma
-l_int|0
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 r_break
@@ -5776,8 +5776,6 @@ id|snd_pmac_resume
 c_func
 (paren
 id|chip-&gt;card
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
