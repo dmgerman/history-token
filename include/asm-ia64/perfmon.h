@@ -53,7 +53,7 @@ multiline_comment|/*&n; * PMC flags&n; */
 DECL|macro|PFM_REGFL_OVFL_NOTIFY
 mdefine_line|#define PFM_REGFL_OVFL_NOTIFY&t;0x1&t;/* send notification on overflow */
 DECL|macro|PFM_REGFL_RANDOM
-mdefine_line|#define PFM_REGFL_RANDOM&t;0x2&t;/* randomize sampling interval */
+mdefine_line|#define PFM_REGFL_RANDOM&t;0x2&t;/* randomize sampling periods    */
 multiline_comment|/*&n; * PMD/PMC/IBR/DBR return flags (ignored on input)&n; *&n; * Those flags are used on output and must be checked in case EAGAIN is returned&n; * by any of the calls using a pfarg_reg_t or pfarg_dbreg_t structure.&n; */
 DECL|macro|PFM_REG_RETFL_NOTAVAIL
 mdefine_line|#define PFM_REG_RETFL_NOTAVAIL&t;(1U&lt;&lt;31) /* set if register is implemented but not available */
@@ -160,12 +160,24 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* which other counters to reset on overflow */
+DECL|member|reg_random_seed
+r_int
+r_int
+id|reg_random_seed
+suffix:semicolon
+multiline_comment|/* seed value when randomization is used */
+DECL|member|reg_random_mask
+r_int
+r_int
+id|reg_random_mask
+suffix:semicolon
+multiline_comment|/* bitmask used to limit random value */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 (braket
-l_int|16
+l_int|14
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
