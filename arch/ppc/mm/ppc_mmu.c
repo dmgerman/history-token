@@ -530,9 +530,9 @@ id|BATS
 id|index
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|flags
@@ -542,11 +542,22 @@ id|_PAGE_NO_CACHE
 op_eq
 l_int|0
 )paren
+op_logical_and
+(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_NEED_COHERENT
+)paren
+)paren
 id|flags
 op_or_assign
 id|_PAGE_COHERENT
 suffix:semicolon
-macro_line|#endif
 id|bl
 op_assign
 (paren
