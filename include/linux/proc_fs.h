@@ -1086,7 +1086,7 @@ id|proc_dir_entry
 id|proc_root
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#if !defined(CONFIG_PROC_FS) || defined(CONFIG_KCORE_AOUT)
+macro_line|#if !defined(CONFIG_PROC_FS)
 DECL|function|kclist_add
 r_static
 r_inline
