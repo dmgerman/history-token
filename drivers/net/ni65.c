@@ -2123,7 +2123,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|p-&gt;tmdhead
@@ -2136,7 +2136,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|p-&gt;rmdhead
@@ -2158,7 +2158,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -2396,7 +2396,7 @@ c_cond
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|ptr
@@ -3045,7 +3045,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|tmdp-&gt;u.buffer
@@ -3146,7 +3146,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 (paren
@@ -3528,7 +3528,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|p-&gt;recv_skb
@@ -3545,7 +3545,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|p-&gt;recvbounce
@@ -5041,7 +5041,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -5440,7 +5440,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|p-&gt;tmdbounce
@@ -5489,7 +5489,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data

@@ -1830,7 +1830,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;rx_ring
@@ -1847,7 +1847,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;tx_ring
@@ -1885,7 +1885,7 @@ r_int
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -1922,7 +1922,7 @@ c_func
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3043,7 +3043,7 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;tx_ring
@@ -3052,7 +3052,7 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;rx_ring
@@ -3061,7 +3061,7 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3097,7 +3097,7 @@ r_int
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3126,7 +3126,7 @@ c_func
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3243,7 +3243,7 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3521,7 +3521,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|rx_buff
@@ -3621,7 +3621,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;rx_ring
@@ -3638,7 +3638,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;tx_ring
@@ -4116,7 +4116,7 @@ c_cond
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -4144,7 +4144,7 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -4176,7 +4176,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 (paren
@@ -4218,7 +4218,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -5146,7 +5146,7 @@ r_int
 r_char
 op_star
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 (paren

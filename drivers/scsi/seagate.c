@@ -2697,18 +2697,29 @@ id|i
 )paren
 id|printk
 (paren
-l_string|&quot;scsi%d : buffer %d address = %08x length = %d&bslash;n&quot;
+l_string|&quot;scsi%d : buffer %d address = %p length = %d&bslash;n&quot;
 comma
 id|hostno
 comma
 id|i
 comma
+id|page_address
+c_func
+(paren
 id|buffer
 (braket
 id|i
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|buffer
+(braket
+id|i
+)braket
+dot
+id|offset
 comma
 id|buffer
 (braket

@@ -6,6 +6,7 @@ singleline_comment|// On the real kernel ADDR32 should always be zero for 2.4. G
 singleline_comment|// high pages. Keep the macro around because of the broken unmerged ia64 tree
 DECL|macro|ADDR32
 mdefine_line|#define ADDR32 (0)
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_AUTHOR

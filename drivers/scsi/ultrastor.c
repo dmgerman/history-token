@@ -2235,7 +2235,7 @@ id|i
 dot
 id|address
 op_assign
-id|virt_to_bus
+id|isa_page_to_bus
 c_func
 (paren
 id|sl
@@ -2243,8 +2243,15 @@ id|sl
 id|i
 )braket
 dot
-id|address
+id|page
 )paren
+op_plus
+id|sl
+(braket
+id|i
+)braket
+dot
+id|offset
 suffix:semicolon
 id|mscp-&gt;sglist
 (braket
@@ -2276,7 +2283,7 @@ id|max
 suffix:semicolon
 id|mscp-&gt;transfer_data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|mscp-&gt;sglist
@@ -2479,7 +2486,7 @@ id|FALSE
 suffix:semicolon
 id|my_mscp-&gt;transfer_data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|SCpnt-&gt;request_buffer
@@ -2529,7 +2536,7 @@ l_int|0
 suffix:semicolon
 id|my_mscp-&gt;sense_data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -2755,7 +2762,7 @@ multiline_comment|/* Store pointer in OGM address bytes */
 id|outl
 c_func
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|my_mscp
@@ -3087,7 +3094,7 @@ op_assign
 r_int
 r_int
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|inl
@@ -3115,7 +3122,7 @@ op_assign
 r_int
 r_int
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|inl
@@ -3275,7 +3282,7 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -3869,7 +3876,7 @@ r_struct
 id|mscp
 op_star
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|inl

@@ -1803,13 +1803,6 @@ op_star
 id|request_buffer
 suffix:semicolon
 multiline_comment|/* Actual requested buffer */
-DECL|member|bounce_buffers
-r_void
-op_star
-op_star
-id|bounce_buffers
-suffix:semicolon
-multiline_comment|/* Array of bounce buffers when using scatter-gather */
 multiline_comment|/* These elements define the operation we ultimately want to perform */
 DECL|member|data_cmnd
 r_int

@@ -895,7 +895,7 @@ r_struct
 id|ecb
 op_star
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|inl
@@ -1779,7 +1779,7 @@ id|i
 dot
 id|dataptr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|sgpnt
@@ -1813,7 +1813,7 @@ id|ecbno
 dot
 id|dataptr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|cptr
@@ -1888,7 +1888,7 @@ id|ecbno
 dot
 id|dataptr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buff
@@ -1949,7 +1949,7 @@ id|ecbno
 dot
 id|senseptr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|host-&gt;ecb
@@ -1967,7 +1967,7 @@ id|ecbno
 dot
 id|statusptr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|host-&gt;ecb
@@ -2170,7 +2170,7 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|host-&gt;ecb

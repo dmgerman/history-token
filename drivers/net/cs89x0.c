@@ -4935,7 +4935,7 @@ comma
 r_int
 r_int
 )paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;dma_buff
@@ -5080,7 +5080,7 @@ c_func
 (paren
 id|dev-&gt;dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;dma_buff

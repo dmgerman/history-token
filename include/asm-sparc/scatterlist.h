@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: scatterlist.h,v 1.7 2001/10/30 04:34:57 davem Exp $ */
+multiline_comment|/* $Id: scatterlist.h,v 1.8 2001/12/17 07:05:15 davem Exp $ */
 macro_line|#ifndef _SPARC_SCATTERLIST_H
 DECL|macro|_SPARC_SCATTERLIST_H
 mdefine_line|#define _SPARC_SCATTERLIST_H
@@ -7,13 +7,6 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-multiline_comment|/* This will disappear in 2.5.x */
-DECL|member|address
-r_char
-op_star
-id|address
-suffix:semicolon
-multiline_comment|/* These two are only valid if ADDRESS member of this&n;&t; * struct is NULL.&n;&t; */
 DECL|member|page
 r_struct
 id|page

@@ -660,7 +660,7 @@ id|cmd_buffer
 suffix:semicolon
 id|esp-&gt;esp_command_dvma
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|cmd_buffer

@@ -2050,7 +2050,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|CURRENT-&gt;buffer
@@ -2970,7 +2970,7 @@ c_func
 (paren
 id|dma_arb_level
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buffer

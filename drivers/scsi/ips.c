@@ -115,6 +115,7 @@ multiline_comment|/* 4.80.20    Set max_sectors in Scsi_Host structure ( if &gt;
 multiline_comment|/*            5 second delay needed after resetting an i960 adapter          */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Conditional Compilation directives for this driver:&n; *&n; * IPS_DEBUG            - Turn on debugging info&n; *&n; *&n; * Parameters:&n; *&n; * debug:&lt;number&gt;       - Set debug level to &lt;number&gt;&n; *                        NOTE: only works when IPS_DEBUG compile directive&n; *                              is used.&n; *&n; *       1              - Normal debug messages&n; *       2              - Verbose debug messages&n; *       11             - Method trace (non interrupt)&n; *       12             - Method trace (includes interrupt)&n; *&n; * noreset              - Don&squot;t reset the controller&n; * nocmdline            - Turn off passthru support&n; * noi2o                - Don&squot;t use I2O Queues (ServeRAID 4 only)&n; * nommap               - Don&squot;t use memory mapped I/O&n; * ioctlsize            - Initial size of the IOCTL buffer&n; */
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

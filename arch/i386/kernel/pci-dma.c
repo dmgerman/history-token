@@ -86,7 +86,7 @@ suffix:semicolon
 op_star
 id|dma_handle
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|ret

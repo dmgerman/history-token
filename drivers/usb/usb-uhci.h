@@ -183,8 +183,6 @@ DECL|macro|uhci_status_bits
 mdefine_line|#define uhci_status_bits(ctrl_sts)&t;(ctrl_sts &amp; 0xFE0000)
 DECL|macro|uhci_actual_length
 mdefine_line|#define uhci_actual_length(ctrl_sts)&t;((ctrl_sts + 1) &amp; TD_CTRL_ACTLEN_MASK)&t;/* 1-based */
-DECL|macro|uhci_ptr_to_virt
-mdefine_line|#define uhci_ptr_to_virt(x)&t;bus_to_virt(x &amp; ~UHCI_PTR_BITS)
 multiline_comment|/*&n; * for TD &lt;flags&gt;:&n; */
 DECL|macro|UHCI_TD_REMOVE
 mdefine_line|#define UHCI_TD_REMOVE&t;&t;0x0001&t;/* Remove when done */

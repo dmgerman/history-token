@@ -5342,7 +5342,7 @@ suffix:semicolon
 )brace
 id|dma_addr
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|dev-&gt;mem_start

@@ -6,13 +6,6 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-multiline_comment|/* This will disappear in 2.5.x: */
-DECL|member|address
-r_char
-op_star
-id|address
-suffix:semicolon
-multiline_comment|/* location data is to be transferred to, NULL for highmem page */
 DECL|member|orig_address
 r_char
 op_star

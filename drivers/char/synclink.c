@@ -8,6 +8,7 @@ macro_line|#else
 DECL|macro|BREAKPOINT
 macro_line|#  define BREAKPOINT() { }
 macro_line|#endif
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 DECL|macro|MAX_ISA_DEVICES
 mdefine_line|#define MAX_ISA_DEVICES 10
 DECL|macro|MAX_PCI_DEVICES

@@ -3,6 +3,7 @@ DECL|macro|BusLogic_DriverVersion
 mdefine_line|#define BusLogic_DriverVersion&t;&t;&quot;2.1.15&quot;
 DECL|macro|BusLogic_DriverDate
 mdefine_line|#define BusLogic_DriverDate&t;&t;&quot;17 August 1998&quot;
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

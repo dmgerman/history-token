@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Core I2O structure management &n; * &n; * (C) Copyright 1999   Red Hat Software &n; *&n; * Written by Alan Cox, Building Number Three Ltd &n; * &n; * This program is free software; you can redistribute it and/or &n; * modify it under the terms of the GNU General Public License &n; * as published by the Free Software Foundation; either version &n; * 2 of the License, or (at your option) any later version.  &n; * &n; * A lot of the I2O message side code from this is taken from the &n; * Red Creek RCPCI45 adapter driver by Red Creek Communications &n; * &n; * Fixes by: &n; *&t;&t;Philipp Rumpf &n; *&t;&t;Juha Siev&#xfffd;nen &lt;Juha.Sievanen@cs.Helsinki.FI&gt; &n; *&t;&t;Auvo H&#xfffd;kkinen &lt;Auvo.Hakkinen@cs.Helsinki.FI&gt; &n; *&t;&t;Deepak Saxena &lt;deepak@plexity.net&gt; &n; *&t;&t;Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; * &n; */
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -1,3 +1,4 @@
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;

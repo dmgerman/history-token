@@ -716,7 +716,7 @@ r_int
 )paren
 id|high_memory
 op_logical_or
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|addr
@@ -887,7 +887,7 @@ c_func
 (paren
 id|FLOPPY_DMA
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|addr

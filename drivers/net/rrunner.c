@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * rrunner.c: Linux driver for the Essential RoadRunner HIPPI board.&n; *&n; * Copyright (C) 1998-2000 by Jes Sorensen, &lt;Jes.Sorensen@cern.ch&gt;.&n; *&n; * Thanks to Essential Communication for providing us with hardware&n; * and very comprehensive documentation without which I would not have&n; * been able to write this driver. A special thank you to John Gibbon&n; * for sorting out the legal issues, with the NDA, allowing the code to&n; * be released under the GPL.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Thanks to Jayaram Bhat from ODS/Essential for fixing some of the&n; * stupid bugs in my code.&n; *&n; * Softnet support and various other patches from Val Henson of&n; * ODS/Essential.&n; */
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 DECL|macro|RX_DMA_SKBUFF

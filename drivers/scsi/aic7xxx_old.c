@@ -37,9 +37,6 @@ macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
 macro_line|#include &lt;linux/config.h&gt;        /* for CONFIG_PCI */
-multiline_comment|/*&n; * To generate the correct addresses for the controller to issue&n; * on the bus.  Originally added for DEC Alpha support.&n; */
-DECL|macro|VIRT_TO_BUS
-mdefine_line|#define VIRT_TO_BUS(a) (unsigned int)virt_to_bus((void *)(a))
 DECL|macro|AIC7XXX_C_VERSION
 mdefine_line|#define AIC7XXX_C_VERSION  &quot;5.2.4&quot;
 DECL|macro|NUMBER
@@ -8326,36 +8323,12 @@ c_cond
 id|cmd-&gt;use_sg
 )paren
 (brace
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
-id|sg
-op_assign
+id|BUG
+c_func
 (paren
-r_struct
-id|scatterlist
-op_star
 )paren
-id|cmd-&gt;request_buffer
-suffix:semicolon
-id|buffer
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|sg
-(braket
-l_int|0
-)braket
-dot
-id|address
 suffix:semicolon
 )brace
-r_else
-(brace
 id|buffer
 op_assign
 (paren
@@ -8364,7 +8337,6 @@ op_star
 )paren
 id|cmd-&gt;request_buffer
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

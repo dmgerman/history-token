@@ -1,5 +1,6 @@
 multiline_comment|/***********************************************************************&n; *&t;FILE NAME : SCSIIOM.C&t;&t;&t;&t;&t;       *&n; *&t;     BY   : C.L. Huang,    ching@tekram.com.tw&t;&t;       *&n; *&t;Description: Device Driver for Tekram DC-390 (T) PCI SCSI      *&n; *&t;&t;     Bus Master Host Adapter&t;&t;&t;       *&n; ***********************************************************************/
 multiline_comment|/* $Id: scsiiom.c,v 2.55.2.17 2000/12/20 00:39:37 garloff Exp $ */
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 r_static
 r_void
 id|__inline__

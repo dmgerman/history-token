@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&n; *  linux/kernel/atp870u.c&n; *&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15 (7.1)&n; */
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

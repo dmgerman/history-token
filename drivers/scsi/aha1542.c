@@ -20,8 +20,10 @@ macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aha1542.h&quot;
-DECL|macro|SCSI_PA
-mdefine_line|#define SCSI_PA(address) virt_to_bus(address)
+DECL|macro|SCSI_BUF_PA
+mdefine_line|#define SCSI_BUF_PA(address)&t;isa_virt_to_bus(address)
+DECL|macro|SCSI_SG_PA
+mdefine_line|#define SCSI_SG_PA(sgent)&t;(isa_page_to_bus((sgent)-&gt;page) + (sgent)-&gt;offset)
 DECL|function|BAD_DMA
 r_static
 r_void
@@ -45,7 +47,7 @@ l_string|&quot;buf vaddress %p paddress 0x%lx length %d&bslash;n&quot;
 comma
 id|address
 comma
-id|SCSI_PA
+id|SCSI_BUS_PA
 c_func
 (paren
 id|address
@@ -111,27 +113,15 @@ id|badseg
 dot
 id|offset
 comma
-(paren
-r_int
-r_int
-)paren
-id|page_to_bus
+id|SCSI_SG_PA
 c_func
 (paren
+op_amp
 id|sgpnt
 (braket
 id|badseg
 )braket
-dot
-id|page
 )paren
-op_plus
-id|sgpnt
-(braket
-id|badseg
-)braket
-dot
-id|offset
 comma
 id|sgpnt
 (braket
@@ -1830,7 +1820,7 @@ id|ccbptr
 )paren
 op_minus
 (paren
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 op_amp
@@ -2777,7 +2767,7 @@ id|mbo
 dot
 id|ccbptr
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 op_amp
@@ -3055,6 +3045,7 @@ l_string|&quot;%d: %p %d&bslash;n&quot;
 comma
 id|i
 comma
+(paren
 id|page_address
 c_func
 (paren
@@ -3072,6 +3063,7 @@ id|i
 )braket
 dot
 id|offset
+)paren
 comma
 id|sgpnt
 (braket
@@ -3152,31 +3144,24 @@ id|i
 dot
 id|dataptr
 comma
-id|page_to_bus
+id|SCSI_SG_PA
 c_func
 (paren
+op_amp
 id|sgpnt
 (braket
 id|i
 )braket
-dot
-id|page
 )paren
-op_plus
-id|sgpnt
-(braket
-id|i
-)braket
-dot
-id|offset
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|page_to_bus
+id|SCSI_SG_PA
 c_func
 (paren
+op_amp
 id|sgpnt
 (braket
 id|i
@@ -3184,13 +3169,6 @@ id|i
 dot
 id|page
 )paren
-op_plus
-id|sgpnt
-(braket
-id|i
-)braket
-dot
-id|offset
 op_plus
 id|sgpnt
 (braket
@@ -3264,7 +3242,7 @@ id|mbo
 dot
 id|dataptr
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|cptr
@@ -3350,7 +3328,7 @@ c_cond
 (paren
 id|buff
 op_logical_and
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|buff
@@ -3380,7 +3358,7 @@ id|mbo
 dot
 id|dataptr
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|buff
@@ -3761,7 +3739,7 @@ id|i
 dot
 id|ccbptr
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 op_amp
@@ -3790,7 +3768,7 @@ op_plus
 l_int|2
 )paren
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|mb
@@ -5589,7 +5567,7 @@ multiline_comment|/* For now we do this - until kmalloc is more intelligent&n;&t
 r_if
 c_cond
 (paren
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 id|shpnt
@@ -6834,7 +6812,7 @@ id|mbo
 dot
 id|ccbptr
 comma
-id|SCSI_PA
+id|SCSI_BUF_PA
 c_func
 (paren
 op_amp

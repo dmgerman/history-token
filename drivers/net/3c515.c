@@ -4180,7 +4180,7 @@ id|i
 dot
 id|next
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -4269,7 +4269,7 @@ id|i
 dot
 id|addr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;tail
@@ -4285,7 +4285,7 @@ l_int|1
 dot
 id|next
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -4299,7 +4299,7 @@ multiline_comment|/* Wrap the ring. */
 id|outl
 c_func
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -5359,7 +5359,7 @@ id|entry
 dot
 id|addr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -5449,7 +5449,7 @@ id|prev_entry
 )paren
 id|prev_entry-&gt;next
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -5476,7 +5476,7 @@ l_int|0
 id|outl
 c_func
 (paren
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -6191,7 +6191,7 @@ op_plus
 id|DownListPtr
 )paren
 op_eq
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -7379,7 +7379,7 @@ comma
 id|pkt_len
 )paren
 comma
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|vp-&gt;rx_ring
@@ -7432,7 +7432,7 @@ multiline_comment|/* Remove this checking code for final release. */
 r_if
 c_cond
 (paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|vp-&gt;rx_ring
@@ -7453,7 +7453,7 @@ l_string|&quot; in boomerang_rx: %p vs. %p / %p.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|vp
@@ -7585,7 +7585,7 @@ id|entry
 dot
 id|addr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;tail

@@ -511,7 +511,7 @@ l_int|2048
 (brace
 id|romstart
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|base
@@ -569,7 +569,7 @@ id|length
 suffix:semicolon
 id|romstart
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|base
@@ -716,7 +716,7 @@ l_int|0xE0000
 suffix:semicolon
 id|romstart
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|base
@@ -2529,7 +2529,7 @@ id|_end
 suffix:semicolon
 id|code_resource.start
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 op_amp
@@ -2538,7 +2538,7 @@ id|_text
 suffix:semicolon
 id|code_resource.end
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 op_amp
@@ -2549,7 +2549,7 @@ l_int|1
 suffix:semicolon
 id|data_resource.start
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 op_amp
@@ -2558,7 +2558,7 @@ id|_etext
 suffix:semicolon
 id|data_resource.end
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 op_amp

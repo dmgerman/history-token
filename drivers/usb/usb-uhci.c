@@ -2953,7 +2953,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//uhci_show_queue(s-&gt;control_chain);   
 id|dbg
 c_func
 (paren
@@ -3483,7 +3482,6 @@ op_complement
 id|UHCI_PTR_TERM
 )paren
 suffix:semicolon
-singleline_comment|//uhci_show_queue(qh);
 multiline_comment|/* Start it up... put low speed first */
 r_if
 c_cond
@@ -4277,7 +4275,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//uhci_show_queue(s-&gt;bulk_chain);
 singleline_comment|//dbg(&quot;uhci_submit_bulk_urb: exit&bslash;n&quot;);
 r_return
 l_int|0

@@ -2185,7 +2185,7 @@ c_func
 (paren
 id|dev-&gt;dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|target
@@ -3799,7 +3799,7 @@ id|nlen
 suffix:semicolon
 id|target
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|adapter-&gt;dma_buffer
@@ -3810,7 +3810,7 @@ r_else
 (brace
 id|target
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data

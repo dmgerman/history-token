@@ -5,12 +5,6 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-DECL|member|address
-r_char
-op_star
-id|address
-suffix:semicolon
-multiline_comment|/* Location data is to be transferred to, NULL for&n;&t;&t;&t; * highmem page */
 DECL|member|page
 r_struct
 id|page

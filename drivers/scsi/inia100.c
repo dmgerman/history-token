@@ -4,6 +4,7 @@ mdefine_line|#define CVT_LINUX_VERSION(V,P,S)        (V * 65536 + P * 256 + S)
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;

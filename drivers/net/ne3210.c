@@ -868,7 +868,7 @@ c_cond
 (paren
 id|dev-&gt;mem_start
 OL
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|high_memory
@@ -895,7 +895,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;ne3210.c: or to an address above 0x%lx.&bslash;n&quot;
 comma
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|high_memory

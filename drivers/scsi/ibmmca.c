@@ -3208,7 +3208,7 @@ id|IM_SCB
 suffix:semicolon
 id|scb-&gt;sys_buf_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buf
@@ -3221,7 +3221,7 @@ suffix:semicolon
 multiline_comment|/* maximum bufferlength gives max info */
 id|scb-&gt;tsb_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|tsb
@@ -3240,7 +3240,7 @@ id|issue_cmd
 (paren
 id|host_index
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|scb
@@ -3462,7 +3462,7 @@ id|IM_SCB
 suffix:semicolon
 id|scb-&gt;sys_buf_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buf
@@ -3474,7 +3474,7 @@ l_int|8
 suffix:semicolon
 id|scb-&gt;tsb_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|tsb
@@ -3493,7 +3493,7 @@ id|issue_cmd
 (paren
 id|host_index
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|scb
@@ -3712,7 +3712,7 @@ id|IM_SCB
 suffix:semicolon
 id|scb-&gt;sys_buf_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buf
@@ -3742,7 +3742,7 @@ suffix:semicolon
 multiline_comment|/* get exactly 18 bytes for other SCSI */
 id|scb-&gt;tsb_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|tsb
@@ -3761,7 +3761,7 @@ id|issue_cmd
 (paren
 id|host_index
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|scb
@@ -11110,7 +11110,7 @@ id|IM_RETRY_ENABLE
 suffix:semicolon
 id|scb-&gt;tsb_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -11198,7 +11198,7 @@ r_void
 op_star
 )paren
 (paren
-id|virt_to_bus
+id|isa_page_to_bus
 c_func
 (paren
 id|sl
@@ -11206,8 +11206,15 @@ id|sl
 id|i
 )braket
 dot
-id|address
+id|page
 )paren
+op_plus
+id|sl
+(braket
+id|i
+)braket
+dot
+id|offset
 )paren
 suffix:semicolon
 id|ld
@@ -11240,7 +11247,7 @@ id|IM_POINTER_TO_LIST
 suffix:semicolon
 id|scb-&gt;sys_buf_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 op_amp
@@ -11276,7 +11283,7 @@ r_else
 (brace
 id|scb-&gt;sys_buf_adr
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|cmd-&gt;request_buffer
@@ -12083,7 +12090,7 @@ id|issue_cmd
 (paren
 id|host_index
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|scb
@@ -12110,7 +12117,7 @@ id|issue_cmd
 (paren
 id|host_index
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|scb

@@ -1544,7 +1544,7 @@ op_assign
 id|SK_RAM
 op_star
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|rom_addr

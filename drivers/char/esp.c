@@ -1307,7 +1307,7 @@ c_func
 (paren
 id|dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|dma_buffer
@@ -2151,7 +2151,7 @@ c_func
 (paren
 id|dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|dma_buffer
@@ -2304,7 +2304,7 @@ c_func
 (paren
 id|dma
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|dma_buffer

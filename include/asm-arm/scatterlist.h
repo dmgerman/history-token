@@ -6,25 +6,19 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-DECL|member|address
-r_char
-op_star
-id|address
-suffix:semicolon
-multiline_comment|/* virtual address&t;&t; */
 DECL|member|page
 r_struct
 id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/* Location for highmem page, if any */
+multiline_comment|/* buffer page&t;&t;&t; */
 DECL|member|offset
 r_int
 r_int
 id|offset
 suffix:semicolon
-multiline_comment|/* for highmem, page offset&t; */
+multiline_comment|/* buffer offset&t;&t; */
 DECL|member|dma_address
 id|dma_addr_t
 id|dma_address

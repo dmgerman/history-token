@@ -3555,6 +3555,7 @@ op_eq
 l_int|7
 )paren
 (brace
+macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 id|phead
 op_assign
 id|bus_to_virt

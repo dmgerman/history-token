@@ -1473,7 +1473,7 @@ suffix:semicolon
 )brace
 id|lp-&gt;exec_box
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1503,7 +1503,7 @@ id|base
 suffix:semicolon
 id|lp-&gt;rx_box
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|lp-&gt;base
@@ -1516,7 +1516,7 @@ l_int|2
 suffix:semicolon
 id|lp-&gt;tx_box
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|lp-&gt;base
@@ -1529,7 +1529,7 @@ l_int|3
 suffix:semicolon
 id|lp-&gt;stats
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|lp-&gt;base
@@ -2396,7 +2396,7 @@ suffix:semicolon
 )brace
 id|p
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|lp-&gt;base
@@ -2410,7 +2410,7 @@ l_int|0
 suffix:semicolon
 id|p-&gt;data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|lp-&gt;rx_ring
@@ -2610,7 +2610,7 @@ op_increment
 (brace
 id|p
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|lp-&gt;base
@@ -3313,7 +3313,7 @@ id|skb-&gt;len
 suffix:semicolon
 id|np-&gt;data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|skb-&gt;data
@@ -3639,7 +3639,7 @@ id|newskb
 suffix:semicolon
 id|p-&gt;data
 op_assign
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|newskb-&gt;data

@@ -4949,7 +4949,7 @@ c_func
 (paren
 id|QIC02_TAPE_DMA
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buffaddr

@@ -8,25 +8,17 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-DECL|member|address
-r_char
-op_star
-id|address
-suffix:semicolon
-multiline_comment|/* Location data is to be transferred to,&n;&t;&t;&t;&t; * or NULL for highmem page */
 DECL|member|page
 r_struct
 id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/* Location for highmem page, if any */
 DECL|member|offset
 r_int
 r_int
 id|offset
 suffix:semicolon
-multiline_comment|/* for highmem, page offset */
 DECL|member|dma_address
 id|dma_addr_t
 id|dma_address

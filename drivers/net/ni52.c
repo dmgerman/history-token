@@ -625,7 +625,7 @@ op_assign
 r_int
 r_int
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 (paren
@@ -641,7 +641,7 @@ l_int|0x01000000
 suffix:semicolon
 id|p-&gt;memtop
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 (paren
@@ -744,7 +744,7 @@ id|iscp_addrs
 l_int|0
 )braket
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 (paren
@@ -917,7 +917,7 @@ r_struct
 id|scb_struct
 op_star
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1756,7 +1756,7 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|memtop
 op_assign
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1781,7 +1781,7 @@ op_assign
 r_int
 r_int
 )paren
-id|bus_to_virt
+id|isa_bus_to_virt
 c_func
 (paren
 id|dev-&gt;mem_start

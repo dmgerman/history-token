@@ -5,12 +5,17 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-DECL|member|address
-r_char
+DECL|member|page
+r_struct
+id|page
 op_star
-id|address
+id|page
 suffix:semicolon
-multiline_comment|/* Location data is to be transferred to */
+DECL|member|offset
+r_int
+r_int
+id|offset
+suffix:semicolon
 DECL|member|length
 r_int
 r_int
