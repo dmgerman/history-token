@@ -1,12 +1,11 @@
 multiline_comment|/*&n; *&t;sm_sbc.c  -- soundcard radio modem driver soundblaster hardware driver&n; *&n; *&t;Copyright (C) 1996  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Please note that the GPL allows you to use the driver, NOT the radio.&n; *  In order to use the radio, you need a license from the communications&n; *  authority of your country.&n; *&n; */
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/soundmodem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;sm.h&quot;
 macro_line|#include &quot;smdma.h&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
