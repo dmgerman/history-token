@@ -7036,6 +7036,28 @@ comma
 dot
 id|vendor
 op_assign
+l_int|0x1019
+comma
+dot
+id|device
+op_assign
+l_int|0x0a85
+comma
+dot
+id|name
+op_assign
+l_string|&quot;ECS L7VMM2&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1849
 comma
 dot
@@ -9729,6 +9751,24 @@ id|VIA_DXS_NO_VRA
 )brace
 comma
 multiline_comment|/* ECS K7VTA3 v8.0 */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1019
+comma
+dot
+id|device
+op_assign
+l_int|0x0a85
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* ECS L7VMM2 */
 (brace
 dot
 id|vendor
