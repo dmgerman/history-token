@@ -3888,13 +3888,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|ps-&gt;dev-&gt;serialize
-)paren
-suffix:semicolon
 id|actconfig
 op_assign
 id|ps-&gt;dev-&gt;actconfig
@@ -4009,13 +4002,6 @@ id|u
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|ps-&gt;dev-&gt;serialize
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
