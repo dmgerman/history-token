@@ -1356,6 +1356,8 @@ DECL|macro|ATKBD_CMD_RESET_DIS
 mdefine_line|#define ATKBD_CMD_RESET_DIS&t;0x00f5
 DECL|macro|ATKBD_CMD_SETALL_MB
 mdefine_line|#define ATKBD_CMD_SETALL_MB&t;0x00f8
+DECL|macro|ATKBD_CMD_RESEND
+mdefine_line|#define ATKBD_CMD_RESEND&t;0x00fe
 DECL|macro|ATKBD_CMD_EX_ENABLE
 mdefine_line|#define ATKBD_CMD_EX_ENABLE&t;0x10ea
 DECL|macro|ATKBD_CMD_EX_SETLEDS
@@ -1494,12 +1496,46 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;atkbd.c: Received %02x&bslash;n&quot;
+l_string|&quot;atkbd.c: Received %02x flags %02x&bslash;n&quot;
 comma
 id|data
+comma
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Interface error.  Request that the keyboard resend. */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+(paren
+id|SERIO_FRAME
+op_or
+id|SERIO_PARITY
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;atkbd.c: frame/parity error: %02x&bslash;n&quot;
+comma
+id|flags
+)paren
+suffix:semicolon
+id|serio_write
+c_func
+(paren
+id|serio
+comma
+id|ATKBD_CMD_RESEND
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren

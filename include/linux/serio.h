@@ -353,10 +353,13 @@ id|serio
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * bit masks for use in &quot;interrupt&quot; flags (3rd argument)&n; */
 DECL|macro|SERIO_TIMEOUT
 mdefine_line|#define SERIO_TIMEOUT&t;1
 DECL|macro|SERIO_PARITY
 mdefine_line|#define SERIO_PARITY&t;2
+DECL|macro|SERIO_FRAME
+mdefine_line|#define SERIO_FRAME&t;4
 DECL|macro|SERIO_TYPE
 mdefine_line|#define SERIO_TYPE&t;0xff000000UL
 DECL|macro|SERIO_XT
