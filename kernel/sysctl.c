@@ -3867,17 +3867,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp.nlen
-template_param
-id|CTL_MAXNAME
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
