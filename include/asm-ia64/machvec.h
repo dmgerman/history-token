@@ -20,6 +20,9 @@ suffix:semicolon
 r_struct
 id|page
 suffix:semicolon
+r_struct
+id|mm_struct
+suffix:semicolon
 DECL|typedef|ia64_mv_setup_t
 r_typedef
 r_void
@@ -88,6 +91,16 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_tlb_migrate_finish_t
+r_typedef
+r_void
+id|ia64_mv_tlb_migrate_finish_t
+(paren
+r_struct
+id|mm_struct
+op_star
 )paren
 suffix:semicolon
 DECL|typedef|ia64_mv_irq_desc
@@ -468,13 +481,29 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
+r_inline
 r_void
+DECL|function|machvec_noop
 id|machvec_noop
 (paren
 r_void
 )paren
-suffix:semicolon
+(brace
+)brace
+r_static
+r_inline
+r_void
+DECL|function|machvec_noop_mm
+id|machvec_noop_mm
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+)brace
 r_extern
 r_void
 id|machvec_setup
@@ -530,6 +559,15 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|machvec_tlb_migrate_finish
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
 macro_line|# if defined (CONFIG_IA64_HP_SIM)
 macro_line|#  include &lt;asm/machvec_hpsim.h&gt;
 macro_line|# elif defined (CONFIG_IA64_DIG)
@@ -556,6 +594,8 @@ DECL|macro|platform_timer_interrupt
 macro_line|#  define platform_timer_interrupt&t;ia64_mv.timer_interrupt
 DECL|macro|platform_global_tlb_purge
 macro_line|#  define platform_global_tlb_purge&t;ia64_mv.global_tlb_purge
+DECL|macro|platform_tlb_migrate_finish
+macro_line|#  define platform_tlb_migrate_finish&t;ia64_mv.tlb_migrate_finish
 DECL|macro|platform_dma_init
 macro_line|#  define platform_dma_init&t;&t;ia64_mv.dma_init
 DECL|macro|platform_dma_alloc_coherent
@@ -657,6 +697,11 @@ DECL|member|global_tlb_purge
 id|ia64_mv_global_tlb_purge_t
 op_star
 id|global_tlb_purge
+suffix:semicolon
+DECL|member|tlb_migrate_finish
+id|ia64_mv_tlb_migrate_finish_t
+op_star
+id|tlb_migrate_finish
 suffix:semicolon
 DECL|member|dma_init
 id|ia64_mv_dma_init
@@ -823,7 +868,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_tlb_migrate_finish,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -919,6 +964,10 @@ macro_line|#endif
 macro_line|#ifndef platform_global_tlb_purge
 DECL|macro|platform_global_tlb_purge
 macro_line|# define platform_global_tlb_purge&t;ia64_global_tlb_purge /* default to architected version */
+macro_line|#endif
+macro_line|#ifndef platform_tlb_migrate_finish
+DECL|macro|platform_tlb_migrate_finish
+macro_line|# define platform_tlb_migrate_finish&t;machvec_noop_mm
 macro_line|#endif
 macro_line|#ifndef platform_dma_init
 DECL|macro|platform_dma_init

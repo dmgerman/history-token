@@ -27,6 +27,10 @@ id|ia64_mv_global_tlb_purge_t
 id|sn2_global_tlb_purge
 suffix:semicolon
 r_extern
+id|ia64_mv_tlb_migrate_finish_t
+id|sn_tlb_migrate_finish
+suffix:semicolon
+r_extern
 id|ia64_mv_irq_desc
 id|sn_irq_desc
 suffix:semicolon
@@ -157,6 +161,8 @@ DECL|macro|platform_timer_interrupt
 mdefine_line|#define platform_timer_interrupt&t;sn_timer_interrupt
 DECL|macro|platform_global_tlb_purge
 mdefine_line|#define platform_global_tlb_purge       sn2_global_tlb_purge
+DECL|macro|platform_tlb_migrate_finish
+mdefine_line|#define platform_tlb_migrate_finish&t;sn_tlb_migrate_finish
 DECL|macro|platform_pci_fixup
 mdefine_line|#define platform_pci_fixup&t;&t;sn_pci_fixup
 DECL|macro|platform_inb

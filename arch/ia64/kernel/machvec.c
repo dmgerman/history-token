@@ -139,21 +139,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_IA64_GENERIC */
 r_void
-DECL|function|machvec_noop
-id|machvec_noop
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|machvec_noop
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|machvec_noop
-)paren
-suffix:semicolon
-r_void
 DECL|function|machvec_setup
 id|machvec_setup
 (paren

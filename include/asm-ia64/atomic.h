@@ -170,7 +170,7 @@ r_new
 comma
 r_sizeof
 (paren
-id|atomic_t
+id|atomic64_t
 )paren
 )paren
 op_ne
@@ -310,7 +310,7 @@ r_new
 comma
 r_sizeof
 (paren
-id|atomic_t
+id|atomic64_t
 )paren
 )paren
 op_ne

@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
@@ -105,6 +106,31 @@ id|SH_PIO_WRITE_STATUS_0_PENDING_WRITE_COUNT_MASK
 suffix:semicolon
 r_return
 id|ws
+suffix:semicolon
+)brace
+r_void
+DECL|function|sn_tlb_migrate_finish
+id|sn_tlb_migrate_finish
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mm
+op_eq
+id|current-&gt;mm
+)paren
+id|flush_tlb_mm
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn2_global_tlb_purge - globally purge translation cache of virtual address range&n; * @start: start of virtual address range&n; * @end: end of virtual address range&n; * @nbits: specifies number of bytes to purge per instruction (num = 1&lt;&lt;(nbits &amp; 0xfc))&n; *&n; * Purges the translation caches of all processors of the given virtual address&n; * range.&n; *&n; * Note:&n; * &t;- cpu_vm_mask is a bit mask that indicates which cpus have loaded the context.&n; * &t;- cpu_vm_mask is converted into a nodemask of the nodes containing the&n; * &t;  cpus in cpu_vm_mask.&n; *&t;- if only one bit is set in cpu_vm_mask &amp; it is the current cpu,&n; *&t;  then only the local TLB needs to be flushed. This flushing can be done&n; *&t;  using ptc.l. This is the common case &amp; avoids the global spinlock.&n; *&t;- if multiple cpus have loaded the context, then flushing has to be&n; *&t;  done with ptc.g/MMRs under protection of the global ptc_lock.&n; */
@@ -286,6 +312,33 @@ suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mm_users
+)paren
+op_eq
+l_int|1
+)paren
+(brace
+id|flush_tlb_mm
+c_func
+(paren
+id|mm
 )paren
 suffix:semicolon
 id|preempt_enable

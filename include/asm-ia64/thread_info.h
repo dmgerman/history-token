@@ -97,14 +97,20 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;2&t;/* rescheduling necessary */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;3&t;/* syscall trace active */
+DECL|macro|TIF_SYSCALL_AUDIT
+mdefine_line|#define TIF_SYSCALL_AUDIT&t;4&t;/* syscall auditing active */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|TIF_WORK_MASK
 mdefine_line|#define TIF_WORK_MASK&t;&t;0x7&t;/* like TIF_ALLWORK_BITS but sans TIF_SYSCALL_TRACE */
 DECL|macro|TIF_ALLWORK_MASK
-mdefine_line|#define TIF_ALLWORK_MASK&t;0xf&t;/* bits 0..3 are &quot;work to do on user-return&quot; bits */
+mdefine_line|#define TIF_ALLWORK_MASK&t;0x1f&t;/* bits 0..4 are &quot;work to do on user-return&quot; bits */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
+DECL|macro|_TIF_SYSCALL_AUDIT
+mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1 &lt;&lt; TIF_SYSCALL_AUDIT)
+DECL|macro|_TIF_SYSCALL_TRACEAUDIT
+mdefine_line|#define _TIF_SYSCALL_TRACEAUDIT&t;(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_NOTIFY_RESUME
 mdefine_line|#define _TIF_NOTIFY_RESUME&t;(1 &lt;&lt; TIF_NOTIFY_RESUME)
 DECL|macro|_TIF_SIGPENDING
