@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 r_extern
 r_int
@@ -58,7 +59,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* The number doesn&squot;t include the -1 terminator */
 DECL|macro|NUM_MSS
-mdefine_line|#define NUM_MSS (sizeof(msstab)/sizeof(msstab[0]) - 1)
+mdefine_line|#define NUM_MSS (ARRAY_SIZE(msstab) - 1)
 multiline_comment|/*&n; * Generate a syncookie.  mssp points to the mss, which is returned&n; * rounded down to the value encoded in the cookie.&n; */
 DECL|function|cookie_v4_init_sequence
 id|__u32
