@@ -7215,6 +7215,10 @@ id|chip-&gt;ac97_bus-&gt;clock
 op_assign
 id|chip-&gt;ac97_clock
 suffix:semicolon
+id|chip-&gt;ac97_bus-&gt;shared_type
+op_assign
+id|AC97_SHARED_TYPE_VIA
+suffix:semicolon
 id|memset
 c_func
 (paren
