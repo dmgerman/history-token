@@ -2907,7 +2907,7 @@ id|sk
 op_member_access_from_pointer
 id|conn-&gt;mtu
 suffix:semicolon
-id|BT_INFO
+id|BT_DBG
 c_func
 (paren
 l_string|&quot;mtu %d&quot;
@@ -4090,7 +4090,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */

@@ -74,7 +74,7 @@ multiline_comment|/* OGF_HOST_CTL */
 (brace
 l_int|0x80100000
 comma
-l_int|0xa
+l_int|0x2a
 comma
 l_int|0x0
 comma

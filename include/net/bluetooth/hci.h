@@ -35,6 +35,8 @@ DECL|macro|HCI_UART
 mdefine_line|#define HCI_UART &t;3
 DECL|macro|HCI_RS232
 mdefine_line|#define HCI_RS232 &t;4
+DECL|macro|HCI_PCI
+mdefine_line|#define HCI_PCI&t;&t;5
 multiline_comment|/* HCI device flags */
 r_enum
 (brace
