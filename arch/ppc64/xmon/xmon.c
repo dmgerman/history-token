@@ -103,12 +103,6 @@ DECL|macro|setjmp
 mdefine_line|#define setjmp xmon_setjmp
 DECL|macro|longjmp
 mdefine_line|#define longjmp xmon_longjmp
-DECL|macro|memlist_entry
-mdefine_line|#define memlist_entry list_entry
-DECL|macro|memlist_next
-mdefine_line|#define memlist_next(x) ((x)-&gt;next)
-DECL|macro|memlist_prev
-mdefine_line|#define memlist_prev(x) ((x)-&gt;prev)
 multiline_comment|/* Max number of stack frames we are willing to produce on a backtrace. */
 DECL|macro|MAXFRAMECOUNT
 mdefine_line|#define MAXFRAMECOUNT 50
@@ -123,6 +117,7 @@ r_int
 id|address
 suffix:semicolon
 DECL|member|instr
+r_int
 r_int
 id|instr
 suffix:semicolon
@@ -4269,11 +4264,29 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x380
+suffix:colon
+id|ret
+op_assign
+l_string|&quot;(Data SLB Access)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x400
 suffix:colon
 id|ret
 op_assign
 l_string|&quot;(Instruction Access)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x480
+suffix:colon
+id|ret
+op_assign
+l_string|&quot;(Instruction SLB Access)&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5148,6 +5161,10 @@ c_cond
 id|fp-&gt;trap
 op_eq
 l_int|0x300
+op_logical_or
+id|fp-&gt;trap
+op_eq
+l_int|0x380
 op_logical_or
 id|fp-&gt;trap
 op_eq
@@ -7645,24 +7662,40 @@ op_star
 id|regs
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|regs-&gt;trap
+)paren
+(brace
+r_case
+l_int|0x200
+suffix:colon
 id|fault_type
 op_assign
-id|regs-&gt;trap
-op_eq
-l_int|0x200
-ques
-c_cond
 l_int|0
-suffix:colon
-id|regs-&gt;trap
-op_eq
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x300
-ques
-c_cond
-l_int|1
 suffix:colon
+r_case
+l_int|0x380
+suffix:colon
+id|fault_type
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|fault_type
+op_assign
 l_int|2
 suffix:semicolon
+)brace
 m_longjmp
 (paren
 id|bus_error_jmp
