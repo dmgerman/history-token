@@ -828,9 +828,10 @@ r_int
 id|hdlc_open
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Must be called by hardware driver when HDLC device is being closed */

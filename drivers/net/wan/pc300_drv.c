@@ -19507,7 +19507,7 @@ op_assign
 id|hdlc_open
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -4169,10 +4169,7 @@ id|err
 op_assign
 id|hdlc_open
 (paren
-id|dev_to_hdlc
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_if
