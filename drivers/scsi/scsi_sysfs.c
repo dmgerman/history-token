@@ -1096,6 +1096,7 @@ id|sdev_show_timeout
 comma
 id|sdev_store_timeout
 )paren
+suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|store_rescan_field
@@ -1137,6 +1138,7 @@ l_int|NULL
 comma
 id|store_rescan_field
 )paren
+suffix:semicolon
 DECL|function|sdev_store_delete
 r_static
 id|ssize_t
