@@ -346,7 +346,7 @@ multiline_comment|/* Don&squot;t enqueue while not enough space for reply */
 id|dprintk
 c_func
 (paren
-l_string|&quot;svc: socket %p  no space, %d &gt; %ld, not enqueued&bslash;n&quot;
+l_string|&quot;svc: socket %p  no space, %d*2 &gt; %ld, not enqueued&bslash;n&quot;
 comma
 id|svsk-&gt;sk_sk
 comma
