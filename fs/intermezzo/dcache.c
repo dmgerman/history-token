@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 DECL|variable|presto_dentry_slab
-r_static
 id|kmem_cache_t
 op_star
 id|presto_dentry_slab
