@@ -2847,7 +2847,7 @@ op_assign
 id|create_flash_pde
 c_func
 (paren
-l_string|&quot;ppc64/rtas&quot;
+l_string|&quot;ppc64/rtas/&quot;
 id|MANAGE_FLASH_NAME
 comma
 op_amp
