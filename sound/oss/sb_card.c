@@ -1216,7 +1216,7 @@ l_string|&quot;sb: PnP: Found Card Named = &bslash;&quot;%s&bslash;&quot;, Card 
 "&bslash;"
 l_string|&quot;%s, Device PnP id = %s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|card-&gt;card-&gt;name
 comma
 id|card_id-&gt;id
 comma
