@@ -1396,10 +1396,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|device_init
+DECL|function|genhd_device_init
+r_static
 r_int
 id|__init
-id|device_init
+id|genhd_device_init
 c_func
 (paren
 r_void
@@ -1432,11 +1433,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|device_init
+DECL|variable|genhd_device_init
 id|subsys_initcall
 c_func
 (paren
-id|device_init
+id|genhd_device_init
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * kobject &amp; sysfs bindings for block devices&n; */
