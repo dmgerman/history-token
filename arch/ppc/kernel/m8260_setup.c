@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.26 09/22/01 11:33:22 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.28 10/18/01 11:16:28 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -41,6 +41,7 @@ r_int
 id|time
 )paren
 suffix:semicolon
+r_static
 r_int
 r_int
 id|m8260_get_rtc_time
@@ -49,17 +50,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|m8260_calibrate_decr
 c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|loops_per_jiffy
 suffix:semicolon
 DECL|variable|__res
 r_int
@@ -73,22 +70,6 @@ id|bd_t
 )braket
 suffix:semicolon
 r_extern
-r_char
-id|saved_command_line
-(braket
-l_int|256
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|find_available_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|m8260_cpm_reset
 c_func
@@ -96,6 +77,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|__init
 DECL|function|m8260_setup_arch
@@ -112,6 +94,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|abort
 m_abort
@@ -144,9 +127,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency&n; * divided by four.&n; */
-DECL|function|m8260_calibrate_decr
+r_static
 r_void
 id|__init
+DECL|function|m8260_calibrate_decr
 id|m8260_calibrate_decr
 c_func
 (paren
@@ -204,6 +188,7 @@ id|uint
 id|rtc_time
 suffix:semicolon
 r_static
+r_static
 r_int
 DECL|function|m8260_set_rtc_time
 id|m8260_set_rtc_time
@@ -222,6 +207,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 r_int
 DECL|function|m8260_get_rtc_time
@@ -240,6 +226,7 @@ r_int
 id|rtc_time
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|m8260_restart
 id|m8260_restart
@@ -327,6 +314,7 @@ id|startaddr
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|m8260_power_off
 id|m8260_power_off
@@ -342,6 +330,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|m8260_halt
 id|m8260_halt
@@ -357,8 +346,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|m8260_setup_residual
+r_static
 r_int
+DECL|function|m8260_setup_residual
 id|m8260_setup_residual
 c_func
 (paren
@@ -415,6 +405,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the internal interrupt controller.  The number of&n; * interrupts supported can vary with the processor type, and the&n; * 8260 family can have up to 64.&n; * External interrupts can be either edge or level triggered, and&n; * need to be initialized by the appropriate driver.&n; */
+r_static
 r_void
 id|__init
 DECL|function|m8260_init_IRQ
@@ -483,10 +474,11 @@ l_int|0x05309770
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Same hack as 8xx&n; */
-DECL|function|m8260_find_end_of_memory
+r_static
 r_int
 r_int
 id|__init
+DECL|function|m8260_find_end_of_memory
 id|m8260_find_end_of_memory
 c_func
 (paren
@@ -756,12 +748,10 @@ id|ppc_md.kbd_init_hw
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.kbd_sysrq_xlate
+id|ppc_md.ppc_kbd_sysrq_xlate
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Mainly for ksyms.&n;*/
 r_int

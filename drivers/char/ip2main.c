@@ -2,8 +2,20 @@ multiline_comment|/*&n;*&n;*   (c) 1999 by Computone Corporation&n;*&n;*********
 singleline_comment|// ToDo:
 singleline_comment|//
 singleline_comment|// Fix the immediate DSS_NOW problem.
+singleline_comment|// Work over the channel stats return logic in ip2_ipl_ioctl so they
+singleline_comment|//&t;make sense for all 256 possible channels and so the user space
+singleline_comment|//&t;utilities will compile and work properly.
 singleline_comment|//
 singleline_comment|// Done:
+singleline_comment|//
+singleline_comment|// 1.2.14&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|// Added bounds checking to ip2_ipl_ioctl to avoid potential terroristic acts.
+singleline_comment|// Changed the definition of ip2trace to be more consistant with kernel style
+singleline_comment|//&t;Thanks to Andreas Dilger &lt;adilger@turbolabs.com&gt; for these updates
+singleline_comment|//
+singleline_comment|// 1.2.13&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
+singleline_comment|// DEVFS: Renamed ttf/{n} to tts/F{n} and cuf/{n} to cua/F{n} to conform
+singleline_comment|//&t;to agreed devfs serial device naming convention.
 singleline_comment|//
 singleline_comment|// 1.2.12&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
 singleline_comment|// Cleaned up some remove queue cut and paste errors
@@ -225,7 +237,7 @@ r_char
 op_star
 id|pcVersion
 op_assign
-l_string|&quot;1.2.11&quot;
+l_string|&quot;1.2.14&quot;
 suffix:semicolon
 multiline_comment|/* String constants for port names */
 DECL|variable|pcDriver_name
@@ -243,7 +255,7 @@ r_char
 op_star
 id|pcTty
 op_assign
-l_string|&quot;ttf/%d&quot;
+l_string|&quot;tts/F%d&quot;
 suffix:semicolon
 DECL|variable|pcCallout
 r_static
@@ -251,7 +263,7 @@ r_char
 op_star
 id|pcCallout
 op_assign
-l_string|&quot;cuf/%d&quot;
+l_string|&quot;cua/F%d&quot;
 suffix:semicolon
 macro_line|#else
 DECL|variable|pcTty
@@ -719,27 +731,6 @@ comma
 r_struct
 id|file
 op_star
-)paren
-suffix:semicolon
-r_void
-id|ip2trace
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_char
-comma
-r_int
-r_char
-comma
-r_int
-r_int
-comma
-dot
-dot
-dot
 )paren
 suffix:semicolon
 r_static
@@ -1746,7 +1737,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -1758,7 +1748,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* process command line arguments to modprobe or&n;&t;&t;insmod i.e. iop &amp; irqp */
 multiline_comment|/* irqp and iop should ALWAYS be specified now...  But we check&n;&t;&t;them individually just to be sure, anyways... */
 r_for
@@ -2683,7 +2672,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -2695,7 +2683,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Zero out the normal tty device structure. */
 id|memset
 (paren
@@ -2885,7 +2872,6 @@ id|ip2_callout_driver.subtype
 op_assign
 id|SERIAL_TYPE_CALLOUT
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -2897,7 +2883,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Register the tty devices. */
 r_if
 c_cond
@@ -3028,7 +3013,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -3040,7 +3024,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Register the interrupt handler or poll handler, depending upon the&n;&t;&t; * specified interrupt.&n;&t;&t; */
 macro_line|#ifdef&t;CONFIG_DEVFS_FS
 r_if
@@ -3491,7 +3474,6 @@ multiline_comment|/* set and enable board interrupt */
 )brace
 )brace
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -3503,7 +3485,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5260,7 +5241,6 @@ suffix:semicolon
 id|i2eBordStrPtr
 id|pB
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -5274,7 +5254,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Service just the boards on the list using this irq */
 r_for
 c_loop
@@ -5372,7 +5351,6 @@ macro_line|#endif /* USE_IQI */
 op_increment
 id|irq_counter
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -5384,7 +5362,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   ip2_poll(unsigned long arg)                                    */
@@ -5407,7 +5384,6 @@ r_int
 id|arg
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -5419,7 +5395,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|TimerOn
 op_assign
 l_int|0
@@ -5453,7 +5428,6 @@ id|TimerOn
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -5465,7 +5439,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 r_inline
@@ -5482,7 +5455,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 c_func
 (paren
@@ -5495,7 +5467,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Data input
 r_if
 c_cond
@@ -5553,7 +5524,6 @@ id|flags
 )brace
 r_else
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 c_func
 (paren
@@ -5566,7 +5536,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|i2InputFlush
 c_func
 (paren
@@ -5678,7 +5647,6 @@ id|I2_OVR
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -5692,7 +5660,6 @@ comma
 id|status
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5992,7 +5959,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -6004,7 +5970,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Device Open/Close/Ioctl Entry Point Section                                */
@@ -6169,7 +6134,6 @@ id|tty-&gt;device
 )paren
 )braket
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|MINOR
@@ -6185,7 +6149,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6770,7 +6733,6 @@ l_string|&quot;OpenBlock: waiting for CD or signal&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -6794,7 +6756,6 @@ id|ASYNC_CLOSING
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* check for signal */
 r_if
 c_cond
@@ -6852,7 +6813,6 @@ op_decrement
 id|pCh-&gt;wopen
 suffix:semicolon
 singleline_comment|//why count?
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -6864,7 +6824,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6977,7 +6936,6 @@ c_func
 id|pCh-&gt;pMyBord
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -6989,7 +6947,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -7034,7 +6991,6 @@ id|pCh
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7046,7 +7002,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef IP2DEBUG_OPEN
 id|printk
 c_func
@@ -7073,7 +7028,6 @@ id|pFile
 (brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7087,7 +7041,6 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -7102,7 +7055,6 @@ l_int|1
 multiline_comment|/* not the last close */
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7116,7 +7068,6 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -7355,7 +7306,6 @@ suffix:semicolon
 macro_line|#endif
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7369,7 +7319,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -7406,7 +7355,6 @@ id|pCh
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7418,7 +7366,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ip2_flush_buffer
 c_func
 (paren
@@ -7558,7 +7505,6 @@ op_amp
 id|pCh-&gt;open_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7570,7 +7516,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/******************************************************************************/
@@ -7625,7 +7570,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7642,7 +7586,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Flush out any buffered data left over from ip2_putchar() calls. */
 id|ip2_flush_chars
 c_func
@@ -7683,7 +7626,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7697,7 +7639,6 @@ comma
 id|bytesSent
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|bytesSent
 OG
@@ -7742,9 +7683,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 singleline_comment|//&t;ip2trace (CHANN, ITRC_PUTC, ITRC_ENTER, 1, ch );
-macro_line|#endif
 id|WRITE_LOCK_IRQSAVE
 c_func
 (paren
@@ -7797,9 +7736,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 singleline_comment|//&t;ip2trace (CHANN, ITRC_PUTC, ITRC_RETURN, 1, ch );
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   ip2_flush_chars()                                              */
@@ -7846,9 +7783,7 @@ c_cond
 id|pCh-&gt;Pbuf_stuff
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
-singleline_comment|//&t;ip2trace (CHANN, ITRC_PUTC, 10, 1, strip );
-macro_line|#endif
+singleline_comment|//&t;&t;ip2trace (CHANN, ITRC_PUTC, 10, 1, strip );
 singleline_comment|//
 singleline_comment|// We may need to restart i2Output if it does not fullfill this request
 singleline_comment|//
@@ -7963,7 +7898,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7977,7 +7911,6 @@ comma
 id|bytesFree
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 (paren
@@ -8023,7 +7956,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8039,7 +7971,6 @@ op_plus
 id|pCh-&gt;Pbuf_stuff
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef IP2DEBUG_WRITE
 id|printk
 (paren
@@ -8132,7 +8063,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8144,7 +8074,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef IP2DEBUG_WRITE
 id|printk
 (paren
@@ -8187,7 +8116,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8199,7 +8127,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   ip2_wait_until_sent()                                          */
@@ -8621,7 +8548,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8637,7 +8563,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef IP2DEBUG_IOCTL
 id|printk
 c_func
@@ -8660,7 +8585,6 @@ id|cmd
 r_case
 id|TIOCGSERIAL
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8674,7 +8598,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|get_serial_info
@@ -8703,7 +8626,6 @@ suffix:semicolon
 r_case
 id|TIOCSSERIAL
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8717,7 +8639,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|set_serial_info
@@ -8882,7 +8803,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8896,7 +8816,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8959,7 +8878,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -8973,7 +8891,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9025,7 +8942,6 @@ suffix:semicolon
 r_case
 id|TIOCGSOFTCAR
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9039,7 +8955,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|PUT_USER
 c_func
 (paren
@@ -9077,7 +8992,6 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9091,7 +9005,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|GET_USER
 c_func
 (paren
@@ -9140,7 +9053,6 @@ suffix:semicolon
 r_case
 id|TIOCMGET
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9154,7 +9066,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;FIXME - the following code is causing a NULL pointer dereference in&n;&t;2.3.51 in an interrupt handler.  It&squot;s suppose to prompt the board&n;&t;to return the DSS signal status immediately.  Why doesn&squot;t it do&n;&t;the same thing in 2.2.14?&n;*/
 multiline_comment|/*&t;This thing is still busted in the 1.2.12 driver on 2.4.x&n;&t;and even hoses the serial console so the oops can be trapped.&n;&t;&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/&t;&t;&t;*/
 macro_line|#ifdef&t;ENABLE_DSSNOW
@@ -9342,7 +9253,6 @@ suffix:colon
 r_case
 id|TIOCMSET
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9354,7 +9264,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|set_modem_info
@@ -9458,7 +9367,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9470,13 +9378,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9488,7 +9394,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* see if a signal did it */
 r_if
 c_cond
@@ -9706,7 +9611,6 @@ multiline_comment|/*&n;&t; * Get counter of input serial line interrupts (DCD,RI
 r_case
 id|TIOCGICOUNT
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9720,7 +9624,6 @@ comma
 id|rc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|save_flags
 c_func
 (paren
@@ -9898,7 +9801,6 @@ id|TIOCSERSETMULTI
 suffix:colon
 r_default
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9910,7 +9812,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 op_minus
@@ -9919,7 +9820,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -9931,7 +9831,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|rc
 suffix:semicolon
@@ -10787,7 +10686,6 @@ l_string|&quot;IP2: set line discipline&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 (paren
@@ -10806,7 +10704,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   SetLine Characteristics()                                      */
@@ -13137,6 +13034,16 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|cmd
+OL
+id|IP2_MAX_PORTS
+)paren
+(brace
 id|pCh
 op_assign
 id|DevTable
@@ -13178,14 +13085,15 @@ r_else
 (brace
 id|rc
 op_assign
-id|cmd
-OL
-l_int|64
-ques
-c_cond
 op_minus
 id|ENODEV
-suffix:colon
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -14761,6 +14669,7 @@ multiline_comment|/* Description:                                               
 multiline_comment|/*                                                                            */
 multiline_comment|/*                                                                            */
 multiline_comment|/******************************************************************************/
+macro_line|#ifdef IP2DEBUG_TRACE
 r_void
 DECL|function|ip2trace
 id|ip2trace
@@ -14786,7 +14695,6 @@ dot
 dot
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 r_int
 id|flags
 suffix:semicolon
@@ -14952,8 +14860,8 @@ op_increment
 id|pCode
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren

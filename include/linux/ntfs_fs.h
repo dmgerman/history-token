@@ -13,7 +13,7 @@ r_enum
 DECL|enumerator|ATTR_IS_COMPRESSED
 id|ATTR_IS_COMPRESSED
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 c_func
 (paren
 l_int|0x0001
@@ -22,17 +22,17 @@ comma
 DECL|enumerator|ATTR_COMPRESSION_MASK
 id|ATTR_COMPRESSION_MASK
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 c_func
 (paren
 l_int|0x00ff
 )paren
 comma
-multiline_comment|/* Compression method&n;&t;&t;&t;&t;&t;&t;&t; * mask. Also, first&n;&t;&t;&t;&t;&t;&t;&t; * illegal value. */
+multiline_comment|/* Compression method mask. Also,&n;&t;&t;&t;&t;&t; * first illegal value. */
 DECL|enumerator|ATTR_IS_ENCRYPTED
 id|ATTR_IS_ENCRYPTED
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 c_func
 (paren
 l_int|0x4000
@@ -41,7 +41,7 @@ comma
 DECL|enumerator|ATTR_IS_SPARSE
 id|ATTR_IS_SPARSE
 op_assign
-id|cpu_to_le16
+id|__constant_cpu_to_le16
 c_func
 (paren
 l_int|0x8000

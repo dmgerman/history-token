@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.unistd.h 1.7 05/17/01 18:14:26 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.unistd.h 1.11 10/18/01 17:29:53 trini&n; */
 macro_line|#ifndef _ASM_PPC_UNISTD_H_
 DECL|macro|_ASM_PPC_UNISTD_H_
 mdefine_line|#define _ASM_PPC_UNISTD_H_
@@ -383,6 +383,8 @@ DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork&t;&t;189
 DECL|macro|__NR_ugetrlimit
 mdefine_line|#define __NR_ugetrlimit&t;&t;190&t;/* SuS compliant getrlimit */
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;191
 DECL|macro|__NR_mmap2
 mdefine_line|#define __NR_mmap2&t;&t;192
 DECL|macro|__NR_truncate64
@@ -413,6 +415,8 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise&t;&t;205
 DECL|macro|__NR_mincore
 mdefine_line|#define __NR_mincore&t;&t;206
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;207
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

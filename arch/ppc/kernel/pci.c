@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.28 08/08/01 16:35:43 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.31 11/01/01 12:24:55 trini&n; */
 multiline_comment|/*&n; * Common pmac/prep/chrp pci routines. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -49,6 +49,13 @@ r_int
 id|pci_dram_offset
 op_assign
 l_int|0
+suffix:semicolon
+r_void
+id|pcibios_make_OF_bus_map
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_static
 r_void

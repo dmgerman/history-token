@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.16 08/15/01 22:43:06 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_asm.h 1.18 10/18/01 15:02:09 trini&n; */
 multiline_comment|/*&n; * arch/ppc/kernel/ppc_asm.h&n; *&n; * Definitions used by various bits of low-level assembly code on PowerPC.&n; *&n; * Copyright (C) 1995-1999 Gary Thomas, Paul Mackerras, Cort Dougan.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ppc_asm.tmpl&quot;
@@ -134,27 +134,4 @@ mdefine_line|#define MTMSRD(r)&t;mtmsr&t;r
 DECL|macro|CLR_TOP32
 mdefine_line|#define CLR_TOP32(r)
 macro_line|#endif /* CONFIG_PPC64BRIDGE */
-multiline_comment|/*&n; * Defines for cache-line size etc.&n; */
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_8xx)
-DECL|macro|CACHE_LINE_SIZE
-mdefine_line|#define CACHE_LINE_SIZE&t;&t;16
-DECL|macro|LG_CACHE_LINE_SIZE
-mdefine_line|#define LG_CACHE_LINE_SIZE&t;4
-DECL|macro|MAX_COPY_PREFETCH
-mdefine_line|#define MAX_COPY_PREFETCH&t;1
-macro_line|#elif !defined(CONFIG_PPC64BRIDGE)
-DECL|macro|CACHE_LINE_SIZE
-mdefine_line|#define CACHE_LINE_SIZE&t;&t;32
-DECL|macro|LG_CACHE_LINE_SIZE
-mdefine_line|#define LG_CACHE_LINE_SIZE&t;5
-DECL|macro|MAX_COPY_PREFETCH
-mdefine_line|#define MAX_COPY_PREFETCH&t;4
-macro_line|#else
-DECL|macro|CACHE_LINE_SIZE
-mdefine_line|#define CACHE_LINE_SIZE&t;&t;128
-DECL|macro|LG_CACHE_LINE_SIZE
-mdefine_line|#define LG_CACHE_LINE_SIZE&t;7
-DECL|macro|MAX_COPY_PREFETCH
-mdefine_line|#define MAX_COPY_PREFETCH&t;1
-macro_line|#endif /* CONFIG_4xx || CONFIG_8xx */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.19 08/24/01 20:07:37 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.22 10/11/01 10:33:09 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -425,6 +425,12 @@ r_int
 id|fixup
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALL_PPC */
+r_int
+r_int
+id|msr
+op_assign
+id|regs-&gt;msr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -479,16 +485,28 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ALL_PPC
-multiline_comment|/*&n;&t; * I/O accesses can cause machine checks on powermacs.&n;&t; * Check if the NIP corresponds to the address of a sync&n;&t; * instruction for which there is an entry in the exception&n;&t; * table.&n;&t; */
+multiline_comment|/*&n;&t; * I/O accesses can cause machine checks on powermacs.&n;&t; * Check if the NIP corresponds to the address of a sync&n;&t; * instruction for which there is an entry in the exception&n;&t; * table.&n;&t; * Note that the 601 only takes a machine check on TEA&n;&t; * (transfer error ack) signal assertion, and does not&n;&t; * set of the top 16 bits of SRR1.&n;&t; *  -- paulus.&n;&t; */
 r_if
 c_cond
 (paren
-id|regs-&gt;msr
+(paren
+(paren
+id|msr
+op_amp
+l_int|0xffff0000
+)paren
+op_eq
+l_int|0
+op_logical_or
+(paren
+id|msr
 op_amp
 (paren
 l_int|0x80000
 op_or
 l_int|0x40000
+)paren
+)paren
 )paren
 op_logical_and
 (paren
@@ -504,43 +522,76 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Check that it&squot;s a sync instruction.&n;&t;&t; * As the address is in the exception table&n;&t;&t; * we should be able to read the instr there.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check that it&squot;s a sync instruction, or somewhere&n;&t;&t; * in the twi; isync; nop sequence that inb/inw/inl uses.&n;&t;&t; * As the address is in the exception table&n;&t;&t; * we should be able to read the instr there.&n;&t;&t; * For the debug message, we look at the preceding&n;&t;&t; * load or store.&n;&t;&t; */
+r_int
+r_int
+op_star
+id|nip
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|regs-&gt;nip
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_star
-(paren
-r_int
-r_int
-op_star
+id|nip
+op_eq
+l_int|0x60000000
 )paren
-id|regs-&gt;nip
+multiline_comment|/* nop */
+id|nip
+op_sub_assign
+l_int|2
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|nip
+op_eq
+l_int|0x4c00012c
+)paren
+multiline_comment|/* isync */
+op_decrement
+id|nip
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|nip
 op_eq
 l_int|0x7c0004ac
+op_logical_or
+(paren
+op_star
+id|nip
+op_rshift
+l_int|26
+)paren
+op_eq
+l_int|3
 )paren
 (brace
+multiline_comment|/* sync or twi */
 r_int
 r_int
-id|lsi
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|regs-&gt;nip
-)paren
-(braket
-op_minus
-l_int|1
-)braket
+id|rb
 suffix:semicolon
-r_int
+op_decrement
+id|nip
+suffix:semicolon
 id|rb
 op_assign
 (paren
-id|lsi
+op_star
+id|nip
 op_rshift
 l_int|11
 )paren
@@ -551,10 +602,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s bad port %lx at %lx&bslash;n&quot;
+l_string|&quot;%s bad port %lx at %p&bslash;n&quot;
 comma
 (paren
-id|lsi
+op_star
+id|nip
 op_amp
 l_int|0x100
 )paren
@@ -571,7 +623,7 @@ id|rb
 op_minus
 id|_IO_BASE
 comma
-id|regs-&gt;nip
+id|nip
 )paren
 suffix:semicolon
 id|regs-&gt;nip
@@ -594,13 +646,13 @@ c_func
 (paren
 l_string|&quot;Caused by (from SRR1=%lx): &quot;
 comma
-id|regs-&gt;msr
+id|msr
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|regs-&gt;msr
+id|msr
 op_amp
 l_int|0xF0000
 )paren
@@ -616,6 +668,10 @@ l_string|&quot;Machine check signal&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* for 601 */
 r_case
 l_int|0x40000
 suffix:colon

@@ -28,6 +28,26 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+r_extern
+r_int
+id|get_pteptr
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
+id|pte_t
+op_star
+op_star
+id|ptep
+)paren
+suffix:semicolon
 DECL|function|consistent_alloc
 r_void
 op_star

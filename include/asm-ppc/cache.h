@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.cache.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.cache.h 1.10 10/18/01 15:02:09 trini&n; */
 multiline_comment|/*&n; * include/asm-ppc/cache.h&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ARCH_PPC_CACHE_H
@@ -7,24 +7,36 @@ mdefine_line|#define __ARCH_PPC_CACHE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* bytes per L1 cache line */
-macro_line|#if !defined(CONFIG_8xx) || defined(CONFIG_8260)
-macro_line|#if defined(CONFIG_PPC64BRIDGE)
-DECL|macro|L1_CACHE_BYTES
-mdefine_line|#define L1_CACHE_BYTES&t;128
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_403GCX)
+DECL|macro|L1_CACHE_LINE_SIZE
+mdefine_line|#define&t;L1_CACHE_LINE_SIZE&t;16
+DECL|macro|LG_L1_CACHE_LINE_SIZE
+mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;4
+DECL|macro|MAX_L1_COPY_PREFETCH
+mdefine_line|#define MAX_L1_COPY_PREFETCH&t;1
+macro_line|#elif defined(CONFIG_PPC64BRIDGE)
+DECL|macro|L1_CACHE_LINE_SIZE
+mdefine_line|#define L1_CACHE_LINE_SIZE&t;128
+DECL|macro|LG_L1_CACHE_LINE_SIZE
+mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;7
+DECL|macro|MAX_L1_COPY_PREFETCH
+mdefine_line|#define MAX_L1_COPY_PREFETCH&t;1
 macro_line|#else
+DECL|macro|L1_CACHE_LINE_SIZE
+mdefine_line|#define&t;L1_CACHE_LINE_SIZE  32
+DECL|macro|LG_L1_CACHE_LINE_SIZE
+mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;5
+DECL|macro|MAX_L1_COPY_PREFETCH
+mdefine_line|#define MAX_L1_COPY_PREFETCH&t;4
+macro_line|#endif
 DECL|macro|L1_CACHE_BYTES
-mdefine_line|#define&t;L1_CACHE_BYTES  32
-macro_line|#endif /* PPC64 */
-macro_line|#else
-DECL|macro|L1_CACHE_BYTES
-mdefine_line|#define&t;L1_CACHE_BYTES&t;16
-macro_line|#endif /* !8xx || 8260 */
+mdefine_line|#define&t;L1_CACHE_BYTES L1_CACHE_LINE_SIZE
+DECL|macro|SMP_CACHE_BYTES
+mdefine_line|#define&t;SMP_CACHE_BYTES L1_CACHE_BYTES
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define&t;L1_CACHE_ALIGN(x)       (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))
 DECL|macro|L1_CACHE_PAGES
 mdefine_line|#define&t;L1_CACHE_PAGES&t;&t;8
-DECL|macro|SMP_CACHE_BYTES
-mdefine_line|#define&t;SMP_CACHE_BYTES L1_CACHE_BYTES
 macro_line|#ifdef MODULE
 DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned __attribute__((__aligned__(L1_CACHE_BYTES)))

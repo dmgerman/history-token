@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.55 10/02/01 12:33:42 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.57 10/16/01 15:58:42 trini&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -1704,7 +1704,7 @@ c_func
 id|disarm_decr
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)
+macro_line|#ifdef CONFIG_PPC_STD_MMU
 DECL|variable|flush_hash_page
 id|EXPORT_SYMBOL
 c_func

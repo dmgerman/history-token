@@ -393,6 +393,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * oom_kill - kill the &quot;best&quot; process when we run out of memory&n; *&n; * If we run out of memory, we have the choice between either&n; * killing a random task (bad), letting the system crash (worse)&n; * OR try to be smart about which process to kill. Note that we&n; * don&squot;t have to be perfect here, we just have to be good.&n; */
 DECL|function|oom_kill
+r_static
 r_void
 id|oom_kill
 c_func
@@ -477,9 +478,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * out_of_memory - is the system out of memory?&n; *&n; * Returns 0 if there is still enough memory left,&n; * 1 when we are out of memory (otherwise).&n; */
+multiline_comment|/**&n; * out_of_memory - is the system out of memory?&n; */
 DECL|function|out_of_memory
-r_int
+r_void
 id|out_of_memory
 c_func
 (paren
@@ -498,18 +499,34 @@ suffix:semicolon
 r_int
 r_int
 id|now
+comma
+id|since
+suffix:semicolon
+multiline_comment|/*&n;&t; * Enough swap space left?  Not OOM.&n;&t; */
+r_if
+c_cond
+(paren
+id|nr_swap_pages
+OG
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|now
 op_assign
 id|jiffies
 suffix:semicolon
-r_int
-r_int
 id|since
 op_assign
 id|now
 op_minus
 id|last
 suffix:semicolon
-multiline_comment|/*&n;&t; * If there&squot;s been more than a second since last query,&n;&t; * we&squot;re not oom.&n;&t; */
+id|last
+op_assign
+id|now
+suffix:semicolon
+multiline_comment|/*&n;&t; * If it&squot;s been a long time since last failure,&n;&t; * we&squot;re not oom.&n;&t; */
 id|last
 op_assign
 id|now
@@ -519,32 +536,12 @@ c_cond
 (paren
 id|since
 OG
+l_int|5
+op_star
 id|HZ
 )paren
-(brace
-id|first
-op_assign
-id|now
-suffix:semicolon
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If we have gotten less than 100 failures,&n;&t; * we&squot;re not really oom. &n;&t; */
-r_if
-c_cond
-(paren
-op_increment
-id|count
-OL
-l_int|100
-)paren
-r_return
-l_int|0
+r_goto
+id|reset
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we haven&squot;t tried for at least one second,&n;&t; * we&squot;re not really oom.&n;&t; */
 id|since
@@ -561,20 +558,26 @@ OL
 id|HZ
 )paren
 r_return
-l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enough swap space left?  Not OOM.&n;&t; */
+multiline_comment|/*&n;&t; * If we have gotten only a few failures,&n;&t; * we&squot;re not really oom. &n;&t; */
 r_if
 c_cond
 (paren
-id|nr_swap_pages
-OG
-l_int|0
+op_increment
+id|count
+OL
+l_int|10
 )paren
 r_return
-l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, really out of memory.&n;&t; *&n;&t; * Reset test logic, let the poor sucker&n;&t; * we selected die in peace (this will&n;&t; * delay the next oom kill for at least&n;&t; * another second and another X failures).&n;&t; */
+multiline_comment|/*&n;&t; * Ok, really out of memory. Kill something.&n;&t; */
+id|oom_kill
+c_func
+(paren
+)paren
+suffix:semicolon
+id|reset
+suffix:colon
 id|first
 op_assign
 id|now
@@ -582,9 +585,6 @@ suffix:semicolon
 id|count
 op_assign
 l_int|0
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 eof

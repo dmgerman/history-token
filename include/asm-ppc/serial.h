@@ -1,6 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.serial.h 1.12 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.serial.h 1.15 10/23/01 08:09:35 trini&n; */
 multiline_comment|/*&n; * include/asm-ppc/serial.h&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __ASM_SERIAL_H__
+DECL|macro|__ASM_SERIAL_H__
+mdefine_line|#define __ASM_SERIAL_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_GEMINI
 macro_line|#include &lt;asm/gemini_serial.h&gt;
@@ -64,5 +67,6 @@ mdefine_line|#define MCA_SERIAL_PORT_DFNS
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;MCA_SERIAL_PORT_DFNS
 macro_line|#endif /* !CONFIG_GEMINI and others */
+macro_line|#endif /* __ASM_SERIAL_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

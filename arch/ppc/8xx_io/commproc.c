@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.13 09/14/01 18:01:16 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.15 10/16/01 16:21:52 trini&n; */
 multiline_comment|/*&n; * General Purpose functions for the global management of the&n; * Communication Processor Module.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * In addition to the individual control of the communication&n; * channels, there are a few functions that globally affect the&n; * communication processor.&n; *&n; * Buffer descriptors must be allocated from the dual ported memory&n; * space.  The allocator for that is here.  When the communication&n; * process is reset, we reclaim the memory available.  There is&n; * currently no deallocator for this memory.&n; * The amount of space available is platform dependent.  On the&n; * MBX, the EPPC software loads additional microcode into the&n; * communication processor, and uses some of the DP ram for this&n; * purpose.  Current, the first 512 bytes and the last 256 bytes of&n; * memory are used.  Right now I am conservative and only use the&n; * memory that can never be used for microcode.  If there are&n; * applications that require more DP ram, we can expand the boundaries&n; * but then we have to be careful of any downloaded microcode.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,6 +13,26 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/commproc.h&gt;
+r_extern
+r_int
+id|get_pteptr
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
+id|pte_t
+op_star
+op_star
+id|ptep
+)paren
+suffix:semicolon
 DECL|variable|dp_alloc_base
 r_static
 id|uint
@@ -152,6 +172,32 @@ op_star
 op_amp
 id|imp-&gt;im_cpm
 suffix:semicolon
+macro_line|#ifdef CONFIG_UCODE_PATCH
+multiline_comment|/* Perform a reset.&n;&t;*/
+id|commproc-&gt;cp_cpcr
+op_assign
+(paren
+id|CPM_CR_RST
+op_or
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for it.&n;&t;*/
+r_while
+c_loop
+(paren
+id|commproc-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+id|cpm_load_patch
+c_func
+(paren
+id|imp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set SDMA Bus Request priority 5.&n;&t; * On 860T, this also enables FEC priority 6.  I am not sure&n;&t; * this is what we realy want for some applications, but the&n;&t; * manual recommends it.&n;&t; * Bit 25, FAM can also be set to use FEC aggressive mode (860T).&n;&t;*/
 id|imp-&gt;im_siu_conf.sc_sdcr
 op_assign
@@ -180,14 +226,23 @@ id|host_page_addr
 op_plus
 id|PAGE_SIZE
 suffix:semicolon
-id|pte
-op_assign
-id|va_to_pte
+multiline_comment|/* We need to get this page early, so I have to do it the&n;&t; * hard way.&n;&t; */
+r_if
+c_cond
+(paren
+id|get_pteptr
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|host_page_addr
+comma
+op_amp
+id|pte
 )paren
-suffix:semicolon
+)paren
+(brace
 id|pte_val
 c_func
 (paren
@@ -205,6 +260,16 @@ comma
 id|host_buffer
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;Huh?  No CPM host page?&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Tell everyone where the comm processor resides.&n;&t;*/
 id|cpmp
 op_assign

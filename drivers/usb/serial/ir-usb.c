@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n;&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
+multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n;&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,11 +33,19 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB IR Dongle driver&quot;
+multiline_comment|/* if overridden by the user, then use their value for the size of the read and&n; * write urbs */
+DECL|variable|buffer_size
+r_static
+r_int
+id|buffer_size
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_int
 id|ir_startup
@@ -149,9 +157,43 @@ op_assign
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x050f
+comma
+l_int|0x0180
+)paren
+)brace
+comma
+multiline_comment|/* KC Technology, KC-180 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08e9
+comma
+l_int|0x0100
+)paren
+)brace
+comma
+multiline_comment|/* XTNDAccess */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x09c4
 comma
 l_int|0x0011
+)paren
+)brace
+comma
+multiline_comment|/* ACTiSys ACT-IR2000U */
+(brace
+id|USB_INTERFACE_INFO
+(paren
+id|USB_CLASS_APP_SPEC
+comma
+id|USB_CLASS_IRDA
+comma
+l_int|0
 )paren
 )brace
 comma
@@ -701,6 +743,10 @@ id|serial
 op_assign
 id|port-&gt;serial
 suffix:semicolon
+r_char
+op_star
+id|buffer
+suffix:semicolon
 r_int
 id|result
 op_assign
@@ -751,11 +797,98 @@ id|port-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;&t;   can get lost. */
-id|port-&gt;tty-&gt;low_latency
+r_if
+c_cond
+(paren
+id|buffer_size
+)paren
+(brace
+multiline_comment|/* override the default buffer sizes */
+id|buffer
 op_assign
-l_int|1
+id|kmalloc
+(paren
+id|buffer_size
+comma
+id|GFP_KERNEL
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+(brace
+id|err
+(paren
+id|__FUNCTION__
+l_string|&quot; - out of memory.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|kfree
+(paren
+id|port-&gt;read_urb-&gt;transfer_buffer
+)paren
+suffix:semicolon
+id|port-&gt;read_urb-&gt;transfer_buffer
+op_assign
+id|buffer
+suffix:semicolon
+id|port-&gt;read_urb-&gt;transfer_buffer_length
+op_assign
+id|buffer_size
+suffix:semicolon
+id|buffer
+op_assign
+id|kmalloc
+(paren
+id|buffer_size
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+(brace
+id|err
+(paren
+id|__FUNCTION__
+l_string|&quot; - out of memory.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|kfree
+(paren
+id|port-&gt;write_urb-&gt;transfer_buffer
+)paren
+suffix:semicolon
+id|port-&gt;write_urb-&gt;transfer_buffer
+op_assign
+id|buffer
+suffix:semicolon
+id|port-&gt;write_urb-&gt;transfer_buffer_length
+op_assign
+id|buffer_size
+suffix:semicolon
+id|port-&gt;bulk_out_size
+op_assign
+id|buffer_size
+suffix:semicolon
+)brace
 multiline_comment|/* Start reading from the device */
 id|FILL_BULK_URB
 c_func
@@ -1068,12 +1201,13 @@ id|count
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* use 12 XBOF&squot;s as default */
 id|transfer_buffer
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0x00
+l_int|0x30
 suffix:semicolon
 id|usb_serial_debug_data
 (paren
@@ -1097,6 +1231,10 @@ suffix:semicolon
 id|port-&gt;write_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
+suffix:semicolon
+id|port-&gt;write_urb-&gt;transfer_flags
+op_or_assign
+id|USB_ZERO_PACKET
 suffix:semicolon
 id|result
 op_assign
@@ -1257,9 +1395,6 @@ op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 r_if
@@ -1329,71 +1464,29 @@ comma
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* Bypass flip-buffers, and feed the ldisc directly due to our &n;&t; * potentally large buffer size.  Since we used to set low_latency,&n;&t; * this is exactly what the tty layer did anyway :) */
 id|tty
 op_assign
 id|port-&gt;tty
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|urb-&gt;actual_length
-OG
-l_int|1
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-id|i
-OL
-id|urb-&gt;actual_length
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-multiline_comment|/* if we insert more than TTY_FLIPBUF_SIZE characters, we drop them. */
-r_if
-c_cond
-(paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
-)paren
-(brace
-id|tty_flip_buffer_push
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* this doesn&squot;t actually push the data through unless tty-&gt;low_latency is set */
-id|tty_insert_flip_char
+id|tty-&gt;ldisc
+dot
+id|receive_buf
 c_func
 (paren
 id|tty
 comma
 id|data
-(braket
-id|i
-)braket
+op_plus
+l_int|1
 comma
-l_int|0
+l_int|NULL
+comma
+id|urb-&gt;actual_length
+op_minus
+l_int|1
 )paren
 suffix:semicolon
-)brace
-id|tty_flip_buffer_push
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Continue trying to always read  */
 id|FILL_BULK_URB
 c_func
@@ -1818,6 +1911,22 @@ c_func
 id|debug
 comma
 l_string|&quot;Debug enabled or not&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|buffer_size
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|buffer_size
+comma
+l_string|&quot;Size of the transfer buffers&quot;
 )paren
 suffix:semicolon
 eof

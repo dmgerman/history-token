@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.gemini_setup.c 1.11 08/20/01 14:34:41 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.gemini_setup.c 1.14 10/18/01 11:16:28 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995 Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Synergy Microsystems board support by Dan Cox (dan@synergymicro.com)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -569,6 +569,17 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* We only want to do this on 1 CPU */
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -2107,7 +2118,7 @@ r_int
 id|nr
 )paren
 (brace
-id|openpic_init_processor
+id|openpic_reset_processor_phys
 c_func
 (paren
 l_int|1
@@ -2115,7 +2126,7 @@ op_lshift
 id|nr
 )paren
 suffix:semicolon
-id|openpic_init_processor
+id|openpic_reset_processor_phys
 c_func
 (paren
 l_int|0
@@ -2347,12 +2358,10 @@ id|ppc_md.kbd_init_hw
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|ppc_md.ppc_kbd_sysrq_xlate
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 id|ppc_md.pcibios_fixup_bus
 op_assign
 id|gemini_pcibios_fixup

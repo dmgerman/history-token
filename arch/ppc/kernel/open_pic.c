@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.c 1.28 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.c 1.31 10/11/01 12:09:11 trini&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.c -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1928,13 +1928,13 @@ macro_line|#else
 DECL|macro|physmask
 mdefine_line|#define physmask(cpumask)&t;(cpumask)
 macro_line|#endif
-DECL|function|openpic_init_processor
+DECL|function|openpic_reset_processor_phys
 r_void
-id|openpic_init_processor
+id|openpic_reset_processor_phys
 c_func
 (paren
 id|u_int
-id|cpumask
+id|mask
 )paren
 (brace
 id|openpic_write
@@ -1943,11 +1943,7 @@ c_func
 op_amp
 id|OpenPIC-&gt;Global.Processor_Initialization
 comma
-id|physmask
-c_func
-(paren
-id|cpumask
-)paren
+id|mask
 )paren
 suffix:semicolon
 )brace

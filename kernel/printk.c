@@ -7,9 +7,18 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|macro|LOG_BUF_LEN
+mdefine_line|#define LOG_BUF_LEN&t;(65536)
+macro_line|#elif defined(CONFIG_SMP)
+DECL|macro|LOG_BUF_LEN
+mdefine_line|#define LOG_BUF_LEN&t;(32768)
+macro_line|#else&t;
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(16384)&t;&t;&t;/* This must be a power of two */
+macro_line|#endif
 DECL|macro|LOG_BUF_MASK
 mdefine_line|#define LOG_BUF_MASK&t;(LOG_BUF_LEN-1)
 multiline_comment|/* printk&squot;s without a loglevel use this.. */

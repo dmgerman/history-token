@@ -395,7 +395,7 @@ op_assign
 id|__constant_htonl
 c_func
 (paren
-l_int|0x0FC00000
+l_int|0x0F000000
 )paren
 comma
 DECL|enumerator|TCP_DATA_OFFSET

@@ -24,6 +24,18 @@ DECL|macro|PCA57_CPU
 mdefine_line|#define PCA57_CPU&t;&t;10&t;/* PCA57 (notyet)&t;*/
 DECL|macro|EV67_CPU
 mdefine_line|#define EV67_CPU&t;&t;11&t;/* EV67 (21264A)&t;*/
+DECL|macro|EV68CB_CPU
+mdefine_line|#define EV68CB_CPU&t;&t;12&t;/* EV68CB (21264C)&t;*/
+DECL|macro|EV68AL_CPU
+mdefine_line|#define EV68AL_CPU&t;&t;13&t;/* EV68AL (21264B)&t;*/
+DECL|macro|EV68CX_CPU
+mdefine_line|#define EV68CX_CPU&t;&t;14&t;/* EV68CX (21264D)&t;*/
+DECL|macro|EV7_CPU
+mdefine_line|#define EV7_CPU&t;&t;&t;15&t;/* EV7 (21364)&t;&t;*/
+DECL|macro|EV79_CPU
+mdefine_line|#define EV79_CPU&t;&t;16&t;/* EV79 (21364??)&t;*/
+DECL|macro|EV69_CPU
+mdefine_line|#define EV69_CPU&t;&t;17&t;/* EV69 (21264/EV69A)&t;*/
 multiline_comment|/*&n; * DEC system types for Alpha systems.  Found in HWRPB.&n; * These values are architected.&n; */
 DECL|macro|ST_ADU
 mdefine_line|#define ST_ADU&t;&t;&t;  1&t;/* Alpha ADU systype&t;*/

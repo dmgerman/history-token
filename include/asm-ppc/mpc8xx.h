@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mpc8xx.h 1.10 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.mpc8xx.h 1.15 11/01/01 12:48:53 trini&n; */
 multiline_comment|/* This is the single file included by all MPC8xx build options.&n; * Since there are many different boards and no standard configuration,&n; * we have a unique include file for each.  Rather than change every&n; * file that has to include MPC8xx configuration, they all include&n; * this one and the configuration switching is done here.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __CONFIG_8xx_DEFS
@@ -21,13 +21,13 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_RPXCLASSIC
 macro_line|#include &lt;asm/rpxclassic.h&gt;
 macro_line|#endif
-macro_line|#if (defined(CONFIG_TQM860) || defined(CONFIG_TQM8xxL))
+macro_line|#if defined(CONFIG_TQM8xxL)
 macro_line|#include &lt;asm/tqm8xx.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_SPD823TS)
 macro_line|#include &lt;asm/spd8xx.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_IVMS8)
+macro_line|#if defined(CONFIG_IVMS8) || defined(CONFIG_IVML24)
 macro_line|#include &lt;asm/ivms8.h&gt;
 macro_line|#endif
 multiline_comment|/* I need this to get pt_regs.......&n;*/

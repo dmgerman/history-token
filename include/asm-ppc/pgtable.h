@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pgtable.h 1.12 06/28/01 15:50:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pgtable.h 1.15 09/22/01 11:26:52 trini&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PGTABLE_H
 DECL|macro|_PPC_PGTABLE_H
@@ -429,8 +429,10 @@ DECL|macro|_PAGE_RW
 mdefine_line|#define _PAGE_RW&t;0x0040&t;/* software: user write access allowed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x0080&t;/* software: page referenced */
+DECL|macro|_PAGE_HWWRITE
+mdefine_line|#define _PAGE_HWWRITE&t;0x0100&t;/* h/w write enable: never set in Linux PTE */
 DECL|macro|_PAGE_DIRTY
-mdefine_line|#define _PAGE_DIRTY&t;0x0100&t;/* C: page changed (write protect) */
+mdefine_line|#define _PAGE_DIRTY&t;0x0200&t;/* software: page changed */
 DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;0x0800&t;/* One of the PP bits, the other is USER&amp;~RW */
 macro_line|#else /* CONFIG_6xx */
@@ -458,13 +460,27 @@ mdefine_line|#define _PAGE_EXEC&t;0x200&t;/* software: i-cache coherency require
 DECL|macro|_PAGE_RW
 mdefine_line|#define _PAGE_RW&t;0x400&t;/* software: user write access allowed */
 macro_line|#endif
+multiline_comment|/* The non-standard PowerPC MMUs, which includes the 4xx and 8xx (and&n; * mabe 603e) have TLB miss handlers that unconditionally set the&n; * _PAGE_ACCESSED flag as a performance optimization.  This causes&n; * problems for the page_none() macro, just like the HASHPTE flag does&n; * for the standard PowerPC MMUs.  Depending upon the MMU configuration,&n; * either HASHPTE or ACCESSED will have to be masked to give us a&n; * proper pte_none() condition.&n; */
 macro_line|#ifndef _PAGE_HASHPTE
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0
+DECL|macro|_PTE_NONE_MASK
+mdefine_line|#define _PTE_NONE_MASK _PAGE_ACCESSED
+macro_line|#else
+DECL|macro|_PTE_NONE_MASK
+mdefine_line|#define _PTE_NONE_MASK _PAGE_HASHPTE
 macro_line|#endif
 macro_line|#ifndef _PAGE_SHARED
 DECL|macro|_PAGE_SHARED
 mdefine_line|#define _PAGE_SHARED&t;0
+macro_line|#endif
+macro_line|#ifndef _PAGE_HWWRITE
+DECL|macro|_PAGE_HWWRITE
+mdefine_line|#define _PAGE_HWWRITE&t;0
+macro_line|#endif
+multiline_comment|/* We can&squot;t use _PAGE_HWWRITE on any SMP due to the lack of ability&n; * to atomically manage _PAGE_HWWRITE and it&squot;s coordination flags,&n; * _PAGE_DIRTY or _PAGE_RW.  The SMP systems must manage HWWRITE&n; * or its logical equivalent in the MMU management software.&n; */
+macro_line|#if CONFIG_SMP &amp;&amp; _PAGE_HWWRITE
+macro_line|#error &quot;You can&squot;t configure SMP and HWWRITE&quot;
 macro_line|#endif
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
@@ -544,7 +560,7 @@ DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|pte_none
-mdefine_line|#define pte_none(pte)&t;&t;((pte_val(pte) &amp; ~_PAGE_HASHPTE) == 0)
+mdefine_line|#define pte_none(pte)&t;&t;((pte_val(pte) &amp; ~_PTE_NONE_MASK) == 0)
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
@@ -802,7 +818,11 @@ id|pte
 )paren
 op_and_assign
 op_complement
+(paren
 id|_PAGE_RW
+op_or
+id|_PAGE_HWWRITE
+)paren
 suffix:semicolon
 r_return
 id|pte
@@ -850,7 +870,11 @@ id|pte
 )paren
 op_and_assign
 op_complement
+(paren
 id|_PAGE_DIRTY
+op_or
+id|_PAGE_HWWRITE
+)paren
 suffix:semicolon
 r_return
 id|pte
@@ -1217,7 +1241,11 @@ c_func
 (paren
 id|ptep
 comma
+(paren
 id|_PAGE_DIRTY
+op_or
+id|_PAGE_HWWRITE
+)paren
 comma
 l_int|0
 )paren
@@ -1274,7 +1302,11 @@ c_func
 (paren
 id|ptep
 comma
+(paren
 id|_PAGE_RW
+op_or
+id|_PAGE_HWWRITE
+)paren
 comma
 l_int|0
 )paren

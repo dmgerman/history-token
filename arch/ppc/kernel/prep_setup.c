@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.38 09/15/01 09:13:52 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.41 10/18/01 11:16:28 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * Support for PReP (Motorola MTX/MVME)&n; * by Troy Benjegerdes (hozer@drgw.net)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -232,7 +232,6 @@ r_int
 r_char
 id|pckbd_sysrq_xlate
 (braket
-l_int|128
 )braket
 suffix:semicolon
 r_extern
@@ -247,7 +246,6 @@ r_extern
 r_char
 id|saved_command_line
 (braket
-l_int|256
 )braket
 suffix:semicolon
 DECL|variable|_prep_type
@@ -328,6 +326,7 @@ id|ppc_cs4232_dma2
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
 r_int
 id|__prep
 DECL|function|prep_get_cpuinfo
@@ -354,7 +353,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|CD
-mdefine_line|#define CD(X)&t;&t;(cpu_data[n].X)  
+mdefine_line|#define CD(X)&t;&t;(cpu_data[n].X)
 macro_line|#else
 mdefine_line|#define CD(X) (X)
 macro_line|#endif
@@ -921,6 +920,7 @@ id|len
 suffix:semicolon
 macro_line|#endif
 )brace
+r_static
 r_void
 id|__init
 DECL|function|prep_setup_arch
@@ -1319,16 +1319,17 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Determine the decrementer frequency from the residual data&n; * This allows for a faster boot as we do not need to calibrate the&n; * decrementer against another clock. This is important for embedded systems.&n; */
-DECL|function|prep_res_calibrate_decr
-r_void
+r_static
+r_int
 id|__init
+DECL|function|prep_res_calibrate_decr
 id|prep_res_calibrate_decr
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 r_int
 r_int
 id|freq
@@ -1337,6 +1338,12 @@ id|divisor
 op_assign
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res-&gt;VitalProductData.ProcessorBusHz
+)paren
+(brace
 id|freq
 op_assign
 id|res-&gt;VitalProductData.ProcessorBusHz
@@ -1363,14 +1370,6 @@ op_mod
 l_int|1000000
 )paren
 suffix:semicolon
-id|tb_ticks_per_jiffy
-op_assign
-id|freq
-op_div
-id|HZ
-op_div
-id|divisor
-suffix:semicolon
 id|tb_to_us
 op_assign
 id|mulhwu_scale_factor
@@ -1383,7 +1382,23 @@ comma
 l_int|1000000
 )paren
 suffix:semicolon
+id|tb_ticks_per_jiffy
+op_assign
+id|freq
+op_div
+id|HZ
+op_div
+id|divisor
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
 macro_line|#endif&t;
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Uses the on-board timer to calibrate the on-chip decrementer register&n; * for prep systems.  On the pmac the OF tells us what the frequency is&n; * but on prep we have to figure it out.&n; * -- Cort&n; */
 multiline_comment|/* Done with 3 interrupts: the first one primes the cache and the&n; * 2 following ones measure the interval. The precision of the method&n; * is still doubtful due to the short interval sampled.&n; */
@@ -1404,6 +1419,7 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+r_static
 r_void
 id|__init
 DECL|function|prep_calibrate_decr_handler
@@ -1499,13 +1515,32 @@ l_int|1000000
 suffix:semicolon
 )brace
 )brace
-DECL|function|prep_calibrate_decr
+r_static
 r_void
 id|__init
+DECL|function|prep_calibrate_decr
 id|prep_calibrate_decr
 c_func
 (paren
 r_void
+)paren
+(brace
+r_int
+id|res
+suffix:semicolon
+multiline_comment|/* Try and get this from the residual data. */
+id|res
+op_assign
+id|prep_res_calibrate_decr
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* If we didn&squot;t get it from the residual data, try this. */
+r_if
+c_cond
+(paren
+id|res
 )paren
 (brace
 r_int
@@ -1585,14 +1620,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* wait for calibrate */
 r_while
 c_loop
 (paren
 id|calibrate_steps
 )paren
-multiline_comment|/* nothing */
 suffix:semicolon
-multiline_comment|/* wait for calibrate */
 id|restore_flags
 c_func
 (paren
@@ -1608,10 +1642,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|mk48t59_init
+)brace
 r_static
 r_int
 id|__init
+DECL|function|mk48t59_init
 id|mk48t59_init
 c_func
 (paren
@@ -1696,9 +1731,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* We use the NVRAM RTC to time a second to calibrate the decrementer,&n; * the RTC registers have just been set up in the right state by the&n; * preceding routine.&n; */
-DECL|function|mk48t59_calibrate_decr
+r_static
 r_void
 id|__init
+DECL|function|mk48t59_calibrate_decr
 id|mk48t59_calibrate_decr
 c_func
 (paren
@@ -1879,10 +1915,8 @@ id|MK48T59_RTC_SECONDS
 op_ne
 id|sec
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|printk
 c_func
@@ -1915,6 +1949,7 @@ l_int|1000000
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__prep
 DECL|function|prep_restart
@@ -1994,54 +2029,7 @@ l_string|&quot;restart failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function will restart a board regardless of port 92 functionality&n; */
-r_void
-id|__prep
-DECL|function|prep_direct_restart
-id|prep_direct_restart
-c_func
-(paren
-r_char
-op_star
-id|cmd
-)paren
-(brace
-id|u32
-id|jumpaddr
-op_assign
-l_int|0xfff00100
-suffix:semicolon
-id|u32
-id|defaultmsr
-op_assign
-id|MSR_IP
-suffix:semicolon
-multiline_comment|/*&n;&t; * This will ALWAYS work regardless of port 92&n;&t; * functionality&n;&t; */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;&n;&t;mtspr   26, %1  /* SRR0 */&t;&bslash;n&bslash;&n;&t;mtspr   27, %0  /* SRR1 */&t;&bslash;n&bslash;&n;&t;rfi&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|defaultmsr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|jumpaddr
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Not reached&n;&t; */
-)brace
+r_static
 r_void
 id|__prep
 DECL|function|prep_halt
@@ -2241,6 +2229,7 @@ l_int|100
 suffix:semicolon
 multiline_comment|/* important: let controller recover */
 )brace
+r_static
 r_void
 id|__prep
 DECL|function|prep_power_off
@@ -2311,6 +2300,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 id|__prep
 DECL|function|prep_setup_residual
@@ -2389,7 +2379,9 @@ r_return
 id|len
 suffix:semicolon
 )brace
-id|u_int
+r_static
+r_int
+r_int
 id|__prep
 DECL|function|prep_irq_cannonicalize
 id|prep_irq_cannonicalize
@@ -2418,6 +2410,7 @@ id|irq
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 id|__prep
 DECL|function|prep_get_irq
@@ -2441,6 +2434,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__init
 DECL|function|prep_init_IRQ
@@ -2505,6 +2499,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
+r_static
 r_int
 id|__prep
 DECL|function|prep_ide_default_irq
@@ -2566,6 +2561,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+r_static
 id|ide_ioreg_t
 id|__prep
 DECL|function|prep_ide_default_io_base
@@ -2613,6 +2609,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 id|__prep
 DECL|function|prep_ide_check_region
@@ -2637,6 +2634,7 @@ id|extent
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__prep
 DECL|function|prep_ide_request_region
@@ -2667,6 +2665,7 @@ id|name
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__prep
 DECL|function|prep_ide_release_region
@@ -2690,6 +2689,7 @@ id|extent
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__init
 DECL|function|prep_ide_init_hwif_ports
@@ -2792,6 +2792,7 @@ macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* PReP (MTX) support */
 r_static
 r_int
+id|__init
 DECL|function|smp_prep_probe
 id|smp_prep_probe
 c_func
@@ -2831,6 +2832,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|smp_prep_kick_cpu
 id|smp_prep_kick_cpu
 c_func
@@ -2871,6 +2873,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|smp_prep_setup_cpu
 id|smp_prep_setup_cpu
 c_func
@@ -2890,11 +2893,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|prep_smp_ops
+DECL|variable|__prepdata
 r_static
 r_struct
 id|smp_ops_t
 id|prep_smp_ops
+id|__prepdata
 op_assign
 (brace
 id|smp_openpic_message_pass
@@ -2909,10 +2913,11 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/*&n; * This finds the amount of physical ram and does necessary&n; * setup for prep.  This is pretty architecture specific so&n; * this will likely stay separate from the pmac.&n; * -- Cort&n; */
-DECL|function|prep_find_end_of_memory
+r_static
 r_int
 r_int
 id|__init
+DECL|function|prep_find_end_of_memory
 id|prep_find_end_of_memory
 c_func
 (paren
@@ -2951,6 +2956,7 @@ id|total
 op_assign
 id|boot_mem_size
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -2984,9 +2990,10 @@ id|total
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setup the bat mappings we&squot;re going to load that cover&n; * the io areas.  RAM was mapped by mapin_ram().&n; * -- Cort&n; */
-DECL|function|prep_map_io
+r_static
 r_void
 id|__init
+DECL|function|prep_map_io
 id|prep_map_io
 c_func
 (paren
@@ -3018,6 +3025,7 @@ id|_PAGE_IO
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__init
 DECL|function|prep_init2
@@ -3027,7 +3035,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_NVRAM  
+macro_line|#ifdef CONFIG_NVRAM
 id|request_region
 c_func
 (paren
@@ -3294,7 +3302,7 @@ suffix:semicolon
 )brace
 r_else
 multiline_comment|/* assume motorola if no residual (netboot?) */
-macro_line|#endif&t;  
+macro_line|#endif
 (brace
 id|_prep_type
 op_assign

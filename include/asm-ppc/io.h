@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.io.h 1.11 08/28/01 15:48:26 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.io.h 1.14 10/16/01 15:58:42 trini&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_IO_H
 DECL|macro|_PPC_IO_H
 mdefine_line|#define _PPC_IO_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|SIO_CONFIG_RA
@@ -34,15 +35,14 @@ macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#elif defined(CONFIG_8260)
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#else /* 4xx/8xx/8260 */
-macro_line|#ifdef CONFIG_APUS
+macro_line|#elif defined(CONFIG_APUS)
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE 0
 DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE 0
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET 0
-macro_line|#else /* CONFIG_APUS */
+macro_line|#else /* Everyone else */
 r_extern
 r_int
 r_int
@@ -64,8 +64,7 @@ DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE&t;isa_mem_base
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET&t;pci_dram_offset
-macro_line|#endif /* CONFIG_APUS */
-macro_line|#endif
+macro_line|#endif /* Platform-dependant I/O */
 DECL|macro|readb
 mdefine_line|#define readb(addr) in_8((volatile u8 *)(addr))
 DECL|macro|writeb
@@ -117,7 +116,7 @@ mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+_IO_BASE), 
 macro_line|#ifdef CONFIG_ALL_PPC
 multiline_comment|/*&n; * We have to handle possible machine checks here on powermacs&n; * and potentially some CHRPs -- paulus.&n; */
 DECL|macro|__do_in_asm
-mdefine_line|#define __do_in_asm(name, op)&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned int name(unsigned int port)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int x;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;op &quot; %0,0,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;sync&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;li&t;%0,-1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;2b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b,3b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (port + _IO_BASE));&t;&t;&bslash;&n;&t;return x;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define __do_in_asm(name, op)&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned int name(unsigned int port)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int x;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&t;op &quot;&t;%0,0,%1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;twi&t;0,%0,0&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;isync&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;nop&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;5:&t;li&t;%0,-1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;2b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;3b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (port + _IO_BASE));&t;&t;&bslash;&n;&t;return x;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|__do_out_asm
 mdefine_line|#define __do_out_asm(name, op)&t;&t;&t;&t;&bslash;&n;extern __inline__ void name(unsigned int val, unsigned int port) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;op &quot; %0,0,%1&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;sync&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b,2b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: : &quot;r&quot; (val), &quot;r&quot; (port + _IO_BASE));&t;&bslash;&n;}
 id|__do_in_asm

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.21 08/29/01 10:07:29 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.23 10/18/01 11:16:28 trini&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -344,14 +344,12 @@ id|kbd_init_hw
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|member|ppc_kbd_sysrq_xlate
 r_int
 r_char
 op_star
 id|ppc_kbd_sysrq_xlate
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * optional PCI &quot;hooks&quot;&n;&t; */
 multiline_comment|/* Called after scanning the bus, before allocating resources */
 DECL|member|pcibios_fixup

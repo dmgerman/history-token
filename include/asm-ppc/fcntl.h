@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fcntl.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.fcntl.h 1.8 09/19/01 23:06:01 paulus&n; */
 macro_line|#ifndef _PPC_FCNTL_H
 DECL|macro|_PPC_FCNTL_H
 mdefine_line|#define _PPC_FCNTL_H
@@ -36,7 +36,7 @@ mdefine_line|#define O_NOFOLLOW      0100000&t;/* don&squot;t follow links */
 DECL|macro|O_LARGEFILE
 mdefine_line|#define O_LARGEFILE     0200000
 DECL|macro|O_DIRECT
-mdefine_line|#define O_DIRECT&t;0400000&t;/* direct disk access hint - currently ignored */
+mdefine_line|#define O_DIRECT&t;0400000&t;/* direct disk access hint */
 DECL|macro|F_DUPFD
 mdefine_line|#define F_DUPFD&t;&t;0&t;/* dup */
 DECL|macro|F_GETFD

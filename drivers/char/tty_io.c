@@ -9649,13 +9649,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_COMPUTONE
-id|ip2_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ROCKETPORT
 id|rp_init
 c_func

@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.atomic.h 1.13 08/21/01 16:07:48 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.atomic.h 1.15 10/28/01 10:37:22 trini&n; */
 multiline_comment|/*&n; * PowerPC atomic operations&n; */
 macro_line|#ifndef _ASM_PPC_ATOMIC_H_ 
 DECL|macro|_ASM_PPC_ATOMIC_H_
 mdefine_line|#define _ASM_PPC_ATOMIC_H_
-macro_line|#ifdef __KERNEL__
 DECL|member|counter
 DECL|typedef|atomic_t
 r_typedef
@@ -16,6 +15,7 @@ suffix:semicolon
 )brace
 id|atomic_t
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)&t;{ (i) }
 DECL|macro|atomic_read

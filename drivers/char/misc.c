@@ -123,6 +123,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|i8k_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|misc_read_proc
 r_static
 r_int
@@ -977,6 +985,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_TOSHIBA
 id|tosh_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I8K
+id|i8k_init
 c_func
 (paren
 )paren

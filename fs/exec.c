@@ -3066,16 +3066,6 @@ op_eq
 l_int|0x3000
 )paren
 (brace
-r_char
-op_star
-id|dynloader
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;/sbin/loader&quot;
-)brace
-suffix:semicolon
 r_struct
 id|file
 op_star
@@ -3118,10 +3108,7 @@ op_assign
 id|open_exec
 c_func
 (paren
-id|dynloader
-(braket
-l_int|0
-)braket
+l_string|&quot;/sbin/loader&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -3143,6 +3130,13 @@ id|file
 )paren
 r_return
 id|retval
+suffix:semicolon
+multiline_comment|/* Remember if the application is TASO.  */
+id|bprm-&gt;sh_bang
+op_assign
+id|eh-&gt;ah.entry
+OL
+l_int|0x100000000
 suffix:semicolon
 id|bprm-&gt;file
 op_assign

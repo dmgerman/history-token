@@ -4419,6 +4419,14 @@ comma
 l_string|&quot;EV68CB&quot;
 comma
 l_string|&quot;EV68AL&quot;
+comma
+l_string|&quot;EV68CX&quot;
+comma
+l_string|&quot;EV7&quot;
+comma
+l_string|&quot;EV79&quot;
+comma
+l_string|&quot;EV69&quot;
 )brace
 suffix:semicolon
 r_struct

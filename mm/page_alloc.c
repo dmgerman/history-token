@@ -2335,26 +2335,22 @@ c_func
 (paren
 l_string|&quot;Free pages:      %6dkB (%6dkB HighMem)&bslash;n&quot;
 comma
+id|K
+c_func
+(paren
 id|nr_free_pages
 c_func
 (paren
 )paren
-op_lshift
-(paren
-id|PAGE_SHIFT
-op_minus
-l_int|10
 )paren
 comma
+id|K
+c_func
+(paren
 id|nr_free_highpages
 c_func
 (paren
 )paren
-op_lshift
-(paren
-id|PAGE_SHIFT
-op_minus
-l_int|10
 )paren
 )paren
 suffix:semicolon
@@ -2387,7 +2383,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;Zone:%s freepages:%6lukB min:%6luKB low:%6lukB &quot;
+l_string|&quot;Zone:%s freepages:%6lukB min:%6lukB low:%6lukB &quot;
 l_string|&quot;high:%6lukB&bslash;n&quot;
 comma
 id|zone-&gt;name
@@ -2422,30 +2418,6 @@ op_assign
 id|tmpdat-&gt;node_next
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;Free pages:      %6dkB (%6dkB HighMem)&bslash;n&quot;
-comma
-id|K
-c_func
-(paren
-id|nr_free_pages
-c_func
-(paren
-)paren
-)paren
-comma
-id|K
-c_func
-(paren
-id|nr_free_highpages
-c_func
-(paren
-)paren
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2598,10 +2570,10 @@ l_string|&quot;%lu*%lukB &quot;
 comma
 id|nr
 comma
+id|K
+c_func
 (paren
-id|PAGE_SIZE
-op_rshift
-l_int|10
+l_int|1UL
 )paren
 op_lshift
 id|order

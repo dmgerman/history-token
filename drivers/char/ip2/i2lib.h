@@ -698,6 +698,32 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef IP2DEBUG_TRACE
+r_void
+id|ip2trace
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_char
+comma
+r_int
+r_char
+comma
+r_int
+r_int
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|ip2trace
+mdefine_line|#define ip2trace(a,b,c,d...) do {} while (0)
+macro_line|#endif
 singleline_comment|// Argument to i2QueueCommands
 singleline_comment|//
 DECL|macro|C_IN_LINE

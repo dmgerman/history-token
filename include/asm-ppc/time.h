@@ -1,6 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.15 08/16/01 07:49:31 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.time.h 1.17 10/23/01 08:09:35 trini&n; */
 multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@fsmlabs.com) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __ASM_TIME_H__
+DECL|macro|__ASM_TIME_H__
+mdefine_line|#define __ASM_TIME_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -475,5 +478,6 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif /* __ASM_TIME_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

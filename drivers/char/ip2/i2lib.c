@@ -1103,10 +1103,12 @@ id|pCh-&gt;tqueue_status.data
 op_assign
 id|pCh
 suffix:semicolon
+macro_line|#ifdef IP2DEBUG_TRACE
 id|pCh-&gt;trace
 op_assign
 id|ip2trace
 suffix:semicolon
+macro_line|#endif
 op_increment
 id|pCh
 suffix:semicolon
@@ -1814,7 +1816,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -1826,7 +1827,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pB
 op_assign
 id|pCh-&gt;pMyBord
@@ -2137,7 +2137,6 @@ op_add_assign
 id|maxBuff
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2151,7 +2150,6 @@ comma
 id|bufroom
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Check for overflow
 r_if
 c_cond
@@ -2167,7 +2165,6 @@ suffix:semicolon
 multiline_comment|/* from for()- Enough room: goto proceed */
 )brace
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2181,7 +2178,6 @@ comma
 id|totalsize
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Prepare to wait for buffers to empty
 id|WRITE_UNLOCK_IRQRESTORE
 c_func
@@ -2266,7 +2262,6 @@ l_int|0
 suffix:semicolon
 singleline_comment|// Wake up! Time to die!!!
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2278,7 +2273,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 singleline_comment|// end of for(;;)
 singleline_comment|// At this point we have room and the lock - stick them in.
@@ -2358,7 +2352,6 @@ id|CMD_BMARK_REQ
 id|pCh-&gt;bookMarks
 op_increment
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2372,7 +2365,6 @@ comma
 id|pCh-&gt;bookMarks
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|cnt
 op_assign
@@ -2395,7 +2387,6 @@ op_logical_or
 id|lastended
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2407,7 +2398,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|PTYPE_OF
 c_func
 (paren
@@ -2652,7 +2642,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2666,7 +2655,6 @@ comma
 id|nCommands
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|nCommands
 suffix:semicolon
@@ -2705,7 +2693,6 @@ suffix:semicolon
 id|i2eBordStrPtr
 id|pB
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2721,7 +2708,6 @@ comma
 id|resetBits
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Make sure the channel exists, otherwise do nothing */
 r_if
 c_cond
@@ -2783,7 +2769,6 @@ id|I2_DRI
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2797,7 +2782,6 @@ comma
 id|pCh-&gt;dataSetIn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
@@ -2840,7 +2824,6 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -2852,7 +2835,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Ensure channel structure seems real
 r_if
 c_cond
@@ -3102,7 +3084,6 @@ suffix:semicolon
 )brace
 id|i2Input_exit
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3116,7 +3097,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|count
 suffix:semicolon
@@ -3162,7 +3142,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3174,7 +3153,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|WRITE_LOCK_IRQSAVE
 c_func
 (paren
@@ -3264,7 +3242,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3278,7 +3255,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|count
 suffix:semicolon
@@ -3440,7 +3416,6 @@ id|bailout
 op_assign
 l_int|10
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3456,7 +3431,6 @@ comma
 id|user
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Ensure channel structure seems real
 r_if
 c_cond
@@ -3618,7 +3592,6 @@ singleline_comment|// an overflow area at the end, we needn&squot;t worry about 
 singleline_comment|// middle of a packet.
 singleline_comment|// Small WINDOW here with no LOCK but I can&squot;t call Flush with LOCK
 singleline_comment|// We would be flushing (or ending flush) anyway
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3632,7 +3605,6 @@ comma
 id|amountToMove
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3819,7 +3791,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3833,14 +3804,12 @@ comma
 id|stuffIndex
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
 singleline_comment|// Cannot move data
 singleline_comment|// becuz we need to stuff a flush 
 singleline_comment|// or amount to move is &lt;= 0
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 c_func
 (paren
@@ -3859,7 +3828,6 @@ comma
 id|pB-&gt;i2eWaitingForEmptyFifo
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Put this channel back on queue
 singleline_comment|// this ultimatly gets more data or wakes write output
 id|i2QueueNeeds
@@ -3878,7 +3846,6 @@ c_cond
 id|pB-&gt;i2eWaitingForEmptyFifo
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3890,7 +3857,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// or schedule
 r_if
 c_cond
@@ -3902,7 +3868,6 @@ c_func
 )paren
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3914,7 +3879,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -3943,7 +3907,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3955,7 +3918,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// let interrupt in = WAS restore_flags()
 singleline_comment|// We hold no lock nor is irq off anymore???
 r_break
@@ -3980,7 +3942,6 @@ id|pB
 )paren
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -3996,7 +3957,6 @@ comma
 id|pB-&gt;i2eTxMailEmpty
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 singleline_comment|// from while(count)
@@ -4010,7 +3970,6 @@ op_amp
 id|NEED_CREDIT
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4022,7 +3981,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 singleline_comment|// from while(count)
@@ -4037,7 +3995,6 @@ id|bailout
 (brace
 singleline_comment|// Try to throw more things (maybe not us) in the fifo if we&squot;re
 singleline_comment|// not already waiting for it.
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4049,7 +4006,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|serviceOutgoingFifo
 c_func
 (paren
@@ -4060,7 +4016,6 @@ singleline_comment|//break;  CONTINUE;
 )brace
 r_else
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4078,7 +4033,6 @@ comma
 id|pB-&gt;i2eWaitingForEmptyFifo
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 singleline_comment|// from while(count)
@@ -4106,7 +4060,6 @@ OG
 id|count
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4122,7 +4075,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 id|serviceOutgoingFifo
 c_func
 (paren
@@ -4130,7 +4082,6 @@ id|pB
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4146,7 +4097,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|countOriginal
 op_minus
@@ -4174,7 +4124,6 @@ id|i2ChanStrPtr
 id|pCh
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4188,7 +4137,6 @@ comma
 id|pCh-&gt;flush_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4221,7 +4169,6 @@ op_assign
 id|STARTFL_FLAG
 suffix:semicolon
 singleline_comment|// Failed - flag for later
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4233,7 +4180,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -4261,7 +4207,6 @@ op_assign
 id|STOPFL_FLAG
 suffix:semicolon
 singleline_comment|// Failed - flag for later
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4273,7 +4218,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_static
@@ -4291,7 +4235,6 @@ id|old_flags
 op_assign
 id|pCh-&gt;flush_flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4305,7 +4248,6 @@ comma
 id|old_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCh-&gt;flush_flags
 op_assign
 l_int|0
@@ -4354,7 +4296,6 @@ id|STARTFL_FLAG
 suffix:semicolon
 singleline_comment|//Failure - Flag for retry later
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4368,7 +4309,6 @@ comma
 id|old_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -4406,7 +4346,6 @@ l_int|0
 suffix:semicolon
 singleline_comment|// Success - clear flags
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4420,13 +4359,11 @@ comma
 id|old_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|pCh-&gt;flush_flags
 op_assign
 id|old_flags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4440,7 +4377,6 @@ comma
 id|old_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|old_flags
 suffix:semicolon
@@ -4465,7 +4401,6 @@ id|i2ChanStrPtr
 id|pCh
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4479,7 +4414,6 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCh-&gt;BookmarkTimer.expires
 op_assign
 l_int|0
@@ -4511,7 +4445,6 @@ suffix:semicolon
 id|i2eBordStrPtr
 id|pB
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4525,7 +4458,6 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pB
 op_assign
 id|pCh-&gt;pMyBord
@@ -4612,7 +4544,6 @@ r_int
 )paren
 id|pCh
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4626,7 +4557,6 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 id|add_timer
 c_func
 (paren
@@ -4742,7 +4672,6 @@ id|pCh-&gt;BookmarkTimer.expires
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4756,9 +4685,7 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4772,7 +4699,6 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -4904,7 +4830,6 @@ id|pCh
 op_assign
 id|tp-&gt;driver_data
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4924,7 +4849,6 @@ id|TTY_DO_WRITE_WAKEUP
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|wake_up_interruptible
 (paren
 op_amp
@@ -4954,7 +4878,6 @@ id|tp-&gt;ldisc.write_wakeup
 id|tp
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -4966,7 +4889,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_static
@@ -5392,9 +5314,7 @@ id|bflags
 comma
 id|cflags
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
-singleline_comment|//ip2trace (ITRC_NO_PORT, ITRC_SFIFO, ITRC_ENTER, 0 );
-macro_line|#endif
+singleline_comment|//&t;ip2trace (ITRC_NO_PORT, ITRC_SFIFO, ITRC_ENTER, 0 );
 r_while
 c_loop
 (paren
@@ -5405,9 +5325,7 @@ id|pB
 )paren
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
-singleline_comment|//ip2trace (ITRC_NO_PORT, ITRC_SFIFO, 2, 0 );
-macro_line|#endif
+singleline_comment|//&t;&t;ip2trace (ITRC_NO_PORT, ITRC_SFIFO, 2, 0 );
 singleline_comment|// Process packet from fifo a one atomic unit
 id|WRITE_LOCK_IRQSAVE
 c_func
@@ -5448,9 +5366,7 @@ id|pB-&gt;got_input
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
-singleline_comment|//ip2trace (ITRC_NO_PORT, ITRC_SFIFO, 3, 0 );
-macro_line|#endif
+singleline_comment|//&t;&t;&t;ip2trace (ITRC_NO_PORT, ITRC_SFIFO, 3, 0 );
 id|channel
 op_assign
 id|CHANNEL_OF
@@ -5826,7 +5742,6 @@ singleline_comment|// From switch: ready for next packet
 r_case
 id|PTYPE_STATUS
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -5838,7 +5753,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|count
 op_assign
 id|CMD_COUNT_OF
@@ -5895,7 +5809,6 @@ op_star
 id|pc
 op_increment
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -5912,7 +5825,6 @@ op_star
 id|pc
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* check for valid channel */
 r_if
 c_cond
@@ -6021,7 +5933,6 @@ suffix:semicolon
 r_case
 id|STAT_DCD_UP
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6035,7 +5946,6 @@ comma
 id|pCh-&gt;dataSetIn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6047,7 +5957,6 @@ id|I2_DCD
 )paren
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -6059,7 +5968,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCh-&gt;dataSetIn
 op_or_assign
 id|I2_DDCD
@@ -6076,7 +5984,6 @@ id|pCh-&gt;dataSetIn
 op_or_assign
 id|I2_DCD
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6090,13 +5997,11 @@ comma
 id|pCh-&gt;dataSetIn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|STAT_DCD_DN
 suffix:colon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6110,7 +6015,6 @@ comma
 id|pCh-&gt;dataSetIn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6119,7 +6023,6 @@ op_amp
 id|I2_DCD
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6131,7 +6034,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCh-&gt;dataSetIn
 op_or_assign
 id|I2_DDCD
@@ -6149,7 +6051,6 @@ op_and_assign
 op_complement
 id|I2_DCD
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6163,7 +6064,6 @@ comma
 id|pCh-&gt;dataSetIn
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -6319,7 +6219,6 @@ op_amp
 id|pCh-&gt;pBookmarkWait
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6333,7 +6232,6 @@ comma
 id|pCh-&gt;BookmarkTimer.expires
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_break
 suffix:semicolon
@@ -6366,7 +6264,6 @@ op_member_access_from_pointer
 id|asof
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6380,7 +6277,6 @@ comma
 id|pCh-&gt;outfl.room
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6389,7 +6285,6 @@ op_amp
 id|NEED_CREDIT
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6403,7 +6298,6 @@ comma
 id|pCh-&gt;channelNeeds
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCh-&gt;channelNeeds
 op_and_assign
 op_complement
@@ -6431,7 +6325,6 @@ id|pCh-&gt;pTTY
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|channel
@@ -6445,7 +6338,6 @@ comma
 id|pCh-&gt;channelNeeds
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pc
 op_add_assign
 r_sizeof
@@ -6763,7 +6655,6 @@ suffix:semicolon
 r_default
 suffix:colon
 singleline_comment|// Neither packet? should be impossible
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -6781,14 +6672,12 @@ id|pB-&gt;i2eLeadoffWord
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
 singleline_comment|// End of switch on type of packets
 )brace
 singleline_comment|//while(board HAS_INPUT)
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -6800,7 +6689,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Send acknowledgement to the board even if there was no data!
 id|pB-&gt;i2eOutMailWaiting
 op_or_assign
@@ -7213,7 +7101,6 @@ id|flowIn
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -7229,7 +7116,6 @@ comma
 id|paddedSize
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Continue processing so long as there are entries, or there is room in the
 singleline_comment|// fifo. Each entry represents a channel with something to do.
 r_while
@@ -7307,7 +7193,6 @@ suffix:semicolon
 macro_line|#endif /* DEBUG_FIFO */
 )brace
 singleline_comment|// Either clogged or finished all the work
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -7319,7 +7204,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 singleline_comment|//******************************************************************************
 singleline_comment|// Function:   i2StuffFifoInline(pB)
@@ -7384,7 +7268,6 @@ suffix:semicolon
 r_int
 id|bailout2
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -7402,7 +7285,6 @@ comma
 id|pB-&gt;i2Dbuf_stuff
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Continue processing so long as there are entries, or there is room in the
 singleline_comment|// fifo. Each entry represents a channel with something to do.
 r_while
@@ -7443,7 +7325,6 @@ id|stripIndex
 op_assign
 id|pCh-&gt;Obuf_strip
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7459,7 +7340,6 @@ comma
 id|pCh-&gt;Obuf_stuff
 )paren
 suffix:semicolon
-macro_line|#endif 
 singleline_comment|// as long as there are packets for this channel...
 id|bailout2
 op_assign
@@ -7555,7 +7435,6 @@ c_func
 id|packetSize
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7571,12 +7450,10 @@ comma
 id|paddedSize
 )paren
 suffix:semicolon
-macro_line|#endif 
 singleline_comment|// If we don&squot;t have enough credits from the board to send the data,
 singleline_comment|// flag the channel that we are waiting for flow control credit, and
 singleline_comment|// break out. This will clean up this channel and remove us from the
 singleline_comment|// queue of hot things to do.
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7592,7 +7469,6 @@ comma
 id|flowsize
 )paren
 suffix:semicolon
-macro_line|#endif 
 r_if
 c_cond
 (paren
@@ -7722,7 +7598,6 @@ id|stripIndex
 op_add_assign
 id|packetSize
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7738,7 +7613,6 @@ comma
 id|pCh-&gt;Obuf_strip
 )paren
 suffix:semicolon
-macro_line|#endif 
 r_if
 c_cond
 (paren
@@ -7755,7 +7629,6 @@ id|pRemove
 op_assign
 id|pCh-&gt;Obuf
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7769,7 +7642,6 @@ comma
 id|stripIndex
 )paren
 suffix:semicolon
-macro_line|#endif 
 )brace
 )brace
 multiline_comment|/* while */
@@ -7813,7 +7685,6 @@ c_cond
 id|notClogged
 )paren
 (brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|CHANN
@@ -7825,7 +7696,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7842,7 +7712,6 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// Either clogged or finished all the work
-macro_line|#ifdef IP2DEBUG_TRACE
 r_if
 c_cond
 (paren
@@ -7862,8 +7731,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -7877,7 +7744,6 @@ comma
 id|pB-&gt;i2Dbuf_strip
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 singleline_comment|//******************************************************************************
 singleline_comment|// Function:   serviceOutgoingFifo(pB)
@@ -8006,7 +7872,6 @@ id|pB-&gt;i2eStartMail
 op_assign
 id|NO_MAIL_HERE
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -8020,7 +7885,6 @@ comma
 id|inmail
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8104,7 +7968,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -8118,7 +7981,6 @@ comma
 id|pB-&gt;i2eFifoRemains
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|serviceOutgoingFifo
 c_func
@@ -8127,7 +7989,6 @@ id|pB
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IP2DEBUG_TRACE
 id|ip2trace
 (paren
 id|ITRC_NO_PORT
@@ -8139,7 +8000,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|exit_i2ServiceBoard
 suffix:colon
 r_return

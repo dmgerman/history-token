@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.17 08/20/01 22:59:41 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.19 10/16/01 15:58:42 trini&n; */
 multiline_comment|/*&n; * PowerPC hash table management proc entry.  Will show information&n; * about the current hash table and will allow changes to it.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -355,7 +355,9 @@ r_int
 id|n
 op_assign
 l_int|0
-comma
+suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_STD_MMU
+r_int
 id|valid
 suffix:semicolon
 r_int
@@ -381,6 +383,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 r_char
 id|buffer
 (braket
@@ -763,9 +766,9 @@ comma
 id|htab_evicts
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_STD_MMU */
 id|return_string
 suffix:colon
+macro_line|#endif /* CONFIG_PPC_STD_MMU */
 id|n
 op_add_assign
 id|sprintf

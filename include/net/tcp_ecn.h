@@ -3,7 +3,7 @@ DECL|macro|_NET_TCP_ECN_H_
 mdefine_line|#define _NET_TCP_ECN_H_ 1
 macro_line|#include &lt;net/inet_ecn.h&gt;
 DECL|macro|TCP_HP_BITS
-mdefine_line|#define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH)|TCP_FLAG_ECE|TCP_FLAG_CWR)
+mdefine_line|#define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH))
 DECL|macro|TCP_ECN_OK
 mdefine_line|#define&t;TCP_ECN_OK&t;&t;1
 DECL|macro|TCP_ECN_QUEUE_CWR

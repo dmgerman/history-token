@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.byteorder.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.byteorder.h 1.8 10/11/01 13:02:49 trini&n; */
 macro_line|#ifndef _PPC_BYTEORDER_H
 DECL|macro|_PPC_BYTEORDER_H
 mdefine_line|#define _PPC_BYTEORDER_H
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#ifdef __KERNEL__
 macro_line|#ifdef __GNUC__
+macro_line|#ifdef __KERNEL__
 DECL|function|ld_le16
 r_extern
 id|__inline__
@@ -272,12 +272,14 @@ DECL|macro|__arch__swab16s
 mdefine_line|#define __arch__swab16s(addr) st_le16(addr,*addr)
 DECL|macro|__arch__swab32s
 mdefine_line|#define __arch__swab32s(addr) st_le32(addr,*addr)
-macro_line|#ifndef __STRICT_ANSI__
+macro_line|#endif /* __KERNEL__ */
+macro_line|#if !defined(__STRICT_ANSI__) || defined(__KERNEL__)
 DECL|macro|__BYTEORDER_HAS_U64__
-mdefine_line|#define __BYTEORDER_HAS_U64__
+macro_line|#  define __BYTEORDER_HAS_U64__
+DECL|macro|__SWAB_64_THRU_32__
+macro_line|#  define __SWAB_64_THRU_32__
 macro_line|#endif
 macro_line|#endif /* __GNUC__ */
-macro_line|#endif /* __KERNEL__ */
 macro_line|#include &lt;linux/byteorder/big_endian.h&gt;
 macro_line|#endif /* _PPC_BYTEORDER_H */
 eof

@@ -44,13 +44,13 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * The Zone Protection Register (ZPR) defines how protection will&n;&t; * be applied to every page which is a member of a given zone. At&n;&t; * present, we utilize only two of the 4xx&squot;s zones.&n;&t; * The zone index bits (of ZSEL) in the PTE are used for software&n;&t; * indicators, except the LSB.  For user access, zone 15 is used,&n;&t; * for kernel access, zone 14 is used.  We set all but zone 15&n;&t; * to zero, allowing only kernel access as indicated in the PTE.&n;&t; * For zone 15, we set a 01 binary (a value of 10 will not work)&n;&t; * to allow user access as indicated in the PTE.  This also allows&n;&t; * kernel access as indicated in the PTE.&n;&t; */
+multiline_comment|/*&n;&t; * The Zone Protection Register (ZPR) defines how protection will&n;&t; * be applied to every page which is a member of a given zone. At&n;&t; * present, we utilize only two of the 4xx&squot;s zones.&n;&t; * The zone index bits (of ZSEL) in the PTE are used for software&n;&t; * indicators, except the LSB.  For user access, zone 1 is used,&n;&t; * for kernel access, zone 0 is used.  We set all but zone 1&n;&t; * to zero, allowing only kernel access as indicated in the PTE.&n;&t; * For zone 1, we set a 01 binary (a value of 10 will not work)&n;&t; * to allow user access as indicated in the PTE.  This also allows&n;&t; * kernel access as indicated in the PTE.&n;&t; */
 id|mtspr
 c_func
 (paren
 id|SPRN_ZPR
 comma
-l_int|0x00000001
+l_int|0x10000000
 )paren
 suffix:semicolon
 id|flush_instruction_cache

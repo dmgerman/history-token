@@ -1247,14 +1247,16 @@ r_return
 id|retval
 suffix:semicolon
 multiline_comment|/* OK, This is the point of no return */
-macro_line|#if !defined(__sparc__)
-id|set_personality
+macro_line|#if defined(__alpha__)
+id|SET_AOUT_PERSONALITY
 c_func
 (paren
-id|PER_LINUX
+id|bprm
+comma
+id|ex
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(__sparc__)
 id|set_personality
 c_func
 (paren
@@ -1279,6 +1281,13 @@ id|exec
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#else
+id|set_personality
+c_func
+(paren
+id|PER_LINUX
+)paren
+suffix:semicolon
 macro_line|#endif
 id|current-&gt;mm-&gt;end_code
 op_assign

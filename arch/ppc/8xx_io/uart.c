@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.16 09/14/01 18:01:17 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.19 10/26/01 09:59:32 trini&n; */
 multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -140,17 +140,6 @@ id|options
 )paren
 suffix:semicolon
 r_static
-r_int
-id|serial_console_wait_key
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|co
-)paren
-suffix:semicolon
-r_static
 r_void
 id|serial_console_write
 c_func
@@ -178,6 +167,17 @@ r_struct
 id|console
 op_star
 id|c
+)paren
+suffix:semicolon
+r_static
+r_int
+id|serial_console_wait_key
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|co
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -1373,8 +1373,10 @@ id|tty-&gt;flip.count
 op_increment
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 id|ignore_char
 suffix:colon
+macro_line|#endif
 multiline_comment|/* This BD is ready to be used again.  Clear status.&n;&t;&t; * Get next BD.&n;&t;&t; */
 id|bdp-&gt;cbd_sc
 op_or_assign
@@ -2793,6 +2795,8 @@ comma
 id|scval
 comma
 id|prev_mode
+comma
+id|new_mode
 suffix:semicolon
 r_int
 id|i
@@ -2951,7 +2955,6 @@ suffix:semicolon
 id|bits
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2975,6 +2978,7 @@ op_or
 id|SCU_PMSR_TEVP
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Determine divisor based on baud rate */
 id|i
@@ -3254,7 +3258,7 @@ id|cpmp-&gt;cp_scc
 id|idx
 )braket
 suffix:semicolon
-id|sccp-&gt;scc_pmsr
+id|new_mode
 op_assign
 (paren
 id|sbits
@@ -3263,6 +3267,41 @@ l_int|12
 )paren
 op_or
 id|scval
+suffix:semicolon
+id|prev_mode
+op_assign
+id|sccp-&gt;scc_pmsr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|prev_mode
+op_amp
+id|SCU_PMSR_PEN
+)paren
+)paren
+multiline_comment|/* If parity is disabled, mask out even/odd */
+id|prev_mode
+op_and_assign
+op_complement
+(paren
+id|SCU_PMSR_TPM
+op_or
+id|SCU_PMSR_RPM
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prev_mode
+op_ne
+id|new_mode
+)paren
+id|sccp-&gt;scc_pmsr
+op_assign
+id|new_mode
 suffix:semicolon
 )brace
 r_else
@@ -3280,7 +3319,7 @@ id|prev_mode
 op_assign
 id|smcp-&gt;smc_smcmr
 suffix:semicolon
-id|smcp-&gt;smc_smcmr
+id|new_mode
 op_assign
 id|smcr_mk_clen
 c_func
@@ -3292,7 +3331,7 @@ id|cval
 op_or
 id|SMCMR_SM_UART
 suffix:semicolon
-id|smcp-&gt;smc_smcmr
+id|new_mode
 op_or_assign
 (paren
 id|prev_mode
@@ -3303,6 +3342,33 @@ op_or
 id|SMCMR_TEN
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|prev_mode
+op_amp
+id|SMCMR_PEN
+)paren
+)paren
+multiline_comment|/* If parity is disabled, mask out even/odd */
+id|prev_mode
+op_and_assign
+op_complement
+id|SMCMR_PM_EVEN
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prev_mode
+op_ne
+id|new_mode
+)paren
+id|smcp-&gt;smc_smcmr
+op_assign
+id|new_mode
 suffix:semicolon
 )brace
 id|m8xx_cpm_setbrg

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.idle.c 1.14 08/15/01 22:43:06 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.idle.c 1.16 10/16/01 15:58:42 trini&n; */
 multiline_comment|/*&n; * Idle daemon for PowerPC.  Idle daemon will handle any action&n; * that needs to be taken when the system becomes idle.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -129,9 +129,6 @@ suffix:semicolon
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
-r_int
-id|oldval
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -140,6 +137,7 @@ id|do_power_save
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Deal with another CPU just having chosen a thread to&n;&t;&t;&t; * run here:&n;&t;&t;&t; */
+r_int
 id|oldval
 op_assign
 id|xchg

@@ -3061,6 +3061,13 @@ multiline_comment|/* 82489DX IO-APICs */
 (paren
 id|reg_01.version
 op_ne
+l_int|0x02
+)paren
+op_logical_and
+multiline_comment|/* 82801BA IO-APICs (ICH2) */
+(paren
+id|reg_01.version
+op_ne
 l_int|0x10
 )paren
 op_logical_and
@@ -3080,7 +3087,7 @@ l_int|0x13
 op_logical_and
 multiline_comment|/* Xeon IO-APICs */
 (paren
-id|reg_01.entries
+id|reg_01.version
 op_ne
 l_int|0x20
 )paren

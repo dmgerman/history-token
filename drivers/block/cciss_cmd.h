@@ -697,11 +697,11 @@ id|_CommandList_struct
 op_star
 id|next
 suffix:semicolon
-DECL|member|bh
+DECL|member|rq
 r_struct
-id|buffer_head
+id|request
 op_star
-id|bh
+id|rq
 suffix:semicolon
 DECL|typedef|CommandList_struct
 )brace

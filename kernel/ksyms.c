@@ -1485,6 +1485,13 @@ c_func
 id|lock_page
 )paren
 suffix:semicolon
+DECL|variable|unlock_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unlock_page
+)paren
+suffix:semicolon
 multiline_comment|/* device registration */
 DECL|variable|register_chrdev
 id|EXPORT_SYMBOL

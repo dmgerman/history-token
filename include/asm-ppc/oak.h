@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.oak.h 1.10 09/14/01 17:37:56 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.oak.h 1.12 10/11/01 13:05:07 trini&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak.h&n; *&n; *    Description:&n; *&t;Macros, definitions, and data structures specific to the IBM PowerPC&n; *      403G{A,B,C,CX} &quot;Oak&quot; evaluation board. Anything specific to the pro-&n; *      cessor itself is defined elsewhere.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef&t;__OAK_H__
 DECL|macro|__OAK_H__
 mdefine_line|#define&t;__OAK_H__
-macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE&t;0
 DECL|macro|_ISA_MEM_BASE
@@ -29,14 +28,15 @@ mdefine_line|#define&t;OAKPROM_IO_BASE&t;&t;0xFFFE0000&t;/* AMD 29F010 Flash ROM
 DECL|macro|OAKPROM_IO_SIZE
 mdefine_line|#define&t;OAKPROM_IO_SIZE&t;&t;0x00020000
 multiline_comment|/* Interrupt assignments fixed by the hardware implementation */
+multiline_comment|/* This is annoying kbuild-2.4 problem. -- Tom */
 DECL|macro|PPC403SPU_RX_INT
-mdefine_line|#define&t;PPC403SPU_RX_INT&t;AIC_INT4
+mdefine_line|#define&t;PPC403SPU_RX_INT&t;4&t;/* AIC_INT4 */
 DECL|macro|PPC403SPU_TX_INT
-mdefine_line|#define&t;PPC403SPU_TX_INT&t;AIC_INT5
+mdefine_line|#define&t;PPC403SPU_TX_INT&t;5&t;/* AIC_INT5 */
 DECL|macro|OAKNET_INT
-mdefine_line|#define&t;OAKNET_INT&t;&t;AIC_INT27
+mdefine_line|#define&t;OAKNET_INT&t;&t;27&t;/* AIC_INT27 */
 DECL|macro|OAKSERIAL_INT
-mdefine_line|#define&t;OAKSERIAL_INT&t;&t;AIC_INT28
+mdefine_line|#define&t;OAKSERIAL_INT&t;&t;28&t;/* AIC_INT28 */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Oak&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
 DECL|struct|board_info

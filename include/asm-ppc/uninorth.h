@@ -1,6 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uninorth.h 1.11 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.uninorth.h 1.13 10/23/01 08:09:35 trini&n; */
 multiline_comment|/*&n; * uninorth.h: definitions for using the &quot;UniNorth&quot; host bridge chip&n; *             from Apple. This chip is used on &quot;Core99&quot; machines&n; *&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __ASM_UNINORTH_H__
+DECL|macro|__ASM_UNINORTH_H__
+mdefine_line|#define __ASM_UNINORTH_H__
 multiline_comment|/*&n; * Uni-N config space reg. definitions&n; * &n; * (Little endian)&n; */
 multiline_comment|/* Address ranges selection. This one should work with Bandit too */
 DECL|macro|UNI_N_ADDR_SELECT
@@ -73,5 +76,6 @@ multiline_comment|/* This last bit appear to be used by the bootROM to know the 
 DECL|macro|UNI_N_HWINIT_STATE_CPU1_FLAG
 mdefine_line|#define UNI_N_HWINIT_STATE_CPU1_FLAG&t;0x10000000
 multiline_comment|/* Uninorth 1.5 rev. has additional perf. monitor registers at 0xf00-0xf50 */
+macro_line|#endif /* __ASM_UNINORTH_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

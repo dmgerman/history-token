@@ -140,6 +140,14 @@ mdefine_line|#define MMU_init_hw()&t;&t;do { } while(0)
 macro_line|#elif defined(CONFIG_4xx)
 DECL|macro|flush_HPTE
 mdefine_line|#define flush_HPTE(X, va, pg)&t;_tlbie(va)
+r_extern
+r_void
+id|MMU_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else
 multiline_comment|/* anything except 4xx or 8xx */
 r_extern

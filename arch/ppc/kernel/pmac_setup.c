@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.39 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.41 10/18/01 11:16:28 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -215,13 +215,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 r_extern
 r_int
 r_char
 id|mac_hid_kbd_sysrq_xlate
 (braket
-l_int|128
 )braket
 suffix:semicolon
 r_extern
@@ -229,7 +227,6 @@ r_int
 r_char
 id|pckbd_sysrq_xlate
 (braket
-l_int|128
 )braket
 suffix:semicolon
 r_extern
@@ -237,10 +234,8 @@ r_int
 r_char
 id|mackbd_sysrq_xlate
 (braket
-l_int|128
 )braket
 suffix:semicolon
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 r_extern
 r_int
 id|pckbd_setkeycode

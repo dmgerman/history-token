@@ -60,6 +60,12 @@ multiline_comment|/* Don&squot;t look at this pte if it&squot;s been accessed re
 r_if
 c_cond
 (paren
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_LOCKED
+)paren
+op_logical_or
 id|ptep_test_and_clear_young
 c_func
 (paren
@@ -776,17 +782,13 @@ r_int
 r_int
 id|end
 suffix:semicolon
-multiline_comment|/* Don&squot;t swap out areas which are locked down */
+multiline_comment|/* Don&squot;t swap out areas which are reserved */
 r_if
 c_cond
 (paren
 id|vma-&gt;vm_flags
 op_amp
-(paren
-id|VM_LOCKED
-op_or
 id|VM_RESERVED
-)paren
 )paren
 r_return
 id|count
@@ -1318,8 +1320,12 @@ r_int
 id|max_mapped
 op_assign
 id|nr_pages
-op_star
-l_int|10
+op_lshift
+(paren
+l_int|9
+op_minus
+id|priority
+)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2301,15 +2307,7 @@ id|priority
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Hmm.. Cache shrink failed - time to kill something?&n;&t; * Mhwahahhaha! This is the part I really like. Giggle.&n;&t; */
-r_if
-c_cond
-(paren
 id|out_of_memory
-c_func
-(paren
-)paren
-)paren
-id|oom_kill
 c_func
 (paren
 )paren

@@ -10,6 +10,7 @@ macro_line|#include &quot;attr.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &quot;util.h&quot;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 DECL|variable|I30
 r_static
 r_char

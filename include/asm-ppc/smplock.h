@@ -1,6 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smplock.h 1.7 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.smplock.h 1.10 10/23/01 08:09:35 trini&n; */
 multiline_comment|/*&n; * &lt;asm/smplock.h&gt;&n; *&n; * Default SMP lock implementation&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __ASM_SMPLOCK_H__
+DECL|macro|__ASM_SMPLOCK_H__
+mdefine_line|#define __ASM_SMPLOCK_H__
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 r_extern
@@ -67,5 +70,6 @@ id|kernel_flag
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* __ASM_SMPLOCK_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

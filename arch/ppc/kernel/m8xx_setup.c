@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.35 10/11/01 11:55:47 trini&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.38 10/18/01 11:16:28 trini&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -91,13 +91,6 @@ id|rd_image_start
 suffix:semicolon
 multiline_comment|/* starting block # of image */
 macro_line|#endif
-r_extern
-r_char
-id|saved_command_line
-(braket
-l_int|256
-)braket
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -1343,12 +1336,10 @@ id|ppc_md.kbd_init_hw
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|ppc_md.ppc_kbd_sysrq_xlate
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|m8xx_ide_init
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.h 1.12 08/20/01 22:33:28 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.open_pic.h 1.14 10/11/01 12:09:12 trini&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.h -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *  &n; */
 macro_line|#ifndef _PPC_KERNEL_OPEN_PIC_H
 DECL|macro|_PPC_KERNEL_OPEN_PIC_H
@@ -103,7 +103,7 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|openpic_init_processor
+id|openpic_reset_processor_phys
 c_func
 (paren
 id|u_int

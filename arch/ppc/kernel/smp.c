@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.31 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.34 10/11/01 12:06:01 trini&n; */
 multiline_comment|/*&n; * Smp support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
-macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 DECL|variable|smp_threads_ready
@@ -906,6 +905,10 @@ c_func
 (paren
 l_int|0
 )paren
+suffix:semicolon
+id|cpu_online_map
+op_assign
+l_int|1UL
 suffix:semicolon
 multiline_comment|/*&n;&t; * assume for now that the first cpu booted is&n;&t; * cpu 0, the master -- Cort&n;&t; */
 id|cpu_callin_map

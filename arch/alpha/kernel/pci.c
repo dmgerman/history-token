@@ -284,7 +284,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The Cypress bridge responds on the PCI bus in the address range&n;&t;   0xffff0000-0xffffffff (conventional x86 BIOS ROM).  There is no&n;&t;   way to turn this off, so if we use a large direct-map window, or&n;&t;   a large SG window, we must avoid this region.  */
+multiline_comment|/* The Cypress bridge responds on the PCI bus in the address range&n;&t;   0xffff0000-0xffffffff (conventional x86 BIOS ROM).  There is no&n;&t;   way to turn this off.  The bridge also supports several extended&n;&t;   BIOS ranges (disabled after power-up), and some consoles do turn&n;&t;   them on.  So if we use a large direct-map window, or a large SG&n;&t;   window, we must avoid entire 0xfff00000-0xffffffff region.  */
 r_else
 r_if
 c_cond
@@ -305,11 +305,11 @@ id|__direct_map_base
 op_plus
 id|__direct_map_size
 op_ge
-l_int|0xffff0000
+l_int|0xfff00000
 )paren
 id|__direct_map_size
 op_assign
-l_int|0xffff0000
+l_int|0xfff00000
 op_minus
 id|__direct_map_base
 suffix:semicolon
@@ -338,11 +338,11 @@ id|pci-&gt;dma_base
 op_plus
 id|pci-&gt;size
 op_ge
-l_int|0xffff0000
+l_int|0xfff00000
 )paren
 id|pci-&gt;size
 op_assign
-l_int|0xffff0000
+l_int|0xfff00000
 op_minus
 id|pci-&gt;dma_base
 suffix:semicolon

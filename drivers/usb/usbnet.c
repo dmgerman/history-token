@@ -5140,6 +5140,26 @@ id|net1080_info
 comma
 )brace
 comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x06D0
+comma
+l_int|0x0622
+)paren
+comma
+singleline_comment|// Laplink Gold
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|net1080_info
+comma
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_PL2301
 (brace

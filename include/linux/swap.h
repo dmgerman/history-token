@@ -184,6 +184,9 @@ r_extern
 r_int
 id|nr_swap_pages
 suffix:semicolon
+multiline_comment|/* Swap 50% full? Release swapcache more aggressively.. */
+DECL|macro|vm_swap_full
+mdefine_line|#define vm_swap_full() (nr_swap_pages*2 &lt; total_swap_pages)
 r_extern
 r_int
 r_int
@@ -459,16 +462,8 @@ id|swp_entry_t
 suffix:semicolon
 multiline_comment|/* linux/mm/oom_kill.c */
 r_extern
-r_int
+r_void
 id|out_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|oom_kill
 c_func
 (paren
 r_void
