@@ -929,7 +929,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-DECL|variable|ioctl_mutex
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
