@@ -937,6 +937,16 @@ c_func
 op_amp
 id|rt-&gt;u.dst
 )paren
+op_logical_and
+op_logical_neg
+id|skb_shinfo
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|tso_size
 )paren
 (brace
 multiline_comment|/* No hook can be after us, so this should be OK. */
