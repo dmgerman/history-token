@@ -8557,7 +8557,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;hid&quot;
+l_string|&quot;usbhid&quot;
 comma
 dot
 id|probe
