@@ -1048,6 +1048,23 @@ id|COMET
 )brace
 comma
 (brace
+l_int|0x10b9
+comma
+l_int|0x5261
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DM910X
+)brace
+comma
+multiline_comment|/* ALi 1563 integrated ethernet */
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace
@@ -7312,6 +7329,7 @@ multiline_comment|/* DM9102A has troubles with MRM &amp; clear reserved bits 24:
 r_if
 c_cond
 (paren
+(paren
 id|pdev-&gt;vendor
 op_eq
 l_int|0x1282
@@ -7319,6 +7337,17 @@ op_logical_and
 id|pdev-&gt;device
 op_eq
 l_int|0x9102
+)paren
+op_logical_or
+(paren
+id|pdev-&gt;vendor
+op_eq
+l_int|0x10b9
+op_logical_and
+id|pdev-&gt;device
+op_eq
+l_int|0x5261
+)paren
 )paren
 id|csr0
 op_and_assign
@@ -7330,6 +7359,7 @@ multiline_comment|/* DM9102A needs 32-dword alignment/burst length on sparc - ch
 r_if
 c_cond
 (paren
+(paren
 id|pdev-&gt;vendor
 op_eq
 l_int|0x1282
@@ -7337,6 +7367,17 @@ op_logical_and
 id|pdev-&gt;device
 op_eq
 l_int|0x9102
+)paren
+op_logical_or
+(paren
+id|pdev-&gt;vendor
+op_eq
+l_int|0x10b9
+op_logical_and
+id|pdev-&gt;device
+op_eq
+l_int|0x5261
+)paren
 )paren
 id|csr0
 op_assign
