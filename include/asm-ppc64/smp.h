@@ -123,6 +123,16 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|query_cpu_stopped
+c_func
+(paren
+r_int
+r_int
+id|pcpu
+)paren
+suffix:semicolon
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|get_hard_smp_processor_id
 mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].hw_cpu_id)
