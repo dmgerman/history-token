@@ -9,6 +9,9 @@ id|u_long
 id|vm_offset_t
 suffix:semicolon
 macro_line|#include &quot;sym53c8xx_defs.h&quot;
+multiline_comment|/*&n;&t;Build a scatter/gather entry.&n;&t;see sym53c8xx_2/sym_hipd.h for more detailed sym_build_sge()&n;&t;implementation ;)&n; */
+DECL|macro|ncr_build_sge
+mdefine_line|#define ncr_build_sge(np, data, badd, len)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(data)-&gt;addr = cpu_to_scr(badd);&t;&bslash;&n;&t;(data)-&gt;size = cpu_to_scr(len);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*==========================================================&n;**&n;**&t;Structures used by the detection routine to transmit &n;**&t;device configuration to the attach function.&n;**&n;**==========================================================&n;*/
 DECL|struct|ncr_slot
 r_struct
