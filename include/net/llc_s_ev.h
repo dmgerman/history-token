@@ -2,6 +2,7 @@ macro_line|#ifndef LLC_S_EV_H
 DECL|macro|LLC_S_EV_H
 mdefine_line|#define LLC_S_EV_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+macro_line|#include &lt;linux/skbuff.h&gt;
 multiline_comment|/* Defines SAP component events */
 multiline_comment|/* Types of events (possible values in &squot;ev-&gt;type&squot;) */
 DECL|macro|LLC_SAP_EV_TYPE_SIMPLE
@@ -83,12 +84,6 @@ suffix:semicolon
 DECL|member|reason
 id|u8
 id|reason
-suffix:semicolon
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -174,6 +169,30 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|llc_sap_ev
+r_static
+id|__inline__
+r_struct
+id|llc_sap_state_ev
+op_star
+id|llc_sap_ev
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|llc_sap_state_ev
+op_star
+)paren
+id|skb-&gt;cb
+suffix:semicolon
+)brace
 r_struct
 id|llc_sap
 suffix:semicolon
@@ -191,9 +210,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -207,9 +226,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -223,9 +242,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -239,9 +258,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -255,9 +274,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -271,9 +290,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -287,9 +306,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -303,9 +322,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -319,9 +338,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -335,9 +354,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -351,9 +370,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 macro_line|#endif /* LLC_S_EV_H */
