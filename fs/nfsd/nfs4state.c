@@ -622,9 +622,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* The following nfsd_close may not actually close the file,&n;&t; * but we want to remove the lease in any case. */
-id|remove_lease
+id|setlease
 c_func
 (paren
+id|filp
+comma
+id|F_UNLCK
+comma
+op_amp
 id|dp-&gt;dl_flock
 )paren
 suffix:semicolon
