@@ -700,7 +700,7 @@ r_int
 r_int
 comma
 r_int
-r_char
+r_int
 comma
 r_int
 comma
@@ -1684,7 +1684,7 @@ r_int
 id|ioaddr
 comma
 r_int
-r_char
+r_int
 id|irq_line
 comma
 r_int
