@@ -8866,7 +8866,7 @@ c_func
 (paren
 id|pci
 comma
-l_int|0xFFFFFFFF
+id|DMA_32BIT_MASK
 )paren
 op_ne
 l_int|0
