@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3232,7 +3233,7 @@ op_logical_or
 id|get_user
 c_func
 (paren
-id|user_msg
+id|i
 comma
 op_amp
 id|cmd-&gt;msg
@@ -3241,6 +3242,14 @@ id|cmd-&gt;msg
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+id|user_msg
+op_assign
+id|compat_ptr
+c_func
+(paren
+id|i
+)paren
 suffix:semicolon
 id|c
 op_assign
