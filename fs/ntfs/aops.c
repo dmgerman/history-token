@@ -6152,4 +6152,25 @@ multiline_comment|/* Commit received data. */
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * ntfs_mst_aops - general address space operations for mst protecteed inodes&n; *&t;&t;   and attributes&n; */
+DECL|variable|ntfs_mst_aops
+r_struct
+id|address_space_operations
+id|ntfs_mst_aops
+op_assign
+(brace
+dot
+id|readpage
+op_assign
+id|ntfs_readpage
+comma
+multiline_comment|/* Fill page with data. */
+dot
+id|sync_page
+op_assign
+id|block_sync_page
+comma
+multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
+)brace
+suffix:semicolon
 eof
