@@ -13,11 +13,23 @@ macro_line|# define NR_NODES     (8)
 DECL|macro|NR_MEMBLKS
 macro_line|# define NR_MEMBLKS   (NR_NODES * 8)
 macro_line|#endif
+macro_line|#include &lt;linux/cache.h&gt;
 r_extern
+r_volatile
 r_char
 id|cpu_to_node_map
 (braket
 id|NR_CPUS
+)braket
+id|__cacheline_aligned
+suffix:semicolon
+r_extern
+r_volatile
+r_int
+r_int
+id|node_to_cpu_mask
+(braket
+id|NR_NODES
 )braket
 id|__cacheline_aligned
 suffix:semicolon

@@ -471,10 +471,6 @@ id|ia64_node_data
 op_star
 id|node_data
 suffix:semicolon
-DECL|member|nodeid
-r_int
-id|nodeid
-suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
@@ -492,10 +488,6 @@ DECL|macro|local_cpu_data
 mdefine_line|#define local_cpu_data&t;&t;(&amp;__get_cpu_var(cpu_info))
 DECL|macro|cpu_data
 mdefine_line|#define cpu_data(cpu)&t;&t;(&amp;per_cpu(cpu_info, cpu))
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;&t;(local_cpu_data-&gt;nodeid)
-macro_line|#endif
 r_extern
 r_void
 id|identify_cpu

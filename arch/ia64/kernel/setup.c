@@ -2437,13 +2437,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cpu_info-&gt;nodeid
-op_assign
-id|boot_get_local_nodeid
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * We can&squot;t pass &quot;local_cpu_data&quot; to identify_cpu() because we haven&squot;t called&n;&t; * ia64_mmu_init() yet.  And we can&squot;t call ia64_mmu_init() first because it&n;&t; * depends on the data returned by identify_cpu().  We break the dependency by&n;&t; * accessing cpu_data() the old way, through identity mapped space.&n;&t; */
 id|identify_cpu
