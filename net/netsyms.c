@@ -2388,8 +2388,6 @@ id|sysctl_max_syn_backlog
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE) || defined (CONFIG_IPV6_TUNNEL_MODULE)
 DECL|variable|ip_generic_getfrag
 id|EXPORT_SYMBOL
 c_func

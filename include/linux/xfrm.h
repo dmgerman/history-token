@@ -70,6 +70,10 @@ DECL|member|sport_mask
 id|__u16
 id|sport_mask
 suffix:semicolon
+DECL|member|family
+id|__u16
+id|family
+suffix:semicolon
 DECL|member|prefixlen_d
 id|__u8
 id|prefixlen_d
@@ -295,6 +299,10 @@ r_struct
 id|xfrm_id
 id|id
 suffix:semicolon
+DECL|member|family
+id|__u16
+id|family
+suffix:semicolon
 DECL|member|saddr
 id|xfrm_address_t
 id|saddr
@@ -512,10 +520,6 @@ suffix:semicolon
 DECL|member|index
 id|__u32
 id|index
-suffix:semicolon
-DECL|member|family
-id|__u16
-id|family
 suffix:semicolon
 DECL|member|dir
 id|__u8
