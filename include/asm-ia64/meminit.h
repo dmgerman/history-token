@@ -2,6 +2,8 @@ macro_line|#ifndef meminit_h
 DECL|macro|meminit_h
 mdefine_line|#define meminit_h
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * Entries defined so far:&n; * &t;- boot param structure itself&n; * &t;- memory map&n; * &t;- initrd (optional)&n; * &t;- command line string&n; * &t;- kernel code &amp; data&n; *&n; * More could be added if necessary&n; */
 DECL|macro|IA64_MAX_RSVD_REGIONS
 mdefine_line|#define IA64_MAX_RSVD_REGIONS 5
@@ -75,6 +77,21 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|count_pages
+(paren
+id|u64
+id|start
+comma
+id|u64
+id|end
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 r_extern
 r_void
@@ -96,5 +113,45 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|IGNORE_PFN0
 mdefine_line|#define IGNORE_PFN0&t;1&t;/* XXX fix me: ignore pfn 0 until TLB miss handler is updated... */
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+DECL|macro|LARGE_GAP
+mdefine_line|#define LARGE_GAP&t;0x40000000 /* Use virtual mem map if hole is &gt; than this */
+r_extern
+r_struct
+id|page
+op_star
+id|vmem_map
+suffix:semicolon
+r_extern
+r_int
+id|find_largest_hole
+(paren
+id|u64
+id|start
+comma
+id|u64
+id|end
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|create_mem_map_page_table
+(paren
+id|u64
+id|start
+comma
+id|u64
+id|end
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* meminit_h */
 eof
