@@ -2940,7 +2940,7 @@ id|log
 )paren
 )paren
 r_goto
-id|errout10
+id|free
 suffix:semicolon
 r_goto
 id|out
@@ -2948,7 +2948,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *      external log as separate logical volume&n;&t; *&n;&t; * file systems to log may have n-to-1 relationship;&n;&t; */
 id|externalLog
 suffix:colon
-multiline_comment|/*&n;&t; * TODO: Check for already opened log devices&n;&t; */
 r_if
 c_cond
 (paren
@@ -2979,7 +2978,7 @@ op_assign
 id|ENODEV
 suffix:semicolon
 r_goto
-id|errout10
+id|free
 suffix:semicolon
 )brace
 r_if
@@ -3010,7 +3009,32 @@ op_minus
 id|rc
 suffix:semicolon
 r_goto
-id|errout10
+id|bdput
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
+id|bd_claim
+c_func
+(paren
+id|bdev
+comma
+id|log
+)paren
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|rc
+suffix:semicolon
+r_goto
+id|close
 suffix:semicolon
 )brace
 id|log-&gt;bdev
@@ -3051,7 +3075,7 @@ id|log
 )paren
 )paren
 r_goto
-id|errout20
+id|unclaim
 suffix:semicolon
 multiline_comment|/*&n;&t; * add file system to log active file system list&n;&t; */
 r_if
@@ -3078,7 +3102,7 @@ l_int|1
 )paren
 )paren
 r_goto
-id|errout30
+id|shutdown
 suffix:semicolon
 id|out
 suffix:colon
@@ -3101,7 +3125,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *      unwind on error&n;&t; */
-id|errout30
+id|shutdown
 suffix:colon
 multiline_comment|/* unwind lbmLogInit() */
 id|lbmLogShutdown
@@ -3110,7 +3134,15 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|errout20
+id|unclaim
+suffix:colon
+id|bd_release
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+id|close
 suffix:colon
 multiline_comment|/* close external log device */
 id|blkdev_put
@@ -3121,7 +3153,15 @@ comma
 id|BDEV_FS
 )paren
 suffix:semicolon
-id|errout10
+id|bdput
+suffix:colon
+id|bdput
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+id|free
 suffix:colon
 multiline_comment|/* free log descriptor */
 id|kfree
@@ -3884,6 +3924,13 @@ op_star
 id|log
 )paren
 (brace
+r_struct
+id|block_device
+op_star
+id|bdev
+op_assign
+id|log-&gt;bdev
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -3951,12 +3998,24 @@ c_func
 id|log
 )paren
 suffix:semicolon
+id|bd_release
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
 id|blkdev_put
 c_func
 (paren
-id|log-&gt;bdev
+id|bdev
 comma
 id|BDEV_FS
+)paren
+suffix:semicolon
+id|bdput
+c_func
+(paren
+id|bdev
 )paren
 suffix:semicolon
 id|out
