@@ -276,11 +276,16 @@ id|permitted
 (brace
 id|task_t
 op_star
+id|g
+comma
+op_star
 id|target
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|target
 )paren
 (brace
@@ -308,6 +313,14 @@ id|permitted
 )paren
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|target
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * cap_set_all - set capabilities for all processes other than init&n; * and self.  We call this holding task_capability_lock and tasklist_lock.&n; */
 DECL|function|cap_set_all
@@ -332,11 +345,16 @@ id|permitted
 (brace
 id|task_t
 op_star
+id|g
+comma
+op_star
 id|target
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|target
 )paren
 (brace
@@ -368,6 +386,14 @@ id|permitted
 )paren
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|target
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * sys_capset - set capabilities for a given process, all processes, or all&n; * processes in a given process group.&n; *&n; * The restrictions on setting capabilities are specified as:&n; *&n; * [pid is for the &squot;target&squot; task.  &squot;current&squot; is the calling task.]&n; *&n; * I: any raised capabilities must be a subset of the (old current) permitted&n; * P: any raised capabilities must be a subset of the (old current) permitted&n; * E: must be set to a subset of (new target) permitted&n; */
 DECL|function|sys_capset

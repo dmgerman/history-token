@@ -544,6 +544,9 @@ id|flags
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 r_int
@@ -607,9 +610,11 @@ id|tasklist_lock
 suffix:semicolon
 id|repeat
 suffix:colon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -704,6 +709,14 @@ op_assign
 id|p-&gt;session
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren

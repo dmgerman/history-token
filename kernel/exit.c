@@ -459,7 +459,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -533,7 +533,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -680,7 +680,7 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
