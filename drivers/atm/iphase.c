@@ -14510,6 +14510,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -14527,6 +14528,7 @@ comma
 id|board
 suffix:semicolon
 id|u16
+id|__user
 op_star
 id|tmps
 suffix:semicolon
@@ -14701,6 +14703,7 @@ id|tmps
 op_assign
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|ia_cmds.buf
@@ -14784,6 +14787,7 @@ id|tmps
 op_assign
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|ia_cmds.buf
@@ -15432,6 +15436,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -15472,6 +15477,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma

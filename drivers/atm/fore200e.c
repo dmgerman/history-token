@@ -7847,6 +7847,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -7900,6 +7901,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -8451,6 +8453,7 @@ id|fore200e
 comma
 r_struct
 id|sonet_stats
+id|__user
 op_star
 id|arg
 )paren
@@ -8617,6 +8620,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8670,6 +8674,7 @@ comma
 (paren
 r_struct
 id|sonet_stats
+id|__user
 op_star
 )paren
 id|arg
@@ -8686,6 +8691,7 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -8727,6 +8733,7 @@ id|fore200e-&gt;loop_mode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -8751,6 +8758,7 @@ id|ATM_LM_RMT_PHY
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
