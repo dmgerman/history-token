@@ -36,7 +36,6 @@ id|u32
 op_star
 id|value
 )paren
-multiline_comment|/* CONFIG_MULTIQUAD */
 (brace
 r_int
 r_int
@@ -227,7 +226,6 @@ comma
 id|u32
 id|value
 )paren
-multiline_comment|/* CONFIG_MULTIQUAD */
 (brace
 r_int
 r_int

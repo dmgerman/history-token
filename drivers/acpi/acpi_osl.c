@@ -88,6 +88,7 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Initialize PCI configuration space access, as we&squot;ll need to access&n;&t; * it while walking the namespace (bus 0 and root bridges w/ _BBNs).&n;&t; */
+macro_line|#if 0
 id|pcibios_config_init
 c_func
 (paren
@@ -115,6 +116,7 @@ r_return
 id|AE_NULL_ENTRY
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|AE_OK
 suffix:semicolon

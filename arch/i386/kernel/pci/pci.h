@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;Low-Level PCI Access for i386 machines.&n; *&n; *&t;(c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(x)
@@ -219,13 +219,6 @@ id|spinlock_t
 id|pci_config_lock
 suffix:semicolon
 r_void
-id|pcibios_irq_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|pcibios_fixup_irqs
 c_func
 (paren
@@ -240,6 +233,22 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|pci_lookup_irq
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|assign
 )paren
 suffix:semicolon
 eof
