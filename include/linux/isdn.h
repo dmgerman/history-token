@@ -100,8 +100,6 @@ DECL|macro|ISDN_NET_ENCAP_CISCOHDLCK
 mdefine_line|#define ISDN_NET_ENCAP_CISCOHDLCK 6 /* With SLARP and keepalive    */
 DECL|macro|ISDN_NET_ENCAP_X25IFACE
 mdefine_line|#define ISDN_NET_ENCAP_X25IFACE   7 /* Documentation/networking/x25-iface.txt*/
-DECL|macro|ISDN_NET_ENCAP_MAX_ENCAP
-mdefine_line|#define ISDN_NET_ENCAP_MAX_ENCAP  ISDN_NET_ENCAP_X25IFACE
 multiline_comment|/* Facility which currently uses an ISDN-channel */
 DECL|macro|ISDN_USAGE_NONE
 mdefine_line|#define ISDN_USAGE_NONE       0
