@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * unistr.c - NTFS Unicode string handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * unistr.c - NTFS Unicode string handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/*&n; * IMPORTANT&n; * =========&n; *&n; * All these routines assume that the Unicode characters are in little endian&n; * encoding inside the strings!!!&n; */
 multiline_comment|/*&n; * This is used by the name collation functions to quickly determine what&n; * characters are (in)valid.&n; */
@@ -268,26 +268,29 @@ id|upcase_len
 (brace
 id|u32
 id|cnt
-suffix:semicolon
-r_const
+comma
 id|u32
 id|min_len
-op_assign
-id|min_t
-c_func
-(paren
-r_const
-id|u32
-comma
-id|name1_len
-comma
-id|name2_len
-)paren
 suffix:semicolon
 id|uchar_t
 id|c1
 comma
 id|c2
+suffix:semicolon
+id|min_len
+op_assign
+id|name1_len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name1_len
+OG
+id|name2_len
+)paren
+id|min_len
+op_assign
+id|name2_len
 suffix:semicolon
 r_for
 c_loop

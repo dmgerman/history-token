@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * attrib.c - NTFS attribute operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * attrib.c - NTFS attribute operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
@@ -4749,9 +4749,37 @@ suffix:semicolon
 multiline_comment|/* @val is present; compare values. */
 r_else
 (brace
+id|u32
+id|vl
+suffix:semicolon
 r_register
 r_int
 id|rc
+suffix:semicolon
+id|vl
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|a
+op_member_access_from_pointer
+id|_ARA
+c_func
+(paren
+id|value_length
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vl
+OG
+id|val_len
+)paren
+id|vl
+op_assign
+id|val_len
 suffix:semicolon
 id|rc
 op_assign
@@ -4778,26 +4806,7 @@ id|value_offset
 )paren
 )paren
 comma
-id|min_t
-c_func
-(paren
-r_const
-id|u32
-comma
-id|val_len
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|a
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_length
-)paren
-)paren
-)paren
+id|vl
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If @val collates before the current attribute&squot;s&n;&t;&t;&t; * value, there is no matching attribute.&n;&t;&t;&t; */
