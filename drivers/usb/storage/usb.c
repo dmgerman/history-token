@@ -1187,6 +1187,16 @@ op_ne
 id|US_ACT_COMMAND
 )paren
 suffix:semicolon
+multiline_comment|/* lock the device pointers */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* reject the command if the direction indicator &n;&t;&t; * is UNKNOWN&n;&t;&t; */
 r_if
 c_cond
@@ -1208,34 +1218,9 @@ id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
 multiline_comment|/* reject if target != 0 or if LUN is higher than&n;&t;&t; * the maximum known LUN&n;&t;&t; */
+r_else
 r_if
 c_cond
 (paren
@@ -1265,33 +1250,8 @@ id|DID_BAD_TARGET
 op_lshift
 l_int|16
 suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -1316,34 +1276,9 @@ id|DID_BAD_TARGET
 op_lshift
 l_int|16
 suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
 multiline_comment|/* handle those devices which can&squot;t do a START_STOP */
+r_else
 r_if
 c_cond
 (paren
@@ -1375,44 +1310,9 @@ id|GOOD
 op_lshift
 l_int|1
 suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
-multiline_comment|/* lock the device pointers */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* our device has gone - pretend not ready */
+r_else
 r_if
 c_cond
 (paren
@@ -1548,10 +1448,9 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_else
-(brace
 multiline_comment|/* test_bit(DEV_ATTACHED, &amp;us-&gt;bitflags) */
-multiline_comment|/* Handle those devices which need us to fake &n;&t;&t;&t; * their inquiry data */
+multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
+r_else
 r_if
 c_cond
 (paren
@@ -1619,9 +1518,9 @@ op_lshift
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* we&squot;ve got a command, let&squot;s do it! */
 r_else
 (brace
-multiline_comment|/* we&squot;ve got a command, let&squot;s do it! */
 id|US_DEBUG
 c_func
 (paren
@@ -1642,7 +1541,6 @@ comma
 id|us
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* unlock the device pointers */
 id|up
