@@ -440,7 +440,11 @@ op_logical_and
 id|abs
 c_func
 (paren
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_minus
 (paren
 l_int|1000000
@@ -597,7 +601,11 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_assign
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 id|delta
@@ -783,9 +791,13 @@ op_add_assign
 l_int|1000000
 suffix:semicolon
 )brace
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
+(paren
 id|new_usec
+op_star
+l_int|1000
+)paren
 suffix:semicolon
 id|xtime.tv_sec
 op_assign
@@ -1032,7 +1044,7 @@ id|tb_last_stamp
 op_assign
 id|stamp
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
