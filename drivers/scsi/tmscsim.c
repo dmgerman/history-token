@@ -128,14 +128,6 @@ comma
 id|tmscsim_pci_tbl
 )paren
 suffix:semicolon
-DECL|macro|USE_SPINLOCKS
-mdefine_line|#define USE_SPINLOCKS 1
-DECL|macro|DC390_IFLAGS
-mdefine_line|#define DC390_IFLAGS unsigned long iflags
-DECL|macro|DC390_LOCK_IO
-mdefine_line|#define DC390_LOCK_IO(dev) spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
-DECL|macro|DC390_UNLOCK_IO
-mdefine_line|#define DC390_UNLOCK_IO(dev) spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 multiline_comment|/* These macros are used for uniform access to 2.0.x and 2.1.x PCI config space*/
 DECL|macro|PDEV
 mdefine_line|#define PDEV pdev
@@ -2984,7 +2976,9 @@ id|PACB
 )paren
 id|ptr
 suffix:semicolon
-id|DC390_IFLAGS
+r_int
+r_int
+id|iflags
 suffix:semicolon
 id|DEBUG0
 c_func
@@ -2995,10 +2989,12 @@ l_string|&quot;DC390: Debug: Waiting queue woken up by timer!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|DC390_LOCK_IO
+id|spin_lock_irqsave
 c_func
 (paren
-id|pACB-&gt;pScsiHost
+id|pACB-&gt;pScsiHost-&gt;host_lock
+comma
+id|iflags
 )paren
 suffix:semicolon
 id|dc390_Waiting_process
@@ -3006,10 +3002,12 @@ id|dc390_Waiting_process
 id|pACB
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_IO
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|pACB-&gt;pScsiHost
+id|pACB-&gt;pScsiHost-&gt;host_lock
+comma
+id|iflags
 )paren
 suffix:semicolon
 )brace
@@ -7729,7 +7727,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|DC390_IFLAGS
+r_int
+r_int
+id|iflags
 suffix:semicolon
 id|PACB
 id|pACB
@@ -7745,10 +7745,12 @@ c_func
 id|scsi_host
 )paren
 suffix:semicolon
-id|DC390_LOCK_IO
+id|spin_lock_irqsave
 c_func
 (paren
-id|scsi_host
+id|scsi_host-&gt;host_lock
+comma
+id|iflags
 )paren
 suffix:semicolon
 multiline_comment|/* TO DO: We should check for outstanding commands first. */
@@ -7802,10 +7804,12 @@ c_func
 id|scsi_host
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_IO
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|scsi_host
+id|scsi_host-&gt;host_lock
+comma
+id|iflags
 )paren
 suffix:semicolon
 id|pci_disable_device
