@@ -3,7 +3,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_ASM_PMAC_FEATURE_H
 DECL|macro|__PPC_ASM_PMAC_FEATURE_H
 mdefine_line|#define __PPC_ASM_PMAC_FEATURE_H
-multiline_comment|/*&n; * Known Mac motherboard models&n; * &n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; */
+macro_line|#include &lt;asm/macio_asic.h&gt;
+multiline_comment|/*&n; * Known Mac motherboard models&n; * &n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; * &n; * Note that I don&squot;t fully maintain this list for Core99 &amp; MacRISC2&n; * and I&squot;m considering removing all NewWorld entries from it and&n; * entirely rely on the model string.&n; */
 multiline_comment|/* PowerSurge are the first generation of PCI Pmacs. This include&n; * all of the Grand-Central based machines. We currently don&squot;t&n; * differenciate most of them.&n; */
 DECL|macro|PMAC_TYPE_PSURGE
 mdefine_line|#define PMAC_TYPE_PSURGE&t;&t;0x10&t;/* PowerSurge */
@@ -60,11 +61,20 @@ mdefine_line|#define PMAC_TYPE_PISMO&t;&t;&t;0x46&t;/* Pismo PowerBook */
 DECL|macro|PMAC_TYPE_TITANIUM
 mdefine_line|#define PMAC_TYPE_TITANIUM&t;&t;0x47&t;/* Titanium PowerBook */
 DECL|macro|PMAC_TYPE_TITANIUM2
-mdefine_line|#define PMAC_TYPE_TITANIUM2&t;&t;0x48&t;/* Titanium II PowerBook */
+mdefine_line|#define PMAC_TYPE_TITANIUM2&t;&t;0x48&t;/* Titanium II PowerBook (no L3, M6) */
 DECL|macro|PMAC_TYPE_TITANIUM3
-mdefine_line|#define PMAC_TYPE_TITANIUM3&t;&t;0x49&t;/* Titanium III PowerBook (with L3) */
+mdefine_line|#define PMAC_TYPE_TITANIUM3&t;&t;0x49&t;/* Titanium III PowerBook (with L3 &amp; M7) */
+DECL|macro|PMAC_TYPE_TITANIUM4
+mdefine_line|#define PMAC_TYPE_TITANIUM4&t;&t;0x50&t;/* Titanium IV PowerBook (with L3 &amp; M9) */
+DECL|macro|PMAC_TYPE_EMAC
+mdefine_line|#define PMAC_TYPE_EMAC&t;&t;&t;0x50&t;/* eMac */
 DECL|macro|PMAC_TYPE_UNKNOWN_CORE99
 mdefine_line|#define PMAC_TYPE_UNKNOWN_CORE99&t;0x5f
+multiline_comment|/* MacRisc2 with UniNorth 2.0 */
+DECL|macro|PMAC_TYPE_RACKMAC
+mdefine_line|#define PMAC_TYPE_RACKMAC&t;&t;0x80&t;/* XServe */
+DECL|macro|PMAC_TYPE_WINDTUNNEL
+mdefine_line|#define PMAC_TYPE_WINDTUNNEL&t;&t;0x81&t;
 multiline_comment|/* MacRISC2 machines based on the Pangea chipset&n; */
 DECL|macro|PMAC_TYPE_PANGEA_IMAC
 mdefine_line|#define PMAC_TYPE_PANGEA_IMAC&t;&t;0x100&t;/* Flower Power iMac */
@@ -74,11 +84,18 @@ DECL|macro|PMAC_TYPE_FLAT_PANEL_IMAC
 mdefine_line|#define PMAC_TYPE_FLAT_PANEL_IMAC&t;0x102&t;/* Flat panel iMac */
 DECL|macro|PMAC_TYPE_UNKNOWN_PANGEA
 mdefine_line|#define PMAC_TYPE_UNKNOWN_PANGEA&t;0x10f
+multiline_comment|/* MacRISC2 machines based on the Intrepid chipset&n; */
+DECL|macro|PMAC_TYPE_UNKNOWN_INTREPID
+mdefine_line|#define PMAC_TYPE_UNKNOWN_INTREPID&t;0x11f&t;/* Generic */
 multiline_comment|/*&n; * Motherboard flags&n; */
 DECL|macro|PMAC_MB_CAN_SLEEP
 mdefine_line|#define PMAC_MB_CAN_SLEEP&t;&t;0x00000001
 DECL|macro|PMAC_MB_HAS_FW_POWER
 mdefine_line|#define PMAC_MB_HAS_FW_POWER&t;&t;0x00000002
+DECL|macro|PMAC_MB_OLD_CORE99
+mdefine_line|#define PMAC_MB_OLD_CORE99&t;&t;0x00000004
+DECL|macro|PMAC_MB_MOBILE
+mdefine_line|#define PMAC_MB_MOBILE&t;&t;&t;0x00000008
 multiline_comment|/*&n; * Feature calls supported on pmac&n; * &t;&n; */
 multiline_comment|/*&n; * Use this inline wrapper&n; */
 r_struct
@@ -229,6 +246,138 @@ r_void
 suffix:semicolon
 DECL|macro|PMAC_FTR_DEF
 mdefine_line|#define PMAC_FTR_DEF(x) ((_MACH_Pmac &lt;&lt; 16) | (x))
+multiline_comment|/*&n; * The part below is for use by macio_asic.c only, do not rely&n; * on the data structures or constants below in a normal driver&n; *&n; */
+DECL|macro|MAX_MACIO_CHIPS
+mdefine_line|#define MAX_MACIO_CHIPS&t;&t;2
+r_enum
+(brace
+DECL|enumerator|macio_unknown
+id|macio_unknown
+op_assign
+l_int|0
+comma
+DECL|enumerator|macio_grand_central
+id|macio_grand_central
+comma
+DECL|enumerator|macio_ohare
+id|macio_ohare
+comma
+DECL|enumerator|macio_ohareII
+id|macio_ohareII
+comma
+DECL|enumerator|macio_heathrow
+id|macio_heathrow
+comma
+DECL|enumerator|macio_gatwick
+id|macio_gatwick
+comma
+DECL|enumerator|macio_paddington
+id|macio_paddington
+comma
+DECL|enumerator|macio_keylargo
+id|macio_keylargo
+comma
+DECL|enumerator|macio_pangea
+id|macio_pangea
+comma
+DECL|enumerator|macio_intrepid
+id|macio_intrepid
+comma
+)brace
+suffix:semicolon
+DECL|struct|macio_chip
+r_struct
+id|macio_chip
+(brace
+DECL|member|of_node
+r_struct
+id|device_node
+op_star
+id|of_node
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|rev
+r_int
+id|rev
+suffix:semicolon
+DECL|member|base
+r_volatile
+id|u32
+op_star
+id|base
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* For use by macio_asic PCI driver */
+DECL|member|lbus
+r_struct
+id|macio_bus
+id|lbus
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|macio_chip
+id|macio_chips
+(braket
+id|MAX_MACIO_CHIPS
+)braket
+suffix:semicolon
+DECL|macro|MACIO_FLAG_SCCA_ON
+mdefine_line|#define MACIO_FLAG_SCCA_ON&t;0x00000001
+DECL|macro|MACIO_FLAG_SCCB_ON
+mdefine_line|#define MACIO_FLAG_SCCB_ON&t;0x00000002
+DECL|macro|MACIO_FLAG_SCC_LOCKED
+mdefine_line|#define MACIO_FLAG_SCC_LOCKED&t;0x00000004
+DECL|macro|MACIO_FLAG_AIRPORT_ON
+mdefine_line|#define MACIO_FLAG_AIRPORT_ON&t;0x00000010
+DECL|macro|MACIO_FLAG_FW_SUPPORTED
+mdefine_line|#define MACIO_FLAG_FW_SUPPORTED&t;0x00000020
+r_extern
+r_struct
+id|macio_chip
+op_star
+id|macio_find
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|child
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+DECL|macro|MACIO_FCR32
+mdefine_line|#define MACIO_FCR32(macio, r)&t;((macio)-&gt;base + ((r) &gt;&gt; 2))
+DECL|macro|MACIO_FCR8
+mdefine_line|#define MACIO_FCR8(macio, r)&t;(((volatile u8*)((macio)-&gt;base)) + (r))
+DECL|macro|MACIO_IN32
+mdefine_line|#define MACIO_IN32(r)&t;&t;(in_le32(MACIO_FCR32(macio,r)))
+DECL|macro|MACIO_OUT32
+mdefine_line|#define MACIO_OUT32(r,v)&t;(out_le32(MACIO_FCR32(macio,r), (v)))
+DECL|macro|MACIO_BIS
+mdefine_line|#define MACIO_BIS(r,v)&t;&t;(MACIO_OUT32((r), MACIO_IN32(r) | (v)))
+DECL|macro|MACIO_BIC
+mdefine_line|#define MACIO_BIC(r,v)&t;&t;(MACIO_OUT32((r), MACIO_IN32(r) &amp; ~(v)))
+DECL|macro|MACIO_IN8
+mdefine_line|#define MACIO_IN8(r)&t;&t;(in_8(MACIO_FCR8(macio,r)))
+DECL|macro|MACIO_OUT8
+mdefine_line|#define MACIO_OUT8(r,v)&t;&t;(out_8(MACIO_FCR8(macio,r), (v)))
 macro_line|#endif /* __PPC_ASM_PMAC_FEATURE_H */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -211,6 +211,15 @@ r_int
 id|target
 )paren
 suffix:semicolon
+multiline_comment|/* Low level assembly function used to backup CPU 0 state */
+r_extern
+r_void
+id|__save_cpu_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; * &n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION&t;0
@@ -1239,6 +1248,12 @@ id|num_cpus
 )paren
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/* Backup CPU 0 state */
+id|__save_cpu_setup
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

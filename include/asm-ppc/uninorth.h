@@ -27,6 +27,8 @@ DECL|macro|UNI_N_CFG_GART_ENABLE
 mdefine_line|#define UNI_N_CFG_GART_ENABLE&t;&t;0x00000100
 DECL|macro|UNI_N_CFG_GART_2xRESET
 mdefine_line|#define UNI_N_CFG_GART_2xRESET&t;&t;0x00010000
+DECL|macro|UNI_N_CFG_GART_DISSBADET
+mdefine_line|#define UNI_N_CFG_GART_DISSBADET&t;0x00020000
 multiline_comment|/* My understanding of UniNorth AGP as of UniNorth rev 1.0x,&n; * revision 1.5 (x4 AGP) may need further changes.&n; * &n; * AGP_BASE register contains the base address of the AGP aperture on&n; * the AGP bus. It doesn&squot;t seem to be visible to the CPU as of UniNorth 1.x,&n; * even if decoding of this address range is enabled in the address select&n; * register. Apparently, the only supported bases are 256Mb multiples&n; * (high 4 bits of that register).&n; * &n; * GART_BASE register appear to contain the physical address of the GART&n; * in system memory in the high address bits (page aligned), and the&n; * GART size in the low order bits (number of GART pages)&n; *&n; * The GART format itself is one 32bits word per physical memory page.&n; * This word contains, in little-endian format (!!!), the physical address&n; * of the page in the high bits, and what appears to be an &quot;enable&quot; bit&n; * in the LSB bit (0) that must be set to 1 when the entry is valid.&n; * &n; * Obviously, the GART is not cache coherent and so any change to it&n; * must be flushed to memory (or maybe just make the GART space non&n; * cachable). AGP memory itself doens&squot;t seem to be cache coherent neither.&n; * &n; * In order to invalidate the GART (which is probably necessary to inval&n; * the bridge internal TLBs), the following sequence has to be written,&n; * in order, to the GART_CTRL register:&n; * &n; *   UNI_N_CFG_GART_ENABLE | UNI_N_CFG_GART_INVAL&n; *   UNI_N_CFG_GART_ENABLE&n; *   UNI_N_CFG_GART_ENABLE | UNI_N_CFG_GART_2xRESET&n; *   UNI_N_CFG_GART_ENABLE&n; *   &n; * As far as AGP &quot;features&quot; are concerned, it looks like fast write may&n; * not be supported but this has to be confirmed.&n; * &n; * Turning on AGP seem to require a double invalidate operation, one before&n; * setting the AGP command register, on after.&n; * &n; * Turning off AGP seems to require the following sequence: first wait&n; * for the AGP to be idle by reading the internal status register, then&n; * write in that order to the GART_CTRL register:&n; * &n; *   UNI_N_CFG_GART_ENABLE | UNI_N_CFG_GART_INVAL&n; *   0&n; *   UNI_N_CFG_GART_2xRESET&n; *   0&n; */
 multiline_comment|/* &n; * Uni-N memory mapped reg. definitions&n; * &n; * Those registers are Big-Endian !!&n; *&n; * Their meaning come from either Darwin and/or from experiments I made with&n; * the bootrom, I&squot;m not sure about their exact meaning yet&n; *&n; */
 multiline_comment|/* Version of the UniNorth chip */
@@ -41,6 +43,8 @@ DECL|macro|UNI_N_CLOCK_CNTL_GMAC
 mdefine_line|#define UNI_N_CLOCK_CNTL_GMAC&t;&t;0x00000002&t;/* GMAC clock control */
 DECL|macro|UNI_N_CLOCK_CNTL_FW
 mdefine_line|#define UNI_N_CLOCK_CNTL_FW&t;&t;0x00000004&t;/* FireWire clock control */
+DECL|macro|UNI_N_CLOCK_CNTL_ATA100
+mdefine_line|#define UNI_N_CLOCK_CNTL_ATA100&t;&t;0x00000010&t;/* ATA-100 clock control (U2) */
 multiline_comment|/* Power Management control */
 DECL|macro|UNI_N_POWER_MGT
 mdefine_line|#define UNI_N_POWER_MGT&t;&t;&t;0x0030
