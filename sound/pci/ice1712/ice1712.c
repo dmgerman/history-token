@@ -13462,6 +13462,13 @@ op_amp
 id|ice-&gt;gpio_mutex
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|ice-&gt;open_mutex
+)paren
+suffix:semicolon
 id|ice-&gt;gpio.set_mask
 op_assign
 id|snd_ice1712_set_gpio_mask
