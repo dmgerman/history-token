@@ -94,6 +94,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|buffer_data
+r_static
 r_void
 id|buffer_data
 c_func
