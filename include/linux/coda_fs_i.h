@@ -39,12 +39,12 @@ r_int
 r_int
 id|c_cached_epoch
 suffix:semicolon
-DECL|member|c_cached_cred
-r_struct
-id|coda_cred
-id|c_cached_cred
+multiline_comment|/* epoch for cached permissions */
+DECL|member|c_uid
+id|vuid_t
+id|c_uid
 suffix:semicolon
-multiline_comment|/* credentials of cached perms */
+multiline_comment|/* fsuid for cached permissions */
 DECL|member|c_cached_perm
 r_int
 r_int
@@ -83,12 +83,6 @@ r_int
 id|cfi_mapcount
 suffix:semicolon
 multiline_comment|/* nr of times this file is mapped */
-DECL|member|cfi_cred
-r_struct
-id|coda_cred
-id|cfi_cred
-suffix:semicolon
-multiline_comment|/* credentials of opener */
 )brace
 suffix:semicolon
 DECL|macro|CODA_FTOC

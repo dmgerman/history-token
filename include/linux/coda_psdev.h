@@ -191,9 +191,8 @@ comma
 r_int
 id|flags
 comma
-r_struct
-id|coda_cred
-op_star
+id|vuid_t
+id|uid
 )paren
 suffix:semicolon
 r_int
@@ -231,9 +230,8 @@ comma
 r_int
 id|flags
 comma
-r_struct
-id|coda_cred
-op_star
+id|vuid_t
+id|uid
 )paren
 suffix:semicolon
 r_int
