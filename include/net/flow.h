@@ -202,6 +202,19 @@ mdefine_line|#define fl_icmp_code&t;uli_u.icmpt.code
 DECL|macro|fl_ipsec_spi
 mdefine_line|#define fl_ipsec_spi&t;uli_u.spi
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|__aligned__
+c_func
+(paren
+id|BITS_PER_LONG
+op_div
+l_int|8
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|macro|FLOW_DIR_IN
 mdefine_line|#define FLOW_DIR_IN&t;0
