@@ -104,6 +104,16 @@ id|inode_operations
 id|ntfs_file_inode_ops
 op_assign
 (brace
+dot
+id|truncate
+op_assign
+id|ntfs_truncate
+comma
+dot
+id|setattr
+op_assign
+id|ntfs_setattr
+comma
 )brace
 suffix:semicolon
 DECL|variable|ntfs_empty_file_ops

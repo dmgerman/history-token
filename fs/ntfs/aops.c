@@ -5287,16 +5287,17 @@ OG
 id|vi-&gt;i_size
 )paren
 (brace
-id|vi-&gt;i_size
-op_assign
-id|pos
-suffix:semicolon
-id|mark_inode_dirty
+id|ntfs_error
 c_func
 (paren
-id|vi
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Writing beyond the existing file size is &quot;
+l_string|&quot;not supported yet. Sorry.&quot;
 )paren
 suffix:semicolon
+singleline_comment|// vi-&gt;i_size = pos;
+singleline_comment|// mark_inode_dirty(vi);
 )brace
 id|ntfs_debug
 c_func
