@@ -1076,7 +1076,7 @@ comma
 dot
 id|mask
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 comma
 dot
 id|name

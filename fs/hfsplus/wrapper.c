@@ -658,9 +658,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|blocksize
 op_rshift_assign
 l_int|1
+)paren
+op_ne
+l_int|0
 )paren
 id|HFSPLUS_SB
 c_func

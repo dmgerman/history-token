@@ -1024,67 +1024,15 @@ mdefine_line|#define XFS_BUF_UNSTALE(x)&t;((x)-&gt;pb_flags &amp;= ~XFS_B_STALE)
 DECL|macro|XFS_BUF_ISSTALE
 mdefine_line|#define XFS_BUF_ISSTALE(x)&t;((x)-&gt;pb_flags &amp; XFS_B_STALE)
 DECL|macro|XFS_BUF_SUPER_STALE
-mdefine_line|#define XFS_BUF_SUPER_STALE(x)&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_STALE(x);&t;&bslash;&n;&t;&t;&t;&t;&t;xfs_buf_undelay(x);&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_DONE(x);&t;&bslash;&n;&t;&t;&t;&t;} while (0)
+mdefine_line|#define XFS_BUF_SUPER_STALE(x)&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_STALE(x);&t;&bslash;&n;&t;&t;&t;&t;&t;pagebuf_delwri_dequeue(x);&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_DONE(x);&t;&bslash;&n;&t;&t;&t;&t;} while (0)
 DECL|macro|XFS_BUF_MANAGE
 mdefine_line|#define XFS_BUF_MANAGE&t;&t;PBF_FS_MANAGED
 DECL|macro|XFS_BUF_UNMANAGE
 mdefine_line|#define XFS_BUF_UNMANAGE(x)&t;((x)-&gt;pb_flags &amp;= ~PBF_FS_MANAGED)
-DECL|function|xfs_buf_undelay
-r_static
-r_inline
-r_void
-id|xfs_buf_undelay
-c_func
-(paren
-id|xfs_buf_t
-op_star
-id|pb
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pb-&gt;pb_flags
-op_amp
-id|PBF_DELWRI
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pb-&gt;pb_list.next
-op_ne
-op_amp
-id|pb-&gt;pb_list
-)paren
-(brace
-id|pagebuf_delwri_dequeue
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
-id|pagebuf_rele
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pb-&gt;pb_flags
-op_and_assign
-op_complement
-id|PBF_DELWRI
-suffix:semicolon
-)brace
-)brace
-)brace
 DECL|macro|XFS_BUF_DELAYWRITE
 mdefine_line|#define XFS_BUF_DELAYWRITE(x)&t; ((x)-&gt;pb_flags |= PBF_DELWRI)
 DECL|macro|XFS_BUF_UNDELAYWRITE
-mdefine_line|#define XFS_BUF_UNDELAYWRITE(x)&t; xfs_buf_undelay(x)
+mdefine_line|#define XFS_BUF_UNDELAYWRITE(x)&t; pagebuf_delwri_dequeue(x)
 DECL|macro|XFS_BUF_ISDELAYWRITE
 mdefine_line|#define XFS_BUF_ISDELAYWRITE(x)&t; ((x)-&gt;pb_flags &amp; PBF_DELWRI)
 DECL|macro|XFS_BUF_ERROR
@@ -1300,7 +1248,7 @@ id|bp-&gt;pb_strat
 op_assign
 id|xfs_bdstrat_cb
 suffix:semicolon
-id|xfs_buf_undelay
+id|pagebuf_delwri_dequeue
 c_func
 (paren
 id|bp
@@ -1403,7 +1351,7 @@ id|pb-&gt;pb_flags
 op_or_assign
 id|_PBF_RUN_QUEUES
 suffix:semicolon
-id|xfs_buf_undelay
+id|pagebuf_delwri_dequeue
 c_func
 (paren
 id|pb

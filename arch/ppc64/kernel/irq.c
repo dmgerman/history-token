@@ -638,9 +638,11 @@ id|action-&gt;flags
 op_assign
 id|irqflags
 suffix:semicolon
+id|cpus_clear
+c_func
+(paren
 id|action-&gt;mask
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|action-&gt;name
 op_assign
@@ -2760,11 +2762,6 @@ id|new_value
 comma
 id|tmp
 suffix:semicolon
-id|cpumask_t
-id|allcpus
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2805,7 +2802,7 @@ id|new_value
 comma
 id|new_value
 comma
-id|allcpus
+id|CPU_MASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Grab lock here so cpu_online_map can&squot;t change, and also&n;&t; * protect irq_affinity[].&n;&t; */

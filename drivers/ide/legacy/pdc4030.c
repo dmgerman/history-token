@@ -1359,7 +1359,7 @@ id|nsect
 suffix:semicolon
 macro_line|#endif /* DEBUG_READ */
 macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-id|task_sectors
+id|task_bio_sectors
 c_func
 (paren
 id|drive
@@ -1876,7 +1876,7 @@ id|nsect
 op_assign
 id|msect
 suffix:semicolon
-id|task_sectors
+id|task_bio_sectors
 c_func
 (paren
 id|drive

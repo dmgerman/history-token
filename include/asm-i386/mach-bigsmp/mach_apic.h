@@ -64,7 +64,7 @@ id|NR_CPUS
 )paren
 id|cpu
 op_assign
-id|first_cpu_const
+id|first_cpu
 c_func
 (paren
 id|cpu_online_map
@@ -73,7 +73,7 @@ suffix:semicolon
 r_else
 id|cpu
 op_assign
-id|next_cpu_const
+id|next_cpu
 c_func
 (paren
 id|cpu
@@ -91,14 +91,10 @@ id|NR_CPUS
 )paren
 suffix:semicolon
 r_return
-id|mk_cpumask_const
-c_func
-(paren
 id|cpumask_of_cpu
 c_func
 (paren
 id|cpu
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -509,7 +505,7 @@ r_int
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 (brace
@@ -521,7 +517,7 @@ id|apicid
 suffix:semicolon
 id|cpu
 op_assign
-id|first_cpu_const
+id|first_cpu
 c_func
 (paren
 id|cpumask

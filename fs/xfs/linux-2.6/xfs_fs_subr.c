@@ -6,6 +6,7 @@ DECL|function|fs_noerr
 id|fs_noerr
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -18,6 +19,7 @@ DECL|function|fs_nosys
 id|fs_nosys
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -31,6 +33,7 @@ DECL|function|fs_noval
 id|fs_noval
 c_func
 (paren
+r_void
 )paren
 (brace
 )brace

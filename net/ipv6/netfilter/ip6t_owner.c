@@ -629,6 +629,40 @@ id|ip6t_owner_info
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* files-&gt;file_lock can not be used in a BH */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_struct
+id|ip6t_owner_info
+op_star
+)paren
+id|matchinfo
+)paren
+op_member_access_from_pointer
+id|match
+op_amp
+(paren
+id|IP6T_OWNER_PID
+op_or
+id|IP6T_OWNER_SID
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ip6t_owner: pid and sid matching is broken on SMP.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon

@@ -336,11 +336,6 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|cpumask_t
-id|mask
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 multiline_comment|/* Unblock all signals. */
 id|flush_signals
 c_func
@@ -388,7 +383,7 @@ c_func
 (paren
 id|current
 comma
-id|mask
+id|CPU_MASK_ALL
 )paren
 suffix:semicolon
 id|retval

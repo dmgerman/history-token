@@ -15,13 +15,8 @@ c_func
 r_void
 )paren
 (brace
-id|cpumask_t
-id|tmp
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 r_return
-id|tmp
+id|CPU_MASK_ALL
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
@@ -472,7 +467,7 @@ r_int
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 (brace

@@ -140,6 +140,16 @@ id|init_irq
 r_void
 )paren
 suffix:semicolon
+DECL|member|init_time
+r_void
+(paren
+op_star
+id|init_time
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|member|init_machine
 r_void
 (paren
@@ -173,6 +183,8 @@ DECL|macro|MAPIO
 mdefine_line|#define MAPIO(_func)&t;&t;&t;&t;&bslash;&n;&t;.map_io&t;&t;= _func,
 DECL|macro|INITIRQ
 mdefine_line|#define INITIRQ(_func)&t;&t;&t;&t;&bslash;&n;&t;.init_irq&t;= _func,
+DECL|macro|INITTIME
+mdefine_line|#define INITTIME(_func)&t;&t;&t;&t;&bslash;&n;&t;.init_time&t;= _func,
 DECL|macro|INIT_MACHINE
 mdefine_line|#define INIT_MACHINE(_func)&t;&t;&t;&bslash;&n;&t;.init_machine&t;= _func,
 DECL|macro|MACHINE_END

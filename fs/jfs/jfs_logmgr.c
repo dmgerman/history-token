@@ -7142,6 +7142,8 @@ id|bp
 op_assign
 id|log_redrive_list
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|log_redrive_list

@@ -2003,7 +2003,7 @@ op_amp
 id|HFLAG_FENABLE
 )paren
 )paren
-r_return
+(brace
 id|happy_meal_bb_write
 c_func
 (paren
@@ -2016,6 +2016,9 @@ comma
 id|value
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Would you like fries with that? */
 id|hme_write32
 c_func

@@ -5,6 +5,7 @@ mdefine_line|#define _PPC64_MACHDEP_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 r_struct
 id|pt_regs
@@ -594,18 +595,9 @@ r_struct
 id|machdep_calls
 id|ppc_md
 suffix:semicolon
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 512
 r_extern
 r_char
 id|cmd_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
-r_extern
-r_char
-id|saved_command_line
 (braket
 id|COMMAND_LINE_SIZE
 )braket

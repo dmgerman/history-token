@@ -2707,6 +2707,10 @@ id|newsk-&gt;sk_backlog.tail
 op_assign
 l_int|NULL
 suffix:semicolon
+id|newsk-&gt;sk_send_head
+op_assign
+l_int|NULL
+suffix:semicolon
 id|newsk-&gt;sk_callback_lock
 op_assign
 id|RW_LOCK_UNLOCKED
@@ -2914,10 +2918,6 @@ c_func
 op_amp
 id|newtp-&gt;out_of_order_queue
 )paren
-suffix:semicolon
-id|newtp-&gt;send_head
-op_assign
-l_int|NULL
 suffix:semicolon
 id|newtp-&gt;rcv_wup
 op_assign

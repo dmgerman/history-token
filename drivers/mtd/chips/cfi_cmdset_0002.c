@@ -2428,7 +2428,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;MTD %s(): WRITE 0x%.8lx(0x%.8x)&bslash;n&quot;
+l_string|&quot;MTD %s(): WRITE 0x%.8lx(0x%.8llx)&bslash;n&quot;
 comma
 id|__func__
 comma
@@ -2837,7 +2837,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;MTD %s(): 0x%.8lx(0x%.8x): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
+l_string|&quot;MTD %s(): 0x%.8lx(0x%.8llx): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
 comma
 id|__func__
 comma
@@ -4582,7 +4582,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;MTD %s(): 0x%.8lx(0x%.8x): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
+l_string|&quot;MTD %s(): 0x%.8lx(0x%.8llx): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
 comma
 id|__func__
 comma
@@ -5448,7 +5448,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;MTD %s(): 0x%.8lx(0x%.8x): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
+l_string|&quot;MTD %s(): 0x%.8lx(0x%.8llx): 0x%.8x 0x%.8x 0x%.8x 0x%.8x&bslash;n&quot;
 comma
 id|__func__
 comma

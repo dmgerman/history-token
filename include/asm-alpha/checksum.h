@@ -1,6 +1,7 @@
 macro_line|#ifndef _ALPHA_CHECKSUM_H
 DECL|macro|_ALPHA_CHECKSUM_H
 mdefine_line|#define _ALPHA_CHECKSUM_H
+macro_line|#include &lt;linux/in6.h&gt;
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; */
 r_extern
 r_int

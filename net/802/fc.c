@@ -76,17 +76,6 @@ r_struct
 id|fcllc
 op_star
 id|fcllc
-op_assign
-(paren
-r_struct
-id|fcllc
-op_star
-)paren
-(paren
-id|fch
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|hdr_len
 op_assign

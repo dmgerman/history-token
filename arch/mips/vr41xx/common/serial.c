@@ -467,6 +467,7 @@ suffix:semicolon
 id|vr41xx_enable_dsiuint
 c_func
 (paren
+id|DSIUINT_ALL
 )paren
 suffix:semicolon
 id|vr41xx_serial_ports

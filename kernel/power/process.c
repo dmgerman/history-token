@@ -436,12 +436,6 @@ comma
 id|p-&gt;comm
 )paren
 suffix:semicolon
-id|wake_up_process
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 )brace
 id|while_each_thread
 c_func

@@ -7345,10 +7345,13 @@ comma
 DECL|enumerator|idedisk_pm_standby
 id|idedisk_pm_standby
 comma
-DECL|enumerator|idedisk_pm_restore_dma
-id|idedisk_pm_restore_dma
+DECL|enumerator|idedisk_pm_idle
+id|idedisk_pm_idle
 op_assign
 id|ide_pm_state_start_resume
+comma
+DECL|enumerator|idedisk_pm_restore_dma
+id|idedisk_pm_restore_dma
 comma
 )brace
 suffix:semicolon
@@ -7408,6 +7411,16 @@ multiline_comment|/* Suspend step 2 (standby) complete */
 id|rq-&gt;pm-&gt;pm_step
 op_assign
 id|ide_pm_state_completed
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|idedisk_pm_idle
+suffix:colon
+multiline_comment|/* Resume step 1 (idle) complete */
+id|rq-&gt;pm-&gt;pm_step
+op_assign
+id|idedisk_pm_restore_dma
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7561,9 +7574,37 @@ id|args
 )paren
 suffix:semicolon
 r_case
+id|idedisk_pm_idle
+suffix:colon
+multiline_comment|/* Resume step 1 (idle) */
+id|args-&gt;tfRegister
+(braket
+id|IDE_COMMAND_OFFSET
+)braket
+op_assign
+id|WIN_IDLEIMMEDIATE
+suffix:semicolon
+id|args-&gt;command_type
+op_assign
+id|IDE_DRIVE_TASK_NO_DATA
+suffix:semicolon
+id|args-&gt;handler
+op_assign
+id|task_no_data_intr
+suffix:semicolon
+r_return
+id|do_rw_taskfile
+c_func
+(paren
+id|drive
+comma
+id|args
+)paren
+suffix:semicolon
+r_case
 id|idedisk_pm_restore_dma
 suffix:colon
-multiline_comment|/* Resume step 1 (restore DMA) */
+multiline_comment|/* Resume step 2 (restore DMA) */
 multiline_comment|/*&n;&t;&t; * Right now, all we do is call hwif-&gt;ide_dma_check(drive),&n;&t;&t; * we could be smarter and check for current xfer_speed&n;&t;&t; * in struct drive etc...&n;&t;&t; * Also, this step could be implemented as a generic helper&n;&t;&t; * as most subdrivers will use it&n;&t;&t; */
 r_if
 c_cond

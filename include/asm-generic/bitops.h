@@ -145,6 +145,8 @@ c_func
 r_int
 id|nr
 comma
+r_const
+r_int
 r_int
 op_star
 id|addr

@@ -295,23 +295,10 @@ mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIF
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
-multiline_comment|/*&n; * Bits 0, 1, 2, 9 and 10 are taken, split up the 27 bits of offset&n; * into this range:&n; */
-DECL|macro|pte_to_pgoff
-mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x3f ) + (((_pte).pte &gt;&gt; 11) &lt;&lt; 8 ))
-DECL|macro|pgoff_to_pte
-mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x3f) &lt;&lt; 3) + (((off) &gt;&gt; 8) &lt;&lt; 11) + _PAGE_FILE })
-macro_line|#else
-multiline_comment|/*&n; * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset&n; * into this range:&n; */
-DECL|macro|pte_to_pgoff
-mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
-DECL|macro|pgoff_to_pte
-mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
-macro_line|#endif
 DECL|macro|__pgd_offset
 mdefine_line|#define __pgd_offset(address)&t;pgd_index(address)
 DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+mdefine_line|#define __pmd_offset(address)&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
@@ -361,21 +348,36 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) ((void)(pte))
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) ((void)(pte))
-multiline_comment|/* Swap entries must have VALID and GLOBAL bits cleared. */
 macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+multiline_comment|/* Swap entries must have VALID bit cleared. */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 1) &amp; 0x7f)
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 10) &amp; 0x1f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 10)
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 15)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 10) })
+mdefine_line|#define __swp_entry(type,offset)&t;&bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 10) | ((offset) &lt;&lt; 15) })
+multiline_comment|/*&n; * Bits 0, 1, 2, 9 and 10 are taken, split up the 27 bits of offset&n; * into this range:&n; */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;27
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x3f ) + (((_pte).pte &gt;&gt; 11) &lt;&lt; 8 ))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x3f) &lt;&lt; 3) + (((off) &gt;&gt; 8) &lt;&lt; 11) + _PAGE_FILE })
 macro_line|#else
+multiline_comment|/* Swap entries must have VALID and GLOBAL bits cleared. */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 8) &amp; 0x1f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 8)
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 13)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+mdefine_line|#define __swp_entry(type,offset)&t;&bslash;&n;&t;&t;((swp_entry_t) { ((type) &lt;&lt; 8) | ((offset) &lt;&lt; 13) })
+multiline_comment|/*&n; * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset&n; * into this range:&n; */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;27
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
 macro_line|#endif
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })

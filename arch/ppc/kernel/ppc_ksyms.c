@@ -183,13 +183,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -1249,13 +1242,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|memchr
-)paren
-suffix:semicolon
-DECL|variable|abs
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|abs
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_FB_VGA16_MODULE)

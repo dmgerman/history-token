@@ -8374,6 +8374,8 @@ id|lid
 op_assign
 id|xtlck-&gt;next
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|tlck

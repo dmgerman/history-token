@@ -165,6 +165,16 @@ l_int|3
 )paren
 comma
 multiline_comment|/* has write cache we can&n;&t;&t;&t;&t;&t;     * (hopefully) flush? */
+DECL|enumerator|ATA_DFLAG_LOCK_SECTORS
+id|ATA_DFLAG_LOCK_SECTORS
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+comma
+multiline_comment|/* don&squot;t adjust max_sectors */
 DECL|enumerator|ATA_DEV_UNKNOWN
 id|ATA_DEV_UNKNOWN
 op_assign

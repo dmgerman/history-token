@@ -443,8 +443,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|rtas_call
+r_int
 id|rtas_call
 c_func
 (paren
@@ -457,7 +457,6 @@ comma
 r_int
 id|nret
 comma
-r_int
 r_int
 op_star
 id|outputs
@@ -624,19 +623,12 @@ id|rtas_args-&gt;args
 id|i
 )braket
 op_assign
-(paren
-id|rtas_arg_t
-)paren
-id|LONG_LSW
-c_func
-(paren
 id|va_arg
 c_func
 (paren
 id|list
 comma
-id|ulong
-)paren
+id|rtas_arg_t
 )paren
 suffix:semicolon
 id|PPCDBG
@@ -644,7 +636,7 @@ c_func
 (paren
 id|PPCDBG_RTAS
 comma
-l_string|&quot;&bslash;tnarg[%d] = 0x%lx&bslash;n&quot;
+l_string|&quot;&bslash;tnarg[%d] = 0x%x&bslash;n&quot;
 comma
 id|i
 comma
@@ -818,10 +810,6 @@ suffix:semicolon
 id|ret
 op_assign
 (paren
-id|ulong
-)paren
-(paren
-(paren
 id|nret
 OG
 l_int|0
@@ -834,7 +822,6 @@ l_int|0
 )braket
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* Gotta do something different here, use global lock for now... */
 id|spin_unlock_irqrestore
@@ -958,9 +945,6 @@ l_string|&quot;get-power-level&quot;
 )paren
 suffix:semicolon
 r_int
-id|powerlevel
-suffix:semicolon
-r_int
 id|rc
 suffix:semicolon
 r_if
@@ -976,14 +960,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
-)paren
-(brace
+(paren
 id|rc
 op_assign
-(paren
-r_int
-)paren
 id|rtas_call
 c_func
 (paren
@@ -993,16 +972,11 @@ l_int|1
 comma
 l_int|2
 comma
-op_amp
-id|powerlevel
+id|level
 comma
 id|powerdomain
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
+)paren
 op_eq
 id|RTAS_BUSY
 )paren
@@ -1011,18 +985,6 @@ c_func
 (paren
 l_int|1
 )paren
-suffix:semicolon
-r_else
-r_break
-suffix:semicolon
-)brace
-op_star
-id|level
-op_assign
-(paren
-r_int
-)paren
-id|powerlevel
 suffix:semicolon
 r_return
 id|rc
@@ -1058,9 +1020,6 @@ r_int
 id|wait_time
 suffix:semicolon
 r_int
-id|returned_level
-suffix:semicolon
-r_int
 id|rc
 suffix:semicolon
 r_if
@@ -1081,9 +1040,6 @@ l_int|1
 (brace
 id|rc
 op_assign
-(paren
-r_int
-)paren
 id|rtas_call
 c_func
 (paren
@@ -1093,8 +1049,7 @@ l_int|2
 comma
 l_int|2
 comma
-op_amp
-id|returned_level
+id|setlevel
 comma
 id|powerdomain
 comma
@@ -1146,14 +1101,6 @@ r_else
 r_break
 suffix:semicolon
 )brace
-op_star
-id|setlevel
-op_assign
-(paren
-r_int
-)paren
-id|returned_level
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1188,9 +1135,6 @@ r_int
 id|wait_time
 suffix:semicolon
 r_int
-id|returned_state
-suffix:semicolon
-r_int
 id|rc
 suffix:semicolon
 r_if
@@ -1211,9 +1155,6 @@ l_int|1
 (brace
 id|rc
 op_assign
-(paren
-r_int
-)paren
 id|rtas_call
 c_func
 (paren
@@ -1223,8 +1164,7 @@ l_int|2
 comma
 l_int|2
 comma
-op_amp
-id|returned_state
+id|state
 comma
 id|sensor
 comma
@@ -1276,14 +1216,6 @@ r_else
 r_break
 suffix:semicolon
 )brace
-op_star
-id|state
-op_assign
-(paren
-r_int
-)paren
-id|returned_state
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1337,9 +1269,6 @@ l_int|1
 (brace
 id|rc
 op_assign
-(paren
-r_int
-)paren
 id|rtas_call
 c_func
 (paren
@@ -1824,7 +1753,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;RTAS system-reboot returned %ld&bslash;n&quot;
+l_string|&quot;RTAS system-reboot returned %d&bslash;n&quot;
 comma
 id|rtas_call
 c_func
@@ -1873,7 +1802,7 @@ multiline_comment|/* allow power on only with power button press */
 id|printk
 c_func
 (paren
-l_string|&quot;RTAS power-off returned %ld&bslash;n&quot;
+l_string|&quot;RTAS power-off returned %d&bslash;n&quot;
 comma
 id|rtas_call
 c_func
@@ -1890,9 +1819,11 @@ l_int|1
 comma
 l_int|NULL
 comma
-l_int|0xffffffff
+op_minus
+l_int|1
 comma
-l_int|0xffffffff
+op_minus
+l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -2013,7 +1944,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;ibm,os-term call failed %ld&bslash;n&quot;
+l_string|&quot;ibm,os-term call failed %d&bslash;n&quot;
 comma
 id|status
 )paren

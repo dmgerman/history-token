@@ -1,13 +1,14 @@
 macro_line|#ifndef __ASM_SH_PGTABLE_H
 DECL|macro|__ASM_SH_PGTABLE_H
 mdefine_line|#define __ASM_SH_PGTABLE_H
-multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2002, 2003 Paul Mundt&n; */
+multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2002, 2003, 2004 Paul Mundt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgtable-2level.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the SuperH page table tree.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 r_extern
 id|pgd_t
@@ -56,7 +57,7 @@ multiline_comment|/*&n; * First 1MB map is used by fixed purpose.&n; * Currently
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(P3SEG+0x00100000)
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;P4SEG
+mdefine_line|#define VMALLOC_END&t;(FIXADDR_START-2*PAGE_SIZE)
 DECL|macro|_PAGE_WT
 mdefine_line|#define&t;_PAGE_WT&t;0x001  /* WT-bit on SH-4, 0 on SH-3 */
 DECL|macro|_PAGE_HW_SHARED
@@ -143,25 +144,29 @@ DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_CACHABLE | _PAGE_ACCESSED | _PAGE_FLAGS_HARD)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_CACHABLE | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_HW_SHARED | _PAGE_FLAGS_HARD)
+DECL|macro|PAGE_KERNEL_NOCACHE
+mdefine_line|#define PAGE_KERNEL_NOCACHE &bslash;&n;&t;&t;&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_HW_SHARED | _PAGE_FLAGS_HARD)
 DECL|macro|PAGE_KERNEL_RO
 mdefine_line|#define PAGE_KERNEL_RO&t;__pgprot(_PAGE_PRESENT | _PAGE_CACHABLE | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_HW_SHARED | _PAGE_FLAGS_HARD)
 DECL|macro|PAGE_KERNEL_PCC
 mdefine_line|#define PAGE_KERNEL_PCC(slot, type) &bslash;&n;&t;&t;&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_FLAGS_HARD | (slot ? _PAGE_PCC_AREA5 : _PAGE_PCC_AREA6) | (type))
 macro_line|#else /* no mmu */
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot(0)
+mdefine_line|#define PAGE_NONE&t;&t;__pgprot(0)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot(0)
+mdefine_line|#define PAGE_SHARED&t;&t;__pgprot(0)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(0)
+mdefine_line|#define PAGE_COPY&t;&t;__pgprot(0)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;__pgprot(0)
+mdefine_line|#define PAGE_READONLY&t;&t;__pgprot(0)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot(0)
+mdefine_line|#define PAGE_KERNEL&t;&t;__pgprot(0)
+DECL|macro|PAGE_KERNEL_NOCACHE
+mdefine_line|#define PAGE_KERNEL_NOCACHE&t;__pgprot(0)
 DECL|macro|PAGE_KERNEL_RO
-mdefine_line|#define PAGE_KERNEL_RO&t;__pgprot(0)
+mdefine_line|#define PAGE_KERNEL_RO&t;&t;__pgprot(0)
 DECL|macro|PAGE_KERNEL_PCC
-mdefine_line|#define PAGE_KERNEL_PCC&t;__pgprot(0)
+mdefine_line|#define PAGE_KERNEL_PCC&t;&t;__pgprot(0)
 macro_line|#endif
 multiline_comment|/*&n; * As i386 and MIPS, SuperH can&squot;t do page protection for execute, and&n; * considers that the same as a read.  Also, write permissions imply&n; * read permissions. This is the closest we can get..  &n; */
 DECL|macro|__P000
@@ -862,19 +867,22 @@ mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 10)
 DECL|macro|__swp_entry
 mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { (type) | ((offset) &lt;&lt; 10) })
 DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) &gt;&gt; 1 })
 DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val &lt;&lt; 1 })
 multiline_comment|/*&n; * Encode and decode a nonlinear file mapping entry&n; */
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS&t;29
 DECL|macro|pte_to_pgoff
-mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte))
+mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; 1)
 DECL|macro|pgoff_to_pte
-mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { (off) | _PAGE_FILE })
-multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; *&n; */
-DECL|macro|pte_same
-mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
+mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { ((off) &lt;&lt; 1) | _PAGE_FILE })
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
@@ -897,18 +905,21 @@ id|objp
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_MMU */
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+macro_line|#ifdef CONFIG_CPU_SH4
 DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
-DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
-mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
-DECL|macro|__HAVE_ARCH_PTE_SAME
-mdefine_line|#define __HAVE_ARCH_PTE_SAME
+r_extern
+r_inline
+id|pte_t
+id|ptep_get_and_clear
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* __ASM_SH_PAGE_H */
 eof

@@ -1136,7 +1136,7 @@ id|jmr3927_ioc_interrupt
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;IOC&quot;
 comma
@@ -1233,7 +1233,7 @@ id|jmr3927_isac_interrupt
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;ISAC&quot;
 comma
@@ -1283,7 +1283,7 @@ id|jmr3927_isaerr_interrupt
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;ISA error&quot;
 comma
@@ -1344,7 +1344,7 @@ id|jmr3927_pcierr_interrupt
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;PCI error&quot;
 comma

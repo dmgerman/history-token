@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -24,6 +25,7 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#ifndef MEM_SIZE
 DECL|macro|MEM_SIZE
 mdefine_line|#define MEM_SIZE&t;(16*1024*1024)
@@ -260,13 +262,6 @@ c_func
 (paren
 id|elf_platform
 )paren
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
 suffix:semicolon
 DECL|variable|__initdata
 r_int
@@ -2896,6 +2891,10 @@ multiline_comment|/*&n;&t; * Set up various architecture-specific pointers&n;&t;
 id|init_arch_irq
 op_assign
 id|mdesc-&gt;init_irq
+suffix:semicolon
+id|init_arch_time
+op_assign
+id|mdesc-&gt;init_time
 suffix:semicolon
 id|init_machine
 op_assign

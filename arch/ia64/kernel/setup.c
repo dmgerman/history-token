@@ -156,16 +156,6 @@ c_func
 id|ia64_max_iommu_merge_mask
 )paren
 suffix:semicolon
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE&t;512
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* used in proc filesystem */
 multiline_comment|/*&n; * We use a special marker for the end of memory and it uses the extra (+1) slot&n; */
 DECL|variable|rsvd_region
 r_struct

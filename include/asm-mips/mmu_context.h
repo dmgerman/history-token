@@ -31,12 +31,17 @@ DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x40
 DECL|macro|ASID_MASK
 mdefine_line|#define ASID_MASK&t;0xfc0
+macro_line|#elif defined(CONFIG_CPU_R8000)
+DECL|macro|ASID_INC
+mdefine_line|#define ASID_INC&t;0x10
+DECL|macro|ASID_MASK
+mdefine_line|#define ASID_MASK&t;0xff0
 macro_line|#elif defined(CONFIG_CPU_RM9000)
 DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x1
 DECL|macro|ASID_MASK
 mdefine_line|#define ASID_MASK&t;0xfff
-macro_line|#else /* FIXME: not correct for R6000, R8000 */
+macro_line|#else /* FIXME: not correct for R6000 */
 DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x1
 DECL|macro|ASID_MASK
@@ -114,13 +119,16 @@ id|ASID_MASK
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_VTAG_ICACHE
+r_if
+c_cond
+(paren
+id|cpu_has_vtag_icache
+)paren
 id|flush_icache_all
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|local_flush_tlb_all
 c_func
 (paren

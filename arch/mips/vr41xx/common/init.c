@@ -1,41 +1,7 @@
 multiline_comment|/*&n; *  init.c, Common initialization routines for NEC VR4100 series.&n; *&n; *  Copyright (C) 2003-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-r_extern
-r_void
-id|vr41xx_bcu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_cmu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_pmu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_rtc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|prom_init
 r_void
 id|__init
@@ -114,34 +80,6 @@ l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
-id|iomem_resource.start
-op_assign
-id|IO_MEM_RESOURCE_START
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-id|IO_MEM_RESOURCE_END
-suffix:semicolon
-id|vr41xx_bcu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_cmu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_pmu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_rtc_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
 r_int

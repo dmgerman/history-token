@@ -209,7 +209,7 @@ l_int|NULL
 suffix:semicolon
 id|timer.mask
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 id|irq_desc
 (braket

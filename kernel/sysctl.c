@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
+macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
@@ -3234,6 +3235,56 @@ op_assign
 r_sizeof
 (paren
 id|block_dump
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_intvec
+comma
+dot
+id|extra1
+op_assign
+op_amp
+id|zero
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
+id|VM_VFS_CACHE_PRESSURE
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;vfs_cache_pressure&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|sysctl_vfs_cache_pressure
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+id|sysctl_vfs_cache_pressure
 )paren
 comma
 dot

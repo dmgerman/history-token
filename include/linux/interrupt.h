@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/preempt.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -50,8 +51,7 @@ r_int
 id|flags
 suffix:semicolon
 DECL|member|mask
-r_int
-r_int
+id|cpumask_t
 id|mask
 suffix:semicolon
 DECL|member|name

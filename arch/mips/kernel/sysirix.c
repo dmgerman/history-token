@@ -7868,7 +7868,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|irix_statvfs
+id|irix_statvfs64
 )paren
 )paren
 suffix:semicolon

@@ -610,7 +610,7 @@ id|make_reg_snap
 comma
 l_int|0
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;reg_snap&quot;
 comma

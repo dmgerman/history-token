@@ -55,6 +55,14 @@ DECL|member|qlen
 id|__u32
 id|qlen
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+multiline_comment|/* eventually remove the define here; adding this(useful) &n;field at least fixes the 8 byte layout problems we &n;have with MIPS and PPC because we have a u64&n;*/
+DECL|member|reqs
+id|__u32
+id|reqs
+suffix:semicolon
+multiline_comment|/* number of requeues happened */
+macro_line|#endif
 DECL|member|backlog
 id|__u32
 id|backlog

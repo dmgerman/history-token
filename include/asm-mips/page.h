@@ -3,12 +3,16 @@ macro_line|#ifndef _ASM_PAGE_H
 DECL|macro|_ASM_PAGE_H
 mdefine_line|#define _ASM_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;spaces.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;spaces.h&gt;
 multiline_comment|/*&n; * PAGE_SHIFT determines the page size&n; */
 macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_8KB
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT&t;13
 macro_line|#endif
 macro_line|#ifdef CONFIG_PAGE_SIZE_16KB
 DECL|macro|PAGE_SHIFT

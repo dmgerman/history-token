@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net/sched/cls_api.c&t;Packet classifier API.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Changes:&n; *&n; * Eduardo J. Blanco &lt;ejbs@netlabs.com.uy&gt; :990222: kmod support&n; */
+multiline_comment|/*&n; * net/sched/cls_api.c&t;Packet classifier API.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Changes:&n; *&n; * Eduardo J. Blanco &lt;ejbs@netlabs.com.uy&gt; :990222: kmod support&n; *&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -21,6 +21,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#if 0 /* control */
+mdefine_line|#define DPRINTK(format,args...) printk(KERN_DEBUG format,##args)
+macro_line|#else
+DECL|macro|DPRINTK
+mdefine_line|#define DPRINTK(format,args...)
+macro_line|#endif
 multiline_comment|/* The list of all installed classifier types */
 DECL|variable|tcf_proto_base
 r_static
@@ -488,6 +494,8 @@ suffix:semicolon
 r_int
 r_int
 id|fh
+comma
+id|fh_s
 suffix:semicolon
 r_int
 id|err
@@ -1076,6 +1084,8 @@ id|tp-&gt;ops-&gt;kind
 r_goto
 id|errout
 suffix:semicolon
+id|fh_s
+op_assign
 id|fh
 op_assign
 id|tp-&gt;ops
@@ -1139,6 +1149,20 @@ c_func
 (paren
 op_amp
 id|qdisc_tree_lock
+)paren
+suffix:semicolon
+id|tfilter_notify
+c_func
+(paren
+id|skb
+comma
+id|n
+comma
+id|tp
+comma
+id|fh_s
+comma
+id|RTM_DELTFILTER
 )paren
 suffix:semicolon
 id|tcf_destroy
@@ -1218,6 +1242,27 @@ r_delete
 id|tp
 comma
 id|fh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+l_int|0
+)paren
+id|tfilter_notify
+c_func
+(paren
+id|skb
+comma
+id|n
+comma
+id|tp
+comma
+id|fh_s
+comma
+id|RTM_DELTFILTER
 )paren
 suffix:semicolon
 r_goto
@@ -1412,10 +1457,6 @@ id|tcm-&gt;tcm_parent
 op_assign
 id|tp-&gt;classid
 suffix:semicolon
-id|tcm-&gt;tcm_handle
-op_assign
-l_int|0
-suffix:semicolon
 id|tcm-&gt;tcm_info
 op_assign
 id|TC_H_MAKE
@@ -1437,6 +1478,22 @@ id|IFNAMSIZ
 comma
 id|tp-&gt;ops-&gt;kind
 )paren
+suffix:semicolon
+id|tcm-&gt;tcm_handle
+op_assign
+id|fh
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|RTM_DELTFILTER
+op_ne
+id|event
+)paren
+(brace
+id|tcm-&gt;tcm_handle
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1462,6 +1519,7 @@ l_int|0
 r_goto
 id|rtattr_failure
 suffix:semicolon
+)brace
 id|nlh-&gt;nlmsg_len
 op_assign
 id|skb-&gt;tail

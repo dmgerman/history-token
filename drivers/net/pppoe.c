@@ -2484,6 +2484,7 @@ id|PPP_HDRLEN
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2532,6 +2533,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2586,6 +2588,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2662,6 +2665,7 @@ id|po-&gt;pppoe_relay
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

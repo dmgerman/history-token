@@ -556,23 +556,6 @@ macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Return_address is a replacement for __builtin_return_address(count)&n; * which on certain architectures cannot reasonably be implemented in GCC&n; * (MIPS, Alpha) or is unuseable with -fomit-frame-pointer (i386).&n; * Note that __builtin_return_address(x&gt;=1) is forbidden because GCC&n; * aborts compilation on some CPUs.  It&squot;s simply not possible to unwind&n; * some CPU&squot;s stackframes.&n; *&n; * __builtin_return_address works only for non-leaf functions.  We avoid the&n; * overhead of a function call by forcing the compiler to save the return&n; * address register on the stack.&n; */
 DECL|macro|return_address
 mdefine_line|#define return_address() ({__asm__ __volatile__(&quot;&quot;:::&quot;$31&quot;);__builtin_return_address(0);})
-multiline_comment|/*&n; * For now.  The 32-bit cycle counter is screwed up so solving this nicely takes a little&n; * brainwork ...&n; */
-DECL|function|sched_clock
-r_static
-r_inline
-r_int
-r_int
-r_int
-id|sched_clock
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0ULL
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_CPU_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH

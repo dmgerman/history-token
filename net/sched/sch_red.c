@@ -283,6 +283,9 @@ id|q-&gt;qidlestart
 comma
 id|q-&gt;Scell_max
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon

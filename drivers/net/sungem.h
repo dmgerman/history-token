@@ -904,7 +904,7 @@ mdefine_line|#define TX_BUFFS_AVAIL(GP)&t;&t;&t;&t;&t;&bslash;&n;&t;(((GP)-&gt;t
 DECL|macro|RX_OFFSET
 mdefine_line|#define RX_OFFSET          2
 DECL|macro|RX_BUF_ALLOC_SIZE
-mdefine_line|#define RX_BUF_ALLOC_SIZE(gp)&t;((gp)-&gt;dev-&gt;mtu + 46 + RX_OFFSET + 64)
+mdefine_line|#define RX_BUF_ALLOC_SIZE(gp)&t;((gp)-&gt;rx_buf_sz + 28 + RX_OFFSET + 64)
 DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD  256
 macro_line|#if TX_RING_SIZE &lt; 128
@@ -1101,6 +1101,10 @@ suffix:semicolon
 DECL|member|rx_pause_on
 r_int
 id|rx_pause_on
+suffix:semicolon
+DECL|member|rx_buf_sz
+r_int
+id|rx_buf_sz
 suffix:semicolon
 DECL|member|mii_phy_addr
 r_int

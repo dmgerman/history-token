@@ -2931,7 +2931,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|apicid

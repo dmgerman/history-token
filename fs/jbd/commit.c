@@ -1740,7 +1740,7 @@ id|wbuf
 id|i
 )braket
 suffix:semicolon
-id|set_buffer_locked
+id|lock_buffer
 c_func
 (paren
 id|bh
