@@ -423,6 +423,13 @@ op_star
 id|cd
 )paren
 (brace
+r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|cd-&gt;device
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -442,7 +449,7 @@ suffix:semicolon
 id|scsi_device_put
 c_func
 (paren
-id|cd-&gt;device
+id|sdev
 )paren
 suffix:semicolon
 id|up
