@@ -6929,6 +6929,20 @@ id|vi-&gt;i_size
 r_goto
 id|done
 suffix:semicolon
+singleline_comment|// FIXME: We abort for now as this code is not safe.
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Changing the file size is not supported yet.  &quot;
+l_string|&quot;Sorry.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 multiline_comment|/* Map, pin, and lock the (base) mft record. */
 r_if
 c_cond
