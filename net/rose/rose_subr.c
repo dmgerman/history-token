@@ -30,7 +30,8 @@ r_char
 op_star
 id|buffer
 comma
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 )paren
@@ -89,7 +90,8 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 op_assign
@@ -245,7 +247,8 @@ r_int
 id|nr
 )paren
 (brace
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 op_assign
@@ -311,7 +314,8 @@ r_int
 id|frametype
 )paren
 (brace
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 op_assign
@@ -1837,7 +1841,8 @@ r_char
 op_star
 id|buffer
 comma
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 )paren
@@ -2418,7 +2423,8 @@ r_int
 id|diagnostic
 )paren
 (brace
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 op_assign

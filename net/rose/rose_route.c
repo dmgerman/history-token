@@ -3527,7 +3527,8 @@ op_eq
 id|ROSE_CALL_REQUEST
 )paren
 (brace
-id|rose_cb
+r_struct
+id|rose_sock
 op_star
 id|rose
 op_assign
