@@ -2819,17 +2819,6 @@ id|sb
 r_goto
 id|out_mnt
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|type-&gt;fs_flags
-op_amp
-id|FS_NOMOUNT
-)paren
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_NOUSER
-suffix:semicolon
 id|mnt-&gt;mnt_sb
 op_assign
 id|sb

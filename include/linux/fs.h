@@ -136,12 +136,6 @@ mdefine_line|#define SEL_EX&t;&t;4
 multiline_comment|/* public flags for file_system_type */
 DECL|macro|FS_REQUIRES_DEV
 mdefine_line|#define FS_REQUIRES_DEV 1 
-DECL|macro|FS_NO_DCACHE
-mdefine_line|#define FS_NO_DCACHE&t;2 /* Only dcache the necessary things. */
-DECL|macro|FS_NO_PRELIM
-mdefine_line|#define FS_NO_PRELIM&t;4 /* prevent preloading of dentries, even if&n;&t;&t;&t;   * FS_NO_DCACHE is not set.&n;&t;&t;&t;   */
-DECL|macro|FS_NOMOUNT
-mdefine_line|#define FS_NOMOUNT&t;16 /* Never mount from userland */
 DECL|macro|FS_ODD_RENAME
 mdefine_line|#define FS_ODD_RENAME&t;32768&t;/* Temporary stuff; will go away as soon&n;&t;&t;&t;&t;  * as nfs_rename() will be cleaned up&n;&t;&t;&t;&t;  */
 multiline_comment|/*&n; * These are the fs-independent mount-flags: up to 32 flags are supported&n; */
@@ -4017,6 +4011,28 @@ comma
 r_void
 op_star
 id|data
+)paren
+suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|get_sb_pseudo
+c_func
+(paren
+r_struct
+id|file_system_type
+op_star
+comma
+r_char
+op_star
+comma
+r_struct
+id|super_operations
+op_star
+id|ops
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
