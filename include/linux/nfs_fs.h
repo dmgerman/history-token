@@ -801,6 +801,17 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_void
+id|nfs_commit_release
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+id|task
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|nfs_commit_done
 c_func
 (paren

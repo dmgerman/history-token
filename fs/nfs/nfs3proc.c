@@ -3998,7 +3998,7 @@ suffix:semicolon
 multiline_comment|/* Release requests */
 id|task-&gt;tk_release
 op_assign
-id|nfs_writedata_release
+id|nfs_commit_release
 suffix:semicolon
 id|msg.rpc_proc
 op_assign

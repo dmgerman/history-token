@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
@@ -36,6 +37,14 @@ id|kmem_cache_t
 op_star
 id|nfs_rdata_cachep
 suffix:semicolon
+DECL|variable|nfs_rdata_mempool
+r_static
+id|mempool_t
+op_star
+id|nfs_rdata_mempool
+suffix:semicolon
+DECL|macro|MIN_POOL_READ
+mdefine_line|#define MIN_POOL_READ&t;(32)
 DECL|function|nfs_readdata_alloc
 r_static
 id|__inline__
@@ -55,10 +64,15 @@ id|p
 suffix:semicolon
 id|p
 op_assign
-id|kmem_cache_alloc
+(paren
+r_struct
+id|nfs_read_data
+op_star
+)paren
+id|mempool_alloc
 c_func
 (paren
-id|nfs_rdata_cachep
+id|nfs_rdata_mempool
 comma
 id|SLAB_NOFS
 )paren
@@ -108,12 +122,12 @@ op_star
 id|p
 )paren
 (brace
-id|kmem_cache_free
+id|mempool_free
 c_func
 (paren
-id|nfs_rdata_cachep
-comma
 id|p
+comma
+id|nfs_rdata_mempool
 )paren
 suffix:semicolon
 )brace
@@ -1849,6 +1863,31 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|nfs_rdata_mempool
+op_assign
+id|mempool_create
+c_func
+(paren
+id|MIN_POOL_READ
+comma
+id|mempool_alloc_slab
+comma
+id|mempool_free_slab
+comma
+id|nfs_rdata_cachep
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_rdata_mempool
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1861,6 +1900,12 @@ c_func
 r_void
 )paren
 (brace
+id|mempool_destroy
+c_func
+(paren
+id|nfs_rdata_mempool
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
