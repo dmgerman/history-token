@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_ARM_MEMORY_H
 DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
 macro_line|#ifndef TASK_SIZE
 multiline_comment|/*&n; * TASK_SIZE - the maximum size of a user space task.&n; * TASK_UNMAPPED_BASE - the lower boundary of the mmap VM area&n; */
