@@ -1118,25 +1118,6 @@ id|ct-&gt;timeout
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|master_ct
-c_func
-(paren
-id|ct
-)paren
-)paren
-id|ip_conntrack_put
-c_func
-(paren
-id|master_ct
-c_func
-(paren
-id|ct
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* To make sure we don&squot;t get any weird locking issues here:&n;&t; * destroy_conntrack() MUST NOT be called with a write lock&n;&t; * to ip_conntrack_lock!!! -HW */
 id|proto
 op_assign
@@ -1199,7 +1180,13 @@ c_cond
 id|ct-&gt;master
 )paren
 (brace
-multiline_comment|/* can&squot;t call __unexpect_related here,&n;&t;&t; * since it would screw up expect_list */
+r_if
+c_cond
+(paren
+id|ct-&gt;master-&gt;expectant
+)paren
+(brace
+multiline_comment|/* can&squot;t call __unexpect_related here,&n;&t;&t;&t; * since it would screw up expect_list */
 id|list_del
 c_func
 (paren
@@ -1207,6 +1194,13 @@ op_amp
 id|ct-&gt;master-&gt;expected_list
 )paren
 suffix:semicolon
+id|ip_conntrack_put
+c_func
+(paren
+id|ct-&gt;master-&gt;expectant
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
