@@ -1103,11 +1103,6 @@ comma
 r_struct
 id|resource
 op_star
-id|root
-comma
-r_struct
-id|resource
-op_star
 id|res
 comma
 r_int
@@ -1150,6 +1145,7 @@ op_amp
 id|reg
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME - this doesn&squot;t work for PCI-PCI bridges. */
 id|reg
 op_assign
 (paren
@@ -1166,7 +1162,7 @@ id|u32
 (paren
 id|res-&gt;start
 op_minus
-id|root-&gt;start
+id|res-&gt;parent-&gt;start
 )paren
 )paren
 op_amp

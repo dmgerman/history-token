@@ -3095,11 +3095,6 @@ comma
 r_struct
 id|resource
 op_star
-id|root
-comma
-r_struct
-id|resource
-op_star
 id|res
 comma
 r_int

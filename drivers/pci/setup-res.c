@@ -301,7 +301,7 @@ id|res-&gt;start
 comma
 id|res-&gt;end
 comma
-id|i
+id|resno
 comma
 id|dev-&gt;dev.name
 )paren
@@ -312,8 +312,6 @@ id|pcibios_update_resource
 c_func
 (paren
 id|dev
-comma
-id|res-&gt;parent
 comma
 id|res
 comma

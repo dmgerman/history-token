@@ -1212,10 +1212,6 @@ r_struct
 id|resource
 op_star
 comma
-r_struct
-id|resource
-op_star
-comma
 r_int
 )paren
 suffix:semicolon

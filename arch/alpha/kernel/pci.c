@@ -994,11 +994,6 @@ comma
 r_struct
 id|resource
 op_star
-id|parent
-comma
-r_struct
-id|resource
-op_star
 id|res
 comma
 r_int

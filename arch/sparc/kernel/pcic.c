@@ -3755,12 +3755,7 @@ comma
 r_struct
 id|resource
 op_star
-id|res1
-comma
-r_struct
-id|resource
-op_star
-id|res2
+id|res
 comma
 r_int
 id|index
