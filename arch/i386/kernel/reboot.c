@@ -583,16 +583,6 @@ op_star
 id|KERNEL_PGD_PTRS
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure the first page is mapped to the start of physical memory.&n;&t;   It is normally not mapped, to trap kernel NULL pointer dereferences. */
-id|pg0
-(braket
-l_int|0
-)braket
-op_assign
-id|_PAGE_RW
-op_or
-id|_PAGE_PRESENT
-suffix:semicolon
 multiline_comment|/*&n;&t; * Use `swapper_pg_dir&squot; as our page directory.&n;&t; */
 id|load_cr3
 c_func
