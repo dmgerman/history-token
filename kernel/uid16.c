@@ -847,10 +847,6 @@ id|groups
 id|i
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|i
 op_assign
 id|security_task_setgroups
@@ -860,7 +856,11 @@ id|gidsetsize
 comma
 id|new_groups
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 )paren
 r_return
 id|i

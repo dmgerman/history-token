@@ -18188,10 +18188,6 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_bprm_alloc
@@ -18200,7 +18196,11 @@ c_func
 op_amp
 id|bprm
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|out

@@ -378,6 +378,9 @@ mdefine_line|#define OV511_NUMSBUF&t;&t;2
 multiline_comment|/* Control transfers use up to 4 bytes */
 DECL|macro|OV511_CBUF_SIZE
 mdefine_line|#define OV511_CBUF_SIZE&t;&t;4
+multiline_comment|/* Size of usb_make_path() buffer */
+DECL|macro|OV511_USB_PATH_LEN
+mdefine_line|#define OV511_USB_PATH_LEN&t;64
 multiline_comment|/* Bridge types */
 r_enum
 (brace
@@ -965,6 +968,13 @@ DECL|member|iface
 r_int
 r_char
 id|iface
+suffix:semicolon
+DECL|member|usb_path
+r_char
+id|usb_path
+(braket
+id|OV511_USB_PATH_LEN
+)braket
 suffix:semicolon
 multiline_comment|/* Determined by sensor type */
 DECL|member|maxwidth

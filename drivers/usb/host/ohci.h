@@ -216,6 +216,13 @@ id|ed
 op_star
 id|ed
 suffix:semicolon
+DECL|member|td_hash
+r_struct
+id|td
+op_star
+id|td_hash
+suffix:semicolon
+multiline_comment|/* dma--&gt;td hashtable */
 DECL|member|next_dl_td
 r_struct
 id|td
@@ -703,52 +710,11 @@ id|urb_priv_t
 suffix:semicolon
 DECL|macro|URB_DEL
 mdefine_line|#define URB_DEL 1
-multiline_comment|/* Hash struct used for TD/ED hashing */
-DECL|struct|hash_t
-r_struct
-id|hash_t
-(brace
-DECL|member|virt
-r_void
-op_star
-id|virt
-suffix:semicolon
-DECL|member|dma
-id|dma_addr_t
-id|dma
-suffix:semicolon
-DECL|member|next
-r_struct
-id|hash_t
-op_star
-id|next
-suffix:semicolon
-singleline_comment|// chaining for collision cases
-)brace
-suffix:semicolon
-multiline_comment|/* List of TD/ED hash entries */
-DECL|struct|hash_list_t
-r_struct
-id|hash_list_t
-(brace
-DECL|member|head
-r_struct
-id|hash_t
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-r_struct
-id|hash_t
-op_star
-id|tail
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|TD_HASH_SIZE
 mdefine_line|#define TD_HASH_SIZE    64    /* power&squot;o&squot;two */
+singleline_comment|// sizeof (struct td) ~= 64 == 2^6 ... 
 DECL|macro|TD_HASH_FUNC
-mdefine_line|#define TD_HASH_FUNC(td_dma) ((td_dma ^ (td_dma &gt;&gt; 5)) % TD_HASH_SIZE)
+mdefine_line|#define TD_HASH_FUNC(td_dma) ((td_dma ^ (td_dma &gt;&gt; 6)) % TD_HASH_SIZE)
 multiline_comment|/*&n; * This is the full ohci controller description&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs. (Linus)&n; */
 DECL|struct|ohci_hcd
 r_struct
@@ -822,7 +788,8 @@ id|ed_cache
 suffix:semicolon
 DECL|member|td_hash
 r_struct
-id|hash_list_t
+id|td
+op_star
 id|td_hash
 (braket
 id|TD_HASH_SIZE

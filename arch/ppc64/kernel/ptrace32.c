@@ -69,10 +69,6 @@ id|PT_PTRACED
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|security_ptrace
@@ -82,7 +78,11 @@ id|current-&gt;parent
 comma
 id|current
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out

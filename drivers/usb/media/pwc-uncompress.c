@@ -1,4 +1,4 @@
-multiline_comment|/* Linux driver for Philips webcam &n;   Decompression frontend.&n;   (C) 1999-2001 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* Linux driver for Philips webcam &n;   Decompression frontend.&n;   (C) 1999-2002 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*&n;   This is where the decompression routines register and unregister &n;   themselves. It also has a decompressor wrapper function.&n;*/
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &quot;pwc.h&quot;
@@ -205,9 +205,6 @@ id|yuv
 comma
 op_star
 id|image
-comma
-op_star
-id|dst
 suffix:semicolon
 id|u16
 op_star
@@ -334,83 +331,6 @@ c_cond
 id|pdev-&gt;vpalette
 )paren
 (brace
-r_case
-id|VIDEO_PALETTE_YUV420
-suffix:colon
-multiline_comment|/* Calculate byte offsets per line in image &amp; view */
-id|n
-op_assign
-(paren
-id|pdev-&gt;image.x
-op_star
-l_int|3
-)paren
-op_div
-l_int|2
-suffix:semicolon
-id|col
-op_assign
-(paren
-id|pdev-&gt;view.x
-op_star
-l_int|3
-)paren
-op_div
-l_int|2
-suffix:semicolon
-multiline_comment|/* Offset into image */
-id|dst
-op_assign
-id|image
-op_plus
-(paren
-id|pdev-&gt;view.x
-op_star
-id|pdev-&gt;offset.y
-op_plus
-id|pdev-&gt;offset.x
-)paren
-op_star
-l_int|3
-op_div
-l_int|2
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|line
-op_assign
-l_int|0
-suffix:semicolon
-id|line
-OL
-id|pdev-&gt;image.y
-suffix:semicolon
-id|line
-op_increment
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|dst
-comma
-id|yuv
-comma
-id|n
-)paren
-suffix:semicolon
-id|yuv
-op_add_assign
-id|n
-suffix:semicolon
-id|dst
-op_add_assign
-id|col
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
 r_case
 id|VIDEO_PALETTE_YUV420P
 suffix:colon
@@ -610,11 +530,21 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|Err
+c_func
+(paren
+l_string|&quot;Unsupported palette!&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 )brace
 r_else
 (brace
-multiline_comment|/* Compressed; the decompressor routines will write the data &n;&t;&t;   in interlaced or planar format immediately.&n;&t;&t; */
+multiline_comment|/* Compressed; the decompressor routines will write the data &n;&t;&t;   in planar format immediately.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -638,14 +568,7 @@ id|yuv
 comma
 id|image
 comma
-id|pdev-&gt;vpalette
-op_eq
-id|VIDEO_PALETTE_YUV420P
-ques
-c_cond
 l_int|1
-suffix:colon
-l_int|0
 comma
 id|pdev-&gt;decompress_data
 comma
