@@ -21,8 +21,6 @@ r_const
 r_char
 op_star
 id|global_mode_option
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;     *  Standard video mode definitions (taken from XFree86)&n;     */
 DECL|macro|DEFAULT_MODEDB_INDEX
