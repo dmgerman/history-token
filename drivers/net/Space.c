@@ -1370,7 +1370,7 @@ macro_line|#ifdef CONFIG_TR
 multiline_comment|/* Token-ring device probe */
 r_extern
 r_int
-id|ibmtr_probe
+id|ibmtr_probe_card
 c_func
 (paren
 r_struct
@@ -1464,17 +1464,16 @@ r_int
 id|unit
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 r_int
 id|err
 op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef CONFIG_IBMTR
+r_struct
+id|net_device
+op_star
 id|dev
 op_assign
 id|alloc_trdev
@@ -1509,24 +1508,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-macro_line|#ifdef CONFIG_IBMTR
-id|ibmtr_probe
-c_func
-(paren
-id|dev
-)paren
-op_eq
-l_int|0
-op_logical_or
-macro_line|#endif
-l_int|0
-)paren
 id|err
 op_assign
-id|register_netdev
+id|ibmtr_probe_card
 c_func
 (paren
 id|dev
@@ -1543,6 +1527,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|err
 suffix:semicolon
