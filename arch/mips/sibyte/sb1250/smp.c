@@ -186,7 +186,7 @@ r_int
 id|action
 )paren
 (brace
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -240,7 +240,7 @@ multiline_comment|/* Load the mailbox register to figure out what we&squot;re su
 id|action
 op_assign
 (paren
-id|____raw_readq
+id|__bus_readq
 c_func
 (paren
 id|mailbox_regs
@@ -255,7 +255,7 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 multiline_comment|/* Clear the mailbox to clear the interrupt */
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 (paren

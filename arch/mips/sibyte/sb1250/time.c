@@ -89,7 +89,7 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* Map the timer interrupt to ip[4] of this cpu */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP4_VAL
@@ -115,7 +115,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* the general purpose timer ticks at 1 Mhz independent if the rest of the system */
 multiline_comment|/* Disable the timer and set up the count */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -134,7 +134,7 @@ id|R_SCD_TIMER_CFG
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SIMULATION
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|50000
@@ -155,7 +155,7 @@ id|R_SCD_TIMER_INIT
 )paren
 suffix:semicolon
 macro_line|#else
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|1000000
@@ -177,7 +177,7 @@ id|R_SCD_TIMER_INIT
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Set the timer running */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TIMER_ENABLE
@@ -255,7 +255,7 @@ op_plus
 id|cpu
 suffix:semicolon
 multiline_comment|/* Reset the timer */
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 id|M_SCD_TIMER_ENABLE
@@ -317,7 +317,7 @@ r_int
 r_int
 id|count
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
