@@ -28,7 +28,8 @@ r_int
 id|ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -39,7 +40,8 @@ suffix:semicolon
 DECL|function|ide_default_io_base
 r_static
 id|__inline__
-id|ide_ioreg_t
+r_int
+r_int
 id|ide_default_io_base
 c_func
 (paren
@@ -63,10 +65,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
