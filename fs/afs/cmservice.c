@@ -1561,7 +1561,7 @@ suffix:semicolon
 r_int
 id|loop
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|fp
 comma

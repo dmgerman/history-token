@@ -440,7 +440,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 id|param
 (braket
 l_int|1
@@ -809,7 +809,7 @@ id|ret
 comma
 id|loop
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bp
 comma
@@ -1508,7 +1508,7 @@ id|ret
 comma
 id|loop
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bp
 comma
@@ -2198,7 +2198,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 id|param
 (braket
 l_int|3
@@ -2532,10 +2532,11 @@ op_star
 id|entry
 )paren
 (brace
-r_int
+id|__be32
 op_star
 id|bp
-comma
+suffix:semicolon
+id|__u32
 id|tmp
 suffix:semicolon
 r_int
