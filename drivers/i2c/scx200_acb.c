@@ -316,7 +316,6 @@ op_amp
 id|iface-&gt;adapter.dev
 comma
 l_string|&quot;interrupt in idle state&bslash;n&quot;
-comma
 )paren
 suffix:semicolon
 r_break
