@@ -841,6 +841,11 @@ DECL|member|dma
 id|dma
 suffix:semicolon
 multiline_comment|/* miscellaneous */
+DECL|member|internal_done
+r_int
+id|internal_done
+suffix:semicolon
+multiline_comment|/* flag to indicate request done */
 DECL|member|magic_end
 r_int
 r_int
@@ -881,6 +886,25 @@ multiline_comment|/* Function: int fas216_queue_command (Scsi_Cmnd *SCpnt, void 
 r_extern
 r_int
 id|fas216_queue_command
+(paren
+id|Scsi_Cmnd
+op_star
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Function: int fas216_noqueue_command (Scsi_Cmnd *SCpnt, void (*done)(Scsi_Cmnd *))&n; * Purpose : queue a command for adapter to process, and process it to completion.&n; * Params  : SCpnt - Command to queue&n; *&t;     done  - done function to call once command is complete&n; * Returns : 0 - success, else error&n; */
+r_extern
+r_int
+id|fas216_noqueue_command
 (paren
 id|Scsi_Cmnd
 op_star

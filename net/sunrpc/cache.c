@@ -3118,7 +3118,17 @@ r_struct
 id|cache_reader
 op_star
 id|rp
+op_assign
+l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|filp-&gt;f_mode
+op_amp
+id|FMODE_READ
+)paren
+(brace
 r_struct
 id|cache_detail
 op_star
@@ -3199,6 +3209,7 @@ op_amp
 id|queue_lock
 )paren
 suffix:semicolon
+)brace
 id|filp-&gt;private_data
 op_assign
 id|rp
@@ -3244,6 +3255,12 @@ id|inode
 op_member_access_from_pointer
 id|data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rp
+)paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -3367,6 +3384,7 @@ op_amp
 id|cd-&gt;readers
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -27,12 +27,7 @@ DECL|macro|NFSEXP_ASYNC
 mdefine_line|#define NFSEXP_ASYNC&t;&t;0x0010
 DECL|macro|NFSEXP_GATHERED_WRITES
 mdefine_line|#define NFSEXP_GATHERED_WRITES&t;0x0020
-DECL|macro|NFSEXP_UIDMAP
-mdefine_line|#define NFSEXP_UIDMAP&t;&t;0x0040
-DECL|macro|NFSEXP_KERBEROS
-mdefine_line|#define NFSEXP_KERBEROS&t;&t;0x0080&t;&t;/* not available */
-DECL|macro|NFSEXP_SUNSECURE
-mdefine_line|#define NFSEXP_SUNSECURE&t;0x0100
+multiline_comment|/* 40 80 100 currently unused */
 DECL|macro|NFSEXP_NOHIDE
 mdefine_line|#define NFSEXP_NOHIDE&t;&t;0x0200
 DECL|macro|NFSEXP_NOSUBTREECHECK
@@ -43,10 +38,12 @@ DECL|macro|NFSEXP_MSNFS
 mdefine_line|#define NFSEXP_MSNFS&t;&t;0x1000&t;/* do silly things that MS clients expect */
 DECL|macro|NFSEXP_FSID
 mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
-DECL|macro|NFSEXP_CROSSMNT
-mdefine_line|#define&t;NFSEXP_CROSSMNT&t;&t;0x4000
+DECL|macro|NFSEXP_CROSSMOUNT
+mdefine_line|#define&t;NFSEXP_CROSSMOUNT&t;0x4000
+DECL|macro|NFSEXP_NOACL
+mdefine_line|#define&t;NFSEXP_NOACL&t;&t;0x8000&t;/* reserved for possible ACL related use */
 DECL|macro|NFSEXP_ALLFLAGS
-mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x7FFF
+mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0xFE3F
 macro_line|#ifdef __KERNEL__
 DECL|struct|svc_export
 r_struct
@@ -135,9 +132,7 @@ mdefine_line|#define EX_ISSYNC(exp)&t;&t;(!((exp)-&gt;ex_flags &amp; NFSEXP_ASYN
 DECL|macro|EX_RDONLY
 mdefine_line|#define EX_RDONLY(exp)&t;&t;((exp)-&gt;ex_flags &amp; NFSEXP_READONLY)
 DECL|macro|EX_NOHIDE
-mdefine_line|#define EX_NOHIDE(exp)&t;((exp)-&gt;ex_flags &amp; NFSEXP_NOHIDE)
-DECL|macro|EX_SUNSECURE
-mdefine_line|#define EX_SUNSECURE(exp)&t;((exp)-&gt;ex_flags &amp; NFSEXP_SUNSECURE)
+mdefine_line|#define EX_NOHIDE(exp)&t;&t;((exp)-&gt;ex_flags &amp; NFSEXP_NOHIDE)
 DECL|macro|EX_WGATHER
 mdefine_line|#define EX_WGATHER(exp)&t;&t;((exp)-&gt;ex_flags &amp; NFSEXP_GATHERED_WRITES)
 multiline_comment|/*&n; * Function declarations&n; */

@@ -234,7 +234,17 @@ r_if
 c_cond
 (paren
 id|vfs
-op_logical_and
+)paren
+(brace
+id|mntput
+c_func
+(paren
+id|vfs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|is_vfsmnt_tree_busy
 c_func
 (paren
@@ -244,6 +254,7 @@ id|vfs
 id|ret
 op_decrement
 suffix:semicolon
+)brace
 id|DPRINTK
 c_func
 (paren

@@ -509,36 +509,6 @@ DECL|macro|SA1111_WAKEPOL0
 mdefine_line|#define SA1111_WAKEPOL0&t;&t;0x0034
 DECL|macro|SA1111_WAKEPOL1
 mdefine_line|#define SA1111_WAKEPOL1&t;&t;0x0038
-DECL|macro|INTTEST0
-mdefine_line|#define INTTEST0&t;__CCREG(SA1111_INTC + SA1111_INTTEST0)
-DECL|macro|INTTEST1
-mdefine_line|#define INTTEST1&t;__CCREG(SA1111_INTC + SA1111_INTTEST1)
-DECL|macro|INTEN0
-mdefine_line|#define INTEN0&t;&t;__CCREG(SA1111_INTC + SA1111_INTEN0)
-DECL|macro|INTEN1
-mdefine_line|#define INTEN1&t;&t;__CCREG(SA1111_INTC + SA1111_INTEN1)
-DECL|macro|INTPOL0
-mdefine_line|#define INTPOL0&t;&t;__CCREG(SA1111_INTC + SA1111_INTPOL0)
-DECL|macro|INTPOL1
-mdefine_line|#define INTPOL1&t;&t;__CCREG(SA1111_INTC + SA1111_INTPOL1)
-DECL|macro|INTTSTSEL
-mdefine_line|#define INTTSTSEL&t;__CCREG(SA1111_INTC + SA1111_INTTSTSEL)
-DECL|macro|INTSTATCLR0
-mdefine_line|#define INTSTATCLR0&t;__CCREG(SA1111_INTC + SA1111_INTSTATCLR0)
-DECL|macro|INTSTATCLR1
-mdefine_line|#define INTSTATCLR1&t;__CCREG(SA1111_INTC + SA1111_INTSTATCLR1)
-DECL|macro|INTSET0
-mdefine_line|#define INTSET0&t;&t;__CCREG(SA1111_INTC + SA1111_INTSET0)
-DECL|macro|INTSET1
-mdefine_line|#define INTSET1&t;&t;__CCREG(SA1111_INTC + SA1111_INTSET1)
-DECL|macro|WAKE_EN0
-mdefine_line|#define WAKE_EN0&t;__CCREG(SA1111_INTC + SA1111_WAKEEN0)
-DECL|macro|WAKE_EN1
-mdefine_line|#define WAKE_EN1&t;__CCREG(SA1111_INTC + SA1111_WAKEEN1)
-DECL|macro|WAKE_POL0
-mdefine_line|#define WAKE_POL0&t;__CCREG(SA1111_INTC + SA1111_WAKEPOL0)
-DECL|macro|WAKE_POL1
-mdefine_line|#define WAKE_POL1&t;__CCREG(SA1111_INTC + SA1111_WAKEPOL1)
 multiline_comment|/*&n; * PS/2 Trackpad and Mouse Interfaces&n; *&n; * Registers&n; *    PS2CR&t;&t;Control Register&n; *    PS2STAT&t;&t;Status Register&n; *    PS2DATA&t;&t;Transmit/Receive Data register&n; *    PS2CLKDIV&t;&t;Clock Division Register&n; *    PS2PRECNT&t;&t;Clock Precount Register&n; *    PS2TEST1&t;&t;Test register 1&n; *    PS2TEST2&t;&t;Test register 2&n; *    PS2TEST3&t;&t;Test register 3&n; *    PS2TEST4&t;&t;Test register 4&n; */
 DECL|macro|SA1111_KBD
 mdefine_line|#define SA1111_KBD&t;&t;0x0a00
