@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netpoll.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -3129,6 +3130,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* If carrier appears to come up instantly, we don&squot;t&n;&t;&t; * trust it and pause so that we don&squot;t pump all our&n;&t;&t; * queued console messages into the bitbucket.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3145,26 +3147,16 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: carrier detect appears flaky,&quot;
-l_string|&quot; waiting 4 seconds&bslash;n&quot;
+l_string|&quot;%s: carrier detect appears&quot;
+l_string|&quot; untrustworthy, waiting 4 seconds&bslash;n&quot;
 comma
 id|np-&gt;name
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|msleep
 c_func
 (paren
-id|jiffies
-comma
-id|atmost
-)paren
-)paren
-id|cond_resched
-c_func
-(paren
+l_int|4000
 )paren
 suffix:semicolon
 )brace
