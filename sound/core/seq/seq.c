@@ -469,20 +469,8 @@ id|snd_seq_event_port_detach
 suffix:semicolon
 multiline_comment|/* seq_lock.c */
 macro_line|#if defined(__SMP__) || defined(CONFIG_SND_DEBUG)
-DECL|variable|snd_seq_sleep_in_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_seq_sleep_in_lock
-)paren
-suffix:semicolon
-DECL|variable|snd_seq_sleep_timeout_in_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_seq_sleep_timeout_in_lock
-)paren
-suffix:semicolon
+multiline_comment|/*EXPORT_SYMBOL(snd_seq_sleep_in_lock);*/
+multiline_comment|/*EXPORT_SYMBOL(snd_seq_sleep_timeout_in_lock);*/
 DECL|variable|snd_use_lock_sync_helper
 id|EXPORT_SYMBOL
 c_func

@@ -8049,6 +8049,16 @@ comma
 id|YMFPCI_DOUBLE
 c_func
 (paren
+l_string|&quot;FM Legacy Volume&quot;
+comma
+l_int|0
+comma
+id|YDSXGR_LEGACYOUTVOL
+)paren
+comma
+id|YMFPCI_DOUBLE
+c_func
+(paren
 id|SNDRV_CTL_NAME_IEC958
 c_func
 (paren
@@ -10906,6 +10916,16 @@ comma
 l_int|0x3fff3fff
 )paren
 suffix:semicolon
+id|snd_ymfpci_writel
+c_func
+(paren
+id|chip
+comma
+id|YDSXGR_LEGACYOUTVOL
+comma
+l_int|0x3fff3fff
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10965,6 +10985,16 @@ c_func
 id|chip
 comma
 id|YDSXGR_BUF441OUTVOL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|snd_ymfpci_writel
+c_func
+(paren
+id|chip
+comma
+id|YDSXGR_LEGACYOUTVOL
 comma
 l_int|0
 )paren
@@ -11248,6 +11278,8 @@ id|YDSXGR_SPDIFOUTVOL
 comma
 id|YDSXGR_ZVOUTVOL
 comma
+id|YDSXGR_LEGACYOUTVOL
+comma
 multiline_comment|/* address bases */
 id|YDSXGR_PLAYCTRLBASE
 comma
@@ -11271,7 +11303,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|YDSXGR_NUM_SAVED_REGS
-mdefine_line|#define YDSXGR_NUM_SAVED_REGS&t;(sizeof(saved_regs_index)/sizeof(saved_regs_index[0]))
+mdefine_line|#define YDSXGR_NUM_SAVED_REGS&t;ARRAY_SIZE(saved_regs_index)
 DECL|function|snd_ymfpci_suspend
 r_void
 id|snd_ymfpci_suspend
