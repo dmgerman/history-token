@@ -585,9 +585,35 @@ id|xattr_sem
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|reiserfs_mark_inode_private
+id|reiserfs_mark_inode_private
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+id|REISERFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_flags
+op_or_assign
+id|i_priv_object
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|macro|is_reiserfs_priv_object
 mdefine_line|#define is_reiserfs_priv_object(inode) 0
+DECL|macro|reiserfs_mark_inode_private
+mdefine_line|#define reiserfs_mark_inode_private(inode)
 DECL|macro|reiserfs_getxattr
 mdefine_line|#define reiserfs_getxattr NULL
 DECL|macro|reiserfs_setxattr

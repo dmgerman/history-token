@@ -1442,15 +1442,10 @@ id|is_reiserfs_priv_object
 id|dir
 )paren
 )paren
-id|REISERFS_I
-c_func
+id|reiserfs_mark_inode_private
 (paren
 id|inode
 )paren
-op_member_access_from_pointer
-id|i_flags
-op_or_assign
-id|i_priv_object
 suffix:semicolon
 )brace
 id|reiserfs_write_unlock
