@@ -2746,6 +2746,10 @@ c_func
 id|conf
 )paren
 suffix:semicolon
+id|clp
+op_assign
+id|unconf
+suffix:semicolon
 id|move_to_confirmed
 c_func
 (paren
@@ -2829,6 +2833,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|clp
+op_assign
+id|conf
+suffix:semicolon
 id|status
 op_assign
 id|nfs_ok
@@ -2883,6 +2891,10 @@ r_else
 id|status
 op_assign
 id|nfs_ok
+suffix:semicolon
+id|clp
+op_assign
+id|unconf
 suffix:semicolon
 id|move_to_confirmed
 c_func
@@ -2960,7 +2972,18 @@ id|out
 suffix:semicolon
 id|out
 suffix:colon
-multiline_comment|/* XXX if status == nfs_ok, probe callback path */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|status
+)paren
+id|nfsd4_probe_callback
+c_func
+(paren
+id|clp
+)paren
+suffix:semicolon
 id|nfs4_unlock_state
 c_func
 (paren
