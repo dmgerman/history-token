@@ -1373,6 +1373,12 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_else
+id|buffer_error
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bh
 op_assign
 id|bh-&gt;b_this_page

@@ -4303,6 +4303,7 @@ id|BH_Uptodate
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Be very careful.  We have no exclusion from __set_page_dirty_buffers&n;&t; * here, and the (potentially unmapped) buffers may become dirty at&n;&t; * any time.  If a buffer becomes dirty here after we&squot;ve inspected it&n;&t; * then we just miss that fact, and the page stays dirty.&n;&t; *&n;&t; * Buffers outside i_size may be dirtied by __set_page_dirty_buffers;&n;&t; * handle that here by just cleaning them.&n;&t; */
 id|block
 op_assign
 id|page-&gt;index
@@ -4336,18 +4337,10 @@ OG
 id|last_block
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buffer_dirty
+id|clear_buffer_dirty
 c_func
 (paren
 id|bh
-)paren
-)paren
-id|buffer_error
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4364,7 +4357,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * NOTE: this buffer can only be marked uptodate&n;&t;&t;&t; * because we know that block_write_full_page has&n;&t;&t;&t; * zeroed it out.  That seems unnecessary and may go&n;&t;&t;&t; * away.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The buffer was zeroed by block_write_full_page()&n;&t;&t;&t; */
 id|set_buffer_uptodate
 c_func
 (paren
@@ -4478,6 +4471,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|buffer_mapped
+c_func
+(paren
+id|bh
+)paren
+op_logical_and
 id|buffer_dirty
 c_func
 (paren
@@ -4494,28 +4493,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buffer_dirty
+id|test_clear_buffer_dirty
 c_func
 (paren
 id|bh
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
-)paren
-id|buffer_error
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4604,12 +4588,6 @@ id|bh
 )paren
 )paren
 (brace
-id|clear_buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|submit_bh
 c_func
 (paren
