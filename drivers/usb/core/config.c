@@ -2267,7 +2267,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|8
+id|USB_DT_CONFIG_SIZE
 comma
 id|GFP_KERNEL
 )paren
@@ -2305,8 +2305,7 @@ id|cfgno
 op_increment
 )paren
 (brace
-multiline_comment|/* We grab the first 8 bytes so we know how long the whole */
-multiline_comment|/* configuration is */
+multiline_comment|/* We grab just the first descriptor so we know how long&n;&t;&t; * the whole configuration is */
 id|result
 op_assign
 id|usb_get_descriptor
@@ -2320,7 +2319,7 @@ id|cfgno
 comma
 id|buffer
 comma
-l_int|8
+id|USB_DT_CONFIG_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -2337,9 +2336,11 @@ c_func
 id|ddev
 comma
 l_string|&quot;unable to read config index %d &quot;
-l_string|&quot;descriptor&bslash;n&quot;
+l_string|&quot;descriptor/%s&bslash;n&quot;
 comma
 id|cfgno
+comma
+l_string|&quot;start&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2352,7 +2353,7 @@ c_cond
 (paren
 id|result
 OL
-l_int|8
+l_int|4
 )paren
 (brace
 id|dev_err
@@ -2365,7 +2366,7 @@ l_string|&quot;(expected %i, got %i)&bslash;n&quot;
 comma
 id|cfgno
 comma
-l_int|8
+id|USB_DT_CONFIG_SIZE
 comma
 id|result
 )paren
@@ -2453,9 +2454,11 @@ c_func
 id|ddev
 comma
 l_string|&quot;unable to read config index %d &quot;
-l_string|&quot;descriptor&bslash;n&quot;
+l_string|&quot;descriptor/%s&bslash;n&quot;
 comma
 id|cfgno
+comma
+l_string|&quot;all&quot;
 )paren
 suffix:semicolon
 id|kfree
