@@ -867,6 +867,21 @@ l_char|&squot;T&squot;
 comma
 l_char|&squot;L&squot;
 comma
+l_int|0x0025
+comma
+l_int|0x0031
+)paren
+comma
+multiline_comment|/* Sound Blaster 16 PnP */
+id|ISAPNP_SB16
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;T&squot;
+comma
+l_char|&squot;L&squot;
+comma
 l_int|0x0026
 comma
 l_int|0x0031

@@ -278,6 +278,10 @@ c_cond
 id|ak-&gt;type
 op_eq
 id|SND_AK4524
+op_logical_or
+id|ak-&gt;type
+op_eq
+id|SND_AK4528
 )paren
 (brace
 r_if

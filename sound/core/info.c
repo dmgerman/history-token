@@ -4140,10 +4140,7 @@ comma
 id|entry
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
-multiline_comment|/* we should not set this - at least on 2.4.14 or later it causes&n;&t;&t;   problems! */
-multiline_comment|/* p-&gt;proc_fops = &amp;snd_fops; */
-macro_line|#else
+macro_line|#ifdef LINUX_2_2
 id|p-&gt;ops
 op_assign
 op_amp

@@ -256,6 +256,11 @@ DECL|member|reg
 r_int
 id|reg
 suffix:semicolon
+DECL|member|reg_mask
+r_int
+r_int
+id|reg_mask
+suffix:semicolon
 DECL|typedef|snd_pcm_oss_t
 )brace
 id|snd_pcm_oss_t

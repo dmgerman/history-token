@@ -8802,6 +8802,26 @@ r_goto
 id|__error1
 suffix:semicolon
 )brace
+id|err
+op_assign
+id|snd_card_file_add
+c_func
+(paren
+id|pcm-&gt;card
+comma
+id|file
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|__error1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8819,7 +8839,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_goto
-id|__error1
+id|__error2
 suffix:semicolon
 )brace
 id|init_waitqueue_entry
@@ -8995,6 +9015,16 @@ c_func
 id|pcm-&gt;card-&gt;module
 )paren
 suffix:semicolon
+id|__error2
+suffix:colon
+id|snd_card_file_remove
+c_func
+(paren
+id|pcm-&gt;card
+comma
+id|file
+)paren
+suffix:semicolon
 id|__error1
 suffix:colon
 macro_line|#ifdef LINUX_2_2
@@ -9145,6 +9175,14 @@ id|dec_mod_count
 c_func
 (paren
 id|pcm-&gt;card-&gt;module
+)paren
+suffix:semicolon
+id|snd_card_file_remove
+c_func
+(paren
+id|pcm-&gt;card
+comma
+id|file
 )paren
 suffix:semicolon
 macro_line|#ifdef LINUX_2_2
