@@ -572,8 +572,9 @@ id|s
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: requesttype=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: requesttype=%d&quot;
 comma
 id|s-&gt;requesttype
 )paren
@@ -581,8 +582,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: request=%d %s&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: request=%d %s&quot;
 comma
 id|s-&gt;request
 comma
@@ -596,8 +598,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: value=0x%04x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: value=0x%04x&quot;
 comma
 id|s-&gt;wValue
 )paren
@@ -605,8 +608,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: index=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: index=%d&quot;
 comma
 id|s-&gt;index
 )paren
@@ -614,8 +618,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: length=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: length=%d&quot;
 comma
 id|s-&gt;length
 )paren
@@ -1345,8 +1350,9 @@ suffix:semicolon
 id|vdbg
 c_func
 (paren
+l_string|&quot;%s: ep%d, pkt=%p&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ep%d, pkt=%p&quot;
 comma
 id|ep-&gt;address
 comma
@@ -1363,8 +1369,9 @@ id|pkt
 id|err
 c_func
 (paren
+l_string|&quot;%s: head=NULL! list-&gt;count=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: head=NULL! list-&gt;count=%d&quot;
 comma
 id|ep-&gt;inlist.count
 )paren
@@ -1553,8 +1560,9 @@ suffix:semicolon
 id|vdbg
 c_func
 (paren
+l_string|&quot;%s: ep%d, %s pkt=%p, list count=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ep%d, %s pkt=%p, list count=%d&quot;
 comma
 id|ep-&gt;address
 comma
@@ -1700,8 +1708,9 @@ suffix:semicolon
 id|vdbg
 c_func
 (paren
+l_string|&quot;%s: ep%d, pkt=%p, size=%d, list count=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ep%d, pkt=%p, size=%d, list count=%d&quot;
 comma
 id|ep-&gt;address
 comma
@@ -1772,8 +1781,9 @@ id|ep-&gt;max_pkt_size
 id|err
 c_func
 (paren
+l_string|&quot;%s: could not alloc new packet&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: could not alloc new packet&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2012,8 +2022,9 @@ suffix:semicolon
 id|vdbg
 c_func
 (paren
+l_string|&quot;%s: ep%d, %s pkt=%p, size=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ep%d, %s pkt=%p, size=%d&quot;
 comma
 id|ep-&gt;address
 comma
@@ -2425,8 +2436,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: our address=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: our address=%d&quot;
 comma
 id|new_addr
 )paren
@@ -3269,8 +3281,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: req %d %s&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: req %d %s&quot;
 comma
 id|setup-&gt;bRequestType
 comma
@@ -3304,8 +3317,9 @@ id|USB_RECIP_DEVICE
 id|err
 c_func
 (paren
+l_string|&quot;%s: invalid requesttype 0x%02x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: invalid requesttype 0x%02x&quot;
 comma
 id|setup-&gt;bRequestType
 )paren
@@ -3329,8 +3343,9 @@ id|setup-&gt;wLength
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: OUT phase! length=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: OUT phase! length=%d&quot;
 comma
 id|setup-&gt;wLength
 )paren
@@ -3533,8 +3548,9 @@ r_else
 id|err
 c_func
 (paren
+l_string|&quot;%s: wrong size SETUP received&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: wrong size SETUP received&quot;
 )paren
 suffix:semicolon
 r_break
