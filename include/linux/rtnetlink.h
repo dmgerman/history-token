@@ -1127,11 +1127,13 @@ r_int
 id|rtattr_strcmp
 c_func
 (paren
+r_const
 r_struct
 id|rtattr
 op_star
 id|rta
 comma
+r_const
 r_char
 op_star
 id|str
