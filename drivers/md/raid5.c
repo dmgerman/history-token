@@ -321,8 +321,13 @@ id|sh
 id|PRINTK
 c_func
 (paren
-l_string|&quot;remove_hash(), stripe %lu&bslash;n&quot;
+l_string|&quot;remove_hash(), stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -387,8 +392,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;insert_hash(), stripe %lu&bslash;n&quot;
+l_string|&quot;insert_hash(), stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -746,8 +756,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;init_stripe called, stripe %lu&bslash;n&quot;
+l_string|&quot;init_stripe called, stripe %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -814,8 +829,13 @@ id|dev-&gt;flags
 id|printk
 c_func
 (paren
-l_string|&quot;sector=%lx i=%d %p %p %p %d&bslash;n&quot;
+l_string|&quot;sector=%llx i=%d %p %p %p %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -1603,8 +1623,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;end_read_request %lu/%d, count: %d, uptodate %d.&bslash;n&quot;
+l_string|&quot;end_read_request %llu/%d, count: %d, uptodate %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -1986,8 +2011,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;end_write_request %lu/%d, count %d, uptodate: %d.&bslash;n&quot;
+l_string|&quot;end_write_request %llu/%d, count %d, uptodate: %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -2104,8 +2134,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
-r_int
+id|sector_t
 id|compute_blocknr
 c_func
 (paren
@@ -3034,8 +3063,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;compute_block, stripe %lu, idx %d&bslash;n&quot;
+l_string|&quot;compute_block, stripe %llu, idx %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|dd_idx
@@ -3137,10 +3171,15 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;compute_block() %d, stripe %lu, %d not present&bslash;n&quot;
+l_string|&quot;compute_block() %d, stripe %llu, %d not present&bslash;n&quot;
 comma
 id|dd_idx
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|i
@@ -3236,8 +3275,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;compute_parity, stripe %lu, method %d&bslash;n&quot;
+l_string|&quot;compute_parity, stripe %llu, method %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|method
@@ -3840,10 +3884,20 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;adding bh b#%lu to stripe s#%lu&bslash;n&quot;
+l_string|&quot;adding bh b#%llu to stripe s#%llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bi-&gt;bi_sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -3969,10 +4023,20 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;added bi b#%lu to stripe s#%lu, disk %d.&bslash;n&quot;
+l_string|&quot;added bi b#%llu to stripe s#%llu, disk %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bi-&gt;bi_sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|dd_idx
@@ -4163,8 +4227,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;handling stripe %ld, cnt=%d, pd_idx=%d&bslash;n&quot;
+l_string|&quot;handling stripe %llu, cnt=%d, pd_idx=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|atomic_read
@@ -5388,8 +5457,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;for sector %ld, rmw=%d rcw=%d&bslash;n&quot;
+l_string|&quot;for sector %llu, rmw=%d rcw=%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|rmw
@@ -6375,8 +6449,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;for %ld schedule op %ld on disc %d&bslash;n&quot;
+l_string|&quot;for %llu schedule op %ld on disc %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|bi-&gt;bi_rw
@@ -6439,12 +6518,17 @@ r_else
 id|PRINTK
 c_func
 (paren
-l_string|&quot;skip op %ld on disc %d for sector %ld&bslash;n&quot;
+l_string|&quot;skip op %ld on disc %d for sector %llu&bslash;n&quot;
 comma
 id|bi-&gt;bi_rw
 comma
 id|i
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon
@@ -8111,8 +8195,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu, pd_idx %d, state %ld.&bslash;n&quot;
+l_string|&quot;sh %llu, pd_idx %d, state %ld.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|sh-&gt;pd_idx
@@ -8123,8 +8212,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu,  count %d.&bslash;n&quot;
+l_string|&quot;sh %llu,  count %d.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 comma
 id|atomic_read
@@ -8138,8 +8232,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sh %lu, &quot;
+l_string|&quot;sh %llu, &quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sh-&gt;sector
 )paren
 suffix:semicolon

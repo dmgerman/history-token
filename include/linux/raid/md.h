@@ -35,7 +35,7 @@ mdefine_line|#define MD_MINOR_VERSION                90
 DECL|macro|MD_PATCHLEVEL_VERSION
 mdefine_line|#define MD_PATCHLEVEL_VERSION           0
 r_extern
-r_int
+id|sector_t
 id|md_size
 (braket
 id|MAX_MD_DEVS

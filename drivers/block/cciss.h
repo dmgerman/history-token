@@ -115,7 +115,7 @@ r_int
 id|usage_count
 suffix:semicolon
 DECL|member|nr_blocks
-r_int
+id|sector_t
 id|nr_blocks
 suffix:semicolon
 DECL|member|block_size
