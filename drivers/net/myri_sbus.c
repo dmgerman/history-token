@@ -5937,6 +5937,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|dev-&gt;priv
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
 id|dev
 )paren
 suffix:semicolon
@@ -6172,6 +6178,12 @@ id|kfree
 c_func
 (paren
 id|root_myri_dev-&gt;dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|root_myri_dev
 )paren
 suffix:semicolon
 id|root_myri_dev
