@@ -223,14 +223,6 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|wait_intr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
 id|chip_init
 c_func
 (paren
@@ -2561,7 +2553,7 @@ id|info_msg
 )paren
 suffix:semicolon
 )brace
-DECL|function|wait_intr
+macro_line|#if 0
 r_static
 r_void
 id|wait_intr
@@ -2664,6 +2656,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|NCR53c406a_queue
 r_static
 r_int
