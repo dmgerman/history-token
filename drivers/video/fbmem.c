@@ -990,7 +990,7 @@ op_assign
 multiline_comment|/*&n;&t; * Chipset specific drivers that use resource management&n;&t; */
 macro_line|#ifdef CONFIG_FB_RETINAZ3
 (brace
-l_string|&quot;retz3&quot;
+l_string|&quot;retz3fb&quot;
 comma
 id|retz3fb_init
 comma
@@ -1030,7 +1030,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CYBER
 (brace
-l_string|&quot;cyber&quot;
+l_string|&quot;cyberfb&quot;
 comma
 id|cyberfb_init
 comma
@@ -1040,7 +1040,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CYBER2000
 (brace
-l_string|&quot;cyber2000&quot;
+l_string|&quot;cyber2000fb&quot;
 comma
 id|cyber2000fb_init
 comma
@@ -1070,7 +1070,7 @@ comma
 macro_line|#endif           
 macro_line|#ifdef CONFIG_FB_CLGEN
 (brace
-l_string|&quot;clgen&quot;
+l_string|&quot;clgenfb&quot;
 comma
 id|clgenfb_init
 comma
@@ -1090,7 +1090,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_MATROX
 (brace
-l_string|&quot;matrox&quot;
+l_string|&quot;matroxfb&quot;
 comma
 id|matroxfb_init
 comma
@@ -1110,7 +1110,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_NEOMAGIC
 (brace
-l_string|&quot;neo&quot;
+l_string|&quot;neofb&quot;
 comma
 id|neofb_init
 comma
@@ -1120,7 +1120,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_VIRGE
 (brace
-l_string|&quot;virge&quot;
+l_string|&quot;virgefb&quot;
 comma
 id|virgefb_init
 comma
@@ -1130,7 +1130,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_RIVA
 (brace
-l_string|&quot;riva&quot;
+l_string|&quot;rivafb&quot;
 comma
 id|rivafb_init
 comma
@@ -1140,7 +1140,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_RADEON
 (brace
-l_string|&quot;radeon&quot;
+l_string|&quot;radeonfb&quot;
 comma
 id|radeonfb_init
 comma
@@ -1200,7 +1200,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_S3TRIO
 (brace
-l_string|&quot;s3trio&quot;
+l_string|&quot;s3triofb&quot;
 comma
 id|s3triofb_init
 comma
@@ -1230,7 +1230,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_TRIDENT
 (brace
-l_string|&quot;trident&quot;
+l_string|&quot;tridentfb&quot;
 comma
 id|tridentfb_init
 comma
@@ -1270,7 +1270,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CG6
 (brace
-l_string|&quot;cg6&quot;
+l_string|&quot;cg6fb&quot;
 comma
 id|cg6_init
 comma
@@ -1280,7 +1280,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CG3
 (brace
-l_string|&quot;cg3&quot;
+l_string|&quot;cg3fb&quot;
 comma
 id|cg3_init
 comma
@@ -1290,7 +1290,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_BW2
 (brace
-l_string|&quot;bw2&quot;
+l_string|&quot;bw2fb&quot;
 comma
 id|bw2_init
 comma
@@ -1300,7 +1300,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CG14
 (brace
-l_string|&quot;cg14&quot;
+l_string|&quot;cg14fb&quot;
 comma
 id|cg14_init
 comma
@@ -1310,7 +1310,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_P9100
 (brace
-l_string|&quot;p9100&quot;
+l_string|&quot;p9100fb&quot;
 comma
 id|p9100_init
 comma
@@ -1320,7 +1320,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_TCX
 (brace
-l_string|&quot;tcx&quot;
+l_string|&quot;tcxfb&quot;
 comma
 id|tcx_init
 comma
@@ -1330,7 +1330,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_LEO
 (brace
-l_string|&quot;leo&quot;
+l_string|&quot;leofb&quot;
 comma
 id|leo_init
 comma
@@ -1351,7 +1351,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_VESA
 (brace
-l_string|&quot;vesa&quot;
+l_string|&quot;vesafb&quot;
 comma
 id|vesafb_init
 comma
@@ -1362,7 +1362,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Chipset specific drivers that don&squot;t use resource management (yet)&n;&t; */
 macro_line|#ifdef CONFIG_FB_3DFX
 (brace
-l_string|&quot;tdfx&quot;
+l_string|&quot;tdfxfb&quot;
 comma
 id|tdfxfb_init
 comma
@@ -1372,7 +1372,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SGIVW
 (brace
-l_string|&quot;sgivw&quot;
+l_string|&quot;sgivwfb&quot;
 comma
 id|sgivwfb_init
 comma
@@ -1382,7 +1382,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_ACORN
 (brace
-l_string|&quot;acorn&quot;
+l_string|&quot;acornfb&quot;
 comma
 id|acornfb_init
 comma
@@ -1412,7 +1412,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_HGA
 (brace
-l_string|&quot;hga&quot;
+l_string|&quot;hgafb&quot;
 comma
 id|hgafb_init
 comma
@@ -1432,7 +1432,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_APOLLO
 (brace
-l_string|&quot;apollo&quot;
+l_string|&quot;apollofb&quot;
 comma
 id|dnfb_init
 comma
@@ -1452,7 +1452,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_TGA
 (brace
-l_string|&quot;tga&quot;
+l_string|&quot;tgafb&quot;
 comma
 id|tgafb_init
 comma
@@ -1472,7 +1472,7 @@ comma
 macro_line|#endif 
 macro_line|#ifdef CONFIG_FB_G364
 (brace
-l_string|&quot;g364&quot;
+l_string|&quot;g364fb&quot;
 comma
 id|g364fb_init
 comma
@@ -1482,7 +1482,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SA1100
 (brace
-l_string|&quot;sa1100&quot;
+l_string|&quot;sa1100fb&quot;
 comma
 id|sa1100fb_init
 comma
@@ -1492,7 +1492,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SUN3
 (brace
-l_string|&quot;sun3&quot;
+l_string|&quot;sun3fb&quot;
 comma
 id|sun3fb_init
 comma
@@ -1512,7 +1512,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_TX3912
 (brace
-l_string|&quot;tx3912&quot;
+l_string|&quot;tx3912fb&quot;
 comma
 id|tx3912fb_init
 comma
@@ -1532,7 +1532,7 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_PVR2
 (brace
-l_string|&quot;pvr2&quot;
+l_string|&quot;pvr2fb&quot;
 comma
 id|pvr2fb_init
 comma
@@ -1572,7 +1572,7 @@ comma
 macro_line|#endif            
 macro_line|#ifdef CONFIG_FB_VOODOO1
 (brace
-l_string|&quot;sst&quot;
+l_string|&quot;sstfb&quot;
 comma
 id|sstfb_init
 comma
@@ -1583,7 +1583,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Generic drivers that don&squot;t use resource management (yet)&n;&t; */
 macro_line|#ifdef CONFIG_FB_VGA16
 (brace
-l_string|&quot;vga16&quot;
+l_string|&quot;vga16fb&quot;
 comma
 id|vga16fb_init
 comma
@@ -1594,7 +1594,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_GSP_RESOLVER
 multiline_comment|/* Not a real frame buffer device... */
 (brace
-l_string|&quot;resolver&quot;
+l_string|&quot;resolverfb&quot;
 comma
 l_int|NULL
 comma
@@ -2001,6 +2001,10 @@ l_int|1
 suffix:semicolon
 id|u32
 id|offset
+comma
+id|count
+op_assign
+l_int|1000
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2032,6 +2036,20 @@ OG
 id|info-&gt;pixmap.size
 )paren
 (brace
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|info-&gt;pixmap.count
+)paren
+op_logical_and
+id|count
+op_decrement
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2059,6 +2077,18 @@ op_assign
 id|offset
 op_plus
 id|size
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|info-&gt;pixmap.count
+)paren
+suffix:semicolon
+id|smp_mb__after_atomic_inc
+c_func
+(paren
+)paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -2972,7 +3002,6 @@ op_assign
 l_int|8
 suffix:semicolon
 )brace
-multiline_comment|/* 16 colors */
 r_else
 r_if
 c_cond
@@ -2981,16 +3010,17 @@ id|fb_logo.depth
 op_ge
 l_int|16
 )paren
+multiline_comment|/* 16 colors */
 id|fb_logo.needs_logo
 op_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* 2 colors */
 r_else
 id|fb_logo.needs_logo
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* 2 colors */
 r_break
 suffix:semicolon
 r_case
@@ -3014,12 +3044,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FB_VISUAL_PSEUDOCOLOR
+id|FB_VISUAL_STATIC_PSEUDOCOLOR
 suffix:colon
-r_default
-suffix:colon
-(brace
-)brace
 r_if
 c_cond
 (paren
@@ -3028,44 +3054,36 @@ op_ge
 l_int|8
 )paren
 (brace
+id|fb_logo.needs_logo
+op_assign
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;fix.visual
+op_eq
+id|FB_VISUAL_PSEUDOCOLOR
+)paren
 id|fb_logo.needs_cmapreset
 op_assign
 l_int|1
 suffix:semicolon
-id|fb_logo.needs_logo
-op_assign
-l_int|8
-suffix:semicolon
 )brace
-multiline_comment|/* fall through */
-r_case
-id|FB_VISUAL_STATIC_PSEUDOCOLOR
-suffix:colon
-multiline_comment|/* 16 colors */
-r_if
-c_cond
-(paren
-id|fb_logo.depth
-op_ge
-l_int|4
-op_logical_and
-id|fb_logo.depth
-OL
-l_int|8
-)paren
-id|fb_logo.needs_logo
-op_assign
-l_int|4
-suffix:semicolon
-multiline_comment|/* 2 colors */
 r_else
 r_if
 c_cond
 (paren
 id|fb_logo.depth
-OL
+op_ge
 l_int|4
 )paren
+id|fb_logo.needs_logo
+op_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* 16 colors */
+r_else
 id|fb_logo.needs_logo
 op_assign
 l_int|1
@@ -3406,6 +3424,18 @@ id|info
 comma
 op_amp
 id|image
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|info-&gt;pixmap.count
+)paren
+suffix:semicolon
+id|smp_mb__after_atomic_dec
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
