@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* These mutexes are a very simple counter: the winner is the one who&n;   decrements from 1 to 0.  The counter starts at 1 when the lock is&n;   free.  A value other than 0 or 1 means someone may be sleeping.&n;   This is simple enough to work on all architectures, but has the&n;   problem that if we never &quot;up&quot; the semaphore it could eventually&n;   wrap around. */
+multiline_comment|/* Simple &quot;sleep if unchanged&quot; interface. */
 multiline_comment|/* FIXME: This may be way too small. --RR */
 DECL|macro|FUTEX_HASHBITS
 mdefine_line|#define FUTEX_HASHBITS 6
