@@ -1452,16 +1452,11 @@ id|US_STATE_ABORTING
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- transport indicates command was aborted&bslash;n&quot;
+l_string|&quot;-- command was aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|srb-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
-suffix:semicolon
-r_return
+r_goto
+id|Handle_Abort
 suffix:semicolon
 )brace
 multiline_comment|/* if there is a transport error, reset and don&squot;t auto-sense */
@@ -1870,13 +1865,8 @@ c_func
 l_string|&quot;-- auto-sense aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|srb-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
-suffix:semicolon
-r_return
+r_goto
+id|Handle_Abort
 suffix:semicolon
 )brace
 r_if
@@ -2074,6 +2064,34 @@ l_int|0
 op_assign
 l_int|0x0
 suffix:semicolon
+r_return
+suffix:semicolon
+multiline_comment|/* abort processing: the bulk-only transport requires a reset&n;&t; * following an abort */
+id|Handle_Abort
+suffix:colon
+id|srb-&gt;result
+op_assign
+id|DID_ABORT
+op_lshift
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|us-&gt;protocol
+op_eq
+id|US_PR_BULK
+)paren
+(brace
+id|us
+op_member_access_from_pointer
+id|transport_reset
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Abort the currently running scsi command or device reset.&n; * This must be called with scsi_lock(us-&gt;srb-&gt;host) held */
 DECL|function|usb_stor_abort_transport
