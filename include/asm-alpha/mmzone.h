@@ -100,13 +100,13 @@ mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;     &bslash;&n;({&t;
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;       &t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;                                                           &bslash;&n;})
 DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;unsigned long kaddr = (unsigned long)__va(pfn &lt;&lt; PAGE_SHIFT);&t;&bslash;&n;&t;(node_mem_map(kvaddr_to_nid(kaddr)) + local_mapnr(kaddr));&t;&bslash;&n;})
+mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;unsigned long kaddr = (unsigned long)__va((pfn) &lt;&lt; PAGE_SHIFT);&t;&bslash;&n;&t;(node_mem_map(kvaddr_to_nid(kaddr)) + local_mapnr(kaddr));&t;&bslash;&n;})
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((page) - page_zone(page)-&gt;zone_mem_map +&t;&t;&t;&bslash;&n;&t; (page_zone(page)-&gt;zone_start_pfn))
 DECL|macro|page_to_pa
 mdefine_line|#define page_to_pa(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((( (page) - page_zone(page)-&gt;zone_mem_map )&t;&t;&t;&bslash;&n;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|pfn_to_nid
-mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid(((u64)pfn &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid(((u64)(pfn) &lt;&lt; PAGE_SHIFT))
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((pfn) - node_start_pfn(pfn_to_nid(pfn))) &lt;&t;&t;&t;&bslash;&n;&t; node_spanned_pages(pfn_to_nid(pfn)))&t;&t;&t;&t;&t;&bslash;&n;
 DECL|macro|virt_addr_valid
