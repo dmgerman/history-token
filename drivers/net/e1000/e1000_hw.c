@@ -196,17 +196,6 @@ id|hw
 suffix:semicolon
 r_static
 r_void
-id|e1000_standby_eeprom
-c_func
-(paren
-r_struct
-id|e1000_hw
-op_star
-id|hw
-)paren
-suffix:semicolon
-r_static
-r_void
 id|e1000_clock_eeprom
 c_func
 (paren
@@ -219,6 +208,17 @@ suffix:semicolon
 r_static
 r_void
 id|e1000_cleanup_eeprom
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_static
+r_void
+id|e1000_standby_eeprom
 c_func
 (paren
 r_struct
@@ -3269,7 +3269,6 @@ comma
 id|ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* Write the MII Control Register with the new PHY configuration. */
 r_if
 c_cond
 (paren
@@ -3344,6 +3343,7 @@ id|mii_ctrl_reg
 op_or_assign
 id|MII_CR_RESET
 suffix:semicolon
+multiline_comment|/* Write back the modified PHY MII control register. */
 r_if
 c_cond
 (paren
@@ -7331,7 +7331,7 @@ op_star
 id|eecd
 )paren
 (brace
-multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;     * wait 50 microseconds.&n;     */
+multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;     * wait &lt;delay&gt; microseconds.&n;     */
 op_star
 id|eecd
 op_assign
@@ -7585,7 +7585,7 @@ suffix:semicolon
 r_uint16
 id|data
 suffix:semicolon
-multiline_comment|/* In order to read a register from the EEPROM, we need to shift 16 bits &n;     * in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock input to&n;     * the EEPROM (setting the SK bit), and then reading the value of the &quot;DO&quot;&n;     * bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should always be &n;     * clear..&n;     */
+multiline_comment|/* In order to read a register from the EEPROM, we need to shift &squot;count&squot;&n;     * bits in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock&n;     * input to the EEPROM (setting the SK bit), and then reading the value of&n;     * the &quot;DO&quot; bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should&n;     * always be clear.&n;     */
 id|eecd
 op_assign
 id|E1000_READ_REG
