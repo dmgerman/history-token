@@ -587,6 +587,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * vsc_sata_interrupt&n; *&n; * Read the interrupt register and process for the devices that have them pending.&n; */
 DECL|function|vsc_sata_interrupt
+r_static
 id|irqreturn_t
 id|vsc_sata_interrupt
 (paren

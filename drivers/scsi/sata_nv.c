@@ -104,6 +104,7 @@ op_star
 id|ent
 )paren
 suffix:semicolon
+r_static
 id|irqreturn_t
 id|nv_interrupt
 (paren
@@ -874,6 +875,7 @@ id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|function|nv_interrupt
+r_static
 id|irqreturn_t
 id|nv_interrupt
 (paren
