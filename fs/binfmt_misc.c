@@ -3662,9 +3662,9 @@ id|get_sb
 suffix:colon
 id|bm_get_sb
 comma
-id|fs_flags
+id|kill_sb
 suffix:colon
-id|FS_LITTER
+id|kill_litter_super
 comma
 )brace
 suffix:semicolon

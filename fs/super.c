@@ -1599,22 +1599,6 @@ id|bdev
 op_assign
 id|sb-&gt;s_bdev
 suffix:semicolon
-multiline_comment|/* Need to clean after the sucker */
-r_if
-c_cond
-(paren
-id|fs-&gt;fs_flags
-op_amp
-id|FS_LITTER
-op_logical_and
-id|sb-&gt;s_root
-)paren
-id|d_genocide
-c_func
-(paren
-id|sb-&gt;s_root
-)paren
-suffix:semicolon
 id|generic_shutdown_super
 c_func
 (paren
