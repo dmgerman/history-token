@@ -407,17 +407,7 @@ id|irqreturn_t
 id|gamma_dma_service
 c_func
 (paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|device
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
+id|DRM_IRQ_ARGS
 )paren
 (brace
 id|drm_device_t
@@ -428,7 +418,7 @@ op_assign
 id|drm_device_t
 op_star
 )paren
-id|device
+id|arg
 suffix:semicolon
 id|drm_device_dma_t
 op_star
@@ -446,6 +436,7 @@ op_star
 )paren
 id|dev-&gt;dev_private
 suffix:semicolon
+multiline_comment|/* FIXME: should check whether we&squot;re actually interested in the interrupt? */
 id|atomic_inc
 c_func
 (paren

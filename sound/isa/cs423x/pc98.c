@@ -2294,7 +2294,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma1
+id|dma2
 (braket
 id|dev
 )braket

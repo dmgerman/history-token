@@ -38,9 +38,14 @@ mdefine_line|#define DRM_MEMORYBARRIER()&t;&t;mb()
 multiline_comment|/** DRM device local declaration */
 DECL|macro|DRM_DEVICE
 mdefine_line|#define DRM_DEVICE&t;drm_file_t&t;*priv&t;= filp-&gt;private_data; &bslash;&n;&t;&t;&t;drm_device_t&t;*dev&t;= priv-&gt;dev
-multiline_comment|/** IRQ handler arguments */
+multiline_comment|/** IRQ handler arguments and return type and values */
 DECL|macro|DRM_IRQ_ARGS
-mdefine_line|#define DRM_IRQ_ARGS&t;        int irq, void *arg, struct pt_regs *regs
+mdefine_line|#define DRM_IRQ_ARGS&t;&t;int irq, void *arg, struct pt_regs *regs
+multiline_comment|/** AGP types */
+DECL|macro|DRM_AGP_MEM
+mdefine_line|#define DRM_AGP_MEM&t;&t;struct agp_memory
+DECL|macro|DRM_AGP_KERN
+mdefine_line|#define DRM_AGP_KERN&t;&t;struct agp_kern_info
 multiline_comment|/** Task queue handler arguments */
 DECL|macro|DRM_TASKQUEUE_ARGS
 mdefine_line|#define DRM_TASKQUEUE_ARGS&t;void *arg
