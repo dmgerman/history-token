@@ -4090,14 +4090,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* just in case ! */
-id|ctx-&gt;ctx_ovfl_regs
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0UL
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -4738,6 +4730,8 @@ suffix:semicolon
 r_int
 r_int
 id|value
+comma
+id|hw_value
 suffix:semicolon
 r_int
 r_int
@@ -4907,6 +4901,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|hw_value
+op_assign
+id|value
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * no error on this register&n;&t;&t; */
 id|PFM_REG_RETFLAG_SET
 c_func
@@ -4963,6 +4961,12 @@ op_assign
 id|value
 op_amp
 op_complement
+id|pmu_conf.perf_ovfl_val
+suffix:semicolon
+id|hw_value
+op_assign
+id|value
+op_amp
 id|pmu_conf.perf_ovfl_val
 suffix:semicolon
 id|ctx-&gt;ctx_soft_pmds
@@ -5040,7 +5044,7 @@ c_func
 (paren
 id|cnum
 comma
-id|value
+id|hw_value
 )paren
 suffix:semicolon
 multiline_comment|/* to go away */
@@ -5053,7 +5057,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot;[%d] pmd[%u]: value=0x%lx soft_pmd=0x%lx  short_reset=0x%lx &quot;
+l_string|&quot;[%d] pmd[%u]: value=0x%lx hw_value=0x%lx soft_pmd=0x%lx  short_reset=0x%lx &quot;
 l_string|&quot;long_reset=0x%lx hw_pmd=%lx notify=%c used_pmds=0x%lx reset_pmds=0x%lx&bslash;n&quot;
 comma
 id|task-&gt;pid
@@ -5061,6 +5065,8 @@ comma
 id|cnum
 comma
 id|value
+comma
+id|hw_value
 comma
 id|ctx-&gt;ctx_soft_pmds
 (braket
