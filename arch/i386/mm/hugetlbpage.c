@@ -1200,20 +1200,6 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|htlbpage_lock
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|htlbpage_lock
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1295,8 +1281,8 @@ id|end
 )paren
 suffix:semicolon
 )brace
-DECL|function|zap_hugepage_range
 r_void
+DECL|function|zap_hugepage_range
 id|zap_hugepage_range
 c_func
 (paren
@@ -2336,11 +2322,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We cannot handle pagefaults against hugetlb pages at all.  They cause&n; * handle_mm_fault() to try to instantiate regular-sized pages in the&n; * hugegpage VMA.  do_page_fault() is supposed to trap this, so BUG is we get&n; * this far.&n; */
+DECL|function|hugetlb_nopage
 r_static
 r_struct
 id|page
 op_star
-DECL|function|hugetlb_nopage
 id|hugetlb_nopage
 c_func
 (paren
