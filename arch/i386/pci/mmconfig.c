@@ -401,6 +401,17 @@ id|pci_mmcfg_base_addr
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* Kludge for now. Don&squot;t use mmconfig on AMD systems because&n;&t;   those have some busses where mmconfig doesn&squot;t work,&n;&t;   and we don&squot;t parse ACPI MCFG well enough to handle that. &n;&t;   Remove when proper handling is added. */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|printk
 c_func
 (paren
