@@ -654,12 +654,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|fat_cache_inval_dev
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3983,6 +3977,7 @@ suffix:semicolon
 id|fat_cache_init
 c_func
 (paren
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */

@@ -31,8 +31,6 @@ DECL|macro|FAT_MAX_DIR_SIZE
 mdefine_line|#define FAT_MAX_DIR_SIZE&t;(FAT_MAX_DIR_ENTRIES &lt;&lt; MSDOS_DIR_BITS)
 DECL|macro|MSDOS_SUPER_MAGIC
 mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
-DECL|macro|FAT_CACHE
-mdefine_line|#define FAT_CACHE    8 /* FAT cache size */
 DECL|macro|ATTR_NONE
 mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
 DECL|macro|ATTR_RO
@@ -515,41 +513,6 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-DECL|struct|fat_cache
-r_struct
-id|fat_cache
-(brace
-DECL|member|sb
-r_struct
-id|super_block
-op_star
-id|sb
-suffix:semicolon
-multiline_comment|/* fs in question.  NULL means unused */
-DECL|member|start_cluster
-r_int
-id|start_cluster
-suffix:semicolon
-multiline_comment|/* first cluster of the chain. */
-DECL|member|file_cluster
-r_int
-id|file_cluster
-suffix:semicolon
-multiline_comment|/* cluster number in the file. */
-DECL|member|disk_cluster
-r_int
-id|disk_cluster
-suffix:semicolon
-multiline_comment|/* cluster number on disk. */
-DECL|member|next
-r_struct
-id|fat_cache
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* next cache entry */
-)brace
-suffix:semicolon
 DECL|function|fat16_towchar
 r_static
 r_inline
@@ -749,7 +712,10 @@ r_void
 id|fat_cache_init
 c_func
 (paren
-r_void
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -800,17 +766,6 @@ r_struct
 id|inode
 op_star
 id|inode
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fat_cache_inval_dev
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
 )paren
 suffix:semicolon
 r_extern
