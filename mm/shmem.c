@@ -29,7 +29,7 @@ mdefine_line|#define SHMEM_MAX_INDEX  (SHMEM_NR_DIRECT + (ENTRIES_PER_PAGEPAGE/2
 DECL|macro|SHMEM_MAX_BYTES
 mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
-mdefine_line|#define VM_ACCT(size)    (((size) + PAGE_CACHE_SIZE - 1) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define VM_ACCT(size)    (PAGE_CACHE_ALIGN(size) &gt;&gt; PAGE_SHIFT)
 multiline_comment|/* Pretend that each entry is of this size in directory&squot;s i_size */
 DECL|macro|BOGO_DIRENT_SIZE
 mdefine_line|#define BOGO_DIRENT_SIZE 20
@@ -1547,6 +1547,13 @@ id|empty
 op_assign
 id|subdir
 suffix:semicolon
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
 id|dir
 op_assign
 id|shmem_dir_map
@@ -2664,8 +2671,8 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
@@ -2674,23 +2681,15 @@ c_func
 id|page
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|page_mapped
 c_func
 (paren
 id|page
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|mapping
@@ -2772,25 +2771,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|entry
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|entry-&gt;val
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3637,14 +3628,14 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* We have the page */
 id|SetPageUptodate
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* We have the page */
 op_star
 id|pagep
 op_assign
@@ -3842,11 +3833,17 @@ op_minus
 id|vma-&gt;vm_start
 )paren
 op_rshift
-id|PAGE_CACHE_SHIFT
+id|PAGE_SHIFT
 suffix:semicolon
 id|idx
 op_add_assign
 id|vma-&gt;vm_pgoff
+suffix:semicolon
+id|idx
+op_rshift_assign
+id|PAGE_CACHE_SHIFT
+op_minus
+id|PAGE_SHIFT
 suffix:semicolon
 r_if
 c_cond
@@ -4833,25 +4830,6 @@ id|status
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* We have exclusive IO access to the page.. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageLocked
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|PAGE_BUG
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 id|kaddr
 op_assign
 id|kmap
@@ -4862,7 +4840,7 @@ id|page
 suffix:semicolon
 id|status
 op_assign
-id|copy_from_user
+id|__copy_from_user
 c_func
 (paren
 id|kaddr
