@@ -266,6 +266,21 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * fill in this function to allow the queue depth of this host&n;&t; * to be changeable (on a per device basis).  returns either&n;&t; * the current queue depth setting (may be different from what&n;&t; * was passed in) or an error.  An error should only be&n;&t; * returned if the requested depth is legal but the driver was&n;&t; * unable to set it.  If the requested depth is illegal, the&n;&t; * driver should set and return the closest legal queue depth.&n;&t; *&n;&t; */
+DECL|member|change_queue_depth
+r_int
+(paren
+op_star
+id|change_queue_depth
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This function determines the bios parameters for a given&n;&t; * harddisk.  These tend to be numbers that are made up by&n;&t; * the host adapter.  Parameters:&n;&t; * size, device, list (heads, sectors, cylinders)&n;&t; *&n;&t; * Status: OPTIONAL&n;&t; */
 DECL|member|bios_param
 r_int
