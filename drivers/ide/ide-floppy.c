@@ -6179,8 +6179,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Return the current floppy capacity to ide.c.&n; */
 DECL|function|idefloppy_capacity
 r_static
-r_int
-r_int
+id|sector_t
 id|idefloppy_capacity
 (paren
 id|ide_drive_t

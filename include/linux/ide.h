@@ -4246,8 +4246,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|capacity
-r_int
-r_int
+id|sector_t
 (paren
 op_star
 id|capacity
@@ -4709,8 +4708,7 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
 r_extern
-r_int
-r_int
+id|sector_t
 id|current_capacity
 (paren
 id|ide_drive_t

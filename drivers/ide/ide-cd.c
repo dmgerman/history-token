@@ -12987,8 +12987,7 @@ suffix:semicolon
 )brace
 r_static
 DECL|function|ide_cdrom_capacity
-r_int
-r_int
+id|sector_t
 id|ide_cdrom_capacity
 (paren
 id|ide_drive_t

@@ -729,8 +729,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * current_capacity() returns the capacity (in sectors) of a drive&n; * according to its current geometry/LBA settings.&n; */
 DECL|function|current_capacity
-r_int
-r_int
+id|sector_t
 id|current_capacity
 (paren
 id|ide_drive_t
@@ -9789,8 +9788,7 @@ id|drive
 )brace
 DECL|function|default_capacity
 r_static
-r_int
-r_int
+id|sector_t
 id|default_capacity
 (paren
 id|ide_drive_t
