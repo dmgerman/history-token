@@ -1091,5 +1091,7 @@ macro_line|#else
 DECL|macro|pagebuf_trace
 macro_line|# define pagebuf_trace(pb, id, ptr, ra)&t;do { } while (0)
 macro_line|#endif
+DECL|macro|pagebuf_target_name
+mdefine_line|#define pagebuf_target_name(target)&t;&bslash;&n;&t;({ char __b[BDEVNAME_SIZE]; bdevname((target)-&gt;pbr_bdev, __b); __b; })
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

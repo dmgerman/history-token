@@ -270,7 +270,7 @@ mdefine_line|#define XFS_BUF_SET_VTYPE(bp, type)
 DECL|macro|XFS_BUF_SET_REF
 mdefine_line|#define XFS_BUF_SET_REF(bp, ref)
 DECL|macro|XFS_BUF_ISPINNED
-mdefine_line|#define XFS_BUF_ISPINNED(bp)   pagebuf_ispin(bp)
+mdefine_line|#define XFS_BUF_ISPINNED(bp)&t;pagebuf_ispin(bp)
 DECL|macro|XFS_BUF_VALUSEMA
 mdefine_line|#define XFS_BUF_VALUSEMA(bp)&t;pagebuf_lock_value(bp)
 DECL|macro|XFS_BUF_CPSEMA
@@ -283,11 +283,11 @@ DECL|macro|XFS_BUF_V_IODONESEMA
 mdefine_line|#define XFS_BUF_V_IODONESEMA(bp) up(&amp;bp-&gt;pb_iodonesema);
 multiline_comment|/* setup the buffer target from a buftarg structure */
 DECL|macro|XFS_BUF_SET_TARGET
-mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;(bp)-&gt;pb_target = (target)
+mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;&t;(bp)-&gt;pb_target = (target)
 DECL|macro|XFS_BUF_TARGET
 mdefine_line|#define XFS_BUF_TARGET(bp)&t;((bp)-&gt;pb_target)
 DECL|macro|XFS_BUFTARG_NAME
-mdefine_line|#define XFS_BUFTARG_NAME(target) &bslash;&n;&t;({ char __b[BDEVNAME_SIZE]; bdevname((target-&gt;pbr_bdev), __b); __b; })
+mdefine_line|#define XFS_BUFTARG_NAME(target)&t;&bslash;&n;&t;&t;pagebuf_target_name(target)
 DECL|macro|XFS_BUF_SET_VTYPE_REF
 mdefine_line|#define XFS_BUF_SET_VTYPE_REF(bp, type, ref)
 DECL|macro|XFS_BUF_SET_VTYPE
