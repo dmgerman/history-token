@@ -1,20 +1,12 @@
 macro_line|#ifndef _X86_64_PGTABLE_H
 DECL|macro|_X86_64_PGTABLE_H
 mdefine_line|#define _X86_64_PGTABLE_H
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the x86-64 page table tree.&n; * &n; * x86-64 has a 4 level table setup. Generic linux MM only supports&n; * three levels. The fourth level is currently a single static page that&n; * is shared by everybody and just contains a pointer to the current&n; * three level page setup on the beginning and some kernel mappings at &n; * the end. For more details see Documentation/x86_64/mm.txt&n; */
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-r_extern
-id|level4_t
-id|level4_pgt
-(braket
-l_int|512
-)braket
-suffix:semicolon
+macro_line|#include &lt;asm/pda.h&gt;
 r_extern
 id|pgd_t
 id|level3_kernel_pgt
@@ -35,11 +27,6 @@ id|level3_ident_pgt
 (braket
 l_int|512
 )braket
-comma
-id|swapper_pg_dir
-(braket
-l_int|512
-)braket
 suffix:semicolon
 r_extern
 id|pmd_t
@@ -49,6 +36,20 @@ l_int|512
 )braket
 suffix:semicolon
 r_extern
+id|pml4_t
+id|init_level4_pgt
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|pgd_t
+id|boot_vmalloc_pgt
+(braket
+)braket
+suffix:semicolon
+DECL|macro|swapper_pg_dir
+mdefine_line|#define swapper_pg_dir NULL
+r_extern
 r_void
 id|paging_init
 c_func
@@ -56,40 +57,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Caches aren&squot;t brain-dead. */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_icache_range
-mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)       do { } while (0)
-DECL|macro|__flush_tlb
-mdefine_line|#define __flush_tlb()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movq %%cr3, %0;  # flush TLB &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movq %0, %%cr3;              &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (tmpreg)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;:: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Global pages have to be flushed a bit differently. Not a real&n; * performance problem because this does not happen often.&n; */
-DECL|macro|__flush_tlb_global
-mdefine_line|#define __flush_tlb_global()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movq %1, %%cr4;  # turn off PGE     &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movq %%cr3, %0;  # flush TLB        &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movq %0, %%cr3;                     &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movq %2, %%cr4;  # turn PGE back on &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=&amp;r&quot; (tmpreg)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;r&quot; (mmu_cr4_features &amp; ~X86_CR4_PGE),&t;&bslash;&n;&t;&t;&t;  &quot;r&quot; (mmu_cr4_features)&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 r_extern
 r_int
 r_int
 id|pgkern_mask
 suffix:semicolon
-multiline_comment|/*&n; * Do not check the PGE bit unnecesserily if this is a PPro+ kernel.&n; * FIXME: This should be cleaned up&n; */
-DECL|macro|__flush_tlb_all
-macro_line|# define __flush_tlb_all() __flush_tlb_global()
-DECL|macro|__flush_tlb_one
-mdefine_line|#define __flush_tlb_one(addr) __asm__ __volatile__(&quot;invlpg %0&quot;: :&quot;m&quot; (*(char *) addr))
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int
@@ -101,11 +73,10 @@ l_int|1024
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-macro_line|#endif /* !__ASSEMBLY__ */
-DECL|macro|LEVEL4_SHIFT
-mdefine_line|#define LEVEL4_SHIFT&t;39
-DECL|macro|PTRS_PER_LEVEL4
-mdefine_line|#define PTRS_PER_LEVEL4&t;512
+DECL|macro|PML4_SHIFT
+mdefine_line|#define PML4_SHIFT&t;39
+DECL|macro|PTRS_PER_PML4
+mdefine_line|#define PTRS_PER_PML4&t;512
 multiline_comment|/*&n; * PGDIR_SHIFT determines what a top-level page table entry can map&n; */
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;30
@@ -125,12 +96,10 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %p(%016lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %p(%016lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pgd_val(e))
-DECL|macro|level4_none
-mdefine_line|#define level4_none(x)&t;(!level4_val(x))
+DECL|macro|pml4_none
+mdefine_line|#define pml4_none(x)&t;(!pml4_val(x))
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(x)&t;(!pgd_val(x))
-DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(x) ((pgd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
 DECL|function|pgd_present
 r_extern
 r_inline
@@ -166,13 +135,10 @@ id|pte_t
 id|val
 )paren
 (brace
-op_star
+id|pte_val
+c_func
 (paren
-(paren
-r_int
-r_int
 op_star
-)paren
 id|dst
 )paren
 op_assign
@@ -198,13 +164,10 @@ id|pmd_t
 id|val
 )paren
 (brace
-op_star
+id|pmd_val
+c_func
 (paren
-(paren
-r_int
-r_int
 op_star
-)paren
 id|dst
 )paren
 op_assign
@@ -230,13 +193,10 @@ id|pgd_t
 id|val
 )paren
 (brace
-op_star
+id|pgd_val
+c_func
 (paren
-(paren
-r_int
-r_int
 op_star
-)paren
 id|dst
 )paren
 op_assign
@@ -247,11 +207,11 @@ id|val
 )paren
 suffix:semicolon
 )brace
-DECL|function|__pgd_clear
+DECL|function|pgd_clear
 r_extern
 r_inline
 r_void
-id|__pgd_clear
+id|pgd_clear
 (paren
 id|pgd_t
 op_star
@@ -271,26 +231,32 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|pgd_clear
-r_extern
+DECL|function|set_pml4
+r_static
 r_inline
 r_void
-id|pgd_clear
+id|set_pml4
+c_func
 (paren
-id|pgd_t
+id|pml4_t
 op_star
-id|pgd
+id|dst
+comma
+id|pml4_t
+id|val
 )paren
 (brace
-id|__pgd_clear
+id|pml4_val
 c_func
 (paren
-id|pgd
+op_star
+id|dst
 )paren
-suffix:semicolon
-id|__flush_tlb
+op_assign
+id|pml4_val
 c_func
 (paren
+id|val
 )paren
 suffix:semicolon
 )brace
@@ -328,15 +294,18 @@ mdefine_line|#define BOOT_USER_L4_PTRS 1
 DECL|macro|BOOT_KERNEL_L4_PTRS
 mdefine_line|#define BOOT_KERNEL_L4_PTRS 511&t;/* But we will do it in 4rd level */
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* Just any arbitrary offset to the start of the vmalloc VM area: the&n; * current 8MB value just means that there will be a 8MB &quot;hole&quot; after the&n; * physical memory until the kernel virtual memory starts.  That means that&n; * any out-of-bounds memory accesses will hopefully be caught.&n; * The vmalloc() routines leaves a hole of 4kB between each vmalloced&n; * area for the same reason. ;)&n; */
-DECL|macro|VMALLOC_OFFSET
-mdefine_line|#define VMALLOC_OFFSET&t;(8*1024*1024)
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;(((unsigned long) high_memory + 2*VMALLOC_OFFSET-1) &amp; &bslash;&n;&t;&t;&t;&t;&t;&t;~(VMALLOC_OFFSET-1))
+mdefine_line|#define VMALLOC_START    0xffffff0000000000
+DECL|macro|VMALLOC_END
+mdefine_line|#define VMALLOC_END      0xffffff7fffffffff
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
-DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;(__START_KERNEL_map-PAGE_SIZE)
+DECL|macro|MODULES_VADDR
+mdefine_line|#define MODULES_VADDR    0xffffffffa0000000
+DECL|macro|MODULES_END
+mdefine_line|#define MODULES_END      0xffffffffafffffff
+DECL|macro|MODULES_LEN
+mdefine_line|#define MODULES_LEN   (MODULES_END - MODULES_VADDR)
 DECL|macro|_PAGE_BIT_PRESENT
 mdefine_line|#define _PAGE_BIT_PRESENT&t;0
 DECL|macro|_PAGE_BIT_RW
@@ -352,9 +321,11 @@ mdefine_line|#define _PAGE_BIT_ACCESSED&t;5
 DECL|macro|_PAGE_BIT_DIRTY
 mdefine_line|#define _PAGE_BIT_DIRTY&t;&t;6
 DECL|macro|_PAGE_BIT_PSE
-mdefine_line|#define _PAGE_BIT_PSE&t;&t;7&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
+mdefine_line|#define _PAGE_BIT_PSE&t;&t;7&t;/* 4 MB (or 2MB) page */
 DECL|macro|_PAGE_BIT_GLOBAL
 mdefine_line|#define _PAGE_BIT_GLOBAL&t;8&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_BIT_NX
+mdefine_line|#define _PAGE_BIT_NX           63       /* No execute: only valid after cpuid check */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_RW
@@ -372,9 +343,11 @@ mdefine_line|#define _PAGE_DIRTY&t;0x040
 DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 2MB page */
 DECL|macro|_PAGE_GLOBAL
-mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry PPro+ */
+mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry */
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;0x080&t;/* If not present */
+DECL|macro|_PAGE_NX
+mdefine_line|#define _PAGE_NX        (1UL&lt;&lt;_PAGE_BIT_NX)
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|_KERNPG_TABLE
@@ -407,7 +380,6 @@ DECL|macro|PAGE_KERNEL_NOCACHE
 mdefine_line|#define PAGE_KERNEL_NOCACHE MAKE_GLOBAL(__PAGE_KERNEL_NOCACHE)
 DECL|macro|PAGE_KERNEL_VSYSCALL
 mdefine_line|#define PAGE_KERNEL_VSYSCALL MAKE_GLOBAL(__PAGE_KERNEL_VSYSCALL)
-multiline_comment|/*&n; * The i386 can&squot;t do page protection for execute, and considers that&n; * the same are read. Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
@@ -440,39 +412,55 @@ DECL|macro|__S110
 mdefine_line|#define __S110&t;PAGE_SHARED
 DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED
-multiline_comment|/*&n; * Define this if things work differently on an i386 and an i486:&n; * it will (on an i486) warn about kernel memory accesses that are&n; * done without a &squot;verify_area(VERIFY_WRITE,..)&squot;&n; */
-DECL|macro|TEST_VERIFY_AREA
-macro_line|#undef TEST_VERIFY_AREA
-multiline_comment|/* page table for 0-4MB for everybody */
-r_extern
+DECL|function|pgd_bad
+r_static
+r_inline
 r_int
 r_int
-id|pg0
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-multiline_comment|/*&n; * Handling allocation failures during page table setup.&n; */
-r_extern
-r_void
-id|__handle_bad_pmd
+id|pgd_bad
 c_func
 (paren
-id|pmd_t
-op_star
-id|pmd
+id|pgd_t
+id|pgd
 )paren
-suffix:semicolon
-r_extern
-r_void
-id|__handle_bad_pmd_kernel
+(brace
+r_int
+r_int
+id|val
+op_assign
+id|pgd_val
 c_func
 (paren
-id|pmd_t
-op_star
-id|pmd
+id|pgd
 )paren
 suffix:semicolon
+id|val
+op_and_assign
+op_complement
+id|PAGE_MASK
+suffix:semicolon
+id|val
+op_and_assign
+op_complement
+(paren
+id|_PAGE_USER
+op_or
+id|_PAGE_DIRTY
+)paren
+suffix:semicolon
+r_return
+id|val
+op_amp
+op_complement
+(paren
+id|_PAGE_PRESENT
+op_or
+id|_PAGE_RW
+op_or
+id|_PAGE_ACCESSED
+)paren
+suffix:semicolon
+)brace
 DECL|macro|pte_none
 mdefine_line|#define pte_none(x)&t;(!pte_val(x))
 DECL|macro|pte_present
@@ -487,7 +475,6 @@ DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(xp)&t;do { set_pmd(xp, __pmd(0)); } while (0)
 DECL|macro|pmd_bad
 mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
-multiline_comment|/*&n; * Permanent address of a page. Obviously must never be&n; * called on a highmem page.&n; */
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))&t;/* FIXME: is this&n;&t;&t;&t;&t;&t;&t;   right? */
 DECL|macro|pte_page
@@ -1030,11 +1017,131 @@ id|ptep
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
+DECL|macro|page_pte
+mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
+multiline_comment|/*&n; * Level 4 access.&n; * Never use these in the common code.&n; */
+DECL|macro|pml4_page
+mdefine_line|#define pml4_page(pml4) ((unsigned long) __va(pml4_val(pml4) &amp; PAGE_MASK))
+DECL|macro|pml4_index
+mdefine_line|#define pml4_index(address) ((address &gt;&gt; PML4_SHIFT) &amp; (PTRS_PER_PML4-1))
+DECL|macro|pml4_offset_k
+mdefine_line|#define pml4_offset_k(address) (init_level4_pgt + pml4_index(address))
+DECL|macro|mk_kernel_pml4
+mdefine_line|#define mk_kernel_pml4(address) ((pml4_t){ (address) | _KERNPG_TABLE })
+DECL|macro|level3_offset_k
+mdefine_line|#define level3_offset_k(dir, address) ((pgd_t *) pml4_page(*(dir)) + pgd_index(address))
+multiline_comment|/* PGD - Level3 access */
+DECL|macro|__pgd_offset_k
+mdefine_line|#define __pgd_offset_k(pgd, address) ((pgd) + pgd_index(address))
+multiline_comment|/* to find an entry in a page-table-directory. */
+DECL|macro|pgd_index
+mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+DECL|macro|current_pgd_offset_k
+mdefine_line|#define current_pgd_offset_k(address) &bslash;&n;       __pgd_offset_k((pgd_t *)read_pda(level4_pgt), address)
+multiline_comment|/* This accesses the reference page table of the boot cpu. &n;   Other CPUs get synced lazily via the page fault handler. */
+DECL|function|pgd_offset_k
+r_static
+r_inline
+id|pgd_t
+op_star
+id|pgd_offset_k
+c_func
+(paren
+r_int
+r_int
+id|address
+)paren
+(brace
+id|pml4_t
+id|pml4
+suffix:semicolon
+id|pml4
+op_assign
+id|init_level4_pgt
+(braket
+id|pml4_index
+c_func
+(paren
+id|address
+)paren
+)braket
+suffix:semicolon
+r_return
+id|__pgd_offset_k
+c_func
+(paren
+id|__va
+c_func
+(paren
+id|pml4_val
+c_func
+(paren
+id|pml4
+)paren
+op_amp
+id|PAGE_MASK
+)paren
+comma
+id|address
+)paren
+suffix:semicolon
+)brace
+DECL|macro|__pgd_offset
+mdefine_line|#define __pgd_offset(address) pgd_index(address)
+DECL|macro|pgd_offset
+mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
+multiline_comment|/* PMD  - Level 2 access */
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)        (mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|__pmd_offset
+mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+multiline_comment|/* PTE - Level 1 access. */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(&amp;__pte, __pte(((page)-mem_map) * &t;&t;&t;&bslash;&n;&t;&t;(unsigned long long)PAGE_SIZE + pgprot_val(pgprot)));&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({                                                                     &bslash;&n;       pte_t __pte;                                                    &bslash;&n;                                                                       &bslash;&n;       set_pte(&amp;__pte, __pte(((page)-mem_map) *                        &bslash;&n;               (unsigned long long)PAGE_SIZE + pgprot_val(pgprot)));   &bslash;&n;       __pte;                                                          &bslash;&n;})
 multiline_comment|/* This takes a physical page address that is used by the remapping functions */
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; set_pte(&amp;__pte, __pte(physpage + pgprot_val(pgprot))); __pte; })
+DECL|function|mk_pte_phys
+r_static
+r_inline
+id|pte_t
+id|mk_pte_phys
+c_func
+(paren
+r_int
+r_int
+id|physpage
+comma
+id|pgprot_t
+id|pgprot
+)paren
+(brace
+id|pte_t
+id|__pte
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+op_amp
+id|__pte
+comma
+id|__pte
+c_func
+(paren
+id|physpage
+op_plus
+id|pgprot_val
+c_func
+(paren
+id|pgprot
+)paren
+)paren
+)paren
+suffix:semicolon
+r_return
+id|__pte
+suffix:semicolon
+)brace
 DECL|function|pte_modify
 r_extern
 r_inline
@@ -1080,29 +1187,11 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|page_pte
-mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
-DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;       (mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
-multiline_comment|/* to find an entry in a page-table-directory. */
-DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-DECL|macro|__pgd_offset
-mdefine_line|#define __pgd_offset(address) pgd_index(address)
-DECL|macro|pgd_offset
-mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
-multiline_comment|/* to find an entry in a kernel page-table-directory */
-DECL|macro|pgd_offset_k
-mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
-DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
-multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir, address) ((pte_t *) pmd_page_kernel(*(dir)) + &bslash;&n;&t;&t;&t;__pte_offset(address))
+multiline_comment|/* x86-64 always has all page tables mapped. */
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir,address) pte_offset_kernel(dir,address)
 DECL|macro|pte_offset_map_nested
@@ -1111,16 +1200,6 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) /* NOP */
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) /* NOP */ 
-multiline_comment|/* never use these in the common code */
-DECL|macro|level4_page
-mdefine_line|#define level4_page(level4) ((unsigned long) __va(level4_val(level4) &amp; PAGE_MASK))
-DECL|macro|level4_index
-mdefine_line|#define level4_index(address) ((address &gt;&gt; LEVEL4_SHIFT) &amp; (PTRS_PER_LEVEL4-1))
-DECL|macro|level4_offset_k
-mdefine_line|#define level4_offset_k(address) (level4_pgt + level4_index(address))
-DECL|macro|level3_offset_k
-mdefine_line|#define level3_offset_k(dir, address) ((pgd_t *) level4_page(*(dir)) + pgd_index(address))
-multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
 multiline_comment|/* Encode and de-code a swap entry */
@@ -1146,5 +1225,7 @@ DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()      do { } while (0)
 macro_line|#endif /* _X86_64_PGTABLE_H */
 eof

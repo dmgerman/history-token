@@ -2,82 +2,8 @@ multiline_comment|/*&n; *  include/asm-x86_64/bugs.h&n; *&n; *  Copyright (C) 19
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
-DECL|function|check_fpu
-r_static
-r_inline
-r_void
-id|check_fpu
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_void
-id|__bad_fxsave_alignment
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|thread.i387.fxsave
-)paren
-op_amp
-l_int|15
-)paren
-id|__bad_fxsave_alignment
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Enabling fast FPU save and restore... &quot;
-)paren
-suffix:semicolon
-id|set_in_cr4
-c_func
-(paren
-id|X86_CR4_OSFXSR
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;done.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Enabling unmasked SIMD FPU exception support... &quot;
-)paren
-suffix:semicolon
-id|set_in_cr4
-c_func
-(paren
-id|X86_CR4_OSXMMEXCPT
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;done.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * If we configured ourselves for FXSR, we&squot;d better have it.&n; */
+macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/pda.h&gt;
 DECL|function|check_bugs
 r_static
 r_void
@@ -93,11 +19,6 @@ c_func
 (paren
 op_amp
 id|boot_cpu_data
-)paren
-suffix:semicolon
-id|check_fpu
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_SMP)

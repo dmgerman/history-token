@@ -12,7 +12,9 @@ r_void
 id|init_fpu
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * FPU lazy state save handling...&n; */

@@ -32,7 +32,6 @@ id|gfp
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
-multiline_comment|/* We need to always allocate below 4Gig. We probably need new&n;&t;   GPF mask to say that */
 id|gfp
 op_or_assign
 id|GFP_DMA

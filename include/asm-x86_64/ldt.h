@@ -2,7 +2,6 @@ multiline_comment|/*&n; * ldt.h&n; *&n; * Definitions of structures used with th
 macro_line|#ifndef _LINUX_LDT_H
 DECL|macro|_LINUX_LDT_H
 mdefine_line|#define _LINUX_LDT_H
-multiline_comment|/* Is this to allow userland manipulate LDTs? It looks so. We should&n;   consider disallowing LDT manipulations altogether: in long mode&n;   there&squot;s no possibility of v86 mode, so something will have to&n;   break, anyway.&t;&t;&t;&t;&t;--pavel */
 multiline_comment|/* Maximum number of LDT entries supported. */
 DECL|macro|LDT_ENTRIES
 mdefine_line|#define LDT_ENTRIES&t;8192
@@ -10,6 +9,7 @@ multiline_comment|/* The size of each LDT entry. */
 DECL|macro|LDT_ENTRY_SIZE
 mdefine_line|#define LDT_ENTRY_SIZE&t;8
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/* Note on 64bit base and limit is ignored and you cannot set&n;   DS/ES/CS not to the default values if you still want to do syscalls. This&n;   call is more for 32bit mode therefore. */
 DECL|struct|modify_ldt_ldt_s
 r_struct
 id|modify_ldt_ldt_s
@@ -68,6 +68,13 @@ DECL|member|useable
 r_int
 r_int
 id|useable
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|lm
+r_int
+r_int
+id|lm
 suffix:colon
 l_int|1
 suffix:semicolon

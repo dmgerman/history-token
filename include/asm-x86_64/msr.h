@@ -1,6 +1,7 @@
 macro_line|#ifndef X86_64_MSR_H
 DECL|macro|X86_64_MSR_H
 mdefine_line|#define X86_64_MSR_H 1
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Access to machine-specific registers (available on 586 and better only)&n; * Note: the rd* operations modify the parameters directly (without using&n; * pointer indirection), this allows gcc to optimize better&n; */
 DECL|macro|rdmsr
 mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;       __asm__ __volatile__(&quot;rdmsr&quot; &bslash;&n;&t;&t;&t;    : &quot;=a&quot; (val1), &quot;=d&quot; (val2) &bslash;&n;&t;&t;&t;    : &quot;c&quot; (msr))
@@ -12,17 +13,20 @@ DECL|macro|wrmsrl
 mdefine_line|#define wrmsrl(msr,val) wrmsr(msr,(__u32)((__u64)(val)),((__u64)(val))&gt;&gt;32) 
 multiline_comment|/* wrmsrl with exception handling */
 DECL|macro|checking_wrmsrl
-mdefine_line|#define checking_wrmsrl(msr,val) ({ int ret__;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;2: wrmsr ; xorl %0,%0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;3:  movl %4,%0 ; jmp 1b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;     &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .align 8&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .quad &t;2b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;=a&quot; (ret__)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;c&quot; (msr), &quot;0&quot; ((__u32)val), &quot;d&quot; ((val)&gt;&gt;32), &quot;i&quot; (-EFAULT)); &t;&bslash;&n;&t;ret__; })
+mdefine_line|#define checking_wrmsrl(msr,val) ({ int ret__;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;2: wrmsr ; xorl %0,%0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;3:  movl %4,%0 ; jmp 1b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;     &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .align 8&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;   .quad &t;2b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;=a&quot; (ret__)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     : &quot;c&quot; (msr), &quot;0&quot; ((__u32)val), &quot;d&quot; ((val)&gt;&gt;32), &quot;i&quot; (-EFAULT));&bslash;&n;&t;ret__; })
 DECL|macro|rdtsc
 mdefine_line|#define rdtsc(low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdtsc&quot; : &quot;=a&quot; (low), &quot;=d&quot; (high))
 DECL|macro|rdtscl
 mdefine_line|#define rdtscl(low) &bslash;&n;     __asm__ __volatile__ (&quot;rdtsc&quot; : &quot;=a&quot; (low) : : &quot;edx&quot;)
 DECL|macro|rdtscll
-mdefine_line|#define rdtscll(val) &bslash;&n;     __asm__ __volatile__ (&quot;rdtsc&quot; : &quot;=A&quot; (val))
+mdefine_line|#define rdtscll(val) do { &bslash;&n;     unsigned int a,d; &bslash;&n;     asm volatile(&quot;rdtsc&quot; : &quot;=a&quot; (a), &quot;=d&quot; (d)); &bslash;&n;     (val) = ((unsigned long)a) | (((unsigned long)d)&lt;&lt;32); &bslash;&n;} while(0)
+DECL|macro|rdpmc
+mdefine_line|#define rdpmc(counter,low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdpmc&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (low), &quot;=d&quot; (high) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (counter))
 DECL|macro|write_tsc
 mdefine_line|#define write_tsc(val1,val2) wrmsr(0x10, val1, val2)
 DECL|macro|rdpmc
 mdefine_line|#define rdpmc(counter,low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdpmc&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (low), &quot;=d&quot; (high) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (counter))
+macro_line|#endif
 multiline_comment|/* AMD/K8 specific MSRs */
 DECL|macro|MSR_EFER
 mdefine_line|#define MSR_EFER 0xc0000080&t;&t;/* extended feature register */
@@ -39,7 +43,24 @@ mdefine_line|#define MSR_FS_BASE 0xc0000100&t;&t;/* 64bit GS base */
 DECL|macro|MSR_GS_BASE
 mdefine_line|#define MSR_GS_BASE 0xc0000101&t;&t;/* 64bit FS base */
 DECL|macro|MSR_KERNEL_GS_BASE
-mdefine_line|#define MSR_KERNEL_GS_BASE  0xc0000102&t;/* SwapGS GS shadow (or USER_GS from kernel view) */ 
+mdefine_line|#define MSR_KERNEL_GS_BASE  0xc0000102&t;/* SwapGS GS shadow (or USER_GS from kernel) */ 
+multiline_comment|/* EFER bits: */
+DECL|macro|_EFER_SCE
+mdefine_line|#define _EFER_SCE 0  /* SYSCALL/SYSRET */
+DECL|macro|_EFER_LME
+mdefine_line|#define _EFER_LME 8  /* Long mode enable */
+DECL|macro|_EFER_LMA
+mdefine_line|#define _EFER_LMA 10 /* Long mode active (read-only) */
+DECL|macro|_EFER_NX
+mdefine_line|#define _EFER_NX 11  /* No execute enable */
+DECL|macro|EFER_SCE
+mdefine_line|#define EFER_SCE (1&lt;&lt;_EFER_SCE)
+DECL|macro|EFER_LME
+mdefine_line|#define EFER_LME (1&lt;&lt;EFER_LME)
+DECL|macro|EFER_LMA
+mdefine_line|#define EFER_LMA (1&lt;&lt;EFER_LMA)
+DECL|macro|EFER_NX
+mdefine_line|#define EFER_NX (1&lt;&lt;_EFER_NX)
 multiline_comment|/* Intel MSRs. Some also available on other CPUs */
 DECL|macro|MSR_IA32_PLATFORM_ID
 mdefine_line|#define MSR_IA32_PLATFORM_ID&t;0x17
@@ -77,11 +98,37 @@ DECL|macro|MSR_IA32_MC0_ADDR
 mdefine_line|#define MSR_IA32_MC0_ADDR      0x402
 DECL|macro|MSR_IA32_MC0_MISC
 mdefine_line|#define MSR_IA32_MC0_MISC      0x403
-multiline_comment|/* K7 MSRs */
+DECL|macro|MSR_P6_PERFCTR0
+mdefine_line|#define MSR_P6_PERFCTR0&t;&t;&t;0xc1
+DECL|macro|MSR_P6_PERFCTR1
+mdefine_line|#define MSR_P6_PERFCTR1&t;&t;&t;0xc2
+DECL|macro|MSR_P6_EVNTSEL0
+mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;&t;0x186
+DECL|macro|MSR_P6_EVNTSEL1
+mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;&t;0x187
+multiline_comment|/* K7/K8 MSRs. Not complete. See the architecture manual for a more complete list. */
 DECL|macro|MSR_K7_EVNTSEL0
 mdefine_line|#define MSR_K7_EVNTSEL0            0xC0010000
 DECL|macro|MSR_K7_PERFCTR0
 mdefine_line|#define MSR_K7_PERFCTR0            0xC0010004
+DECL|macro|MSR_K7_EVNTSEL1
+mdefine_line|#define MSR_K7_EVNTSEL1            0xC0010001
+DECL|macro|MSR_K7_PERFCTR1
+mdefine_line|#define MSR_K7_PERFCTR1            0xC0010005
+DECL|macro|MSR_K7_EVNTSEL2
+mdefine_line|#define MSR_K7_EVNTSEL2            0xC0010002
+DECL|macro|MSR_K7_PERFCTR2
+mdefine_line|#define MSR_K7_PERFCTR2            0xC0010006
+DECL|macro|MSR_K7_EVNTSEL3
+mdefine_line|#define MSR_K7_EVNTSEL3            0xC0010003
+DECL|macro|MSR_K7_PERFCTR3
+mdefine_line|#define MSR_K7_PERFCTR3            0xC0010007
+DECL|macro|MSR_K8_TOP_MEM1
+mdefine_line|#define MSR_K8_TOP_MEM1&t;&t;   0xC001001A
+DECL|macro|MSR_K8_TOP_MEM2
+mdefine_line|#define MSR_K8_TOP_MEM2&t;&t;   0xC001001D
+DECL|macro|MSR_K8_SYSCFG
+mdefine_line|#define MSR_K8_SYSCFG&t;&t;   0xC0000010&t;
 multiline_comment|/* K6 MSRs */
 DECL|macro|MSR_K6_EFER
 mdefine_line|#define MSR_K6_EFER&t;&t;&t;0xC0000080
@@ -142,5 +189,13 @@ DECL|macro|MSR_IA32_APICBASE_ENABLE
 mdefine_line|#define MSR_IA32_APICBASE_ENABLE        (1&lt;&lt;11)
 DECL|macro|MSR_IA32_APICBASE_BASE
 mdefine_line|#define MSR_IA32_APICBASE_BASE          (0xfffff&lt;&lt;12)
+DECL|macro|MSR_IA32_THERM_CONTROL
+mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
+DECL|macro|MSR_IA32_THERM_INTERRUPT
+mdefine_line|#define MSR_IA32_THERM_INTERRUPT&t;0x19b
+DECL|macro|MSR_IA32_THERM_STATUS
+mdefine_line|#define MSR_IA32_THERM_STATUS&t;&t;0x19c
+DECL|macro|MSR_IA32_MISC_ENABLE
+mdefine_line|#define MSR_IA32_MISC_ENABLE&t;&t;0x1a0
 macro_line|#endif
 eof

@@ -7,13 +7,13 @@ macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Keep this syncronized with kernel/head.S */
 DECL|macro|TSS_START
-mdefine_line|#define TSS_START (7 * 8)
+mdefine_line|#define TSS_START (8 * 8)
 DECL|macro|LDT_START
-mdefine_line|#define LDT_START (TSS_START + NR_CPUS*16) 
+mdefine_line|#define LDT_START (TSS_START + 16) 
 DECL|macro|__TSS
-mdefine_line|#define __TSS(n)  (TSS_START + (n)*16)
+mdefine_line|#define __TSS(n)  (TSS_START + (n)*64)
 DECL|macro|__LDT
-mdefine_line|#define __LDT(n)  (LDT_START + (n)*16)
+mdefine_line|#define __LDT(n)  (LDT_START + (n)*64)
 r_extern
 id|__u8
 id|tss_start
@@ -23,12 +23,6 @@ suffix:semicolon
 r_extern
 id|__u8
 id|gdt_table
-(braket
-)braket
-suffix:semicolon
-r_extern
-id|__u8
-id|ldt_start
 (braket
 )braket
 suffix:semicolon
@@ -214,11 +208,6 @@ id|DESC_LDT
 op_assign
 l_int|0x2
 comma
-DECL|enumerator|TSSLIMIT
-id|TSSLIMIT
-op_assign
-l_int|0x67
-comma
 )brace
 suffix:semicolon
 singleline_comment|// LDT or TSS descriptor in the GDT. 16 bytes.
@@ -316,11 +305,12 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: these should use more generic register classes */
 DECL|macro|load_TR
-mdefine_line|#define load_TR(n) asm volatile(&quot;ltr %%ax&quot;::&quot;a&quot; (__TSS(n)))
+mdefine_line|#define load_TR(n) asm volatile(&quot;ltr %w0&quot;::&quot;r&quot; (__TSS(n)))
 DECL|macro|__load_LDT
-mdefine_line|#define __load_LDT(n) asm volatile(&quot;lldt %%ax&quot;::&quot;a&quot; (__LDT(n)))
+mdefine_line|#define __load_LDT(n) asm volatile(&quot;lldt %w0&quot;::&quot;r&quot; (__LDT(n)))
+DECL|macro|clear_LDT
+mdefine_line|#define clear_LDT(n)  asm volatile(&quot;lldt %w0&quot;::&quot;r&quot; (0))
 multiline_comment|/*&n; * This is the ldt that every process will get unless we need&n; * something other than this.&n; */
 r_extern
 r_struct
@@ -547,117 +537,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|set_trap_gate
-r_static
-r_inline
-r_void
-id|set_trap_gate
-c_func
-(paren
-r_int
-id|nr
-comma
-r_void
-op_star
-id|func
-)paren
-(brace
-id|_set_gate
-c_func
-(paren
-op_amp
-id|idt_table
-(braket
-id|nr
-)braket
-comma
-id|GATE_TRAP
-comma
-(paren
-r_int
-r_int
-)paren
-id|func
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|set_call_gate
-r_static
-r_inline
-r_void
-id|set_call_gate
-c_func
-(paren
-r_void
-op_star
-id|adr
-comma
-r_void
-op_star
-id|func
-)paren
-(brace
-id|_set_gate
-c_func
-(paren
-id|adr
-comma
-id|GATE_CALL
-comma
-(paren
-r_int
-r_int
-)paren
-id|func
-comma
-l_int|3
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|set_priv_gate
-r_static
-r_inline
-r_void
-id|set_priv_gate
-c_func
-(paren
-r_int
-id|nr
-comma
-r_void
-op_star
-id|func
-)paren
-(brace
-id|_set_gate
-c_func
-(paren
-op_amp
-id|idt_table
-(braket
-id|nr
-)braket
-comma
-id|GATE_TRAP
-comma
-(paren
-r_int
-r_int
-)paren
-id|func
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 DECL|function|set_tssldt_descriptor
 r_static
 r_inline
@@ -806,7 +685,11 @@ id|addr
 comma
 id|DESC_TSS
 comma
-id|TSSLIMIT
+r_sizeof
+(paren
+r_struct
+id|tss_struct
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -855,46 +738,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef MINIKERNEL
-DECL|function|clear_LDT
-r_extern
-r_inline
-r_void
-id|clear_LDT
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_ldt_desc
-c_func
-(paren
-id|cpu
-comma
-op_amp
-id|default_ldt
-(braket
-l_int|0
-)braket
-comma
-l_int|5
-)paren
-suffix:semicolon
-id|__load_LDT
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * load one particular LDT into the current CPU&n; */
 DECL|function|load_LDT
 r_extern
@@ -922,11 +765,6 @@ id|segments
 op_assign
 id|mm-&gt;context.segments
 suffix:semicolon
-r_int
-id|count
-op_assign
-id|LDT_ENTRIES
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -934,17 +772,13 @@ op_logical_neg
 id|segments
 )paren
 (brace
-id|segments
-op_assign
-op_amp
-id|default_ldt
-(braket
-l_int|0
-)braket
+id|clear_LDT
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
-id|count
-op_assign
-l_int|5
+r_return
 suffix:semicolon
 )brace
 id|set_ldt_desc
@@ -954,7 +788,7 @@ id|cpu
 comma
 id|segments
 comma
-id|count
+id|LDT_ENTRIES
 )paren
 suffix:semicolon
 id|__load_LDT
@@ -964,7 +798,6 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif
 eof

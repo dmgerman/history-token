@@ -12,12 +12,12 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
-DECL|macro|DEBUG_SIG
-mdefine_line|#define DEBUG_SIG 0
+multiline_comment|/* #define DEBUG_SIG 1 */
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 r_void
@@ -460,13 +460,17 @@ DECL|member|fpstate
 r_struct
 id|_fpstate
 id|fpstate
-suffix:semicolon
-DECL|member|retcode
-r_char
-id|retcode
-(braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
 l_int|8
-)braket
+)paren
+)paren
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -500,25 +504,48 @@ l_int|0
 suffix:semicolon
 DECL|macro|COPY
 mdefine_line|#define COPY(x)&t;&t;err |= __get_user(regs-&gt;x, &amp;sc-&gt;x)
-DECL|macro|COPY_SEG
-mdefine_line|#define COPY_SEG(seg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned short tmp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(tmp, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;&t;  regs-&gt;x##seg = tmp; }
-DECL|macro|COPY_SEG_STRICT
-mdefine_line|#define COPY_SEG_STRICT(seg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned short tmp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(tmp, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;&t;  regs-&gt;x##seg = tmp|3; }
-DECL|macro|GET_SEG
-mdefine_line|#define GET_SEG(seg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned short tmp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(tmp, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;&t;  loadsegment(seg,tmp); }
-multiline_comment|/* XXX: rdmsr for 64bits */
-id|GET_SEG
+(brace
+r_int
+r_int
+id|seg
+suffix:semicolon
+id|err
+op_or_assign
+id|__get_user
 c_func
 (paren
-id|gs
+id|seg
+comma
+op_amp
+id|sc-&gt;gs
 )paren
 suffix:semicolon
-id|GET_SEG
+id|load_gs_index
+c_func
+(paren
+id|seg
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__get_user
+c_func
+(paren
+id|seg
+comma
+op_amp
+id|sc-&gt;fs
+)paren
+suffix:semicolon
+id|loadsegment
 c_func
 (paren
 id|fs
+comma
+id|seg
 )paren
 suffix:semicolon
+)brace
 id|COPY
 c_func
 (paren
@@ -970,6 +997,13 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
 id|tmp
 op_assign
 l_int|0
@@ -1219,7 +1253,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;thread.trap_no
+id|me-&gt;thread.trap_no
 comma
 op_amp
 id|sc-&gt;trapno
@@ -1230,7 +1264,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;thread.error_code
+id|me-&gt;thread.error_code
 comma
 op_amp
 id|sc-&gt;err
@@ -1263,10 +1297,21 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|regs-&gt;rsp
+id|mask
 comma
 op_amp
-id|sc-&gt;rsp_at_signal
+id|sc-&gt;oldmask
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|me-&gt;thread.cr2
+comma
+op_amp
+id|sc-&gt;cr2
 )paren
 suffix:semicolon
 id|tmp
@@ -1303,29 +1348,6 @@ l_int|NULL
 comma
 op_amp
 id|sc-&gt;fpstate
-)paren
-suffix:semicolon
-multiline_comment|/* non-iBCS2 extensions.. */
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-id|mask
-comma
-op_amp
-id|sc-&gt;oldmask
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-id|current-&gt;thread.cr2
-comma
-op_amp
-id|sc-&gt;cr2
 )paren
 suffix:semicolon
 r_return
@@ -1394,6 +1416,39 @@ op_plus
 id|current-&gt;sas_ss_size
 suffix:semicolon
 )brace
+(brace
+r_extern
+r_void
+id|bad_sigframe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* beginning of sigframe is 8 bytes misaligned, but fpstate&n;&t;&t;   must end up on a 16byte boundary */
+r_if
+c_cond
+(paren
+(paren
+m_offsetof
+(paren
+r_struct
+id|rt_sigframe
+comma
+id|fpstate
+)paren
+op_amp
+l_int|16
+)paren
+op_ne
+l_int|0
+)paren
+id|bad_sigframe
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_return
 (paren
 r_void
@@ -1406,9 +1461,13 @@ op_minus
 id|frame_size
 )paren
 op_amp
-op_minus
-l_int|16UL
+op_complement
+(paren
+l_int|15UL
 )paren
+)paren
+op_minus
+l_int|8
 suffix:semicolon
 )brace
 DECL|function|setup_rt_frame
@@ -1439,11 +1498,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|thread_info
-op_star
-id|ti
-suffix:semicolon
 r_struct
 id|rt_sigframe
 op_star
@@ -1685,39 +1739,52 @@ id|regs-&gt;rax
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ti
+multiline_comment|/* Set up registers for signal handler */
+(brace
+r_struct
+id|exec_domain
+op_star
+id|ed
 op_assign
 id|current_thread_info
 c_func
 (paren
 )paren
+op_member_access_from_pointer
+id|exec_domain
 suffix:semicolon
-multiline_comment|/* Set up registers for signal handler */
-id|regs-&gt;rdi
-op_assign
+r_if
+c_cond
 (paren
-id|ti-&gt;exec_domain
+id|unlikely
+c_func
+(paren
+id|ed
 op_logical_and
-id|ti-&gt;exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
-ques
-c_cond
-id|ti-&gt;exec_domain-&gt;signal_invmap
+)paren
+)paren
+id|sig
+op_assign
+id|ed-&gt;signal_invmap
 (braket
 id|sig
 )braket
-suffix:colon
-id|sig
-)paren
 suffix:semicolon
+)brace
+id|regs-&gt;rdi
+op_assign
+id|sig
+suffix:semicolon
+multiline_comment|/* In case the signal handler was declared without prototypes */
 id|regs-&gt;rax
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* In case the signal handler was declared without prototypes */
 multiline_comment|/* This also works for non SA_SIGINFO handlers because they expect the&n;&t;   next argument after the signal number on the stack. */
 id|regs-&gt;rsi
 op_assign
@@ -1759,7 +1826,6 @@ c_func
 id|USER_DS
 )paren
 suffix:semicolon
-singleline_comment|// XXX: cs
 id|regs-&gt;eflags
 op_and_assign
 op_complement
@@ -2165,11 +2231,6 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|current-&gt;state
 op_assign
 id|TASK_STOPPED
@@ -2183,11 +2244,6 @@ id|SIGCHLD
 )paren
 suffix:semicolon
 id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-id|preempt_enable
 c_func
 (paren
 )paren
@@ -2242,11 +2298,11 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|info.si_uid
 op_assign
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 suffix:semicolon
 )brace
 multiline_comment|/* If the (new) signal is now blocked, requeue it.  */
@@ -2414,7 +2470,7 @@ id|signr
 suffix:semicolon
 id|sig
 op_assign
-id|current-&gt;p_pptr-&gt;sig
+id|current-&gt;parent-&gt;sig
 suffix:semicolon
 r_if
 c_cond
@@ -2587,7 +2643,7 @@ id|regs-&gt;rax
 op_assign
 id|regs-&gt;orig_rax
 suffix:semicolon
-id|regs-&gt;rcx
+id|regs-&gt;rip
 op_sub_assign
 l_int|2
 suffix:semicolon

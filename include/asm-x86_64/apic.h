@@ -3,6 +3,7 @@ DECL|macro|__ASM_APIC_H
 mdefine_line|#define __ASM_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
@@ -125,9 +126,6 @@ c_func
 r_void
 )paren
 (brace
-r_do
-(brace
-)brace
 r_while
 c_loop
 (paren
@@ -180,7 +178,6 @@ suffix:semicolon
 r_extern
 r_int
 id|get_maxlvt
-c_func
 (paren
 r_void
 )paren
@@ -188,7 +185,6 @@ suffix:semicolon
 r_extern
 r_void
 id|clear_local_APIC
-c_func
 (paren
 r_void
 )paren
