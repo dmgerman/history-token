@@ -1189,7 +1189,7 @@ id|NR_CPUS
 id|__cacheline_aligned
 suffix:semicolon
 DECL|function|xics_ipi_action
-r_void
+id|irqreturn_t
 id|xics_ipi_action
 c_func
 (paren
@@ -1214,6 +1214,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|ops
 op_member_access_from_pointer
 id|qirr_info
@@ -1235,6 +1240,10 @@ dot
 id|value
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1368,6 +1377,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|xics_cause_IPI
 r_void
