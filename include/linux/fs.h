@@ -2197,6 +2197,12 @@ id|list_head
 id|s_locked_inodes
 suffix:semicolon
 multiline_comment|/* inodes being synced */
+DECL|member|s_anon
+r_struct
+id|list_head
+id|s_anon
+suffix:semicolon
+multiline_comment|/* anonymous dentries for (nfs) exporting */
 DECL|member|s_files
 r_struct
 id|list_head
@@ -3494,7 +3500,7 @@ id|super_block
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Following are for knfsd to interact with &quot;interesting&quot; filesystems&n;&t; * Currently just reiserfs, but possibly FAT and others later&n;&t; *&n;&t; * fh_to_dentry is given a filehandle fragement with length, and a type flag&n;&t; *   and must return a dentry for the referenced object or, if &quot;parent&quot; is&n;&t; *   set, a dentry for the parent of the object.&n;&t; *   If a dentry cannot be found, a &quot;root&quot; dentry should be created and&n;&t; *   flaged as DCACHE_NFSD_DISCONNECTED. nfsd_iget is an example implementation.&n;&t; *&n;&t; * dentry_to_fh is given a dentry and must generate the filesys specific&n;&t; *   part of the file handle.  Available length is passed in *lenp and used&n;&t; *   length should be returned therein.&n;&t; *   If need_parent is set, then dentry_to_fh should encode sufficient information&n;&t; *   to find the (current) parent.&n;&t; *   dentry_to_fh should return a 1byte &quot;type&quot; which will be passed back in&n;&t; *   the fhtype arguement to fh_to_dentry.  Type of 0 is reserved.&n;&t; *   If filesystem was exportable before the introduction of fh_to_dentry,&n;&t; *   types 1 and 2 should be used is that same way as the generic code.&n;&t; *   Type 255 means error.&n;&t; *&n;&t; * Lengths are in units of 4bytes, not bytes.&n;&t; */
+multiline_comment|/* Following are for knfsd to interact with &quot;interesting&quot; filesystems&n;&t; * Currently just reiserfs, but possibly FAT and others later&n;&t; *&n;&t; * fh_to_dentry is given a filehandle fragement with length, and a type flag&n;&t; *   and must return a dentry for the referenced object or, if &quot;parent&quot; is&n;&t; *   set, a dentry for the parent of the object.&n;&t; *   If a dentry cannot be found, a &quot;root&quot; dentry should be created and&n;&t; *   flaged as DCACHE_DISCONNECTED. nfsd_iget is an example implementation.&n;&t; *&n;&t; * dentry_to_fh is given a dentry and must generate the filesys specific&n;&t; *   part of the file handle.  Available length is passed in *lenp and used&n;&t; *   length should be returned therein.&n;&t; *   If need_parent is set, then dentry_to_fh should encode sufficient information&n;&t; *   to find the (current) parent.&n;&t; *   dentry_to_fh should return a 1byte &quot;type&quot; which will be passed back in&n;&t; *   the fhtype arguement to fh_to_dentry.  Type of 0 is reserved.&n;&t; *   If filesystem was exportable before the introduction of fh_to_dentry,&n;&t; *   types 1 and 2 should be used is that same way as the generic code.&n;&t; *   Type 255 means error.&n;&t; *&n;&t; * Lengths are in units of 4bytes, not bytes.&n;&t; */
 DECL|member|fh_to_dentry
 r_struct
 id|dentry

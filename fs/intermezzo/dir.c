@@ -751,7 +751,7 @@ id|inode
 suffix:semicolon
 id|dentry-&gt;d_flags
 op_or_assign
-id|DCACHE_NFSD_DISCONNECTED
+id|DCACHE_DISCONNECTED
 suffix:semicolon
 multiline_comment|/* NFS hack */
 id|EXIT

@@ -399,8 +399,8 @@ DECL|macro|DCACHE_AUTOFS_PENDING
 mdefine_line|#define DCACHE_AUTOFS_PENDING 0x0001    /* autofs: &quot;under construction&quot; */
 DECL|macro|DCACHE_NFSFS_RENAMED
 mdefine_line|#define DCACHE_NFSFS_RENAMED  0x0002    /* this dentry has been &quot;silly&n;&t;&t;&t;&t;&t; * renamed&quot; and has to be&n;&t;&t;&t;&t;&t; * deleted on the last dput()&n;&t;&t;&t;&t;&t; */
-DECL|macro|DCACHE_NFSD_DISCONNECTED
-mdefine_line|#define&t;DCACHE_NFSD_DISCONNECTED 0x0004&t;/* This dentry is not currently connected to the&n;&t;&t;&t;&t;&t; * dcache tree. Its parent will either be itself,&n;&t;&t;&t;&t;&t; * or will have this flag as well.&n;&t;&t;&t;&t;&t; * If this dentry points to a directory, then&n;&t;&t;&t;&t;&t; * s_nfsd_free_path semaphore will be down&n;&t;&t;&t;&t;&t; */
+DECL|macro|DCACHE_DISCONNECTED
+mdefine_line|#define&t;DCACHE_DISCONNECTED 0x0004&t;/* This dentry is not currently connected to the&n;&t;&t;&t;&t;&t; * dcache tree. Its parent will either be itself,&n;&t;&t;&t;&t;&t; * or will have this flag as well.&n;&t;&t;&t;&t;&t; * If this dentry points to a directory, then&n;&t;&t;&t;&t;&t; * s_nfsd_free_path semaphore will be down&n;&t;&t;&t;&t;&t; */
 DECL|macro|DCACHE_REFERENCED
 mdefine_line|#define DCACHE_REFERENCED&t;0x0008  /* Recently used, don&squot;t discard. */
 r_extern
@@ -517,6 +517,34 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|dentry
+op_star
+id|d_alloc_anon
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|d_splice_alias
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|dentry
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|shrink_dcache_sb
 c_func
@@ -533,6 +561,16 @@ c_func
 (paren
 r_struct
 id|dentry
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|shrink_dcache_anon
+c_func
+(paren
+r_struct
+id|list_head
 op_star
 )paren
 suffix:semicolon
