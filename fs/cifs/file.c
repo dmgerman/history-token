@@ -1169,7 +1169,7 @@ op_assign
 id|CIFS_I
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -1190,8 +1190,7 @@ op_assign
 id|cifs_get_inode_info_unix
 c_func
 (paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode
+id|inode
 comma
 id|full_path
 comma
@@ -1204,8 +1203,7 @@ op_assign
 id|cifs_get_inode_info
 c_func
 (paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode
+id|inode
 comma
 id|full_path
 comma
