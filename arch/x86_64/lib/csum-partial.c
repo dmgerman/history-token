@@ -185,6 +185,13 @@ c_cond
 id|count
 )paren
 (brace
+r_int
+r_int
+id|zero
+suffix:semicolon
+r_int
+id|count64
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -225,13 +232,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* nr of 64-bit words.. */
 multiline_comment|/* main loop using 64byte blocks */
-r_int
-r_int
 id|zero
 op_assign
 l_int|0
 suffix:semicolon
-r_int
 id|count64
 op_assign
 id|count

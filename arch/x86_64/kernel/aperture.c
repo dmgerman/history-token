@@ -314,6 +314,12 @@ r_int
 id|cap
 )paren
 (brace
+id|u8
+id|pos
+suffix:semicolon
+r_int
+id|bytes
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -337,7 +343,6 @@ id|PCI_STATUS_CAP_LIST
 r_return
 l_int|0
 suffix:semicolon
-id|u8
 id|pos
 op_assign
 id|read_pci_config_byte
@@ -351,9 +356,6 @@ id|func
 comma
 id|PCI_CAPABILITY_LIST
 )paren
-suffix:semicolon
-r_int
-id|bytes
 suffix:semicolon
 r_for
 c_loop
@@ -374,12 +376,14 @@ id|bytes
 op_increment
 )paren
 (brace
+id|u8
+id|id
+suffix:semicolon
 id|pos
 op_and_assign
 op_complement
 l_int|3
 suffix:semicolon
-id|u8
 id|id
 op_assign
 id|read_pci_config_byte
@@ -461,6 +465,23 @@ op_star
 id|order
 )paren
 (brace
+id|u32
+id|apsize
+suffix:semicolon
+id|u32
+id|apsizereg
+suffix:semicolon
+r_int
+id|nbits
+suffix:semicolon
+id|u32
+id|aper_low
+comma
+id|aper_hi
+suffix:semicolon
+id|u64
+id|aper
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -473,7 +494,6 @@ comma
 id|func
 )paren
 suffix:semicolon
-id|u32
 id|apsizereg
 op_assign
 id|read_pci_config_16
@@ -508,7 +528,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|u32
 id|apsize
 op_assign
 id|apsizereg
@@ -527,7 +546,6 @@ id|apsize
 op_or_assign
 l_int|0xf00
 suffix:semicolon
-r_int
 id|nbits
 op_assign
 id|hweight16
@@ -560,7 +578,6 @@ id|order
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
 id|aper_low
 op_assign
 id|read_pci_config
@@ -575,7 +592,6 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-id|u32
 id|aper_hi
 op_assign
 id|read_pci_config
@@ -590,7 +606,6 @@ comma
 l_int|0x14
 )paren
 suffix:semicolon
-id|u64
 id|aper
 op_assign
 (paren
@@ -740,6 +755,9 @@ r_class
 comma
 id|cap
 suffix:semicolon
+id|u8
+id|type
+suffix:semicolon
 r_class
 op_assign
 id|read_pci_config
@@ -823,7 +841,6 @@ id|order
 suffix:semicolon
 )brace
 multiline_comment|/* No multi-function device? */
-id|u8
 id|type
 op_assign
 id|read_pci_config_byte
