@@ -54,17 +54,6 @@ id|dev
 suffix:semicolon
 r_extern
 r_int
-id|ultramca_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|wd_probe
 c_func
 (paren
@@ -911,14 +900,6 @@ id|mca_probes
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_ULTRAMCA 
-(brace
-id|ultramca_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_NE2_MCA
 (brace
 id|ne2_probe
