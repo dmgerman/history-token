@@ -13,7 +13,7 @@ id|mac
 id|ETH_ALEN
 )braket
 suffix:semicolon
-singleline_comment|// EBT_ACCEPT, EBT_DROP, EBT_CONTINUE or EBT_RETURN
+multiline_comment|/* EBT_ACCEPT, EBT_DROP, EBT_CONTINUE or EBT_RETURN */
 DECL|member|target
 r_int
 id|target

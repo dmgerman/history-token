@@ -2,8 +2,7 @@ macro_line|#ifndef __LINUX_BRIDGE_EBT_LOG_H
 DECL|macro|__LINUX_BRIDGE_EBT_LOG_H
 mdefine_line|#define __LINUX_BRIDGE_EBT_LOG_H
 DECL|macro|EBT_LOG_IP
-mdefine_line|#define EBT_LOG_IP 0x01 
-singleline_comment|// if the frame is made by ip, log the ip information
+mdefine_line|#define EBT_LOG_IP 0x01 /* if the frame is made by ip, log the ip information */
 DECL|macro|EBT_LOG_ARP
 mdefine_line|#define EBT_LOG_ARP 0x02
 DECL|macro|EBT_LOG_MASK
