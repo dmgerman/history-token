@@ -2135,7 +2135,7 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
-multiline_comment|/* Because of some uninorth weirdness, we need a page of&n;&t; * memory as high as possible (it must be outside of the&n;&t; * bus address seen as the AGP aperture). It will be used&n;&t; * by the r128 DRM driver&n;&t; * &n;&t; * FIXME: We need to make sure that page doesn&squot;t overlap any of the&bslash;&n;&t; * above. This could be done by improving mem_pieces_find to be able&n;&t; * to do a backward search from the end of the list.&n;&t; */
+multiline_comment|/* Because of some uninorth weirdness, we need a page of&n;&t; * memory as high as possible (it must be outside of the&n;&t; * bus address seen as the AGP aperture). It will be used&n;&t; * by the r128 DRM driver&n;&t; *&n;&t; * FIXME: We need to make sure that page doesn&squot;t overlap any of the&bslash;&n;&t; * above. This could be done by improving mem_pieces_find to be able&n;&t; * to do a backward search from the end of the list.&n;&t; */
 r_if
 c_cond
 (paren

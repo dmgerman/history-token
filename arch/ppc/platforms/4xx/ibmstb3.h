@@ -29,7 +29,7 @@ macro_line|#else
 DECL|macro|UART0_IO_BASE
 mdefine_line|#define UART0_IO_BASE&t;&t;0xe0040000
 macro_line|#endif
-multiline_comment|/* UART 0 is duped here so when the SICC is the default console&n;  * then ttys1 is configured properly - armin &n;  */
+multiline_comment|/* UART 0 is duped here so when the SICC is the default console&n;  * then ttys1 is configured properly - armin&n;  */
 DECL|macro|UART1_INT
 mdefine_line|#define UART1_INT&t;&t;20
 macro_line|#ifdef __BOOTER__

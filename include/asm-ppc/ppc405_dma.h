@@ -27,7 +27,7 @@ DECL|macro|dma_outb
 mdefine_line|#define dma_outb&t;outb
 DECL|macro|dma_inb
 mdefine_line|#define dma_inb&t;&t;inb
-multiline_comment|/* &n; * Function return status codes&n; * These values are used to indicate whether or not the function&n; * call was successful, or a bad/invalid parameter was passed.&n; */
+multiline_comment|/*&n; * Function return status codes&n; * These values are used to indicate whether or not the function&n; * call was successful, or a bad/invalid parameter was passed.&n; */
 DECL|macro|DMA_STATUS_GOOD
 mdefine_line|#define DMA_STATUS_GOOD&t;&t;&t;0
 DECL|macro|DMA_STATUS_BAD_CHANNEL
@@ -70,7 +70,7 @@ multiline_comment|/* Device-paced memory to memory,      */
 multiline_comment|/* device is at destination address    */
 DECL|macro|DMA_MODE_MM_DEVATDST
 mdefine_line|#define DMA_MODE_MM_DEVATDST&t;(SET_DMA_TM(TM_D_MM))
-multiline_comment|/* &n; * DMA Polarity Configuration Register&n; */
+multiline_comment|/*&n; * DMA Polarity Configuration Register&n; */
 DECL|macro|DMAReq0_ActiveLow
 mdefine_line|#define DMAReq0_ActiveLow (1&lt;&lt;31)
 DECL|macro|DMAAck0_ActiveLow
@@ -110,19 +110,19 @@ mdefine_line|#define DMA_CS3           (1&lt;&lt;28)
 DECL|macro|DMA_TS0
 mdefine_line|#define DMA_TS0           (1&lt;&lt;27) /* End of Transfer has been requested */
 DECL|macro|DMA_TS1
-mdefine_line|#define DMA_TS1           (1&lt;&lt;26) 
+mdefine_line|#define DMA_TS1           (1&lt;&lt;26)
 DECL|macro|DMA_TS2
-mdefine_line|#define DMA_TS2           (1&lt;&lt;25)  
+mdefine_line|#define DMA_TS2           (1&lt;&lt;25)
 DECL|macro|DMA_TS3
-mdefine_line|#define DMA_TS3           (1&lt;&lt;24)   
+mdefine_line|#define DMA_TS3           (1&lt;&lt;24)
 DECL|macro|DMA_CH0_ERR
 mdefine_line|#define DMA_CH0_ERR       (1&lt;&lt;23) /* DMA Chanel 0 Error */
 DECL|macro|DMA_CH1_ERR
-mdefine_line|#define DMA_CH1_ERR       (1&lt;&lt;22) 
+mdefine_line|#define DMA_CH1_ERR       (1&lt;&lt;22)
 DECL|macro|DMA_CH2_ERR
-mdefine_line|#define DMA_CH2_ERR       (1&lt;&lt;21) 
+mdefine_line|#define DMA_CH2_ERR       (1&lt;&lt;21)
 DECL|macro|DMA_CH3_ERR
-mdefine_line|#define DMA_CH3_ERR       (1&lt;&lt;20) 
+mdefine_line|#define DMA_CH3_ERR       (1&lt;&lt;20)
 DECL|macro|DMA_IN_DMA_REQ0
 mdefine_line|#define DMA_IN_DMA_REQ0   (1&lt;&lt;19) /* Internal DMA Request is pending */
 DECL|macro|DMA_IN_DMA_REQ1
@@ -142,19 +142,19 @@ mdefine_line|#define DMA_EXT_DMA_REQ3  (1&lt;&lt;12)
 DECL|macro|DMA_CH0_BUSY
 mdefine_line|#define DMA_CH0_BUSY      (1&lt;&lt;11) /* DMA Channel 0 Busy */
 DECL|macro|DMA_CH1_BUSY
-mdefine_line|#define DMA_CH1_BUSY      (1&lt;&lt;10)  
+mdefine_line|#define DMA_CH1_BUSY      (1&lt;&lt;10)
 DECL|macro|DMA_CH2_BUSY
-mdefine_line|#define DMA_CH2_BUSY       (1&lt;&lt;9)  
+mdefine_line|#define DMA_CH2_BUSY       (1&lt;&lt;9)
 DECL|macro|DMA_CH3_BUSY
-mdefine_line|#define DMA_CH3_BUSY       (1&lt;&lt;8)  
+mdefine_line|#define DMA_CH3_BUSY       (1&lt;&lt;8)
 DECL|macro|DMA_SG0
 mdefine_line|#define DMA_SG0            (1&lt;&lt;7) /* DMA Channel 0 Scatter/Gather in progress */
 DECL|macro|DMA_SG1
-mdefine_line|#define DMA_SG1            (1&lt;&lt;6) 
+mdefine_line|#define DMA_SG1            (1&lt;&lt;6)
 DECL|macro|DMA_SG2
-mdefine_line|#define DMA_SG2            (1&lt;&lt;5) 
+mdefine_line|#define DMA_SG2            (1&lt;&lt;5)
 DECL|macro|DMA_SG3
-mdefine_line|#define DMA_SG3            (1&lt;&lt;4) 
+mdefine_line|#define DMA_SG3            (1&lt;&lt;4)
 multiline_comment|/*&n; * DMA Channel Control Registers&n; */
 DECL|macro|DMA_CH_ENABLE
 mdefine_line|#define DMA_CH_ENABLE         (1&lt;&lt;31)     /* DMA Channel Enable */
@@ -169,7 +169,7 @@ mdefine_line|#define SET_DMA_CIE_ENABLE(x) (((x)&amp;0x1)&lt;&lt;30)
 DECL|macro|GET_DMA_CIE_ENABLE
 mdefine_line|#define GET_DMA_CIE_ENABLE(x) (((x)&amp;DMA_CIE_ENABLE)&gt;&gt;30)
 DECL|macro|DMA_TD
-mdefine_line|#define DMA_TD                (1&lt;&lt;29)      
+mdefine_line|#define DMA_TD                (1&lt;&lt;29)
 DECL|macro|SET_DMA_TD
 mdefine_line|#define SET_DMA_TD(x)         (((x)&amp;0x1)&lt;&lt;29)
 DECL|macro|GET_DMA_TD
@@ -255,7 +255,7 @@ mdefine_line|#define SET_DMA_PRIORITY(x)   (((x)&amp;0x3)&lt;&lt;6)   /* DMA Cha
 DECL|macro|DMA_PRIORITY_MASK
 mdefine_line|#define DMA_PRIORITY_MASK SET_DMA_PRIORITY(3)
 DECL|macro|PRIORITY_LOW
-mdefine_line|#define   PRIORITY_LOW         0 
+mdefine_line|#define   PRIORITY_LOW         0
 DECL|macro|PRIORITY_MID_LOW
 mdefine_line|#define   PRIORITY_MID_LOW     1
 DECL|macro|PRIORITY_MID_HIGH
@@ -300,12 +300,12 @@ mdefine_line|#define SSG3_ENABLE        (1&lt;&lt;28)
 DECL|macro|SSG0_MASK_ENABLE
 mdefine_line|#define SSG0_MASK_ENABLE   (1&lt;&lt;15)        /* Enable writing to SSG0 bit */
 DECL|macro|SSG1_MASK_ENABLE
-mdefine_line|#define SSG1_MASK_ENABLE   (1&lt;&lt;14)   
+mdefine_line|#define SSG1_MASK_ENABLE   (1&lt;&lt;14)
 DECL|macro|SSG2_MASK_ENABLE
-mdefine_line|#define SSG2_MASK_ENABLE   (1&lt;&lt;13)  
+mdefine_line|#define SSG2_MASK_ENABLE   (1&lt;&lt;13)
 DECL|macro|SSG3_MASK_ENABLE
-mdefine_line|#define SSG3_MASK_ENABLE   (1&lt;&lt;12) 
-multiline_comment|/*&n; * DMA Scatter/Gather Descriptor Bit fields &n; */
+mdefine_line|#define SSG3_MASK_ENABLE   (1&lt;&lt;12)
+multiline_comment|/*&n; * DMA Scatter/Gather Descriptor Bit fields&n; */
 DECL|macro|SG_LINK
 mdefine_line|#define SG_LINK            (1&lt;&lt;31)        /* Link */
 DECL|macro|SG_TCI_ENABLE
@@ -324,7 +324,7 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-multiline_comment|/* &n;&t; * Valid polarity settings:&n;&t; *   DMAReq0_ActiveLow&n;&t; *   DMAAck0_ActiveLow&n;&t; *   EOT0_ActiveLow&n;&t; *&n;&t; *   DMAReq1_ActiveLow&n;&t; *   DMAAck1_ActiveLow&n;&t; *   EOT1_ActiveLow&n;&t; * &n;&t; *   DMAReq2_ActiveLow&n;&t; *   DMAAck2_ActiveLow&n;&t; *   EOT2_ActiveLow&n;&t; *&n;&t; *   DMAReq3_ActiveLow &n;&t; *   DMAAck3_ActiveLow&n;&t; *   EOT3_ActiveLow&n;&t; */
+multiline_comment|/*&n;&t; * Valid polarity settings:&n;&t; *   DMAReq0_ActiveLow&n;&t; *   DMAAck0_ActiveLow&n;&t; *   EOT0_ActiveLow&n;&t; *&n;&t; *   DMAReq1_ActiveLow&n;&t; *   DMAAck1_ActiveLow&n;&t; *   EOT1_ActiveLow&n;&t; *&n;&t; *   DMAReq2_ActiveLow&n;&t; *   DMAAck2_ActiveLow&n;&t; *   EOT2_ActiveLow&n;&t; *&n;&t; *   DMAReq3_ActiveLow&n;&t; *   DMAAck3_ActiveLow&n;&t; *   EOT3_ActiveLow&n;&t; */
 DECL|member|polarity
 r_int
 r_int
@@ -1120,7 +1120,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-multiline_comment|/*&n; * Sets the dma mode for single DMA transfers only.&n; * For scatter/gather transfers, the mode is passed to the&n; * alloc_dma_handle() function as one of the parameters.&n; *&n; * The mode is simply saved and used later.  This allows&n; * the driver to call set_dma_mode() and set_dma_addr() in&n; * any order.&n; *&n; * Valid mode values are:&n; *&n; * DMA_MODE_READ          peripheral to memory &n; * DMA_MODE_WRITE         memory to peripheral&n; * DMA_MODE_MM            memory to memory&n; * DMA_MODE_MM_DEVATSRC   device-paced memory to memory, device at src&n; * DMA_MODE_MM_DEVATDST   device-paced memory to memory, device at dst&n; */
+multiline_comment|/*&n; * Sets the dma mode for single DMA transfers only.&n; * For scatter/gather transfers, the mode is passed to the&n; * alloc_dma_handle() function as one of the parameters.&n; *&n; * The mode is simply saved and used later.  This allows&n; * the driver to call set_dma_mode() and set_dma_addr() in&n; * any order.&n; *&n; * Valid mode values are:&n; *&n; * DMA_MODE_READ          peripheral to memory&n; * DMA_MODE_WRITE         memory to peripheral&n; * DMA_MODE_MM            memory to memory&n; * DMA_MODE_MM_DEVATSRC   device-paced memory to memory, device at src&n; * DMA_MODE_MM_DEVATDST   device-paced memory to memory, device at dst&n; */
 DECL|function|set_405gp_dma_mode
 r_static
 id|__inline__
@@ -1654,14 +1654,14 @@ id|p_dma_ch-&gt;pwidth
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
+macro_line|#endif
 multiline_comment|/* save dma address and program it later after we know the xfer mode */
 id|p_dma_ch-&gt;addr
 op_assign
 id|addr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Sets both DMA addresses for a memory to memory transfer. &n; * For memory to peripheral or peripheral to memory transfers&n; * the function set_dma_addr() should be used instead.&n; */
+multiline_comment|/*&n; * Sets both DMA addresses for a memory to memory transfer.&n; * For memory to peripheral or peripheral to memory transfers&n; * the function set_dma_addr() should be used instead.&n; */
 r_static
 id|__inline__
 r_void
@@ -1934,7 +1934,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-multiline_comment|/*&n; * Enables the channel interrupt.&n; *&n; * If performing a scatter/gatter transfer, this function &n; * MUST be called before calling alloc_dma_handle() and building&n; * the sgl list.  Otherwise, interrupts will not be enabled, if &n; * they were previously disabled.&n; */
+multiline_comment|/*&n; * Enables the channel interrupt.&n; *&n; * If performing a scatter/gatter transfer, this function&n; * MUST be called before calling alloc_dma_handle() and building&n; * the sgl list.  Otherwise, interrupts will not be enabled, if&n; * they were previously disabled.&n; */
 r_static
 id|__inline__
 r_int
@@ -2092,7 +2092,7 @@ r_return
 id|DMA_STATUS_GOOD
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Disables the channel interrupt.&n; *&n; * If performing a scatter/gatter transfer, this function &n; * MUST be called before calling alloc_dma_handle() and building&n; * the sgl list.  Otherwise, interrupts will not be disabled, if &n; * they were previously enabled.&n; */
+multiline_comment|/*&n; * Disables the channel interrupt.&n; *&n; * If performing a scatter/gatter transfer, this function&n; * MUST be called before calling alloc_dma_handle() and building&n; * the sgl list.  Otherwise, interrupts will not be disabled, if&n; * they were previously enabled.&n; */
 r_static
 id|__inline__
 r_int
@@ -2255,7 +2255,7 @@ id|DMA_STATUS_GOOD
 suffix:semicolon
 )brace
 macro_line|#ifdef DCRNCAP_DMA_SG
-multiline_comment|/*&n; *   Add a new sgl descriptor to the end of a scatter/gather list &n; *   which was created by alloc_dma_handle(). &n; *&n; *   For a memory to memory transfer, both dma addresses must be&n; *   valid. For a peripheral to memory transfer, one of the addresses&n; *   must be set to NULL, depending on the direction of the transfer:&n; *   memory to peripheral: set dst_addr to NULL,&n; *   peripheral to memory: set src_addr to NULL.&n; */
+multiline_comment|/*&n; *   Add a new sgl descriptor to the end of a scatter/gather list&n; *   which was created by alloc_dma_handle().&n; *&n; *   For a memory to memory transfer, both dma addresses must be&n; *   valid. For a peripheral to memory transfer, one of the addresses&n; *   must be set to NULL, depending on the direction of the transfer:&n; *   memory to peripheral: set dst_addr to NULL,&n; *   peripheral to memory: set src_addr to NULL.&n; */
 r_static
 id|__inline__
 r_int

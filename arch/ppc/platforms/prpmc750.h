@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/platforms/prpmc750.h&n; * &n; * Definitions for Motorola PrPMC750 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * include/asm-ppc/platforms/prpmc750.h&n; *&n; * Definitions for Motorola PrPMC750 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PRPMC750_H__
 DECL|macro|__ASM_PRPMC750_H__

@@ -156,10 +156,10 @@ DECL|macro|ZFREE
 mdefine_line|#define ZFREE(strm, addr, size)&t;&bslash;&n;&t;   (*((strm)-&gt;zfree))((strm)-&gt;opaque, (voidpf)(addr), (size))
 DECL|macro|TRY_FREE
 mdefine_line|#define TRY_FREE(s, p, n) {if (p) ZFREE(s, p, n);}
-multiline_comment|/* deflate.h -- internal compression state&n; * Copyright (C) 1995 Jean-loup Gailly&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* deflate.h -- internal compression state&n; * Copyright (C) 1995 Jean-loup Gailly&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 multiline_comment|/*+++++*/
-multiline_comment|/* infblock.h -- header to use infblock.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* infblock.h -- header to use infblock.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 r_struct
 id|inflate_blocks_state
@@ -277,7 +277,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*+++++*/
-multiline_comment|/* inftrees.h -- header to use inftrees.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inftrees.h -- header to use inftrees.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 multiline_comment|/* Huffman code lookup table entry--this entry is four bytes for machines&n;   that have 16-bit pointers (e.g. PC&squot;s in the small or medium model). */
 DECL|typedef|inflate_huft
@@ -468,7 +468,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* for zfree function */
 multiline_comment|/*+++++*/
-multiline_comment|/* infcodes.h -- header to use infcodes.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* infcodes.h -- header to use infcodes.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 r_struct
 id|inflate_codes_state
@@ -536,7 +536,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*+++++*/
-multiline_comment|/* inflate.c -- zlib interface to inflate modules&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inflate.c -- zlib interface to inflate modules&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* inflate private state */
 DECL|struct|internal_state
 r_struct
@@ -1662,7 +1662,7 @@ macro_line|#undef NEEDBYTE
 DECL|macro|NEXTBYTE
 macro_line|#undef NEXTBYTE
 multiline_comment|/*+++++*/
-multiline_comment|/* infutil.h -- types and macros common to blocks and codes&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* infutil.h -- types and macros common to blocks and codes&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 multiline_comment|/* inflate blocks semi-private state */
 DECL|struct|inflate_blocks_state
@@ -1944,7 +1944,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*+++++*/
-multiline_comment|/* inffast.h -- header to use inffast.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inffast.h -- header to use inffast.c&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 id|local
 r_int
@@ -1972,7 +1972,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*+++++*/
-multiline_comment|/* infblock.c -- interpret and process block types to last block&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* infblock.c -- interpret and process block types to last block&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* Table for deflate from PKZIP&squot;s appnote.txt. */
 DECL|variable|border
 id|local
@@ -3982,7 +3982,7 @@ id|Z_OK
 suffix:semicolon
 )brace
 multiline_comment|/*+++++*/
-multiline_comment|/* inftrees.c -- generate Huffman trees for efficient decoding&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inftrees.c -- generate Huffman trees for efficient decoding&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* simplify the use of the inflate_huft type with some defines */
 DECL|macro|base
 mdefine_line|#define base more.Base
@@ -6236,7 +6236,7 @@ id|Z_OK
 suffix:semicolon
 )brace
 multiline_comment|/*+++++*/
-multiline_comment|/* infcodes.c -- process literals and length/distance pairs&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* infcodes.c -- process literals and length/distance pairs&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* simplify the use of the inflate_huft type with some defines */
 DECL|macro|base
 mdefine_line|#define base more.Base
@@ -7221,7 +7221,7 @@ l_string|&quot;inflate:       codes free&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*+++++*/
-multiline_comment|/* inflate_util.c -- data and routines common to blocks and codes&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inflate_util.c -- data and routines common to blocks and codes&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* copy as much as possible from the sliding window to the output area */
 DECL|function|inflate_flush
 id|local
@@ -7482,7 +7482,7 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/*+++++*/
-multiline_comment|/* inffast.c -- process literals and length/distance pairs fast&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* inffast.c -- process literals and length/distance pairs fast&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* simplify the use of the inflate_huft type with some defines */
 DECL|macro|base
 mdefine_line|#define base more.Base
@@ -8162,7 +8162,7 @@ id|Z_OK
 suffix:semicolon
 )brace
 multiline_comment|/*+++++*/
-multiline_comment|/* zutil.c -- target dependent utility functions for the compression library&n; * Copyright (C) 1995 Jean-loup Gailly.&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* zutil.c -- target dependent utility functions for the compression library&n; * Copyright (C) 1995 Jean-loup Gailly.&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* From: zutil.c,v 1.8 1995/05/03 17:27:12 jloup Exp */
 DECL|variable|zlib_version
 r_char
@@ -8204,7 +8204,7 @@ l_string|&quot;&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*+++++*/
-multiline_comment|/* adler32.c -- compute the Adler-32 checksum of a data stream&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h &n; */
+multiline_comment|/* adler32.c -- compute the Adler-32 checksum of a data stream&n; * Copyright (C) 1995 Mark Adler&n; * For conditions of distribution and use, see copyright notice in zlib.h&n; */
 multiline_comment|/* From: adler32.c,v 1.6 1995/05/03 17:27:08 jloup Exp */
 DECL|macro|BASE
 mdefine_line|#define BASE 65521L /* largest prime smaller than 65536 */

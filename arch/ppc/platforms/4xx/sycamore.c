@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/4xx/sycamore.c&n; *&n; * Architecture- / platform-specific boot-time initialization code for&n; * IBM PowerPC 4xx based boards. &n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/sycamore.c&n; *&n; * Architecture- / platform-specific boot-time initialization code for&n; * IBM PowerPC 4xx based boards.&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -41,7 +41,7 @@ r_void
 op_star
 id|sycamore_rtc_base
 suffix:semicolon
-multiline_comment|/*&n; * Define all of the IRQ senses and polarities.  &n; */
+multiline_comment|/*&n; * Define all of the IRQ senses and polarities.&n; */
 DECL|variable|__initdata
 r_static
 id|u_char

@@ -326,7 +326,7 @@ mdefine_line|#define _VSWTC&t;9
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*                   ^C  ^&bslash; del  ^U  ^D   1   0   0   0   0  ^W  ^R  ^Z  ^Q  ^S  ^V  ^U  */
 DECL|macro|INIT_C_CC
-mdefine_line|#define INIT_C_CC &quot;&bslash;003&bslash;034&bslash;177&bslash;025&bslash;004&bslash;001&bslash;000&bslash;000&bslash;000&bslash;000&bslash;027&bslash;022&bslash;032&bslash;021&bslash;023&bslash;026&bslash;025&quot; 
+mdefine_line|#define INIT_C_CC &quot;&bslash;003&bslash;034&bslash;177&bslash;025&bslash;004&bslash;001&bslash;000&bslash;000&bslash;000&bslash;000&bslash;027&bslash;022&bslash;032&bslash;021&bslash;023&bslash;026&bslash;025&quot;
 macro_line|#endif&t;/* __KERNEL__ */
 multiline_comment|/* modem lines */
 DECL|macro|TIOCM_LE

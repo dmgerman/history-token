@@ -73,7 +73,7 @@ mdefine_line|#define _FP_DIV_MEAT_1_udiv(fs, R, X, Y)&t;&t;&bslash;&n;  do {&t;&
 multiline_comment|/*&n; * Square root algorithms:&n; * We have just one right now, maybe Newton approximation&n; * should be added for those machines where division is fast.&n; */
 DECL|macro|_FP_SQRT_MEAT_1
 mdefine_line|#define _FP_SQRT_MEAT_1(R, S, T, X, q)&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    while (q)&t;&t;&t;&t;&t;&t;&bslash;&n;      {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        T##_f = S##_f + q;&t;&t;&t;&t;&bslash;&n;        if (T##_f &lt;= X##_f)&t;&t;&t;&t;&bslash;&n;          {&t;&t;&t;&t;&t;&t;&bslash;&n;            S##_f = T##_f + q;&t;&t;&t;&t;&bslash;&n;            X##_f -= T##_f;&t;&t;&t;&t;&bslash;&n;            R##_f += q;&t;&t;&t;&t;&t;&bslash;&n;          }&t;&t;&t;&t;&t;&t;&bslash;&n;        _FP_FRAC_SLL_1(X, 1);&t;&t;&t;&t;&bslash;&n;        q &gt;&gt;= 1;&t;&t;&t;&t;&t;&bslash;&n;      }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
-multiline_comment|/*&n; * Assembly/disassembly for converting to/from integral types.  &n; * No shifting or overflow handled here.&n; */
+multiline_comment|/*&n; * Assembly/disassembly for converting to/from integral types.&n; * No shifting or overflow handled here.&n; */
 DECL|macro|_FP_FRAC_ASSEMBLE_1
 mdefine_line|#define _FP_FRAC_ASSEMBLE_1(r, X, rsize)&t;(r = X##_f)
 DECL|macro|_FP_FRAC_DISASSEMBLE_1

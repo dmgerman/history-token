@@ -1151,7 +1151,7 @@ comma
 id|__setup_cpu_generic
 )brace
 comma
-macro_line|#endif /* CLASSIC_PPC */    
+macro_line|#endif /* CLASSIC_PPC */
 macro_line|#ifdef CONFIG_PPC64BRIDGE
 (brace
 multiline_comment|/* Power3 */
@@ -1253,7 +1253,7 @@ comma
 id|__setup_cpu_power3
 )brace
 comma
-macro_line|#endif /* CONFIG_PPC64BRIDGE */    
+macro_line|#endif /* CONFIG_PPC64BRIDGE */
 macro_line|#ifdef CONFIG_8xx
 (brace
 multiline_comment|/* 8xx */

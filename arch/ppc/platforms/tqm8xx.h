@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TQM8xx(L) board specific definitions&n; * &n; * Copyright (c) 1999-2002 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * TQM8xx(L) board specific definitions&n; *&n; * Copyright (c) 1999-2002 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_TQM8xx_H
 DECL|macro|__MACH_TQM8xx_H

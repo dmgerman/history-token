@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
-multiline_comment|/**&n; * of_match_device - Tell if an of_device structure has a matching&n; * of_match structure&n; * @ids: array of of device match structures to search in&n; * @dev: the of device structure to match against&n; * &n; * Used by a driver to check whether an of_device present in the&n; * system is in its list of supported devices. &n; */
+multiline_comment|/**&n; * of_match_device - Tell if an of_device structure has a matching&n; * of_match structure&n; * @ids: array of of device match structures to search in&n; * @dev: the of device structure to match against&n; *&n; * Used by a driver to check whether an of_device present in the&n; * system is in its list of supported devices.&n; */
 DECL|function|of_match_device
 r_const
 r_struct

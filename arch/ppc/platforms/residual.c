@@ -1053,7 +1053,7 @@ l_int|1
 )paren
 suffix:semicolon
 DECL|macro|p
-macro_line|#undef p&t;&t; 
+macro_line|#undef p
 r_break
 suffix:semicolon
 r_case
@@ -3312,8 +3312,8 @@ id|did.BusId
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;
-multiline_comment|/* Returns the device index in the residual data, &n;   any of the search items may be set as -1 for wildcard,&n;   DevID number field (second halfword) is big endian ! &n;&n;   Examples:&n;   - search for the Interrupt controller (8259 type), 2 methods:&n;     1) i8259 = residual_find_device(~0, &n;                                     NULL, &n;&t;&t;&t;&t;     SystemPeripheral, &n;&t;&t;&t;&t;     ProgrammableInterruptController, &n;&t;&t;&t;&t;     ISA_PIC, &n;&t;&t;&t;&t;     0);&n;     2) i8259 = residual_find_device(~0, &quot;PNP0000&quot;, -1, -1, -1, 0) &n;&n;   - search for the first two serial devices, whatever their type)&n;     iserial1 = residual_find_device(~0,NULL,&n;                                     CommunicationsDevice,&n;&t;&t;&t;&t;     RS232Device,&n;&t;&t;&t;&t;     -1, 0)&n;     iserial2 = residual_find_device(~0,NULL,&n;                                     CommunicationsDevice,&n;&t;&t;&t;&t;     RS232Device,&n;&t;&t;&t;&t;     -1, 1)&n;   - but search for typical COM1 and COM2 is not easy due to the&n;     fact that the interface may be anything and the name &quot;PNP0500&quot; or &n;     &quot;PNP0501&quot;. Quite bad. &n;&n;*/
+macro_line|#endif
+multiline_comment|/* Returns the device index in the residual data,&n;   any of the search items may be set as -1 for wildcard,&n;   DevID number field (second halfword) is big endian !&n;&n;   Examples:&n;   - search for the Interrupt controller (8259 type), 2 methods:&n;     1) i8259 = residual_find_device(~0,&n;                                     NULL,&n;&t;&t;&t;&t;     SystemPeripheral,&n;&t;&t;&t;&t;     ProgrammableInterruptController,&n;&t;&t;&t;&t;     ISA_PIC,&n;&t;&t;&t;&t;     0);&n;     2) i8259 = residual_find_device(~0, &quot;PNP0000&quot;, -1, -1, -1, 0)&n;&n;   - search for the first two serial devices, whatever their type)&n;     iserial1 = residual_find_device(~0,NULL,&n;                                     CommunicationsDevice,&n;&t;&t;&t;&t;     RS232Device,&n;&t;&t;&t;&t;     -1, 0)&n;     iserial2 = residual_find_device(~0,NULL,&n;                                     CommunicationsDevice,&n;&t;&t;&t;&t;     RS232Device,&n;&t;&t;&t;&t;     -1, 1)&n;   - but search for typical COM1 and COM2 is not easy due to the&n;     fact that the interface may be anything and the name &quot;PNP0500&quot; or&n;     &quot;PNP0501&quot;. Quite bad.&n;&n;*/
 multiline_comment|/* devid are easier to uncompress than to compress, so to minimize bloat&n;in this rarely used area we unencode and compare */
 multiline_comment|/* in residual data number is big endian in the device table and&n;little endian in the heap, so we use two parameters to avoid writing&n;two very similar functions */
 DECL|function|same_DevID

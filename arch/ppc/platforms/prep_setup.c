@@ -237,7 +237,7 @@ DECL|variable|boot_dev
 id|dev_t
 id|boot_dev
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOUND_CS4232 
+macro_line|#ifdef CONFIG_SOUND_CS4232
 DECL|variable|ppc_cs4232_dma
 DECL|variable|ppc_cs4232_dma2
 r_int
@@ -270,7 +270,7 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOUND_CS4232 
+macro_line|#ifdef CONFIG_SOUND_CS4232
 DECL|variable|ppc_cs4232_dma
 id|EXPORT_SYMBOL
 c_func
@@ -2065,7 +2065,7 @@ comma
 l_string|&quot;clock&bslash;t&bslash;t: &quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 r_if
 c_cond
 (paren
@@ -2106,7 +2106,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SOUND_CS4232 
+macro_line|#ifdef CONFIG_SOUND_CS4232
 DECL|function|masktoint
 r_static
 r_int
@@ -2142,7 +2142,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ppc_cs4232_dma and ppc_cs4232_dma2 are used in include/asm/dma.h&n; * to distinguish sound dma-channels from others. This is because &n; * blocksize on 16 bit dma-channels 5,6,7 is 128k, but&n; * the cs4232.c uses 64k like on 8 bit dma-channels 0,1,2,3&n; */
+multiline_comment|/*&n; * ppc_cs4232_dma and ppc_cs4232_dma2 are used in include/asm/dma.h&n; * to distinguish sound dma-channels from others. This is because&n; * blocksize on 16 bit dma-channels 5,6,7 is 128k, but&n; * the cs4232.c uses 64k like on 8 bit dma-channels 0,1,2,3&n; */
 DECL|function|prep_init_sound
 r_static
 r_void
@@ -2159,7 +2159,7 @@ id|audiodevice
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the needed resource informations from residual data.&n;&t; * &n;&t; */
+multiline_comment|/*&n;&t; * Get the needed resource informations from residual data.&n;&t; *&n;&t; */
 macro_line|#ifdef CONFIG_PREP_RESIDUAL
 id|audiodevice
 op_assign
@@ -2267,7 +2267,7 @@ id|pkt-&gt;S5_Pack.DMAMask
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * These are the PReP specs&squot; defaults for the cs4231.  We use these&n;&t; * as fallback incase we don&squot;t have residual data.&n;&t; * At least the IBM Thinkpad 850 with IDE DMA Channels at 6 and 7 &n;&t; * will use the other values.&n;&t; */
+multiline_comment|/*&n;&t; * These are the PReP specs&squot; defaults for the cs4231.  We use these&n;&t; * as fallback incase we don&squot;t have residual data.&n;&t; * At least the IBM Thinkpad 850 with IDE DMA Channels at 6 and 7&n;&t; * will use the other values.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2891,7 +2891,7 @@ id|cmd_line
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_SOUND_CS4232 
+macro_line|#ifdef CONFIG_SOUND_CS4232
 id|prep_init_sound
 c_func
 (paren
@@ -3026,7 +3026,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif&t;
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3317,7 +3317,7 @@ op_complement
 id|MK48T59_RTC_CB_STOP
 )paren
 suffix:semicolon
-multiline_comment|/* Low frequency crystal oscillators may take a very long&n;&t;&t; * time to startup and stabilize. For now just ignore the&n;&t;&t; * the issue, but attempting to calibrate the decrementer&n;&t;&t; * from the RTC just after this wakeup is likely to be very &n;&t;&t; * inaccurate. Firmware should not allow to load&n;&t;&t; * the OS with the clock stopped anyway...&n;&t;&t; */
+multiline_comment|/* Low frequency crystal oscillators may take a very long&n;&t;&t; * time to startup and stabilize. For now just ignore the&n;&t;&t; * the issue, but attempting to calibrate the decrementer&n;&t;&t; * from the RTC just after this wakeup is likely to be very&n;&t;&t; * inaccurate. Firmware should not allow to load&n;&t;&t; * the OS with the clock stopped anyway...&n;&t;&t; */
 )brace
 multiline_comment|/* Ensure that the clock registers are updated */
 id|tmp
@@ -4121,7 +4121,7 @@ r_int
 id|r7
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 multiline_comment|/* make a copy of residual data */
 r_if
 c_cond
@@ -4181,7 +4181,7 @@ op_assign
 l_int|0x48
 suffix:semicolon
 multiline_comment|/* figure out what kind of prep workstation we are */
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 r_if
 c_cond
 (paren

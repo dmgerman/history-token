@@ -1909,7 +1909,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * G3 powermacs and 1999 G3 PowerBooks have 64 interrupts,&n;&t; * 1998 G3 Series PowerBooks have 128, &n;&t; * other powermacs have 32.&n;&t; * The combo ethernet/modem card for the Powerstar powerbooks&n;&t; * (2400/3400/3500, ohare based) has a second ohare chip&n;&t; * effectively making a total of 64.&n;&t; */
+multiline_comment|/*&n;&t; * G3 powermacs and 1999 G3 PowerBooks have 64 interrupts,&n;&t; * 1998 G3 Series PowerBooks have 128,&n;&t; * other powermacs have 32.&n;&t; * The combo ethernet/modem card for the Powerstar powerbooks&n;&t; * (2400/3400/3500, ohare based) has a second ohare chip&n;&t; * effectively making a total of 64.&n;&t; */
 id|max_irqs
 op_assign
 id|max_real_irqs
@@ -2760,7 +2760,7 @@ op_assign
 op_amp
 id|pmacpic_resume
 comma
-macro_line|#endif /* CONFIG_PM */&t;
+macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 DECL|function|init_pmacpic_sysfs

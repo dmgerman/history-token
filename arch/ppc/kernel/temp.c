@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * temp.c&t;Thermal management for cpu&squot;s with Thermal Assist Units&n; *&n; * Written by Troy Benjegerdes &lt;hozer@drgw.net&gt;&n; *&n; * TODO:&n; * dynamic power management to limit peak CPU temp (using ICTC)&n; * calibration???&n; * &n; * Silly, crazy ideas: use cpu load (from scheduler) and ICTC to extend battery&n; * life in portables, and add a &squot;performance/watt&squot; metric somewhere in /proc&n; */
+multiline_comment|/*&n; * temp.c&t;Thermal management for cpu&squot;s with Thermal Assist Units&n; *&n; * Written by Troy Benjegerdes &lt;hozer@drgw.net&gt;&n; *&n; * TODO:&n; * dynamic power management to limit peak CPU temp (using ICTC)&n; * calibration???&n; *&n; * Silly, crazy ideas: use cpu load (from scheduler) and ICTC to extend battery&n; * life in portables, and add a &squot;performance/watt&squot; metric somewhere in /proc&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -599,7 +599,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Do the enable every time, since otherwise a bunch of (relatively)&n;&t; * complex sleep code needs to be added. One mtspr every time&n;&t; * tau_timeout is called is probably not a big deal.&n;&t; * &n;&t; * Enable thermal sensor and set up sample interval timer&n;&t; * need 20 us to do the compare.. until a nice &squot;cpu_speed&squot; function&n;&t; * call is implemented, just assume a 500 mhz clock. It doesn&squot;t really&n;&t; * matter if we take too long for a compare since it&squot;s all interrupt &n;&t; * driven anyway. &n;&t; *&n;&t; * use a extra long time.. (60 us @ 500 mhz)&n;&t; */
+multiline_comment|/*&n;&t; * Do the enable every time, since otherwise a bunch of (relatively)&n;&t; * complex sleep code needs to be added. One mtspr every time&n;&t; * tau_timeout is called is probably not a big deal.&n;&t; *&n;&t; * Enable thermal sensor and set up sample interval timer&n;&t; * need 20 us to do the compare.. until a nice &squot;cpu_speed&squot; function&n;&t; * call is implemented, just assume a 500 mhz clock. It doesn&squot;t really&n;&t; * matter if we take too long for a compare since it&squot;s all interrupt&n;&t; * driven anyway.&n;&t; *&n;&t; * use a extra long time.. (60 us @ 500 mhz)&n;&t; */
 id|mtspr
 c_func
 (paren
@@ -659,7 +659,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * setup the TAU&n; * &n; * Set things up to use THRM1 as a temperature lower bound, and THRM2 as an upper bound.&n; * Start off at zero&n; */
+multiline_comment|/*&n; * setup the TAU&n; *&n; * Set things up to use THRM1 as a temperature lower bound, and THRM2 as an upper bound.&n; * Start off at zero&n; */
 DECL|variable|tau_initialized
 r_int
 id|tau_initialized

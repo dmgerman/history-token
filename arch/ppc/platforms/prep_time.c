@@ -270,7 +270,7 @@ comma
 id|i
 suffix:semicolon
 multiline_comment|/* The Linux interpretation of the CMOS clock register contents:&n;&t; * When the Update-In-Progress (UIP) flag goes from 1 to 0, the&n;&t; * RTC registers show the second which has precisely just started.&n;&t; * Let&squot;s hope other operating systems interpret the RTC the same way.&n;&t; */
-multiline_comment|/* Since the UIP flag is set for about 2.2 ms and the clock&n;&t; * is typically written with a precision of 1 jiffy, trying&n;&t; * to obtain a precision better than a few milliseconds is &n;&t; * an illusion. Only consistency is interesting, this also&n;&t; * allows to use the routine for /dev/rtc without a potential&n;&t; * 1 second kernel busy loop triggered by any reader of /dev/rtc. &n;&t; */
+multiline_comment|/* Since the UIP flag is set for about 2.2 ms and the clock&n;&t; * is typically written with a precision of 1 jiffy, trying&n;&t; * to obtain a precision better than a few milliseconds is&n;&t; * an illusion. Only consistency is interesting, this also&n;&t; * allows to use the routine for /dev/rtc without a potential&n;&t; * 1 second kernel busy loop triggered by any reader of /dev/rtc.&n;&t; */
 r_for
 c_loop
 (paren
