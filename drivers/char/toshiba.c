@@ -181,15 +181,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -208,7 +203,7 @@ c_func
 l_int|0xe5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -276,15 +271,10 @@ l_int|0xfe00
 )paren
 (brace
 multiline_comment|/* fan status */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -303,7 +293,7 @@ c_func
 l_int|0xe5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -343,15 +333,10 @@ l_int|0x0000
 )paren
 (brace
 multiline_comment|/* fan off */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -387,7 +372,7 @@ comma
 l_int|0xe5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -419,15 +404,10 @@ l_int|0x0001
 )paren
 (brace
 multiline_comment|/* fan on */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -464,7 +444,7 @@ comma
 l_int|0xe5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -498,15 +478,10 @@ l_int|0xfe00
 )paren
 (brace
 multiline_comment|/* fan status */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -525,7 +500,7 @@ c_func
 l_int|0xe5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -559,15 +534,10 @@ l_int|0x0000
 )paren
 (brace
 multiline_comment|/* fan off */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -604,7 +574,7 @@ comma
 l_int|0xe4
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -636,15 +606,10 @@ l_int|0x0001
 )paren
 (brace
 multiline_comment|/* fan on */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -681,7 +646,7 @@ comma
 l_int|0xe4
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
