@@ -8393,7 +8393,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Optical IEC958 Playback Volume&quot;
+l_string|&quot;IEC958 Optical Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -8439,7 +8439,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Optical IEC958 Capture Volume&quot;
+l_string|&quot;IEC958 Optical Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -8577,7 +8577,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;RCA SPDIF Playback Volume&quot;
+l_string|&quot;IEC958 Coaxial Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -8623,7 +8623,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;RCA SPDIF Capture Volume&quot;
+l_string|&quot;IEC958 Coaxial Capture Volume&quot;
 comma
 id|gpr
 comma
