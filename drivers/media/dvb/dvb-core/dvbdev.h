@@ -59,6 +59,11 @@ id|proposed_mac
 l_int|6
 )braket
 suffix:semicolon
+DECL|member|priv
+r_void
+op_star
+id|priv
+suffix:semicolon
 DECL|member|module
 r_struct
 id|module

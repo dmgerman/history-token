@@ -1726,7 +1726,7 @@ id|curr_pos
 suffix:semicolon
 id|info-&gt;extra_fname
 op_assign
-id|fname
+id|fname-&gt;next
 suffix:semicolon
 r_return
 id|error
@@ -1869,11 +1869,7 @@ r_if
 c_cond
 (paren
 id|info-&gt;extra_fname
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|call_filldir
 c_func
 (paren
@@ -1886,16 +1882,9 @@ comma
 id|info-&gt;extra_fname
 )paren
 )paren
-(brace
 r_goto
 id|finished
 suffix:semicolon
-)brace
-r_else
-r_goto
-id|next_entry
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2036,8 +2025,6 @@ id|fname
 )paren
 r_break
 suffix:semicolon
-id|next_entry
-suffix:colon
 id|info-&gt;curr_node
 op_assign
 id|rb_next

@@ -694,6 +694,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|saa7146_set_vbi_capture
+r_static
 r_void
 id|saa7146_set_vbi_capture
 c_func

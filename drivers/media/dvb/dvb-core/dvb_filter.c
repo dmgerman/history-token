@@ -2,7 +2,8 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;dvb_filter.h&quot;
-DECL|variable|bitrates
+macro_line|#if 0
+r_static
 r_int
 r_int
 id|bitrates
@@ -117,7 +118,9 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|freq
+r_static
 id|u32
 id|freq
 (braket
@@ -125,9 +128,9 @@ l_int|4
 )braket
 op_assign
 (brace
-l_int|441
-comma
 l_int|480
+comma
+l_int|441
 comma
 l_int|320
 comma
@@ -135,6 +138,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|ac3_bitrates
+r_static
 r_int
 r_int
 id|ac3_bitrates
@@ -208,24 +212,8 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|ac3_freq
-id|u32
-id|ac3_freq
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-l_int|480
-comma
-l_int|441
-comma
-l_int|320
-comma
-l_int|0
-)brace
-suffix:semicolon
 DECL|variable|ac3_frames
+r_static
 id|u32
 id|ac3_frames
 (braket
@@ -2432,6 +2420,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|dvb_filter_get_ac3info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_filter_get_ac3info
+)paren
+suffix:semicolon
 macro_line|#if 0
 r_static
 id|u8
@@ -3251,6 +3246,13 @@ op_assign
 id|priv
 suffix:semicolon
 )brace
+DECL|variable|dvb_filter_pes2ts_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_filter_pes2ts_init
+)paren
+suffix:semicolon
 DECL|function|dvb_filter_pes2ts
 r_int
 id|dvb_filter_pes2ts
@@ -3481,4 +3483,11 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dvb_filter_pes2ts
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_filter_pes2ts
+)paren
+suffix:semicolon
 eof

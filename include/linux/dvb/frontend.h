@@ -217,7 +217,7 @@ DECL|member|notifier_delay
 id|__u32
 id|notifier_delay
 suffix:semicolon
-multiline_comment|/* ms */
+multiline_comment|/* DEPRECATED */
 DECL|member|caps
 id|fe_caps_t
 id|caps
