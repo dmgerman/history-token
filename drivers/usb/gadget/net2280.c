@@ -1023,8 +1023,8 @@ id|ep-&gt;regs-&gt;ep_irqenb
 )paren
 suffix:semicolon
 multiline_comment|/* init to our chosen defaults, notably so that we NAK OUT&n;&t; * packets until the driver queues a read (+note erratum 0112)&n;&t; */
-id|writel
-(paren
+id|tmp
+op_assign
 (paren
 l_int|1
 op_lshift
@@ -1048,7 +1048,17 @@ l_int|1
 op_lshift
 id|CLEAR_INTERRUPT_MODE
 )paren
-op_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep-&gt;num
+op_ne
+l_int|0
+)paren
+(brace
+id|tmp
+op_or_assign
 (paren
 l_int|1
 op_lshift
@@ -1060,6 +1070,11 @@ l_int|1
 op_lshift
 id|CLEAR_ENDPOINT_HALT
 )paren
+suffix:semicolon
+)brace
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|ep-&gt;regs-&gt;ep_rsp
@@ -8041,22 +8056,6 @@ l_int|1
 op_lshift
 id|SELF_POWERED_USB_DEVICE
 )paren
-multiline_comment|/* erratum 0102 workaround */
-op_or
-(paren
-(paren
-id|dev-&gt;chiprev
-op_eq
-l_int|0100
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|1
-)paren
-op_lshift
-id|SUSPEND_IMMEDIATELY
 op_or
 (paren
 l_int|1
@@ -8524,6 +8523,14 @@ op_amp
 id|dev-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|net2280_pullup
+(paren
+op_amp
+id|dev-&gt;gadget
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|driver-&gt;unbind
@@ -10667,16 +10674,6 @@ id|dev-&gt;driver-&gt;suspend
 (paren
 op_amp
 id|dev-&gt;gadget
-)paren
-suffix:semicolon
-multiline_comment|/* we use SUSPEND_IMMEDIATELY */
-id|stat
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-id|SUSPEND_REQUEST_INTERRUPT
 )paren
 suffix:semicolon
 )brace

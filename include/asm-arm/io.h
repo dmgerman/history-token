@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/io.h&n; *&n; *  Copyright (C) 1996-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *  16-Sep-1996&t;RMK&t;Inlined the inx/outx functions &amp; optimised for both&n; *&t;&t;&t;constant addresses and variable addresses.&n; *  04-Dec-1997&t;RMK&t;Moved a lot of this stuff to the new architecture&n; *&t;&t;&t;specific IO header files.&n; *  27-Mar-1999&t;PJB&t;Second parameter of memcpy_toio is const..&n; *  04-Apr-1999&t;PJB&t;Added check_signature.&n; *  12-Dec-1999&t;RMK&t;More cleanups&n; *  18-Jun-2000 RMK&t;Removed virt_to_* and friends definitions&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/io.h&n; *&n; *  Copyright (C) 1996-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *  16-Sep-1996&t;RMK&t;Inlined the inx/outx functions &amp; optimised for both&n; *&t;&t;&t;constant addresses and variable addresses.&n; *  04-Dec-1997&t;RMK&t;Moved a lot of this stuff to the new architecture&n; *&t;&t;&t;specific IO header files.&n; *  27-Mar-1999&t;PJB&t;Second parameter of memcpy_toio is const..&n; *  04-Apr-1999&t;PJB&t;Added check_signature.&n; *  12-Dec-1999&t;RMK&t;More cleanups&n; *  18-Jun-2000 RMK&t;Removed virt_to_* and friends definitions&n; *  05-Oct-2004 BJD     Moved memory string functions to use void __iomem&n; */
 macro_line|#ifndef __ASM_ARM_IO_H
 DECL|macro|__ASM_ARM_IO_H
 mdefine_line|#define __ASM_ARM_IO_H
@@ -212,8 +212,9 @@ c_func
 r_void
 op_star
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 comma
 r_int
 )paren
@@ -223,8 +224,9 @@ r_void
 id|_memcpy_toio
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 comma
 r_const
 r_void
@@ -238,8 +240,9 @@ r_void
 id|_memset_io
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 comma
 r_int
 comma
