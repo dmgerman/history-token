@@ -2096,7 +2096,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|self-&gt;dev.dev_addr
+id|self-&gt;dev-&gt;dev_addr
 (braket
 id|i
 )braket
