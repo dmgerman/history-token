@@ -2027,7 +2027,6 @@ macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/qnx4_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
@@ -2231,11 +2230,6 @@ DECL|member|adfs_sb
 r_struct
 id|adfs_sb_info
 id|adfs_sb
-suffix:semicolon
-DECL|member|qnx4_sb
-r_struct
-id|qnx4_sb_info
-id|qnx4_sb
 suffix:semicolon
 DECL|member|reiserfs_sb
 r_struct
