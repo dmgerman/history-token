@@ -248,7 +248,11 @@ r_int
 r_char
 id|rcvtstamp
 suffix:semicolon
-multiline_comment|/* Hole of 1 byte. Try to pack. */
+DECL|member|no_largesend
+r_int
+r_char
+id|no_largesend
+suffix:semicolon
 DECL|member|route_caps
 r_int
 id|route_caps

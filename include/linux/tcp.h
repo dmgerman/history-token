@@ -777,10 +777,15 @@ id|pmtu_cookie
 suffix:semicolon
 multiline_comment|/* Last pmtu seen by socket&t;&t;*/
 DECL|member|mss_cache
-id|__u16
+id|__u32
 id|mss_cache
 suffix:semicolon
 multiline_comment|/* Cached effective mss, not including SACKS */
+DECL|member|mss_cache_std
+id|__u16
+id|mss_cache_std
+suffix:semicolon
+multiline_comment|/* Like mss_cache, but without TSO */
 DECL|member|mss_clamp
 id|__u16
 id|mss_clamp
