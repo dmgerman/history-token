@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/seqlock.h&gt;
 multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @list: list_head to queue the update requests&n; * @func: actual update function to call after the grace period.&n; * @arg: argument to be passed to the actual update function.&n; */
 DECL|struct|rcu_head
 r_struct
@@ -62,6 +63,18 @@ r_int
 id|completed
 suffix:semicolon
 multiline_comment|/* Number of the last completed batch */
+DECL|member|next_pending
+r_int
+id|next_pending
+suffix:semicolon
+multiline_comment|/* Is the next batch already waiting? */
+DECL|member|lock
+id|seqcount_t
+id|lock
+suffix:semicolon
+multiline_comment|/* for atomically reading cur and     */
+multiline_comment|/* next_pending. Spinlock not used,   */
+multiline_comment|/* protected by state.mutex           */
 DECL|member|____cacheline_maxaligned_in_smp
 )brace
 id|batch
@@ -75,11 +88,6 @@ id|spinlock_t
 id|mutex
 suffix:semicolon
 multiline_comment|/* Guard this struct                  */
-DECL|member|next_pending
-r_int
-id|next_pending
-suffix:semicolon
-multiline_comment|/* Is the next batch already waiting? */
 DECL|member|rcu_cpu_mask
 id|cpumask_t
 id|rcu_cpu_mask
