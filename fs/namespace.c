@@ -2382,6 +2382,11 @@ id|err
 r_goto
 id|out_unlock
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOENT
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

@@ -273,7 +273,7 @@ id|host
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|NCR53c7x0_intr
 c_func
 (paren
@@ -15285,9 +15285,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : static void NCR53c7x0_intr (int irq, void *dev_id, struct pt_regs * regs)&n; *&n; * Purpose : handle NCR53c7x0 interrupts for all NCR devices sharing&n; *&t;the same IRQ line.  &n; * &n; * Inputs : Since we&squot;re using the SA_INTERRUPT interrupt handler&n; *&t;semantics, irq indicates the interrupt which invoked &n; *&t;this handler.  &n; *&n; * On the 710 we simualte an INTFLY with a script interrupt, and the&n; * script interrupt handler will call back to this function.&n; */
+multiline_comment|/*&n; * Function : static irqreturn_t NCR53c7x0_intr (int irq, void *dev_id, struct pt_regs * regs)&n; *&n; * Purpose : handle NCR53c7x0 interrupts for all NCR devices sharing&n; *&t;the same IRQ line.  &n; * &n; * Inputs : Since we&squot;re using the SA_INTERRUPT interrupt handler&n; *&t;semantics, irq indicates the interrupt which invoked &n; *&t;this handler.  &n; *&n; * On the 710 we simualte an INTFLY with a script interrupt, and the&n; * script interrupt handler will call back to this function.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|NCR53c7x0_intr
 id|NCR53c7x0_intr
 (paren
@@ -15337,6 +15337,11 @@ op_star
 id|dsa
 suffix:semicolon
 multiline_comment|/* DSA */
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef NCR_DEBUG
 r_char
 id|buf
@@ -15398,6 +15403,10 @@ id|ISTAT_DIP
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|hostdata-&gt;dsp_changed
 op_assign
 l_int|0
@@ -15783,6 +15792,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : static int abort_connected (struct Scsi_Host *host)&n; *&n; * Purpose : Assuming that the NCR SCSI processor is currently &n; * &t;halted, break the currently established nexus.  Clean&n; *&t;up of the NCR53c7x0_cmd and Scsi_Cmnd structures should&n; *&t;be done on receipt of the abort interrupt.&n; *&n; * Inputs : host - SCSI host&n; *&n; */
 r_static

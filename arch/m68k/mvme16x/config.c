@@ -35,7 +35,7 @@ id|MK48T08ptr_t
 id|MVME_RTC_BASE
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|mvme16x_process_int
 (paren
 r_int
@@ -122,7 +122,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -157,7 +157,7 @@ r_void
 id|mvme16x_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -227,7 +227,7 @@ suffix:semicolon
 multiline_comment|/* Save tick handler routine pointer, will point to do_timer() in&n; * kernel/sched.c, called via mvme16x_process_int() */
 DECL|variable|tick_handler
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|tick_handler
@@ -799,7 +799,7 @@ suffix:semicolon
 )brace
 DECL|function|mvme16x_abort_int
 r_static
-r_void
+id|irqreturn_t
 id|mvme16x_abort_int
 (paren
 r_int
@@ -989,10 +989,13 @@ l_int|0x6e
 )paren
 suffix:semicolon
 multiline_comment|/* ABORT switch */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mvme16x_timer_int
 r_static
-r_void
+id|irqreturn_t
 id|mvme16x_timer_int
 (paren
 r_int
@@ -1019,6 +1022,7 @@ l_int|0xfff4201b
 op_or_assign
 l_int|8
 suffix:semicolon
+r_return
 id|tick_handler
 c_func
 (paren
@@ -1034,7 +1038,7 @@ DECL|function|mvme16x_sched_init
 r_void
 id|mvme16x_sched_init
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine

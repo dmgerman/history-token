@@ -26,7 +26,7 @@ id|baboon
 op_star
 id|baboon
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|baboon_irq
 c_func
 (paren
@@ -140,7 +140,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Baboon interrupt handler. This works a lot like a VIA.&n; */
 DECL|function|baboon_irq
-r_void
+id|irqreturn_t
 id|baboon_irq
 c_func
 (paren
@@ -204,6 +204,7 @@ l_int|0x07
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_for
 c_loop
@@ -284,6 +285,9 @@ op_complement
 id|events
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|baboon_irq_enable
 r_void

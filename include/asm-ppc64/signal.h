@@ -267,5 +267,22 @@ id|stack_t
 suffix:semicolon
 DECL|macro|ptrace_signal_deliver
 mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|do_signal32
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASMPPC64_SIGNAL_H */
 eof

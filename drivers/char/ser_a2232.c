@@ -87,7 +87,7 @@ id|err
 suffix:semicolon
 multiline_comment|/* The interrupt service routine */
 r_static
-r_void
+id|irqreturn_t
 id|a2232_vbl_inter
 c_func
 (paren
@@ -1726,7 +1726,7 @@ suffix:semicolon
 )brace
 DECL|function|a2232_vbl_inter
 r_static
-r_void
+id|irqreturn_t
 id|a2232_vbl_inter
 c_func
 (paren
@@ -2403,6 +2403,9 @@ multiline_comment|/* remove events */
 singleline_comment|// if events in CD queue
 )brace
 singleline_comment|// for every completely initialized A2232 board
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|a2232_init_portstructs
 r_static

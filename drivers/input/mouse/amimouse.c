@@ -67,7 +67,7 @@ l_string|&quot;amimouse/input0&quot;
 suffix:semicolon
 DECL|function|amimouse_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amimouse_interrupt
 c_func
 (paren
@@ -285,6 +285,9 @@ c_func
 op_amp
 id|amimouse_dev
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|amimouse_open

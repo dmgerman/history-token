@@ -4505,7 +4505,7 @@ suffix:semicolon
 )brace
 DECL|function|ata_probe
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|ata_probe
 c_func

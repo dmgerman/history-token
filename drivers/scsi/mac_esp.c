@@ -567,7 +567,7 @@ id|pregs
 suffix:semicolon
 )brace
 DECL|function|fake_drq
-r_void
+id|irqreturn_t
 id|fake_drq
 c_func
 (paren
@@ -589,6 +589,9 @@ c_func
 (paren
 l_string|&quot;mac_esp: got drq&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|macro|DRIVER_SETUP

@@ -1908,6 +1908,29 @@ DECL|macro|sd_v1_first_direct_byte
 mdefine_line|#define sd_v1_first_direct_byte(sdp) &bslash;&n;                                (le32_to_cpu((sdp)-&gt;sd_first_direct_byte))
 DECL|macro|set_sd_v1_first_direct_byte
 mdefine_line|#define set_sd_v1_first_direct_byte(sdp,v) &bslash;&n;                                ((sdp)-&gt;sd_first_direct_byte = cpu_to_le32(v))
+macro_line|#include &lt;linux/ext2_fs.h&gt;
+multiline_comment|/* inode flags stored in sd_attrs (nee sd_reserved) */
+multiline_comment|/* we want common flags to have the same values as in ext2,&n;   so chattr(1) will work without problems */
+DECL|macro|REISERFS_IMMUTABLE_FL
+mdefine_line|#define REISERFS_IMMUTABLE_FL EXT2_IMMUTABLE_FL
+DECL|macro|REISERFS_SYNC_FL
+mdefine_line|#define REISERFS_SYNC_FL      EXT2_SYNC_FL
+DECL|macro|REISERFS_NOATIME_FL
+mdefine_line|#define REISERFS_NOATIME_FL   EXT2_NOATIME_FL
+DECL|macro|REISERFS_NODUMP_FL
+mdefine_line|#define REISERFS_NODUMP_FL    EXT2_NODUMP_FL
+DECL|macro|REISERFS_SECRM_FL
+mdefine_line|#define REISERFS_SECRM_FL     EXT2_SECRM_FL
+DECL|macro|REISERFS_UNRM_FL
+mdefine_line|#define REISERFS_UNRM_FL      EXT2_UNRM_FL
+DECL|macro|REISERFS_COMPR_FL
+mdefine_line|#define REISERFS_COMPR_FL     EXT2_COMPR_FL
+multiline_comment|/* persistent flag to disable tails on per-file basic.&n;   Note, that is inheritable: mark directory with this and&n;   all new files inside will not have tails. &n;&n;   Teodore Tso allocated EXT2_NODUMP_FL (0x00008000) for this. Change&n;   numeric constant to ext2 macro when available. */
+DECL|macro|REISERFS_NOTAIL_FL
+mdefine_line|#define REISERFS_NOTAIL_FL    (0x00008000) /* EXT2_NOTAIL_FL */
+multiline_comment|/* persistent flags that file inherits from the parent directory */
+DECL|macro|REISERFS_INHERIT_MASK
+mdefine_line|#define REISERFS_INHERIT_MASK ( REISERFS_IMMUTABLE_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SYNC_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOATIME_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NODUMP_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SECRM_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_COMPR_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOTAIL_FL )
 multiline_comment|/* Stat Data on disk (reiserfs version of UFS disk inode minus the&n;   address blocks) */
 DECL|struct|stat_data
 r_struct
@@ -1918,10 +1941,11 @@ id|__u16
 id|sd_mode
 suffix:semicolon
 multiline_comment|/* file type, permissions */
-DECL|member|sd_reserved
+DECL|member|sd_attrs
 id|__u16
-id|sd_reserved
+id|sd_attrs
 suffix:semicolon
+multiline_comment|/* persistent inode flags */
 DECL|member|sd_nlink
 id|__u32
 id|sd_nlink
@@ -2046,6 +2070,10 @@ DECL|macro|sd_v2_generation
 mdefine_line|#define sd_v2_generation(sdp)   (le32_to_cpu((sdp)-&gt;u.sd_generation))
 DECL|macro|set_sd_v2_generation
 mdefine_line|#define set_sd_v2_generation(sdp,v) ((sdp)-&gt;u.sd_generation = cpu_to_le32(v))
+DECL|macro|sd_v2_attrs
+mdefine_line|#define sd_v2_attrs(sdp)         (le16_to_cpu((sdp)-&gt;sd_attrs))
+DECL|macro|set_sd_v2_attrs
+mdefine_line|#define set_sd_v2_attrs(sdp,v)   ((sdp)-&gt;sd_attrs = cpu_to_le16(v))
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                      DIRECTORY STRUCTURE                                */
 multiline_comment|/***************************************************************************/
@@ -4998,6 +5026,33 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+r_void
+id|sd_attrs_to_i_attrs
+c_func
+(paren
+id|__u16
+id|sd_attrs
+comma
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
+id|i_attrs_to_sd_attrs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|__u16
+op_star
+id|sd_attrs
+)paren
+suffix:semicolon
 multiline_comment|/* namei.c */
 r_inline
 r_void
@@ -6681,6 +6736,15 @@ suffix:semicolon
 multiline_comment|/* ioctl&squot;s command */
 DECL|macro|REISERFS_IOC_UNPACK
 mdefine_line|#define REISERFS_IOC_UNPACK&t;&t;_IOW(0xCD,1,long)
+multiline_comment|/* define following flags to be the same as in ext2, so that chattr(1),&n;   lsattr(1) will work with us. */
+DECL|macro|REISERFS_IOC_GETFLAGS
+mdefine_line|#define REISERFS_IOC_GETFLAGS&t;&t;EXT2_IOC_GETFLAGS
+DECL|macro|REISERFS_IOC_SETFLAGS
+mdefine_line|#define REISERFS_IOC_SETFLAGS&t;&t;EXT2_IOC_SETFLAGS
+DECL|macro|REISERFS_IOC_GETVERSION
+mdefine_line|#define REISERFS_IOC_GETVERSION&t;&t;EXT2_IOC_GETVERSION
+DECL|macro|REISERFS_IOC_SETVERSION
+mdefine_line|#define REISERFS_IOC_SETVERSION&t;&t;EXT2_IOC_SETVERSION
 multiline_comment|/* Locking primitives */
 multiline_comment|/* Right now we are still falling back to (un)lock_kernel, but eventually that&n;   would evolve into real per-fs locks */
 DECL|macro|reiserfs_write_lock

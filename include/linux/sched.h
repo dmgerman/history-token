@@ -612,11 +612,16 @@ DECL|member|group_exit_code
 r_int
 id|group_exit_code
 suffix:semicolon
+multiline_comment|/* overloaded:&n;&t; * - notify group_exit_task when -&gt;count is equal to notify_count&n;&t; * - everyone except group_exit_task is stopped during signal delivery&n;&t; *   of fatal signals, group_exit_task processes the signal.&n;&t; */
 DECL|member|group_exit_task
 r_struct
 id|task_struct
 op_star
 id|group_exit_task
+suffix:semicolon
+DECL|member|notify_count
+r_int
+id|notify_count
 suffix:semicolon
 multiline_comment|/* thread group stop support, overloads group_exit_code too */
 DECL|member|group_stop_count
@@ -1286,6 +1291,11 @@ multiline_comment|/* Protection of (de-)allocation: mm, files, fs, tty */
 DECL|member|alloc_lock
 id|spinlock_t
 id|alloc_lock
+suffix:semicolon
+multiline_comment|/* Protection of proc_dentry: nesting proc_lock, dcache_lock, write_lock_irq(&amp;tasklist_lock); */
+DECL|member|proc_lock
+id|spinlock_t
+id|proc_lock
 suffix:semicolon
 multiline_comment|/* context-switch lock */
 DECL|member|switch_lock

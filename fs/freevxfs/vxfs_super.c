@@ -722,7 +722,7 @@ id|vxfs_inode_info
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma

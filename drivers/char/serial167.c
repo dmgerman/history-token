@@ -1416,7 +1416,7 @@ multiline_comment|/* then trigger event */
 multiline_comment|/* cy_sched_event */
 multiline_comment|/* The real interrupt service routines are called&n;   whenever the card wants its hand held--chars&n;   received, out buffer empty, modem change, etc.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_rxerr_interrupt
 id|cd2401_rxerr_interrupt
 c_func
@@ -1520,6 +1520,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Read a byte of data if there is any - assume the error&n;     * is associated with this character */
@@ -1571,6 +1572,7 @@ suffix:colon
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -1601,6 +1603,7 @@ suffix:colon
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1813,10 +1816,13 @@ l_int|0
 suffix:colon
 id|CyNOTRANS
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_rxerr_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_modem_interrupt
 id|cd2401_modem_interrupt
 c_func
@@ -2082,10 +2088,13 @@ id|CyMEOIR
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_modem_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_tx_interrupt
 id|cd2401_tx_interrupt
 c_func
@@ -2208,6 +2217,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|info-&gt;last_active
@@ -2259,6 +2269,7 @@ op_assign
 id|CyNOTRANS
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* load the on-chip space available for outbound data */
@@ -2575,10 +2586,13 @@ l_int|0
 suffix:colon
 id|CyNOTRANS
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* cy_tx_interrupt */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cd2401_rx_interrupt
 id|cd2401_rx_interrupt
 c_func
@@ -2829,6 +2843,9 @@ c_cond
 l_int|0
 suffix:colon
 id|CyNOTRANS
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* cy_rx_interrupt */

@@ -63,13 +63,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Users of the generic TLB shootdown code must declare this storage space. */
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* tlb_gather_mmu&n; *&t;Return a pointer to an initialized struct mmu_gather.&n; */
 r_static
@@ -97,13 +98,16 @@ op_star
 id|tlb
 op_assign
 op_amp
+id|per_cpu
+c_func
+(paren
 id|mmu_gathers
-(braket
+comma
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
+)paren
 suffix:semicolon
 id|tlb-&gt;mm
 op_assign

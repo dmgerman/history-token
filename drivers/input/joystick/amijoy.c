@@ -99,7 +99,7 @@ l_string|&quot;Amiga joystick&quot;
 suffix:semicolon
 DECL|function|amijoy_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amijoy_interrupt
 c_func
 (paren
@@ -303,6 +303,9 @@ id|i
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|amijoy_open
 r_static

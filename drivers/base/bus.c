@@ -1445,7 +1445,7 @@ comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|drv-&gt;kobj.name
@@ -1779,7 +1779,7 @@ op_star
 id|bus
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|bus-&gt;subsys.kset.kobj.name

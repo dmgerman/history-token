@@ -939,7 +939,7 @@ id|aip
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|acsi_interrupt
 (paren
 r_int
@@ -2624,7 +2624,7 @@ suffix:semicolon
 multiline_comment|/*******************************************************************&n; *&n; * ACSI interrupt routine&n; *   Test, if this is a ACSI interrupt and call the irq handler&n; *   Otherwise ignore this interrupt.&n; *&n; *******************************************************************/
 DECL|function|acsi_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|acsi_interrupt
 c_func
 (paren
@@ -2675,6 +2675,9 @@ id|acsi_irq_handler
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************&n; *&n; * The Interrupt handlers&n; *&n; *******************************************************************/

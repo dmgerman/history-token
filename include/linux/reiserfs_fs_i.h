@@ -66,6 +66,11 @@ id|__u32
 id|i_first_direct_byte
 suffix:semicolon
 singleline_comment|// offset of first byte stored in direct item.
+multiline_comment|/* copy of persistent inode flags read from sd_attrs. */
+DECL|member|i_attrs
+id|__u32
+id|i_attrs
+suffix:semicolon
 DECL|member|i_prealloc_block
 r_int
 id|i_prealloc_block

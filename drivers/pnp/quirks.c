@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef CONFIG_PNP_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -66,6 +67,14 @@ id|pnp_port
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port2
+)paren
+r_return
+suffix:semicolon
 id|port3
 op_assign
 id|pnp_alloc
@@ -82,13 +91,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port2
-op_logical_or
-op_logical_neg
 id|port3
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|port2
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|port
 op_assign
 id|res-&gt;port

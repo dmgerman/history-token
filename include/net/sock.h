@@ -3326,5 +3326,22 @@ r_extern
 id|__u32
 id|sysctl_rmem_max
 suffix:semicolon
+r_int
+id|siocdevprivate_ioctl
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _SOCK_H */
 eof

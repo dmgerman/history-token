@@ -1311,7 +1311,8 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;Illegal floating point used in kernel (task=0x%016lx, pc=0x%016lx, trap=0x%08x)&bslash;n&quot;
+l_string|&quot;Illegal floating point used in kernel &quot;
+l_string|&quot;(task=0x%p, pc=0x%016lx, trap=0x%08lx)&bslash;n&quot;
 comma
 id|current
 comma

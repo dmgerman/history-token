@@ -238,7 +238,7 @@ id|tty
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_tx_int
 c_func
 (paren
@@ -256,7 +256,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_rx_int
 c_func
 (paren
@@ -274,7 +274,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_stat_int
 c_func
 (paren
@@ -292,7 +292,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_spcond_int
 c_func
 (paren
@@ -1807,7 +1807,7 @@ suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------------------&n; * Interrupt handlers&n; *--------------------------------------------------------------------------*/
 DECL|function|scc_rx_int
 r_static
-r_void
+id|irqreturn_t
 id|scc_rx_int
 c_func
 (paren
@@ -1879,6 +1879,7 @@ id|CR_HIGHEST_IUS_RESET
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1941,6 +1942,7 @@ id|fp
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|SCCwrite_NB
@@ -1957,10 +1959,13 @@ c_func
 id|tty
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|scc_spcond_int
 r_static
-r_void
+id|irqreturn_t
 id|scc_spcond_int
 c_func
 (paren
@@ -2048,6 +2053,7 @@ id|CR_HIGHEST_IUS_RESET
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_do
@@ -2179,10 +2185,13 @@ c_func
 id|tty
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|scc_tx_int
 r_static
-r_void
+id|irqreturn_t
 id|scc_tx_int
 c_func
 (paren
@@ -2253,6 +2262,7 @@ id|CR_HIGHEST_IUS_RESET
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_while
@@ -2428,10 +2438,13 @@ comma
 id|CR_HIGHEST_IUS_RESET
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|scc_stat_int
 r_static
-r_void
+id|irqreturn_t
 id|scc_stat_int
 c_func
 (paren
@@ -2614,6 +2627,9 @@ id|COMMAND_REG
 comma
 id|CR_HIGHEST_IUS_RESET
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n; * generic_serial.c callback funtions&n; *--------------------------------------------------------------------------*/

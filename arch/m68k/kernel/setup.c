@@ -148,7 +148,7 @@ op_star
 id|mach_sched_init
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -182,7 +182,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|mach_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 (paren
@@ -251,7 +251,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|mach_process_int
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|mach_process_int

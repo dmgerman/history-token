@@ -5913,7 +5913,7 @@ suffix:semicolon
 DECL|function|md_probe
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|md_probe
 c_func

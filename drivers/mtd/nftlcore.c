@@ -3477,7 +3477,7 @@ suffix:semicolon
 DECL|function|nftl_probe
 r_static
 r_struct
-id|gendisk
+id|kobject
 op_star
 id|nftl_probe
 c_func

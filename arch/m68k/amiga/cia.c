@@ -308,7 +308,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -488,7 +488,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_handler
 r_static
-r_void
+id|irqreturn_t
 id|cia_handler
 c_func
 (paren
@@ -624,6 +624,9 @@ id|base-&gt;server_irq
 comma
 id|fp
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|cia_init_IRQ

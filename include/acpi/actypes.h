@@ -6,13 +6,13 @@ mdefine_line|#define __ACTYPES_H__
 multiline_comment|/*! [Begin] no source code translation (keep the typedefs) */
 multiline_comment|/*&n; * Data type ranges&n; */
 DECL|macro|ACPI_UINT8_MAX
-mdefine_line|#define ACPI_UINT8_MAX                  (UINT8)  0xFF
+mdefine_line|#define ACPI_UINT8_MAX                  (~((UINT8)  0))
 DECL|macro|ACPI_UINT16_MAX
-mdefine_line|#define ACPI_UINT16_MAX                 (UINT16) 0xFFFF
+mdefine_line|#define ACPI_UINT16_MAX                 (~((UINT16) 0))
 DECL|macro|ACPI_UINT32_MAX
-mdefine_line|#define ACPI_UINT32_MAX                 (UINT32) 0xFFFFFFFF
+mdefine_line|#define ACPI_UINT32_MAX                 (~((UINT32) 0))
 DECL|macro|ACPI_UINT64_MAX
-mdefine_line|#define ACPI_UINT64_MAX                 (UINT64) 0xFFFFFFFFFFFFFFFF
+mdefine_line|#define ACPI_UINT64_MAX                 (~((UINT64) 0))
 DECL|macro|ACPI_ASCII_MAX
 mdefine_line|#define ACPI_ASCII_MAX                  0x7F
 macro_line|#ifdef DEFINE_ALTERNATE_TYPES
@@ -491,8 +491,13 @@ DECL|macro|ACPI_INTEGER_MAX
 mdefine_line|#define ACPI_INTEGER_MAX                ACPI_UINT64_MAX
 DECL|macro|ACPI_INTEGER_BIT_SIZE
 mdefine_line|#define ACPI_INTEGER_BIT_SIZE           64
+macro_line|#if ACPI_MACHINE_WIDTH == 64
 DECL|macro|ACPI_MAX_BCD_VALUE
-mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999
+mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999UL
+macro_line|#else
+DECL|macro|ACPI_MAX_BCD_VALUE
+mdefine_line|#define ACPI_MAX_BCD_VALUE              9999999999999999ULL
+macro_line|#endif
 DECL|macro|ACPI_MAX_BCD_DIGITS
 mdefine_line|#define ACPI_MAX_BCD_DIGITS             16
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS

@@ -26,7 +26,7 @@ r_void
 id|sun3x_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|vector

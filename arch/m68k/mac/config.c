@@ -159,7 +159,7 @@ r_void
 id|via_init_clock
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|func
@@ -294,7 +294,7 @@ r_void
 id|mac_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|vector
@@ -329,7 +329,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_extern
-r_void
+id|irqreturn_t
 id|mac_default_handler
 c_func
 (paren
@@ -344,7 +344,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|variable|mac_handlers
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|mac_handlers

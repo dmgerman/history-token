@@ -3,6 +3,7 @@ multiline_comment|/*&n; * stupid library routines.. The optimized versions shoul
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifndef __HAVE_ARCH_STRNICMP
 multiline_comment|/**&n; * strnicmp - Case insensitive, length-limited string comparison&n; * @s1: One string&n; * @s2: The other string&n; * @len: the maximum number of characters to compare&n; */
 DECL|function|strnicmp
@@ -232,6 +233,87 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_STRLCPY
+multiline_comment|/**&n; * strlcpy - Copy a %NUL terminated string into a sized buffer&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @size: size of destination buffer&n; *&n; * Compatible with *BSD: the result is always a valid&n; * NUL-terminated string that fits in the buffer (unless,&n; * of course, the buffer size is zero). It does not pad&n; * out the result like strncpy() does.&n; */
+DECL|function|strlcpy
+r_int
+id|strlcpy
+c_func
+(paren
+r_char
+op_star
+id|dest
+comma
+r_const
+r_char
+op_star
+id|src
+comma
+r_int
+id|size
+)paren
+(brace
+r_int
+id|ret
+op_assign
+id|strlen
+c_func
+(paren
+id|src
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_int
+id|len
+op_assign
+(paren
+id|ret
+op_ge
+id|size
+)paren
+ques
+c_cond
+id|size
+op_minus
+l_int|1
+suffix:colon
+id|ret
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dest
+comma
+id|src
+comma
+id|len
+)paren
+suffix:semicolon
+id|dest
+(braket
+id|len
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+)brace
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|variable|strlcpy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strlcpy
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCAT
 multiline_comment|/**&n; * strcat - Append one %NUL-terminated string to another&n; * @dest: The string to be appended to&n; * @src: The string to append to it&n; */

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;&t;/* for MAX_SCHEDULE_TIMEOUT */
 macro_line|#include &lt;linux/futex.h&gt;&t;/* for FUTEX_WAIT */
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|get_compat_timespec
 r_int
@@ -1072,22 +1073,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|do_futex
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_FUTEX
 DECL|function|compat_sys_futex
 id|asmlinkage
 r_int
@@ -1119,6 +1105,11 @@ r_int
 id|timeout
 op_assign
 id|MAX_SCHEDULE_TIMEOUT
+suffix:semicolon
+r_int
+id|val2
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1160,6 +1151,20 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|op
+op_eq
+id|FUTEX_REQUEUE
+)paren
+id|val2
+op_assign
+(paren
+r_int
+)paren
+id|utime
+suffix:semicolon
 r_return
 id|do_futex
 c_func
@@ -1175,9 +1180,14 @@ comma
 id|val
 comma
 id|timeout
+comma
+id|uaddr2
+comma
+id|val2
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|asmlinkage
 r_int
 id|sys_setrlimit
