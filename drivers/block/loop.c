@@ -1426,8 +1426,6 @@ l_int|9
 op_plus
 id|lo-&gt;lo_offset
 suffix:semicolon
-r_do
-(brace
 r_if
 c_cond
 (paren
@@ -1466,16 +1464,6 @@ comma
 id|lo-&gt;lo_blocksize
 comma
 id|pos
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_increment
-id|bio-&gt;bi_idx
-OL
-id|bio-&gt;bi_vcnt
 )paren
 suffix:semicolon
 r_return
