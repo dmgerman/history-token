@@ -4007,12 +4007,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Set up domains */
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
@@ -4100,16 +4098,14 @@ id|SD_NODE_INIT
 suffix:semicolon
 id|node_domain-&gt;span
 op_assign
-id|cpu_online_map
+id|cpu_possible_map
 suffix:semicolon
 )brace
 multiline_comment|/* Set up CPU (sibling) groups */
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
@@ -4252,7 +4248,7 @@ c_func
 id|i
 )paren
 comma
-id|cpu_online_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_if
@@ -4419,7 +4415,7 @@ c_func
 id|i
 )paren
 comma
-id|cpu_online_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_if
@@ -4471,12 +4467,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_int
@@ -4640,12 +4634,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Set up domains */
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
@@ -4692,16 +4684,14 @@ id|SD_CPU_INIT
 suffix:semicolon
 id|phys_domain-&gt;span
 op_assign
-id|cpu_online_map
+id|cpu_possible_map
 suffix:semicolon
 )brace
 multiline_comment|/* Set up CPU (sibling) groups */
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
@@ -4810,12 +4800,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Set up physical groups */
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
@@ -4909,12 +4897,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|for_each_cpu_mask
+id|for_each_cpu
 c_func
 (paren
 id|i
-comma
-id|cpu_online_map
 )paren
 (brace
 r_struct
