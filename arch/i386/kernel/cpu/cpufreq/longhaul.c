@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longhaul.c,v 1.87 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2001  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longhaul.c,v 1.87 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2001-2003  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -993,9 +993,6 @@ r_int
 id|bits
 suffix:semicolon
 r_int
-id|revkey
-suffix:semicolon
-r_int
 id|vidindex
 comma
 id|i
@@ -1132,17 +1129,16 @@ comma
 id|hi
 )paren
 suffix:semicolon
-id|revkey
-op_assign
-(paren
+multiline_comment|/* Enable software clock multiplier */
 id|lo
-op_amp
-l_int|0xf
-)paren
+op_or_assign
+(paren
+l_int|1
 op_lshift
-l_int|4
+l_int|19
+)paren
 suffix:semicolon
-multiline_comment|/* Rev key. */
+multiline_comment|/* desired multiplier */
 id|lo
 op_and_assign
 op_complement
@@ -1167,24 +1163,10 @@ suffix:semicolon
 id|lo
 op_or_assign
 (paren
-l_int|1
-op_lshift
-l_int|19
-)paren
-suffix:semicolon
-multiline_comment|/* Enable software clock multiplier */
-id|lo
-op_or_assign
-(paren
 id|bits
 op_lshift
 l_int|23
 )paren
-suffix:semicolon
-multiline_comment|/* desired multiplier */
-id|lo
-op_or_assign
-id|revkey
 suffix:semicolon
 id|wrmsr
 (paren
@@ -1219,10 +1201,6 @@ op_lshift
 l_int|19
 )paren
 suffix:semicolon
-id|lo
-op_or_assign
-id|revkey
-suffix:semicolon
 id|wrmsr
 (paren
 id|MSR_VIA_BCR2
@@ -1246,17 +1224,6 @@ comma
 id|hi
 )paren
 suffix:semicolon
-id|revkey
-op_assign
-(paren
-id|lo
-op_amp
-l_int|0xf
-)paren
-op_lshift
-l_int|4
-suffix:semicolon
-multiline_comment|/* Rev key. */
 id|lo
 op_and_assign
 l_int|0xfff0bf0f
@@ -1279,9 +1246,10 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* EnableSoftBusRatio */
+multiline_comment|/* We must program the revision key only with values we&n;&t;&t; * know about, not blindly copy it from 0:3 */
 id|lo
 op_or_assign
-id|revkey
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1485,8 +1453,9 @@ l_int|9
 suffix:semicolon
 id|lo
 op_or_assign
-id|revkey
+l_int|1
 suffix:semicolon
+multiline_comment|/* Revision Key */
 id|wrmsr
 (paren
 id|MSR_VIA_LONGHAUL
@@ -1510,17 +1479,6 @@ comma
 id|hi
 )paren
 suffix:semicolon
-id|revkey
-op_assign
-(paren
-id|lo
-op_amp
-l_int|0xf
-)paren
-op_lshift
-l_int|4
-suffix:semicolon
-multiline_comment|/* Rev key. */
 id|lo
 op_and_assign
 l_int|0xfff0bf0f
@@ -1543,10 +1501,12 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* EnableSoftBusRatio */
+multiline_comment|/* We must program the revision key only with values we&n;&t;&t; * know about, not blindly copy it from 0:3 */
 id|lo
 op_or_assign
-id|revkey
+l_int|3
 suffix:semicolon
+multiline_comment|/* SoftVID &amp; SoftBSEL */
 id|wrmsr
 (paren
 id|MSR_VIA_LONGHAUL
@@ -1581,7 +1541,7 @@ l_int|8
 suffix:semicolon
 id|lo
 op_or_assign
-id|revkey
+l_int|3
 suffix:semicolon
 id|wrmsr
 (paren
@@ -2310,6 +2270,11 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* Rev key. */
 id|lo
+op_or_assign
+id|revkey
+suffix:semicolon
+multiline_comment|/* Reinsert key FIXME: This is bad. */
+id|lo
 op_and_assign
 l_int|0xfe0fff0f
 suffix:semicolon
@@ -2323,11 +2288,6 @@ l_int|9
 )paren
 suffix:semicolon
 multiline_comment|/* EnableSoftVID */
-id|lo
-op_or_assign
-id|revkey
-suffix:semicolon
-multiline_comment|/* Reinsert key */
 id|lo
 op_or_assign
 id|maxvid
