@@ -1057,4 +1057,11 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
+DECL|variable|pccard_static_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pccard_static_ops
+)paren
+suffix:semicolon
 eof

@@ -4755,6 +4755,11 @@ op_assign
 op_amp
 id|yenta_socket_operations
 suffix:semicolon
+id|socket-&gt;socket.resource_ops
+op_assign
+op_amp
+id|pccard_nonstatic_ops
+suffix:semicolon
 id|socket-&gt;socket.dev.dev
 op_assign
 op_amp

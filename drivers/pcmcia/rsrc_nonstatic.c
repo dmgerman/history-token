@@ -19,6 +19,18 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David A. Hinds, Dominik Brodowski&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 DECL|macro|INT_MODULE_PARM
 mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; module_param(n, int, 0444)
@@ -3710,5 +3722,12 @@ op_assign
 id|nonstatic_release_resource_db
 comma
 )brace
+suffix:semicolon
+DECL|variable|pccard_nonstatic_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pccard_nonstatic_ops
+)paren
 suffix:semicolon
 eof

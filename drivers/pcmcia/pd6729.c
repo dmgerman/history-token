@@ -3472,6 +3472,16 @@ id|socket
 id|i
 )braket
 dot
+id|socket.resource_ops
+op_assign
+op_amp
+id|pccard_nonstatic_ops
+suffix:semicolon
+id|socket
+(braket
+id|i
+)braket
+dot
 id|socket.dev.dev
 op_assign
 op_amp

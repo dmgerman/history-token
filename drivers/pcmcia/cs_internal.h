@@ -556,16 +556,6 @@ op_star
 id|s
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|pccard_resource_ops
-id|pccard_static_ops
-suffix:semicolon
-r_extern
-r_struct
-id|pccard_resource_ops
-id|pccard_nonstatic_ops
-suffix:semicolon
 multiline_comment|/* In socket_sysfs.c */
 r_extern
 r_struct

@@ -489,6 +489,18 @@ id|s
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* SS_CAP_STATIC_MAP */
+r_extern
+r_struct
+id|pccard_resource_ops
+id|pccard_static_ops
+suffix:semicolon
+multiline_comment|/* !SS_CAP_STATIC_MAP */
+r_extern
+r_struct
+id|pccard_resource_ops
+id|pccard_nonstatic_ops
+suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
 r_struct
 id|pcmcia_socket

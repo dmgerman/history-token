@@ -183,6 +183,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+DECL|variable|release_cis_mem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|release_cis_mem
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Map the card memory at &quot;card_offset&quot; into virtual space.&n; * If flags &amp; MAP_ATTRIB, map the attribute space, otherwise&n; * map the memory space.&n; */
 r_static
 r_void
@@ -1527,6 +1534,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+DECL|variable|destroy_cis_cache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|destroy_cis_cache
+)paren
+suffix:semicolon
 multiline_comment|/*======================================================================&n;&n;    This verifies if the CIS of a card matches what is in the CIS&n;    cache.&n;    &n;======================================================================*/
 DECL|function|verify_cis_cache
 r_int
