@@ -36,6 +36,9 @@ mdefine_line|#define  SN_SAL_PRINT_ERROR&t;&t;&t;   0x02000012
 DECL|macro|SN_SAL_SET_ERROR_HANDLING_FEATURES
 mdefine_line|#define  SN_SAL_SET_ERROR_HANDLING_FEATURES&t;   0x0200001a&t;
 singleline_comment|// reentrant
+DECL|macro|SN_SAL_GET_FIT_COMPT
+mdefine_line|#define  SN_SAL_GET_FIT_COMPT&t;&t;&t;   0x0200001b&t;
+singleline_comment|// reentrant
 DECL|macro|SN_SAL_CONSOLE_PUTC
 mdefine_line|#define  SN_SAL_CONSOLE_PUTC                       0x02000021
 DECL|macro|SN_SAL_CONSOLE_GETC
@@ -140,15 +143,17 @@ DECL|macro|SAL_IROUTER_INTR_XMIT
 mdefine_line|#define SAL_IROUTER_INTR_XMIT&t;SAL_CONSOLE_INTR_XMIT
 DECL|macro|SAL_IROUTER_INTR_RECV
 mdefine_line|#define SAL_IROUTER_INTR_RECV&t;SAL_CONSOLE_INTR_RECV
-multiline_comment|/*&n; * SN_SAL_GET_PARTITION_ADDR return constants&n; */
+multiline_comment|/*&n; * SAL Error Codes&n; */
 DECL|macro|SALRET_MORE_PASSES
 mdefine_line|#define SALRET_MORE_PASSES&t;1
 DECL|macro|SALRET_OK
 mdefine_line|#define SALRET_OK&t;&t;0
+DECL|macro|SALRET_NOT_IMPLEMENTED
+mdefine_line|#define SALRET_NOT_IMPLEMENTED&t;(-1)
 DECL|macro|SALRET_INVALID_ARG
-mdefine_line|#define SALRET_INVALID_ARG&t;-2
+mdefine_line|#define SALRET_INVALID_ARG&t;(-2)
 DECL|macro|SALRET_ERROR
-mdefine_line|#define SALRET_ERROR&t;&t;-3
+mdefine_line|#define SALRET_ERROR&t;&t;(-3)
 multiline_comment|/*&n; * SN_SAL_SET_ERROR_HANDLING_FEATURES bit settings&n; */
 r_enum
 (brace
@@ -2540,6 +2545,65 @@ r_return
 r_int
 )paren
 id|rv.v0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ia64_sn_get_fit_compt - read a FIT entry from the PROM header&n; * @nasid: NASID of node to read&n; * @index: FIT entry index to be retrieved (0..n)&n; * @fitentry: 16 byte buffer where FIT entry will be stored.&n; * @banbuf: optional buffer for retrieving banner&n; * @banlen: length of banner buffer&n; *&n; * Access to the physical PROM chips needs to be serialized since reads and&n; * writes can&squot;t occur at the same time, so we need to call into the SAL when&n; * we want to look at the FIT entries on the chips.&n; *&n; * Returns:&n; *&t;%SALRET_OK if ok&n; *&t;%SALRET_INVALID_ARG if index too big&n; *&t;%SALRET_NOT_IMPLEMENTED if running on older PROM&n; *&t;??? if nasid invalid OR banner buffer not large enough&n; */
+r_static
+r_inline
+r_int
+DECL|function|ia64_sn_get_fit_compt
+id|ia64_sn_get_fit_compt
+c_func
+(paren
+id|u64
+id|nasid
+comma
+id|u64
+id|index
+comma
+r_void
+op_star
+id|fitentry
+comma
+r_void
+op_star
+id|banbuf
+comma
+id|u64
+id|banlen
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|rv
+suffix:semicolon
+id|SAL_CALL_NOLOCK
+c_func
+(paren
+id|rv
+comma
+id|SN_SAL_GET_FIT_COMPT
+comma
+id|nasid
+comma
+id|index
+comma
+id|fitentry
+comma
+id|banbuf
+comma
+id|banlen
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+(paren
+r_int
+)paren
+id|rv.status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the SAL components of the system controller&n; * communication driver; specifically pass in a sizable buffer that&n; * can be used for allocation of subchannel queues as new subchannels&n; * are opened.  &quot;buf&quot; points to the buffer, and &quot;len&quot; specifies its&n; * length.&n; */
