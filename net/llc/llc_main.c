@@ -518,7 +518,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to intiailize.&n; *&n; *     Initializes a socket with default llc values.&n; */
+multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to initialize.&n; *&n; *     Initializes a socket with default llc values.&n; */
 DECL|function|llc_sk_init
 r_int
 id|llc_sk_init

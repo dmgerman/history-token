@@ -4065,7 +4065,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Initalize our global data */
+multiline_comment|/* Initialize our global data */
 r_for
 c_loop
 (paren

@@ -5238,7 +5238,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Notify socket layer about incomming connection */
+multiline_comment|/* Notify socket layer about incoming connection */
 id|channel
 op_assign
 id|__srv_channel
@@ -5625,7 +5625,7 @@ id|cr
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* PN request for non existing DLC.&n;&t;&t; * Assume incomming connection. */
+multiline_comment|/* PN request for non existing DLC.&n;&t;&t; * Assume incoming connection. */
 r_if
 c_cond
 (paren
@@ -7826,7 +7826,7 @@ id|rfcomm_event
 )paren
 )paren
 (brace
-multiline_comment|/* No pending events. Let&squot;s sleep.&n;&t;&t;&t; * Incomming connections and data will wake us up. */
+multiline_comment|/* No pending events. Let&squot;s sleep.&n;&t;&t;&t; * Incoming connections and data will wake us up. */
 id|set_current_state
 c_func
 (paren

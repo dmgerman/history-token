@@ -575,7 +575,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function async_unwrap_bof(dev, byte)&n; *&n; *    Handle Beggining Of Frame character received within a frame&n; *&n; */
+multiline_comment|/*&n; * Function async_unwrap_bof(dev, byte)&n; *&n; *    Handle Beginning Of Frame character received within a frame&n; *&n; */
 r_static
 r_inline
 r_void
@@ -906,7 +906,7 @@ id|INSIDE_FRAME
 suffix:colon
 r_default
 suffix:colon
-multiline_comment|/* Stuffed byte comming */
+multiline_comment|/* Stuffed byte coming */
 id|rx_buff-&gt;state
 op_assign
 id|LINK_ESCAPE

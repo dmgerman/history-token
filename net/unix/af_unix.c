@@ -6303,7 +6303,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* It is questionable: on PEEK we could:&n;&t;&t;   - do not return fds - good, but too simple 8)&n;&t;&t;   - return fds, and do not return them on read (old strategy,&n;&t;&t;     apparently wrong)&n;&t;&t;   - clone fds (I choosed it for now, it is the most universal&n;&t;&t;     solution)&n;&t;&t;&n;&t;           POSIX 1003.1g does not actually define this clearly&n;&t;           at all. POSIX 1003.1g doesn&squot;t define a lot of things&n;&t;           clearly however!&t;&t;     &n;&t;&t;   &n;&t;&t;*/
+multiline_comment|/* It is questionable: on PEEK we could:&n;&t;&t;   - do not return fds - good, but too simple 8)&n;&t;&t;   - return fds, and do not return them on read (old strategy,&n;&t;&t;     apparently wrong)&n;&t;&t;   - clone fds (I chose it for now, it is the most universal&n;&t;&t;     solution)&n;&t;&t;&n;&t;           POSIX 1003.1g does not actually define this clearly&n;&t;           at all. POSIX 1003.1g doesn&squot;t define a lot of things&n;&t;           clearly however!&t;&t;     &n;&t;&t;   &n;&t;&t;*/
 r_if
 c_cond
 (paren

@@ -87,7 +87,7 @@ comma
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* A helper to initilize to initilize an op error inside a&n; * provided chunk, as most cause codes will be embedded inside an&n; * abort chunk.&n; */
+multiline_comment|/* A helper to initialize to initialize an op error inside a&n; * provided chunk, as most cause codes will be embedded inside an&n; * abort chunk.&n; */
 DECL|function|sctp_init_cause
 r_void
 id|sctp_init_cause

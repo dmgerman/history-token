@@ -1432,7 +1432,7 @@ op_star
 id|lsap
 )paren
 (brace
-multiline_comment|/* Prevent concurent read to get garbage */
+multiline_comment|/* Prevent concurrent read to get garbage */
 id|lap-&gt;cache.valid
 op_assign
 id|FALSE
@@ -1456,7 +1456,7 @@ id|TRUE
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Function irlmp_find_handle (self, dlsap_sel, slsap_sel, status, queue)&n; *&n; *    Find handle assosiated with destination and source LSAP&n; *&n; * Any IrDA connection (LSAP/TSAP) is uniquely identified by&n; * 3 parameters, the local lsap, the remote lsap and the remote address. &n; * We may initiate multiple connections to the same remote service&n; * (they will have different local lsap), a remote device may initiate&n; * multiple connections to the same local service (they will have&n; * different remote lsap), or multiple devices may connect to the same&n; * service and may use the same remote lsap (and they will have&n; * different remote address).&n; * So, where is the remote address ? Each LAP connection is made with&n; * a single remote device, so imply a specific remote address.&n; * Jean II&n; */
+multiline_comment|/*&n; * Function irlmp_find_handle (self, dlsap_sel, slsap_sel, status, queue)&n; *&n; *    Find handle associated with destination and source LSAP&n; *&n; * Any IrDA connection (LSAP/TSAP) is uniquely identified by&n; * 3 parameters, the local lsap, the remote lsap and the remote address. &n; * We may initiate multiple connections to the same remote service&n; * (they will have different local lsap), a remote device may initiate&n; * multiple connections to the same local service (they will have&n; * different remote lsap), or multiple devices may connect to the same&n; * service and may use the same remote lsap (and they will have&n; * different remote address).&n; * So, where is the remote address ? Each LAP connection is made with&n; * a single remote device, so imply a specific remote address.&n; * Jean II&n; */
 DECL|function|irlmp_find_lsap
 r_static
 r_struct
@@ -1575,7 +1575,7 @@ id|LSAP_ANY
 )paren
 )paren
 (brace
-multiline_comment|/* This is where the dest lsap sel is set on incomming&n;&t;&t;&t; * lsaps */
+multiline_comment|/* This is where the dest lsap sel is set on incoming&n;&t;&t;&t; * lsaps */
 id|lsap-&gt;dlsap_sel
 op_assign
 id|dlsap_sel

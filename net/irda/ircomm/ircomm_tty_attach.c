@@ -1800,7 +1800,7 @@ op_amp
 id|self-&gt;watchdog_timer
 )paren
 suffix:semicolon
-multiline_comment|/* Remove LM-IAS object now so it is not reused.&n;&t; * IrCOMM deals very poorly with multiple incomming connections.&n;&t; * It should looks a lot more like IrNET, and &quot;dup&quot; a server TSAP&n;&t; * to the application TSAP (based on various rules).&n;&t; * This is a cheap workaround allowing multiple clients to&n;&t; * connect to us. It will not always work.&n;&t; * Each IrCOMM socket has an IAS entry. Incomming connection will&n;&t; * pick the first one found. So, when we are fully connected,&n;&t; * we remove our IAS entries so that the next IAS entry is used.&n;&t; * We do that for *both* client and server, because a server&n;&t; * can also create client instances.&n;&t; * Jean II */
+multiline_comment|/* Remove LM-IAS object now so it is not reused.&n;&t; * IrCOMM deals very poorly with multiple incoming connections.&n;&t; * It should looks a lot more like IrNET, and &quot;dup&quot; a server TSAP&n;&t; * to the application TSAP (based on various rules).&n;&t; * This is a cheap workaround allowing multiple clients to&n;&t; * connect to us. It will not always work.&n;&t; * Each IrCOMM socket has an IAS entry. Incoming connection will&n;&t; * pick the first one found. So, when we are fully connected,&n;&t; * we remove our IAS entries so that the next IAS entry is used.&n;&t; * We do that for *both* client and server, because a server&n;&t; * can also create client instances.&n;&t; * Jean II */
 r_if
 c_cond
 (paren

@@ -17,7 +17,7 @@ multiline_comment|/* Enough lenience, let&squot;s make sure things are proper...
 DECL|macro|WE_STRICT_WRITE
 mdefine_line|#define WE_STRICT_WRITE&t;&t;/* Check write buffer size */
 multiline_comment|/* I&squot;ll probably drop both the define and kernel message in the next version */
-multiline_comment|/* Debuging stuff */
+multiline_comment|/* Debugging stuff */
 DECL|macro|WE_IOCTL_DEBUG
 macro_line|#undef WE_IOCTL_DEBUG&t;&t;/* Debug IOCTL API */
 DECL|macro|WE_EVENT_DEBUG
@@ -3518,7 +3518,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* WE_EVENT_NETLINK */
 multiline_comment|/* ---------------------------------------------------------------- */
-multiline_comment|/*&n; * Main event dispatcher. Called from other parts and drivers.&n; * Send the event on the apropriate channels.&n; * May be called from interrupt context.&n; */
+multiline_comment|/*&n; * Main event dispatcher. Called from other parts and drivers.&n; * Send the event on the appropriate channels.&n; * May be called from interrupt context.&n; */
 DECL|function|wireless_send_event
 r_void
 id|wireless_send_event

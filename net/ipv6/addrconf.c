@@ -3258,7 +3258,7 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;Choose an apropriate source address&n; *&t;should do:&n; *&t;i)&t;get an address with an apropriate scope&n; *&t;ii)&t;see if there is a specific route for the destination and use&n; *&t;&t;an address of the attached interface &n; *&t;iii)&t;don&squot;t use deprecated addresses&n; */
+multiline_comment|/*&n; *&t;Choose an appropriate source address&n; *&t;should do:&n; *&t;i)&t;get an address with an appropriate scope&n; *&t;ii)&t;see if there is a specific route for the destination and use&n; *&t;&t;an address of the attached interface &n; *&t;iii)&t;don&squot;t use deprecated addresses&n; */
 DECL|function|ipv6_saddr_pref
 r_static
 r_int

@@ -4862,7 +4862,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Incomming channel.&n;&t;&t; * Wake up socket sleeping on accept.&n;&t;&t; */
+multiline_comment|/* Incoming channel.&n;&t;&t; * Wake up socket sleeping on accept.&n;&t;&t; */
 id|parent
 op_member_access_from_pointer
 id|data_ready
