@@ -91,7 +91,7 @@ id|timer_irq.handler
 op_assign
 id|timer_interrupt
 suffix:semicolon
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_RTC_TICK

@@ -346,12 +346,12 @@ op_and_assign
 op_complement
 id|LART_GPIO_IDE
 suffix:semicolon
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|LART_GPIO_IDE
+id|LART_IRQ_IDE
 comma
-id|GPIO_RISING_EDGE
+id|IRQT_RISING
 )paren
 suffix:semicolon
 multiline_comment|/* set PCMCIA interface timing */

@@ -435,6 +435,13 @@ c_func
 id|disable_irq
 )paren
 suffix:semicolon
+DECL|variable|set_irq_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_irq_type
+)paren
+suffix:semicolon
 DECL|variable|pm_idle
 id|EXPORT_SYMBOL
 c_func

@@ -72,7 +72,7 @@ op_assign
 id|excalibur_timer_interrupt
 suffix:semicolon
 multiline_comment|/* &n;&t; * Make irqs happen for the system timer&n;&t; */
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_TIMER0

@@ -373,10 +373,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|GPIO_UCB1300_IRQ
+id|IRQ_GPIO_UCB1300_IRQ
+comma
+id|IRQT_RISING
 )paren
 suffix:semicolon
 )brace

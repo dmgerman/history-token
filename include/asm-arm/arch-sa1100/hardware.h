@@ -67,29 +67,6 @@ DECL|macro|__PREG
 macro_line|# define __PREG(x)&t;io_v2p(x)
 macro_line|#endif
 macro_line|#include &quot;SA-1100.h&quot;
-multiline_comment|/*&n; * SA1100 GPIO edge detection for IRQs:&n; * IRQs are generated on Falling-Edge, Rising-Edge, or both.&n; * This must be called *before* the corresponding IRQ is registered.&n; * Use this instead of directly setting GRER/GFER.&n; */
-DECL|macro|GPIO_NO_EDGES
-mdefine_line|#define GPIO_NO_EDGES&t;&t;0
-DECL|macro|GPIO_FALLING_EDGE
-mdefine_line|#define GPIO_FALLING_EDGE       1
-DECL|macro|GPIO_RISING_EDGE
-mdefine_line|#define GPIO_RISING_EDGE        2
-DECL|macro|GPIO_BOTH_EDGES
-mdefine_line|#define GPIO_BOTH_EDGES         3
-macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_void
-id|set_GPIO_IRQ_edge
-c_func
-(paren
-r_int
-id|gpio_mask
-comma
-r_int
-id|edge_mask
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Implementation specifics.&n; *&n; * *** NOTE ***&n; * Any definitions in these files should be prefixed by an identifier -&n; * eg, ASSABET_UCB1300_IRQ  This will allow us to eleminate these&n; * ifdefs, and lots of other preprocessor gunk elsewhere.&n; */
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 macro_line|#include &quot;pangolin.h&quot;

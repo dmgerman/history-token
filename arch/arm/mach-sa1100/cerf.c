@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -27,30 +28,30 @@ suffix:semicolon
 multiline_comment|/* Need to register these as rising edge interrupts&n;&t; * For standard 16550 serial driver support&n;&t; * Basically - I copied it from pfs168.c :)&n;&t; */
 macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
 multiline_comment|/* PDA Full serial port */
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|GPIO_GPIO3
+id|IRQ_GPIO3
 comma
-id|GPIO_RISING_EDGE
+id|IRQT_RISING
 )paren
 suffix:semicolon
 multiline_comment|/* PDA Bluetooth */
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|GPIO_GPIO2
+id|IRQ_GPIO2
 comma
-id|GPIO_RISING_EDGE
+id|IRQT_RISING
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SA1100_CERF_CPLD */
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|GPIO_UCB1200_IRQ
+id|IRQ_GPIO_UCB1200_IRQ
 comma
-id|GPIO_RISING_EDGE
+id|IRQT_RISING
 )paren
 suffix:semicolon
 )brace
