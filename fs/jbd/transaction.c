@@ -3982,7 +3982,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * List management code snippets: various functions for manipulating the&n; * transaction buffer lists.&n; *&n; */
-multiline_comment|/*&n; * Append a buffer to a transaction list, given the transaction&squot;s list head&n; * pointer.&n; * journal_datalist_lock is held.&n; */
+multiline_comment|/*&n; * Append a buffer to a transaction list, given the transaction&squot;s list head&n; * pointer.&n; *&n; * journal_datalist_lock is held.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
 r_static
 r_inline
 r_void
@@ -4054,7 +4054,7 @@ id|jh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Remove a buffer from a transaction list, given the transaction&squot;s list&n; * head pointer.&n; *&n; * Called with journal_datalist_lock held, and the journal may not&n; * be locked.&n; */
+multiline_comment|/* &n; * Remove a buffer from a transaction list, given the transaction&squot;s list&n; * head pointer.&n; *&n; * Called with journal_datalist_lock held, and the journal may not&n; * be locked.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
 r_static
 r_inline
 r_void
@@ -4135,6 +4135,17 @@ id|transaction_t
 op_star
 id|transaction
 suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|bh
+op_assign
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
+suffix:semicolon
 id|assert_spin_locked
 c_func
 (paren
@@ -4146,15 +4157,6 @@ id|transaction
 op_assign
 id|jh-&gt;b_transaction
 suffix:semicolon
-macro_line|#ifdef __SMP__
-id|J_ASSERT
-(paren
-id|current-&gt;lock_depth
-op_ge
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|J_ASSERT_JH
 c_func
 (paren
@@ -4292,29 +4294,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_clear_bit
+id|test_clear_buffer_jbddirty
 c_func
 (paren
-id|BH_JBDDirty
-comma
-op_amp
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-op_member_access_from_pointer
-id|b_state
+id|bh
 )paren
 )paren
 id|mark_buffer_dirty
 c_func
 (paren
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
+id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* Expose it to the VM */
@@ -4330,6 +4319,16 @@ op_star
 id|jh
 )paren
 (brace
+id|jbd_lock_bh_state
+c_func
+(paren
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -4348,6 +4347,16 @@ c_func
 (paren
 op_amp
 id|journal_datalist_lock
+)paren
+suffix:semicolon
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
 )paren
 suffix:semicolon
 )brace

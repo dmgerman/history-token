@@ -64,7 +64,7 @@ id|transaction_t
 op_star
 id|b_next_transaction
 suffix:semicolon
-multiline_comment|/*&n;&t; * Doubly-linked list of buffers on a transaction&squot;s data, metadata or&n;&t; * forget queue. [jbd_lock_bh_state()]&n;&t; */
+multiline_comment|/*&n;&t; * Doubly-linked list of buffers on a transaction&squot;s data, metadata or&n;&t; * forget queue. [t_list_lock] [jbd_lock_bh_state()]&n;&t; */
 DECL|member|b_tnext
 DECL|member|b_tprev
 r_struct
