@@ -1700,26 +1700,11 @@ op_star
 id|config
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|u32
 id|class_rev
 suffix:semicolon
 id|u16
 id|pcicmd
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|noautodma
-)paren
-id|ret
-op_assign
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1805,11 +1790,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* default DMA off if we had to configure it here */
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 op_star
 id|config
 op_assign
@@ -1857,10 +1837,10 @@ id|class_rev
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@autodma: Should we enable DMA&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;necessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
+multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;necessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
 DECL|function|ide_pci_setup_ports
 r_void
 id|ide_pci_setup_ports
@@ -1874,9 +1854,6 @@ comma
 id|ide_pci_device_t
 op_star
 id|d
-comma
-r_int
-id|autodma
 comma
 r_int
 id|pciirq
@@ -2085,26 +2062,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;autodma
-op_eq
-id|NOAUTODMA
-)paren
-id|autodma
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|autodma
-)paren
-id|hwif-&gt;autodma
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|d-&gt;init_setup_dma
 )paren
 (brace
@@ -2200,11 +2157,6 @@ id|noisy
 )paren
 (brace
 r_int
-id|autodma
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|pciirq
 op_assign
 l_int|0
@@ -2237,9 +2189,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|autodma
-op_assign
 id|ide_setup_pci_controller
 c_func
 (paren
@@ -2252,15 +2201,12 @@ comma
 op_amp
 id|tried_config
 )paren
-)paren
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|index
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Can we trust the reported IRQ?&n;&t; */
 id|pciirq
 op_assign
@@ -2465,8 +2411,6 @@ c_func
 id|dev
 comma
 id|d
-comma
-id|autodma
 comma
 id|pciirq
 comma
