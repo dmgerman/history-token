@@ -5523,6 +5523,16 @@ r_goto
 id|abort_free_ctlr
 suffix:semicolon
 )brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: shpc_cap_offset = %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|shpc_cap_offset
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|pci_write_config_byte
@@ -6206,7 +6216,6 @@ multiline_comment|/* start with 10 second delay */
 r_else
 (brace
 multiline_comment|/* Installs the interrupt handler */
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR 
 id|rc
 op_assign
 id|pci_enable_msi
@@ -6221,10 +6230,16 @@ c_cond
 id|rc
 )paren
 (brace
-id|err
+id|info
 c_func
 (paren
 l_string|&quot;Can&squot;t get msi for the hotplug controller&bslash;n&quot;
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Use INTx for the hotplug controller&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
@@ -6237,15 +6252,12 @@ comma
 id|rc
 )paren
 suffix:semicolon
-r_goto
-id|abort_free_ctlr
-suffix:semicolon
 )brace
+r_else
 id|php_ctlr-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|request_irq

@@ -436,4 +436,8 @@ r_extern
 id|spinlock_t
 id|pci_bus_lock
 suffix:semicolon
+r_extern
+r_int
+id|pciehp_msi_quirk
+suffix:semicolon
 eof

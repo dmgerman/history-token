@@ -5526,6 +5526,11 @@ c_func
 l_string|&quot;SHPCHPRM ACPI Slots&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_bridges_head
+)paren
 id|print_acpi_resources
 (paren
 id|acpi_bridges_head
