@@ -3386,7 +3386,8 @@ op_logical_neg
 id|len
 )paren
 r_return
-id|addr
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* Careful about overflows.. */
 id|len
@@ -3409,7 +3410,7 @@ id|TASK_SIZE
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* offset overflow? */
 r_if
