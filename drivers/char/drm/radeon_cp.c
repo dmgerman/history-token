@@ -5869,6 +5869,23 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#if _HAVE_DMA_IRQ
+multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+)paren
+id|DRM
+c_func
+(paren
+id|irq_uninstall
+)paren
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5993,6 +6010,14 @@ id|DRM_DEVICE
 suffix:semicolon
 id|drm_radeon_init_t
 id|init
+suffix:semicolon
+id|LOCK_TEST_WITH_RETURN
+c_func
+(paren
+id|dev
+comma
+id|filp
+)paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
 c_func

@@ -862,7 +862,6 @@ id|retcode
 suffix:semicolon
 )brace
 DECL|function|i810_dma_cleanup
-r_static
 r_int
 id|i810_dma_cleanup
 c_func
@@ -878,6 +877,23 @@ id|dma
 op_assign
 id|dev-&gt;dma
 suffix:semicolon
+macro_line|#if _HAVE_DMA_IRQ
+multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+)paren
+id|DRM
+c_func
+(paren
+id|irq_uninstall
+)paren
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
