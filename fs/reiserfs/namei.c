@@ -3634,6 +3634,10 @@ suffix:semicolon
 r_int
 id|jbegin_count
 suffix:semicolon
+r_int
+r_int
+id|savelink
+suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
@@ -3786,6 +3790,14 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|inode-&gt;i_nlink
+op_decrement
+suffix:semicolon
+multiline_comment|/*&n;     * we schedule before doing the add_save_link call, save the link&n;     * count so we don&squot;t race&n;     */
+id|savelink
+op_assign
+id|inode-&gt;i_nlink
+suffix:semicolon
 id|retval
 op_assign
 id|reiserfs_cut_from_item
@@ -3815,12 +3827,14 @@ id|retval
 OL
 l_int|0
 )paren
+(brace
+id|inode-&gt;i_nlink
+op_increment
+suffix:semicolon
 r_goto
 id|end_unlink
 suffix:semicolon
-id|inode-&gt;i_nlink
-op_decrement
-suffix:semicolon
+)brace
 id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
@@ -3871,7 +3885,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_nlink
+id|savelink
 )paren
 multiline_comment|/* prevent file from getting lost */
 id|add_save_link
@@ -4392,6 +4406,23 @@ op_minus
 id|EMLINK
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|inode-&gt;i_nlink
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+)brace
+multiline_comment|/* inc before scheduling so reiserfs_unlink knows we are here */
+id|inode-&gt;i_nlink
+op_increment
+suffix:semicolon
 id|journal_begin
 c_func
 (paren
@@ -4449,6 +4480,9 @@ c_cond
 id|retval
 )paren
 (brace
+id|inode-&gt;i_nlink
+op_decrement
+suffix:semicolon
 id|pop_journal_writer
 c_func
 (paren
@@ -4476,9 +4510,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-id|inode-&gt;i_nlink
-op_increment
-suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
@@ -4808,6 +4839,12 @@ id|jbegin_count
 suffix:semicolon
 id|umode_t
 id|old_inode_mode
+suffix:semicolon
+r_int
+r_int
+id|savelink
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* two balancings: old name removal, new name insertion or &quot;save&quot; link,&n;       stat data updates: old directory and new directory and maybe block&n;       containing &quot;..&quot; of renamed directory */
 id|jbegin_count
@@ -5579,6 +5616,10 @@ id|new_dentry_inode-&gt;i_ctime
 op_assign
 id|new_dir-&gt;i_ctime
 suffix:semicolon
+id|savelink
+op_assign
+id|new_dentry_inode-&gt;i_nlink
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5722,7 +5763,7 @@ id|new_dentry_inode
 r_if
 c_cond
 (paren
-id|new_dentry_inode-&gt;i_nlink
+id|savelink
 op_eq
 l_int|0
 )paren
