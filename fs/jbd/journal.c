@@ -2167,7 +2167,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* journal_init_dev and journal_init_inode:&n; *&n; * Create a journal structure assigned some fixed set of disk blocks to&n; * the journal.  We don&squot;t actually touch those disk blocks yet, but we&n; * need to set up all of the mapping information to tell the journaling&n; * system where the journal blocks are.&n; *&n; * journal_init_dev creates a journal which maps a fixed contiguous&n; * range of blocks on an arbitrary block device.&n; *&n; * journal_init_inode creates a journal which maps an on-disk inode as&n; * the journal.  The inode must exist already, must support bmap() and&n; * must have all data blocks preallocated.&n; */
+multiline_comment|/* journal_init_dev and journal_init_inode:&n; *&n; * Create a journal structure assigned some fixed set of disk blocks to&n; * the journal.  We don&squot;t actually touch those disk blocks yet, but we&n; * need to set up all of the mapping information to tell the journaling&n; * system where the journal blocks are.&n; *&n; */
+multiline_comment|/**&n; *  journal_t * journal_init_dev() - creates an initialises a journal structure&n; *  @bdev: Block device on which to create the journal&n; *  @fs_dev: Device which hold journalled filesystem for this journal.&n; *  @start: Block nr Start of journal.&n; *  @len:  Lenght of the journal in blocks.&n; *  @blocksize: blocksize of journalling device&n; *  @returns: a newly created journal_t *&n; *  &n; *  journal_init_dev creates a journal which maps a fixed contiguous&n; *  range of blocks on an arbitrary block device.&n; * &n; */
 DECL|function|journal_init_dev
 id|journal_t
 op_star
@@ -2273,6 +2274,7 @@ r_return
 id|journal
 suffix:semicolon
 )brace
+multiline_comment|/** &n; *  journal_t * journal_init_inode () - creates a journal which maps to a inode.&n; *  @inode: An inode to create the journal in&n; *  &n; * journal_init_inode creates a journal which maps an on-disk inode as&n; * the journal.  The inode must exist already, must support bmap() and&n; * must have all data blocks preallocated.&n; */
 DECL|function|journal_init_inode
 id|journal_t
 op_star
@@ -2574,10 +2576,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Given a journal_t structure which tells us which disk blocks we can&n; * use, create a new journal superblock and initialise all of the&n; * journal fields from scratch.  */
+multiline_comment|/** &n; * int journal_create() - Initialise the new journal file&n; * @journal: Journal to create. This structure must have been initialised&n; * &n; * Given a journal_t structure which tells us which disk blocks we can&n; * use, create a new journal superblock and initialise all of the&n; * journal fields from scratch.  &n; **/
 DECL|function|journal_create
 r_int
 id|journal_create
+c_func
 (paren
 id|journal_t
 op_star
@@ -2846,7 +2849,7 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Update a journal&squot;s dynamic superblock fields and write it to disk,&n; * optionally waiting for the IO to complete.&n;*/
+multiline_comment|/** &n; * void journal_update_superblock() - Update journal sb on disk.&n; * @journal: The journal to update.&n; * @wait: Set to &squot;0&squot; if you don&squot;t want to wait for IO completion.&n; *&n; * Update a journal&squot;s dynamic superblock fields and write it to disk,&n; * optionally waiting for the IO to complete.&n; */
 DECL|function|journal_update_superblock
 r_void
 id|journal_update_superblock
@@ -3274,7 +3277,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Given a journal_t structure which tells us which disk blocks contain&n; * a journal, read the journal from disk to initialise the in-memory&n; * structures.&n; */
+multiline_comment|/**&n; * int journal_load() - Read journal from disk.&n; * @journal: Journal to act on.&n; * &n; * Given a journal_t structure which tells us which disk blocks contain&n; * a journal, read the journal from disk to initialise the in-memory&n; * structures.&n; */
 DECL|function|journal_load
 r_int
 id|journal_load
@@ -3408,7 +3411,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Release a journal_t structure once it is no longer in use by the&n; * journaled object.&n; */
+multiline_comment|/**&n; * void journal_destroy() - Release a journal_t structure.&n; * @journal: Journal to act on.&n;* &n; * Release a journal_t structure once it is no longer in use by the&n; * journaled object.&n; */
 DECL|function|journal_destroy
 r_void
 id|journal_destroy
@@ -3549,7 +3552,7 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Published API: Check whether the journal uses all of a given set of&n; * features.  Return true (non-zero) if it does. */
+multiline_comment|/**&n; *int journal_check_used_features () - Check if features specified are used.&n; * &n; * Check whether the journal uses all of a given set of&n; * features.  Return true (non-zero) if it does. &n; **/
 DECL|function|journal_check_used_features
 r_int
 id|journal_check_used_features
@@ -3656,7 +3659,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Published API: Check whether the journaling code supports the use of&n; * all of a given set of features on this journal.  Return true&n; * (non-zero) if it can. */
+multiline_comment|/**&n; * int journal_check_available_features() - Check feature set in journalling layer&n; * &n; * Check whether the journaling code supports the use of&n; * all of a given set of features on this journal.  Return true&n; * (non-zero) if it can. */
 DECL|function|journal_check_available_features
 r_int
 id|journal_check_available_features
@@ -3746,7 +3749,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Published API: Mark a given journal feature as present on the&n; * superblock.  Returns true if the requested features could be set. */
+multiline_comment|/**&n; * int journal_set_features () - Mark a given journal feature in the superblock&n; *&n; * Mark a given journal feature as present on the&n; * superblock.  Returns true if the requested features could be set. &n; *&n; */
 DECL|function|journal_set_features
 r_int
 id|journal_set_features
@@ -3855,7 +3858,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Published API:&n; * Given an initialised but unloaded journal struct, poke about in the&n; * on-disk structure to update it to the most recent supported version.&n; */
+multiline_comment|/**&n; * int journal_update_format () - Update on-disk journal structure.&n; *&n; * Given an initialised but unloaded journal struct, poke about in the&n; * on-disk structure to update it to the most recent supported version.&n; */
 DECL|function|journal_update_format
 r_int
 id|journal_update_format
@@ -4064,7 +4067,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush all data for a given journal to disk and empty the journal.&n; * Filesystems can use this when remounting readonly to ensure that&n; * recovery does not need to happen on remount.&n; */
+multiline_comment|/**&n; * int journal_flush () - Flush journal&n; * @journal: Journal to act on.&n; * &n; * Flush all data for a given journal to disk and empty the journal.&n; * Filesystems can use this when remounting readonly to ensure that&n; * recovery does not need to happen on remount.&n; */
 DECL|function|journal_flush
 r_int
 id|journal_flush
@@ -4244,7 +4247,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Wipe out all of the contents of a journal, safely.  This will produce&n; * a warning if the journal contains any valid recovery information.&n; * Must be called between journal_init_*() and journal_load().&n; *&n; * If (write) is non-zero, then we wipe out the journal on disk; otherwise&n; * we merely suppress recovery.&n; */
+multiline_comment|/**&n; * int journal_wipe() - Wipe journal contents&n; * @journal: Journal to act on.&n; * @write: flag (see below)&n; * &n; * Wipe out all of the contents of a journal, safely.  This will produce&n; * a warning if the journal contains any valid recovery information.&n; * Must be called between journal_init_*() and journal_load().&n; *&n; * If &squot;write&squot; is non-zero, then we wipe out the journal on disk; otherwise&n; * we merely suppress recovery.&n; */
 DECL|function|journal_wipe
 r_int
 id|journal_wipe
@@ -4385,7 +4388,7 @@ id|bdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * journal_abort: perform a complete, immediate shutdown of the ENTIRE&n; * journal (not of a single transaction).  This operation cannot be&n; * undone without closing and reopening the journal.&n; *&n; * The journal_abort function is intended to support higher level error&n; * recovery mechanisms such as the ext2/ext3 remount-readonly error&n; * mode.&n; *&n; * Journal abort has very specific semantics.  Any existing dirty,&n; * unjournaled buffers in the main filesystem will still be written to&n; * disk by bdflush, but the journaling mechanism will be suspended&n; * immediately and no further transaction commits will be honoured.&n; *&n; * Any dirty, journaled buffers will be written back to disk without&n; * hitting the journal.  Atomicity cannot be guaranteed on an aborted&n; * filesystem, but we _do_ attempt to leave as much data as possible&n; * behind for fsck to use for cleanup.&n; *&n; * Any attempt to get a new transaction handle on a journal which is in&n; * ABORT state will just result in an -EROFS error return.  A&n; * journal_stop on an existing handle will return -EIO if we have&n; * entered abort state during the update.&n; *&n; * Recursive transactions are not disturbed by journal abort until the&n; * final journal_stop, which will receive the -EIO error.&n; *&n; * Finally, the journal_abort call allows the caller to supply an errno&n; * which will be recored (if possible) in the journal superblock.  This&n; * allows a client to record failure conditions in the middle of a&n; * transaction without having to complete the transaction to record the&n; * failure to disk.  ext3_error, for example, now uses this&n; * functionality.&n; *&n; * Errors which originate from within the journaling layer will NOT&n; * supply an errno; a null errno implies that absolutely no further&n; * writes are done to the journal (unless there are any already in&n; * progress).&n; */
+multiline_comment|/*&n; * Journal abort has very specific semantics, which we describe&n; * for journal abort. &n; *&n; * Two internal function, which provide abort to te jbd layer&n; * itself are here.&n; */
 multiline_comment|/* Quick version for internal journal use (doesn&squot;t lock the journal).&n; * Aborts hard --- we mark the abort as occurred, but do _nothing_ else,&n; * and don&squot;t attempt to make any other journal updates. */
 DECL|function|__journal_abort_hard
 r_void
@@ -4495,7 +4498,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Full version for external use */
+multiline_comment|/**&n; * void journal_abort () - Shutdown the journal immediately.&n; * @journal: the journal to shutdown.&n; * @errno:   an error number to record in the journal indicating&n; *           the reason for the shutdown.&n; *&n; * Perform a complete, immediate shutdown of the ENTIRE&n; * journal (not of a single transaction).  This operation cannot be&n; * undone without closing and reopening the journal.&n; *           &n; * The journal_abort function is intended to support higher level error&n; * recovery mechanisms such as the ext2/ext3 remount-readonly error&n; * mode.&n; *&n; * Journal abort has very specific semantics.  Any existing dirty,&n; * unjournaled buffers in the main filesystem will still be written to&n; * disk by bdflush, but the journaling mechanism will be suspended&n; * immediately and no further transaction commits will be honoured.&n; *&n; * Any dirty, journaled buffers will be written back to disk without&n; * hitting the journal.  Atomicity cannot be guaranteed on an aborted&n; * filesystem, but we _do_ attempt to leave as much data as possible&n; * behind for fsck to use for cleanup.&n; *&n; * Any attempt to get a new transaction handle on a journal which is in&n; * ABORT state will just result in an -EROFS error return.  A&n; * journal_stop on an existing handle will return -EIO if we have&n; * entered abort state during the update.&n; *&n; * Recursive transactions are not disturbed by journal abort until the&n; * final journal_stop, which will receive the -EIO error.&n; *&n; * Finally, the journal_abort call allows the caller to supply an errno&n; * which will be recorded (if possible) in the journal superblock.  This&n; * allows a client to record failure conditions in the middle of a&n; * transaction without having to complete the transaction to record the&n; * failure to disk.  ext3_error, for example, now uses this&n; * functionality.&n; *&n; * Errors which originate from within the journaling layer will NOT&n; * supply an errno; a null errno implies that absolutely no further&n; * writes are done to the journal (unless there are any already in&n; * progress).&n; * &n; */
 DECL|function|journal_abort
 r_void
 id|journal_abort
@@ -4529,6 +4532,7 @@ id|journal
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * int journal_errno () - returns the journal&squot;s error state.&n; * @journal: journal to examine.&n; *&n; * This is the errno numbet set with journal_abort(), the last&n; * time the journal was mounted - if the journal was stopped&n; * without calling abort this will be 0.&n; *&n; * If the journal has been aborted on this mount time -EROFS will&n; * be returned.&n; */
 DECL|function|journal_errno
 r_int
 id|journal_errno
@@ -4574,6 +4578,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * int journal_clear_err () - clears the journal&squot;s error state&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
 DECL|function|journal_clear_err
 r_int
 id|journal_clear_err
@@ -4621,6 +4626,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * void journal_ack_err() - Ack journal err.&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
 DECL|function|journal_ack_err
 r_void
 id|journal_ack_err
