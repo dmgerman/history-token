@@ -8432,6 +8432,12 @@ r_case
 id|NETDEV_CHANGENAME
 suffix:colon
 macro_line|#ifdef CONFIG_SYSCTL
+r_if
+c_cond
+(paren
+id|idev
+)paren
+(brace
 id|addrconf_sysctl_unregister
 c_func
 (paren
@@ -8468,6 +8474,7 @@ op_amp
 id|idev-&gt;cnf
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_break
 suffix:semicolon
