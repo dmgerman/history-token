@@ -1046,6 +1046,10 @@ id|NUM_TX_DESC
 )braket
 suffix:semicolon
 multiline_comment|/* Tx data buffers */
+DECL|member|rx_buf_sz
+r_int
+id|rx_buf_sz
+suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
@@ -4776,6 +4780,10 @@ id|tp-&gt;chipset
 op_assign
 id|i
 suffix:semicolon
+id|tp-&gt;rx_buf_sz
+op_assign
+id|RX_BUF_SIZE
+suffix:semicolon
 op_star
 id|ioaddr_out
 op_assign
@@ -6236,9 +6244,9 @@ id|rtl8169_free_rx_skb
 c_func
 (paren
 r_struct
-id|pci_dev
+id|rtl8169_private
 op_star
-id|pdev
+id|tp
 comma
 r_struct
 id|sk_buff
@@ -6252,6 +6260,13 @@ op_star
 id|desc
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|tp-&gt;pci_dev
+suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
@@ -6263,7 +6278,7 @@ c_func
 id|desc-&gt;addr
 )paren
 comma
-id|RX_BUF_SIZE
+id|tp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6298,6 +6313,9 @@ r_struct
 id|RxDesc
 op_star
 id|desc
+comma
+r_int
+id|rx_buf_sz
 )paren
 (brace
 id|desc-&gt;status
@@ -6307,7 +6325,7 @@ c_func
 (paren
 id|OWNbit
 op_plus
-id|RX_BUF_SIZE
+id|rx_buf_sz
 )paren
 suffix:semicolon
 )brace
@@ -6325,6 +6343,9 @@ id|desc
 comma
 id|dma_addr_t
 id|mapping
+comma
+r_int
+id|rx_buf_sz
 )paren
 (brace
 id|desc-&gt;addr
@@ -6342,7 +6363,7 @@ c_func
 (paren
 id|OWNbit
 op_plus
-id|RX_BUF_SIZE
+id|rx_buf_sz
 )paren
 suffix:semicolon
 )brace
@@ -6358,11 +6379,6 @@ op_star
 id|pdev
 comma
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
 id|sk_buff
 op_star
 op_star
@@ -6372,6 +6388,9 @@ r_struct
 id|RxDesc
 op_star
 id|desc
+comma
+r_int
+id|rx_buf_sz
 )paren
 (brace
 r_struct
@@ -6392,7 +6411,7 @@ op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|RX_BUF_SIZE
+id|rx_buf_sz
 )paren
 suffix:semicolon
 r_if
@@ -6403,10 +6422,6 @@ id|skb
 )paren
 r_goto
 id|err_out
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
 suffix:semicolon
 id|skb_reserve
 c_func
@@ -6430,7 +6445,7 @@ id|pdev
 comma
 id|skb-&gt;tail
 comma
-id|RX_BUF_SIZE
+id|rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6441,6 +6456,8 @@ c_func
 id|desc
 comma
 id|mapping
+comma
+id|rx_buf_sz
 )paren
 suffix:semicolon
 id|out
@@ -6507,7 +6524,7 @@ id|i
 id|rtl8169_free_rx_skb
 c_func
 (paren
-id|tp-&gt;pci_dev
+id|tp
 comma
 id|tp-&gt;Rx_skbuff
 op_plus
@@ -6590,8 +6607,6 @@ c_func
 (paren
 id|tp-&gt;pci_dev
 comma
-id|dev
-comma
 id|tp-&gt;Rx_skbuff
 op_plus
 id|i
@@ -6599,6 +6614,8 @@ comma
 id|tp-&gt;RxDescArray
 op_plus
 id|i
+comma
+id|tp-&gt;rx_buf_sz
 )paren
 suffix:semicolon
 r_if
@@ -7535,10 +7552,8 @@ id|RxDesc
 op_star
 id|desc
 comma
-r_struct
-id|net_device
-op_star
-id|dev
+r_int
+id|rx_buf_sz
 )paren
 (brace
 r_int
@@ -7576,10 +7591,6 @@ c_cond
 id|skb
 )paren
 (brace
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb_reserve
 c_func
 (paren
@@ -7614,6 +7625,8 @@ id|rtl8169_return_to_asic
 c_func
 (paren
 id|desc
+comma
+id|rx_buf_sz
 )paren
 suffix:semicolon
 id|ret
@@ -7857,7 +7870,7 @@ c_func
 id|desc-&gt;addr
 )paren
 comma
-id|RX_BUF_SIZE
+id|tp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -7875,7 +7888,7 @@ id|pkt_size
 comma
 id|desc
 comma
-id|dev
+id|tp-&gt;rx_buf_sz
 )paren
 )paren
 (brace
@@ -7902,10 +7915,14 @@ c_func
 id|desc-&gt;addr
 )paren
 comma
-id|RX_BUF_SIZE
+id|tp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+id|dev
 suffix:semicolon
 id|skb_put
 c_func
