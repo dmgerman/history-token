@@ -484,6 +484,8 @@ suffix:semicolon
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(rw)&t;do { (rw)-&gt;lock = 0; } while(0)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* __SPARC_SPINLOCK_H */
 eof

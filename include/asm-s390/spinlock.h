@@ -48,6 +48,8 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lp)&t;do { barrier(); } while(((volatile spinlock_t *)(lp))-&gt;lock)
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x) ((x)-&gt;lock != 0)
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 DECL|function|_raw_spin_lock
 r_extern
 r_inline

@@ -28,16 +28,20 @@ mdefine_line|#define spin_lock_init(x)&t;&t;&t;((x)-&gt;lock = 0)
 macro_line|#ifdef ASM_SUPPORTED
 multiline_comment|/*&n; * Try to get the lock.  If we fail to get the lock, make a non-standard call to&n; * ia64_spinlock_contention().  We do not use a normal call because that would force all&n; * callers of spin_lock() to be non-leaf routines.  Instead, ia64_spinlock_contention() is&n; * carefully coded to touch only those registers that spin_lock() marks &quot;clobbered&quot;.&n; */
 DECL|macro|IA64_SPINLOCK_CLOBBERS
-mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.ccv&quot;, &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
+mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.ccv&quot;, &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;p15&quot;, &quot;r27&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
 r_static
 r_inline
 r_void
-DECL|function|_raw_spin_lock
-id|_raw_spin_lock
+DECL|function|_raw_spin_lock_flags
+id|_raw_spin_lock_flags
 (paren
 id|spinlock_t
 op_star
 id|lock
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_register
@@ -68,7 +72,8 @@ l_string|&quot;}&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%1], r30, ar.ccv&bslash;n&bslash;t&quot;
 l_string|&quot;movl r29 = ia64_spinlock_contention_pre3_4;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
-l_string|&quot;mov b6 = r29;;&bslash;n&quot;
+l_string|&quot;mov b6 = r29;;&bslash;n&bslash;t&quot;
+l_string|&quot;mov r27=%2&bslash;n&bslash;t&quot;
 l_string|&quot;(p14) br.cond.spnt.many b6&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -79,6 +84,11 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|ptr
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flags
 )paren
 suffix:colon
 id|IA64_SPINLOCK_CLOBBERS
@@ -94,7 +104,8 @@ l_string|&quot;  mov r28 = ip&bslash;n&bslash;t&quot;
 l_string|&quot;  mov r30 = 1;;&bslash;n&bslash;t&quot;
 l_string|&quot;}&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%1], r30, ar.ccv;;&bslash;n&bslash;t&quot;
-l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&quot;
+l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
+l_string|&quot;mov r27=%2&bslash;n&bslash;t&quot;
 l_string|&quot;(p14) brl.cond.spnt.many ia64_spinlock_contention_pre3_4;;&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -105,6 +116,11 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|ptr
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flags
 )paren
 suffix:colon
 id|IA64_SPINLOCK_CLOBBERS
@@ -119,11 +135,12 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;mov r30 = 1&bslash;n&bslash;t&quot;
+l_string|&quot;mov r27=%2&bslash;n&bslash;t&quot;
 l_string|&quot;mov ar.ccv = r0;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%0], r30, ar.ccv&bslash;n&bslash;t&quot;
 l_string|&quot;movl r29 = ia64_spinlock_contention;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
-l_string|&quot;mov b6 = r29;;&bslash;n&quot;
+l_string|&quot;mov b6 = r29;;&bslash;n&bslash;t&quot;
 l_string|&quot;(p14) br.call.spnt.many b6 = b6&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -135,6 +152,11 @@ l_string|&quot;r&quot;
 (paren
 id|ptr
 )paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flags
+)paren
 suffix:colon
 id|IA64_SPINLOCK_CLOBBERS
 )paren
@@ -144,6 +166,7 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;mov r30 = 1&bslash;n&bslash;t&quot;
+l_string|&quot;mov r27=%2&bslash;n&bslash;t&quot;
 l_string|&quot;mov ar.ccv = r0;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmpxchg4.acq r30 = [%0], r30, ar.ccv;;&bslash;n&bslash;t&quot;
 l_string|&quot;cmp4.ne p14, p0 = r30, r0&bslash;n&bslash;t&quot;
@@ -158,6 +181,11 @@ l_string|&quot;r&quot;
 (paren
 id|ptr
 )paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flags
+)paren
 suffix:colon
 id|IA64_SPINLOCK_CLOBBERS
 )paren
@@ -165,7 +193,11 @@ suffix:semicolon
 macro_line|# endif /* CONFIG_MCKINLEY */
 macro_line|#endif
 )brace
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(lock) _raw_spin_lock_flags(lock, 0)
 macro_line|#else /* !ASM_SUPPORTED */
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 DECL|macro|_raw_spin_lock
 macro_line|# define _raw_spin_lock(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u32 *ia64_spinlock_ptr = (__u32 *) (x);&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 ia64_spinlock_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_spinlock_val = ia64_cmpxchg4_acq(ia64_spinlock_ptr, 1, 0);&t;&t;&t;&bslash;&n;&t;if (unlikely(ia64_spinlock_val)) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;while (*ia64_spinlock_ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;ia64_barrier();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;ia64_spinlock_val = ia64_cmpxchg4_acq(ia64_spinlock_ptr, 1, 0);&t;&bslash;&n;&t;&t;} while (ia64_spinlock_val);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* !ASM_SUPPORTED */

@@ -20,6 +20,8 @@ DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t) { 0 }
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 DECL|function|_raw_spin_trylock
 r_static
 id|__inline__
