@@ -450,14 +450,6 @@ id|pcmcia_socket
 op_star
 id|sock
 suffix:semicolon
-DECL|member|base
-id|u_long
-id|base
-suffix:semicolon
-DECL|member|size
-id|u_long
-id|size
-suffix:semicolon
 DECL|member|ctl
 id|pccard_mem_map
 id|ctl
