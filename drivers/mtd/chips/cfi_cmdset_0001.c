@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.160 2004/11/01 06:02:24 nico Exp $&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 02/05/2002&t;Christopher Hoover &lt;ch@hpl.hp.com&gt;/&lt;ch@murgatroid.com&gt;&n; *&t;- reworked lock/unlock/erase support for var size flash&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.160 2004/11/01 06:02:24 nico Exp $&n; * (+ suspend fix from v1.162)&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 02/05/2002&t;Christopher Hoover &lt;ch@hpl.hp.com&gt;/&lt;ch@murgatroid.com&gt;&n; *&t;- reworked lock/unlock/erase support for var size flash&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8352,10 +8352,38 @@ id|FL_PM_SUSPENDED
 suffix:semicolon
 multiline_comment|/* No need to wake_up() on this state change - &n;&t;&t;&t;&t; * as the whole point is that nobody can do anything&n;&t;&t;&t;&t; * with the chip now anyway.&n;&t;&t;&t;&t; */
 )brace
+r_else
+(brace
+multiline_comment|/* There seems to be an operation pending. We must wait for it. */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Flash device refused suspend due to pending operation (oldstate %d)&bslash;n&quot;
+comma
+id|chip-&gt;oldstate
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* Should we actually wait? Once upon a time these routines weren&squot;t&n;&t;&t;&t;   allowed to. Or should we return -EAGAIN, because the upper layers&n;&t;&t;&t;   ought to have already shut down anything which was using the device&n;&t;&t;&t;   anyway? The latter for now. */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Flash device refused suspend due to active operation (state %d)&bslash;n&quot;
+comma
+id|chip-&gt;oldstate
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -8421,6 +8449,10 @@ multiline_comment|/* No need to force it into a known state here,&n;&t;&t;&t;&t;
 id|chip-&gt;state
 op_assign
 id|chip-&gt;oldstate
+suffix:semicolon
+id|chip-&gt;oldstate
+op_assign
+id|FL_READY
 suffix:semicolon
 id|wake_up
 c_func
@@ -8533,6 +8565,8 @@ dot
 id|start
 )paren
 suffix:semicolon
+id|chip-&gt;oldstate
+op_assign
 id|chip-&gt;state
 op_assign
 id|FL_READY
