@@ -59,10 +59,10 @@ mdefine_line|#define FLUSH_LOWPRI&t;&t;8&t;/* low priority background flush */
 DECL|macro|FLUSH_HIGHPRI
 mdefine_line|#define FLUSH_HIGHPRI&t;&t;16&t;/* high priority memory reclaim flush */
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * NFSv3 Access mode cache&n; */
-DECL|struct|nfs_access_cache
+multiline_comment|/*&n; * NFSv3/v4 Access mode cache entry&n; */
+DECL|struct|nfs_access_entry
 r_struct
-id|nfs_access_cache
+id|nfs_access_entry
 (brace
 DECL|member|jiffies
 r_int
@@ -78,10 +78,6 @@ suffix:semicolon
 DECL|member|mask
 r_int
 id|mask
-suffix:semicolon
-DECL|member|err
-r_int
-id|err
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -146,7 +142,7 @@ id|data_updates
 suffix:semicolon
 DECL|member|cache_access
 r_struct
-id|nfs_access_cache
+id|nfs_access_entry
 id|cache_access
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is the cookie verifier used for NFSv3 readdir&n;&t; * operations&n;&t; */
