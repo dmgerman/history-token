@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -1501,8 +1502,6 @@ l_int|2
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 id|irq_mask
 op_assign
@@ -1533,24 +1532,10 @@ op_plus
 id|CSR1
 )paren
 suffix:semicolon
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|50
 )paren
 suffix:semicolon
 id|irq

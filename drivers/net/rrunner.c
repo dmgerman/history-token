@@ -3197,6 +3197,10 @@ op_logical_and
 op_logical_neg
 id|rrpriv-&gt;fw_running
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|netif_start_queue
 c_func
