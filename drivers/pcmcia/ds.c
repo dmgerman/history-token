@@ -1078,10 +1078,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|driver-&gt;use_count
-op_assign
-l_int|0
-suffix:semicolon
 id|driver-&gt;drv.bus
 op_assign
 op_amp
@@ -1166,7 +1162,7 @@ suffix:semicolon
 r_struct
 id|pcmcia_driver
 op_star
-id|p_dev
+id|p_drv
 op_assign
 id|container_of
 c_func
@@ -1190,9 +1186,24 @@ id|p
 comma
 l_string|&quot;%-24.24s 1 %d&bslash;n&quot;
 comma
-id|driver-&gt;name
+id|p_drv-&gt;drv.name
 comma
-id|p_dev-&gt;use_count
+macro_line|#ifdef CONFIG_MODULE_UNLOAD
+(paren
+id|p_drv-&gt;owner
+)paren
+ques
+c_cond
+id|module_refcount
+c_func
+(paren
+id|p_drv-&gt;owner
+)paren
+suffix:colon
+l_int|1
+macro_line|#else
+l_int|1
+macro_line|#endif
 )paren
 suffix:semicolon
 id|d
@@ -2319,9 +2330,6 @@ id|s-&gt;parent-&gt;clients
 op_assign
 id|client
 suffix:semicolon
-id|p_drv-&gt;use_count
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2860,9 +2868,6 @@ c_cond
 id|p_drv
 )paren
 (brace
-id|p_drv-&gt;use_count
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
