@@ -3108,6 +3108,10 @@ id|do_gtod.tb_orig_stamp
 op_assign
 id|tb_last_stamp
 suffix:semicolon
+id|systemcfg-&gt;tb_orig_stamp
+op_assign
+id|tb_last_stamp
+suffix:semicolon
 id|look_for_more_cpus
 c_func
 (paren
