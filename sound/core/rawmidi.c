@@ -7390,7 +7390,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
+macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|rmidi-&gt;ossreg
 op_assign
 l_int|0
@@ -7444,6 +7444,7 @@ r_else
 id|rmidi-&gt;ossreg
 op_increment
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_MIDI
 id|snd_oss_info_register
 c_func
 (paren
@@ -7454,6 +7455,7 @@ comma
 id|rmidi-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 r_if
@@ -7507,7 +7509,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_SND_OSSEMUL */
 id|up
 c_func
 (paren
@@ -7754,7 +7756,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
+macro_line|#ifdef CONFIG_SND_OSSEMUL
 r_if
 c_cond
 (paren
@@ -7782,6 +7784,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_MIDI
 id|snd_oss_info_unregister
 c_func
 (paren
@@ -7790,6 +7793,7 @@ comma
 id|rmidi-&gt;card-&gt;number
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -7816,7 +7820,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_SND_OSSEMUL */
 r_if
 c_cond
 (paren
