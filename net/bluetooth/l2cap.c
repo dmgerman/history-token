@@ -1,7 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * Bluetooth L2CAP core and sockets.&n; *&n; * $Id: l2cap.c,v 1.15 2002/09/09 01:14:52 maxk Exp $&n; */
-DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.1&quot;
+multiline_comment|/* Bluetooth L2CAP core and sockets. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,8 +28,10 @@ macro_line|#ifndef CONFIG_BT_L2CAP_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
+DECL|macro|VERSION
+mdefine_line|#define VERSION &quot;2.2&quot;
 DECL|variable|l2cap_sock_ops
 r_static
 r_struct
@@ -2417,11 +2417,111 @@ op_member_access_from_pointer
 id|psm
 )paren
 (brace
+id|bdaddr_t
+op_star
+id|src
+op_assign
+op_amp
+id|bt_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|src
+suffix:semicolon
+id|u16
+id|psm
+suffix:semicolon
 id|err
 op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+id|write_lock_bh
+c_func
+(paren
+op_amp
+id|l2cap_sk_list.lock
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|psm
+op_assign
+l_int|0x1001
+suffix:semicolon
+id|psm
+OL
+l_int|0x1100
+suffix:semicolon
+id|psm
+op_add_assign
+l_int|2
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+id|__l2cap_get_sock_by_addr
+c_func
+(paren
+id|psm
+comma
+id|src
+)paren
+)paren
+(brace
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|psm
+op_assign
+id|htobs
+c_func
+(paren
+id|psm
+)paren
+suffix:semicolon
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|sport
+op_assign
+id|htobs
+c_func
+(paren
+id|psm
+)paren
+suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|write_unlock_bh
+c_func
+(paren
+op_amp
+id|l2cap_sk_list.lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
 r_goto
 id|done
 suffix:semicolon
@@ -6166,7 +6266,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Configure output options and let the other side know&n;&t; * which ones we don&squot;t like.&n;&t; */
+multiline_comment|/* Configure output options and let the other side know&n;&t; * which ones we don&squot;t like. */
 r_if
 c_cond
 (paren
@@ -7410,7 +7510,7 @@ id|req
 l_int|128
 )braket
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;   It does not make sense to adjust L2CAP parameters &n;&t;&t;&t;   that are currently defined in the spec. We simply &n;&t;&t;&t;   resend config request that we sent earlier. It is&n;&t;&t;&t;   stupid :) but it helps qualification testing&n;&t;&t;&t;   which expects at least some response from us.&n;&t;&t;&t;*/
+multiline_comment|/* It does not make sense to adjust L2CAP parameters&n;&t;&t;&t; * that are currently defined in the spec. We simply&n;&t;&t;&t; * resend config request that we sent earlier. It is&n;&t;&t;&t; * stupid, but it helps qualification testing which&n;&t;&t;&t; * expects at least some response from us. */
 id|l2cap_send_req
 c_func
 (paren
@@ -8282,7 +8382,7 @@ id|skb-&gt;len
 r_goto
 id|drop
 suffix:semicolon
-multiline_comment|/* If socket recv buffers overflows we drop data here &n;&t; * which is *bad* because L2CAP has to be reliable. &n;&t; * But we don&squot;t have any other choice. L2CAP doesn&squot;t &n;&t; * provide flow control mechanism */
+multiline_comment|/* If socket recv buffers overflows we drop data here&n;&t; * which is *bad* because L2CAP has to be reliable.&n;&t; * But we don&squot;t have any other choice. L2CAP doesn&squot;t&n;&t; * provide flow control mechanism */
 r_if
 c_cond
 (paren
@@ -10274,14 +10374,14 @@ op_assign
 id|PF_BLUETOOTH
 comma
 dot
-id|create
-op_assign
-id|l2cap_sock_create
-comma
-dot
 id|owner
 op_assign
 id|THIS_MODULE
+comma
+dot
+id|create
+op_assign
+id|l2cap_sock_create
 comma
 )brace
 suffix:semicolon
@@ -10477,7 +10577,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Dummy function to trigger automatic L2CAP module loading by &n;&t;   other modules that use L2CAP sockets but don not use any other&n;&t;   symbols from it. */
+multiline_comment|/* Dummy function to trigger automatic L2CAP module loading by&n;&t; * other modules that use L2CAP sockets but don not use any othe&n;&t; * symbols from it. */
 r_return
 suffix:semicolon
 )brace
