@@ -946,13 +946,10 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* CHECK: Ports can&squot;t be zero. */
+multiline_comment|/* CHECK: Destination port can&squot;t be zero. */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|udph-&gt;source
-op_logical_or
 op_logical_neg
 id|udph-&gt;dest
 )paren
@@ -960,19 +957,7 @@ id|udph-&gt;dest
 id|limpk
 c_func
 (paren
-l_string|&quot;UDP zero ports %u/%u&bslash;n&quot;
-comma
-id|ntohs
-c_func
-(paren
-id|udph-&gt;source
-)paren
-comma
-id|ntohs
-c_func
-(paren
-id|udph-&gt;dest
-)paren
+l_string|&quot;UDP zero destination port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
