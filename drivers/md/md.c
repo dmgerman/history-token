@@ -9871,7 +9871,8 @@ op_logical_neg
 id|rdev
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 id|md_error
 c_func
@@ -9882,7 +9883,7 @@ id|rdev
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|md_ioctl
