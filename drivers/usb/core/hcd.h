@@ -104,6 +104,13 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* pci is typical */
+DECL|member|parent
+r_struct
+id|device
+op_star
+id|parent
+suffix:semicolon
+multiline_comment|/* parent device driver */
 macro_line|#ifdef&t;CONFIG_PCI
 DECL|member|region
 r_int
