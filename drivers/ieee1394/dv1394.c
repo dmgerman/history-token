@@ -10037,6 +10037,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|cdev_init
 c_func
 (paren
@@ -10060,9 +10063,8 @@ comma
 l_string|&quot;dv1394&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|cdev_add
 c_func
 (paren
@@ -10073,6 +10075,11 @@ id|IEEE1394_DV1394_DEV
 comma
 l_int|16
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -10083,8 +10090,7 @@ l_string|&quot;dv1394: unable to register character device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
 )brace
 id|devfs_mk_dir
@@ -10100,6 +10106,8 @@ op_amp
 id|dv1394_highlevel
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|hpsb_register_protocol
 c_func
 (paren
@@ -10107,11 +10115,45 @@ op_amp
 id|dv1394_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_COMPAT
+r_if
+c_cond
+(paren
+id|ret
+)paren
 (brace
-r_int
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dv1394: failed to register protocol&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hpsb_unregister_highlevel
+c_func
+(paren
+op_amp
+id|dv1394_highlevel
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;ieee1394/dv&quot;
+)paren
+suffix:semicolon
+id|cdev_del
+c_func
+(paren
+op_amp
+id|dv1394_cdev
+)paren
+suffix:semicolon
+r_return
 id|ret
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_COMPAT
+(brace
 multiline_comment|/* First compatible ones */
 id|ret
 op_assign

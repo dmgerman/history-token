@@ -1508,12 +1508,29 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|saa7146_wait_for_debi_done
 c_func
 (paren
 id|av7110-&gt;dev
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb: av7110_bootarm(): &quot;
+l_string|&quot;saa7146_wait_for_debi_done() timed out&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|saa7146_setgpio
 c_func
 (paren
@@ -1606,12 +1623,29 @@ comma
 id|av7110-&gt;size_dpram
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|saa7146_wait_for_debi_done
 c_func
 (paren
 id|av7110-&gt;dev
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb: av7110_bootarm(): &quot;
+l_string|&quot;saa7146_wait_for_debi_done() timed out after loading DRAM&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|saa7146_setgpio
 c_func
 (paren
@@ -2977,7 +3011,7 @@ suffix:semicolon
 multiline_comment|/****************************************************************************&n; * Firmware commands&n; ****************************************************************************/
 multiline_comment|/* get version of the firmware ROM, RTSL, video ucode and ARM application  */
 DECL|function|av7110_firmversion
-r_void
+r_int
 id|av7110_firmversion
 c_func
 (paren
@@ -3016,6 +3050,9 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|av7110_fw_query
 c_func
 (paren
@@ -3027,7 +3064,21 @@ id|buf
 comma
 l_int|16
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;DVB: AV7110-%d: ERROR: Failed to boot firmware&bslash;n&quot;
+comma
+id|av7110-&gt;dvb_adapter-&gt;num
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|av7110-&gt;arm_fw
 op_assign
 (paren
@@ -3158,6 +3209,7 @@ id|av7110-&gt;dvb_adapter-&gt;num
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|av7110_diseqc_send

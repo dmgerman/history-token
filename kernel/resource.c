@@ -1402,7 +1402,7 @@ c_func
 id|allocate_resource
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * insert_resource - Inserts a resource in the resource tree&n; * @parent: parent of the new resource&n; * @new: new resource to insert&n; *&n; * Returns 0 on success, -EBUSY if the resource can&squot;t be inserted.&n; *&n; * This function is equivalent of request_resource when no&n; * conflict happens. If a conflict happens, and the conflicting&n; * resources entirely fit within the range of the new resource,&n; * then the new resource is inserted and the conflicting resources&n; * become childs of the new resource. &n; */
+multiline_comment|/**&n; * insert_resource - Inserts a resource in the resource tree&n; * @parent: parent of the new resource&n; * @new: new resource to insert&n; *&n; * Returns 0 on success, -EBUSY if the resource can&squot;t be inserted.&n; *&n; * This function is equivalent of request_resource when no conflict&n; * happens. If a conflict happens, and the conflicting resources&n; * entirely fit within the range of the new resource, then the new&n; * resource is inserted and the conflicting resources become childs of&n; * the new resource.  Otherwise the new resource becomes the child of&n; * the conflicting resource&n; */
 DECL|function|insert_resource
 r_int
 id|insert_resource
@@ -1439,6 +1439,8 @@ op_amp
 id|resource_lock
 )paren
 suffix:semicolon
+id|begin
+suffix:colon
 id|first
 op_assign
 id|__request_resource
@@ -1507,9 +1509,15 @@ r_new
 op_member_access_from_pointer
 id|end
 )paren
-r_goto
-id|out
+(brace
+id|parent
+op_assign
+id|next
 suffix:semicolon
+r_goto
+id|begin
+suffix:semicolon
+)brace
 id|result
 op_assign
 l_int|0

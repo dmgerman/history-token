@@ -2353,10 +2353,10 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|function|sram_writeChunk
+DECL|function|sram_write_chunk
 r_static
 r_void
-id|sram_writeChunk
+id|sram_write_chunk
 c_func
 (paren
 r_struct
@@ -2447,10 +2447,10 @@ id|len
 )paren
 suffix:semicolon
 )brace
-DECL|function|sram_readChunk
+DECL|function|sram_read_chunk
 r_static
 r_void
-id|sram_readChunk
+id|sram_read_chunk
 c_func
 (paren
 r_struct
@@ -2622,7 +2622,7 @@ op_minus
 id|addr
 suffix:semicolon
 )brace
-id|sram_readChunk
+id|sram_read_chunk
 c_func
 (paren
 id|adapter
@@ -2735,7 +2735,7 @@ op_minus
 id|addr
 suffix:semicolon
 )brace
-id|sram_writeChunk
+id|sram_write_chunk
 c_func
 (paren
 id|adapter

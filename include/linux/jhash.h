@@ -16,6 +16,7 @@ id|u32
 id|jhash
 c_func
 (paren
+r_const
 r_void
 op_star
 id|key
@@ -36,6 +37,7 @@ id|c
 comma
 id|len
 suffix:semicolon
+r_const
 id|u8
 op_star
 id|k

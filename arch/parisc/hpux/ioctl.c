@@ -2,24 +2,11 @@ multiline_comment|/*&n; *    Implements some necessary HPUX ioctls.&n; *&n; *   
 multiline_comment|/*&n; * Supported ioctls:&n; *   TCGETA&n; *   TCSETA&n; *   TCSETAW&n; *   TCSETAF&n; *   TCSBRK&n; *   TCXONC&n; *   TCFLSH&n; *   TIOCGWINSZ&n; *   TIOCSWINSZ&n; *   TIOCGPGRP&n; *   TIOCSPGRP&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|hpux_ioctl_t
 r_static
 r_int

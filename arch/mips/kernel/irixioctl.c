@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -40,44 +41,6 @@ id|NCCS
 )braket
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_write
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-r_int
-id|count
-)paren
 suffix:semicolon
 r_extern
 r_void

@@ -376,6 +376,36 @@ suffix:semicolon
 multiline_comment|/* Device type, 0 = Ethernet, 1 = TokenRing */
 )brace
 suffix:semicolon
+DECL|struct|lec_vcc_priv
+r_struct
+id|lec_vcc_priv
+(brace
+DECL|member|old_pop
+r_void
+(paren
+op_star
+id|old_pop
+)paren
+(paren
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|xoff
+r_int
+id|xoff
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|LEC_VCC_PRIV
+mdefine_line|#define LEC_VCC_PRIV(vcc)&t;((struct lec_vcc_priv *)((vcc)-&gt;user_back))
 r_int
 id|lecd_attach
 c_func

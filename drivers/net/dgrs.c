@@ -4792,11 +4792,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: io 0x%3lX, which is busy.&bslash;n&quot;
+l_string|&quot;dgrs: eisa io 0x%x, which is busy.&bslash;n&quot;
 comma
-id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
+id|io
 )paren
 suffix:semicolon
 r_return

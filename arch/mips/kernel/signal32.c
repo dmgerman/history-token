@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -3984,26 +3985,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|asmlinkage
-r_int
-id|sys_rt_sigprocmask
-c_func
-(paren
-r_int
-id|how
-comma
-id|sigset_t
-op_star
-id|set
-comma
-id|sigset_t
-op_star
-id|oset
-comma
-r_int
-id|sigsetsize
-)paren
-suffix:semicolon
 DECL|function|sys32_rt_sigprocmask
 id|asmlinkage
 r_int
@@ -4121,19 +4102,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|asmlinkage
-r_int
-id|sys_rt_sigpending
-c_func
-(paren
-id|sigset_t
-op_star
-id|set
-comma
-r_int
-id|sigsetsize
-)paren
-suffix:semicolon
 DECL|function|sys32_rt_sigpending
 id|asmlinkage
 r_int
@@ -4769,23 +4737,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_rt_sigqueueinfo
-c_func
-(paren
-r_int
-id|pid
-comma
-r_int
-id|sig
-comma
-id|siginfo_t
-op_star
-id|uinfo
-)paren
-suffix:semicolon
 DECL|function|sys32_rt_sigqueueinfo
 id|asmlinkage
 r_int

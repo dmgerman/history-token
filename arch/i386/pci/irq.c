@@ -2072,6 +2072,9 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_ESB_0
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH6_0
+suffix:colon
 id|r-&gt;name
 op_assign
 l_string|&quot;PIIX/ICH&quot;

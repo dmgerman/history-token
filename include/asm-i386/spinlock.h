@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/rwlock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-r_extern
+id|asmlinkage
 r_int
 id|printk
 c_func

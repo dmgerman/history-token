@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/mac_psc.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|macro|DEBUG_SPURIOUS
 mdefine_line|#define DEBUG_SPURIOUS
 DECL|macro|SHUTUP_SONIC

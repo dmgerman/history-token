@@ -1021,14 +1021,14 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************/
-DECL|variable|irtty_sem
+multiline_comment|/* serialize ldisc open/close with sir_dev */
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
 id|irtty_sem
 )paren
 suffix:semicolon
-multiline_comment|/* serialize ldisc open/close with sir_dev */
 multiline_comment|/* notifier from sir_dev when irda% device gets opened (ifup) */
 DECL|function|irtty_start_dev
 r_static

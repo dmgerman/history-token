@@ -178,13 +178,17 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %s on Subchannel &quot;
-l_string|&quot;%s, lpm %02X, became &squot;not &quot;
+l_string|&quot;SNID - Device %04x on Subchannel &quot;
+l_string|&quot;%04x, lpm %02X, became &squot;not &quot;
 l_string|&quot;operational&squot;&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|cdev
 op_member_access_from_pointer
@@ -389,11 +393,15 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - device %s, unit check, &quot;
+l_string|&quot;SNID - device %04x, unit check, &quot;
 l_string|&quot;lpum %02X, cnt %02d, sns : &quot;
 l_string|&quot;%02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
 id|irb-&gt;esw.esw0.sublog.lpum
 comma
@@ -458,12 +466,16 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %s on Subchannel &quot;
-l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
+l_string|&quot;SNID - Device %04x on Subchannel &quot;
+l_string|&quot;%04x, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|sch-&gt;orb.lpm
 )paren
@@ -490,12 +502,16 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SNID - Device %s on Subchannel %s &quot;
+l_string|&quot;SNID - Device %04x on Subchannel %04x &quot;
 l_string|&quot;is reserved by someone else&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -1019,12 +1035,16 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - Device %s on Subchannel &quot;
-l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
+l_string|&quot;SPID - Device %04x on Subchannel &quot;
+l_string|&quot;%04x, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|cdev
 op_member_access_from_pointer
@@ -1118,10 +1138,14 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - device %s, unit check, cnt %02d, &quot;
+l_string|&quot;SPID - device %04x, unit check, cnt %02d, &quot;
 l_string|&quot;sns : %02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
 id|irb-&gt;esw.esw0.erw.scnt
 comma
@@ -1184,12 +1208,16 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SPID - Device %s on Subchannel &quot;
-l_string|&quot;%s, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
+l_string|&quot;SPID - Device %04x on Subchannel &quot;
+l_string|&quot;%04x, lpm %02X, became &squot;not operational&squot;&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|cdev
 op_member_access_from_pointer

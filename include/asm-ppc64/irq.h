@@ -31,22 +31,15 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* this number is used when no interrupt has been assigned */
+DECL|macro|NO_IRQ
+mdefine_line|#define NO_IRQ&t;&t;&t;(-1)
 multiline_comment|/*&n; * this is the maximum number of virtual irqs we will use.&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;512
 DECL|macro|NUM_8259_INTERRUPTS
 mdefine_line|#define NUM_8259_INTERRUPTS&t;16
 multiline_comment|/* Interrupt numbers are virtual in case they are sparsely&n; * distributed by the hardware.&n; */
-DECL|macro|NR_HW_IRQS
-mdefine_line|#define NR_HW_IRQS&t;&t;8192
-r_extern
-r_int
-r_int
-id|real_irq_to_virt_map
-(braket
-id|NR_HW_IRQS
-)braket
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -57,7 +50,6 @@ id|NR_IRQS
 suffix:semicolon
 multiline_comment|/* Create a mapping for a real_irq if it doesn&squot;t already exist.&n; * Return the virtual irq as a convenience.&n; */
 r_int
-r_int
 id|virt_irq_create_mapping
 c_func
 (paren
@@ -66,27 +58,13 @@ r_int
 id|real_irq
 )paren
 suffix:semicolon
-multiline_comment|/* These funcs map irqs between real and virtual */
-DECL|function|real_irq_to_virt
-r_static
-r_inline
-r_int
-r_int
-id|real_irq_to_virt
+r_void
+id|virt_irq_init
 c_func
 (paren
-r_int
-r_int
-id|real_irq
+r_void
 )paren
-(brace
-r_return
-id|real_irq_to_virt_map
-(braket
-id|real_irq
-)braket
 suffix:semicolon
-)brace
 DECL|function|virt_irq_to_real
 r_static
 r_inline

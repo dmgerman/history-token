@@ -1616,6 +1616,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|check_efer
+c_func
+(paren
+)paren
+suffix:semicolon
 id|init_memory_mapping
 c_func
 (paren
@@ -3991,6 +3996,12 @@ id|i
 )braket
 suffix:semicolon
 )brace
+id|mcheck_init
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 )brace
 DECL|function|print_cpu_info
 r_void
@@ -4365,7 +4376,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
+l_string|&quot;cmpxchg16b&quot;
 comma
 l_int|NULL
 comma

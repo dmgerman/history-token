@@ -7221,6 +7221,9 @@ id|video1394_init_module
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|cdev_init
 c_func
 (paren
@@ -7242,6 +7245,19 @@ op_amp
 id|video1394_cdev.kobj
 comma
 id|VIDEO1394_DRIVER_NAME
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|cdev_add
+c_func
+(paren
+op_amp
+id|video1394_cdev
+comma
+id|IEEE1394_VIDEO1394_DEV
+comma
+l_int|16
 )paren
 suffix:semicolon
 r_if
@@ -7268,8 +7284,7 @@ l_string|&quot;video1394: unable to get minor device block&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
 )brace
 id|devfs_mk_dir
@@ -7285,6 +7300,8 @@ op_amp
 id|video1394_highlevel
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|hpsb_register_protocol
 c_func
 (paren
@@ -7292,11 +7309,46 @@ op_amp
 id|video1394_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_COMPAT
+r_if
+c_cond
+(paren
+id|ret
+)paren
 (brace
-r_int
+id|PRINT_G
+c_func
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;video1394: failed to register protocol&quot;
+)paren
+suffix:semicolon
+id|hpsb_unregister_highlevel
+c_func
+(paren
+op_amp
+id|video1394_highlevel
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+id|VIDEO1394_DRIVER_NAME
+)paren
+suffix:semicolon
+id|cdev_del
+c_func
+(paren
+op_amp
+id|video1394_cdev
+)paren
+suffix:semicolon
+r_return
 id|ret
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_COMPAT
+(brace
 multiline_comment|/* First the compatible ones */
 id|ret
 op_assign

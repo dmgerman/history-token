@@ -756,7 +756,7 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
-id|hu-&gt;hdev.stat.err_rx
+id|hu-&gt;hdev-&gt;stat.err_rx
 op_increment
 suffix:semicolon
 id|ptr
@@ -817,7 +817,6 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
 id|hu-&gt;hdev
 suffix:semicolon
 id|h4-&gt;rx_skb-&gt;pkt_type

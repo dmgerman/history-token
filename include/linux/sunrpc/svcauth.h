@@ -21,12 +21,11 @@ DECL|member|cr_gid
 id|gid_t
 id|cr_gid
 suffix:semicolon
-DECL|member|cr_groups
-id|gid_t
-id|cr_groups
-(braket
-id|SVC_CRED_NGROUPS
-)braket
+DECL|member|cr_group_info
+r_struct
+id|group_info
+op_star
+id|cr_group_info
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -55,7 +54,7 @@ id|flavour
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Each authentication flavour registers an auth_ops&n; * structure.&n; * name is simply the name.&n; * flavour gives the auth flavour. It determines where the flavour is registered&n; * accept() is given a request and should verify it.&n; *   It should inspect the authenticator and verifier, and possibly the data.&n; *    If there is a problem with the authentication *authp should be set.&n; *    The return value of accept() can indicate:&n; *      OK - authorised. client and credential are set in rqstp.&n; *           reqbuf points to arguments&n; *           resbuf points to good place for results.  verfier&n; *             is (probably) already in place.  Certainly space is&n; *&t;       reserved for it.&n; *      DROP - simply drop the request. It may have been deferred&n; *      GARBAGE - rpc garbage_args error&n; *      SYSERR - rpc system_err error&n; *      DENIED - authp holds reason for denial.&n; *&n; *   accept is passed the proc number so that it can accept NULL rpc requests&n; *   even if it cannot authenticate the client (as is sometimes appropriate).&n; *&n; * release() is given a request after the procedure has been run.&n; *  It should sign/encrypt the results if needed&n; * It should return:&n; *    OK - the resbuf is ready to be sent&n; *    DROP - the reply should be quitely dropped&n; *    DENIED - authp holds a reason for MSG_DENIED&n; *    SYSERR - rpc system_err&n; *&n; * domain_release()&n; *   This call releases a domain.&n; */
+multiline_comment|/*&n; * Each authentication flavour registers an auth_ops&n; * structure.&n; * name is simply the name.&n; * flavour gives the auth flavour. It determines where the flavour is registered&n; * accept() is given a request and should verify it.&n; *   It should inspect the authenticator and verifier, and possibly the data.&n; *    If there is a problem with the authentication *authp should be set.&n; *    The return value of accept() can indicate:&n; *      OK - authorised. client and credential are set in rqstp.&n; *           reqbuf points to arguments&n; *           resbuf points to good place for results.  verfier&n; *             is (probably) already in place.  Certainly space is&n; *&t;       reserved for it.&n; *      DROP - simply drop the request. It may have been deferred&n; *      GARBAGE - rpc garbage_args error&n; *      SYSERR - rpc system_err error&n; *      DENIED - authp holds reason for denial.&n; *      COMPLETE - the reply is encoded already and ready to be sent; no&n; *&t;&t;further processing is necessary.  (This is used for processing&n; *&t;&t;null procedure calls which are used to set up encryption&n; *&t;&t;contexts.)&n; *&n; *   accept is passed the proc number so that it can accept NULL rpc requests&n; *   even if it cannot authenticate the client (as is sometimes appropriate).&n; *&n; * release() is given a request after the procedure has been run.&n; *  It should sign/encrypt the results if needed&n; * It should return:&n; *    OK - the resbuf is ready to be sent&n; *    DROP - the reply should be quitely dropped&n; *    DENIED - authp holds a reason for MSG_DENIED&n; *    SYSERR - rpc system_err&n; *&n; * domain_release()&n; *   This call releases a domain.&n; */
 DECL|struct|auth_ops
 r_struct
 id|auth_ops
@@ -138,6 +137,8 @@ DECL|macro|SVC_DENIED
 mdefine_line|#define&t;SVC_DENIED&t;7
 DECL|macro|SVC_PENDING
 mdefine_line|#define&t;SVC_PENDING&t;8
+DECL|macro|SVC_COMPLETE
+mdefine_line|#define&t;SVC_COMPLETE&t;9
 r_extern
 r_int
 id|svc_authenticate

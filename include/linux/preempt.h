@@ -3,6 +3,7 @@ DECL|macro|__LINUX_PREEMPT_H
 mdefine_line|#define __LINUX_PREEMPT_H
 multiline_comment|/*&n; * include/linux/preempt.h - macros for accessing and manipulating&n; * preempt_count (used for kernel preemption, interrupt count, etc.)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|preempt_count
 mdefine_line|#define preempt_count()&t;(current_thread_info()-&gt;preempt_count)
 DECL|macro|inc_preempt_count
@@ -10,7 +11,7 @@ mdefine_line|#define inc_preempt_count() &bslash;&n;do { &bslash;&n;&t;preempt_c
 DECL|macro|dec_preempt_count
 mdefine_line|#define dec_preempt_count() &bslash;&n;do { &bslash;&n;&t;preempt_count()--; &bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_PREEMPT
-r_extern
+id|asmlinkage
 r_void
 id|preempt_schedule
 c_func

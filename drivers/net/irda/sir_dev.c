@@ -2336,12 +2336,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|dev-&gt;flags
-op_assign
-id|IFF_SIR
-op_or
-id|IFF_PIO
-suffix:semicolon
 multiline_comment|/* Override the network functions we need to use */
 id|ndev-&gt;hard_start_xmit
 op_assign

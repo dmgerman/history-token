@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -94,15 +95,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-id|asmlinkage
-r_void
-id|sys_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* it&squot;s really int */
 multiline_comment|/* Pretty sick eh? */
 DECL|function|prom_sync_me
 r_void

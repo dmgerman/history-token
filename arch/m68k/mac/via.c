@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/machw.h&gt; 
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_psc.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|via1
 DECL|variable|via2
 r_volatile

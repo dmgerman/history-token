@@ -6034,7 +6034,6 @@ multiline_comment|/********** reset a card **********/
 DECL|function|hrz_reset
 r_static
 r_void
-id|__init
 id|hrz_reset
 (paren
 r_const

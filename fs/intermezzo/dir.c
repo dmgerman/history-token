@@ -3681,8 +3681,6 @@ c_func
 id|inode
 comma
 id|mask
-comma
-id|nd
 )paren
 suffix:semicolon
 id|EXIT

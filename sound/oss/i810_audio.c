@@ -43,9 +43,17 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_440MX
 DECL|macro|PCI_DEVICE_ID_INTEL_440MX
 mdefine_line|#define PCI_DEVICE_ID_INTEL_440MX&t;0x7195
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
+DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
@@ -749,6 +757,38 @@ comma
 l_int|0
 comma
 id|AMD8111
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ESB_5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|INTELICH4
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH6_3
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|INTELICH4
 )brace
 comma
 (brace
@@ -12058,6 +12098,14 @@ op_logical_or
 id|card-&gt;pci_id
 op_eq
 id|PCI_DEVICE_ID_INTEL_ICH5
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ESB_5
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ICH6_3
 )paren
 op_logical_and
 (paren
@@ -12405,6 +12453,14 @@ op_logical_or
 id|card-&gt;pci_id
 op_eq
 id|PCI_DEVICE_ID_INTEL_ICH5
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ESB_5
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ICH6_3
 )paren
 op_logical_and
 (paren

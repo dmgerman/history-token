@@ -456,6 +456,12 @@ op_assign
 l_int|62
 comma
 multiline_comment|/* dir: pty driver */
+DECL|enumerator|KERN_NGROUPS_MAX
+id|KERN_NGROUPS_MAX
+op_assign
+l_int|63
+comma
+multiline_comment|/* int: NGROUPS_MAX */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -2706,18 +2712,6 @@ multiline_comment|/* fake target utsname information */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-r_extern
-id|asmlinkage
-r_int
-id|sys_sysctl
-c_func
-(paren
-r_struct
-id|__sysctl_args
-id|__user
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|sysctl_init

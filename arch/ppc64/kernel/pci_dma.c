@@ -121,6 +121,12 @@ id|sysdata
 op_assign
 op_amp
 id|iSeries_vio_dev_node
+comma
+dot
+id|dev.bus
+op_assign
+op_amp
+id|pci_bus_type
 )brace
 suffix:semicolon
 DECL|variable|iSeries_veth_dev
@@ -134,12 +140,12 @@ id|iSeries_veth_dev_st
 suffix:semicolon
 DECL|variable|iSeries_vio_dev
 r_struct
-id|pci_dev
+id|device
 op_star
 id|iSeries_vio_dev
 op_assign
 op_amp
-id|iSeries_vio_dev_st
+id|iSeries_vio_dev_st.dev
 suffix:semicolon
 multiline_comment|/* Device TceTable is stored in Device Node */
 multiline_comment|/* struct TceTable * tceTables[256]; */

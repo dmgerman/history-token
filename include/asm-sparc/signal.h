@@ -386,6 +386,7 @@ DECL|typedef|stack_t
 )brace
 id|stack_t
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|sparc_deliver_cookie
 r_struct
 id|sparc_deliver_cookie
@@ -401,8 +402,25 @@ id|orig_i0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|ptrace_signal_deliver
-mdefine_line|#define ptrace_signal_deliver(REGS, COOKIE) &bslash;&n;do {&t;struct sparc_deliver_cookie *cp = (COOKIE); &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    (regs-&gt;u_regs[UREG_I0] == ERESTARTNOHAND || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTSYS || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTNOINTR)) { &bslash;&n;&t;&t;/* replay the system call when we are done */ &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_I0] = cp-&gt;orig_i0; &bslash;&n;&t;&t;regs-&gt;pc -= 4; &bslash;&n;&t;&t;regs-&gt;npc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    regs-&gt;u_regs[UREG_I0] == ERESTART_RESTARTBLOCK) { &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_G1] = __NR_restart_syscall; &bslash;&n;&t;&t;regs-&gt;pc -= 4; &bslash;&n;&t;&t;regs-&gt;npc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;} while (0)
+r_struct
+id|pt_regs
+suffix:semicolon
+r_extern
+r_void
+id|ptrace_signal_deliver
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_void
+op_star
+id|cookie
+)paren
+suffix:semicolon
+macro_line|#endif /* !(__KERNEL__) */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_ASMSPARC_SIGNAL_H) */
 eof

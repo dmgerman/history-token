@@ -2,6 +2,8 @@ multiline_comment|/* &n; * 32bit ptrace for x86-64.&n; *&n; * Copyright 2001,200
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1130,27 +1132,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_ptrace
-c_func
-(paren
-r_int
-id|request
-comma
-r_int
-id|pid
-comma
-r_int
-r_int
-id|addr
-comma
-r_int
-r_int
-id|data
-)paren
-suffix:semicolon
 DECL|function|sys32_ptrace
 id|asmlinkage
 r_int

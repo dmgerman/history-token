@@ -2812,6 +2812,7 @@ id|tsk
 suffix:semicolon
 )brace
 DECL|function|do_exit
+id|asmlinkage
 id|NORET_TYPE
 r_void
 id|do_exit

@@ -52,23 +52,7 @@ op_assign
 id|KB_101
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86
-id|asmlinkage
-r_int
-id|sys_ioperm
-c_func
-(paren
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-id|on
-)paren
-suffix:semicolon
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * these are the valid i/o ports we&squot;re allowed to change. they map all the&n; * video ports&n; */
 DECL|macro|GPFIRST

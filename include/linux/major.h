@@ -212,6 +212,10 @@ DECL|macro|COMPAQ_CISS_MAJOR6
 mdefine_line|#define COMPAQ_CISS_MAJOR6      110
 DECL|macro|COMPAQ_CISS_MAJOR7
 mdefine_line|#define COMPAQ_CISS_MAJOR7      111
+DECL|macro|VIODASD_MAJOR
+mdefine_line|#define VIODASD_MAJOR&t;&t;112
+DECL|macro|VIOCD_MAJOR
+mdefine_line|#define VIOCD_MAJOR&t;&t;113
 DECL|macro|ATARAID_MAJOR
 mdefine_line|#define ATARAID_MAJOR&t;&t;114
 DECL|macro|SCSI_DISK8_MAJOR

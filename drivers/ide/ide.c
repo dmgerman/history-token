@@ -600,14 +600,6 @@ id|initializing
 op_assign
 l_int|0
 suffix:semicolon
-id|idebus_parameter
-op_assign
-l_int|0
-suffix:semicolon
-id|system_bus_speed
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; * The actual value to be used is computed/displayed the first time through.&n; */
 DECL|function|ide_system_bus_speed

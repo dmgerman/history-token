@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/cio/qdio.c&n; *&n; * Linux for S/390 QDIO base support, Hipersocket base support&n; * version 2&n; *&n; * Copyright 2000,2002 IBM Corporation&n; * Author(s): Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Restriction: only 63 iqdio subchannels would have its own indicator,&n; * after that, subsequent subchannels share one indicator&n; *&n; *&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/cio/qdio.c&n; *&n; * Linux for S/390 QDIO base support, Hipersocket base support&n; * version 2&n; *&n; * Copyright 2000,2002 IBM Corporation&n; * Author(s):             Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; * 2.6 cio integration by Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Restriction: only 63 iqdio subchannels would have its own indicator,&n; * after that, subsequent subchannels share one indicator&n; *&n; *&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.67 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.74 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -98,6 +98,11 @@ DECL|variable|hydra_thinints
 r_static
 r_int
 id|hydra_thinints
+suffix:semicolon
+DECL|variable|omit_svs
+r_static
+r_int
+id|omit_svs
 suffix:semicolon
 DECL|variable|indicator_used
 r_static
@@ -256,7 +261,7 @@ c_func
 (paren
 )paren
 op_rshift
-l_int|12
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* time&gt;&gt;12 is microseconds */
@@ -2025,12 +2030,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|SAVE_TIMESTAMP
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -2355,9 +2354,10 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
-DECL|function|qdio_outbound_processing
-id|qdio_outbound_processing
+DECL|function|__qdio_outbound_processing
+id|__qdio_outbound_processing
 c_func
 (paren
 r_struct
@@ -2528,6 +2528,25 @@ id|q
 )paren
 suffix:semicolon
 id|qdio_release_q
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|qdio_outbound_processing
+id|qdio_outbound_processing
+c_func
+(paren
+r_struct
+id|qdio_q
+op_star
+id|q
+)paren
+(brace
+id|__qdio_outbound_processing
 c_func
 (paren
 id|q
@@ -3965,7 +3984,7 @@ c_func
 id|oq
 )paren
 )paren
-id|qdio_outbound_processing
+id|__qdio_outbound_processing
 c_func
 (paren
 id|oq
@@ -4065,9 +4084,10 @@ id|spare_indicator_usecount
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
-DECL|function|qdio_inbound_processing
-id|qdio_inbound_processing
+DECL|function|__qdio_inbound_processing
+id|__qdio_inbound_processing
 c_func
 (paren
 r_struct
@@ -4249,6 +4269,25 @@ id|q
 suffix:semicolon
 )brace
 id|qdio_release_q
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|qdio_inbound_processing
+id|qdio_inbound_processing
+c_func
+(paren
+r_struct
+id|qdio_q
+op_star
+id|q
+)paren
+(brace
+id|__qdio_inbound_processing
 c_func
 (paren
 id|q
@@ -4774,11 +4813,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|irq_ptr-&gt;qdr
-)paren
 id|kfree
 c_func
 (paren
@@ -6288,12 +6322,12 @@ op_assign
 id|NOW
 suffix:semicolon
 macro_line|#endif /* QDIO_PERFORMANCE_STATS */
-multiline_comment|/* VM will do the SVS for us */
+multiline_comment|/* SVS only when needed:&n;&t; * issue SVS to benefit from iqdio interrupt avoidance&n;&t; * (SVS clears AISOI)*/
 r_if
 c_cond
 (paren
 op_logical_neg
-id|MACHINE_IS_VM
+id|omit_svs
 )paren
 id|tiqdio_clear_global_summary
 c_func
@@ -6582,7 +6616,7 @@ id|perf_stats.tl_runs
 op_decrement
 suffix:semicolon
 macro_line|#endif /* QDIO_PERFORMANCE_STATS */
-id|qdio_inbound_processing
+id|__qdio_inbound_processing
 c_func
 (paren
 id|q
@@ -6644,7 +6678,7 @@ id|irq_ptr-&gt;sync_done_on_outb_pcis
 )paren
 id|SYNC_MEMORY
 suffix:semicolon
-id|qdio_outbound_processing
+id|__qdio_outbound_processing
 c_func
 (paren
 id|q
@@ -7349,7 +7383,6 @@ comma
 id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
-singleline_comment|//FIXME: hm?
 r_return
 suffix:semicolon
 r_case
@@ -7864,7 +7897,6 @@ suffix:semicolon
 op_star
 id|ssqd_area
 suffix:semicolon
-multiline_comment|/* FIXME make this GFP_KERNEL */
 id|ssqd_area
 op_assign
 (paren
@@ -7874,7 +7906,7 @@ op_star
 id|get_zeroed_page
 c_func
 (paren
-id|GFP_ATOMIC
+id|GFP_KERNEL
 op_or
 id|GFP_DMA
 )paren
@@ -7897,8 +7929,11 @@ id|sch
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|CHSC_FLAG_SIGA_INPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_OUTPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_SYNC_NECESSARY
 suffix:semicolon
 multiline_comment|/* all flags set */
 )brace
@@ -7957,8 +7992,11 @@ id|sch
 suffix:semicolon
 id|qdioac
 op_assign
-op_minus
-l_int|1
+id|CHSC_FLAG_SIGA_INPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_OUTPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_SYNC_NECESSARY
 suffix:semicolon
 multiline_comment|/* all flags set */
 r_goto
@@ -7987,8 +8025,11 @@ id|sch
 suffix:semicolon
 id|qdioac
 op_assign
-op_minus
-l_int|1
+id|CHSC_FLAG_SIGA_INPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_OUTPUT_NECESSARY
+op_logical_or
+id|CHSC_FLAG_SIGA_SYNC_NECESSARY
 suffix:semicolon
 multiline_comment|/* all flags set */
 r_goto
@@ -8319,6 +8360,42 @@ comma
 l_string|&quot;hydrati%1x&quot;
 comma
 id|hydra_thinints
+)paren
+suffix:semicolon
+id|QDIO_DBF_TEXT0
+c_func
+(paren
+l_int|0
+comma
+id|setup
+comma
+id|dbf_text
+)paren
+suffix:semicolon
+multiline_comment|/* Check for aif time delay disablement fac (bit 56). If installed,&n;&t; * omit svs even under lpar (good point by rick again) */
+id|omit_svs
+op_assign
+(paren
+(paren
+id|scsc_area-&gt;general_char
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x00000080
+)paren
+op_eq
+l_int|0x00000080
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dbf_text
+comma
+l_string|&quot;omitsvs%1x&quot;
+comma
+id|omit_svs
 )paren
 suffix:semicolon
 id|QDIO_DBF_TEXT0
@@ -9223,8 +9300,6 @@ id|dbf_text
 (braket
 l_int|15
 )braket
-op_assign
-l_string|&quot;12345678&quot;
 suffix:semicolon
 id|irq_ptr
 op_assign
@@ -9423,7 +9498,6 @@ op_member_access_from_pointer
 id|use_count
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * FIXME:&n;&t;&t;&t; * nobody cares about such retval,&n;&t;&t;&t; * does a timeout make sense at all?&n;&t;&t;&t; * can this case be eliminated?&n;&t;&t;&t; * mutex should be released anyway, shouldn&squot;t it?&n;&t;&t;&t; */
 id|result
 op_assign
 op_minus
@@ -9499,7 +9573,6 @@ op_member_access_from_pointer
 id|use_count
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * FIXME:&n;&t;&t;&t; * nobody cares about such retval,&n;&t;&t;&t; * does a timeout make sense at all?&n;&t;&t;&t; * can this case be eliminated?&n;&t;&t;&t; * mutex should be released anyway, shouldn&squot;t it?&n;&t;&t;&t; */
 id|result
 op_assign
 op_minus
@@ -9916,7 +9989,7 @@ id|dbf_text
 l_int|20
 )braket
 suffix:semicolon
-multiline_comment|/* if a printf would print out more than 8 chars */
+multiline_comment|/* if a printf printed out more than 8 chars */
 id|sprintf
 c_func
 (paren
@@ -9935,16 +10008,6 @@ comma
 id|setup
 comma
 id|dbf_text
-)paren
-suffix:semicolon
-id|QDIO_DBF_TEXT0
-c_func
-(paren
-l_int|0
-comma
-id|setup
-comma
-id|init_data-&gt;adapter_name
 )paren
 suffix:semicolon
 id|QDIO_DBF_HEX0
@@ -11502,12 +11565,6 @@ id|irq_ptr-&gt;qdr
 id|kfree
 c_func
 (paren
-id|irq_ptr-&gt;qdr
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|irq_ptr
 )paren
 suffix:semicolon
@@ -12170,13 +12227,6 @@ id|init_data-&gt;cdev-&gt;handler
 op_assign
 id|qdio_handler
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|irq_ptr-&gt;setting_up_sema
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -12297,7 +12347,7 @@ op_amp
 id|irq_ptr-&gt;setting_up_sema
 )paren
 suffix:semicolon
-id|qdio_cleanup
+id|qdio_shutdown
 c_func
 (paren
 id|cdev
@@ -12553,8 +12603,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: don&squot;t wait forever if hardware is broken */
-id|wait_event
+id|wait_event_interruptible_timeout
 c_func
 (paren
 id|cdev
@@ -12570,6 +12619,8 @@ op_logical_or
 id|irq_ptr-&gt;state
 op_eq
 id|QDIO_IRQ_STATE_ERR
+comma
+id|QDIO_ESTABLISH_TIMEOUT
 )paren
 suffix:semicolon
 r_if
@@ -12585,6 +12636,13 @@ l_int|0
 suffix:semicolon
 r_else
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|irq_ptr-&gt;setting_up_sema
+)paren
+suffix:semicolon
 id|qdio_shutdown
 c_func
 (paren
@@ -12593,17 +12651,11 @@ comma
 id|QDIO_FLAG_CLEANUP_USING_CLEAR
 )paren
 suffix:semicolon
-id|result
-op_assign
+r_return
 op_minus
 id|EIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|MACHINE_IS_VM
-)paren
 id|irq_ptr-&gt;qdioac
 op_assign
 id|qdio_check_siga_needs
@@ -12612,12 +12664,17 @@ c_func
 id|irq_ptr-&gt;irq
 )paren
 suffix:semicolon
-r_else
+multiline_comment|/* if this gets set once, we&squot;re running under VM and can omit SVSes */
+r_if
+c_cond
+(paren
 id|irq_ptr-&gt;qdioac
+op_amp
+id|CHSC_FLAG_SIGA_SYNC_NECESSARY
+)paren
+id|omit_svs
 op_assign
-id|CHSC_FLAG_SIGA_INPUT_NECESSARY
-op_or
-id|CHSC_FLAG_SIGA_OUTPUT_NECESSARY
+l_int|1
 suffix:semicolon
 id|sprintf
 c_func
@@ -13118,12 +13175,26 @@ suffix:colon
 r_case
 id|QDIO_IRQ_STATE_ERR
 suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|irq_ptr-&gt;setting_up_sema
+)paren
+suffix:semicolon
 id|qdio_shutdown
 c_func
 (paren
 id|cdev
 comma
 id|QDIO_FLAG_CLEANUP_USING_CLEAR
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|irq_ptr-&gt;setting_up_sema
 )paren
 suffix:semicolon
 id|result
@@ -13163,6 +13234,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* buffers filled forwards again to make Rick happy */
 r_static
+r_inline
 r_void
 DECL|function|qdio_do_qdio_fill_input
 id|qdio_do_qdio_fill_input
@@ -13565,7 +13637,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|qdio_outbound_processing
+id|__qdio_outbound_processing
 c_func
 (paren
 id|q
@@ -13630,7 +13702,7 @@ macro_line|#endif /* QDIO_PERFORMANCE_STATS */
 )brace
 )brace
 multiline_comment|/* &n;&t;&t; * only marking the q could take too long,&n;&t;&t; * the upper layer module could do a lot of&n;&t;&t; * traffic in that time &n;&t;&t; */
-id|qdio_outbound_processing
+id|__qdio_outbound_processing
 c_func
 (paren
 id|q

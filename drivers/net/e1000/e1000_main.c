@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.30.1-k1&quot;
+l_string|&quot;5.2.30.1-k2&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1714,7 +1714,7 @@ op_minus
 id|pba
 )paren
 op_lshift
-id|E1000_TX_FIFO_SIZE_SHIFT
+id|E1000_PBA_BYTES_SHIFT
 suffix:semicolon
 id|atomic_set
 c_func
@@ -1740,13 +1740,21 @@ suffix:semicolon
 multiline_comment|/* flow control settings */
 id|adapter-&gt;hw.fc_high_water
 op_assign
+(paren
 id|pba
+op_lshift
+id|E1000_PBA_BYTES_SHIFT
+)paren
 op_minus
 id|E1000_FC_HIGH_DIFF
 suffix:semicolon
 id|adapter-&gt;hw.fc_low_water
 op_assign
+(paren
 id|pba
+op_lshift
+id|E1000_PBA_BYTES_SHIFT
+)paren
 op_minus
 id|E1000_FC_LOW_DIFF
 suffix:semicolon
@@ -2299,6 +2307,8 @@ id|NETIF_F_SG
 suffix:semicolon
 )brace
 macro_line|#ifdef NETIF_F_TSO
+macro_line|#ifdef BROKEN_ON_NON_IA_ARCHS
+multiline_comment|/* Disbaled for now until root-cause is found for&n;&t; * hangs reported against non-IA archs.  TSO can be&n;&t; * enabled using ethtool -K eth&lt;x&gt; tso on */
 r_if
 c_cond
 (paren
@@ -2320,6 +2330,7 @@ op_or_assign
 id|NETIF_F_TSO
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
@@ -2508,12 +2519,24 @@ comma
 id|netdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|register_netdev
 c_func
 (paren
 id|netdev
 )paren
+)paren
+)paren
+(brace
+r_goto
+id|err_register
 suffix:semicolon
+)brace
 multiline_comment|/* we&squot;re going to reset, so assume we have no link for now */
 id|netif_carrier_off
 c_func
@@ -2652,6 +2675,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_register
+suffix:colon
 id|err_sw_init
 suffix:colon
 id|err_eeprom
@@ -8825,26 +8850,6 @@ id|netdev
 suffix:semicolon
 )brace
 macro_line|#else
-multiline_comment|/* Writing IMC and IMS is needed for 82547.&n;&t;   Due to Hub Link bus being occupied, an interrupt &n;&t;   de-assertion message is not able to be sent. &n;&t;   When an interrupt assertion message is generated later,&n;&t;   two messages are re-ordered and sent out.&n;&t;   That causes APIC to think 82547 is in de-assertion&n;&t;   state, while 82547 is in assertion state, resulting &n;&t;   in dead lock. Writing IMC forces 82547 into &n;&t;   de-assertion state.&n;        */
-r_if
-c_cond
-(paren
-id|hw-&gt;mac_type
-op_eq
-id|e1000_82547
-op_logical_or
-id|hw-&gt;mac_type
-op_eq
-id|e1000_82547_rev_2
-)paren
-(brace
-id|e1000_irq_disable
-c_func
-(paren
-id|adapter
-)paren
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -8878,25 +8883,6 @@ id|adapter
 )paren
 (brace
 r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|hw-&gt;mac_type
-op_eq
-id|e1000_82547
-op_logical_or
-id|hw-&gt;mac_type
-op_eq
-id|e1000_82547_rev_2
-)paren
-(brace
-id|e1000_irq_enable
-c_func
-(paren
-id|adapter
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.50 2003/12/02 15:18:50 cohuck Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.50 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.54 2004/02/18 12:35:59 ptiedem Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * Driver Model stuff by : Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.54 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -243,6 +243,10 @@ r_char
 op_star
 id|trans_skb_data
 suffix:semicolon
+DECL|member|logflags
+id|__u16
+id|logflags
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CHANNEL_FLAGS_READ
@@ -253,10 +257,61 @@ DECL|macro|CHANNEL_FLAGS_INUSE
 mdefine_line|#define CHANNEL_FLAGS_INUSE           2
 DECL|macro|CHANNEL_FLAGS_BUFSIZE_CHANGED
 mdefine_line|#define CHANNEL_FLAGS_BUFSIZE_CHANGED 4
+DECL|macro|CHANNEL_FLAGS_FAILED
+mdefine_line|#define CHANNEL_FLAGS_FAILED          8
+DECL|macro|CHANNEL_FLAGS_WAITIRQ
+mdefine_line|#define CHANNEL_FLAGS_WAITIRQ        16
 DECL|macro|CHANNEL_FLAGS_RWMASK
 mdefine_line|#define CHANNEL_FLAGS_RWMASK 1
 DECL|macro|CHANNEL_DIRECTION
 mdefine_line|#define CHANNEL_DIRECTION(f) (f &amp; CHANNEL_FLAGS_RWMASK)
+DECL|macro|LOG_FLAG_ILLEGALPKT
+mdefine_line|#define LOG_FLAG_ILLEGALPKT  1
+DECL|macro|LOG_FLAG_ILLEGALSIZE
+mdefine_line|#define LOG_FLAG_ILLEGALSIZE 2
+DECL|macro|LOG_FLAG_OVERRUN
+mdefine_line|#define LOG_FLAG_OVERRUN     4
+DECL|macro|LOG_FLAG_NOMEM
+mdefine_line|#define LOG_FLAG_NOMEM       8
+DECL|macro|CTC_LOGLEVEL_INFO
+mdefine_line|#define CTC_LOGLEVEL_INFO     1
+DECL|macro|CTC_LOGLEVEL_NOTICE
+mdefine_line|#define CTC_LOGLEVEL_NOTICE   2
+DECL|macro|CTC_LOGLEVEL_WARN
+mdefine_line|#define CTC_LOGLEVEL_WARN     4
+DECL|macro|CTC_LOGLEVEL_EMERG
+mdefine_line|#define CTC_LOGLEVEL_EMERG    8
+DECL|macro|CTC_LOGLEVEL_ERR
+mdefine_line|#define CTC_LOGLEVEL_ERR     16
+DECL|macro|CTC_LOGLEVEL_DEBUG
+mdefine_line|#define CTC_LOGLEVEL_DEBUG   32
+DECL|macro|CTC_LOGLEVEL_CRIT
+mdefine_line|#define CTC_LOGLEVEL_CRIT    64
+DECL|macro|CTC_LOGLEVEL_DEFAULT
+mdefine_line|#define CTC_LOGLEVEL_DEFAULT &bslash;&n;(CTC_LOGLEVEL_INFO | CTC_LOGLEVEL_NOTICE | CTC_LOGLEVEL_WARN | CTC_LOGLEVEL_CRIT)
+DECL|macro|CTC_LOGLEVEL_MAX
+mdefine_line|#define CTC_LOGLEVEL_MAX     ((CTC_LOGLEVEL_CRIT&lt;&lt;1)-1)
+DECL|variable|loglevel
+r_static
+r_int
+id|loglevel
+op_assign
+id|CTC_LOGLEVEL_DEFAULT
+suffix:semicolon
+DECL|macro|ctc_pr_debug
+mdefine_line|#define ctc_pr_debug(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_DEBUG) printk(KERN_DEBUG fmt,##arg); } while (0)
+DECL|macro|ctc_pr_info
+mdefine_line|#define ctc_pr_info(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_INFO) printk(KERN_INFO fmt,##arg); } while (0)
+DECL|macro|ctc_pr_notice
+mdefine_line|#define ctc_pr_notice(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_NOTICE) printk(KERN_NOTICE fmt,##arg); } while (0)
+DECL|macro|ctc_pr_warn
+mdefine_line|#define ctc_pr_warn(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_WARN) printk(KERN_WARNING fmt,##arg); } while (0)
+DECL|macro|ctc_pr_emerg
+mdefine_line|#define ctc_pr_emerg(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_EMERG) printk(KERN_EMERG fmt,##arg); } while (0)
+DECL|macro|ctc_pr_err
+mdefine_line|#define ctc_pr_err(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_ERR) printk(KERN_ERR fmt,##arg); } while (0)
+DECL|macro|ctc_pr_crit
+mdefine_line|#define ctc_pr_crit(fmt, arg...) &bslash;&n;do { if (loglevel &amp; CTC_LOGLEVEL_CRIT) printk(KERN_CRIT fmt,##arg); } while (0)
 multiline_comment|/**&n; * Linked list of all detected channels.&n; */
 DECL|variable|channels
 r_static
@@ -363,6 +418,22 @@ id|tbusy
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_struct
+id|ctc_priv
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|protocol
+op_ne
+id|CTC_PROTO_LINUX_TTY
+)paren
 id|netif_wake_queue
 c_func
 (paren
@@ -383,6 +454,22 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_struct
+id|ctc_priv
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|protocol
+op_ne
+id|CTC_PROTO_LINUX_TTY
+)paren
 id|netif_stop_queue
 c_func
 (paren
@@ -430,7 +517,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.50 $&quot;
+l_string|&quot;$Revision: 1.54 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -773,15 +860,15 @@ id|ch_event_names
 )braket
 op_assign
 (brace
-l_string|&quot;do_IO success&quot;
+l_string|&quot;ccw_device success&quot;
 comma
-l_string|&quot;do_IO busy&quot;
+l_string|&quot;ccw_device busy&quot;
 comma
-l_string|&quot;do_IO enodev&quot;
+l_string|&quot;ccw_device enodev&quot;
 comma
-l_string|&quot;do_IO ioerr&quot;
+l_string|&quot;ccw_device ioerr&quot;
 comma
-l_string|&quot;do_IO unknown&quot;
+l_string|&quot;ccw_device unknown&quot;
 comma
 l_string|&quot;Status ATTN &amp; BUSY&quot;
 comma
@@ -963,6 +1050,18 @@ id|header
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|loglevel
+op_amp
+id|CTC_LOGLEVEL_DEBUG
+)paren
+)paren
+r_return
 suffix:semicolon
 id|p
 op_add_assign
@@ -1247,19 +1346,38 @@ id|ETH_P_IP
 )paren
 )paren
 (brace
-multiline_comment|/**&n;&t;&t;&t; * Check packet type only if we stick strictly&n;&t;&t;&t; * to S/390&squot;s protocol of OS390. This only&n;&t;&t;&t; * supports IP. Otherwise allow any packet&n;&t;&t;&t; * type.&n;&t;&t;&t; */
-id|printk
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ch-&gt;logflags
+op_amp
+id|LOG_FLAG_ILLEGALPKT
+)paren
+)paren
+(brace
+macro_line|#endif
+multiline_comment|/**&n;&t;&t;&t;&t; * Check packet type only if we stick strictly&n;&t;&t;&t;&t; * to S/390&squot;s protocol of OS390. This only&n;&t;&t;&t;&t; * supports IP. Otherwise allow any packet&n;&t;&t;&t;&t; * type.&n;&t;&t;&t;&t; */
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s Illegal packet type 0x%04x &quot;
-l_string|&quot;received, dropping&bslash;n&quot;
+l_string|&quot;%s Illegal packet type 0x%04x received, dropping&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|header-&gt;type
 )paren
 suffix:semicolon
+id|ch-&gt;logflags
+op_or_assign
+id|LOG_FLAG_ILLEGALPKT
+suffix:semicolon
+macro_line|#ifndef DEBUG
+)brace
+macro_line|#endif
+macro_line|#ifdef DEBUG
 id|ctc_dump_skb
 c_func
 (paren
@@ -1269,6 +1387,7 @@ op_minus
 l_int|6
 )paren
 suffix:semicolon
+macro_line|#endif
 id|privptr-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
@@ -1286,40 +1405,30 @@ c_func
 id|header-&gt;type
 )paren
 suffix:semicolon
-id|header-&gt;length
-op_sub_assign
-id|LL_HEADER_LENGTH
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|header-&gt;length
-op_eq
-l_int|0
+op_le
+id|LL_HEADER_LENGTH
 )paren
-op_logical_or
+(brace
+macro_line|#ifndef DEBUG
+r_if
+c_cond
 (paren
-id|header-&gt;length
-OG
-id|skb_tailroom
-c_func
+op_logical_neg
 (paren
-id|pskb
-)paren
-)paren
-op_logical_or
-(paren
-id|header-&gt;length
-OG
-id|len
+id|ch-&gt;logflags
+op_amp
+id|LOG_FLAG_ILLEGALSIZE
 )paren
 )paren
 (brace
-id|printk
+macro_line|#endif
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s Illegal packet size %d &quot;
 l_string|&quot;received (MTU=%d blocklen=%d), &quot;
 l_string|&quot;dropping&bslash;n&quot;
@@ -1333,6 +1442,14 @@ comma
 id|len
 )paren
 suffix:semicolon
+id|ch-&gt;logflags
+op_or_assign
+id|LOG_FLAG_ILLEGALSIZE
+suffix:semicolon
+macro_line|#ifndef DEBUG
+)brace
+macro_line|#endif
+macro_line|#ifdef DEBUG
 id|ctc_dump_skb
 c_func
 (paren
@@ -1342,6 +1459,7 @@ op_minus
 l_int|6
 )paren
 suffix:semicolon
+macro_line|#endif
 id|privptr-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
@@ -1351,8 +1469,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|header-&gt;length
+op_sub_assign
+id|LL_HEADER_LENGTH
+suffix:semicolon
+id|len
+op_sub_assign
+id|LL_HEADER_LENGTH
+suffix:semicolon
 r_if
 c_cond
+(paren
 (paren
 id|header-&gt;length
 OG
@@ -1362,11 +1489,30 @@ c_func
 id|pskb
 )paren
 )paren
+op_logical_or
+(paren
+id|header-&gt;length
+OG
+id|len
+)paren
+)paren
 (brace
-id|printk
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ch-&gt;logflags
+op_amp
+id|LOG_FLAG_OVERRUN
+)paren
+)paren
+(brace
+macro_line|#endif
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s Illegal packet size %d &quot;
 l_string|&quot;(beyond the end of received data), &quot;
 l_string|&quot;dropping&bslash;n&quot;
@@ -1376,6 +1522,14 @@ comma
 id|header-&gt;length
 )paren
 suffix:semicolon
+id|ch-&gt;logflags
+op_or_assign
+id|LOG_FLAG_OVERRUN
+suffix:semicolon
+macro_line|#ifndef DEBUG
+)brace
+macro_line|#endif
+macro_line|#ifdef DEBUG
 id|ctc_dump_skb
 c_func
 (paren
@@ -1385,6 +1539,7 @@ op_minus
 l_int|6
 )paren
 suffix:semicolon
+macro_line|#endif
 id|privptr-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
@@ -1408,11 +1563,7 @@ id|pskb-&gt;data
 suffix:semicolon
 id|len
 op_sub_assign
-(paren
-id|LL_HEADER_LENGTH
-op_plus
 id|header-&gt;length
-)paren
 suffix:semicolon
 id|skb
 op_assign
@@ -1429,15 +1580,34 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|printk
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ch-&gt;logflags
+op_amp
+id|LOG_FLAG_NOMEM
+)paren
+)paren
+(brace
+macro_line|#endif
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s Out of memory in ctc_unpack_skb&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|ch-&gt;logflags
+op_or_assign
+id|LOG_FLAG_NOMEM
+suffix:semicolon
+macro_line|#ifndef DEBUG
+)brace
+macro_line|#endif
 id|privptr-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
@@ -1496,6 +1666,11 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/**&n;&t;&t; * Successful rx; reset logflags&n;&t;&t; */
+id|ch-&gt;logflags
+op_assign
+l_int|0
+suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -1523,6 +1698,49 @@ comma
 id|header-&gt;length
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb_tailroom
+c_func
+(paren
+id|pskb
+)paren
+OL
+id|LL_HEADER_LENGTH
+)paren
+(brace
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ch-&gt;logflags
+op_amp
+id|LOG_FLAG_OVERRUN
+)paren
+)paren
+(brace
+macro_line|#endif
+id|ctc_pr_warn
+c_func
+(paren
+l_string|&quot;%s Overrun in ctc_unpack_skb&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|ch-&gt;logflags
+op_or_assign
+id|LOG_FLAG_OVERRUN
+suffix:semicolon
+macro_line|#ifndef DEBUG
+)brace
+macro_line|#endif
+r_return
+suffix:semicolon
+)brace
 id|skb_put
 c_func
 (paren
@@ -1534,7 +1752,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * Check return code of a preceeding do_IO, halt_IO etc...&n; *&n; * @param ch          The channel, the error belongs to.&n; * @param return_code The error code to inspect.&n; */
+multiline_comment|/**&n; * Check return code of a preceeding ccw_device call, halt_IO etc...&n; *&n; * @param ch          The channel, the error belongs to.&n; * @param return_code The error code to inspect.&n; */
 r_static
 r_void
 r_inline
@@ -1549,6 +1767,10 @@ id|ch
 comma
 r_int
 id|return_code
+comma
+r_char
+op_star
+id|msg
 )paren
 (brace
 r_switch
@@ -1576,13 +1798,14 @@ r_case
 op_minus
 id|EBUSY
 suffix:colon
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: Busy !&bslash;n&quot;
+l_string|&quot;%s (%s): Busy !&bslash;n&quot;
 comma
 id|ch-&gt;id
+comma
+id|msg
 )paren
 suffix:semicolon
 id|fsm_event
@@ -1601,13 +1824,14 @@ r_case
 op_minus
 id|ENODEV
 suffix:colon
-id|printk
+id|ctc_pr_emerg
 c_func
 (paren
-id|KERN_EMERG
-l_string|&quot;%s: Invalid device called for IO&bslash;n&quot;
+l_string|&quot;%s (%s): Invalid device called for IO&bslash;n&quot;
 comma
 id|ch-&gt;id
+comma
+id|msg
 )paren
 suffix:semicolon
 id|fsm_event
@@ -1626,13 +1850,14 @@ r_case
 op_minus
 id|EIO
 suffix:colon
-id|printk
+id|ctc_pr_emerg
 c_func
 (paren
-id|KERN_EMERG
-l_string|&quot;%s: Status pending... &bslash;n&quot;
+l_string|&quot;%s (%s): Status pending... &bslash;n&quot;
 comma
 id|ch-&gt;id
+comma
+id|msg
 )paren
 suffix:semicolon
 id|fsm_event
@@ -1649,13 +1874,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|ctc_pr_emerg
 c_func
 (paren
-id|KERN_EMERG
-l_string|&quot;%s: Unknown error in do_IO %04x&bslash;n&quot;
+l_string|&quot;%s (%s): Unknown error in do_IO %04x&bslash;n&quot;
 comma
 id|ch-&gt;id
+comma
+id|msg
 comma
 id|return_code
 )paren
@@ -1713,10 +1939,9 @@ id|ch-&gt;protocol
 op_ne
 id|CTC_PROTO_LINUX_TTY
 )paren
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Interface disc. or Sel. reset &quot;
 l_string|&quot;(remote)&bslash;n&quot;
 comma
@@ -1736,10 +1961,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: System reset (remote)&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1774,10 +1998,9 @@ op_amp
 id|SNS0_BUS_OUT_CHECK
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Hardware malfunction (remote)&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1796,10 +2019,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Read-data parity error (remote)&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1834,10 +2056,9 @@ op_amp
 l_int|0x04
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Data-streaming timeout)&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1856,10 +2077,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Data-transfer parity error&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1886,10 +2106,9 @@ op_amp
 id|SNS0_CMD_REJECT
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Command reject&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1905,10 +2124,9 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Unit check ZERO&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -1927,10 +2145,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Unit Check with sense code: %02x&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -2076,10 +2293,9 @@ c_cond
 (paren
 id|warn
 )paren
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Couldn&squot;t alloc %s trans_skb&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -2145,10 +2361,9 @@ c_cond
 (paren
 id|warn
 )paren
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: set_normalized_cda for %s &quot;
 l_string|&quot;trans_skb failed, dropping packets&bslash;n&quot;
 comma
@@ -2322,10 +2537,9 @@ id|ch-&gt;irb-&gt;scsw.count
 op_ne
 l_int|0
 )paren
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: TX not complete, remaining %d bytes&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2664,6 +2878,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;chained TX&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2851,10 +3067,9 @@ OL
 l_int|8
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: got packet with length %d &lt; 8&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2880,10 +3095,9 @@ OG
 id|ch-&gt;max_bufsize
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: got packet with length %d &gt; %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2949,10 +3163,9 @@ id|check_len
 )paren
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: got block length %d != rx length %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2962,6 +3175,7 @@ comma
 id|len
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|ctc_dump_skb
 c_func
 (paren
@@ -2970,6 +3184,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 op_star
 (paren
 (paren
@@ -3094,6 +3309,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;normal RX&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3159,12 +3376,10 @@ id|fi
 op_eq
 id|CH_STATE_TXIDLE
 )paren
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;%s: remote side issued READ?, &quot;
-l_string|&quot;init ...&bslash;n&quot;
+l_string|&quot;%s: remote side issued READ?, init ...&bslash;n&quot;
 comma
 id|ch-&gt;id
 )paren
@@ -3425,6 +3640,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;init IO&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3539,7 +3756,8 @@ op_star
 id|ch-&gt;trans_skb-&gt;data
 )paren
 suffix:semicolon
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;%s: Initial RX count %d&bslash;n&quot;
@@ -3549,6 +3767,7 @@ comma
 id|buflen
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3633,6 +3852,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;initial RX&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3659,10 +3880,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Initial RX count %d not %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3841,6 +4061,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;set Mode&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3901,10 +4123,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ch_action_start ch=NULL&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3919,10 +4140,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ch_action_start dev=NULL, id=%s&bslash;n&quot;
 comma
 id|ch-&gt;id
@@ -3935,7 +4155,8 @@ id|dev
 op_assign
 id|ch-&gt;netdev
 suffix:semicolon
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;%s: %s channel start&bslash;n&quot;
@@ -3958,6 +4179,7 @@ suffix:colon
 l_string|&quot;TX&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4070,10 +4292,10 @@ comma
 l_int|0
 )paren
 )paren
-id|printk
+(brace
+id|ctc_pr_notice
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;%s: Could not allocate %s trans_skb, delaying &quot;
 l_string|&quot;allocation until first transfer&bslash;n&quot;
 comma
@@ -4095,6 +4317,7 @@ suffix:colon
 l_string|&quot;TX&quot;
 )paren
 suffix:semicolon
+)brace
 id|ch-&gt;ccw
 (braket
 l_int|0
@@ -4280,6 +4503,14 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+op_minus
+id|EBUSY
+)paren
 id|fsm_deltimer
 c_func
 (paren
@@ -4293,17 +4524,21 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;initial HaltIO&quot;
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;ctc: %s(): leaving&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|__func__
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/**&n; * Shutdown a channel.&n; *&n; * @param fi    An instance of a channel statemachine.&n; * @param event The event, just happened.&n; * @param arg   Generic pointer, casted from channel * upon call.&n; */
 r_static
@@ -4442,6 +4677,15 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+op_minus
+id|EBUSY
+)paren
+(brace
 id|fsm_deltimer
 c_func
 (paren
@@ -4457,12 +4701,15 @@ comma
 id|oldstate
 )paren
 suffix:semicolon
+)brace
 id|ccw_check_return_code
 c_func
 (paren
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;HaltIO in ch_action_haltio&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4953,16 +5200,17 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;HaltIO in ch_action_setuperr&quot;
 )paren
 suffix:semicolon
 )brace
 r_return
 suffix:semicolon
 )brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Error %s during %s channel setup state=%s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5120,10 +5368,9 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: %s channel restart&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5233,6 +5480,15 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+op_minus
+id|EBUSY
+)paren
+(brace
 id|fsm_deltimer
 c_func
 (paren
@@ -5248,12 +5504,15 @@ comma
 id|oldstate
 )paren
 suffix:semicolon
+)brace
 id|ccw_check_return_code
 c_func
 (paren
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;HaltIO in ch_action_restart&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5311,10 +5570,9 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Timeout during RX init handshake&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5370,10 +5628,9 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Error during RX init handshake&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5426,19 +5683,17 @@ comma
 id|CH_STATE_RXERR
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: RX initialization failed&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: RX &lt;-&gt; RX connection detected&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5514,10 +5769,9 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Got remote disconnect, re-initializing ...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5672,10 +5926,9 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Timeout during TX init handshake&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5731,10 +5984,9 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Error during TX init handshake&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5799,10 +6051,9 @@ OG
 l_int|3
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: TX retry failed, restarting channel&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5845,10 +6096,9 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: TX retry %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5911,12 +6161,10 @@ id|skb-&gt;data
 )paren
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;%s: IDAL alloc failed, &quot;
-l_string|&quot;restarting channel&bslash;n&quot;
+l_string|&quot;%s: IDAL alloc failed, chan restart&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -6049,6 +6297,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;TX in ch_action_txretry&quot;
 )paren
 suffix:semicolon
 id|ctc_purge_skb_queue
@@ -6119,10 +6369,9 @@ op_eq
 id|READ
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: RX I/O error&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6158,10 +6407,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: TX I/O error&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6627,7 +6875,7 @@ comma
 id|ch_action_rxdisc
 )brace
 comma
-singleline_comment|//      { CH_STATE_RXIDLE,     CH_EVENT_UC_RSRESET, ch_action_rxretry    },
+singleline_comment|//      {CH_STATE_RXIDLE,     CH_EVENT_UC_RSRESET, ch_action_rxretry    },
 (brace
 id|CH_STATE_RXIDLE
 comma
@@ -7153,10 +7401,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7216,10 +7463,9 @@ c_func
 id|ch
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7321,6 +7567,10 @@ id|ch-&gt;type
 op_assign
 id|type
 suffix:semicolon
+id|loglevel
+op_assign
+id|CTC_LOGLEVEL_DEFAULT
+suffix:semicolon
 id|ch-&gt;fsm
 op_assign
 id|init_fsm
@@ -7351,10 +7601,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: Could not create FSM in add_channel&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7404,10 +7653,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: Out of memory in add_channel&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7491,10 +7739,9 @@ id|CTC_ID_SIZE
 )paren
 )paren
 (brace
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;ctc: add_channel: device %s already in list, &quot;
 l_string|&quot;using old entry&bslash;n&quot;
 comma
@@ -7749,18 +7996,20 @@ id|ch
 op_assign
 id|channels
 suffix:semicolon
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
-l_string|&quot;ctc: %s(): searching for ch with id %d and type %d&bslash;n&quot;
+l_string|&quot;ctc: %s(): searching for ch with id %s and type %d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|__func__
 comma
 id|id
 comma
 id|type
 )paren
 suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -7787,12 +8036,13 @@ id|type
 )paren
 )paren
 (brace
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;ctc: %s(): ch=0x%p (id=%s, type=%d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|__func__
 comma
 id|ch
 comma
@@ -7801,17 +8051,19 @@ comma
 id|ch-&gt;type
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ch
 op_assign
 id|ch-&gt;next
 suffix:semicolon
 )brace
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;ctc: %s(): ch=0x%pq (id=%s, type=%d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|__func__
 comma
 id|ch
 comma
@@ -7820,6 +8072,7 @@ comma
 id|ch-&gt;type
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7827,14 +8080,13 @@ op_logical_neg
 id|ch
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: %s(): channel with id %s &quot;
 l_string|&quot;and type %d not found in channel list&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|__func__
 comma
 id|id
 comma
@@ -8009,10 +8261,9 @@ op_logical_neg
 id|cdev-&gt;dev.driver_data
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc: Got unsolicited irq: %s c-%02x d-%02x&bslash;n&quot;
 comma
 id|cdev-&gt;dev.bus_id
@@ -8071,10 +8322,9 @@ id|WRITE
 suffix:semicolon
 r_else
 (brace
-id|printk
+id|ctc_pr_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;ctc: Can&squot;t determine channel for interrupt, &quot;
 l_string|&quot;device %s&bslash;n&quot;
 comma
@@ -8103,11 +8353,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_crit
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;ctc: ctc_irq_handler dev = NULL bus_id=%s, ch=0x%p&bslash;n&quot;
+l_string|&quot;ctc: ctc_irq_handler dev=NULL bus_id=%s, ch=0x%p&bslash;n&quot;
 comma
 id|cdev-&gt;dev.bus_id
 comma
@@ -8117,10 +8366,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|pr_debug
+macro_line|#ifdef DEBUG
+id|ctc_pr_debug
 c_func
 (paren
 l_string|&quot;%s: interrupt for device: %s received c-%02x d-%02x&bslash;n&quot;
+comma
 id|dev-&gt;name
 comma
 id|ch-&gt;id
@@ -8130,6 +8381,7 @@ comma
 id|irb-&gt;scsw.dstat
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Copy interruption response block. */
 id|memcpy
 c_func
@@ -8162,10 +8414,9 @@ comma
 id|ch
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: subchannel check for device: %s - %02x %02x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8528,10 +8779,9 @@ id|privptr
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|printk
+id|ctc_pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: Restarting&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8667,10 +8917,9 @@ comma
 id|DEV_STATE_RUNNING
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: connected with remote side&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8719,10 +8968,9 @@ comma
 id|DEV_STATE_RUNNING
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: connected with remote side&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9882,6 +10130,8 @@ c_func
 id|ch
 comma
 id|rc
+comma
+l_string|&quot;single skb TX&quot;
 )paren
 suffix:semicolon
 r_if
@@ -10068,10 +10318,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: NULL sk_buff passed&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -10100,10 +10349,9 @@ l_int|2
 )paren
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Got sk_buff with head room &lt; %ld bytes&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -10334,8 +10582,6 @@ id|stats
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sysfs attributes&n; */
-DECL|macro|CTRL_BUFSIZE
-mdefine_line|#define CTRL_BUFSIZE 40
 r_static
 id|ssize_t
 DECL|function|buffer_show
@@ -10575,6 +10821,487 @@ id|count
 suffix:semicolon
 )brace
 r_static
+id|ssize_t
+DECL|function|loglevel_show
+id|loglevel_show
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|ctc_priv
+op_star
+id|priv
+suffix:semicolon
+id|priv
+op_assign
+id|dev-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%d&bslash;n&quot;
+comma
+id|loglevel
+)paren
+suffix:semicolon
+)brace
+r_static
+id|ssize_t
+DECL|function|loglevel_write
+id|loglevel_write
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+(brace
+r_struct
+id|ctc_priv
+op_star
+id|priv
+suffix:semicolon
+r_int
+id|ll1
+suffix:semicolon
+id|priv
+op_assign
+id|dev-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|sscanf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%i&quot;
+comma
+op_amp
+id|ll1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ll1
+OG
+id|CTC_LOGLEVEL_MAX
+)paren
+op_logical_or
+(paren
+id|ll1
+OL
+l_int|0
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|loglevel
+op_assign
+id|ll1
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|ctc_print_statistics
+id|ctc_print_statistics
+c_func
+(paren
+r_struct
+id|ctc_priv
+op_star
+id|priv
+)paren
+(brace
+r_char
+op_star
+id|sbuf
+suffix:semicolon
+r_char
+op_star
+id|p
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+suffix:semicolon
+id|sbuf
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+l_int|2048
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbuf
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+id|p
+op_assign
+id|sbuf
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  Device FSM state: %s&bslash;n&quot;
+comma
+id|fsm_getstate_str
+c_func
+(paren
+id|priv-&gt;fsm
+)paren
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  RX channel FSM state: %s&bslash;n&quot;
+comma
+id|fsm_getstate_str
+c_func
+(paren
+id|priv-&gt;channel
+(braket
+id|READ
+)braket
+op_member_access_from_pointer
+id|fsm
+)paren
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  TX channel FSM state: %s&bslash;n&quot;
+comma
+id|fsm_getstate_str
+c_func
+(paren
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|fsm
+)paren
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  Max. TX buffer used: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.maxmulti
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  Max. chained SKBs: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.maxcqueue
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  TX single write ops: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.doios_single
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  TX multi write ops: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.doios_multi
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  Netto bytes written: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.txlen
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;  Max. TX IO-time: %ld&bslash;n&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof.tx_time
+)paren
+suffix:semicolon
+id|ctc_pr_debug
+c_func
+(paren
+l_string|&quot;Statistics for %s:&bslash;n%s&quot;
+comma
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|netdev-&gt;name
+comma
+id|sbuf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sbuf
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_static
+id|ssize_t
+DECL|function|stats_show
+id|stats_show
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_struct
+id|ctc_priv
+op_star
+id|priv
+op_assign
+id|dev-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|ctc_print_statistics
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;0&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_static
+id|ssize_t
+DECL|function|stats_write
+id|stats_write
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+(brace
+r_struct
+id|ctc_priv
+op_star
+id|priv
+op_assign
+id|dev-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Reset statistics */
+id|memset
+c_func
+(paren
+op_amp
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_member_access_from_pointer
+id|prof
+)paren
+)paren
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+r_static
 id|DEVICE_ATTR
 c_func
 (paren
@@ -10585,6 +11312,32 @@ comma
 id|buffer_show
 comma
 id|buffer_write
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|loglevel
+comma
+l_int|0644
+comma
+id|loglevel_show
+comma
+id|loglevel_write
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|stats
+comma
+l_int|0644
+comma
+id|stats_show
+comma
+id|stats_write
 )paren
 suffix:semicolon
 r_static
@@ -10599,7 +11352,6 @@ op_star
 id|dev
 )paren
 (brace
-r_return
 id|device_create_file
 c_func
 (paren
@@ -10608,6 +11360,27 @@ comma
 op_amp
 id|dev_attr_buffer
 )paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|dev_attr_loglevel
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|dev_attr_stats
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -10628,584 +11401,28 @@ c_func
 id|dev
 comma
 op_amp
+id|dev_attr_stats
+)paren
+suffix:semicolon
+id|device_remove_file
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|dev_attr_loglevel
+)paren
+suffix:semicolon
+id|device_remove_file
+c_func
+(paren
+id|dev
+comma
+op_amp
 id|dev_attr_buffer
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* FIXME: This has to be converted to another interface, as we can only have one&n; *        value per file and can&squot;t have atomicity then */
-mdefine_line|#define STATS_BUFSIZE 2048
-r_static
-r_int
-id|ctc_stat_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-id|file-&gt;private_data
-op_assign
-id|kmalloc
-c_func
-(paren
-id|STATS_BUFSIZE
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file-&gt;private_data
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_int
-id|ctc_stat_close
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|file-&gt;private_data
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-id|ssize_t
-id|ctc_stat_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_const
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-op_star
-id|off
-)paren
-(brace
-r_struct
-id|proc_dir_entry
-op_star
-id|pde
-op_assign
-id|PDE
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-r_struct
-id|ctc_priv
-op_star
-id|privptr
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|dev
-op_assign
-id|find_netdev_by_ino
-c_func
-(paren
-id|pde
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|privptr
-op_assign
-(paren
-r_struct
-id|ctc_priv
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.maxmulti
-op_assign
-l_int|0
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.maxcqueue
-op_assign
-l_int|0
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.doios_single
-op_assign
-l_int|0
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.doios_multi
-op_assign
-l_int|0
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.txlen
-op_assign
-l_int|0
-suffix:semicolon
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.tx_time
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|count
-suffix:semicolon
-)brace
-r_static
-id|ssize_t
-id|ctc_stat_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-op_star
-id|off
-)paren
-(brace
-r_struct
-id|proc_dir_entry
-op_star
-id|pde
-op_assign
-id|PDE
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
-r_char
-op_star
-id|sbuf
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|file-&gt;private_data
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-r_struct
-id|ctc_priv
-op_star
-id|privptr
-suffix:semicolon
-id|ssize_t
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_char
-op_star
-id|p
-op_assign
-id|sbuf
-suffix:semicolon
-r_int
-id|l
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|dev
-op_assign
-id|find_netdev_by_ino
-c_func
-(paren
-id|pde
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|off
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-id|privptr
-op_assign
-(paren
-r_struct
-id|ctc_priv
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file-&gt;f_pos
-op_eq
-l_int|0
-)paren
-(brace
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Device FSM state: %s&bslash;n&quot;
-comma
-id|fsm_getstate_str
-c_func
-(paren
-id|privptr-&gt;fsm
-)paren
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;RX channel FSM state: %s&bslash;n&quot;
-comma
-id|fsm_getstate_str
-c_func
-(paren
-id|privptr-&gt;channel
-(braket
-id|READ
-)braket
-op_member_access_from_pointer
-id|fsm
-)paren
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;TX channel FSM state: %s&bslash;n&quot;
-comma
-id|fsm_getstate_str
-c_func
-(paren
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|fsm
-)paren
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Max. TX buffer used: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.maxmulti
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Max. chained SKBs: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.maxcqueue
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;TX single write ops: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.doios_single
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;TX multi write ops: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.doios_multi
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Netto bytes written: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.txlen
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Max. TX IO-time: %ld&bslash;n&quot;
-comma
-id|privptr-&gt;channel
-(braket
-id|WRITE
-)braket
-op_member_access_from_pointer
-id|prof.tx_time
-)paren
-suffix:semicolon
-)brace
-id|l
-op_assign
-id|strlen
-c_func
-(paren
-id|sbuf
-)paren
-suffix:semicolon
-id|p
-op_assign
-id|sbuf
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file-&gt;f_pos
-OL
-id|l
-)paren
-(brace
-id|p
-op_add_assign
-id|file-&gt;f_pos
-suffix:semicolon
-id|l
-op_assign
-id|strlen
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|ret
-op_assign
-(paren
-id|count
-OG
-id|l
-)paren
-ques
-c_cond
-id|l
-suffix:colon
-id|count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_to_user
-c_func
-(paren
-id|buf
-comma
-id|p
-comma
-id|ret
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-id|file-&gt;f_pos
-op_add_assign
-id|ret
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-r_static
-r_struct
-id|file_operations
-id|ctc_stat_fops
-op_assign
-(brace
-dot
-id|read
-op_assign
-id|ctc_stat_read
-comma
-dot
-id|write
-op_assign
-id|ctc_stat_write
-comma
-dot
-id|open
-op_assign
-id|ctc_stat_open
-comma
-dot
-id|release
-op_assign
-id|ctc_stat_close
-comma
-)brace
-suffix:semicolon
-macro_line|#endif
 "&f;"
 r_static
 r_void
@@ -11658,6 +11875,14 @@ suffix:semicolon
 r_int
 id|value
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|priv
 op_assign
 id|dev-&gt;driver_data
@@ -11683,7 +11908,25 @@ op_amp
 id|value
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: sanity checks */
+r_if
+c_cond
+(paren
+(paren
+id|value
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|value
+OG
+id|CTC_PROTO_MAX
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|priv-&gt;protocol
 op_assign
 id|value
@@ -11823,6 +12066,14 @@ op_star
 id|dev
 )paren
 (brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sysfs_create_group
 c_func
@@ -11847,6 +12098,14 @@ op_star
 id|dev
 )paren
 (brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|sysfs_remove_group
 c_func
 (paren
@@ -11878,6 +12137,14 @@ id|priv
 suffix:semicolon
 r_int
 id|rc
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -11915,10 +12182,9 @@ op_logical_neg
 id|priv
 )paren
 (brace
-id|printk
+id|ctc_pr_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: Out of memory&bslash;n&quot;
 comma
 id|__func__
@@ -12068,6 +12334,17 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|privptr
 op_assign
 id|cgdev-&gt;dev.driver_data
@@ -12166,6 +12443,8 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|ret
+op_assign
 id|ccw_device_set_online
 c_func
 (paren
@@ -12175,6 +12454,26 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ccw_device_set_online (cdev[0]) failed with ret = %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
+id|ret
+op_assign
 id|ccw_device_set_online
 c_func
 (paren
@@ -12184,6 +12483,24 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ccw_device_set_online (cdev[1]) failed with ret = %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
 id|dev
 op_assign
 id|ctc_init_netdevice
@@ -12203,10 +12520,9 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|printk
+id|ctc_pr_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;ctc_init_netdevice failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12370,6 +12686,92 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* Create symlinks. */
+r_if
+c_cond
+(paren
+id|sysfs_create_link
+c_func
+(paren
+op_amp
+id|cgdev-&gt;dev.kobj
+comma
+op_amp
+id|dev-&gt;class_dev.kobj
+comma
+id|dev-&gt;name
+)paren
+)paren
+(brace
+id|ctc_netdev_unregister
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|dev-&gt;priv
+op_assign
+l_int|0
+suffix:semicolon
+id|ctc_free_netdevice
+c_func
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sysfs_create_link
+c_func
+(paren
+op_amp
+id|dev-&gt;class_dev.kobj
+comma
+op_amp
+id|cgdev-&gt;dev.kobj
+comma
+id|cgdev-&gt;dev.bus_id
+)paren
+)paren
+(brace
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|cgdev-&gt;dev.kobj
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|ctc_netdev_unregister
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|dev-&gt;priv
+op_assign
+l_int|0
+suffix:semicolon
+id|ctc_free_netdevice
+c_func
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|ctc_add_attributes
 c_func
 (paren
@@ -12395,10 +12797,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: read: %s, write: %s, proto: %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -12471,9 +12872,21 @@ id|net_device
 op_star
 id|ndev
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|priv
 op_assign
 id|cgdev-&gt;dev.driver_data
+suffix:semicolon
+id|ndev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -12485,6 +12898,15 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;channel
+(braket
+id|READ
+)braket
+)paren
+(brace
 id|ndev
 op_assign
 id|priv-&gt;channel
@@ -12522,6 +12944,15 @@ id|READ
 )braket
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+)paren
 id|channel_free
 c_func
 (paren
@@ -12529,6 +12960,30 @@ id|priv-&gt;channel
 (braket
 id|WRITE
 )braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ndev
+)paren
+(brace
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|ndev-&gt;class_dev.kobj
+comma
+id|cgdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|cgdev-&gt;dev.kobj
+comma
+id|ndev-&gt;name
 )paren
 suffix:semicolon
 id|ctc_netdev_unregister
@@ -12549,6 +13004,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|priv-&gt;fsm
+)paren
 id|kfree_fsm
 c_func
 (paren
@@ -12573,6 +13034,14 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;channel
+(braket
+id|READ
+)braket
+)paren
 id|channel_remove
 c_func
 (paren
@@ -12582,6 +13051,14 @@ id|READ
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+)paren
 id|channel_remove
 c_func
 (paren
@@ -12590,6 +13067,18 @@ id|priv-&gt;channel
 id|WRITE
 )braket
 )paren
+suffix:semicolon
+id|priv-&gt;channel
+(braket
+id|READ
+)braket
+op_assign
+id|priv-&gt;channel
+(braket
+id|WRITE
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -12611,6 +13100,14 @@ r_struct
 id|ctc_priv
 op_star
 id|priv
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s() called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv
 op_assign
@@ -12730,10 +13227,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+id|ctc_pr_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;CTC driver unloaded&bslash;n&quot;
 )paren
 suffix:semicolon

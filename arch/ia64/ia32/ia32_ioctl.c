@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * IA32 Architecture-specific ioctl shim code&n; *&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
 DECL|macro|INCLUDES
 mdefine_line|#define&t;INCLUDES
@@ -9,24 +10,6 @@ DECL|macro|IOCTL_NR
 mdefine_line|#define IOCTL_NR(a)&t;((a) &amp; ~(_IOC_SIZEMASK &lt;&lt; _IOC_SIZESHIFT))
 DECL|macro|DO_IOCTL
 mdefine_line|#define DO_IOCTL(fd, cmd, arg) ({&t;&t;&t;&bslash;&n;&t;int _ret;&t;&t;&t;&t;&t;&bslash;&n;&t;mm_segment_t _old_fs = get_fs();&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(KERNEL_DS);&t;&t;&t;&t;&bslash;&n;&t;_ret = sys_ioctl(fd, cmd, (unsigned long)arg);&t;&bslash;&n;&t;set_fs(_old_fs);&t;&t;&t;&t;&bslash;&n;&t;_ret;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|macro|CODE
 mdefine_line|#define CODE
 macro_line|#include &quot;compat_ioctl.c&quot;

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;&t;/* for SIOCDEVPRIVATE */
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
@@ -2037,6 +2038,12 @@ c_cond
 (paren
 id|t-&gt;handler
 )paren
+(brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|t
@@ -2053,6 +2060,12 @@ comma
 id|filp
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_else
 id|error
 op_assign
@@ -2625,22 +2638,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-r_extern
-id|asmlinkage
-r_int
-id|sys_fcntl
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|compat_sys_fcntl64
 id|asmlinkage
 r_int
@@ -3041,20 +3038,6 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_io_setup
-c_func
-(paren
-r_int
-id|nr_reqs
-comma
-id|aio_context_t
-op_star
-id|ctx
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|compat_sys_io_setup
@@ -3149,32 +3132,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_io_getevents
-c_func
-(paren
-id|aio_context_t
-id|ctx_id
-comma
-r_int
-id|min_nr
-comma
-r_int
-id|nr
-comma
-r_struct
-id|io_event
-op_star
-id|events
-comma
-r_struct
-id|timespec
-op_star
-id|timeout
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|compat_sys_io_getevents
@@ -3325,23 +3282,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_io_submit
-c_func
-(paren
-id|aio_context_t
-comma
-r_int
-comma
-r_struct
-id|iocb
-id|__user
-op_star
-op_star
-)paren
-suffix:semicolon
 r_static
 r_inline
 r_int

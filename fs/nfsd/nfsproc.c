@@ -2481,6 +2481,13 @@ id|ESTALE
 )brace
 comma
 (brace
+id|nfserr_jukebox
+comma
+op_minus
+id|ETIMEDOUT
+)brace
+comma
+(brace
 id|nfserr_dropit
 comma
 op_minus

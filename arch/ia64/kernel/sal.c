@@ -433,7 +433,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SAL v%x.%02x: oem=%.32s, product=%.32s&bslash;n&quot;
+l_string|&quot;SAL v%x.%x: oem=%.32s, product=%.32s&bslash;n&quot;
 comma
 id|systab-&gt;sal_rev_major
 comma

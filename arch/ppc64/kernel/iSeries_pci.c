@@ -940,6 +940,10 @@ r_int
 id|pdev
 )paren
 suffix:semicolon
+id|pdev-&gt;irq
+op_assign
+id|node-&gt;Irq
+suffix:semicolon
 )brace
 id|iSeries_IoMmTable_Status
 c_func
@@ -1618,22 +1622,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;connected bus unit at bus %d subbus 0x%x agentid 0x%x (idsel=%d func=%d)&bslash;n&quot;
-comma
-id|Bus
-comma
-id|SubBus
-comma
-id|AgentId
-comma
-id|IdSel
-comma
-id|Function
-)paren
-suffix:semicolon
 id|HvRc
 op_assign
 id|HvCallPci_configLoad16
@@ -1690,7 +1678,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;PCI:- FoundDevice: 0x%02X.%02X.%02X = 0x%04X&bslash;n&quot;
+l_string|&quot;PCI:- FoundDevice: 0x%02X.%02X.%02X = 0x%04X, irq %d&bslash;n&quot;
 comma
 id|Bus
 comma
@@ -1699,6 +1687,8 @@ comma
 id|AgentId
 comma
 id|VendorId
+comma
+id|Irq
 )paren
 suffix:semicolon
 id|HvRc

@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_ccw.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * CCW driver related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_CCW_C_REVISION
-mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.36 $&quot;
+mdefine_line|#define ZFCP_CCW_C_REVISION &quot;$Revision: 1.48 $&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -8,8 +8,6 @@ macro_line|#include &quot;zfcp_ext.h&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-mdefine_line|#define ZFCP_LOG_AREA_PREFIX            ZFCP_LOG_AREA_PREFIX_CONFIG
 r_static
 r_int
 id|zfcp_ccw_probe
@@ -50,6 +48,18 @@ id|ccw_device
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|zfcp_ccw_notify
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|variable|zfcp_ccw_device_id
 r_static
 r_struct
@@ -70,6 +80,20 @@ comma
 id|ZFCP_DEVICE_TYPE
 comma
 id|ZFCP_DEVICE_MODEL
+)paren
+)brace
+comma
+(brace
+id|CCW_DEVICE_DEVTYPE
+c_func
+(paren
+id|ZFCP_CONTROL_UNIT_TYPE
+comma
+id|ZFCP_CONTROL_UNIT_MODEL
+comma
+id|ZFCP_DEVICE_TYPE
+comma
+id|ZFCP_DEVICE_MODEL_PRIV
 )paren
 )brace
 comma
@@ -114,6 +138,11 @@ dot
 id|set_offline
 op_assign
 id|zfcp_ccw_set_offline
+comma
+dot
+id|notify
+op_assign
+id|zfcp_ccw_notify
 comma
 )brace
 suffix:semicolon
@@ -173,6 +202,19 @@ id|retval
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_else
+id|ZFCP_LOG_DEBUG
+c_func
+(paren
+l_string|&quot;Probed adapter %s&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
 suffix:semicolon
 id|up
 c_func
@@ -239,6 +281,18 @@ c_func
 (paren
 op_amp
 id|ccw_device-&gt;dev
+)paren
+suffix:semicolon
+id|ZFCP_LOG_DEBUG
+c_func
+(paren
+l_string|&quot;Removing adapter %s&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
 )paren
 suffix:semicolon
 id|write_lock_irq
@@ -464,6 +518,38 @@ id|ccw_device-&gt;dev
 suffix:semicolon
 id|retval
 op_assign
+id|zfcp_erp_thread_setup
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;error: out of resources. &quot;
+l_string|&quot;error recovery thread for adapter %s &quot;
+l_string|&quot;could not be started&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|retval
+op_assign
 id|zfcp_adapter_scsi_register
 c_func
 (paren
@@ -476,7 +562,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|out
+id|out_scsi_register
 suffix:semicolon
 id|zfcp_erp_modify_adapter_status
 c_func
@@ -497,6 +583,17 @@ id|ZFCP_STATUS_COMMON_ERP_FAILED
 )paren
 suffix:semicolon
 id|zfcp_erp_wait
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_scsi_register
+suffix:colon
+id|zfcp_erp_thread_kill
 c_func
 (paren
 id|adapter
@@ -569,6 +666,12 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+id|zfcp_erp_thread_kill
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -578,6 +681,130 @@ id|zfcp_data.config_sema
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_ccw_notify&n; * @ccw_device: pointer to belonging ccw device&n; * @event: indicates if adapter was detached or attached&n; *&n; * This function gets called by the common i/o layer if an adapter has gone&n; * or reappeared.&n; */
+r_static
+r_int
+DECL|function|zfcp_ccw_notify
+id|zfcp_ccw_notify
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|ccw_device
+comma
+r_int
+id|event
+)paren
+(brace
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|zfcp_data.config_sema
+)paren
+suffix:semicolon
+id|adapter
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+op_amp
+id|ccw_device-&gt;dev
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|event
+)paren
+(brace
+r_case
+id|CIO_GONE
+suffix:colon
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;Adapter %s: device gone.&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CIO_NO_PATH
+suffix:colon
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;Adapter %s: no path.&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CIO_OPER
+suffix:colon
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;Adapter %s: operational again.&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|zfcp_erp_modify_adapter_status
+c_func
+(paren
+id|adapter
+comma
+id|ZFCP_STATUS_COMMON_RUNNING
+comma
+id|ZFCP_SET
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_reopen
+c_func
+(paren
+id|adapter
+comma
+id|ZFCP_STATUS_COMMON_ERP_FAILED
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|zfcp_data.config_sema
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * zfcp_ccw_register - ccw register function&n; *&n; * Registers the driver at the common i/o layer. This function will be called&n; * at module load time/system start.&n; */
@@ -664,6 +891,4 @@ suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA
 macro_line|#undef ZFCP_LOG_AREA
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-macro_line|#undef ZFCP_LOG_AREA_PREFIX
 eof

@@ -1,15 +1,16 @@
 multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; * &n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|variable|imlist_lock
-id|rwlock_t
-id|imlist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+macro_line|#include &lt;asm/semaphore.h&gt;
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|imlist_sem
+)paren
 suffix:semicolon
 DECL|variable|imlist
 r_struct
@@ -930,11 +931,11 @@ r_int
 r_int
 id|addr
 suffix:semicolon
-id|write_lock
+id|down
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 r_if
@@ -1005,11 +1006,11 @@ suffix:semicolon
 )brace
 id|next_im_done
 suffix:colon
-id|write_unlock
+id|up
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 r_return
@@ -1040,11 +1041,11 @@ id|vm_struct
 op_star
 id|area
 suffix:semicolon
-id|write_lock
+id|down
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 id|area
@@ -1059,11 +1060,11 @@ comma
 id|criteria
 )paren
 suffix:semicolon
-id|write_unlock
+id|up
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 r_return
@@ -1136,11 +1137,11 @@ r_return
 id|ret_size
 suffix:semicolon
 )brace
-id|write_lock
+id|down
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 r_for
@@ -1187,11 +1188,11 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|write_unlock
+id|up
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 r_return
@@ -1199,11 +1200,11 @@ id|ret_size
 suffix:semicolon
 )brace
 )brace
-id|write_unlock
+id|up
 c_func
 (paren
 op_amp
-id|imlist_lock
+id|imlist_sem
 )paren
 suffix:semicolon
 id|printk

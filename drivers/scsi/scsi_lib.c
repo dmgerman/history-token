@@ -1187,7 +1187,7 @@ r_int
 id|uptodate
 comma
 r_int
-id|sectors
+id|bytes
 comma
 r_int
 id|requeue
@@ -1214,23 +1214,42 @@ multiline_comment|/*&n;&t; * If there are blocks left over at the end, set up th
 r_if
 c_cond
 (paren
-id|end_that_request_first
+id|end_that_request_chunk
 c_func
 (paren
 id|req
 comma
 id|uptodate
 comma
-id|sectors
+id|bytes
 )paren
 )paren
 (brace
 r_int
 id|leftover
 op_assign
+(paren
 id|req-&gt;hard_nr_sectors
+op_lshift
+l_int|9
+)paren
 op_minus
-id|sectors
+id|bytes
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|blk_pc_request
+c_func
+(paren
+id|req
+)paren
+)paren
+id|leftover
+op_assign
+id|req-&gt;data_len
+op_minus
+id|bytes
 suffix:semicolon
 multiline_comment|/* kill remainder if no retrys */
 r_if
@@ -1245,7 +1264,7 @@ c_func
 id|req
 )paren
 )paren
-id|end_that_request_first
+id|end_that_request_chunk
 c_func
 (paren
 id|req
@@ -1599,10 +1618,12 @@ op_star
 id|cmd
 comma
 r_int
-id|good_sectors
+r_int
+id|good_bytes
 comma
 r_int
-id|block_sectors
+r_int
+id|block_bytes
 )paren
 (brace
 r_int
@@ -1614,8 +1635,6 @@ r_int
 id|this_count
 op_assign
 id|cmd-&gt;bufflen
-op_rshift
-l_int|9
 suffix:semicolon
 id|request_queue_t
 op_star
@@ -1835,7 +1854,7 @@ multiline_comment|/*&n;&t; * Next deal with any sectors which we were able to co
 r_if
 c_cond
 (paren
-id|good_sectors
+id|good_bytes
 op_ge
 l_int|0
 )paren
@@ -1848,11 +1867,11 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;%ld sectors total, %d sectors done.&bslash;n&quot;
+l_string|&quot;%ld sectors total, %d bytes done.&bslash;n&quot;
 comma
 id|req-&gt;nr_sectors
 comma
-id|good_sectors
+id|good_bytes
 )paren
 )paren
 suffix:semicolon
@@ -1879,7 +1898,7 @@ id|req-&gt;errors
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If multiple sectors are requested in one buffer, then&n;&t;&t; * they will have been finished off by the first command.&n;&t;&t; * If not, then we have a multi-buffer command.&n;&t;&t; *&n;&t;&t; * If block_sectors != 0, it means we had a medium error&n;&t;&t; * of some sort, and that we want to mark some number of&n;&t;&t; * sectors as not uptodate.  Thus we want to inhibit&n;&t;&t; * requeueing right here - we will requeue down below&n;&t;&t; * when we handle the bad sectors.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If multiple sectors are requested in one buffer, then&n;&t;&t; * they will have been finished off by the first command.&n;&t;&t; * If not, then we have a multi-buffer command.&n;&t;&t; *&n;&t;&t; * If block_bytes != 0, it means we had a medium error&n;&t;&t; * of some sort, and that we want to mark some number of&n;&t;&t; * sectors as not uptodate.  Thus we want to inhibit&n;&t;&t; * requeueing right here - we will requeue down below&n;&t;&t; * when we handle the bad sectors.&n;&t;&t; */
 id|cmd
 op_assign
 id|scsi_end_request
@@ -1889,7 +1908,7 @@ id|cmd
 comma
 l_int|1
 comma
-id|good_sectors
+id|good_bytes
 comma
 id|result
 op_eq
@@ -2191,7 +2210,7 @@ id|cmd
 comma
 l_int|0
 comma
-id|block_sectors
+id|block_bytes
 comma
 l_int|1
 )paren
@@ -2271,6 +2290,22 @@ id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Mark a single buffer as not uptodate.  Queue the remainder.&n;&t;&t; * We sometimes get this cruft in the event that a medium error&n;&t;&t; * isn&squot;t properly reported.&n;&t;&t; */
+id|block_bytes
+op_assign
+id|req-&gt;hard_cur_sectors
+op_lshift
+l_int|9
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|block_bytes
+)paren
+id|block_bytes
+op_assign
+id|req-&gt;data_len
+suffix:semicolon
 id|cmd
 op_assign
 id|scsi_end_request
@@ -2280,12 +2315,10 @@ id|cmd
 comma
 l_int|0
 comma
-id|req-&gt;current_nr_sectors
+id|block_bytes
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 )brace
@@ -3603,19 +3636,6 @@ c_func
 id|q
 comma
 id|shost-&gt;dma_boundary
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Set the queue&squot;s mask to require a mere 8-byte alignment for&n;&t; * DMA buffers, rather than the default 512.  This shouldn&squot;t&n;&t; * inconvenience any user programs and should be okay for most&n;&t; * host adapters.  A host driver can alter this mask in its&n;&t; * slave_alloc() or slave_configure() callback if necessary.&n;&t; */
-id|blk_queue_dma_alignment
-c_func
-(paren
-id|q
-comma
-(paren
-l_int|8
-op_minus
-l_int|1
-)paren
 )paren
 suffix:semicolon
 r_if

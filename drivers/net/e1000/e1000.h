@@ -98,8 +98,8 @@ mdefine_line|#define E1000_SMARTSPEED_DOWNSHIFT 3
 DECL|macro|E1000_SMARTSPEED_MAX
 mdefine_line|#define E1000_SMARTSPEED_MAX       15
 multiline_comment|/* Packet Buffer allocations */
-DECL|macro|E1000_TX_FIFO_SIZE_SHIFT
-mdefine_line|#define E1000_TX_FIFO_SIZE_SHIFT 0xA
+DECL|macro|E1000_PBA_BYTES_SHIFT
+mdefine_line|#define E1000_PBA_BYTES_SHIFT 0xA
 DECL|macro|E1000_TX_HEAD_ADDR_SHIFT
 mdefine_line|#define E1000_TX_HEAD_ADDR_SHIFT 7
 DECL|macro|E1000_PBA_TX_MASK

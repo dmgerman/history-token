@@ -277,6 +277,12 @@ DECL|struct|videocodec
 r_struct
 id|videocodec
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* -- filled in by slave device during register -- */
 DECL|member|name
 r_char

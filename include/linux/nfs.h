@@ -364,8 +364,8 @@ op_assign
 l_int|10029
 comma
 multiline_comment|/*       v4 */
-DECL|enumerator|NFSERR_READDIR_NOSPC
-id|NFSERR_READDIR_NOSPC
+DECL|enumerator|NFSERR_RESTOREFH
+id|NFSERR_RESTOREFH
 op_assign
 l_int|10030
 comma

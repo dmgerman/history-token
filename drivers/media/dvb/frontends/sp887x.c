@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -49,7 +50,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Microtune MT7072DTF&quot;
+l_string|&quot;Microtune MT7202DTF&quot;
 comma
 dot
 id|type
@@ -133,20 +134,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 id|len
 )brace
 suffix:semicolon
@@ -2845,20 +2850,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x70
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|0
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.26 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.27 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -6152,7 +6152,7 @@ l_int|25
 r_case
 l_int|0x00
 suffix:colon
-multiline_comment|/* success */
+multiline_comment|/* success - use default ERP for retries */
 id|DEV_MESSAGE
 c_func
 (paren
@@ -6160,20 +6160,10 @@ id|KERN_DEBUG
 comma
 id|device
 comma
-l_string|&quot;ERP called for successful request %p&quot;
-l_string|&quot; - NO ERP necessary&quot;
+l_string|&quot;%s&quot;
 comma
-id|erp
-)paren
-suffix:semicolon
-id|erp
-op_assign
-id|dasd_3990_erp_cleanup
-c_func
-(paren
-id|erp
-comma
-id|DASD_CQR_DONE
+l_string|&quot;ERP called for successful request&quot;
+l_string|&quot; - just retry&quot;
 )paren
 suffix:semicolon
 r_break

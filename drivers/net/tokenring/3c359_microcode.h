@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * The firmware this driver downloads into the tokenring card is a&n; * separate program and is not GPL&squot;d source code, even though the Linux&n; * side driver and the routine that loads this data into the card are.&n; *&n; * This firmware is licensed to you strictly for use in conjunction&n; * with the use of 3Com 3C359 TokenRing adapters. There is no&n; * waranty expressed or implied about its fitness for any purpose.&n; */
 multiline_comment|/* 3c359_microcode.mac: 3Com 3C359 Tokenring microcode.&n; *&n; * Notes:&n; *  - Loaded from xl_init upon adapter initialization.&n; *&n; * Available from 3Com as part of their standard 3C359 driver. &n; *&n; * mc_size *must* must match the microcode being used, each version is a &n; * different length.&n; */
-macro_line|#if defined(CONFIG_3C359) || defined(CONFIG_3C359_MODULE) 
 DECL|variable|mc_size
 r_static
 r_int
@@ -49776,5 +49775,4 @@ comma
 l_int|0x06
 )brace
 suffix:semicolon
-macro_line|#endif 
 eof

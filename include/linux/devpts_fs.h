@@ -1,9 +1,9 @@
 multiline_comment|/* -*- linux-c -*- --------------------------------------------------------- *&n; *&n; * linux/include/linux/devpts_fs.h&n; *&n; *  Copyright 1998-2004 H. Peter Anvin -- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifndef _LINUX_DEVPTS_FS_H
 DECL|macro|_LINUX_DEVPTS_FS_H
-mdefine_line|#define _LINUX_DEVPTS_FS_H 1
+mdefine_line|#define _LINUX_DEVPTS_FS_H
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#if CONFIG_UNIX98_PTYS
+macro_line|#ifdef CONFIG_UNIX98_PTYS
 r_int
 id|devpts_pty_new
 c_func
@@ -11,6 +11,7 @@ c_func
 r_struct
 id|tty_struct
 op_star
+id|tty
 )paren
 suffix:semicolon
 multiline_comment|/* mknod in devpts */
@@ -21,6 +22,7 @@ id|devpts_get_tty
 c_func
 (paren
 r_int
+id|number
 )paren
 suffix:semicolon
 multiline_comment|/* get tty structure */
@@ -29,6 +31,7 @@ id|devpts_pty_kill
 c_func
 (paren
 r_int
+id|number
 )paren
 suffix:semicolon
 multiline_comment|/* unlink */
@@ -44,6 +47,7 @@ c_func
 r_struct
 id|tty_struct
 op_star
+id|tty
 )paren
 (brace
 r_return
@@ -61,6 +65,7 @@ id|devpts_get_tty
 c_func
 (paren
 r_int
+id|number
 )paren
 (brace
 r_return
@@ -75,6 +80,7 @@ id|devpts_pty_kill
 c_func
 (paren
 r_int
+id|number
 )paren
 (brace
 )brace

@@ -612,10 +612,6 @@ suffix:semicolon
 multiline_comment|/* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP&t;1
-DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
-DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|pci_map_page
 mdefine_line|#define pci_map_page(dev, page, off, size, dir) &bslash;&n;&t;&t;pci_map_single(dev, (page_address(page) + (off)), size, dir)
 DECL|macro|pci_unmap_page

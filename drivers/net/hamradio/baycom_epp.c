@@ -19,9 +19,6 @@ macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
 multiline_comment|/* prototypes for ax25_encapsulate and ax25_rebuild_header */
 macro_line|#include &lt;net/ax25.h&gt; 
 macro_line|#endif /* CONFIG_AX25 || CONFIG_AX25_MODULE */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|BAYCOM_DEBUG
 mdefine_line|#define BAYCOM_DEBUG

@@ -4,6 +4,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/sunrpc/svcauth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_krb5.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
@@ -1052,6 +1054,25 @@ comma
 l_int|0
 comma
 id|RPC_GSS_SVC_INTEGRITY
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|svcauth_gss_register_pseudoflavor
+c_func
+(paren
+id|RPC_AUTH_GSS_KRB5
+comma
+l_string|&quot;krb5&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to register %s with server!&bslash;n&quot;
+comma
+l_string|&quot;krb5&quot;
 )paren
 suffix:semicolon
 id|gss_mech_put

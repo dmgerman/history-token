@@ -510,44 +510,6 @@ macro_line|#else
 DECL|macro|MSG_CMSG_COMPAT
 mdefine_line|#define MSG_CMSG_COMPAT&t;0&t;&t;/* We never have 32 bit fixups */
 macro_line|#endif
-r_extern
-id|asmlinkage
-r_int
-id|sys_sendmsg
-c_func
-(paren
-r_int
-id|fd
-comma
-r_struct
-id|msghdr
-id|__user
-op_star
-id|msg
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_recvmsg
-c_func
-(paren
-r_int
-id|fd
-comma
-r_struct
-id|msghdr
-id|__user
-op_star
-id|msg
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Setsockoptions(2) level. Thanks to BSD these must match IPPROTO_xxx */
 DECL|macro|SOL_IP
 mdefine_line|#define SOL_IP&t;&t;0

@@ -1,5 +1,6 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.19 2003/12/18 15:28:49 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.19 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.24 2004/02/05 14:16:01 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.24 $&n; *&n; */
 "&f;"
+multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -19,8 +20,6 @@ macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt; 
 singleline_comment|//for root device stuff
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 multiline_comment|/* FLAGS:&n; * All flags are defined in the field IPFLAGS1 of each function&n; * and can be found in CP Programming Services.&n; * IPSRCCLS - Indicates you have specified a source class&n; * IPFGMCL  - Indicates you have specified a target class&n; * IPFGPID  - Indicates you have specified a pathid&n; * IPFGMID  - Indicates you have specified a message ID&n; * IPANSLST - Indicates that you are using an address list for&n; *            reply data&n; * IPBUFLST - Indicates that you are using an address list for&n; *            message data&n; */
 DECL|macro|IPSRCCLS
 mdefine_line|#define IPSRCCLS &t;0x01
@@ -129,6 +128,13 @@ id|spinlock_t
 id|iucv_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|messagesDisabled
+r_static
+r_int
+id|messagesDisabled
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/***************INTERRUPT HANDLING ***************/
 r_typedef
@@ -813,7 +819,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.19 $&quot;
+l_string|&quot;$Revision: 1.24 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -1138,6 +1144,13 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * iucv_exit - De-Initialization&n; *&n; * Frees everything allocated from iucv_init.&n; */
 r_static
+r_int
+id|iucv_retrieve_buffer
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
 r_void
 DECL|function|iucv_exit
 id|iucv_exit
@@ -1146,6 +1159,11 @@ c_func
 r_void
 )paren
 (brace
+id|iucv_retrieve_buffer
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2130,11 +2148,6 @@ id|iucv_handler_table
 )paren
 )paren
 (brace
-id|iucv_retrieve_buffer
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3236,6 +3249,16 @@ l_int|0
 r_if
 c_cond
 (paren
+id|msglim
+)paren
+op_star
+id|msglim
+op_assign
+id|parm-&gt;ipmsglim
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|pgm_data
 )paren
 id|h-&gt;pgm_data
@@ -3332,6 +3355,9 @@ id|pgm_data
 id|iparml_control
 op_star
 id|parm
+suffix:semicolon
+id|iparml_control
+id|local_parm
 suffix:semicolon
 r_struct
 id|list_head
@@ -3606,6 +3632,21 @@ id|parm-&gt;iptarget
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* In order to establish an IUCV connection, the procedure is:&n;         *&n;         * b2f0(CONNECT)&n;         * take the ippathid from the b2f0 call&n;         * register the handler to the ippathid&n;         *&n;         * Unfortunately, the ConnectionEstablished message gets sent after the&n;         * b2f0(CONNECT) call but before the register is handled.&n;         *&n;         * In order for this race condition to be eliminated, the IUCV Control&n;         * Interrupts must be disabled for the above procedure.&n;         *&n;         * David Kennedy &lt;dkennedy@linuxcare.com&gt;&n;         */
+multiline_comment|/* Enable everything but IUCV Control messages */
+id|iucv_setmask
+c_func
+(paren
+op_complement
+(paren
+id|AllInterrupts
+)paren
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|1
+suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -3630,6 +3671,31 @@ id|CONNECT
 comma
 id|parm
 )paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|local_parm
+comma
+id|parm
+comma
+r_sizeof
+(paren
+id|local_parm
+)paren
+)paren
+suffix:semicolon
+id|release_param
+c_func
+(paren
+id|parm
+)paren
+suffix:semicolon
+id|parm
+op_assign
+op_amp
+id|local_parm
 suffix:semicolon
 r_if
 c_cond
@@ -3662,11 +3728,16 @@ c_cond
 id|b2f0_result
 )paren
 (brace
-id|release_param
+id|iucv_setmask
 c_func
 (paren
-id|parm
+op_complement
+l_int|0
 )paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|b2f0_result
@@ -3676,6 +3747,13 @@ op_star
 id|pathid
 op_assign
 id|parm-&gt;ippathid
+suffix:semicolon
+multiline_comment|/* Enable everything again */
+id|iucv_setmask
+c_func
+(paren
+id|IUCVControlInterruptsFlag
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3715,7 +3793,8 @@ id|add_pathid_result
 id|iucv_sever
 c_func
 (paren
-id|parm-&gt;ippathid
+op_star
+id|pathid
 comma
 id|no_memory
 )paren
@@ -6745,23 +6824,30 @@ r_return
 id|b2f0_result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Name: iucv_setmask&n; * Purpose: This function enables or disables the following IUCV&n; *          external interruptions: Nonpriority and priority message&n; *          interrupts, nonpriority and priority reply interrupts.&n; * Input: SetMaskFlag - options for interrupts&n; *           0x80 - Nonpriority_MessagePendingInterruptsFlag&n; *           0x40 - Priority_MessagePendingInterruptsFlag&n; *           0x20 - Nonpriority_MessageCompletionInterruptsFlag&n; *           0x10 - Priority_MessageCompletionInterruptsFlag&n; * Output: NA&n; * Return: b2f0_result - return code from CP&n;*/
-r_int
-DECL|function|iucv_setmask
-id|iucv_setmask
+r_void
+DECL|function|iucv_setmask_cpu0
+id|iucv_setmask_cpu0
 (paren
-r_int
-id|SetMaskFlag
+r_void
+op_star
+id|result
 )paren
 (brace
 id|iparml_set_mask
 op_star
 id|parm
 suffix:semicolon
-id|ulong
-id|b2f0_result
-op_assign
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_ne
 l_int|0
+)paren
+r_return
 suffix:semicolon
 id|iucv_debug
 c_func
@@ -6784,12 +6870,23 @@ c_func
 suffix:semicolon
 id|parm-&gt;ipmask
 op_assign
+op_star
+(paren
 (paren
 id|__u8
+op_star
 )paren
-id|SetMaskFlag
+id|result
+)paren
 suffix:semicolon
-id|b2f0_result
+op_star
+(paren
+(paren
+id|ulong
+op_star
+)paren
+id|result
+)paren
 op_assign
 id|b2f0
 c_func
@@ -6812,7 +6909,14 @@ l_int|1
 comma
 l_string|&quot;b2f0_result = %ld&quot;
 comma
-id|b2f0_result
+op_star
+(paren
+(paren
+id|ulong
+op_star
+)paren
+id|result
+)paren
 )paren
 suffix:semicolon
 id|iucv_debug
@@ -6823,8 +6927,64 @@ comma
 l_string|&quot;exiting&quot;
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * Name: iucv_setmask&n; * Purpose: This function enables or disables the following IUCV&n; *          external interruptions: Nonpriority and priority message&n; *          interrupts, nonpriority and priority reply interrupts.&n; * Input: SetMaskFlag - options for interrupts&n; *           0x80 - Nonpriority_MessagePendingInterruptsFlag&n; *           0x40 - Priority_MessagePendingInterruptsFlag&n; *           0x20 - Nonpriority_MessageCompletionInterruptsFlag&n; *           0x10 - Priority_MessageCompletionInterruptsFlag&n; *           0x08 - IUCVControlInterruptsFlag&n; * Output: NA&n; * Return: b2f0_result - return code from CP&n;*/
+r_int
+DECL|function|iucv_setmask
+id|iucv_setmask
+(paren
+r_int
+id|SetMaskFlag
+)paren
+(brace
+r_union
+(brace
+id|ulong
+id|result
+suffix:semicolon
+id|__u8
+id|param
+suffix:semicolon
+)brace
+id|u
+suffix:semicolon
+id|u.param
+op_assign
+id|SetMaskFlag
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+id|iucv_setmask_cpu0
+c_func
+(paren
+op_amp
+id|u
+)paren
+suffix:semicolon
+r_else
+id|smp_call_function
+c_func
+(paren
+id|iucv_setmask_cpu0
+comma
+op_amp
+id|u
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_return
-id|b2f0_result
+id|u.result
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * iucv_sever:&n; * @pathid:    Path identification number&n; * @user_data: 16-byte of user data&n; *&n; * This function terminates an iucv path.&n; * Returns: return code from CP&n; */
@@ -7204,6 +7364,24 @@ r_case
 l_int|0x01
 suffix:colon
 multiline_comment|/* connection pending */
+r_if
+c_cond
+(paren
+id|messagesDisabled
+)paren
+(brace
+id|iucv_setmask
+c_func
+(paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7465,6 +7643,24 @@ multiline_comment|/*connection complete */
 r_if
 c_cond
 (paren
+id|messagesDisabled
+)paren
+(brace
+id|iucv_setmask
+c_func
+(paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|h
 )paren
 (brace
@@ -7473,6 +7669,7 @@ c_cond
 (paren
 id|interrupt-&gt;ConnectionComplete
 )paren
+(brace
 id|interrupt
 op_member_access_from_pointer
 id|ConnectionComplete
@@ -7487,6 +7684,7 @@ comma
 id|h-&gt;pgm_data
 )paren
 suffix:semicolon
+)brace
 r_else
 id|iucv_debug
 c_func
@@ -7512,6 +7710,24 @@ r_case
 l_int|0x03
 suffix:colon
 multiline_comment|/* connection severed */
+r_if
+c_cond
+(paren
+id|messagesDisabled
+)paren
+(brace
+id|iucv_setmask
+c_func
+(paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7564,6 +7780,24 @@ multiline_comment|/* connection quiesced */
 r_if
 c_cond
 (paren
+id|messagesDisabled
+)paren
+(brace
+id|iucv_setmask
+c_func
+(paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|h
 )paren
 (brace
@@ -7602,6 +7836,24 @@ r_case
 l_int|0x05
 suffix:colon
 multiline_comment|/* connection resumed */
+r_if
+c_cond
+(paren
+id|messagesDisabled
+)paren
+(brace
+id|iucv_setmask
+c_func
+(paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+id|messagesDisabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7939,11 +8191,14 @@ id|EXPORT_SYMBOL
 id|iucv_receive_array
 )paren
 suffix:semicolon
+macro_line|#endif
+DECL|variable|iucv_reject
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reject
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|iucv_reply

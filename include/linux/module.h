@@ -167,6 +167,9 @@ DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(_parm, desc) &bslash;&n;&t;__MODULE_INFO(parm, _parm, #_parm &quot;:&quot; desc)
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
+multiline_comment|/* Version of form [&lt;epoch&gt;:]&lt;version&gt;[-&lt;extra-version&gt;].&n;   Or for CVS/RCS ID version, everything but the number is stripped.&n;  &lt;epoch&gt;: A (small) unsigned integer which allows you to start versions&n;           anew. If not mentioned, it&squot;s zero.  eg. &quot;2:1.0&quot; is after&n;&t;   &quot;1:2.0&quot;.&n;  &lt;version&gt;: The &lt;version&gt; may contain only alphanumerics and the&n;           character `.&squot;.  Ordered by numeric sort for numeric parts,&n;&t;   ascii sort for ascii parts (as per RPM or DEB algorithm).&n;  &lt;extraversion&gt;: Like &lt;version&gt;, but inserted for local&n;           customizations, eg &quot;rh3&quot; or &quot;rusty1&quot;.&n;&n;  Using this automatically adds a checksum of the .c files and the&n;  local headers to the end.  Use MODULE_VERSION(&quot;&quot;) if you want just&n;  this.  Macro includes room for this.&n;*/
+DECL|macro|MODULE_VERSION
+mdefine_line|#define MODULE_VERSION(_version) &bslash;&n;  MODULE_INFO(version, _version &quot;&bslash;0xxxxxxxxxxxxxxxxxxxxxxxx&quot;)
 multiline_comment|/* Given an address, look for it in the exception tables */
 r_const
 r_struct
@@ -513,6 +516,18 @@ id|namebuf
 (braket
 l_int|128
 )braket
+)paren
+suffix:semicolon
+multiline_comment|/* Look for this name: can be of form module:name. */
+r_int
+r_int
+id|module_kallsyms_lookup_name
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
 )paren
 suffix:semicolon
 r_int
@@ -1072,6 +1087,24 @@ l_int|128
 (brace
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|module_kallsyms_lookup_name
+r_static
+r_inline
+r_int
+r_int
+id|module_kallsyms_lookup_name
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|is_exported

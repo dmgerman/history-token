@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/kbio.h&gt;
 macro_line|#if 0
@@ -29,31 +30,6 @@ macro_line|#endif
 multiline_comment|/* NR_OPEN is now larger and dynamic in recent kernels. */
 DECL|macro|SUNOS_NR_OPEN
 mdefine_line|#define SUNOS_NR_OPEN&t;256
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_setsid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|sunos_ioctl
 id|asmlinkage
 r_int

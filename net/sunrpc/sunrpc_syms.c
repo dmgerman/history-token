@@ -376,6 +376,20 @@ c_func
 id|svc_reserve
 )paren
 suffix:semicolon
+DECL|variable|svc_auth_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svc_auth_register
+)paren
+suffix:semicolon
+DECL|variable|auth_domain_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|auth_domain_lookup
+)paren
+suffix:semicolon
 multiline_comment|/* RPC statistics */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|rpc_proc_register

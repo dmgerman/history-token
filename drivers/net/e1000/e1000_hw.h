@@ -3934,7 +3934,7 @@ DECL|macro|PBA_SIZE
 mdefine_line|#define PBA_SIZE 4
 multiline_comment|/* Collision related configuration parameters */
 DECL|macro|E1000_COLLISION_THRESHOLD
-mdefine_line|#define E1000_COLLISION_THRESHOLD       16
+mdefine_line|#define E1000_COLLISION_THRESHOLD       15
 DECL|macro|E1000_CT_SHIFT
 mdefine_line|#define E1000_CT_SHIFT                  4
 DECL|macro|E1000_COLLISION_DISTANCE

@@ -1151,7 +1151,7 @@ id|sb_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Call the -&gt;sync_fs super_op against all filesytems which are r/w and&n; * which implement it.&n; *&n; * This operation is careful to avoid the livelock which could easily happen&n; * if two or more filesystems are being continuously dirtied.  s_need_sync_fs&n; * is used only here.  We set it against all filesystems and then clear it as&n; * we sync them.  So redirtied filesystems are skipped.&n; *&n; * But if process A is currently running sync_filesytems and then process B&n; * calls sync_filesystems as well, process B will set all the s_need_sync_fs&n; * flags again, which will cause process A to resync everything.  Fix that with&n; * a local mutex.&n; *&n; * FIXME: If wait==0, we only really need to call -&gt;sync_fs if s_dirt is true.&n; */
+multiline_comment|/*&n; * Call the -&gt;sync_fs super_op against all filesytems which are r/w and&n; * which implement it.&n; *&n; * This operation is careful to avoid the livelock which could easily happen&n; * if two or more filesystems are being continuously dirtied.  s_need_sync_fs&n; * is used only here.  We set it against all filesystems and then clear it as&n; * we sync them.  So redirtied filesystems are skipped.&n; *&n; * But if process A is currently running sync_filesytems and then process B&n; * calls sync_filesystems as well, process B will set all the s_need_sync_fs&n; * flags again, which will cause process A to resync everything.  Fix that with&n; * a local mutex.&n; *&n; * (Fabian) Avoid sync_fs with clean fs &amp; wait mode 0&n; */
 DECL|function|sync_filesystems
 r_void
 id|sync_filesystems
@@ -1327,6 +1327,12 @@ r_if
 c_cond
 (paren
 id|sb-&gt;s_root
+op_logical_and
+(paren
+id|wait
+op_logical_or
+id|sb-&gt;s_dirt
+)paren
 )paren
 id|sb-&gt;s_op
 op_member_access_from_pointer
@@ -1723,6 +1729,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;mark_files_ro&n; *&t;@sb: superblock in question&n; *&n; *&t;All files are marked read/only.  We don&squot;t care about pending&n; *&t;delete files so this should be used in &squot;force&squot; mode only&n; */
 DECL|function|mark_files_ro
 r_static
 r_void
@@ -1853,7 +1860,7 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-multiline_comment|/* If we are remounting RDONLY, make sure there are no rw files open */
+multiline_comment|/* If we are remounting RDONLY and current sb is read/write,&n;&t;   make sure there are no rw files opened */
 r_if
 c_cond
 (paren

@@ -1,58 +1,8 @@
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
-r_extern
-id|asmlinkage
-r_int
-id|sys_symlink
-c_func
-(paren
-r_const
-r_char
-op_star
-id|old
-comma
-r_const
-r_char
-op_star
-r_new
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_access
-c_func
-(paren
-r_const
-r_char
-op_star
-id|filename
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_getdents64
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_void
-op_star
-id|dirent
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
 DECL|function|mount_devfs
 r_void
 id|__init
@@ -160,9 +110,16 @@ c_func
 (paren
 id|fd
 comma
+(paren
+r_struct
+id|linux_dirent64
+op_star
+)paren
+(paren
 id|p
 op_plus
 id|bytes
+)paren
 comma
 id|len
 op_minus

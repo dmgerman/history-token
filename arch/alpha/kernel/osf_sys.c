@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -40,17 +41,6 @@ c_func
 (paren
 r_int
 op_star
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-r_int
-id|sys_brk
-c_func
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Brk needs to return an error.  Still support Linux&squot;s brk(0) query idiom,&n; * which OSF programs just shouldn&squot;t be doing.  We&squot;re still not quite&n; * identical to OSF as we don&squot;t return 0 on success, but doing otherwise&n; * would require changes to libc.  Hopefully this is good enough.&n; */
@@ -3373,20 +3363,6 @@ id|timezone
 id|sys_tz
 suffix:semicolon
 r_extern
-id|asmlinkage
-r_int
-id|sys_utimes
-c_func
-(paren
-r_char
-op_star
-comma
-r_struct
-id|timeval
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|do_adjtimex
 c_func
@@ -5951,40 +5927,6 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_OSF4_COMPAT
-r_extern
-id|ssize_t
-id|sys_readv
-c_func
-(paren
-r_int
-r_int
-comma
-r_const
-r_struct
-id|iovec
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|sys_writev
-c_func
-(paren
-r_int
-r_int
-comma
-r_const
-r_struct
-id|iovec
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* Clear top 32 bits of iov_len in the user&squot;s buffer for&n;   compatibility with old versions of OSF/1 where iov_len&n;   was defined as int. */
 r_static
 r_int

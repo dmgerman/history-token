@@ -2,11 +2,18 @@ multiline_comment|/*&n; *  drivers/s390/s390mach.c&n; *   S/390 machine check ha
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &quot;s390mach.h&quot;
 DECL|macro|DBG
 mdefine_line|#define DBG printk
 singleline_comment|// #define DBG(args,...) do {} while (0);
+DECL|variable|m_sem
+r_static
+r_struct
+id|semaphore
+id|m_sem
+suffix:semicolon
 DECL|variable|s_sem
 r_static
 r_struct
@@ -14,7 +21,7 @@ id|semaphore
 id|s_sem
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|css_process_crw
 c_func
 (paren
@@ -22,7 +29,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|chsc_process_crw
 c_func
 (paren
@@ -30,7 +37,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|chp_process_crw
 c_func
 (paren
@@ -42,6 +49,14 @@ suffix:semicolon
 r_extern
 r_void
 id|css_reiterate_subchannels
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|css_trigger_slow_path
 c_func
 (paren
 r_void
@@ -89,6 +104,58 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|s390_mchk_slow_path
+id|s390_mchk_slow_path
+c_func
+(paren
+r_void
+op_star
+id|param
+)paren
+(brace
+r_struct
+id|semaphore
+op_star
+id|sem
+suffix:semicolon
+id|sem
+op_assign
+(paren
+r_struct
+id|semaphore
+op_star
+)paren
+id|param
+suffix:semicolon
+multiline_comment|/* Set a nice name. */
+id|daemonize
+c_func
+(paren
+l_string|&quot;kslowcrw&quot;
+)paren
+suffix:semicolon
+id|repeat
+suffix:colon
+id|down_interruptible
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+id|css_trigger_slow_path
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|repeat
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Retrieve CRWs and call function to handle event.&n; *&n; * Note : we currently process CRWs for io and chsc subchannels only&n; */
 r_static
 r_int
@@ -107,6 +174,10 @@ id|crw
 suffix:semicolon
 r_int
 id|ccode
+comma
+id|ret
+comma
+id|slow
 suffix:semicolon
 r_struct
 id|semaphore
@@ -136,6 +207,10 @@ c_func
 (paren
 id|sem
 )paren
+suffix:semicolon
+id|slow
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -203,6 +278,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|slow
+op_assign
+l_int|1
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -223,10 +302,24 @@ comma
 id|crw.rsid
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|css_process_crw
 (paren
 id|crw.rsid
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EAGAIN
+)paren
+id|slow
+op_assign
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -262,6 +355,8 @@ r_case
 id|CRW_ERC_IPARM
 suffix:colon
 multiline_comment|/* Path has come. */
+id|ret
+op_assign
 id|chp_process_crw
 c_func
 (paren
@@ -276,6 +371,11 @@ r_case
 id|CRW_ERC_PERRI
 suffix:colon
 multiline_comment|/* Path has gone. */
+r_case
+id|CRW_ERC_PERRN
+suffix:colon
+id|ret
+op_assign
 id|chp_process_crw
 c_func
 (paren
@@ -296,7 +396,23 @@ comma
 id|crw.erc
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EAGAIN
+)paren
+id|slow
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -319,10 +435,24 @@ c_func
 l_string|&quot;source is channel subsystem&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|chsc_process_crw
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EAGAIN
+)paren
+id|slow
+op_assign
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -338,6 +468,18 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|slow
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|s_sem
+)paren
+suffix:semicolon
 r_goto
 id|repeat
 suffix:semicolon
@@ -458,7 +600,7 @@ id|up
 c_func
 (paren
 op_amp
-id|s_sem
+id|m_sem
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MACHCHK_WARNING
@@ -523,6 +665,13 @@ c_func
 r_void
 )paren
 (brace
+id|init_MUTEX_LOCKED
+c_func
+(paren
+op_amp
+id|m_sem
+)paren
+suffix:semicolon
 id|init_MUTEX_LOCKED
 c_func
 (paren
@@ -594,6 +743,19 @@ id|kernel_thread
 c_func
 (paren
 id|s390_collect_crw_info
+comma
+op_amp
+id|m_sem
+comma
+id|CLONE_FS
+op_or
+id|CLONE_FILES
+)paren
+suffix:semicolon
+id|kernel_thread
+c_func
+(paren
+id|s390_mchk_slow_path
 comma
 op_amp
 id|s_sem

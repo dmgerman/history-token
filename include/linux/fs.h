@@ -4776,31 +4776,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* fs/open.c */
-id|asmlinkage
-r_int
-id|sys_open
-c_func
-(paren
-r_const
-r_char
-id|__user
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_close
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* yes, it&squot;s really unsigned */
 r_extern
 r_int
 id|do_truncate

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;&t;/* support for loadable modules */
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
@@ -215,9 +216,10 @@ l_int|0xC2
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef MODULE
 DECL|function|wanrouter_init
+r_static
 r_int
+id|__init
 id|wanrouter_init
 c_func
 (paren
@@ -226,22 +228,6 @@ r_void
 (brace
 r_int
 id|err
-suffix:semicolon
-r_extern
-r_int
-id|wanpipe_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sdladrv_init
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 id|printk
 c_func
@@ -279,19 +265,6 @@ comma
 id|wanrouter_modname
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         *      Initialise compiled in boards&n;         */
-macro_line|#ifdef CONFIG_VENDOR_SANGOMA
-id|sdladrv_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|wanpipe_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -311,74 +284,21 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/*&n; *&t;Kernel Loadable Module Entry Points&n; */
-multiline_comment|/*&n; * &t;Module &squot;insert&squot; entry point.&n; * &t;o print announcement&n; * &t;o initialize static data&n; * &t;o create /proc/net/router directory and static entries&n; *&n; * &t;Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * &t;Context:&t;process&n; */
-DECL|function|init_module
-r_int
-id|init_module
-(paren
-r_void
-)paren
-(brace
-r_int
-id|err
-suffix:semicolon
-id|printk
+multiline_comment|/*&n; * This is just plain dumb.  We should move the bugger to drivers/net/wan,&n; * slap it first in directory and make it module_init().  The only reason&n; * for subsys_initcall() here is that net goes after drivers (why, BTW?)&n; */
+DECL|variable|wanrouter_init
+id|subsys_initcall
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s v%u.%u %s&bslash;n&quot;
-comma
-id|wanrouter_fullname
-comma
-id|ROUTER_VERSION
-comma
-id|ROUTER_RELEASE
-comma
-id|wanrouter_copyright
+id|wanrouter_init
 )paren
 suffix:semicolon
-id|err
-op_assign
-id|wanrouter_proc_init
+DECL|variable|wanrouter_cleanup
+id|module_exit
 c_func
 (paren
+id|wanrouter_cleanup
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: can&squot;t create entry in proc filesystem!&bslash;n&quot;
-comma
-id|wanrouter_modname
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * &t;Module &squot;remove&squot; entry point.&n; * &t;o delete /proc/net/router directory and static entries.&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-(paren
-r_void
-)paren
-(brace
-id|wanrouter_proc_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * &t;Kernel APIs&n; */
 multiline_comment|/*&n; * &t;Register WAN device.&n; * &t;o verify device credentials&n; * &t;o create an entry for the device in the /proc/net/router directory&n; * &t;o initialize internally maintained fields of the wan_device structure&n; * &t;o link device data space to a singly-linked list&n; * &t;o if it&squot;s the first device, then start kernel &squot;thread&squot;&n; * &t;o increment module use count&n; *&n; * &t;Return:&n; *&t;0&t;Ok&n; *&t;&lt; 0&t;error.&n; *&n; * &t;Context:&t;process&n; */
 DECL|function|register_wan_device

@@ -476,6 +476,12 @@ id|res
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+id|rq-&gt;queue_lock
+)paren
+suffix:semicolon
 id|complete_and_exit
 c_func
 (paren

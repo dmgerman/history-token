@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
@@ -13,6 +14,9 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#ifdef CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_VIRT_TIMER
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * memory management&n; */
 DECL|variable|_oi_bitmap
@@ -55,6 +59,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__clear_user_asm
+)paren
+suffix:semicolon
+DECL|variable|diag10
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|diag10
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * semaphore ops&n; */
@@ -178,6 +189,13 @@ c_func
 id|strpbrk
 )paren
 suffix:semicolon
+DECL|variable|strcpy
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|strcpy
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * binfmt_elf loader &n; */
 r_extern
 r_int
@@ -221,6 +239,44 @@ c_func
 id|empty_zero_page
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * virtual CPU timer&n; */
+macro_line|#ifdef CONFIG_VIRT_TIMER
+DECL|variable|init_virt_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_virt_timer
+)paren
+suffix:semicolon
+DECL|variable|add_virt_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_virt_timer
+)paren
+suffix:semicolon
+DECL|variable|add_virt_timer_periodic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_virt_timer_periodic
+)paren
+suffix:semicolon
+DECL|variable|mod_virt_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mod_virt_timer
+)paren
+suffix:semicolon
+DECL|variable|del_virt_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|del_virt_timer
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * misc.&n; */
 DECL|variable|machine_flags
 id|EXPORT_SYMBOL
@@ -283,6 +339,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpcmd
+)paren
+suffix:semicolon
+DECL|variable|smp_call_function_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function_on
 )paren
 suffix:semicolon
 DECL|variable|sys_ioctl

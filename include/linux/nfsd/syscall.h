@@ -268,24 +268,6 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Kernel syscall implementation.&n; */
 r_extern
-id|asmlinkage
-r_int
-id|sys_nfsservctl
-c_func
-(paren
-r_int
-comma
-r_struct
-id|nfsctl_arg
-id|__user
-op_star
-comma
-r_void
-id|__user
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|exp_addclient
 c_func

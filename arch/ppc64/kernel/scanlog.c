@@ -8,8 +8,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/proc_fs.h&gt;
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;scanlog&quot;
 multiline_comment|/* Status returns from ibm,scan-log-dump */

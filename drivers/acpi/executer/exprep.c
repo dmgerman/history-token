@@ -999,12 +999,10 @@ op_logical_neg
 id|obj_desc-&gt;index_field.index_obj
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Null Index Object&bslash;n&quot;
+l_string|&quot;Null Index Object during field prep&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

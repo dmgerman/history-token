@@ -81,6 +81,9 @@ DECL|macro|SN_SAL_MEMPROTECT
 mdefine_line|#define  SN_SAL_MEMPROTECT                         0x0200003e
 DECL|macro|SN_SAL_SYSCTL_FRU_CAPTURE
 mdefine_line|#define  SN_SAL_SYSCTL_FRU_CAPTURE&t;&t;   0x0200003f
+DECL|macro|SN_SAL_SYSCTL_IOBRICK_PCI_OP
+mdefine_line|#define  SN_SAL_SYSCTL_IOBRICK_PCI_OP&t;&t;   0x02000042&t;
+singleline_comment|// reentrant
 multiline_comment|/*&n; * Service-specific constants&n; */
 multiline_comment|/* Console interrupt manipulation */
 multiline_comment|/* action codes */
@@ -95,6 +98,18 @@ DECL|macro|SAL_CONSOLE_INTR_XMIT
 mdefine_line|#define SAL_CONSOLE_INTR_XMIT&t;1&t;/* output interrupt */
 DECL|macro|SAL_CONSOLE_INTR_RECV
 mdefine_line|#define SAL_CONSOLE_INTR_RECV&t;2&t;/* input interrupt */
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
+multiline_comment|/* power up / power down / reset a PCI slot or bus */
+DECL|macro|SAL_SYSCTL_PCI_POWER_UP
+mdefine_line|#define SAL_SYSCTL_PCI_POWER_UP         0
+DECL|macro|SAL_SYSCTL_PCI_POWER_DOWN
+mdefine_line|#define SAL_SYSCTL_PCI_POWER_DOWN       1
+DECL|macro|SAL_SYSCTL_PCI_RESET
+mdefine_line|#define SAL_SYSCTL_PCI_RESET            2
+multiline_comment|/* what type of I/O brick? */
+DECL|macro|SAL_SYSCTL_IO_XTALK
+mdefine_line|#define SAL_SYSCTL_IO_XTALK&t;0       /* connected via a compute node */
+macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
 multiline_comment|/*&n; * SN_SAL_GET_PARTITION_ADDR return constants&n; */
 DECL|macro|SALRET_MORE_PASSES
 mdefine_line|#define SALRET_MORE_PASSES&t;1
@@ -1924,6 +1939,81 @@ l_int|0
 suffix:semicolon
 r_return
 id|isrv.v0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Performs an operation on a PCI bus or slot -- power up, power down&n; * or reset.&n; */
+r_static
+r_inline
+id|u64
+DECL|function|ia64_sn_sysctl_iobrick_pci_op
+id|ia64_sn_sysctl_iobrick_pci_op
+c_func
+(paren
+id|nasid_t
+id|n
+comma
+id|u64
+id|connection_type
+comma
+id|u64
+id|bus
+comma
+id|slotid_t
+id|slot
+comma
+id|u64
+id|action
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|rv
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+suffix:semicolon
+id|SAL_CALL_NOLOCK
+c_func
+(paren
+id|rv
+comma
+id|SN_SAL_SYSCTL_IOBRICK_PCI_OP
+comma
+id|connection_type
+comma
+id|n
+comma
+id|action
+comma
+id|bus
+comma
+(paren
+id|u64
+)paren
+id|slot
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rv.status
+)paren
+r_return
+id|rv.v0
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* _ASM_IA64_SN_SN_SAL_H */

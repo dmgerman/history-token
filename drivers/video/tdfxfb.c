@@ -27,11 +27,11 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif 
 DECL|macro|BANSHEE_MAX_PIXCLOCK
-mdefine_line|#define BANSHEE_MAX_PIXCLOCK 270000.0
+mdefine_line|#define BANSHEE_MAX_PIXCLOCK 270000
 DECL|macro|VOODOO3_MAX_PIXCLOCK
-mdefine_line|#define VOODOO3_MAX_PIXCLOCK 300000.0
+mdefine_line|#define VOODOO3_MAX_PIXCLOCK 300000
 DECL|macro|VOODOO5_MAX_PIXCLOCK
-mdefine_line|#define VOODOO5_MAX_PIXCLOCK 350000.0
+mdefine_line|#define VOODOO5_MAX_PIXCLOCK 350000
 DECL|variable|__initdata
 r_static
 r_struct

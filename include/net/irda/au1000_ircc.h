@@ -242,11 +242,6 @@ DECL|member|open
 id|u8
 id|open
 suffix:semicolon
-DECL|member|flags
-id|u32
-id|flags
-suffix:semicolon
-multiline_comment|/* Interface flags */
 DECL|member|speed
 id|u32
 id|speed

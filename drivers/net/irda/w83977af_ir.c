@@ -726,18 +726,6 @@ op_amp
 id|self-&gt;qos
 )paren
 suffix:semicolon
-id|self-&gt;flags
-op_assign
-id|IFF_FIR
-op_or
-id|IFF_MIR
-op_or
-id|IFF_SIR
-op_or
-id|IFF_DMA
-op_or
-id|IFF_PIO
-suffix:semicolon
 multiline_comment|/* Max DMA buffer size needed = (data_size + 6) * (window_size) + 6; */
 id|self-&gt;rx_buff.truesize
 op_assign
@@ -2480,7 +2468,7 @@ id|self-&gt;tx_buff.len
 )paren
 suffix:semicolon
 macro_line|#else
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -2747,6 +2735,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function w83977af_dma_xmit_complete (self)&n; *&n; *    The transfer of a frame in finished. So do the necessary things&n; *&n; *    &n; */
 DECL|function|w83977af_dma_xmit_complete
+r_static
 r_void
 id|w83977af_dma_xmit_complete
 c_func
@@ -3100,7 +3089,7 @@ id|self-&gt;rx_buff.truesize
 )paren
 suffix:semicolon
 macro_line|#else
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma

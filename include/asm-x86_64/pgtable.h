@@ -87,7 +87,13 @@ r_int
 r_int
 id|empty_zero_page
 (braket
-l_int|1024
+id|PAGE_SIZE
+op_div
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )braket
 suffix:semicolon
 DECL|macro|ZERO_PAGE

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/pci/alim15x3.c&t;&t;Version 0.16&t;2003/01/02&n; *&n; *  Copyright (C) 1998-2000 Michel Aubry, Maintainer&n; *  Copyright (C) 1998-2000 Andrzej Krzysztofowicz, Maintainer&n; *  Copyright (C) 1999-2000 CJ, cjtsai@ali.com.tw, Maintainer&n; *&n; *  Copyright (C) 1998-2000 Andre Hedrick (andre@linux-ide.org)&n; *  May be copied or modified under the terms of the GNU General Public License&n; *  Copyright (C) 2002 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  (U)DMA capable version of ali 1533/1543(C), 1535(D)&n; *&n; **********************************************************************&n; *  9/7/99 --Parts from the above author are included and need to be&n; *  converted into standard interface, once I finish the thought.&n; *&n; *  Recent changes&n; *&t;Don&squot;t use LBA48 mode on ALi &lt;= 0xC4&n; *&t;Don&squot;t poke 0x79 with a non ALi northbridge&n; *&t;Don&squot;t flip undefined bits on newer chipsets (fix Fujitsu laptop hang)&n; *&n; *  Documentation&n; *&t;Chipset documentation available under NDA only&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/alim15x3.c&t;&t;Version 0.17&t;2003/01/02&n; *&n; *  Copyright (C) 1998-2000 Michel Aubry, Maintainer&n; *  Copyright (C) 1998-2000 Andrzej Krzysztofowicz, Maintainer&n; *  Copyright (C) 1999-2000 CJ, cjtsai@ali.com.tw, Maintainer&n; *&n; *  Copyright (C) 1998-2000 Andre Hedrick (andre@linux-ide.org)&n; *  May be copied or modified under the terms of the GNU General Public License&n; *  Copyright (C) 2002 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  (U)DMA capable version of ali 1533/1543(C), 1535(D)&n; *&n; **********************************************************************&n; *  9/7/99 --Parts from the above author are included and need to be&n; *  converted into standard interface, once I finish the thought.&n; *&n; *  Recent changes&n; *&t;Don&squot;t use LBA48 mode on ALi &lt;= 0xC4&n; *&t;Don&squot;t poke 0x79 with a non ALi northbridge&n; *&t;Don&squot;t flip undefined bits on newer chipsets (fix Fujitsu laptop hang)&n; *&t;Allow UDMA6 on revisions &gt; 0xC4&n; *&n; *  Documentation&n; *&t;Chipset documentation available under NDA only&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1942,7 +1942,23 @@ r_if
 c_cond
 (paren
 id|m5229_revision
-op_ge
+OG
+l_int|0xC4
+op_logical_and
+id|can_ultra
+)paren
+(brace
+id|mode
+op_assign
+l_int|4
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|m5229_revision
+op_eq
 l_int|0xC4
 op_logical_and
 id|can_ultra
@@ -2061,6 +2077,11 @@ id|xferspeed
 )paren
 suffix:semicolon
 id|u8
+id|speed1
+op_assign
+id|speed
+suffix:semicolon
+id|u8
 id|unit
 op_assign
 (paren
@@ -2085,6 +2106,17 @@ c_cond
 l_int|0x57
 suffix:colon
 l_int|0x56
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|speed
+op_eq
+id|XFER_UDMA_6
+)paren
+id|speed1
+op_assign
+l_int|0x47
 suffix:semicolon
 r_if
 c_cond
@@ -2188,7 +2220,7 @@ op_or
 (paren
 l_int|4
 op_minus
-id|speed
+id|speed1
 )paren
 op_amp
 l_int|0x07
@@ -3179,7 +3211,7 @@ l_int|0x20
 )paren
 id|hwif-&gt;ultra_mask
 op_assign
-l_int|0x3f
+l_int|0x7f
 suffix:semicolon
 id|hwif-&gt;mwdma_mask
 op_assign
@@ -3525,19 +3557,6 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|ide_setup_pci_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;alim15x3_init_one&t;-&t;set up an ALi15x3 IDE controller&n; *&t;@dev: PCI device to set up&n; *&n; *&t;Perform the actual set up for an ALi15x3 that has been found by the&n; *&t;hot plug layer.&n; */
 DECL|function|alim15x3_init_one
 r_static

@@ -3089,11 +3089,13 @@ id|WifiCtlHdr
 id|wifictlhdr8023
 op_assign
 (brace
+dot
 id|ctlhdr
-suffix:colon
+op_assign
 (brace
+dot
 id|ctl
-suffix:colon
+op_assign
 id|HOST_DONT_RLSE
 comma
 )brace

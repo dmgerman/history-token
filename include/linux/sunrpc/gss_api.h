@@ -417,6 +417,17 @@ id|xdr_netobj
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Similar, but get by name like &quot;krb5&quot;, &quot;spkm&quot;, etc., instead of OID. */
+r_struct
+id|gss_api_mech
+op_star
+id|gss_mech_get_by_name
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Just increments the mechanism&squot;s reference count and returns its input: */
 r_struct
 id|gss_api_mech

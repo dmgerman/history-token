@@ -5858,35 +5858,6 @@ c_func
 id|ide_raw_taskfile
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASK_IOCTL_DEBUG
-DECL|function|ide_ioctl_verbose
-r_char
-op_star
-id|ide_ioctl_verbose
-(paren
-r_int
-r_int
-id|cmd
-)paren
-(brace
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-)brace
-DECL|function|ide_task_cmd_verbose
-r_char
-op_star
-id|ide_task_cmd_verbose
-(paren
-id|u8
-id|task
-)paren
-(brace
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_IDE_TASK_IOCTL_DEBUG */
 DECL|macro|MAX_DMA
 mdefine_line|#define MAX_DMA&t;&t;(256*SECTOR_WORDS)
 id|ide_startstop_t
@@ -6324,31 +6295,6 @@ id|args.command_type
 op_assign
 id|req_task-&gt;req_cmd
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASK_IOCTL_DEBUG
-id|DTF
-c_func
-(paren
-l_string|&quot;%s: ide_ioctl_cmd %s:  ide_task_cmd %s&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|ide_ioctl_verbose
-c_func
-(paren
-id|cmd
-)paren
-comma
-id|ide_task_cmd_verbose
-c_func
-(paren
-id|args.tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASK_IOCTL_DEBUG */
 id|drive-&gt;io_32bit
 op_assign
 l_int|0

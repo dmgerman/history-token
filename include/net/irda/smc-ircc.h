@@ -239,11 +239,6 @@ DECL|member|new_speed
 id|__u32
 id|new_speed
 suffix:semicolon
-DECL|member|flags
-id|__u32
-id|flags
-suffix:semicolon
-multiline_comment|/* Interface flags */
 DECL|member|tx_buff_offsets
 r_int
 id|tx_buff_offsets

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
@@ -8812,7 +8813,7 @@ id|SECURITY_FS_USE_MNTPOINT
 )paren
 r_return
 op_minus
-id|ENOTSUPP
+id|EOPNOTSUPP
 suffix:semicolon
 id|AVC_AUDIT_DATA_INIT
 c_func
@@ -9070,7 +9071,7 @@ id|SECURITY_FS_USE_MNTPOINT
 )paren
 r_return
 op_minus
-id|ENOTSUPP
+id|EOPNOTSUPP
 suffix:semicolon
 r_return
 id|dentry_has_perm

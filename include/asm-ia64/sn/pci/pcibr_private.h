@@ -1800,6 +1800,15 @@ DECL|member|bs_noslot_info
 id|pcibr_info_t
 id|bs_noslot_info
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
+multiline_comment|/* Linux PCI bus structure pointer */
+DECL|member|bs_pci_bus
+r_struct
+id|pci_bus
+op_star
+id|bs_pci_bus
+suffix:semicolon
+macro_line|#endif
 DECL|struct|pcibr_soft_slot_s
 r_struct
 id|pcibr_soft_slot_s
@@ -1818,11 +1827,20 @@ DECL|member|slot_conn
 id|vertex_hdl_t
 id|slot_conn
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_PCI_SGI
 multiline_comment|/* PCI Hot-Plug status word */
 DECL|member|slot_status
 r_int
 id|slot_status
 suffix:semicolon
+multiline_comment|/* PCI Hot-Plug core structure pointer */
+DECL|member|bss_hotplug_slot
+r_struct
+id|hotplug_slot
+op_star
+id|bss_hotplug_slot
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_HOTPLUG_PCI_SGI */
 multiline_comment|/* Potentially several connection points&n;&t; * for this slot. bss_ninfo is how many,&n;&t; * and bss_infos is a pointer to&n;&t; * an array pcibr_info_t values (which are&n;&t; * pointers to pcibr_info structs, stored&n;&t; * as device_info in connection ponts).&n;&t; */
 DECL|member|bss_ninfo
 r_int

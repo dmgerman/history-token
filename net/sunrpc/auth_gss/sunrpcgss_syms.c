@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth_gss.h&gt;
+macro_line|#include &lt;linux/sunrpc/svcauth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_asn1.h&gt;
 multiline_comment|/* sec_triples: */
 DECL|variable|gss_register_triple
@@ -48,6 +49,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|gss_pseudoflavor_to_service
+)paren
+suffix:semicolon
+DECL|variable|svcauth_gss_register_pseudoflavor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svcauth_gss_register_pseudoflavor
 )paren
 suffix:semicolon
 multiline_comment|/* registering gss mechanisms to the mech switching code: */

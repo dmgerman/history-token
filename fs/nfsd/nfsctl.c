@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -15,6 +16,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
+macro_line|#include &lt;linux/nfsd_idmap.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -2219,6 +2221,14 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* lockd-&gt;nfsd callbacks */
+macro_line|#ifdef CONFIG_NFSD_V4
+id|nfsd_idmap_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Name to ID mapping */
+macro_line|#endif /* CONFIG_NFSD_V4 */
 r_if
 c_cond
 (paren
@@ -2361,6 +2371,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFSD_V4
+id|nfsd_idmap_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFSD_V4 */
 id|unregister_filesystem
 c_func
 (paren

@@ -4,6 +4,7 @@ macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/version.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
 macro_line|#include &quot;linux/swap.h&quot;
+macro_line|#include &quot;linux/syscalls.h&quot;
 macro_line|#include &quot;linux/sysctl.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;sysdep/syscalls.h&quot;
@@ -1019,7 +1020,6 @@ id|__NR_unlink
 op_assign
 id|sys_unlink
 comma
-multiline_comment|/* declared differently in kern_util.h */
 (braket
 id|__NR_execve
 )braket
@@ -1030,6 +1030,7 @@ op_star
 )paren
 id|sys_execve
 comma
+multiline_comment|/* declared differently in kern_util.h */
 (braket
 id|__NR_chdir
 )braket

@@ -16,9 +16,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;h8.h&quot;
 DECL|macro|DEBUG_H8
 mdefine_line|#define DEBUG_H8

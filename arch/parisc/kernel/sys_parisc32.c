@@ -37,6 +37,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -1442,21 +1443,6 @@ id|t
 suffix:semicolon
 r_int
 id|ret
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_sched_rr_get_interval
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_struct
-id|timespec
-op_star
-id|interval
-)paren
 suffix:semicolon
 id|KERNEL_SYSCALL
 c_func
@@ -5264,26 +5250,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-id|ssize_t
-id|sys_sendfile
-c_func
-(paren
-r_int
-id|out_fd
-comma
-r_int
-id|in_fd
-comma
-id|off_t
-op_star
-id|offset
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
 DECL|function|sys32_sendfile
 id|asmlinkage
 r_int
@@ -5829,26 +5795,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-id|ssize_t
-id|sys_sendfile64
-c_func
-(paren
-r_int
-id|out_fd
-comma
-r_int
-id|in_fd
-comma
-id|loff_t
-op_star
-id|offset
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
 DECL|typedef|__kernel_loff_t32
 r_typedef
 r_int
@@ -6804,24 +6750,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* lseek() needs a wrapper because &squot;offset&squot; can be negative, but the top&n; * half of the argument has been zeroed by syscall.S.&n; */
-r_extern
-id|asmlinkage
-id|off_t
-id|sys_lseek
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-id|off_t
-id|offset
-comma
-r_int
-r_int
-id|origin
-)paren
-suffix:semicolon
 DECL|function|sys32_lseek
 id|asmlinkage
 r_int
@@ -6925,22 +6853,6 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|sys_lookup_dcookie
-c_func
-(paren
-id|u64
-id|cookie64
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
 DECL|function|sys32_lookup_dcookie
 r_int
 id|sys32_lookup_dcookie

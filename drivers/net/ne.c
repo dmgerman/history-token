@@ -596,11 +596,13 @@ id|base_addr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+macro_line|#ifndef MODULE
 r_int
-id|irq
+id|orig_irq
 op_assign
 id|dev-&gt;irq
 suffix:semicolon
+macro_line|#endif
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -690,7 +692,7 @@ id|base_addr
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
-id|irq
+id|orig_irq
 suffix:semicolon
 r_if
 c_cond

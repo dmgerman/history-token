@@ -1529,6 +1529,10 @@ op_assign
 id|phys_to_virt
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 (paren
 (paren

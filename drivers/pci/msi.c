@@ -580,6 +580,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_IRQBALANCE
 DECL|function|move_msi
 r_static
 r_inline
@@ -627,7 +628,8 @@ id|vector
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_IRQBALANCE */
+macro_line|#endif /* CONFIG_SMP */
 DECL|function|mask_MSI_irq
 r_static
 r_void

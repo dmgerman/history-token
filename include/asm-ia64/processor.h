@@ -1596,16 +1596,39 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* XXX remove the handcoded version once we have a sufficiently clever compiler... */
-macro_line|#ifdef SMART_COMPILER
-DECL|macro|ia64_rotr
-macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 __ia64_rotr_w = (w), _n = (n);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__ia64_rotr_w &gt;&gt; _n) | (__ia64_rotr_w &lt;&lt; (64 - _n));&t;&bslash;&n;  })
-macro_line|#else
-DECL|macro|ia64_rotr
-macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 __ia64_rotr_w;&t;&t;&t;&t;&bslash;&n;&t;__ia64_rotr_w = ia64_shrp((w), (w), (n));&t;&bslash;&n;&t;__ia64_rotr_w;&t;&t;&t;&t;&t;&bslash;&n;  })
-macro_line|#endif
+r_static
+r_inline
+id|__u64
+DECL|function|ia64_rotr
+id|ia64_rotr
+(paren
+id|__u64
+id|w
+comma
+id|__u64
+id|n
+)paren
+(brace
+r_return
+(paren
+id|w
+op_rshift
+id|n
+)paren
+op_or
+(paren
+id|w
+op_lshift
+(paren
+l_int|64
+op_minus
+id|n
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ia64_rotl
-mdefine_line|#define ia64_rotl(w,n)&t;ia64_rotr((w),(64)-(n))
+mdefine_line|#define ia64_rotl(w,n)&t;ia64_rotr((w), (64) - (n))
 multiline_comment|/*&n; * Take a mapped kernel address and return the equivalent address&n; * in the region 7 identity mapped virtual area.&n; */
 r_static
 r_inline

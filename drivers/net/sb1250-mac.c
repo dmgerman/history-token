@@ -6268,8 +6268,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6309,14 +6307,10 @@ comma
 id|dev
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Configure default speed &n;&t; */
 id|sbmac_mii_poll
 c_func
@@ -7649,8 +7643,6 @@ op_amp
 id|sc-&gt;sbm_rxdma
 )paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

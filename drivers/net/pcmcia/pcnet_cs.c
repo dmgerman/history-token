@@ -6086,10 +6086,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|info-&gt;stale
+id|irqreturn_t
+id|ret
 op_assign
-l_int|0
-suffix:semicolon
 id|ei_interrupt
 c_func
 (paren
@@ -6100,9 +6099,19 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME! Was it really ours? */
-r_return
+r_if
+c_cond
+(paren
+id|ret
+op_eq
 id|IRQ_HANDLED
+)paren
+id|info-&gt;stale
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|ei_watchdog

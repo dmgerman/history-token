@@ -34,7 +34,7 @@ r_int
 r_int
 id|nmi_watchdog
 op_assign
-id|NMI_LOCAL_APIC
+id|NMI_DEFAULT
 suffix:semicolon
 DECL|variable|nmi_hz
 r_static
@@ -50,10 +50,7 @@ r_int
 id|nmi_perfctr_msr
 suffix:semicolon
 multiline_comment|/* the MSR to reset in NMI handler */
-DECL|variable|nmi_watchdog_disabled
-r_int
-id|nmi_watchdog_disabled
-suffix:semicolon
+multiline_comment|/* Note that these events don&squot;t tick when the CPU idles. This means&n;   the frequency varies with CPU load. */
 DECL|macro|K7_EVNTSEL_ENABLE
 mdefine_line|#define K7_EVNTSEL_ENABLE&t;(1 &lt;&lt; 22)
 DECL|macro|K7_EVNTSEL_INT
@@ -78,6 +75,61 @@ DECL|macro|P6_EVENT_CPU_CLOCKS_NOT_HALTED
 mdefine_line|#define P6_EVENT_CPU_CLOCKS_NOT_HALTED&t;0x79
 DECL|macro|P6_NMI_EVENT
 mdefine_line|#define P6_NMI_EVENT&t;&t;P6_EVENT_CPU_CLOCKS_NOT_HALTED
+multiline_comment|/* Run after command line and cpu_init init, but before all other checks */
+DECL|function|nmi_watchdog_default
+r_void
+id|__init
+id|nmi_watchdog_default
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nmi_watchdog
+op_ne
+id|NMI_DEFAULT
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* For some reason the IO APIC watchdog doesn&squot;t work on the AMD&n;&t;   8111 chipset. For now switch to local APIC mode using&n;&t;   perfctr0 there.  On Intel CPUs we don&squot;t have code to handle&n;&t;   the perfctr and the IO-APIC seems to work, so use that.  */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+(brace
+id|nmi_watchdog
+op_assign
+id|NMI_LOCAL_APIC
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using local APIC NMI watchdog using perfctr0&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using IO APIC NMI watchdog&bslash;n&quot;
+)paren
+suffix:semicolon
+id|nmi_watchdog
+op_assign
+id|NMI_IO_APIC
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Why is there no CPUID flag for this? */
 DECL|function|cpu_has_lapic
 r_static
@@ -298,7 +350,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|setup_nmi_watchdog
-r_static
 r_int
 id|__init
 id|setup_nmi_watchdog
@@ -750,6 +801,11 @@ r_int
 r_int
 id|evntsel
 suffix:semicolon
+multiline_comment|/* No check, so can start with slow frequency */
+id|nmi_hz
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* XXX should check these in EFER */
 id|nmi_perfctr_msr
 op_assign
@@ -817,38 +873,22 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;watchdog: setting K7_PERFCTR0 to %08x&bslash;n&quot;
-comma
-op_minus
-(paren
-id|cpu_khz
-op_div
-id|nmi_hz
-op_star
-l_int|1000
-)paren
-)paren
-suffix:semicolon
-id|wrmsr
+id|wrmsrl
 c_func
 (paren
 id|MSR_K7_PERFCTR0
 comma
 op_minus
 (paren
+(paren
+id|u64
+)paren
 id|cpu_khz
-op_div
-id|nmi_hz
 op_star
 l_int|1000
 )paren
-comma
-op_minus
-l_int|1
+op_div
+id|nmi_hz
 )paren
 suffix:semicolon
 id|apic_write
@@ -877,6 +917,7 @@ suffix:semicolon
 DECL|function|setup_apic_nmi_watchdog
 r_void
 id|setup_apic_nmi_watchdog
+c_func
 (paren
 r_void
 )paren
@@ -1002,18 +1043,13 @@ r_int
 id|sum
 comma
 id|cpu
+suffix:semicolon
+id|cpu
 op_assign
 id|safe_smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nmi_watchdog_disabled
-)paren
-r_return
 suffix:semicolon
 id|sum
 op_assign
@@ -1118,6 +1154,8 @@ r_if
 c_cond
 (paren
 id|panic_on_timeout
+op_logical_or
+id|panic_on_oops
 )paren
 id|panic
 c_func

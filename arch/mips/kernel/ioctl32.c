@@ -52,6 +52,7 @@ macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_bonding.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
@@ -81,23 +82,6 @@ macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#ifdef CONFIG_SIBYTE_TBPROF
 macro_line|#include &lt;asm/sibyte/trace_prof.h&gt;
 macro_line|#endif
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|function|w_long
 r_static
 r_int

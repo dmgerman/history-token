@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.27 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.29 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -6,8 +6,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;asm/cio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;blacklist.h&quot;
+macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;css.h&quot;
 multiline_comment|/*&n; * &quot;Blacklisting&quot; of certain devices:&n; * Device numbers given in the commandline as cio_ignore=... won&squot;t be known&n; * to Linux.&n; *&n; * These can be single devices or ranges of devices&n; */
@@ -757,14 +759,6 @@ id|bl_dev
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_void
-id|css_reiterate_subchannels
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Function: s390_redo_validation&n; * Look for no longer blacklisted devices&n; * FIXME: there must be a better way to do this */
 r_static
 r_inline
@@ -775,6 +769,10 @@ id|s390_redo_validation
 r_void
 )paren
 (brace
+r_int
+r_int
+id|irq
+suffix:semicolon
 id|CIO_TRACE_EVENT
 (paren
 l_int|0
@@ -782,11 +780,85 @@ comma
 l_string|&quot;redoval&quot;
 )paren
 suffix:semicolon
-id|css_reiterate_subchannels
+r_for
+c_loop
+(paren
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+id|irq
+op_le
+id|__MAX_SUBCHANNELS
+suffix:semicolon
+id|irq
+op_increment
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_struct
+id|subchannel
+op_star
+id|sch
+suffix:semicolon
+id|sch
+op_assign
+id|get_subchannel_by_schid
 c_func
 (paren
+id|irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sch
+)paren
+(brace
+multiline_comment|/* Already known. */
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|css_probe_device
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|ENXIO
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* We&squot;re through. */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|ENOMEM
+)paren
+multiline_comment|/*&n;&t;&t;&t; * Stop validation for now. Bad, but no need for a&n;&t;&t;&t; * panic.&n;&t;&t;&t; */
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function: blacklist_parse_proc_parameters&n; * parse the stuff which is piped to /proc/cio_ignore&n; */
 r_static

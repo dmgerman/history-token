@@ -393,12 +393,10 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Invalid reference object */
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unknown target_type %X in Index/Reference obj %p&bslash;n&quot;
+l_string|&quot;During resolve, Unknown target_type %X in Index/Reference obj %p&bslash;n&quot;
 comma
 id|stack_desc-&gt;reference.target_type
 comma
@@ -429,12 +427,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unknown Reference opcode %X (%s) in %p&bslash;n&quot;
+l_string|&quot;During resolve, Unknown Reference opcode %X (%s) in %p&bslash;n&quot;
 comma
 id|opcode
 comma

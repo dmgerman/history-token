@@ -76,11 +76,7 @@ DECL|macro|__DEBUG_FEATURE_VERSION
 mdefine_line|#define __DEBUG_FEATURE_VERSION      1  /* version of debug feature */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif /* LINUX_VERSION_CODE */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

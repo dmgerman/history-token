@@ -5,8 +5,8 @@ macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;rtas_flash&quot;
 DECL|macro|FIRMWARE_FLASH_NAME

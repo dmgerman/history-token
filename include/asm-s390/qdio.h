@@ -7,6 +7,7 @@ mdefine_line|#define VERSION_QDIO_H &quot;$Revision: 1.57 $&quot;
 multiline_comment|/* note, that most of the typedef&squot;s are from ingo. */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/cio.h&gt;
+macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|QDIO_NAME
 mdefine_line|#define QDIO_NAME &quot;qdio &quot;
 macro_line|#ifndef __s390x__

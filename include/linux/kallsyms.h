@@ -4,6 +4,18 @@ DECL|macro|_LINUX_KALLSYMS_H
 mdefine_line|#define _LINUX_KALLSYMS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_KALLSYMS
+multiline_comment|/* Lookup the address for a symbol. Returns 0 if not found. */
+r_int
+r_int
+id|kallsyms_lookup_name
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 multiline_comment|/* Lookup an address.  modname is set to NULL if it&squot;s in the kernel. */
 r_const
 r_char
@@ -52,6 +64,24 @@ id|address
 )paren
 suffix:semicolon
 macro_line|#else /* !CONFIG_KALLSYMS */
+DECL|function|kallsyms_lookup_name
+r_static
+r_inline
+r_int
+r_int
+id|kallsyms_lookup_name
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|kallsyms_lookup
 r_static
 r_inline

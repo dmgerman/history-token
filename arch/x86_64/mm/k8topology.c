@@ -154,6 +154,9 @@ suffix:semicolon
 id|u32
 id|reg
 suffix:semicolon
+r_int
+id|rr
+suffix:semicolon
 id|nb
 op_assign
 id|find_northbridge
@@ -729,7 +732,6 @@ id|end
 suffix:semicolon
 )brace
 multiline_comment|/* There are unfortunately some poorly designed mainboards around&n;&t;   that only connect memory to a single CPU. This breaks the 1:1 cpu-&gt;node&n;&t;   mapping. To avoid this fill in the mapping for all possible&n;&t;   CPUs, as the number of CPUs is not known yet. &n;&t;   We round robin the existing nodes. */
-r_int
 id|rr
 op_assign
 l_int|0

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -52,14 +53,6 @@ suffix:semicolon
 r_extern
 r_int
 id|pmdisk_free
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_sync
 c_func
 (paren
 r_void

@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;procfs_example&quot;
 DECL|macro|FOOBAR_LEN
@@ -520,7 +520,7 @@ l_string|&quot;%s %s initialised&bslash;n&quot;
 comma
 id|MODULE_NAME
 comma
-id|MODULE_VERSION
+id|MODULE_VERS
 )paren
 suffix:semicolon
 r_return
@@ -648,7 +648,7 @@ l_string|&quot;%s %s removed&bslash;n&quot;
 comma
 id|MODULE_NAME
 comma
-id|MODULE_VERSION
+id|MODULE_VERS
 )paren
 suffix:semicolon
 )brace

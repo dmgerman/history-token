@@ -29,6 +29,10 @@ DECL|member|state
 )brace
 id|state
 suffix:semicolon
+DECL|member|onoff
+id|atomic_t
+id|onoff
+suffix:semicolon
 DECL|member|count
 r_int
 r_int

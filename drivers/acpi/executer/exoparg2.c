@@ -669,6 +669,21 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Concat - invalid obj type: %X&bslash;n&quot;
+comma
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
@@ -1018,11 +1033,6 @@ op_assign
 id|operand
 (braket
 l_int|0
-)braket
-op_member_access_from_pointer
-id|package.elements
-(braket
-id|index
 )braket
 suffix:semicolon
 id|return_desc-&gt;reference.where

@@ -585,21 +585,6 @@ multiline_comment|/*************************/
 multiline_comment|/* im/exported functions */
 multiline_comment|/*************************/
 r_extern
-r_int
-id|printk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-r_extern
 r_char
 op_star
 id|hysdn_getrev

@@ -329,6 +329,7 @@ id|hci_usb
 DECL|member|hdev
 r_struct
 id|hci_dev
+op_star
 id|hdev
 suffix:semicolon
 DECL|member|state

@@ -985,16 +985,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
+l_string|&quot;Wrong object type in field I/O %X&bslash;n&quot;
 comma
-l_string|&quot;%p, Wrong object type - %s&bslash;n&quot;
-comma
-id|obj_desc
-comma
-id|acpi_ut_get_object_type_name
+id|ACPI_GET_OBJECT_TYPE
 (paren
 id|obj_desc
 )paren

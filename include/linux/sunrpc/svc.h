@@ -343,6 +343,12 @@ op_star
 id|rq_resp
 suffix:semicolon
 multiline_comment|/* xdr&squot;d results */
+DECL|member|rq_auth_data
+r_void
+op_star
+id|rq_auth_data
+suffix:semicolon
+multiline_comment|/* flavor-specific data */
 DECL|member|rq_reserved
 r_int
 id|rq_reserved

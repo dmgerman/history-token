@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -12561,14 +12562,6 @@ id|CB1_INT
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|sys_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|__pmac

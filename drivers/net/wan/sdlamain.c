@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;&t;/* OS configuration options */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/module.h&gt;&t;/* support for loadable modules */
@@ -283,7 +284,9 @@ suffix:semicolon
 multiline_comment|/******* Kernel Loadable Module Entry Points ********************************/
 multiline_comment|/*============================================================================&n; * Module &squot;insert&squot; entry point.&n; * o print announcement&n; * o allocate adapter data space&n; * o initialize static data&n; * o register all cards with WAN router&n; * o calibrate SDLA shared memory access delay.&n; *&n; * Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * Context:&t;process&n; */
 DECL|function|wanpipe_init
+r_static
 r_int
+id|__init
 id|wanpipe_init
 c_func
 (paren
@@ -594,11 +597,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*============================================================================&n; * Module &squot;remove&squot; entry point.&n; * o unregister all adapters from the WAN router&n; * o release all remaining system resources&n; */
 DECL|function|wanpipe_cleanup
 r_static
 r_void
+id|__exit
 id|wanpipe_cleanup
 c_func
 (paren
@@ -682,7 +685,6 @@ c_func
 id|wanpipe_cleanup
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/******* WAN Device Driver Entry Points *************************************/
 multiline_comment|/*============================================================================&n; * Setup/configure WAN link driver.&n; * o check adapter state&n; * o make sure firmware is present in configuration&n; * o make sure I/O port and IRQ are specified&n; * o make sure I/O region is available&n; * o allocate interrupt vector&n; * o setup SDLA hardware&n; * o call appropriate routine to perform protocol-specific initialization&n; * o mark I/O region as used&n; * o if this is the first active card, then schedule background task&n; *&n; * This function is called when router handles ROUTER_SETUP IOCTL. The&n; * configuration structure is in kernel memory (including extended data, if&n; * any).&n; */
 DECL|function|setup
@@ -3665,8 +3667,6 @@ id|card
 op_increment
 id|card-&gt;open_cnt
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * This routine is called by the protocol-specific modules when network&n; * interface is being closed.  The only reason we need this, is because we&n; * have to call MOD_DEC_USE_COUNT, but cannot include &squot;module.h&squot; where it&squot;s&n; * defined more than once into the same kernel module.&n; */
 DECL|function|wanpipe_close
@@ -3680,8 +3680,6 @@ id|card
 (brace
 op_decrement
 id|card-&gt;open_cnt
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Set WAN device state.&n; */

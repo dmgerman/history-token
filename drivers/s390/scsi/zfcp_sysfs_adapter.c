@@ -1,13 +1,11 @@
-multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_adapter.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs adapter related routines&n; *&n; * Copyright (C) 2003 IBM Entwicklung GmbH, IBM Corporation&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_adapter.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs adapter related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_ADAPTER_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.26 $&quot;
+mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.30 $&quot;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &quot;zfcp_ext.h&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-mdefine_line|#define ZFCP_LOG_AREA_PREFIX            ZFCP_LOG_AREA_PREFIX_CONFIG
 DECL|variable|fc_topologies
 r_static
 r_const
@@ -93,7 +91,7 @@ suffix:semicolon
 id|ZFCP_DEFINE_ADAPTER_ATTR
 c_func
 (paren
-id|hw_version
+id|card_version
 comma
 l_string|&quot;0x%04x&bslash;n&quot;
 comma
@@ -141,6 +139,26 @@ id|fc_topologies
 (braket
 id|adapter-&gt;fc_topology
 )braket
+)paren
+suffix:semicolon
+id|ZFCP_DEFINE_ADAPTER_ATTR
+c_func
+(paren
+id|hardware_version
+comma
+l_string|&quot;0x%08x&bslash;n&quot;
+comma
+id|adapter-&gt;hardware_version
+)paren
+suffix:semicolon
+id|ZFCP_DEFINE_ADAPTER_ATTR
+c_func
+(paren
+id|serial_number
+comma
+l_string|&quot;%17s&bslash;n&quot;
+comma
+id|adapter-&gt;serial_number
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * zfcp_sysfs_adapter_in_recovery_show - recovery state of adapter&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; *&n; * Show function of &quot;in_recovery&quot; attribute of adapter. Will be&n; * &quot;0&quot; if no error recovery is pending for adapter, otherwise &quot;1&quot;.&n; */
@@ -892,24 +910,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* restart error recovery only if adapter is online */
-r_if
-c_cond
-(paren
-id|adapter-&gt;ccw_device-&gt;online
-op_ne
-l_int|1
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|ENXIO
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|zfcp_erp_modify_adapter_status
 c_func
 (paren
@@ -1061,7 +1061,7 @@ op_amp
 id|dev_attr_s_id.attr
 comma
 op_amp
-id|dev_attr_hw_version.attr
+id|dev_attr_card_version.attr
 comma
 op_amp
 id|dev_attr_lic_version.attr
@@ -1080,6 +1080,12 @@ id|dev_attr_scsi_host_no.attr
 comma
 op_amp
 id|dev_attr_status.attr
+comma
+op_amp
+id|dev_attr_hardware_version.attr
+comma
+op_amp
+id|dev_attr_serial_number.attr
 comma
 l_int|NULL
 )brace
@@ -1147,6 +1153,4 @@ suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA
 macro_line|#undef ZFCP_LOG_AREA
-DECL|macro|ZFCP_LOG_AREA_PREFIX
-macro_line|#undef ZFCP_LOG_AREA_PREFIX
 eof

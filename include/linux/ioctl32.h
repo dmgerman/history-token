@@ -4,21 +4,6 @@ mdefine_line|#define IOCTL32_H 1
 r_struct
 id|file
 suffix:semicolon
-r_extern
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* &n; * Register an 32bit ioctl translation handler for ioctl cmd.&n; *&n; * handler == NULL: use 64bit ioctl handler.&n; * arguments to handler:  fd: file descriptor&n; *                        cmd: ioctl command.&n; *                        arg: ioctl argument&n; *                        struct file *file: file descriptor pointer.&n; */
 r_extern
 r_int

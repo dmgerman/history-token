@@ -145,7 +145,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_system_write_sleep
 id|acpi_system_write_sleep
 (paren
@@ -156,6 +156,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -798,7 +799,7 @@ id|result
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_system_write_alarm
 id|acpi_system_write_alarm
 (paren
@@ -809,6 +810,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *    Architecture-specific kernel symbols&n; *&n; *    C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 DECL|variable|memchr
 id|EXPORT_SYMBOL
@@ -268,59 +269,6 @@ id|__memset_io
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/unistd.h&gt;
-r_extern
-r_int
-id|sys_open
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-id|off_t
-id|sys_lseek
-c_func
-(paren
-r_int
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_read
-c_func
-(paren
-r_int
-comma
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sys_write
-c_func
-(paren
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|variable|sys_open
 id|EXPORT_SYMBOL
 c_func

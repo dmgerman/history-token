@@ -29,9 +29,9 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#endif /* CONFIG_PPC */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 macro_line|#include &quot;de4x5.h&quot;
 DECL|variable|__devinitdata
 r_static
@@ -18340,13 +18340,13 @@ comma
 id|broken
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 multiline_comment|/* &n;    ** If the address starts with 00 a0, we have to bit-reverse&n;    ** each byte of the address.&n;    */
 r_if
 c_cond
 (paren
 (paren
-id|ppc_md.ppc_machine
+id|_machine
 op_amp
 id|_MACH_Pmac
 )paren
@@ -18464,7 +18464,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_PPC */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 multiline_comment|/* Test for a bad enet address */
 id|status
 op_assign

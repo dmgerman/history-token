@@ -479,11 +479,27 @@ id|orig_i0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|ptrace_signal_deliver
-mdefine_line|#define ptrace_signal_deliver(REGS, COOKIE) &bslash;&n;do {&t;struct signal_deliver_cookie *cp = (COOKIE); &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    (regs-&gt;u_regs[UREG_I0] == ERESTARTNOHAND || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTSYS || &bslash;&n;&t;     regs-&gt;u_regs[UREG_I0] == ERESTARTNOINTR)) { &bslash;&n;&t;&t;/* replay the system call when we are done */ &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_I0] = cp-&gt;orig_i0; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;&t;if (cp-&gt;restart_syscall &amp;&amp; &bslash;&n;&t;    regs-&gt;u_regs[UREG_I0] == ERESTART_RESTARTBLOCK) { &bslash;&n;&t;&t;regs-&gt;u_regs[UREG_G1] = __NR_restart_syscall; &bslash;&n;&t;&t;regs-&gt;tpc -= 4; &bslash;&n;&t;&t;regs-&gt;tnpc -= 4; &bslash;&n;&t;&t;cp-&gt;restart_syscall = 0; &bslash;&n;&t;} &bslash;&n;} while (0)
+r_struct
+id|pt_regs
+suffix:semicolon
+r_extern
+r_void
+id|ptrace_signal_deliver
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_void
+op_star
+id|cookie
+)paren
+suffix:semicolon
 DECL|macro|HAVE_ARCH_SYS_PAUSE
 mdefine_line|#define HAVE_ARCH_SYS_PAUSE
-macro_line|#endif
+macro_line|#endif /* !(__KERNEL__) */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_ASMSPARC64_SIGNAL_H) */
 eof

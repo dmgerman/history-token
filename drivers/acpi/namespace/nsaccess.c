@@ -661,12 +661,10 @@ op_ne
 id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;%p Not a namespace node [%s]&bslash;n&quot;
+l_string|&quot;ns_lookup: %p is not a namespace node [%s]&bslash;n&quot;
 comma
 id|prefix_node
 comma

@@ -1506,8 +1506,6 @@ id|regs
 op_assign
 id|priv-&gt;regs
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Start DMA */
 id|regs-&gt;dma_ctrl
 op_or_assign
@@ -1619,8 +1617,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -77,11 +77,6 @@ op_star
 id|instr
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-suffix:semicolon
 id|__u16
 op_star
 id|location

@@ -14,10 +14,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 DECL|function|ide_getxdigit
 r_static
 r_int

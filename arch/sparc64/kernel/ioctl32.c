@@ -3,6 +3,7 @@ DECL|macro|INCLUDES
 mdefine_line|#define INCLUDES
 macro_line|#include &quot;compat_ioctl.c&quot;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/fbio.h&gt;
 macro_line|#include &lt;asm/kbio.h&gt;
 macro_line|#include &lt;asm/vuid_event.h&gt;

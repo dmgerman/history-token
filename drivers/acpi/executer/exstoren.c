@@ -111,6 +111,18 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* For copy_object, no further validation necessary */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;opcode
+op_eq
+id|AML_COPY_OP
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Must have a Integer, Buffer, or String&n;&t;&t; */
 r_if
 c_cond
@@ -192,11 +204,9 @@ r_case
 id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Aliases are resolved by acpi_ex_prep_operands&n;&t;&t; */
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_WARN
-comma
 l_string|&quot;Store into Alias - should never happen&bslash;n&quot;
 )paren
 )paren

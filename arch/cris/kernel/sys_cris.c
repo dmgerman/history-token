@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: sys_cris.c,v 1.5 2003/07/04 08:27:52 starvik Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;

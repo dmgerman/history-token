@@ -6578,10 +6578,6 @@ id|self-&gt;qos.baud_rate.bits
 op_or_assign
 id|IR_1152000
 suffix:semicolon
-id|self-&gt;flags
-op_or_assign
-id|IFF_MIR
-suffix:semicolon
 )brace
 macro_line|#endif
 r_if
@@ -6600,10 +6596,6 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
-id|self-&gt;flags
-op_or_assign
-id|IFF_FIR
-suffix:semicolon
 )brace
 multiline_comment|/*FIXME: work this out... */
 id|self-&gt;qos.min_turn_time.bits
@@ -6615,14 +6607,6 @@ id|irda_qos_bits_to_value
 op_amp
 id|self-&gt;qos
 )paren
-suffix:semicolon
-id|self-&gt;flags
-op_assign
-id|IFF_SIR
-op_or
-id|IFF_DMA
-op_or
-id|IFF_PIO
 suffix:semicolon
 multiline_comment|/* Allocate twice the size to guarantee alignment */
 id|self-&gt;ringbuf

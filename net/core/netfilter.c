@@ -16,9 +16,6 @@ macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 multiline_comment|/* In this code, we can be waiting indefinitely for userspace to&n; * service a packet if a hook returns NF_QUEUE.  We could keep a count&n; * of skbuffs queued for userspace, and not deregister a hook unless&n; * this is zero, but that sucks.  Now, we simply check when the&n; * packets come back: if the hook is gone, the packet is discarded. */
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|macro|NFDEBUG

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.123 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.129 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2691,7 +2691,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Terminate the current i/o and set the request to failed.&n; * ccw_device_halt/ccw_device_clear can fail if the i/o subsystem &n; * is in a bad mood.&n; */
+multiline_comment|/*&n; * Terminate the current i/o and set the request to failed.&n; * ccw_device_clear can fail if the i/o subsystem&n; * is in a bad mood.&n; */
 r_int
 DECL|function|dasd_term_IO
 id|dasd_term_IO
@@ -2759,27 +2759,6 @@ id|DASD_CQR_IN_IO
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|retries
-OL
-l_int|2
-)paren
-id|rc
-op_assign
-id|ccw_device_halt
-c_func
-(paren
-id|device-&gt;cdev
-comma
-(paren
-r_int
-)paren
-id|cqr
-)paren
-suffix:semicolon
-r_else
 id|rc
 op_assign
 id|ccw_device_clear
@@ -2965,6 +2944,10 @@ id|get_clock
 c_func
 (paren
 )paren
+suffix:semicolon
+id|cqr-&gt;starttime
+op_assign
+id|jiffies
 suffix:semicolon
 id|rc
 op_assign
@@ -3154,7 +3137,7 @@ id|device
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Setup timeout for a device.&n; */
+multiline_comment|/*&n; * Setup timeout for a device in jiffies.&n; */
 r_void
 DECL|function|dasd_set_timer
 id|dasd_set_timer
@@ -3169,7 +3152,6 @@ r_int
 id|expires
 )paren
 (brace
-multiline_comment|/* FIXME: timeouts are based on jiffies but the timeout&n;&t; * comparision in __dasd_check_expire is based on the&n;&t; * TOD clock. */
 r_if
 c_cond
 (paren
@@ -4086,21 +4068,12 @@ l_string|&quot;no memory for dstat...ignoring&quot;
 suffix:semicolon
 macro_line|#ifdef ERP_DEBUG
 multiline_comment|/* dump sense data */
-r_if
-c_cond
-(paren
-id|device-&gt;discipline
-op_logical_and
-id|device-&gt;discipline-&gt;dump_sense
-)paren
-id|device-&gt;discipline
-op_member_access_from_pointer
-id|dump_sense
+id|dasd_log_sense
 c_func
 (paren
-id|device
-comma
 id|cqr
+comma
+id|irb
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4403,6 +4376,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|cqr-&gt;dstat-&gt;esw.esw0.erw.cons
+)paren
+(brace
 id|erp_fn
 op_assign
 id|device-&gt;discipline
@@ -4414,6 +4393,14 @@ id|cqr
 )paren
 suffix:semicolon
 id|erp_fn
+c_func
+(paren
+id|cqr
+)paren
+suffix:semicolon
+)brace
+r_else
+id|dasd_default_erp_action
 c_func
 (paren
 id|cqr
@@ -4902,17 +4889,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cqr-&gt;expires
-op_star
+id|time_after_eq
+c_func
 (paren
-id|TOD_SEC
-op_div
-id|HZ
-)paren
+id|jiffies
+comma
+id|cqr-&gt;expires
 op_plus
-id|cqr-&gt;startclk
-OL
-id|now
+id|cqr-&gt;starttime
+)paren
 )paren
 (brace
 r_if
@@ -6121,6 +6106,10 @@ id|cqr-&gt;stopclk
 op_assign
 l_int|0
 suffix:semicolon
+id|cqr-&gt;starttime
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|rc
@@ -7192,10 +7181,39 @@ c_cond
 (paren
 id|device-&gt;use_diag_flag
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dasd_diag_discipline_pointer
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;dasd_generic couldn&squot;t online device %s &quot;
+l_string|&quot;- discipline DIAG not available&bslash;n&quot;
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+id|dasd_delete_device
+c_func
+(paren
+id|device
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|discipline
 op_assign
 id|dasd_diag_discipline_pointer
 suffix:semicolon
+)brace
 id|device-&gt;discipline
 op_assign
 id|discipline
@@ -8097,6 +8115,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|dasd_generic_remove
+)paren
+suffix:semicolon
+DECL|variable|dasd_generic_notify
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|dasd_generic_notify
 )paren
 suffix:semicolon
 DECL|variable|dasd_generic_set_online

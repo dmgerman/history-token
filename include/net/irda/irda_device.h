@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;&t;&t;/* struct sk_buff */
 macro_line|#include &lt;linux/irda.h&gt;
+macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;&t;&t;/* struct qos_info */
 macro_line|#include &lt;net/irda/irqueue.h&gt;&t;&t;/* irda_queue_t */
@@ -659,16 +660,33 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Interface for internal use */
+DECL|function|irda_device_txqueue_empty
+r_static
+r_inline
 r_int
 id|irda_device_txqueue_empty
 c_func
 (paren
+r_const
 r_struct
 id|net_device
 op_star
 id|dev
 )paren
+(brace
+r_return
+(paren
+id|skb_queue_len
+c_func
+(paren
+op_amp
+id|dev-&gt;qdisc-&gt;q
+)paren
+op_eq
+l_int|0
+)paren
 suffix:semicolon
+)brace
 r_int
 id|irda_device_set_raw_mode
 c_func
@@ -777,7 +795,7 @@ id|dongle
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
 r_void
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 r_int
@@ -797,16 +815,6 @@ suffix:semicolon
 macro_line|#endif
 r_void
 id|irda_task_delete
-c_func
-(paren
-r_struct
-id|irda_task
-op_star
-id|task
-)paren
-suffix:semicolon
-r_int
-id|irda_task_kick
 c_func
 (paren
 r_struct
@@ -853,14 +861,6 @@ comma
 id|IRDA_TASK_STATE
 id|state
 )paren
-suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|infrared_mode
-(braket
-)braket
 suffix:semicolon
 multiline_comment|/*&n; * Function irda_get_mtt (skb)&n; *&n; *    Utility function for getting the minimum turnaround time out of &n; *    the skb, where it has been hidden in the cb field.&n; */
 DECL|macro|irda_get_mtt
