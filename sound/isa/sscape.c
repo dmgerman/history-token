@@ -9,6 +9,8 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
+DECL|macro|SNDRV_GET_ID
+mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/sscape_ioctl.h&gt;
 DECL|macro|chip_t
@@ -2166,7 +2168,7 @@ id|VERIFY_READ
 comma
 id|code
 comma
-l_int|65536
+id|SSCAPE_MICROCODE_SIZE
 )paren
 )paren
 op_ne
@@ -2188,7 +2190,7 @@ id|sscape
 comma
 id|code
 comma
-l_int|65536
+id|SSCAPE_MICROCODE_SIZE
 )paren
 )paren
 op_eq
@@ -4305,6 +4307,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sscape: can&squot;t grab port 0x%x&bslash;n&quot;
+comma
+id|params-&gt;port
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -4329,6 +4340,15 @@ OL
 l_int|0
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sscape: can&squot;t grab DMA %d&bslash;n&quot;
+comma
+id|params-&gt;dma1
+)paren
+suffix:semicolon
 r_goto
 id|_release_region
 suffix:semicolon
@@ -5226,6 +5246,15 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 id|pnp_set_card_drvdata
 c_func
 (paren
@@ -5723,16 +5752,12 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|get_option
+id|get_id
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|id
 (braket
@@ -5744,16 +5769,12 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|port
 (braket

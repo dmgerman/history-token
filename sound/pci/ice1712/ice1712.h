@@ -1025,6 +1025,23 @@ op_star
 id|ice
 )paren
 suffix:semicolon
+multiline_comment|/* misc operators - move to another place? */
+DECL|member|set_pro_rate
+r_void
+(paren
+op_star
+id|set_pro_rate
+)paren
+(paren
+id|ice1712_t
+op_star
+id|ice
+comma
+r_int
+r_int
+id|rate
+)paren
+suffix:semicolon
 DECL|member|gpio
 )brace
 id|gpio

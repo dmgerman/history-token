@@ -8226,6 +8226,8 @@ id|entry
 comma
 id|korg1212
 comma
+l_int|1024
+comma
 id|snd_korg1212_proc_read
 )paren
 suffix:semicolon
@@ -9897,6 +9899,15 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|rchip
 op_assign

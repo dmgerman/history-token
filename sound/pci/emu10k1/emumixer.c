@@ -2627,9 +2627,6 @@ op_star
 id|emu
 )paren
 (brace
-id|ac97_t
-id|ac97
-suffix:semicolon
 r_int
 id|err
 comma
@@ -2645,6 +2642,136 @@ id|card
 op_assign
 id|emu-&gt;card
 suffix:semicolon
+r_char
+op_star
+op_star
+id|c
+suffix:semicolon
+r_static
+r_char
+op_star
+id|emu10k1_remove_ctls
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* no AC97 mono, surround, center/lfe */
+l_string|&quot;Master Mono Playback Switch&quot;
+comma
+l_string|&quot;Master Mono Playback Volume&quot;
+comma
+l_string|&quot;PCM Out Path &amp; Mute&quot;
+comma
+l_string|&quot;Mono Output Select&quot;
+comma
+l_string|&quot;Surround Playback Switch&quot;
+comma
+l_string|&quot;Surround Playback Volume&quot;
+comma
+l_string|&quot;Center Playback Switch&quot;
+comma
+l_string|&quot;Center Playback Volume&quot;
+comma
+l_string|&quot;LFE Playback Switch&quot;
+comma
+l_string|&quot;LFE Playback Volume&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+r_static
+r_char
+op_star
+id|emu10k1_rename_ctls
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;Surround Digital Playback Volume&quot;
+comma
+l_string|&quot;Surround Playback Volume&quot;
+comma
+l_string|&quot;Center Digital Playback Volume&quot;
+comma
+l_string|&quot;Center Playback Volume&quot;
+comma
+l_string|&quot;LFE Digital Playback Volume&quot;
+comma
+l_string|&quot;LFE Playback Volume&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+r_static
+r_char
+op_star
+id|audigy_remove_ctls
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* Master/PCM controls on ac97 of Audigy has no effect */
+l_string|&quot;PCM Playback Switch&quot;
+comma
+l_string|&quot;PCM Playback Volume&quot;
+comma
+l_string|&quot;Master Mono Playback Switch&quot;
+comma
+l_string|&quot;Master Mono Playback Volume&quot;
+comma
+l_string|&quot;Master Playback Switch&quot;
+comma
+l_string|&quot;Master Playback Volume&quot;
+comma
+l_string|&quot;PCM Out Path &amp; Mute&quot;
+comma
+l_string|&quot;Mono Output Select&quot;
+comma
+multiline_comment|/* remove unused AC97 capture controls */
+l_string|&quot;Capture Source&quot;
+comma
+l_string|&quot;Capture Switch&quot;
+comma
+l_string|&quot;Capture Volume&quot;
+comma
+l_string|&quot;Mic Select&quot;
+comma
+l_string|&quot;Video Playback Switch&quot;
+comma
+l_string|&quot;Video Playback Volume&quot;
+comma
+l_string|&quot;Mic Playback Switch&quot;
+comma
+l_string|&quot;Mic Playback Volume&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+r_static
+r_char
+op_star
+id|audigy_rename_ctls
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* use conventional names */
+l_string|&quot;Wave Playback Volume&quot;
+comma
+l_string|&quot;PCM Playback Volume&quot;
+comma
+multiline_comment|/* &quot;Wave Capture Volume&quot;, &quot;PCM Capture Volume&quot;, */
+l_string|&quot;Wave Master Playback Volume&quot;
+comma
+l_string|&quot;Master Playback Volume&quot;
+comma
+l_string|&quot;AMic Playback Volume&quot;
+comma
+l_string|&quot;Mic Playback Volume&quot;
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2652,6 +2779,61 @@ op_logical_neg
 id|emu-&gt;no_ac97
 )paren
 (brace
+id|ac97_bus_t
+id|bus
+comma
+op_star
+id|pbus
+suffix:semicolon
+id|ac97_t
+id|ac97
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|bus
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|bus
+)paren
+)paren
+suffix:semicolon
+id|bus.write
+op_assign
+id|snd_emu10k1_ac97_write
+suffix:semicolon
+id|bus.read
+op_assign
+id|snd_emu10k1_ac97_read
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ac97_bus
+c_func
+(paren
+id|emu-&gt;card
+comma
+op_amp
+id|bus
+comma
+op_amp
+id|pbus
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2665,14 +2847,6 @@ r_sizeof
 id|ac97
 )paren
 )paren
-suffix:semicolon
-id|ac97.write
-op_assign
-id|snd_emu10k1_ac97_write
-suffix:semicolon
-id|ac97.read
-op_assign
-id|snd_emu10k1_ac97_read
 suffix:semicolon
 id|ac97.private_data
 op_assign
@@ -2691,7 +2865,7 @@ op_assign
 id|snd_ac97_mixer
 c_func
 (paren
-id|emu-&gt;card
+id|pbus
 comma
 op_amp
 id|ac97
@@ -2710,52 +2884,82 @@ r_if
 c_cond
 (paren
 id|emu-&gt;audigy
-op_logical_and
-id|emu-&gt;revision
-op_eq
-l_int|4
 )paren
 (brace
-multiline_comment|/* Master/PCM controls on ac97 of Audigy2 has no effect */
-multiline_comment|/* FIXME: keep master volume/switch to be sure.&n;&t;&t;&t; * once after we check that they play really no roles,&n;&t;&t;&t; * they shall be removed.&n;&t;&t;&t; */
-id|rename_ctl
+multiline_comment|/* set master volume to 0 dB */
+id|snd_ac97_write
 c_func
 (paren
-id|card
+id|emu-&gt;ac97
 comma
-l_string|&quot;Master Playback Switch&quot;
+id|AC97_MASTER
 comma
-l_string|&quot;AC97 Master Playback Switch&quot;
+l_int|0x0202
 )paren
 suffix:semicolon
-id|rename_ctl
+multiline_comment|/* set capture source to mic */
+id|snd_ac97_write
 c_func
 (paren
-id|card
+id|emu-&gt;ac97
 comma
-l_string|&quot;Master Playback Volume&quot;
+id|AC97_REC_SEL
 comma
-l_string|&quot;AC97 Master Playback Volume&quot;
+l_int|0x0000
 )paren
 suffix:semicolon
-multiline_comment|/* pcm controls are removed */
-id|remove_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;PCM Playback Switch&quot;
-)paren
-suffix:semicolon
-id|remove_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;PCM Playback Volume&quot;
-)paren
+id|c
+op_assign
+id|audigy_remove_ctls
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* remove unused AC97 controls */
+id|snd_ac97_write
+c_func
+(paren
+id|emu-&gt;ac97
+comma
+id|AC97_SURROUND_MASTER
+comma
+l_int|0x0202
+)paren
+suffix:semicolon
+id|snd_ac97_write
+c_func
+(paren
+id|emu-&gt;ac97
+comma
+id|AC97_CENTER_LFE_MASTER
+comma
+l_int|0x0202
+)paren
+suffix:semicolon
+id|c
+op_assign
+id|emu10k1_remove_ctls
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+op_star
+id|c
+suffix:semicolon
+id|c
+op_increment
+)paren
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+op_star
+id|c
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2800,45 +3004,43 @@ r_if
 c_cond
 (paren
 id|emu-&gt;audigy
-op_logical_and
-id|emu-&gt;revision
-op_eq
-l_int|4
 )paren
-(brace
-multiline_comment|/* Audigy2 and Audigy2 EX */
-multiline_comment|/* use the conventional names */
+id|c
+op_assign
+id|audigy_rename_ctls
+suffix:semicolon
+r_else
+id|c
+op_assign
+id|emu10k1_rename_ctls
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+op_star
+id|c
+suffix:semicolon
+id|c
+op_add_assign
+l_int|2
+)paren
 id|rename_ctl
 c_func
 (paren
 id|card
 comma
-l_string|&quot;Wave Playback Volume&quot;
+id|c
+(braket
+l_int|0
+)braket
 comma
-l_string|&quot;PCM Playback Volume&quot;
+id|c
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
-id|rename_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;Wave Playback Volume&quot;
-comma
-l_string|&quot;PCM Capture Volume&quot;
-)paren
-suffix:semicolon
-id|rename_ctl
-c_func
-(paren
-id|card
-comma
-l_string|&quot;Wave Master Playback Volume&quot;
-comma
-l_string|&quot;Master Playback Volume&quot;
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3155,6 +3357,51 @@ id|kctl
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|kctl
+op_assign
+id|ctl_find
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|DEFAULT
+)paren
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* already defined by ac97, remove it */
+multiline_comment|/* FIXME: or do we need both controls? */
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|DEFAULT
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

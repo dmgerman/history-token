@@ -746,6 +746,8 @@ DECL|macro|SNDRV_PCM_INFO_JOINT_DUPLEX
 mdefine_line|#define SNDRV_PCM_INFO_JOINT_DUPLEX&t;0x00200000&t;/* playback and capture stream are somewhat correlated */
 DECL|macro|SNDRV_PCM_INFO_SYNC_START
 mdefine_line|#define SNDRV_PCM_INFO_SYNC_START&t;0x00400000&t;/* pcm support some kind of sync go */
+DECL|macro|SNDRV_PCM_INFO_NONATOMIC_OPS
+mdefine_line|#define SNDRV_PCM_INFO_NONATOMIC_OPS&t;0x00800000&t;/* non-atomic prepare callback */
 DECL|enum|sndrv_pcm_state
 r_enum
 id|sndrv_pcm_state
@@ -784,10 +786,14 @@ DECL|enumerator|SNDRV_PCM_STATE_SUSPENDED
 id|SNDRV_PCM_STATE_SUSPENDED
 comma
 multiline_comment|/* hardware is suspended */
+DECL|enumerator|SNDRV_PCM_STATE_DISCONNECTED
+id|SNDRV_PCM_STATE_DISCONNECTED
+comma
+multiline_comment|/* hardware is disconnected */
 DECL|enumerator|SNDRV_PCM_STATE_LAST
 id|SNDRV_PCM_STATE_LAST
 op_assign
-id|SNDRV_PCM_STATE_SUSPENDED
+id|SNDRV_PCM_STATE_DISCONNECTED
 comma
 )brace
 suffix:semicolon
@@ -2777,7 +2783,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                                                          *&n; *        Section for driver control interface - /dev/snd/control?          *&n; *                                                                          *&n; ****************************************************************************/
 DECL|macro|SNDRV_CTL_VERSION
-mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
+mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 3)
 DECL|struct|sndrv_ctl_card_info
 r_struct
 id|sndrv_ctl_card_info
@@ -2964,6 +2970,8 @@ DECL|macro|SNDRV_CTL_ELEM_ACCESS_LOCK
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_LOCK&t;&t;(1&lt;&lt;9)&t;/* write lock */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_OWNER
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_OWNER&t;&t;(1&lt;&lt;10)&t;/* write lock owner */
+DECL|macro|SNDRV_CTL_ELEM_ACCESS_USER
+mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_USER&t;&t;(1&lt;&lt;29) /* user space element */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_DINDIRECT
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_DINDIRECT&t;&t;(1&lt;&lt;30)&t;/* indirect access for matrix dimensions in the info structure */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_INDIRECT
@@ -3482,6 +3490,48 @@ comma
 l_int|0x16
 comma
 r_int
+)paren
+comma
+DECL|enumerator|SNDRV_CTL_IOCTL_ELEM_ADD
+id|SNDRV_CTL_IOCTL_ELEM_ADD
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;U&squot;
+comma
+l_int|0x17
+comma
+r_struct
+id|sndrv_ctl_elem_info
+)paren
+comma
+DECL|enumerator|SNDRV_CTL_IOCTL_ELEM_REPLACE
+id|SNDRV_CTL_IOCTL_ELEM_REPLACE
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;U&squot;
+comma
+l_int|0x18
+comma
+r_struct
+id|sndrv_ctl_elem_info
+)paren
+comma
+DECL|enumerator|SNDRV_CTL_IOCTL_ELEM_REMOVE
+id|SNDRV_CTL_IOCTL_ELEM_REMOVE
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;U&squot;
+comma
+l_int|0x19
+comma
+r_struct
+id|sndrv_ctl_elem_id
 )paren
 comma
 DECL|enumerator|SNDRV_CTL_IOCTL_HWDEP_NEXT_DEVICE

@@ -107,6 +107,8 @@ DECL|macro|SNDRV_OSS_DEVICE_TYPE_SNDSTAT
 mdefine_line|#define SNDRV_OSS_DEVICE_TYPE_SNDSTAT&t;5
 DECL|macro|SNDRV_OSS_DEVICE_TYPE_MUSIC
 mdefine_line|#define SNDRV_OSS_DEVICE_TYPE_MUSIC&t;6
+DECL|macro|MODULE_ALIAS_SNDRV_MINOR
+mdefine_line|#define MODULE_ALIAS_SNDRV_MINOR(type) &bslash;&n;&t;MODULE_ALIAS(&quot;sound-service-?-&quot; __stringify(type))
 macro_line|#endif
 macro_line|#endif /* __SOUND_MINORS_H */
 eof

@@ -3706,6 +3706,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;es1688: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|port
+op_plus
+l_int|4
+)paren
+suffix:semicolon
 id|snd_es1688_free
 c_func
 (paren
@@ -3739,6 +3750,15 @@ id|chip
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;es1688: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|snd_es1688_free
 c_func
 (paren
@@ -3766,6 +3786,15 @@ l_string|&quot;ES1688&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;es1688: can&squot;t grab DMA8 %d&bslash;n&quot;
+comma
+id|dma8
+)paren
+suffix:semicolon
 id|snd_es1688_free
 c_func
 (paren

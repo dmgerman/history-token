@@ -1260,6 +1260,10 @@ op_star
 id|file
 )paren
 suffix:semicolon
+macro_line|#ifndef snd_card_set_dev
+DECL|macro|snd_card_set_dev
+mdefine_line|#define snd_card_set_dev(card,devptr) ((card)-&gt;dev = (devptr))
+macro_line|#endif
 multiline_comment|/* device.c */
 r_int
 id|snd_device_new
@@ -1437,6 +1441,19 @@ dot
 dot
 dot
 )paren
+id|__attribute__
+(paren
+(paren
+id|format
+(paren
+id|printf
+comma
+l_int|3
+comma
+l_int|4
+)paren
+)paren
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; defined(CONFIG_SND_VERBOSE_PRINTK)
@@ -1460,6 +1477,19 @@ comma
 dot
 dot
 dot
+)paren
+id|__attribute__
+(paren
+(paren
+id|format
+(paren
+id|printf
+comma
+l_int|3
+comma
+l_int|4
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
