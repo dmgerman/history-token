@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -1900,9 +1901,6 @@ r_struct
 id|list_head
 op_star
 id|tmp
-comma
-op_star
-id|head
 suffix:semicolon
 r_struct
 id|task_struct
@@ -1915,27 +1913,20 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|head
-op_assign
-op_amp
-id|q-&gt;task_list
-suffix:semicolon
 id|WQ_CHECK_LIST_HEAD
 c_func
 (paren
-id|head
+op_amp
+id|q-&gt;task_list
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each
+c_func
 (paren
 id|tmp
-op_ne
-id|head
+comma
+op_amp
+id|q-&gt;task_list
 )paren
 (brace
 r_int
@@ -1955,10 +1946,6 @@ id|wait_queue_t
 comma
 id|task_list
 )paren
-suffix:semicolon
-id|tmp
-op_assign
-id|tmp-&gt;next
 suffix:semicolon
 id|CHECK_MAGIC
 c_func
@@ -3122,7 +3109,7 @@ macro_line|#if CONFIG_SMP
 r_int
 id|i
 suffix:semicolon
-singleline_comment|// Substract non-idle processes running on other CPUs.
+singleline_comment|// Subtract non-idle processes running on other CPUs.
 r_for
 c_loop
 (paren

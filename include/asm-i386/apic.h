@@ -2,11 +2,12 @@ macro_line|#ifndef __ASM_APIC_H
 DECL|macro|__ASM_APIC_H
 mdefine_line|#define __ASM_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|macro|APIC_DEBUG
-mdefine_line|#define APIC_DEBUG 1
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+DECL|macro|APIC_DEBUG
+mdefine_line|#define APIC_DEBUG 0
 macro_line|#if APIC_DEBUG
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...) printk(x)
@@ -140,14 +141,6 @@ id|APIC_ICR_BUSY
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|apic_timer_irqs
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_X86_GOOD_APIC
 DECL|macro|FORCE_READ_AROUND_WRITE
 macro_line|# define FORCE_READ_AROUND_WRITE 0
@@ -230,7 +223,13 @@ suffix:semicolon
 r_extern
 r_void
 id|sync_Arb_IDs
-c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|init_bsp_APIC
 (paren
 r_void
 )paren
@@ -245,7 +244,6 @@ suffix:semicolon
 r_extern
 r_void
 id|init_apic_mappings
-c_func
 (paren
 r_void
 )paren
@@ -253,7 +251,6 @@ suffix:semicolon
 r_extern
 r_void
 id|smp_local_timer_interrupt
-c_func
 (paren
 r_struct
 id|pt_regs
@@ -264,11 +261,88 @@ suffix:semicolon
 r_extern
 r_void
 id|setup_APIC_clocks
-c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+r_extern
+r_void
+id|setup_apic_nmi_watchdog
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_inline
+r_void
+id|nmi_watchdog_tick
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|APIC_init_uniprocessor
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|pm_dev
+op_star
+id|apic_pm_register
+c_func
+(paren
+id|pm_dev_t
+comma
+r_int
+r_int
+comma
+id|pm_callback
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|apic_pm_unregister
+c_func
+(paren
+r_struct
+id|pm_dev
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|apic_timer_irqs
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_int
+id|check_nmi_watchdog
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|nmi_watchdog
+suffix:semicolon
+DECL|macro|NMI_NONE
+mdefine_line|#define NMI_NONE&t;0
+DECL|macro|NMI_IO_APIC
+mdefine_line|#define NMI_IO_APIC&t;1
+DECL|macro|NMI_LOCAL_APIC
+mdefine_line|#define NMI_LOCAL_APIC&t;2
+DECL|macro|NMI_INVALID
+mdefine_line|#define NMI_INVALID&t;3
+macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
+macro_line|#endif /* __ASM_APIC_H */
 eof

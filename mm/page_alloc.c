@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 DECL|variable|nr_swap_pages
 r_int
 id|nr_swap_pages
@@ -1137,7 +1138,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|__freed
+)paren
 )paren
 (brace
 multiline_comment|/* pick from the last inserted so we&squot;re lifo */
@@ -1741,12 +1746,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|freed
-comma
-l_int|1
 )paren
 )paren
 (brace
@@ -1775,31 +1778,6 @@ id|z
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|zone_free_pages
-c_func
-(paren
-id|z
-comma
-id|order
-)paren
-OG
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_HIGH
-ques
-c_cond
-id|z-&gt;pages_min
-op_div
-l_int|2
-suffix:colon
-id|z-&gt;pages_min
-)paren
-)paren
-(brace
 id|page
 op_assign
 id|rmqueue
@@ -1820,9 +1798,9 @@ id|page
 suffix:semicolon
 )brace
 )brace
-)brace
 r_else
 (brace
+multiline_comment|/* &n;&t;&t; * Check that no other task is been killed meanwhile,&n;&t;&t; * in such a case we can succeed the allocation.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -3149,6 +3127,10 @@ op_assign
 id|pgdat
 suffix:semicolon
 id|zone-&gt;free_pages
+op_assign
+l_int|0
+suffix:semicolon
+id|zone-&gt;need_balance
 op_assign
 l_int|0
 suffix:semicolon

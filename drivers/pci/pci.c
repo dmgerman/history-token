@@ -1153,7 +1153,7 @@ id|pci_command
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * pci_enable_wake - enable device to generate PME# when suspended&n; * @dev - PCI device to operate on&n; * @enable - Flag to enable or disable generation&n; * &n; * Set the bits in the device&squot;s PM Capabilities to generate PME# when&n; * the system is suspended. &n; *&n; * -EIO is returned if device doesn&squot;t have PM Capabilities. &n; * -EINVAL is returned if device supports it, but can&squot;t generate wake events.&n; * 0 if operation is successful.&n; * &n; */
+multiline_comment|/**&n; * pci_enable_wake - enable device to generate PME# when suspended&n; * @dev: - PCI device to operate on&n; * @state: - Current state of device.&n; * @enable: - Flag to enable or disable generation&n; * &n; * Set the bits in the device&squot;s PM Capabilities to generate PME# when&n; * the system is suspended. &n; *&n; * -EIO is returned if device doesn&squot;t have PM Capabilities. &n; * -EINVAL is returned if device supports it, but can&squot;t generate wake events.&n; * 0 if operation is successful.&n; * &n; */
 DECL|function|pci_enable_wake
 r_int
 id|pci_enable_wake

@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/*&n; * Common place to define all x86 IRQ vectors&n; *&n; * This builds up the IRQ handler stubs using some ugly macros in irq.h&n; *&n; * These macros create the low-level assembly IRQ routines that save&n; * register context and call do_IRQ(). do_IRQ() then does all the&n; * operations that are needed to keep the AT (or SMP IOAPIC)&n; * interrupt-controller happy.&n; */
 id|BUILD_COMMON_IRQ
@@ -1238,6 +1239,13 @@ r_void
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+id|init_bsp_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|init_8259A
 c_func
 (paren

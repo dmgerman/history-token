@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network device driver for the GMAC ethernet controller on&n; * Apple G4 Powermacs.&n; *&n; * Copyright (C) 2000 Paul Mackerras &amp; Ben. Herrenschmidt&n; * &n; * portions based on sunhme.c by David S. Miller&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/06/2000&n; * - check init_etherdev return in gmac_probe1&n; * BenH &lt;benh@kernel.crashing.org&gt; - 03/09/2000&n; * - Add support for new PHYs&n; * - Add some PowerBook sleep code&n; * &n; */
+multiline_comment|/*&n; * Network device driver for the GMAC ethernet controller on&n; * Apple G4 Powermacs.&n; *&n; * Copyright (C) 2000 Paul Mackerras &amp; Ben. Herrenschmidt&n; * &n; * portions based on sunhme.c by David S. Miller&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/06/2000&n; * - check init_etherdev return in gmac_probe1&n; * BenH &lt;benh@kernel.crashing.org&gt; - 03/09/2000&n; * - Add support for new PHYs&n; * - Add some PowerBook sleep code&n; * BenH &lt;benh@kernel.crashing.org&gt; - ??/??/????&n; *  - PHY updates&n; * BenH &lt;benh@kernel.crashing.org&gt; - 08/08/2001&n; * - Add more PHYs, fixes to sleep code&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -27,9 +27,9 @@ macro_line|#endif
 macro_line|#include &quot;gmac.h&quot;
 DECL|macro|DEBUG_PHY
 mdefine_line|#define DEBUG_PHY
-multiline_comment|/* Driver version 1.3, kernel 2.4.x */
+multiline_comment|/* Driver version 1.5, kernel 2.4.x */
 DECL|macro|GMAC_VERSION
-mdefine_line|#define GMAC_VERSION&t;&quot;v1.4k4&quot;
+mdefine_line|#define GMAC_VERSION&t;&quot;v1.5k4&quot;
 DECL|macro|DUMMY_BUF_LEN
 mdefine_line|#define DUMMY_BUF_LEN&t;RX_BUF_ALLOC_SIZE + RX_OFFSET + GMAC_BUFFER_ALIGN
 DECL|variable|dummy_buf
@@ -934,6 +934,7 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Link state change, phy_status: 0x%04x&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
@@ -1005,15 +1006,23 @@ id|restart
 op_assign
 l_int|0
 suffix:semicolon
-r_if
+r_int
+id|aux_stat
+comma
+id|link
+suffix:semicolon
+r_switch
 c_cond
 (paren
 id|gm-&gt;phy_type
-op_eq
-id|PHY_B5201
 )paren
 (brace
-r_int
+r_case
+id|PHY_B5201
+suffix:colon
+r_case
+id|PHY_B5221
+suffix:colon
 id|aux_stat
 op_assign
 id|mii_read
@@ -1030,7 +1039,10 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;    Link up ! BCM5201 aux_stat: 0x%04x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s:    Link up ! BCM5201/5221 aux_stat: 0x%04x&bslash;n&quot;
+comma
+id|gm-&gt;dev-&gt;name
 comma
 id|aux_stat
 )paren
@@ -1060,17 +1072,17 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|gm-&gt;phy_type
-op_eq
+r_break
+suffix:semicolon
+r_case
 id|PHY_B5400
-)paren
-(brace
-r_int
+suffix:colon
+r_case
+id|PHY_B5401
+suffix:colon
+r_case
+id|PHY_B5411
+suffix:colon
 id|aux_stat
 op_assign
 id|mii_read
@@ -1083,7 +1095,6 @@ comma
 id|MII_BCM5400_AUXSTATUS
 )paren
 suffix:semicolon
-r_int
 id|link
 op_assign
 (paren
@@ -1098,7 +1109,10 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;    Link up ! BCM5400 aux_stat: 0x%04x (link mode: %d)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s:    Link up ! BCM54xx aux_stat: 0x%04x (link mode: %d)&bslash;n&quot;
+comma
+id|gm-&gt;dev-&gt;name
 comma
 id|aux_stat
 comma
@@ -1136,18 +1150,12 @@ id|link
 l_int|2
 )braket
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|gm-&gt;phy_type
-op_eq
+r_break
+suffix:semicolon
+r_case
 id|PHY_LXT971
-)paren
-(brace
-r_int
-id|stat2
+suffix:colon
+id|aux_stat
 op_assign
 id|mii_read
 c_func
@@ -1163,9 +1171,12 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;    Link up ! LXT971 stat2: 0x%04x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s:    Link up ! LXT971 stat2: 0x%04x&bslash;n&quot;
 comma
-id|stat2
+id|gm-&gt;dev-&gt;name
+comma
+id|aux_stat
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1173,7 +1184,7 @@ id|full_duplex
 op_assign
 (paren
 (paren
-id|stat2
+id|aux_stat
 op_amp
 id|MII_LXT971_STATUS2_FULLDUPLEX
 )paren
@@ -1185,7 +1196,7 @@ id|link_100
 op_assign
 (paren
 (paren
-id|stat2
+id|aux_stat
 op_amp
 id|MII_LXT971_STATUS2_SPEED
 )paren
@@ -1193,9 +1204,10 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|full_duplex
 op_assign
 (paren
@@ -1216,12 +1228,17 @@ id|MII_ANLPA_100M
 op_ne
 l_int|0
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;    full_duplex: %d, speed: %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s:    Full Duplex: %d, Speed: %s&bslash;n&quot;
+comma
+id|gm-&gt;dev-&gt;name
 comma
 id|full_duplex
 comma
@@ -1319,14 +1336,17 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;    Link down !&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s:    Link down !&bslash;n&quot;
+comma
+id|gm-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
 )brace
 )brace
 )brace
-multiline_comment|/* Power management: stop PHY chip for suspend mode&n; */
+multiline_comment|/* Power management: stop PHY chip for suspend mode&n; * &n; * TODO: This will have to be modified is WOL is to be supported.&n; */
 r_static
 r_void
 DECL|function|gmac_suspend
@@ -1352,7 +1372,7 @@ id|gm-&gt;sleeping
 op_assign
 l_int|1
 suffix:semicolon
-id|netif_stop_queue
+id|netif_device_detach
 c_func
 (paren
 id|gm-&gt;dev
@@ -1476,6 +1496,10 @@ c_cond
 id|gm-&gt;phy_type
 op_eq
 id|PHY_B5201
+op_logical_or
+id|gm-&gt;phy_type
+op_eq
+id|PHY_B5221
 )paren
 id|mii_write
 c_func
@@ -1523,39 +1547,6 @@ comma
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* Put MDIO in sane state */
-id|GM_OUT
-c_func
-(paren
-id|GM_MIF_CFG
-comma
-id|GM_MIF_CFGBB
-)paren
-suffix:semicolon
-id|GM_OUT
-c_func
-(paren
-id|GM_MIF_BB_CLOCK
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|GM_OUT
-c_func
-(paren
-id|GM_MIF_BB_DATA
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|GM_OUT
-c_func
-(paren
-id|GM_MIF_BB_OUT_ENABLE
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Stop everything */
 id|GM_OUT
 c_func
@@ -1597,7 +1588,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Set reset state */
+multiline_comment|/* Set MAC in reset state */
 id|GM_OUT
 c_func
 (paren
@@ -1674,6 +1665,10 @@ c_cond
 id|gm-&gt;phy_type
 op_eq
 id|PHY_B5201
+op_logical_or
+id|gm-&gt;phy_type
+op_eq
+id|PHY_B5221
 )paren
 id|mii_write
 c_func
@@ -1687,7 +1682,59 @@ comma
 id|MII_BCM5201_MULTIPHY_SUPERISOLATE
 )paren
 suffix:semicolon
-multiline_comment|/* Unclock chip */
+multiline_comment|/* Put MDIO in sane electric state. According to an obscure&n;&t; * Apple comment, not doing so may let them drive some current&n;&t; * during sleep and possibly damage BCM PHYs.&n;&t; */
+id|GM_OUT
+c_func
+(paren
+id|GM_MIF_CFG
+comma
+id|GM_MIF_CFGBB
+)paren
+suffix:semicolon
+id|GM_OUT
+c_func
+(paren
+id|GM_MIF_BB_CLOCK
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|GM_OUT
+c_func
+(paren
+id|GM_MIF_BB_DATA
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|GM_OUT
+c_func
+(paren
+id|GM_MIF_BB_OUT_ENABLE
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|GM_OUT
+c_func
+(paren
+id|GM_MAC_XIF_CONFIG
+comma
+id|GM_MAC_XIF_CONF_GMII_MODE
+op_or
+id|GM_MAC_XIF_CONF_MII_INT_LOOP
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|GM_IN
+c_func
+(paren
+id|GM_MAC_XIF_CONFIG
+)paren
+suffix:semicolon
+multiline_comment|/* Unclock the GMAC chip */
 id|gmac_set_power
 c_func
 (paren
@@ -1833,6 +1880,10 @@ c_cond
 id|gm-&gt;phy_type
 op_eq
 id|PHY_B5201
+op_logical_or
+id|gm-&gt;phy_type
+op_eq
+id|PHY_B5221
 )paren
 (brace
 id|data
@@ -1889,7 +1940,7 @@ c_func
 id|gm
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|netif_device_attach
 c_func
 (paren
 id|gm-&gt;dev
@@ -2108,6 +2159,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Here&squot;s a bunch of configuration routines for&n; * Broadcom PHYs used on various Mac models. Unfortunately,&n; * except for the 5201, Broadcom never sent me any documentation,&n; * so this is from my understanding of Apple&squot;s Open Firmware&n; * drivers and Darwin&squot;s implementation&n; */
 r_static
 r_void
 DECL|function|mii_init_BCM5400
@@ -2123,6 +2175,7 @@ id|gm
 r_int
 id|data
 suffix:semicolon
+multiline_comment|/* Configure for gigabit full duplex */
 id|data
 op_assign
 id|mii_read
@@ -2185,6 +2238,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* Reset and configure cascaded 10/100 PHY */
 id|mii_do_reset_phy
 c_func
 (paren
@@ -2295,7 +2349,7 @@ op_eq
 l_int|3
 )paren
 (brace
-multiline_comment|/* A bit of black magic from Apple */
+multiline_comment|/* Some revisions of 5401 appear to need this&n;&t;&t; * initialisation sequence to disable, according&n;&t;&t; * to OF, &quot;tap power management&quot;&n;&t;&t; * &n;&t;&t; * WARNING ! OF and Darwin don&squot;t agree on the&n;&t;&t; * register addresses. OF seem to interpret the&n;&t;&t; * register numbers below as decimal&n;&t;&t; */
 id|mii_write
 c_func
 (paren
@@ -2429,6 +2483,7 @@ l_int|0x0a20
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Configure for gigabit full duplex */
 id|data
 op_assign
 id|mii_read
@@ -2463,6 +2518,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* Reset and configure cascaded 10/100 PHY */
 id|mii_do_reset_phy
 c_func
 (paren
@@ -2495,6 +2551,121 @@ comma
 l_int|0x1f
 comma
 id|MII_BCM5201_MULTIPHY
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|mii_init_BCM5411
+id|mii_init_BCM5411
+c_func
+(paren
+r_struct
+id|gmac
+op_star
+id|gm
+)paren
+(brace
+r_int
+id|data
+suffix:semicolon
+multiline_comment|/* Here&squot;s some more Apple black magic to setup&n;&t; * some voltage stuffs.&n;&t; */
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+l_int|0x1c
+comma
+l_int|0x8c23
+)paren
+suffix:semicolon
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+l_int|0x1c
+comma
+l_int|0x8ca3
+)paren
+suffix:semicolon
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+l_int|0x1c
+comma
+l_int|0x8c23
+)paren
+suffix:semicolon
+multiline_comment|/* Here, Apple seems to want to reset it, do&n;&t; * it as well&n;&t; */
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+id|MII_CR
+comma
+id|MII_CR_RST
+)paren
+suffix:semicolon
+multiline_comment|/* Start autoneg */
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+id|MII_CR
+comma
+id|MII_CR_ASSE
+op_or
+id|MII_CR_FDM
+op_or
+multiline_comment|/* Autospeed, full duplex */
+id|MII_CR_RAN
+op_or
+id|MII_CR_SPEEDSEL2
+multiline_comment|/* chip specific, gigabit enable ? */
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|mii_read
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+id|MII_BCM5400_GB_CONTROL
+)paren
+suffix:semicolon
+id|data
+op_or_assign
+id|MII_BCM5400_GB_CONTROL_FULLDUPLEXCAP
+suffix:semicolon
+id|mii_write
+c_func
+(paren
+id|gm
+comma
+id|gm-&gt;phy_addr
+comma
+id|MII_BCM5400_GB_CONTROL
 comma
 id|data
 )paren
@@ -2661,7 +2832,8 @@ macro_line|#ifdef DEBUG_PHY
 id|printk
 c_func
 (paren
-l_string|&quot;%s PHY ID: 0x%08x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: PHY ID: 0x%08x&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 comma
@@ -2688,8 +2860,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s Found Broadcom BCM5400 PHY (Gigabit)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Found Broadcom BCM5400 PHY (Gigabit)&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 )paren
@@ -2721,13 +2893,46 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s Found Broadcom BCM5401 PHY (Gigabit)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Found Broadcom BCM5401 PHY (Gigabit)&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|mii_init_BCM5401
+c_func
+(paren
+id|gm
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|gm-&gt;phy_id
+op_amp
+id|MII_BCM5411_MASK
+)paren
+op_eq
+id|MII_BCM5411_ID
+)paren
+(brace
+id|gm-&gt;phy_type
+op_assign
+id|PHY_B5411
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Found Broadcom BCM5411 PHY (Gigabit)&bslash;n&quot;
+comma
+id|gm-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+id|mii_init_BCM5411
 c_func
 (paren
 id|gm
@@ -2755,7 +2960,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s Found Broadcom BCM5201 PHY&bslash;n&quot;
+l_string|&quot;%s: Found Broadcom BCM5201 PHY&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 )paren
@@ -2776,14 +2981,13 @@ id|MII_BCM5221_ID
 (brace
 id|gm-&gt;phy_type
 op_assign
-id|PHY_B5201
+id|PHY_B5221
 suffix:semicolon
-multiline_comment|/* Same as 5201 for now */
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s Found Broadcom BCM5221 PHY&bslash;n&quot;
+l_string|&quot;%s: Found Broadcom BCM5221 PHY&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 )paren
@@ -2810,7 +3014,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s Found LevelOne LX971 PHY&bslash;n&quot;
+l_string|&quot;%s: Found LevelOne LX971 PHY&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name
 )paren
@@ -2821,7 +3025,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;%s: Warning ! Unknown PHY ID 0x%08x, using generic mode...&bslash;n&quot;
 comma
 id|gm-&gt;dev-&gt;name

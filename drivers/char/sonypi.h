@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t;1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;2
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;5
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
@@ -291,6 +291,8 @@ DECL|macro|SONYPI_R505_FNKEY_EV
 mdefine_line|#define SONYPI_R505_FNKEY_EV&t;0x08
 DECL|macro|SONYPI_BLUETOOTH_EV
 mdefine_line|#define SONYPI_BLUETOOTH_EV&t;0x30
+DECL|macro|SONYPI_NORMAL_PKEY_EV
+mdefine_line|#define SONYPI_NORMAL_PKEY_EV&t;0x40
 DECL|struct|sonypi_event
 r_struct
 id|sonypi_event
@@ -536,6 +538,41 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* The set of possible program key events */
+DECL|variable|sonypi_pkeyev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_pkeyev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x01
+comma
+id|SONYPI_EVENT_PKEY_P1
+)brace
+comma
+(brace
+l_int|0x02
+comma
+id|SONYPI_EVENT_PKEY_P2
+)brace
+comma
+(brace
+l_int|0x04
+comma
+id|SONYPI_EVENT_PKEY_P3
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+suffix:semicolon
 multiline_comment|/* The set of possible bluetooth events */
 DECL|variable|sonypi_blueev
 r_static
@@ -662,6 +699,8 @@ id|model
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|wait_on_command
+mdefine_line|#define wait_on_command(command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at &quot; __FILE__ &quot; : &quot; __FUNCTION__ &quot;(line %d)&bslash;n&quot;, __LINE__); &bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SONYPI_PRIV_H_ */
 eof

@@ -52,7 +52,7 @@ mdefine_line|#define spin_lock_prefetch(x) prefetchw(x)
 macro_line|#endif
 macro_line|#ifndef PREFETCH_STRIDE
 DECL|macro|PREFETCH_STRIDE
-mdefine_line|#define PREFETCH_STRIDE (4*L1_CACHE_BYTE)
+mdefine_line|#define PREFETCH_STRIDE (4*L1_CACHE_BYTES)
 macro_line|#endif
 macro_line|#endif
 eof

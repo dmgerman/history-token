@@ -93,15 +93,15 @@ DECL|macro|DRIVER_UNLOCK
 macro_line|#    define DRIVER_UNLOCK
 macro_line|#  endif
 multiline_comment|/*&n; * You can try raising me if tagged queueing is enabled, or lowering&n; * me if you only have 4 SCBs.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_CMDS_PER_DEVICE
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_CMDS_PER_DEVICE
 DECL|macro|AIC7XXX_CMDS_PER_DEVICE
-mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE CONFIG_AIC7XXX_CMDS_PER_DEVICE
+mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE CONFIG_AIC7XXX_OLD_CMDS_PER_DEVICE
 macro_line|#else
 DECL|macro|AIC7XXX_CMDS_PER_DEVICE
-mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE 8
+mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE 32
 macro_line|#endif
 multiline_comment|/*&n; * Control collection of SCSI transfer statistics for the /proc filesystem.&n; *&n; * NOTE: Do NOT enable this when running on kernels version 1.2.x and below.&n; * NOTE: This does affect performance since it has to maintain statistics.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_PROC_STATS
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_PROC_STATS
 DECL|macro|AIC7XXX_PROC_STATS
 mdefine_line|#define AIC7XXX_PROC_STATS
 macro_line|#endif
@@ -123,7 +123,7 @@ DECL|typedef|adapter_tag_info_t
 id|adapter_tag_info_t
 suffix:semicolon
 multiline_comment|/*&n; * Make a define that will tell the driver not to use tagged queueing&n; * by default.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_TCQ_ON_BY_DEFAULT
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_TCQ_ON_BY_DEFAULT
 DECL|macro|DEFAULT_TAG_COMMANDS
 mdefine_line|#define DEFAULT_TAG_COMMANDS {0, 0, 0, 0, 0, 0, 0, 0,&bslash;&n;                              0, 0, 0, 0, 0, 0, 0, 0}
 macro_line|#else
@@ -33199,6 +33199,10 @@ suffix:semicolon
 id|p-&gt;host
 op_assign
 id|host
+suffix:semicolon
+id|host-&gt;max_sectors
+op_assign
+l_int|512
 suffix:semicolon
 id|p-&gt;scb_data
 op_assign

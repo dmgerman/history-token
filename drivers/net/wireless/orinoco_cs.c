@@ -1,10 +1,10 @@
-multiline_comment|/* orinoco_cs.c 0.06f&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.07&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -29,14 +29,13 @@ macro_line|#include &quot;orinoco.h&quot;
 multiline_comment|/*====================================================================*/
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.06f (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.07 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -48,6 +47,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Driver for PCMCIA Lucent Orinoco, Prism II based and similar wireless cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
@@ -502,7 +507,7 @@ suffix:semicolon
 id|conf_reg_t
 id|reg
 suffix:semicolon
-id|u_long
+id|u_int
 id|default_cor
 suffix:semicolon
 id|TRACE_ENTER
@@ -2417,6 +2422,7 @@ id|event
 r_case
 id|CS_EVENT_CARD_REMOVAL
 suffix:colon
+multiline_comment|/* FIXME: Erg.. this whole hw_ready thing looks racy&n;&t;&t;   to me.  this may not be fixable without changin the&n;&t;&t;   PCMCIA subsystem, though */
 id|priv-&gt;hw_ready
 op_assign
 l_int|0
@@ -2660,8 +2666,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;dldwd: David&squot;s Less Dodgy WaveLAN/IEEE Driver&bslash;n&quot;
 id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma

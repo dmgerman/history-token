@@ -55,6 +55,62 @@ DECL|macro|AIRONET4500_365
 mdefine_line|#define AIRONET4500_365&t;&t;4
 macro_line|#ifdef CONFIG_AIRONET4500_PCI
 macro_line|#include &lt;linux/pci.h&gt;
+DECL|variable|__devinitdata
+r_static
+r_struct
+id|pci_device_id
+id|aironet4500_card_pci_tbl
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_AIRONET
+comma
+id|PCI_DEVICE_AIRONET_4800_1
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AIRONET
+comma
+id|PCI_DEVICE_AIRONET_4800
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AIRONET
+comma
+id|PCI_DEVICE_AIRONET_4500
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|aironet4500_card_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|reverse_probe
 r_static
 r_int
@@ -520,6 +576,37 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|allocd_dev
+)paren
+(brace
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -1929,6 +2016,52 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+DECL|variable|id_table
+r_static
+r_struct
+id|isapnp_device_id
+id|id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_char|&squot;W&squot;
+comma
+l_char|&squot;L&squot;
+)paren
+comma
+id|ISAPNP_DEVICE
+c_func
+(paren
+l_int|1
+)paren
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
+comma
+id|id_table
+)paren
+suffix:semicolon
 macro_line|#endif 
 singleline_comment|//MODULE
 macro_line|#endif /* CONFIG_AIRONET4500_PNP */
@@ -2577,7 +2710,7 @@ suffix:semicolon
 macro_line|#endif 
 singleline_comment|//MODULE   
 macro_line|#endif /* CONFIG_AIRONET4500_ISA */
-macro_line|#ifdef  CONFIG_AIRONET4500_365 
+macro_line|#ifdef  CONFIG_AIRONET4500_I365 
 DECL|macro|port_range
 mdefine_line|#define port_range 0x40
 DECL|variable|awc_i365_offset_ports
@@ -4103,7 +4236,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_AIRONET4500_365 */
+macro_line|#endif /* CONFIG_AIRONET4500_I365 */
 macro_line|#ifdef MODULE        
 DECL|function|init_module
 r_int

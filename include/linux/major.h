@@ -195,6 +195,8 @@ DECL|macro|COMPAQ_CISS_MAJOR6
 mdefine_line|#define COMPAQ_CISS_MAJOR6      110
 DECL|macro|COMPAQ_CISS_MAJOR7
 mdefine_line|#define COMPAQ_CISS_MAJOR7      111
+DECL|macro|ATARAID_MAJOR
+mdefine_line|#define ATARAID_MAJOR&t;&t;114
 DECL|macro|DASD_MAJOR
 mdefine_line|#define DASD_MAJOR      94&t;/* Official assignations from Peter */
 DECL|macro|MDISK_MAJOR

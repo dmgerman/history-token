@@ -385,6 +385,12 @@ op_assign
 l_int|52
 comma
 multiline_comment|/* int: use core or core.%pid */
+DECL|enumerator|KERN_CADPID
+id|KERN_CADPID
+op_assign
+l_int|54
+comma
+multiline_comment|/* int: PID of the process to notify on CAD */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

@@ -1117,6 +1117,8 @@ DECL|macro|PT_DTRACE
 mdefine_line|#define PT_DTRACE&t;0x00000004&t;/* delayed trace (used on m68k, i386) */
 DECL|macro|PT_TRACESYSGOOD
 mdefine_line|#define PT_TRACESYSGOOD&t;0x00000008
+DECL|macro|PT_PTRACE_CAP
+mdefine_line|#define PT_PTRACE_CAP&t;0x00000010&t;/* ptracer can follow suid-exec */
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)

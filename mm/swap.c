@@ -76,6 +76,12 @@ id|page
 )paren
 suffix:semicolon
 )brace
+id|ClearPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 DECL|function|deactivate_page
 r_void
@@ -144,6 +150,12 @@ id|page
 )paren
 suffix:semicolon
 )brace
+id|SetPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 DECL|function|activate_page
 r_void

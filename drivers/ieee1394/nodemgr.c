@@ -1539,6 +1539,9 @@ r_struct
 id|list_head
 op_star
 id|lh
+comma
+op_star
+id|spare
 suffix:semicolon
 r_struct
 id|node_entry
@@ -1956,10 +1959,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|lh
+comma
+id|spare
 comma
 op_amp
 id|node_list

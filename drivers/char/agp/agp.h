@@ -454,6 +454,26 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|member|suspend
+r_int
+(paren
+op_star
+id|suspend
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|resume
+r_void
+(paren
+op_star
+id|resume
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|OUTREG32
@@ -510,6 +530,10 @@ macro_line|#ifndef PCI_DEVICE_ID_VIA_8363_0
 DECL|macro|PCI_DEVICE_ID_VIA_8363_0
 mdefine_line|#define PCI_DEVICE_ID_VIA_8363_0      0x0305
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_VIA_82C694X_0
+DECL|macro|PCI_DEVICE_ID_VIA_82C694X_0
+mdefine_line|#define PCI_DEVICE_ID_VIA_82C694X_0      0x0605
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_0
 mdefine_line|#define PCI_DEVICE_ID_INTEL_810_0       0x7120
@@ -562,9 +586,9 @@ macro_line|#ifndef PCI_DEVICE_ID_AMD_IRONGATE_0
 DECL|macro|PCI_DEVICE_ID_AMD_IRONGATE_0
 mdefine_line|#define PCI_DEVICE_ID_AMD_IRONGATE_0    0x7006
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_AMD_761_0
-DECL|macro|PCI_DEVICE_ID_AMD_761_0
-mdefine_line|#define PCI_DEVICE_ID_AMD_761_0         0x700e
+macro_line|#ifndef PCI_DEVICE_ID_AMD_762_0
+DECL|macro|PCI_DEVICE_ID_AMD_762_0
+mdefine_line|#define PCI_DEVICE_ID_AMD_762_0&t;&t;0x700C
 macro_line|#endif
 macro_line|#ifndef PCI_VENDOR_ID_AL
 DECL|macro|PCI_VENDOR_ID_AL

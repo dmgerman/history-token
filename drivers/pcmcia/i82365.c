@@ -4765,7 +4765,7 @@ id|SS_DETECT
 id|mdelay
 c_func
 (paren
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 r_if

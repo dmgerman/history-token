@@ -673,4 +673,26 @@ id|atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+DECL|variable|do_BUG
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_BUG
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_SONYPI) || defined(CONFIG_SONYPI_MODULE)
+r_extern
+r_int
+id|is_sony_vaio_laptop
+suffix:semicolon
+DECL|variable|is_sony_vaio_laptop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|is_sony_vaio_laptop
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

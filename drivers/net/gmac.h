@@ -655,27 +655,29 @@ DECL|macro|MII_ANP
 mdefine_line|#define MII_ANP      0x07          /* Auto Negotiation Next Page TX */
 multiline_comment|/*&n;** MII Management Control Register&n;*/
 DECL|macro|MII_CR_RST
-mdefine_line|#define MII_CR_RST  0x8000         /* RESET the PHY chip */
+mdefine_line|#define MII_CR_RST&t; 0x8000         /* RESET the PHY chip */
 DECL|macro|MII_CR_LPBK
-mdefine_line|#define MII_CR_LPBK 0x4000         /* Loopback enable */
+mdefine_line|#define MII_CR_LPBK&t; 0x4000         /* Loopback enable */
 DECL|macro|MII_CR_SPD
-mdefine_line|#define MII_CR_SPD  0x2000         /* 0: 10Mb/s; 1: 100Mb/s */
+mdefine_line|#define MII_CR_SPD &t; 0x2000         /* 0: 10Mb/s; 1: 100Mb/s */
 DECL|macro|MII_CR_10
-mdefine_line|#define MII_CR_10   0x0000         /* Set 10Mb/s */
+mdefine_line|#define MII_CR_10  &t; 0x0000         /* Set 10Mb/s */
 DECL|macro|MII_CR_100
-mdefine_line|#define MII_CR_100  0x2000         /* Set 100Mb/s */
+mdefine_line|#define MII_CR_100 &t; 0x2000         /* Set 100Mb/s */
 DECL|macro|MII_CR_ASSE
-mdefine_line|#define MII_CR_ASSE 0x1000         /* Auto Speed Select Enable */
+mdefine_line|#define MII_CR_ASSE&t; 0x1000         /* Auto Speed Select Enable */
 DECL|macro|MII_CR_PD
-mdefine_line|#define MII_CR_PD   0x0800         /* Power Down */
+mdefine_line|#define MII_CR_PD  &t; 0x0800         /* Power Down */
 DECL|macro|MII_CR_ISOL
-mdefine_line|#define MII_CR_ISOL 0x0400         /* Isolate Mode */
+mdefine_line|#define MII_CR_ISOL&t; 0x0400         /* Isolate Mode */
 DECL|macro|MII_CR_RAN
-mdefine_line|#define MII_CR_RAN  0x0200         /* Restart Auto Negotiation */
+mdefine_line|#define MII_CR_RAN &t; 0x0200         /* Restart Auto Negotiation */
 DECL|macro|MII_CR_FDM
-mdefine_line|#define MII_CR_FDM  0x0100         /* Full Duplex Mode */
+mdefine_line|#define MII_CR_FDM &t; 0x0100         /* Full Duplex Mode */
 DECL|macro|MII_CR_CTE
-mdefine_line|#define MII_CR_CTE  0x0080         /* Collision Test Enable */
+mdefine_line|#define MII_CR_CTE &t; 0x0080         /* Collision Test Enable */
+DECL|macro|MII_CR_SPEEDSEL2
+mdefine_line|#define MII_CR_SPEEDSEL2 0x0040&t;&t;/* Speed selection 2 on BCM */
 multiline_comment|/*&n;** MII Management Status Register&n;*/
 DECL|macro|MII_SR_T4C
 mdefine_line|#define MII_SR_T4C  0x8000         /* 100BASE-T4 capable */
@@ -748,8 +750,12 @@ DECL|macro|PHY_B5400
 mdefine_line|#define PHY_B5400&t;0x5400
 DECL|macro|PHY_B5401
 mdefine_line|#define PHY_B5401&t;0x5401
+DECL|macro|PHY_B5411
+mdefine_line|#define PHY_B5411&t;0x5411
 DECL|macro|PHY_B5201
 mdefine_line|#define PHY_B5201&t;0x5201
+DECL|macro|PHY_B5221
+mdefine_line|#define PHY_B5221&t;0x5221
 DECL|macro|PHY_LXT971
 mdefine_line|#define PHY_LXT971&t;0x0971
 DECL|macro|PHY_UNKNOWN
@@ -795,6 +801,16 @@ DECL|macro|MII_BCM5401_ID
 mdefine_line|#define MII_BCM5401_ID                          ((MII_BCM5401_OUI &lt;&lt; 10) | (MII_BCM5401_MODEL &lt;&lt; 4))
 DECL|macro|MII_BCM5401_MASK
 mdefine_line|#define MII_BCM5401_MASK                        0xfffffff0
+DECL|macro|MII_BCM5411_OUI
+mdefine_line|#define MII_BCM5411_OUI                         0x000818
+DECL|macro|MII_BCM5411_MODEL
+mdefine_line|#define MII_BCM5411_MODEL                       0x07
+DECL|macro|MII_BCM5411_REV
+mdefine_line|#define MII_BCM5411_REV                         0x01
+DECL|macro|MII_BCM5411_ID
+mdefine_line|#define MII_BCM5411_ID                          ((MII_BCM5411_OUI &lt;&lt; 10) | (MII_BCM5411_MODEL &lt;&lt; 4))
+DECL|macro|MII_BCM5411_MASK
+mdefine_line|#define MII_BCM5411_MASK                        0xfffffff0
 DECL|macro|MII_LXT971_OUI
 mdefine_line|#define MII_LXT971_OUI                          0x0004de
 DECL|macro|MII_LXT971_MODEL

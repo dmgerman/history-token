@@ -3176,6 +3176,7 @@ op_logical_and
 op_logical_neg
 id|fb-&gt;color_map
 )paren
+(brace
 id|fb-&gt;color_map
 op_assign
 id|kmalloc
@@ -3188,6 +3189,11 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3592,4 +3598,10 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

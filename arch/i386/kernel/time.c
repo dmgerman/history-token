@@ -970,7 +970,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|smp_found_config
+id|using_apic_timer
 )paren
 id|smp_local_timer_interrupt
 c_func

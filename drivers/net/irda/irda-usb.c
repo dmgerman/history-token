@@ -933,7 +933,7 @@ l_string|&quot;(), failed Empty URB&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif IU_BUG_KICK_TX
+macro_line|#endif /* IU_BUG_KICK_TX */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Note : this function will be called with both speed_urb and empty_urb...&n; */
 DECL|function|speed_bulk_callback
@@ -1333,7 +1333,7 @@ id|purb-&gt;transfer_flags
 op_or_assign
 id|USB_ZERO_PACKET
 suffix:semicolon
-macro_line|#endif IU_USE_USB_ZERO_FLAG
+macro_line|#endif /* IU_USE_USB_ZERO_FLAG */
 id|purb-&gt;timeout
 op_assign
 id|MSECS_TO_JIFFIES
@@ -1504,7 +1504,7 @@ id|self
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif IU_BUG_KICK_TX
+macro_line|#endif /* IU_BUG_KICK_TX */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -1852,7 +1852,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif IU_BUG_KICK_TX
+macro_line|#endif /* IU_BUG_KICK_TX */
 multiline_comment|/* Check speed URB */
 id|purb
 op_assign
@@ -2017,7 +2017,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-macro_line|#endif IU_BUG_KICK_TIMEOUT
+macro_line|#endif /* IU_BUG_KICK_TIMEOUT */
 r_switch
 c_cond
 (paren
@@ -4205,7 +4205,7 @@ id|desc-&gt;bMaxUnicastList
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif IU_DUMP_CLASS_DESC
+macro_line|#endif /* IU_DUMP_CLASS_DESC */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Function irda_usb_find_class_desc(dev, ifnum)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; */
 DECL|function|irda_usb_find_class_desc
@@ -4409,7 +4409,7 @@ c_func
 id|desc
 )paren
 suffix:semicolon
-macro_line|#endif&t;IU_DUMP_CLASS_DESC
+macro_line|#endif&t;/* IU_DUMP_CLASS_DESC */
 r_return
 id|desc
 suffix:semicolon

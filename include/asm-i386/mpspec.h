@@ -551,5 +551,9 @@ r_extern
 r_int
 id|pic_mode
 suffix:semicolon
+r_extern
+r_int
+id|using_apic_timer
+suffix:semicolon
 macro_line|#endif
 eof

@@ -264,6 +264,14 @@ id|nr_async_pages
 )paren
 suffix:semicolon
 )brace
+r_else
+multiline_comment|/*&n;&t;&t; * Must hold a reference until after wait_on_page()&n;&t;&t; * returned or it could be freed by the VM after&n;&t;&t; * I/O is completed and the page is been unlocked.&n;&t;&t; * The asynchronous path is fine since it never&n;&t;&t; * references the page after brw_page().&n;&t;&t; */
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/* block_size == PAGE_SIZE/zones_used */
 id|brw_page
 c_func
@@ -312,6 +320,12 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;rw_swap_page: page unused while waiting!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 r_return

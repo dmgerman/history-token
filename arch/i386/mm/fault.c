@@ -352,11 +352,13 @@ id|loglevel_save
 op_assign
 id|console_loglevel
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|unblank_screen
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|oops_in_progress
 op_assign
 l_int|0
@@ -379,8 +381,7 @@ id|loglevel_save
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
-multiline_comment|/*&n; * Verbose bug reporting: call do_BUG(__FILE__, __LINE__) in page.h:BUG() to enable this&n; */
+DECL|function|do_BUG
 r_void
 id|do_BUG
 c_func
@@ -411,7 +412,6 @@ id|line
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|asmlinkage
 r_void
 id|do_invalid_op

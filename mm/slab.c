@@ -3,6 +3,7 @@ macro_line|#include&t;&lt;linux/config.h&gt;
 macro_line|#include&t;&lt;linux/slab.h&gt;
 macro_line|#include&t;&lt;linux/interrupt.h&gt;
 macro_line|#include&t;&lt;linux/init.h&gt;
+macro_line|#include&t;&lt;linux/compiler.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * DEBUG&t;- 1 for kmem_cache_create() to honour; SLAB_DEBUG_INITIAL,&n; *&t;&t;  SLAB_RED_ZONE &amp; SLAB_POISON.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * STATS&t;- 1 to collect stats for /proc/slabinfo.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * FORCED_DEBUG&t;- 1 enables SLAB_RED_ZONE and SLAB_POISON (if possible)&n; */
 macro_line|#ifdef CONFIG_DEBUG_SLAB
@@ -4045,14 +4046,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|slabp-&gt;free
 op_eq
 id|BUFCTL_END
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -4171,7 +4170,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns a ptr to an obj in the given cache.&n; * caller must guarantee synchronization&n; * #define for the goto optimization 8-)&n; */
 DECL|macro|kmem_cache_alloc_one
-mdefine_line|#define kmem_cache_alloc_one(cachep)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head * slabs_partial, * entry;&t;&t;&bslash;&n;&t;slab_t *slabp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabs_partial = &amp;(cachep)-&gt;slabs_partial;&t;&t;&bslash;&n;&t;entry = slabs_partial-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;if (__builtin_expect(entry == slabs_partial, 0)) {&t;&bslash;&n;&t;&t;struct list_head * slabs_free;&t;&t;&t;&bslash;&n;&t;&t;slabs_free = &amp;(cachep)-&gt;slabs_free;&t;&t;&bslash;&n;&t;&t;entry = slabs_free-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (__builtin_expect(entry == slabs_free, 0))&t;&bslash;&n;&t;&t;&t;goto alloc_new_slab;&t;&t;&t;&bslash;&n;&t;&t;list_del(entry);&t;&t;&t;&t;&bslash;&n;&t;&t;list_add(entry, slabs_partial);&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabp = list_entry(entry, slab_t, list);&t;&t;&bslash;&n;&t;kmem_cache_alloc_one_tail(cachep, slabp);&t;&t;&bslash;&n;})
+mdefine_line|#define kmem_cache_alloc_one(cachep)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head * slabs_partial, * entry;&t;&t;&bslash;&n;&t;slab_t *slabp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabs_partial = &amp;(cachep)-&gt;slabs_partial;&t;&t;&bslash;&n;&t;entry = slabs_partial-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(entry == slabs_partial)) {&t;&t;&t;&bslash;&n;&t;&t;struct list_head * slabs_free;&t;&t;&t;&bslash;&n;&t;&t;slabs_free = &amp;(cachep)-&gt;slabs_free;&t;&t;&bslash;&n;&t;&t;entry = slabs_free-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(entry == slabs_free))&t;&t;&bslash;&n;&t;&t;&t;goto alloc_new_slab;&t;&t;&t;&bslash;&n;&t;&t;list_del(entry);&t;&t;&t;&t;&bslash;&n;&t;&t;list_add(entry, slabs_partial);&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabp = list_entry(entry, slab_t, list);&t;&t;&bslash;&n;&t;kmem_cache_alloc_one_tail(cachep, slabp);&t;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_SMP
 DECL|function|kmem_cache_alloc_batch
 r_void
@@ -4245,14 +4244,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|entry
 op_eq
 id|slabs_partial
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -4277,14 +4274,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|entry
 op_eq
 id|slabs_free
-comma
-l_int|0
 )paren
 )paren
 r_break
@@ -4776,14 +4771,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 op_logical_neg
 op_decrement
 id|slabp-&gt;inuse
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -4810,14 +4803,12 @@ r_else
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|inuse
 op_eq
 id|cachep-&gt;num
-comma
-l_int|0
 )paren
 )paren
 (brace

@@ -14,7 +14,7 @@ DECL|macro|EXPORT_SYMTAB
 mdefine_line|#define EXPORT_SYMTAB 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(CONFIG_PARPORT_MODULE)||defined(CONFIG_PARPORT)

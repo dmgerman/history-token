@@ -2457,12 +2457,10 @@ id|PT_PTRACED
 )paren
 op_logical_and
 op_logical_neg
-id|cap_raised
-c_func
 (paren
-id|p-&gt;p_pptr-&gt;cap_effective
-comma
-id|CAP_SYS_PTRACE
+id|p-&gt;ptrace
+op_amp
+id|PT_PTRACE_CAP
 )paren
 suffix:semicolon
 )brace

@@ -44,6 +44,12 @@ id|C_A_D
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|cad_pid
+r_int
+id|cad_pid
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n; *&t;Notifier list for kernel code which wants to be called&n; *&t;at shutdown. This is used to stop any idling DMA operations&n; *&t;and the like. &n; */
 DECL|variable|reboot_notifier_list
 r_static
@@ -1093,7 +1099,7 @@ r_else
 id|kill_proc
 c_func
 (paren
-l_int|1
+id|cad_pid
 comma
 id|SIGINT
 comma

@@ -5473,7 +5473,7 @@ id|lru_list_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * bread() reads a specified block and returns the buffer that contains&n; * it. It returns NULL if the block was unreadable.&n; */
+multiline_comment|/**&n; *&t;bread() - reads a specified block and returns the bh&n; *&t;@block: number of block&n; *&t;@size: size (in bytes) to read&n; * &n; *&t;Reads a specified block, and returns buffer head that&n; *&t;contains it. It returns NULL if the block was unreadable.&n; */
 DECL|function|bread
 r_struct
 id|buffer_head

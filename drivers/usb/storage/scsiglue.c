@@ -1040,6 +1040,16 @@ id|us-&gt;guid
 )paren
 )paren
 suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;     Attached: %d&bslash;n&quot;
+comma
+id|us-&gt;pusb_dev
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
 op_star
 id|start

@@ -1,6 +1,9 @@
 macro_line|#ifndef __irq_h
 DECL|macro|__irq_h
 mdefine_line|#define __irq_h
+multiline_comment|/*&n; * Please do not include this file in generic code.  There is currently&n; * no requirement for any architecture to implement anything held&n; * within this file.&n; *&n; * Thanks. --rmk&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if !defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -177,20 +180,6 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 macro_line|#include &lt;asm/hw_irq.h&gt; /* the arch dependent stuff */
-multiline_comment|/**&n; * touch_nmi_watchdog - restart NMI watchdog timeout.&n; * &n; * If the architecture supports the NMI watchdog, touch_nmi_watchdog()&n; * may be used to reset the timeout - for code which intentionally&n; * disables interrupts for a long time. This call is stateless.&n; */
-macro_line|#ifdef ARCH_HAS_NMI_WATCHDOG
-r_extern
-r_void
-id|touch_nmi_watchdog
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|touch_nmi_watchdog
-macro_line|# define touch_nmi_watchdog() do { } while(0)
-macro_line|#endif
 r_extern
 r_int
 id|handle_IRQ_event
@@ -244,5 +233,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __asm_h */
 eof

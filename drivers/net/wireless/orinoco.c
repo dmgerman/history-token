@@ -1,12 +1,12 @@
-multiline_comment|/* orinoco.c 0.06f&t;- (formerly known as dldwd_cs.c and orinoco_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; *&n; * Copyright (C) 2000 David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; *&t;With some help from :&n; * Copyright (C) 2001 Jean Tourrilhes, HP Labs &lt;jt@hpl.hp.com&gt;&n; * Copyright (C) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; *&n; * Based on dummy_cs.c 1.27 2000/06/12 21:27:25&n; *&n; * Portions based on wvlan_cs.c 1.0.6, Copyright Andreas Neuhaus &lt;andy@fasta.fh-dortmund.de&gt;&n; *      http://www.fasta.fh-dortmund.de/users/andy/wvlan/&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David&n; * A. Hinds are Copyright (C) 1999 David A. Hinds.  All Rights&n; * Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/* orinoco.c 0.07&t;- (formerly known as dldwd_cs.c and orinoco_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; *&n; * Copyright (C) 2000 David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; *&t;With some help from :&n; * Copyright (C) 2001 Jean Tourrilhes, HP Labs &lt;jt@hpl.hp.com&gt;&n; * Copyright (C) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; *&n; * Based on dummy_cs.c 1.27 2000/06/12 21:27:25&n; *&n; * Portions based on wvlan_cs.c 1.0.6, Copyright Andreas Neuhaus &lt;andy@fasta.fh-dortmund.de&gt;&n; *      http://www.fasta.fh-dortmund.de/users/andy/wvlan/&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David&n; * A. Hinds are Copyright (C) 1999 David A. Hinds.  All Rights&n; * Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
 multiline_comment|/* Notes on locking:&n; *&n; * The basic principle of operation is that everything except the&n; * interrupt handler is serialized through a single spinlock in the&n; * dldwd_priv_t structure, using dldwd_lock() and&n; * dldwd_unlock() (which in turn use spin_lock_bh() and spin_unlock_bh()).&n; *&n; * The kernel&squot;s IRQ handling stuff ensures that the interrupt handler&n; * does not re-enter itself. The interrupt handler is written such&n; * that everything it does is safe without a lock: chiefly this means&n; * that the Rx path uses one of the Hermes chipset&squot;s BAPs while&n; * everything else uses the other.&n; *&n; * For the moment access to the device statistics from the interrupt&n; * handler is unsafe - we just put up with any resulting errors in the&n; * statisics. FIXME: This should probably be changed to store the&n; * stats in atomic types.&n; *&n; * EXCEPT that we don&squot;t want the irq handler running when we actually&n; * reset or shut down the card, because strange things might happen&n; * (probably the worst would be one packet of garbage, but you can&squot;t&n; * be too careful). For this we use __dldwd_stop_irqs() which will set&n; * a flag to disable the interrupt handler, and wait for any&n; * outstanding instances of the handler to complete. THIS WILL LOSE&n; * INTERRUPTS! so it shouldn&squot;t be used except for resets, when we&n; * don&squot;t care about that.*/
-multiline_comment|/*&n; * Tentative changelog...&n; *&n; * v0.01 -&gt; v0.02 - 21/3/2001 - Jean II&n; *&t;o Allow to use regular ethX device name instead of dldwdX&n; *&t;o Warning on IBSS with ESSID=any for firmware 6.06&n; *&t;o Put proper range.throughput values (optimistic)&n; *&t;o IWSPY support (IOCTL and stat gather in Rx path)&n; *&t;o Allow setting frequency in Ad-Hoc mode&n; *&t;o Disable WEP setting if !has_wep to work on old firmware&n; *&t;o Fix txpower range&n; *&t;o Start adding support for Samsung/Compaq firmware&n; *&n; * v0.02 -&gt; v0.03 - 23/3/2001 - Jean II&n; *&t;o Start adding Symbol support - need to check all that&n; *&t;o Fix Prism2/Symbol WEP to accept 128 bits keys&n; *&t;o Add Symbol WEP (add authentication type)&n; *&t;o Add Prism2/Symbol rate&n; *&t;o Add PM timeout (holdover duration)&n; *&t;o Enable &quot;iwconfig eth0 key off&quot; and friends (toggle flags)&n; *&t;o Enable &quot;iwconfig eth0 power unicast/all&quot; (toggle flags)&n; *&t;o Try with an intel card. It report firmware 1.01, behave like&n; *&t;  an antiquated firmware, however on windows it says 2.00. Yuck !&n; *&t;o Workaround firmware bug in allocate buffer (Intel 1.01)&n; *&t;o Finish external renaming to orinoco...&n; *&t;o Testing with various Wavelan firmwares&n; *&n; * v0.03 -&gt; v0.04 - 30/3/2001 - Jean II&n; *&t;o Update to Wireless 11 -&gt; add retry limit/lifetime support&n; *&t;o Tested with a D-Link DWL 650 card, fill in firmware support&n; *&t;o Warning on Vcc mismatch (D-Link 3.3v card in Lucent 5v only slot)&n; *&t;o Fixed the Prims2 WEP bugs that I introduced in v0.03 :-(&n; *&t;  It work on D-Link *only* after a tcpdump. Weird...&n; *&t;  And still doesn&squot;t work on Intel card. Grrrr...&n; *&t;o Update the mode after a setport3&n; *&t;o Add preamble setting for Symbol cards (not yet enabled)&n; *&t;o Don&squot;t complain as much about Symbol cards...&n; *&n; * v0.04 -&gt; v0.04b - 22/4/2001 - David Gibson&n; *      o Removed the &squot;eth&squot; parameter - always use ethXX as the&n; *        interface name instead of dldwdXX.  The other was racy&n; *        anyway.&n; *&t;o Clean up RID definitions in hermes.h, other cleanups&n; *&n; * v0.04b -&gt; v0.04c - 24/4/2001 - Jean II&n; *&t;o Tim Hurley &lt;timster@seiki.bliztech.com&gt; reported a D-Link card&n; *&t;  with vendor 02 and firmware 0.08. Added in the capabilities...&n; *&t;o Tested Lucent firmware 7.28, everything works...&n; *&n; * v0.04c -&gt; v0.05 - 3/5/2001 - Benjamin Herrenschmidt&n; *&t;o Spin-off Pcmcia code. This file is renamed orinoco.c,&n; *&t;  and orinoco_cs.c now contains only the Pcmcia specific stuff&n; *&t;o Add Airport driver support on top of orinoco.c (see airport.c)&n; *&n; * v0.05 -&gt; v0.05a - 4/5/2001 - Jean II&n; *&t;o Revert to old Pcmcia code to fix breakage of Ben&squot;s changes...&n; *&n; * v0.05a -&gt; v0.05b - 4/5/2001 - Jean II&n; *&t;o add module parameter &squot;ignore_cis_vcc&squot; for D-Link @ 5V&n; *&t;o D-Link firmware doesn&squot;t support multicast. We just print a few&n; *&t;  error messages, but otherwise everything works...&n; *&t;o For David : set/getport3 works fine, just upgrade iwpriv...&n; *&n; * v0.05b -&gt; v0.05c - 5/5/2001 - Benjamin Herrenschmidt&n; *&t;o Adapt airport.c to latest changes in orinoco.c&n; *&t;o Remove deferred power enabling code&n; *&n; * v0.05c -&gt; v0.05d - 5/5/2001 - Jean II&n; *&t;o Workaround to SNAP decapsulate frame from LinkSys AP&n; *&t;  original patch from : Dong Liu &lt;dliu@research.bell-labs.com&gt;&n; *&t;  (note : the memcmp bug was mine - fixed)&n; *&t;o Remove set_retry stuff, no firmware support it (bloat--).&n; *&n; * v0.05d -&gt; v0.06 - 25/5/2001 - Jean II&n; *&t;&t;Original patch from &quot;Hong Lin&quot; &lt;alin@redhat.com&gt;,&n; *&t;&t;&quot;Ian Kinner&quot; &lt;ikinner@redhat.com&gt;&n; *&t;&t;and &quot;David Smith&quot; &lt;dsmith@redhat.com&gt;&n; *&t;o Init of priv-&gt;tx_rate_ctrl in firmware specific section.&n; *&t;o Prism2/Symbol rate, upto should be 0xF and not 0x15. Doh !&n; *&t;o Spectrum card always need cor_reset (for every reset)&n; *&t;o Fix cor_reset to not loose bit 7 in the register&n; *&t;o flush_stale_links to remove zombie Pcmcia instances&n; *&t;o Ack previous hermes event before reset&n; *&t;&t;Me (with my little hands)&n; *&t;o Allow orinoco.c to call cor_reset via priv-&gt;card_reset_handler&n; *&t;o Add priv-&gt;need_card_reset to toggle this feature&n; *&t;o Fix various buglets when setting WEP in Symbol firmware&n; *&t;  Now, encryption is fully functional on Symbol cards. Youpi !&n; *&n; * v0.06 -&gt; v0.06b - 25/5/2001 - Jean II&n; *&t;o IBSS on Symbol use port_mode = 4. Please don&squot;t ask...&n; *&n; * v0.06b -&gt; v0.06c - 29/5/2001 - Jean II&n; *&t;o Show first spy address in /proc/net/wireless for IBSS mode as well&n; *&n; * v0.06c -&gt; v0.06d - 6/7/2001 - David Gibson&n; *      o Change a bunch of KERN_INFO messages to KERN_DEBUG, as per Linus&squot;&n; *        wishes to reduce the number of unecessary messages.&n; *&t;o Removed bogus message on CRC error.&n; *&t;o Merged fixeds for v0.08 Prism 2 firmware from William Waghorn&n; *&t;  &lt;willwaghorn@yahoo.co.uk&gt;&n; *&t;o Slight cleanup/re-arrangement of firmware detection code.&n; *&n; * v0.06d -&gt; v0.06e - 1/8/2001 - David Gibson&n; *&t;o Removed some redundant global initializers (orinoco_cs.c).&n; *&t;o Added some module metadataa&n; *&n; * v0.06e -&gt; v0.06f - 14/8/2001 - David Gibson&n; *&t;o Wording fix to license&n; *&t;o Added a &squot;use_alternate_encaps&squot; module parameter for APs which need an oui of&n; *&t;  00:00:00.  We really need a better way of handling this, but the module flag&n; *&t;  is better than nothing for now.&n; *&n; * TODO - Jean II&n; *&t;o inline functions (lot&squot;s of candidate, need to reorder code)&n; *&t;o Test PrismII/Symbol cards &amp; firmware versions&n; *&t;o Mini-PCI support (some people have reported success - JII)&n; */
+multiline_comment|/*&n; * Tentative changelog...&n; *&n; * v0.01 -&gt; v0.02 - 21/3/2001 - Jean II&n; *&t;o Allow to use regular ethX device name instead of dldwdX&n; *&t;o Warning on IBSS with ESSID=any for firmware 6.06&n; *&t;o Put proper range.throughput values (optimistic)&n; *&t;o IWSPY support (IOCTL and stat gather in Rx path)&n; *&t;o Allow setting frequency in Ad-Hoc mode&n; *&t;o Disable WEP setting if !has_wep to work on old firmware&n; *&t;o Fix txpower range&n; *&t;o Start adding support for Samsung/Compaq firmware&n; *&n; * v0.02 -&gt; v0.03 - 23/3/2001 - Jean II&n; *&t;o Start adding Symbol support - need to check all that&n; *&t;o Fix Prism2/Symbol WEP to accept 128 bits keys&n; *&t;o Add Symbol WEP (add authentication type)&n; *&t;o Add Prism2/Symbol rate&n; *&t;o Add PM timeout (holdover duration)&n; *&t;o Enable &quot;iwconfig eth0 key off&quot; and friends (toggle flags)&n; *&t;o Enable &quot;iwconfig eth0 power unicast/all&quot; (toggle flags)&n; *&t;o Try with an intel card. It report firmware 1.01, behave like&n; *&t;  an antiquated firmware, however on windows it says 2.00. Yuck !&n; *&t;o Workaround firmware bug in allocate buffer (Intel 1.01)&n; *&t;o Finish external renaming to orinoco...&n; *&t;o Testing with various Wavelan firmwares&n; *&n; * v0.03 -&gt; v0.04 - 30/3/2001 - Jean II&n; *&t;o Update to Wireless 11 -&gt; add retry limit/lifetime support&n; *&t;o Tested with a D-Link DWL 650 card, fill in firmware support&n; *&t;o Warning on Vcc mismatch (D-Link 3.3v card in Lucent 5v only slot)&n; *&t;o Fixed the Prims2 WEP bugs that I introduced in v0.03 :-(&n; *&t;  It work on D-Link *only* after a tcpdump. Weird...&n; *&t;  And still doesn&squot;t work on Intel card. Grrrr...&n; *&t;o Update the mode after a setport3&n; *&t;o Add preamble setting for Symbol cards (not yet enabled)&n; *&t;o Don&squot;t complain as much about Symbol cards...&n; *&n; * v0.04 -&gt; v0.04b - 22/4/2001 - David Gibson&n; *      o Removed the &squot;eth&squot; parameter - always use ethXX as the&n; *        interface name instead of dldwdXX.  The other was racy&n; *        anyway.&n; *&t;o Clean up RID definitions in hermes.h, other cleanups&n; *&n; * v0.04b -&gt; v0.04c - 24/4/2001 - Jean II&n; *&t;o Tim Hurley &lt;timster@seiki.bliztech.com&gt; reported a D-Link card&n; *&t;  with vendor 02 and firmware 0.08. Added in the capabilities...&n; *&t;o Tested Lucent firmware 7.28, everything works...&n; *&n; * v0.04c -&gt; v0.05 - 3/5/2001 - Benjamin Herrenschmidt&n; *&t;o Spin-off Pcmcia code. This file is renamed orinoco.c,&n; *&t;  and orinoco_cs.c now contains only the Pcmcia specific stuff&n; *&t;o Add Airport driver support on top of orinoco.c (see airport.c)&n; *&n; * v0.05 -&gt; v0.05a - 4/5/2001 - Jean II&n; *&t;o Revert to old Pcmcia code to fix breakage of Ben&squot;s changes...&n; *&n; * v0.05a -&gt; v0.05b - 4/5/2001 - Jean II&n; *&t;o add module parameter &squot;ignore_cis_vcc&squot; for D-Link @ 5V&n; *&t;o D-Link firmware doesn&squot;t support multicast. We just print a few&n; *&t;  error messages, but otherwise everything works...&n; *&t;o For David : set/getport3 works fine, just upgrade iwpriv...&n; *&n; * v0.05b -&gt; v0.05c - 5/5/2001 - Benjamin Herrenschmidt&n; *&t;o Adapt airport.c to latest changes in orinoco.c&n; *&t;o Remove deferred power enabling code&n; *&n; * v0.05c -&gt; v0.05d - 5/5/2001 - Jean II&n; *&t;o Workaround to SNAP decapsulate frame from LinkSys AP&n; *&t;  original patch from : Dong Liu &lt;dliu@research.bell-labs.com&gt;&n; *&t;  (note : the memcmp bug was mine - fixed)&n; *&t;o Remove set_retry stuff, no firmware support it (bloat--).&n; *&n; * v0.05d -&gt; v0.06 - 25/5/2001 - Jean II&n; *&t;&t;Original patch from &quot;Hong Lin&quot; &lt;alin@redhat.com&gt;,&n; *&t;&t;&quot;Ian Kinner&quot; &lt;ikinner@redhat.com&gt;&n; *&t;&t;and &quot;David Smith&quot; &lt;dsmith@redhat.com&gt;&n; *&t;o Init of priv-&gt;tx_rate_ctrl in firmware specific section.&n; *&t;o Prism2/Symbol rate, upto should be 0xF and not 0x15. Doh !&n; *&t;o Spectrum card always need cor_reset (for every reset)&n; *&t;o Fix cor_reset to not loose bit 7 in the register&n; *&t;o flush_stale_links to remove zombie Pcmcia instances&n; *&t;o Ack previous hermes event before reset&n; *&t;&t;Me (with my little hands)&n; *&t;o Allow orinoco.c to call cor_reset via priv-&gt;card_reset_handler&n; *&t;o Add priv-&gt;need_card_reset to toggle this feature&n; *&t;o Fix various buglets when setting WEP in Symbol firmware&n; *&t;  Now, encryption is fully functional on Symbol cards. Youpi !&n; *&n; * v0.06 -&gt; v0.06b - 25/5/2001 - Jean II&n; *&t;o IBSS on Symbol use port_mode = 4. Please don&squot;t ask...&n; *&n; * v0.06b -&gt; v0.06c - 29/5/2001 - Jean II&n; *&t;o Show first spy address in /proc/net/wireless for IBSS mode as well&n; *&n; * v0.06c -&gt; v0.06d - 6/7/2001 - David Gibson&n; *      o Change a bunch of KERN_INFO messages to KERN_DEBUG, as per Linus&squot;&n; *        wishes to reduce the number of unecessary messages.&n; *&t;o Removed bogus message on CRC error.&n; *&t;o Merged fixeds for v0.08 Prism 2 firmware from William Waghorn&n; *&t;  &lt;willwaghorn@yahoo.co.uk&gt;&n; *&t;o Slight cleanup/re-arrangement of firmware detection code.&n; *&n; * v0.06d -&gt; v0.06e - 1/8/2001 - David Gibson&n; *&t;o Removed some redundant global initializers (orinoco_cs.c).&n; *&t;o Added some module metadataa&n; *&n; * v0.06e -&gt; v0.06f - 14/8/2001 - David Gibson&n; *&t;o Wording fix to license&n; *&t;o Added a &squot;use_alternate_encaps&squot; module parameter for APs which need an oui of&n; *&t;  00:00:00.  We really need a better way of handling this, but the module flag&n; *&t;  is better than nothing for now.&n; *&n; * v0.06f -&gt; v0.07 - 20/8/2001 - David Gibson&n; *&t;o Removed BAP error retries from hermes_bap_seek().  For Tx we now&n; *&t;  let the upper layers handle the retry, we retry explicitly in the&n; *&t;  Rx path, but don&squot;t make as much noise about it.&n; *&t;o Firmware detection cleanups.&n; *&n; *&n; * TODO - Jean II&n; *&t;o inline functions (lot&squot;s of candidate, need to reorder code)&n; *&t;o Test PrismII/Symbol cards &amp; firmware versions&n; *&t;o Mini-PCI support (some people have reported success - JII)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -30,14 +30,13 @@ macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco.c 0.06f (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco.c 0.07 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -49,6 +48,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Driver for Lucent Orinoco, Prism II based and similar wireless cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Level of debugging. Used in the macros in orinoco.h */
@@ -247,71 +252,70 @@ DECL|macro|DLDWD_FTYPE_CTL
 mdefine_line|#define DLDWD_FTYPE_CTL&t;&t;&t;0x0004
 DECL|macro|DLDWD_FTYPE_DATA
 mdefine_line|#define DLDWD_FTYPE_DATA&t;&t;0x0008
+DECL|macro|__PACKED__
+mdefine_line|#define __PACKED__ __attribute__ ((packed))
 DECL|struct|p8022_hdr
 r_struct
 id|p8022_hdr
 (brace
-DECL|member|dsap
+DECL|member|__PACKED__
 r_uint8
 id|dsap
+id|__PACKED__
 suffix:semicolon
-DECL|member|ssap
+DECL|member|__PACKED__
 r_uint8
 id|ssap
+id|__PACKED__
 suffix:semicolon
-DECL|member|ctrl
+DECL|member|__PACKED__
 r_uint8
 id|ctrl
+id|__PACKED__
 suffix:semicolon
-DECL|member|oui
+DECL|member|__PACKED__
 r_uint8
 id|oui
 (braket
 l_int|3
 )braket
+id|__PACKED__
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|struct|dldwd_frame_hdr
 r_struct
 id|dldwd_frame_hdr
 (brace
-DECL|member|desc
+DECL|member|__PACKED__
 id|hermes_frame_desc_t
 id|desc
+id|__PACKED__
 suffix:semicolon
-DECL|member|p80211
+DECL|member|__PACKED__
 r_struct
 id|p80211_hdr
 id|p80211
+id|__PACKED__
 suffix:semicolon
-DECL|member|p8023
+DECL|member|__PACKED__
 r_struct
 id|ethhdr
 id|p8023
+id|__PACKED__
 suffix:semicolon
-DECL|member|p8022
+DECL|member|__PACKED__
 r_struct
 id|p8022_hdr
 id|p8022
+id|__PACKED__
 suffix:semicolon
-DECL|member|ethertype
+DECL|member|__PACKED__
 r_uint16
 id|ethertype
+id|__PACKED__
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|macro|P8023_OFFSET
 mdefine_line|#define P8023_OFFSET&t;&t;(sizeof(hermes_frame_desc_t) + &bslash;&n;&t;&t;&t;&t;sizeof(struct p80211_hdr))
@@ -359,6 +363,29 @@ comma
 l_int|0x00
 )brace
 )brace
+suffix:semicolon
+multiline_comment|/* How many times to retry if we get an EIO reading the BAP in the Rx path */
+DECL|macro|RX_EIO_RETRY
+mdefine_line|#define RX_EIO_RETRY&t;&t;10
+DECL|struct|dldwd_commsqual
+r_typedef
+r_struct
+id|dldwd_commsqual
+(brace
+DECL|member|qual
+DECL|member|signal
+DECL|member|noise
+r_uint16
+id|qual
+comma
+id|signal
+comma
+id|noise
+suffix:semicolon
+DECL|typedef|dldwd_commsqual_t
+)brace
+id|__PACKED__
+id|dldwd_commsqual_t
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 r_static
@@ -1170,23 +1197,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Symbol is different here */
-r_if
-c_cond
-(paren
-id|priv-&gt;firmware_type
-op_eq
-id|FIRMWARE_TYPE_SYMBOL
-)paren
-id|priv-&gt;port_type
-op_assign
-l_int|4
-suffix:semicolon
-r_else
-id|priv-&gt;port_type
-op_assign
-l_int|1
-suffix:semicolon
 id|priv-&gt;port_type
 op_assign
 id|priv-&gt;ibss_port
@@ -2241,9 +2251,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIRMWARE_TYPE_PRISM2
+id|FIRMWARE_TYPE_INTERSIL
 suffix:colon
-multiline_comment|/* Prism II style WEP */
+multiline_comment|/* Intersil style WEP */
 r_case
 id|FIRMWARE_TYPE_SYMBOL
 suffix:colon
@@ -2386,7 +2396,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* Authentication is where Prism2 and Symbol&n;&t;&t;&t; * firmware differ... */
+multiline_comment|/* Authentication is where Intersil and Symbol&n;&t;&t;&t; * firmware differ... */
 r_if
 c_cond
 (paren
@@ -3106,7 +3116,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef PCMCIA_DEBUG
+macro_line|#ifndef ORINOCO_DEBUG
 DECL|function|show_rx_frame
 r_static
 r_inline
@@ -4126,6 +4136,11 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|l
+op_assign
+id|RX_EIO_RETRY
+suffix:semicolon
 r_uint16
 id|rxfid
 comma
@@ -4175,6 +4190,8 @@ id|rxfid
 )paren
 suffix:semicolon
 multiline_comment|/* We read in the entire frame header here. This isn&squot;t really&n;&t;   necessary, since we ignore most of it, but it&squot;s&n;&t;   conceptually simpler. We can tune this later if&n;&t;   necessary. */
+r_do
+(brace
 id|err
 op_assign
 id|hermes_bap_pread
@@ -4197,12 +4214,48 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+op_logical_and
+(paren
+op_decrement
+id|l
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s: EIO reading frame header.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -4222,6 +4275,18 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
+id|DEBUG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: BAP read suceeded: l=%d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|l
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|le16_to_cpu
@@ -4449,7 +4514,7 @@ l_int|3
 )paren
 )paren
 (brace
-multiline_comment|/* These indicate a SNAP within 802.2 LLC within&n;&t;&t;   802.11 frame which we&squot;ll need to de-encapsulate to&n;&t;&t;   the original EthernetII frame.&n;&t;&t;   IEEE and ISO OSI have a lot to answer for.  */
+multiline_comment|/* These indicate a SNAP within 802.2 LLC within&n;&t;&t;   802.11 frame which we&squot;ll need to de-encapsulate to&n;&t;&t;   the original EthernetII frame. */
 multiline_comment|/* Remove SNAP header, reconstruct EthernetII frame */
 id|data_len
 op_assign
@@ -4521,9 +4586,10 @@ comma
 id|data_len
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_do
+(brace
+id|err
+op_assign
 id|hermes_bap_pread
 c_func
 (paren
@@ -4543,17 +4609,59 @@ id|rxfid
 comma
 id|data_off
 )paren
-op_ne
-l_int|0
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+op_logical_and
+(paren
+op_decrement
+id|l
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s: EIO reading frame header.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: Error reading packet data&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: error %d reading frame header. &quot;
+l_string|&quot;Frame dropped.&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|err
 )paren
 suffix:semicolon
 id|stats-&gt;rx_errors
@@ -4563,6 +4671,18 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
+id|DEBUG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: BAP read suceeded: l=%d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|l
+)paren
+suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -4816,25 +4936,39 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_struct
+id|sta_id
+(brace
+r_uint16
+id|id
+comma
+id|vendor
+comma
+id|major
+comma
+id|minor
+suffix:semicolon
+)brace
+id|__PACKED__
+id|sta_id
+suffix:semicolon
 r_uint32
 id|firmver
-suffix:semicolon
-r_char
-op_star
-id|vendor_str
 suffix:semicolon
 multiline_comment|/* Get the firmware version */
 id|err
 op_assign
-id|hermes_read_staidentity
+id|HERMES_READ_RECORD
 c_func
 (paren
 id|hw
 comma
 id|USER_BAP
 comma
+id|HERMES_RID_STAIDENTITY
+comma
 op_amp
-id|priv-&gt;firmware_info
+id|sta_id
 )paren
 suffix:semicolon
 r_if
@@ -4858,58 +4992,99 @@ id|memset
 c_func
 (paren
 op_amp
-id|priv-&gt;firmware_info
+id|sta_id
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|priv-&gt;firmware_info
+id|sta_id
 )paren
 )paren
 suffix:semicolon
 )brace
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|sta_id.id
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|sta_id.vendor
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|sta_id.major
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|sta_id.minor
+)paren
+suffix:semicolon
 id|firmver
 op_assign
 (paren
 (paren
 r_uint32
 )paren
-id|priv-&gt;firmware_info.major
+id|sta_id.major
 op_lshift
 l_int|16
 )paren
 op_or
-id|priv-&gt;firmware_info.minor
+id|sta_id.minor
 suffix:semicolon
-id|DEBUG
+id|printk
 c_func
 (paren
-l_int|2
-comma
-l_string|&quot;%s: firmver = 0x%X&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;%s: Station identity %04x:%04x:%04x:%04x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|firmver
+id|sta_id.id
+comma
+id|sta_id.vendor
+comma
+id|sta_id.major
+comma
+id|sta_id.minor
 )paren
 suffix:semicolon
 multiline_comment|/* Determine capabilities from the firmware version */
-r_switch
+r_if
 c_cond
 (paren
-id|priv-&gt;firmware_info.vendor
+id|sta_id.vendor
+op_eq
+l_int|1
 )paren
 (brace
-r_case
-l_int|0x1
-suffix:colon
-multiline_comment|/* Lucent Wavelan IEEE, Lucent Orinoco, Cabletron RoamAbout,&n;&t;&t; * ELSA, Melco, HP, IBM, Dell 1150 cards */
-id|vendor_str
-op_assign
-l_string|&quot;Lucent&quot;
+multiline_comment|/* Lucent Wavelan IEEE, Lucent Orinoco, Cabletron RoamAbout,&n;&t;&t;   ELSE, Meloc, HP, IBM, Dell 1150 */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Looks like a Lucent/Agere firmware &quot;
+l_string|&quot;version %d.%02d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|sta_id.major
+comma
+id|sta_id.minor
+)paren
 suffix:semicolon
-multiline_comment|/* Lucent MAC : 00:60:1D:* &amp; 00:02:2D:* */
 id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_LUCENT
@@ -4985,99 +5160,51 @@ id|priv-&gt;has_preamble
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Tested with Lucent firmware :&n;&t;&t; *&t;1.16 ; 4.08 ; 4.52 ; 6.04 ; 6.16 ; 7.28 =&gt; Jean II&n;&t;&t; * Tested CableTron firmware : 4.32 =&gt; Anton */
-r_break
-suffix:semicolon
-r_case
-l_int|0x2
-suffix:colon
-id|vendor_str
-op_assign
-l_string|&quot;Generic Prism II&quot;
-suffix:semicolon
-multiline_comment|/* Some D-Link cards report vendor 0x02... */
-id|priv-&gt;firmware_type
-op_assign
-id|FIRMWARE_TYPE_PRISM2
-suffix:semicolon
-id|priv-&gt;tx_rate_ctrl
-op_assign
-l_int|0xF
-suffix:semicolon
-multiline_comment|/* 11 Mb/s auto */
-id|priv-&gt;need_card_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_allocate
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_port3
+id|priv-&gt;ibss_port
 op_assign
 l_int|1
 suffix:semicolon
-id|priv-&gt;has_ibss
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_wep
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_big_wep
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_mwo
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_pm
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_preamble
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Tim Hurley -&gt; D-Link card, vendor 02, firmware 0.08 */
-multiline_comment|/* Special case for Symbol cards */
+multiline_comment|/* Tested with Lucent firmware :&n;&t;&t; *&t;1.16 ; 4.08 ; 4.52 ; 6.04 ; 6.16 ; 7.28 =&gt; Jean II&n;&t;&t; * Tested CableTron firmware : 4.32 =&gt; Anton */
+)brace
+r_else
 r_if
 c_cond
+(paren
+(paren
+id|sta_id.vendor
+op_eq
+l_int|2
+)paren
+op_logical_and
+(paren
 (paren
 id|firmver
 op_eq
 l_int|0x10001
 )paren
+op_logical_or
+(paren
+id|firmver
+op_eq
+l_int|0x20001
+)paren
+)paren
+)paren
 (brace
 multiline_comment|/* Symbol , 3Com AirConnect, Intel, Ericsson WLAN */
-id|vendor_str
-op_assign
-l_string|&quot;Symbol&quot;
-suffix:semicolon
 multiline_comment|/* Intel MAC : 00:02:B3:* */
 multiline_comment|/* 3Com MAC : 00:50:DA:* */
-multiline_comment|/* FIXME : we need to get Symbol firmware revision.&n;&t;&t;&t; * I tried to use SYMBOL_***ARY_VER, but it didn&squot;t&n;&t;&t;&t; * returned anything proper... */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Looks like a Symbol firmware &quot;
+l_string|&quot;(unknown version)&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME : we need to get Symbol firmware revision.&n;&t;&t; * I tried to use SYMBOL_***ARY_VER, but it didn&squot;t&n;&t;&t; * returned anything proper... */
 id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_SYMBOL
@@ -5132,269 +5259,119 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME */
-multiline_comment|/* Tested with Intel firmware : v15 =&gt; Jean II */
-)brace
-r_break
-suffix:semicolon
-r_case
-l_int|0x3
-suffix:colon
-id|vendor_str
-op_assign
-l_string|&quot;Samsung&quot;
-suffix:semicolon
-multiline_comment|/* To check - Should cover Samsung &amp; Compaq */
-id|priv-&gt;firmware_type
-op_assign
-id|FIRMWARE_TYPE_PRISM2
-suffix:semicolon
-id|priv-&gt;tx_rate_ctrl
-op_assign
-l_int|0xF
-suffix:semicolon
-multiline_comment|/* 11 Mb/s auto */
-id|priv-&gt;need_card_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_allocate
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_port3
-op_assign
-l_int|1
-suffix:semicolon
-id|priv-&gt;has_ibss
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME: available in later firmwares */
-id|priv-&gt;has_wep
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x20000
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_big_wep
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_mwo
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_pm
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x20000
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_preamble
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x6
-suffix:colon
-multiline_comment|/* D-Link DWL 650, ... */
-id|vendor_str
-op_assign
-l_string|&quot;LinkSys/D-Link&quot;
-suffix:semicolon
-multiline_comment|/* D-Link MAC : 00:40:05:* */
-id|priv-&gt;firmware_type
-op_assign
-id|FIRMWARE_TYPE_PRISM2
-suffix:semicolon
-id|priv-&gt;tx_rate_ctrl
-op_assign
-l_int|0xF
-suffix:semicolon
-multiline_comment|/* 11 Mb/s auto */
-id|priv-&gt;need_card_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_allocate
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_port3
-op_assign
-l_int|1
-suffix:semicolon
-id|priv-&gt;has_ibss
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_wep
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_big_wep
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_mwo
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_pm
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x00007
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|priv-&gt;has_preamble
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Tested with D-Link firmware 0.07 =&gt; Jean II */
-multiline_comment|/* Note : with 0.07, IBSS to a Lucent card seem flaky */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|vendor_str
-op_assign
-l_string|&quot;UNKNOWN&quot;
-suffix:semicolon
-id|priv-&gt;firmware_type
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;tx_rate_ctrl
-op_assign
-l_int|0x3
-suffix:semicolon
-multiline_comment|/* Hum... */
-id|priv-&gt;need_card_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;broken_allocate
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_port3
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_ibss
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_wep
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_big_wep
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_mwo
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_pm
-op_assign
-l_int|0
-suffix:semicolon
-id|priv-&gt;has_preamble
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|priv-&gt;firmware_type
-op_eq
-id|FIRMWARE_TYPE_SYMBOL
-)paren
 id|priv-&gt;ibss_port
 op_assign
 l_int|4
 suffix:semicolon
+multiline_comment|/* Tested with Intel firmware : v15 =&gt; Jean II */
+)brace
 r_else
-r_if
-c_cond
+(brace
+id|printk
+c_func
 (paren
-(paren
-id|priv-&gt;firmware_type
-op_eq
-id|FIRMWARE_TYPE_PRISM2
+id|KERN_DEBUG
+l_string|&quot;%s: Looks like an Intersil firmware &quot;
+l_string|&quot;version %d.%02d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|sta_id.major
+comma
+id|sta_id.minor
 )paren
-op_logical_and
+suffix:semicolon
+id|priv-&gt;firmware_type
+op_assign
+id|FIRMWARE_TYPE_INTERSIL
+suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0xF
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;broken_reset
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;broken_allocate
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;has_port3
+op_assign
+l_int|1
+suffix:semicolon
+id|priv-&gt;has_ibss
+op_assign
+(paren
+id|firmver
+op_ge
+l_int|0x00007
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME */
+id|priv-&gt;has_wep
+op_assign
 (paren
 id|firmver
 op_ge
 l_int|0x00008
 )paren
+suffix:semicolon
+id|priv-&gt;has_big_wep
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;has_mwo
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;has_pm
+op_assign
+(paren
+id|firmver
+op_ge
+l_int|0x00007
+)paren
+suffix:semicolon
+id|priv-&gt;has_preamble
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|firmver
+op_ge
+l_int|0x00008
 )paren
 id|priv-&gt;ibss_port
 op_assign
 l_int|0
 suffix:semicolon
 r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: Intersil firmware earlier &quot;
+l_string|&quot;than v0.08 - several features not supported.&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 id|priv-&gt;ibss_port
 op_assign
 l_int|1
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Firmware ID %02X vendor 0x%x (%s) version %d.%02d&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|priv-&gt;firmware_info.id
-comma
-id|priv-&gt;firmware_info.vendor
-comma
-id|vendor_str
-comma
-id|priv-&gt;firmware_info.major
-comma
-id|priv-&gt;firmware_info.minor
-)paren
-suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*&n; * struct net_device methods&n; */
 r_int
@@ -6139,9 +6116,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|hermes_commsqual_t
-id|cq
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6230,17 +6204,43 @@ macro_line|#endif /* WIRELESS_SPY */
 )brace
 r_else
 (brace
+id|dldwd_commsqual_t
+id|cq
+suffix:semicolon
 id|err
 op_assign
-id|hermes_read_commsqual
+id|HERMES_READ_RECORD
 c_func
 (paren
 id|hw
 comma
 id|USER_BAP
 comma
+id|HERMES_RID_COMMSQUALITY
+comma
 op_amp
 id|cq
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|cq.qual
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|cq.signal
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|cq.noise
 )paren
 suffix:semicolon
 id|DEBUG
@@ -6354,7 +6354,7 @@ id|u_char
 op_star
 id|mac
 comma
-id|hermes_commsqual_t
+id|dldwd_commsqual_t
 op_star
 id|cq
 )paren
@@ -6517,7 +6517,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|hermes_commsqual_t
+id|dldwd_commsqual_t
 id|cq
 suffix:semicolon
 multiline_comment|/* Using spy support with lots of Rx packets, like in an&n;&t; * infrastructure (AP), will really slow down everything, because&n;&t; * the MAC address must be compared to each entry of the spy list.&n;&t; * If the user really asks for it (set some address in the&n;&t; * spy list), we do it, but he will pay the price.&n;&t; * Note that to get here, you need both WIRELESS_SPY&n;&t; * compiled in AND some addresses in the list !!!&n;&t; */
@@ -6945,6 +6945,26 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+multiline_comment|/* We get these errors reported by the&n;&t;&t;&t;&t;   firmware every so often apparently at&n;&t;&t;&t;&t;   random.  Let the upper layers&n;&t;&t;&t;&t;   handle the retry */
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s: DEBUG: EIO writing packet header to BAP&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -7063,11 +7083,30 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EIO
+)paren
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s: DEBUG: EIO writing packet header to BAP&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error %d writing packet data to BAP&bslash;n&quot;
+l_string|&quot;%s: Error %d writing packet header to BAP&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7849,6 +7888,19 @@ id|erq-&gt;pointer
 )paren
 (brace
 multiline_comment|/* We actually have a key to set */
+r_if
+c_cond
+(paren
+id|erq-&gt;length
+OG
+id|MAX_KEY_SIZE
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -9648,9 +9700,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIRMWARE_TYPE_PRISM2
+id|FIRMWARE_TYPE_INTERSIL
 suffix:colon
-multiline_comment|/* Prism II style rate */
+multiline_comment|/* Intersil style rate */
 r_case
 id|FIRMWARE_TYPE_SYMBOL
 suffix:colon
@@ -9932,9 +9984,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIRMWARE_TYPE_PRISM2
+id|FIRMWARE_TYPE_INTERSIL
 suffix:colon
-multiline_comment|/* Prism II style rate */
+multiline_comment|/* Intersil style rate */
 r_case
 id|FIRMWARE_TYPE_SYMBOL
 suffix:colon
@@ -15438,7 +15490,7 @@ id|priv
 r_struct
 id|net_device
 op_star
-id|ndev
+id|dev
 op_assign
 op_amp
 id|priv-&gt;ndev
@@ -15455,10 +15507,10 @@ multiline_comment|/* Set up the net_device */
 id|ether_setup
 c_func
 (paren
-id|ndev
+id|dev
 )paren
 suffix:semicolon
-id|ndev-&gt;priv
+id|dev-&gt;priv
 op_assign
 id|priv
 suffix:semicolon
@@ -15468,58 +15520,56 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Caller may override */
-id|ndev-&gt;init
+id|dev-&gt;init
 op_assign
 id|dldwd_init
 suffix:semicolon
-id|ndev-&gt;open
+id|dev-&gt;open
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Caller *must* override */
-id|ndev-&gt;stop
+id|dev-&gt;stop
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ndev-&gt;hard_start_xmit
+id|dev-&gt;hard_start_xmit
 op_assign
 id|dldwd_xmit
 suffix:semicolon
-id|ndev-&gt;tx_timeout
+id|dev-&gt;tx_timeout
 op_assign
 id|dldwd_tx_timeout
 suffix:semicolon
-id|ndev-&gt;watchdog_timeo
+id|dev-&gt;watchdog_timeo
 op_assign
-l_int|4
-op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* 4 second timeout */
-id|ndev-&gt;get_stats
+id|dev-&gt;get_stats
 op_assign
 id|dldwd_get_stats
 suffix:semicolon
-id|ndev-&gt;get_wireless_stats
+id|dev-&gt;get_wireless_stats
 op_assign
 id|dldwd_get_wireless_stats
 suffix:semicolon
-id|ndev-&gt;do_ioctl
+id|dev-&gt;do_ioctl
 op_assign
 id|dldwd_ioctl
 suffix:semicolon
-id|ndev-&gt;change_mtu
+id|dev-&gt;change_mtu
 op_assign
 id|dldwd_change_mtu
 suffix:semicolon
-id|ndev-&gt;set_multicast_list
+id|dev-&gt;set_multicast_list
 op_assign
 id|dldwd_set_multicast_list
 suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
-id|ndev
+id|dev
 )paren
 suffix:semicolon
 r_return

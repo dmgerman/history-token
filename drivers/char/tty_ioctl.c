@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -17,13 +18,6 @@ DECL|macro|TTY_DEBUG_WAIT_UNTIL_SENT
 macro_line|#undef TTY_DEBUG_WAIT_UNTIL_SENT
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|PRINTK
-macro_line|# define&t;PRINTK(x)&t;printk (x)
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|# define&t;PRINTK(x)&t;/**/
-macro_line|#endif
 multiline_comment|/*&n; * Internal flag options for termios setting behavior&n; */
 DECL|macro|TERMIOS_FLUSH
 mdefine_line|#define TERMIOS_FLUSH&t;1
@@ -619,8 +613,6 @@ id|tmp_termios
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-id|retval
 op_assign
 id|tty_check_change
 c_func
@@ -1042,9 +1034,7 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -1058,12 +1048,11 @@ r_sizeof
 id|tmp
 )paren
 )paren
-)paren
-r_return
+ques
+c_cond
 op_minus
 id|EFAULT
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -1379,9 +1368,7 @@ id|VEOL2
 )braket
 suffix:semicolon
 multiline_comment|/* what is brkc anyway? */
-r_if
-c_cond
-(paren
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -1395,12 +1382,11 @@ r_sizeof
 id|tmp
 )paren
 )paren
-)paren
-r_return
+ques
+c_cond
 op_minus
 id|EFAULT
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -1560,9 +1546,7 @@ id|tty-&gt;termios-&gt;c_cc
 id|VLNEXT
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -1576,12 +1560,11 @@ r_sizeof
 id|tmp
 )paren
 )paren
-)paren
-r_return
+ques
+c_cond
 op_minus
 id|EFAULT
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -2375,9 +2358,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
@@ -2429,8 +2413,9 @@ r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -2442,14 +2427,10 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 )paren
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -2511,8 +2492,9 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -2525,14 +2507,10 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 )paren
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
@@ -2565,4 +2543,11 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
+DECL|variable|n_tty_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|n_tty_ioctl
+)paren
+suffix:semicolon
 eof

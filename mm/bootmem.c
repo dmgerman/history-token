@@ -1574,9 +1574,19 @@ id|ptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Whoops, we cannot satisfy the allocation request.&n;&t; */
-id|BUG
+id|printk
 c_func
 (paren
+id|KERN_ALERT
+l_string|&quot;bootmem alloc of %lu bytes failed!&bslash;n&quot;
+comma
+id|size
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
 r_return

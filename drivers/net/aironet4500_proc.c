@@ -91,8 +91,6 @@ id|awc_proc_buff
 (braket
 id|AWC_STR_SIZE
 )braket
-op_assign
-l_string|&quot;&bslash;0&quot;
 suffix:semicolon
 DECL|variable|awc_int_buff
 r_static
@@ -2484,8 +2482,6 @@ r_struct
 id|ctl_table_header
 op_star
 id|awc_driver_sysctl_header
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|awc_procname
 r_const

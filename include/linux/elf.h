@@ -52,13 +52,23 @@ id|Elf64_Off
 suffix:semicolon
 DECL|typedef|Elf64_Sword
 r_typedef
-id|__s64
+id|__s32
 id|Elf64_Sword
 suffix:semicolon
 DECL|typedef|Elf64_Word
 r_typedef
-id|__u64
+id|__u32
 id|Elf64_Word
+suffix:semicolon
+DECL|typedef|Elf64_Xword
+r_typedef
+id|__u64
+id|Elf64_Xword
+suffix:semicolon
+DECL|typedef|Elf64_Sxword
+r_typedef
+id|__s64
+id|Elf64_Sxword
 suffix:semicolon
 multiline_comment|/* These constants are for the segment types stored in the image headers */
 DECL|macro|PT_NULL
@@ -132,6 +142,8 @@ DECL|macro|EM_SPARC32PLUS
 mdefine_line|#define EM_SPARC32PLUS 18&t;/* Sun&squot;s &quot;v8plus&quot; */
 DECL|macro|EM_PPC
 mdefine_line|#define EM_PPC&t;       20&t;/* PowerPC */
+DECL|macro|EM_PPC64
+mdefine_line|#define EM_PPC64       21       /* PowerPC64 */
 DECL|macro|EM_SH
 mdefine_line|#define EM_SH&t;       42&t;/* SuperH */
 DECL|macro|EM_SPARCV9
@@ -332,18 +344,18 @@ r_typedef
 r_struct
 (brace
 DECL|member|d_tag
-id|Elf64_Word
+id|Elf64_Sxword
 id|d_tag
 suffix:semicolon
 multiline_comment|/* entry tag value */
 r_union
 (brace
 DECL|member|d_val
-id|Elf64_Word
+id|Elf64_Xword
 id|d_val
 suffix:semicolon
 DECL|member|d_ptr
-id|Elf64_Word
+id|Elf64_Addr
 id|d_ptr
 suffix:semicolon
 DECL|member|d_un
@@ -428,7 +440,7 @@ DECL|macro|R_MIPS_GOT_PAGE
 mdefine_line|#define R_MIPS_GOT_PAGE&t;&t;20
 DECL|macro|R_MIPS_GOT_OFST
 mdefine_line|#define R_MIPS_GOT_OFST&t;&t;21
-multiline_comment|/*&n; * The following two relocation types are specified in the the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
+multiline_comment|/*&n; * The following two relocation types are specified in the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
 DECL|macro|R_MIPS_GOTHI16
 mdefine_line|#define R_MIPS_GOTHI16&t;&t;22
 DECL|macro|R_MIPS_GOTLO16
@@ -445,7 +457,7 @@ DECL|macro|R_MIPS_HIGHER
 mdefine_line|#define R_MIPS_HIGHER&t;&t;28
 DECL|macro|R_MIPS_HIGHEST
 mdefine_line|#define R_MIPS_HIGHEST&t;&t;29
-multiline_comment|/*&n; * The following two relocation types are specified in the the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
+multiline_comment|/*&n; * The following two relocation types are specified in the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
 DECL|macro|R_MIPS_CALLHI16
 mdefine_line|#define R_MIPS_CALLHI16&t;&t;30
 DECL|macro|R_MIPS_CALLLO16
@@ -678,7 +690,7 @@ id|r_offset
 suffix:semicolon
 multiline_comment|/* Location at which to apply the action */
 DECL|member|r_info
-id|Elf64_Word
+id|Elf64_Xword
 id|r_info
 suffix:semicolon
 multiline_comment|/* index and type of relocation */
@@ -718,12 +730,12 @@ id|r_offset
 suffix:semicolon
 multiline_comment|/* Location at which to apply the action */
 DECL|member|r_info
-id|Elf64_Word
+id|Elf64_Xword
 id|r_info
 suffix:semicolon
 multiline_comment|/* index and type of relocation */
 DECL|member|r_addend
-id|Elf64_Word
+id|Elf64_Sxword
 id|r_addend
 suffix:semicolon
 multiline_comment|/* Constant addend used to compute value */
@@ -772,10 +784,10 @@ r_struct
 id|elf64_sym
 (brace
 DECL|member|st_name
-id|Elf32_Word
+id|Elf64_Word
 id|st_name
 suffix:semicolon
-multiline_comment|/* Symbol name, index in string tbl (yes, Elf32) */
+multiline_comment|/* Symbol name, index in string tbl */
 DECL|member|st_info
 r_int
 r_char
@@ -799,7 +811,7 @@ id|st_value
 suffix:semicolon
 multiline_comment|/* Value of the symbol */
 DECL|member|st_size
-id|Elf64_Word
+id|Elf64_Xword
 id|st_size
 suffix:semicolon
 multiline_comment|/* Associated symbol size */
@@ -894,7 +906,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* ELF &quot;magic number&quot; */
 DECL|member|e_type
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_type
 suffix:semicolon
 DECL|member|e_machine
@@ -902,7 +914,7 @@ id|Elf64_Half
 id|e_machine
 suffix:semicolon
 DECL|member|e_version
-id|__s32
+id|Elf64_Word
 id|e_version
 suffix:semicolon
 DECL|member|e_entry
@@ -921,31 +933,31 @@ id|e_shoff
 suffix:semicolon
 multiline_comment|/* Section header table file offset */
 DECL|member|e_flags
-id|__s32
+id|Elf64_Word
 id|e_flags
 suffix:semicolon
 DECL|member|e_ehsize
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_ehsize
 suffix:semicolon
 DECL|member|e_phentsize
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_phentsize
 suffix:semicolon
 DECL|member|e_phnum
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_phnum
 suffix:semicolon
 DECL|member|e_shentsize
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_shentsize
 suffix:semicolon
 DECL|member|e_shnum
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_shnum
 suffix:semicolon
 DECL|member|e_shstrndx
-id|Elf64_SHalf
+id|Elf64_Half
 id|e_shstrndx
 suffix:semicolon
 DECL|typedef|Elf64_Ehdr
@@ -1006,11 +1018,11 @@ r_struct
 id|elf64_phdr
 (brace
 DECL|member|p_type
-id|__s32
+id|Elf64_Word
 id|p_type
 suffix:semicolon
 DECL|member|p_flags
-id|__s32
+id|Elf64_Word
 id|p_flags
 suffix:semicolon
 DECL|member|p_offset
@@ -1029,17 +1041,17 @@ id|p_paddr
 suffix:semicolon
 multiline_comment|/* Segment physical address */
 DECL|member|p_filesz
-id|Elf64_Word
+id|Elf64_Xword
 id|p_filesz
 suffix:semicolon
 multiline_comment|/* Segment size in file */
 DECL|member|p_memsz
-id|Elf64_Word
+id|Elf64_Xword
 id|p_memsz
 suffix:semicolon
 multiline_comment|/* Segment size in memory */
 DECL|member|p_align
-id|Elf64_Word
+id|Elf64_Xword
 id|p_align
 suffix:semicolon
 multiline_comment|/* Segment alignment, file &amp; memory */
@@ -1171,17 +1183,17 @@ r_struct
 id|elf64_shdr
 (brace
 DECL|member|sh_name
-id|Elf32_Word
+id|Elf64_Word
 id|sh_name
 suffix:semicolon
-multiline_comment|/* Section name, index in string tbl (yes Elf32) */
+multiline_comment|/* Section name, index in string tbl */
 DECL|member|sh_type
-id|Elf32_Word
+id|Elf64_Word
 id|sh_type
 suffix:semicolon
-multiline_comment|/* Type of section (yes Elf32) */
+multiline_comment|/* Type of section */
 DECL|member|sh_flags
-id|Elf64_Word
+id|Elf64_Xword
 id|sh_flags
 suffix:semicolon
 multiline_comment|/* Miscellaneous section attributes */
@@ -1196,27 +1208,27 @@ id|sh_offset
 suffix:semicolon
 multiline_comment|/* Section file offset */
 DECL|member|sh_size
-id|Elf64_Word
+id|Elf64_Xword
 id|sh_size
 suffix:semicolon
 multiline_comment|/* Size of section in bytes */
 DECL|member|sh_link
-id|Elf32_Word
+id|Elf64_Word
 id|sh_link
 suffix:semicolon
-multiline_comment|/* Index of another section (yes Elf32) */
+multiline_comment|/* Index of another section */
 DECL|member|sh_info
-id|Elf32_Word
+id|Elf64_Word
 id|sh_info
 suffix:semicolon
-multiline_comment|/* Additional section information (yes Elf32) */
+multiline_comment|/* Additional section information */
 DECL|member|sh_addralign
-id|Elf64_Word
+id|Elf64_Xword
 id|sh_addralign
 suffix:semicolon
 multiline_comment|/* Section alignment */
 DECL|member|sh_entsize
-id|Elf64_Word
+id|Elf64_Xword
 id|sh_entsize
 suffix:semicolon
 multiline_comment|/* Entry size if section holds table */
@@ -1309,24 +1321,23 @@ DECL|typedef|Elf32_Nhdr
 id|Elf32_Nhdr
 suffix:semicolon
 multiline_comment|/* Note header in a PT_NOTE section */
-multiline_comment|/*&n; * For now we use the 32 bit version of the structure until we figure&n; * out whether we need anything better.  Note - on the Alpha, &quot;unsigned int&quot;&n; * is only 32 bits.&n; */
 DECL|struct|elf64_note
 r_typedef
 r_struct
 id|elf64_note
 (brace
 DECL|member|n_namesz
-id|Elf32_Word
+id|Elf64_Word
 id|n_namesz
 suffix:semicolon
 multiline_comment|/* Name size */
 DECL|member|n_descsz
-id|Elf32_Word
+id|Elf64_Word
 id|n_descsz
 suffix:semicolon
 multiline_comment|/* Content size */
 DECL|member|n_type
-id|Elf32_Word
+id|Elf64_Word
 id|n_type
 suffix:semicolon
 multiline_comment|/* Content type */

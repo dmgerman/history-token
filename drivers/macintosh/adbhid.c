@@ -4071,7 +4071,6 @@ l_int|5
 comma
 l_int|0x0d
 comma
-multiline_comment|/*r1_buffer[6],*/
 id|r1_buffer
 (braket
 l_int|7
@@ -4172,6 +4171,26 @@ id|r1_buffer
 (braket
 l_int|7
 )braket
+)paren
+suffix:semicolon
+multiline_comment|/* Without this flush, the trackpad may be locked up */
+id|adb_request
+c_func
+(paren
+op_amp
+id|req
+comma
+l_int|NULL
+comma
+id|ADBREQ_SYNC
+comma
+l_int|1
+comma
+id|ADB_FLUSH
+c_func
+(paren
+id|id
+)paren
 )paren
 suffix:semicolon
 )brace

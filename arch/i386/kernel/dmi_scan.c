@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/keyboard.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
 DECL|struct|dmi_header
 r_struct
 id|dmi_header
@@ -306,6 +309,11 @@ id|fp
 op_sub_assign
 l_int|16
 suffix:semicolon
+macro_line|#ifdef CONFIG_SIMNOW
+multiline_comment|/*&n; &t; *&t;Skip on x86/64 with simnow. Will eventually go away&n; &t; *&t;If you see this ifdef in 2.6pre mail me !&n; &t; */
+r_return
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -784,6 +792,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Computer Corporation so their systems &quot;just work&quot;. :-)&n; */
 multiline_comment|/* &n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
 DECL|function|set_bios_reboot
 r_static
@@ -824,6 +833,82 @@ id|d-&gt;ident
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some machines require the &quot;reboot=s&quot;  commandline option, this quirk makes that automatic.&n; */
+DECL|function|set_smp_reboot
+r_static
+id|__init
+r_int
+id|set_smp_reboot
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_int
+id|reboot_smp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reboot_smp
+op_eq
+l_int|0
+)paren
+(brace
+id|reboot_smp
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s series board detected. Selecting SMP-method for reboots.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some machines require the &quot;reboot=b,s&quot;  commandline option, this quirk makes that automatic.&n; */
+DECL|function|set_smp_bios_reboot
+r_static
+id|__init
+r_int
+id|set_smp_bios_reboot
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|set_smp_reboot
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+id|set_bios_reboot
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -977,6 +1062,52 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SONYPI) || defined(CONFIG_SONYPI_MODULE)
+multiline_comment|/*&n; * Check for a Sony Vaio system in order to enable the use of&n; * the sonypi driver (we don&squot;t want this driver to be used on&n; * other systems, even if they have the good PCI IDs).&n; *&n; * This one isn&squot;t a bug detect for those who asked, we simply want to&n; * activate Sony specific goodies like the camera and jogdial..&n; */
+DECL|variable|is_sony_vaio_laptop
+r_int
+id|is_sony_vaio_laptop
+suffix:semicolon
+DECL|function|sony_vaio_laptop
+r_static
+id|__init
+r_int
+id|sony_vaio_laptop
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|is_sony_vaio_laptop
+op_eq
+l_int|0
+)paren
+(brace
+id|is_sony_vaio_laptop
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s laptop detected.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * This bios swaps the APM minute reporting bytes over (Many sony laptops&n; * have this problem).&n; */
 DECL|function|swab_apm_power_in_minutes
 r_static
@@ -1002,6 +1133,116 @@ id|KERN_WARNING
 l_string|&quot;BIOS strings suggest APM reports battery life in minutes and wrong byte order.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The Intel 440GX hall of shame. &n; *&n; * On many (all we have checked) of these boxes the $PIRQ table is wrong.&n; * The MP1.4 table is right however and so SMP kernels tend to work. &n; */
+DECL|function|broken_pirq
+r_static
+id|__init
+r_int
+id|broken_pirq
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot; *** Possibly defective BIOS detected (irqtable)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot; *** Many BIOSes matching this signature have incorrect IRQ routing tables.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot; *** If you see IRQ problems, in paticular SCSI resets and hangs at boot&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot; *** contact your vendor and ask about updates.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot; *** Building an SMP kernel may evade the bug some of the time.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some Bioses enable the PS/2 mouse (touchpad) at resume, even if it&n; * was disabled before the suspend. Linux gets terribly confused by that.&n; */
+DECL|typedef|pm_kbd_func
+r_typedef
+r_void
+(paren
+id|pm_kbd_func
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|pm_kbd_func
+op_star
+id|pm_kbd_request_override
+suffix:semicolon
+DECL|function|broken_ps2_resume
+r_static
+id|__init
+r_int
+id|broken_ps2_resume
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_VT
+r_if
+c_cond
+(paren
+id|pm_kbd_request_override
+op_eq
+l_int|NULL
+)paren
+(brace
+id|pm_kbd_request_override
+op_assign
+id|pckbd_pm_resume
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s machine detected. Mousepad Resume Bug workaround enabled.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon

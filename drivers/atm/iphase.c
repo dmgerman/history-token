@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n;         iphase.c: Device driver for Interphase ATM PCI adapter cards &n;                    Author: Peter Wang  &lt;pwang@iphase.com&gt;            &n;                   Interphase Corporation  &lt;www.iphase.com&gt;           &n;                               Version: 1.0                           &n;*******************************************************************************&n;      &n;      This software may be used and distributed according to the terms&n;      of the GNU General Public License (GPL), incorporated herein by reference.&n;      Drivers based on this skeleton fall under the GPL and must retain&n;      the authorship (implicit copyright) notice.&n;&n;      This program is distributed in the hope that it will be useful, but&n;      WITHOUT ANY WARRANTY; without even the implied warranty of&n;      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n;      General Public License for more details.&n;      &n;      Modified from an incomplete driver for Interphase 5575 1KVC 1M card which &n;      was originally written by Monalisa Agrawal at UNH. Now this driver &n;      supports a variety of varients of Interphase ATM PCI (i)Chip adapter &n;      card family (See www.iphase.com/products/ClassSheet.cfm?ClassID=ATM) &n;      in terms of PHY type, the size of control memory and the size of &n;      packet memory. The followings are the change log and history:&n;     &n;          Bugfix the Mona&squot;s UBR driver.&n;          Modify the basic memory allocation and dma logic.&n;          Port the driver to the latest kernel from 2.0.46.&n;          Complete the ABR logic of the driver, and added the ABR work-&n;              around for the hardware anormalies.&n;          Add the CBR support.&n;&t;  Add the flow control logic to the driver to allow rate-limit VC.&n;          Add 4K VC support to the board with 512K control memory.&n;          Add the support of all the variants of the Interphase ATM PCI &n;          (i)Chip adapter cards including x575 (155M OC3 and UTP155), x525&n;          (25M UTP25) and x531 (DS3 and E3).&n;          Add SMP support.&n;&n;      Support and updates available at: ftp://ftp.iphase.com/pub/atm&n;&n;*******************************************************************************/
+multiline_comment|/******************************************************************************&n;         iphase.c: Device driver for Interphase ATM PCI adapter cards &n;                    Author: Peter Wang  &lt;pwang@iphase.com&gt;            &n;&t;&t;   Some fixes: Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                   Interphase Corporation  &lt;www.iphase.com&gt;           &n;                               Version: 1.0                           &n;*******************************************************************************&n;      &n;      This software may be used and distributed according to the terms&n;      of the GNU General Public License (GPL), incorporated herein by reference.&n;      Drivers based on this skeleton fall under the GPL and must retain&n;      the authorship (implicit copyright) notice.&n;&n;      This program is distributed in the hope that it will be useful, but&n;      WITHOUT ANY WARRANTY; without even the implied warranty of&n;      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n;      General Public License for more details.&n;      &n;      Modified from an incomplete driver for Interphase 5575 1KVC 1M card which &n;      was originally written by Monalisa Agrawal at UNH. Now this driver &n;      supports a variety of varients of Interphase ATM PCI (i)Chip adapter &n;      card family (See www.iphase.com/products/ClassSheet.cfm?ClassID=ATM) &n;      in terms of PHY type, the size of control memory and the size of &n;      packet memory. The followings are the change log and history:&n;     &n;          Bugfix the Mona&squot;s UBR driver.&n;          Modify the basic memory allocation and dma logic.&n;          Port the driver to the latest kernel from 2.0.46.&n;          Complete the ABR logic of the driver, and added the ABR work-&n;              around for the hardware anormalies.&n;          Add the CBR support.&n;&t;  Add the flow control logic to the driver to allow rate-limit VC.&n;          Add 4K VC support to the board with 512K control memory.&n;          Add the support of all the variants of the Interphase ATM PCI &n;          (i)Chip adapter cards including x575 (155M OC3 and UTP155), x525&n;          (25M UTP25) and x531 (DS3 and E3).&n;          Add SMP support.&n;&n;      Support and updates available at: ftp://ftp.iphase.com/pub/atm&n;&n;*******************************************************************************/
 macro_line|#ifdef IA_MODULE
 DECL|macro|MODULE
 mdefine_line|#define MODULE
@@ -102,8 +102,6 @@ DECL|variable|iadev_count
 r_static
 r_int
 id|iadev_count
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void
@@ -210,6 +208,12 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#if BITS_PER_LONG != 32
 macro_line|#  error FIXME: this driver only works on 32-bit platforms
 macro_line|#endif
@@ -295,19 +299,14 @@ id|data
 id|IARTN_Q
 op_star
 id|entry
-suffix:semicolon
-id|entry
 op_assign
-(paren
-id|IARTN_Q
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-id|IARTN_Q
+op_star
+id|entry
 )paren
 comma
 id|GFP_KERNEL
@@ -2041,7 +2040,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|f_vc_abr_entry
+op_star
+id|f_abr_vc
 )paren
 )paren
 suffix:semicolon
@@ -2803,7 +2803,7 @@ id|TstSchedTbl
 comma
 r_sizeof
 (paren
-id|u16
+id|cbrVC
 )paren
 )paren
 suffix:semicolon
@@ -2883,7 +2883,7 @@ id|TstSchedTbl
 comma
 r_sizeof
 (paren
-id|u16
+id|cbrVC
 )paren
 )paren
 suffix:semicolon
@@ -2992,7 +2992,7 @@ id|TstSchedTbl
 comma
 r_sizeof
 (paren
-id|u16
+id|cbrVC
 )paren
 )paren
 suffix:semicolon
@@ -3015,7 +3015,7 @@ id|vcIndex
 comma
 r_sizeof
 (paren
-id|u16
+id|TstSchedTbl
 )paren
 )paren
 suffix:semicolon
@@ -3531,7 +3531,8 @@ c_func
 l_string|&quot;ia_tx_poll: skb is null&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|vcc
@@ -3563,7 +3564,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|iavcc
@@ -3593,7 +3595,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|skb1
@@ -3654,8 +3657,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vcc
-op_logical_and
 (paren
 id|vcc-&gt;pop
 )paren
@@ -3743,8 +3744,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vcc
-op_logical_and
 (paren
 id|vcc-&gt;pop
 )paren
@@ -3802,6 +3801,8 @@ c_func
 id|iadev
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 suffix:semicolon
 )brace
@@ -4754,12 +4755,8 @@ l_int|0x81
 suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_idle_pat_h1
 op_assign
-l_int|0
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_idle_pat_h2
 op_assign
-l_int|0
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_idle_pat_h3
 op_assign
 l_int|0
@@ -4786,12 +4783,8 @@ l_int|0xfe
 suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_pat_h1
 op_assign
-l_int|0
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_pat_h2
 op_assign
-l_int|0
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_pat_h3
 op_assign
 l_int|0
@@ -4802,16 +4795,10 @@ l_int|1
 suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_mask_h1
 op_assign
-l_int|0xff
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_mask_h2
 op_assign
-l_int|0xff
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_mask_h3
 op_assign
-l_int|0xff
-suffix:semicolon
 id|suni_pm7345-&gt;suni_rxcp_cell_mask_h4
 op_assign
 l_int|0xff
@@ -5937,16 +5924,8 @@ l_string|&quot; cause: buffer over flow&bslash;n&quot;
 suffix:semicolon
 )paren
 )brace
-id|free_desc
-c_func
-(paren
-id|dev
-comma
-id|desc
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_free_desc
 suffix:semicolon
 )brace
 multiline_comment|/*  &n;&t;&t;build DLE.&t;  &n;&t;*/
@@ -5999,16 +5978,8 @@ op_amp
 id|vcc-&gt;stats-&gt;rx_err
 )paren
 suffix:semicolon
-id|free_desc
-c_func
-(paren
-id|dev
-comma
-id|desc
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_free_desc
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
@@ -6095,16 +6066,8 @@ id|len
 )paren
 )paren
 suffix:semicolon
-id|free_desc
-c_func
-(paren
-id|dev
-comma
-id|desc
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_free_desc
 suffix:semicolon
 )brace
 )brace
@@ -6136,16 +6099,8 @@ c_func
 l_string|&quot;Drop control packets&bslash;n&quot;
 )paren
 suffix:semicolon
-id|free_desc
-c_func
-(paren
-id|dev
-comma
-id|desc
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_free_desc
 suffix:semicolon
 )brace
 id|skb_put
@@ -6256,8 +6211,23 @@ op_plus
 id|IPHASE5575_RX_COUNTER
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 l_int|0
+suffix:semicolon
+id|out_free_desc
+suffix:colon
+id|free_desc
+c_func
+(paren
+id|dev
+comma
+id|desc
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|rx_intr
@@ -6592,6 +6562,9 @@ suffix:semicolon
 id|u_int
 id|dle_lp
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|iadev
 op_assign
 id|INPH_IA_DEV
@@ -6692,7 +6665,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+id|len
+op_assign
 id|skb-&gt;len
+)paren
 )paren
 (brace
 id|printk
@@ -6747,13 +6724,6 @@ c_func
 l_string|&quot;IA: null vcc&bslash;n&quot;
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|vcc-&gt;stats-&gt;rx_err
-)paren
-suffix:semicolon
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -6802,7 +6772,7 @@ comma
 id|atm_guess_pdu2truesize
 c_func
 (paren
-id|skb-&gt;len
+id|len
 )paren
 )paren
 suffix:semicolon
@@ -6815,7 +6785,7 @@ comma
 id|atm_pdu2truesize
 c_func
 (paren
-id|skb-&gt;len
+id|len
 )paren
 )paren
 suffix:semicolon
@@ -6843,8 +6813,8 @@ id|skb-&gt;len
 op_minus
 r_sizeof
 (paren
-r_struct
-id|cpcs_trailer
+op_star
+id|trailer
 )paren
 )paren
 suffix:semicolon
@@ -6887,12 +6857,6 @@ op_amp
 id|vcc-&gt;stats-&gt;rx_err
 )paren
 suffix:semicolon
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|IF_ERR
 c_func
 (paren
@@ -6907,6 +6871,12 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 )paren
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 id|atm_return
 c_func
@@ -6916,7 +6886,7 @@ comma
 id|atm_guess_pdu2truesize
 c_func
 (paren
-id|skb-&gt;len
+id|len
 )paren
 )paren
 suffix:semicolon
@@ -6929,7 +6899,7 @@ comma
 id|atm_pdu2truesize
 c_func
 (paren
-id|skb-&gt;len
+id|len
 )paren
 )paren
 suffix:semicolon
@@ -7333,6 +7303,9 @@ l_int|0
 suffix:semicolon
 id|u32
 op_star
+id|odle_addr
+comma
+op_star
 id|dle_addr
 suffix:semicolon
 r_struct
@@ -7377,12 +7350,8 @@ suffix:semicolon
 singleline_comment|//    spin_lock_init(&amp;iadev-&gt;rx_lock); 
 multiline_comment|/* I need to initialize the DLEs somewhere. Lets see what I   &n;&t;&t;need to do for this, hmmm...  &n;&t;&t;- allocate memory for 256 DLEs. make sure that it starts  &n;&t;&t;on a 4k byte address boundary. Program the start address   &n;&t;&t;in Receive List address register.  ..... to do for TX also  &n;&t;   To make sure that it is a 4k byte boundary - allocate 8k and find   &n;&t;&t;4k byte boundary within.  &n;&t;&t;( (addr + (4k-1)) &amp; ~(4k-1) )  &n;&t;*/
 multiline_comment|/* allocate 8k bytes */
-id|dle_addr
+id|odle_addr
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -7403,7 +7372,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dle_addr
+id|odle_addr
 )paren
 (brace
 id|printk
@@ -7413,6 +7382,10 @@ id|KERN_ERR
 id|DEV_LABEL
 l_string|&quot;can&squot;t allocate DLEs&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* find 4k byte boundary within the 8k allocated */
@@ -7427,7 +7400,7 @@ op_star
 (paren
 id|u32
 )paren
-id|dle_addr
+id|odle_addr
 op_plus
 (paren
 l_int|4096
@@ -7642,8 +7615,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|rx_buf_desc
+op_star
+id|buf_desc_ptr
 )paren
 )paren
 suffix:semicolon
@@ -7681,8 +7654,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|rx_buf_desc
+op_star
+id|buf_desc_ptr
 )paren
 )paren
 suffix:semicolon
@@ -8319,7 +8292,7 @@ id|j
 op_star
 r_sizeof
 (paren
-r_struct
+op_star
 id|abr_vc_table
 )paren
 )paren
@@ -8510,12 +8483,6 @@ l_int|NULL
 suffix:semicolon
 id|iadev-&gt;rx_open
 op_assign
-(paren
-r_struct
-id|atm_vcc
-op_star
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -8541,6 +8508,12 @@ id|DEV_LABEL
 l_string|&quot;itf %d couldn&squot;t get free page&bslash;n&quot;
 comma
 id|dev-&gt;number
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|odle_addr
 )paren
 suffix:semicolon
 r_return
@@ -9160,7 +9133,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
+op_star
 id|ia_vcc
 )paren
 )paren
@@ -9439,8 +9412,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|main_vc
+op_star
+id|vc
 )paren
 )paren
 suffix:semicolon
@@ -9456,8 +9429,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|ext_vc
+op_star
+id|evc
 )paren
 )paren
 suffix:semicolon
@@ -9951,10 +9924,6 @@ multiline_comment|/*---------- Initializing Transmit DLEs ----------*/
 multiline_comment|/* allocating 8k memory for transmit DLEs */
 id|dle_addr
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -9985,6 +9954,10 @@ id|KERN_ERR
 id|DEV_LABEL
 l_string|&quot;can&squot;t allocate TX DLEs&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* find 4k byte boundary within the 8k allocated */
@@ -10164,8 +10137,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|tx_buf_desc
+op_star
+id|buf_desc_ptr
 )paren
 )paren
 suffix:semicolon
@@ -10203,8 +10176,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|tx_buf_desc
+op_star
+id|buf_desc_ptr
 )paren
 )paren
 suffix:semicolon
@@ -10234,10 +10207,6 @@ suffix:semicolon
 )brace
 id|iadev-&gt;tx_buf
 op_assign
-(paren
-id|caddr_t
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10291,9 +10260,6 @@ id|iadev-&gt;tx_buf
 id|i
 )braket
 op_assign
-(paren
-id|caddr_t
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10334,11 +10300,6 @@ suffix:semicolon
 )brace
 id|iadev-&gt;desc_tbl
 op_assign
-(paren
-r_struct
-id|desc_tbl_t
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -11171,12 +11132,6 @@ id|iadev-&gt;EXT_VC_TABLE_ADDR
 suffix:semicolon
 id|iadev-&gt;testTable
 op_assign
-(paren
-r_struct
-id|testTable_t
-op_star
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -11235,8 +11190,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|main_vc
+op_star
+id|vc
 )paren
 )paren
 suffix:semicolon
@@ -11252,8 +11207,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|ext_vc
+op_star
+id|evc
 )paren
 )paren
 suffix:semicolon
@@ -11262,11 +11217,6 @@ id|iadev-&gt;testTable
 id|i
 )braket
 op_assign
-(paren
-r_struct
-id|testTable_t
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -14322,7 +14272,7 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
+op_star
 id|ia_vcc
 )paren
 comma
@@ -16119,8 +16069,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|dle
+op_star
+id|wr_ptr
 )paren
 )paren
 suffix:semicolon
@@ -17039,16 +16989,13 @@ suffix:semicolon
 )brace
 id|iadev
 op_assign
-(paren
-id|IADEV
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-id|IADEV
+op_star
+id|iadev
 )paren
 comma
 id|GFP_KERNEL
@@ -17077,7 +17024,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|IADEV
+op_star
+id|iadev
 )paren
 )paren
 suffix:semicolon
@@ -17332,16 +17280,13 @@ id|dev
 suffix:semicolon
 id|iadev
 op_assign
-(paren
-id|IADEV
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-id|IADEV
+op_star
+id|iadev
 )paren
 comma
 id|GFP_KERNEL
@@ -17368,7 +17313,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|IADEV
+op_star
+id|iadev
 )paren
 )paren
 suffix:semicolon

@@ -433,21 +433,10 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|nmi_watchdog
-suffix:semicolon
 multiline_comment|/* 1 if &quot;noapic&quot; boot option passed */
 r_extern
 r_int
 id|skip_ioapic_setup
-suffix:semicolon
-r_extern
-r_void
-id|IO_APIC_init_uniprocessor
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/*&n; * If we use the IO-APIC for IRQ routing, disable automatic&n; * assignment of PCI IRQ&squot;s.&n; */
 DECL|macro|io_apic_assign_pci_irqs

@@ -13704,6 +13704,24 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;irq
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;found UHCI device with no IRQ assigned. check BIOS settings!&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren

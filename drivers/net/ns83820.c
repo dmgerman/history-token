@@ -16,16 +16,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;&t;/* for iph */
 macro_line|#include &lt;linux/in.h&gt;&t;/* for IPPROTO_... */
 macro_line|#include &lt;linux/eeprom.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 singleline_comment|//#include &lt;linux/skbrefill.h&gt;
 multiline_comment|/* Dprintk is used for more interesting debug events */
 DECL|macro|Dprintk
 macro_line|#undef Dprintk
 DECL|macro|Dprintk
 mdefine_line|#define&t;Dprintk&t;&t;&t;dprintk
-macro_line|#if !defined(GCC_VERSION) || (GCC_VERSION &lt; 2096)
-DECL|macro|__builtin_expect
-mdefine_line|#define __builtin_expect(x,y)&t;(x)
-macro_line|#endif
 macro_line|#ifdef CONFIG_HIGHMEM64G
 DECL|macro|USE_64BIT_ADDR
 mdefine_line|#define USE_64BIT_ADDR

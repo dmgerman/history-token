@@ -173,6 +173,12 @@ r_int
 id|n
 )paren
 (brace
+id|prefetch
+c_func
+(paren
+id|from
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -220,6 +226,12 @@ r_int
 id|n
 )paren
 (brace
+id|prefetchw
+c_func
+(paren
+id|to
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

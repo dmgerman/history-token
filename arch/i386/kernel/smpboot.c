@@ -2557,11 +2557,6 @@ DECL|variable|cacheflush_time
 id|cycles_t
 id|cacheflush_time
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|cpu_khz
-suffix:semicolon
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -2844,7 +2839,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;SMP motherboard not detected. Using dummy APIC emulation.&bslash;n&quot;
+l_string|&quot;SMP motherboard not detected.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_VISWS
@@ -2862,6 +2857,22 @@ suffix:semicolon
 id|smp_num_cpus
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|APIC_init_uniprocessor
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Local APIC not detected.&quot;
+l_string|&quot; Using dummy APIC emulation.&bslash;n&quot;
+)paren
 suffix:semicolon
 r_goto
 id|smp_done
@@ -3312,6 +3323,8 @@ c_cond
 (paren
 op_logical_neg
 id|skip_ioapic_setup
+op_logical_and
+id|nr_ioapics
 )paren
 id|setup_IO_APIC
 c_func

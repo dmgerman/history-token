@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
@@ -33,6 +32,12 @@ c_func
 l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
 DECL|macro|CMD_BUSY_TIMEOUT
 mdefine_line|#define CMD_BUSY_TIMEOUT (100) /* In iterations of ~1us */
@@ -44,8 +49,6 @@ DECL|macro|ALLOC_COMPL_TIMEOUT
 mdefine_line|#define ALLOC_COMPL_TIMEOUT (1000) /* in iterations of ~10us */
 DECL|macro|BAP_BUSY_TIMEOUT
 mdefine_line|#define BAP_BUSY_TIMEOUT (500) /* In iterations of ~1us */
-DECL|macro|BAP_ERROR_RETRY
-mdefine_line|#define BAP_ERROR_RETRY (10) /* How many times to retry a BAP seek when there is an error */
 DECL|macro|MAX
 mdefine_line|#define MAX(a, b) ( (a) &gt; (b) ? (a) : (b) )
 DECL|macro|MIN
@@ -63,23 +66,6 @@ macro_line|#else /* ! HERMES_DEBUG */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(lvl, stuff...) do { } while (0)
 macro_line|#endif /* ! HERMES_DEBUG */
-multiline_comment|/*&n; * Prototypes&n; */
-r_static
-r_int
-id|hermes_issue_cmd
-c_func
-(paren
-id|hermes_t
-op_star
-id|hw
-comma
-r_uint16
-id|cmd
-comma
-r_uint16
-id|param0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Internal functions&n; */
 multiline_comment|/* Issue a command to the chip. Waiting for it to complete is the caller&squot;s&n;   problem.&n;&n;   Returns -EBUSY if the command register is busy, 0 on success.&n;&n;   Callable from any context.&n;*/
 DECL|function|hermes_issue_cmd
@@ -1018,11 +1004,6 @@ suffix:semicolon
 r_int
 id|k
 suffix:semicolon
-r_int
-id|l
-op_assign
-id|BAP_ERROR_RETRY
-suffix:semicolon
 r_uint16
 id|reg
 suffix:semicolon
@@ -1072,8 +1053,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/* Now we actually set up the transfer */
-id|retry
-suffix:colon
 id|hermes_write_reg
 c_func
 (paren
@@ -1156,9 +1135,9 @@ id|HERMES_OFFSET_BUSY
 id|DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
-l_string|&quot;hermes_bap_seek: returning ETIMEDOUT...&bslash;n&quot;
+l_string|&quot;hermes_bap_seek: timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1166,7 +1145,6 @@ op_minus
 id|ETIMEDOUT
 suffix:semicolon
 )brace
-multiline_comment|/* For some reason, seeking the BAP seems to randomly fail somewhere&n;&t;   (firmware bug?). We retry a few times before giving up. */
 r_if
 c_cond
 (paren
@@ -1175,24 +1153,14 @@ op_amp
 id|HERMES_OFFSET_ERR
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|l
-op_decrement
-)paren
-(brace
-id|udelay
+id|DEBUG
 c_func
 (paren
 l_int|1
+comma
+l_string|&quot;hermes_bap_seek: BAP error&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|retry
-suffix:semicolon
-)brace
-r_else
 r_return
 op_minus
 id|EIO

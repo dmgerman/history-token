@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.4.0)&n; *&n; * Copyright (C) 1999, 2000 David E. Nelson&n; *&n; * David E. Nelson (dnelson@jump.net)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.4.0)&n; *&n; * Copyright (C) 1999, 2000 David E. Nelson&n; *&n; * David E. Nelson (dnelson@jump.net)&n; *&n; * 08/16/2001 added devfs support Yves Duret &lt;yduret@mandrakesoft.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 singleline_comment|// #define DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|variable|vendor
@@ -40,6 +41,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;USB Scanner Driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -783,6 +790,11 @@ id|usb_device
 op_star
 id|scn_dev
 suffix:semicolon
+DECL|member|devfs
+id|devfs_handle_t
+id|devfs
+suffix:semicolon
+multiline_comment|/* devfs device */
 DECL|member|scn_irq
 r_struct
 id|urb
@@ -877,4 +889,9 @@ r_struct
 id|usb_driver
 id|scanner_driver
 suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|usb_devfs_handle
+suffix:semicolon
+multiline_comment|/* /dev/usb dir. */
 eof

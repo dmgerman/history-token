@@ -211,7 +211,7 @@ op_div
 id|PAGE_SIZE
 )paren
 op_div
-l_int|16
+l_int|8
 suffix:semicolon
 id|init_task.rlim
 (braket

@@ -12,6 +12,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 DECL|macro|APIC_LOCKUP_DEBUG
+macro_line|#undef APIC_LOCKUP_DEBUG
+DECL|macro|APIC_LOCKUP_DEBUG
 mdefine_line|#define APIC_LOCKUP_DEBUG
 DECL|variable|ioapic_lock
 r_static
@@ -20,40 +22,13 @@ id|ioapic_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * # of IO-APICs and # of IRQ routing registers&n; */
-DECL|variable|nr_ioapics
-r_int
-id|nr_ioapics
-suffix:semicolon
+multiline_comment|/*&n; * # of IRQ routing registers&n; */
 DECL|variable|nr_ioapic_registers
 r_int
 id|nr_ioapic_registers
 (braket
 id|MAX_IO_APICS
 )braket
-suffix:semicolon
-multiline_comment|/* I/O APIC entries */
-DECL|variable|mp_ioapics
-r_struct
-id|mpc_config_ioapic
-id|mp_ioapics
-(braket
-id|MAX_IO_APICS
-)braket
-suffix:semicolon
-multiline_comment|/* # of MP IRQ source entries */
-DECL|variable|mp_irqs
-r_struct
-id|mpc_config_intsrc
-id|mp_irqs
-(braket
-id|MAX_IRQ_SOURCES
-)braket
-suffix:semicolon
-multiline_comment|/* MP IRQ source entries */
-DECL|variable|mp_irq_entries
-r_int
-id|mp_irq_entries
 suffix:semicolon
 macro_line|#if CONFIG_SMP
 DECL|macro|TARGET_CPUS
@@ -3022,12 +2997,6 @@ multiline_comment|/* older (Neptune) boards */
 (paren
 id|reg_01.entries
 op_ne
-l_int|0x11
-)paren
-op_logical_and
-(paren
-id|reg_01.entries
-op_ne
 l_int|0x17
 )paren
 op_logical_and
@@ -3046,12 +3015,6 @@ l_int|0x1f
 )paren
 op_logical_and
 multiline_comment|/* dual Xeon boards */
-(paren
-id|reg_01.entries
-op_ne
-l_int|0x20
-)paren
-op_logical_and
 (paren
 id|reg_01.entries
 op_ne
@@ -3114,7 +3077,14 @@ id|reg_01.version
 op_ne
 l_int|0x13
 )paren
+op_logical_and
 multiline_comment|/* Xeon IO-APICs */
+(paren
+id|reg_01.entries
+op_ne
+l_int|0x20
+)paren
+multiline_comment|/* Intel P64H (82806 AA) */
 )paren
 id|UNEXPECTED_IO_APIC
 c_func
@@ -3378,7 +3348,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;-&gt; %d&quot;
+l_string|&quot;-&gt; %d:%d&quot;
+comma
+id|entry-&gt;apic
 comma
 id|entry-&gt;pin
 )paren
@@ -4889,111 +4861,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nmi_irq_works
-r_static
-r_int
-id|__init
-id|nmi_irq_works
-c_func
-(paren
-r_void
-)paren
-(brace
-id|irq_cpustat_t
-id|tmp
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_int
-id|j
-comma
-id|cpu
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|tmp
-comma
-id|irq_stat
-comma
-r_sizeof
-(paren
-id|tmp
-)paren
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|cpu
-op_assign
-id|cpu_logical_map
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nmi_count
-c_func
-(paren
-id|cpu
-)paren
-op_minus
-id|tmp
-(braket
-id|cpu
-)braket
-dot
-id|__nmi_count
-op_le
-l_int|3
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;CPU#%d NMI appears to be stuck.&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * In the SMP+IOAPIC case it might happen that there are an unspecified&n; * number of pending IRQ events unhandled. These cases are very rare,&n; * so we &squot;resend&squot; these IRQs via IPIs, to the same CPU. It&squot;s much&n; * better to do it this way as thus we do not have to be aware of&n; * &squot;pending&squot; interrupts in the IRQ path, except at this point.&n; */
 multiline_comment|/*&n; * Edge triggered needs to resend any interrupt&n; * that was delayed but this is now handled in the device&n; * independent code.&n; */
 DECL|macro|enable_edge_ioapic_irq
@@ -5193,7 +5060,18 @@ r_int
 r_int
 id|v
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n; * It appears there is an erratum which affects at least version 0x11&n; * of I/O APIC (that&squot;s the 82093AA and cores integrated into various&n; * chipsets).  Under certain conditions a level-triggered interrupt is&n; * erroneously delivered as edge-triggered one but the respective IRR&n; * bit gets set nevertheless.  As a result the I/O unit expects an EOI&n; * message but it will never arrive and further interrupts are blocked&n; * from the source.  The exact reason is so far unknown, but the&n; * phenomenon was observed when two consecutive interrupt requests&n; * from a given source get delivered to the same CPU and the source is&n; * temporarily disabled in between.&n; *&n; * A workaround is to simulate an EOI message manually.  We achieve it&n; * by setting the trigger mode to edge and then to level when the edge&n; * trigger mode gets detected in the TMR of a local APIC for a&n; * level-triggered interrupt.  We mask the source for the time of the&n; * operation to prevent an edge-triggered interrupt escaping meanwhile.&n; * The idea is from Manfred Spraul.  --macro&n; */
+id|i
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|v
 op_assign
 id|apic_read
@@ -5203,11 +5081,7 @@ id|APIC_TMR
 op_plus
 (paren
 (paren
-id|IO_APIC_VECTOR
-c_func
-(paren
-id|irq
-)paren
+id|i
 op_amp
 op_complement
 l_int|0x1f
@@ -5233,11 +5107,7 @@ op_amp
 l_int|1
 op_lshift
 (paren
-id|IO_APIC_VECTOR
-c_func
-(paren
-id|irq
-)paren
+id|i
 op_amp
 l_int|0x1f
 )paren
@@ -6292,7 +6162,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;..TIMER: vector=%02X pin1=%d pin2=%d&bslash;n&quot;
+l_string|&quot;..TIMER: vector=0x%02X pin1=%d pin2=%d&bslash;n&quot;
 comma
 id|vector
 comma
@@ -6330,6 +6200,8 @@ r_if
 c_cond
 (paren
 id|nmi_watchdog
+op_eq
+id|NMI_IO_APIC
 )paren
 (brace
 id|disable_8259A_irq
@@ -6349,7 +6221,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|nmi_irq_works
+id|check_nmi_watchdog
 c_func
 (paren
 )paren
@@ -6426,6 +6298,8 @@ r_if
 c_cond
 (paren
 id|nmi_watchdog
+op_eq
+id|NMI_IO_APIC
 )paren
 (brace
 id|setup_nmi
@@ -6433,7 +6307,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|nmi_irq_works
+id|check_nmi_watchdog
 c_func
 (paren
 )paren
@@ -6675,43 +6549,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SMP
-multiline_comment|/*&n; * This initializes the IO-APIC and APIC hardware if this is&n; * a UP kernel.&n; */
-DECL|function|IO_APIC_init_uniprocessor
-r_void
-id|IO_APIC_init_uniprocessor
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|smp_found_config
-)paren
-r_return
-suffix:semicolon
-id|connect_bsp_APIC
-c_func
-(paren
-)paren
-suffix:semicolon
-id|setup_local_APIC
-c_func
-(paren
-)paren
-suffix:semicolon
-id|setup_IO_APIC
-c_func
-(paren
-)paren
-suffix:semicolon
-id|setup_APIC_clocks
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

@@ -96,7 +96,7 @@ mdefine_line|#define GPLAST 0x3df
 DECL|macro|GPNUM
 mdefine_line|#define GPNUM (GPLAST - GPFIRST + 1)
 multiline_comment|/*&n; * Generates sound of some frequency for some number of clock ticks&n; *&n; * If freq is 0, will turn off sound, else will turn it on for that time.&n; * If msec is 0, will return immediately, else will sleep for msec time, then&n; * turn sound off.&n; *&n; * We also return immediately, which is what was implied within the X&n; * comments - KDMKTONE doesn&squot;t put the process to sleep.&n; */
-macro_line|#if defined(__i386__) || defined(__alpha__) || defined(__powerpc__) &bslash;&n;    || (defined(__mips__) &amp;&amp; !defined(CONFIG_SGI_IP22)) &bslash;&n;    || (defined(__arm__) &amp;&amp; defined(CONFIG_HOST_FOOTBRIDGE))
+macro_line|#if defined(__i386__) || defined(__alpha__) || defined(__powerpc__) &bslash;&n;    || (defined(__mips__) &amp;&amp; defined(CONFIG_ISA)) &bslash;&n;    || (defined(__arm__) &amp;&amp; defined(CONFIG_HOST_FOOTBRIDGE)) &bslash;&n;    || defined(__x86_64__)
 r_static
 r_void
 DECL|function|kd_nosound

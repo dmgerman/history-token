@@ -140,18 +140,14 @@ r_uint16
 id|txfid
 suffix:semicolon
 multiline_comment|/* Capabilities of the hardware/firmware */
-DECL|member|firmware_info
-id|hermes_identity_t
-id|firmware_info
-suffix:semicolon
 DECL|member|firmware_type
 r_int
 id|firmware_type
 suffix:semicolon
 DECL|macro|FIRMWARE_TYPE_LUCENT
 mdefine_line|#define FIRMWARE_TYPE_LUCENT 1
-DECL|macro|FIRMWARE_TYPE_PRISM2
-mdefine_line|#define FIRMWARE_TYPE_PRISM2 2
+DECL|macro|FIRMWARE_TYPE_INTERSIL
+mdefine_line|#define FIRMWARE_TYPE_INTERSIL 2
 DECL|macro|FIRMWARE_TYPE_SYMBOL
 mdefine_line|#define FIRMWARE_TYPE_SYMBOL 3
 DECL|member|has_ibss
