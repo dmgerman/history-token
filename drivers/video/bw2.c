@@ -1676,6 +1676,22 @@ id|sbus_dev
 op_star
 id|sdev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;bw2fb&quot;
+comma
+op_amp
+id|option
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#ifdef CONFIG_SUN4
 id|bw2_init_one
 c_func

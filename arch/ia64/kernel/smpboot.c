@@ -1084,7 +1084,7 @@ DECL|function|idle_regs
 r_struct
 id|pt_regs
 op_star
-id|__init
+id|__devinit
 id|idle_regs
 c_func
 (paren

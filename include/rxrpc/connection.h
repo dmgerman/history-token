@@ -117,22 +117,22 @@ suffix:semicolon
 multiline_comment|/* packet serial number counter */
 multiline_comment|/* the following should all be in net order */
 DECL|member|in_epoch
-r_uint32
+id|__be32
 id|in_epoch
 suffix:semicolon
 multiline_comment|/* peer&squot;s epoch */
 DECL|member|out_epoch
-r_uint32
+id|__be32
 id|out_epoch
 suffix:semicolon
 multiline_comment|/* my epoch */
 DECL|member|conn_id
-r_uint32
+id|__be32
 id|conn_id
 suffix:semicolon
 multiline_comment|/* connection ID, appropriately shifted */
 DECL|member|service_id
-r_uint16
+id|__be16
 id|service_id
 suffix:semicolon
 multiline_comment|/* service ID */
@@ -163,10 +163,10 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-r_uint16
+id|__be16
 id|port
 comma
-r_uint32
+id|__be32
 id|addr
 comma
 r_uint16

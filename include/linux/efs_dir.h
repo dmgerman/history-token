@@ -11,8 +11,7 @@ r_struct
 id|efs_dentry
 (brace
 DECL|member|inode
-r_int
-r_int
+id|__be32
 id|inode
 suffix:semicolon
 DECL|member|namelen
@@ -42,8 +41,7 @@ r_struct
 id|efs_dir
 (brace
 DECL|member|magic
-r_int
-r_int
+id|__be16
 id|magic
 suffix:semicolon
 DECL|member|firstused

@@ -107,7 +107,7 @@ c_cond
 (paren
 id|ictx-&gt;actx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ictx-&gt;actx
@@ -197,6 +197,11 @@ op_star
 id|ictx
 )paren
 (brace
+id|VCN
+id|vcn
+comma
+id|old_vcn
+suffix:semicolon
 id|ntfs_inode
 op_star
 id|idx_ni
@@ -241,22 +246,13 @@ suffix:semicolon
 id|u8
 op_star
 id|index_end
+comma
+op_star
+id|kaddr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|actx
-suffix:semicolon
-r_int
-id|rc
-comma
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|VCN
-id|vcn
-comma
-id|old_vcn
 suffix:semicolon
 r_struct
 id|address_space
@@ -268,9 +264,12 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|u8
-op_star
-id|kaddr
+r_int
+id|rc
+comma
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -403,7 +402,7 @@ suffix:semicolon
 )brace
 id|actx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -432,11 +431,9 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -455,6 +452,24 @@ l_int|0
 comma
 id|actx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
 )paren
 (brace
 id|ntfs_error
@@ -462,7 +477,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index root attribute missing in inode 0x%lx.&quot;
+l_string|&quot;Index root attribute missing in inode &quot;
+l_string|&quot;0x%lx.&quot;
 comma
 id|idx_ni-&gt;mft_no
 )paren
@@ -472,6 +488,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_goto
 id|err_out
 suffix:semicolon
@@ -875,7 +892,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record.  Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|actx
@@ -1670,7 +1687,7 @@ c_cond
 (paren
 id|actx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|actx

@@ -103,7 +103,7 @@ suffix:semicolon
 id|u64
 id|mref
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -212,7 +212,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|dir_ni
@@ -241,11 +241,9 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -264,6 +262,24 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
 )paren
 (brace
 id|ntfs_error
@@ -271,8 +287,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%lx.&quot;
+l_string|&quot;Index root attribute missing in &quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
 id|dir_ni-&gt;mft_no
 )paren
@@ -282,6 +298,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_goto
 id|err_out
 suffix:semicolon
@@ -535,7 +552,7 @@ c_func
 id|ie-&gt;data.dir.indexed_file
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -839,7 +856,7 @@ c_cond
 id|name
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -936,7 +953,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record. Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2010,7 +2027,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2131,7 +2148,7 @@ suffix:semicolon
 id|u64
 id|mref
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -2210,7 +2227,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|dir_ni
@@ -2235,11 +2252,9 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -2258,6 +2273,24 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
 )paren
 (brace
 id|ntfs_error
@@ -2265,8 +2298,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%lx.&quot;
+l_string|&quot;Index root attribute missing in &quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
 id|dir_ni-&gt;mft_no
 )paren
@@ -2276,6 +2309,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_goto
 id|err_out
 suffix:semicolon
@@ -2452,7 +2486,7 @@ c_func
 id|ie-&gt;data.dir.indexed_file
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2653,7 +2687,7 @@ op_member_access_from_pointer
 id|i_mapping
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the index root and the mft record. Release them,&n;&t; * otherwise we deadlock with ntfs_map_page().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3443,7 +3477,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3992,7 +4026,7 @@ comma
 op_star
 id|index_end
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -4226,7 +4260,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ndir
@@ -4263,14 +4297,9 @@ id|s64
 id|fpos
 suffix:semicolon
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -4289,6 +4318,14 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace
@@ -4371,7 +4408,7 @@ comma
 id|rc
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5744,7 +5781,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

@@ -264,15 +264,15 @@ comma
 l_string|&quot;read_block_bitmap&quot;
 comma
 l_string|&quot;Cannot read block bitmap - &quot;
-l_string|&quot;block_group = %d, block_bitmap = %lu&quot;
+l_string|&quot;block_group = %d, block_bitmap = %u&quot;
 comma
 id|block_group
 comma
+id|le32_to_cpu
+c_func
 (paren
-r_int
-r_int
-)paren
 id|desc-&gt;bg_block_bitmap
+)paren
 )paren
 suffix:semicolon
 id|error_out

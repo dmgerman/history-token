@@ -408,7 +408,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -543,7 +543,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -554,8 +554,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|ctx
+)paren
 )paren
 (brace
 id|err
@@ -576,11 +580,9 @@ suffix:semicolon
 id|u32
 id|val_len
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_FILE_NAME
@@ -599,6 +601,15 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
 id|ntfs_error
@@ -611,6 +622,14 @@ l_string|&quot;namespace counterpart to DOS &quot;
 l_string|&quot;file name. Run chkdsk.&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|err
 op_assign
 op_minus
@@ -749,7 +768,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1081,7 +1100,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1163,7 +1182,7 @@ id|MFT_RECORD
 op_star
 id|mrec
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1188,6 +1207,9 @@ suffix:semicolon
 r_int
 r_int
 id|parent_ino
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -1226,7 +1248,7 @@ suffix:semicolon
 multiline_comment|/* Find the first file name attribute in the mft record. */
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1262,14 +1284,9 @@ suffix:semicolon
 )brace
 id|try_next
 suffix:colon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_FILE_NAME
@@ -1288,10 +1305,18 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1303,13 +1328,21 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Inode 0x%lx does not have a file name &quot;
-l_string|&quot;attribute. Run chkdsk.&quot;
+l_string|&quot;Inode 0x%lx does not have a &quot;
+l_string|&quot;file name attribute.  Run chkdsk.&quot;
 comma
 id|vi-&gt;i_ino
 )paren
@@ -1318,8 +1351,7 @@ r_return
 id|ERR_PTR
 c_func
 (paren
-op_minus
-id|ENOENT
+id|err
 )paren
 suffix:semicolon
 )brace
@@ -1403,7 +1435,7 @@ id|fn-&gt;parent_directory
 )paren
 suffix:semicolon
 multiline_comment|/* Release the search context and the mft record of the child. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

@@ -199,9 +199,23 @@ op_eq
 id|AT_UNUSED
 )paren
 )paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|na-&gt;name
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|na-&gt;name_len
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* It is a fake inode. */
 id|NInoSetAttr
 c_func
@@ -213,8 +227,6 @@ multiline_comment|/*&n;&t; * We have I30 global constant as an optimization as i
 r_if
 c_cond
 (paren
-id|na-&gt;name
-op_logical_and
 id|na-&gt;name_len
 op_logical_and
 id|na-&gt;name
@@ -225,6 +237,13 @@ id|I30
 r_int
 r_int
 id|i
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|na-&gt;name
+)paren
 suffix:semicolon
 id|i
 op_assign
@@ -282,6 +301,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
+id|L
 l_char|&squot;&bslash;0&squot;
 )paren
 suffix:semicolon
@@ -1277,23 +1297,25 @@ r_return
 id|ni
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
+multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *    -errno: failed to determine if the file is in the $Extend directory&n; */
 DECL|function|ntfs_is_extended_system_file
 r_static
 r_int
 id|ntfs_is_extended_system_file
 c_func
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 )paren
 (brace
 r_int
 id|nr_links
+comma
+id|err
 suffix:semicolon
 multiline_comment|/* Restart search. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -1312,7 +1334,11 @@ multiline_comment|/* Loop through all hard links. */
 r_while
 c_loop
 (paren
-id|lookup_attr
+op_logical_neg
+(paren
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_FILE_NAME
@@ -1330,6 +1356,7 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
 )paren
 )paren
 (brace
@@ -1532,7 +1559,26 @@ multiline_comment|/* YES, it&squot;s an extended system file. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|nr_links
+)paren
 )paren
 (brace
 id|ntfs_error
@@ -1590,7 +1636,7 @@ id|STANDARD_INFORMATION
 op_star
 id|si
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1684,7 +1730,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1803,11 +1849,9 @@ op_or_assign
 id|S_IFREG
 suffix:semicolon
 multiline_comment|/*&n;&t; * Find the standard information attribute in the mft record. At this&n;&t; * stage we haven&squot;t setup the attribute list stuff yet, so this could&n;&t; * in fact fail if the standard information is in an extent record, but&n;&t; * I don&squot;t think this actually ever happens.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_STANDARD_INFORMATION
@@ -1826,18 +1870,37 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * TODO: We should be performing a hot fix here (if the recover&n;&t;&t; * mount option is set) by creating a new attribute.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * TODO: We should be performing a hot fix here (if the&n;&t;&t;&t; * recover mount option is set) by creating a new&n;&t;&t;&t; * attribute.&n;&t;&t;&t; */
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$STANDARD_INFORMATION attribute is &quot;
-l_string|&quot;missing.&quot;
+l_string|&quot;$STANDARD_INFORMATION attribute &quot;
+l_string|&quot;is missing.&quot;
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|unm_err_out
 suffix:semicolon
@@ -1893,16 +1956,15 @@ id|si-&gt;last_access_time
 )paren
 suffix:semicolon
 multiline_comment|/* Find the attribute list attribute if present. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_ATTRIBUTE_LIST
@@ -1921,7 +1983,42 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup attribute list &quot;
+l_string|&quot;attribute. You should run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
+)brace
+r_else
+multiline_comment|/* if (!err) */
 (brace
 r_if
 c_cond
@@ -2260,17 +2357,15 @@ op_star
 id|index_end
 suffix:semicolon
 multiline_comment|/* It is a directory, find index root attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -2289,19 +2384,39 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
-singleline_comment|// FIXME: File is corrupt! Hot-fix with empty index
-singleline_comment|// root attribute if recovery option is set.
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+singleline_comment|// FIXME: File is corrupt! Hot-fix with empty
+singleline_comment|// index root attribute if recovery option is
+singleline_comment|// set.
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is &quot;
-l_string|&quot;missing.&quot;
+l_string|&quot;$INDEX_ROOT attribute &quot;
+l_string|&quot;is missing.&quot;
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|unm_err_out
 suffix:semicolon
@@ -2708,7 +2823,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -2740,17 +2855,15 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Find index allocation attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ALLOCATION
@@ -2769,16 +2882,45 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ALLOCATION attribute &quot;
-l_string|&quot;is not present but $INDEX_ROOT &quot;
-l_string|&quot;indicated it is.&quot;
+l_string|&quot;$INDEX_ALLOCATION &quot;
+l_string|&quot;attribute is not present but &quot;
+l_string|&quot;$INDEX_ROOT indicated it &quot;
+l_string|&quot;is.&quot;
+)paren
+suffix:semicolon
+r_else
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup &quot;
+l_string|&quot;$INDEX_ALLOCATION &quot;
+l_string|&quot;attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2914,7 +3056,7 @@ id|ctx-&gt;attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We are done with the mft record, so we release it. Otherwise&n;&t;&t; * we would deadlock in ntfs_attr_iget().&n;&t;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3112,7 +3254,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* It is a file. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -3132,11 +3274,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Find first extent of the unnamed data attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_DATA
@@ -3155,6 +3295,15 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
 id|vi-&gt;i_size
@@ -3163,8 +3312,30 @@ id|ni-&gt;initialized_size
 op_assign
 id|ni-&gt;allocated_size
 op_assign
-l_int|0LL
+l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup $DATA &quot;
+l_string|&quot;attribute.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * FILE_Secure does not have an unnamed $DATA&n;&t;&t;&t; * attribute, so we special case it here.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -3492,7 +3663,7 @@ suffix:semicolon
 id|no_data_attr_special_case
 suffix:colon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3612,7 +3783,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -3694,7 +3865,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -3812,7 +3983,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -3837,11 +4008,9 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|ni-&gt;type
@@ -3859,6 +4028,15 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 r_goto
@@ -4389,7 +4567,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -4428,7 +4606,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -4518,7 +4696,7 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -4648,7 +4826,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|base_ni
@@ -4673,11 +4851,9 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ROOT
@@ -4696,14 +4872,32 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is missing.&quot;
+l_string|&quot;$INDEX_ROOT attribute is &quot;
+l_string|&quot;missing.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5050,7 +5244,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We are done with the mft record, so we release it. */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5082,17 +5276,15 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Find index allocation attribute. */
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_INDEX_ALLOCATION
@@ -5111,15 +5303,43 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ALLOCATION attribute is not &quot;
-l_string|&quot;present but $INDEX_ROOT indicated it is.&quot;
+l_string|&quot;$INDEX_ALLOCATION attribute is &quot;
+l_string|&quot;not present but $INDEX_ROOT &quot;
+l_string|&quot;indicated it is.&quot;
+)paren
+suffix:semicolon
+r_else
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup &quot;
+l_string|&quot;$INDEX_ALLOCATION attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5253,7 +5473,7 @@ id|ctx-&gt;attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are done with the mft record, so we release it.  Otherwise&n;&t; * we would deadlock in ntfs_attr_iget().&n;&t; */
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5474,7 +5694,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5519,7 +5739,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. can&squot;t&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we don&squot;t know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet. Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using lookup_attr($DATA) over all extents. As each extent&n; * is found, we decompress_mapping_pairs() including the implied&n; * merge_runlists(). Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
+multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we decompress_mapping_pairs() including the implied&n; * ntfs_merge_runlists().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
 DECL|function|ntfs_read_inode_mount
 r_int
 id|ntfs_read_inode_mount
@@ -5577,7 +5797,7 @@ id|ATTR_RECORD
 op_star
 id|attr
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -5868,7 +6088,7 @@ id|ntfs_mft_aops
 suffix:semicolon
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -5893,10 +6113,9 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the attribute list attribute if present. */
-r_if
-c_cond
-(paren
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_ATTRIBUTE_LIST
@@ -5915,7 +6134,42 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to lookup attribute list &quot;
+l_string|&quot;attribute. You should run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_err_out
+suffix:semicolon
+)brace
+)brace
+r_else
+multiline_comment|/* if (!err) */
 (brace
 id|ATTR_LIST_ENTRY
 op_star
@@ -6431,7 +6685,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|reinit_attr_search_ctx
+id|ntfs_attr_reinit_search_ctx
 c_func
 (paren
 id|ctx
@@ -6453,7 +6707,11 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|lookup_attr
+op_logical_neg
+(paren
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_DATA
@@ -6471,6 +6729,7 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
 )paren
 )paren
 (brace
@@ -6592,9 +6851,6 @@ op_logical_neg
 id|next_vcn
 )paren
 (brace
-id|u64
-id|ll
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6654,18 +6910,15 @@ c_func
 id|attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
-multiline_comment|/* Set the number of mft records. */
-id|ll
-op_assign
-id|vi-&gt;i_size
-op_rshift
-id|vol-&gt;mft_record_size_bits
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Verify the number of mft records does not exceed&n;&t;&t;&t; * 2^32 - 1.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|ll
+(paren
+id|vi-&gt;i_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+)paren
 op_ge
 (paren
 l_int|1ULL
@@ -6686,10 +6939,6 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-id|vol-&gt;nr_mft_records
-op_assign
-id|ll
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * We have got the first extent of the runlist for&n;&t;&t;&t; * $MFT which means it is now relatively safe to call&n;&t;&t;&t; * the normal ntfs_read_inode() function.&n;&t;&t;&t; * Complete reading the inode, this will actually&n;&t;&t;&t; * re-read the mft record for $MFT, this time entering&n;&t;&t;&t; * it into the page cache with which we complete the&n;&t;&t;&t; * kick start of the volume. It should be safe to do&n;&t;&t;&t; * this now as the first extent of $MFT/$DATA is&n;&t;&t;&t; * already known and we would hope that we don&squot;t need&n;&t;&t;&t; * further extents in order to find the other&n;&t;&t;&t; * attributes belonging to $MFT. Only time will tell if&n;&t;&t;&t; * this is really the case. If not we will have to play&n;&t;&t;&t; * magic at this point, possibly duplicating a lot of&n;&t;&t;&t; * ntfs_read_inode() at this point. We will need to&n;&t;&t;&t; * ensure we do enough of its work to be able to call&n;&t;&t;&t; * ntfs_read_inode() on extents of $MFT/$DATA. But lets&n;&t;&t;&t; * hope this never happens...&n;&t;&t;&t; */
 id|ntfs_read_locked_inode
 c_func
@@ -6721,7 +6970,7 @@ l_string|&quot;linux-ntfs-dev@lists.&quot;
 l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6825,6 +7074,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to lookup $MFT/$DATA attribute extent. &quot;
+l_string|&quot;$MFT is corrupt. Run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_err_out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|attr
 )paren
@@ -6859,9 +7130,9 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Failed to load the complete runlist &quot;
-l_string|&quot;for $MFT/$DATA. Driver bug or &quot;
-l_string|&quot;corrupt $MFT. Run chkdsk.&quot;
+l_string|&quot;Failed to load the complete runlist for &quot;
+l_string|&quot;$MFT/$DATA. Driver bug or corrupt $MFT. &quot;
+l_string|&quot;Run chkdsk.&quot;
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -6890,7 +7161,7 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6924,7 +7195,7 @@ l_string|&quot;attribute list. $MFT is corrupt. Run chkdsk.&quot;
 suffix:semicolon
 id|put_err_out
 suffix:colon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -7971,7 +8242,7 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -8073,7 +8344,7 @@ suffix:semicolon
 multiline_comment|/* Update the access times in the standard information attribute. */
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -8101,14 +8372,9 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_STANDARD_INFORMATION
@@ -8127,19 +8393,22 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
 )paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOENT
 suffix:semicolon
 r_goto
 id|unm_err_out
@@ -8323,7 +8592,7 @@ c_func
 id|ctx-&gt;ntfs_ino-&gt;page
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx

@@ -41,7 +41,7 @@ op_star
 id|ir
 suffix:semicolon
 DECL|member|actx
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|actx
 suffix:semicolon

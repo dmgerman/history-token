@@ -814,8 +814,6 @@ id|buffer
 l_int|32
 )braket
 suffix:semicolon
-DECL|macro|EMIT
-mdefine_line|#define EMIT(x...) sz += ((sz &gt;= maxlen) ? &bslash;&n;&t;&t;&t;  0 : scnprintf(result + sz, maxlen - sz, x))
 r_switch
 c_cond
 (paren
@@ -837,7 +835,7 @@ suffix:semicolon
 r_case
 id|STATUSTYPE_TABLE
 suffix:colon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 l_string|&quot;%d &quot;
@@ -878,7 +876,7 @@ dot
 id|dev-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-id|EMIT
+id|DMEMIT
 c_func
 (paren
 l_string|&quot; %s &quot;

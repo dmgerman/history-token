@@ -698,6 +698,21 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;g364fb&quot;
+comma
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* TBD: G364 detection */
 multiline_comment|/* get the resolution set by ARC console */
 op_star

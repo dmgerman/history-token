@@ -9394,10 +9394,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|atyfb_init
+DECL|function|atyfb_do_init
 r_int
 id|__init
-id|atyfb_init
+id|atyfb_do_init
 c_func
 (paren
 r_void
@@ -9479,20 +9479,6 @@ id|u16
 id|tmp
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef MODULE
-id|atyfb_setup
-c_func
-(paren
-id|fb_get_options
-c_func
-(paren
-l_string|&quot;atyfb&quot;
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_PCI)
 macro_line|#ifdef __sparc__
 multiline_comment|/* Do not attach when we have a serial console. */
 r_if
@@ -11443,6 +11429,52 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_ATARI */
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|atyfb_init
+r_int
+id|__init
+id|atyfb_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifndef MODULE
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;atyfb&quot;
+comma
+op_amp
+id|option
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|atyfb_setup
+c_func
+(paren
+id|option
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|atyfb_do_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE

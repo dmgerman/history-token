@@ -4858,6 +4858,16 @@ op_star
 id|sb
 )paren
 suffix:semicolon
+r_int
+id|__put_super_and_need_restart
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
 r_void
 id|unnamed_dev_init
 c_func

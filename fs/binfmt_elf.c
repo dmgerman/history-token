@@ -2005,18 +2005,6 @@ id|reloc_func_desc
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|elfhdr
-id|elf_ex
-suffix:semicolon
-r_struct
-id|elfhdr
-id|interp_elf_ex
-suffix:semicolon
-r_struct
-id|exec
-id|interp_ex
-suffix:semicolon
 r_char
 id|passed_fileno
 (braket
@@ -2041,8 +2029,56 @@ id|def_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Get the exec-header */
+r_struct
+(brace
+r_struct
+id|elfhdr
 id|elf_ex
+suffix:semicolon
+r_struct
+id|elfhdr
+id|interp_elf_ex
+suffix:semicolon
+r_struct
+id|exec
+id|interp_ex
+suffix:semicolon
+)brace
+op_star
+id|loc
+suffix:semicolon
+id|loc
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|loc
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|loc
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_ret
+suffix:semicolon
+)brace
+multiline_comment|/* Get the exec-header */
+id|loc-&gt;elf_ex
 op_assign
 op_star
 (paren
@@ -2066,7 +2102,7 @@ c_cond
 id|memcmp
 c_func
 (paren
-id|elf_ex.e_ident
+id|loc-&gt;elf_ex.e_ident
 comma
 id|ELFMAG
 comma
@@ -2081,11 +2117,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|elf_ex.e_type
+id|loc-&gt;elf_ex.e_type
 op_ne
 id|ET_EXEC
 op_logical_and
-id|elf_ex.e_type
+id|loc-&gt;elf_ex.e_type
 op_ne
 id|ET_DYN
 )paren
@@ -2100,7 +2136,7 @@ id|elf_check_arch
 c_func
 (paren
 op_amp
-id|elf_ex
+id|loc-&gt;elf_ex
 )paren
 )paren
 r_goto
@@ -2127,7 +2163,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|elf_ex.e_phentsize
+id|loc-&gt;elf_ex.e_phentsize
 op_ne
 r_sizeof
 (paren
@@ -2141,7 +2177,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 OG
 l_int|65536U
 op_div
@@ -2156,7 +2192,7 @@ id|out
 suffix:semicolon
 id|size
 op_assign
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 op_star
 r_sizeof
 (paren
@@ -2195,7 +2231,7 @@ c_func
 (paren
 id|bprm-&gt;file
 comma
-id|elf_ex.e_phoff
+id|loc-&gt;elf_ex.e_phoff
 comma
 (paren
 r_char
@@ -2329,7 +2365,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 suffix:semicolon
 id|i
 op_increment
@@ -2438,7 +2474,7 @@ multiline_comment|/*&n;&t;&t;&t; * The early SET_PERSONALITY here is so that the
 id|SET_PERSONALITY
 c_func
 (paren
-id|elf_ex
+id|loc-&gt;elf_ex
 comma
 id|ibcs2_interpreter
 )paren
@@ -2496,7 +2532,7 @@ r_goto
 id|out_free_dentry
 suffix:semicolon
 multiline_comment|/* Get the exec headers */
-id|interp_ex
+id|loc-&gt;interp_ex
 op_assign
 op_star
 (paren
@@ -2508,7 +2544,7 @@ op_star
 id|bprm-&gt;buf
 )paren
 suffix:semicolon
-id|interp_elf_ex
+id|loc-&gt;interp_elf_ex
 op_assign
 op_star
 (paren
@@ -2540,7 +2576,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 suffix:semicolon
 id|i
 op_increment
@@ -2580,7 +2616,7 @@ op_assign
 (paren
 id|i
 OL
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 )paren
 suffix:semicolon
 multiline_comment|/* Some simple consistency checks for the interpreter */
@@ -2604,7 +2640,7 @@ c_cond
 id|N_MAGIC
 c_func
 (paren
-id|interp_ex
+id|loc-&gt;interp_ex
 )paren
 op_ne
 id|OMAGIC
@@ -2614,7 +2650,7 @@ op_logical_and
 id|N_MAGIC
 c_func
 (paren
-id|interp_ex
+id|loc-&gt;interp_ex
 )paren
 op_ne
 id|ZMAGIC
@@ -2624,7 +2660,7 @@ op_logical_and
 id|N_MAGIC
 c_func
 (paren
-id|interp_ex
+id|loc-&gt;interp_ex
 )paren
 op_ne
 id|QMAGIC
@@ -2640,7 +2676,7 @@ c_cond
 id|memcmp
 c_func
 (paren
-id|interp_elf_ex.e_ident
+id|loc-&gt;interp_elf_ex.e_ident
 comma
 id|ELFMAG
 comma
@@ -2705,7 +2741,7 @@ id|elf_check_arch
 c_func
 (paren
 op_amp
-id|interp_elf_ex
+id|loc-&gt;interp_elf_ex
 )paren
 )paren
 r_goto
@@ -2718,7 +2754,7 @@ multiline_comment|/* Executables without an interpreter also need a personality 
 id|SET_PERSONALITY
 c_func
 (paren
-id|elf_ex
+id|loc-&gt;elf_ex
 comma
 id|ibcs2_interpreter
 )paren
@@ -2859,7 +2895,7 @@ multiline_comment|/* Do this immediately, since STACK_TOP as used in setup_arg_p
 id|SET_PERSONALITY
 c_func
 (paren
-id|elf_ex
+id|loc-&gt;elf_ex
 comma
 id|ibcs2_interpreter
 )paren
@@ -2870,7 +2906,7 @@ c_cond
 id|elf_read_implies_exec
 c_func
 (paren
-id|elf_ex
+id|loc-&gt;elf_ex
 comma
 id|have_pt_gnu_stack
 )paren
@@ -2944,7 +2980,7 @@ id|elf_phdata
 suffix:semicolon
 id|i
 OL
-id|elf_ex.e_phnum
+id|loc-&gt;elf_ex.e_phnum
 suffix:semicolon
 id|i
 op_increment
@@ -3124,7 +3160,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|elf_ex.e_type
+id|loc-&gt;elf_ex.e_type
 op_eq
 id|ET_EXEC
 op_logical_or
@@ -3140,7 +3176,7 @@ r_else
 r_if
 c_cond
 (paren
-id|elf_ex.e_type
+id|loc-&gt;elf_ex.e_type
 op_eq
 id|ET_DYN
 )paren
@@ -3208,7 +3244,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|elf_ex.e_type
+id|loc-&gt;elf_ex.e_type
 op_eq
 id|ET_DYN
 )paren
@@ -3362,7 +3398,7 @@ op_assign
 id|k
 suffix:semicolon
 )brace
-id|elf_ex.e_entry
+id|loc-&gt;elf_ex.e_entry
 op_add_assign
 id|load_bias
 suffix:semicolon
@@ -3446,7 +3482,7 @@ id|load_aout_interp
 c_func
 (paren
 op_amp
-id|interp_ex
+id|loc-&gt;interp_ex
 comma
 id|interpreter
 )paren
@@ -3458,7 +3494,7 @@ id|load_elf_interp
 c_func
 (paren
 op_amp
-id|interp_elf_ex
+id|loc-&gt;interp_elf_ex
 comma
 id|interpreter
 comma
@@ -3530,7 +3566,7 @@ r_else
 (brace
 id|elf_entry
 op_assign
-id|elf_ex.e_entry
+id|loc-&gt;elf_ex.e_entry
 suffix:semicolon
 )brace
 id|kfree
@@ -3576,7 +3612,7 @@ c_func
 id|bprm
 comma
 op_amp
-id|elf_ex
+id|loc-&gt;elf_ex
 comma
 (paren
 id|interpreter_type
@@ -3741,6 +3777,14 @@ op_assign
 l_int|0
 suffix:semicolon
 id|out
+suffix:colon
+id|kfree
+c_func
+(paren
+id|loc
+)paren
+suffix:semicolon
+id|out_ret
 suffix:colon
 r_return
 id|retval

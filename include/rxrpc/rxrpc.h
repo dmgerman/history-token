@@ -4,7 +4,7 @@ DECL|macro|_LINUX_RXRPC_RXRPC_H
 mdefine_line|#define _LINUX_RXRPC_RXRPC_H
 macro_line|#ifdef __KERNEL__
 r_extern
-r_uint32
+id|__be32
 id|rxrpc_epoch
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL

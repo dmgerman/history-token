@@ -75,15 +75,15 @@ id|uid_t
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
-DECL|member|_utime
-id|clock_t
-id|_utime
-suffix:semicolon
 DECL|member|_status
 r_int
 id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
+DECL|member|_utime
+id|clock_t
+id|_utime
+suffix:semicolon
 DECL|member|_stime
 id|clock_t
 id|_stime

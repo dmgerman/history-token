@@ -49,25 +49,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|smp_mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* prepare for lockless i_state read */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_DIRTY
-)paren
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/*&n;&t; * data=writeback:&n;&t; *  The caller&squot;s filemap_fdatawrite()/wait will sync the data.&n;&t; *  sync_inode() will sync the metadata&n;&t; *&n;&t; * data=ordered:&n;&t; *  The caller&squot;s filemap_fdatawrite() will write the data and&n;&t; *  sync_inode() will write the inode if it is dirty.  Then the caller&squot;s&n;&t; *  filemap_fdatawait() will wait on the pages.&n;&t; *&n;&t; * data=journal:&n;&t; *  filemap_fdatawrite won&squot;t do anything (the buffers are clean).&n;&t; *  ext3_force_commit will write the file data into the journal and&n;&t; *  will wait on that.&n;&t; *  filemap_fdatawait() will encounter a ton of newly-dirtied pages&n;&t; *  (they were dirtied by commit).  But that&squot;s OK - the blocks are&n;&t; *  safe in-journal, which is all fsync() needs to ensure.&n;&t; */
 r_if
 c_cond

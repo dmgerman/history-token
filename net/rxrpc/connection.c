@@ -296,10 +296,10 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-r_uint16
+id|__be16
 id|port
 comma
-r_uint32
+id|__be32
 id|addr
 comma
 r_uint16
@@ -334,7 +334,7 @@ id|list_head
 op_star
 id|_p
 suffix:semicolon
-r_uint32
+id|__be32
 id|connid
 suffix:semicolon
 r_int
@@ -649,7 +649,7 @@ c_func
 (paren
 l_string|&quot;created connection: {%08x} [out]&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|candidate-&gt;conn_id
@@ -786,7 +786,7 @@ c_func
 (paren
 l_string|&quot;resurrecting connection: {%08x} [out]&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;conn_id
@@ -871,17 +871,18 @@ id|fresh
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|__be32
 id|x_epoch
 comma
 id|x_connid
 suffix:semicolon
-id|u16
+id|__be16
 id|x_port
 comma
-id|x_secix
-comma
 id|x_servid
+suffix:semicolon
+id|__u32
+id|x_secix
 suffix:semicolon
 id|u8
 id|x_clflag
@@ -1253,7 +1254,7 @@ c_func
 (paren
 l_string|&quot;created connection: {%08x} [in]&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|candidate-&gt;conn_id
@@ -1427,7 +1428,7 @@ c_func
 (paren
 l_string|&quot;resurrecting connection: {%08x} [in]&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;conn_id
@@ -1598,7 +1599,7 @@ c_func
 (paren
 l_string|&quot;burying connection: {%08x}&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;conn_id
@@ -1781,7 +1782,7 @@ l_string|&quot;--- Destroying Connection %p{%08x} ---&quot;
 comma
 id|conn
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;conn_id
@@ -2644,13 +2645,13 @@ id|msg-&gt;hdr.type
 comma
 id|msg-&gt;dsize
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;addr.sin_addr.s_addr
 )paren
 comma
-id|htons
+id|ntohs
 c_func
 (paren
 id|conn-&gt;addr.sin_port
@@ -2887,31 +2888,31 @@ c_func
 (paren
 l_string|&quot;Received packet %%%u [%u] on call %hu:%u:%u&quot;
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|msg-&gt;hdr.serial
 )paren
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|msg-&gt;hdr.seq
 )paren
 comma
-id|htons
+id|ntohs
 c_func
 (paren
 id|msg-&gt;hdr.serviceId
 )paren
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|conn-&gt;conn_id
 )paren
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|call-&gt;call_id

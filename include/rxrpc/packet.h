@@ -22,12 +22,12 @@ r_struct
 id|rxrpc_header
 (brace
 DECL|member|epoch
-r_uint32
+id|__be32
 id|epoch
 suffix:semicolon
 multiline_comment|/* client boot timestamp */
 DECL|member|cid
-r_uint32
+id|__be32
 id|cid
 suffix:semicolon
 multiline_comment|/* connection and channel ID */
@@ -40,19 +40,19 @@ mdefine_line|#define RXRPC_CIDMASK&t;&t;(~RXRPC_CHANNELMASK)&t;/* mask for conne
 DECL|macro|RXRPC_CIDSHIFT
 mdefine_line|#define RXRPC_CIDSHIFT&t;&t;2&t;&t;&t;/* shift for connection ID */
 DECL|member|callNumber
-r_uint32
+id|__be32
 id|callNumber
 suffix:semicolon
 multiline_comment|/* call ID (0 for connection-level packets) */
 DECL|macro|RXRPC_PROCESS_MAXCALLS
 mdefine_line|#define RXRPC_PROCESS_MAXCALLS&t;(1&lt;&lt;2)&t;/* maximum number of active calls per conn (power of 2) */
 DECL|member|seq
-r_uint32
+id|__be32
 id|seq
 suffix:semicolon
 multiline_comment|/* sequence number of pkt in call stream */
 DECL|member|serial
-r_uint32
+id|__be32
 id|serial
 suffix:semicolon
 multiline_comment|/* serial number of pkt sent to network */
@@ -107,12 +107,12 @@ id|securityIndex
 suffix:semicolon
 multiline_comment|/* security protocol ID */
 DECL|member|_rsvd
-r_uint16
+id|__be16
 id|_rsvd
 suffix:semicolon
 multiline_comment|/* reserved (used by kerberos security as cksum) */
 DECL|member|serviceId
-r_uint16
+id|__be16
 id|serviceId
 suffix:semicolon
 multiline_comment|/* service ID */
@@ -151,7 +151,7 @@ r_uint8
 id|pad
 suffix:semicolon
 DECL|member|_rsvd
-r_uint16
+id|__be16
 id|_rsvd
 suffix:semicolon
 multiline_comment|/* reserved (used by kerberos security as cksum) */
@@ -166,27 +166,27 @@ r_struct
 id|rxrpc_ackpacket
 (brace
 DECL|member|bufferSpace
-r_uint16
+id|__be16
 id|bufferSpace
 suffix:semicolon
 multiline_comment|/* number of packet buffers available */
 DECL|member|maxSkew
-r_uint16
+id|__be16
 id|maxSkew
 suffix:semicolon
 multiline_comment|/* diff between serno being ACK&squot;d and highest serial no&n;&t;&t;&t;&t;&t; * received */
 DECL|member|firstPacket
-r_uint32
+id|__be32
 id|firstPacket
 suffix:semicolon
 multiline_comment|/* sequence no of first ACK&squot;d packet in attached list */
 DECL|member|previousPacket
-r_uint32
+id|__be32
 id|previousPacket
 suffix:semicolon
 multiline_comment|/* sequence no of previous packet received */
 DECL|member|serial
-r_uint32
+id|__be32
 id|serial
 suffix:semicolon
 multiline_comment|/* serial no of packet that prompted this ACK */

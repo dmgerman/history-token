@@ -118,28 +118,6 @@ macro_line|#ifndef swap
 DECL|macro|swap
 mdefine_line|#define swap(x, y) do { typeof(x) z = x; x = y; y = z; } while (0)
 macro_line|#endif
-DECL|member|v
-DECL|typedef|le_u32
-r_typedef
-r_struct
-(brace
-id|u32
-id|v
-suffix:semicolon
-)brace
-id|le_u32
-suffix:semicolon
-DECL|member|v
-DECL|typedef|le_u16
-r_typedef
-r_struct
-(brace
-id|u16
-id|v
-suffix:semicolon
-)brace
-id|le_u16
-suffix:semicolon
 macro_line|#ifdef DX_DEBUG
 DECL|macro|dxtrace
 mdefine_line|#define dxtrace(command) command
@@ -152,13 +130,11 @@ r_struct
 id|fake_dirent
 (brace
 DECL|member|inode
-multiline_comment|/*le*/
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 DECL|member|rec_len
-multiline_comment|/*le*/
-id|u16
+id|__le16
 id|rec_len
 suffix:semicolon
 DECL|member|name_len
@@ -176,11 +152,11 @@ r_struct
 id|dx_countlimit
 (brace
 DECL|member|limit
-id|le_u16
+id|__le16
 id|limit
 suffix:semicolon
 DECL|member|count
-id|le_u16
+id|__le16
 id|count
 suffix:semicolon
 )brace
@@ -190,11 +166,11 @@ r_struct
 id|dx_entry
 (brace
 DECL|member|hash
-id|le_u32
+id|__le32
 id|hash
 suffix:semicolon
 DECL|member|block
-id|le_u32
+id|__le32
 id|block
 suffix:semicolon
 )brace
@@ -233,7 +209,7 @@ r_struct
 id|dx_root_info
 (brace
 DECL|member|reserved_zero
-id|le_u32
+id|__le32
 id|reserved_zero
 suffix:semicolon
 DECL|member|hash_version
@@ -663,7 +639,7 @@ r_return
 id|le32_to_cpu
 c_func
 (paren
-id|entry-&gt;block.v
+id|entry-&gt;block
 )paren
 op_amp
 l_int|0x00ffffff
@@ -684,7 +660,7 @@ r_int
 id|value
 )paren
 (brace
-id|entry-&gt;block.v
+id|entry-&gt;block
 op_assign
 id|cpu_to_le32
 c_func
@@ -709,7 +685,7 @@ r_return
 id|le32_to_cpu
 c_func
 (paren
-id|entry-&gt;hash.v
+id|entry-&gt;hash
 )paren
 suffix:semicolon
 )brace
@@ -728,7 +704,7 @@ r_int
 id|value
 )paren
 (brace
-id|entry-&gt;hash.v
+id|entry-&gt;hash
 op_assign
 id|cpu_to_le32
 c_func
@@ -762,7 +738,7 @@ op_star
 id|entries
 )paren
 op_member_access_from_pointer
-id|count.v
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -791,7 +767,7 @@ op_star
 id|entries
 )paren
 op_member_access_from_pointer
-id|limit.v
+id|limit
 )paren
 suffix:semicolon
 )brace
@@ -819,7 +795,7 @@ op_star
 id|entries
 )paren
 op_member_access_from_pointer
-id|count.v
+id|count
 op_assign
 id|cpu_to_le16
 c_func
@@ -852,7 +828,7 @@ op_star
 id|entries
 )paren
 op_member_access_from_pointer
-id|limit.v
+id|limit
 op_assign
 id|cpu_to_le16
 c_func
@@ -11684,7 +11660,7 @@ id|new_bh
 suffix:semicolon
 id|new_de-&gt;inode
 op_assign
-id|le32_to_cpu
+id|cpu_to_le32
 c_func
 (paren
 id|old_inode-&gt;i_ino
@@ -11921,7 +11897,7 @@ c_func
 id|dir_bh-&gt;b_data
 )paren
 op_assign
-id|le32_to_cpu
+id|cpu_to_le32
 c_func
 (paren
 id|new_dir-&gt;i_ino

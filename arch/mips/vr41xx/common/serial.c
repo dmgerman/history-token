@@ -229,8 +229,6 @@ id|SIU_IRQ
 suffix:semicolon
 id|port.flags
 op_assign
-id|UPF_RESOURCES
-op_or
 id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SKIP_TEST
@@ -409,8 +407,6 @@ id|DSIU_IRQ
 suffix:semicolon
 id|port.flags
 op_assign
-id|UPF_RESOURCES
-op_or
 id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SKIP_TEST

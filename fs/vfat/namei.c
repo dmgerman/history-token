@@ -3340,11 +3340,13 @@ id|de-&gt;date
 op_assign
 l_int|0
 suffix:semicolon
-id|de-&gt;ctime_ms
-op_assign
 id|de-&gt;ctime
 op_assign
 id|de-&gt;time
+op_assign
+l_int|0
+suffix:semicolon
+id|de-&gt;ctime_ms
 op_assign
 l_int|0
 suffix:semicolon
@@ -5364,7 +5366,7 @@ id|i_logstart
 suffix:semicolon
 id|dotdot_de-&gt;start
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|start
@@ -5372,7 +5374,7 @@ id|start
 suffix:semicolon
 id|dotdot_de-&gt;starthi
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|start

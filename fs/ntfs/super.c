@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
@@ -1184,7 +1185,7 @@ id|VOLUME_INFORMATION
 op_star
 id|vi
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -1250,7 +1251,7 @@ suffix:semicolon
 )brace
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|ni
@@ -1274,11 +1275,9 @@ r_goto
 id|put_unm_err_out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lookup_attr
+id|err
+op_assign
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_VOLUME_INFORMATION
@@ -1297,17 +1296,15 @@ l_int|0
 comma
 id|ctx
 )paren
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
 r_goto
 id|put_unm_err_out
 suffix:semicolon
-)brace
 id|vi
 op_assign
 (paren
@@ -1346,7 +1343,7 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -1376,7 +1373,7 @@ c_cond
 (paren
 id|ctx
 )paren
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -5520,7 +5517,7 @@ id|VOLUME_INFORMATION
 op_star
 id|vi
 suffix:semicolon
-id|attr_search_context
+id|ntfs_attr_search_ctx
 op_star
 id|ctx
 suffix:semicolon
@@ -5927,7 +5924,7 @@ op_logical_neg
 (paren
 id|ctx
 op_assign
-id|get_attr_search_ctx
+id|ntfs_attr_get_search_ctx
 c_func
 (paren
 id|NTFS_I
@@ -5956,8 +5953,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|lookup_attr
+id|ntfs_attr_lookup
 c_func
 (paren
 id|AT_VOLUME_INFORMATION
@@ -5984,7 +5980,7 @@ id|ctx-&gt;attr-&gt;flags
 (brace
 id|err_put_vol
 suffix:colon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -6064,7 +6060,7 @@ id|vol-&gt;minor_ver
 op_assign
 id|vi-&gt;minor_ver
 suffix:semicolon
-id|put_attr_search_ctx
+id|ntfs_attr_put_search_ctx
 c_func
 (paren
 id|ctx
@@ -8332,8 +8328,6 @@ id|vol
 (brace
 id|s64
 id|nr_free
-op_assign
-id|vol-&gt;nr_mft_records
 suffix:semicolon
 id|u32
 op_star
@@ -8377,13 +8371,30 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE, rounding up so that if we have one&n;&t; * full and one partial page max_index = 2.&n;&t; */
+multiline_comment|/* Number of mft records in file system (at this point in time). */
+id|nr_free
+op_assign
+id|vol-&gt;mft_ino-&gt;i_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+multiline_comment|/*&n;&t; * Convert the maximum number of set bits into bytes rounded up, then&n;&t; * convert into multiples of PAGE_CACHE_SIZE, rounding up so that if we&n;&t; * have one full and one partial page max_index = 2.&n;&t; */
 id|max_index
 op_assign
 (paren
 (paren
 (paren
-id|vol-&gt;nr_mft_records
+(paren
+id|NTFS_I
+c_func
+(paren
+id|vol-&gt;mft_ino
+)paren
+op_member_access_from_pointer
+id|initialized_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+)paren
 op_plus
 l_int|7
 )paren
@@ -8710,14 +8721,14 @@ op_amp
 id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Total file nodes in file system (at this moment in time). */
+multiline_comment|/* Number of inodes in file system (at this point in time). */
 id|sfs-&gt;f_files
 op_assign
 id|vol-&gt;mft_ino-&gt;i_size
 op_rshift
 id|vol-&gt;mft_record_size_bits
 suffix:semicolon
-multiline_comment|/* Free file nodes in fs (based on current total count). */
+multiline_comment|/* Free inodes in fs (based on current total count). */
 id|sfs-&gt;f_ffree
 op_assign
 id|__get_nr_free_mft_records
@@ -9103,6 +9114,11 @@ suffix:semicolon
 id|vol-&gt;dmask
 op_assign
 l_int|0077
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Important to get the mount options dealt with now. */
 r_if
@@ -9549,6 +9565,11 @@ op_assign
 op_amp
 id|ntfs_export_ops
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9925,6 +9946,11 @@ suffix:semicolon
 multiline_comment|/* Errors at this stage are irrelevant. */
 id|err_out_now
 suffix:colon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
@@ -10276,7 +10302,7 @@ id|ntfs_attr_ctx_cache_name
 comma
 r_sizeof
 (paren
-id|attr_search_context
+id|ntfs_attr_search_ctx
 )paren
 comma
 l_int|0

@@ -77,14 +77,6 @@ DECL|macro|HARDIRQ_SHIFT
 mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
 r_extern
 r_void
-id|do_call_softirq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|account_ticks
 c_func
 (paren
@@ -93,11 +85,11 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|invoke_softirq
-mdefine_line|#define invoke_softirq() do_call_softirq()
+DECL|macro|__ARCH_HAS_DO_SOFTIRQ
+mdefine_line|#define __ARCH_HAS_DO_SOFTIRQ
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(preempt_count() += HARDIRQ_OFFSET);&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&t;&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_call_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&t;&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

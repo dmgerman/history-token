@@ -245,7 +245,7 @@ c_func
 (paren
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -294,7 +294,7 @@ c_func
 (paren
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|bh-&gt;b_data
@@ -425,7 +425,7 @@ l_int|32
 (brace
 (paren
 (paren
-id|__u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -462,7 +462,7 @@ l_int|16
 (brace
 (paren
 (paren
-id|__u16
+id|__le16
 op_star
 )paren
 id|bh-&gt;b_data

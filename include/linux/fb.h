@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_FB_H
 DECL|macro|_LINUX_FB_H
 mdefine_line|#define _LINUX_FB_H
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* Definitions of frame buffers&t;&t;&t;&t;&t;&t;*/
 DECL|macro|FB_MAJOR
 mdefine_line|#define FB_MAJOR&t;&t;29
@@ -568,249 +567,6 @@ DECL|macro|VESA_HSYNC_SUSPEND
 mdefine_line|#define VESA_HSYNC_SUSPEND      2
 DECL|macro|VESA_POWERDOWN
 mdefine_line|#define VESA_POWERDOWN          3
-multiline_comment|/* Definitions below are used in the parsed monitor specs */
-DECL|macro|FB_DPMS_ACTIVE_OFF
-mdefine_line|#define FB_DPMS_ACTIVE_OFF&t;1
-DECL|macro|FB_DPMS_SUSPEND
-mdefine_line|#define FB_DPMS_SUSPEND&t;&t;2
-DECL|macro|FB_DPMS_STANDBY
-mdefine_line|#define FB_DPMS_STANDBY&t;&t;4
-DECL|macro|FB_DISP_DDI
-mdefine_line|#define FB_DISP_DDI&t;&t;1
-DECL|macro|FB_DISP_ANA_700_300
-mdefine_line|#define FB_DISP_ANA_700_300&t;2
-DECL|macro|FB_DISP_ANA_714_286
-mdefine_line|#define FB_DISP_ANA_714_286&t;4
-DECL|macro|FB_DISP_ANA_1000_400
-mdefine_line|#define FB_DISP_ANA_1000_400&t;8
-DECL|macro|FB_DISP_ANA_700_000
-mdefine_line|#define FB_DISP_ANA_700_000&t;16
-DECL|macro|FB_DISP_MONO
-mdefine_line|#define FB_DISP_MONO&t;&t;32
-DECL|macro|FB_DISP_RGB
-mdefine_line|#define FB_DISP_RGB&t;&t;64
-DECL|macro|FB_DISP_MULTI
-mdefine_line|#define FB_DISP_MULTI&t;&t;128
-DECL|macro|FB_DISP_UNKNOWN
-mdefine_line|#define FB_DISP_UNKNOWN&t;&t;256
-DECL|macro|FB_SIGNAL_NONE
-mdefine_line|#define FB_SIGNAL_NONE&t;&t;0
-DECL|macro|FB_SIGNAL_BLANK_BLANK
-mdefine_line|#define FB_SIGNAL_BLANK_BLANK&t;1
-DECL|macro|FB_SIGNAL_SEPARATE
-mdefine_line|#define FB_SIGNAL_SEPARATE&t;2
-DECL|macro|FB_SIGNAL_COMPOSITE
-mdefine_line|#define FB_SIGNAL_COMPOSITE&t;4
-DECL|macro|FB_SIGNAL_SYNC_ON_GREEN
-mdefine_line|#define FB_SIGNAL_SYNC_ON_GREEN&t;8
-DECL|macro|FB_SIGNAL_SERRATION_ON
-mdefine_line|#define FB_SIGNAL_SERRATION_ON&t;16
-DECL|macro|FB_MISC_PRIM_COLOR
-mdefine_line|#define FB_MISC_PRIM_COLOR&t;1
-DECL|macro|FB_MISC_1ST_DETAIL
-mdefine_line|#define FB_MISC_1ST_DETAIL&t;2&t;/* First Detailed Timing is preferred */
-DECL|struct|fb_chroma
-r_struct
-id|fb_chroma
-(brace
-DECL|member|redx
-id|__u32
-id|redx
-suffix:semicolon
-multiline_comment|/* in fraction of 1024 */
-DECL|member|greenx
-id|__u32
-id|greenx
-suffix:semicolon
-DECL|member|bluex
-id|__u32
-id|bluex
-suffix:semicolon
-DECL|member|whitex
-id|__u32
-id|whitex
-suffix:semicolon
-DECL|member|redy
-id|__u32
-id|redy
-suffix:semicolon
-DECL|member|greeny
-id|__u32
-id|greeny
-suffix:semicolon
-DECL|member|bluey
-id|__u32
-id|bluey
-suffix:semicolon
-DECL|member|whitey
-id|__u32
-id|whitey
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|fb_monspecs
-r_struct
-id|fb_monspecs
-(brace
-DECL|member|chroma
-r_struct
-id|fb_chroma
-id|chroma
-suffix:semicolon
-DECL|member|modedb
-r_struct
-id|fb_videomode
-op_star
-id|modedb
-suffix:semicolon
-multiline_comment|/* mode database */
-DECL|member|modelist
-r_struct
-id|list_head
-id|modelist
-suffix:semicolon
-multiline_comment|/* mode list */
-DECL|member|manufacturer
-id|__u8
-id|manufacturer
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* Manufacturer */
-DECL|member|monitor
-id|__u8
-id|monitor
-(braket
-l_int|14
-)braket
-suffix:semicolon
-multiline_comment|/* Monitor String */
-DECL|member|serial_no
-id|__u8
-id|serial_no
-(braket
-l_int|14
-)braket
-suffix:semicolon
-multiline_comment|/* Serial Number */
-DECL|member|ascii
-id|__u8
-id|ascii
-(braket
-l_int|14
-)braket
-suffix:semicolon
-multiline_comment|/* ? */
-DECL|member|modedb_len
-id|__u32
-id|modedb_len
-suffix:semicolon
-multiline_comment|/* mode database length */
-DECL|member|model
-id|__u32
-id|model
-suffix:semicolon
-multiline_comment|/* Monitor Model */
-DECL|member|serial
-id|__u32
-id|serial
-suffix:semicolon
-multiline_comment|/* Serial Number - Integer */
-DECL|member|year
-id|__u32
-id|year
-suffix:semicolon
-multiline_comment|/* Year manufactured */
-DECL|member|week
-id|__u32
-id|week
-suffix:semicolon
-multiline_comment|/* Week Manufactured */
-DECL|member|hfmin
-id|__u32
-id|hfmin
-suffix:semicolon
-multiline_comment|/* hfreq lower limit (Hz) */
-DECL|member|hfmax
-id|__u32
-id|hfmax
-suffix:semicolon
-multiline_comment|/* hfreq upper limit (Hz) */
-DECL|member|dclkmin
-id|__u32
-id|dclkmin
-suffix:semicolon
-multiline_comment|/* pixelclock lower limit (Hz) */
-DECL|member|dclkmax
-id|__u32
-id|dclkmax
-suffix:semicolon
-multiline_comment|/* pixelclock upper limit (Hz) */
-DECL|member|input
-id|__u16
-id|input
-suffix:semicolon
-multiline_comment|/* display type - see FB_DISP_* */
-DECL|member|dpms
-id|__u16
-id|dpms
-suffix:semicolon
-multiline_comment|/* DPMS support - see FB_DPMS_ */
-DECL|member|signal
-id|__u16
-id|signal
-suffix:semicolon
-multiline_comment|/* Signal Type - see FB_SIGNAL_* */
-DECL|member|vfmin
-id|__u16
-id|vfmin
-suffix:semicolon
-multiline_comment|/* vfreq lower limit (Hz) */
-DECL|member|vfmax
-id|__u16
-id|vfmax
-suffix:semicolon
-multiline_comment|/* vfreq upper limit (Hz) */
-DECL|member|gamma
-id|__u16
-id|gamma
-suffix:semicolon
-multiline_comment|/* Gamma - in fractions of 100 */
-DECL|member|gtf
-id|__u16
-id|gtf
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* supports GTF */
-DECL|member|misc
-id|__u16
-id|misc
-suffix:semicolon
-multiline_comment|/* Misc flags - see FB_MISC_* */
-DECL|member|version
-id|__u8
-id|version
-suffix:semicolon
-multiline_comment|/* EDID version... */
-DECL|member|revision
-id|__u8
-id|revision
-suffix:semicolon
-multiline_comment|/* ...and revision */
-DECL|member|max_x
-id|__u8
-id|max_x
-suffix:semicolon
-multiline_comment|/* Maximum horizontal size (cm) */
-DECL|member|max_y
-id|__u8
-id|max_y
-suffix:semicolon
-multiline_comment|/* Maximum vertical size (cm) */
-)brace
-suffix:semicolon
 DECL|macro|FB_VBLANK_VBLANKING
 mdefine_line|#define FB_VBLANK_VBLANKING&t;0x001&t;/* currently in a vertical blank */
 DECL|macro|FB_VBLANK_HBLANKING
@@ -1063,6 +819,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_struct
 id|vm_area_struct
@@ -1075,6 +832,243 @@ id|device
 suffix:semicolon
 r_struct
 id|file
+suffix:semicolon
+multiline_comment|/* Definitions below are used in the parsed monitor specs */
+DECL|macro|FB_DPMS_ACTIVE_OFF
+mdefine_line|#define FB_DPMS_ACTIVE_OFF&t;1
+DECL|macro|FB_DPMS_SUSPEND
+mdefine_line|#define FB_DPMS_SUSPEND&t;&t;2
+DECL|macro|FB_DPMS_STANDBY
+mdefine_line|#define FB_DPMS_STANDBY&t;&t;4
+DECL|macro|FB_DISP_DDI
+mdefine_line|#define FB_DISP_DDI&t;&t;1
+DECL|macro|FB_DISP_ANA_700_300
+mdefine_line|#define FB_DISP_ANA_700_300&t;2
+DECL|macro|FB_DISP_ANA_714_286
+mdefine_line|#define FB_DISP_ANA_714_286&t;4
+DECL|macro|FB_DISP_ANA_1000_400
+mdefine_line|#define FB_DISP_ANA_1000_400&t;8
+DECL|macro|FB_DISP_ANA_700_000
+mdefine_line|#define FB_DISP_ANA_700_000&t;16
+DECL|macro|FB_DISP_MONO
+mdefine_line|#define FB_DISP_MONO&t;&t;32
+DECL|macro|FB_DISP_RGB
+mdefine_line|#define FB_DISP_RGB&t;&t;64
+DECL|macro|FB_DISP_MULTI
+mdefine_line|#define FB_DISP_MULTI&t;&t;128
+DECL|macro|FB_DISP_UNKNOWN
+mdefine_line|#define FB_DISP_UNKNOWN&t;&t;256
+DECL|macro|FB_SIGNAL_NONE
+mdefine_line|#define FB_SIGNAL_NONE&t;&t;0
+DECL|macro|FB_SIGNAL_BLANK_BLANK
+mdefine_line|#define FB_SIGNAL_BLANK_BLANK&t;1
+DECL|macro|FB_SIGNAL_SEPARATE
+mdefine_line|#define FB_SIGNAL_SEPARATE&t;2
+DECL|macro|FB_SIGNAL_COMPOSITE
+mdefine_line|#define FB_SIGNAL_COMPOSITE&t;4
+DECL|macro|FB_SIGNAL_SYNC_ON_GREEN
+mdefine_line|#define FB_SIGNAL_SYNC_ON_GREEN&t;8
+DECL|macro|FB_SIGNAL_SERRATION_ON
+mdefine_line|#define FB_SIGNAL_SERRATION_ON&t;16
+DECL|macro|FB_MISC_PRIM_COLOR
+mdefine_line|#define FB_MISC_PRIM_COLOR&t;1
+DECL|macro|FB_MISC_1ST_DETAIL
+mdefine_line|#define FB_MISC_1ST_DETAIL&t;2&t;/* First Detailed Timing is preferred */
+DECL|struct|fb_chroma
+r_struct
+id|fb_chroma
+(brace
+DECL|member|redx
+id|__u32
+id|redx
+suffix:semicolon
+multiline_comment|/* in fraction of 1024 */
+DECL|member|greenx
+id|__u32
+id|greenx
+suffix:semicolon
+DECL|member|bluex
+id|__u32
+id|bluex
+suffix:semicolon
+DECL|member|whitex
+id|__u32
+id|whitex
+suffix:semicolon
+DECL|member|redy
+id|__u32
+id|redy
+suffix:semicolon
+DECL|member|greeny
+id|__u32
+id|greeny
+suffix:semicolon
+DECL|member|bluey
+id|__u32
+id|bluey
+suffix:semicolon
+DECL|member|whitey
+id|__u32
+id|whitey
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|fb_monspecs
+r_struct
+id|fb_monspecs
+(brace
+DECL|member|chroma
+r_struct
+id|fb_chroma
+id|chroma
+suffix:semicolon
+DECL|member|modedb
+r_struct
+id|fb_videomode
+op_star
+id|modedb
+suffix:semicolon
+multiline_comment|/* mode database */
+DECL|member|manufacturer
+id|__u8
+id|manufacturer
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Manufacturer */
+DECL|member|monitor
+id|__u8
+id|monitor
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* Monitor String */
+DECL|member|serial_no
+id|__u8
+id|serial_no
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* Serial Number */
+DECL|member|ascii
+id|__u8
+id|ascii
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* ? */
+DECL|member|modedb_len
+id|__u32
+id|modedb_len
+suffix:semicolon
+multiline_comment|/* mode database length */
+DECL|member|model
+id|__u32
+id|model
+suffix:semicolon
+multiline_comment|/* Monitor Model */
+DECL|member|serial
+id|__u32
+id|serial
+suffix:semicolon
+multiline_comment|/* Serial Number - Integer */
+DECL|member|year
+id|__u32
+id|year
+suffix:semicolon
+multiline_comment|/* Year manufactured */
+DECL|member|week
+id|__u32
+id|week
+suffix:semicolon
+multiline_comment|/* Week Manufactured */
+DECL|member|hfmin
+id|__u32
+id|hfmin
+suffix:semicolon
+multiline_comment|/* hfreq lower limit (Hz) */
+DECL|member|hfmax
+id|__u32
+id|hfmax
+suffix:semicolon
+multiline_comment|/* hfreq upper limit (Hz) */
+DECL|member|dclkmin
+id|__u32
+id|dclkmin
+suffix:semicolon
+multiline_comment|/* pixelclock lower limit (Hz) */
+DECL|member|dclkmax
+id|__u32
+id|dclkmax
+suffix:semicolon
+multiline_comment|/* pixelclock upper limit (Hz) */
+DECL|member|input
+id|__u16
+id|input
+suffix:semicolon
+multiline_comment|/* display type - see FB_DISP_* */
+DECL|member|dpms
+id|__u16
+id|dpms
+suffix:semicolon
+multiline_comment|/* DPMS support - see FB_DPMS_ */
+DECL|member|signal
+id|__u16
+id|signal
+suffix:semicolon
+multiline_comment|/* Signal Type - see FB_SIGNAL_* */
+DECL|member|vfmin
+id|__u16
+id|vfmin
+suffix:semicolon
+multiline_comment|/* vfreq lower limit (Hz) */
+DECL|member|vfmax
+id|__u16
+id|vfmax
+suffix:semicolon
+multiline_comment|/* vfreq upper limit (Hz) */
+DECL|member|gamma
+id|__u16
+id|gamma
+suffix:semicolon
+multiline_comment|/* Gamma - in fractions of 100 */
+DECL|member|gtf
+id|__u16
+id|gtf
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* supports GTF */
+DECL|member|misc
+id|__u16
+id|misc
+suffix:semicolon
+multiline_comment|/* Misc flags - see FB_MISC_* */
+DECL|member|version
+id|__u8
+id|version
+suffix:semicolon
+multiline_comment|/* EDID version... */
+DECL|member|revision
+id|__u8
+id|revision
+suffix:semicolon
+multiline_comment|/* ...and revision */
+DECL|member|max_x
+id|__u8
+id|max_x
+suffix:semicolon
+multiline_comment|/* Maximum horizontal size (cm) */
+DECL|member|max_y
+id|__u8
+id|max_y
+suffix:semicolon
+multiline_comment|/* Maximum vertical size (cm) */
+)brace
 suffix:semicolon
 DECL|struct|fb_cmap_user
 r_struct
@@ -1829,6 +1823,12 @@ id|fb_cmap
 id|cmap
 suffix:semicolon
 multiline_comment|/* Current cmap */
+DECL|member|modelist
+r_struct
+id|list_head
+id|modelist
+suffix:semicolon
+multiline_comment|/* mode list */
 DECL|member|fbops
 r_struct
 id|fb_ops
@@ -2317,14 +2317,18 @@ id|info
 )paren
 suffix:semicolon
 r_extern
-r_char
-op_star
+r_int
 id|fb_get_options
 c_func
 (paren
 r_char
 op_star
 id|name
+comma
+r_char
+op_star
+op_star
+id|option
 )paren
 suffix:semicolon
 r_extern

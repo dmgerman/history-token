@@ -2,6 +2,18 @@ macro_line|#ifndef _SYSV_H
 DECL|macro|_SYSV_H
 mdefine_line|#define _SYSV_H
 macro_line|#include &lt;linux/buffer_head.h&gt;
+DECL|typedef|__fs16
+r_typedef
+id|__u16
+id|__bitwise
+id|__fs16
+suffix:semicolon
+DECL|typedef|__fs32
+r_typedef
+id|__u32
+id|__bitwise
+id|__fs32
+suffix:semicolon
 macro_line|#include &lt;linux/sysv_fs.h&gt;
 multiline_comment|/*&n; * SystemV/V7/Coherent super-block data in memory&n; *&n; * The SystemV/V7/Coherent superblock contains dynamic data (it gets modified&n; * while the system is running). This is in contrast to the Minix and Berkeley&n; * filesystems (where the superblock is never modified). This affects the&n; * sync() operation: we must keep the superblock in a disk buffer and use this&n; * one as our &quot;working copy&quot;.&n; */
 DECL|struct|sysv_sb_info
@@ -123,49 +135,49 @@ id|s_sbd2
 suffix:semicolon
 multiline_comment|/* entire superblock data, for part 2 */
 DECL|member|s_sb_fic_count
-id|u16
+id|__fs16
 op_star
 id|s_sb_fic_count
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_ninode */
 DECL|member|s_sb_fic_inodes
-id|u16
+id|sysv_ino_t
 op_star
 id|s_sb_fic_inodes
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_inode */
 DECL|member|s_sb_total_free_inodes
-id|u16
+id|__fs16
 op_star
 id|s_sb_total_free_inodes
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_tinode */
 DECL|member|s_bcache_count
-id|u16
+id|__fs16
 op_star
 id|s_bcache_count
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_nfree */
 DECL|member|s_bcache
-id|u32
+id|sysv_zone_t
 op_star
 id|s_bcache
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_free */
 DECL|member|s_free_blocks
-id|u32
+id|__fs32
 op_star
 id|s_free_blocks
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_tfree */
 DECL|member|s_sb_time
-id|u32
+id|__fs32
 op_star
 id|s_sb_time
 suffix:semicolon
 multiline_comment|/* pointer to s_sbd-&gt;s_time */
 DECL|member|s_sb_state
-id|u32
+id|__fs32
 op_star
 id|s_sb_state
 suffix:semicolon
@@ -213,7 +225,7 @@ r_struct
 id|sysv_inode_info
 (brace
 DECL|member|i_data
-id|u32
+id|__fs32
 id|i_data
 (braket
 l_int|13
@@ -452,7 +464,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* balloc.c */
 r_extern
-id|u32
+id|sysv_zone_t
 id|sysv_new_block
 c_func
 (paren
@@ -470,7 +482,7 @@ r_struct
 id|super_block
 op_star
 comma
-id|u32
+id|sysv_zone_t
 )paren
 suffix:semicolon
 r_extern
@@ -796,7 +808,7 @@ macro_line|#endif
 DECL|function|fs32_to_cpu
 r_static
 r_inline
-id|u32
+id|__u32
 id|fs32_to_cpu
 c_func
 (paren
@@ -805,7 +817,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u32
+id|__fs32
 id|n
 )paren
 (brace
@@ -820,6 +832,10 @@ r_return
 id|PDP_swab
 c_func
 (paren
+(paren
+id|__force
+id|__u32
+)paren
 id|n
 )paren
 suffix:semicolon
@@ -835,6 +851,10 @@ r_return
 id|le32_to_cpu
 c_func
 (paren
+(paren
+id|__force
+id|__le32
+)paren
 id|n
 )paren
 suffix:semicolon
@@ -843,6 +863,10 @@ r_return
 id|be32_to_cpu
 c_func
 (paren
+(paren
+id|__force
+id|__be32
+)paren
 id|n
 )paren
 suffix:semicolon
@@ -850,7 +874,7 @@ suffix:semicolon
 DECL|function|cpu_to_fs32
 r_static
 r_inline
-id|u32
+id|__fs32
 id|cpu_to_fs32
 c_func
 (paren
@@ -859,7 +883,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u32
+id|__u32
 id|n
 )paren
 (brace
@@ -871,6 +895,10 @@ op_eq
 id|BYTESEX_PDP
 )paren
 r_return
+(paren
+id|__force
+id|__fs32
+)paren
 id|PDP_swab
 c_func
 (paren
@@ -886,6 +914,10 @@ op_eq
 id|BYTESEX_LE
 )paren
 r_return
+(paren
+id|__force
+id|__fs32
+)paren
 id|cpu_to_le32
 c_func
 (paren
@@ -894,6 +926,10 @@ id|n
 suffix:semicolon
 r_else
 r_return
+(paren
+id|__force
+id|__fs32
+)paren
 id|cpu_to_be32
 c_func
 (paren
@@ -904,7 +940,7 @@ suffix:semicolon
 DECL|function|fs32_add
 r_static
 r_inline
-id|u32
+id|__fs32
 id|fs32_add
 c_func
 (paren
@@ -913,7 +949,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u32
+id|__fs32
 op_star
 id|n
 comma
@@ -928,8 +964,11 @@ id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_PDP
 )paren
-r_return
 op_star
+(paren
+id|__u32
+op_star
+)paren
 id|n
 op_assign
 id|PDP_swab
@@ -939,6 +978,10 @@ id|PDP_swab
 c_func
 (paren
 op_star
+(paren
+id|__u32
+op_star
+)paren
 id|n
 )paren
 op_plus
@@ -953,8 +996,11 @@ id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_LE
 )paren
-r_return
 op_star
+(paren
+id|__le32
+op_star
+)paren
 id|n
 op_assign
 id|cpu_to_le32
@@ -964,6 +1010,10 @@ id|le32_to_cpu
 c_func
 (paren
 op_star
+(paren
+id|__le32
+op_star
+)paren
 id|n
 )paren
 op_plus
@@ -971,8 +1021,11 @@ id|d
 )paren
 suffix:semicolon
 r_else
-r_return
 op_star
+(paren
+id|__be32
+op_star
+)paren
 id|n
 op_assign
 id|cpu_to_be32
@@ -982,17 +1035,25 @@ id|be32_to_cpu
 c_func
 (paren
 op_star
+(paren
+id|__be32
+op_star
+)paren
 id|n
 )paren
 op_plus
 id|d
 )paren
 suffix:semicolon
+r_return
+op_star
+id|n
+suffix:semicolon
 )brace
 DECL|function|fs16_to_cpu
 r_static
 r_inline
-id|u16
+id|__u16
 id|fs16_to_cpu
 c_func
 (paren
@@ -1001,7 +1062,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u16
+id|__fs16
 id|n
 )paren
 (brace
@@ -1016,6 +1077,10 @@ r_return
 id|le16_to_cpu
 c_func
 (paren
+(paren
+id|__force
+id|__le16
+)paren
 id|n
 )paren
 suffix:semicolon
@@ -1024,6 +1089,10 @@ r_return
 id|be16_to_cpu
 c_func
 (paren
+(paren
+id|__force
+id|__be16
+)paren
 id|n
 )paren
 suffix:semicolon
@@ -1031,7 +1100,7 @@ suffix:semicolon
 DECL|function|cpu_to_fs16
 r_static
 r_inline
-id|u16
+id|__fs16
 id|cpu_to_fs16
 c_func
 (paren
@@ -1040,7 +1109,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u16
+id|__u16
 id|n
 )paren
 (brace
@@ -1052,6 +1121,10 @@ op_ne
 id|BYTESEX_BE
 )paren
 r_return
+(paren
+id|__force
+id|__fs16
+)paren
 id|cpu_to_le16
 c_func
 (paren
@@ -1060,6 +1133,10 @@ id|n
 suffix:semicolon
 r_else
 r_return
+(paren
+id|__force
+id|__fs16
+)paren
 id|cpu_to_be16
 c_func
 (paren
@@ -1070,7 +1147,7 @@ suffix:semicolon
 DECL|function|fs16_add
 r_static
 r_inline
-id|u16
+id|__fs16
 id|fs16_add
 c_func
 (paren
@@ -1079,7 +1156,7 @@ id|sysv_sb_info
 op_star
 id|sbi
 comma
-id|u16
+id|__fs16
 op_star
 id|n
 comma
@@ -1094,8 +1171,11 @@ id|sbi-&gt;s_bytesex
 op_ne
 id|BYTESEX_BE
 )paren
-r_return
 op_star
+(paren
+id|__le16
+op_star
+)paren
 id|n
 op_assign
 id|cpu_to_le16
@@ -1105,6 +1185,10 @@ id|le16_to_cpu
 c_func
 (paren
 op_star
+(paren
+id|__le16
+op_star
+)paren
 id|n
 )paren
 op_plus
@@ -1112,8 +1196,11 @@ id|d
 )paren
 suffix:semicolon
 r_else
-r_return
 op_star
+(paren
+id|__be16
+op_star
+)paren
 id|n
 op_assign
 id|cpu_to_be16
@@ -1123,11 +1210,19 @@ id|be16_to_cpu
 c_func
 (paren
 op_star
+(paren
+id|__be16
+op_star
+)paren
 id|n
 )paren
 op_plus
 id|d
 )paren
+suffix:semicolon
+r_return
+op_star
+id|n
 suffix:semicolon
 )brace
 macro_line|#endif /* _SYSV_H */

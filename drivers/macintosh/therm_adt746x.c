@@ -2151,15 +2151,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Now, unfortunately, sysfs doesn&squot;t give us a nice void * we could&n; * pass around to the attribute functions, so we don&squot;t really have&n; * choice but implement a bunch of them...&n; *&n; */
-DECL|macro|BUILD_SHOW_FUNC_DEG
-mdefine_line|#define BUILD_SHOW_FUNC_DEG(name, data)&t;&t;&t;&t;&bslash;&n;static ssize_t show_##name(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&#xfffd;C&bslash;n&quot;, data);&t;&t;&t;&bslash;&n;}
 DECL|macro|BUILD_SHOW_FUNC_INT
 mdefine_line|#define BUILD_SHOW_FUNC_INT(name, data)&t;&t;&t;&t;&bslash;&n;static ssize_t show_##name(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data);&t;&t;&t;&bslash;&n;}
 DECL|macro|BUILD_STORE_FUNC_DEG
 mdefine_line|#define BUILD_STORE_FUNC_DEG(name, data)&t;&t;&t;&bslash;&n;static ssize_t store_##name(struct device *dev, const char *buf, size_t n) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtol(buf, NULL, 10);&t;&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;Adjusting limits by %d&#xfffd;C&bslash;n&quot;, val);&t;&bslash;&n;&t;limit_adjust = val;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i=0; i &lt; 3; i++)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_limit(thermostat, i);&t;&t;&t;&bslash;&n;&t;return n;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|BUILD_STORE_FUNC_INT
 mdefine_line|#define BUILD_STORE_FUNC_INT(name, data)&t;&t;&t;&bslash;&n;static ssize_t store_##name(struct device *dev, const char *buf, size_t n) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 10);&t;&t;&t;&bslash;&n;&t;if (val &lt; 0 || val &gt; 255)&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;Setting fan speed to %d&bslash;n&quot;, val);&t;&bslash;&n;&t;data = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return n;&t;&t;&t;&t;&t;&t;&bslash;&n;}
-id|BUILD_SHOW_FUNC_DEG
+id|BUILD_SHOW_FUNC_INT
 c_func
 (paren
 id|cpu_temperature
@@ -2177,7 +2175,7 @@ l_int|1
 )paren
 )paren
 )paren
-id|BUILD_SHOW_FUNC_DEG
+id|BUILD_SHOW_FUNC_INT
 c_func
 (paren
 id|gpu_temperature
@@ -2195,7 +2193,7 @@ l_int|2
 )paren
 )paren
 )paren
-id|BUILD_SHOW_FUNC_DEG
+id|BUILD_SHOW_FUNC_INT
 c_func
 (paren
 id|cpu_limit
@@ -2205,7 +2203,7 @@ id|thermostat-&gt;limits
 l_int|1
 )braket
 )paren
-id|BUILD_SHOW_FUNC_DEG
+id|BUILD_SHOW_FUNC_INT
 c_func
 (paren
 id|gpu_limit

@@ -384,7 +384,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NTFS-fs DEBUG (%s, %d): %s: %s&bslash;n&quot;
+l_string|&quot;NTFS-fs DEBUG (%s, %d): %s(): %s&bslash;n&quot;
 comma
 id|file
 comma

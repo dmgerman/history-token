@@ -12,7 +12,7 @@ mdefine_line|#define OPENPIC_VEC_TIMER&t;110&t;/* and up */
 DECL|macro|OPENPIC_VEC_IPI
 mdefine_line|#define OPENPIC_VEC_IPI&t;&t;118&t;/* and up */
 DECL|macro|OPENPIC_VEC_SPURIOUS
-mdefine_line|#define OPENPIC_VEC_SPURIOUS&t;239
+mdefine_line|#define OPENPIC_VEC_SPURIOUS&t;255
 multiline_comment|/* OpenPIC IRQ controller structure */
 r_extern
 r_struct

@@ -232,12 +232,6 @@ DECL|macro|CRW_ERC_PERRI
 mdefine_line|#define CRW_ERC_PERRI    0x07 /* perm. error, facility init */
 DECL|macro|CRW_ERC_PMOD
 mdefine_line|#define CRW_ERC_PMOD     0x08 /* installed parameters modified */
-DECL|macro|MCHCHK_STATUS_TO_PROCESS
-mdefine_line|#define MCHCHK_STATUS_TO_PROCESS    0x00000001
-DECL|macro|MCHCHK_STATUS_IN_PROGRESS
-mdefine_line|#define MCHCHK_STATUS_IN_PROGRESS   0x00000002
-DECL|macro|MCHCHK_STATUS_WAITING
-mdefine_line|#define MCHCHK_STATUS_WAITING       0x00000004
 DECL|function|stcrw
 r_extern
 id|__inline__

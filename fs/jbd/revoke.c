@@ -1972,7 +1972,7 @@ l_int|0
 suffix:semicolon
 id|header-&gt;h_magic
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -1980,7 +1980,7 @@ id|JFS_MAGIC_NUMBER
 suffix:semicolon
 id|header-&gt;h_blocktype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_REVOKE_BLOCK
@@ -1988,7 +1988,7 @@ id|JFS_REVOKE_BLOCK
 suffix:semicolon
 id|header-&gt;h_sequence
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|transaction-&gt;t_tid
@@ -2029,8 +2029,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 (paren
@@ -2048,7 +2047,7 @@ id|offset
 )paren
 )paren
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|record-&gt;blocknr
@@ -2134,7 +2133,7 @@ id|b_data
 suffix:semicolon
 id|header-&gt;r_count
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|offset
