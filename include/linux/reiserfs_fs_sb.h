@@ -477,36 +477,36 @@ r_int
 id|j_cnode_free
 suffix:semicolon
 multiline_comment|/* number of cnodes on the free list */
-DECL|member|s_journal_trans_max
+DECL|member|j_trans_max
 r_int
 r_int
-id|s_journal_trans_max
+id|j_trans_max
 suffix:semicolon
 multiline_comment|/* max number of blocks in a transaction.  */
-DECL|member|s_journal_max_batch
+DECL|member|j_max_batch
 r_int
 r_int
-id|s_journal_max_batch
+id|j_max_batch
 suffix:semicolon
 multiline_comment|/* max number of blocks to batch into a trans */
-DECL|member|s_journal_max_commit_age
+DECL|member|j_max_commit_age
 r_int
 r_int
-id|s_journal_max_commit_age
+id|j_max_commit_age
 suffix:semicolon
 multiline_comment|/* in seconds, how old can an async commit be */
-DECL|member|s_journal_default_max_commit_age
+DECL|member|j_max_trans_age
 r_int
 r_int
-id|s_journal_default_max_commit_age
-suffix:semicolon
-multiline_comment|/* the default for the max commit age */
-DECL|member|s_journal_max_trans_age
-r_int
-r_int
-id|s_journal_max_trans_age
+id|j_max_trans_age
 suffix:semicolon
 multiline_comment|/* in seconds, how old can a transaction be */
+DECL|member|j_default_max_commit_age
+r_int
+r_int
+id|j_default_max_commit_age
+suffix:semicolon
+multiline_comment|/* the default for the max commit age */
 DECL|member|j_cnode_free_list
 r_struct
 id|reiserfs_journal_cnode
@@ -1386,16 +1386,6 @@ DECL|macro|SB_AP_BITMAP
 mdefine_line|#define SB_AP_BITMAP(s) (REISERFS_SB(s)-&gt;s_ap_bitmap)
 DECL|macro|SB_DISK_JOURNAL_HEAD
 mdefine_line|#define SB_DISK_JOURNAL_HEAD(s) (SB_JOURNAL(s)-&gt;j_header_bh-&gt;)
-DECL|macro|SB_JOURNAL_TRANS_MAX
-mdefine_line|#define SB_JOURNAL_TRANS_MAX(s)      (SB_JOURNAL(s)-&gt;s_journal_trans_max)
-DECL|macro|SB_JOURNAL_MAX_BATCH
-mdefine_line|#define SB_JOURNAL_MAX_BATCH(s)      (SB_JOURNAL(s)-&gt;s_journal_max_batch)
-DECL|macro|SB_JOURNAL_MAX_COMMIT_AGE
-mdefine_line|#define SB_JOURNAL_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_max_commit_age)
-DECL|macro|SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE
-mdefine_line|#define SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_default_max_commit_age)
-DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
-mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
 multiline_comment|/* A safe version of the &quot;bdevname&quot;, which returns the &quot;s_id&quot; field of&n; * a superblock or else &quot;Null superblock&quot; if the super block is NULL.&n; */
 DECL|function|reiserfs_bdevname
 r_static
