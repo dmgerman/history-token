@@ -207,6 +207,11 @@ op_assign
 id|DRV_NAME
 comma
 dot
+id|ioctl
+op_assign
+id|ata_scsi_ioctl
+comma
+dot
 id|queuecommand
 op_assign
 id|ata_scsi_queuecmd
@@ -965,7 +970,11 @@ suffix:semicolon
 )brace
 id|probe_ent-&gt;pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
+suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+l_int|0x7
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign

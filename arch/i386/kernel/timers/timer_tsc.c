@@ -751,6 +751,13 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_ne
+id|CPUFREQ_RESUMECHANGE
+)paren
 id|write_seqlock_irq
 c_func
 (paren
@@ -915,6 +922,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+r_if
+c_cond
+(paren
+id|val
+op_ne
+id|CPUFREQ_RESUMECHANGE
+)paren
 id|write_sequnlock_irq
 c_func
 (paren

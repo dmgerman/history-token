@@ -1282,6 +1282,8 @@ DECL|macro|XFS_DIFLAG_NOATIME_BIT
 mdefine_line|#define XFS_DIFLAG_NOATIME_BIT   6&t;/* do not update atime */
 DECL|macro|XFS_DIFLAG_NODUMP_BIT
 mdefine_line|#define XFS_DIFLAG_NODUMP_BIT    7&t;/* do not dump */
+DECL|macro|XFS_DIFLAG_RTINHERIT_BIT
+mdefine_line|#define XFS_DIFLAG_RTINHERIT_BIT 8&t;/* create with realtime bit set */
 DECL|macro|XFS_DIFLAG_REALTIME
 mdefine_line|#define XFS_DIFLAG_REALTIME      (1 &lt;&lt; XFS_DIFLAG_REALTIME_BIT)
 DECL|macro|XFS_DIFLAG_PREALLOC
@@ -1298,5 +1300,9 @@ DECL|macro|XFS_DIFLAG_NOATIME
 mdefine_line|#define XFS_DIFLAG_NOATIME       (1 &lt;&lt; XFS_DIFLAG_NOATIME_BIT)
 DECL|macro|XFS_DIFLAG_NODUMP
 mdefine_line|#define XFS_DIFLAG_NODUMP        (1 &lt;&lt; XFS_DIFLAG_NODUMP_BIT)
+DECL|macro|XFS_DIFLAG_RTINHERIT
+mdefine_line|#define XFS_DIFLAG_RTINHERIT     (1 &lt;&lt; XFS_DIFLAG_RTINHERIT_BIT)
+DECL|macro|XFS_DIFLAG_ANY
+mdefine_line|#define XFS_DIFLAG_ANY &bslash;&n;&t;(XFS_DIFLAG_REALTIME | XFS_DIFLAG_PREALLOC | XFS_DIFLAG_NEWRTBM | &bslash;&n;&t; XFS_DIFLAG_IMMUTABLE | XFS_DIFLAG_APPEND | XFS_DIFLAG_SYNC | &bslash;&n;&t; XFS_DIFLAG_NOATIME | XFS_DIFLAG_NODUMP | XFS_DIFLAG_RTINHERIT)
 macro_line|#endif&t;/* __XFS_DINODE_H__ */
 eof

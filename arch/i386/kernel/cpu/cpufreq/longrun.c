@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -13,7 +13,7 @@ r_struct
 id|cpufreq_driver
 id|longrun_driver
 suffix:semicolon
-multiline_comment|/**&n; * longrun_{low,high}_freq is needed for the conversion of cpufreq kHz &n; * values into per cent values. In TMTA microcode, the following is valid:&n; * performance_pctg = (current_freq - low_freq)/(high_freq - low_freq)&n; */
+multiline_comment|/**&n; * longrun_{low,high}_freq is needed for the conversion of cpufreq kHz&n; * values into per cent values. In TMTA microcode, the following is valid:&n; * performance_pctg = (current_freq - low_freq)/(high_freq - low_freq)&n; */
 DECL|variable|longrun_low_freq
 DECL|variable|longrun_high_freq
 r_static
@@ -339,7 +339,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longrun_verify_poliy - verifies a new CPUFreq policy&n; * @policy: the policy to verify&n; *&n; * Validates a new CPUFreq policy. This function has to be called with &n; * cpufreq_driver locked.&n; */
+multiline_comment|/**&n; * longrun_verify_poliy - verifies a new CPUFreq policy&n; * @policy: the policy to verify&n; *&n; * Validates a new CPUFreq policy. This function has to be called with&n; * cpufreq_driver locked.&n; */
 DECL|function|longrun_verify_policy
 r_static
 r_int
@@ -528,7 +528,7 @@ id|X86_FEATURE_LRTI
 )paren
 )paren
 (brace
-multiline_comment|/* if the LongRun Table Interface is present, the&n;&t;&t; * detection is a bit easier: &n;&t;&t; * For minimum frequency, read out the maximum&n;&t;&t; * level (msr_hi), write that into &quot;currently &n;&t;&t; * selected level&quot;, and read out the frequency.&n;&t;&t; * For maximum frequency, read out level zero.&n;&t;&t; */
+multiline_comment|/* if the LongRun Table Interface is present, the&n;&t;&t; * detection is a bit easier:&n;&t;&t; * For minimum frequency, read out the maximum&n;&t;&t; * level (msr_hi), write that into &quot;currently&n;&t;&t; * selected level&quot;, and read out the frequency.&n;&t;&t; * For maximum frequency, read out level zero.&n;&t;&t; */
 multiline_comment|/* minimum */
 id|rdmsr
 c_func

@@ -250,7 +250,7 @@ id|counter_config
 id|i
 )braket
 dot
-id|event
+id|enabled
 )paren
 (brace
 id|reset_value

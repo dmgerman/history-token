@@ -6,8 +6,17 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#warning This module will be removed from the 2.6. kernel series soon after 2005-01-01
 DECL|macro|CPUFREQ_ALL_CPUS
 mdefine_line|#define CPUFREQ_ALL_CPUS&t;&t;((NR_CPUS))
+DECL|variable|warning_print
+r_static
+r_int
+r_int
+id|warning_print
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/**&n; * cpufreq_parse_policy - parse a policy string&n; * @input_string: the string to parse.&n; * @policy: the policy written inside input_string&n; *&n; * This function parses a &quot;policy string&quot; - something the user echo&squot;es into&n; * /proc/cpufreq or gives as boot parameter - into a struct cpufreq_policy.&n; * If there are invalid/missing entries, they are replaced with current&n; * cpufreq policy.&n; */
 DECL|function|cpufreq_parse_policy
 r_static
@@ -405,6 +414,26 @@ l_int|0
 r_goto
 id|end
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/cpufreq is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|p
 op_add_assign
 id|sprintf
@@ -725,6 +754,26 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|warning_print
+)paren
+(brace
+id|warning_print
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Access to /proc/cpufreq is deprecated and &quot;
+l_string|&quot;will be removed from (new) 2.6. kernels soon &quot;
+l_string|&quot;after 2005-01-01&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|proc_string
 (braket
 id|count

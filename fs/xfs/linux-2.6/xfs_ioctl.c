@@ -38,13 +38,6 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-multiline_comment|/*&n; * ioctl commands that are used by Linux filesystems&n; */
-DECL|macro|XFS_IOC_GETXFLAGS
-mdefine_line|#define XFS_IOC_GETXFLAGS&t;_IOR(&squot;f&squot;, 1, long)
-DECL|macro|XFS_IOC_SETXFLAGS
-mdefine_line|#define XFS_IOC_SETXFLAGS&t;_IOW(&squot;f&squot;, 2, long)
-DECL|macro|XFS_IOC_GETVERSION
-mdefine_line|#define XFS_IOC_GETVERSION&t;_IOR(&squot;v&squot;, 1, long)
 multiline_comment|/*&n; * xfs_find_handle maps from userspace xfs_fsop_handlereq structure to&n; * a file or fs handle.&n; *&n; * XFS_IOC_PATH_TO_FSHANDLE&n; *    returns fs handle for a mount point or path within that mount point&n; * XFS_IOC_FD_TO_HANDLE&n; *    returns full handle for a FD opened in user space&n; * XFS_IOC_PATH_TO_HANDLE&n; *    returns full handle for a path&n; */
 id|STATIC
 r_int
@@ -56,8 +49,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -89,10 +83,6 @@ c_func
 op_amp
 id|hreq
 comma
-(paren
-id|xfs_fsop_handlereq_t
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -152,6 +142,12 @@ op_assign
 id|user_path_walk_link
 c_func
 (paren
+(paren
+r_const
+r_char
+id|__user
+op_star
+)paren
 id|hreq.path
 comma
 op_amp
@@ -467,10 +463,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|xfs_handle_t
-op_star
-)paren
 id|hreq.ohandle
 comma
 op_amp
@@ -540,8 +532,9 @@ r_int
 id|cap
 comma
 multiline_comment|/* capability level for op */
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 multiline_comment|/* userspace data pointer  */
@@ -568,6 +561,7 @@ id|inode
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|hanp
 suffix:semicolon
@@ -651,11 +645,6 @@ c_func
 (paren
 id|hreq
 comma
-(paren
-r_struct
-id|xfs_fsop_handlereq
-op_star
-)paren
 id|arg
 comma
 id|size
@@ -959,8 +948,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_struct
@@ -1368,8 +1358,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_struct
@@ -1571,8 +1562,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_struct
@@ -1769,8 +1761,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_struct
@@ -1900,8 +1893,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_struct
@@ -2350,8 +2344,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2368,8 +2363,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2382,8 +2378,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2396,8 +2393,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2423,8 +2421,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2449,8 +2448,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2463,8 +2463,9 @@ id|bhv_desc_t
 op_star
 id|bdp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2494,8 +2495,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -2662,11 +2664,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|dioattr
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -2784,11 +2781,6 @@ c_func
 op_amp
 id|dmi
 comma
-(paren
-r_struct
-id|fsdmidata
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -2967,6 +2959,7 @@ c_func
 (paren
 r_struct
 id|xfs_swapext
+id|__user
 op_star
 )paren
 id|arg
@@ -3010,10 +3003,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -3070,10 +3059,6 @@ c_func
 op_amp
 id|inout
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3124,10 +3109,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -3200,10 +3181,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -3257,10 +3234,6 @@ c_func
 op_amp
 id|in
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3323,10 +3296,6 @@ c_func
 op_amp
 id|in
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3389,10 +3358,6 @@ c_func
 op_amp
 id|in
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3510,6 +3475,7 @@ id|in
 comma
 (paren
 id|__uint32_t
+id|__user
 op_star
 )paren
 id|arg
@@ -3568,10 +3534,6 @@ c_func
 op_amp
 id|in
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3666,8 +3628,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -3743,10 +3706,6 @@ c_func
 op_amp
 id|bf
 comma
-(paren
-id|xfs_flock64_t
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3827,8 +3786,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -3891,10 +3851,6 @@ c_func
 op_amp
 id|bulkreq
 comma
-(paren
-id|xfs_fsop_bulkreq_t
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3920,10 +3876,6 @@ c_func
 op_amp
 id|inlast
 comma
-(paren
-id|__s64
-op_star
-)paren
 id|bulkreq.lastip
 comma
 r_sizeof
@@ -4101,10 +4053,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|xfs_ino_t
-op_star
-)paren
 id|bulkreq.lastip
 comma
 op_amp
@@ -4130,10 +4078,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|__s32
-op_star
-)paren
 id|bulkreq.ocount
 comma
 op_amp
@@ -4168,8 +4112,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4211,10 +4156,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|xfs_fsop_geom_t
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4248,8 +4189,9 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4287,10 +4229,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|xfs_fsop_geom_t
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4535,8 +4473,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4617,11 +4556,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|fsxattr
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4658,11 +4592,6 @@ c_func
 op_amp
 id|fa
 comma
-(paren
-r_struct
-id|fsxattr
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -4799,11 +4728,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|fsxattr
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4845,11 +4769,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_int
-r_int
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4886,11 +4805,6 @@ c_func
 op_amp
 id|flags
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -5028,11 +4942,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_int
-r_int
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -5086,8 +4995,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -5110,11 +5020,6 @@ c_func
 op_amp
 id|bm
 comma
-(paren
-r_struct
-id|getbmap
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -5183,6 +5088,7 @@ comma
 (paren
 r_struct
 id|getbmap
+id|__user
 op_star
 )paren
 id|arg
@@ -5207,11 +5113,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|getbmap
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -5245,8 +5146,9 @@ id|bhv_desc_t
 op_star
 id|bdp
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -5273,11 +5175,6 @@ c_func
 op_amp
 id|bmx
 comma
-(paren
-r_struct
-id|getbmapx
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -5357,6 +5254,7 @@ comma
 (paren
 r_struct
 id|getbmapx
+id|__user
 op_star
 )paren
 id|arg
@@ -5389,11 +5287,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|getbmapx
-op_star
-)paren
 id|arg
 comma
 op_amp

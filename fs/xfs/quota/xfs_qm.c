@@ -584,33 +584,13 @@ id|xfs_Gqm
 op_eq
 l_int|NULL
 )paren
-(brace
-r_if
-c_cond
-(paren
-(paren
 id|xfs_Gqm
 op_assign
 id|xfs_Gqm_init
 c_func
 (paren
 )paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-(paren
-id|XFS_ERROR
-c_func
-(paren
-id|EINVAL
-)paren
-)paren
 suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n;&t; * We can keep a list of all filesystems with quotas mounted for&n;&t; * debugging and statistical purposes, but ...&n;&t; * Just take a reference and get out.&n;&t; */
 id|XFS_QM_HOLD
 c_func
@@ -5894,6 +5874,7 @@ id|ino
 comma
 multiline_comment|/* inode number to get data for */
 r_void
+id|__user
 op_star
 id|buffer
 comma

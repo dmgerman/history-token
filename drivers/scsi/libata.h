@@ -111,6 +111,20 @@ op_star
 id|tf
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|swap_buf_le16
+c_func
+(paren
+id|u16
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buf_words
+)paren
+suffix:semicolon
 multiline_comment|/* libata-scsi.c */
 r_extern
 r_void
@@ -121,6 +135,9 @@ r_struct
 id|ata_queued_cmd
 op_star
 id|qc
+comma
+id|u8
+id|drv_stat
 )paren
 suffix:semicolon
 r_extern

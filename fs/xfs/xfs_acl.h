@@ -265,7 +265,7 @@ mdefine_line|#define _ACL_XFS_IACCESS(i,m,c) (XFS_IFORK_Q(i) ? xfs_acl_iaccess(i
 DECL|macro|_ACL_ALLOC
 mdefine_line|#define _ACL_ALLOC(a)&t;&t;((a) = kmem_zone_alloc(xfs_acl_zone, KM_SLEEP))
 DECL|macro|_ACL_FREE
-mdefine_line|#define _ACL_FREE(a)&t;&t;((a)? kmem_zone_free(xfs_acl_zone, (a)) : 0)
+mdefine_line|#define _ACL_FREE(a)&t;&t;((a)? kmem_zone_free(xfs_acl_zone, (a)):(void)0)
 macro_line|#else
 DECL|macro|xfs_acl_zone_init
 mdefine_line|#define xfs_acl_zone_init(zone,name)

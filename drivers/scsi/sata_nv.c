@@ -18,6 +18,8 @@ DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
 mdefine_line|#define NV_PIO_MASK&t;&t;&t;0x1f
+DECL|macro|NV_MWDMA_MASK
+mdefine_line|#define NV_MWDMA_MASK&t;&t;&t;0x07
 DECL|macro|NV_UDMA_MASK
 mdefine_line|#define NV_UDMA_MASK&t;&t;&t;0x7f
 DECL|macro|NV_PORT0_BMDMA_REG_OFFSET
@@ -579,6 +581,11 @@ dot
 id|name
 op_assign
 id|DRV_NAME
+comma
+dot
+id|ioctl
+op_assign
+id|ata_scsi_ioctl
 comma
 dot
 id|queuecommand
@@ -1384,6 +1391,10 @@ id|probe_ent-&gt;pio_mask
 op_assign
 id|NV_PIO_MASK
 suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+id|NV_MWDMA_MASK
+suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
 id|NV_UDMA_MASK
@@ -1566,7 +1577,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|err_out_free_ent
+id|err_out_iounmap
 suffix:semicolon
 id|base
 op_assign
@@ -1672,7 +1683,7 @@ op_ne
 id|NV_PORTS
 )paren
 r_goto
-id|err_out_free_ent
+id|err_out_iounmap
 suffix:semicolon
 id|kfree
 c_func
@@ -1682,6 +1693,21 @@ id|probe_ent
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_out_iounmap
+suffix:colon
+r_if
+c_cond
+(paren
+id|host-&gt;host_desc-&gt;host_flags
+op_amp
+id|NV_HOST_FLAGS_SCR_MMIO
+)paren
+id|iounmap
+c_func
+(paren
+id|probe_ent-&gt;mmio_base
+)paren
 suffix:semicolon
 id|err_out_free_ent
 suffix:colon

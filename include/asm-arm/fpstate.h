@@ -2,8 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/fpstate.h&n; *&n; *  Copyright 
 macro_line|#ifndef __ASM_ARM_FPSTATE_H
 DECL|macro|__ASM_ARM_FPSTATE_H
 mdefine_line|#define __ASM_ARM_FPSTATE_H
-DECL|macro|FP_SIZE
-mdefine_line|#define FP_SIZE 35
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * VFP storage area has:&n; *  - FPEXC, FPSCR, FPINST and FPINST2.&n; *  - 16 double precision data registers&n; *  - an implementation-dependant word of state for FLDMX/FSTMX&n; * &n; *  FPEXC will always be non-zero once the VFP has been used in this process.&n; */
 DECL|struct|vfp_hard_struct
@@ -71,6 +70,8 @@ id|vfp_state
 op_star
 )paren
 suffix:semicolon
+DECL|macro|FP_HARD_SIZE
+mdefine_line|#define FP_HARD_SIZE 35
 DECL|struct|fp_hard_struct
 r_struct
 id|fp_hard_struct
@@ -80,12 +81,14 @@ r_int
 r_int
 id|save
 (braket
-id|FP_SIZE
+id|FP_HARD_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* as yet undefined */
 )brace
 suffix:semicolon
+DECL|macro|FP_SOFT_SIZE
+mdefine_line|#define FP_SOFT_SIZE 35
 DECL|struct|fp_soft_struct
 r_struct
 id|fp_soft_struct
@@ -95,10 +98,31 @@ r_int
 r_int
 id|save
 (braket
-id|FP_SIZE
+id|FP_SOFT_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* undefined information */
+)brace
+suffix:semicolon
+DECL|struct|iwmmxt_struct
+r_struct
+id|iwmmxt_struct
+(brace
+DECL|member|save
+r_int
+r_int
+id|save
+(braket
+l_int|0x98
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+op_plus
+l_int|1
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|union|fp_state
@@ -115,8 +139,17 @@ r_struct
 id|fp_soft_struct
 id|soft
 suffix:semicolon
+macro_line|#ifdef CONFIG_IWMMXT
+DECL|member|iwmmxt
+r_struct
+id|iwmmxt_struct
+id|iwmmxt
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|FP_SIZE
+mdefine_line|#define FP_SIZE (sizeof(union fp_state) / sizeof(int))
 macro_line|#endif
 macro_line|#endif
 eof

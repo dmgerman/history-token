@@ -9,7 +9,17 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
+macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &quot;common.h&quot;
+r_extern
+r_void
+id|__init
+id|omap_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|omap_perseus2_init_irq
 r_void
 id|omap_perseus2_init_irq
@@ -41,13 +51,13 @@ op_assign
 dot
 id|start
 op_assign
-id|OMAP730_FPGA_ETHR_START
+id|H2P2_DBG_FPGA_ETHR_START
 comma
 multiline_comment|/* Physical */
 dot
 id|end
 op_assign
-id|OMAP730_FPGA_ETHR_START
+id|H2P2_DBG_FPGA_ETHR_START
 op_plus
 id|SZ_4K
 comma
@@ -66,7 +76,7 @@ op_assign
 dot
 id|start
 op_assign
-l_int|0
+id|INT_730_MPU_EXT_NIRQ
 comma
 dot
 id|end
@@ -76,7 +86,7 @@ comma
 dot
 id|flags
 op_assign
-id|INT_ETHER
+id|IORESOURCE_IRQ
 comma
 )brace
 comma
@@ -169,11 +179,11 @@ id|__initdata
 op_assign
 (brace
 (brace
-id|OMAP730_FPGA_BASE
+id|H2P2_DBG_FPGA_BASE
 comma
-id|OMAP730_FPGA_START
+id|H2P2_DBG_FPGA_START
 comma
-id|OMAP730_FPGA_SIZE
+id|H2P2_DBG_FPGA_SIZE
 comma
 id|MT_DEVICE
 )brace
@@ -312,15 +322,15 @@ c_func
 (paren
 id|omap_perseus2_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
 id|INIT_MACHINE
 c_func
 (paren
 id|omap_perseus2_init
+)paren
+id|INITTIME
+c_func
+(paren
+id|omap_init_time
 )paren
 id|MACHINE_END
 eof

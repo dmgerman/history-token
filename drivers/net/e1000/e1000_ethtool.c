@@ -490,6 +490,16 @@ id|stats.xofftxc
 )brace
 comma
 (brace
+l_string|&quot;rx_long_byte_count&quot;
+comma
+id|E1000_STAT
+c_func
+(paren
+id|stats.gorcl
+)paren
+)brace
+comma
+(brace
 l_string|&quot;rx_csum_offload_good&quot;
 comma
 id|E1000_STAT
@@ -506,16 +516,6 @@ id|E1000_STAT
 c_func
 (paren
 id|hw_csum_err
-)paren
-)brace
-comma
-(brace
-l_string|&quot;rx_long_byte_count&quot;
-comma
-id|E1000_STAT
-c_func
-(paren
-id|stats.gorcl
 )paren
 )brace
 )brace
@@ -761,13 +761,19 @@ suffix:semicolon
 id|ecmd-&gt;autoneg
 op_assign
 (paren
+(paren
+id|hw-&gt;media_type
+op_eq
+id|e1000_media_type_fiber
+)paren
+op_logical_or
 id|hw-&gt;autoneg
+)paren
 ques
 c_cond
 id|AUTONEG_ENABLE
 suffix:colon
 id|AUTONEG_DISABLE
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -858,6 +864,12 @@ id|adapter-&gt;netdev
 )paren
 (brace
 id|e1000_down
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+id|e1000_reset
 c_func
 (paren
 id|adapter
@@ -2087,6 +2099,32 @@ l_int|24
 )braket
 suffix:semicolon
 multiline_comment|/* phy remote receiver status */
+r_if
+c_cond
+(paren
+id|hw-&gt;mac_type
+op_ge
+id|e1000_82540
+op_logical_and
+id|hw-&gt;media_type
+op_eq
+id|e1000_media_type_copper
+)paren
+(brace
+id|regs_buff
+(braket
+l_int|26
+)braket
+op_assign
+id|E1000_READ_REG
+c_func
+(paren
+id|hw
+comma
+id|MANC
+)paren
+suffix:semicolon
+)brace
 )brace
 r_static
 r_int
@@ -2234,10 +2272,12 @@ c_cond
 op_logical_neg
 id|eeprom_buff
 )paren
+(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2357,8 +2397,8 @@ id|eeprom_buff
 op_plus
 (paren
 id|eeprom-&gt;offset
-op_mod
-l_int|2
+op_amp
+l_int|1
 )paren
 comma
 id|eeprom-&gt;len
@@ -2922,9 +2962,6 @@ op_star
 id|ring
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 r_struct
 id|e1000_adapter
 op_star
@@ -2958,12 +2995,13 @@ id|e1000_desc_ring
 id|tx_old
 comma
 id|tx_new
-suffix:semicolon
-r_struct
-id|e1000_desc_ring
+comma
 id|rx_old
 comma
 id|rx_new
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|tx_old
 op_assign
@@ -3086,7 +3124,7 @@ id|adapter-&gt;netdev
 )paren
 )paren
 (brace
-multiline_comment|/* try to get new resources before deleting old */
+multiline_comment|/* Try to get new resources before deleting old */
 r_if
 c_cond
 (paren
@@ -3872,6 +3910,15 @@ comma
 id|i
 op_assign
 l_int|0
+comma
+id|shared_int
+op_assign
+id|TRUE
+suffix:semicolon
+r_uint32
+id|irq
+op_assign
+id|adapter-&gt;pdev-&gt;irq
 suffix:semicolon
 op_star
 id|data
@@ -3882,10 +3929,36 @@ multiline_comment|/* Hook up test interrupt handler just for this test */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|request_irq
 c_func
 (paren
-id|adapter-&gt;pdev-&gt;irq
+id|irq
+comma
+op_amp
+id|e1000_test_intr
+comma
+l_int|0
+comma
+id|netdev-&gt;name
+comma
+id|netdev
+)paren
+)paren
+(brace
+id|shared_int
+op_assign
+id|FALSE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|irq
 comma
 op_amp
 id|e1000_test_intr
@@ -3988,7 +4061,14 @@ l_int|1
 op_lshift
 id|i
 suffix:semicolon
-multiline_comment|/* Disable the interrupt to be reported in&n;&t;&t; * the cause register and then force the same&n;&t;&t; * interrupt and see if one gets posted.  If&n;&t;&t; * an interrupt was posted to the bus, the&n;&t;&t; * test failed.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shared_int
+)paren
+(brace
+multiline_comment|/* Disable the interrupt to be reported in&n; &t;&t;&t; * the cause register and then force the same&n; &t;&t;&t; * interrupt and see if one gets posted.  If&n; &t;&t;&t; * an interrupt was posted to the bus, the&n; &t;&t;&t; * test failed.&n; &t;&t;&t; */
 id|adapter-&gt;test_icr
 op_assign
 l_int|0
@@ -4036,6 +4116,7 @@ l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Enable the interrupt to be reported in&n;&t;&t; * the cause register and then force the same&n;&t;&t; * interrupt and see if one gets posted.  If&n;&t;&t; * an interrupt was not posted to the bus, the&n;&t;&t; * test failed.&n;&t;&t; */
 id|adapter-&gt;test_icr
@@ -4089,7 +4170,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Disable the other interrupts to be reported in&n;&t;&t; * the cause register and then force the other&n;&t;&t; * interrupts and see if any get posted.  If&n;&t;&t; * an interrupt was posted to the bus, the&n;&t;&t; * test failed.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shared_int
+)paren
+(brace
+multiline_comment|/* Disable the other interrupts to be reported in&n;&t;&t;&t; * the cause register and then force the other&n;&t;&t;&t; * interrupts and see if any get posted.  If&n;&t;&t;&t; * an interrupt was posted to the bus, the&n;&t;&t;&t; * test failed.&n;&t;&t;&t; */
 id|adapter-&gt;test_icr
 op_assign
 l_int|0
@@ -4139,6 +4227,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+)brace
 multiline_comment|/* Disable all the interrupts */
 id|E1000_WRITE_REG
 c_func
@@ -4161,7 +4250,7 @@ multiline_comment|/* Unhook test interrupt handler */
 id|free_irq
 c_func
 (paren
-id|adapter-&gt;pdev-&gt;irq
+id|irq
 comma
 id|netdev
 )paren
@@ -6465,7 +6554,7 @@ comma
 l_int|1024
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|pdev
@@ -6505,7 +6594,7 @@ c_func
 l_int|200
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|pdev
@@ -6903,7 +6992,7 @@ op_or_assign
 id|ETH_TEST_FL_FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* restore Autoneg/speed/duplex settings */
+multiline_comment|/* restore speed, duplex, autoneg settings */
 id|adapter-&gt;hw.autoneg_advertised
 op_assign
 id|autoneg_advertised
@@ -7040,6 +7129,9 @@ id|E1000_DEV_ID_82543GC_COPPER
 suffix:colon
 r_case
 id|E1000_DEV_ID_82544EI_FIBER
+suffix:colon
+r_case
+id|E1000_DEV_ID_82546EB_QUAD_COPPER
 suffix:colon
 id|wol-&gt;supported
 op_assign
@@ -7205,6 +7297,9 @@ id|E1000_DEV_ID_82543GC_COPPER
 suffix:colon
 r_case
 id|E1000_DEV_ID_82544EI_FIBER
+suffix:colon
+r_case
+id|E1000_DEV_ID_82546EB_QUAD_COPPER
 suffix:colon
 r_return
 id|wol-&gt;wolopts

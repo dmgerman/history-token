@@ -1910,6 +1910,17 @@ suffix:semicolon
 r_int
 id|offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|of_stdout_device
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* The user has requested a console so this is already set up. */
 r_if
 c_cond

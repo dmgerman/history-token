@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  sata_sil.c - Silicon Image SATA&n; *&n; *  Maintained by:  Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *  &t;&t;    Please ALWAYS copy linux-ide@vger.kernel.org&n; *&t;&t;    on emails.&n; *&n; *  Copyright 2003 Red Hat, Inc.&n; *  Copyright 2003 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; */
+multiline_comment|/*&n; *  sata_sil.c - Silicon Image SATA&n; *&n; *  Maintained by:  Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *  &t;&t;    Please ALWAYS copy linux-ide@vger.kernel.org&n; *&t;&t;    on emails.&n; *&n; *  Copyright 2003 Red Hat, Inc.&n; *  Copyright 2003 Benjamin Herrenschmidt&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -418,6 +418,11 @@ op_assign
 id|DRV_NAME
 comma
 dot
+id|ioctl
+op_assign
+id|ata_scsi_ioctl
+comma
+dot
 id|queuecommand
 op_assign
 id|ata_scsi_queuecmd
@@ -619,9 +624,15 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+dot
+id|mwdma_mask
+op_assign
+l_int|0x07
+comma
+multiline_comment|/* mwdma0-2 */
 dot
 id|udma_mask
 op_assign
@@ -658,9 +669,15 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+dot
+id|mwdma_mask
+op_assign
+l_int|0x07
+comma
+multiline_comment|/* mwdma0-2 */
 dot
 id|udma_mask
 op_assign
@@ -1612,6 +1629,15 @@ id|ent-&gt;driver_data
 )braket
 dot
 id|pio_mask
+suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+id|sil_port_info
+(braket
+id|ent-&gt;driver_data
+)braket
+dot
+id|mwdma_mask
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign

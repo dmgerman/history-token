@@ -48,11 +48,16 @@ r_int
 id|val
 suffix:semicolon
 multiline_comment|/* Make sure there&squot;s clock for OCPI */
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710)
 r_if
 c_cond
 (paren
 id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren

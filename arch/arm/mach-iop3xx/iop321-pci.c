@@ -485,6 +485,9 @@ id|IOP321_OCCDR
 )paren
 suffix:semicolon
 )brace
+r_return
+id|PCIBIOS_SUCCESSFUL
+suffix:semicolon
 )brace
 DECL|variable|iop321_ops
 r_static

@@ -4888,7 +4888,11 @@ c_func
 (paren
 id|dev
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|fifty_base_hpt370a
 )paren
 suffix:semicolon
 r_else

@@ -35,6 +35,7 @@ id|xfs_swapext
 c_func
 (paren
 id|xfs_swapext_t
+id|__user
 op_star
 id|sxp
 )paren

@@ -388,6 +388,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|blk_get_backing_dev_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_get_backing_dev_info
+)paren
+suffix:semicolon
 DECL|function|blk_queue_activity_fn
 r_void
 id|blk_queue_activity_fn

@@ -43,7 +43,9 @@ DECL|macro|MII_NCONFIG
 mdefine_line|#define MII_NCONFIG         0x1c        /* Network interface config    */
 multiline_comment|/* Basic mode control register. */
 DECL|macro|BMCR_RESV
-mdefine_line|#define BMCR_RESV               0x007f  /* Unused...                   */
+mdefine_line|#define BMCR_RESV               0x003f  /* Unused...                   */
+DECL|macro|BMCR_SPEED1000
+mdefine_line|#define BMCR_SPEED1000&t;&t;0x0040  /* MSB of Speed (1000)         */
 DECL|macro|BMCR_CTST
 mdefine_line|#define BMCR_CTST               0x0080  /* Collision test              */
 DECL|macro|BMCR_FULLDPLX

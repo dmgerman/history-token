@@ -34,6 +34,7 @@ macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_version.h&quot;
+macro_line|#include &quot;xfs_ioctl32.h&quot;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
@@ -1987,7 +1988,7 @@ l_int|2
 suffix:semicolon
 id|dotdot.d_inode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cvp
 op_assign
@@ -3308,6 +3309,21 @@ suffix:semicolon
 )brace
 id|error
 op_assign
+id|xfs_ioctl32_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|undo_ioctl32
+suffix:semicolon
+id|error
+op_assign
 id|register_filesystem
 c_func
 (paren
@@ -3334,6 +3350,13 @@ r_return
 l_int|0
 suffix:semicolon
 id|undo_register
+suffix:colon
+id|xfs_ioctl32_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|undo_ioctl32
 suffix:colon
 id|kmem_shake_deregister
 c_func
@@ -3388,6 +3411,11 @@ c_func
 (paren
 op_amp
 id|xfs_fs_type
+)paren
+suffix:semicolon
+id|xfs_ioctl32_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kmem_shake_deregister

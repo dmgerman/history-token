@@ -1970,7 +1970,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;&bslash;nTcpExt:&quot;
+l_string|&quot;TcpExt:&quot;
 )paren
 suffix:semicolon
 r_for

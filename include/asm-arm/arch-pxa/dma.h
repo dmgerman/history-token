@@ -8,8 +8,10 @@ multiline_comment|/* No DMA as the rest of the world see it */
 DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS&t;0
 multiline_comment|/*&n; * Descriptor structure for PXA&squot;s DMA engine&n; * Note: this structure must always be aligned to a 16-byte boundary.&n; */
+DECL|struct|pxa_dma_desc
 r_typedef
 r_struct
+id|pxa_dma_desc
 (brace
 DECL|member|ddadr
 r_volatile

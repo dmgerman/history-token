@@ -688,6 +688,8 @@ id|gx_params-&gt;pci_suscfg
 op_or
 id|SUSMOD
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|local_irq_restore
