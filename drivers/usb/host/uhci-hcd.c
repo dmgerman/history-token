@@ -10541,7 +10541,7 @@ id|hcd_name
 (braket
 )braket
 op_assign
-l_string|&quot;uhci-hcd&quot;
+l_string|&quot;uhci_hcd&quot;
 suffix:semicolon
 DECL|variable|uhci_driver
 r_static
