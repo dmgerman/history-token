@@ -42,18 +42,6 @@ id|____cacheline_aligned_in_smp
 id|movsl_mask
 suffix:semicolon
 macro_line|#endif
-r_int
-id|__verify_write
-c_func
-(paren
-r_const
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|macro|__addr_ok
 mdefine_line|#define __addr_ok(addr) ((unsigned long)(addr) &lt; (current_thread_info()-&gt;addr_limit.seg))
 multiline_comment|/*&n; * Test whether a block of memory is a valid user space address.&n; * Returns 0 if the range is valid, nonzero otherwise.&n; *&n; * This is equivalent to the following test:&n; * (u33)addr + (u33)size &gt;= (u33)current-&gt;addr_limit.seg&n; *&n; * This needs 33-bit arithmetic. We have a carry...&n; */
