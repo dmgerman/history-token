@@ -3526,6 +3526,12 @@ id|MAY_READ
 comma
 l_int|NULL
 )paren
+op_logical_or
+(paren
+id|bprm-&gt;interp_flags
+op_amp
+id|BINPRM_FLAGS_ENFORCE_NONDUMP
+)paren
 )paren
 id|current-&gt;mm-&gt;dumpable
 op_assign
@@ -4577,6 +4583,10 @@ suffix:semicolon
 id|bprm.interp
 op_assign
 id|filename
+suffix:semicolon
+id|bprm.interp_flags
+op_assign
+l_int|0
 suffix:semicolon
 id|bprm.sh_bang
 op_assign
