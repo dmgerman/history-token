@@ -3254,19 +3254,14 @@ suffix:semicolon
 multiline_comment|/*&n; * USB probe, disconnect.&n; */
 DECL|function|catc_probe
 r_static
-r_void
-op_star
+r_int
 id|catc_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usbdev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -3275,6 +3270,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|usbdev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -3304,7 +3310,7 @@ c_func
 (paren
 id|usbdev
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 comma
 l_int|1
 )paren
@@ -3317,7 +3323,8 @@ l_string|&quot;Can&squot;t set altsetting 1.&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|catc
@@ -3341,7 +3348,8 @@ op_logical_neg
 id|catc
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -3381,7 +3389,8 @@ id|catc
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|netdev-&gt;open
@@ -3581,7 +3590,8 @@ id|catc
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* The F5U011 has the same vendor/product as the netmate but a device version of 0x130 */
@@ -4126,7 +4136,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s USB Ethernet at usb-%s-%s/%d, &quot;
+l_string|&quot;%s: %s USB Ethernet at usb-%s-%s, &quot;
 comma
 id|netdev-&gt;name
 comma
@@ -4142,8 +4152,6 @@ comma
 id|usbdev-&gt;bus-&gt;bus_name
 comma
 id|usbdev-&gt;devpath
-comma
-id|ifnum
 )paren
 suffix:semicolon
 r_for
@@ -4182,8 +4190,16 @@ id|i
 )braket
 )paren
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|catc
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|catc_disconnect
@@ -4193,13 +4209,9 @@ id|catc_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usbdev
-comma
-r_void
-op_star
-id|dev_ptr
+id|intf
 )paren
 (brace
 r_struct
@@ -4207,8 +4219,26 @@ id|catc
 op_star
 id|catc
 op_assign
-id|dev_ptr
+id|dev_get_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
 suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|catc
+)paren
+(brace
 id|unregister_netdev
 c_func
 (paren
@@ -4251,6 +4281,7 @@ c_func
 id|catc
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Module functions and tables.&n; */
 DECL|variable|catc_id_table

@@ -104,21 +104,15 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 r_static
-r_void
-op_star
+r_int
 id|kaweth_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
+id|intf
 comma
-multiline_comment|/* the device */
-r_int
-id|ifnum
-comma
-multiline_comment|/* what interface */
 r_const
 r_struct
 id|usb_device_id
@@ -133,13 +127,9 @@ id|kaweth_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 suffix:semicolon
 r_int
@@ -3015,21 +3005,15 @@ suffix:semicolon
 multiline_comment|/****************************************************************&n; *     kaweth_probe&n; ****************************************************************/
 DECL|function|kaweth_probe
 r_static
-r_void
-op_star
+r_int
 id|kaweth_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
+id|intf
 comma
-multiline_comment|/* the device */
-r_int
-id|ifnum
-comma
-multiline_comment|/* what interface */
 r_const
 r_struct
 id|usb_device_id
@@ -3038,6 +3022,17 @@ id|id
 multiline_comment|/* from id_table */
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|kaweth_device
 op_star
@@ -3140,7 +3135,8 @@ id|GFP_KERNEL
 )paren
 (brace
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -3273,7 +3269,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -3325,7 +3322,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -3377,7 +3375,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -3429,7 +3428,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -3475,7 +3475,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Device will now disappear for a moment...  */
@@ -3502,7 +3503,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|result
@@ -3536,7 +3538,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|kaweth_info
@@ -3664,7 +3667,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -3687,8 +3691,8 @@ c_func
 l_string|&quot;Error setting URB size&quot;
 )paren
 suffix:semicolon
-r_return
-id|kaweth
+r_goto
+id|err_no_netdev
 suffix:semicolon
 )brace
 r_if
@@ -3711,8 +3715,8 @@ c_func
 l_string|&quot;Error setting SOFS wait&quot;
 )paren
 suffix:semicolon
-r_return
-id|kaweth
+r_goto
+id|err_no_netdev
 suffix:semicolon
 )brace
 id|result
@@ -3750,7 +3754,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|kaweth_dbg
@@ -3787,7 +3792,8 @@ id|kaweth
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|kaweth-&gt;tx_urb
@@ -3980,8 +3986,16 @@ c_func
 l_string|&quot;Kaweth probe returning.&quot;
 )paren
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|kaweth
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 id|err_tx_and_rx
 suffix:colon
@@ -4004,17 +4018,20 @@ suffix:colon
 id|kfree
 c_func
 (paren
-id|kaweth
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|netdev
 )paren
 suffix:semicolon
+id|err_no_netdev
+suffix:colon
+id|kfree
+c_func
+(paren
+id|kaweth
+)paren
+suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *     kaweth_disconnect&n; ****************************************************************/
@@ -4025,13 +4042,9 @@ id|kaweth_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 r_struct
@@ -4039,12 +4052,24 @@ id|kaweth_device
 op_star
 id|kaweth
 op_assign
-id|ptr
+id|dev_get_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
 suffix:semicolon
 id|kaweth_info
 c_func
 (paren
 l_string|&quot;Unregistering&quot;
+)paren
+suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
