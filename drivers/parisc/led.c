@@ -1385,7 +1385,7 @@ id|total
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef 0
+macro_line|#if 0
 multiline_comment|/*&n;&t; * this section will no longer work in 2.5, as we no longer&n;&t; * have either kstat.dk_drive nor DK_MAX_*.  It can probably&n;&t; * be rewritten to use the per-disk statistics now kept in the&n;&t; * gendisk, but since I have no HP machines to test it on, I&squot;m&n;&t; * not really up to that.  ricklind@us.ibm.com 11/7/02&n;&t; */
 r_for
 c_loop

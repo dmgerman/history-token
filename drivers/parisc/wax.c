@@ -197,6 +197,23 @@ comma
 id|wax-&gt;hpa
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %d&quot;
+comma
+id|wax-&gt;name
+comma
+id|wax-&gt;version
+)paren
+suffix:semicolon
 multiline_comment|/* Stop wax hissing for a bit */
 id|wax_init_irq
 c_func

@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stu
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;&t;&t;/* for proc_runway_root */
 macro_line|#include &lt;asm/pdc.h&gt;&t;&t;/* for PDC_MODEL_* */
+macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;SBA&quot;
 multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;** Don&squot;t even think about messing with it unless you have&n;** plenty of 710&squot;s to sacrifice to the computer gods. :^)&n;*/
@@ -2317,7 +2318,7 @@ id|sba_dma_supported
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -2350,11 +2351,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|dev-&gt;dma_mask
-op_assign
-id|mask
-suffix:semicolon
-multiline_comment|/* save it */
 multiline_comment|/* only support 32-bit PCI devices - no DAC support (yet) */
 r_return
 (paren
@@ -2363,7 +2359,7 @@ r_int
 (paren
 id|mask
 op_eq
-l_int|0xffffffff
+l_int|0xffffffffUL
 )paren
 suffix:semicolon
 )brace
@@ -2375,7 +2371,7 @@ id|sba_map_single
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -2386,7 +2382,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -2426,12 +2423,6 @@ c_func
 id|size
 op_le
 id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|dev-&gt;sysdata
 )paren
 suffix:semicolon
 id|ioc
@@ -2784,7 +2775,7 @@ id|sba_unmap_single
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -2794,7 +2785,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -2816,12 +2808,6 @@ id|flags
 suffix:semicolon
 id|dma_addr_t
 id|offset
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|dev-&gt;sysdata
-)paren
 suffix:semicolon
 id|ioc
 op_assign
@@ -3029,7 +3015,7 @@ id|sba_alloc_consistent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|hwdev
 comma
@@ -3124,7 +3110,7 @@ id|sba_free_consistent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|hwdev
 comma
@@ -3854,7 +3840,7 @@ id|sba_map_sg
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -3866,7 +3852,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -3894,12 +3881,6 @@ comma
 id|__FUNCTION__
 comma
 id|nents
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|dev-&gt;sysdata
 )paren
 suffix:semicolon
 id|ioc
@@ -4104,7 +4085,7 @@ id|sba_unmap_sg
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -4116,7 +4097,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -4147,12 +4129,6 @@ id|sglist
 )paren
 comma
 id|sglist-&gt;length
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|dev-&gt;sysdata
 )paren
 suffix:semicolon
 id|ioc
@@ -4314,31 +4290,60 @@ macro_line|#endif
 DECL|variable|sba_ops
 r_static
 r_struct
-id|pci_dma_ops
+id|hppa_dma_ops
 id|sba_ops
 op_assign
 (brace
+dot
+id|dma_supported
+op_assign
 id|sba_dma_supported
 comma
+dot
+id|alloc_consistent
+op_assign
 id|sba_alloc_consistent
 comma
-multiline_comment|/* allocate cacheable host mem */
+dot
+id|alloc_noncoherent
+op_assign
+id|sba_alloc_consistent
+comma
+dot
+id|free_consistent
+op_assign
 id|sba_free_consistent
 comma
-multiline_comment|/* release cacheable host mem */
+dot
+id|map_single
+op_assign
 id|sba_map_single
 comma
+dot
+id|unmap_single
+op_assign
 id|sba_unmap_single
 comma
+dot
+id|map_sg
+op_assign
 id|sba_map_sg
 comma
+dot
+id|unmap_sg
+op_assign
 id|sba_unmap_sg
 comma
+dot
+id|dma_sync_single
+op_assign
 l_int|NULL
 comma
-multiline_comment|/* dma_sync_single */
+dot
+id|dma_sync_sg
+op_assign
 l_int|NULL
-multiline_comment|/* dma_sync_sg */
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**************************************************************************&n;**&n;**   SBA PAT PDC support&n;**&n;**   o call pdc_pat_cell_module()&n;**   o store ranges in PCI &quot;resource&quot; structures&n;**&n;**************************************************************************/
@@ -6862,6 +6867,23 @@ comma
 id|version
 comma
 id|dev-&gt;hpa
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %s&quot;
+comma
+id|MODULE_NAME
+comma
+id|version
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_SBA_INIT

@@ -271,6 +271,23 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %d&quot;
+comma
+id|asp-&gt;name
+comma
+id|asp-&gt;version
+)paren
+suffix:semicolon
 multiline_comment|/* the IRQ ASP should use */
 id|ret
 op_assign
