@@ -441,6 +441,11 @@ id|urb-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|urb_rm_priv
@@ -2268,6 +2273,14 @@ id|EINVAL
 suffix:semicolon
 singleline_comment|//&t;if(usb_endpoint_halted (urb-&gt;dev, usb_pipeendpoint (pipe), usb_pipeout (pipe))) 
 singleline_comment|//&t;&t;return -EPIPE;
+multiline_comment|/* increment the reference count of the urb, as we now also control it */
+id|urb
+op_assign
+id|usb_get_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 id|usb_inc_dev_use
 (paren
 id|urb-&gt;dev
@@ -2324,6 +2337,11 @@ id|usb_dec_dev_use
 id|urb-&gt;dev
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ESHUTDOWN
@@ -2355,6 +2373,11 @@ id|mem_flags
 id|usb_dec_dev_use
 (paren
 id|urb-&gt;dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -2443,6 +2466,11 @@ l_int|0
 id|usb_dec_dev_use
 (paren
 id|urb-&gt;dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -2558,6 +2586,11 @@ id|usb_dec_dev_use
 id|urb-&gt;dev
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -2662,6 +2695,11 @@ id|usb_dec_dev_use
 id|urb-&gt;dev
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -2700,6 +2738,11 @@ suffix:semicolon
 id|usb_dec_dev_use
 (paren
 id|urb-&gt;dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -2805,6 +2848,11 @@ suffix:semicolon
 id|usb_dec_dev_use
 (paren
 id|urb-&gt;dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -9416,6 +9464,11 @@ id|urb-&gt;complete
 id|urb
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9503,6 +9556,11 @@ id|urb-&gt;status
 op_assign
 op_minus
 id|ENOENT
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
 suffix:semicolon
 )brace
 r_return
