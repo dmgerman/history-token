@@ -1679,7 +1679,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* On Dell PowerEdge servers with a CSB5, the top two bits of the subsystem&n; * device ID indicate presence of an 80-pin cable.&n; * Bit 15 clear = secondary IDE channel does not have 80-pin cable.&n; * Bit 15 set   = secondary IDE channel has 80-pin cable.&n; * Bit 14 clear = primary IDE channel does not have 80-pin cable.&n; * Bit 14 set   = primary IDE channel has 80-pin cable.&n; */
+multiline_comment|/* On Dell PowerEdge servers with a CSB5/CSB6, the top two bits&n; * of the subsystem device ID indicate presence of an 80-pin cable.&n; * Bit 15 clear = secondary IDE channel does not have 80-pin cable.&n; * Bit 15 set   = secondary IDE channel has 80-pin cable.&n; * Bit 14 clear = primary IDE channel does not have 80-pin cable.&n; * Bit 14 set   = primary IDE channel has 80-pin cable.&n; */
 DECL|function|ata66_svwks_dell
 r_static
 r_int
@@ -1712,9 +1712,15 @@ id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_SERVERWORKS
 op_logical_and
+(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+op_logical_or
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SERVERWORKS_CSB6IDE
+)paren
 )paren
 r_return
 (paren

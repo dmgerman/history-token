@@ -842,9 +842,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_SPECIAL
+)paren
+op_logical_and
+(paren
+id|drive-&gt;type
+op_eq
+id|ATA_DISK
+)paren
 )paren
 (brace
 r_struct
@@ -1706,7 +1714,7 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-r_int
+id|u8
 r_int
 id|cmd
 suffix:semicolon
@@ -1736,7 +1744,7 @@ id|ATA_DISK
 r_return
 l_int|0
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive

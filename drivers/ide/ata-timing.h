@@ -110,7 +110,7 @@ DECL|macro|XFER_EPIO
 mdefine_line|#define XFER_EPIO&t;0x01
 DECL|macro|XFER_PIO
 mdefine_line|#define XFER_PIO&t;0x00
-multiline_comment|/* External interface to host chips chanell timing setup.&n; *&n; * It&squot;s a bit elaborate due to the legacy we have to bear.&n; */
+multiline_comment|/* External interface to host chips channel timing setup.&n; *&n; * It&squot;s a bit elaborate due to the legacy we have to bear.&n; */
 r_extern
 r_int
 id|ata_timing_mode
@@ -170,6 +170,16 @@ comma
 r_int
 r_int
 id|what
+)paren
+suffix:semicolon
+r_void
+id|ata_timing_merge_8bit
+c_func
+(paren
+r_struct
+id|ata_timing
+op_star
+id|t
 )paren
 suffix:semicolon
 r_extern

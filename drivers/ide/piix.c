@@ -47,12 +47,6 @@ DECL|macro|PIIX_CHECK_REV
 mdefine_line|#define PIIX_CHECK_REV&t;&t;0x40&t;/* May be a buggy revision of PIIX */
 DECL|macro|PIIX_NODMA
 mdefine_line|#define PIIX_NODMA&t;&t;0x80&t;/* Don&squot;t do DMA with this chip */
-macro_line|#ifdef CONFIG_BLK_DEV_PIIX_TRY133&t;/* I think even the older ICHs should be able to do UDMA133 */
-DECL|macro|PIIX_UDMA_100
-macro_line|#undef PIIX_UDMA_100
-DECL|macro|PIIX_UDMA_100
-mdefine_line|#define PIIX_UDMA_100 PIIX_UDMA_133
-macro_line|#endif
 multiline_comment|/*&n; * Intel IDE chips&n; */
 DECL|struct|piix_ide_chip
 r_static
@@ -213,12 +207,6 @@ r_static
 r_int
 r_char
 id|piix_enabled
-suffix:semicolon
-DECL|variable|piix_80w
-r_static
-r_int
-r_int
-id|piix_80w
 suffix:semicolon
 DECL|variable|piix_dma
 r_static

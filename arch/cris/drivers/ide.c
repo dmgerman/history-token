@@ -2814,7 +2814,7 @@ id|atapi
 )paren
 (brace
 multiline_comment|/* set the irq handler which will finish the request when DMA is done */
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -2999,7 +2999,7 @@ id|atapi
 )paren
 (brace
 multiline_comment|/* set the irq handler which will finish the request when DMA is done */
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive

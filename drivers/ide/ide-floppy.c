@@ -2709,6 +2709,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -2748,6 +2759,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -2973,6 +2985,15 @@ id|ide_stopped
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|bcount.b.high
 op_assign
 id|IN_BYTE
@@ -3002,6 +3023,14 @@ c_cond
 id|ireason.b.cod
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3028,6 +3057,14 @@ id|pc-&gt;flags
 )paren
 (brace
 multiline_comment|/* Hopefully, we will never get here */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3108,7 +3145,7 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -3118,6 +3155,14 @@ comma
 id|IDEFLOPPY_WAIT_CMD
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3220,7 +3265,7 @@ id|pc-&gt;current_position
 op_add_assign
 id|bcount.all
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -3233,6 +3278,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* And set the interrupt handler again */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -3255,6 +3308,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
@@ -3297,6 +3361,15 @@ r_return
 id|startstop
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -3313,6 +3386,14 @@ op_logical_or
 id|ireason.b.io
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3323,7 +3404,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-id|ide_set_handler
+id|ata_set_handler
 (paren
 id|drive
 comma
@@ -3346,6 +3427,14 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -3407,6 +3496,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -3450,6 +3550,15 @@ r_return
 id|startstop
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -3466,6 +3575,14 @@ op_logical_or
 id|ireason.b.io
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3476,8 +3593,8 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The following delay solves a problem with ATAPI Zip 100 drives where the&n;&t; * Busy flag was apparently being deasserted before the unit was ready to&n;&t; * receive data. This was happening on a 1200 MHz Athlon system. 10/26/01&n;&t; * 25msec is too short, 40 and 50msec work well. idefloppy_pc_intr will&n;&t; * not be actually used until after the packet is moved in about 50 msec.&n;&t; */
-id|ide_set_handler
+multiline_comment|/*&n;&t; * The following delay solves a problem with ATAPI Zip 100 drives where&n;&t; * the Busy flag was apparently being deasserted before the unit was&n;&t; * ready to receive data. This was happening on a 1200 MHz Athlon&n;&t; * system. 10/26/01 25msec is too short, 40 and 50msec work well.&n;&t; * idefloppy_pc_intr will not be actually used until after the packet&n;&t; * is moved in about 50 msec.&n;&t; */
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -3492,6 +3609,14 @@ id|idefloppy_transfer_pc2
 )paren
 suffix:semicolon
 multiline_comment|/* fail == transfer_pc2 */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -3689,7 +3814,7 @@ comma
 id|pc-&gt;retries
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 id|pc-&gt;retries
 op_increment
 suffix:semicolon
@@ -3867,6 +3992,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|IDEFLOPPY_DRQ_INTERRUPT
 comma
@@ -3875,7 +4001,27 @@ id|floppy-&gt;flags
 )paren
 )paren
 (brace
-id|ide_set_handler
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -3895,6 +4041,14 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Issue the packet command */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -6820,13 +6974,6 @@ op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
-suffix:semicolon
-id|invalidate_bdev
-(paren
-id|inode-&gt;i_bdev
-comma
-l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* IOMEGA Clik! drives do not support lock/unlock commands */
 r_if

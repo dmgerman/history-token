@@ -258,7 +258,8 @@ comma
 r_int
 id|number
 comma
-id|atm_dev_flags_t
+r_int
+r_int
 op_star
 id|flags
 )paren
