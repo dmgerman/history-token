@@ -66,6 +66,7 @@ id|video_nr
 comma
 r_int
 comma
+op_amp
 id|video_nr_num
 comma
 l_int|0444
@@ -116,6 +117,7 @@ id|vbi_nr
 comma
 r_int
 comma
+op_amp
 id|vbi_nr_num
 comma
 l_int|0444
@@ -166,6 +168,7 @@ id|radio_nr
 comma
 r_int
 comma
+op_amp
 id|radio_nr_num
 comma
 l_int|0444

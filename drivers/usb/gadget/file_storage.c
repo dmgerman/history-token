@@ -343,7 +343,6 @@ c_func
 (paren
 id|luns
 comma
-op_amp
 id|mod_data.nluns
 comma
 id|uint
@@ -364,7 +363,6 @@ c_func
 (paren
 id|removable
 comma
-op_amp
 id|mod_data.removable
 comma
 r_bool

@@ -118,6 +118,7 @@ id|tuner
 comma
 r_int
 comma
+op_amp
 id|tuner_num
 comma
 l_int|0444
@@ -167,6 +168,7 @@ id|card
 comma
 r_int
 comma
+op_amp
 id|card_num
 comma
 l_int|0444
