@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * udf_fs_i.h&n; *&n; * This file is intended for the Linux kernel/module. &n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hootie.lvld.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; */
+multiline_comment|/*&n; * udf_fs_i.h&n; *&n; * This file is intended for the Linux kernel/module. &n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; */
 macro_line|#if !defined(_LINUX_UDF_FS_I_H)
 DECL|macro|_LINUX_UDF_FS_I_H
 mdefine_line|#define _LINUX_UDF_FS_I_H
@@ -53,6 +53,10 @@ DECL|member|i_lenAlloc
 id|__u32
 id|i_lenAlloc
 suffix:semicolon
+DECL|member|i_lenExtents
+id|__u64
+id|i_lenExtents
+suffix:semicolon
 DECL|member|i_next_alloc_block
 id|__u32
 id|i_next_alloc_block
@@ -101,5 +105,7 @@ DECL|macro|UDF_GETEABLOCK
 mdefine_line|#define UDF_GETEABLOCK  _IOR(&squot;l&squot;, 0x41, void *)
 DECL|macro|UDF_GETVOLIDENT
 mdefine_line|#define UDF_GETVOLIDENT _IOR(&squot;l&squot;, 0x42, void *)
+DECL|macro|UDF_RELOCATE_BLOCKS
+mdefine_line|#define UDF_RELOCATE_BLOCKS _IOWR(&squot;l&squot;, 0x43, long)
 macro_line|#endif /* !defined(_LINUX_UDF_FS_I_H) */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.23 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.25 05/23/01 00:38:42 cort&n; */
 multiline_comment|/*&n; * Smp support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * Support for PReP (Motorola MTX/MVME) and Macintosh G4 SMP &n; * by Troy Benjegerdes (hozer@drgw.net)&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2646,7 +2646,7 @@ c_func
 (paren
 l_int|1
 op_lshift
-id|i
+id|nr
 )paren
 suffix:semicolon
 id|openpic_init_processor
@@ -2662,7 +2662,8 @@ DECL|function|smp_gemini_setup_cpu
 id|smp_gemini_setup_cpu
 c_func
 (paren
-r_void
+r_int
+id|cpu_nr
 )paren
 (brace
 r_if

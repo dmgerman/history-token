@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * linux/arch/m68k/atari/time.c&n; *&n; * Atari time and real time clock stuff&n; *&n; * Assembled of parts of former atari/config.c 97-12-18 by Roman Hodek&n; *  &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 r_void
 id|__init
 DECL|function|atari_sched_init

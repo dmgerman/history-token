@@ -142,6 +142,8 @@ DECL|macro|N_HDLC
 mdefine_line|#define N_HDLC&t;&t;13&t;/* synchronous HDLC */
 DECL|macro|N_SYNC_PPP
 mdefine_line|#define N_SYNC_PPP&t;14
+DECL|macro|N_HCI
+mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Translate a &quot;termio&quot; structure into a &quot;termios&quot;. Ugh.&n; */
 DECL|macro|SET_LOW_TERMIOS_BITS

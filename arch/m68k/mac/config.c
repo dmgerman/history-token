@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Miscellaneous linux stuff&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -20,6 +19,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
@@ -248,26 +248,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|mac_floppy_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mac_floppy_setup
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|nubus_sweep_video
 c_func
@@ -476,17 +456,6 @@ r_void
 suffix:semicolon
 )brace
 macro_line|#endif
-r_extern
-r_struct
-id|fb_info
-op_star
-id|mac_fb_init
-c_func
-(paren
-r_int
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|mac_default_handler
@@ -1562,9 +1531,9 @@ l_string|&quot;Performa 520&quot;
 comma
 id|MAC_ADB_CUDA
 comma
-id|MAC_VIA_QUADRA
+id|MAC_VIA_IIci
 comma
-id|MAC_SCSI_QUADRA
+id|MAC_SCSI_OLD
 comma
 id|MAC_IDE_NONE
 comma

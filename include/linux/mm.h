@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 r_extern
 r_int
 r_int
@@ -1198,6 +1199,81 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Work out if there are any other processes sharing this&n; * swap cache page. Never mind the buffers.&n; */
+DECL|function|exclusive_swap_page
+r_static
+r_inline
+r_int
+id|exclusive_swap_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_int
+r_int
+id|count
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|count
+op_assign
+id|page_count
+c_func
+(paren
+id|page
+)paren
+op_minus
+op_logical_neg
+op_logical_neg
+id|page-&gt;buffers
+suffix:semicolon
+multiline_comment|/*  2: us + swap cache */
+id|count
+op_add_assign
+id|swap_count
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* +1: just swap cache */
+r_return
+id|count
+op_eq
+l_int|3
+suffix:semicolon
+multiline_comment|/* =3: total */
+)brace
 multiline_comment|/* mmap.c */
 r_extern
 r_void

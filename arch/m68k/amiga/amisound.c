@@ -7,7 +7,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 DECL|variable|snd_data
 r_static
-id|u_short
+r_int
+r_int
 op_star
 id|snd_data
 op_assign
@@ -78,7 +79,8 @@ mdefine_line|#define DATA_SIZE&t;(sizeof(sine_data)/sizeof(sine_data[0]))
 multiline_comment|/*&n;     * The minimum period for audio may be modified by the frame buffer&n;     * device since it depends on htotal (for OCS/ECS/AGA)&n;     */
 DECL|variable|amiga_audio_min_period
 r_volatile
-id|u_short
+r_int
+r_int
 id|amiga_audio_min_period
 op_assign
 l_int|124
@@ -88,14 +90,16 @@ DECL|macro|MAX_PERIOD
 mdefine_line|#define MAX_PERIOD&t;(65535)
 multiline_comment|/*&n;     *&t;Current period (set by dmasound.c)&n;     */
 DECL|variable|amiga_audio_period
-id|u_short
+r_int
+r_int
 id|amiga_audio_period
 op_assign
 id|MAX_PERIOD
 suffix:semicolon
 DECL|variable|clock_constant
 r_static
-id|u_long
+r_int
+r_int
 id|clock_constant
 suffix:semicolon
 DECL|function|amiga_init_sound
@@ -258,7 +262,8 @@ OL
 l_int|32767
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|period
 op_assign
 (paren
@@ -321,7 +326,8 @@ dot
 id|audper
 op_assign
 (paren
-id|u_short
+r_int
+r_int
 )paren
 id|period
 suffix:semicolon

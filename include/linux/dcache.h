@@ -215,11 +215,6 @@ op_star
 id|d_parent
 suffix:semicolon
 multiline_comment|/* parent directory */
-DECL|member|d_vfsmnt
-r_struct
-id|list_head
-id|d_vfsmnt
-suffix:semicolon
 DECL|member|d_hash
 r_struct
 id|list_head
@@ -250,6 +245,10 @@ id|list_head
 id|d_alias
 suffix:semicolon
 multiline_comment|/* inode alias list */
+DECL|member|d_mounted
+r_int
+id|d_mounted
+suffix:semicolon
 DECL|member|d_name
 r_struct
 id|qstr
@@ -873,15 +872,25 @@ id|dentry
 )paren
 (brace
 r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_vfsmnt
-)paren
+id|dentry-&gt;d_mounted
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|vfsmount
+op_star
+id|lookup_mnt
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+comma
+r_struct
+id|dentry
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_DCACHE_H */
 eof

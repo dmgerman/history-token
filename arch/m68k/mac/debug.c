@@ -477,7 +477,7 @@ id|str
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Mac: loops_per_sec min. 1900000 ^= .5 us; MFPDELAY was 0.6 us*/
+multiline_comment|/* Mac: loops_per_jiffy min. 19000 ^= .5 us; MFPDELAY was 0.6 us*/
 DECL|macro|uSEC
 mdefine_line|#define uSEC 1
 DECL|function|mac_sccb_out
@@ -891,8 +891,8 @@ DECL|macro|SCCB_WRITE
 mdefine_line|#define SCCB_WRITE(reg,val)&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;scc.cha_b_ctrl = (reg);&t;&t;&t;&t;&bslash;&n;&t;for( i = uSEC; i &gt; 0; --i )&t;&t;&t;&bslash;&n;&t;&t;barrier();&t;&t;&t;&t;&bslash;&n;&t;scc.cha_b_ctrl = (val);&t;&t;&t;&t;&bslash;&n;&t;for( i = uSEC; i &gt; 0; --i )&t;&t;&t;&bslash;&n;&t;&t;barrier();&t;&t;&t;&t;&bslash;&n;    } while(0)
 DECL|macro|SCCA_WRITE
 mdefine_line|#define SCCA_WRITE(reg,val)&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;scc.cha_a_ctrl = (reg);&t;&t;&t;&t;&bslash;&n;&t;for( i = uSEC; i &gt; 0; --i )&t;&t;&t;&bslash;&n;&t;&t;barrier();&t;&t;&t;&t;&bslash;&n;&t;scc.cha_a_ctrl = (val);&t;&t;&t;&t;&bslash;&n;&t;for( i = uSEC; i &gt; 0; --i )&t;&t;&t;&bslash;&n;&t;&t;barrier();&t;&t;&t;&t;&bslash;&n;    } while(0)
-multiline_comment|/* loops_per_sec isn&squot;t initialized yet, so we can&squot;t use udelay(). This does a&n; * delay of ~ 60us. */
-multiline_comment|/* Mac: loops_per_sec min. 1900000 ^= .5 us; MFPDELAY was 0.6 us*/
+multiline_comment|/* loops_per_jiffy isn&squot;t initialized yet, so we can&squot;t use udelay(). This does a&n; * delay of ~ 60us. */
+multiline_comment|/* Mac: loops_per_jiffy min. 19000 ^= .5 us; MFPDELAY was 0.6 us*/
 DECL|macro|LONG_DELAY
 mdefine_line|#define LONG_DELAY()&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&bslash;&n;&t;for( i = 60*uSEC; i &gt; 0; --i )&t;&t;&bslash;&n;&t;    barrier();&t;&t;&t;&t;&bslash;&n;    } while(0)
 macro_line|#ifndef CONFIG_SERIAL_CONSOLE

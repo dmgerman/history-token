@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Device handling code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_device.c,v 1.3 2000/03/01 02:58:09 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Device handling code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_device.c,v 1.4 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
@@ -193,7 +193,7 @@ op_amp
 l_int|1
 )paren
 (brace
-id|br_flood
+id|br_flood_deliver
 c_func
 (paren
 id|br
@@ -225,7 +225,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|br_forward
+id|br_deliver
 c_func
 (paren
 id|dst-&gt;dst
@@ -243,7 +243,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|br_flood
+id|br_flood_deliver
 c_func
 (paren
 id|br

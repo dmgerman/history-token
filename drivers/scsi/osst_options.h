@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995 Kai Makisara.&n;   &n;   Last modified: Wed Sep  2 21:24:07 1998 by root@home&n;   &n;   Changed (and renamed) for OnStream SCSI drives garloff@suse.de&n;   2000-06-21&n;&n;   $Header: /home/cvsroot/Driver/osst_options.h,v 1.4 2000/06/26 01:44:01 riede Exp $&n;*/
+multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995 Kai Makisara.&n;   &n;   Last modified: Wed Sep  2 21:24:07 1998 by root@home&n;   &n;   Changed (and renamed) for OnStream SCSI drives garloff@suse.de&n;   2000-06-21&n;&n;   $Header: /home/cvsroot/Driver/osst_options.h,v 1.5 2001/01/07 22:19:15 riede Exp $&n;*/
 macro_line|#ifndef _OSST_OPTIONS_H
 DECL|macro|_OSST_OPTIONS_H
 mdefine_line|#define _OSST_OPTIONS_H
@@ -7,14 +7,17 @@ DECL|macro|OSST_MAX_TAPES
 mdefine_line|#define OSST_MAX_TAPES 4
 multiline_comment|/* If OSST_IN_FILE_POS is nonzero, the driver positions the tape after the&n;   record been read by the user program even if the tape has moved further&n;   because of buffered reads. Should be set to zero to support also drives&n;   that can&squot;t space backwards over records. NOTE: The tape will be&n;   spaced backwards over an &quot;accidentally&quot; crossed filemark in any case. */
 DECL|macro|OSST_IN_FILE_POS
-mdefine_line|#define OSST_IN_FILE_POS 0
+mdefine_line|#define OSST_IN_FILE_POS 1
 multiline_comment|/* The tape driver buffer size in kilobytes. */
 multiline_comment|/* Don&squot;t change, as this is the HW blocksize */
 DECL|macro|OSST_BUFFER_BLOCKS
 mdefine_line|#define OSST_BUFFER_BLOCKS 32
 multiline_comment|/* The number of kilobytes of data in the buffer that triggers an&n;   asynchronous write in fixed block mode. See also OSST_ASYNC_WRITES&n;   below. */
 DECL|macro|OSST_WRITE_THRESHOLD_BLOCKS
-mdefine_line|#define OSST_WRITE_THRESHOLD_BLOCKS 30
+mdefine_line|#define OSST_WRITE_THRESHOLD_BLOCKS 32
+multiline_comment|/* OSST_EOM_RESERVE defines the number of frames are kept in reserve for&n; *  * write error recovery when writing near end of medium. ENOSPC is returned&n; *   * when write() is called and the tape write position is within this number&n; *    * of blocks from the tape capacity. */
+DECL|macro|OSST_EOM_RESERVE
+mdefine_line|#define OSST_EOM_RESERVE 300
 multiline_comment|/* The maximum number of tape buffers the driver allocates. The number&n;   is also constrained by the number of drives detected. Determines the&n;   maximum number of concurrently active tape drives. */
 DECL|macro|OSST_MAX_BUFFERS
 mdefine_line|#define OSST_MAX_BUFFERS OSST_MAX_TAPES 
@@ -32,7 +35,7 @@ multiline_comment|/* The following lines define defaults for properties that can
 multiline_comment|/* If OSST_TWO_FM is non-zero, the driver writes two filemarks after a&n;   file being written. Some drives can&squot;t handle two filemarks at the&n;   end of data. */
 DECL|macro|OSST_TWO_FM
 mdefine_line|#define OSST_TWO_FM 0
-multiline_comment|/* If OSST_BUFFER_WRITES is non-zero, writes in fixed block mode are&n;   buffered until the driver buffer is full or asynchronous write is&n;   triggered. May make detection of End-Of-Medium early enough fail. */
+multiline_comment|/* If OSST_BUFFER_WRITES is non-zero, writes in fixed block mode are&n;   buffered until the driver buffer is full or asynchronous write is&n;   triggered. */
 DECL|macro|OSST_BUFFER_WRITES
 mdefine_line|#define OSST_BUFFER_WRITES 1
 multiline_comment|/* If OSST_ASYNC_WRITES is non-zero, the SCSI write command may be started&n;   without waiting for it to finish. May cause problems in multiple&n;   tape backups. */

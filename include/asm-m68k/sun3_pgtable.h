@@ -303,8 +303,9 @@ op_amp
 id|SUN3_PMD_VALID
 suffix:semicolon
 )brace
+multiline_comment|/* #define pmd_present(pmd) pmd_present2(&amp;(pmd)) */
 DECL|macro|pmd_present
-mdefine_line|#define pmd_present(pmd) pmd_present2(&amp;(pmd))
+mdefine_line|#define pmd_present(pmd) (!pmd_none2(&amp;(pmd)))
 DECL|function|pmd_clear
 r_extern
 r_inline
@@ -364,7 +365,7 @@ id|pgd
 )paren
 (brace
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|pgd_clear

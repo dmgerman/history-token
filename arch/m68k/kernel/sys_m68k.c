@@ -1161,7 +1161,7 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-multiline_comment|/* Convert virtual address VADDR to physical address PADDR */
+multiline_comment|/* Convert virtual (user) address VADDR to physical address PADDR */
 DECL|macro|virt_to_phys_040
 mdefine_line|#define virt_to_phys_040(vaddr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  unsigned long _mmusr, _paddr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&quot;.chip 68040&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ptestr (%1)&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movec %%mmusr,%0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.chip 68k&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (_mmusr)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (vaddr));&t;&t;&t;&t;&t;&bslash;&n;  _paddr = (_mmusr &amp; MMU_R_040) ? (_mmusr &amp; PAGE_MASK) : 0;&t;&t;&bslash;&n;  _paddr;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 r_static
@@ -1709,6 +1709,7 @@ id|paddr
 comma
 id|i
 suffix:semicolon
+multiline_comment|/*&n;   * 68060 manual says: &n;   *  cpush %dc : flush DC, remains valid (with our %cacr setup)&n;   *  cpush %ic : invalidate IC&n;   *  cpush %bc : flush DC + invalidate IC&n;   */
 r_switch
 c_cond
 (paren
@@ -1732,7 +1733,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpusha %dc&bslash;n&bslash;t&quot;
-l_string|&quot;cinva %dc&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 )paren
 suffix:semicolon
@@ -1746,7 +1746,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpusha %ic&bslash;n&bslash;t&quot;
-l_string|&quot;cinva %ic&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 )paren
 suffix:semicolon
@@ -1762,7 +1761,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpusha %bc&bslash;n&bslash;t&quot;
-l_string|&quot;cinva %bc&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 )paren
 suffix:semicolon
@@ -1924,7 +1922,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushl %%dc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvl %%dc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -1944,7 +1941,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushl %%ic,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvl %%ic,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -1966,7 +1962,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushl %%bc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvl %%bc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -2125,7 +2120,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushp %%dc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvp %%dc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -2145,7 +2139,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushp %%ic,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvp %%ic,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -2167,7 +2160,6 @@ id|__volatile__
 (paren
 l_string|&quot;.chip 68060&bslash;n&bslash;t&quot;
 l_string|&quot;cpushp %%bc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvp %%bc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -2248,7 +2240,7 @@ op_eq
 id|FLUSH_SCOPE_ALL
 )paren
 (brace
-multiline_comment|/* Only the superuser may flush the whole cache. */
+multiline_comment|/* Only the superuser may explicitly flush the whole cache. */
 id|ret
 op_assign
 op_minus
@@ -2270,7 +2262,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Verify that the specified address region actually belongs to&n;&t;&t; * this process.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Verify that the specified address region actually belongs&n;&t;&t; * to this process.&n;&t;&t; */
 id|vma
 op_assign
 id|find_vma
@@ -2464,6 +2456,42 @@ id|out
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/*&n;&t;     * 040 or 060: don&squot;t blindly trust &squot;scope&squot;, someone could&n;&t;     * try to flush a few megs of memory.&n;&t;     */
+r_if
+c_cond
+(paren
+id|len
+op_ge
+l_int|3
+op_star
+id|PAGE_SIZE
+op_logical_and
+id|scope
+OL
+id|FLUSH_SCOPE_PAGE
+)paren
+id|scope
+op_assign
+id|FLUSH_SCOPE_PAGE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ge
+l_int|10
+op_star
+id|PAGE_SIZE
+op_logical_and
+id|scope
+OL
+id|FLUSH_SCOPE_ALL
+)paren
+id|scope
+op_assign
+id|FLUSH_SCOPE_ALL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2504,6 +2532,7 @@ comma
 id|len
 )paren
 suffix:semicolon
+)brace
 )brace
 id|out
 suffix:colon

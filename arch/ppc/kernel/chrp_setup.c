@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.17 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.20 06/05/01 21:22:02 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -873,10 +873,27 @@ c_func
 l_int|0x71
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|level0
+op_ne
+id|level
+op_logical_or
+id|type0
+op_ne
+id|type
+op_logical_or
+op_logical_neg
+id|active
+)paren
+(brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sio: %s irq level %d, type %d, %sactive: &quot;
+l_string|&quot;remapping to level %d, type %d, active&bslash;n&quot;
 comma
 id|name
 comma
@@ -891,33 +908,6 @@ c_cond
 l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|level0
-op_eq
-id|level
-op_logical_and
-id|type0
-op_eq
-id|type
-op_logical_and
-id|active
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;OK&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;remapping to level %d, type %d, active&bslash;n&quot;
 comma
 id|level
 comma

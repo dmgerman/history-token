@@ -941,11 +941,12 @@ op_logical_neg
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * N.B. This function returns only 0 or 1.  Return values != 1 from&n; * the lower level routines result in continued processing.&n; */
+DECL|macro|SWAP_MM_SHIFT
+mdefine_line|#define SWAP_MM_SHIFT&t;2
 DECL|macro|SWAP_SHIFT
-mdefine_line|#define SWAP_SHIFT 5
+mdefine_line|#define SWAP_SHIFT&t;5
 DECL|macro|SWAP_MIN
-mdefine_line|#define SWAP_MIN 8
+mdefine_line|#define SWAP_MIN&t;8
 DECL|function|swap_amount
 r_static
 r_inline
@@ -996,7 +997,7 @@ suffix:semicolon
 )brace
 DECL|function|swap_out
 r_static
-r_int
+r_void
 id|swap_out
 c_func
 (paren
@@ -1049,7 +1050,7 @@ op_assign
 (paren
 id|mmlist_nr
 op_lshift
-id|SWAP_SHIFT
+id|SWAP_MM_SHIFT
 )paren
 op_rshift
 id|priority
@@ -1159,7 +1160,6 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|retval
 suffix:semicolon
 id|empty
 suffix:colon
@@ -1169,9 +1169,6 @@ c_func
 op_amp
 id|mmlist_lock
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * reclaim_page -&t;reclaims one page from the inactive_clean list&n; * @zone: reclaim a page from this zone&n; *&n; * The pages on the inactive_clean can be instantly reclaimed.&n; * The tests look impressive, but most of the time we&squot;ll grab&n; * the first page of the list and exit successfully.&n; */
@@ -2602,6 +2599,14 @@ id|pgdat-&gt;node_zones
 op_plus
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|zone-&gt;size
+)paren
+r_continue
+suffix:semicolon
 id|zone_shortage
 op_assign
 id|zone-&gt;pages_high
@@ -2740,6 +2745,15 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Walk the VM space for a bit.. */
+id|swap_out
+c_func
+(paren
+id|DEF_PRIORITY
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
 id|count
 op_sub_assign
 id|refill_inactive_scan
@@ -2759,15 +2773,6 @@ l_int|0
 )paren
 r_goto
 id|done
-suffix:semicolon
-multiline_comment|/* If refill_inactive_scan failed, try to page stuff out.. */
-id|swap_out
-c_func
-(paren
-id|DEF_PRIORITY
-comma
-id|gfp_mask
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be losely based on bvme6000ints.c&n; *&n; */
+multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be losely based on bvme6000ints.c&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -51,7 +51,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* added just for debugging */
 r_static
 r_void
 id|q40_defhand
@@ -285,8 +284,8 @@ comma
 id|EXT_ENABLE_REG
 )paren
 suffix:semicolon
-multiline_comment|/* hm, aint that too early? */
-multiline_comment|/* would be spurious ints by now, q40kbd_init_hw() does that */
+multiline_comment|/* ISA IRQ 5-15 */
+multiline_comment|/* make sure keyboard IRQ is disabled */
 id|master_outb
 c_func
 (paren
@@ -490,6 +489,10 @@ l_string|&quot;WARNING: dev_id == NULL in request_irq&bslash;n&quot;
 suffix:semicolon
 id|dev_id
 op_assign
+(paren
+r_void
+op_star
+)paren
 l_int|1
 suffix:semicolon
 )brace
@@ -805,6 +808,7 @@ id|ql_ticks
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* 200Hz ticks since last jiffie */
 DECL|variable|sound_ticks
 r_static
 r_int
@@ -847,7 +851,6 @@ id|sound_ticks
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* atomic - no irq spinlock used */
 op_star
 id|DAC_LEFT
 op_assign
@@ -898,25 +901,6 @@ r_struct
 id|pt_regs
 op_star
 )paren
-suffix:semicolon
-DECL|variable|rtc_oldsecs
-r_static
-r_int
-id|rtc_oldsecs
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|rtc_irq_flags
-r_int
-id|rtc_irq_flags
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|rtc_irq_ctrl
-r_int
-id|rtc_irq_ctrl
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|q40_timer_int
 r_static
@@ -985,30 +969,31 @@ op_assign
 id|sval
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_Q40RTC
+macro_line|#if defined(CONFIG_Q40RTC) || defined(CONFIG_GEN_RTC)
 r_if
 c_cond
 (paren
-id|rtc_irq_ctrl
+id|gen_rtc_irq_ctrl
 op_logical_and
 (paren
-id|rtc_oldsecs
+id|q40rtc_oldsecs
 op_ne
 id|RTC_SECS
 )paren
 )paren
 (brace
-id|rtc_oldsecs
+id|q40rtc_oldsecs
 op_assign
 id|RTC_SECS
 suffix:semicolon
-id|rtc_irq_flags
+id|gen_rtc_irq_flags
 op_assign
 id|RTC_UIE
 suffix:semicolon
-id|rtc_interrupt
+id|gen_rtc_interrupt
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1191,7 +1176,7 @@ suffix:semicolon
 multiline_comment|/* ISA dev IRQ&squot;s*/
 multiline_comment|/*static int cclirq=60;*/
 multiline_comment|/* internal */
-multiline_comment|/* FIX: add shared ints,mask,unmask,probing.... */
+multiline_comment|/* FIXME: add shared ints,mask,unmask,probing.... */
 DECL|macro|IRQ_INPROGRESS
 mdefine_line|#define IRQ_INPROGRESS 1
 multiline_comment|/*static unsigned short saved_mask;*/
@@ -1204,9 +1189,8 @@ l_int|0
 suffix:semicolon
 DECL|macro|DEBUG_Q40INT
 mdefine_line|#define DEBUG_Q40INT
-DECL|macro|IP_USE_DISABLE
-mdefine_line|#define IP_USE_DISABLE /* would be nice, but crashes ???? */
-multiline_comment|/*static int dd_count=0;*/
+multiline_comment|/*#define IP_USE_DISABLE */
+multiline_comment|/* would be nice, but crashes ???? */
 DECL|variable|mext_disabled
 r_static
 r_int
@@ -1521,7 +1505,6 @@ id|disabled
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*dd_count--;*/
 id|enable_irq
 c_func
 (paren
@@ -1535,22 +1518,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*printk(&quot;reenabling irq %d&bslash;n&quot;,irq); */
-macro_line|#if 0
-id|fp-&gt;sr
-op_assign
-(paren
-(paren
-id|fp-&gt;sr
-)paren
-op_amp
-(paren
-op_complement
-l_int|0x700
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* unneeded ?! */
-macro_line|#endif
 macro_line|#endif
 )brace
 r_goto
@@ -1976,7 +1943,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;  * verified to be Q40 &quot;compatible&quot; - right now only IDE&n;  * Any driver should not attempt to sleep accross disable_irq !!&n;  */
+multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;  * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;  * Any driver should not attempt to sleep accross disable_irq !!&n;  */
 r_if
 c_cond
 (paren

@@ -15,6 +15,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -26,24 +27,18 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bset %1,%2; sne %0&quot;
+l_string|&quot;bset %2,%1; sne %0&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|retval
 )paren
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
 comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -58,6 +53,13 @@ l_int|31
 op_rshift
 l_int|3
 )braket
+)paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -75,6 +77,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -104,6 +107,8 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -122,6 +127,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -130,20 +136,13 @@ id|vaddr
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bset %0,%1&quot;
+l_string|&quot;bset %1,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
-comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -159,6 +158,13 @@ op_rshift
 l_int|3
 )braket
 )paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -172,6 +178,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -194,6 +201,8 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -209,6 +218,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -220,24 +230,18 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bclr %1,%2; sne %0&quot;
+l_string|&quot;bclr %2,%1; sne %0&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|retval
 )paren
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
 comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -252,6 +256,13 @@ l_int|31
 op_rshift
 l_int|3
 )braket
+)paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -269,6 +280,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -298,6 +310,8 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -321,6 +335,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -329,20 +344,13 @@ id|vaddr
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bclr %0,%1&quot;
+l_string|&quot;bclr %1,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
-comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -358,6 +366,13 @@ op_rshift
 l_int|3
 )braket
 )paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -371,6 +386,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -393,11 +409,17 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|macro|test_and_change_bit
 mdefine_line|#define test_and_change_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_change_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_change_bit(nr, vaddr))
+DECL|macro|__test_and_change_bit
+mdefine_line|#define __test_and_change_bit(nr,vaddr) test_and_change_bit(nr,vaddr)
+DECL|macro|__change_bit
+mdefine_line|#define __change_bit(nr,vaddr) change_bit(nr,vaddr)
 DECL|function|__constant_test_and_change_bit
 r_extern
 id|__inline__
@@ -408,6 +430,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -419,24 +442,18 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bchg %1,%2; sne %0&quot;
+l_string|&quot;bchg %2,%1; sne %0&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
 id|retval
 )paren
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
 comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -451,6 +468,13 @@ l_int|31
 op_rshift
 l_int|3
 )braket
+)paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -468,6 +492,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -497,6 +522,8 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -515,6 +542,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -523,20 +551,13 @@ id|vaddr
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;bchg %0,%1&quot;
+l_string|&quot;bchg %1,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;di&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
-comma
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 (paren
 (paren
+r_volatile
 r_char
 op_star
 )paren
@@ -552,6 +573,13 @@ op_rshift
 l_int|3
 )braket
 )paren
+suffix:colon
+l_string|&quot;di&quot;
+(paren
+id|nr
+op_amp
+l_int|7
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -565,6 +593,7 @@ c_func
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -587,6 +616,8 @@ l_string|&quot;a&quot;
 (paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -601,6 +632,7 @@ r_int
 id|nr
 comma
 r_const
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -622,6 +654,7 @@ op_amp
 (paren
 (paren
 r_const
+r_volatile
 r_int
 r_int
 op_star
@@ -999,7 +1032,9 @@ id|x
 r_int
 id|cnt
 suffix:semicolon
-id|asm
+id|__asm__
+id|__volatile__
+c_func
 (paren
 l_string|&quot;bfffo %1{#0:#0},%0&quot;
 suffix:colon
@@ -1174,6 +1209,7 @@ id|minix_test_and_set_bit
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1203,11 +1239,14 @@ l_string|&quot;m&quot;
 (paren
 op_star
 (paren
+r_volatile
 r_char
 op_star
 )paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1225,6 +1264,7 @@ id|minix_test_and_clear_bit
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1254,11 +1294,14 @@ l_string|&quot;m&quot;
 (paren
 op_star
 (paren
+r_volatile
 r_char
 op_star
 )paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1275,6 +1318,7 @@ r_int
 id|nr
 comma
 r_const
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1296,6 +1340,7 @@ op_amp
 (paren
 (paren
 r_const
+r_volatile
 r_int
 r_int
 op_star
@@ -1323,6 +1368,7 @@ id|ext2_set_bit
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1352,11 +1398,14 @@ l_string|&quot;m&quot;
 (paren
 op_star
 (paren
+r_volatile
 r_char
 op_star
 )paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1372,6 +1421,7 @@ id|ext2_clear_bit
 r_int
 id|nr
 comma
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1401,11 +1451,14 @@ l_string|&quot;m&quot;
 (paren
 op_star
 (paren
+r_volatile
 r_char
 op_star
 )paren
 id|vaddr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1422,6 +1475,7 @@ r_int
 id|nr
 comma
 r_const
+r_volatile
 r_void
 op_star
 id|vaddr
@@ -1443,6 +1497,7 @@ op_amp
 (paren
 (paren
 r_const
+r_volatile
 r_int
 r_char
 op_star

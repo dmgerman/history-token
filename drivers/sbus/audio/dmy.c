@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dmy.c,v 1.7 2001/02/13 01:16:59 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
+multiline_comment|/* $Id: dmy.c,v 1.9 2001/05/22 23:16:10 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -92,6 +92,7 @@ id|sparcaudio_driver
 op_star
 id|drv
 )paren
+id|__init
 suffix:semicolon
 r_static
 r_int
@@ -3144,67 +3145,11 @@ id|dummy_get_formats
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Probe for the dummy chip and then attach the driver. */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
-r_int
-id|__init
-id|dummy_init
-c_func
-(paren
-r_void
-)paren
-macro_line|#endif
-(brace
-id|num_drivers
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Add support here for specifying multiple dummies to attach at once. */
-r_if
-c_cond
-(paren
-id|dummy_attach
-c_func
-(paren
-op_amp
-id|drivers
-(braket
-id|num_drivers
-)braket
-)paren
-op_eq
-l_int|0
-)paren
-id|num_drivers
-op_increment
-suffix:semicolon
-multiline_comment|/* Only return success if we found some dummy chips. */
-r_return
-(paren
-id|num_drivers
-OG
-l_int|0
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 multiline_comment|/* Attach to an dummy chip given its PROM node. */
 DECL|function|dummy_attach
 r_static
 r_int
+id|__init
 id|dummy_attach
 c_func
 (paren
@@ -3346,11 +3291,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/* Detach from an dummy chip given the device structure. */
 DECL|function|dummy_detach
 r_static
 r_void
+id|__exit
 id|dummy_detach
 c_func
 (paren
@@ -3377,9 +3322,60 @@ r_private
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+multiline_comment|/* Probe for the dummy chip and then attach the driver. */
+DECL|function|dummy_init
+r_static
+r_int
+id|__init
+id|dummy_init
+c_func
+(paren
 r_void
-id|cleanup_module
+)paren
+(brace
+id|num_drivers
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Add support here for specifying multiple dummies to attach at once. */
+r_if
+c_cond
+(paren
+id|dummy_attach
+c_func
+(paren
+op_amp
+id|drivers
+(braket
+id|num_drivers
+)braket
+)paren
+op_eq
+l_int|0
+)paren
+id|num_drivers
+op_increment
+suffix:semicolon
+multiline_comment|/* Only return success if we found some dummy chips. */
+r_return
+(paren
+id|num_drivers
+OG
+l_int|0
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+DECL|function|dummy_exit
+r_static
+r_void
+id|__exit
+id|dummy_exit
 c_func
 (paren
 r_void
@@ -3418,6 +3414,19 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+DECL|variable|dummy_init
+id|module_init
+c_func
+(paren
+id|dummy_init
+)paren
+suffix:semicolon
+DECL|variable|dummy_exit
+id|module_exit
+c_func
+(paren
+id|dummy_exit
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: amd7930.c,v 1.26 2001/02/13 01:16:59 davem Exp $&n; * drivers/sbus/audio/amd7930.c&n; *&n; * Copyright (C) 1996,1997 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is the lowlevel driver for the AMD7930 audio chip found on all&n; * sun4c machines and some sun4m machines.&n; *&n; * The amd7930 is actually an ISDN chip which has a very simple&n; * integrated audio encoder/decoder. When Sun decided on what chip to&n; * use for audio, they had the brilliant idea of using the amd7930 and&n; * only connecting the audio encoder/decoder pins.&n; *&n; * Thanks to the AMD engineer who was able to get us the AMD79C30&n; * databook which has all the programming information and gain tables.&n; *&n; * Advanced Micro Devices&squot; Am79C30A is an ISDN/audio chip used in the&n; * SparcStation 1+.  The chip provides microphone and speaker interfaces&n; * which provide mono-channel audio at 8K samples per second via either&n; * 8-bit A-law or 8-bit mu-law encoding.  Also, the chip features an&n; * ISDN BRI Line Interface Unit (LIU), I.430 S/T physical interface,&n; * which performs basic D channel LAPD processing and provides raw&n; * B channel data.  The digital audio channel, the two ISDN B channels,&n; * and two 64 Kbps channels to the microprocessor are all interconnected&n; * via a multiplexer.&n; *&n; * This driver interfaces to the Linux HiSax ISDN driver, which performs&n; * all high-level Q.921 and Q.931 ISDN functions.  The file is not&n; * itself a hardware driver; rather it uses functions exported by&n; * the AMD7930 driver in the sparcaudio subsystem (drivers/sbus/audio),&n; * allowing the chip to be simultaneously used for both audio and ISDN data.&n; * The hardware driver does _no_ buffering, but provides several callbacks&n; * which are called during interrupt service and should therefore run quickly.&n; *&n; * D channel transmission is performed by passing the hardware driver the&n; * address and size of an skb&squot;s data area, then waiting for a callback&n; * to signal successful transmission of the packet.  A task is then&n; * queued to notify the HiSax driver that another packet may be transmitted.&n; *&n; * D channel reception is quite simple, mainly because of:&n; *   1) the slow speed of the D channel - 16 kbps, and&n; *   2) the presence of an 8- or 32-byte (depending on chip version) FIFO&n; *      to buffer the D channel data on the chip&n; * Worst case scenario of back-to-back packets with the 8 byte buffer&n; * at 16 kbps yields an service time of 4 ms - long enough to preclude&n; * the need for fancy buffering.  We queue a background task that copies&n; * data out of the receive buffer into an skb, and the hardware driver&n; * simply does nothing until we&squot;re done with the receive buffer and&n; * reset it for a new packet.&n; *&n; * B channel processing is more complex, because of:&n; *   1) the faster speed - 64 kbps,&n; *   2) the lack of any on-chip buffering (it interrupts for every byte), and&n; *   3) the lack of any chip support for HDLC encapsulation&n; *&n; * The HiSax driver can put each B channel into one of three modes -&n; * L1_MODE_NULL (channel disabled), L1_MODE_TRANS (transparent data relay),&n; * and L1_MODE_HDLC (HDLC encapsulation by low-level driver).&n; * L1_MODE_HDLC is the most common, used for almost all &quot;pure&quot; digital&n; * data sessions.  L1_MODE_TRANS is used for ISDN audio.&n; *&n; * HDLC B channel transmission is performed via a large buffer into&n; * which the skb is copied while performing HDLC bit-stuffing.  A CRC&n; * is computed and attached to the end of the buffer, which is then&n; * passed to the low-level routines for raw transmission.  Once&n; * transmission is complete, the hardware driver is set to enter HDLC&n; * idle by successive transmission of mark (all 1) bytes, waiting for&n; * the ISDN driver to prepare another packet for transmission and&n; * deliver it.&n; *&n; * HDLC B channel reception is performed via an X-byte ring buffer&n; * divided into N sections of X/N bytes each.  Defaults: X=256 bytes, N=4.&n; * As the hardware driver notifies us that each section is full, we&n; * hand it the next section and schedule a background task to peruse&n; * the received section, bit-by-bit, with an HDLC decoder.  As&n; * packets are detected, they are copied into a large buffer while&n; * decoding HDLC bit-stuffing.  The ending CRC is verified, and if&n; * it is correct, we alloc a new skb of the correct length (which we&n; * now know), copy the packet into it, and hand it to the upper layers.&n; * Optimization: for large packets, we hand the buffer (which also&n; * happens to be an skb) directly to the upper layer after an skb_trim,&n; * and alloc a new large buffer for future packets, thus avoiding a copy.&n; * Then we return to HDLC processing; state is saved between calls.&n; */
+multiline_comment|/* $Id: amd7930.c,v 1.27 2001/05/21 01:25:22 davem Exp $&n; * drivers/sbus/audio/amd7930.c&n; *&n; * Copyright (C) 1996,1997 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is the lowlevel driver for the AMD7930 audio chip found on all&n; * sun4c machines and some sun4m machines.&n; *&n; * The amd7930 is actually an ISDN chip which has a very simple&n; * integrated audio encoder/decoder. When Sun decided on what chip to&n; * use for audio, they had the brilliant idea of using the amd7930 and&n; * only connecting the audio encoder/decoder pins.&n; *&n; * Thanks to the AMD engineer who was able to get us the AMD79C30&n; * databook which has all the programming information and gain tables.&n; *&n; * Advanced Micro Devices&squot; Am79C30A is an ISDN/audio chip used in the&n; * SparcStation 1+.  The chip provides microphone and speaker interfaces&n; * which provide mono-channel audio at 8K samples per second via either&n; * 8-bit A-law or 8-bit mu-law encoding.  Also, the chip features an&n; * ISDN BRI Line Interface Unit (LIU), I.430 S/T physical interface,&n; * which performs basic D channel LAPD processing and provides raw&n; * B channel data.  The digital audio channel, the two ISDN B channels,&n; * and two 64 Kbps channels to the microprocessor are all interconnected&n; * via a multiplexer.&n; *&n; * This driver interfaces to the Linux HiSax ISDN driver, which performs&n; * all high-level Q.921 and Q.931 ISDN functions.  The file is not&n; * itself a hardware driver; rather it uses functions exported by&n; * the AMD7930 driver in the sparcaudio subsystem (drivers/sbus/audio),&n; * allowing the chip to be simultaneously used for both audio and ISDN data.&n; * The hardware driver does _no_ buffering, but provides several callbacks&n; * which are called during interrupt service and should therefore run quickly.&n; *&n; * D channel transmission is performed by passing the hardware driver the&n; * address and size of an skb&squot;s data area, then waiting for a callback&n; * to signal successful transmission of the packet.  A task is then&n; * queued to notify the HiSax driver that another packet may be transmitted.&n; *&n; * D channel reception is quite simple, mainly because of:&n; *   1) the slow speed of the D channel - 16 kbps, and&n; *   2) the presence of an 8- or 32-byte (depending on chip version) FIFO&n; *      to buffer the D channel data on the chip&n; * Worst case scenario of back-to-back packets with the 8 byte buffer&n; * at 16 kbps yields an service time of 4 ms - long enough to preclude&n; * the need for fancy buffering.  We queue a background task that copies&n; * data out of the receive buffer into an skb, and the hardware driver&n; * simply does nothing until we&squot;re done with the receive buffer and&n; * reset it for a new packet.&n; *&n; * B channel processing is more complex, because of:&n; *   1) the faster speed - 64 kbps,&n; *   2) the lack of any on-chip buffering (it interrupts for every byte), and&n; *   3) the lack of any chip support for HDLC encapsulation&n; *&n; * The HiSax driver can put each B channel into one of three modes -&n; * L1_MODE_NULL (channel disabled), L1_MODE_TRANS (transparent data relay),&n; * and L1_MODE_HDLC (HDLC encapsulation by low-level driver).&n; * L1_MODE_HDLC is the most common, used for almost all &quot;pure&quot; digital&n; * data sessions.  L1_MODE_TRANS is used for ISDN audio.&n; *&n; * HDLC B channel transmission is performed via a large buffer into&n; * which the skb is copied while performing HDLC bit-stuffing.  A CRC&n; * is computed and attached to the end of the buffer, which is then&n; * passed to the low-level routines for raw transmission.  Once&n; * transmission is complete, the hardware driver is set to enter HDLC&n; * idle by successive transmission of mark (all 1) bytes, waiting for&n; * the ISDN driver to prepare another packet for transmission and&n; * deliver it.&n; *&n; * HDLC B channel reception is performed via an X-byte ring buffer&n; * divided into N sections of X/N bytes each.  Defaults: X=256 bytes, N=4.&n; * As the hardware driver notifies us that each section is full, we&n; * hand it the next section and schedule a background task to peruse&n; * the received section, bit-by-bit, with an HDLC decoder.  As&n; * packets are detected, they are copied into a large buffer while&n; * decoding HDLC bit-stuffing.  The ending CRC is verified, and if&n; * it is correct, we alloc a new skb of the correct length (which we&n; * now know), copy the packet into it, and hand it to the upper layers.&n; * Optimization: for large packets, we hand the buffer (which also&n; * happens to be an skb) directly to the upper layer after an skb_trim,&n; * and alloc a new large buffer for future packets, thus avoiding a copy.&n; * Then we return to HDLC processing; state is saved between calls.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -52,7 +52,7 @@ id|__u8
 id|data
 )paren
 suffix:semicolon
-macro_line|#if defined (AMD79C30_ISDN) &amp;&amp; defined (LINUX_VERSION_CODE) &amp;&amp; LINUX_VERSION_CODE &gt; 0x200ff 
+macro_line|#if defined (AMD79C30_ISDN)
 macro_line|#include &quot;../../isdn/hisax/hisax.h&quot;
 macro_line|#include &quot;../../isdn/hisax/isdnl1.h&quot;
 macro_line|#include &quot;../../isdn/hisax/foreign.h&quot;
@@ -4039,7 +4039,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *       ISDN operations&n; *&n; * Many of these routines take an &quot;int dev&quot; argument, which is simply&n; * an index into the drivers[] array.  Currently, we only support a&n; * single AMD 7930 chip, so the value should always be 0.  B channel&n; * operations require an &quot;int chan&quot;, which should be 0 for channel B1&n; * and 1 for channel B2&n; *&n; * int amd7930_get_irqnum(int dev)&n; *&n; *   returns the interrupt number being used by the chip.  ISDN4linux&n; *   uses this number to watch the interrupt during initialization and&n; *   make sure something is happening.&n; *&n; * int amd7930_get_liu_state(int dev)&n; *&n; *   returns the current state of the ISDN Line Interface Unit (LIU)&n; *   as a number between 2 (state F2) and 7 (state F7).  0 may also be&n; *   returned if the chip doesn&squot;t exist or the LIU hasn&squot;t been&n; *   activated.  The meanings of the states are defined in I.430, ISDN&n; *   BRI Physical Layer Interface.  The most important two states are&n; *   F3 (shutdown) and F7 (syncronized).&n; *&n; * void amd7930_liu_init(int dev, void (*callback)(), void *callback_arg)&n; *&n; *   initializes the LIU and optionally registers a callback to be&n; *   signaled upon a change of LIU state.  The callback will be called&n; *   with a single opaque callback_arg Once the callback has been&n; *   triggered, amd7930_get_liu_state can be used to determine the LIU&n; *   current state.&n; *&n; * void amd7930_liu_activate(int dev, int priority)&n; *&n; *   requests LIU activation at a given D-channel priority.&n; *   Successful activatation is achieved upon entering state F7, which&n; *   will trigger any callback previously registered with&n; *   amd7930_liu_init.&n; *&n; * void amd7930_liu_deactivate(int dev)&n; *&n; *   deactivates LIU.  Outstanding D and B channel transactions are&n; *   terminated rudely and without callback notification.  LIU change&n; *   of state callback will be triggered, however.&n; *&n; * void amd7930_dxmit(int dev, __u8 *buffer, unsigned int count,&n; *               void (*callback)(void *, int), void *callback_arg)&n; *&n; *   transmits a packet - specified with buffer, count - over the D-channel&n; *   interface.  Buffer should begin with the LAPD address field and&n; *   end with the information field.  FCS and flag sequences should not&n; *   be included, nor is bit-stuffing required - all these functions are&n; *   performed by the chip.  The callback function will be called&n; *   DURING THE TOP HALF OF AN INTERRUPT HANDLER and will be passed&n; *   both the arbitrary callback_arg and an integer error indication:&n; *&n; *       0 - successful transmission; ready for next packet&n; *   non-0 - error value from chip&squot;s DER (D-Channel Error Register):&n; *       4 - collision detect&n; *     128 - underrun; irq routine didn&squot;t service chip fast enough&n; *&n; *   The callback routine should defer any time-consuming operations&n; *   to a bottom-half handler; however, amd7930_dxmit may be called&n; *   from within the callback to request back-to-back transmission of&n; *   a second packet (without repeating the priority/collision mechanism)&n; *&n; *   A comment about the &quot;collision detect&quot; error, which is signalled&n; *   whenever the echoed D-channel data didn&squot;t match the transmitted&n; *   data.  This is part of ISDN&squot;s normal multi-drop T-interface&n; *   operation, indicating that another device has attempted simultaneous&n; *   transmission, but can also result from line noise.  An immediate&n; *   requeue via amd7930_dxmit is suggested, but repeated collision&n; *   errors may indicate a more serious problem.&n; *&n; * void amd7930_drecv(int dev, __u8 *buffer, unsigned int size,&n; *               void (*callback)(void *, int, unsigned int),&n; *               void *callback_arg)&n; *&n; *   register a buffer - buffer, size - into which a D-channel packet&n; *   can be received.  The callback function will be called DURING&n; *   THE TOP HALF OF AN INTERRUPT HANDLER and will be passed an&n; *   arbitrary callback_arg, an integer error indication and the length&n; *   of the received packet, which will start with the address field,&n; *   end with the information field, and not contain flag or FCS&n; *   bytes.  Bit-stuffing will already have been corrected for.&n; *   Possible values of second callback argument &quot;error&quot;:&n; *&n; *       0 - successful reception&n; *   non-0 - error value from chip&squot;s DER (D-Channel Error Register):&n; *       1 - received packet abort&n; *       2 - framing error; non-integer number of bytes received&n; *       8 - FCS error; CRC sequence indicated corrupted data&n; *      16 - overflow error; packet exceeded size of buffer&n; *      32 - underflow error; packet smaller than required five bytes&n; *      64 - overrun error; irq routine didn&squot;t service chip fast enough&n; *&n; * int amd7930_bopen(int dev, int chan, u_char xmit_idle_char)&n; *&n; *   This function should be called before any other operations on a B&n; *   channel.  In addition to arranging for interrupt handling and&n; *   channel multiplexing, it sets the xmit_idle_char which is&n; *   transmitted on the interface when no data buffer is available.&n; *   Suggested values are: 0 for ISDN audio; FF for HDLC mark idle; 7E&n; *   for HDLC flag idle.  Returns 0 on a successful open; -1 on error,&n; *   which is quite possible if audio and the other ISDN channel are&n; *   already in use, since the Am7930 can only send two of the three&n; *   channels to the processor&n; *&n; * void amd7930_bclose(int dev, int chan)&n; *&n; *   Shuts down a B channel when no longer in use.&n; *&n; * void amd7930_bxmit(int dev, int chan, __u8 *buffer, unsigned int count,&n; *               void (*callback)(void *), void *callback_arg)&n; *&n; *   transmits a raw data block - specified with buffer, count - over&n; *   the B channel interface specified by dev/chan.  The callback&n; *   function will be called DURING THE TOP HALF OF AN INTERRUPT&n; *   HANDLER and will be passed the arbitrary callback_arg&n; *&n; *   The callback routine should defer any time-consuming operations&n; *   to a bottom-half handler; however, amd7930_bxmit may be called&n; *   from within the callback to request back-to-back transmission of&n; *   another data block&n; *&n; * void amd7930_brecv(int dev, int chan, __u8 *buffer, unsigned int size,&n; *               void (*callback)(void *), void *callback_arg)&n; *&n; *   receive a raw data block - specified with buffer, size - over the&n; *   B channel interface specified by dev/chan.  The callback function&n; *   will be called DURING THE TOP HALF OF AN INTERRUPT HANDLER and&n; *   will be passed the arbitrary callback_arg&n; *&n; *   The callback routine should defer any time-consuming operations&n; *   to a bottom-half handler; however, amd7930_brecv may be called&n; *   from within the callback to register another buffer and ensure&n; *   continuous B channel reception without loss of data&n; *&n; */
-macro_line|#if defined (AMD79C30_ISDN) &amp;&amp; defined (LINUX_VERSION_CODE) &amp;&amp; LINUX_VERSION_CODE &gt; 0x200ff 
+macro_line|#if defined (AMD79C30_ISDN)
 DECL|function|amd7930_get_irqnum
 r_static
 r_int
@@ -6244,11 +6244,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/* Detach from an amd7930 chip given the device structure. */
 DECL|function|amd7930_detach
 r_static
 r_void
+id|__exit
 id|amd7930_detach
 c_func
 (paren
@@ -6317,17 +6317,9 @@ r_private
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Probe for the amd7930 chip and then attach the driver. */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|amd7930_init
+r_static
 r_int
 id|__init
 id|amd7930_init
@@ -6335,7 +6327,6 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_struct
 id|sbus_bus
@@ -6474,10 +6465,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|amd7930_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|amd7930_exit
 c_func
 (paren
 r_void
@@ -6517,7 +6509,20 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+DECL|variable|amd7930_init
+id|module_init
+c_func
+(paren
+id|amd7930_init
+)paren
+suffix:semicolon
+DECL|variable|amd7930_exit
+id|module_exit
+c_func
+(paren
+id|amd7930_exit
+)paren
+suffix:semicolon
 multiline_comment|/*************************************************************/
 multiline_comment|/*                 Audio format conversion                   */
 multiline_comment|/*************************************************************/

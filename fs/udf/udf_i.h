@@ -9,6 +9,8 @@ DECL|macro|UDF_I_LENEATTR
 mdefine_line|#define UDF_I_LENEATTR(X)&t;( UDF_I(X)-&gt;i_lenEAttr )
 DECL|macro|UDF_I_LENALLOC
 mdefine_line|#define UDF_I_LENALLOC(X)&t;( UDF_I(X)-&gt;i_lenAlloc )
+DECL|macro|UDF_I_LENEXTENTS
+mdefine_line|#define UDF_I_LENEXTENTS(X)&t;( UDF_I(X)-&gt;i_lenExtents )
 DECL|macro|UDF_I_UNIQUE
 mdefine_line|#define UDF_I_UNIQUE(X)&t;&t;( UDF_I(X)-&gt;i_unique )
 DECL|macro|UDF_I_ALLOCTYPE

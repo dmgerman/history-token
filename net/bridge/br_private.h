@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.5 2001/02/05 06:03:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.6 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _BR_PRIVATE_H
 DECL|macro|_BR_PRIVATE_H
 mdefine_line|#define _BR_PRIVATE_H
@@ -512,6 +512,22 @@ suffix:semicolon
 multiline_comment|/* br_forward.c */
 r_extern
 r_void
+id|br_deliver
+c_func
+(paren
+r_struct
+id|net_bridge_port
+op_star
+id|to
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|br_forward
 c_func
 (paren
@@ -528,7 +544,26 @@ id|skb
 suffix:semicolon
 r_extern
 r_void
-id|br_flood
+id|br_flood_deliver
+c_func
+(paren
+r_struct
+id|net_bridge
+op_star
+id|br
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|clone
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_flood_forward
 c_func
 (paren
 r_struct

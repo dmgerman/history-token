@@ -1043,8 +1043,6 @@ multiline_comment|/* Device specific setup. */
 r_if
 c_cond
 (paren
-id|n-&gt;parms
-op_logical_and
 id|n-&gt;parms-&gt;neigh_setup
 op_logical_and
 (paren

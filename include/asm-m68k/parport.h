@@ -2,6 +2,10 @@ multiline_comment|/*&n; * parport.h: platform-specific PC-style parport initiali
 macro_line|#ifndef _ASM_M68K_PARPORT_H
 DECL|macro|_ASM_M68K_PARPORT_H
 mdefine_line|#define _ASM_M68K_PARPORT_H 1
+DECL|macro|insl
+mdefine_line|#define insl(port,buf,len)   isa_insb(port,buf,(len)&lt;&lt;2)
+DECL|macro|outsl
+mdefine_line|#define outsl(port,buf,len)  isa_outsb(port,buf,(len)&lt;&lt;2)
 multiline_comment|/* no dma, or IRQ autoprobing */
 r_static
 r_int

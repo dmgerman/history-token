@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: auxio.h,v 1.2 1999/09/21 14:39:25 davem Exp $&n; * auxio.h:  Definitions and code for the Auxiliary I/O register.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: auxio.h,v 1.3 2001/06/05 08:16:34 davem Exp $&n; * auxio.h:  Definitions and code for the Auxiliary I/O register.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_AUXIO_H
 DECL|macro|_SPARC64_AUXIO_H
 mdefine_line|#define _SPARC64_AUXIO_H
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* FIXME: All of this should be checked for sun4u. It has /sbus/auxio, but&n;   I don&squot;t know whether it is the same and don&squot;t have a floppy */
 r_extern
 r_int

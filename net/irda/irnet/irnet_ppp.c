@@ -27,18 +27,23 @@ id|count
 r_char
 id|command
 (braket
-l_int|5
-op_plus
-id|NICKNAME_MAX_LEN
-op_plus
-l_int|2
+id|IRNET_MAX_COMMAND
 )braket
 suffix:semicolon
+r_char
+op_star
+id|start
+suffix:semicolon
+multiline_comment|/* Current command beeing processed */
+r_char
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Next command to process */
 r_int
 id|length
-op_assign
-id|count
 suffix:semicolon
+multiline_comment|/* Length of current command */
 id|DENTER
 c_func
 (paren
@@ -60,14 +65,8 @@ id|DABORT
 c_func
 (paren
 id|count
-OG
-(paren
-l_int|5
-op_plus
-id|NICKNAME_MAX_LEN
-op_plus
-l_int|1
-)paren
+op_ge
+id|IRNET_MAX_COMMAND
 comma
 op_minus
 id|ENOMEM
@@ -105,44 +104,10 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/* Strip out &squot;&bslash;n&squot; if needed, and safe terminate the string */
-r_if
-c_cond
-(paren
+multiline_comment|/* Safe terminate the string */
 id|command
 (braket
-id|length
-op_minus
-l_int|1
-)braket
-op_eq
-l_char|&squot;&bslash;0&squot;
-)paren
-(brace
-id|length
-op_decrement
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|command
-(braket
-id|length
-op_minus
-l_int|1
-)braket
-op_eq
-l_char|&squot;&bslash;n&squot;
-)paren
-(brace
-id|length
-op_decrement
-suffix:semicolon
-)brace
-id|command
-(braket
-id|length
+id|count
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
@@ -152,17 +117,105 @@ c_func
 (paren
 id|CTRL_INFO
 comma
-l_string|&quot;Command received is ``%s&squot;&squot; (%d-%d).&bslash;n&quot;
+l_string|&quot;Command line received is ``%s&squot;&squot; (%d).&bslash;n&quot;
 comma
 id|command
-comma
-id|length
 comma
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we recognised the command */
-multiline_comment|/* First command : name */
+multiline_comment|/* Check every commands in the command line */
+id|next
+op_assign
+id|command
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|next
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* Look at the next command */
+id|start
+op_assign
+id|next
+suffix:semicolon
+multiline_comment|/* Scrap whitespaces before the command */
+r_while
+c_loop
+(paren
+id|isspace
+c_func
+(paren
+op_star
+id|start
+)paren
+)paren
+(brace
+id|start
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/* &squot;,&squot; is our command separator */
+id|next
+op_assign
+id|strchr
+c_func
+(paren
+id|start
+comma
+l_char|&squot;,&squot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|next
+)paren
+(brace
+op_star
+id|next
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+multiline_comment|/* Terminate command */
+id|length
+op_assign
+id|next
+op_minus
+id|start
+suffix:semicolon
+multiline_comment|/* Length */
+id|next
+op_increment
+suffix:semicolon
+multiline_comment|/* Skip the &squot;&bslash;0&squot; */
+)brace
+r_else
+id|length
+op_assign
+id|strlen
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+id|CTRL_INFO
+comma
+l_string|&quot;Found command ``%s&squot;&squot; (%d).&bslash;n&quot;
+comma
+id|start
+comma
+id|length
+)paren
+suffix:semicolon
+multiline_comment|/* Check if we recognised one of the known command&n;       * We can&squot;t use &quot;switch&quot; with strings, so hack with &quot;continue&quot; */
+multiline_comment|/* First command : name -&gt; Requested IrDA nickname */
 r_if
 c_cond
 (paren
@@ -170,7 +223,7 @@ op_logical_neg
 id|strncmp
 c_func
 (paren
-id|command
+id|start
 comma
 l_string|&quot;name&quot;
 comma
@@ -192,7 +245,7 @@ op_logical_and
 id|strcmp
 c_func
 (paren
-id|command
+id|start
 op_plus
 l_int|5
 comma
@@ -201,22 +254,49 @@ l_string|&quot;any&quot;
 )paren
 )paren
 (brace
-multiline_comment|/* Copy the name for later reuse (including the &squot;/0&squot;) */
+multiline_comment|/* Strip out trailing whitespaces */
+r_while
+c_loop
+(paren
+id|isspace
+c_func
+(paren
+id|start
+(braket
+id|length
+op_minus
+l_int|1
+)braket
+)paren
+)paren
+(brace
+id|length
+op_decrement
+suffix:semicolon
+)brace
+multiline_comment|/* Copy the name for later reuse */
 id|memcpy
 c_func
 (paren
 id|ap-&gt;rname
 comma
-id|command
+id|start
 op_plus
 l_int|5
 comma
 id|length
 op_minus
 l_int|5
-op_plus
-l_int|1
 )paren
+suffix:semicolon
+id|ap-&gt;rname
+(braket
+id|length
+op_minus
+l_int|5
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 r_else
@@ -227,36 +307,69 @@ l_int|0
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|DEXIT
+id|DEBUG
 c_func
 (paren
-id|CTRL_TRACE
+id|CTRL_INFO
 comma
-l_string|&quot; - rname = ``%s&squot;&squot;&bslash;n&quot;
+l_string|&quot;Got rname = ``%s&squot;&squot;&bslash;n&quot;
 comma
 id|ap-&gt;rname
 )paren
 suffix:semicolon
-r_return
-id|count
+multiline_comment|/* Restart the loop */
+r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Second command : addr */
+multiline_comment|/* Second command : addr, daddr -&gt; Requested IrDA destination address&n;       * Also process : saddr -&gt; Requested IrDA source address */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|strncmp
 c_func
 (paren
-id|command
+id|start
 comma
 l_string|&quot;addr&quot;
 comma
 l_int|4
 )paren
 )paren
+op_logical_or
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|start
+comma
+l_string|&quot;daddr&quot;
+comma
+l_int|5
+)paren
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|start
+comma
+l_string|&quot;saddr&quot;
+comma
+l_int|5
+)paren
+)paren
+)paren
 (brace
+id|__u32
+id|addr
+op_assign
+id|DEV_ADDR_ANY
+suffix:semicolon
 multiline_comment|/* Copy the address only if is included and not &quot;any&quot; */
 r_if
 c_cond
@@ -271,7 +384,7 @@ op_logical_and
 id|strcmp
 c_func
 (paren
-id|command
+id|start
 op_plus
 l_int|5
 comma
@@ -282,20 +395,39 @@ l_string|&quot;any&quot;
 (brace
 r_char
 op_star
+id|begp
+op_assign
+id|start
+op_plus
+l_int|5
+suffix:semicolon
+r_char
+op_star
 id|endp
 suffix:semicolon
-id|__u32
-id|daddr
+multiline_comment|/* Scrap whitespaces before the command */
+r_while
+c_loop
+(paren
+id|isspace
+c_func
+(paren
+op_star
+id|begp
+)paren
+)paren
+(brace
+id|begp
+op_increment
 suffix:semicolon
+)brace
 multiline_comment|/* Convert argument to a number (last arg is the base) */
-id|daddr
+id|addr
 op_assign
 id|simple_strtoul
 c_func
 (paren
-id|command
-op_plus
-l_int|5
+id|begp
 comma
 op_amp
 id|endp
@@ -303,14 +435,14 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-multiline_comment|/* Has it worked  ? (endp should be command + count) */
+multiline_comment|/* Has it worked  ? (endp should be start + length) */
 id|DABORT
 c_func
 (paren
 id|endp
 op_le
 (paren
-id|command
+id|start
 op_plus
 l_int|5
 )paren
@@ -323,33 +455,59 @@ comma
 l_string|&quot;Invalid address.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Which type of address ? */
+r_if
+c_cond
+(paren
+id|start
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;s&squot;
+)paren
+(brace
 multiline_comment|/* Save it */
-id|ap-&gt;raddr
+id|ap-&gt;rsaddr
 op_assign
-id|daddr
+id|addr
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+id|CTRL_INFO
+comma
+l_string|&quot;Got rsaddr = %08x&bslash;n&quot;
+comma
+id|ap-&gt;rsaddr
+)paren
 suffix:semicolon
 )brace
 r_else
-id|ap-&gt;raddr
+(brace
+multiline_comment|/* Save it */
+id|ap-&gt;rdaddr
 op_assign
-id|DEV_ADDR_ANY
+id|addr
 suffix:semicolon
-id|DEXIT
+id|DEBUG
 c_func
 (paren
-id|CTRL_TRACE
+id|CTRL_INFO
 comma
-l_string|&quot; - raddr = %08x&bslash;n&quot;
+l_string|&quot;Got rdaddr = %08x&bslash;n&quot;
 comma
-id|ap-&gt;raddr
+id|ap-&gt;rdaddr
 )paren
 suffix:semicolon
-r_return
-id|count
+)brace
+multiline_comment|/* Restart the loop */
+r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* Other possible command : connect N (number of retries) */
-multiline_comment|/* Failed... */
+multiline_comment|/* No command matched -&gt; Failed... */
 id|DABORT
 c_func
 (paren
@@ -362,6 +520,11 @@ id|CTRL_ERROR
 comma
 l_string|&quot;Not a recognised IrNET command.&bslash;n&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Success : we have parsed all commands successfully */
+r_return
+id|count
 suffix:semicolon
 )brace
 macro_line|#ifdef INITIAL_DISCOVERY
@@ -507,7 +670,7 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Found %08x (%s)&bslash;n&quot;
+l_string|&quot;Found %08x (%s) behind %08x&bslash;n&quot;
 comma
 id|ap-&gt;discoveries
 (braket
@@ -522,6 +685,13 @@ id|ap-&gt;disco_index
 )braket
 dot
 id|info
+comma
+id|ap-&gt;discoveries
+(braket
+id|ap-&gt;disco_index
+)braket
+dot
+id|saddr
 )paren
 suffix:semicolon
 id|DEBUG
@@ -887,14 +1057,14 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Discovered %08x (%s)&bslash;n&quot;
+l_string|&quot;Discovered %08x (%s) behind %08x&bslash;n&quot;
 comma
 id|irnet_events.log
 (braket
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -902,6 +1072,13 @@ id|ap-&gt;event_index
 )braket
 dot
 id|name
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|saddr
 )paren
 suffix:semicolon
 r_break
@@ -914,14 +1091,14 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Expired %08x (%s)&bslash;n&quot;
+l_string|&quot;Expired %08x (%s) behind %08x&bslash;n&quot;
 comma
 id|irnet_events.log
 (braket
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -929,6 +1106,13 @@ id|ap-&gt;event_index
 )braket
 dot
 id|name
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|saddr
 )paren
 suffix:semicolon
 r_break
@@ -948,7 +1132,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -982,7 +1166,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -1009,14 +1193,14 @@ c_func
 (paren
 id|event
 comma
-l_string|&quot;Request from %08x (%s)&bslash;n&quot;
+l_string|&quot;Request from %08x (%s) behind %08x&bslash;n&quot;
 comma
 id|irnet_events.log
 (braket
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -1024,6 +1208,13 @@ id|ap-&gt;event_index
 )braket
 dot
 id|name
+comma
+id|irnet_events.log
+(braket
+id|ap-&gt;event_index
+)braket
+dot
+id|saddr
 )paren
 suffix:semicolon
 r_break
@@ -1043,7 +1234,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -1077,7 +1268,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -1111,7 +1302,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -1145,7 +1336,7 @@ id|irnet_events.log
 id|ap-&gt;event_index
 )braket
 dot
-id|addr
+id|daddr
 comma
 id|irnet_events.log
 (braket
@@ -3030,8 +3221,8 @@ l_int|0
 (brace
 macro_line|#ifdef CONNECT_IN_SEND
 multiline_comment|/* Let&squot;s try to connect one more time... */
-multiline_comment|/* Note : we won&squot;t connect fully yet, but we should be ready for&n;       * next packet... */
-multiline_comment|/* Note : we can&squot;t do that, we need to have a process context to&n;       * go through interruptible_sleep_on() in irnet_find_lsap_sel()&n;       * We need to find another way... */
+multiline_comment|/* Note : we won&squot;t be connected after this call, but we should be&n;       * ready for next packet... */
+multiline_comment|/* If we are already connecting, this will fail */
 id|irda_irnet_connect
 c_func
 (paren

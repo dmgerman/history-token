@@ -30,7 +30,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/linux_logo.h&gt;
 macro_line|#include &quot;console_macros.h&quot;
 DECL|variable|conswitchp
 r_const

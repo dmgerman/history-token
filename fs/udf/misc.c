@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * misc.c&n; *&n; * PURPOSE&n; *&t;Miscellaneous routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hootie.lvld.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998 Dave Boynton&n; *  (C) 1998-2000 Ben Fennema&n; *  (C) 1999-2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  04/19/99 blf  partial support for reading/writing specific EA&squot;s&n; */
+multiline_comment|/*&n; * misc.c&n; *&n; * PURPOSE&n; *&t;Miscellaneous routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998 Dave Boynton&n; *  (C) 1998-2000 Ben Fennema&n; *  (C) 1999-2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  04/19/99 blf  partial support for reading/writing specific EA&squot;s&n; */
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#if defined(__linux__) &amp;&amp; defined(__KERNEL__)
 macro_line|#include &quot;udf_sb.h&quot;
@@ -69,6 +69,65 @@ l_int|32
 suffix:semicolon
 )brace
 macro_line|#if defined(__linux__) &amp;&amp; defined(__KERNEL__)
+r_extern
+r_struct
+id|buffer_head
+op_star
+DECL|function|udf_tgetblk
+id|udf_tgetblk
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|block
+comma
+r_int
+id|size
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|UDF_QUERY_FLAG
+c_func
+(paren
+id|sb
+comma
+id|UDF_FLAG_VARCONV
+)paren
+)paren
+r_return
+id|getblk
+c_func
+(paren
+id|sb-&gt;s_dev
+comma
+id|udf_fixed_to_variable
+c_func
+(paren
+id|block
+)paren
+comma
+id|size
+)paren
+suffix:semicolon
+r_else
+r_return
+id|getblk
+c_func
+(paren
+id|sb-&gt;s_dev
+comma
+id|block
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_struct
 id|buffer_head
@@ -1310,7 +1369,7 @@ id|tag_p-&gt;tagLocation
 id|udf_debug
 c_func
 (paren
-l_string|&quot;location mismatch block %d, tag %d != %d&bslash;n&quot;
+l_string|&quot;location mismatch block %u, tag %u != %u&bslash;n&quot;
 comma
 id|block
 comma

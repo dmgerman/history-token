@@ -10,13 +10,9 @@ DECL|macro|IRNET_MAJOR
 mdefine_line|#define IRNET_MAJOR&t;10&t;/* Misc range */
 DECL|macro|IRNET_MINOR
 mdefine_line|#define IRNET_MINOR&t;187&t;/* Official allocation */
-macro_line|#ifdef LINKNAME_IOCTL
-multiline_comment|/* Compatibility with old ppp drivers&n; * Should be defined in &lt;linux/if_ppp.h&gt; */
-macro_line|#ifndef PPPIOCSLINKNAME
-DECL|macro|PPPIOCSLINKNAME
-mdefine_line|#define PPPIOCSLINKNAME&t;_IOW(&squot;t&squot;, 74, struct ppp_option_data)
-macro_line|#endif /* PPPIOCSLINKNAME */
-macro_line|#endif /* LINKNAME_IOCTL */
+multiline_comment|/* IrNET control channel stuff */
+DECL|macro|IRNET_MAX_COMMAND
+mdefine_line|#define IRNET_MAX_COMMAND&t;256&t;/* Max length of a command line */
 multiline_comment|/* PPP hardcore stuff */
 multiline_comment|/* Bits in rbits (PPP flags in irnet struct) */
 DECL|macro|SC_RCV_BITS

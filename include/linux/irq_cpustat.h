@@ -19,10 +19,8 @@ DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu, member)&t;((void)(cpu), irq_stat[0].member)
 macro_line|#endif&t;
 multiline_comment|/* arch independent irq_stat fields */
-DECL|macro|softirq_active
-mdefine_line|#define softirq_active(cpu)&t;__IRQ_STAT((cpu), __softirq_active)
-DECL|macro|softirq_mask
-mdefine_line|#define softirq_mask(cpu)&t;__IRQ_STAT((cpu), __softirq_mask)
+DECL|macro|softirq_pending
+mdefine_line|#define softirq_pending(cpu)&t;__IRQ_STAT((cpu), __softirq_pending)
 DECL|macro|local_irq_count
 mdefine_line|#define local_irq_count(cpu)&t;__IRQ_STAT((cpu), __local_irq_count)
 DECL|macro|local_bh_count
@@ -32,7 +30,5 @@ mdefine_line|#define syscall_count(cpu)&t;__IRQ_STAT((cpu), __syscall_count)
 multiline_comment|/* arch dependent irq_stat fields */
 DECL|macro|nmi_count
 mdefine_line|#define nmi_count(cpu)&t;&t;__IRQ_STAT((cpu), __nmi_count)&t;&t;/* i386, ia64 */
-DECL|macro|softirq_pending
-mdefine_line|#define softirq_pending(cpu) &bslash;&n;&t;((softirq_active(cpu) &amp; softirq_mask(cpu)))
 macro_line|#endif&t;/* __irq_cpustat_h */
 eof

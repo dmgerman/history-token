@@ -7,6 +7,18 @@ DECL|struct|vfsmount
 r_struct
 id|vfsmount
 (brace
+DECL|member|mnt_hash
+r_struct
+id|list_head
+id|mnt_hash
+suffix:semicolon
+DECL|member|mnt_parent
+r_struct
+id|vfsmount
+op_star
+id|mnt_parent
+suffix:semicolon
+multiline_comment|/* fs we are mounted on */
 DECL|member|mnt_mountpoint
 r_struct
 id|dentry
@@ -21,26 +33,12 @@ op_star
 id|mnt_root
 suffix:semicolon
 multiline_comment|/* root of the mounted tree */
-DECL|member|mnt_parent
-r_struct
-id|vfsmount
-op_star
-id|mnt_parent
-suffix:semicolon
-multiline_comment|/* fs we are mounted on */
 DECL|member|mnt_instances
 r_struct
 id|list_head
 id|mnt_instances
 suffix:semicolon
 multiline_comment|/* other vfsmounts of the same fs */
-DECL|member|mnt_clash
-r_struct
-id|list_head
-id|mnt_clash
-suffix:semicolon
-multiline_comment|/* those who are mounted on (other */
-multiline_comment|/* instances) of the same dentry */
 DECL|member|mnt_sb
 r_struct
 id|super_block

@@ -8,12 +8,6 @@ macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,7)
-macro_line|#error &quot;The UDF Module Current Requires Kernel Version 2.3.7 or greater&quot;
-macro_line|#endif
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#if !defined(CONFIG_UDF_FS) &amp;&amp; !defined(CONFIG_UDF_FS_MODULE)
 DECL|macro|CONFIG_UDF_FS_MODULE
@@ -266,6 +260,11 @@ id|udf_write_fi
 c_func
 (paren
 r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
 id|FileIdentDesc
 op_star
 comma
@@ -403,6 +402,16 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|udf_truncate
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|udf_read_inode
 c_func
 (paren
@@ -434,18 +443,6 @@ suffix:semicolon
 r_extern
 r_void
 id|udf_write_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|udf_locked_block_map
 c_func
 (paren
 r_struct
@@ -546,7 +543,6 @@ id|Uint32
 comma
 r_struct
 id|buffer_head
-op_star
 op_star
 comma
 r_int
@@ -684,6 +680,22 @@ id|block
 comma
 r_int
 id|partref
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|buffer_head
+op_star
+id|udf_tgetblk
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -899,19 +911,18 @@ id|Uint32
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|udf_fill_spartable
+r_int
+id|udf_relocate_blocks
 c_func
 (paren
 r_struct
 id|super_block
 op_star
 comma
-r_struct
-id|udf_sparing_data
-op_star
+r_int
 comma
 r_int
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* unicode.c */
@@ -920,6 +931,10 @@ r_int
 id|udf_get_filename
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+comma
 id|Uint8
 op_star
 comma
@@ -960,17 +975,7 @@ suffix:semicolon
 multiline_comment|/* truncate.c */
 r_extern
 r_void
-id|udf_trunc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|udf_truncate
+id|udf_truncate_extents
 c_func
 (paren
 r_struct
@@ -1034,7 +1039,7 @@ suffix:semicolon
 multiline_comment|/* fsync.c */
 r_extern
 r_int
-id|udf_sync_file
+id|udf_fsync_file
 c_func
 (paren
 r_struct
@@ -1043,6 +1048,18 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|udf_fsync_inode
+c_func
+(paren
+r_struct
+id|inode
 op_star
 comma
 r_int
@@ -1301,6 +1318,45 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+r_extern
+r_int
+id|udf_CS0toNLS
+c_func
+(paren
+r_struct
+id|nls_table
+op_star
+comma
+r_struct
+id|ustr
+op_star
+comma
+r_struct
+id|ustr
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|udf_NLStoCS0
+c_func
+(paren
+r_struct
+id|nls_table
+op_star
+comma
+id|dstring
+op_star
+comma
+r_struct
+id|ustr
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* crc.c */
 r_extern
 id|Uint16

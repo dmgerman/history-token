@@ -879,6 +879,19 @@ op_rshift
 l_int|4
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|offset
+op_eq
+op_minus
+l_int|2047
+)paren
+multiline_comment|/* unspecified offset */
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 id|offset

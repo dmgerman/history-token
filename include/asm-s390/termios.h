@@ -136,6 +136,8 @@ DECL|macro|N_SMSBLOCK
 mdefine_line|#define N_SMSBLOCK&t;12&t;/* SMS block mode - for talking to GSM data cards about SMS messages */
 DECL|macro|N_HDLC
 mdefine_line|#define N_HDLC         13&t;/* synchronous HDLC */
+DECL|macro|N_HCI
+mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&t;intr=^C&t;&t;quit=^&bslash;&t;&t;erase=del&t;kill=^U&n;&t;eof=^D&t;&t;vtime=&bslash;0&t;vmin=&bslash;1&t;&t;sxtc=&bslash;0&n;&t;start=^Q&t;stop=^S&t;&t;susp=^Z&t;&t;eol=&bslash;0&n;&t;reprint=^R&t;discard=^U&t;werase=^W&t;lnext=^V&n;&t;eol2=&bslash;0&n;*/
 DECL|macro|INIT_C_CC

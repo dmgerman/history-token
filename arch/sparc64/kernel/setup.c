@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.64 2001/04/24 21:10:05 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.65 2001/06/03 13:41:13 ecd Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -87,6 +87,16 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|prom_keyboard
+r_void
+(paren
+op_star
+id|prom_keyboard
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 id|asmlinkage
 r_void
 id|sys_sync

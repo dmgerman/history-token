@@ -1887,7 +1887,7 @@ r_volatile
 (paren
 l_string|&quot;add.b %1,%0&quot;
 suffix:colon
-l_string|&quot;=d,=g&quot;
+l_string|&quot;=d,g&quot;
 (paren
 id|dest-&gt;lowmant
 )paren
@@ -2122,7 +2122,7 @@ r_volatile
 (paren
 l_string|&quot;sub.b %1,%0&quot;
 suffix:colon
-l_string|&quot;=d,=g&quot;
+l_string|&quot;=d,g&quot;
 (paren
 id|dest-&gt;lowmant
 )paren
@@ -2206,7 +2206,7 @@ mdefine_line|#define fp_div64(quot, rem, srch, srcl, div)&t;&t;&t;&t;&bslash;&n;
 DECL|macro|fp_add64
 mdefine_line|#define fp_add64(dest1, dest2, src1, src2) ({&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;add.l %1,%0&quot; : &quot;=d,=dm&quot; (dest2)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;dm,d&quot; (src2), &quot;0,0&quot; (dest2));&t;&t;&t;&bslash;&n;&t;asm (&quot;addx.l %1,%0&quot; : &quot;=d&quot; (dest1)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (src1), &quot;0&quot; (dest1));&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|fp_addx96
-mdefine_line|#define fp_addx96(dest, src) ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* we assume here, gcc only insert move and a clr instr */&t;&bslash;&n;&t;asm volatile (&quot;add.l %1,%0&quot; : &quot;=d,=g&quot; (dest-&gt;m32[2])&t;&t;&bslash;&n;&t;&t;: &quot;g,d&quot; (temp.m32[1]), &quot;0,0&quot; (dest-&gt;m32[2]));&t;&t;&bslash;&n;&t;asm volatile (&quot;addx.l %1,%0&quot; : &quot;=d&quot; (dest-&gt;m32[1])&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (temp.m32[0]), &quot;0&quot; (dest-&gt;m32[1]));&t;&t;&bslash;&n;&t;asm volatile (&quot;addx.l %1,%0&quot; : &quot;=d&quot; (dest-&gt;m32[0])&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (0), &quot;0&quot; (dest-&gt;m32[0]));&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define fp_addx96(dest, src) ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* we assume here, gcc only insert move and a clr instr */&t;&bslash;&n;&t;asm volatile (&quot;add.l %1,%0&quot; : &quot;=d,g&quot; (dest-&gt;m32[2])&t;&t;&bslash;&n;&t;&t;: &quot;g,d&quot; (temp.m32[1]), &quot;0,0&quot; (dest-&gt;m32[2]));&t;&t;&bslash;&n;&t;asm volatile (&quot;addx.l %1,%0&quot; : &quot;=d&quot; (dest-&gt;m32[1])&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (temp.m32[0]), &quot;0&quot; (dest-&gt;m32[1]));&t;&t;&bslash;&n;&t;asm volatile (&quot;addx.l %1,%0&quot; : &quot;=d&quot; (dest-&gt;m32[0])&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (0), &quot;0&quot; (dest-&gt;m32[0]));&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|fp_sub64
 mdefine_line|#define fp_sub64(dest, src) ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm (&quot;sub.l %1,%0&quot; : &quot;=d,=dm&quot; (dest.m32[1])&t;&t;&t;&bslash;&n;&t;&t;: &quot;dm,d&quot; (src.m32[1]), &quot;0,0&quot; (dest.m32[1]));&t;&t;&bslash;&n;&t;asm (&quot;subx.l %1,%0&quot; : &quot;=d&quot; (dest.m32[0])&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (src.m32[0]), &quot;0&quot; (dest.m32[0]));&t;&t;&t;&bslash;&n;})
 DECL|macro|fp_sub96c

@@ -338,10 +338,9 @@ op_star
 id|s
 suffix:semicolon
 )brace
-DECL|macro|__HAVE_ARCH_STRPBRK
+macro_line|#if 0
 mdefine_line|#define __HAVE_ARCH_STRPBRK
-DECL|function|strpbrk
-r_static
+r_extern
 r_inline
 r_char
 op_star
@@ -417,9 +416,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|macro|__HAVE_ARCH_STRSPN
+macro_line|#endif
+macro_line|#if 0
 mdefine_line|#define __HAVE_ARCH_STRSPN
-DECL|function|strspn
 r_static
 r_inline
 r_int
@@ -514,10 +513,10 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|macro|__HAVE_ARCH_STRTOK
+macro_line|#endif
+macro_line|#if 0
 mdefine_line|#define __HAVE_ARCH_STRTOK
-DECL|function|strtok
-r_static
+r_extern
 r_inline
 r_char
 op_star
@@ -624,6 +623,7 @@ id|sbegin
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* strstr !! */
 DECL|macro|__HAVE_ARCH_STRLEN
 mdefine_line|#define __HAVE_ARCH_STRLEN
@@ -1353,7 +1353,7 @@ id|s
 op_amp
 l_int|0x0f
 )paren
-id|memset
+id|__memset_g
 c_func
 (paren
 id|s
@@ -1523,10 +1523,24 @@ r_return
 id|xs
 suffix:semicolon
 )brace
+r_extern
+r_void
+op_star
+id|memset
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
 DECL|macro|__memset_const
 mdefine_line|#define __memset_const(s,c,count) &bslash;&n;((count==PAGE_SIZE) ? &bslash;&n;  __memset_page((s),(c),(count)) : &bslash;&n;  __memset_g((s),(c),(count)))
 DECL|macro|memset
-mdefine_line|#define memset(s, c, count) &bslash;&n;(__builtin_constant_p(count) ? &bslash;&n; __memset_const((s),(c),(count)) : &bslash;&n; memset((s),(c),(count)))
+mdefine_line|#define memset(s, c, count) &bslash;&n;(__builtin_constant_p(count) ? &bslash;&n; __memset_const((s),(c),(count)) : &bslash;&n; __memset_g((s),(c),(count)))
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
 multiline_comment|/*&n; * __builtin_memcpy() does not handle page-sized memcpys very well,&n; * thus following the same assumptions as for page-sized memsets, this&n; * function copies page-sized areas using an unrolled loop, without&n; * considering alignment.&n; *&n; * For the 680[46]0 only kernels we use the move16 instruction instead&n; * as it writes through the data-cache, invalidating the cache-lines&n; * touched. In this way we do not use up the entire data-cache (well,&n; * half of it on the 68060) by copying a page. An unrolled loop of two&n; * move16 instructions seem to the fastest. The only caveat is that&n; * both source and destination must be 16-byte aligned, if not we fall&n; * back to the generic memcpy function.  - Jes&n; */
@@ -2206,5 +2220,71 @@ DECL|macro|__HAVE_ARCH_MEMCMP
 mdefine_line|#define __HAVE_ARCH_MEMCMP
 DECL|macro|memcmp
 mdefine_line|#define memcmp(cs, ct, n) &bslash;&n;(__builtin_constant_p(n) ? &bslash;&n; __builtin_memcmp((cs),(ct),(n)) : &bslash;&n; memcmp((cs),(ct),(n)))
+DECL|macro|__HAVE_ARCH_MEMCHR
+mdefine_line|#define __HAVE_ARCH_MEMCHR
+DECL|function|memchr
+r_extern
+r_inline
+r_void
+op_star
+id|memchr
+c_func
+(paren
+r_const
+r_void
+op_star
+id|cs
+comma
+r_int
+id|c
+comma
+r_int
+id|count
+)paren
+(brace
+multiline_comment|/* Someone else can optimize this, I don&squot;t care - tonym@mac.linux-m68k.org */
+r_int
+r_char
+op_star
+id|ret
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|cs
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|count
+OG
+l_int|0
+suffix:semicolon
+id|count
+op_decrement
+comma
+id|ret
+op_increment
+)paren
+r_if
+c_cond
+(paren
+op_star
+id|ret
+op_eq
+id|c
+)paren
+(brace
+r_return
+id|ret
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif /* _M68K_STRING_H_ */
 eof

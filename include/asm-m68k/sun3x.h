@@ -28,6 +28,12 @@ DECL|macro|SUN3X_ESP_BASE
 mdefine_line|#define SUN3X_ESP_BASE&t;  0x66000000
 DECL|macro|SUN3X_ESP_DMA
 mdefine_line|#define SUN3X_ESP_DMA&t;  0x66001000
+DECL|macro|SUN3X_FDC
+mdefine_line|#define SUN3X_FDC         0x6e000000
+DECL|macro|SUN3X_FDC_FCR
+mdefine_line|#define SUN3X_FDC_FCR     0x6e000400
+DECL|macro|SUN3X_FDC_FVR
+mdefine_line|#define SUN3X_FDC_FVR     0x6e000800
 multiline_comment|/* some NVRAM addresses */
 DECL|macro|SUN3X_EEPROM_CONS
 mdefine_line|#define SUN3X_EEPROM_CONS &t;(SUN3X_EEPROM + 0x1f)

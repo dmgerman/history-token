@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.05&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.06&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -60,7 +60,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;orinoco_cs.c 0.05 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.06 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
@@ -458,6 +458,236 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Do a soft reset of the Pcmcia card using the Configuration Option Register&n; * Can&squot;t do any harm, and actually may do some good on some cards...&n; * In fact, this seem necessary for Spectrum cards...&n; */
+r_static
+r_int
+DECL|function|dldwd_cs_cor_reset
+id|dldwd_cs_cor_reset
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|priv
+)paren
+(brace
+id|dldwd_card_t
+op_star
+id|card
+op_assign
+(paren
+id|dldwd_card_t
+op_star
+)paren
+id|priv-&gt;card
+suffix:semicolon
+id|dev_link_t
+op_star
+id|link
+op_assign
+op_amp
+id|card-&gt;link
+suffix:semicolon
+id|conf_reg_t
+id|reg
+suffix:semicolon
+id|u_long
+id|default_cor
+suffix:semicolon
+id|TRACE_ENTER
+c_func
+(paren
+id|priv-&gt;ndev.name
+)paren
+suffix:semicolon
+multiline_comment|/* Doing it if hardware is gone is guaranteed crash */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv-&gt;hw_ready
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Save original COR value */
+id|reg.Function
+op_assign
+l_int|0
+suffix:semicolon
+id|reg.Action
+op_assign
+id|CS_READ
+suffix:semicolon
+id|reg.Offset
+op_assign
+id|CISREG_COR
+suffix:semicolon
+id|reg.Value
+op_assign
+l_int|0
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+id|default_cor
+op_assign
+id|reg.Value
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;dldwd : dldwd_cs_cor_reset() : cor=0x%lX&bslash;n&quot;
+comma
+id|default_cor
+)paren
+suffix:semicolon
+multiline_comment|/* Soft-Reset card */
+id|reg.Action
+op_assign
+id|CS_WRITE
+suffix:semicolon
+id|reg.Offset
+op_assign
+id|CISREG_COR
+suffix:semicolon
+id|reg.Value
+op_assign
+(paren
+id|default_cor
+op_or
+id|COR_SOFT_RESET
+)paren
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* Wait until the card has acknowledged our reset */
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Restore original COR configuration index */
+id|reg.Value
+op_assign
+(paren
+id|default_cor
+op_amp
+op_complement
+id|COR_SOFT_RESET
+)paren
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* Wait until the card has finished restarting */
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|TRACE_EXIT
+c_func
+(paren
+id|priv-&gt;ndev.name
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Remove zombie instances (card removed, detach pending) */
+r_static
+r_void
+DECL|function|flush_stale_links
+id|flush_stale_links
+c_func
+(paren
+r_void
+)paren
+(brace
+id|dev_link_t
+op_star
+id|link
+comma
+op_star
+id|next
+suffix:semicolon
+id|TRACE_ENTER
+c_func
+(paren
+l_string|&quot;dldwd&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|link
+op_assign
+id|dev_list
+suffix:semicolon
+id|link
+suffix:semicolon
+id|link
+op_assign
+id|next
+)paren
+(brace
+id|next
+op_assign
+id|link-&gt;next
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_STALE_LINK
+)paren
+id|dldwd_cs_detach
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
+)brace
+id|TRACE_EXIT
+c_func
+(paren
+l_string|&quot;dldwd&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*======================================================================&n;  dldwd_cs_attach() creates an &quot;instance&quot; of the driver, allocating&n;  local data structures for one device.  The device is registered&n;  with Card Services.&n;  &n;  The dev_link structure is initialized, but we don&squot;t actually&n;  configure the card at this point -- we wait until we receive a&n;  card insertion event.&n;  ======================================================================*/
 r_static
 id|dev_link_t
@@ -498,6 +728,12 @@ id|TRACE_ENTER
 c_func
 (paren
 l_string|&quot;dldwd&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* A bit of cleanup */
+id|flush_stale_links
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate space for private device-specific data */
@@ -683,6 +919,10 @@ suffix:semicolon
 id|ndev-&gt;stop
 op_assign
 id|dldwd_cs_stop
+suffix:semicolon
+id|priv-&gt;card_reset_handler
+op_assign
+id|dldwd_cs_cor_reset
 suffix:semicolon
 multiline_comment|/* Register with Card Services */
 id|link-&gt;next
@@ -968,132 +1208,6 @@ l_string|&quot;dldwd&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* dldwd_cs_detach */
-multiline_comment|/*&n; * Do a soft reset of the Pcmcia card using the Configuration Option Register&n; * Can&squot;t do any harm, and actually may do some good on some cards...&n; */
-r_static
-r_int
-DECL|function|dldwd_cs_cor_reset
-id|dldwd_cs_cor_reset
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-id|conf_reg_t
-id|reg
-suffix:semicolon
-id|u_long
-id|default_cor
-suffix:semicolon
-multiline_comment|/* Save original COR value */
-id|reg.Function
-op_assign
-l_int|0
-suffix:semicolon
-id|reg.Action
-op_assign
-id|CS_READ
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_COR
-suffix:semicolon
-id|reg.Value
-op_assign
-l_int|0
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-id|default_cor
-op_assign
-id|reg.Value
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;dldwd : dldwd_cs_cor_reset() : cor=0x%lX&bslash;n&quot;
-comma
-id|default_cor
-)paren
-suffix:semicolon
-multiline_comment|/* Soft-Reset card */
-id|reg.Action
-op_assign
-id|CS_WRITE
-suffix:semicolon
-id|reg.Offset
-op_assign
-id|CISREG_COR
-suffix:semicolon
-id|reg.Value
-op_assign
-(paren
-id|default_cor
-op_or
-id|COR_SOFT_RESET
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Wait until the card has acknowledged our reset */
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Restore original COR configuration index */
-id|reg.Value
-op_assign
-(paren
-id|default_cor
-op_amp
-id|COR_CONFIG_MASK
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|AccessConfigurationRegister
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|reg
-)paren
-suffix:semicolon
-multiline_comment|/* Wait until the card has finished restarting */
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*======================================================================&n;  dldwd_cs_config() is scheduled to run after a CARD_INSERTION event&n;  is received, to configure the PCMCIA socket, and to make the&n;  device available to the system.&n;  ======================================================================*/
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn),args))!=0) goto cs_failed
@@ -1870,20 +1984,6 @@ id|ndev-&gt;irq
 op_assign
 id|link-&gt;irq.AssignedIRQ
 suffix:semicolon
-multiline_comment|/* Do a Pcmcia soft reset of the card (optional) */
-r_if
-c_cond
-(paren
-id|reset_cor
-)paren
-(brace
-id|dldwd_cs_cor_reset
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* register_netdev will give us an ethX name */
 id|ndev-&gt;name
 (braket
@@ -2022,11 +2122,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Allow /proc &amp; ioctls to act */
-id|priv-&gt;hw_ready
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* And give us the proc nodes for debugging */
 r_if
 c_cond
@@ -2060,6 +2155,25 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
+multiline_comment|/* Allow cor_reset, /proc &amp; ioctls to act */
+id|priv-&gt;hw_ready
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Do a Pcmcia soft reset of the card (optional) */
+r_if
+c_cond
+(paren
+id|reset_cor
+)paren
+(brace
+id|dldwd_cs_cor_reset
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;   At this point, the dev_node_t structure(s) need to be&n;&t;   initialized and arranged in a linked list at link-&gt;dev.&n;&t; */
 id|card-&gt;node.major
 op_assign

@@ -91,7 +91,7 @@ id|BAD_PAGETABLE
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_pte_slow
+macro_line|#if 0
 id|pte_t
 op_star
 id|get_pte_slow
@@ -247,7 +247,8 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-DECL|function|get_pmd_slow
+macro_line|#endif
+macro_line|#if 0
 id|pmd_t
 op_star
 id|get_pmd_slow
@@ -362,6 +363,7 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* ++andreas: {get,free}_pointer_table rewritten to use unused fields from&n;   struct page instead of separately kmalloced struct.  Stolen from&n;   arch/sparc/mm/srmmu.c ... */
 DECL|typedef|ptable_desc
 r_typedef
@@ -1118,6 +1120,33 @@ l_int|1
 dot
 id|size
 suffix:semicolon
+multiline_comment|/* As a special case allow `__pa(high_memory)&squot;.  */
+r_if
+c_cond
+(paren
+id|voff
+op_eq
+l_int|0
+)paren
+r_return
+id|m68k_memory
+(braket
+id|i
+op_minus
+l_int|1
+)braket
+dot
+id|addr
+op_plus
+id|m68k_memory
+(braket
+id|i
+op_minus
+l_int|1
+)braket
+dot
+id|size
+suffix:semicolon
 r_return
 id|mm_vtop_fallback
 c_func
@@ -1806,12 +1835,13 @@ mdefine_line|#define&t;cleari040(paddr)&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volat
 multiline_comment|/* push page in both caches */
 DECL|macro|push040
 mdefine_line|#define&t;push040(paddr)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;.chip 68040&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;      &quot;cpushp %%bc,(%0)&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;      &quot;.chip 68k&quot;&t;&t;&bslash;&n;&t;&t;&t;      : : &quot;a&quot; (paddr))
-multiline_comment|/* push and invalidate page in both caches */
+multiline_comment|/* push and invalidate page in both caches, must disable ints&n; * to avoid invalidating valid data */
 DECL|macro|pushcl040
-mdefine_line|#define&t;pushcl040(paddr)&t;&t;&t;&bslash;&n;&t;do { push040(paddr);&t;&t;&t;&bslash;&n;&t;     if (CPU_IS_060) clear040(paddr);&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;pushcl040(paddr)&t;&t;&t;&bslash;&n;&t;do { unsigned long flags;               &bslash;&n;             save_flags(flags);                 &bslash;&n;&t;     cli();                             &bslash;&n;             push040(paddr);&t;&t;&t;&bslash;&n;&t;     if (CPU_IS_060) clear040(paddr);&t;&bslash;&n;&t;     restore_flags(flags);              &bslash;&n;&t;} while(0)
 multiline_comment|/* push page in both caches, invalidate in i-cache */
+multiline_comment|/* RZ: cpush %bc DOES invalidate %ic, regardless of DPI */
 DECL|macro|pushcli040
-mdefine_line|#define&t;pushcli040(paddr)&t;&t;&t;&bslash;&n;&t;do { push040(paddr);&t;&t;&t;&bslash;&n;&t;     if (CPU_IS_060) cleari040(paddr);&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;pushcli040(paddr)&t;&t;&t;&bslash;&n;&t;do { push040(paddr);&t;&t;&t;&bslash;&n;&t;} while(0)
 multiline_comment|/*&n; * 040: Hit every page containing an address in the range paddr..paddr+len-1.&n; * (Low order bits of the ea of a CINVP/CPUSHP are &quot;don&squot;t care&quot;s).&n; * Hit every page until there is a page or less to go. Hit the next page,&n; * and the one after that if the range hits it.&n; */
 multiline_comment|/* ++roman: A little bit more care is required here: The CINVP instruction&n; * invalidates cache entries WITHOUT WRITING DIRTY DATA BACK! So the beginning&n; * and the end of the region must be treated differently if they are not&n; * exactly at the beginning or end of a page boundary. Else, maybe too much&n; * data becomes invalidated and thus lost forever. CPUSHP does what we need:&n; * it invalidates the page after pushing dirty data to memory. (Thanks to Jes&n; * for discovering the problem!)&n; */
 multiline_comment|/* ... but on the &squot;060, CPUSH doesn&squot;t invalidate (for us, since we have set&n; * the DPI bit in the CACR; would it cause problems with temporarily changing&n; * this?). So we have to push first and then additionally to invalidate.&n; */

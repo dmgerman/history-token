@@ -3,7 +3,6 @@ macro_line|#ifndef IRNET_IRDA_H
 DECL|macro|IRNET_IRDA_H
 mdefine_line|#define IRNET_IRDA_H
 multiline_comment|/***************************** INCLUDES *****************************/
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Please add other headers in irnet.h */
 macro_line|#include &quot;irnet.h&quot;&t;&t;/* Module global include */
 multiline_comment|/************************ CONSTANTS &amp; MACROS ************************/
@@ -86,6 +85,8 @@ id|irnet_event
 comma
 id|__u32
 comma
+id|__u32
+comma
 r_char
 op_star
 )paren
@@ -102,8 +103,45 @@ op_star
 )paren
 suffix:semicolon
 r_static
+r_inline
+id|__u8
+id|irnet_ias_to_tsap
+c_func
+(paren
+id|irnet_socket
+op_star
+comma
+r_int
+comma
+r_struct
+id|ias_value
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
 r_int
 id|irnet_find_lsap_sel
+c_func
+(paren
+id|irnet_socket
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_int
+id|irnet_connect_tsap
+c_func
+(paren
+id|irnet_socket
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_int
+id|irnet_discover_next_daddr
 c_func
 (paren
 id|irnet_socket
@@ -321,6 +359,23 @@ multiline_comment|/* -------------------- IRDA-IAS/LMP CALLBACKS ---------------
 r_static
 r_void
 id|irnet_getvalue_confirm
+c_func
+(paren
+r_int
+comma
+id|__u16
+comma
+r_struct
+id|ias_value
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|irnet_discovervalue_confirm
 c_func
 (paren
 r_int

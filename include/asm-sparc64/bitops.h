@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bitops.h,v 1.33 2001/04/24 01:09:12 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.34 2001/05/27 00:09:29 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_BITOPS_H
 DECL|macro|_SPARC64_BITOPS_H
 mdefine_line|#define _SPARC64_BITOPS_H
@@ -60,19 +60,19 @@ DECL|macro|clear_bit
 mdefine_line|#define clear_bit(nr,addr)&t;&t;((void)___test_and_clear_bit(nr,addr))
 DECL|macro|change_bit
 mdefine_line|#define change_bit(nr,addr)&t;&t;((void)___test_and_change_bit(nr,addr))
-multiline_comment|/* &quot;non-atomic&quot; versions, nothing special for now... */
+multiline_comment|/* &quot;non-atomic&quot; versions... */
 DECL|macro|__set_bit
-mdefine_line|#define __set_bit(X,Y)&t;&t;set_bit(X,Y)
+mdefine_line|#define __set_bit(X,Y)&t;&t;&t;&t;&t;&bslash;&n;do {&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;*__m |= (1UL &lt;&lt; (__nr &amp; 63));&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__clear_bit
-mdefine_line|#define __clear_bit(X,Y)&t;clear_bit(X,Y)
+mdefine_line|#define __clear_bit(X,Y)&t;&t;&t;&t;&bslash;&n;do {&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;*__m &amp;= ~(1UL &lt;&lt; (__nr &amp; 63));&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__change_bit
-mdefine_line|#define __change_bit(X,Y)&t;change_bit(X,Y)
+mdefine_line|#define __change_bit(X,Y)&t;&t;&t;&t;&bslash;&n;do {&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;*__m ^= (1UL &lt;&lt; (__nr &amp; 63));&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__test_and_set_bit
-mdefine_line|#define __test_and_set_bit(X,Y)&t;&t;test_and_set_bit(X,Y)
+mdefine_line|#define __test_and_set_bit(X,Y)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;long __old = *__m;&t;&t;&t;&t;&bslash;&n;&t;long __mask = (1UL &lt;&lt; (__nr &amp; 63));&t;&t;&bslash;&n;&t;*__m = (__old | __mask);&t;&t;&t;&bslash;&n;&t;((__old &amp; __mask) != 0);&t;&t;&t;&bslash;&n;})
 DECL|macro|__test_and_clear_bit
-mdefine_line|#define __test_and_clear_bit(X,Y)&t;test_and_clear_bit(X,Y)
+mdefine_line|#define __test_and_clear_bit(X,Y)&t;&t;&t;&bslash;&n;({&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;long __old = *__m;&t;&t;&t;&t;&bslash;&n;&t;long __mask = (1UL &lt;&lt; (__nr &amp; 63));&t;&t;&bslash;&n;&t;*__m = (__old &amp; ~__mask);&t;&t;&t;&bslash;&n;&t;((__old &amp; __mask) != 0);&t;&t;&t;&bslash;&n;})
 DECL|macro|__test_and_change_bit
-mdefine_line|#define __test_and_change_bit(X,Y)&t;test_and_change_bit(X,Y)
+mdefine_line|#define __test_and_change_bit(X,Y)&t;&t;&t;&bslash;&n;({&t;unsigned long __nr = (X);&t;&t;&t;&bslash;&n;&t;long *__m = ((long *) (Y)) + (__nr &gt;&gt; 6);&t;&bslash;&n;&t;long __old = *__m;&t;&t;&t;&t;&bslash;&n;&t;long __mask = (1UL &lt;&lt; (__nr &amp; 63));&t;&t;&bslash;&n;&t;*__m = (__old ^ __mask);&t;&t;&t;&bslash;&n;&t;((__old &amp; __mask) != 0);&t;&t;&t;&bslash;&n;})
 DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;do { } while(0)
 DECL|macro|smp_mb__after_clear_bit

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.20 05/23/01 00:38:42 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.23 06/06/01 22:49:01 paulus&n; */
 multiline_comment|/*&n; * Procedures for interfacing to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * In particular, we are interested in the device tree&n; * and in using some of its services (exit, write to stdout).&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -25,9 +25,9 @@ macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_FB
 macro_line|#include &lt;asm/linux_logo.h&gt;
 macro_line|#endif
-multiline_comment|/*&n; * Properties whose value is longer than this get excluded from our&n; * copy of the device tree.  This way we don&squot;t waste space storing&n; * things like &quot;driver,AAPL,MacOS,PowerPC&quot; properties.&n; */
+multiline_comment|/*&n; * Properties whose value is longer than this get excluded from our&n; * copy of the device tree.  This way we don&squot;t waste space storing&n; * things like &quot;driver,AAPL,MacOS,PowerPC&quot; properties.  But this value&n; * does need to be big enough to ensure that we don&squot;t lose things&n; * like the interrupt-map property on a PCI-PCI bridge.&n; */
 DECL|macro|MAX_PROPERTY_LENGTH
-mdefine_line|#define MAX_PROPERTY_LENGTH&t;1024
+mdefine_line|#define MAX_PROPERTY_LENGTH&t;4096
 DECL|struct|prom_args
 r_struct
 id|prom_args
@@ -3395,14 +3395,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-id|prom_hold_cpus
-c_func
-(paren
-id|mem
-)paren
-suffix:semicolon
-macro_line|#endif
 id|mem
 op_assign
 id|check_display
@@ -3447,6 +3439,14 @@ l_string|&quot;done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|prom_hold_cpus
+c_func
+(paren
+id|mem
+)paren
+suffix:semicolon
+macro_line|#endif
 id|RELOC
 c_func
 (paren
@@ -6674,9 +6674,9 @@ id|mem
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|1
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|dev_tree_size
@@ -6881,16 +6881,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|np-&gt;n_addr_cells
-op_assign
-id|naddrc
-suffix:semicolon
-id|np-&gt;n_size_cells
-op_assign
-id|nsizec
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* get the device addresses and interrupts */
 r_if
 c_cond
@@ -6989,26 +6979,6 @@ op_assign
 op_star
 id|ip
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|np-&gt;parent
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Set the n_addr/size_cells on the root to its&n;&t;&t; * own values, rather than 0.&n;&t;&t; */
-id|np-&gt;n_addr_cells
-op_assign
-id|naddrc
-suffix:semicolon
-id|np-&gt;n_size_cells
-op_assign
-id|nsizec
-suffix:semicolon
-)brace
-macro_line|#endif&t;
 multiline_comment|/* the f50 sets the name to &squot;display&squot; and &squot;compatible&squot; to what we&n;&t; * expect for the name -- Cort&n;&t; */
 r_if
 c_cond
@@ -8284,8 +8254,9 @@ id|np-&gt;parent
 (brace
 suffix:semicolon
 )brace
+multiline_comment|/* No #address-cells property for the root node, default to 1 */
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 r_int
@@ -8350,8 +8321,9 @@ id|np-&gt;parent
 (brace
 suffix:semicolon
 )brace
+multiline_comment|/* No #size-cells property for the root node, default to 1 */
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 id|__init
@@ -11116,7 +11088,9 @@ id|pp-&gt;next
 r_if
 c_cond
 (paren
-id|name
+id|pp-&gt;name
+op_ne
+l_int|NULL
 op_logical_and
 id|strcmp
 c_func

@@ -3,50 +3,199 @@ macro_line|#ifndef __M68K_DVMA_H
 DECL|macro|__M68K_DVMA_H
 mdefine_line|#define __M68K_DVMA_H
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|DVMA_PAGE_SHIFT
+mdefine_line|#define DVMA_PAGE_SHIFT&t;13
+DECL|macro|DVMA_PAGE_SIZE
+mdefine_line|#define DVMA_PAGE_SIZE&t;(1UL &lt;&lt; DVMA_PAGE_SHIFT)
+DECL|macro|DVMA_PAGE_MASK
+mdefine_line|#define DVMA_PAGE_MASK&t;(~(DVMA_PAGE_SIZE-1))
+DECL|macro|DVMA_PAGE_ALIGN
+mdefine_line|#define DVMA_PAGE_ALIGN(addr)&t;(((addr)+DVMA_PAGE_SIZE-1)&amp;DVMA_PAGE_MASK)
+r_extern
+r_void
+id|dvma_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dvma_map_iommu
+c_func
+(paren
+r_int
+r_int
+id|kaddr
+comma
+r_int
+r_int
+id|baddr
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|macro|dvma_malloc
+mdefine_line|#define dvma_malloc(x) dvma_malloc_align(x, 0)
+DECL|macro|dvma_map
+mdefine_line|#define dvma_map(x, y) dvma_map_align(x, y, 0)
+r_extern
+r_int
+r_int
+id|dvma_map_align
+c_func
+(paren
+r_int
+r_int
+id|kaddr
+comma
+r_int
+id|len
+comma
+r_int
+id|align
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|dvma_malloc_align
+c_func
+(paren
+r_int
+r_int
+id|len
+comma
+r_int
+r_int
+id|align
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dvma_unmap
+c_func
+(paren
+r_void
+op_star
+id|baddr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dvma_free
+c_func
+(paren
+r_void
+op_star
+id|vaddr
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SUN3
 multiline_comment|/* sun3 dvma page support */
-DECL|macro|DVMA_RESERVED_PMEGS
-mdefine_line|#define DVMA_RESERVED_PMEGS 2 /* 256k of dvma */
 multiline_comment|/* memory and pmegs potentially reserved for dvma */
 DECL|macro|DVMA_PMEG_START
 mdefine_line|#define DVMA_PMEG_START 10
 DECL|macro|DVMA_PMEG_END
 mdefine_line|#define DVMA_PMEG_END 16
 DECL|macro|DVMA_START
-mdefine_line|#define DVMA_START 0xff00000
+mdefine_line|#define DVMA_START 0xf00000
 DECL|macro|DVMA_END
-mdefine_line|#define DVMA_END 0xffe0000
+mdefine_line|#define DVMA_END 0xfe0000
 DECL|macro|DVMA_SIZE
 mdefine_line|#define DVMA_SIZE (DVMA_END-DVMA_START)
+DECL|macro|IOMMU_TOTAL_ENTRIES
+mdefine_line|#define IOMMU_TOTAL_ENTRIES 128
+DECL|macro|IOMMU_ENTRIES
+mdefine_line|#define IOMMU_ENTRIES 120
 multiline_comment|/* empirical kludge -- dvma regions only seem to work right on 0x10000 &n;   byte boundries */
 DECL|macro|DVMA_REGION_SIZE
 mdefine_line|#define DVMA_REGION_SIZE 0x10000
 DECL|macro|DVMA_ALIGN
 mdefine_line|#define DVMA_ALIGN(addr) (((addr)+DVMA_REGION_SIZE-1) &amp; &bslash;&n;                         ~(DVMA_REGION_SIZE-1))
 multiline_comment|/* virt &lt;-&gt; phys conversions */
-DECL|macro|sun3_dvma_vtop
-mdefine_line|#define sun3_dvma_vtop(x) ((unsigned long)(x) &amp; 0xffffff)
-DECL|macro|sun3_dvma_ptov
-mdefine_line|#define sun3_dvma_ptov(x) ((unsigned long)(x) | 0xf000000)
+DECL|macro|dvma_vtop
+mdefine_line|#define dvma_vtop(x) ((unsigned long)(x) &amp; 0xffffff)
+DECL|macro|dvma_ptov
+mdefine_line|#define dvma_ptov(x) ((unsigned long)(x) | 0xf000000)
+DECL|macro|dvma_vtob
+mdefine_line|#define dvma_vtob(x) dvma_vtop(x)
+DECL|macro|dvma_btov
+mdefine_line|#define dvma_btov(x) dvma_ptov(x)
+DECL|function|dvma_map_cpu
 r_extern
-r_void
-id|sun3_dvma_init
+r_inline
+r_int
+id|dvma_map_cpu
 c_func
 (paren
-r_void
+r_int
+r_int
+id|kaddr
+comma
+r_int
+r_int
+id|vaddr
+comma
+r_int
+id|len
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_extern
+r_int
+r_int
+id|dvma_page
+c_func
+(paren
+r_int
+r_int
+id|kaddr
+comma
+r_int
+r_int
+id|vaddr
 )paren
 suffix:semicolon
+macro_line|#else /* Sun3x */
+multiline_comment|/* sun3x dvma page support */
+DECL|macro|DVMA_START
+mdefine_line|#define DVMA_START 0x0
+DECL|macro|DVMA_END
+mdefine_line|#define DVMA_END 0xf00000
+DECL|macro|DVMA_SIZE
+mdefine_line|#define DVMA_SIZE (DVMA_END-DVMA_START)
+DECL|macro|IOMMU_TOTAL_ENTRIES
+mdefine_line|#define IOMMU_TOTAL_ENTRIES&t;   2048
+multiline_comment|/* the prom takes the top meg */
+DECL|macro|IOMMU_ENTRIES
+mdefine_line|#define IOMMU_ENTRIES              (IOMMU_TOTAL_ENTRIES - 0x80)
+DECL|macro|dvma_vtob
+mdefine_line|#define dvma_vtob(x) ((unsigned long)(x) &amp; 0x00ffffff)
+DECL|macro|dvma_btov
+mdefine_line|#define dvma_btov(x) ((unsigned long)(x) | 0xff000000)
 r_extern
-r_void
-op_star
-id|sun3_dvma_malloc
+r_int
+id|dvma_map_cpu
 c_func
 (paren
+r_int
+r_int
+id|kaddr
+comma
+r_int
+r_int
+id|vaddr
+comma
 r_int
 id|len
 )paren
 suffix:semicolon
-macro_line|#else /* Sun3x */
+multiline_comment|/* everything below this line is specific to dma used for the onboard &n;   ESP scsi on sun3x */
 multiline_comment|/* Structure to describe the current status of DMA registers on the Sparc */
 DECL|struct|sparc_dma_registers
 r_struct
@@ -325,29 +474,6 @@ mdefine_line|#define DMA_IRQ_EXIT(dma, dregs) do { &bslash;&n;&t;if(DMA_ISBROKEN
 multiline_comment|/* Reset the friggin&squot; thing... */
 DECL|macro|DMA_RESET
 mdefine_line|#define DMA_RESET(dma) do { &bslash;&n;&t;struct sparc_dma_registers *regs = dma-&gt;regs;                      &bslash;&n;&t;/* Let the current FIFO drain itself */                            &bslash;&n;&t;sparc_dma_pause(regs, (DMA_FIFO_ISDRAIN));                         &bslash;&n;&t;/* Reset the logic */                                              &bslash;&n;&t;regs-&gt;cond_reg |= (DMA_RST_SCSI);     /* assert */                 &bslash;&n;&t;__delay(400);                         /* let the bits set ;) */    &bslash;&n;&t;regs-&gt;cond_reg &amp;= ~(DMA_RST_SCSI);    /* de-assert */              &bslash;&n;&t;sparc_dma_enable_interrupts(regs);    /* Re-enable interrupts */   &bslash;&n;&t;/* Enable FAST transfers if available */                           &bslash;&n;&t;if(dma-&gt;revision&gt;dvmarev1) regs-&gt;cond_reg |= DMA_3CLKS;            &bslash;&n;&t;dma-&gt;running = 0;                                                  &bslash;&n;} while(0)
-r_extern
-r_int
-r_int
-id|dvma_alloc
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dvma_free
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 macro_line|#endif /* !CONFIG_SUN3 */
 macro_line|#endif /* !(__M68K_DVMA_H) */
 eof

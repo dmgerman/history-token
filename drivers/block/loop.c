@@ -2683,7 +2683,7 @@ id|blksize_size
 id|MAJOR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|lo_device
 )paren
 )braket
 )paren
@@ -2694,14 +2694,14 @@ id|blksize_size
 id|MAJOR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|lo_device
 )paren
 )braket
 (braket
 id|MINOR
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|lo_device
 )paren
 )braket
 suffix:semicolon

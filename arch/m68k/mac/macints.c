@@ -13,7 +13,12 @@ macro_line|#include &lt;asm/machw.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_psc.h&gt;
+macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
+DECL|macro|DEBUG_SPURIOUS
+mdefine_line|#define DEBUG_SPURIOUS
+DECL|macro|SHUTUP_SONIC
+mdefine_line|#define SHUTUP_SONIC
 multiline_comment|/*&n; * The mac_irq_list array is an array of linked lists of irq_node_t nodes.&n; * Each node contains one handler to be called whenever the interrupt&n; * occurs, with fast handlers listed before slow handlers.&n; */
 DECL|variable|mac_irq_list
 id|irq_node_t
@@ -355,6 +360,61 @@ id|scc_mask
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Make sure the SONIC interrupt is cleared or things get ugly */
+macro_line|#ifdef SHUTUP_SONIC
+id|printk
+c_func
+(paren
+l_string|&quot;Killing onboard sonic... &quot;
+)paren
+suffix:semicolon
+multiline_comment|/* This address should hopefully be mapped already */
+r_if
+c_cond
+(paren
+id|hwreg_present
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+l_int|0x50f0a000
+)paren
+)paren
+)paren
+(brace
+op_star
+(paren
+r_int
+op_star
+)paren
+(paren
+l_int|0x50f0a014
+)paren
+op_assign
+l_int|0x7fffL
+suffix:semicolon
+op_star
+(paren
+r_int
+op_star
+)paren
+(paren
+l_int|0x50f0a010
+)paren
+op_assign
+l_int|0L
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;Done.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* SHUTUP_SONIC */
 multiline_comment|/* &n;&t; * Now register the handlers for the the master IRQ handlers&n;&t; * at levels 1-7. Most of the work is done elsewhere.&n;&t; */
 r_if
 c_cond
@@ -1961,14 +2021,6 @@ id|regs
 )paren
 (brace
 macro_line|#ifdef DEBUG_SPURIOUS
-r_if
-c_cond
-(paren
-id|console_loglevel
-OG
-l_int|6
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -1979,7 +2031,6 @@ comma
 id|dev_id
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 DECL|variable|num_debug

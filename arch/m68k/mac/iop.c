@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * I/O Processor (IOP) management&n; * Written and (C) 1999 by Joshua M. Thompson (funaho@jurai.org)&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice and this list of conditions.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice and this list of conditions in the documentation and/or other&n; *    materials provided with the distribution.&n; */
-multiline_comment|/*&n; * The IOP chips are used in the IIfx and some Quadras (900, 950) to manage&n; * serial and ADB. They are actually a 6502 processor and some glue logic.&n; *&n; * 990429 (jmt) - Initial implementation, just enough to knock the SCC IOP&n; *&t;&t;  into compatible mode so nobody has to fiddle with the&n; *&t;&t;  Serial Switch control panel anymore.&n; * 990603 (jmt) - Added code to grab the correct ISM IOP interrupt for OSS&n; *&t;&t;  and non-OSS machines (at least I hope it&squot;s correct on a&n; *&t;&t;  non-OSS machine -- someone with a Q900 or Q950 needs to&n; *&t;&t;  check this.)&n; * 990605 (jmt) - Rearranged things a bit wrt IOP detection; iop_present is&n; *&t;&t;  gone, IOP base addresses are now in an array and the&n; *&t;&t;  globally-visible functions take an IOP number instead of an&n; *&t;&t;  an actual base address.&n; * 990610 (jmt) - Finished the message passing framework and it seems to work.&n; *&t;&t;  Sending _definately_ works; my adb-bus.c mods can send&n; *&t;&t;  messages and receive the MSG_COMPLETED status back from the&n; *&t;&t;  IOP. The trick now is figuring out the message formats.&n; * 990611 (jmt) - More cleanups. Fixed problem where unclaimed messages on a&n; *&t;&t;  receive channel were never properly acknowledged. Bracketed&n; *&t;&t;  the remaining debug printk&squot;s with #ifdef&squot;s and disabled&n; *&t;&t;  debugging. I can now type on the console.&n; * 990612 (jmt) - Copyright notice added. Reworked the way replies are handled.&n; *&t;&t;  It turns out that replies are placed back in the send buffer&n; *&t;&t;  for that channel; messages on the receive channels are always&n; *&t;&t;  unsolicited messages from the IOP (and our replies to them&n; *&t;&t;  should go back in the receive channel.) Also added tracking&n; *&t;&t;  of device names to the listener functions ala the interrupt&n; *&t;&t;  handlers.&n; * 990729 (jmt) - Added passing of pt_regs structure to IOP handlers. This is&n; *&t;&t;  used by the new unified ADB driver.&n; *&n; * TODO:&n; *&n; * o Something should be periodically checking iop_alive() to make sure the&n; *   IOP hasn&squot;t died.&n; * o Some of the IOP manager routines need better error checking and&n; *   return codes. Nothing major, just prettying up.&n; *&n; * + share the stuff you were smoking when you wrote the iop_get_proc_info()&n; *   for case when CONFIG_PROC_FS is undefined.&n; */
+multiline_comment|/*&n; * The IOP chips are used in the IIfx and some Quadras (900, 950) to manage&n; * serial and ADB. They are actually a 6502 processor and some glue logic.&n; *&n; * 990429 (jmt) - Initial implementation, just enough to knock the SCC IOP&n; *&t;&t;  into compatible mode so nobody has to fiddle with the&n; *&t;&t;  Serial Switch control panel anymore.&n; * 990603 (jmt) - Added code to grab the correct ISM IOP interrupt for OSS&n; *&t;&t;  and non-OSS machines (at least I hope it&squot;s correct on a&n; *&t;&t;  non-OSS machine -- someone with a Q900 or Q950 needs to&n; *&t;&t;  check this.)&n; * 990605 (jmt) - Rearranged things a bit wrt IOP detection; iop_present is&n; *&t;&t;  gone, IOP base addresses are now in an array and the&n; *&t;&t;  globally-visible functions take an IOP number instead of an&n; *&t;&t;  an actual base address.&n; * 990610 (jmt) - Finished the message passing framework and it seems to work.&n; *&t;&t;  Sending _definately_ works; my adb-bus.c mods can send&n; *&t;&t;  messages and receive the MSG_COMPLETED status back from the&n; *&t;&t;  IOP. The trick now is figuring out the message formats.&n; * 990611 (jmt) - More cleanups. Fixed problem where unclaimed messages on a&n; *&t;&t;  receive channel were never properly acknowledged. Bracketed&n; *&t;&t;  the remaining debug printk&squot;s with #ifdef&squot;s and disabled&n; *&t;&t;  debugging. I can now type on the console.&n; * 990612 (jmt) - Copyright notice added. Reworked the way replies are handled.&n; *&t;&t;  It turns out that replies are placed back in the send buffer&n; *&t;&t;  for that channel; messages on the receive channels are always&n; *&t;&t;  unsolicited messages from the IOP (and our replies to them&n; *&t;&t;  should go back in the receive channel.) Also added tracking&n; *&t;&t;  of device names to the listener functions ala the interrupt&n; *&t;&t;  handlers.&n; * 990729 (jmt) - Added passing of pt_regs structure to IOP handlers. This is&n; *&t;&t;  used by the new unified ADB driver.&n; *&n; * TODO:&n; *&n; * o Something should be periodically checking iop_alive() to make sure the&n; *   IOP hasn&squot;t died.&n; * o Some of the IOP manager routines need better error checking and&n; *   return codes. Nothing major, just prettying up.&n; */
 multiline_comment|/*&n; * -----------------------&n; * IOP Message Passing 101&n; * -----------------------&n; *&n; * The host talks to the IOPs using a rather simple message-passing scheme via&n; * a shared memory area in the IOP RAM. Each IOP has seven &quot;channels&quot;; each&n; * channel is conneced to a specific software driver on the IOP. For example&n; * on the SCC IOP there is one channel for each serial port. Each channel has&n; * an incoming and and outgoing message queue with a depth of one.&n; *&n; * A message is 32 bytes plus a state byte for the channel (MSG_IDLE, MSG_NEW,&n; * MSG_RCVD, MSG_COMPLETE). To send a message you copy the message into the&n; * buffer, set the state to MSG_NEW and signal the IOP by setting the IRQ flag&n; * in the IOP control to 1. The IOP will move the state to MSG_RCVD when it&n; * receives the message and then to MSG_COMPLETE when the message processing&n; * has completed. It is the host&squot;s responsibility at that point to read the&n; * reply back out of the send channel buffer and reset the channel state back&n; * to MSG_IDLE.&n; *&n; * To receive message from the IOP the same procedure is used except the roles&n; * are reversed. That is, the IOP puts message in the channel with a state of&n; * MSG_NEW, and the host receives the message and move its state to MSG_RCVD&n; * and then to MSG_COMPLETE when processing is completed and the reply (if any)&n; * has been placed back in the receive channel. The IOP will then reset the&n; * channel state to MSG_IDLE.&n; *&n; * Two sets of host interrupts are provided, INT0 and INT1. Both appear on one&n; * interrupt level; they are distinguished by a pair of bits in the IOP status&n; * register. The IOP will raise INT0 when one or more messages in the send&n; * channels have gone to the MSG_COMPLETE state and it will raise INT1 when one&n; * or more messages on the receive channels have gone to the MSG_NEW state.&n; *&n; * Since each channel handles only one message we have to implement a small&n; * interrupt-driven queue on our end. Messages to e sent are placed on the&n; * queue for sending and contain a pointer to an optional callback function.&n; * The handler for a message is called when the message state goes to&n; * MSG_COMPLETE.&n; *&n; * For receiving message we maintain a list of handler functions to call when&n; * a message is received on that IOP/channel combination. The handlers are&n; * called much like an interrupt handler and are passed a copy of the message&n; * from the IOP. The message state will be in MSG_RCVD while the handler runs;&n; * it is the handler&squot;s responsibility to call iop_complete_message() when&n; * finished; this function moves the message state to MSG_COMPLETE and signals&n; * the IOP. This two-step process is provided to allow the handler to defer&n; * message processing to a bottom-half handler if the processing will take&n; * a signifigant amount of time (handlers are called at interrupt time so they&n; * should execute quickly.)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -40,27 +40,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* What the bloody hell is THAT ??? */
-DECL|function|iop_get_proc_info
-r_static
-r_int
-id|iop_get_proc_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-(brace
-)brace
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* structure for tracking channel listeners */
 DECL|struct|listener
@@ -818,6 +797,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#if 0&t;/* Crashing in 2.4 now, not yet sure why.   --jmt */
+macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_info_entry
 c_func
 (paren
@@ -825,11 +806,14 @@ l_string|&quot;mac_iop&quot;
 comma
 l_int|0
 comma
-l_int|0
+op_amp
+id|proc_root
 comma
 id|iop_get_proc_info
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Register the interrupt handler for the IOPs.&n; * TODO: might be wrong for non-OSS machines. Anyone?&n; */
 DECL|function|iop_register_interrupts

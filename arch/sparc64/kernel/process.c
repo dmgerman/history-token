@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: process.c,v 1.117 2001/03/30 07:10:41 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: process.c,v 1.118 2001/06/03 13:41:13 ecd Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -194,6 +194,16 @@ r_int
 id|serial_console
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_void
+(paren
+op_star
+id|prom_keyboard
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -233,6 +243,16 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|prom_keyboard
+)paren
+id|prom_keyboard
+c_func
+(paren
+)paren
+suffix:semicolon
 id|prom_halt
 c_func
 (paren
@@ -309,6 +329,16 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|prom_keyboard
+)paren
+id|prom_keyboard
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

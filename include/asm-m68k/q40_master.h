@@ -2,7 +2,7 @@ multiline_comment|/* &n; * Q40 master Chip Control &n; * RTC stuff merged for co
 macro_line|#ifndef _Q40_MASTER_H
 DECL|macro|_Q40_MASTER_H
 mdefine_line|#define _Q40_MASTER_H
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/raw_io.h&gt;
 DECL|macro|q40_master_addr
 mdefine_line|#define q40_master_addr 0xff000000
 DECL|macro|q40_rtc_addr
@@ -17,6 +17,12 @@ DECL|macro|DISPLAY_CONTROL_REG
 mdefine_line|#define DISPLAY_CONTROL_REG 0x18
 DECL|macro|FRAME_CLEAR_REG
 mdefine_line|#define FRAME_CLEAR_REG     0x24
+DECL|macro|LED_REG
+mdefine_line|#define LED_REG             0x30
+DECL|macro|Q40_LED_ON
+mdefine_line|#define Q40_LED_ON()        master_outb(1,LED_REG)
+DECL|macro|Q40_LED_OFF
+mdefine_line|#define Q40_LED_OFF()       master_outb(0,LED_REG)
 DECL|macro|INTERRUPT_REG
 mdefine_line|#define INTERRUPT_REG       IIRQ_REG  /* &quot;native&quot; ints */
 DECL|macro|KEY_IRQ_ENABLE_REG
@@ -40,15 +46,10 @@ mdefine_line|#define SER_ENABLE_REG      0x0c      /* allow serial ints to be ge
 macro_line|#endif
 DECL|macro|EXT_ENABLE_REG
 mdefine_line|#define EXT_ENABLE_REG      0x10      /* ... rest of the ISA ints ... */
-macro_line|#if 0
-mdefine_line|#define master_inb(_reg_)           (*(((unsigned char *)q40_master_addr)+_reg_))
-mdefine_line|#define master_outb(_b_,_reg_)      (*(((unsigned char *)q40_master_addr)+_reg_)=(_b_))
-macro_line|#else
 DECL|macro|master_inb
-mdefine_line|#define master_inb(_reg_)      native_inb((unsigned char *)q40_master_addr+_reg_)
+mdefine_line|#define master_inb(_reg_)      in_8((unsigned char *)q40_master_addr+_reg_)
 DECL|macro|master_outb
-mdefine_line|#define master_outb(_b_,_reg_)  native_outb(_b_,(unsigned char *)q40_master_addr+_reg_)
-macro_line|#endif
+mdefine_line|#define master_outb(_b_,_reg_)  out_8((unsigned char *)q40_master_addr+_reg_,_b_)
 multiline_comment|/* define some Q40 specific ints */
 macro_line|#include &quot;q40ints.h&quot;
 multiline_comment|/* RTC defines */

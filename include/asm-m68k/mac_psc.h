@@ -7,6 +7,8 @@ mdefine_line|#define pIFRbase&t;0x100
 DECL|macro|pIERbase
 mdefine_line|#define pIERbase&t;0x104
 multiline_comment|/*&n; * One-shot DMA control registers&n; */
+DECL|macro|PSC_MYSTERY
+mdefine_line|#define PSC_MYSTERY&t;0x804
 DECL|macro|PSC_CTL_BASE
 mdefine_line|#define PSC_CTL_BASE&t;0xC00
 DECL|macro|PSC_SCSI_CTL
@@ -30,6 +32,10 @@ DECL|macro|PSC_LEN_BASE
 mdefine_line|#define PSC_LEN_BASE&t;0x1004
 DECL|macro|PSC_CMD_BASE
 mdefine_line|#define PSC_CMD_BASE&t;0x1008
+DECL|macro|PSC_SET0
+mdefine_line|#define PSC_SET0&t;0x00
+DECL|macro|PSC_SET1
+mdefine_line|#define PSC_SET1&t;0x10
 DECL|macro|PSC_SCSI_ADDR
 mdefine_line|#define PSC_SCSI_ADDR&t;0x1000 &t;/* confirmed */
 DECL|macro|PSC_SCSI_LEN

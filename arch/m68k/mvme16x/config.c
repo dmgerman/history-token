@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  arch/m68k/mvme16x/config.c&n; *&n; *  Copyright (C) 1
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
@@ -14,21 +13,9 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/mvme16xhw.h&gt;
-DECL|variable|atari_SCC_reset_done
-r_int
-id|atari_SCC_reset_done
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* So SCC doesn&squot;t get reset */
-DECL|variable|atari_mch_cookie
-id|u_long
-id|atari_mch_cookie
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 id|t_bdid
 id|mvme_bdid

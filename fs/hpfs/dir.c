@@ -1126,7 +1126,7 @@ suffix:semicolon
 id|hpfs_error
 c_func
 (paren
-id|result-&gt;i_sb
+id|dir-&gt;i_sb
 comma
 l_string|&quot;hpfs_lookup: can&squot;t get inode&quot;
 )paren

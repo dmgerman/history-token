@@ -7,7 +7,8 @@ macro_line|#include &lt;asm/amipcmcia.h&gt;
 multiline_comment|/* gayle config byte for program voltage and access speed */
 DECL|variable|cfg_byte
 r_static
-id|u_char
+r_int
+r_char
 id|cfg_byte
 op_assign
 id|GAYLE_CFG_0V
@@ -220,7 +221,8 @@ r_int
 id|voltage
 )paren
 (brace
-id|u_char
+r_int
+r_char
 id|v
 suffix:semicolon
 r_switch
@@ -287,7 +289,8 @@ r_int
 id|speed
 )paren
 (brace
-id|u_char
+r_int
+r_char
 id|s
 suffix:semicolon
 r_if

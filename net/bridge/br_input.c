@@ -1,8 +1,9 @@
-multiline_comment|/*&n; *&t;Handle incoming frames&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_input.c,v 1.7 2000/12/13 16:44:14 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Handle incoming frames&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_input.c,v 1.8 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/netfilter_bridge.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 DECL|variable|bridge_ula
 r_int
@@ -26,6 +27,28 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
+DECL|function|br_pass_frame_up_finish
+r_static
+r_int
+id|br_pass_frame_up_finish
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|br_pass_frame_up
 r_static
 r_void
@@ -43,12 +66,21 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|indev
+suffix:semicolon
 id|br-&gt;statistics.rx_packets
 op_increment
 suffix:semicolon
 id|br-&gt;statistics.rx_bytes
 op_add_assign
 id|skb-&gt;len
+suffix:semicolon
+id|indev
+op_assign
+id|skb-&gt;dev
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
@@ -80,10 +112,20 @@ op_amp
 id|br-&gt;dev
 )paren
 suffix:semicolon
-id|netif_rx
+id|NF_HOOK
 c_func
 (paren
+id|PF_BRIDGE
+comma
+id|NF_BR_LOCAL_IN
+comma
 id|skb
+comma
+id|indev
+comma
+l_int|NULL
+comma
+id|br_pass_frame_up_finish
 )paren
 suffix:semicolon
 )brace
@@ -355,7 +397,7 @@ op_amp
 l_int|1
 )paren
 (brace
-id|br_flood
+id|br_flood_forward
 c_func
 (paren
 id|br
@@ -464,7 +506,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|br_flood
+id|br_flood_forward
 c_func
 (paren
 id|br
@@ -506,9 +548,10 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-DECL|function|br_handle_frame
-r_void
-id|br_handle_frame
+DECL|function|br_handle_frame_finish
+r_static
+r_int
+id|br_handle_frame_finish
 c_func
 (paren
 r_struct
@@ -544,6 +587,37 @@ c_func
 (paren
 op_amp
 id|br-&gt;lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|br_handle_frame
+r_void
+id|br_handle_frame
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+id|NF_HOOK
+c_func
+(paren
+id|PF_BRIDGE
+comma
+id|NF_BR_PRE_ROUTING
+comma
+id|skb
+comma
+id|skb-&gt;dev
+comma
+l_int|NULL
+comma
+id|br_handle_frame_finish
 )paren
 suffix:semicolon
 )brace

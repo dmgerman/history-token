@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;IrNET protocol module : Synchronous PPP over an IrDA socket.&n; *&n; *&t;&t;Jean II - HPL `00 - &lt;jt@hpl.hp.com&gt;&n; *&n; * This file implement the IRDA interface of IrNET.&n; * Basically, we sit on top of IrTTP. We set up IrTTP, IrIAS properly,&n; * and exchange frames with IrTTP.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;irnet_irda.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* CONTROL CHANNEL *************************/
 multiline_comment|/*&n; * When ppp is not active, /dev/irnet act as a control channel.&n; * Writting allow to set up the IrDA destination of the IrNET channel,&n; * and any application may be read events happening on IrNET...&n; */
@@ -19,7 +18,10 @@ id|irnet_event
 id|event
 comma
 id|__u32
-id|addr
+id|saddr
+comma
+id|__u32
+id|daddr
 comma
 r_char
 op_star
@@ -40,7 +42,7 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X, event=%d, addr=%08x, name=``%s&squot;&squot;)&bslash;n&quot;
+l_string|&quot;(ap=0x%X, event=%d, daddr=%08x, name=``%s&squot;&squot;)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -50,7 +52,7 @@ id|ap
 comma
 id|event
 comma
-id|addr
+id|daddr
 comma
 id|name
 )paren
@@ -84,9 +86,18 @@ id|irnet_events.log
 id|index
 )braket
 dot
-id|addr
+id|daddr
 op_assign
-id|addr
+id|daddr
+suffix:semicolon
+id|irnet_events.log
+(braket
+id|index
+)braket
+dot
+id|saddr
+op_assign
+id|saddr
 suffix:semicolon
 multiline_comment|/* Try to copy IrDA nickname */
 r_if
@@ -366,8 +377,235 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Function irnet_ias_to_tsap (self, result, value)&n; *&n; *    Examine an IAS object and extract TSAP&n; *&n; * We do an IAP query to find the TSAP associated with the IrNET service.&n; * When IrIAP pass us the result of the query, this function look at&n; * the return values to check for failures and extract the TSAP if&n; * possible.&n; * Also deallocate value&n; * The failure is in self-&gt;errno&n; * Return TSAP or -1&n; */
+r_static
+r_inline
+id|__u8
+DECL|function|irnet_ias_to_tsap
+id|irnet_ias_to_tsap
+c_func
+(paren
+id|irnet_socket
+op_star
+id|self
+comma
+r_int
+id|result
+comma
+r_struct
+id|ias_value
+op_star
+id|value
+)paren
+(brace
+id|__u8
+id|dtsap_sel
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TSAP we are looking for */
+id|DENTER
+c_func
+(paren
+id|IRDA_SR_TRACE
+comma
+l_string|&quot;(self=0x%X)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|self
+)paren
+suffix:semicolon
+multiline_comment|/* By default, no error */
+id|self-&gt;errno
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Check if request succeeded */
+r_switch
+c_cond
+(paren
+id|result
+)paren
+(brace
+multiline_comment|/* Standard errors : service not available */
+r_case
+id|IAS_CLASS_UNKNOWN
+suffix:colon
+r_case
+id|IAS_ATTRIB_UNKNOWN
+suffix:colon
+id|DEBUG
+c_func
+(paren
+id|IRDA_SR_INFO
+comma
+l_string|&quot;IAS object doesn&squot;t exist ! (%d)&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+id|self-&gt;errno
+op_assign
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Other errors, most likely IrDA stack failure */
+r_default
+suffix:colon
+id|DEBUG
+c_func
+(paren
+id|IRDA_SR_INFO
+comma
+l_string|&quot;IAS query failed ! (%d)&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+id|self-&gt;errno
+op_assign
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Success : we got what we wanted */
+r_case
+id|IAS_SUCCESS
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Check what was returned to us */
+r_if
+c_cond
+(paren
+id|value
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* What type of argument have we got ? */
+r_switch
+c_cond
+(paren
+id|value-&gt;type
+)paren
+(brace
+r_case
+id|IAS_INTEGER
+suffix:colon
+id|DEBUG
+c_func
+(paren
+id|IRDA_SR_INFO
+comma
+l_string|&quot;result=%d&bslash;n&quot;
+comma
+id|value-&gt;t.integer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|value-&gt;t.integer
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* Get the remote TSAP selector */
+id|dtsap_sel
+op_assign
+id|value-&gt;t.integer
+suffix:semicolon
+)brace
+r_else
+id|self-&gt;errno
+op_assign
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|self-&gt;errno
+op_assign
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
+id|DERROR
+c_func
+(paren
+id|IRDA_SR_ERROR
+comma
+l_string|&quot;bad type ! (0x%X)&bslash;n&quot;
+comma
+id|value-&gt;type
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Cleanup */
+id|irias_delete_value
+c_func
+(paren
+id|value
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* value == NULL */
+(brace
+multiline_comment|/* Nothing returned to us - usually result != SUCCESS */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|self-&gt;errno
+)paren
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_SR_ERROR
+comma
+l_string|&quot;IrDA bug : result == SUCCESS &amp;&amp; value == NULL&bslash;n&quot;
+)paren
+suffix:semicolon
+id|self-&gt;errno
+op_assign
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
+)brace
+)brace
+id|DEXIT
+c_func
+(paren
+id|IRDA_SR_TRACE
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Return the TSAP */
+r_return
+id|dtsap_sel
+suffix:semicolon
+)brace
+multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Function irnet_find_lsap_sel (self)&n; *&n; *    Try to lookup LSAP selector in remote LM-IAS&n; *&n; * Basically, we start a IAP query, and then go to sleep. When the query&n; * return, irnet_getvalue_confirm will wake us up, and we can examine the&n; * result of the query...&n; * Note that in some case, the query fail even before we go to sleep,&n; * creating some races...&n; */
 r_static
+r_inline
 r_int
 DECL|function|irnet_find_lsap_sel
 id|irnet_find_lsap_sel
@@ -433,7 +671,7 @@ c_func
 (paren
 id|self-&gt;iriap
 comma
-id|self-&gt;saddr
+id|self-&gt;rsaddr
 comma
 id|self-&gt;daddr
 comma
@@ -442,146 +680,7 @@ comma
 id|IRNET_IAS_VALUE
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for answer (if not already failed) */
-r_if
-c_cond
-(paren
-id|self-&gt;iriap
-op_ne
-l_int|NULL
-)paren
-(brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|self-&gt;query_wait
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check what happened */
-r_if
-c_cond
-(paren
-id|self-&gt;errno
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;IAS query failed! (%d)&bslash;n&quot;
-comma
-id|self-&gt;errno
-)paren
-suffix:semicolon
-multiline_comment|/* Requested object/attribute doesn&squot;t exist */
-r_if
-c_cond
-(paren
-(paren
-id|self-&gt;errno
-op_eq
-id|IAS_CLASS_UNKNOWN
-)paren
-op_logical_or
-(paren
-id|self-&gt;errno
-op_eq
-id|IAS_ATTRIB_UNKNOWN
-)paren
-)paren
-(brace
-r_return
-(paren
-op_minus
-id|EADDRNOTAVAIL
-)paren
-suffix:semicolon
-)brace
-r_else
-r_return
-(paren
-op_minus
-id|EHOSTUNREACH
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Get the remote TSAP selector */
-r_switch
-c_cond
-(paren
-id|self-&gt;ias_result-&gt;type
-)paren
-(brace
-r_case
-id|IAS_INTEGER
-suffix:colon
-id|DEBUG
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;result=%d&bslash;n&quot;
-comma
-id|self-&gt;ias_result-&gt;t.integer
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|self-&gt;ias_result-&gt;t.integer
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|self-&gt;dtsap_sel
-op_assign
-id|self-&gt;ias_result-&gt;t.integer
-suffix:semicolon
-)brace
-r_else
-id|self-&gt;dtsap_sel
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|self-&gt;dtsap_sel
-op_assign
-l_int|0
-suffix:semicolon
-id|DERROR
-c_func
-(paren
-id|IRDA_SR_ERROR
-comma
-l_string|&quot;bad type ! (0x%X)&bslash;n&quot;
-comma
-id|self-&gt;ias_result-&gt;type
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* Cleanup */
-r_if
-c_cond
-(paren
-id|self-&gt;ias_result
-)paren
-(brace
-id|irias_delete_value
-c_func
-(paren
-id|self-&gt;ias_result
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* The above request is non-blocking.&n;   * After a while, IrDA will call us back in irnet_getvalue_confirm()&n;   * We will then call irnet_ias_to_tsap() and finish the&n;   * connection procedure */
 id|DEXIT
 c_func
 (paren
@@ -590,28 +689,17 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|self-&gt;dtsap_sel
-)paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-r_return
-op_minus
-id|EADDRNOTAVAIL
-suffix:semicolon
-)brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irnet_discover_daddr_and_lsap_sel (self)&n; *&n; *    This try to find a device with the requested service.&n; *&n; * It basically look into the discovery log. For each address in the list,&n; * it queries the LM-IAS of the device to find if this device offer&n; * the requested service.&n; * If there is more than one node supporting the service, we complain&n; * to the user (it should move devices around).&n; * The, we set both the destination address and the lsap selector to point&n; * on the service on the unique device we have found.&n; *&n; * Note : this function fails if there is more than one device in range,&n; * because IrLMP doesn&squot;t disconnect the LAP when the last LSAP is closed.&n; * Moreover, we would need to wait the LAP disconnection...&n; */
+multiline_comment|/*&n; * Function irnet_connect_tsap (self)&n; *&n; *    Initialise the TTP socket and initiate TTP connection&n; *&n; */
 r_static
 r_inline
 r_int
-DECL|function|irnet_discover_daddr_and_lsap_sel
-id|irnet_discover_daddr_and_lsap_sel
+DECL|function|irnet_connect_tsap
+id|irnet_connect_tsap
 c_func
 (paren
 id|irnet_socket
@@ -619,37 +707,9 @@ op_star
 id|self
 )paren
 (brace
-r_struct
-id|irda_device_info
-op_star
-id|discoveries
-suffix:semicolon
-multiline_comment|/* Copy of the discovery log */
-r_int
-id|number
-suffix:semicolon
-multiline_comment|/* Number of nodes in the log */
-r_int
-id|i
-suffix:semicolon
 r_int
 id|err
-op_assign
-op_minus
-id|ENETUNREACH
 suffix:semicolon
-id|__u32
-id|daddr
-op_assign
-id|DEV_ADDR_ANY
-suffix:semicolon
-multiline_comment|/* Address we found the service on */
-id|__u8
-id|dtsap_sel
-op_assign
-l_int|0x0
-suffix:semicolon
-multiline_comment|/* TSAP associated with it */
 id|DENTER
 c_func
 (paren
@@ -664,14 +724,231 @@ r_int
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Ask lmp for the current discovery log&n;   * Note : we have to use irlmp_get_discoveries(), as opposed&n;   * to play with the cachelog directly, because while we are&n;   * making our ias query, le log might change... */
-id|discoveries
+multiline_comment|/* Open a local TSAP (an IrTTP instance) */
+id|err
+op_assign
+id|irnet_open_tsap
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+l_int|0
+)paren
+(brace
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
+id|DERROR
+c_func
+(paren
+id|IRDA_SR_ERROR
+comma
+l_string|&quot;connect aborted!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/* Connect to remote device */
+id|err
+op_assign
+id|irttp_connect_request
+c_func
+(paren
+id|self-&gt;tsap
+comma
+id|self-&gt;dtsap_sel
+comma
+id|self-&gt;rsaddr
+comma
+id|self-&gt;daddr
+comma
+l_int|NULL
+comma
+id|self-&gt;max_sdu_size_rx
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+l_int|0
+)paren
+(brace
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
+id|DERROR
+c_func
+(paren
+id|IRDA_SR_ERROR
+comma
+l_string|&quot;connect aborted!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/* The above call is non-blocking.&n;   * After a while, the IrDA stack will either call us back in&n;   * irnet_connect_confirm() or irnet_disconnect_indication()&n;   * See you there ;-) */
+id|DEXIT
+c_func
+(paren
+id|IRDA_SR_TRACE
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Function irnet_discover_next_daddr (self)&n; *&n; *    Query the IrNET TSAP of the next device in the log.&n; *&n; * Used in the TSAP discovery procedure.&n; */
+r_static
+r_inline
+r_int
+DECL|function|irnet_discover_next_daddr
+id|irnet_discover_next_daddr
+c_func
+(paren
+id|irnet_socket
+op_star
+id|self
+)paren
+(brace
+multiline_comment|/* Close the last instance of IrIAP, and open a new one.&n;   * We can&squot;t reuse the IrIAP instance in the IrIAP callback */
+r_if
+c_cond
+(paren
+id|self-&gt;iriap
+)paren
+(brace
+id|iriap_close
+c_func
+(paren
+id|self-&gt;iriap
+)paren
+suffix:semicolon
+id|self-&gt;iriap
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Create a new IAP instance */
+id|self-&gt;iriap
+op_assign
+id|iriap_open
+c_func
+(paren
+id|LSAP_ANY
+comma
+id|IAS_CLIENT
+comma
+id|self
+comma
+id|irnet_discovervalue_confirm
+)paren
+suffix:semicolon
+multiline_comment|/* Next discovery - before the call to avoid races */
+id|self-&gt;disco_index
+op_increment
+suffix:semicolon
+multiline_comment|/* Check if we have one more address to try */
+r_if
+c_cond
+(paren
+id|self-&gt;disco_index
+OL
+id|self-&gt;disco_number
+)paren
+(brace
+multiline_comment|/* Query remote LM-IAS */
+id|iriap_getvaluebyclass_request
+c_func
+(paren
+id|self-&gt;iriap
+comma
+id|self-&gt;discoveries
+(braket
+id|self-&gt;disco_index
+)braket
+dot
+id|saddr
+comma
+id|self-&gt;discoveries
+(braket
+id|self-&gt;disco_index
+)braket
+dot
+id|daddr
+comma
+id|IRNET_SERVICE_NAME
+comma
+id|IRNET_IAS_VALUE
+)paren
+suffix:semicolon
+multiline_comment|/* The above request is non-blocking.&n;       * After a while, IrDA will call us back in irnet_discovervalue_confirm()&n;       * We will then call irnet_ias_to_tsap() and come back here again... */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Function irnet_discover_daddr_and_lsap_sel (self)&n; *&n; *    This try to find a device with the requested service.&n; *&n; * Initiate a TSAP discovery procedure.&n; * It basically look into the discovery log. For each address in the list,&n; * it queries the LM-IAS of the device to find if this device offer&n; * the requested service.&n; * If there is more than one node supporting the service, we complain&n; * to the user (it should move devices around).&n; * If we find one node which have the requested TSAP, we connect to it.&n; *&n; * This function just start the whole procedure. It request the discovery&n; * log and submit the first IAS query.&n; * The bulk of the job is handled in irnet_discovervalue_confirm()&n; *&n; * Note : this procedure fails if there is more than one device in range&n; * on the same dongle, because IrLMP doesn&squot;t disconnect the LAP when the&n; * last LSAP is closed. Moreover, we would need to wait the LAP&n; * disconnection...&n; */
+r_static
+r_inline
+r_int
+DECL|function|irnet_discover_daddr_and_lsap_sel
+id|irnet_discover_daddr_and_lsap_sel
+c_func
+(paren
+id|irnet_socket
+op_star
+id|self
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|DENTER
+c_func
+(paren
+id|IRDA_SR_TRACE
+comma
+l_string|&quot;(self=0x%X)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|self
+)paren
+suffix:semicolon
+multiline_comment|/* Ask lmp for the current discovery log */
+id|self-&gt;discoveries
 op_assign
 id|irlmp_get_discoveries
 c_func
 (paren
 op_amp
-id|number
+id|self-&gt;disco_number
 comma
 id|self-&gt;mask
 )paren
@@ -680,10 +957,99 @@ multiline_comment|/* Check if the we got some results */
 r_if
 c_cond
 (paren
-id|discoveries
+id|self-&gt;discoveries
 op_eq
 l_int|NULL
 )paren
+(brace
+id|self-&gt;disco_number
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
+id|DRETURN
+c_func
+(paren
+op_minus
+id|ENETUNREACH
+comma
+id|IRDA_SR_INFO
+comma
+l_string|&quot;No Cachelog...&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|DEBUG
+c_func
+(paren
+id|IRDA_SR_INFO
+comma
+l_string|&quot;Got the log (0x%X), size is %d&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|self-&gt;discoveries
+comma
+id|self-&gt;disco_number
+)paren
+suffix:semicolon
+multiline_comment|/* Start with the first discovery */
+id|self-&gt;disco_index
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|self-&gt;daddr
+op_assign
+id|DEV_ADDR_ANY
+suffix:semicolon
+multiline_comment|/* This will fail if the log is empty - this is non-blocking */
+id|ret
+op_assign
+id|irnet_discover_next_daddr
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+multiline_comment|/* Close IAP */
+id|iriap_close
+c_func
+(paren
+id|self-&gt;iriap
+)paren
+suffix:semicolon
+id|self-&gt;iriap
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Cleanup our copy of the discovery log */
+id|kfree
+c_func
+(paren
+id|self-&gt;discoveries
+)paren
+suffix:semicolon
+id|self-&gt;discoveries
+op_assign
+l_int|NULL
+suffix:semicolon
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
 id|DRETURN
 c_func
 (paren
@@ -695,188 +1061,8 @@ comma
 l_string|&quot;Cachelog empty...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;   * Now, check all discovered devices (if any), and connect&n;   * client only about the services that the client is&n;   * interested in...&n;   */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|number
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-multiline_comment|/* Try the address in the log */
-id|self-&gt;daddr
-op_assign
-id|discoveries
-(braket
-id|i
-)braket
-dot
-id|daddr
-suffix:semicolon
-id|self-&gt;saddr
-op_assign
-l_int|0x0
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;trying daddr = %08x&bslash;n&quot;
-comma
-id|self-&gt;daddr
-)paren
-suffix:semicolon
-multiline_comment|/* Query remote LM-IAS for this service */
-id|err
-op_assign
-id|irnet_find_lsap_sel
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|err
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* We found the requested service */
-r_if
-c_cond
-(paren
-id|daddr
-op_ne
-id|DEV_ADDR_ANY
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;More than one device in range supports IrNET...&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* First time we found that one, save it ! */
-id|daddr
-op_assign
-id|self-&gt;daddr
-suffix:semicolon
-id|dtsap_sel
-op_assign
-id|self-&gt;dtsap_sel
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-op_minus
-id|EADDRNOTAVAIL
-suffix:colon
-multiline_comment|/* Requested service simply doesn&squot;t exist on this node */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* Something bad did happen :-( */
-id|DERROR
-c_func
-(paren
-id|IRDA_SR_ERROR
-comma
-l_string|&quot;unexpected IAS query failure&bslash;n&quot;
-)paren
-suffix:semicolon
-id|self-&gt;daddr
-op_assign
-id|DEV_ADDR_ANY
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|discoveries
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EHOSTUNREACH
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Cleanup our copy of the discovery log */
-id|kfree
-c_func
-(paren
-id|discoveries
-)paren
-suffix:semicolon
-multiline_comment|/* Check out what we found */
-r_if
-c_cond
-(paren
-id|daddr
-op_eq
-id|DEV_ADDR_ANY
-)paren
-(brace
-id|self-&gt;daddr
-op_assign
-id|DEV_ADDR_ANY
-suffix:semicolon
-id|DEXIT
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;cannot discover IrNET in any device !!!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EADDRNOTAVAIL
-suffix:semicolon
-)brace
-multiline_comment|/* Revert back to discovered device &amp; service */
-id|self-&gt;daddr
-op_assign
-id|daddr
-suffix:semicolon
-id|self-&gt;saddr
-op_assign
-l_int|0x0
-suffix:semicolon
-id|self-&gt;dtsap_sel
-op_assign
-id|dtsap_sel
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|IRDA_SR_INFO
-comma
-l_string|&quot;discovered IrNET at address %08x&bslash;n&quot;
-comma
-id|self-&gt;daddr
-)paren
-suffix:semicolon
+multiline_comment|/* Follow me in irnet_discovervalue_confirm() */
 id|DEXIT
 c_func
 (paren
@@ -1096,18 +1282,16 @@ op_assign
 id|IRNET_MAGIC
 suffix:semicolon
 multiline_comment|/* Paranoia */
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|self-&gt;query_wait
-)paren
-suffix:semicolon
 id|self-&gt;ttp_open
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Prevent higher layer from accessing IrTTP */
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Not connecting yet */
 id|self-&gt;rname
 (braket
 l_int|0
@@ -1116,9 +1300,14 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* May be set via control channel */
-id|self-&gt;raddr
+id|self-&gt;rdaddr
 op_assign
 id|DEV_ADDR_ANY
+suffix:semicolon
+multiline_comment|/* May be set via control channel */
+id|self-&gt;rsaddr
+op_assign
+l_int|0x0
 suffix:semicolon
 multiline_comment|/* May be set via control channel */
 id|self-&gt;daddr
@@ -1130,7 +1319,7 @@ id|self-&gt;saddr
 op_assign
 l_int|0x0
 suffix:semicolon
-multiline_comment|/* so IrLMP assign us any link */
+multiline_comment|/* Until we get connected */
 id|self-&gt;max_sdu_size_rx
 op_assign
 id|TTP_SAR_UNBOUND
@@ -1184,7 +1373,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Connect to the other side :&n; *&t;o convert device name to an address&n; *&t;o find the socket number (dlsap)&n; *&t;o Establish the connection&n; */
+multiline_comment|/*&n; * Connect to the other side :&n; *&t;o convert device name to an address&n; *&t;o find the socket number (dlsap)&n; *&t;o Establish the connection&n; *&n; * Note : We no longer mimic af_irda. The IAS query for finding the TSAP&n; * is done asynchronously, like the TTP connection. This allow us to&n; * call this function from any context (not only process).&n; * The downside is that following what&squot;s happening in there is tricky&n; * because it involve various functions all over the place...&n; */
 r_int
 DECL|function|irda_irnet_connect
 id|irda_irnet_connect
@@ -1216,9 +1405,7 @@ multiline_comment|/* Check if we have opened a local TSAP :&n;   * If we have al
 r_if
 c_cond
 (paren
-id|self-&gt;tsap
-op_ne
-l_int|NULL
+id|self-&gt;ttp_connect
 )paren
 (brace
 id|DRETURN
@@ -1230,6 +1417,35 @@ comma
 id|IRDA_SOCK_INFO
 comma
 l_string|&quot;Already connecting...&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|self-&gt;ttp_connect
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|self-&gt;iriap
+op_ne
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|self-&gt;tsap
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_SOCK_ERROR
+comma
+l_string|&quot;Socket not cleaned up...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1302,7 +1518,7 @@ r_if
 c_cond
 (paren
 (paren
-id|self-&gt;raddr
+id|self-&gt;rdaddr
 op_eq
 id|DEV_ADDR_ANY
 )paren
@@ -1345,6 +1561,7 @@ l_string|&quot;auto-connect failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* In most cases, the call above is non-blocking */
 )brace
 r_else
 (brace
@@ -1352,7 +1569,7 @@ multiline_comment|/* If we have only the name (no address), try to get an addres
 r_if
 c_cond
 (paren
-id|self-&gt;raddr
+id|self-&gt;rdaddr
 op_eq
 id|DEV_ADDR_ANY
 )paren
@@ -1380,7 +1597,7 @@ id|err
 comma
 id|IRDA_SOCK_INFO
 comma
-l_string|&quot;name-connect failed!&bslash;n&quot;
+l_string|&quot;name connect failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1389,107 +1606,18 @@ r_else
 multiline_comment|/* Use the requested destination address */
 id|self-&gt;daddr
 op_assign
-id|self-&gt;raddr
+id|self-&gt;rdaddr
 suffix:semicolon
 multiline_comment|/* Query remote LM-IAS to find LSAP selector */
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
 id|irnet_find_lsap_sel
 c_func
 (paren
 id|self
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|DRETURN
-c_func
-(paren
-id|err
-comma
-id|IRDA_SOCK_INFO
-comma
-l_string|&quot;connect failed!&bslash;n&quot;
-)paren
 suffix:semicolon
+multiline_comment|/* The above call is non blocking */
 )brace
-)brace
-id|DEBUG
-c_func
-(paren
-id|IRDA_SOCK_INFO
-comma
-l_string|&quot;daddr = %08x, lsap = %d, starting IrTTP connection&bslash;n&quot;
-comma
-id|self-&gt;daddr
-comma
-id|self-&gt;dtsap_sel
-)paren
-suffix:semicolon
-multiline_comment|/* Open a local TSAP (an IrTTP instance) */
-id|err
-op_assign
-id|irnet_open_tsap
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-id|DABORT
-c_func
-(paren
-id|err
-op_ne
-l_int|0
-comma
-id|err
-comma
-id|IRDA_SOCK_ERROR
-comma
-l_string|&quot;connect aborted!&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Connect to remote device */
-id|err
-op_assign
-id|irttp_connect_request
-c_func
-(paren
-id|self-&gt;tsap
-comma
-id|self-&gt;dtsap_sel
-comma
-id|self-&gt;saddr
-comma
-id|self-&gt;daddr
-comma
-l_int|NULL
-comma
-id|self-&gt;max_sdu_size_rx
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|DABORT
-c_func
-(paren
-id|err
-op_ne
-l_int|0
-comma
-id|err
-comma
-id|IRDA_SOCK_ERROR
-comma
-l_string|&quot;connect aborted!&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* At this point, we are waiting for the IrDA stack to call us back,&n;   * or we have already failed.&n;   * We will finish the connection procedure in irnet_connect_tsap().&n;   */
 id|DEXIT
 c_func
 (paren
@@ -1641,6 +1769,33 @@ c_func
 id|self-&gt;iriap
 )paren
 suffix:semicolon
+id|self-&gt;iriap
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* If we were connected, post a message */
+r_if
+c_cond
+(paren
+id|self-&gt;ttp_open
+)paren
+(brace
+multiline_comment|/* Note : as the disconnect comes from ppp_generic, the unit number&n;       * doesn&squot;t exist anymore when we post the event, so we need to pass&n;       * NULL as the first arg... */
+id|irnet_post_event
+c_func
+(paren
+l_int|NULL
+comma
+id|IRNET_DISCONNECT_TO
+comma
+id|self-&gt;saddr
+comma
+id|self-&gt;daddr
+comma
+id|self-&gt;rname
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Prevent higher layer from accessing IrTTP */
 id|self-&gt;ttp_open
@@ -1681,19 +1836,6 @@ suffix:semicolon
 id|self-&gt;tsap
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/* Note : as the disconnect comes from ppp_generic, the unit number&n;       * doesn&squot;t exist anymore when we post the event, so we need to pass&n;       * NULL as the first arg... */
-id|irnet_post_event
-c_func
-(paren
-l_int|NULL
-comma
-id|IRNET_DISCONNECT_TO
-comma
-id|self-&gt;daddr
-comma
-id|self-&gt;rname
-)paren
 suffix:semicolon
 )brace
 id|self-&gt;stsap_sel
@@ -1939,10 +2081,18 @@ r_int
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Get the address of the requester */
+multiline_comment|/* Get the addresses of the requester */
 id|self-&gt;daddr
 op_assign
 id|irttp_get_daddr
+c_func
+(paren
+id|self-&gt;tsap
+)paren
+suffix:semicolon
+id|self-&gt;saddr
+op_assign
+id|irttp_get_saddr
 c_func
 (paren
 id|self-&gt;tsap
@@ -2063,7 +2213,7 @@ c_cond
 (paren
 r_new
 op_member_access_from_pointer
-id|raddr
+id|rdaddr
 op_eq
 id|self-&gt;daddr
 )paren
@@ -2162,7 +2312,7 @@ op_logical_and
 (paren
 r_new
 op_member_access_from_pointer
-id|raddr
+id|rdaddr
 op_eq
 id|DEV_ADDR_ANY
 )paren
@@ -2440,6 +2590,12 @@ id|ttp_open
 op_assign
 l_int|1
 suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONNECT_INDIC_KICK
 multiline_comment|/* As currently we don&squot;t packets in ppp_irnet_send(), this is not needed...&n;   * Also, not doing it give IrDA a chance to finish the setup properly&n;   * before beeing swamped with packets... */
 id|ppp_output_wakeup
@@ -2459,6 +2615,10 @@ c_func
 r_new
 comma
 id|IRNET_CONNECT_FROM
+comma
+r_new
+op_member_access_from_pointer
+id|saddr
 comma
 r_new
 op_member_access_from_pointer
@@ -2533,6 +2693,21 @@ id|P_NORMAL
 )paren
 suffix:semicolon
 macro_line|#endif /* FAIL_SEND_DISCONNECT */
+multiline_comment|/* Notify the control channel (see irnet_find_socket()) */
+id|irnet_post_event
+c_func
+(paren
+l_int|NULL
+comma
+id|IRNET_REQUEST_FROM
+comma
+id|self-&gt;saddr
+comma
+id|self-&gt;daddr
+comma
+id|self-&gt;rname
+)paren
+suffix:semicolon
 multiline_comment|/* Clean up the server to keep it in listen state */
 id|self-&gt;tsap-&gt;dtsap_sel
 op_assign
@@ -2543,19 +2718,6 @@ suffix:semicolon
 id|self-&gt;tsap-&gt;lsap-&gt;lsap_state
 op_assign
 id|LSAP_DISCONNECTED
-suffix:semicolon
-multiline_comment|/* Notify the control channel */
-id|irnet_post_event
-c_func
-(paren
-l_int|NULL
-comma
-id|IRNET_REQUEST_FROM
-comma
-id|self-&gt;daddr
-comma
-id|self-&gt;rname
-)paren
 suffix:semicolon
 id|DEXIT
 c_func
@@ -3094,6 +3256,8 @@ id|self
 comma
 id|IRNET_DISCONNECT_FROM
 comma
+id|self-&gt;saddr
+comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
@@ -3124,6 +3288,8 @@ id|self
 comma
 id|IRNET_NOANSWER_FROM
 comma
+id|self-&gt;saddr
+comma
 id|self-&gt;daddr
 comma
 id|self-&gt;rname
@@ -3132,6 +3298,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* Prevent higher layer from accessing IrTTP */
 id|self-&gt;ttp_open
+op_assign
+l_int|0
+suffix:semicolon
+id|self-&gt;ttp_connect
 op_assign
 l_int|0
 suffix:semicolon
@@ -3318,6 +3488,10 @@ id|self-&gt;tsap
 )paren
 suffix:semicolon
 multiline_comment|/* Allow higher layer to access IrTTP */
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
 id|self-&gt;ttp_open
 op_assign
 l_int|1
@@ -3391,6 +3565,8 @@ c_func
 id|self
 comma
 id|IRNET_CONNECT_TO
+comma
+id|self-&gt;saddr
 comma
 id|self-&gt;daddr
 comma
@@ -3572,11 +3748,6 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|LOCAL_FLOW
-id|oldflow
-op_assign
-id|self-&gt;tx_flow
-suffix:semicolon
 id|DENTER
 c_func
 (paren
@@ -3620,6 +3791,8 @@ c_func
 id|self
 comma
 id|IRNET_BLOCKED_LINK
+comma
+id|self-&gt;saddr
 comma
 id|self-&gt;daddr
 comma
@@ -3941,7 +4114,7 @@ suffix:semicolon
 multiline_comment|/********************** IRDA-IAS/LMP CALLBACKS **********************/
 multiline_comment|/*&n; * These are the callbacks called by other layers of the IrDA stack,&n; * mainly LMP for discovery and IAS for name queries.&n; */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irnet_getvalue_confirm (obj_id, value, priv)&n; *&n; *    Got answer from remote LM-IAS, just pass object to requester...&n; *&n; */
+multiline_comment|/*&n; * Function irnet_getvalue_confirm (result, obj_id, value, priv)&n; *&n; *    Got answer from remote LM-IAS, just connect&n; *&n; * This is the reply to a IAS query we were doing to find the TSAP of&n; * the device we want to connect to.&n; * If we have found a valid TSAP, just initiate the TTP connection&n; * on this TSAP.&n; */
 r_static
 r_void
 DECL|function|irnet_getvalue_confirm
@@ -3996,7 +4169,7 @@ op_ne
 l_int|NULL
 comma
 comma
-id|IRDA_CB_ERROR
+id|IRDA_OCB_ERROR
 comma
 l_string|&quot;Self is NULL !!!&bslash;n&quot;
 )paren
@@ -4012,49 +4185,371 @@ id|self-&gt;iriap
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Check if request succeeded */
+multiline_comment|/* Check if already connected (via irnet_connect_socket()) */
 r_if
 c_cond
 (paren
-id|result
-op_ne
-id|IAS_SUCCESS
+id|self-&gt;ttp_open
 )paren
 (brace
-id|DEBUG
+id|DERROR
 c_func
 (paren
-id|IRDA_CB_INFO
+id|IRDA_OCB_ERROR
 comma
-l_string|&quot;IAS query failed! (%d)&bslash;n&quot;
-comma
-id|result
+l_string|&quot;Socket already connected. Ouch !&bslash;n&quot;
 )paren
 suffix:semicolon
-id|self-&gt;errno
-op_assign
-id|result
+r_return
 suffix:semicolon
-multiline_comment|/* We really need it later */
 )brace
-r_else
-(brace
-multiline_comment|/* Pass the object to the caller (so the caller must delete it) */
-id|self-&gt;ias_result
+multiline_comment|/* Post process the IAS reply */
+id|self-&gt;dtsap_sel
 op_assign
+id|irnet_ias_to_tsap
+c_func
+(paren
+id|self
+comma
+id|result
+comma
 id|value
+)paren
 suffix:semicolon
+multiline_comment|/* If error, just go out */
+r_if
+c_cond
+(paren
 id|self-&gt;errno
+)paren
+(brace
+id|self-&gt;ttp_connect
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/* Wake up any processes waiting for result */
-id|wake_up_interruptible
+id|DERROR
 c_func
 (paren
-op_amp
-id|self-&gt;query_wait
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;IAS connect failed ! (0x%X)&bslash;n&quot;
+comma
+id|self-&gt;errno
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|DEBUG
+c_func
+(paren
+id|IRDA_OCB_INFO
+comma
+l_string|&quot;daddr = %08x, lsap = %d, starting IrTTP connection&bslash;n&quot;
+comma
+id|self-&gt;daddr
+comma
+id|self-&gt;dtsap_sel
+)paren
+suffix:semicolon
+multiline_comment|/* Start up TTP - non blocking */
+id|irnet_connect_tsap
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
+id|DEXIT
+c_func
+(paren
+id|IRDA_OCB_TRACE
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Function irnet_discovervalue_confirm (result, obj_id, value, priv)&n; *&n; *    Handle the TSAP discovery procedure state machine.&n; *    Got answer from remote LM-IAS, try next device&n; *&n; * We are doing a  TSAP discovery procedure, and we got an answer to&n; * a IAS query we were doing to find the TSAP on one of the address&n; * in the discovery log.&n; *&n; * If we have found a valid TSAP for the first time, save it. If it&squot;s&n; * not the first time we found one, complain.&n; *&n; * If we have more addresses in the log, just initiate a new query.&n; * Note that those query may fail (see irnet_discover_daddr_and_lsap_sel())&n; *&n; * Otherwise, wrap up the procedure (cleanup), check if we have found&n; * any device and connect to it.&n; */
+r_static
+r_void
+DECL|function|irnet_discovervalue_confirm
+id|irnet_discovervalue_confirm
+c_func
+(paren
+r_int
+id|result
+comma
+id|__u16
+id|obj_id
+comma
+r_struct
+id|ias_value
+op_star
+id|value
+comma
+r_void
+op_star
+id|priv
+)paren
+(brace
+id|irnet_socket
+op_star
+id|self
+op_assign
+(paren
+id|irnet_socket
+op_star
+)paren
+id|priv
+suffix:semicolon
+id|__u8
+id|dtsap_sel
+suffix:semicolon
+multiline_comment|/* TSAP we are looking for */
+id|DENTER
+c_func
+(paren
+id|IRDA_OCB_TRACE
+comma
+l_string|&quot;(self=0x%X)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|self
+)paren
+suffix:semicolon
+id|DASSERT
+c_func
+(paren
+id|self
+op_ne
+l_int|NULL
+comma
+comma
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;Self is NULL !!!&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Post process the IAS reply */
+id|dtsap_sel
+op_assign
+id|irnet_ias_to_tsap
+c_func
+(paren
+id|self
+comma
+id|result
+comma
+id|value
+)paren
+suffix:semicolon
+multiline_comment|/* Have we got something ? */
+r_if
+c_cond
+(paren
+id|self-&gt;errno
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* We found the requested service */
+r_if
+c_cond
+(paren
+id|self-&gt;daddr
+op_ne
+id|DEV_ADDR_ANY
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;More than one device in range supports IrNET...&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* First time we found that one, save it ! */
+id|self-&gt;daddr
+op_assign
+id|self-&gt;discoveries
+(braket
+id|self-&gt;disco_index
+)braket
+dot
+id|daddr
+suffix:semicolon
+id|self-&gt;dtsap_sel
+op_assign
+id|dtsap_sel
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* If no failure */
+r_if
+c_cond
+(paren
+(paren
+id|self-&gt;errno
+op_eq
+op_minus
+id|EADDRNOTAVAIL
+)paren
+op_logical_or
+(paren
+id|self-&gt;errno
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Search the next node */
+id|ret
+op_assign
+id|irnet_discover_next_daddr
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+(brace
+multiline_comment|/* In this case, the above request was non-blocking.&n;&t;   * We will return here after a while... */
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* In this case, we have processed the last discovery item */
+)brace
+multiline_comment|/* No more queries to be done (failure or last one) */
+multiline_comment|/* We probably don&squot;t need to make any more queries */
+id|iriap_close
+c_func
+(paren
+id|self-&gt;iriap
+)paren
+suffix:semicolon
+id|self-&gt;iriap
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* No more items : remove the log and signal termination */
+id|DEBUG
+c_func
+(paren
+id|IRDA_OCB_INFO
+comma
+l_string|&quot;Cleaning up log (0x%X)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|self-&gt;discoveries
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;discoveries
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* Cleanup our copy of the discovery log */
+id|kfree
+c_func
+(paren
+id|self-&gt;discoveries
+)paren
+suffix:semicolon
+id|self-&gt;discoveries
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|self-&gt;disco_number
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Check out what we found */
+r_if
+c_cond
+(paren
+id|self-&gt;daddr
+op_eq
+id|DEV_ADDR_ANY
+)paren
+(brace
+id|self-&gt;daddr
+op_assign
+id|DEV_ADDR_ANY
+suffix:semicolon
+id|self-&gt;ttp_connect
+op_assign
+l_int|0
+suffix:semicolon
+id|DEXIT
+c_func
+(paren
+id|IRDA_OCB_TRACE
+comma
+l_string|&quot;: cannot discover IrNET in any device !!!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Check if already connected (via irnet_connect_socket()) */
+r_if
+c_cond
+(paren
+id|self-&gt;ttp_open
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;Socket already connected. Ouch !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* We have a valid address - just connect */
+id|DEBUG
+c_func
+(paren
+id|IRDA_OCB_INFO
+comma
+l_string|&quot;daddr = %08x, lsap = %d, starting IrTTP connection&bslash;n&quot;
+comma
+id|self-&gt;daddr
+comma
+id|self-&gt;dtsap_sel
+)paren
+suffix:semicolon
+multiline_comment|/* Start up TTP - non blocking */
+id|irnet_connect_tsap
+c_func
+(paren
+id|self
 )paren
 suffix:semicolon
 id|DEXIT
@@ -4114,7 +4609,7 @@ op_amp
 id|irnet_server
 comma
 comma
-id|IRDA_CB_ERROR
+id|IRDA_OCB_ERROR
 comma
 l_string|&quot;Invalid instance (0x%X) !!!&bslash;n&quot;
 comma
@@ -4149,7 +4644,7 @@ multiline_comment|/* Too old, not interesting -&gt; goodbye */
 id|DEBUG
 c_func
 (paren
-id|IRDA_CB_INFO
+id|IRDA_OCB_INFO
 comma
 l_string|&quot;Discovered new IrNET/IrLAN node %s...&bslash;n&quot;
 comma
@@ -4163,6 +4658,8 @@ c_func
 l_int|NULL
 comma
 id|IRNET_DISCOVER
+comma
+id|discovery-&gt;saddr
 comma
 id|discovery-&gt;daddr
 comma
@@ -4225,7 +4722,7 @@ op_amp
 id|irnet_server
 comma
 comma
-id|IRDA_CB_ERROR
+id|IRDA_OCB_ERROR
 comma
 l_string|&quot;Invalid instance (0x%X) !!!&bslash;n&quot;
 comma
@@ -4239,7 +4736,7 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-id|IRDA_CB_INFO
+id|IRDA_OCB_INFO
 comma
 l_string|&quot;IrNET/IrLAN node %s expired...&bslash;n&quot;
 comma
@@ -4253,6 +4750,8 @@ c_func
 l_int|NULL
 comma
 id|IRNET_EXPIRE
+comma
+id|expiry-&gt;saddr
 comma
 id|expiry-&gt;daddr
 comma
@@ -4462,9 +4961,23 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;addr: %08x&bslash;n&quot;
+l_string|&quot;daddr: %08x, &quot;
 comma
-id|self-&gt;raddr
+id|self-&gt;rdaddr
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;saddr: %08x&bslash;n&quot;
+comma
+id|self-&gt;rsaddr
 )paren
 suffix:semicolon
 multiline_comment|/* Second, get all the PPP info */
@@ -4573,6 +5086,32 @@ l_int|NULL
 id|state
 op_assign
 l_string|&quot;connecting&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|self-&gt;iriap
+op_ne
+l_int|NULL
+)paren
+(brace
+id|state
+op_assign
+l_string|&quot;searching&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|self-&gt;ttp_connect
+)paren
+(brace
+id|state
+op_assign
+l_string|&quot;weird&quot;
 suffix:semicolon
 )brace
 r_else

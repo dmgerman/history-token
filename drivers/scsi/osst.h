@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.9 2000/10/08 03:09:43 riede Exp $&n; */
+multiline_comment|/*&n; *&t;$Header: /home/cvsroot/Driver/osst.h,v 1.11 2001/01/26 01:54:49 riede Exp $&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -1619,11 +1619,16 @@ id|__u32
 id|next_mark_ppos
 suffix:semicolon
 multiline_comment|/* when known, points to next marker */
+DECL|member|last_mark_lbn
+id|__u32
+id|last_mark_lbn
+suffix:semicolon
+multiline_comment|/* storing log_blk_num of last mark is extends ADR spec */
 DECL|member|linux_specific
 id|__u8
 id|linux_specific
 (braket
-l_int|28
+l_int|24
 )braket
 suffix:semicolon
 DECL|member|reserved_256_511
@@ -2207,6 +2212,14 @@ r_int
 id|recover_count
 suffix:semicolon
 multiline_comment|/* from tape opening */
+DECL|member|write_count
+r_int
+id|write_count
+suffix:semicolon
+DECL|member|read_count
+r_int
+id|read_count
+suffix:semicolon
 DECL|member|recover_erreg
 r_int
 id|recover_erreg
@@ -2230,12 +2243,17 @@ r_char
 id|poll
 suffix:semicolon
 multiline_comment|/* flag that this drive needs polling (IDE|firmware) */
-DECL|member|logical_blk_in_buffer
+DECL|member|frame_in_buffer
 r_int
 r_char
-id|logical_blk_in_buffer
+id|frame_in_buffer
 suffix:semicolon
-multiline_comment|/* flag that the block as per logical_blk_num&n;&t;&t;&t;&t;&t;&t;* has been read into STp-&gt;buffer and is valid */
+multiline_comment|/* flag that the frame as per frame_seq_number&n;&t;&t;&t;&t;&t;&t;* has been read into STp-&gt;buffer and is valid */
+DECL|member|frame_seq_number
+r_int
+id|frame_seq_number
+suffix:semicolon
+multiline_comment|/* logical frame number */
 DECL|member|logical_blk_num
 r_int
 id|logical_blk_num
@@ -2323,6 +2341,11 @@ DECL|member|last_mark_ppos
 r_int
 id|last_mark_ppos
 suffix:semicolon
+DECL|member|last_mark_lbn
+r_int
+id|last_mark_lbn
+suffix:semicolon
+multiline_comment|/* storing log_blk_num of last mark is extends ADR spec */
 DECL|member|first_data_ppos
 r_int
 id|first_data_ppos

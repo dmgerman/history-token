@@ -4300,6 +4300,14 @@ id|sdev-&gt;prom_name
 comma
 l_string|&quot;QLGC,isp&quot;
 )paren
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|sdev-&gt;prom_name
+comma
+l_string|&quot;SUNW,isp&quot;
+)paren
 )paren
 r_continue
 suffix:semicolon

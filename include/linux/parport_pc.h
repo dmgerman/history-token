@@ -1092,5 +1092,15 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|parport_pc_unregister_port
+(paren
+r_struct
+id|parport
+op_star
+id|p
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

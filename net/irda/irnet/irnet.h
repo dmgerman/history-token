@@ -3,7 +3,7 @@ macro_line|#ifndef IRNET_H
 DECL|macro|IRNET_H
 mdefine_line|#define IRNET_H
 multiline_comment|/************************** DOCUMENTATION ***************************/
-multiline_comment|/*&n; * What is IrNET&n; * -------------&n; * IrNET is a protocol allowing to carry TCP/IP traffic between two&n; * IrDA peers in an efficient fashion. It is a thin layer, passing PPP&n; * packets to IrTTP and vice versa. It uses PPP in synchronous mode,&n; * because IrTTP offer a reliable sequenced packet service (as opposed&n; * to a byte stream). In fact, you could see IrNET as carrying TCP/IP&n; * in a IrDA socket, using PPP to provide the glue.&n; *&n; * The main difference with traditional PPP over IrCOMM is that we&n; * avoid the framing and serial emulation which are a performance&n; * bottleneck. It also allows multipoint communications in a sensible&n; * fashion.&n; *&n; * The main difference with IrLAN is that we use PPP for the link&n; * management, which is more standard, interoperable and flexible than&n; * the IrLAN protocol. For example, PPP adds authentication,&n; * encryption, compression, header compression and automated routing&n; * setup. And, as IrNET let PPP do the hard work, the implementation&n; * is much simpler than IrLAN.&n; *&n; * The Linux implementation&n; * ------------------------&n; * IrNET is written on top of the Linux-IrDA stack, and interface with&n; * the generic Linux PPP driver. Because IrNET depend on recent&n; * changes of the PPP driver interface, IrNET will work only with very&n; * recent kernel (2.3.99-pre6 and up).&n; * &n; * The present implementation offer the following features :&n; *&t;o simple user interface using pppd&n; *&t;o efficient implementation (interface directly to PPP and IrTTP)&n; *&t;o addressing (you can specify the name of the IrNET recipient)&n; *&t;o multipoint operation (limited by IrLAP specification)&n; *&t;o information in /proc/net/irda/irnet&n; *&t;o IrNET events on /dev/irnet (for user space daemon)&n; *&t;o IrNET daemon (irnetd) to automatically handle incoming requests&n; *&t;o Windows 2000 compatibility (tested, but need more work)&n; * Currently missing :&n; *&t;o Lot&squot;s of testing (that&squot;s your job)&n; *&t;o Connection retries (may be too hard to do)&n; *&t;o Check pppd persist mode&n; *&t;o User space daemon (to automatically handle incoming requests)&n; *&n; * The setup is not currently the most easy, but this should get much&n; * better when everything will get integrated...&n; *&n; * Acknowledgements&n; * ----------------&n; * This module is based on :&n; *&t;o The PPP driver (ppp_synctty/ppp_generic) by Paul Mackerras&n; *&t;o The IrLAN protocol (irlan_common/XXX) by Dag Brattli&n; *&t;o The IrSock interface (af_irda) by Dag Brattli&n; *&t;o Some other bits from the kernel and my drivers...&n; * Infinite thanks to those brave souls for providing the infrastructure&n; * upon which IrNET is built.&n; *&n; * Thanks to all my collegues in HP for helping me. In particular,&n; * thanks to Salil Pradhan and Bill Serra for W2k testing...&n; * Thanks to Luiz Magalhaes for irnetd and much testing...&n; *&n; * Thanks to Alan Cox for answering lot&squot;s of my stupid questions, and&n; * to Paul Mackerras answering my questions on how to best integrate&n; * IrNET and pppd.&n; *&n; * Jean II&n; *&n; * Note on some implementations choices...&n; * ------------------------------------&n; *&t;1) Direct interface vs tty/socket&n; * I could have used a tty interface to hook to ppp and use the full&n; * socket API to connect to IrDA. The code would have been easier to&n; * maintain, and maybe the code would have been smaller...&n; * Instead, we hook directly to ppp_generic and to IrTTP, which make&n; * things more complicated...&n; *&n; * The first reason is flexibility : this allow us to create IrNET&n; * instances on demand (no /dev/ircommX crap) and to allow linkname&n; * specification on pppd command line...&n; *&n; * Second reason is speed optimisation. If you look closely at the&n; * transmit and receive paths, you will notice that they are &quot;super lean&quot;&n; * (that&squot;s why they look ugly), with no function calls and as little data&n; * copy and modification as I could...&n; *&n; *&t;2) irnetd in user space&n; * irnetd is implemented in user space, which is necessary to call pppd.&n; * This also give maximum benefits in term of flexibility and customability,&n; * and allow to offer the event channel, useful for other stuff like debug.&n; *&n; * On the other hand, this require a loose coordination between the&n; * present module and irnetd. One critical area is how incoming request&n; * are handled.&n; * When irnet receive an incoming request, it send an event to irnetd and&n; * drop the incoming IrNET socket.&n; * irnetd start a pppd instance, which create a new IrNET socket. This new&n; * socket is then connected in the originating node to the pppd instance.&n; * At this point, in the originating node, the first socket is closed.&n; *&n; * I admit, this is a bit messy and waste some ressources. The alternative&n; * is caching incoming socket, and that&squot;s also quite messy and waste&n; * ressources.&n; * We also make connection time slower. For example, on a 115 kb/s link it&n; * adds 60ms to the connection time (770 ms). However, this is slower than&n; * the time it takes to fire up pppd on my P133...&n; *&n; *&n; * History :&n; * -------&n; *&n; * v1 - 15/5/00 - Jean II&n; *&t;o Basic IrNET (hook to ppp_generic &amp; IrTTP - incl. multipoint)&n; *&t;o control channel on /dev/irnet (set name/address)&n; *&t;o event channel on /dev/irnet (for user space daemon)&n; *&n; * v2 - 5/6/00 - Jean II&n; *&t;o Enable DROP_NOT_READY to avoid PPP timeouts &amp; other weirdness...&n; *&t;o Add DISCONNECT_TO event and rename DISCONNECT_FROM.&n; *&t;o Set official device number alloaction on /dev/irnet&n; *&n; * v3 - 30/8/00 - Jean II&n; *&t;o Update to latest Linux-IrDA changes :&n; *&t;&t;- queue_t =&gt; irda_queue_t&n; *&t;o Update to ppp-2.4.0 :&n; *&t;&t;- move irda_irnet_connect from PPPIOCATTACH to TIOCSETD&n; *&t;o Add EXPIRE event (depend on new IrDA-Linux patch)&n; *&t;o Switch from `hashbin_remove&squot; to `hashbin_remove_this&squot; to fix&n; *&t;  a multilink bug... (depend on new IrDA-Linux patch)&n; *&t;o fix a self-&gt;daddr to self-&gt;raddr in irda_irnet_connect to fix&n; *&t;  another multilink bug (darn !)&n; *&t;o Remove LINKNAME_IOCTL cruft&n; *&n; * v3b - 31/8/00 - Jean II&n; *&t;o Dump discovery log at event channel startup&n; *&n; * v4 - 28/9/00 - Jean II&n; *&t;o Fix interaction between poll/select and dump discovery log&n; *&t;o Add IRNET_BLOCKED_LINK event (depend on new IrDA-Linux patch)&n; *&t;o Add IRNET_NOANSWER_FROM event (mostly to help support)&n; *&t;o Release flow control in disconnect_indication&n; *&t;o Block packets while connecting (speed up connections)&n; *&n; * v5 - 11/01/01 - Jean II&n; *&t;o Init self-&gt;max_header_size, just in case...&n; *&t;o Set up ap-&gt;chan.hdrlen, to get zero copy on tx side working.&n; *&t;o avoid tx-&gt;ttp-&gt;flow-&gt;ppp-&gt;tx-&gt;... loop, by checking flow state&n; *&t;&t;Thanks to Christian Gennerat for finding this bug !&n; *&t;---&n; *&t;o Declare the proper MTU/MRU that we can support&n; *&t;&t;(but PPP doesn&squot;t read the MTU value :-()&n; *&t;o Declare hashbin HB_NOLOCK instead of HB_LOCAL to avoid&n; *&t;&t;disabling and enabling irq twice&n; */
+multiline_comment|/*&n; * What is IrNET&n; * -------------&n; * IrNET is a protocol allowing to carry TCP/IP traffic between two&n; * IrDA peers in an efficient fashion. It is a thin layer, passing PPP&n; * packets to IrTTP and vice versa. It uses PPP in synchronous mode,&n; * because IrTTP offer a reliable sequenced packet service (as opposed&n; * to a byte stream). In fact, you could see IrNET as carrying TCP/IP&n; * in a IrDA socket, using PPP to provide the glue.&n; *&n; * The main difference with traditional PPP over IrCOMM is that we&n; * avoid the framing and serial emulation which are a performance&n; * bottleneck. It also allows multipoint communications in a sensible&n; * fashion.&n; *&n; * The main difference with IrLAN is that we use PPP for the link&n; * management, which is more standard, interoperable and flexible than&n; * the IrLAN protocol. For example, PPP adds authentication,&n; * encryption, compression, header compression and automated routing&n; * setup. And, as IrNET let PPP do the hard work, the implementation&n; * is much simpler than IrLAN.&n; *&n; * The Linux implementation&n; * ------------------------&n; * IrNET is written on top of the Linux-IrDA stack, and interface with&n; * the generic Linux PPP driver. Because IrNET depend on recent&n; * changes of the PPP driver interface, IrNET will work only with very&n; * recent kernel (2.3.99-pre6 and up).&n; * &n; * The present implementation offer the following features :&n; *&t;o simple user interface using pppd&n; *&t;o efficient implementation (interface directly to PPP and IrTTP)&n; *&t;o addressing (you can specify the name of the IrNET recipient)&n; *&t;o multipoint operation (limited by IrLAP specification)&n; *&t;o information in /proc/net/irda/irnet&n; *&t;o IrNET events on /dev/irnet (for user space daemon)&n; *&t;o IrNET daemon (irnetd) to automatically handle incoming requests&n; *&t;o Windows 2000 compatibility (tested, but need more work)&n; * Currently missing :&n; *&t;o Lot&squot;s of testing (that&squot;s your job)&n; *&t;o Connection retries (may be too hard to do)&n; *&t;o Check pppd persist mode&n; *&t;o User space daemon (to automatically handle incoming requests)&n; *&n; * The setup is not currently the most easy, but this should get much&n; * better when everything will get integrated...&n; *&n; * Acknowledgements&n; * ----------------&n; * This module is based on :&n; *&t;o The PPP driver (ppp_synctty/ppp_generic) by Paul Mackerras&n; *&t;o The IrLAN protocol (irlan_common/XXX) by Dag Brattli&n; *&t;o The IrSock interface (af_irda) by Dag Brattli&n; *&t;o Some other bits from the kernel and my drivers...&n; * Infinite thanks to those brave souls for providing the infrastructure&n; * upon which IrNET is built.&n; *&n; * Thanks to all my collegues in HP for helping me. In particular,&n; * thanks to Salil Pradhan and Bill Serra for W2k testing...&n; * Thanks to Luiz Magalhaes for irnetd and much testing...&n; *&n; * Thanks to Alan Cox for answering lot&squot;s of my stupid questions, and&n; * to Paul Mackerras answering my questions on how to best integrate&n; * IrNET and pppd.&n; *&n; * Jean II&n; *&n; * Note on some implementations choices...&n; * ------------------------------------&n; *&t;1) Direct interface vs tty/socket&n; * I could have used a tty interface to hook to ppp and use the full&n; * socket API to connect to IrDA. The code would have been easier to&n; * maintain, and maybe the code would have been smaller...&n; * Instead, we hook directly to ppp_generic and to IrTTP, which make&n; * things more complicated...&n; *&n; * The first reason is flexibility : this allow us to create IrNET&n; * instances on demand (no /dev/ircommX crap) and to allow linkname&n; * specification on pppd command line...&n; *&n; * Second reason is speed optimisation. If you look closely at the&n; * transmit and receive paths, you will notice that they are &quot;super lean&quot;&n; * (that&squot;s why they look ugly), with no function calls and as little data&n; * copy and modification as I could...&n; *&n; *&t;2) irnetd in user space&n; * irnetd is implemented in user space, which is necessary to call pppd.&n; * This also give maximum benefits in term of flexibility and customability,&n; * and allow to offer the event channel, useful for other stuff like debug.&n; *&n; * On the other hand, this require a loose coordination between the&n; * present module and irnetd. One critical area is how incoming request&n; * are handled.&n; * When irnet receive an incoming request, it send an event to irnetd and&n; * drop the incoming IrNET socket.&n; * irnetd start a pppd instance, which create a new IrNET socket. This new&n; * socket is then connected in the originating node to the pppd instance.&n; * At this point, in the originating node, the first socket is closed.&n; *&n; * I admit, this is a bit messy and waste some ressources. The alternative&n; * is caching incoming socket, and that&squot;s also quite messy and waste&n; * ressources.&n; * We also make connection time slower. For example, on a 115 kb/s link it&n; * adds 60ms to the connection time (770 ms). However, this is slower than&n; * the time it takes to fire up pppd on my P133...&n; *&n; *&n; * History :&n; * -------&n; *&n; * v1 - 15/5/00 - Jean II&n; *&t;o Basic IrNET (hook to ppp_generic &amp; IrTTP - incl. multipoint)&n; *&t;o control channel on /dev/irnet (set name/address)&n; *&t;o event channel on /dev/irnet (for user space daemon)&n; *&n; * v2 - 5/6/00 - Jean II&n; *&t;o Enable DROP_NOT_READY to avoid PPP timeouts &amp; other weirdness...&n; *&t;o Add DISCONNECT_TO event and rename DISCONNECT_FROM.&n; *&t;o Set official device number alloaction on /dev/irnet&n; *&n; * v3 - 30/8/00 - Jean II&n; *&t;o Update to latest Linux-IrDA changes :&n; *&t;&t;- queue_t =&gt; irda_queue_t&n; *&t;o Update to ppp-2.4.0 :&n; *&t;&t;- move irda_irnet_connect from PPPIOCATTACH to TIOCSETD&n; *&t;o Add EXPIRE event (depend on new IrDA-Linux patch)&n; *&t;o Switch from `hashbin_remove&squot; to `hashbin_remove_this&squot; to fix&n; *&t;  a multilink bug... (depend on new IrDA-Linux patch)&n; *&t;o fix a self-&gt;daddr to self-&gt;raddr in irda_irnet_connect to fix&n; *&t;  another multilink bug (darn !)&n; *&t;o Remove LINKNAME_IOCTL cruft&n; *&n; * v3b - 31/8/00 - Jean II&n; *&t;o Dump discovery log at event channel startup&n; *&n; * v4 - 28/9/00 - Jean II&n; *&t;o Fix interaction between poll/select and dump discovery log&n; *&t;o Add IRNET_BLOCKED_LINK event (depend on new IrDA-Linux patch)&n; *&t;o Add IRNET_NOANSWER_FROM event (mostly to help support)&n; *&t;o Release flow control in disconnect_indication&n; *&t;o Block packets while connecting (speed up connections)&n; *&n; * v5 - 11/01/01 - Jean II&n; *&t;o Init self-&gt;max_header_size, just in case...&n; *&t;o Set up ap-&gt;chan.hdrlen, to get zero copy on tx side working.&n; *&t;o avoid tx-&gt;ttp-&gt;flow-&gt;ppp-&gt;tx-&gt;... loop, by checking flow state&n; *&t;&t;Thanks to Christian Gennerat for finding this bug !&n; *&t;---&n; *&t;o Declare the proper MTU/MRU that we can support&n; *&t;&t;(but PPP doesn&squot;t read the MTU value :-()&n; *&t;o Declare hashbin HB_NOLOCK instead of HB_LOCAL to avoid&n; *&t;&t;disabling and enabling irq twice&n; *&n; * v6 - 31/05/01 - Jean II&n; *&t;o Print source address in Found, Discovery, Expiry &amp; Request events&n; *&t;o Print requested source address in /proc/net/irnet&n; *&t;o Change control channel input. Allow multiple commands in one line.&n; *&t;o Add saddr command to change ap-&gt;rsaddr (and use that in IrDA)&n; *&t;---&n; *&t;o Make the IrDA connection procedure totally asynchronous.&n; *&t;  Heavy rewrite of the IAS query code and the whole connection&n; *&t;  procedure. Now, irnet_connect() no longer need to be called from&n; *&t;  a process context...&n; *&t;o Enable IrDA connect retries in ppp_irnet_send(). The good thing&n; *&t;  is that IrDA connect retries are directly driven by PPP LCP&n; *&t;  retries (we retry for each LCP packet), so that everything&n; *&t;  is transparently controlled from pppd lcp-max-configure.&n; *&t;o Add ttp_connect flag to prevent rentry on the connect procedure&n; *&t;o Test and fixups to eliminate side effects of retries&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,6 +13,8 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;&t;/* isspace() */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
@@ -48,7 +50,7 @@ multiline_comment|/* PPP side of the business */
 DECL|macro|BLOCK_WHEN_CONNECT
 mdefine_line|#define BLOCK_WHEN_CONNECT&t;/* Block packets when connecting */
 DECL|macro|CONNECT_IN_SEND
-macro_line|#undef CONNECT_IN_SEND&t;&t;/* Will crash hard your box... */
+mdefine_line|#define CONNECT_IN_SEND&t;&t;/* Retry IrDA connection procedure */
 DECL|macro|FLUSH_TO_PPP
 macro_line|#undef FLUSH_TO_PPP&t;&t;/* Not sure about this one, let&squot;s play safe */
 DECL|macro|SECURE_DEVIRNET
@@ -99,12 +101,16 @@ DECL|macro|DEBUG_IRDA_SERV_ERROR
 mdefine_line|#define DEBUG_IRDA_SERV_ERROR&t;1&t;/* problems */
 DECL|macro|DEBUG_IRDA_TCB_TRACE
 mdefine_line|#define DEBUG_IRDA_TCB_TRACE&t;0&t;/* IRDA IrTTP callbacks */
-DECL|macro|DEBUG_IRDA_OCB_TRACE
-mdefine_line|#define DEBUG_IRDA_OCB_TRACE&t;0&t;/* IRDA other callbacks */
 DECL|macro|DEBUG_IRDA_CB_INFO
 mdefine_line|#define DEBUG_IRDA_CB_INFO&t;0&t;/* various info */
 DECL|macro|DEBUG_IRDA_CB_ERROR
 mdefine_line|#define DEBUG_IRDA_CB_ERROR&t;1&t;/* problems */
+DECL|macro|DEBUG_IRDA_OCB_TRACE
+mdefine_line|#define DEBUG_IRDA_OCB_TRACE&t;0&t;/* IRDA other callbacks */
+DECL|macro|DEBUG_IRDA_OCB_INFO
+mdefine_line|#define DEBUG_IRDA_OCB_INFO&t;0&t;/* various info */
+DECL|macro|DEBUG_IRDA_OCB_ERROR
+mdefine_line|#define DEBUG_IRDA_OCB_ERROR&t;1&t;/* problems */
 DECL|macro|DEBUG_ASSERT
 mdefine_line|#define DEBUG_ASSERT&t;&t;0&t;/* Verify all assertions */
 multiline_comment|/* &n; * These are the macros we are using to actually print the debug&n; * statements. Don&squot;t look at it, it&squot;s ugly...&n; *&n; * One of the trick is that, as the DEBUG_XXX are constant, the&n; * compiler will optimise away the if() in all cases.&n; */
@@ -230,6 +236,11 @@ r_int
 id|ttp_open
 suffix:semicolon
 multiline_comment|/* Set when IrTTP is ready */
+DECL|member|ttp_connect
+r_int
+id|ttp_connect
+suffix:semicolon
+multiline_comment|/* Set when IrTTP is connecting */
 DECL|member|tsap
 r_struct
 id|tsap_cb
@@ -247,21 +258,26 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* IrDA nickname of destination */
-DECL|member|raddr
+DECL|member|rdaddr
 id|__u32
-id|raddr
+id|rdaddr
 suffix:semicolon
 multiline_comment|/* Requested peer IrDA address */
-DECL|member|saddr
+DECL|member|rsaddr
 id|__u32
-id|saddr
+id|rsaddr
 suffix:semicolon
-multiline_comment|/* my local IrDA address */
+multiline_comment|/* Requested local IrDA address */
 DECL|member|daddr
 id|__u32
 id|daddr
 suffix:semicolon
 multiline_comment|/* actual peer IrDA address */
+DECL|member|saddr
+id|__u32
+id|saddr
+suffix:semicolon
+multiline_comment|/* my local IrDA address */
 DECL|member|dtsap_sel
 id|__u8
 id|dtsap_sel
@@ -318,26 +334,13 @@ op_star
 id|iriap
 suffix:semicolon
 multiline_comment|/* Used to query remote IAS */
-DECL|member|query_wait
-id|wait_queue_head_t
-id|query_wait
-suffix:semicolon
-multiline_comment|/* Wait for the answer to a query */
-DECL|member|ias_result
-r_struct
-id|ias_value
-op_star
-id|ias_result
-suffix:semicolon
-multiline_comment|/* Result of remote IAS query */
 DECL|member|errno
 r_int
 id|errno
 suffix:semicolon
 multiline_comment|/* status of the IAS query */
-multiline_comment|/* ---------------------- Optional parts ---------------------- */
-macro_line|#ifdef INITIAL_DISCOVERY
-multiline_comment|/* Stuff used to dump discovery log */
+multiline_comment|/* -------------------- Discovery log part -------------------- */
+multiline_comment|/* Used by initial discovery on the control channel&n;   * and by irnet_discover_daddr_and_lsap_sel() */
 DECL|member|discoveries
 r_struct
 id|irda_device_info
@@ -355,7 +358,6 @@ r_int
 id|disco_number
 suffix:semicolon
 multiline_comment|/* Size of the discovery log */
-macro_line|#endif /* INITIAL_DISCOVERY */
 DECL|typedef|irnet_socket
 )brace
 id|irnet_socket
@@ -419,9 +421,13 @@ DECL|member|unit
 r_int
 id|unit
 suffix:semicolon
-DECL|member|addr
+DECL|member|saddr
 id|__u32
-id|addr
+id|saddr
+suffix:semicolon
+DECL|member|daddr
+id|__u32
+id|daddr
 suffix:semicolon
 DECL|member|name
 r_char
@@ -432,6 +438,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 21 + 1 */
 DECL|typedef|irnet_log
 )brace
 id|irnet_log

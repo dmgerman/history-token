@@ -1400,10 +1400,6 @@ id|events
 comma
 id|mask
 suffix:semicolon
-id|irq
-op_sub_assign
-id|VEC_SPUR
-suffix:semicolon
 id|mask
 op_assign
 id|via1
@@ -1494,6 +1490,7 @@ op_or
 l_int|0x80
 suffix:semicolon
 )brace
+macro_line|#if 0 /* freakin&squot; pmu is doing weird stuff */
 r_if
 c_cond
 (paren
@@ -1531,6 +1528,7 @@ id|IRQ_MAC_NUBUS
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|via2_irq
 r_void
@@ -1560,10 +1558,6 @@ r_char
 id|events
 comma
 id|mask
-suffix:semicolon
-id|irq
-op_sub_assign
-id|VEC_SPUR
 suffix:semicolon
 id|mask
 op_assign

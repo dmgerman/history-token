@@ -1495,6 +1495,17 @@ c_loop
 l_int|1
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The algorithm is inefficient but seldomly used&n;&t;&t; * and probably not worth fixing.&n;&t;&t; *&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|current-&gt;need_resched
+)paren
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Find a swap page in use and read it in.&n;&t;&t; */
 id|swap_device_lock
 c_func

@@ -593,6 +593,17 @@ op_star
 id|page
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|free_page_and_swap_cache
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/* linux/mm/swapfile.c */
 r_extern
 r_int

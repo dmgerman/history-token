@@ -314,6 +314,13 @@ multiline_comment|/* PCMCIA Slot */
 id|AMIGAHW_DECLARE
 c_func
 (paren
+id|GG2_ISA
+)paren
+suffix:semicolon
+multiline_comment|/* GG2 Zorro2ISA Bridge */
+id|AMIGAHW_DECLARE
+c_func
+(paren
 id|ZORRO
 )paren
 suffix:semicolon

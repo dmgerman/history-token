@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: termios.h,v 1.10 2001/02/05 05:54:29 davem Exp $ */
+multiline_comment|/* $Id: termios.h,v 1.11 2001/06/01 08:12:11 davem Exp $ */
 macro_line|#ifndef _SPARC64_TERMIOS_H
 DECL|macro|_SPARC64_TERMIOS_H
 mdefine_line|#define _SPARC64_TERMIOS_H
@@ -180,6 +180,8 @@ DECL|macro|N_HDLC
 mdefine_line|#define N_HDLC&t;&t;13&t;/* synchronous HDLC */
 DECL|macro|N_SYNC_PPP
 mdefine_line|#define N_SYNC_PPP&t;14&t;/* synchronous PPP */
+DECL|macro|N_HCI
+mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * c_cc characters in the termio structure.  Oh, how I love being&n; * backwardly compatible.  Notice that character 4 and 5 are&n; * interpreted differently depending on whether ICANON is set in&n; * c_lflag.  If it&squot;s set, they are used as _VEOF and _VEOL, otherwise&n; * as _VMIN and V_TIME.  This is for compatibility with OSF/1 (which&n; * is compatible with sysV)...&n; */
 DECL|macro|_VMIN

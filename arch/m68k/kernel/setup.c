@@ -25,6 +25,17 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_SUN3X
+macro_line|#include &lt;asm/dvma.h&gt;
+r_extern
+r_void
+id|sun_serial_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
@@ -519,6 +530,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_ISA)
+DECL|variable|isa_type
+r_int
+id|isa_type
+suffix:semicolon
+DECL|variable|isa_sex
+r_int
+id|isa_sex
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|amiga_parse_bootinfo
@@ -740,7 +761,8 @@ op_assign
 l_int|0
 suffix:semicolon
 r_const
-id|u_long
+r_int
+r_int
 op_star
 id|data
 op_assign
@@ -992,7 +1014,8 @@ op_star
 )paren
 (paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|record
 op_plus
@@ -1820,12 +1843,97 @@ id|availmem
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SUN3X
+r_if
+c_cond
+(paren
+id|MACH_IS_SUN3X
+)paren
+(brace
+id|dvma_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3X_ZS
+id|sun_serial_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#endif
 macro_line|#endif /* !CONFIG_SUN3 */
 id|paging_init
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* set ISA defs early as possible */
+macro_line|#if defined(CONFIG_ISA)
+macro_line|#if defined(CONFIG_Q40) 
+r_if
+c_cond
+(paren
+id|MACH_IS_Q40
+)paren
+(brace
+id|isa_type
+op_assign
+id|Q40_ISA
+suffix:semicolon
+id|isa_sex
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_GG2)
+r_if
+c_cond
+(paren
+id|MACH_IS_AMIGA
+op_logical_and
+id|AMIGAHW_PRESENT
+c_func
+(paren
+id|GG2_ISA
+)paren
+)paren
+(brace
+id|isa_type
+op_assign
+id|GG2_ISA
+suffix:semicolon
+id|isa_sex
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_AMIGA_PCMCIA)
+r_if
+c_cond
+(paren
+id|MACH_IS_AMIGA
+op_logical_and
+id|AMIGAHW_PRESENT
+c_func
+(paren
+id|PCMCIA
+)paren
+)paren
+(brace
+id|isa_type
+op_assign
+id|AG_ISA
+suffix:semicolon
+id|isa_sex
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#endif
 )brace
 DECL|function|get_cpuinfo
 r_int
@@ -1848,7 +1956,8 @@ comma
 op_star
 id|fpu
 suffix:semicolon
-id|u_long
+r_int
+r_int
 id|clockfreq
 comma
 id|clockfactor
@@ -2166,7 +2275,8 @@ id|model
 l_int|80
 )braket
 suffix:semicolon
-id|u_long
+r_int
+r_int
 id|mem
 suffix:semicolon
 r_int

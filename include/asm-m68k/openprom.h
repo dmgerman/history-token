@@ -505,7 +505,7 @@ id|fd_stdout
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN3
+macro_line|#if defined(CONFIG_SUN3) || defined(CONFIG_SUN3X)
 DECL|struct|linux_romvec
 r_struct
 id|linux_romvec
@@ -898,6 +898,7 @@ r_char
 op_star
 id|pv_memorybitmap
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3
 DECL|member|pv_setctxt
 r_void
 (paren
@@ -942,6 +943,7 @@ DECL|member|dummy4z
 r_int
 id|dummy4z
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#else

@@ -152,6 +152,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Push the page at kernel virtual address and clear the icache */
+multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
 DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page) __flush_page_to_ram((unsigned long) page_address(page))
 DECL|function|__flush_page_to_ram
@@ -178,8 +179,7 @@ c_func
 (paren
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68040&bslash;n&bslash;t&quot;
-l_string|&quot;cpushp %%dc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvp %%ic,(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;cpushp %%bc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon
@@ -228,6 +228,7 @@ suffix:semicolon
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 multiline_comment|/* Push n pages at kernel virtual address and clear the icache */
+multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
 DECL|function|flush_icache_range
 r_extern
 r_inline
@@ -279,8 +280,7 @@ c_func
 (paren
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68040&bslash;n&bslash;t&quot;
-l_string|&quot;cpushp %%dc,(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;cinvp %%ic,(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;cpushp %%bc,(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.chip 68k&quot;
 suffix:colon
 suffix:colon

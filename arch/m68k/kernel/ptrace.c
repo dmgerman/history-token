@@ -406,6 +406,17 @@ c_func
 id|pid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|child
+)paren
+id|get_task_struct
+c_func
+(paren
+id|child
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
@@ -413,7 +424,6 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME!!! */
 r_if
 c_cond
 (paren
@@ -437,7 +447,7 @@ l_int|1
 )paren
 multiline_comment|/* you may not mess with init */
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_if
 c_cond
@@ -455,7 +465,7 @@ op_eq
 id|current
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_if
 c_cond
@@ -520,7 +530,7 @@ id|CAP_SYS_PTRACE
 )paren
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 multiline_comment|/* the same process cannot be attached many times */
 r_if
@@ -531,7 +541,7 @@ op_amp
 id|PT_PTRACED
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 id|child-&gt;ptrace
 op_or_assign
@@ -595,7 +605,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|ret
@@ -614,7 +624,7 @@ id|PT_PTRACED
 )paren
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_if
 c_cond
@@ -632,7 +642,7 @@ op_ne
 id|PTRACE_KILL
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_if
@@ -643,7 +653,7 @@ op_ne
 id|current
 )paren
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_switch
 c_cond
@@ -702,8 +712,7 @@ r_sizeof
 id|tmp
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|ret
 op_assign
@@ -720,8 +729,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* read the word at location addr in the USER area. */
@@ -748,19 +756,16 @@ l_int|3
 )paren
 op_logical_or
 id|addr
-OL
-l_int|0
-op_logical_or
-id|addr
-op_ge
+template_param
 r_sizeof
 (paren
 r_struct
 id|user
 )paren
+op_minus
+l_int|3
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|tmp
 op_assign
@@ -876,8 +881,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_else
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|ret
 op_assign
@@ -894,8 +898,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* when I and D space are separate, this will have to be fixed. */
@@ -936,16 +939,14 @@ r_sizeof
 id|data
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|ret
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 r_case
 id|PTRACE_POKEUSR
@@ -966,19 +967,16 @@ l_int|3
 )paren
 op_logical_or
 id|addr
-OL
-l_int|0
-op_logical_or
-id|addr
-op_ge
+template_param
 r_sizeof
 (paren
 r_struct
 id|user
 )paren
+op_minus
+l_int|3
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|addr
 op_assign
@@ -1042,15 +1040,13 @@ comma
 id|data
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -1130,8 +1126,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_goto
-id|out
+r_break
 suffix:semicolon
 r_case
 id|PTRACE_SYSCALL
@@ -1161,8 +1156,7 @@ id|data
 OG
 id|_NSIG
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -1223,8 +1217,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill. &n; * perhaps it should be put in the status that it wants to &n; * exit.&n; */
@@ -1247,8 +1240,7 @@ op_eq
 id|TASK_ZOMBIE
 )paren
 multiline_comment|/* already dead */
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -1288,8 +1280,7 @@ c_func
 id|child
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1316,8 +1307,7 @@ id|data
 OG
 id|_NSIG
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|child-&gt;ptrace
 op_and_assign
@@ -1365,8 +1355,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1393,8 +1382,7 @@ id|data
 OG
 id|_NSIG
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|child-&gt;ptrace
 op_and_assign
@@ -1481,8 +1469,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1555,8 +1542,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 id|data
@@ -1571,8 +1557,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1624,8 +1609,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -1684,8 +1668,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1724,8 +1707,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -1764,8 +1746,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 r_default
@@ -1775,10 +1756,17 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
+id|out_tsk
+suffix:colon
+id|free_task_struct
+c_func
+(paren
+id|child
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 id|unlock_kernel
@@ -1799,11 +1787,6 @@ c_func
 r_void
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1823,8 +1806,7 @@ op_or
 id|PT_TRACESYS
 )paren
 )paren
-r_goto
-id|out
+r_return
 suffix:semicolon
 id|current-&gt;exit_code
 op_assign
@@ -1869,12 +1851,5 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|out
-suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 eof

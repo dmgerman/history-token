@@ -346,6 +346,8 @@ DECL|macro|AF_PPPOX
 mdefine_line|#define AF_PPPOX&t;24&t;/* PPPoX sockets&t;&t;*/
 DECL|macro|AF_WANPIPE
 mdefine_line|#define AF_WANPIPE&t;25&t;/* Wanpipe API Sockets */
+DECL|macro|AF_BLUETOOTH
+mdefine_line|#define AF_BLUETOOTH&t;31&t;/* Bluetooth sockets &t;&t;*/
 DECL|macro|AF_MAX
 mdefine_line|#define AF_MAX&t;&t;32&t;/* For now.. */
 multiline_comment|/* Protocol families, same as address families. */
@@ -403,6 +405,8 @@ DECL|macro|PF_PPPOX
 mdefine_line|#define PF_PPPOX&t;AF_PPPOX
 DECL|macro|PF_WANPIPE
 mdefine_line|#define PF_WANPIPE&t;AF_WANPIPE
+DECL|macro|PF_BLUETOOTH
+mdefine_line|#define PF_BLUETOOTH&t;AF_BLUETOOTH
 DECL|macro|PF_MAX
 mdefine_line|#define PF_MAX&t;&t;AF_MAX
 multiline_comment|/* Maximum queue length specifiable by listen.  */

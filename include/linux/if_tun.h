@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Universal TUN/TAP device driver.&n; *  Copyright (C) 1999-2000 Maxim Krasnyansky &lt;max_mk@yahoo.com&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *  GNU General Public License for more details.&n; *&n; *  $Id: if_tun.h,v 1.1 2000/08/23 05:59:28 davem Exp $&n; */
+multiline_comment|/*&n; *  Universal TUN/TAP device driver.&n; *  Copyright (C) 1999-2000 Maxim Krasnyansky &lt;max_mk@yahoo.com&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *  GNU General Public License for more details.&n; *&n; *  $Id: if_tun.h,v 1.2 2001/06/01 18:39:47 davem Exp $&n; */
 macro_line|#ifndef __IF_TUN_H
 DECL|macro|__IF_TUN_H
 mdefine_line|#define __IF_TUN_H
@@ -22,40 +22,46 @@ id|tun_struct
 (brace
 DECL|member|name
 r_char
+op_star
 id|name
-(braket
-l_int|8
-)braket
 suffix:semicolon
 DECL|member|flags
 r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|fasync
-r_struct
-id|fasync_struct
-op_star
-id|fasync
+DECL|member|attached
+r_int
+id|attached
+suffix:semicolon
+DECL|member|owner
+id|uid_t
+id|owner
 suffix:semicolon
 DECL|member|read_wait
 id|wait_queue_head_t
 id|read_wait
+suffix:semicolon
+DECL|member|readq
+r_struct
+id|sk_buff_head
+id|readq
 suffix:semicolon
 DECL|member|dev
 r_struct
 id|net_device
 id|dev
 suffix:semicolon
-DECL|member|txq
-r_struct
-id|sk_buff_head
-id|txq
-suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
+suffix:semicolon
+DECL|member|fasync
+r_struct
+id|fasync_struct
+op_star
+id|fasync
 suffix:semicolon
 macro_line|#ifdef TUN_DEBUG&t;
 DECL|member|debug
@@ -70,15 +76,9 @@ DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ( (a)&lt;(b) ? (a):(b) ) 
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
-multiline_comment|/* Number of devices */
-DECL|macro|TUN_MAX_DEV
-mdefine_line|#define TUN_MAX_DEV&t;255
-multiline_comment|/* TX queue size */
-DECL|macro|TUN_TXQ_SIZE
-mdefine_line|#define TUN_TXQ_SIZE&t;10
-multiline_comment|/* Max frame size */
-DECL|macro|TUN_MAX_FRAME
-mdefine_line|#define TUN_MAX_FRAME&t;4096
+multiline_comment|/* Read queue size */
+DECL|macro|TUN_READQ_SIZE
+mdefine_line|#define TUN_READQ_SIZE&t;10
 multiline_comment|/* TUN device flags */
 DECL|macro|TUN_TUN_DEV
 mdefine_line|#define TUN_TUN_DEV &t;0x0001&t;
@@ -92,15 +92,21 @@ DECL|macro|TUN_NOCHECKSUM
 mdefine_line|#define TUN_NOCHECKSUM&t;0x0020
 DECL|macro|TUN_NO_PI
 mdefine_line|#define TUN_NO_PI&t;0x0040
-DECL|macro|TUN_IFF_SET
-mdefine_line|#define TUN_IFF_SET&t;0x1000
+DECL|macro|TUN_ONE_QUEUE
+mdefine_line|#define TUN_ONE_QUEUE&t;0x0080
+DECL|macro|TUN_PERSIST
+mdefine_line|#define TUN_PERSIST &t;0x0100&t;
 multiline_comment|/* Ioctl defines */
 DECL|macro|TUNSETNOCSUM
-mdefine_line|#define TUNSETNOCSUM ((&squot;T&squot;&lt;&lt; 8) | 200) 
+mdefine_line|#define TUNSETNOCSUM  _IOW(&squot;T&squot;, 200, int) 
 DECL|macro|TUNSETDEBUG
-mdefine_line|#define TUNSETDEBUG  ((&squot;T&squot;&lt;&lt; 8) | 201) 
+mdefine_line|#define TUNSETDEBUG   _IOW(&squot;T&squot;, 201, int) 
 DECL|macro|TUNSETIFF
-mdefine_line|#define TUNSETIFF    ((&squot;T&squot;&lt;&lt; 8) | 202) 
+mdefine_line|#define TUNSETIFF     _IOW(&squot;T&squot;, 202, int) 
+DECL|macro|TUNSETPERSIST
+mdefine_line|#define TUNSETPERSIST _IOW(&squot;T&squot;, 203, int) 
+DECL|macro|TUNSETOWNER
+mdefine_line|#define TUNSETOWNER   _IOW(&squot;T&squot;, 204, int)
 multiline_comment|/* TUNSETIFF ifr flags */
 DECL|macro|IFF_TUN
 mdefine_line|#define IFF_TUN&t;&t;0x0001
@@ -108,6 +114,8 @@ DECL|macro|IFF_TAP
 mdefine_line|#define IFF_TAP&t;&t;0x0002
 DECL|macro|IFF_NO_PI
 mdefine_line|#define IFF_NO_PI&t;0x1000
+DECL|macro|IFF_ONE_QUEUE
+mdefine_line|#define IFF_ONE_QUEUE&t;0x2000
 DECL|struct|tun_pi
 r_struct
 id|tun_pi

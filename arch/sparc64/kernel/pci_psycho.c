@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.24 2001/05/15 08:54:30 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.25 2001/06/04 23:20:32 ecd Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1311,7 +1311,7 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|0x0f
+l_int|0xff
 )paren
 (brace
 r_case
@@ -1321,6 +1321,8 @@ id|ret
 op_assign
 l_int|4
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PCI_BASE_CLASS_NETWORK
 suffix:colon
@@ -1328,12 +1330,16 @@ id|ret
 op_assign
 l_int|6
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|PCI_BASE_CLASS_DISPLAY
 suffix:colon
 id|ret
 op_assign
 l_int|9
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|PCI_BASE_CLASS_MULTIMEDIA
@@ -1348,11 +1354,15 @@ id|ret
 op_assign
 l_int|10
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ret
 op_assign
 l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 suffix:semicolon

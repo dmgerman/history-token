@@ -33,6 +33,8 @@ id|__noreturn__
 suffix:semicolon
 DECL|macro|DEBUG_MMU_EMU
 macro_line|#undef DEBUG_MMU_EMU
+DECL|macro|DEBUG_PROM_MAPS
+mdefine_line|#define DEBUG_PROM_MAPS
 multiline_comment|/*&n;** Defines&n;*/
 DECL|macro|CONTEXTS_NUM
 mdefine_line|#define CONTEXTS_NUM&t;&t;8
@@ -754,7 +756,22 @@ op_ne
 id|SUN3_INVALID_PMEG
 )paren
 (brace
-macro_line|#ifdef DEBUG_MMU_EMU
+macro_line|#ifdef DEBUG_PROM_MAPS
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|printk
 (paren
 l_string|&quot;mapped:&quot;
@@ -763,8 +780,17 @@ suffix:semicolon
 id|print_pte_vaddr
 (paren
 id|seg
+op_plus
+(paren
+id|i
+op_star
+id|PAGE_SIZE
+)paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 macro_line|#endif
 singleline_comment|// the lowest mapping here is the end of our
 singleline_comment|// vmalloc region
@@ -796,7 +822,7 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-id|sun3_dvma_init
+id|dvma_init
 c_func
 (paren
 )paren

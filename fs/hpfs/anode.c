@@ -1200,6 +1200,11 @@ op_minus
 l_int|1
 )paren
 (brace
+r_struct
+id|anode
+op_star
+id|new_anode
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1480,7 +1485,7 @@ r_if
 c_cond
 (paren
 (paren
-id|anode
+id|new_anode
 op_assign
 id|hpfs_alloc_anode
 c_func
@@ -1498,6 +1503,10 @@ id|bh
 )paren
 )paren
 (brace
+id|anode
+op_assign
+id|new_anode
+suffix:semicolon
 multiline_comment|/*anode-&gt;up = up != -1 ? up : ra;*/
 id|anode-&gt;btree.internal
 op_assign
@@ -2051,6 +2060,11 @@ l_string|&quot;hpfs_remove_btree #1&quot;
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|anode
 op_assign
 id|hpfs_map_anode
@@ -2063,6 +2077,9 @@ comma
 op_amp
 id|bh
 )paren
+)paren
+)paren
+r_return
 suffix:semicolon
 id|btree1
 op_assign
@@ -2121,6 +2138,12 @@ id|level
 )paren
 r_return
 suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2147,12 +2170,6 @@ l_string|&quot;hpfs_remove_btree #2&quot;
 )paren
 r_return
 suffix:semicolon
-id|brelse
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|hpfs_free_sectors
 c_func
 (paren
@@ -2178,6 +2195,11 @@ op_decrement
 id|level
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|anode
 op_assign
 id|hpfs_map_anode
@@ -2190,6 +2212,9 @@ comma
 op_amp
 id|bh
 )paren
+)paren
+)paren
+r_return
 suffix:semicolon
 id|btree1
 op_assign

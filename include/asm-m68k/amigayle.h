@@ -2,8 +2,8 @@ multiline_comment|/*&n;** asm-m68k/amigayle.h -- This header defines the registe
 macro_line|#ifndef _M68K_AMIGAYLE_H_
 DECL|macro|_M68K_AMIGAYLE_H_
 mdefine_line|#define _M68K_AMIGAYLE_H_
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* memory layout */
 DECL|macro|GAYLE_RAM
 mdefine_line|#define GAYLE_RAM&t;&t;(0x600000+zTwoBase)
@@ -91,14 +91,12 @@ DECL|macro|gayle_reset
 mdefine_line|#define gayle_reset (*(volatile u_char *)(zTwoBase+GAYLE_RESET))
 DECL|macro|gayle_attribute
 mdefine_line|#define gayle_attribute ((volatile u_char *)(GAYLE_ATTRIBUTE))
-DECL|macro|gayle_inb
+macro_line|#if 0
 mdefine_line|#define gayle_inb(a) readb( GAYLE_IO+(a)+(((a)&amp;1)*GAYLE_ODD) )
-DECL|macro|gayle_outb
 mdefine_line|#define gayle_outb(v,a) writeb( v, GAYLE_IO+(a)+(((a)&amp;1)*GAYLE_ODD) )
-DECL|macro|gayle_inw
 mdefine_line|#define gayle_inw(a) readw( GAYLE_IO+(a) )
-DECL|macro|gayle_outw
 mdefine_line|#define gayle_outw(v,a) writew( v, GAYLE_IO+(a) )
+macro_line|#endif
 multiline_comment|/* GAYLE_CARDSTATUS bit def */
 DECL|macro|GAYLE_CS_CCDET
 mdefine_line|#define GAYLE_CS_CCDET&t;&t;0x40&t;/* credit card detect */

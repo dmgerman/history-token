@@ -786,8 +786,8 @@ l_int|NULL
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 macro_line|#endif
 r_if

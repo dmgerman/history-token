@@ -1447,11 +1447,13 @@ r_int
 id|irq
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_struct
 id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
+macro_line|#endif
 r_char
 id|name
 (braket
@@ -1576,11 +1578,13 @@ id|init_irq_proc
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_struct
 id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
+macro_line|#endif
 r_int
 id|i
 suffix:semicolon
@@ -2445,7 +2449,7 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
+multiline_comment|/*&n; * handle_irq handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
 r_void
 DECL|function|handle_irq
 id|handle_irq
@@ -2604,7 +2608,7 @@ id|action
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Edge triggered interrupts need to remember pending events.&n;&t; * This applies to any hw interrupts that allow a second&n;&t; * instance of the same irq to arrive while we are in do_IRQ&n;&t; * or in the handler. But the code here only handles the _second_&n;&t; * instance of the irq, not the third or fourth. So it is mostly&n;&t; * useful for irq hardware that does not mask cleanly in an&n;&t; * SMP environment.&n;&t; */
+multiline_comment|/*&n;&t; * Edge triggered interrupts need to remember pending events.&n;&t; * This applies to any hw interrupts that allow a second&n;&t; * instance of the same irq to arrive while we are in handle_irq&n;&t; * or in the handler. But the code here only handles the _second_&n;&t; * instance of the irq, not the third or fourth. So it is mostly&n;&t; * useful for irq hardware that does not mask cleanly in an&n;&t; * SMP environment.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2681,6 +2685,20 @@ c_func
 (paren
 op_amp
 id|desc-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|softirq_pending
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

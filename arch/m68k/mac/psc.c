@@ -450,10 +450,6 @@ r_int
 r_char
 id|events
 suffix:semicolon
-id|irq
-op_sub_assign
-id|VEC_SPUR
-suffix:semicolon
 id|base_irq
 op_assign
 id|irq

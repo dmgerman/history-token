@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.8 05/18/01 06:20:29 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.10 06/05/01 20:20:05 paulus&n; */
 multiline_comment|/*&n; * misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;zlib.h&quot;
@@ -1990,10 +1990,30 @@ r_struct
 id|bi_record
 op_star
 )paren
-id|PAGE_ALIGN
+id|_ALIGN
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|zimage_size
+)paren
+op_plus
+(paren
+l_int|1
+op_lshift
+l_int|20
+)paren
+op_minus
+l_int|1
+comma
+(paren
+l_int|1
+op_lshift
+l_int|20
+)paren
 )paren
 suffix:semicolon
 id|rec-&gt;tag
@@ -2088,7 +2108,7 @@ id|rec-&gt;data
 l_int|1
 )braket
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|rec-&gt;size
 op_assign
@@ -2098,6 +2118,8 @@ r_struct
 id|bi_record
 )paren
 op_plus
+l_int|2
+op_star
 r_sizeof
 (paren
 r_int

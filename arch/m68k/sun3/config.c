@@ -1,10 +1,8 @@
 multiline_comment|/*&n; *  linux/arch/m68k/sun3/config.c&n; *&n; *  Copyright (C) 1996,1997 Pekka Pietik{inen&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -16,10 +14,12 @@ macro_line|#include &lt;asm/movs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sun3-head.h&gt;
 macro_line|#include &lt;asm/sun3mmu.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/intersil.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
+macro_line|#include &lt;asm/sun3ints.h&gt;
 r_extern
 r_char
 id|_text
@@ -70,113 +70,6 @@ r_struct
 id|pt_regs
 op_star
 )paren
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_init_IRQ
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|sun3_default_handler
-(braket
-)braket
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sun3_request_irq
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-id|flags
-comma
-r_const
-r_char
-op_star
-id|devname
-comma
-r_void
-op_star
-id|dev_id
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_free_irq
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_enable_irq
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_disable_irq
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_enable_interrupts
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun3_disable_interrupts
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
@@ -253,6 +146,7 @@ op_star
 id|clock_va
 suffix:semicolon
 r_extern
+r_volatile
 r_int
 r_char
 op_star
@@ -345,7 +239,7 @@ id|enable_register
 suffix:semicolon
 id|enable_register
 op_or_assign
-l_int|0x40
+l_int|0x50
 suffix:semicolon
 multiline_comment|/* Enable FPU */
 id|SET_CONTROL_BYTE
@@ -663,6 +557,10 @@ id|disable_irq
 op_assign
 id|sun3_disable_irq
 suffix:semicolon
+id|mach_process_int
+op_assign
+id|sun3_process_int
+suffix:semicolon
 id|mach_get_irq_list
 op_assign
 id|sun3_get_irq_list
@@ -691,7 +589,7 @@ id|mach_halt
 op_assign
 id|sun3_halt
 suffix:semicolon
-macro_line|#ifndef CONFIG_SERIAL_CONSOLE
+macro_line|#if !defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_FB)
 id|conswitchp
 op_assign
 op_amp

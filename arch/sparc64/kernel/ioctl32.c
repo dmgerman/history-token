@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.115 2001/05/12 06:41:58 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.117 2001/06/02 21:39:55 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -81,6 +81,8 @@ macro_line|#include &lt;linux/atmsvc.h&gt;
 macro_line|#include &lt;linux/atm_tcp.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;
 macro_line|#include &lt;linux/atm_suni.h&gt;
+macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
+macro_line|#include &lt;net/bluetooth/hci.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. &n;   See sys_sparc32.c for description about these. */
 DECL|macro|A
 mdefine_line|#define A(__x) ((unsigned long)(__x))
@@ -21657,6 +21659,22 @@ c_func
 (paren
 id|CDROM_GET_CAPABILITY
 )paren
+multiline_comment|/* DVD ioctls */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DVD_READ_STRUCT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DVD_WRITE_STRUCT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DVD_AUTH
+)paren
 multiline_comment|/* Big L */
 id|COMPATIBLE_IOCTL
 c_func
@@ -22854,6 +22872,57 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|WIOCGSTAT
+)paren
+multiline_comment|/* Bluetooth ioctls */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIDEVUP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIDEVDOWN
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIDEVRESET
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIRESETSTAT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIGETINFO
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIGETDEVLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCISETRAW
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCISETSCAN
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCISETAUTH
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIINQUIRY
 )paren
 multiline_comment|/* Misc. */
 id|COMPATIBLE_IOCTL

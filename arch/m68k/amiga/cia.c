@@ -21,13 +21,15 @@ id|cia
 suffix:semicolon
 DECL|member|icr_mask
 DECL|member|icr_data
-id|u_char
+r_int
+r_char
 id|icr_mask
 comma
 id|icr_data
 suffix:semicolon
 DECL|member|int_mask
-id|u_short
+r_int
+r_int
 id|int_mask
 suffix:semicolon
 DECL|member|handler_irq
@@ -114,7 +116,8 @@ r_char
 id|mask
 )paren
 (brace
-id|u_char
+r_int
+r_char
 id|old
 suffix:semicolon
 id|old
@@ -178,7 +181,8 @@ r_char
 id|mask
 )paren
 (brace
-id|u_char
+r_int
+r_char
 id|old
 comma
 id|tmp
@@ -332,7 +336,8 @@ op_star
 id|dev_id
 )paren
 (brace
-id|u_char
+r_int
+r_char
 id|mask
 suffix:semicolon
 id|base-&gt;irq_list

@@ -1351,12 +1351,12 @@ op_eq
 id|NF_IP_LOCAL_IN
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|IPT_ICMP_ECHOREPLY
 suffix:colon
 multiline_comment|/* Doesn&squot;t happen. */
+r_break
+suffix:semicolon
 )brace
 r_return
 id|NF_DROP

@@ -51,7 +51,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Can we do this in a generic manner??&n; */
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
 DECL|function|ide_init_hwif_ports
 r_static
@@ -429,54 +428,73 @@ macro_line|#undef SUPPORT_VLB_SYNC
 DECL|macro|SUPPORT_VLB_SYNC
 mdefine_line|#define SUPPORT_VLB_SYNC 0
 multiline_comment|/* this definition is used only on startup .. */
-macro_line|#ifndef CONFIG_Q40
 DECL|macro|HD_DATA
 macro_line|#undef HD_DATA
 DECL|macro|HD_DATA
 mdefine_line|#define HD_DATA NULL
+multiline_comment|/* get rid of defs from io.h - ide has its private and conflicting versions */
+DECL|macro|inb
+macro_line|#undef inb
+DECL|macro|inw
+macro_line|#undef inw
+DECL|macro|outb
+macro_line|#undef outb
+DECL|macro|outw
+macro_line|#undef outw
+DECL|macro|inb_p
+macro_line|#undef inb_p
+DECL|macro|outb_p
+macro_line|#undef outb_p
+DECL|macro|insw
+macro_line|#undef insw
+DECL|macro|outsw
+macro_line|#undef outsw
+DECL|macro|insw_swapw
+macro_line|#undef insw_swapw
+DECL|macro|outsw_swapw
+macro_line|#undef outsw_swapw
+multiline_comment|/* &n; * define IO method and translation,&n; * so far only Q40 has ide-if on ISA &n;*/
+macro_line|#ifndef CONFIG_Q40
+DECL|macro|ADDR_TRANS_B
+mdefine_line|#define ADDR_TRANS_B(_addr_) (_addr_)
+DECL|macro|ADDR_TRANS_W
+mdefine_line|#define ADDR_TRANS_W(_addr_) (_addr_)
 macro_line|#else
-macro_line|#ifdef MACH_Q40_ONLY
-DECL|macro|HD_DATA
-macro_line|#undef HD_DATA
-DECL|macro|HD_DATA
-mdefine_line|#define HD_DATA ((ide_ioreg_t)0x1f0)
-macro_line|#else
-DECL|macro|HD_DATA
-macro_line|#undef HD_DATA
-DECL|macro|HD_DATA
-mdefine_line|#define HD_DATA   (MACH_IS_Q40 ? (ide_ioreg_t)0x1f0 : 0)
+DECL|macro|ADDR_TRANS_B
+mdefine_line|#define ADDR_TRANS_B(_addr_) (MACH_IS_Q40 ? ((unsigned char *)Q40_ISA_IO_B(_addr_)) : (_addr_))
+DECL|macro|ADDR_TRANS_W
+mdefine_line|#define ADDR_TRANS_W(_addr_) (MACH_IS_Q40 ? ((unsigned char *)Q40_ISA_IO_W(_addr_)) : (_addr_))
 macro_line|#endif
-macro_line|#endif
+DECL|macro|inb
+mdefine_line|#define inb(p)     in_8(ADDR_TRANS_B(p))
+DECL|macro|inb_p
+mdefine_line|#define inb_p(p)     in_8(ADDR_TRANS_B(p))
+DECL|macro|inw
+mdefine_line|#define inw(p)     in_be16(ADDR_TRANS_W(p))
+DECL|macro|outb
+mdefine_line|#define outb(v,p)  out_8(ADDR_TRANS_B(p),v)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(v,p)  out_8(ADDR_TRANS_B(p),v)
+DECL|macro|outw
+mdefine_line|#define outw(v,p)  out_be16(ADDR_TRANS_W(p),v)
+DECL|macro|insw
+mdefine_line|#define insw(port, buf, nr) raw_insw(ADDR_TRANS_W(port), buf, nr)
+DECL|macro|outsw
+mdefine_line|#define outsw(port, buf, nr) raw_outsw(ADDR_TRANS_W(port), buf, nr)
 DECL|macro|insl
 mdefine_line|#define insl(data_reg, buffer, wcount) insw(data_reg, buffer, (wcount)&lt;&lt;1)
 DECL|macro|outsl
 mdefine_line|#define outsl(data_reg, buffer, wcount) outsw(data_reg, buffer, (wcount)&lt;&lt;1)
-macro_line|#ifdef CONFIG_Q40
-macro_line|#ifdef MACH_Q40_ONLY
-DECL|macro|ADDR_TRANS
-mdefine_line|#define ADDR_TRANS(_addr_) (Q40_ISA_IO_W(_addr_))
-macro_line|#else
-DECL|macro|ADDR_TRANS
-mdefine_line|#define ADDR_TRANS(_addr_) (MACH_IS_Q40 ? ((unsigned char *)Q40_ISA_IO_W(_addr_)) : (_addr_))
-macro_line|#endif
-macro_line|#else
-DECL|macro|ADDR_TRANS
-mdefine_line|#define ADDR_TRANS(_addr_) (_addr_)
-macro_line|#endif
-DECL|macro|insw
-mdefine_line|#define insw(port, buf, nr) ({&t;&t;&t;&t;&bslash;&n;&t;unsigned char *_port = (unsigned char *) ADDR_TRANS(port);&t;&bslash;&n;&t;unsigned char *_buf = (buf);&t;&t;&t;&bslash;&n;&t;int _nr = (nr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &amp; 15) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &amp; 15) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: movew %2@,%0@+; dbra %1,1b&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &gt;&gt; 4) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &gt;&gt; 4) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: &quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dbra %1,1b&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, nr) ({&t;&t;&t;&t;&bslash;&n;&t;unsigned char *_port = (unsigned char *) ADDR_TRANS(port);&t;&bslash;&n;&t;unsigned char *_buf = (buf);&t;&t;&t;&bslash;&n;&t;int _nr = (nr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &amp; 15) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &amp; 15) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: movew %0@+,%2@; dbra %1,1b&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &gt;&gt; 4) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &gt;&gt; 4) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: &quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dbra %1,1b&quot;&t;   &t;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#if defined(CONFIG_ATARI) || defined(CONFIG_Q40)
 DECL|macro|insl_swapw
 mdefine_line|#define insl_swapw(data_reg, buffer, wcount) &bslash;&n;    insw_swapw(data_reg, buffer, (wcount)&lt;&lt;1)
 DECL|macro|outsl_swapw
 mdefine_line|#define outsl_swapw(data_reg, buffer, wcount) &bslash;&n;    outsw_swapw(data_reg, buffer, (wcount)&lt;&lt;1)
 DECL|macro|insw_swapw
-mdefine_line|#define insw_swapw(port, buf, nr) &bslash;&n;    if ((nr) % 8) &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; dbra %/d6,1b&quot; : &bslash;&n;&t;&t;: &quot;g&quot; (ADDR_TRANS(port)), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;    else &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; lsrl  #3,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; dbra %/d6,1b&quot; : &bslash;&n;&t;&t;: &quot;g&quot; (ADDR_TRANS(port)), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;) 
+mdefine_line|#define insw_swapw(port, buf, nr) raw_insw_swapw(ADDR_TRANS_W(port), buf, nr)
 DECL|macro|outsw_swapw
-mdefine_line|#define outsw_swapw(port, buf, nr) &bslash;&n;    if ((nr) % 8) &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; dbra %/d6,1b&quot; : &bslash;&n;&t;&t;: &quot;g&quot; (ADDR_TRANS(port)), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;    else &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; lsrl  #3,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; dbra %/d6,1b&quot; : &bslash;&n;&t;&t;: &quot;g&quot; (ADDR_TRANS(port)), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;)
-macro_line|#endif /* CONFIG_ATARI */
+mdefine_line|#define outsw_swapw(port, buf, nr) raw_outsw_swapw(ADDR_TRANS_W(port),buf,nr)
+macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
 DECL|macro|T_CHAR
 mdefine_line|#define T_CHAR          (0x0000)        /* char:  don&squot;t touch  */
 DECL|macro|T_SHORT
@@ -497,7 +515,12 @@ DECL|macro|D_INT
 mdefine_line|#define D_INT(cnt)      (T_INT   | (cnt))
 DECL|macro|D_TEXT
 mdefine_line|#define D_TEXT(cnt)     (T_TEXT  | (cnt))
-macro_line|#if defined(CONFIG_AMIGA) || defined (CONFIG_MAC)
+multiline_comment|/* Q40 and Atari have byteswapped IDE bus and since many interesting&n; * values in the identification string are text, chars and words they&n; * happened to be almost correct without swapping.. However *_capacity &n; * is needed for drives over 8 GB. RZ */
+macro_line|#if defined(CONFIG_Q40) || defined(CONFIG_ATARI)
+DECL|macro|M68K_IDE_SWAPW
+mdefine_line|#define M68K_IDE_SWAPW  (MACH_IS_Q40 || MACH_IS_ATARI)
+macro_line|#endif
+macro_line|#if defined(CONFIG_AMIGA) || defined (CONFIG_MAC) || defined(M68K_IDE_SWAPW)
 DECL|variable|driveid_types
 r_static
 id|u_short
@@ -602,7 +625,7 @@ c_func
 (paren
 l_int|194
 )paren
-multiline_comment|/* dma_1word - reservedyy */
+multiline_comment|/* dma_1word - reserved */
 )brace
 suffix:semicolon
 DECL|macro|num_driveid_types
@@ -621,7 +644,7 @@ op_star
 id|id
 )paren
 (brace
-macro_line|#if defined(CONFIG_AMIGA) || defined (CONFIG_MAC)
+macro_line|#if defined(CONFIG_AMIGA) || defined (CONFIG_MAC) || defined(M68K_IDE_SWAPW)
 id|u_char
 op_star
 id|p
@@ -650,9 +673,68 @@ id|MACH_IS_AMIGA
 op_logical_and
 op_logical_neg
 id|MACH_IS_MAC
+op_logical_and
+op_logical_neg
+id|MACH_IS_Q40
+op_logical_and
+op_logical_neg
+id|MACH_IS_ATARI
 )paren
 r_return
 suffix:semicolon
+macro_line|#ifdef M68K_IDE_SWAPW
+r_if
+c_cond
+(paren
+id|M68K_IDE_SWAPW
+)paren
+multiline_comment|/* fix bus byteorder first */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_add_assign
+l_int|2
+)paren
+(brace
+id|t
+op_assign
+id|p
+(braket
+id|i
+)braket
+suffix:semicolon
+id|p
+(braket
+id|i
+)braket
+op_assign
+id|p
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+id|p
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+op_assign
+id|t
+suffix:semicolon
+)brace
+macro_line|#endif
 r_for
 c_loop
 (paren

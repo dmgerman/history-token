@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: sab82532.h,v 1.6 2000/04/13 07:22:35 ecd Exp $&n; * sab82532.h: Register Definitions for the Siemens SAB82532 DUSCC&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: sab82532.h,v 1.7 2001/05/23 23:09:10 ecd Exp $&n; * sab82532.h: Register Definitions for the Siemens SAB82532 DUSCC&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
 macro_line|#ifndef _SPARC64_SAB82532_H
 DECL|macro|_SPARC64_SAB82532_H
 mdefine_line|#define _SPARC64_SAB82532_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/circ_buf.h&gt;
 DECL|struct|sab82532_async_rd_regs
 r_struct
 id|sab82532_async_rd_regs
@@ -601,9 +602,10 @@ r_int
 r_int
 id|closing_wait2
 suffix:semicolon
-DECL|member|all_sent
+DECL|member|irqflags
 r_int
-id|all_sent
+r_int
+id|irqflags
 suffix:semicolon
 DECL|member|is_console
 r_int
@@ -674,23 +676,10 @@ DECL|member|pgrp
 r_int
 id|pgrp
 suffix:semicolon
-DECL|member|xmit_buf
-r_int
-r_char
-op_star
-id|xmit_buf
-suffix:semicolon
-DECL|member|xmit_head
-r_int
-id|xmit_head
-suffix:semicolon
-DECL|member|xmit_tail
-r_int
-id|xmit_tail
-suffix:semicolon
-DECL|member|xmit_cnt
-r_int
-id|xmit_cnt
+DECL|member|xmit
+r_struct
+id|circ_buf
+id|xmit
 suffix:semicolon
 DECL|member|tqueue
 r_struct
@@ -743,6 +732,11 @@ id|prev
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* irqflags bits */
+DECL|macro|SAB82532_ALLS
+mdefine_line|#define SAB82532_ALLS&t;&t;&t;0x00000001
+DECL|macro|SAB82532_XPR
+mdefine_line|#define SAB82532_XPR&t;&t;&t;0x00000002
 multiline_comment|/* RFIFO Status Byte */
 DECL|macro|SAB82532_RSTAT_PE
 mdefine_line|#define SAB82532_RSTAT_PE&t;&t;0x80

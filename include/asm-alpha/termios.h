@@ -214,6 +214,8 @@ DECL|macro|N_HDLC
 mdefine_line|#define N_HDLC&t;&t;13&t;/* synchronous HDLC */
 DECL|macro|N_SYNC_PPP
 mdefine_line|#define N_SYNC_PPP&t;14
+DECL|macro|N_HCI
+mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&t;eof=^D&t;&t;eol=&bslash;0&t;&t;eol2=&bslash;0&t;&t;erase=del&n;&t;werase=^W&t;kill=^U&t;&t;reprint=^R&t;sxtc=&bslash;0&n;&t;intr=^C&t;&t;quit=^&bslash;&t;&t;susp=^Z&t;&t;&lt;OSF/1 VDSUSP&gt;&n;&t;start=^Q&t;stop=^S&t;&t;lnext=^V&t;discard=^U&n;&t;vmin=&bslash;1&t;&t;vtime=&bslash;0&n;*/
 DECL|macro|INIT_C_CC

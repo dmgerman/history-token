@@ -26,7 +26,7 @@ mdefine_line|#define __sti() asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&
 macro_line|#else
 macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|__sti
-mdefine_line|#define __sti() ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!local_irq_count(smp_processor_id()))&t;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);&t;&bslash;&n;})
+mdefine_line|#define __sti() ({&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;if (MACH_IS_Q40 || !local_irq_count(smp_processor_id()))              &bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);  &bslash;&n;})
 macro_line|#endif
 DECL|macro|__cli
 mdefine_line|#define __cli() asm volatile (&quot;oriw  #0x0700,%%sr&quot;: : : &quot;memory&quot;)

@@ -204,8 +204,6 @@ DECL|macro|HERMES_RID_CNF_WEP_ON
 mdefine_line|#define&t;&t;HERMES_RID_CNF_WEP_ON&t;&t;(0xfc20)
 DECL|macro|HERMES_RID_CNF_MWO_ROBUST
 mdefine_line|#define&t;&t;HERMES_RID_CNF_MWO_ROBUST&t;(0xfc25)
-DECL|macro|HERMES_RID_CNF_PRISM2_WEP_ON
-mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_WEP_ON&t;(0xfc28)
 DECL|macro|HERMES_RID_CNF_MULTICAST_LIST
 mdefine_line|#define&t;&t;HERMES_RID_CNF_MULTICAST_LIST&t;(0xfc80)
 DECL|macro|HERMES_RID_CNF_CREATEIBSS
@@ -224,6 +222,8 @@ DECL|macro|HERMES_RID_CNF_TX_KEY
 mdefine_line|#define&t;&t;HERMES_RID_CNF_TX_KEY&t;&t;(0xfcb1)
 DECL|macro|HERMES_RID_CNF_TICKTIME
 mdefine_line|#define&t;&t;HERMES_RID_CNF_TICKTIME&t;&t;(0xfce0)
+DECL|macro|HERMES_RID_CNF_PRISM2_WEP_ON
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_WEP_ON&t;(0xfc28)
 DECL|macro|HERMES_RID_CNF_PRISM2_TX_KEY
 mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_TX_KEY&t;(0xfc23)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY0

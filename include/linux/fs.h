@@ -284,21 +284,54 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mnt_init
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* bh state bits */
-DECL|macro|BH_Uptodate
-mdefine_line|#define BH_Uptodate&t;0&t;/* 1 if the buffer contains valid data */
-DECL|macro|BH_Dirty
-mdefine_line|#define BH_Dirty&t;1&t;/* 1 if the buffer is dirty */
-DECL|macro|BH_Lock
-mdefine_line|#define BH_Lock&t;&t;2&t;/* 1 if the buffer is locked */
-DECL|macro|BH_Req
-mdefine_line|#define BH_Req&t;&t;3&t;/* 0 if the buffer has been invalidated */
-DECL|macro|BH_Mapped
-mdefine_line|#define BH_Mapped&t;4&t;/* 1 if the buffer has a disk mapping */
-DECL|macro|BH_New
-mdefine_line|#define BH_New&t;&t;5&t;/* 1 if the buffer is new and not yet written out */
-DECL|macro|BH_Protected
-mdefine_line|#define BH_Protected&t;6&t;/* 1 if the buffer is protected */
+DECL|enum|bh_state_bits
+r_enum
+id|bh_state_bits
+(brace
+DECL|enumerator|BH_Uptodate
+id|BH_Uptodate
+comma
+multiline_comment|/* 1 if the buffer contains valid data */
+DECL|enumerator|BH_Dirty
+id|BH_Dirty
+comma
+multiline_comment|/* 1 if the buffer is dirty */
+DECL|enumerator|BH_Lock
+id|BH_Lock
+comma
+multiline_comment|/* 1 if the buffer is locked */
+DECL|enumerator|BH_Req
+id|BH_Req
+comma
+multiline_comment|/* 0 if the buffer has been invalidated */
+DECL|enumerator|BH_Mapped
+id|BH_Mapped
+comma
+multiline_comment|/* 1 if the buffer has a disk mapping */
+DECL|enumerator|BH_New
+id|BH_New
+comma
+multiline_comment|/* 1 if the buffer is new and not yet written out */
+DECL|enumerator|BH_Protected
+id|BH_Protected
+comma
+multiline_comment|/* 1 if the buffer is protected */
+DECL|enumerator|BH_PrivateStart
+id|BH_PrivateStart
+comma
+multiline_comment|/* not a state bit, but the first bit available&n;&t;&t;&t; * for private allocation by other entities&n;&t;&t;&t; */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Try to keep the most commonly used fields in single cache lines (16&n; * bytes) to improve performance.  This ordering should be&n; * particularly beneficial on 32-bit processors.&n; * &n; * We use the first 16 bytes for the data which is used in searches&n; * over the block hash lists (ie. getblk() and friends).&n; * &n; * The second 16 bytes we use for lru buffer scans, as used by&n; * sync_buffers() and refill_freelist().  -- sct&n; */
 DECL|struct|buffer_head
 r_struct

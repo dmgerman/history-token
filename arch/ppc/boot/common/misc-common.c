@@ -1159,7 +1159,19 @@ id|Z_OK
 id|puts
 c_func
 (paren
-l_string|&quot;inflateInit2 returned %d&bslash;n&quot;
+l_string|&quot;inflateInit2 returned &quot;
+)paren
+suffix:semicolon
+id|puthex
+c_func
+(paren
+id|r
+)paren
+suffix:semicolon
+id|puts
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 m_exit
@@ -1214,7 +1226,19 @@ id|Z_STREAM_END
 id|puts
 c_func
 (paren
-l_string|&quot;inflate returned %d&bslash;n&quot;
+l_string|&quot;inflate returned &quot;
+)paren
+suffix:semicolon
+id|puthex
+c_func
+(paren
+id|r
+)paren
+suffix:semicolon
+id|puts
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 m_exit

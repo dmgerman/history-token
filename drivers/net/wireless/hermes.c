@@ -19,12 +19,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &quot;hermes.h&quot;
+multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
 DECL|macro|CMD_BUSY_TIMEOUT
 mdefine_line|#define CMD_BUSY_TIMEOUT (100) /* In iterations of ~1us */
 DECL|macro|CMD_INIT_TIMEOUT
 mdefine_line|#define CMD_INIT_TIMEOUT (50000) /* in iterations of ~10us */
 DECL|macro|CMD_COMPL_TIMEOUT
-mdefine_line|#define CMD_COMPL_TIMEOUT (10000) /* in iterations of ~10us */
+mdefine_line|#define CMD_COMPL_TIMEOUT (20000) /* in iterations of ~10us */
 DECL|macro|ALLOC_COMPL_TIMEOUT
 mdefine_line|#define ALLOC_COMPL_TIMEOUT (1000) /* in iterations of ~10us */
 DECL|macro|BAP_BUSY_TIMEOUT
@@ -288,6 +289,27 @@ id|CMD
 suffix:semicolon
 )brace
 multiline_comment|/* No need to explicitly handle the timeout - hermes_issue_cmd() will&n;&t;   probably return -EBUSY */
+multiline_comment|/* According to the documentation, EVSTAT may contain&n;&t;   obsolete event occurrence information.  We have to acknowledge&n;&t;   it by writing EVACK. */
+id|reg
+op_assign
+id|hermes_read_regn
+c_func
+(paren
+id|hw
+comma
+id|EVSTAT
+)paren
+suffix:semicolon
+id|hermes_write_regn
+c_func
+(paren
+id|hw
+comma
+id|EVACK
+comma
+id|reg
+)paren
+suffix:semicolon
 multiline_comment|/* We don&squot;t use hermes_docmd_wait here, because the reset wipes&n;&t;   the magic constant in SWSUPPORT0 away, and it gets confused */
 id|err
 op_assign
@@ -1118,10 +1140,20 @@ id|reg
 op_amp
 id|HERMES_OFFSET_BUSY
 )paren
+(brace
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;hermes_bap_seek: returning ETIMEDOUT...&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
+)brace
 multiline_comment|/* For some reason, seeking the BAP seems to randomly fail somewhere&n;&t;   (firmware bug?). We retry a few times before giving up. */
 r_if
 c_cond

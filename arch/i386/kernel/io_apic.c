@@ -5830,7 +5830,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;..TIMER: vector=%d pin1=%d pin2=%d&bslash;n&quot;
+l_string|&quot;..TIMER: vector=%02X pin1=%d pin2=%d&bslash;n&quot;
 comma
 id|vector
 comma

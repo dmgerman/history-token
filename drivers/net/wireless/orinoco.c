@@ -1,6 +1,6 @@
-multiline_comment|/* orinoco.c 0.05&t;- (formerly known as dldwd_cs.c and orinoco_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; *&n; * Copyright (C) 2000 David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; *&t;With some help from :&n; * Copyright (C) 2001 Jean Tourrilhes, HP Labs &lt;jt@hpl.hp.com&gt;&n; * Copyright (C) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; *&n; * Based on dummy_cs.c 1.27 2000/06/12 21:27:25&n; *&n; * Portions based on wvlan_cs.c 1.0.6, Copyright Andreas Neuhaus &lt;andy@fasta.fh-dortmund.de&gt;&n; *      http://www.fasta.fh-dortmund.de/users/andy/wvlan/&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David&n; * A. Hinds are Copyright (C) 1999 David A. Hinds.  All Rights&n; * Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU Public License version 2 (the &quot;GPL&quot;), in which&n; * case the provisions of the GPL are applicable instead of the above.&n; * If you wish to allow the use of your version of this file only&n; * under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/* orinoco.c 0.06&t;- (formerly known as dldwd_cs.c and orinoco_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; *&n; * Copyright (C) 2000 David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; *&t;With some help from :&n; * Copyright (C) 2001 Jean Tourrilhes, HP Labs &lt;jt@hpl.hp.com&gt;&n; * Copyright (C) 2001 Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; *&n; * Based on dummy_cs.c 1.27 2000/06/12 21:27:25&n; *&n; * Portions based on wvlan_cs.c 1.0.6, Copyright Andreas Neuhaus &lt;andy@fasta.fh-dortmund.de&gt;&n; *      http://www.fasta.fh-dortmund.de/users/andy/wvlan/&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David&n; * A. Hinds are Copyright (C) 1999 David A. Hinds.  All Rights&n; * Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU Public License version 2 (the &quot;GPL&quot;), in which&n; * case the provisions of the GPL are applicable instead of the above.&n; * If you wish to allow the use of your version of this file only&n; * under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
 multiline_comment|/* Notes on locking:&n; *&n; * The basic principle of operation is that everything except the&n; * interrupt handler is serialized through a single spinlock in the&n; * dldwd_priv_t structure, using dldwd_lock() and&n; * dldwd_unlock() (which in turn use spin_lock_bh() and spin_unlock_bh()).&n; *&n; * The kernel&squot;s IRQ handling stuff ensures that the interrupt handler&n; * does not re-enter itself. The interrupt handler is written such&n; * that everything it does is safe without a lock: chiefly this means&n; * that the Rx path uses one of the Hermes chipset&squot;s BAPs while&n; * everything else uses the other.&n; *&n; * For the moment access to the device statistics from the interrupt&n; * handler is unsafe - we just put up with any resulting errors in the&n; * statisics. FIXME: This should probably be changed to store the&n; * stats in atomic types.&n; *&n; * EXCEPT that we don&squot;t want the irq handler running when we actually&n; * reset or shut down the card, because strange things might happen&n; * (probably the worst would be one packet of garbage, but you can&squot;t&n; * be too careful). For this we use __dldwd_stop_irqs() which will set&n; * a flag to disable the interrupt handler, and wait for any&n; * outstanding instances of the handler to complete. THIS WILL LOSE&n; * INTERRUPTS! so it shouldn&squot;t be used except for resets, when we&n; * don&squot;t care about that.*/
-multiline_comment|/*&n; * Tentative changelog...&n; *&n; * v0.01 -&gt; v0.02 - 21/3/2001 - Jean II&n; *&t;o Allow to use regular ethX device name instead of dldwdX&n; *&t;o Warning on IBSS with ESSID=any for firmware 6.06&n; *&t;o Put proper range.throughput values (optimistic)&n; *&t;o IWSPY support (IOCTL and stat gather in Rx path)&n; *&t;o Allow setting frequency in Ad-Hoc mode&n; *&t;o Disable WEP setting if !has_wep to work on old firmware&n; *&t;o Fix txpower range&n; *&t;o Start adding support for Samsung/Compaq firmware&n; *&n; * v0.02 -&gt; v0.03 - 23/3/2001 - Jean II&n; *&t;o Start adding Symbol support - need to check all that&n; *&t;o Fix Prism2/Symbol WEP to accept 128 bits keys&n; *&t;o Add Symbol WEP (add authentication type)&n; *&t;o Add Prism2/Symbol rate&n; *&t;o Add PM timeout (holdover duration)&n; *&t;o Enable &quot;iwconfig eth0 key off&quot; and friends (toggle flags)&n; *&t;o Enable &quot;iwconfig eth0 power unicast/all&quot; (toggle flags)&n; *&t;o Try with an intel card. It report firmware 1.01, behave like&n; *&t;  an antiquated firmware, however on windows it says 2.00. Yuck !&n; *&t;o Workaround firmware bug in allocate buffer (Intel 1.01)&n; *&t;o Finish external renaming to orinoco...&n; *&t;o Testing with various Wavelan firmwares&n; *&n; * v0.03 -&gt; v0.04 - 30/3/2001 - Jean II&n; *&t;o Update to Wireless 11 -&gt; add retry limit/lifetime support&n; *&t;o Tested with a D-Link DWL 650 card, fill in firmware support&n; *&t;o Warning on Vcc mismatch (D-Link 3.3v card in Lucent 5v only slot)&n; *&t;o Fixed the Prims2 WEP bugs that I introduced in v0.03 :-(&n; *&t;  It work on D-Link *only* after a tcpdump. Weird...&n; *&t;  And still doesn&squot;t work on Intel card. Grrrr...&n; *&t;o Update the mode after a setport3&n; *&t;o Add preamble setting for Symbol cards (not yet enabled)&n; *&t;o Don&squot;t complain as much about Symbol cards...&n; *&n; * v0.04 -&gt; v0.04b - 22/4/2001 - David Gibson&n; *      o Removed the &squot;eth&squot; parameter - always use ethXX as the&n; *        interface name instead of dldwdXX.  The other was racy&n; *        anyway.&n; *&t;o Clean up RID definitions in hermes.h, other cleanups&n; *&n; * v0.04b -&gt; v0.04c - 24/4/2001 - Jean II&n; *&t;o Tim Hurley &lt;timster@seiki.bliztech.com&gt; reported a D-Link card&n; *&t;  with vendor 02 and firmware 0.08. Added in the capabilities...&n; *&t;o Tested Lucent firmware 7.28, everything works...&n; *&n; * v0.04c -&gt; v0.05 - 3/5/2001 - Benjamin Herrenschmidt&n; *&t;o Spin-off Pcmcia code. This file is renamed orinoco.c,&n; *&t;  and orinoco_cs.c now contains only the Pcmcia specific stuff&n; *&t;o Add Airport driver support on top of orinoco.c (see airport.c)&n; *&n; * v0.05 -&gt; v0.05a - 4/5/2001 - Jean II&n; *&t;o Revert to old Pcmcia code to fix breakage of Ben&squot;s changes...&n; *&n; * v0.05a -&gt; v0.05b - 4/5/2001 - Jean II&n; *&t;o add module parameter &squot;ignore_cis_vcc&squot; for D-Link @ 5V&n; *&t;o D-Link firmware doesn&squot;t support multicast. We just print a few&n; *&t;  error messages, but otherwise everything works...&n; *&t;o For David : set/getport3 works fine, just upgrade iwpriv...&n; *&n; * v0.05b -&gt; v0.05c - 5/5/2001 - Benjamin Herrenschmidt&n; *&t;o Adapt airport.c to latest changes in orinoco.c&n; *&t;o Remove deferred power enabling code&n; *&n; * v0.05c -&gt; v0.05d - 5/5/2001 - Jean II&n; *&t;o Workaround to SNAP decapsulate frame from LinkSys AP&n; *&t;  original patch from : Dong Liu &lt;dliu@research.bell-labs.com&gt;&n; *&t;  (note : the memcmp bug was mine - fixed)&n; *&t;o Remove set_retry stuff, no firmware support it (bloat--).&n; *&n; * TODO - Jean II&n; *&t;o inline functions (lot&squot;s of candidate, need to reorder code)&n; *&t;o Test PrismII/Symbol cards &amp; firmware versions&n; *&t;o Mini-PCI support&n; */
+multiline_comment|/*&n; * Tentative changelog...&n; *&n; * v0.01 -&gt; v0.02 - 21/3/2001 - Jean II&n; *&t;o Allow to use regular ethX device name instead of dldwdX&n; *&t;o Warning on IBSS with ESSID=any for firmware 6.06&n; *&t;o Put proper range.throughput values (optimistic)&n; *&t;o IWSPY support (IOCTL and stat gather in Rx path)&n; *&t;o Allow setting frequency in Ad-Hoc mode&n; *&t;o Disable WEP setting if !has_wep to work on old firmware&n; *&t;o Fix txpower range&n; *&t;o Start adding support for Samsung/Compaq firmware&n; *&n; * v0.02 -&gt; v0.03 - 23/3/2001 - Jean II&n; *&t;o Start adding Symbol support - need to check all that&n; *&t;o Fix Prism2/Symbol WEP to accept 128 bits keys&n; *&t;o Add Symbol WEP (add authentication type)&n; *&t;o Add Prism2/Symbol rate&n; *&t;o Add PM timeout (holdover duration)&n; *&t;o Enable &quot;iwconfig eth0 key off&quot; and friends (toggle flags)&n; *&t;o Enable &quot;iwconfig eth0 power unicast/all&quot; (toggle flags)&n; *&t;o Try with an intel card. It report firmware 1.01, behave like&n; *&t;  an antiquated firmware, however on windows it says 2.00. Yuck !&n; *&t;o Workaround firmware bug in allocate buffer (Intel 1.01)&n; *&t;o Finish external renaming to orinoco...&n; *&t;o Testing with various Wavelan firmwares&n; *&n; * v0.03 -&gt; v0.04 - 30/3/2001 - Jean II&n; *&t;o Update to Wireless 11 -&gt; add retry limit/lifetime support&n; *&t;o Tested with a D-Link DWL 650 card, fill in firmware support&n; *&t;o Warning on Vcc mismatch (D-Link 3.3v card in Lucent 5v only slot)&n; *&t;o Fixed the Prims2 WEP bugs that I introduced in v0.03 :-(&n; *&t;  It work on D-Link *only* after a tcpdump. Weird...&n; *&t;  And still doesn&squot;t work on Intel card. Grrrr...&n; *&t;o Update the mode after a setport3&n; *&t;o Add preamble setting for Symbol cards (not yet enabled)&n; *&t;o Don&squot;t complain as much about Symbol cards...&n; *&n; * v0.04 -&gt; v0.04b - 22/4/2001 - David Gibson&n; *      o Removed the &squot;eth&squot; parameter - always use ethXX as the&n; *        interface name instead of dldwdXX.  The other was racy&n; *        anyway.&n; *&t;o Clean up RID definitions in hermes.h, other cleanups&n; *&n; * v0.04b -&gt; v0.04c - 24/4/2001 - Jean II&n; *&t;o Tim Hurley &lt;timster@seiki.bliztech.com&gt; reported a D-Link card&n; *&t;  with vendor 02 and firmware 0.08. Added in the capabilities...&n; *&t;o Tested Lucent firmware 7.28, everything works...&n; *&n; * v0.04c -&gt; v0.05 - 3/5/2001 - Benjamin Herrenschmidt&n; *&t;o Spin-off Pcmcia code. This file is renamed orinoco.c,&n; *&t;  and orinoco_cs.c now contains only the Pcmcia specific stuff&n; *&t;o Add Airport driver support on top of orinoco.c (see airport.c)&n; *&n; * v0.05 -&gt; v0.05a - 4/5/2001 - Jean II&n; *&t;o Revert to old Pcmcia code to fix breakage of Ben&squot;s changes...&n; *&n; * v0.05a -&gt; v0.05b - 4/5/2001 - Jean II&n; *&t;o add module parameter &squot;ignore_cis_vcc&squot; for D-Link @ 5V&n; *&t;o D-Link firmware doesn&squot;t support multicast. We just print a few&n; *&t;  error messages, but otherwise everything works...&n; *&t;o For David : set/getport3 works fine, just upgrade iwpriv...&n; *&n; * v0.05b -&gt; v0.05c - 5/5/2001 - Benjamin Herrenschmidt&n; *&t;o Adapt airport.c to latest changes in orinoco.c&n; *&t;o Remove deferred power enabling code&n; *&n; * v0.05c -&gt; v0.05d - 5/5/2001 - Jean II&n; *&t;o Workaround to SNAP decapsulate frame from LinkSys AP&n; *&t;  original patch from : Dong Liu &lt;dliu@research.bell-labs.com&gt;&n; *&t;  (note : the memcmp bug was mine - fixed)&n; *&t;o Remove set_retry stuff, no firmware support it (bloat--).&n; *&n; * v0.05d -&gt; v0.06 - 25/5/2001 - Jean II&n; *&t;&t;Original patch from &quot;Hong Lin&quot; &lt;alin@redhat.com&gt;,&n; *&t;&t;&quot;Ian Kinner&quot; &lt;ikinner@redhat.com&gt;&n; *&t;&t;and &quot;David Smith&quot; &lt;dsmith@redhat.com&gt;&n; *&t;o Init of priv-&gt;tx_rate_ctrl in firmware specific section.&n; *&t;o Prism2/Symbol rate, upto should be 0xF and not 0x15. Doh !&n; *&t;o Spectrum card always need cor_reset (for every reset)&n; *&t;o Fix cor_reset to not loose bit 7 in the register&n; *&t;o flush_stale_links to remove zombie Pcmcia instances&n; *&t;o Ack previous hermes event before reset&n; *&t;&t;Me (with my little hands)&n; *&t;o Allow orinoco.c to call cor_reset via priv-&gt;card_reset_handler&n; *&t;o Add priv-&gt;need_card_reset to toggle this feature&n; *&t;o Fix various buglets when setting WEP in Symbol firmware&n; *&t;  Now, encryption is fully functional on Symbol cards. Youpi !&n; *&n; * v0.06 -&gt; v0.06b - 25/5/2001 - Jean II&n; *&t;o IBSS on Symbol use port_mode = 4. Please don&squot;t ask...&n; *&n; * v0.06b -&gt; v0.06c - 29/5/2001 - Jean II&n; *&t;o Show first spy address in /proc/net/wireless for IBSS mode as well&n; *&n; * TODO - Jean II&n; *&t;o inline functions (lot&squot;s of candidate, need to reorder code)&n; *&t;o Test PrismII/Symbol cards &amp; firmware versions&n; *&t;o Mini-PCI support (some people have reported success - JII)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -34,7 +34,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;orinoco.c 0.05d (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco.c 0.06c (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 multiline_comment|/* Level of debugging. Used in the macros in orinoco.h */
 macro_line|#ifdef ORINOCO_DEBUG
@@ -1118,6 +1118,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Symbol is different here */
+r_if
+c_cond
+(paren
+id|priv-&gt;firmware_type
+op_eq
+id|FIRMWARE_TYPE_SYMBOL
+)paren
+id|priv-&gt;port_type
+op_assign
+l_int|4
+suffix:semicolon
+r_else
 id|priv-&gt;port_type
 op_assign
 l_int|1
@@ -1374,6 +1387,7 @@ c_func
 id|priv-&gt;ndev.name
 )paren
 suffix:semicolon
+multiline_comment|/* Stop other people bothering us */
 id|dldwd_lock
 c_func
 (paren
@@ -1386,6 +1400,31 @@ c_func
 id|priv
 )paren
 suffix:semicolon
+multiline_comment|/* Check if we need a card reset */
+r_if
+c_cond
+(paren
+(paren
+id|priv-&gt;need_card_reset
+)paren
+op_logical_and
+(paren
+id|priv-&gt;card_reset_handler
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+id|priv
+op_member_access_from_pointer
+id|card_reset_handler
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Do standard firmware reset if we can */
 id|err
 op_assign
 id|__dldwd_hw_reset
@@ -2054,9 +2093,10 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|extra_wep_flag
-op_assign
-l_int|0
+id|master_wep_flag
+suffix:semicolon
+r_int
+id|auth_flag
 suffix:semicolon
 r_switch
 c_cond
@@ -2152,6 +2192,11 @@ r_case
 id|FIRMWARE_TYPE_SYMBOL
 suffix:colon
 multiline_comment|/* Symbol style WEP */
+id|master_wep_flag
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Off */
 r_if
 c_cond
 (paren
@@ -2172,6 +2217,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* Fudge around firmware weirdness */
+id|keylen
+op_assign
+id|priv-&gt;keys
+(braket
+id|priv-&gt;tx_key
+)braket
+dot
+id|len
+suffix:semicolon
 multiline_comment|/* Write all 4 keys */
 r_for
 c_loop
@@ -2188,21 +2243,18 @@ id|i
 op_increment
 )paren
 (brace
-id|keylen
-op_assign
-id|priv-&gt;keys
-(braket
-id|i
-)braket
-dot
-id|len
-suffix:semicolon
+id|memset
+c_func
+(paren
 id|keybuf
-(braket
-id|keylen
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|keybuf
+)paren
+)paren
 suffix:semicolon
 id|memcpy
 c_func
@@ -2216,7 +2268,12 @@ id|i
 dot
 id|data
 comma
-id|keylen
+id|priv-&gt;keys
+(braket
+id|i
+)braket
+dot
+id|len
 )paren
 suffix:semicolon
 id|err
@@ -2236,11 +2293,8 @@ id|HERMES_BYTES_TO_RECLEN
 c_func
 (paren
 id|keylen
-op_plus
-l_int|1
 )paren
 comma
-op_amp
 id|keybuf
 )paren
 suffix:semicolon
@@ -2253,6 +2307,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* Write the index of the key used in transmission */
 id|err
 op_assign
 id|hermes_write_wordrec
@@ -2284,39 +2339,20 @@ op_eq
 id|FIRMWARE_TYPE_SYMBOL
 )paren
 (brace
-multiline_comment|/* Symbol cards : set the authentication :&n;&t;&t;&t;&t; * 0 -&gt; no encryption, 1 -&gt; open,&n;&t;&t;&t;&t; * 2 -&gt; shared key, 3 -&gt; shared key 128bit */
+multiline_comment|/* Symbol cards : set the authentication :&n;&t;&t;&t;&t; * 0 -&gt; no encryption, 1 -&gt; open,&n;&t;&t;&t;&t; * 2 -&gt; shared key&n;&t;&t;&t;&t; * 3 -&gt; shared key 128 -&gt; AP only */
 r_if
 c_cond
 (paren
 id|priv-&gt;wep_restrict
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|priv-&gt;keys
-(braket
-id|priv-&gt;tx_key
-)braket
-dot
-id|len
-OG
-id|SMALL_KEY_SIZE
-)paren
-(brace
-id|extra_wep_flag
-op_assign
-l_int|3
-suffix:semicolon
-)brace
-r_else
-id|extra_wep_flag
+id|auth_flag
 op_assign
 l_int|2
 suffix:semicolon
 )brace
 r_else
-id|extra_wep_flag
+id|auth_flag
 op_assign
 l_int|1
 suffix:semicolon
@@ -2331,7 +2367,7 @@ id|USER_BAP
 comma
 id|HERMES_RID_CNF_SYMBOL_AUTH_TYPE
 comma
-id|priv-&gt;wep_restrict
+id|auth_flag
 )paren
 suffix:semicolon
 r_if
@@ -2341,6 +2377,11 @@ id|err
 )paren
 r_return
 id|err
+suffix:semicolon
+multiline_comment|/* Master WEP setting is always 3 */
+id|master_wep_flag
+op_assign
+l_int|3
 suffix:semicolon
 )brace
 r_else
@@ -2352,15 +2393,15 @@ c_cond
 id|priv-&gt;wep_restrict
 )paren
 (brace
-id|extra_wep_flag
+id|master_wep_flag
 op_assign
-l_int|2
+l_int|3
 suffix:semicolon
 )brace
 r_else
-id|extra_wep_flag
+id|master_wep_flag
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -2376,11 +2417,7 @@ id|USER_BAP
 comma
 id|HERMES_RID_CNF_PRISM2_WEP_ON
 comma
-(paren
-id|priv-&gt;wep_on
-op_or
-id|extra_wep_flag
-)paren
+id|master_wep_flag
 )paren
 suffix:semicolon
 r_if
@@ -4752,6 +4789,7 @@ c_func
 id|priv
 )paren
 suffix:semicolon
+multiline_comment|/* Do standard firmware reset */
 id|err
 op_assign
 id|hermes_reset
@@ -4772,9 +4810,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: failed to reset hardware&bslash;n&quot;
+l_string|&quot;%s: failed to reset hardware (err = %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|err
 )paren
 suffix:semicolon
 r_goto
@@ -4872,6 +4912,15 @@ id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_LUCENT
 suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|0
+suffix:semicolon
 id|priv-&gt;broken_reset
 op_assign
 l_int|0
@@ -4949,6 +4998,15 @@ id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_PRISM2
 suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0xF
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|0
+suffix:semicolon
 id|priv-&gt;broken_reset
 op_assign
 l_int|0
@@ -5017,10 +5075,19 @@ l_string|&quot;Symbol&quot;
 suffix:semicolon
 multiline_comment|/* Intel MAC : 00:02:B3:* */
 multiline_comment|/* 3Com MAC : 00:50:DA:* */
-multiline_comment|/* FIXME : probably need to use SYMBOL_***ARY_VER&n;&t;&t;&t; * to get proper firmware version */
+multiline_comment|/* FIXME : we need to get Symbol firmware revision.&n;&t;&t;&t; * I tried to use SYMBOL_***ARY_VER, but it didn&squot;t&n;&t;&t;&t; * returned anything proper... */
 id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_SYMBOL
+suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0xF
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|1
 suffix:semicolon
 id|priv-&gt;broken_reset
 op_assign
@@ -5078,6 +5145,15 @@ multiline_comment|/* To check - Should cover Samsung &amp; Compaq */
 id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_PRISM2
+suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0xF
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|0
 suffix:semicolon
 id|priv-&gt;broken_reset
 op_assign
@@ -5142,6 +5218,15 @@ id|priv-&gt;firmware_type
 op_assign
 id|FIRMWARE_TYPE_PRISM2
 suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0xF
+suffix:semicolon
+multiline_comment|/* 11 Mb/s auto */
+id|priv-&gt;need_card_reset
+op_assign
+l_int|0
+suffix:semicolon
 id|priv-&gt;broken_reset
 op_assign
 l_int|0
@@ -5204,6 +5289,15 @@ op_assign
 l_string|&quot;UNKNOWN&quot;
 suffix:semicolon
 id|priv-&gt;firmware_type
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;tx_rate_ctrl
+op_assign
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* Hum... */
+id|priv-&gt;need_card_reset
 op_assign
 l_int|0
 suffix:semicolon
@@ -5667,11 +5761,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Set initial bitrate control*/
-id|priv-&gt;tx_rate_ctrl
-op_assign
-l_int|3
-suffix:semicolon
 multiline_comment|/* Power management setup */
 r_if
 c_cond
@@ -5943,9 +6032,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;port_type
+id|priv-&gt;iw_mode
 op_eq
-l_int|3
+id|IW_MODE_ADHOC
 )paren
 (brace
 id|memset
@@ -7040,7 +7129,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|ptype
+id|mode
 suffix:semicolon
 r_struct
 id|iw_range
@@ -7096,9 +7185,9 @@ c_func
 id|priv
 )paren
 suffix:semicolon
-id|ptype
+id|mode
 op_assign
-id|priv-&gt;port_type
+id|priv-&gt;iw_mode
 suffix:semicolon
 id|dldwd_unlock
 c_func
@@ -7234,9 +7323,9 @@ r_if
 c_cond
 (paren
 (paren
-id|ptype
+id|mode
 op_eq
-l_int|3
+id|IW_MODE_ADHOC
 )paren
 op_logical_and
 (paren
@@ -9431,7 +9520,7 @@ l_int|0x0
 suffix:semicolon
 id|upto
 op_assign
-l_int|0x15
+l_int|0xF
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -9483,7 +9572,7 @@ l_int|0x8
 suffix:semicolon
 id|upto
 op_assign
-l_int|0x15
+l_int|0xF
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -12171,6 +12260,18 @@ comma
 (brace
 id|SIOCDEVPRIVATE
 op_plus
+l_int|0x1
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;card_reset&quot;
+)brace
+comma
+(brace
+id|SIOCDEVPRIVATE
+op_plus
 l_int|0x2
 comma
 id|IW_PRIV_TYPE_INT
@@ -12338,6 +12439,75 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|dldwd_reset
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIOCDEVPRIVATE
+op_plus
+l_int|0x1
+suffix:colon
+multiline_comment|/* card_reset */
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s: SIOCDEVPRIVATE + 0x1 (card_reset)&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EPERM
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Forcing card reset!&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;card_reset_handler
+op_ne
+l_int|NULL
+)paren
+(brace
+id|priv
+op_member_access_from_pointer
+id|card_reset_handler
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+)brace
 id|dldwd_reset
 c_func
 (paren
@@ -14910,6 +15080,11 @@ op_assign
 id|priv
 suffix:semicolon
 multiline_comment|/* Setup up default routines */
+id|priv-&gt;card_reset_handler
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Caller may override */
 id|ndev-&gt;init
 op_assign
 id|dldwd_init

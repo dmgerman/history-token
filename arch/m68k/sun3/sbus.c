@@ -1,6 +1,14 @@
 multiline_comment|/*&n; * SBus helper functions&n; *&n; * Sun3 don&squot;t have a sbus, but many of the used devices are also&n; * used on Sparc machines with sbus. To avoid having a lot of&n; * duplicate code, we provide necessary glue stuff to make using&n; * of the sbus driver code possible.&n; *&n; * (C) 1999 Thomas Bogendoerfer (tsbogend@alpha.franken.de)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+r_extern
+r_void
+id|rs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|sbus_init
 r_void
 id|__init
@@ -10,6 +18,11 @@ c_func
 r_void
 )paren
 (brace
+id|rs_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|sparc_alloc_io
 r_void

@@ -84,6 +84,19 @@ op_star
 id|card
 suffix:semicolon
 multiline_comment|/* Pointer to card dependant structure */
+multiline_comment|/* card dependant extra reset code (i.e. bus/interface specific */
+DECL|member|card_reset_handler
+r_int
+(paren
+op_star
+id|card_reset_handler
+)paren
+(paren
+r_struct
+id|dldwd_priv
+op_star
+)paren
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -173,9 +186,12 @@ DECL|member|has_preamble
 r_int
 id|has_preamble
 suffix:semicolon
+DECL|member|need_card_reset
 DECL|member|broken_reset
 DECL|member|broken_allocate
 r_int
+id|need_card_reset
+comma
 id|broken_reset
 comma
 id|broken_allocate

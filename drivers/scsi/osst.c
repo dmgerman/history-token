@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;  file README.st for more information.&n;&n;  History:&n;&n;  OnStream SCSI Tape support (osst) cloned from st.c by&n;  Willem Riede (osst@riede.org) Feb 2000&n;  Fixes ... Kurt Garloff &lt;garloff@suse.de&gt; Mar 2000&n;&n;  Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;  Contribution and ideas from several people including (in alphabetical&n;  order) Klaus Ehrenfried, Wolfgang Denk, Steve Hirsch, Andreas Koppenh&quot;ofer,&n;  Michael Leodolter, Eyal Lebedinsky, J&quot;org Weule, and Eric Youngdale.&n;&n;  Copyright 1992 - 2000 Kai Makisara&n;&t;&t; email Kai.Makisara@metla.fi&n;&n;  $Header: /home/cvsroot/Driver/osst.c,v 1.51 2000/12/22 20:48:27 garloff Exp $&n;&n;  Microscopic alterations - Rik Ling, 2000/12/21&n;  Last modified: Wed Feb  2 22:04:05 2000 by makisara@kai.makisara.local&n;  Some small formal changes - aeb, 950809&n;*/
+multiline_comment|/*&n;  SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;  file README.st for more information.&n;&n;  History:&n;&n;  OnStream SCSI Tape support (osst) cloned from st.c by&n;  Willem Riede (osst@riede.org) Feb 2000&n;  Fixes ... Kurt Garloff &lt;garloff@suse.de&gt; Mar 2000&n;&n;  Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;  Contribution and ideas from several people including (in alphabetical&n;  order) Klaus Ehrenfried, Wolfgang Denk, Steve Hirsch, Andreas Koppenh&quot;ofer,&n;  Michael Leodolter, Eyal Lebedinsky, J&quot;org Weule, and Eric Youngdale.&n;&n;  Copyright 1992 - 2000 Kai Makisara&n;&t;&t; email Kai.Makisara@metla.fi&n;&n;  $Header: /home/cvsroot/Driver/osst.c,v 1.61 2001/06/03 21:55:12 riede Exp $&n;&n;  Microscopic alterations - Rik Ling, 2000/12/21&n;  Last modified: Wed Feb  2 22:04:05 2000 by makisara@kai.makisara.local&n;  Some small formal changes - aeb, 950809&n;*/
 DECL|variable|cvsid
 r_static
 r_const
@@ -6,7 +6,7 @@ r_char
 op_star
 id|cvsid
 op_assign
-l_string|&quot;$Id: osst.c,v 1.51 2000/12/22 20:48:27 garloff Exp $&quot;
+l_string|&quot;$Id: osst.c,v 1.61 2001/06/03 21:55:12 riede Exp $&quot;
 suffix:semicolon
 DECL|variable|osst_version
 r_const
@@ -14,16 +14,15 @@ r_char
 op_star
 id|osst_version
 op_assign
-l_string|&quot;0.9.4.3&quot;
+l_string|&quot;0.9.8&quot;
 suffix:semicolon
 multiline_comment|/* The &quot;failure to reconnect&quot; firmware bug */
 DECL|macro|OSST_FW_NEED_POLL_MIN
-mdefine_line|#define OSST_FW_NEED_POLL_MIN 10602 /*(107A)*/
+mdefine_line|#define OSST_FW_NEED_POLL_MIN 10601 /*(107A)*/
 DECL|macro|OSST_FW_NEED_POLL_MAX
-mdefine_line|#define OSST_FW_NEED_POLL_MAX 10708 /*(108D)*/
+mdefine_line|#define OSST_FW_NEED_POLL_MAX 10704 /*(108D)*/
 DECL|macro|OSST_FW_NEED_POLL
 mdefine_line|#define OSST_FW_NEED_POLL(x,d) ((x) &gt;= OSST_FW_NEED_POLL_MIN &amp;&amp; (x) &lt;= OSST_FW_NEED_POLL_MAX &amp;&amp; d-&gt;host-&gt;this_id != 7)
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -204,6 +203,8 @@ id|debugging
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* uncomment define below to test error recovery */
+singleline_comment|// #define OSST_INJECT_ERRORS 1 
 macro_line|#endif
 DECL|macro|MAX_RETRIES
 mdefine_line|#define MAX_RETRIES 0
@@ -525,9 +526,6 @@ id|Scsi_Request
 op_star
 op_star
 id|aSRpnt
-comma
-r_int
-id|file_blk
 )paren
 suffix:semicolon
 r_static
@@ -661,7 +659,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -798,7 +796,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Error with sense data: &quot;
+l_string|&quot;osst%d:W: Error with sense data: &quot;
 comma
 id|dev
 )paren
@@ -813,11 +811,18 @@ id|SRpnt
 suffix:semicolon
 )brace
 r_else
+(brace
+r_static
+r_int
+id|notyetprinted
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Error %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
+l_string|&quot;osst%d:W: Error %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
 comma
 id|dev
 comma
@@ -844,6 +849,36 @@ id|result
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|notyetprinted
+)paren
+(brace
+id|notyetprinted
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst%d:I: This error may be caused by your scsi controller,&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst%d:I: it has been reported with some Buslogic cards.&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 r_if
 c_cond
@@ -915,7 +950,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Recovered %s error (%d).&bslash;n&quot;
+l_string|&quot;osst%d:D: Recovered %s error (%d).&bslash;n&quot;
 comma
 id|dev
 comma
@@ -970,9 +1005,6 @@ id|SCpnt
 r_int
 r_int
 id|dev
-suffix:semicolon
-r_int
-id|remainder
 suffix:semicolon
 id|OS_Scsi_Tape
 op_star
@@ -1038,59 +1070,6 @@ c_cond
 (paren
 id|SCpnt-&gt;sense_buffer
 (braket
-l_int|0
-)braket
-op_amp
-l_int|0x80
-)paren
-op_ne
-l_int|0
-)paren
-id|remainder
-op_assign
-(paren
-id|SCpnt-&gt;sense_buffer
-(braket
-l_int|3
-)braket
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|SCpnt-&gt;sense_buffer
-(braket
-l_int|4
-)braket
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|SCpnt-&gt;sense_buffer
-(braket
-l_int|5
-)braket
-op_lshift
-l_int|8
-)paren
-op_or
-id|SCpnt-&gt;sense_buffer
-(braket
-l_int|6
-)braket
-suffix:semicolon
-r_else
-id|remainder
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|SCpnt-&gt;sense_buffer
-(braket
 l_int|2
 )braket
 op_amp
@@ -1098,10 +1077,6 @@ l_int|0x0f
 )paren
 op_eq
 id|VOLUME_OVERFLOW
-op_logical_or
-id|remainder
-OG
-l_int|0
 )paren
 (paren
 id|STp-&gt;buffer
@@ -1167,8 +1142,8 @@ id|debugging
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;osst?: Illegal interrupt device %x&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst?:D: Illegal interrupt device %x&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -1217,8 +1192,20 @@ r_char
 op_star
 id|bp
 suffix:semicolon
-singleline_comment|//static int inject = 0; /* FIXME - take out inject occasional read errors */
-singleline_comment|//static int repeat = 0;
+macro_line|#ifdef OSST_INJECT_ERRORS
+r_static
+r_int
+id|inject
+op_assign
+l_int|0
+suffix:semicolon
+r_static
+r_int
+id|repeat
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1247,7 +1234,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Can&squot;t get SCSI request.&bslash;n&quot;
+l_string|&quot;osst%d:E: Can&squot;t get SCSI request.&bslash;n&quot;
 comma
 id|TAPE_NR
 c_func
@@ -1451,12 +1438,69 @@ comma
 id|SRpnt
 )paren
 suffix:semicolon
-singleline_comment|//if ((STp-&gt;buffer)-&gt;syscall_result == 0 &amp;&amp;
-singleline_comment|//    cmd[0] == READ_6 &amp;&amp; cmd[4] &amp;&amp; ( /* (++ inject % 83) == 29  || */
-singleline_comment|//     (STp-&gt;first_frame_position == 240 /* or STp-&gt;read_error_frame to fail again on the block calculated above */ &amp;&amp; ++repeat &lt; 3))) {
-singleline_comment|//&t;printk(OSST_DEB_MSG &quot;osst%d: injecting read error&bslash;n&quot;, TAPE_NR(STp-&gt;devt));
-singleline_comment|//&t;STp-&gt;buffer-&gt;last_result_fatal = 1; /* FIXME - take out inject occasional read errors */
-singleline_comment|//}
+macro_line|#ifdef OSST_INJECT_ERRORS
+r_if
+c_cond
+(paren
+id|STp-&gt;buffer-&gt;syscall_result
+op_eq
+l_int|0
+op_logical_and
+id|cmd
+(braket
+l_int|0
+)braket
+op_eq
+id|READ_6
+op_logical_and
+id|cmd
+(braket
+l_int|4
+)braket
+op_logical_and
+(paren
+(paren
+op_increment
+id|inject
+op_mod
+l_int|83
+)paren
+op_eq
+l_int|29
+op_logical_or
+(paren
+id|STp-&gt;first_frame_position
+op_eq
+l_int|240
+multiline_comment|/* or STp-&gt;read_error_frame to fail again on the block calculated above */
+op_logical_and
+op_increment
+id|repeat
+OL
+l_int|3
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Injecting read error&bslash;n&quot;
+comma
+id|TAPE_NR
+c_func
+(paren
+id|STp-&gt;devt
+)paren
+)paren
+suffix:semicolon
+id|STp-&gt;buffer-&gt;last_result_fatal
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 r_return
 id|SRpnt
@@ -1477,10 +1521,6 @@ id|STp
 id|OSST_buffer
 op_star
 id|STbuffer
-suffix:semicolon
-id|ST_partstat
-op_star
-id|STps
 suffix:semicolon
 id|STbuffer
 op_assign
@@ -1580,70 +1620,17 @@ id|STbuffer-&gt;writing
 OL
 id|STbuffer-&gt;buffer_bytes
 )paren
-macro_line|#if 0
-id|memcpy
-c_func
-(paren
-id|STbuffer-&gt;b_data
-comma
-id|STbuffer-&gt;b_data
-op_plus
-id|STbuffer-&gt;writing
-comma
-id|STbuffer-&gt;buffer_bytes
-op_minus
-id|STbuffer-&gt;writing
-)paren
-suffix:semicolon
-macro_line|#else
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: write_behind_check: something left in buffer!&bslash;n&quot;
+l_string|&quot;osst:A: write_behind_check: something left in buffer!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|STbuffer-&gt;buffer_bytes
 op_sub_assign
 id|STbuffer-&gt;writing
 suffix:semicolon
-id|STps
-op_assign
-op_amp
-(paren
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|STps-&gt;drv_block
-op_ge
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|STp-&gt;block_size
-op_eq
-l_int|0
-)paren
-id|STps-&gt;drv_block
-op_increment
-suffix:semicolon
-r_else
-id|STps-&gt;drv_block
-op_add_assign
-id|STbuffer-&gt;writing
-op_div
-id|STp-&gt;block_size
-suffix:semicolon
-)brace
 id|STbuffer-&gt;writing
 op_assign
 l_int|0
@@ -1668,7 +1655,16 @@ r_int
 id|frame_type
 comma
 r_int
+id|frame_seq_number
+comma
+r_int
 id|logical_blk_num
+comma
+r_int
+id|blk_sz
+comma
+r_int
+id|blk_cnt
 )paren
 (brace
 id|os_aux_t
@@ -1858,14 +1854,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|frame_type
-op_eq
-id|OS_FRAME_TYPE_DATA
-ques
-c_cond
-id|STp-&gt;block_size
-suffix:colon
-l_int|0
+id|blk_sz
 )paren
 suffix:semicolon
 id|dat-&gt;dat_list
@@ -1878,7 +1867,7 @@ op_assign
 id|htons
 c_func
 (paren
-l_int|1
+id|blk_cnt
 )paren
 suffix:semicolon
 id|dat-&gt;dat_list
@@ -1954,7 +1943,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|logical_blk_num
+id|frame_seq_number
 )paren
 suffix:semicolon
 id|aux-&gt;logical_blk_num_high
@@ -1988,7 +1977,6 @@ c_func
 id|STp-&gt;filemark_cnt
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME -- violates ADR spec */
 id|aux-&gt;phys_fm
 op_assign
 id|ntohl
@@ -2005,6 +1993,14 @@ c_func
 id|STp-&gt;last_mark_ppos
 )paren
 suffix:semicolon
+id|aux-&gt;last_mark_lbn
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;last_mark_lbn
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Verify that we have the correct tape frame&n; */
 DECL|function|osst_verify_frame
@@ -2018,7 +2014,7 @@ op_star
 id|STp
 comma
 r_int
-id|logical_blk_num
+id|frame_seq_number
 comma
 r_int
 id|quiet
@@ -2052,9 +2048,6 @@ id|STp-&gt;partition
 )paren
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_int
 id|dev
 op_assign
 id|TAPE_NR
@@ -2062,6 +2055,13 @@ c_func
 (paren
 id|STp-&gt;devt
 )paren
+suffix:semicolon
+r_int
+id|blk_cnt
+comma
+id|blk_sz
+comma
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -2128,15 +2128,17 @@ c_cond
 id|STp-&gt;buffer-&gt;syscall_result
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, read error&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, read error&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2153,11 +2155,12 @@ op_ne
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, format_id %u&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, format_id %u&bslash;n&quot;
 comma
 id|dev
 comma
@@ -2168,8 +2171,9 @@ id|aux-&gt;format_id
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2206,17 +2210,19 @@ l_int|4
 )paren
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, incorrect application signature&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, incorrect application signature&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2238,19 +2244,21 @@ op_ne
 l_int|2
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, partition num %d&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, partition num %d&bslash;n&quot;
 comma
 id|dev
 comma
 id|par-&gt;partition_num
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 )brace
@@ -2262,19 +2270,21 @@ op_ne
 id|OS_PARTITION_VERSION
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, partition version %d&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, partition version %d&bslash;n&quot;
 comma
 id|dev
 comma
 id|par-&gt;par_desc_ver
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2289,11 +2299,12 @@ op_ne
 id|STp-&gt;wrt_pass_cntr
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, wrt_pass_cntr %d (expected %d)&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, wrt_pass_cntr %d (expected %d)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -2306,29 +2317,9 @@ comma
 id|STp-&gt;wrt_pass_cntr
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|aux-&gt;frame_seq_num
-op_ne
-id|aux-&gt;logical_blk_num
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, seq != logical&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2353,19 +2344,21 @@ c_cond
 op_logical_neg
 id|quiet
 )paren
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, frame type %x&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, frame type %x&bslash;n&quot;
 comma
 id|dev
 comma
 id|aux-&gt;frame_type
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2384,25 +2377,25 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Skipping premature EOD frame %d&bslash;n&quot;
+l_string|&quot;osst%d:I: Skipping premature EOD frame %d&bslash;n&quot;
 comma
 id|dev
 comma
 id|STp-&gt;first_frame_position
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_out
 suffix:semicolon
 )brace
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|logical_blk_num
+id|frame_seq_number
 op_ne
 op_minus
 l_int|1
@@ -2410,10 +2403,10 @@ op_logical_and
 id|ntohl
 c_func
 (paren
-id|aux-&gt;logical_blk_num
+id|aux-&gt;frame_seq_num
 )paren
 op_ne
-id|logical_blk_num
+id|frame_seq_number
 )paren
 (brace
 r_if
@@ -2422,25 +2415,27 @@ c_cond
 op_logical_neg
 id|quiet
 )paren
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%d: Skipping frame, logical_blk_num %u (expected %d)&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping frame, sequence number %u (expected %d)&bslash;n&quot;
 comma
 id|dev
 comma
 id|ntohl
 c_func
 (paren
-id|aux-&gt;logical_blk_num
+id|aux-&gt;frame_seq_num
 )paren
 comma
-id|logical_blk_num
+id|frame_seq_number
 )paren
 suffix:semicolon
-r_return
-l_int|0
+macro_line|#endif
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2494,13 +2489,12 @@ id|i
 )paren
 )paren
 (brace
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: %s filemark %d at frame %d&bslash;n&quot;
+l_string|&quot;osst%d:D: %s filemark %d at frame pos %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -2573,13 +2567,156 @@ op_eq
 id|OS_FRAME_TYPE_DATA
 )paren
 (brace
+id|blk_cnt
+op_assign
+id|ntohs
+c_func
+(paren
+id|aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+suffix:semicolon
+id|blk_sz
+op_assign
+id|ntohl
+c_func
+(paren
+id|aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_sz
+)paren
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_assign
+id|blk_cnt
+op_star
+id|blk_sz
+suffix:semicolon
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* See what block size was used to write file */
+r_if
+c_cond
+(paren
+id|STp-&gt;block_size
+op_ne
+id|blk_sz
+op_logical_and
+id|blk_sz
+OG
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst%d:I: File was written with block size %d%c, currently %d%c, adjusted to match.&bslash;n&quot;
+comma
+id|dev
+comma
+id|blk_sz
+OL
+l_int|1024
+ques
+c_cond
+id|blk_sz
+suffix:colon
+id|blk_sz
+op_div
+l_int|1024
+comma
+id|blk_sz
+OL
+l_int|1024
+ques
+c_cond
+l_char|&squot;b&squot;
+suffix:colon
+l_char|&squot;k&squot;
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+id|STp-&gt;block_size
+suffix:colon
+id|STp-&gt;block_size
+op_div
+l_int|1024
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+l_char|&squot;b&squot;
+suffix:colon
+l_char|&squot;k&squot;
+)paren
+suffix:semicolon
+id|STp-&gt;block_size
+op_assign
+id|blk_sz
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_blocks
+op_assign
+id|OS_DATA_SIZE
+op_div
+id|blk_sz
+suffix:semicolon
+)brace
 id|STps-&gt;eof
 op_assign
 id|ST_NOEOF
 suffix:semicolon
 )brace
+id|STp-&gt;frame_seq_number
+op_assign
+id|ntohl
+c_func
+(paren
+id|aux-&gt;frame_seq_num
+)paren
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_assign
+id|ntohl
+c_func
+(paren
+id|aux-&gt;logical_blk_num
+)paren
+suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+id|err_out
+suffix:colon
+r_if
+c_cond
+(paren
+id|STp-&gt;read_error_frame
+op_eq
+l_int|0
+)paren
+id|STp-&gt;read_error_frame
+op_assign
+id|STp-&gt;first_frame_position
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for the unit to become Ready&n; */
@@ -2637,7 +2774,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Reached onstream wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached onstream wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -2759,7 +2896,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Sleeping in onstream wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Sleeping in onstream wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -2768,7 +2905,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -2863,7 +3000,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Abnormal exit from onstream wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Abnormal exit from onstream wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -2872,7 +3009,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
+l_string|&quot;osst%d:D: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -2912,7 +3049,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Normal exit from onstream wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Normal exit from onstream wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -3052,7 +3189,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Reached onstream flush drive buffer (write filemark)&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached onstream flush drive buffer (write filemark)&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -3223,7 +3360,6 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-(paren
 id|minlast
 op_ge
 l_int|0
@@ -3237,38 +3373,13 @@ id|rw
 op_ne
 id|ST_READING
 )paren
-op_logical_or
-(paren
-id|minlast
-OL
-l_int|0
-op_logical_and
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-dot
-id|rw
-op_ne
-id|ST_WRITING
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: waiting for frame without having initialized %s!&bslash;n&quot;
+l_string|&quot;osst%i:A: Waiting for frame without having initialized read!&bslash;n&quot;
 comma
 id|dev
-comma
-id|minlast
-OL
-l_int|0
-ques
-c_cond
-l_string|&quot;write&quot;
-suffix:colon
-l_string|&quot;read&quot;
 )paren
 suffix:semicolon
 r_while
@@ -3392,7 +3503,7 @@ id|OSST_POLL_PER_SEC
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Succ wait f fr %i (&gt;%i): %i-%i %i (%i): %3li.%li s&bslash;n&quot;
+l_string|&quot;osst%d:D: Succ wait f fr %i (&gt;%i): %i-%i %i (%i): %3li.%li s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3460,7 +3571,7 @@ id|notyetprinted
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Wait for frame %i (&gt;%i): %i-%i %i (%i)&bslash;n&quot;
+l_string|&quot;osst%d:D: Wait for frame %i (&gt;%i): %i-%i %i (%i)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3500,7 +3611,7 @@ macro_line|#if DEBUG
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Fail wait f fr %i (&gt;%i): %i-%i %i: %3li.%li s&bslash;n&quot;
+l_string|&quot;osst%d:D: Fail wait f fr %i (&gt;%i): %i-%i %i: %3li.%li s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3547,11 +3658,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read the next OnStream tape block at the current location&n; */
-DECL|function|osst_read_block
+multiline_comment|/*&n; * Read the next OnStream tape frame at the current location&n; */
+DECL|function|osst_read_frame
 r_static
 r_int
-id|osst_read_block
+id|osst_read_frame
 c_func
 (paren
 id|OS_Scsi_Tape
@@ -3672,7 +3783,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Reading block from OnStream tape&bslash;n&quot;
+l_string|&quot;osst%d:D: Reading frame from OnStream tape&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -3744,16 +3855,19 @@ id|STp-&gt;read_error_frame
 op_assign
 id|STp-&gt;first_frame_position
 suffix:semicolon
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: recording read error at %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Recording read error at %d&bslash;n&quot;
+comma
+id|dev
 comma
 id|STp-&gt;read_error_frame
 )paren
 suffix:semicolon
-multiline_comment|/*FIXME*/
+macro_line|#endif
 )brace
 macro_line|#if DEBUG
 r_if
@@ -3765,7 +3879,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
+l_string|&quot;osst%d:D: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3827,7 +3941,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: AUX: %c%c%c%c UpdFrCt#%d %s FrSeq#%d LogBlk#%d&bslash;n&quot;
+l_string|&quot;osst%d:D: AUX: %c%c%c%c UpdFrCt#%d Wpass#%d %s FrSeq#%d LogBlk#%d Qty=%d Sz=%d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3855,6 +3969,12 @@ id|ntohl
 c_func
 (paren
 id|aux-&gt;update_frame_cntr
+)paren
+comma
+id|ntohs
+c_func
+(paren
+id|aux-&gt;partition.wrt_pass_cntr
 )paren
 comma
 id|aux-&gt;frame_type
@@ -3898,6 +4018,28 @@ c_func
 (paren
 id|aux-&gt;logical_blk_num
 )paren
+comma
+id|ntohs
+c_func
+(paren
+id|aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_sz
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3911,7 +4053,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: mark_cnt=%d, last_mark=%d, next_mark=%d&bslash;n&quot;
+l_string|&quot;osst%d:D: mark_cnt=%d, last_mark_ppos=%d, last_mark_lbn=%d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -3930,7 +4072,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|aux-&gt;next_mark_ppos
+id|aux-&gt;last_mark_lbn
 )paren
 )paren
 suffix:semicolon
@@ -3938,7 +4080,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Exit read block from OnStream tape with code %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Exit read frame from OnStream tape with code %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -4031,8 +4173,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|osst_flush_drive_buffer
@@ -4048,11 +4188,11 @@ id|STps-&gt;rw
 op_assign
 id|ST_READING
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *      Issue a read 0 command to get the OnStream drive&n;&t;&t; *      read blocks into its buffer.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *      Issue a read 0 command to get the OnStream drive&n;                 *      read frames into its buffer.&n;&t;&t; */
 id|memset
 c_func
 (paren
@@ -4082,7 +4222,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Start Read Ahead on OnStream tape&bslash;n&quot;
+l_string|&quot;osst%d:D: Start Read Ahead on OnStream tape&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -4125,10 +4265,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osst_get_logical_blk
+DECL|function|osst_get_logical_frame
 r_static
 r_int
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|OS_Scsi_Tape
@@ -4141,7 +4281,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|logical_blk_num
+id|frame_seq_number
 comma
 r_int
 id|quiet
@@ -4185,7 +4325,7 @@ id|x
 comma
 id|position
 suffix:semicolon
-multiline_comment|/*&n;&t; * Search and wait for the next logical tape block&n;&t; */
+multiline_comment|/*&n;         * Search and wait for the next logical tape frame&n;&t; */
 r_while
 c_loop
 (paren
@@ -4204,12 +4344,12 @@ l_int|400
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Couldn&squot;t find logical block %d, aborting&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%d:E: Couldn&squot;t find logical frame %d, aborting&bslash;n&quot;
 comma
 id|dev
 comma
-id|logical_blk_num
+id|frame_seq_number
 )paren
 suffix:semicolon
 r_if
@@ -4230,13 +4370,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Repositioning tape to bad block %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Repositioning tape to bad frame %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -4266,11 +4405,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Looking for block %d, attempt %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Looking for frame %d, attempt %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|logical_blk_num
+id|frame_seq_number
 comma
 id|cnt
 )paren
@@ -4290,10 +4429,10 @@ op_logical_or
 (paren
 (paren
 op_logical_neg
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 )paren
 op_logical_and
-id|osst_read_block
+id|osst_read_frame
 c_func
 (paren
 id|STp
@@ -4344,22 +4483,6 @@ op_eq
 l_int|10
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: start again from pos %d, eod %d, bad %d&bslash;n&quot;
-comma
-id|dev
-comma
-id|position
-comma
-id|STp-&gt;eod_frame_ppos
-comma
-id|bad
-)paren
-suffix:semicolon
-multiline_comment|/*FIXME*/
 id|position
 op_assign
 id|STp-&gt;read_error_frame
@@ -4383,7 +4506,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Bad block detected, positioning tape to block %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Bad frame detected, positioning tape to block %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -4414,7 +4537,7 @@ c_func
 (paren
 id|STp
 comma
-id|logical_blk_num
+id|frame_seq_number
 comma
 id|quiet
 )paren
@@ -4441,7 +4564,7 @@ op_assign
 id|ntohl
 c_func
 (paren
-id|STp-&gt;buffer-&gt;aux-&gt;logical_blk_num
+id|STp-&gt;buffer-&gt;aux-&gt;frame_seq_num
 )paren
 suffix:semicolon
 r_if
@@ -4450,22 +4573,19 @@ c_cond
 id|STp-&gt;fast_open
 )paren
 (brace
-macro_line|#if 1 
-singleline_comment|//DEBUG
 id|printk
 c_func
 (paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: Found logical block %d instead of %d after fast open&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Found logical frame %d instead of %d after fast open&bslash;n&quot;
 comma
 id|dev
 comma
 id|x
 comma
-id|logical_blk_num
+id|frame_seq_number
 )paren
 suffix:semicolon
-macro_line|#endif
 id|STp-&gt;header_ok
 op_assign
 l_int|0
@@ -4486,7 +4606,7 @@ c_cond
 (paren
 id|x
 OG
-id|logical_blk_num
+id|frame_seq_number
 )paren
 (brace
 r_if
@@ -4498,7 +4618,7 @@ OG
 l_int|3
 )paren
 (brace
-multiline_comment|/* positioning backwards did not bring us to the desired block */
+multiline_comment|/* positioning backwards did not bring us to the desired frame */
 id|position
 op_assign
 id|STp-&gt;read_error_frame
@@ -4507,6 +4627,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|position
 op_assign
 id|osst_get_frame_position
@@ -4517,25 +4638,40 @@ comma
 id|aSRpnt
 )paren
 op_plus
-id|logical_blk_num
+id|frame_seq_number
 op_minus
 id|x
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+r_if
+c_cond
+(paren
+id|STp-&gt;first_frame_position
+op_ge
+l_int|3000
+op_logical_and
+id|position
+OL
+l_int|3000
+)paren
+id|position
+op_sub_assign
+l_int|10
+suffix:semicolon
+)brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Found logical block %d while looking for %d: back up %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Found logical frame %d while looking for %d: back up %d&bslash;n&quot;
 comma
 id|dev
 comma
 id|x
 comma
-id|logical_blk_num
+id|frame_seq_number
 comma
 id|STp-&gt;first_frame_position
 op_minus
@@ -4585,7 +4721,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Skipping config partition&bslash;n&quot;
+l_string|&quot;osst%d:D: Skipping config partition&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -4607,7 +4743,7 @@ id|cnt
 op_decrement
 suffix:semicolon
 )brace
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -4626,14 +4762,20 @@ suffix:semicolon
 id|STp-&gt;recover_erreg
 op_increment
 suffix:semicolon
-)brace
-id|STp-&gt;logical_blk_num
-op_assign
-id|ntohl
+id|printk
 c_func
 (paren
-id|STp-&gt;buffer-&gt;aux-&gt;logical_blk_num
+id|KERN_WARNING
+l_string|&quot;osst%d:I: Read error at position %d recovered&bslash;n&quot;
+comma
+id|dev
+comma
+id|STp-&gt;read_error_frame
 )paren
+suffix:semicolon
+)brace
+id|STp-&gt;read_count
+op_increment
 suffix:semicolon
 macro_line|#if DEBUG
 r_if
@@ -4647,13 +4789,13 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Exit get logical block (%d=&gt;%d) from OnStream tape with code %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Exit get logical frame (%d=&gt;%d) from OnStream tape with code %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|logical_blk_num
+id|frame_seq_number
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 comma
 id|STps-&gt;eof
 )paren
@@ -4692,13 +4834,17 @@ r_int
 id|logical_blk_num
 )paren
 (brace
-r_int
-id|estimate
-suffix:semicolon
-r_int
-id|retries
+id|ST_partstat
+op_star
+id|STps
 op_assign
-l_int|0
+op_amp
+(paren
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+)paren
 suffix:semicolon
 r_int
 id|dev
@@ -4709,6 +4855,18 @@ c_func
 id|STp-&gt;devt
 )paren
 suffix:semicolon
+r_int
+id|retries
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|frame_seq_estimate
+comma
+id|ppos_estimate
+comma
+id|move
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4719,43 +4877,118 @@ l_int|0
 id|logical_blk_num
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME -- this may not be valid for foreign formats */
-r_if
-c_cond
-(paren
-id|logical_blk_num
-OL
-l_int|2980
-)paren
-id|estimate
-op_assign
-id|logical_blk_num
-op_plus
-l_int|10
-suffix:semicolon
-r_else
-id|estimate
-op_assign
-id|logical_blk_num
-op_plus
-l_int|20
 suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Seeking logical block %d (now at %d)&bslash;n&quot;
+l_string|&quot;osst%d:D: Seeking logical block %d (now at %d, size %d%c)&bslash;n&quot;
 comma
 id|dev
 comma
 id|logical_blk_num
 comma
 id|STp-&gt;logical_blk_num
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+id|STp-&gt;block_size
+suffix:colon
+id|STp-&gt;block_size
+op_div
+l_int|1024
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+l_char|&squot;b&squot;
+suffix:colon
+l_char|&squot;k&squot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Do we know where we are? */
+r_if
+c_cond
+(paren
+id|STps-&gt;drv_block
+op_ge
+l_int|0
+)paren
+(brace
+id|move
+op_assign
+id|logical_blk_num
+op_minus
+id|STp-&gt;logical_blk_num
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|move
+OL
+l_int|0
+)paren
+id|move
+op_sub_assign
+(paren
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|move
+op_div_assign
+(paren
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+)paren
+suffix:semicolon
+id|frame_seq_estimate
+op_assign
+id|STp-&gt;frame_seq_number
+op_plus
+id|move
+suffix:semicolon
+)brace
+r_else
+id|frame_seq_estimate
+op_assign
+id|logical_blk_num
+op_star
+id|STp-&gt;block_size
+op_div
+id|OS_DATA_SIZE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|frame_seq_estimate
+OL
+l_int|2980
+)paren
+id|ppos_estimate
+op_assign
+id|frame_seq_estimate
+op_plus
+l_int|10
+suffix:semicolon
+r_else
+id|ppos_estimate
+op_assign
+id|frame_seq_estimate
+op_plus
+l_int|20
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4765,6 +4998,48 @@ OL
 l_int|10
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppos_estimate
+OG
+id|STp-&gt;eod_frame_ppos
+op_minus
+l_int|2
+)paren
+(brace
+id|frame_seq_estimate
+op_add_assign
+id|STp-&gt;eod_frame_ppos
+op_minus
+l_int|2
+op_minus
+id|ppos_estimate
+suffix:semicolon
+id|ppos_estimate
+op_assign
+id|STp-&gt;eod_frame_ppos
+op_minus
+l_int|2
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|frame_seq_estimate
+OL
+l_int|0
+)paren
+(brace
+id|frame_seq_estimate
+op_assign
+l_int|0
+suffix:semicolon
+id|ppos_estimate
+op_assign
+l_int|10
+suffix:semicolon
+)brace
 id|osst_set_frame_position
 c_func
 (paren
@@ -4772,7 +5047,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|estimate
+id|ppos_estimate
 comma
 l_int|0
 )paren
@@ -4780,27 +5055,257 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
 comma
 id|aSRpnt
 comma
-id|logical_blk_num
+id|frame_seq_estimate
 comma
 l_int|1
 )paren
 op_ge
 l_int|0
 )paren
-r_return
+(brace
+multiline_comment|/* we&squot;ve located the estimated frame, now does it have our block? */
+r_if
+c_cond
+(paren
+id|logical_blk_num
+OL
+id|STp-&gt;logical_blk_num
+op_logical_or
+id|logical_blk_num
+op_ge
+id|STp-&gt;logical_blk_num
+op_plus
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
 l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|STps-&gt;eof
+op_eq
+id|ST_FM_HIT
+)paren
+id|move
+op_assign
+id|logical_blk_num
+OL
+id|STp-&gt;logical_blk_num
+ques
+c_cond
+op_minus
+l_int|2
+suffix:colon
+l_int|1
+suffix:semicolon
+r_else
+(brace
+id|move
+op_assign
+id|logical_blk_num
+op_minus
+id|STp-&gt;logical_blk_num
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|move
+OL
+l_int|0
+)paren
+id|move
+op_sub_assign
+(paren
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|move
+op_div_assign
+(paren
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+)paren
+suffix:semicolon
+)brace
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d) move %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|retries
+comma
+id|ppos_estimate
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|frame_seq_estimate
+comma
+id|STp-&gt;logical_blk_num
+comma
+id|logical_blk_num
+comma
+id|move
+)paren
+suffix:semicolon
+macro_line|#endif
+id|frame_seq_estimate
+op_add_assign
+id|move
+suffix:semicolon
+id|ppos_estimate
+op_add_assign
+id|move
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_else
+(brace
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+(paren
+id|logical_blk_num
+op_minus
+id|STp-&gt;logical_blk_num
+)paren
+op_star
+id|STp-&gt;block_size
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_sub_assign
+id|STp-&gt;buffer-&gt;read_pointer
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_assign
+id|logical_blk_num
+suffix:semicolon
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Seek success at ppos %d fsq %d in_buf %d, bytes %d, ptr %d*%d&bslash;n&quot;
+comma
+id|dev
+comma
+id|ppos_estimate
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;frame_in_buffer
+comma
+id|STp-&gt;buffer-&gt;buffer_bytes
+comma
+id|STp-&gt;buffer-&gt;read_pointer
+op_div
+id|STp-&gt;block_size
+comma
+id|STp-&gt;block_size
+)paren
+suffix:semicolon
+macro_line|#endif
+id|STps-&gt;drv_file
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;filemark_cnt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STps-&gt;eof
+op_eq
+id|ST_FM_HIT
+)paren
+(brace
+id|STps-&gt;drv_file
+op_increment
+suffix:semicolon
+id|STps-&gt;drv_block
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|STps-&gt;drv_block
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;last_mark_lbn
+)paren
+ques
+c_cond
+id|STp-&gt;logical_blk_num
+op_minus
+(paren
+id|STps-&gt;drv_file
+ques
+c_cond
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;last_mark_lbn
+)paren
+op_plus
+l_int|1
+suffix:colon
+l_int|0
+)paren
+suffix:colon
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|STps-&gt;eof
+op_assign
+(paren
+id|STp-&gt;first_frame_position
+op_ge
+id|STp-&gt;eod_frame_ppos
+)paren
+ques
+c_cond
+id|ST_EOD
+suffix:colon
+id|ST_NOEOF
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -4818,18 +5323,42 @@ l_int|0
 r_goto
 id|error
 suffix:semicolon
+multiline_comment|/* we are not yet at the estimated frame, adjust our estimate of its physical position */
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d)&bslash;n&quot;
+comma
+id|dev
+comma
+id|retries
+comma
+id|ppos_estimate
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|frame_seq_estimate
+comma
+id|STp-&gt;logical_blk_num
+comma
+id|logical_blk_num
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
-id|STp-&gt;logical_blk_num
+id|frame_seq_estimate
 op_ne
-id|logical_blk_num
+id|STp-&gt;frame_seq_number
 )paren
-id|estimate
+id|ppos_estimate
 op_add_assign
-id|logical_blk_num
+id|frame_seq_estimate
 op_minus
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 suffix:semicolon
 r_else
 r_break
@@ -4840,8 +5369,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Couldn&squot;t seek to logical block %d (at %d), %d retries&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%d:E: Couldn&squot;t seek to logical block %d (at %d), %d retries&bslash;n&quot;
 comma
 id|dev
 comma
@@ -4859,10 +5388,202 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-DECL|function|osst_seek_frame
+multiline_comment|/* The values below are based on the OnStream frame payload size of 32K == 2**15,&n; * that is, OSST_FRAME_SHIFT + OSST_SECTOR_SHIFT must be 15. With a minimum block&n; * size of 512 bytes, we need to be able to resolve 32K/512 == 64 == 2**6 positions&n; * inside each frame. Finaly, OSST_SECTOR_MASK == 2**OSST_FRAME_SHIFT - 1.&n; */
+DECL|macro|OSST_FRAME_SHIFT
+mdefine_line|#define OSST_FRAME_SHIFT  6
+DECL|macro|OSST_SECTOR_SHIFT
+mdefine_line|#define OSST_SECTOR_SHIFT 9
+DECL|macro|OSST_SECTOR_MASK
+mdefine_line|#define OSST_SECTOR_MASK  0x03F
+DECL|function|osst_get_sector
 r_static
 r_int
-id|osst_seek_frame
+id|osst_get_sector
+c_func
+(paren
+id|OS_Scsi_Tape
+op_star
+id|STp
+comma
+id|Scsi_Request
+op_star
+op_star
+id|aSRpnt
+)paren
+(brace
+r_int
+id|sector
+suffix:semicolon
+macro_line|#if DEBUG
+r_int
+id|dev
+op_assign
+id|TAPE_NR
+c_func
+(paren
+id|STp-&gt;devt
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, %cptr %d, eof %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|STp-&gt;first_frame_position
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;logical_blk_num
+comma
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|drv_file
+comma
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|drv_block
+comma
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|rw
+op_eq
+id|ST_WRITING
+ques
+c_cond
+l_char|&squot;w&squot;
+suffix:colon
+l_char|&squot;r&squot;
+comma
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|rw
+op_eq
+id|ST_WRITING
+ques
+c_cond
+id|STp-&gt;buffer-&gt;buffer_bytes
+suffix:colon
+id|STp-&gt;buffer-&gt;read_pointer
+comma
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|eof
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* do we know where we are inside a file? */
+r_if
+c_cond
+(paren
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|drv_block
+op_ge
+l_int|0
+)paren
+(brace
+id|sector
+op_assign
+(paren
+id|STp-&gt;frame_in_buffer
+ques
+c_cond
+id|STp-&gt;first_frame_position
+op_minus
+l_int|1
+suffix:colon
+id|STp-&gt;first_frame_position
+)paren
+op_lshift
+id|OSST_FRAME_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|rw
+op_eq
+id|ST_WRITING
+)paren
+id|sector
+op_or_assign
+(paren
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_rshift
+id|OSST_SECTOR_SHIFT
+)paren
+op_amp
+id|OSST_SECTOR_MASK
+suffix:semicolon
+r_else
+id|sector
+op_or_assign
+(paren
+id|STp-&gt;buffer-&gt;read_pointer
+op_rshift
+id|OSST_SECTOR_SHIFT
+)paren
+op_amp
+id|OSST_SECTOR_MASK
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sector
+op_assign
+id|osst_get_frame_position
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sector
+OG
+l_int|0
+)paren
+id|sector
+op_lshift_assign
+id|OSST_FRAME_SHIFT
+suffix:semicolon
+)brace
+r_return
+id|sector
+suffix:semicolon
+)brace
+DECL|function|osst_seek_sector
+r_static
+r_int
+id|osst_seek_sector
 c_func
 (paren
 id|OS_Scsi_Tape
@@ -4875,7 +5596,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|frame
+id|sector
 )paren
 (brace
 id|ST_partstat
@@ -4891,8 +5612,50 @@ id|STp-&gt;partition
 )paren
 suffix:semicolon
 r_int
+id|frame
+op_assign
+id|sector
+op_rshift
+id|OSST_FRAME_SHIFT
+comma
+id|offset
+op_assign
+(paren
+id|sector
+op_amp
+id|OSST_SECTOR_MASK
+)paren
+op_lshift
+id|OSST_SECTOR_SHIFT
+comma
 id|r
 suffix:semicolon
+macro_line|#if DEBUG
+r_int
+id|dev
+op_assign
+id|TAPE_NR
+c_func
+(paren
+id|STp-&gt;devt
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Seeking sector %d in frame %d at offset %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|sector
+comma
+id|frame
+comma
+id|offset
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4918,6 +5681,8 @@ op_le
 id|STp-&gt;first_data_ppos
 )paren
 (brace
+id|STp-&gt;frame_seq_number
+op_assign
 id|STp-&gt;logical_blk_num
 op_assign
 id|STps-&gt;drv_file
@@ -4951,6 +5716,11 @@ id|STp
 comma
 id|aSRpnt
 comma
+id|offset
+ques
+c_cond
+id|frame
+suffix:colon
 id|frame
 op_minus
 l_int|1
@@ -4970,7 +5740,7 @@ id|r
 suffix:semicolon
 id|r
 op_assign
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -5004,7 +5774,16 @@ comma
 id|aSRpnt
 )paren
 op_ne
+(paren
+id|offset
+ques
+c_cond
 id|frame
+op_plus
+l_int|1
+suffix:colon
+id|frame
+)paren
 )paren
 r_return
 (paren
@@ -5012,35 +5791,155 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|offset
+)paren
+(brace
 id|STp-&gt;logical_blk_num
+op_add_assign
+id|offset
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+id|offset
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_sub_assign
+id|offset
+suffix:semicolon
+)brace
+r_else
+(brace
+id|STp-&gt;frame_seq_number
 op_increment
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_assign
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|STps-&gt;drv_file
 op_assign
-id|htonl
+id|ntohl
 c_func
 (paren
 id|STp-&gt;buffer-&gt;aux-&gt;filemark_cnt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|STps-&gt;eof
+op_eq
+id|ST_FM_HIT
+)paren
+(brace
+id|STps-&gt;drv_file
+op_increment
+suffix:semicolon
 id|STps-&gt;drv_block
 op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|STps-&gt;drv_block
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;last_mark_lbn
+)paren
+ques
+c_cond
+id|STp-&gt;logical_blk_num
+op_minus
+(paren
+id|STps-&gt;drv_file
+ques
+c_cond
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;last_mark_lbn
+)paren
+op_plus
+l_int|1
+suffix:colon
+l_int|0
+)paren
+suffix:colon
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|STps-&gt;eof
 op_assign
+(paren
+id|STp-&gt;first_frame_position
+op_ge
+id|STp-&gt;eod_frame_ppos
+)paren
+ques
+c_cond
+id|ST_EOD
+suffix:colon
 id|ST_NOEOF
 suffix:semicolon
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Now positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, rptr %d, eof %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|STp-&gt;first_frame_position
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;logical_blk_num
+comma
+id|STps-&gt;drv_file
+comma
+id|STps-&gt;drv_block
+comma
+id|STp-&gt;buffer-&gt;read_pointer
+comma
+id|STps-&gt;eof
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read back the drive&squot;s internal buffer contents, as a part&n; * of the write error recovery mechanism for old OnStream&n; * firmware revisions.&n; */
+multiline_comment|/*&n; * Read back the drive&squot;s internal buffer contents, as a part&n; * of the write error recovery mechanism for old OnStream&n; * firmware revisions.&n; * Precondition for this function to work: all frames in the&n; * drive&squot;s buffer must be of one type (DATA, MARK or EOD)!&n; */
 DECL|function|osst_read_back_buffer_and_rewrite
 r_static
 r_int
@@ -5058,7 +5957,7 @@ id|aSRpnt
 comma
 r_int
 r_int
-id|block
+id|frame
 comma
 r_int
 r_int
@@ -5091,15 +5990,66 @@ id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
 r_int
-id|frames
-comma
 id|flag
 comma
-id|new_block
+id|new_frame
 comma
 id|i
-comma
+suffix:semicolon
+r_int
+id|nframes
+op_assign
+id|STp-&gt;cur_frames
+suffix:semicolon
+r_int
+id|blks_per_frame
+op_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+suffix:semicolon
+r_int
+id|frame_seq_number
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;frame_seq_num
+)paren
+op_minus
+(paren
+id|nframes
+op_plus
+id|pending
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_int
 id|logical_blk_num
+op_assign
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;logical_blk_num
+)paren
+op_minus
+(paren
+id|nframes
+op_plus
+id|pending
+op_minus
+l_int|1
+)paren
+op_star
+id|blks_per_frame
 suffix:semicolon
 r_int
 id|dev
@@ -5122,10 +6072,6 @@ op_assign
 id|debugging
 suffix:semicolon
 macro_line|#endif
-id|frames
-op_assign
-id|STp-&gt;cur_frames
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5141,9 +6087,9 @@ id|vmalloc
 c_func
 (paren
 (paren
-id|frames
+id|nframes
 op_plus
-id|pending
+l_int|1
 )paren
 op_star
 id|OS_DATA_SIZE
@@ -5158,23 +6104,15 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-id|logical_blk_num
-op_assign
-id|STp-&gt;logical_blk_num
-op_minus
-id|frames
-op_minus
-id|pending
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Reading back %d frames from drive buffer%s&bslash;n&quot;
+l_string|&quot;osst%d:I: Reading back %d frames from drive buffer%s&bslash;n&quot;
 comma
 id|dev
 comma
-id|frames
+id|nframes
 comma
 id|pending
 ques
@@ -5184,12 +6122,6 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pending
-)paren
-(brace
 id|osst_copy_from_buffer
 c_func
 (paren
@@ -5201,31 +6133,38 @@ op_assign
 op_amp
 id|buffer
 (braket
-id|frames
+id|nframes
 op_star
 id|OS_DATA_SIZE
 )braket
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;memcpy((p = &amp;buffer[frames * OS_DATA_SIZE]), STp-&gt;buffer-&gt;b_data, OS_DATA_SIZE);
 macro_line|#if DEBUG
 r_if
 c_cond
 (paren
+id|pending
+op_logical_and
 id|debugging
 )paren
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Pending logical block %d, data %x %x %x %x&bslash;n&quot;
+l_string|&quot;osst%d:D: Pending frame %d (lblk %d), data %02x %02x %02x %02x&bslash;n&quot;
 comma
 id|dev
 comma
+id|frame_seq_number
+op_plus
+id|nframes
+comma
 id|logical_blk_num
 op_plus
-id|frames
+id|nframes
+op_star
+id|blks_per_frame
 comma
 id|p
 (braket
@@ -5249,7 +6188,6 @@ l_int|3
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
 r_for
 c_loop
 (paren
@@ -5263,7 +6201,7 @@ id|buffer
 suffix:semicolon
 id|i
 OL
-id|frames
+id|nframes
 suffix:semicolon
 id|i
 op_increment
@@ -5347,13 +6285,16 @@ id|STp-&gt;buffer
 )paren
 op_member_access_from_pointer
 id|syscall_result
+op_logical_or
+op_logical_neg
+id|SRpnt
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Failed to read block back from OnStream buffer&bslash;n&quot;
+l_string|&quot;osst%d:E: Failed to read frame back from OnStream buffer&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5388,7 +6329,6 @@ comma
 id|p
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;memcpy(p, STp-&gt;buffer-&gt;b_data, OS_DATA_SIZE);
 macro_line|#if DEBUG
 r_if
 c_cond
@@ -5399,11 +6339,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Read back logical block %d, data %x %x %x %x&bslash;n&quot;
+l_string|&quot;osst%d:D: Read back logical frame %d, data %02x %02x %02x %02x&bslash;n&quot;
 comma
 id|dev
 comma
-id|logical_blk_num
+id|frame_seq_number
 op_plus
 id|i
 comma
@@ -5448,7 +6388,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Frames left in buffer: %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Frames left in buffer: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -5457,7 +6397,7 @@ id|STp-&gt;cur_frames
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Write synchronously so we can be sure we&squot;re OK again and don&squot;t have to recover recursively */
-multiline_comment|/* In the header we don&squot;t actually re-write the blocks that fail, just the ones after them */
+multiline_comment|/* In the header we don&squot;t actually re-write the frames that fail, just the ones after them */
 r_for
 c_loop
 (paren
@@ -5465,9 +6405,9 @@ id|flag
 op_assign
 l_int|1
 comma
-id|new_block
+id|new_frame
 op_assign
-id|block
+id|frame
 comma
 id|p
 op_assign
@@ -5479,7 +6419,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|frames
+id|nframes
 op_plus
 id|pending
 suffix:semicolon
@@ -5514,28 +6454,28 @@ r_else
 r_if
 c_cond
 (paren
-id|new_block
+id|new_frame
 OL
 l_int|2990
 op_logical_and
-id|new_block
+id|new_frame
 op_plus
 id|skip
 op_plus
-id|frames
+id|nframes
 op_plus
 id|pending
 op_ge
 l_int|2990
 )paren
-id|new_block
+id|new_frame
 op_assign
 l_int|3000
 op_minus
 id|i
 suffix:semicolon
 r_else
-id|new_block
+id|new_frame
 op_add_assign
 id|skip
 suffix:semicolon
@@ -5544,20 +6484,19 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Position to frame %d, write lblk %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Position to frame %d, write fseq %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|new_block
+id|new_frame
 op_plus
 id|i
 comma
-id|logical_blk_num
+id|frame_seq_number
 op_plus
 id|i
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME var blk sz */
 macro_line|#endif
 id|osst_set_frame_position
 c_func
@@ -5566,7 +6505,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|new_block
+id|new_frame
 op_plus
 id|i
 comma
@@ -5599,9 +6538,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_block
+id|new_frame
 OG
-id|block
+id|frame
 op_plus
 l_int|1000
 )paren
@@ -5610,7 +6549,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Failed to find valid tape media&bslash;n&quot;
+l_string|&quot;osst%d:E: Failed to find writable tape media&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5641,7 +6580,7 @@ c_cond
 (paren
 id|i
 op_ge
-id|frames
+id|nframes
 op_plus
 id|pending
 )paren
@@ -5656,7 +6595,6 @@ comma
 id|p
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;memcpy(STp-&gt;buffer-&gt;b_data, p, OS_DATA_SIZE);
 multiline_comment|/*&n;&t;&t; * IMPORTANT: for error recovery to work, _never_ queue frames with mixed frame type!&n;&t;&t; */
 id|osst_init_aux
 c_func
@@ -5665,9 +6603,28 @@ id|STp
 comma
 id|STp-&gt;buffer-&gt;aux-&gt;frame_type
 comma
+id|frame_seq_number
+op_plus
+id|i
+comma
 id|logical_blk_num
 op_plus
 id|i
+op_star
+id|blks_per_frame
+comma
+id|ntohl
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_sz
+)paren
+comma
+id|blks_per_frame
 )paren
 suffix:semicolon
 id|memset
@@ -5711,13 +6668,43 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: About to attempt to write to frame %d&bslash;n&quot;
+l_string|&quot;osst%d:D: About to write frame %d, seq %d, lbn %d, data %02x %02x %02x %02x&bslash;n&quot;
 comma
 id|dev
 comma
-id|new_block
+id|new_frame
 op_plus
 id|i
+comma
+id|frame_seq_number
+op_plus
+id|i
+comma
+id|logical_blk_num
+op_plus
+id|i
+op_star
+id|blks_per_frame
+comma
+id|p
+(braket
+l_int|0
+)braket
+comma
+id|p
+(braket
+l_int|1
+)braket
+comma
+id|p
+(braket
+l_int|2
+)braket
+comma
+id|p
+(braket
+l_int|3
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5767,7 +6754,7 @@ c_cond
 (paren
 id|i
 op_eq
-id|frames
+id|nframes
 op_plus
 id|pending
 )paren
@@ -5777,7 +6764,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Check re-write successful&bslash;n&quot;
+l_string|&quot;osst%d:D: Check re-write successful&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5840,7 +6827,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Sleeping in re-write wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Sleeping in re-write wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5849,7 +6836,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5989,7 +6976,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Wait re-write finished&bslash;n&quot;
+l_string|&quot;osst%d:D: Wait re-write finished&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5997,6 +6984,11 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+op_star
+id|aSRpnt
+op_assign
+id|SRpnt
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6036,7 +7028,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Volume overflow in write error recovery&bslash;n&quot;
+l_string|&quot;osst%d:E: Volume overflow in write error recovery&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6095,7 +7087,7 @@ l_int|6
 )braket
 )paren
 op_minus
-id|new_block
+id|new_frame
 suffix:semicolon
 id|p
 op_assign
@@ -6112,11 +7104,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Additional write error at %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Additional write error at %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|new_block
+id|new_frame
 op_plus
 id|i
 )paren
@@ -6135,7 +7127,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: reported frame positions: host = %d, tape = %d&bslash;n&quot;
+l_string|&quot;osst%d:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -6146,12 +7138,22 @@ id|STp-&gt;last_frame_position
 suffix:semicolon
 macro_line|#endif
 )brace
-op_star
-id|aSRpnt
-op_assign
-id|SRpnt
-suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pending
+)paren
+id|osst_copy_to_buffer
+c_func
+(paren
+id|STp-&gt;buffer
+comma
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* so buffer content == at entry in all cases */
 id|vfree
 c_func
 (paren
@@ -6183,7 +7185,7 @@ id|aSRpnt
 comma
 r_int
 r_int
-id|block
+id|frame
 comma
 r_int
 r_int
@@ -6203,9 +7205,6 @@ suffix:semicolon
 id|Scsi_Request
 op_star
 id|SRpnt
-op_assign
-op_star
-id|aSRpnt
 suffix:semicolon
 r_int
 id|dev
@@ -6214,6 +7213,15 @@ id|TAPE_NR
 c_func
 (paren
 id|STp-&gt;devt
+)paren
+suffix:semicolon
+r_int
+id|expected
+id|__attribute__
+(paren
+(paren
+id|__unused__
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -6273,11 +7281,11 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|block
+id|frame
 OL
 l_int|2990
 op_logical_and
-id|block
+id|frame
 op_plus
 id|skip
 op_plus
@@ -6287,26 +7295,36 @@ id|pending
 op_ge
 l_int|2990
 )paren
-id|block
+id|frame
 op_assign
 l_int|3000
 op_minus
 id|skip
+suffix:semicolon
+id|expected
+op_assign
+id|frame
+op_plus
+id|skip
+op_plus
+id|STp-&gt;cur_frames
+op_plus
+id|pending
 suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Position to frame %d, re-write from lblk %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Position to fppos %d, re-write from fseq %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|frame
 op_plus
 id|skip
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_minus
 id|STp-&gt;cur_frames
 op_minus
@@ -6321,7 +7339,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 op_plus
 id|skip
 comma
@@ -6356,7 +7374,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Addl error, host %d, tape %d, buffer %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Addl error, host %d, tape %d, buffer %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -6368,7 +7386,7 @@ id|STp-&gt;cur_frames
 )paren
 suffix:semicolon
 macro_line|#endif
-id|block
+id|frame
 op_assign
 id|STp-&gt;last_frame_position
 suffix:semicolon
@@ -6425,11 +7443,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: About to write pending lblk %d at frame %d&bslash;n&quot;
+l_string|&quot;osst%d:D: About to write pending fseq %d at fppos %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_minus
 l_int|1
 comma
@@ -6442,7 +7460,8 @@ op_assign
 id|osst_do_scsi
 c_func
 (paren
-id|SRpnt
+op_star
+id|aSRpnt
 comma
 id|STp
 comma
@@ -6503,8 +7522,8 @@ l_int|2
 id|printk
 c_func
 (paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: Volume overflow in write error recovery&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%d:E: Volume overflow in write error recovery&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6543,12 +7562,40 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Wait re-write finished&bslash;n&quot;
+l_string|&quot;osst%d:D: Wait re-write finished&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|STp-&gt;first_frame_position
+op_ne
+id|expected
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;osst%d:A: Actual position %d - expected %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|STp-&gt;first_frame_position
+comma
+id|expected
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+id|EIO
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6564,7 +7611,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Sleeping in re-write wait ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Sleeping in re-write wait ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6573,7 +7620,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6597,7 +7644,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Failed to find valid tape media&bslash;n&quot;
+l_string|&quot;osst%d:E: Failed to find valid tape media&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6671,7 +7718,7 @@ id|rw_state
 suffix:semicolon
 r_int
 r_int
-id|block
+id|frame
 comma
 id|skip
 suffix:semicolon
@@ -6713,7 +7760,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Write error recovery cannot handle %02x:%02x:%02x&bslash;n&quot;
+l_string|&quot;osst%d:D: Write error recovery cannot handle %02x:%02x:%02x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -6741,7 +7788,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-id|block
+id|frame
 op_assign
 (paren
 id|SRpnt-&gt;sr_sense_buffer
@@ -6787,11 +7834,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Detected physical bad block at %u, advised to skip %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Detected physical bad frame at %u, advised to skip %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|frame
 comma
 id|skip
 )paren
@@ -6810,7 +7857,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: reported frame positions: host = %d, tape = %d&bslash;n&quot;
+l_string|&quot;osst%d:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -6839,13 +7886,30 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Relocating %d buffered logical blocks to physical block %u&bslash;n&quot;
+l_string|&quot;osst%d:I: Relocating %d buffered logical frames from position %u to %u&bslash;n&quot;
 comma
 id|dev
 comma
 id|STp-&gt;cur_frames
 comma
-id|block
+id|frame
+comma
+(paren
+id|frame
+op_plus
+id|skip
+OG
+l_int|3000
+op_logical_and
+id|frame
+OL
+l_int|3000
+)paren
+ques
+c_cond
+l_int|3000
+suffix:colon
+id|frame
 op_plus
 id|skip
 )paren
@@ -6866,7 +7930,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 comma
 id|skip
 comma
@@ -6883,11 +7947,27 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 comma
 id|skip
 comma
 id|pending
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;osst%d:I: Write error%srecovered&bslash;n&quot;
+comma
+id|dev
+comma
+id|retval
+ques
+c_cond
+l_string|&quot; not &quot;
+suffix:colon
+l_string|&quot; &quot;
 )paren
 suffix:semicolon
 r_break
@@ -6899,7 +7979,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Bad block in update last marker, fatal&bslash;n&quot;
+l_string|&quot;osst%d:E: Bad frame in update last marker, fatal&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6911,7 +7991,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 op_plus
 id|STp-&gt;cur_frames
 op_plus
@@ -6934,7 +8014,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Bad block in header partition, skipped&bslash;n&quot;
+l_string|&quot;osst%d:I: Bad frame in header partition, skipped&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6948,7 +8028,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 comma
 l_int|1
 comma
@@ -6962,8 +8042,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Bad block in filler, ignored&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%d:I: Bad frame in filler, ignored&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -6975,7 +8055,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|frame
 op_plus
 id|STp-&gt;cur_frames
 op_plus
@@ -6997,8 +8077,8 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;osst%d: Positioning complete, cur_frames %d, pos %d, tape pos %d&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Positioning complete, cur_frames %d, pos %d, tape pos %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7013,7 +8093,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: next logical block to write: %d&bslash;n&quot;
+l_string|&quot;osst%d:D: next logical frame to write: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7089,7 +8169,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Reached space_over_filemarks_backwards %d %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached space_over_filemarks_backwards %d %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7102,7 +8182,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7118,15 +8198,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks_bwd&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_bwd&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|EIO
@@ -7204,8 +8286,7 @@ id|mt_count
 )braket
 )paren
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 r_if
 c_cond
 (paren
@@ -7233,7 +8314,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Filemark lookup fail due to %s&bslash;n&quot;
+l_string|&quot;osst%d:D: Filemark lookup fail due to %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7252,7 +8333,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7325,7 +8406,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7341,15 +8422,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -7368,8 +8451,8 @@ id|OS_FRAME_TYPE_MARKER
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find marker at block %d, not found&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7391,27 +8474,42 @@ op_eq
 id|MTBSFM
 )paren
 (brace
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_increment
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
 suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Reverting to scan filemark backwards&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Reverting to scan filemark backwards&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|cnt
 op_assign
@@ -7452,7 +8550,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Positioning to last mark at %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Positioning to last mark at %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7478,7 +8576,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7494,15 +8592,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -7521,8 +8621,8 @@ id|OS_FRAME_TYPE_MARKER
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find marker at block %d, not found&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7545,12 +8645,25 @@ op_eq
 id|MTBSFM
 )paren
 (brace
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_increment
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -7581,6 +8694,12 @@ id|mt_count
 )paren
 (brace
 r_int
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if DEBUG
+r_int
 id|dev
 op_assign
 id|TAPE_NR
@@ -7589,17 +8708,11 @@ c_func
 id|STp-&gt;devt
 )paren
 suffix:semicolon
-r_int
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Reached space_over_filemarks_forward_slow %d %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached space_over_filemarks_forward_slow %d %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7612,7 +8725,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7628,15 +8741,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -7653,7 +8768,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7669,15 +8784,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -7708,7 +8825,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: space_fwd: EOD reached&bslash;n&quot;
+l_string|&quot;osst%d:D: space_fwd: EOD reached&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -7729,7 +8846,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: EOD position corrected (%d=&gt;%d)&bslash;n&quot;
+l_string|&quot;osst%d:D: EOD position corrected (%d=&gt;%d)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7764,7 +8881,7 @@ id|mt_count
 )paren
 r_break
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -7777,12 +8894,25 @@ op_eq
 id|MTFSF
 )paren
 (brace
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_increment
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -7836,7 +8966,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Reached space_over_filemarks_forward_fast %d %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached space_over_filemarks_forward_fast %d %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7849,7 +8979,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -7865,15 +8995,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -7965,8 +9097,7 @@ id|mt_count
 )braket
 )paren
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 r_if
 c_cond
 (paren
@@ -7986,7 +9117,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Filemark lookup fail due to %s&bslash;n&quot;
+l_string|&quot;osst%d:D: Filemark lookup fail due to %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8005,7 +9136,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8061,15 +9192,17 @@ OG
 id|STp-&gt;eod_frame_ppos
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Reverting to slow filemark space&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|osst_space_over_filemarks_forward_slow
 c_func
@@ -8101,7 +9234,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -8117,15 +9250,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -8144,8 +9279,8 @@ id|OS_FRAME_TYPE_MARKER
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find marker at block %d, not found&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8176,8 +9311,8 @@ id|mt_count
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find marker %d at block %d, not %d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find marker %d at ppos %d, not %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8234,7 +9369,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: space_fwd: EOD reached&bslash;n&quot;
+l_string|&quot;osst%d:D: space_fwd: EOD reached&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -8268,15 +9403,17 @@ op_minus
 l_int|1
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Reverting to slow filemark space&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|osst_space_over_filemarks_forward_slow
 c_func
@@ -8306,7 +9443,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -8322,15 +9459,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks_fwd_fast&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd_fast&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -8349,8 +9488,8 @@ id|OS_FRAME_TYPE_MARKER
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find filemark at %d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find filemark at %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8425,15 +9564,17 @@ OG
 id|STp-&gt;eod_frame_ppos
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Reverting to slow filemark space&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|osst_space_over_filemarks_forward_slow
 c_func
@@ -8456,7 +9597,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Positioning to next mark at %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Positioning to next mark at %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8482,7 +9623,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -8498,15 +9639,17 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 op_minus
@@ -8525,8 +9668,8 @@ id|OS_FRAME_TYPE_MARKER
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Expected to find marker at block %d, not found&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8549,13 +9692,28 @@ id|mt_op
 op_eq
 id|MTFSF
 )paren
-id|STp-&gt;logical_blk_num
+(brace
+id|STp-&gt;frame_seq_number
 op_increment
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|ntohs
+c_func
+(paren
+id|STp-&gt;buffer-&gt;aux-&gt;dat.dat_list
+(braket
+l_int|0
+)braket
+dot
+id|blk_cnt
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8756,7 +9914,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Setting number of retries on OnStream tape to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Setting number of retries on OnStream tape to %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -8805,336 +9963,13 @@ id|syscall_result
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Couldn&squot;t set retries to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Couldn&squot;t set retries to %d&bslash;n&quot;
 comma
 id|dev
 comma
 id|retries
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if 0
-r_static
-r_void
-id|osst_update_markers
-c_func
-(paren
-id|OS_Scsi_Tape
-op_star
-id|STp
-comma
-id|Scsi_Request
-op_star
-op_star
-id|aSRpnt
-comma
-r_int
-id|last_mark_ppos
-comma
-r_int
-id|this_mark_ppos
-)paren
-(brace
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|STp-&gt;devt
-)paren
-suffix:semicolon
-r_int
-id|frame
-comma
-id|reslt
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|STp-&gt;raw
-)paren
-r_return
-suffix:semicolon
-id|STp-&gt;last_mark_ppos
-op_assign
-id|this_mark_ppos
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|STp-&gt;header_cache
-op_ne
-l_int|NULL
-op_logical_and
-id|STp-&gt;filemark_cnt
-OL
-id|OS_FM_TAB_MAX
-)paren
-id|STp-&gt;header_cache-&gt;dat_fm_tab.fm_tab_ent
-(braket
-id|STp-&gt;filemark_cnt
-)braket
-op_assign
-id|htonl
-c_func
-(paren
-id|this_mark_ppos
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|STp-&gt;filemark_cnt
-op_increment
-op_eq
-l_int|0
-)paren
-id|STp-&gt;first_mark_ppos
-op_assign
-id|this_mark_ppos
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|STp-&gt;linux_media_version
-op_ge
-l_int|4
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|last_mark_ppos
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-suffix:semicolon
-id|STp-&gt;write_type
-op_assign
-id|OS_WRITE_LAST_MARK
-suffix:semicolon
-id|frame
-op_assign
-id|osst_get_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-)paren
-suffix:semicolon
-macro_line|#if DEBUG
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%i: Update last_marker at frame %d&bslash;n&quot;
-comma
-id|dev
-comma
-id|last_mark_addr
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%i: current position %d, lblk %d, tape blk %d&bslash;n&quot;
-comma
-id|dev
-comma
-id|frame
-comma
-id|STp-&gt;logical_blk_num
-comma
-id|STp-&gt;last_frame_position
-)paren
-suffix:semicolon
-macro_line|#endif
-id|osst_set_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-id|last_mark_ppos
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|osst_initiate_read
-(paren
-id|STp
-comma
-id|aSRpnt
-)paren
-suffix:semicolon
-id|reslt
-op_assign
-id|osst_read_block
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-l_int|180
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reslt
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;osst%i: couldn&squot;t read last marker&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-id|osst_set_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-id|frame
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|STp-&gt;buffer-&gt;aux-&gt;frame_type
-op_ne
-id|OS_FRAME_TYPE_MARKER
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;osst%i: expected marker at addr %d&bslash;n&quot;
-comma
-id|dev
-comma
-id|last_mark_ppos
-)paren
-suffix:semicolon
-id|osst_set_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-id|frame
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#if DEBUG
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%i: writing back marker&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-id|STp-&gt;buffer-&gt;aux-&gt;next_mark_ppos
-op_assign
-id|htonl
-c_func
-(paren
-id|this_mark_ppos
-)paren
-suffix:semicolon
-id|osst_set_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-id|last_mark_ppos
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|STp-&gt;dirty
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|osst_flush_write_buffer
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-l_int|0
-)paren
-op_logical_or
-id|osst_flush_drive_buffer
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;osst%i: couldn&squot;t write marker back at addr %d&bslash;n&quot;
-comma
-id|dev
-comma
-id|last_mark_ppos
-)paren
-suffix:semicolon
-)brace
-id|osst_set_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-comma
-id|frame
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-multiline_comment|/* FIXME -- errors should go back to user space */
 )brace
 macro_line|#endif
 DECL|function|osst_write_filemark
@@ -9158,6 +9993,13 @@ id|result
 suffix:semicolon
 r_int
 id|this_mark_ppos
+op_assign
+id|STp-&gt;first_frame_position
+suffix:semicolon
+r_int
+id|this_mark_lbn
+op_assign
+id|STp-&gt;logical_blk_num
 suffix:semicolon
 macro_line|#if DEBUG
 r_int
@@ -9182,22 +10024,12 @@ id|STp-&gt;write_type
 op_assign
 id|OS_WRITE_NEW_MARK
 suffix:semicolon
-id|this_mark_ppos
-op_assign
-id|osst_get_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-)paren
-suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Writing Filemark %i at frame %d (lblk %d)&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing Filemark %i at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -9205,30 +10037,12 @@ id|STp-&gt;filemark_cnt
 comma
 id|this_mark_ppos
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
+comma
+id|this_mark_lbn
 )paren
 suffix:semicolon
 macro_line|#endif
-id|osst_init_aux
-c_func
-(paren
-id|STp
-comma
-id|OS_FRAME_TYPE_MARKER
-comma
-id|STp-&gt;logical_blk_num
-op_increment
-)paren
-suffix:semicolon
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-dot
-id|rw
-op_assign
-id|ST_WRITING
-suffix:semicolon
 id|STp-&gt;dirty
 op_assign
 l_int|1
@@ -9241,8 +10055,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -9258,6 +10070,10 @@ suffix:semicolon
 id|STp-&gt;last_mark_ppos
 op_assign
 id|this_mark_ppos
+suffix:semicolon
+id|STp-&gt;last_mark_lbn
+op_assign
+id|this_mark_lbn
 suffix:semicolon
 r_if
 c_cond
@@ -9293,7 +10109,6 @@ id|STp-&gt;first_mark_ppos
 op_assign
 id|this_mark_ppos
 suffix:semicolon
-singleline_comment|//&t;osst_update_markers(STp, aSRpnt, STp-&gt;last_mark_addr, this_mark_addr);
 r_return
 id|result
 suffix:semicolon
@@ -9342,49 +10157,25 @@ id|OS_WRITE_EOD
 suffix:semicolon
 id|STp-&gt;eod_frame_ppos
 op_assign
-id|osst_get_frame_position
-c_func
-(paren
-id|STp
-comma
-id|aSRpnt
-)paren
+id|STp-&gt;first_frame_position
 suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Writing EOD at %d=&gt;%d&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing EOD at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
 comma
 id|dev
 comma
-id|STp-&gt;logical_blk_num
-comma
 id|STp-&gt;eod_frame_ppos
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;logical_blk_num
 )paren
 suffix:semicolon
 macro_line|#endif
-id|osst_init_aux
-c_func
-(paren
-id|STp
-comma
-id|OS_FRAME_TYPE_EOD
-comma
-id|STp-&gt;logical_blk_num
-op_increment
-)paren
-suffix:semicolon
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-dot
-id|rw
-op_assign
-id|ST_WRITING
-suffix:semicolon
 id|STp-&gt;dirty
 op_assign
 l_int|1
@@ -9397,8 +10188,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -9415,7 +10204,7 @@ id|STp-&gt;eod_frame_lfa
 op_assign
 op_decrement
 (paren
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 )paren
 suffix:semicolon
 r_return
@@ -9438,7 +10227,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|block
+id|where
 comma
 r_int
 id|count
@@ -9458,11 +10247,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Reached onstream write filler group %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached onstream write filler group %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|where
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9485,7 +10274,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|where
 comma
 l_int|0
 )paren
@@ -9493,16 +10282,6 @@ suffix:semicolon
 id|STp-&gt;write_type
 op_assign
 id|OS_WRITE_FILLER
-suffix:semicolon
-id|osst_init_aux
-c_func
-(paren
-id|STp
-comma
-id|OS_FRAME_TYPE_FILL
-comma
-l_int|0
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -9538,8 +10317,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -9547,7 +10324,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t write filler frame&bslash;n&quot;
+l_string|&quot;osst%i:I: Couldn&squot;t write filler frame&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -9565,7 +10342,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Exiting onstream write filler group&bslash;n&quot;
+l_string|&quot;osst%d:D: Exiting onstream write filler group&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -9597,7 +10374,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|block
+id|where
 comma
 r_int
 id|count
@@ -9620,11 +10397,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Reached onstream write header group %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached onstream write header group %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|where
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9647,7 +10424,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|where
 comma
 l_int|0
 )paren
@@ -9655,25 +10432,6 @@ suffix:semicolon
 id|STp-&gt;write_type
 op_assign
 id|OS_WRITE_HEADER
-suffix:semicolon
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-dot
-id|rw
-op_assign
-id|ST_WRITING
-suffix:semicolon
-id|osst_init_aux
-c_func
-(paren
-id|STp
-comma
-id|OS_FRAME_TYPE_HEADER
-comma
-id|STp-&gt;logical_blk_num
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -9715,8 +10473,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -9724,7 +10480,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i: Couldn&squot;t write header frame&bslash;n&quot;
+l_string|&quot;osst%i:I: Couldn&squot;t write header frame&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -9752,7 +10508,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Write onstream header group %s&bslash;n&quot;
+l_string|&quot;osst%d:D: Write onstream header group %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -9809,7 +10565,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Writing tape header&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing tape header&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -9858,7 +10614,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Failed to allocate header cache&bslash;n&quot;
+l_string|&quot;osst%i:E: Failed to allocate header cache&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -9888,7 +10644,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Allocated and cleared memory for header cache&bslash;n&quot;
+l_string|&quot;osst%d:D: Allocated and cleared memory for header cache&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10159,7 +10915,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: locating back to eod frame addr %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Locating back to eod frame addr %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -10188,8 +10944,8 @@ id|result
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%i: write header failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%i:E: Write header failed&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10261,9 +11017,11 @@ id|os_header_t
 suffix:semicolon
 id|STp-&gt;logical_blk_num
 op_assign
+id|STp-&gt;frame_seq_number
+op_assign
 l_int|0
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -10280,6 +11038,8 @@ suffix:semicolon
 id|STp-&gt;first_mark_ppos
 op_assign
 id|STp-&gt;last_mark_ppos
+op_assign
+id|STp-&gt;last_mark_lbn
 op_assign
 op_minus
 l_int|1
@@ -10312,7 +11072,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|block
+id|ppos
 )paren
 (brace
 r_int
@@ -10354,11 +11114,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|block
+id|ppos
 op_eq
 l_int|5
 op_logical_or
-id|block
+id|ppos
 op_eq
 l_int|0xbae
 op_logical_or
@@ -10375,7 +11135,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|ppos
 comma
 l_int|0
 )paren
@@ -10384,7 +11144,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i: Couldn&squot;t position tape&bslash;n&quot;
+l_string|&quot;osst%i:W: Couldn&squot;t position tape&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10404,7 +11164,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i: Couldn&squot;t initiate read&bslash;n&quot;
+l_string|&quot;osst%i:W: Couldn&squot;t initiate read&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10417,7 +11177,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_read_block
+id|osst_read_frame
 c_func
 (paren
 id|STp
@@ -10433,7 +11193,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Couldn&squot;t read header frame&bslash;n&quot;
+l_string|&quot;osst%d:D: Couldn&squot;t read header frame&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10469,11 +11229,92 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Skipping non-header frame (%d)&bslash;n&quot;
+l_string|&quot;osst%d:D: Skipping non-header frame (%d)&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ntohl
+c_func
+(paren
+id|aux-&gt;frame_seq_num
+)paren
+op_ne
+l_int|0
+op_logical_or
+id|ntohl
+c_func
+(paren
+id|aux-&gt;logical_blk_num
+)paren
+op_ne
+l_int|0
+op_logical_or
+id|aux-&gt;partition.partition_num
+op_ne
+id|OS_CONFIG_PARTITION
+op_logical_or
+id|ntohl
+c_func
+(paren
+id|aux-&gt;partition.first_frame_ppos
+)paren
+op_ne
+l_int|0
+op_logical_or
+id|ntohl
+c_func
+(paren
+id|aux-&gt;partition.last_frame_ppos
+)paren
+op_ne
+l_int|0xbb7
+)paren
+(brace
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Invalid header frame (%d,%d,%d,%d,%d)&bslash;n&quot;
+comma
+id|dev
+comma
+id|ntohl
+c_func
+(paren
+id|aux-&gt;frame_seq_num
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|aux-&gt;logical_blk_num
+)paren
+comma
+id|aux-&gt;partition.partition_num
+comma
+id|ntohl
+c_func
+(paren
+id|aux-&gt;partition.first_frame_ppos
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|aux-&gt;partition.last_frame_ppos
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10526,17 +11367,19 @@ l_int|7
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: Invalid header identification string %s&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Invalid header identification string %s&bslash;n&quot;
 comma
 id|dev
 comma
 id|id_string
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -10562,11 +11405,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Skipping frame %d with update_frame_counter %d&lt;%d&bslash;n&quot;
+l_string|&quot;osst%d:D: Skipping frame %d with update_frame_counter %d&lt;%d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
 comma
 id|update_frame_cntr
 comma
@@ -10590,11 +11433,12 @@ op_ne
 l_int|4
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: %s revision %d.%d detected (1.4 supported)&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: %s revision %d.%d detected (1.4 supported)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -10618,6 +11462,7 @@ comma
 id|header-&gt;minor_rev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10633,6 +11478,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if DEBUG
 r_if
 c_cond
 (paren
@@ -10644,13 +11490,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i: Warning: %d partitions defined, only one supported&bslash;n&quot;
+l_string|&quot;osst%i:W: %d partitions defined, only one supported&bslash;n&quot;
 comma
 id|dev
 comma
 id|header-&gt;pt_par_num
 )paren
 suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -10708,7 +11555,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i: Linux media version %d detected (current 4)&bslash;n&quot;
+l_string|&quot;osst%i:I: Linux media version %d detected (current 4)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -10722,7 +11569,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i: non Linux media detected (%s)&bslash;n&quot;
+l_string|&quot;osst%i:W: Non Linux media detected (%s)&bslash;n&quot;
 comma
 id|dev
 comma
@@ -10746,11 +11593,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Skipping frame %d with linux_media_version %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Skipping frame %d with linux_media_version %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
 comma
 id|linux_media_version
 )paren
@@ -10773,11 +11620,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Frame %d sets linux_media_version to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Frame %d sets linux_media_version to %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
 comma
 id|linux_media_version
 )paren
@@ -10816,11 +11663,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Frame %d sets update_frame_counter to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Frame %d sets update_frame_counter to %d&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
 comma
 id|update_frame_cntr
 )paren
@@ -10861,7 +11708,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Failed to allocate header cache&bslash;n&quot;
+l_string|&quot;osst%i:E: Failed to allocate header cache&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10875,7 +11722,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Allocated memory for header cache&bslash;n&quot;
+l_string|&quot;osst%d:D: Allocated memory for header cache&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -10971,6 +11818,14 @@ c_func
 id|aux-&gt;last_mark_ppos
 )paren
 suffix:semicolon
+id|STp-&gt;last_mark_lbn
+op_assign
+id|ntohl
+c_func
+(paren
+id|aux-&gt;last_mark_lbn
+)paren
+suffix:semicolon
 id|STp-&gt;update_frame_cntr
 op_assign
 id|update_frame_cntr
@@ -10980,7 +11835,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: detected write pass %d, update frame counter %d, filemark counter %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Detected write pass %d, update frame counter %d, filemark counter %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -10995,7 +11850,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: first data frame on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
+l_string|&quot;osst%d:D: first data frame on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -11028,7 +11883,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: first mark on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
+l_string|&quot;osst%d:D: first mark on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -11052,15 +11907,17 @@ op_eq
 l_int|4
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Moving filemark list to ADR 1.4 location&bslash;n&quot;
+l_string|&quot;osst%i:D: Moving filemark list to ADR 1.4 location&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -11235,12 +12092,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i: Failed consistency check ADR 1.4 format&bslash;n&quot;
+l_string|&quot;osst%i:W: Failed consistency check ADR 1.4 format&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;memcpy(STp-&gt;header_cache, header, sizeof(os_header_t));
 )brace
 r_return
 l_int|1
@@ -11265,7 +12121,7 @@ id|aSRpnt
 r_int
 id|position
 comma
-id|block
+id|ppos
 suffix:semicolon
 r_int
 id|first
@@ -11342,6 +12198,8 @@ id|STp-&gt;first_mark_ppos
 op_assign
 id|STp-&gt;last_mark_ppos
 op_assign
+id|STp-&gt;last_mark_lbn
+op_assign
 op_minus
 l_int|1
 suffix:semicolon
@@ -11350,13 +12208,13 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Reading header&bslash;n&quot;
+l_string|&quot;osst%d:D: Reading header&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* optimization for speed - if we are positioned at block 10, read second group first */
+multiline_comment|/* optimization for speed - if we are positioned at ppos 10, read second group first  */
 multiline_comment|/* TODO try the ADR 1.1 locations for the second group if we have no valid one yet... */
 id|first
 op_assign
@@ -11383,15 +12241,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|block
+id|ppos
 op_assign
 id|first
 suffix:semicolon
-id|block
+id|ppos
 OL
 id|last
 suffix:semicolon
-id|block
+id|ppos
 op_increment
 )paren
 r_if
@@ -11404,7 +12262,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|ppos
 )paren
 )paren
 id|valid
@@ -11436,15 +12294,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|block
+id|ppos
 op_assign
 id|first
 suffix:semicolon
-id|block
+id|ppos
 OL
 id|last
 suffix:semicolon
-id|block
+id|ppos
 op_increment
 )paren
 r_if
@@ -11457,7 +12315,7 @@ id|STp
 comma
 id|aSRpnt
 comma
-id|block
+id|ppos
 )paren
 )paren
 id|valid
@@ -11475,7 +12333,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Failed to find valid ADRL header, new media?&bslash;n&quot;
+l_string|&quot;osst%i:E: Failed to find valid ADRL header, new media?&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -11528,6 +12386,8 @@ l_int|0
 dot
 id|drv_block
 op_assign
+id|STp-&gt;frame_seq_number
+op_assign
 id|STp-&gt;logical_blk_num
 op_assign
 l_int|0
@@ -11575,9 +12435,24 @@ op_assign
 id|STp-&gt;first_frame_position
 suffix:semicolon
 r_int
+id|frame_seq_numbr
+op_assign
+id|STp-&gt;frame_seq_number
+suffix:semicolon
+r_int
 id|logical_blk_num
 op_assign
 id|STp-&gt;logical_blk_num
+suffix:semicolon
+r_int
+id|halfway_frame
+op_assign
+id|STp-&gt;frame_in_buffer
+suffix:semicolon
+r_int
+id|read_pointer
+op_assign
+id|STp-&gt;buffer-&gt;read_pointer
 suffix:semicolon
 r_int
 id|prev_mark_ppos
@@ -11592,8 +12467,7 @@ id|i
 comma
 id|n
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 r_int
 id|dev
 op_assign
@@ -11607,7 +12481,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Verify that the tape is really the one we think before writing&bslash;n&quot;
+l_string|&quot;osst%d:D: Verify that the tape is really the one we think before writing&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -11630,7 +12504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -11651,7 +12525,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Couldn&squot;t get logical blk num in verify_position&bslash;n&quot;
+l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in verify_position&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -11741,24 +12615,30 @@ id|frame_position
 op_ne
 id|STp-&gt;first_frame_position
 op_logical_or
-id|logical_blk_num
+id|frame_seq_numbr
 op_ne
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_plus
+(paren
+id|halfway_frame
+ques
+c_cond
+l_int|0
+suffix:colon
 l_int|1
+)paren
 op_logical_or
 id|prev_mark_ppos
 op_ne
 id|actual_mark_ppos
 )paren
 (brace
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Block mismatch: frame %d-%d, lblk %d-%d, mark %d-%d&bslash;n&quot;
+l_string|&quot;osst%d:D: Block mismatch: fppos %d-%d, fseq %d-%d, mark %d-%d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -11766,11 +12646,18 @@ id|STp-&gt;first_frame_position
 comma
 id|frame_position
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 op_plus
+(paren
+id|halfway_frame
+ques
+c_cond
+l_int|0
+suffix:colon
 l_int|1
+)paren
 comma
-id|logical_blk_num
+id|frame_seq_numbr
 comma
 id|actual_mark_ppos
 comma
@@ -11785,9 +12672,52 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-id|STp-&gt;logical_blk_in_buffer
-op_assign
+r_if
+c_cond
+(paren
+id|halfway_frame
+)paren
+(brace
+multiline_comment|/* prepare buffer for append and rewrite on top of original */
+id|osst_set_frame_position
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+comma
+id|frame_position
+op_minus
+l_int|1
+comma
 l_int|0
+)paren
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_assign
+id|read_pointer
+suffix:semicolon
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|rw
+op_assign
+id|ST_WRITING
+suffix:semicolon
+id|STp-&gt;dirty
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|STp-&gt;frame_in_buffer
+op_assign
+id|halfway_frame
+suffix:semicolon
+id|STp-&gt;frame_seq_number
+op_assign
+id|frame_seq_numbr
 suffix:semicolon
 id|STp-&gt;logical_blk_num
 op_assign
@@ -11797,7 +12727,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Acc. to OnStream, the vers. numbering is the following:&n; * X.XX for released versions (X=digit), &n; * XXXY for unreleased versions (Y=letter)&n; * Ordering 1.05 &lt; 106A &lt; 106a &lt; 106B &lt; ... &lt; 1.06&n; * This fn makes monoton numbers out of this scheme ...&n; */
+multiline_comment|/* Acc. to OnStream, the vers. numbering is the following:&n; * X.XX for released versions (X=digit), &n; * XXXY for unreleased versions (Y=letter)&n; * Ordering 1.05 &lt; 106A &lt; 106B &lt; ...  &lt; 106a &lt; ... &lt; 1.06&n; * This fn makes monoton numbers out of this scheme ...&n; */
 DECL|function|osst_parse_firmware_rev
 r_static
 r_int
@@ -11810,10 +12740,6 @@ op_star
 id|str
 )paren
 (brace
-r_int
-r_int
-id|rev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11825,15 +12751,14 @@ op_eq
 l_char|&squot;.&squot;
 )paren
 (brace
-id|rev
-op_assign
+r_return
 (paren
 id|str
 (braket
 l_int|0
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|10000
@@ -11844,7 +12769,7 @@ id|str
 l_int|2
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|1000
@@ -11855,7 +12780,7 @@ id|str
 l_int|3
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|100
@@ -11863,15 +12788,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|rev
-op_assign
+r_return
 (paren
 id|str
 (braket
 l_int|0
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|10000
@@ -11882,7 +12806,7 @@ id|str
 l_int|1
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|1000
@@ -11893,44 +12817,23 @@ id|str
 l_int|2
 )braket
 op_minus
-l_int|0x30
+l_char|&squot;0&squot;
 )paren
 op_star
 l_int|100
 op_minus
 l_int|100
-suffix:semicolon
-id|rev
-op_add_assign
-l_int|2
-op_star
-(paren
-id|str
-(braket
-l_int|3
-)braket
-op_amp
-l_int|0x1f
-)paren
 op_plus
 (paren
 id|str
 (braket
 l_int|3
 )braket
-op_ge
-l_int|0x60
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
+op_minus
+l_char|&squot;@&squot;
 )paren
 suffix:semicolon
 )brace
-r_return
-id|rev
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Configure the OnStream SCII tape drive for default operation&n; */
 DECL|function|osst_configure_onstream
@@ -11950,6 +12853,13 @@ id|aSRpnt
 )paren
 (brace
 r_int
+r_char
+id|cmd
+(braket
+id|MAX_COMMAND_SIZE
+)braket
+suffix:semicolon
+r_int
 id|dev
 op_assign
 id|TAPE_NR
@@ -11957,13 +12867,6 @@ c_func
 (paren
 id|STp-&gt;devt
 )paren
-suffix:semicolon
-r_int
-r_char
-id|cmd
-(braket
-id|MAX_COMMAND_SIZE
-)braket
 suffix:semicolon
 id|Scsi_Request
 op_star
@@ -12004,7 +12907,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Not Ready&bslash;n&quot;
+l_string|&quot;osst%d:D: Not Ready&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12028,7 +12931,8 @@ l_int|10600
 id|printk
 c_func
 (paren
-l_string|&quot;osst%i: Old OnStream firmware revision detected (%s)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%i:I: Old OnStream firmware revision detected (%s),&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12038,13 +12942,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;osst%i: An upgrade to version 1.06 or above is recommended&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%d:I: an upgrade to version 1.06 or above is recommended&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Configure 32.5KB (data+aux) frame size.&n;&t; * Get the current block size from the block size mode page&n;&t; */
+multiline_comment|/*&n;&t; * Configure 32.5KB (data+aux) frame size.&n;         * Get the current frame size from the block size mode page&n;&t; */
 id|memset
 c_func
 (paren
@@ -12123,7 +13028,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: Busy&bslash;n&quot;
+l_string|&quot;osst :D: Busy&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12154,7 +13059,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Can&squot;t get tape block size mode page&bslash;n&quot;
+l_string|&quot;osst%i:E: Can&squot;t get tape block size mode page&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12203,8 +13108,8 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: 32KB play back: %s&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: 32KB play back: %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12219,8 +13124,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: 32.5KB play back: %s&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: 32.5KB play back: %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12235,8 +13140,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: 32KB record: %s&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: 32KB record: %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12251,8 +13156,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst%i: 32.5KB record: %s&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: 32.5KB record: %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12364,7 +13269,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Couldn&squot;t set tape block size mode page&bslash;n&quot;
+l_string|&quot;osst%i:E: Couldn&squot;t set tape block size mode page&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12376,32 +13281,12 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-id|STp-&gt;block_size
-op_assign
-(paren
-id|STp-&gt;raw
-)paren
-ques
-c_cond
-id|OS_FRAME_SIZE
-suffix:colon
-id|OS_DATA_SIZE
-suffix:semicolon
-id|STp-&gt;min_block
-op_assign
-id|OS_FRAME_SIZE
-suffix:semicolon
-multiline_comment|/* FIXME */
-id|STp-&gt;max_block
-op_assign
-id|STp-&gt;block_size
-suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i: Block Size changed to 32.5K&bslash;n&quot;
+l_string|&quot;osst%d:D: Block Size changed to 32.5K&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12635,7 +13520,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: Couldn&squot;t set vendor name to %s&bslash;n&quot;
+l_string|&quot;osst%i:E: Couldn&squot;t set vendor name to %s&bslash;n&quot;
 comma
 id|dev
 comma
@@ -12748,7 +13633,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: can&squot;t get capabilities page&bslash;n&quot;
+l_string|&quot;osst%i:E: Can&squot;t get capabilities page&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12888,7 +13773,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i: can&squot;t get tape parameter page&bslash;n&quot;
+l_string|&quot;osst%i:E: Can&squot;t get tape parameter page&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -12956,7 +13841,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Density %d, tape length: %dMB, drive buffer size: %dKB&bslash;n&quot;
+l_string|&quot;osst%d:D: Density %d, tape length: %dMB, drive buffer size: %dKB&bslash;n&quot;
 comma
 id|dev
 comma
@@ -13016,7 +13901,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Stepping over filemark %s.&bslash;n&quot;
+l_string|&quot;osst%d:D: Stepping over filemark %s.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -13077,8 +13962,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;osst%d: Stepping over filemark %s failed.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Stepping over filemark %s failed.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -13280,7 +14165,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Can&squot;t read tape position.&bslash;n&quot;
+l_string|&quot;osst%d:E: Can&squot;t read tape position.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -13497,7 +14382,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Drive Positions: host %d, tape %d%s, buffer %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Drive Positions: host %d, tape %d%s, buffer %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -13561,7 +14446,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Correcting read position %d, %d, %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Correcting read position %d, %d, %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -13617,7 +14502,7 @@ op_star
 id|aSRpnt
 comma
 r_int
-id|block
+id|ppos
 comma
 r_int
 id|skip
@@ -13644,7 +14529,21 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|timeout
+id|pp
+op_assign
+(paren
+id|ppos
+op_eq
+l_int|3000
+op_logical_and
+op_logical_neg
+id|skip
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|ppos
 suffix:semicolon
 r_int
 id|dev
@@ -13668,10 +14567,6 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|STp-&gt;long_timeout
-suffix:semicolon
 id|STps
 op_assign
 op_amp
@@ -13685,7 +14580,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|block
+id|ppos
 template_param
 id|STp-&gt;capacity
 )paren
@@ -13693,17 +14588,19 @@ id|STp-&gt;capacity
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;osst%d: Reposition request %d out of range&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Reposition request %d out of range&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|ppos
 )paren
 suffix:semicolon
-id|block
+id|pp
 op_assign
-id|block
+id|ppos
+op_assign
+id|ppos
 OL
 l_int|0
 ques
@@ -13724,6 +14621,8 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
+r_do
+(brace
 macro_line|#if DEBUG
 r_if
 c_cond
@@ -13734,11 +14633,11 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Setting block to %d.&bslash;n&quot;
+l_string|&quot;osst%d:D: Setting ppos to %d.&bslash;n&quot;
 comma
 id|dev
 comma
-id|block
+id|pp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13771,7 +14670,7 @@ l_int|3
 )braket
 op_assign
 (paren
-id|block
+id|pp
 op_rshift
 l_int|24
 )paren
@@ -13782,7 +14681,7 @@ l_int|4
 )braket
 op_assign
 (paren
-id|block
+id|pp
 op_rshift
 l_int|16
 )paren
@@ -13793,7 +14692,7 @@ l_int|5
 )braket
 op_assign
 (paren
-id|block
+id|pp
 op_rshift
 l_int|8
 )paren
@@ -13803,7 +14702,7 @@ id|scmd
 l_int|6
 )braket
 op_assign
-id|block
+id|pp
 suffix:semicolon
 r_if
 c_cond
@@ -13833,7 +14732,7 @@ l_int|0
 comma
 id|SCSI_DATA_NONE
 comma
-id|timeout
+id|STp-&gt;long_timeout
 comma
 id|MAX_READY_RETRIES
 comma
@@ -13857,16 +14756,6 @@ id|aSRpnt
 op_assign
 id|SRpnt
 suffix:semicolon
-id|STp-&gt;first_frame_position
-op_assign
-id|STp-&gt;last_frame_position
-op_assign
-id|block
-suffix:semicolon
-id|STps-&gt;eof
-op_assign
-id|ST_NOEOF
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13884,9 +14773,13 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: SEEK command failed.&bslash;n&quot;
+l_string|&quot;osst%d:D: SEEK command from %d to %d failed.&bslash;n&quot;
 comma
 id|dev
+comma
+id|STp-&gt;first_frame_position
+comma
+id|pp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13898,6 +14791,52 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pp
+op_ne
+id|ppos
+)paren
+id|osst_wait_ready
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+comma
+l_int|5
+op_star
+l_int|60
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|pp
+op_ne
+id|ppos
+)paren
+op_logical_and
+(paren
+id|pp
+op_assign
+id|ppos
+)paren
+)paren
+suffix:semicolon
+id|STp-&gt;first_frame_position
+op_assign
+id|STp-&gt;last_frame_position
+op_assign
+id|ppos
+suffix:semicolon
+id|STps-&gt;eof
+op_assign
+id|ST_NOEOF
+suffix:semicolon
 id|STps-&gt;at_sm
 op_assign
 l_int|0
@@ -13906,7 +14845,7 @@ id|STps-&gt;rw
 op_assign
 id|ST_IDLE
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -13931,9 +14870,6 @@ id|Scsi_Request
 op_star
 op_star
 id|aSRpnt
-comma
-r_int
-id|file_blk
 )paren
 (brace
 r_int
@@ -14004,7 +14940,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: aSRpnt points to Scsi_Request that write_behind_check will release -- cleared&bslash;n&quot;
+l_string|&quot;osst%d:D: aSRpnt points to Scsi_Request that write_behind_check will release -- cleared&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -14029,7 +14965,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: aSRpnt does not point to Scsi_Request that write_behind_check will release -- strange&bslash;n&quot;
+l_string|&quot;osst%d:D: aSRpnt does not point to Scsi_Request that write_behind_check will release -- strange&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -14061,7 +14997,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Async write error (flush) %x.&bslash;n&quot;
+l_string|&quot;osst%d:D: Async write error (flush) %x.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -14110,40 +15046,43 @@ op_eq
 l_int|1
 )paren
 (brace
+id|STp-&gt;write_count
+op_increment
+suffix:semicolon
+id|STps
+op_assign
+op_amp
+(paren
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+)paren
+suffix:semicolon
+id|STps-&gt;rw
+op_assign
+id|ST_WRITING
+suffix:semicolon
 id|offset
 op_assign
 id|STp-&gt;buffer-&gt;buffer_bytes
+suffix:semicolon
+id|blks
+op_assign
+(paren
+id|offset
+op_plus
+id|STp-&gt;block_size
+op_minus
+l_int|1
+)paren
+op_div
+id|STp-&gt;block_size
 suffix:semicolon
 id|transfer
 op_assign
 id|OS_FRAME_SIZE
 suffix:semicolon
-id|blks
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#if DEBUG
-r_if
-c_cond
-(paren
-id|debugging
-)paren
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: Flushing %d bytes, Tranfering %d bytes in %d blocks.&bslash;n&quot;
-comma
-id|dev
-comma
-id|offset
-comma
-id|transfer
-comma
-id|blks
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -14208,8 +15147,178 @@ id|cmd
 l_int|4
 )braket
 op_assign
-id|blks
+l_int|1
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|STp-&gt;write_type
+)paren
+(brace
+r_case
+id|OS_WRITE_DATA
+suffix:colon
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+id|debugging
+)paren
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
+comma
+id|dev
+comma
+id|blks
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+id|blks
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_DATA
+comma
+id|STp-&gt;frame_seq_number
+op_increment
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+id|blks
+comma
+id|STp-&gt;block_size
+comma
+id|blks
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OS_WRITE_EOD
+suffix:colon
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_EOD
+comma
+id|STp-&gt;frame_seq_number
+op_increment
+comma
+id|STp-&gt;logical_blk_num
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OS_WRITE_NEW_MARK
+suffix:colon
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_MARKER
+comma
+id|STp-&gt;frame_seq_number
+op_increment
+comma
+id|STp-&gt;logical_blk_num
+op_increment
+comma
+l_int|0
+comma
+id|blks
+op_assign
+l_int|1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OS_WRITE_HEADER
+suffix:colon
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_HEADER
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|blks
+op_assign
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* probably FILLER */
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_FILL
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+id|debugging
+)paren
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Flushing %d bytes, Transfering %d bytes in %d lblocks.&bslash;n&quot;
+comma
+id|dev
+comma
+id|offset
+comma
+id|transfer
+comma
+id|blks
+)paren
+suffix:semicolon
+macro_line|#endif
 id|SRpnt
 op_assign
 id|osst_do_scsi
@@ -14250,16 +15359,6 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-id|STps
-op_assign
-op_amp
-(paren
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14272,11 +15371,12 @@ op_ne
 l_int|0
 )paren
 (brace
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: write sense [0]=0x%02x [2]=%02x [12]=%02x [13]=%02x&bslash;n&quot;
+l_string|&quot;osst%d:D: write sense [0]=0x%02x [2]=%02x [12]=%02x [13]=%02x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -14301,6 +15401,7 @@ l_int|13
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -14377,7 +15478,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Error on flush.&bslash;n&quot;
+l_string|&quot;osst%d:E: Error on flush write.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -14401,22 +15502,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|file_blk
-op_logical_and
-id|STps-&gt;drv_block
-op_ge
-l_int|0
-)paren
-id|STps-&gt;drv_block
-op_add_assign
-id|blks
-suffix:semicolon
 id|STp-&gt;first_frame_position
-op_add_assign
-id|blks
+op_increment
 suffix:semicolon
 id|STp-&gt;dirty
 op_assign
@@ -14437,7 +15524,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Exit flush write buffer with code %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Exit flush write buffer with code %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -14469,18 +15556,18 @@ r_int
 id|seek_next
 )paren
 (brace
-r_int
-id|backspace
-comma
-id|result
-suffix:semicolon
-id|OSST_buffer
-op_star
-id|STbuffer
-suffix:semicolon
 id|ST_partstat
 op_star
 id|STps
+suffix:semicolon
+r_int
+id|backspace
+op_assign
+l_int|0
+comma
+id|result
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
 r_int
@@ -14493,10 +15580,6 @@ id|STp-&gt;devt
 )paren
 suffix:semicolon
 macro_line|#endif
-id|STbuffer
-op_assign
-id|STp-&gt;buffer
-suffix:semicolon
 multiline_comment|/*&n;&t; * If there was a bus reset, block further access&n;&t; * to this device.&n;&t; */
 r_if
 c_cond
@@ -14546,8 +15629,6 @@ c_func
 id|STp
 comma
 id|aSRpnt
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -14565,12 +15646,19 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Reached flush (read) buffer&bslash;n&quot;
+l_string|&quot;osst%d:D: Reached flush (read) buffer&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|STp-&gt;can_bsr
+)paren
+(brace
 id|backspace
 op_assign
 (paren
@@ -14619,10 +15707,12 @@ id|read_pointer
 op_assign
 l_int|0
 suffix:semicolon
-id|result
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME is this relevant w. OSST? */
+)brace
 r_if
 c_cond
 (paren
@@ -14737,6 +15827,419 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|osst_write_frame
+r_static
+r_int
+id|osst_write_frame
+c_func
+(paren
+id|OS_Scsi_Tape
+op_star
+id|STp
+comma
+id|Scsi_Request
+op_star
+op_star
+id|aSRpnt
+comma
+r_int
+id|synchronous
+)paren
+(brace
+r_int
+r_char
+id|cmd
+(braket
+id|MAX_COMMAND_SIZE
+)braket
+suffix:semicolon
+id|Scsi_Request
+op_star
+id|SRpnt
+suffix:semicolon
+r_int
+id|blks
+suffix:semicolon
+macro_line|#if DEBUG
+r_int
+id|dev
+op_assign
+id|TAPE_NR
+c_func
+(paren
+id|STp-&gt;devt
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|STp
+op_member_access_from_pointer
+id|raw
+)paren
+op_logical_and
+(paren
+id|STp-&gt;first_frame_position
+op_eq
+l_int|0xbae
+)paren
+)paren
+(brace
+multiline_comment|/* _must_ preserve buffer! */
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Reaching config partition.&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|osst_flush_drive_buffer
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+)paren
+OL
+l_int|0
+)paren
+(brace
+r_return
+(paren
+op_minus
+id|EIO
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* error recovery may have bumped us past the header partition */
+r_if
+c_cond
+(paren
+id|osst_get_frame_position
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+)paren
+OL
+l_int|0xbb8
+)paren
+(brace
+macro_line|#if DEBUG
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Skipping over config partition.&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+id|osst_position_tape_and_confirm
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+comma
+l_int|0xbb8
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|STp-&gt;poll
+)paren
+id|osst_wait_frame
+(paren
+id|STp
+comma
+id|aSRpnt
+comma
+id|STp-&gt;first_frame_position
+comma
+op_minus
+l_int|50
+comma
+l_int|60
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: Check for an error ! */
+singleline_comment|//&t;osst_build_stats(STp, &amp;SRpnt);
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+dot
+id|rw
+op_assign
+id|ST_WRITING
+suffix:semicolon
+id|STp-&gt;write_type
+op_assign
+id|OS_WRITE_DATA
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|cmd
+comma
+l_int|0
+comma
+id|MAX_COMMAND_SIZE
+)paren
+suffix:semicolon
+id|cmd
+(braket
+l_int|0
+)braket
+op_assign
+id|WRITE_6
+suffix:semicolon
+id|cmd
+(braket
+l_int|1
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+id|cmd
+(braket
+l_int|4
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* one frame at a time... */
+id|blks
+op_assign
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+id|debugging
+)paren
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
+comma
+id|dev
+comma
+id|blks
+comma
+id|STp-&gt;frame_seq_number
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+id|blks
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+id|osst_init_aux
+c_func
+(paren
+id|STp
+comma
+id|OS_FRAME_TYPE_DATA
+comma
+id|STp-&gt;frame_seq_number
+op_increment
+comma
+id|STp-&gt;logical_blk_num
+op_minus
+id|blks
+comma
+id|STp-&gt;block_size
+comma
+id|blks
+)paren
+suffix:semicolon
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+id|synchronous
+)paren
+id|STp-&gt;write_pending
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+id|SRpnt
+op_assign
+id|osst_do_scsi
+c_func
+(paren
+op_star
+id|aSRpnt
+comma
+id|STp
+comma
+id|cmd
+comma
+id|OS_FRAME_SIZE
+comma
+id|SCSI_DATA_WRITE
+comma
+id|STp-&gt;timeout
+comma
+id|MAX_WRITE_RETRIES
+comma
+id|synchronous
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SRpnt
+)paren
+r_return
+(paren
+op_minus
+id|EBUSY
+)paren
+suffix:semicolon
+op_star
+id|aSRpnt
+op_assign
+id|SRpnt
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|synchronous
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|STp-&gt;buffer-&gt;syscall_result
+op_ne
+l_int|0
+)paren
+(brace
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+id|debugging
+)paren
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Error on write:&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x70
+)paren
+op_eq
+l_int|0x70
+op_logical_and
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x40
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x0f
+)paren
+op_eq
+id|VOLUME_OVERFLOW
+)paren
+r_return
+(paren
+op_minus
+id|ENOSPC
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|osst_write_error_recovery
+c_func
+(paren
+id|STp
+comma
+id|aSRpnt
+comma
+l_int|1
+)paren
+)paren
+r_return
+(paren
+op_minus
+id|EIO
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+id|STp-&gt;first_frame_position
+op_increment
+suffix:semicolon
+)brace
+id|STp-&gt;write_count
+op_increment
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 "&f;"
 multiline_comment|/* Entry points to osst */
 multiline_comment|/* Write command */
@@ -14794,13 +16297,6 @@ r_int
 id|doing_write
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-r_char
-id|cmd
-(braket
-id|MAX_COMMAND_SIZE
-)braket
 suffix:semicolon
 r_const
 r_char
@@ -15003,7 +16499,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Incorrect device.&bslash;n&quot;
+l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -15057,8 +16553,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Write (%ld bytes) not multiple of tape block size (32k).&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%d:E: Write (%ld bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15067,6 +16563,26 @@ r_int
 r_int
 )paren
 id|count
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+id|STp-&gt;block_size
+suffix:colon
+id|STp-&gt;block_size
+op_div
+l_int|1024
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+l_char|&squot;b&squot;
+suffix:colon
+l_char|&squot;k&squot;
 )paren
 suffix:semicolon
 id|retval
@@ -15087,14 +16603,14 @@ id|STp-&gt;first_frame_position
 op_ge
 id|STp-&gt;capacity
 op_minus
-l_int|164
+id|OSST_EOM_RESERVE
 )paren
 (brace
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Write truncated at EOM early warning (frame %d).&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;osst%d:E: Write truncated at EOM early warning (frame %d).&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15199,9 +16715,15 @@ c_cond
 op_logical_neg
 id|STp-&gt;header_ok
 op_logical_or
+(paren
 id|STp-&gt;first_frame_position
 op_eq
 id|STp-&gt;first_data_ppos
+op_logical_and
+id|STps-&gt;drv_block
+OL
+l_int|0
+)paren
 op_logical_or
 (paren
 id|STps-&gt;drv_file
@@ -15222,7 +16744,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Allocating next write pass counter: %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Allocating next write pass counter: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15242,8 +16764,6 @@ suffix:semicolon
 id|STps-&gt;drv_file
 op_assign
 id|STps-&gt;drv_block
-op_assign
-id|STp-&gt;logical_blk_num
 op_assign
 l_int|0
 suffix:semicolon
@@ -15284,6 +16804,7 @@ op_eq
 id|STp-&gt;eod_frame_ppos
 )paren
 (brace
+multiline_comment|/* at EOD */
 id|STps-&gt;drv_file
 op_assign
 id|STp-&gt;filemark_cnt
@@ -15301,7 +16822,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Cannot write at indeterminate position.&bslash;n&quot;
+l_string|&quot;osst%d:D: Cannot write at indeterminate position.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -15322,7 +16843,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|STps-&gt;drv_file
+op_plus
+id|STps-&gt;drv_block
+)paren
 OG
 l_int|0
 op_logical_and
@@ -15352,7 +16877,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Overwriting file %d with old write pass counter %d&bslash;n&quot;
+l_string|&quot;osst%d:W: Overwriting file %d with old write pass counter %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15365,7 +16890,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: may lead to stale data being accepted on reading back!&bslash;n&quot;
+l_string|&quot;osst%d:W: may lead to stale data being accepted on reading back!&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -15375,13 +16900,15 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: resetting filemark count to %d and last mark ppos to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: resetting filemark count to %d and last mark ppos,lbn to %d,%d&bslash;n&quot;
 comma
 id|dev
 comma
 id|STp-&gt;filemark_cnt
 comma
 id|STp-&gt;last_mark_ppos
+comma
+id|STp-&gt;last_mark_lbn
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -15404,7 +16931,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Write cannot proceed without valid headers&bslash;n&quot;
+l_string|&quot;osst%d:D: Write cannot proceed without valid headers&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -15440,7 +16967,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d: Not supposed to have SRpnt at line %d&bslash;n&quot;
+l_string|&quot;osst%d:A: Not supposed to have SRpnt at line %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15473,7 +17000,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Async write error (write) %x.&bslash;n&quot;
+l_string|&quot;osst%d:D: Async write error (write) %x.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15601,36 +17128,6 @@ op_logical_neg
 id|STm-&gt;do_buffer_writes
 )paren
 (brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|STp-&gt;block_size
-op_ne
-l_int|0
-op_logical_and
-(paren
-id|count
-op_mod
-id|STp-&gt;block_size
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|retval
-op_assign
-(paren
-op_minus
-id|EIO
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/* Write must be integral number of blocks */
-macro_line|#endif
 id|write_threshold
 op_assign
 l_int|1
@@ -15660,148 +17157,17 @@ id|total
 op_assign
 id|count
 suffix:semicolon
+macro_line|#if DEBUG
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|STp
-op_member_access_from_pointer
-id|raw
+id|debugging
 )paren
-op_logical_and
-(paren
-id|STp-&gt;first_frame_position
-op_eq
-l_int|0xbae
-)paren
-)paren
-(brace
-macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Skipping over config partition.&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|osst_flush_drive_buffer
-c_func
-(paren
-id|STp
-comma
-op_amp
-id|SRpnt
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|retval
-op_assign
-(paren
-op_minus
-id|EIO
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/* error recovery may have bumped us past the header partition */
-r_if
-c_cond
-(paren
-id|osst_get_frame_position
-c_func
-(paren
-id|STp
-comma
-op_amp
-id|SRpnt
-)paren
-OL
-l_int|0xbb8
-)paren
-id|osst_position_tape_and_confirm
-c_func
-(paren
-id|STp
-comma
-op_amp
-id|SRpnt
-comma
-l_int|0xbb8
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|STp-&gt;poll
-)paren
-id|retval
-op_assign
-id|osst_wait_frame
-(paren
-id|STp
-comma
-op_amp
-id|SRpnt
-comma
-id|STp-&gt;first_frame_position
-comma
-op_minus
-l_int|50
-comma
-l_int|60
-)paren
-suffix:semicolon
-multiline_comment|/* TODO: Check for an error ! */
-id|memset
-c_func
-(paren
-id|cmd
-comma
-l_int|0
-comma
-id|MAX_COMMAND_SIZE
-)paren
-suffix:semicolon
-id|cmd
-(braket
-l_int|0
-)braket
-op_assign
-id|WRITE_6
-suffix:semicolon
-id|cmd
-(braket
-l_int|1
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-id|STps-&gt;rw
-op_assign
-id|ST_WRITING
-suffix:semicolon
-id|STp-&gt;write_type
-op_assign
-id|OS_WRITE_DATA
-suffix:semicolon
-macro_line|#if DEBUG
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: Writing %d bytes to file %d block %d lblk %d frame %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing %d bytes to file %d block %d lblk %d fseq %d fppos %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -15812,6 +17178,8 @@ comma
 id|STps-&gt;drv_block
 comma
 id|STp-&gt;logical_blk_num
+comma
+id|STp-&gt;frame_seq_number
 comma
 id|STp-&gt;first_frame_position
 )paren
@@ -15892,68 +17260,26 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|transfer
-op_assign
-id|OS_FRAME_SIZE
-suffix:semicolon
 id|blks
 op_assign
-l_int|1
+id|do_count
+op_div
+id|STp-&gt;block_size
 suffix:semicolon
-id|osst_init_aux
-c_func
-(paren
-id|STp
-comma
-id|OS_FRAME_TYPE_DATA
-comma
 id|STp-&gt;logical_blk_num
-op_increment
-)paren
-suffix:semicolon
-id|cmd
-(braket
-l_int|2
-)braket
-op_assign
-id|blks
-op_rshift
-l_int|16
-suffix:semicolon
-id|cmd
-(braket
-l_int|3
-)braket
-op_assign
-id|blks
-op_rshift
-l_int|8
-suffix:semicolon
-id|cmd
-(braket
-l_int|4
-)braket
-op_assign
+op_add_assign
 id|blks
 suffix:semicolon
-id|SRpnt
+multiline_comment|/* logical_blk_num is incremented as data is moved from user */
+id|i
 op_assign
-id|osst_do_scsi
+id|osst_write_frame
 c_func
 (paren
-id|SRpnt
-comma
 id|STp
 comma
-id|cmd
-comma
-id|transfer
-comma
-id|SCSI_DATA_WRITE
-comma
-id|STp-&gt;timeout
-comma
-id|MAX_WRITE_RETRIES
+op_amp
+id|SRpnt
 comma
 id|TRUE
 )paren
@@ -15961,131 +17287,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|SRpnt
-)paren
-(brace
-id|retval
-op_assign
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|syscall_result
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|syscall_result
-op_ne
-l_int|0
-)paren
-(brace
-macro_line|#if DEBUG
-r_if
-c_cond
-(paren
-id|debugging
-)paren
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst%d: Error on write:&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x70
-)paren
+id|i
 op_eq
-l_int|0x70
-op_logical_and
 (paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x40
+op_minus
+id|ENOSPC
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x80
-)paren
-op_ne
-l_int|0
-)paren
 id|transfer
 op_assign
-(paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|3
-)braket
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|4
-)braket
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|5
-)braket
-op_lshift
-l_int|8
-)paren
-op_or
-id|SRpnt-&gt;sr_sense_buffer
-(braket
-l_int|6
-)braket
+id|STp-&gt;buffer-&gt;writing
 suffix:semicolon
-r_else
-id|transfer
-op_assign
-l_int|0
-suffix:semicolon
-id|transfer
-op_mul_assign
-id|STp-&gt;block_size
-suffix:semicolon
+multiline_comment|/* FIXME -- check this logic */
 r_if
 c_cond
 (paren
@@ -16147,7 +17361,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: EOM with %d bytes unwritten.&bslash;n&quot;
+l_string|&quot;osst%d:D: EOM with %d bytes unwritten.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -16188,7 +17402,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: EOM with lost data.&bslash;n&quot;
+l_string|&quot;osst%d:D: EOM with lost data.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -16197,47 +17411,38 @@ macro_line|#endif
 )brace
 )brace
 r_else
+id|retval
+op_assign
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
 (brace
 r_if
 c_cond
 (paren
-id|osst_write_error_recovery
+id|SRpnt
+op_ne
+l_int|NULL
+)paren
+(brace
+id|scsi_release_request
 c_func
 (paren
-id|STp
-comma
-op_amp
 id|SRpnt
-comma
-l_int|1
-)paren
-op_eq
-l_int|0
-)paren
-r_goto
-id|ok
-suffix:semicolon
-id|STps-&gt;drv_block
-op_assign
-(paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Too cautious? */
-id|retval
+id|SRpnt
 op_assign
-(paren
-op_minus
-id|EIO
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|buffer_bytes
+id|STp-&gt;buffer-&gt;buffer_bytes
 op_assign
 l_int|0
 suffix:semicolon
@@ -16262,11 +17467,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|STp-&gt;first_frame_position
-op_increment
-suffix:semicolon
-id|ok
-suffix:colon
 id|filp-&gt;f_pos
 op_add_assign
 id|do_count
@@ -16292,15 +17492,7 @@ op_add_assign
 id|blks
 suffix:semicolon
 )brace
-id|STp-&gt;first_frame_position
-op_add_assign
-id|blks
-suffix:semicolon
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|buffer_bytes
+id|STp-&gt;buffer-&gt;buffer_bytes
 op_assign
 l_int|0
 suffix:semicolon
@@ -16309,6 +17501,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* end while write threshold exceeded */
 r_if
 c_cond
 (paren
@@ -16345,6 +17538,29 @@ id|i
 suffix:semicolon
 r_goto
 id|out
+suffix:semicolon
+)brace
+id|blks
+op_assign
+id|count
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|blks
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STps-&gt;drv_block
+op_ge
+l_int|0
+)paren
+(brace
+id|STps-&gt;drv_block
+op_add_assign
+id|blks
 suffix:semicolon
 )brace
 id|filp-&gt;f_pos
@@ -16395,14 +17611,6 @@ op_member_access_from_pointer
 id|buffer_bytes
 op_ge
 id|STp-&gt;write_threshold
-op_logical_and
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|buffer_bytes
-op_ge
-id|OS_DATA_SIZE
 )paren
 )paren
 (brace
@@ -16442,74 +17650,15 @@ op_member_access_from_pointer
 id|buffer_bytes
 )paren
 suffix:semicolon
-id|transfer
+id|i
 op_assign
-id|OS_FRAME_SIZE
-suffix:semicolon
-id|blks
-op_assign
-l_int|1
-suffix:semicolon
-id|osst_init_aux
+id|osst_write_frame
 c_func
 (paren
 id|STp
 comma
-id|OS_FRAME_TYPE_DATA
-comma
-id|STp-&gt;logical_blk_num
-op_increment
-)paren
-suffix:semicolon
-id|cmd
-(braket
-l_int|2
-)braket
-op_assign
-id|blks
-op_rshift
-l_int|16
-suffix:semicolon
-id|cmd
-(braket
-l_int|3
-)braket
-op_assign
-id|blks
-op_rshift
-l_int|8
-suffix:semicolon
-id|cmd
-(braket
-l_int|4
-)braket
-op_assign
-id|blks
-suffix:semicolon
-macro_line|#if DEBUG
-id|STp-&gt;write_pending
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
+op_amp
 id|SRpnt
-op_assign
-id|osst_do_scsi
-c_func
-(paren
-id|SRpnt
-comma
-id|STp
-comma
-id|cmd
-comma
-id|transfer
-comma
-id|SCSI_DATA_WRITE
-comma
-id|STp-&gt;timeout
-comma
-id|MAX_WRITE_RETRIES
 comma
 id|FALSE
 )paren
@@ -16517,32 +17666,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SRpnt
-op_eq
-l_int|NULL
+id|i
+OL
+l_int|0
 )paren
 (brace
 id|retval
 op_assign
 (paren
-id|STp-&gt;buffer
+op_minus
+id|EIO
 )paren
-op_member_access_from_pointer
-id|syscall_result
 suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
 )brace
-)brace
-singleline_comment|//    else if (SRpnt != NULL) {
-singleline_comment|//&t;scsi_release_request(SRpnt);&t;/* FIXME -- this relesae no longer in st - why? */
 id|SRpnt
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Prevent releasing this request! */
-singleline_comment|//    }
+)brace
 id|STps-&gt;at_sm
 op_and_assign
 (paren
@@ -16806,7 +17951,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Incorrect device.&bslash;n&quot;
+l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -16838,47 +17983,6 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|count
-op_mod
-id|STp-&gt;block_size
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Use multiple of %d bytes as block size (%ld requested)&bslash;n&quot;
-comma
-id|dev
-comma
-id|STp-&gt;block_size
-comma
-(paren
-r_int
-r_int
-)paren
-id|count
-)paren
-suffix:semicolon
-id|retval
-op_assign
-(paren
-op_minus
-id|EINVAL
-)paren
-suffix:semicolon
-multiline_comment|/* Read must be integral number of blocks */
 r_goto
 id|out
 suffix:semicolon
@@ -16954,6 +18058,50 @@ op_assign
 id|ST_IDLE
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|count
+op_mod
+id|STp-&gt;block_size
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Read (%d bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
+comma
+id|dev
+comma
+id|count
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+id|STp-&gt;block_size
+suffix:colon
+id|STp-&gt;block_size
+op_div
+l_int|1024
+comma
+id|STp-&gt;block_size
+OL
+l_int|1024
+ques
+c_cond
+l_char|&squot;b&squot;
+suffix:colon
+l_char|&squot;k&squot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#if DEBUG
 r_if
 c_cond
@@ -16968,7 +18116,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
+l_string|&quot;osst%d:D: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17119,6 +18267,10 @@ suffix:semicolon
 id|total
 OL
 id|count
+op_minus
+id|STp-&gt;block_size
+op_plus
+l_int|1
 op_logical_and
 op_logical_neg
 id|special
@@ -17138,9 +18290,18 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|STps-&gt;eof
+op_eq
+id|ST_FM_HIT
+)paren
+r_break
+suffix:semicolon
 id|special
 op_assign
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -17148,31 +18309,10 @@ comma
 op_amp
 id|SRpnt
 comma
-id|STp-&gt;logical_blk_num
+id|STp-&gt;frame_seq_number
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|STp-&gt;buffer-&gt;buffer_bytes
-op_assign
-id|special
-ques
-c_cond
-l_int|0
-suffix:colon
-id|OS_DATA_SIZE
-suffix:semicolon
-id|STp-&gt;buffer-&gt;read_pointer
-op_assign
-l_int|0
-suffix:semicolon
-id|STp-&gt;logical_blk_num
-op_increment
-suffix:semicolon
-multiline_comment|/* block to look for next time */
-id|STp-&gt;logical_blk_in_buffer
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -17183,6 +18323,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* No need to continue read */
+id|STp-&gt;frame_in_buffer
+op_assign
+l_int|0
+suffix:semicolon
 id|retval
 op_assign
 id|special
@@ -17191,9 +18335,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|STps-&gt;drv_block
-op_increment
-suffix:semicolon
 )brace
 multiline_comment|/* Move the data from driver buffer to user buffer */
 r_if
@@ -17222,7 +18363,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
+l_string|&quot;osst%d:D: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17243,6 +18384,8 @@ macro_line|#endif
 id|transfer
 op_assign
 (paren
+(paren
+(paren
 id|STp-&gt;buffer
 )paren
 op_member_access_from_pointer
@@ -17262,7 +18405,14 @@ suffix:colon
 id|count
 op_minus
 id|total
+)paren
+op_div
+id|STp-&gt;block_size
+)paren
+op_star
+id|STp-&gt;block_size
 suffix:semicolon
+multiline_comment|/* force multiple of block size */
 id|i
 op_assign
 id|from_buffer
@@ -17289,6 +18439,18 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|STp-&gt;logical_blk_num
+op_add_assign
+id|transfer
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
+id|STps-&gt;drv_block
+op_add_assign
+id|transfer
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
 id|filp-&gt;f_pos
 op_add_assign
 id|transfer
@@ -17301,6 +18463,45 @@ id|total
 op_add_assign
 id|transfer
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|STp-&gt;buffer
+)paren
+op_member_access_from_pointer
+id|buffer_bytes
+op_eq
+l_int|0
+)paren
+(brace
+macro_line|#if DEBUG
+r_if
+c_cond
+(paren
+id|debugging
+)paren
+id|printk
+c_func
+(paren
+id|OSST_DEB_MSG
+l_string|&quot;osst%d:D: Finished with frame %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|STp-&gt;frame_seq_number
+)paren
+suffix:semicolon
+macro_line|#endif
+id|STp-&gt;frame_in_buffer
+op_assign
+l_int|0
+suffix:semicolon
+id|STp-&gt;frame_seq_number
+op_increment
+suffix:semicolon
+multiline_comment|/* frame to look for next time */
 )brace
 )brace
 multiline_comment|/* for (total = 0, special = 0; total &lt; count &amp;&amp; !special; ) */
@@ -17459,7 +18660,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
+l_string|&quot;osst%d:I: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17476,7 +18677,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
+l_string|&quot;osst%d:I:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17493,7 +18694,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
+l_string|&quot;osst%d:I:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17510,7 +18711,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:    sysv: %d&bslash;n&quot;
+l_string|&quot;osst%d:I:    sysv: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17522,7 +18723,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:    debugging: %d&bslash;n&quot;
+l_string|&quot;osst%d:D:    debugging: %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -17614,7 +18815,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Initialized mode %d definition from mode 0&bslash;n&quot;
+l_string|&quot;osst%d:D: Initialized mode %d definition from mode 0&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18060,7 +19261,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Write threshold %d too small or too large.&bslash;n&quot;
+l_string|&quot;osst%d:W: Write threshold %d too small or too large.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18082,7 +19283,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Write threshold set to %d bytes.&bslash;n&quot;
+l_string|&quot;osst%d:I: Write threshold set to %d bytes.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18128,7 +19329,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Default block size disabled.&bslash;n&quot;
+l_string|&quot;osst%d:I: Default block size disabled.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -18136,6 +19337,36 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|value
+template_param
+id|OS_DATA_SIZE
+op_logical_or
+id|OS_DATA_SIZE
+op_mod
+id|value
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;osst%d:W: Default block size cannot be set to %d.&bslash;n&quot;
+comma
+id|dev
+comma
+id|value
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+)brace
 id|STm-&gt;default_blksize
 op_assign
 id|value
@@ -18144,7 +19375,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Default block size set to %d bytes.&bslash;n&quot;
+l_string|&quot;osst%d:I: Default block size set to %d bytes.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18198,7 +19429,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Long timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;osst%d:I: Long timeout set to %d seconds.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18223,7 +19454,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Normal timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;osst%d:I: Normal timeout set to %d seconds.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18285,7 +19516,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Density default disabled.&bslash;n&quot;
+l_string|&quot;osst%d:I: Density default disabled.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -18303,7 +19534,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Density default set to %x&bslash;n&quot;
+l_string|&quot;osst%d:I: Density default set to %x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18337,7 +19568,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Drive buffer default disabled.&bslash;n&quot;
+l_string|&quot;osst%d:I: Drive buffer default disabled.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -18355,7 +19586,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Drive buffer default set to %x&bslash;n&quot;
+l_string|&quot;osst%d:I: Drive buffer default set to %x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18389,7 +19620,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Compression default disabled.&bslash;n&quot;
+l_string|&quot;osst%d:I: Compression default disabled.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -18414,7 +19645,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d: Compression default set to %x&bslash;n&quot;
+l_string|&quot;osst%d:I: Compression default set to %x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18505,6 +19736,8 @@ id|blkno
 comma
 id|at_sm
 comma
+id|frame_seq_numbr
+comma
 id|logical_blk_num
 suffix:semicolon
 r_int
@@ -18584,6 +19817,10 @@ id|at_sm
 op_assign
 id|STps-&gt;at_sm
 suffix:semicolon
+id|frame_seq_numbr
+op_assign
+id|STp-&gt;frame_seq_number
+suffix:semicolon
 id|logical_blk_num
 op_assign
 id|STp-&gt;logical_blk_num
@@ -18662,10 +19899,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-id|logical_blk_num
-op_assign
-id|STp-&gt;logical_blk_num
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18729,10 +19962,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-id|logical_blk_num
-op_assign
-id|STp-&gt;logical_blk_num
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18779,7 +20008,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Skipping %lu blocks %s from logical block %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Skipping %lu blocks %s from logical block %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -18851,13 +20080,15 @@ op_amp
 id|SRpnt
 comma
 id|logical_blk_num
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-id|STp-&gt;logical_blk_in_buffer
+id|fileno
 op_assign
-l_int|0
+id|STps-&gt;drv_file
+suffix:semicolon
+id|blkno
+op_assign
+id|STps-&gt;drv_block
 suffix:semicolon
 id|at_sm
 op_and_assign
@@ -18928,7 +20159,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Spacing tape forward %d setmarks.&bslash;n&quot;
+l_string|&quot;osst%d:D: Spacing tape forward %d setmarks.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -19084,7 +20315,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Spacing tape backward %ld setmarks.&bslash;n&quot;
+l_string|&quot;osst%d:D: Spacing tape backward %ld setmarks.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -19146,8 +20377,6 @@ id|STp
 comma
 op_amp
 id|SRpnt
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -19179,10 +20408,6 @@ comma
 op_amp
 id|SRpnt
 )paren
-suffix:semicolon
-id|logical_blk_num
-op_assign
-id|STp-&gt;logical_blk_num
 suffix:semicolon
 r_if
 c_cond
@@ -19305,7 +20530,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Writing %d filemarks.&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing %d filemarks.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -19334,7 +20559,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Writing %d setmarks.&bslash;n&quot;
+l_string|&quot;osst%d:D: Writing %d setmarks.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -19481,7 +20706,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Unloading tape.&bslash;n&quot;
+l_string|&quot;osst%d:D: Unloading tape.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19495,7 +20720,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Loading tape.&bslash;n&quot;
+l_string|&quot;osst%d:D: Loading tape.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19509,7 +20734,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Retensioning tape.&bslash;n&quot;
+l_string|&quot;osst%d:D: Retensioning tape.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19523,7 +20748,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Ejecting tape.&bslash;n&quot;
+l_string|&quot;osst%d:D: Ejecting tape.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19538,6 +20763,8 @@ op_assign
 id|blkno
 op_assign
 id|at_sm
+op_assign
+id|frame_seq_numbr
 op_assign
 id|logical_blk_num
 op_assign
@@ -19558,7 +20785,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: No op on tape.&bslash;n&quot;
+l_string|&quot;osst%d:D: No-op on tape.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19583,7 +20810,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Spacing to end of recorded medium.&bslash;n&quot;
+l_string|&quot;osst%d:D: Spacing to end of recorded medium.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19605,7 +20832,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osst_get_logical_blk
+id|osst_get_logical_frame
 c_func
 (paren
 id|STp
@@ -19644,7 +20871,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: No EOD frame found where expected.&bslash;n&quot;
+l_string|&quot;osst%d:D: No EOD frame found where expected.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -19673,10 +20900,6 @@ id|STp-&gt;eod_frame_ppos
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|logical_blk_num
-op_assign
-id|STp-&gt;logical_blk_num
 suffix:semicolon
 id|fileno
 op_assign
@@ -19768,8 +20991,6 @@ id|blkno
 op_assign
 id|at_sm
 op_assign
-id|logical_blk_num
-op_assign
 l_int|0
 suffix:semicolon
 r_goto
@@ -19803,7 +21024,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Rewinding tape, Immed=%d.&bslash;n&quot;
+l_string|&quot;osst%d:D: Rewinding tape, Immed=%d.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -19819,6 +21040,8 @@ op_assign
 id|blkno
 op_assign
 id|at_sm
+op_assign
+id|frame_seq_numbr
 op_assign
 id|logical_blk_num
 op_assign
@@ -19857,12 +21080,12 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Locking drive door.&bslash;n&quot;
+l_string|&quot;osst%d:D: Locking drive door.&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif;
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -19896,12 +21119,12 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Unlocking drive door.&bslash;n&quot;
+l_string|&quot;osst%d:D: Unlocking drive door.&bslash;n&quot;
 comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif;
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -19988,7 +21211,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Illegal block size.&bslash;n&quot;
+l_string|&quot;osst%d:W: Illegal block size.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -20003,7 +21226,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* silently ignore if block size didn&squot;t change */
+multiline_comment|/* FIXME silently ignore if block size didn&squot;t change */
 r_default
 suffix:colon
 r_return
@@ -20055,7 +21278,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Couldn&squot;t exec scsi cmd for IOCTL&bslash;n&quot;
+l_string|&quot;osst%d:D: Couldn&squot;t exec scsi cmd for IOCTL&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -20063,6 +21286,23 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|ioctl_result
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioctl_result
+)paren
+(brace
+multiline_comment|/* SCSI command successful */
+id|STp-&gt;frame_seq_number
+op_assign
+id|frame_seq_numbr
+suffix:semicolon
+id|STp-&gt;logical_blk_num
+op_assign
+id|logical_blk_num
 suffix:semicolon
 )brace
 id|os_bypass
@@ -20077,7 +21317,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: IOCTL (%d) Result=%d&bslash;n&quot;
+l_string|&quot;osst%d:D: IOCTL (%d) Result=%d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -20094,7 +21334,6 @@ op_logical_neg
 id|ioctl_result
 )paren
 (brace
-multiline_comment|/* SCSI command successful */
 r_if
 c_cond
 (paren
@@ -20136,10 +21375,6 @@ suffix:semicolon
 id|STps-&gt;at_sm
 op_assign
 id|at_sm
-suffix:semicolon
-id|STp-&gt;logical_blk_num
-op_assign
-id|logical_blk_num
 suffix:semicolon
 r_if
 c_cond
@@ -20264,6 +21499,7 @@ id|last_block_valid
 op_assign
 id|FALSE
 suffix:semicolon
+multiline_comment|/* FIXME - where else is this field maintained? */
 )brace
 id|STp-&gt;partition
 op_assign
@@ -20665,7 +21901,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Device already in use.&bslash;n&quot;
+l_string|&quot;osst%d:D: Device already in use.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -20736,7 +21972,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Mode change from %d to %d.&bslash;n&quot;
+l_string|&quot;osst%d:D: Mode change from %d to %d.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -20869,7 +22105,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: Can&squot;t allocate tape buffer.&bslash;n&quot;
+l_string|&quot;osst%d:W: Can&squot;t allocate tape buffer.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -21046,10 +22282,6 @@ id|STp-&gt;ready
 op_assign
 id|ST_READY
 suffix:semicolon
-id|STp-&gt;recover_count
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#if DEBUG
 id|STp-&gt;nbr_waits
 op_assign
@@ -21153,7 +22385,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Unit not ready, cause %x&bslash;n&quot;
+l_string|&quot;osst%d:D: Unit not ready, cause %x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -21287,7 +22519,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Unit wants attention&bslash;n&quot;
+l_string|&quot;osst%d:D: Unit wants attention&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -21427,6 +22659,7 @@ id|STps-&gt;rw
 op_assign
 id|ST_IDLE
 suffix:semicolon
+multiline_comment|/* FIXME - seems to be redundant... */
 id|STps-&gt;eof
 op_assign
 id|ST_NOEOF
@@ -21451,6 +22684,10 @@ suffix:semicolon
 id|new_session
 op_assign
 id|TRUE
+suffix:semicolon
+id|STp-&gt;recover_count
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * if we have valid headers from before, and the drive/tape seem untouched,&n;&t; * open without reconfiguring and re-reading the headers&n;&t; */
@@ -21585,7 +22822,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: signature was changed to %c%c%c%c&bslash;n&quot;
+l_string|&quot;osst%d:D: Signature was changed to %c%c%c%c&bslash;n&quot;
 comma
 id|dev
 comma
@@ -21672,8 +22909,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Can&squot;t lock drive door&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%d:I: Can&squot;t lock drive door&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -21684,6 +22921,48 @@ op_assign
 id|ST_LOCKED_AUTO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|STp-&gt;frame_in_buffer
+)paren
+(brace
+id|STp-&gt;block_size
+op_assign
+(paren
+id|STp-&gt;raw
+)paren
+ques
+c_cond
+id|OS_FRAME_SIZE
+suffix:colon
+(paren
+(paren
+id|STm-&gt;default_blksize
+OG
+l_int|0
+)paren
+ques
+c_cond
+id|STm-&gt;default_blksize
+suffix:colon
+id|OS_DATA_SIZE
+)paren
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_assign
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|STp-&gt;buffer-&gt;buffer_blocks
+op_assign
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
 id|STp-&gt;fast_open
 op_assign
 id|TRUE
@@ -21710,7 +22989,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: tape position changed from %d to %d&bslash;n&quot;
+l_string|&quot;osst%d:D: Tape position changed from %d to %d&bslash;n&quot;
 comma
 id|dev
 comma
@@ -21895,13 +23174,12 @@ l_int|3
 op_assign
 l_int|3
 suffix:semicolon
-macro_line|#if 1 
-singleline_comment|//DEBUG
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i: Applying soft reset&bslash;n&quot;
+l_string|&quot;osst%d:D: Applying soft reset&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -22128,8 +23406,8 @@ multiline_comment|/* FIXME - not allowed with NOBLOCK */
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%i: Device did not become Ready in open&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%i:I: Device did not become Ready in open&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -22300,7 +23578,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;osst%d: Framesize %d too large for buffer.&bslash;n&quot;
+l_string|&quot;osst%d:A: Framesize %d too large for buffer.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -22393,7 +23671,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: b_data points to %p in segment 0 at %p&bslash;n&quot;
+l_string|&quot;osst%d:D: b_data points to %p in segment 0 at %p&bslash;n&quot;
 comma
 id|dev
 comma
@@ -22411,7 +23689,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: AUX points to %p in segment %d at %p&bslash;n&quot;
+l_string|&quot;osst%d:D: AUX points to %p in segment %d at %p&bslash;n&quot;
 comma
 id|dev
 comma
@@ -22435,27 +23713,47 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* this had better never happen! */
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|buffer_blocks
+id|STp-&gt;block_size
 op_assign
-l_int|1
+(paren
+id|STp-&gt;raw
+)paren
+ques
+c_cond
+id|OS_FRAME_SIZE
+suffix:colon
+(paren
+(paren
+id|STm-&gt;default_blksize
+OG
+l_int|0
+)paren
+ques
+c_cond
+id|STm-&gt;default_blksize
+suffix:colon
+id|OS_DATA_SIZE
+)paren
 suffix:semicolon
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|buffer_bytes
+id|STp-&gt;min_block
 op_assign
-(paren
-id|STp-&gt;buffer
-)paren
-op_member_access_from_pointer
-id|read_pointer
+l_int|512
+suffix:semicolon
+id|STp-&gt;max_block
 op_assign
-id|STp-&gt;logical_blk_in_buffer
+id|OS_DATA_SIZE
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_blocks
+op_assign
+id|OS_DATA_SIZE
+op_div
+id|STp-&gt;block_size
+suffix:semicolon
+id|STp-&gt;buffer-&gt;buffer_bytes
+op_assign
+id|STp-&gt;buffer-&gt;read_pointer
+op_assign
+id|STp-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -22469,7 +23767,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Block size: %d, frame size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
+l_string|&quot;osst%d:D: Block size: %d, frame size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
 comma
 id|dev
 comma
@@ -22511,7 +23809,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Write protected&bslash;n&quot;
+l_string|&quot;osst%d:D: Write protected&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -22566,7 +23864,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: New Session&bslash;n&quot;
+l_string|&quot;osst%d:D: New Session&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -22611,8 +23909,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst%d: Can&squot;t lock drive door&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst%d:I: Can&squot;t lock drive door&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -22833,8 +24131,6 @@ id|STp
 comma
 op_amp
 id|SRpnt
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -22881,7 +24177,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: File length %ld bytes.&bslash;n&quot;
+l_string|&quot;osst%d:D: File length %ld bytes.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -22897,7 +24193,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Async write waits %d, finished %d.&bslash;n&quot;
+l_string|&quot;osst%d:D: Async write waits %d, finished %d.&bslash;n&quot;
 comma
 id|dev
 comma
@@ -23003,7 +24299,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Buffer flushed, %d EOF(s) written&bslash;n&quot;
+l_string|&quot;osst%d:D: Buffer flushed, %d EOF(s) written&bslash;n&quot;
 comma
 id|dev
 comma
@@ -23061,6 +24357,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* this is the default path */
 r_else
 r_if
 c_cond
@@ -23191,6 +24488,8 @@ id|STps-&gt;drv_file
 op_assign
 id|STps-&gt;drv_block
 op_assign
+id|STp-&gt;frame_seq_number
+op_assign
 id|STp-&gt;logical_blk_num
 op_assign
 l_int|0
@@ -23200,6 +24499,10 @@ c_cond
 (paren
 id|result
 op_eq
+l_int|0
+op_logical_and
+id|result2
+OL
 l_int|0
 )paren
 id|result
@@ -23217,6 +24520,68 @@ c_func
 (paren
 id|SRpnt
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STp-&gt;recover_count
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst%d:I: %d recovered errors in&quot;
+comma
+id|dev
+comma
+id|STp-&gt;recover_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STp-&gt;write_count
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %d frames written&quot;
+comma
+id|STp-&gt;write_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|STp-&gt;read_count
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %d frames read&quot;
+comma
+id|STp-&gt;read_count
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|STp-&gt;recover_count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|STp-&gt;write_count
+op_assign
+l_int|0
+suffix:semicolon
+id|STp-&gt;read_count
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|result
@@ -23455,7 +24820,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d: Incorrect device.&bslash;n&quot;
+l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -23642,7 +25007,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
+l_string|&quot;osst%d:W: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -23934,7 +25299,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;osst%d: Could not relock door after bus reset.&bslash;n&quot;
+l_string|&quot;osst%d:I: Could not relock door after bus reset.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -24205,7 +25570,7 @@ id|MTSEEK
 (brace
 id|i
 op_assign
-id|osst_seek_frame
+id|osst_seek_sector
 c_func
 (paren
 id|STp
@@ -24775,7 +26140,7 @@ suffix:semicolon
 )brace
 id|blk
 op_assign
-id|osst_get_frame_position
+id|osst_get_sector
 c_func
 (paren
 id|STp
@@ -25336,7 +26701,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;osst: Can&squot;t allocate new tape buffer (nbr %d).&bslash;n&quot;
+l_string|&quot;osst :I: Can&squot;t allocate new tape buffer (nbr %d).&bslash;n&quot;
 comma
 id|osst_nbr_buffers
 )paren
@@ -25371,7 +26736,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: Allocated tape buffer %d (%d bytes, %d segments, dma: %d, a: %p).&bslash;n&quot;
+l_string|&quot;osst :D: Allocated tape buffer %d (%d bytes, %d segments, dma: %d, a: %p).&bslash;n&quot;
 comma
 id|osst_nbr_buffers
 comma
@@ -25388,7 +26753,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: segment sizes: first %d, last %d bytes.&bslash;n&quot;
+l_string|&quot;osst :D: segment sizes: first %d, last %d bytes.&bslash;n&quot;
 comma
 id|tb-&gt;sg
 (braket
@@ -25633,8 +26998,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;osst: Failed to enlarge buffer to %d bytes.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst :W: Failed to enlarge buffer to %d bytes.&bslash;n&quot;
 comma
 id|new_size
 )paren
@@ -25722,7 +27087,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: Expanded tape buffer %d (%d bytes, %d-&gt;%d segments, dma: %d, a: %p).&bslash;n&quot;
+l_string|&quot;osst :D: Expanded tape buffer %d (%d bytes, %d-&gt;%d segments, dma: %d, a: %p).&bslash;n&quot;
 comma
 id|nbr
 comma
@@ -25741,7 +27106,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: segment sizes: first %d, last %d bytes.&bslash;n&quot;
+l_string|&quot;osst :D: segment sizes: first %d, last %d bytes.&bslash;n&quot;
 comma
 id|STbuffer-&gt;sg
 (braket
@@ -25869,7 +27234,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: Buffer at %p normalized to %d bytes (segs %d).&bslash;n&quot;
+l_string|&quot;osst :D: Buffer at %p normalized to %d bytes (segs %d).&bslash;n&quot;
 comma
 id|STbuffer-&gt;b_data
 comma
@@ -25962,7 +27327,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Append_to_buffer offset overflow.&bslash;n&quot;
+l_string|&quot;osst :A: Append_to_buffer offset overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -26067,7 +27432,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Append_to_buffer overflow (left %d).&bslash;n&quot;
+l_string|&quot;osst :A: Append_to_buffer overflow (left %d).&bslash;n&quot;
 comma
 id|do_count
 )paren
@@ -26160,7 +27525,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: From_buffer offset overflow.&bslash;n&quot;
+l_string|&quot;osst :A: From_buffer offset overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -26269,7 +27634,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: From_buffer overflow (left %d).&bslash;n&quot;
+l_string|&quot;osst :A: From_buffer overflow (left %d).&bslash;n&quot;
 comma
 id|do_count
 )paren
@@ -26355,7 +27720,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Zero_buffer offset overflow.&bslash;n&quot;
+l_string|&quot;osst :A: Zero_buffer offset overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -26372,7 +27737,7 @@ id|do_count
 op_assign
 id|OS_DATA_SIZE
 op_minus
-id|st_bp-&gt;read_pointer
+id|st_bp-&gt;buffer_bytes
 suffix:semicolon
 id|i
 template_param
@@ -26444,7 +27809,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Zero_buffer overflow (left %d).&bslash;n&quot;
+l_string|&quot;osst :A: Zero_buffer overflow (left %d).&bslash;n&quot;
 comma
 id|do_count
 )paren
@@ -26460,7 +27825,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Copy a osst 32K block of memory into the buffer.&n;   Returns zero (success) or negative error code.  */
+multiline_comment|/* Copy a osst 32K chunk of memory into the buffer.&n;   Returns zero (success) or negative error code.  */
 DECL|function|osst_copy_to_buffer
 r_static
 r_int
@@ -26563,7 +27928,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Copy_to_buffer overflow (left %d at sg %d).&bslash;n&quot;
+l_string|&quot;osst :A: Copy_to_buffer overflow (left %d at sg %d).&bslash;n&quot;
 comma
 id|do_count
 comma
@@ -26581,7 +27946,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Copy a osst 32K block of memory from the buffer.&n;   Returns zero (success) or negative error code.  */
+multiline_comment|/* Copy a osst 32K chunk of memory from the buffer.&n;   Returns zero (success) or negative error code.  */
 DECL|function|osst_copy_from_buffer
 r_static
 r_int
@@ -26684,7 +28049,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst: Copy_from_buffer overflow (left %d at sg %d).&bslash;n&quot;
+l_string|&quot;osst :A: Copy_from_buffer overflow (left %d at sg %d).&bslash;n&quot;
 comma
 id|do_count
 comma
@@ -26771,11 +28136,12 @@ id|osst_max_sg_segs
 op_assign
 id|max_sg_segs
 suffix:semicolon
+macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;osst: bufsize %d, wrt %d, max buffers %d, s/g segs %d.&bslash;n&quot;
+id|OSST_DEB_MSG
+l_string|&quot;osst :D: bufsize %d, wrt %d, max buffers %d, s/g segs %d.&bslash;n&quot;
 comma
 id|osst_buffer_size
 comma
@@ -26786,7 +28152,9 @@ comma
 id|osst_max_sg_segs
 )paren
 suffix:semicolon
-singleline_comment|//printk(OSST_DEB_MSG &quot;osst: sizeof(header) = %d (%s)&bslash;n&quot;,sizeof(os_header_t),sizeof(os_header_t)==OS_DATA_SIZE?&quot;ok&quot;:&quot;error&quot;);
+singleline_comment|//printk(OSST_DEB_MSG &quot;osst :D: sizeof(header) = %d (%s)&bslash;n&quot;,
+singleline_comment|//&t;&t;sizeof(os_header_t),sizeof(os_header_t)==OS_DATA_SIZE?&quot;ok&quot;:&quot;error&quot;);
+macro_line|#endif
 )brace
 macro_line|#ifndef MODULE
 multiline_comment|/* Set the boot options. Syntax: osst=xxx,yyy,...&n;   where xxx is buffer size in 1024 byte blocks and yyy is write threshold&n;   in 1024 byte blocks. */
@@ -27009,8 +28377,8 @@ id|osst_dev_parm
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;osst: illegal parameter in &squot;%s&squot;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;osst :I: Illegal parameter in &squot;%s&squot;&bslash;n&quot;
 comma
 id|stp
 )paren
@@ -27237,6 +28605,8 @@ id|STps
 suffix:semicolon
 r_int
 id|i
+comma
+id|dev
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 r_int
@@ -27342,8 +28712,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;osst: Can&squot;t allocate device descriptor.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;osst :W: Can&squot;t allocate device descriptor.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -27370,6 +28740,10 @@ id|i
 op_assign
 id|tpnt
 suffix:semicolon
+id|dev
+op_assign
+id|i
+suffix:semicolon
 id|tpnt-&gt;capacity
 op_assign
 l_int|0xfffff
@@ -27391,7 +28765,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst: Unable to allocate a tape buffer.&bslash;n&quot;
+l_string|&quot;osst :W: Unable to allocate a tape buffer.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -27718,19 +29092,6 @@ op_assign
 id|OSST_LONG_TIMEOUT
 suffix:semicolon
 multiline_comment|/* Recognize OnStream tapes */
-id|printk
-(paren
-l_string|&quot;osst%i: Tape driver with OnStream support osst %s&bslash;nosst%i: %s&bslash;n&quot;
-comma
-id|i
-comma
-id|osst_version
-comma
-id|i
-comma
-id|cvsid
-)paren
-suffix:semicolon
 multiline_comment|/* We don&squot;t need to test for OnStream, as this has been done in detect () */
 id|tpnt-&gt;os_fw_rev
 op_assign
@@ -27739,17 +29100,6 @@ id|osst_parse_firmware_rev
 id|SDp-&gt;rev
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
-id|printk
-(paren
-l_string|&quot;osst%i: OnStream tape drive recognized, Model %s&bslash;n&quot;
-comma
-id|i
-comma
-id|SDp-&gt;model
-)paren
-suffix:semicolon
-macro_line|#endif
 id|tpnt-&gt;omit_blklims
 op_assign
 l_int|1
@@ -27778,7 +29128,7 @@ comma
 id|SDp
 )paren
 suffix:semicolon
-id|tpnt-&gt;logical_blk_in_buffer
+id|tpnt-&gt;frame_in_buffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -27849,11 +29199,8 @@ id|ST_DONT_TOUCH
 suffix:semicolon
 id|STm-&gt;default_blksize
 op_assign
-l_int|32
-op_star
-id|ST_KILOBYTE
+l_int|512
 suffix:semicolon
-multiline_comment|/* No forced size */
 id|STm-&gt;default_density
 op_assign
 (paren
@@ -27950,6 +29297,25 @@ suffix:semicolon
 id|osst_template.nr_dev
 op_increment
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst :I: Attached OnStream %.5s tape at scsi%d, channel %d, id %d, lun %d as osst%d&bslash;n&quot;
+comma
+id|SDp-&gt;model
+comma
+id|SDp-&gt;host-&gt;host_no
+comma
+id|SDp-&gt;channel
+comma
+id|SDp-&gt;id
+comma
+id|SDp-&gt;lun
+comma
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -27989,23 +29355,8 @@ id|SDp
 r_return
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Detected OnStream scsi tape osst%d at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
-comma
 id|osst_template.dev_noticed
 op_increment
-comma
-id|SDp-&gt;host-&gt;host_no
-comma
-id|SDp-&gt;channel
-comma
-id|SDp-&gt;id
-comma
-id|SDp-&gt;lun
-)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -28084,7 +29435,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst: Unable to get major %d for OnStream tapes&bslash;n&quot;
+l_string|&quot;osst :W: Unable to get major %d for OnStream tapes&bslash;n&quot;
 comma
 id|MAJOR_NR
 )paren
@@ -28122,7 +29473,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst: Only %d tapes accessible.&bslash;n&quot;
+l_string|&quot;osst :I: Only %d tapes accessible.&bslash;n&quot;
 comma
 l_int|128
 op_div
@@ -28162,7 +29513,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst: Unable to allocate array for OnStream SCSI tapes.&bslash;n&quot;
+l_string|&quot;osst :W: Unable to allocate array for OnStream SCSI tapes.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -28243,7 +29594,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst: Unable to allocate tape buffer pointers.&bslash;n&quot;
+l_string|&quot;osst :W: Unable to allocate tape buffer pointers.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
@@ -28279,12 +29630,23 @@ id|osst_nbr_buffers
 op_assign
 l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;osst :I: Tape driver with OnStream support version %s&bslash;nosst :I: %s&bslash;n&quot;
+comma
+id|osst_version
+comma
+id|cvsid
+)paren
+suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst: Buffer size %d bytes, write threshold %d bytes.&bslash;n&quot;
+l_string|&quot;osst :D: Buffer size %d bytes, write threshold %d bytes.&bslash;n&quot;
 comma
 id|osst_buffer_size
 comma
@@ -28651,7 +30013,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst: Unloaded.&bslash;n&quot;
+l_string|&quot;osst :I: Unloaded.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
