@@ -3,20 +3,11 @@ macro_line|#ifndef SYM53C8XX_DEFS_H
 DECL|macro|SYM53C8XX_DEFS_H
 mdefine_line|#define SYM53C8XX_DEFS_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* These options are not tunable from &squot;make config&squot; */
-DECL|macro|SCSI_NCR_PROC_INFO_SUPPORT
-mdefine_line|#define&t;SCSI_NCR_PROC_INFO_SUPPORT
 multiline_comment|/*&n;**&t;If you want a driver as small as possible, donnot define the &n;**&t;following options.&n;*/
 DECL|macro|SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
 mdefine_line|#define SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
 DECL|macro|SCSI_NCR_DEBUG_INFO_SUPPORT
 mdefine_line|#define SCSI_NCR_DEBUG_INFO_SUPPORT
-macro_line|#ifdef&t;SCSI_NCR_PROC_INFO_SUPPORT
-DECL|macro|SCSI_NCR_USER_COMMAND_SUPPORT
-macro_line|#&t;define&t;SCSI_NCR_USER_COMMAND_SUPPORT
-DECL|macro|SCSI_NCR_USER_INFO_SUPPORT
-macro_line|#&t;define&t;SCSI_NCR_USER_INFO_SUPPORT
-macro_line|#endif
 multiline_comment|/*&n;**&t;To disable integrity checking, do not define the &n;**&t;following option.&n;*/
 macro_line|#ifdef&t;CONFIG_SCSI_NCR53C8XX_INTEGRITY_CHECK
 DECL|macro|SCSI_NCR_ENABLE_INTEGRITY_CHECK

@@ -14,6 +14,34 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &quot;clock.h&quot;
+multiline_comment|/* clock information */
+DECL|variable|s3c24xx_xtal
+r_int
+r_int
+id|s3c24xx_xtal
+op_assign
+l_int|12
+op_star
+l_int|1000
+op_star
+l_int|1000
+suffix:semicolon
+multiline_comment|/* default 12MHz */
+DECL|variable|s3c24xx_fclk
+r_int
+r_int
+id|s3c24xx_fclk
+suffix:semicolon
+DECL|variable|s3c24xx_hclk
+r_int
+r_int
+id|s3c24xx_hclk
+suffix:semicolon
+DECL|variable|s3c24xx_pclk
+r_int
+r_int
+id|s3c24xx_pclk
+suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -920,15 +948,15 @@ suffix:semicolon
 multiline_comment|/* initialise the main system clocks */
 id|clk_h.rate
 op_assign
-id|s3c2410_hclk
+id|s3c24xx_hclk
 suffix:semicolon
 id|clk_p.rate
 op_assign
-id|s3c2410_pclk
+id|s3c24xx_pclk
 suffix:semicolon
 id|clk_f.rate
 op_assign
-id|s3c2410_fclk
+id|s3c24xx_fclk
 suffix:semicolon
 multiline_comment|/* set the enabled clocks to a minimal (known) state */
 id|__raw_writel

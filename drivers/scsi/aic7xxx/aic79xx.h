@@ -888,7 +888,7 @@ id|bus_dmamap_t
 id|dmamap
 suffix:semicolon
 DECL|member|physaddr
-id|bus_addr_t
+id|dma_addr_t
 id|physaddr
 suffix:semicolon
 DECL|member|vaddr
@@ -1136,11 +1136,11 @@ op_star
 id|sense_data
 suffix:semicolon
 DECL|member|sg_list_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|sg_list_busaddr
 suffix:semicolon
 DECL|member|sense_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|sense_busaddr
 suffix:semicolon
 DECL|member|sg_count
@@ -2521,7 +2521,7 @@ id|bus_dmamap_t
 id|shared_data_dmamap
 suffix:semicolon
 DECL|member|shared_data_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|shared_data_busaddr
 suffix:semicolon
 multiline_comment|/* Information saved through suspend/resume cycles */

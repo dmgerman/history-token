@@ -868,7 +868,7 @@ id|bus_dmamap_t
 id|sg_dmamap
 suffix:semicolon
 DECL|member|sg_physaddr
-id|bus_addr_t
+id|dma_addr_t
 id|sg_physaddr
 suffix:semicolon
 DECL|member|sg_vaddr
@@ -1049,7 +1049,7 @@ op_star
 id|sg_list
 suffix:semicolon
 DECL|member|sg_list_phys
-id|bus_addr_t
+id|dma_addr_t
 id|sg_list_phys
 suffix:semicolon
 DECL|member|sg_count
@@ -1114,7 +1114,7 @@ id|bus_dmamap_t
 id|hscb_dmamap
 suffix:semicolon
 DECL|member|hscb_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|hscb_busaddr
 suffix:semicolon
 DECL|member|sense_dmat
@@ -1126,7 +1126,7 @@ id|bus_dmamap_t
 id|sense_dmamap
 suffix:semicolon
 DECL|member|sense_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|sense_busaddr
 suffix:semicolon
 DECL|member|sg_dmat
@@ -2102,12 +2102,12 @@ id|bus_dmamap_t
 id|shared_data_dmamap
 suffix:semicolon
 DECL|member|shared_data_busaddr
-id|bus_addr_t
+id|dma_addr_t
 id|shared_data_busaddr
 suffix:semicolon
 multiline_comment|/*&n;&t; * Bus address of the one byte buffer used to&n;&t; * work-around a DMA bug for chips &lt;= aic7880&n;&t; * in target mode.&n;&t; */
 DECL|member|dma_bug_buf
-id|bus_addr_t
+id|dma_addr_t
 id|dma_bug_buf
 suffix:semicolon
 multiline_comment|/* Number of enabled target mode device on this card */

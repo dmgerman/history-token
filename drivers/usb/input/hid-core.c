@@ -4124,6 +4124,13 @@ id|ESHUTDOWN
 suffix:colon
 r_return
 suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+multiline_comment|/* NAK */
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* error */

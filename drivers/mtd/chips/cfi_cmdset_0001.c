@@ -2742,7 +2742,6 @@ id|shared-&gt;lock
 suffix:semicolon
 )brace
 )brace
-)brace
 r_else
 (brace
 id|spin_unlock
@@ -2752,6 +2751,7 @@ op_amp
 id|shared-&gt;lock
 )paren
 suffix:semicolon
+)brace
 )brace
 r_switch
 c_cond

@@ -17,8 +17,11 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 DECL|macro|IDESCSI_DEBUG_LOG
 mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0
@@ -82,7 +85,8 @@ id|b_count
 suffix:semicolon
 multiline_comment|/* Bytes transferred from current entry */
 DECL|member|scsi_cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsi_cmd
 suffix:semicolon
@@ -94,7 +98,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -3984,7 +3989,8 @@ r_int
 id|idescsi_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 )paren
@@ -4026,7 +4032,8 @@ r_static
 r_int
 id|idescsi_ioctl
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 comma
@@ -4553,7 +4560,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -4637,7 +4645,8 @@ r_static
 r_int
 id|idescsi_queue
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -4647,7 +4656,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5026,7 +5036,8 @@ r_static
 r_int
 id|idescsi_eh_abort
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5285,7 +5296,8 @@ r_static
 r_int
 id|idescsi_eh_reset
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5698,7 +5710,8 @@ suffix:semicolon
 )brace
 DECL|variable|idescsi_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|idescsi_template
 op_assign
 (brace
