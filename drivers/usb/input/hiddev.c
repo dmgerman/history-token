@@ -2879,7 +2879,7 @@ c_cond
 (paren
 id|uref_multi-&gt;num_values
 op_ge
-id|HID_MAX_USAGES
+id|HID_MAX_MULTI_USAGES
 op_logical_or
 id|uref-&gt;usage_index
 op_ge

@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: tmdc.c,v 1.31 2002/01/22 20:29:52 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *   Based on the work of:&n; *&t;Trystan Larey-Williams &n; */
+multiline_comment|/*&n; * $Id: tmdc.c,v 1.31 2002/01/22 20:29:52 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *   Based on the work of:&n; *&t;Trystan Larey-Williams&n; */
 multiline_comment|/*&n; * ThrustMaster DirectConnect (BSP) joystick family driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -51,7 +51,7 @@ mdefine_line|#define TMDC_BYTE_REV&t;&t;11
 DECL|macro|TMDC_BYTE_DEF
 mdefine_line|#define TMDC_BYTE_DEF&t;&t;12
 DECL|macro|TMDC_ABS
-mdefine_line|#define TMDC_ABS&t;&t;7&t;
+mdefine_line|#define TMDC_ABS&t;&t;7
 DECL|macro|TMDC_ABS_HAT
 mdefine_line|#define TMDC_ABS_HAT&t;&t;4
 DECL|macro|TMDC_BTN
