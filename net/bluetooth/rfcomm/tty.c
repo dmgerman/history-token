@@ -1922,7 +1922,7 @@ id|dev-&gt;tty
 )paren
 )paren
 (brace
-id|kfree
+id|kfree_skb
 c_func
 (paren
 id|skb
