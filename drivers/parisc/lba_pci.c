@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* for __init and __devinit */
+multiline_comment|/* #define PCI_DEBUG&t;enable ASSERT */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,13 +12,12 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;&t;&t;/* for struct irq_region support */
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_driver() stuff */
+macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
 macro_line|#include &lt;asm/iosapic.h&gt;&t;/* for iosapic_register() */
-macro_line|#include &lt;asm/gsc.h&gt;&t;&t;/* gsc_read/write stuff */
+macro_line|#include &lt;asm/io.h&gt;&t;&t;/* read/write stuff */
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE (1 == 1)
@@ -32,6 +32,8 @@ DECL|macro|DEBUG_LBA_CFG
 macro_line|#undef DEBUG_LBA_CFG&t;/* debug Config Space Access (ie PCI Bus walk) */
 DECL|macro|DEBUG_LBA_PAT
 macro_line|#undef DEBUG_LBA_PAT&t;/* debug PCI Resource Mgt code - PDC PAT only */
+DECL|macro|FBB_SUPPORT
+macro_line|#undef FBB_SUPPORT&t;/* Fast Back-Back xfers - NOT READY YET */
 macro_line|#ifdef DEBUG_LBA
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)&t;printk(x)
@@ -63,94 +65,6 @@ macro_line|#endif
 multiline_comment|/*&n;** Config accessor functions only pass in the 8-bit bus number and not&n;** the 8-bit &quot;PCI Segment&quot; number. Each LBA will be assigned a PCI bus&n;** number based on what firmware wrote into the scratch register.&n;**&n;** The &quot;secondary&quot; bus number is set to this before calling&n;** pci_register_ops(). If any PPB&squot;s are present, the scan will&n;** discover them and update the &quot;secondary&quot; and &quot;subordinate&quot;&n;** fields in the pci_bus structure.&n;**&n;** Changes in the configuration *may* result in a different&n;** bus number for each LBA depending on what firmware does.&n;*/
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;lba&quot;
-r_static
-r_int
-id|lba_driver_callback
-c_func
-(paren
-r_struct
-id|hp_device
-op_star
-comma
-r_struct
-id|pa_iodc_driver
-op_star
-)paren
-suffix:semicolon
-DECL|variable|lba_drivers_for
-r_static
-r_struct
-id|pa_iodc_driver
-id|lba_drivers_for
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|HPHW_BRIDGE
-comma
-l_int|0x782
-comma
-l_int|0x0
-comma
-l_int|0xa
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|DRIVER_CHECK_HVERSION
-op_plus
-id|DRIVER_CHECK_SVERSION
-op_plus
-id|DRIVER_CHECK_HWTYPE
-comma
-id|MODULE_NAME
-comma
-l_string|&quot;tbd&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|lba_driver_callback
-)brace
-comma
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_char
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
 DECL|macro|LBA_FUNC_ID
 mdefine_line|#define LBA_FUNC_ID&t;0x0000&t;/* function id */
 DECL|macro|LBA_FCLASS
@@ -179,6 +93,12 @@ DECL|macro|LBA_MOD_ID
 mdefine_line|#define LBA_MOD_ID&t;0x0100&t;/* Module ID. PDC_PAT_CELL reports 4 */
 DECL|macro|LBA_STAT_CTL
 mdefine_line|#define LBA_STAT_CTL&t;0x0108&t;/* Status &amp; Control */
+DECL|macro|LBA_BUS_RESET
+mdefine_line|#define   LBA_BUS_RESET&t;&t;0x01&t;/*  Deassert PCI Bus Reset Signal */
+DECL|macro|CLEAR_ERRLOG
+mdefine_line|#define   CLEAR_ERRLOG&t;&t;0x10&t;/*  &quot;Clear Error Log&quot; cmd */
+DECL|macro|CLEAR_ERRLOG_ENABLE
+mdefine_line|#define   CLEAR_ERRLOG_ENABLE&t;0x20&t;/*  &quot;Clear Error Log&quot; Enable */
 DECL|macro|HF_ENABLE
 mdefine_line|#define   HF_ENABLE&t;0x40&t;/*    enable HF mode (default is -1 mode) */
 DECL|macro|LBA_LMMIO_BASE
@@ -211,11 +131,11 @@ DECL|macro|LBA_EIOS_MASK
 mdefine_line|#define LBA_EIOS_MASK&t;0x0268
 DECL|macro|LBA_DMA_CTL
 mdefine_line|#define LBA_DMA_CTL&t;0x0278&t;/* firmware sets this */
-multiline_comment|/* RESET: ignore DMA stuff until we can measure performance */
 DECL|macro|LBA_IBASE
-mdefine_line|#define LBA_IBASE&t;0x0300&t;/* DMA support */
+mdefine_line|#define LBA_IBASE&t;0x0300&t;/* SBA DMA support */
 DECL|macro|LBA_IMASK
 mdefine_line|#define LBA_IMASK&t;0x0308
+multiline_comment|/* FIXME: ignore DMA Hint stuff until we can measure performance */
 DECL|macro|LBA_HINT_CFG
 mdefine_line|#define LBA_HINT_CFG&t;0x0310
 DECL|macro|LBA_HINT_BASE
@@ -223,8 +143,12 @@ mdefine_line|#define LBA_HINT_BASE&t;0x0380&t;/* 14 registers at every 8 bytes. 
 multiline_comment|/* ERROR regs are needed for config cycle kluges */
 DECL|macro|LBA_ERROR_CONFIG
 mdefine_line|#define LBA_ERROR_CONFIG 0x0680
+DECL|macro|LBA_SMART_MODE
+mdefine_line|#define     LBA_SMART_MODE 0x20
 DECL|macro|LBA_ERROR_STATUS
 mdefine_line|#define LBA_ERROR_STATUS 0x0688
+DECL|macro|LBA_ROPE_CTL
+mdefine_line|#define LBA_ROPE_CTL     0x06A0
 DECL|macro|LBA_IOSAPIC_BASE
 mdefine_line|#define LBA_IOSAPIC_BASE&t;0x800 /* Offset of IRQ logic */
 multiline_comment|/* non-postable I/O port space, densely packed */
@@ -311,29 +235,31 @@ DECL|macro|LBA_MAX_NUM_BUSES
 mdefine_line|#define LBA_MAX_NUM_BUSES 8
 multiline_comment|/************************************&n; * LBA register read and write support&n; *&n; * BE WARNED: register writes are posted.&n; *  (ie follow writes which must reach HW with a read)&n; */
 DECL|macro|READ_U8
-mdefine_line|#define READ_U8(addr)  gsc_readb(addr)
+mdefine_line|#define READ_U8(addr)  __raw_readb(addr)
 DECL|macro|READ_U16
-mdefine_line|#define READ_U16(addr) gsc_readw((u16 *) (addr))
+mdefine_line|#define READ_U16(addr) __raw_readw(addr)
 DECL|macro|READ_U32
-mdefine_line|#define READ_U32(addr) gsc_readl((u32 *) (addr))
+mdefine_line|#define READ_U32(addr) __raw_readl(addr)
 DECL|macro|WRITE_U8
-mdefine_line|#define WRITE_U8(value, addr) gsc_writeb(value, addr)
+mdefine_line|#define WRITE_U8(value, addr)  __raw_writeb(value, addr)
 DECL|macro|WRITE_U16
-mdefine_line|#define WRITE_U16(value, addr) gsc_writew(value, (u16 *) (addr))
+mdefine_line|#define WRITE_U16(value, addr) __raw_writew(value, addr)
 DECL|macro|WRITE_U32
-mdefine_line|#define WRITE_U32(value, addr) gsc_writel(value, (u32 *) (addr))
+mdefine_line|#define WRITE_U32(value, addr) __raw_writel(value, addr)
 DECL|macro|READ_REG8
-mdefine_line|#define READ_REG8(addr)  gsc_readb(addr)
+mdefine_line|#define READ_REG8(addr)  readb(addr)
 DECL|macro|READ_REG16
-mdefine_line|#define READ_REG16(addr) le16_to_cpu(gsc_readw((u16 *) (addr)))
+mdefine_line|#define READ_REG16(addr) readw(addr)
 DECL|macro|READ_REG32
-mdefine_line|#define READ_REG32(addr) le32_to_cpu(gsc_readl((u32 *) (addr)))
+mdefine_line|#define READ_REG32(addr) readl(addr)
+DECL|macro|READ_REG64
+mdefine_line|#define READ_REG64(addr) readq(addr)
 DECL|macro|WRITE_REG8
-mdefine_line|#define WRITE_REG8(value, addr) gsc_writeb(value, addr)
+mdefine_line|#define WRITE_REG8(value, addr)  writeb(value, addr)
 DECL|macro|WRITE_REG16
-mdefine_line|#define WRITE_REG16(value, addr) gsc_writew(cpu_to_le16(value), (u16 *) (addr))
+mdefine_line|#define WRITE_REG16(value, addr) writew(value, addr)
 DECL|macro|WRITE_REG32
-mdefine_line|#define WRITE_REG32(value, addr) gsc_writel(cpu_to_le32(value), (u32 *) (addr))
+mdefine_line|#define WRITE_REG32(value, addr) writel(value, addr)
 DECL|macro|LBA_CFG_TOK
 mdefine_line|#define LBA_CFG_TOK(bus,dfn) ((u32) ((bus)&lt;&lt;16 | (dfn)&lt;&lt;8))
 DECL|macro|LBA_CFG_BUS
@@ -342,59 +268,11 @@ DECL|macro|LBA_CFG_DEV
 mdefine_line|#define LBA_CFG_DEV(tok)  ((u8) ((tok)&gt;&gt;11) &amp; 0x1f)
 DECL|macro|LBA_CFG_FUNC
 mdefine_line|#define LBA_CFG_FUNC(tok) ((u8) ((tok)&gt;&gt;8 ) &amp; 0x7)
-macro_line|#ifdef DEBUG_LBA
-multiline_comment|/* Extract LBA (Rope) number from HPA */
+multiline_comment|/*&n;** Extract LBA (Rope) number from HPA&n;** REVISIT: 16 ropes for Stretch/Ike?&n;*/
+DECL|macro|ROPES_PER_SBA
+mdefine_line|#define ROPES_PER_SBA&t;8
 DECL|macro|LBA_NUM
-mdefine_line|#define LBA_NUM(x)    ((((uintptr_t) x) &gt;&gt; 13) &amp; 0xf)
-macro_line|#endif /* DEBUG_LBA */
-macro_line|#ifdef __LP64__
-multiline_comment|/* PDC_PAT */
-DECL|variable|pdc_result
-r_static
-r_int
-r_int
-id|pdc_result
-(braket
-l_int|32
-)braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|8
-)paren
-)paren
-)paren
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;** One time initialization to let the world know the LBA was found.&n;** This is the only routine which is NOT static.&n;** Must be called exactly once before pci_init().&n;*/
-DECL|function|lba_init
-r_void
-id|__init
-id|lba_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|register_driver
-c_func
-(paren
-id|lba_drivers_for
-)paren
-suffix:semicolon
-)brace
+mdefine_line|#define LBA_NUM(x)    ((((unsigned long) x) &gt;&gt; 13) &amp; (ROPES_PER_SBA-1))
 r_static
 r_void
 DECL|function|lba_dump_res
@@ -425,6 +303,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;(%p)&quot;
 comma
 id|r-&gt;parent
@@ -451,6 +330,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%p [%lx,%lx]/%x&bslash;n&quot;
 comma
 id|r
@@ -625,16 +505,16 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|LBA_CFG_SETUP
-mdefine_line|#define LBA_CFG_SETUP(d, tok) {&t;&t;&t;&t;&bslash;&n;    /* Save contents of error config register.  */&t;&t;&t;&bslash;&n;    error_config = READ_REG32(d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&t;&bslash;&n;&bslash;&n;    /* Save contents of status control register.  */&t;&t;&t;&bslash;&n;    status_control = READ_REG32(d-&gt;hba.base_addr + LBA_STAT_CTL);&t;&t;&bslash;&n;&bslash;&n;    /* For LBA rev 2.0, 2.1, 2.2, and 3.0, we must disable DMA&t;&t;&bslash;&n;    ** arbitration for full bus walks.&t;&t;&t;&t;&t;&bslash;&n;    */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (LBA_DMA_DURING_CFG_DISABLED(d)) {&t;&t;&t;&t;&bslash;&n;&t;/* Save contents of arb mask register. */&t;&t;&t;&bslash;&n;&t;arb_mask = READ_REG32(d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&bslash;&n;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Turn off all device arbitration bits (i.e. everything&t;&bslash;&n;&t; * except arbitration enable bit).&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;WRITE_REG32(0x1, d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set the smart mode bit so that master aborts don&squot;t cause&t;&t;&bslash;&n;     * LBA to go into PCI fatal mode (required).&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(error_config | 0x20, d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&bslash;&n;}
+mdefine_line|#define LBA_CFG_SETUP(d, tok) {&t;&t;&t;&t;&bslash;&n;    /* Save contents of error config register.  */&t;&t;&t;&bslash;&n;    error_config = READ_REG32(d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&t;&bslash;&n;&bslash;&n;    /* Save contents of status control register.  */&t;&t;&t;&bslash;&n;    status_control = READ_REG32(d-&gt;hba.base_addr + LBA_STAT_CTL);&t;&t;&bslash;&n;&bslash;&n;    /* For LBA rev 2.0, 2.1, 2.2, and 3.0, we must disable DMA&t;&t;&bslash;&n;    ** arbitration for full bus walks.&t;&t;&t;&t;&t;&bslash;&n;    */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (LBA_DMA_DURING_CFG_DISABLED(d)) {&t;&t;&t;&t;&bslash;&n;&t;/* Save contents of arb mask register. */&t;&t;&t;&bslash;&n;&t;arb_mask = READ_REG32(d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&bslash;&n;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Turn off all device arbitration bits (i.e. everything&t;&bslash;&n;&t; * except arbitration enable bit).&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;WRITE_REG32(0x1, d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set the smart mode bit so that master aborts don&squot;t cause&t;&t;&bslash;&n;     * LBA to go into PCI fatal mode (required).&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(error_config | LBA_SMART_MODE, d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&bslash;&n;}
 DECL|macro|LBA_CFG_PROBE
 mdefine_line|#define LBA_CFG_PROBE(d, tok) {&t;&t;&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Setup Vendor ID write and read back the address register&t;&t;&bslash;&n;     * to make sure that LBA is the bus master.&t;&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(tok | PCI_VENDOR_ID, (d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR);&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Read address register to ensure that LBA is the bus master,&t;&bslash;&n;     * which implies that DMA traffic has stopped when DMA arb is off.&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    lba_t32 = READ_REG32((d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR);&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Generate a cfg write cycle (will have no affect on&t;&t;&bslash;&n;     * Vendor ID register since read-only).&t;&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(~0, (d)-&gt;hba.base_addr + LBA_PCI_CFG_DATA);&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Make sure write has completed before proceeding further,&t;&t;&bslash;&n;     * i.e. before setting clear enable.&t;&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    lba_t32 = READ_REG32((d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR);&t;&t;&bslash;&n;}
-multiline_comment|/*&n; * HPREVISIT:&n; *   -- Can&squot;t tell if config cycle got the error.&n; *&n; *&t;&t;OV bit is broken until rev 4.0, so can&squot;t use OV bit and&n; *&t;&t;LBA_ERROR_LOG_ADDR to tell if error belongs to config cycle.&n; *&n; *&t;&t;As of rev 4.0, no longer need the error check.&n; *&n; *   -- Even if we could tell, we still want to return -1&n; *&t;for **ANY** error (not just master abort).&n; *&n; *   -- Only clear non-fatal errors (we don&squot;t want to bring&n; *&t;LBA out of pci-fatal mode).&n; *&n; *&t;&t;Actually, there is still a race in which&n; *&t;&t;we could be clearing a fatal error.  We will&n; *&t;&t;live with this during our real mode bus walk&n; *&t;&t;until rev 4.0 (no driver activity during&n; *&t;&t;real mode bus walk).  The real mode bus walk&n; *&t;&t;has race conditions concerning the use of&n; *&t;&t;smart mode as well.&n; */
+multiline_comment|/*&n; * HPREVISIT:&n; *   -- Can&squot;t tell if config cycle got the error.&n; *&n; *&t;&t;OV bit is broken until rev 4.0, so can&squot;t use OV bit and&n; *&t;&t;LBA_ERROR_LOG_ADDR to tell if error belongs to config cycle.&n; *&n; *&t;&t;As of rev 4.0, no longer need the error check.&n; *&n; *   -- Even if we could tell, we still want to return -1&n; *&t;for **ANY** error (not just master abort).&n; *&n; *   -- Only clear non-fatal errors (we don&squot;t want to bring&n; *&t;LBA out of pci-fatal mode).&n; *&n; *&t;&t;Actually, there is still a race in which&n; *&t;&t;we could be clearing a fatal error.  We will&n; *&t;&t;live with this during our initial bus walk&n; *&t;&t;until rev 4.0 (no driver activity during&n; *&t;&t;initial bus walk).  The initial bus walk&n; *&t;&t;has race conditions concerning the use of&n; *&t;&t;smart mode as well.&n; */
 DECL|macro|LBA_MASTER_ABORT_ERROR
 mdefine_line|#define LBA_MASTER_ABORT_ERROR 0xc
 DECL|macro|LBA_FATAL_ERROR
 mdefine_line|#define LBA_FATAL_ERROR 0x10
 DECL|macro|LBA_CFG_MASTER_ABORT_CHECK
-mdefine_line|#define LBA_CFG_MASTER_ABORT_CHECK(d, base, tok, error) {&t;&t;&bslash;&n;    u32 error_status = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set clear enable (CE) bit. Unset by HW when new&t;&t;&t;&bslash;&n;     * errors are logged -- LBA HW ERS section 14.3.3).&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(status_control | 0x20, base + LBA_STAT_CTL);&t;&bslash;&n;    error_status = READ_REG32(base + LBA_ERROR_STATUS);&t;&t;&bslash;&n;    if ((error_status &amp; 0x1f) != 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Fail the config read request.&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;error = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((error_status &amp; LBA_FATAL_ERROR) == 0) {&t;&t;&t;&bslash;&n;&t;    /*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     * Clear error status (if fatal bit not set) by setting&t;&bslash;&n;&t;     * clear error log bit (CL).&t;&t;&t;&t;&bslash;&n;&t;     */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    WRITE_REG32(status_control | 0x10, base + LBA_STAT_CTL);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define LBA_CFG_MASTER_ABORT_CHECK(d, base, tok, error) {&t;&t;&bslash;&n;    u32 error_status = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set clear enable (CE) bit. Unset by HW when new&t;&t;&t;&bslash;&n;     * errors are logged -- LBA HW ERS section 14.3.3).&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(status_control | CLEAR_ERRLOG_ENABLE, base + LBA_STAT_CTL); &bslash;&n;    error_status = READ_REG32(base + LBA_ERROR_STATUS);&t;&t;&bslash;&n;    if ((error_status &amp; 0x1f) != 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Fail the config read request.&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;error = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((error_status &amp; LBA_FATAL_ERROR) == 0) {&t;&t;&t;&bslash;&n;&t;    /*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     * Clear error status (if fatal bit not set) by setting&t;&bslash;&n;&t;     * clear error log bit (CL).&t;&t;&t;&t;&bslash;&n;&t;     */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    WRITE_REG32(status_control | CLEAR_ERRLOG, base + LBA_STAT_CTL); &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|LBA_CFG_TR4_ADDR_SETUP
 mdefine_line|#define LBA_CFG_TR4_ADDR_SETUP(d, addr) &bslash;&n;    WRITE_REG32(((addr) &amp; ~3), (d)-&gt;hba.base_addr + LBA_PCI_CFG_ADDR)
 DECL|macro|LBA_CFG_ADDR_SETUP
@@ -900,29 +780,257 @@ r_return
 id|data
 suffix:semicolon
 )brace
-DECL|macro|LBA_CFG_RD
-mdefine_line|#define LBA_CFG_RD(size, mask) &bslash;&n;static int lba_cfg_read##size (struct pci_dev *dev, int pos, u##size *data) &bslash;&n;{ &bslash;&n;&t;struct lba_device *d = LBA_DEV(dev-&gt;bus-&gt;sysdata); &bslash;&n;&t;u32 local_bus = (dev-&gt;bus-&gt;parent == NULL) ? 0 : dev-&gt;bus-&gt;secondary; &bslash;&n;&t;u32 tok = LBA_CFG_TOK(local_bus,dev-&gt;devfn); &bslash;&n; &bslash;&n;&t;if ((!LBA_TR4PLUS(d)) &amp;&amp; (!LBA_SKIP_PROBE(d))) { &bslash;&n;&t;&t;/* original - Generate config cycle on broken elroy &bslash;&n;&t;&t;  with risk we will miss PCI bus errors. */ &bslash;&n;&t;&t;*data = (u##size) lba_rd_cfg(d, tok, pos, sizeof(u##size)); &bslash;&n;&t;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) -&gt; 0x%x (a)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, *data); &bslash;&n;&t;&t;return(*data == (u##size) -1); &bslash;&n;&t;} &bslash;&n; &bslash;&n;&t;if (LBA_SKIP_PROBE(d) &amp;&amp; (!lba_device_present(dev-&gt;bus-&gt;secondary, dev-&gt;devfn, d))) &bslash;&n;&t;{ &bslash;&n;&t;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) -&gt; -1 (b)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, *data); &bslash;&n;&t;&t;/* either don&squot;t want to look or know device isn&squot;t present. */ &bslash;&n;&t;&t;*data = (u##size) -1; &bslash;&n;&t;&t;return(0); &bslash;&n;&t;} &bslash;&n; &bslash;&n;&t;/* Basic Algorithm &bslash;&n;&t;** Should only get here on fully working LBA rev. &bslash;&n;&t;** This is how simple the code should have been. &bslash;&n;&t;*/ &bslash;&n;&t;LBA_CFG_TR4_ADDR_SETUP(d, tok | pos); &bslash;&n;&t;*data = READ_REG##size(d-&gt;hba.base_addr + LBA_PCI_CFG_DATA + (pos &amp; mask));&bslash;&n;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) -&gt; 0x%x (c)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, *data);&bslash;&n;&t;return(*data == (u##size) -1); &bslash;&n;}
-id|LBA_CFG_RD
+DECL|function|lba_cfg_read
+r_static
+r_int
+id|lba_cfg_read
 c_func
 (paren
-l_int|8
+r_struct
+id|pci_bus
+op_star
+id|bus
 comma
-l_int|3
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+op_star
+id|data
 )paren
-id|LBA_CFG_RD
+(brace
+r_struct
+id|lba_device
+op_star
+id|d
+op_assign
+id|LBA_DEV
 c_func
 (paren
-l_int|16
-comma
-l_int|2
+id|bus-&gt;sysdata
 )paren
-id|LBA_CFG_RD
-c_func
+suffix:semicolon
+id|u32
+id|local_bus
+op_assign
 (paren
-l_int|32
-comma
+id|bus-&gt;parent
+op_eq
+l_int|NULL
+)paren
+ques
+c_cond
 l_int|0
+suffix:colon
+id|bus-&gt;secondary
+suffix:semicolon
+id|u32
+id|tok
+op_assign
+id|LBA_CFG_TOK
+c_func
+(paren
+id|local_bus
+comma
+id|devfn
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME: B2K/C3600 workaround is always use old method... */
+multiline_comment|/* if (!LBA_TR4PLUS(d) &amp;&amp; !LBA_SKIP_PROBE(d)) */
+(brace
+multiline_comment|/* original - Generate config cycle on broken elroy&n;&t;&t;  with risk we will miss PCI bus errors. */
+op_star
+id|data
+op_assign
+id|lba_rd_cfg
+c_func
+(paren
+id|d
+comma
+id|tok
+comma
+id|pos
+comma
+id|size
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; 0x%x (a)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+op_star
+id|data
+)paren
+suffix:semicolon
+r_return
+op_star
+id|data
+op_eq
+op_complement
+l_int|0UL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|LBA_SKIP_PROBE
+c_func
+(paren
+id|d
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|lba_device_present
+c_func
+(paren
+id|bus-&gt;secondary
+comma
+id|devfn
+comma
+id|d
+)paren
+)paren
+)paren
+(brace
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; -1 (b)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+)paren
+suffix:semicolon
+multiline_comment|/* either don&squot;t want to look or know device isn&squot;t present. */
+op_star
+id|data
+op_assign
+op_complement
+l_int|0U
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Basic Algorithm&n;&t;** Should only get here on fully working LBA rev.&n;&t;** This is how simple the code should have been.&n;&t;*/
+id|LBA_CFG_TR4_ADDR_SETUP
+c_func
+(paren
+id|d
+comma
+id|tok
+op_or
+id|pos
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG8
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+op_star
+(paren
+id|u16
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG16
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|data
+op_assign
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) -&gt; 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+op_star
+id|data
+)paren
+suffix:semicolon
+r_return
+op_star
+id|data
+op_eq
+op_complement
+l_int|0U
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|lba_wr_cfg
@@ -1155,29 +1263,273 @@ id|d-&gt;hba.base_addr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * LBA 4.0 config write code implements non-postable semantics&n; * by doing a read of CONFIG ADDR after the write.&n; */
-DECL|macro|LBA_CFG_WR
-mdefine_line|#define LBA_CFG_WR(size, mask) &bslash;&n;static int lba_cfg_write##size (struct pci_dev *dev, int pos, u##size data) &bslash;&n;{ &bslash;&n;&t;struct lba_device *d = LBA_DEV(dev-&gt;bus-&gt;sysdata); &bslash;&n;&t;u32 local_bus = (dev-&gt;bus-&gt;parent == NULL) ? 0 : dev-&gt;bus-&gt;secondary; &bslash;&n;&t;u32 tok = LBA_CFG_TOK(local_bus,dev-&gt;devfn); &bslash;&n; &bslash;&n; &t;ASSERT((tok &amp; 0xff) == 0); &bslash;&n;&t;ASSERT(pos &lt; 0x100); &bslash;&n; &bslash;&n;&t;if ((!LBA_TR4PLUS(d)) &amp;&amp; (!LBA_SKIP_PROBE(d))) { &bslash;&n;&t;&t;/* Original Workaround */ &bslash;&n;&t;&t;lba_wr_cfg(d, tok, pos, (u32) data, sizeof(u##size)); &bslash;&n;&t;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) = 0x%x (a)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, data); &bslash;&n;&t;&t;return 0; &bslash;&n;&t;} &bslash;&n; &bslash;&n;&t;if (LBA_SKIP_PROBE(d) &amp;&amp; (!lba_device_present(dev-&gt;bus-&gt;secondary, dev-&gt;devfn, d))) { &bslash;&n;&t;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) = 0x%x (b)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, data); &bslash;&n;&t;&t;return 1; /* New Workaround */ &bslash;&n;&t;} &bslash;&n; &bslash;&n;&t;DBG_CFG(KERN_DEBUG &quot;%s(%s+%2x) = 0x%x (c)&bslash;n&quot;, __FUNCTION__, dev-&gt;slot_name, pos, data); &bslash;&n;&t;/* Basic Algorithm */ &bslash;&n;&t;LBA_CFG_TR4_ADDR_SETUP(d, tok | pos); &bslash;&n;&t;WRITE_REG##size(data, d-&gt;hba.base_addr + LBA_PCI_CFG_DATA + (pos &amp; mask)); &bslash;&n;&t;lba_t32 = READ_REG32(d-&gt;hba.base_addr + LBA_PCI_CFG_ADDR); &bslash;&n;&t;return 0; &bslash;&n;}
-id|LBA_CFG_WR
+DECL|function|lba_cfg_write
+r_static
+r_int
+id|lba_cfg_write
 c_func
 (paren
-l_int|8
+r_struct
+id|pci_bus
+op_star
+id|bus
 comma
-l_int|3
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+id|data
 )paren
-id|LBA_CFG_WR
+(brace
+r_struct
+id|lba_device
+op_star
+id|d
+op_assign
+id|LBA_DEV
 c_func
 (paren
-l_int|16
-comma
-l_int|2
+id|bus-&gt;sysdata
 )paren
-id|LBA_CFG_WR
+suffix:semicolon
+id|u32
+id|local_bus
+op_assign
+(paren
+id|bus-&gt;parent
+op_eq
+l_int|NULL
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|bus-&gt;secondary
+suffix:semicolon
+id|u32
+id|tok
+op_assign
+id|LBA_CFG_TOK
 c_func
 (paren
-l_int|32
+id|local_bus
 comma
+id|devfn
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+(paren
+id|tok
+op_amp
+l_int|0xff
+)paren
+op_eq
 l_int|0
 )paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|pos
+OL
+l_int|0x100
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|LBA_TR4PLUS
+c_func
+(paren
+id|d
+)paren
+op_logical_and
+op_logical_neg
+id|LBA_SKIP_PROBE
+c_func
+(paren
+id|d
+)paren
+)paren
+(brace
+multiline_comment|/* Original Workaround */
+id|lba_wr_cfg
+c_func
+(paren
+id|d
+comma
+id|tok
+comma
+id|pos
+comma
+(paren
+id|u32
+)paren
+id|data
+comma
+id|size
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) = 0x%x (a)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|data
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|LBA_SKIP_PROBE
+c_func
+(paren
+id|d
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|lba_device_present
+c_func
+(paren
+id|bus-&gt;secondary
+comma
+id|devfn
+comma
+id|d
+)paren
+)paren
+)paren
+(brace
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) = 0x%x (b)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|data
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* New Workaround */
+)brace
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%x+%2x) = 0x%x (c)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|tok
+comma
+id|pos
+comma
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* Basic Algorithm */
+id|LBA_CFG_TR4_ADDR_SETUP
+c_func
+(paren
+id|d
+comma
+id|tok
+op_or
+id|pos
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|WRITE_REG8
+(paren
+id|data
+comma
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|WRITE_REG16
+c_func
+(paren
+id|data
+comma
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|WRITE_REG32
+c_func
+(paren
+id|data
+comma
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_DATA
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|lba_t32
+op_assign
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_PCI_CFG_ADDR
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|lba_cfg_ops
 r_static
 r_struct
@@ -1185,17 +1537,14 @@ id|pci_ops
 id|lba_cfg_ops
 op_assign
 (brace
-id|lba_cfg_read8
+id|read
+suffix:colon
+id|lba_cfg_read
 comma
-id|lba_cfg_read16
+id|write
+suffix:colon
+id|lba_cfg_write
 comma
-id|lba_cfg_read32
-comma
-id|lba_cfg_write8
-comma
-id|lba_cfg_write16
-comma
-id|lba_cfg_write32
 )brace
 suffix:semicolon
 r_static
@@ -1210,7 +1559,6 @@ r_void
 id|DBG
 c_func
 (paren
-id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot;: lba_bios_init&bslash;n&quot;
 )paren
@@ -1241,7 +1589,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|lba_cfg_read16
+id|pci_read_config_word
 c_func
 (paren
 id|dev
@@ -1376,11 +1724,7 @@ id|list_head
 op_star
 id|ln
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
+macro_line|#ifdef FBB_SUPPORT
 id|u16
 id|fbb_enable
 op_assign
@@ -1389,6 +1733,7 @@ suffix:semicolon
 id|u16
 id|status
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|lba_device
 op_star
@@ -1400,11 +1745,15 @@ c_func
 id|bus-&gt;sysdata
 )paren
 suffix:semicolon
-macro_line|#ifdef __LP64__
 r_int
-id|i
+id|lba_portbase
+op_assign
+id|HBA_PORT_BASE
+c_func
+(paren
+id|ldev-&gt;hba.hba_num
+)paren
 suffix:semicolon
-macro_line|#endif
 id|DBG
 c_func
 (paren
@@ -1451,16 +1800,16 @@ c_func
 (paren
 l_string|&quot;lba_fixup_bus() %s [%lx/%lx]/%x&bslash;n&quot;
 comma
-id|ldev-&gt;hba.mem_space.name
+id|ldev-&gt;hba.lmmio_space.name
 comma
-id|ldev-&gt;hba.mem_space.start
+id|ldev-&gt;hba.lmmio_space.start
 comma
-id|ldev-&gt;hba.mem_space.end
+id|ldev-&gt;hba.lmmio_space.end
 comma
 (paren
 r_int
 )paren
-id|ldev-&gt;hba.mem_space.flags
+id|ldev-&gt;hba.lmmio_space.flags
 )paren
 suffix:semicolon
 id|err
@@ -1510,7 +1859,7 @@ id|iomem_resource
 comma
 op_amp
 (paren
-id|ldev-&gt;hba.mem_space
+id|ldev-&gt;hba.lmmio_space
 )paren
 )paren
 suffix:semicolon
@@ -1554,8 +1903,194 @@ l_int|1
 op_assign
 op_amp
 (paren
-id|ldev-&gt;hba.mem_space
+id|ldev-&gt;hba.lmmio_space
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* KLUGE ALERT!&n;&t;&t;** PCI-PCI Bridge resource munging.&n;&t;&t;** This hack should go away in the near future.&n;&t;&t;** It&squot;s based on the Alpha port.&n;&t;&t;*/
+r_int
+id|i
+suffix:semicolon
+id|u16
+id|cmd
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|bus-&gt;resource
+(braket
+id|i
+)braket
+op_assign
+op_amp
+id|bus-&gt;self-&gt;resource
+(braket
+id|PCI_BRIDGE_RESOURCES
+op_plus
+id|i
+)braket
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|name
+op_assign
+id|bus-&gt;name
+suffix:semicolon
+)brace
+macro_line|#if 0
+id|bus-&gt;resource
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|flags
+op_or_assign
+id|pci_bridge_check_io
+c_func
+(paren
+id|bus-&gt;self
+)paren
+suffix:semicolon
+macro_line|#else
+id|bus-&gt;resource
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|flags
+op_or_assign
+id|IORESOURCE_IO
+suffix:semicolon
+macro_line|#endif
+id|bus-&gt;resource
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|flags
+op_or_assign
+id|IORESOURCE_MEM
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+l_int|2
+)braket
+op_member_access_from_pointer
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Don&squot;t support prefetchable */
+id|bus-&gt;resource
+(braket
+l_int|3
+)braket
+op_member_access_from_pointer
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* not used */
+multiline_comment|/* &n;&t;&t;** If the PPB is enabled (ie already configured) then&n;&t;&t;** just read those values.&n;&t;&t;*/
+(paren
+r_void
+)paren
+id|pci_read_config_word
+c_func
+(paren
+id|bus-&gt;self
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_amp
+(paren
+id|PCI_COMMAND_MEMORY
+op_or
+id|PCI_COMMAND_IO
+)paren
+)paren
+(brace
+id|pci_read_bridge_bases
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Not configured.&n;&t;&t;&t;** For now, propogate HBA limits to the bus;&n;&t;&t;&t;**&t;PCI will adjust them later.&n;&t;&t;&t;*/
+id|bus-&gt;resource
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|end
+op_assign
+id|ldev-&gt;hba.io_space.end
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|end
+op_assign
+id|ldev-&gt;hba.lmmio_space.end
+suffix:semicolon
+)brace
+multiline_comment|/* Turn off downstream PF memory address range by default */
+id|bus-&gt;resource
+(braket
+l_int|2
+)braket
+op_member_access_from_pointer
+id|start
+op_assign
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+l_int|2
+)braket
+op_member_access_from_pointer
+id|end
+op_assign
+id|bus-&gt;resource
+(braket
+l_int|2
+)braket
+op_member_access_from_pointer
+id|start
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|list_for_each
@@ -1567,6 +2102,12 @@ op_amp
 id|bus-&gt;devices
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
 id|dev
 op_assign
 id|pci_dev_b
@@ -1575,8 +2116,15 @@ c_func
 id|ln
 )paren
 suffix:semicolon
-macro_line|#ifdef __LP64__
-multiline_comment|/*&n;&t;&t;** 0-5 are the &quot;standard PCI regions&quot;&n;&t;&t;** (see comments near PCI_NUM_RESOURCES in include/linux/pci.h)&n;&t;&t;*/
+id|DBG
+c_func
+(paren
+l_string|&quot;lba_fixup_bus() %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* Virtualize Device/Bridge Resources. */
 r_for
 c_loop
 (paren
@@ -1585,8 +2133,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-op_le
-id|PCI_ROM_RESOURCE
+OL
+id|PCI_NUM_RESOURCES
 suffix:semicolon
 id|i
 op_increment
@@ -1598,13 +2146,58 @@ op_star
 id|res
 op_assign
 op_amp
-(paren
 id|dev-&gt;resource
 (braket
 id|i
 )braket
+suffix:semicolon
+multiline_comment|/* If resource not allocated - skip it */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|res-&gt;start
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_IO
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;lba_fixup_bus() I/O Ports [%lx/%lx] -&gt; &quot;
+comma
+id|res-&gt;start
+comma
+id|res-&gt;end
 )paren
 suffix:semicolon
+id|res-&gt;start
+op_or_assign
+id|lba_portbase
+suffix:semicolon
+id|res-&gt;end
+op_or_assign
+id|lba_portbase
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;[%lx/%lx]&bslash;n&quot;
+comma
+id|res-&gt;start
+comma
+id|res-&gt;end
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -1613,23 +2206,63 @@ op_amp
 id|IORESOURCE_MEM
 )paren
 (brace
-multiline_comment|/* &quot;Globalize&quot; PCI address */
+multiline_comment|/*&n;&t;&t;&t;&t;** Convert PCI (IO_VIEW) addresses to&n;&t;&t;&t;&t;** processor (PA_VIEW) addresses&n;&t;&t;&t;&t; */
+id|DBG
+c_func
+(paren
+l_string|&quot;lba_fixup_bus() MMIO [%lx/%lx] -&gt; &quot;
+comma
 id|res-&gt;start
-op_or_assign
-id|ldev-&gt;lmmio_base
+comma
+id|res-&gt;end
+)paren
+suffix:semicolon
+id|res-&gt;start
+op_assign
+id|PCI_HOST_ADDR
+c_func
+(paren
+id|HBA_DATA
+c_func
+(paren
+id|ldev
+)paren
+comma
+id|res-&gt;start
+)paren
 suffix:semicolon
 id|res-&gt;end
-op_or_assign
-id|ldev-&gt;lmmio_base
+op_assign
+id|PCI_HOST_ADDR
+c_func
+(paren
+id|HBA_DATA
+c_func
+(paren
+id|ldev
+)paren
+comma
+id|res-&gt;end
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;[%lx/%lx]&bslash;n&quot;
+comma
+id|res-&gt;start
+comma
+id|res-&gt;end
+)paren
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#ifdef FBB_SUPPORT
 multiline_comment|/*&n;&t;&t;** If one device does not support FBB transfers,&n;&t;&t;** No one on the bus can be allowed to use them.&n;&t;&t;*/
 (paren
 r_void
 )paren
-id|lba_cfg_read16
+id|pci_read_config_word
 c_func
 (paren
 id|dev
@@ -1644,11 +2277,15 @@ id|fbb_enable
 op_and_assign
 id|status
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|pdc_pat
+id|is_pdc_pat
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/* Claim resources for PDC&squot;s devices */
@@ -1659,7 +2296,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* __LP64__ */
+macro_line|#endif
 multiline_comment|/*&n;&t;&t;** P2PB&squot;s have no IRQs. ignore them.&n;&t;&t;*/
 r_if
 c_cond
@@ -1680,20 +2317,14 @@ multiline_comment|/* Adjust INTERRUPT_LINE for this dev */
 id|iosapic_fixup_irq
 c_func
 (paren
-id|LBA_DEV
-c_func
-(paren
-id|bus-&gt;sysdata
-)paren
-op_member_access_from_pointer
-id|iosapic_obj
+id|ldev-&gt;iosapic_obj
 comma
 id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* FIXME/REVISIT - finish figuring out to set FBB on both&n;** pbus_set_ranges() clobbers PCI_BRIDGE_CONTROL.&n;** Can&squot;t fixup here anyway....garr...&n;*/
+macro_line|#ifdef FBB_SUPPORT
+multiline_comment|/* FIXME/REVISIT - finish figuring out to set FBB on both&n;** pci_setup_bridge() clobbers PCI_BRIDGE_CONTROL.&n;** Can&squot;t fixup here anyway....garr...&n;*/
 r_if
 c_cond
 (paren
@@ -1713,7 +2344,7 @@ multiline_comment|/* enable on PPB */
 (paren
 r_void
 )paren
-id|lba_cfg_read8
+id|pci_read_config_byte
 c_func
 (paren
 id|bus-&gt;self
@@ -1727,7 +2358,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|lba_cfg_write8
+id|pci_write_config_byte
 c_func
 (paren
 id|bus-&gt;self
@@ -1762,7 +2393,7 @@ id|bus-&gt;devices
 (paren
 r_void
 )paren
-id|lba_cfg_read16
+id|pci_read_config_word
 c_func
 (paren
 id|dev
@@ -1784,7 +2415,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|lba_cfg_write16
+id|pci_write_config_word
 c_func
 (paren
 id|dev
@@ -1803,15 +2434,19 @@ id|pci_bios_ops
 id|lba_bios_ops
 op_assign
 (brace
+id|init
+suffix:colon
 id|lba_bios_init
 comma
+id|fixup_bus
+suffix:colon
 id|lba_fixup_bus
-multiline_comment|/* void lba_fixup_bus(struct pci_bus *bus) */
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*******************************************************&n;**&n;** LBA Sprockets &quot;I/O Port&quot; Space Accessor Functions&n;**&n;** This set of accessor functions is intended for use with&n;** &quot;legacy firmware&quot; (ie Sprockets on Allegro/Forte boxes).&n;**&n;** Many PCI devices don&squot;t require use of I/O port space (eg Tulip,&n;** NCR720) since they export the same registers to both MMIO and&n;** I/O port space. In general I/O port space is slower than&n;** MMIO since drivers are designed so PIO writes can be posted.&n;**&n;********************************************************/
 DECL|macro|LBA_PORT_IN
-mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_astro_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(KERN_DEBUG &quot;%s(0x%p, 0x%x) -&gt;&quot;, __FUNCTION__, bus, addr); &bslash;&n;&t;t = READ_REG##size(LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
+mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_astro_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;t = READ_REG##size(LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
 id|LBA_PORT_IN
 c_func
 (paren
@@ -1835,7 +2470,7 @@ l_int|0
 )paren
 multiline_comment|/*&n;** BUG X4107:  Ordering broken - DMA RD return can bypass PIO WR&n;**&n;** Fixed in Elroy 2.2. The READ_U32(..., LBA_FUNC_ID) below is&n;** guarantee non-postable completion semantics - not avoid X4107.&n;** The READ_U32 only guarantees the write data gets to elroy but&n;** out to the PCI bus. We can&squot;t read stuff from I/O port space&n;** since we don&squot;t know what has side-effects. Attempting to read&n;** from configuration space would be suicidal given the number of&n;** bugs in that elroy functionality.&n;**&n;**      Description:&n;**          DMA read results can improperly pass PIO writes (X4107).  The&n;**          result of this bug is that if a processor modifies a location in&n;**          memory after having issued PIO writes, the PIO writes are not&n;**          guaranteed to be completed before a PCI device is allowed to see&n;**          the modified data in a DMA read.&n;**&n;**          Note that IKE bug X3719 in TR1 IKEs will result in the same&n;**          symptom.&n;**&n;**      Workaround:&n;**          The workaround for this bug is to always follow a PIO write with&n;**          a PIO read to the same bus before starting DMA on that PCI bus.&n;**&n;*/
 DECL|macro|LBA_PORT_OUT
-mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_astro_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(KERN_DEBUG &quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, d, addr, val); &bslash;&n;&t;WRITE_REG##size(val, LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;if (LBA_DEV(d)-&gt;hw_rev &lt; 3) &bslash;&n;&t;&t;lba_t32 = READ_U32(d-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
+mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_astro_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;ASSERT(d != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, d, addr, val); &bslash;&n;&t;WRITE_REG##size(val, LBA_ASTRO_PORT_BASE + addr); &bslash;&n;&t;if (LBA_DEV(d)-&gt;hw_rev &lt; 3) &bslash;&n;&t;&t;lba_t32 = READ_U32(d-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
 id|LBA_PORT_OUT
 c_func
 (paren
@@ -1864,16 +2499,28 @@ id|pci_port_ops
 id|lba_astro_port_ops
 op_assign
 (brace
+id|inb
+suffix:colon
 id|lba_astro_in8
 comma
+id|inw
+suffix:colon
 id|lba_astro_in16
 comma
+id|inl
+suffix:colon
 id|lba_astro_in32
 comma
+id|outb
+suffix:colon
 id|lba_astro_out8
 comma
+id|outw
+suffix:colon
 id|lba_astro_out16
 comma
+id|outl
+suffix:colon
 id|lba_astro_out32
 )brace
 suffix:semicolon
@@ -1884,7 +2531,7 @@ multiline_comment|/*******************************************************&n;**&
 DECL|macro|LBA_PORT_IN
 macro_line|#undef LBA_PORT_IN
 DECL|macro|LBA_PORT_IN
-mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_pat_in##size (struct pci_hba_data *l, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(KERN_DEBUG &quot;%s(0x%p, 0x%x) -&gt;&quot;, __FUNCTION__, l, addr); &bslash;&n;&t;t = READ_REG##size(PIOP_TO_GMMIO(LBA_DEV(l), addr)); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
+mdefine_line|#define LBA_PORT_IN(size, mask) &bslash;&n;static u##size lba_pat_in##size (struct pci_hba_data *l, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size t; &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x) -&gt;&quot;, __FUNCTION__, l, addr); &bslash;&n;&t;t = READ_REG##size(PIOP_TO_GMMIO(LBA_DEV(l), addr)); &bslash;&n;&t;DBG_PORT(&quot; 0x%x&bslash;n&quot;, t); &bslash;&n;&t;return (t); &bslash;&n;}
 id|LBA_PORT_IN
 c_func
 (paren
@@ -1909,7 +2556,7 @@ l_int|0
 DECL|macro|LBA_PORT_OUT
 macro_line|#undef LBA_PORT_OUT
 DECL|macro|LBA_PORT_OUT
-mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_pat_out##size (struct pci_hba_data *l, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;void *where = (void *) PIOP_TO_GMMIO(LBA_DEV(l), addr); &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(KERN_DEBUG &quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, l, addr, val); &bslash;&n;&t;WRITE_REG##size(val, where); &bslash;&n;&t;/* flush the I/O down to the elroy at least */ &bslash;&n;&t;lba_t32 = READ_U32(l-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
+mdefine_line|#define LBA_PORT_OUT(size, mask) &bslash;&n;static void lba_pat_out##size (struct pci_hba_data *l, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;void *where = (void *) PIOP_TO_GMMIO(LBA_DEV(l), addr); &bslash;&n;&t;ASSERT(bus != NULL); &bslash;&n;&t;DBG_PORT(&quot;%s(0x%p, 0x%x, 0x%x)&bslash;n&quot;, __FUNCTION__, l, addr, val); &bslash;&n;&t;WRITE_REG##size(val, where); &bslash;&n;&t;/* flush the I/O down to the elroy at least */ &bslash;&n;&t;lba_t32 = READ_U32(l-&gt;base_addr + LBA_FUNC_ID); &bslash;&n;}
 id|LBA_PORT_OUT
 c_func
 (paren
@@ -1938,16 +2585,28 @@ id|pci_port_ops
 id|lba_pat_port_ops
 op_assign
 (brace
+id|inb
+suffix:colon
 id|lba_pat_in8
 comma
+id|inw
+suffix:colon
 id|lba_pat_in16
 comma
+id|inl
+suffix:colon
 id|lba_pat_in32
 comma
+id|outb
+suffix:colon
 id|lba_pat_out8
 comma
+id|outw
+suffix:colon
 id|lba_pat_out16
 comma
+id|outl
+suffix:colon
 id|lba_pat_out32
 )brace
 suffix:semicolon
@@ -1959,9 +2618,9 @@ id|lba_pat_resources
 c_func
 (paren
 r_struct
-id|hp_device
+id|parisc_device
 op_star
-id|d
+id|pa_dev
 comma
 r_struct
 id|lba_device
@@ -1969,11 +2628,14 @@ op_star
 id|lba_dev
 )paren
 (brace
+r_int
+r_int
+id|bytecnt
+suffix:semicolon
 id|pdc_pat_cell_mod_maddr_block_t
 id|pa_pdc_cell
 suffix:semicolon
 multiline_comment|/* PA_VIEW */
-macro_line|#ifdef DONT_NEED_THIS_FOR_ASTRO
 id|pdc_pat_cell_mod_maddr_block_t
 id|io_pdc_cell
 suffix:semicolon
@@ -1981,7 +2643,6 @@ multiline_comment|/* IO_VIEW */
 r_int
 id|io_count
 suffix:semicolon
-macro_line|#endif
 r_int
 id|status
 suffix:semicolon
@@ -1999,11 +2660,11 @@ id|pdc_pat_cell_module
 c_func
 (paren
 op_amp
-id|pdc_result
+id|bytecnt
 comma
-id|d-&gt;pcell_loc
+id|pa_dev-&gt;pcell_loc
 comma
-id|d-&gt;mod_index
+id|pa_dev-&gt;mod_index
 comma
 id|PA_VIEW
 comma
@@ -2018,18 +2679,17 @@ id|pa_pdc_cell.mod
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#ifdef DONT_NEED_THIS_FOR_ASTRO
 id|status
 op_or_assign
 id|pdc_pat_cell_module
 c_func
 (paren
 op_amp
-id|pdc_result
+id|bytecnt
 comma
-id|d-&gt;pcell_loc
+id|pa_dev-&gt;pcell_loc
 comma
-id|d-&gt;mod_index
+id|pa_dev-&gt;mod_index
 comma
 id|IO_VIEW
 comma
@@ -2044,14 +2704,13 @@ id|io_pdc_cell.mod
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We&squot;ve already done this once for device discovery...*/
 r_if
 c_cond
 (paren
 id|status
 op_ne
-id|PDC_RET_OK
+id|PDC_OK
 )paren
 (brace
 id|panic
@@ -2114,6 +2773,9 @@ multiline_comment|/* aka finish */
 )brace
 op_star
 id|p
+comma
+op_star
+id|io
 suffix:semicolon
 r_struct
 id|resource
@@ -2129,6 +2791,24 @@ op_star
 op_amp
 (paren
 id|pa_pdc_cell.mod
+(braket
+l_int|2
+op_plus
+id|i
+op_star
+l_int|3
+)braket
+)paren
+suffix:semicolon
+id|io
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_amp
+(paren
+id|io_pdc_cell.mod
 (braket
 l_int|2
 op_plus
@@ -2164,15 +2844,17 @@ r_case
 id|PAT_LMMIO
 suffix:colon
 multiline_comment|/* used to fix up pre-initialized MEM BARs */
-id|lba_dev-&gt;lmmio_base
+id|lba_dev-&gt;hba.lmmio_space_offset
 op_assign
 id|p-&gt;start
+op_minus
+id|io-&gt;start
 suffix:semicolon
 id|r
 op_assign
 op_amp
 (paren
-id|lba_dev-&gt;hba.mem_space
+id|lba_dev-&gt;hba.lmmio_space
 )paren
 suffix:semicolon
 id|r-&gt;name
@@ -2261,15 +2943,19 @@ l_string|&quot;LBA I/O Port&quot;
 suffix:semicolon
 id|r-&gt;start
 op_assign
+id|HBA_PORT_BASE
+c_func
+(paren
 id|lba_dev-&gt;hba.hba_num
-op_lshift
-l_int|16
+)paren
 suffix:semicolon
 id|r-&gt;end
 op_assign
 id|r-&gt;start
 op_plus
-l_int|0xffffUL
+id|HBA_PORT_SPACE_SIZE
+op_minus
+l_int|1
 suffix:semicolon
 id|r-&gt;flags
 op_assign
@@ -2314,9 +3000,9 @@ id|lba_legacy_resources
 c_func
 (paren
 r_struct
-id|hp_device
+id|parisc_device
 op_star
-id|d
+id|pa_dev
 comma
 r_struct
 id|lba_device
@@ -2324,19 +3010,28 @@ op_star
 id|lba_dev
 )paren
 (brace
-r_int
-id|lba_num
-suffix:semicolon
 r_struct
 id|resource
 op_star
 id|r
 suffix:semicolon
+r_int
+r_int
+id|rsize
+suffix:semicolon
+r_int
+id|lba_num
+suffix:semicolon
 macro_line|#ifdef __LP64__
-multiline_comment|/*&n;&t;** Used to sign extend instead BAR values are only 32-bit.&n;&t;** 64-bit BARs have the upper 32-bit&squot;s zero&squot;d by firmware.&n;&t;** &quot;Sprockets&quot; PDC initializes for 32-bit OS.&n;&t;*/
-id|lba_dev-&gt;lmmio_base
+multiline_comment|/*&n;&t;** Sign extend all BAR values on &quot;legacy&quot; platforms.&n;&t;** &quot;Sprockets&quot; PDC (Forte/Allegro) initializes everything&n;&t;** for &quot;legacy&quot; 32-bit OS (HPUX 10.20).&n;&t;** Upper 32-bits of 64-bit BAR will be zero too.&n;&t;*/
+id|lba_dev-&gt;hba.lmmio_space_offset
 op_assign
 l_int|0xffffffff00000000UL
+suffix:semicolon
+macro_line|#else
+id|lba_dev-&gt;hba.lmmio_space_offset
+op_assign
+l_int|0UL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;** With &quot;legacy&quot; firmware, the lowest byte of FW_SCRATCH&n;&t;** represents bus-&gt;secondary and the second byte represents&n;&t;** bus-&gt;subsidiary (i.e. highest PPB programmed by firmware).&n;&t;** PCI bus walk *should* end up with the same result.&n;&t;** FIXME: But we don&squot;t have sanity checks in PCI or LBA.&n;&t;*/
@@ -2345,7 +3040,7 @@ op_assign
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|pa_dev-&gt;hpa
 op_plus
 id|LBA_FW_SCRATCH
 )paren
@@ -2382,7 +3077,7 @@ id|r
 op_assign
 op_amp
 (paren
-id|lba_dev-&gt;hba.mem_space
+id|lba_dev-&gt;hba.lmmio_space
 )paren
 suffix:semicolon
 id|r-&gt;name
@@ -2393,31 +3088,145 @@ id|r-&gt;flags
 op_assign
 id|IORESOURCE_MEM
 suffix:semicolon
+multiline_comment|/* Ignore &quot;Range Enable&quot; bit in the BASE register */
 id|r-&gt;start
 op_assign
+id|PCI_HOST_ADDR
+c_func
+(paren
+id|HBA_DATA
+c_func
+(paren
+id|lba_dev
+)paren
+comma
+(paren
+(paren
+r_int
+)paren
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|pa_dev-&gt;hpa
 op_plus
 id|LBA_LMMIO_BASE
+)paren
+)paren
+op_amp
+op_complement
+l_int|1UL
+)paren
+suffix:semicolon
+id|rsize
+op_assign
+op_complement
+id|READ_REG32
+c_func
+(paren
+id|pa_dev-&gt;hpa
+op_plus
+id|LBA_LMMIO_MASK
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;** Each rope only gets part of the distributed range.&n;&t;** Adjust &quot;window&quot; for this rope&n;&t;*/
+id|rsize
+op_div_assign
+id|ROPES_PER_SBA
+suffix:semicolon
+id|r-&gt;start
+op_add_assign
+id|rsize
+op_star
+id|LBA_NUM
+c_func
+(paren
+id|pa_dev-&gt;hpa
 )paren
 suffix:semicolon
 id|r-&gt;end
 op_assign
 id|r-&gt;start
 op_plus
-op_complement
+id|rsize
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;** XXX FIXME - ignore LBA_ELMMIO_BASE for now&n;&t;** &quot;Directed&quot; ranges are used when the &quot;distributed range&quot; isn&squot;t&n;&t;** sufficient for all devices below a given LBA.  Typically devices&n;&t;** like graphics cards or X25 may need a directed range when the&n;&t;** bus has multiple slots (ie multiple devices) or the device&n;&t;** needs more than the typical 4 or 8MB a distributed range offers.&n;&t;**&n;&t;** The main reason for ignoring it now frigging complications.&n;&t;** Directed ranges may overlap (and have precedence) over&n;&t;** distributed ranges. Ie a distributed range assigned to a unused&n;&t;** rope may be used by a directed range on a different rope.&n;&t;** Support for graphics devices may require fixing this&n;&t;** since they may be assigned a directed range which overlaps&n;&t;** an existing (but unused portion of) distributed range.&n;&t;*/
+id|r
+op_assign
+op_amp
 (paren
+id|lba_dev-&gt;hba.elmmio_space
+)paren
+suffix:semicolon
+id|r-&gt;name
+op_assign
+l_string|&quot;extra LBA PCI LMMIO&quot;
+suffix:semicolon
+id|r-&gt;flags
+op_assign
+id|IORESOURCE_MEM
+suffix:semicolon
+id|r-&gt;start
+op_assign
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|pa_dev-&gt;hpa
 op_plus
-id|LBA_LMMIO_MASK
-)paren
+id|LBA_ELMMIO_BASE
 )paren
 suffix:semicolon
+id|r-&gt;end
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* check Range Enable bit */
+r_if
+c_cond
+(paren
+id|r-&gt;start
+op_amp
+l_int|1
+)paren
+(brace
+multiline_comment|/* First baby step to getting Direct Ranges listed in /proc.&n;&t;&t;** AFAIK, only Sprockets PDC will setup a directed Range.&n;&t;&t;*/
+id|r-&gt;start
+op_and_assign
+op_complement
+l_int|1
+suffix:semicolon
+id|r-&gt;end
+op_assign
+id|r-&gt;start
+suffix:semicolon
+id|r-&gt;end
+op_add_assign
+op_complement
+id|READ_REG32
+c_func
+(paren
+id|pa_dev-&gt;hpa
+op_plus
+id|LBA_ELMMIO_MASK
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;WARNING: Ignoring enabled ELMMIO BASE 0x%0lx  SIZE 0x%lx&bslash;n&quot;
+comma
+id|r-&gt;start
+comma
+id|r-&gt;end
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|r
 op_assign
 op_amp
@@ -2438,10 +3247,13 @@ op_assign
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|pa_dev-&gt;hpa
 op_plus
 id|LBA_IOS_BASE
 )paren
+op_amp
+op_complement
+l_int|1L
 suffix:semicolon
 id|r-&gt;end
 op_assign
@@ -2451,19 +3263,26 @@ op_plus
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|pa_dev-&gt;hpa
 op_plus
 id|LBA_IOS_MASK
 )paren
 op_xor
-l_int|0xffff
+(paren
+id|HBA_PORT_SPACE_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* Virtualize the I/O Port space ranges */
 id|lba_num
 op_assign
+id|HBA_PORT_BASE
+c_func
+(paren
 id|lba_dev-&gt;hba.hba_num
-op_lshift
-l_int|16
+)paren
 suffix:semicolon
 id|r-&gt;start
 op_or_assign
@@ -2476,7 +3295,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n;**&n;**   LBA initialization code (HW and SW)&n;**&n;**   o identify LBA chip itself&n;**   o initialize LBA chip modes (HardFail)&n;**   o FIXME: initialize DMA hints for reasonable defaults&n;**   o enable configuration functions&n;**   o call pci_register_ops() to discover devs (fixup/fixup_bus get invoked)&n;**&n;**************************************************************************/
 r_static
-r_void
+r_int
+id|__init
 DECL|function|lba_hw_init
 id|lba_hw_init
 c_func
@@ -2490,6 +3310,233 @@ id|d
 id|u32
 id|stat
 suffix:semicolon
+id|u32
+id|bus_reset
+suffix:semicolon
+multiline_comment|/* PDC_PAT_BUG */
+macro_line|#if 0
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;LBA %lx  STAT_CTL %Lx  ERROR_CFG %Lx  STATUS %Lx DMA_CTL %Lx&bslash;n&quot;
+comma
+id|d-&gt;hba.base_addr
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_STAT_CTL
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ERROR_CONFIG
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ERROR_STATUS
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_DMA_CTL
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;&t;ARB mask %Lx  pri %Lx  mode %Lx  mtlt %Lx&bslash;n&quot;
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_MASK
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_PRI
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_MODE
+)paren
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_MTLT
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;&t;HINT cfg 0x%Lx&bslash;n&quot;
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_HINT_CFG
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;&t;HINT reg &quot;
+)paren
+suffix:semicolon
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|LBA_HINT_BASE
+suffix:semicolon
+id|i
+OL
+(paren
+l_int|14
+op_star
+l_int|8
+op_plus
+id|LBA_HINT_BASE
+)paren
+suffix:semicolon
+id|i
+op_add_assign
+l_int|8
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %Lx&quot;
+comma
+id|READ_REG64
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* DEBUG_LBA_PAT */
+macro_line|#ifdef __LP64__
+macro_line|#warning FIXME add support for PDC_PAT_IO &quot;Get slot status&quot; - OLAR support
+macro_line|#endif
+multiline_comment|/* PDC_PAT_BUG: exhibited in rev 40.48  on L2000 */
+id|bus_reset
+op_assign
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_STAT_CTL
+op_plus
+l_int|4
+)paren
+op_amp
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus_reset
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;NOTICE: PCI bus reset still asserted! (clearing)&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|stat
+op_assign
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ERROR_CONFIG
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|LBA_SMART_MODE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;NOTICE: LBA in SMART mode! (cleared)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|stat
+op_and_assign
+op_complement
+id|LBA_SMART_MODE
+suffix:semicolon
+id|WRITE_REG32
+c_func
+(paren
+id|stat
+comma
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ERROR_CONFIG
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set HF mode as the default (vs. -1 mode). */
 id|stat
 op_assign
@@ -2513,10 +3560,59 @@ op_plus
 id|LBA_STAT_CTL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;** Writing a zero to STAT_CTL.rf (bit 0) will clear reset signal&n;&t;** if it&squot;s not already set. If we just cleared the PCI Bus Reset&n;&t;** signal, wait a bit for the PCI devices to recover and setup.&n;&t;*/
+r_if
+c_cond
+(paren
+id|bus_reset
+)paren
+id|mdelay
+c_func
+(paren
+id|pci_post_reset_delay
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|READ_REG32
+c_func
+(paren
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_MASK
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;** PDC_PAT_BUG: PDC rev 40.48 on L2000.&n;&t;&t;** B2000/C3600/J6000 also have this problem?&n;&t;&t;** &n;&t;&t;** Elroys with hot pluggable slots don&squot;t get configured&n;&t;&t;** correctly if the slot is empty.  ARB_MASK is set to 0&n;&t;&t;** and we can&squot;t master transactions on the bus if it&squot;s&n;&t;&t;** not at least one. 0x3 enables elroy and first slot.&n;&t;&t;*/
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;NOTICE: Enabling PCI Arbitration&bslash;n&quot;
+)paren
+suffix:semicolon
+id|WRITE_REG32
+c_func
+(paren
+l_int|0x3
+comma
+id|d-&gt;hba.base_addr
+op_plus
+id|LBA_ARB_MASK
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;** FIXME: Hint registers are programmed with default hint&n;&t;** values by firmware. Hints should be sane even if we&n;&t;** can&squot;t reprogram them the way drivers want.&n;&t;*/
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|lba_common_init
 id|lba_common_init
 c_func
@@ -2535,12 +3631,11 @@ suffix:semicolon
 id|pcibios_register_hba
 c_func
 (paren
+id|HBA_DATA
+c_func
 (paren
-r_struct
-id|pci_hba_data
-op_star
-)paren
 id|lba_dev
+)paren
 )paren
 suffix:semicolon
 id|lba_dev-&gt;lba_lock
@@ -2567,21 +3662,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** Determine if lba should claim this chip (return 0) or not (return 1).&n;** If so, initialize the chip and tell other partners in crime they&n;** have work to do.&n;*/
 r_static
-id|__init
 r_int
+id|__init
 DECL|function|lba_driver_callback
 id|lba_driver_callback
 c_func
 (paren
 r_struct
-id|hp_device
+id|parisc_device
 op_star
-id|d
-comma
-r_struct
-id|pa_iodc_driver
-op_star
-id|dri
+id|dev
 )paren
 (brace
 r_struct
@@ -2601,21 +3691,9 @@ r_void
 op_star
 id|tmp_obj
 suffix:semicolon
-multiline_comment|/* from drivers/pci/setup-bus.c */
-r_extern
-r_void
-id|__init
-id|pbus_set_ranges
-c_func
-(paren
-r_struct
-id|pci_bus
+r_char
 op_star
-comma
-r_struct
-id|pbus_set_ranges_data
-op_star
-)paren
+id|version
 suffix:semicolon
 multiline_comment|/* Read HW Rev First */
 id|func_class
@@ -2623,7 +3701,7 @@ op_assign
 id|READ_REG32
 c_func
 (paren
-id|d-&gt;hpa
+id|dev-&gt;hpa
 op_plus
 id|LBA_FCLASS
 )paren
@@ -2641,7 +3719,7 @@ id|func_class
 r_case
 l_int|0
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR1.0&quot;
 suffix:semicolon
@@ -2650,7 +3728,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR2.0&quot;
 suffix:semicolon
@@ -2659,7 +3737,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR2.1&quot;
 suffix:semicolon
@@ -2668,7 +3746,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR2.2&quot;
 suffix:semicolon
@@ -2677,7 +3755,7 @@ suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR3.0&quot;
 suffix:semicolon
@@ -2686,7 +3764,7 @@ suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR4.0&quot;
 suffix:semicolon
@@ -2694,7 +3772,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dri-&gt;version
+id|version
 op_assign
 l_string|&quot;TR4+&quot;
 suffix:semicolon
@@ -2702,17 +3780,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s version %s (0x%x) found at 0x%p&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s version %s (0x%x) found at 0x%lx&bslash;n&quot;
 comma
-id|dri-&gt;name
+id|MODULE_NAME
 comma
-id|dri-&gt;version
+id|version
 comma
 id|func_class
 op_amp
 l_int|0xf
 comma
-id|d-&gt;hpa
+id|dev-&gt;hpa
 )paren
 suffix:semicolon
 multiline_comment|/* Just in case we find some prototypes... */
@@ -2739,34 +3818,12 @@ op_assign
 id|iosapic_register
 c_func
 (paren
-id|d-&gt;hpa
+id|dev-&gt;hpa
 op_plus
 id|LBA_IOSAPIC_BASE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|tmp_obj
-)paren
-(brace
-multiline_comment|/* iosapic may have failed. But more likely the&n;&t;&t;** slot isn&squot;t occupied and thus has no IRT entries.&n;&t;&t;** iosapic_register looks for this iosapic in the IRT&n;&t;&t;** before bothering to allocating data structures&n;&t;&t;** we don&squot;t need.&n;&t;&t;*/
-id|DBG
-c_func
-(paren
-id|KERN_WARNING
-id|MODULE_NAME
-l_string|&quot;: iosapic_register says not used&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* NOTE: PCI devices (e.g. 103c:1005 graphics card) which don&squot;t&n;&t;**&t;have an IRT entry will get NULL back from iosapic code.&n;&t;*/
 id|lba_dev
 op_assign
 id|kmalloc
@@ -2792,6 +3849,7 @@ id|lba_dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;lba_init_chip - couldn&squot;t alloc lba_device&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2821,14 +3879,27 @@ id|func_class
 suffix:semicolon
 id|lba_dev-&gt;hba.base_addr
 op_assign
-id|d-&gt;hpa
+id|dev-&gt;hpa
 suffix:semicolon
 multiline_comment|/* faster access */
+id|lba_dev-&gt;hba.dev
+op_assign
+id|dev
+suffix:semicolon
 id|lba_dev-&gt;iosapic_obj
 op_assign
 id|tmp_obj
 suffix:semicolon
 multiline_comment|/* save interrupt handle */
+id|lba_dev-&gt;hba.iommu
+op_assign
+id|sba_get_iommu
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* get iommu data */
 multiline_comment|/* ------------ Second : initialize common stuff ---------- */
 id|lba_common_init
 c_func
@@ -2836,18 +3907,27 @@ c_func
 id|lba_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|lba_hw_init
 c_func
 (paren
 id|lba_dev
 )paren
+)paren
+r_return
+l_int|1
 suffix:semicolon
 multiline_comment|/* ---------- Third : setup I/O Port and MMIO resources  --------- */
 macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|pdc_pat
+id|is_pdc_pat
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/* PDC PAT firmware uses PIOP region of GMMIO space. */
@@ -2860,15 +3940,15 @@ multiline_comment|/* Go ask PDC PAT what resources this LBA has */
 id|lba_pat_resources
 c_func
 (paren
-id|d
+id|dev
 comma
 id|lba_dev
 )paren
 suffix:semicolon
 )brace
 r_else
-(brace
 macro_line|#endif
+(brace
 multiline_comment|/* Sprockets PDC uses NPIOP region */
 id|pci_port
 op_assign
@@ -2879,14 +3959,12 @@ multiline_comment|/* Poke the chip a bit for /proc output */
 id|lba_legacy_resources
 c_func
 (paren
-id|d
+id|dev
 comma
 id|lba_dev
 )paren
 suffix:semicolon
-macro_line|#ifdef __LP64__
 )brace
-macro_line|#endif
 multiline_comment|/* &n;&t;** Tell PCI support another PCI bus was found.&n;&t;** Walks PCI bus for us too.&n;&t;*/
 id|lba_bus
 op_assign
@@ -2911,24 +3989,12 @@ macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
-id|pdc_pat
+id|is_pdc_pat
+c_func
+(paren
+)paren
 )paren
 (brace
-multiline_comment|/* determine window sizes needed by PCI-PCI bridges */
-id|DBG_PAT
-c_func
-(paren
-l_string|&quot;LBA pcibios_size_bridge()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pcibios_size_bridge
-c_func
-(paren
-id|lba_bus
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* assign resources to un-initialized devices */
 id|DBG_PAT
 c_func
@@ -2968,29 +4034,14 @@ id|lba_dump_res
 c_func
 (paren
 op_amp
-id|lba_dev-&gt;hba.mem_space
+id|lba_dev-&gt;hba.lmmio_space
 comma
 l_int|2
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* program *all* PCI-PCI bridge range registers */
-id|DBG_PAT
-c_func
-(paren
-l_string|&quot;LBA pbus_set_ranges()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pbus_set_ranges
-c_func
-(paren
-id|lba_bus
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
-macro_line|#endif /* __LP64__ */
+macro_line|#endif
 multiline_comment|/*&n;&t;** Once PCI register ops has walked the bus, access to config&n;&t;** space is restricted. Avoids master aborts on config cycles.&n;&t;** Early LBA revs go fatal on *any* master abort.&n;&t;*/
 r_if
 c_cond
@@ -3013,15 +4064,79 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Initialize the IBASE/IMASK registers for LBA (Elroy).&n;** Only called from sba_iommu.c initialization sequence.&n;*/
-DECL|function|lba_init_iregs
+DECL|variable|lba_tbl
+r_static
+r_struct
+id|parisc_device_id
+id|lba_tbl
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|HPHW_BRIDGE
+comma
+id|HVERSION_REV_ANY_ID
+comma
+l_int|0x782
+comma
+l_int|0xa
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|lba_driver
+r_static
+r_struct
+id|parisc_driver
+id|lba_driver
+op_assign
+(brace
+id|name
+suffix:colon
+id|MODULE_NAME
+comma
+id|id_table
+suffix:colon
+id|lba_tbl
+comma
+id|probe
+suffix:colon
+id|lba_driver_callback
+)brace
+suffix:semicolon
+multiline_comment|/*&n;** One time initialization to let the world know the LBA was found.&n;** Must be called exactly once before pci_init().&n;*/
+DECL|function|lba_init
 r_void
-id|lba_init_iregs
+id|__init
+id|lba_init
 c_func
 (paren
 r_void
+)paren
+(brace
+id|register_parisc_driver
+c_func
+(paren
+op_amp
+id|lba_driver
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;** Initialize the IBASE/IMASK registers for LBA (Elroy).&n;** Only called from sba_iommu.c in order to route ranges (MMIO vs DMA).&n;** sba_iommu is responsible for locking (none needed at init time).&n;*/
+r_void
+DECL|function|lba_set_iregs
+id|lba_set_iregs
+c_func
+(paren
+r_struct
+id|parisc_device
 op_star
-id|sba_hpa
+id|lba
 comma
 id|u32
 id|ibase
@@ -3030,17 +4145,11 @@ id|u32
 id|imask
 )paren
 (brace
-r_extern
-r_struct
-id|pci_hba_data
-op_star
-id|hba_list
-suffix:semicolon
-multiline_comment|/* arch/parisc/kernel/pci.c */
-r_struct
-id|pci_hba_data
-op_star
-id|lba
+r_int
+r_int
+id|base_addr
+op_assign
+id|lba-&gt;hpa
 suffix:semicolon
 id|imask
 op_lshift_assign
@@ -3071,19 +4180,9 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: sba_hpa is intended to search some table to&n;&t;**      determine which LBA&squot;s belong to the caller&squot;s SBA.&n;&t;** IS_ASTRO: just assume only one SBA for now.&n;&t;*/
-id|ASSERT
-c_func
-(paren
-l_int|NULL
-op_ne
-id|hba_list
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s() ibase 0x%x imask 0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3093,39 +4192,12 @@ comma
 id|imask
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|lba
-op_assign
-id|hba_list
-suffix:semicolon
-l_int|NULL
-op_ne
-id|lba
-suffix:semicolon
-id|lba
-op_assign
-id|lba-&gt;next
-)paren
-(brace
-id|DBG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s() base_addr %p&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|lba-&gt;base_addr
-)paren
-suffix:semicolon
 id|WRITE_REG32
 c_func
 (paren
 id|imask
 comma
-id|lba-&gt;base_addr
+id|base_addr
 op_plus
 id|LBA_IMASK
 )paren
@@ -3135,19 +4207,9 @@ c_func
 (paren
 id|ibase
 comma
-id|lba-&gt;base_addr
+id|base_addr
 op_plus
 id|LBA_IBASE
-)paren
-suffix:semicolon
-)brace
-id|DBG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s() done&bslash;n&quot;
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
