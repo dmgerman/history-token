@@ -3809,10 +3809,19 @@ OG
 id|ATM_MAX_AAL5_PDU
 )paren
 )paren
+(brace
+id|dbg
+(paren
+l_string|&quot;udsl_atm_open: unsupported ATM type %d!&quot;
+comma
+id|vcc-&gt;qos.aal
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3850,6 +3859,15 @@ id|vci
 )paren
 )paren
 (brace
+id|dbg
+(paren
+l_string|&quot;udsl_atm_open: %hd/%d already in use!&quot;
+comma
+id|vpi
+comma
+id|vci
+)paren
+suffix:semicolon
 id|up
 (paren
 op_amp
@@ -3881,6 +3899,11 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
+id|dbg
+(paren
+l_string|&quot;udsl_atm_open: no memory for vcc_data!&quot;
+)paren
+suffix:semicolon
 id|up
 (paren
 op_amp
@@ -5397,7 +5420,7 @@ l_int|0
 )paren
 id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on receive urb %d returned %d&quot;
+l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on receive urb %d returned %d!&quot;
 comma
 id|i
 comma
@@ -5579,7 +5602,7 @@ l_int|0
 )paren
 id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on send urb %d returned %d&quot;
+l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on send urb %d returned %d!&quot;
 comma
 id|i
 comma
