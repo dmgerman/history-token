@@ -2459,15 +2459,11 @@ macro_line|#if IDESCSI_DEBUG_LOG
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;rq_status: %d, rq_dev: %u, cmd: %d, errors: %d&bslash;n&quot;
+l_string|&quot;rq_status: %d, dev: %s, cmd: %d, errors: %d&bslash;n&quot;
 comma
 id|rq-&gt;rq_status
 comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;rq_dev
+id|rq-&gt;rq_disk-&gt;disk_name
 comma
 id|rq-&gt;cmd
 comma

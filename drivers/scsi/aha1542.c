@@ -7788,11 +7788,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;Timed out command pending for %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
+id|SCpnt-&gt;request-&gt;rq_disk
+ques
+c_cond
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;disk_name
+suffix:colon
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7840,11 +7841,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;Other pending command %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
+id|SCpnt-&gt;request-&gt;rq_disk
+ques
+c_cond
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;disk_name
+suffix:colon
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 )brace

@@ -7989,15 +7989,11 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: rq_status: %d, &quot;
-l_string|&quot;rq_dev: %u, cmd: %ld, errors: %d&bslash;n&quot;
+l_string|&quot;dev: %s, cmd: %ld, errors: %d&bslash;n&quot;
 comma
 id|rq-&gt;rq_status
 comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;rq_dev
+id|rq-&gt;rq_disk-&gt;disk_name
 comma
 id|rq-&gt;flags
 comma
