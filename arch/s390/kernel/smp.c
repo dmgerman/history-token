@@ -1879,20 +1879,15 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;la    1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;stam  0,15,0(1)&quot;
+l_string|&quot;stam  0,15,0(%0)&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
+op_amp
 id|cpu_lowcore-&gt;access_regs_save_area
-(braket
-l_int|0
-)braket
 )paren
 suffix:colon
-suffix:colon
-l_string|&quot;1&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
