@@ -4883,7 +4883,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a non-blocking operation.&n; */
+multiline_comment|/*&n; * This operation can block, but only after everything is updated&n; */
 DECL|function|dquot_free_space
 r_int
 id|dquot_free_space
@@ -5078,7 +5078,7 @@ r_return
 id|QUOTA_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a non-blocking operation.&n; */
+multiline_comment|/*&n; * This operation can block, but only after everything is updated&n; */
 DECL|function|dquot_free_inode
 r_int
 id|dquot_free_inode
@@ -5255,7 +5255,7 @@ r_return
 id|QUOTA_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer the number of inode and blocks from one diskquota to an other.&n; *&n; * This operation can block, but only after everything is updated&n; */
+multiline_comment|/*&n; * Transfer the number of inode and blocks from one diskquota to an other.&n; *&n; * This operation can block, but only after everything is updated&n; * A transaction must be started when entering this function.&n; */
 DECL|function|dquot_transfer
 r_int
 id|dquot_transfer
