@@ -415,7 +415,7 @@ id|cp
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -469,7 +469,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -526,7 +526,7 @@ id|cp
 comma
 l_int|2
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_return
