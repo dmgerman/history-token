@@ -1846,6 +1846,9 @@ l_int|1
 )paren
 op_logical_or
 (paren
+id|j
+op_logical_and
+(paren
 id|pst
 (braket
 id|j
@@ -1856,7 +1859,9 @@ OL
 id|HI_FID_TABLE_BOTTOM
 )paren
 )paren
+)paren
 (brace
+multiline_comment|/* Only first fid is allowed to be in &quot;low&quot; range */
 id|printk
 c_func
 (paren

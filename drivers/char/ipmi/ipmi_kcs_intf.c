@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/ipmi_smi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ipmi_kcs_sm.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* Measure times between events in the driver. */

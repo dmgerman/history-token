@@ -467,12 +467,17 @@ DECL|member|minor_start
 r_int
 id|minor_start
 suffix:semicolon
-multiline_comment|/* start of minor device number*/
+multiline_comment|/* start of minor device number */
+DECL|member|minor_num
+r_int
+id|minor_num
+suffix:semicolon
+multiline_comment|/* number of *possible* devices */
 DECL|member|num
 r_int
 id|num
 suffix:semicolon
-multiline_comment|/* number of devices */
+multiline_comment|/* number of devices allocated */
 DECL|member|type
 r_int
 id|type
@@ -993,7 +998,7 @@ suffix:semicolon
 multiline_comment|/* tty driver magic number */
 DECL|macro|TTY_DRIVER_MAGIC
 mdefine_line|#define TTY_DRIVER_MAGIC&t;&t;0x5402
-multiline_comment|/*&n; * tty driver flags&n; * &n; * TTY_DRIVER_RESET_TERMIOS --- requests the tty layer to reset the&n; * &t;termios setting when the last process has closed the device.&n; * &t;Used for PTY&squot;s, in particular.&n; * &n; * TTY_DRIVER_REAL_RAW --- if set, indicates that the driver will&n; * &t;guarantee never not to set any special character handling&n; * &t;flags if ((IGNBRK || (!BRKINT &amp;&amp; !PARMRK)) &amp;&amp; (IGNPAR ||&n; * &t;!INPCK)).  That is, if there is no reason for the driver to&n; * &t;send notifications of parity and break characters up to the&n; * &t;line driver, it won&squot;t do so.  This allows the line driver to&n; *&t;optimize for this case if this flag is set.  (Note that there&n; * &t;is also a promise, if the above case is true, not to signal&n; * &t;overruns, either.)&n; *&n; * TTY_DRIVER_NO_DEVFS --- if set, do not create devfs entries. This&n; *&t;is only used by tty_register_driver().&n; *&n; */
+multiline_comment|/*&n; * tty driver flags&n; * &n; * TTY_DRIVER_RESET_TERMIOS --- requests the tty layer to reset the&n; * &t;termios setting when the last process has closed the device.&n; * &t;Used for PTY&squot;s, in particular.&n; * &n; * TTY_DRIVER_REAL_RAW --- if set, indicates that the driver will&n; * &t;guarantee never not to set any special character handling&n; * &t;flags if ((IGNBRK || (!BRKINT &amp;&amp; !PARMRK)) &amp;&amp; (IGNPAR ||&n; * &t;!INPCK)).  That is, if there is no reason for the driver to&n; * &t;send notifications of parity and break characters up to the&n; * &t;line driver, it won&squot;t do so.  This allows the line driver to&n; *&t;optimize for this case if this flag is set.  (Note that there&n; * &t;is also a promise, if the above case is true, not to signal&n; * &t;overruns, either.)&n; *&n; * TTY_DRIVER_NO_DEVFS --- if set, do not create devfs entries. This&n; *&t;is only used by tty_register_driver().&n; *&n; * TTY_DRIVER_DEVPTS_MEM -- don&squot;t use the standard arrays, instead&n; *&t;use dynamic memory keyed through the devpts filesystem.  This&n; *&t;is only applicable to the pty driver.&n; */
 DECL|macro|TTY_DRIVER_INSTALLED
 mdefine_line|#define TTY_DRIVER_INSTALLED&t;&t;0x0001
 DECL|macro|TTY_DRIVER_RESET_TERMIOS
@@ -1002,6 +1007,8 @@ DECL|macro|TTY_DRIVER_REAL_RAW
 mdefine_line|#define TTY_DRIVER_REAL_RAW&t;&t;0x0004
 DECL|macro|TTY_DRIVER_NO_DEVFS
 mdefine_line|#define TTY_DRIVER_NO_DEVFS&t;&t;0x0008
+DECL|macro|TTY_DRIVER_DEVPTS_MEM
+mdefine_line|#define TTY_DRIVER_DEVPTS_MEM&t;&t;0x0010
 multiline_comment|/* tty driver types */
 DECL|macro|TTY_DRIVER_TYPE_SYSTEM
 mdefine_line|#define TTY_DRIVER_TYPE_SYSTEM&t;&t;0x0001

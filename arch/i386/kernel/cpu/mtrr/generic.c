@@ -228,6 +228,7 @@ suffix:semicolon
 multiline_comment|/*  Grab all of the MTRR state for this CPU into *state  */
 DECL|function|get_mtrr_state
 r_void
+id|__init
 id|get_mtrr_state
 c_func
 (paren
@@ -677,7 +678,6 @@ suffix:semicolon
 DECL|function|set_fixed_ranges
 r_static
 r_int
-id|__init
 id|set_fixed_ranges
 c_func
 (paren
@@ -939,7 +939,6 @@ multiline_comment|/*  Set the MSR pair relating to a var range. Returns TRUE if&
 DECL|function|set_mtrr_var_ranges
 r_static
 r_int
-id|__init
 id|set_mtrr_var_ranges
 c_func
 (paren

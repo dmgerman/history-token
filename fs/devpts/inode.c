@@ -1,10 +1,12 @@
-multiline_comment|/* -*- linux-c -*- --------------------------------------------------------- *&n; *&n; * linux/fs/devpts/inode.c&n; *&n; *  Copyright 1998 H. Peter Anvin -- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
+multiline_comment|/* -*- linux-c -*- --------------------------------------------------------- *&n; *&n; * linux/fs/devpts/inode.c&n; *&n; *  Copyright 1998-2004 H. Peter Anvin -- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/devpts_fs.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 DECL|macro|DEVPTS_SUPER_MAGIC
 mdefine_line|#define DEVPTS_SUPER_MAGIC 0x1cd1
@@ -516,7 +518,7 @@ id|num
 r_char
 id|s
 (braket
-l_int|10
+l_int|12
 )braket
 suffix:semicolon
 r_struct
@@ -583,17 +585,41 @@ comma
 )brace
 suffix:semicolon
 DECL|function|devpts_pty_new
-r_void
+r_int
 id|devpts_pty_new
 c_func
 (paren
-r_int
-id|number
-comma
-id|dev_t
-id|device
+r_struct
+id|tty_struct
+op_star
+id|tty
 )paren
 (brace
+r_int
+id|number
+op_assign
+id|tty-&gt;index
+suffix:semicolon
+r_struct
+id|tty_driver
+op_star
+id|driver
+op_assign
+id|tty-&gt;driver
+suffix:semicolon
+id|dev_t
+id|device
+op_assign
+id|MKDEV
+c_func
+(paren
+id|driver-&gt;major
+comma
+id|driver-&gt;minor_start
+op_plus
+id|number
+)paren
+suffix:semicolon
 r_struct
 id|dentry
 op_star
@@ -610,6 +636,23 @@ c_func
 id|devpts_mnt-&gt;mnt_sb
 )paren
 suffix:semicolon
+multiline_comment|/* We&squot;re supposed to be given the slave end of a pty */
+id|BUG_ON
+c_func
+(paren
+id|driver-&gt;type
+op_ne
+id|TTY_DRIVER_TYPE_PTY
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|driver-&gt;subtype
+op_ne
+id|PTY_TYPE_SLAVE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -617,6 +660,8 @@ op_logical_neg
 id|inode
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|inode-&gt;i_ino
 op_assign
@@ -671,6 +716,10 @@ op_assign
 op_amp
 id|devpts_file_inode_operations
 suffix:semicolon
+id|inode-&gt;u.generic_ip
+op_assign
+id|tty
+suffix:semicolon
 id|dentry
 op_assign
 id|get_node
@@ -706,6 +755,65 @@ c_func
 op_amp
 id|devpts_root-&gt;d_inode-&gt;i_sem
 )paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|devpts_get_tty
+r_struct
+id|tty_struct
+op_star
+id|devpts_get_tty
+c_func
+(paren
+r_int
+id|number
+)paren
+(brace
+r_struct
+id|dentry
+op_star
+id|dentry
+op_assign
+id|get_node
+c_func
+(paren
+id|number
+)paren
+suffix:semicolon
+r_struct
+id|tty_struct
+op_star
+id|tty
+suffix:semicolon
+id|tty
+op_assign
+(paren
+id|IS_ERR
+c_func
+(paren
+id|dentry
+)paren
+op_logical_or
+op_logical_neg
+id|dentry-&gt;d_inode
+)paren
+ques
+c_cond
+l_int|NULL
+suffix:colon
+id|dentry-&gt;d_inode-&gt;u.generic_ip
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|devpts_root-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
+r_return
+id|tty
 suffix:semicolon
 )brace
 DECL|function|devpts_pty_kill

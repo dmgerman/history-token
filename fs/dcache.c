@@ -2897,7 +2897,7 @@ suffix:semicolon
 id|security_d_instantiate
 c_func
 (paren
-id|dentry
+r_new
 comma
 id|inode
 )paren

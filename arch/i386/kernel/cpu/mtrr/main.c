@@ -313,6 +313,7 @@ suffix:semicolon
 DECL|function|init_table
 r_static
 r_void
+id|__init
 id|init_table
 c_func
 (paren
@@ -1733,6 +1734,7 @@ suffix:semicolon
 DECL|function|init_other_cpus
 r_static
 r_void
+id|__init
 id|init_other_cpus
 c_func
 (paren
@@ -2022,7 +2024,7 @@ id|mtrr_restore
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * mtrr_init - initialie mtrrs on the boot CPU&n; *&n; * This needs to be called early; before any of the other CPUs are &n; * initialized (i.e. before smp_init()).&n; * &n; */
+multiline_comment|/**&n; * mtrr_init - initialize mtrrs on the boot CPU&n; *&n; * This needs to be called early; before any of the other CPUs are &n; * initialized (i.e. before smp_init()).&n; * &n; */
 DECL|function|mtrr_init
 r_static
 r_int

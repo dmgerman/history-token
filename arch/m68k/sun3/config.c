@@ -597,7 +597,7 @@ id|mach_get_hardware_list
 op_assign
 id|sun3_get_hardware_list
 suffix:semicolon
-macro_line|#if !defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_DUMMY_CONSOLE)
+macro_line|#if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp

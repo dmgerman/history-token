@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2884,7 +2885,7 @@ id|MMU_I
 )paren
 )paren
 (brace
-multiline_comment|/* propably a 020 cas fault */
+multiline_comment|/* probably a 020 cas fault */
 r_if
 c_cond
 (paren
@@ -3663,12 +3664,13 @@ id|addr
 )paren
 )paren
 (brace
+macro_line|#ifndef CONFIG_KALLSYMS
 r_if
 c_cond
 (paren
 id|i
 op_mod
-l_int|4
+l_int|5
 op_eq
 l_int|0
 )paren
@@ -3678,10 +3680,19 @@ c_func
 l_string|&quot;&bslash;n       &quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
 l_string|&quot; [&lt;%08lx&gt;]&quot;
+comma
+id|addr
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; %s&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -4896,9 +4907,23 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PC: [&lt;%08lx&gt;]&bslash;nSR: %04x  SP: %p  a2: %08lx&bslash;n&quot;
+l_string|&quot;PC: [&lt;%08lx&gt;]&quot;
 comma
 id|fp-&gt;pc
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; %s&bslash;n&quot;
+comma
+id|fp-&gt;pc
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;nSR: %04x  SP: %p  a2: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;sr
 comma

@@ -3,17 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;efi.h&quot;
-multiline_comment|/* Handle printing of 64-bit values */
-multiline_comment|/* Borrowed from /usr/include/inttypes.h */
-macro_line|# if BITS_PER_LONG == 64 
-DECL|macro|__PRI64_PREFIX
-macro_line|#  define __PRI64_PREFIX&t;&quot;l&quot;
-macro_line|# else
-DECL|macro|__PRI64_PREFIX
-macro_line|#  define __PRI64_PREFIX&t;&quot;ll&quot;
-macro_line|# endif
-DECL|macro|PRIx64
-macro_line|# define PRIx64&t;&t;__PRI64_PREFIX &quot;x&quot;
 DECL|macro|EFI_DEBUG
 macro_line|#undef EFI_DEBUG
 macro_line|#ifdef EFI_DEBUG
@@ -660,12 +649,14 @@ id|GPT_HEADER_SIGNATURE
 id|Dprintk
 c_func
 (paren
-l_string|&quot;GUID Partition Table Header signature is wrong: %&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GUID Partition Table Header signature is wrong:&quot;
+l_string|&quot;%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -677,6 +668,11 @@ op_member_access_from_pointer
 id|signature
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|GPT_HEADER_SIGNATURE
 )paren
 suffix:semicolon
@@ -814,12 +810,13 @@ id|lba
 id|Dprintk
 c_func
 (paren
-l_string|&quot;GPT my_lba incorrect: %&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT my_lba incorrect: %lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -831,6 +828,11 @@ op_member_access_from_pointer
 id|my_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|lba
 )paren
 suffix:semicolon
@@ -1043,18 +1045,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|pgpt-&gt;my_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -1093,18 +1101,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|pgpt-&gt;alternate_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -1143,18 +1157,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|pgpt-&gt;first_usable_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -1193,18 +1213,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|pgpt-&gt;last_usable_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
@@ -1382,18 +1408,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|pgpt-&gt;alternate_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|lastlba
 )paren
 suffix:semicolon
@@ -1424,18 +1456,24 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;GPT:%&quot;
-id|PRIx64
-l_string|&quot; != %&quot;
-id|PRIx64
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;GPT:%lld != %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le64_to_cpu
 c_func
 (paren
 id|agpt-&gt;my_lba
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|lastlba
 )paren
 suffix:semicolon

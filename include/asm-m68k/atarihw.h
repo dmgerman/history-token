@@ -974,8 +974,8 @@ id|internal_frequency_divider
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|matrix
-mdefine_line|#define matrix (*(volatile struct MATRIX *)MATRIX_BASE)
+DECL|macro|falcon_matrix
+mdefine_line|#define falcon_matrix (*(volatile struct MATRIX *)MATRIX_BASE)
 DECL|macro|CODEC_BASE
 mdefine_line|#define CODEC_BASE (0xffff8936)
 DECL|struct|CODEC
@@ -1061,8 +1061,8 @@ id|gpio_data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|codec
-mdefine_line|#define codec (*(volatile struct CODEC *)CODEC_BASE)
+DECL|macro|falcon_codec
+mdefine_line|#define falcon_codec (*(volatile struct CODEC *)CODEC_BASE)
 multiline_comment|/*&n;** Falcon Blitter&n;*/
 DECL|macro|BLT_BAS
 mdefine_line|#define BLT_BAS (0xffff8a00)

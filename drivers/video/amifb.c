@@ -1034,6 +1034,8 @@ l_int|60
 comma
 l_int|640
 comma
+l_int|400
+comma
 id|TAG_HIRES
 comma
 l_int|106
@@ -1653,7 +1655,7 @@ comma
 multiline_comment|/* 1024x800, 15 Hz */
 l_string|&quot;a2024-15&quot;
 comma
-l_int|10
+l_int|15
 comma
 l_int|1024
 comma
