@@ -1323,11 +1323,6 @@ id|usb_match_id
 c_func
 (paren
 r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_struct
 id|usb_interface
 op_star
 id|interface
