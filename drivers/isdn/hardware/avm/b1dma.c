@@ -2260,6 +2260,7 @@ id|capi_ctr
 op_star
 id|ctrl
 op_assign
+op_amp
 id|cinfo-&gt;capi_ctrl
 suffix:semicolon
 r_struct

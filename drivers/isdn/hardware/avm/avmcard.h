@@ -160,7 +160,6 @@ suffix:semicolon
 DECL|member|capi_ctrl
 r_struct
 id|capi_ctr
-op_star
 id|capi_ctrl
 suffix:semicolon
 DECL|member|ncci_head
@@ -258,6 +257,10 @@ r_struct
 id|avmctrl_info
 op_star
 id|ctrlinfo
+suffix:semicolon
+DECL|member|nr_controllers
+r_int
+id|nr_controllers
 suffix:semicolon
 DECL|member|nlogcontr
 r_int

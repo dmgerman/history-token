@@ -364,6 +364,10 @@ op_amp
 id|card-&gt;lock
 )paren
 suffix:semicolon
+id|card-&gt;nr_controllers
+op_assign
+id|nr_controllers
+suffix:semicolon
 r_return
 id|card
 suffix:semicolon
@@ -2207,6 +2211,7 @@ id|capi_ctr
 op_star
 id|ctrl
 op_assign
+op_amp
 id|cinfo-&gt;capi_ctrl
 suffix:semicolon
 id|avmcard
@@ -2806,6 +2811,7 @@ id|capi_ctr
 op_star
 id|ctrl
 op_assign
+op_amp
 id|cinfo-&gt;capi_ctrl
 suffix:semicolon
 r_int
