@@ -1517,7 +1517,7 @@ id|kobject_set_name
 suffix:semicolon
 multiline_comment|/**&n; *&t;kobject_rename - change the name of an object&n; *&t;@kobj:&t;object in question.&n; *&t;@new_name: object&squot;s new name&n; */
 DECL|function|kobject_rename
-r_void
+r_int
 id|kobject_rename
 c_func
 (paren
@@ -1531,6 +1531,11 @@ op_star
 id|new_name
 )paren
 (brace
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 id|kobj
 op_assign
 id|kobject_get
@@ -1546,7 +1551,11 @@ op_logical_neg
 id|kobj
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
+id|error
+op_assign
 id|sysfs_rename_dir
 c_func
 (paren
@@ -1560,6 +1569,9 @@ c_func
 (paren
 id|kobj
 )paren
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;kobject_del - unlink kobject from hierarchy.&n; * &t;@kobj:&t;object.&n; */

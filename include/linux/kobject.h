@@ -152,7 +152,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|kobject_rename
 c_func
 (paren

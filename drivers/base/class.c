@@ -1626,6 +1626,11 @@ op_star
 id|new_name
 )paren
 (brace
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 id|class_dev
 op_assign
 id|class_device_get
@@ -1664,6 +1669,8 @@ comma
 id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|kobject_rename
 c_func
 (paren
@@ -1680,7 +1687,7 @@ id|class_dev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 DECL|function|class_device_get
