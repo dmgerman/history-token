@@ -22,11 +22,6 @@ macro_line|#include &quot;compat_ioctl.c&quot;
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|TCSBRKP
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|TIOCSTART
 )paren
 id|COMPATIBLE_IOCTL
