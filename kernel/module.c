@@ -1766,7 +1766,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|atomic_set
+id|local_set
 c_func
 (paren
 op_amp
@@ -1781,7 +1781,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Hold reference count during initialization. */
-id|atomic_set
+id|local_set
 c_func
 (paren
 op_amp
@@ -2733,7 +2733,7 @@ op_increment
 )paren
 id|total
 op_add_assign
-id|atomic_read
+id|local_read
 c_func
 (paren
 op_amp

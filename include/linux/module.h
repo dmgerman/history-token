@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;asm/local.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_SUPPORTED_DEVICE
@@ -211,7 +212,7 @@ r_struct
 id|module_ref
 (brace
 DECL|member|count
-id|atomic_t
+id|local_t
 id|count
 suffix:semicolon
 DECL|variable|____cacheline_aligned
@@ -541,13 +542,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* We only need protection against local interrupts. */
-macro_line|#ifndef __HAVE_ARCH_LOCAL_INC
-DECL|macro|local_inc
-mdefine_line|#define local_inc(x) atomic_inc(x)
-DECL|macro|local_dec
-mdefine_line|#define local_dec(x) atomic_dec(x)
-macro_line|#endif
 multiline_comment|/* Sometimes we know we already have a refcount, and it&squot;s easier not&n;   to handle the error case (which only happens with rmmod --wait). */
 DECL|function|__module_get
 r_static
