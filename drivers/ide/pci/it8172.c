@@ -1002,9 +1002,10 @@ id|PCI_CLASS_STORAGE_IDE
 )paren
 )paren
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
-multiline_comment|/* IT8172 is more than only a IDE controller */
+multiline_comment|/* IT8172 is more than an IDE controller */
 id|ide_setup_pci_device
 c_func
 (paren
