@@ -253,9 +253,9 @@ multiline_comment|/* leave as last */
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************/
-DECL|function|usbdevfs_conn_disc_event
+DECL|function|usbfs_conn_disc_event
 r_void
-id|usbdevfs_conn_disc_event
+id|usbfs_conn_disc_event
 c_func
 (paren
 r_void
@@ -2753,10 +2753,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|usbdevfs_devices_fops
+DECL|variable|usbfs_devices_fops
 r_struct
 id|file_operations
-id|usbdevfs_devices_fops
+id|usbfs_devices_fops
 op_assign
 (brace
 dot

@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      devio.c  --  User space communication with USB devices.&n; *&n; *      Copyright (C) 1999-2000  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  $Id: devio.c,v 1.7 2000/02/01 17:28:48 fliegl Exp $&n; *&n; *  This file implements the usbdevfs/x/y files, where&n; *  x is the bus number and y the device number.&n; *&n; *  It allows user space programs/&quot;drivers&quot; to communicate directly&n; *  with USB devices without intervening kernel driver.&n; *&n; *  Revision history&n; *    22.12.1999   0.1   Initial release (split from proc_usb.c)&n; *    04.01.2000   0.2   Turned into its own filesystem&n; */
+multiline_comment|/*&n; *      devio.c  --  User space communication with USB devices.&n; *&n; *      Copyright (C) 1999-2000  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  $Id: devio.c,v 1.7 2000/02/01 17:28:48 fliegl Exp $&n; *&n; *  This file implements the usbfs/x/y files, where&n; *  x is the bus number and y the device number.&n; *&n; *  It allows user space programs/&quot;drivers&quot; to communicate directly&n; *  with USB devices without intervening kernel driver.&n; *&n; *  Revision history&n; *    22.12.1999   0.1   Initial release (split from proc_usb.c)&n; *    04.01.2000   0.2   Turned into its own filesystem&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1460,10 +1460,10 @@ id|ifnum
 )paren
 suffix:semicolon
 )brace
-DECL|variable|usbdevfs_driver
+DECL|variable|usbfs_driver
 r_struct
 id|usb_driver
-id|usbdevfs_driver
+id|usbfs_driver
 op_assign
 (brace
 dot
@@ -1587,7 +1587,7 @@ id|usb_driver_claim_interface
 c_func
 (paren
 op_amp
-id|usbdevfs_driver
+id|usbfs_driver
 comma
 id|intf
 comma
@@ -1721,7 +1721,7 @@ id|usb_driver_release_interface
 c_func
 (paren
 op_amp
-id|usbdevfs_driver
+id|usbfs_driver
 comma
 id|intf
 )paren
@@ -7041,10 +7041,10 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-DECL|variable|usbdevfs_device_file_operations
+DECL|variable|usbfs_device_file_operations
 r_struct
 id|file_operations
-id|usbdevfs_device_file_operations
+id|usbfs_device_file_operations
 op_assign
 (brace
 dot
