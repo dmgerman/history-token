@@ -227,9 +227,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD &bslash;&n;{ &bslash;&n;&t;forking:&t;&t;0, &bslash;&n;&t;kernel_stack:&t;&t;0, &bslash;&n;&t;nsyscalls:&t;&t;0, &bslash;&n;        regs:&t;&t;   &t;EMPTY_REGS, &bslash;&n;&t;cr2:&t;&t;&t;0, &bslash;&n;&t;err:&t;&t;&t;0, &bslash;&n;&t;fault_addr:&t;&t;NULL, &bslash;&n;&t;prev_sched:&t;&t;NULL, &bslash;&n;&t;temp_stack:&t;&t;0, &bslash;&n;&t;exec_buf:&t;&t;NULL, &bslash;&n;&t;arch:&t;&t;&t;INIT_ARCH_THREAD, &bslash;&n;&t;request:&t;&t;{ 0 } &bslash;&n;}
-DECL|macro|INIT_THREAD_SIZE
-mdefine_line|#define INIT_THREAD_SIZE (4 * PAGE_SIZE)
+mdefine_line|#define INIT_THREAD &bslash;&n;{ &bslash;&n;&t;.forking&t;&t;= 0, &bslash;&n;&t;.kernel_stack&t;&t;= 0, &bslash;&n;&t;.nsyscalls&t;&t;= 0, &bslash;&n;        .regs&t;&t;   &t;= EMPTY_REGS, &bslash;&n;&t;.cr2&t;&t;&t;= 0, &bslash;&n;&t;.err&t;&t;&t;= 0, &bslash;&n;&t;.fault_addr&t;&t;= NULL, &bslash;&n;&t;.prev_sched&t;&t;= NULL, &bslash;&n;&t;.temp_stack&t;&t;= 0, &bslash;&n;&t;.exec_buf&t;&t;= NULL, &bslash;&n;&t;.arch&t;&t;&t;= INIT_ARCH_THREAD, &bslash;&n;&t;.request&t;&t;= { 0 } &bslash;&n;}
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE ((1 &lt;&lt; CONFIG_KERNEL_STACK_ORDER) * PAGE_SIZE)
 r_typedef
 r_struct
 (brace
