@@ -133,6 +133,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1086,6 +1087,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1388,7 +1390,11 @@ id|USB_ENDPOINT_XFER_BULK
 multiline_comment|/* we found a bulk in endpoint */
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|dev-&gt;bulk_in_size
 op_assign
