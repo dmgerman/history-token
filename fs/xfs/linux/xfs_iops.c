@@ -2934,10 +2934,16 @@ c_cond
 op_logical_neg
 id|size
 )paren
+(brace
 id|xflags
 op_or_assign
 id|ATTR_KERNOVAL
 suffix:semicolon
+id|data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
