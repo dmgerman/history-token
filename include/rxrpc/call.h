@@ -13,22 +13,6 @@ r_int
 id|rxrpc_call_rcv_timeout
 suffix:semicolon
 multiline_comment|/* receive activity timeout (secs) */
-r_extern
-r_int
-id|rxrpc_call_acks_timeout
-suffix:semicolon
-multiline_comment|/* pending ACK (retransmit) timeout (secs) */
-r_extern
-r_int
-id|rxrpc_call_dfr_ack_timeout
-suffix:semicolon
-multiline_comment|/* deferred ACK timeout (secs) */
-r_extern
-r_int
-r_int
-id|rxrpc_call_max_resend
-suffix:semicolon
-multiline_comment|/* maximum consecutive resend count */
 multiline_comment|/* application call state&n; * - only state 0 and ffff are reserved, the state is set to 1 after an opid is received&n; */
 DECL|enum|rxrpc_app_cstate
 r_enum
@@ -679,17 +663,6 @@ comma
 r_int
 op_star
 id|size_sent
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|rxrpc_call_flush
-c_func
-(paren
-r_struct
-id|rxrpc_call
-op_star
-id|call
 )paren
 suffix:semicolon
 r_extern

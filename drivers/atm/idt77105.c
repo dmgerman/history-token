@@ -1393,6 +1393,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|idt77105_stop
+r_static
 r_int
 id|idt77105_stop
 c_func

@@ -491,6 +491,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|ax25_dev_dama_on
+r_static
 r_void
 id|ax25_dev_dama_on
 c_func

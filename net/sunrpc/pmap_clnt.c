@@ -54,7 +54,8 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|pmap_program
+r_static
 r_struct
 id|rpc_program
 id|pmap_program
@@ -1254,6 +1255,7 @@ id|rpc_stat
 id|pmap_stats
 suffix:semicolon
 DECL|variable|pmap_program
+r_static
 r_struct
 id|rpc_program
 id|pmap_program

@@ -241,13 +241,5 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|rxrpc_acks
-(braket
-)braket
-suffix:semicolon
 macro_line|#endif /* _LINUX_RXRPC_PACKET_H */
 eof

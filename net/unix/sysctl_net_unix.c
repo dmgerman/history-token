@@ -6,6 +6,7 @@ r_int
 id|sysctl_unix_max_dgram_qlen
 suffix:semicolon
 DECL|variable|unix_table
+r_static
 id|ctl_table
 id|unix_table
 (braket

@@ -73,6 +73,16 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+r_static
+r_void
+id|desc_dbg
+c_func
+(paren
+id|IADEV
+op_star
+id|iadev
+)paren
+suffix:semicolon
 DECL|variable|ia_dev
 r_static
 id|IADEV
@@ -122,15 +132,6 @@ l_int|0
 comma
 l_int|0
 )paren
-suffix:semicolon
-DECL|variable|vcc_close_que
-r_struct
-id|atm_vcc
-op_star
-id|vcc_close_que
-(braket
-l_int|100
-)braket
 suffix:semicolon
 DECL|variable|IA_TX_BUF
 DECL|variable|IA_TX_BUF_SZ
@@ -439,16 +440,6 @@ id|iavcc_r
 op_assign
 l_int|NULL
 suffix:semicolon
-r_extern
-r_void
-id|desc_dbg
-c_func
-(paren
-id|IADEV
-op_star
-id|iadev
-)paren
-suffix:semicolon
 id|tcq_wr
 op_assign
 id|readl
@@ -747,16 +738,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|ltimeout
-suffix:semicolon
-r_extern
-r_void
-id|desc_dbg
-c_func
-(paren
-id|IADEV
-op_star
-id|iadev
-)paren
 suffix:semicolon
 id|ia_hack_tcq
 (paren
@@ -3441,6 +3422,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ia_tx_poll
+r_static
 r_void
 id|ia_tx_poll
 (paren
@@ -4543,6 +4525,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ia_mb25_init
+r_static
 r_void
 id|ia_mb25_init
 (paren
@@ -4597,6 +4580,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ia_suni_pm7345_init
+r_static
 r_void
 id|ia_suni_pm7345_init
 (paren
@@ -4822,19 +4806,15 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/***************************** IA_LIB END *****************************/
-multiline_comment|/* pwang_test debug utility */
 DECL|variable|tcnter
-DECL|variable|rcnter
+r_static
 r_int
 id|tcnter
 op_assign
 l_int|0
-comma
-id|rcnter
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|xdump
+r_static
 r_void
 id|xdump
 c_func
@@ -5116,6 +5096,7 @@ DECL|macro|ACTUAL_REASS_RAM_BASE
 mdefine_line|#define ACTUAL_REASS_RAM_BASE &bslash;&n;&t;IPHASE5575_REASS_CONTROL_RAM_BASE*((iadev-&gt;mem)/(128 * 1024))  
 multiline_comment|/*-- some utilities and memory allocation stuff will come here -------------*/
 DECL|function|desc_dbg
+r_static
 r_void
 id|desc_dbg
 c_func

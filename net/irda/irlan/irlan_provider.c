@@ -544,6 +544,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|irlan_provider_disconnect_indication
+r_static
 r_void
 id|irlan_provider_disconnect_indication
 c_func

@@ -205,16 +205,6 @@ id|ircomm_tty_cb
 suffix:semicolon
 multiline_comment|/* Forward decl. */
 r_int
-id|ircomm_param_flush
-c_func
-(paren
-r_struct
-id|ircomm_tty_cb
-op_star
-id|self
-)paren
-suffix:semicolon
-r_int
 id|ircomm_param_request
 c_func
 (paren

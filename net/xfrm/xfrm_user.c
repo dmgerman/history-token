@@ -5523,6 +5523,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* User gives us xfrm_user_policy_info followed by an array of 0&n; * or more templates.&n; */
 DECL|function|xfrm_compile_policy
+r_static
 r_struct
 id|xfrm_policy
 op_star

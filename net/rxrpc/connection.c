@@ -44,6 +44,17 @@ l_int|60
 op_star
 l_int|60
 suffix:semicolon
+r_static
+r_void
+id|rxrpc_conn_do_timeout
+c_func
+(paren
+r_struct
+id|rxrpc_connection
+op_star
+id|conn
+)paren
+suffix:semicolon
 DECL|function|__rxrpc_conn_timeout
 r_static
 r_void
@@ -1658,6 +1669,7 @@ multiline_comment|/* end rxrpc_put_connection() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * free a connection record&n; */
 DECL|function|rxrpc_conn_do_timeout
+r_static
 r_void
 id|rxrpc_conn_do_timeout
 c_func

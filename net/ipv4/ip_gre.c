@@ -923,6 +923,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|ipgre_err
+r_static
 r_void
 id|ipgre_err
 c_func
@@ -2048,6 +2049,7 @@ id|inner
 suffix:semicolon
 )brace
 DECL|function|ipgre_rcv
+r_static
 r_int
 id|ipgre_rcv
 c_func
@@ -5607,6 +5609,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|ipgre_fini
+r_static
 r_void
 id|ipgre_fini
 c_func

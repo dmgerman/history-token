@@ -2499,6 +2499,7 @@ id|gss_auth-&gt;lock
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|gss_pipe_destroy_msg
 id|gss_pipe_destroy_msg

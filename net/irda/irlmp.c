@@ -17,6 +17,23 @@ macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/irlmp_frame.h&gt;
+r_static
+id|__u8
+id|irlmp_find_free_slsap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_int
+id|irlmp_slsap_inuse
+c_func
+(paren
+id|__u8
+id|slsap_sel
+)paren
+suffix:semicolon
 multiline_comment|/* Master structure */
 DECL|variable|irlmp
 r_struct
@@ -4440,25 +4457,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
-DECL|function|irlmp_status_request
-r_void
-id|irlmp_status_request
-c_func
-(paren
-r_void
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s(), Not implemented&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Propagate status indication from LAP to LSAPs (via LMP)&n; * This don&squot;t trigger any change of state in lap_cb, lmp_cb or lsap_cb,&n; * and the event is stateless, therefore we can bypass both state machines&n; * and send the event direct to the LSAP user.&n; * Jean II&n; */
 DECL|function|irlmp_status_indication
 r_void
@@ -5918,6 +5916,7 @@ id|irlmp_unregister_client
 suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_slsap_inuse (slsap)&n; *&n; *    Check if the given source LSAP selector is in use&n; *&n; * This function is clearly not very efficient. On the mitigating side, the&n; * stack make sure that in 99% of the cases, we are called only once&n; * for each socket allocation. We could probably keep a bitmap&n; * of the allocated LSAP, but I&squot;m not sure the complexity is worth it.&n; * Jean II&n; */
 DECL|function|irlmp_slsap_inuse
+r_static
 r_int
 id|irlmp_slsap_inuse
 c_func
@@ -6299,6 +6298,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_find_free_slsap ()&n; *&n; *    Find a free source LSAP to use. This function is called if the service&n; *    user has requested a source LSAP equal to LM_ANY&n; */
 DECL|function|irlmp_find_free_slsap
+r_static
 id|__u8
 id|irlmp_find_free_slsap
 c_func

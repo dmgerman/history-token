@@ -98,7 +98,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -267,7 +267,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon
@@ -494,7 +494,7 @@ op_star
 id|answer
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon
@@ -1041,7 +1041,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1961,7 +1961,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2155,6 +2155,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|function|inet_sendpage
+r_static
 id|ssize_t
 id|inet_sendpage
 c_func
@@ -3629,6 +3630,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 id|ipv4_proc_init
 c_func
@@ -4121,6 +4123,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|ipv4_proc_init
+r_static
 r_int
 id|__init
 id|ipv4_proc_init
@@ -4235,6 +4238,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_PROC_FS */
 DECL|function|ipv4_proc_init
+r_static
 r_int
 id|__init
 id|ipv4_proc_init

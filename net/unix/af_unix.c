@@ -42,6 +42,7 @@ op_assign
 l_int|10
 suffix:semicolon
 DECL|variable|unix_sk_cachep
+r_static
 id|kmem_cache_t
 op_star
 id|unix_sk_cachep

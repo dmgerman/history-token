@@ -143,6 +143,17 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|xprt_clear_backlog
+c_func
+(paren
+r_struct
+id|rpc_xprt
+op_star
+id|xprt
+)paren
+suffix:semicolon
 macro_line|#ifdef RPC_DEBUG_DATA
 multiline_comment|/*&n; * Print the buffer contents (first 128 bytes only--just enough for&n; * diropres return).&n; */
 r_static
@@ -5700,6 +5711,7 @@ id|xprt-&gt;xprt_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set default timeout parameters&n; */
+r_static
 r_void
 DECL|function|xprt_default_timeout
 id|xprt_default_timeout
@@ -6775,6 +6787,7 @@ id|xprt
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prepare for transport shutdown.&n; */
+r_static
 r_void
 DECL|function|xprt_shutdown
 id|xprt_shutdown
@@ -6834,6 +6847,7 @@ id|xprt-&gt;timer
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Clear the xprt backlog queue&n; */
+r_static
 r_int
 DECL|function|xprt_clear_backlog
 id|xprt_clear_backlog
