@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_isa.c,v 1.16.6.2 2001/11/06 20:58:29 kai Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for old ISA cards.&n; *&n; * Copyright 1998      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: eicon_isa.c,v 1.1.4.1.2.3 2002/10/01 11:29:13 armin Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for old ISA cards.&n; *&n; * Copyright 1998      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &quot;eicon_isa.h&quot;
@@ -13,7 +13,7 @@ r_char
 op_star
 id|eicon_isa_revision
 op_assign
-l_string|&quot;$Revision: 1.16.6.2 $&quot;
+l_string|&quot;$Revision: 1.1.4.1.2.3 $&quot;
 suffix:semicolon
 DECL|macro|EICON_MCA_DEBUG
 macro_line|#undef EICON_MCA_DEBUG
