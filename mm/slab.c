@@ -826,12 +826,19 @@ c_func
 id|cache_cache.lists
 )paren
 comma
+multiline_comment|/* Allow for boot cpu != 0 */
 dot
 id|array
 op_assign
 (brace
 (braket
 l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
 )braket
 op_assign
 op_amp
