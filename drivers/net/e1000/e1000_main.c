@@ -9734,9 +9734,9 @@ id|le16_to_cpu
 c_func
 (paren
 id|rx_desc-&gt;special
+)paren
 op_amp
 id|E1000_RXD_SPC_VLAN_MASK
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -9777,9 +9777,9 @@ id|le16_to_cpu
 c_func
 (paren
 id|rx_desc-&gt;special
+)paren
 op_amp
 id|E1000_RXD_SPC_VLAN_MASK
-)paren
 )paren
 suffix:semicolon
 )brace
