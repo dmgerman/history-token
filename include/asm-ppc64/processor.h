@@ -410,10 +410,6 @@ DECL|macro|SPRN_L2CR
 mdefine_line|#define&t;SPRN_L2CR&t;0x3F9&t;/* Level 2 Cache Control Regsiter */
 DECL|macro|SPRN_LR
 mdefine_line|#define&t;SPRN_LR&t;&t;0x008&t;/* Link Register */
-DECL|macro|SPRN_MMCR0
-mdefine_line|#define&t;SPRN_MMCR0&t;0x3B8&t;/* Monitor Mode Control Register 0 */
-DECL|macro|SPRN_MMCR1
-mdefine_line|#define&t;SPRN_MMCR1&t;0x3BC&t;/* Monitor Mode Control Register 1 */
 DECL|macro|SPRN_PBL1
 mdefine_line|#define&t;SPRN_PBL1&t;0x3FC&t;/* Protection Bound Lower 1 */
 DECL|macro|SPRN_PBL2
@@ -428,14 +424,8 @@ DECL|macro|SPRN_PIR
 mdefine_line|#define&t;SPRN_PIR&t;0x3FF&t;/* Processor Identification Register */
 DECL|macro|SPRN_PIT
 mdefine_line|#define&t;SPRN_PIT&t;0x3DB&t;/* Programmable Interval Timer */
-DECL|macro|SPRN_PMC1
-mdefine_line|#define&t;SPRN_PMC1&t;0x3B9&t;/* Performance Counter Register 1 */
-DECL|macro|SPRN_PMC2
-mdefine_line|#define&t;SPRN_PMC2&t;0x3BA&t;/* Performance Counter Register 2 */
-DECL|macro|SPRN_PMC3
-mdefine_line|#define&t;SPRN_PMC3&t;0x3BD&t;/* Performance Counter Register 3 */
-DECL|macro|SPRN_PMC4
-mdefine_line|#define&t;SPRN_PMC4&t;0x3BE&t;/* Performance Counter Register 4 */
+DECL|macro|SPRN_PURR
+mdefine_line|#define&t;SPRN_PURR&t;0x135&t;/* Processor Utilization of Resources Register */
 DECL|macro|SPRN_PVR
 mdefine_line|#define&t;SPRN_PVR&t;0x11F&t;/* Processor Version Register */
 DECL|macro|SPRN_RPA
@@ -554,18 +544,6 @@ DECL|macro|TSR_PIS
 mdefine_line|#define&t;  TSR_PIS&t;&t;0x08000000&t;/* PIT Interrupt Status */
 DECL|macro|TSR_FIS
 mdefine_line|#define&t;  TSR_FIS&t;&t;0x04000000&t;/* FIT Interrupt Status */
-DECL|macro|SPRN_UMMCR0
-mdefine_line|#define&t;SPRN_UMMCR0&t;0x3A8&t;/* User Monitor Mode Control Register 0 */
-DECL|macro|SPRN_UMMCR1
-mdefine_line|#define&t;SPRN_UMMCR1&t;0x3AC&t;/* User Monitor Mode Control Register 0 */
-DECL|macro|SPRN_UPMC1
-mdefine_line|#define&t;SPRN_UPMC1&t;0x3A9&t;/* User Performance Counter Register 1 */
-DECL|macro|SPRN_UPMC2
-mdefine_line|#define&t;SPRN_UPMC2&t;0x3AA&t;/* User Performance Counter Register 2 */
-DECL|macro|SPRN_UPMC3
-mdefine_line|#define&t;SPRN_UPMC3&t;0x3AD&t;/* User Performance Counter Register 3 */
-DECL|macro|SPRN_UPMC4
-mdefine_line|#define&t;SPRN_UPMC4&t;0x3AE&t;/* User Performance Counter Register 4 */
 DECL|macro|SPRN_USIA
 mdefine_line|#define&t;SPRN_USIA&t;0x3AB&t;/* User Sampled Instruction Address Register */
 DECL|macro|SPRN_XER
@@ -574,6 +552,33 @@ DECL|macro|SPRN_ZPR
 mdefine_line|#define&t;SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register */
 DECL|macro|SPRN_VRSAVE
 mdefine_line|#define SPRN_VRSAVE     0x100   /* Vector save */
+multiline_comment|/* Performance monitor SPRs */
+DECL|macro|SPRN_SIAR
+mdefine_line|#define SPRN_SIAR&t;780
+DECL|macro|SPRN_SDAR
+mdefine_line|#define SPRN_SDAR&t;781
+DECL|macro|SPRN_MMCRA
+mdefine_line|#define SPRN_MMCRA&t;786
+DECL|macro|SPRN_PMC1
+mdefine_line|#define SPRN_PMC1&t;787
+DECL|macro|SPRN_PMC2
+mdefine_line|#define SPRN_PMC2&t;788
+DECL|macro|SPRN_PMC3
+mdefine_line|#define SPRN_PMC3&t;789
+DECL|macro|SPRN_PMC4
+mdefine_line|#define SPRN_PMC4&t;790
+DECL|macro|SPRN_PMC5
+mdefine_line|#define SPRN_PMC5&t;791
+DECL|macro|SPRN_PMC6
+mdefine_line|#define SPRN_PMC6&t;792
+DECL|macro|SPRN_PMC7
+mdefine_line|#define SPRN_PMC7&t;793
+DECL|macro|SPRN_PMC8
+mdefine_line|#define SPRN_PMC8&t;794
+DECL|macro|SPRN_MMCR0
+mdefine_line|#define SPRN_MMCR0&t;795
+DECL|macro|SPRN_MMCR1
+mdefine_line|#define SPRN_MMCR1&t;798
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define&t;CTR&t;SPRN_CTR&t;/* Counter Register */
@@ -621,6 +626,8 @@ DECL|macro|PVR
 mdefine_line|#define&t;PVR&t;SPRN_PVR&t;/* Processor Version */
 DECL|macro|PIR
 mdefine_line|#define&t;PIR&t;SPRN_PIR&t;/* Processor ID */
+DECL|macro|PURR
+mdefine_line|#define&t;PURR&t;SPRN_PURR&t;/* Processor Utilization of Resource Register */
 DECL|macro|RPA
 mdefine_line|#define&t;RPA&t;SPRN_RPA&t;/* Required Physical Address Register */
 DECL|macro|SDR1
