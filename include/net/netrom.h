@@ -591,8 +591,8 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|nr_init
+r_void
+id|nr_setup
 c_func
 (paren
 r_struct
