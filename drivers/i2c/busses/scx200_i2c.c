@@ -215,6 +215,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|scx200_i2c_init
+r_static
 r_int
 id|scx200_i2c_init
 c_func
@@ -350,6 +351,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|scx200_i2c_cleanup
+r_static
 r_void
 id|scx200_i2c_cleanup
 c_func
