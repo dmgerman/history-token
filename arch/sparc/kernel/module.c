@@ -285,7 +285,7 @@ op_star
 )paren
 id|location
 suffix:semicolon
-multiline_comment|/* This is the symbol it is referring to */
+multiline_comment|/* This is the symbol it is referring to.  Note that all&n;&t;&t;   undefined symbols have been resolved.  */
 id|sym
 op_assign
 (paren
@@ -310,37 +310,10 @@ dot
 id|r_info
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|v
 op_assign
 id|sym-&gt;st_value
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Unknown symbol %s&bslash;n&quot;
-comma
-id|me-&gt;name
-comma
-id|strtab
 op_plus
-id|sym-&gt;st_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-)brace
-id|v
-op_add_assign
 id|rel
 (braket
 id|i
