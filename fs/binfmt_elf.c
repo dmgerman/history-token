@@ -4489,6 +4489,11 @@ r_struct
 id|task_struct
 op_star
 id|p
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 (brace
 r_int
@@ -4513,9 +4518,9 @@ id|elf_prpsinfo
 suffix:semicolon
 id|len
 op_assign
-id|p-&gt;mm-&gt;arg_end
+id|mm-&gt;arg_end
 op_minus
-id|p-&gt;mm-&gt;arg_start
+id|mm-&gt;arg_start
 suffix:semicolon
 r_if
 c_cond
@@ -4541,7 +4546,7 @@ r_const
 r_char
 op_star
 )paren
-id|p-&gt;mm-&gt;arg_start
+id|mm-&gt;arg_start
 comma
 id|len
 )paren
@@ -5451,6 +5456,8 @@ c_func
 id|psinfo
 comma
 id|current-&gt;group_leader
+comma
+id|current-&gt;mm
 )paren
 suffix:semicolon
 id|fill_note
