@@ -1140,7 +1140,7 @@ c_cond
 (paren
 id|mtu
 op_ge
-l_int|1280
+id|IPV6_MIN_MTU
 op_logical_and
 id|mtu
 OL
@@ -1150,8 +1150,6 @@ c_func
 id|dst
 )paren
 )paren
-r_return
-suffix:semicolon
 id|path-&gt;ops
 op_member_access_from_pointer
 id|update_pmtu
@@ -1161,6 +1159,8 @@ id|path
 comma
 id|mtu
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 DECL|variable|xfrm6_dst_ops

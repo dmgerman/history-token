@@ -633,7 +633,7 @@ op_assign
 id|sctp_assoc_t
 )paren
 op_minus
-l_int|1
+l_int|1L
 suffix:semicolon
 multiline_comment|/* Assume that peer would support both address types unless we are&n;&t; * told otherwise.&n;&t; */
 id|asoc-&gt;peer.ipv4_address
@@ -978,7 +978,7 @@ r_int
 id|asoc-&gt;assoc_id
 op_ne
 op_minus
-l_int|1
+l_int|1L
 )paren
 (brace
 id|spin_lock_bh

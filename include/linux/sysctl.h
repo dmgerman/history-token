@@ -1300,6 +1300,11 @@ id|NET_TCP_BIC_LOW_WINDOW
 op_assign
 l_int|104
 comma
+DECL|enumerator|NET_TCP_DEFAULT_WIN_SCALE
+id|NET_TCP_DEFAULT_WIN_SCALE
+op_assign
+l_int|105
+comma
 )brace
 suffix:semicolon
 r_enum

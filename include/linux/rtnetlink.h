@@ -642,7 +642,7 @@ id|IFA_MULTICAST
 )brace
 suffix:semicolon
 DECL|macro|IFA_MAX
-mdefine_line|#define IFA_MAX IFA_CACHEINFO
+mdefine_line|#define IFA_MAX IFA_MULTICAST
 multiline_comment|/* ifa_flags */
 DECL|macro|IFA_F_SECONDARY
 mdefine_line|#define IFA_F_SECONDARY&t;&t;0x01
