@@ -195,7 +195,7 @@ op_star
 id|header
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PNPBIOS_PROC_FS
 r_extern
 r_int
 id|pnpbios_interface_attach_device
@@ -263,5 +263,5 @@ r_void
 (brace
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PROC */
+macro_line|#endif /* CONFIG_PNPBIOS_PROC_FS */
 eof
