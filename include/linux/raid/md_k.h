@@ -972,38 +972,6 @@ id|mdk_thread_t
 suffix:semicolon
 DECL|macro|THREAD_WAKEUP
 mdefine_line|#define THREAD_WAKEUP  0
-DECL|macro|MAX_DISKNAME_LEN
-mdefine_line|#define MAX_DISKNAME_LEN 64
-DECL|struct|dev_name_s
-r_typedef
-r_struct
-id|dev_name_s
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
-DECL|member|namebuf
-r_char
-id|namebuf
-(braket
-id|MAX_DISKNAME_LEN
-)braket
-suffix:semicolon
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|typedef|dev_name_t
-)brace
-id|dev_name_t
-suffix:semicolon
 DECL|macro|__wait_event_lock_irq
 mdefine_line|#define __wait_event_lock_irq(wq, condition, lock) &t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE);&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_unlock_irq(&amp;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;blk_run_queues();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;schedule();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irq(&amp;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|wait_event_lock_irq

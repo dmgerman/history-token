@@ -370,10 +370,6 @@ macro_line|#include &quot;paride.h&quot;
 multiline_comment|/* set up defines for blk.h,  why don&squot;t all drivers do it this way ? */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;major
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 DECL|macro|PCD_RETRIES
@@ -629,6 +625,11 @@ id|cdrom_device_info
 id|info
 suffix:semicolon
 multiline_comment|/* uniform cdrom interface */
+DECL|member|disk
+r_struct
+id|gendisk
+id|disk
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|pcd
@@ -871,6 +872,14 @@ id|cd
 op_increment
 )paren
 (brace
+r_struct
+id|gendisk
+op_star
+id|disk
+op_assign
+op_amp
+id|cd-&gt;disk
+suffix:semicolon
 id|cd-&gt;pi
 op_assign
 op_amp
@@ -973,6 +982,27 @@ suffix:semicolon
 id|cd-&gt;info.mask
 op_assign
 l_int|0
+suffix:semicolon
+id|disk-&gt;major
+op_assign
+id|major
+suffix:semicolon
+id|disk-&gt;first_minor
+op_assign
+id|unit
+suffix:semicolon
+id|disk-&gt;minor_shift
+op_assign
+l_int|0
+suffix:semicolon
+id|disk-&gt;major_name
+op_assign
+id|cd-&gt;name
+suffix:semicolon
+id|disk-&gt;fops
+op_assign
+op_amp
+id|pcd_bdops
 suffix:semicolon
 )brace
 )brace
@@ -4737,6 +4767,14 @@ c_cond
 id|cd-&gt;present
 )paren
 (brace
+r_struct
+id|gendisk
+op_star
+id|disk
+op_assign
+op_amp
+id|cd-&gt;disk
+suffix:semicolon
 id|register_cdrom
 c_func
 (paren
@@ -4744,14 +4782,10 @@ op_amp
 id|cd-&gt;info
 )paren
 suffix:semicolon
-id|devfs_plain_cdrom
+id|add_disk
 c_func
 (paren
-op_amp
-id|cd-&gt;info
-comma
-op_amp
-id|pcd_bdops
+id|disk
 )paren
 suffix:semicolon
 )brace
@@ -4821,6 +4855,13 @@ c_cond
 id|cd-&gt;present
 )paren
 (brace
+id|del_gendisk
+c_func
+(paren
+op_amp
+id|cd-&gt;disk
+)paren
+suffix:semicolon
 id|pi_release
 c_func
 (paren

@@ -177,6 +177,9 @@ singleline_comment|// enable Cisco extensions
 macro_line|#ifdef CISCO_EXT
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#endif
+multiline_comment|/* Hack to do some power saving */
+DECL|macro|POWER_ON_DOWN
+mdefine_line|#define POWER_ON_DOWN
 multiline_comment|/* As you can see this list is HUGH!&n;   I really don&squot;t know what a lot of these counts are about, but they&n;   are all here for completeness.  If the IGNLABEL macro is put in&n;   infront of the label, that statistic will not be included in the list&n;   of statistics in the /proc filesystem */
 DECL|macro|IGNLABEL
 mdefine_line|#define IGNLABEL 0&amp;(int)
@@ -1130,7 +1133,7 @@ DECL|member|mac
 id|u8
 id|mac
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|klen
@@ -1276,7 +1279,7 @@ DECL|member|macAddr
 id|u8
 id|macAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|rates
@@ -1609,7 +1612,7 @@ DECL|member|mac
 id|u8
 id|mac
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|mode
@@ -1649,7 +1652,7 @@ id|bssid
 l_int|4
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|beaconPeriod
@@ -1766,7 +1769,7 @@ id|ap
 l_int|4
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|typedef|APListRid
@@ -1820,14 +1823,14 @@ DECL|member|factoryAddr
 r_char
 id|factoryAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|aironetAddr
 r_char
 id|aironetAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|radioType
@@ -1842,7 +1845,7 @@ DECL|member|callid
 r_char
 id|callid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|supportedRates
@@ -1933,7 +1936,7 @@ DECL|member|bssid
 id|u8
 id|bssid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 multiline_comment|/* Mac address of the BSS */
@@ -2836,13 +2839,17 @@ r_int
 id|flags
 suffix:semicolon
 DECL|macro|FLAG_PROMISC
-mdefine_line|#define FLAG_PROMISC   IFF_PROMISC
+mdefine_line|#define FLAG_PROMISC   IFF_PROMISC&t;/* 0x100 - include/linux/if.h */
 DECL|macro|FLAG_RADIO_OFF
-mdefine_line|#define FLAG_RADIO_OFF 0x02
+mdefine_line|#define FLAG_RADIO_OFF 0x02&t;&t;/* User disabling of MAC */
+DECL|macro|FLAG_RADIO_DOWN
+mdefine_line|#define FLAG_RADIO_DOWN 0x08&t;&t;/* ifup/ifdown disabling of MAC */
 DECL|macro|FLAG_LOCKED
-mdefine_line|#define FLAG_LOCKED    2
+mdefine_line|#define FLAG_LOCKED    2&t;&t;/* 0x04 - use as a bit offset */
+DECL|macro|FLAG_FLASHING
+mdefine_line|#define FLAG_FLASHING  0x10
 DECL|macro|FLAG_802_11
-mdefine_line|#define FLAG_802_11&t;   0x10
+mdefine_line|#define FLAG_802_11    0x200
 DECL|member|bap_read
 r_int
 (paren
@@ -2952,7 +2959,7 @@ id|spy_address
 id|IW_MAX_SPY
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|spy_stat
@@ -4452,6 +4459,20 @@ id|info
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|Resp
+id|rsp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 multiline_comment|/* Make sure the card is configured.&n;&t; * Wireless Extensions may postpone config changes until the card&n;&t; * is open (to pipeline changes and speed-up card setup). If&n;&t; * those changes are not yet commited, do it now - Jean II */
 r_if
 c_cond
@@ -4459,9 +4480,6 @@ c_cond
 id|info-&gt;need_commit
 )paren
 (brace
-id|Resp
-id|rsp
-suffix:semicolon
 id|disable_MAC
 c_func
 (paren
@@ -4474,15 +4492,6 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|enable_MAC
-c_func
-(paren
-id|info
-comma
-op_amp
-id|rsp
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4491,10 +4500,27 @@ id|info-&gt;wifidev
 op_ne
 id|dev
 )paren
+(brace
+multiline_comment|/* Power on the MAC controller (which may have been disabled) */
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_RADIO_DOWN
+suffix:semicolon
 id|enable_interrupts
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+)brace
+id|enable_MAC
+c_func
+(paren
+id|info
+comma
+op_amp
+id|rsp
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -5995,12 +6021,27 @@ id|ai-&gt;wifidev
 op_ne
 id|dev
 )paren
+(brace
+macro_line|#ifdef POWER_ON_DOWN
+multiline_comment|/* Shut power to the card. The idea is that the user can save&n;&t;&t; * power when he doesn&squot;t need the card with &quot;ifconfig down&quot;.&n;&t;&t; * That&squot;s the method that is most friendly towards the network&n;&t;&t; * stack (i.e. the network stack won&squot;t try to broadcast&n;&t;&t; * anything on the interface and routes are gone. Jean II */
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_RADIO_DOWN
+suffix:semicolon
+id|disable_MAC
+c_func
+(paren
+id|ai
+)paren
+suffix:semicolon
+macro_line|#endif
 id|disable_interrupts
 c_func
 (paren
 id|ai
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6770,7 +6811,11 @@ r_if
 c_cond
 (paren
 id|probe
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|setup_card
 c_func
 (paren
@@ -6798,11 +6843,18 @@ r_goto
 id|err_out_res
 suffix:semicolon
 )brace
+)brace
 r_else
+(brace
 id|ai-&gt;bap_read
 op_assign
 id|fast_bap_read
 suffix:semicolon
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_FLASHING
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|register_netdev
@@ -8087,7 +8139,9 @@ suffix:semicolon
 r_else
 id|hdrlen
 op_assign
-l_int|12
+id|ETH_ALEN
+op_star
+l_int|2
 suffix:semicolon
 id|skb
 op_assign
@@ -8274,16 +8328,13 @@ id|BAP0
 )paren
 suffix:semicolon
 )brace
-id|OUT4500
-c_func
+)brace
+r_if
+c_cond
 (paren
-id|apriv
-comma
-id|EVACK
-comma
-id|EV_RX
+id|len
 )paren
-suffix:semicolon
+(brace
 macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
@@ -8349,7 +8400,7 @@ id|apriv-&gt;spy_address
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 )paren
 (brace
@@ -8469,6 +8520,16 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WIRELESS_SPY  */
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|EV_RX
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8902,12 +8963,17 @@ suffix:semicolon
 id|Cmd
 id|cmd
 suffix:semicolon
+multiline_comment|/* FLAG_RADIO_OFF : Radio disabled via /proc or Wireless Extensions&n;&t; * FLAG_RADIO_DOWN : Radio disabled via &quot;ifconfig ethX down&quot;&n;&t; * Note : we could try to use !netif_running(dev) in enable_MAC()&n;&t; * instead of this flag, but I don&squot;t trust it *within* the&n;&t; * open/close functions, and testing both flags together is&n;&t; * &quot;cheaper&quot; - Jean II */
 r_if
 c_cond
 (paren
 id|ai-&gt;flags
 op_amp
+(paren
 id|FLAG_RADIO_OFF
+op_or
+id|FLAG_RADIO_DOWN
+)paren
 )paren
 r_return
 id|SUCCESS
@@ -9594,7 +9660,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|6
+id|ETH_ALEN
 suffix:semicolon
 id|i
 op_increment
@@ -9896,10 +9962,33 @@ c_cond
 id|status
 op_ne
 id|SUCCESS
+op_logical_or
+(paren
+id|rsp.status
+op_amp
+l_int|0xFF00
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;airo: Bad MAC enable reason = %x, rid = %x, offset = %d&bslash;n&quot;
+comma
+id|rsp.rsp0
+comma
+id|rsp.rsp1
+comma
+id|rsp.rsp2
+)paren
+suffix:semicolon
 r_return
 id|ERROR
 suffix:semicolon
+)brace
 multiline_comment|/* Grab the initial wep key, we gotta save it for auto_wep */
 id|rc
 op_assign
@@ -11802,7 +11891,9 @@ c_cond
 (paren
 id|len
 OL
-l_int|12
+id|ETH_ALEN
+op_star
+l_int|2
 )paren
 (brace
 id|printk
@@ -11983,7 +12074,7 @@ r_struct
 id|u8
 id|addr4
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 id|u16
@@ -17078,7 +17169,7 @@ r_int
 r_char
 id|macaddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 op_assign
 (brace
@@ -17204,7 +17295,7 @@ id|wkr.mac
 comma
 id|macaddr
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|printk
@@ -19131,9 +19222,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|apriv-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+op_logical_and
+(paren
 id|linkstat
 op_ne
 l_int|0x400
+)paren
 )paren
 (brace
 multiline_comment|/* We don&squot;t have a link so try changing the authtype */
@@ -20455,7 +20555,7 @@ r_int
 r_char
 id|bcast
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 op_assign
 (brace
@@ -20495,7 +20595,7 @@ id|bcast
 comma
 id|awrq-&gt;sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 )paren
 (brace
@@ -20584,7 +20684,7 @@ l_int|0
 comma
 id|awrq-&gt;sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|disable_MAC
@@ -20675,7 +20775,7 @@ id|status_rid.bssid
 l_int|0
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|awrq-&gt;sa_family
@@ -23807,7 +23907,7 @@ id|sa_data
 comma
 id|BSSList.bssid
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
@@ -24050,7 +24150,7 @@ id|status_rid.bssid
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
@@ -24925,7 +25025,7 @@ id|i
 dot
 id|sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 multiline_comment|/* Reset stats */
@@ -25040,7 +25140,7 @@ id|local-&gt;spy_address
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
@@ -27430,6 +27530,24 @@ id|iobuf
 l_int|2048
 )braket
 suffix:semicolon
+r_struct
+id|airo_info
+op_star
+id|ai
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -27667,6 +27785,13 @@ op_star
 id|comp
 )paren
 (brace
+r_struct
+id|airo_info
+op_star
+id|ai
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|ridcode
 suffix:semicolon
@@ -27715,6 +27840,17 @@ id|CAP_NET_ADMIN
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|ridcode
 op_assign
@@ -28486,6 +28622,10 @@ op_star
 id|ai
 )paren
 (brace
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_FLASHING
+suffix:semicolon
 id|OUT4500
 c_func
 (paren
@@ -28590,6 +28730,11 @@ id|ai
 )paren
 )paren
 (brace
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_FLASHING
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -29047,6 +29192,11 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* Added 12/7/00 */
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_FLASHING
+suffix:semicolon
 id|status
 op_assign
 id|setup_card

@@ -31,8 +31,6 @@ mdefine_line|#define MAX_LOOPS 10000
 multiline_comment|/* NFTL block device stuff */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR NFTL_MAJOR
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 multiline_comment|/* Linux-specific block device functions */
@@ -502,39 +500,22 @@ id|gd-&gt;major_name
 op_assign
 id|name
 suffix:semicolon
+id|set_capacity
+c_func
+(paren
+id|gd
+comma
+id|nftl-&gt;nr_sects
+)paren
+suffix:semicolon
 id|nftl-&gt;disk
 op_assign
 id|gd
 suffix:semicolon
-id|add_gendisk
+id|add_disk
 c_func
 (paren
 id|gd
-)paren
-suffix:semicolon
-id|register_disk
-c_func
-(paren
-id|gd
-comma
-id|mk_kdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|firstfree
-op_lshift
-id|NFTL_PARTN_BITS
-)paren
-comma
-l_int|1
-op_lshift
-id|NFTL_PARTN_BITS
-comma
-op_amp
-id|nftl_fops
-comma
-id|nftl-&gt;nr_sects
 )paren
 suffix:semicolon
 )brace

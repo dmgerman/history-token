@@ -236,6 +236,11 @@ r_struct
 id|semaphore
 id|tx_lock
 suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+id|disk
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -1950,20 +1950,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
-DECL|macro|RQFUNC_ARG
-mdefine_line|#define RQFUNC_ARG void
-macro_line|#else
-DECL|macro|RQFUNC_ARG
-mdefine_line|#define RQFUNC_ARG request_queue_t *q
-macro_line|#endif
 DECL|function|mtdblock_request
 r_static
 r_void
 id|mtdblock_request
 c_func
 (paren
-id|RQFUNC_ARG
+id|request_queue
+op_star
+id|q
 )paren
 (brace
 multiline_comment|/* Don&squot;t do anything, except wake the thread if necessary */
@@ -2079,7 +2074,6 @@ suffix:semicolon
 r_case
 id|BLKFLSBUF
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 r_if
 c_cond
 (paren
@@ -2096,7 +2090,6 @@ op_minus
 id|EACCES
 suffix:semicolon
 )brace
-macro_line|#endif
 id|fsync_bdev
 c_func
 (paren
@@ -2155,36 +2148,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20326
-DECL|variable|mtd_fops
-r_static
-r_struct
-id|file_operations
-id|mtd_fops
-op_assign
-(brace
-id|open
-suffix:colon
-id|mtdblock_open
-comma
-id|ioctl
-suffix:colon
-id|mtdblock_ioctl
-comma
-id|release
-suffix:colon
-id|mtdblock_release
-comma
-id|read
-suffix:colon
-id|block_read
-comma
-id|write
-suffix:colon
-id|block_write
-)brace
-suffix:semicolon
-macro_line|#else
 DECL|variable|mtd_fops
 r_static
 r_struct
@@ -2209,7 +2172,6 @@ suffix:colon
 id|mtdblock_ioctl
 )brace
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
 multiline_comment|/* Notification that a new device has been added. Create the devfs entry for&n; * it. */
 DECL|function|mtd_notify_add
