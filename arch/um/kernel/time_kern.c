@@ -3,6 +3,7 @@ macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
+macro_line|#include &quot;linux/time.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
@@ -17,10 +18,6 @@ macro_line|#include &quot;mode.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
 suffix:semicolon
 DECL|function|hz
 r_int
@@ -164,7 +161,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -176,7 +173,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
@@ -19,10 +20,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 multiline_comment|/* Apparently the RTC stores seconds since 1 Jan 1904 */
 DECL|macro|RTC_OFFSET
 mdefine_line|#define RTC_OFFSET&t;2082844800
@@ -886,6 +883,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+r_int
+id|seq
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -895,7 +896,11 @@ id|when
 r_case
 id|PBOOK_SLEEP_NOW
 suffix:colon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -913,13 +918,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -927,7 +939,7 @@ suffix:semicolon
 r_case
 id|PBOOK_WAKE
 suffix:colon
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 c_func
 (paren
 op_amp
@@ -953,7 +965,7 @@ id|last_rtc_update
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp

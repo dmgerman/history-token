@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -21,10 +22,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 r_extern
 id|spinlock_t
 id|i8253_lock
@@ -3027,7 +3024,7 @@ l_string|&quot;apm: suspend was vetoed, but suspending anyway.&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* serialize with the timer interrupt */
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -3076,7 +3073,7 @@ op_amp
 id|i8253_lock
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -3208,7 +3205,7 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -3221,7 +3218,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -3581,7 +3578,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -3593,7 +3590,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -3650,7 +3647,7 @@ suffix:semicolon
 r_case
 id|APM_UPDATE_TIME
 suffix:colon
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -3662,7 +3659,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp

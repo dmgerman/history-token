@@ -44,10 +44,6 @@ DECL|variable|last_rtc_update
 id|time_t
 id|last_rtc_update
 suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 multiline_comment|/* The decrementer counts down by 128 every 128ns on a 601. */
 DECL|macro|DECREMENTER_COUNT_601
 mdefine_line|#define DECREMENTER_COUNT_601&t;(1000000000 / HZ)
@@ -382,7 +378,7 @@ c_func
 r_continue
 suffix:semicolon
 multiline_comment|/* We are in an interrupt, no need to save/restore flags */
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -478,7 +474,7 @@ op_add_assign
 l_int|60
 suffix:semicolon
 )brace
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -559,6 +555,10 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+r_int
+id|seq
+suffix:semicolon
+r_int
 id|delta
 comma
 id|lost_ticks
@@ -567,7 +567,11 @@ id|usec
 comma
 id|sec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -597,7 +601,7 @@ id|tb_last_stamp
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* As long as timebases are not in sync, gettimeofday can only&n;&t; * have jiffy resolution on SMP.&n;&t; */
+multiline_comment|/* As long as timebases are not in sync, gettimeofday can only&n;&t;&t; * have jiffy resolution on SMP.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -615,13 +619,20 @@ id|jiffies
 op_minus
 id|wall_jiffies
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 id|usec
@@ -685,7 +696,7 @@ id|new_usec
 comma
 id|new_sec
 suffix:semicolon
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 c_func
 (paren
 op_amp
@@ -794,7 +805,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp
