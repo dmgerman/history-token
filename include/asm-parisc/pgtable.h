@@ -28,11 +28,16 @@ mdefine_line|#define  ISTACK_SIZE  32768 /* Interrupt Stack Size */
 DECL|macro|ISTACK_ORDER
 mdefine_line|#define  ISTACK_ORDER 3
 multiline_comment|/* This is the size of the initially mapped kernel memory (i.e. currently&n; * 0 to 1&lt;&lt;23 == 8MB */
+macro_line|#ifdef CONFIG_64BIT
+DECL|macro|KERNEL_INITIAL_ORDER
+mdefine_line|#define KERNEL_INITIAL_ORDER&t;24
+macro_line|#else
 DECL|macro|KERNEL_INITIAL_ORDER
 mdefine_line|#define KERNEL_INITIAL_ORDER&t;23
+macro_line|#endif
 DECL|macro|KERNEL_INITIAL_SIZE
 mdefine_line|#define KERNEL_INITIAL_SIZE&t;(1 &lt;&lt; KERNEL_INITIAL_ORDER)
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_64BIT
 DECL|macro|PT_NLEVELS
 mdefine_line|#define PT_NLEVELS&t;3
 DECL|macro|PGD_ORDER
@@ -193,6 +198,25 @@ DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|_PAGE_KERNEL
 mdefine_line|#define _PAGE_KERNEL&t;(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_WRITE | _PAGE_DIRTY | _PAGE_ACCESSED)
+multiline_comment|/* The pgd/pmd contains a ptr (in phys addr space); since all pgds/pmds&n; * are page-aligned, we don&squot;t care about the PAGE_OFFSET bits, except&n; * for a few meta-information bits, so we shift the address to be&n; * able to effectively address 40-bits of physical address space. */
+DECL|macro|_PxD_PRESENT_BIT
+mdefine_line|#define _PxD_PRESENT_BIT   31
+DECL|macro|_PxD_ATTACHED_BIT
+mdefine_line|#define _PxD_ATTACHED_BIT  30
+DECL|macro|_PxD_VALID_BIT
+mdefine_line|#define _PxD_VALID_BIT     29
+DECL|macro|PxD_FLAG_PRESENT
+mdefine_line|#define PxD_FLAG_PRESENT  (1 &lt;&lt; xlate_pabit(_PxD_PRESENT_BIT))
+DECL|macro|PxD_FLAG_ATTACHED
+mdefine_line|#define PxD_FLAG_ATTACHED (1 &lt;&lt; xlate_pabit(_PxD_ATTACHED_BIT))
+DECL|macro|PxD_FLAG_VALID
+mdefine_line|#define PxD_FLAG_VALID    (1 &lt;&lt; xlate_pabit(_PxD_VALID_BIT))
+DECL|macro|PxD_FLAG_MASK
+mdefine_line|#define PxD_FLAG_MASK     (0xf)
+DECL|macro|PxD_FLAG_SHIFT
+mdefine_line|#define PxD_FLAG_SHIFT    (4)
+DECL|macro|PxD_VALUE_SHIFT
+mdefine_line|#define PxD_VALUE_SHIFT   (8)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
@@ -283,20 +307,26 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = 0; } while (0)
-macro_line|#ifdef __LP64__
+DECL|macro|pmd_flag
+mdefine_line|#define pmd_flag(x)&t;(pmd_val(x) &amp; PxD_FLAG_MASK)
+DECL|macro|pmd_address
+mdefine_line|#define pmd_address(x)&t;((unsigned long)(pmd_val(x) &amp;~ PxD_FLAG_MASK) &lt;&lt; PxD_VALUE_SHIFT)
+DECL|macro|pgd_flag
+mdefine_line|#define pgd_flag(x)&t;(pgd_val(x) &amp; PxD_FLAG_MASK)
+DECL|macro|pgd_address
+mdefine_line|#define pgd_address(x)&t;((unsigned long)(pgd_val(x) &amp;~ PxD_FLAG_MASK) &lt;&lt; PxD_VALUE_SHIFT)
+macro_line|#ifdef CONFIG_64BIT
 multiline_comment|/* The first entry of the permanent pmd is not there if it contains&n; * the gateway marker */
 DECL|macro|pmd_none
-mdefine_line|#define pmd_none(x)&t;(!pmd_val(x) || pmd_val(x) == _PAGE_GATEWAY)
-DECL|macro|pmd_bad
-mdefine_line|#define pmd_bad(x)&t;((pmd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE &amp;&amp; (pmd_val(x) &amp; ~PAGE_MASK) != (_PAGE_TABLE | _PAGE_GATEWAY))
+mdefine_line|#define pmd_none(x)&t;(!pmd_val(x) || pmd_flag(x) == PxD_FLAG_ATTACHED)
 macro_line|#else
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
-DECL|macro|pmd_bad
-mdefine_line|#define pmd_bad(x)&t;((pmd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE)
 macro_line|#endif
+DECL|macro|pmd_bad
+mdefine_line|#define pmd_bad(x)&t;(!(pmd_flag(x) &amp; PxD_FLAG_VALID))
 DECL|macro|pmd_present
-mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
+mdefine_line|#define pmd_present(x)&t;(pmd_flag(x) &amp; PxD_FLAG_PRESENT)
 DECL|function|pmd_clear
 r_static
 r_inline
@@ -309,58 +339,51 @@ op_star
 id|pmd
 )paren
 (brace
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_64BIT
 r_if
 c_cond
 (paren
-id|pmd_val
+id|pmd_flag
 c_func
 (paren
 op_star
 id|pmd
 )paren
 op_amp
-id|_PAGE_GATEWAY
+id|PxD_FLAG_ATTACHED
 )paren
-(brace
 multiline_comment|/* This is the entry pointing to the permanent pmd&n;&t;&t; * attached to the pgd; cannot clear it */
-id|pmd_val
+id|__pmd_val_set
 c_func
 (paren
 op_star
 id|pmd
+comma
+id|PxD_FLAG_ATTACHED
 )paren
-op_assign
-id|_PAGE_GATEWAY
 suffix:semicolon
-)brace
 r_else
 macro_line|#endif
-id|pmd_val
+id|__pmd_val_set
 c_func
 (paren
 op_star
 id|pmd
-)paren
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#if PT_NLEVELS == 3
 DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd) ((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
+mdefine_line|#define pgd_page(pgd) ((unsigned long) __va(pgd_address(pgd)))
 multiline_comment|/* For 64 bit we have three level tables */
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(x)     (!pgd_val(x))
-macro_line|#ifdef __LP64__
 DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(x)      ((pgd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE &amp;&amp; (pgd_val(x) &amp; ~PAGE_MASK) != (_PAGE_TABLE | _PAGE_GATEWAY))
-macro_line|#else
-DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(x)      ((pgd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE)
-macro_line|#endif
+mdefine_line|#define pgd_bad(x)      (!(pgd_flag(x) &amp; PxD_FLAG_VALID))
 DECL|macro|pgd_present
-mdefine_line|#define pgd_present(x)  (pgd_val(x) &amp; _PAGE_PRESENT)
+mdefine_line|#define pgd_present(x)  (pgd_flag(x) &amp; PxD_FLAG_PRESENT)
 DECL|function|pgd_clear
 r_static
 r_inline
@@ -373,18 +396,18 @@ op_star
 id|pgd
 )paren
 (brace
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_64BIT
 r_if
 c_cond
 (paren
-id|pgd_val
+id|pgd_flag
 c_func
 (paren
 op_star
 id|pgd
 )paren
 op_amp
-id|_PAGE_GATEWAY
+id|PxD_FLAG_ATTACHED
 )paren
 (brace
 multiline_comment|/* This is the permanent pmd attached to the pgd; cannot&n;&t;&t; * free it */
@@ -392,14 +415,14 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-id|pgd_val
+id|__pgd_val_set
 c_func
 (paren
 op_star
 id|pgd
-)paren
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#else
@@ -869,17 +892,12 @@ suffix:semicolon
 multiline_comment|/* Permanent address of a page.  On parisc we don&squot;t have highmem. */
 DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(x) (pte_val(x) &gt;&gt; PAGE_SHIFT)
-macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (phys_to_page(pte_val(x)))
-macro_line|#else
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+(pte_val(x) &gt;&gt; PAGE_SHIFT))
-macro_line|#endif
+mdefine_line|#define pte_page(pte)&t;&t;(pfn_to_page(pte_pfn(pte)))
 DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd)&t;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page_kernel(pmd)&t;((unsigned long) __va(pmd_address(pmd)))
 DECL|macro|__pmd_page
-mdefine_line|#define __pmd_page(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define __pmd_page(pmd) ((unsigned long) __va(pmd_address(pmd)))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;virt_to_page((void *)__pmd_page(pmd))
 DECL|macro|pgd_index
@@ -992,7 +1010,13 @@ c_func
 id|_PAGE_ACCESSED_BIT
 )paren
 comma
+op_amp
+id|pte_val
+c_func
+(paren
+op_star
 id|ptep
+)paren
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1069,7 +1093,13 @@ c_func
 id|_PAGE_DIRTY_BIT
 )paren
 comma
+op_amp
+id|pte_val
+c_func
+(paren
+op_star
 id|ptep
+)paren
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1109,19 +1139,10 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_SMP
 r_extern
 id|spinlock_t
 id|pa_dbit_lock
 suffix:semicolon
-macro_line|#else
-DECL|variable|pa_dbit_lock
-r_static
-r_int
-id|pa_dbit_lock
-suffix:semicolon
-multiline_comment|/* dummy to keep the compilers happy */
-macro_line|#endif
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -1300,7 +1321,13 @@ c_func
 id|_PAGE_DIRTY_BIT
 )paren
 comma
+op_amp
+id|pte_val
+c_func
+(paren
+op_star
 id|ptep
+)paren
 )paren
 suffix:semicolon
 macro_line|#else

@@ -1784,7 +1784,7 @@ suffix:semicolon
 DECL|function|_exit
 r_static
 r_inline
-r_int
+r_void
 id|_exit
 c_func
 (paren
@@ -1792,7 +1792,6 @@ r_int
 id|exitcode
 )paren
 (brace
-r_return
 id|sys_exit
 c_func
 (paren

@@ -4,6 +4,7 @@ mdefine_line|#define _PARISC_DMA_MAPPING_H
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/* See Documentation/DMA-mapping.txt */
 DECL|struct|hppa_dma_ops
 r_struct

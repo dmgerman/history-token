@@ -882,4 +882,21 @@ id|dyncall
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#include &lt;asm/mmzone.h&gt;
+DECL|variable|node_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|node_data
+)paren
+suffix:semicolon
+DECL|variable|pfnnid_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfnnid_map
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

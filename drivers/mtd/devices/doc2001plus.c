@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.8 2004/04/04 12:36:45 gleixner Exp $&n; *&n; * Released under GPL&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.9 2004/08/09 13:19:44 dwmw2 Exp $&n; *&n; * Released under GPL&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -5642,14 +5642,7 @@ comma
 id|Mplus_FlashSelect
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr

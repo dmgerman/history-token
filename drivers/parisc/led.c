@@ -478,6 +478,8 @@ comma
 id|lbuf
 (braket
 id|count
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_int
@@ -505,6 +507,8 @@ comma
 l_int|0
 comma
 id|count
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -666,8 +670,8 @@ suffix:semicolon
 r_case
 id|LED_HASLCD
 suffix:colon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 op_star
 id|cur

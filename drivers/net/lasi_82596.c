@@ -23,16 +23,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
-DECL|variable|__devinitdata
-r_static
-r_char
-id|version
-(braket
-)braket
-id|__devinitdata
-op_assign
-l_string|&quot;82596.c $Revision: 1.29 $&bslash;n&quot;
-suffix:semicolon
+DECL|macro|LASI_82596_DRIVER_VERSION
+mdefine_line|#define LASI_82596_DRIVER_VERSION &quot;LASI 82596 driver - Revision: 1.30&quot;
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
 mdefine_line|#define DEB_INIT&t;0x0001
@@ -73,9 +65,9 @@ mdefine_line|#define DEB(x,y)&t;if (i596_debug &amp; (x)) { y; }
 DECL|macro|CHECK_WBACK
 mdefine_line|#define  CHECK_WBACK(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr, len, DMA_TO_DEVICE); } while (0)
 DECL|macro|CHECK_INV
-mdefine_line|#define  CHECK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr,len, DMA_FROM_DEVICE); } while(0)
+mdefine_line|#define  CHECK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr, len, DMA_FROM_DEVICE); } while(0)
 DECL|macro|CHECK_WBACK_INV
-mdefine_line|#define  CHECK_WBACK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr,len, DMA_BIDIRECTIONAL); } while (0)
+mdefine_line|#define  CHECK_WBACK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr, len, DMA_BIDIRECTIONAL); } while (0)
 DECL|macro|PA_I82596_RESET
 mdefine_line|#define PA_I82596_RESET&t;&t;0&t;/* Offsets relative to LASI-LAN-Addr.*/
 DECL|macro|PA_CPU_PORT_L_ACCESS
@@ -1655,6 +1647,7 @@ suffix:semicolon
 r_do
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;   %p .stat %04x, .cmd %04x, b_next %08x, rbd %08x,&quot;
 l_string|&quot; count %04x&bslash;n&quot;
@@ -1895,7 +1888,9 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;82596: alloc_skb() failed&quot;
+l_string|&quot;%s: alloc_skb() failed&quot;
+comma
+id|__FILE__
 )paren
 suffix:semicolon
 id|skb_reserve
@@ -2408,11 +2403,17 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;RESET 82596 port: %08lX (with IRQ%d disabled)&bslash;n&quot;
+l_string|&quot;RESET 82596 port: %p (with IRQ %d disabled)&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
+(paren
 id|dev-&gt;base_addr
 op_plus
 id|PA_I82596_RESET
+)paren
 comma
 id|dev-&gt;irq
 )paren
@@ -2977,6 +2978,7 @@ c_func
 id|DEB_RXFRAME
 comma
 id|printk
+c_func
 (paren
 l_string|&quot;i596_rx(), rfd_head %p, rbd_head %p&bslash;n&quot;
 comma
@@ -3293,6 +3295,7 @@ l_int|NULL
 (brace
 multiline_comment|/* XXX tulip.c can defer packets here!! */
 id|printk
+c_func
 (paren
 l_string|&quot;%s: i596_rx Memory squeeze, dropping packet.&bslash;n&quot;
 comma
@@ -3635,6 +3638,7 @@ c_func
 id|DEB_RXFRAME
 comma
 id|printk
+c_func
 (paren
 l_string|&quot;frames %d&bslash;n&quot;
 comma
@@ -4494,6 +4498,7 @@ c_func
 id|DEB_ERRORS
 comma
 id|printk
+c_func
 (paren
 l_string|&quot;Resetting board.&bslash;n&quot;
 )paren
@@ -4517,6 +4522,7 @@ c_func
 id|DEB_ERRORS
 comma
 id|printk
+c_func
 (paren
 l_string|&quot;Kicking board.&bslash;n&quot;
 )paren
@@ -4687,6 +4693,7 @@ c_func
 id|DEB_ERRORS
 comma
 id|printk
+c_func
 (paren
 l_string|&quot;%s: xmit ring full, dropping packet.&bslash;n&quot;
 comma
@@ -5010,6 +5017,9 @@ c_func
 (paren
 l_string|&quot;82596: sizeof(struct i596_rfd) = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct
@@ -5043,6 +5053,9 @@ c_func
 (paren
 l_string|&quot;82596: sizeof(struct i596_rbd) = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct
@@ -5076,6 +5089,9 @@ c_func
 (paren
 l_string|&quot;82596: sizeof(struct tx_cmd) = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct
@@ -5105,6 +5121,9 @@ c_func
 (paren
 l_string|&quot;82596: sizeof(struct i596_tbd) = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct
@@ -5135,6 +5154,9 @@ c_func
 (paren
 l_string|&quot;82596: sizeof(struct i596_private) = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct
@@ -5205,7 +5227,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;82596.c: MAC of HP700 LAN read from EEPROM&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: MAC of HP700 LAN read from EEPROM&bslash;n&quot;
+comma
+id|__FILE__
 )paren
 suffix:semicolon
 )brace
@@ -5242,9 +5267,10 @@ id|dev-&gt;mem_start
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Couldn&squot;t get shared memory&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|__FILE__
 )paren
 suffix:semicolon
 r_return
@@ -5252,22 +5278,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|DEB
-c_func
-(paren
-id|DEB_PROBE
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;%s: 82596 at %#3lx,&quot;
-comma
-id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5282,16 +5292,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|DEB
-c_func
-(paren
-id|DEB_PROBE
-comma
-id|printk
-c_func
-(paren
-l_string|&quot; %2.2X&quot;
-comma
 id|dev-&gt;dev_addr
 (braket
 id|i
@@ -5301,34 +5301,6 @@ id|eth_addr
 (braket
 id|i
 )braket
-)paren
-)paren
-suffix:semicolon
-id|DEB
-c_func
-(paren
-id|DEB_PROBE
-comma
-id|printk
-c_func
-(paren
-l_string|&quot; IRQ %d.&bslash;n&quot;
-comma
-id|dev-&gt;irq
-)paren
-)paren
-suffix:semicolon
-id|DEB
-c_func
-(paren
-id|DEB_PROBE
-comma
-id|printk
-c_func
-(paren
-id|version
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* The 82596-specific entries in the device structure. */
 id|dev-&gt;open
@@ -5372,38 +5344,6 @@ suffix:semicolon
 id|lp
 op_assign
 id|dev-&gt;priv
-suffix:semicolon
-id|DEB
-c_func
-(paren
-id|DEB_INIT
-comma
-id|printk
-(paren
-l_string|&quot;%s: lp at 0x%08lx (%d bytes), lp-&gt;scb at 0x%08lx&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-(paren
-r_int
-r_int
-)paren
-id|lp
-comma
-r_sizeof
-(paren
-r_struct
-id|i596_private
-)paren
-comma
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|lp-&gt;scb
-)paren
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -5452,6 +5392,140 @@ r_sizeof
 (paren
 r_struct
 id|i596_private
+)paren
+)paren
+suffix:semicolon
+id|i
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+(brace
+id|lp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|dma_free_noncoherent
+c_func
+(paren
+id|lp-&gt;dev
+comma
+r_sizeof
+(paren
+r_struct
+id|i596_private
+)paren
+comma
+(paren
+r_void
+op_star
+)paren
+id|dev-&gt;mem_start
+comma
+id|lp-&gt;dma_addr
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+suffix:semicolon
+id|DEB
+c_func
+(paren
+id|DEB_PROBE
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: 82596 at %#3lx,&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;base_addr
+)paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|DEB
+c_func
+(paren
+id|DEB_PROBE
+comma
+id|printk
+c_func
+(paren
+l_string|&quot; %2.2X&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+)paren
+suffix:semicolon
+id|DEB
+c_func
+(paren
+id|DEB_PROBE
+comma
+id|printk
+c_func
+(paren
+l_string|&quot; IRQ %d.&bslash;n&quot;
+comma
+id|dev-&gt;irq
+)paren
+)paren
+suffix:semicolon
+id|DEB
+c_func
+(paren
+id|DEB_INIT
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: lp at 0x%p (%d bytes), lp-&gt;scb at 0x%p&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|lp
+comma
+(paren
+r_int
+)paren
+r_sizeof
+(paren
+r_struct
+id|i596_private
+)paren
+comma
+op_amp
+id|lp-&gt;scb
 )paren
 )paren
 suffix:semicolon
@@ -5509,7 +5583,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;i596_interrupt(): irq %d for unknown device.&bslash;n&quot;
+l_string|&quot;%s: irq %d for unknown device.&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|irq
 )paren
@@ -6966,9 +7042,24 @@ id|MAX_DRIVERS
 multiline_comment|/* max count of possible i82596 drivers reached */
 r_return
 op_minus
-id|ENODEV
+id|ENOMEM
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|num_drivers
+op_eq
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|LASI_82596_DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6980,8 +7071,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: IRQ not found for i82596 at 0x%lx&bslash;n&quot;
+comma
 id|__FILE__
-l_string|&quot;: IRQ not found for i82596 at 0x%lx&bslash;n&quot;
 comma
 id|dev-&gt;hpa
 )paren
@@ -7056,69 +7148,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|retval
-op_assign
-id|register_netdev
-c_func
-(paren
-id|netdevice
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-r_struct
-id|i596_private
-op_star
-id|lp
-op_assign
-id|netdevice-&gt;priv
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|__FILE__
-l_string|&quot;: register_netdevice ret&squot;d %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
-id|dma_free_noncoherent
-c_func
-(paren
-id|lp-&gt;dev
-comma
-r_sizeof
-(paren
-r_struct
-id|i596_private
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-id|netdevice-&gt;mem_start
-comma
-id|lp-&gt;dma_addr
-)paren
-suffix:semicolon
-id|free_netdev
-c_func
-(paren
-id|netdevice
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7347,6 +7376,10 @@ id|netdevice
 )paren
 suffix:semicolon
 )brace
+id|num_drivers
+op_assign
+l_int|0
+suffix:semicolon
 id|unregister_parisc_driver
 c_func
 (paren

@@ -309,33 +309,6 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|variable|cpu_irq_ops
-r_struct
-id|irq_region_ops
-id|cpu_irq_ops
-op_assign
-(brace
-dot
-id|disable_irq
-op_assign
-id|disable_cpu_irq
-comma
-dot
-id|enable_irq
-op_assign
-id|enable_cpu_irq
-comma
-dot
-id|mask_irq
-op_assign
-id|unmask_cpu_irq
-comma
-dot
-id|unmask_irq
-op_assign
-id|unmask_cpu_irq
-)brace
-suffix:semicolon
 DECL|variable|cpu0_irq_region
 r_struct
 id|irq_region
@@ -700,7 +673,7 @@ c_func
 id|irq
 comma
 (paren
-l_string|&quot;enable_irq(%d) %d+%d eiem 0x%lx&bslash;n&quot;
+l_string|&quot;enable_irq(%d) %d+%d EIRR 0x%lx EIEM 0x%lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -716,7 +689,17 @@ c_func
 id|irq
 )paren
 comma
-id|cpu_eiem
+id|mfctl
+c_func
+(paren
+l_int|23
+)paren
+comma
+id|mfctl
+c_func
+(paren
+l_int|15
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -833,6 +816,15 @@ id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
 )paren
 macro_line|#endif
 id|seq_printf
@@ -974,6 +966,15 @@ id|NR_CPUS
 suffix:semicolon
 id|j
 op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|j
+)paren
 )paren
 macro_line|#endif
 id|seq_printf
@@ -1313,6 +1314,7 @@ OL
 id|NR_CPUS
 )paren
 op_logical_and
+(paren
 op_logical_neg
 id|cpu_data
 (braket
@@ -1320,6 +1322,14 @@ id|next_cpu
 )braket
 dot
 id|txn_addr
+op_logical_or
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|next_cpu
+)paren
+)paren
 )paren
 id|next_cpu
 op_increment
@@ -1448,7 +1458,7 @@ c_func
 id|irq
 comma
 (paren
-l_string|&quot;do_irq(%d) %d+%d&bslash;n&quot;
+l_string|&quot;do_irq(%d) %d+%d eiem 0x%lx&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1463,6 +1473,8 @@ c_func
 (paren
 id|irq
 )paren
+comma
+id|cpu_eiem
 )paren
 )paren
 suffix:semicolon
@@ -1739,9 +1751,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;do_cpu_irq_mask  %x&bslash;n&quot;
+l_string|&quot;do_cpu_irq_mask  0x%x &amp; 0x%x&bslash;n&quot;
 comma
 id|eirr_val
+comma
+id|cpu_eiem
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3293,8 +3307,8 @@ multiline_comment|/* PARANOID - should already be disabled */
 id|mtctl
 c_func
 (paren
-op_minus
-l_int|1L
+op_complement
+l_int|0UL
 comma
 l_int|23
 )paren

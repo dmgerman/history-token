@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.6 2003/08/19 09:25:36 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.7 2004/07/29 14:16:45 macro Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -27,7 +27,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&quot;
+l_string|&quot;Maciej W. Rozycki &lt;macro@linux-mips.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

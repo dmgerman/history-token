@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.60 2004/04/07 08:30:04 gleixner Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.62 2004/08/09 14:04:02 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -5869,14 +5869,7 @@ id|MTD_ERASE_DONE
 suffix:semicolon
 id|callback
 suffix:colon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr

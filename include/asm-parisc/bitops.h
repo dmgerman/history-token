@@ -37,7 +37,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -120,7 +122,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -175,7 +179,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -261,7 +267,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -317,7 +324,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -400,7 +409,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -455,7 +466,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -558,7 +571,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -633,7 +648,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -737,7 +754,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -813,7 +832,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -916,7 +937,9 @@ c_func
 r_int
 id|nr
 comma
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -992,7 +1015,9 @@ r_int
 id|nr
 comma
 r_const
-r_void
+r_volatile
+r_int
+r_int
 op_star
 id|address
 )paren
@@ -1001,12 +1026,14 @@ r_int
 r_int
 id|mask
 suffix:semicolon
+r_const
 r_int
 r_int
 op_star
 id|addr
 op_assign
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -1224,6 +1251,7 @@ r_int
 id|sched_find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -1436,6 +1464,7 @@ r_int
 id|find_next_zero_bit
 c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -1449,6 +1478,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -1643,6 +1673,7 @@ r_int
 id|find_next_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -1657,6 +1688,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -1861,22 +1893,22 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * test_and_{set,clear}_bit guarantee atomicity without&n; * disabling interrupts.&n; */
 macro_line|#ifdef __LP64__
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x38, addr)
+mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x38, (unsigned long *)addr)
 DECL|macro|ext2_set_bit_atomic
-mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x38, addr)
+mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x38, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x38, addr)
+mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x38, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit_atomic
-mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x38, addr)
+mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x38, (unsigned long *)addr)
 macro_line|#else
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit((nr) ^ 0x18, (unsigned long *)addr)
 DECL|macro|ext2_set_bit_atomic
-mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_set_bit_atomic(l,nr,addr)  test_and_set_bit((nr) ^ 0x18, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x18, (unsigned long *)addr)
 DECL|macro|ext2_clear_bit_atomic
-mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_clear_bit_atomic(l,nr,addr) test_and_clear_bit((nr) ^ 0x18, (unsigned long *)addr)
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 DECL|function|ext2_test_bit

@@ -1285,6 +1285,7 @@ macro_line|#ifdef CONFIG_SERIAL_8250
 r_int
 id|retval
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 r_extern
 r_void
 id|serial8250_console_init
@@ -1294,6 +1295,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* drivers/serial/8250.c */
+macro_line|#endif        
 r_if
 c_cond
 (paren
@@ -1370,11 +1372,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 id|serial8250_console_init
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|serial
 (braket
 l_int|1

@@ -163,10 +163,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|VALID_PAGE
+id|pfn_valid
+c_func
+(paren
+id|page_to_pfn
 c_func
 (paren
 id|page
+)paren
 )paren
 op_logical_and
 id|page_mapping
@@ -234,7 +238,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;D-cache&bslash;t&bslash;t: %ld KB (%s)%s&bslash;n&quot;
+l_string|&quot;D-cache&bslash;t&bslash;t: %ld KB (%s%s, %d-way associative)&bslash;n&quot;
 comma
 id|cache_info.dc_size
 op_div
@@ -253,9 +257,13 @@ comma
 id|cache_info.dc_conf.cc_sh
 ques
 c_cond
-l_string|&quot; - shared I/D&quot;
+l_string|&quot;, shared I/D&quot;
 suffix:colon
 l_string|&quot;&quot;
+)paren
+comma
+(paren
+id|cache_info.dc_conf.cc_assoc
 )paren
 )paren
 suffix:semicolon
@@ -367,38 +375,19 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;ic_size %lx dc_size %lx it_size %lx pdc_cache_info %d*long pdc_cache_cf %d&bslash;n&quot;
+l_string|&quot;ic_size %lx dc_size %lx it_size %lx&bslash;n&quot;
 comma
 id|cache_info.ic_size
 comma
 id|cache_info.dc_size
 comma
 id|cache_info.it_size
-comma
-r_sizeof
-(paren
-r_struct
-id|pdc_cache_info
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-)paren
-comma
-r_sizeof
-(paren
-r_struct
-id|pdc_cache_cf
-)paren
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;dc base %x dc stride %x dc count %x dc loop %d&bslash;n&quot;
+l_string|&quot;DC  base 0x%lx stride 0x%lx count 0x%lx loop 0x%lx&bslash;n&quot;
 comma
 id|cache_info.dc_base
 comma
@@ -412,14 +401,32 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;dc conf: alias %d block %d line %d wt %d sh %d cst %d assoc %d&bslash;n&quot;
+l_string|&quot;dc_conf = 0x%lx  alias %d blk %d line %d shift %d&bslash;n&quot;
+comma
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+op_amp
+id|cache_info.dc_conf
+)paren
 comma
 id|cache_info.dc_conf.cc_alias
 comma
 id|cache_info.dc_conf.cc_block
 comma
 id|cache_info.dc_conf.cc_line
+comma
+id|cache_info.dc_conf.cc_shift
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&t;wt %d sh %d cst %d assoc %d&bslash;n&quot;
 comma
 id|cache_info.dc_conf.cc_wt
 comma
@@ -433,14 +440,46 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;ic conf: alias %d block %d line %d wt %d sh %d cst %d assoc %d&bslash;n&quot;
+l_string|&quot;IC  base 0x%lx stride 0x%lx count 0x%lx loop 0x%lx&bslash;n&quot;
+comma
+id|cache_info.ic_base
+comma
+id|cache_info.ic_stride
+comma
+id|cache_info.ic_count
+comma
+id|cache_info.ic_loop
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;ic_conf = 0x%lx  alias %d blk %d line %d shift %d&bslash;n&quot;
+comma
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+op_amp
+id|cache_info.ic_conf
+)paren
 comma
 id|cache_info.ic_conf.cc_alias
 comma
 id|cache_info.ic_conf.cc_block
 comma
 id|cache_info.ic_conf.cc_line
+comma
+id|cache_info.ic_conf.cc_shift
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&t;wt %d sh %d cst %d assoc %d&bslash;n&quot;
 comma
 id|cache_info.ic_conf.cc_wt
 comma
@@ -454,8 +493,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;dt conf: sh %d page %d cst %d aid %d pad1 %d &bslash;n&quot;
+l_string|&quot;D-TLB conf: sh %d page %d cst %d aid %d pad1 %d &bslash;n&quot;
 comma
 id|cache_info.dt_conf.tc_sh
 comma
@@ -471,8 +509,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;it conf: sh %d page %d cst %d aid %d pad1 %d &bslash;n&quot;
+l_string|&quot;I-TLB conf: sh %d page %d cst %d aid %d pad1 %d &bslash;n&quot;
 comma
 id|cache_info.it_conf.tc_sh
 comma
@@ -522,34 +559,27 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* &quot;New and Improved&quot; version from Jim Hull &n;&t; *&t;(1 &lt;&lt; (cc_block-1)) * (cc_line &lt;&lt; (4 + cnf.cc_shift))&n;&t; */
+DECL|macro|CAFL_STRIDE
+mdefine_line|#define CAFL_STRIDE(cnf) (cnf.cc_line &lt;&lt; (3 + cnf.cc_block + cnf.cc_shift))
 id|dcache_stride
 op_assign
+id|CAFL_STRIDE
+c_func
 (paren
-l_int|1
-op_lshift
-(paren
-id|cache_info.dc_conf.cc_block
-op_plus
-l_int|3
+id|cache_info.dc_conf
 )paren
-)paren
-op_star
-id|cache_info.dc_conf.cc_line
 suffix:semicolon
 id|icache_stride
 op_assign
+id|CAFL_STRIDE
+c_func
 (paren
-l_int|1
-op_lshift
-(paren
-id|cache_info.ic_conf.cc_block
-op_plus
-l_int|3
+id|cache_info.ic_conf
 )paren
-)paren
-op_star
-id|cache_info.ic_conf.cc_line
 suffix:semicolon
+DECL|macro|CAFL_STRIDE
+macro_line|#undef CAFL_STRIDE
 macro_line|#ifndef CONFIG_PA20
 r_if
 c_cond
@@ -594,10 +624,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Only equivalent aliasing supported&bslash;n&quot;
+l_string|&quot;parisc_cache_init: Only equivalent aliasing supported!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
+macro_line|#if 0
 id|panic
 c_func
 (paren
@@ -682,9 +712,9 @@ id|srhash_type
 )paren
 suffix:semicolon
 )brace
-DECL|function|__flush_dcache_page
+DECL|function|flush_dcache_page
 r_void
-id|__flush_dcache_page
+id|flush_dcache_page
 c_func
 (paren
 r_struct
@@ -726,6 +756,45 @@ suffix:semicolon
 id|pgoff_t
 id|pgoff
 suffix:semicolon
+id|pte_t
+op_star
+id|pte
+suffix:semicolon
+r_int
+r_int
+id|pfn
+op_assign
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping
+op_logical_and
+op_logical_neg
+id|mapping_mapped
+c_func
+(paren
+id|mapping
+)paren
+)paren
+(brace
+id|set_bit
+c_func
+(paren
+id|PG_dcache_dirty
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|flush_kernel_dcache_page
 c_func
 (paren
@@ -808,6 +877,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+id|pte
+op_assign
 id|translation_exists
 c_func
 (paren
@@ -816,8 +888,28 @@ comma
 id|addr
 )paren
 )paren
+)paren
+(brace
 r_continue
 suffix:semicolon
+)brace
+multiline_comment|/* make sure we really have this page: the private&n;&t;&t; * mappings may cover this area but have COW&squot;d this&n;&t;&t; * particular page */
+r_if
+c_cond
+(paren
+id|pte_pfn
+c_func
+(paren
+op_star
+id|pte
+)paren
+op_ne
+id|pfn
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 id|__flush_cache_page
 c_func
 (paren
@@ -836,11 +928,11 @@ id|mapping
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__flush_dcache_page
+DECL|variable|flush_dcache_page
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__flush_dcache_page
+id|flush_dcache_page
 )paren
 suffix:semicolon
 multiline_comment|/* Defined in arch/parisc/kernel/pacache.S */

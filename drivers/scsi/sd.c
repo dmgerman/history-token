@@ -2333,6 +2333,8 @@ op_assign
 id|scsi_cmd_ioctl
 c_func
 (paren
+id|filp
+comma
 id|disk
 comma
 id|cmd

@@ -402,6 +402,8 @@ DECL|macro|HPHW_BRIDGE
 mdefine_line|#define HPHW_BRIDGE    13
 DECL|macro|HPHW_FABRIC
 mdefine_line|#define HPHW_FABRIC    14
+DECL|macro|HPHW_MC
+mdefine_line|#define HPHW_MC&t;       15
 DECL|macro|HPHW_FAULTY
 mdefine_line|#define HPHW_FAULTY    31
 multiline_comment|/* hardware.c: */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   ST Advanced Architecture Command Set (ID 0x0020)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0020.c,v 1.14 2004/07/20 02:44:25 dwmw2 Exp $&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 06/21/2002&t;Joern Engel &lt;joern@wh.fh-wedel.de&gt; and others&n; *&t;- modified Intel Command Set 0x0001 to support ST Advanced Architecture&n; *&t;  (command set 0x0020)&n; *&t;- added a writev function&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   ST Advanced Architecture Command Set (ID 0x0020)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0020.c,v 1.15 2004/08/09 13:19:43 dwmw2 Exp $&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 06/21/2002&t;Joern Engel &lt;joern@wh.fh-wedel.de&gt; and others&n; *&t;- modified Intel Command Set 0x0001 to support ST Advanced Architecture&n; *&t;  (command set 0x0020)&n; *&t;- added a writev function&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -4770,14 +4770,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr
