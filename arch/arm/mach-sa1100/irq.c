@@ -152,7 +152,7 @@ r_return
 l_int|0
 suffix:semicolon
 id|type
-op_eq
+op_assign
 id|__IRQT_RISEDGE
 op_or
 id|__IRQT_FALEDGE
