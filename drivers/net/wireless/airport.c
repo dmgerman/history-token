@@ -507,7 +507,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev
@@ -765,7 +765,7 @@ id|PFX
 l_string|&quot;can&squot;t request IO resource !&bslash;n&quot;
 )paren
 suffix:semicolon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev

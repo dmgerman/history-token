@@ -462,7 +462,7 @@ id|mem
 suffix:semicolon
 id|out3
 suffix:colon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev
@@ -568,7 +568,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev

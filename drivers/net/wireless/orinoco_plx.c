@@ -695,7 +695,7 @@ id|dev
 suffix:semicolon
 id|fail_irq
 suffix:colon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev
@@ -803,7 +803,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev

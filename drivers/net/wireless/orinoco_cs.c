@@ -582,7 +582,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev

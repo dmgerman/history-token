@@ -339,6 +339,17 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|free_orinocodev
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|__orinoco_up
 c_func
