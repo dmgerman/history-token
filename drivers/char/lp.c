@@ -2518,11 +2518,13 @@ r_char
 op_star
 id|lf
 op_assign
-id|strchr
+id|memchr
 (paren
 id|s
 comma
 l_char|&squot;&bslash;n&squot;
+comma
+id|count
 )paren
 suffix:semicolon
 r_if
