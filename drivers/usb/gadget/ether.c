@@ -533,7 +533,7 @@ DECL|macro|STRING_RNDIS
 mdefine_line|#define STRING_RNDIS&t;&t;&t;9
 DECL|macro|USB_BUFSIZ
 mdefine_line|#define USB_BUFSIZ&t;256&t;&t;/* holds our biggest descriptor */
-multiline_comment|/*&n; * This device advertises one configuration, eth_config, unless RNDIS&n; * is enabled (rndis_config) on hardware supporting at least two configs.&n; *&n; * NOTE:  Controllers like superh_udc should probably be able to use&n; * an RNDIS-only configuration.&n; */
+multiline_comment|/*&n; * This device advertises one configuration, eth_config, unless RNDIS&n; * is enabled (rndis_config) on hardware supporting at least two configs.&n; *&n; * NOTE:  Controllers like superh_udc should probably be able to use&n; * an RNDIS-only configuration.&n; *&n; * FIXME define some higher-powered configurations to make it easier&n; * to recharge batteries ...&n; */
 DECL|macro|DEV_CONFIG_VALUE
 mdefine_line|#define DEV_CONFIG_VALUE&t;1&t;/* cdc or subset */
 DECL|macro|DEV_RNDIS_CONFIG_VALUE
@@ -614,6 +614,31 @@ comma
 suffix:semicolon
 r_static
 r_struct
+id|usb_otg_descriptor
+DECL|variable|otg_descriptor
+id|otg_descriptor
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+r_sizeof
+id|otg_descriptor
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_OTG
+comma
+dot
+id|bmAttributes
+op_assign
+id|USB_OTG_SRP
+comma
+)brace
+suffix:semicolon
+r_static
+r_struct
 id|usb_config_descriptor
 DECL|variable|eth_config
 id|eth_config
@@ -662,7 +687,6 @@ comma
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_ETH_RNDIS
 r_static
-r_const
 r_struct
 id|usb_config_descriptor
 DECL|variable|rndis_config
@@ -1543,10 +1567,18 @@ id|usb_descriptor_header
 op_star
 id|fs_eth_function
 (braket
-l_int|10
+l_int|11
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 macro_line|#ifdef DEV_CONFIG_CDC
 multiline_comment|/* &quot;cdc&quot; mode descriptors */
 (paren
@@ -1642,7 +1674,7 @@ r_void
 macro_line|#ifdef DEV_CONFIG_SUBSET
 id|fs_eth_function
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
 (paren
@@ -1655,7 +1687,7 @@ id|subset_data_intf
 suffix:semicolon
 id|fs_eth_function
 (braket
-l_int|1
+l_int|2
 )braket
 op_assign
 (paren
@@ -1668,7 +1700,7 @@ id|fs_source_desc
 suffix:semicolon
 id|fs_eth_function
 (braket
-l_int|2
+l_int|3
 )braket
 op_assign
 (paren
@@ -1681,7 +1713,7 @@ id|fs_sink_desc
 suffix:semicolon
 id|fs_eth_function
 (braket
-l_int|3
+l_int|4
 )braket
 op_assign
 l_int|0
@@ -1689,7 +1721,7 @@ suffix:semicolon
 macro_line|#else
 id|fs_eth_function
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
 l_int|0
@@ -1708,6 +1740,14 @@ id|fs_rndis_function
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 multiline_comment|/* control interface matches ACM, not Ethernet */
 (paren
 r_struct
@@ -1940,10 +1980,18 @@ id|usb_descriptor_header
 op_star
 id|hs_eth_function
 (braket
-l_int|10
+l_int|11
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 macro_line|#ifdef DEV_CONFIG_CDC
 multiline_comment|/* &quot;cdc&quot; mode descriptors */
 (paren
@@ -2039,7 +2087,7 @@ r_void
 macro_line|#ifdef DEV_CONFIG_SUBSET
 id|hs_eth_function
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
 (paren
@@ -2052,7 +2100,7 @@ id|subset_data_intf
 suffix:semicolon
 id|hs_eth_function
 (braket
-l_int|1
+l_int|2
 )braket
 op_assign
 (paren
@@ -2065,7 +2113,7 @@ id|fs_source_desc
 suffix:semicolon
 id|hs_eth_function
 (braket
-l_int|2
+l_int|3
 )braket
 op_assign
 (paren
@@ -2078,7 +2126,7 @@ id|fs_sink_desc
 suffix:semicolon
 id|hs_eth_function
 (braket
-l_int|3
+l_int|4
 )braket
 op_assign
 l_int|0
@@ -2086,7 +2134,7 @@ suffix:semicolon
 macro_line|#else
 id|hs_eth_function
 (braket
-l_int|0
+l_int|1
 )braket
 op_assign
 l_int|0
@@ -2105,6 +2153,14 @@ id|hs_rndis_function
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 multiline_comment|/* control interface matches ACM, not Ethernet */
 (paren
 r_struct
@@ -2362,10 +2418,26 @@ id|type
 comma
 r_int
 id|index
+comma
+r_int
+id|is_otg
 )paren
 (brace
 r_int
 id|len
+suffix:semicolon
+r_const
+r_struct
+id|usb_config_descriptor
+op_star
+id|config
+suffix:semicolon
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+id|function
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_int
@@ -2389,12 +2461,9 @@ op_assign
 op_logical_neg
 id|hs
 suffix:semicolon
-DECL|macro|which_config
-mdefine_line|#define which_config(t)&t;(hs ? &amp; t ## _config   : &amp; t ## _config)
 DECL|macro|which_fn
 mdefine_line|#define which_fn(t)&t;(hs ? &amp; hs_ ## t ## _function : &amp; fs_ ## t ## _function)
 macro_line|#else
-mdefine_line|#define&t;which_config(t)&t;(&amp; t ## _config)
 mdefine_line|#define&t;which_fn(t)&t;(&amp; fs_ ## t ## _function)
 macro_line|#endif
 r_if
@@ -2421,19 +2490,14 @@ id|index
 op_eq
 l_int|0
 )paren
-id|len
+(brace
+id|config
 op_assign
-id|usb_gadget_config_buf
-(paren
-id|which_config
-(paren
-id|rndis
-)paren
-comma
-id|buf
-comma
-id|USB_BUFSIZ
-comma
+op_amp
+id|rndis_config
+suffix:semicolon
+id|function
+op_assign
 (paren
 r_const
 r_struct
@@ -2444,24 +2508,19 @@ op_star
 id|which_fn
 (paren
 id|rndis
-)paren
 )paren
 suffix:semicolon
+)brace
 r_else
 macro_line|#endif
-id|len
+(brace
+id|config
 op_assign
-id|usb_gadget_config_buf
-(paren
-id|which_config
-(paren
-id|eth
-)paren
-comma
-id|buf
-comma
-id|USB_BUFSIZ
-comma
+op_amp
+id|eth_config
+suffix:semicolon
+id|function
+op_assign
 (paren
 r_const
 r_struct
@@ -2473,6 +2532,29 @@ id|which_fn
 (paren
 id|eth
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* for now, don&squot;t advertise srp-only devices */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_otg
+)paren
+id|function
+op_increment
+suffix:semicolon
+id|len
+op_assign
+id|usb_gadget_config_buf
+(paren
+id|config
+comma
+id|buf
+comma
+id|USB_BUFSIZ
+comma
+id|function
 )paren
 suffix:semicolon
 r_if
@@ -4297,6 +4379,10 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* descriptors just go into the pre-allocated ep0 buffer,&n;&t; * while config change events may enable network traffic.&n;&t; */
+id|req-&gt;complete
+op_assign
+id|eth_setup_complete
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4419,6 +4505,8 @@ comma
 id|ctrl-&gt;wValue
 op_amp
 l_int|0xff
+comma
+id|gadget-&gt;is_otg
 )paren
 suffix:semicolon
 r_if
@@ -4494,6 +4582,31 @@ op_ne
 l_int|0
 )paren
 r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gadget-&gt;a_hnp_support
+)paren
+id|DEBUG
+(paren
+id|dev
+comma
+l_string|&quot;HNP available&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget-&gt;a_alt_hnp_support
+)paren
+id|DEBUG
+(paren
+id|dev
+comma
+l_string|&quot;HNP needs a different root port&bslash;n&quot;
+)paren
 suffix:semicolon
 id|spin_lock
 (paren
@@ -5655,7 +5768,7 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-multiline_comment|/* Padding up to RX_EXTRA handles minor disagreements with host.&n;&t; * Normally we use the USB &quot;terminate on short read&quot; convention;&n;&t; * so allow up to (N*maxpacket)-1, since that memory is normally&n;&t; * already allocated.  Major loss of synch means -EOVERFLOW; any&n;&t; * obviously corrupted packets will automatically be discarded. &n;&t; *&n;&t; * RNDIS uses internal framing, and explicitly allows senders to&n;&t; * pad to end-of-packet.  That&squot;s potentially nice for speed,&n;&t; * but means receivers can&squot;t recover synch on their own.&n;&t; */
+multiline_comment|/* Padding up to RX_EXTRA handles minor disagreements with host.&n;&t; * Normally we use the USB &quot;terminate on short read&quot; convention;&n;&t; * so allow up to (N*maxpacket), since that memory is normally&n;&t; * already allocated.  Some hardware doesn&squot;t deal well with short&n;&t; * reads (e.g. DMA must be N*maxpacket), so for now don&squot;t trim a&n;&t; * byte off the end (to force hardware errors on overflow).&n;&t; *&n;&t; * RNDIS uses internal framing, and explicitly allows senders to&n;&t; * pad to end-of-packet.  That&squot;s potentially nice for speed,&n;&t; * but means receivers can&squot;t recover synch on their own.&n;&t; */
 id|size
 op_assign
 (paren
@@ -5696,17 +5809,6 @@ op_sub_assign
 id|size
 op_mod
 id|dev-&gt;out_ep-&gt;maxpacket
-suffix:semicolon
-macro_line|#ifdef CONFIG_USB_ETH_RNDIS
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;rndis
-)paren
-macro_line|#endif&t;
-id|size
-op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -8489,6 +8591,27 @@ id|usb_gadget_set_selfpowered
 id|gadget
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gadget-&gt;is_otg
+)paren
+(brace
+id|otg_descriptor.bmAttributes
+op_or_assign
+id|USB_OTG_HNP
+comma
+id|eth_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USB_ETH_RNDIS
+id|rndis_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+macro_line|#endif
+)brace
 id|net
 op_assign
 id|alloc_etherdev
