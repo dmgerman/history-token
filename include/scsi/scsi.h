@@ -271,8 +271,12 @@ DECL|macro|COMMAND_TERMINATED
 mdefine_line|#define COMMAND_TERMINATED   0x11
 DECL|macro|QUEUE_FULL
 mdefine_line|#define QUEUE_FULL           0x14
+DECL|macro|ACA_ACTIVE
+mdefine_line|#define ACA_ACTIVE           0x18
+DECL|macro|TASK_ABORTED
+mdefine_line|#define TASK_ABORTED         0x20
 DECL|macro|STATUS_MASK
-mdefine_line|#define STATUS_MASK          0x3e
+mdefine_line|#define STATUS_MASK          0xfe
 multiline_comment|/*&n; *  SENSE KEYS&n; */
 DECL|macro|NO_SENSE
 mdefine_line|#define NO_SENSE            0x00
@@ -557,7 +561,7 @@ DECL|macro|SCSI_MLQUEUE_EH_RETRY
 mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
 multiline_comment|/*&n; *  Use these to separate status msg and our bytes&n; *&n; *  These are set by:&n; *&n; *      status byte = set from target device&n; *      msg_byte    = return status from host adapter itself.&n; *      host_byte   = set by low-level driver to indicate status.&n; *      driver_byte = set by mid-level.&n; */
 DECL|macro|status_byte
-mdefine_line|#define status_byte(result) (((result) &gt;&gt; 1) &amp; 0x1f)
+mdefine_line|#define status_byte(result) (((result) &gt;&gt; 1) &amp; 0x7f)
 DECL|macro|msg_byte
 mdefine_line|#define msg_byte(result)    (((result) &gt;&gt; 8) &amp; 0xff)
 DECL|macro|host_byte

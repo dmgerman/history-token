@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_VMALLOC_H
 DECL|macro|_LINUX_VMALLOC_H
 mdefine_line|#define _LINUX_VMALLOC_H
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* pgprot_t */
 multiline_comment|/* bits in vm_struct-&gt;flags */
 DECL|macro|VM_IOREMAP
@@ -31,10 +30,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|page_list
+DECL|member|pages
 r_struct
-id|list_head
-id|page_list
+id|page
+op_star
+op_star
+id|pages
+suffix:semicolon
+DECL|member|nr_pages
+r_int
+r_int
+id|nr_pages
 suffix:semicolon
 DECL|member|phys_addr
 r_int
@@ -127,9 +133,6 @@ r_void
 op_star
 id|addr
 )paren
-suffix:semicolon
-r_struct
-id|page
 suffix:semicolon
 r_extern
 r_void
@@ -230,6 +233,13 @@ id|area
 comma
 id|pgprot_t
 id|prot
+comma
+r_struct
+id|page
+op_star
+op_star
+op_star
+id|pages
 )paren
 suffix:semicolon
 r_extern

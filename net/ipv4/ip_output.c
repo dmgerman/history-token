@@ -919,7 +919,7 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -966,7 +966,7 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|skb-&gt;dst
@@ -1717,7 +1717,7 @@ comma
 id|htonl
 c_func
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -1746,7 +1746,7 @@ l_int|4
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp

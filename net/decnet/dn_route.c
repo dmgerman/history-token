@@ -3430,7 +3430,7 @@ c_func
 (paren
 id|dev
 comma
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp

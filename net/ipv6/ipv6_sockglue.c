@@ -2662,13 +2662,11 @@ id|dst
 (brace
 id|val
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
 )paren
-op_minus
-id|dst-&gt;header_len
 suffix:semicolon
 id|dst_release
 c_func
@@ -2957,7 +2955,6 @@ suffix:semicolon
 )brace
 DECL|function|ipv6_packet_cleanup
 r_void
-id|__exit
 id|ipv6_packet_cleanup
 c_func
 (paren

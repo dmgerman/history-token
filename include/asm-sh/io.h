@@ -594,6 +594,12 @@ DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size) &bslash;&n;    __flush_invalidate_region(_start,_size)
 DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size) &bslash;&n;    __flush_wback_region(_start,_size)
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_IO_H */
 eof

@@ -30,9 +30,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.18&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.19&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.18&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.19&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -756,12 +756,6 @@ id|_MPT_ADAPTER
 op_star
 id|ioc
 suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-multiline_comment|/* timer function for this adapter */
 DECL|member|ReplyFrame
 id|u8
 id|ReplyFrame
@@ -801,17 +795,6 @@ id|u8
 id|target
 suffix:semicolon
 multiline_comment|/* target for reset */
-DECL|member|tmPtr
-r_void
-op_star
-id|tmPtr
-suffix:semicolon
-DECL|member|TMtimer
-r_struct
-id|timer_list
-id|TMtimer
-suffix:semicolon
-multiline_comment|/* timer function for this adapter */
 DECL|member|sem_ioc
 r_struct
 id|semaphore
@@ -1818,10 +1801,6 @@ op_star
 op_star
 id|ScsiLookup
 suffix:semicolon
-DECL|member|qtag_tick
-id|u32
-id|qtag_tick
-suffix:semicolon
 DECL|member|Targets
 id|VirtDevice
 op_star
@@ -1839,12 +1818,6 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-DECL|member|TMtimer
-r_struct
-id|timer_list
-id|TMtimer
-suffix:semicolon
-multiline_comment|/* Timer for TM commands ONLY */
 multiline_comment|/* Pool of memory for holding SCpnts before doing&n;&t;&t; * OS callbacks. freeQ is the free pool.&n;&t;&t; */
 DECL|member|tmPending
 id|u8
@@ -1874,12 +1847,6 @@ id|rsvd
 l_int|2
 )braket
 suffix:semicolon
-DECL|member|tmPtr
-id|MPT_FRAME_HDR
-op_star
-id|tmPtr
-suffix:semicolon
-multiline_comment|/* Ptr to TM request*/
 DECL|member|cmdPtr
 id|MPT_FRAME_HDR
 op_star

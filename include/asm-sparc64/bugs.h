@@ -8,6 +8,7 @@ suffix:semicolon
 DECL|function|check_bugs
 r_static
 r_void
+id|__init
 id|check_bugs
 c_func
 (paren

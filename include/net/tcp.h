@@ -3451,6 +3451,8 @@ id|tcp_timer_bug_msg
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+suffix:semicolon
 )brace
 suffix:semicolon
 )brace
@@ -6961,7 +6963,13 @@ id|NETIF_F_TSO
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_no_largesend
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 op_logical_or
 id|dst-&gt;header_len
 )paren

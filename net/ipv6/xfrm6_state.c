@@ -671,7 +671,6 @@ suffix:semicolon
 )brace
 DECL|function|xfrm6_state_fini
 r_void
-id|__exit
 id|xfrm6_state_fini
 c_func
 (paren

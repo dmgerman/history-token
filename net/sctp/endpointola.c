@@ -248,9 +248,13 @@ id|sk-&gt;sk_write_space
 op_assign
 id|sctp_write_space
 suffix:semicolon
-id|sk-&gt;sk_use_write_queue
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_USE_WRITE_QUEUE
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the secret key used with cookie. */
 id|get_random_bytes

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_NVRAM_H
 DECL|macro|SYM_NVRAM_H
 mdefine_line|#define SYM_NVRAM_H
-macro_line|#include &quot;sym_conf.h&quot;
+macro_line|#include &quot;sym53c8xx.h&quot;
 multiline_comment|/*&n; *&t;Symbios NVRAM data format&n; */
 DECL|macro|SYMBIOS_NVRAM_SIZE
 mdefine_line|#define SYMBIOS_NVRAM_SIZE 368
@@ -458,7 +458,13 @@ suffix:semicolon
 macro_line|#if SYM_CONF_NVRAM_SUPPORT
 r_void
 id|sym_nvram_setup_host
+c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_struct
 id|sym_hcb
 op_star
@@ -501,6 +507,17 @@ op_star
 id|nvp
 )paren
 suffix:semicolon
+r_char
+op_star
+id|sym_nvram_type
+c_func
+(paren
+r_struct
+id|sym_nvram
+op_star
+id|nvp
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|sym_nvram_setup_host
 r_static
@@ -509,6 +526,11 @@ r_void
 id|sym_nvram_setup_host
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_struct
 id|sym_hcb
 op_star
@@ -564,6 +586,24 @@ l_int|0
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|sym_nvram_type
+r_static
+r_inline
+r_char
+op_star
+id|sym_nvram_type
+c_func
+(paren
+r_struct
+id|sym_nvram
+op_star
+id|nvp
+)paren
+(brace
+r_return
+l_string|&quot;No NVRAM&quot;
 suffix:semicolon
 )brace
 macro_line|#endif

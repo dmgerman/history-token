@@ -37,7 +37,7 @@ DECL|macro|UNCACHEABLE_ADDR
 mdefine_line|#define UNCACHEABLE_ADDR&t;0xdf010000
 multiline_comment|/*&n; * IO Addresses&n; */
 DECL|macro|VIDC_BASE
-mdefine_line|#define VIDC_BASE&t;&t;0xe0400000
+mdefine_line|#define VIDC_BASE&t;&t;(void __iomem *)0xe0400000
 DECL|macro|EXPMASK_BASE
 mdefine_line|#define EXPMASK_BASE&t;&t;0xe0360000
 DECL|macro|IOMD_BASE

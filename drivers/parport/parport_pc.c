@@ -11997,12 +11997,6 @@ comma
 DECL|enumerator|netmos_9855
 id|netmos_9855
 comma
-DECL|enumerator|netmos_9735
-id|netmos_9735
-comma
-DECL|enumerator|netmos_9835
-id|netmos_9835
-comma
 DECL|enumerator|netmos_9755
 id|netmos_9755
 comma
@@ -12861,36 +12855,6 @@ comma
 )brace
 comma
 multiline_comment|/* untested */
-multiline_comment|/* netmos_9735 */
-(brace
-l_int|1
-comma
-(brace
-(brace
-l_int|2
-comma
-l_int|3
-)brace
-comma
-)brace
-)brace
-comma
-multiline_comment|/* untested */
-multiline_comment|/* netmos_9835 */
-(brace
-l_int|1
-comma
-(brace
-(brace
-l_int|2
-comma
-l_int|3
-)brace
-comma
-)brace
-)brace
-comma
-multiline_comment|/* untested */
 multiline_comment|/* netmos_9755 */
 (brace
 l_int|2
@@ -13732,38 +13696,6 @@ comma
 l_int|0
 comma
 id|netmos_9855
-)brace
-comma
-(brace
-id|PCI_VENDOR_ID_NETMOS
-comma
-id|PCI_DEVICE_ID_NETMOS_9735
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|netmos_9735
-)brace
-comma
-(brace
-id|PCI_VENDOR_ID_NETMOS
-comma
-id|PCI_DEVICE_ID_NETMOS_9835
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|netmos_9835
 )brace
 comma
 (brace

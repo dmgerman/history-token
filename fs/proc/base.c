@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/seccomp.h&gt;
 macro_line|#include &lt;linux/cpuset.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &quot;internal.h&quot;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
@@ -3517,6 +3518,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3639,6 +3641,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3790,12 +3793,14 @@ id|file_operations
 id|proc_oom_adjust_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|oom_adjust_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|oom_adjust_write
 comma
 )brace

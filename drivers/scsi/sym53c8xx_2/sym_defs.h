@@ -3,13 +3,13 @@ macro_line|#ifndef SYM_DEFS_H
 DECL|macro|SYM_DEFS_H
 mdefine_line|#define SYM_DEFS_H
 DECL|macro|SYM_VERSION
-mdefine_line|#define SYM_VERSION &quot;2.1.18n&quot;
+mdefine_line|#define SYM_VERSION &quot;2.2.0&quot;
 DECL|macro|SYM_DRIVER_NAME
 mdefine_line|#define SYM_DRIVER_NAME&t;&quot;sym-&quot; SYM_VERSION
 multiline_comment|/*&n; *&t;SYM53C8XX device features descriptor.&n; */
-DECL|struct|sym_pci_chip
+DECL|struct|sym_chip
 r_struct
-id|sym_pci_chip
+id|sym_chip
 (brace
 DECL|member|device_id
 id|u_short

@@ -288,7 +288,6 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/prio_tree.h&gt;
-macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -5561,8 +5560,17 @@ macro_line|#ifndef CONFIG_AUDITSYSCALL
 DECL|macro|putname
 mdefine_line|#define putname(name)   __putname(name)
 macro_line|#else
-DECL|macro|putname
-mdefine_line|#define putname(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(current-&gt;audit_context))&t;&t;&t;&bslash;&n;&t;&t;&t;audit_putname(name);&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__putname(name);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+r_extern
+r_void
+id|putname
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 macro_line|#endif
 r_extern
 r_int

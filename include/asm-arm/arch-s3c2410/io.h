@@ -34,12 +34,6 @@ id|port
 )paren
 (brace
 r_return
-(paren
-r_void
-id|__iomem
-op_star
-)paren
-(paren
 id|__PORT_PCIO
 c_func
 (paren
@@ -47,12 +41,18 @@ id|port
 )paren
 ques
 c_cond
+(paren
 id|PCIO_BASE
 op_plus
 id|port
-suffix:colon
-id|port
 )paren
+suffix:colon
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+id|port
 suffix:semicolon
 )brace
 DECL|macro|DECLARE_IO
@@ -102,7 +102,7 @@ mdefine_line|#define __outlc(value,port)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;
 DECL|macro|__inlc
 mdefine_line|#define __inlc(port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long result;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__PORT_PCIO((port)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, %2]&t;@ inlc&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; (PCIO_BASE), &quot;Jr&quot; ((port)));&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, #0]&t;@ inlc&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; ((port)));&t;&t;&bslash;&n;&t;result;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__ioaddrc
-mdefine_line|#define __ioaddrc(port)&t;((void __iomem *)(__PORT_PCIO(port) ? PCIO_BASE + (port) : (port)))
+mdefine_line|#define __ioaddrc(port)&t;((__PORT_PCIO(port) ? PCIO_BASE + (port) : (void __iomem *)(port)))
 DECL|macro|inb
 mdefine_line|#define inb(p)&t;&t;(__builtin_constant_p((p)) ? __inbc(p)&t;   : __inb(p))
 DECL|macro|inw
@@ -119,7 +119,7 @@ DECL|macro|__ioaddr
 mdefine_line|#define __ioaddr(p)&t;(__builtin_constant_p((p)) ? __ioaddr(p)  : __ioaddrc(p))
 multiline_comment|/* the following macro is deprecated */
 DECL|macro|ioaddr
-mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
+mdefine_line|#define ioaddr(port)&t;__ioaddr((port))
 DECL|macro|insb
 mdefine_line|#define insb(p,d,l)&t;__raw_readsb(__ioaddr(p),d,l)
 DECL|macro|insw

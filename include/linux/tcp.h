@@ -687,41 +687,49 @@ id|rcv_tsecr
 suffix:semicolon
 multiline_comment|/* Time stamp echo reply        &t;*/
 DECL|member|saw_tstamp
-r_char
+id|__u16
 id|saw_tstamp
-suffix:semicolon
+suffix:colon
+l_int|1
+comma
 multiline_comment|/* Saw TIMESTAMP on last packet&t;&t;*/
 DECL|member|tstamp_ok
-r_char
 id|tstamp_ok
-suffix:semicolon
+suffix:colon
+l_int|1
+comma
 multiline_comment|/* TIMESTAMP seen on SYN packet&t;&t;*/
-DECL|member|sack_ok
-r_char
-id|sack_ok
-suffix:semicolon
-multiline_comment|/* SACK seen on SYN packet&t;&t;*/
+DECL|member|dsack
+id|dsack
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* D-SACK is scheduled&t;&t;&t;*/
 DECL|member|wscale_ok
-r_char
 id|wscale_ok
-suffix:semicolon
+suffix:colon
+l_int|1
+comma
 multiline_comment|/* Wscale seen on SYN packet&t;&t;*/
+DECL|member|sack_ok
+id|sack_ok
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* SACK seen on SYN packet&t;&t;*/
 DECL|member|snd_wscale
-id|__u8
 id|snd_wscale
-suffix:semicolon
+suffix:colon
+l_int|4
+comma
 multiline_comment|/* Window scaling received from sender&t;*/
 DECL|member|rcv_wscale
-id|__u8
 id|rcv_wscale
+suffix:colon
+l_int|4
 suffix:semicolon
 multiline_comment|/* Window scaling to send to receiver&t;*/
 multiline_comment|/*&t;SACKs data&t;*/
-DECL|member|dsack
-id|__u8
-id|dsack
-suffix:semicolon
-multiline_comment|/* D-SACK is scheduled&t;&t;&t;*/
 DECL|member|eff_sacks
 id|__u8
 id|eff_sacks
@@ -732,10 +740,6 @@ id|__u8
 id|num_sacks
 suffix:semicolon
 multiline_comment|/* Number of SACK blocks&t;&t;*/
-DECL|member|__pad
-id|__u8
-id|__pad
-suffix:semicolon
 DECL|member|user_mss
 id|__u16
 id|user_mss

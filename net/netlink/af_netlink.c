@@ -1845,16 +1845,6 @@ id|EADDRINUSE
 r_goto
 id|retry
 suffix:semicolon
-id|nlk_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|groups
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

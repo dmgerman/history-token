@@ -2621,6 +2621,7 @@ id|port.membase
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -2667,6 +2668,7 @@ id|port.membase
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -2713,6 +2715,7 @@ id|port.membase
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 op_amp

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -161,6 +160,7 @@ op_eq
 id|HZ
 )paren
 (brace
+macro_line|#if defined (DEBUG) || defined(CONFIG_CHASSIS_LCD_LED)
 r_static
 r_char
 id|msg
@@ -169,6 +169,7 @@ id|msg
 op_assign
 l_string|&quot;Shutting down...&quot;
 suffix:semicolon
+macro_line|#endif
 id|DPRINTK
 c_func
 (paren
@@ -178,14 +179,12 @@ comma
 id|msg
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHASSIS_LCD_LED
 id|lcd_print
 c_func
 (paren
 id|msg
 )paren
 suffix:semicolon
-macro_line|#endif
 id|poweroff
 c_func
 (paren

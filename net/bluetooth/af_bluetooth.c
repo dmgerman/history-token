@@ -399,9 +399,13 @@ op_member_access_from_pointer
 id|accept_q
 )paren
 suffix:semicolon
-id|sk-&gt;sk_zapped
-op_assign
-l_int|0
+id|sock_reset_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_ZAPPED
+)paren
 suffix:semicolon
 id|sk-&gt;sk_protocol
 op_assign

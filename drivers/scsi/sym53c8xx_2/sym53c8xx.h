@@ -3,10 +3,6 @@ macro_line|#ifndef SYM53C8XX_H
 DECL|macro|SYM53C8XX_H
 mdefine_line|#define SYM53C8XX_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_SCSI_SYM53C8XX_IOMAPPED
-DECL|macro|SYM_CONF_IOMAPPED
-mdefine_line|#define&t;SYM_CONF_IOMAPPED
-macro_line|#endif
 multiline_comment|/*&n; *  DMA addressing mode.&n; *&n; *  0 : 32 bit addressing for all chips.&n; *  1 : 40 bit addressing when supported by chip.&n; *  2 : 64 bit addressing when supported by chip,&n; *      limited to 16 segments of 4 GB -&gt; 64 GB max.&n; */
 DECL|macro|SYM_CONF_DMA_ADDRESSING_MODE
 mdefine_line|#define&t;SYM_CONF_DMA_ADDRESSING_MODE CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
@@ -139,11 +135,6 @@ DECL|macro|SYM_SETUP_HOST_ID
 mdefine_line|#define SYM_SETUP_HOST_ID&t;&t;sym_driver_setup.host_id
 DECL|macro|boot_verbose
 mdefine_line|#define boot_verbose&t;&t;&t;sym_driver_setup.verbose
-multiline_comment|/* Always enable parity. */
-DECL|macro|SYM_SETUP_PCI_PARITY
-mdefine_line|#define SYM_SETUP_PCI_PARITY&t;&t;1
-DECL|macro|SYM_SETUP_SCSI_PARITY
-mdefine_line|#define SYM_SETUP_SCSI_PARITY&t;&t;1
 multiline_comment|/*&n; *  Initial setup.&n; *&n; *  Can be overriden at startup by a command line.&n; */
 DECL|macro|SYM_LINUX_DRIVER_SETUP
 mdefine_line|#define SYM_LINUX_DRIVER_SETUP&t;{&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,&t;&bslash;&n;&t;.burst_order&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 3,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
@@ -159,5 +150,27 @@ id|sym_debug_flags
 suffix:semicolon
 DECL|macro|DEBUG_FLAGS
 mdefine_line|#define DEBUG_FLAGS&t;sym_debug_flags
+multiline_comment|/*&n; *  Max number of targets.&n; *  Maximum is 16 and you are advised not to change this value.&n; */
+macro_line|#ifndef SYM_CONF_MAX_TARGET
+DECL|macro|SYM_CONF_MAX_TARGET
+mdefine_line|#define SYM_CONF_MAX_TARGET&t;(16)
+macro_line|#endif
+multiline_comment|/*&n; *  Max number of logical units.&n; *  SPI-2 allows up to 64 logical units, but in real life, target&n; *  that implements more that 7 logical units are pretty rare.&n; *  Anyway, the cost of accepting up to 64 logical unit is low in &n; *  this driver, thus going with the maximum is acceptable.&n; */
+macro_line|#ifndef SYM_CONF_MAX_LUN
+DECL|macro|SYM_CONF_MAX_LUN
+mdefine_line|#define SYM_CONF_MAX_LUN&t;(64)
+macro_line|#endif
+multiline_comment|/*&n; *  Max number of IO control blocks queued to the controller.&n; *  Each entry needs 8 bytes and the queues are allocated contiguously.&n; *  Since we donnot want to allocate more than a page, the theorical &n; *  maximum is PAGE_SIZE/8. For safety, we announce a bit less to the &n; *  access method. :)&n; *  When not supplied, as it is suggested, the driver compute some &n; *  good value for this parameter.&n; */
+multiline_comment|/* #define SYM_CONF_MAX_START&t;(PAGE_SIZE/8 - 16) */
+multiline_comment|/*&n; *  Support for Immediate Arbitration.&n; *  Not advised.&n; */
+multiline_comment|/* #define SYM_CONF_IARB_SUPPORT */
+multiline_comment|/*&n; *  Only relevant if IARB support configured.&n; *  - Max number of successive settings of IARB hints.&n; *  - Set IARB on arbitration lost.&n; */
+DECL|macro|SYM_CONF_IARB_MAX
+mdefine_line|#define SYM_CONF_IARB_MAX 3
+DECL|macro|SYM_CONF_SET_IARB_ON_ARB_LOST
+mdefine_line|#define SYM_CONF_SET_IARB_ON_ARB_LOST 1
+multiline_comment|/*&n; *  Returning wrong residuals may make problems.&n; *  When zero, this define tells the driver to &n; *  always return 0 as transfer residual.&n; *  Btw, all my testings of residuals have succeeded.&n; */
+DECL|macro|SYM_SETUP_RESIDUAL_SUPPORT
+mdefine_line|#define SYM_SETUP_RESIDUAL_SUPPORT 1
 macro_line|#endif /* SYM53C8XX_H */
 eof
