@@ -3,8 +3,9 @@ macro_line|#ifndef __MACH_SBC8560_H__
 DECL|macro|__MACH_SBC8560_H__
 mdefine_line|#define __MACH_SBC8560_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;platforms/85xx/sbc85xx.h&gt;
+DECL|macro|CPM_MAP_ADDR
+mdefine_line|#define CPM_MAP_ADDR    (CCSRBAR + MPC85xx_CPM_OFFSET)
 macro_line|#ifdef CONFIG_SERIAL_MANY_PORTS
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE  64

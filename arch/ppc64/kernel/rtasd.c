@@ -21,10 +21,10 @@ macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(A...)
 macro_line|#endif
-DECL|variable|log_lock
+DECL|variable|rtasd_log_lock
 r_static
 id|spinlock_t
-id|log_lock
+id|rtasd_log_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -416,7 +416,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -465,7 +465,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -514,7 +514,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -622,7 +622,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -645,7 +645,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -798,7 +798,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -823,7 +823,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -850,7 +850,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren
@@ -891,7 +891,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|log_lock
+id|rtasd_log_lock
 comma
 id|s
 )paren

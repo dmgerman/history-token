@@ -84,12 +84,6 @@ r_int
 id|testMemory
 suffix:semicolon
 r_extern
-r_const
-r_char
-op_star
-id|arlan_version
-suffix:semicolon
-r_extern
 r_int
 id|arlan_command
 c_func

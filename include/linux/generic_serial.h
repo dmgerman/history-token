@@ -426,6 +426,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -441,6 +442,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren

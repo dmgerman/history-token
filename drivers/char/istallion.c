@@ -1670,6 +1670,7 @@ op_star
 id|fp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1693,6 +1694,7 @@ id|fp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2012,6 +2014,7 @@ id|portp
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -2027,6 +2030,7 @@ id|portp
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -2037,6 +2041,7 @@ id|stli_getbrdstats
 c_func
 (paren
 id|combrd_t
+id|__user
 op_star
 id|bp
 )paren
@@ -2051,6 +2056,7 @@ op_star
 id|portp
 comma
 id|comstats_t
+id|__user
 op_star
 id|cp
 )paren
@@ -2075,6 +2081,7 @@ op_star
 id|portp
 comma
 id|comstats_t
+id|__user
 op_star
 id|cp
 )paren
@@ -2084,8 +2091,9 @@ r_int
 id|stli_getportstruct
 c_func
 (paren
-r_int
-r_int
+id|stliport_t
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2094,8 +2102,9 @@ r_int
 id|stli_getbrdstruct
 c_func
 (paren
-r_int
-r_int
+id|stlibrd_t
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2716,7 +2725,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2778,7 +2787,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3140,6 +3149,7 @@ r_void
 id|stli_argbrds
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlconf_t
@@ -3154,7 +3164,7 @@ id|nrargs
 comma
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3485,7 +3495,7 @@ id|nrbrdnames
 comma
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3805,7 +3815,7 @@ id|portnr
 comma
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4208,7 +4218,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4579,7 +4589,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4901,7 +4911,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5206,7 +5216,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5505,7 +5515,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5690,7 +5700,7 @@ suffix:semicolon
 id|asyport_t
 id|aport
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5820,7 +5830,7 @@ r_int
 id|len
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -5883,7 +5893,7 @@ id|rc
 comma
 id|doclocal
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -6194,7 +6204,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -6828,7 +6838,7 @@ r_char
 id|ch
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -6971,7 +6981,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -7465,7 +7475,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -7751,7 +7761,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8000,6 +8010,7 @@ id|portp
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -8012,7 +8023,7 @@ id|stlibrd_t
 op_star
 id|brdp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8144,6 +8155,7 @@ id|portp
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -8155,20 +8167,14 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;stli_setserial(portp=%x,sp=%x)&bslash;n&quot;
+l_string|&quot;stli_setserial(portp=%p,sp=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|portp
 comma
-(paren
-r_int
-)paren
 id|sp
 )paren
 suffix:semicolon
@@ -8667,7 +8673,19 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -8843,7 +8861,7 @@ l_int|0
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -8867,7 +8885,7 @@ id|ival
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -8899,33 +8917,6 @@ suffix:semicolon
 r_case
 id|TIOCGSERIAL
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_struct
-id|serial_struct
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getserial
@@ -8933,12 +8924,7 @@ c_func
 (paren
 id|portp
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -8946,33 +8932,6 @@ suffix:semicolon
 r_case
 id|TIOCSSERIAL
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_struct
-id|serial_struct
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_setserial
@@ -8980,12 +8939,7 @@ c_func
 (paren
 id|portp
 comma
-(paren
-r_struct
-id|serial_struct
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -9002,10 +8956,10 @@ id|portp-&gt;pflag
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -9026,10 +8980,10 @@ id|portp-&gt;pflag
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 )paren
 )paren
 op_eq
@@ -9046,32 +9000,6 @@ suffix:semicolon
 r_case
 id|COM_GETPORTSTATS
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|comstats_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getportstats
@@ -9079,11 +9007,7 @@ c_func
 (paren
 id|portp
 comma
-(paren
-id|comstats_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -9091,32 +9015,6 @@ suffix:semicolon
 r_case
 id|COM_CLRPORTSTATS
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|comstats_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_clrportstats
@@ -9124,11 +9022,7 @@ c_func
 (paren
 id|portp
 comma
-(paren
-id|comstats_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -9203,7 +9097,7 @@ suffix:semicolon
 id|asyport_t
 id|aport
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9452,7 +9346,7 @@ id|stliport_t
 op_star
 id|portp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9524,7 +9418,7 @@ id|stliport_t
 op_star
 id|portp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9603,7 +9497,7 @@ suffix:semicolon
 id|asyctrl_t
 id|actrl
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9750,7 +9644,7 @@ suffix:semicolon
 id|asyctrl_t
 id|actrl
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9889,7 +9783,7 @@ id|stliport_t
 op_star
 id|portp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -9972,7 +9866,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -10266,7 +10160,7 @@ id|ftype
 comma
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -10527,7 +10421,7 @@ r_int
 id|arg
 suffix:semicolon
 multiline_comment|/* long savestate, savetime; */
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -10672,7 +10566,7 @@ r_int
 r_int
 id|tend
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -10808,7 +10702,7 @@ suffix:semicolon
 id|asyctrl_t
 id|actrl
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -11393,7 +11287,7 @@ r_char
 op_star
 id|pos
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -11726,7 +11620,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -11988,7 +11882,7 @@ id|len
 comma
 id|stlen
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -12643,7 +12537,7 @@ id|rc
 comma
 id|donerx
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -13788,7 +13682,7 @@ op_star
 id|tiosp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14291,7 +14185,7 @@ r_int
 id|rts
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14395,7 +14289,7 @@ id|sigvalue
 r_int
 id|tiocm
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14532,7 +14426,7 @@ id|panelnr
 comma
 id|panelport
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14733,7 +14627,7 @@ r_int
 r_int
 id|memconf
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14818,7 +14712,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14857,7 +14751,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14912,7 +14806,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -14960,7 +14854,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -15020,7 +14914,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15083,7 +14977,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15123,7 +15017,7 @@ r_int
 r_int
 id|memconf
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15308,7 +15202,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15358,7 +15252,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -15569,7 +15463,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -15683,7 +15577,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15762,7 +15656,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -15812,7 +15706,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -15924,7 +15818,7 @@ r_int
 r_int
 id|memconf
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16023,7 +15917,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16066,7 +15960,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16121,7 +16015,7 @@ r_void
 op_star
 id|ptr
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16169,7 +16063,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -16201,7 +16095,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16269,7 +16163,7 @@ r_int
 r_int
 id|memconf
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16402,7 +16296,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16441,7 +16335,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16496,7 +16390,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16546,7 +16440,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -16612,7 +16506,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16676,7 +16570,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16769,7 +16663,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16817,7 +16711,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|val
 op_assign
@@ -16877,7 +16771,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16941,7 +16835,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -16994,7 +16888,7 @@ r_void
 op_star
 id|ptr
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -17042,7 +16936,7 @@ id|brdp-&gt;brdnr
 suffix:semicolon
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -17080,7 +16974,7 @@ r_int
 op_star
 id|vecp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -17164,7 +17058,7 @@ id|panelnr
 comma
 id|nrports
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -17785,7 +17679,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -18379,7 +18273,7 @@ id|i
 comma
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -18885,7 +18779,7 @@ op_star
 id|brdp
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -19121,7 +19015,7 @@ id|i
 comma
 id|foundit
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -19510,7 +19404,7 @@ l_int|0
 suffix:semicolon
 id|brdp-&gt;membase
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func
@@ -19540,6 +19434,67 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|stli_getbrdnr
+r_static
+r_inline
+r_int
+id|stli_getbrdnr
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|STL_MAXBRDS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|stli_brds
+(braket
+id|i
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|stli_nrbrds
+)paren
+id|stli_nrbrds
+op_assign
+id|i
+op_plus
+l_int|1
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Probe around and try to find any EISA boards in system. The biggest&n; *&t;problem here is finding out what memory address is associated with&n; *&t;an EISA board after it is found. The registers of the ECPE and&n; *&t;ONboardE are not readable - so we can&squot;t read them from there. We&n; *&t;don&squot;t have access to the EISA CMOS (or EISA BIOS) so we don&squot;t&n; *&t;actually have any way to find out the real value. The best we can&n; *&t;do is go probing around in the usual places hoping we can find it.&n; */
 DECL|function|stli_findeisabrds
@@ -19549,6 +19504,7 @@ r_int
 id|stli_findeisabrds
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlibrd_t
@@ -19564,7 +19520,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -19844,73 +19800,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Find the next available board number that is free.&n; */
-DECL|function|stli_getbrdnr
-r_static
-r_inline
-r_int
-id|stli_getbrdnr
-c_func
-(paren
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|i
-OL
-id|STL_MAXBRDS
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|stli_brds
-(braket
-id|i
-)braket
-op_eq
-(paren
-id|stlibrd_t
-op_star
-)paren
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-op_ge
-id|stli_nrbrds
-)paren
-id|stli_nrbrds
-op_assign
-id|i
-op_plus
-l_int|1
-suffix:semicolon
-r_return
-id|i
-suffix:semicolon
-)brace
-)brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*****************************************************************************/
 macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/*&n; *&t;We have a Stallion board. Allocate a board structure and&n; *&t;initialize it. Read its IO and MEMORY resources from PCI&n; *&t;configuration space.&n; */
@@ -19934,7 +19823,7 @@ id|stlibrd_t
 op_star
 id|brdp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -20017,7 +19906,7 @@ id|brdp-&gt;brdtype
 op_assign
 id|brdtype
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -20102,6 +19991,7 @@ r_int
 id|stli_findpcibrds
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -20114,7 +20004,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -20173,6 +20063,7 @@ op_star
 id|stli_allocbrd
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlibrd_t
@@ -20257,6 +20148,7 @@ r_int
 id|stli_initbrds
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlibrd_t
@@ -20275,7 +20167,7 @@ id|i
 comma
 id|j
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -20624,6 +20516,7 @@ op_star
 id|fp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -20654,7 +20547,7 @@ id|size
 comma
 id|n
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -20888,6 +20781,7 @@ id|fp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -20912,6 +20806,7 @@ op_star
 id|brdp
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|chbuf
 suffix:semicolon
@@ -20922,7 +20817,7 @@ id|size
 comma
 id|n
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -21014,6 +20909,7 @@ id|chbuf
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|buf
@@ -21158,6 +21054,7 @@ id|stli_getbrdstats
 c_func
 (paren
 id|combrd_t
+id|__user
 op_star
 id|bp
 )paren
@@ -21804,6 +21701,7 @@ op_star
 id|portp
 comma
 id|comstats_t
+id|__user
 op_star
 id|cp
 )paren
@@ -21818,13 +21716,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|portp
-op_eq
-(paren
-id|stliport_t
-op_star
-)paren
-l_int|NULL
 )paren
 (brace
 r_if
@@ -21863,13 +21756,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|portp
-op_eq
-(paren
-id|stliport_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -21886,13 +21774,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|brdp
-op_eq
-(paren
-id|stlibrd_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -21951,6 +21834,7 @@ op_star
 id|portp
 comma
 id|comstats_t
+id|__user
 op_star
 id|cp
 )paren
@@ -21965,13 +21849,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|portp
-op_eq
-(paren
-id|stliport_t
-op_star
-)paren
-l_int|NULL
 )paren
 (brace
 r_if
@@ -22010,13 +21889,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|portp
-op_eq
-(paren
-id|stliport_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -22033,13 +21907,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|brdp
-op_eq
-(paren
-id|stlibrd_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -22068,7 +21937,7 @@ id|portp
 comma
 id|A_CLEARSTATS
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -22141,8 +22010,9 @@ r_int
 id|stli_getportstruct
 c_func
 (paren
-r_int
-r_int
+id|stliport_t
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -22159,10 +22029,6 @@ c_func
 op_amp
 id|stli_dummyport
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -22190,13 +22056,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|portp
-op_eq
-(paren
-id|stliport_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -22208,10 +22069,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|portp
@@ -22238,8 +22095,9 @@ r_int
 id|stli_getbrdstruct
 c_func
 (paren
-r_int
-r_int
+id|stlibrd_t
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -22256,10 +22114,6 @@ c_func
 op_amp
 id|stli_dummybrd
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -22301,13 +22155,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|brdp
-op_eq
-(paren
-id|stlibrd_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -22319,10 +22168,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|brdp
@@ -22379,7 +22224,19 @@ id|rc
 comma
 id|done
 suffix:semicolon
-macro_line|#if DEBUG
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -22428,17 +22285,9 @@ op_assign
 id|stli_getportstats
 c_func
 (paren
-(paren
-id|stliport_t
-op_star
-)paren
 l_int|NULL
 comma
-(paren
-id|comstats_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|done
@@ -22454,17 +22303,9 @@ op_assign
 id|stli_clrportstats
 c_func
 (paren
-(paren
-id|stliport_t
-op_star
-)paren
 l_int|NULL
 comma
-(paren
-id|comstats_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|done
@@ -22480,11 +22321,7 @@ op_assign
 id|stli_getbrdstats
 c_func
 (paren
-(paren
-id|combrd_t
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|done
@@ -22500,7 +22337,7 @@ op_assign
 id|stli_getportstruct
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|done
@@ -22516,7 +22353,7 @@ op_assign
 id|stli_getbrdstruct
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|done
@@ -22563,13 +22400,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|brdp
-op_eq
-(paren
-id|stlibrd_t
-op_star
-)paren
-l_int|NULL
 )paren
 r_return
 op_minus

@@ -173,46 +173,34 @@ r_void
 id|lzrw3_compress
 c_func
 (paren
-id|action
-comma
-id|wrk_mem
-comma
-id|src_adr
-comma
-id|src_len
-comma
-id|dst_adr
-comma
-id|p_dst_len
-)paren
 id|UWORD
 id|action
-suffix:semicolon
-multiline_comment|/* Action to be performed.                             */
+comma
+multiline_comment|/* Action to be performed.&t;&t;*/
 id|UBYTE
 op_star
 id|wrk_mem
-suffix:semicolon
-multiline_comment|/* Address of working memory we can use.               */
+comma
+multiline_comment|/* Address of working memory we can use.*/
 id|UBYTE
 op_star
 id|src_adr
-suffix:semicolon
-multiline_comment|/* Address of input data.                              */
+comma
+multiline_comment|/* Address of input data.&t;&t;*/
 id|LONG
 id|src_len
-suffix:semicolon
-multiline_comment|/* Length  of input data.                              */
+comma
+multiline_comment|/* Length  of input data.&t;&t;*/
 id|UBYTE
 op_star
 id|dst_adr
-suffix:semicolon
-multiline_comment|/* Address to put output data.                         */
+comma
+multiline_comment|/* Address to put output data.&t;&t;*/
 r_void
 op_star
 id|p_dst_len
-suffix:semicolon
-multiline_comment|/* Address of longword for length of output data.      */
+multiline_comment|/* Address of longword for length of output data.*/
+)paren
 (brace
 r_switch
 c_cond
@@ -462,21 +450,6 @@ multiline_comment|/* point. The following macro neatens the code up for this.   
 DECL|macro|HASH
 mdefine_line|#define HASH(PTR) &bslash;&n;   (((40543*(((*(PTR))&lt;&lt;8)^((*((PTR)+1))&lt;&lt;4)^(*((PTR)+2))))&gt;&gt;4) &amp; 0xFFF)
 multiline_comment|/******************************************************************************/
-DECL|function|compress_compress
-id|LOCAL
-r_void
-id|compress_compress
-(paren
-id|p_wrk_mem
-comma
-id|p_src_first
-comma
-id|src_len
-comma
-id|p_dst_first
-comma
-id|p_dst_len
-)paren
 multiline_comment|/* Input  : Hand over the required amount of working memory in p_wrk_mem.     */
 multiline_comment|/* Input  : Specify input block using p_src_first and src_len.                */
 multiline_comment|/* Input  : Point p_dst_first to the start of the output zone (OZ).           */
@@ -486,25 +459,31 @@ multiline_comment|/* Output : Length of output block written to *p_dst_len.     
 multiline_comment|/* Output : Output block in Mem[p_dst_first..p_dst_first+*p_dst_len-1]. May   */
 multiline_comment|/* Output : write in OZ=Mem[p_dst_first..p_dst_first+src_len+MAX_CMP_GROUP-1].*/
 multiline_comment|/* Output : Upon completion guaranteed *p_dst_len&lt;=src_len+FLAG_BYTES.        */
+DECL|function|compress_compress
+id|LOCAL
+r_void
+id|compress_compress
+c_func
+(paren
 id|UBYTE
 op_star
 id|p_wrk_mem
-suffix:semicolon
+comma
 id|UBYTE
 op_star
 id|p_src_first
-suffix:semicolon
+comma
 id|ULONG
 id|src_len
-suffix:semicolon
+comma
 id|UBYTE
 op_star
 id|p_dst_first
-suffix:semicolon
+comma
 id|LONG
 op_star
 id|p_dst_len
-suffix:semicolon
+)paren
 (brace
 multiline_comment|/* p_src and p_dst step through the source and destination blocks.           */
 r_register
@@ -611,14 +590,14 @@ op_star
 op_star
 id|p_h1
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|UBYTE
 op_star
 op_star
 id|p_h2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* To start, we write the flag bytes. Being optimistic, we set the flag to   */
 multiline_comment|/* FLAG_COMPRESS. The remaining flag bytes are zeroed so as to keep the      */
@@ -1056,8 +1035,6 @@ r_if
 c_cond
 (paren
 id|p_h2
-op_ne
-l_int|0
 )paren
 (brace
 op_star
@@ -1069,7 +1046,7 @@ l_int|2
 suffix:semicolon
 id|p_h2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 op_star
@@ -1081,7 +1058,7 @@ l_int|1
 suffix:semicolon
 id|p_h1
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* In any case, we can update the hash table based on the current   */
@@ -1292,21 +1269,6 @@ multiline_comment|/* return a negative number to indicate uncompressed data */
 macro_line|#endif
 )brace
 multiline_comment|/******************************************************************************/
-DECL|function|compress_decompress
-id|LOCAL
-r_void
-id|compress_decompress
-(paren
-id|p_wrk_mem
-comma
-id|p_src_first
-comma
-id|src_len
-comma
-id|p_dst_first
-comma
-id|p_dst_len
-)paren
 multiline_comment|/* Input  : Hand over the required amount of working memory in p_wrk_mem.     */
 multiline_comment|/* Input  : Specify input block using p_src_first and src_len.                */
 multiline_comment|/* Input  : Point p_dst_first to the start of the output zone.                */
@@ -1317,25 +1279,31 @@ multiline_comment|/* Input  : In any case, maximum expansion possible is nine ti
 multiline_comment|/* Output : Length of output block written to *p_dst_len.                     */
 multiline_comment|/* Output : Output block in Mem[p_dst_first..p_dst_first+*p_dst_len-1].       */
 multiline_comment|/* Output : Writes only  in Mem[p_dst_first..p_dst_first+*p_dst_len-1].       */
+DECL|function|compress_decompress
+id|LOCAL
+r_void
+id|compress_decompress
+c_func
+(paren
 id|UBYTE
 op_star
 id|p_wrk_mem
-suffix:semicolon
+comma
 id|UBYTE
 op_star
 id|p_src_first
-suffix:semicolon
+comma
 id|LONG
 id|src_len
-suffix:semicolon
+comma
 id|UBYTE
 op_star
 id|p_dst_first
-suffix:semicolon
+comma
 id|ULONG
 op_star
 id|p_dst_len
-suffix:semicolon
+)paren
 (brace
 multiline_comment|/* Byte pointers p_src and p_dst scan through the input and output blocks.   */
 r_register

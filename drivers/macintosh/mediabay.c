@@ -1639,6 +1639,13 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|variable|check_media_bay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|check_media_bay
+)paren
+suffix:semicolon
 DECL|function|check_media_bay_by_base
 r_int
 id|__pmac

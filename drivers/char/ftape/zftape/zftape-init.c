@@ -188,6 +188,7 @@ op_star
 id|fp
 comma
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -211,6 +212,7 @@ id|fp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -670,6 +672,7 @@ id|command
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -821,6 +824,7 @@ op_star
 id|fp
 comma
 r_char
+id|__user
 op_star
 id|buff
 comma
@@ -959,6 +963,7 @@ id|fp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buff
 comma

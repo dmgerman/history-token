@@ -25,6 +25,12 @@ DECL|macro|PPPOE_HASH_BITS
 mdefine_line|#define PPPOE_HASH_BITS 4
 DECL|macro|PPPOE_HASH_SIZE
 mdefine_line|#define PPPOE_HASH_SIZE (1&lt;&lt;PPPOE_HASH_BITS)
+DECL|variable|pppoe_chan_ops
+r_static
+r_struct
+id|ppp_channel_ops
+id|pppoe_chan_ops
+suffix:semicolon
 r_static
 r_int
 id|pppoe_ioctl

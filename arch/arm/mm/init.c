@@ -1739,7 +1739,7 @@ id|node
 comma
 id|pgdat
 comma
-l_int|0
+l_int|NULL
 comma
 id|zone_size
 comma

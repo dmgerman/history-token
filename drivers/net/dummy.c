@@ -107,30 +107,6 @@ id|dev
 )paren
 (brace
 )brace
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-DECL|function|dummy_accept_fastpath
-r_static
-r_int
-id|dummy_accept_fastpath
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|dst_entry
-op_star
-id|dst
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|dummy_setup
 r_static
 r_void
@@ -161,12 +137,6 @@ id|dev-&gt;set_mac_address
 op_assign
 id|dummy_set_address
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-id|dev-&gt;accept_fastpath
-op_assign
-id|dummy_accept_fastpath
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Fill in device structure with ethernet-generic values. */
 id|ether_setup
 c_func

@@ -159,7 +159,6 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|variable|fib6_walker_list
-r_static
 r_struct
 id|fib6_walker_t
 id|fib6_walker_list

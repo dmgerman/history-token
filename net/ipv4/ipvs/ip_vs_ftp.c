@@ -1063,7 +1063,7 @@ l_int|1
 op_minus
 id|debug
 comma
-l_string|&quot;got PASV at %d of %d&bslash;n&quot;
+l_string|&quot;got PASV at %zd of %zd&bslash;n&quot;
 comma
 id|data
 op_minus

@@ -69,7 +69,7 @@ c_func
 (paren
 id|menu_item
 comma
-l_string|&quot;YyNnMm&quot;
+l_string|&quot;YyNnMmHh&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clear &squot;residue&squot; of last item */
@@ -1390,7 +1390,7 @@ c_cond
 id|strchr
 c_func
 (paren
-l_string|&quot;ynm&quot;
+l_string|&quot;ynmh&quot;
 comma
 id|key
 )paren
@@ -1436,7 +1436,7 @@ op_plus
 l_int|1
 )braket
 comma
-l_string|&quot;YyNnMm&quot;
+l_string|&quot;YyNnMmHh&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1507,7 +1507,7 @@ op_plus
 l_int|1
 )braket
 comma
-l_string|&quot;YyNnMm&quot;
+l_string|&quot;YyNnMmHh&quot;
 )paren
 suffix:semicolon
 r_if

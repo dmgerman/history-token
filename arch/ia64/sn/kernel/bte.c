@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/nodedata.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -86,6 +85,9 @@ id|notification
 (brace
 id|u64
 id|transfer_size
+suffix:semicolon
+id|u64
+id|transfer_stat
 suffix:semicolon
 r_struct
 id|bteinfo_s
@@ -504,13 +506,6 @@ r_return
 id|BTEFAIL_NOTAVAIL
 suffix:semicolon
 )brace
-multiline_comment|/* Wait until a bte is available. */
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
@@ -734,8 +729,12 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
+id|transfer_stat
+op_assign
 op_star
 id|bte-&gt;most_rcnt_na
+)paren
 op_eq
 op_minus
 l_int|1UL
@@ -762,16 +761,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|bte-&gt;most_rcnt_na
+id|transfer_stat
 op_amp
 id|IBLS_ERROR
 )paren
 (brace
 id|bte_status
 op_assign
-op_star
-id|bte-&gt;most_rcnt_na
+id|transfer_stat
 op_amp
 op_complement
 id|IBLS_ERROR

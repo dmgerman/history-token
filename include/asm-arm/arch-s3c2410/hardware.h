@@ -19,6 +19,51 @@ r_int
 r_int
 id|s3c2410_fclk
 suffix:semicolon
+multiline_comment|/* external functions for GPIO support&n; *&n; * These allow various different clients to access the same GPIO&n; * registers without conflicting. If your driver only owns the entire&n; * GPIO register, then it is safe to ioremap/__raw_{read|write} to it.&n;*/
+multiline_comment|/* s3c2410_gpio_cfgpin&n; *&n; * set the configuration of the given pin to the value passed.&n; *&n; * eg:&n; *    s3c2410_gpio_cfgpin(S3C2410_GPA0, S3C2410_GPA0_ADDR0);&n; *    s3c2410_gpio_cfgpin(S3C2410_GPE8, S3C2410_GPE8_SDDAT1);&n;*/
+r_extern
+r_void
+id|s3c2410_gpio_cfgpin
+c_func
+(paren
+r_int
+r_int
+id|pin
+comma
+r_int
+r_int
+id|function
+)paren
+suffix:semicolon
+multiline_comment|/* s3c2410_gpio_pullup&n; *&n; * configure the pull-up control on the given pin&n; *&n; * to = 1 =&gt; disable the pull-up&n; *      0 =&gt; enable the pull-up&n; *&n; * eg;&n; *&n; *   s3c2410_gpio_pullup(S3C2410_GPB0, 0);&n; *   s3c2410_gpio_pullup(S3C2410_GPE8, 0);&n;*/
+r_extern
+r_void
+id|s3c2410_gpio_pullup
+c_func
+(paren
+r_int
+r_int
+id|pin
+comma
+r_int
+r_int
+id|to
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|s3c2410_gpio_setpin
+c_func
+(paren
+r_int
+r_int
+id|pin
+comma
+r_int
+r_int
+id|to
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;

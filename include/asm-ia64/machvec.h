@@ -119,7 +119,8 @@ r_typedef
 id|u8
 id|ia64_mv_irq_to_vector
 (paren
-id|u8
+r_int
+r_int
 )paren
 suffix:semicolon
 DECL|typedef|ia64_mv_local_vector_to_irq
@@ -129,7 +130,6 @@ r_int
 id|ia64_mv_local_vector_to_irq
 (paren
 id|u8
-id|vector
 )paren
 suffix:semicolon
 multiline_comment|/* DMA-mapping interface: */

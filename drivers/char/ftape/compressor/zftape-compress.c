@@ -118,6 +118,7 @@ id|seg_sz
 comma
 r_const
 id|__u8
+id|__user
 op_star
 id|src_buf
 comma
@@ -146,6 +147,7 @@ op_star
 id|read_cnt
 comma
 id|__u8
+id|__user
 op_star
 id|dst_buf
 comma
@@ -1724,6 +1726,7 @@ id|seg_sz
 comma
 r_const
 id|__u8
+id|__user
 op_star
 id|src_buf
 comma
@@ -2117,6 +2120,7 @@ op_star
 id|read_cnt
 comma
 id|__u8
+id|__user
 op_star
 id|dst_buf
 comma

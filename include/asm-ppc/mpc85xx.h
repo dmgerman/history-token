@@ -9,6 +9,12 @@ macro_line|#ifdef CONFIG_85xx
 macro_line|#ifdef CONFIG_MPC8540_ADS
 macro_line|#include &lt;platforms/85xx/mpc8540_ads.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_MPC8555_CDS
+macro_line|#include &lt;platforms/85xx/mpc8555_cds.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MPC8560_ADS
+macro_line|#include &lt;platforms/85xx/mpc8560_ads.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_SBC8560
 macro_line|#include &lt;platforms/85xx/sbc8560.h&gt;
 macro_line|#endif
@@ -16,8 +22,13 @@ DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE        isa_io_base
 DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE   isa_mem_base
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET pci_dram_offset
+macro_line|#else
+DECL|macro|PCI_DRAM_OFFSET
+mdefine_line|#define PCI_DRAM_OFFSET 0
+macro_line|#endif
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 r_extern
 r_int

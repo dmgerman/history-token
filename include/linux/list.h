@@ -1089,6 +1089,9 @@ mdefine_line|#define hlist_for_each_entry_from(tpos, pos, member)&t;&t;&t; &bsla
 multiline_comment|/**&n; * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @n:&t;&t;another &amp;struct hlist_node to use as temporary storage&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
 DECL|macro|hlist_for_each_entry_safe
 mdefine_line|#define hlist_for_each_entry_safe(tpos, pos, n, head, member) &t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ n = pos-&gt;next; 1; }) &amp;&amp; &t;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = n)
+multiline_comment|/**&n; * hlist_for_each_entry_rcu - iterate over rcu list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; *&n; * This list-traversal primitive may safely run concurrently with&n; * the _rcu list-mutation primitives such as hlist_add_rcu()&n; * as long as the traversal is guarded by rcu_read_lock().&n; */
+DECL|macro|hlist_for_each_entry_rcu
+mdefine_line|#define hlist_for_each_entry_rcu(tpos, pos, head, member)&t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ prefetch(pos-&gt;next); 1;}) &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = pos-&gt;next, ({ smp_read_barrier_depends(); 0; }) )
 macro_line|#else
 macro_line|#warning &quot;don&squot;t include kernel headers in userspace&quot;
 macro_line|#endif /* __KERNEL__ */

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -96,6 +97,13 @@ id|maceps2_port
 (braket
 l_int|2
 )braket
+suffix:semicolon
+DECL|variable|maceps2_device
+r_static
+r_struct
+id|platform_device
+op_star
+id|maceps2_device
 suffix:semicolon
 DECL|function|maceps2_write
 r_static
@@ -508,6 +516,11 @@ id|port_data
 id|idx
 )braket
 suffix:semicolon
+id|serio-&gt;dev.parent
+op_assign
+op_amp
+id|maceps2_device-&gt;dev
+suffix:semicolon
 )brace
 r_return
 id|serio
@@ -523,6 +536,37 @@ c_func
 r_void
 )paren
 (brace
+id|maceps2_device
+op_assign
+id|platform_device_register_simple
+c_func
+(paren
+l_string|&quot;maceps2&quot;
+comma
+op_minus
+l_int|1
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|maceps2_device
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|maceps2_device
+)paren
+suffix:semicolon
 id|port_data
 (braket
 l_int|0
@@ -617,6 +661,12 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+id|maceps2_device
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -670,6 +720,12 @@ id|maceps2_port
 (braket
 l_int|1
 )braket
+)paren
+suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+id|maceps2_device
 )paren
 suffix:semicolon
 )brace

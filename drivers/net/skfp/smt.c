@@ -8144,7 +8144,7 @@ r_void
 op_star
 id|found
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|SK_UNUSED
 c_func
@@ -8243,9 +8243,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -8275,9 +8273,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -8292,9 +8288,7 @@ id|found
 suffix:semicolon
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#if&t;0

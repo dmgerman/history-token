@@ -1379,6 +1379,11 @@ id|__u32
 id|last_cwnd
 suffix:semicolon
 multiline_comment|/* the last snd_cwnd */
+DECL|member|last_stamp
+id|__u32
+id|last_stamp
+suffix:semicolon
+multiline_comment|/* time when updated last_cwnd */
 DECL|member|bictcp
 )brace
 id|bictcp

@@ -1,6 +1,7 @@
 macro_line|#ifndef&t;_SPARC64_OPENPROMIO_H
 DECL|macro|_SPARC64_OPENPROMIO_H
 mdefine_line|#define&t;_SPARC64_OPENPROMIO_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * SunOS and Solaris /dev/openprom definitions. The ioctl values&n; * were chosen to be exactly equal to the SunOS equivalents.&n; */
