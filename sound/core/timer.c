@@ -502,6 +502,14 @@ op_star
 id|tid
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;fs-&gt;root
+)paren
+r_return
+suffix:semicolon
 r_switch
 c_cond
 (paren
