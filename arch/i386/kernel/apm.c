@@ -3393,7 +3393,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the APM thread main loop.&n; *&n; * Check whether we&squot;re the only running process to&n; * decide if we should just power down.&n; *&n; */
 DECL|macro|system_idle
-mdefine_line|#define system_idle() (nr_running == 1)
+mdefine_line|#define system_idle() (nr_running() == 1)
 DECL|function|apm_mainloop
 r_static
 r_void
