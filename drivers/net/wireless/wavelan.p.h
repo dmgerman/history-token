@@ -875,16 +875,21 @@ c_func
 (paren
 id|device
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Configure one device. */
 r_extern
-r_int
+r_struct
+id|net_device
+op_star
 id|wavelan_probe
 c_func
 (paren
-id|device
-op_star
+r_int
+id|unit
 )paren
 suffix:semicolon
 multiline_comment|/* See Space.c. */
