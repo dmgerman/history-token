@@ -1,5 +1,6 @@
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;string.h&gt;
+macro_line|#include &lt;stdlib.h&gt;
 DECL|function|main
 r_int
 id|main

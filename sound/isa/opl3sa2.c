@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Driver for Yamaha OPL3-SA[2,3] soundcards&n; *  Copyr
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifndef LINUX_ISAPNP_H

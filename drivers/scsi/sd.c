@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR

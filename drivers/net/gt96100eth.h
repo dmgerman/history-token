@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: M
 macro_line|#ifndef _GT96100ETH_H
 DECL|macro|_GT96100ETH_H
 mdefine_line|#define _GT96100ETH_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/galileo-boards/gt96100.h&gt;
 DECL|macro|dbg
 mdefine_line|#define dbg(lvl, format, arg...) &bslash;&n;    if (lvl &lt;= GT96100_DEBUG) &bslash;&n;        printk(KERN_DEBUG &quot;%s: &quot; format, dev-&gt;name , ## arg)

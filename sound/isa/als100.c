@@ -2,7 +2,6 @@ multiline_comment|/*&n;    card-als100.c - driver for Avance Logic ALS100 based 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#ifndef LINUX_ISAPNP_H
 macro_line|#include &lt;linux/isapnp.h&gt;

@@ -13,10 +13,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;        /* O_ACCMODE */
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
 macro_line|#include &lt;linux/umem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x...) do {} while (0)
 DECL|macro|dprintk
