@@ -1003,8 +1003,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -1150,8 +1148,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
