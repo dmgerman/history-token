@@ -192,6 +192,14 @@ DECL|macro|rq_rnr
 mdefine_line|#define rq_rnr&t;&t;&t;rq_rcv_buf.io_nr
 DECL|macro|rq_rlen
 mdefine_line|#define rq_rlen&t;&t;&t;rq_rcv_buf.io_len
+DECL|macro|XPRT_LAST_FRAG
+mdefine_line|#define XPRT_LAST_FRAG&t;&t;(1 &lt;&lt; 0)
+DECL|macro|XPRT_COPY_RECM
+mdefine_line|#define XPRT_COPY_RECM&t;&t;(1 &lt;&lt; 1)
+DECL|macro|XPRT_COPY_XID
+mdefine_line|#define XPRT_COPY_XID&t;&t;(1 &lt;&lt; 2)
+DECL|macro|XPRT_COPY_DATA
+mdefine_line|#define XPRT_COPY_DATA&t;&t;(1 &lt;&lt; 3)
 DECL|struct|rpc_xprt
 r_struct
 id|rpc_xprt
@@ -302,45 +310,35 @@ DECL|member|stream
 id|stream
 suffix:colon
 l_int|1
-comma
-multiline_comment|/* TCP */
-DECL|member|tcp_more
-id|tcp_more
-suffix:colon
-l_int|1
 suffix:semicolon
-multiline_comment|/* more record fragments */
+multiline_comment|/* TCP */
 multiline_comment|/*&n;&t; * State of TCP reply receive stuff&n;&t; */
 DECL|member|tcp_recm
 id|u32
 id|tcp_recm
-suffix:semicolon
+comma
 multiline_comment|/* Fragment header */
 DECL|member|tcp_xid
-id|u32
 id|tcp_xid
-suffix:semicolon
+comma
 multiline_comment|/* Current XID */
 DECL|member|tcp_reclen
-r_int
-r_int
 id|tcp_reclen
 comma
 multiline_comment|/* fragment length */
 DECL|member|tcp_offset
 id|tcp_offset
-comma
+suffix:semicolon
 multiline_comment|/* fragment offset */
 DECL|member|tcp_copied
+r_int
+r_int
 id|tcp_copied
-suffix:semicolon
+comma
 multiline_comment|/* copied to request */
-DECL|member|rx_pending
-r_struct
-id|list_head
-id|rx_pending
+DECL|member|tcp_flags
+id|tcp_flags
 suffix:semicolon
-multiline_comment|/* receive pending list */
 multiline_comment|/*&n;&t; * Send stuff&n;&t; */
 DECL|member|sock_lock
 id|spinlock_t
@@ -531,20 +529,6 @@ id|rpc_xprt
 op_star
 )paren
 suffix:semicolon
-r_int
-id|xprt_tcp_pending
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|__rpciod_tcp_dispatcher
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|XPRT_WSPACE
 mdefine_line|#define XPRT_WSPACE&t;0
 DECL|macro|XPRT_CONNECT
@@ -563,30 +547,6 @@ DECL|macro|xprt_test_and_set_connected
 mdefine_line|#define xprt_test_and_set_connected(xp)&t;(test_and_set_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_clear_connected
 mdefine_line|#define xprt_clear_connected(xp)&t;(clear_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
-r_static
-r_inline
-DECL|function|rpciod_tcp_dispatcher
-r_void
-id|rpciod_tcp_dispatcher
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|xprt_tcp_pending
-c_func
-(paren
-)paren
-)paren
-id|__rpciod_tcp_dispatcher
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif /* __KERNEL__*/
 macro_line|#endif /* _LINUX_SUNRPC_XPRT_H */
 eof

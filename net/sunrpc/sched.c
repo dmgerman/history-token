@@ -2252,12 +2252,6 @@ c_loop
 l_int|1
 )paren
 (brace
-multiline_comment|/* Ensure equal rights for tcp tasks... */
-id|rpciod_tcp_dispatcher
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
@@ -3428,11 +3422,6 @@ c_func
 (paren
 op_amp
 id|schedq.tasks
-)paren
-op_logical_or
-id|xprt_tcp_pending
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
