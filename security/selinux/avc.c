@@ -2414,6 +2414,19 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|audit_log_format
+c_func
+(paren
+id|ab
+comma
+l_string|&quot; comm=%s&quot;
+comma
+id|tsk-&gt;comm
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
