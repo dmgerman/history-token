@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
 macro_line|#include &quot;mach_resources.h&quot;
 DECL|variable|__initdata
@@ -2129,6 +2130,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* disable IO-APIC */
 r_else
 r_if
@@ -2151,7 +2153,8 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
+macro_line|#endif /* CONFIG_ACPI_BOOT */
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
 r_if
 c_cond

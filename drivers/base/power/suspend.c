@@ -544,4 +544,11 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+DECL|variable|device_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_suspend
+)paren
+suffix:semicolon
 eof

@@ -1194,7 +1194,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pci_request_region
+id|request_region
 c_func
 (paren
 id|pci_ioaddr
