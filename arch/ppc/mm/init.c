@@ -207,6 +207,10 @@ DECL|variable|__map_without_bats
 r_int
 id|__map_without_bats
 suffix:semicolon
+DECL|variable|__map_without_ltlbs
+r_int
+id|__map_without_ltlbs
+suffix:semicolon
 multiline_comment|/* max amount of RAM to use */
 DECL|variable|__max_memory
 r_int
@@ -699,6 +703,23 @@ l_string|&quot;nobats&quot;
 )paren
 (brace
 id|__map_without_bats
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;noltlbs&quot;
+)paren
+)paren
+(brace
+id|__map_without_ltlbs
 op_assign
 l_int|1
 suffix:semicolon
