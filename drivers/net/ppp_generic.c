@@ -5958,7 +5958,7 @@ c_func
 (paren
 id|new_skb
 comma
-id|len
+id|skb-&gt;len
 )paren
 comma
 id|skb-&gt;data
