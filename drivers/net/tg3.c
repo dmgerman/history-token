@@ -13376,10 +13376,10 @@ DECL|macro|TG3_FW_BSS_ADDR
 mdefine_line|#define TG3_FW_BSS_ADDR&t;&t;0x08000a70
 DECL|macro|TG3_FW_BSS_LEN
 mdefine_line|#define TG3_FW_BSS_LEN&t;&t;0x10
-DECL|variable|t3FwText
+DECL|variable|tg3FwText
 r_static
 id|u32
-id|t3FwText
+id|tg3FwText
 (braket
 (paren
 id|TG3_FW_TEXT_LEN
@@ -14645,10 +14645,10 @@ comma
 l_int|0x00000000
 )brace
 suffix:semicolon
-DECL|variable|t3FwRodata
+DECL|variable|tg3FwRodata
 r_static
 id|u32
-id|t3FwRodata
+id|tg3FwRodata
 (braket
 (paren
 id|TG3_FW_RODATA_LEN
@@ -14716,7 +14716,7 @@ l_int|0x00000000
 suffix:semicolon
 macro_line|#if 0 /* All zeros, dont eat up space with it. */
 id|u32
-id|t3FwData
+id|tg3FwData
 (braket
 (paren
 id|TG3_FW_DATA_LEN
@@ -31952,6 +31952,7 @@ macro_line|#ifdef NETIF_F_TSO
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_TSO
+suffix:semicolon
 macro_line|#endif
 id|tp
 op_assign
