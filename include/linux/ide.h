@@ -2549,16 +2549,6 @@ id|id
 suffix:semicolon
 r_extern
 r_int
-id|ide_driveid_update
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|ide_config_drive_speed
 c_func
 (paren
@@ -3274,11 +3264,21 @@ id|__init
 suffix:semicolon
 macro_line|#endif
 r_extern
+r_void
+id|ata_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+)paren
+suffix:semicolon
+r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
 DECL|macro|DRIVE_LOCK
-mdefine_line|#define DRIVE_LOCK(drive)&t;&t;((drive)-&gt;queue.queue_lock)
+mdefine_line|#define DRIVE_LOCK(drive)&t;((drive)-&gt;queue.queue_lock)
 r_extern
 r_int
 id|drive_is_ready

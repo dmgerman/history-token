@@ -14,15 +14,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Maximum number of interfaces per card&n; */
 DECL|macro|MAX_IFS
 mdefine_line|#define MAX_IFS&t;2
@@ -1147,15 +1138,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s selected (peak %dMB/s)&bslash;n&quot;
+l_string|&quot;%s: %02x selected (peak %dMB/s)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|xfer_mode
-)paren
 comma
 l_int|2000
 op_div

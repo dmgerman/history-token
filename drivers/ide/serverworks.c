@@ -1283,15 +1283,6 @@ suffix:semicolon
 macro_line|#endif  /* defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 DECL|macro|SVWKS_CSB5_REVISION_NEW
 mdefine_line|#define SVWKS_CSB5_REVISION_NEW&t;0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 DECL|variable|isa_dev
 r_static
 r_struct
@@ -1854,20 +1845,16 @@ macro_line|#if SVWKS_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s drive%d&bslash;n&quot;
+l_string|&quot;%s: %02x drive%d&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|speed
-)paren
 comma
 id|drive-&gt;dn
 )paren
 suffix:semicolon
-macro_line|#endif /* SVWKS_DEBUG_DRIVE_INFO */
+macro_line|#endif
 id|pci_write_config_byte
 c_func
 (paren

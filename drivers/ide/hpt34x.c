@@ -307,16 +307,6 @@ id|hpt34x_proc
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-c_func
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 DECL|function|hpt34x_clear_chipset
 r_static
 r_void
@@ -604,17 +594,13 @@ macro_line|#if HPT343_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s drive%d (0x%04x 0x%04x) (0x%04x 0x%04x)&quot;
+l_string|&quot;%s: %02x drive%d (0x%04x 0x%04x) (0x%04x 0x%04x)&quot;
 "&bslash;"
 l_string|&quot; (0x%02x 0x%02x) 0x%04x&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|speed
-)paren
 comma
 id|drive-&gt;dn
 comma
@@ -633,7 +619,7 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif /* HPT343_DEBUG_DRIVE_INFO */
+macro_line|#endif
 r_if
 c_cond
 (paren

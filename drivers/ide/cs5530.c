@@ -300,15 +300,6 @@ id|cs5530_proc
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Set a new transfer mode at the drive&n; */
 DECL|function|cs5530_set_xfer_mode
 r_int
@@ -332,15 +323,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: cs5530_set_xfer_mode(%s)&bslash;n&quot;
+l_string|&quot;%s: cs5530_set_xfer_mode(%02x)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|mode
-)paren
 )paren
 suffix:semicolon
 id|error
