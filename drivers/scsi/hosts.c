@@ -453,10 +453,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_host_generic_release - default release function for hosts&n; * @shost: &n; * &n; * Description:&n; * &t;This is the default case for the release function.  Its completely&n; *&t;useless for anything but old ISA adapters&n; **/
+multiline_comment|/**&n; * scsi_host_legacy_release - default release function for hosts&n; * @shost: &n; * &n; * Description:&n; * &t;This is the default case for the release function.  Its completely&n; *&t;useless for anything but old ISA adapters&n; **/
 DECL|function|scsi_host_legacy_release
 r_static
-r_void
+r_int
 id|scsi_host_legacy_release
 c_func
 (paren
@@ -507,6 +507,9 @@ comma
 id|shost-&gt;n_io_port
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|scsi_remove_legacy_host
 r_static
@@ -534,27 +537,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;hostt-&gt;release
 )paren
 (paren
 op_star
 id|shost-&gt;hostt-&gt;release
 )paren
-(paren
-id|shost
-)paren
-suffix:semicolon
-r_else
-id|scsi_host_legacy_release
-c_func
 (paren
 id|shost
 )paren
@@ -1450,29 +1439,58 @@ id|Scsi_Host
 op_star
 id|shost
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check no detect routine.&n;&t; */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|shost_tp-&gt;detect
 )paren
-r_return
-l_int|1
 suffix:semicolon
-multiline_comment|/* If max_sectors isn&squot;t set, default to max */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|shost_tp-&gt;max_sectors
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi HBA driver %s didn&squot;t set max_sectors, &quot;
+l_string|&quot;please fix the template&quot;
+comma
+id|shost_tp-&gt;name
+)paren
+suffix:semicolon
 id|shost_tp-&gt;max_sectors
 op_assign
 l_int|1024
 suffix:semicolon
-multiline_comment|/*&n;&t; * The detect routine must carefully spinunlock/spinlock if it&n;&t; * enables interrupts, since all interrupt handlers do spinlock as&n;&t; * well.&n;&t; */
-multiline_comment|/*&n;&t; * detect should do its own locking&n;&t; * FIXME present is now set is scsi_register which breaks manual&n;&t; * registration code below.&n;&t; */
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shost_tp-&gt;release
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi HBA driver %s didn&squot;t set a release method, &quot;
+l_string|&quot;please fix the template&quot;
+comma
+id|shost_tp-&gt;name
+)paren
+suffix:semicolon
+id|shost_tp-&gt;release
+op_assign
+op_amp
+id|scsi_host_legacy_release
+suffix:semicolon
+)brace
 id|shost_tp
 op_member_access_from_pointer
 id|detect
