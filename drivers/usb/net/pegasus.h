@@ -367,6 +367,8 @@ DECL|macro|VENDOR_ELCON
 mdefine_line|#define&t;VENDOR_ELCON&t;&t;0x0db7
 DECL|macro|VENDOR_ELSA
 mdefine_line|#define&t;VENDOR_ELSA&t;&t;0x05cc
+DECL|macro|VENDOR_GIGABYTE
+mdefine_line|#define&t;VENDOR_GIGABYTE&t;&t;0x1044
 DECL|macro|VENDOR_HAWKING
 mdefine_line|#define&t;VENDOR_HAWKING&t;&t;0x0e66
 DECL|macro|VENDOR_HP
@@ -584,6 +586,19 @@ comma
 id|VENDOR_ADMTEK
 comma
 l_int|0x8513
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;ADMtek ADM8515 &bslash;&quot;Pegasus II&bslash;&quot; USB-2.0 Ethernet&quot;
+comma
+id|VENDOR_ADMTEK
+comma
+l_int|0x8515
 comma
 id|DEFAULT_GPIO_RESET
 op_or
@@ -864,6 +879,17 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;GIGABYTE GN-BR402W Wireless Router&quot;
+comma
+id|VENDOR_GIGABYTE
+comma
+l_int|0x8002
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;Hawking UF100 10/100 Ethernet&quot;
 comma
 id|VENDOR_HAWKING
@@ -1100,6 +1126,19 @@ comma
 id|VENDOR_OCT
 comma
 l_int|0x0109
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;OCT USB TO Ethernet&quot;
+comma
+id|VENDOR_OCT
+comma
+l_int|0x0901
 comma
 id|DEFAULT_GPIO_RESET
 op_or
