@@ -125,14 +125,6 @@ DECL|macro|ACPI_EC_DEVICE_NAME
 mdefine_line|#define ACPI_EC_DEVICE_NAME&t;&t;&quot;Embedded Controller&quot;
 DECL|macro|ACPI_EC_FILE_INFO
 mdefine_line|#define ACPI_EC_FILE_INFO&t;&t;&quot;info&quot;
-macro_line|#ifdef CONFIG_ACPI_EC
-r_int
-id|acpi_ec_ecdt_probe
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                       Fan&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_FAN_COMPONENT
 mdefine_line|#define ACPI_FAN_COMPONENT&t;&t;0x00200000
