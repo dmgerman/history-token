@@ -681,7 +681,7 @@ id|force
 suffix:semicolon
 id|sctp_cmd_t
 op_star
-id|command
+id|cmd
 suffix:semicolon
 id|sctp_chunk_t
 op_star
@@ -743,7 +743,7 @@ c_loop
 l_int|NULL
 op_ne
 (paren
-id|command
+id|cmd
 op_assign
 id|sctp_next_cmd
 c_func
@@ -756,7 +756,7 @@ id|commands
 r_switch
 c_cond
 (paren
-id|command-&gt;verb
+id|cmd-&gt;verb
 )paren
 (brace
 r_case
@@ -771,7 +771,7 @@ suffix:colon
 multiline_comment|/* Register a new association.  */
 id|asoc
 op_assign
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 suffix:semicolon
 multiline_comment|/* Register with the endpoint.  */
 id|sctp_endpoint_add_asoc
@@ -798,7 +798,7 @@ c_func
 (paren
 id|asoc
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -848,7 +848,7 @@ id|commands
 comma
 id|asoc
 comma
-id|command-&gt;obj.state
+id|cmd-&gt;obj.state
 )paren
 suffix:semicolon
 r_break
@@ -863,7 +863,7 @@ c_func
 op_amp
 id|asoc-&gt;peer.tsn_map
 comma
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 )paren
 suffix:semicolon
 r_break
@@ -874,7 +874,7 @@ suffix:colon
 multiline_comment|/* Generate a Selective ACK.&n;&t;&t;&t; * The argument tells us whether to just count&n;&t;&t;&t; * the packet and MAYBE generate a SACK, or&n;&t;&t;&t; * force a SACK out.&n;&t;&t;&t; */
 id|force
 op_assign
-id|command-&gt;obj.i32
+id|cmd-&gt;obj.i32
 suffix:semicolon
 id|error
 op_assign
@@ -903,7 +903,7 @@ id|commands
 comma
 id|asoc
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -966,7 +966,7 @@ id|asoc
 comma
 id|chunk
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 comma
 id|priority
 )paren
@@ -997,12 +997,12 @@ id|new_obj
 r_if
 c_cond
 (paren
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 id|sctp_free_chunk
 c_func
 (paren
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_goto
@@ -1027,7 +1027,7 @@ multiline_comment|/* If there is an ERROR chunk to be sent along with&n;&t;&t;&t
 r_if
 c_cond
 (paren
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 id|sctp_add_cmd_sf
 c_func
@@ -1039,7 +1039,7 @@ comma
 id|SCTP_CHUNK
 c_func
 (paren
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 )paren
 suffix:semicolon
@@ -1098,7 +1098,7 @@ l_string|&quot;sm_sideff: %s %p, %s %p.&bslash;n&quot;
 comma
 l_string|&quot;chunk_up:&quot;
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 comma
 l_string|&quot;ulpq:&quot;
 comma
@@ -1112,7 +1112,7 @@ c_func
 op_amp
 id|asoc-&gt;ulpq
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 comma
 id|GFP_ATOMIC
 )paren
@@ -1130,7 +1130,7 @@ l_string|&quot;sm_sideff: %s %p, %s %p.&bslash;n&quot;
 comma
 l_string|&quot;event_up:&quot;
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 comma
 l_string|&quot;ulpq:&quot;
 comma
@@ -1144,7 +1144,7 @@ c_func
 op_amp
 id|asoc-&gt;ulpq
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -1161,7 +1161,7 @@ c_func
 op_amp
 id|asoc-&gt;outqueue
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -1172,7 +1172,7 @@ suffix:colon
 multiline_comment|/* Send a full packet to our peer.  */
 id|packet
 op_assign
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 suffix:semicolon
 id|sctp_packet_transmit
 c_func
@@ -1198,7 +1198,7 @@ c_func
 op_amp
 id|asoc-&gt;outqueue
 comma
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 comma
 id|SCTP_RETRANSMIT_T3_RTX
 )paren
@@ -1231,7 +1231,7 @@ c_func
 (paren
 id|asoc
 comma
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 )paren
 suffix:semicolon
 r_break
@@ -1247,7 +1247,7 @@ c_func
 (paren
 id|asoc
 comma
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 comma
 id|chunk
 )paren
@@ -1257,7 +1257,6 @@ c_cond
 (paren
 id|new_obj
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1272,7 +1271,6 @@ id|new_obj
 )paren
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1284,7 +1282,7 @@ c_func
 (paren
 id|asoc
 comma
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 )paren
 suffix:semicolon
 r_break
@@ -1299,7 +1297,7 @@ id|commands
 comma
 id|asoc
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -1312,14 +1310,14 @@ op_assign
 op_amp
 id|asoc-&gt;timers
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 suffix:semicolon
 id|timeout
 op_assign
 id|asoc-&gt;timeouts
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 suffix:semicolon
 r_if
@@ -1361,14 +1359,14 @@ op_assign
 op_amp
 id|asoc-&gt;timers
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 suffix:semicolon
 id|timeout
 op_assign
 id|asoc-&gt;timeouts
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 suffix:semicolon
 r_if
@@ -1401,7 +1399,7 @@ op_assign
 op_amp
 id|asoc-&gt;timers
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 suffix:semicolon
 r_if
@@ -1439,7 +1437,7 @@ op_increment
 suffix:semicolon
 id|asoc-&gt;timeouts
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 op_mul_assign
 l_int|2
@@ -1449,7 +1447,7 @@ c_cond
 (paren
 id|asoc-&gt;timeouts
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 OG
 id|asoc-&gt;max_init_timeo
@@ -1457,7 +1455,7 @@ id|asoc-&gt;max_init_timeo
 (brace
 id|asoc-&gt;timeouts
 (braket
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )braket
 op_assign
 id|asoc-&gt;max_init_timeo
@@ -1508,7 +1506,7 @@ comma
 id|SCTP_TO
 c_func
 (paren
-id|command-&gt;obj.to
+id|cmd-&gt;obj.to
 )paren
 )paren
 suffix:semicolon
@@ -1551,7 +1549,7 @@ id|SCTP_CMD_COUNTER_INC
 suffix:colon
 id|asoc-&gt;counters
 (braket
-id|command-&gt;obj.counter
+id|cmd-&gt;obj.counter
 )braket
 op_increment
 suffix:semicolon
@@ -1562,7 +1560,7 @@ id|SCTP_CMD_COUNTER_RESET
 suffix:colon
 id|asoc-&gt;counters
 (braket
-id|command-&gt;obj.counter
+id|cmd-&gt;obj.counter
 )braket
 op_assign
 l_int|0
@@ -1572,45 +1570,13 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_REPORT_DUP
 suffix:colon
-r_if
-c_cond
-(paren
-id|asoc-&gt;peer.next_dup_tsn
-OL
-id|SCTP_MAX_DUP_TSNS
-)paren
-(brace
-id|asoc-&gt;peer.dup_tsns
-(braket
-id|asoc-&gt;peer.next_dup_tsn
-op_increment
-)braket
-op_assign
-id|ntohl
-c_func
-(paren
-id|command-&gt;obj.u32
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SCTP_CMD_REPORT_BIGGAP
-suffix:colon
-id|SCTP_DEBUG_PRINTK
-c_func
-(paren
-l_string|&quot;Big gap: %x to %x&bslash;n&quot;
-comma
-id|sctp_tsnmap_get_ctsn
+id|sctp_tsnmap_mark_dup
 c_func
 (paren
 op_amp
 id|asoc-&gt;peer.tsn_map
-)paren
 comma
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 )paren
 suffix:semicolon
 r_break
@@ -1635,7 +1601,7 @@ c_func
 (paren
 id|asoc
 comma
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 )paren
 suffix:semicolon
 r_break
@@ -1645,7 +1611,7 @@ id|SCTP_CMD_TRANSPORT_RESET
 suffix:colon
 id|t
 op_assign
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 suffix:semicolon
 id|sctp_cmd_transport_reset
 c_func
@@ -1664,7 +1630,7 @@ id|SCTP_CMD_TRANSPORT_ON
 suffix:colon
 id|t
 op_assign
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 suffix:semicolon
 id|sctp_cmd_transport_on
 c_func
@@ -1698,7 +1664,7 @@ id|SCTP_CMD_HB_TIMER_UPDATE
 suffix:colon
 id|t
 op_assign
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 suffix:semicolon
 id|sctp_cmd_hb_timer_update
 c_func
@@ -1730,7 +1696,7 @@ id|SCTP_CMD_REPORT_ERROR
 suffix:colon
 id|error
 op_assign
-id|command-&gt;obj.error
+id|cmd-&gt;obj.error
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1740,7 +1706,7 @@ suffix:colon
 multiline_comment|/* Dummy up a SACK for processing. */
 id|sackh.cum_tsn_ack
 op_assign
-id|command-&gt;obj.u32
+id|cmd-&gt;obj.u32
 suffix:semicolon
 id|sackh.a_rwnd
 op_assign
@@ -1786,11 +1752,43 @@ id|SCTP_CMD_RTO_PENDING
 suffix:colon
 id|t
 op_assign
-id|command-&gt;obj.transport
+id|cmd-&gt;obj.transport
 suffix:semicolon
 id|t-&gt;rto_pending
 op_assign
 l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCTP_CMD_PART_DELIVER
+suffix:colon
+id|sctp_ulpq_partial_delivery
+c_func
+(paren
+op_amp
+id|asoc-&gt;ulpq
+comma
+id|cmd-&gt;obj.ptr
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCTP_CMD_RENEGE
+suffix:colon
+id|sctp_ulpq_renege
+c_func
+(paren
+op_amp
+id|asoc-&gt;ulpq
+comma
+id|cmd-&gt;obj.ptr
+comma
+id|GFP_ATOMIC
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1802,9 +1800,9 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Impossible command: %u, %p&bslash;n&quot;
 comma
-id|command-&gt;verb
+id|cmd-&gt;verb
 comma
-id|command-&gt;obj.ptr
+id|cmd-&gt;obj.ptr
 )paren
 suffix:semicolon
 r_break
@@ -2088,10 +2086,6 @@ op_assign
 id|asoc-&gt;rwnd
 suffix:semicolon
 id|asoc-&gt;peer.sack_needed
-op_assign
-l_int|0
-suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
 op_assign
 l_int|0
 suffix:semicolon
@@ -2934,7 +2928,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -3018,7 +3013,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -3106,6 +3102,16 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Cancel any partial delivery in progress. */
+id|sctp_ulpq_abort_pd
+c_func
+(paren
+op_amp
+id|asoc-&gt;ulpq
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
 id|event
 op_assign
 id|sctp_ulpevent_make_assoc_change

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * These functions manipulate an sctp event.   The sctp_ulpevent_t is used&n; * to carry notifications and data to the ULP (sockets).  &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These functions manipulate an sctp event.   The struct ulpevent is used&n; * to carry notifications and data to the ULP (sockets).&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/structs.h&gt;
@@ -14,7 +14,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -30,14 +31,16 @@ op_star
 id|skb
 comma
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 suffix:semicolon
 multiline_comment|/* Create a new sctp_ulpevent.  */
 DECL|function|sctp_ulpevent_new
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_new
 c_func
@@ -52,7 +55,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -82,11 +86,11 @@ id|fail
 suffix:semicolon
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|event
 op_assign
@@ -94,8 +98,6 @@ id|sctp_ulpevent_init
 c_func
 (paren
 id|event
-comma
-id|skb
 comma
 id|msg_flags
 )paren
@@ -109,10 +111,6 @@ id|event
 r_goto
 id|fail_init
 suffix:semicolon
-id|event-&gt;malloced
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 id|event
 suffix:semicolon
@@ -121,7 +119,7 @@ suffix:colon
 id|kfree_skb
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 )paren
 suffix:semicolon
 id|fail
@@ -132,19 +130,16 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize an ULP event from an given skb.  */
 DECL|function|sctp_ulpevent_init
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_init
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
-comma
-r_struct
-id|sk_buff
-op_star
-id|parent
 comma
 r_int
 id|msg_flags
@@ -157,7 +152,8 @@ id|event
 comma
 r_sizeof
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 )paren
 comma
 l_int|0x00
@@ -166,14 +162,6 @@ suffix:semicolon
 id|event-&gt;msg_flags
 op_assign
 id|msg_flags
-suffix:semicolon
-id|event-&gt;parent
-op_assign
-id|parent
-suffix:semicolon
-id|event-&gt;malloced
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 id|event
@@ -185,20 +173,20 @@ r_void
 id|sctp_ulpevent_free
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|event-&gt;malloced
-)paren
 id|kfree_skb
 c_func
 (paren
-id|event-&gt;parent
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -209,20 +197,26 @@ id|sctp_ulpevent_is_notification
 c_func
 (paren
 r_const
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 )paren
 (brace
 r_return
+id|MSG_NOTIFICATION
+op_eq
+(paren
 id|event-&gt;msg_flags
 op_amp
 id|MSG_NOTIFICATION
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize an SCTP_ASSOC_CHANGE event.&n; *&n; * 5.3.1.1 SCTP_ASSOC_CHANGE&n; *&n; * Communication notifications inform the ULP that an SCTP association&n; * has either begun or ended. The identifier for a new association is&n; * provided by this notification.&n; *&n; * Note: There is no field checking here.  If a field is unused it will be&n; * zero&squot;d out.&n; */
 DECL|function|sctp_ulpevent_make_assoc_change
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_assoc_change
 c_func
@@ -251,7 +245,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -259,6 +254,11 @@ r_struct
 id|sctp_assoc_change
 op_star
 id|sac
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|event
 op_assign
@@ -285,6 +285,14 @@ id|event
 r_goto
 id|fail
 suffix:semicolon
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|sac
 op_assign
 (paren
@@ -295,7 +303,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 r_sizeof
 (paren
@@ -346,7 +354,7 @@ multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANG
 id|sctp_ulpevent_set_owner
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 id|asoc
 )paren
@@ -370,7 +378,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize an SCTP_PEER_ADDR_CHANGE event.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n; *&n; * When a destination address on a multi-homed peer encounters a change&n; * an interface details event is sent.&n; */
 DECL|function|sctp_ulpevent_make_peer_addr_change
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_peer_addr_change
 c_func
@@ -399,7 +408,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -407,6 +417,11 @@ r_struct
 id|sctp_paddr_change
 op_star
 id|spc
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|event
 op_assign
@@ -433,6 +448,14 @@ id|event
 r_goto
 id|fail
 suffix:semicolon
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|spc
 op_assign
 (paren
@@ -443,7 +466,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 r_sizeof
 (paren
@@ -471,7 +494,7 @@ id|spc-&gt;spc_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_state:  32 bits (signed integer)&n;&t; * &n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the address.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_state:  32 bits (signed integer)&n;&t; *&n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the address.&n;&t; */
 id|spc-&gt;spc_state
 op_assign
 id|state
@@ -485,7 +508,7 @@ multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANG
 id|sctp_ulpevent_set_owner
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 id|asoc
 )paren
@@ -525,7 +548,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize an SCTP_REMOTE_ERROR notification.&n; *&n; * Note: This assumes that the chunk-&gt;skb-&gt;data already points to the&n; * operation error payload.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.3 SCTP_REMOTE_ERROR&n; *&n; * A remote peer may send an Operational Error message to its peer.&n; * This message indicates a variety of error conditions on an&n; * association. The entire error TLV as it appears on the wire is&n; * included in a SCTP_REMOTE_ERROR event.  Please refer to the SCTP&n; * specification [SCTP] and any extensions for a list of possible&n; * error formats.&n; */
 DECL|function|sctp_ulpevent_make_remote_error
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_remote_error
 c_func
@@ -546,7 +570,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -651,11 +676,11 @@ suffix:semicolon
 multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|event
 op_assign
@@ -663,8 +688,6 @@ id|sctp_ulpevent_init
 c_func
 (paren
 id|event
-comma
-id|skb
 comma
 id|MSG_NOTIFICATION
 )paren
@@ -677,10 +700,6 @@ id|event
 )paren
 r_goto
 id|fail
-suffix:semicolon
-id|event-&gt;malloced
-op_assign
-l_int|1
 suffix:semicolon
 id|sre
 op_assign
@@ -737,10 +756,18 @@ op_assign
 id|cause
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|sctp_ulpevent_set_owner
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 id|asoc
 )paren
@@ -764,7 +791,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a SCTP_SEND_FAILED notification.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.4 SCTP_SEND_FAILED&n; */
 DECL|function|sctp_ulpevent_make_send_failed
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_send_failed
 c_func
@@ -788,7 +816,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -847,11 +876,11 @@ suffix:semicolon
 multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|event
 op_assign
@@ -859,8 +888,6 @@ id|sctp_ulpevent_init
 c_func
 (paren
 id|event
-comma
-id|skb
 comma
 id|MSG_NOTIFICATION
 )paren
@@ -873,11 +900,6 @@ id|event
 )paren
 r_goto
 id|fail
-suffix:semicolon
-multiline_comment|/* Mark as malloced, even though the constructor was not&n;&t; * called.&n;&t; */
-id|event-&gt;malloced
-op_assign
-l_int|1
 suffix:semicolon
 id|ssf
 op_assign
@@ -936,10 +958,18 @@ id|sctp_sndrcvinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, sf_assoc_id, holds the identifier for the&n;&t; * association.  All notifications for a given association have the&n;&t; * same association identifier.  For TCP style socket, this field is&n;&t; * ignored.&n;&t; */
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|sctp_ulpevent_set_owner
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 id|asoc
 )paren
@@ -963,7 +993,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a SCTP_SHUTDOWN_EVENT notification.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n; */
 DECL|function|sctp_ulpevent_make_shutdown_event
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_shutdown_event
 c_func
@@ -980,7 +1011,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -988,6 +1020,11 @@ r_struct
 id|sctp_shutdown_event
 op_star
 id|sse
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|event
 op_assign
@@ -1014,6 +1051,14 @@ id|event
 r_goto
 id|fail
 suffix:semicolon
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|sse
 op_assign
 (paren
@@ -1024,7 +1069,7 @@ op_star
 id|skb_put
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 r_sizeof
 (paren
@@ -1056,7 +1101,7 @@ multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EV
 id|sctp_ulpevent_set_owner
 c_func
 (paren
-id|event-&gt;parent
+id|skb
 comma
 id|asoc
 )paren
@@ -1078,9 +1123,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* A message has been received.  Package this message as a notification&n; * to pass it to the upper layers.  Go ahead and calculate the sndrcvinfo&n; * even if filtered out later.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; */
+multiline_comment|/* A message has been received.  Package this message as a notification&n; * to pass it to the upper layers.  Go ahead and calculate the sndrcvinfo&n; * even if filtered out later.&n; *&n; * Socket Extensions for SCTP&n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; */
 DECL|function|sctp_ulpevent_make_rcvmsg
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|sctp_ulpevent_make_rcvmsg
 c_func
@@ -1097,12 +1143,10 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
-comma
-op_star
-id|levent
 suffix:semicolon
 r_struct
 id|sctp_sndrcvinfo
@@ -1186,11 +1230,11 @@ suffix:semicolon
 multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 multiline_comment|/* Initialize event with flags 0.  */
 id|event
@@ -1199,8 +1243,6 @@ id|sctp_ulpevent_init
 c_func
 (paren
 id|event
-comma
-id|skb
 comma
 l_int|0
 )paren
@@ -1214,10 +1256,7 @@ id|event
 r_goto
 id|fail_init
 suffix:semicolon
-id|event-&gt;malloced
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting. &n;&t; */
 r_for
 c_loop
 (paren
@@ -1237,7 +1276,6 @@ id|list
 op_assign
 id|list-&gt;next
 )paren
-(brace
 id|sctp_ulpevent_set_owner_r
 c_func
 (paren
@@ -1246,33 +1284,6 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize event with flags 0.  */
-id|levent
-op_assign
-id|sctp_ulpevent_init
-c_func
-(paren
-id|event
-comma
-id|skb
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|levent
-)paren
-r_goto
-id|fail_init
-suffix:semicolon
-id|levent-&gt;malloced
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 id|info
 op_assign
 (paren
@@ -1318,16 +1329,28 @@ id|chunk-&gt;chunk_hdr-&gt;flags
 op_amp
 id|SCTP_DATA_UNORDERED
 )paren
+(brace
 id|info-&gt;sinfo_flags
 op_or_assign
 id|MSG_UNORDERED
 suffix:semicolon
-multiline_comment|/* FIXME:  For reassembly, we need to have the fragmentation bits.&n;&t; * This really does not belong in the event structure, but&n;&t; * its difficult to fix everything at the same time.   Eventually,&n;&t; * we should create and skb based chunk structure.   This structure&n;&t; * storage can be converted to an event.  --jgrimm&n;&t; */
-id|event-&gt;chunk_flags
+multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *  &n;&t;&t; * This field will hold the current cumulative TSN as &n;&t;&t; * known by the underlying SCTP layer.  Note this field is &n;&t;&t; * ignored when sending and only valid for a receive &n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
+id|info-&gt;sinfo_cumtsn
 op_assign
+id|sctp_tsnmap_get_ctsn
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.tsn_map
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits. &n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
+id|event-&gt;msg_flags
+op_or_assign
 id|chunk-&gt;chunk_hdr-&gt;flags
 suffix:semicolon
-multiline_comment|/* With -04 draft, tsn moves into sndrcvinfo. */
+multiline_comment|/* With 04 draft, tsn moves into sndrcvinfo. */
 id|info-&gt;sinfo_tsn
 op_assign
 id|ntohl
@@ -1367,6 +1390,134 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Create a partial delivery related event. &n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
+DECL|function|sctp_ulpevent_make_pdapi
+r_struct
+id|sctp_ulpevent
+op_star
+id|sctp_ulpevent_make_pdapi
+c_func
+(paren
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+id|__u32
+id|indication
+comma
+r_int
+id|priority
+)paren
+(brace
+r_struct
+id|sctp_ulpevent
+op_star
+id|event
+suffix:semicolon
+r_struct
+id|sctp_rcv_pdapi_event
+op_star
+id|pd
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|event
+op_assign
+id|sctp_ulpevent_new
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|sctp_assoc_change
+)paren
+comma
+id|MSG_NOTIFICATION
+comma
+id|priority
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|event
+)paren
+r_goto
+id|fail
+suffix:semicolon
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
+id|pd
+op_assign
+(paren
+r_struct
+id|sctp_rcv_pdapi_event
+op_star
+)paren
+id|skb_put
+c_func
+(paren
+id|skb
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_rcv_pdapi_event
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* pdapi_type&n;&t; *   It should be SCTP_PARTIAL_DELIVERY_EVENT&n;&t; *&n;&t; * pdapi_flags: 16 bits (unsigned integer)&n;&t; *   Currently unused.&n;&t; */
+id|pd-&gt;pdapi_type
+op_assign
+id|SCTP_PARTIAL_DELIVERY_EVENT
+suffix:semicolon
+id|pd-&gt;pdapi_flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* pdapi_length: 32 bits (unsigned integer)&n;&t; *&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.  It will generally be sizeof (struct&n;&t; * sctp_rcv_pdapi_event).&n;&t; */
+id|pd-&gt;pdapi_length
+op_assign
+r_sizeof
+(paren
+r_struct
+id|sctp_rcv_pdapi_event
+)paren
+suffix:semicolon
+multiline_comment|/*  pdapi_indication: 32 bits (unsigned integer)&n;&t; *&n;&t; * This field holds the indication being sent to the application.&n;&t; */
+id|pd-&gt;pdapi_indication
+op_assign
+id|indication
+suffix:semicolon
+multiline_comment|/*  pdapi_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association id field, holds the identifier for the association.&n;&t; */
+id|pd-&gt;pdapi_assoc_id
+op_assign
+id|sctp_assoc2id
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+r_return
+id|event
+suffix:semicolon
+id|fail
+suffix:colon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Return the notification type, assuming this is a notification&n; * event.&n; */
 DECL|function|sctp_ulpevent_get_notification_type
 id|__u16
@@ -1374,7 +1525,8 @@ id|sctp_ulpevent_get_notification_type
 c_func
 (paren
 r_const
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 )paren
@@ -1384,6 +1536,24 @@ id|sctp_notification
 op_star
 id|notification
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|skb
+op_assign
+id|sctp_event2skb
+c_func
+(paren
+(paren
+r_struct
+id|sctp_ulpevent
+op_star
+)paren
+id|event
+)paren
+suffix:semicolon
 id|notification
 op_assign
 (paren
@@ -1391,7 +1561,7 @@ r_union
 id|sctp_notification
 op_star
 )paren
-id|event-&gt;parent-&gt;data
+id|skb-&gt;data
 suffix:semicolon
 r_return
 id|notification-&gt;h.sn_type
@@ -1404,7 +1574,8 @@ id|sctp_ulpevent_read_sndrcvinfo
 c_func
 (paren
 r_const
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 comma
@@ -1467,18 +1638,19 @@ id|sctp_association_t
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
 multiline_comment|/* Current stack structures assume that the rcv buffer is&n;&t; * per socket.   For UDP style sockets this is not true as&n;&t; * multiple associations may be on a single UDP-style socket.&n;&t; * Use the local private area of the skb to track the owning&n;&t; * association.&n;&t; */
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|asoc
 op_assign
@@ -1520,7 +1692,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -1537,11 +1710,11 @@ id|asoc-&gt;base.sk
 suffix:semicolon
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|event-&gt;asoc
 op_assign
@@ -1577,17 +1750,18 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|sctp_association_put
 c_func
@@ -1596,7 +1770,7 @@ id|event-&gt;asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Hold the association in case the msg_name needs read out of &n; * the association. &n; */
+multiline_comment|/* Hold the association in case the msg_name needs read out of&n; * the association.&n; */
 DECL|function|sctp_ulpevent_set_owner
 r_static
 r_void
@@ -1609,12 +1783,14 @@ op_star
 id|skb
 comma
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -1623,7 +1799,8 @@ id|sctp_association_hold
 c_func
 (paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 id|asoc
@@ -1635,16 +1812,17 @@ id|asoc-&gt;base.sk
 suffix:semicolon
 id|event
 op_assign
+id|sctp_skb2event
+c_func
 (paren
-id|sctp_ulpevent_t
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 id|event-&gt;asoc
 op_assign
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 id|asoc

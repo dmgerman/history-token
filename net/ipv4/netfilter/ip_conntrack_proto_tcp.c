@@ -808,10 +808,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_bit
+c_func
 (paren
-id|conntrack-&gt;status
+id|IPS_SEEN_REPLY_BIT
+comma
 op_amp
-id|IPS_SEEN_REPLY
+id|conntrack-&gt;status
 )paren
 op_logical_and
 id|tcph-&gt;rst

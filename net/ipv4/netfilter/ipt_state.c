@@ -192,16 +192,9 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* NULL if ip_conntrack not a module */
-r_if
-c_cond
-(paren
-id|ip_conntrack_module
-)paren
-id|__MOD_INC_USE_COUNT
+id|need_ip_conntrack
 c_func
 (paren
-id|ip_conntrack_module
 )paren
 suffix:semicolon
 r_return
@@ -228,17 +221,6 @@ c_func
 (paren
 op_amp
 id|state_match
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ip_conntrack_module
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|ip_conntrack_module
 )paren
 suffix:semicolon
 )brace

@@ -4369,12 +4369,8 @@ id|do_gettimeofday
 c_func
 (paren
 op_amp
-id|vcc-&gt;timestamp
-)paren
-suffix:semicolon
 id|skb-&gt;stamp
-op_assign
-id|vcc-&gt;timestamp
+)paren
 suffix:semicolon
 macro_line|#ifdef FORE200E_52BYTE_AAL0_SDU
 r_if

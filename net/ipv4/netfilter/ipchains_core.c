@@ -6136,21 +6136,8 @@ id|offset
 comma
 r_int
 id|length
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,29)
-comma
-r_int
-id|reset
-macro_line|#endif
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
-multiline_comment|/* FIXME: No more `atomic&squot; read and reset.  Wonderful 8-( --RR */
-r_int
-id|reset
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|ip_chain
 op_star
@@ -6366,28 +6353,6 @@ r_goto
 id|outside
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|reset
-)paren
-id|memset
-c_func
-(paren
-id|j-&gt;counters
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|ip_counters
-)paren
-op_star
-id|NUM_SLOTS
-)paren
-suffix:semicolon
 )brace
 )brace
 id|outside

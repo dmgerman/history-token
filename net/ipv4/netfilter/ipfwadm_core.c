@@ -3774,9 +3774,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|reset
 )paren
 (brace
 id|off_t
@@ -4104,26 +4101,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Not possible in 2.3.29+, also allowing read lock instead of write -- JM */
-macro_line|#if 0
-r_else
-r_if
-c_cond
-(paren
-id|reset
-)paren
-(brace
-multiline_comment|/* This needs to be done at this specific place! */
-id|i-&gt;fw_pcnt
-op_assign
-l_int|0L
-suffix:semicolon
-id|i-&gt;fw_bcnt
-op_assign
-l_int|0L
-suffix:semicolon
-)brace
-macro_line|#endif
 id|last_len
 op_assign
 id|len
@@ -4198,21 +4175,8 @@ id|offset
 comma
 r_int
 id|length
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,29)
-comma
-r_int
-id|reset
-macro_line|#endif
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
-multiline_comment|/* FIXME: No more `atomic&squot; read and reset.  Wonderful 8-( --RR */
-r_int
-id|reset
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ip_chain_procinfo
 c_func
@@ -4226,8 +4190,6 @@ comma
 id|offset
 comma
 id|length
-comma
-id|reset
 )paren
 suffix:semicolon
 )brace
@@ -4253,21 +4215,8 @@ id|offset
 comma
 r_int
 id|length
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,29)
-comma
-r_int
-id|reset
-macro_line|#endif
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
-multiline_comment|/* FIXME: No more `atomic&squot; read and reset.  Wonderful 8-( --RR */
-r_int
-id|reset
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ip_chain_procinfo
 c_func
@@ -4281,8 +4230,6 @@ comma
 id|offset
 comma
 id|length
-comma
-id|reset
 )paren
 suffix:semicolon
 )brace
@@ -4306,21 +4253,8 @@ id|offset
 comma
 r_int
 id|length
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,29)
-comma
-r_int
-id|reset
-macro_line|#endif
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
-multiline_comment|/* FIXME: No more `atomic&squot; read and reset.  Wonderful 8-( --RR */
-r_int
-id|reset
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ip_chain_procinfo
 c_func
@@ -4334,8 +4268,6 @@ comma
 id|offset
 comma
 id|length
-comma
-id|reset
 )paren
 suffix:semicolon
 )brace
@@ -4359,21 +4291,8 @@ id|offset
 comma
 r_int
 id|length
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,29)
-comma
-r_int
-id|reset
-macro_line|#endif
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
-multiline_comment|/* FIXME: No more `atomic&squot; read and reset.  Wonderful 8-( --RR */
-r_int
-id|reset
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ip_chain_procinfo
 c_func
@@ -4387,8 +4306,6 @@ comma
 id|offset
 comma
 id|length
-comma
-id|reset
 )paren
 suffix:semicolon
 )brace
