@@ -215,11 +215,6 @@ id|file
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|register_ioctl32_conversion
-mdefine_line|#define register_ioctl32_conversion(a,b)&t;do{}while(0)
-DECL|macro|unregister_ioctl32_conversion
-mdefine_line|#define unregister_ioctl32_conversion(a)&t;do{}while(0)
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
