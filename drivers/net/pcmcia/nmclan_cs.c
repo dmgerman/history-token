@@ -1142,7 +1142,7 @@ id|mace_private
 op_star
 id|lp
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 comma
 r_int
@@ -1257,7 +1257,7 @@ id|mace_private
 op_star
 id|lp
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 comma
 r_int
@@ -1367,7 +1367,7 @@ id|mace_private
 op_star
 id|lp
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 comma
 r_char
@@ -1715,7 +1715,7 @@ id|last_ret
 comma
 id|last_fn
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 id|DEBUG
@@ -2714,7 +2714,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -2790,7 +2790,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3057,7 +3057,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3257,7 +3257,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3786,7 +3786,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -4521,7 +4521,7 @@ r_void
 id|update_stats
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 comma
 r_struct
@@ -5062,7 +5062,7 @@ id|ladrf
 op_assign
 id|lp-&gt;multicast_ladrf
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5428,7 +5428,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr

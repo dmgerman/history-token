@@ -137,7 +137,7 @@ id|speed
 suffix:semicolon
 DECL|member|start
 DECL|member|stop
-id|ioaddr_t
+id|kio_addr_t
 id|start
 comma
 id|stop
@@ -529,14 +529,14 @@ id|Attributes
 suffix:semicolon
 DECL|member|BasePort
 DECL|member|NumPorts
-id|ioaddr_t
+id|kio_addr_t
 id|BasePort
 comma
 id|NumPorts
 suffix:semicolon
 DECL|member|InUse
 DECL|member|Config
-id|ioaddr_t
+id|kio_addr_t
 id|InUse
 comma
 id|Config
@@ -715,7 +715,7 @@ id|u_int
 id|map_size
 suffix:semicolon
 DECL|member|io_offset
-id|ioaddr_t
+id|kio_addr_t
 id|io_offset
 suffix:semicolon
 DECL|member|pci_irq

@@ -2748,7 +2748,7 @@ id|lines
 r_int
 id|i
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 r_try
 comma
 id|align
@@ -2800,7 +2800,7 @@ id|s
 comma
 l_int|0
 comma
-l_string|&quot;odd IO request: num %04x align %04x&bslash;n&quot;
+l_string|&quot;odd IO request: num %#x align %#lx&bslash;n&quot;
 comma
 id|num
 comma
@@ -2850,7 +2850,7 @@ id|s
 comma
 l_int|0
 comma
-l_string|&quot;odd IO request: base %04x align %04x&bslash;n&quot;
+l_string|&quot;odd IO request: base %#x align %#lx&bslash;n&quot;
 comma
 op_star
 id|base

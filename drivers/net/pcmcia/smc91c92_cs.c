@@ -707,7 +707,7 @@ r_void
 id|mdio_sync
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 )paren
 suffix:semicolon
@@ -2144,12 +2144,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iouart
 op_assign
 id|link-&gt;io.BasePort2
@@ -2270,7 +2270,7 @@ id|dev
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -2854,7 +2854,7 @@ op_assign
 id|link-&gt;priv
 suffix:semicolon
 r_static
-id|ioaddr_t
+id|kio_addr_t
 id|com
 (braket
 l_int|4
@@ -3311,7 +3311,7 @@ id|dev
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3610,7 +3610,7 @@ id|j
 comma
 id|rev
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 id|u_long
@@ -5019,7 +5019,7 @@ r_void
 id|mdio_sync
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 )paren
 (brace
@@ -5079,7 +5079,7 @@ r_int
 id|loc
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 op_assign
 id|dev-&gt;base_addr
@@ -5253,7 +5253,7 @@ r_int
 id|value
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 op_assign
 id|dev-&gt;base_addr
@@ -5397,7 +5397,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5692,7 +5692,7 @@ op_assign
 op_amp
 id|smc-&gt;link
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5828,7 +5828,7 @@ id|skb
 op_assign
 id|smc-&gt;saved_skb
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6114,7 +6114,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6197,7 +6197,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6471,7 +6471,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6683,7 +6683,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -6862,7 +6862,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 id|u_short
@@ -7481,7 +7481,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -7914,7 +7914,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -8229,7 +8229,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -8391,7 +8391,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -8780,7 +8780,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -9421,7 +9421,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -9495,7 +9495,7 @@ id|ecmd
 id|u16
 id|tmp
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -9608,7 +9608,7 @@ id|ecmd
 id|u16
 id|tmp
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -9828,7 +9828,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -9934,7 +9934,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -10035,7 +10035,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -10161,7 +10161,7 @@ op_amp
 id|CFG_MII_SELECT
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -10311,7 +10311,7 @@ suffix:semicolon
 id|u16
 id|saved_bank
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr

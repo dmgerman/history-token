@@ -118,7 +118,7 @@ r_int
 id|number
 suffix:semicolon
 DECL|member|ioaddr
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 DECL|member|mapaddr
@@ -1136,7 +1136,7 @@ comma
 id|ulong
 id|mapaddr
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 )paren
 (brace
@@ -2025,7 +2025,7 @@ c_func
 l_int|3
 comma
 l_string|&quot;m32r-pcc: SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx)&bslash;n&quot;
 comma
 id|sock
 comma
@@ -2101,7 +2101,7 @@ c_func
 l_int|3
 comma
 l_string|&quot;m32r-pcc: SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#5.5lx,  %#5.5x)&bslash;n&quot;
+l_string|&quot;%#lx,  %#x)&bslash;n&quot;
 comma
 id|sock
 comma

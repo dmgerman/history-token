@@ -77,6 +77,7 @@ multiline_comment|/* The base port address of the TCIC-2 chip */
 DECL|variable|tcic_base
 r_static
 r_int
+r_int
 id|tcic_base
 op_assign
 id|TCIC_BASE
@@ -154,7 +155,7 @@ c_func
 (paren
 id|tcic_base
 comma
-r_int
+id|ulong
 comma
 l_int|0444
 )paren
@@ -354,7 +355,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_getb(%#x) = %#x&bslash;n&quot;
+l_string|&quot;tcic_getb(%#lx) = %#x&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -392,7 +393,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_getw(%#x) = %#x&bslash;n&quot;
+l_string|&quot;tcic_getw(%#lx) = %#x&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -422,7 +423,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_setb(%#x, %#x)&bslash;n&quot;
+l_string|&quot;tcic_setb(%#lx, %#x)&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -459,7 +460,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_setw(%#x, %#x)&bslash;n&quot;
+l_string|&quot;tcic_setw(%#lx, %#x)&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -4152,7 +4153,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx)&bslash;n&quot;
 comma
 id|psock
 comma
@@ -4434,7 +4435,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#5.5lx-%#5.5lx, %#5.5x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx, %#x)&bslash;n&quot;
 comma
 id|psock
 comma

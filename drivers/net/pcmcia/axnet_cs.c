@@ -216,7 +216,7 @@ r_int
 id|mdio_read
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 comma
 r_int
@@ -231,7 +231,7 @@ r_void
 id|mdio_write
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 comma
 r_int
@@ -844,7 +844,7 @@ id|dev
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -2399,7 +2399,7 @@ r_void
 id|mdio_sync
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 )paren
 (brace
@@ -2447,7 +2447,7 @@ r_int
 id|mdio_read
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 comma
 r_int
@@ -2611,7 +2611,7 @@ r_void
 id|mdio_write
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|addr
 comma
 r_int
@@ -2953,7 +2953,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|nic_base
 op_assign
 id|dev-&gt;base_addr
@@ -3150,12 +3150,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|nic_base
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|mii_addr
 op_assign
 id|nic_base
@@ -3531,7 +3531,7 @@ op_star
 op_amp
 id|rq-&gt;ifr_ifru
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|mii_addr
 op_assign
 id|dev-&gt;base_addr
@@ -3655,7 +3655,7 @@ r_int
 id|ring_page
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|nic_base
 op_assign
 id|dev-&gt;base_addr
@@ -3745,7 +3745,7 @@ r_int
 id|ring_offset
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|nic_base
 op_assign
 id|dev-&gt;base_addr
@@ -3892,7 +3892,7 @@ r_int
 id|start_page
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|nic_base
 op_assign
 id|dev-&gt;base_addr

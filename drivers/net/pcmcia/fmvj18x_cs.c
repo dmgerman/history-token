@@ -955,7 +955,7 @@ comma
 id|ret
 suffix:semicolon
 r_static
-id|ioaddr_t
+id|kio_addr_t
 id|serial_base
 (braket
 l_int|5
@@ -1059,7 +1059,7 @@ id|link
 r_int
 id|ret
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 multiline_comment|/*&n;&t;Ungermann-Bass Access/CARD accepts 0x300,0x320,0x340,0x360&n;&t;0x380,0x3c0 only for ioport.&n;    */
@@ -1181,7 +1181,7 @@ id|last_ret
 comma
 id|ret
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 id|cardtype_t
@@ -2734,7 +2734,7 @@ id|dev
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 multiline_comment|/* Allocate a small memory window */
@@ -3309,7 +3309,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 r_int
@@ -3590,7 +3590,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3812,7 +3812,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -4142,7 +4142,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -4575,7 +4575,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5224,7 +5224,7 @@ op_assign
 op_amp
 id|lp-&gt;link
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5363,7 +5363,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
