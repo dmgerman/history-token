@@ -7429,6 +7429,11 @@ id|zr
 op_assign
 id|fh-&gt;zr
 suffix:semicolon
+multiline_comment|/* CAREFUL: used in multiple places here */
+r_struct
+id|zoran_jpg_settings
+id|settings
+suffix:semicolon
 multiline_comment|/* we might have older buffers lying around... We don&squot;t want&n;&t; * to wait, but we do want to try cleaning them up ASAP. So&n;&t; * we try to obtain the lock and free them. If that fails, we&n;&t; * don&squot;t do anything and wait for the next turn. In the end,&n;&t; * zoran_close() or a new allocation will still free them...&n;&t; * This is just a &squot;the sooner the better&squot; extra &squot;feature&squot;&n;&t; *&n;&t; * We don&squot;t free the buffers right on munmap() because that&n;&t; * causes oopses (kfree() inside munmap() oopses for no&n;&t; * apparent reason - it&squot;s also not reproduceable in any way,&n;&t; * but moving the free code outside the munmap() handler fixes&n;&t; * all this... If someone knows why, please explain me (Ronald)&n;&t; */
 r_if
 c_cond
@@ -9072,10 +9077,6 @@ op_star
 id|bparams
 op_assign
 id|arg
-suffix:semicolon
-r_struct
-id|zoran_jpg_settings
-id|settings
 suffix:semicolon
 r_int
 id|res
@@ -10775,10 +10776,6 @@ op_eq
 id|V4L2_PIX_FMT_MJPEG
 )paren
 (brace
-r_struct
-id|zoran_jpg_settings
-id|settings
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -14751,8 +14748,6 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|zoran_jpg_settings
 id|settings
 op_assign
 id|fh-&gt;jpg_settings
@@ -15031,16 +15026,14 @@ id|params
 op_assign
 id|arg
 suffix:semicolon
-r_struct
-id|zoran_jpg_settings
-id|settings
-op_assign
-id|fh-&gt;jpg_settings
-suffix:semicolon
 r_int
 id|res
 op_assign
 l_int|0
+suffix:semicolon
+id|settings
+op_assign
+id|fh-&gt;jpg_settings
 suffix:semicolon
 id|dprintk
 c_func
@@ -15373,8 +15366,6 @@ op_eq
 id|V4L2_PIX_FMT_MJPEG
 )paren
 (brace
-r_struct
-id|zoran_jpg_settings
 id|settings
 op_assign
 id|fh-&gt;jpg_settings
