@@ -6975,6 +6975,34 @@ id|ac97_quirks
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
+l_int|0x4161
+comma
+dot
+id|codec_id
+op_assign
+l_int|0x56494161
+comma
+multiline_comment|/* VT1612A */
+dot
+id|name
+op_assign
+l_string|&quot;Soltek SL-75DRV5&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_NONE
+)brace
+comma
+(brace
 multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
