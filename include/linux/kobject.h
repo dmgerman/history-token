@@ -32,6 +32,11 @@ id|kobject
 op_star
 id|parent
 suffix:semicolon
+DECL|member|dir
+r_struct
+id|sysfs_dir
+id|dir
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
