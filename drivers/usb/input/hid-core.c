@@ -6140,6 +6140,10 @@ DECL|macro|USB_VENDOR_ID_TANGTOP
 mdefine_line|#define USB_VENDOR_ID_TANGTOP          0x0d3d
 DECL|macro|USB_DEVICE_ID_TANGTOP_USBPS2
 mdefine_line|#define USB_DEVICE_ID_TANGTOP_USBPS2   0x0001
+DECL|macro|USB_VENDOR_ID_ESSENTIAL_REALITY
+mdefine_line|#define USB_VENDOR_ID_ESSENTIAL_REALITY&t;0x0d7f
+DECL|macro|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
+mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5&t;0x0100
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6507,6 +6511,14 @@ comma
 id|USB_DEVICE_ID_TANGTOP_USBPS2
 comma
 id|HID_QUIRK_NOGET
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ESSENTIAL_REALITY
+comma
+id|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
+comma
+id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace

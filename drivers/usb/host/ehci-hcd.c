@@ -1797,16 +1797,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: suspend to %d&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;suspend to %d&bslash;n&quot;
 comma
 id|state
 )paren
@@ -1871,16 +1866,11 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: suspend port %d&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;suspend port %d&quot;
 comma
 id|i
 )paren
@@ -1961,16 +1951,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: resume&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;resume&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ports
@@ -2040,16 +2025,11 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: resume port %d&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;resume port %d&quot;
 comma
 id|i
 )paren
@@ -2928,16 +2908,13 @@ id|flags
 suffix:semicolon
 multiline_comment|/* ASSERT:  no requests/urbs are still linked (so no TDs) */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: free_config devnum %d&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;free_config %s devnum %d&bslash;n&quot;
+comma
+id|udev-&gt;devpath
 comma
 id|udev-&gt;devnum
 )paren
@@ -3095,8 +3072,10 @@ id|QH_STATE_IDLE
 r_goto
 id|idle
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
+id|ehci
+comma
 l_string|&quot;free_config, async ep 0x%02x qh %p&quot;
 comma
 id|i
