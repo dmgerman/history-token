@@ -203,6 +203,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|variable|dev_list
+r_static
 id|dev_link_t
 op_star
 id|dev_list
@@ -248,7 +249,7 @@ id|nsh_t
 suffix:semicolon
 multiline_comment|/* Nokia Specific Header */
 DECL|macro|NSHL
-mdefine_line|#define NSHL  4    /* Nokia Specific Header Length */
+mdefine_line|#define NSHL  4&t;&t;&t;&t;/* Nokia Specific Header Length */
 multiline_comment|/* ======================== Interrupt handling ======================== */
 DECL|function|dtl1_write
 r_static
@@ -2726,7 +2727,7 @@ l_int|0
 dot
 id|len
 suffix:semicolon
-multiline_comment|/*yo*/
+multiline_comment|/*yo */
 id|link-&gt;io.IOAddrLines
 op_assign
 id|cf-&gt;io.flags
@@ -2879,6 +2880,14 @@ l_int|0
 )paren
 r_goto
 id|failed
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;node.dev_name
+comma
+id|info-&gt;hdev.name
+)paren
 suffix:semicolon
 id|link-&gt;dev
 op_assign
