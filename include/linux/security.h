@@ -5922,7 +5922,7 @@ suffix:semicolon
 multiline_comment|/* prototypes */
 r_extern
 r_int
-id|security_scaffolding_startup
+id|security_init
 (paren
 r_void
 )paren

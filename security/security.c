@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-DECL|macro|SECURITY_SCAFFOLD_VERSION
-mdefine_line|#define SECURITY_SCAFFOLD_VERSION&t;&quot;1.0.0&quot;
+DECL|macro|SECURITY_FRAMEWORK_VERSION
+mdefine_line|#define SECURITY_FRAMEWORK_VERSION&t;&quot;1.0.0&quot;
 multiline_comment|/* things that live in dummy.c */
 r_extern
 r_struct
@@ -113,11 +113,12 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * security_scaffolding_startup - initializes the security scaffolding framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
-DECL|function|security_scaffolding_startup
+multiline_comment|/**&n; * security_init - initializes the security framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
+DECL|function|security_init
 r_int
 id|__init
-id|security_scaffolding_startup
+id|security_init
+c_func
 (paren
 r_void
 )paren
@@ -125,8 +126,8 @@ r_void
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;Security Scaffold v&quot;
-id|SECURITY_SCAFFOLD_VERSION
+l_string|&quot;Security Framework v&quot;
+id|SECURITY_FRAMEWORK_VERSION
 l_string|&quot; initialized&bslash;n&quot;
 )paren
 suffix:semicolon
