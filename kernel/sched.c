@@ -5380,6 +5380,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rt_task
+c_func
+(paren
+id|next
+)paren
+op_logical_and
 id|next-&gt;activated
 OG
 l_int|0
