@@ -4495,6 +4495,16 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* ignore lock owners */
+r_if
+c_cond
+(paren
+id|stq-&gt;st_stateowner-&gt;so_is_open_owner
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
