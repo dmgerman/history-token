@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;base.h&quot;
 id|MODULE_AUTHOR
@@ -24,6 +25,16 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|FW_STATUS_LOADING
+id|FW_STATUS_LOADING
+comma
+DECL|enumerator|FW_STATUS_ABORT
+id|FW_STATUS_ABORT
+comma
+)brace
 suffix:semicolon
 DECL|variable|loading_timeout
 r_static
@@ -60,13 +71,10 @@ id|firmware
 op_star
 id|fw
 suffix:semicolon
-DECL|member|loading
+DECL|member|status
 r_int
-id|loading
-suffix:semicolon
-DECL|member|abort
 r_int
-m_abort
+id|status
 suffix:semicolon
 DECL|member|alloc_size
 r_int
@@ -92,11 +100,14 @@ op_star
 id|fw_priv
 )paren
 (brace
-id|fw_priv
-op_member_access_from_pointer
-m_abort
-op_assign
-l_int|1
+id|set_bit
+c_func
+(paren
+id|FW_STATUS_ABORT
+comma
+op_amp
+id|fw_priv-&gt;status
+)paren
 suffix:semicolon
 id|wmb
 c_func
@@ -376,6 +387,18 @@ c_func
 id|class_dev
 )paren
 suffix:semicolon
+r_int
+id|loading
+op_assign
+id|test_bit
+c_func
+(paren
+id|FW_STATUS_LOADING
+comma
+op_amp
+id|fw_priv-&gt;status
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -384,7 +407,7 @@ id|buf
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|fw_priv-&gt;loading
+id|loading
 )paren
 suffix:semicolon
 )brace
@@ -421,11 +444,7 @@ id|class_dev
 )paren
 suffix:semicolon
 r_int
-id|prev_loading
-op_assign
-id|fw_priv-&gt;loading
-suffix:semicolon
-id|fw_priv-&gt;loading
+id|loading
 op_assign
 id|simple_strtol
 c_func
@@ -440,7 +459,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|fw_priv-&gt;loading
+id|loading
 )paren
 (brace
 r_case
@@ -464,6 +483,15 @@ id|fw_priv-&gt;alloc_size
 op_assign
 l_int|0
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|FW_STATUS_LOADING
+comma
+op_amp
+id|fw_priv-&gt;status
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -472,9 +500,14 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|prev_loading
-op_eq
-l_int|1
+id|test_bit
+c_func
+(paren
+id|FW_STATUS_LOADING
+comma
+op_amp
+id|fw_priv-&gt;status
+)paren
 )paren
 (brace
 id|complete
@@ -482,6 +515,15 @@ c_func
 (paren
 op_amp
 id|fw_priv-&gt;completion
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|FW_STATUS_LOADING
+comma
+op_amp
+id|fw_priv-&gt;status
 )paren
 suffix:semicolon
 r_break
@@ -498,7 +540,7 @@ l_string|&quot;%s: unexpected value (%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|fw_priv-&gt;loading
+id|loading
 )paren
 suffix:semicolon
 multiline_comment|/* fallthrough */
@@ -1523,9 +1565,14 @@ c_cond
 id|fw_priv-&gt;fw-&gt;size
 op_logical_and
 op_logical_neg
-id|fw_priv
-op_member_access_from_pointer
-m_abort
+id|test_bit
+c_func
+(paren
+id|FW_STATUS_ABORT
+comma
+op_amp
+id|fw_priv-&gt;status
+)paren
 )paren
 (brace
 op_star
