@@ -776,62 +776,122 @@ DECL|macro|R_PPC_NUM
 mdefine_line|#define R_PPC_NUM&t;&t;37
 multiline_comment|/* s390 relocations defined by the ABIs */
 DECL|macro|R_390_NONE
-mdefine_line|#define R_390_NONE&t;0&t;       /* No reloc.  */
+mdefine_line|#define R_390_NONE&t;&t;0&t;/* No reloc.  */
 DECL|macro|R_390_8
-mdefine_line|#define R_390_8&t;&t;1&t;       /* Direct 8 bit.&t; */
+mdefine_line|#define R_390_8&t;&t;&t;1&t;/* Direct 8 bit.  */
 DECL|macro|R_390_12
-mdefine_line|#define R_390_12&t;2&t;       /* Direct 12 bit.  */
+mdefine_line|#define R_390_12&t;&t;2&t;/* Direct 12 bit.  */
 DECL|macro|R_390_16
-mdefine_line|#define R_390_16&t;3&t;       /* Direct 16 bit.  */
+mdefine_line|#define R_390_16&t;&t;3&t;/* Direct 16 bit.  */
 DECL|macro|R_390_32
-mdefine_line|#define R_390_32&t;4&t;       /* Direct 32 bit.  */
+mdefine_line|#define R_390_32&t;&t;4&t;/* Direct 32 bit.  */
 DECL|macro|R_390_PC32
-mdefine_line|#define R_390_PC32&t;5&t;       /* PC relative 32 bit.  */
+mdefine_line|#define R_390_PC32&t;&t;5&t;/* PC relative 32 bit.&t;*/
 DECL|macro|R_390_GOT12
-mdefine_line|#define R_390_GOT12&t;6&t;       /* 12 bit GOT offset.  */
+mdefine_line|#define R_390_GOT12&t;&t;6&t;/* 12 bit GOT offset.  */
 DECL|macro|R_390_GOT32
-mdefine_line|#define R_390_GOT32&t;7&t;       /* 32 bit GOT offset.  */
+mdefine_line|#define R_390_GOT32&t;&t;7&t;/* 32 bit GOT offset.  */
 DECL|macro|R_390_PLT32
-mdefine_line|#define R_390_PLT32&t;8&t;       /* 32 bit PC relative PLT address.  */
+mdefine_line|#define R_390_PLT32&t;&t;8&t;/* 32 bit PC relative PLT address.  */
 DECL|macro|R_390_COPY
-mdefine_line|#define R_390_COPY&t;9&t;       /* Copy symbol at runtime.  */
+mdefine_line|#define R_390_COPY&t;&t;9&t;/* Copy symbol at runtime.  */
 DECL|macro|R_390_GLOB_DAT
-mdefine_line|#define R_390_GLOB_DAT&t;10&t;       /* Create GOT entry.  */
+mdefine_line|#define R_390_GLOB_DAT&t;&t;10&t;/* Create GOT entry.  */
 DECL|macro|R_390_JMP_SLOT
-mdefine_line|#define R_390_JMP_SLOT&t;11&t;       /* Create PLT entry.  */
+mdefine_line|#define R_390_JMP_SLOT&t;&t;11&t;/* Create PLT entry.  */
 DECL|macro|R_390_RELATIVE
-mdefine_line|#define R_390_RELATIVE&t;12&t;       /* Adjust by program base.  */
-DECL|macro|R_390_GOTOFF
-mdefine_line|#define R_390_GOTOFF&t;13&t;       /* 32 bit offset to GOT.&t; */
+mdefine_line|#define R_390_RELATIVE&t;&t;12&t;/* Adjust by program base.  */
+DECL|macro|R_390_GOTOFF32
+mdefine_line|#define R_390_GOTOFF32&t;&t;13&t;/* 32 bit offset to GOT.&t; */
 DECL|macro|R_390_GOTPC
-mdefine_line|#define R_390_GOTPC&t;14&t;       /* 32 bit PC relative offset to GOT.  */
+mdefine_line|#define R_390_GOTPC&t;&t;14&t;/* 32 bit PC rel. offset to GOT.  */
 DECL|macro|R_390_GOT16
-mdefine_line|#define R_390_GOT16&t;15&t;       /* 16 bit GOT offset.  */
+mdefine_line|#define R_390_GOT16&t;&t;15&t;/* 16 bit GOT offset.  */
 DECL|macro|R_390_PC16
-mdefine_line|#define R_390_PC16&t;16&t;       /* PC relative 16 bit.  */
+mdefine_line|#define R_390_PC16&t;&t;16&t;/* PC relative 16 bit.&t;*/
 DECL|macro|R_390_PC16DBL
-mdefine_line|#define R_390_PC16DBL&t;17&t;       /* PC relative 16 bit shifted by 1.  */
+mdefine_line|#define R_390_PC16DBL&t;&t;17&t;/* PC relative 16 bit shifted by 1.  */
 DECL|macro|R_390_PLT16DBL
-mdefine_line|#define R_390_PLT16DBL&t;18&t;       /* 16 bit PC rel. PLT shifted by 1.  */
+mdefine_line|#define R_390_PLT16DBL&t;&t;18&t;/* 16 bit PC rel. PLT shifted by 1.  */
 DECL|macro|R_390_PC32DBL
-mdefine_line|#define R_390_PC32DBL&t;19&t;       /* PC relative 32 bit shifted by 1.  */
+mdefine_line|#define R_390_PC32DBL&t;&t;19&t;/* PC relative 32 bit shifted by 1.  */
 DECL|macro|R_390_PLT32DBL
-mdefine_line|#define R_390_PLT32DBL&t;20&t;       /* 32 bit PC rel. PLT shifted by 1.  */
+mdefine_line|#define R_390_PLT32DBL&t;&t;20&t;/* 32 bit PC rel. PLT shifted by 1.  */
 DECL|macro|R_390_GOTPCDBL
-mdefine_line|#define R_390_GOTPCDBL&t;21&t;       /* 32 bit PC rel. GOT shifted by 1.  */
+mdefine_line|#define R_390_GOTPCDBL&t;&t;21&t;/* 32 bit PC rel. GOT shifted by 1.  */
 DECL|macro|R_390_64
-mdefine_line|#define R_390_64&t;22&t;       /* Direct 64 bit.  */
+mdefine_line|#define R_390_64&t;&t;22&t;/* Direct 64 bit.  */
 DECL|macro|R_390_PC64
-mdefine_line|#define R_390_PC64&t;23&t;       /* PC relative 64 bit.  */
+mdefine_line|#define R_390_PC64&t;&t;23&t;/* PC relative 64 bit.&t;*/
 DECL|macro|R_390_GOT64
-mdefine_line|#define R_390_GOT64&t;24&t;       /* 64 bit GOT offset.  */
+mdefine_line|#define R_390_GOT64&t;&t;24&t;/* 64 bit GOT offset.  */
 DECL|macro|R_390_PLT64
-mdefine_line|#define R_390_PLT64&t;25&t;       /* 64 bit PC relative PLT address.  */
+mdefine_line|#define R_390_PLT64&t;&t;25&t;/* 64 bit PC relative PLT address.  */
 DECL|macro|R_390_GOTENT
-mdefine_line|#define R_390_GOTENT&t;26&t;       /* 32 bit PC rel. to GOT entry &gt;&gt; 1. */
+mdefine_line|#define R_390_GOTENT&t;&t;26&t;/* 32 bit PC rel. to GOT entry &gt;&gt; 1. */
+DECL|macro|R_390_GOTOFF16
+mdefine_line|#define R_390_GOTOFF16&t;&t;27&t;/* 16 bit offset to GOT. */
+DECL|macro|R_390_GOTOFF64
+mdefine_line|#define R_390_GOTOFF64&t;&t;28&t;/* 64 bit offset to GOT. */
+DECL|macro|R_390_GOTPLT12
+mdefine_line|#define R_390_GOTPLT12&t;&t;29&t;/* 12 bit offset to jump slot.&t;*/
+DECL|macro|R_390_GOTPLT16
+mdefine_line|#define R_390_GOTPLT16&t;&t;30&t;/* 16 bit offset to jump slot.&t;*/
+DECL|macro|R_390_GOTPLT32
+mdefine_line|#define R_390_GOTPLT32&t;&t;31&t;/* 32 bit offset to jump slot.&t;*/
+DECL|macro|R_390_GOTPLT64
+mdefine_line|#define R_390_GOTPLT64&t;&t;32&t;/* 64 bit offset to jump slot.&t;*/
+DECL|macro|R_390_GOTPLTENT
+mdefine_line|#define R_390_GOTPLTENT&t;&t;33&t;/* 32 bit rel. offset to jump slot.  */
+DECL|macro|R_390_PLTOFF16
+mdefine_line|#define R_390_PLTOFF16&t;&t;34&t;/* 16 bit offset from GOT to PLT. */
+DECL|macro|R_390_PLTOFF32
+mdefine_line|#define R_390_PLTOFF32&t;&t;35&t;/* 32 bit offset from GOT to PLT. */
+DECL|macro|R_390_PLTOFF64
+mdefine_line|#define R_390_PLTOFF64&t;&t;36&t;/* 16 bit offset from GOT to PLT. */
+DECL|macro|R_390_TLS_LOAD
+mdefine_line|#define R_390_TLS_LOAD&t;&t;37&t;/* Tag for load insn in TLS code. */
+DECL|macro|R_390_TLS_GDCALL
+mdefine_line|#define R_390_TLS_GDCALL&t;38&t;/* Tag for function call in general&n;                                           dynamic TLS code.  */
+DECL|macro|R_390_TLS_LDCALL
+mdefine_line|#define R_390_TLS_LDCALL&t;39&t;/* Tag for function call in local&n;                                           dynamic TLS code.  */
+DECL|macro|R_390_TLS_GD32
+mdefine_line|#define R_390_TLS_GD32&t;&t;40&t;/* Direct 32 bit for general dynamic&n;                                           thread local data.  */
+DECL|macro|R_390_TLS_GD64
+mdefine_line|#define R_390_TLS_GD64&t;&t;41&t;/* Direct 64 bit for general dynamic&n;                                           thread local data.  */
+DECL|macro|R_390_TLS_GOTIE12
+mdefine_line|#define R_390_TLS_GOTIE12&t;42&t;/* 12 bit GOT offset for static TLS&n;                                           block offset.  */
+DECL|macro|R_390_TLS_GOTIE32
+mdefine_line|#define R_390_TLS_GOTIE32&t;43&t;/* 32 bit GOT offset for static TLS&n;                                           block offset.  */
+DECL|macro|R_390_TLS_GOTIE64
+mdefine_line|#define R_390_TLS_GOTIE64&t;44&t;/* 64 bit GOT offset for static TLS&n;                                           block offset.  */
+DECL|macro|R_390_TLS_LDM32
+mdefine_line|#define R_390_TLS_LDM32&t;&t;45&t;/* Direct 32 bit for local dynamic&n;                                           thread local data in LD code.  */
+DECL|macro|R_390_TLS_LDM64
+mdefine_line|#define R_390_TLS_LDM64&t;&t;46&t;/* Direct 64 bit for local dynamic&n;                                           thread local data in LD code.  */
+DECL|macro|R_390_TLS_IE32
+mdefine_line|#define R_390_TLS_IE32&t;&t;47&t;/* 32 bit address of GOT entry for&n;                                           negated static TLS block offset.  */
+DECL|macro|R_390_TLS_IE64
+mdefine_line|#define R_390_TLS_IE64&t;&t;48&t;/* 64 bit address of GOT entry for&n;                                           negated static TLS block offset.  */
+DECL|macro|R_390_TLS_IEENT
+mdefine_line|#define R_390_TLS_IEENT&t;&t;49&t;/* 32 bit rel. offset to GOT entry for&n;                                           negated static TLS block offset.  */
+DECL|macro|R_390_TLS_LE32
+mdefine_line|#define R_390_TLS_LE32&t;&t;50&t;/* 32 bit negated offset relative to&n;                                           static TLS block.  */
+DECL|macro|R_390_TLS_LE64
+mdefine_line|#define R_390_TLS_LE64&t;&t;51&t;/* 64 bit negated offset relative to&n;                                           static TLS block.  */
+DECL|macro|R_390_TLS_LDO32
+mdefine_line|#define R_390_TLS_LDO32&t;&t;52&t;/* 32 bit offset relative to TLS&n;                                           block.  */
+DECL|macro|R_390_TLS_LDO64
+mdefine_line|#define R_390_TLS_LDO64&t;&t;53&t;/* 64 bit offset relative to TLS&n;                                           block.  */
+DECL|macro|R_390_TLS_DTPMOD
+mdefine_line|#define R_390_TLS_DTPMOD&t;54&t;/* ID of module containing symbol.  */
+DECL|macro|R_390_TLS_DTPOFF
+mdefine_line|#define R_390_TLS_DTPOFF&t;55&t;/* Offset in TLS block.  */
+DECL|macro|R_390_TLS_TPOFF
+mdefine_line|#define R_390_TLS_TPOFF&t;&t;56&t;/* Negate offset in static TLS&n;                                           block.  */
 multiline_comment|/* Keep this the last entry.  */
 DECL|macro|R_390_NUM
-mdefine_line|#define R_390_NUM&t;27
+mdefine_line|#define R_390_NUM&t;57
 multiline_comment|/* x86-64 relocation types */
 DECL|macro|R_X86_64_NONE
 mdefine_line|#define R_X86_64_NONE&t;&t;0&t;/* No reloc */
@@ -867,64 +927,6 @@ DECL|macro|R_X86_64_PC8
 mdefine_line|#define R_X86_64_PC8&t;&t;15&t;/* 8 bit sign extended pc relative */
 DECL|macro|R_X86_64_NUM
 mdefine_line|#define R_X86_64_NUM&t;&t;16
-multiline_comment|/* s390 relocations defined by the ABIs */
-DECL|macro|R_390_NONE
-mdefine_line|#define R_390_NONE&t;0&t;       /* No reloc.  */
-DECL|macro|R_390_8
-mdefine_line|#define R_390_8&t;&t;1&t;       /* Direct 8 bit.&t; */
-DECL|macro|R_390_12
-mdefine_line|#define R_390_12&t;2&t;       /* Direct 12 bit.  */
-DECL|macro|R_390_16
-mdefine_line|#define R_390_16&t;3&t;       /* Direct 16 bit.  */
-DECL|macro|R_390_32
-mdefine_line|#define R_390_32&t;4&t;       /* Direct 32 bit.  */
-DECL|macro|R_390_PC32
-mdefine_line|#define R_390_PC32&t;5&t;       /* PC relative 32 bit.  */
-DECL|macro|R_390_GOT12
-mdefine_line|#define R_390_GOT12&t;6&t;       /* 12 bit GOT offset.  */
-DECL|macro|R_390_GOT32
-mdefine_line|#define R_390_GOT32&t;7&t;       /* 32 bit GOT offset.  */
-DECL|macro|R_390_PLT32
-mdefine_line|#define R_390_PLT32&t;8&t;       /* 32 bit PC relative PLT address.  */
-DECL|macro|R_390_COPY
-mdefine_line|#define R_390_COPY&t;9&t;       /* Copy symbol at runtime.  */
-DECL|macro|R_390_GLOB_DAT
-mdefine_line|#define R_390_GLOB_DAT&t;10&t;       /* Create GOT entry.  */
-DECL|macro|R_390_JMP_SLOT
-mdefine_line|#define R_390_JMP_SLOT&t;11&t;       /* Create PLT entry.  */
-DECL|macro|R_390_RELATIVE
-mdefine_line|#define R_390_RELATIVE&t;12&t;       /* Adjust by program base.  */
-DECL|macro|R_390_GOTOFF
-mdefine_line|#define R_390_GOTOFF&t;13&t;       /* 32 bit offset to GOT.&t; */
-DECL|macro|R_390_GOTPC
-mdefine_line|#define R_390_GOTPC&t;14&t;       /* 32 bit PC relative offset to GOT.  */
-DECL|macro|R_390_GOT16
-mdefine_line|#define R_390_GOT16&t;15&t;       /* 16 bit GOT offset.  */
-DECL|macro|R_390_PC16
-mdefine_line|#define R_390_PC16&t;16&t;       /* PC relative 16 bit.  */
-DECL|macro|R_390_PC16DBL
-mdefine_line|#define R_390_PC16DBL&t;17&t;       /* PC relative 16 bit shifted by 1.  */
-DECL|macro|R_390_PLT16DBL
-mdefine_line|#define R_390_PLT16DBL&t;18&t;       /* 16 bit PC rel. PLT shifted by 1.  */
-DECL|macro|R_390_PC32DBL
-mdefine_line|#define R_390_PC32DBL&t;19&t;       /* PC relative 32 bit shifted by 1.  */
-DECL|macro|R_390_PLT32DBL
-mdefine_line|#define R_390_PLT32DBL&t;20&t;       /* 32 bit PC rel. PLT shifted by 1.  */
-DECL|macro|R_390_GOTPCDBL
-mdefine_line|#define R_390_GOTPCDBL&t;21&t;       /* 32 bit PC rel. GOT shifted by 1.  */
-DECL|macro|R_390_64
-mdefine_line|#define R_390_64&t;22&t;       /* Direct 64 bit.  */
-DECL|macro|R_390_PC64
-mdefine_line|#define R_390_PC64&t;23&t;       /* PC relative 64 bit.  */
-DECL|macro|R_390_GOT64
-mdefine_line|#define R_390_GOT64&t;24&t;       /* 64 bit GOT offset.  */
-DECL|macro|R_390_PLT64
-mdefine_line|#define R_390_PLT64&t;25&t;       /* 64 bit PC relative PLT address.  */
-DECL|macro|R_390_GOTENT
-mdefine_line|#define R_390_GOTENT&t;26&t;       /* 32 bit PC rel. to GOT entry &gt;&gt; 1. */
-multiline_comment|/* Keep this the last entry.  */
-DECL|macro|R_390_NUM
-mdefine_line|#define R_390_NUM&t;27
 multiline_comment|/* Legal values for e_flags field of Elf64_Ehdr.  */
 DECL|macro|EF_ALPHA_32BIT
 mdefine_line|#define EF_ALPHA_32BIT&t;&t;1&t;/* All addresses are below 2GB */

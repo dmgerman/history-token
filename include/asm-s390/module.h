@@ -2,26 +2,69 @@ macro_line|#ifndef _ASM_S390_MODULE_H
 DECL|macro|_ASM_S390_MODULE_H
 mdefine_line|#define _ASM_S390_MODULE_H
 multiline_comment|/*&n; * This file contains the s390 architecture specific module code.&n; */
+DECL|struct|mod_arch_syminfo
+r_struct
+id|mod_arch_syminfo
+(brace
+DECL|member|got_offset
+r_int
+r_int
+id|got_offset
+suffix:semicolon
+DECL|member|plt_offset
+r_int
+r_int
+id|plt_offset
+suffix:semicolon
+DECL|member|got_initialized
+r_int
+id|got_initialized
+suffix:semicolon
+DECL|member|plt_initialized
+r_int
+id|plt_initialized
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
 (brace
-DECL|member|module_got
-DECL|member|module_plt
-r_void
-op_star
-id|module_got
-comma
-op_star
-id|module_plt
+multiline_comment|/* Starting offset of got in the module core memory. */
+DECL|member|got_offset
+r_int
+r_int
+id|got_offset
 suffix:semicolon
+multiline_comment|/* Starting offset of plt in the module core memory. */
+DECL|member|plt_offset
+r_int
+r_int
+id|plt_offset
+suffix:semicolon
+multiline_comment|/* Size of the got. */
 DECL|member|got_size
-DECL|member|plt_size
 r_int
 r_int
 id|got_size
-comma
+suffix:semicolon
+multiline_comment|/* Size of the plt. */
+DECL|member|plt_size
+r_int
+r_int
 id|plt_size
+suffix:semicolon
+multiline_comment|/* Number of symbols in syminfo. */
+DECL|member|nsyms
+r_int
+id|nsyms
+suffix:semicolon
+multiline_comment|/* Additional symbol information (got and plt offsets). */
+DECL|member|syminfo
+r_struct
+id|mod_arch_syminfo
+op_star
+id|syminfo
 suffix:semicolon
 )brace
 suffix:semicolon
