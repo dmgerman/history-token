@@ -8612,7 +8612,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_bdev
 comma
 id|blocks
 comma
@@ -8644,8 +8644,10 @@ id|iovec
 (braket
 )braket
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 id|sector_t
 id|b
@@ -8776,7 +8778,7 @@ id|rw
 comma
 id|iobuf
 comma
-id|dev
+id|bdev
 comma
 id|b
 (braket

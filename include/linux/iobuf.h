@@ -282,8 +282,10 @@ id|iovec
 (braket
 )braket
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 id|sector_t
 (braket
@@ -306,8 +308,10 @@ id|kiobuf
 op_star
 id|kio
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 id|sector_t
 id|block
