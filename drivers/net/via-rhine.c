@@ -2756,6 +2756,9 @@ comma
 macro_line|#ifdef USE_MMIO
 id|memaddr
 macro_line|#else
+(paren
+r_int
+)paren
 id|ioaddr
 macro_line|#endif
 )paren
