@@ -19,8 +19,8 @@ DECL|macro|_PAGE_FAKE_SUPER
 mdefine_line|#define _PAGE_FAKE_SUPER 0x200&t;/* fake supervisor only on 680[23]0 */
 DECL|macro|_PAGE_GLOBAL040
 mdefine_line|#define _PAGE_GLOBAL040&t;0x400&t;/* 68040 global bit, used for kva descs */
-DECL|macro|_PAGE_COW
-mdefine_line|#define _PAGE_COW&t;0x800&t;/* implemented in software */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x800&t;/* pagecache or swap? */
 DECL|macro|_PAGE_NOCACHE030
 mdefine_line|#define _PAGE_NOCACHE030 0x040&t;/* 68030 no-cache mode */
 DECL|macro|_PAGE_NOCACHE
@@ -408,6 +408,27 @@ id|pte
 )paren
 op_amp
 id|_PAGE_ACCESSED
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
@@ -1002,6 +1023,96 @@ id|ptep
 suffix:semicolon
 )brace
 )brace
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;29
+DECL|function|pte_to_pgoff
+r_static
+r_inline
+r_int
+r_int
+id|pte_to_pgoff
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+(paren
+id|pte.pte
+op_rshift
+l_int|12
+)paren
+op_lshift
+l_int|7
+)paren
+op_plus
+(paren
+(paren
+id|pte.pte
+op_rshift
+l_int|2
+)paren
+op_amp
+l_int|0x1ff
+)paren
+suffix:semicolon
+)brace
+DECL|function|pgoff_to_pte
+r_static
+r_inline
+id|pte_t
+id|pgoff_to_pte
+c_func
+(paren
+r_inline
+r_int
+id|off
+)paren
+(brace
+id|pte_t
+id|pte
+op_assign
+(brace
+(paren
+(paren
+id|off
+op_rshift
+l_int|7
+)paren
+op_lshift
+l_int|12
+)paren
+op_plus
+(paren
+(paren
+id|off
+op_amp
+l_int|0x1ff
+)paren
+op_lshift
+l_int|2
+)paren
+op_plus
+id|_PAGE_FILE
+)brace
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
+multiline_comment|/* Encode and de-code a swap entry (must be !pte_none(e) &amp;&amp; !pte_present(e)) */
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 2) &amp; 0x1ff)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 12)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 12) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
 macro_line|#endif&t;/* !__ASSEMBLY__ */
 macro_line|#endif /* _MOTOROLA_PGTABLE_H */
 eof
