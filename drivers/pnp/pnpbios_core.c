@@ -171,9 +171,9 @@ l_string|&quot;.previous&t;&t;&bslash;n&quot;
 )paren
 suffix:semicolon
 DECL|macro|Q_SET_SEL
-mdefine_line|#define Q_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;_set_limit(&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
+mdefine_line|#define Q_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;set_limit(&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
 DECL|macro|Q2_SET_SEL
-mdefine_line|#define Q2_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;_set_limit((char *)&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
+mdefine_line|#define Q2_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;set_limit(&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
 multiline_comment|/*&n; * At some point we want to use this stack frame pointer to unwind&n; * after PnP BIOS oopses. &n; */
 DECL|variable|pnp_bios_fault_esp
 id|u32
