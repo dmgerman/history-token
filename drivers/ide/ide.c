@@ -7503,8 +7503,8 @@ id|__initdata
 id|probe_umc8672
 suffix:semicolon
 r_extern
-r_void
-id|init_umc8672
+r_int
+id|umc8672_init
 c_func
 (paren
 r_void
@@ -10686,7 +10686,10 @@ c_cond
 (paren
 id|probe_umc8672
 )paren
-id|init_umc8672
+(paren
+r_void
+)paren
+id|umc8672_init
 c_func
 (paren
 )paren
