@@ -852,6 +852,10 @@ id|mm-&gt;mmap_cache
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mm-&gt;free_area_cache
+op_assign
+id|TASK_UNMAPPED_BASE
+suffix:semicolon
 id|mm-&gt;map_count
 op_assign
 l_int|0
@@ -1252,6 +1256,10 @@ comma
 op_star
 id|mm
 )paren
+suffix:semicolon
+id|mm-&gt;free_area_cache
+op_assign
+id|TASK_UNMAPPED_BASE
 suffix:semicolon
 id|mm-&gt;pgd
 op_assign
