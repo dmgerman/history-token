@@ -318,7 +318,7 @@ c_func
 id|ac97_quirk
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,default:-1&quot;
+l_string|&quot;,allows:{{-1,3}},dialog:list,default:-1&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
