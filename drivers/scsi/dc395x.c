@@ -2360,6 +2360,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n; ---------------------------------------------------------------------------*/
 multiline_comment|/**&n; * list_size - Returns the size (in number of entries) of the&n; * supplied list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; **/
+r_static
 DECL|function|list_size
 r_int
 r_int
@@ -2398,6 +2399,7 @@ id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dcb_get_next - Given a dcb return the next dcb in the list of&n; * dcb&squot;s, wrapping back to the start of the dcb list if required.&n; * Returns the supplied dcb if there is only one dcb in the list.&n; *&n; * @head: The pointer to the head of the list to count the items in.&n; * @pos: The pointer the dcb for which we are searching for the&n; *       following dcb.&n; **/
+r_static
 DECL|function|dcb_get_next
 r_struct
 id|DeviceCtlBlk
