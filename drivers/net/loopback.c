@@ -623,8 +623,6 @@ op_or
 id|NETIF_F_NO_CSUM
 op_or
 id|NETIF_F_HIGHDMA
-op_or
-id|NETIF_F_TSO
 comma
 )brace
 suffix:semicolon

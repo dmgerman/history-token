@@ -750,7 +750,7 @@ op_ge
 l_int|12
 )paren
 (brace
-multiline_comment|/* we choose the lastest default router if it&n;&t;&t;&t;&t; * is in (probably) reachable state.&n;&t;&t;&t;&t; * If route changed, we should do pmtu&n;&t;&t;&t;&t; * discovery. --yoshfuji&n;&t;&t;&t;&t; */
+multiline_comment|/* we choose the last default router if it&n;&t;&t;&t;&t; * is in (probably) reachable state.&n;&t;&t;&t;&t; * If route changed, we should do pmtu&n;&t;&t;&t;&t; * discovery. --yoshfuji&n;&t;&t;&t;&t; */
 r_break
 suffix:semicolon
 )brace
@@ -2080,6 +2080,11 @@ id|neighbour
 op_star
 id|neigh
 comma
+r_struct
+id|in6_addr
+op_star
+id|addr
+comma
 r_int
 (paren
 op_star
@@ -2138,6 +2143,17 @@ c_func
 id|neigh
 )paren
 suffix:semicolon
+r_else
+id|neigh
+op_assign
+id|ndisc_get_neigh
+c_func
+(paren
+id|dev
+comma
+id|addr
+)paren
+suffix:semicolon
 id|rt-&gt;rt6i_dev
 op_assign
 id|dev
@@ -2153,8 +2169,6 @@ suffix:semicolon
 id|rt-&gt;rt6i_flags
 op_assign
 id|RTF_LOCAL
-op_or
-id|RTF_NDISC
 suffix:semicolon
 id|rt-&gt;rt6i_metric
 op_assign
@@ -3189,9 +3203,6 @@ suffix:semicolon
 id|rt-&gt;rt6i_flags
 op_assign
 id|rtmsg-&gt;rtmsg_flags
-op_amp
-op_complement
-id|RTF_NDISC
 suffix:semicolon
 id|install_route
 suffix:colon
@@ -4409,14 +4420,6 @@ op_assign
 id|ip6_dst_alloc
 c_func
 (paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|ort-&gt;rt6i_flags
-op_amp
-id|RTF_NDISC
 )paren
 suffix:semicolon
 r_if

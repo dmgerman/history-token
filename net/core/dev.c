@@ -5340,6 +5340,12 @@ id|skb-&gt;nh.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+id|skb-&gt;mac_len
+op_assign
+id|skb-&gt;nh.raw
+op_minus
+id|skb-&gt;mac.raw
+suffix:semicolon
 id|pt_prev
 op_assign
 l_int|NULL
