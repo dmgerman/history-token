@@ -1220,7 +1220,7 @@ mdefine_line|#define PCI_DEVICE_ID_HP_DIVA_EVEREST&t;0x1282
 DECL|macro|PCI_DEVICE_ID_HP_DIVA_AUX
 mdefine_line|#define PCI_DEVICE_ID_HP_DIVA_AUX&t;0x1290
 DECL|macro|PCI_DEVICE_ID_HP_CISS
-mdefine_line|#define PCI_DEVICE_ID_HP_CISS&t;&t;0x3211
+mdefine_line|#define PCI_DEVICE_ID_HP_CISS&t;&t;0x3210
 DECL|macro|PCI_VENDOR_ID_PCTECH
 mdefine_line|#define PCI_VENDOR_ID_PCTECH&t;&t;0x1042
 DECL|macro|PCI_DEVICE_ID_PCTECH_RZ1000
