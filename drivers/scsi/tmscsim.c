@@ -8234,7 +8234,7 @@ suffix:semicolon
 id|UCHAR
 id|irq
 suffix:semicolon
-id|UINT
+id|ULONG
 id|io_port
 suffix:semicolon
 singleline_comment|//dc390_pSHT_start = psht;
