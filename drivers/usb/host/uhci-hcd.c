@@ -96,6 +96,7 @@ suffix:semicolon
 multiline_comment|/* urb_priv */
 r_static
 r_int
+r_int
 id|uhci_get_current_frame_number
 c_func
 (paren
@@ -452,8 +453,12 @@ id|framenum
 )paren
 (brace
 id|framenum
-op_mod_assign
+op_and_assign
+(paren
 id|UHCI_NUMFRAMES
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|td-&gt;frame
 op_assign
@@ -4629,31 +4634,24 @@ c_cond
 (paren
 id|limits
 )paren
-(brace
-r_int
-id|curframe
-suffix:semicolon
-id|curframe
+id|urb-&gt;start_frame
 op_assign
+(paren
 id|uhci_get_current_frame_number
 c_func
 (paren
 id|uhci
 )paren
-op_mod
-id|UHCI_NUMFRAMES
-suffix:semicolon
-id|urb-&gt;start_frame
-op_assign
-(paren
-id|curframe
 op_plus
 l_int|10
 )paren
-op_mod
+op_amp
+(paren
 id|UHCI_NUMFRAMES
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-)brace
 r_else
 id|urb-&gt;start_frame
 op_assign
@@ -4663,8 +4661,12 @@ suffix:semicolon
 r_else
 (brace
 id|urb-&gt;start_frame
-op_mod_assign
+op_and_assign
+(paren
 id|UHCI_NUMFRAMES
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* FIXME: Sanity check */
 )brace
@@ -6248,6 +6250,7 @@ suffix:semicolon
 multiline_comment|/*&n; * uhci_get_current_frame_number()&n; *&n; * returns the current frame number for a USB bus/controller.&n; */
 DECL|function|uhci_get_current_frame_number
 r_static
+r_int
 r_int
 id|uhci_get_current_frame_number
 c_func
