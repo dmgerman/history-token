@@ -3117,9 +3117,11 @@ suffix:semicolon
 multiline_comment|/* to remeber the register values */
 id|ice-&gt;akm
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 id|akm4xxx_t

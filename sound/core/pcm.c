@@ -3994,12 +3994,15 @@ id|EAGAIN
 suffix:semicolon
 id|runtime
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|snd_pcm_runtime_t
+op_star
+id|runtime
 )paren
 comma
 id|GFP_KERNEL

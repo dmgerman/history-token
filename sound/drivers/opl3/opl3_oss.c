@@ -964,13 +964,11 @@ id|fm_xinstrument_t
 suffix:semicolon
 id|put
 op_assign
-(paren
-id|snd_seq_instr_header_t
-op_star
-)paren
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 id|size
 comma
 id|GFP_KERNEL

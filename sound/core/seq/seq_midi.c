@@ -1532,12 +1532,15 @@ l_int|1
 suffix:semicolon
 id|client
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|seq_midisynth_client_t
+op_star
+id|client
 )paren
 comma
 id|GFP_KERNEL
@@ -1660,15 +1663,15 @@ suffix:semicolon
 multiline_comment|/* use the first device&squot;s name */
 id|msynth
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+id|ports
+comma
 r_sizeof
 (paren
 id|seq_midisynth_t
 )paren
-op_star
-id|ports
 comma
 id|GFP_KERNEL
 )paren

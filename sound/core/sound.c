@@ -1902,6 +1902,13 @@ c_func
 id|snd_hidden_kmalloc
 )paren
 suffix:semicolon
+DECL|variable|snd_hidden_kcalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_hidden_kcalloc
+)paren
+suffix:semicolon
 DECL|variable|snd_hidden_kfree
 id|EXPORT_SYMBOL
 c_func
@@ -1945,13 +1952,6 @@ id|snd_magic_kfree
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|snd_kcalloc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_kcalloc
-)paren
-suffix:semicolon
 DECL|variable|snd_kmalloc_strdup
 id|EXPORT_SYMBOL
 c_func

@@ -378,12 +378,15 @@ suffix:semicolon
 multiline_comment|/* create a new port */
 id|new_port
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|client_port_t
+op_star
+id|new_port
 )paren
 comma
 id|GFP_KERNEL
@@ -1969,9 +1972,11 @@ id|exclusive
 suffix:semicolon
 id|subs
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star

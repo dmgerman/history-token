@@ -725,12 +725,15 @@ suffix:semicolon
 multiline_comment|/* init client data */
 id|client
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|client_t
+op_star
+id|client
 )paren
 comma
 id|GFP_KERNEL

@@ -206,13 +206,11 @@ id|xp
 suffix:semicolon
 id|wp
 op_assign
-(paren
-id|gf1_wave_t
-op_star
-)paren
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star

@@ -1384,9 +1384,11 @@ id|err
 suffix:semicolon
 id|data32
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star
@@ -1398,9 +1400,11 @@ id|GFP_KERNEL
 suffix:semicolon
 id|data
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star

@@ -1167,9 +1167,11 @@ r_else
 (brace
 id|dmab
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star
