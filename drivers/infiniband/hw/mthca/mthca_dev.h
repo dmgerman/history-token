@@ -816,6 +816,12 @@ r_struct
 id|mthca_uar
 id|driver_uar
 suffix:semicolon
+DECL|member|db_tab
+r_struct
+id|mthca_db_table
+op_star
+id|db_tab
+suffix:semicolon
 DECL|member|driver_pd
 r_struct
 id|mthca_pd

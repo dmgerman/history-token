@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (c) 2005 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id$&n; */
 macro_line|#include &quot;mthca_dev.h&quot;
+macro_line|#include &quot;mthca_memfree.h&quot;
 DECL|function|mthca_uar_alloc
 r_int
 id|mthca_uar_alloc
@@ -114,6 +115,34 @@ comma
 id|dev-&gt;limits.reserved_uars
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|mthca_init_db_tab
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|mthca_alloc_cleanup
+c_func
+(paren
+op_amp
+id|dev-&gt;uar_table.alloc
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -129,6 +158,12 @@ op_star
 id|dev
 )paren
 (brace
+id|mthca_cleanup_db_tab
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* XXX check if any UARs are still allocated? */
 id|mthca_alloc_cleanup
 c_func
