@@ -583,7 +583,7 @@ id|sparc_ebus_dmas
 id|count
 )braket
 dot
-id|info
+id|info.lock
 )paren
 suffix:semicolon
 id|sparc_ebus_dmas
