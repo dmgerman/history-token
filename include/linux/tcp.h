@@ -796,6 +796,11 @@ id|__u16
 id|ext_header_len
 suffix:semicolon
 multiline_comment|/* Network protocol overhead (IP/IPv6 options) */
+DECL|member|ext2_header_len
+id|__u16
+id|ext2_header_len
+suffix:semicolon
+multiline_comment|/* Options depending on route */
 DECL|member|ca_state
 id|__u8
 id|ca_state

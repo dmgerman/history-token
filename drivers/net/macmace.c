@@ -1424,6 +1424,10 @@ op_star
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|mp-&gt;rx_ring
 )paren
 suffix:semicolon
@@ -1437,6 +1441,10 @@ op_star
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|mp-&gt;tx_ring
 )paren
 suffix:semicolon

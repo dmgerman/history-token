@@ -1964,6 +1964,9 @@ id|parent_scb
 comma
 r_int
 id|scb_child_type
+comma
+r_int
+id|pass_through
 )paren
 (brace
 id|dsp_spos_instance_t
@@ -2204,6 +2207,48 @@ comma
 l_int|32
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pass_through
+)paren
+(brace
+multiline_comment|/* wont work with any other rate than&n;&t;&t;&t;   the native DSP rate */
+id|snd_assert
+(paren
+id|rate
+op_assign
+l_int|48000
+)paren
+suffix:semicolon
+id|scb
+op_assign
+id|cs46xx_dsp_create_generic_scb
+c_func
+(paren
+id|chip
+comma
+id|scb_name
+comma
+(paren
+id|u32
+op_star
+)paren
+op_amp
+id|src_task_scb
+comma
+id|dest
+comma
+l_string|&quot;DMAREADER&quot;
+comma
+id|parent_scb
+comma
+id|scb_child_type
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|scb
 op_assign
 id|_dsp_create_generic_scb
@@ -2229,6 +2274,7 @@ comma
 id|scb_child_type
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|scb
@@ -2748,15 +2794,18 @@ id|RSCONFIG_MODULO_16
 comma
 l_int|0
 comma
+multiline_comment|/* 0xD */
 l_int|0
 comma
 id|input_scb-&gt;address
 comma
 (brace
+multiline_comment|/* 0xE */
 l_int|0x8000
 comma
 l_int|0x8000
 comma
+multiline_comment|/* 0xF */
 l_int|0x8000
 comma
 l_int|0x8000
@@ -3734,7 +3783,7 @@ id|src_parent_scb
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*dsp_scb_descriptor_t * pcm_parent_scb;*/
+multiline_comment|/* dsp_scb_descriptor_t * pcm_parent_scb; */
 r_char
 id|scb_name
 (braket
@@ -3755,6 +3804,10 @@ id|src_index
 op_assign
 op_minus
 l_int|1
+comma
+id|pass_through
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -3839,9 +3892,10 @@ id|snd_printdd
 l_string|&quot;IEC958 pass through&bslash;n&quot;
 )paren
 suffix:semicolon
-id|src_parent_scb
+multiline_comment|/* Hack to bypass creating a new SRC */
+id|pass_through
 op_assign
-id|ins-&gt;asynch_tx_scb
+l_int|1
 suffix:semicolon
 )brace
 r_break
@@ -4088,14 +4142,6 @@ multiline_comment|/* we need to create a new SRC SCB */
 r_if
 c_cond
 (paren
-id|src_parent_scb
-op_eq
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|mixer_scb-&gt;sub_list_ptr
 op_eq
 id|ins-&gt;the_null_scb
@@ -4127,12 +4173,6 @@ op_assign
 id|SCB_ON_PARENT_NEXT_SCB
 suffix:semicolon
 )brace
-)brace
-r_else
-id|insert_point
-op_assign
-id|SCB_ON_PARENT_NEXT_SCB
-suffix:semicolon
 id|snprintf
 (paren
 id|scb_name
@@ -4185,6 +4225,8 @@ comma
 id|src_parent_scb
 comma
 id|insert_point
+comma
+id|pass_through
 )paren
 suffix:semicolon
 r_if
@@ -4281,45 +4323,6 @@ l_string|&quot;dsp_spos: failed to create PCMreaderSCB&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pcm_channel_id
-op_eq
-id|DSP_IEC958_CHANNEL
-op_logical_and
-id|sample_rate
-op_eq
-l_int|48000
-)paren
-(brace
-id|snd_assert
-(paren
-id|ins-&gt;spdif_pcm_input_scb
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* a hack to make the skip the SRC and pass the stream &n;&t;&t;   directly to the SPDIF task */
-id|ins-&gt;spdif_pcm_input_scb
-op_assign
-id|cs46xx_dsp_create_pcm_serial_input_scb
-c_func
-(paren
-id|chip
-comma
-l_string|&quot;PCMSerialInput_PCM&quot;
-comma
-id|PCMSERIALINII_SCB_ADDR
-comma
-id|pcm_scb
-comma
-id|ins-&gt;asynch_tx_scb
-comma
-id|SCB_ON_PARENT_SUBLIST_SCB
-)paren
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -5360,7 +5363,7 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* don&squot;t touch anything if SPDIF is open */
+multiline_comment|/* dont touch anything if SPDIF is open */
 r_if
 c_cond
 (paren
@@ -5506,7 +5509,7 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-multiline_comment|/* don&squot;t touch anything if SPDIF is open */
+multiline_comment|/* dont touch anything if SPDIF is open */
 r_if
 c_cond
 (paren
@@ -5652,9 +5655,12 @@ multiline_comment|/* if not enabled already */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|ins-&gt;spdif_status_out
 op_amp
 id|DSP_SPDIF_STATUS_HW_ENABLED
+)paren
 )paren
 (brace
 id|cs46xx_dsp_enable_spdif_hw

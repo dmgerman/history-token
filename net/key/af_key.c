@@ -4327,6 +4327,10 @@ id|key
 op_ne
 l_int|NULL
 op_logical_and
+id|sa-&gt;sadb_sa_auth
+op_ne
+id|SADB_X_AALG_NULL
+op_logical_and
 (paren
 (paren
 id|key-&gt;sadb_key_bits

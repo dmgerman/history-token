@@ -8576,7 +8576,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|IRQ_AMIGA_VERTB
+id|IRQ_AMIGA_COPPER
 comma
 id|amifb_interrupt
 comma

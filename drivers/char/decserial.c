@@ -105,7 +105,7 @@ macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 multiline_comment|/* serial_console_init handles the special case of starting&n; *   up the console on the serial port&n; */
 DECL|function|decserial_console_init
 r_static
-r_void
+r_int
 id|__init
 id|decserial_console_init
 c_func
@@ -146,6 +146,9 @@ c_func
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|decserial_console_init
 id|console_initcall

@@ -70,6 +70,9 @@ macro_line|#else
 DECL|macro|MAX_HEADER
 mdefine_line|#define MAX_HEADER (LL_MAX_HEADER + 48)
 macro_line|#endif
+multiline_comment|/* Reserve 16byte aligned hard_header_len, but at least 16.&n; * Alternative is: dev-&gt;hard_header_len ? (dev-&gt;hard_header_len + 15)&amp;~15 : 0&n; */
+DECL|macro|LL_RESERVED_SPACE
+mdefine_line|#define LL_RESERVED_SPACE(dev) (((dev)-&gt;hard_header_len&amp;~15) + 16)
 multiline_comment|/*&n; *&t;Network device statistics. Akin to the 2.0 ether stats but&n; *&t;with byte counters.&n; */
 DECL|struct|net_device_stats
 r_struct
@@ -818,8 +821,6 @@ DECL|macro|NETIF_F_NO_CSUM
 mdefine_line|#define NETIF_F_NO_CSUM&t;&t;4&t;/* Does not require checksum. F.e. loopack. */
 DECL|macro|NETIF_F_HW_CSUM
 mdefine_line|#define NETIF_F_HW_CSUM&t;&t;8&t;/* Can checksum all the packets. */
-DECL|macro|NETIF_F_DYNALLOC
-mdefine_line|#define NETIF_F_DYNALLOC&t;16&t;/* Self-dectructable device. */
 DECL|macro|NETIF_F_HIGHDMA
 mdefine_line|#define NETIF_F_HIGHDMA&t;&t;32&t;/* Can DMA to high memory. */
 DECL|macro|NETIF_F_FRAGLIST
@@ -1423,6 +1424,38 @@ r_const
 r_char
 op_star
 id|name
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|net_device
+op_star
+id|dev_get_by_flags
+c_func
+(paren
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|mask
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|net_device
+op_star
+id|__dev_get_by_flags
+c_func
+(paren
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|mask
 )paren
 suffix:semicolon
 r_extern

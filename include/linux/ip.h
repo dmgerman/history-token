@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_IP_H
 DECL|macro|_LINUX_IP_H
 mdefine_line|#define _LINUX_IP_H
 macro_line|#include &lt;asm/byteorder.h&gt;
-multiline_comment|/* SOL_IP socket options */
 DECL|macro|IPTOS_TOS_MASK
 mdefine_line|#define IPTOS_TOS_MASK&t;&t;0x1E
 DECL|macro|IPTOS_TOS
@@ -81,7 +80,6 @@ DECL|macro|MAXTTL
 mdefine_line|#define MAXTTL&t;&t;255
 DECL|macro|IPDEFTTL
 mdefine_line|#define IPDEFTTL&t;64
-multiline_comment|/* struct timestamp, struct route and MAX_ROUTES are removed.&n;&n;   REASONS: it is clear that nobody used them because:&n;   - MAX_ROUTES value was wrong.&n;   - &quot;struct route&quot; was wrong.&n;   - &quot;struct timestamp&quot; had fatally misaligned bitfields and was completely unusable.&n; */
 DECL|macro|IPOPT_OPTVAL
 mdefine_line|#define IPOPT_OPTVAL 0
 DECL|macro|IPOPT_OLEN

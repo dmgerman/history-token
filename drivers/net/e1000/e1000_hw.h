@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 multiline_comment|/* e1000_hw.h&n; * Structures, enums, and macros for the MAC&n; */
 macro_line|#ifndef _E1000_HW_H_
 DECL|macro|_E1000_HW_H_
@@ -42,11 +42,37 @@ comma
 DECL|enumerator|e1000_82546
 id|e1000_82546
 comma
+DECL|enumerator|e1000_82541
+id|e1000_82541
+comma
+DECL|enumerator|e1000_82547
+id|e1000_82547
+comma
 DECL|enumerator|e1000_num_macs
 id|e1000_num_macs
 DECL|typedef|e1000_mac_type
 )brace
 id|e1000_mac_type
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_eeprom_uninitialized
+id|e1000_eeprom_uninitialized
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_eeprom_spi
+id|e1000_eeprom_spi
+comma
+DECL|enumerator|e1000_eeprom_microwire
+id|e1000_eeprom_microwire
+comma
+DECL|enumerator|e1000_num_eeprom_types
+id|e1000_num_eeprom_types
+DECL|typedef|e1000_eeprom_type
+)brace
+id|e1000_eeprom_type
 suffix:semicolon
 multiline_comment|/* Media Types */
 r_typedef
@@ -221,6 +247,102 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
+DECL|enumerator|e1000_igp_cable_length_10
+id|e1000_igp_cable_length_10
+op_assign
+l_int|10
+comma
+DECL|enumerator|e1000_igp_cable_length_20
+id|e1000_igp_cable_length_20
+op_assign
+l_int|20
+comma
+DECL|enumerator|e1000_igp_cable_length_30
+id|e1000_igp_cable_length_30
+op_assign
+l_int|30
+comma
+DECL|enumerator|e1000_igp_cable_length_40
+id|e1000_igp_cable_length_40
+op_assign
+l_int|40
+comma
+DECL|enumerator|e1000_igp_cable_length_50
+id|e1000_igp_cable_length_50
+op_assign
+l_int|50
+comma
+DECL|enumerator|e1000_igp_cable_length_60
+id|e1000_igp_cable_length_60
+op_assign
+l_int|60
+comma
+DECL|enumerator|e1000_igp_cable_length_70
+id|e1000_igp_cable_length_70
+op_assign
+l_int|70
+comma
+DECL|enumerator|e1000_igp_cable_length_80
+id|e1000_igp_cable_length_80
+op_assign
+l_int|80
+comma
+DECL|enumerator|e1000_igp_cable_length_90
+id|e1000_igp_cable_length_90
+op_assign
+l_int|90
+comma
+DECL|enumerator|e1000_igp_cable_length_100
+id|e1000_igp_cable_length_100
+op_assign
+l_int|100
+comma
+DECL|enumerator|e1000_igp_cable_length_110
+id|e1000_igp_cable_length_110
+op_assign
+l_int|110
+comma
+DECL|enumerator|e1000_igp_cable_length_120
+id|e1000_igp_cable_length_120
+op_assign
+l_int|120
+comma
+DECL|enumerator|e1000_igp_cable_length_130
+id|e1000_igp_cable_length_130
+op_assign
+l_int|130
+comma
+DECL|enumerator|e1000_igp_cable_length_140
+id|e1000_igp_cable_length_140
+op_assign
+l_int|140
+comma
+DECL|enumerator|e1000_igp_cable_length_150
+id|e1000_igp_cable_length_150
+op_assign
+l_int|150
+comma
+DECL|enumerator|e1000_igp_cable_length_160
+id|e1000_igp_cable_length_160
+op_assign
+l_int|160
+comma
+DECL|enumerator|e1000_igp_cable_length_170
+id|e1000_igp_cable_length_170
+op_assign
+l_int|170
+comma
+DECL|enumerator|e1000_igp_cable_length_180
+id|e1000_igp_cable_length_180
+op_assign
+l_int|180
+DECL|typedef|e1000_igp_cable_length
+)brace
+id|e1000_igp_cable_length
+suffix:semicolon
+r_typedef
+r_enum
+(brace
 DECL|enumerator|e1000_10bt_ext_dist_enable_normal
 id|e1000_10bt_ext_dist_enable_normal
 op_assign
@@ -255,6 +377,25 @@ l_int|0xFF
 DECL|typedef|e1000_rev_polarity
 )brace
 id|e1000_rev_polarity
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_downshift_normal
+id|e1000_downshift_normal
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_downshift_activated
+id|e1000_downshift_activated
+comma
+DECL|enumerator|e1000_downshift_undefined
+id|e1000_downshift_undefined
+op_assign
+l_int|0xFF
+DECL|typedef|e1000_downshift
+)brace
+id|e1000_downshift
 suffix:semicolon
 r_typedef
 r_enum
@@ -319,6 +460,25 @@ DECL|typedef|e1000_1000t_rx_status
 )brace
 id|e1000_1000t_rx_status
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_phy_m88
+id|e1000_phy_m88
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_phy_igp
+id|e1000_phy_igp
+comma
+DECL|enumerator|e1000_phy_undefined
+id|e1000_phy_undefined
+op_assign
+l_int|0xFF
+DECL|typedef|e1000_phy_type
+)brace
+id|e1000_phy_type
+suffix:semicolon
 DECL|struct|e1000_phy_info
 r_struct
 id|e1000_phy_info
@@ -334,6 +494,10 @@ suffix:semicolon
 DECL|member|cable_polarity
 id|e1000_rev_polarity
 id|cable_polarity
+suffix:semicolon
+DECL|member|downshift
+id|e1000_downshift
+id|downshift
 suffix:semicolon
 DECL|member|polarity_correction
 id|e1000_polarity_reversal
@@ -367,6 +531,36 @@ id|receive_errors
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|e1000_eeprom_info
+r_struct
+id|e1000_eeprom_info
+(brace
+DECL|member|type
+id|e1000_eeprom_type
+id|type
+suffix:semicolon
+DECL|member|word_size
+r_uint16
+id|word_size
+suffix:semicolon
+DECL|member|opcode_bits
+r_uint16
+id|opcode_bits
+suffix:semicolon
+DECL|member|address_bits
+r_uint16
+id|address_bits
+suffix:semicolon
+DECL|member|delay_usec
+r_uint16
+id|delay_usec
+suffix:semicolon
+DECL|member|page_size
+r_uint16
+id|page_size
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Error Codes */
 DECL|macro|E1000_SUCCESS
 mdefine_line|#define E1000_SUCCESS      0
@@ -380,6 +574,8 @@ DECL|macro|E1000_ERR_PARAM
 mdefine_line|#define E1000_ERR_PARAM    4
 DECL|macro|E1000_ERR_MAC_TYPE
 mdefine_line|#define E1000_ERR_MAC_TYPE 5
+DECL|macro|E1000_ERR_PHY_TYPE
+mdefine_line|#define E1000_ERR_PHY_TYPE 6
 multiline_comment|/* Function prototypes */
 multiline_comment|/* Initialization */
 r_void
@@ -571,6 +767,78 @@ id|phy_info
 )paren
 suffix:semicolon
 r_int32
+id|e1000_phy_m88_get_info
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_struct
+id|e1000_phy_info
+op_star
+id|phy_info
+)paren
+suffix:semicolon
+r_int32
+id|e1000_phy_igp_get_info
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_struct
+id|e1000_phy_info
+op_star
+id|phy_info
+)paren
+suffix:semicolon
+r_int32
+id|e1000_get_cable_length
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint16
+op_star
+id|min_length
+comma
+r_uint16
+op_star
+id|max_length
+)paren
+suffix:semicolon
+r_int32
+id|e1000_check_polarity
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint16
+op_star
+id|polarity
+)paren
+suffix:semicolon
+r_int32
+id|e1000_check_downshift
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_int32
 id|e1000_validate_mdi_setting
 c_func
 (paren
@@ -581,6 +849,16 @@ id|hw
 )paren
 suffix:semicolon
 multiline_comment|/* EEPROM Functions */
+r_void
+id|e1000_init_eeprom_params
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
 r_int32
 id|e1000_read_eeprom
 c_func
@@ -592,6 +870,9 @@ id|hw
 comma
 r_uint16
 id|reg
+comma
+r_uint16
+id|words
 comma
 r_uint16
 op_star
@@ -631,6 +912,10 @@ r_uint16
 id|reg
 comma
 r_uint16
+id|words
+comma
+r_uint16
+op_star
 id|data
 )paren
 suffix:semicolon
@@ -1014,8 +1299,14 @@ DECL|macro|E1000_DEV_ID_82546EB_COPPER
 mdefine_line|#define E1000_DEV_ID_82546EB_COPPER      0x1010
 DECL|macro|E1000_DEV_ID_82546EB_FIBER
 mdefine_line|#define E1000_DEV_ID_82546EB_FIBER       0x1012
+DECL|macro|E1000_DEV_ID_82541EI
+mdefine_line|#define E1000_DEV_ID_82541EI             0x1013
+DECL|macro|E1000_DEV_ID_82541EP
+mdefine_line|#define E1000_DEV_ID_82541EP             0x1018
+DECL|macro|E1000_DEV_ID_82547EI
+mdefine_line|#define E1000_DEV_ID_82547EI             0x1019
 DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 16
+mdefine_line|#define NUM_DEV_IDS 19
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS
@@ -1069,15 +1360,15 @@ DECL|macro|IP_PROTOCOL_TCP
 mdefine_line|#define IP_PROTOCOL_TCP    6
 DECL|macro|IP_PROTOCOL_UDP
 mdefine_line|#define IP_PROTOCOL_UDP    0x11
-multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error &n; */
+multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error&n; */
 DECL|macro|POLL_IMS_ENABLE_MASK
 mdefine_line|#define POLL_IMS_ENABLE_MASK ( &bslash;&n;    E1000_IMS_RXDMT0 |         &bslash;&n;    E1000_IMS_RXSEQ)
 multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXT0   = Receiver Timer Interrupt (ring 0)&n; *   o TXDW   = Transmit Descriptor Written Back&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error&n; *   o LSC    = Link Status Change&n; */
 DECL|macro|IMS_ENABLE_MASK
 mdefine_line|#define IMS_ENABLE_MASK ( &bslash;&n;    E1000_IMS_RXT0   |    &bslash;&n;    E1000_IMS_TXDW   |    &bslash;&n;    E1000_IMS_RXDMT0 |    &bslash;&n;    E1000_IMS_RXSEQ  |    &bslash;&n;    E1000_IMS_LSC)
-multiline_comment|/* The number of high/low register pairs in the RAR. The RAR (Receive Address&n; * Registers) holds the directed and multicast addresses that we monitor. We&n; * reserve one of these spots for our directed address, allowing us room for&n; * E1000_RAR_ENTRIES - 1 multicast addresses. &n; */
+multiline_comment|/* The number of high/low register pairs in the RAR. The RAR (Receive Address&n; * Registers) holds the directed and multicast addresses that we monitor. We&n; * reserve one of these spots for our directed address, allowing us room for&n; * E1000_RAR_ENTRIES - 1 multicast addresses.&n; */
 DECL|macro|E1000_RAR_ENTRIES
-mdefine_line|#define E1000_RAR_ENTRIES 16
+mdefine_line|#define E1000_RAR_ENTRIES 15
 DECL|macro|MIN_NUMBER_OF_DESCRIPTORS
 mdefine_line|#define MIN_NUMBER_OF_DESCRIPTORS 8
 DECL|macro|MAX_NUMBER_OF_DESCRIPTORS
@@ -1588,7 +1879,7 @@ DECL|macro|E1000_FFMT_SIZE
 mdefine_line|#define E1000_FFMT_SIZE E1000_FLEXIBLE_FILTER_SIZE_MAX
 DECL|macro|E1000_FFVT_SIZE
 mdefine_line|#define E1000_FFVT_SIZE E1000_FLEXIBLE_FILTER_SIZE_MAX
-multiline_comment|/* Register Set. (82543, 82544)&n; *&n; * Registers are defined to be 32 bits and  should be accessed as 32 bit values.&n; * These registers are physically located on the NIC, but are mapped into the &n; * host memory address space.&n; *&n; * RW - register is both readable and writable&n; * RO - register is read only&n; * WO - register is write only&n; * R/clr - register is read only and is cleared when read&n; * A - register array&n; */
+multiline_comment|/* Register Set. (82543, 82544)&n; *&n; * Registers are defined to be 32 bits and  should be accessed as 32 bit values.&n; * These registers are physically located on the NIC, but are mapped into the&n; * host memory address space.&n; *&n; * RW - register is both readable and writable&n; * RO - register is read only&n; * WO - register is write only&n; * R/clr - register is read only and is cleared when read&n; * A - register array&n; */
 DECL|macro|E1000_CTRL
 mdefine_line|#define E1000_CTRL     0x00000  /* Device Control - RW */
 DECL|macro|E1000_STATUS
@@ -1599,6 +1890,8 @@ DECL|macro|E1000_EERD
 mdefine_line|#define E1000_EERD     0x00014  /* EEPROM Read - RW */
 DECL|macro|E1000_CTRL_EXT
 mdefine_line|#define E1000_CTRL_EXT 0x00018  /* Extended Device Control - RW */
+DECL|macro|E1000_FLA
+mdefine_line|#define E1000_FLA      0x0001C  /* Flash Access Register - RW */
 DECL|macro|E1000_MDIC
 mdefine_line|#define E1000_MDIC     0x00020  /* MDI Control - RW */
 DECL|macro|E1000_FCAL
@@ -1663,6 +1956,16 @@ DECL|macro|E1000_RSRPD
 mdefine_line|#define E1000_RSRPD    0x02C00  /* RX Small Packet Detect - RW */
 DECL|macro|E1000_TXDMAC
 mdefine_line|#define E1000_TXDMAC   0x03000  /* TX DMA Control - RW */
+DECL|macro|E1000_TDFH
+mdefine_line|#define E1000_TDFH     0x03410  /* TX Data FIFO Head - RW */
+DECL|macro|E1000_TDFT
+mdefine_line|#define E1000_TDFT     0x03418  /* TX Data FIFO Tail - RW */
+DECL|macro|E1000_TDFHS
+mdefine_line|#define E1000_TDFHS    0x03420  /* TX Data FIFO Head Saved - RW */
+DECL|macro|E1000_TDFTS
+mdefine_line|#define E1000_TDFTS    0x03428  /* TX Data FIFO Tail Saved - RW */
+DECL|macro|E1000_TDFPC
+mdefine_line|#define E1000_TDFPC    0x03430  /* TX Data FIFO Packet Count - RW */
 DECL|macro|E1000_TDBAL
 mdefine_line|#define E1000_TDBAL    0x03800  /* TX Descriptor Base Address Low - RW */
 DECL|macro|E1000_TDBAH
@@ -1840,6 +2143,8 @@ DECL|macro|E1000_82542_EERD
 mdefine_line|#define E1000_82542_EERD     E1000_EERD
 DECL|macro|E1000_82542_CTRL_EXT
 mdefine_line|#define E1000_82542_CTRL_EXT E1000_CTRL_EXT
+DECL|macro|E1000_82542_FLA
+mdefine_line|#define E1000_82542_FLA      E1000_FLA
 DECL|macro|E1000_82542_MDIC
 mdefine_line|#define E1000_82542_MDIC     E1000_MDIC
 DECL|macro|E1000_82542_FCAL
@@ -1922,6 +2227,12 @@ DECL|macro|E1000_82542_RSRPD
 mdefine_line|#define E1000_82542_RSRPD    E1000_RSRPD
 DECL|macro|E1000_82542_TXDMAC
 mdefine_line|#define E1000_82542_TXDMAC   E1000_TXDMAC
+DECL|macro|E1000_82542_TDFHS
+mdefine_line|#define E1000_82542_TDFHS    E1000_TDFHS
+DECL|macro|E1000_82542_TDFTS
+mdefine_line|#define E1000_82542_TDFTS    E1000_TDFTS
+DECL|macro|E1000_82542_TDFPC
+mdefine_line|#define E1000_82542_TDFPC    E1000_TDFPC
 DECL|macro|E1000_82542_TXDCTL
 mdefine_line|#define E1000_82542_TXDCTL   E1000_TXDCTL
 DECL|macro|E1000_82542_TADV
@@ -2066,6 +2377,10 @@ DECL|macro|E1000_82542_WUPM
 mdefine_line|#define E1000_82542_WUPM     E1000_WUPM
 DECL|macro|E1000_82542_FFLT
 mdefine_line|#define E1000_82542_FFLT     E1000_FFLT
+DECL|macro|E1000_82542_TDFH
+mdefine_line|#define E1000_82542_TDFH     0x08010
+DECL|macro|E1000_82542_TDFT
+mdefine_line|#define E1000_82542_TDFT     0x08018
 DECL|macro|E1000_82542_FFMT
 mdefine_line|#define E1000_82542_FFMT     E1000_FFMT
 DECL|macro|E1000_82542_FFVT
@@ -2323,6 +2638,14 @@ DECL|member|mac_type
 id|e1000_mac_type
 id|mac_type
 suffix:semicolon
+DECL|member|phy_type
+id|e1000_phy_type
+id|phy_type
+suffix:semicolon
+DECL|member|phy_init_script
+r_uint32
+id|phy_init_script
+suffix:semicolon
 DECL|member|media_type
 id|e1000_media_type
 id|media_type
@@ -2347,6 +2670,11 @@ suffix:semicolon
 DECL|member|bus_type
 id|e1000_bus_type
 id|bus_type
+suffix:semicolon
+DECL|member|eeprom
+r_struct
+id|e1000_eeprom_info
+id|eeprom
 suffix:semicolon
 DECL|member|io_base
 r_uint32
@@ -2510,6 +2838,10 @@ DECL|member|disable_polarity_correction
 id|boolean_t
 id|disable_polarity_correction
 suffix:semicolon
+DECL|member|speed_downgraded
+id|boolean_t
+id|speed_downgraded
+suffix:semicolon
 DECL|member|get_link_status
 id|boolean_t
 id|get_link_status
@@ -2662,21 +2994,29 @@ mdefine_line|#define E1000_EECD_DI        0x00000004 /* EEPROM Data In */
 DECL|macro|E1000_EECD_DO
 mdefine_line|#define E1000_EECD_DO        0x00000008 /* EEPROM Data Out */
 DECL|macro|E1000_EECD_FWE_MASK
-mdefine_line|#define E1000_EECD_FWE_MASK  0x00000030 
+mdefine_line|#define E1000_EECD_FWE_MASK  0x00000030
 DECL|macro|E1000_EECD_FWE_DIS
 mdefine_line|#define E1000_EECD_FWE_DIS   0x00000010 /* Disable FLASH writes */
 DECL|macro|E1000_EECD_FWE_EN
 mdefine_line|#define E1000_EECD_FWE_EN    0x00000020 /* Enable FLASH writes */
 DECL|macro|E1000_EECD_FWE_SHIFT
 mdefine_line|#define E1000_EECD_FWE_SHIFT 4
-DECL|macro|E1000_EECD_SIZE
-mdefine_line|#define E1000_EECD_SIZE      0x00000200 /* EEPROM Size (0=64 word 1=256 word) */
 DECL|macro|E1000_EECD_REQ
 mdefine_line|#define E1000_EECD_REQ       0x00000040 /* EEPROM Access Request */
 DECL|macro|E1000_EECD_GNT
 mdefine_line|#define E1000_EECD_GNT       0x00000080 /* EEPROM Access Grant */
 DECL|macro|E1000_EECD_PRES
 mdefine_line|#define E1000_EECD_PRES      0x00000100 /* EEPROM Present */
+DECL|macro|E1000_EECD_SIZE
+mdefine_line|#define E1000_EECD_SIZE      0x00000200 /* EEPROM Size (0=64 word 1=256 word) */
+DECL|macro|E1000_EECD_ADDR_BITS
+mdefine_line|#define E1000_EECD_ADDR_BITS 0x00000400 /* EEPROM Addressing bits based on type&n;&t;&t;&t;&t;&t; * (0-small, 1-large) */
+DECL|macro|E1000_EECD_TYPE
+mdefine_line|#define E1000_EECD_TYPE      0x00002000 /* EEPROM Type (1-SPI, 0-Microwire) */
+macro_line|#ifndef E1000_EEPROM_GRANT_ATTEMPTS
+DECL|macro|E1000_EEPROM_GRANT_ATTEMPTS
+mdefine_line|#define E1000_EEPROM_GRANT_ATTEMPTS 1000 /* EEPROM # attempts to gain grant */
+macro_line|#endif
 multiline_comment|/* EEPROM Read */
 DECL|macro|E1000_EERD_START
 mdefine_line|#define E1000_EERD_START      0x00000001 /* Start Read */
@@ -2690,9 +3030,20 @@ DECL|macro|E1000_EERD_DATA_SHIFT
 mdefine_line|#define E1000_EERD_DATA_SHIFT 16
 DECL|macro|E1000_EERD_DATA_MASK
 mdefine_line|#define E1000_EERD_DATA_MASK  0xFFFF0000 /* Read Data */
+multiline_comment|/* SPI EEPROM Status Register */
+DECL|macro|EEPROM_STATUS_RDY_SPI
+mdefine_line|#define EEPROM_STATUS_RDY_SPI  0x01
+DECL|macro|EEPROM_STATUS_WEN_SPI
+mdefine_line|#define EEPROM_STATUS_WEN_SPI  0x02
+DECL|macro|EEPROM_STATUS_BP0_SPI
+mdefine_line|#define EEPROM_STATUS_BP0_SPI  0x04
+DECL|macro|EEPROM_STATUS_BP1_SPI
+mdefine_line|#define EEPROM_STATUS_BP1_SPI  0x08
+DECL|macro|EEPROM_STATUS_WPEN_SPI
+mdefine_line|#define EEPROM_STATUS_WPEN_SPI 0x80
 multiline_comment|/* Extended Device Control */
 DECL|macro|E1000_CTRL_EXT_GPI0_EN
-mdefine_line|#define E1000_CTRL_EXT_GPI0_EN   0x00000001 /* Maps SDP4 to GPI0 */ 
+mdefine_line|#define E1000_CTRL_EXT_GPI0_EN   0x00000001 /* Maps SDP4 to GPI0 */
 DECL|macro|E1000_CTRL_EXT_GPI1_EN
 mdefine_line|#define E1000_CTRL_EXT_GPI1_EN   0x00000002 /* Maps SDP5 to GPI1 */
 DECL|macro|E1000_CTRL_EXT_PHYINT_EN
@@ -3143,6 +3494,8 @@ DECL|macro|E1000_WUC_PME_STATUS
 mdefine_line|#define E1000_WUC_PME_STATUS 0x00000004 /* PME Status */
 DECL|macro|E1000_WUC_APMPME
 mdefine_line|#define E1000_WUC_APMPME     0x00000008 /* Assert PME on APM Wakeup */
+DECL|macro|E1000_WUC_SPM
+mdefine_line|#define E1000_WUC_SPM        0x80000000 /* Enable SPM */
 multiline_comment|/* Wake Up Filter Control */
 DECL|macro|E1000_WUFC_LNKC
 mdefine_line|#define E1000_WUFC_LNKC 0x00000001 /* Link Status Change Wakeup Enable */
@@ -3221,7 +3574,7 @@ mdefine_line|#define E1000_MANC_SNAP_EN       0x00001000 /* Accept LLC/SNAP */
 DECL|macro|E1000_MANC_ARP_EN
 mdefine_line|#define E1000_MANC_ARP_EN        0x00002000 /* Enable ARP Request Filtering */
 DECL|macro|E1000_MANC_NEIGHBOR_EN
-mdefine_line|#define E1000_MANC_NEIGHBOR_EN   0x00004000 /* Enable Neighbor Discovery &n;                                             * Filtering */
+mdefine_line|#define E1000_MANC_NEIGHBOR_EN   0x00004000 /* Enable Neighbor Discovery&n;                                             * Filtering */
 DECL|macro|E1000_MANC_TCO_RESET
 mdefine_line|#define E1000_MANC_TCO_RESET     0x00010000 /* TCO Reset Occurred */
 DECL|macro|E1000_MANC_RCV_TCO_EN
@@ -3249,17 +3602,51 @@ DECL|macro|E1000_WUPL_LENGTH_MASK
 mdefine_line|#define E1000_WUPL_LENGTH_MASK 0x0FFF   /* Only the lower 12 bits are valid */
 DECL|macro|E1000_MDALIGN
 mdefine_line|#define E1000_MDALIGN          4096
-multiline_comment|/* EEPROM Commands */
-DECL|macro|EEPROM_READ_OPCODE
-mdefine_line|#define EEPROM_READ_OPCODE  0x6  /* EERPOM read opcode */
-DECL|macro|EEPROM_WRITE_OPCODE
-mdefine_line|#define EEPROM_WRITE_OPCODE 0x5  /* EERPOM write opcode */
-DECL|macro|EEPROM_ERASE_OPCODE
-mdefine_line|#define EEPROM_ERASE_OPCODE 0x7  /* EERPOM erase opcode */
-DECL|macro|EEPROM_EWEN_OPCODE
-mdefine_line|#define EEPROM_EWEN_OPCODE  0x13 /* EERPOM erase/write enable */
-DECL|macro|EEPROM_EWDS_OPCODE
-mdefine_line|#define EEPROM_EWDS_OPCODE  0x10 /* EERPOM erast/write disable */
+multiline_comment|/* EEPROM Commands - Microwire */
+DECL|macro|EEPROM_READ_OPCODE_MICROWIRE
+mdefine_line|#define EEPROM_READ_OPCODE_MICROWIRE  0x6  /* EEPROM read opcode */
+DECL|macro|EEPROM_WRITE_OPCODE_MICROWIRE
+mdefine_line|#define EEPROM_WRITE_OPCODE_MICROWIRE 0x5  /* EEPROM write opcode */
+DECL|macro|EEPROM_ERASE_OPCODE_MICROWIRE
+mdefine_line|#define EEPROM_ERASE_OPCODE_MICROWIRE 0x7  /* EEPROM erase opcode */
+DECL|macro|EEPROM_EWEN_OPCODE_MICROWIRE
+mdefine_line|#define EEPROM_EWEN_OPCODE_MICROWIRE  0x13 /* EEPROM erase/write enable */
+DECL|macro|EEPROM_EWDS_OPCODE_MICROWIRE
+mdefine_line|#define EEPROM_EWDS_OPCODE_MICROWIRE  0x10 /* EEPROM erast/write disable */
+multiline_comment|/* EEPROM Commands - SPI */
+DECL|macro|EEPROM_MAX_RETRY_SPI
+mdefine_line|#define EEPROM_MAX_RETRY_SPI    5000 /* Max wait of 5ms, for RDY signal */
+DECL|macro|EEPROM_READ_OPCODE_SPI
+mdefine_line|#define EEPROM_READ_OPCODE_SPI  0x3  /* EEPROM read opcode */
+DECL|macro|EEPROM_WRITE_OPCODE_SPI
+mdefine_line|#define EEPROM_WRITE_OPCODE_SPI 0x2  /* EEPROM write opcode */
+DECL|macro|EEPROM_A8_OPCODE_SPI
+mdefine_line|#define EEPROM_A8_OPCODE_SPI    0x8  /* opcode bit-3 = address bit-8 */
+DECL|macro|EEPROM_WREN_OPCODE_SPI
+mdefine_line|#define EEPROM_WREN_OPCODE_SPI  0x6  /* EEPROM set Write Enable latch */
+DECL|macro|EEPROM_WRDI_OPCODE_SPI
+mdefine_line|#define EEPROM_WRDI_OPCODE_SPI  0x4  /* EEPROM reset Write Enable latch */
+DECL|macro|EEPROM_RDSR_OPCODE_SPI
+mdefine_line|#define EEPROM_RDSR_OPCODE_SPI  0x5  /* EEPROM read Status register */
+DECL|macro|EEPROM_WRSR_OPCODE_SPI
+mdefine_line|#define EEPROM_WRSR_OPCODE_SPI  0x1  /* EEPROM write Status register */
+multiline_comment|/* EEPROM Size definitions */
+DECL|macro|EEPROM_SIZE_16KB
+mdefine_line|#define EEPROM_SIZE_16KB        0x1800
+DECL|macro|EEPROM_SIZE_8KB
+mdefine_line|#define EEPROM_SIZE_8KB         0x1400
+DECL|macro|EEPROM_SIZE_4KB
+mdefine_line|#define EEPROM_SIZE_4KB         0x1000
+DECL|macro|EEPROM_SIZE_2KB
+mdefine_line|#define EEPROM_SIZE_2KB         0x0C00
+DECL|macro|EEPROM_SIZE_1KB
+mdefine_line|#define EEPROM_SIZE_1KB         0x0800
+DECL|macro|EEPROM_SIZE_512B
+mdefine_line|#define EEPROM_SIZE_512B        0x0400
+DECL|macro|EEPROM_SIZE_128B
+mdefine_line|#define EEPROM_SIZE_128B        0x0000
+DECL|macro|EEPROM_SIZE_MASK
+mdefine_line|#define EEPROM_SIZE_MASK        0x1C00
 multiline_comment|/* EEPROM Word Offsets */
 DECL|macro|EEPROM_COMPAT
 mdefine_line|#define EEPROM_COMPAT              0x0003
@@ -3269,6 +3656,8 @@ DECL|macro|EEPROM_INIT_CONTROL1_REG
 mdefine_line|#define EEPROM_INIT_CONTROL1_REG   0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
 mdefine_line|#define EEPROM_INIT_CONTROL2_REG   0x000F
+DECL|macro|EEPROM_CFG
+mdefine_line|#define EEPROM_CFG                 0x0012
 DECL|macro|EEPROM_FLASH_VERSION
 mdefine_line|#define EEPROM_FLASH_VERSION       0x0032
 DECL|macro|EEPROM_CHECKSUM_REG
@@ -3298,11 +3687,12 @@ DECL|macro|ID_LED_OFF1_ON2
 mdefine_line|#define ID_LED_OFF1_ON2      0x8
 DECL|macro|ID_LED_OFF1_OFF2
 mdefine_line|#define ID_LED_OFF1_OFF2     0x9
-multiline_comment|/* Mask bits for fields in Word 0x03 of the EEPROM */
-DECL|macro|EEPROM_COMPAT_SERVER
-mdefine_line|#define EEPROM_COMPAT_SERVER 0x0400
-DECL|macro|EEPROM_COMPAT_CLIENT
-mdefine_line|#define EEPROM_COMPAT_CLIENT 0x0200
+DECL|macro|IGP_ACTIVITY_LED_MASK
+mdefine_line|#define IGP_ACTIVITY_LED_MASK   0xFFFFF0FF
+DECL|macro|IGP_ACTIVITY_LED_ENABLE
+mdefine_line|#define IGP_ACTIVITY_LED_ENABLE 0x0300
+DECL|macro|IGP_LED3_MODE
+mdefine_line|#define IGP_LED3_MODE           0x07000000
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010
@@ -3409,8 +3799,12 @@ mdefine_line|#define IFS_RATIO              4
 multiline_comment|/* PBA constants */
 DECL|macro|E1000_PBA_16K
 mdefine_line|#define E1000_PBA_16K 0x0010    /* 16KB, default TX allocation */
+DECL|macro|E1000_PBA_22K
+mdefine_line|#define E1000_PBA_22K 0x0016
 DECL|macro|E1000_PBA_24K
 mdefine_line|#define E1000_PBA_24K 0x0018
+DECL|macro|E1000_PBA_30K
+mdefine_line|#define E1000_PBA_30K 0x001E
 DECL|macro|E1000_PBA_40K
 mdefine_line|#define E1000_PBA_40K 0x0028
 DECL|macro|E1000_PBA_48K
@@ -3448,16 +3842,16 @@ DECL|macro|PCIX_STATUS_HI_MMRBC_4K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_4K      0x3
 DECL|macro|PCIX_STATUS_HI_MMRBC_2K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_2K      0x2
-multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register &n; */
+multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register&n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO&quot;&n; * bits from the EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO&quot;&n; * bits from the EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field&n; * in the CTRL register&n; */
 DECL|macro|SWDPIO_SHIFT
 mdefine_line|#define SWDPIO_SHIFT 17
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO_EXT&quot;&n; * bits from the EEPROM word F (bits 7:4) to the bits 11:8 of The&n; * Extended CTRL register.&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO_EXT&quot;&n; * bits from the EEPROM word F (bits 7:4) to the bits 11:8 of The&n; * Extended CTRL register.&n; * in the CTRL register&n; */
 DECL|macro|SWDPIO__EXT_SHIFT
 mdefine_line|#define SWDPIO__EXT_SHIFT 4
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;ILOS&quot;&n; * bit from the EEPROM (bit 4) to the &quot;ILOS&quot; (bit 7) field&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;ILOS&quot;&n; * bit from the EEPROM (bit 4) to the &quot;ILOS&quot; (bit 7) field&n; * in the CTRL register&n; */
 DECL|macro|ILOS_SHIFT
 mdefine_line|#define ILOS_SHIFT  3
 DECL|macro|RECEIVE_BUFFER_ALIGN_SIZE
@@ -3470,7 +3864,7 @@ mdefine_line|#define E1000_TX_BUFFER_SIZE ((uint32_t)1514)
 multiline_comment|/* The carrier extension symbol, as received by the NIC. */
 DECL|macro|CARRIER_EXTENSION
 mdefine_line|#define CARRIER_EXTENSION   0x0F
-multiline_comment|/* TBI_ACCEPT macro definition:&n; *&n; * This macro requires:&n; *      adapter = a pointer to struct e1000_hw &n; *      status = the 8 bit status field of the RX descriptor with EOP set&n; *      error = the 8 bit error field of the RX descriptor with EOP set&n; *      length = the sum of all the length fields of the RX descriptors that&n; *               make up the current frame&n; *      last_byte = the last byte of the frame DMAed by the hardware&n; *      max_frame_length = the maximum frame length we want to accept.&n; *      min_frame_length = the minimum frame length we want to accept.&n; *&n; * This macro is a conditional that should be used in the interrupt &n; * handler&squot;s Rx processing routine when RxErrors have been detected.&n; *&n; * Typical use:&n; *  ...&n; *  if (TBI_ACCEPT) {&n; *      accept_frame = TRUE;&n; *      e1000_tbi_adjust_stats(adapter, MacAddress);&n; *      frame_length--;&n; *  } else {&n; *      accept_frame = FALSE;&n; *  }&n; *  ...&n; */
+multiline_comment|/* TBI_ACCEPT macro definition:&n; *&n; * This macro requires:&n; *      adapter = a pointer to struct e1000_hw&n; *      status = the 8 bit status field of the RX descriptor with EOP set&n; *      error = the 8 bit error field of the RX descriptor with EOP set&n; *      length = the sum of all the length fields of the RX descriptors that&n; *               make up the current frame&n; *      last_byte = the last byte of the frame DMAed by the hardware&n; *      max_frame_length = the maximum frame length we want to accept.&n; *      min_frame_length = the minimum frame length we want to accept.&n; *&n; * This macro is a conditional that should be used in the interrupt&n; * handler&squot;s Rx processing routine when RxErrors have been detected.&n; *&n; * Typical use:&n; *  ...&n; *  if (TBI_ACCEPT) {&n; *      accept_frame = TRUE;&n; *      e1000_tbi_adjust_stats(adapter, MacAddress);&n; *      frame_length--;&n; *  } else {&n; *      accept_frame = FALSE;&n; *  }&n; *  ...&n; */
 DECL|macro|TBI_ACCEPT
 mdefine_line|#define TBI_ACCEPT(adapter, status, errors, length, last_byte) &bslash;&n;    ((adapter)-&gt;tbi_compatibility_on &amp;&amp; &bslash;&n;     (((errors) &amp; E1000_RXD_ERR_FRAME_ERR_MASK) == E1000_RXD_ERR_CE) &amp;&amp; &bslash;&n;     ((last_byte) == CARRIER_EXTENSION) &amp;&amp; &bslash;&n;     (((status) &amp; E1000_RXD_STAT_VP) ? &bslash;&n;          (((length) &gt; ((adapter)-&gt;min_frame_size - VLAN_TAG_SIZE)) &amp;&amp; &bslash;&n;           ((length) &lt;= ((adapter)-&gt;max_frame_size + 1))) : &bslash;&n;          (((length) &gt; (adapter)-&gt;min_frame_size) &amp;&amp; &bslash;&n;           ((length) &lt;= ((adapter)-&gt;max_frame_size + VLAN_TAG_SIZE + 1)))))
 multiline_comment|/* Structures, enums, and macros for the PHY */
@@ -3530,6 +3924,36 @@ DECL|macro|M88E1000_EXT_PHY_SPEC_CTRL
 mdefine_line|#define M88E1000_EXT_PHY_SPEC_CTRL 0x14  /* Extended PHY Specific Control */
 DECL|macro|M88E1000_RX_ERR_CNTR
 mdefine_line|#define M88E1000_RX_ERR_CNTR       0x15  /* Receive Error Counter */
+multiline_comment|/* IGP01E1000 Specific Registers */
+DECL|macro|IGP01E1000_PHY_PORT_CONFIG
+mdefine_line|#define IGP01E1000_PHY_PORT_CONFIG 0x10 /* PHY Specific Port Config Register */
+DECL|macro|IGP01E1000_PHY_PORT_STATUS
+mdefine_line|#define IGP01E1000_PHY_PORT_STATUS 0x11 /* PHY Specific Status Register */
+DECL|macro|IGP01E1000_PHY_PORT_CTRL
+mdefine_line|#define IGP01E1000_PHY_PORT_CTRL   0x12 /* PHY Specific Control Register */
+DECL|macro|IGP01E1000_PHY_LINK_HEALTH
+mdefine_line|#define IGP01E1000_PHY_LINK_HEALTH 0x13 /* PHY Link Health Register */
+DECL|macro|IGP01E1000_GMII_FIFO
+mdefine_line|#define IGP01E1000_GMII_FIFO       0x14 /* GMII FIFO Register */
+DECL|macro|IGP01E1000_PHY_CHANNEL_QUALITY
+mdefine_line|#define IGP01E1000_PHY_CHANNEL_QUALITY 0x15 /* PHY Channel Quality Register */
+DECL|macro|IGP01E1000_PHY_PAGE_SELECT
+mdefine_line|#define IGP01E1000_PHY_PAGE_SELECT     0x1F /* PHY Page Select Core Register */
+multiline_comment|/* IGP01E1000 AGC Registers - stores the cable length values*/
+DECL|macro|IGP01E1000_PHY_AGC_A
+mdefine_line|#define IGP01E1000_PHY_AGC_A        0x1172
+DECL|macro|IGP01E1000_PHY_AGC_B
+mdefine_line|#define IGP01E1000_PHY_AGC_B        0x1272
+DECL|macro|IGP01E1000_PHY_AGC_C
+mdefine_line|#define IGP01E1000_PHY_AGC_C        0x1472
+DECL|macro|IGP01E1000_PHY_AGC_D
+mdefine_line|#define IGP01E1000_PHY_AGC_D        0x1872
+multiline_comment|/* Number of AGC registers */
+DECL|macro|IGP01E1000_PHY_AGC_NUM
+mdefine_line|#define IGP01E1000_PHY_AGC_NUM     4
+multiline_comment|/* IGP01E1000 PCS Initialization register - stores the polarity status when&n; * speed = 1000 Mbps. */
+DECL|macro|IGP01E1000_PHY_PCS_INIT_REG
+mdefine_line|#define IGP01E1000_PHY_PCS_INIT_REG  0x00B4
 DECL|macro|MAX_PHY_REG_ADDRESS
 mdefine_line|#define MAX_PHY_REG_ADDRESS 0x1F        /* 5 bit address bus (0-0x1F) */
 multiline_comment|/* PHY Control Register */
@@ -3638,7 +4062,7 @@ mdefine_line|#define NWAY_ER_NEXT_PAGE_CAPS    0x0004 /* LP is 10T   Full Duplex
 DECL|macro|NWAY_ER_LP_NEXT_PAGE_CAPS
 mdefine_line|#define NWAY_ER_LP_NEXT_PAGE_CAPS 0x0008 /* LP is 100TX Half Duplex Capable */
 DECL|macro|NWAY_ER_PAR_DETECT_FAULT
-mdefine_line|#define NWAY_ER_PAR_DETECT_FAULT  0x0100 /* LP is 100TX Full Duplex Capable */
+mdefine_line|#define NWAY_ER_PAR_DETECT_FAULT  0x0010 /* LP is 100TX Full Duplex Capable */
 multiline_comment|/* Next Page TX Register */
 DECL|macro|NPTX_MSG_CODE_FIELD
 mdefine_line|#define NPTX_MSG_CODE_FIELD 0x0001 /* NP msg code or unformatted data */
@@ -3649,20 +4073,20 @@ mdefine_line|#define NPTX_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg&n;  
 DECL|macro|NPTX_MSG_PAGE
 mdefine_line|#define NPTX_MSG_PAGE       0x2000 /* formatted(1)/unformatted(0) pg */
 DECL|macro|NPTX_NEXT_PAGE
-mdefine_line|#define NPTX_NEXT_PAGE      0x8000 /* 1 = addition NP will follow &n;                                    * 0 = sending last NP&n;                                    */
+mdefine_line|#define NPTX_NEXT_PAGE      0x8000 /* 1 = addition NP will follow&n;                                    * 0 = sending last NP&n;                                    */
 multiline_comment|/* Link Partner Next Page Register */
 DECL|macro|LP_RNPR_MSG_CODE_FIELD
 mdefine_line|#define LP_RNPR_MSG_CODE_FIELD 0x0001 /* NP msg code or unformatted data */
 DECL|macro|LP_RNPR_TOGGLE
 mdefine_line|#define LP_RNPR_TOGGLE         0x0800 /* Toggles between exchanges&n;                                       * of different NP&n;                                       */
 DECL|macro|LP_RNPR_ACKNOWLDGE2
-mdefine_line|#define LP_RNPR_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg &n;                                       * 0 = cannot comply with msg&n;                                       */
+mdefine_line|#define LP_RNPR_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg&n;                                       * 0 = cannot comply with msg&n;                                       */
 DECL|macro|LP_RNPR_MSG_PAGE
 mdefine_line|#define LP_RNPR_MSG_PAGE       0x2000  /* formatted(1)/unformatted(0) pg */
 DECL|macro|LP_RNPR_ACKNOWLDGE
 mdefine_line|#define LP_RNPR_ACKNOWLDGE     0x4000  /* 1 = ACK / 0 = NO ACK */
 DECL|macro|LP_RNPR_NEXT_PAGE
-mdefine_line|#define LP_RNPR_NEXT_PAGE      0x8000  /* 1 = addition NP will follow&n;                                        * 0 = sending last NP &n;                                        */
+mdefine_line|#define LP_RNPR_NEXT_PAGE      0x8000  /* 1 = addition NP will follow&n;                                        * 0 = sending last NP&n;                                        */
 multiline_comment|/* 1000BASE-T Control Register */
 DECL|macro|CR_1000T_ASYM_PAUSE
 mdefine_line|#define CR_1000T_ASYM_PAUSE      0x0080 /* Advertise asymmetric pause bit */
@@ -3734,18 +4158,18 @@ mdefine_line|#define M88E1000_PSCR_POLARITY_REVERSAL 0x0002 /* 1=Polarity Revers
 DECL|macro|M88E1000_PSCR_SQE_TEST
 mdefine_line|#define M88E1000_PSCR_SQE_TEST          0x0004 /* 1=SQE Test enabled */
 DECL|macro|M88E1000_PSCR_CLK125_DISABLE
-mdefine_line|#define M88E1000_PSCR_CLK125_DISABLE    0x0010 /* 1=CLK125 low, &n;                                                * 0=CLK125 toggling&n;                                                */
+mdefine_line|#define M88E1000_PSCR_CLK125_DISABLE    0x0010 /* 1=CLK125 low,&n;                                                * 0=CLK125 toggling&n;                                                */
 DECL|macro|M88E1000_PSCR_MDI_MANUAL_MODE
 mdefine_line|#define M88E1000_PSCR_MDI_MANUAL_MODE  0x0000  /* MDI Crossover Mode bits 6:5 */
 multiline_comment|/* Manual MDI configuration */
 DECL|macro|M88E1000_PSCR_MDIX_MANUAL_MODE
 mdefine_line|#define M88E1000_PSCR_MDIX_MANUAL_MODE 0x0020  /* Manual MDIX configuration */
 DECL|macro|M88E1000_PSCR_AUTO_X_1000T
-mdefine_line|#define M88E1000_PSCR_AUTO_X_1000T     0x0040  /* 1000BASE-T: Auto crossover,&n;                                                *  100BASE-TX/10BASE-T: &n;                                                *  MDI Mode&n;                                                */
+mdefine_line|#define M88E1000_PSCR_AUTO_X_1000T     0x0040  /* 1000BASE-T: Auto crossover,&n;                                                *  100BASE-TX/10BASE-T:&n;                                                *  MDI Mode&n;                                                */
 DECL|macro|M88E1000_PSCR_AUTO_X_MODE
-mdefine_line|#define M88E1000_PSCR_AUTO_X_MODE      0x0060  /* Auto crossover enabled &n;                                                * all speeds. &n;                                                */
+mdefine_line|#define M88E1000_PSCR_AUTO_X_MODE      0x0060  /* Auto crossover enabled&n;                                                * all speeds.&n;                                                */
 DECL|macro|M88E1000_PSCR_10BT_EXT_DIST_ENABLE
-mdefine_line|#define M88E1000_PSCR_10BT_EXT_DIST_ENABLE 0x0080 
+mdefine_line|#define M88E1000_PSCR_10BT_EXT_DIST_ENABLE 0x0080
 multiline_comment|/* 1=Enable Extended 10BASE-T distance&n;                                         * (Lower 10BASE-T RX Threshold)&n;                                         * 0=Normal 10BASE-T RX Threshold */
 DECL|macro|M88E1000_PSCR_MII_5BIT_ENABLE
 mdefine_line|#define M88E1000_PSCR_MII_5BIT_ENABLE      0x0100
@@ -3767,6 +4191,8 @@ DECL|macro|M88E1000_PSSR_JABBER
 mdefine_line|#define M88E1000_PSSR_JABBER             0x0001 /* 1=Jabber */
 DECL|macro|M88E1000_PSSR_REV_POLARITY
 mdefine_line|#define M88E1000_PSSR_REV_POLARITY       0x0002 /* 1=Polarity reversed */
+DECL|macro|M88E1000_PSSR_DOWNSHIFT
+mdefine_line|#define M88E1000_PSSR_DOWNSHIFT          0x0020 /* 1=Downshifted */
 DECL|macro|M88E1000_PSSR_MDIX
 mdefine_line|#define M88E1000_PSSR_MDIX               0x0040 /* 1=MDIX; 0=MDI */
 DECL|macro|M88E1000_PSSR_CABLE_LENGTH
@@ -3789,6 +4215,8 @@ DECL|macro|M88E1000_PSSR_1000MBS
 mdefine_line|#define M88E1000_PSSR_1000MBS            0x8000 /* 10=1000Mbs */
 DECL|macro|M88E1000_PSSR_REV_POLARITY_SHIFT
 mdefine_line|#define M88E1000_PSSR_REV_POLARITY_SHIFT 1
+DECL|macro|M88E1000_PSSR_DOWNSHIFT_SHIFT
+mdefine_line|#define M88E1000_PSSR_DOWNSHIFT_SHIFT    5
 DECL|macro|M88E1000_PSSR_MDIX_SHIFT
 mdefine_line|#define M88E1000_PSSR_MDIX_SHIFT         6
 DECL|macro|M88E1000_PSSR_CABLE_LENGTH_SHIFT
@@ -3797,12 +4225,12 @@ multiline_comment|/* M88E1000 Extended PHY Specific Control Register */
 DECL|macro|M88E1000_EPSCR_FIBER_LOOPBACK
 mdefine_line|#define M88E1000_EPSCR_FIBER_LOOPBACK 0x4000 /* 1=Fiber loopback */
 DECL|macro|M88E1000_EPSCR_DOWN_NO_IDLE
-mdefine_line|#define M88E1000_EPSCR_DOWN_NO_IDLE   0x8000 /* 1=Lost lock detect enabled.&n;                                              * Will assert lost lock and bring&n;                                              * link down if idle not seen&n;                                              * within 1ms in 1000BASE-T &n;                                              */
+mdefine_line|#define M88E1000_EPSCR_DOWN_NO_IDLE   0x8000 /* 1=Lost lock detect enabled.&n;                                              * Will assert lost lock and bring&n;                                              * link down if idle not seen&n;                                              * within 1ms in 1000BASE-T&n;                                              */
 multiline_comment|/* Number of times we will attempt to autonegotiate before downshifting if we&n; * are the master */
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_MASK
 mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_MASK 0x0C00
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_1X
-mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_1X   0x0000    
+mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_1X   0x0000
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_2X
 mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_2X   0x0400
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_3X
@@ -3826,6 +4254,377 @@ DECL|macro|M88E1000_EPSCR_TX_CLK_25
 mdefine_line|#define M88E1000_EPSCR_TX_CLK_25      0x0070 /* 25  MHz TX_CLK */
 DECL|macro|M88E1000_EPSCR_TX_CLK_0
 mdefine_line|#define M88E1000_EPSCR_TX_CLK_0       0x0000 /* NO  TX_CLK */
+multiline_comment|/* IGP01E1000 Specific Port Config Register - R/W */
+DECL|macro|IGP01E1000_PSCFR_AUTO_MDIX_PAR_DETECT
+mdefine_line|#define IGP01E1000_PSCFR_AUTO_MDIX_PAR_DETECT  0x0010
+DECL|macro|IGP01E1000_PSCFR_PRE_EN
+mdefine_line|#define IGP01E1000_PSCFR_PRE_EN                0x0020
+DECL|macro|IGP01E1000_PSCFR_SMART_SPEED
+mdefine_line|#define IGP01E1000_PSCFR_SMART_SPEED           0x0080
+DECL|macro|IGP01E1000_PSCFR_DISABLE_TPLOOPBACK
+mdefine_line|#define IGP01E1000_PSCFR_DISABLE_TPLOOPBACK    0x0100
+DECL|macro|IGP01E1000_PSCFR_DISABLE_JABBER
+mdefine_line|#define IGP01E1000_PSCFR_DISABLE_JABBER        0x0400
+DECL|macro|IGP01E1000_PSCFR_DISABLE_TRANSMIT
+mdefine_line|#define IGP01E1000_PSCFR_DISABLE_TRANSMIT      0x2000
+multiline_comment|/* IGP01E1000 Specific Port Status Register - R/O */
+DECL|macro|IGP01E1000_PSSR_AUTONEG_FAILED
+mdefine_line|#define IGP01E1000_PSSR_AUTONEG_FAILED         0x0001 /* RO LH SC */
+DECL|macro|IGP01E1000_PSSR_POLARITY_REVERSED
+mdefine_line|#define IGP01E1000_PSSR_POLARITY_REVERSED      0x0002
+DECL|macro|IGP01E1000_PSSR_CABLE_LENGTH
+mdefine_line|#define IGP01E1000_PSSR_CABLE_LENGTH           0x007C
+DECL|macro|IGP01E1000_PSSR_FULL_DUPLEX
+mdefine_line|#define IGP01E1000_PSSR_FULL_DUPLEX            0x0200
+DECL|macro|IGP01E1000_PSSR_LINK_UP
+mdefine_line|#define IGP01E1000_PSSR_LINK_UP                0x0400
+DECL|macro|IGP01E1000_PSSR_MDIX
+mdefine_line|#define IGP01E1000_PSSR_MDIX                   0x0800
+DECL|macro|IGP01E1000_PSSR_SPEED_MASK
+mdefine_line|#define IGP01E1000_PSSR_SPEED_MASK             0xC000 /* speed bits mask */
+DECL|macro|IGP01E1000_PSSR_SPEED_10MBPS
+mdefine_line|#define IGP01E1000_PSSR_SPEED_10MBPS           0x4000
+DECL|macro|IGP01E1000_PSSR_SPEED_100MBPS
+mdefine_line|#define IGP01E1000_PSSR_SPEED_100MBPS          0x8000
+DECL|macro|IGP01E1000_PSSR_SPEED_1000MBPS
+mdefine_line|#define IGP01E1000_PSSR_SPEED_1000MBPS         0xC000
+DECL|macro|IGP01E1000_PSSR_CABLE_LENGTH_SHIFT
+mdefine_line|#define IGP01E1000_PSSR_CABLE_LENGTH_SHIFT     0x0002 /* shift right 2 */
+DECL|macro|IGP01E1000_PSSR_MDIX_SHIFT
+mdefine_line|#define IGP01E1000_PSSR_MDIX_SHIFT             0x000B /* shift right 11 */
+multiline_comment|/* IGP01E1000 Specific Port Control Register - R/W */
+DECL|macro|IGP01E1000_PSCR_TP_LOOPBACK
+mdefine_line|#define IGP01E1000_PSCR_TP_LOOPBACK            0x0001
+DECL|macro|IGP01E1000_PSCR_CORRECT_NC_SCMBLR
+mdefine_line|#define IGP01E1000_PSCR_CORRECT_NC_SCMBLR      0x0200
+DECL|macro|IGP01E1000_PSCR_TEN_CRS_SELECT
+mdefine_line|#define IGP01E1000_PSCR_TEN_CRS_SELECT         0x0400
+DECL|macro|IGP01E1000_PSCR_FLIP_CHIP
+mdefine_line|#define IGP01E1000_PSCR_FLIP_CHIP              0x0800
+DECL|macro|IGP01E1000_PSCR_AUTO_MDIX
+mdefine_line|#define IGP01E1000_PSCR_AUTO_MDIX              0x1000
+DECL|macro|IGP01E1000_PSCR_FORCE_MDI_MDIX
+mdefine_line|#define IGP01E1000_PSCR_FORCE_MDI_MDIX         0x2000 /* 0-MDI, 1-MDIX */
+multiline_comment|/* IGP01E1000 Specific Port Link Health Register */
+DECL|macro|IGP01E1000_PLHR_SS_DOWNGRADE
+mdefine_line|#define IGP01E1000_PLHR_SS_DOWNGRADE           0x8000
+DECL|macro|IGP01E1000_PLHR_GIG_SCRAMBLER_ERROR
+mdefine_line|#define IGP01E1000_PLHR_GIG_SCRAMBLER_ERROR    0x4000
+DECL|macro|IGP01E1000_PLHR_GIG_REM_RCVR_NOK
+mdefine_line|#define IGP01E1000_PLHR_GIG_REM_RCVR_NOK       0x0800 /* LH */
+DECL|macro|IGP01E1000_PLHR_IDLE_ERROR_CNT_OFLOW
+mdefine_line|#define IGP01E1000_PLHR_IDLE_ERROR_CNT_OFLOW   0x0400 /* LH */
+DECL|macro|IGP01E1000_PLHR_DATA_ERR_1
+mdefine_line|#define IGP01E1000_PLHR_DATA_ERR_1             0x0200 /* LH */
+DECL|macro|IGP01E1000_PLHR_DATA_ERR_0
+mdefine_line|#define IGP01E1000_PLHR_DATA_ERR_0             0x0100
+DECL|macro|IGP01E1000_PLHR_AUTONEG_FAULT
+mdefine_line|#define IGP01E1000_PLHR_AUTONEG_FAULT          0x0010
+DECL|macro|IGP01E1000_PLHR_AUTONEG_ACTIVE
+mdefine_line|#define IGP01E1000_PLHR_AUTONEG_ACTIVE         0x0008
+DECL|macro|IGP01E1000_PLHR_VALID_CHANNEL_D
+mdefine_line|#define IGP01E1000_PLHR_VALID_CHANNEL_D        0x0004
+DECL|macro|IGP01E1000_PLHR_VALID_CHANNEL_C
+mdefine_line|#define IGP01E1000_PLHR_VALID_CHANNEL_C        0x0002
+DECL|macro|IGP01E1000_PLHR_VALID_CHANNEL_B
+mdefine_line|#define IGP01E1000_PLHR_VALID_CHANNEL_B        0x0001
+DECL|macro|IGP01E1000_PLHR_VALID_CHANNEL_A
+mdefine_line|#define IGP01E1000_PLHR_VALID_CHANNEL_A        0x0000
+multiline_comment|/* IGP01E1000 Channel Quality Register */
+DECL|macro|IGP01E1000_MSE_CHANNEL_D
+mdefine_line|#define IGP01E1000_MSE_CHANNEL_D        0x000F
+DECL|macro|IGP01E1000_MSE_CHANNEL_C
+mdefine_line|#define IGP01E1000_MSE_CHANNEL_C        0x00F0
+DECL|macro|IGP01E1000_MSE_CHANNEL_B
+mdefine_line|#define IGP01E1000_MSE_CHANNEL_B        0x0F00
+DECL|macro|IGP01E1000_MSE_CHANNEL_A
+mdefine_line|#define IGP01E1000_MSE_CHANNEL_A        0xF000
+multiline_comment|/* IGP01E1000 AGC Registers */
+DECL|macro|IGP01E1000_AGC_LENGTH_SHIFT
+mdefine_line|#define IGP01E1000_AGC_LENGTH_SHIFT 7         /* Coarse - 13:11, Fine - 10:7 */
+multiline_comment|/* 7 bits (3 Coarse + 4 Fine) --&gt; 128 optional values */
+DECL|macro|IGP01E1000_AGC_LENGTH_TABLE_SIZE
+mdefine_line|#define IGP01E1000_AGC_LENGTH_TABLE_SIZE 128
+multiline_comment|/* The precision of the length is +/- 10 meters */
+DECL|macro|IGP01E1000_AGC_RANGE
+mdefine_line|#define IGP01E1000_AGC_RANGE    10
+multiline_comment|/* IGP cable length table */
+r_static
+r_const
+DECL|variable|e1000_igp_cable_length_table
+r_uint16
+id|e1000_igp_cable_length_table
+(braket
+id|IGP01E1000_AGC_LENGTH_TABLE_SIZE
+)braket
+op_assign
+(brace
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|5
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|20
+comma
+l_int|20
+comma
+l_int|20
+comma
+l_int|20
+comma
+l_int|20
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|25
+comma
+l_int|30
+comma
+l_int|30
+comma
+l_int|30
+comma
+l_int|30
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|40
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|50
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|60
+comma
+l_int|70
+comma
+l_int|70
+comma
+l_int|70
+comma
+l_int|70
+comma
+l_int|70
+comma
+l_int|70
+comma
+l_int|80
+comma
+l_int|80
+comma
+l_int|80
+comma
+l_int|80
+comma
+l_int|80
+comma
+l_int|80
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|90
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|100
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|110
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+comma
+l_int|120
+)brace
+suffix:semicolon
+multiline_comment|/* IGP01E1000 PCS Initialization register */
+multiline_comment|/* bits 3:6 in the PCS registers stores the channels polarity */
+DECL|macro|IGP01E1000_PHY_POLARITY_MASK
+mdefine_line|#define IGP01E1000_PHY_POLARITY_MASK    0x0078
+multiline_comment|/* IGP01E1000 GMII FIFO Register */
+DECL|macro|IGP01E1000_GMII_FLEX_SPD
+mdefine_line|#define IGP01E1000_GMII_FLEX_SPD               0x10 /* Enable flexible speed&n;                                                     * on Link-Up */
+DECL|macro|IGP01E1000_GMII_SPD
+mdefine_line|#define IGP01E1000_GMII_SPD                    0x20 /* Enable SPD */
 multiline_comment|/* Bit definitions for valid PHY IDs. */
 DECL|macro|M88E1000_E_PHY_ID
 mdefine_line|#define M88E1000_E_PHY_ID  0x01410C50
@@ -3833,6 +4632,8 @@ DECL|macro|M88E1000_I_PHY_ID
 mdefine_line|#define M88E1000_I_PHY_ID  0x01410C30
 DECL|macro|M88E1011_I_PHY_ID
 mdefine_line|#define M88E1011_I_PHY_ID  0x01410C20
+DECL|macro|IGP01E1000_I_PHY_ID
+mdefine_line|#define IGP01E1000_I_PHY_ID  0x02A80380
 DECL|macro|M88E1000_12_PHY_ID
 mdefine_line|#define M88E1000_12_PHY_ID M88E1000_E_PHY_ID
 DECL|macro|M88E1000_14_PHY_ID

@@ -4337,10 +4337,6 @@ comma
 id|readahead_dataleft
 )paren
 suffix:semicolon
-id|readahead_dataleft
-op_assign
-l_int|0
-suffix:semicolon
 id|bytesleft
 op_sub_assign
 id|readahead_dataleft
@@ -4348,6 +4344,10 @@ suffix:semicolon
 id|offset
 op_add_assign
 id|readahead_dataleft
+suffix:semicolon
+id|readahead_dataleft
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else

@@ -28,6 +28,17 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sun3_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
+r_static
+r_void
+id|NCR5380_print
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|instance
+)paren
+suffix:semicolon
 multiline_comment|/* #define OLDDMA */
 DECL|macro|USE_WRAPPER
 mdefine_line|#define USE_WRAPPER
@@ -876,6 +887,10 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|sun3_scsi_regp
 )paren
 suffix:semicolon
@@ -1994,14 +2009,14 @@ op_assign
 id|sun3scsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|sun3scsi_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
-id|sun3scsi_reset
+id|sun3scsi_bus_reset
 comma
 dot
 id|can_queue

@@ -382,11 +382,11 @@ op_ne
 op_minus
 id|ENODEV
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;snd-usb-midi: usb_submit_urb: %d&bslash;n&quot;
+l_string|&quot;usb_submit_urb: %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -441,11 +441,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/* device removed */
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;snd-usb-midi: urb status %d&bslash;n&quot;
+l_string|&quot;urb status %d&bslash;n&quot;
 comma
 id|status
 )paren
@@ -1975,10 +1975,17 @@ c_cond
 op_logical_neg
 id|port
 )paren
+(brace
+id|snd_BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+)brace
 id|substream-&gt;runtime-&gt;private_data
 op_assign
 id|port
@@ -2351,6 +2358,15 @@ id|USB_ENDPOINT_XFER_INT
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;switching to altsetting %d with int ep&bslash;n&quot;
+comma
+id|intfd-&gt;bAlternateSetting
+)paren
 suffix:semicolon
 id|usb_set_interface
 c_func
@@ -3615,11 +3631,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|printk
+id|snd_printdd
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;snd-usb-midi: created %d output and %d input ports&bslash;n&quot;
+l_string|&quot;created %d output and %d input ports&bslash;n&quot;
 comma
 id|out_ports
 comma
@@ -3744,11 +3760,11 @@ id|ms_header-&gt;bDescriptorSubtype
 op_eq
 id|HEADER
 )paren
-id|printk
+id|snd_printdd
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;snd-usb-midi: MIDIStreaming version %02x.%02x&bslash;n&quot;
+l_string|&quot;MIDIStreaming version %02x.%02x&bslash;n&quot;
 comma
 id|ms_header-&gt;bcdMSC
 (braket
@@ -3762,11 +3778,11 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;snd-usb-midi: MIDIStreaming interface descriptor not found&bslash;n&quot;
+l_string|&quot;MIDIStreaming interface descriptor not found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|epidx
@@ -3879,11 +3895,11 @@ op_ge
 id|MIDI_MAX_ENDPOINTS
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;snd-usb-midi: too many endpoints&bslash;n&quot;
+l_string|&quot;too many endpoints&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3916,11 +3932,11 @@ id|ms_ep-&gt;bNumEmbMIDIJack
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|snd_printdd
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;snd-usb-midi: EP %02X: %d jack(s)&bslash;n&quot;
+l_string|&quot;EP %02X: %d jack(s)&bslash;n&quot;
 comma
 id|ep-&gt;bEndpointAddress
 comma
@@ -3950,11 +3966,11 @@ op_ge
 id|MIDI_MAX_ENDPOINTS
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;snd-usb-midi: too many endpoints&bslash;n&quot;
+l_string|&quot;too many endpoints&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3987,11 +4003,11 @@ id|ms_ep-&gt;bNumEmbMIDIJack
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|snd_printdd
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;snd-usb-midi: EP %02X: %d jack(s)&bslash;n&quot;
+l_string|&quot;EP %02X: %d jack(s)&bslash;n&quot;
 comma
 id|ep-&gt;bEndpointAddress
 comma

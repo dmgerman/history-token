@@ -1326,7 +1326,7 @@ id|format
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_pcm_format_set_silence - set the silence data on the buffer&n; * @format: the PCM format&n; * @data: the buffer pointer&n; * @samples: the number of samples to set silence&n; *&n; * Sets the silence data on the buffer for the given samples.&n; *&n; * Returns zero if sucessful, or a negative error code on failure.&n; */
+multiline_comment|/**&n; * snd_pcm_format_set_silence - set the silence data on the buffer&n; * @format: the PCM format&n; * @data: the buffer pointer&n; * @samples: the number of samples to set silence&n; *&n; * Sets the silence data on the buffer for the given samples.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_format_set_silence
 r_int
 id|snd_pcm_format_set_silence

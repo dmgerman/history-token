@@ -22,36 +22,6 @@ macro_line|#include &quot;adriver.h&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; *  ==========================================================================&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0)
-macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
-multiline_comment|/*&n; * Here a dirty hack for 2.4 kernels.. See sound/core/memory.c.&n; */
-DECL|macro|HACK_PCI_ALLOC_CONSISTENT
-mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
-macro_line|#include &lt;linux/pci.h&gt;
-r_void
-op_star
-id|snd_pci_hack_alloc_consistent
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-suffix:semicolon
-DECL|macro|pci_alloc_consistent
-macro_line|#undef pci_alloc_consistent
-DECL|macro|pci_alloc_consistent
-mdefine_line|#define pci_alloc_consistent snd_pci_hack_alloc_consistent
-macro_line|#endif /* i386 or ppc */
-macro_line|#endif /* 2.4.0 */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

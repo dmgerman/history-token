@@ -6,13 +6,16 @@ multiline_comment|/* PAGE_SHIFT determines the page size */
 macro_line|#ifndef CONFIG_SUN3
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;(12)
-DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE&t;(4096)
 macro_line|#else
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;(13)
+macro_line|#endif
+macro_line|#ifdef __ASSEMBLY__
 DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE&t;(8192)
+mdefine_line|#define PAGE_SIZE&t;(1 &lt;&lt; PAGE_SHIFT)
+macro_line|#else
+DECL|macro|PAGE_SIZE
+mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
@@ -427,7 +430,7 @@ r_if
 c_cond
 (paren
 id|x
-OG
+op_ge
 id|PAGE_OFFSET
 )paren
 (brace

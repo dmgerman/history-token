@@ -12,6 +12,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;piix.h&quot;
+DECL|variable|no_piix_dma
+r_static
+r_int
+id|no_piix_dma
+suffix:semicolon
 macro_line|#if defined(DISPLAY_PIIX_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -38,13 +43,6 @@ DECL|variable|n_piix_devs
 r_static
 r_int
 id|n_piix_devs
-suffix:semicolon
-DECL|variable|no_piix_dma
-r_static
-r_int
-id|no_piix_dma
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/**&n; *&t;piix_get_info&t;&t;-&t;fill in /proc for PIIX ide&n; *&t;@buffer: buffer to fill&n; *&t;@addr: address of user start in buffer&n; *&t;@offset: offset into &squot;file&squot;&n; *&t;@count: buffer count&n; *&n; *&t;Walks the PIIX devices and outputs summary data on the tuning and&n; *&t;anything else that will help with debugging&n; */
 DECL|function|piix_get_info

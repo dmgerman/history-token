@@ -79,9 +79,16 @@ id|expires
 suffix:semicolon
 DECL|member|header_len
 r_int
+r_int
 id|header_len
 suffix:semicolon
 multiline_comment|/* more space at head required */
+DECL|member|trailer_len
+r_int
+r_int
+id|trailer_len
+suffix:semicolon
+multiline_comment|/* space to reserve at tail */
 DECL|member|metrics
 id|u32
 id|metrics

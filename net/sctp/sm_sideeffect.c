@@ -241,7 +241,7 @@ mdefine_line|#define DEBUG_PRE &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm 
 DECL|macro|DEBUG_POST
 mdefine_line|#define DEBUG_POST &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm postfn: &quot; &bslash;&n;&t;&t;&t;  &quot;asoc %p, status: %s&bslash;n&quot;, &bslash;&n;&t;&t;&t;  asoc, sctp_status_tbl[status])
 DECL|macro|DEBUG_POST_SFX
-mdefine_line|#define DEBUG_POST_SFX &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm post sfx: error %d, asoc %p[%s]&bslash;n&quot;, &bslash;&n;&t;&t;&t;  error, asoc, &bslash;&n;&t;&t;&t;  sctp_state_tbl[sctp_id2assoc(ep-&gt;base.sk, &bslash;&n;&t;&t;&t;  sctp_assoc2id(asoc))?asoc-&gt;state:SCTP_STATE_CLOSED])
+mdefine_line|#define DEBUG_POST_SFX &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm post sfx: error %d, asoc %p[%s]&bslash;n&quot;, &bslash;&n;&t;&t;&t;  error, asoc, &bslash;&n;&t;&t;&t;  sctp_state_tbl[(asoc &amp;&amp; sctp_id2assoc(ep-&gt;base.sk, &bslash;&n;&t;&t;&t;  sctp_assoc2id(asoc)))?asoc-&gt;state:SCTP_STATE_CLOSED])
 multiline_comment|/*&n; * This is the master state machine processing function.&n; *&n; * If you want to understand all of lksctp, this is a&n; * good place to start.&n; */
 DECL|function|sctp_do_sm
 r_int
@@ -693,7 +693,8 @@ id|chunk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -2063,6 +2064,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|asoc-&gt;a_rwnd
+OG
+id|asoc-&gt;rwnd
+)paren
+id|asoc-&gt;a_rwnd
+op_assign
+id|asoc-&gt;rwnd
+suffix:semicolon
 id|sack
 op_assign
 id|sctp_make_sack
@@ -2079,11 +2091,6 @@ id|sack
 )paren
 r_goto
 id|nomem
-suffix:semicolon
-multiline_comment|/* Update the last advertised rwnd value. */
-id|asoc-&gt;a_rwnd
-op_assign
-id|asoc-&gt;rwnd
 suffix:semicolon
 id|asoc-&gt;peer.sack_needed
 op_assign
@@ -3700,6 +3707,24 @@ id|sctp_state_t
 id|state
 )paren
 (brace
+r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|asoc-&gt;base.sk
+suffix:semicolon
+r_struct
+id|sctp_opt
+op_star
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|asoc-&gt;state
 op_assign
 id|state
@@ -3708,7 +3733,58 @@ id|asoc-&gt;state_timestamp
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* Wake up any process waiting for the association to&n;&t; * get established.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_STATE_ESTABLISHED
+op_eq
+id|asoc-&gt;state
+)paren
+op_logical_or
+(paren
+id|SCTP_STATE_CLOSED
+op_eq
+id|asoc-&gt;state
+)paren
+)paren
+(brace
+multiline_comment|/* Wake up any processes waiting in the asoc&squot;s wait queue in&n;&t;&t; * sctp_wait_for_connect() or sctp_wait_for_sndbuf(). &n;&t; &t; */
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
+)paren
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
+suffix:semicolon
+multiline_comment|/* Wake up any processes waiting in the sk&squot;s sleep queue of&n;&t;&t; * a TCP-style or UDP-style peeled-off socket in&n;&t;&t; * sctp_wait_for_accept() or sctp_wait_for_packet().&n;&t;&t; * For a UDP-style socket, the waiters are woken up by the&n;&t;&t; * notifications.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_UDP
+op_ne
+id|sp-&gt;type
+)paren
+id|sk
+op_member_access_from_pointer
+id|state_change
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Change the sk-&gt;state of a TCP-style socket that has sucessfully&n;&t; * completed a connect() call.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3719,20 +3795,20 @@ id|asoc-&gt;state
 )paren
 op_logical_and
 (paren
-id|waitqueue_active
-c_func
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+op_logical_and
 (paren
-op_amp
-id|asoc-&gt;wait
+id|SCTP_SS_CLOSED
+op_eq
+id|sk-&gt;state
 )paren
 )paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|asoc-&gt;wait
-)paren
+id|sk-&gt;state
+op_assign
+id|SCTP_SS_ESTABLISHED
 suffix:semicolon
 )brace
 eof

@@ -762,26 +762,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;x86_vendor
-op_ne
-id|X86_VENDOR_TRANSMETA
-op_logical_or
-op_logical_neg
-id|cpu_has
-c_func
-(paren
-id|c
-comma
-id|X86_FEATURE_LONGRUN
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/* detect low and high frequency */
 id|result
 op_assign

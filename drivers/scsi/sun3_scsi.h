@@ -46,14 +46,11 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|sun3scsi_reset
+id|sun3scsi_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_static
@@ -157,8 +154,8 @@ DECL|macro|NCR5380_intr
 mdefine_line|#define NCR5380_intr sun3scsi_intr
 DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command sun3scsi_queue_command
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset sun3scsi_reset
+DECL|macro|NCR5380_bus_reset
+mdefine_line|#define NCR5380_bus_reset sun3scsi_bus_reset
 DECL|macro|NCR5380_abort
 mdefine_line|#define NCR5380_abort sun3scsi_abort
 DECL|macro|NCR5380_proc_info

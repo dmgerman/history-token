@@ -716,6 +716,9 @@ c_cond
 (paren
 id|file-&gt;f_pos
 op_ge
+(paren
+r_int
+)paren
 id|buf-&gt;size
 )paren
 r_return
@@ -931,6 +934,9 @@ c_cond
 (paren
 id|file-&gt;f_pos
 op_ge
+(paren
+r_int
+)paren
 id|buf-&gt;len
 )paren
 r_return
@@ -987,6 +993,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|buf-&gt;size
 OL
 id|file-&gt;f_pos

@@ -1441,7 +1441,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* after an exception in a writeback the stack frame coresponding&n; * to that exception is discarded, set a few bits in the old frame &n; * to simulate what it should look like&n; */
+multiline_comment|/* after an exception in a writeback the stack frame corresponding&n; * to that exception is discarded, set a few bits in the old frame &n; * to simulate what it should look like&n; */
 DECL|function|fix_xframe040
 r_static
 r_inline
@@ -1568,7 +1568,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* do the 2nd wb only if the first one was succesful (except for a kernel wb) */
+multiline_comment|/* do the 2nd wb only if the first one was successful (except for a kernel wb) */
 r_if
 c_cond
 (paren

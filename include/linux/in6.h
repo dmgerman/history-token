@@ -111,6 +111,8 @@ id|ipv6mr_ifindex
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ipv6mr_acaddr
+mdefine_line|#define ipv6mr_acaddr&t;ipv6mr_multiaddr
 DECL|struct|in6_flowlabel_req
 r_struct
 id|in6_flowlabel_req
@@ -276,6 +278,10 @@ DECL|macro|IPV6_RECVERR
 mdefine_line|#define IPV6_RECVERR&t;&t;25
 DECL|macro|IPV6_V6ONLY
 mdefine_line|#define IPV6_V6ONLY&t;&t;26
+DECL|macro|IPV6_JOIN_ANYCAST
+mdefine_line|#define IPV6_JOIN_ANYCAST&t;27
+DECL|macro|IPV6_LEAVE_ANYCAST
+mdefine_line|#define IPV6_LEAVE_ANYCAST&t;28
 multiline_comment|/* IPV6_MTU_DISCOVER values */
 DECL|macro|IPV6_PMTUDISC_DONT
 mdefine_line|#define IPV6_PMTUDISC_DONT&t;&t;0

@@ -206,8 +206,6 @@ DECL|macro|IOBASE
 mdefine_line|#define IOBASE 0x300
 multiline_comment|/*&n;   use MANUAL_CONFIG and MANUAL_OFFSET for enabling IO by hand&n;   you can find the values to use by looking at the cnet.device&n;   config file example (the default values are for the CNET40BC card)&n;*/
 multiline_comment|/*&n;#define MANUAL_CONFIG 0x20&n;#define MANUAL_OFFSET 0x3f8&n;&n;#define MANUAL_HWADDR0 0x00&n;#define MANUAL_HWADDR1 0x12&n;#define MANUAL_HWADDR2 0x34&n;#define MANUAL_HWADDR3 0x56&n;#define MANUAL_HWADDR4 0x78&n;#define MANUAL_HWADDR5 0x9a&n;*/
-DECL|macro|WORDSWAP
-mdefine_line|#define WORDSWAP(a) ( (((a)&gt;&gt;8)&amp;0xff) | ((a)&lt;&lt;8) )
 DECL|variable|version
 r_static
 r_const
@@ -1642,18 +1640,17 @@ id|NE_EN0_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Ack intr. */
-id|hdr-&gt;count
-op_assign
-id|WORDSWAP
-c_func
-(paren
-id|hdr-&gt;count
-)paren
-suffix:semicolon
 id|ei_status.dmaing
 op_and_assign
 op_complement
 l_int|0x01
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|hdr-&gt;count
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using outb. */

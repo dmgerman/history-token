@@ -333,7 +333,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ioremap
+id|z_ioremap
 c_func
 (paren
 id|address
@@ -420,7 +420,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ioremap
+id|z_ioremap
 c_func
 (paren
 id|address

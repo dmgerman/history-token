@@ -881,7 +881,7 @@ c_func
 id|skb
 )paren
 op_member_access_from_pointer
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB

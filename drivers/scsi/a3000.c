@@ -976,7 +976,6 @@ suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|a3000_release
 r_int
-id|__exit
 id|a3000_release
 c_func
 (paren

@@ -5089,9 +5089,10 @@ r_while
 c_loop
 (paren
 (paren
-id|READ_AUX_STAT
+id|read_aux_stat
 c_func
 (paren
+id|regs
 )paren
 op_amp
 id|ASR_BSY
@@ -5112,9 +5113,10 @@ multiline_comment|/* still busy ? */
 r_if
 c_cond
 (paren
-id|READ_AUX_STAT
+id|read_aux_stat
 c_func
 (paren
+id|regs
 )paren
 op_amp
 id|ASR_BSY
@@ -8173,6 +8175,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|wd33c93_intr
+)paren
+suffix:semicolon
+DECL|variable|wd33c93_proc_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wd33c93_proc_info
 )paren
 suffix:semicolon
 eof

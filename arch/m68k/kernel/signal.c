@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/m68k/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
-multiline_comment|/*&n; * Linux/m68k support by Hamish Macdonald&n; *&n; * 68060 fixes by Jesper Skov&n; *&n; * 1997-12-01  Modified for POSIX.1b signals by Andreas Schwab&n; *&n; * mathemu support by Roman Zippel&n; *  (Note: fpstate in the signal context is completly ignored for the emulator&n; *         and the internal floating point format is put on stack)&n; */
+multiline_comment|/*&n; * Linux/m68k support by Hamish Macdonald&n; *&n; * 68060 fixes by Jesper Skov&n; *&n; * 1997-12-01  Modified for POSIX.1b signals by Andreas Schwab&n; *&n; * mathemu support by Roman Zippel&n; *  (Note: fpstate in the signal context is completely ignored for the emulator&n; *         and the internal floating point format is put on stack)&n; */
 multiline_comment|/*&n; * ++roman (07/09/96): implemented signal stacks (specially for tosemu on&n; * Atari :-) Current limitation: Only one sigstack can be active at one time.&n; * If a second signal with SA_ONSTACK set arrives while working on a sigstack,&n; * SA_ONSTACK is ignored. This behaviour avoids lots of trouble with nested&n; * signal handlers!&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -4802,7 +4802,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -4967,7 +4967,7 @@ suffix:semicolon
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -5083,9 +5083,9 @@ id|SIGSTOP
 suffix:colon
 (brace
 r_struct
-id|signal_struct
+id|sighand_struct
 op_star
-id|sig
+id|sighand
 suffix:semicolon
 id|current-&gt;state
 op_assign
@@ -5095,18 +5095,18 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
-id|sig
+id|sighand
 op_assign
-id|current-&gt;parent-&gt;sig
+id|current-&gt;parent-&gt;sighand
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig
+id|sighand
 op_logical_and
 op_logical_neg
 (paren
-id|sig-&gt;action
+id|sighand-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -5184,15 +5184,10 @@ suffix:semicolon
 multiline_comment|/* FALLTHRU */
 r_default
 suffix:colon
-id|sig_exit
+id|do_group_exit
 c_func
 (paren
 id|signr
-comma
-id|exit_code
-comma
-op_amp
-id|info
 )paren
 suffix:semicolon
 multiline_comment|/* NOTREACHED */

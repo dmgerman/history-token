@@ -713,7 +713,7 @@ r_if
 c_cond
 (paren
 id|started
-op_amp
+op_logical_and
 op_logical_neg
 id|ended
 )paren
