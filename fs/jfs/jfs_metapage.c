@@ -8,23 +8,12 @@ macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
-r_extern
-r_struct
-id|task_struct
-op_star
-id|jfsCommitTask
-suffix:semicolon
 DECL|variable|meta_lock
 r_static
 id|spinlock_t
 id|meta_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|meta_wait
-r_static
-id|wait_queue_head_t
-id|meta_wait
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 r_struct
@@ -44,11 +33,6 @@ id|uint
 id|lockwait
 suffix:semicolon
 multiline_comment|/* # of sleeping lock_metapage() calls */
-DECL|member|allocwait
-id|uint
-id|allocwait
-suffix:semicolon
-multiline_comment|/* # of sleeping alloc_metapage() calls */
 DECL|variable|mpStat
 )brace
 id|mpStat
@@ -504,14 +488,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Initialize wait queue&n;&t; */
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|meta_wait
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate the metapage structures&n;&t; */
 id|metapage_cache
 op_assign
@@ -2791,15 +2767,12 @@ l_string|&quot;=======================&bslash;n&quot;
 l_string|&quot;page allocations = %d&bslash;n&quot;
 l_string|&quot;page frees = %d&bslash;n&quot;
 l_string|&quot;lock waits = %d&bslash;n&quot;
-l_string|&quot;allocation waits = %d&bslash;n&quot;
 comma
 id|mpStat.pagealloc
 comma
 id|mpStat.pagefree
 comma
 id|mpStat.lockwait
-comma
-id|mpStat.allocwait
 )paren
 suffix:semicolon
 id|begin
