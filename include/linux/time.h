@@ -83,19 +83,30 @@ macro_line|#ifndef NSEC_PER_USEC
 DECL|macro|NSEC_PER_USEC
 mdefine_line|#define NSEC_PER_USEC (1000L)
 macro_line|#endif
-multiline_comment|/*&n; * We want to do realistic conversions of time so we need to use the same&n; * values the update wall clock code uses as the jiffie size.  This value&n; * is: TICK_NSEC (both of which are defined in timex.h).  This &n; * is a constant and is in nanoseconds.  We will used scaled math and&n; * with a scales defined here as SEC_JIFFIE_SC,  USEC_JIFFIE_SC and &n; * NSEC_JIFFIE_SC.  Note that these defines contain nothing but&n; * constants and so are computed at compile time.  SHIFT_HZ (computed in&n; * timex.h) adjusts the scaling for different HZ values.&n; */
+multiline_comment|/*&n; * We want to do realistic conversions of time so we need to use the same&n; * values the update wall clock code uses as the jiffies size.  This value&n; * is: TICK_NSEC (which is defined in timex.h).  This&n; * is a constant and is in nanoseconds.  We will used scaled math&n; * with a set of scales defined here as SEC_JIFFIE_SC,  USEC_JIFFIE_SC and&n; * NSEC_JIFFIE_SC.  Note that these defines contain nothing but&n; * constants and so are computed at compile time.  SHIFT_HZ (computed in&n; * timex.h) adjusts the scaling for different HZ values.&n;&n; * Scaled math???  What is that?&n; *&n; * Scaled math is a way to do integer math on values that would,&n; * otherwise, either overflow, underflow, or cause undesired div&n; * instructions to appear in the execution path.  In short, we &quot;scale&quot;&n; * up the operands so they take more bits (more precision, less&n; * underflow), do the desired operation and then &quot;scale&quot; the result back&n; * by the same amount.  If we do the scaling by shifting we avoid the&n; * costly mpy and the dastardly div instructions.&n;&n; * Suppose, for example, we want to convert from seconds to jiffies&n; * where jiffies is defined in nanoseconds as NSEC_PER_JIFFIE.  The&n; * simple math is: jiff = (sec * NSEC_PER_SEC) / NSEC_PER_JIFFIE; We&n; * observe that (NSEC_PER_SEC / NSEC_PER_JIFFIE) is a constant which we&n; * might calculate at compile time, however, the result will only have&n; * about 3-4 bits of precision (less for smaller values of HZ).&n; *&n; * So, we scale as follows:&n; * jiff = (sec) * (NSEC_PER_SEC / NSEC_PER_JIFFIE);&n; * jiff = ((sec) * ((NSEC_PER_SEC * SCALE)/ NSEC_PER_JIFFIE)) / SCALE;&n; * Then we make SCALE a power of two so:&n; * jiff = ((sec) * ((NSEC_PER_SEC &lt;&lt; SCALE)/ NSEC_PER_JIFFIE)) &gt;&gt; SCALE;&n; * Now we define:&n; * #define SEC_CONV = ((NSEC_PER_SEC &lt;&lt; SCALE)/ NSEC_PER_JIFFIE))&n; * jiff = (sec * SEC_CONV) &gt;&gt; SCALE;&n; *&n; * Often the math we use will expand beyond 32-bits so we tell C how to&n; * do this and pass the 64-bit result of the mpy through the &quot;&gt;&gt; SCALE&quot;&n; * which should take the result back to 32-bits.  We want this expansion&n; * to capture as much precision as possible.  At the same time we don&squot;t&n; * want to overflow so we pick the SCALE to avoid this.  In this file,&n; * that means using a different scale for each range of HZ values (as&n; * defined in timex.h).&n; *&n; * For those who want to know, gcc will give a 64-bit result from a &quot;*&quot;&n; * operator if the result is a long long AND at least one of the&n; * operands is cast to long long (usually just prior to the &quot;*&quot; so as&n; * not to confuse it into thinking it really has a 64-bit operand,&n; * which, buy the way, it can do, but it take more code and at least 2&n; * mpys).&n;&n; * We also need to be aware that one second in nanoseconds is only a&n; * couple of bits away from overflowing a 32-bit word, so we MUST use&n; * 64-bits to get the full range time in nanoseconds.&n;&n; */
+multiline_comment|/*&n; * Here are the scales we will use.  One for seconds, nanoseconds and&n; * microseconds.&n; *&n; * Within the limits of cpp we do a rough cut at the SEC_JIFFIE_SC and&n; * check if the sign bit is set.  If not, we bump the shift count by 1.&n; * (Gets an extra bit of precision where we can use it.)&n; * We know it is set for HZ = 1024 and HZ = 100 not for 1000.&n; * Haven&squot;t tested others.&n;&n; * Limits of cpp (for #if expressions) only long (no long long), but&n; * then we only need the most signicant bit.&n; */
 DECL|macro|SEC_JIFFIE_SC
-mdefine_line|#define SEC_JIFFIE_SC (30 - SHIFT_HZ)
+mdefine_line|#define SEC_JIFFIE_SC (31 - SHIFT_HZ)
+macro_line|#if !((((NSEC_PER_SEC &lt;&lt; 2) / TICK_NSEC) &lt;&lt; (SEC_JIFFIE_SC - 2)) &amp; 0x80000000)
+DECL|macro|SEC_JIFFIE_SC
+macro_line|#undef SEC_JIFFIE_SC
+DECL|macro|SEC_JIFFIE_SC
+mdefine_line|#define SEC_JIFFIE_SC (32 - SHIFT_HZ)
+macro_line|#endif
 DECL|macro|NSEC_JIFFIE_SC
-mdefine_line|#define NSEC_JIFFIE_SC (SEC_JIFFIE_SC + 30)
+mdefine_line|#define NSEC_JIFFIE_SC (SEC_JIFFIE_SC + 29)
 DECL|macro|USEC_JIFFIE_SC
-mdefine_line|#define USEC_JIFFIE_SC (SEC_JIFFIE_SC + 20)
+mdefine_line|#define USEC_JIFFIE_SC (SEC_JIFFIE_SC + 19)
 DECL|macro|SEC_CONVERSION
-mdefine_line|#define SEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC) /&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
+mdefine_line|#define SEC_CONVERSION ((unsigned long)((((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC))&bslash;&n;                                         / (u64)TICK_NSEC))
 DECL|macro|NSEC_CONVERSION
-mdefine_line|#define NSEC_CONVERSION ((unsigned long)(((u64)1 &lt;&lt; NSEC_JIFFIE_SC) /&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
+mdefine_line|#define NSEC_CONVERSION ((unsigned long)((((u64)1 &lt;&lt; NSEC_JIFFIE_SC))&bslash;&n;                                         / (u64)TICK_NSEC))
 DECL|macro|USEC_CONVERSION
-mdefine_line|#define USEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)/&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
+mdefine_line|#define USEC_CONVERSION  &bslash;&n;                    ((unsigned long)((((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)) &bslash;&n;                                         / (u64)TICK_NSEC))
+multiline_comment|/*&n; * USEC_ROUND is used in the timeval to jiffie conversion.  See there&n; * for more details.  It is the scaled resolution rounding value.  Note&n; * that it is a 64-bit value.  Since, when it is applied, we are already&n; * in jiffies (albit scaled), it is nothing but the bits we will shift&n; * off.&n; */
+DECL|macro|USEC_ROUND
+mdefine_line|#define USEC_ROUND (u64)(((u64)1 &lt;&lt; USEC_JIFFIE_SC) - 1)
+multiline_comment|/*&n; * The maximum jiffie value is (MAX_INT &gt;&gt; 1).  Here we translate that&n; * into seconds.  The 64-bit case will overflow if we are not careful,&n; * so use the messy SH_DIV macro to do it.  Still all constants.&n; */
 macro_line|#if BITS_PER_LONG &lt; 64
 DECL|macro|MAX_SEC_IN_JIFFIES
 macro_line|# define MAX_SEC_IN_JIFFIES &bslash;&n;&t;(long)((u64)((u64)MAX_JIFFY_OFFSET * TICK_NSEC) / NSEC_PER_SEC)
@@ -103,6 +114,7 @@ macro_line|#else&t;/* take care of overflow on 64 bits machines */
 DECL|macro|MAX_SEC_IN_JIFFIES
 macro_line|# define MAX_SEC_IN_JIFFIES &bslash;&n;&t;(SH_DIV((MAX_JIFFY_OFFSET &gt;&gt; SEC_JIFFIE_SC) * TICK_NSEC, NSEC_PER_SEC, 1) - 1)
 macro_line|#endif
+multiline_comment|/*&n; * The TICK_NSEC - 1 rounds up the value to the next resolution.  Note&n; * that a remainder subtract here would not do the right thing as the&n; * resolution values don&squot;t fall on second boundries.  I.e. the line:&n; * nsec -= nsec % TICK_NSEC; is NOT a correct resolution rounding.&n; *&n; * Rather, we just shift the bits off the right.&n; *&n; * The &gt;&gt; (NSEC_JIFFIE_SC - SEC_JIFFIE_SC) converts the scaled nsec&n; * value to a scaled second value.&n; */
 r_static
 id|__inline__
 r_int
@@ -223,7 +235,7 @@ id|value-&gt;tv_nsec
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Same for &quot;timeval&quot; */
+multiline_comment|/* Same for &quot;timeval&quot;&n; *&n; * Well, almost.  The problem here is that the real system resolution is&n; * in nanoseconds and the value being converted is in micro seconds.&n; * Also for some machines (those that use HZ = 1024, in-particular),&n; * there is a LARGE error in the tick size in microseconds.&n;&n; * The solution we use is to do the rounding AFTER we convert the&n; * microsecond part.  Thus the USEC_ROUND, the bits to be shifted off.&n; * Instruction wise, this should cost only an additional add with carry&n; * instruction above the way it was done above.&n; */
 r_static
 id|__inline__
 r_int
@@ -248,20 +260,6 @@ r_int
 id|usec
 op_assign
 id|value-&gt;tv_usec
-op_plus
-(paren
-(paren
-id|TICK_NSEC
-op_plus
-l_int|1000UL
-op_div
-l_int|2
-)paren
-op_div
-l_int|1000UL
-)paren
-op_minus
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -299,6 +297,8 @@ id|u64
 id|usec
 op_star
 id|USEC_CONVERSION
+op_plus
+id|USEC_ROUND
 )paren
 op_rshift
 (paren
