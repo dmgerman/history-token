@@ -1236,8 +1236,6 @@ r_struct
 id|tcf_st
 op_star
 id|p
-suffix:semicolon
-id|p
 op_assign
 id|tcf_hash_check
 (paren
@@ -1253,12 +1251,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|p
 )paren
-(brace
-r_return
+id|p
+op_assign
 id|tcf_hash_create
 c_func
 (paren
@@ -1275,7 +1272,9 @@ comma
 id|bind
 )paren
 suffix:semicolon
-)brace
+r_return
+id|p
+suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
