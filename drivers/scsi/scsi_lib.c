@@ -2514,6 +2514,12 @@ id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 multiline_comment|/* release the command and kill it */
+id|scsi_release_buffers
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
 id|scsi_put_command
 c_func
 (paren
