@@ -270,13 +270,13 @@ DECL|macro|IDE_MAX
 mdefine_line|#define IDE_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
-mdefine_line|#define WAIT_DRQ&t;(5*HZ/100)&t;/* 50msec - spec allows up to 20ms */
+mdefine_line|#define WAIT_DRQ&t;(HZ/10)&t;&t;/* 100msec - spec allows up to 20ms */
 macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
 DECL|macro|WAIT_READY
 mdefine_line|#define WAIT_READY&t;(5*HZ)&t;&t;/* 5sec - some laptops are very slow */
 macro_line|#else
 DECL|macro|WAIT_READY
-mdefine_line|#define WAIT_READY&t;(3*HZ/100)&t;/* 30msec - should be instantaneous */
+mdefine_line|#define WAIT_READY&t;(HZ/10)&t;&t;/* 100msec - should be instantaneous */
 macro_line|#endif /* CONFIG_APM || CONFIG_APM_MODULE */
 DECL|macro|WAIT_PIDENTIFY
 mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?), if all ATAPI CD is closed at boot */
