@@ -665,7 +665,7 @@ suffix:semicolon
 multiline_comment|/* Make sure we wrap around the log correctly! */
 DECL|macro|wrap
 mdefine_line|#define wrap(journal, var)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (var &gt;= (journal)-&gt;j_last)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;var -= ((journal)-&gt;j_last - (journal)-&gt;j_first);&t;&bslash;&n;} while (0)
-multiline_comment|/**&n; * int journal_recover(journal_t *journal) - recovers a on-disk journal&n; * @journal: the journal to recover&n; * &n; * The primary function for recovering the log contents when mounting a&n; * journaled device.  &n; */
+multiline_comment|/**&n; * int journal_recover(journal_t *journal) - recovers a on-disk journal&n; * @journal: the journal to recover&n; * &n; * The primary function for recovering the log contents when mounting a&n; * journaled device.  &n; *&n; * Recovery is done in three passes.  In the first pass, we look for the&n; * end of the log.  In the second, we assemble the list of revoke&n; * blocks.  In the third and final pass, we replay any un-revoked blocks&n; * in the log.  &n; */
 DECL|function|journal_recover
 r_int
 id|journal_recover
@@ -676,7 +676,6 @@ op_star
 id|journal
 )paren
 (brace
-multiline_comment|/*&n; * Recovery is done in three passes.  In the first pass, we look for the&n; * end of the log.  In the second, we assemble the list of revoke&n; * blocks.  In the third and final pass, we replay any un-revoked blocks&n; * in the log.  &n; */
 r_int
 id|err
 suffix:semicolon
@@ -844,7 +843,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * int journal_skip_recovery() - Start journal and wipe exiting records &n; * @journal: journal to startup&n; * &n; * Locate any valid recovery information from the journal and set up the&n; * journal structures in memory to ignore it (presumably because the&n; * caller has evidence that it is out of date).  &n; * This function does&squot;nt appear to be exorted..&n; */
+multiline_comment|/**&n; * int journal_skip_recovery() - Start journal and wipe exiting records &n; * @journal: journal to startup&n; * &n; * Locate any valid recovery information from the journal and set up the&n; * journal structures in memory to ignore it (presumably because the&n; * caller has evidence that it is out of date).  &n; * This function does&squot;nt appear to be exorted..&n; *&n; * We perform one pass over the journal to allow us to tell the user how&n; * much recovery information is being erased, and to let us initialise&n; * the journal transaction sequence numbers to the next unused ID. &n; */
 DECL|function|journal_skip_recovery
 r_int
 id|journal_skip_recovery
@@ -855,7 +854,6 @@ op_star
 id|journal
 )paren
 (brace
-multiline_comment|/*&n; * We perform one pass over the journal to allow us to tell the user how&n; * much recovery information is being erased, and to let us initialise&n; * the journal transaction sequence numbers to the next unused ID. &n; */
 r_int
 id|err
 suffix:semicolon

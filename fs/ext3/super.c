@@ -6261,25 +6261,12 @@ id|s_mount_state
 op_or_assign
 id|EXT3_ORPHAN_FS
 suffix:semicolon
-id|unlock_super
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-multiline_comment|/* akpm: sigh */
 id|ext3_orphan_cleanup
 c_func
 (paren
 id|sb
 comma
 id|es
-)paren
-suffix:semicolon
-id|lock_super
-c_func
-(paren
-id|sb
 )paren
 suffix:semicolon
 id|EXT3_SB

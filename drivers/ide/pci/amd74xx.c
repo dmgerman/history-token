@@ -145,6 +145,17 @@ id|AMD_UDMA_100
 comma
 multiline_comment|/* nVidia nForce */
 (brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2_IDE
+comma
+l_int|0x00
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_100
+)brace
+comma
+multiline_comment|/* nVidia nForce 2 */
+(brace
 l_int|0
 )brace
 )brace
@@ -2881,6 +2892,22 @@ comma
 l_int|0
 comma
 l_int|5
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2_IDE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|6
 )brace
 comma
 (brace

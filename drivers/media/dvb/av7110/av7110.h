@@ -1548,7 +1548,7 @@ id|dvb_demux_filter
 op_star
 id|handle2filter
 (braket
-l_int|32
+id|MAXFILT
 )braket
 suffix:semicolon
 DECL|member|p2t_filter
