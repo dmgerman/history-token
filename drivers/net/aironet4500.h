@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/*#include &lt;linux/module.h&gt;&n; #include &lt;linux/kernel.h&gt;&n;*/
 multiline_comment|/*&n;#include &lt;linux/types.h&gt;&n;#include &lt;linux/netdevice.h&gt;&n;#include &lt;linux/etherdevice.h&gt;&n;#include &lt;linux/delay.h&gt;&n;#include &lt;linux/time.h&gt;&n;*/
 macro_line|#include &lt;linux/802_11.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 singleline_comment|//damn idiot PCMCIA stuff
 macro_line|#ifndef DEV_NAME_LEN
 DECL|macro|DEV_NAME_LEN
