@@ -388,10 +388,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|flush_kernel_vm_range
-r_static
+DECL|function|flush_tlb_kernel_range_skas
 r_void
-id|flush_kernel_vm_range
+id|flush_tlb_kernel_range_skas
 c_func
 (paren
 r_int
@@ -684,7 +683,7 @@ c_func
 r_void
 )paren
 (brace
-id|flush_kernel_vm_range
+id|flush_tlb_kernel_range_skas
 c_func
 (paren
 id|start_vm
@@ -703,7 +702,7 @@ r_int
 id|addr
 )paren
 (brace
-id|flush_kernel_vm_range
+id|flush_tlb_kernel_range_skas
 c_func
 (paren
 id|addr
@@ -741,7 +740,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|flush_kernel_vm_range
+id|flush_tlb_kernel_range_skas
 c_func
 (paren
 id|start

@@ -121,7 +121,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PT_PROXY
+macro_line|#ifdef UML_CONFIG_PT_PROXY
 DECL|function|debugger_signal
 r_int
 id|debugger_signal
@@ -195,24 +195,29 @@ id|chan_opts
 id|opts
 op_assign
 (brace
+dot
 id|announce
-suffix:colon
+op_assign
 id|gdb_announce
 comma
+dot
 id|xterm_title
-suffix:colon
+op_assign
 l_string|&quot;UML kernel debugger&quot;
 comma
+dot
 id|raw
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|tramp_stack
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|in_kernel
-suffix:colon
+op_assign
 l_int|0
 comma
 )brace

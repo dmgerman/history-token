@@ -548,8 +548,7 @@ c_func
 op_amp
 id|ts
 comma
-op_amp
-id|ts
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

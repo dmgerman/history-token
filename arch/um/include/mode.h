@@ -3,10 +3,10 @@ macro_line|#ifndef __MODE_H__
 DECL|macro|__MODE_H__
 mdefine_line|#define __MODE_H__
 macro_line|#include &quot;uml-config.h&quot;
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 macro_line|#include &quot;../kernel/tt/include/mode.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;../kernel/skas/include/mode.h&quot;
 macro_line|#endif
 macro_line|#endif

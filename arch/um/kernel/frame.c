@@ -343,7 +343,7 @@ l_int|0
 id|printf
 c_func
 (paren
-l_string|&quot;capture_stack : mmap failed - errno = %d&bslash;n&quot;
+l_string|&quot;capture_stack : PTRACE_CONT failed - errno = %d&bslash;n&quot;
 comma
 id|errno
 )paren
