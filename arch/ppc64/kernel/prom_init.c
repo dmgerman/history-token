@@ -35,7 +35,6 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
 r_extern

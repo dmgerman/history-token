@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -24,7 +25,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/keylargo.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
+macro_line|#include &quot;mpic.h&quot;
 r_extern
 r_void
 id|pmac_secondary_start_1
@@ -47,18 +48,6 @@ id|pmac_secondary_start_3
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_openpic_message_pass
-c_func
-(paren
-r_int
-id|target
-comma
-r_int
-id|msg
 )paren
 suffix:semicolon
 r_extern
@@ -151,7 +140,7 @@ id|ncpus
 OG
 l_int|1
 )paren
-id|openpic_request_IPIs
+id|mpic_request_ipis
 c_func
 (paren
 )paren
@@ -406,8 +395,8 @@ r_int
 id|cpu_nr
 )paren
 (brace
-multiline_comment|/* Setup openpic */
-id|do_openpic_setup_cpu
+multiline_comment|/* Setup MPIC */
+id|mpic_setup_this_cpu
 c_func
 (paren
 )paren
@@ -487,7 +476,7 @@ op_assign
 dot
 id|message_pass
 op_assign
-id|smp_openpic_message_pass
+id|smp_mpic_message_pass
 comma
 dot
 id|probe

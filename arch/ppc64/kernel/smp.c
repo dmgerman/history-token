@@ -31,11 +31,11 @@ macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallCfg.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;mpic.h&quot;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
 macro_line|#ifdef DEBUG
@@ -610,9 +610,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
-DECL|function|smp_openpic_message_pass
+DECL|function|smp_mpic_message_pass
 r_void
-id|smp_openpic_message_pass
+id|smp_mpic_message_pass
 c_func
 (paren
 r_int
@@ -656,7 +656,7 @@ id|target
 r_case
 id|MSG_ALL
 suffix:colon
-id|openpic_cause_IPI
+id|mpic_send_ipi
 c_func
 (paren
 id|msg
@@ -669,7 +669,7 @@ suffix:semicolon
 r_case
 id|MSG_ALL_BUT_SELF
 suffix:colon
-id|openpic_cause_IPI
+id|mpic_send_ipi
 c_func
 (paren
 id|msg
@@ -691,7 +691,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|openpic_cause_IPI
+id|mpic_send_ipi
 c_func
 (paren
 id|msg
@@ -705,11 +705,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|smp_openpic_probe
-r_static
+DECL|function|smp_mpic_probe
 r_int
 id|__init
-id|smp_openpic_probe
+id|smp_mpic_probe
 c_func
 (paren
 r_void
@@ -717,6 +716,12 @@ r_void
 (brace
 r_int
 id|nr_cpus
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;smp_mpic_probe()...&bslash;n&quot;
+)paren
 suffix:semicolon
 id|nr_cpus
 op_assign
@@ -726,6 +731,14 @@ c_func
 id|cpu_possible_map
 )paren
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;nr_cpus: %d&bslash;n&quot;
+comma
+id|nr_cpus
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -733,7 +746,7 @@ id|nr_cpus
 OG
 l_int|1
 )paren
-id|openpic_request_IPIs
+id|mpic_request_ipis
 c_func
 (paren
 )paren
@@ -742,18 +755,17 @@ r_return
 id|nr_cpus
 suffix:semicolon
 )brace
-DECL|function|smp_openpic_setup_cpu
-r_static
+DECL|function|smp_mpic_setup_cpu
 r_void
 id|__devinit
-id|smp_openpic_setup_cpu
+id|smp_mpic_setup_cpu
 c_func
 (paren
 r_int
 id|cpu
 )paren
 (brace
-id|do_openpic_setup_cpu
+id|mpic_setup_this_cpu
 c_func
 (paren
 )paren
@@ -1945,22 +1957,22 @@ id|timebase_lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pSeries_openpic_smp_ops
+DECL|variable|pSeries_mpic_smp_ops
 r_static
 r_struct
 id|smp_ops_t
-id|pSeries_openpic_smp_ops
+id|pSeries_mpic_smp_ops
 op_assign
 (brace
 dot
 id|message_pass
 op_assign
-id|smp_openpic_message_pass
+id|smp_mpic_message_pass
 comma
 dot
 id|probe
 op_assign
-id|smp_openpic_probe
+id|smp_mpic_probe
 comma
 dot
 id|kick_cpu
@@ -1970,7 +1982,7 @@ comma
 dot
 id|setup_cpu
 op_assign
-id|smp_openpic_setup_cpu
+id|smp_mpic_setup_cpu
 comma
 )brace
 suffix:semicolon
@@ -2034,7 +2046,7 @@ id|IC_OPEN_PIC
 id|smp_ops
 op_assign
 op_amp
-id|pSeries_openpic_smp_ops
+id|pSeries_mpic_smp_ops
 suffix:semicolon
 r_else
 id|smp_ops

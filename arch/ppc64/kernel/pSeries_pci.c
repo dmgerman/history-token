@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
+macro_line|#include &quot;mpic.h&quot;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* RTAS tokens */
 DECL|variable|read_pci_config
@@ -48,6 +48,12 @@ r_extern
 r_int
 r_int
 id|pci_probe_only
+suffix:semicolon
+r_extern
+r_struct
+id|mpic
+op_star
+id|pSeries_mpic
 suffix:semicolon
 DECL|function|rtas_read_config
 r_static
@@ -1742,6 +1748,8 @@ c_cond
 id|naca-&gt;interrupt_controller
 op_eq
 id|IC_OPEN_PIC
+op_logical_and
+id|pSeries_mpic
 )paren
 (brace
 r_int
@@ -1757,9 +1765,11 @@ l_int|2
 op_minus
 l_int|1
 suffix:semicolon
-id|openpic_setup_ISU
+id|mpic_assign_isu
 c_func
 (paren
+id|pSeries_mpic
+comma
 id|index
 comma
 id|opprop

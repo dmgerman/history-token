@@ -11,6 +11,19 @@ mdefine_line|#define NR_IRQS&t;&t;512
 multiline_comment|/* this number is used when no interrupt has been assigned */
 DECL|macro|NO_IRQ
 mdefine_line|#define NO_IRQ&t;&t;&t;(-1)
+multiline_comment|/*&n; * These constants are used for passing information about interrupt&n; * signal polarity and level/edge sensing to the low-level PIC chip&n; * drivers.&n; */
+DECL|macro|IRQ_SENSE_MASK
+mdefine_line|#define IRQ_SENSE_MASK&t;&t;0x1
+DECL|macro|IRQ_SENSE_LEVEL
+mdefine_line|#define IRQ_SENSE_LEVEL&t;&t;0x1&t;/* interrupt on active level */
+DECL|macro|IRQ_SENSE_EDGE
+mdefine_line|#define IRQ_SENSE_EDGE&t;&t;0x0&t;/* interrupt triggered by edge */
+DECL|macro|IRQ_POLARITY_MASK
+mdefine_line|#define IRQ_POLARITY_MASK&t;0x2
+DECL|macro|IRQ_POLARITY_POSITIVE
+mdefine_line|#define IRQ_POLARITY_POSITIVE&t;0x2&t;/* high level or low-&gt;high edge */
+DECL|macro|IRQ_POLARITY_NEGATIVE
+mdefine_line|#define IRQ_POLARITY_NEGATIVE&t;0x0&t;/* low level or high-&gt;low edge */
 DECL|macro|get_irq_desc
 mdefine_line|#define get_irq_desc(irq) (&amp;irq_desc[(irq)])
 multiline_comment|/* Define a way to iterate across irqs. */

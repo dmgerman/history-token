@@ -126,6 +126,35 @@ r_extern
 r_int
 id|smt_enabled_at_boot
 suffix:semicolon
+r_extern
+r_int
+id|smp_mpic_probe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_mpic_setup_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_mpic_message_pass
+c_func
+(paren
+r_int
+id|target
+comma
+r_int
+id|msg
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(_PPC64_SMP_H) */
 macro_line|#endif /* __KERNEL__ */
