@@ -1465,7 +1465,7 @@ c_cond
 (paren
 id|action-&gt;handler
 )paren
-id|prom_printf
+id|printk
 c_func
 (paren
 l_string|&quot;[%s:%d:0x%x] &quot;
