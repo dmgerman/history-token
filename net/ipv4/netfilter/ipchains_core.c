@@ -2407,6 +2407,16 @@ id|ret
 op_assign
 id|FW_BLOCK
 suffix:semicolon
+id|cleanup
+c_func
+(paren
+id|chain
+comma
+l_int|0
+comma
+id|slot
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
