@@ -396,7 +396,7 @@ suffix:semicolon
 multiline_comment|/* &quot;ehci-hcd&quot; etc */
 multiline_comment|/* irq handler */
 DECL|member|irq
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq

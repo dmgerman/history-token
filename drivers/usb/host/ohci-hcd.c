@@ -1622,7 +1622,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/* an interrupt happens */
 DECL|function|ohci_irq
 r_static
-r_void
+id|irqreturn_t
 id|ohci_irq
 (paren
 r_struct
@@ -1718,6 +1718,7 @@ l_string|&quot;device removed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* interrupt for some other device? */
 )brace
@@ -1739,6 +1740,7 @@ l_int|0
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1927,6 +1929,9 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|ohci_stop
