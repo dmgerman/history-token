@@ -45,7 +45,7 @@ c_func
 (paren
 r_int
 r_int
-id|unused
+id|_min_pages
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are&n; * generating dirty data.  It looks at the number of dirty pages&n; * in the machine and either:&n; *&n; * - Starts background writeback or&n; * - Causes the caller to perform async writeback or&n; * - Causes the caller to perform synchronous writeback, then&n; *   tells a pdflush thread to perform more writeback or&n; * - Does nothing at all.&n; *&n; * balance_dirty_pages() can sleep.&n; *&n; * FIXME: WB_SYNC_LAST doesn&squot;t actually work.  It waits on the last dirty&n; * inode on the superblock list.  It should wait when nr_to_write is&n; * exhausted.  Doesn&squot;t seem to matter.&n; */
@@ -1445,6 +1445,21 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+id|buffer_error
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
