@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_ACPI_H
 DECL|macro|_ASM_ACPI_H
 mdefine_line|#define _ASM_ACPI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/system.h&gt;&t;&t;/* defines cmpxchg */
 DECL|macro|COMPILER_DEPENDENT_INT64
 mdefine_line|#define COMPILER_DEPENDENT_INT64   long long
 DECL|macro|COMPILER_DEPENDENT_UINT64
