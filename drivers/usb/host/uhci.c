@@ -12120,6 +12120,10 @@ id|bus-&gt;hcpriv
 op_assign
 id|uhci
 suffix:semicolon
+id|bus-&gt;bus_name
+op_assign
+id|dev-&gt;slot_name
+suffix:semicolon
 id|usb_register_bus
 c_func
 (paren

@@ -1129,12 +1129,8 @@ r_if
 c_cond
 (paren
 id|gl_skb
-op_eq
-l_int|0
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 singleline_comment|// copy the packet data to the new skb
 id|memcpy
 (paren
@@ -1182,6 +1178,7 @@ id|netif_rx
 id|gl_skb
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// advance to the next packet
 id|packet
 op_assign
@@ -2041,13 +2038,13 @@ id|devdbg
 (paren
 id|dev
 comma
-l_string|&quot;net1080 %03d/%03d usbctl 0x%x:%s%s%s%s%s;&quot;
+l_string|&quot;net1080 %s-%s usbctl 0x%x:%s%s%s%s%s;&quot;
 l_string|&quot; this%s%s;&quot;
 l_string|&quot; other%s%s; r/o 0x%x&quot;
 comma
-id|dev-&gt;udev-&gt;bus-&gt;busnum
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
 comma
-id|dev-&gt;udev-&gt;devnum
+id|dev-&gt;udev-&gt;devpath
 comma
 id|usbctl
 comma
@@ -2202,13 +2199,13 @@ id|devdbg
 (paren
 id|dev
 comma
-l_string|&quot;net1080 %03d/%03d status 0x%x:&quot;
+l_string|&quot;net1080 %s-%s status 0x%x:&quot;
 l_string|&quot; this (%c) PKT=%d%s%s%s;&quot;
 l_string|&quot; other PKT=%d%s%s%s; unspec 0x%x&quot;
 comma
-id|dev-&gt;udev-&gt;bus-&gt;busnum
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
 comma
-id|dev-&gt;udev-&gt;devnum
+id|dev-&gt;udev-&gt;devpath
 comma
 id|status
 comma
@@ -2336,11 +2333,11 @@ id|devdbg
 (paren
 id|dev
 comma
-l_string|&quot;net1080 %03d/%03d ttl 0x%x this = %d, other = %d&quot;
+l_string|&quot;net1080 %s-%s ttl 0x%x this = %d, other = %d&quot;
 comma
-id|dev-&gt;udev-&gt;bus-&gt;busnum
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
 comma
-id|dev-&gt;udev-&gt;devnum
+id|dev-&gt;udev-&gt;devpath
 comma
 id|ttl
 comma
@@ -2425,9 +2422,11 @@ l_int|0
 (brace
 id|dbg
 (paren
-l_string|&quot;can&squot;t read dev %d status: %d&quot;
+l_string|&quot;can&squot;t read %s-%s status: %d&quot;
 comma
-id|dev-&gt;udev-&gt;devnum
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
+comma
+id|dev-&gt;udev-&gt;devpath
 comma
 id|retval
 )paren
@@ -4752,12 +4751,11 @@ id|devinfo
 (paren
 id|dev
 comma
-l_string|&quot;open reset fail (%d) usbnet bus%d%s, %s&quot;
+l_string|&quot;open reset fail (%d) usbnet usb-%s-%s, %s&quot;
 comma
 id|retval
 comma
-singleline_comment|// FIXME busnum is unstable
-id|dev-&gt;udev-&gt;bus-&gt;busnum
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
 comma
 id|dev-&gt;udev-&gt;devpath
 comma
@@ -4979,19 +4977,14 @@ r_sizeof
 id|info.fw_version
 )paren
 suffix:semicolon
-id|snprintf
+id|usb_make_path
 (paren
+id|dev-&gt;udev
+comma
 id|info.bus_info
 comma
 r_sizeof
 id|info.bus_info
-comma
-l_string|&quot;USB bus%d%s&quot;
-comma
-multiline_comment|/* FIXME busnums are bogus/unstable IDs */
-id|dev-&gt;udev-&gt;bus-&gt;busnum
-comma
-id|dev-&gt;udev-&gt;devpath
 )paren
 suffix:semicolon
 r_if
@@ -6194,10 +6187,9 @@ id|devinfo
 (paren
 id|dev
 comma
-l_string|&quot;unregister usbnet bus%d%s, %s&quot;
+l_string|&quot;unregister usbnet usb-%s-%s, %s&quot;
 comma
-singleline_comment|// FIXME busnum is unstable
-id|udev-&gt;bus-&gt;busnum
+id|udev-&gt;bus-&gt;bus_name
 comma
 id|udev-&gt;devpath
 comma
@@ -6559,10 +6551,9 @@ id|devinfo
 (paren
 id|dev
 comma
-l_string|&quot;register usbnet bus%d%s, %s&quot;
+l_string|&quot;register usbnet usb-%s-%s, %s&quot;
 comma
-singleline_comment|// FIXME busnum is unstable
-id|udev-&gt;bus-&gt;busnum
+id|udev-&gt;bus-&gt;bus_name
 comma
 id|udev-&gt;devpath
 comma

@@ -9,25 +9,12 @@ id|usb_hcd
 (brace
 multiline_comment|/* usb_bus.hcpriv points to this */
 multiline_comment|/*&n;&t; * housekeeping&n;&t; */
-DECL|member|bus
-r_struct
-id|usb_bus
-op_star
-id|bus
-suffix:semicolon
-multiline_comment|/* FIXME only use &quot;self&quot; */
 DECL|member|self
 r_struct
 id|usb_bus
 id|self
 suffix:semicolon
 multiline_comment|/* hcd is-a bus */
-DECL|member|bus_name
-r_const
-r_char
-op_star
-id|bus_name
-suffix:semicolon
 DECL|member|product_desc
 r_const
 r_char

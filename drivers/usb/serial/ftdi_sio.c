@@ -428,6 +428,10 @@ id|usb_serial_device_type
 id|ftdi_8U232AM_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;FTDI 8U232AM&quot;
