@@ -1205,21 +1205,21 @@ l_int|0x02
 comma
 multiline_comment|/* not ready */
 (braket
-l_int|5
+l_int|7
 )braket
 op_assign
 l_int|0x0a
 comma
 multiline_comment|/* additional length */
 (braket
-l_int|10
+l_int|12
 )braket
 op_assign
 l_int|0x04
 comma
 multiline_comment|/* not ready */
 (braket
-l_int|11
+l_int|13
 )braket
 op_assign
 l_int|0x03
