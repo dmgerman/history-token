@@ -1415,6 +1415,7 @@ c_loop
 id|i
 op_decrement
 )paren
+(brace
 id|put_disk
 c_func
 (paren
@@ -1424,6 +1425,16 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+id|rd_queue
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon
