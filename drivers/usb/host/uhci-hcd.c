@@ -2359,6 +2359,13 @@ op_amp
 id|urbp-&gt;qh-&gt;list
 )paren
 suffix:semicolon
+id|list_del_init
+c_func
+(paren
+op_amp
+id|urbp-&gt;qh-&gt;list
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
