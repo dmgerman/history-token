@@ -3060,6 +3060,12 @@ c_func
 id|desc-&gt;host
 )paren
 suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|desc-&gt;host
+)paren
+suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
