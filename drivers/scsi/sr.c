@@ -2845,13 +2845,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_minus
-id|EINVAL
-op_eq
 id|rc
 )paren
 (brace
-multiline_comment|/* failed, drive has&squot;nt this mode page */
+multiline_comment|/* failed, drive doesn&squot;t have capabilities mode page */
 id|scsi_CDs
 (braket
 id|i
@@ -2861,7 +2858,6 @@ id|cdi.speed
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* disable speed select, drive probably can&squot;t do this either */
 id|scsi_CDs
 (braket
 id|i
@@ -2869,7 +2865,21 @@ id|i
 dot
 id|cdi.mask
 op_or_assign
+(paren
+id|CDC_CD_R
+op_or
+id|CDC_CD_RW
+op_or
+id|CDC_DVD_R
+op_or
+id|CDC_DVD
+op_or
+id|CDC_DVD_RAM
+op_or
+id|CDC_SELECT_DISC
+op_or
 id|CDC_SELECT_SPEED
+)paren
 suffix:semicolon
 id|scsi_free
 c_func
@@ -2877,6 +2887,12 @@ c_func
 id|buffer
 comma
 l_int|512
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;sr%i: scsi-1 drive&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

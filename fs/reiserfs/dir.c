@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -592,6 +593,22 @@ id|strlen
 id|d_name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|d_reclen
+OG
+id|REISERFS_MAX_NAME_LEN
+c_func
+(paren
+id|inode-&gt;i_sb-&gt;s_blocksize
+)paren
+)paren
+(brace
+multiline_comment|/* too big to send back to VFS */
+r_continue
+suffix:semicolon
+)brace
 id|d_off
 op_assign
 id|deh_offset

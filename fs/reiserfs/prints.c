@@ -1,15 +1,15 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#else
 macro_line|#include &quot;nokernel.h&quot;
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;limits.h&gt;
 macro_line|#endif
+macro_line|#include &lt;stdarg.h&gt;
 DECL|variable|error_buf
 r_static
 r_char

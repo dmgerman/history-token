@@ -10242,7 +10242,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Non-extended sense class %d code 0x%0x &quot;
+l_string|&quot;Non-extended sense class %d code 0x%0x&bslash;n&quot;
 comma
 id|sense_class
 comma

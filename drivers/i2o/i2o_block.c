@@ -1275,9 +1275,6 @@ id|max_segments
 id|req-&gt;nr_segments
 op_increment
 suffix:semicolon
-id|q-&gt;elevator.nr_segments
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1472,10 +1469,6 @@ id|max_segments
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|q-&gt;elevator.nr_segments
-op_sub_assign
-id|same_segment
 suffix:semicolon
 id|req-&gt;nr_segments
 op_assign

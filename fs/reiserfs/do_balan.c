@@ -6,6 +6,7 @@ multiline_comment|/* balance the tree according to the analysis made before,&t;&
 multiline_comment|/* and using buffers obtained after all above.&t;&t;&t;&t;*/
 multiline_comment|/**&n; ** balance_leaf_when_delete&n; ** balance_leaf&n; ** do_balance&n; **&n; **/
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;

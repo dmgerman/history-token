@@ -3689,6 +3689,13 @@ id|SG_DEFAULT_RETRIES
 )paren
 suffix:semicolon
 multiline_comment|/* dxfer_len overwrites SRpnt-&gt;sr_bufflen, hence need for b_malloc_len */
+id|generic_unplug_device
+c_func
+(paren
+op_amp
+id|SRpnt-&gt;sr_device-&gt;request_queue
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

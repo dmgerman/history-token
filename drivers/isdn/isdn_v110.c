@@ -512,7 +512,7 @@ r_sizeof
 id|isdn_v110_stream
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -661,7 +661,7 @@ c_func
 (paren
 id|maxsize
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq

@@ -638,9 +638,6 @@ suffix:semicolon
 id|req-&gt;nr_segments
 op_increment
 suffix:semicolon
-id|q-&gt;elevator.nr_segments
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -685,23 +682,10 @@ id|SHpnt-&gt;sg_tablesize
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|req-&gt;nr_segments
-op_ge
-id|max_segments
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|req-&gt;nr_hw_segments
 op_increment
 suffix:semicolon
 id|req-&gt;nr_segments
-op_increment
-suffix:semicolon
-id|q-&gt;elevator.nr_segments
 op_increment
 suffix:semicolon
 r_return
@@ -748,9 +732,6 @@ id|max_segments
 (brace
 multiline_comment|/*&n;&t;&t; * This will form the start of a new segment.  Bump the &n;&t;&t; * counter.&n;&t;&t; */
 id|req-&gt;nr_segments
-op_increment
-suffix:semicolon
-id|q-&gt;elevator.nr_segments
 op_increment
 suffix:semicolon
 r_return
@@ -828,6 +809,7 @@ id|SHpnt
 op_assign
 id|SDpnt-&gt;host
 suffix:semicolon
+macro_line|#ifdef DMA_CHUNK_SIZE
 r_if
 c_cond
 (paren
@@ -839,6 +821,7 @@ id|max_segments
 op_assign
 l_int|64
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1040,6 +1023,7 @@ id|SHpnt
 op_assign
 id|SDpnt-&gt;host
 suffix:semicolon
+macro_line|#ifdef DMA_CHUNK_SIZE
 r_if
 c_cond
 (paren
@@ -1051,6 +1035,7 @@ id|max_segments
 op_assign
 l_int|64
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1311,6 +1296,7 @@ id|SHpnt
 op_assign
 id|SDpnt-&gt;host
 suffix:semicolon
+macro_line|#ifdef DMA_CHUNK_SIZE
 r_if
 c_cond
 (paren
@@ -1322,7 +1308,6 @@ id|max_segments
 op_assign
 l_int|64
 suffix:semicolon
-macro_line|#ifdef DMA_CHUNK_SIZE
 multiline_comment|/* If it would not fit into prepared memory space for sg chain,&n;&t; * then don&squot;t allow the merge.&n;&t; */
 r_if
 c_cond
@@ -1511,9 +1496,6 @@ op_add_assign
 id|next-&gt;nr_segments
 op_minus
 l_int|1
-suffix:semicolon
-id|q-&gt;elevator.nr_segments
-op_decrement
 suffix:semicolon
 macro_line|#ifdef DMA_CHUNK_SIZE
 id|req-&gt;nr_hw_segments

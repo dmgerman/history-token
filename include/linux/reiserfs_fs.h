@@ -1986,7 +1986,7 @@ singleline_comment|//#define REISERFS_MAX_NAME_LEN(block_size)
 singleline_comment|//((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE * 2) / 2)
 singleline_comment|// two entries per block (at least)
 DECL|macro|REISERFS_MAX_NAME_LEN
-mdefine_line|#define REISERFS_MAX_NAME_LEN(block_size) &bslash;&n;((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE))
+mdefine_line|#define REISERFS_MAX_NAME_LEN(block_size) 255
 multiline_comment|/* this structure is used for operations on directory entries. It is&n;   not a disk structure. */
 multiline_comment|/* When reiserfs_find_entry or search_by_entry_key find directory&n;   entry, they return filled reiserfs_dir_entry structure */
 DECL|struct|reiserfs_dir_entry
@@ -4565,15 +4565,6 @@ id|update_timestamps
 )paren
 suffix:semicolon
 singleline_comment|//
-r_void
-id|reiserfs_vfs_truncate_file
-(paren
-r_struct
-id|inode
-op_star
-id|p_s_inode
-)paren
-suffix:semicolon
 singleline_comment|//void lock_inode_to_convert (struct inode * p_s_inode);
 singleline_comment|//void unlock_inode_after_convert (struct inode * p_s_inode);
 singleline_comment|//void increment_i_read_sync_counter (struct inode * p_s_inode);
@@ -4675,6 +4666,9 @@ c_func
 r_struct
 id|inode
 op_star
+comma
+r_int
+id|update_timestamps
 )paren
 suffix:semicolon
 r_void

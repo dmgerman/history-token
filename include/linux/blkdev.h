@@ -43,12 +43,6 @@ r_struct
 id|list_head
 id|table
 suffix:semicolon
-DECL|member|free_list
-r_struct
-id|list_head
-op_star
-id|free_list
-suffix:semicolon
 DECL|member|rq_status
 r_volatile
 r_int
@@ -143,11 +137,6 @@ DECL|member|q
 id|request_queue_t
 op_star
 id|q
-suffix:semicolon
-DECL|member|e
-id|elevator_t
-op_star
-id|e
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -273,7 +262,7 @@ id|q
 suffix:semicolon
 multiline_comment|/*&n; * Default nr free requests per queue&n; */
 DECL|macro|QUEUE_NR_REQUESTS
-mdefine_line|#define QUEUE_NR_REQUESTS&t;256
+mdefine_line|#define QUEUE_NR_REQUESTS&t;512
 DECL|struct|request_queue
 r_struct
 id|request_queue
@@ -283,6 +272,21 @@ DECL|member|request_freelist
 r_struct
 id|list_head
 id|request_freelist
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|pending_freelist
+r_struct
+id|list_head
+id|pending_freelist
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|pending_free
+r_int
+id|pending_free
 (braket
 l_int|2
 )braket
@@ -350,9 +354,9 @@ r_char
 id|head_active
 suffix:semicolon
 multiline_comment|/*&n;&t; * Is meant to protect the queue in the future instead of&n;&t; * io_request_lock&n;&t; */
-DECL|member|request_lock
+DECL|member|queue_lock
 id|spinlock_t
-id|request_lock
+id|queue_lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tasks wait here for free request&n;&t; */
 DECL|member|wait_for_request
@@ -486,6 +490,17 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
+r_inline
+id|request_queue_t
+op_star
+id|__blk_get_queue
+c_func
+(paren
+id|kdev_t
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|blkdev_release_request
 c_func
@@ -553,6 +568,15 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|generic_unplug_device
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 op_star
 id|blk_size
@@ -600,10 +624,10 @@ id|max_segments
 id|MAX_BLKDEV
 )braket
 suffix:semicolon
-DECL|macro|MAX_SECTORS
-mdefine_line|#define MAX_SECTORS 254
 DECL|macro|MAX_SEGMENTS
-mdefine_line|#define MAX_SEGMENTS MAX_SECTORS
+mdefine_line|#define MAX_SEGMENTS 128
+DECL|macro|MAX_SECTORS
+mdefine_line|#define MAX_SECTORS (MAX_SEGMENTS*8)
 DECL|macro|PageAlignSize
 mdefine_line|#define PageAlignSize(size) (((size) + PAGE_SIZE -1) &amp; PAGE_MASK)
 multiline_comment|/* read-ahead in pages.. */

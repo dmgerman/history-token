@@ -7088,9 +7088,6 @@ id|Controller-&gt;DriverScatterGatherLimit
 id|Request-&gt;nr_segments
 op_increment
 suffix:semicolon
-id|RequestQueue-&gt;elevator.nr_segments
-op_increment
-suffix:semicolon
 r_return
 l_bool|true
 suffix:semicolon
@@ -7157,9 +7154,6 @@ id|Controller-&gt;DriverScatterGatherLimit
 )paren
 (brace
 id|Request-&gt;nr_segments
-op_increment
-suffix:semicolon
-id|RequestQueue-&gt;elevator.nr_segments
 op_increment
 suffix:semicolon
 r_return
@@ -7246,10 +7240,6 @@ id|Controller-&gt;DriverScatterGatherLimit
 )paren
 r_return
 l_bool|false
-suffix:semicolon
-id|RequestQueue-&gt;elevator.nr_segments
-op_sub_assign
-id|SameSegment
 suffix:semicolon
 id|Request-&gt;nr_segments
 op_assign

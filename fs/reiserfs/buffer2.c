@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README  &n; */
 multiline_comment|/*&n; * Contains code from&n; *&n; *  linux/include/linux/lock.h and linux/fs/buffer.c /linux/fs/minix/fsync.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;

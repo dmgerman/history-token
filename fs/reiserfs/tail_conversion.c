@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright 1999 Hans Reiser, see reiserfs/README for licensing and copyright details&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;

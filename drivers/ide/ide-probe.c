@@ -504,7 +504,7 @@ suffix:semicolon
 macro_line|#endif
 id|printk
 (paren
-l_string|&quot;CDROM&quot;
+l_string|&quot;CD/DVD-ROM&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3624,15 +3624,16 @@ ques
 c_cond
 l_int|127
 suffix:colon
-id|MAX_SECTORS
+l_int|256
 )paren
 suffix:semicolon
 macro_line|#else
+multiline_comment|/* IDE can do up to 128K per request. */
 op_star
 id|max_sect
 op_increment
 op_assign
-id|MAX_SECTORS
+l_int|256
 suffix:semicolon
 macro_line|#endif
 op_star

@@ -1,5 +1,6 @@
 multiline_comment|/*&n;** Write ahead logging implementation copyright Chris Mason 2000&n;**&n;** The background commits make this code very interelated, and &n;** overly complex.  I need to rethink things a bit....The major players:&n;**&n;** journal_begin -- call with the number of blocks you expect to log.  &n;**                  If the current transaction is too&n;** &t;&t;    old, it will block until the current transaction is &n;** &t;&t;    finished, and then start a new one.&n;**&t;&t;    Usually, your transaction will get joined in with &n;**                  previous ones for speed.&n;**&n;** journal_join  -- same as journal_begin, but won&squot;t block on the current &n;**                  transaction regardless of age.  Don&squot;t ever call&n;**                  this.  Ever.  There are only two places it should be &n;**                  called from, and they are both inside this file.&n;**&n;** journal_mark_dirty -- adds blocks into this transaction.  clears any flags &n;**                       that might make them get sent to disk&n;**                       and then marks them BH_JDirty.  Puts the buffer head &n;**                       into the current transaction hash.  &n;**&n;** journal_end -- if the current transaction is batchable, it does nothing&n;**                   otherwise, it could do an async/synchronous commit, or&n;**                   a full flush of all log and real blocks in the &n;**                   transaction.&n;**&n;** flush_old_commits -- if the current transaction is too old, it is ended and &n;**                      commit blocks are sent to disk.  Forces commit blocks &n;**                      to disk for all backgrounded commits that have been &n;**                      around too long.&n;**&t;&t;     -- Note, if you call this as an immediate flush from &n;**&t;&t;        from within kupdate, it will ignore the immediate flag&n;**&n;** The commit thread -- a writer process for async commits.  It allows a &n;**                      a process to request a log flush on a task queue.&n;**                      the commit will happen once the commit thread wakes up.&n;**                      The benefit here is the writer (with whatever&n;**                      related locks it has) doesn&squot;t have to wait for the&n;**                      log blocks to hit disk if it doesn&squot;t want to.&n;*/
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1793,7 +1794,7 @@ op_star
 id|caller
 )paren
 (brace
-macro_line|#ifdef __SMP__
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -4008,24 +4009,21 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|submit_logged_buffer
+DECL|function|reiserfs_end_buffer_io_sync
 r_static
 r_void
-id|submit_logged_buffer
+id|reiserfs_end_buffer_io_sync
 c_func
 (paren
 r_struct
 id|buffer_head
 op_star
 id|bh
+comma
+r_int
+id|uptodate
 )paren
 (brace
-id|mark_buffer_notjournal_new
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4051,7 +4049,50 @@ id|bh-&gt;b_dev
 )paren
 suffix:semicolon
 )brace
-id|set_bit
+id|mark_buffer_uptodate
+c_func
+(paren
+id|bh
+comma
+id|uptodate
+)paren
+suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+)brace
+DECL|function|submit_logged_buffer
+r_static
+r_void
+id|submit_logged_buffer
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+(brace
+id|lock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|bh-&gt;b_end_io
+op_assign
+id|reiserfs_end_buffer_io_sync
+suffix:semicolon
+id|mark_buffer_notjournal_new
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|clear_bit
 c_func
 (paren
 id|BH_Dirty
@@ -4060,14 +4101,11 @@ op_amp
 id|bh-&gt;b_state
 )paren
 suffix:semicolon
-id|ll_rw_block
+id|submit_bh
 c_func
 (paren
 id|WRITE
 comma
-l_int|1
-comma
-op_amp
 id|bh
 )paren
 suffix:semicolon

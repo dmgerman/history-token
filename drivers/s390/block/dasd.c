@@ -4145,15 +4145,6 @@ op_amp
 id|queue-&gt;queue_head
 )paren
 suffix:semicolon
-id|req
-op_assign
-id|blkdev_entry_next_request
-c_func
-(paren
-op_amp
-id|queue-&gt;queue_head
-)paren
-suffix:semicolon
 id|di
 op_assign
 id|DEVICE_NR

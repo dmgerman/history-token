@@ -157,6 +157,8 @@ id|reiserfs_truncate_file
 c_func
 (paren
 id|inode
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|pop_journal_writer
@@ -179,6 +181,27 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|reiserfs_vfs_truncate_file
+r_static
+r_void
+id|reiserfs_vfs_truncate_file
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+id|reiserfs_truncate_file
+c_func
+(paren
+id|inode
+comma
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Sync a reiserfs file. */
@@ -358,7 +381,7 @@ op_assign
 (brace
 id|truncate
 suffix:colon
-id|reiserfs_truncate_file
+id|reiserfs_vfs_truncate_file
 comma
 )brace
 suffix:semicolon

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
@@ -6305,6 +6306,9 @@ r_struct
 id|inode
 op_star
 id|p_s_inode
+comma
+r_int
+id|update_timestamps
 )paren
 (brace
 r_struct
@@ -6448,8 +6452,7 @@ id|p_s_inode
 comma
 id|page
 comma
-l_int|1
-multiline_comment|/*update timestamps*/
+id|update_timestamps
 )paren
 suffix:semicolon
 id|pop_journal_writer

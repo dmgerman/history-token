@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Copyright 2000 by Hans Reiser, licensing governed by 
 multiline_comment|/*&n; *  Written by Anatoly P. Pinchuk pap@namesys.botik.ru&n; *  Programm System Institute&n; *  Pereslavl-Zalessky Russia&n; */
 multiline_comment|/*&n; *  This file contains functions dealing with S+tree&n; *&n; * B_IS_IN_TREE&n; * copy_short_key&n; * copy_item_head&n; * comp_short_keys&n; * comp_keys&n; * comp_cpu_keys&n; * comp_short_le_keys&n; * comp_short_cpu_keys&n; * cpu_key2cpu_key&n; * le_key2cpu_key&n; * comp_le_keys&n; * bin_search&n; * get_lkey&n; * get_rkey&n; * key_in_buffer&n; * decrement_bcount&n; * decrement_counters_in_path&n; * reiserfs_check_path&n; * pathrelse_and_restore&n; * pathrelse&n; * search_by_key_reada&n; * search_by_key&n; * search_for_position_by_key&n; * comp_items&n; * prepare_for_direct_item&n; * prepare_for_direntry_item&n; * prepare_for_delete_or_cut&n; * calc_deleted_bytes_number&n; * init_tb_struct&n; * padd_item&n; * reiserfs_delete_item&n; * reiserfs_delete_solid_item&n; * reiserfs_delete_object&n; * maybe_indirect_to_direct&n; * indirect_to_direct_roll_back&n; * reiserfs_cut_from_item&n; * truncate_directory&n; * reiserfs_do_truncate&n; * reiserfs_paste_into_item&n; * reiserfs_insert_item&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;

@@ -25,15 +25,25 @@ macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 multiline_comment|/*&n; * This entire source file deals with the new queueing code.&n; */
-multiline_comment|/*&n; * Function:    scsi_insert_special_cmd()&n; *&n; * Purpose:     Insert pre-formed command into request queue.&n; *&n; * Arguments:   SCpnt   - command that is ready to be queued.&n; *              at_head - boolean.  True if we should insert at head&n; *                        of queue, false if we should insert at tail.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is called from character device and from&n; *              ioctl types of functions where the caller knows exactly&n; *              what SCSI command needs to be issued.   The idea is that&n; *              we merely inject the command into the queue (at the head&n; *              for now), and then call the queue request function to actually&n; *              process it.&n; */
-DECL|function|scsi_insert_special_cmd
-r_int
-id|scsi_insert_special_cmd
+multiline_comment|/*&n; * Function:&t;__scsi_insert_special()&n; *&n; * Purpose:&t;worker for scsi_insert_special_*()&n; *&n; * Arguments:&t;q - request queue where request should be inserted&n; *&t;&t;rq - request to be inserted&n; * &t;&t;data - private data&n; *&t;&t;at_head - insert request at head or tail of queue&n; *&n; * Lock status:&t;Assumed that io_request_lock is not held upon entry.&n; *&n; * Returns:&t;Nothing&n; */
+DECL|function|__scsi_insert_special
+r_static
+r_void
+id|__scsi_insert_special
 c_func
 (paren
-id|Scsi_Cmnd
+id|request_queue_t
 op_star
-id|SCpnt
+id|q
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_void
+op_star
+id|data
 comma
 r_int
 id|at_head
@@ -42,10 +52,6 @@ id|at_head
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|request_queue_t
-op_star
-id|q
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
@@ -56,33 +62,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The SCpnt already contains a request structure - we will doctor the&n;&t; * thing up with the appropriate values and use that in the actual&n;&t; * request queue.&n;&t; */
-id|q
-op_assign
-op_amp
-id|SCpnt-&gt;device-&gt;request_queue
-suffix:semicolon
-id|SCpnt-&gt;request.cmd
+id|rq-&gt;cmd
 op_assign
 id|SPECIAL
 suffix:semicolon
-id|SCpnt-&gt;request.special
+id|rq-&gt;special
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|SCpnt
+id|data
 suffix:semicolon
-id|SCpnt-&gt;request.q
+id|rq-&gt;q
 op_assign
 l_int|NULL
 suffix:semicolon
-id|SCpnt-&gt;request.free_list
+id|rq-&gt;nr_segments
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
-id|SCpnt-&gt;request.nr_segments
+id|rq-&gt;elevator_sequence
 op_assign
 l_int|0
 suffix:semicolon
@@ -101,33 +97,27 @@ c_cond
 (paren
 id|at_head
 )paren
-(brace
 id|list_add
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;request.queue
+id|rq-&gt;queue
 comma
 op_amp
 id|q-&gt;queue_head
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-multiline_comment|/*&n;&t;&t; * FIXME(eric) - we always insert at the tail of the&n;&t;&t; * list.  Otherwise ioctl commands would always take&n;&t;&t; * precedence over normal I/O.  An ioctl on a busy&n;&t;&t; * disk might be delayed indefinitely because the&n;&t;&t; * request might not float high enough in the queue&n;&t;&t; * to be scheduled.&n;&t;&t; */
 id|list_add_tail
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;request.queue
+id|rq-&gt;queue
 comma
 op_amp
 id|q-&gt;queue_head
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Now hit the requeue function for the queue.  If the host is&n;&t; * already busy, so be it - we have nothing special to do.  If&n;&t; * the host can queue it, then send it off.  &n;&t; */
 id|q
 op_member_access_from_pointer
 id|request_fn
@@ -143,6 +133,41 @@ op_amp
 id|io_request_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function:    scsi_insert_special_cmd()&n; *&n; * Purpose:     Insert pre-formed command into request queue.&n; *&n; * Arguments:   SCpnt   - command that is ready to be queued.&n; *              at_head - boolean.  True if we should insert at head&n; *                        of queue, false if we should insert at tail.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is called from character device and from&n; *              ioctl types of functions where the caller knows exactly&n; *              what SCSI command needs to be issued.   The idea is that&n; *              we merely inject the command into the queue (at the head&n; *              for now), and then call the queue request function to actually&n; *              process it.&n; */
+DECL|function|scsi_insert_special_cmd
+r_int
+id|scsi_insert_special_cmd
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+comma
+r_int
+id|at_head
+)paren
+(brace
+id|request_queue_t
+op_star
+id|q
+op_assign
+op_amp
+id|SCpnt-&gt;device-&gt;request_queue
+suffix:semicolon
+id|__scsi_insert_special
+c_func
+(paren
+id|q
+comma
+op_amp
+id|SCpnt-&gt;request
+comma
+id|SCpnt
+comma
+id|at_head
 )paren
 suffix:semicolon
 r_return
@@ -163,106 +188,24 @@ r_int
 id|at_head
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|request_queue_t
 op_star
-id|q
-suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The SCpnt already contains a request structure - we will doctor the&n;&t; * thing up with the appropriate values and use that in the actual&n;&t; * request queue.&n;&t; */
 id|q
 op_assign
 op_amp
 id|SRpnt-&gt;sr_device-&gt;request_queue
 suffix:semicolon
-id|SRpnt-&gt;sr_request.cmd
-op_assign
-id|SPECIAL
-suffix:semicolon
-id|SRpnt-&gt;sr_request.special
-op_assign
+id|__scsi_insert_special
+c_func
 (paren
-r_void
-op_star
-)paren
+id|q
+comma
+op_amp
+id|SRpnt-&gt;sr_request
+comma
 id|SRpnt
-suffix:semicolon
-id|SRpnt-&gt;sr_request.q
-op_assign
-l_int|NULL
-suffix:semicolon
-id|SRpnt-&gt;sr_request.nr_segments
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * We have the option of inserting the head or the tail of the queue.&n;&t; * Typically we use the tail for new ioctls and so forth.  We use the&n;&t; * head of the queue for things like a QUEUE_FULL message from a&n;&t; * device, or a host that is unable to accept a particular command.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
 comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|at_head
-)paren
-(brace
-id|list_add
-c_func
-(paren
-op_amp
-id|SRpnt-&gt;sr_request.queue
-comma
-op_amp
-id|q-&gt;queue_head
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * FIXME(eric) - we always insert at the tail of the&n;&t;&t; * list.  Otherwise ioctl commands would always take&n;&t;&t; * precedence over normal I/O.  An ioctl on a busy&n;&t;&t; * disk might be delayed indefinitely because the&n;&t;&t; * request might not float high enough in the queue&n;&t;&t; * to be scheduled.&n;&t;&t; */
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|SRpnt-&gt;sr_request.queue
-comma
-op_amp
-id|q-&gt;queue_head
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Now hit the requeue function for the queue.  If the host is&n;&t; * already busy, so be it - we have nothing special to do.  If&n;&t; * the host can queue it, then send it off.  &n;&t; */
-id|q
-op_member_access_from_pointer
-id|request_fn
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1973,16 +1916,6 @@ id|SHpnt
 op_assign
 id|SDpnt-&gt;host
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the host for this device is in error recovery mode, don&squot;t&n;&t; * do anything at all here.  When the host leaves error recovery&n;&t; * mode, it will automatically restart things and start queueing&n;&t; * commands again.  Same goes if the queue is actually plugged,&n;&t; * if the device itself is blocked, or if the host is fully&n;&t; * occupied.&n;&t; */
-r_if
-c_cond
-(paren
-id|SHpnt-&gt;in_recovery
-op_logical_or
-id|q-&gt;plugged
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/*&n;&t; * To start with, we keep looping until the queue is empty, or until&n;&t; * the host is no longer able to accept any more requests.&n;&t; */
 r_while
 c_loop
@@ -2036,7 +1969,7 @@ id|SHpnt-&gt;host_self_blocked
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If we are unable to process any commands at all for this&n;&t;&t;&t; * device, then we consider it to be starved.  What this means&n;&t;&t;&t; * is that there are no outstanding commands for this device&n;&t;&t;&t; * and hence we need a little help getting it started again&n;&t;&t;&t; * once the host isn&squot;t quite so busy.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we are unable to process any commands at all for&n;&t;&t;&t; * this device, then we consider it to be starved.&n;&t;&t;&t; * What this means is that there are no outstanding&n;&t;&t;&t; * commands for this device and hence we need a&n;&t;&t;&t; * little help getting it started again&n;&t;&t;&t; * once the host isn&squot;t quite so busy.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2276,7 +2209,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * If so, we are ready to do something.  Bump the count&n;&t;&t;&t; * while the queue is locked and then break out of the loop.&n;&t;&t;&t; * Otherwise loop around and try another request.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If so, we are ready to do something.  Bump the count&n;&t;&t;&t; * while the queue is locked and then break out of the&n;&t;&t;&t; * loop. Otherwise loop around and try another request.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2331,7 +2264,7 @@ id|request
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We have copied the data out of the request block - it is now in&n;&t;&t;&t; * a field in SCpnt.  Release the request block.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We have copied the data out of the request block -&n;&t;&t;&t; * it is now in a field in SCpnt.  Release the request&n;&t;&t;&t; * block.&n;&t;&t;&t; */
 id|blkdev_release_request
 c_func
 (paren
@@ -2359,7 +2292,7 @@ op_ne
 id|SPECIAL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * This will do a couple of things:&n;&t;&t;&t; *  1) Fill in the actual SCSI command.&n;&t;&t;&t; *  2) Fill in any other upper-level specific fields (timeout).&n;&t;&t;&t; *&n;&t;&t;&t; * If this returns 0, it means that the request failed (reading&n;&t;&t;&t; * past end of disk, reading offline device, etc).   This won&squot;t&n;&t;&t;&t; * actually talk to the device, but some kinds of consistency&n;&t;&t;&t; * checking may cause the request to be rejected immediately.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This will do a couple of things:&n;&t;&t;&t; *  1) Fill in the actual SCSI command.&n;&t;&t;&t; *  2) Fill in any other upper-level specific fields&n;&t;&t;&t; * (timeout).&n;&t;&t;&t; *&n;&t;&t;&t; * If this returns 0, it means that the request failed&n;&t;&t;&t; * (reading past end of disk, reading offline device,&n;&t;&t;&t; * etc).   This won&squot;t actually talk to the device, but&n;&t;&t;&t; * some kinds of consistency checking may cause the&t;&n;&t;&t;&t; * request to be rejected immediately.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2520,7 +2453,7 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Now we need to grab the lock again.  We are about to mess with&n;&t;&t; * the request queue and try to find another command.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Now we need to grab the lock again.  We are about to mess&n;&t;&t; * with the request queue and try to find another command.&n;&t;&t; */
 id|spin_lock_irq
 c_func
 (paren
