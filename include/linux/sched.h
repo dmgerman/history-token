@@ -504,6 +504,15 @@ r_int
 r_int
 id|swap_address
 suffix:semicolon
+DECL|member|saved_auxv
+r_int
+r_int
+id|saved_auxv
+(braket
+l_int|40
+)braket
+suffix:semicolon
+multiline_comment|/* for /proc/PID/auxv */
 DECL|member|dumpable
 r_int
 id|dumpable

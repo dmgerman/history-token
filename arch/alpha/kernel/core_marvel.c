@@ -2508,11 +2508,7 @@ c_cond
 id|__alpha_remap_area_pages
 c_func
 (paren
-id|VMALLOC_VMADDR
-c_func
-(paren
 id|vaddr
-)paren
 comma
 id|pfn
 op_lshift

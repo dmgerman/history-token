@@ -316,8 +316,6 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START    0xffffff0000000000
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END      0xffffff7fffffffff
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|MODULES_VADDR
 mdefine_line|#define MODULES_VADDR    0xffffffffa0000000
 DECL|macro|MODULES_END

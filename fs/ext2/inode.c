@@ -5323,6 +5323,13 @@ id|inode-&gt;i_rdev
 )paren
 )paren
 suffix:semicolon
+id|raw_inode-&gt;i_block
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 r_else

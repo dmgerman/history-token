@@ -5,10 +5,8 @@ mdefine_line|#define __ASM_ARCH_VMALLOC_H
 multiline_comment|/*&n; * VMALLOC_ARCH_OFFSET must be set to VMALLOC_OFFSET (check&n; * linux/arch/arm/kernel/traps.c)&n; */
 DECL|macro|VMALLOC_ARCH_OFFSET
 mdefine_line|#define VMALLOC_ARCH_OFFSET&t;(8 * 1024 * 1024)
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(a)&t;((unsigned int) (a))
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;((VMALLOC_VMADDR(high_memory) + VMALLOC_ARCH_OFFSET) &amp; ~(VMALLOC_ARCH_OFFSET - 1))
+mdefine_line|#define VMALLOC_START&t;&t;(((unsigned long) (high_memory) + VMALLOC_ARCH_OFFSET) &amp; ~(VMALLOC_ARCH_OFFSET - 1))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(PAGE_OFFSET + 0x10000000)
 DECL|macro|MODULE_START

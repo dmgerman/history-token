@@ -102,25 +102,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_static
-r_int
-id|generic_NCR5380_biosparam
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-comma
-r_struct
-id|block_device
-op_star
-comma
-id|sector_t
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2

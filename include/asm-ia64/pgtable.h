@@ -233,8 +233,6 @@ DECL|macro|RGN_KERNEL
 mdefine_line|#define RGN_KERNEL&t;7
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;0xa000000200000000
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
 DECL|macro|VMALLOC_END_INIT
 macro_line|# define VMALLOC_END_INIT&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))

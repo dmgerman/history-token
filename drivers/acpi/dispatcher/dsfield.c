@@ -106,7 +106,24 @@ id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * During the load phase, we want to enter the name of the field into&n;&t; * the namespace.  During the execute phase (when we evaluate the size&n;&t; * operand), we want to lookup the name&n;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;deferred_node
+)paren
+(brace
+id|node
+op_assign
+id|walk_state-&gt;deferred_node
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * During the load phase, we want to enter the name of the field into&n;&t;&t; * the namespace.  During the execute phase (when we evaluate the size&n;&t;&t; * operand), we want to lookup the name&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -133,7 +150,7 @@ op_or
 id|ACPI_NS_ERROR_IF_FOUND
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Enter the name_string into the namespace&n;&t; */
+multiline_comment|/*&n;&t;&t; * Enter the name_string into the namespace&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -177,6 +194,7 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* We could put the returned object (Node) on the object stack for later, but&n;&t; * for now, we will put it in the &quot;op&quot; object that the parser uses, so we&n;&t; * can get it again at the end of this scope&n;&t; */
 id|op-&gt;common.node

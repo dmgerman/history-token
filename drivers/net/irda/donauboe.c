@@ -6388,7 +6388,7 @@ id|err
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_netdev
+id|alloc_irdadev
 c_func
 (paren
 r_sizeof
@@ -6396,10 +6396,6 @@ r_sizeof
 r_struct
 id|toshoboe_cb
 )paren
-comma
-l_string|&quot;irda%d&quot;
-comma
-id|irda_device_setup
 )paren
 suffix:semicolon
 r_if

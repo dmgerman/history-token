@@ -334,6 +334,14 @@ id|inode
 )paren
 )paren
 suffix:semicolon
+id|UDF_I_DATA
+c_func
+(paren
+id|inode
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|udf_discard_prealloc
 r_void

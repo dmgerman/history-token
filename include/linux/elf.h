@@ -980,6 +980,8 @@ DECL|macro|NT_PRPSINFO
 mdefine_line|#define NT_PRPSINFO&t;3
 DECL|macro|NT_TASKSTRUCT
 mdefine_line|#define NT_TASKSTRUCT&t;4
+DECL|macro|NT_AUXV
+mdefine_line|#define NT_AUXV&t;&t;6
 DECL|macro|NT_PRXFPREG
 mdefine_line|#define NT_PRXFPREG     0x46e62b7f      /* copied from gdb5.1/include/elf/common.h */
 multiline_comment|/* Note header in a PT_NOTE section */

@@ -63,6 +63,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 multiline_comment|/* The following value needs to be tuned and probably scaled with the&n; * cache size.&n; */
 DECL|macro|FLUSH_THRESHOLD
 mdefine_line|#define FLUSH_THRESHOLD 0x80000
@@ -242,6 +246,10 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(s,e)&t;&t;do { flush_kernel_dcache_range_asm(s,e); flush_kernel_icache_range_asm(s,e); } while (0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma, page, addr, len) do { &bslash;&n;        flush_user_dcache_range(addr, addr + len); &bslash;&n;&t;flush_user_icache_range(addr, addr + len); } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { memcpy(dst, src, len); &bslash;&n;     flush_icache_user_range(vma, page, vaddr, len); &bslash;&n;} while (0)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 DECL|function|flush_cache_range
 r_static
 r_inline

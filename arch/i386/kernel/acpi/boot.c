@@ -455,7 +455,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
 r_static
 r_int
 id|__init
@@ -920,14 +920,6 @@ op_logical_neg
 id|result
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;MADT not present&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1095,7 +1087,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
 multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
 multiline_comment|/*&n;&t; * ACPI interpreter is required to complete interrupt setup,&n;&t; * so if it is off, don&squot;t enumerate the io-apics with ACPI.&n;&t; * If MPS is present, it will handle them,&n;&t; * otherwise the system will stay in PIC mode&n;&t; */
 r_if
@@ -1261,7 +1253,7 @@ id|acpi_ioapic
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /*CONFIG_X86_IO_APIC*/
+macro_line|#endif /* CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER */
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_if
 c_cond

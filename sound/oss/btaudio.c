@@ -427,7 +427,7 @@ id|bta-&gt;buf_size
 comma
 id|bta-&gt;buf_cpu
 comma
-id|bta-&gt;dma
+id|bta-&gt;buf_dma
 )paren
 suffix:semicolon
 id|bta-&gt;buf_cpu

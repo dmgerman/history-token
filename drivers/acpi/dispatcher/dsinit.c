@@ -197,7 +197,7 @@ op_or_assign
 id|ANOBJ_DATA_WIDTH_32
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Always parse methods to detect errors, we may delete&n;&t;&t; * the parse tree below&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Always parse methods to detect errors, we will delete&n;&t;&t; * the parse tree below&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ds_parse_method
@@ -245,7 +245,7 @@ multiline_comment|/* This parse failed, but we will continue parsing more method
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Delete the parse tree.  We simple re-parse the method&n;&t;&t; * for every execution since there isn&squot;t much overhead&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Delete the parse tree.  We simply re-parse the method&n;&t;&t; * for every execution since there isn&squot;t much overhead&n;&t;&t; */
 id|acpi_ns_delete_namespace_subtree
 (paren
 id|obj_handle

@@ -13,7 +13,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsopcode&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              aml_length          - Length of executable AML&n; *              aml_start           - Pointer to the AML&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late execution of region or field arguments&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              aml_length          - Length of executable AML&n; *              aml_start           - Pointer to the AML&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late (deferred) execution of region or field arguments&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_execute_arguments
 id|acpi_ds_execute_arguments
@@ -153,9 +153,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Mark this parse as a deferred opcode */
 id|walk_state-&gt;parse_flags
 op_assign
 id|ACPI_PARSE_DEFERRED_OP
+suffix:semicolon
+id|walk_state-&gt;deferred_node
+op_assign
+id|node
 suffix:semicolon
 multiline_comment|/* Pass1: Parse the entire declaration */
 id|status
@@ -203,7 +208,7 @@ id|acpi_ps_delete_parse_tree
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/* Evaluate the address and length arguments for the Buffer Field */
+multiline_comment|/* Evaluate the deferred arguments */
 id|op
 op_assign
 id|acpi_ps_alloc_op
@@ -255,6 +260,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Execute the opcode and arguments */
 id|status
 op_assign
 id|acpi_ds_init_aml_walk
@@ -296,6 +302,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Mark this execution as a deferred opcode */
+id|walk_state-&gt;deferred_node
+op_assign
+id|node
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ps_parse_aml
@@ -389,7 +400,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%4.4s] buffer_field JIT Init&bslash;n&quot;
+l_string|&quot;[%4.4s] buffer_field Arg Init&bslash;n&quot;
 comma
 id|node-&gt;name.ascii
 )paren
@@ -418,7 +429,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_buffer_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Bufferobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_buffer_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Buffer object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_buffer_arguments
 id|acpi_ds_get_buffer_arguments
@@ -492,7 +503,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Buffer JIT Init&bslash;n&quot;
+l_string|&quot;Buffer Arg Init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -516,7 +527,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_package_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Packageobject&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Package length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_package_arguments&n; *&n; * PARAMETERS:  obj_desc        - A valid Package object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Package length and initializer byte list.  This implements&n; *              the late evaluation of these attributes.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_get_package_arguments
 id|acpi_ds_get_package_arguments
@@ -590,7 +601,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Package JIT Init&bslash;n&quot;
+l_string|&quot;Package Arg Init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -685,7 +696,6 @@ op_assign
 id|obj_desc-&gt;region.node
 suffix:semicolon
 id|ACPI_DEBUG_EXEC
-c_func
 (paren
 id|acpi_ut_display_init_pathname
 (paren
@@ -702,7 +712,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%4.4s] op_region Init at AML %p&bslash;n&quot;
+l_string|&quot;[%4.4s] op_region Arg Init at AML %p&bslash;n&quot;
 comma
 id|node-&gt;name.ascii
 comma
@@ -710,6 +720,7 @@ id|extra_desc-&gt;extra.aml_start
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Execute the argument AML */
 id|status
 op_assign
 id|acpi_ds_execute_arguments
@@ -1075,11 +1086,24 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Field size %d exceeds Buffer size %d (bits)&bslash;n&quot;
+l_string|&quot;Field [%4.4s] size %d exceeds Buffer [%4.4s] size %d (bits)&bslash;n&quot;
+comma
+(paren
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+)paren
+id|result_desc
+)paren
+op_member_access_from_pointer
+id|name.ascii
 comma
 id|bit_offset
 op_plus
 id|bit_count
+comma
+id|buffer_desc-&gt;buffer.node-&gt;name.ascii
 comma
 l_int|8
 op_star

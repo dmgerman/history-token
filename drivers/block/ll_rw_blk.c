@@ -8543,17 +8543,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|nr_io_contexts
-r_static
-id|atomic_t
-id|nr_io_contexts
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * IO Context helper functions&n; */
 DECL|function|put_io_context
 r_void
@@ -8618,13 +8607,6 @@ id|kfree
 c_func
 (paren
 id|ioc
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|nr_io_contexts
 )paren
 suffix:semicolon
 )brace
@@ -8770,13 +8752,6 @@ c_cond
 id|ret
 )paren
 (brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|nr_io_contexts
-)paren
-suffix:semicolon
 id|atomic_set
 c_func
 (paren

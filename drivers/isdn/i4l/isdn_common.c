@@ -10341,12 +10341,15 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* err_tty_modem:*/
+macro_line|#ifdef CONFIG_ISDN_PPP
+id|err_tty_modem
+suffix:colon
 id|isdn_tty_exit
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|err_cleanup_devfs
 suffix:colon
 id|isdn_cleanup_devfs

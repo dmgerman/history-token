@@ -45,8 +45,6 @@ macro_line|#else
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;(-2*PGDIR_SIZE)
 macro_line|#endif
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(-PGDIR_SIZE)
 multiline_comment|/*&n; * OSF/1 PAL-code-imposed page table bits&n; */

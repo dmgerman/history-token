@@ -74,8 +74,6 @@ DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;(8*1024*1024)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START (((unsigned long) high_memory + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1))
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END KMAP_START
 macro_line|#else
@@ -86,8 +84,6 @@ id|vmalloc_end
 suffix:semicolon
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START 0x0f800000
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END vmalloc_end
 macro_line|#endif /* CONFIG_SUN3 */

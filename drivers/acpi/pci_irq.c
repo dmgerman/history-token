@@ -81,6 +81,18 @@ c_func
 l_string|&quot;acpi_pci_irq_find_prt_entry&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_prt.count
+)paren
+id|return_PTR
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Parse through all PRT entries looking for a match on the specified&n;&t; * PCI device&squot;s segment, bus, device, and pin (don&squot;t care about func).&n;&t; *&n;&t; * TBD: Acquire/release lock&n;&t; */
 id|list_for_each
 c_func

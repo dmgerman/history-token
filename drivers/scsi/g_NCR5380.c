@@ -1851,8 +1851,9 @@ suffix:semicolon
 )brace
 macro_line|#ifdef BIOSPARAM
 multiline_comment|/**&n; *&t;generic_NCR5380_biosparam&n; *&t;@disk: disk to compute geometry for&n; *&t;@dev: device identifier for this disk&n; *&t;@ip: sizes to fill in&n; *&n; *&t;Generates a BIOS / DOS compatible H-C-S mapping for the specified &n; *&t;device / size.&n; * &n; * &t;XXX Most SCSI boards use this mapping, I could be incorrect.  Someone&n; *&t;using hard disks on a trantor should verify that this mapping&n; *&t;corresponds to that used by the BIOS / ASPI driver by running the linux&n; *&t;fdisk program and matching the H_C_S coordinates to what DOS uses.&n; *&n; *&t;Locks: none&n; */
-DECL|function|generic_NCR5380_biosparam
+r_static
 r_int
+DECL|function|generic_NCR5380_biosparam
 id|generic_NCR5380_biosparam
 c_func
 (paren

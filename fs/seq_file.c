@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/fs/seq_file.c&n; *&n; * helper functions for making synthetic files from sequences of records.&n; * initial implementation -- AV, Oct 2001.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -83,6 +84,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|seq_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_open
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;seq_read -&t;-&gt;read() method for sequential files.&n; *&t;@file, @buf, @size, @ppos: see file_operations method&n; *&n; *&t;Ready-made -&gt;f_op-&gt;read()&n; */
 DECL|function|seq_read
 id|ssize_t
@@ -608,6 +616,13 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
+DECL|variable|seq_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_read
+)paren
+suffix:semicolon
 DECL|function|traverse
 r_static
 r_int
@@ -1011,6 +1026,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|seq_lseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_lseek
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;seq_release -&t;free the structures associated with sequential file.&n; *&t;@file: file in question&n; *&t;@inode: file-&gt;f_dentry-&gt;d_inode&n; *&n; *&t;Frees the structures associated with sequential file; can be used&n; *&t;as -&gt;f_op-&gt;release() if you don&squot;t have private data to destroy.&n; */
 DECL|function|seq_release
 r_int
@@ -1056,6 +1078,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|seq_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_release
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;seq_escape -&t;print string into buffer, escaping some characters&n; *&t;@m:&t;target buffer&n; *&t;@s:&t;string&n; *&t;@esc:&t;set of characters that need escaping&n; *&n; *&t;Puts string into buffer, replacing each occurrence of character from&n; *&t;@esc with usual octal escape.  Returns 0 in case of success, -1 - in&n; *&t;case of overflow.&n; */
 DECL|function|seq_escape
 r_int
@@ -1223,6 +1252,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|seq_escape
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_escape
+)paren
+suffix:semicolon
 DECL|function|seq_printf
 r_int
 id|seq_printf
@@ -1317,6 +1353,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|seq_printf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_printf
+)paren
+suffix:semicolon
 DECL|function|seq_path
 r_int
 id|seq_path
@@ -1527,6 +1570,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|seq_path
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_path
+)paren
+suffix:semicolon
 DECL|function|single_start
 r_static
 r_void
@@ -1716,6 +1766,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|single_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_open
+)paren
+suffix:semicolon
 DECL|function|single_release
 r_int
 id|single_release
@@ -1769,6 +1826,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|single_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|single_release
+)paren
+suffix:semicolon
 DECL|function|seq_release_private
 r_int
 id|seq_release_private
@@ -1816,4 +1880,11 @@ id|file
 )paren
 suffix:semicolon
 )brace
+DECL|variable|seq_release_private
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_release_private
+)paren
+suffix:semicolon
 eof

@@ -17,6 +17,10 @@ DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,vmaddr)            do { } while (0)
 DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)                 do { } while (0)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;do { } while (0)
 DECL|macro|invalidate_dcache_range
 mdefine_line|#define invalidate_dcache_range(start,end)      do { } while (0)
 DECL|macro|clean_dcache_range
@@ -35,6 +39,10 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start,end)           do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,page)             do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 multiline_comment|/* DAG: ARM3 will flush cache on MEMC updates anyway? so don&squot;t bother */
 multiline_comment|/* IM : Yes, it will, but only if setup to do so (we do this). */
 DECL|macro|clean_cache_area

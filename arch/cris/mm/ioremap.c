@@ -687,11 +687,11 @@ c_cond
 id|remap_area_pages
 c_func
 (paren
-id|VMALLOC_VMADDR
-c_func
 (paren
-id|addr
+r_int
+r_int
 )paren
+id|addr
 comma
 id|phys_addr
 comma
