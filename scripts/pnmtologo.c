@@ -1279,7 +1279,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;static const unsigned char %s_data[] __initdata = {&bslash;n&quot;
+l_string|&quot;static unsigned char %s_data[] __initdata = {&bslash;n&quot;
 comma
 id|logoname
 )paren
@@ -1307,7 +1307,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;const struct linux_logo %s __initdata = {&bslash;n&quot;
+l_string|&quot;struct linux_logo %s __initdata = {&bslash;n&quot;
 comma
 id|logoname
 )paren
@@ -2105,7 +2105,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;static const unsigned char %s_clut[] __initdata = {&bslash;n&quot;
+l_string|&quot;static unsigned char %s_clut[] __initdata = {&bslash;n&quot;
 comma
 id|logoname
 )paren
