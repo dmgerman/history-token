@@ -45,6 +45,21 @@ id|dma_addr_t
 id|dma
 suffix:semicolon
 multiline_comment|/* addr of ED */
+DECL|member|dummy
+r_struct
+id|td
+op_star
+id|dummy
+suffix:semicolon
+multiline_comment|/* next TD to activate */
+multiline_comment|/* host&squot;s view of schedule */
+DECL|member|ed_next
+r_struct
+id|ed
+op_star
+id|ed_next
+suffix:semicolon
+multiline_comment|/* on schedule or rm_list */
 DECL|member|ed_prev
 r_struct
 id|ed
@@ -52,31 +67,24 @@ op_star
 id|ed_prev
 suffix:semicolon
 multiline_comment|/* for non-interrupt EDs */
-DECL|member|dummy
-r_struct
-id|td
-op_star
-id|dummy
-suffix:semicolon
 DECL|member|td_list
 r_struct
 id|list_head
 id|td_list
 suffix:semicolon
 multiline_comment|/* &quot;shadow list&quot; of our TDs */
+multiline_comment|/* create --&gt; IDLE --&gt; OPER --&gt; ... --&gt; IDLE --&gt; destroy&n;&t; * usually:  OPER --&gt; UNLINK --&gt; (IDLE | OPER) --&gt; ...&n;&t; * some special cases :  OPER --&gt; IDLE ...&n;&t; */
 DECL|member|state
 id|u8
 id|state
 suffix:semicolon
-multiline_comment|/* ED_{NEW,UNLINK,OPER} */
-DECL|macro|ED_NEW
-mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
+multiline_comment|/* ED_{IDLE,UNLINK,OPER} */
+DECL|macro|ED_IDLE
+mdefine_line|#define ED_IDLE &t;0x00&t;&t;/* NOT linked to HC */
 DECL|macro|ED_UNLINK
-mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* dummy td, maybe linked to hc */
+mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* being unlinked from hc */
 DECL|macro|ED_OPER
-mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
-DECL|macro|ED_URB_DEL
-mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* for unlinking; masked in */
+mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* IS linked to hc */
 DECL|member|type
 id|u8
 id|type
@@ -119,12 +127,6 @@ multiline_comment|/* HC may see EDs on rm_list until next frame (frame_no == tic
 DECL|member|tick
 id|u16
 id|tick
-suffix:semicolon
-DECL|member|ed_rm_list
-r_struct
-id|ed
-op_star
-id|ed_rm_list
 suffix:semicolon
 )brace
 id|__attribute__
