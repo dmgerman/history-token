@@ -1356,6 +1356,11 @@ c_func
 id|handle_to_abort
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|qla2x00_add_iodesc_timer
 c_func
 (paren
@@ -1663,6 +1668,11 @@ id|__constant_cpu_to_le16
 c_func
 (paren
 id|BIT_0
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|qla2x00_add_iodesc_timer
@@ -2056,6 +2066,11 @@ c_func
 id|iodesc-&gt;remote_fcport-&gt;loop_id
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|qla2x00_add_iodesc_timer
 c_func
 (paren
@@ -2326,6 +2341,11 @@ id|__constant_cpu_to_le16
 c_func
 (paren
 id|BIT_0
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|qla2x00_add_iodesc_timer

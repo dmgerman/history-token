@@ -1674,6 +1674,11 @@ r_uint8
 )paren
 id|sp-&gt;req_cnt
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Adjust ring index. */
 id|ha-&gt;req_ring_index
 op_increment
@@ -1876,6 +1881,11 @@ id|loop_id
 )paren
 suffix:semicolon
 )brace
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Issue command to ISP */
 id|qla2x00_isp_cmd
 c_func
