@@ -439,6 +439,8 @@ r_sizeof
 op_star
 id|tfm
 )paren
+op_plus
+id|alg-&gt;cra_ctxsize
 )paren
 suffix:semicolon
 id|tfm-&gt;__crt_alg

@@ -1158,7 +1158,7 @@ comma
 dot
 id|hook
 op_assign
-id|ipt_local_hook
+id|ipt_route_hook
 comma
 dot
 id|pf

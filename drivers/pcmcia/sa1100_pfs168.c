@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;sa1100_generic.h&quot;
 macro_line|#include &quot;sa1111_generic.h&quot;
 DECL|function|pfs168_pcmcia_init
 r_static
@@ -18,9 +17,9 @@ id|pfs168_pcmcia_init
 c_func
 (paren
 r_struct
-id|pcmcia_init
+id|sa1100_pcmcia_socket
 op_star
-id|init
+id|skt
 )paren
 (brace
 multiline_comment|/* TPS2211 to standby mode: */
@@ -55,7 +54,7 @@ r_return
 id|sa1111_pcmcia_init
 c_func
 (paren
-id|init
+id|skt
 )paren
 suffix:semicolon
 )brace
@@ -65,14 +64,15 @@ DECL|function|pfs168_pcmcia_configure_socket
 id|pfs168_pcmcia_configure_socket
 c_func
 (paren
-r_int
-id|sock
+r_struct
+id|sa1100_pcmcia_socket
+op_star
+id|skt
 comma
 r_const
-r_struct
-id|pcmcia_configure
+id|socket_state_t
 op_star
-id|conf
+id|state
 )paren
 (brace
 r_int
@@ -92,7 +92,7 @@ multiline_comment|/* PFS168 uses the Texas Instruments TPS2211 for PCMCIA (socke
 r_switch
 c_cond
 (paren
-id|sock
+id|skt-&gt;nr
 )paren
 (brace
 r_case
@@ -111,7 +111,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|conf-&gt;vcc
+id|state-&gt;Vcc
 )paren
 (brace
 r_default
@@ -147,7 +147,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 )paren
 (brace
 r_case
@@ -166,7 +166,7 @@ l_string|&quot;%s(): PFS-168 does not support VPP %uV&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 op_div
 l_int|10
 )paren
@@ -184,9 +184,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 op_eq
-id|conf-&gt;vcc
+id|state-&gt;Vcc
 )paren
 id|pa_dwr_set
 op_or_assign
@@ -202,7 +202,7 @@ l_string|&quot;%s(): unrecognized VPP %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 )paren
 suffix:semicolon
 r_return
@@ -249,7 +249,7 @@ l_string|&quot;%s(): PFS-168 CompactFlash socket does not support VCC %uV&bslash
 comma
 id|__FUNCTION__
 comma
-id|conf-&gt;vcc
+id|state-&gt;Vcc
 op_div
 l_int|10
 )paren
@@ -268,7 +268,7 @@ l_string|&quot;%s(): unrecognized VCC %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|conf-&gt;vcc
+id|state-&gt;Vcc
 )paren
 suffix:semicolon
 r_return
@@ -279,11 +279,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 op_ne
-id|conf-&gt;vcc
+id|state-&gt;Vcc
 op_logical_and
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 op_ne
 l_int|0
 )paren
@@ -295,7 +295,7 @@ id|KERN_ERR
 l_string|&quot;%s(): CompactFlash socket does not support VPP %uV&bslash;n&quot;
 id|__FUNCTION__
 comma
-id|conf-&gt;vpp
+id|state-&gt;Vpp
 op_div
 l_int|10
 )paren
@@ -313,9 +313,9 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
-id|sock
+id|skt
 comma
-id|conf
+id|state
 )paren
 suffix:semicolon
 r_if
@@ -371,14 +371,14 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|init
+id|hw_init
 op_assign
-id|pfs168_pcmcia_init
+id|pfs168_pcmcia_hw_init
 comma
 dot
-id|shutdown
+id|hw_shutdown
 op_assign
-id|sa1111_pcmcia_shutdown
+id|sa1111_pcmcia_hw_shutdown
 comma
 dot
 id|socket_state
@@ -430,39 +430,21 @@ c_func
 )paren
 id|ret
 op_assign
-id|sa1100_register_pcmcia
+id|sa11xx_drv_pcmcia_probe
 c_func
 (paren
+id|dev
+comma
 op_amp
 id|pfs168_pcmcia_ops
 comma
-id|dev
+l_int|0
+comma
+l_int|2
 )paren
 suffix:semicolon
 r_return
 id|ret
-suffix:semicolon
-)brace
-DECL|function|pcmcia_pfs168_exit
-r_void
-id|__exit
-id|pcmcia_pfs168_exit
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-(brace
-id|sa1100_unregister_pcmcia
-c_func
-(paren
-op_amp
-id|pfs168_pcmcia_ops
-comma
-id|dev
-)paren
 suffix:semicolon
 )brace
 eof

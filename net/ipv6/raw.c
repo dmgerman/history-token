@@ -1075,7 +1075,6 @@ op_star
 id|skb
 )paren
 (brace
-macro_line|#if defined(CONFIG_FILTER)
 r_if
 c_cond
 (paren
@@ -1126,7 +1125,6 @@ op_assign
 id|CHECKSUM_UNNECESSARY
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Charge it to the socket. */
 r_if
 c_cond

@@ -1336,7 +1336,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1452,7 +1452,7 @@ op_star
 op_star
 l_int|4
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3736,7 +3736,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
