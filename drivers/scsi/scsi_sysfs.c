@@ -1419,17 +1419,6 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sdev-&gt;access_count
-)paren
-)paren
 id|device_del
 c_func
 (paren
