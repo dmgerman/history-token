@@ -372,6 +372,7 @@ c_func
 id|strnlen_user
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|pci_alloc_consistent
 id|EXPORT_SYMBOL
 c_func
@@ -386,6 +387,7 @@ c_func
 id|pci_free_consistent
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|pcibios_penalize_isa_irq
 id|EXPORT_SYMBOL

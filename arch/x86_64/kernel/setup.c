@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/edd.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1591,6 +1592,85 @@ comma
 id|noreplacement_setup
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
+DECL|variable|eddnr
+r_int
+r_char
+id|eddnr
+suffix:semicolon
+DECL|variable|edd
+r_struct
+id|edd_info
+id|edd
+(braket
+id|EDDMAXNR
+)braket
+suffix:semicolon
+DECL|variable|edd_disk80_sig
+r_int
+r_int
+id|edd_disk80_sig
+suffix:semicolon
+macro_line|#ifdef CONFIG_EDD_MODULE
+DECL|variable|eddnr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eddnr
+)paren
+suffix:semicolon
+DECL|variable|edd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd
+)paren
+suffix:semicolon
+DECL|variable|edd_disk80_sig
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd_disk80_sig
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */
+DECL|function|copy_edd
+r_static
+r_inline
+r_void
+id|copy_edd
+c_func
+(paren
+r_void
+)paren
+(brace
+id|eddnr
+op_assign
+id|EDD_NR
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|edd
+comma
+id|EDD_BUF
+comma
+r_sizeof
+(paren
+id|edd
+)paren
+)paren
+suffix:semicolon
+id|edd_disk80_sig
+op_assign
+id|DISK80_SIGNATURE
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|copy_edd
+mdefine_line|#define copy_edd() do {} while (0)
+macro_line|#endif
 DECL|function|setup_arch
 r_void
 id|__init
@@ -1672,6 +1752,11 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 id|setup_memory_region
+c_func
+(paren
+)paren
+suffix:semicolon
+id|copy_edd
 c_func
 (paren
 )paren
@@ -1982,14 +2067,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-multiline_comment|/* Temporary hack: disable the IO-APIC for UP Nvidia and VIA. */
 id|check_ioapic
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;        * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;        * Must do this after paging_init (due to reliance on fixmap, and thus&n;        * the bootmem allocator) but before get_smp_config (to allow parsing&n;        * of MADT).&n;        */
 r_if
@@ -3640,6 +3722,19 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|c-&gt;x86
+op_eq
+l_int|15
+)paren
+id|c-&gt;x86_cache_alignment
+op_assign
+id|c-&gt;x86_clflush_size
+op_star
+l_int|2
+suffix:semicolon
 )brace
 DECL|function|get_cpu_vendor
 r_void
@@ -3775,6 +3870,10 @@ multiline_comment|/* Unset */
 id|c-&gt;x86_clflush_size
 op_assign
 l_int|64
+suffix:semicolon
+id|c-&gt;x86_cache_alignment
+op_assign
+id|c-&gt;x86_clflush_size
 suffix:semicolon
 id|memset
 c_func
@@ -4905,6 +5004,16 @@ comma
 l_string|&quot;clflush size&bslash;t: %d&bslash;n&quot;
 comma
 id|c-&gt;x86_clflush_size
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;cache_alignment&bslash;t: %d&bslash;n&quot;
+comma
+id|c-&gt;x86_cache_alignment
 )paren
 suffix:semicolon
 id|seq_printf

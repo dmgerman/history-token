@@ -667,6 +667,11 @@ op_assign
 l_int|0xffffffff
 suffix:semicolon
 multiline_comment|/* Kludge to make it bug-to-bug compatible with i386. i386&n;&t;   uses the normal dma_mask for alloc_consistent. */
+r_if
+c_cond
+(paren
+id|hwdev
+)paren
 id|dma_mask
 op_and_assign
 id|hwdev-&gt;dma_mask
@@ -3751,7 +3756,7 @@ c_func
 id|pci_iommu_init
 )paren
 suffix:semicolon
-multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (default) &n;   nofullflush Don&squot;t use IOMMU fullflush&n;   soft&t; Use software bounce buffering (default for Intel machines)&n;*/
+multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (default) &n;   nofullflush Don&squot;t use IOMMU fullflush&n;   allowed  overwrite iommu off workarounds for specific chipsets.&n;   soft&t; Use software bounce buffering (default for Intel machines)&n;*/
 DECL|function|iommu_setup
 id|__init
 r_int
@@ -3829,7 +3834,31 @@ comma
 l_int|5
 )paren
 )paren
+(brace
 id|force_iommu
+op_assign
+l_int|1
+suffix:semicolon
+id|iommu_aperture_allowed
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;allowed&quot;
+comma
+l_int|7
+)paren
+)paren
+id|iommu_aperture_allowed
 op_assign
 l_int|1
 suffix:semicolon

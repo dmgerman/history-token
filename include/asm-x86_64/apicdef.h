@@ -1386,5 +1386,7 @@ id|packed
 suffix:semicolon
 DECL|macro|u32
 macro_line|#undef u32
+DECL|macro|BAD_APICID
+mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#endif
 eof

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 DECL|variable|sis_apic_bug
 r_int
 id|sis_apic_bug
@@ -656,11 +657,10 @@ comma
 id|enable_ioapic_setup
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
 macro_line|#include &lt;asm/pci-direct.h&gt;
 macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-multiline_comment|/* Temporary Hack. Nvidia and VIA boards currently only work with IO-APIC&n;   off. Check for an Nvidia or VIA PCI bridge and turn it off.&n;   Use pci direct infrastructure because this runs before the PCI subsystem. &n;&n;   Can be overwritten with &quot;apic&quot; */
+multiline_comment|/* Temporary Hack. Nvidia and VIA boards currently only work with IO-APIC&n;   off. Check for an Nvidia or VIA PCI bridge and turn it off.&n;   Use pci direct infrastructure because this runs before the PCI subsystem. &n;&n;   Can be overwritten with &quot;apic&quot;&n;&n;   And another hack to disable the IOMMU on VIA chipsets.&n;&n;   Kludge-O-Rama. */
 DECL|function|check_ioapic
 r_void
 id|__init
@@ -797,11 +797,40 @@ id|vendor
 )paren
 (brace
 r_case
-id|PCI_VENDOR_ID_NVIDIA
-suffix:colon
-r_case
 id|PCI_VENDOR_ID_VIA
 suffix:colon
+r_if
+c_cond
+(paren
+id|end_pfn
+op_ge
+(paren
+l_int|0xffffffff
+op_rshift
+id|PAGE_SHIFT
+)paren
+op_logical_and
+op_logical_neg
+id|iommu_aperture_allowed
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Looks like a VIA chipset. Disabling IOMMU. Overwrite with &bslash;&quot;iommu=allowed&bslash;&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iommu_aperture_disabled
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* FALL THROUGH */
+r_case
+id|PCI_VENDOR_ID_NVIDIA
+suffix:colon
+macro_line|#ifndef CONFIG_SMP
 id|printk
 c_func
 (paren
@@ -819,6 +848,7 @@ id|skip_ioapic_setup
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -854,7 +884,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 DECL|function|ioapic_pirq_setup
 r_static
 r_int
@@ -7272,7 +7301,6 @@ multiline_comment|/*&n;&t; * The P4 platform supports up to 256 APIC IDs on two 
 r_if
 c_cond
 (paren
-op_logical_neg
 id|physids_empty
 c_func
 (paren

@@ -35,15 +35,6 @@ DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
-multiline_comment|/* which CPU (physical APIC ID) maps to which logical CPU number */
-DECL|variable|x86_apicid_to_cpu
-r_volatile
-r_char
-id|x86_apicid_to_cpu
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
 DECL|variable|x86_cpu_to_apicid
 r_volatile
@@ -1967,13 +1958,6 @@ id|cpu
 op_assign
 id|apicid
 suffix:semicolon
-id|x86_apicid_to_cpu
-(braket
-id|apicid
-)braket
-op_assign
-id|cpu
-suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|init_idle
 c_func
@@ -2553,6 +2537,10 @@ r_int
 id|apicid
 comma
 id|cpu
+comma
+id|bit
+comma
+id|kicked
 suffix:semicolon
 id|nmi_watchdog_default
 c_func
@@ -2885,21 +2873,37 @@ id|phys_cpu_present_map
 )paren
 )paren
 suffix:semicolon
+id|kicked
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
-id|apicid
+id|bit
 op_assign
 l_int|0
 suffix:semicolon
-id|apicid
+id|kicked
 OL
 id|NR_CPUS
+op_logical_and
+id|bit
+OL
+id|MAX_APICS
 suffix:semicolon
-id|apicid
+id|bit
 op_increment
 )paren
 (brace
+id|apicid
+op_assign
+id|cpu_present_to_apicid
+c_func
+(paren
+id|bit
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Don&squot;t even attempt to start the boot CPU!&n;&t;&t; */
 r_if
 c_cond
@@ -2907,6 +2911,12 @@ c_cond
 id|apicid
 op_eq
 id|boot_cpu_id
+op_logical_or
+(paren
+id|apicid
+op_eq
+id|BAD_APICID
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -2948,6 +2958,9 @@ c_func
 (paren
 id|apicid
 )paren
+suffix:semicolon
+op_increment
+id|kicked
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */

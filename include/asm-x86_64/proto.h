@@ -578,6 +578,14 @@ r_int
 id|iommu_aperture
 suffix:semicolon
 r_extern
+r_int
+id|iommu_aperture_disabled
+suffix:semicolon
+r_extern
+r_int
+id|iommu_aperture_allowed
+suffix:semicolon
+r_extern
 r_void
 id|smp_local_timer_interrupt
 c_func
