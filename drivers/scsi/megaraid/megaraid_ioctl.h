@@ -178,7 +178,7 @@ id|dma_addr_t
 id|buf_paddr
 suffix:semicolon
 DECL|member|pool_index
-r_uint8
+r_int8
 id|pool_index
 suffix:semicolon
 DECL|member|free_buf

@@ -4858,6 +4858,12 @@ id|slave_alloc
 op_assign
 id|imm_adjust_queue
 comma
+dot
+id|unchecked_isa_dma
+op_assign
+l_int|1
+comma
+multiline_comment|/* imm cannot deal with highmem, so&n;&t;&t;&t;&t;      * this is an easy trick to ensure&n;&t;&t;&t;&t;      * all io pages for this host reside&n;&t;&t;&t;&t;      * in low memory */
 )brace
 suffix:semicolon
 multiline_comment|/***************************************************************************&n; *                   Parallel port probing routines                        *&n; ***************************************************************************/
