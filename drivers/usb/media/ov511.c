@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OmniVision OV511 Camera-to-USB Bridge Driver&n; *&n; * Copyright (c) 1999-2002 Mark W. McClelland&n; * Original decompression code Copyright 1998-2000 OmniVision Technologies&n; * Many improvements by Bret Wallach &lt;bwallac1@san.rr.com&gt;&n; * Color fixes by by Orion Sky Lawlor &lt;olawlor@acm.org&gt; (2/26/2000)&n; * Snapshot code by Kevin Moore&n; * OV7620 fixes by Charl P. Botha &lt;cpbotha@ieee.org&gt;&n; * Changes by Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; * Original SAA7111A code by Dave Perks &lt;dperks@ibm.net&gt;&n; * URB error messages from pwc driver by Nemosoft&n; * generic_ioctl() code from videodev.c by Gerd Knorr and Alan Cox&n; * Memory management (rvmalloc) code from bttv driver, by Gerd Knorr and others&n; *&n; * Based on the Linux CPiA driver written by Peter Pregler,&n; * Scott J. Bertin and Johannes Erdfelt.&n; * &n; * Please see the file: linux/Documentation/usb/ov511.txt &n; * and the website at:  http://alpha.dyndns.org/ov511&n; * for more info.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * OmniVision OV511 Camera-to-USB Bridge Driver&n; *&n; * Copyright (c) 1999-2003 Mark W. McClelland&n; * Original decompression code Copyright 1998-2000 OmniVision Technologies&n; * Many improvements by Bret Wallach &lt;bwallac1@san.rr.com&gt;&n; * Color fixes by by Orion Sky Lawlor &lt;olawlor@acm.org&gt; (2/26/2000)&n; * Snapshot code by Kevin Moore&n; * OV7620 fixes by Charl P. Botha &lt;cpbotha@ieee.org&gt;&n; * Changes by Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; * Original SAA7111A code by Dave Perks &lt;dperks@ibm.net&gt;&n; * URB error messages from pwc driver by Nemosoft&n; * generic_ioctl() code from videodev.c by Gerd Knorr and Alan Cox&n; * Memory management (rvmalloc) code from bttv driver, by Gerd Knorr and others&n; *&n; * Based on the Linux CPiA driver written by Peter Pregler,&n; * Scott J. Bertin and Johannes Erdfelt.&n; * &n; * Please see the file: linux/Documentation/usb/ov511.txt &n; * and the website at:  http://alpha.dyndns.org/ov511&n; * for more info.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -20,7 +20,7 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.63 for Linux 2.5&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.64 for Linux 2.5&quot;
 DECL|macro|EMAIL
 mdefine_line|#define EMAIL &quot;mark@alpha.dyndns.org&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -359,7 +359,7 @@ c_func
 (paren
 id|compress
 comma
-l_string|&quot;Turn on compression (not reliable yet)&quot;
+l_string|&quot;Turn on compression&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -6182,6 +6182,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Sleeps until no frames are active. Returns !0 if got signal */
+r_static
+r_int
+DECL|function|ov51x_wait_frames_inactive
+id|ov51x_wait_frames_inactive
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+id|ov
+)paren
+(brace
+r_return
+id|wait_event_interruptible
+c_func
+(paren
+id|ov-&gt;wq
+comma
+id|ov-&gt;curframe
+OL
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Resets the hardware snapshot button */
 r_static
 r_void
@@ -9531,7 +9556,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_VIDEO_PROC_FS */
+macro_line|#endif /* CONFIG_VIDEO_PROC_FS */
 multiline_comment|/* Turns on or off the LED. Only has an effect with OV511+/OV518(+) */
 r_static
 r_void
@@ -11296,7 +11321,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/******** Clock programming ********/
-singleline_comment|// FIXME: Test this with OV6630
 multiline_comment|/* The OV6620 needs special handling. This prevents the &n;&t; * severe banding that normally occurs */
 r_if
 c_cond
@@ -16368,22 +16392,6 @@ id|frame-&gt;grabstate
 op_assign
 id|FRAME_DONE
 suffix:semicolon
-singleline_comment|// FIXME: Is this right?
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|frame-&gt;wq
-)paren
-)paren
-(brace
-id|frame-&gt;grabstate
-op_assign
-id|FRAME_DONE
-suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -16391,7 +16399,6 @@ op_amp
 id|frame-&gt;wq
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If next frame is ready or grabbing,&n;&t;&t;&t; * point to it */
 id|nextf
 op_assign
@@ -17181,22 +17188,6 @@ id|frame-&gt;grabstate
 op_assign
 id|FRAME_DONE
 suffix:semicolon
-singleline_comment|// FIXME: Is this right?
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|frame-&gt;wq
-)paren
-)paren
-(brace
-id|frame-&gt;grabstate
-op_assign
-id|FRAME_DONE
-suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -17204,7 +17195,6 @@ op_amp
 id|frame-&gt;wq
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If next frame is ready or grabbing,&n;&t;&t; * point to it */
 id|nextf
 op_assign
@@ -19472,9 +19462,6 @@ r_struct
 id|usb_ov511
 op_star
 id|ov
-comma
-r_int
-id|now
 )paren
 (brace
 id|PDEBUG
@@ -19583,24 +19570,6 @@ id|ov-&gt;user
 r_goto
 id|out
 suffix:semicolon
-id|err
-op_assign
-id|ov51x_alloc
-c_func
-(paren
-id|ov
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|ov-&gt;sub_flag
 op_assign
 l_int|0
@@ -19691,6 +19660,24 @@ suffix:semicolon
 )brace
 id|err
 op_assign
+id|ov51x_alloc
+c_func
+(paren
+id|ov
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|err
+op_assign
 id|ov51x_init_isoc
 c_func
 (paren
@@ -19707,8 +19694,6 @@ id|ov51x_dealloc
 c_func
 (paren
 id|ov
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_goto
@@ -19835,8 +19820,6 @@ id|ov51x_dealloc
 c_func
 (paren
 id|ov
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|up
@@ -19882,8 +19865,6 @@ id|ov51x_dealloc
 c_func
 (paren
 id|ov
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|kfree
@@ -20359,6 +20340,8 @@ id|arg
 suffix:semicolon
 r_int
 id|i
+comma
+id|rc
 suffix:semicolon
 id|PDEBUG
 c_func
@@ -20448,26 +20431,21 @@ comma
 l_string|&quot;Detected format change&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;re collecting previous frame wait&n;&t;&t;&t;   before changing modes */
-id|interruptible_sleep_on
+id|rc
+op_assign
+id|ov51x_wait_frames_inactive
 c_func
 (paren
-op_amp
-id|ov-&gt;wq
+id|ov
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
+id|rc
 )paren
 r_return
-op_minus
-id|EINTR
+id|rc
 suffix:semicolon
 id|mode_init_regs
 c_func
@@ -20693,7 +20671,7 @@ suffix:semicolon
 r_int
 id|i
 comma
-id|result
+id|rc
 suffix:semicolon
 id|PDEBUG
 c_func
@@ -20749,28 +20727,23 @@ op_minus
 id|EINVAL
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we&squot;re collecting previous frame wait&n;&t;&t;   before changing modes */
-id|interruptible_sleep_on
+id|rc
+op_assign
+id|ov51x_wait_frames_inactive
 c_func
 (paren
-op_amp
-id|ov-&gt;wq
+id|ov
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
+id|rc
 )paren
 r_return
-op_minus
-id|EINTR
+id|rc
 suffix:semicolon
-id|result
+id|rc
 op_assign
 id|mode_init_regs
 c_func
@@ -20794,12 +20767,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|rc
 OL
 l_int|0
 )paren
 r_return
-id|result
+id|rc
 suffix:semicolon
 r_for
 c_loop
@@ -21022,7 +20995,7 @@ op_assign
 id|arg
 suffix:semicolon
 r_int
-id|ret
+id|rc
 comma
 id|depth
 suffix:semicolon
@@ -21260,28 +21233,23 @@ comma
 l_string|&quot;VIDIOCMCAPTURE: change in image parameters&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;re collecting previous frame wait&n;&t;&t;&t;   before changing modes */
-id|interruptible_sleep_on
+id|rc
+op_assign
+id|ov51x_wait_frames_inactive
 c_func
 (paren
-op_amp
-id|ov-&gt;wq
+id|ov
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
+id|rc
 )paren
 r_return
-op_minus
-id|EINTR
+id|rc
 suffix:semicolon
-id|ret
+id|rc
 op_assign
 id|mode_init_regs
 c_func
@@ -21301,7 +21269,7 @@ macro_line|#if 0
 r_if
 c_cond
 (paren
-id|ret
+id|rc
 OL
 l_int|0
 )paren
@@ -21532,14 +21500,11 @@ op_eq
 id|FRAME_ERROR
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|ret
+id|rc
 op_assign
 id|ov51x_new_frame
 c_func
@@ -21553,7 +21518,7 @@ OL
 l_int|0
 )paren
 r_return
-id|ret
+id|rc
 suffix:semicolon
 r_goto
 id|redo
@@ -21572,14 +21537,11 @@ op_logical_neg
 id|frame-&gt;snapshot
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|ret
+id|rc
 op_assign
 id|ov51x_new_frame
 c_func
@@ -21593,7 +21555,7 @@ OL
 l_int|0
 )paren
 r_return
-id|ret
+id|rc
 suffix:semicolon
 r_goto
 id|redo
@@ -28258,7 +28220,7 @@ suffix:semicolon
 r_struct
 id|usb_interface_descriptor
 op_star
-id|interface
+id|idesc
 suffix:semicolon
 r_struct
 id|usb_ov511
@@ -28293,7 +28255,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|interface
+id|idesc
 op_assign
 op_amp
 id|intf-&gt;altsetting
@@ -28303,11 +28265,10 @@ l_int|0
 dot
 id|desc
 suffix:semicolon
-multiline_comment|/* Checking vendor/product should be enough, but what the hell */
 r_if
 c_cond
 (paren
-id|interface-&gt;bInterfaceClass
+id|idesc-&gt;bInterfaceClass
 op_ne
 l_int|0xFF
 )paren
@@ -28318,7 +28279,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|interface-&gt;bInterfaceSubClass
+id|idesc-&gt;bInterfaceSubClass
 op_ne
 l_int|0x00
 )paren
@@ -28378,7 +28339,7 @@ id|dev
 suffix:semicolon
 id|ov-&gt;iface
 op_assign
-id|interface-&gt;bInterfaceNumber
+id|idesc-&gt;bInterfaceNumber
 suffix:semicolon
 id|ov-&gt;led_policy
 op_assign
@@ -28993,7 +28954,7 @@ l_string|&quot;Camera initialization failed&quot;
 suffix:semicolon
 r_return
 op_minus
-id|ENOMEM
+id|EIO
 suffix:semicolon
 )brace
 r_static
@@ -29107,21 +29068,6 @@ suffix:semicolon
 id|n
 op_increment
 )paren
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|ov-&gt;frame
-(braket
-id|n
-)braket
-dot
-id|wq
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -29134,16 +29080,6 @@ dot
 id|wq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|ov-&gt;wq
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -29209,8 +29145,6 @@ id|ov51x_dealloc
 c_func
 (paren
 id|ov
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|kfree

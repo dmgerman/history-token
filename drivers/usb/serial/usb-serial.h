@@ -16,7 +16,7 @@ mdefine_line|#define USB_SERIAL_PORT_MAGIC&t;0x7301&t;/* magic number for usb_se
 multiline_comment|/* parity check flag */
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
-multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the coresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; * @sem: struct semaphore used to lock this structure.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
+multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the coresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
 DECL|struct|usb_serial_port
 r_struct
 id|usb_serial_port
@@ -106,11 +106,6 @@ suffix:semicolon
 DECL|member|open_count
 r_int
 id|open_count
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -235,6 +230,11 @@ id|port
 id|MAX_NUM_PORTS
 )braket
 suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 DECL|member|private
 r_void
 op_star
@@ -242,6 +242,8 @@ r_private
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_usb_serial
+mdefine_line|#define to_usb_serial(d) container_of(d, struct usb_serial, kobj)
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
 multiline_comment|/* get and set the serial private data pointer helper functions */

@@ -756,20 +756,32 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* In 2.5 we require hcds&squot; endpoint queues not to progress after fault&n;&t; * reports, until the competion callback (this!) returns.  That lets&n;&t; * device driver code (like this routine) unlink queued urbs first,&n;&t; * if it needs to, since the HC won&squot;t work on them at all.  So it&squot;s&n;&t; * not possible for page N+1 to overwrite page N, and so on.&n;&t; */
+multiline_comment|/* In 2.5 we require hcds&squot; endpoint queues not to progress after fault&n;&t; * reports, until the completion callback (this!) returns.  That lets&n;&t; * device driver code (like this routine) unlink queued urbs first,&n;&t; * if it needs to, since the HC won&squot;t work on them at all.  So it&squot;s&n;&t; * not possible for page N+1 to overwrite page N, and so on.&n;&t; *&n;&t; * That&squot;s only for &quot;hard&quot; faults; &quot;soft&quot; faults (unlinks) sometimes&n;&t; * complete before the HCD can get requests away from hardware,&n;&t; * though never during cleanup after a hard fault.&n;&t; */
 r_if
 c_cond
 (paren
 id|io-&gt;status
 op_logical_and
+(paren
+id|io-&gt;status
+op_ne
+op_minus
+id|ECONNRESET
+op_logical_or
+id|urb-&gt;status
+op_ne
+op_minus
+id|ECONNRESET
+)paren
+op_logical_and
 id|urb-&gt;actual_length
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;driver for bus %s dev %s ep %d-%s corrupted data!&quot;
+id|io-&gt;dev-&gt;bus-&gt;controller
 comma
-id|io-&gt;dev-&gt;bus-&gt;bus_name
+l_string|&quot;dev %s ep%d%s scatterlist error %d/%d&bslash;n&quot;
 comma
 id|io-&gt;dev-&gt;devpath
 comma
@@ -787,6 +799,10 @@ c_cond
 l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;out&quot;
+comma
+id|urb-&gt;status
+comma
+id|io-&gt;status
 )paren
 suffix:semicolon
 singleline_comment|// BUG ();

@@ -178,10 +178,16 @@ r_struct
 id|timer_list
 id|watchdog
 suffix:semicolon
+DECL|member|reboot_notifier
+r_struct
+id|notifier_block
+id|reboot_notifier
+suffix:semicolon
 DECL|member|stamp
 r_int
 id|stamp
 suffix:semicolon
+multiline_comment|/* irq statistics */
 macro_line|#ifdef EHCI_STATS
 DECL|member|stats
 r_struct
