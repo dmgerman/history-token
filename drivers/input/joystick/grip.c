@@ -2365,7 +2365,7 @@ id|grip-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
@@ -2374,7 +2374,7 @@ id|grip-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_GRAVIS
 suffix:semicolon
@@ -2383,7 +2383,7 @@ id|grip-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|grip-&gt;mode
 (braket
@@ -2395,7 +2395,7 @@ id|grip-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon

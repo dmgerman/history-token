@@ -3312,7 +3312,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_PARPORT
 suffix:semicolon
@@ -3321,7 +3321,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
@@ -3330,7 +3330,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|config
 (braket
@@ -3344,7 +3344,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -3440,6 +3440,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|gc_setup
+r_static
 r_int
 id|__init
 id|gc_setup
@@ -3510,6 +3511,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_2
+r_static
 r_int
 id|__init
 id|gc_setup_2
@@ -3580,6 +3582,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_3
+r_static
 r_int
 id|__init
 id|gc_setup_3

@@ -1631,19 +1631,19 @@ id|kbd-&gt;dev.phys
 op_assign
 id|kbd-&gt;phys
 suffix:semicolon
-id|kbd-&gt;dev.idbus
+id|kbd-&gt;dev.id.bus
 op_assign
 id|BUS_USB
 suffix:semicolon
-id|kbd-&gt;dev.idvendor
+id|kbd-&gt;dev.id.vendor
 op_assign
 id|dev-&gt;descriptor.idVendor
 suffix:semicolon
-id|kbd-&gt;dev.idproduct
+id|kbd-&gt;dev.id.product
 op_assign
 id|dev-&gt;descriptor.idProduct
 suffix:semicolon
-id|kbd-&gt;dev.idversion
+id|kbd-&gt;dev.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
@@ -1749,9 +1749,9 @@ id|kbd-&gt;name
 comma
 l_string|&quot;USB HIDBP Keyboard %04x:%04x&quot;
 comma
-id|kbd-&gt;dev.idvendor
+id|kbd-&gt;dev.id.vendor
 comma
-id|kbd-&gt;dev.idproduct
+id|kbd-&gt;dev.id.product
 )paren
 suffix:semicolon
 id|kfree

@@ -970,15 +970,6 @@ op_assign
 id|ppc4xx_progress
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_PC_KEYBOARD)
-macro_line|#if defined(CONFIG_REDWOOD_4) &amp;&amp; defined(CONFIG_STB_KB)
-id|redwood_irkb_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n;**   m8xx_setup.c, prep_setup.c use&n;**     defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)&n;*/
 macro_line|#ifdef CONFIG_IDE
 macro_line|# ifdef CONFIG_PCI

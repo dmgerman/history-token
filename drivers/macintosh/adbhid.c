@@ -2574,7 +2574,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idbus
+id|input.id.bustype
 op_assign
 id|BUS_ADB
 suffix:semicolon
@@ -2583,7 +2583,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idvendor
+id|input.id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
@@ -2592,7 +2592,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idproduct
+id|input.id.product
 op_assign
 (paren
 id|id
@@ -2613,7 +2613,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idversion
+id|input.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -3600,7 +3600,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idproduct
+id|input.id.product
 op_ne
 (paren
 (paren

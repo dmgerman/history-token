@@ -1356,6 +1356,8 @@ DECL|macro|ATKBD_CMD_RESET_DIS
 mdefine_line|#define ATKBD_CMD_RESET_DIS&t;0x00f5
 DECL|macro|ATKBD_CMD_SETALL_MB
 mdefine_line|#define ATKBD_CMD_SETALL_MB&t;0x00f8
+DECL|macro|ATKBD_CMD_RESEND
+mdefine_line|#define ATKBD_CMD_RESEND&t;0x00fe
 DECL|macro|ATKBD_CMD_EX_ENABLE
 mdefine_line|#define ATKBD_CMD_EX_ENABLE&t;0x10ea
 DECL|macro|ATKBD_CMD_EX_SETLEDS
@@ -1494,12 +1496,46 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;atkbd.c: Received %02x&bslash;n&quot;
+l_string|&quot;atkbd.c: Received %02x flags %02x&bslash;n&quot;
 comma
 id|data
+comma
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Interface error.  Request that the keyboard resend. */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+(paren
+id|SERIO_FRAME
+op_or
+id|SERIO_PARITY
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;atkbd.c: frame/parity error: %02x&bslash;n&quot;
+comma
+id|flags
+)paren
+suffix:semicolon
+id|serio_write
+c_func
+(paren
+id|serio
+comma
+id|ATKBD_CMD_RESEND
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -2855,19 +2891,19 @@ id|atkbd-&gt;dev.phys
 op_assign
 id|atkbd-&gt;phys
 suffix:semicolon
-id|atkbd-&gt;dev.idbus
+id|atkbd-&gt;dev.id.bustype
 op_assign
 id|BUS_I8042
 suffix:semicolon
-id|atkbd-&gt;dev.idvendor
+id|atkbd-&gt;dev.id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
-id|atkbd-&gt;dev.idproduct
+id|atkbd-&gt;dev.id.product
 op_assign
 id|atkbd-&gt;set
 suffix:semicolon
-id|atkbd-&gt;dev.idversion
+id|atkbd-&gt;dev.id.version
 op_assign
 id|atkbd-&gt;id
 suffix:semicolon
@@ -2961,9 +2997,10 @@ suffix:colon
 id|atkbd_disconnect
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Module init and exit.&n; */
+macro_line|#ifndef MODULE
 DECL|function|atkbd_setup
-r_void
+r_static
+r_int
 id|__init
 id|atkbd_setup
 c_func
@@ -2971,20 +3008,39 @@ c_func
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
+r_int
+id|ints
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|str
+op_assign
+id|get_options
+c_func
+(paren
+id|str
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|ints
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ints
 (braket
 l_int|0
 )braket
+OG
+l_int|0
 )paren
 id|atkbd_set
 op_assign
@@ -2993,7 +3049,19 @@ id|ints
 l_int|1
 )braket
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
+id|__setup
+c_func
+(paren
+l_string|&quot;atkbd_set=&quot;
+comma
+id|atkbd_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|atkbd_init
 r_int
 id|__init

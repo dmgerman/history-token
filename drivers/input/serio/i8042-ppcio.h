@@ -21,6 +21,10 @@ r_void
 op_star
 id|kb_data
 suffix:semicolon
+DECL|macro|I8042_COMMAND_REG
+mdefine_line|#define I8042_COMMAND_REG (*(int *)kb_cs)
+DECL|macro|I8042_DATA_REG
+mdefine_line|#define I8042_DATA_REG (*(int *)kb_data)
 DECL|function|i8042_read_data
 r_static
 r_inline
@@ -135,6 +139,10 @@ DECL|macro|I8042_KBD_PHYS_DESC
 mdefine_line|#define I8042_KBD_PHYS_DESC &quot;spruceps2/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;spruceps2/serio1&quot;
+DECL|macro|I8042_COMMAND_REG
+mdefine_line|#define I8042_COMMAND_REG 0xff810000
+DECL|macro|I8042_DATA_REG
+mdefine_line|#define I8042_DATA_REG 0xff810001
 DECL|function|i8042_read_data
 r_static
 r_inline

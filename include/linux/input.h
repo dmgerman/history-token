@@ -41,10 +41,32 @@ multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|EV_VERSION
 mdefine_line|#define EV_VERSION&t;&t;0x010000
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
+DECL|struct|input_devinfo
+r_struct
+id|input_devinfo
+(brace
+DECL|member|bustype
+r_uint16
+id|bustype
+suffix:semicolon
+DECL|member|vendor
+r_uint16
+id|vendor
+suffix:semicolon
+DECL|member|product
+r_uint16
+id|product
+suffix:semicolon
+DECL|member|version
+r_uint16
+id|version
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
-mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, short[4])&t;&t;/* get device ID */
+mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_devinfo)&t;/* get device ID */
 DECL|macro|EVIOCGREP
 mdefine_line|#define EVIOCGREP&t;&t;_IOR(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
 DECL|macro|EVIOCSREP
@@ -789,28 +811,24 @@ DECL|macro|KEY_LAST
 mdefine_line|#define KEY_LAST&t;&t;0x195
 DECL|macro|KEY_AB
 mdefine_line|#define KEY_AB&t;&t;&t;0x196
-DECL|macro|KEY_PLAY
-mdefine_line|#define KEY_PLAY&t;&t;0x197
+DECL|macro|KEY_NEXT
+mdefine_line|#define KEY_NEXT&t;&t;0x197
 DECL|macro|KEY_RESTART
 mdefine_line|#define KEY_RESTART&t;&t;0x198
 DECL|macro|KEY_SLOW
 mdefine_line|#define KEY_SLOW&t;&t;0x199
 DECL|macro|KEY_SHUFFLE
 mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
-DECL|macro|KEY_FASTFORWARD
-mdefine_line|#define KEY_FASTFORWARD&t;&t;0x19b
+DECL|macro|KEY_BREAK
+mdefine_line|#define KEY_BREAK&t;&t;0x1ab
 DECL|macro|KEY_PREVIOUS
 mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
-DECL|macro|KEY_NEXT
-mdefine_line|#define KEY_NEXT&t;&t;0x19d
 DECL|macro|KEY_DIGITS
-mdefine_line|#define KEY_DIGITS&t;&t;0x19e
+mdefine_line|#define KEY_DIGITS&t;&t;0x19d
 DECL|macro|KEY_TEEN
-mdefine_line|#define KEY_TEEN&t;&t;0x19f
+mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
-mdefine_line|#define KEY_TWEN&t;&t;0x1a0
-DECL|macro|KEY_BREAK
-mdefine_line|#define KEY_BREAK&t;&t;0x1a1
+mdefine_line|#define KEY_TWEN&t;&t;0x1af
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
@@ -1307,25 +1325,10 @@ r_char
 op_star
 id|uniq
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_devinfo
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int
@@ -1724,25 +1727,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_devinfo
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int

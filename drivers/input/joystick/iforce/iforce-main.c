@@ -1558,7 +1558,7 @@ op_assign
 l_int|10
 suffix:semicolon
 multiline_comment|/*&n; * Input device fields.&n; */
-id|iforce-&gt;dev.idbus
+id|iforce-&gt;dev.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon
@@ -1688,7 +1688,7 @@ comma
 l_string|&quot;M&quot;
 )paren
 )paren
-id|iforce-&gt;dev.idvendor
+id|iforce-&gt;dev.id.vendor
 op_assign
 (paren
 id|iforce-&gt;edata
@@ -1724,7 +1724,7 @@ comma
 l_string|&quot;P&quot;
 )paren
 )paren
-id|iforce-&gt;dev.idproduct
+id|iforce-&gt;dev.id.product
 op_assign
 (paren
 id|iforce-&gt;edata
@@ -1915,7 +1915,7 @@ id|i
 dot
 id|idvendor
 op_eq
-id|iforce-&gt;dev.idvendor
+id|iforce-&gt;dev.id.vendor
 op_logical_and
 id|iforce_device
 (braket
@@ -1924,7 +1924,7 @@ id|i
 dot
 id|idproduct
 op_eq
-id|iforce-&gt;dev.idproduct
+id|iforce-&gt;dev.id.product
 )paren
 r_break
 suffix:semicolon

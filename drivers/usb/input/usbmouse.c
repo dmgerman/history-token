@@ -675,19 +675,19 @@ id|mouse-&gt;dev.phys
 op_assign
 id|mouse-&gt;phys
 suffix:semicolon
-id|mouse-&gt;dev.idbus
+id|mouse-&gt;dev.id.bus
 op_assign
 id|BUS_USB
 suffix:semicolon
-id|mouse-&gt;dev.idvendor
+id|mouse-&gt;dev.id.vendor
 op_assign
 id|dev-&gt;descriptor.idVendor
 suffix:semicolon
-id|mouse-&gt;dev.idproduct
+id|mouse-&gt;dev.id.product
 op_assign
 id|dev-&gt;descriptor.idProduct
 suffix:semicolon
-id|mouse-&gt;dev.idversion
+id|mouse-&gt;dev.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
@@ -793,9 +793,9 @@ id|mouse-&gt;name
 comma
 l_string|&quot;USB HIDBP Mouse %04x:%04x&quot;
 comma
-id|mouse-&gt;dev.idvendor
+id|mouse-&gt;dev.id.vendor
 comma
-id|mouse-&gt;dev.idproduct
+id|mouse-&gt;dev.id.product
 )paren
 suffix:semicolon
 id|kfree

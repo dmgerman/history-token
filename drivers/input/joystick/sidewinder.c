@@ -4005,7 +4005,7 @@ id|sw-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
@@ -4014,7 +4014,7 @@ id|sw-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_MICROSOFT
 suffix:semicolon
@@ -4023,7 +4023,7 @@ id|sw-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|sw-&gt;type
 suffix:semicolon
@@ -4032,7 +4032,7 @@ id|sw-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon

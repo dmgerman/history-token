@@ -28,6 +28,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|serio_interrupt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|serio_interrupt
+)paren
+suffix:semicolon
 DECL|variable|serio_register_port
 id|EXPORT_SYMBOL
 c_func
