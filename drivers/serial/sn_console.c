@@ -171,6 +171,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#ifdef DEBUG
 r_static
 r_int
 id|sn_debug_printf
@@ -186,9 +189,6 @@ dot
 dot
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
 DECL|macro|DPRINTF
 mdefine_line|#define DPRINTF(x...) sn_debug_printf(x)
 macro_line|#else
@@ -1080,6 +1080,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* End of uart struct functions and defines */
+macro_line|#ifdef DEBUG
 multiline_comment|/**&n; * sn_debug_printf - close to hardware debugging printf&n; * @fmt: printf format&n; *&n; * This is as &quot;close to the metal&quot; as we can get, used when the driver&n; * itself may be broken.&n; *&n; */
 r_static
 r_int
@@ -1187,6 +1188,7 @@ r_return
 id|printed_len
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* DEBUG */
 multiline_comment|/*&n; * Interrupt handling routines.&n; */
 multiline_comment|/**&n; * sn_receive_chars - Grab characters, pass them to tty layer&n; * @port: Port to operate on&n; * @regs: Saved registers (needed by uart_handle_sysrq_char)&n; *&n; * Note: If we&squot;re not registered with the serial core infrastructure yet,&n; * we don&squot;t try to send characters to it...&n; *&n; */
 r_static
@@ -1586,7 +1588,7 @@ c_cond
 op_logical_neg
 id|result
 )paren
-id|sn_debug_printf
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;`&quot;
@@ -2571,13 +2573,28 @@ id|sn_sal_module_exit
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_SGI_L1_CONSOLE
-multiline_comment|/**&n; * puts_raw_fixed - sn_sal_console_write helper for adding &bslash;r&squot;s as required&n; * @s: input string&n; * @count: length&n; *&n; * We need a &bslash;r ahead of every &bslash;n for direct writes through&n; * ia64_sn_console_putb (what sal_puts_raw below actually does).&n; *&n; */
+multiline_comment|/**&n; * puts_raw_fixed - sn_sal_console_write helper for adding &bslash;r&squot;s as required&n; * @puts_raw : puts function to do the writing&n; * @s: input string&n; * @count: length&n; *&n; * We need a &bslash;r ahead of every &bslash;n for direct writes through&n; * ia64_sn_console_putb (what sal_puts_raw below actually does).&n; *&n; */
 DECL|function|puts_raw_fixed
 r_static
 r_void
 id|puts_raw_fixed
 c_func
 (paren
+r_int
+(paren
+op_star
+id|puts_raw
+)paren
+(paren
+r_const
+r_char
+op_star
+id|s
+comma
+r_int
+id|len
+)paren
+comma
 r_const
 r_char
 op_star
@@ -2591,14 +2608,6 @@ r_const
 r_char
 op_star
 id|s1
-suffix:semicolon
-r_struct
-id|sn_cons_port
-op_star
-id|port
-op_assign
-op_amp
-id|sal_console_port
 suffix:semicolon
 multiline_comment|/* Output &squot;&bslash;r&squot; before each &squot;&bslash;n&squot; */
 r_while
@@ -2621,9 +2630,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|port-&gt;sc_ops
-op_member_access_from_pointer
-id|sal_puts_raw
+id|puts_raw
 c_func
 (paren
 id|s
@@ -2633,9 +2640,7 @@ op_minus
 id|s
 )paren
 suffix:semicolon
-id|port-&gt;sc_ops
-op_member_access_from_pointer
-id|sal_puts_raw
+id|puts_raw
 c_func
 (paren
 l_string|&quot;&bslash;r&bslash;n&quot;
@@ -2658,9 +2663,7 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-id|port-&gt;sc_ops
-op_member_access_from_pointer
-id|sal_puts_raw
+id|puts_raw
 c_func
 (paren
 id|s
@@ -2890,6 +2893,8 @@ suffix:semicolon
 id|puts_raw_fixed
 c_func
 (paren
+id|port-&gt;sc_ops-&gt;sal_puts_raw
+comma
 id|s
 comma
 id|count
@@ -2932,6 +2937,8 @@ suffix:semicolon
 id|puts_raw_fixed
 c_func
 (paren
+id|port-&gt;sc_ops-&gt;sal_puts_raw
+comma
 id|s
 comma
 id|count
@@ -2945,6 +2952,8 @@ multiline_comment|/* Not yet registered with serial core - simple case */
 id|puts_raw_fixed
 c_func
 (paren
+id|port-&gt;sc_ops-&gt;sal_puts_raw
+comma
 id|s
 comma
 id|count
@@ -2996,11 +3005,11 @@ r_int
 id|count
 )paren
 (brace
-id|sal_console_port.sc_ops
-op_member_access_from_pointer
-id|sal_puts
+id|puts_raw_fixed
 c_func
 (paren
+id|sal_console_port.sc_ops-&gt;sal_puts_raw
+comma
 id|s
 comma
 id|count
