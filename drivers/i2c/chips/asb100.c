@@ -1532,7 +1532,7 @@ c_func
 id|temp_hyst
 )paren
 DECL|macro|set_temp_reg
-mdefine_line|#define set_temp_reg(REG, reg) &bslash;&n;static ssize_t set_##reg(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct asb100_data *data = i2c_get_clientdata(client); &bslash;&n;&t;unsigned long val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;switch (nr) { &bslash;&n;&t;case 1: case 2: &bslash;&n;&t;&t;data-&gt;reg[nr] = LM75_TEMP_TO_REG(val); &bslash;&n;&t;&t;break; &bslash;&n;&t;case 0: case 3: default: &bslash;&n;&t;&t;data-&gt;reg[nr] = TEMP_TO_REG(val); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;asb100_write_value(client, ASB100_REG_TEMP_##REG(nr), &bslash;&n;&t;&t;&t;data-&gt;reg[nr]); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp_reg(REG, reg) &bslash;&n;static ssize_t set_##reg(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct asb100_data *data = i2c_get_clientdata(client); &bslash;&n;&t;unsigned long val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;switch (nr) { &bslash;&n;&t;case 1: case 2: &bslash;&n;&t;&t;data-&gt;reg[nr] = LM75_TEMP_TO_REG(val); &bslash;&n;&t;&t;break; &bslash;&n;&t;case 0: case 3: default: &bslash;&n;&t;&t;data-&gt;reg[nr] = TEMP_TO_REG(val); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;asb100_write_value(client, ASB100_REG_TEMP_##REG(nr+1), &bslash;&n;&t;&t;&t;data-&gt;reg[nr]); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp_reg
 c_func
 (paren
