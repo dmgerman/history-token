@@ -2802,6 +2802,9 @@ id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
 op_amp
 id|CAP_UNIX
 )paren
+(brace
+id|rc
+op_assign
 id|cifs_get_inode_info_unix
 c_func
 (paren
@@ -2813,7 +2816,32 @@ comma
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;error on getting revalidate info %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on certain errors? */
+)brace
+)brace
 r_else
+(brace
+id|rc
+op_assign
 id|cifs_get_inode_info
 c_func
 (paren
@@ -2827,6 +2855,29 @@ comma
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;error on getting revalidate info %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on certain errors? */
+)brace
+)brace
+multiline_comment|/* should we remap certain errors, access denied?, to zero */
 multiline_comment|/* BB if not oplocked, invalidate inode pages if mtime has changed */
 r_if
 c_cond
