@@ -166,7 +166,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|buf
@@ -2175,13 +2175,6 @@ c_func
 (paren
 id|dev-&gt;devfn
 )paren
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dev-&gt;pools
 )paren
 suffix:semicolon
 id|pci_read_config_dword

@@ -1746,7 +1746,7 @@ id|count
 (brace
 singleline_comment|// this also works for isacsx, since
 singleline_comment|// CMDR(D) register works the same
-id|u8
+id|u_char
 op_star
 id|ptr
 suffix:semicolon
@@ -1869,7 +1869,7 @@ r_int
 r_char
 id|cmd
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|ptr
 suffix:semicolon
@@ -3442,9 +3442,9 @@ id|isac-&gt;timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|hisax_isac_setup
+DECL|function|isac_setup
 r_void
-id|hisax_isac_setup
+id|isac_setup
 c_func
 (paren
 r_struct
@@ -4191,11 +4191,11 @@ c_func
 id|isacsx_irq
 )paren
 suffix:semicolon
-DECL|variable|hisax_isac_setup
+DECL|variable|isac_setup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hisax_isac_setup
+id|isac_setup
 )paren
 suffix:semicolon
 DECL|variable|isac_irq

@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
 macro_line|#include &lt;linux/sunrpc/cache.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
+DECL|macro|SVC_CRED_NGROUPS
+mdefine_line|#define SVC_CRED_NGROUPS&t;32
 DECL|struct|svc_cred
 r_struct
 id|svc_cred
@@ -23,7 +25,7 @@ DECL|member|cr_groups
 id|gid_t
 id|cr_groups
 (braket
-id|NGROUPS
+id|SVC_CRED_NGROUPS
 )braket
 suffix:semicolon
 )brace

@@ -373,12 +373,12 @@ suffix:semicolon
 DECL|macro|L1_EVENT_COUNT
 mdefine_line|#define L1_EVENT_COUNT (EV_TIMER3 + 1)
 DECL|macro|ERR
-mdefine_line|#define ERR(format, arg...) &bslash;&n;printk(KERN_ERR __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
+mdefine_line|#define ERR(format, arg...) &bslash;&n;printk(KERN_ERR &quot;%s:%s: &quot; format &quot;&bslash;n&quot; , __FILE__,  __FUNCTION__ , ## arg)
 DECL|macro|WARN
-mdefine_line|#define WARN(format, arg...) &bslash;&n;printk(KERN_WARNING __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
+mdefine_line|#define WARN(format, arg...) &bslash;&n;printk(KERN_WARNING &quot;%s:%s: &quot; format &quot;&bslash;n&quot; , __FILE__,  __FUNCTION__ , ## arg)
 DECL|macro|INFO
-mdefine_line|#define INFO(format, arg...) &bslash;&n;printk(KERN_INFO __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
-macro_line|#include &quot;st5481_hdlc.h&quot;
+mdefine_line|#define INFO(format, arg...) &bslash;&n;printk(KERN_INFO &quot;%s:%s: &quot; format &quot;&bslash;n&quot; , __FILE__,  __FUNCTION__ , ## arg)
+macro_line|#include &quot;isdnhdlc.h&quot;
 macro_line|#include &quot;fsm.h&quot;
 macro_line|#include &quot;hisax_if.h&quot;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -392,7 +392,7 @@ DECL|member|r
 DECL|member|w
 DECL|member|count
 DECL|member|size
-id|u8
+id|u_char
 id|r
 comma
 id|w
@@ -722,7 +722,7 @@ id|st5481_d_out
 (brace
 DECL|member|hdlc_state
 r_struct
-id|hdlc_vars
+id|isdnhdlc_vars
 id|hdlc_state
 suffix:semicolon
 DECL|member|urb
@@ -759,7 +759,7 @@ id|st5481_b_out
 (brace
 DECL|member|hdlc_state
 r_struct
-id|hdlc_vars
+id|isdnhdlc_vars
 id|hdlc_state
 suffix:semicolon
 DECL|member|urb
@@ -773,7 +773,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* double buffering */
 DECL|member|flow_event
-id|u8
+id|u_char
 id|flow_event
 suffix:semicolon
 DECL|member|busy
@@ -794,7 +794,7 @@ id|st5481_in
 (brace
 DECL|member|hdlc_state
 r_struct
-id|hdlc_vars
+id|isdnhdlc_vars
 id|hdlc_state
 suffix:semicolon
 DECL|member|urb
@@ -1219,7 +1219,7 @@ id|st5481_adapter
 op_star
 id|adapter
 comma
-id|u8
+id|u_char
 id|pipe
 comma
 id|ctrl_complete_t
@@ -1368,7 +1368,7 @@ id|len
 comma
 id|ofs
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|data
 suffix:semicolon

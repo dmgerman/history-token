@@ -1,11 +1,7 @@
 multiline_comment|/*&n; * IPVS:        Shortest Expected Delay scheduling module&n; *&n; * Version:     $Id: ip_vs_sed.c,v 1.1 2003/05/10 03:06:08 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *&n; */
 multiline_comment|/*&n; * The SED algorithm attempts to minimize each job&squot;s expected delay until&n; * completion. The expected delay that the job will experience is&n; * (Ci + 1) / Ui if sent to the ith server, in which Ci is the number of&n; * jobs on the the ith server and Ui is the fixed service rate (weight) of&n; * the ith server. The SED algorithm adopts a greedy policy that each does&n; * what is in its own best interest, i.e. to join the queue which would&n; * minimize its expected delay of completion.&n; *&n; * See the following paper for more information:&n; * A. Weinrib and S. Shenker, Greed is not enough: Adaptive load sharing&n; * in large heterogeneous systems. In Proceedings IEEE INFOCOM&squot;88,&n; * pages 986-994, 1988.&n; *&n; * Thanks must go to Marko Buuri &lt;marko@buuri.name&gt; for talking SED to me.&n; *&n; * The difference between SED and WLC is that SED includes the incoming&n; * job in the cost function (the increment of 1). SED may outperform&n; * WLC, while scheduling big jobs under larger heterogeneous systems&n; * (the server weight varies a lot).&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 r_static
 r_int

@@ -343,6 +343,24 @@ r_int
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|kmem_ptr_validate
+c_func
+(paren
+id|kmem_cache_t
+op_star
+id|cachep
+comma
+r_void
+op_star
+id|ptr
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* System wide caches */
 r_extern
 id|kmem_cache_t

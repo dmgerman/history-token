@@ -1,8 +1,5 @@
 multiline_comment|/*&n; * ip_vs_xmit.c: various packet transmitters for IPVS&n; *&n; * Version:     $Id: ip_vs_xmit.c,v 1.2 2002/11/30 01:50:35 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *              Julian Anastasov &lt;ja@ssi.bg&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;                  /* for tcphdr */
 macro_line|#include &lt;net/tcp.h&gt;                    /* for csum_tcpudp_magic */
@@ -1367,23 +1364,16 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Okay, now see if we can stuff it in the buffer as-is.&n;&t; */
 id|max_headroom
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-(paren
-(paren
-id|tdev-&gt;hard_header_len
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|tdev
 )paren
 op_plus
 r_sizeof
 (paren
 r_struct
 id|iphdr
-)paren
 )paren
 suffix:semicolon
 r_if

@@ -372,6 +372,11 @@ op_assign
 l_int|1
 comma
 dot
+id|force_mld_version
+op_assign
+l_int|0
+comma
+dot
 id|dad_transmits
 op_assign
 l_int|1
@@ -768,7 +773,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|addr-&gt;in6_u.u6_addr32
+id|addr-&gt;s6_addr32
 (braket
 l_int|3
 )braket
@@ -4774,7 +4779,7 @@ suffix:semicolon
 r_case
 id|ARPHRD_ARCNET
 suffix:colon
-multiline_comment|/* XXX: inherit EUI-64 fro mother interface -- yoshfuji */
+multiline_comment|/* XXX: inherit EUI-64 from other interface -- yoshfuji */
 r_if
 c_cond
 (paren
@@ -12872,6 +12877,13 @@ id|DEVCONF_RTR_SOLICIT_DELAY
 op_assign
 id|cnf-&gt;rtr_solicit_delay
 suffix:semicolon
+id|array
+(braket
+id|DEVCONF_FORCE_MLD_VERSION
+)braket
+op_assign
+id|cnf-&gt;force_mld_version
+suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 id|array
 (braket
@@ -14661,7 +14673,7 @@ DECL|member|addrconf_vars
 id|ctl_table
 id|addrconf_vars
 (braket
-l_int|17
+l_int|18
 )braket
 suffix:semicolon
 DECL|member|addrconf_dev
@@ -15100,6 +15112,44 @@ id|strategy
 op_assign
 op_amp
 id|sysctl_jiffies
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
+id|NET_IPV6_FORCE_MLD_VERSION
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;force_mld_version&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|ipv6_devconf.force_mld_version
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
 comma
 )brace
 comma

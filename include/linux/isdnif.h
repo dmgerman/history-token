@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnif.h,v 1.37.6.6 2001/09/23 22:25:05 kai Exp $&n; *&n; * Linux ISDN subsystem&n; * Definition of the interface between the subsystem and its low-level drivers.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdnif.h,v 1.43.2.2 2004/01/12 23:08:35 keil Exp $&n; *&n; * Linux ISDN subsystem&n; * Definition of the interface between the subsystem and its low-level drivers.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __ISDNIF_H__
 DECL|macro|__ISDNIF_H__
 mdefine_line|#define __ISDNIF_H__
@@ -203,10 +203,26 @@ DECL|macro|ISDN_CMD_CLREAZ
 mdefine_line|#define ISDN_CMD_CLREAZ   5       /* Clear EAZ(s) of channel               */
 DECL|macro|ISDN_CMD_SETEAZ
 mdefine_line|#define ISDN_CMD_SETEAZ   6       /* Set EAZ(s) of channel                 */
+DECL|macro|ISDN_CMD_GETEAZ
+mdefine_line|#define ISDN_CMD_GETEAZ   7       /* Get EAZ(s) of channel                 */
+DECL|macro|ISDN_CMD_SETSIL
+mdefine_line|#define ISDN_CMD_SETSIL   8       /* Set Service-Indicator-List of channel */
+DECL|macro|ISDN_CMD_GETSIL
+mdefine_line|#define ISDN_CMD_GETSIL   9       /* Get Service-Indicator-List of channel */
 DECL|macro|ISDN_CMD_SETL2
 mdefine_line|#define ISDN_CMD_SETL2   10       /* Set B-Chan. Layer2-Parameter          */
+DECL|macro|ISDN_CMD_GETL2
+mdefine_line|#define ISDN_CMD_GETL2   11       /* Get B-Chan. Layer2-Parameter          */
 DECL|macro|ISDN_CMD_SETL3
 mdefine_line|#define ISDN_CMD_SETL3   12       /* Set B-Chan. Layer3-Parameter          */
+DECL|macro|ISDN_CMD_GETL3
+mdefine_line|#define ISDN_CMD_GETL3   13       /* Get B-Chan. Layer3-Parameter          */
+singleline_comment|// #define ISDN_CMD_LOCK    14       /* Signal usage by upper levels          */
+singleline_comment|// #define ISDN_CMD_UNLOCK  15       /* Release usage-lock                    */
+DECL|macro|ISDN_CMD_SUSPEND
+mdefine_line|#define ISDN_CMD_SUSPEND 16       /* Suspend connection                    */
+DECL|macro|ISDN_CMD_RESUME
+mdefine_line|#define ISDN_CMD_RESUME  17       /* Resume connection                     */
 DECL|macro|ISDN_CMD_PROCEED
 mdefine_line|#define ISDN_CMD_PROCEED 18       /* Proceed with call establishment       */
 DECL|macro|ISDN_CMD_ALERT
@@ -246,6 +262,8 @@ DECL|macro|ISDN_STAT_UNLOAD
 mdefine_line|#define ISDN_STAT_UNLOAD  266    /* Signal unload of lowlevel-driver      */
 DECL|macro|ISDN_STAT_BSENT
 mdefine_line|#define ISDN_STAT_BSENT   267    /* Signal packet sent                    */
+DECL|macro|ISDN_STAT_NODCH
+mdefine_line|#define ISDN_STAT_NODCH   268    /* Signal no D-Channel                   */
 DECL|macro|ISDN_STAT_ADDCH
 mdefine_line|#define ISDN_STAT_ADDCH   269    /* Add more Channels                     */
 DECL|macro|ISDN_STAT_CAUSE
@@ -258,6 +276,8 @@ DECL|macro|ISDN_STAT_PROT
 mdefine_line|#define ISDN_STAT_PROT    273    /* protocol IO specific callback         */
 DECL|macro|ISDN_STAT_DISPLAY
 mdefine_line|#define ISDN_STAT_DISPLAY 274    /* deliver a received display message    */
+DECL|macro|ISDN_STAT_L1ERR
+mdefine_line|#define ISDN_STAT_L1ERR   275    /* Signal Layer-1 Error                  */
 DECL|macro|ISDN_STAT_FAXIND
 mdefine_line|#define ISDN_STAT_FAXIND  276    /* FAX indications from HL-driver        */
 DECL|macro|ISDN_STAT_AUDIO
@@ -269,6 +289,11 @@ DECL|macro|ISDN_AUDIO_SETDD
 mdefine_line|#define ISDN_AUDIO_SETDD&t;0&t;/* Set DTMF detection           */
 DECL|macro|ISDN_AUDIO_DTMF
 mdefine_line|#define ISDN_AUDIO_DTMF&t;&t;1&t;/* Rx/Tx DTMF                   */
+multiline_comment|/*&n; * Values for errcode field&n; */
+DECL|macro|ISDN_STAT_L1ERR_SEND
+mdefine_line|#define ISDN_STAT_L1ERR_SEND 1
+DECL|macro|ISDN_STAT_L1ERR_RECV
+mdefine_line|#define ISDN_STAT_L1ERR_RECV 2
 multiline_comment|/*&n; * Values for feature-field of interface-struct.&n; */
 multiline_comment|/* Layer 2 */
 DECL|macro|ISDN_FEATURE_L2_X75I
@@ -378,6 +403,7 @@ DECL|typedef|setup_parm
 )brace
 id|setup_parm
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_TTY_FAX
 multiline_comment|/* T.30 Fax G3 */
 DECL|macro|FAXIDLEN
 mdefine_line|#define FAXIDLEN 21
@@ -796,6 +822,7 @@ DECL|macro|ISDN_FAX_PHASE_D
 mdefine_line|#define ISDN_FAX_PHASE_D   &t;4
 DECL|macro|ISDN_FAX_PHASE_E
 mdefine_line|#define ISDN_FAX_PHASE_E   &t;5
+macro_line|#endif /* TTY_FAX */
 DECL|macro|ISDN_FAX_CLASS1_FAE
 mdefine_line|#define ISDN_FAX_CLASS1_FAE&t;0
 DECL|macro|ISDN_FAX_CLASS1_FTS
@@ -979,12 +1006,14 @@ id|aux_s
 id|aux
 suffix:semicolon
 multiline_comment|/* for modem commands/indications&t;*/
+macro_line|#ifdef CONFIG_ISDN_TTY_FAX
 DECL|member|fax
 id|T30_s
 op_star
 id|fax
 suffix:semicolon
 multiline_comment|/* Pointer to ttys fax struct&t;&t;*/
+macro_line|#endif
 DECL|member|userdata
 id|ulong
 id|userdata

@@ -800,26 +800,6 @@ op_amp
 id|hcd-&gt;self
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-(paren
-op_amp
-id|hcd-&gt;self.refcnt
-)paren
-op_ne
-l_int|1
-)paren
-id|err
-(paren
-l_string|&quot;%s: %s, count != 1&quot;
-comma
-id|__FUNCTION__
-comma
-id|hcd-&gt;self.bus_name
-)paren
-suffix:semicolon
 id|base
 op_assign
 id|hcd-&gt;regs

@@ -17,6 +17,8 @@ DECL|macro|NETLINK_NFLOG
 mdefine_line|#define NETLINK_NFLOG&t;&t;5&t;/* netfilter/iptables ULOG */
 DECL|macro|NETLINK_XFRM
 mdefine_line|#define NETLINK_XFRM&t;&t;6&t;/* ipsec */
+DECL|macro|NETLINK_SELINUX
+mdefine_line|#define NETLINK_SELINUX&t;&t;7&t;/* SELinux event notifications */
 DECL|macro|NETLINK_ARPD
 mdefine_line|#define NETLINK_ARPD&t;&t;8
 DECL|macro|NETLINK_ROUTE6

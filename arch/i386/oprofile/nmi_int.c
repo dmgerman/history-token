@@ -1344,7 +1344,6 @@ op_assign
 id|nmi_stop
 )brace
 suffix:semicolon
-macro_line|#if !defined(CONFIG_X86_64)
 DECL|function|p4_init
 r_static
 r_int
@@ -1469,6 +1468,20 @@ r_if
 c_cond
 (paren
 id|cpu_model
+op_eq
+l_int|9
+)paren
+(brace
+id|nmi_ops.cpu_type
+op_assign
+l_string|&quot;i386/p6_mobile&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cpu_model
 OG
 l_int|5
 )paren
@@ -1508,7 +1521,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_X86_64 */
 multiline_comment|/* in order to get driverfs right */
 DECL|variable|using_nmi
 r_static
@@ -1602,7 +1614,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#if !defined(CONFIG_X86_64)
 r_case
 id|X86_VENDOR_INTEL
 suffix:colon
@@ -1659,7 +1670,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#endif /* !CONFIG_X86_64 */
 r_default
 suffix:colon
 r_return

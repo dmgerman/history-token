@@ -97,7 +97,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -150,7 +150,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -203,7 +203,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -256,7 +256,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -598,6 +598,7 @@ multiline_comment|/**&n; * pci_visit_dev - scans the pci buses.&n; * Every bus a
 DECL|function|pci_visit_dev
 r_int
 id|pci_visit_dev
+c_func
 (paren
 r_struct
 id|pci_visit

@@ -262,6 +262,13 @@ op_amp
 id|dev-&gt;set_running_wq
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

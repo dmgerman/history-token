@@ -803,7 +803,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -3760,7 +3760,7 @@ op_amp
 id|ipip_handler
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|ipip_fb_tunnel_dev

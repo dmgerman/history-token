@@ -594,6 +594,8 @@ id|fpos
 suffix:semicolon
 r_int
 id|ret
+comma
+id|retval
 suffix:semicolon
 id|DBG_FLT
 c_func
@@ -686,9 +688,13 @@ c_func
 l_string|&quot;binfmt_flat: no memory for read buffer&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_free
 suffix:semicolon
 )brace
 multiline_comment|/* Read in first chunk of data and parse gzip header. */
@@ -725,6 +731,11 @@ id|strm.total_in
 op_assign
 l_int|0
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOEXEC
+suffix:semicolon
 multiline_comment|/* Check minimum size -- gzip header */
 r_if
 c_cond
@@ -740,9 +751,8 @@ c_func
 l_string|&quot;binfmt_flat: file too small?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 multiline_comment|/* Check gzip magic number */
@@ -785,9 +795,8 @@ c_func
 l_string|&quot;binfmt_flat: unknown compression magic?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 multiline_comment|/* Check gzip method */
@@ -808,9 +817,8 @@ c_func
 l_string|&quot;binfmt_flat: unknown compression method?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 multiline_comment|/* Check gzip flags */
@@ -851,9 +859,8 @@ c_func
 l_string|&quot;binfmt_flat: unknown flags?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 id|ret
@@ -907,9 +914,8 @@ c_func
 l_string|&quot;binfmt_flat: buffer overflow (EXTRA)?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 )brace
@@ -963,9 +969,8 @@ c_func
 l_string|&quot;binfmt_flat: buffer overflow (ORIG_NAME)?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 )brace
@@ -1019,9 +1024,8 @@ c_func
 l_string|&quot;binfmt_flat: buffer overflow (COMMENT)?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 )brace
@@ -1067,9 +1071,8 @@ c_func
 l_string|&quot;binfmt_flat: zlib init failed?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_free_buf
 suffix:semicolon
 )brace
 r_while
@@ -1166,11 +1169,16 @@ comma
 id|strm.msg
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOEXEC
+r_goto
+id|out_zlib
 suffix:semicolon
 )brace
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+id|out_zlib
+suffix:colon
 id|zlib_inflateEnd
 c_func
 (paren
@@ -1178,20 +1186,26 @@ op_amp
 id|strm
 )paren
 suffix:semicolon
+id|out_free_buf
+suffix:colon
 id|kfree
 c_func
 (paren
 id|buf
 )paren
 suffix:semicolon
+id|out_free
+suffix:colon
 id|kfree
 c_func
 (paren
 id|strm.workspace
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BINFMT_ZFLAT */

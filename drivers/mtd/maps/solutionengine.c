@@ -352,7 +352,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_MTD_SUPERH_RESERVE
+macro_line|#ifdef CONFIG_MTD_SUPERH_RESERVE
 r_if
 c_cond
 (paren

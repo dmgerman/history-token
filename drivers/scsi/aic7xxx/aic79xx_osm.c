@@ -551,14 +551,14 @@ l_string|&quot;&t;amplitude:&lt;int&gt;&t;&t;Set the signal amplitude (0-7).&bsl
 l_string|&quot;&t;seltime:&lt;int&gt;&t;&t;Selection Timeout:&bslash;n&quot;
 l_string|&quot;&t;&t;&t;&t;(0/256ms,1/128ms,2/64ms,3/32ms)&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;Sample /etc/modules.conf line:&bslash;n&quot;
+l_string|&quot;&t;Sample /etc/modprobe.conf line:&bslash;n&quot;
 l_string|&quot;&t;&t;Enable verbose logging&bslash;n&quot;
 l_string|&quot;&t;&t;Set tag depth on Controller 2/Target 2 to 10 tags&bslash;n&quot;
 l_string|&quot;&t;&t;Shorten the selection timeout to 128ms&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;options aic79xx &squot;aic79xx=verbose.tag_info:{{}.{}.{..10}}.seltime:1&squot;&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;Sample /etc/modules.conf line:&bslash;n&quot;
+l_string|&quot;&t;Sample /etc/modprobe.conf line:&bslash;n&quot;
 l_string|&quot;&t;&t;Change Read Streaming for Controller&squot;s 2 and 3&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;options aic79xx &squot;aic79xx=rd_strm:{..0xFFF0.0xC0F0}&squot;&quot;

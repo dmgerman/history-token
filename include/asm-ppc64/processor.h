@@ -372,10 +372,16 @@ DECL|macro|HID0_BTCD
 mdefine_line|#define&t;  HID0_BTCD&t;(1&lt;&lt;1)&t;&t;/* Branch target cache disable */
 DECL|macro|SPRN_MSRDORM
 mdefine_line|#define&t;SPRN_MSRDORM&t;0x3F1&t;/* Hardware Implementation Register 1 */
+DECL|macro|SPRN_HID1
+mdefine_line|#define SPRN_HID1&t;0x3F1&t;/* Hardware Implementation Register 1 */
 DECL|macro|SPRN_IABR
 mdefine_line|#define&t;SPRN_IABR&t;0x3F2&t;/* Instruction Address Breakpoint Register */
 DECL|macro|SPRN_NIADORM
 mdefine_line|#define&t;SPRN_NIADORM&t;0x3F3&t;/* Hardware Implementation Register 2 */
+DECL|macro|SPRN_HID4
+mdefine_line|#define SPRN_HID4&t;0x3F4&t;/* 970 HID4 */
+DECL|macro|SPRN_HID5
+mdefine_line|#define SPRN_HID5&t;0x3F6&t;/* 970 HID5 */
 DECL|macro|SPRN_TSC
 mdefine_line|#define&t;SPRN_TSC &t;0x3FD&t;/* Thread switch control */
 DECL|macro|SPRN_TST
@@ -466,6 +472,8 @@ DECL|macro|SPRN_TBWL
 mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, W/O) */
 DECL|macro|SPRN_TBWU
 mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Write Upper Register (super, W/O) */
+DECL|macro|SPRN_HIOR
+mdefine_line|#define SPRN_HIOR&t;0x137&t;/* 970 Hypervisor interrupt offset */
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
 DECL|macro|TCR_WP
@@ -673,6 +681,8 @@ DECL|macro|PV_SSTAR
 mdefine_line|#define&t;PV_SSTAR&t;0x0037
 DECL|macro|PV_POWER4p
 mdefine_line|#define&t;PV_POWER4p&t;0x0038
+DECL|macro|PV_GPUL
+mdefine_line|#define PV_GPUL&t;&t;0x0039
 DECL|macro|PV_POWER5
 mdefine_line|#define&t;PV_POWER5&t;0x003A
 DECL|macro|PV_630
@@ -688,6 +698,13 @@ DECL|macro|PLATFORM_ISERIES_LPAR
 mdefine_line|#define PLATFORM_ISERIES_LPAR 0x0201
 DECL|macro|PLATFORM_LPAR
 mdefine_line|#define PLATFORM_LPAR         0x0001
+DECL|macro|PLATFORM_POWERMAC
+mdefine_line|#define PLATFORM_POWERMAC     0x0400
+multiline_comment|/* Compatibility with drivers coming from PPC32 world */
+DECL|macro|_machine
+mdefine_line|#define _machine&t;(systemcfg-&gt;platform)
+DECL|macro|_MACH_Pmac
+mdefine_line|#define _MACH_Pmac&t;PLATFORM_POWERMAC
 multiline_comment|/*&n; * List of interrupt controllers.&n; */
 DECL|macro|IC_INVALID
 mdefine_line|#define IC_INVALID    0
@@ -735,6 +752,41 @@ mdefine_line|#define EXC_FRAME_SIZE 64
 DECL|macro|mfasr
 mdefine_line|#define mfasr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfasr %0&quot; : &quot;=r&quot; (rval)); rval;})
 macro_line|#ifndef __ASSEMBLY__
+DECL|function|set_tb
+r_static
+r_inline
+r_void
+id|set_tb
+c_func
+(paren
+r_int
+r_int
+id|upper
+comma
+r_int
+r_int
+id|lower
+)paren
+(brace
+id|mttbl
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|mttbu
+c_func
+(paren
+id|upper
+)paren
+suffix:semicolon
+id|mttbl
+c_func
+(paren
+id|lower
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_int
 r_int

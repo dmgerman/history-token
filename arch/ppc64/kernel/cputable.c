@@ -44,6 +44,21 @@ op_star
 id|spec
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__setup_cpu_ppc970
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_struct
+id|cpu_spec
+op_star
+id|spec
+)paren
+suffix:semicolon
 multiline_comment|/* We only set the altivec features if the kernel was compiled with altivec&n; * support&n; */
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|macro|CPU_FTR_ALTIVEC_COMP
@@ -313,6 +328,8 @@ op_or
 id|CPU_FTR_PPCAS_ARCH_V2
 op_or
 id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_CAN_NAP
 comma
 id|COMMON_USER_PPC64
 op_or
@@ -322,7 +339,7 @@ l_int|128
 comma
 l_int|128
 comma
-id|__setup_cpu_power4
+id|__setup_cpu_ppc970
 comma
 id|COMMON_PPC64_FW
 )brace

@@ -16,6 +16,15 @@ macro_line|#include &quot;policydb.h&quot;
 macro_line|#include &quot;sidtab.h&quot;
 macro_line|#include &quot;services.h&quot;
 macro_line|#include &quot;mls.h&quot;
+r_extern
+r_void
+id|selnl_notify_policyload
+c_func
+(paren
+id|u32
+id|seqno
+)paren
+suffix:semicolon
 DECL|variable|policy_rwlock
 r_static
 id|rwlock_t
@@ -3881,6 +3890,12 @@ id|oldsidtab
 )paren
 suffix:semicolon
 id|avc_ss_reset
+c_func
+(paren
+id|seqno
+)paren
+suffix:semicolon
+id|selnl_notify_policyload
 c_func
 (paren
 id|seqno

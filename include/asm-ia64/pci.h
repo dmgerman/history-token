@@ -169,6 +169,11 @@ id|pci_window
 op_star
 id|window
 suffix:semicolon
+DECL|member|platform_data
+r_void
+op_star
+id|platform_data
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PCI_CONTROLLER
@@ -237,6 +242,20 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|pcibios_add_platform_entries
+r_static
+r_inline
+r_void
+id|pcibios_add_platform_entries
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
 )brace
 multiline_comment|/* generic pci stuff */
 macro_line|#include &lt;asm-generic/pci.h&gt;

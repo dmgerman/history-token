@@ -5139,7 +5139,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma

@@ -188,6 +188,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|tlb_is_full_mm
+id|tlb_is_full_mm
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+)paren
+(brace
+r_return
+id|tlb-&gt;fullmm
+suffix:semicolon
+)brace
 DECL|macro|tlb_remove_tlb_entry
 mdefine_line|#define tlb_remove_tlb_entry(tlb,ptep,address)&t;do { } while (0)
 DECL|macro|tlb_start_vma

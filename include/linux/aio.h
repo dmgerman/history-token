@@ -536,12 +536,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* for sysctl: */
 r_extern
+id|atomic_t
+id|aio_nr
+suffix:semicolon
+r_extern
 r_int
 id|aio_max_nr
-comma
-id|aio_max_size
-comma
-id|aio_max_pinned
 suffix:semicolon
 macro_line|#endif /* __LINUX__AIO_H */
 eof

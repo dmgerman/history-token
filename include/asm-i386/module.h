@@ -38,6 +38,9 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMII &quot;
 macro_line|#elif defined CONFIG_MPENTIUMIII
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMIII &quot;
+macro_line|#elif defined CONFIG_MPENTIUMM
+DECL|macro|MODULE_PROC_FAMILY
+mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMM &quot;
 macro_line|#elif defined CONFIG_MPENTIUM4
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUM4 &quot;
@@ -68,13 +71,20 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;WINCHIP3D &quot;
 macro_line|#elif defined CONFIG_MCYRIXIII
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;CYRIXIII &quot;
-macro_line|#elif CONFIG_MVIAC3_2
+macro_line|#elif defined CONFIG_MVIAC3_2
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;VIAC3-2 &quot;
 macro_line|#else
 macro_line|#error unknown processor family
 macro_line|#endif
+macro_line|#ifdef CONFIG_REGPARM
+DECL|macro|MODULE_REGPARM
+mdefine_line|#define MODULE_REGPARM &quot;REGPARM &quot;
+macro_line|#else
+DECL|macro|MODULE_REGPARM
+mdefine_line|#define MODULE_REGPARM &quot;&quot;
+macro_line|#endif
 DECL|macro|MODULE_ARCH_VERMAGIC
-mdefine_line|#define MODULE_ARCH_VERMAGIC MODULE_PROC_FAMILY
+mdefine_line|#define MODULE_ARCH_VERMAGIC MODULE_PROC_FAMILY MODULE_REGPARM
 macro_line|#endif /* _ASM_I386_MODULE_H */
 eof

@@ -4,7 +4,7 @@ multiline_comment|/* Set to 3 to get tracing... */
 DECL|macro|ND_DEBUG
 mdefine_line|#define ND_DEBUG 1
 DECL|macro|ND_PRINTK
-mdefine_line|#define ND_PRINTK(x...) printk(KERN_DEBUG x)
+mdefine_line|#define ND_PRINTK(fmt, args...) do { if (net_ratelimit()) { printk(fmt, ## args); } } while(0)
 DECL|macro|ND_NOPRINTK
 mdefine_line|#define ND_NOPRINTK(x...) do { ; } while(0)
 DECL|macro|ND_PRINTK0
@@ -13,6 +13,8 @@ DECL|macro|ND_PRINTK1
 mdefine_line|#define ND_PRINTK1 ND_NOPRINTK
 DECL|macro|ND_PRINTK2
 mdefine_line|#define ND_PRINTK2 ND_NOPRINTK
+DECL|macro|ND_PRINTK3
+mdefine_line|#define ND_PRINTK3 ND_NOPRINTK
 macro_line|#if ND_DEBUG &gt;= 1
 DECL|macro|ND_PRINTK1
 macro_line|#undef ND_PRINTK1
@@ -24,6 +26,12 @@ DECL|macro|ND_PRINTK2
 macro_line|#undef ND_PRINTK2
 DECL|macro|ND_PRINTK2
 mdefine_line|#define ND_PRINTK2 ND_PRINTK
+macro_line|#endif
+macro_line|#if ND_DEBUG &gt;= 3
+DECL|macro|ND_PRINTK3
+macro_line|#undef ND_PRINTK3
+DECL|macro|ND_PRINTK3
+mdefine_line|#define ND_PRINTK3 ND_PRINTK
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -809,7 +817,10 @@ id|nd_opt-&gt;nd_opt_type
 id|ND_PRINTK2
 c_func
 (paren
-l_string|&quot;ndisc_parse_options(): duplicated ND6 option found: type=%d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s(): duplicated ND6 option found: type=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|nd_opt-&gt;nd_opt_type
 )paren
@@ -859,8 +870,10 @@ multiline_comment|/*&n;&t;&t;&t; * Unknown options must be silently ignored,&n;&
 id|ND_PRINTK2
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;ndisc_parse_options(): ignored unsupported option; type=%d, len=%d&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s(): ignored unsupported option; type=%d, len=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|nd_opt-&gt;nd_opt_type
 comma
@@ -1454,305 +1467,7 @@ id|maddr
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-DECL|function|ndisc_build_ll_hdr
-id|ndisc_build_ll_hdr
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|in6_addr
-op_star
-id|daddr
-comma
-r_struct
-id|neighbour
-op_star
-id|neigh
-comma
-r_int
-id|len
-)paren
-(brace
-r_int
-r_char
-id|ha
-(braket
-id|MAX_ADDR_LEN
-)braket
-suffix:semicolon
-r_int
-r_char
-op_star
-id|h_dest
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;hard_header
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ipv6_addr_is_multicast
-c_func
-(paren
-id|daddr
-)paren
-)paren
-(brace
-id|ndisc_mc_map
-c_func
-(paren
-id|daddr
-comma
-id|ha
-comma
-id|dev
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|h_dest
-op_assign
-id|ha
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|neigh
-)paren
-(brace
-id|read_lock_bh
-c_func
-(paren
-op_amp
-id|neigh-&gt;lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|neigh-&gt;nud_state
-op_amp
-id|NUD_VALID
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|ha
-comma
-id|neigh-&gt;ha
-comma
-id|dev-&gt;addr_len
-)paren
-suffix:semicolon
-id|h_dest
-op_assign
-id|ha
-suffix:semicolon
-)brace
-id|read_unlock_bh
-c_func
-(paren
-op_amp
-id|neigh-&gt;lock
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|neigh
-op_assign
-id|neigh_lookup
-c_func
-(paren
-op_amp
-id|nd_tbl
-comma
-id|daddr
-comma
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|neigh
-)paren
-(brace
-id|read_lock_bh
-c_func
-(paren
-op_amp
-id|neigh-&gt;lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|neigh-&gt;nud_state
-op_amp
-id|NUD_VALID
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|ha
-comma
-id|neigh-&gt;ha
-comma
-id|dev-&gt;addr_len
-)paren
-suffix:semicolon
-id|h_dest
-op_assign
-id|ha
-suffix:semicolon
-)brace
-id|read_unlock_bh
-c_func
-(paren
-op_amp
-id|neigh-&gt;lock
-)paren
-suffix:semicolon
-id|neigh_release
-c_func
-(paren
-id|neigh
-)paren
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|dev
-op_member_access_from_pointer
-id|hard_header
-c_func
-(paren
-id|skb
-comma
-id|dev
-comma
-id|ETH_P_IPV6
-comma
-id|h_dest
-comma
-l_int|NULL
-comma
-id|len
-)paren
-OL
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Send a Neighbour Advertisement&n; */
-DECL|function|ndisc_output
-r_static
-r_int
-id|ndisc_output
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|skb
-)paren
-(brace
-r_struct
-id|neighbour
-op_star
-id|neigh
-op_assign
-(paren
-id|skb-&gt;dst
-ques
-c_cond
-id|skb-&gt;dst-&gt;neighbour
-suffix:colon
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ndisc_build_ll_hdr
-c_func
-(paren
-id|skb
-comma
-id|skb-&gt;dev
-comma
-op_amp
-id|skb-&gt;nh.ipv6h-&gt;daddr
-comma
-id|neigh
-comma
-id|skb-&gt;len
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-id|dev_queue_xmit
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 DECL|function|ndisc_flow_init
 r_static
 r_inline
@@ -2006,7 +1721,9 @@ id|dev
 comma
 id|neigh
 comma
-id|ndisc_output
+id|daddr
+comma
+id|ip6_output2
 )paren
 suffix:semicolon
 r_if
@@ -2086,9 +1803,11 @@ id|MAX_HEADER
 op_plus
 id|len
 op_plus
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 comma
 l_int|1
 comma
@@ -2104,10 +1823,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;send_na: alloc skb failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 NA: %s() failed to allocate an skb.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dst_release
@@ -2124,14 +1846,11 @@ c_func
 (paren
 id|skb
 comma
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|dev
 )paren
-op_amp
-op_complement
-l_int|15
 )paren
 suffix:semicolon
 id|ip6_nd_hdr
@@ -2459,7 +2178,9 @@ id|dev
 comma
 id|neigh
 comma
-id|ndisc_output
+id|daddr
+comma
+id|ip6_output2
 )paren
 suffix:semicolon
 r_if
@@ -2552,9 +2273,11 @@ id|MAX_HEADER
 op_plus
 id|len
 op_plus
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 comma
 l_int|1
 comma
@@ -2570,10 +2293,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;send_ns: alloc skb failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 NA: %s() failed to allocate an skb.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dst_release
@@ -2590,14 +2316,11 @@ c_func
 (paren
 id|skb
 comma
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|dev
 )paren
-op_amp
-op_complement
-l_int|15
 )paren
 suffix:semicolon
 id|ip6_nd_hdr
@@ -2872,7 +2595,9 @@ id|dev
 comma
 l_int|NULL
 comma
-id|ndisc_output
+id|daddr
+comma
+id|ip6_output2
 )paren
 suffix:semicolon
 r_if
@@ -2948,9 +2673,11 @@ id|MAX_HEADER
 op_plus
 id|len
 op_plus
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 comma
 l_int|1
 comma
@@ -2966,10 +2693,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;send_ns: alloc skb failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 RS: %s() failed to allocate an skb.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dst_release
@@ -2986,14 +2716,11 @@ c_func
 (paren
 id|skb
 comma
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|dev
 )paren
-op_amp
-op_complement
-l_int|15
 )paren
 suffix:semicolon
 id|ip6_nd_hdr
@@ -3319,12 +3046,25 @@ op_amp
 id|NUD_VALID
 )paren
 )paren
+(brace
 id|ND_PRINTK1
 c_func
 (paren
-l_string|&quot;trying to ucast probe in NUD_INVALID&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;%s(): trying to ucast probe in NUD_INVALID: &quot;
+l_string|&quot;%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|NIP6
+c_func
+(paren
+op_star
+id|target
+)paren
 )paren
 suffix:semicolon
+)brace
 id|ndisc_send_ns
 c_func
 (paren
@@ -3499,19 +3239,11 @@ id|msg-&gt;target
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NS: target address is multicast&bslash;n&quot;
+l_string|&quot;ICMPv6 NS: multicast target address&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3567,19 +3299,11 @@ l_int|0xff
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|ND_PRINTK2
 c_func
 (paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ICMP6 NS: bad DAD packet (wrong destination)&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 NS: bad DAD packet (wrong destination)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3601,19 +3325,11 @@ id|ndopts
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NS: invalid ND option, ignored.&bslash;n&quot;
+l_string|&quot;ICMPv6 NS: invalid ND options&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3655,44 +3371,28 @@ id|dev-&gt;addr_len
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NS: bad lladdr length.&bslash;n&quot;
+l_string|&quot;ICMPv6 NS: invalid link-layer address length&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
+multiline_comment|/* RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|dad
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 NS: bad DAD packet (link-layer address option)&bslash;n&quot;
+l_string|&quot;ICMPv6 NS: bad DAD packet (link-layer address option)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4202,19 +3902,11 @@ id|nd_msg
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NA: packet too short&bslash;n&quot;
+l_string|&quot;ICMPv6 NA: packet too short&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4231,19 +3923,11 @@ id|msg-&gt;target
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NDISC NA: target address is multicast&bslash;n&quot;
+l_string|&quot;ICMPv6 NA: target address is multicast.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4261,10 +3945,11 @@ op_logical_and
 id|msg-&gt;icmph.icmp6_solicited
 )paren
 (brace
-id|ND_PRINTK0
+id|ND_PRINTK2
 c_func
 (paren
-l_string|&quot;NDISC: solicited NA is multicasted&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 NA: solicited NA is multicasted.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4286,19 +3971,11 @@ id|ndopts
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NS: invalid ND option, ignored.&bslash;n&quot;
+l_string|&quot;ICMPv6 NS: invalid ND option&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4340,19 +4017,11 @@ id|dev-&gt;addr_len
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NDISC NA: invalid lladdr length.&bslash;n&quot;
+l_string|&quot;ICMPv6 NA: invalid link-layer address length&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4396,10 +4065,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* What should we make now? The advertisement&n;&t;&t;   is invalid, but ndisc specs say nothing&n;&t;&t;   about it. It could be misconfiguration, or&n;&t;&t;   an smart proxy agent tries to help us :-)&n;&t;&t; */
-id|ND_PRINTK0
+id|ND_PRINTK1
 c_func
 (paren
-l_string|&quot;%s: someone advertises our address!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 NA: someone advertises our address on %s!&bslash;n&quot;
 comma
 id|ifp-&gt;idev-&gt;dev-&gt;name
 )paren
@@ -4614,19 +4284,11 @@ id|IPV6_ADDR_LINKLOCAL
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP RA: source address is not linklocal&bslash;n&quot;
+l_string|&quot;ICMPv6 RA: source address is not link-local.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4640,19 +4302,11 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP RA: packet too short&bslash;n&quot;
+l_string|&quot;ICMPv6 RA: packet too short&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4675,10 +4329,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;RA: can&squot;t find in6 device&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 RA: can&squot;t find inet6 device for %s.&bslash;n&quot;
+comma
+id|skb-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -4724,19 +4381,11 @@ c_func
 id|in6_dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 RA: invalid ND option, ignored.&bslash;n&quot;
+l_string|&quot;ICMP6 RA: invalid ND options&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4842,10 +4491,11 @@ op_logical_and
 id|lifetime
 )paren
 (brace
-id|ND_PRINTK2
+id|ND_PRINTK3
 c_func
 (paren
-l_string|&quot;ndisc_rdisc: adding default router&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;ICMPv6 RA: adding default router.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rt
@@ -4867,10 +4517,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;route_add failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 RA: %s() failed to add default route.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|in6_dev_put
@@ -4894,10 +4547,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;nd: add default router: null neighbour&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 RA: %s() got default router without neighbour.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dst_release
@@ -4959,7 +4615,8 @@ c_cond
 id|in6_dev-&gt;nd_parms
 )paren
 (brace
-id|__u32
+r_int
+r_int
 id|rtime
 op_assign
 id|ntohl
@@ -5178,19 +4835,11 @@ id|skb-&gt;dev-&gt;addr_len
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 RA: Invalid lladdr length.&bslash;n&quot;
+l_string|&quot;ICMPv6 RA: invalid link-layer address length&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5315,24 +4964,15 @@ template_param
 id|skb-&gt;dev-&gt;mtu
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|ND_PRINTK2
 c_func
 (paren
-)paren
-)paren
-(brace
-id|ND_PRINTK0
-c_func
-(paren
-l_string|&quot;NDISC: router announcement with mtu = %d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 RA: invalid mtu: %d&bslash;n&quot;
 comma
 id|mtu
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -5379,19 +5019,11 @@ op_logical_or
 id|ndopts.nd_opts_rh
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|ND_PRINTK0
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 RA: got invalid option with RA&quot;
+l_string|&quot;ICMPv6 RA: invalid RA options&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5491,19 +5123,11 @@ id|IPV6_ADDR_LINKLOCAL
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP redirect: source address is not linklocal&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: source address is not link-local.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5539,19 +5163,11 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP redirect: packet too small&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: packet too short&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5595,19 +5211,11 @@ id|dest
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP redirect for multicast addr&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: destination address is multicast.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5648,19 +5256,11 @@ id|IPV6_ADDR_LINKLOCAL
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP redirect: target address is not linklocal&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: target address is not link-local.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5700,7 +5300,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 8.1: &n;&t; *&t;The IP source address of the Redirect MUST be the same as the current&n;&t; *&t;first-hop router for the specified ICMP Destination Address.&n;&t; */
+multiline_comment|/* RFC2461 8.1: &n;&t; *&t;The IP source address of the Redirect MUST be the same as the current&n;&t; *&t;first-hop router for the specified ICMP Destination Address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5725,19 +5325,11 @@ id|ndopts
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 Redirect: invalid ND options, rejected.&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: invalid ND options&bslash;n&quot;
 )paren
 suffix:semicolon
 id|in6_dev_put
@@ -5785,19 +5377,11 @@ id|skb-&gt;dev-&gt;addr_len
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP6 Redirect: invalid lladdr length.&bslash;n&quot;
+l_string|&quot;ICMPv6 Redirect: invalid link-layer address length&bslash;n&quot;
 )paren
 suffix:semicolon
 id|in6_dev_put
@@ -6008,10 +5592,13 @@ id|saddr_buf
 )paren
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK2
 c_func
 (paren
-l_string|&quot;redirect: no link_local addr for dev&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 Redirect: no link-local address on %s&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -6109,10 +5696,11 @@ op_amp
 id|RTF_GATEWAY
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK2
 c_func
 (paren
-l_string|&quot;ndisc_send_redirect: not a neighbour&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ICMPv6 Redirect: destination is not a neighbour.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dst_release
@@ -6227,9 +5815,11 @@ id|MAX_HEADER
 op_plus
 id|len
 op_plus
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 comma
 l_int|1
 comma
@@ -6245,10 +5835,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ND_PRINTK1
+id|ND_PRINTK0
 c_func
 (paren
-l_string|&quot;ndisc_send_redirect: alloc_skb failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ICMPv6 Redirect: %s() failed to allocate an skb.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dst_release
@@ -6269,14 +5862,11 @@ c_func
 (paren
 id|buff
 comma
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|dev
 )paren
-op_amp
-op_complement
-l_int|15
 )paren
 suffix:semicolon
 id|ip6_nd_hdr
@@ -6639,19 +6229,11 @@ op_ne
 l_int|255
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NDISC: fake message with non-255 Hop Limit received: %d&bslash;n&quot;
+l_string|&quot;ICMPv6 NDISC: invalid hop-limit: %d&bslash;n&quot;
 comma
 id|skb-&gt;nh.ipv6h-&gt;hop_limit
 )paren
@@ -6668,19 +6250,13 @@ op_ne
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|ND_PRINTK2
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ICMP NDISC: code is not zero&bslash;n&quot;
+l_string|&quot;ICMPv6 NDISC: invalid ICMPv6 code: %d&bslash;n&quot;
+comma
+id|msg-&gt;icmph.icmp6_code
 )paren
 suffix:semicolon
 r_return
@@ -6963,11 +6539,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|ND_PRINTK0
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to initialize the NDISC control socket (err %d).&bslash;n&quot;
+l_string|&quot;ICMPv6 NDISC: Failed to initialize the control socket (err %d).&bslash;n&quot;
 comma
 id|err
 )paren

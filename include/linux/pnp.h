@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 DECL|macro|PNP_MAX_PORT
 mdefine_line|#define PNP_MAX_PORT&t;&t;8
 DECL|macro|PNP_MAX_MEM
@@ -14,10 +15,6 @@ DECL|macro|PNP_MAX_IRQ
 mdefine_line|#define PNP_MAX_IRQ&t;&t;2
 DECL|macro|PNP_MAX_DMA
 mdefine_line|#define PNP_MAX_DMA&t;&t;2
-DECL|macro|PNP_MAX_DEVICES
-mdefine_line|#define PNP_MAX_DEVICES&t;&t;8
-DECL|macro|PNP_ID_LEN
-mdefine_line|#define PNP_ID_LEN&t;&t;8
 DECL|macro|PNP_NAME_LEN
 mdefine_line|#define PNP_NAME_LEN&t;&t;50
 r_struct
@@ -35,7 +32,7 @@ mdefine_line|#define pnp_port_end(dev,bar)     ((dev)-&gt;res.port_resource[(bar
 DECL|macro|pnp_port_flags
 mdefine_line|#define pnp_port_flags(dev,bar)   ((dev)-&gt;res.port_resource[(bar)].flags)
 DECL|macro|pnp_port_valid
-mdefine_line|#define pnp_port_valid(dev,bar)   (pnp_port_flags((dev),(bar)) &amp; IORESOURCE_IO)
+mdefine_line|#define pnp_port_valid(dev,bar) &bslash;&n;&t;((pnp_port_flags((dev),(bar)) &amp; (IORESOURCE_IO | IORESOURCE_UNSET)) &bslash;&n;&t;&t;== IORESOURCE_IO)
 DECL|macro|pnp_port_len
 mdefine_line|#define pnp_port_len(dev,bar) &bslash;&n;&t;((pnp_port_start((dev),(bar)) == 0 &amp;&amp;&t;&bslash;&n;&t;  pnp_port_end((dev),(bar)) ==&t;&t;&bslash;&n;&t;  pnp_port_start((dev),(bar))) ? 0 :&t;&bslash;&n;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t; (pnp_port_end((dev),(bar)) -&t;&t;&bslash;&n;&t;  pnp_port_start((dev),(bar)) + 1))
 DECL|macro|pnp_mem_start
@@ -45,7 +42,7 @@ mdefine_line|#define pnp_mem_end(dev,bar)     ((dev)-&gt;res.mem_resource[(bar)]
 DECL|macro|pnp_mem_flags
 mdefine_line|#define pnp_mem_flags(dev,bar)   ((dev)-&gt;res.mem_resource[(bar)].flags)
 DECL|macro|pnp_mem_valid
-mdefine_line|#define pnp_mem_valid(dev,bar)   (pnp_mem_flags((dev),(bar)) &amp; IORESOURCE_MEM)
+mdefine_line|#define pnp_mem_valid(dev,bar) &bslash;&n;&t;((pnp_mem_flags((dev),(bar)) &amp; (IORESOURCE_MEM | IORESOURCE_UNSET)) &bslash;&n;&t;&t;== IORESOURCE_MEM)
 DECL|macro|pnp_mem_len
 mdefine_line|#define pnp_mem_len(dev,bar) &bslash;&n;&t;((pnp_mem_start((dev),(bar)) == 0 &amp;&amp;&t;&bslash;&n;&t;  pnp_mem_end((dev),(bar)) ==&t;&t;&bslash;&n;&t;  pnp_mem_start((dev),(bar))) ? 0 :&t;&bslash;&n;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t; (pnp_mem_end((dev),(bar)) -&t;&t;&bslash;&n;&t;  pnp_mem_start((dev),(bar)) + 1))
 DECL|macro|pnp_irq
@@ -53,13 +50,13 @@ mdefine_line|#define pnp_irq(dev,bar)&t; ((dev)-&gt;res.irq_resource[(bar)].star
 DECL|macro|pnp_irq_flags
 mdefine_line|#define pnp_irq_flags(dev,bar)&t; ((dev)-&gt;res.irq_resource[(bar)].flags)
 DECL|macro|pnp_irq_valid
-mdefine_line|#define pnp_irq_valid(dev,bar)   (pnp_irq_flags((dev),(bar)) &amp; IORESOURCE_IRQ)
+mdefine_line|#define pnp_irq_valid(dev,bar) &bslash;&n;&t;((pnp_irq_flags((dev),(bar)) &amp; (IORESOURCE_IRQ | IORESOURCE_UNSET)) &bslash;&n;&t;&t;== IORESOURCE_IRQ)
 DECL|macro|pnp_dma
 mdefine_line|#define pnp_dma(dev,bar)&t; ((dev)-&gt;res.dma_resource[(bar)].start)
 DECL|macro|pnp_dma_flags
 mdefine_line|#define pnp_dma_flags(dev,bar)&t; ((dev)-&gt;res.dma_resource[(bar)].flags)
 DECL|macro|pnp_dma_valid
-mdefine_line|#define pnp_dma_valid(dev,bar)   (pnp_dma_flags((dev),(bar)) &amp; IORESOURCE_DMA)
+mdefine_line|#define pnp_dma_valid(dev,bar) &bslash;&n;&t;((pnp_dma_flags((dev),(bar)) &amp; (IORESOURCE_DMA | IORESOURCE_UNSET)) &bslash;&n;&t;&t;== IORESOURCE_DMA)
 DECL|macro|PNP_PORT_FLAG_16BITADDR
 mdefine_line|#define PNP_PORT_FLAG_16BITADDR&t;(1&lt;&lt;0)
 DECL|macro|PNP_PORT_FLAG_FIXED
@@ -767,61 +764,6 @@ id|pnp_id
 op_star
 id|next
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|pnp_device_id
-r_struct
-id|pnp_device_id
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|driver_data
-r_int
-r_int
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
-)brace
-suffix:semicolon
-DECL|struct|pnp_card_device_id
-r_struct
-id|pnp_card_device_id
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|driver_data
-r_int
-r_int
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
-r_struct
-(brace
-DECL|member|id
-r_char
-id|id
-(braket
-id|PNP_ID_LEN
-)braket
-suffix:semicolon
-DECL|member|devs
-)brace
-id|devs
-(braket
-id|PNP_MAX_DEVICES
-)braket
-suffix:semicolon
-multiline_comment|/* logical devices */
 )brace
 suffix:semicolon
 DECL|struct|pnp_driver

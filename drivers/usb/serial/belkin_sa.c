@@ -715,12 +715,20 @@ c_cond
 (paren
 id|retval
 )paren
+(brace
+id|usb_unlink_urb
+c_func
+(paren
+id|port-&gt;read_urb
+)paren
+suffix:semicolon
 id|err
 c_func
 (paren
 l_string|&quot; usb_submit_urb(read int) failed&quot;
 )paren
 suffix:semicolon
+)brace
 m_exit
 suffix:colon
 r_return

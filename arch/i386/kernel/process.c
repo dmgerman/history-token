@@ -2214,6 +2214,10 @@ DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched
 mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
+DECL|macro|top_esp
+mdefine_line|#define top_esp                (THREAD_SIZE - sizeof(unsigned long))
+DECL|macro|top_ebp
+mdefine_line|#define top_ebp                (THREAD_SIZE - 2*sizeof(unsigned long))
 DECL|function|get_wchan
 r_int
 r_int
@@ -2280,7 +2284,7 @@ id|stack_page
 op_logical_or
 id|esp
 template_param
-l_int|8188
+id|top_esp
 op_plus
 id|stack_page
 )paren
@@ -2305,7 +2309,7 @@ c_cond
 (paren
 id|ebp
 template_param
-l_int|8184
+id|top_ebp
 op_plus
 id|stack_page
 )paren

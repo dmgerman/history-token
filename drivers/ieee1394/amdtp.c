@@ -5010,14 +5010,6 @@ c_func
 l_string|&quot;amdtp&quot;
 )paren
 suffix:semicolon
-id|cdev_unmap
-c_func
-(paren
-id|IEEE1394_AMDTP_DEV
-comma
-l_int|16
-)paren
-suffix:semicolon
 id|cdev_del
 c_func
 (paren

@@ -31,6 +31,20 @@ DECL|member|pm_port
 id|__u16
 id|pm_port
 suffix:semicolon
+DECL|member|pm_binding
+r_int
+r_char
+id|pm_binding
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* doing a getport() */
+DECL|member|pm_bindwait
+r_struct
+id|rpc_wait_queue
+id|pm_bindwait
+suffix:semicolon
+multiline_comment|/* waiting on getport() */
 )brace
 suffix:semicolon
 r_struct
@@ -41,6 +55,11 @@ DECL|struct|rpc_clnt
 r_struct
 id|rpc_clnt
 (brace
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
+multiline_comment|/* Number of clones */
 DECL|member|cl_users
 id|atomic_t
 id|cl_users
@@ -117,12 +136,6 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* use getport() */
-DECL|member|cl_binding
-id|cl_binding
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* doing a getport() */
 DECL|member|cl_droppriv
 id|cl_droppriv
 suffix:colon
@@ -144,21 +157,17 @@ multiline_comment|/* abandoned */
 DECL|member|cl_rtt
 r_struct
 id|rpc_rtt
+op_star
 id|cl_rtt
 suffix:semicolon
 multiline_comment|/* RTO estimator data */
 DECL|member|cl_pmap
 r_struct
 id|rpc_portmap
+op_star
 id|cl_pmap
 suffix:semicolon
 multiline_comment|/* port mapping */
-DECL|member|cl_bindwait
-r_struct
-id|rpc_wait_queue
-id|cl_bindwait
-suffix:semicolon
-multiline_comment|/* waiting on getport() */
 DECL|member|cl_nodelen
 r_int
 id|cl_nodelen
@@ -186,18 +195,42 @@ op_star
 id|cl_dentry
 suffix:semicolon
 multiline_comment|/* inode */
+DECL|member|cl_parent
+r_struct
+id|rpc_clnt
+op_star
+id|cl_parent
+suffix:semicolon
+multiline_comment|/* Points to parent of clones */
+DECL|member|cl_rtt_default
+r_struct
+id|rpc_rtt
+id|cl_rtt_default
+suffix:semicolon
+DECL|member|cl_pmap_default
+r_struct
+id|rpc_portmap
+id|cl_pmap_default
+suffix:semicolon
+DECL|member|cl_inline_name
+r_char
+id|cl_inline_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|cl_timeout
 mdefine_line|#define cl_timeout&t;&t;cl_xprt-&gt;timeout
 DECL|macro|cl_prog
-mdefine_line|#define cl_prog&t;&t;&t;cl_pmap.pm_prog
+mdefine_line|#define cl_prog&t;&t;&t;cl_pmap-&gt;pm_prog
 DECL|macro|cl_vers
-mdefine_line|#define cl_vers&t;&t;&t;cl_pmap.pm_vers
+mdefine_line|#define cl_vers&t;&t;&t;cl_pmap-&gt;pm_vers
 DECL|macro|cl_port
-mdefine_line|#define cl_port&t;&t;&t;cl_pmap.pm_port
+mdefine_line|#define cl_port&t;&t;&t;cl_pmap-&gt;pm_port
 DECL|macro|cl_prot
-mdefine_line|#define cl_prot&t;&t;&t;cl_pmap.pm_prot
+mdefine_line|#define cl_prot&t;&t;&t;cl_pmap-&gt;pm_prot
 multiline_comment|/*&n; * General RPC program info&n; */
 DECL|macro|RPC_MAXVERSION
 mdefine_line|#define RPC_MAXVERSION&t;&t;4
@@ -339,6 +372,17 @@ id|version
 comma
 id|rpc_authflavor_t
 id|authflavor
+)paren
+suffix:semicolon
+r_struct
+id|rpc_clnt
+op_star
+id|rpc_clone_client
+c_func
+(paren
+r_struct
+id|rpc_clnt
+op_star
 )paren
 suffix:semicolon
 r_int

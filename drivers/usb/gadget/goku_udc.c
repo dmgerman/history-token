@@ -4800,7 +4800,7 @@ suffix:semicolon
 multiline_comment|/* int_status is the same format ... */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 op_star
@@ -5160,7 +5160,7 @@ id|PW_DETECT
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5373,7 +5373,7 @@ suffix:semicolon
 multiline_comment|/* registers for (active) device and ep0 */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5440,7 +5440,7 @@ id|regs-&gt;dma_master
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5627,7 +5627,7 @@ id|ep-&gt;reg_status
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5844,7 +5844,7 @@ id|ep-&gt;queue
 (brace
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5942,7 +5942,7 @@ id|req-&gt;req.actual
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -8770,7 +8770,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifndef __sparc__
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

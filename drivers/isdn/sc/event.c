@@ -10,7 +10,7 @@ suffix:semicolon
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -83,7 +83,7 @@ c_func
 (paren
 l_string|&quot;%s: Indicating event %s on Channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -113,7 +113,7 @@ c_func
 (paren
 l_string|&quot;%s: Event data: %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -185,7 +185,7 @@ id|event
 suffix:semicolon
 id|cmd.driver
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -197,7 +197,7 @@ op_assign
 id|Channel
 suffix:semicolon
 r_return
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

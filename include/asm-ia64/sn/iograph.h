@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_IOGRAPH_H
 DECL|macro|_ASM_IA64_SN_IOGRAPH_H
 mdefine_line|#define _ASM_IA64_SN_IOGRAPH_H
+macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* For get MAX_PORT_NUM */
 multiline_comment|/*&n; * During initialization, platform-dependent kernel code establishes some&n; * basic elements of the hardware graph.  This file contains edge and&n; * info labels that are used across various platforms -- it serves as an&n; * ad-hoc registry.&n; */
 multiline_comment|/* edges names */
 DECL|macro|EDGE_LBL_BUS
@@ -199,27 +200,7 @@ DECL|macro|INFO_LBL_XFUNCS
 mdefine_line|#define INFO_LBL_XFUNCS&t;&t;&t;&quot;_xtalk_ops&quot;&t;/* ops vector for gio providers */
 DECL|macro|INFO_LBL_XWIDGET
 mdefine_line|#define INFO_LBL_XWIDGET&t;&t;&quot;_xwidget&quot;
-multiline_comment|/* Device/Driver  Admin directive labels  */
-DECL|macro|ADMIN_LBL_INTR_TARGET
-mdefine_line|#define ADMIN_LBL_INTR_TARGET&t;&t;&quot;INTR_TARGET&quot;&t;/* Target cpu for device interrupts*/
-DECL|macro|ADMIN_LBL_INTR_SWLEVEL
-mdefine_line|#define ADMIN_LBL_INTR_SWLEVEL&t;&t;&quot;INTR_SWLEVEL&quot;&t;/* Priority level of the ithread */
-DECL|macro|ADMIN_LBL_DMATRANS_NODE
-mdefine_line|#define&t;ADMIN_LBL_DMATRANS_NODE&t;&t;&quot;PCIBUS_DMATRANS_NODE&quot; /* Node used for&n;&t;&t;&t;&t;&t;&t;&t;&t;* 32-bit Direct&n;&t;&t;&t;&t;&t;&t;&t;&t;* Mapping I/O&n;&t;&t;&t;&t;&t;&t;&t;&t;*/
-DECL|macro|ADMIN_LBL_DISABLED
-mdefine_line|#define ADMIN_LBL_DISABLED&t;&t;&quot;DISABLE&quot;&t;/* Device has been disabled */
-DECL|macro|ADMIN_LBL_DETACH
-mdefine_line|#define ADMIN_LBL_DETACH&t;&t;&quot;DETACH&quot;&t;/* Device has been detached */
-DECL|macro|ADMIN_LBL_THREAD_PRI
-mdefine_line|#define ADMIN_LBL_THREAD_PRI&t;&t;&quot;thread_priority&quot; 
-multiline_comment|/* Driver adminstrator&n;&t;&t;&t;&t;&t;&t;&t; * hint parameter for &n;&t;&t;&t;&t;&t;&t;&t; * thread priority&n;&t;&t;&t;&t;&t;&t;&t; */
-DECL|macro|ADMIN_LBL_THREAD_CLASS
-mdefine_line|#define ADMIN_LBL_THREAD_CLASS&t;&t;&quot;thread_class&quot; 
-multiline_comment|/* Driver adminstrator&n;&t;&t;&t;&t;&t;&t;&t; * hint parameter for &n;&t;&t;&t;&t;&t;&t;&t; * thread priority&n;&t;&t;&t;&t;&t;&t;&t; * default class&n;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/* Info labels that begin with &squot;_&squot; cannot be overwritten by an attr_set call */
-DECL|macro|INFO_LBL_RESERVED
-mdefine_line|#define INFO_LBL_RESERVED(name) ((name)[0] == &squot;_&squot;)
-macro_line|#if defined(__KERNEL__)
+macro_line|#ifdef __KERNEL__
 r_void
 id|init_all_devices
 c_func
@@ -228,8 +209,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* For get MAX_PORT_NUM */
 r_int
 id|io_brick_map_widget
 c_func
@@ -237,13 +216,6 @@ c_func
 r_int
 comma
 r_int
-)paren
-suffix:semicolon
-r_int
-id|io_path_map_widget
-c_func
-(paren
-id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Map a brick&squot;s widget number to a meaningful int&n; */

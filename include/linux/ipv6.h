@@ -303,6 +303,10 @@ DECL|member|rtr_solicit_delay
 id|__s32
 id|rtr_solicit_delay
 suffix:semicolon
+DECL|member|force_mld_version
+id|__s32
+id|force_mld_version
+suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 DECL|member|use_tempaddr
 id|__s32
@@ -389,6 +393,9 @@ comma
 DECL|enumerator|DEVCONF_MAX_ADDRESSES
 id|DEVCONF_MAX_ADDRESSES
 comma
+DECL|enumerator|DEVCONF_FORCE_MLD_VERSION
+id|DEVCONF_FORCE_MLD_VERSION
+comma
 DECL|enumerator|DEVCONF_MAX
 id|DEVCONF_MAX
 )brace
@@ -415,10 +422,6 @@ suffix:semicolon
 DECL|member|hop
 id|__u16
 id|hop
-suffix:semicolon
-DECL|member|auth
-id|__u16
-id|auth
 suffix:semicolon
 DECL|member|dst0
 id|__u16
@@ -507,11 +510,6 @@ l_int|1
 comma
 DECL|member|dstopts
 id|dstopts
-suffix:colon
-l_int|1
-comma
-DECL|member|authhdr
-id|authhdr
 suffix:colon
 l_int|1
 comma

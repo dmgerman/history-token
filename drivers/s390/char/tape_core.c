@@ -290,7 +290,7 @@ op_star
 id|dev-&gt;driver_data
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -347,7 +347,7 @@ op_star
 id|dev-&gt;driver_data
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -404,7 +404,7 @@ op_star
 id|dev-&gt;driver_data
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -483,7 +483,7 @@ OL
 l_int|0
 )paren
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -515,7 +515,7 @@ id|tdev-&gt;req_queue
 )paren
 id|rc
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -547,7 +547,7 @@ id|list
 suffix:semicolon
 id|rc
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -621,7 +621,7 @@ op_star
 id|dev-&gt;driver_data
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

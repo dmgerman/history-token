@@ -3153,7 +3153,7 @@ id|svc_fh
 op_star
 id|fhp
 comma
-id|off_t
+id|loff_t
 id|offset
 comma
 r_int

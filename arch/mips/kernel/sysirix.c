@@ -1438,7 +1438,7 @@ l_int|4
 suffix:colon
 id|retval
 op_assign
-id|NGROUPS
+id|NGROUPS_MAX
 suffix:semicolon
 r_goto
 id|out

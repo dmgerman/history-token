@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -124,9 +124,9 @@ id|fsb
 )paren
 (brace
 r_int
-id|mhz
+id|khz
 suffix:semicolon
-id|mhz
+id|khz
 op_assign
 (paren
 id|mult
@@ -143,14 +143,18 @@ id|mult
 op_mod
 l_int|10
 )paren
-id|mhz
+id|khz
 op_add_assign
 id|fsb
 op_div
 l_int|2
 suffix:semicolon
+id|khz
+op_mul_assign
+l_int|1000
+suffix:semicolon
 r_return
-id|mhz
+id|khz
 suffix:semicolon
 )brace
 DECL|function|longhaul_get_cpu_mult
@@ -980,8 +984,12 @@ comma
 id|fsb
 comma
 id|lowest_speed
+op_div
+l_int|1000
 comma
 id|highest_speed
+op_div
+l_int|1000
 )paren
 suffix:semicolon
 id|longhaul_table
@@ -1086,11 +1094,7 @@ id|k
 dot
 id|index
 op_assign
-(paren
 id|j
-op_lshift
-l_int|8
-)paren
 suffix:semicolon
 id|k
 op_increment
@@ -1481,6 +1485,7 @@ suffix:semicolon
 DECL|function|longhaul_cpu_init
 r_static
 r_int
+id|__init
 id|longhaul_cpu_init
 (paren
 r_struct

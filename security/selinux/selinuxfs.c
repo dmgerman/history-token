@@ -13,6 +13,15 @@ macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
 macro_line|#include &quot;security.h&quot;
 macro_line|#include &quot;objsec.h&quot;
+r_extern
+r_void
+id|selnl_notify_setenforce
+c_func
+(paren
+r_int
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/* Check whether a task is allowed to use a security operation. */
 DECL|function|task_has_security
 r_int
@@ -175,7 +184,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -490,6 +499,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+id|selnl_notify_setenforce
+c_func
+(paren
+id|selinux_enforcing
+)paren
+suffix:semicolon
 )brace
 id|length
 op_assign
@@ -612,7 +627,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -1961,7 +1976,7 @@ id|out2
 suffix:semicolon
 id|length
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -3090,7 +3105,7 @@ comma
 op_amp
 id|sel_enforce_ops
 comma
-id|S_IRUSR
+id|S_IRUGO
 op_or
 id|S_IWUSR
 )brace

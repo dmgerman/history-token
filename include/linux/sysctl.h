@@ -1392,6 +1392,16 @@ id|NET_IPV4_CONF_FORCE_IGMP_VERSION
 op_assign
 l_int|17
 comma
+DECL|enumerator|NET_IPV4_CONF_ARP_ANNOUNCE
+id|NET_IPV4_CONF_ARP_ANNOUNCE
+op_assign
+l_int|18
+comma
+DECL|enumerator|NET_IPV4_CONF_ARP_IGNORE
+id|NET_IPV4_CONF_ARP_IGNORE
+op_assign
+l_int|19
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */
@@ -1642,6 +1652,11 @@ DECL|enumerator|NET_IPV6_MAX_ADDRESSES
 id|NET_IPV6_MAX_ADDRESSES
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_IPV6_FORCE_MLD_VERSION
+id|NET_IPV6_FORCE_MLD_VERSION
+op_assign
+l_int|17
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */
@@ -2212,6 +2227,16 @@ id|NET_SCTP_ADDIP_ENABLE
 op_assign
 l_int|13
 comma
+DECL|enumerator|NET_SCTP_RMEM
+id|NET_SCTP_RMEM
+op_assign
+l_int|14
+comma
+DECL|enumerator|NET_SCTP_WMEM
+id|NET_SCTP_WMEM
+op_assign
+l_int|15
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/bridge */
@@ -2343,6 +2368,18 @@ op_assign
 l_int|17
 comma
 multiline_comment|/* struct: control xfs parameters */
+DECL|enumerator|FS_AIO_NR
+id|FS_AIO_NR
+op_assign
+l_int|18
+comma
+multiline_comment|/* current system-wide number of aio requests */
+DECL|enumerator|FS_AIO_MAX_NR
+id|FS_AIO_MAX_NR
+op_assign
+l_int|19
+comma
+multiline_comment|/* system-wide maximum number of aio requests */
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/fs/quota/ */

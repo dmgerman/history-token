@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SUNRPC_GSS_API_H
 mdefine_line|#define _LINUX_SUNRPC_GSS_API_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 multiline_comment|/* The mechanism-independent gss-api context: */
 DECL|struct|gss_ctx
 r_struct
@@ -66,7 +67,7 @@ id|u32
 id|qop
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma
@@ -86,7 +87,7 @@ op_star
 id|ctx_id
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma
@@ -321,7 +322,7 @@ id|u32
 id|qop
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma
@@ -344,7 +345,7 @@ op_star
 id|ctx_id
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
 id|message
 comma

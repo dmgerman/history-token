@@ -319,7 +319,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -346,7 +346,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX SABME(1)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -372,7 +372,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX SABM(1)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -429,7 +429,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -448,7 +448,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 TX DISC(1)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -510,7 +510,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -568,7 +568,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -25,14 +25,6 @@ mdefine_line|#define Elf_Addr Elf32_Addr
 DECL|macro|Elf_Rela
 mdefine_line|#define Elf_Rela Elf32_Rela
 macro_line|#endif
-DECL|macro|module_map
-mdefine_line|#define module_map(x)&t;&t;vmalloc(x)
-DECL|macro|module_unmap
-mdefine_line|#define module_unmap(x)&t;&t;vfree(x)
-DECL|macro|module_arch_init
-mdefine_line|#define module_arch_init(x)&t;(0)
-DECL|macro|arch_init_modules
-mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
 DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific

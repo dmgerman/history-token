@@ -10,7 +10,10 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
-macro_line|#include &lt;linux/pci.h&gt;&t;&t;&t;/* for hcd-&gt;pdev and dma addressing */
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -2100,7 +2103,7 @@ id|EXPORT_SYMBOL
 id|usb_deregister_bus
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the driverfs tree, and then calls usb_new_device() to register the&n; * usb device.  It also assigns the root hub&squot;s USB address (always 1).&n; */
+multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device model tree, and then calls usb_new_device() to register the&n; * usb device.  It also assigns the root hub&squot;s USB address (always 1).&n; */
 DECL|function|usb_register_root_hub
 r_int
 id|usb_register_root_hub
@@ -2125,23 +2128,6 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|sprintf
-(paren
-op_amp
-id|usb_dev-&gt;dev.bus_id
-(braket
-l_int|0
-)braket
-comma
-l_string|&quot;usb%d&quot;
-comma
-id|usb_dev-&gt;bus-&gt;busnum
-)paren
-suffix:semicolon
-id|usb_dev-&gt;state
-op_assign
-id|USB_STATE_DEFAULT
-suffix:semicolon
 id|usb_dev-&gt;devnum
 op_assign
 id|devnum
@@ -2152,6 +2138,17 @@ id|devnum
 op_plus
 l_int|1
 suffix:semicolon
+id|memset
+(paren
+op_amp
+id|usb_dev-&gt;bus-&gt;devmap.devicemap
+comma
+l_int|0
+comma
+r_sizeof
+id|usb_dev-&gt;bus-&gt;devmap.devicemap
+)paren
+suffix:semicolon
 id|set_bit
 (paren
 id|devnum
@@ -2159,13 +2156,15 @@ comma
 id|usb_dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
+id|usb_dev-&gt;state
+op_assign
+id|USB_STATE_ADDRESS
+suffix:semicolon
 id|retval
 op_assign
 id|usb_new_device
 (paren
 id|usb_dev
-comma
-id|parent_dev
 )paren
 suffix:semicolon
 r_if
@@ -4478,9 +4477,9 @@ op_amp
 id|URB_NO_SETUP_DMA_MAP
 )paren
 )paren
-id|pci_unmap_single
+id|dma_unmap_single
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;controller
 comma
 id|urb-&gt;setup_dma
 comma
@@ -4490,7 +4489,7 @@ r_struct
 id|usb_ctrlrequest
 )paren
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 r_if
@@ -4507,9 +4506,9 @@ op_amp
 id|URB_NO_TRANSFER_DMA_MAP
 )paren
 )paren
-id|pci_unmap_single
+id|dma_unmap_single
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -4521,9 +4520,9 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 suffix:colon
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -4596,12 +4595,20 @@ id|hcd-&gt;saw_irq
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|hcd-&gt;driver-&gt;irq
 (paren
 id|hcd
 comma
 id|r
 )paren
+op_eq
+id|IRQ_NONE
+)paren
+r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond

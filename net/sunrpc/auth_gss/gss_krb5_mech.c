@@ -319,7 +319,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: get_key: unsupported algorithm %d&quot;
+l_string|&quot;RPC: get_key: unsupported algorithm %d&bslash;n&quot;
 comma
 id|alg
 )paren
@@ -746,6 +746,7 @@ r_return
 id|GSS_S_FAILURE
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|gss_delete_sec_context_kerberos
 id|gss_delete_sec_context_kerberos
@@ -803,6 +804,7 @@ id|kctx
 )paren
 suffix:semicolon
 )brace
+r_static
 id|u32
 DECL|function|gss_verify_mic_kerberos
 id|gss_verify_mic_kerberos
@@ -814,14 +816,14 @@ op_star
 id|ctx
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
-id|signbuf
+id|message
 comma
 r_struct
 id|xdr_netobj
 op_star
-id|checksum
+id|mic_token
 comma
 id|u32
 op_star
@@ -850,9 +852,9 @@ c_func
 (paren
 id|kctx
 comma
-id|checksum
+id|mic_token
 comma
-id|signbuf
+id|message
 comma
 op_amp
 id|qop_state
@@ -885,6 +887,7 @@ r_return
 id|maj_stat
 suffix:semicolon
 )brace
+r_static
 id|u32
 DECL|function|gss_get_mic_kerberos
 id|gss_get_mic_kerberos
@@ -899,14 +902,14 @@ id|u32
 id|qop
 comma
 r_struct
-id|xdr_netobj
+id|xdr_buf
 op_star
-id|message_buffer
+id|message
 comma
 r_struct
 id|xdr_netobj
 op_star
-id|message_token
+id|mic_token
 )paren
 (brace
 id|u32
@@ -921,24 +924,6 @@ id|kctx
 op_assign
 id|ctx-&gt;internal_ctx_id
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|message_buffer-&gt;data
-)paren
-r_return
-id|GSS_S_FAILURE
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;RPC: gss_get_mic_kerberos:&quot;
-l_string|&quot; message_buffer-&gt;len %d&bslash;n&quot;
-comma
-id|message_buffer-&gt;len
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|krb5_make_token
@@ -948,9 +933,9 @@ id|kctx
 comma
 id|qop
 comma
-id|message_buffer
+id|message
 comma
-id|message_token
+id|mic_token
 comma
 id|KG_TOK_MIC_MSG
 )paren
@@ -1057,6 +1042,18 @@ comma
 id|RPC_GSS_SVC_NONE
 )paren
 suffix:semicolon
+id|gss_register_triple
+c_func
+(paren
+id|RPC_AUTH_GSS_KRB5I
+comma
+id|gm
+comma
+l_int|0
+comma
+id|RPC_GSS_SVC_INTEGRITY
+)paren
+suffix:semicolon
 id|gss_mech_put
 c_func
 (paren
@@ -1077,6 +1074,12 @@ c_func
 r_void
 )paren
 (brace
+id|gss_unregister_triple
+c_func
+(paren
+id|RPC_AUTH_GSS_KRB5I
+)paren
+suffix:semicolon
 id|gss_unregister_triple
 c_func
 (paren

@@ -6368,7 +6368,7 @@ c_func
 (paren
 id|sk
 comma
-l_string|&quot;SK %p: Copy user data (%d bytes).&bslash;n&quot;
+l_string|&quot;SK %p: Copy user data (%Zd bytes).&bslash;n&quot;
 comma
 id|sk
 comma
@@ -6624,7 +6624,7 @@ c_func
 (paren
 id|sk
 comma
-l_string|&quot;SK %p: Done write (%d).&bslash;n&quot;
+l_string|&quot;SK %p: Done write (%Zd).&bslash;n&quot;
 comma
 id|sk
 comma

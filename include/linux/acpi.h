@@ -1227,6 +1227,10 @@ id|id
 comma
 id|acpi_madt_entry_handler
 id|handler
+comma
+r_int
+r_int
+id|max_entries
 )paren
 suffix:semicolon
 r_int
@@ -1238,6 +1242,10 @@ id|id
 comma
 id|acpi_madt_entry_handler
 id|handler
+comma
+r_int
+r_int
+id|max_entries
 )paren
 suffix:semicolon
 r_void

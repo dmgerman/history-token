@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_2bds0.h,v 1.4.6.2 2001/09/23 22:24:47 kai Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BDS0&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hfc_2bds0.h,v 1.6.2.2 2004/01/12 22:52:26 keil Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BDS0&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|HFCD_CIRM
 mdefine_line|#define HFCD_CIRM  &t;0x18
 DECL|macro|HFCD_CTMT
@@ -229,7 +229,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 id|val
 )paren
 suffix:semicolon

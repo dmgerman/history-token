@@ -42,6 +42,170 @@ id|irq_action_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|SMP_NOP2
+mdefine_line|#define SMP_NOP2 &quot;nop; nop;&bslash;n&bslash;t&quot;
+DECL|macro|SMP_NOP3
+mdefine_line|#define SMP_NOP3 &quot;nop; nop; nop;&bslash;n&bslash;t&quot;
+macro_line|#else
+DECL|macro|SMP_NOP2
+mdefine_line|#define SMP_NOP2
+DECL|macro|SMP_NOP3
+mdefine_line|#define SMP_NOP3
+macro_line|#endif /* SMP */
+DECL|function|__local_irq_save
+r_int
+r_int
+id|__local_irq_save
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|retval
+suffix:semicolon
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+id|SMP_NOP3
+multiline_comment|/* Sun4m + Cypress + SMP bug */
+l_string|&quot;or&t;%0, %2, %1&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%1, 0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|PSR_PIL
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+DECL|function|local_irq_enable
+r_void
+id|local_irq_enable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+id|SMP_NOP3
+multiline_comment|/* Sun4m + Cypress + SMP bug */
+l_string|&quot;andn&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|PSR_PIL
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|local_irq_restore
+r_void
+id|local_irq_restore
+c_func
+(paren
+r_int
+r_int
+id|old_psr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%2, %1, %2&bslash;n&bslash;t&quot;
+id|SMP_NOP2
+multiline_comment|/* Sun4m + Cypress + SMP bug */
+l_string|&quot;andn&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, %2, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|PSR_PIL
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|old_psr
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|variable|__local_irq_save
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__local_irq_save
+)paren
+suffix:semicolon
+DECL|variable|local_irq_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|local_irq_enable
+)paren
+suffix:semicolon
+DECL|variable|local_irq_restore
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|local_irq_restore
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Dave Redman (djhr@tadpole.co.uk)&n; *&n; * IRQ numbers.. These are no longer restricted to 15..&n; *&n; * this is done to enable SBUS cards and onboard IO to be masked&n; * correctly. using the interrupt level isn&squot;t good enough.&n; *&n; * For example:&n; *   A device interrupting at sbus level6 and the Floppy both come in&n; *   at IRQ11, but enabling and disabling them requires writing to&n; *   different bits in the SLAVIO/SEC.&n; *&n; * As a result of these changes sun4m machines could now support&n; * directed CPU interrupts using the existing enable/disable irq code&n; * with tweaks.&n; *&n; */
 DECL|function|irq_panic
 r_static

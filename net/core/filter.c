@@ -1344,6 +1344,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 r_int
 r_int
 )paren
@@ -1359,6 +1360,11 @@ r_struct
 id|sock_filter
 )paren
 )paren
+)paren
+op_logical_or
+id|flen
+op_eq
+l_int|0
 )paren
 r_return
 op_minus

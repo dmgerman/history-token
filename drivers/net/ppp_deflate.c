@@ -2345,4 +2345,26 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;ppp-compress-&quot;
+id|__stringify
+c_func
+(paren
+id|CI_DEFLATE
+)paren
+)paren
+suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;ppp-compress-&quot;
+id|__stringify
+c_func
+(paren
+id|CI_DEFLATE_DRAFT
+)paren
+)paren
+suffix:semicolon
 eof

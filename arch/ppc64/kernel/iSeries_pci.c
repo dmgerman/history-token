@@ -754,11 +754,11 @@ l_string|&quot;iSeries_pcibios_init Exit.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pcibios_final_fixup(void)  &n; */
-DECL|function|pcibios_final_fixup
+multiline_comment|/*&n; * iSeries_pci_final_fixup(void)  &n; */
+DECL|function|iSeries_pci_final_fixup
 r_void
 id|__init
-id|pcibios_final_fixup
+id|iSeries_pci_final_fixup
 c_func
 (paren
 r_void
@@ -1514,18 +1514,6 @@ op_assign
 id|iSeries_allocate_IRQ
 c_func
 (paren
-id|Bus
-comma
-l_int|0
-comma
-id|EADsIdSel
-)paren
-suffix:semicolon
-id|iSeries_assign_IRQ
-c_func
-(paren
-id|Irq
-comma
 id|Bus
 comma
 l_int|0

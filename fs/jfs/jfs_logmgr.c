@@ -3047,8 +3047,6 @@ comma
 id|FMODE_READ
 op_or
 id|FMODE_WRITE
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 r_if
@@ -3196,8 +3194,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 id|free
@@ -4039,8 +4035,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 id|out
@@ -6610,15 +6604,14 @@ c_func
 l_string|&quot;jfsIOWait being killed!&quot;
 )paren
 suffix:semicolon
-id|complete
+id|complete_and_exit
 c_func
 (paren
 op_amp
 id|jfsIOwait
-)paren
-suffix:semicolon
-r_return
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;lmLogFormat()/jfs_logform()&n; *&n; * FUNCTION:&t;format file system log&n; *&n; * PARAMETERS:&n; *      log&t;- volume log&n; *&t;logAddress - start address of log space in FS block&n; *&t;logSize&t;- length of log space in FS block;&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;-EIO&t;- i/o error&n; *&n; * XXX: We&squot;re synchronously writing one page at a time.  This needs to&n; *&t;be improved by writing multiple pages at once.&n; */

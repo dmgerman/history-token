@@ -19,9 +19,10 @@ r_void
 id|x25_connect_disconnect
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -30,12 +31,6 @@ r_int
 id|code
 )paren
 (brace
-id|hdlc_device
-op_star
-id|hdlc
-op_assign
-id|token
-suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -68,11 +63,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: out of memory&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -95,11 +86,7 @@ id|code
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
@@ -130,9 +117,10 @@ r_void
 id|x25_connected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -141,7 +129,7 @@ id|reason
 id|x25_connect_disconnect
 c_func
 (paren
-id|token
+id|dev
 comma
 id|reason
 comma
@@ -155,9 +143,10 @@ r_void
 id|x25_disconnected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -166,7 +155,7 @@ id|reason
 id|x25_connect_disconnect
 c_func
 (paren
-id|token
+id|dev
 comma
 id|reason
 comma
@@ -180,9 +169,10 @@ r_int
 id|x25_data_indication
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -190,12 +180,6 @@ op_star
 id|skb
 )paren
 (brace
-id|hdlc_device
-op_star
-id|hdlc
-op_assign
-id|token
-suffix:semicolon
 r_int
 r_char
 op_star
@@ -234,11 +218,7 @@ l_int|0
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
@@ -270,9 +250,10 @@ r_void
 id|x25_data_transmit
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -284,7 +265,11 @@ id|hdlc_device
 op_star
 id|hdlc
 op_assign
-id|token
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|hdlc
 op_member_access_from_pointer
@@ -293,11 +278,7 @@ c_func
 (paren
 id|skb
 comma
-id|hdlc_to_dev
-c_func
-(paren
-id|hdlc
-)paren
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Ignore return value :-( */
@@ -319,16 +300,6 @@ op_star
 id|dev
 )paren
 (brace
-id|hdlc_device
-op_star
-id|hdlc
-op_assign
-id|dev_to_hdlc
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_int
 id|result
 suffix:semicolon
@@ -363,7 +334,7 @@ op_assign
 id|lapb_data_request
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|skb
 )paren
@@ -392,7 +363,7 @@ op_assign
 id|lapb_connect_request
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 )paren
 op_ne
@@ -410,7 +381,7 @@ multiline_comment|/* Send connect confirm. msg to level 3 */
 id|x25_connected
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 l_int|0
 )paren
@@ -423,11 +394,7 @@ id|KERN_ERR
 l_string|&quot;%s: LAPB connect request &quot;
 l_string|&quot;failed, error code = %i&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|result
 )paren
@@ -447,7 +414,7 @@ op_assign
 id|lapb_disconnect_request
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 )paren
 op_ne
@@ -465,7 +432,7 @@ multiline_comment|/* Send disconnect confirm. msg to level 3 */
 id|x25_disconnected
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 l_int|0
 )paren
@@ -478,11 +445,7 @@ id|KERN_ERR
 l_string|&quot;%s: LAPB disconnect request &quot;
 l_string|&quot;failed, error code = %i&bslash;n&quot;
 comma
-id|hdlc_to_name
-c_func
-(paren
-id|hdlc
-)paren
+id|dev-&gt;name
 comma
 id|result
 )paren
@@ -512,9 +475,10 @@ r_int
 id|x25_open
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 (brace
 r_struct
@@ -553,7 +517,7 @@ op_assign
 id|lapb_register
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 op_amp
 id|cb
@@ -579,15 +543,16 @@ r_void
 id|x25_close
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 (brace
 id|lapb_unregister
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -644,7 +609,7 @@ c_cond
 id|lapb_data_received
 c_func
 (paren
-id|hdlc
+id|skb-&gt;dev
 comma
 id|skb
 )paren
@@ -672,9 +637,10 @@ r_int
 id|hdlc_x25_ioctl
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_struct
 id|ifreq
@@ -682,15 +648,14 @@ op_star
 id|ifr
 )paren
 (brace
-r_struct
-id|net_device
+id|hdlc_device
 op_star
-id|dev
+id|hdlc
 op_assign
-id|hdlc_to_dev
+id|dev_to_hdlc
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_int
@@ -752,7 +717,7 @@ op_member_access_from_pointer
 id|attach
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|ENCODING_NRZ
 comma

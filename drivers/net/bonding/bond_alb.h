@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
+multiline_comment|/*&n; * Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 macro_line|#ifndef __BOND_ALB_H__
 DECL|macro|__BOND_ALB_H__
 mdefine_line|#define __BOND_ALB_H__
@@ -96,6 +96,17 @@ op_star
 id|slave
 suffix:semicolon
 multiline_comment|/* the slave assigned to this client */
+DECL|member|tag
+id|u8
+id|tag
+suffix:semicolon
+multiline_comment|/* flag - need to tag skb */
+DECL|member|vlan_id
+r_int
+r_int
+id|vlan_id
+suffix:semicolon
+multiline_comment|/* VLAN tag associated with IP address */
 )brace
 suffix:semicolon
 DECL|struct|tlb_slave_info
@@ -211,6 +222,12 @@ id|u8
 id|rlb_rebalance
 suffix:semicolon
 multiline_comment|/* flag - indicates that the&n;&t;&t;&t;&t;&t;&t; * rx traffic should be&n;&t;&t;&t;&t;&t;&t; * rebalanced&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|current_alb_vlan
+r_struct
+id|vlan_entry
+op_star
+id|current_alb_vlan
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -336,6 +353,20 @@ comma
 r_void
 op_star
 id|addr
+)paren
+suffix:semicolon
+r_void
+id|bond_alb_clear_vlan
+c_func
+(paren
+r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_int
+r_int
+id|vlan_id
 )paren
 suffix:semicolon
 macro_line|#endif /* __BOND_ALB_H__ */

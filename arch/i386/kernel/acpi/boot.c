@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#if defined (CONFIG_X86_LOCAL_APIC)
 macro_line|#include &lt;mach_apic.h&gt;
@@ -35,14 +36,10 @@ multiline_comment|/* enable HT */
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
@@ -339,6 +336,17 @@ c_func
 (paren
 id|header
 )paren
+suffix:semicolon
+multiline_comment|/* no utility in registering a disabled processor */
+r_if
+c_cond
+(paren
+id|processor-&gt;flags.enabled
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|mp_register_lapic
 (paren
@@ -1109,6 +1117,121 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* detect the location of the ACPI PM Timer */
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+r_extern
+id|u32
+id|pmtmr_ioport
+suffix:semicolon
+DECL|function|acpi_parse_fadt
+r_static
+r_int
+id|__init
+id|acpi_parse_fadt
+c_func
+(paren
+r_int
+r_int
+id|phys
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_struct
+id|fadt_descriptor_rev2
+op_star
+id|fadt
+op_assign
+l_int|0
+suffix:semicolon
+id|fadt
+op_assign
+(paren
+r_struct
+id|fadt_descriptor_rev2
+op_star
+)paren
+id|__acpi_map_table
+c_func
+(paren
+id|phys
+comma
+id|size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fadt
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Unable to map FADT&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fadt-&gt;revision
+op_ge
+id|FADT2_REVISION_ID
+)paren
+(brace
+multiline_comment|/* FADT rev. 2 */
+r_if
+c_cond
+(paren
+id|fadt-&gt;xpm_tmr_blk.address_space_id
+op_ne
+id|ACPI_ADR_SPACE_SYSTEM_IO
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|pmtmr_ioport
+op_assign
+id|fadt-&gt;xpm_tmr_blk.address
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* FADT rev. 1 */
+id|pmtmr_ioport
+op_assign
+id|fadt-&gt;V1_pm_tmr_blk
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pmtmr_ioport
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;PM-Timer IO Port: %#x&bslash;n&quot;
+comma
+id|pmtmr_ioport
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_int
 r_int
 id|__init
@@ -1266,6 +1389,16 @@ r_return
 id|result
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_FADT
+comma
+id|acpi_parse_fadt
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
 id|result
@@ -1335,6 +1468,8 @@ c_func
 id|ACPI_MADT_LAPIC_ADDR_OVR
 comma
 id|acpi_parse_lapic_addr_ovr
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1371,6 +1506,8 @@ c_func
 id|ACPI_MADT_LAPIC
 comma
 id|acpi_parse_lapic
+comma
+id|MAX_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1424,6 +1561,8 @@ c_func
 id|ACPI_MADT_LAPIC_NMI
 comma
 id|acpi_parse_lapic_nmi
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1498,6 +1637,8 @@ c_func
 id|ACPI_MADT_IOAPIC
 comma
 id|acpi_parse_ioapic
+comma
+id|MAX_IO_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1555,6 +1696,8 @@ c_func
 id|ACPI_MADT_INT_SRC_OVR
 comma
 id|acpi_parse_int_src_ovr
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if
@@ -1586,6 +1729,8 @@ c_func
 id|ACPI_MADT_NMI_SRC
 comma
 id|acpi_parse_nmi_src
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if

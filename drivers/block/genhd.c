@@ -1207,6 +1207,16 @@ id|GENHD_FL_REMOVABLE
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sgp-&gt;flags
+op_amp
+id|GENHD_FL_SUPPRESS_PARTITION_INFO
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* show the full disk and all non-0 size partitions of it */
 id|seq_printf
 c_func

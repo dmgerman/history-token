@@ -1357,7 +1357,7 @@ id|IORESOURCE_MEM
 suffix:semicolon
 id|size
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|name

@@ -87,11 +87,25 @@ DECL|macro|MAX_MATCH
 mdefine_line|#define MAX_MATCH  258
 multiline_comment|/* The minimum and maximum match lengths */
 multiline_comment|/* functions */
-macro_line|#include &lt;linux/string.h&gt;
+r_extern
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|macro|zmemcpy
 mdefine_line|#define zmemcpy memcpy
-DECL|macro|zmemzero
-mdefine_line|#define zmemzero(dest, len)&t;memset(dest, 0, len)
 multiline_comment|/* Diagnostic functions */
 macro_line|#ifdef DEBUG_ZLIB
 macro_line|#  include &lt;stdio.h&gt;

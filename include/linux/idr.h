@@ -118,6 +118,9 @@ r_struct
 id|idr
 op_star
 id|idp
+comma
+r_int
+id|gfp_mask
 )paren
 suffix:semicolon
 r_int

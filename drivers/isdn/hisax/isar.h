@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.h,v 1.9.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * ISAR (Siemens PSB 7110) specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isar.h,v 1.11.2.2 2004/01/12 22:52:27 keil Exp $&n; *&n; * ISAR (Siemens PSB 7110) specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|ISAR_IRQMSK
 mdefine_line|#define ISAR_IRQMSK&t;0x04
 DECL|macro|ISAR_IRQSTA
@@ -33,6 +33,10 @@ DECL|macro|ISAR_HIS_STDSP
 mdefine_line|#define ISAR_HIS_STDSP&t;&t;0x08
 DECL|macro|ISAR_HIS_DIAG
 mdefine_line|#define ISAR_HIS_DIAG&t;&t;0x05
+DECL|macro|ISAR_HIS_WAITSTATE
+mdefine_line|#define ISAR_HIS_WAITSTATE&t;0x27
+DECL|macro|ISAR_HIS_TIMERIRQ
+mdefine_line|#define ISAR_HIS_TIMERIRQ&t;0x25
 DECL|macro|ISAR_HIS_P0CFG
 mdefine_line|#define ISAR_HIS_P0CFG&t;&t;0x3c
 DECL|macro|ISAR_HIS_P12CFG
@@ -61,6 +65,10 @@ DECL|macro|ISAR_HIS_DPS2
 mdefine_line|#define ISAR_HIS_DPS2&t;&t;0x80
 DECL|macro|SET_DPS
 mdefine_line|#define SET_DPS(x)&t;&t;((x&lt;&lt;6) &amp; 0xc0)
+DECL|macro|ISAR_CMD_TIMERIRQ_OFF
+mdefine_line|#define ISAR_CMD_TIMERIRQ_OFF&t;0x20
+DECL|macro|ISAR_CMD_TIMERIRQ_ON
+mdefine_line|#define ISAR_CMD_TIMERIRQ_ON&t;0x21
 DECL|macro|ISAR_IIS_MSCMSD
 mdefine_line|#define ISAR_IIS_MSCMSD&t;&t;0x3f
 DECL|macro|ISAR_IIS_VNR
@@ -347,6 +355,23 @@ DECL|macro|STFAX_ESCAPE
 mdefine_line|#define STFAX_ESCAPE&t;5
 DECL|macro|STFAX_SILDET
 mdefine_line|#define STFAX_SILDET&t;6
+DECL|macro|ISDN_FAXPUMP_HALT
+mdefine_line|#define ISDN_FAXPUMP_HALT&t;100
+r_extern
+r_int
+id|ISARVersion
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_char
+op_star
+id|s
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|isar_int_main
@@ -393,22 +418,6 @@ comma
 id|isdn_ctrl
 op_star
 id|ic
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|isar_setup
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-r_struct
-id|bc_hw_ops
-op_star
-id|isar_ops
 )paren
 suffix:semicolon
 eof

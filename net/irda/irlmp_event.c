@@ -1245,6 +1245,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * IrLAP may have a pending disconnect. We tried to close&n;&t;&t; * IrLAP, but it was postponed because the link was&n;&t;&t; * busy or we were still sending packets. As we now&n;&t;&t; * need it, make sure it stays on. Jean II&n;&t;&t; */
+id|irlap_clear_disconnect
+c_func
+(paren
+id|self-&gt;irlap
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  LAP connection already active, just bounce back! Since we&n;&t;&t; *  don&squot;t know which LSAP that tried to do this, we have to&n;&t;&t; *  notify all LSAPs using this LAP, but that should be safe to&n;&t;&t; *  do anyway.&n;&t;&t; */
 id|irlmp_do_all_lsap_event
 c_func

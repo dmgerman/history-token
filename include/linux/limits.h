@@ -4,7 +4,7 @@ mdefine_line|#define _LINUX_LIMITS_H
 DECL|macro|NR_OPEN
 mdefine_line|#define NR_OPEN&t;        1024
 DECL|macro|NGROUPS_MAX
-mdefine_line|#define NGROUPS_MAX       32&t;/* supplemental group IDs are available */
+mdefine_line|#define NGROUPS_MAX    65536&t;/* supplemental group IDs are available */
 DECL|macro|ARG_MAX
 mdefine_line|#define ARG_MAX       131072&t;/* # bytes of args + environ for exec() */
 DECL|macro|CHILD_MAX

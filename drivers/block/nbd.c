@@ -3105,6 +3105,10 @@ id|nbd_dev
 id|i
 )braket
 suffix:semicolon
+id|disk-&gt;flags
+op_or_assign
+id|GENHD_FL_SUPPRESS_PARTITION_INFO
+suffix:semicolon
 id|sprintf
 c_func
 (paren

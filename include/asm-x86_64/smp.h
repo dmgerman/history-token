@@ -53,6 +53,10 @@ r_int
 id|pic_mode
 suffix:semicolon
 r_extern
+r_int
+id|smp_num_siblings
+suffix:semicolon
+r_extern
 r_void
 id|smp_flush_tlb
 c_func
@@ -120,6 +124,12 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|cpu_sibling_map
+(braket
+)braket
 suffix:semicolon
 DECL|macro|SMP_TRAMPOLINE_BASE
 mdefine_line|#define SMP_TRAMPOLINE_BASE 0x6000

@@ -1,4 +1,4 @@
-multiline_comment|/* Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: isdn_concap.h,v 1.1.2.2 2004/01/12 22:37:19 keil Exp $&n; *&n; * Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 r_extern
 r_struct
 id|concap_device_ops
@@ -9,6 +9,7 @@ r_struct
 id|concap_device_ops
 id|isdn_concap_demand_dial_dops
 suffix:semicolon
+r_extern
 r_struct
 id|concap_proto
 op_star
@@ -17,10 +18,5 @@ c_func
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|isdn_netif_ops
-id|isdn_x25_ops
 suffix:semicolon
 eof

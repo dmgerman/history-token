@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
+multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 macro_line|#ifndef _LINUX_BONDING_H
 DECL|macro|_LINUX_BONDING_H
 mdefine_line|#define _LINUX_BONDING_H
@@ -8,13 +8,15 @@ macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.5.0&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2.6.0&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;December 1, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;January 14, 2004&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&quot;Ethernet Channel Bonding Driver&quot;
+DECL|macro|BOND_MAX_ARP_TARGETS
+mdefine_line|#define BOND_MAX_ARP_TARGETS&t;16
 macro_line|#ifdef BONDING_DEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, args...) &bslash;&n;&t;printk(KERN_DEBUG     &bslash;&n;&t;       DRV_NAME &quot;: %s() %d: &quot; fmt, __FUNCTION__, __LINE__ , ## args )
@@ -44,6 +46,70 @@ mdefine_line|#define bond_for_each_slave_from_to(bond, pos, cnt, start, stop)&t;
 multiline_comment|/**&n; * bond_for_each_slave - iterate the slaves list from head&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; *&n; * Caller must hold bond-&gt;lock&n; */
 DECL|macro|bond_for_each_slave
 mdefine_line|#define bond_for_each_slave(bond, pos, cnt)&t;&bslash;&n;&t;&t;bond_for_each_slave_from(bond, pos, cnt, (bond)-&gt;first_slave)
+DECL|struct|bond_params
+r_struct
+id|bond_params
+(brace
+DECL|member|mode
+r_int
+id|mode
+suffix:semicolon
+DECL|member|miimon
+r_int
+id|miimon
+suffix:semicolon
+DECL|member|arp_interval
+r_int
+id|arp_interval
+suffix:semicolon
+DECL|member|use_carrier
+r_int
+id|use_carrier
+suffix:semicolon
+DECL|member|updelay
+r_int
+id|updelay
+suffix:semicolon
+DECL|member|downdelay
+r_int
+id|downdelay
+suffix:semicolon
+DECL|member|lacp_fast
+r_int
+id|lacp_fast
+suffix:semicolon
+DECL|member|primary
+r_char
+id|primary
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+DECL|member|arp_targets
+id|u32
+id|arp_targets
+(braket
+id|BOND_MAX_ARP_TARGETS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|vlan_entry
+r_struct
+id|vlan_entry
+(brace
+DECL|member|vlan_list
+r_struct
+id|list_head
+id|vlan_list
+suffix:semicolon
+DECL|member|vlan_id
+r_int
+r_int
+id|vlan_id
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|slave
 r_struct
 id|slave
@@ -229,6 +295,22 @@ r_struct
 id|alb_bond_info
 id|alb_info
 suffix:semicolon
+DECL|member|params
+r_struct
+id|bond_params
+id|params
+suffix:semicolon
+DECL|member|vlan_list
+r_struct
+id|list_head
+id|vlan_list
+suffix:semicolon
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * Returns NULL if the net_device does not belong to any of the bond&squot;s slaves&n; *&n; * Caller must hold bond lock for read&n; */
@@ -371,5 +453,42 @@ op_complement
 id|IFF_NOARP
 suffix:semicolon
 )brace
+r_struct
+id|vlan_entry
+op_star
+id|bond_next_vlan
+c_func
+(paren
+r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_struct
+id|vlan_entry
+op_star
+id|curr
+)paren
+suffix:semicolon
+r_int
+id|bond_dev_queue_xmit
+c_func
+(paren
+r_struct
+id|bonding
+op_star
+id|bond
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|slave_dev
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_BONDING_H */
 eof

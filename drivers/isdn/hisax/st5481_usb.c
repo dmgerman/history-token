@@ -333,7 +333,7 @@ id|st5481_adapter
 op_star
 id|adapter
 comma
-id|u8
+id|u_char
 id|pipe
 comma
 id|ctrl_complete_t
@@ -1996,7 +1996,7 @@ r_else
 (brace
 id|status
 op_assign
-id|hdlc_decode
+id|isdnhdlc_decode
 c_func
 (paren
 op_amp
@@ -2598,7 +2598,7 @@ id|in-&gt;mode
 op_ne
 id|L1_MODE_TRANS
 )paren
-id|hdlc_rcv_init
+id|isdnhdlc_rcv_init
 c_func
 (paren
 op_amp

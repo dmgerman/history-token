@@ -419,6 +419,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|tlb_is_full_mm
+id|tlb_is_full_mm
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+)paren
+(brace
+r_return
+id|tlb-&gt;fullmm
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Logically, this routine frees PAGE.  On MP machines, the actual freeing of the page&n; * must be delayed until after the TLB has been flushed (see comments at the beginning of&n; * this file).&n; */
 r_static
 r_inline

@@ -1124,6 +1124,7 @@ suffix:semicolon
 DECL|function|init_acpi
 r_static
 r_int
+id|__init
 id|init_acpi
 (paren
 r_void
@@ -1271,6 +1272,7 @@ multiline_comment|/**&n; * init_slots - initialize &squot;struct slot&squot; str
 DECL|function|init_slots
 r_static
 r_int
+id|__init
 id|init_slots
 (paren
 r_void
@@ -1609,6 +1611,7 @@ suffix:semicolon
 DECL|function|cleanup_slots
 r_static
 r_void
+id|__exit
 id|cleanup_slots
 (paren
 r_void

@@ -151,7 +151,7 @@ c_func
 (paren
 id|displayConfig
 comma
-l_string|&quot;If 1 then display the configuration used in /etc/modules.conf.&quot;
+l_string|&quot;If 1 then display the configuration used in /etc/modprobe.conf.&quot;
 )paren
 suffix:semicolon
 DECL|variable|ql2xplogiabsentdevice
@@ -8586,17 +8586,19 @@ c_func
 op_amp
 id|info
 comma
-l_string|&quot;Request Queue = 0x%p, Response Queue = 0x%p&bslash;n&quot;
+l_string|&quot;Request Queue = 0x%llx, Response Queue = 0x%llx&bslash;n&quot;
 comma
 (paren
-r_void
-op_star
+r_int
+r_int
+r_int
 )paren
 id|ha-&gt;request_dma
 comma
 (paren
-r_void
-op_star
+r_int
+r_int
+r_int
 )paren
 id|ha-&gt;response_dma
 )paren

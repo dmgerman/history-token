@@ -1,10 +1,6 @@
 multiline_comment|/*&n; * IPVS:        Weighted Round-Robin Scheduling module&n; *&n; * Version:     $Id: ip_vs_wrr.c,v 1.12 2002/09/15 08:14:08 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *     Wensong Zhang            :     changed the ip_vs_wrr_schedule to return dest&n; *     Wensong Zhang            :     changed some comestics things for debugging&n; *     Wensong Zhang            :     changed for the d-linked destination list&n; *     Wensong Zhang            :     added the ip_vs_wrr_update_svc&n; *     Julian Anastasov         :     fixed the bug of returning destination&n; *                                    with weight 0 when all weights are zero&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 multiline_comment|/*&n; * current destination pointer for weighted round-robin scheduling&n; */
 DECL|struct|ip_vs_wrr_mark

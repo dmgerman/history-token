@@ -335,6 +335,17 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* PCI stuff */
+DECL|member|pcibios_fixup
+r_void
+(paren
+op_star
+id|pcibios_fixup
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */
 DECL|member|init
 r_void
@@ -530,14 +541,43 @@ op_star
 id|index
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* functions for dealing with other cpus */
-DECL|member|smp_ops
-r_struct
-id|smp_ops_t
-id|smp_ops
+DECL|member|nvram_size
+id|ssize_t
+(paren
+op_star
+id|nvram_size
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
+DECL|member|nvram_sync
+r_int
+(paren
+op_star
+id|nvram_sync
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Motherboard/chipset features. This is a kind of general purpose&n;&t; * hook used to control some machine specific features (like reset&n;&t; * lines, chip power control, etc...).&n;&t; */
+DECL|member|feature_call
+r_int
+(paren
+op_star
+id|feature_call
+)paren
+(paren
+r_int
+r_int
+id|feature
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -545,11 +585,13 @@ r_struct
 id|machdep_calls
 id|ppc_md
 suffix:semicolon
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE 512
 r_extern
 r_char
 id|cmd_line
 (braket
-l_int|512
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Functions to produce codes on the leds.&n; * The SRC code should be unique for the message category and should&n; * be limited to the lower 24 bits (the upper 8 are set by these funcs),&n; * and (for boot &amp; dump) should be sorted numerically in the order&n; * the events occur.&n; */

@@ -96,6 +96,7 @@ r_int
 id|eaddr
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|build_valid_hpte
 c_func
@@ -131,8 +132,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|iSeries_setup_arch
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iSeries_pci_final_fixup
 c_func
 (paren
 r_void
@@ -1278,10 +1288,6 @@ id|ppc_md.init_IRQ
 op_assign
 id|iSeries_init_IRQ
 suffix:semicolon
-id|ppc_md.init_irq_desc
-op_assign
-id|iSeries_init_irq_desc
-suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|iSeries_get_irq
@@ -1289,6 +1295,10 @@ suffix:semicolon
 id|ppc_md.init
 op_assign
 l_int|NULL
+suffix:semicolon
+id|ppc_md.pcibios_fixup
+op_assign
+id|iSeries_pci_final_fixup
 suffix:semicolon
 id|ppc_md.restart
 op_assign

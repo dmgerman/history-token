@@ -1431,6 +1431,12 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|b
+)paren
+suffix:semicolon
 )brace
 DECL|variable|io
 r_static

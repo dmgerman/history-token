@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_pci.h,v 1.8.6.2 2001/09/23 22:24:48 kai Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BDS0 PCI chips&n; *&n; * Author       Werner Cornelius&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hfc_pci.h,v 1.10.2.2 2004/01/12 22:52:26 keil Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BDS0 PCI chips&n; *&n; * Author       Werner Cornelius&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/*********************************************/
 multiline_comment|/* thresholds for transparent B-channel mode */
 multiline_comment|/* change mask and threshold simultaneously  */
@@ -267,20 +267,13 @@ suffix:semicolon
 multiline_comment|/* Z2 pointer 16 Bit */
 DECL|typedef|z_type
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|z_type
 suffix:semicolon
 r_typedef
 r_struct
 (brace
 DECL|member|data
-id|u8
+id|u_char
 id|data
 (braket
 id|D_FIFO_SIZE
@@ -288,7 +281,7 @@ id|D_FIFO_SIZE
 suffix:semicolon
 multiline_comment|/* FIFO data space */
 DECL|member|fill1
-id|u8
+id|u_char
 id|fill1
 (braket
 l_int|0x20A0
@@ -299,14 +292,14 @@ suffix:semicolon
 multiline_comment|/* reserved, do not use */
 DECL|member|f1
 DECL|member|f2
-id|u8
+id|u_char
 id|f1
 comma
 id|f2
 suffix:semicolon
 multiline_comment|/* f pointers */
 DECL|member|fill2
-id|u8
+id|u_char
 id|fill2
 (braket
 l_int|0x20C0
@@ -326,7 +319,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* mask index with D_FREG_MASK for access */
 DECL|member|fill3
-id|u8
+id|u_char
 id|fill3
 (braket
 l_int|0x4000
@@ -337,13 +330,6 @@ suffix:semicolon
 multiline_comment|/* align 16K */
 DECL|typedef|dfifo_type
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|dfifo_type
 suffix:semicolon
 r_typedef
@@ -361,14 +347,14 @@ suffix:semicolon
 multiline_comment|/* only range 0x0..0x1F allowed */
 DECL|member|f1
 DECL|member|f2
-id|u8
+id|u_char
 id|f1
 comma
 id|f2
 suffix:semicolon
 multiline_comment|/* f pointers */
 DECL|member|fill
-id|u8
+id|u_char
 id|fill
 (braket
 l_int|0x2100
@@ -379,13 +365,6 @@ suffix:semicolon
 multiline_comment|/* alignment */
 DECL|typedef|bzfifo_type
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|bzfifo_type
 suffix:semicolon
 r_typedef
@@ -405,26 +384,19 @@ suffix:semicolon
 multiline_comment|/* D-receive channel */
 DECL|member|d_chan
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|d_chan
 suffix:semicolon
 r_struct
 (brace
 DECL|member|fill1
-id|u8
+id|u_char
 id|fill1
 (braket
 l_int|0x200
 )braket
 suffix:semicolon
 DECL|member|txdat_b1
-id|u8
+id|u_char
 id|txdat_b1
 (braket
 id|B_FIFO_SIZE
@@ -439,21 +411,21 @@ id|bzfifo_type
 id|txbz_b2
 suffix:semicolon
 DECL|member|txdat_b2
-id|u8
+id|u_char
 id|txdat_b2
 (braket
 id|B_FIFO_SIZE
 )braket
 suffix:semicolon
 DECL|member|fill2
-id|u8
+id|u_char
 id|fill2
 (braket
 id|D_FIFO_SIZE
 )braket
 suffix:semicolon
 DECL|member|rxdat_b1
-id|u8
+id|u_char
 id|rxdat_b1
 (braket
 id|B_FIFO_SIZE
@@ -468,7 +440,7 @@ id|bzfifo_type
 id|rxbz_b2
 suffix:semicolon
 DECL|member|rxdat_b2
-id|u8
+id|u_char
 id|rxdat_b2
 (braket
 id|B_FIFO_SIZE
@@ -476,17 +448,10 @@ id|B_FIFO_SIZE
 suffix:semicolon
 DECL|member|b_chans
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|b_chans
 suffix:semicolon
 DECL|member|fill
-id|u8
+id|u_char
 id|fill
 (braket
 l_int|32768
@@ -494,21 +459,12 @@ l_int|32768
 suffix:semicolon
 DECL|typedef|fifo_area
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|fifo_area
 suffix:semicolon
-singleline_comment|//#define Write_hfc(a,b,c) (*(((u8 *)a-&gt;hw.hfcpci.pci_io)+b) = c) 
-singleline_comment|//#define Read_hfc(a,b) (*(((u8 *)a-&gt;hw.hfcpci.pci_io)+b))
 DECL|macro|Write_hfc
-mdefine_line|#define Write_hfc(a,b,c)&t;writeb(c, ((u8 *)a-&gt;hw.hfcpci.pci_io)+b)
+mdefine_line|#define Write_hfc(a,b,c) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b) = c) 
 DECL|macro|Read_hfc
-mdefine_line|#define Read_hfc(a,b)&t;&t;readb(((u8 *)a-&gt;hw.hfcpci.pci_io)+b)
+mdefine_line|#define Read_hfc(a,b) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b))
 r_extern
 r_void
 id|main_irq_hcpci

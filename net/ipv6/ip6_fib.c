@@ -136,7 +136,7 @@ op_star
 id|fn
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;A routing update causes an increase of the serial number on the&n; *&t;afected subtree. This allows for cached routes to be asynchronously&n; *&t;tested when modifications are made to the destination cache as a&n; *&t;result of redirects, path MTU changes, etc.&n; */
+multiline_comment|/*&n; *&t;A routing update causes an increase of the serial number on the&n; *&t;affected subtree. This allows for cached routes to be asynchronously&n; *&t;tested when modifications are made to the destination cache as a&n; *&t;result of redirects, path MTU changes, etc.&n; */
 DECL|variable|rt_sernum
 r_static
 id|__u32

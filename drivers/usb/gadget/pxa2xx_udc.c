@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/usb/gadget/pxa2xx_udc.c&n; * Intel PXA2xx on-chip full speed USB device controllers&n; *&n; * Copyright (C) 2002 Intrinsyc, Inc. (Frank Becker)&n; * Copyright (C) 2003 Robert Schwebel, Pengutronix&n; * Copyright (C) 2003 Benedikt Spranger, Pengutronix&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003 Joshua Wise&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/usb/gadget/pxa2xx_udc.c&n; * Intel PXA2xx and IXP4xx on-chip full speed USB device controllers&n; *&n; * Copyright (C) 2002 Intrinsyc, Inc. (Frank Becker)&n; * Copyright (C) 2003 Robert Schwebel, Pengutronix&n; * Copyright (C) 2003 Benedikt Spranger, Pengutronix&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003 Joshua Wise&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
 singleline_comment|// #define&t;VERBOSE&t;DBG_VERBOSE
@@ -30,12 +30,11 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
-macro_line|#include &quot;pxa2xx_udc.h&quot;
-multiline_comment|/*&n; * This driver handles the USB Device Controller (UDC) in Intel&squot;s PXA 2xx&n; * series processors.  The UDC for the IXP 4xx series is very similar.&n; *&n; * Such controller drivers work with a gadget driver.  The gadget driver&n; * returns descriptors, implements configuration and data protocols used&n; * by the host to interact with this device, and allocates endpoints to&n; * the different protocol interfaces.  The controller driver virtualizes&n; * usb hardware so that the gadget drivers will be more portable.&n; *&n; * This UDC hardware wants to implement a bit too much USB protocol, so&n; * it constrains the sorts of USB configuration change events that work.&n; * The errata for these chips are misleading; some &quot;fixed&quot; bugs from&n; * pxa250 a0/a1 b0/b1/b2 sure act like they&squot;re still there.&n; */
+multiline_comment|/*&n; * This driver handles the USB Device Controller (UDC) in Intel&squot;s PXA 2xx&n; * series processors.  The UDC for the IXP 4xx series is very similar.&n; * There are fifteen endpoints, in addition to ep0.&n; *&n; * Such controller drivers work with a gadget driver.  The gadget driver&n; * returns descriptors, implements configuration and data protocols used&n; * by the host to interact with this device, and allocates endpoints to&n; * the different protocol interfaces.  The controller driver virtualizes&n; * usb hardware so that the gadget drivers will be more portable.&n; * &n; * This UDC hardware wants to implement a bit too much USB protocol, so&n; * it constrains the sorts of USB configuration change events that work.&n; * The errata for these chips are misleading; some &quot;fixed&quot; bugs from&n; * pxa250 a0/a1 b0/b1/b2 sure act like they&squot;re still there.&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define&t;DRIVER_VERSION&t;&quot;7-Nov-2003&quot;
+mdefine_line|#define&t;DRIVER_VERSION&t;&quot;14-Dec-2003&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;PXA 2xx USB Device Controller driver&quot;
+mdefine_line|#define&t;DRIVER_DESC&t;&quot;PXA 2xx USB Device Controller driver&quot;
 DECL|variable|driver_name
 r_static
 r_const
@@ -63,6 +62,15 @@ macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|UDC_PROC_FILE
 mdefine_line|#define&t;UDC_PROC_FILE
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_IXP425
+DECL|macro|USE_DMA
+macro_line|#undef USE_DMA
+multiline_comment|/* cpu-specific register addresses are compiled in to this code */
+macro_line|#ifdef CONFIG_ARCH_PXA
+macro_line|#error &quot;Can&squot;t configure both IXP and PXA&quot;
+macro_line|#endif
+macro_line|#endif
+macro_line|#include &quot;pxa2xx_udc.h&quot;
 macro_line|#ifdef CONFIG_EMBEDDED
 multiline_comment|/* few strings, and little code to use them */
 DECL|macro|DEBUG
@@ -430,9 +438,12 @@ id|ep-&gt;bEndpointAddress
 op_ne
 id|desc-&gt;bEndpointAddress
 op_logical_or
-id|ep-&gt;ep.maxpacket
+id|ep-&gt;fifo_size
 OL
+id|le16_to_cpu
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 )paren
 (brace
 id|DMSG
@@ -489,7 +500,10 @@ id|desc-&gt;bmAttributes
 op_eq
 id|USB_ENDPOINT_XFER_BULK
 op_logical_and
+id|le16_to_cpu
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_ne
 id|BULK_FIFO_SIZE
 )paren
@@ -560,6 +574,13 @@ id|ep-&gt;dma_irqs
 op_assign
 l_int|0
 suffix:semicolon
+id|ep-&gt;ep.maxpacket
+op_assign
+id|le16_to_cpu
+(paren
+id|desc-&gt;wMaxPacketSize
+)paren
+suffix:semicolon
 multiline_comment|/* flush fifo (mostly for OUT buffers) */
 id|pxa2xx_ep_fifo_flush
 (paren
@@ -568,7 +589,7 @@ id|_ep
 suffix:semicolon
 multiline_comment|/* ... reset halt state too, if we could ... */
 macro_line|#ifdef&t;USE_DMA
-multiline_comment|/* for (some) bulk and ISO endpoints, try to get a DMA channel and&n;&t; * bind it to the endpoint.  otherwise use PIO.&n;&t; */
+multiline_comment|/* for (some) bulk and ISO endpoints, try to get a DMA channel and&n;&t; * bind it to the endpoint.  otherwise use PIO. &n;&t; */
 r_switch
 c_cond
 (paren
@@ -581,7 +602,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_mod
 l_int|32
 )paren
@@ -613,7 +638,10 @@ op_star
 id|_ep-&gt;name
 comma
 (paren
+id|le16_to_cpu
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 OG
 l_int|64
 )paren
@@ -1226,7 +1254,11 @@ id|max
 suffix:semicolon
 id|max
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 r_do
 (brace
@@ -1298,10 +1330,9 @@ id|unlikely
 (paren
 id|max
 OL
-id|ep-&gt;ep.maxpacket
+id|ep-&gt;fifo_size
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME ep.maxpacket should be the current size,&n;&t;&t;&t; * modified (for periodic endpoints) when the&n;&t;&t;&t; * ep is enabled.  do that, re-init as needed,&n;&t;&t;&t; * and change maxpacket refs accordingly.&n;&t;&t;&t; */
 )brace
 id|DBG
 c_func
@@ -1821,7 +1852,7 @@ op_assign
 (paren
 id|count
 OL
-id|ep-&gt;desc-&gt;wMaxPacketSize
+id|ep-&gt;ep.maxpacket
 )paren
 suffix:semicolon
 id|DBG
@@ -3133,7 +3164,10 @@ id|USB_ENDPOINT_XFER_ISOC
 op_logical_and
 id|req-&gt;req.length
 OG
+id|le16_to_cpu
+(paren
 id|ep-&gt;desc-&gt;wMaxPacketSize
+)paren
 )paren
 )paren
 r_return
@@ -3155,8 +3189,7 @@ op_assign
 id|dma_map_single
 c_func
 (paren
-op_amp
-id|dev-&gt;dev.dev
+id|dev-&gt;dev
 comma
 id|_req-&gt;buf
 comma
@@ -3679,27 +3712,11 @@ comma
 id|ep
 )paren
 suffix:semicolon
-id|req
-op_assign
-id|container_of
-c_func
-(paren
-id|_req
-comma
-r_struct
-id|pxa2xx_request
-comma
-id|req
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|_ep
-op_logical_or
-op_logical_neg
-id|_req
 op_logical_or
 id|ep-&gt;ep.name
 op_eq
@@ -3715,6 +3732,48 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* make sure it&squot;s actually queued on this endpoint */
+id|list_for_each_entry
+(paren
+id|req
+comma
+op_amp
+id|ep-&gt;queue
+comma
+id|queue
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_amp
+id|req-&gt;req
+op_eq
+id|_req
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_amp
+id|req-&gt;req
+op_ne
+id|_req
+)paren
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 macro_line|#ifdef&t;USE_DMA
 r_if
 c_cond
@@ -3787,17 +3846,6 @@ suffix:semicolon
 )brace
 r_else
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|req-&gt;queue
-)paren
-)paren
 id|done
 c_func
 (paren
@@ -3809,11 +3857,6 @@ op_minus
 id|ECONNRESET
 )paren
 suffix:semicolon
-r_else
-id|req
-op_assign
-l_int|0
-suffix:semicolon
 id|local_irq_restore
 c_func
 (paren
@@ -3821,13 +3864,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|req
-ques
-c_cond
 l_int|0
-suffix:colon
-op_minus
-id|EOPNOTSUPP
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -4534,7 +4571,7 @@ suffix:semicolon
 multiline_comment|/* basic device status */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4580,7 +4617,7 @@ suffix:semicolon
 multiline_comment|/* registers for device and ep0 */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4616,7 +4653,7 @@ id|UDCCR
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4730,7 +4767,7 @@ id|UDCCS0
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4850,7 +4887,7 @@ id|UDCCFR
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -4910,7 +4947,7 @@ id|done
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5011,7 +5048,7 @@ id|reg_udccs
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5051,7 +5088,7 @@ r_else
 multiline_comment|/* ep0 should only have one transfer queued */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5098,7 +5135,7 @@ id|ep-&gt;queue
 (brace
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5159,7 +5196,7 @@ id|ep-&gt;queue
 )paren
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5192,7 +5229,7 @@ r_else
 macro_line|#endif
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|next
@@ -5310,7 +5347,7 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -5379,12 +5416,14 @@ c_func
 id|UDCCR_UDE
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ARCH_PXA
 multiline_comment|/* Disable clock for USB device */
 id|CKEN
 op_and_assign
 op_complement
 id|CKEN11_USB
 suffix:semicolon
+macro_line|#endif
 id|ep0_idle
 (paren
 id|dev
@@ -5514,11 +5553,13 @@ c_func
 id|UDCCR_UDE
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ARCH_PXA
 multiline_comment|/* Enable clock for USB device */
 id|CKEN
 op_or_assign
 id|CKEN11_USB
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* try to clear these bits before we enable the udc */
 id|udc_ack_int_UDCCR
 c_func
@@ -6004,6 +6045,11 @@ comma
 id|driver
 )paren
 suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|driver
 op_member_access_from_pointer
 id|unbind
@@ -6016,11 +6062,6 @@ suffix:semicolon
 id|dev-&gt;driver
 op_assign
 l_int|0
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
 suffix:semicolon
 id|device_del
 (paren
@@ -6688,10 +6729,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* if !has_cfr, there&squot;s no synch&n;&t;&t;&t;&t;&t; * else use AREN (later) not SA|OPR&n;&t;&t;&t;&t;&t; * USIR0_IR0 acts edge sensitive&n;&t;&t;&t;&t;&t; */
-id|dev-&gt;req_pending
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -6931,6 +6968,14 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* pxa210/250 erratum 131 for B0/B1 says RNE lies.&n;&t;&t;&t; * still observed on a pxa255 a0.&n;&t;&t;&t; */
+id|DBG
+c_func
+(paren
+id|DBG_VERBOSE
+comma
+l_string|&quot;e131&bslash;n&quot;
+)paren
+suffix:semicolon
 id|nuke
 c_func
 (paren
@@ -7757,12 +7802,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dev_info
+id|INFO
 c_func
 (paren
-op_amp
-id|dev-&gt;gadget.dev
-comma
 l_string|&quot;USB reset&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -8126,6 +8168,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8149,12 +8196,10 @@ op_assign
 op_amp
 id|UDDR1
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR25
-comma
+id|drcmr
+(paren
+l_int|25
+)paren
 )brace
 comma
 dot
@@ -8193,6 +8238,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|2
@@ -8220,12 +8270,10 @@ op_assign
 op_amp
 id|UDDR2
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR26
-comma
+id|drcmr
+(paren
+l_int|26
+)paren
 )brace
 comma
 macro_line|#ifndef CONFIG_USB_PXA2XX_SMALL
@@ -8265,6 +8313,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8288,12 +8341,10 @@ op_assign
 op_amp
 id|UDDR3
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR27
-comma
+id|drcmr
+(paren
+l_int|27
+)paren
 )brace
 comma
 dot
@@ -8332,6 +8383,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|4
@@ -8359,12 +8415,10 @@ op_assign
 op_amp
 id|UDDR4
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR28
-comma
+id|drcmr
+(paren
+l_int|28
+)paren
 )brace
 comma
 dot
@@ -8401,6 +8455,11 @@ id|dev
 op_assign
 op_amp
 id|memory
+comma
+dot
+id|fifo_size
+op_assign
+id|INT_FIFO_SIZE
 comma
 dot
 id|bEndpointAddress
@@ -8465,6 +8524,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8488,12 +8552,10 @@ op_assign
 op_amp
 id|UDDR6
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR30
-comma
+id|drcmr
+(paren
+l_int|30
+)paren
 )brace
 comma
 dot
@@ -8532,6 +8594,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|7
@@ -8559,12 +8626,10 @@ op_assign
 op_amp
 id|UDDR7
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR31
-comma
+id|drcmr
+(paren
+l_int|31
+)paren
 )brace
 comma
 dot
@@ -8603,6 +8668,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8626,12 +8696,10 @@ op_assign
 op_amp
 id|UDDR8
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR32
-comma
+id|drcmr
+(paren
+l_int|32
+)paren
 )brace
 comma
 dot
@@ -8670,6 +8738,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|9
@@ -8697,12 +8770,10 @@ op_assign
 op_amp
 id|UDDR9
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR33
-comma
+id|drcmr
+(paren
+l_int|33
+)paren
 )brace
 comma
 dot
@@ -8739,6 +8810,11 @@ id|dev
 op_assign
 op_amp
 id|memory
+comma
+dot
+id|fifo_size
+op_assign
+id|INT_FIFO_SIZE
 comma
 dot
 id|bEndpointAddress
@@ -8803,6 +8879,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8826,12 +8907,10 @@ op_assign
 op_amp
 id|UDDR11
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR35
-comma
+id|drcmr
+(paren
+l_int|35
+)paren
 )brace
 comma
 dot
@@ -8870,6 +8949,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|BULK_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|12
@@ -8897,12 +8981,10 @@ op_assign
 op_amp
 id|UDDR12
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR36
-comma
+id|drcmr
+(paren
+l_int|36
+)paren
 )brace
 comma
 dot
@@ -8941,6 +9023,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -8964,12 +9051,10 @@ op_assign
 op_amp
 id|UDDR13
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR37
-comma
+id|drcmr
+(paren
+l_int|37
+)paren
 )brace
 comma
 dot
@@ -9008,6 +9093,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|ISO_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 l_int|14
@@ -9035,12 +9125,10 @@ op_assign
 op_amp
 id|UDDR14
 comma
-dot
-id|reg_drcmr
-op_assign
-op_amp
-id|DRCMR38
-comma
+id|drcmr
+(paren
+l_int|38
+)paren
 )brace
 comma
 dot
@@ -9079,6 +9167,11 @@ op_amp
 id|memory
 comma
 dot
+id|fifo_size
+op_assign
+id|INT_FIFO_SIZE
+comma
+dot
 id|bEndpointAddress
 op_assign
 id|USB_DIR_IN
@@ -9109,8 +9202,13 @@ macro_line|#endif /* !CONFIG_USB_PXA2XX_SMALL */
 suffix:semicolon
 DECL|macro|CP15R0_VENDOR_MASK
 mdefine_line|#define CP15R0_VENDOR_MASK&t;0xffffe000
+macro_line|#if&t;defined(CONFIG_ARCH_PXA)
 DECL|macro|CP15R0_XSCALE_VALUE
 mdefine_line|#define CP15R0_XSCALE_VALUE&t;0x69052000&t;/* intel/arm/xscale */
+macro_line|#elif&t;defined(CONFIG_ARCH_IXP425)
+DECL|macro|CP15R0_XSCALE_VALUE
+mdefine_line|#define CP15R0_XSCALE_VALUE&t;0x69054000&t;/* intel/arm/ixp425 */
+macro_line|#endif
 DECL|macro|CP15R0_PROD_MASK
 mdefine_line|#define CP15R0_PROD_MASK&t;0x000003f0
 DECL|macro|PXA25x
@@ -9143,6 +9241,8 @@ DECL|macro|PXA210_B1
 mdefine_line|#define PXA210_B1&t;&t;0x00000123
 DECL|macro|PXA210_B0
 mdefine_line|#define PXA210_B0&t;&t;0x00000122
+DECL|macro|IXP425_A0
+mdefine_line|#define IXP425_A0&t;&t;0x000001c1
 multiline_comment|/*&n; * &t;probe - binds to the platform device&n; */
 DECL|function|pxa2xx_udc_probe
 r_static
@@ -9222,6 +9322,7 @@ op_amp
 id|CP15R0_PRODREV_MASK
 )paren
 (brace
+macro_line|#if&t;defined(CONFIG_ARCH_PXA)
 r_case
 id|PXA255_A0
 suffix:colon
@@ -9270,6 +9371,17 @@ id|PXA210_C0
 suffix:colon
 r_break
 suffix:semicolon
+macro_line|#elif&t;defined(CONFIG_ARCH_IXP425)
+r_case
+id|IXP425_A0
+suffix:colon
+id|out_dma
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|out_dma
@@ -9505,6 +9617,7 @@ id|dev-&gt;got_irq
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_LUBBOCK
 r_if
 c_cond
 (paren
@@ -9574,6 +9687,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 id|create_proc_files
 c_func
 (paren

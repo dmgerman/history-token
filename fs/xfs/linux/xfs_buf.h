@@ -141,16 +141,6 @@ l_int|8
 )paren
 comma
 multiline_comment|/* force updates to disk                   */
-DECL|enumerator|PBF_MAPPABLE
-id|PBF_MAPPABLE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|9
-)paren
-comma
-multiline_comment|/* use directly-addressable pages          */
 DECL|enumerator|PBF_STALE
 id|PBF_STALE
 op_assign
@@ -213,16 +203,6 @@ l_int|15
 comma
 multiline_comment|/* do not block in current thread&t;   */
 multiline_comment|/* flags used only internally */
-DECL|enumerator|_PBF_LOCKABLE
-id|_PBF_LOCKABLE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-comma
-multiline_comment|/* page_buf_t may be locked&t;&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
@@ -650,7 +630,7 @@ id|page_buf_flags_t
 )paren
 suffix:semicolon
 multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
-multiline_comment|/* PBF_FORCEIO, _PBF_LOCKABLE&t;*/
+multiline_comment|/* PBF_FORCEIO, &t;&t;*/
 r_extern
 id|page_buf_t
 op_star
@@ -1366,13 +1346,13 @@ mdefine_line|#define XFS_BUF_SET_VTYPE(bp, type)
 DECL|macro|XFS_BUF_SET_REF
 mdefine_line|#define XFS_BUF_SET_REF(bp, ref)
 DECL|macro|xfs_buf_read
-mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_READ | PBF_MAPPED | PBF_MAPPABLE)
+mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_READ | PBF_MAPPED)
 DECL|macro|xfs_buf_get
-mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_MAPPED | PBF_MAPPABLE)
+mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_MAPPED)
 DECL|macro|xfs_buf_read_flags
-mdefine_line|#define xfs_buf_read_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_READ | PBF_MAPPABLE | flags)
+mdefine_line|#define xfs_buf_read_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), PBF_READ | (flags))
 DECL|macro|xfs_buf_get_flags
-mdefine_line|#define xfs_buf_get_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_MAPPABLE | flags)
+mdefine_line|#define xfs_buf_get_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), (flags))
 DECL|function|xfs_bawrite
 r_static
 r_inline
@@ -1432,12 +1412,6 @@ id|bp
 r_if
 c_cond
 (paren
-(paren
-id|bp-&gt;pb_flags
-op_amp
-id|_PBF_LOCKABLE
-)paren
-op_logical_and
 op_logical_neg
 id|bp-&gt;pb_relse
 )paren

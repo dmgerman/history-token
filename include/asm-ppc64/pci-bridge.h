@@ -51,6 +51,11 @@ DECL|enumerator|phb_type_winnipeg
 id|phb_type_winnipeg
 op_assign
 l_int|0x12
+comma
+DECL|enumerator|phb_type_apple
+id|phb_type_apple
+op_assign
+l_int|0xff
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Structure of a PCI controller (host bridge)&n; */
@@ -123,6 +128,20 @@ r_struct
 id|pci_ops
 op_star
 id|ops
+suffix:semicolon
+DECL|member|cfg_addr
+r_volatile
+r_int
+r_int
+op_star
+id|cfg_addr
+suffix:semicolon
+DECL|member|cfg_data
+r_volatile
+r_int
+r_char
+op_star
+id|cfg_data
 suffix:semicolon
 multiline_comment|/* Currently, we limit ourselves to 1 IO range and 3 mem&n;&t; * ranges since the common pci_bus structure can&squot;t handle more&n;&t; */
 DECL|member|io_resource

@@ -2336,7 +2336,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: COMMIT(3)   %s %d@%ld&bslash;n&quot;
+l_string|&quot;nfsd: COMMIT(3)   %s %u@%Lu&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
@@ -2348,6 +2348,7 @@ comma
 id|argp-&gt;count
 comma
 (paren
+r_int
 r_int
 r_int
 )paren

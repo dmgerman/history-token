@@ -276,17 +276,17 @@ macro_line|#endif
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
 multiline_comment|/*&n; * Note: the _PAGE_COHERENT bit automatically gets set in the hardware&n; * PTE if CONFIG_SMP is defined (hash_page does this); there is no need&n; * to have it in the Linux PTE, and in fact the bit could be reused for&n; * another purpose.  -- paulus.&n; */
+macro_line|#ifdef CONFIG_44x
+DECL|macro|_PAGE_BASE
+mdefine_line|#define _PAGE_BASE&t;(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_GUARDED)
+macro_line|#else
 DECL|macro|_PAGE_BASE
 mdefine_line|#define _PAGE_BASE&t;(_PAGE_PRESENT | _PAGE_ACCESSED)
+macro_line|#endif
 DECL|macro|_PAGE_WRENABLE
 mdefine_line|#define _PAGE_WRENABLE&t;(_PAGE_RW | _PAGE_DIRTY | _PAGE_HWWRITE)
-macro_line|#ifndef CONFIG_44x
 DECL|macro|_PAGE_KERNEL
 mdefine_line|#define _PAGE_KERNEL&t;(_PAGE_BASE | _PAGE_SHARED | _PAGE_WRENABLE)
-macro_line|#else
-DECL|macro|_PAGE_KERNEL
-mdefine_line|#define _PAGE_KERNEL&t;(_PAGE_BASE | _PAGE_SHARED | _PAGE_WRENABLE | _PAGE_GUARDED)
-macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 multiline_comment|/* On standard PPC MMU, no user access implies kernel read/write access,&n; * so to write-protect kernel memory we must turn on user access */
 DECL|macro|_PAGE_KERNEL_RO

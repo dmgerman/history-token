@@ -90,6 +90,8 @@ mdefine_line|#define PMAC_TYPE_UNKNOWN_INTREPID&t;0x11f&t;/* Generic */
 multiline_comment|/* MacRISC4 / G5 machines&n; */
 DECL|macro|PMAC_TYPE_POWERMAC_G5
 mdefine_line|#define PMAC_TYPE_POWERMAC_G5&t;&t;0x150&t;/* First tower */
+DECL|macro|PMAC_TYPE_UNKNOWN_K2
+mdefine_line|#define PMAC_TYPE_UNKNOWN_K2&t;&t;0x19f&t;/* Any other K2 based */
 multiline_comment|/*&n; * Motherboard flags&n; */
 DECL|macro|PMAC_MB_CAN_SLEEP
 mdefine_line|#define PMAC_MB_CAN_SLEEP&t;&t;0x00000001

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jade.h,v 1.3.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * JADE specific defines&n; *&n; * Author       Roland Klabunde&n; * Copyright    by Roland Klabunde   &lt;R.Klabunde@Berkom.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: jade.h,v 1.5.2.3 2004/01/14 16:04:48 keil Exp $&n; *&n; * JADE specific defines&n; *&n; * Author       Roland Klabunde&n; * Copyright    by Roland Klabunde   &lt;R.Klabunde@Berkom.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 macro_line|#ifndef&t;__JADE_H__
 DECL|macro|__JADE_H__
@@ -189,17 +189,18 @@ mdefine_line|#define&t;jade_TXAUDIOCH1CFG&t;&t;&t;&t;0x17
 DECL|macro|jade_TXAUDIOCH2CFG
 mdefine_line|#define&t;jade_TXAUDIOCH2CFG&t;&t;&t;&t;0x1A
 r_extern
-r_void
-id|jade_sched_event
+r_int
+id|JadeVersion
 c_func
 (paren
 r_struct
-id|BCState
+id|IsdnCardState
 op_star
-id|bcs
+id|cs
 comma
-r_int
-id|event
+r_char
+op_star
+id|s
 )paren
 suffix:semicolon
 r_extern
@@ -221,7 +222,7 @@ id|bc
 suffix:semicolon
 r_extern
 r_void
-id|initjade
+id|clear_pending_jade_ints
 c_func
 (paren
 r_struct
@@ -232,35 +233,13 @@ id|cs
 suffix:semicolon
 r_extern
 r_void
-id|jade_int_main
+id|initjade
 c_func
 (paren
 r_struct
 id|IsdnCardState
 op_star
 id|cs
-comma
-id|u8
-id|val
-comma
-r_int
-id|jade
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|jade_setup
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-r_struct
-id|bc_hw_ops
-op_star
-id|jade_ops
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __JADE_H__ */

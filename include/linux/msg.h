@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_MSG_H
 DECL|macro|_LINUX_MSG_H
 mdefine_line|#define _LINUX_MSG_H
 macro_line|#include &lt;linux/ipc.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* ipcs ctl commands */
 DECL|macro|MSG_STAT
 mdefine_line|#define MSG_STAT 11

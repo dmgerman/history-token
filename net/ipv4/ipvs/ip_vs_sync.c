@@ -1,15 +1,7 @@
 multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the NetFilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_sync.c,v 1.13 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * ip_vs_sync:  sync connection info from master load balancer to backups&n; *              through multicast&n; *&n; * Changes:&n; *&t;Alexandre Cassen&t;:&t;Added master &amp; backup support at a time.&n; *&t;Alexandre Cassen&t;:&t;Added SyncID support for incoming sync&n; *&t;&t;&t;&t;&t;messages filtering.&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__             /*  for waitpid */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -2286,11 +2278,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -2884,7 +2871,7 @@ id|IP_VS_STATE_MASTER
 suffix:semicolon
 id|name
 op_assign
-l_string|&quot;ipvs syncmaster&quot;
+l_string|&quot;ipvs_syncmaster&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2905,7 +2892,7 @@ id|IP_VS_STATE_BACKUP
 suffix:semicolon
 id|name
 op_assign
-l_string|&quot;ipvs syncbackup&quot;
+l_string|&quot;ipvs_syncbackup&quot;
 suffix:semicolon
 )brace
 r_else
@@ -3129,10 +3116,18 @@ op_star
 id|startup
 )paren
 (brace
+id|pid_t
+id|pid
+suffix:semicolon
 multiline_comment|/* fork the sync thread here, then the parent process of the&n;&t;   sync thread is the init process after this thread exits. */
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
+(paren
+id|pid
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -3142,14 +3137,34 @@ id|startup
 comma
 l_int|0
 )paren
+)paren
 OL
 l_int|0
 )paren
-id|IP_VS_BUG
+(brace
+id|IP_VS_ERR
 c_func
 (paren
+l_string|&quot;could not create sync_thread due to %d... &quot;
+l_string|&quot;retrying.&bslash;n&quot;
+comma
+id|pid
 )paren
 suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+r_goto
+id|repeat
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3178,9 +3193,6 @@ id|startup
 suffix:semicolon
 id|pid_t
 id|pid
-suffix:semicolon
-r_int
-id|waitpid_result
 suffix:semicolon
 r_if
 c_cond
@@ -3271,6 +3283,8 @@ op_assign
 id|syncid
 suffix:semicolon
 )brace
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3291,43 +3305,28 @@ l_int|0
 OL
 l_int|0
 )paren
-id|IP_VS_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|waitpid_result
-op_assign
-id|waitpid
-c_func
-(paren
-id|pid
-comma
-l_int|NULL
-comma
-id|__WCLONE
-)paren
-)paren
-op_ne
-id|pid
-)paren
 (brace
 id|IP_VS_ERR
 c_func
 (paren
-l_string|&quot;%s: waitpid(%d,...) failed, errno %d&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;could not create fork_sync_thread due to %d... &quot;
+l_string|&quot;retrying.&bslash;n&quot;
 comma
 id|pid
-comma
-op_minus
-id|waitpid_result
 )paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+r_goto
+id|repeat
 suffix:semicolon
 )brace
 id|wait_for_completion

@@ -135,6 +135,11 @@ op_star
 id|desc
 )paren
 (brace
+id|desc-&gt;handler
+op_assign
+op_amp
+id|iSeries_IRQ_handler
+suffix:semicolon
 )brace
 multiline_comment|/* This is called by init_IRQ.  set in ppc_md.init_IRQ by iSeries_setup.c */
 DECL|function|iSeries_init_IRQ
@@ -228,56 +233,6 @@ DECL|macro|IRQ_TO_IDSEL
 mdefine_line|#define IRQ_TO_IDSEL(irq)&t;(((((irq) - 1) &gt;&gt; 3) &amp; 7) + 1)
 DECL|macro|IRQ_TO_FUNC
 mdefine_line|#define IRQ_TO_FUNC(irq)&t;(((irq) - 1) &amp; 7)
-multiline_comment|/*&n; * This is called out of iSeries_scan_slot to assign the EADS slot&n; * to its IRQ number&n; */
-DECL|function|iSeries_assign_IRQ
-r_int
-id|__init
-id|iSeries_assign_IRQ
-c_func
-(paren
-r_int
-id|irq
-comma
-id|HvBusNumber
-id|busNumber
-comma
-id|HvSubBusNumber
-id|subBusNumber
-comma
-id|HvAgentId
-id|deviceId
-)paren
-(brace
-id|irq_desc_t
-op_star
-id|desc
-op_assign
-id|get_real_irq_desc
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|desc
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|desc-&gt;handler
-op_assign
-op_amp
-id|iSeries_IRQ_handler
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* This is called by iSeries_activate_IRQs */
 DECL|function|iSeries_startup_IRQ
 r_static
@@ -388,6 +343,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Temporary hack&n; */
+DECL|macro|get_irq_desc
+mdefine_line|#define get_irq_desc(irq)&t;&amp;irq_desc[(irq)]
 multiline_comment|/*&n; * This is called out of iSeries_fixup to activate interrupt&n; * generation for usable slots&n; */
 DECL|function|iSeries_activate_IRQs
 r_void

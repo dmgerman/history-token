@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: q931.c,v 1.10.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; * Copyright    by Jan den Ouden&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Changelog:&n; *&n; * Pauline Middelink    general improvements&n; * Beat Doebeli         cause texts, display information element&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
+multiline_comment|/* $Id: q931.c,v 1.12.2.3 2004/01/13 14:31:26 keil Exp $&n; *&n; * code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; * Copyright    by Jan den Ouden&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Changelog:&n; *&n; * Pauline Middelink    general improvements&n; * Beat Doebeli         cause texts, display information element&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;l3_1tr6.h&quot;
 r_void
@@ -6,11 +6,11 @@ DECL|function|iecpy
 id|iecpy
 c_func
 (paren
-id|u8
+id|u_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|iestart
 comma
@@ -18,7 +18,7 @@ r_int
 id|ieoffset
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -70,7 +70,7 @@ r_struct
 id|MessageType
 (brace
 DECL|member|nr
-id|u8
+id|u_char
 id|nr
 suffix:semicolon
 DECL|member|descr
@@ -554,7 +554,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 id|b
 comma
 r_int
@@ -623,13 +623,13 @@ id|dest
 suffix:semicolon
 )brace
 r_static
-id|u8
+id|u_char
 op_star
 DECL|function|skipext
 id|skipext
 c_func
 (paren
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -660,7 +660,7 @@ r_struct
 id|CauseValue
 (brace
 DECL|member|nr
-id|u8
+id|u_char
 id|nr
 suffix:semicolon
 DECL|member|edescr
@@ -1230,12 +1230,12 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|end
 suffix:semicolon
@@ -1245,7 +1245,7 @@ id|dp
 op_assign
 id|dest
 suffix:semicolon
-id|u_int
+r_int
 id|i
 comma
 id|cause
@@ -1692,7 +1692,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -1906,7 +1906,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -1970,7 +1970,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -2075,7 +2075,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -2231,7 +2231,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -2553,7 +2553,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -2564,7 +2564,7 @@ id|dp
 op_assign
 id|dest
 suffix:semicolon
-id|u8
+id|u_char
 id|len
 suffix:semicolon
 id|p
@@ -2889,7 +2889,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3018,7 +3018,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3147,7 +3147,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3247,7 +3247,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3319,7 +3319,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3525,7 +3525,7 @@ id|DTag
 (brace
 multiline_comment|/* Display tags */
 DECL|member|nr
-id|u8
+id|u_char
 id|nr
 suffix:semicolon
 DECL|member|descr
@@ -3686,7 +3686,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -3703,8 +3703,7 @@ comma
 id|tag
 comma
 id|len
-suffix:semicolon
-id|u_int
+comma
 id|i
 suffix:semicolon
 id|p
@@ -3922,7 +3921,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -4050,7 +4049,7 @@ r_char
 op_star
 id|dest
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -4241,7 +4240,7 @@ r_struct
 id|InformationElement
 (brace
 DECL|member|nr
-id|u8
+id|u_char
 id|nr
 suffix:semicolon
 DECL|member|descr
@@ -4259,7 +4258,7 @@ id|f
 r_char
 op_star
 comma
-id|u8
+id|u_char
 op_star
 )paren
 suffix:semicolon
@@ -4938,7 +4937,7 @@ r_char
 op_star
 id|txt
 comma
-id|u8
+id|u_char
 op_star
 id|p
 comma
@@ -4958,7 +4957,7 @@ op_assign
 id|txt
 suffix:semicolon
 r_register
-id|u8
+id|u_char
 id|w
 suffix:semicolon
 r_for
@@ -5081,7 +5080,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 op_star
 id|buf
 comma
@@ -5212,7 +5211,7 @@ r_int
 id|dir
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|bend
 comma
@@ -5241,7 +5240,7 @@ id|tei
 comma
 id|ftyp
 suffix:semicolon
-id|u_int
+r_int
 id|i
 comma
 id|cset

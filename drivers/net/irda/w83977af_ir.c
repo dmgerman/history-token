@@ -4466,7 +4466,11 @@ id|SSR
 suffix:semicolon
 multiline_comment|/* Restore bank register */
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|isr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function w83977af_is_receiving (self)&n; *&n; *    Return TRUE is we are currently receiving a frame&n; *&n; */

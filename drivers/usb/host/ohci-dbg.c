@@ -263,7 +263,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|ohci_dbg_sw
-mdefine_line|#define ohci_dbg_sw(ohci, next, size, format, arg...) &bslash;&n;&t;do { &bslash;&n;&t;if (next) { &bslash;&n;&t;&t;unsigned s_len; &bslash;&n;&t;&t;s_len = snprintf (*next, *size, format, ## arg ); &bslash;&n;&t;&t;*size -= s_len; *next += s_len; &bslash;&n;&t;} else &bslash;&n;&t;&t;ohci_dbg(ohci,format, ## arg ); &bslash;&n;&t;} while (0);
+mdefine_line|#define ohci_dbg_sw(ohci, next, size, format, arg...) &bslash;&n;&t;do { &bslash;&n;&t;if (next) { &bslash;&n;&t;&t;unsigned s_len; &bslash;&n;&t;&t;s_len = scnprintf (*next, *size, format, ## arg ); &bslash;&n;&t;&t;*size -= s_len; *next += s_len; &bslash;&n;&t;} else &bslash;&n;&t;&t;ohci_dbg(ohci,format, ## arg ); &bslash;&n;&t;} while (0);
 DECL|function|ohci_dump_intr_mask
 r_static
 r_void
@@ -2122,7 +2122,7 @@ id|td
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -2269,7 +2269,7 @@ id|td-&gt;hwBE
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -2367,7 +2367,7 @@ suffix:semicolon
 )brace
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -2630,7 +2630,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2690,7 +2690,7 @@ r_continue
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2718,7 +2718,7 @@ r_do
 (brace
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2813,7 +2813,7 @@ op_increment
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -2951,7 +2951,7 @@ id|ed
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3159,7 +3159,7 @@ id|regs-&gt;fminterval
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3211,7 +3211,7 @@ id|regs-&gt;fmremaining
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3255,7 +3255,7 @@ id|regs-&gt;periodicstart
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -3286,7 +3286,7 @@ id|regs-&gt;lsthresh
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma

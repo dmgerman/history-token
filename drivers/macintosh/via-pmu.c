@@ -36,7 +36,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
@@ -53,17 +52,6 @@ mdefine_line|#define PMU_MINOR&t;&t;154
 multiline_comment|/* How many iterations between battery polls */
 DECL|macro|BATTERY_POLLING_COUNT
 mdefine_line|#define BATTERY_POLLING_COUNT&t;2
-multiline_comment|/* Some debugging tools */
-macro_line|#ifdef CONFIG_XMON
-singleline_comment|//#define LIVE_DEBUG(req) ((req) &amp;&amp; (req)-&gt;data[0] == 0x7d)
-DECL|macro|LIVE_DEBUG
-mdefine_line|#define LIVE_DEBUG(req) (0)
-DECL|variable|whacky_debug
-r_static
-r_int
-id|whacky_debug
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 DECL|variable|via
 r_static
 r_volatile
@@ -3138,10 +3126,12 @@ comma
 id|pmu_version
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64
 id|sys_ctrler
 op_assign
 id|SYS_CTRLER_PMU
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3422,6 +3412,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64
 id|request_OF_resource
 c_func
 (paren
@@ -3432,6 +3423,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 multiline_comment|/* Enable backlight */
 id|register_backlight_controller
@@ -4140,6 +4132,7 @@ r_return
 id|pmu_kind
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC64
 DECL|function|wakeup_decrementer
 r_static
 r_inline
@@ -4171,6 +4164,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|pmu_set_server_mode
 r_static
 r_void
@@ -7236,28 +7230,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;R&quot;
-)paren
-suffix:semicolon
-r_else
-id|whacky_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 )brace
 r_void
 id|__openfirmware
@@ -8022,7 +7994,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_XMON
+macro_line|#if defined(CONFIG_XMON) &amp;&amp; !defined(CONFIG_PPC64)
 r_if
 c_cond
 (paren
@@ -8061,7 +8033,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif /* defined(CONFIG_XMON) &amp;&amp; !defined(CONFIG_PPC64) */
 macro_line|#ifdef CONFIG_ADB
 multiline_comment|/*&n;&t;&t;&t; * XXX On the [23]400 the PMU gives us an up&n;&t;&t;&t; * event for keycodes 0x74 or 0x75 when the PC&n;&t;&t;&t; * card eject buttons are released, so we&n;&t;&t;&t; * ignore those events.&n;&t;&t;&t; */
 r_if
@@ -8415,23 +8387,6 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;s&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|data_len
 op_assign
 id|req-&gt;nbytes
@@ -8455,23 +8410,6 @@ op_le
 id|data_len
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;S&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|send_byte
 c_func
 (paren
@@ -8510,23 +8448,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;D&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|pmu_state
 op_assign
 id|idle
@@ -8551,23 +8472,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;-&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|pmu_state
 op_assign
 id|reading
@@ -8657,23 +8561,6 @@ op_minus
 l_int|1
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|current_req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|data_len
 op_assign
 id|bite
@@ -8704,23 +8591,6 @@ OL
 l_int|32
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|current_req
-)paren
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;R&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|reply_ptr
 (braket
 id|data_index
@@ -8746,29 +8616,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|LIVE_DEBUG
-c_func
-(paren
-id|current_req
-)paren
-)paren
-(brace
-id|whacky_debug
-op_assign
-l_int|1
-suffix:semicolon
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;D&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_XMON */
 r_if
 c_cond
 (paren
@@ -8956,21 +8803,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|whacky_debug
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;|%02x|&quot;
-comma
-id|intr
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 id|handled
 op_assign
 l_int|1
@@ -9081,19 +8913,6 @@ c_cond
 id|adb_int_pending
 )paren
 (brace
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|whacky_debug
-)paren
-id|xmon_printf
-c_func
-(paren
-l_string|&quot;!A!&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
 r_if
 c_cond
 (paren

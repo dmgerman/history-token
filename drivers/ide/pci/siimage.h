@@ -63,13 +63,12 @@ r_static
 id|u8
 id|siimage_proc
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|siimage_procs
 r_static
 id|ide_pci_host_proc_t
 id|siimage_procs
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

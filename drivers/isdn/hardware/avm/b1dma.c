@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: b1dma.c,v 1.1.4.1.2.1 2001/12/21 15:00:17 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: b1dma.c,v 1.1.2.3 2004/02/10 01:07:12 keil Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,17 +17,16 @@ macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
-macro_line|#if BITS_PER_LONG != 32
-macro_line|#error FIXME: driver requires 32-bit platform
-macro_line|#endif
 DECL|variable|revision
 r_static
 r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
+l_string|&quot;$Revision: 1.1.2.3 $&quot;
 suffix:semicolon
+DECL|macro|CONFIG_B1DMA_DEBUG
+macro_line|#undef CONFIG_B1DMA_DEBUG
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_DESCRIPTION
 c_func
@@ -1049,6 +1048,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1dma_detect
+r_static
 r_int
 id|b1dma_detect
 c_func
@@ -2958,6 +2958,18 @@ id|card
 (brace
 id|u32
 id|status
+suffix:semicolon
+id|u32
+id|newcsr
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
+suffix:semicolon
+id|status
 op_assign
 id|b1dma_readl
 c_func
@@ -2966,9 +2978,6 @@ id|card
 comma
 id|AMCC_INTCSR
 )paren
-suffix:semicolon
-id|u32
-id|newcsr
 suffix:semicolon
 r_if
 c_cond
@@ -2981,8 +2990,17 @@ id|ANY_S5933_INT
 op_eq
 l_int|0
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|newcsr
 op_assign
 id|card-&gt;csr
@@ -3057,6 +3075,24 @@ op_eq
 l_int|0
 )paren
 (brace
+id|rxlen
+op_assign
+id|b1dma_readl
+c_func
+(paren
+id|card
+comma
+id|AMCC_RXLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rxlen
+op_eq
+l_int|0
+)paren
+(brace
 id|dma-&gt;recvlen
 op_assign
 op_star
@@ -3101,9 +3137,33 @@ comma
 id|AMCC_RXLEN
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_B1DMA_DEBUG
 )brace
 r_else
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: rx not complete (%d).&bslash;n&quot;
+comma
+id|card-&gt;name
+comma
+id|rxlen
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+)brace
+r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
+suffix:semicolon
 id|b1dma_handle_rx
 c_func
 (paren
@@ -3113,6 +3173,13 @@ suffix:semicolon
 id|dma-&gt;recvlen
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
 suffix:semicolon
 id|b1dma_writel
 c_func
@@ -3136,13 +3203,6 @@ id|AMCC_RXLEN
 suffix:semicolon
 )brace
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3833,10 +3893,32 @@ id|card
 op_assign
 id|cinfo-&gt;card
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|b1dma_reset
 c_func
 (paren
 id|card
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|memset
@@ -4413,6 +4495,10 @@ id|rxlen
 comma
 id|csr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -4902,6 +4988,15 @@ comma
 id|cinfo-&gt;cardname
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|txoff
 op_assign
 (paren
@@ -4960,6 +5055,15 @@ c_func
 id|card
 comma
 id|AMCC_INTCSR
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|len

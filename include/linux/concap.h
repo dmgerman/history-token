@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: concap.h,v 1.2.8.1 2001/09/23 22:25:05 kai Exp $&n; *&n; * Copyright 1997 by Henner Eisen &lt;eis@baty.hanse.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: concap.h,v 1.3.2.2 2004/01/12 23:08:35 keil Exp $&n; *&n; * Copyright 1997 by Henner Eisen &lt;eis@baty.hanse.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef _LINUX_CONCAP_H
 DECL|macro|_LINUX_CONCAP_H
 mdefine_line|#define _LINUX_CONCAP_H
@@ -38,6 +38,10 @@ op_star
 id|pops
 suffix:semicolon
 multiline_comment|/* callbacks provided by us */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|flags
 r_int
 id|flags

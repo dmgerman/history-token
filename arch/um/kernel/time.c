@@ -467,6 +467,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|do_gettimeofday
 id|EXPORT_SYMBOL

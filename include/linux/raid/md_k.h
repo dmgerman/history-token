@@ -579,9 +579,13 @@ id|mdk_personality_t
 op_star
 id|pers
 suffix:semicolon
-DECL|member|__minor
+DECL|member|unit
+id|dev_t
+id|unit
+suffix:semicolon
+DECL|member|md_minor
 r_int
-id|__minor
+id|md_minor
 suffix:semicolon
 DECL|member|disks
 r_struct
@@ -728,6 +732,11 @@ DECL|member|active
 id|atomic_t
 id|active
 suffix:semicolon
+DECL|member|changed
+r_int
+id|changed
+suffix:semicolon
+multiline_comment|/* true if we might need to reread partition info */
 DECL|member|degraded
 r_int
 id|degraded
@@ -932,22 +941,6 @@ id|go_faster
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Currently we index md_array directly, based on the minor&n; * number. This will have to change to dynamic allocation&n; * once we start supporting partitioning of md devices.&n; */
-DECL|function|mdidx
-r_static
-r_inline
-r_int
-id|mdidx
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-(brace
-r_return
-id|mddev-&gt;__minor
-suffix:semicolon
-)brace
 DECL|function|mdname
 r_static
 r_inline

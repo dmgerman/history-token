@@ -1257,9 +1257,13 @@ c_func
 (paren
 id|conf-&gt;cache_name
 comma
-l_string|&quot;md/raid5-%d&quot;
+l_string|&quot;raid5/%s&quot;
 comma
-id|conf-&gt;mddev-&gt;__minor
+id|mdname
+c_func
+(paren
+id|conf-&gt;mddev
+)paren
 )paren
 suffix:semicolon
 id|sc

@@ -12,7 +12,7 @@ mdefine_line|#define nfsd_ruid(rq, uid)&t;((u32)(uid))
 DECL|macro|nfsd_rgid
 mdefine_line|#define nfsd_rgid(rq, gid)&t;((u32)(gid))
 multiline_comment|/*&n; * Set the current process&squot;s fsuid/fsgid etc to those of the NFS&n; * client user&n; */
-r_void
+r_int
 id|nfsd_setuser
 c_func
 (paren

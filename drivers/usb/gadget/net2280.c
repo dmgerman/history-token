@@ -1850,12 +1850,19 @@ suffix:semicolon
 multiline_comment|/* write just one packet at a time */
 id|count
 op_assign
-id|min
-(paren
 id|ep-&gt;ep.maxpacket
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
 id|total
 )paren
+multiline_comment|/* min() cannot be used on a bitfield */
+id|count
+op_assign
+id|total
 suffix:semicolon
 id|VDEBUG
 (paren
@@ -5818,7 +5825,7 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma
@@ -5927,7 +5934,7 @@ suffix:semicolon
 multiline_comment|/* Main Control Registers */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6075,7 +6082,7 @@ l_string|&quot;not attached&quot;
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6172,7 +6179,7 @@ l_int|0xff
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6324,7 +6331,7 @@ id|t
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6387,7 +6394,7 @@ r_continue
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6441,7 +6448,7 @@ singleline_comment|// none yet
 multiline_comment|/* Statistics */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6498,7 +6505,7 @@ r_continue
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6522,7 +6529,7 @@ suffix:semicolon
 )brace
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6688,7 +6695,7 @@ id|d-&gt;bEndpointAddress
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6781,7 +6788,7 @@ r_else
 multiline_comment|/* ep0 should only have one transfer queued */
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6831,7 +6838,7 @@ id|ep-&gt;queue
 (brace
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6890,7 +6897,7 @@ id|ep-&gt;dma-&gt;dmadesc
 )paren
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6918,7 +6925,7 @@ suffix:semicolon
 r_else
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -6975,7 +6982,7 @@ id|req-&gt;td
 suffix:semicolon
 id|t
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|next
 comma
@@ -9086,14 +9093,16 @@ id|req-&gt;req.length
 op_minus
 id|req-&gt;req.actual
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|ep-&gt;ep.maxpacket
+)paren
 id|len
 op_assign
-id|min
-(paren
 id|ep-&gt;ep.maxpacket
-comma
-id|len
-)paren
 suffix:semicolon
 id|req-&gt;req.actual
 op_add_assign
@@ -11526,7 +11535,7 @@ id|done
 suffix:semicolon
 )brace
 macro_line|#ifndef __sparc__
-id|snprintf
+id|scnprintf
 (paren
 id|buf
 comma

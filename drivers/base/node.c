@@ -59,7 +59,7 @@ suffix:semicolon
 multiline_comment|/* FIXME - someone should pass us a buffer size (count) or&n;&t; * use seq_file or something to avoid buffer overrun risk. */
 id|len
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|buf

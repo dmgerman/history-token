@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program; if not, write to the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fix long fail over time when releasing last slave of an active&n; *&t;  aggregator - send LACPDU on unbind of slave to tell partner this&n; *&t;  port is no longer aggregatable.&n; *&n; * 2003/06/25 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Send LACPDU as highest priority packet to further fix the above&n; *&t;  problem on very high Tx traffic load where packets may get dropped&n; *&t;  by the slave.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
+multiline_comment|/*&n; * Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program; if not, write to the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fix long fail over time when releasing last slave of an active&n; *&t;  aggregator - send LACPDU on unbind of slave to tell partner this&n; *&t;  port is no longer aggregatable.&n; *&n; * 2003/06/25 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Send LACPDU as highest priority packet to further fix the above&n; *&t;  problem on very high Tx traffic load where packets may get dropped&n; *&t;  by the slave.&n; *&n; * 2003/12/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
@@ -8142,6 +8142,11 @@ r_struct
 id|ad_info
 id|ad_info
 suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* make sure that the slaves list will&n;&t; * not change during tx&n;&t; */
 id|read_lock
 c_func
@@ -8162,7 +8167,7 @@ id|bond
 )paren
 (brace
 r_goto
-id|free_out
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -8186,7 +8191,7 @@ l_string|&quot;ERROR: bond_3ad_get_active_agg_info failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|free_out
+id|out
 suffix:semicolon
 )brace
 id|slaves_in_agg
@@ -8214,7 +8219,7 @@ l_string|&quot;ERROR: active aggregator is empty&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|free_out
+id|out
 suffix:semicolon
 )brace
 id|slave_agg_no
@@ -8303,7 +8308,7 @@ id|agg_id
 )paren
 suffix:semicolon
 r_goto
-id|free_out
+id|out
 suffix:semicolon
 )brace
 id|start_at
@@ -8369,27 +8374,38 @@ id|agg_id
 )paren
 )paren
 (brace
-id|skb-&gt;dev
+id|res
 op_assign
-id|slave-&gt;dev
-suffix:semicolon
-id|skb-&gt;priority
-op_assign
-l_int|1
-suffix:semicolon
-id|dev_queue_xmit
+id|bond_dev_queue_xmit
 c_func
 (paren
+id|bond
+comma
 id|skb
+comma
+id|slave-&gt;dev
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 )brace
 id|out
 suffix:colon
+r_if
+c_cond
+(paren
+id|res
+)paren
+(brace
+multiline_comment|/* no suitable interface, frame not sent */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 id|read_unlock
 c_func
 (paren
@@ -8399,18 +8415,6 @@ id|bond-&gt;lock
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|free_out
-suffix:colon
-multiline_comment|/* no suitable interface, frame not sent */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 DECL|function|bond_3ad_lacpdu_recv

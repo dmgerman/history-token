@@ -17,6 +17,8 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
+macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/cyclone.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|variable|pm_idle
@@ -539,20 +541,6 @@ l_string|&quot; disabled&quot;
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-id|available_cpus
-op_ge
-id|NR_CPUS
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; ignored (increase NR_CPUS)&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
 id|printk
 c_func
@@ -929,6 +917,64 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Hook from generic ACPI tables.c */
+DECL|function|acpi_madt_oem_check
+r_void
+id|__init
+id|acpi_madt_oem_check
+c_func
+(paren
+r_char
+op_star
+id|oem_id
+comma
+r_char
+op_star
+id|oem_table_id
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|oem_id
+comma
+l_string|&quot;IBM&quot;
+comma
+l_int|3
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|oem_table_id
+comma
+l_string|&quot;SERMOW&quot;
+comma
+l_int|6
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Unfortunatly ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
+id|sal_platform_features
+op_or_assign
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+suffix:semicolon
+multiline_comment|/*Start cyclone clock*/
+id|cyclone_setup
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
 r_static
 r_int
 id|__init
@@ -1017,6 +1063,14 @@ id|PREFIX
 l_string|&quot;Local APIC address 0x%lx&bslash;n&quot;
 comma
 id|ipi_base_addr
+)paren
+suffix:semicolon
+id|acpi_madt_oem_check
+c_func
+(paren
+id|acpi_madt-&gt;header.oem_id
+comma
+id|acpi_madt-&gt;header.oem_table_id
 )paren
 suffix:semicolon
 r_return
@@ -1255,34 +1309,6 @@ l_int|32
 op_or
 id|ma-&gt;length_lo
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|num_memblks
-op_ge
-id|NR_MEMBLKS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Too many mem chunks in SRAT. Ignoring %ld MBytes at %lx&bslash;n&quot;
-comma
-id|size
-op_div
-(paren
-l_int|1024
-op_star
-l_int|1024
-)paren
-comma
-id|paddr
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Ignore disabled entries */
 r_if
 c_cond
@@ -2018,6 +2044,8 @@ c_func
 id|ACPI_MADT_LAPIC_ADDR_OVR
 comma
 id|acpi_parse_lapic_addr_ovr
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2039,6 +2067,8 @@ c_func
 id|ACPI_MADT_LSAPIC
 comma
 id|acpi_parse_lsapic
+comma
+id|NR_CPUS
 )paren
 OL
 l_int|1
@@ -2060,6 +2090,8 @@ c_func
 id|ACPI_MADT_LAPIC_NMI
 comma
 id|acpi_parse_lapic_nmi
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2082,6 +2114,8 @@ c_func
 id|ACPI_MADT_IOSAPIC
 comma
 id|acpi_parse_iosapic
+comma
+id|NR_IOSAPICS
 )paren
 OL
 l_int|1
@@ -2104,6 +2138,8 @@ c_func
 id|ACPI_MADT_PLAT_INT_SRC
 comma
 id|acpi_parse_plat_int_src
+comma
+id|ACPI_MAX_PLATFORM_INTERRUPTS
 )paren
 OL
 l_int|0
@@ -2125,6 +2161,8 @@ c_func
 id|ACPI_MADT_INT_SRC_OVR
 comma
 id|acpi_parse_int_src_ovr
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2146,6 +2184,8 @@ c_func
 id|ACPI_MADT_NMI_SRC
 comma
 id|acpi_parse_nmi_src
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2235,7 +2275,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|# ifdef CONFIG_NUMA
+macro_line|# ifdef CONFIG_ACPI_NUMA
 r_if
 c_cond
 (paren

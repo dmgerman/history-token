@@ -799,7 +799,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -3736,7 +3736,7 @@ comma
 id|IPPROTO_IPV6
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|ipip6_fb_tunnel_dev
