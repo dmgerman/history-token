@@ -312,30 +312,42 @@ DECL|macro|__NR_mount
 mdefine_line|#define __NR_mount              167 /* Common                                      */
 DECL|macro|__NR_ustat
 mdefine_line|#define __NR_ustat              168 /* Common                                      */
-multiline_comment|/* #define __NR_semsys          169    SunOS Specific                              */
-multiline_comment|/* #define __NR_msgsys          170    SunOS Specific                              */
-multiline_comment|/* #define __NR_shmsys          171    SunOS Specific                              */
-multiline_comment|/* #define __NR_auditsys        172    SunOS Specific                              */
-multiline_comment|/* #define __NR_rfssys          173    SunOS Specific                              */
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr           169 /* SunOS: semsys                               */
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr          170 /* SunOS: msgsys                               */
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr          171 /* SunOS: shmsys                               */
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr           172 /* SunOS: auditsys                             */
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr          173 /* SunOS: rfssys                               */
 DECL|macro|__NR_getdents
 mdefine_line|#define __NR_getdents           174 /* Common                                      */
 DECL|macro|__NR_setsid
 mdefine_line|#define __NR_setsid             175 /* Common                                      */
 DECL|macro|__NR_fchdir
 mdefine_line|#define __NR_fchdir             176 /* Common                                      */
-multiline_comment|/* #define __NR_fchroot         177    SunOS Specific                              */
-multiline_comment|/* #define __NR_vpixsys         178    SunOS Specific                              */
-multiline_comment|/* #define __NR_aioread         179    SunOS Specific                              */
-multiline_comment|/* #define __NR_aiowrite        180    SunOS Specific                              */
-multiline_comment|/* #define __NR_aiowait         181    SunOS Specific                              */
-multiline_comment|/* #define __NR_aiocancel       182    SunOS Specific                              */
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr          177 /* SunOS: fchroot                              */
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr          178 /* SunOS: vpixsys                              */
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr         179 /* SunOS: aioread                              */
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr         180 /* SunOS: aiowrite                             */
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr        181 /* SunOS: aiowait                              */
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr       182 /* SunOS: aiocancel                            */
 DECL|macro|__NR_sigpending
 mdefine_line|#define __NR_sigpending         183 /* Common                                      */
 DECL|macro|__NR_query_module
 mdefine_line|#define __NR_query_module&t;184 /* Linux Specific&t;&t;&t;&t;   */
 DECL|macro|__NR_setpgid
 mdefine_line|#define __NR_setpgid            185 /* Common                                      */
-multiline_comment|/* #define __NR_pathconf        186    SunOS Specific                              */
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr       186 /* SunOS: pathconf                             */
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill              187 /* SunOS: fpathconf                            */
 multiline_comment|/* #define __NR_sysconf         188    SunOS Specific                              */
