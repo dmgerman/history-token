@@ -618,9 +618,10 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * This is called after saving image so modification&n; * will be lost after resume... and that&squot;s what we want.&n; * we make the device unusable. A new call to&n; * lock_swapdevices can unlock the devices. &n; */
-DECL|function|swsusp_swap_lock
+DECL|function|lock_swapdevices
+r_static
 r_void
-id|swsusp_swap_lock
+id|lock_swapdevices
 c_func
 (paren
 r_void
@@ -1338,6 +1339,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_suspend_image - Write entire image and metadata.&n; *&n; */
 DECL|function|write_suspend_image
+r_static
 r_int
 id|write_suspend_image
 c_func
@@ -3073,37 +3075,44 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|suspend_save_image
-r_static
-r_void
-id|suspend_save_image
+multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n; * them synced (in case something goes wrong) but we DO not want to mark&n; * filesystem clean: it is not. (And it does not matter, if we resume&n; * correctly, we&squot;ll mark system clean, anyway.)&n; */
+DECL|function|swsusp_write
+r_int
+id|swsusp_write
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 id|device_resume
 c_func
 (paren
 )paren
 suffix:semicolon
-id|swsusp_swap_lock
+id|lock_swapdevices
 c_func
 (paren
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|write_suspend_image
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* This will unlock ignored swap devices since writing is finished */
-id|swsusp_swap_lock
+id|lock_swapdevices
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n;&t; * them synced (in case something goes wrong) but we DO not want to mark&n;&t; * filesystem clean: it is not. (And it does not matter, if we resume&n;&t; * correctly, we&squot;ll mark system clean, anyway.)&n;&t; */
+r_return
+id|error
+suffix:semicolon
 )brace
 DECL|function|suspend_power_down
 r_static
@@ -3621,7 +3630,7 @@ op_logical_and
 id|in_suspend
 )paren
 (brace
-id|suspend_save_image
+id|swsusp_write
 c_func
 (paren
 )paren

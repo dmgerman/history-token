@@ -28,7 +28,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_write
+id|swsusp_write
 c_func
 (paren
 r_void
@@ -493,7 +493,7 @@ c_func
 suffix:semicolon
 id|error
 op_assign
-id|pmdisk_write
+id|swsusp_write
 c_func
 (paren
 )paren
