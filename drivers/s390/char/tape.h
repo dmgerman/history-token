@@ -571,6 +571,10 @@ r_struct
 id|list_head
 id|node
 suffix:semicolon
+DECL|member|cdev_id
+r_int
+id|cdev_id
+suffix:semicolon
 DECL|member|cdev
 r_struct
 id|ccw_device
@@ -866,7 +870,7 @@ id|tape_state
 suffix:semicolon
 r_extern
 r_int
-id|tape_enable_device
+id|tape_generic_online
 c_func
 (paren
 r_struct
@@ -879,8 +883,8 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|tape_disable_device
+r_int
+id|tape_generic_offline
 c_func
 (paren
 r_struct
