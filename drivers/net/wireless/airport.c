@@ -973,8 +973,6 @@ comma
 id|version
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Lookup card in device tree */
 id|airport_node
 op_assign
@@ -1005,8 +1003,6 @@ c_func
 (paren
 id|airport_node
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|airport_dev
