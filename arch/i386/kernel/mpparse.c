@@ -283,7 +283,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Processor #%d %d:%d APIC version %d (quad %d, apic %d)&bslash;n&quot;
+l_string|&quot;Processor #%d %ld:%ld APIC version %d (quad %d, apic %d)&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
 comma
@@ -316,7 +316,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Processor #%d %d:%d APIC version %d&bslash;n&quot;
+l_string|&quot;Processor #%d %ld:%ld APIC version %d&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
 comma

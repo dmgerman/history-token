@@ -349,6 +349,10 @@ DECL|macro|ti_cardctl
 mdefine_line|#define ti_cardctl(socket)&t;((socket)-&gt;private[1])
 DECL|macro|ti_devctl
 mdefine_line|#define ti_devctl(socket)&t;((socket)-&gt;private[2])
+DECL|macro|ti_diag
+mdefine_line|#define ti_diag(socket)&t;&t;((socket)-&gt;private[3])
+DECL|macro|ti_irqmux
+mdefine_line|#define ti_irqmux(socket)&t;((socket)-&gt;private[4])
 DECL|function|ti113x_open
 r_static
 r_int
@@ -545,8 +549,6 @@ comma
 id|yenta_proc_setup
 )brace
 suffix:semicolon
-DECL|macro|ti_diag
-mdefine_line|#define ti_diag(socket)&t;&t;((socket)-&gt;private[0])
 DECL|function|ti1250_open
 r_static
 r_int
@@ -600,7 +602,7 @@ id|TI1250_DIAG_PCI_CSC
 op_or
 id|TI1250_DIAG_PCI_IREQ
 suffix:semicolon
-id|ti_open
+id|ti113x_open
 c_func
 (paren
 id|socket
@@ -627,6 +629,83 @@ c_func
 id|socket
 )paren
 suffix:semicolon
+id|ti113x_init
+c_func
+(paren
+id|socket
+)paren
+suffix:semicolon
+id|ti_irqmux
+c_func
+(paren
+id|socket
+)paren
+op_assign
+id|config_readl
+c_func
+(paren
+id|socket
+comma
+id|TI122X_IRQMUX
+)paren
+suffix:semicolon
+id|ti_irqmux
+c_func
+(paren
+id|socket
+)paren
+op_assign
+(paren
+id|ti_irqmux
+c_func
+(paren
+id|socket
+)paren
+op_amp
+op_complement
+l_int|0x0f
+)paren
+op_or
+l_int|0x02
+suffix:semicolon
+multiline_comment|/* route INTA */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ti_sysctl
+c_func
+(paren
+id|socket
+)paren
+op_amp
+id|TI122X_SCR_INTRTIE
+)paren
+)paren
+id|ti_irqmux
+c_func
+(paren
+id|socket
+)paren
+op_or_assign
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* route INTB */
+id|config_writel
+c_func
+(paren
+id|socket
+comma
+id|TI122X_IRQMUX
+comma
+id|ti_irqmux
+c_func
+(paren
+id|socket
+)paren
+)paren
+suffix:semicolon
 id|config_writeb
 c_func
 (paren
@@ -639,12 +718,6 @@ c_func
 (paren
 id|socket
 )paren
-)paren
-suffix:semicolon
-id|ti_intctl
-c_func
-(paren
-id|socket
 )paren
 suffix:semicolon
 r_return

@@ -4467,7 +4467,7 @@ l_int|1410
 )paren
 comma
 op_amp
-id|ti_ops
+id|ti1250_ops
 )brace
 comma
 (brace
