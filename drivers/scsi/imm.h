@@ -69,9 +69,15 @@ id|IMM_EPP_8
 op_assign
 l_string|&quot;EPP 8 bit&quot;
 comma
-macro_line|#ifdef CONFIG_SCSI_IZIP_EPP16
 (braket
 id|IMM_EPP_16
+)braket
+op_assign
+l_string|&quot;EPP 16 bit&quot;
+comma
+macro_line|#ifdef CONFIG_SCSI_IZIP_EPP16
+(braket
+id|IMM_EPP_32
 )braket
 op_assign
 l_string|&quot;EPP 16 bit&quot;
