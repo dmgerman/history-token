@@ -185,6 +185,9 @@ r_struct
 id|inet_peer
 op_star
 id|p
+comma
+r_int
+id|more
 )paren
 (brace
 id|__u16
@@ -200,7 +203,12 @@ suffix:semicolon
 id|id
 op_assign
 id|p-&gt;ip_id_count
-op_increment
+suffix:semicolon
+id|p-&gt;ip_id_count
+op_add_assign
+l_int|1
+op_plus
+id|more
 suffix:semicolon
 id|spin_unlock_bh
 c_func

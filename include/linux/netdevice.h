@@ -828,6 +828,8 @@ DECL|macro|NETIF_F_HW_VLAN_FILTER
 mdefine_line|#define NETIF_F_HW_VLAN_FILTER&t;512&t;/* Receive filtering on VLAN */
 DECL|macro|NETIF_F_VLAN_CHALLENGED
 mdefine_line|#define NETIF_F_VLAN_CHALLENGED&t;1024&t;/* Device cannot handle VLAN packets */
+DECL|macro|NETIF_F_TSO
+mdefine_line|#define NETIF_F_TSO&t;&t;2048&t;/* Can offload TCP/IP segmentation */
 multiline_comment|/* Called after device is detached from network. */
 DECL|member|uninit
 r_void

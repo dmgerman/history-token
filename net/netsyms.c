@@ -55,7 +55,7 @@ r_struct
 id|net_proto_family
 id|inet_family_ops
 suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
+macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE) &bslash;&n;   || defined (CONFIG_IP_SCTP_MODULE)
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -578,6 +578,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sock_kfree_s
+)paren
+suffix:semicolon
+DECL|variable|sock_map_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sock_map_fd
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_FILTER
@@ -1188,7 +1195,7 @@ id|dlci_ioctl_hook
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined (CONFIG_IPV6_MODULE)
+macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release
 id|EXPORT_SYMBOL
@@ -1845,6 +1852,43 @@ c_func
 id|tcp_read_sock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_SCTP_MODULE
+DECL|variable|ip_setsockopt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_setsockopt
+)paren
+suffix:semicolon
+DECL|variable|ip_getsockopt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_getsockopt
+)paren
+suffix:semicolon
+DECL|variable|inet_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_ioctl
+)paren
+suffix:semicolon
+DECL|variable|inet_bind
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_bind
+)paren
+suffix:semicolon
+DECL|variable|inet_getname
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_getname
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_IP_SCTP_MODULE */
 DECL|variable|netlink_set_err
 id|EXPORT_SYMBOL
 c_func

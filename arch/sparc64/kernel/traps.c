@@ -48,6 +48,11 @@ r_int
 r_int
 id|tnpc
 suffix:semicolon
+DECL|member|tt
+r_int
+r_int
+id|tt
+suffix:semicolon
 DECL|member|trapstack
 )brace
 id|trapstack
@@ -103,7 +108,9 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;TRAPLOG: Trap level %d TSTATE[%016lx] TPC[%016lx] TNPC[%016lx]&bslash;n&quot;
+id|KERN_CRIT
+l_string|&quot;TRAPLOG: Trap level %d TSTATE[%016lx] TPC[%016lx] &quot;
+l_string|&quot;TNPC[%016lx] TT[%lx]&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -129,6 +136,13 @@ id|i
 )braket
 dot
 id|tnpc
+comma
+id|p-&gt;trapstack
+(braket
+id|i
+)braket
+dot
+id|tt
 )paren
 suffix:semicolon
 )brace
@@ -678,10 +692,10 @@ id|pci_poke_faulted
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* When access exceptions happen, we must do this. */
-DECL|function|clean_and_reenable_l1_caches
+DECL|function|spitfire_clean_and_reenable_l1_caches
 r_static
 r_void
-id|clean_and_reenable_l1_caches
+id|spitfire_clean_and_reenable_l1_caches
 c_func
 (paren
 r_void
@@ -695,10 +709,14 @@ r_if
 c_cond
 (paren
 id|tlb_type
-op_eq
+op_ne
 id|spitfire
 )paren
-(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Clean &squot;em. */
 r_for
 c_loop
@@ -769,67 +787,6 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|tlb_type
-op_eq
-id|cheetah
-op_logical_or
-id|tlb_type
-op_eq
-id|cheetah_plus
-)paren
-(brace
-multiline_comment|/* Flush D-cache */
-r_for
-c_loop
-(paren
-id|va
-op_assign
-l_int|0
-suffix:semicolon
-id|va
-OL
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-id|va
-op_add_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
-l_string|&quot;membar #Sync&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|va
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|ASI_DCACHE_TAG
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
 DECL|function|do_iae
 r_void
 id|do_iae
@@ -844,7 +801,7 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
-id|clean_and_reenable_l1_caches
+id|spitfire_clean_and_reenable_l1_caches
 c_func
 (paren
 )paren
@@ -910,7 +867,7 @@ c_func
 )paren
 )paren
 (brace
-id|clean_and_reenable_l1_caches
+id|spitfire_clean_and_reenable_l1_caches
 c_func
 (paren
 )paren
