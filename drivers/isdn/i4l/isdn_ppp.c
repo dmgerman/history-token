@@ -2341,7 +2341,7 @@ id|pidle.xmit_idle
 op_assign
 id|pidle.recv_idle
 op_assign
-id|idev-&gt;local.huptimer
+id|idev-&gt;huptimer
 suffix:semicolon
 r_if
 c_cond
@@ -2841,7 +2841,7 @@ c_cond
 id|i
 op_increment
 op_eq
-id|idev-&gt;local.dial
+id|idev-&gt;dial
 )paren
 (brace
 id|strncpy
@@ -2860,12 +2860,12 @@ suffix:semicolon
 )brace
 id|pci.charge_units
 op_assign
-id|idev-&gt;local.charge
+id|idev-&gt;charge
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|idev-&gt;local.outgoing
+id|idev-&gt;outgoing
 )paren
 (brace
 id|pci.calltype
@@ -3748,7 +3748,7 @@ id|proto
 op_ne
 id|PPP_LCP
 )paren
-id|idev-&gt;local.huptimer
+id|idev-&gt;huptimer
 op_assign
 l_int|0
 suffix:semicolon
@@ -4570,10 +4570,9 @@ id|PPP_LCP
 id|isdn_net_reset_huptimer
 c_func
 (paren
-op_amp
-id|net_dev-&gt;local
+id|net_dev
 comma
-id|lp
+id|lp-&gt;netdev
 )paren
 suffix:semicolon
 id|slot
@@ -5375,7 +5374,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Reset hangup-timer */
-id|lp-&gt;huptimer
+id|idev-&gt;huptimer
 op_assign
 l_int|0
 suffix:semicolon
@@ -5786,7 +5785,7 @@ id|ippp_table
 id|slot
 )braket
 suffix:semicolon
-id|lp-&gt;huptimer
+id|idev-&gt;huptimer
 op_assign
 l_int|0
 suffix:semicolon
@@ -9531,7 +9530,7 @@ suffix:semicolon
 id|isdn_net_hangup
 c_func
 (paren
-id|mlp
+id|mlp-&gt;netdev
 )paren
 suffix:semicolon
 r_return

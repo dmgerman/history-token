@@ -1723,9 +1723,9 @@ multiline_comment|/* no special cisco protocol */
 id|isdn_net_reset_huptimer
 c_func
 (paren
-id|lp
+id|idev
 comma
-id|olp
+id|olp-&gt;netdev
 )paren
 suffix:semicolon
 id|skb-&gt;protocol

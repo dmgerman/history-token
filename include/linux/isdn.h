@@ -746,6 +746,16 @@ r_int
 id|dialmax
 suffix:semicolon
 multiline_comment|/* Max. Number of Dial-retries      */
+DECL|member|dialtimeout
+r_int
+id|dialtimeout
+suffix:semicolon
+multiline_comment|/* How long shall we try on dialing */
+DECL|member|dialwait
+r_int
+id|dialwait
+suffix:semicolon
+multiline_comment|/* wait after failed attempt        */
 DECL|member|cbdelay
 r_int
 id|cbdelay
@@ -764,97 +774,31 @@ id|u_char
 id|cbhup
 suffix:semicolon
 multiline_comment|/* Flag: Reject Call before Callback*/
-DECL|member|p_encap
-id|u_char
-id|p_encap
-suffix:semicolon
-multiline_comment|/* Packet encapsulation             */
-multiline_comment|/*   0 = Ethernet over ISDN         */
-multiline_comment|/*   1 = RAW-IP                     */
-multiline_comment|/*   2 = IP with type field         */
-DECL|member|l2_proto
-id|u_char
-id|l2_proto
-suffix:semicolon
-multiline_comment|/* Layer-2-protocol                 */
-multiline_comment|/* See ISDN_PROTO_L2..-constants in */
-multiline_comment|/* isdnif.h                         */
-multiline_comment|/*   0 = X75/LAPB with I-Frames     */
-multiline_comment|/*   1 = X75/LAPB with UI-Frames    */
-multiline_comment|/*   2 = X75/LAPB with BUI-Frames   */
-multiline_comment|/*   3 = HDLC                       */
-DECL|member|l3_proto
-id|u_char
-id|l3_proto
-suffix:semicolon
-multiline_comment|/* Layer-3-protocol                 */
-multiline_comment|/* See ISDN_PROTO_L3..-constants in */
-multiline_comment|/* isdnif.h                         */
-multiline_comment|/*   0 = Transparent                */
-DECL|member|huptimer
-r_int
-id|huptimer
-suffix:semicolon
-multiline_comment|/* Timeout-counter for auto-hangup  */
-DECL|member|charge
-r_int
-id|charge
-suffix:semicolon
-multiline_comment|/* Counter for charging units       */
-DECL|member|charge_state
-r_int
-id|charge_state
-suffix:semicolon
-multiline_comment|/* ChargeInfo state machine         */
-DECL|member|chargetime
-id|ulong
-id|chargetime
-suffix:semicolon
-multiline_comment|/* Timer for Charging info          */
 DECL|member|hupflags
 r_int
 id|hupflags
 suffix:semicolon
 multiline_comment|/* Flags for charge-unit-hangup:    */
-multiline_comment|/* bit0: chargeint is invalid       */
-multiline_comment|/* bit1: Getting charge-interval    */
-multiline_comment|/* bit2: Do charge-unit-hangup      */
-multiline_comment|/* bit3: Do hangup even on incoming */
-DECL|member|outgoing
-r_int
-id|outgoing
-suffix:semicolon
-multiline_comment|/* Flag: outgoing call              */
 DECL|member|onhtime
 r_int
 id|onhtime
 suffix:semicolon
 multiline_comment|/* Time to keep link up             */
-DECL|member|chargeint
-r_int
-id|chargeint
+DECL|member|p_encap
+id|u_char
+id|p_encap
 suffix:semicolon
-multiline_comment|/* Interval between charge-infos    */
-DECL|member|onum
-r_int
-id|onum
+multiline_comment|/* Packet encapsulation             */
+DECL|member|l2_proto
+id|u_char
+id|l2_proto
 suffix:semicolon
-multiline_comment|/* Flag: at least 1 outgoing number */
-DECL|member|cps
-r_int
-id|cps
+multiline_comment|/* Layer-2-protocol                 */
+DECL|member|l3_proto
+id|u_char
+id|l3_proto
 suffix:semicolon
-multiline_comment|/* current speed of this interface  */
-DECL|member|transcount
-r_int
-id|transcount
-suffix:semicolon
-multiline_comment|/* byte-counter for cps-calculation */
-DECL|member|last_jiffies
-r_int
-id|last_jiffies
-suffix:semicolon
-multiline_comment|/* when transcount was reset        */
+multiline_comment|/* Layer-3-protocol                 */
 DECL|member|sqfull
 r_int
 id|sqfull
@@ -886,11 +830,6 @@ suffix:semicolon
 multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
-DECL|member|dial
-r_int
-id|dial
-suffix:semicolon
-multiline_comment|/* # of phone number just dialed    */
 DECL|member|master
 r_struct
 id|net_device
@@ -947,31 +886,6 @@ suffix:semicolon
 multiline_comment|/* used to protect the xmit path of */
 multiline_comment|/* a particular channel (including  */
 multiline_comment|/* the frame_cnt                    */
-DECL|member|dialtimeout
-r_int
-id|dialtimeout
-suffix:semicolon
-multiline_comment|/* How long shall we try on dialing? (jiffies) */
-DECL|member|dialwait
-r_int
-id|dialwait
-suffix:semicolon
-multiline_comment|/* How long shall we wait after failed attempt? (jiffies) */
-DECL|member|dialstarted
-id|ulong
-id|dialstarted
-suffix:semicolon
-multiline_comment|/* jiffies of first dialing-attempt */
-DECL|member|dialwait_timer
-id|ulong
-id|dialwait_timer
-suffix:semicolon
-multiline_comment|/* jiffies of earliest next dialing-attempt */
-DECL|member|huptimeout
-r_int
-id|huptimeout
-suffix:semicolon
-multiline_comment|/* How long will the connection be up? (seconds) */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -1083,12 +997,75 @@ r_int
 id|dialstate
 suffix:semicolon
 multiline_comment|/* State for dialing                */
+DECL|member|dial
+r_int
+id|dial
+suffix:semicolon
+multiline_comment|/* # of phone number just dialed    */
+DECL|member|outgoing
+r_int
+id|outgoing
+suffix:semicolon
+multiline_comment|/* Flag: outgoing call              */
+DECL|member|dialstarted
+r_int
+r_int
+id|dialstarted
+suffix:semicolon
+multiline_comment|/* first dialing-attempt           */
+DECL|member|dialwait_timer
+r_int
+r_int
+id|dialwait_timer
+suffix:semicolon
+multiline_comment|/* earliest next dialing-attempt   */
+DECL|member|cps
+r_int
+id|cps
+suffix:semicolon
+multiline_comment|/* current speed of this interface  */
+DECL|member|transcount
+r_int
+id|transcount
+suffix:semicolon
+multiline_comment|/* byte-counter for cps-calculation */
+DECL|member|last_jiffies
+r_int
+id|last_jiffies
+suffix:semicolon
+multiline_comment|/* when transcount was reset        */
 DECL|member|hup_timer
 r_struct
 id|timer_list
 id|hup_timer
 suffix:semicolon
 multiline_comment|/* auto hangup timer                */
+DECL|member|huptimer
+r_int
+id|huptimer
+suffix:semicolon
+multiline_comment|/* Timeout-counter for auto-hangup  */
+DECL|member|charge
+r_int
+id|charge
+suffix:semicolon
+multiline_comment|/* Counter for charging units       */
+DECL|member|charge_state
+r_int
+id|charge_state
+suffix:semicolon
+multiline_comment|/* ChargeInfo state machine         */
+DECL|member|chargetime
+r_int
+r_int
+id|chargetime
+suffix:semicolon
+multiline_comment|/* Timer for Charging info          */
+DECL|member|chargeint
+r_int
+id|chargeint
+suffix:semicolon
+multiline_comment|/* Interval between charge-infos    */
 DECL|member|pppbind
 r_int
 id|pppbind
