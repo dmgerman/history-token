@@ -25,10 +25,8 @@ suffix:semicolon
 DECL|member|keys
 r_struct
 id|tc_pedit_key
+op_star
 id|keys
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
