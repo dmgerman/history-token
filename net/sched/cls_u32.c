@@ -3972,14 +3972,6 @@ op_amp
 id|n-&gt;ht_down-&gt;handle
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CLS_U32_PERF2
-id|n-&gt;sel.rcnt
-op_assign
-id|n-&gt;sel.rhit
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 multiline_comment|/* again for backward compatible mode - we want&n;&t;&t;*  to work with both old and new modes of entering&n;&t;&t;*  tc data even if iproute2  was newer - jhs &n;&t;&t;*/
 r_if
