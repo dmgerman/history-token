@@ -19,9 +19,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|for_all_nodes
-mdefine_line|#define for_all_nodes(x) for ((x) = 0; (x) &lt;= maxnode; (x)++) &bslash;&n;&t;&t;&t;&t;if ((1UL &lt;&lt; (x)) &amp; nodes_present)
-DECL|macro|early_for_all_nodes
-mdefine_line|#define early_for_all_nodes(n) &bslash;&n;&t;for (n=0; n&lt;MAXNODE;n++) if (nodes[n].start!=nodes[n].end)
+mdefine_line|#define for_all_nodes(x) for ((x) = 0; (x) &lt; numnodes; (x)++) &bslash;&n;&t;&t;&t;&t;if ((1UL &lt;&lt; (x)) &amp; nodes_present)
 r_extern
 r_int
 id|compute_hash_shift
@@ -31,12 +29,6 @@ r_struct
 id|node
 op_star
 id|nodes
-comma
-r_int
-id|numnodes
-comma
-id|u64
-id|maxmem
 )paren
 suffix:semicolon
 r_extern

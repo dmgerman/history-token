@@ -12,7 +12,7 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/* image of the saved processor state */
+multiline_comment|/* Image of the saved processor state. If you touch this, fix acpi_wakeup.S. */
 DECL|struct|saved_context
 r_struct
 id|saved_context

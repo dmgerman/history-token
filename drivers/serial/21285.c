@@ -1997,7 +1997,7 @@ comma
 suffix:semicolon
 DECL|function|rs285_console_init
 r_static
-r_void
+r_int
 id|__init
 id|rs285_console_init
 c_func
@@ -2016,6 +2016,9 @@ c_func
 op_amp
 id|serial21285_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|rs285_console_init

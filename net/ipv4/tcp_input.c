@@ -13739,7 +13739,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Header prediction.&n;&t; *&t;The code losely follows the one in the famous &n;&t; *&t;&quot;30 instruction TCP receive&quot; Van Jacobson mail.&n;&t; *&t;&n;&t; *&t;Van&squot;s trick is to deposit buffers into socket queue &n;&t; *&t;on a device interrupt, to call tcp_recv function&n;&t; *&t;on the receive process context and checksum and copy&n;&t; *&t;the buffer to user space. smart...&n;&t; *&n;&t; *&t;Our current scheme is not silly either but we take the &n;&t; *&t;extra cost of the net_bh soft interrupt processing...&n;&t; *&t;We do checksum and copy also but from device to kernel.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Header prediction.&n;&t; *&t;The code loosely follows the one in the famous &n;&t; *&t;&quot;30 instruction TCP receive&quot; Van Jacobson mail.&n;&t; *&t;&n;&t; *&t;Van&squot;s trick is to deposit buffers into socket queue &n;&t; *&t;on a device interrupt, to call tcp_recv function&n;&t; *&t;on the receive process context and checksum and copy&n;&t; *&t;the buffer to user space. smart...&n;&t; *&n;&t; *&t;Our current scheme is not silly either but we take the &n;&t; *&t;extra cost of the net_bh soft interrupt processing...&n;&t; *&t;We do checksum and copy also but from device to kernel.&n;&t; */
 id|tp-&gt;saw_tstamp
 op_assign
 l_int|0

@@ -374,23 +374,6 @@ l_string|&quot;hlt&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Stop all CPUs and turn off local APICs and the IO-APIC, so&n;&t; * other OSs see a clean IRQ state.&n;&t; */
-r_if
-c_cond
-(paren
-id|notify_die
-c_func
-(paren
-id|DIE_STOP
-comma
-l_string|&quot;cpustop&quot;
-comma
-l_int|0
-comma
-l_int|0
-)paren
-op_ne
-id|NOTIFY_BAD
-)paren
 id|smp_send_stop
 c_func
 (paren

@@ -2153,7 +2153,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&t;Lookup an ioctx id.  ioctx_list is lockless for reads.&n; *&t;FIXME: this is O(n) and is only suitable for development.&n; */
 DECL|function|lookup_ioctx
-r_static
 r_struct
 id|kioctx
 op_star
@@ -4095,7 +4094,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_static
 r_int
 id|FASTCALL
 c_func
@@ -4121,7 +4119,6 @@ id|iocb
 )paren
 suffix:semicolon
 DECL|function|io_submit_one
-r_static
 r_int
 id|io_submit_one
 c_func

@@ -278,7 +278,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|nmi_watchdog_tick
 (paren
@@ -286,6 +285,9 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+id|reason
 )paren
 suffix:semicolon
 r_extern

@@ -1145,6 +1145,8 @@ DECL|macro|pml4_index
 mdefine_line|#define pml4_index(address) ((address &gt;&gt; PML4_SHIFT) &amp; (PTRS_PER_PML4-1))
 DECL|macro|pml4_offset_k
 mdefine_line|#define pml4_offset_k(address) (init_level4_pgt + pml4_index(address))
+DECL|macro|pml4_present
+mdefine_line|#define pml4_present(pml4) (pml4_val(pml4) &amp; _PAGE_PRESENT)
 DECL|macro|mk_kernel_pml4
 mdefine_line|#define mk_kernel_pml4(address) ((pml4_t){ (address) | _KERNPG_TABLE })
 DECL|macro|level3_offset_k

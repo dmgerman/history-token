@@ -635,8 +635,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
-DECL|macro|prepare_to_copy
-mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
+r_extern
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * create a kernel thread without removing it from tasklists&n; */
 r_extern
 r_int
@@ -766,9 +775,9 @@ mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|macro|prefetch
-mdefine_line|#define prefetch(x) __builtin_prefetch((x),0)
+mdefine_line|#define prefetch(x) __builtin_prefetch((x),0,1)
 DECL|macro|prefetchw
-mdefine_line|#define prefetchw(x) __builtin_prefetch((x),1)
+mdefine_line|#define prefetchw(x) __builtin_prefetch((x),1,1)
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)  prefetchw(x)
 DECL|macro|cpu_relax

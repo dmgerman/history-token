@@ -149,23 +149,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|fixup_resources
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_void
-id|iSeries_pcibios_fixup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_struct
 id|pci_controller
 op_star
@@ -983,7 +966,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*********************************************************************** &n; * ppc64_pcibios_init&n; *  &n; * Chance to initialize and structures or variable before PCI Bus walk.&n; *  &n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Entry.&n; *&lt;4&gt;buswalk [swapper : IoMmTable Initialized 0xC00000000034BD30&n; *&lt;4&gt;buswalk [swapper : find_and_init_phbs Entry&n; *&lt;4&gt;buswalk [swapper : Create iSeries pci_controller:(0xC00000001F5C7000), Bus 0x0017&n; *&lt;4&gt;buswalk [swapper : Connect EADs: 0x17.00.12 = 0x00&n; *&lt;4&gt;buswalk [swapper : iSeries_assign_IRQ   0x0017.00.12 = 0x0091&n; *&lt;4&gt;buswalk [swapper : - allocate and assign IRQ 0x17.00.12 = 0x91&n; *&lt;4&gt;buswalk [swapper : - FoundDevice: 0x17.28.10 = 0x12AE&n; *&lt;4&gt;buswalk [swapper : - build_device_node 0x17.28.12&n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Exit.&n; ***********************************************************************/
+multiline_comment|/*********************************************************************** &n; * iSeries_pcibios_init&n; *  &n; * Chance to initialize and structures or variable before PCI Bus walk.&n; *  &n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Entry.&n; *&lt;4&gt;buswalk [swapper : IoMmTable Initialized 0xC00000000034BD30&n; *&lt;4&gt;buswalk [swapper : find_and_init_phbs Entry&n; *&lt;4&gt;buswalk [swapper : Create iSeries pci_controller:(0xC00000001F5C7000), Bus 0x0017&n; *&lt;4&gt;buswalk [swapper : Connect EADs: 0x17.00.12 = 0x00&n; *&lt;4&gt;buswalk [swapper : iSeries_assign_IRQ   0x0017.00.12 = 0x0091&n; *&lt;4&gt;buswalk [swapper : - allocate and assign IRQ 0x17.00.12 = 0x91&n; *&lt;4&gt;buswalk [swapper : - FoundDevice: 0x17.28.10 = 0x12AE&n; *&lt;4&gt;buswalk [swapper : - build_device_node 0x17.28.12&n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Exit.&n; ***********************************************************************/
 DECL|function|iSeries_pcibios_init
 r_void
 id|iSeries_pcibios_init
@@ -1023,11 +1006,11 @@ l_string|&quot;iSeries_pcibios_init Exit.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * iSeries_pcibios_fixup(void)  &n; ***********************************************************************/
-DECL|function|iSeries_pcibios_fixup
+multiline_comment|/***********************************************************************&n; * pcibios_final_fixup(void)  &n; ***********************************************************************/
+DECL|function|pcibios_final_fixup
 r_void
 id|__init
-id|iSeries_pcibios_fixup
+id|pcibios_final_fixup
 c_func
 (paren
 r_void
@@ -1126,18 +1109,6 @@ c_func
 id|PciDev
 )paren
 suffix:semicolon
-id|PPCDBGCALL
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-id|dumpPci_Dev
-c_func
-(paren
-id|PciDev
-)paren
-)paren
-suffix:semicolon
 id|iSeries_Device_Information
 c_func
 (paren
@@ -1205,10 +1176,9 @@ l_int|0xC9000200
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * iSeries_pcibios_fixup_bus(int Bus)&n; *&n; ***********************************************************************/
-DECL|function|iSeries_pcibios_fixup_bus
+DECL|function|pcibios_fixup_bus
 r_void
-id|iSeries_pcibios_fixup_bus
+id|pcibios_fixup_bus
 c_func
 (paren
 r_struct
@@ -1228,10 +1198,10 @@ id|PciBus-&gt;number
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * fixup_resources(struct pci_dev *dev) &n; *&t;&n; ***********************************************************************/
-DECL|function|fixup_resources
+multiline_comment|/***********************************************************************&n; * pcibios_fixup_resources(struct pci_dev *dev) &n; *&t;&n; ***********************************************************************/
+DECL|function|pcibios_fixup_resources
 r_void
-id|fixup_resources
+id|pcibios_fixup_resources
 c_func
 (paren
 r_struct
@@ -1245,7 +1215,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;fixup_resources PciDev %p&bslash;n&quot;
+l_string|&quot;pcibios_fixup_resources PciDev %p&bslash;n&quot;
 comma
 id|PciDev
 )paren
@@ -4436,21 +4406,5 @@ id|Data
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * This is called very early before the page table is setup.&n; * There are warnings here because of type mismatches.. Okay for now. AHT&n; */
-r_void
-DECL|function|iSeries_pcibios_init_early
-id|iSeries_pcibios_init_early
-c_func
-(paren
-r_void
-)paren
-(brace
-singleline_comment|//ppc_md.pcibios_read_config_byte   = iSeries_Node_read_config_byte;
-singleline_comment|//ppc_md.pcibios_read_config_word   = iSeries_Node_read_config_word;
-singleline_comment|//ppc_md.pcibios_read_config_dword  = iSeries_Node_read_config_dword;
-singleline_comment|//ppc_md.pcibios_write_config_byte  = iSeries_Node_write_config_byte;
-singleline_comment|//ppc_md.pcibios_write_config_word  = iSeries_Node_write_config_word;
-singleline_comment|//ppc_md.pcibios_write_config_dword = iSeries_Node_write_config_dword;
 )brace
 eof

@@ -10787,9 +10787,6 @@ r_char
 op_star
 id|name_ptr
 suffix:semicolon
-r_int
-id|dtlhdrdatalen
-suffix:semicolon
 id|u32
 id|dir_index
 suffix:semicolon
@@ -10851,10 +10848,6 @@ multiline_comment|/*&n;&t;&t; * persistent index is stored in directory entries.
 id|do_index
 op_assign
 l_int|1
-suffix:semicolon
-id|dtlhdrdatalen
-op_assign
-id|DTLHDRDATALEN
 suffix:semicolon
 id|dir_index
 op_assign
@@ -11204,10 +11197,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * Legacy filesystem - OS/2 &amp; Linux JFS &lt; 0.3.6&n;&t;&t; *&n;&t;&t; * pn = index = 0:      First entry &quot;.&quot;&n;&t;&t; * pn = 0; index = 1:   Second entry &quot;..&quot;&n;&t;&t; * pn &gt; 0:              Real entries, pn=1 -&gt; leftmost page&n;&t;&t; * pn = index = -1:     No more entries&n;&t;&t; */
-id|dtlhdrdatalen
-op_assign
-id|DTLHDRDATALEN_LEGACY
-suffix:semicolon
 id|dtpos
 op_assign
 id|filp-&gt;f_pos

@@ -90,11 +90,6 @@ DECL|member|user
 id|uid_t
 id|user
 suffix:semicolon
-DECL|member|owner
-r_void
-op_star
-id|owner
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|XFRM_INF
@@ -440,11 +435,11 @@ id|xfrm_usersa_info
 id|info
 suffix:semicolon
 DECL|member|min
-id|u32
+id|__u32
 id|min
 suffix:semicolon
 DECL|member|max
-id|u32
+id|__u32
 id|max
 suffix:semicolon
 )brace

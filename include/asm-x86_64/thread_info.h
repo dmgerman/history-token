@@ -38,6 +38,11 @@ id|__u32
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */
+DECL|member|status
+id|__u32
+id|status
+suffix:semicolon
+multiline_comment|/* thread synchronous flags */
 DECL|member|cpu
 id|__u32
 id|cpu
@@ -169,12 +174,10 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* reenable singlestep on user return*/
-DECL|macro|TIF_USEDFPU
-mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum */
 DECL|macro|TIF_POLLING_NRFLAG
-mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
+mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|TIF_IA32
-mdefine_line|#define TIF_IA32&t;&t;18&t;/* 32bit process */ 
+mdefine_line|#define TIF_IA32&t;&t;17&t;/* 32bit process */ 
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -185,8 +188,6 @@ DECL|macro|_TIF_SINGLESTEP
 mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
-DECL|macro|_TIF_USEDFPU
-mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_IA32
@@ -197,6 +198,9 @@ DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE     0x4000000
+multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */
+DECL|macro|TS_USEDFPU
+mdefine_line|#define TS_USEDFPU&t;&t;0x0001&t;/* FPU was used by this task this quantum (SMP) */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof

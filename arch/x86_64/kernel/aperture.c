@@ -411,7 +411,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Your BIOS is broken and doesn&squot;t leave a aperture memory hole&bslash;n&quot;
+l_string|&quot;Your BIOS doesn&squot;t leave a aperture memory hole&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Please enable the IOMMU option in the BIOS setup&bslash;n&quot;
 )paren
 suffix:semicolon
 id|aper_alloc
