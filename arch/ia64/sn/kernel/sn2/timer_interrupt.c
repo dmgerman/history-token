@@ -72,12 +72,6 @@ comma
 id|LED_CPU_HEARTBEAT
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Blink&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond

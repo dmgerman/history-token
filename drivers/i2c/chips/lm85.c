@@ -81,14 +81,6 @@ comma
 id|adt7463
 )paren
 suffix:semicolon
-multiline_comment|/* Enable debug if true */
-DECL|variable|lm85debug
-r_static
-r_int
-id|lm85debug
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* The LM85 registers */
 DECL|macro|LM85_REG_IN
 mdefine_line|#define&t;LM85_REG_IN(nr)&t;&t;&t;(0x20 + (nr))
@@ -3128,16 +3120,13 @@ comma
 id|LM85_REG_VERSTEP
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85: Detecting device at %d,0x%02x with&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Detecting device at %d,0x%02x with&quot;
 l_string|&quot; COMPANY: 0x%02x and VERSTEP: 0x%02x&bslash;n&quot;
 comma
 id|i2c_adapter_id
@@ -3153,7 +3142,6 @@ comma
 id|verstep
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If auto-detecting, Determine the chip type. */
 r_if
 c_cond
@@ -3163,16 +3151,13 @@ op_le
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85: Autodetecting device at %d,0x%02x ...&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Autodetecting device at %d,0x%02x ...&bslash;n&quot;
 comma
 id|i2c_adapter_id
 c_func
@@ -3183,7 +3168,6 @@ comma
 id|address
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3236,10 +3220,13 @@ op_eq
 id|LM85_VERSTEP_GENERIC
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85: Unrecgonized version/stepping 0x%02x&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Unrecgonized version/stepping 0x%02x&quot;
 l_string|&quot; Defaulting to LM85.&bslash;n&quot;
 comma
 id|verstep
@@ -3303,10 +3290,13 @@ op_eq
 id|LM85_VERSTEP_GENERIC
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85: Unrecgonized version/stepping 0x%02x&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Unrecgonized version/stepping 0x%02x&quot;
 l_string|&quot; Defaulting to ADM1027.&bslash;n&quot;
 comma
 id|verstep
@@ -3334,29 +3324,28 @@ op_eq
 l_int|0x60
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85: Generic LM85 Version 6 detected&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Generic LM85 Version 6 detected&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Leave kind as &quot;any_chip&quot; */
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85: Autodetection failed&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Autodetection failed&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Not an LM85 ... */
 r_if
 c_cond
@@ -3367,10 +3356,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* User used force=x,y */
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85: Generic LM85 Version 6 not&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Generic LM85 Version 6 not&quot;
 l_string|&quot; found at %d,0x%02x. Try force_lm85c.&bslash;n&quot;
 comma
 id|i2c_adapter_id
@@ -3515,16 +3507,13 @@ op_amp
 id|data-&gt;update_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85: Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
 comma
 id|new_client-&gt;id
 comma
@@ -3539,7 +3528,6 @@ comma
 id|new_client-&gt;addr
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Tell the I2C layer a new client has arrived */
 r_if
 c_cond
@@ -4401,21 +4389,15 @@ c_func
 id|client
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85(%d): Initializing device&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Initializing device&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Warn if part was not &quot;READY&quot; */
 id|value
 op_assign
@@ -4427,23 +4409,17 @@ comma
 id|LM85_REG_CONFIG
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85(%d): LM85_REG_CONFIG is: 0x%02x&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;LM85_REG_CONFIG is: 0x%02x&bslash;n&quot;
 comma
 id|value
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4452,12 +4428,13 @@ op_amp
 l_int|0x02
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85(%d): Client (%d,0x%02x) config is locked.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Client (%d,0x%02x) config is locked.&bslash;n&quot;
 comma
 id|i2c_adapter_id
 c_func
@@ -4481,12 +4458,13 @@ l_int|0x04
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85(%d): Client (%d,0x%02x) is not ready.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Client (%d,0x%02x) is not ready.&bslash;n&quot;
 comma
 id|i2c_adapter_id
 c_func
@@ -4517,13 +4495,14 @@ id|adt7463
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;lm85(%d): Client (%d,0x%02x) VxI mode is set.  &quot;
-l_string|&quot;Please report this to the lm85 maintainer.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Client (%d,0x%02x) VxI mode is set.  &quot;
+l_string|&quot;Please report this to the lm85 maintainer.&bslash;n&quot;
 comma
 id|i2c_adapter_id
 c_func
@@ -4560,23 +4539,17 @@ l_int|0x02
 op_or
 l_int|0x01
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85(%d): Setting CONFIG to: 0x%02x&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Setting CONFIG to: 0x%02x&bslash;n&quot;
 comma
 id|value
 )paren
 suffix:semicolon
-)brace
 id|lm85_write_value
 c_func
 (paren
@@ -4636,21 +4609,15 @@ id|LM85_DATA_INTERVAL
 )paren
 (brace
 multiline_comment|/* Things that change quickly */
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85(%d): Reading sensor values&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Reading sensor values&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Have to read extended bits first to &quot;freeze&quot; the&n;&t;&t; * more significant bits that are read later.&n;&t;&t; */
 r_if
 c_cond
@@ -4874,21 +4841,15 @@ id|LM85_CONFIG_INTERVAL
 )paren
 (brace
 multiline_comment|/* Things that don&squot;t change often */
-r_if
-c_cond
-(paren
-id|lm85debug
-)paren
-(brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm85(%d): Reading config values&bslash;n&quot;
+op_amp
+id|client-&gt;dev
 comma
-id|client-&gt;id
+l_string|&quot;Reading config values&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -5574,22 +5535,6 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;LM85-B, LM85-C driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|lm85debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|lm85debug
-comma
-l_string|&quot;Enable debugging statements&quot;
 )paren
 suffix:semicolon
 DECL|variable|sm_lm85_init
