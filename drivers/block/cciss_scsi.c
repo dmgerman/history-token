@@ -2957,7 +2957,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
 DECL|function|cciss_scsi_detect
 id|cciss_scsi_detect
 c_func
