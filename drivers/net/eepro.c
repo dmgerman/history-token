@@ -6893,7 +6893,7 @@ multiline_comment|/* For linux 2.1.xx */
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Pascal Dupuis &lt;dupuis@lei.ucl.ac.be&gt; for the 2.1 stuff (locking,...)&quot;
+l_string|&quot;Pascal Dupuis, and aris@cathedrallabs.org&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
