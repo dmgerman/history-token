@@ -1664,7 +1664,7 @@ id|udev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_alloc_dev - usb device constructor (usbcore-internal)&n; * @parent: hub to which device is connected; null to allocate a root hub&n; * @bus: bus used to access the device&n; * @port: zero based index of port; ignored for root hubs&n; * Context: !in_interrupt ()&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call may not be used in a non-sleeping context.&n; */
+multiline_comment|/**&n; * usb_alloc_dev - usb device constructor (usbcore-internal)&n; * @parent: hub to which device is connected; null to allocate a root hub&n; * @bus: bus used to access the device&n; * @port1: one-based index of port; ignored for root hubs&n; * Context: !in_interrupt ()&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call may not be used in a non-sleeping context.&n; */
 r_struct
 id|usb_device
 op_star
@@ -1683,7 +1683,7 @@ op_star
 id|bus
 comma
 r_int
-id|port
+id|port1
 )paren
 (brace
 r_struct
@@ -1874,9 +1874,7 @@ id|dev-&gt;devpath
 comma
 l_string|&quot;%d&quot;
 comma
-id|port
-op_plus
-l_int|1
+id|port1
 )paren
 suffix:semicolon
 r_else
@@ -1891,9 +1889,7 @@ l_string|&quot;%s.%d&quot;
 comma
 id|parent-&gt;devpath
 comma
-id|port
-op_plus
-l_int|1
+id|port1
 )paren
 suffix:semicolon
 id|dev-&gt;dev.parent
