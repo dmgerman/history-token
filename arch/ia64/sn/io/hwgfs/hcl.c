@@ -37,7 +37,7 @@ id|vertex_hdl_t
 id|linux_busnum
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|pci_bus_cvlink_init
 c_func
 (paren
@@ -240,11 +240,28 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|pci_bus_cvlink_init
 c_func
 (paren
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;init_hcl: Failed to create pcibus cvlink.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Initialize the ifconfgi_net driver that does network devices &n;&t; * Persistent Naming.&n;&t; */
 id|init_ioconfig_bus
 c_func

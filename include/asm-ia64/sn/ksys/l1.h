@@ -102,22 +102,40 @@ multiline_comment|/* request codes */
 DECL|macro|L1_REQ_EXEC_CMD
 mdefine_line|#define L1_REQ_EXEC_CMD&t;&t;0x0000&t;/* interpret and execute an ASCII&n;&t;&t;&t;&t;&t;   command string */
 multiline_comment|/* brick type response codes */
+DECL|macro|L1_BRICKTYPE_PX
+mdefine_line|#define L1_BRICKTYPE_PX         0x23            /* # */
+DECL|macro|L1_BRICKTYPE_PE
+mdefine_line|#define L1_BRICKTYPE_PE         0x25            /* % */
+DECL|macro|L1_BRICKTYPE_N_p0
+mdefine_line|#define L1_BRICKTYPE_N_p0       0x26            /* &amp; */
 DECL|macro|L1_BRICKTYPE_IP45
 mdefine_line|#define L1_BRICKTYPE_IP45       0x34            /* 4 */
-DECL|macro|L1_BRICKTYPE_C
-mdefine_line|#define L1_BRICKTYPE_C          0x43            /* C */
-DECL|macro|L1_BRICKTYPE_R
-mdefine_line|#define L1_BRICKTYPE_R          0x52            /* R */
-DECL|macro|L1_BRICKTYPE_CHI_CG
-mdefine_line|#define L1_BRICKTYPE_CHI_CG     0x76            /* v */
-DECL|macro|L1_BRICKTYPE_N
-mdefine_line|#define L1_BRICKTYPE_N          0x4e            /* N */
-DECL|macro|L1_BRICKTYPE_PX
-mdefine_line|#define L1_BRICKTYPE_PX&t;&t;0x23&t;&t;/* # */
+DECL|macro|L1_BRICKTYPE_IP41
+mdefine_line|#define L1_BRICKTYPE_IP41       0x35            /* 5 */
+DECL|macro|L1_BRICKTYPE_TWISTER
+mdefine_line|#define L1_BRICKTYPE_TWISTER    0x36            /* 6 */ /* IP53 &amp; ROUTER */
 DECL|macro|L1_BRICKTYPE_IX
-mdefine_line|#define L1_BRICKTYPE_IX&t;&t;0x3d&t;&t;/* = */
+mdefine_line|#define L1_BRICKTYPE_IX         0x3d            /* = */
+DECL|macro|L1_BRICKTYPE_IP34
+mdefine_line|#define L1_BRICKTYPE_IP34       0x61            /* a */
+DECL|macro|L1_BRICKTYPE_C
+mdefine_line|#define L1_BRICKTYPE_C          0x63            /* c */
+DECL|macro|L1_BRICKTYPE_I
+mdefine_line|#define L1_BRICKTYPE_I          0x69            /* i */
+DECL|macro|L1_BRICKTYPE_N
+mdefine_line|#define L1_BRICKTYPE_N          0x6e            /* n */
 DECL|macro|L1_BRICKTYPE_OPUS
 mdefine_line|#define L1_BRICKTYPE_OPUS       0x6f&t;&t;/* o */
+DECL|macro|L1_BRICKTYPE_P
+mdefine_line|#define L1_BRICKTYPE_P          0x70            /* p */
+DECL|macro|L1_BRICKTYPE_R
+mdefine_line|#define L1_BRICKTYPE_R          0x72            /* r */
+DECL|macro|L1_BRICKTYPE_CHI_CG
+mdefine_line|#define L1_BRICKTYPE_CHI_CG     0x76            /* v */
+DECL|macro|L1_BRICKTYPE_X
+mdefine_line|#define L1_BRICKTYPE_X          0x78            /* x */
+DECL|macro|L1_BRICKTYPE_X2
+mdefine_line|#define L1_BRICKTYPE_X2         0x79            /* y */
 multiline_comment|/* EEPROM codes (for the &quot;read EEPROM&quot; request) */
 multiline_comment|/* c brick */
 DECL|macro|L1_EEP_NODE

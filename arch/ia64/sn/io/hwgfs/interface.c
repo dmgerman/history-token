@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 r_extern
 r_struct
@@ -1128,14 +1127,16 @@ suffix:colon
 id|hwgfs_vfsmount-&gt;mnt_sb-&gt;s_root
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|traverse_symlinks
-)paren
 id|nd.flags
 op_assign
+(paren
+id|traverse_symlinks
+ques
+c_cond
 id|LOOKUP_FOLLOW
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 id|error
 op_assign
