@@ -1729,10 +1729,10 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set up a new TCP connection, depending on whether it should be&n; * using Vegas or not.&n; */
-DECL|function|tcp_vegas_init
+multiline_comment|/* When starting a new connection, pin down the current choice of &n; * congestion algorithm.&n; */
+DECL|function|tcp_ca_init
 r_void
-id|tcp_vegas_init
+id|tcp_ca_init
 c_func
 (paren
 r_struct
@@ -1744,12 +1744,32 @@ id|tp
 r_if
 c_cond
 (paren
+id|sysctl_tcp_westwood
+)paren
+id|tp-&gt;adv_cong
+op_assign
+id|TCP_WESTWOOD
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|sysctl_tcp_bic
+)paren
+id|tp-&gt;adv_cong
+op_assign
+id|TCP_BIC
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|sysctl_tcp_vegas_cong_avoid
 )paren
 (brace
-id|tp-&gt;vegas.do_vegas
+id|tp-&gt;adv_cong
 op_assign
-l_int|1
+id|TCP_VEGAS
 suffix:semicolon
 id|tp-&gt;vegas.baseRTT
 op_assign
@@ -1762,13 +1782,6 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-r_else
-id|tcp_vegas_disable
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Do RTT sampling needed for Vegas.&n; * Basically we:&n; *   o min-filter RTT samples from within an RTT to get the current&n; *     propagation delay + queuing delay (we are min-filtering to try to&n; *     avoid the effects of delayed ACKs)&n; *   o min-filter RTT samples from a much longer window (forever for now)&n; *     to find the propagation delay (baseRTT)&n; */
 DECL|function|vegas_rtt_calc
@@ -7803,7 +7816,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sysctl_tcp_bic
+id|tcp_is_bic
+c_func
+(paren
+id|tp
+)paren
 )paren
 r_return
 id|tp-&gt;snd_cwnd
