@@ -302,29 +302,24 @@ r_struct
 id|tcp_tw_bucket
 (brace
 multiline_comment|/* These _must_ match the beginning of struct sock precisely.&n;&t; * XXX Yes I know this is gross, but I&squot;d have to edit every single&n;&t; * XXX networking file if I created a &quot;struct sock_header&quot;. -DaveM&n;&t; */
+DECL|member|family
+r_int
+r_int
+id|family
+suffix:semicolon
 DECL|member|state
 r_volatile
 r_int
 r_char
 id|state
-comma
-multiline_comment|/* Connection state&t;      */
-DECL|member|substate
-id|substate
 suffix:semicolon
-multiline_comment|/* &quot;zapped&quot; -&gt; &quot;substate&quot;     */
+multiline_comment|/* Connection state&t;      */
 DECL|member|reuse
 r_int
 r_char
 id|reuse
 suffix:semicolon
 multiline_comment|/* SO_REUSEADDR setting       */
-DECL|member|rcv_wscale
-r_int
-r_char
-id|rcv_wscale
-suffix:semicolon
-multiline_comment|/* also TW bucket specific    */
 DECL|member|bound_dev_if
 r_int
 id|bound_dev_if
@@ -360,12 +355,18 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-DECL|member|family
-r_int
-r_int
-id|family
-suffix:semicolon
 multiline_comment|/* End of struct sock/struct tcp_tw_bucket shared layout */
+DECL|member|substate
+r_volatile
+r_int
+r_char
+id|substate
+suffix:semicolon
+DECL|member|rcv_wscale
+r_int
+r_char
+id|rcv_wscale
+suffix:semicolon
 DECL|member|sport
 id|__u16
 id|sport

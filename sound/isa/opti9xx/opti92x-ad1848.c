@@ -19,10 +19,8 @@ macro_line|#endif&t;/* OPTi93X */
 macro_line|#endif&t;/* CS4231 */
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
-macro_line|#ifdef USE_OPL4
 macro_line|#ifndef OPTi93X
-macro_line|#include &quot;opl4.h&quot; /* &lt;sound/opl4.h&gt; */
-macro_line|#endif
+macro_line|#include &lt;sound/opl4.h&gt;
 macro_line|#endif
 DECL|macro|SNDRV_LEGACY_FIND_FREE_IRQ
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
@@ -793,8 +791,6 @@ op_assign
 id|SNDRV_DEFAULT_PTR1
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
-DECL|macro|ISAPNP_OPTI9XX
-mdefine_line|#define ISAPNP_OPTI9XX(_va, _vb, _vc, _device, _fa, _fb, _fc, _audio, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_fa, _fb, _fc, _audio), &bslash;&n;&t;&t;&t;ISAPNP_DEVICE_ID(_fa, _fb, _fc, _mpu401), } &bslash;&n;&t;}
 DECL|variable|snd_opti9xx_pnpids
 r_static
 r_struct
@@ -3918,14 +3914,31 @@ id|what
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|pos
+suffix:semicolon
 id|snd_pcm_substream_t
 op_star
 id|s
-op_assign
-id|substream
 suffix:semicolon
-r_do
+id|snd_pcm_group_for_each
+c_func
+(paren
+id|pos
+comma
+id|substream
+)paren
 (brace
+id|s
+op_assign
+id|snd_pcm_group_substream_entry
+c_func
+(paren
+id|pos
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3969,19 +3982,7 @@ id|substream
 )paren
 suffix:semicolon
 )brace
-id|s
-op_assign
-id|s-&gt;link_next
-suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|s
-op_ne
-id|substream
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -9560,6 +9561,8 @@ c_cond
 (paren
 id|isapnp
 op_logical_and
+id|pcard
+op_logical_and
 (paren
 id|hw
 op_assign
@@ -10441,7 +10444,6 @@ id|opl3
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef USE_OPL4
 macro_line|#ifndef OPTi93X
 r_if
 c_cond
@@ -10526,7 +10528,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* !OPTi93X */
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10865,6 +10866,7 @@ id|cards
 comma
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 id|cards
 op_assign
 id|pnp_register_card_driver
@@ -10874,6 +10876,12 @@ op_amp
 id|opti9xx_pnpc_driver
 )paren
 suffix:semicolon
+macro_line|#else
+id|cards
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10896,6 +10904,15 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|opti9xx_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MODULE
 macro_line|#ifdef OPTi93X
 id|printk

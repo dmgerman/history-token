@@ -49,7 +49,7 @@ DECL|macro|SNDRV_DEFAULT_ENABLE
 mdefine_line|#define SNDRV_DEFAULT_ENABLE&t;{ 1, [1 ... (SNDRV_CARDS-1)] = 0 }
 DECL|macro|SNDRV_DEFAULT_ENABLE_PNP
 mdefine_line|#define SNDRV_DEFAULT_ENABLE_PNP { [0 ... (SNDRV_CARDS-1)] = 1 }
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|macro|SNDRV_DEFAULT_ENABLE_ISAPNP
 mdefine_line|#define SNDRV_DEFAULT_ENABLE_ISAPNP SNDRV_DEFAULT_ENABLE_PNP
 macro_line|#else
