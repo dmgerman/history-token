@@ -437,11 +437,7 @@ op_logical_and
 id|GET_ESID
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren
@@ -480,11 +476,7 @@ op_assign
 id|GET_ESID
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren
@@ -2188,11 +2180,7 @@ r_else
 (brace
 id|sp
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren
@@ -2308,7 +2296,7 @@ r_int
 r_int
 op_star
 )paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren

@@ -1433,11 +1433,7 @@ op_eq
 id|GET_ESID
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren

@@ -2127,11 +2127,7 @@ id|sp
 suffix:semicolon
 id|sp
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|_get_SP
+id|__get_SP
 c_func
 (paren
 )paren
