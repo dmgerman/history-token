@@ -708,6 +708,20 @@ op_star
 )paren
 id|data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
+l_int|32768
+)paren
+(brace
+multiline_comment|/* Stupidity filter */
+id|count
+op_assign
+l_int|32768
+suffix:semicolon
+)brace
 id|string
 op_assign
 id|sp
