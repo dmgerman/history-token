@@ -3014,14 +3014,17 @@ id|err
 suffix:semicolon
 )brace
 DECL|macro|HANDLE_IOCTL
-mdefine_line|#define HANDLE_IOCTL(cmd,handler) { (cmd), (ioctl_trans_handler_t)(handler), NULL },
+mdefine_line|#define HANDLE_IOCTL(cmd,handler) { (cmd), (ioctl_trans_handler_t)(handler) }, 
 DECL|macro|COMPATIBLE_IOCTL
 mdefine_line|#define COMPATIBLE_IOCTL(cmd) HANDLE_IOCTL(cmd,sys_ioctl)
-DECL|macro|IOCTL_TABLE_START
-mdefine_line|#define IOCTL_TABLE_START struct ioctl_trans ioctl_start[] = {
-DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END  };
-id|IOCTL_TABLE_START
+DECL|variable|ioctl_start
+r_struct
+id|ioctl_trans
+id|ioctl_start
+(braket
+)braket
+op_assign
+(brace
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 DECL|macro|DECLARES
 mdefine_line|#define DECLARES
@@ -3423,7 +3426,9 @@ id|MTRRIOC32_KILL_PAGE_ENTRY
 comma
 id|mtrr_ioctl32
 )paren
-id|IOCTL_TABLE_END
+)brace
+suffix:semicolon
+DECL|variable|ioctl_table_size
 r_int
 id|ioctl_table_size
 op_assign

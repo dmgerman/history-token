@@ -91,6 +91,8 @@ DECL|macro|X86_FEATURE_CYRIX_ARR
 mdefine_line|#define X86_FEATURE_CYRIX_ARR&t;(3*32+ 2) /* Cyrix ARRs (= MTRRs) */
 DECL|macro|X86_FEATURE_CENTAUR_MCR
 mdefine_line|#define X86_FEATURE_CENTAUR_MCR&t;(3*32+ 3) /* Centaur MCRs (= MTRRs) */
+DECL|macro|X86_FEATURE_K8_C
+mdefine_line|#define X86_FEATURE_K8_C&t;(3*32+ 4) /* C stepping K8 */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)                test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has
