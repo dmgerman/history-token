@@ -142,7 +142,7 @@ r_return
 id|pdev-&gt;slot_name
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @mem_flags: SLAB_* flags.&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
+multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * Context: !in_interrupt()&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
 r_struct
 id|pci_pool
 op_star
@@ -167,9 +167,6 @@ id|align
 comma
 r_int
 id|allocation
-comma
-r_int
-id|mem_flags
 )paren
 (brace
 r_struct
@@ -289,7 +286,7 @@ r_sizeof
 op_star
 id|retval
 comma
-id|mem_flags
+id|SLAB_KERNEL
 )paren
 )paren
 )paren

@@ -1327,6 +1327,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;UART_ENABLE_MS - determine if port should enable modem status irqs&n; */
 DECL|macro|UART_ENABLE_MS
-mdefine_line|#define UART_ENABLE_MS(port,cflag)&t;((port)-&gt;flags &amp; UPF_HARDPPS_CD || &bslash;&n;&t;&t;&t;&t;&t; (cflag) &amp; CRTSCTS || &bslash;&n;&t;&t;&t;&t;&t; !(cflag) &amp; CLOCAL)
+mdefine_line|#define UART_ENABLE_MS(port,cflag)&t;((port)-&gt;flags &amp; UPF_HARDPPS_CD || &bslash;&n;&t;&t;&t;&t;&t; (cflag) &amp; CRTSCTS || &bslash;&n;&t;&t;&t;&t;&t; !((cflag) &amp; CLOCAL))
 macro_line|#endif
 eof
