@@ -366,7 +366,7 @@ c_cond
 id|dev_priv-&gt;ring.virtual_start
 )paren
 (brace
-id|DRM_IOREMAPFREE
+id|drm_core_ioremapfree
 c_func
 (paren
 op_amp
@@ -501,10 +501,12 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-id|DRM_FIND_MAP
+id|dev_priv-&gt;mmio_map
+op_assign
+id|drm_core_findmap
 c_func
 (paren
-id|dev_priv-&gt;mmio_map
+id|dev
 comma
 id|init-&gt;mmio_offset
 )paren
@@ -598,7 +600,7 @@ id|dev_priv-&gt;ring.map.mtrr
 op_assign
 l_int|0
 suffix:semicolon
-id|DRM_IOREMAP
+id|drm_core_ioremap
 c_func
 (paren
 op_amp
