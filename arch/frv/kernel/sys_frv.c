@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/frvnommu/kernel/sys_frv.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/FRV&n; * platform.&n; */
+multiline_comment|/* sys_frv.c: FRV arch-specific syscall wrappers&n; *&n; * Copyright (C) 2003-5 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; * - Derived from arch/m68k/kernel/sys_m68k.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
