@@ -409,7 +409,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wdt_interrupt:&n; *&t;@irq:&t;&t;Interrupt number&n; *&t;@dev_id:&t;Unused as we don&squot;t allow multiple devices.&n; *&t;@regs:&t;&t;Unused.&n; *&n; *&t;Handle an interrupt from the board. These are raised when the status&n; *&t;map changes in what the board considers an interesting way. That means&n; *&t;a failure condition occurring.&n; */
 DECL|function|wdt_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|wdt_interrupt
 c_func
 (paren
@@ -581,7 +582,10 @@ id|KERN_CRIT
 l_string|&quot;Reset in 5ms.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wdt_ping:&n; *&n; *&t;Reload counter one with the watchdog timeout. We don&squot;t bother reloading&n; *&t;the cascade counter. &n; */
 DECL|function|wdt_ping
