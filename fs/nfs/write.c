@@ -5251,7 +5251,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NFS: Server wrote less than requested.&bslash;n&quot;
+l_string|&quot;NFS: Server wrote zero bytes, expected %u.&bslash;n&quot;
+comma
+id|argp-&gt;count
 )paren
 suffix:semicolon
 id|complain
