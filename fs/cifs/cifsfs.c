@@ -20,6 +20,14 @@ macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|CIFS_MAGIC_NUMBER
 mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of all SMB PDUs */
+macro_line|#ifdef CIFS_QUOTA
+DECL|variable|cifs_quotactl_ops
+r_static
+r_struct
+id|quotactl_ops
+id|cifs_quotactl_ops
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_struct
 id|file_system_type
@@ -49,6 +57,13 @@ r_int
 id|oplockEnabled
 op_assign
 l_int|1
+suffix:semicolon
+DECL|variable|quotaEnabled
+r_int
+r_int
+id|quotaEnabled
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|lookupCacheEnabled
 r_int
@@ -290,6 +305,13 @@ op_amp
 id|cifs_super_ops
 suffix:semicolon
 multiline_comment|/*&t;if(cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf &gt; MAX_CIFS_HDR_SIZE + 512)&n;&t;    sb-&gt;s_blocksize = cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE; */
+macro_line|#ifdef CIFS_QUOTA
+id|sb-&gt;s_qcop
+op_assign
+op_amp
+id|cifs_quotactl_ops
+suffix:semicolon
+macro_line|#endif
 id|sb-&gt;s_blocksize
 op_assign
 id|CIFS_MAX_MSGSIZE
@@ -887,6 +909,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CIFS_QUOTA
 DECL|function|cifs_xquota_set
 r_int
 id|cifs_xquota_set
@@ -962,14 +985,27 @@ c_cond
 id|pTcon
 )paren
 (brace
-id|rc
-op_assign
-op_minus
-id|EIO
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set type: 0x%x id: %d&quot;
+comma
+id|quota_type
+comma
+id|qid
+)paren
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 )brace
 id|FreeXid
 c_func
@@ -1056,14 +1092,28 @@ c_cond
 id|pTcon
 )paren
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set type: 0x%x id: %d&quot;
+comma
+id|quota_type
+comma
+id|qid
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-)brace
-r_else
-(brace
 )brace
 id|FreeXid
 c_func
@@ -1146,14 +1196,28 @@ c_cond
 id|pTcon
 )paren
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;flags: 0x%x operation: 0x%x&quot;
+comma
+id|flags
+comma
+id|operation
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-)brace
-r_else
-(brace
 )brace
 id|FreeXid
 c_func
@@ -1217,10 +1281,12 @@ id|cifs_sb-&gt;tcon
 suffix:semicolon
 )brace
 r_else
+(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 id|xid
 op_assign
 id|GetXid
@@ -1234,14 +1300,26 @@ c_cond
 id|pTcon
 )paren
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;pqstats %p&quot;
+comma
+id|qstats
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
-)brace
-r_else
-(brace
 )brace
 id|FreeXid
 c_func
@@ -1282,6 +1360,7 @@ id|cifs_xstate_get
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|cifs_super_ops
 r_struct
 id|super_operations
