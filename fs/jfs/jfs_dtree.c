@@ -10980,6 +10980,44 @@ id|d_namleft
 op_sub_assign
 id|len
 suffix:semicolon
+multiline_comment|/* Sanity Check */
+r_if
+c_cond
+(paren
+id|d_namleft
+op_eq
+l_int|0
+)paren
+(brace
+id|jERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;JFS:Dtree error: &quot;
+l_string|&quot;ino = %ld, bn=%Ld, index = %d&bslash;n&quot;
+comma
+id|ip-&gt;i_ino
+comma
+id|bn
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|updateSuper
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+id|FM_DIRTY
+)paren
+suffix:semicolon
+r_goto
+id|skip_one
+suffix:semicolon
+)brace
 id|len
 op_assign
 id|min
@@ -11039,6 +11077,8 @@ id|DT_UNKNOWN
 r_goto
 id|out
 suffix:semicolon
+id|skip_one
+suffix:colon
 r_if
 c_cond
 (paren
