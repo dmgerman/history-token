@@ -366,6 +366,10 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|limit
+r_int
+id|limit
+suffix:semicolon
 multiline_comment|/* read-write data: */
 DECL|member|____cacheline_aligned_in_smp
 id|spinlock_t
@@ -432,6 +436,11 @@ op_assign
 l_string|&quot;input&quot;
 comma
 dot
+id|limit
+op_assign
+l_int|1
+comma
+dot
 id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
@@ -462,6 +471,11 @@ dot
 id|name
 op_assign
 l_string|&quot;blocking&quot;
+comma
+dot
+id|limit
+op_assign
+l_int|1
 comma
 dot
 id|lock
@@ -6595,8 +6609,6 @@ DECL|macro|EXTRACT_ENTROPY_USER
 mdefine_line|#define EXTRACT_ENTROPY_USER&t;&t;1
 DECL|macro|EXTRACT_ENTROPY_SECONDARY
 mdefine_line|#define EXTRACT_ENTROPY_SECONDARY&t;2
-DECL|macro|EXTRACT_ENTROPY_LIMIT
-mdefine_line|#define EXTRACT_ENTROPY_LIMIT&t;&t;4
 DECL|macro|TMP_BUF_SIZE
 mdefine_line|#define TMP_BUF_SIZE&t;&t;&t;(HASH_BUFFER_SIZE + HASH_EXTRA_SIZE)
 DECL|macro|SEC_XFER_SIZE
@@ -6686,6 +6698,18 @@ id|TMP_BUF_SIZE
 )paren
 )paren
 suffix:semicolon
+r_int
+id|rsvd
+op_assign
+id|r-&gt;limit
+ques
+c_cond
+l_int|0
+suffix:colon
+id|random_read_wakeup_thresh
+op_div
+l_int|4
+suffix:semicolon
 id|DEBUG_ENT
 c_func
 (paren
@@ -6721,9 +6745,9 @@ id|random_read_wakeup_thresh
 op_div
 l_int|8
 comma
-l_int|0
+id|rsvd
 comma
-id|EXTRACT_ENTROPY_LIMIT
+l_int|0
 )paren
 suffix:semicolon
 id|add_entropy_words
@@ -6881,9 +6905,7 @@ multiline_comment|/* If limited, never pull more than available */
 r_if
 c_cond
 (paren
-id|flags
-op_amp
-id|EXTRACT_ENTROPY_LIMIT
+id|r-&gt;limit
 op_logical_and
 id|nbytes
 op_plus
@@ -6951,9 +6973,7 @@ l_int|8
 comma
 id|r-&gt;name
 comma
-id|flags
-op_amp
-id|EXTRACT_ENTROPY_LIMIT
+id|r-&gt;limit
 ques
 c_cond
 l_string|&quot;&quot;
@@ -7740,8 +7760,6 @@ l_int|0
 comma
 id|EXTRACT_ENTROPY_USER
 op_or
-id|EXTRACT_ENTROPY_LIMIT
-op_or
 id|EXTRACT_ENTROPY_SECONDARY
 )paren
 suffix:semicolon
@@ -7909,44 +7927,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_int
-id|flags
-op_assign
-id|EXTRACT_ENTROPY_USER
-suffix:semicolon
-r_int
-r_int
-id|cpuflags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|input_pool.lock
-comma
-id|cpuflags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|input_pool.entropy_count
-OG
-id|input_pool.poolinfo-&gt;POOLBITS
-)paren
-id|flags
-op_or_assign
-id|EXTRACT_ENTROPY_SECONDARY
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|input_pool.lock
-comma
-id|cpuflags
-)paren
-suffix:semicolon
 r_return
 id|extract_entropy
 c_func
@@ -7962,7 +7942,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|flags
+id|EXTRACT_ENTROPY_USER
 )paren
 suffix:semicolon
 )brace
