@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; *&n; *  Complications for I2O scsi&n; *&n; *&t;o&t;Each (bus,lun) is a logical device in I2O. We keep a map&n; *&t;&t;table. We spoof failed selection for unmapped units&n; *&t;o&t;Request sense buffers can come back for free. &n; *&t;o&t;Scatter gather is a bit dynamic. We have to investigate at&n; *&t;&t;setup time.&n; *&t;o&t;Some of our resources are dynamically shared. The i2o core&n; *&t;&t;needs a message reservation protocol to avoid swap v net&n; *&t;&t;deadlocking. We need to back off queue requests.&n; *&t;&n; *&t;In general the firmware wants to help. Where its help isn&squot;t performance&n; *&t;useful we just ignore the aid. Its not worth the code in truth.&n; *&n; *&t;Fixes:&n; *&t;&t;Steve Ralston&t;:&t;Scatter gather now works&n; *&n; *&t;To Do&n; *&t;&t;64bit cleanups&n; *&t;&t;Fix the resource management problems.&n; */
+multiline_comment|/* &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; *&n; *  Complications for I2O scsi&n; *&n; *&t;o&t;Each (bus,lun) is a logical device in I2O. We keep a map&n; *&t;&t;table. We spoof failed selection for unmapped units&n; *&t;o&t;Request sense buffers can come back for free. &n; *&t;o&t;Scatter gather is a bit dynamic. We have to investigate at&n; *&t;&t;setup time.&n; *&t;o&t;Some of our resources are dynamically shared. The i2o core&n; *&t;&t;needs a message reservation protocol to avoid swap v net&n; *&t;&t;deadlocking. We need to back off queue requests.&n; *&t;&n; *&t;In general the firmware wants to help. Where its help isn&squot;t performance&n; *&t;useful we just ignore the aid. Its not worth the code in truth.&n; *&n; * Fixes/additions:&n; *&t;Steve Ralston:&n; *&t;&t;Scatter gather now works&n; *&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;:&n; *&t;&t;Minor fixes for 2.6.&n; *&n; * To Do:&n; *&t;64bit cleanups&n; *&t;Fix the resource management problems.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -24,8 +24,14 @@ macro_line|#error FIXME: driver does not support 64-bit platforms
 macro_line|#endif
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 0.1.2&quot;
+singleline_comment|//#define DRIVERDEBUG
+macro_line|#ifdef DRIVERDEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(x)
+mdefine_line|#define dprintk(s, args...) printk(s, ## args)
+macro_line|#else
+DECL|macro|dprintk
+mdefine_line|#define dprintk(s, args...)
+macro_line|#endif
 DECL|macro|I2O_SCSI_CAN_QUEUE
 mdefine_line|#define I2O_SCSI_CAN_QUEUE&t;4
 DECL|macro|MAXHOSTS
@@ -826,7 +832,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;i2o got a scsi reply %08X: &quot;
 comma
 id|m
@@ -834,12 +840,11 @@ id|m
 l_int|0
 )braket
 )paren
-)paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;m[2]=%08X: &quot;
 comma
 id|m
@@ -847,19 +852,17 @@ id|m
 l_int|2
 )braket
 )paren
-)paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;m[4]=%08X&bslash;n&quot;
 comma
 id|m
 (braket
 l_int|4
 )braket
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -887,9 +890,8 @@ l_int|0x40000000
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Event.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|lun_done
@@ -939,7 +941,7 @@ id|st
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_WARNING
 l_string|&quot;SCSI abort: %08X&quot;
 comma
 id|m
@@ -947,15 +949,13 @@ id|m
 l_int|4
 )braket
 )paren
-)paren
 suffix:semicolon
 )brace
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;SCSI abort completed.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -964,11 +964,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Completed %ld&bslash;n&quot;
 comma
 id|current_command-&gt;serial_number
-)paren
 )paren
 suffix:semicolon
 id|atomic_dec
@@ -1078,15 +1077,13 @@ multiline_comment|/* An error has occurred */
 id|dprintk
 c_func
 (paren
-(paren
-id|KERN_DEBUG
+id|KERN_WARNING
 l_string|&quot;SCSI error %08X&quot;
 comma
 id|m
 (braket
 l_int|4
 )braket
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1350,7 +1347,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;SCSI (%d,%d)&bslash;n&quot;
 comma
 op_star
@@ -1358,7 +1355,6 @@ id|target
 comma
 op_star
 id|lun
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1479,7 +1475,7 @@ id|unit-&gt;next
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Class %03X, parent %d, want %d.&bslash;n&quot;
 comma
 id|unit-&gt;lct_data.class_id
@@ -1487,7 +1483,6 @@ comma
 id|unit-&gt;lct_data.parent_tid
 comma
 id|d-&gt;lct_data.tid
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Only look at scsi and fc devices */
@@ -1512,11 +1507,10 @@ multiline_comment|/* On our bus ? */
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Found a disk (%d).&bslash;n&quot;
 comma
 id|unit-&gt;lct_data.tid
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1541,9 +1535,8 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Its ours.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1582,13 +1575,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Found disk %d %d.&bslash;n&quot;
 comma
 id|target
 comma
 id|lun
-)paren
 )paren
 suffix:semicolon
 id|h-&gt;task
@@ -1657,11 +1649,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;i2o_scsi: set scatter-gather to %d.&bslash;n&quot;
 comma
 id|shpnt-&gt;sg_tablesize
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2075,6 +2066,12 @@ id|i2o_scsi_handler
 )paren
 suffix:semicolon
 )brace
+id|scsi_unregister
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2271,11 +2268,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;qcmd: Tid = %d&bslash;n&quot;
 comma
 id|tid
-)paren
 )paren
 suffix:semicolon
 id|current_command
@@ -2333,9 +2329,8 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Real scsi messages.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Obtain an I2O message. If there are none free then &n;&t; *&t;throw it back to the scsi layer&n;&t; */
@@ -3029,13 +3024,12 @@ r_else
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;non sg for %p, %d&bslash;n&quot;
 comma
 id|SCpnt-&gt;request_buffer
 comma
 id|SCpnt-&gt;request_bufflen
-)paren
 )paren
 suffix:semicolon
 id|i2o_raw_writel
@@ -3203,11 +3197,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-(paren
+id|KERN_INFO
 l_string|&quot;Issued %ld&bslash;n&quot;
 comma
 id|current_command-&gt;serial_number
-)paren
 )paren
 suffix:semicolon
 r_return
