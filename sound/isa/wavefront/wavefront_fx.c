@@ -451,7 +451,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|hw-&gt;card-&gt;module

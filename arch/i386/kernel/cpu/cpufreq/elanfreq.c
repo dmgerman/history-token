@@ -320,7 +320,7 @@ id|clock
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+l_int|0
 suffix:semicolon
 multiline_comment|/* elanfreq.c is UP only driver */
 id|cpufreq_notify_transition

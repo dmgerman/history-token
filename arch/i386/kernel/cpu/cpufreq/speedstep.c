@@ -324,7 +324,7 @@ id|speedstep_low_freq
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+l_int|0
 suffix:semicolon
 multiline_comment|/* speedstep.c is UP only driver */
 r_if

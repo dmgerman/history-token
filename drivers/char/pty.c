@@ -225,8 +225,6 @@ id|NR_PTYS
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|function|pty_close
 r_static
 r_void
@@ -397,7 +395,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-id|tty_unregister_devfs
+id|tty_unregister_device
 (paren
 op_amp
 id|tty-&gt;link-&gt;driver
@@ -601,7 +599,7 @@ r_break
 suffix:semicolon
 id|n
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|n
@@ -1185,6 +1183,23 @@ id|to-&gt;read_wait
 suffix:semicolon
 )brace
 )brace
+r_extern
+r_void
+id|tty_register_devfs
+(paren
+r_struct
+id|tty_driver
+op_star
+id|driver
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+id|minor
+)paren
+suffix:semicolon
 DECL|function|pty_open
 r_static
 r_int

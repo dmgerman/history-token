@@ -271,7 +271,7 @@ id|scmd-&gt;host-&gt;host_failed
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_block_when_processing_errors - Prevent cmds from being queued.&n; * @sdev:&t;Device on which we are performing recovery.&n; *&n; * Description:&n; *     We block until the host is out of error recovery, and then check to&n; *     see whether the host or the device is offline.&n; *&n; * Return value:&n; *     FALSE when dev was taken offline by error recovery. TRUE OK to&n; *     proceed.&n; **/
+multiline_comment|/**&n; * scsi_block_when_processing_errors - Prevent cmds from being queued.&n; * @sdev:&t;Device on which we are performing recovery.&n; *&n; * Description:&n; *     We block until the host is out of error recovery, and then check to&n; *     see whether the host or the device is offline.&n; *&n; * Return value:&n; *     0 when dev was taken offline by error recovery. 1 OK to proceed.&n; **/
 DECL|function|scsi_block_when_processing_errors
 r_int
 id|scsi_block_when_processing_errors
@@ -3192,7 +3192,7 @@ l_int|24
 suffix:semicolon
 id|scmd-&gt;device-&gt;online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|scsi_eh_finish_cmd
 c_func
@@ -3345,9 +3345,8 @@ multiline_comment|/*&n;&t; * if the device is offline, then we clearly just pass
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scmd-&gt;device-&gt;online
-op_eq
-id|FALSE
 )paren
 (brace
 id|SCSI_LOG_ERROR_RECOVERY

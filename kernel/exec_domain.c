@@ -290,7 +290,7 @@ id|ep-&gt;pers_high
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ep-&gt;module
@@ -367,7 +367,7 @@ id|ep-&gt;pers_high
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ep-&gt;module

@@ -105,14 +105,5 @@ mdefine_line|#define RTC_VALID&t;RTC_REG_D
 DECL|macro|RTC_VRT
 macro_line|# define RTC_VRT 0x80&t;&t;/* valid RAM and time */
 multiline_comment|/**********************************************************************/
-multiline_comment|/* example: !(CMOS_READ(RTC_CONTROL) &amp; RTC_DM_BINARY) &n; * determines if the following two #defines are needed&n; */
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) ((val)=((val)&amp;15) + ((val)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((val)=(((val)/10)&lt;&lt;4) + (val)%10)
-macro_line|#endif
 macro_line|#endif /* _MC146818RTC_H */
 eof

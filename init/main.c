@@ -1301,6 +1301,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Mark the boot cpu &quot;online&quot; so that it can call console drivers in&n;&t; * printk() and can access its per-cpu storage.&n;&t; */
+id|smp_prepare_boot_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|build_all_zonelists
 c_func
 (paren

@@ -1,6 +1,22 @@
 macro_line|#ifndef __ASM_MACH_MPPARSE_H
 DECL|macro|__ASM_MACH_MPPARSE_H
 mdefine_line|#define __ASM_MACH_MPPARSE_H
+r_static
+r_void
+id|__init
+id|smp_read_mpc_oem
+c_func
+(paren
+r_struct
+id|mp_config_oemtable
+op_star
+id|oemtable
+comma
+r_int
+r_int
+id|oemsize
+)paren
+suffix:semicolon
 DECL|function|mpc_oem_bus_info
 r_static
 r_inline

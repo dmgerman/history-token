@@ -1189,13 +1189,11 @@ id|index
 op_assign
 id|i
 suffix:semicolon
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 op_amp
 id|hvc_driver
-comma
-l_int|0
 comma
 id|hvc_driver.minor_start
 op_plus

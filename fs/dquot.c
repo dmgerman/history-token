@@ -187,8 +187,8 @@ c_cond
 id|actqf
 op_logical_and
 op_logical_neg
-id|try_inc_mod_count
-c_func
+id|try_module_get
+suffix:colon
 (paren
 id|actqf-&gt;qf_owner
 )paren

@@ -377,6 +377,12 @@ DECL|struct|i2c_driver
 r_struct
 id|i2c_driver
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 id|name
@@ -440,33 +446,6 @@ comma
 r_void
 op_star
 id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* These two are mainly used for bookkeeping &amp; dynamic unloading of &n;&t; * kernel modules. inc_use tells the driver that a client is being  &n;&t; * used by another module &amp; that it should increase its ref. counter.&n;&t; * dec_use is the inverse operation.&n;&t; * NB: Make sure you have no circular dependencies, or else you get a &n;&t; * deadlock when trying to unload the modules.&n;&t;* You should use the i2c_{inc,dec}_use_client functions instead of&n;&t;* calling this function directly.&n;&t; */
-DECL|member|inc_use
-r_void
-(paren
-op_star
-id|inc_use
-)paren
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-suffix:semicolon
-DECL|member|dec_use
-r_void
-(paren
-op_star
-id|dec_use
-)paren
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
 )paren
 suffix:semicolon
 )brace
@@ -684,6 +663,12 @@ DECL|struct|i2c_adapter
 r_struct
 id|i2c_adapter
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 id|name
@@ -710,31 +695,6 @@ DECL|member|algo_data
 r_void
 op_star
 id|algo_data
-suffix:semicolon
-multiline_comment|/* --- These may be NULL, but should increase the module use count */
-DECL|member|inc_use
-r_void
-(paren
-op_star
-id|inc_use
-)paren
-(paren
-r_struct
-id|i2c_adapter
-op_star
-)paren
-suffix:semicolon
-DECL|member|dec_use
-r_void
-(paren
-op_star
-id|dec_use
-)paren
-(paren
-r_struct
-id|i2c_adapter
-op_star
-)paren
 suffix:semicolon
 multiline_comment|/* --- administration stuff. */
 DECL|member|client_register
@@ -956,27 +916,6 @@ id|i2c_client
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Only call these if you grab a resource that makes unloading the&n;   client and the adapter it is on completely impossible. Like when a&n;   /proc directory is entered. */
-r_extern
-r_void
-id|i2c_inc_use_client
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|i2c_dec_use_client
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* New function: This is to get an i2c_client-struct for controlling the &n;   client either by using i2c_control-function or having the &n;   client-module export functions that can be used with the i2c_client&n;   -struct. */
 r_extern
 r_struct
@@ -1152,6 +1091,10 @@ DECL|macro|I2C_M_NOSTART
 mdefine_line|#define I2C_M_NOSTART&t;0x4000
 DECL|macro|I2C_M_REV_DIR_ADDR
 mdefine_line|#define I2C_M_REV_DIR_ADDR&t;0x2000
+DECL|macro|I2C_M_IGNORE_NAK
+mdefine_line|#define I2C_M_IGNORE_NAK&t;0x1000
+DECL|macro|I2C_M_NO_RD_ACK
+mdefine_line|#define I2C_M_NO_RD_ACK&t;&t;0x0800
 DECL|member|len
 r_int
 id|len
@@ -1171,7 +1114,7 @@ mdefine_line|#define I2C_FUNC_I2C&t;&t;&t;0x00000001
 DECL|macro|I2C_FUNC_10BIT_ADDR
 mdefine_line|#define I2C_FUNC_10BIT_ADDR&t;&t;0x00000002
 DECL|macro|I2C_FUNC_PROTOCOL_MANGLING
-mdefine_line|#define I2C_FUNC_PROTOCOL_MANGLING&t;0x00000004 /* I2C_M_{REV_DIR_ADDR,NOSTART} */
+mdefine_line|#define I2C_FUNC_PROTOCOL_MANGLING&t;0x00000004 /* I2C_M_{REV_DIR_ADDR,NOSTART,..} */
 DECL|macro|I2C_FUNC_SMBUS_HWPEC_CALC
 mdefine_line|#define I2C_FUNC_SMBUS_HWPEC_CALC&t;0x00000008 /* SMBus 2.0 */
 DECL|macro|I2C_FUNC_SMBUS_READ_WORD_DATA_PEC

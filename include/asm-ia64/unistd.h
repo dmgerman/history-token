@@ -419,10 +419,8 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;&t;1233
-DECL|macro|__NR_alloc_hugepages
-mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
-DECL|macro|__NR_free_hugepages
-mdefine_line|#define __NR_free_hugepages&t;&t;1235
+multiline_comment|/* #define __NR_alloc_hugepages&t;&t;1234 reusable */
+multiline_comment|/* #define __NR_free_hugepages&t;&t;1235 reusable */
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;1236
 DECL|macro|__NR_lookup_dcookie
