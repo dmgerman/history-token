@@ -1815,7 +1815,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* debugging and troubleshooting/diagnostic helpers. */
 DECL|macro|dev_printk
-mdefine_line|#define dev_printk(level, dev, format, arg...)&t;&bslash;&n;&t;printk(level &quot;%s %s: &quot; format , (dev)-&gt;driver-&gt;name , (dev)-&gt;bus_id , ## arg)
+mdefine_line|#define dev_printk(level, dev, format, arg...)&t;&bslash;&n;&t;printk(level &quot;%s %s: &quot; format , (dev)-&gt;driver ? (dev)-&gt;driver-&gt;name : &quot;&quot; , (dev)-&gt;bus_id , ## arg)
 macro_line|#ifdef DEBUG
 DECL|macro|dev_dbg
 mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_DEBUG , dev , format , ## arg)

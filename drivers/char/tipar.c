@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;&t;/* DevFs support */
 macro_line|#include &lt;linux/parport.h&gt;&t;/* Our code depend on parport */
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * TI definitions&n; */
 macro_line|#include &lt;linux/ticable.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
@@ -90,6 +91,13 @@ r_int
 id|opened
 suffix:semicolon
 multiline_comment|/* opened devices */
+DECL|variable|tipar_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|tipar_class
+suffix:semicolon
 multiline_comment|/* --- macros for parport access -------------------------------------- */
 DECL|macro|r_dtr
 mdefine_line|#define r_dtr(x)        (parport_read_data(table[(x)].dev-&gt;port))
@@ -1489,6 +1497,11 @@ op_star
 id|port
 )paren
 (brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Register our module into parport */
 id|table
 (braket
@@ -1535,10 +1548,40 @@ id|dev
 op_eq
 l_int|NULL
 )paren
-r_return
+(brace
+id|err
+op_assign
 l_int|1
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|class_simple_device_add
+c_func
+(paren
+id|tipar_class
+comma
+id|MKDEV
+c_func
+(paren
+id|TIPAR_MAJOR
+comma
+id|TIPAR_MINOR
+op_plus
+id|nr
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;par%d&quot;
+comma
+id|nr
+)paren
+suffix:semicolon
 multiline_comment|/* Use devfs, tree: /dev/ticables/par/[0..2] */
+id|err
+op_assign
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1562,6 +1605,14 @@ l_string|&quot;ticables/par/%d&quot;
 comma
 id|nr
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out_class
 suffix:semicolon
 multiline_comment|/* Display informations */
 id|printk
@@ -1615,8 +1666,39 @@ comma
 id|nr
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_class
+suffix:colon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|TIPAR_MAJOR
+comma
+id|TIPAR_MINOR
+op_plus
+id|nr
+)paren
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|tipar_class
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -1713,6 +1795,11 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1744,9 +1831,13 @@ comma
 id|TIPAR_MAJOR
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Use devfs with tree: /dev/ticables/par/[0..2] */
@@ -1756,6 +1847,38 @@ c_func
 l_string|&quot;ticables/par&quot;
 )paren
 suffix:semicolon
+id|tipar_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;ticables&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|tipar_class
+)paren
+)paren
+(brace
+id|err
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|tipar_class
+)paren
+suffix:semicolon
+r_goto
+id|out_chrdev
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1773,13 +1896,36 @@ c_func
 l_string|&quot;tipar: unable to register with parport&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
 )brace
-r_return
+id|err
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_chrdev
+suffix:colon
+id|unregister_chrdev
+c_func
+(paren
+id|TIPAR_MAJOR
+comma
+l_string|&quot;tipar&quot;
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_void
@@ -1851,6 +1997,18 @@ dot
 id|dev
 )paren
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|TIPAR_MAJOR
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
 id|devfs_remove
 c_func
 (paren
@@ -1860,6 +2018,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|class_simple_destroy
+c_func
+(paren
+id|tipar_class
+)paren
+suffix:semicolon
 id|devfs_remove
 c_func
 (paren

@@ -761,10 +761,10 @@ id|kobject
 op_star
 id|kobj
 op_assign
-id|kobject_get
+id|sysfs_get_kobject
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_parent-&gt;d_fsdata
+id|file-&gt;f_dentry-&gt;d_parent
 )paren
 suffix:semicolon
 r_struct
