@@ -534,6 +534,11 @@ r_int
 id|desc_nr
 suffix:semicolon
 multiline_comment|/* descriptor index in the superblock */
+DECL|member|raid_disk
+r_int
+id|raid_disk
+suffix:semicolon
+multiline_comment|/* role of device in array */
 )brace
 suffix:semicolon
 DECL|typedef|mdk_personality_t

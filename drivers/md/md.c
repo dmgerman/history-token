@@ -718,7 +718,7 @@ id|tmp
 r_if
 c_cond
 (paren
-id|rdev-&gt;desc_nr
+id|rdev-&gt;raid_disk
 op_eq
 id|nr
 )paren
@@ -4590,12 +4590,27 @@ op_assign
 id|i
 op_increment
 suffix:semicolon
+id|rdev-&gt;raid_disk
+op_assign
+id|rdev-&gt;desc_nr
+suffix:semicolon
 )brace
 r_else
+(brace
 id|rdev-&gt;desc_nr
 op_assign
 id|rdev-&gt;sb-&gt;this_disk.number
 suffix:semicolon
+id|rdev-&gt;raid_disk
+op_assign
+id|sb-&gt;disks
+(braket
+id|rdev-&gt;desc_nr
+)braket
+dot
+id|raid_disk
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Fix up changed device names ... but only if this disk has a&n;&t; * recent update time. Use faulty checksum ones too.&n;&t; */
 r_if
@@ -8298,6 +8313,10 @@ suffix:semicolon
 id|rdev-&gt;desc_nr
 op_assign
 id|info-&gt;number
+suffix:semicolon
+id|rdev-&gt;raid_disk
+op_assign
+id|info-&gt;raid_disk
 suffix:semicolon
 id|bind_rdev_to_array
 c_func

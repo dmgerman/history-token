@@ -119,7 +119,7 @@ id|tmp
 r_int
 id|j
 op_assign
-id|rdev-&gt;sb-&gt;this_disk.raid_disk
+id|rdev-&gt;raid_disk
 suffix:semicolon
 id|dev_info_t
 op_star

@@ -2847,7 +2847,7 @@ c_func
 (paren
 id|mddev
 comma
-id|spare_desc-&gt;number
+id|spare_disk
 )paren
 suffix:semicolon
 id|failed_rdev
@@ -2857,7 +2857,7 @@ c_func
 (paren
 id|mddev
 comma
-id|failed_desc-&gt;number
+id|failed_disk
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There must be a spare_rdev, but there may not be a&n;&t; * failed_rdev. That slot might be empty...&n;&t; */
@@ -2865,15 +2865,25 @@ id|spare_rdev-&gt;desc_nr
 op_assign
 id|failed_desc-&gt;number
 suffix:semicolon
+id|spare_rdev-&gt;raid_disk
+op_assign
+id|failed_disk
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|failed_rdev
 )paren
+(brace
 id|failed_rdev-&gt;desc_nr
 op_assign
 id|spare_desc-&gt;number
 suffix:semicolon
+id|failed_rdev-&gt;raid_disk
+op_assign
+id|spare_disk
+suffix:semicolon
+)brace
 id|xchg_values
 c_func
 (paren
