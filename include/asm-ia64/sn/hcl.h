@@ -12,6 +12,37 @@ r_extern
 id|vertex_hdl_t
 id|linux_busnum
 suffix:semicolon
+r_void
+id|hwgraph_debug
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+comma
+id|vertex_hdl_t
+comma
+id|vertex_hdl_t
+comma
+r_char
+op_star
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#if 1
+DECL|macro|HWGRAPH_DEBUG
+mdefine_line|#define HWGRAPH_DEBUG(args) hwgraph_debug args ;
+macro_line|#else   
+DECL|macro|HWGRAPH_DEBUG
+mdefine_line|#define HWGRAPH_DEBUG(args)
+macro_line|#endif  
 DECL|typedef|labelcl_info_place_t
 r_typedef
 r_int
@@ -26,13 +57,6 @@ DECL|typedef|arb_info_desc_t
 r_typedef
 r_int
 id|arb_info_desc_t
-suffix:semicolon
-multiline_comment|/* Support for INVENTORY */
-r_struct
-id|inventory_s
-suffix:semicolon
-r_struct
-id|invplace_s
 suffix:semicolon
 multiline_comment|/* &n; * Reserve room in every vertex for 2 pieces of fast access indexed information &n; * Note that we do not save a pointer to the bdevsw or cdevsw[] tables anymore.&n; */
 DECL|macro|HWGRAPH_NUM_INDEX_INFO
@@ -57,8 +81,19 @@ DECL|macro|HWGRAPH_EDGELBL_DOT
 mdefine_line|#define HWGRAPH_EDGELBL_DOT &t;&quot;.&quot;
 DECL|macro|HWGRAPH_EDGELBL_DOTDOT
 mdefine_line|#define HWGRAPH_EDGELBL_DOTDOT &t;&quot;..&quot;
-DECL|macro|graph_edge_place_t
-mdefine_line|#define graph_edge_place_t uint
+macro_line|#include &lt;asm/sn/labelcl.h&gt;
+DECL|macro|hwgraph_fastinfo_set
+mdefine_line|#define hwgraph_fastinfo_set(a,b) labelcl_info_replace_IDX(a, HWGRAPH_FASTINFO, b, NULL)
+DECL|macro|hwgraph_connectpt_set
+mdefine_line|#define hwgraph_connectpt_set labelcl_info_connectpt_set
+DECL|macro|hwgraph_generate_path
+mdefine_line|#define hwgraph_generate_path hwgfs_generate_path
+DECL|macro|hwgraph_path_to_vertex
+mdefine_line|#define hwgraph_path_to_vertex(a) hwgfs_find_handle(NULL, a, 0, 0, 0, 1)
+DECL|macro|hwgraph_edge_remove
+mdefine_line|#define hwgraph_edge_remove(a,b,c)
+DECL|macro|hwgraph_vertex_unref
+mdefine_line|#define hwgraph_vertex_unref(a)
 multiline_comment|/*&n; * External declarations of EXPORTED SYMBOLS in hcl.c&n; */
 r_extern
 id|vertex_hdl_t
@@ -172,16 +207,6 @@ id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|hwgraph_fastinfo_set
-c_func
-(paren
-id|vertex_hdl_t
-comma
-id|arbitrary_info_t
-)paren
-suffix:semicolon
-r_extern
 id|vertex_hdl_t
 id|hwgraph_mk_dir
 c_func
@@ -230,21 +255,8 @@ comma
 id|vertex_hdl_t
 op_star
 comma
-id|uint
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|graph_error_t
-id|hwgraph_edge_remove
-c_func
-(paren
-id|vertex_hdl_t
-comma
-r_char
-op_star
-comma
-id|vertex_hdl_t
+r_int
+r_int
 op_star
 )paren
 suffix:semicolon
@@ -276,76 +288,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|hwgraph_inventory_get_next
-c_func
-(paren
-id|vertex_hdl_t
-comma
-id|invplace_t
-op_star
-comma
-id|inventory_t
-op_star
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|hwgraph_inventory_add
-c_func
-(paren
-id|vertex_hdl_t
-comma
-r_int
-comma
-r_int
-comma
-id|major_t
-comma
-id|minor_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|hwgraph_inventory_remove
-c_func
-(paren
-id|vertex_hdl_t
-comma
-r_int
-comma
-r_int
-comma
-id|major_t
-comma
-id|minor_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|hwgraph_controller_num_get
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|hwgraph_controller_num_set
-c_func
-(paren
-id|vertex_hdl_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|hwgraph_path_ad
+id|hwgraph_path_add
 c_func
 (paren
 id|vertex_hdl_t
@@ -354,15 +297,6 @@ r_char
 op_star
 comma
 id|vertex_hdl_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|vertex_hdl_t
-id|hwgraph_path_to_vertex
-c_func
-(paren
-r_char
 op_star
 )paren
 suffix:semicolon
@@ -501,6 +435,24 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|hwgraph_path_lookup
+c_func
+(paren
+id|vertex_hdl_t
+comma
+r_char
+op_star
+comma
+id|vertex_hdl_t
+op_star
+comma
+r_char
+op_star
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|hwgraph_info_export_LBL
 c_func
 (paren
@@ -549,14 +501,6 @@ r_char
 op_star
 comma
 id|uint
-)paren
-suffix:semicolon
-r_extern
-id|graph_error_t
-id|hwgraph_vertex_unref
-c_func
-(paren
-id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern

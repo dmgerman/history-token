@@ -6914,9 +6914,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the character device associated with this bridge */
-(paren
-r_void
-)paren
 id|hwgraph_edge_remove
 c_func
 (paren
@@ -6928,9 +6925,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the PCI bridge vertex */
-(paren
-r_void
-)paren
 id|hwgraph_edge_remove
 c_func
 (paren
