@@ -4366,6 +4366,21 @@ id|ide_driver_t
 suffix:semicolon
 DECL|macro|DRIVER
 mdefine_line|#define DRIVER(drive)&t;&t;((drive)-&gt;driver)
+r_extern
+r_int
+id|generic_ide_ioctl
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * IDE modules.&n; */
 DECL|macro|IDE_CHIPSET_MODULE
 mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
@@ -5277,14 +5292,6 @@ c_func
 id|ide_drive_t
 op_star
 comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
 r_int
 r_int
 comma
@@ -5299,14 +5306,6 @@ c_func
 id|ide_drive_t
 op_star
 comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
 r_int
 r_int
 comma
@@ -5319,14 +5318,6 @@ id|ide_task_ioctl
 c_func
 (paren
 id|ide_drive_t
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
 op_star
 comma
 r_int
