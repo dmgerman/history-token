@@ -1,14 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/fat/cache.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  Mar 1999. AV. Changed cache, so that it uses the starting cluster instead&n; *&t;of inode number.&n; *  May 1999. AV. Fixed the bogosity with FAT32 (read &quot;FAT28&quot;). Fscking lusers.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#if 0
-macro_line|#  define PRINTK(x) printk x
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|#  define PRINTK(x)
-macro_line|#endif
 DECL|variable|fat_cache
 DECL|variable|cache
 r_static
@@ -29,76 +22,6 @@ id|fat_cache_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Returns the this&squot;th FAT entry, -1 if it is an end-of-file entry. If&n;   new_value is != -1, that FAT entry is replaced by it. */
-DECL|function|fat_access
-r_int
-id|fat_access
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_int
-id|nr
-comma
-r_int
-id|new_value
-)paren
-(brace
-r_return
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_member_access_from_pointer
-id|fat_access
-c_func
-(paren
-id|sb
-comma
-id|nr
-comma
-id|new_value
-)paren
-suffix:semicolon
-)brace
-DECL|function|fat_bmap
-r_int
-id|fat_bmap
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|sector
-)paren
-(brace
-r_return
-id|MSDOS_SB
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_member_access_from_pointer
-id|cvf_bmap
-c_func
-(paren
-id|inode
-comma
-id|sector
-)paren
-suffix:semicolon
-)brace
 DECL|function|__fat_access
 r_int
 id|__fat_access
@@ -229,7 +152,7 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -242,7 +165,9 @@ id|b
 id|printk
 c_func
 (paren
-l_string|&quot;FAT: bread(block %d) in fat_access failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;FAT: bread(block %d) in&quot;
+l_string|&quot; fat_access failed&bslash;n&quot;
 comma
 id|b
 )paren
@@ -282,7 +207,7 @@ op_logical_neg
 (paren
 id|bh2
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -294,18 +219,18 @@ l_int|1
 )paren
 )paren
 (brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;FAT: bread(block %d) in fat_access failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;FAT: bread(block %d) in&quot;
+l_string|&quot; fat_access failed&bslash;n&quot;
 comma
 id|b
 op_plus
@@ -643,20 +568,16 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|bh2
 )paren
 suffix:semicolon
 )brace
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -696,7 +617,7 @@ op_logical_neg
 (paren
 id|c_bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -722,7 +643,7 @@ op_logical_neg
 (paren
 id|c_bh2
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -734,11 +655,9 @@ l_int|1
 )paren
 )paren
 (brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|c_bh
 )paren
 suffix:semicolon
@@ -755,19 +674,15 @@ comma
 id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|c_bh2
 )paren
 suffix:semicolon
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|c_bh2
 )paren
 suffix:semicolon
@@ -782,29 +697,23 @@ comma
 id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|c_bh
 )paren
 suffix:semicolon
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|c_bh
 )paren
 suffix:semicolon
 )brace
 )brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -815,11 +724,9 @@ id|bh
 op_ne
 id|bh2
 )paren
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh2
 )paren
 suffix:semicolon
@@ -827,9 +734,10 @@ r_return
 id|next
 suffix:semicolon
 )brace
-DECL|function|default_fat_access
+multiline_comment|/* &n; * Returns the this&squot;th FAT entry, -1 if it is an end-of-file entry. If&n; * new_value is != -1, that FAT entry is replaced by it.&n; */
+DECL|function|fat_access
 r_int
-id|default_fat_access
+id|fat_access
 c_func
 (paren
 r_struct
@@ -955,8 +863,6 @@ r_void
 r_static
 r_int
 id|initialized
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|count
@@ -1355,7 +1261,9 @@ id|d_clu
 id|printk
 c_func
 (paren
-l_string|&quot;FAT: cache corruption inode=%lu&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;FAT: cache corruption&quot;
+l_string|&quot; (ino %lu)&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 )paren
@@ -1767,9 +1675,9 @@ r_return
 id|nr
 suffix:semicolon
 )brace
-DECL|function|default_fat_bmap
+DECL|function|fat_bmap
 r_int
-id|default_fat_bmap
+id|fat_bmap
 c_func
 (paren
 r_struct

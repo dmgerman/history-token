@@ -5,33 +5,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-singleline_comment|//#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-r_extern
-r_struct
-id|cvf_format
-id|default_cvf
-suffix:semicolon
-multiline_comment|/* #define FAT_PARANOIA 1 */
-DECL|macro|DEBUG_LEVEL
-mdefine_line|#define DEBUG_LEVEL 0
-macro_line|#ifdef FAT_DEBUG
-DECL|macro|PRINTK
-macro_line|#  define PRINTK(x) printk x
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|#  define PRINTK(x)
-macro_line|#endif
-macro_line|#if (DEBUG_LEVEL &gt;= 1)
-DECL|macro|PRINTK1
-macro_line|#  define PRINTK1(x) printk x
-macro_line|#else
-DECL|macro|PRINTK1
-macro_line|#  define PRINTK1(x)
-macro_line|#endif
 multiline_comment|/*&n; * New FAT inode stuff. We do the following:&n; *&t;a) i_ino is constant and has nothing with on-disk location.&n; *&t;b) FAT manages its own cache of directory entries.&n; *&t;c) *This* cache is indexed by on-disk location.&n; *&t;d) inode has an associated directory entry, all right, but&n; *&t;&t;it may be unhashed.&n; *&t;e) currently entries are stored within struct inode. That should&n; *&t;&t;change.&n; *&t;f) we deal with races in the following way:&n; *&t;&t;1. readdir() and lookup() do FAT-dir-cache lookup.&n; *&t;&t;2. rename() unhashes the F-d-c entry and rehashes it in&n; *&t;&t;&t;a new place.&n; *&t;&t;3. unlink() and rmdir() unhash F-d-c entry.&n; *&t;&t;4. fat_write_inode() checks whether the thing is unhashed.&n; *&t;&t;&t;If it is we silently return. If it isn&squot;t we do bread(),&n; *&t;&t;&t;check if the location is still valid and retry if it&n; *&t;&t;&t;isn&squot;t. Otherwise we do changes.&n; *&t;&t;5. Spinlock is used to protect hash/unhash/location check/lookup&n; *&t;&t;6. fat_clear_inode() unhashes the F-d-c entry.&n; *&t;&t;7. lookup() and readdir() do igrab() if they find a F-d-c entry&n; *&t;&t;&t;and consider negative result as cache miss.&n; */
 DECL|macro|FAT_HASH_BITS
 mdefine_line|#define FAT_HASH_BITS&t;8
@@ -670,27 +646,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sbi-&gt;cvf_format-&gt;cvf_version
-)paren
-(brace
-id|dec_cvf_format_use_count_by_version
-c_func
-(paren
-id|sbi-&gt;cvf_format-&gt;cvf_version
-)paren
-suffix:semicolon
-id|sbi-&gt;cvf_format
-op_member_access_from_pointer
-id|unmount_cvf
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-)brace
 id|fat_clusters_flush
 c_func
 (paren
@@ -1109,23 +1064,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
-op_ne
-l_char|&squot;b&squot;
-)paren
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;,conv=%c&quot;
-comma
-id|opts-&gt;conversion
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|opts-&gt;quiet
 )paren
 id|seq_puts
@@ -1264,14 +1202,6 @@ r_struct
 id|fat_mount_options
 op_star
 id|opts
-comma
-r_char
-op_star
-id|cvf_format
-comma
-r_char
-op_star
-id|cvf_options
 )paren
 (brace
 r_char
@@ -1338,10 +1268,6 @@ suffix:semicolon
 id|opts-&gt;name_check
 op_assign
 l_char|&squot;n&squot;
-suffix:semicolon
-id|opts-&gt;conversion
-op_assign
-l_char|&squot;b&squot;
 suffix:semicolon
 id|opts-&gt;quiet
 op_assign
@@ -1548,89 +1474,13 @@ op_logical_and
 id|value
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|value
-(braket
-l_int|0
-)braket
-op_logical_and
-op_logical_neg
-id|value
-(braket
-l_int|1
-)braket
-op_logical_and
-id|strchr
+id|printk
 c_func
 (paren
-l_string|&quot;bta&quot;
-comma
-op_star
-id|value
+id|KERN_INFO
+l_string|&quot;FAT: conv option is obsolete, &quot;
+l_string|&quot;not supported now&bslash;n&quot;
 )paren
-)paren
-id|opts-&gt;conversion
-op_assign
-op_star
-id|value
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|value
-comma
-l_string|&quot;binary&quot;
-)paren
-)paren
-id|opts-&gt;conversion
-op_assign
-l_char|&squot;b&squot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|value
-comma
-l_string|&quot;text&quot;
-)paren
-)paren
-id|opts-&gt;conversion
-op_assign
-l_char|&squot;t&squot;
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|value
-comma
-l_string|&quot;auto&quot;
-)paren
-)paren
-id|opts-&gt;conversion
-op_assign
-l_char|&squot;a&squot;
-suffix:semicolon
-r_else
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -1954,6 +1804,7 @@ l_string|&quot;fat&quot;
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;FAT: fat option is obsolete, &quot;
 l_string|&quot;not supported now&bslash;n&quot;
 )paren
@@ -2005,6 +1856,7 @@ l_string|&quot;blocksize&quot;
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;FAT: blocksize option is obsolete, &quot;
 l_string|&quot;not supported now&bslash;n&quot;
 )paren
@@ -2077,74 +1929,6 @@ id|value
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|this_char
-comma
-l_string|&quot;cvf_format&quot;
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|cvf_format
-comma
-id|value
-comma
-l_int|20
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|this_char
-comma
-l_string|&quot;cvf_options&quot;
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|cvf_options
-comma
-id|value
-comma
-l_int|100
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* msdos specific */
@@ -2464,6 +2248,7 @@ l_string|&quot;posix&quot;
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;FAT: posix option is obsolete, &quot;
 l_string|&quot;not supported now&bslash;n&quot;
 )paren
@@ -2611,6 +2396,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: Unrecognized mount option %s&bslash;n&quot;
 comma
 id|this_char
@@ -3598,11 +3384,9 @@ c_cond
 id|bh
 )paren
 (brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|child-&gt;d_sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -3992,21 +3776,6 @@ id|buf
 l_int|50
 )braket
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_char
-id|cvf_format
-(braket
-l_int|21
-)braket
-suffix:semicolon
-r_char
-id|cvf_options
-(braket
-l_int|101
-)braket
-suffix:semicolon
 id|sbi
 op_assign
 id|kmalloc
@@ -4049,24 +3818,6 @@ id|msdos_sb_info
 )paren
 )paren
 suffix:semicolon
-id|cvf_format
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|cvf_options
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|sbi-&gt;private_data
-op_assign
-l_int|NULL
-suffix:semicolon
 id|sb-&gt;s_magic
 op_assign
 id|MSDOS_SUPER_MAGIC
@@ -4085,11 +3836,6 @@ id|sbi-&gt;dir_ops
 op_assign
 id|fs_dir_inode_ops
 suffix:semicolon
-id|sbi-&gt;cvf_format
-op_assign
-op_amp
-id|default_cvf
-suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -4102,10 +3848,6 @@ op_logical_neg
 id|parse_options
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|data
 comma
 id|isvfat
@@ -4115,10 +3857,6 @@ id|debug
 comma
 op_amp
 id|sbi-&gt;options
-comma
-id|cvf_format
-comma
-id|cvf_options
 )paren
 )paren
 r_goto
@@ -4171,6 +3909,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: unable to read boot sector&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4203,6 +3942,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus number of reserved sectors&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4232,6 +3972,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus number of FAT structure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4261,6 +4002,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus sectors-per-track value&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4290,6 +4032,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus number-of-heads value&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4327,6 +4070,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: invalid media value (0x%02x)&bslash;n&quot;
 comma
 id|media
@@ -4398,6 +4142,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus logical sector size %d&bslash;n&quot;
 comma
 id|logical_sector_size
@@ -4443,6 +4188,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus cluster size %d&bslash;n&quot;
 comma
 id|sbi-&gt;cluster_size
@@ -4469,6 +4215,7 @@ id|sb-&gt;s_blocksize
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: logical sector size too small for device&quot;
 l_string|&quot; (logical sector size = %d)&bslash;n&quot;
 comma
@@ -4515,6 +4262,7 @@ id|logical_sector_size
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: unable to set blocksize %d&bslash;n&quot;
 comma
 id|logical_sector_size
@@ -4545,6 +4293,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: unable to read boot sector&quot;
 l_string|&quot; (logical sector size = %lu)&bslash;n&quot;
 comma
@@ -4701,6 +4450,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bread failed, FSINFO block&quot;
 l_string|&quot; (sector = %lu)&bslash;n&quot;
 comma
@@ -4740,6 +4490,7 @@ id|fsinfo
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;FAT: Did not find valid FSINFO signature.&bslash;n&quot;
 l_string|&quot;     Found signature1 0x%08x signature2 0x%08x&quot;
 l_string|&quot; (sector = %lu)&bslash;n&quot;
@@ -4839,6 +4590,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: bogus directroy-entries per block&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5019,6 +4771,7 @@ id|silent
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: invalid first entry of FAT &quot;
 l_string|&quot;(0x%x != 0x%x)&bslash;n&quot;
 comma
@@ -5043,62 +4796,6 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|cvf_format
-comma
-l_string|&quot;none&quot;
-)paren
-)paren
-id|i
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_else
-id|i
-op_assign
-id|detect_cvf
-c_func
-(paren
-id|sb
-comma
-id|cvf_format
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-op_ge
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cvf_formats
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|mount_cvf
-c_func
-(paren
-id|sb
-comma
-id|cvf_options
-)paren
-)paren
-r_goto
-id|out_fail
-suffix:semicolon
-)brace
 id|cp
 op_assign
 id|sbi-&gt;options.codepage
@@ -5145,6 +4842,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: codepage %s not found&bslash;n&quot;
 comma
 id|buf
@@ -5200,6 +4898,7 @@ id|sbi-&gt;nls_io
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: IO charset %s not found&bslash;n&quot;
 comma
 id|sbi-&gt;options.iocharset
@@ -5296,33 +4995,12 @@ id|sb-&gt;s_root
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
 id|out_fail
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
-op_ge
-l_int|0
-)paren
-(brace
-id|sbi-&gt;cvf_format
-op_assign
-id|cvf_formats
-(braket
-id|i
-)braket
-suffix:semicolon
-op_increment
-id|cvf_format_use_count
-(braket
-id|i
-)braket
 suffix:semicolon
 )brace
 r_return
@@ -5397,21 +5075,6 @@ c_func
 id|sbi-&gt;options.iocharset
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sbi-&gt;private_data
-)paren
-id|kfree
-c_func
-(paren
-id|sbi-&gt;private_data
-)paren
-suffix:semicolon
-id|sbi-&gt;private_data
-op_assign
-l_int|NULL
-suffix:semicolon
 id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
@@ -5446,48 +5109,6 @@ r_int
 id|free
 comma
 id|nr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_logical_and
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format-&gt;cvf_statfs
-)paren
-r_return
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_member_access_from_pointer
-id|cvf_statfs
-c_func
-(paren
-id|sb
-comma
-id|buf
-comma
-r_sizeof
-(paren
-r_struct
-id|statfs
-)paren
-)paren
 suffix:semicolon
 id|lock_fat
 c_func
@@ -6097,29 +5718,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* includes .., compensating for &quot;self&quot; */
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode-&gt;i_nlink
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;directory %lu: i_nlink == 0&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-id|inode-&gt;i_nlink
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -6447,7 +6045,7 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -6465,22 +6063,14 @@ id|dir_per_block_bits
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;dev = %s, ino = %d&bslash;n&quot;
-comma
-id|sb-&gt;s_id
-comma
-id|i_pos
-)paren
-suffix:semicolon
 id|fat_fs_panic
 c_func
 (paren
 id|sb
 comma
-l_string|&quot;msdos_write_inode: unable to read i-node block&quot;
+l_string|&quot;unable to read i-node block (ino %lu)&quot;
+comma
+id|i_pos
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -6519,11 +6109,9 @@ op_amp
 id|fat_inode_lock
 )paren
 suffix:semicolon
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -6731,19 +6319,15 @@ op_amp
 id|fat_inode_lock
 )paren
 suffix:semicolon
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon

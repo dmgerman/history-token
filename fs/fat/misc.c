@@ -2,53 +2,6 @@ multiline_comment|/*&n; *  linux/fs/fat/misc.c&n; *&n; *  Written 1992,1993 by W
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#if 0
-macro_line|#  define PRINTK(x)&t;printk x
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|#  define PRINTK(x)
-macro_line|#endif
-DECL|macro|Printk
-mdefine_line|#define Printk(x)&t;printk x
-multiline_comment|/* Well-known binary file extensions - of course there are many more */
-DECL|variable|ascii_extensions
-r_static
-r_char
-id|ascii_extensions
-(braket
-)braket
-op_assign
-l_string|&quot;TXT&quot;
-l_string|&quot;ME &quot;
-l_string|&quot;HTM&quot;
-l_string|&quot;1ST&quot;
-l_string|&quot;LOG&quot;
-l_string|&quot;   &quot;
-multiline_comment|/* text files */
-l_string|&quot;C  &quot;
-l_string|&quot;H  &quot;
-l_string|&quot;CPP&quot;
-l_string|&quot;LIS&quot;
-l_string|&quot;PAS&quot;
-l_string|&quot;FOR&quot;
-multiline_comment|/* programming languages */
-l_string|&quot;F  &quot;
-l_string|&quot;MAK&quot;
-l_string|&quot;INC&quot;
-l_string|&quot;BAS&quot;
-multiline_comment|/* programming languages */
-l_string|&quot;BAT&quot;
-l_string|&quot;SH &quot;
-multiline_comment|/* program code :) */
-l_string|&quot;INI&quot;
-multiline_comment|/* config files */
-l_string|&quot;PBM&quot;
-l_string|&quot;PGM&quot;
-l_string|&quot;DXF&quot;
-multiline_comment|/* graphics */
-l_string|&quot;TEX&quot;
-suffix:semicolon
-multiline_comment|/* TeX */
 multiline_comment|/*&n; * fat_fs_panic reports a severe file system problem and sets the file system&n; * read-only. The file system can be made writable again by remounting it.&n; */
 DECL|variable|panic_msg
 r_static
@@ -131,6 +84,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: Filesystem panic (dev %s)&bslash;n&quot;
 l_string|&quot;    %s&bslash;n&quot;
 comma
@@ -147,97 +101,10 @@ id|not_ro
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;    File system has been set read-only&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * fat_is_binary selects optional text conversion based on the conversion mode&n; * and the extension part of the file name.&n; */
-DECL|function|fat_is_binary
-r_int
-id|fat_is_binary
-c_func
-(paren
-r_char
-id|conversion
-comma
-r_char
-op_star
-id|extension
-)paren
-(brace
-r_char
-op_star
-id|walk
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|conversion
-)paren
-(brace
-r_case
-l_char|&squot;b&squot;
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
-r_case
-l_char|&squot;t&squot;
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-l_char|&squot;a&squot;
-suffix:colon
-r_for
-c_loop
-(paren
-id|walk
-op_assign
-id|ascii_extensions
-suffix:semicolon
-op_star
-id|walk
-suffix:semicolon
-id|walk
-op_add_assign
-l_int|3
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|extension
-comma
-id|walk
-comma
-l_int|3
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* default binary conversion */
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;Invalid conversion mode - defaulting to &quot;
-l_string|&quot;binary.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 )brace
 DECL|function|lock_fat
 r_void
@@ -349,7 +216,7 @@ r_return
 suffix:semicolon
 id|bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -374,6 +241,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT bread failed in fat_clusters_flush&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -404,6 +272,7 @@ id|fsinfo
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: Did not find valid FSINFO signature.&bslash;n&quot;
 l_string|&quot;     Found signature1 0x%08x signature2 0x%08x&quot;
 l_string|&quot; (sector = %lu)&bslash;n&quot;
@@ -446,20 +315,16 @@ op_member_access_from_pointer
 id|free_clusters
 )paren
 suffix:semicolon
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
 )brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -928,6 +793,7 @@ l_int|9
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;file_cluster badly computed!!! %d &lt;&gt; %ld&bslash;n&quot;
 comma
 id|file_cluster
@@ -1088,54 +954,6 @@ id|sector
 op_plus
 id|cluster_size
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_logical_and
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format-&gt;zero_out_cluster
-)paren
-(brace
-id|res
-op_assign
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|EIO
-)paren
-suffix:semicolon
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|cvf_format
-op_member_access_from_pointer
-id|zero_out_cluster
-c_func
-(paren
-id|inode
-comma
-id|nr
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 r_for
 c_loop
 (paren
@@ -1151,11 +969,10 @@ op_increment
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|bh
 op_assign
-id|fat_getblk
+id|sb_getblk
 c_func
 (paren
 id|sb
@@ -1164,13 +981,6 @@ id|sector
 )paren
 )paren
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;FAT: fat_getblk() failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
 id|memset
 c_func
@@ -1182,21 +992,15 @@ comma
 id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
-id|fat_set_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
-id|sb
-comma
 id|bh
-comma
-l_int|1
 )paren
 suffix:semicolon
-id|fat_mark_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -1211,11 +1015,9 @@ op_assign
 id|bh
 suffix:semicolon
 r_else
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -1237,7 +1039,6 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1303,12 +1104,6 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|cluster_bits
-suffix:semicolon
-id|mark_inode_dirty
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 r_return
 id|res
@@ -1797,11 +1592,9 @@ c_cond
 op_star
 id|bh
 )paren
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 op_star
 id|bh
 )paren
@@ -1843,7 +1636,7 @@ multiline_comment|/* beyond EOF or error */
 op_star
 id|bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -1863,6 +1656,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FAT: Directory bread(block %d) failed&bslash;n&quot;
 comma
 id|sector
@@ -2010,7 +1804,7 @@ op_logical_neg
 (paren
 id|bh
 op_assign
-id|fat_bread
+id|sb_bread
 c_func
 (paren
 id|sb
@@ -2160,11 +1954,9 @@ c_cond
 op_logical_neg
 id|res_bh
 )paren
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
@@ -2190,11 +1982,9 @@ id|start
 suffix:semicolon
 )brace
 )brace
-id|fat_brelse
+id|brelse
 c_func
 (paren
-id|sb
-comma
 id|bh
 )paren
 suffix:semicolon
