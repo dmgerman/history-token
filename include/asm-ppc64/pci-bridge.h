@@ -312,6 +312,14 @@ suffix:semicolon
 multiline_comment|/* Use this macro after the PCI bus walk for max performance when it&n; * is known that sysdata is correct.&n; */
 DECL|macro|PCI_GET_DN
 mdefine_line|#define PCI_GET_DN(dev) ((struct device_node *)((dev)-&gt;sysdata))
+r_extern
+r_void
+id|phbs_remap_io
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 eof
