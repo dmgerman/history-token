@@ -1161,7 +1161,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;CPU %d: base freq=%lu.%03luMHz, ITC ratio=%lu/%lu, &quot;
 l_string|&quot;ITC freq=%lu.%03luMHz+/-%ldppm&bslash;n&quot;
 comma

@@ -970,6 +970,12 @@ suffix:semicolon
 DECL|member|fr
 r_struct
 id|ia64_fpreg
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|fr
 (braket
 l_int|128
