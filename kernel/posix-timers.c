@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/posix_timers.c&n; *&n; *&n; * 2002-10-15  Posix Clocks &amp; timers by George Anzinger&n; *&t;&t;&t;     Copyright (C) 2002 by MontaVista Software.&n; */
+multiline_comment|/*&n; * linux/kernel/posix_timers.c&n; *&n; *&n; * 2002-10-15  Posix Clocks &amp; timers&n; *                           by George Anzinger george@mvista.com&n; *&n; *&t;&t;&t;     Copyright (C) 2002 2003 by MontaVista Software.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n; * General Public License for more details.&n;&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * MontaVista Software | 1237 East Arques Avenue | Sunnyvale | CA 94085 | USA&n; */
 multiline_comment|/* These are all the functions necessary to implement&n; * POSIX clocks &amp; timers&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -19,8 +19,7 @@ DECL|macro|div_long_long_rem
 mdefine_line|#define div_long_long_rem(dividend,divisor,remainder) ({ &bslash;&n;&t;&t;       u64 result = dividend;&t;&t;&bslash;&n;&t;&t;       *remainder = do_div(result,divisor); &bslash;&n;&t;&t;       result; })
 macro_line|#endif
 DECL|macro|CLOCK_REALTIME_RES
-mdefine_line|#define CLOCK_REALTIME_RES TICK_NSEC  
-singleline_comment|// In nano seconds.
+mdefine_line|#define CLOCK_REALTIME_RES TICK_NSEC  /* In nano seconds. */
 DECL|function|mpy_l_X_l_ll
 r_static
 r_inline
@@ -84,9 +83,10 @@ singleline_comment|// error to use outside of SMP
 DECL|macro|set_timer_inactive
 macro_line|# define set_timer_inactive(tmr) do { } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.&n; * Here we define a mask to get rid of the common bits.&t; The&n; * optimizer should make this costless to all but mips.&n; * Note that no common bits (the non-mips case) will give 0xffffffff.&n; */
-DECL|macro|MIPS_SIGEV
-mdefine_line|#define MIPS_SIGEV ~(SIGEV_NONE &amp; &bslash;&n;&t;&t;      SIGEV_SIGNAL &amp; &bslash;&n;&t;&t;      SIGEV_THREAD &amp;  &bslash;&n;&t;&t;      SIGEV_THREAD_ID)
+multiline_comment|/*&n; * we assume that the new SIGEV_THREAD_ID shares no bits with the other&n; * SIGEV values.  Here we put out an error if this assumption fails.&n; */
+macro_line|#if SIGEV_THREAD_ID != (SIGEV_THREAD_ID &amp; &bslash;&n;                       ~(SIGEV_SIGNAL | SIGEV_NONE | SIGEV_THREAD))
+macro_line|#error &quot;SIGEV_THREAD_ID must not share bit with other SIGEV values!&quot;
+macro_line|#endif
 DECL|macro|REQUEUE_PENDING
 mdefine_line|#define REQUEUE_PENDING 1
 multiline_comment|/*&n; * The timer ID is turned into a timer address by idr_find().&n; * Verifying a valid ID consists of:&n; *&n; * a) checking that idr_find() returns other than -1.&n; * b) checking that the timer id matches the one in the timer itself.&n; * c) that the timer owner is in the callers thread group.&n; */
@@ -601,8 +601,6 @@ c_cond
 id|timr-&gt;it_sigev_notify
 op_amp
 id|SIGEV_THREAD_ID
-op_amp
-id|MIPS_SIGEV
 )paren
 id|ret
 op_assign
@@ -730,8 +728,6 @@ c_cond
 id|event-&gt;sigev_notify
 op_amp
 id|SIGEV_THREAD_ID
-op_amp
-id|MIPS_SIGEV
 )paren
 op_logical_and
 (paren
@@ -749,6 +745,15 @@ op_logical_or
 id|rtn-&gt;tgid
 op_ne
 id|current-&gt;tgid
+op_logical_or
+(paren
+id|event-&gt;sigev_notify
+op_amp
+op_complement
+id|SIGEV_THREAD_ID
+)paren
+op_ne
+id|SIGEV_SIGNAL
 )paren
 )paren
 r_return
@@ -758,20 +763,23 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|event-&gt;sigev_notify
 op_amp
 op_complement
+id|SIGEV_THREAD_ID
+)paren
+op_ne
 id|SIGEV_NONE
-op_amp
-id|MIPS_SIGEV
 )paren
 op_logical_and
+(paren
+(paren
 id|event-&gt;sigev_signo
-op_logical_and
-(paren
-(paren
-r_int
+op_le
+l_int|0
 )paren
+op_logical_or
 (paren
 id|event-&gt;sigev_signo
 OG
@@ -856,6 +864,15 @@ id|posix_timers_cache
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmr
+)paren
+r_return
+id|tmr
 suffix:semicolon
 id|memset
 c_func
@@ -1680,8 +1697,13 @@ c_cond
 id|expires
 op_logical_and
 (paren
+(paren
 id|timr-&gt;it_sigev_notify
 op_amp
+op_complement
+id|SIGEV_THREAD_ID
+)paren
+op_eq
 id|SIGEV_NONE
 )paren
 op_logical_and
@@ -1720,9 +1742,13 @@ op_logical_or
 (paren
 id|timr-&gt;it_sigev_notify
 op_amp
+op_complement
+id|SIGEV_THREAD_ID
+)paren
+op_eq
 id|SIGEV_NONE
 )paren
-)paren
+(brace
 r_while
 c_loop
 (paren
@@ -1742,6 +1768,11 @@ c_func
 id|timr
 )paren
 suffix:semicolon
+id|expires
+op_assign
+id|timr-&gt;it_timer.expires
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2402,10 +2433,14 @@ multiline_comment|/*&n;&t; * For some reason the timer does not fire immediately
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 (paren
 id|timr-&gt;it_sigev_notify
 op_amp
+op_complement
+id|SIGEV_THREAD_ID
+)paren
+op_ne
 id|SIGEV_NONE
 )paren
 )paren
@@ -3029,7 +3064,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We do ticks here to avoid the irq lock ( they take sooo long).&n; * The seqlock is great here.  Since we a reader, we don&squot;t really care&n; * if we are interrupted since we don&squot;t take lock that will stall us or&n; * any other cpu. Voila, no irq lock is needed.&n; *&n; * Note also that the while loop assures that the sub_jiff_offset&n; * will be less than a jiffie, thus no need to normalize the result.&n; * Well, not really, if called with ints off :(&n; */
+multiline_comment|/*&n; * We do ticks here to avoid the irq lock ( they take sooo long).&n; * The seqlock is great here.  Since we a reader, we don&squot;t really care&n; * if we are interrupted since we don&squot;t take lock that will stall us or&n; * any other cpu. Voila, no irq lock is needed.&n; *&n; */
 DECL|function|do_posix_clock_monotonic_gettime_parts
 r_static
 id|u64
