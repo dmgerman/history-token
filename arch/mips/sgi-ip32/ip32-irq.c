@@ -65,12 +65,12 @@ mdefine_line|#define DBG(x...)
 macro_line|#endif
 multiline_comment|/* O2 irq map&n; *&n; * IP0 -&gt; software (ignored)&n; * IP1 -&gt; software (ignored)&n; * IP2 -&gt; (irq0) C crime 1.1 all interrupts; crime 1.5 ???&n; * IP3 -&gt; (irq1) X unknown&n; * IP4 -&gt; (irq2) X unknown&n; * IP5 -&gt; (irq3) X unknown&n; * IP6 -&gt; (irq4) X unknown&n; * IP7 -&gt; (irq5) 0 CPU count/compare timer (system timer)&n; *&n; * crime: (C)&n; *&n; * CRIME_INT_STAT 31:0:&n; *&n; * 0  -&gt; 1  Video in 1&n; * 1  -&gt; 2  Video in 2&n; * 2  -&gt; 3  Video out&n; * 3  -&gt; 4  Mace ethernet&n; * 4  -&gt; S  SuperIO sub-interrupt&n; * 5  -&gt; M  Miscellaneous sub-interrupt&n; * 6  -&gt; A  Audio sub-interrupt&n; * 7  -&gt; 8  PCI bridge errors&n; * 8  -&gt; 9  PCI SCSI aic7xxx 0&n; * 9  -&gt; 10 PCI SCSI aic7xxx 1&n; * 10 -&gt; 11 PCI slot 0&n; * 11 -&gt; 12 unused (PCI slot 1)&n; * 12 -&gt; 13 unused (PCI slot 2)&n; * 13 -&gt; 14 unused (PCI shared 0)&n; * 14 -&gt; 15 unused (PCI shared 1)&n; * 15 -&gt; 16 unused (PCI shared 2)&n; * 16 -&gt; 17 GBE0 (E)&n; * 17 -&gt; 18 GBE1 (E)&n; * 18 -&gt; 19 GBE2 (E)&n; * 19 -&gt; 20 GBE3 (E)&n; * 20 -&gt; 21 CPU errors&n; * 21 -&gt; 22 Memory errors&n; * 22 -&gt; 23 RE empty edge (E)&n; * 23 -&gt; 24 RE full edge (E)&n; * 24 -&gt; 25 RE idle edge (E)&n; * 25 -&gt; 26 RE empty level&n; * 26 -&gt; 27 RE full level&n; * 27 -&gt; 28 RE idle level&n; * 28 -&gt; 29 unused (software 0) (E)&n; * 29 -&gt; 30 unused (software 1) (E)&n; * 30 -&gt; 31 unused (software 2) - crime 1.5 CPU SysCorError (E)&n; * 31 -&gt; 32 VICE&n; *&n; * S, M, A: Use the MACE ISA interrupt register&n; * MACE_ISA_INT_STAT 31:0&n; *&n; * 0-7 -&gt; 33-40 Audio&n; * 8 -&gt; 41 RTC&n; * 9 -&gt; 42 Keyboard&n; * 10 -&gt; X Keyboard polled&n; * 11 -&gt; 44 Mouse&n; * 12 -&gt; X Mouse polled&n; * 13-15 -&gt; 46-48 Count/compare timers&n; * 16-19 -&gt; 49-52 Parallel (16 E)&n; * 20-25 -&gt; 53-58 Serial 1 (22 E)&n; * 26-31 -&gt; 59-64 Serial 2 (28 E)&n; *&n; * Note that this means IRQs 5-7, 43, and 45 do not exist.  This is a&n; * different IRQ map than IRIX uses, but that&squot;s OK as Linux irq handling&n; * is quite different anyway.&n; */
 multiline_comment|/*&n; * IRQ spinlock - Ralf says not to disable CPU interrupts,&n; * and I think he knows better.&n; */
-DECL|variable|ip32_irq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ip32_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Some initial interrupts to set up */
 r_extern
