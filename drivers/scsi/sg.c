@@ -990,6 +990,21 @@ id|sg_dev_arr
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|sg_dev_noticed
+r_static
+r_int
+id|sg_dev_noticed
+suffix:semicolon
+DECL|variable|sg_dev_max
+r_static
+r_int
+id|sg_dev_max
+suffix:semicolon
+DECL|variable|sg_nr_dev
+r_static
+r_int
+id|sg_nr_dev
+suffix:semicolon
 DECL|macro|SZ_SG_HEADER
 mdefine_line|#define SZ_SG_HEADER sizeof(struct sg_header)
 DECL|macro|SZ_SG_IO_HDR
@@ -7280,7 +7295,7 @@ op_star
 id|scsidp
 )paren
 (brace
-id|sg_template.dev_noticed
+id|sg_dev_noticed
 op_increment
 suffix:semicolon
 r_return
@@ -7541,9 +7556,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sg_template.nr_dev
+id|sg_nr_dev
 op_ge
-id|sg_template.dev_max
+id|sg_dev_max
 )paren
 (brace
 multiline_comment|/* try to resize */
@@ -7555,7 +7570,7 @@ suffix:semicolon
 r_int
 id|tmp_dev_max
 op_assign
-id|sg_template.nr_dev
+id|sg_nr_dev
 op_plus
 id|SG_DEV_ARR_LUMP
 suffix:semicolon
@@ -7647,7 +7662,7 @@ id|tmp_da
 comma
 id|sg_dev_arr
 comma
-id|sg_template.dev_max
+id|sg_dev_max
 op_star
 r_sizeof
 (paren
@@ -7670,7 +7685,7 @@ id|sg_dev_arr
 op_assign
 id|tmp_da
 suffix:semicolon
-id|sg_template.dev_max
+id|sg_dev_max
 op_assign
 id|tmp_dev_max
 suffix:semicolon
@@ -7686,7 +7701,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-id|sg_template.dev_max
+id|sg_dev_max
 suffix:semicolon
 id|k
 op_increment
@@ -7774,7 +7789,7 @@ c_cond
 (paren
 id|k
 OL
-id|sg_template.dev_max
+id|sg_dev_max
 )paren
 (brace
 r_if
@@ -8015,7 +8030,7 @@ op_assign
 op_amp
 id|scsi_driverfs_bus_type
 suffix:semicolon
-id|sg_template.nr_dev
+id|sg_nr_dev
 op_increment
 suffix:semicolon
 id|sg_dev_arr
@@ -8213,7 +8228,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-id|sg_template.dev_max
+id|sg_dev_max
 suffix:semicolon
 id|k
 op_increment
@@ -8435,10 +8450,10 @@ suffix:semicolon
 id|scsidp-&gt;attached
 op_decrement
 suffix:semicolon
-id|sg_template.nr_dev
+id|sg_nr_dev
 op_decrement
 suffix:semicolon
-id|sg_template.dev_noticed
+id|sg_dev_noticed
 op_decrement
 suffix:semicolon
 multiline_comment|/* from &lt;dan@lectra.fr&gt; */
@@ -8702,7 +8717,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|sg_template.dev_max
+id|sg_dev_max
 op_assign
 l_int|0
 suffix:semicolon
@@ -13395,7 +13410,7 @@ id|maxd
 suffix:semicolon
 id|maxd
 op_assign
-id|sg_template.dev_max
+id|sg_dev_max
 suffix:semicolon
 r_for
 c_loop
@@ -14093,7 +14108,7 @@ c_loop
 (paren
 id|k
 op_assign
-id|sg_template.dev_max
+id|sg_dev_max
 op_minus
 l_int|1
 suffix:semicolon
@@ -14185,7 +14200,7 @@ c_cond
 (paren
 id|dev
 OL
-id|sg_template.dev_max
+id|sg_dev_max
 )paren
 id|sdp
 op_assign
@@ -15980,7 +15995,7 @@ c_func
 (paren
 l_string|&quot;dev_max(currently)=%d max_active_device=%d (origin 1)&bslash;n&quot;
 comma
-id|sg_template.dev_max
+id|sg_dev_max
 comma
 id|max_dev
 )paren
