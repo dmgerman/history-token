@@ -2987,7 +2987,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Finish device-tree (pre-parsing some properties etc...) */
+multiline_comment|/*&n;&t; * Finish device-tree (pre-parsing some properties etc...)&n;&t; * We do this in 2 passes. One with &quot;measure_only&quot; set, which&n;&t; * will only measure the amount of memory needed, then we can&n;&t; * allocate that memory, and call finish_node again. However,&n;&t; * we must be careful as most routines will fail nowadays when&n;&t; * prom_alloc() returns 0, so we must make sure our first pass&n;&t; * doesn&squot;t start at 0. We pre-initialize size to 16 for that&n;&t; * reason and then remove those additional 16 bytes&n;&t; */
+id|size
+op_assign
+l_int|16
+suffix:semicolon
 id|finish_node
 c_func
 (paren
@@ -3004,6 +3008,10 @@ l_int|0
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|size
+op_sub_assign
+l_int|16
 suffix:semicolon
 id|end
 op_assign
