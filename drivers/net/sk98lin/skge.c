@@ -2864,7 +2864,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|pAC-&gt;dev

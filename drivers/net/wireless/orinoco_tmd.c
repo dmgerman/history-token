@@ -403,7 +403,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
