@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * This file contains work-arounds for x86 and x86_64 platform bugs.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP)
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PCI)
 DECL|function|quirk_intel_irqbalance
 r_void
 id|__devinit

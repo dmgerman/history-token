@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.5.20, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci-hcd&t;(For Intel/Via USB controllers)&n; *&t;o uhci-hcd&t;(Alternate/JE driver for Intel/Via USB controllers)&n; *&t;o ohci-hcd&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o ehci-hcd&t;(USB 2.0 controllers)&n; *&n; * Note that all HCD drivers do URB_ZERO_PACKET and timeout properly,&n; * so we don&squot;t have to worry about that anymore.&n; * One common problem is the failure to set the address on the dongle,&n; * but this happens before the driver gets loaded...&n; *&n; * Jean II&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -132,7 +133,7 @@ comma
 multiline_comment|/* The end */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Important note :&n; * Devices based on the SigmaTel chipset (0x66f, 0x4200) are not compliant&n; * with the USB-IrDA specification (and actually very very different), and&n; * there is no way this driver can support those devices, apart from&n; * a complete rewrite...&n; * Jean II&n; */
+multiline_comment|/*&n; * Important note :&n; * Devices based on the SigmaTel chipset (0x66f, 0x4200) are not designed&n; * using the &quot;USB-IrDA specification&quot; (yes, there exist such a thing), and&n; * therefore not supported by this driver (don&squot;t add them above).&n; * There is a Linux driver, stir4200, that support those USB devices.&n; * Jean II&n; */
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
@@ -2994,7 +2995,7 @@ op_and_assign
 op_complement
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|self-&gt;tx_urb
@@ -3005,7 +3006,7 @@ op_and_assign
 op_complement
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|self-&gt;speed_urb
@@ -4801,7 +4802,7 @@ op_and_assign
 op_complement
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|self-&gt;tx_urb
@@ -4812,7 +4813,7 @@ op_and_assign
 op_complement
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|self-&gt;speed_urb
@@ -5009,12 +5010,14 @@ id|usb_irda_cleanup
 suffix:semicolon
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Module parameters&n; */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qos_mtt_bits
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

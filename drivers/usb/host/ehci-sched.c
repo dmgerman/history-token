@@ -1046,9 +1046,11 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|vdbg
+id|ehci_vdbg
 (paren
-l_string|&quot;periodic schedule still enabled&quot;
+id|ehci
+comma
+l_string|&quot;periodic schedule still enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1092,9 +1094,11 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* we may not be IDLE yet, but if the qh is empty&n;&t;&t;&t; * the race is very short.  then if qh also isn&squot;t&n;&t;&t;&t; * rescheduled soon, it won&squot;t matter.  otherwise...&n;&t;&t;&t; */
-id|vdbg
+id|ehci_vdbg
 (paren
-l_string|&quot;intr_deschedule...&quot;
+id|ehci
+comma
+l_string|&quot;intr_deschedule...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1425,6 +1429,14 @@ r_int
 id|frame
 suffix:semicolon
 multiline_comment|/* 0..(qh-&gt;period - 1), or NO_FRAME */
+id|qh_refresh
+c_func
+(paren
+id|ehci
+comma
+id|qh
+)paren
+suffix:semicolon
 id|qh-&gt;hw_next
 op_assign
 id|EHCI_LIST_END

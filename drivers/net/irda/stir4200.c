@@ -2637,7 +2637,7 @@ id|stir-&gt;receiving
 op_assign
 l_int|0
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|stir-&gt;rx_urb
@@ -3681,7 +3681,7 @@ id|stir-&gt;fifo_status
 )paren
 suffix:semicolon
 multiline_comment|/* Mop up receive urb&squot;s */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|stir-&gt;rx_urb
