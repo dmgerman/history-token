@@ -15107,7 +15107,6 @@ c_func
 id|raid_table_header
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -15116,7 +15115,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ITERATE_MDDEV
 c_func
 (paren
