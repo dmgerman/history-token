@@ -990,7 +990,18 @@ comma
 id|noninv
 )paren
 op_or
-multiline_comment|/* Not connected, don&squot;t care /&n;&t;&t;IO_STATE(R_PAR0_CONFIG, iinit,   noninv)    |&n;          /* perror is GND and reverse wants 0, noninv */
+multiline_comment|/* Not connected, don&squot;t care */
+id|IO_STATE
+c_func
+(paren
+id|R_PAR0_CONFIG
+comma
+id|iinit
+comma
+id|noninv
+)paren
+op_or
+multiline_comment|/* perror is GND and reverse wants 0, noninv */
 id|IO_STATE
 c_func
 (paren

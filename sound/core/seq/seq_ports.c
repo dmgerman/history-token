@@ -1704,16 +1704,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|port-&gt;owner
-comma
-r_return
-op_minus
-id|EFAULT
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

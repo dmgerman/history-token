@@ -1763,13 +1763,7 @@ l_string|&quot;   subql #1,%1&bslash;n&bslash;t&quot;
 l_string|&quot;2: movesl %4@+,%2&bslash;n&bslash;t&quot;
 l_string|&quot;3: movel %2,%/a0@+&bslash;n&bslash;t&quot;
 l_string|&quot;   dbra %1,2b&bslash;n&bslash;t&quot;
-l_string|&quot;   bral &quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|ret_from_signal
-)paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;   bral ret_from_signal&bslash;n&quot;
 l_string|&quot;4:&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 4&bslash;n&quot;
@@ -2283,13 +2277,7 @@ l_string|&quot;   subql #1,%1&bslash;n&bslash;t&quot;
 l_string|&quot;2: movesl %4@+,%2&bslash;n&bslash;t&quot;
 l_string|&quot;3: movel %2,%/a0@+&bslash;n&bslash;t&quot;
 l_string|&quot;   dbra %1,2b&bslash;n&bslash;t&quot;
-l_string|&quot;   bral &quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|ret_from_signal
-)paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;   bral ret_from_signal&bslash;n&quot;
 l_string|&quot;4:&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 4&bslash;n&quot;

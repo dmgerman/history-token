@@ -685,6 +685,15 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* OSS sequencer adds running status to all sequences */
+id|snd_midi_event_no_status
+c_func
+(paren
+id|mdev-&gt;coder
+comma
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * look for en empty slot&n;&t; */
 id|spin_lock_irqsave
 c_func

@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -349,13 +350,15 @@ mdefine_line|#define CM_JYSTK_EN&t;&t;0x00000002&t;/* joy stick */
 DECL|macro|CM_REG_CHFORMAT
 mdefine_line|#define CM_REG_CHFORMAT&t;&t;0x08
 DECL|macro|CM_CHB3D5C
-mdefine_line|#define CM_CHB3D5C&t;&t;0x80000000&t;/* 5 channels */
+mdefine_line|#define CM_CHB3D5C&t;&t;0x80000000&t;/* 5,6 channels */
 DECL|macro|CM_CHB3D
-mdefine_line|#define CM_CHB3D&t;&t;0x20000000&t;/* 4,5,6 channels */
+mdefine_line|#define CM_CHB3D&t;&t;0x20000000&t;/* 4 channels */
 DECL|macro|CM_CHIP_MASK1
 mdefine_line|#define CM_CHIP_MASK1&t;&t;0x1f000000
 DECL|macro|CM_CHIP_037
 mdefine_line|#define CM_CHIP_037&t;&t;0x01000000
+DECL|macro|CM_SPDIF_SELECT1
+mdefine_line|#define CM_SPDIF_SELECT1&t;0x00080000&t;/* for model &lt;= 037 ? */
 DECL|macro|CM_AC3EN1
 mdefine_line|#define CM_AC3EN1&t;&t;0x00100000&t;/* enable AC3: model 037 */
 DECL|macro|CM_SPD24SEL
@@ -495,7 +498,7 @@ mdefine_line|#define CM_TXVX&t;&t;&t;0x08000000
 DECL|macro|CM_N4SPK3D
 mdefine_line|#define CM_N4SPK3D&t;&t;0x04000000&t;/* 4ch output */
 DECL|macro|CM_SPDO5V
-mdefine_line|#define CM_SPDO5V&t;&t;0x02000000&t;/* 5V spdif output */
+mdefine_line|#define CM_SPDO5V&t;&t;0x02000000&t;/* 5V spdif output (1 = 0.5v (coax)) */
 DECL|macro|CM_SPDIF48K
 mdefine_line|#define CM_SPDIF48K&t;&t;0x01000000&t;/* write */
 DECL|macro|CM_SPATUS48K
@@ -524,8 +527,8 @@ DECL|macro|CM_SFILENB
 mdefine_line|#define CM_SFILENB&t;&t;0x00001000
 DECL|macro|CM_MMODE_MASK
 mdefine_line|#define CM_MMODE_MASK&t;&t;0x00000E00
-DECL|macro|CM_SPDIF_SELECT
-mdefine_line|#define CM_SPDIF_SELECT&t;&t;0x00000100&t;/* for model &gt; 039 ? */
+DECL|macro|CM_SPDIF_SELECT2
+mdefine_line|#define CM_SPDIF_SELECT2&t;0x00000100&t;/* for model &gt; 039 ? */
 DECL|macro|CM_ENCENTER
 mdefine_line|#define CM_ENCENTER&t;&t;0x00000080&t;/* shared with FLINKON? */
 DECL|macro|CM_FLINKON
@@ -1717,16 +1720,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snd_cmipci_set_bit
-c_func
-(paren
-id|cm
-comma
-id|CM_REG_CHFORMAT
-comma
-id|CM_CHB3D
-)paren
-suffix:semicolon
 id|snd_cmipci_clear_bit
 c_func
 (paren
@@ -1735,6 +1728,16 @@ comma
 id|CM_REG_CHFORMAT
 comma
 id|CM_CHB3D5C
+)paren
+suffix:semicolon
+id|snd_cmipci_set_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_CHFORMAT
+comma
+id|CM_CHB3D
 )paren
 suffix:semicolon
 )brace
@@ -9366,11 +9369,25 @@ macro_line|#endif
 id|DEFINE_BIT_SWITCH_ARG
 c_func
 (paren
-id|spdif_in_1_2
+id|spdif_in_sel1
+comma
+id|CM_REG_CHFORMAT
+comma
+id|CM_SPDIF_SELECT1
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|DEFINE_BIT_SWITCH_ARG
+c_func
+(paren
+id|spdif_in_sel2
 comma
 id|CM_REG_MISC_CTRL
 comma
-id|CM_SPDIF_SELECT
+id|CM_SPDIF_SELECT2
 comma
 l_int|0
 comma
@@ -9972,6 +9989,14 @@ comma
 id|spdi_phase
 )paren
 comma
+id|DEFINE_MIXER_SWITCH
+c_func
+(paren
+l_string|&quot;IEC958 In Select&quot;
+comma
+id|spdif_in_sel1
+)paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* only for model 039 or later */
@@ -9997,7 +10022,7 @@ c_func
 (paren
 l_string|&quot;IEC958 In Select&quot;
 comma
-id|spdif_in_1_2
+id|spdif_in_sel2
 )paren
 comma
 id|DEFINE_MIXER_SWITCH

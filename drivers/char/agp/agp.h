@@ -648,6 +648,10 @@ macro_line|#ifndef PCI_DEVICE_ID_AL_M1641_0
 DECL|macro|PCI_DEVICE_ID_AL_M1641_0
 mdefine_line|#define PCI_DEVICE_ID_AL_M1641_0&t;0x1641
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1644_0
+DECL|macro|PCI_DEVICE_ID_AL_M1644_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1644_0&t;0x1644
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_AL_M1647_0
 DECL|macro|PCI_DEVICE_ID_AL_M1647_0
 mdefine_line|#define PCI_DEVICE_ID_AL_M1647_0&t;0x1647

@@ -216,12 +216,7 @@ c_func
 l_string|&quot;.text&bslash;n&quot;
 id|__ALIGN_STR
 l_string|&quot;&bslash;n&quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|nmihandler
-)paren
-l_string|&quot;: rte&quot;
+l_string|&quot;nmihandler: rte&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * this must be called very early as the kernel might&n; * use some instruction that are emulated on the 060&n; */

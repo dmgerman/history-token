@@ -48,10 +48,6 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;&t;FTL_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME&t;&t;&quot;ftl&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST&t;&t;do_ftl_request
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 DECL|macro|DEVICE_NR

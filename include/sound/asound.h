@@ -6,7 +6,6 @@ macro_line|#if defined(LINUX) || defined(__LINUX__) || defined(__linux__)
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#if  __LITTLE_ENDIAN == 1234
 DECL|macro|SNDRV_LITTLE_ENDIAN

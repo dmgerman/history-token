@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -46,6 +47,7 @@ l_string|&quot;{{Intel,82801AA},&quot;
 l_string|&quot;{Intel,82901AB},&quot;
 l_string|&quot;{Intel,82801BA},&quot;
 l_string|&quot;{Intel,ICH3},&quot;
+l_string|&quot;{Intel,ICH4},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,NForce Audio},&quot;
@@ -357,6 +359,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH3
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH3
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH3&t;0x2485
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH4
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH4
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH4&t;0x24c5
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
 mdefine_line|#define PCI_DEVICE_ID_SI_7012&t;&t;0x7012
@@ -615,6 +621,20 @@ r_int
 r_int
 id|device_type
 suffix:semicolon
+DECL|member|ac97_name
+r_char
+id|ac97_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|ctrl_name
+r_char
+id|ctrl_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
 DECL|member|dma_playback_size
 r_int
 r_int
@@ -859,6 +879,23 @@ id|DEVICE_INTEL
 )brace
 comma
 multiline_comment|/* ICH3 */
+(brace
+l_int|0x8086
+comma
+l_int|0x24c5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL
+)brace
+comma
+multiline_comment|/* ICH4 */
 (brace
 l_int|0x8086
 comma
@@ -1999,6 +2036,13 @@ r_int
 r_int
 id|status
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|inl
@@ -2030,7 +2074,46 @@ id|ICH_PIINT
 op_eq
 l_int|0
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+multiline_comment|/* ack first */
+id|outl
+c_func
+(paren
+id|status
+op_amp
+(paren
+id|ICH_MCINT
+op_or
+id|ICH_POINT
+op_or
+id|ICH_PIINT
+)paren
+comma
+id|ICHREG
+c_func
+(paren
+id|chip
+comma
+id|GLOB_STA
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5667,15 +5750,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* don&squot;t process interrupts */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* set rate */
 id|snd_ac97_set_rate
 c_func
@@ -5701,6 +5775,15 @@ op_assign
 id|chip-&gt;bmport
 op_plus
 id|chip-&gt;playback.reg_offset
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|outb
 c_func
@@ -5907,6 +5990,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;?? calculation error..&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5948,27 +6032,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|pos
-OG
+OL
 l_int|40000
-op_logical_and
-id|pos
-OL
-l_int|47500
-)paren
 op_logical_or
+id|pos
+op_ge
+l_int|60000
+)paren
+multiline_comment|/* abnormal value. hw problem? */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;intel8x0: measured clock %ld rejected&bslash;n&quot;
+comma
+id|pos
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
 (paren
 id|pos
-OG
+template_param
 l_int|48500
-op_logical_and
-id|pos
-OL
-l_int|50000
 )paren
-)paren
-(brace
+multiline_comment|/* not 48000Hz, tuning the clock.. */
 id|chip-&gt;ac97-&gt;clock
 op_assign
 (paren
@@ -5988,7 +6078,6 @@ comma
 id|chip-&gt;ac97-&gt;clock
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|snd_intel8x0_dev_free
 r_static
@@ -6068,12 +6157,6 @@ suffix:colon
 id|snd_intel8x0_dev_free
 comma
 )brace
-suffix:semicolon
-r_char
-id|name
-(braket
-l_int|32
-)braket
 suffix:semicolon
 op_star
 id|r_intel8x0
@@ -6165,7 +6248,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|name
+id|chip-&gt;ac97_name
 comma
 l_string|&quot;%s - AC&squot;97&quot;
 comma
@@ -6185,7 +6268,7 @@ id|chip-&gt;port
 comma
 l_int|256
 comma
-id|name
+id|chip-&gt;ac97_name
 )paren
 )paren
 op_eq
@@ -6220,7 +6303,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|name
+id|chip-&gt;ctrl_name
 comma
 l_string|&quot;%s - Controller&quot;
 comma
@@ -6250,7 +6333,7 @@ id|chip-&gt;bmport
 comma
 l_int|64
 comma
-id|name
+id|chip-&gt;ctrl_name
 )paren
 )paren
 op_eq
@@ -6680,6 +6763,12 @@ comma
 id|PCI_DEVICE_ID_INTEL_ICH3
 comma
 l_string|&quot;Intel ICH3&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH4
+comma
+l_string|&quot;Intel ICH4&quot;
 )brace
 comma
 (brace

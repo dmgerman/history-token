@@ -4,6 +4,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -853,9 +854,13 @@ id|emu-&gt;ptb_pages
 id|idx
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|silent_page
 op_or
 id|idx
+)paren
 suffix:semicolon
 id|snd_emu10k1_ptr_write
 c_func
@@ -2954,7 +2959,7 @@ l_int|0
 )paren
 id|extin_mask
 op_assign
-l_int|0x1fcf
+l_int|0x3fcf
 suffix:semicolon
 r_if
 c_cond
@@ -2965,7 +2970,7 @@ l_int|0
 )paren
 id|extout_mask
 op_assign
-l_int|0x3fff
+l_int|0x1fff
 suffix:semicolon
 id|emu-&gt;fx8010.extin_mask
 op_assign

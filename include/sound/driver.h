@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; *  ==========================================================================&n; */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0)
 macro_line|#if defined(__i386__) || defined(__ppc__)
-multiline_comment|/*&n; * Here a dirty hack for 2.4 kernels.. See kernel/memory.c.&n; */
+multiline_comment|/*&n; * Here a dirty hack for 2.4 kernels.. See sound/core/memory.c.&n; */
 DECL|macro|HACK_PCI_ALLOC_CONSISTENT
 mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
 macro_line|#include &lt;linux/pci.h&gt;

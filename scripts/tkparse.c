@@ -112,7 +112,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find index of a specyfic variable in the symbol table.&n; * Create a new entry if it does not exist yet.&n; */
 DECL|macro|VARTABLE_SIZE
-mdefine_line|#define VARTABLE_SIZE 2048
+mdefine_line|#define VARTABLE_SIZE 4096
 DECL|variable|vartable
 r_struct
 id|variable

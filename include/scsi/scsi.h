@@ -122,6 +122,8 @@ DECL|macro|PERSISTENT_RESERVE_IN
 mdefine_line|#define PERSISTENT_RESERVE_IN 0x5e
 DECL|macro|PERSISTENT_RESERVE_OUT
 mdefine_line|#define PERSISTENT_RESERVE_OUT 0x5f
+DECL|macro|REPORT_LUNS
+mdefine_line|#define REPORT_LUNS           0xa0
 DECL|macro|MOVE_MEDIUM
 mdefine_line|#define MOVE_MEDIUM           0xa5
 DECL|macro|READ_12
@@ -195,6 +197,8 @@ DECL|macro|TYPE_DISK
 mdefine_line|#define TYPE_DISK           0x00
 DECL|macro|TYPE_TAPE
 mdefine_line|#define TYPE_TAPE           0x01
+DECL|macro|TYPE_PRINTER
+mdefine_line|#define TYPE_PRINTER        0x02
 DECL|macro|TYPE_PROCESSOR
 mdefine_line|#define TYPE_PROCESSOR      0x03    /* HP scanners use this */
 DECL|macro|TYPE_WORM
@@ -274,6 +278,23 @@ id|u_char
 id|block_length_lo
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * ScsiLun: 8 byte LUN.&n; */
+DECL|struct|scsi_lun
+r_typedef
+r_struct
+id|scsi_lun
+(brace
+DECL|member|scsi_lun
+id|u8
+id|scsi_lun
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|typedef|ScsiLun
+)brace
+id|ScsiLun
 suffix:semicolon
 multiline_comment|/*&n; *  MESSAGE CODES&n; */
 DECL|macro|COMMAND_COMPLETE

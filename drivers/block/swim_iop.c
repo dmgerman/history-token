@@ -581,7 +581,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_fd_request
 comma
 op_amp
 id|swim_iop_lock

@@ -4,7 +4,6 @@ DECL|macro|__SOUND_ASEQUENCER_H
 mdefine_line|#define __SOUND_ASEQUENCER_H
 macro_line|#ifndef __KERNEL__
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;sys/ipc.h&gt;
 macro_line|#endif
 macro_line|#include &lt;sound/asound.h&gt;
 multiline_comment|/** version of the sequencer */
@@ -99,7 +98,7 @@ multiline_comment|/** port connection changes&n; * event data type = sndrv_seq_c
 DECL|macro|SNDRV_SEQ_EVENT_PORT_SUBSCRIBED
 mdefine_line|#define SNDRV_SEQ_EVENT_PORT_SUBSCRIBED&t;66&t;/* ports connected */
 DECL|macro|SNDRV_SEQ_EVENT_PORT_UNSUBSCRIBED
-mdefine_line|#define SNDRV_SEQ_EVENT_PORT_UNSUBSCRIBED&t;67&t;/* ports disconnected */
+mdefine_line|#define SNDRV_SEQ_EVENT_PORT_UNSUBSCRIBED 67&t;/* ports disconnected */
 multiline_comment|/** synthesizer events&n; * event data type = sndrv_seq_eve_sample_control_t&n; */
 DECL|macro|SNDRV_SEQ_EVENT_SAMPLE
 mdefine_line|#define SNDRV_SEQ_EVENT_SAMPLE&t;&t;70&t;/* sample select */
@@ -164,7 +163,7 @@ mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_PUT&t;109&t;/* put instrument to port
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_GET
 mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_GET&t;110&t;/* get instrument from port */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_GET_RESULT
-mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_GET_RESULT&t;111&t;/* result */
+mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_GET_RESULT 111&t;/* result */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_FREE
 mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_FREE&t;112&t;/* free instrument(s) */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_LIST
@@ -174,9 +173,9 @@ mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_LIST_RESULT 114&t;/* result */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_CLUSTER
 mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CLUSTER&t;115&t;/* cluster parameters */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_CLUSTER_GET
-mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CLUSTER_GET&t;116&t;/* get cluster parameters */
+mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CLUSTER_GET 116&t;/* get cluster parameters */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_CLUSTER_RESULT
-mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CLUSTER_RESULT 117&t;/* result */
+mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CLUSTER_RESULT 117 /* result */
 DECL|macro|SNDRV_SEQ_EVENT_INSTR_CHANGE
 mdefine_line|#define SNDRV_SEQ_EVENT_INSTR_CHANGE&t;118&t;/* instrument change */
 multiline_comment|/* 119-129: reserved */
@@ -196,20 +195,6 @@ DECL|macro|SNDRV_SEQ_EVENT_USR_VAR3
 mdefine_line|#define SNDRV_SEQ_EVENT_USR_VAR3&t;138
 DECL|macro|SNDRV_SEQ_EVENT_USR_VAR4
 mdefine_line|#define SNDRV_SEQ_EVENT_USR_VAR4&t;139
-multiline_comment|/* 140-149: IPC shared memory events (*NOT SUPPORTED YET*)&n; * event data type = sndrv_seq_ev_ipcshm&n; * (SNDRV_SEQ_EVENT_LENGTH_VARIPC must be set)&n; */
-DECL|macro|SNDRV_SEQ_EVENT_IPCSHM
-mdefine_line|#define SNDRV_SEQ_EVENT_IPCSHM&t;&t;140
-multiline_comment|/* 141-144: reserved */
-DECL|macro|SNDRV_SEQ_EVENT_USR_VARIPC0
-mdefine_line|#define SNDRV_SEQ_EVENT_USR_VARIPC0&t;145
-DECL|macro|SNDRV_SEQ_EVENT_USR_VARIPC1
-mdefine_line|#define SNDRV_SEQ_EVENT_USR_VARIPC1&t;146
-DECL|macro|SNDRV_SEQ_EVENT_USR_VARIPC2
-mdefine_line|#define SNDRV_SEQ_EVENT_USR_VARIPC2&t;147
-DECL|macro|SNDRV_SEQ_EVENT_USR_VARIPC3
-mdefine_line|#define SNDRV_SEQ_EVENT_USR_VARIPC3&t;148
-DECL|macro|SNDRV_SEQ_EVENT_USR_VARIPC4
-mdefine_line|#define SNDRV_SEQ_EVENT_USR_VARIPC4&t;149
 multiline_comment|/* 150-151: kernel events with quote - DO NOT use in user clients */
 DECL|macro|SNDRV_SEQ_EVENT_KERNEL_ERROR
 mdefine_line|#define SNDRV_SEQ_EVENT_KERNEL_ERROR&t;150
@@ -289,8 +274,6 @@ DECL|macro|SNDRV_SEQ_EVENT_LENGTH_VARIABLE
 mdefine_line|#define SNDRV_SEQ_EVENT_LENGTH_VARIABLE&t;(1&lt;&lt;2)&t;/* variable event size */
 DECL|macro|SNDRV_SEQ_EVENT_LENGTH_VARUSR
 mdefine_line|#define SNDRV_SEQ_EVENT_LENGTH_VARUSR&t;(2&lt;&lt;2)&t;/* variable event size - user memory space */
-DECL|macro|SNDRV_SEQ_EVENT_LENGTH_VARIPC
-mdefine_line|#define SNDRV_SEQ_EVENT_LENGTH_VARIPC&t;(3&lt;&lt;2)&t;/* variable event size - IPC */
 DECL|macro|SNDRV_SEQ_EVENT_LENGTH_MASK
 mdefine_line|#define SNDRV_SEQ_EVENT_LENGTH_MASK&t;(3&lt;&lt;2)
 DECL|macro|SNDRV_SEQ_PRIORITY_NORMAL
@@ -406,6 +389,7 @@ id|sndrv_seq_ev_ext
 (brace
 DECL|member|len
 r_int
+r_int
 id|len
 suffix:semicolon
 multiline_comment|/* length of data */
@@ -415,23 +399,6 @@ op_star
 id|ptr
 suffix:semicolon
 multiline_comment|/* pointer to data (note: maybe 64-bit) */
-)brace
-suffix:semicolon
-multiline_comment|/* external stored data - IPC shared memory */
-DECL|struct|sndrv_seq_ev_ipcshm
-r_struct
-id|sndrv_seq_ev_ipcshm
-(brace
-DECL|member|len
-r_int
-id|len
-suffix:semicolon
-multiline_comment|/* length of data */
-DECL|member|ipc
-id|key_t
-id|ipc
-suffix:semicolon
-multiline_comment|/* IPC key */
 )brace
 suffix:semicolon
 multiline_comment|/* Instrument cluster type */
@@ -908,11 +875,6 @@ r_struct
 id|sndrv_seq_ev_ext
 id|ext
 suffix:semicolon
-DECL|member|ipcshm
-r_struct
-id|sndrv_seq_ev_ipcshm
-id|ipcshm
-suffix:semicolon
 DECL|member|queue
 r_struct
 id|sndrv_seq_ev_queue_control
@@ -1012,9 +974,6 @@ mdefine_line|#define sndrv_seq_ev_is_instr_type(ev)&t;((ev)-&gt;type &gt;= 100 &
 multiline_comment|/* variable length events: 130-139 */
 DECL|macro|sndrv_seq_ev_is_variable_type
 mdefine_line|#define sndrv_seq_ev_is_variable_type(ev)&t;((ev)-&gt;type &gt;= 130 &amp;&amp; (ev)-&gt;type &lt; 140)
-multiline_comment|/* ipc shmem events: 140-149 */
-DECL|macro|sndrv_seq_ev_is_varipc_type
-mdefine_line|#define sndrv_seq_ev_is_varipc_type(ev)&t;((ev)-&gt;type &gt;= 140 &amp;&amp; (ev)-&gt;type &lt; 150)
 multiline_comment|/* reserved for kernel */
 DECL|macro|sndrv_seq_ev_is_reserved
 mdefine_line|#define sndrv_seq_ev_is_reserved(ev)&t;((ev)-&gt;type &gt;= 150)
@@ -1034,8 +993,6 @@ DECL|macro|sndrv_seq_ev_is_variable
 mdefine_line|#define sndrv_seq_ev_is_variable(ev)&t;(sndrv_seq_ev_length_type(ev) == SNDRV_SEQ_EVENT_LENGTH_VARIABLE)
 DECL|macro|sndrv_seq_ev_is_varusr
 mdefine_line|#define sndrv_seq_ev_is_varusr(ev)&t;(sndrv_seq_ev_length_type(ev) == SNDRV_SEQ_EVENT_LENGTH_VARUSR)
-DECL|macro|sndrv_seq_ev_is_varipc
-mdefine_line|#define sndrv_seq_ev_is_varipc(ev)&t;(sndrv_seq_ev_length_type(ev) == SNDRV_SEQ_EVENT_LENGTH_VARIPC)
 multiline_comment|/* time-stamp type */
 DECL|macro|sndrv_seq_ev_timestamp_type
 mdefine_line|#define sndrv_seq_ev_timestamp_type(ev)&t;((ev)-&gt;flags &amp; SNDRV_SEQ_TIME_STAMP_MASK)
@@ -2039,7 +1996,7 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* INSTR_PUT/GET, data are stored in one block (extended or IPC), header + data */
+multiline_comment|/* INSTR_PUT/GET, data are stored in one block (extended), header + data */
 DECL|struct|sndrv_seq_instr_header
 r_struct
 id|sndrv_seq_instr_header
@@ -2187,7 +2144,7 @@ mdefine_line|#define SNDRV_SEQ_IOCTL_SET_PORT_INFO&t;_IOW (&squot;S&squot;, 0x23
 DECL|macro|SNDRV_SEQ_IOCTL_SUBSCRIBE_PORT
 mdefine_line|#define SNDRV_SEQ_IOCTL_SUBSCRIBE_PORT&t;_IOW (&squot;S&squot;, 0x30, struct sndrv_seq_port_subscribe)
 DECL|macro|SNDRV_SEQ_IOCTL_UNSUBSCRIBE_PORT
-mdefine_line|#define SNDRV_SEQ_IOCTL_UNSUBSCRIBE_PORT&t;_IOW (&squot;S&squot;, 0x31, struct sndrv_seq_port_subscribe)
+mdefine_line|#define SNDRV_SEQ_IOCTL_UNSUBSCRIBE_PORT _IOW (&squot;S&squot;, 0x31, struct sndrv_seq_port_subscribe)
 DECL|macro|SNDRV_SEQ_IOCTL_CREATE_QUEUE
 mdefine_line|#define SNDRV_SEQ_IOCTL_CREATE_QUEUE&t;_IOWR(&squot;S&squot;, 0x32, struct sndrv_seq_queue_info)
 DECL|macro|SNDRV_SEQ_IOCTL_DELETE_QUEUE
@@ -2199,7 +2156,7 @@ mdefine_line|#define SNDRV_SEQ_IOCTL_SET_QUEUE_INFO&t;_IOWR(&squot;S&squot;, 0x3
 DECL|macro|SNDRV_SEQ_IOCTL_GET_NAMED_QUEUE
 mdefine_line|#define SNDRV_SEQ_IOCTL_GET_NAMED_QUEUE&t;_IOWR(&squot;S&squot;, 0x36, struct sndrv_seq_queue_info)
 DECL|macro|SNDRV_SEQ_IOCTL_GET_QUEUE_STATUS
-mdefine_line|#define SNDRV_SEQ_IOCTL_GET_QUEUE_STATUS&t;_IOWR(&squot;S&squot;, 0x40, struct sndrv_seq_queue_status)
+mdefine_line|#define SNDRV_SEQ_IOCTL_GET_QUEUE_STATUS _IOWR(&squot;S&squot;, 0x40, struct sndrv_seq_queue_status)
 DECL|macro|SNDRV_SEQ_IOCTL_GET_QUEUE_TEMPO
 mdefine_line|#define SNDRV_SEQ_IOCTL_GET_QUEUE_TEMPO&t;_IOWR(&squot;S&squot;, 0x41, struct sndrv_seq_queue_tempo)
 DECL|macro|SNDRV_SEQ_IOCTL_SET_QUEUE_TEMPO

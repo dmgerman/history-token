@@ -50,6 +50,12 @@ r_int
 id|compat
 suffix:semicolon
 multiline_comment|/* = 0 */
+DECL|variable|nojogdial
+r_static
+r_int
+id|nojogdial
+suffix:semicolon
+multiline_comment|/* = 0 */
 multiline_comment|/* Inits the queue */
 DECL|function|sonypi_initq
 r_static
@@ -1480,6 +1486,9 @@ id|sonypi_capture_ev
 comma
 id|sonypi_bluetooth_ev
 suffix:semicolon
+id|u8
+id|sonypi_pkey_ev
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1504,6 +1513,15 @@ id|sonypi_bluetooth_ev
 op_assign
 id|SONYPI_TYPE2_BLUETOOTH_EV
 suffix:semicolon
+id|sonypi_pkey_ev
+op_assign
+id|nojogdial
+ques
+c_cond
+id|SONYPI_TYPE2_PKEY_EV
+suffix:colon
+id|SONYPI_TYPE1_PKEY_EV
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1522,6 +1540,10 @@ suffix:semicolon
 id|sonypi_bluetooth_ev
 op_assign
 id|SONYPI_TYPE1_BLUETOOTH_EV
+suffix:semicolon
+id|sonypi_pkey_ev
+op_assign
+id|SONYPI_TYPE1_PKEY_EV
 suffix:semicolon
 )brace
 id|v1
@@ -1546,10 +1568,10 @@ c_cond
 (paren
 id|v2
 op_amp
-id|SONYPI_TYPE1_PKEY_EV
+id|sonypi_pkey_ev
 )paren
 op_eq
-id|SONYPI_TYPE1_PKEY_EV
+id|sonypi_pkey_ev
 )paren
 (brace
 r_for
@@ -3587,7 +3609,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;sonypi: detected %s model, &quot;
-l_string|&quot;camera = %s, compat = %s&bslash;n&quot;
+l_string|&quot;camera = %s, compat = %s, nojogdial = %s&bslash;n&quot;
 comma
 (paren
 id|sonypi_device.model
@@ -3608,6 +3630,13 @@ suffix:colon
 l_string|&quot;off&quot;
 comma
 id|compat
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+comma
+id|nojogdial
 ques
 c_cond
 l_string|&quot;on&quot;
@@ -3967,6 +3996,26 @@ id|ints
 l_int|5
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ints
+(braket
+l_int|0
+)braket
+op_eq
+l_int|5
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|nojogdial
+op_assign
+id|ints
+(braket
+l_int|6
+)braket
+suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -4093,6 +4142,22 @@ c_func
 id|compat
 comma
 l_string|&quot;set this if you want to enable backward compatibility mode&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|nojogdial
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nojogdial
+comma
+l_string|&quot;set this if you have a Vaio without a jogdial (like the fx series)&quot;
 )paren
 suffix:semicolon
 DECL|variable|sonypi_camera_command

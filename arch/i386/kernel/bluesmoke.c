@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * arch/i386/kernel/bluesmoke.c - x86 Machine Check Exception Reporting&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,32 +26,8 @@ r_static
 r_int
 id|banks
 suffix:semicolon
-multiline_comment|/*&n; * If we get an MCE, we don&squot;t know what state the caches/TLB&squot;s are&n; * going to be in, so we throw them all away.&n; */
-DECL|function|flush_all
-r_static
-r_void
-r_inline
-id|flush_all
-(paren
-r_void
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;invd&quot;
-suffix:colon
-suffix:colon
-)paren
-suffix:semicolon
-id|__flush_tlb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
 multiline_comment|/*&n; *&t;P4/Xeon Thermal transition interrupt handler&n; */
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|intel_thermal_interrupt
 r_static
 r_void
@@ -132,7 +109,6 @@ id|cpu
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 DECL|function|unexpected_thermal_interrupt
 r_static
 r_void
@@ -208,7 +184,6 @@ op_star
 id|c
 )paren
 (brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 id|u32
 id|l
 comma
@@ -316,7 +291,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* check wether a vector already exists */
+multiline_comment|/* check whether a vector already exists */
 id|l
 op_assign
 id|apic_read
@@ -442,8 +417,8 @@ id|APIC_LVT_MASKED
 suffix:semicolon
 r_return
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif /* CONFIG_X86_MCE_P4THERMAL */
 multiline_comment|/*&n; *&t;Machine Check Handler For PII/PIII&n; */
 DECL|function|intel_machine_check
 r_static
@@ -481,11 +456,6 @@ id|mcgsth
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|flush_all
-c_func
-(paren
-)paren
 suffix:semicolon
 id|rdmsr
 c_func
@@ -976,18 +946,28 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_MCE_NONFATAL
 DECL|variable|mce_timer
+r_static
 r_struct
 id|timer_list
 id|mce_timer
 suffix:semicolon
+DECL|variable|timerset
+r_static
+r_int
+id|timerset
+op_assign
+l_int|0
+suffix:semicolon
+DECL|macro|MCE_RATE
+mdefine_line|#define MCE_RATE&t;15*HZ&t;/* timer rate is 15s */
 DECL|function|mce_checkregs
 r_static
 r_void
 id|mce_checkregs
 (paren
-r_int
-r_int
-id|cpu
+r_void
+op_star
+id|info
 )paren
 (brace
 id|u32
@@ -998,19 +978,22 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
+r_int
+r_int
+op_star
+id|cpu
+op_assign
+id|info
+suffix:semicolon
+id|BUG_ON
 (paren
+op_star
 id|cpu
 op_ne
 id|smp_processor_id
 c_func
 (paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -1054,11 +1037,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|flush_all
-c_func
-(paren
-)paren
-suffix:semicolon
 id|printk
 (paren
 id|KERN_EMERG
@@ -1082,7 +1060,7 @@ comma
 id|low
 )paren
 suffix:semicolon
-multiline_comment|/* Scrub the error so we don&squot;t pick it up in 5 seconds time. */
+multiline_comment|/* Scrub the error so we don&squot;t pick it up in MCE_RATE seconds time. */
 id|wrmsr
 c_func
 (paren
@@ -1105,21 +1083,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Refresh the timer. */
-id|mce_timer.expires
-op_assign
-id|jiffies
-op_plus
-l_int|5
-op_star
-id|HZ
-suffix:semicolon
-id|add_timer
-(paren
-op_amp
-id|mce_timer
-)paren
-suffix:semicolon
 )brace
 DECL|function|mce_timerfunc
 r_static
@@ -1131,6 +1094,7 @@ r_int
 id|data
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -1162,6 +1126,7 @@ c_func
 id|mce_checkregs
 c_func
 (paren
+op_amp
 id|i
 )paren
 suffix:semicolon
@@ -1170,6 +1135,7 @@ id|smp_call_function
 (paren
 id|mce_checkregs
 comma
+op_amp
 id|i
 comma
 l_int|1
@@ -1178,6 +1144,19 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Refresh the timer. */
+id|mce_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|MCE_RATE
+suffix:semicolon
+id|add_timer
+(paren
+op_amp
+id|mce_timer
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; *&t;Set up machine check reporting for processors with Intel style MCE&n; */
@@ -1521,12 +1500,26 @@ c_func
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+multiline_comment|/* Only enable thermal throttling warning on Pentium 4. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_INTEL
+op_logical_and
+id|c-&gt;x86
+op_eq
+l_int|15
+)paren
 id|intel_init_thermal
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
+macro_line|#endif
 id|done
 op_assign
 l_int|1
@@ -1680,7 +1673,15 @@ id|c
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_MCE_NONFATAL
-multiline_comment|/* Set the timer to check for non-fatal errors every 5 seconds */
+r_if
+c_cond
+(paren
+id|timerset
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Set the timer to check for non-fatal&n;&t;&t;&t;&t;&t;   errors every MCE_RATE seconds */
 id|init_timer
 (paren
 op_amp
@@ -1691,9 +1692,7 @@ id|mce_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|5
-op_star
-id|HZ
+id|MCE_RATE
 suffix:semicolon
 id|mce_timer.data
 op_assign
@@ -1710,6 +1709,18 @@ op_amp
 id|mce_timer
 )paren
 suffix:semicolon
+id|timerset
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Machine check exception polling timer started.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 r_break
