@@ -3,7 +3,7 @@ multiline_comment|/*&n; * BEGIN_DESC&n; *&n; *  File:&n; *&t;@(#)&t;pa/fp/fpudis
 DECL|macro|FPUDEBUG
 mdefine_line|#define FPUDEBUG 0
 macro_line|#include &quot;float.h&quot;
-macro_line|#include &quot;types.h&quot;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* #include &lt;sys/debug.h&gt; */
 multiline_comment|/* #include &lt;machine/sys/mdep_private.h&gt; */

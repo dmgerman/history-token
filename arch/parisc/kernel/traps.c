@@ -2864,12 +2864,20 @@ id|regs
 r_if
 c_cond
 (paren
+(paren
 id|fault_space
+op_rshift
+id|SPACEID_SHIFT
+)paren
 op_ne
+(paren
 id|regs-&gt;sr
 (braket
 l_int|7
 )braket
+op_rshift
+id|SPACEID_SHIFT
+)paren
 )paren
 (brace
 macro_line|#ifdef PRINT_USER_FAULTS
@@ -2892,7 +2900,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;User Fault (long pointer) &quot;
+l_string|&quot;User Fault (long pointer) (fault %d) &quot;
+comma
+id|code
 )paren
 suffix:semicolon
 id|printk

@@ -131,18 +131,6 @@ DECL|macro|ELF_CORE_COPY_TASK_REGS
 mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_regs) dump_task_regs(tsk, elf_regs)
 DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|dump_smp_unlazy_fpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|ELF_CORE_SYNC
-mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

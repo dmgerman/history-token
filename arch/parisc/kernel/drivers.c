@@ -16,6 +16,13 @@ id|hppa_dma_ops
 op_star
 id|hppa_dma_ops
 suffix:semicolon
+DECL|variable|hppa_dma_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hppa_dma_ops
+)paren
+suffix:semicolon
 DECL|variable|root
 r_static
 r_struct
@@ -445,6 +452,13 @@ id|driver-&gt;drv
 )paren
 suffix:semicolon
 )brace
+DECL|variable|register_parisc_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_parisc_driver
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * count_parisc_driver - count # of devices this driver would match&n; * @driver: the PA-RISC driver to try&n; *&n; * Use by IOMMU support to &quot;guess&quot; the right size IOPdir.&n; * Formula is something like memsize/(num_iommu * entry_size).&n; */
 DECL|function|count_parisc_driver
 r_int
@@ -515,6 +529,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unregister_parisc_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_parisc_driver
+)paren
+suffix:semicolon
 DECL|function|find_device_by_addr
 r_static
 r_struct
@@ -791,6 +812,13 @@ id|output
 )paren
 suffix:semicolon
 )brace
+DECL|variable|print_pa_hwpath
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|print_pa_hwpath
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_PCI) || defined(CONFIG_ISA)
 multiline_comment|/**&n; * get_pci_node_path - Returns hardware path for PCI devices&n; * dev: The device to return the path for&n; * output: Pointer to a previously-allocated array to place the path in.&n; *&n; * This function fills in the hardware_path structure with the route to&n; * the specified PCI device.  This structure is suitable for passing to&n; * PDC calls.&n; */
 DECL|function|get_pci_node_path
@@ -933,6 +961,13 @@ id|padev-&gt;parent
 suffix:semicolon
 )brace
 )brace
+DECL|variable|get_pci_node_path
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_pci_node_path
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * print_pci_hwpath - Returns hardware path for PCI devices&n; * dev: The device to return the path for&n; * output: Pointer to a previously-allocated array to place the path in.&n; *&n; * This function fills in the output array with a human-readable path&n; * to a PCI device.  This string is compatible with that used by PDC, and&n; * may be printed on the outside of the box.&n; */
 DECL|function|print_pci_hwpath
 r_char
@@ -974,6 +1009,13 @@ id|output
 )paren
 suffix:semicolon
 )brace
+DECL|variable|print_pci_hwpath
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|print_pci_hwpath
+)paren
+suffix:semicolon
 macro_line|#endif /* defined(CONFIG_PCI) || defined(CONFIG_ISA) */
 DECL|function|create_tree_node
 r_struct

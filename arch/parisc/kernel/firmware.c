@@ -1,15 +1,16 @@
 multiline_comment|/* arch/parisc/kernel/pdc.c  - safe pdc access routines&n; *&n; * Copyright 1999 SuSE GmbH Nuernberg (Philipp Rumpf, prumpf@tux.org)&n; * portions Copyright 1999 The Puffin Group, (Alex deVries, David Kennedy)&n; *&n; * only these routines should be used out of the real kernel (i.e. everything&n; * using virtual addresses) for obvious reasons */
 multiline_comment|/*&t;I think it would be in everyone&squot;s best interest to follow this&n; *&t;guidelines when writing PDC wrappers:&n; *&n; *&t; - the name of the pdc wrapper should match one of the macros&n; *&t;   used for the first two arguments&n; *&t; - don&squot;t use caps for random parts of the name&n; *&t; - use the static PDC result buffers and &quot;copyout&quot; to structs&n; *&t;   supplied by the caller to encapsulate alignment restrictions&n; *&t; - hold pdc_lock while in PDC or using static result buffers&n; *&t; - use __pa() to convert virtual (kernel) pointers to physical&n; *&t;   ones.&n; *&t; - the name of the struct used for pdc return values should equal&n; *&t;   one of the macros used for the first two arguments to the&n; *&t;   corresponding PDC call&n; *&t; - keep the order of arguments&n; *&t; - don&squot;t be smart (setting trailing NUL bytes for strings, return&n; *&t;   something useful even if the call failed) unless you are sure&n; *&t;   it&squot;s not going to affect functionality or performance&n; *&n; *&t;Example:&n; *&t;int pdc_cache_info(struct pdc_cache_info *cache_info )&n; *&t;{&n; *&t;&t;int retval;&n; *&n; *&t;&t;spin_lock_irq(&amp;pdc_lock);&n; *&t;&t;retval = mem_pdc_call(PDC_CACHE,PDC_CACHE_INFO,__pa(cache_info),0);&n; *&t;&t;convert_to_wide(pdc_result);&n; *&t;&t;memcpy(cache_info, pdc_result, sizeof(*cache_info));&n; *&t;&t;spin_unlock_irq(&amp;pdc_lock);&n; *&n; *&t;&t;return retval;&n; *&t;}&n; *&t;&t;&t;&t;&t;prumpf&t;991016&t;&n; */
+macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* for boot_cpu_data */
-macro_line|#include &lt;stdarg.h&gt;
 DECL|variable|pdc_lock
 r_static
 id|spinlock_t
@@ -271,6 +272,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_add_valid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_add_valid
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * pdc_chassis_info - Return chassis information.&n; * @result: The return buffer.&n; * @chassis_info: The memory buffer address.&n; * @len: The size of the memory buffer address.&n; *&n; * An HVERSION dependent call for returning the chassis information.&n; */
 DECL|function|pdc_chassis_info
 r_int
@@ -695,6 +703,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_iodc_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_iodc_read
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * pdc_system_map_find_mods - Locate unarchitected modules.&n; * @pdc_mod_info: Return buffer address.&n; * @mod_path: pointer to dev path structure.&n; * @mod_index: fixed address module index.&n; *&n; * To locate and identify modules which reside at fixed I/O addresses, which&n; * do not self-identify via architected bus walks.&n; */
 DECL|function|pdc_system_map_find_mods
 r_int
@@ -1592,6 +1607,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_lan_station_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_lan_station_id
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * pdc_get_initiator - Get the SCSI Interface Card params (SCSI ID, SDTR, SE or LVD)&n; * @hwpath: fully bc.mod style path to the device.&n; * @scsi_id: what someone told firmware the ID should be.&n; * @period: time in cycles &n; * @width: 8 or 16-bit wide bus&n; * @mode: 0,1,2 -&gt; SE,HVD,LVD signalling mode&n; *&n; * Get the SCSI operational parameters from PDC.&n; * Needed since HPUX never used BIOS or symbios card NVRAM.&n; * Most ncr/sym cards won&squot;t have an entry and just use whatever&n; * capabilities of the card are (eg Ultra, LVD). But there are&n; * several cases where it&squot;s useful:&n; *    o set SCSI id for Multi-initiator clusters,&n; *    o cable too long (ie SE scsi 10Mhz won&squot;t support 6m length),&n; *    o bus width exported is less than what the interface chip supports.&n; */
 DECL|function|pdc_get_initiator
 r_int
@@ -1783,6 +1805,13 @@ op_ge
 id|PDC_OK
 suffix:semicolon
 )brace
+DECL|variable|pdc_get_initiator
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_get_initiator
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * pdc_pci_irt_size - Get the number of entries in the interrupt routing table.&n; * @num_entries: The return value.&n; * @hpa: The HPA for the device.&n; *&n; * This PDC function returns the number of entries in the specified cell&squot;s&n; * interrupt table.&n; * Similar to PDC_PAT stuff - but added for Forte/Allegro boxes&n; */
 DECL|function|pdc_pci_irt_size
 r_int
@@ -1994,6 +2023,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_tod_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_tod_read
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * pdc_tod_set - Set the Time-Of-Day clock.&n; * @sec: The number of seconds since epoch.&n; * @usec: The number of micro seconds.&n; *&n; * Set the Time-Of-Day clock.&n; */
 DECL|function|pdc_tod_set
 r_int
@@ -2044,6 +2080,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_tod_set
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_tod_set
+)paren
+suffix:semicolon
 macro_line|#ifdef __LP64__
 DECL|function|pdc_mem_mem_table
 r_int
@@ -2372,10 +2415,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pdc_suspend_usb - Stop USB controller&n; *&n; * If PDC used the usb controller, the usb controller&n; * is still running and will crash the machines during iommu &n; * setup, because of still running DMA. This PDC call&n; * stops the USB controller&n; */
-DECL|function|pdc_suspend_usb
+multiline_comment|/*&n; * pdc_io_reset - Hack to avoid overlapping range registers of Bridges devices.&n; * Primarily a problem on T600 (which parisc-linux doesn&squot;t support) but&n; * who knows what other platform firmware might do with this OS &quot;hook&quot;.&n; */
+DECL|function|pdc_io_reset
 r_void
-id|pdc_suspend_usb
+id|pdc_io_reset
 c_func
 (paren
 r_void
@@ -2393,7 +2436,41 @@ c_func
 (paren
 id|PDC_IO
 comma
-id|PDC_IO_SUSPEND_USB
+id|PDC_IO_RESET
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|pdc_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * pdc_io_reset_devices - Hack to Stop USB controller&n; *&n; * If PDC used the usb controller, the usb controller&n; * is still running and will crash the machines during iommu &n; * setup, because of still running DMA. This PDC call&n; * stops the USB controller.&n; * Normally called after calling pdc_io_reset().&n; */
+DECL|function|pdc_io_reset_devices
+r_void
+id|pdc_io_reset_devices
+c_func
+(paren
+r_void
+)paren
+(brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|pdc_lock
+)paren
+suffix:semicolon
+id|mem_pdc_call
+c_func
+(paren
+id|PDC_IO
+comma
+id|PDC_IO_RESET_DEVICES
 comma
 l_int|0
 )paren
@@ -2948,6 +3025,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|pdc_sti_call
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pdc_sti_call
+)paren
+suffix:semicolon
 macro_line|#ifdef __LP64__
 multiline_comment|/**&n; * pdc_pat_cell_get_number - Returns the cell number.&n; * @cell_info: The return buffer.&n; *&n; * This PDC call returns the cell number of the cell from which the call&n; * is made.&n; */
 DECL|function|pdc_pat_cell_get_number

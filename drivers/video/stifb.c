@@ -4560,12 +4560,14 @@ macro_line|#endif
 multiline_comment|/* get framebuffer physical and virtual base addr &amp; len (64bit ready) */
 id|fix-&gt;smem_start
 op_assign
+id|F_EXTEND
+c_func
+(paren
 id|fb-&gt;sti-&gt;regions_phys
 (braket
 l_int|1
 )braket
-op_or
-l_int|0xffffffff00000000
+)paren
 suffix:semicolon
 id|fix-&gt;smem_len
 op_assign

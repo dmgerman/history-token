@@ -1068,23 +1068,29 @@ macro_line|#if BITS_PER_LONG &gt; 32
 l_string|&quot; ldi       63,%1&bslash;n&quot;
 l_string|&quot; extrd,u,*&lt;&gt;  %0,63,32,%%r0&bslash;n&quot;
 l_string|&quot; extrd,u,*TR  %0,31,32,%0&bslash;n&quot;
+multiline_comment|/* move top 32-bits down */
 l_string|&quot; addi    -32,%1,%1&bslash;n&quot;
 macro_line|#else
 l_string|&quot; ldi       31,%1&bslash;n&quot;
 macro_line|#endif
 l_string|&quot; extru,&lt;&gt;  %0,31,16,%%r0&bslash;n&quot;
 l_string|&quot; extru,TR  %0,15,16,%0&bslash;n&quot;
+multiline_comment|/* xxxx0000 -&gt; 0000xxxx */
 l_string|&quot; addi    -16,%1,%1&bslash;n&quot;
 l_string|&quot; extru,&lt;&gt;  %0,31,8,%%r0&bslash;n&quot;
 l_string|&quot; extru,TR  %0,23,8,%0&bslash;n&quot;
+multiline_comment|/* 0000xx00 -&gt; 000000xx */
 l_string|&quot; addi    -8,%1,%1&bslash;n&quot;
 l_string|&quot; extru,&lt;&gt;  %0,31,4,%%r0&bslash;n&quot;
 l_string|&quot; extru,TR  %0,27,4,%0&bslash;n&quot;
+multiline_comment|/* 000000x0 -&gt; 0000000x */
 l_string|&quot; addi    -4,%1,%1&bslash;n&quot;
 l_string|&quot; extru,&lt;&gt;  %0,31,2,%%r0&bslash;n&quot;
 l_string|&quot; extru,TR  %0,29,2,%0&bslash;n&quot;
+multiline_comment|/* 0000000y, 1100b -&gt; 0011b */
 l_string|&quot; addi    -2,%1,%1&bslash;n&quot;
 l_string|&quot; extru,=  %0,31,1,%%r0&bslash;n&quot;
+multiline_comment|/* check last bit */
 l_string|&quot; addi    -1,%1,%1&bslash;n&quot;
 suffix:colon
 l_string|&quot;+r&quot;
@@ -1180,7 +1186,7 @@ multiline_comment|/* x0000000 */
 l_string|&quot;&t;addi&t;&t;4,%1,%1&bslash;n&quot;
 l_string|&quot;&t;extru,&lt;&gt;&t;%0,1,2,%%r0&bslash;n&quot;
 l_string|&quot;&t;zdep,TR&t;&t;%0,29,30,%0&bslash;n&quot;
-multiline_comment|/* y0000000 (y&amp;3 = 0 */
+multiline_comment|/* y0000000 (y&amp;3 = 0) */
 l_string|&quot;&t;addi&t;&t;2,%1,%1&bslash;n&quot;
 l_string|&quot;&t;extru,=&t;&t;%0,0,1,%%r0&bslash;n&quot;
 l_string|&quot;&t;addi&t;&t;1,%1,%1&bslash;n&quot;

@@ -2,13 +2,13 @@ multiline_comment|/*&n; &t;drivers/sound/harmony.c &n;&n;&t;This is a sound driv
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;harmony: &quot;

@@ -139,18 +139,6 @@ DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
 DECL|macro|ELF_CORE_COPY_XFPREGS
 mdefine_line|#define ELF_CORE_COPY_XFPREGS(tsk, elf_xfpregs) dump_task_extended_fpu(tsk, elf_xfpregs)
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|dump_smp_unlazy_fpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|ELF_CORE_SYNC
-mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
-macro_line|#endif
 DECL|macro|VSYSCALL_BASE
 mdefine_line|#define VSYSCALL_BASE&t;(__fix_to_virt(FIX_VSYSCALL))
 DECL|macro|VSYSCALL_EHDR

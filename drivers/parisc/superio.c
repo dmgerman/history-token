@@ -1784,21 +1784,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SERIAL_8250
-r_extern
-r_int
-id|serial8250_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|serial8250_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -1826,8 +1811,9 @@ id|superio_driver
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Make late initcall to ensure the serial and tty layers are initialised&n; * before we start superio.&n; *&n; * FIXME: does this break the superio console?&n; */
 DECL|variable|superio_modinit
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|superio_modinit

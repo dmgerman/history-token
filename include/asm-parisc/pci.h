@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_PARISC_PCI_H
 DECL|macro|__ASM_PARISC_PCI_H
 mdefine_line|#define __ASM_PARISC_PCI_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n;** HP PCI platforms generally support multiple bus adapters.&n;**    (workstations 1-~4, servers 2-~32)&n;**&n;** Newer platforms number the busses across PCI bus adapters *sparsely*.&n;** E.g. 0, 8, 16, ...&n;**&n;** Under a PCI bus, most HP platforms support PPBs up to two or three&n;** levels deep. See &quot;Bit3&quot; product line. &n;*/
 DECL|macro|PCI_MAX_BUSSES

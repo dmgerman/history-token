@@ -12121,57 +12121,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * Power Management&n; */
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/* Save Device Context */
-DECL|function|nsp32_save_state
-r_static
-r_int
-id|nsp32_save_state
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-id|u32
-id|state
-)paren
-(brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|pci_get_drvdata
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-id|nsp32_msg
-c_func
-(paren
-id|KERN_INFO
-comma
-l_string|&quot;pci-save_state: stub, pdev=0x%p, state=%ld, slot=%s, host=0x%p&quot;
-comma
-id|pdev
-comma
-id|state
-comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
-comma
-id|host
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Device suspended */
 DECL|function|nsp32_suspend
 r_static
@@ -12742,11 +12691,6 @@ id|nsp32_remove
 )paren
 comma
 macro_line|#ifdef CONFIG_PM
-dot
-id|save_state
-op_assign
-id|nsp32_save_state
-comma
 dot
 id|suspend
 op_assign

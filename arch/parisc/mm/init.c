@@ -1810,6 +1810,13 @@ r_void
 op_star
 id|vmalloc_start
 suffix:semicolon
+DECL|variable|vmalloc_start
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_start
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PA11
 DECL|variable|pcxl_dma_start
 r_int
@@ -2717,12 +2724,6 @@ r_void
 (brace
 r_int
 id|range
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;pagetable_init&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Map each physical memory range to its kernel vaddr */
 r_for

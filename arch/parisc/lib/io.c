@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * arch/parisc/lib/io.c&n; *&n; * Copyright (c) Matthew Wilcox 2001 for Hewlett-Packard&n; * Copyright (c) Randolph Chung 2001 &lt;tausq@debian.org&gt;&n; *&n; * IO accessing functions which shouldn&squot;t be inlined because they&squot;re too big&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Copies a block of memory to a device in an efficient manner.&n; * Assumes the device can cope with 32-bit transfers.  If it can&squot;t,&n; * don&squot;t use this function.&n; */
 DECL|function|__memcpy_toio
@@ -2430,4 +2431,46 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|insb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|insb
+)paren
+suffix:semicolon
+DECL|variable|insw
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|insw
+)paren
+suffix:semicolon
+DECL|variable|insl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|insl
+)paren
+suffix:semicolon
+DECL|variable|outsb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|outsb
+)paren
+suffix:semicolon
+DECL|variable|outsw
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|outsw
+)paren
+suffix:semicolon
+DECL|variable|outsl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|outsl
+)paren
+suffix:semicolon
 eof

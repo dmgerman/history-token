@@ -50,11 +50,10 @@ c_func
 id|pci_hotplug_slot_list
 )paren
 suffix:semicolon
-DECL|variable|hotplug_slots_subsys
-r_static
+DECL|variable|pci_hotplug_slots_subsys
 r_struct
 id|subsystem
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 suffix:semicolon
 DECL|function|hotplug_slot_attr_show
 r_static
@@ -259,12 +258,10 @@ id|hotplug_slot_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|decl_subsys
-r_static
 id|decl_subsys
 c_func
 (paren
-id|hotplug_slots
+id|pci_hotplug_slots
 comma
 op_amp
 id|hotplug_slot_ktype
@@ -2207,7 +2204,7 @@ c_func
 (paren
 id|slot
 comma
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 )paren
 suffix:semicolon
 multiline_comment|/* this can fail if we have already registered a slot with the same name */
@@ -2579,7 +2576,7 @@ id|kset_set_kset_s
 c_func
 (paren
 op_amp
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 comma
 id|pci_bus_type.subsys
 )paren
@@ -2590,7 +2587,7 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 )paren
 suffix:semicolon
 r_if
@@ -2653,7 +2650,7 @@ id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 )paren
 suffix:semicolon
 m_exit
@@ -2680,7 +2677,7 @@ id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|hotplug_slots_subsys
+id|pci_hotplug_slots_subsys
 )paren
 suffix:semicolon
 )brace
@@ -2732,6 +2729,13 @@ c_func
 id|debug
 comma
 l_string|&quot;Debugging mode enabled or not&quot;
+)paren
+suffix:semicolon
+DECL|variable|pci_hotplug_slots_subsys
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|pci_hotplug_slots_subsys
 )paren
 suffix:semicolon
 DECL|variable|pci_hp_register

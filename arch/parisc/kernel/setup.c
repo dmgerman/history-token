@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;&t;/* for pa7300lc_init() proto */
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE 1024
 DECL|variable|saved_command_line
@@ -577,6 +578,11 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* FIXME: this was added to prevent the compiler &n;&t;&t; * complaining about missing pcx, pcxs and pcxt&n;&t;&t; * I&squot;m assuming they have neither gsc nor runway */
+r_break
+suffix:semicolon
 )brace
 )brace
 DECL|variable|central_bus
@@ -594,20 +600,20 @@ comma
 dot
 id|start
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xfff80000
 )paren
-l_int|0xfffffffffff80000
 comma
 dot
 id|end
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xfffaffff
 )paren
-l_int|0xfffffffffffaffff
 comma
 dot
 id|flags
@@ -631,20 +637,20 @@ comma
 dot
 id|start
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xfffb0000
 )paren
-l_int|0xfffffffffffb0000
 comma
 dot
 id|end
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xfffdffff
 )paren
-l_int|0xfffffffffffdffff
 comma
 dot
 id|flags
@@ -668,20 +674,20 @@ comma
 dot
 id|start
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xfffe0000
 )paren
-l_int|0xfffffffffffe0000
 comma
 dot
 id|end
 op_assign
+id|F_EXTEND
+c_func
 (paren
-r_int
-r_int
+l_int|0xffffffff
 )paren
-l_int|0xffffffffffffffff
 comma
 dot
 id|flags

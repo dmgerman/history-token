@@ -9,6 +9,7 @@ mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|clear_page

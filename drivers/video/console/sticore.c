@@ -4554,7 +4554,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Unable to handle STI device &squot;%s&squot;&bslash;n&quot;
 comma
-id|pd-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|pd
+)paren
 )paren
 suffix:semicolon
 r_return

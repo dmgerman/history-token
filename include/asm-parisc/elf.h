@@ -231,6 +231,53 @@ DECL|macro|R_PARISC_LTOFF_TP16DF
 mdefine_line|#define R_PARISC_LTOFF_TP16DF&t;231&t;/* 16 bits LT-TP-rel. address.  */
 DECL|macro|R_PARISC_HIRESERVE
 mdefine_line|#define R_PARISC_HIRESERVE&t;255
+DECL|macro|PA_PLABEL_FDESC
+mdefine_line|#define PA_PLABEL_FDESC&t;&t;0x02&t;/* bit set if PLABEL points to&n;&t;&t;&t;&t;&t; * a function descriptor, not&n;&t;&t;&t;&t;&t; * an address */
+multiline_comment|/* The following are PA function descriptors &n; *&n; * addr:&t;the absolute address of the function&n; * gp:&t;&t;either the data pointer (r27) for non-PIC code or the&n; *&t;&t;the PLT pointer (r19) for PIC code */
+multiline_comment|/* Format for the Elf32 Function descriptor */
+DECL|struct|elf32_fdesc
+r_typedef
+r_struct
+id|elf32_fdesc
+(brace
+DECL|member|addr
+id|__u32
+id|addr
+suffix:semicolon
+DECL|member|gp
+id|__u32
+id|gp
+suffix:semicolon
+DECL|typedef|Elf32_Fdesc
+)brace
+id|Elf32_Fdesc
+suffix:semicolon
+multiline_comment|/* Format for the Elf64 Function descriptor */
+DECL|struct|elf64_fdesc
+r_typedef
+r_struct
+id|elf64_fdesc
+(brace
+DECL|member|dummy
+id|__u64
+id|dummy
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* FIXME: nothing uses these, why waste&n;&t;&t;&t;   * the space */
+DECL|member|addr
+id|__u64
+id|addr
+suffix:semicolon
+DECL|member|gp
+id|__u64
+id|gp
+suffix:semicolon
+DECL|typedef|Elf64_Fdesc
+)brace
+id|Elf64_Fdesc
+suffix:semicolon
 multiline_comment|/* Legal values for p_type field of Elf32_Phdr/Elf64_Phdr.  */
 DECL|macro|PT_HP_TLS
 mdefine_line|#define PT_HP_TLS&t;&t;(PT_LOOS + 0x0)
@@ -304,7 +351,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (&quot;PARISC&bslash;0&quot; /*+((boot_cpu_data.x86-3)*5) */)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX; &bslash;&n;&t;current-&gt;thread.map_base = DEFAULT_MAP_BASE; &bslash;&n;&t;current-&gt;thread.task_size = DEFAULT_TASK_SIZE &bslash;&n;
 macro_line|#endif
 multiline_comment|/*&n; * Fill in general registers in a core dump.  This saves pretty&n; * much the same registers as hp-ux, although in a different order.&n; * Registers marked # below are not currently saved in pt_regs, so&n; * we use their current values here.&n; *&n; * &t;gr0..gr31&n; * &t;sr0..sr7&n; * &t;iaoq0..iaoq1&n; * &t;iasq0..iasq1&n; * &t;cr11 (sar)&n; * &t;cr19 (iir)&n; * &t;cr20 (isr)&n; * &t;cr21 (ior)&n; *  #&t;cr22 (ipsw)&n; *  #&t;cr0 (recovery counter)&n; *  #&t;cr24..cr31 (temporary registers)&n; *  #&t;cr8,9,12,13 (protection IDs)&n; *  #&t;cr10 (scr/ccr)&n; *  #&t;cr15 (ext int enable mask)&n; *&n; */
 DECL|macro|ELF_CORE_COPY_REGS

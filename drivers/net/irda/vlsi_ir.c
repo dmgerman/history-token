@@ -8854,54 +8854,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/* The Controller doesn&squot;t provide PCI PM capabilities as defined by PCI specs.&n; * Some of the Linux PCI-PM code however depends on this, for example in&n; * pci_set_power_state(). So we have to take care to perform the required&n; * operations on our own (particularly reflecting the pdev-&gt;current_state)&n; * otherwise we might get cheated by pci-pm.&n; */
-DECL|function|vlsi_irda_save_state
-r_static
-r_int
-id|vlsi_irda_save_state
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-id|u32
-id|state
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|state
-template_param
-l_int|3
-)paren
-(brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|PCIDEV_NAME
-c_func
-(paren
-id|pdev
-)paren
-comma
-id|state
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|vlsi_irda_suspend
 r_static
 r_int
@@ -9341,11 +9293,6 @@ id|vlsi_irda_remove
 )paren
 comma
 macro_line|#ifdef CONFIG_PM
-dot
-id|save_state
-op_assign
-id|vlsi_irda_save_state
-comma
 dot
 id|suspend
 op_assign

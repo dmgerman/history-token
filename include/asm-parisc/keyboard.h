@@ -4,7 +4,6 @@ multiline_comment|/*&n; *  We try to keep the amount of generic code as low as p
 macro_line|#ifndef _PARISC_KEYBOARD_H
 DECL|macro|_PARISC_KEYBOARD_H
 mdefine_line|#define _PARISC_KEYBOARD_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;

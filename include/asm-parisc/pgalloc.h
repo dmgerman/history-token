@@ -1,7 +1,6 @@
 macro_line|#ifndef _ASM_PGALLOC_H
 DECL|macro|_ASM_PGALLOC_H
 mdefine_line|#define _ASM_PGALLOC_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
