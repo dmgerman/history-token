@@ -1540,9 +1540,12 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|do_gettimeofday
+c_func
+(paren
+op_amp
 id|new_skb-&gt;stamp
-op_assign
-id|xtime
+)paren
 suffix:semicolon
 id|memcpy
 c_func

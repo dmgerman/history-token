@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
