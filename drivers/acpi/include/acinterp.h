@@ -1,28 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 116 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 132 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACINTERP_H__
 DECL|macro|__ACINTERP_H__
 mdefine_line|#define __ACINTERP_H__
-DECL|macro|WALK_OPERANDS
-mdefine_line|#define WALK_OPERANDS       &amp;(walk_state-&gt;operands [walk_state-&gt;num_operands -1])
-multiline_comment|/* Interpreter constants */
-DECL|macro|AML_END_OF_BLOCK
-mdefine_line|#define AML_END_OF_BLOCK            -1
-DECL|macro|PUSH_PKG_LENGTH
-mdefine_line|#define PUSH_PKG_LENGTH             1
-DECL|macro|DO_NOT_PUSH_PKG_LENGTH
-mdefine_line|#define DO_NOT_PUSH_PKG_LENGTH      0
-DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP                   0
-DECL|macro|STACK_BOTTOM
-mdefine_line|#define STACK_BOTTOM                (u32) -1
-multiline_comment|/* Constants for global &quot;When_to_parse_methods&quot; */
-DECL|macro|METHOD_PARSE_AT_INIT
-mdefine_line|#define METHOD_PARSE_AT_INIT        0x0
-DECL|macro|METHOD_PARSE_JUST_IN_TIME
-mdefine_line|#define METHOD_PARSE_JUST_IN_TIME   0x1
-DECL|macro|METHOD_DELETE_AT_COMPLETION
-mdefine_line|#define METHOD_DELETE_AT_COMPLETION 0x2
+DECL|macro|ACPI_WALK_OPERANDS
+mdefine_line|#define ACPI_WALK_OPERANDS       (&amp;(walk_state-&gt;operands [walk_state-&gt;num_operands -1]))
 id|acpi_status
 id|acpi_ex_resolve_operands
 (paren
@@ -39,7 +21,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amxface - External interpreter interfaces&n; */
+multiline_comment|/*&n; * exxface - External interpreter interfaces&n; */
 id|acpi_status
 id|acpi_ex_load_table
 (paren
@@ -65,7 +47,7 @@ op_star
 id|return_obj_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amconvrt - object conversion&n; */
+multiline_comment|/*&n; * exconvrt - object conversion&n; */
 id|acpi_status
 id|acpi_ex_convert_to_integer
 (paren
@@ -126,20 +108,24 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ex_convert_to_target_type
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|destination_type
 comma
 id|acpi_operand_object
 op_star
+id|source_desc
+comma
+id|acpi_operand_object
 op_star
-id|obj_desc
+op_star
+id|result_desc
 comma
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amfield - ACPI AML (p-code) execution - field manipulation&n; */
+multiline_comment|/*&n; * exfield - ACPI AML (p-code) execution - field manipulation&n; */
 id|acpi_status
 id|acpi_ex_extract_from_field
 (paren
@@ -171,119 +157,114 @@ id|buffer_length
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ex_setup_field
+id|acpi_ex_setup_region
 (paren
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
 id|u32
-id|field_byte_offset
+id|field_datum_byte_offset
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ex_read_field_datum
+id|acpi_ex_access_region
 (paren
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
 id|u32
-id|field_byte_offset
+id|field_datum_byte_offset
+comma
+id|acpi_integer
+op_star
+id|value
 comma
 id|u32
+id|read_write
+)paren
+suffix:semicolon
+id|u8
+id|acpi_ex_register_overflow
+(paren
+id|acpi_operand_object
 op_star
+id|obj_desc
+comma
+id|acpi_integer
 id|value
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ex_common_access_field
+id|acpi_ex_field_datum_io
 (paren
-id|u32
-id|mode
-comma
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-r_void
+id|u32
+id|field_datum_byte_offset
+comma
+id|acpi_integer
 op_star
-id|buffer
+id|value
 comma
 id|u32
-id|buffer_length
+id|read_write
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ex_access_index_field
+id|acpi_ex_write_with_update_rule
 (paren
-id|u32
-id|mode
-comma
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-r_void
-op_star
-id|buffer
+id|acpi_integer
+id|mask
+comma
+id|acpi_integer
+id|field_value
 comma
 id|u32
-id|buffer_length
+id|field_datum_byte_offset
 )paren
 suffix:semicolon
-id|acpi_status
-id|acpi_ex_access_bank_field
+r_void
+id|acpi_ex_get_buffer_datum
+c_func
 (paren
-id|u32
-id|mode
-comma
-id|acpi_operand_object
+id|acpi_integer
 op_star
-id|obj_desc
+id|datum
 comma
 r_void
 op_star
 id|buffer
 comma
 id|u32
-id|buffer_length
+id|byte_granularity
+comma
+id|u32
+id|offset
 )paren
 suffix:semicolon
-id|acpi_status
-id|acpi_ex_access_region_field
+r_void
+id|acpi_ex_set_buffer_datum
 (paren
-id|u32
-id|mode
-comma
-id|acpi_operand_object
-op_star
-id|obj_desc
+id|acpi_integer
+id|merged_datum
 comma
 r_void
 op_star
 id|buffer
 comma
 id|u32
-id|buffer_length
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_access_buffer_field
-(paren
-id|u32
-id|mode
-comma
-id|acpi_operand_object
-op_star
-id|obj_desc
-comma
-r_void
-op_star
-id|buffer
+id|byte_granularity
 comma
 id|u32
-id|buffer_length
+id|offset
 )paren
 suffix:semicolon
 id|acpi_status
@@ -311,7 +292,7 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ammisc - ACPI AML (p-code) execution - specific opcodes&n; */
+multiline_comment|/*&n; * exmisc - ACPI AML (p-code) execution - specific opcodes&n; */
 id|acpi_status
 id|acpi_ex_opcode_3A_0T_0R
 (paren
@@ -347,6 +328,27 @@ id|acpi_operand_object
 op_star
 op_star
 id|return_desc
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_concat_template
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+comma
+id|acpi_operand_object
+op_star
+id|obj_desc2
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|actual_return_desc
 comma
 id|acpi_walk_state
 op_star
@@ -398,26 +400,6 @@ id|operand0
 comma
 id|acpi_integer
 id|operand1
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_load_op
-(paren
-id|acpi_operand_object
-op_star
-id|rgn_desc
-comma
-id|acpi_operand_object
-op_star
-id|ddb_handle
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_unload_table
-(paren
-id|acpi_operand_object
-op_star
-id|ddb_handle
 )paren
 suffix:semicolon
 id|acpi_status
@@ -501,7 +483,62 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ammutex - mutex support&n; */
+multiline_comment|/*&n; * exconfig - dynamic table load/unload&n; */
+id|acpi_status
+id|acpi_ex_add_table
+(paren
+id|acpi_table_header
+op_star
+id|table
+comma
+id|acpi_namespace_node
+op_star
+id|parent_node
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|ddb_handle
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_load_op
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+comma
+id|acpi_operand_object
+op_star
+id|target
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_load_table_op
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|return_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_unload_table
+(paren
+id|acpi_operand_object
+op_star
+id|ddb_handle
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * exmutex - mutex support&n; */
 id|acpi_status
 id|acpi_ex_acquire_mutex
 (paren
@@ -533,9 +570,9 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ex_release_all_mutexes
 (paren
-id|acpi_operand_object
+id|ACPI_THREAD_STATE
 op_star
-id|mutex_list
+id|thread
 )paren
 suffix:semicolon
 r_void
@@ -546,7 +583,19 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amprep - ACPI AML (p-code) execution - prep utilities&n; */
+r_void
+id|acpi_ex_link_mutex
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+comma
+id|ACPI_THREAD_STATE
+op_star
+id|thread
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * exprep - ACPI AML (p-code) execution - prep utilities&n; */
 id|acpi_status
 id|acpi_ex_prep_common_field_object
 (paren
@@ -557,84 +606,14 @@ comma
 id|u8
 id|field_flags
 comma
-id|u32
-id|field_position
-comma
-id|u32
-id|field_length
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_prep_region_field_value
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-comma
-id|acpi_handle
-id|region
-comma
 id|u8
-id|field_flags
+id|field_attribute
 comma
 id|u32
-id|field_position
+id|field_bit_position
 comma
 id|u32
-id|field_length
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_prep_bank_field_value
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-comma
-id|acpi_namespace_node
-op_star
-id|region_node
-comma
-id|acpi_namespace_node
-op_star
-id|bank_register_node
-comma
-id|u32
-id|bank_val
-comma
-id|u8
-id|field_flags
-comma
-id|u32
-id|field_position
-comma
-id|u32
-id|field_length
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ex_prep_index_field_value
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-comma
-id|acpi_namespace_node
-op_star
-id|index_reg
-comma
-id|acpi_namespace_node
-op_star
-id|data_reg
-comma
-id|u8
-id|field_flags
-comma
-id|u32
-id|field_position
-comma
-id|u32
-id|field_length
+id|field_bit_length
 )paren
 suffix:semicolon
 id|acpi_status
@@ -645,7 +624,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amsystem - Interface to OS services&n; */
+multiline_comment|/*&n; * exsystem - Interface to OS services&n; */
 id|acpi_status
 id|acpi_ex_system_do_notify_op
 (paren
@@ -658,7 +637,7 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-r_void
+id|acpi_status
 id|acpi_ex_system_do_suspend
 c_func
 (paren
@@ -666,7 +645,7 @@ id|u32
 id|time
 )paren
 suffix:semicolon
-r_void
+id|acpi_status
 id|acpi_ex_system_do_stall
 (paren
 id|u32
@@ -736,7 +715,7 @@ id|u32
 id|timeout
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ammonadic - ACPI AML (p-code) execution, monadic operators&n; */
+multiline_comment|/*&n; * exmonadic - ACPI AML (p-code) execution, monadic operators&n; */
 id|acpi_status
 id|acpi_ex_opcode_1A_0T_0R
 (paren
@@ -769,7 +748,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amdyadic - ACPI AML (p-code) execution, dyadic operators&n; */
+multiline_comment|/*&n; * exdyadic - ACPI AML (p-code) execution, dyadic operators&n; */
 id|acpi_status
 id|acpi_ex_opcode_2A_0T_0R
 (paren
@@ -802,7 +781,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amresolv  - Object resolution and get value functions&n; */
+multiline_comment|/*&n; * exresolv  - Object resolution and get value functions&n; */
 id|acpi_status
 id|acpi_ex_resolve_to_value
 (paren
@@ -842,19 +821,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-id|acpi_status
-id|acpi_ex_get_buffer_field_value
-(paren
-id|acpi_operand_object
-op_star
-id|field_desc
-comma
-id|acpi_operand_object
-op_star
-id|result_desc
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * amdump - Scanner debug output routines&n; */
+multiline_comment|/*&n; * exdump - Scanner debug output routines&n; */
 r_void
 id|acpi_ex_show_hex_value
 (paren
@@ -885,7 +852,7 @@ op_star
 op_star
 id|operands
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|interpreter_mode
 comma
 id|NATIVE_CHAR
@@ -929,7 +896,7 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amnames - interpreter/scanner name load/execute&n; */
+multiline_comment|/*&n; * exnames - interpreter/scanner name load/execute&n; */
 id|NATIVE_CHAR
 op_star
 id|acpi_ex_allocate_name_string
@@ -964,7 +931,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ex_get_name_string
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|data_type
 comma
 id|u8
@@ -987,11 +954,11 @@ id|acpi_ex_do_name
 id|acpi_object_type
 id|data_type
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|load_exec_mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amstore - Object store support&n; */
+multiline_comment|/*&n; * exstore - Object store support&n; */
 id|acpi_status
 id|acpi_ex_store
 (paren
@@ -1040,6 +1007,23 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * exstoren&n; */
+id|acpi_status
+id|acpi_ex_resolve_object
+(paren
+id|acpi_operand_object
+op_star
+op_star
+id|source_desc_ptr
+comma
+id|acpi_object_type
+id|target_type
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
 id|acpi_status
 id|acpi_ex_store_object_to_object
 (paren
@@ -1051,51 +1035,19 @@ id|acpi_operand_object
 op_star
 id|dest_desc
 comma
-id|acpi_walk_state
-op_star
-id|walk_state
-)paren
-suffix:semicolon
-multiline_comment|/*&n; *&n; */
-id|acpi_status
-id|acpi_ex_resolve_object
-(paren
 id|acpi_operand_object
 op_star
 op_star
-id|source_desc_ptr
-comma
-id|acpi_object_type8
-id|target_type
+id|new_desc
 comma
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * excopy - object copy&n; */
 id|acpi_status
-id|acpi_ex_store_object
-(paren
-id|acpi_operand_object
-op_star
-id|source_desc
-comma
-id|acpi_object_type8
-id|target_type
-comma
-id|acpi_operand_object
-op_star
-op_star
-id|target_desc_ptr
-comma
-id|acpi_walk_state
-op_star
-id|walk_state
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * amcopy - object copy&n; */
-id|acpi_status
-id|acpi_ex_copy_buffer_to_buffer
+id|acpi_ex_store_buffer_to_buffer
 (paren
 id|acpi_operand_object
 op_star
@@ -1107,7 +1059,7 @@ id|target_desc
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ex_copy_string_to_string
+id|acpi_ex_store_string_to_string
 (paren
 id|acpi_operand_object
 op_star
@@ -1166,7 +1118,7 @@ op_star
 id|target_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amutils - interpreter/scanner utilities&n; */
+multiline_comment|/*&n; * exutils - interpreter/scanner utilities&n; */
 id|acpi_status
 id|acpi_ex_enter_interpreter
 (paren
@@ -1244,7 +1196,7 @@ op_star
 id|out_string
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * amregion - default Op_region handlers&n; */
+multiline_comment|/*&n; * exregion - default Op_region handlers&n; */
 id|acpi_status
 id|acpi_ex_system_memory_space_handler
 (paren
@@ -1257,7 +1209,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1282,7 +1234,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1307,7 +1259,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1332,7 +1284,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1357,7 +1309,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1382,7 +1334,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -1407,7 +1359,32 @@ comma
 id|u32
 id|bit_width
 comma
+id|acpi_integer
+op_star
+id|value
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+id|region_context
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ex_data_table_space_handler
+(paren
 id|u32
+id|function
+comma
+id|ACPI_PHYSICAL_ADDRESS
+id|address
+comma
+id|u32
+id|bit_width
+comma
+id|acpi_integer
 op_star
 id|value
 comma

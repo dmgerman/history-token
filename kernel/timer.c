@@ -2724,7 +2724,7 @@ id|parent
 suffix:semicolon
 id|parent
 op_assign
-id|me-&gt;p_opptr
+id|me-&gt;real_parent
 suffix:semicolon
 r_for
 c_loop
@@ -2753,7 +2753,7 @@ c_func
 suffix:semicolon
 id|parent
 op_assign
-id|me-&gt;p_opptr
+id|me-&gt;real_parent
 suffix:semicolon
 r_if
 c_cond

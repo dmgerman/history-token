@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 7 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exmutex&quot;
 )paren
@@ -21,6 +21,22 @@ op_star
 id|obj_desc
 )paren
 (brace
+id|ACPI_THREAD_STATE
+op_star
+id|thread
+op_assign
+id|obj_desc-&gt;mutex.owner_thread
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|thread
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -51,6 +67,13 @@ op_assign
 id|obj_desc-&gt;mutex.next
 suffix:semicolon
 )brace
+r_else
+(brace
+id|thread-&gt;acquired_mutex_list
+op_assign
+id|obj_desc-&gt;mutex.next
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_link_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The mutex to be linked&n; *              *List_head          - head of the &quot;Acquired_mutex&quot; list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Add a mutex to the &quot;Acquired_mutex&quot; list for this walk&n; *&n; ******************************************************************************/
 r_void
@@ -61,38 +84,42 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+id|ACPI_THREAD_STATE
+op_star
+id|thread
+)paren
+(brace
 id|acpi_operand_object
 op_star
 id|list_head
-)paren
-(brace
+suffix:semicolon
+id|list_head
+op_assign
+id|thread-&gt;acquired_mutex_list
+suffix:semicolon
 multiline_comment|/* This object will be the first object in the list */
 id|obj_desc-&gt;mutex.prev
 op_assign
-id|list_head
+l_int|NULL
 suffix:semicolon
 id|obj_desc-&gt;mutex.next
 op_assign
-id|list_head-&gt;mutex.next
+id|list_head
 suffix:semicolon
 multiline_comment|/* Update old first object to point back to this object */
 r_if
 c_cond
 (paren
-id|list_head-&gt;mutex.next
+id|list_head
 )paren
 (brace
-(paren
-id|list_head-&gt;mutex.next
-)paren
-op_member_access_from_pointer
-id|mutex.prev
+id|list_head-&gt;mutex.prev
 op_assign
 id|obj_desc
 suffix:semicolon
 )brace
 multiline_comment|/* Update list head */
-id|list_head-&gt;mutex.next
+id|thread-&gt;acquired_mutex_list
 op_assign
 id|obj_desc
 suffix:semicolon
@@ -118,7 +145,7 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ex_acquire_mutex&quot;
 comma
@@ -142,7 +169,7 @@ multiline_comment|/*&n;&t; * Current Sync must be less than or equal to the sync
 r_if
 c_cond
 (paren
-id|walk_state-&gt;current_sync_level
+id|walk_state-&gt;thread-&gt;current_sync_level
 OG
 id|obj_desc-&gt;mutex.sync_level
 )paren
@@ -153,15 +180,16 @@ id|AE_AML_MUTEX_ORDER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the mutex is already owned by this thread,&n;&t; * just increment the acquisition depth&n;&t; */
+multiline_comment|/*&n;&t; * Support for multiple acquires by the owning thread&n;&t; */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;mutex.owner
+id|obj_desc-&gt;mutex.owner_thread
 op_eq
-id|walk_state
+id|walk_state-&gt;thread
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The mutex is already owned by this thread,&n;&t;&t; * just increment the acquisition depth&n;&t;&t; */
 id|obj_desc-&gt;mutex.acquisition_depth
 op_increment
 suffix:semicolon
@@ -198,31 +226,24 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Have the mutex, update mutex and walk info */
-id|obj_desc-&gt;mutex.owner
+id|obj_desc-&gt;mutex.owner_thread
 op_assign
-id|walk_state
+id|walk_state-&gt;thread
 suffix:semicolon
 id|obj_desc-&gt;mutex.acquisition_depth
 op_assign
 l_int|1
 suffix:semicolon
-id|walk_state-&gt;current_sync_level
+id|walk_state-&gt;thread-&gt;current_sync_level
 op_assign
 id|obj_desc-&gt;mutex.sync_level
 suffix:semicolon
-multiline_comment|/* Link the mutex to the walk state for force-unlock at method exit */
+multiline_comment|/* Link the mutex to the current thread for force-unlock at method exit */
 id|acpi_ex_link_mutex
 (paren
 id|obj_desc
 comma
-(paren
-id|acpi_operand_object
-op_star
-)paren
-op_amp
-(paren
-id|walk_state-&gt;walk_list-&gt;acquired_mutex_list
-)paren
+id|walk_state-&gt;thread
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -248,7 +269,7 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_release_mutex&quot;
 )paren
@@ -271,7 +292,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|obj_desc-&gt;mutex.owner
+id|obj_desc-&gt;mutex.owner_thread
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -284,9 +305,9 @@ multiline_comment|/* The Mutex is owned, but this thread must be the owner */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;mutex.owner
+id|obj_desc-&gt;mutex.owner_thread
 op_ne
-id|walk_state
+id|walk_state-&gt;thread
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -301,7 +322,7 @@ c_cond
 (paren
 id|obj_desc-&gt;mutex.sync_level
 OG
-id|walk_state-&gt;current_sync_level
+id|walk_state-&gt;thread-&gt;current_sync_level
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -329,6 +350,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Unlink the mutex from the owner&squot;s list */
+id|acpi_ex_unlink_mutex
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 multiline_comment|/* Release the mutex */
 id|status
 op_assign
@@ -338,19 +365,13 @@ id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/* Update the mutex and walk state */
-id|obj_desc-&gt;mutex.owner
+id|obj_desc-&gt;mutex.owner_thread
 op_assign
 l_int|NULL
 suffix:semicolon
-id|walk_state-&gt;current_sync_level
+id|walk_state-&gt;thread-&gt;current_sync_level
 op_assign
 id|obj_desc-&gt;mutex.sync_level
-suffix:semicolon
-multiline_comment|/* Unlink the mutex from the owner&squot;s list */
-id|acpi_ex_unlink_mutex
-(paren
-id|obj_desc
-)paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -363,22 +384,22 @@ id|acpi_status
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes
 (paren
-id|acpi_operand_object
+id|ACPI_THREAD_STATE
 op_star
-id|list_head
+id|thread
 )paren
 (brace
 id|acpi_operand_object
 op_star
 id|next
 op_assign
-id|list_head-&gt;mutex.next
+id|thread-&gt;acquired_mutex_list
 suffix:semicolon
 id|acpi_operand_object
 op_star
 id|this
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -397,10 +418,9 @@ id|next
 op_assign
 id|this-&gt;mutex.next
 suffix:semicolon
-multiline_comment|/* Mark mutex un-owned */
-id|this-&gt;mutex.owner
+id|this-&gt;mutex.acquisition_depth
 op_assign
-l_int|NULL
+l_int|1
 suffix:semicolon
 id|this-&gt;mutex.prev
 op_assign
@@ -410,15 +430,16 @@ id|this-&gt;mutex.next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|this-&gt;mutex.acquisition_depth
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Release the mutex */
 id|acpi_ex_system_release_mutex
 (paren
 id|this
 )paren
+suffix:semicolon
+multiline_comment|/* Mark mutex unowned */
+id|this-&gt;mutex.owner_thread
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_return

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pswalk&quot;
 )paren
@@ -44,7 +44,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_get_next_walk_op&quot;
 comma
@@ -57,7 +57,7 @@ c_cond
 (paren
 id|walk_state-&gt;next_op_info
 op_ne
-id|NEXT_OP_UPWARD
+id|ACPI_NEXT_OP_UPWARD
 )paren
 (brace
 multiline_comment|/* Look for an argument or child of the current op */
@@ -87,7 +87,7 @@ id|next
 suffix:semicolon
 id|walk_state-&gt;next_op_info
 op_assign
-id|NEXT_OP_DOWNWARD
+id|ACPI_NEXT_OP_DOWNWARD
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -168,7 +168,7 @@ id|next
 suffix:semicolon
 id|walk_state-&gt;next_op_info
 op_assign
-id|NEXT_OP_DOWNWARD
+id|ACPI_NEXT_OP_DOWNWARD
 suffix:semicolon
 multiline_comment|/* Continue downward */
 id|return_ACPI_STATUS
@@ -267,7 +267,7 @@ id|next
 suffix:semicolon
 id|walk_state-&gt;next_op_info
 op_assign
-id|NEXT_OP_DOWNWARD
+id|ACPI_NEXT_OP_DOWNWARD
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -289,8 +289,7 @@ op_assign
 id|op
 suffix:semicolon
 )brace
-multiline_comment|/* Got all the way to the top of the tree, we must be done! */
-multiline_comment|/* However, the code should have terminated in the loop above */
+multiline_comment|/*&n;&t; * Got all the way to the top of the tree, we must be done!&n;&t; * However, the code should have terminated in the loop above&n;&t; */
 id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
@@ -302,7 +301,6 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_delete_completed_op&n; *&n; * PARAMETERS:  State           - Walk state&n; *              Op              - Completed op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Callback function for Acpi_ps_get_next_walk_op(). Used during&n; *              Acpi_ps_delete_parse tree to delete Op objects when all sub-objects&n; *              have been visited (and deleted.)&n; *&n; ******************************************************************************/
-r_static
 id|acpi_status
 DECL|function|acpi_ps_delete_completed_op
 id|acpi_ps_delete_completed_op
@@ -337,10 +335,11 @@ id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|acpi_walk_list
-id|walk_list
+id|ACPI_THREAD_STATE
+op_star
+id|thread
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_delete_parse_tree&quot;
 comma
@@ -358,18 +357,22 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new walk list */
-id|walk_list.walk_state
+id|thread
 op_assign
-l_int|NULL
+id|acpi_ut_create_thread_state
+(paren
+)paren
 suffix:semicolon
-id|walk_list.acquired_mutex_list.prev
-op_assign
-l_int|NULL
+r_if
+c_cond
+(paren
+op_logical_neg
+id|thread
+)paren
+(brace
+id|return_VOID
 suffix:semicolon
-id|walk_list.acquired_mutex_list.next
-op_assign
-l_int|NULL
-suffix:semicolon
+)brace
 id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
@@ -380,8 +383,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-op_amp
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_if
@@ -417,7 +419,7 @@ suffix:semicolon
 multiline_comment|/* Head downward in the tree */
 id|walk_state-&gt;next_op_info
 op_assign
-id|NEXT_OP_DOWNWARD
+id|ACPI_NEXT_OP_DOWNWARD
 suffix:semicolon
 multiline_comment|/* Visit all nodes in the subtree */
 r_while
@@ -437,14 +439,13 @@ id|acpi_ps_delete_completed_op
 suffix:semicolon
 )brace
 multiline_comment|/* We are done with this walk */
-id|acpi_ex_release_all_mutexes
+id|acpi_ut_delete_generic_state
 (paren
 (paren
-id|acpi_operand_object
+id|acpi_generic_state
 op_star
 )paren
-op_amp
-id|walk_list.acquired_mutex_list
+id|thread
 )paren
 suffix:semicolon
 id|acpi_ds_delete_walk_state

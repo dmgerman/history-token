@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psopcode&quot;
 )paren
@@ -263,7 +263,7 @@ mdefine_line|#define ARGP_TYPE_OP                    ARGP_LIST1 (ARGP_SUPERNAME)
 DECL|macro|ARGP_UNLOAD_OP
 mdefine_line|#define ARGP_UNLOAD_OP                  ARGP_LIST1 (ARGP_SUPERNAME)
 DECL|macro|ARGP_VAR_PACKAGE_OP
-mdefine_line|#define ARGP_VAR_PACKAGE_OP             ARGP_LIST3 (ARGP_PKGLENGTH,  ARGP_BYTEDATA,      ARGP_DATAOBJLIST)
+mdefine_line|#define ARGP_VAR_PACKAGE_OP             ARGP_LIST3 (ARGP_PKGLENGTH,  ARGP_TERMARG,       ARGP_DATAOBJLIST)
 DECL|macro|ARGP_WAIT_OP
 mdefine_line|#define ARGP_WAIT_OP                    ARGP_LIST2 (ARGP_SUPERNAME,  ARGP_TERMARG)
 DECL|macro|ARGP_WHILE_OP
@@ -348,7 +348,7 @@ mdefine_line|#define ARGI_DEBUG_OP                   ARG_NONE
 DECL|macro|ARGI_DECREMENT_OP
 mdefine_line|#define ARGI_DECREMENT_OP               ARGI_LIST1 (ARGI_INTEGER_REF)
 DECL|macro|ARGI_DEREF_OF_OP
-mdefine_line|#define ARGI_DEREF_OF_OP                ARGI_LIST1 (ARGI_REFERENCE)
+mdefine_line|#define ARGI_DEREF_OF_OP                ARGI_LIST1 (ARGI_REF_OR_STRING)
 DECL|macro|ARGI_DEVICE_OP
 mdefine_line|#define ARGI_DEVICE_OP                  ARGI_INVALID_OPCODE
 DECL|macro|ARGI_DIVIDE_OP
@@ -396,7 +396,7 @@ mdefine_line|#define ARGI_LNOTEQUAL_OP               ARGI_INVALID_OPCODE
 DECL|macro|ARGI_LOAD_OP
 mdefine_line|#define ARGI_LOAD_OP                    ARGI_LIST2 (ARGI_REGION,     ARGI_TARGETREF)
 DECL|macro|ARGI_LOAD_TABLE_OP
-mdefine_line|#define ARGI_LOAD_TABLE_OP              ARGI_LIST6 (ARGI_STRING,     ARGI_STRING,        ARGI_STRING,       ARGI_STRING,    ARGI_STRING, ARGI_TARGETREF)
+mdefine_line|#define ARGI_LOAD_TABLE_OP              ARGI_LIST6 (ARGI_STRING,     ARGI_STRING,        ARGI_STRING,       ARGI_STRING,    ARGI_STRING, ARGI_ANYTYPE)
 DECL|macro|ARGI_LOCAL0
 mdefine_line|#define ARGI_LOCAL0                     ARG_NONE
 DECL|macro|ARGI_LOCAL1
@@ -516,18 +516,19 @@ mdefine_line|#define ARGI_WORD_OP                    ARGI_INVALID_OPCODE
 DECL|macro|ARGI_ZERO_OP
 mdefine_line|#define ARGI_ZERO_OP                    ARG_NONE
 multiline_comment|/*&n; * Summary of opcode types/flags&n; */
-multiline_comment|/******************************************************************************&n;&n; Opcodes that have associated namespace objects&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that are &quot;namespace&quot; opcodes&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that have an associated namespace node&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that define named ACPI objects&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;&t;Opcodes that contain executable AML as part of the definition that&n;&t;must be deferred until needed&n;&n;&t;AML_METHOD_OP&n;&t;AML_VAR_PACKAGE_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_REGION_OP&n;&n;  Field opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&n;  Field &quot;Create&quot; opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;&n; Opcodes that have associated namespace objects (AML_NSOBJECT flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that are &quot;namespace&quot; opcodes (AML_NSOPCODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that have an associated namespace node (AML_NSNODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that define named ACPI objects (AML_NAMED flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that contain executable AML as part of the definition that&n;  must be deferred until needed&n;&n;&t;AML_METHOD_OP&n;&t;AML_VAR_PACKAGE_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_REGION_OP&n;&n;  Field opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&n;  Field &quot;Create&quot; opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&n;******************************************************************************/
 multiline_comment|/*&n; * Master Opcode information table.  A summary of everything we know about each opcode, all in one place.&n; */
-DECL|variable|aml_op_info
+DECL|variable|acpi_gbl_aml_op_info
 r_static
 r_const
 id|acpi_opcode_info
-id|aml_op_info
+id|acpi_gbl_aml_op_info
 (braket
 )braket
 op_assign
 (brace
-multiline_comment|/* Index           Name                 Parser Args               Interpreter Args                 Class                      Type                  Flags */
+multiline_comment|/*! [Begin] no source code translation */
+multiline_comment|/* Index           Name                 Parser Args               Interpreter Args                ObjectType                Class                      Type                  Flags */
 multiline_comment|/* 00 */
 id|ACPI_OP
 (paren
@@ -536,6 +537,8 @@ comma
 id|ARGP_ZERO_OP
 comma
 id|ARGI_ZERO_OP
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -553,6 +556,8 @@ id|ARGP_ONE_OP
 comma
 id|ARGI_ONE_OP
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_CONSTANT
@@ -568,6 +573,8 @@ comma
 id|ARGP_ALIAS_OP
 comma
 id|ARGI_ALIAS_OP
+comma
+id|INTERNAL_TYPE_ALIAS
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -593,6 +600,8 @@ id|ARGP_NAME_OP
 comma
 id|ARGI_NAME_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_COMPLEX
@@ -611,11 +620,13 @@ comma
 multiline_comment|/* 04 */
 id|ACPI_OP
 (paren
-l_string|&quot;Byte_const&quot;
+l_string|&quot;ByteConst&quot;
 comma
 id|ARGP_BYTE_OP
 comma
 id|ARGI_BYTE_OP
+comma
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -627,11 +638,13 @@ comma
 multiline_comment|/* 05 */
 id|ACPI_OP
 (paren
-l_string|&quot;Word_const&quot;
+l_string|&quot;WordConst&quot;
 comma
 id|ARGP_WORD_OP
 comma
 id|ARGI_WORD_OP
+comma
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -643,11 +656,13 @@ comma
 multiline_comment|/* 06 */
 id|ACPI_OP
 (paren
-l_string|&quot;Dword_const&quot;
+l_string|&quot;DwordConst&quot;
 comma
 id|ARGP_DWORD_OP
 comma
 id|ARGI_DWORD_OP
+comma
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -665,6 +680,8 @@ id|ARGP_STRING_OP
 comma
 id|ARGI_STRING_OP
 comma
+id|ACPI_TYPE_STRING
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_LITERAL
@@ -680,6 +697,8 @@ comma
 id|ARGP_SCOPE_OP
 comma
 id|ARGI_SCOPE_OP
+comma
+id|INTERNAL_TYPE_SCOPE
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -705,6 +724,8 @@ id|ARGP_BUFFER_OP
 comma
 id|ARGI_BUFFER_OP
 comma
+id|ACPI_TYPE_BUFFER
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_DATA_TERM
@@ -721,6 +742,8 @@ id|ARGP_PACKAGE_OP
 comma
 id|ARGI_PACKAGE_OP
 comma
+id|ACPI_TYPE_PACKAGE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_DATA_TERM
@@ -736,6 +759,8 @@ comma
 id|ARGP_METHOD_OP
 comma
 id|ARGI_METHOD_OP
+comma
+id|ACPI_TYPE_METHOD
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -763,6 +788,8 @@ id|ARGP_LOCAL0
 comma
 id|ARGI_LOCAL0
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_LOCAL_VARIABLE
@@ -778,6 +805,8 @@ comma
 id|ARGP_LOCAL1
 comma
 id|ARGI_LOCAL1
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -795,6 +824,8 @@ id|ARGP_LOCAL2
 comma
 id|ARGI_LOCAL2
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_LOCAL_VARIABLE
@@ -810,6 +841,8 @@ comma
 id|ARGP_LOCAL3
 comma
 id|ARGI_LOCAL3
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -827,6 +860,8 @@ id|ARGP_LOCAL4
 comma
 id|ARGI_LOCAL4
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_LOCAL_VARIABLE
@@ -842,6 +877,8 @@ comma
 id|ARGP_LOCAL5
 comma
 id|ARGI_LOCAL5
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -859,6 +896,8 @@ id|ARGP_LOCAL6
 comma
 id|ARGI_LOCAL6
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_LOCAL_VARIABLE
@@ -874,6 +913,8 @@ comma
 id|ARGP_LOCAL7
 comma
 id|ARGI_LOCAL7
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -891,6 +932,8 @@ id|ARGP_ARG0
 comma
 id|ARGI_ARG0
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_METHOD_ARGUMENT
@@ -906,6 +949,8 @@ comma
 id|ARGP_ARG1
 comma
 id|ARGI_ARG1
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -923,6 +968,8 @@ id|ARGP_ARG2
 comma
 id|ARGI_ARG2
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_METHOD_ARGUMENT
@@ -938,6 +985,8 @@ comma
 id|ARGP_ARG3
 comma
 id|ARGI_ARG3
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -955,6 +1004,8 @@ id|ARGP_ARG4
 comma
 id|ARGI_ARG4
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_METHOD_ARGUMENT
@@ -971,6 +1022,8 @@ id|ARGP_ARG5
 comma
 id|ARGI_ARG5
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_METHOD_ARGUMENT
@@ -978,7 +1031,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* 1_a */
+multiline_comment|/* 1A */
 id|ACPI_OP
 (paren
 l_string|&quot;Arg6&quot;
@@ -987,6 +1040,8 @@ id|ARGP_ARG6
 comma
 id|ARGI_ARG6
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_METHOD_ARGUMENT
@@ -994,7 +1049,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* 1_b */
+multiline_comment|/* 1B */
 id|ACPI_OP
 (paren
 l_string|&quot;Store&quot;
@@ -1003,6 +1058,8 @@ id|ARGP_STORE_OP
 comma
 id|ARGI_STORE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_1T_1R
@@ -1010,14 +1067,16 @@ comma
 id|AML_FLAGS_EXEC_1A_1T_1R
 )paren
 comma
-multiline_comment|/* 1_c */
+multiline_comment|/* 1C */
 id|ACPI_OP
 (paren
-l_string|&quot;Ref_of&quot;
+l_string|&quot;RefOf&quot;
 comma
 id|ARGP_REF_OF_OP
 comma
 id|ARGI_REF_OF_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1026,7 +1085,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_1R
 )paren
 comma
-multiline_comment|/* 1_d */
+multiline_comment|/* 1D */
 id|ACPI_OP
 (paren
 l_string|&quot;Add&quot;
@@ -1034,6 +1093,8 @@ comma
 id|ARGP_ADD_OP
 comma
 id|ARGI_ADD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1044,7 +1105,7 @@ op_or
 id|AML_MATH
 )paren
 comma
-multiline_comment|/* 1_e */
+multiline_comment|/* 1E */
 id|ACPI_OP
 (paren
 l_string|&quot;Concatenate&quot;
@@ -1053,6 +1114,8 @@ id|ARGP_CONCAT_OP
 comma
 id|ARGI_CONCAT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1060,7 +1123,7 @@ comma
 id|AML_FLAGS_EXEC_2A_1T_1R
 )paren
 comma
-multiline_comment|/* 1_f */
+multiline_comment|/* 1F */
 id|ACPI_OP
 (paren
 l_string|&quot;Subtract&quot;
@@ -1068,6 +1131,8 @@ comma
 id|ARGP_SUBTRACT_OP
 comma
 id|ARGI_SUBTRACT_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1087,6 +1152,8 @@ id|ARGP_INCREMENT_OP
 comma
 id|ARGI_INCREMENT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_1R
@@ -1103,6 +1170,8 @@ id|ARGP_DECREMENT_OP
 comma
 id|ARGI_DECREMENT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_1R
@@ -1118,6 +1187,8 @@ comma
 id|ARGP_MULTIPLY_OP
 comma
 id|ARGI_MULTIPLY_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1137,6 +1208,8 @@ id|ARGP_DIVIDE_OP
 comma
 id|ARGI_DIVIDE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_2T_1R
@@ -1147,11 +1220,13 @@ comma
 multiline_comment|/* 24 */
 id|ACPI_OP
 (paren
-l_string|&quot;Shift_left&quot;
+l_string|&quot;ShiftLeft&quot;
 comma
 id|ARGP_SHIFT_LEFT_OP
 comma
 id|ARGI_SHIFT_LEFT_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1165,11 +1240,13 @@ comma
 multiline_comment|/* 25 */
 id|ACPI_OP
 (paren
-l_string|&quot;Shift_right&quot;
+l_string|&quot;ShiftRight&quot;
 comma
 id|ARGP_SHIFT_RIGHT_OP
 comma
 id|ARGI_SHIFT_RIGHT_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1189,6 +1266,8 @@ id|ARGP_BIT_AND_OP
 comma
 id|ARGI_BIT_AND_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1206,6 +1285,8 @@ comma
 id|ARGP_BIT_NAND_OP
 comma
 id|ARGI_BIT_NAND_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1225,6 +1306,8 @@ id|ARGP_BIT_OR_OP
 comma
 id|ARGI_BIT_OR_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1243,6 +1326,8 @@ id|ARGP_BIT_NOR_OP
 comma
 id|ARGI_BIT_NOR_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1252,7 +1337,7 @@ op_or
 id|AML_MATH
 )paren
 comma
-multiline_comment|/* 2_a */
+multiline_comment|/* 2A */
 id|ACPI_OP
 (paren
 l_string|&quot;XOr&quot;
@@ -1261,6 +1346,8 @@ id|ARGP_BIT_XOR_OP
 comma
 id|ARGI_BIT_XOR_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1270,7 +1357,7 @@ op_or
 id|AML_MATH
 )paren
 comma
-multiline_comment|/* 2_b */
+multiline_comment|/* 2B */
 id|ACPI_OP
 (paren
 l_string|&quot;Not&quot;
@@ -1279,6 +1366,8 @@ id|ARGP_BIT_NOT_OP
 comma
 id|ARGI_BIT_NOT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_1T_1R
@@ -1286,15 +1375,17 @@ comma
 id|AML_FLAGS_EXEC_1A_1T_1R
 )paren
 comma
-multiline_comment|/* 2_c */
+multiline_comment|/* 2C */
 id|ACPI_OP
 (paren
-l_string|&quot;Find_set_left_bit&quot;
+l_string|&quot;FindSetLeftBit&quot;
 comma
 id|ARGP_FIND_SET_LEFT_BIT_OP
 comma
 id|ARGI_FIND_SET_LEFT_BIT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_1T_1R
@@ -1302,15 +1393,17 @@ comma
 id|AML_FLAGS_EXEC_1A_1T_1R
 )paren
 comma
-multiline_comment|/* 2_d */
+multiline_comment|/* 2D */
 id|ACPI_OP
 (paren
-l_string|&quot;Find_set_right_bit&quot;
+l_string|&quot;FindSetRightBit&quot;
 comma
 id|ARGP_FIND_SET_RIGHT_BIT_OP
 comma
 id|ARGI_FIND_SET_RIGHT_BIT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_1T_1R
@@ -1318,14 +1411,16 @@ comma
 id|AML_FLAGS_EXEC_1A_1T_1R
 )paren
 comma
-multiline_comment|/* 2_e */
+multiline_comment|/* 2E */
 id|ACPI_OP
 (paren
-l_string|&quot;Deref_of&quot;
+l_string|&quot;DerefOf&quot;
 comma
 id|ARGP_DEREF_OF_OP
 comma
 id|ARGI_DEREF_OF_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1334,7 +1429,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_1R
 )paren
 comma
-multiline_comment|/* 2_f */
+multiline_comment|/* 2F */
 id|ACPI_OP
 (paren
 l_string|&quot;Notify&quot;
@@ -1342,6 +1437,8 @@ comma
 id|ARGP_NOTIFY_OP
 comma
 id|ARGI_NOTIFY_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1353,11 +1450,13 @@ comma
 multiline_comment|/* 30 */
 id|ACPI_OP
 (paren
-l_string|&quot;Size_of&quot;
+l_string|&quot;SizeOf&quot;
 comma
 id|ARGP_SIZE_OF_OP
 comma
 id|ARGI_SIZE_OF_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1375,6 +1474,8 @@ id|ARGP_INDEX_OP
 comma
 id|ARGI_INDEX_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -1391,6 +1492,8 @@ id|ARGP_MATCH_OP
 comma
 id|ARGI_MATCH_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_6A_0T_1R
@@ -1401,11 +1504,13 @@ comma
 multiline_comment|/* 33 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_dWord_field&quot;
+l_string|&quot;CreateDWordField&quot;
 comma
 id|ARGP_CREATE_DWORD_FIELD_OP
 comma
 id|ARGI_CREATE_DWORD_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -1425,11 +1530,13 @@ comma
 multiline_comment|/* 34 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_word_field&quot;
+l_string|&quot;CreateWordField&quot;
 comma
 id|ARGP_CREATE_WORD_FIELD_OP
 comma
 id|ARGI_CREATE_WORD_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -1449,11 +1556,13 @@ comma
 multiline_comment|/* 35 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_byte_field&quot;
+l_string|&quot;CreateByteField&quot;
 comma
 id|ARGP_CREATE_BYTE_FIELD_OP
 comma
 id|ARGI_CREATE_BYTE_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -1473,11 +1582,13 @@ comma
 multiline_comment|/* 36 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_bit_field&quot;
+l_string|&quot;CreateBitField&quot;
 comma
 id|ARGP_CREATE_BIT_FIELD_OP
 comma
 id|ARGI_CREATE_BIT_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -1497,11 +1608,13 @@ comma
 multiline_comment|/* 37 */
 id|ACPI_OP
 (paren
-l_string|&quot;Object_type&quot;
+l_string|&quot;ObjectType&quot;
 comma
 id|ARGP_TYPE_OP
 comma
 id|ARGI_TYPE_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1518,6 +1631,8 @@ comma
 id|ARGP_LAND_OP
 comma
 id|ARGI_LAND_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1537,6 +1652,8 @@ id|ARGP_LOR_OP
 comma
 id|ARGI_LOR_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_0T_1R
@@ -1546,7 +1663,7 @@ op_or
 id|AML_LOGICAL
 )paren
 comma
-multiline_comment|/* 3_a */
+multiline_comment|/* 3A */
 id|ACPI_OP
 (paren
 l_string|&quot;LNot&quot;
@@ -1555,6 +1672,8 @@ id|ARGP_LNOT_OP
 comma
 id|ARGI_LNOT_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_1R
@@ -1562,7 +1681,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_1R
 )paren
 comma
-multiline_comment|/* 3_b */
+multiline_comment|/* 3B */
 id|ACPI_OP
 (paren
 l_string|&quot;LEqual&quot;
@@ -1571,6 +1690,8 @@ id|ARGP_LEQUAL_OP
 comma
 id|ARGI_LEQUAL_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_0T_1R
@@ -1580,7 +1701,7 @@ op_or
 id|AML_LOGICAL
 )paren
 comma
-multiline_comment|/* 3_c */
+multiline_comment|/* 3C */
 id|ACPI_OP
 (paren
 l_string|&quot;LGreater&quot;
@@ -1589,6 +1710,8 @@ id|ARGP_LGREATER_OP
 comma
 id|ARGI_LGREATER_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_0T_1R
@@ -1598,7 +1721,7 @@ op_or
 id|AML_LOGICAL
 )paren
 comma
-multiline_comment|/* 3_d */
+multiline_comment|/* 3D */
 id|ACPI_OP
 (paren
 l_string|&quot;LLess&quot;
@@ -1607,6 +1730,8 @@ id|ARGP_LLESS_OP
 comma
 id|ARGI_LLESS_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_0T_1R
@@ -1616,7 +1741,7 @@ op_or
 id|AML_LOGICAL
 )paren
 comma
-multiline_comment|/* 3_e */
+multiline_comment|/* 3E */
 id|ACPI_OP
 (paren
 l_string|&quot;If&quot;
@@ -1625,6 +1750,8 @@ id|ARGP_IF_OP
 comma
 id|ARGI_IF_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_CONTROL
 comma
 id|AML_TYPE_CONTROL
@@ -1632,7 +1759,7 @@ comma
 id|AML_HAS_ARGS
 )paren
 comma
-multiline_comment|/* 3_f */
+multiline_comment|/* 3F */
 id|ACPI_OP
 (paren
 l_string|&quot;Else&quot;
@@ -1640,6 +1767,8 @@ comma
 id|ARGP_ELSE_OP
 comma
 id|ARGI_ELSE_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_CONTROL
 comma
@@ -1657,6 +1786,8 @@ id|ARGP_WHILE_OP
 comma
 id|ARGI_WHILE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_CONTROL
 comma
 id|AML_TYPE_CONTROL
@@ -1672,6 +1803,8 @@ comma
 id|ARGP_NOOP_OP
 comma
 id|ARGI_NOOP_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_CONTROL
 comma
@@ -1689,6 +1822,8 @@ id|ARGP_RETURN_OP
 comma
 id|ARGI_RETURN_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_CONTROL
 comma
 id|AML_TYPE_CONTROL
@@ -1705,6 +1840,8 @@ id|ARGP_BREAK_OP
 comma
 id|ARGI_BREAK_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_CONTROL
 comma
 id|AML_TYPE_CONTROL
@@ -1715,11 +1852,13 @@ comma
 multiline_comment|/* 44 */
 id|ACPI_OP
 (paren
-l_string|&quot;Break_point&quot;
+l_string|&quot;BreakPoint&quot;
 comma
 id|ARGP_BREAK_POINT_OP
 comma
 id|ARGI_BREAK_POINT_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_CONTROL
 comma
@@ -1737,6 +1876,8 @@ id|ARGP_ONES_OP
 comma
 id|ARGI_ONES_OP
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_CONSTANT
@@ -1753,6 +1894,8 @@ comma
 id|ARGP_MUTEX_OP
 comma
 id|ARGI_MUTEX_OP
+comma
+id|ACPI_TYPE_MUTEX
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -1778,6 +1921,8 @@ id|ARGP_EVENT_OP
 comma
 id|ARGI_EVENT_OP
 comma
+id|ACPI_TYPE_EVENT
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_SIMPLE
@@ -1794,11 +1939,13 @@ comma
 multiline_comment|/* 48 */
 id|ACPI_OP
 (paren
-l_string|&quot;Cond_ref_of&quot;
+l_string|&quot;CondRefOf&quot;
 comma
 id|ARGP_COND_REF_OF_OP
 comma
 id|ARGI_COND_REF_OF_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1810,11 +1957,13 @@ comma
 multiline_comment|/* 49 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_field&quot;
+l_string|&quot;CreateField&quot;
 comma
 id|ARGP_CREATE_FIELD_OP
 comma
 id|ARGI_CREATE_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -1833,7 +1982,7 @@ op_or
 id|AML_CREATE
 )paren
 comma
-multiline_comment|/* 4_a */
+multiline_comment|/* 4A */
 id|ACPI_OP
 (paren
 l_string|&quot;Load&quot;
@@ -1842,6 +1991,8 @@ id|ARGP_LOAD_OP
 comma
 id|ARGI_LOAD_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_1T_0R
@@ -1849,7 +2000,7 @@ comma
 id|AML_FLAGS_EXEC_1A_1T_0R
 )paren
 comma
-multiline_comment|/* 4_b */
+multiline_comment|/* 4B */
 id|ACPI_OP
 (paren
 l_string|&quot;Stall&quot;
@@ -1858,6 +2009,8 @@ id|ARGP_STALL_OP
 comma
 id|ARGI_STALL_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -1865,7 +2018,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_0R
 )paren
 comma
-multiline_comment|/* 4_c */
+multiline_comment|/* 4C */
 id|ACPI_OP
 (paren
 l_string|&quot;Sleep&quot;
@@ -1874,6 +2027,8 @@ id|ARGP_SLEEP_OP
 comma
 id|ARGI_SLEEP_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -1881,7 +2036,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_0R
 )paren
 comma
-multiline_comment|/* 4_d */
+multiline_comment|/* 4D */
 id|ACPI_OP
 (paren
 l_string|&quot;Acquire&quot;
@@ -1890,6 +2045,8 @@ id|ARGP_ACQUIRE_OP
 comma
 id|ARGI_ACQUIRE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_0T_1R
@@ -1897,7 +2054,7 @@ comma
 id|AML_FLAGS_EXEC_2A_0T_1R
 )paren
 comma
-multiline_comment|/* 4_e */
+multiline_comment|/* 4E */
 id|ACPI_OP
 (paren
 l_string|&quot;Signal&quot;
@@ -1906,6 +2063,8 @@ id|ARGP_SIGNAL_OP
 comma
 id|ARGI_SIGNAL_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -1913,7 +2072,7 @@ comma
 id|AML_FLAGS_EXEC_1A_0T_0R
 )paren
 comma
-multiline_comment|/* 4_f */
+multiline_comment|/* 4F */
 id|ACPI_OP
 (paren
 l_string|&quot;Wait&quot;
@@ -1921,6 +2080,8 @@ comma
 id|ARGP_WAIT_OP
 comma
 id|ARGI_WAIT_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1938,6 +2099,8 @@ id|ARGP_RESET_OP
 comma
 id|ARGI_RESET_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -1954,6 +2117,8 @@ id|ARGP_RELEASE_OP
 comma
 id|ARGI_RELEASE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -1964,11 +2129,13 @@ comma
 multiline_comment|/* 52 */
 id|ACPI_OP
 (paren
-l_string|&quot;From_bCD&quot;
+l_string|&quot;FromBCD&quot;
 comma
 id|ARGP_FROM_BCD_OP
 comma
 id|ARGI_FROM_BCD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -1980,11 +2147,13 @@ comma
 multiline_comment|/* 53 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_bCD&quot;
+l_string|&quot;ToBCD&quot;
 comma
 id|ARGP_TO_BCD_OP
 comma
 id|ARGI_TO_BCD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2002,6 +2171,8 @@ id|ARGP_UNLOAD_OP
 comma
 id|ARGI_UNLOAD_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_1A_0T_0R
@@ -2017,6 +2188,8 @@ comma
 id|ARGP_REVISION_OP
 comma
 id|ARGI_REVISION_OP
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2034,6 +2207,8 @@ id|ARGP_DEBUG_OP
 comma
 id|ARGI_DEBUG_OP
 comma
+id|INTERNAL_TYPE_REFERENCE
+comma
 id|AML_CLASS_ARGUMENT
 comma
 id|AML_TYPE_CONSTANT
@@ -2050,6 +2225,8 @@ id|ARGP_FATAL_OP
 comma
 id|ARGI_FATAL_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_3A_0T_0R
@@ -2060,11 +2237,13 @@ comma
 multiline_comment|/* 58 */
 id|ACPI_OP
 (paren
-l_string|&quot;Op_region&quot;
+l_string|&quot;OperationRegion&quot;
 comma
 id|ARGP_REGION_OP
 comma
 id|ARGI_REGION_OP
+comma
+id|ACPI_TYPE_REGION
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2092,6 +2271,8 @@ id|ARGP_FIELD_OP
 comma
 id|ARGI_FIELD_OP
 comma
+id|INTERNAL_TYPE_FIELD_DEFN
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_FIELD
@@ -2105,7 +2286,7 @@ op_or
 id|AML_FIELD
 )paren
 comma
-multiline_comment|/* 5_a */
+multiline_comment|/* 5A */
 id|ACPI_OP
 (paren
 l_string|&quot;Device&quot;
@@ -2114,6 +2295,8 @@ id|ARGP_DEVICE_OP
 comma
 id|ARGI_DEVICE_OP
 comma
+id|ACPI_TYPE_DEVICE
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_NO_OBJ
@@ -2129,7 +2312,7 @@ op_or
 id|AML_NAMED
 )paren
 comma
-multiline_comment|/* 5_b */
+multiline_comment|/* 5B */
 id|ACPI_OP
 (paren
 l_string|&quot;Processor&quot;
@@ -2138,6 +2321,8 @@ id|ARGP_PROCESSOR_OP
 comma
 id|ARGI_PROCESSOR_OP
 comma
+id|ACPI_TYPE_PROCESSOR
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_SIMPLE
@@ -2153,15 +2338,17 @@ op_or
 id|AML_NAMED
 )paren
 comma
-multiline_comment|/* 5_c */
+multiline_comment|/* 5C */
 id|ACPI_OP
 (paren
-l_string|&quot;Power_resource&quot;
+l_string|&quot;PowerResource&quot;
 comma
 id|ARGP_POWER_RES_OP
 comma
 id|ARGI_POWER_RES_OP
 comma
+id|ACPI_TYPE_POWER
+comma
 id|AML_CLASS_NAMED_OBJECT
 comma
 id|AML_TYPE_NAMED_SIMPLE
@@ -2177,14 +2364,16 @@ op_or
 id|AML_NAMED
 )paren
 comma
-multiline_comment|/* 5_d */
+multiline_comment|/* 5D */
 id|ACPI_OP
 (paren
-l_string|&quot;Thermal_zone&quot;
+l_string|&quot;ThermalZone&quot;
 comma
 id|ARGP_THERMAL_ZONE_OP
 comma
 id|ARGI_THERMAL_ZONE_OP
+comma
+id|ACPI_TYPE_THERMAL
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2201,14 +2390,16 @@ op_or
 id|AML_NAMED
 )paren
 comma
-multiline_comment|/* 5_e */
+multiline_comment|/* 5E */
 id|ACPI_OP
 (paren
-l_string|&quot;Index_field&quot;
+l_string|&quot;IndexField&quot;
 comma
 id|ARGP_INDEX_FIELD_OP
 comma
 id|ARGI_INDEX_FIELD_OP
+comma
+id|INTERNAL_TYPE_INDEX_FIELD_DEFN
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2223,14 +2414,16 @@ op_or
 id|AML_FIELD
 )paren
 comma
-multiline_comment|/* 5_f */
+multiline_comment|/* 5F */
 id|ACPI_OP
 (paren
-l_string|&quot;Bank_field&quot;
+l_string|&quot;BankField&quot;
 comma
 id|ARGP_BANK_FIELD_OP
 comma
 id|ARGI_BANK_FIELD_OP
+comma
+id|INTERNAL_TYPE_BANK_FIELD_DEFN
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2249,11 +2442,13 @@ multiline_comment|/* Internal opcodes that map to invalid AML opcodes */
 multiline_comment|/* 60 */
 id|ACPI_OP
 (paren
-l_string|&quot;LNot_equal&quot;
+l_string|&quot;LNotEqual&quot;
 comma
 id|ARGP_LNOTEQUAL_OP
 comma
 id|ARGI_LNOTEQUAL_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2265,11 +2460,13 @@ comma
 multiline_comment|/* 61 */
 id|ACPI_OP
 (paren
-l_string|&quot;LLess_equal&quot;
+l_string|&quot;LLessEqual&quot;
 comma
 id|ARGP_LLESSEQUAL_OP
 comma
 id|ARGI_LLESSEQUAL_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2281,11 +2478,13 @@ comma
 multiline_comment|/* 62 */
 id|ACPI_OP
 (paren
-l_string|&quot;LGreater_equal&quot;
+l_string|&quot;LGreaterEqual&quot;
 comma
 id|ARGP_LGREATEREQUAL_OP
 comma
 id|ARGI_LGREATEREQUAL_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2297,11 +2496,13 @@ comma
 multiline_comment|/* 63 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Name_path]&quot;
+l_string|&quot;[NamePath]&quot;
 comma
 id|ARGP_NAMEPATH_OP
 comma
 id|ARGI_NAMEPATH_OP
+comma
+id|INTERNAL_TYPE_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2315,11 +2516,13 @@ comma
 multiline_comment|/* 64 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Method_call]&quot;
+l_string|&quot;[MethodCall]&quot;
 comma
 id|ARGP_METHODCALL_OP
 comma
 id|ARGI_METHODCALL_OP
+comma
+id|ACPI_TYPE_METHOD
 comma
 id|AML_CLASS_METHOD_CALL
 comma
@@ -2335,11 +2538,13 @@ comma
 multiline_comment|/* 65 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Byte_list]&quot;
+l_string|&quot;[ByteList]&quot;
 comma
 id|ARGP_BYTELIST_OP
 comma
 id|ARGI_BYTELIST_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2351,11 +2556,13 @@ comma
 multiline_comment|/* 66 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Reserved_field]&quot;
+l_string|&quot;[ReservedField]&quot;
 comma
 id|ARGP_RESERVEDFIELD_OP
 comma
 id|ARGI_RESERVEDFIELD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2367,11 +2574,13 @@ comma
 multiline_comment|/* 67 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Named_field]&quot;
+l_string|&quot;[NamedField]&quot;
 comma
 id|ARGP_NAMEDFIELD_OP
 comma
 id|ARGI_NAMEDFIELD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2389,11 +2598,13 @@ comma
 multiline_comment|/* 68 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Access_field]&quot;
+l_string|&quot;[AccessField]&quot;
 comma
 id|ARGP_ACCESSFIELD_OP
 comma
 id|ARGI_ACCESSFIELD_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2405,11 +2616,13 @@ comma
 multiline_comment|/* 69 */
 id|ACPI_OP
 (paren
-l_string|&quot;[Static_string&quot;
+l_string|&quot;[StaticString&quot;
 comma
 id|ARGP_STATICSTRING_OP
 comma
 id|ARGI_STATICSTRING_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_INTERNAL
 comma
@@ -2418,7 +2631,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* 6_a */
+multiline_comment|/* 6A */
 id|ACPI_OP
 (paren
 l_string|&quot;[Return Value]&quot;
@@ -2426,6 +2639,8 @@ comma
 id|ARG_NONE
 comma
 id|ARG_NONE
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_RETURN_VALUE
 comma
@@ -2436,7 +2651,7 @@ op_or
 id|AML_HAS_RETVAL
 )paren
 comma
-multiline_comment|/* 6_b */
+multiline_comment|/* 6B */
 id|ACPI_OP
 (paren
 l_string|&quot;UNKNOWN_OP!&quot;
@@ -2445,6 +2660,8 @@ id|ARG_NONE
 comma
 id|ARG_NONE
 comma
+id|INTERNAL_TYPE_INVALID
+comma
 id|AML_CLASS_UNKNOWN
 comma
 id|AML_TYPE_BOGUS
@@ -2452,7 +2669,7 @@ comma
 id|AML_HAS_ARGS
 )paren
 comma
-multiline_comment|/* 6_c */
+multiline_comment|/* 6C */
 id|ACPI_OP
 (paren
 l_string|&quot;ASCII_ONLY!&quot;
@@ -2461,6 +2678,8 @@ id|ARG_NONE
 comma
 id|ARG_NONE
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_ASCII
 comma
 id|AML_TYPE_BOGUS
@@ -2468,7 +2687,7 @@ comma
 id|AML_HAS_ARGS
 )paren
 comma
-multiline_comment|/* 6_d */
+multiline_comment|/* 6D */
 id|ACPI_OP
 (paren
 l_string|&quot;PREFIX_ONLY!&quot;
@@ -2476,6 +2695,8 @@ comma
 id|ARG_NONE
 comma
 id|ARG_NONE
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_PREFIX
 comma
@@ -2485,14 +2706,16 @@ id|AML_HAS_ARGS
 )paren
 comma
 multiline_comment|/* ACPI 2.0 opcodes */
-multiline_comment|/* 6_e */
+multiline_comment|/* 6E */
 id|ACPI_OP
 (paren
-l_string|&quot;Qword_const&quot;
+l_string|&quot;QwordConst&quot;
 comma
 id|ARGP_QWORD_OP
 comma
 id|ARGI_QWORD_OP
+comma
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2501,14 +2724,16 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* 6_f */
+multiline_comment|/* 6F */
 id|ACPI_OP
 (paren
-l_string|&quot;Var_package&quot;
+l_string|&quot;Package /*Var*/&quot;
 comma
 id|ARGP_VAR_PACKAGE_OP
 comma
 id|ARGI_VAR_PACKAGE_OP
+comma
+id|ACPI_TYPE_PACKAGE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2522,11 +2747,13 @@ comma
 multiline_comment|/* 70 */
 id|ACPI_OP
 (paren
-l_string|&quot;Concat_res&quot;
+l_string|&quot;ConcatenateResTemplate&quot;
 comma
 id|ARGP_CONCAT_RES_OP
 comma
 id|ARGI_CONCAT_RES_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2544,6 +2771,8 @@ id|ARGP_MOD_OP
 comma
 id|ARGI_MOD_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_2A_1T_1R
@@ -2554,11 +2783,13 @@ comma
 multiline_comment|/* 72 */
 id|ACPI_OP
 (paren
-l_string|&quot;Create_qWord_field&quot;
+l_string|&quot;CreateQWordField&quot;
 comma
 id|ARGP_CREATE_QWORD_FIELD_OP
 comma
 id|ARGI_CREATE_QWORD_FIELD_OP
+comma
+id|ACPI_TYPE_BUFFER_FIELD
 comma
 id|AML_CLASS_CREATE
 comma
@@ -2578,11 +2809,13 @@ comma
 multiline_comment|/* 73 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_buffer&quot;
+l_string|&quot;ToBuffer&quot;
 comma
 id|ARGP_TO_BUFFER_OP
 comma
 id|ARGI_TO_BUFFER_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2594,11 +2827,13 @@ comma
 multiline_comment|/* 74 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_decimal_string&quot;
+l_string|&quot;ToDecimalString&quot;
 comma
 id|ARGP_TO_DEC_STR_OP
 comma
 id|ARGI_TO_DEC_STR_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2610,11 +2845,13 @@ comma
 multiline_comment|/* 75 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_hex_string&quot;
+l_string|&quot;ToHexString&quot;
 comma
 id|ARGP_TO_HEX_STR_OP
 comma
 id|ARGI_TO_HEX_STR_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2626,11 +2863,13 @@ comma
 multiline_comment|/* 76 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_integer&quot;
+l_string|&quot;ToInteger&quot;
 comma
 id|ARGP_TO_INTEGER_OP
 comma
 id|ARGI_TO_INTEGER_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2642,11 +2881,13 @@ comma
 multiline_comment|/* 77 */
 id|ACPI_OP
 (paren
-l_string|&quot;To_string&quot;
+l_string|&quot;ToString&quot;
 comma
 id|ARGP_TO_STRING_OP
 comma
 id|ARGI_TO_STRING_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2658,11 +2899,13 @@ comma
 multiline_comment|/* 78 */
 id|ACPI_OP
 (paren
-l_string|&quot;Copy_object&quot;
+l_string|&quot;CopyObject&quot;
 comma
 id|ARGP_COPY_OP
 comma
 id|ARGI_COPY_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2680,6 +2923,8 @@ id|ARGP_MID_OP
 comma
 id|ARGI_MID_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_EXECUTE
 comma
 id|AML_TYPE_EXEC_3A_1T_1R
@@ -2687,7 +2932,7 @@ comma
 id|AML_FLAGS_EXEC_3A_1T_1R
 )paren
 comma
-multiline_comment|/* 7_a */
+multiline_comment|/* 7A */
 id|ACPI_OP
 (paren
 l_string|&quot;Continue&quot;
@@ -2696,6 +2941,8 @@ id|ARGP_CONTINUE_OP
 comma
 id|ARGI_CONTINUE_OP
 comma
+id|ACPI_TYPE_ANY
+comma
 id|AML_CLASS_CONTROL
 comma
 id|AML_TYPE_CONTROL
@@ -2703,14 +2950,16 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* 7_b */
+multiline_comment|/* 7B */
 id|ACPI_OP
 (paren
-l_string|&quot;Load_table&quot;
+l_string|&quot;LoadTable&quot;
 comma
 id|ARGP_LOAD_TABLE_OP
 comma
 id|ARGI_LOAD_TABLE_OP
+comma
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_EXECUTE
 comma
@@ -2719,30 +2968,41 @@ comma
 id|AML_FLAGS_EXEC_6A_0T_1R
 )paren
 comma
-multiline_comment|/* 7_c */
+multiline_comment|/* 7C */
 id|ACPI_OP
 (paren
-l_string|&quot;Data_op_region&quot;
+l_string|&quot;DataTableRegion&quot;
 comma
 id|ARGP_DATA_REGION_OP
 comma
 id|ARGI_DATA_REGION_OP
 comma
-id|AML_CLASS_EXECUTE
+id|ACPI_TYPE_REGION
 comma
-id|AML_TYPE_EXEC_1A_1T_1R
+id|AML_CLASS_NAMED_OBJECT
 comma
-id|AML_FLAGS_EXEC_1A_1T_1R
+id|AML_TYPE_NAMED_SIMPLE
+comma
+id|AML_HAS_ARGS
+op_or
+id|AML_NSOBJECT
+op_or
+id|AML_NSOPCODE
+op_or
+id|AML_NSNODE
+op_or
+id|AML_NAMED
 )paren
 comma
+multiline_comment|/*! [End] no source code translation !*/
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This table is directly indexed by the opcodes, and returns an&n; * index into the table above&n; */
-DECL|variable|aml_short_op_info_index
+DECL|variable|acpi_gbl_short_op_index
 r_static
 r_const
 id|u8
-id|aml_short_op_info_index
+id|acpi_gbl_short_op_index
 (braket
 l_int|256
 )braket
@@ -3296,11 +3556,11 @@ l_int|0x45
 comma
 )brace
 suffix:semicolon
-DECL|variable|aml_long_op_info_index
+DECL|variable|acpi_gbl_long_op_index
 r_static
 r_const
 id|u8
-id|aml_long_op_info_index
+id|acpi_gbl_long_op_index
 (braket
 id|NUM_EXTENDED_OPCODE
 )braket
@@ -3613,25 +3873,15 @@ id|u16
 id|opcode
 )paren
 (brace
-r_const
-id|acpi_opcode_info
-op_star
-id|op_info
-suffix:semicolon
-id|u8
-id|upper_opcode
-suffix:semicolon
-id|u8
-id|lower_opcode
-suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ps_get_opcode_info&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Split the 16-bit opcode into separate bytes */
-id|upper_opcode
-op_assign
+multiline_comment|/*&n;&t; * Detect normal 8-bit opcode or extended 16-bit opcode&n;&t; */
+r_switch
+c_cond
+(paren
 (paren
 id|u8
 )paren
@@ -3640,46 +3890,26 @@ id|opcode
 op_rshift
 l_int|8
 )paren
-suffix:semicolon
-id|lower_opcode
-op_assign
-(paren
-id|u8
-)paren
-id|opcode
-suffix:semicolon
-multiline_comment|/* Default is &quot;unknown opcode&quot; */
-id|op_info
-op_assign
-op_amp
-id|aml_op_info
-(braket
-id|_UNK
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Detect normal 8-bit opcode or extended 16-bit opcode&n;&t; */
-r_switch
-c_cond
-(paren
-id|upper_opcode
 )paren
 (brace
 r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Simple (8-bit) opcode: 0-255, can&squot;t index beyond table  */
-id|op_info
-op_assign
+r_return
+(paren
 op_amp
-id|aml_op_info
+id|acpi_gbl_aml_op_info
 (braket
-id|aml_short_op_info_index
+id|acpi_gbl_short_op_index
 (braket
-id|lower_opcode
+(paren
+id|u8
+)paren
+id|opcode
 )braket
 )braket
-suffix:semicolon
-r_break
+)paren
 suffix:semicolon
 r_case
 id|AML_EXTOP
@@ -3688,25 +3918,33 @@ multiline_comment|/* Extended (16-bit, prefix+opcode) opcode */
 r_if
 c_cond
 (paren
-id|lower_opcode
+(paren
+(paren
+id|u8
+)paren
+id|opcode
+)paren
 op_le
 id|MAX_EXTENDED_OPCODE
 )paren
 (brace
-id|op_info
-op_assign
+r_return
+(paren
 op_amp
-id|aml_op_info
+id|acpi_gbl_aml_op_info
 (braket
-id|aml_long_op_info_index
+id|acpi_gbl_long_op_index
 (braket
-id|lower_opcode
+(paren
+id|u8
+)paren
+id|opcode
 )braket
 )braket
+)paren
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
+multiline_comment|/* Else fall through to error case below */
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
@@ -3714,7 +3952,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown extended opcode=%X&bslash;n&quot;
+l_string|&quot;Unknown extended opcode [%X]&bslash;n&quot;
 comma
 id|opcode
 )paren
@@ -3723,10 +3961,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Get the Op info pointer for this opcode */
+multiline_comment|/* Default is &quot;unknown opcode&quot; */
 r_return
 (paren
-id|op_info
+op_amp
+id|acpi_gbl_aml_op_info
+(braket
+id|_UNK
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -3740,6 +3982,7 @@ id|u16
 id|opcode
 )paren
 (brace
+macro_line|#ifdef ACPI_DEBUG
 r_const
 id|acpi_opcode_info
 op_star
@@ -3753,7 +3996,6 @@ id|opcode
 )paren
 suffix:semicolon
 multiline_comment|/* Always guaranteed to return a valid pointer */
-macro_line|#ifdef ACPI_DEBUG
 r_return
 (paren
 id|op-&gt;name

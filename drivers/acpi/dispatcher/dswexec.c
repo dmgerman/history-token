@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -9,11 +9,11 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswexec&quot;
 )paren
-multiline_comment|/*&n; * Dispatch tables for opcode classes&n; */
+multiline_comment|/*&n; * Dispatch table for opcode classes&n; */
 DECL|variable|acpi_gbl_op_type_dispatch
 id|ACPI_EXECUTE_OP
 id|acpi_gbl_op_type_dispatch
@@ -53,8 +53,9 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|u32
-id|has_result_obj
+id|acpi_operand_object
+op_star
+id|result_obj
 )paren
 (brace
 id|acpi_status
@@ -66,7 +67,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_get_predicate_value&quot;
 comma
@@ -80,7 +81,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|has_result_obj
+id|result_obj
 )paren
 (brace
 id|status
@@ -284,7 +285,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Completed a predicate eval=%X Op=%pn&quot;
+l_string|&quot;Completed a predicate eval=%X Op=%p&bslash;n&quot;
 comma
 id|walk_state-&gt;control_state-&gt;common.value
 comma
@@ -293,7 +294,7 @@ id|walk_state-&gt;op
 )paren
 suffix:semicolon
 multiline_comment|/* Break to debugger to display result */
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 (paren
 id|acpi_db_display_result_object
 (paren
@@ -311,7 +312,7 @@ id|obj_desc
 suffix:semicolon
 id|walk_state-&gt;control_state-&gt;common.state
 op_assign
-id|CONTROL_NORMAL
+id|ACPI_CONTROL_NORMAL
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -346,7 +347,7 @@ suffix:semicolon
 id|u32
 id|opcode_class
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_exec_begin_op&quot;
 comma
@@ -408,6 +409,37 @@ id|walk_state-&gt;opcode
 op_assign
 id|op-&gt;opcode
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_ns_opens_scope
+(paren
+id|walk_state-&gt;op_info-&gt;object_type
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;(%s) Popping scope for Op %p&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|walk_state-&gt;op_info-&gt;object_type
+)paren
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
+id|acpi_ds_scope_stack_pop
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -446,7 +478,7 @@ op_logical_and
 (paren
 id|walk_state-&gt;control_state-&gt;common.state
 op_eq
-id|CONTROL_CONDITIONAL_EXECUTING
+id|ACPI_CONTROL_CONDITIONAL_EXECUTING
 )paren
 )paren
 (brace
@@ -465,7 +497,7 @@ id|walk_state
 suffix:semicolon
 id|walk_state-&gt;control_state-&gt;common.state
 op_assign
-id|CONTROL_PREDICATE_EXECUTING
+id|ACPI_CONTROL_PREDICATE_EXECUTING
 suffix:semicolon
 multiline_comment|/* Save start of predicate */
 id|walk_state-&gt;control_state-&gt;control.predicate_op
@@ -544,7 +576,7 @@ c_cond
 (paren
 id|walk_state-&gt;walk_type
 op_eq
-id|WALK_METHOD
+id|ACPI_WALK_METHOD
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Found a named object declaration during method&n;&t;&t;&t; * execution;  we must enter this object into the&n;&t;&t;&t; * namespace.  The created object is temporary and&n;&t;&t;&t; * will be deleted upon completion of the execution&n;&t;&t;&t; * of this method.&n;&t;&t;&t; */
@@ -576,13 +608,13 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-multiline_comment|/* most operators with arguments */
 r_case
 id|AML_CLASS_EXECUTE
 suffix:colon
 r_case
 id|AML_CLASS_CREATE
 suffix:colon
+multiline_comment|/* most operators with arguments */
 multiline_comment|/* Start a new result/operand state */
 id|status
 op_assign
@@ -641,7 +673,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_exec_end_op&quot;
 comma
@@ -705,7 +737,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Call debugger for single step support (DEBUG build only) */
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 (paren
 id|status
 op_assign
@@ -719,7 +751,7 @@ id|op_class
 )paren
 )paren
 suffix:semicolon
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 (paren
 r_if
 (paren
@@ -737,23 +769,23 @@ suffix:semicolon
 )brace
 )paren
 suffix:semicolon
+multiline_comment|/* Decode the Opcode Class */
 r_switch
 c_cond
 (paren
 id|op_class
 )paren
 (brace
-multiline_comment|/* Decode the Opcode Class */
 r_case
 id|AML_CLASS_ARGUMENT
 suffix:colon
-multiline_comment|/* constants, literals, etc.  do nothing */
+multiline_comment|/* constants, literals, etc. -- do nothing */
 r_break
 suffix:semicolon
-multiline_comment|/* most operators with arguments */
 r_case
 id|AML_CLASS_EXECUTE
 suffix:colon
+multiline_comment|/* most operators with arguments */
 multiline_comment|/* Build resolved operand stack */
 id|status
 op_assign
@@ -821,13 +853,42 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_FAILURE
+id|ACPI_SUCCESS
 (paren
 id|status
 )paren
 )paren
 (brace
-multiline_comment|/* TBD: must pop and delete operands */
+id|ACPI_DUMP_OPERANDS
+(paren
+id|ACPI_WALK_OPERANDS
+comma
+id|ACPI_IMODE_EXECUTE
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|walk_state-&gt;opcode
+)paren
+comma
+id|walk_state-&gt;num_operands
+comma
+l_string|&quot;after Ex_resolve_operands&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Dispatch the request to the appropriate interpreter handler&n;&t;&t;&t; * routine.  There is one routine per opcode &quot;type&quot; based upon the&n;&t;&t;&t; * number of opcode arguments and return type.&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_gbl_op_type_dispatch
+(braket
+id|op_type
+)braket
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -847,74 +908,8 @@ id|status
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * On error, we must delete all the operands and clear the&n;&t;&t;&t; * operand stack&n;&t;&t;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|walk_state-&gt;num_operands
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|walk_state-&gt;operands
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|walk_state-&gt;operands
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
-id|walk_state-&gt;num_operands
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-id|DUMP_OPERANDS
-(paren
-id|WALK_OPERANDS
-comma
-id|IMODE_EXECUTE
-comma
-id|acpi_ps_get_opcode_name
-(paren
-id|walk_state-&gt;opcode
-)paren
-comma
-id|walk_state-&gt;num_operands
-comma
-l_string|&quot;after Ex_resolve_operands&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Dispatch the request to the appropriate interpreter handler&n;&t;&t; * routine.  There is one routine per opcode &quot;type&quot; based upon the&n;&t;&t; * number of opcode arguments and return type.&n;&t;&t; */
-id|status
-op_assign
-id|acpi_gbl_op_type_dispatch
-(braket
-id|op_type
-)braket
-(paren
-id|walk_state
-)paren
-suffix:semicolon
-multiline_comment|/* Delete argument objects and clear the operand stack */
+multiline_comment|/* Always delete the argument objects and clear the operand stack */
 r_for
 c_loop
 (paren
@@ -1053,7 +1048,7 @@ id|status
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Since the operands will be passed to another&n;&t;&t;&t; * control method, we must resolve all local&n;&t;&t;&t; * references here (Local variables, arguments&n;&t;&t;&t; * to *this* method, etc.)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Since the operands will be passed to another control method,&n;&t;&t;&t; * we must resolve all local references here (Local variables,&n;&t;&t;&t; * arguments to *this* method, etc.)&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ds_resolve_operands
@@ -1083,8 +1078,6 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|AML_TYPE_CREATE_FIELD
@@ -1138,6 +1131,9 @@ id|AML_TYPE_NAMED_COMPLEX
 suffix:colon
 r_case
 id|AML_TYPE_NAMED_SIMPLE
+suffix:colon
+r_case
+id|AML_TYPE_NAMED_NO_OBJ
 suffix:colon
 id|status
 op_assign
@@ -1227,8 +1223,6 @@ id|return_ACPI_STATUS
 id|AE_NOT_IMPLEMENTED
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|AML_TYPE_BOGUS
 suffix:colon
@@ -1274,7 +1268,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * ACPI 2.0 support for 64-bit integers:&n;&t; * Truncate numeric result value if we are executing from a 32-bit ACPI table&n;&t; */
+multiline_comment|/*&n;&t; * ACPI 2.0 support for 64-bit integers: Truncate numeric&n;&t; * result value if we are executing from a 32-bit ACPI table&n;&t; */
 id|acpi_ex_truncate_for32bit_table
 (paren
 id|walk_state-&gt;result_obj
@@ -1293,7 +1287,7 @@ op_logical_and
 (paren
 id|walk_state-&gt;control_state-&gt;common.state
 op_eq
-id|CONTROL_PREDICATE_EXECUTING
+id|ACPI_CONTROL_PREDICATE_EXECUTING
 )paren
 op_logical_and
 (paren
@@ -1309,9 +1303,6 @@ id|acpi_ds_get_predicate_value
 (paren
 id|walk_state
 comma
-(paren
-id|u32
-)paren
 id|walk_state-&gt;result_obj
 )paren
 suffix:semicolon
@@ -1329,7 +1320,7 @@ id|walk_state-&gt;result_obj
 )paren
 (brace
 multiline_comment|/* Break to debugger to display result */
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 (paren
 id|acpi_db_display_result_object
 (paren
@@ -1351,7 +1342,6 @@ id|walk_state
 suffix:semicolon
 )brace
 multiline_comment|/* Always clear the object stack */
-multiline_comment|/* TBD: [Investigate] Clear stack of return value,&n;&t;but don&squot;t delete it */
 id|walk_state-&gt;num_operands
 op_assign
 l_int|0

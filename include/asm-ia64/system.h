@@ -531,7 +531,10 @@ macro_line|#endif
 DECL|macro|__switch_to
 mdefine_line|#define __switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n;   * In the SMP case, we save the fph state when context-switching&n;   * away from a thread that modified fph.  This way, when the thread&n;   * gets scheduled on another CPU, the CPU can pick up the state from&n;   * task-&gt;thread.fph, avoiding the complication of having to fetch&n;   * the latest fph state from another CPU.&n;   */
+multiline_comment|/* Return true if this CPU can call the console drivers in printk() */
+DECL|macro|arch_consoles_callable
+mdefine_line|#define arch_consoles_callable() (cpu_online_map &amp; (1UL &lt;&lt; smp_processor_id()))
+multiline_comment|/*&n; * In the SMP case, we save the fph state when context-switching&n; * away from a thread that modified fph.  This way, when the thread&n; * gets scheduled on another CPU, the CPU can pick up the state from&n; * task-&gt;thread.fph, avoiding the complication of having to fetch&n; * the latest fph state from another CPU.&n; */
 DECL|macro|switch_to
 macro_line|# define switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#else

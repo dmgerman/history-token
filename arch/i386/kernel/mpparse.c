@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;Intel Multiprocessor Specificiation 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;Maciej W. Rozycki&t;:&t;Bits for default MP configurations&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -16,6 +17,13 @@ multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int
 id|smp_found_config
+suffix:semicolon
+multiline_comment|/* Have we found an ACPI MADT table */
+DECL|variable|acpi_found_madt
+r_int
+id|acpi_found_madt
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Various Linux-internal data structures created from the&n; * MP-table.&n; */
 DECL|variable|apic_version
@@ -150,6 +158,54 @@ r_int
 r_int
 id|phys_cpu_present_map
 suffix:semicolon
+multiline_comment|/* ACPI MADT entry parsing functions */
+macro_line|#ifdef CONFIG_ACPI_BOOT
+r_extern
+r_struct
+id|acpi_boot_flags
+id|acpi_boot
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|acpi_parse_lapic
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_parse_lapic_addr_ovr
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_parse_lapic_nmi
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
+macro_line|#ifdef CONFIG_X86_IO_APIC
+r_extern
+r_int
+id|acpi_parse_ioapic
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_X86_IO_APIC*/
+macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 macro_line|#ifndef CONFIG_X86_VISWS_APIC
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
@@ -320,17 +376,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_IO_APIC
-r_extern
-r_int
-id|have_acpi_tables
-suffix:semicolon
-multiline_comment|/* set by acpitable.c */
-macro_line|#else
-DECL|macro|have_acpi_tables
-mdefine_line|#define have_acpi_tables (0)
-macro_line|#endif
-multiline_comment|/* &n; * Have to match translation table entries to main table entries by counter&n; * hence the mpc_record variable .... can&squot;t see a less disgusting way of&n; * doing this ....&n; */
+multiline_comment|/*&n; * Have to match translation table entries to main table entries by counter&n; * hence the mpc_record variable .... can&squot;t see a less disgusting way of&n; * doing this ....&n; */
 DECL|variable|mpc_record
 r_static
 r_int
@@ -1949,12 +1995,12 @@ comma
 id|mpc-&gt;mpc_lapic
 )paren
 suffix:semicolon
-multiline_comment|/* save the local APIC address, it might be non-default,&n;&t; * but only if we&squot;re not using the ACPI tables&n;&t; */
+multiline_comment|/*&n;&t; * Save the local APIC address, it might be non-default,&n;&t; * but only if we&squot;re not using the ACPI tables&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|have_acpi_tables
+id|acpi_found_madt
 )paren
 id|mp_lapic_addr
 op_assign
@@ -2028,7 +2074,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|have_acpi_tables
+id|acpi_found_madt
 )paren
 id|MP_processor_info
 c_func
@@ -2886,14 +2932,6 @@ id|intel_mp_floating
 op_star
 id|mpf_found
 suffix:semicolon
-r_extern
-r_void
-id|config_acpi_tables
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Scan the memory blocks for an SMP configuration block.&n; */
 DECL|function|get_smp_config
 r_void
@@ -2910,14 +2948,41 @@ id|mpf
 op_assign
 id|mpf_found
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-multiline_comment|/*&n;&t; * Check if the ACPI tables are provided. Use them only to get&n;&t; * the processor information, mainly because it provides&n;&t; * the info on the logical processor(s), rather than the physical&n;&t; * processor(s) that are provided by the MPS. We attempt to &n;&t; * check only if the user provided a commandline override&n;&t; */
-id|config_acpi_tables
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;&t; * Check if the MADT exists, and if so, use it to get processor&n;&t; * information (ACPI_MADT_LAPIC).  The MADT supports the concept&n;&t; * of both logical (e.g. HT) and physical processor(s); where the&n;&t; * MPS only supports physical.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_boot.madt
+)paren
+(brace
+id|acpi_found_madt
+op_assign
+id|acpi_table_parse
 c_func
 (paren
+id|ACPI_APIC
+comma
+id|acpi_parse_madt
 )paren
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|acpi_found_madt
+OG
+l_int|0
+)paren
+id|acpi_table_parse_madt
+c_func
+(paren
+id|ACPI_MADT_LAPIC
+comma
+id|acpi_parse_lapic
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /*CONFIG_ACPI_BOOT*/
 id|printk
 c_func
 (paren

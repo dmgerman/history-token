@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 85 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
 mdefine_line|#define DEFINE_AML_GLOBALS
@@ -12,11 +12,11 @@ macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exutils&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region&n; *              TBD: should be a macro&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region.  Failure to enter&n; *              the interpreter region is a fatal system error&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_enter_interpreter
 id|acpi_ex_enter_interpreter
@@ -27,7 +27,7 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_enter_interpreter&quot;
 )paren
@@ -39,13 +39,30 @@ id|acpi_ut_acquire_mutex
 id|ACPI_MTX_EXECUTE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Fatal - Could not acquire interpreter lock&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_exit_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Exit the interpreter execution region&n; *&n; * Cases where the interpreter is unlocked:&n; *      1) Completion of the execution of a control method&n; *      2) Method blocked on a Sleep() AML opcode&n; *      3) Method blocked on an Acquire() AML opcode&n; *      4) Method blocked on a Wait() AML opcode&n; *      5) Method blocked to acquire the global lock&n; *      6) Method blocked to execute a serialized control method that is&n; *          already executing&n; *      7) About to invoke a user-installed opregion handler&n; *&n; *              TBD: should be a macro&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_exit_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Exit the interpreter execution region&n; *&n; * Cases where the interpreter is unlocked:&n; *      1) Completion of the execution of a control method&n; *      2) Method blocked on a Sleep() AML opcode&n; *      3) Method blocked on an Acquire() AML opcode&n; *      4) Method blocked on a Wait() AML opcode&n; *      5) Method blocked to acquire the global lock&n; *      6) Method blocked to execute a serialized control method that is&n; *          already executing&n; *      7) About to invoke a user-installed opregion handler&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_exit_interpreter
 id|acpi_ex_exit_interpreter
@@ -53,11 +70,16 @@ id|acpi_ex_exit_interpreter
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_exit_interpreter&quot;
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EXECUTE
@@ -75,7 +97,7 @@ id|acpi_object_type
 id|type
 )paren
 (brace
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -125,7 +147,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -171,13 +193,13 @@ id|ACPI_UINT32_MAX
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_acquire_global_lock&n; *&n; * PARAMETERS:  Rule            - Lock rule: Always_lock, Never_lock&n; *&n; * RETURN:      TRUE/FALSE indicating whether the lock was actually acquired&n; *&n; * DESCRIPTION: Obtain the global lock and keep track of this fact via two&n; *              methods.  A global variable keeps the state of the lock, and&n; *              the state is returned to the caller.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_acquire_global_lock&n; *&n; * PARAMETERS:  Field_flags           - Flags with Lock rule:&n; *                                      Always_lock or Never_lock&n; *&n; * RETURN:      TRUE/FALSE indicating whether the lock was actually acquired&n; *&n; * DESCRIPTION: Obtain the global lock and keep track of this fact via two&n; *              methods.  A global variable keeps the state of the lock, and&n; *              the state is returned to the caller.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_acquire_global_lock
 id|acpi_ex_acquire_global_lock
 (paren
 id|u32
-id|rule
+id|field_flags
 )paren
 (brace
 id|u8
@@ -188,28 +210,26 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_acquire_global_lock&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Only attempt lock if the Rule says so */
+multiline_comment|/* Only attempt lock if the Always_lock bit is set */
 r_if
 c_cond
 (paren
-id|rule
-op_eq
-(paren
-id|u32
-)paren
-id|GLOCK_ALWAYS_LOCK
+id|field_flags
+op_amp
+id|AML_FIELD_LOCK_RULE_MASK
 )paren
 (brace
-multiline_comment|/* We should attempt to get the lock */
+multiline_comment|/* We should attempt to get the lock, wait forever */
 id|status
 op_assign
 id|acpi_ev_acquire_global_lock
 (paren
+id|ACPI_UINT32_MAX
 )paren
 suffix:semicolon
 r_if
@@ -259,7 +279,7 @@ id|u8
 id|locked_by_me
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_release_global_lock&quot;
 )paren
@@ -300,7 +320,7 @@ id|num_digits
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_digits_needed&quot;
 )paren
@@ -313,7 +333,7 @@ OL
 l_int|1
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_digits_needed: Internal error - Invalid base&bslash;n&quot;
@@ -397,7 +417,7 @@ suffix:semicolon
 )brace
 id|in
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -467,7 +487,7 @@ id|out_string
 id|u32
 id|id
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -628,7 +648,7 @@ suffix:semicolon
 id|u32
 id|remainder
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon

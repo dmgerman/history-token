@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -8,9 +8,11 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acexcep.h&quot;
+macro_line|#include &quot;acparser.h&quot;
+macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utxface&quot;
 )paren
@@ -25,13 +27,12 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_initialize_subsystem&quot;
 )paren
 suffix:semicolon
-id|DEBUG_EXEC
-c_func
+id|ACPI_DEBUG_EXEC
 (paren
 id|acpi_ut_init_stack_ptr_trace
 (paren
@@ -59,7 +60,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;OSD failed to initialize, %s&bslash;n&quot;
@@ -93,7 +94,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Global mutex creation failure, %s&bslash;n&quot;
@@ -127,7 +128,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Namespace initialization failure, %s&bslash;n&quot;
@@ -146,7 +147,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* If configured, initialize the AML debugger */
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 (paren
 id|acpi_db_initialize
 (paren
@@ -173,34 +174,12 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_enable_subsystem&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Sanity check the FADT for valid values */
-id|status
-op_assign
-id|acpi_ut_validate_fadt
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Install the default Op_region handlers. These are&n;&t; * installed unless other handlers have already been&n;&t; * installed via the Install_address_space_handler interface&n;&t; */
+multiline_comment|/*&n;&t; * Install the default Op_region handlers. These are installed unless&n;&t; * other handlers have already been installed via the&n;&t; * Install_address_space_handler interface&n;&t; */
 r_if
 c_cond
 (paren
@@ -243,7 +222,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * We must initialize the hardware before we can enable ACPI.&n;&t; */
+multiline_comment|/*&n;&t; * We must initialize the hardware before we can enable ACPI.&n;&t; * FADT values are validated here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -381,6 +360,49 @@ id|status
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Install SCI handler, Global Lock handler, GPE handlers */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|ACPI_NO_HANDLER_INIT
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Installing SCI/GL/GPE handlers&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ev_handler_initialize
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t; * Initialize all device objects in the namespace&n;&t; * This runs the _STA and _INI methods.&n;&t; */
 r_if
 c_cond
@@ -467,6 +489,13 @@ id|status
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * Empty the caches (delete the cached objects) on the assumption that&n;&t; * the table load filled them up more than they will be at runtime --&n;&t; * thus wasting non-paged memory.&n;&t; */
+id|status
+op_assign
+id|acpi_purge_cached_objects
+(paren
+)paren
+suffix:semicolon
 id|acpi_gbl_startup_flags
 op_or_assign
 id|ACPI_INITIALIZED_OK
@@ -485,13 +514,13 @@ id|acpi_terminate
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_terminate&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Terminate the AML Debugger if present */
-id|DEBUGGER_EXEC
+id|ACPI_DEBUGGER_EXEC
 c_func
 (paren
 id|acpi_gbl_db_terminate_threads
@@ -499,8 +528,6 @@ op_assign
 id|TRUE
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: [Investigate] This is no longer needed?*/
-multiline_comment|/*    Acpi_ut_release_mutex (ACPI_MTX_DEBUG_CMD_READY); */
 multiline_comment|/* Shutdown and free all resources */
 id|acpi_ut_subsystem_shutdown
 (paren
@@ -577,65 +604,66 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_TRACE
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_system_info&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Must have a valid buffer&n;&t; */
-r_if
-c_cond
+multiline_comment|/* Parameter validation */
+id|status
+op_assign
+id|acpi_ut_validate_buffer
 (paren
-(paren
-op_logical_neg
 id|out_buffer
 )paren
-op_logical_or
-(paren
-op_logical_neg
-id|out_buffer-&gt;pointer
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_BAD_PARAMETER
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|out_buffer-&gt;length
-OL
-r_sizeof
+id|ACPI_FAILURE
 (paren
-id|acpi_system_info
+id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Caller&squot;s buffer is too small&n;&t;&t; */
-id|out_buffer-&gt;length
-op_assign
-r_sizeof
-(paren
-id|acpi_system_info
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_BUFFER_OVERFLOW
+id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Set return length and get data&n;&t; */
-id|out_buffer-&gt;length
+multiline_comment|/* Validate/Allocate/Clear caller buffer */
+id|status
 op_assign
+id|acpi_ut_initialize_buffer
+(paren
+id|out_buffer
+comma
 r_sizeof
 (paren
 id|acpi_system_info
 )paren
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Populate the return buffer&n;&t; */
 id|info_ptr
 op_assign
 (paren
@@ -651,7 +679,7 @@ suffix:semicolon
 multiline_comment|/* System flags (ACPI capabilities) */
 id|info_ptr-&gt;flags
 op_assign
-id|acpi_gbl_system_flags
+id|ACPI_SYS_MODE_ACPI
 suffix:semicolon
 multiline_comment|/* Timer resolution - 24 or 32 bits  */
 r_if
@@ -740,6 +768,41 @@ dot
 id|count
 suffix:semicolon
 )brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_purge_cached_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Empty all caches (delete the cached objects)&n; *&n; ****************************************************************************/
+id|acpi_status
+DECL|function|acpi_purge_cached_objects
+id|acpi_purge_cached_objects
+(paren
+r_void
+)paren
+(brace
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_purge_cached_objects&quot;
+)paren
+suffix:semicolon
+id|acpi_ut_delete_generic_state_cache
+(paren
+)paren
+suffix:semicolon
+id|acpi_ut_delete_object_cache
+(paren
+)paren
+suffix:semicolon
+id|acpi_ds_delete_walk_state_cache
+(paren
+)paren
+suffix:semicolon
+id|acpi_ps_delete_parse_cache
+(paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK

@@ -1,12 +1,12 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 75 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nssearch&quot;
 )paren
@@ -22,7 +22,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_namespace_node
@@ -35,7 +35,7 @@ id|acpi_namespace_node
 op_star
 id|next_node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_search_node&quot;
 )paren
@@ -55,7 +55,7 @@ id|scope_name
 suffix:semicolon
 id|scope_name
 op_assign
-id|acpi_ns_get_table_pathname
+id|acpi_ns_get_external_pathname
 (paren
 id|node
 )paren
@@ -71,7 +71,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching %s [%p] For %4.4s (type %X)&bslash;n&quot;
+l_string|&quot;Searching %s [%p] For %4.4s (type %s)&bslash;n&quot;
 comma
 id|scope_name
 comma
@@ -84,7 +84,10 @@ op_star
 op_amp
 id|target_name
 comma
+id|acpi_ut_get_type_name
+(paren
 id|type
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -172,7 +175,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s (actual type %X) found at %p&bslash;n&quot;
+l_string|&quot;Name %4.4s Type [%s] found at %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -181,7 +184,10 @@ op_star
 op_amp
 id|target_name
 comma
+id|acpi_ut_get_type_name
+(paren
 id|next_node-&gt;type
+)paren
 comma
 id|next_node
 )paren
@@ -257,7 +263,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_namespace_node
@@ -273,14 +279,14 @@ id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_search_parent_tree&quot;
 )paren
 suffix:semicolon
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|node
 )paren
@@ -384,8 +390,7 @@ c_loop
 id|parent_node
 )paren
 (brace
-multiline_comment|/* Search parent scope */
-multiline_comment|/* TBD: [Investigate] Why ACPI_TYPE_ANY? */
+multiline_comment|/*&n;&t;&t; * Search parent scope.  Use TYPE_ANY because we don&squot;t care about the&n;&t;&t; * object type at this point, we only care about the existence of&n;&t;&t; * the actual name we are searching for.  Typechecking comes later.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_search_node
@@ -417,7 +422,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Not found here, go up another level&n;&t;&t; * (until we reach the root)&n;&t;&t; */
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|parent_node
 )paren
@@ -446,10 +451,10 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|interpreter_mode
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|u32
@@ -468,7 +473,7 @@ id|acpi_namespace_node
 op_star
 id|new_node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_search_and_enter&quot;
 )paren
@@ -502,7 +507,7 @@ id|return_node
 )paren
 )paren
 suffix:semicolon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ns_search_and_enter: bad (null) parameter&bslash;n&quot;
@@ -537,7 +542,7 @@ id|target_name
 )paren
 )paren
 suffix:semicolon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ns_search_and_enter: Bad character in ACPI Name&bslash;n&quot;
@@ -554,7 +559,7 @@ multiline_comment|/* Try to find the name in the table specified by the caller *
 op_star
 id|return_node
 op_assign
-id|ENTRY_NOT_FOUND
+id|ACPI_ENTRY_NOT_FOUND
 suffix:semicolon
 id|status
 op_assign
@@ -590,13 +595,13 @@ op_logical_and
 (paren
 id|flags
 op_amp
-id|NS_ERROR_IF_FOUND
+id|ACPI_NS_ERROR_IF_FOUND
 )paren
 )paren
 (brace
 id|status
 op_assign
-id|AE_EXIST
+id|AE_ALREADY_EXISTS
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Either found it or there was an error&n;&t;&t; * -- finished either way&n;&t;&t; */
@@ -606,20 +611,20 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Not found in the table.  If we are NOT performing the&n;&t; * first pass (name entry) of loading the namespace, search&n;&t; * the parent tree (all the way to the root if necessary.)&n;&t; * We don&squot;t want to perform the parent search when the&n;&t; * namespace is actually being loaded.  We want to perform&n;&t; * the search when namespace references are being resolved&n;&t; * (load pass 2) and during the execution phase.&n;&t; */
+multiline_comment|/*&n;&t; * The name was not found.  If we are NOT performing the&n;&t; * first pass (name entry) of loading the namespace, search&n;&t; * the parent tree (all the way to the root if necessary.)&n;&t; * We don&squot;t want to perform the parent search when the&n;&t; * namespace is actually being loaded.  We want to perform&n;&t; * the search when namespace references are being resolved&n;&t; * (load pass 2) and during the execution phase.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|interpreter_mode
 op_ne
-id|IMODE_LOAD_PASS1
+id|ACPI_IMODE_LOAD_PASS1
 )paren
 op_logical_and
 (paren
 id|flags
 op_amp
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 )paren
 )paren
 (brace
@@ -659,7 +664,7 @@ c_cond
 (paren
 id|interpreter_mode
 op_eq
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 )paren
 (brace
 id|ACPI_DEBUG_PRINT

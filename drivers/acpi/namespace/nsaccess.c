@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 135 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 152 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsaccess&quot;
 )paren
@@ -21,11 +21,9 @@ r_void
 (brace
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
 r_const
-id|predefined_names
+id|acpi_predefined_names
 op_star
 id|init_val
 op_assign
@@ -39,16 +37,33 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_root_initialize&quot;
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The global root ptr is initially NULL, so a non-NULL value indicates&n;&t; * that Acpi_ns_root_initialize() has already been called; just return.&n;&t; */
 r_if
 c_cond
@@ -103,9 +118,9 @@ id|init_val-&gt;name
 comma
 id|init_val-&gt;type
 comma
-id|IMODE_LOAD_PASS2
+id|ACPI_IMODE_LOAD_PASS2
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 comma
 l_int|NULL
 comma
@@ -190,7 +205,7 @@ op_assign
 (paren
 id|acpi_integer
 )paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|init_val-&gt;val
 comma
@@ -207,7 +222,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t; * Build an object around the static string&n;&t;&t;&t;&t; */
 id|obj_desc-&gt;string.length
 op_assign
-id|STRLEN
+id|ACPI_STRLEN
 (paren
 id|init_val-&gt;val
 )paren
@@ -230,7 +245,7 @@ op_assign
 (paren
 id|u16
 )paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|init_val-&gt;val
 comma
@@ -242,7 +257,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|STRCMP
+id|ACPI_STRCMP
 (paren
 id|init_val-&gt;name
 comma
@@ -317,7 +332,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Unsupported initial type value %X&bslash;n&quot;
@@ -358,6 +373,9 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -382,10 +400,10 @@ id|NATIVE_CHAR
 op_star
 id|pathname
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|interpreter_mode
 comma
 id|u32
@@ -416,12 +434,6 @@ l_int|NULL
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|scope_to_push
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_namespace_node
-op_star
 id|this_node
 op_assign
 l_int|NULL
@@ -432,15 +444,10 @@ suffix:semicolon
 id|acpi_name
 id|simple_name
 suffix:semicolon
-id|u8
-id|null_name_path
-op_assign
-id|FALSE
-suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|type_to_check_for
 suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|this_search_type
 suffix:semicolon
 id|u32
@@ -449,15 +456,9 @@ op_assign
 id|flags
 op_amp
 op_complement
-id|NS_ERROR_IF_FOUND
+id|ACPI_NS_ERROR_IF_FOUND
 suffix:semicolon
-id|DEBUG_EXEC
-(paren
-id|u32
-id|i
-suffix:semicolon
-)paren
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_lookup&quot;
 )paren
@@ -481,7 +482,7 @@ suffix:semicolon
 op_star
 id|return_node
 op_assign
-id|ENTRY_NOT_FOUND
+id|ACPI_ENTRY_NOT_FOUND
 suffix:semicolon
 r_if
 c_cond
@@ -490,7 +491,7 @@ op_logical_neg
 id|acpi_gbl_root_node
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_NAMESPACE
 )paren
@@ -571,8 +572,7 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/* TBD: [Restructure] - Move the pathname stuff into a new procedure */
-multiline_comment|/* Examine the name pointer */
+multiline_comment|/*&n;&t; * Begin examination of the actual pathname&n;&t; */
 r_if
 c_cond
 (paren
@@ -580,11 +580,7 @@ op_logical_neg
 id|pathname
 )paren
 (brace
-multiline_comment|/*  8-12-98 ASL Grammar Update supports null Name_path  */
-id|null_name_path
-op_assign
-id|TRUE
-suffix:semicolon
+multiline_comment|/* A Null Name_path is allowed and refers to the root */
 id|num_segments
 op_assign
 l_int|0
@@ -598,7 +594,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Null Pathname (Zero segments),  Flags=%x&bslash;n&quot;
+l_string|&quot;Null Pathname (Zero segments), Flags=%x&bslash;n&quot;
 comma
 id|flags
 )paren
@@ -607,7 +603,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Valid name pointer (Internal name format)&n;&t;&t; *&n;&t;&t; * Check for prefixes.  As represented in the AML stream, a&n;&t;&t; * Pathname consists of an optional scope prefix followed by&n;&t;&t; * a segment part.&n;&t;&t; *&n;&t;&t; * If present, the scope prefix is either a Root_prefix (in&n;&t;&t; * which case the name is fully qualified), or zero or more&n;&t;&t; * Parent_prefixes (in which case the name&squot;s scope is relative&n;&t;&t; * to the current scope).&n;&t;&t; *&n;&t;&t; * The segment part consists of either:&n;&t;&t; *  - A single 4-byte name segment, or&n;&t;&t; *  - A Dual_name_prefix followed by two 4-byte name segments, or&n;&t;&t; *  - A Multi_name_prefix_op, followed by a byte indicating the&n;&t;&t; *    number of segments and the segments themselves.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Name pointer is valid (and must be in internal name format)&n;&t;&t; *&n;&t;&t; * Check for scope prefixes:&n;&t;&t; *&n;&t;&t; * As represented in the AML stream, a namepath consists of an&n;&t;&t; * optional scope prefix followed by a name segment part.&n;&t;&t; *&n;&t;&t; * If present, the scope prefix is either a Root Prefix (in&n;&t;&t; * which case the name is fully qualified), or one or more&n;&t;&t; * Parent Prefixes (in which case the name&squot;s scope is relative&n;&t;&t; * to the current scope).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -617,12 +613,12 @@ op_eq
 id|AML_ROOT_PREFIX
 )paren
 (brace
-multiline_comment|/* Pathname is fully qualified, look in root name table */
-id|current_node
+multiline_comment|/* Pathname is fully qualified, start from the root */
+id|this_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
-multiline_comment|/* point to segment part */
+multiline_comment|/* Point to name segment part */
 id|pathname
 op_increment
 suffix:semicolon
@@ -633,37 +629,14 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;Searching from root [%p]&bslash;n&quot;
 comma
-id|current_node
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Direct reference to root, &quot;&bslash;&quot; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|pathname
-)paren
-)paren
-(brace
 id|this_node
-op_assign
-id|acpi_gbl_root_node
+)paren
+)paren
 suffix:semicolon
-r_goto
-id|check_for_new_scope_and_exit
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
 multiline_comment|/* Pathname is relative to current scope, start there */
-id|current_node
-op_assign
-id|prefix_node
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -675,7 +648,11 @@ id|prefix_node
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Handle up-prefix (carat).  More than one prefix&n;&t;&t;&t; * is supported&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Handle multiple Parent Prefixes (carat) by just getting&n;&t;&t;&t; * the parent node for each prefix instance.&n;&t;&t;&t; */
+id|this_node
+op_assign
+id|prefix_node
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -685,16 +662,16 @@ op_eq
 id|AML_PARENT_PREFIX
 )paren
 (brace
-multiline_comment|/* Point to segment part or next Parent_prefix */
+multiline_comment|/*&n;&t;&t;&t;&t; * Point past this prefix to the name segment&n;&t;&t;&t;&t; * part or the next Parent Prefix&n;&t;&t;&t;&t; */
 id|pathname
 op_increment
 suffix:semicolon
-multiline_comment|/*  Backup to the parent&squot;s scope  */
+multiline_comment|/* Backup to the parent node */
 id|this_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
-id|current_node
+id|this_node
 )paren
 suffix:semicolon
 r_if
@@ -705,10 +682,10 @@ id|this_node
 )paren
 (brace
 multiline_comment|/* Current scope has no parent scope */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Too many parent prefixes (^) - reached root&bslash;n&quot;
+l_string|&quot;ACPI path has too many parent prefixes (^) - reached beyond root node&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -718,27 +695,45 @@ id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
-id|current_node
-op_assign
-id|this_node
-suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Examine the name prefix opcode, if any,&n;&t;&t; * to determine the number of segments&n;&t;&t; */
-r_if
+multiline_comment|/*&n;&t;&t; * Determine the number of ACPI name segments in this pathname.&n;&t;&t; *&n;&t;&t; * The segment part consists of either:&n;&t;&t; *  - A Null name segment (0)&n;&t;&t; *  - A Dual_name_prefix followed by two 4-byte name segments&n;&t;&t; *  - A Multi_name_prefix followed by a byte indicating the&n;&t;&t; *      number of segments and the segments themselves.&n;&t;&t; *  - A single 4-byte name segment&n;&t;&t; *&n;&t;&t; * Examine the name prefix opcode, if any, to determine the number of&n;&t;&t; * segments.&n;&t;&t; */
+r_switch
 c_cond
 (paren
 op_star
 id|pathname
-op_eq
-id|AML_DUAL_NAME_PREFIX
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Null name after a root or parent prefixes. We already&n;&t;&t;&t; * have the correct target node and there are no name segments.&n;&t;&t;&t; */
+id|num_segments
+op_assign
+l_int|0
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Prefix-only Pathname (Zero name segments), Flags=%x&bslash;n&quot;
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_DUAL_NAME_PREFIX
+suffix:colon
+multiline_comment|/* Two segments, point to first name segment */
 id|num_segments
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* point to first segment */
 id|pathname
 op_increment
 suffix:semicolon
@@ -753,31 +748,26 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_star
-id|pathname
-op_eq
+r_break
+suffix:semicolon
+r_case
 id|AML_MULTI_NAME_PREFIX_OP
-)paren
-(brace
+suffix:colon
+multiline_comment|/* Extract segment count, point to first name segment */
+id|pathname
+op_increment
+suffix:semicolon
 id|num_segments
 op_assign
 (paren
 id|u32
 )paren
-op_star
 (paren
 id|u8
-op_star
 )paren
-op_increment
+op_star
 id|pathname
 suffix:semicolon
-multiline_comment|/* point to first segment */
 id|pathname
 op_increment
 suffix:semicolon
@@ -794,10 +784,11 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * No Dual or Multi prefix, hence there is only one&n;&t;&t;&t; * segment and Pathname is already pointing to it.&n;&t;&t;&t; */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Not a Null name, no Dual or Multi prefix, hence there is&n;&t;&t;&t; * only one name segment and Pathname is already pointing to it.&n;&t;&t;&t; */
 id|num_segments
 op_assign
 l_int|1
@@ -813,81 +804,40 @@ id|flags
 )paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-macro_line|#ifdef ACPI_DEBUG
-multiline_comment|/* TBD: [Restructure] Make this a procedure */
-multiline_comment|/* Debug only: print the entire name that we are about to lookup */
-id|ACPI_DEBUG_PRINT
+id|ACPI_DEBUG_EXEC
 (paren
+id|acpi_ns_print_pathname
 (paren
-id|ACPI_DB_NAMES
-comma
-l_string|&quot;[&quot;
-)paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
 id|num_segments
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|ACPI_DEBUG_PRINT_RAW
-(paren
-(paren
-id|ACPI_DB_NAMES
 comma
-l_string|&quot;%4.4s/&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
 id|pathname
-(braket
-id|i
-op_star
-l_int|4
-)braket
 )paren
 )paren
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT_RAW
-(paren
-(paren
-id|ACPI_DB_NAMES
-comma
-l_string|&quot;]&bslash;n&quot;
-)paren
-)paren
+multiline_comment|/*&n;&t; * Search namespace for each segment of the name.  Loop through and&n;&t; * verify/add each name segment.&n;&t; */
+id|current_node
+op_assign
+id|this_node
 suffix:semicolon
-macro_line|#endif
-)brace
-multiline_comment|/*&n;&t; * Search namespace for each segment of the name.&n;&t; * Loop through and verify/add each name segment.&n;&t; */
 r_while
 c_loop
 (paren
 id|num_segments
-op_decrement
 op_logical_and
 id|current_node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Search for the current name segment under the current&n;&t;&t; * named object.  The Type is significant only at the last (topmost)&n;&t;&t; * level.  (We don&squot;t care about the types along the path, only&n;&t;&t; * the type of the final target object.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Search for the current name segment under the current&n;&t;&t; * named object.  The Type is significant only at the last name&n;&t;&t; * segment.  (We don&squot;t care about the types along the path, only&n;&t;&t; * the type of the final target object.)&n;&t;&t; */
 id|this_search_type
 op_assign
 id|ACPI_TYPE_ANY
+suffix:semicolon
+id|num_segments
+op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -905,8 +855,8 @@ op_assign
 id|flags
 suffix:semicolon
 )brace
-multiline_comment|/* Pluck one ACPI name from the front of the pathname */
-id|MOVE_UNALIGNED32_TO_32
+multiline_comment|/* Extract one ACPI name from the front of the pathname */
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|simple_name
@@ -952,13 +902,13 @@ op_eq
 id|AE_NOT_FOUND
 )paren
 (brace
-multiline_comment|/* Name not found in ACPI namespace  */
+multiline_comment|/* Name not found in ACPI namespace */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name [%4.4s] not found in scope %p&bslash;n&quot;
+l_string|&quot;Name [%4.4s] not found in scope [%4.4s] %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -966,6 +916,13 @@ op_star
 )paren
 op_amp
 id|simple_name
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|current_node-&gt;name
 comma
 id|current_node
 )paren
@@ -978,7 +935,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If 1) This is the last segment (Num_segments == 0)&n;&t;&t; *    2) and looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) which is not a local type (TYPE_DEF_ANY)&n;&t;&t; *    5) which is not a local type (TYPE_SCOPE)&n;&t;&t; *    6) which is not a local type (TYPE_INDEX_FIELD_DEFN)&n;&t;&t; *    7) and type of object is known (not TYPE_ANY)&n;&t;&t; *    8) and object does not match request&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sanity typecheck of the target object:&n;&t;&t; *&n;&t;&t; * If 1) This is the last segment (Num_segments == 0)&n;&t;&t; *    2) And we are looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) Which is not a local type (TYPE_DEF_ANY)&n;&t;&t; *    5) Which is not a local type (TYPE_SCOPE)&n;&t;&t; *    6) Which is not a local type (TYPE_INDEX_FIELD_DEFN)&n;&t;&t; *    7) And the type of target object is known (not TYPE_ANY)&n;&t;&t; *    8) And target object does not match what we are looking for&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1032,7 +989,7 @@ id|type_to_check_for
 )paren
 (brace
 multiline_comment|/* Complain about a type mismatch */
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Ns_lookup: %4.4s, type %X, checking for type %X&bslash;n&quot;
@@ -1056,15 +1013,15 @@ r_if
 c_cond
 (paren
 (paren
-l_int|0
-op_eq
 id|num_segments
+op_eq
+l_int|0
 )paren
 op_logical_and
 (paren
-id|ACPI_TYPE_ANY
-op_eq
 id|type
+op_eq
+id|ACPI_TYPE_ANY
 )paren
 )paren
 (brace
@@ -1073,53 +1030,17 @@ op_assign
 id|this_node-&gt;type
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|num_segments
-op_logical_or
-id|acpi_ns_opens_scope
-(paren
-id|type
-)paren
-)paren
-op_logical_and
-(paren
-id|this_node-&gt;child
-op_eq
-l_int|NULL
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * More segments or the type implies enclosed scope,&n;&t;&t;&t; * and the next scope has not been allocated.&n;&t;&t;&t; */
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Load mode=%X  This_node=%p&bslash;n&quot;
-comma
-id|interpreter_mode
-comma
-id|this_node
-)paren
-)paren
-suffix:semicolon
-)brace
-id|current_node
-op_assign
-id|this_node
-suffix:semicolon
-multiline_comment|/* point to next name segment */
+multiline_comment|/* Point to next name segment and make this node current */
 id|pathname
 op_add_assign
 id|ACPI_NAME_SIZE
 suffix:semicolon
+id|current_node
+op_assign
+id|this_node
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Always check if we need to open a new scope&n;&t; */
-id|check_for_new_scope_and_exit
-suffix:colon
 r_if
 c_cond
 (paren
@@ -1127,7 +1048,7 @@ op_logical_neg
 (paren
 id|flags
 op_amp
-id|NS_DONT_OPEN_SCOPE
+id|ACPI_NS_DONT_OPEN_SCOPE
 )paren
 op_logical_and
 (paren
@@ -1135,7 +1056,7 @@ id|walk_state
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If entry is a type which opens a scope,&n;&t;&t; * push the new scope on the scope stack.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If entry is a type which opens a scope, push the new scope on the&n;&t;&t; * scope stack.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1145,31 +1066,11 @@ id|type_to_check_for
 )paren
 )paren
 (brace
-multiline_comment|/*  8-12-98 ASL Grammar Update supports null Name_path  */
-r_if
-c_cond
-(paren
-id|null_name_path
-)paren
-(brace
-multiline_comment|/* TBD: [Investigate] - is this the correct thing to do? */
-id|scope_to_push
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
-id|scope_to_push
-op_assign
-id|this_node
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ds_scope_stack_push
 (paren
-id|scope_to_push
+id|this_node
 comma
 id|type
 comma
@@ -1196,9 +1097,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Set global scope to %p&bslash;n&quot;
+l_string|&quot;Setting global scope to %p&bslash;n&quot;
 comma
-id|scope_to_push
+id|this_node
 )paren
 )paren
 suffix:semicolon

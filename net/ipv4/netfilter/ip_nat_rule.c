@@ -752,6 +752,7 @@ r_enum
 id|ip_conntrack_info
 id|ctinfo
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 id|IP_NF_ASSERT
 c_func
 (paren
@@ -764,6 +765,16 @@ op_eq
 id|NF_IP_LOCAL_OUT
 )paren
 suffix:semicolon
+macro_line|#else
+id|IP_NF_ASSERT
+c_func
+(paren
+id|hooknum
+op_eq
+id|NF_IP_PRE_ROUTING
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ct
 op_assign
 id|ip_conntrack_get
@@ -1095,7 +1106,7 @@ l_int|0
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;SNAT: wrong table %s&bslash;n&quot;
+l_string|&quot;DNAT: wrong table %s&bslash;n&quot;
 comma
 id|tablename
 )paren
@@ -1137,6 +1148,30 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_IP_NF_NAT_LOCAL
+r_if
+c_cond
+(paren
+id|hook_mask
+op_amp
+(paren
+l_int|1
+op_lshift
+id|NF_IP_LOCAL_OUT
+)paren
+)paren
+(brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;DNAT: CONFIG_IP_NF_NAT_LOCAL not enabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon

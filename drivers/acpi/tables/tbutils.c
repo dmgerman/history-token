@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 42 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbutils&quot;
 )paren
@@ -30,7 +30,7 @@ id|acpi_table_desc
 op_star
 id|list_head
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Tb_handle_to_object&quot;
 )paren
@@ -114,183 +114,6 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_system_table_pointer&n; *&n; * PARAMETERS:  *Where              - Pointer to be examined&n; *&n; * RETURN:      TRUE if Where is within the AML stream (in one of the ACPI&n; *              system tables such as the DSDT or an SSDT.)&n; *              FALSE otherwise&n; *&n; ******************************************************************************/
-id|u8
-DECL|function|acpi_tb_system_table_pointer
-id|acpi_tb_system_table_pointer
-(paren
-r_void
-op_star
-id|where
-)paren
-(brace
-id|u32
-id|i
-suffix:semicolon
-id|acpi_table_desc
-op_star
-id|table_desc
-suffix:semicolon
-id|acpi_table_header
-op_star
-id|table
-suffix:semicolon
-multiline_comment|/* No function trace, called too often! */
-multiline_comment|/* Ignore null pointer */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|where
-)paren
-(brace
-r_return
-(paren
-id|FALSE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check for a pointer within the DSDT */
-r_if
-c_cond
-(paren
-(paren
-id|acpi_gbl_DSDT
-)paren
-op_logical_and
-(paren
-id|IS_IN_ACPI_TABLE
-(paren
-id|where
-comma
-id|acpi_gbl_DSDT
-)paren
-)paren
-)paren
-(brace
-r_return
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check each of the loaded SSDTs (if any)*/
-id|table_desc
-op_assign
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
-id|ACPI_TABLE_SSDT
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|acpi_gbl_acpi_tables
-(braket
-id|ACPI_TABLE_SSDT
-)braket
-dot
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|table
-op_assign
-id|table_desc-&gt;pointer
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_IN_ACPI_TABLE
-(paren
-id|where
-comma
-id|table
-)paren
-)paren
-(brace
-r_return
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-id|table_desc
-op_assign
-id|table_desc-&gt;next
-suffix:semicolon
-)brace
-multiline_comment|/* Check each of the loaded PSDTs (if any)*/
-id|table_desc
-op_assign
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
-id|ACPI_TABLE_PSDT
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|acpi_gbl_acpi_tables
-(braket
-id|ACPI_TABLE_PSDT
-)braket
-dot
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|table
-op_assign
-id|table_desc-&gt;pointer
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_IN_ACPI_TABLE
-(paren
-id|where
-comma
-id|table
-)paren
-)paren
-(brace
-r_return
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-id|table_desc
-op_assign
-id|table_desc-&gt;next
-suffix:semicolon
-)brace
-multiline_comment|/* Pointer does not point into any system table */
-r_return
-(paren
-id|FALSE
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  Table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_validate_table_header
@@ -304,7 +127,7 @@ id|table_header
 id|acpi_name
 id|signature
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Tb_validate_table_header&quot;
 )paren
@@ -343,7 +166,7 @@ id|AE_BAD_ADDRESS
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that the signature is 4 ASCII characters */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|signature
@@ -376,7 +199,7 @@ id|signature
 )paren
 )paren
 suffix:semicolon
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Invalid table signature %4.4s found&bslash;n&quot;
@@ -390,7 +213,7 @@ id|signature
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 id|table_header
 comma
@@ -436,14 +259,16 @@ id|signature
 )paren
 )paren
 suffix:semicolon
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Invalid table header length found&bslash;n&quot;
+l_string|&quot;Invalid table header length (0x%X) found&bslash;n&quot;
+comma
+id|table_header-&gt;length
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 id|table_header
 comma
@@ -498,7 +323,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Tb_map_acpi_table&quot;
 )paren
@@ -674,7 +499,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Tb_verify_table_checksum&quot;
 )paren
@@ -696,7 +521,7 @@ c_cond
 id|checksum
 )paren
 (brace
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Invalid checksum (%X) in table %4.4s&bslash;n&quot;
@@ -736,10 +561,12 @@ id|u32
 id|length
 )paren
 (brace
+r_const
 id|u8
 op_star
 id|limit
 suffix:semicolon
+r_const
 id|u8
 op_star
 id|rover

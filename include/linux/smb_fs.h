@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SMB_FS_H
 mdefine_line|#define _LINUX_SMB_FS_H
 macro_line|#include &lt;linux/smb.h&gt;
 macro_line|#include &lt;linux/smb_fs_i.h&gt;
+macro_line|#include &lt;linux/smb_fs_sb.h&gt;
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|SMB_IOC_GETMOUNTUID
 mdefine_line|#define&t;SMB_IOC_GETMOUNTUID&t;&t;_IOR(&squot;u&squot;, 1, __kernel_old_uid_t)
@@ -17,6 +18,25 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+DECL|function|SMB_SB
+r_static
+r_inline
+r_struct
+id|smb_sb_info
+op_star
+id|SMB_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|SMB_I
 r_static
 r_inline

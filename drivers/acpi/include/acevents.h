@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 66 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 75 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEVENTS_H__
 DECL|macro|__ACEVENTS_H__
 mdefine_line|#define __ACEVENTS_H__
@@ -9,7 +9,13 @@ id|acpi_ev_initialize
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_evfixed - Fixed event handling&n; */
+id|acpi_status
+id|acpi_ev_handler_initialize
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Evfixed - Fixed event handling&n; */
 id|acpi_status
 id|acpi_ev_fixed_event_initialize
 (paren
@@ -26,15 +32,16 @@ id|u32
 id|acpi_ev_fixed_event_dispatch
 (paren
 id|u32
-id|acpi_event
+id|event
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_evglock - Global Lock support&n; */
+multiline_comment|/*&n; * Evmisc&n; */
 id|acpi_status
 id|acpi_ev_acquire_global_lock
 c_func
 (paren
-r_void
+id|u32
+id|timeout
 )paren
 suffix:semicolon
 r_void
@@ -50,7 +57,41 @@ id|acpi_ev_init_global_lock_handler
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_evgpe - GPE handling and dispatch&n; */
+id|u32
+id|acpi_ev_get_gpe_register_index
+(paren
+id|u32
+id|gpe_number
+)paren
+suffix:semicolon
+id|u32
+id|acpi_ev_get_gpe_number_index
+(paren
+id|u32
+id|gpe_number
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ev_queue_notify_request
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+comma
+id|u32
+id|notify_value
+)paren
+suffix:semicolon
+r_void
+id|ACPI_SYSTEM_XFACE
+id|acpi_ev_notify_dispatch
+(paren
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Evgpe - GPE handling and dispatch&n; */
 id|acpi_status
 id|acpi_ev_gpe_initialize
 (paren
@@ -76,27 +117,7 @@ id|acpi_ev_gpe_detect
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_evnotify - Device Notify handling and dispatch&n; */
-id|acpi_status
-id|acpi_ev_queue_notify_request
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-comma
-id|u32
-id|notify_value
-)paren
-suffix:semicolon
-r_void
-id|acpi_ev_notify_dispatch
-(paren
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Acpi_evregion - Address Space handling&n; */
+multiline_comment|/*&n; * Evregion - Address Space handling&n; */
 id|acpi_status
 id|acpi_ev_install_default_address_space_handlers
 (paren
@@ -119,7 +140,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 )paren
@@ -170,7 +191,7 @@ id|u8
 id|acpi_ns_is_locked
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_evregini - Region initialization and setup&n; */
+multiline_comment|/*&n; * Evregini - Region initialization and setup&n; */
 id|acpi_status
 id|acpi_ev_system_memory_region_setup
 (paren
@@ -314,12 +335,6 @@ id|acpi_ev_initialize_sCI
 (paren
 id|u32
 id|program_sCI
-)paren
-suffix:semicolon
-r_void
-id|acpi_ev_restore_acpi_state
-(paren
-r_void
 )paren
 suffix:semicolon
 r_void

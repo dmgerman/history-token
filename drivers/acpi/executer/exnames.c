@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 83 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exnames&quot;
 )paren
@@ -43,7 +43,7 @@ suffix:semicolon
 id|u32
 id|size_needed
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_allocate_name_string&quot;
 )paren
@@ -54,11 +54,7 @@ c_cond
 (paren
 id|prefix_count
 op_eq
-(paren
-id|u32
-)paren
-op_minus
-l_int|1
+id|ACPI_UINT32_MAX
 )paren
 (brace
 multiline_comment|/* Special case for root */
@@ -109,7 +105,7 @@ op_logical_neg
 id|name_string
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_allocate_name_string: Could not allocate size %d&bslash;n&quot;
@@ -134,11 +130,7 @@ c_cond
 (paren
 id|prefix_count
 op_eq
-(paren
-id|u32
-)paren
-op_minus
-l_int|1
+id|ACPI_UINT32_MAX
 )paren
 (brace
 op_star
@@ -256,7 +248,7 @@ id|char_buf
 l_int|5
 )braket
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_name_segment&quot;
 )paren
@@ -338,8 +330,8 @@ id|aml_address
 )paren
 )paren
 suffix:semicolon
-op_decrement
 id|index
+op_decrement
 )paren
 (brace
 id|char_buf
@@ -393,7 +385,7 @@ c_cond
 id|name_string
 )paren
 (brace
-id|STRCAT
+id|ACPI_STRCAT
 (paren
 id|name_string
 comma
@@ -494,7 +486,7 @@ id|acpi_status
 DECL|function|acpi_ex_get_name_string
 id|acpi_ex_get_name_string
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|data_type
 comma
 id|u8
@@ -537,16 +529,11 @@ op_assign
 l_int|0
 suffix:semicolon
 id|u8
-id|prefix
-op_assign
-l_int|0
-suffix:semicolon
-id|u8
 id|has_prefix
 op_assign
 id|FALSE
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ex_get_name_string&quot;
 comma
@@ -618,31 +605,24 @@ id|aml_address
 r_case
 id|AML_ROOT_PREFIX
 suffix:colon
-id|prefix
-op_assign
-op_star
-id|aml_address
-op_increment
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Root_prefix: %x&bslash;n&quot;
+l_string|&quot;Root_prefix(&bslash;&bslash;) at %p&bslash;n&quot;
 comma
-id|prefix
+id|aml_address
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Remember that we have a Root_prefix --&n;&t;&t;&t; * see comment in Acpi_ex_allocate_name_string()&n;&t;&t;&t; */
+id|aml_address
+op_increment
+suffix:semicolon
 id|prefix_count
 op_assign
-(paren
-id|u32
-)paren
-op_minus
-l_int|1
+id|ACPI_UINT32_MAX
 suffix:semicolon
 id|has_prefix
 op_assign
@@ -656,25 +636,22 @@ suffix:colon
 multiline_comment|/* Increment past possibly multiple parent prefixes */
 r_do
 (brace
-id|prefix
-op_assign
-op_star
-id|aml_address
-op_increment
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Parent_prefix: %x&bslash;n&quot;
+l_string|&quot;Parent_prefix (^) at %p&bslash;n&quot;
 comma
-id|prefix
+id|aml_address
 )paren
 )paren
 suffix:semicolon
+id|aml_address
 op_increment
+suffix:semicolon
 id|prefix_count
+op_increment
 suffix:semicolon
 )brace
 r_while
@@ -694,6 +671,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* Not a prefix character */
 r_break
 suffix:semicolon
 )brace
@@ -708,22 +686,19 @@ id|aml_address
 r_case
 id|AML_DUAL_NAME_PREFIX
 suffix:colon
-id|prefix
-op_assign
-op_star
-id|aml_address
-op_increment
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Dual_name_prefix: %x&bslash;n&quot;
+l_string|&quot;Dual_name_prefix at %p&bslash;n&quot;
 comma
-id|prefix
+id|aml_address
 )paren
 )paren
+suffix:semicolon
+id|aml_address
+op_increment
 suffix:semicolon
 id|name_string
 op_assign
@@ -788,29 +763,25 @@ suffix:semicolon
 r_case
 id|AML_MULTI_NAME_PREFIX_OP
 suffix:colon
-id|prefix
-op_assign
-op_star
-id|aml_address
-op_increment
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_LOAD
 comma
-l_string|&quot;Multi_name_prefix: %x&bslash;n&quot;
+l_string|&quot;Multi_name_prefix at %p&bslash;n&quot;
 comma
-id|prefix
+id|aml_address
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* Fetch count of segments remaining in name path */
+id|aml_address
+op_increment
+suffix:semicolon
 id|num_segments
 op_assign
 op_star
 id|aml_address
-op_increment
 suffix:semicolon
 id|name_string
 op_assign
@@ -836,6 +807,9 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Indicate that we processed a prefix */
+id|aml_address
+op_increment
+suffix:semicolon
 id|has_prefix
 op_assign
 id|TRUE
@@ -860,8 +834,8 @@ op_eq
 id|AE_OK
 )paren
 (brace
-op_decrement
 id|num_segments
+op_decrement
 suffix:semicolon
 )brace
 r_break
@@ -873,10 +847,9 @@ multiline_comment|/* Null_name valid as of 8-12-98 ASL/AML Grammar Update */
 r_if
 c_cond
 (paren
-op_minus
-l_int|1
-op_eq
 id|prefix_count
+op_eq
+id|ACPI_UINT32_MAX
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -957,7 +930,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Switch (Peek_op ())   */
 )brace
 r_if
 c_cond
@@ -970,7 +942,7 @@ id|has_prefix
 )paren
 (brace
 multiline_comment|/* Ran out of segments after processing a prefix */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_do_name: Malformed Name at %p&bslash;n&quot;

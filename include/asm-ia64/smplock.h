@@ -8,95 +8,21 @@ r_extern
 id|spinlock_t
 id|kernel_flag
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|kernel_locked
-mdefine_line|#define kernel_locked()&t;&t;spin_is_locked(&amp;kernel_flag)
+macro_line|# define kernel_locked()&t;spin_is_locked(&amp;kernel_flag)
+DECL|macro|check_irq_holder
+macro_line|# define check_irq_holder(cpu)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (global_irq_holder == (cpu))&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|kernel_locked
+macro_line|# define kernel_locked()&t;(1)
+macro_line|#endif
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
-r_static
-id|__inline__
-r_void
-DECL|function|release_kernel_lock
-id|release_kernel_lock
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-id|cpu
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|task-&gt;lock_depth
-op_ge
-l_int|0
-)paren
-)paren
-(brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|kernel_flag
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|global_irq_holder
-op_eq
-(paren
-id|cpu
-)paren
-)paren
-"&bslash;"
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-"&bslash;"
-)brace
-)brace
+DECL|macro|release_kernel_lock
+mdefine_line|#define release_kernel_lock(task, cpu)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0)) {&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;&t;&t;check_irq_holder(cpu);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Re-acquire the kernel lock&n; */
-r_static
-id|__inline__
-r_void
-DECL|function|reacquire_kernel_lock
-id|reacquire_kernel_lock
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|task-&gt;lock_depth
-op_ge
-l_int|0
-)paren
-)paren
-id|spin_lock
-c_func
-(paren
-op_amp
-id|kernel_flag
-)paren
-suffix:semicolon
-)brace
+DECL|macro|reacquire_kernel_lock
+mdefine_line|#define reacquire_kernel_lock(task)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;spin_lock(&amp;kernel_flag);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Getting the big kernel lock.&n; *&n; * This cannot happen asynchronously,&n; * so we only need to worry about other&n; * CPU&squot;s.&n; */
 r_static
 id|__inline__

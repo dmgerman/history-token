@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 50 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 61 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -8,12 +8,10 @@ macro_line|#include &quot;acdebug.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbdisasm&quot;
 )paren
-DECL|macro|MAX_SHOW_ENTRY
-mdefine_line|#define MAX_SHOW_ENTRY      128
 DECL|macro|BLOCK_PAREN
 mdefine_line|#define BLOCK_PAREN         1
 DECL|macro|BLOCK_BRACE
@@ -53,8 +51,6 @@ r_return
 id|BLOCK_BRACE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 r_break
@@ -85,6 +81,65 @@ id|acpi_parse_object
 op_star
 id|target_op
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;flags
+op_amp
+id|ACPI_PARSEOP_GENERIC
+)paren
+(brace
+id|name
+op_assign
+id|op-&gt;value.name
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;&bslash;&squot;
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot; (Fully Qualified Pathname)&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|name
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+(paren
+(paren
+id|acpi_parse2_object
+op_star
+)paren
+id|op
+)paren
+op_member_access_from_pointer
+id|name
+suffix:semicolon
+)brace
 multiline_comment|/* Search parent tree up to the root if necessary */
 id|target_op
 op_assign
@@ -92,7 +147,7 @@ id|acpi_ps_find
 (paren
 id|op
 comma
-id|op-&gt;value.name
+id|name
 comma
 l_int|0
 comma
@@ -159,16 +214,8 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|NATIVE_CHAR
+id|acpi_buffer
 id|buffer
-(braket
-id|MAX_SHOW_ENTRY
-)braket
-suffix:semicolon
-id|u32
-id|buffer_size
-op_assign
-id|MAX_SHOW_ENTRY
 suffix:semicolon
 id|u32
 id|debug_level
@@ -205,9 +252,9 @@ id|op-&gt;value.string
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 comma
 id|walk_state
 comma
@@ -243,6 +290,10 @@ id|node
 suffix:semicolon
 )brace
 multiline_comment|/* Convert Named_desc/handle to a full pathname */
+id|buffer.length
+op_assign
+id|ACPI_ALLOCATE_LOCAL_BUFFER
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_handle_to_pathname
@@ -250,8 +301,6 @@ id|acpi_ns_handle_to_pathname
 id|node
 comma
 op_amp
-id|buffer_size
-comma
 id|buffer
 )paren
 suffix:semicolon
@@ -277,7 +326,12 @@ id|acpi_os_printf
 (paren
 l_string|&quot; (Path %s)&quot;
 comma
-id|buffer
+id|buffer.pointer
+)paren
+suffix:semicolon
+id|ACPI_MEM_FREE
+(paren
+id|buffer.pointer
 )paren
 suffix:semicolon
 m_exit
@@ -344,16 +398,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|op
 )paren
 (brace
+id|acpi_db_display_opcode
+(paren
+id|walk_state
+comma
+id|op
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
 id|op
 )paren
 (brace
-multiline_comment|/* indentation */
+multiline_comment|/* Indentation */
 id|depth_count
 op_assign
 l_int|0
@@ -763,17 +828,6 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-r_else
-(brace
-id|acpi_db_display_opcode
-(paren
-id|walk_state
-comma
-id|op
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_namestring&n; *&n; * PARAMETERS:  Name                - ACPI Name string to store&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Display namestring. Handles prefix characters&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_display_namestring
@@ -786,11 +840,6 @@ id|name
 (brace
 id|u32
 id|seg_count
-suffix:semicolon
-id|u8
-id|do_dot
-op_assign
-id|FALSE
 suffix:semicolon
 r_if
 c_cond
@@ -807,24 +856,25 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
+multiline_comment|/* Handle all Scope Prefix operators */
+r_while
+c_loop
 (paren
 id|acpi_ps_is_prefix_char
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|name
 )paren
 )paren
 )paren
 (brace
-multiline_comment|/* append prefix character */
+multiline_comment|/* Append prefix character */
 id|acpi_os_printf
 (paren
 l_string|&quot;%1c&quot;
 comma
-id|GET8
+id|ACPI_GET8
 (paren
 id|name
 )paren
@@ -837,12 +887,21 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|name
 )paren
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+id|seg_count
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|AML_DUAL_NAME_PREFIX
 suffix:colon
@@ -863,7 +922,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|name
 op_plus
@@ -889,23 +948,9 @@ r_while
 c_loop
 (paren
 id|seg_count
-op_decrement
 )paren
 (brace
-multiline_comment|/* append Name segment */
-r_if
-c_cond
-(paren
-id|do_dot
-)paren
-(brace
-multiline_comment|/* append dot */
-id|acpi_os_printf
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Append Name segment */
 id|acpi_os_printf
 (paren
 l_string|&quot;%4.4s&quot;
@@ -913,13 +958,25 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|do_dot
-op_assign
-id|TRUE
+id|seg_count
+op_decrement
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|seg_count
+)paren
+(brace
+multiline_comment|/* Not last name, append dot separator */
+id|acpi_os_printf
+(paren
+l_string|&quot;.&quot;
+)paren
+suffix:semicolon
+)brace
 id|name
 op_add_assign
-l_int|4
+id|ACPI_NAME_SIZE
 suffix:semicolon
 )brace
 )brace
@@ -1673,22 +1730,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|acpi_gbl_db_opt_verbose
 )paren
+op_logical_and
+(paren
+id|op-&gt;opcode
+op_ne
+id|AML_INT_NAMEDFIELD_OP
+)paren
+)paren
 (brace
-id|acpi_os_printf
+id|acpi_ps_display_object_pathname
 (paren
-l_string|&quot; (Path &bslash;&bslash;&quot;
-)paren
-suffix:semicolon
-id|acpi_db_display_path
-(paren
+id|walk_state
+comma
 id|op
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;)&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acpiosxf.h - All interfaces to the OS Services Layer (OSL).  These&n; *                    interfaces must be implemented by OSL to interface the&n; *                    ACPI components to the host operating system.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACPIOSXF_H__
 DECL|macro|__ACPIOSXF_H__
 mdefine_line|#define __ACPIOSXF_H__
@@ -46,9 +46,10 @@ id|ACPI_SIGNAL_FATAL_INFO
 suffix:semicolon
 multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
 r_typedef
-DECL|typedef|OSD_HANDLER
 id|u32
+DECL|typedef|OSD_HANDLER
 (paren
+id|ACPI_SYSTEM_XFACE
 op_star
 id|OSD_HANDLER
 )paren
@@ -59,9 +60,10 @@ id|context
 )paren
 suffix:semicolon
 r_typedef
-DECL|typedef|OSD_EXECUTION_CALLBACK
 r_void
+DECL|typedef|OSD_EXECUTION_CALLBACK
 (paren
+id|ACPI_SYSTEM_XFACE
 op_star
 id|OSD_EXECUTION_CALLBACK
 )paren
@@ -145,15 +147,7 @@ r_void
 op_star
 id|acpi_os_allocate
 (paren
-id|u32
-id|size
-)paren
-suffix:semicolon
-r_void
-op_star
-id|acpi_os_callocate
-(paren
-id|u32
+id|ACPI_SIZE
 id|size
 )paren
 suffix:semicolon
@@ -171,8 +165,8 @@ id|acpi_os_map_memory
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 comma
-id|u32
-id|length
+id|ACPI_SIZE
+id|size
 comma
 r_void
 op_star
@@ -187,8 +181,8 @@ r_void
 op_star
 id|logical_address
 comma
-id|u32
-id|length
+id|ACPI_SIZE
+id|size
 )paren
 suffix:semicolon
 id|acpi_status
@@ -287,7 +281,7 @@ id|acpi_os_write_port
 id|ACPI_IO_ADDRESS
 id|address
 comma
-id|NATIVE_UINT
+id|acpi_integer
 id|value
 comma
 id|u32
@@ -315,7 +309,7 @@ id|acpi_os_write_memory
 id|ACPI_PHYSICAL_ADDRESS
 id|address
 comma
-id|NATIVE_UINT
+id|acpi_integer
 id|value
 comma
 id|u32
@@ -351,7 +345,7 @@ comma
 id|u32
 r_register
 comma
-id|NATIVE_UINT
+id|acpi_integer
 id|value
 comma
 id|u32
@@ -399,7 +393,8 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Debug print routines&n; */
-id|s32
+r_void
+id|ACPI_INTERNAL_VAR_XFACE
 id|acpi_os_printf
 (paren
 r_const
@@ -412,7 +407,7 @@ dot
 dot
 )paren
 suffix:semicolon
-id|s32
+r_void
 id|acpi_os_vprintf
 (paren
 r_const

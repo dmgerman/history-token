@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evxfregn&quot;
 )paren
@@ -48,10 +48,8 @@ id|node
 suffix:semicolon
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 suffix:semicolon
 id|u16
@@ -59,7 +57,7 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_install_address_space_handler&quot;
 )paren
@@ -68,29 +66,8 @@ multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
 id|device
-)paren
-op_logical_or
-(paren
-(paren
-op_logical_neg
-id|handler
-)paren
-op_logical_and
-(paren
-id|handler
-op_ne
-id|ACPI_DEFAULT_HANDLER
-)paren
-)paren
-op_logical_or
-(paren
-id|space_id
-OG
-id|ACPI_MAX_ADDRESS_SPACE
-)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -99,11 +76,28 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Convert and validate the device handle */
 id|node
 op_assign
@@ -174,7 +168,7 @@ id|ACPI_DEFAULT_HANDLER
 (brace
 id|flags
 op_assign
-id|ADDR_HANDLER_DEFAULT_INSTALLED
+id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 suffix:semicolon
 r_switch
 c_cond
@@ -247,6 +241,19 @@ id|acpi_ev_pci_bar_region_setup
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ACPI_ADR_SPACE_DATA_TABLE
+suffix:colon
+id|handler
+op_assign
+id|acpi_ex_data_table_space_handler
+suffix:semicolon
+id|setup
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|status
@@ -255,8 +262,6 @@ id|AE_NOT_EXIST
 suffix:semicolon
 r_goto
 id|unlock_and_exit
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
@@ -310,7 +315,7 @@ id|space_id
 (brace
 id|status
 op_assign
-id|AE_EXIST
+id|AE_ALREADY_EXISTS
 suffix:semicolon
 r_goto
 id|unlock_and_exit
@@ -396,9 +401,6 @@ id|node
 comma
 id|obj_desc
 comma
-(paren
-id|u8
-)paren
 id|type
 )paren
 suffix:semicolon
@@ -510,7 +512,7 @@ id|device
 comma
 id|ACPI_UINT32_MAX
 comma
-id|NS_WALK_UNLOCK
+id|ACPI_NS_WALK_UNLOCK
 comma
 id|acpi_ev_addr_handler_helper
 comma
@@ -539,6 +541,9 @@ id|handler_obj
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -588,10 +593,8 @@ id|node
 suffix:semicolon
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_remove_address_space_handler&quot;
 )paren
@@ -600,29 +603,8 @@ multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
 id|device
-)paren
-op_logical_or
-(paren
-(paren
-op_logical_neg
-id|handler
-)paren
-op_logical_and
-(paren
-id|handler
-op_ne
-id|ACPI_DEFAULT_HANDLER
-)paren
-)paren
-op_logical_or
-(paren
-id|space_id
-OG
-id|ACPI_MAX_ADDRESS_SPACE
-)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -631,11 +613,28 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Convert and validate the device handle */
 id|node
 op_assign
@@ -817,6 +816,9 @@ id|AE_NOT_EXIST
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE

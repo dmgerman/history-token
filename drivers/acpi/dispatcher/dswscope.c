@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswscope&quot;
 )paren
@@ -25,7 +25,7 @@ id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_scope_stack_clear&quot;
 )paren
@@ -72,7 +72,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_walk_state
@@ -84,7 +84,7 @@ id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_scope_stack_push&quot;
 )paren
@@ -97,7 +97,7 @@ id|node
 )paren
 (brace
 multiline_comment|/* Invalid scope   */
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ds_scope_stack_push: null scope passed&bslash;n&quot;
@@ -121,7 +121,7 @@ id|type
 )paren
 )paren
 (brace
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Ds_scope_stack_push: type code out of range&bslash;n&quot;
@@ -194,7 +194,7 @@ id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_scope_stack_pop&quot;
 )paren

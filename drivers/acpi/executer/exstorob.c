@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -9,14 +9,14 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstorob&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_copy_buffer_to_buffer&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_buffer_to_buffer&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ex_copy_buffer_to_buffer
-id|acpi_ex_copy_buffer_to_buffer
+DECL|function|acpi_ex_store_buffer_to_buffer
+id|acpi_ex_store_buffer_to_buffer
 (paren
 id|acpi_operand_object
 op_star
@@ -34,9 +34,9 @@ id|u8
 op_star
 id|buffer
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ex_copy_buffer_to_buffer&quot;
+l_string|&quot;Ex_store_buffer_to_buffer&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We know that Source_desc is a buffer by now&n;&t; */
@@ -96,7 +96,7 @@ id|target_desc-&gt;buffer.length
 )paren
 (brace
 multiline_comment|/* Clear existing buffer and copy in the new one */
-id|MEMSET
+id|ACPI_MEMSET
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
@@ -105,7 +105,7 @@ comma
 id|target_desc-&gt;buffer.length
 )paren
 suffix:semicolon
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
@@ -118,7 +118,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * Truncate the source, copy only what will fit&n;&t;&t; */
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
@@ -147,10 +147,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_copy_string_to_string&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_string_to_string&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ex_copy_string_to_string
-id|acpi_ex_copy_string_to_string
+DECL|function|acpi_ex_store_string_to_string
+id|acpi_ex_store_string_to_string
 (paren
 id|acpi_operand_object
 op_star
@@ -168,7 +168,7 @@ id|u8
 op_star
 id|buffer
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -195,7 +195,7 @@ id|target_desc-&gt;string.length
 )paren
 (brace
 multiline_comment|/* Clear old string and copy in the new one */
-id|MEMSET
+id|ACPI_MEMSET
 (paren
 id|target_desc-&gt;string.pointer
 comma
@@ -204,7 +204,7 @@ comma
 id|target_desc-&gt;string.length
 )paren
 suffix:semicolon
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;string.pointer
 comma
@@ -265,7 +265,7 @@ id|target_desc-&gt;string.length
 op_assign
 id|length
 suffix:semicolon
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;string.pointer
 comma

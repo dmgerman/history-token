@@ -88,11 +88,11 @@ c_func
 id|fat_build_inode
 )paren
 suffix:semicolon
-DECL|variable|fat_read_super
+DECL|variable|fat_fill_super
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|fat_read_super
+id|fat_fill_super
 )paren
 suffix:semicolon
 DECL|variable|fat_search_long

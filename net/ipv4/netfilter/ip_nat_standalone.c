@@ -32,7 +32,7 @@ DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 DECL|macro|HOOKNAME
-mdefine_line|#define HOOKNAME(hooknum) ((hooknum) == NF_IP_POST_ROUTING ? &quot;POST_ROUTING&quot;  &bslash;&n;&t;&t;&t;   : ((hooknum) == NF_IP_PRE_ROUTING ? &quot;PRE_ROUTING&quot; &bslash;&n;&t;&t;&t;      : ((hooknum) == NF_IP_LOCAL_OUT ? &quot;LOCAL_OUT&quot;  &bslash;&n;&t;&t;&t;&t; : &quot;*ERROR*&quot;)))
+mdefine_line|#define HOOKNAME(hooknum) ((hooknum) == NF_IP_POST_ROUTING ? &quot;POST_ROUTING&quot;  &bslash;&n;&t;&t;&t;   : ((hooknum) == NF_IP_PRE_ROUTING ? &quot;PRE_ROUTING&quot; &bslash;&n;&t;&t;&t;      : ((hooknum) == NF_IP_LOCAL_OUT ? &quot;LOCAL_OUT&quot;  &bslash;&n;&t;&t;&t;         : ((hooknum) == NF_IP_LOCAL_IN ? &quot;LOCAL_IN&quot;  &bslash;&n;&t;&t;&t;&t;    : &quot;*ERROR*&quot;)))
 r_static
 r_int
 r_int
@@ -274,6 +274,19 @@ multiline_comment|/* Fall thru... (Only ICMPs can be IP_CT_IS_REPLY) */
 r_case
 id|IP_CT_NEW
 suffix:colon
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+multiline_comment|/* LOCAL_IN hook doesn&squot;t have a chain and thus doesn&squot;t care&n;&t;&t; * about new packets -HW */
+r_if
+c_cond
+(paren
+id|hooknum
+op_eq
+id|NF_IP_LOCAL_IN
+)paren
+r_return
+id|NF_ACCEPT
+suffix:semicolon
+macro_line|#endif
 id|info
 op_assign
 op_amp
@@ -826,6 +839,30 @@ comma
 id|NF_IP_PRI_NAT_DST
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+DECL|variable|ip_nat_local_in_ops
+r_static
+r_struct
+id|nf_hook_ops
+id|ip_nat_local_in_ops
+op_assign
+(brace
+(brace
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+id|ip_nat_fn
+comma
+id|PF_INET
+comma
+id|NF_IP_LOCAL_IN
+comma
+id|NF_IP_PRI_NAT_SRC
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Protocol registration. */
 DECL|function|ip_nat_protocol_register
 r_int
@@ -1129,6 +1166,35 @@ r_goto
 id|cleanup_outops
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+id|ret
+op_assign
+id|nf_register_hook
+c_func
+(paren
+op_amp
+id|ip_nat_local_in_ops
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ip_nat_init: can&squot;t register local in hook.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|cleanup_localoutops
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1156,6 +1222,17 @@ c_func
 id|ip_conntrack_module
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+id|nf_unregister_hook
+c_func
+(paren
+op_amp
+id|ip_nat_local_in_ops
+)paren
+suffix:semicolon
+id|cleanup_localoutops
+suffix:colon
+macro_line|#endif
 id|nf_unregister_hook
 c_func
 (paren

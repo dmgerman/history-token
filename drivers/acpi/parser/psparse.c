@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 119 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Parse the AML and build an operation tree as most interpreters,&n; * like Perl, do.  Parsing is done by hand rather than with a YACC&n; * generated parser to tightly constrain stack and dynamic memory&n; * usage.  At the same time, parsing is kept flexible and the code&n; * fairly compact by parsing based on a list of AML opcode&n; * templates in Aml_op_info[]&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -10,7 +10,7 @@ macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psparse&quot;
 )paren
@@ -25,7 +25,6 @@ id|u32
 id|acpi_gbl_scope_depth
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_opcode_size&n; *&n; * PARAMETERS:  Opcode          - An AML opcode&n; *&n; * RETURN:      Size of the opcode, in bytes (1 or 2)&n; *&n; * DESCRIPTION: Get the size of the current opcode.&n; *&n; ******************************************************************************/
-r_static
 id|u32
 DECL|function|acpi_ps_get_opcode_size
 id|acpi_ps_get_opcode_size
@@ -82,15 +81,11 @@ op_assign
 (paren
 id|u16
 )paren
-id|GET8
+id|ACPI_GET8
 (paren
 id|aml
 )paren
 suffix:semicolon
-id|aml
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * Original code special cased LNOTEQUAL, LLESSEQUAL, LGREATEREQUAL.&n;&t; * These opcodes are no longer recognized. Instead, they are broken into&n;&t; * two opcodes.&n;&t; *&n;&t; *&n;&t; *    if (Opcode == AML_EXTOP&n;&t; *       || (Opcode == AML_LNOT&n;&t; *          &amp;&amp; (GET8 (Aml) == AML_LEQUAL&n;&t; *               || GET8 (Aml) == AML_LGREATER&n;&t; *               || GET8 (Aml) == AML_LLESS)))&n;&t; *&n;&t; *     extended Opcode, !=, &lt;=, or &gt;=&n;&t; */
 r_if
 c_cond
 (paren
@@ -100,6 +95,9 @@ id|AML_EXTOP
 )paren
 (brace
 multiline_comment|/* Extended opcode */
+id|aml
+op_increment
+suffix:semicolon
 id|opcode
 op_assign
 (paren
@@ -112,7 +110,7 @@ op_lshift
 l_int|8
 )paren
 op_or
-id|GET8
+id|ACPI_GET8
 (paren
 id|aml
 )paren
@@ -219,7 +217,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_complete_this_op&n; *&n; * PARAMETERS:  Walk_state      - Current State&n; *              Op              - Op to complete&n; *&n; * RETURN:      TRUE if Op and subtree was deleted&n; *&n; * DESCRIPTION: Perform any cleanup at the completion of an Op.&n; *&n; ******************************************************************************/
-r_static
 id|u8
 DECL|function|acpi_ps_complete_this_op
 id|acpi_ps_complete_this_op
@@ -253,13 +250,27 @@ id|replacement_op
 op_assign
 l_int|NULL
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_complete_this_op&quot;
 comma
 id|op
 )paren
 suffix:semicolon
+multiline_comment|/* Check for null Op, can happen if AML code is corrupt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|op
+)paren
+(brace
+id|return_VALUE
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Delete this op and the subtree below it if asked to */
 r_if
 c_cond
@@ -309,15 +320,36 @@ r_class
 r_case
 id|AML_CLASS_CONTROL
 suffix:colon
-multiline_comment|/* IF, ELSE, WHILE only */
+r_break
+suffix:semicolon
+r_case
+id|AML_CLASS_CREATE
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * These opcodes contain Term_arg operands. The current&n;&t;&t;&t;&t; * op must be replace by a placeholder return op&n;&t;&t;&t;&t; */
+id|replacement_op
+op_assign
+id|acpi_ps_alloc_op
+(paren
+id|AML_INT_RETURN_VALUE_OP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|replacement_op
+)paren
+(brace
+id|return_VALUE
+(paren
+id|FALSE
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|AML_CLASS_NAMED_OBJECT
-suffix:colon
-multiline_comment|/* Scope, method, etc. */
-r_case
-id|AML_CLASS_CREATE
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t; * These opcodes contain Term_arg operands. The current&n;&t;&t;&t;&t; * op must be replace by a placeholder return op&n;&t;&t;&t;&t; */
 r_if
@@ -332,37 +364,7 @@ op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_CREATE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;parent-&gt;opcode
-op_eq
-id|AML_CREATE_BIT_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;parent-&gt;opcode
-op_eq
-id|AML_CREATE_BYTE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;parent-&gt;opcode
-op_eq
-id|AML_CREATE_WORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;parent-&gt;opcode
-op_eq
-id|AML_CREATE_DWORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;parent-&gt;opcode
-op_eq
-id|AML_CREATE_QWORD_FIELD_OP
+id|AML_DATA_REGION_OP
 )paren
 )paren
 (brace
@@ -549,7 +551,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_next_parse_state&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
-r_static
 id|acpi_status
 DECL|function|acpi_ps_next_parse_state
 id|acpi_ps_next_parse_state
@@ -578,14 +579,7 @@ id|status
 op_assign
 id|AE_CTRL_PENDING
 suffix:semicolon
-id|u8
-op_star
-id|start
-suffix:semicolon
-id|u32
-id|package_length
-suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_next_parse_state&quot;
 comma
@@ -613,11 +607,38 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|AE_CTRL_BREAK
+suffix:colon
+id|parser_state-&gt;aml
+op_assign
+id|walk_state-&gt;aml_last_while
+suffix:semicolon
+id|walk_state-&gt;control_state-&gt;common.value
+op_assign
+id|FALSE
+suffix:semicolon
+id|status
+op_assign
+id|AE_CTRL_BREAK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AE_CTRL_CONTINUE
+suffix:colon
+id|parser_state-&gt;aml
+op_assign
+id|walk_state-&gt;aml_last_while
+suffix:semicolon
+id|status
+op_assign
+id|AE_CTRL_CONTINUE
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|AE_CTRL_PENDING
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Predicate of a WHILE was true and the loop just completed an&n;&t;&t; * execution.  Go back to the start of the loop and reevaluate the&n;&t;&t; * predicate.&n;&t;&t; */
-multiline_comment|/* TBD: How to handle a break within a while. */
-multiline_comment|/* This code attempts it */
 id|parser_state-&gt;aml
 op_assign
 id|walk_state-&gt;aml_last_while
@@ -627,23 +648,13 @@ suffix:semicolon
 r_case
 id|AE_CTRL_TRUE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Predicate of an IF was true, and we are at the matching ELSE.&n;&t;&t; * Just close out this package&n;&t;&t; *&n;&t;&t; * Note: Parser_state-&gt;Aml is modified by the package length procedure&n;&t;&t; * TBD: [Investigate] perhaps it shouldn&squot;t, too much trouble&n;&t;&t; */
-id|start
-op_assign
+multiline_comment|/*&n;&t;&t; * Predicate of an IF was true, and we are at the matching ELSE.&n;&t;&t; * Just close out this package&n;&t;&t; */
 id|parser_state-&gt;aml
-suffix:semicolon
-id|package_length
 op_assign
-id|acpi_ps_get_next_package_length
+id|acpi_ps_get_next_package_end
 (paren
 id|parser_state
 )paren
-suffix:semicolon
-id|parser_state-&gt;aml
-op_assign
-id|start
-op_plus
-id|package_length
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -773,7 +784,7 @@ id|u8
 op_star
 id|aml_op_start
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_parse_loop&quot;
 comma
@@ -795,7 +806,7 @@ c_cond
 (paren
 id|walk_state-&gt;walk_type
 op_amp
-id|WALK_METHOD_RESTART
+id|ACPI_WALK_METHOD_RESTART
 )paren
 (brace
 multiline_comment|/* We are restarting a preempted control method */
@@ -837,7 +848,7 @@ op_logical_and
 (paren
 id|walk_state-&gt;control_state-&gt;common.state
 op_eq
-id|CONTROL_PREDICATE_EXECUTING
+id|ACPI_CONTROL_PREDICATE_EXECUTING
 )paren
 )paren
 (brace
@@ -852,7 +863,10 @@ id|acpi_ds_get_predicate_value
 (paren
 id|walk_state
 comma
+id|ACPI_TO_POINTER
+(paren
 id|TRUE
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1064,7 +1078,7 @@ id|walk_state-&gt;aml_offset
 )paren
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 id|parser_state-&gt;aml
 comma
@@ -1180,7 +1194,6 @@ op_amp
 id|op
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: check status here? */
 r_if
 c_cond
 (paren
@@ -1461,11 +1474,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;Op=%p Opcode=%4.4X Aml %p Oft=%5.5X&bslash;n&quot;
-comma
-id|op
+l_string|&quot;Opcode %4.4X [%s] Op %p Aml %p Aml_offset %5.5X&bslash;n&quot;
 comma
 id|op-&gt;opcode
+comma
+id|walk_state-&gt;op_info-&gt;name
+comma
+id|op
 comma
 id|parser_state-&gt;aml
 comma
@@ -1664,19 +1679,58 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|op-&gt;opcode
+op_eq
+id|AML_WHILE_OP
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|walk_state-&gt;control_state
+)paren
+(brace
+id|walk_state-&gt;control_state-&gt;control.package_end
+op_assign
+id|parser_state-&gt;pkg_end
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Zero Arg_count means that all arguments for this op have been processed&n;&t;&t; */
+multiline_comment|/* Check for arguments that need to be processed */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|walk_state-&gt;arg_count
 )paren
 (brace
-multiline_comment|/* completed Op, prepare for next */
+multiline_comment|/* There are arguments (complex ones), push Op and prepare for argument */
+id|acpi_ps_push_scope
+(paren
+id|parser_state
+comma
+id|op
+comma
+id|walk_state-&gt;arg_types
+comma
+id|walk_state-&gt;arg_count
+)paren
+suffix:semicolon
+id|op
+op_assign
+l_int|NULL
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* All arguments have been processed -- Op is complete, prepare for next */
 id|walk_state-&gt;op_info
 op_assign
 id|acpi_ps_get_opcode_info
@@ -1710,7 +1764,7 @@ op_eq
 id|AML_REGION_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * Completed parsing an Op_region declaration, we now&n;&t;&t;&t;&t;&t; * know the length.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Completed parsing an Op_region declaration, we now&n;&t;&t;&t;&t; * know the length.&n;&t;&t;&t;&t; */
 (paren
 (paren
 id|acpi_parse2_object
@@ -1748,7 +1802,7 @@ op_amp
 id|AML_CREATE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Backup to beginning of Create_xXXfield declaration (1 for&n;&t;&t;&t;&t; * Opcode)&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Body_length is unknown until we parse the body&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Backup to beginning of Create_xXXfield declaration (1 for&n;&t;&t;&t; * Opcode)&n;&t;&t;&t; *&n;&t;&t;&t; * Body_length is unknown until we parse the body&n;&t;&t;&t; */
 (paren
 (paren
 id|acpi_parse2_object
@@ -1831,7 +1885,7 @@ suffix:semicolon
 )brace
 id|close_this_op
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Finished one argument of the containing scope&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Finished one argument of the containing scope&n;&t;&t; */
 id|parser_state-&gt;scope-&gt;parse_scope.arg_count
 op_decrement
 suffix:semicolon
@@ -1866,7 +1920,7 @@ suffix:semicolon
 r_case
 id|AE_CTRL_TRANSFER
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * We are about to transfer to a called method.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We are about to transfer to a called method.&n;&t;&t;&t; */
 id|walk_state-&gt;prev_op
 op_assign
 id|op
@@ -1879,8 +1933,6 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|AE_CTRL_END
@@ -1899,6 +1951,92 @@ op_amp
 id|walk_state-&gt;arg_count
 )paren
 suffix:semicolon
+id|walk_state-&gt;op
+op_assign
+id|op
+suffix:semicolon
+id|walk_state-&gt;op_info
+op_assign
+id|acpi_ps_get_opcode_info
+(paren
+id|op-&gt;opcode
+)paren
+suffix:semicolon
+id|walk_state-&gt;opcode
+op_assign
+id|op-&gt;opcode
+suffix:semicolon
+id|status
+op_assign
+id|walk_state-&gt;ascending_callback
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ps_next_parse_state
+(paren
+id|walk_state
+comma
+id|op
+comma
+id|status
+)paren
+suffix:semicolon
+id|acpi_ps_complete_this_op
+(paren
+id|walk_state
+comma
+id|op
+)paren
+suffix:semicolon
+id|op
+op_assign
+l_int|NULL
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AE_CTRL_BREAK
+suffix:colon
+r_case
+id|AE_CTRL_CONTINUE
+suffix:colon
+multiline_comment|/* Pop off scopes until we find the While */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|op
+op_logical_or
+(paren
+id|op-&gt;opcode
+op_ne
+id|AML_WHILE_OP
+)paren
+)paren
+(brace
+id|acpi_ps_pop_scope
+(paren
+id|parser_state
+comma
+op_amp
+id|op
+comma
+op_amp
+id|walk_state-&gt;arg_types
+comma
+op_amp
+id|walk_state-&gt;arg_count
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Close this iteration of the While loop */
 id|walk_state-&gt;op
 op_assign
 id|op
@@ -1999,13 +2137,50 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 (brace
 )brace
 multiline_comment|/* All other non-AE_OK status */
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|op
+)paren
+(brace
+id|acpi_ps_complete_this_op
+(paren
+id|walk_state
+comma
+id|op
+)paren
+suffix:semicolon
+)brace
+id|acpi_ps_pop_scope
+(paren
+id|parser_state
+comma
+op_amp
+id|op
+comma
+op_amp
+id|walk_state-&gt;arg_types
+comma
+op_amp
+id|walk_state-&gt;arg_count
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|op
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * TBD: Cleanup parse ops on error&n;&t;&t;&t; */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2029,6 +2204,7 @@ id|walk_state-&gt;arg_count
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|walk_state-&gt;prev_op
 op_assign
 id|op
@@ -2037,13 +2213,10 @@ id|walk_state-&gt;prev_arg_types
 op_assign
 id|walk_state-&gt;arg_types
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * TEMP:&n;&t;&t;&t;&t; */
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/* This scope complete? */
@@ -2084,27 +2257,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|op
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Arg_count is non-zero */
-r_else
-(brace
-multiline_comment|/* complex argument, push Op and prepare for argument */
-id|acpi_ps_push_scope
-(paren
-id|parser_state
-comma
-id|op
-comma
-id|walk_state-&gt;arg_types
-comma
-id|walk_state-&gt;arg_count
-)paren
-suffix:semicolon
 id|op
 op_assign
 l_int|NULL
@@ -2317,10 +2469,11 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
-id|acpi_walk_list
-id|walk_list
+id|ACPI_THREAD_STATE
+op_star
+id|thread
 suffix:semicolon
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
 id|prev_walk_list
 op_assign
@@ -2330,7 +2483,7 @@ id|acpi_walk_state
 op_star
 id|previous_walk_state
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_parse_aml&quot;
 )paren
@@ -2350,37 +2503,41 @@ id|walk_state-&gt;parser_state.aml_size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Create and initialize a new walk list */
-id|walk_list.walk_state
+multiline_comment|/* Create and initialize a new thread state */
+id|thread
 op_assign
-l_int|NULL
+id|acpi_ut_create_thread_state
+(paren
+)paren
 suffix:semicolon
-id|walk_list.acquired_mutex_list.prev
-op_assign
-l_int|NULL
+r_if
+c_cond
+(paren
+op_logical_neg
+id|thread
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
-id|walk_list.acquired_mutex_list.next
+)brace
+id|walk_state-&gt;thread
 op_assign
-l_int|NULL
-suffix:semicolon
-id|walk_state-&gt;walk_list
-op_assign
-op_amp
-id|walk_list
+id|thread
 suffix:semicolon
 id|acpi_ds_push_walk_state
 (paren
 id|walk_state
 comma
-op_amp
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: [Restructure] TEMP until we pass Walk_state to the interpreter&n;&t; */
+multiline_comment|/*&n;&t; * This global allows the AML debugger to get a handle to the currently&n;&t; * executing control method.&n;&t; */
 id|acpi_gbl_current_walk_list
 op_assign
-op_amp
-id|walk_list
+id|thread
 suffix:semicolon
 multiline_comment|/*&n;&t; * Execute the walk loop as long as there is a valid Walk State.  This&n;&t; * handles nested control method invocations without recursion.&n;&t; */
 id|ACPI_DEBUG_PRINT
@@ -2446,8 +2603,7 @@ id|status
 op_assign
 id|acpi_ds_call_control_method
 (paren
-op_amp
-id|walk_list
+id|thread
 comma
 id|walk_state
 comma
@@ -2459,8 +2615,7 @@ id|walk_state
 op_assign
 id|acpi_ds_get_current_walk_state
 (paren
-op_amp
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_continue
@@ -2485,8 +2640,7 @@ id|walk_state
 op_assign
 id|acpi_ds_pop_walk_state
 (paren
-op_amp
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the current scope to the beginning of scope stack */
@@ -2543,8 +2697,7 @@ id|walk_state
 op_assign
 id|acpi_ds_get_current_walk_state
 (paren
-op_amp
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_if
@@ -2562,8 +2715,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* There is another walk state, restart it */
-multiline_comment|/*&n;&t;&t;&t;&t; * If the method returned value is not used by the parent,&n;&t;&t;&t;&t; * The object is deleted&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There is another walk state, restart it.&n;&t;&t;&t;&t; * If the method return value is not used by the parent,&n;&t;&t;&t;&t; * The object is deleted&n;&t;&t;&t;&t; */
 id|acpi_ds_restart_control_method
 (paren
 id|walk_state
@@ -2573,7 +2725,39 @@ id|previous_walk_state-&gt;return_desc
 suffix:semicolon
 id|walk_state-&gt;walk_type
 op_or_assign
-id|WALK_METHOD_RESTART
+id|ACPI_WALK_METHOD_RESTART
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* On error, delete any return object */
+id|acpi_ut_remove_reference
+(paren
+id|previous_walk_state-&gt;return_desc
+)paren
+suffix:semicolon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Method execution failed, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DUMP_PATHNAME
+(paren
+id|walk_state-&gt;method_node
+comma
+l_string|&quot;Method pathname: &quot;
+comma
+id|ACPI_LV_ERROR
+comma
+id|_COMPONENT
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2617,12 +2801,16 @@ suffix:semicolon
 multiline_comment|/* Normal exit */
 id|acpi_ex_release_all_mutexes
 (paren
+id|thread
+)paren
+suffix:semicolon
+id|acpi_ut_delete_generic_state
 (paren
-id|acpi_operand_object
+(paren
+id|acpi_generic_state
 op_star
 )paren
-op_amp
-id|walk_list.acquired_mutex_list
+id|thread
 )paren
 suffix:semicolon
 id|acpi_gbl_current_walk_list

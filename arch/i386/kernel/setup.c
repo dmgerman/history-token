@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 macro_line|#include &lt;linux/blk.h&gt;
@@ -239,10 +240,6 @@ id|disable_x86_fxsr
 id|__initdata
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|enable_acpi_smp_table
-r_int
-id|enable_acpi_smp_table
 suffix:semicolon
 multiline_comment|/*&n; * This is set up by the setup-routine at boot-time&n; */
 DECL|macro|PARAM
@@ -2275,29 +2272,6 @@ id|E820_RAM
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* acpismp=force forces parsing and use of the ACPI SMP table */
-r_if
-c_cond
-(paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
-op_logical_neg
-id|memcmp
-c_func
-(paren
-id|from
-comma
-l_string|&quot;acpismp=force&quot;
-comma
-l_int|13
-)paren
-)paren
-id|enable_acpi_smp_table
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
 r_if
 c_cond
@@ -3236,6 +3210,14 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_SLEEP
+multiline_comment|/*&n;&t; * Reserve low memory region for sleep support.&n;&t; */
+id|acpi_reserve_bootmem
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n;&t; * Find and reserve possible boot-time SMP configuration:&n;&t; */
 id|find_smp_config
@@ -3332,6 +3314,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;&t; * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;&t; * Must do this after paging_init (due to reliance on fixmap, and thus&n;&t; * the bootmem allocator) but before get_smp_config (to allow parsing&n;&t; * of MADT).&n;&t; */
+id|acpi_table_init
+c_func
+(paren
+op_star
+id|cmdline_p
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n;&t; * get boot-time SMP configuration:&n;&t; */
 r_if
@@ -7899,14 +7891,6 @@ op_star
 id|c
 )paren
 (brace
-macro_line|#ifndef CONFIG_M686
-r_static
-r_int
-id|f00f_workaround_enabled
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_char
 op_star
 id|p
@@ -7932,7 +7916,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Cache sizes */
-macro_line|#ifndef CONFIG_M686
+macro_line|#ifdef CONFIG_X86_F00F_BUG
 multiline_comment|/*&n;&t; * All current models of Pentium and Pentium with MMX technology CPUs&n;&t; * have the F0 0F bug, which lets nonpriviledged users lock up the system.&n;&t; * Note that the workaround only should be initialized once...&n;&t; */
 id|c-&gt;f00f_bug
 op_assign
@@ -7946,6 +7930,12 @@ op_eq
 l_int|5
 )paren
 (brace
+r_static
+r_int
+id|f00f_workaround_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|c-&gt;f00f_bug
 op_assign
 l_int|1

@@ -2943,11 +2943,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;p_pptr
+id|p-&gt;parent
 op_eq
 id|current
 op_logical_or
-id|p-&gt;p_opptr
+id|p-&gt;real_parent
 op_eq
 id|current
 )paren

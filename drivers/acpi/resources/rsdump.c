@@ -1,10 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 23 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 29 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_RESOURCES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rsdump&quot;
 )paren
@@ -34,7 +34,7 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -47,7 +47,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s Triggered&bslash;n&quot;
 comma
-id|LEVEL_SENSITIVE
+id|ACPI_LEVEL_SENSITIVE
 op_eq
 id|irq_data-&gt;edge_level
 ques
@@ -61,7 +61,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Active %s&bslash;n&quot;
 comma
-id|ACTIVE_LOW
+id|ACPI_ACTIVE_LOW
 op_eq
 id|irq_data-&gt;active_high_low
 ques
@@ -75,7 +75,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s&bslash;n&quot;
 comma
-id|SHARED
+id|ACPI_SHARED
 op_eq
 id|irq_data-&gt;shared_exclusive
 ques
@@ -151,7 +151,7 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -167,7 +167,7 @@ id|dma_data-&gt;type
 )paren
 (brace
 r_case
-id|COMPATIBILITY
+id|ACPI_COMPATIBILITY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -177,7 +177,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TYPE_A
+id|ACPI_TYPE_A
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -187,7 +187,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TYPE_B
+id|ACPI_TYPE_B
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -197,7 +197,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TYPE_F
+id|ACPI_TYPE_F
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -220,7 +220,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %sBus Master&bslash;n&quot;
 comma
-id|BUS_MASTER
+id|ACPI_BUS_MASTER
 op_eq
 id|dma_data-&gt;bus_master
 ques
@@ -237,7 +237,7 @@ id|dma_data-&gt;transfer
 )paren
 (brace
 r_case
-id|TRANSFER_8
+id|ACPI_TRANSFER_8
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -247,7 +247,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TRANSFER_8_16
+id|ACPI_TRANSFER_8_16
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -257,7 +257,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TRANSFER_16
+id|ACPI_TRANSFER_16
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -317,10 +317,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_start_dependent_functions&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dump_start_depend_fns&n; *&n; * PARAMETERS:  Data            - pointer to the resource structure to dump.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Prints out the various members of the Data structure type.&n; *&n; ******************************************************************************/
 r_void
-DECL|function|acpi_rs_dump_start_dependent_functions
-id|acpi_rs_dump_start_dependent_functions
+DECL|function|acpi_rs_dump_start_depend_fns
+id|acpi_rs_dump_start_depend_fns
 (paren
 id|acpi_resource_data
 op_star
@@ -337,7 +337,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -353,7 +353,7 @@ id|sdf_data-&gt;compatibility_priority
 )paren
 (brace
 r_case
-id|GOOD_CONFIGURATION
+id|ACPI_GOOD_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -363,7 +363,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACCEPTABLE_CONFIGURATION
+id|ACPI_ACCEPTABLE_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -373,7 +373,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SUB_OPTIMAL_CONFIGURATION
+id|ACPI_SUB_OPTIMAL_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -399,7 +399,7 @@ id|sdf_data-&gt;performance_robustness
 )paren
 (brace
 r_case
-id|GOOD_CONFIGURATION
+id|ACPI_GOOD_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -409,7 +409,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACCEPTABLE_CONFIGURATION
+id|ACPI_ACCEPTABLE_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -419,7 +419,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SUB_OPTIMAL_CONFIGURATION
+id|ACPI_SUB_OPTIMAL_CONFIGURATION
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -462,7 +462,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -475,7 +475,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %d bit decode&bslash;n&quot;
 comma
-id|DECODE_16
+id|ACPI_DECODE_16
 op_eq
 id|io_data-&gt;io_decode
 ques
@@ -536,7 +536,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -587,7 +587,7 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -654,7 +654,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -667,7 +667,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|memory24_data-&gt;read_write_attribute
 ques
@@ -728,7 +728,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -741,7 +741,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|memory32_data-&gt;read_write_attribute
 ques
@@ -802,7 +802,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -815,7 +815,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|fixed_memory32_data-&gt;read_write_attribute
 ques
@@ -862,7 +862,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -883,7 +883,7 @@ id|address16_data-&gt;resource_type
 )paren
 (brace
 r_case
-id|MEMORY_RANGE
+id|ACPI_MEMORY_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -897,7 +897,7 @@ id|address16_data-&gt;attribute.memory.cache_attribute
 )paren
 (brace
 r_case
-id|NON_CACHEABLE_MEMORY
+id|ACPI_NON_CACHEABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -908,7 +908,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CACHABLE_MEMORY
+id|ACPI_CACHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -919,7 +919,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|WRITE_COMBINING_MEMORY
+id|ACPI_WRITE_COMBINING_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -930,7 +930,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PREFETCHABLE_MEMORY
+id|ACPI_PREFETCHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -955,7 +955,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Type Specific: Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|address16_data-&gt;attribute.memory.read_write_attribute
 ques
@@ -968,7 +968,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|IO_RANGE
+id|ACPI_IO_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -982,7 +982,7 @@ id|address16_data-&gt;attribute.io.range_attribute
 )paren
 (brace
 r_case
-id|NON_ISA_ONLY_RANGES
+id|ACPI_NON_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -993,7 +993,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ISA_ONLY_RANGES
+id|ACPI_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1004,7 +1004,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ENTIRE_RANGE
+id|ACPI_ENTIRE_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1028,7 +1028,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BUS_NUMBER_RANGE
+id|ACPI_BUS_NUMBER_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1051,7 +1051,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Resource %s&bslash;n&quot;
 comma
-id|CONSUMER
+id|ACPI_CONSUMER
 op_eq
 id|address16_data-&gt;producer_consumer
 ques
@@ -1065,7 +1065,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s decode&bslash;n&quot;
 comma
-id|SUB_DECODE
+id|ACPI_SUB_DECODE
 op_eq
 id|address16_data-&gt;decode
 ques
@@ -1079,7 +1079,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Min address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address16_data-&gt;min_address_fixed
 ques
@@ -1093,7 +1093,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Max address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address16_data-&gt;max_address_fixed
 ques
@@ -1184,7 +1184,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -1200,7 +1200,7 @@ id|address32_data-&gt;resource_type
 )paren
 (brace
 r_case
-id|MEMORY_RANGE
+id|ACPI_MEMORY_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1214,7 +1214,7 @@ id|address32_data-&gt;attribute.memory.cache_attribute
 )paren
 (brace
 r_case
-id|NON_CACHEABLE_MEMORY
+id|ACPI_NON_CACHEABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1225,7 +1225,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CACHABLE_MEMORY
+id|ACPI_CACHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1236,7 +1236,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|WRITE_COMBINING_MEMORY
+id|ACPI_WRITE_COMBINING_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1247,7 +1247,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PREFETCHABLE_MEMORY
+id|ACPI_PREFETCHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1272,7 +1272,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Type Specific: Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|address32_data-&gt;attribute.memory.read_write_attribute
 ques
@@ -1285,7 +1285,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|IO_RANGE
+id|ACPI_IO_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1299,7 +1299,7 @@ id|address32_data-&gt;attribute.io.range_attribute
 )paren
 (brace
 r_case
-id|NON_ISA_ONLY_RANGES
+id|ACPI_NON_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1310,7 +1310,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ISA_ONLY_RANGES
+id|ACPI_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1321,7 +1321,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ENTIRE_RANGE
+id|ACPI_ENTIRE_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1345,7 +1345,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BUS_NUMBER_RANGE
+id|ACPI_BUS_NUMBER_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1368,7 +1368,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Resource %s&bslash;n&quot;
 comma
-id|CONSUMER
+id|ACPI_CONSUMER
 op_eq
 id|address32_data-&gt;producer_consumer
 ques
@@ -1382,7 +1382,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s decode&bslash;n&quot;
 comma
-id|SUB_DECODE
+id|ACPI_SUB_DECODE
 op_eq
 id|address32_data-&gt;decode
 ques
@@ -1396,7 +1396,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Min address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address32_data-&gt;min_address_fixed
 ques
@@ -1410,7 +1410,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Max address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address32_data-&gt;max_address_fixed
 ques
@@ -1501,7 +1501,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -1517,7 +1517,7 @@ id|address64_data-&gt;resource_type
 )paren
 (brace
 r_case
-id|MEMORY_RANGE
+id|ACPI_MEMORY_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1531,7 +1531,7 @@ id|address64_data-&gt;attribute.memory.cache_attribute
 )paren
 (brace
 r_case
-id|NON_CACHEABLE_MEMORY
+id|ACPI_NON_CACHEABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1542,7 +1542,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CACHABLE_MEMORY
+id|ACPI_CACHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1553,7 +1553,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|WRITE_COMBINING_MEMORY
+id|ACPI_WRITE_COMBINING_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1564,7 +1564,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PREFETCHABLE_MEMORY
+id|ACPI_PREFETCHABLE_MEMORY
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1589,7 +1589,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Type Specific: Read%s&bslash;n&quot;
 comma
-id|READ_WRITE_MEMORY
+id|ACPI_READ_WRITE_MEMORY
 op_eq
 id|address64_data-&gt;attribute.memory.read_write_attribute
 ques
@@ -1602,7 +1602,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|IO_RANGE
+id|ACPI_IO_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1616,7 +1616,7 @@ id|address64_data-&gt;attribute.io.range_attribute
 )paren
 (brace
 r_case
-id|NON_ISA_ONLY_RANGES
+id|ACPI_NON_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1627,7 +1627,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ISA_ONLY_RANGES
+id|ACPI_ISA_ONLY_RANGES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1638,7 +1638,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ENTIRE_RANGE
+id|ACPI_ENTIRE_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1662,7 +1662,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|BUS_NUMBER_RANGE
+id|ACPI_BUS_NUMBER_RANGE
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -1685,7 +1685,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Resource %s&bslash;n&quot;
 comma
-id|CONSUMER
+id|ACPI_CONSUMER
 op_eq
 id|address64_data-&gt;producer_consumer
 ques
@@ -1699,7 +1699,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s decode&bslash;n&quot;
 comma
-id|SUB_DECODE
+id|ACPI_SUB_DECODE
 op_eq
 id|address64_data-&gt;decode
 ques
@@ -1713,7 +1713,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Min address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address64_data-&gt;min_address_fixed
 ques
@@ -1727,7 +1727,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Max address is %s fixed&bslash;n&quot;
 comma
-id|ADDRESS_FIXED
+id|ACPI_ADDRESS_FIXED
 op_eq
 id|address64_data-&gt;max_address_fixed
 ques
@@ -1823,7 +1823,7 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -1836,7 +1836,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Resource %s&bslash;n&quot;
 comma
-id|CONSUMER
+id|ACPI_CONSUMER
 op_eq
 id|ext_irq_data-&gt;producer_consumer
 ques
@@ -1850,7 +1850,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s&bslash;n&quot;
 comma
-id|LEVEL_SENSITIVE
+id|ACPI_LEVEL_SENSITIVE
 op_eq
 id|ext_irq_data-&gt;edge_level
 ques
@@ -1864,7 +1864,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Active %s&bslash;n&quot;
 comma
-id|ACTIVE_LOW
+id|ACPI_ACTIVE_LOW
 op_eq
 id|ext_irq_data-&gt;active_high_low
 ques
@@ -1878,7 +1878,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  %s&bslash;n&quot;
 comma
-id|SHARED
+id|ACPI_SHARED
 op_eq
 id|ext_irq_data-&gt;shared_exclusive
 ques
@@ -1972,7 +1972,7 @@ id|done
 op_assign
 id|FALSE
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -2034,7 +2034,7 @@ suffix:semicolon
 r_case
 id|ACPI_RSTYPE_START_DPF
 suffix:colon
-id|acpi_rs_dump_start_dependent_functions
+id|acpi_rs_dump_start_depend_fns
 (paren
 op_amp
 id|resource-&gt;data
@@ -2190,7 +2190,7 @@ suffix:semicolon
 )brace
 id|resource
 op_assign
-id|POINTER_ADD
+id|ACPI_PTR_ADD
 (paren
 id|acpi_resource
 comma
@@ -2230,11 +2230,11 @@ id|done
 op_assign
 id|FALSE
 suffix:semicolon
-id|pci_routing_table
+id|acpi_pci_routing_table
 op_star
 id|prt_element
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -2253,7 +2253,7 @@ id|acpi_dbg_layer
 id|prt_element
 op_assign
 (paren
-id|pci_routing_table
+id|acpi_pci_routing_table
 op_star
 )paren
 id|buffer
@@ -2275,9 +2275,17 @@ op_increment
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Address: %X&bslash;n&quot;
+l_string|&quot;  Address: %8.8X%8.8X&bslash;n&quot;
 comma
+id|ACPI_HIDWORD
+(paren
 id|prt_element-&gt;address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|prt_element-&gt;address
+)paren
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -2308,7 +2316,7 @@ suffix:semicolon
 id|prt_element
 op_assign
 (paren
-id|pci_routing_table
+id|acpi_pci_routing_table
 op_star
 )paren
 id|buffer

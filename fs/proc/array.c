@@ -319,7 +319,7 @@ comma
 id|p-&gt;pid
 ques
 c_cond
-id|p-&gt;p_opptr-&gt;pid
+id|p-&gt;real_parent-&gt;pid
 suffix:colon
 l_int|0
 comma
@@ -1297,7 +1297,7 @@ op_assign
 id|task-&gt;pid
 ques
 c_cond
-id|task-&gt;p_opptr-&gt;pid
+id|task-&gt;real_parent-&gt;pid
 suffix:colon
 l_int|0
 suffix:semicolon

@@ -689,6 +689,11 @@ DECL|enumerator|NET_CORE_MOD_CONG
 id|NET_CORE_MOD_CONG
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_CORE_DEV_WEIGHT
+id|NET_CORE_DEV_WEIGHT
+op_assign
+l_int|17
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ethernet */

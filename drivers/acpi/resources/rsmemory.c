@@ -1,14 +1,14 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmem24 - Memory resource descriptors&n; *              $Revision: 14 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsmem24 - Memory resource descriptors&n; *              $Revision: 17 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_RESOURCES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rsmemory&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory24_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory24_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        consumed the Byte_stream_buffer is&n; *                                        returned&n; *              Output_buffer           - Pointer to the return data buffer&n; *              Structure_size          - Pointer to where the number of bytes&n; *                                        in the return data struct is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_memory24_resource
 id|acpi_rs_memory24_resource
@@ -17,7 +17,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -26,7 +26,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -58,15 +58,15 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|struct_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_mem24
 )paren
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_memory24_resource&quot;
 )paren
@@ -76,7 +76,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -116,7 +116,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Min_base_address (Bytes 4-5)&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -133,7 +133,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Max_base_address (Bytes 6-7)&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -150,7 +150,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Alignment (Bytes 8-9)&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -167,7 +167,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Range_length (Bytes 10-11)&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -196,7 +196,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory24_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory24_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        used in the Output_buffer is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_memory24_stream
 id|acpi_rs_memory24_stream
@@ -210,7 +210,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -232,7 +232,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_memory24_stream&quot;
 )paren
@@ -252,7 +252,7 @@ id|temp16
 op_assign
 l_int|0x09
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -286,7 +286,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range minimum base address&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -299,7 +299,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range maximum base address&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -312,7 +312,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the base alignment&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -325,7 +325,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -341,7 +341,7 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
-id|POINTER_DIFF
+id|ACPI_PTR_DIFF
 (paren
 id|buffer
 comma
@@ -355,7 +355,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory32_range_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory32_range_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        consumed the Byte_stream_buffer is&n; *                                        returned&n; *              Output_buffer           - Pointer to the return data buffer&n; *              Structure_size          - Pointer to where the number of bytes&n; *                                        in the return data struct is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_memory32_range_resource
 id|acpi_rs_memory32_range_resource
@@ -364,7 +364,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -373,7 +373,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -405,15 +405,15 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|struct_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_mem32
 )paren
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_memory32_range_resource&quot;
 )paren
@@ -423,7 +423,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -464,7 +464,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Min_base_address (Bytes 4-7)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.min_base_address
@@ -477,7 +477,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Max_base_address (Bytes 8-11)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.max_base_address
@@ -490,7 +490,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Alignment (Bytes 12-15)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.alignment
@@ -503,7 +503,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Range_length (Bytes 16-19)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.range_length
@@ -528,7 +528,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_memory32_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_memory32_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        consumed the Byte_stream_buffer is&n; *                                        returned&n; *              Output_buffer           - Pointer to the return data buffer&n; *              Structure_size          - Pointer to where the number of bytes&n; *                                        in the return data struct is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_fixed_memory32_resource
 id|acpi_rs_fixed_memory32_resource
@@ -537,7 +537,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -546,7 +546,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -578,15 +578,15 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|struct_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_fixed_mem32
 )paren
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_fixed_memory32_resource&quot;
 )paren
@@ -596,7 +596,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -636,7 +636,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Range_base_address (Bytes 4-7)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.fixed_memory32.range_base_address
@@ -649,7 +649,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Range_length (Bytes 8-11)&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.fixed_memory32.range_length
@@ -674,7 +674,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory32_range_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_memory32_range_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        used in the Output_buffer is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_memory32_range_stream
 id|acpi_rs_memory32_range_stream
@@ -688,7 +688,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -710,7 +710,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_memory32_range_stream&quot;
 )paren
@@ -730,7 +730,7 @@ id|temp16
 op_assign
 l_int|0x11
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -764,7 +764,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range minimum base address&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -777,7 +777,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range maximum base address&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -790,7 +790,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the base alignment&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -803,7 +803,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -819,7 +819,7 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
-id|POINTER_DIFF
+id|ACPI_PTR_DIFF
 (paren
 id|buffer
 comma
@@ -833,7 +833,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_memory32_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_memory32_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - Pointer to where the number of bytes&n; *                                        used in the Output_buffer is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_fixed_memory32_stream
 id|acpi_rs_fixed_memory32_stream
@@ -847,7 +847,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -869,7 +869,7 @@ id|temp8
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_fixed_memory32_stream&quot;
 )paren
@@ -889,7 +889,7 @@ id|temp16
 op_assign
 l_int|0x09
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|buffer
 comma
@@ -923,7 +923,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range base address&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -936,7 +936,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 id|buffer
 comma
@@ -952,7 +952,7 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
-id|POINTER_DIFF
+id|ACPI_PTR_DIFF
 (paren
 id|buffer
 comma

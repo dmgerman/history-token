@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,11 +9,11 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsload&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  Display_aml_during_load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_load_namespace
 id|acpi_ns_load_namespace
@@ -24,7 +24,7 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_load_name_space&quot;
 )paren
@@ -104,7 +104,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_one_parse_pass&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_one_parse_pass&n; *&n; * PARAMETERS:  Pass_number             - 1 or 2&n; *              Table_desc              - The table to be parsed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform one complete parse of an ACPI/AML table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_one_complete_parse
 id|acpi_ns_one_complete_parse
@@ -128,7 +128,7 @@ id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_one_complete_parse&quot;
 )paren
@@ -286,7 +286,7 @@ id|start_node
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_parse_table&quot;
 )paren
@@ -364,11 +364,36 @@ id|node
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_load_table&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check if table contains valid AML (must be DSDT, PSDT, SSDT, etc.) */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|acpi_gbl_acpi_table_data
+(braket
+id|table_desc-&gt;type
+)braket
+dot
+id|flags
+op_amp
+id|ACPI_TABLE_EXECUTABLE
+)paren
+)paren
+(brace
+multiline_comment|/* Just ignore this table */
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Check validity of the AML start and length */
 r_if
 c_cond
 (paren
@@ -434,11 +459,28 @@ l_string|&quot;**** Loading table into namespace ****&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_ns_parse_table
@@ -448,6 +490,9 @@ comma
 id|node-&gt;child
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
@@ -516,23 +561,38 @@ id|i
 suffix:semicolon
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
 id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_load_table_by_type&quot;
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Table types supported are:&n;&t; * DSDT (one), SSDT/PSDT (multiple)&n;&t; */
 r_switch
 c_cond
@@ -790,6 +850,9 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_TABLES
@@ -801,7 +864,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              TBD: [Investigate] What if any part of this subtree is in use?&n; *              (i.e. on one of the object stacks?)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              Namespace/Interpreter should be locked or the subsystem should&n; *              be in shutdown before this routine is called.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_delete_subtree
 id|acpi_ns_delete_subtree
@@ -828,7 +891,7 @@ suffix:semicolon
 id|u32
 id|level
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_delete_subtree&quot;
 )paren
@@ -967,7 +1030,7 @@ id|handle
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_unload_name_space&quot;
 )paren

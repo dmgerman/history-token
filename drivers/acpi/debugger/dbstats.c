@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 47 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;acdebug.h&gt;
 macro_line|#include &lt;amlcode.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;acnamesp.h&gt;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbstats&quot;
 )paren
@@ -68,7 +68,7 @@ DECL|macro|CMD_SIZES
 mdefine_line|#define CMD_SIZES           5
 DECL|macro|CMD_STACK
 mdefine_line|#define CMD_STACK           6
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_enumerate_object&n; *&n; * PARAMETERS:  Obj_desc            - Object to be counted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Add this object to the global counts, by object type.&n; *              Recursively handles subobjects and packages.&n; *&n; *              [TBD] Restructure - remove recursion.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_enumerate_object&n; *&n; * PARAMETERS:  Obj_desc            - Object to be counted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Add this object to the global counts, by object type.&n; *              Limited recursion handles subobjects and packages, and this&n; *              is probably acceptable within the AML debugger only.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_enumerate_object
 id|acpi_db_enumerate_object
@@ -78,9 +78,6 @@ op_star
 id|obj_desc
 )paren
 (brace
-id|u32
-id|type
-suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
@@ -98,14 +95,10 @@ multiline_comment|/* Enumerate this object first */
 id|acpi_gbl_num_objects
 op_increment
 suffix:semicolon
-id|type
-op_assign
-id|obj_desc-&gt;common.type
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|type
+id|obj_desc-&gt;common.type
 OG
 id|INTERNAL_TYPE_NODE_MAX
 )paren
@@ -118,7 +111,7 @@ r_else
 (brace
 id|acpi_gbl_obj_type_count
 (braket
-id|type
+id|obj_desc-&gt;common.type
 )braket
 op_increment
 suffix:semicolon
@@ -127,7 +120,7 @@ multiline_comment|/* Count the sub-objects */
 r_switch
 c_cond
 (paren
-id|type
+id|obj_desc-&gt;common.type
 )paren
 (brace
 r_case
@@ -180,8 +173,35 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
+r_if
+c_cond
+(paren
+id|acpi_ns_get_secondary_object
+(paren
+id|obj_desc
+)paren
+)paren
+(brace
+id|acpi_gbl_obj_type_count
+(braket
+id|ACPI_TYPE_BUFFER_FIELD
+)braket
+op_increment
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 id|ACPI_TYPE_REGION
 suffix:colon
+id|acpi_gbl_obj_type_count
+(braket
+id|INTERNAL_TYPE_REGION_FIELD
+)braket
+op_increment
+suffix:semicolon
 id|acpi_db_enumerate_object
 (paren
 id|obj_desc-&gt;region.addr_handler
@@ -292,15 +312,10 @@ id|obj_handle
 suffix:semicolon
 id|obj_desc
 op_assign
+id|acpi_ns_get_attached_object
 (paren
-(paren
-id|acpi_namespace_node
-op_star
+id|node
 )paren
-id|obj_handle
-)paren
-op_member_access_from_pointer
-id|object
 suffix:semicolon
 id|acpi_db_enumerate_object
 (paren
@@ -436,11 +451,13 @@ id|u32
 id|type
 suffix:semicolon
 id|u32
-id|outstanding
-suffix:semicolon
-id|u32
 id|size
 suffix:semicolon
+macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
+id|u32
+id|outstanding
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -472,7 +489,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-id|STRUPR
+id|ACPI_STRUPR
 (paren
 id|type_arg
 )paren
@@ -814,7 +831,7 @@ id|object_size
 (brace
 id|size
 op_assign
-id|ROUND_UP_TO_1K
+id|ACPI_ROUND_UP_TO_1K
 (paren
 id|outstanding
 op_star
@@ -831,7 +848,7 @@ r_else
 (brace
 id|size
 op_assign
-id|ROUND_UP_TO_1K
+id|ACPI_ROUND_UP_TO_1K
 (paren
 id|acpi_gbl_memory_lists
 (braket
@@ -1151,6 +1168,16 @@ comma
 r_sizeof
 (paren
 id|ACPI_OBJECT_EXTRA
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Data           %3d&bslash;n&quot;
+comma
+r_sizeof
+(paren
+id|ACPI_OBJECT_DATA
 )paren
 )paren
 suffix:semicolon
