@@ -1576,24 +1576,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|wireless_proc_exit
-r_void
-id|__init
-id|wireless_proc_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;wireless&quot;
-comma
-id|proc_net
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif&t;/* CONFIG_PROC_FS */
 multiline_comment|/************************** IOCTL SUPPORT **************************/
 multiline_comment|/*&n; * The original user space API to configure all those Wireless Extensions&n; * is through IOCTLs.&n; * In there, we check if we need to call the new driver API (iw_handler)&n; * or just call the driver ioctl handler.&n; */
