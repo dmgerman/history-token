@@ -660,8 +660,6 @@ mdefine_line|#define memblk_set_offline(memblk) &bslash;&n;&t;({ BUG_ON((memblk)
 DECL|macro|num_online_memblks
 mdefine_line|#define num_online_memblks()&t;&t;1
 macro_line|#endif /* CONFIG_DISCONTIGMEM || CONFIG_NUMA */
-DECL|macro|MAP_ALIGN
-mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(struct page)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(struct page) - ((x) % sizeof(struct page))))
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MMZONE_H */
