@@ -451,14 +451,6 @@ r_void
 (brace
 r_int
 id|i
-comma
-id|flags
-suffix:semicolon
-id|save_and_cli
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -492,12 +484,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Install an exception handler for kgdb */
 DECL|function|exceptionHandler
@@ -522,16 +508,6 @@ r_int
 r_int
 )paren
 id|trap_entry
-suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* We are dorking with a live trap table, all irqs off */
-id|save_and_cli
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* Make new vector */
 id|sparc_ttable
@@ -589,12 +565,6 @@ dot
 id|inst_four
 op_assign
 id|SPARC_NOP
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Convert ch from a hex digit to an int */
@@ -1326,7 +1296,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1458,7 +1428,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* connect! */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

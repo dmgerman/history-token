@@ -1855,6 +1855,7 @@ suffix:semicolon
 r_case
 id|both
 suffix:colon
+macro_line|#if 0 /* unsupported */
 id|do_atomic
 c_func
 (paren
@@ -1884,6 +1885,18 @@ comma
 id|user_unaligned_trap_fault
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n;&t;&t;&t; * This was supported in 2.4. However, we question&n;&t;&t;&t; * the value of SWAP instruction across word boundaries.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;Unaligned SWAP unsupported.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|kill_user
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
