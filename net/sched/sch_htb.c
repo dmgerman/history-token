@@ -43,7 +43,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000d&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000e&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -6724,6 +6724,14 @@ id|q-&gt;rttim
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* This line used to be after htb_destroy_class call below&n;&t;   and surprisingly it worked in 2.4. But it must precede it &n;&t;   because filter need its target class alive to be able to call&n;&t;   unbind_filter on it (without Oops). */
+id|htb_destroy_filters
+c_func
+(paren
+op_amp
+id|q-&gt;filter_list
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -6749,13 +6757,6 @@ id|htb_class
 comma
 id|sibling
 )paren
-)paren
-suffix:semicolon
-id|htb_destroy_filters
-c_func
-(paren
-op_amp
-id|q-&gt;filter_list
 )paren
 suffix:semicolon
 id|__skb_queue_purge
