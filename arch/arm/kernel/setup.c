@@ -191,6 +191,13 @@ id|processor
 id|processor
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef MULTI_TLB
+DECL|variable|cpu_tlb
+r_struct
+id|cpu_tlb_fns
+id|cpu_tlb
+suffix:semicolon
+macro_line|#endif
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -830,6 +837,13 @@ id|processor
 op_assign
 op_star
 id|list-&gt;proc
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MULTI_TLB
+id|cpu_tlb
+op_assign
+op_star
+id|list-&gt;tlb
 suffix:semicolon
 macro_line|#endif
 id|printk
