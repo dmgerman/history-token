@@ -2338,35 +2338,6 @@ c_func
 id|acpi_root
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install drivers required for proper enumeration of the&n;&t; * ACPI namespace.&n;&t; */
-id|acpi_power_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ACPI Bus Power Management */
-macro_line|#ifdef CONFIG_ACPI_EC
-id|acpi_ec_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ACPI Embedded Controller */
-macro_line|#endif
-macro_line|#ifdef CONFIG_ACPI_PCI
-id|acpi_pci_link_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ACPI PCI Interrupt Link */
-id|acpi_pci_root_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ACPI PCI Root Bridge */
-macro_line|#endif
 id|return_VALUE
 c_func
 (paren

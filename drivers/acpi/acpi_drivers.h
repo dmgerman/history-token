@@ -132,18 +132,6 @@ id|acpi_ec_ecdt_probe
 r_void
 )paren
 suffix:semicolon
-r_int
-id|acpi_ec_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_ec_exit
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                       Fan&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_FAN_COMPONENT
@@ -173,18 +161,6 @@ DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
 DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
-r_int
-id|acpi_pci_root_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_pci_root_exit
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|acpi_pci_get_translations
 (paren
@@ -228,18 +204,6 @@ id|handle
 comma
 r_int
 id|index
-)paren
-suffix:semicolon
-r_int
-id|acpi_pci_link_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_pci_link_exit
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI PCI Interrupt Routing (pci_irq.c) */
@@ -329,18 +293,6 @@ id|device
 comma
 r_int
 id|state
-)paren
-suffix:semicolon
-r_int
-id|acpi_power_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_power_exit
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif
