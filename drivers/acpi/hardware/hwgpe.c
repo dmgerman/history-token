@@ -68,7 +68,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be cleared&n; *&n; * RETURN:      status_status&n; *&n; * DESCRIPTION: Clear the status bit for a single GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_gpe&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to be cleared&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear the status bit for a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_gpe
 id|acpi_hw_clear_gpe

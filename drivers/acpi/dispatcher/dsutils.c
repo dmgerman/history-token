@@ -14,7 +14,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;dsutils&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_is_result_used&n; *&n; * PARAMETERS:  Op&n; *              result_obj&n; *              walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if a result object will be used by the parent&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_is_result_used&n; *&n; * PARAMETERS:  Op                  - Current Op&n; *              walk_state          - Current State&n; *&n; * RETURN:      TRUE if result is used, FALSE otherwise&n; *&n; * DESCRIPTION: Check if a result object will be used by the parent&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ds_is_result_used
 id|acpi_ds_is_result_used
@@ -66,7 +66,7 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If there is no parent, the result can&squot;t possibly be used!&n;&t; * (An executing method typically has no parent, since each&n;&t; * method is parsed separately)  However, a method that is&n;&t; * invoked from another method has a parent.&n;&t; */
+multiline_comment|/*&n;&t; * If there is no parent, we are executing at the method level.&n;&t; * An executing method typically has no parent, since each method&n;&t; * is parsed separately.&n;&t; */
 r_if
 c_cond
 (paren
@@ -74,13 +74,57 @@ op_logical_neg
 id|op-&gt;common.parent
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * If this is the last statement in the method, we know it is not a&n;&t;&t; * Return() operator (would not come here.) The following code is the&n;&t;&t; * optional support for a so-called &quot;implicit return&quot;. Some AML code&n;&t;&t; * assumes that the last value of the method is &quot;implicitly&quot; returned&n;&t;&t; * to the caller. Just save the last result as the return value.&n;&t;&t; * NOTE: this is optional because the ASL language does not actually&n;&t;&t; * support this behavior.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|acpi_gbl_enable_interpreter_slack
+)paren
+op_logical_and
+(paren
+id|walk_state-&gt;parser_state.aml
+op_ge
+id|walk_state-&gt;parser_state.aml_end
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Result of [%s] will be implicitly returned&bslash;n&quot;
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|op-&gt;common.aml_opcode
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Use the top of the result stack as the implicit return value */
+id|walk_state-&gt;return_desc
+op_assign
+id|walk_state-&gt;results-&gt;results.obj_desc
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|return_VALUE
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* No parent, the return value cannot possibly be used */
 id|return_VALUE
 (paren
 id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get info on the parent.  The root Op is AML_SCOPE&n;&t; */
+multiline_comment|/* Get info on the parent. The root_op is AML_SCOPE */
 id|parent_info
 op_assign
 id|acpi_ps_get_opcode_info
@@ -301,7 +345,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_result_if_not_used&n; *&n; * PARAMETERS:  Op&n; *              result_obj&n; *              walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Used after interpretation of an opcode.  If there is an internal&n; *              result descriptor, check if the parent opcode will actually use&n; *              this result.  If not, delete the result now so that it will&n; *              not become orphaned.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_result_if_not_used&n; *&n; * PARAMETERS:  Op              - Current parse Op&n; *              result_obj      - Result of the operation&n; *              walk_state      - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Used after interpretation of an opcode.  If there is an internal&n; *              result descriptor, check if the parent opcode will actually use&n; *              this result.  If not, delete the result now so that it will&n; *              not become orphaned.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_result_if_not_used
 id|acpi_ds_delete_result_if_not_used
@@ -544,7 +588,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operand&n; *&n; * PARAMETERS:  walk_state&n; *              Arg&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parse tree object that is an argument to an AML&n; *              opcode to the equivalent interpreter object.  This may include&n; *              looking up a name or entering a new name into the internal&n; *              namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operand&n; *&n; * PARAMETERS:  walk_state      - Current walk state&n; *              Arg             - Parse object for the argument&n; *              arg_index       - Which argument (zero based)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parse tree object that is an argument to an AML&n; *              opcode to the equivalent interpreter object.  This may include&n; *              looking up a name or entering a new name into the internal&n; *              namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_operand
 id|acpi_ds_create_operand
