@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/hpt34x.c&t;&t;Version 0.31&t;June. 9, 2000&n; *&n; * Copyright (C) 1998-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * 00:12.0 Unknown mass storage controller:&n; * Triones Technologies, Inc.&n; * Unknown device 0003 (rev 01)&n; *&n; * hde: UDMA 2 (0x0000 0x0002) (0x0000 0x0010)&n; * hdf: UDMA 2 (0x0002 0x0012) (0x0010 0x0030)&n; * hde: DMA 2  (0x0000 0x0002) (0x0000 0x0010)&n; * hdf: DMA 2  (0x0002 0x0012) (0x0010 0x0030)&n; * hdg: DMA 1  (0x0012 0x0052) (0x0030 0x0070)&n; * hdh: DMA 1  (0x0052 0x0252) (0x0070 0x00f0)&n; *&n; * ide-pci.c reference&n; *&n; * Since there are two cards that report almost identically,&n; * the only discernable difference is the values reported in pcicmd.&n; * Booting-BIOS card or HPT363 :: pcicmd == 0x07&n; * Non-bootable card or HPT343 :: pcicmd == 0x05&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/hpt34x.c&t;&t;Version 0.31&t;June. 9, 2000&n; *&n; * Copyright (C) 1998-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * 00:12.0 Unknown mass storage controller:&n; * Triones Technologies, Inc.&n; * Unknown device 0003 (rev 01)&n; *&n; * hde: UDMA 2 (0x0000 0x0002) (0x0000 0x0010)&n; * hdf: UDMA 2 (0x0002 0x0012) (0x0010 0x0030)&n; * hde: DMA 2  (0x0000 0x0002) (0x0000 0x0010)&n; * hdf: DMA 2  (0x0002 0x0012) (0x0010 0x0030)&n; * hdg: DMA 1  (0x0012 0x0052) (0x0030 0x0070)&n; * hdh: DMA 1  (0x0052 0x0252) (0x0070 0x00f0)&n; *&n; * ide-pci.c reference&n; *&n; * Since there are two cards that report almost identically,&n; * the only discernable difference is the values reported in pcicmd.&n; * Booting-BIOS card or HPT363 :: pcicmd == 0x07&n; * Non-bootable card or HPT343 :: pcicmd == 0x05&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,9 +15,10 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
-mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
+macro_line|# define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
 macro_line|#endif
 DECL|macro|HPT343_DEBUG_DRIVE_INFO
 mdefine_line|#define HPT343_DEBUG_DRIVE_INFO&t;&t;0
@@ -1860,6 +1861,7 @@ multiline_comment|/*&n; * If the BIOS does not set the IO base addaress to XX00,
 DECL|macro|HPT34X_PCI_INIT_REG
 mdefine_line|#define&t;HPT34X_PCI_INIT_REG&t;&t;0x80
 DECL|function|pci_init_hpt34x
+r_static
 r_int
 r_int
 id|__init
@@ -2197,12 +2199,13 @@ op_amp
 id|hpt34x_get_info
 suffix:semicolon
 )brace
-macro_line|#endif /* DISPLAY_HPT34X_TIMINGS &amp;&amp; CONFIG_PROC_FS */
+macro_line|#endif
 r_return
 id|dev-&gt;irq
 suffix:semicolon
 )brace
 DECL|function|ide_init_hpt34x
+r_static
 r_void
 id|__init
 id|ide_init_hpt34x
@@ -2216,12 +2219,10 @@ id|hwif
 (brace
 id|hwif-&gt;tuneproc
 op_assign
-op_amp
 id|hpt34x_tune_drive
 suffix:semicolon
 id|hwif-&gt;speedproc
 op_assign
-op_amp
 id|hpt34x_tune_chipset
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
@@ -2314,7 +2315,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
+macro_line|#else
 id|hwif-&gt;drives
 (braket
 l_int|0
@@ -2337,6 +2338,66 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_TTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_TTI_HPT343
+comma
+id|init_chipset
+suffix:colon
+id|pci_init_hpt34x
+comma
+id|init_channel
+suffix:colon
+id|ide_init_hpt34x
+comma
+id|bootable
+suffix:colon
+id|NEVER_BOARD
+comma
+id|extra
+suffix:colon
+l_int|16
+comma
+id|flags
+suffix:colon
+id|ATA_F_NOADMA
+op_or
+id|ATA_F_DMA
+)brace
+suffix:semicolon
+DECL|function|init_hpt34x
+r_int
+id|__init
+id|init_hpt34x
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

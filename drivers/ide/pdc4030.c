@@ -1719,7 +1719,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: write timed-out!&bslash;n&quot;
+l_string|&quot;%s: write timed out!&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|DISPLAY_PDCADMA_TIMINGS
 macro_line|#undef DISPLAY_PDCADMA_TIMINGS
 macro_line|#if defined(DISPLAY_PDCADMA_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -187,6 +188,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|pci_init_pdcadma
+r_static
 r_int
 r_int
 id|__init
@@ -226,6 +228,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ata66_pdcadma
+r_static
 r_int
 r_int
 id|__init
@@ -243,6 +246,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ide_init_pdcadma
+r_static
 r_void
 id|__init
 id|ide_init_pdcadma
@@ -270,6 +274,7 @@ singleline_comment|//&t;&t;hwif-&gt;autodma = 1;
 singleline_comment|//&t;}
 )brace
 DECL|function|ide_dmacapable_pdcadma
+r_static
 r_void
 id|__init
 id|ide_dmacapable_pdcadma
@@ -286,5 +291,71 @@ id|dmabase
 )paren
 (brace
 singleline_comment|//&t;ide_setup_dma(hwif, dmabase, 8);
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|PCI_VENDOR_ID_PDC
+comma
+id|PCI_DEVICE_ID_PDC_1841
+comma
+id|pci_init_pdcadma
+comma
+id|ata66_pdcadma
+comma
+id|ide_init_pdcadma
+comma
+id|ide_dmacapable_pdcadma
+comma
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|OFF_BOARD
+comma
+l_int|0
+comma
+id|ATA_F_NODMA
+)brace
+suffix:semicolon
+DECL|function|init_pdcadma
+r_int
+id|__init
+id|init_pdcadma
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

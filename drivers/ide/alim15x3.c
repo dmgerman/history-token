@@ -4,11 +4,12 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|DISPLAY_ALI_TIMINGS
 macro_line|#undef DISPLAY_ALI_TIMINGS
 macro_line|#if defined(DISPLAY_ALI_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -1477,8 +1478,10 @@ DECL|function|ali15x3_tune_drive
 r_static
 r_void
 id|ali15x3_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1873,8 +1876,10 @@ DECL|function|ali15x3_tune_chipset
 r_static
 r_int
 id|ali15x3_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2144,8 +2149,10 @@ DECL|function|config_chipset_for_pio
 r_static
 r_void
 id|config_chipset_for_pio
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2164,8 +2171,10 @@ DECL|function|config_chipset_for_dma
 r_static
 r_int
 id|config_chipset_for_dma
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2526,8 +2535,10 @@ DECL|function|ali15x3_can_ultra
 r_static
 id|byte
 id|ali15x3_can_ultra
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2611,7 +2622,8 @@ r_int
 id|ali15x3_config_drive_for_dma
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -3001,11 +3013,12 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|pci_init_ali15x3
+DECL|function|ali15x3_init_chipset
+r_static
 r_int
 r_int
 id|__init
-id|pci_init_ali15x3
+id|ali15x3_init_chipset
 c_func
 (paren
 r_struct
@@ -3129,11 +3142,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This checks if the controller and the cable are capable&n; * of UDMA66 transfers. It doesn&squot;t check the drives.&n; * But see note 2 below!&n; */
-DECL|function|ata66_ali15x3
+DECL|function|ali15x3_ata66_check
+r_static
 r_int
 r_int
 id|__init
-id|ata66_ali15x3
+id|ali15x3_ata66_check
 c_func
 (paren
 r_struct
@@ -3444,10 +3458,11 @@ r_return
 id|ata66
 suffix:semicolon
 )brace
-DECL|function|ide_init_ali15x3
+DECL|function|ali15x3_init_channel
+r_static
 r_void
 id|__init
-id|ide_init_ali15x3
+id|ali15x3_init_channel
 c_func
 (paren
 r_struct
@@ -3695,18 +3710,19 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 )brace
-DECL|function|ide_dmacapable_ali15x3
+DECL|function|ali15x3_init_dma
+r_static
 r_void
 id|__init
-id|ide_dmacapable_ali15x3
+id|ali15x3_init_dma
 c_func
 (paren
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 comma
 r_int
 r_int
@@ -3726,19 +3742,93 @@ OL
 l_int|0x20
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
-id|ide_setup_dma
+id|ata_init_dma
 c_func
 (paren
-id|hwif
+id|ch
 comma
 id|dmabase
-comma
-l_int|8
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_AL
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_AL_M5229
+comma
+id|init_chipset
+suffix:colon
+id|ali15x3_init_chipset
+comma
+id|ata66_check
+suffix:colon
+id|ali15x3_ata66_check
+comma
+id|init_channel
+suffix:colon
+id|ali15x3_init_channel
+comma
+id|init_dma
+suffix:colon
+id|ali15x3_init_dma
+comma
+id|enablebits
+suffix:colon
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+suffix:semicolon
+DECL|function|init_ali15x3
+r_int
+id|__init
+id|init_ali15x3
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

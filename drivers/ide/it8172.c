@@ -8,9 +8,11 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_int.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/*&n; * Prototypes&n; */
 r_static
 r_void
@@ -751,6 +753,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; (CONFIG_IT8172_TUNING) */
 DECL|function|pci_init_it8172
+r_static
 r_int
 r_int
 id|__init
@@ -801,6 +804,7 @@ id|IT8172_IDE_IRQ
 suffix:semicolon
 )brace
 DECL|function|ide_init_it8172
+r_static
 r_void
 id|__init
 id|ide_init_it8172
@@ -862,7 +866,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#else /* CONFIG_BLK_DEV_IDEDMA */
-macro_line|#ifdef CONFIG_IT8172_TUNING
+macro_line|# ifdef CONFIG_IT8172_TUNING
 id|hwif-&gt;autodma
 op_assign
 l_int|1
@@ -877,8 +881,8 @@ op_assign
 op_amp
 id|it8172_tune_chipset
 suffix:semicolon
-macro_line|#endif /* CONFIG_IT8172_TUNING */
-macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
+macro_line|# endif
+macro_line|#endif
 id|cmdBase
 op_assign
 id|dev-&gt;resource
@@ -927,6 +931,76 @@ id|hwif-&gt;io_ports
 suffix:semicolon
 id|hwif-&gt;noprobe
 op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_ITE
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_ITE_IT8172G
+comma
+id|init_chipset
+suffix:colon
+id|pci_init_it8172
+comma
+id|init_channel
+suffix:colon
+id|ide_init_it8172
+comma
+id|exnablebits
+suffix:colon
+(brace
+(brace
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x00
+comma
+l_int|0x01
+)brace
+)brace
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+suffix:semicolon
+DECL|function|init_it8172
+r_int
+id|__init
+id|init_it8172
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
 l_int|0
 suffix:semicolon
 )brace

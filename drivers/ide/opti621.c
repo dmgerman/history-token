@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1996-1998  Linus Torvalds &amp; authors (see below)&n; *&n; * Authors:&n; * Jaromir Koutek &lt;miri@punknet.cz&gt;,&n; * Jan Harkes &lt;jaharkes@cwi.nl&gt;,&n; * Mark Lord &lt;mlord@pobox.com&gt;&n; * Some parts of code are from ali14xx.c and from rz1000.c.&n; *&n; * OPTi is trademark of OPTi, Octek is trademark of Octek.&n; *&n; * I used docs from OPTi databook, from ftp.opti.com, file 9123-0002.ps&n; * and disassembled/traced setupvic.exe (DOS program).&n; * It increases kernel code about 2 kB.&n; * I don&squot;t have this card no more, but I hope I can get some in case&n; * of needed development.&n; * My card is Octek PIDE 1.01 (on card) or OPTiViC (program).&n; * It has a place for a secondary connector in circuit, but nothing&n; * is there. Also BIOS says no address for&n; * secondary controller (see bellow in ide_init_opti621).&n; * I&squot;ve only tested this on my system, which only has one disk.&n; * It&squot;s Western Digital WDAC2850, with PIO mode 3. The PCI bus&n; * is at 20 MHz (I have DX2/80, I tried PCI at 40, but I got random&n; * lockups). I tried the OCTEK double speed CD-ROM and&n; * it does not work! But I can&squot;t boot DOS also, so it&squot;s probably&n; * hardware fault. I have connected Conner 80MB, the Seagate 850MB (no&n; * problems) and Seagate 1GB (as slave, WD as master). My experiences&n; * with the third, 1GB drive: I got 3MB/s (hdparm), but sometimes&n; * it slows to about 100kB/s! I don&squot;t know why and I have&n; * not this drive now, so I can&squot;t try it again.&n; * I write this driver because I lost the paper (&quot;manual&quot;) with&n; * settings of jumpers on the card and I have to boot Linux with&n; * Loadlin except LILO, cause I have to run the setupvic.exe program&n; * already or I get disk errors (my test: rpm -Vf&n; * /usr/X11R6/bin/XF86_SVGA - or any big file).&n; * Some numbers from hdparm -t /dev/hda:&n; * Timing buffer-cache reads:   32 MB in  3.02 seconds =10.60 MB/sec&n; * Timing buffered disk reads:  16 MB in  5.52 seconds = 2.90 MB/sec&n; * I have 4 Megs/s before, but I don&squot;t know why (maybe changes&n; * in hdparm test).&n; * After release of 0.1, I got some successful reports, so it might work.&n; *&n; * The main problem with OPTi is that some timings for master&n; * and slave must be the same. For example, if you have master&n; * PIO 3 and slave PIO 0, driver have to set some timings of&n; * master for PIO 0. Second problem is that opti621_tune_drive&n; * got only one drive to set, but have to set both drives.&n; * This is solved in compute_pios. If you don&squot;t set&n; * the second drive, compute_pios use ide_get_best_pio_mode&n; * for autoselect mode (you can change it to PIO 0, if you want).&n; * If you then set the second drive to another PIO, the old value&n; * (automatically selected) will be overrided by yours.&n; * There is a 25/33MHz switch in configuration&n; * register, but driver is written for use at any frequency which get&n; * (use idebus=xx to select PCI bus speed).&n; * Use ide0=autotune for automatical tune of the PIO modes.&n; * If you get strange results, do not use this and set PIO manually&n; * by hdparm.&n; *&n; * Version 0.1, Nov 8, 1996&n; * by Jaromir Koutek, for 2.1.8.&n; * Initial version of driver.&n; *&n; * Version 0.2&n; * Number 0.2 skipped.&n; *&n; * Version 0.3, Nov 29, 1997&n; * by Mark Lord (probably), for 2.1.68&n; * Updates for use with new IDE block driver.&n; *&n; * Version 0.4, Dec 14, 1997&n; * by Jan Harkes&n; * Fixed some errors and cleaned the code.&n; *&n; * Version 0.5, Jan 2, 1998&n; * by Jaromir Koutek&n; * Updates for use with (again) new IDE block driver.&n; * Update of documentation.&n; *&n; * Version 0.6, Jan 2, 1999&n; * by Jaromir Koutek&n; * Reversed to version 0.3 of the driver, because&n; * 0.5 doesn&squot;t work.&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  Copyright (C) 1996-1998  Linus Torvalds &amp; authors (see below)&n; *&n; * Authors:&n; * Jaromir Koutek &lt;miri@punknet.cz&gt;,&n; * Jan Harkes &lt;jaharkes@cwi.nl&gt;,&n; * Mark Lord &lt;mlord@pobox.com&gt;&n; * Some parts of code are from ali14xx.c and from rz1000.c.&n; *&n; * OPTi is trademark of OPTi, Octek is trademark of Octek.&n; *&n; * I used docs from OPTi databook, from ftp.opti.com, file 9123-0002.ps&n; * and disassembled/traced setupvic.exe (DOS program).&n; * It increases kernel code about 2 kB.&n; * I don&squot;t have this card no more, but I hope I can get some in case&n; * of needed development.&n; * My card is Octek PIDE 1.01 (on card) or OPTiViC (program).&n; * It has a place for a secondary connector in circuit, but nothing&n; * is there. Also BIOS says no address for&n; * secondary controller (see bellow in ide_init_opti621).&n; * I&squot;ve only tested this on my system, which only has one disk.&n; * It&squot;s Western Digital WDAC2850, with PIO mode 3. The PCI bus&n; * is at 20 MHz (I have DX2/80, I tried PCI at 40, but I got random&n; * lockups). I tried the OCTEK double speed CD-ROM and&n; * it does not work! But I can&squot;t boot DOS also, so it&squot;s probably&n; * hardware fault. I have connected Conner 80MB, the Seagate 850MB (no&n; * problems) and Seagate 1GB (as slave, WD as master). My experiences&n; * with the third, 1GB drive: I got 3MB/s (hdparm), but sometimes&n; * it slows to about 100kB/s! I don&squot;t know why and I have&n; * not this drive now, so I can&squot;t try it again.&n; * I write this driver because I lost the paper (&quot;manual&quot;) with&n; * settings of jumpers on the card and I have to boot Linux with&n; * Loadlin except LILO, cause I have to run the setupvic.exe program&n; * already or I get disk errors (my test: rpm -Vf&n; * /usr/X11R6/bin/XF86_SVGA - or any big file).&n; * Some numbers from hdparm -t /dev/hda:&n; * Timing buffer-cache reads:   32 MB in  3.02 seconds =10.60 MB/sec&n; * Timing buffered disk reads:  16 MB in  5.52 seconds = 2.90 MB/sec&n; * I have 4 Megs/s before, but I don&squot;t know why (maybe changes&n; * in hdparm test).&n; * After release of 0.1, I got some successful reports, so it might work.&n; *&n; * The main problem with OPTi is that some timings for master&n; * and slave must be the same. For example, if you have master&n; * PIO 3 and slave PIO 0, driver have to set some timings of&n; * master for PIO 0. Second problem is that opti621_tune_drive&n; * got only one drive to set, but have to set both drives.&n; * This is solved in compute_pios. If you don&squot;t set&n; * the second drive, compute_pios use ide_get_best_pio_mode&n; * for autoselect mode (you can change it to PIO 0, if you want).&n; * If you then set the second drive to another PIO, the old value&n; * (automatically selected) will be overrided by yours.&n; * There is a 25/33MHz switch in configuration&n; * register, but driver is written for use at any frequency which get&n; * (use idebus=xx to select PCI bus speed).&n; * Use ide0=autotune for automatical tune of the PIO modes.&n; * If you get strange results, do not use this and set PIO manually&n; * by hdparm.&n; *&n; * Version 0.1, Nov 8, 1996&n; * by Jaromir Koutek, for 2.1.8.&n; * Initial version of driver.&n; *&n; * Version 0.2&n; * Number 0.2 skipped.&n; *&n; * Version 0.3, Nov 29, 1997&n; * by Mark Lord (probably), for 2.1.68&n; * Updates for use with new IDE block driver.&n; *&n; * Version 0.4, Dec 14, 1997&n; * by Jan Harkes&n; * Fixed some errors and cleaned the code.&n; *&n; * Version 0.5, Jan 2, 1998&n; * by Jaromir Koutek&n; * Updates for use with (again) new IDE block driver.&n; * Update of documentation.&n; *&n; * Version 0.6, Jan 2, 1999&n; * by Jaromir Koutek&n; * Reversed to version 0.3 of the driver, because&n; * 0.5 doesn&squot;t work.&n; */
 DECL|macro|OPTI621_DEBUG
 mdefine_line|#define OPTI621_DEBUG&t;&t;/* define for debug messages */
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,10 +8,12 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3
 multiline_comment|/* In fact, I do not have any PIO 4 drive&n; * (address: 25 ns, data: 70 ns, recovery: 35 ns),&n; * but OPTi 82C621 is programmable and it can do (minimal values):&n; * on 40MHz PCI bus (pulse 25 ns):&n; *  address: 25 ns, data: 25 ns, recovery: 50 ns;&n; * on 20MHz PCI bus (pulse 50 ns):&n; *  address: 50 ns, data: 50 ns, recovery: 100 ns.&n; */
@@ -876,6 +878,7 @@ multiline_comment|/* all CPUs */
 )brace
 multiline_comment|/*&n; * ide_init_opti621() is called once for each hwif found at boot.&n; */
 DECL|function|ide_init_opti621
+r_static
 r_void
 id|__init
 id|ide_init_opti621
@@ -909,6 +912,141 @@ id|hwif-&gt;tuneproc
 op_assign
 op_amp
 id|opti621_tune_drive
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipsets
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_OPTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_OPTI_82C621
+comma
+id|init_channel
+suffix:colon
+id|ide_init_opti621
+comma
+id|enablebits
+suffix:colon
+(brace
+(brace
+l_int|0x45
+comma
+l_int|0x80
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x08
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+comma
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_OPTI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_OPTI_82C825
+comma
+id|init_channel
+suffix:colon
+id|ide_init_opti621
+comma
+id|enablebits
+suffix:colon
+(brace
+(brace
+l_int|0x45
+comma
+l_int|0x80
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x08
+comma
+l_int|0x00
+)brace
+)brace
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|function|init_opti621
+r_int
+id|__init
+id|init_opti621
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|chipsets
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipsets
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

@@ -1138,6 +1138,15 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+id|ide_hwifs
+(braket
+id|ix
+)braket
+dot
+id|unmask
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
 macro_line|#if 0

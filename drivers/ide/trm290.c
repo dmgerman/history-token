@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  linux/drivers/ide/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
 multiline_comment|/*&n; * This module provides support for the bus-master IDE DMA function&n; * of the Tekram TRM290 chip, used on a variety of PCI IDE add-on boards,&n; * including a &quot;Precision Instruments&quot; board.  The TRM290 pre-dates&n; * the sff-8038 standard (ide-dma.c) by a few months, and differs&n; * significantly enough to warrant separate routines for some functions,&n; * while re-using others from ide-dma.c.&n; *&n; * EXPERIMENTAL!  It works for me (a sample of one).&n; *&n; * Works reliably for me in DMA mode (READs only),&n; * DMA WRITEs are disabled by default (see #define below);&n; *&n; * DMA is not enabled automatically for this chipset,&n; * but can be turned on manually (with &quot;hdparm -d1&quot;) at run time.&n; *&n; * I need volunteers with &quot;spare&quot; drives for further testing&n; * and development, and maybe to help figure out the peculiarities.&n; * Even knowing the registers (below), some things behave strangely.&n; */
 DECL|macro|TRM290_NO_DMA_WRITES
 mdefine_line|#define TRM290_NO_DMA_WRITES&t;/* DMA writes seem unreliable sometimes */
@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|function|trm290_prepare_drive
 r_static
 r_void
@@ -544,10 +545,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
-DECL|function|ide_init_trm290
+DECL|function|trm290_init_channel
+r_static
 r_void
 id|__init
-id|ide_init_trm290
+id|trm290_init_channel
 c_func
 (paren
 r_struct
@@ -765,7 +767,7 @@ op_assign
 id|primary_irq
 suffix:semicolon
 )brace
-id|ide_setup_dma
+id|ata_init_dma
 c_func
 (paren
 id|hwif
@@ -784,8 +786,6 @@ l_int|0x0080
 suffix:colon
 l_int|0x0000
 )paren
-comma
-l_int|3
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
@@ -942,5 +942,51 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_TEKRAM
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_TEKRAM_DC290
+comma
+id|init_channel
+suffix:colon
+id|trm290_init_channel
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+)brace
+suffix:semicolon
+DECL|function|init_trm290
+r_int
+id|__init
+id|init_trm290
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

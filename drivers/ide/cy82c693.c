@@ -1,12 +1,13 @@
-multiline_comment|/*&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support.&n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA&n; * - this is my first linux driver, so there&squot;s probably a lot  of room&n; *   for optimizations and bug fixing, so feel free to do it.&n; * - use idebus=xx parameter to set PCI bus speed - needed to calc&n; *   timings for PIO modes (default will be 40)&n; * - if using PIO mode it&squot;s a good idea to set the PIO mode and&n; *   32-bit I/O support (if possible), e.g. hdparm -p2 -c1 /dev/hda&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support.&n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA&n; * - this is my first linux driver, so there&squot;s probably a lot  of room&n; *   for optimizations and bug fixing, so feel free to do it.&n; * - use idebus=xx parameter to set PCI bus speed - needed to calc&n; *   timings for PIO modes (default will be 40)&n; * - if using PIO mode it&squot;s a good idea to set the PIO mode and&n; *   32-bit I/O support (if possible), e.g. hdparm -p2 -c1 /dev/hda&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/* the current version */
 DECL|macro|CY82_VERSION
 mdefine_line|#define CY82_VERSION&t;&quot;CY82C693U driver v0.34 99-13-12 Andreas S. Krebs (akrebs@altavista.net)&quot;
@@ -1042,6 +1043,7 @@ macro_line|#endif /* CY82C693_DEBUG_INFO */
 multiline_comment|/*&n; * this function is called during init and is used to setup the cy82c693 chip&n; */
 multiline_comment|/*&n; * FIXME! &quot;pci_init_cy82c693&quot; really should replace&n; * the &quot;init_cy82c693_chip&quot;, it is the correct location to tinker/setup&n; * the device prior to INIT.&n; */
 DECL|function|pci_init_cy82c693
+r_static
 r_int
 r_int
 id|__init
@@ -1118,7 +1120,7 @@ comma
 id|CY82_DATA_PORT
 )paren
 suffix:semicolon
-macro_line|#if CY82C693_DEBUG_INFO
+macro_line|# if CY82C693_DEBUG_INFO
 id|printk
 (paren
 id|KERN_INFO
@@ -1129,14 +1131,15 @@ comma
 id|data
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
-macro_line|#endif /* CY82C693_SETDMA_CLOCK */
+macro_line|# endif
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the init function - called for each ide channel once&n; */
 DECL|function|ide_init_cy82c693
+r_static
 r_void
 id|__init
 id|ide_init_cy82c693
@@ -1204,6 +1207,60 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_CONTAQ
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_CONTAQ_82C693
+comma
+id|init_chipset
+suffix:colon
+id|pci_init_cy82c693
+comma
+id|init_channel
+suffix:colon
+id|ide_init_cy82c693
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+comma
+id|flags
+suffix:colon
+id|ATA_F_DMA
+)brace
+suffix:semicolon
+DECL|function|init_cy82c693
+r_int
+id|__init
+id|init_cy82c693
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

@@ -10,9 +10,10 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;pcihost.h&quot;
 DECL|variable|ns87415_count
 DECL|variable|ns87415_control
 r_static
@@ -548,6 +549,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|ide_init_ns87415
+r_static
 r_void
 id|__init
 id|ide_init_ns87415
@@ -963,6 +965,53 @@ id|hwif-&gt;selectproc
 op_assign
 op_amp
 id|ns87415_selectproc
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_NS
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_NS_87415
+comma
+id|init_channel
+suffix:colon
+id|ide_init_ns87415
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
+DECL|function|init_ns87415
+r_int
+id|__init
+id|init_ns87415
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

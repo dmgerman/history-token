@@ -32,17 +32,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/*&n; * Those will be moved into separate header files eventually.&n; */
-macro_line|#ifdef CONFIG_BLK_DEV_RZ1000
-r_extern
-r_void
-id|ide_probe_for_rz100x
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_IDE
 r_extern
 r_void
@@ -1449,7 +1440,7 @@ multiline_comment|/* end of polling */
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ATAPI reset timed-out, status=0x%02x&bslash;n&quot;
+l_string|&quot;%s: ATAPI reset timed out, status=0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -1557,7 +1548,7 @@ multiline_comment|/* continue polling */
 id|printk
 c_func
 (paren
-l_string|&quot;%s: reset timed-out, status=0x%02x&bslash;n&quot;
+l_string|&quot;%s: reset timed out, status=0x%02x&bslash;n&quot;
 comma
 id|ch-&gt;name
 comma
@@ -10419,142 +10410,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|HDIO_GETGEO_BIG
-suffix:colon
-(brace
-r_struct
-id|hd_big_geometry
-op_star
-id|loc
-op_assign
-(paren
-r_struct
-id|hd_big_geometry
-op_star
-)paren
-id|arg
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|loc
-op_logical_or
-(paren
-id|drive-&gt;type
-op_ne
-id|ATA_DISK
-op_logical_and
-id|drive-&gt;type
-op_ne
-id|ATA_FLOPPY
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-id|drive-&gt;bios_head
-comma
-(paren
-id|byte
-op_star
-)paren
-op_amp
-id|loc-&gt;heads
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-id|drive-&gt;bios_sect
-comma
-(paren
-id|byte
-op_star
-)paren
-op_amp
-id|loc-&gt;sectors
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-id|drive-&gt;bios_cyl
-comma
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|loc-&gt;cylinders
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-(paren
-r_int
-)paren
-id|drive-&gt;part
-(braket
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-op_amp
-id|PARTN_MASK
-)braket
-dot
-id|start_sect
-comma
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|loc-&gt;start
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
 id|HDIO_GETGEO_BIG_RAW
 suffix:colon
 (brace
@@ -10599,7 +10454,7 @@ c_func
 id|drive-&gt;head
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -10619,7 +10474,7 @@ c_func
 id|drive-&gt;sect
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -12664,7 +12519,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_case
 op_minus
@@ -14249,8 +14104,154 @@ id|initializing
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Detect and initialize &quot;known&quot; IDE host chip types.&n;&t; */
 macro_line|#ifdef CONFIG_PCI
+multiline_comment|/*&n;&t; * Register the host chip drivers.&n;&t; */
+macro_line|# ifdef CONFIG_BLK_DEV_PIIX
+id|init_piix
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_VIA82CXXX
+id|init_via82cxxx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_PDC202XX
+id|init_pdc202xx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_RZ1000
+id|init_rz1000
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_SIS5513
+id|init_sis5513
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_CMD64X
+id|init_cmd64x
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_OPTI621
+id|init_opti621
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_TRM290
+id|init_trm290
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_NS87415
+id|init_ns87415
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_AEC62XX
+id|init_aec62xx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_SL82C105
+id|init_sl82c105
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_HPT34X
+id|init_hpt34x
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_HPT366
+id|init_hpt366
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_ALI15X3
+id|init_ali15x3
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_CY82C693
+id|init_cy82c693
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_CS5530
+id|init_cs5530
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_AMD74XX
+id|init_amd74xx
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_PDC_ADMA
+id|init_pdcadma
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_SVWKS
+id|init_svwks
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+macro_line|# ifdef CONFIG_BLK_DEV_IT8172
+id|init_it8172
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# endif
+id|init_ata_pci_misc
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Detect and initialize &quot;known&quot; IDE host chip types.&n;&t; */
 r_if
 c_cond
 (paren

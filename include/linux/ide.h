@@ -2941,9 +2941,9 @@ id|drive
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|ON_BOARD
-macro_line|# define ON_BOARD&t;&t;1
+macro_line|# define ON_BOARD&t;&t;0
 DECL|macro|NEVER_BOARD
-macro_line|# define NEVER_BOARD&t;&t;0
+macro_line|# define NEVER_BOARD&t;&t;1
 macro_line|# ifdef CONFIG_BLK_DEV_OFFBOARD
 DECL|macro|OFF_BOARD
 macro_line|#  define OFF_BOARD&t;&t;ON_BOARD
@@ -3209,23 +3209,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ide_setup_dma
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-id|__init
-suffix:semicolon
-r_extern
 r_int
 id|ata_start_dma
 c_func
@@ -3239,6 +3222,20 @@ id|request
 op_star
 id|rq
 )paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_init_dma
+c_func
+(paren
+r_struct
+id|ata_channel
+op_star
+comma
+r_int
+r_int
+)paren
+id|__init
 suffix:semicolon
 macro_line|#endif
 r_extern

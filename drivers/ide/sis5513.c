@@ -9,14 +9,15 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/* When DEBUG is defined it outputs initial PCI config register&n;   values and changes made to them by the driver */
 singleline_comment|// #define DEBUG
 multiline_comment|/* When BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
@@ -3919,6 +3920,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Chip detection and general config */
 DECL|function|pci_init_sis5513
+r_static
 r_int
 r_int
 id|__init
@@ -4300,6 +4302,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ata66_sis5513
+r_static
 r_int
 r_int
 id|__init
@@ -4369,6 +4372,7 @@ id|ata66
 suffix:semicolon
 )brace
 DECL|function|ide_init_sis5513
+r_static
 r_void
 id|__init
 id|ide_init_sis5513
@@ -4454,6 +4458,84 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 macro_line|#endif
 )brace
 r_return
+suffix:semicolon
+)brace
+multiline_comment|/* module data table */
+DECL|variable|__initdata
+r_static
+r_struct
+id|ata_pci_device
+id|chipset
+id|__initdata
+op_assign
+(brace
+id|vendor
+suffix:colon
+id|PCI_VENDOR_ID_SI
+comma
+id|device
+suffix:colon
+id|PCI_DEVICE_ID_SI_5513
+comma
+id|init_chipset
+suffix:colon
+id|pci_init_sis5513
+comma
+id|ata66_check
+suffix:colon
+id|ata66_sis5513
+comma
+id|init_channel
+suffix:colon
+id|ide_init_sis5513
+comma
+id|enablebits
+suffix:colon
+(brace
+(brace
+l_int|0x4a
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+comma
+(brace
+l_int|0x4a
+comma
+l_int|0x04
+comma
+l_int|0x04
+)brace
+)brace
+comma
+id|bootable
+suffix:colon
+id|ON_BOARD
+comma
+id|flags
+suffix:colon
+id|ATA_F_NOADMA
+)brace
+suffix:semicolon
+DECL|function|init_sis5513
+r_int
+id|__init
+id|init_sis5513
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ata_register_chipset
+c_func
+(paren
+op_amp
+id|chipset
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

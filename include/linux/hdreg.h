@@ -525,7 +525,7 @@ id|start
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* BIG GEOMETRY */
+multiline_comment|/* BIG GEOMETRY - dying, used only by HDIO_GETGEO_BIG_RAW */
 DECL|struct|hd_big_geometry
 r_struct
 id|hd_big_geometry
@@ -622,8 +622,7 @@ id|BUSSTATE_TRISTATE
 )brace
 suffix:semicolon
 multiline_comment|/* hd/ide ctl&squot;s that pass (arg) ptrs to user space are numbered 0x033n/0x033n */
-DECL|macro|HDIO_GETGEO_BIG
-mdefine_line|#define HDIO_GETGEO_BIG&t;&t;0x0330&t;/* */
+multiline_comment|/* 0x330 is reserved - used to be HDIO_GETGEO_BIG */
 DECL|macro|HDIO_GETGEO_BIG_RAW
 mdefine_line|#define HDIO_GETGEO_BIG_RAW&t;0x0331&t;/* */
 DECL|macro|__NEW_HD_DRIVE_ID
