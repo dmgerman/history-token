@@ -1,9 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
@@ -131,6 +129,11 @@ id|second_object
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All others have no secondary object */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* Save the object type in the object descriptor */
 id|object-&gt;common.type
@@ -201,7 +204,7 @@ id|object
 )paren
 (brace
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 multiline_comment|/* The object appears to be a valid acpi_operand_object  */
 r_return
@@ -327,7 +330,7 @@ id|ACPI_SET_DESCRIPTOR_TYPE
 (paren
 id|object
 comma
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -339,6 +342,9 @@ l_string|&quot;%p Size %X&bslash;n&quot;
 comma
 id|object
 comma
+(paren
+id|u32
+)paren
 r_sizeof
 (paren
 id|acpi_operand_object
@@ -378,7 +384,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|object
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -520,6 +526,9 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|length
 op_add_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|internal_object-&gt;string.length
 op_plus
 l_int|1
@@ -531,6 +540,9 @@ id|ACPI_TYPE_BUFFER
 suffix:colon
 id|length
 op_add_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|internal_object-&gt;buffer.length
 suffix:semicolon
 r_break
@@ -742,6 +754,14 @@ l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No other types allowed */
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
 )brace
 r_return
 (paren
@@ -828,6 +848,9 @@ id|acpi_object
 )paren
 )paren
 op_star
+(paren
+id|ACPI_SIZE
+)paren
 id|info.num_packages
 suffix:semicolon
 multiline_comment|/* Return the total package length */
@@ -873,7 +896,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|internal_object
 )paren
 op_eq
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_and
 (paren

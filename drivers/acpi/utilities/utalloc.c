@@ -1,10 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *              $Revision: 121 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *              $Revision: 127 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acglobal.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -93,16 +89,17 @@ id|ACPI_SET_DESCRIPTOR_TYPE
 (paren
 id|object
 comma
-id|ACPI_CACHED_OBJECT
+id|ACPI_DESC_TYPE_CACHED
 )paren
 suffix:semicolon
 multiline_comment|/* Put the object at the head of the cache list */
 op_star
 (paren
+id|ACPI_CAST_INDIRECT_PTR
+(paren
 r_char
-op_star
-op_star
-)paren
+comma
+op_amp
 (paren
 (paren
 (paren
@@ -111,8 +108,11 @@ op_star
 )paren
 id|object
 )paren
-op_plus
+(braket
 id|cache_info-&gt;link_offset
+)braket
+)paren
+)paren
 )paren
 op_assign
 id|cache_info-&gt;list_head
@@ -205,10 +205,11 @@ id|cache_info-&gt;list_head
 op_assign
 op_star
 (paren
+id|ACPI_CAST_INDIRECT_PTR
+(paren
 r_char
-op_star
-op_star
-)paren
+comma
+op_amp
 (paren
 (paren
 (paren
@@ -217,8 +218,11 @@ op_star
 )paren
 id|object
 )paren
-op_plus
+(braket
 id|cache_info-&gt;link_offset
+)braket
+)paren
+)paren
 )paren
 suffix:semicolon
 id|ACPI_MEM_TRACKING
@@ -361,10 +365,11 @@ id|next
 op_assign
 op_star
 (paren
+id|ACPI_CAST_INDIRECT_PTR
+(paren
 r_char
-op_star
-op_star
-)paren
+comma
+op_amp
 (paren
 (paren
 (paren
@@ -373,8 +378,11 @@ op_star
 )paren
 id|cache_info-&gt;list_head
 )paren
-op_plus
+(braket
 id|cache_info-&gt;link_offset
+)braket
+)paren
+)paren
 )paren
 suffix:semicolon
 id|ACPI_MEM_FREE
@@ -694,6 +702,9 @@ comma
 (paren
 l_string|&quot;Ut_allocate: Could not allocate size %X&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|size
 )paren
 )paren
@@ -794,6 +805,9 @@ comma
 (paren
 l_string|&quot;Ut_callocate: Could not allocate size %X&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|size
 )paren
 )paren
@@ -1014,6 +1028,9 @@ comma
 (paren
 l_string|&quot;Ut_callocate: Could not allocate size %X&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|size
 )paren
 )paren
@@ -1118,6 +1135,9 @@ id|acpi_debug_mem_block
 op_star
 id|debug_block
 suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_free&quot;
@@ -1151,10 +1171,10 @@ suffix:semicolon
 )brace
 id|debug_block
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_debug_mem_block
-op_star
-)paren
+comma
 (paren
 (paren
 (paren
@@ -1167,6 +1187,7 @@ op_minus
 r_sizeof
 (paren
 id|acpi_debug_mem_header
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1187,6 +1208,8 @@ id|current_total_size
 op_sub_assign
 id|debug_block-&gt;size
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_remove_allocation
 (paren
 id|ACPI_MEM_LIST_GLOBAL
@@ -1200,6 +1223,30 @@ comma
 id|line
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not free memory, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|acpi_os_free
 (paren
 id|debug_block
@@ -1724,6 +1771,10 @@ id|acpi_debug_mem_block
 op_star
 id|element
 suffix:semicolon
+id|ACPI_DESCRIPTOR
+op_star
+id|descriptor
+suffix:semicolon
 id|u32
 id|num_outstanding
 op_assign
@@ -1795,31 +1846,29 @@ id|element-&gt;module
 )paren
 (brace
 multiline_comment|/* Ignore allocated objects that are in a cache */
-r_if
-c_cond
+id|descriptor
+op_assign
+id|ACPI_CAST_PTR
 (paren
-(paren
-(paren
-id|acpi_operand_object
-op_star
-)paren
-(paren
+id|ACPI_DESCRIPTOR
+comma
 op_amp
 id|element-&gt;user_space
 )paren
-)paren
-op_member_access_from_pointer
-id|common.type
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|descriptor-&gt;descriptor_id
 op_ne
-id|ACPI_CACHED_OBJECT
+id|ACPI_DESC_TYPE_CACHED
 )paren
 (brace
 id|acpi_os_printf
 (paren
 l_string|&quot;%p Len %04X %9.9s-%d &quot;
 comma
-op_amp
-id|element-&gt;user_space
+id|descriptor
 comma
 id|element-&gt;size
 comma
@@ -1834,46 +1883,23 @@ c_cond
 (paren
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
-op_amp
-id|element-&gt;user_space
+id|descriptor
 )paren
 )paren
 (brace
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Obj_type %12.12s R%d&quot;
+l_string|&quot;Obj_type %12.12s R%hd&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-(paren
-(paren
-id|acpi_operand_object
-op_star
-)paren
-(paren
-op_amp
-id|element-&gt;user_space
-)paren
-)paren
-op_member_access_from_pointer
-id|common.type
+id|descriptor-&gt;object.common.type
 )paren
 comma
-(paren
-(paren
-id|acpi_operand_object
-op_star
-)paren
-(paren
-op_amp
-id|element-&gt;user_space
-)paren
-)paren
-op_member_access_from_pointer
-id|common.reference_count
+id|descriptor-&gt;object.common.reference_count
 )paren
 suffix:semicolon
 r_break
@@ -1883,20 +1909,9 @@ id|ACPI_DESC_TYPE_PARSER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Parse_obj Opcode %04X&quot;
+l_string|&quot;Parse_obj Aml_opcode %04hX&quot;
 comma
-(paren
-(paren
-id|acpi_parse_object
-op_star
-)paren
-(paren
-op_amp
-id|element-&gt;user_space
-)paren
-)paren
-op_member_access_from_pointer
-id|opcode
+id|descriptor-&gt;op.asl.aml_opcode
 )paren
 suffix:semicolon
 r_break
@@ -1908,23 +1923,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Node %4.4s&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-(paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-(paren
-op_amp
-id|element-&gt;user_space
-)paren
-)paren
-op_member_access_from_pointer
-id|name
+id|descriptor-&gt;node.name.ascii
 )paren
 suffix:semicolon
 r_break
@@ -2027,6 +2026,11 @@ id|acpi_os_printf
 l_string|&quot;THREAD State_obj&quot;
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All types should appear above */
 r_break
 suffix:semicolon
 )brace

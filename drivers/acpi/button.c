@@ -1,8 +1,10 @@
-multiline_comment|/*&n; *  acpi_button.c - ACPI Button Driver ($Revision: 24 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_button.c - ACPI Button Driver ($Revision: 29 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compatmac.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 DECL|macro|_COMPONENT
@@ -114,8 +116,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
-macro_line|#include &lt;linux/compatmac.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|acpi_button_dir
 r_static
 r_struct
@@ -743,6 +743,24 @@ id|button
 op_assign
 l_int|NULL
 suffix:semicolon
+r_static
+r_struct
+id|acpi_device
+op_star
+id|power_button
+suffix:semicolon
+r_static
+r_struct
+id|acpi_device
+op_star
+id|sleep_button
+suffix:semicolon
+r_static
+r_struct
+id|acpi_device
+op_star
+id|lid_button
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -1111,6 +1129,113 @@ r_goto
 id|end
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Ensure only one button of each type is used.&n;&t; */
+r_switch
+c_cond
+(paren
+id|button-&gt;type
+)paren
+(brace
+r_case
+id|ACPI_BUTTON_TYPE_POWER
+suffix:colon
+r_case
+id|ACPI_BUTTON_TYPE_POWERF
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|power_button
+)paren
+id|power_button
+op_assign
+id|device
+suffix:semicolon
+r_else
+(brace
+id|kfree
+c_func
+(paren
+id|button
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_BUTTON_TYPE_SLEEP
+suffix:colon
+r_case
+id|ACPI_BUTTON_TYPE_SLEEPF
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sleep_button
+)paren
+id|sleep_button
+op_assign
+id|device
+suffix:semicolon
+r_else
+(brace
+id|kfree
+c_func
+(paren
+id|button
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_BUTTON_TYPE_LID
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lid_button
+)paren
+id|lid_button
+op_assign
+id|device
+suffix:semicolon
+r_else
+(brace
+id|kfree
+c_func
+(paren
+id|button
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_button_add_fs
@@ -1122,8 +1247,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -1239,8 +1362,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -1447,9 +1568,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|result
+OL
+l_int|0
 )paren
 id|return_VALUE
 c_func

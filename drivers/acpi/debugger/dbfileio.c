@@ -1,10 +1,8 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 63 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;actables.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
@@ -224,6 +222,7 @@ macro_line|#endif
 )brace
 macro_line|#ifdef ACPI_APPLICATION
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_table&n; *&n; * PARAMETERS:  fp              - File that contains table&n; *              Table_ptr       - Return value, buffer with table&n; *              Table_lenght    - Return value, length of table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the DSDT from the file pointer&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_db_load_table
 id|acpi_db_load_table
@@ -604,8 +603,6 @@ id|status
 op_assign
 id|acpi_tb_install_table
 (paren
-l_int|NULL
-comma
 op_amp
 id|table_info
 )paren
@@ -839,7 +836,6 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Table %4.4s is already installed&bslash;n&quot;
 comma
-op_amp
 id|acpi_gbl_db_table_ptr-&gt;signature
 )paren
 suffix:semicolon
@@ -867,7 +863,6 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%4.4s at %p successfully installed and loaded&bslash;n&quot;
 comma
-op_amp
 id|acpi_gbl_db_table_ptr-&gt;signature
 comma
 id|acpi_gbl_db_table_ptr

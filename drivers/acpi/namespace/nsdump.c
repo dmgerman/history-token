@@ -1,9 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 129 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 135 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
@@ -413,6 +411,9 @@ l_int|1
 id|downstream_sibling_mask
 op_or_assign
 (paren
+(paren
+id|u32
+)paren
 l_int|1
 op_lshift
 (paren
@@ -435,6 +436,9 @@ op_and_assign
 id|ACPI_UINT32_MAX
 op_xor
 (paren
+(paren
+id|u32
+)paren
 l_int|1
 op_lshift
 (paren
@@ -520,7 +524,7 @@ id|ACPI_REPORT_WARNING
 (paren
 l_string|&quot;Invalid ACPI Name %08X&bslash;n&quot;
 comma
-id|this_node-&gt;name
+id|this_node-&gt;name.integer
 )paren
 )paren
 suffix:semicolon
@@ -530,12 +534,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; %4.4s %-12s %p&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|this_node-&gt;name
+id|this_node-&gt;name.ascii
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -603,7 +602,7 @@ id|ACPI_TYPE_PROCESSOR
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; ID %d Addr %.4X Len %.4X&bslash;n&quot;
+l_string|&quot; ID %hd Addr %.4X Len %.4X&bslash;n&quot;
 comma
 id|obj_desc-&gt;processor.proc_id
 comma
@@ -631,7 +630,7 @@ id|ACPI_TYPE_METHOD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Args %d Len %.4X Aml %p &bslash;n&quot;
+l_string|&quot; Args %hd Len %.4X Aml %p &bslash;n&quot;
 comma
 id|obj_desc-&gt;method.param_count
 comma
@@ -746,7 +745,7 @@ op_increment
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; %.2X&quot;
+l_string|&quot; %.2hX&quot;
 comma
 id|obj_desc-&gt;buffer.pointer
 (braket
@@ -898,12 +897,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Buf [%4.4s]&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node-&gt;name
+id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node-&gt;name.ascii
 )paren
 suffix:semicolon
 )brace
@@ -916,12 +910,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Rgn [%4.4s]&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
 )paren
 suffix:semicolon
 r_break
@@ -933,19 +922,9 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Rgn [%4.4s] Bnk [%4.4s]&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node-&gt;name
+id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node-&gt;name.ascii
 )paren
 suffix:semicolon
 r_break
@@ -957,19 +936,9 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Idx [%4.4s] Dat [%4.4s]&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node-&gt;name
+id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node-&gt;name.ascii
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node-&gt;name
+id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node-&gt;name.ascii
 )paren
 suffix:semicolon
 r_break
@@ -1007,7 +976,7 @@ id|INTERNAL_TYPE_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Off %.2X Len %.2X Acc %.2d&bslash;n&quot;
+l_string|&quot; Off %.2X Len %.2X Acc %.2hd&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
@@ -1022,6 +991,10 @@ comma
 id|obj_desc-&gt;common_field.access_byte_width
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -1242,7 +1215,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 id|obj_type
 op_assign
@@ -1272,14 +1245,14 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;(Ptr to ACPI Object type %2.2X [%s])&bslash;n&quot;
-comma
-id|obj_type
+l_string|&quot;(Ptr to ACPI Object type %s, %X)&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
 id|obj_type
 )paren
+comma
+id|obj_type
 )paren
 suffix:semicolon
 id|bytes_to_dump
@@ -1322,7 +1295,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|obj_desc
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 r_goto
@@ -1342,7 +1315,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;string.pointer
@@ -1355,7 +1328,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;buffer.pointer
@@ -1381,7 +1354,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;package.elements
@@ -1394,7 +1367,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;method.aml_start
@@ -1407,7 +1380,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;field.region_obj
@@ -1420,7 +1393,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;bank_field.region_obj
@@ -1433,7 +1406,7 @@ suffix:colon
 id|obj_desc
 op_assign
 (paren
-id|acpi_operand_object
+r_void
 op_star
 )paren
 id|obj_desc-&gt;index_field.index_obj
@@ -1505,6 +1478,9 @@ id|info.display_type
 op_assign
 id|display_type
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ns_walk_namespace
 (paren
 id|type
@@ -1626,7 +1602,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_TABLES
 comma
-l_string|&quot;    HID: %s, ADR: %8.8X%8.8X, Status: %x&bslash;n&quot;
+l_string|&quot;    HID: %s, ADR: %8.8X%8.8X, Status: %X&bslash;n&quot;
 comma
 id|info.hardware_id
 comma
@@ -1662,6 +1638,9 @@ r_void
 id|acpi_handle
 id|sys_bus_handle
 suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ns_dump_root_devices&quot;
@@ -1682,6 +1661,8 @@ id|acpi_dbg_level
 r_return
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_get_handle
 (paren
 l_int|0
@@ -1692,6 +1673,18 @@ op_amp
 id|sys_bus_handle
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1701,6 +1694,8 @@ l_string|&quot;Display of all devices in the namespace:&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ns_walk_namespace
 (paren
 id|ACPI_TYPE_DEVICE
@@ -1832,6 +1827,9 @@ id|info.display_type
 op_assign
 id|ACPI_DISPLAY_SUMMARY
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_ns_dump_one_object
 (paren
 id|handle

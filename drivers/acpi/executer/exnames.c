@@ -1,9 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -227,10 +226,14 @@ op_star
 id|name_string
 )paren
 (brace
-id|u8
+r_char
 op_star
 id|aml_address
 op_assign
+(paren
+r_void
+op_star
+)paren
 op_star
 id|in_aml_address
 suffix:semicolon
@@ -242,7 +245,7 @@ suffix:semicolon
 id|u32
 id|index
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 id|char_buf
 (braket
 l_int|5
@@ -314,12 +317,12 @@ c_loop
 (paren
 id|index
 op_assign
-l_int|4
+l_int|0
 suffix:semicolon
 (paren
 id|index
-OG
-l_int|0
+OL
+id|ACPI_NAME_SIZE
 )paren
 op_logical_and
 (paren
@@ -331,13 +334,11 @@ id|aml_address
 )paren
 suffix:semicolon
 id|index
-op_decrement
+op_increment
 )paren
 (brace
 id|char_buf
 (braket
-l_int|4
-op_minus
 id|index
 )braket
 op_assign
@@ -354,8 +355,6 @@ l_string|&quot;%c&bslash;n&quot;
 comma
 id|char_buf
 (braket
-l_int|4
-op_minus
 id|index
 )braket
 )paren
@@ -366,9 +365,9 @@ multiline_comment|/* Valid name segment  */
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
 id|index
+op_eq
+l_int|4
 )paren
 (brace
 multiline_comment|/* Found 4 valid characters */
@@ -423,9 +422,9 @@ r_else
 r_if
 c_cond
 (paren
-l_int|4
-op_eq
 id|index
+op_eq
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * First character was not a valid name character,&n;&t;&t; * so we are looking at something other than a name.&n;&t;&t; */
@@ -473,6 +472,10 @@ suffix:semicolon
 op_star
 id|in_aml_address
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|aml_address
 suffix:semicolon
 id|return_ACPI_STATUS

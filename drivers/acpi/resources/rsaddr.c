@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsaddr - Address resource descriptors (16/32/64)&n; *              $Revision: 24 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsaddr - Address resource descriptors (16/32/64)&n; *              $Revision: 26 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -42,13 +42,13 @@ op_star
 id|output_struct
 op_assign
 (paren
-id|acpi_resource
+r_void
 op_star
 )paren
 op_star
 id|output_buffer
 suffix:semicolon
-id|NATIVE_CHAR
+id|u8
 op_star
 id|temp_ptr
 suffix:semicolon
@@ -369,6 +369,10 @@ id|struct_size
 suffix:semicolon
 id|temp_ptr
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|output_struct-&gt;data.address16.resource_source.string_ptr
 suffix:semicolon
 multiline_comment|/* Copy the string into the buffer */
@@ -454,6 +458,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -855,6 +862,13 @@ suffix:semicolon
 id|acpi_resource
 op_star
 id|output_struct
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_star
+id|output_buffer
 suffix:semicolon
 id|u16
 id|temp16
@@ -862,7 +876,7 @@ suffix:semicolon
 id|u8
 id|temp8
 suffix:semicolon
-id|NATIVE_CHAR
+id|u8
 op_star
 id|temp_ptr
 suffix:semicolon
@@ -880,15 +894,6 @@ suffix:semicolon
 id|buffer
 op_assign
 id|byte_stream_buffer
-suffix:semicolon
-id|output_struct
-op_assign
-(paren
-id|acpi_resource
-op_star
-)paren
-op_star
-id|output_buffer
 suffix:semicolon
 id|struct_size
 op_assign
@@ -1192,6 +1197,10 @@ id|struct_size
 suffix:semicolon
 id|temp_ptr
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|output_struct-&gt;data.address32.resource_source.string_ptr
 suffix:semicolon
 multiline_comment|/* Copy the string into the buffer */
@@ -1277,6 +1286,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -1348,11 +1360,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set a pointer to the Length field - to be filled in later&n;&t; */
 id|length_field
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|u16
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 id|buffer
 op_add_assign
@@ -1676,6 +1689,13 @@ suffix:semicolon
 id|acpi_resource
 op_star
 id|output_struct
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_star
+id|output_buffer
 suffix:semicolon
 id|u16
 id|temp16
@@ -1683,7 +1703,7 @@ suffix:semicolon
 id|u8
 id|temp8
 suffix:semicolon
-id|NATIVE_CHAR
+id|u8
 op_star
 id|temp_ptr
 suffix:semicolon
@@ -1701,15 +1721,6 @@ suffix:semicolon
 id|buffer
 op_assign
 id|byte_stream_buffer
-suffix:semicolon
-id|output_struct
-op_assign
-(paren
-id|acpi_resource
-op_star
-)paren
-op_star
-id|output_buffer
 suffix:semicolon
 id|struct_size
 op_assign
@@ -2013,6 +2024,10 @@ id|struct_size
 suffix:semicolon
 id|temp_ptr
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|output_struct-&gt;data.address64.resource_source.string_ptr
 suffix:semicolon
 multiline_comment|/* Copy the string into the buffer */
@@ -2098,6 +2113,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|struct_size
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the final size of the structure&n;&t; */
@@ -2169,11 +2187,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set a pointer to the Length field - to be filled in later&n;&t; */
 id|length_field
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|u16
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 id|buffer
 op_add_assign

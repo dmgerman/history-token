@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 61 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisasm - parser op tree display routines&n; *              $Revision: 66 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -19,7 +19,7 @@ mdefine_line|#define BLOCK_BRACE         2
 DECL|macro|DB_NO_OP_INFO
 mdefine_line|#define DB_NO_OP_INFO       &quot;            [%2.2d]  &quot;
 DECL|macro|DB_FULL_OP_INFO
-mdefine_line|#define DB_FULL_OP_INFO     &quot;%5.5X #%4.4X [%2.2d]  &quot;
+mdefine_line|#define DB_FULL_OP_INFO     &quot;%5.5X #%4.4hX [%2.2d]  &quot;
 DECL|variable|acpi_gbl_db_disasm_indent
 id|NATIVE_CHAR
 op_star
@@ -40,7 +40,7 @@ id|op
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -88,14 +88,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;flags
+id|op-&gt;common.flags
 op_amp
 id|ACPI_PARSEOP_GENERIC
 )paren
 (brace
 id|name
 op_assign
-id|op-&gt;value.name
+id|op-&gt;common.value.name
 suffix:semicolon
 r_if
 c_cond
@@ -129,15 +129,7 @@ r_char
 op_star
 )paren
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 suffix:semicolon
 )brace
 multiline_comment|/* Search parent tree up to the root if necessary */
@@ -232,7 +224,7 @@ suffix:semicolon
 multiline_comment|/* Just get the Node out of the Op object */
 id|node
 op_assign
-id|op-&gt;node
+id|op-&gt;common.node
 suffix:semicolon
 r_if
 c_cond
@@ -248,7 +240,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 comma
 id|ACPI_TYPE_ANY
 comma
@@ -284,7 +276,7 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* Save it for next time. */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -440,13 +432,13 @@ c_loop
 (paren
 id|depth
 op_assign
-id|op-&gt;parent
+id|op-&gt;common.parent
 suffix:semicolon
 id|depth
 suffix:semicolon
 id|depth
 op_assign
-id|depth-&gt;parent
+id|depth-&gt;common.parent
 )paren
 (brace
 id|arg
@@ -470,7 +462,7 @@ id|origin
 (brace
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 r_if
@@ -568,18 +560,18 @@ c_loop
 (paren
 id|j
 op_assign
-l_int|0
+id|last_depth
 suffix:semicolon
 id|j
-OL
+op_ge
 (paren
-id|last_depth
-op_minus
 id|depth_count
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|j
-op_increment
+op_decrement
 )paren
 (brace
 id|VERBOSE_PRINT
@@ -587,9 +579,11 @@ id|VERBOSE_PRINT
 (paren
 id|DB_NO_OP_INFO
 comma
-id|last_depth
-op_minus
+(paren
 id|j
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -598,17 +592,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
-(paren
-id|last_depth
-op_minus
 id|j
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 id|i
 op_increment
@@ -656,11 +644,11 @@ id|VERBOSE_PRINT
 id|DB_FULL_OP_INFO
 comma
 (paren
-r_int
+id|u32
 )paren
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 id|depth_count
 )paren
@@ -703,15 +691,15 @@ r_if
 c_cond
 (paren
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 op_logical_and
-id|op-&gt;value.name
+id|op-&gt;common.value.name
 )paren
 op_logical_and
 (paren
-id|op-&gt;parent
+id|op-&gt;common.parent
 )paren
 op_logical_and
 (paren
@@ -719,6 +707,9 @@ id|acpi_gbl_db_opt_verbose
 )paren
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ps_display_object_pathname
 (paren
 id|walk_state
@@ -1020,7 +1011,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -1049,7 +1040,7 @@ multiline_comment|/* Field creation - check for a fully qualified namepath */
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_CREATE_FIELD_OP
 )paren
@@ -1084,11 +1075,11 @@ id|name_path
 )paren
 op_logical_and
 (paren
-id|name_path-&gt;value.string
+id|name_path-&gt;common.value.string
 )paren
 op_logical_and
 (paren
-id|name_path-&gt;value.string
+id|name_path-&gt;common.value.string
 (braket
 l_int|0
 )braket
@@ -1099,7 +1090,7 @@ l_char|&squot;&bslash;&bslash;&squot;
 (brace
 id|acpi_db_display_namestring
 (paren
-id|name_path-&gt;value.string
+id|name_path-&gt;common.value.string
 )paren
 suffix:semicolon
 r_return
@@ -1134,7 +1125,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|search-&gt;parent
+id|search-&gt;common.parent
 op_eq
 id|prev
 )paren
@@ -1145,7 +1136,7 @@ suffix:semicolon
 multiline_comment|/* Go up one level */
 id|search
 op_assign
-id|search-&gt;parent
+id|search-&gt;common.parent
 suffix:semicolon
 )brace
 r_if
@@ -1158,7 +1149,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|search-&gt;opcode
+id|search-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -1197,7 +1188,7 @@ id|AML_CREATE
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_CREATE_FIELD_OP
 )paren
@@ -1232,7 +1223,7 @@ id|name_path
 )paren
 op_logical_and
 (paren
-id|name_path-&gt;value.string
+id|name_path-&gt;common.value.string
 )paren
 )paren
 (brace
@@ -1240,7 +1231,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%4.4s&quot;
 comma
-id|name_path-&gt;value.string
+id|name_path-&gt;common.value.string
 )paren
 suffix:semicolon
 )brace
@@ -1321,12 +1312,14 @@ id|acpi_os_printf
 l_string|&quot;&lt;NULL OP PTR&gt;&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/* op and arguments */
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1340,9 +1333,9 @@ id|acpi_gbl_db_opt_verbose
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;(u8) 0x%2.2X&quot;
+l_string|&quot;(u8) 0x%2.2hX&quot;
 comma
-id|op-&gt;value.integer8
+id|op-&gt;common.value.integer8
 )paren
 suffix:semicolon
 )brace
@@ -1350,9 +1343,9 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;0x%2.2X&quot;
+l_string|&quot;0x%2.2hX&quot;
 comma
-id|op-&gt;value.integer8
+id|op-&gt;common.value.integer8
 )paren
 suffix:semicolon
 )brace
@@ -1369,9 +1362,9 @@ id|acpi_gbl_db_opt_verbose
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;(u16) 0x%4.4X&quot;
+l_string|&quot;(u16) 0x%4.4hX&quot;
 comma
-id|op-&gt;value.integer16
+id|op-&gt;common.value.integer16
 )paren
 suffix:semicolon
 )brace
@@ -1379,9 +1372,9 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;0x%4.4X&quot;
+l_string|&quot;0x%4.4hX&quot;
 comma
-id|op-&gt;value.integer16
+id|op-&gt;common.value.integer16
 )paren
 suffix:semicolon
 )brace
@@ -1400,7 +1393,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;(u32) 0x%8.8X&quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 )brace
@@ -1410,7 +1403,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;0x%8.8X&quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 )brace
@@ -1429,9 +1422,9 @@ id|acpi_os_printf
 (paren
 l_string|&quot;(u64) 0x%8.8X%8.8X&quot;
 comma
-id|op-&gt;value.integer64.hi
+id|op-&gt;common.value.integer64.hi
 comma
-id|op-&gt;value.integer64.lo
+id|op-&gt;common.value.integer64.lo
 )paren
 suffix:semicolon
 )brace
@@ -1441,9 +1434,9 @@ id|acpi_os_printf
 (paren
 l_string|&quot;0x%8.8X%8.8X&quot;
 comma
-id|op-&gt;value.integer64.hi
+id|op-&gt;common.value.integer64.hi
 comma
-id|op-&gt;value.integer64.lo
+id|op-&gt;common.value.integer64.lo
 )paren
 suffix:semicolon
 )brace
@@ -1455,14 +1448,14 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 )paren
 (brace
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;&quot;%s&bslash;&quot;&quot;
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 )paren
 suffix:semicolon
 )brace
@@ -1482,14 +1475,14 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 )paren
 (brace
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;&quot;%s&bslash;&quot;&quot;
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 )paren
 suffix:semicolon
 )brace
@@ -1508,7 +1501,7 @@ id|AML_INT_NAMEPATH_OP
 suffix:colon
 id|acpi_db_display_namestring
 (paren
-id|op-&gt;value.name
+id|op-&gt;common.value.name
 )paren
 suffix:semicolon
 r_break
@@ -1520,7 +1513,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Named_field (Length 0x%8.8X)  &quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 r_break
@@ -1532,7 +1525,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Reserved_field (Length 0x%8.8X) &quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 r_break
@@ -1544,7 +1537,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Access_field (Length 0x%8.8X) &quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 r_break
@@ -1562,7 +1555,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Byte_list   (Length 0x%8.8X)  &quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 )brace
@@ -1572,24 +1565,16 @@ id|acpi_os_printf
 (paren
 l_string|&quot;0x%2.2X&quot;
 comma
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 )paren
 suffix:semicolon
 id|byte_count
 op_assign
-id|op-&gt;value.integer32
+id|op-&gt;common.value.integer32
 suffix:semicolon
 id|byte_data
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 suffix:semicolon
 r_for
 c_loop
@@ -1627,7 +1612,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -1642,9 +1627,13 @@ r_if
 c_cond
 (paren
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_RETURN_VALUE_OP
+)paren
+op_logical_and
+(paren
+id|walk_state
 )paren
 op_logical_and
 (paren
@@ -1682,7 +1671,7 @@ multiline_comment|/* If there is another element in the list, add a comma */
 r_if
 c_cond
 (paren
-id|op-&gt;next
+id|op-&gt;common.next
 )paren
 (brace
 id|acpi_os_printf
@@ -1697,7 +1686,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -1735,12 +1724,15 @@ id|acpi_gbl_db_opt_verbose
 )paren
 op_logical_and
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_ne
 id|AML_INT_NAMEDFIELD_OP
 )paren
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ps_display_object_pathname
 (paren
 id|walk_state

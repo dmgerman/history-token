@@ -1,10 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
@@ -352,7 +350,7 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  The default is zero, since the allocation above zeroed the data, just&n;&t; *  do nothing on failures.&n;&t; */
+multiline_comment|/*&n;&t; *  The default is zero, and since the allocation above zeroed&n;&t; *  the data, just do nothing on failure.&n;&t; */
 r_if
 c_cond
 (paren
@@ -366,14 +364,20 @@ id|pci_id-&gt;device
 op_assign
 id|ACPI_HIWORD
 (paren
+id|ACPI_LODWORD
+(paren
 id|temp
+)paren
 )paren
 suffix:semicolon
 id|pci_id-&gt;function
 op_assign
 id|ACPI_LOWORD
 (paren
+id|ACPI_LODWORD
+(paren
 id|temp
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -434,6 +438,8 @@ id|PCI_ROOT_HID_STRING
 )paren
 )paren
 (brace
+id|status
+op_assign
 id|acpi_install_address_space_handler
 (paren
 (paren
@@ -450,6 +456,30 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not install handler for %4.4s, %s&bslash;n&quot;
+comma
+id|node-&gt;name.ascii
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -848,7 +878,7 @@ c_cond
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  can only be a handler if the object exists&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Can only be a handler if the object exists&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -880,6 +910,11 @@ id|handler_obj
 op_assign
 id|obj_desc-&gt;thermal_zone.addr_handler
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Ignore other objects */
 r_break
 suffix:semicolon
 )brace
@@ -914,7 +949,9 @@ id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; *  Found it! Now update the region and the handler&n;&t;&t;&t;&t;&t; */
-id|acpi_ev_associate_region_and_handler
+id|status
+op_assign
+id|acpi_ev_attach_region
 (paren
 id|handler_obj
 comma

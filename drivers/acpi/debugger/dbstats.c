@@ -1,9 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;acdebug.h&gt;
-macro_line|#include &lt;amlcode.h&gt;
-macro_line|#include &lt;acparser.h&gt;
 macro_line|#include &lt;acnamesp.h&gt;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
@@ -14,6 +12,7 @@ l_string|&quot;dbstats&quot;
 )paren
 multiline_comment|/*&n; * Statistics subcommands&n; */
 DECL|variable|acpi_db_stat_types
+r_static
 id|ARGUMENT_INFO
 id|acpi_db_stat_types
 (braket
@@ -54,20 +53,20 @@ l_int|NULL
 multiline_comment|/* Must be null terminated */
 )brace
 suffix:semicolon
-DECL|macro|CMD_ALLOCATIONS
-mdefine_line|#define CMD_ALLOCATIONS     0
-DECL|macro|CMD_OBJECTS
-mdefine_line|#define CMD_OBJECTS         1
-DECL|macro|CMD_MEMORY
-mdefine_line|#define CMD_MEMORY          2
-DECL|macro|CMD_MISC
-mdefine_line|#define CMD_MISC            3
-DECL|macro|CMD_TABLES
-mdefine_line|#define CMD_TABLES          4
-DECL|macro|CMD_SIZES
-mdefine_line|#define CMD_SIZES           5
-DECL|macro|CMD_STACK
-mdefine_line|#define CMD_STACK           6
+DECL|macro|CMD_STAT_ALLOCATIONS
+mdefine_line|#define CMD_STAT_ALLOCATIONS     0
+DECL|macro|CMD_STAT_OBJECTS
+mdefine_line|#define CMD_STAT_OBJECTS         1
+DECL|macro|CMD_STAT_MEMORY
+mdefine_line|#define CMD_STAT_MEMORY          2
+DECL|macro|CMD_STAT_MISC
+mdefine_line|#define CMD_STAT_MISC            3
+DECL|macro|CMD_STAT_TABLES
+mdefine_line|#define CMD_STAT_TABLES          4
+DECL|macro|CMD_STAT_SIZES
+mdefine_line|#define CMD_STAT_SIZES           5
+DECL|macro|CMD_STAT_STACK
+mdefine_line|#define CMD_STAT_STACK           6
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_enumerate_object&n; *&n; * PARAMETERS:  Obj_desc            - Object to be counted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Add this object to the global counts, by object type.&n; *              Limited recursion handles subobjects and packages, and this&n; *              is probably acceptable within the AML debugger only.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_enumerate_object
@@ -264,6 +263,10 @@ id|obj_desc-&gt;thermal_zone.addr_handler
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 )brace
 macro_line|#ifndef PARSER_ONLY
@@ -354,7 +357,7 @@ multiline_comment|/* TBD: These need to be counted during the initial parsing ph
 multiline_comment|/*&n;&t;if (Acpi_ps_is_named_op (Op-&gt;Opcode))&n;&t;{&n;&t;&t;Num_nodes++;&n;&t;}&n;&n;&t;if (Is_method)&n;&t;{&n;&t;&t;Num_method_elements++;&n;&t;}&n;&n;&t;Num_grammar_elements++;&n;&t;Op = Acpi_ps_get_depth_next (Root, Op);&n;&n;&t;Size_of_parse_tree          = (Num_grammar_elements - Num_method_elements) * (u32) sizeof (acpi_parse_object);&n;&t;Size_of_method_trees        = Num_method_elements * (u32) sizeof (acpi_parse_object);&n;&t;Size_of_node_entries        = Num_nodes * (u32) sizeof (acpi_namespace_node);&n;&t;Size_of_acpi_objects        = Num_nodes * (u32) sizeof (acpi_operand_object);&n;&n;&t;*/
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_count_namespace_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Count and classify the entire namespace, including all&n; *              namespace nodes and attached objects.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_db_count_namespace_objects
 id|acpi_db_count_namespace_objects
 (paren
@@ -410,6 +413,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+(paren
+r_void
+)paren
 id|acpi_ns_walk_namespace
 (paren
 id|ACPI_TYPE_ANY
@@ -425,11 +431,6 @@ comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_return
-(paren
-id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -534,7 +535,7 @@ id|type
 (brace
 macro_line|#ifndef PARSER_ONLY
 r_case
-id|CMD_ALLOCATIONS
+id|CMD_STAT_ALLOCATIONS
 suffix:colon
 macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
 id|acpi_ut_dump_allocation_info
@@ -546,7 +547,7 @@ r_break
 suffix:semicolon
 macro_line|#endif
 r_case
-id|CMD_TABLES
+id|CMD_STAT_TABLES
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -572,7 +573,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CMD_OBJECTS
+id|CMD_STAT_OBJECTS
 suffix:colon
 macro_line|#ifndef PARSER_ONLY
 id|acpi_db_count_namespace_objects
@@ -581,7 +582,7 @@ id|acpi_db_count_namespace_objects
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_objects defined in the current namespace:&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nObjects defined in the current namespace:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -657,7 +658,7 @@ macro_line|#endif
 r_break
 suffix:semicolon
 r_case
-id|CMD_MEMORY
+id|CMD_STAT_MEMORY
 suffix:colon
 macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
 id|acpi_os_printf
@@ -887,11 +888,11 @@ macro_line|#endif
 r_break
 suffix:semicolon
 r_case
-id|CMD_MISC
+id|CMD_STAT_MISC
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_miscellaneous Statistics:&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nMiscellaneous Statistics:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -954,11 +955,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CMD_SIZES
+id|CMD_STAT_SIZES
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_internal object sizes:&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nInternal object sizes:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -1192,17 +1193,27 @@ l_string|&quot;Parse_object   %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|acpi_parse_object
+id|ACPI_PARSE_OBJ_COMMON
 )paren
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;Parse2_object  %3d&bslash;n&quot;
+l_string|&quot;Parse_object_named %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|acpi_parse2_object
+id|ACPI_PARSE_OBJ_NAMED
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Parse_object_asl %3d&bslash;n&quot;
+comma
+r_sizeof
+(paren
+id|ACPI_PARSE_OBJ_ASL
 )paren
 )paren
 suffix:semicolon
@@ -1229,17 +1240,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CMD_STACK
+id|CMD_STAT_STACK
 suffix:colon
+macro_line|#if defined(ACPI_DEBUG)
 id|size
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|acpi_gbl_entry_stack_pointer
 op_minus
 id|acpi_gbl_lowest_stack_pointer
+)paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_subsystem Stack Usage:&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nSubsystem Stack Usage:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -1272,6 +1289,11 @@ comma
 id|acpi_gbl_deepest_nesting
 )paren
 suffix:semicolon
+macro_line|#endif
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace

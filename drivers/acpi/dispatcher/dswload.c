@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -164,7 +164,7 @@ c_cond
 id|op
 op_logical_and
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEDFIELD_OP
 )paren
@@ -188,7 +188,7 @@ multiline_comment|/* We are only interested in opcodes that have an associated n
 r_if
 c_cond
 (paren
-id|walk_state-&gt;op
+id|op
 )paren
 (brace
 r_if
@@ -217,7 +217,7 @@ multiline_comment|/* Check if this object has already been installed in the name
 r_if
 c_cond
 (paren
-id|op-&gt;node
+id|op-&gt;common.node
 )paren
 (brace
 op_star
@@ -250,7 +250,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;State=%p Op=%p Type=%x&bslash;n&quot;
+l_string|&quot;State=%p Op=%p Type=%X&bslash;n&quot;
 comma
 id|walk_state
 comma
@@ -328,20 +328,12 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Initialize */
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 op_assign
 id|node-&gt;name.integer
 suffix:semicolon
 multiline_comment|/*&n;&t; * Put the Node in the &quot;op&quot; object that the parser uses, so we&n;&t; * can get it again quickly when this scope is closed&n;&t; */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -383,6 +375,11 @@ id|op
 suffix:semicolon
 id|acpi_object_type
 id|object_type
+suffix:semicolon
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
@@ -457,6 +454,8 @@ op_eq
 id|AML_INDEX_FIELD_OP
 )paren
 (brace
+id|status
+op_assign
 id|acpi_ds_init_field_objects
 (paren
 id|op
@@ -467,60 +466,60 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_REGION_OP
 )paren
 (brace
-multiline_comment|/*Status = */
+id|status
+op_assign
 id|acpi_ex_create_region
 (paren
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 comma
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
+id|op-&gt;named.length
 comma
 (paren
 id|ACPI_ADR_SPACE_TYPE
 )paren
 (paren
 (paren
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 op_member_access_from_pointer
-id|value.integer
+id|common.value.integer
 )paren
 comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_NAME_OP
 )paren
@@ -529,7 +528,7 @@ multiline_comment|/* For Name opcode, get the object type from the argument */
 r_if
 c_cond
 (paren
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 (brace
 id|object_type
@@ -538,16 +537,16 @@ op_assign
 id|acpi_ps_get_opcode_info
 (paren
 (paren
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 op_member_access_from_pointer
-id|opcode
+id|common.aml_opcode
 )paren
 )paren
 op_member_access_from_pointer
 id|object_type
 suffix:semicolon
-id|op-&gt;node-&gt;type
+id|op-&gt;common.node-&gt;type
 op_assign
 (paren
 id|u8
@@ -582,6 +581,8 @@ id|op
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ds_scope_stack_pop
 (paren
 id|walk_state
@@ -590,7 +591,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -626,12 +627,6 @@ suffix:semicolon
 id|NATIVE_CHAR
 op_star
 id|buffer_ptr
-suffix:semicolon
-r_void
-op_star
-id|original
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
@@ -708,7 +703,7 @@ id|AML_INT_NAMEPATH_OP
 multiline_comment|/* For Namepath op, get the path string */
 id|buffer_ptr
 op_assign
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 suffix:semicolon
 r_if
 c_cond
@@ -735,15 +730,7 @@ id|NATIVE_CHAR
 op_star
 )paren
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 suffix:semicolon
 )brace
 )brace
@@ -769,7 +756,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;State=%p Op=%p Type=%x&bslash;n&quot;
+l_string|&quot;State=%p Op=%p Type=%X&bslash;n&quot;
 comma
 id|walk_state
 comma
@@ -839,21 +826,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* All other opcodes */
 r_if
 c_cond
 (paren
 id|op
 op_logical_and
-id|op-&gt;node
+id|op-&gt;common.node
 )paren
 (brace
-id|original
-op_assign
-id|op-&gt;node
-suffix:semicolon
+multiline_comment|/* This op/node was previously entered into the namespace */
 id|node
 op_assign
-id|op-&gt;node
+id|op-&gt;common.node
 suffix:semicolon
 r_if
 c_cond
@@ -959,71 +944,35 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the new op */
+r_if
+c_cond
 (paren
-(paren
-id|acpi_parse2_object
-op_star
+id|node
 )paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+(brace
+id|op-&gt;named.name
 op_assign
 id|node-&gt;name.integer
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|out_op
+)paren
+(brace
 op_star
 id|out_op
 op_assign
 id|op
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/*&n;&t;&t; * Put the Node in the &quot;op&quot; object that the parser uses, so we&n;&t;&t; * can get it again quickly when this scope is closed&n;&t;&t; */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|original
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;old %p new %p&bslash;n&quot;
-comma
-id|original
-comma
-id|node
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|original
-op_ne
-id|node
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Lookup match error: old %p new %p&bslash;n&quot;
-comma
-id|original
-comma
-id|node
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 r_return
 (paren
@@ -1113,7 +1062,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_SCOPE_OP
 )paren
@@ -1134,15 +1083,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|name
+id|op-&gt;named.name
 op_eq
 id|ACPI_UINT16_MAX
 )paren
@@ -1174,7 +1115,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the Node/name from the earlier lookup&n;&t; * (It was saved in the *op structure)&n;&t; */
 id|node
 op_assign
-id|op-&gt;node
+id|op-&gt;common.node
 suffix:semicolon
 multiline_comment|/*&n;&t; * Put the Node on the object stack (Contains the ACPI Name of&n;&t; * this object)&n;&t; */
 id|walk_state-&gt;operands
@@ -1218,11 +1159,28 @@ id|op
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ds_scope_stack_pop
 (paren
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Named operations are as follows:&n;&t; *&n;&t; * AML_ALIAS&n;&t; * AML_BANKFIELD&n;&t; * AML_CREATEBITFIELD&n;&t; * AML_CREATEBYTEFIELD&n;&t; * AML_CREATEDWORDFIELD&n;&t; * AML_CREATEFIELD&n;&t; * AML_CREATEQWORDFIELD&n;&t; * AML_CREATEWORDFIELD&n;&t; * AML_DATA_REGION&n;&t; * AML_DEVICE&n;&t; * AML_EVENT&n;&t; * AML_FIELD&n;&t; * AML_INDEXFIELD&n;&t; * AML_METHOD&n;&t; * AML_METHODCALL&n;&t; * AML_MUTEX&n;&t; * AML_NAME&n;&t; * AML_NAMEDFIELD&n;&t; * AML_OPREGION&n;&t; * AML_POWERRES&n;&t; * AML_PROCESSOR&n;&t; * AML_SCOPE&n;&t; * AML_THERMALZONE&n;&t; */
 id|ACPI_DEBUG_PRINT
@@ -1234,7 +1192,7 @@ l_string|&quot;Create-Load [%s] State=%p Op=%p Named_obj=%p&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 comma
 id|walk_state
@@ -1248,7 +1206,7 @@ suffix:semicolon
 multiline_comment|/* Decode the opcode */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 r_switch
 c_cond
@@ -1277,7 +1235,7 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1292,7 +1250,7 @@ comma
 (paren
 id|acpi_handle
 )paren
-id|arg-&gt;node
+id|arg-&gt;common.node
 comma
 id|walk_state
 )paren
@@ -1308,7 +1266,7 @@ id|acpi_ds_create_bank_field
 (paren
 id|op
 comma
-id|arg-&gt;node
+id|arg-&gt;common.node
 comma
 id|walk_state
 )paren
@@ -1324,11 +1282,16 @@ id|acpi_ds_create_field
 (paren
 id|op
 comma
-id|arg-&gt;node
+id|arg-&gt;common.node
 comma
 id|walk_state
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All NAMED_FIELD opcodes must be handled above */
 r_break
 suffix:semicolon
 )brace
@@ -1362,7 +1325,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1488,7 +1451,7 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1546,25 +1509,9 @@ id|status
 op_assign
 id|acpi_ex_create_method
 (paren
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 comma
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
+id|op-&gt;named.length
 comma
 id|walk_state
 )paren
@@ -1631,6 +1578,11 @@ id|op
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All NAMED_COMPLEX opcodes must be handled above */
+r_break
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -1665,7 +1617,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 comma
 id|ACPI_TYPE_ANY
 comma
@@ -1707,7 +1659,7 @@ id|AE_AML_OPERAND_TYPE
 suffix:semicolon
 )brace
 multiline_comment|/* We could put the returned object (Node) on the object stack for later, but&n;&t;&t;&t; * for now, we will put it in the &quot;op&quot; object that the parser uses, so we&n;&t;&t;&t; * can get it again at the end of this scope&n;&t;&t;&t; */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|new_node
 suffix:semicolon

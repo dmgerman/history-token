@@ -1,8 +1,10 @@
-multiline_comment|/*&n; *  acpi_battery.c - ACPI Battery Driver ($Revision: 32 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_battery.c - ACPI Battery Driver ($Revision: 35 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compatmac.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 DECL|macro|_COMPONENT
@@ -531,8 +533,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 (paren
@@ -829,8 +830,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 (paren
@@ -1055,8 +1055,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1076,8 +1074,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1121,8 +1117,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1221,8 +1215,6 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
-macro_line|#include &lt;linux/compatmac.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|acpi_battery_dir
 r_struct
 id|proc_dir_entry
@@ -1362,11 +1354,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-l_int|0
-op_ne
 id|result
-)paren
 op_logical_or
 op_logical_neg
 id|bif
@@ -1879,11 +1867,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-l_int|0
-op_ne
 id|result
-)paren
 op_logical_or
 op_logical_neg
 id|bst
@@ -2534,8 +2518,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -2929,8 +2911,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_bus_get_device
 c_func
 (paren
@@ -3131,8 +3111,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -3149,8 +3127,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -3227,8 +3203,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -3399,9 +3373,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|result
+OL
+l_int|0
 )paren
 (brace
 id|remove_proc_entry
@@ -3459,8 +3433,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 id|remove_proc_entry

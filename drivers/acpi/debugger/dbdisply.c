@@ -1,12 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 67 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 73 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
@@ -31,7 +29,7 @@ r_void
 op_star
 id|obj_ptr
 suffix:semicolon
-macro_line|#ifdef _IA16
+macro_line|#if ACPI_MACHINE_WIDTH == 16
 macro_line|#include &lt;stdio.h&gt;
 multiline_comment|/* Have to handle 16-bit pointers of the form segment:offset */
 r_if
@@ -104,7 +102,7 @@ id|info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -118,7 +116,7 @@ l_string|&quot;%20.20s : %4.4X&bslash;n&quot;
 comma
 l_string|&quot;Opcode&quot;
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_ONLY_MEMBERS
@@ -139,7 +137,7 @@ l_string|&quot;%20.20s : %p&bslash;n&quot;
 comma
 l_string|&quot;Value/Arg_list&quot;
 comma
-id|op-&gt;value
+id|op-&gt;common.value.arg
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -148,7 +146,7 @@ l_string|&quot;%20.20s : %p&bslash;n&quot;
 comma
 l_string|&quot;Parent&quot;
 comma
-id|op-&gt;parent
+id|op-&gt;common.parent
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -157,7 +155,7 @@ l_string|&quot;%20.20s : %p&bslash;n&quot;
 comma
 l_string|&quot;Next_op&quot;
 comma
-id|op-&gt;next
+id|op-&gt;common.next
 )paren
 suffix:semicolon
 )brace
@@ -390,7 +388,7 @@ r_goto
 id|dump_nte
 suffix:semicolon
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 multiline_comment|/* This is a ACPI OPERAND OBJECT */
 r_if
@@ -661,7 +659,7 @@ id|obj_desc
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_attached Object (%p):&bslash;n&quot;
+l_string|&quot;&bslash;nAttached Object (%p):&bslash;n&quot;
 comma
 id|obj_desc
 )paren
@@ -767,7 +765,7 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; %.8X%.8X&quot;
+l_string|&quot; %8.8X%8.8X&quot;
 comma
 id|ACPI_HIDWORD
 (paren
@@ -864,6 +862,11 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No additional display for other types */
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_internal_object&n; *&n; * PARAMETERS:  Obj_desc        - Object to be displayed&n; *              Walk_state      - Current walk state&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Short display of an internal object&n; *&n; ******************************************************************************/
@@ -932,7 +935,6 @@ id|acpi_os_printf
 (paren
 l_string|&quot;&lt;Node&gt;          Name %4.4s Type-%s&quot;
 comma
-op_amp
 (paren
 (paren
 id|acpi_namespace_node
@@ -941,7 +943,7 @@ op_star
 id|obj_desc
 )paren
 op_member_access_from_pointer
-id|name
+id|name.ascii
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -1004,7 +1006,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 id|type
 op_assign
@@ -1020,7 +1022,7 @@ id|INTERNAL_TYPE_MAX
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Type %x [Invalid Type]&quot;
+l_string|&quot; Type %hX [Invalid Type]&quot;
 comma
 id|type
 )paren
@@ -1356,8 +1358,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Currently executing control method is [%4.4s]&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -1376,12 +1377,12 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|root_op-&gt;parent
+id|root_op-&gt;common.parent
 )paren
 (brace
 id|root_op
 op_assign
-id|root_op-&gt;parent
+id|root_op-&gt;common.parent
 suffix:semicolon
 )brace
 id|op
@@ -1425,7 +1426,7 @@ id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_switch
@@ -1570,8 +1571,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Local Variables for method [%4.4s]:&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 r_for
@@ -1685,8 +1685,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Method [%4.4s] has %X arguments, max concurrency = %X&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|num_args
 comma
@@ -1806,8 +1805,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Method [%4.4s] has %X stacked result objects&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|num_results
 )paren
@@ -1858,9 +1856,6 @@ id|acpi_db_display_calling_tree
 r_void
 )paren
 (brace
-id|u32
-id|i
-suffix:semicolon
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -1900,17 +1895,10 @@ id|acpi_os_printf
 l_string|&quot;Current Control Method Call Tree&bslash;n&quot;
 )paren
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
 id|walk_state
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|node
@@ -1921,8 +1909,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  [%4.4s]&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 id|walk_state

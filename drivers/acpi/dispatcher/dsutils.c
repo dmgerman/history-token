@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 89 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 92 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -67,7 +67,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|op-&gt;parent
+id|op-&gt;common.parent
 )paren
 (brace
 id|return_VALUE
@@ -81,7 +81,7 @@ id|parent_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -126,7 +126,7 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -163,6 +163,13 @@ r_goto
 id|result_used
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Ignore other control opcodes */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* The general control opcode returns no result */
 r_goto
@@ -182,37 +189,37 @@ r_if
 c_cond
 (paren
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_REGION_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_DATA_REGION_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_PACKAGE_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_VAR_PACKAGE_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_BUFFER_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_eq
 id|AML_INT_EVAL_SUBTREE_OP
 )paren
@@ -244,12 +251,12 @@ l_string|&quot;Result of [%s] used by Parent [%s] Op=%p&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 )paren
 comma
 id|op
@@ -272,12 +279,12 @@ l_string|&quot;Result of [%s] not used by Parent [%s] Op=%p&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 )paren
 comma
 id|op
@@ -415,6 +422,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+id|acpi_status
+id|status2
+suffix:semicolon
 id|NATIVE_CHAR
 op_star
 id|name_string
@@ -457,13 +467,13 @@ r_if
 c_cond
 (paren
 (paren
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
 op_logical_and
 (paren
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 )paren
 )paren
 (brace
@@ -485,7 +495,7 @@ id|acpi_ex_get_name_string
 (paren
 id|ACPI_TYPE_ANY
 comma
-id|arg-&gt;value.buffer
+id|arg-&gt;common.value.buffer
 comma
 op_amp
 id|name_string
@@ -513,13 +523,13 @@ multiline_comment|/*&n;&t;&t; * All prefixes have been handled, and the name is&
 multiline_comment|/*&n;&t;&t; * Differentiate between a namespace &quot;create&quot; operation&n;&t;&t; * versus a &quot;lookup&quot; operation (IMODE_LOAD_PASS2 vs.&n;&t;&t; * IMODE_EXECUTE) in order to support the creation of&n;&t;&t; * namespace objects during the execution of control methods.&n;&t;&t; */
 id|parent_op
 op_assign
-id|arg-&gt;parent
+id|arg-&gt;common.parent
 suffix:semicolon
 id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 r_if
@@ -532,19 +542,19 @@ id|AML_NSNODE
 )paren
 op_logical_and
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_ne
 id|AML_INT_METHODCALL_OP
 )paren
 op_logical_and
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_ne
 id|AML_REGION_OP
 )paren
 op_logical_and
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_ne
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -582,13 +592,13 @@ id|ACPI_NS_DONT_OPEN_SCOPE
 comma
 id|walk_state
 comma
+id|ACPI_CAST_INDIRECT_PTR
 (paren
 id|acpi_namespace_node
-op_star
-op_star
-)paren
+comma
 op_amp
 id|obj_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The only case where we pass through (ignore) a NOT_FOUND&n;&t;&t; * error is for the Cond_ref_of opcode.&n;&t;&t; */
@@ -603,7 +613,7 @@ id|AE_NOT_FOUND
 r_if
 c_cond
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_COND_REF_OF_OP
 )paren
@@ -611,11 +621,12 @@ id|AML_COND_REF_OF_OP
 multiline_comment|/*&n;&t;&t;&t;&t; * For the Conditional Reference op, it&squot;s OK if&n;&t;&t;&t;&t; * the name is not found;  We just need a way to&n;&t;&t;&t;&t; * indicate this to the interpreter, set the&n;&t;&t;&t;&t; * object to the root&n;&t;&t;&t;&t; */
 id|obj_desc
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_operand_object
-op_star
-)paren
+comma
 id|acpi_gbl_root_node
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -633,6 +644,8 @@ id|name
 op_assign
 l_int|NULL
 suffix:semicolon
+id|status2
+op_assign
 id|acpi_ns_externalize_name
 (paren
 id|ACPI_UINT32_MAX
@@ -645,6 +658,15 @@ op_amp
 id|name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status2
+)paren
+)paren
+(brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -661,6 +683,7 @@ id|ACPI_MEM_FREE
 id|name
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Free the namestring created above */
@@ -727,7 +750,7 @@ multiline_comment|/* Check for null name case */
 r_if
 c_cond
 (paren
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -754,7 +777,7 @@ r_else
 (brace
 id|opcode
 op_assign
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 suffix:semicolon
 )brace
 multiline_comment|/* Get the object type of the argument */
@@ -1042,7 +1065,7 @@ suffix:semicolon
 multiline_comment|/* Move on to next argument, if any */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|arg_count
 op_increment
@@ -1056,6 +1079,9 @@ suffix:semicolon
 id|cleanup
 suffix:colon
 multiline_comment|/*&n;&t; * We must undo everything done above; meaning that we must&n;&t; * pop everything off of the operand stack and delete those&n;&t; * objects&n;&t; */
+(paren
+r_void
+)paren
 id|acpi_ds_obj_stack_pop_and_delete
 (paren
 id|arg_count

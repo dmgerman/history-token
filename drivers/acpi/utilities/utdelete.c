@@ -1,10 +1,8 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 88 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 90 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;actables.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -160,6 +158,9 @@ id|acpi_ex_unlink_mutex
 id|object
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_os_delete_semaphore
 (paren
 id|object-&gt;mutex.semaphore
@@ -183,6 +184,9 @@ id|object-&gt;event.semaphore
 )paren
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_os_delete_semaphore
 (paren
 id|object-&gt;event.semaphore
@@ -215,6 +219,9 @@ c_cond
 id|object-&gt;method.semaphore
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_os_delete_semaphore
 (paren
 id|object-&gt;method.semaphore
@@ -376,8 +383,8 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_internal_object_list&n; *&n; * PARAMETERS:  *Obj_list       - Pointer to the list to be deleted&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function deletes an internal object list, including both&n; *              simple objects and package objects&n; *&n; ******************************************************************************/
-id|acpi_status
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_internal_object_list&n; *&n; * PARAMETERS:  *Obj_list       - Pointer to the list to be deleted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: This function deletes an internal object list, including both&n; *              simple objects and package objects&n; *&n; ******************************************************************************/
+r_void
 DECL|function|acpi_ut_delete_internal_object_list
 id|acpi_ut_delete_internal_object_list
 (paren
@@ -425,10 +432,7 @@ id|ACPI_MEM_FREE
 id|obj_list
 )paren
 suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_update_ref_count&n; *&n; * PARAMETERS:  *Object         - Object whose ref count is to be updated&n; *              Action          - What to do&n; *&n; * RETURN:      New ref count&n; *&n; * DESCRIPTION: Modify the ref count and return it.&n; *&n; ******************************************************************************/
@@ -815,10 +819,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 id|acpi_ut_update_ref_count
@@ -913,10 +915,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 )brace
@@ -946,10 +946,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 r_break
@@ -978,10 +976,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 r_break
@@ -1010,10 +1006,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 id|status
@@ -1037,10 +1031,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 r_break
@@ -1069,10 +1061,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 id|status
@@ -1096,10 +1086,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 r_break
@@ -1109,6 +1097,8 @@ id|ACPI_TYPE_REGION
 suffix:colon
 r_case
 id|INTERNAL_TYPE_REFERENCE
+suffix:colon
+r_default
 suffix:colon
 multiline_comment|/* No subobjects */
 r_break
@@ -1135,6 +1125,25 @@ suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
+)paren
+suffix:semicolon
+id|error_exit
+suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not update object reference count, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -1170,6 +1179,9 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We have a valid ACPI internal object, now increment the reference count&n;&t; */
+(paren
+r_void
+)paren
 id|acpi_ut_update_object_reference
 (paren
 id|object
@@ -1245,6 +1257,9 @@ id|object-&gt;common.reference_count
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the reference count, and only actually delete the object&n;&t; * if the reference count becomes 0.  (Must also decrement the ref count&n;&t; * of all subobjects!)&n;&t; */
+(paren
+r_void
+)paren
 id|acpi_ut_update_object_reference
 (paren
 id|object

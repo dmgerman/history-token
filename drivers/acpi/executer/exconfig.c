@@ -1,13 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;actables.h&quot;
-macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -76,6 +74,9 @@ id|table
 suffix:semicolon
 id|table_info.length
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|table-&gt;length
 suffix:semicolon
 id|table_info.allocation
@@ -90,8 +91,6 @@ id|status
 op_assign
 id|acpi_tb_install_table
 (paren
-l_int|NULL
-comma
 op_amp
 id|table_info
 )paren
@@ -129,6 +128,9 @@ id|status
 )paren
 (brace
 multiline_comment|/* Uninstall table on error */
+(paren
+r_void
+)paren
 id|acpi_tb_uninstall_table
 (paren
 id|table_info.installed_desc
@@ -537,11 +539,12 @@ id|operand
 l_int|5
 )braket
 comma
+id|ACPI_CAST_PTR
 (paren
 id|acpi_operand_object
-op_star
-)paren
+comma
 id|parameter_node
+)paren
 comma
 id|walk_state
 )paren
@@ -555,6 +558,9 @@ id|status
 )paren
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ex_unload_table
 (paren
 id|ddb_handle
@@ -688,19 +694,15 @@ comma
 l_int|8
 comma
 (paren
-id|acpi_integer
-op_star
-)paren
-(paren
 (paren
 id|u8
 op_star
 )paren
 op_amp
 id|table_header
+)paren
 op_plus
 id|i
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -800,10 +802,10 @@ comma
 l_int|8
 comma
 (paren
-id|acpi_integer
+(paren
+id|u8
 op_star
 )paren
-(paren
 id|table_data_ptr
 op_plus
 id|i
@@ -882,11 +884,12 @@ suffix:semicolon
 )brace
 id|table_ptr
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_table_header
-op_star
-)paren
+comma
 id|buffer_desc-&gt;buffer.pointer
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -954,11 +957,6 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Table has invalid signature [%4.4s], must be SSDT or PSDT&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
 id|table_ptr-&gt;signature
 )paren
 )paren
@@ -1018,6 +1016,9 @@ id|status
 )paren
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ex_unload_table
 (paren
 id|ddb_handle
@@ -1102,7 +1103,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|ddb_handle
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_or
 (paren
@@ -1136,29 +1137,15 @@ op_star
 id|table_desc-&gt;reference.object
 suffix:semicolon
 multiline_comment|/*&n;&t; * Delete the entire namespace under this table Node&n;&t; * (Offset contains the Table_id)&n;&t; */
-id|status
-op_assign
 id|acpi_ns_delete_namespace_by_owner
 (paren
 id|table_info-&gt;table_id
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Delete the table itself */
+(paren
+r_void
+)paren
 id|acpi_tb_uninstall_table
 (paren
 id|table_info-&gt;installed_desc

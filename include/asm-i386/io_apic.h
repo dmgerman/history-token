@@ -447,6 +447,49 @@ suffix:semicolon
 multiline_comment|/*&n; * If we use the IO-APIC for IRQ routing, disable automatic&n; * assignment of PCI IRQ&squot;s.&n; */
 DECL|macro|io_apic_assign_pci_irqs
 mdefine_line|#define io_apic_assign_pci_irqs (mp_irq_entries &amp;&amp; !skip_ioapic_setup)
+macro_line|#ifdef CONFIG_ACPI_BOOT
+r_extern
+r_int
+id|io_apic_get_unique_id
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|apic_id
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|io_apic_get_version
+(paren
+r_int
+id|ioapic
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|io_apic_get_redir_entries
+(paren
+r_int
+id|ioapic
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|io_apic_set_pci_routing
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|pin
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_ACPI_BOOT*/
 macro_line|#else  /* !CONFIG_X86_IO_APIC */
 DECL|macro|io_apic_assign_pci_irqs
 mdefine_line|#define io_apic_assign_pci_irqs 0

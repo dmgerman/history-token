@@ -1,11 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -238,7 +236,7 @@ c_cond
 (paren
 id|index
 op_ge
-id|OBJ_NUM_OPERANDS
+id|OBJ_MAX_OPERAND
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -543,7 +541,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|u32
+id|NATIVE_UINT
 id|index
 suffix:semicolon
 id|acpi_generic_state
@@ -668,6 +666,9 @@ id|walk_state
 comma
 id|state-&gt;results.num_results
 comma
+(paren
+id|u32
+)paren
 id|index
 )paren
 )paren
@@ -2030,6 +2031,8 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Init the method arguments */
+id|status
+op_assign
 id|acpi_ds_method_data_init_args
 (paren
 id|params
@@ -2039,13 +2042,28 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
 multiline_comment|/* Setup the current scope */
 id|parser_state-&gt;start_node
 op_assign
-id|parser_state-&gt;start_op-&gt;node
+id|parser_state-&gt;start_op-&gt;common.node
 suffix:semicolon
 r_if
 c_cond
@@ -2082,6 +2100,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|status
+op_assign
 id|acpi_ds_init_callbacks
 (paren
 id|walk_state
@@ -2091,7 +2111,7 @@ id|pass_number
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

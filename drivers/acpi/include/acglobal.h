@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 121 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 125 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -68,6 +68,17 @@ id|ACPI_EXTERN
 id|acpi_common_facs
 id|acpi_gbl_common_fACS
 suffix:semicolon
+multiline_comment|/*&n; * Handle both ACPI 1.0 and ACPI 2.0 Integer widths&n; * If we are running a method that exists in a 32-bit ACPI table.&n; * Use only 32 bits of the Integer for conversion.&n; */
+DECL|variable|acpi_gbl_integer_bit_width
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_integer_bit_width
+suffix:semicolon
+DECL|variable|acpi_gbl_integer_byte_width
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_integer_byte_width
+suffix:semicolon
 multiline_comment|/*&n; * Since there may be multiple SSDTs and PSDTS, a single pointer is not&n; * sufficient; Therefore, there isn&squot;t one!&n; */
 multiline_comment|/*&n; * ACPI Table info arrays&n; */
 r_extern
@@ -111,6 +122,11 @@ DECL|variable|acpi_gbl_sys_notify
 id|ACPI_EXTERN
 id|ACPI_OBJECT_NOTIFY_HANDLER
 id|acpi_gbl_sys_notify
+suffix:semicolon
+DECL|variable|acpi_gbl_init_handler
+id|ACPI_EXTERN
+id|ACPI_INIT_HANDLER
+id|acpi_gbl_init_handler
 suffix:semicolon
 DECL|variable|acpi_gbl_breakpoint_walk
 id|ACPI_EXTERN
@@ -218,6 +234,14 @@ id|acpi_gbl_db_sleep_states
 id|ACPI_NUM_SLEEP_STATES
 )braket
 suffix:semicolon
+r_extern
+r_const
+id|acpi_opcode_info
+id|acpi_gbl_aml_op_info
+(braket
+id|AML_NUM_OPCODES
+)braket
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
 DECL|macro|NUM_NS_TYPES
 mdefine_line|#define NUM_NS_TYPES                    INTERNAL_TYPE_INVALID+1
@@ -303,8 +327,7 @@ op_star
 id|acpi_gbl_parsed_namespace_root
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Hardware globals&n; *&n; ****************************************************************************/
-DECL|variable|acpi_gbl_bit_register_info
-id|ACPI_EXTERN
+r_extern
 id|ACPI_BIT_REGISTER_INFO
 id|acpi_gbl_bit_register_info
 (braket
@@ -386,13 +409,11 @@ id|u8
 id|acpi_gbl_db_output_flags
 suffix:semicolon
 macro_line|#ifdef ENABLE_DEBUGGER
-DECL|variable|acpi_gbl_method_executing
-id|ACPI_EXTERN
+r_extern
 id|u8
 id|acpi_gbl_method_executing
 suffix:semicolon
-DECL|variable|acpi_gbl_db_terminate_threads
-id|ACPI_EXTERN
+r_extern
 id|u8
 id|acpi_gbl_db_terminate_threads
 suffix:semicolon
@@ -406,17 +427,6 @@ id|ACPI_EXTERN
 id|NATIVE_CHAR
 op_star
 id|optarg
-suffix:semicolon
-DECL|variable|aml_start
-id|ACPI_EXTERN
-id|u8
-op_star
-id|aml_start
-suffix:semicolon
-DECL|variable|aml_length
-id|ACPI_EXTERN
-id|u32
-id|aml_length
 suffix:semicolon
 DECL|variable|acpi_gbl_db_opt_tables
 id|ACPI_EXTERN

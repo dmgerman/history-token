@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -59,7 +59,7 @@ multiline_comment|/* Get the Name_string argument */
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_CREATE_FIELD_OP
 )paren
@@ -134,7 +134,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 comma
 id|INTERNAL_TYPE_DEF_ANY
 comma
@@ -166,7 +166,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* We could put the returned object (Node) on the object stack for later, but&n;&t; * for now, we will put it in the &quot;op&quot; object that the parser uses, so we&n;&t; * can get it again at the end of this scope&n;&t; */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -221,27 +221,11 @@ id|obj_desc-&gt;common.next_object
 suffix:semicolon
 id|second_desc-&gt;extra.aml_start
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 suffix:semicolon
 id|second_desc-&gt;extra.aml_length
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
+id|op-&gt;named.length
 suffix:semicolon
 id|obj_desc-&gt;buffer_field.node
 op_assign
@@ -307,6 +291,9 @@ id|arg
 id|acpi_status
 id|status
 suffix:semicolon
+id|acpi_integer
+id|position
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_get_field_names&quot;
@@ -330,23 +317,28 @@ multiline_comment|/*&n;&t;&t; * Three types of field elements are handled:&n;&t;
 r_switch
 c_cond
 (paren
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 )paren
 (brace
 r_case
 id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
+id|position
+op_assign
 (paren
 id|acpi_integer
 )paren
 id|info-&gt;field_bit_position
 op_plus
-id|arg-&gt;value.size
+(paren
+id|acpi_integer
 )paren
+id|arg-&gt;common.value.size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|position
 OG
 id|ACPI_UINT32_MAX
 )paren
@@ -365,8 +357,11 @@ id|AE_SUPPORT
 suffix:semicolon
 )brace
 id|info-&gt;field_bit_position
-op_add_assign
-id|arg-&gt;value.size
+op_assign
+(paren
+id|u32
+)paren
+id|position
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -394,7 +389,7 @@ op_or
 id|u8
 )paren
 (paren
-id|arg-&gt;value.integer32
+id|arg-&gt;common.value.integer32
 op_rshift
 l_int|8
 )paren
@@ -407,7 +402,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|arg-&gt;value.integer32
+id|arg-&gt;common.value.integer32
 )paren
 suffix:semicolon
 r_break
@@ -427,15 +422,7 @@ id|NATIVE_CHAR
 op_star
 )paren
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg
-)paren
-op_member_access_from_pointer
-id|name
+id|arg-&gt;named.name
 comma
 id|info-&gt;field_type
 comma
@@ -478,28 +465,20 @@ id|ACPI_REPORT_ERROR
 l_string|&quot;Field name [%4.4s] already exists in current scope&bslash;n&quot;
 comma
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg
-)paren
-op_member_access_from_pointer
-id|name
+id|arg-&gt;named.name
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|arg-&gt;node
+id|arg-&gt;common.node
 op_assign
 id|info-&gt;field_node
 suffix:semicolon
 id|info-&gt;field_bit_length
 op_assign
-id|arg-&gt;value.size
+id|arg-&gt;common.value.size
 suffix:semicolon
 multiline_comment|/* Create and initialize an object for the new Field Node */
 id|status
@@ -526,17 +505,22 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Keep track of bit position for the next field */
-r_if
-c_cond
-(paren
-(paren
+id|position
+op_assign
 (paren
 id|acpi_integer
 )paren
 id|info-&gt;field_bit_position
 op_plus
-id|arg-&gt;value.size
+(paren
+id|acpi_integer
 )paren
+id|arg-&gt;common.value.size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|position
 OG
 id|ACPI_UINT32_MAX
 )paren
@@ -572,19 +556,19 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Invalid opcode in field list: %X&bslash;n&quot;
 comma
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 )paren
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_AML_ERROR
+id|AE_AML_BAD_OPCODE
 )paren
 suffix:semicolon
 )brace
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 id|return_ACPI_STATUS
@@ -613,8 +597,6 @@ id|walk_state
 (brace
 id|acpi_status
 id|status
-op_assign
-id|AE_AML_ERROR
 suffix:semicolon
 id|acpi_parse_object
 op_star
@@ -633,7 +615,7 @@ suffix:semicolon
 multiline_comment|/* First arg is the name of the parent Op_region (must already exist) */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 r_if
 c_cond
@@ -648,7 +630,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 comma
 id|ACPI_TYPE_REGION
 comma
@@ -681,11 +663,11 @@ suffix:semicolon
 multiline_comment|/* Second arg is the field flags */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;value.integer8
+id|arg-&gt;common.value.integer8
 suffix:semicolon
 id|info.attribute
 op_assign
@@ -709,7 +691,7 @@ id|info
 comma
 id|walk_state
 comma
-id|arg-&gt;next
+id|arg-&gt;common.next
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -734,8 +716,6 @@ id|walk_state
 (brace
 id|acpi_status
 id|status
-op_assign
-id|AE_AML_ERROR
 suffix:semicolon
 id|acpi_parse_object
 op_star
@@ -819,6 +799,13 @@ id|INTERNAL_TYPE_INDEX_FIELD
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Walk the list of entries in the Field_list&n;&t; */
 r_while
@@ -831,7 +818,7 @@ multiline_comment|/* Ignore OFFSET and ACCESSAS terms here */
 r_if
 c_cond
 (paren
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEDFIELD_OP
 )paren
@@ -847,15 +834,7 @@ id|NATIVE_CHAR
 op_star
 )paren
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg
-)paren
-op_member_access_from_pointer
-id|name
+id|arg-&gt;named.name
 comma
 id|type
 comma
@@ -902,20 +881,17 @@ id|ACPI_REPORT_ERROR
 l_string|&quot;Field name [%4.4s] already exists in current scope&bslash;n&quot;
 comma
 op_amp
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg
-)paren
-op_member_access_from_pointer
-id|name
+id|arg-&gt;named.name
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Name already exists, just ignore this error */
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
 )brace
-id|arg-&gt;node
+id|arg-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -923,12 +899,12 @@ suffix:semicolon
 multiline_comment|/* Move to next field in the list */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -952,8 +928,6 @@ id|walk_state
 (brace
 id|acpi_status
 id|status
-op_assign
-id|AE_AML_ERROR
 suffix:semicolon
 id|acpi_parse_object
 op_star
@@ -972,7 +946,7 @@ suffix:semicolon
 multiline_comment|/* First arg is the name of the parent Op_region (must already exist) */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 r_if
 c_cond
@@ -987,7 +961,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 comma
 id|ACPI_TYPE_REGION
 comma
@@ -1020,7 +994,7 @@ suffix:semicolon
 multiline_comment|/* Second arg is the Bank Register (must already exist) */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|status
 op_assign
@@ -1028,7 +1002,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 comma
 id|INTERNAL_TYPE_BANK_FIELD_DEFN
 comma
@@ -1060,20 +1034,20 @@ suffix:semicolon
 multiline_comment|/* Third arg is the Bank_value */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|info.bank_value
 op_assign
-id|arg-&gt;value.integer32
+id|arg-&gt;common.value.integer32
 suffix:semicolon
 multiline_comment|/* Fourth arg is the field flags */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;value.integer8
+id|arg-&gt;common.value.integer8
 suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
@@ -1093,7 +1067,7 @@ id|info
 comma
 id|walk_state
 comma
-id|arg-&gt;next
+id|arg-&gt;common.next
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -1140,7 +1114,7 @@ suffix:semicolon
 multiline_comment|/* First arg is the name of the Index register (must already exist) */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 id|status
 op_assign
@@ -1148,7 +1122,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 comma
 id|ACPI_TYPE_ANY
 comma
@@ -1180,7 +1154,7 @@ suffix:semicolon
 multiline_comment|/* Second arg is the data register (must already exist) */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|status
 op_assign
@@ -1188,7 +1162,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 comma
 id|INTERNAL_TYPE_INDEX_FIELD_DEFN
 comma
@@ -1220,11 +1194,11 @@ suffix:semicolon
 multiline_comment|/* Next arg is the field flags */
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;value.integer8
+id|arg-&gt;common.value.integer8
 suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
@@ -1244,7 +1218,7 @@ id|info
 comma
 id|walk_state
 comma
-id|arg-&gt;next
+id|arg-&gt;common.next
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

@@ -1,15 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 96 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acdebug.h&quot;
-macro_line|#include &quot;acexcep.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
+macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -149,6 +145,8 @@ suffix:semicolon
 multiline_comment|/* If configured, initialize the AML debugger */
 id|ACPI_DEBUGGER_EXEC
 (paren
+id|status
+op_assign
 id|acpi_db_initialize
 (paren
 )paren
@@ -202,7 +200,7 @@ l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
 suffix:semicolon
 id|status
 op_assign
-id|acpi_ev_install_default_address_space_handlers
+id|acpi_ev_init_address_spaces
 (paren
 )paren
 suffix:semicolon
@@ -514,6 +512,9 @@ id|acpi_terminate
 r_void
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_terminate&quot;
@@ -546,13 +547,15 @@ id|acpi_db_terminate
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Now we can shutdown the OS-dependent layer */
+id|status
+op_assign
 id|acpi_os_terminate
 (paren
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -772,6 +775,51 @@ id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_install_initialization_handler&n; *&n; * PARAMETERS:  Handler             - Callback procedure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install an initialization handler&n; *&n; * TBD: When a second function is added, must save the Function also.&n; *&n; ****************************************************************************/
+id|acpi_status
+DECL|function|acpi_install_initialization_handler
+id|acpi_install_initialization_handler
+(paren
+id|ACPI_INIT_HANDLER
+id|handler
+comma
+id|u32
+id|function
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|handler
+)paren
+(brace
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_init_handler
+)paren
+(brace
+r_return
+(paren
+id|AE_ALREADY_EXISTS
+)paren
+suffix:semicolon
+)brace
+id|acpi_gbl_init_handler
+op_assign
+id|handler
+suffix:semicolon
+r_return
+id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_purge_cached_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Empty all caches (delete the cached objects)&n; *&n; ****************************************************************************/

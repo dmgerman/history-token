@@ -212,7 +212,7 @@ id|pcibios_irq_mask
 suffix:semicolon
 r_extern
 r_int
-id|pci_use_acpi_routing
+id|pcibios_scanned
 suffix:semicolon
 r_extern
 id|spinlock_t
@@ -225,8 +225,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|pcibios_enable_irq
+r_int
+id|pirq_enable_irq
 c_func
 (paren
 r_struct
@@ -239,16 +239,13 @@ r_extern
 r_int
 (paren
 op_star
-id|pci_lookup_irq
+id|pcibios_enable_irq
 )paren
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_int
-id|assign
 )paren
 suffix:semicolon
 eof

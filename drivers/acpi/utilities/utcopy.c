@@ -1,7 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 98 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
@@ -110,6 +109,9 @@ id|buffer_space_used
 op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|internal_object-&gt;string.length
 op_plus
 l_int|1
@@ -129,6 +131,9 @@ op_star
 )paren
 id|internal_object-&gt;string.pointer
 comma
+(paren
+id|ACPI_SIZE
+)paren
 id|internal_object-&gt;string.length
 op_plus
 l_int|1
@@ -275,7 +280,6 @@ id|acpi_ns_handle_to_pathname
 (paren
 (paren
 id|acpi_handle
-op_star
 )paren
 id|internal_object-&gt;reference.node
 comma
@@ -286,6 +290,9 @@ suffix:semicolon
 multiline_comment|/* Converted (external) string length is returned from above */
 id|external_object-&gt;string.length
 op_assign
+(paren
+id|u32
+)paren
 id|buffer.length
 suffix:semicolon
 op_star
@@ -490,11 +497,12 @@ id|source_object-&gt;package.count
 suffix:semicolon
 id|target_object-&gt;package.elements
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_object
-op_star
-)paren
+comma
 id|info-&gt;free_space
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Pass the new package object back to the package walk routine&n;&t;&t; */
 id|state-&gt;pkg.this_target_obj
@@ -506,6 +514,9 @@ id|object_space
 op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|target_object-&gt;package.count
 op_star
 r_sizeof
@@ -575,11 +586,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * First package at head of the buffer&n;&t; */
 id|external_object
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_object
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Free space begins right after the first package&n;&t; */
 id|info.length
@@ -616,11 +628,12 @@ id|internal_object-&gt;package.count
 suffix:semicolon
 id|external_object-&gt;package.elements
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_object
-op_star
-)paren
+comma
 id|info.free_space
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Build an array of ACPI_OBJECTS in the buffer&n;&t; * and move the free space past it&n;&t; */
 id|info.free_space
@@ -842,6 +855,9 @@ id|internal_object-&gt;string.pointer
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|external_object-&gt;string.length
 op_plus
 l_int|1
@@ -920,6 +936,11 @@ id|internal_object-&gt;integer.value
 op_assign
 id|external_object-&gt;integer.value
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Other types can&squot;t get here */
 r_break
 suffix:semicolon
 )brace
@@ -1182,6 +1203,7 @@ op_assign
 id|source_desc-&gt;common.flags
 suffix:semicolon
 multiline_comment|/* Fall through to common string/buffer case */
+multiline_comment|/*lint -fallthrough */
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
@@ -1233,6 +1255,11 @@ id|source_desc-&gt;string.length
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Nothing to do for other simple objects */
 r_break
 suffix:semicolon
 )brace
@@ -1467,6 +1494,9 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|source_obj-&gt;package.count
 op_plus
 l_int|1
