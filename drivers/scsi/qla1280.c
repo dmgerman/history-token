@@ -1,10 +1,7 @@
 multiline_comment|/********************************************************************************&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP1x80/1x160 device driver for Linux 2.3.x (redhat 6.X).&n; *&n; * COPYRIGHT (C) 1999-2000 QLOGIC CORPORATION    &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the Qlogic&squot;s Linux Software License. See below.&n; *&n; * This program is WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; *&n; * 1. Redistribution&squot;s or source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; ********************************************************************************/
 multiline_comment|/*****************************************************************************************&n;&t;&t;&t;QLOGIC CORPORATION SOFTWARE&n;           &quot;GNU&quot; GENERAL PUBLIC LICENSE&n;    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION&n;                 AND MODIFICATION&n;&n;This GNU General Public License (&quot;License&quot;) applies solely to QLogic Linux &n;Software (&quot;Software&quot;) and may be distributed under the terms of this License.  &n; &n;1. You may copy and distribute verbatim copies of the Software&squot;s source code as &n;you receive it, in any medium, provided that you conspicuously and appropriately &n;publish on each copy an appropriate copyright notice and disclaimer of warranty;&n;keep intact all the notices that refer to this License and to the absence of any&n;warranty; and give any other recipients of the Software a copy of this License along&n;with the Software. &n;&n;You may charge a fee for the physical act of transferring a copy, and you may at your&n;option offer warranty protection in exchange for a fee.&n; &n;2. You may modify your copy or copies of the Software or any portion of it, thus forming&n;a work based on the Software, and copy and distribute such modifications or work under&n;the terms of Section 1 above, provided that you also meet all of these conditions:&n; &n;* a) You must cause the modified files to carry prominent notices stating that you&n;changed the files and the date of any change. &n;&n;* b) You must cause any work that you distribute or publish that in whole or in part&n;contains or is derived from the Software or any part thereof, to be licensed as a&n;whole at no charge to all third parties under the terms of this License. &n;&n;* c) If the modified Software normally reads commands interactively when run, you&n;must cause it, when started running for such interactive use in the most ordinary way,&n;to print or display an announcement including an appropriate copyright notice and a &n;notice that there is no warranty (or else, saying that you provide a warranty) and that&n;users may redistribute the Software under these conditions, and telling the user how to&n;view a copy of this License. (Exception:if the Software itself is interactive but does &n;not normally print such an announcement, your work based on the Software is not required&n;to print an announcement.) &n;&n;These requirements apply to the modified work as a whole. If identifiable sections of&n;that work are not derived from the Software, and can be reasonably considered independent&n;and separate works in themselves, then this License, and its terms, do not apply to those&n;sections when you distribute them as separate works. But when you distribute the same&n;sections as part of a whole which is a work based on the Software, the distribution of the&n;whole must be on the terms of this License, whose permissions for other licensees extend&n;to the entire whole, and thus to each and every part regardless of who wrote it. &n;&n;3. You may copy and distribute the Software (or a work based on it, under Section 2) in &n;object code or executable form under the terms of Sections 1 and 2 above provided that&n;you also do one of the following: &n;&n;* a) Accompany it with the complete corresponding machine-readable source code, which must&n;be distributed under the terms of Sections 1 and 2 above on a medium customarily used for&n;software interchange; or, &n;&n;* b) Accompany it with a written offer, valid for at least three years, to give any third&n;party, for a charge no more than your cost of physically performing source distribution,&n;a complete machine-readable copy of the corresponding source code, to be distributed under&n;the terms of Sections 1 and 2 above on a medium customarily used for software interchange;&n;or,&n;&n;* c) Accompany it with the information you received as to the offer to distribute &n;corresponding source code. (This alternative is allowed only for noncommercial distribution&n;and only if you received the Software in object code or executable form with such an offer,&n;in accord with Subsection b above.) &n;&n;The source code for a work means the preferred form of the work for making modifications&n;to it. For an executable work, complete source code means all the source code for all &n;modules it contains, plus any associated interface definition files, plus the scripts used&n;to control compilation and installation of the executable.     &n;&n;If distribution of executable or object code is made by offering access to copy from a &n;designated place, then offering equivalent access to copy the source code from the same&n;place counts as distribution of the source code, even though third parties are not &n;compelled to copy the source along with the object code. &n;&n;4. You may not copy, modify, sublicense, or distribute the Software except as expressly &n;provided under this License. Any attempt otherwise to copy, modify, sublicense or &n;distribute the Software is void, and will automatically terminate your rights under this&n;License. However, parties who have received copies, or rights, from you under this License&n;will not have their licenses terminated so long as such parties remain in full compliance. &n;&n;5. This license grants you world wide, royalty free non-exclusive rights to modify or &n;distribute the Software or its derivative works. These actions are prohibited by law &n;if you do not accept this License. Therefore, by modifying or distributing the Software&n;(or any work based on the Software), you indicate your acceptance of this License to do&n;so, and all its terms and conditions for copying, distributing or modifying the Software&n;or works based on it.&n; &n;6. Each time you redistribute the Software (or any work based on the Software), the &n;recipient automatically receives a license from the original licensor to copy, distribute&n;or modify the Software subject to these terms and conditions. You may not impose any &n;further restrictions on the recipients&squot; exercise of the rights granted herein. You are&n;not responsible for enforcing compliance by third parties to this License.&n; &n;7. If, as a consequence of a court judgment or allegation of patent infringement or for&n;any other reason (not limited to patent issues), conditions are imposed on you &n;(whether by court order, agreement or otherwise) that contradict the conditions of this&n;License, they do not excuse you from the conditions of this License. If you cannot &n;distribute so as to satisfy simultaneously your obligations under this License &n;and any other pertinent obligations, then as a consequence you may not distribute the&n;Software at all.    &n;&n;If any portion of this section is held invalid or unenforceable under any particular &n;circumstance, the balance of the section is intended to apply and the section as a whole&n;is intended to apply in other circumstances. &n;NO WARRANTY&n;&n;11. THE SOFTWARE IS PROVIDED WITHOUT A WARRANTY OF ANY KIND. THERE IS NO &n;WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. &n;EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR &n;OTHER PARTIES PROVIDE THE SOFTWARE &quot;AS IS&quot; WITHOUT WARRANTY OF ANY KIND, &n;EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED &n;WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE &n;ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU. &n;SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL &n;NECESSARY SERVICING, REPAIR OR CORRECTION.&n; &n;12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING &n;WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR &n;REDISTRIBUTE THE SOFTWARE AS PERMITTED ABOVE, BE LIABLE TO YOU FOR &n;DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL &n;DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING &n;BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR &n;LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO &n;OPERATE WITH ANY OTHER SOFTWARES), EVEN IF SUCH HOLDER OR OTHER PARTY HAS &n;BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. &n;END OF TERMS AND CONDITIONS &n;&n;*******************************************************************************************/
 multiline_comment|/****************************************************************************&n;    Revision History:&n;    Rev. 3.00       Jan 17, 1999    DG  Qlogic&n;&t;   - Added 64-bit support.&n;    Rev. 2.07       Nov 9, 1999     DG  Qlogic&n;&t;   - Added new routine to set target parameters for ISP12160. &n;    Rev. 2.06       Sept 10, 1999     DG  Qlogic&n;       - Added support for ISP12160 Ultra 3 chip.&n;    Rev. 2.03       August 3, 1999    Fred Lewis, Intel DuPont&n;&t;- Modified code to remove errors generated when compiling with&n;&t;  Cygnus IA64 Compiler.&n;        - Changed conversion of pointers to unsigned longs instead of integers.&n;        - Changed type of I/O port variables from uint32_t to unsigned long.&n;        - Modified OFFSET macro to work with 64-bit as well as 32-bit.&n;        - Changed sprintf and printk format specifiers for pointers to %p.&n;        - Changed some int to long type casts where needed in sprintf &amp; printk.&n;        - Added l modifiers to sprintf and printk format specifiers for longs.&n;        - Removed unused local variables.&n;    Rev. 1.20       June 8, 1999      DG,  Qlogic&n;         Changes to support RedHat release 6.0 (kernel 2.2.5).  &n;       - Added SCSI exclusive access lock (io_request_lock) when accessing &n;         the adapter.&n;       - Added changes for the new LINUX interface template. Some new error&n;         handling routines have been added to the template, but for now we&n;         will use the old ones.&n;    -   Initial Beta Release.  &n;*****************************************************************************/
-macro_line|#error Please convert me to Documentation/DMA-mapping.txt
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif
 DECL|macro|QLA1280_VERSION
 mdefine_line|#define QLA1280_VERSION      &quot; 3.00-Beta&quot;
 macro_line|#include &lt;stdarg.h&gt;
@@ -15340,6 +15337,19 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
+r_int
+r_int
+r_int
+id|address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -15348,9 +15358,9 @@ c_func
 (paren
 id|debug_buff
 comma
-l_string|&quot;SG Segment ap=0x%p, len=0x%x&bslash;n&bslash;r&quot;
+l_string|&quot;SG Segment ap=0x%ull, len=0x%x&bslash;n&bslash;r&quot;
 comma
-id|sg-&gt;address
+id|address
 comma
 id|sg-&gt;length
 )paren
@@ -15373,11 +15383,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_LOW
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
 )paren
 suffix:semicolon
 op_star
@@ -15387,11 +15393,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_HIGH
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
+op_rshift
+l_int|32
 )paren
 suffix:semicolon
 op_star
@@ -15644,6 +15648,19 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
+r_int
+r_int
+r_int
+id|address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
@@ -15651,11 +15668,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_LOW
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
 )paren
 suffix:semicolon
 op_star
@@ -15665,11 +15678,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_HIGH
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
+op_rshift
+l_int|32
 )paren
 suffix:semicolon
 op_star
@@ -16877,6 +16888,19 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
+r_int
+r_int
+r_int
+id|address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
@@ -16887,11 +16911,7 @@ r_uint32
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
 )paren
 suffix:semicolon
 op_star
@@ -16908,9 +16928,9 @@ c_func
 (paren
 id|debug_buff
 comma
-l_string|&quot;SG Segment ap=0x%p, len=0x%x&bslash;n&bslash;r&quot;
+l_string|&quot;SG Segment ap=0x%ull, len=0x%x&bslash;n&bslash;r&quot;
 comma
-id|sg-&gt;address
+id|address
 comma
 id|sg-&gt;length
 )paren
@@ -17082,6 +17102,19 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
+r_int
+r_int
+r_int
+id|address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
@@ -17092,11 +17125,7 @@ id|u_int
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
-c_func
-(paren
-id|sg-&gt;address
-)paren
+id|address
 )paren
 suffix:semicolon
 op_star
