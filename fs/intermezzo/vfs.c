@@ -5350,7 +5350,7 @@ id|nd.dentry
 comma
 id|dentry
 comma
-id|oldname
+id|from
 comma
 id|info
 )paren
