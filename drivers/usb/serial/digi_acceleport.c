@@ -1207,12 +1207,6 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren

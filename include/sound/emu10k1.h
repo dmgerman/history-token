@@ -3011,6 +3011,10 @@ DECL|macro|FXBUS_PCM_CENTER
 mdefine_line|#define FXBUS_PCM_CENTER&t;0x06
 DECL|macro|FXBUS_PCM_LFE
 mdefine_line|#define FXBUS_PCM_LFE&t;&t;0x07
+DECL|macro|FXBUS_PT_LEFT
+mdefine_line|#define FXBUS_PT_LEFT&t;&t;20
+DECL|macro|FXBUS_PT_RIGHT
+mdefine_line|#define FXBUS_PT_RIGHT&t;&t;21
 DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS

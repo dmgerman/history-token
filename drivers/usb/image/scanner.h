@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; * Previously maintained by Brian Beattie&n; *&n; * Current maintainer: Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.6)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; * Previously maintained by Brian Beattie&n; *&n; * Current maintainer: Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 multiline_comment|/*&n; * For documentation, see Documentation/usb/scanner.txt.&n; * Website: http://www.meier-geinitz.de/kernel/&n; * Please contact the maintainer if your scanner is not detected by this&n; * driver automatically.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 singleline_comment|// #define DEBUG
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.14&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.15&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -634,11 +634,44 @@ c_func
 (paren
 l_int|0x04a9
 comma
+l_int|0x2210
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan 9900F */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2212
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan 5000F */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
 l_int|0x2213
 )paren
 )brace
 comma
 multiline_comment|/* LIDE 50 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2215
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan 3000 */
 (brace
 id|USB_DEVICE
 c_func
@@ -950,11 +983,33 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x0805
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 4470c */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x0901
 )paren
 )brace
 comma
 multiline_comment|/* ScanJet 2300C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x0a01
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 2400c */
 (brace
 id|USB_DEVICE
 c_func
@@ -1109,6 +1164,17 @@ c_func
 (paren
 l_int|0x05da
 comma
+l_int|0x20a7
+)paren
+)brace
+comma
+multiline_comment|/* ScanMaker 5600 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05da
+comma
 l_int|0x20c9
 )paren
 )brace
@@ -1136,6 +1202,17 @@ l_int|0x30cf
 )brace
 comma
 multiline_comment|/* ScanMaker 4800 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05da
+comma
+l_int|0x30d4
+)paren
+)brace
+comma
+multiline_comment|/* ScanMaker 3830 + 3840 */
 (brace
 id|USB_DEVICE
 c_func
@@ -1358,6 +1435,17 @@ l_int|0x0401
 )brace
 comma
 multiline_comment|/* P 3600 A3 Pro */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0409
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 2448TA Pro */
 (brace
 id|USB_DEVICE
 c_func
@@ -1983,6 +2071,29 @@ l_int|0x0802
 )brace
 comma
 multiline_comment|/* Stylus CX3200 */
+multiline_comment|/* Siemens */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0681
+comma
+l_int|0x0005
+)paren
+)brace
+comma
+multiline_comment|/* ID Mouse Professional */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0681
+comma
+l_int|0x0010
+)paren
+)brace
+comma
+multiline_comment|/* Cherry FingerTIP ID Board - Sensor */
 multiline_comment|/* SYSCAN */
 (brace
 id|USB_DEVICE
@@ -2069,6 +2180,17 @@ c_func
 (paren
 l_int|0x1606
 comma
+l_int|0x0070
+)paren
+)brace
+comma
+multiline_comment|/* Astra 4400 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1606
+comma
 l_int|0x0130
 )paren
 )brace
@@ -2140,7 +2262,18 @@ l_int|0x0226
 )paren
 )brace
 comma
-multiline_comment|/* OneTouch 5300 USB */
+multiline_comment|/* OneTouch 5800 USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a7
+comma
+l_int|0x022c
+)paren
+)brace
+comma
+multiline_comment|/* OneTouch 9020 USB */
 (brace
 id|USB_DEVICE
 c_func

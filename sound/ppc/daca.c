@@ -159,7 +159,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mix-&gt;right_vol
+id|mix-&gt;left_vol
 OG
 id|DACA_VOL_MAX
 )paren
@@ -176,12 +176,12 @@ id|data
 l_int|0
 )braket
 op_assign
-id|mix-&gt;right_vol
+id|mix-&gt;left_vol
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|mix-&gt;left_vol
+id|mix-&gt;right_vol
 OG
 id|DACA_VOL_MAX
 )paren
@@ -198,7 +198,7 @@ id|data
 l_int|1
 )braket
 op_assign
-id|mix-&gt;left_vol
+id|mix-&gt;right_vol
 suffix:semicolon
 id|data
 (braket

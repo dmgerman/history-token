@@ -1,23 +1,20 @@
-macro_line|#ifndef _sis_drm_public_h_
-DECL|macro|_sis_drm_public_h_
-mdefine_line|#define _sis_drm_public_h_
+macro_line|#ifndef __SIS_DRM_H__
+DECL|macro|__SIS_DRM_H__
+mdefine_line|#define __SIS_DRM_H__
 multiline_comment|/* SiS specific ioctls */
-DECL|macro|SIS_IOCTL_FB_ALLOC
-mdefine_line|#define SIS_IOCTL_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
-DECL|macro|SIS_IOCTL_FB_FREE
-mdefine_line|#define SIS_IOCTL_FB_FREE&t;&t;DRM_IOW( 0x45, drm_sis_mem_t)
-DECL|macro|SIS_IOCTL_AGP_INIT
-mdefine_line|#define SIS_IOCTL_AGP_INIT&t;&t;DRM_IOWR(0x53, drm_sis_agp_t)
-DECL|macro|SIS_IOCTL_AGP_ALLOC
-mdefine_line|#define SIS_IOCTL_AGP_ALLOC&t;&t;DRM_IOWR(0x54, drm_sis_mem_t)
-DECL|macro|SIS_IOCTL_AGP_FREE
-mdefine_line|#define SIS_IOCTL_AGP_FREE&t;&t;DRM_IOW( 0x55, drm_sis_mem_t)
-DECL|macro|SIS_IOCTL_FLIP
-mdefine_line|#define SIS_IOCTL_FLIP&t;&t;&t;DRM_IOW( 0x48, drm_sis_flip_t)
-DECL|macro|SIS_IOCTL_FLIP_INIT
-mdefine_line|#define SIS_IOCTL_FLIP_INIT&t;&t;DRM_IO(  0x49)
-DECL|macro|SIS_IOCTL_FLIP_FINAL
-mdefine_line|#define SIS_IOCTL_FLIP_FINAL&t;&t;DRM_IO(  0x50)
+DECL|macro|DRM_IOCTL_SIS_FB_ALLOC
+mdefine_line|#define DRM_IOCTL_SIS_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
+DECL|macro|DRM_IOCTL_SIS_FB_FREE
+mdefine_line|#define DRM_IOCTL_SIS_FB_FREE&t;&t;DRM_IOW( 0x45, drm_sis_mem_t)
+DECL|macro|DRM_IOCTL_SIS_AGP_INIT
+mdefine_line|#define DRM_IOCTL_SIS_AGP_INIT&t;&t;DRM_IOWR(0x53, drm_sis_agp_t)
+DECL|macro|DRM_IOCTL_SIS_AGP_ALLOC
+mdefine_line|#define DRM_IOCTL_SIS_AGP_ALLOC&t;&t;DRM_IOWR(0x54, drm_sis_mem_t)
+DECL|macro|DRM_IOCTL_SIS_AGP_FREE
+mdefine_line|#define DRM_IOCTL_SIS_AGP_FREE&t;&t;DRM_IOW( 0x55, drm_sis_mem_t)
+DECL|macro|DRM_IOCTL_SIS_FB_INIT
+mdefine_line|#define DRM_IOCTL_SIS_FB_INIT&t;&t;DRM_IOW( 0x56, drm_sis_fb_t)
+multiline_comment|/*&n;#define DRM_IOCTL_SIS_FLIP&t;&t;DRM_IOW( 0x48, drm_sis_flip_t)&n;#define DRM_IOCTL_SIS_FLIP_INIT&t;&t;DRM_IO(  0x49)&n;#define DRM_IOCTL_SIS_FLIP_FINAL&t;DRM_IO(  0x50)&n;*/
 r_typedef
 r_struct
 (brace
@@ -62,134 +59,17 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|left
-DECL|member|right
+DECL|member|offset
+DECL|member|size
 r_int
 r_int
-id|left
+id|offset
 comma
-id|right
+id|size
 suffix:semicolon
-DECL|typedef|drm_sis_flip_t
+DECL|typedef|drm_sis_fb_t
 )brace
-id|drm_sis_flip_t
+id|drm_sis_fb_t
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_int
-id|sis_fb_alloc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_int
-id|sis_fb_free
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_int
-id|sisp_agp_init
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_int
-id|sisp_agp_alloc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_int
-id|sisp_agp_free
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* __SIS_DRM_H__ */
 eof

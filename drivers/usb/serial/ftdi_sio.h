@@ -161,6 +161,12 @@ DECL|macro|IDTECH_VID
 mdefine_line|#define IDTECH_VID&t;&t;0x0ACD&t;/* ID TECH Vendor ID */
 DECL|macro|IDTECH_IDT1221U_PID
 mdefine_line|#define IDTECH_IDT1221U_PID&t;0x0300&t;/* IDT1221U USB to RS-232 adapter */
+multiline_comment|/*&n; * Definitions for Omnidirectional Control Technology, Inc. devices&n; */
+DECL|macro|OCT_VID
+mdefine_line|#define OCT_VID&t;&t;&t;0x0B39&t;/* OCT vendor ID */
+multiline_comment|/* Note: OCT US101 is also rebadged as Dick Smith Electronics (NZ) XH6381 */
+DECL|macro|OCT_US101_PID
+mdefine_line|#define OCT_US101_PID&t;&t;0x0421&t;/* OCT US101 USB to RS-232 */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

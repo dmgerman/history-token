@@ -1924,7 +1924,7 @@ multiline_comment|/* ACLINK: I2S */
 l_int|0xf8
 comma
 multiline_comment|/* I2S: vol, 96k, 24bit, 192k */
-l_int|0xc2
+l_int|0xc3
 comma
 multiline_comment|/* SPDIF: out-en, out-int, spdif-in */
 l_int|0xff
@@ -1975,7 +1975,7 @@ multiline_comment|/* ACLINK: I2S */
 l_int|0xf8
 comma
 multiline_comment|/* I2S: vol, 96k, 24bit, 192k */
-l_int|0xc2
+l_int|0xc3
 comma
 multiline_comment|/* SPDIF: out-en, out-int, spdif-in */
 l_int|0xff

@@ -3887,10 +3887,23 @@ op_minus
 id|epcm-&gt;ccca_start_addr
 suffix:semicolon
 r_else
+(brace
 id|ptr
 op_sub_assign
 id|epcm-&gt;ccca_start_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+op_ge
+id|runtime-&gt;buffer_size
+)paren
+id|ptr
+op_sub_assign
+id|runtime-&gt;buffer_size
+suffix:semicolon
+)brace
 macro_line|#endif
 singleline_comment|// printk(&quot;ptr = 0x%x, buffer_size = 0x%x, period_size = 0x%x&bslash;n&quot;, ptr, runtime-&gt;buffer_size, runtime-&gt;period_size);
 r_return

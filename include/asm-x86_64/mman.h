@@ -11,6 +11,10 @@ DECL|macro|PROT_NONE
 mdefine_line|#define PROT_NONE&t;0x0&t;&t;/* page can not be accessed */
 DECL|macro|PROT_SEM
 mdefine_line|#define PROT_SEM&t;0x8
+DECL|macro|PROT_GROWSDOWN
+mdefine_line|#define PROT_GROWSDOWN&t;0x01000000&t;/* mprotect flag: extend change to start of growsdown vma */
+DECL|macro|PROT_GROWSUP
+mdefine_line|#define PROT_GROWSUP&t;0x02000000&t;/* mprotect flag: extend change to end of growsup vma */
 DECL|macro|MAP_SHARED
 mdefine_line|#define MAP_SHARED&t;0x01&t;&t;/* Share changes */
 DECL|macro|MAP_PRIVATE

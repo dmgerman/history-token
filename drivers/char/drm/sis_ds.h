@@ -1,14 +1,10 @@
 multiline_comment|/* sis_ds.h -- Private header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by sclin@sis.com.tw&n; *&n; * Copyright 2000 Silicon Integrated Systems Corp, Inc., HsinChu, Taiwan.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; * &n; * Authors:&n; *    Sung-Ching Lin &lt;sclin@sis.com.tw&gt;&n; * &n; */
-macro_line|#ifndef _sis_ds_h_
-DECL|macro|_sis_ds_h_
-mdefine_line|#define _sis_ds_h_
+macro_line|#ifndef __SIS_DS_H__
+DECL|macro|__SIS_DS_H__
+mdefine_line|#define __SIS_DS_H__
 multiline_comment|/* Set Data Structure */
 DECL|macro|SET_SIZE
 mdefine_line|#define SET_SIZE 5000
-DECL|macro|MALLOC
-mdefine_line|#define MALLOC(s) kmalloc(s, GFP_KERNEL)
-DECL|macro|FREE
-mdefine_line|#define FREE(s) kfree(s)
 DECL|typedef|ITEM_TYPE
 r_typedef
 r_int
@@ -126,11 +122,7 @@ op_star
 id|set
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * GLX Hardware Device Driver common code&n; * Copyright (C) 1999 Keith Whitwell&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * KEITH WHITWELL, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
-macro_line|#ifndef MM_INC
-DECL|macro|MM_INC
-mdefine_line|#define MM_INC
 DECL|struct|mem_block_t
 r_struct
 id|mem_block_t
@@ -286,6 +278,18 @@ r_int
 id|startSearch
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Returns 1 if the block &squot;b&squot; is part of the heap &squot;heap&squot;&n; */
+r_int
+id|mmBlockInHeap
+c_func
+(paren
+id|PMemBlock
+id|heap
+comma
+id|PMemBlock
+id|b
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Free block starts at offset&n; * input: pointer to a block&n; * return: 0 if OK, -1 if error&n; */
 r_int
 id|mmFreeMem
@@ -343,5 +347,5 @@ op_star
 id|mmInit
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* __SIS_DS_H__ */
 eof

@@ -172,7 +172,8 @@ id|dfs
 op_lshift
 id|shift
 suffix:semicolon
-id|snd_akm4xxx_write
+singleline_comment|// snd_akm4xxx_write(ak, 0, reg, tmp);
+id|snd_akm4xxx_set
 c_func
 (paren
 id|ak
@@ -184,6 +185,7 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+multiline_comment|/* the value is written in reset(0) */
 id|snd_akm4xxx_reset
 c_func
 (paren
@@ -439,7 +441,7 @@ id|ak
 op_assign
 id|ice-&gt;akm
 op_assign
-id|kmalloc
+id|snd_kcalloc
 c_func
 (paren
 r_sizeof

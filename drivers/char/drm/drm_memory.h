@@ -1204,8 +1204,7 @@ suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/** Wrapper around agp_allocate_memory() */
 DECL|function|alloc_agp
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|DRM
 c_func
@@ -1242,8 +1241,7 @@ c_func
 id|free_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -1277,8 +1275,7 @@ c_func
 id|bind_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -1309,8 +1306,7 @@ c_func
 id|unbind_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 )paren

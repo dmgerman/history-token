@@ -14,17 +14,7 @@ c_func
 id|dma_service
 )paren
 (paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|device
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
+id|DRM_IRQ_ARGS
 )paren
 (brace
 id|drm_device_t
@@ -35,7 +25,7 @@ op_assign
 id|drm_device_t
 op_star
 )paren
-id|device
+id|arg
 suffix:semicolon
 id|drm_i830_private_t
 op_star

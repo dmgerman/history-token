@@ -1084,6 +1084,10 @@ id|ins-&gt;spdif_csuv_stream
 op_assign
 multiline_comment|/* byte 0 */
 (paren
+(paren
+r_int
+r_int
+)paren
 id|_wrap_all_bits
 c_func
 (paren
@@ -1099,6 +1103,10 @@ l_int|24
 op_or
 multiline_comment|/* byte 1 */
 (paren
+(paren
+r_int
+r_int
+)paren
 id|_wrap_all_bits
 c_func
 (paren
@@ -1106,7 +1114,7 @@ c_func
 (paren
 id|SNDRV_PCM_DEFAULT_CON_SPDIF
 op_rshift
-l_int|16
+l_int|8
 )paren
 op_amp
 l_int|0xff
@@ -1117,6 +1125,10 @@ l_int|16
 )paren
 op_or
 multiline_comment|/* byte 3 */
+(paren
+r_int
+r_int
+)paren
 id|_wrap_all_bits
 c_func
 (paren

@@ -946,6 +946,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|dev_dbg
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;suspend D%d --&gt; D%d&bslash;n&quot;
+comma
+id|dev-&gt;current_state
+comma
+id|state
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -971,26 +982,13 @@ id|dev_dbg
 (paren
 id|hcd-&gt;controller
 comma
-l_string|&quot;suspend D%d --&gt; D%d&bslash;n&quot;
-comma
-id|dev-&gt;current_state
-comma
-id|state
+l_string|&quot;hcd already suspended&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dev_dbg
-(paren
-id|hcd-&gt;controller
-comma
-l_string|&quot;suspend to state %d&bslash;n&quot;
-comma
-id|state
-)paren
-suffix:semicolon
 multiline_comment|/* remote wakeup needs hub-&gt;suspend() cooperation */
 singleline_comment|// pci_enable_wake (dev, 3, 1);
 id|pci_save_state
@@ -1012,6 +1010,20 @@ id|hcd-&gt;driver-&gt;suspend
 id|hcd
 comma
 id|state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+id|dev_dbg
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;suspend fail, retval %d&bslash;n&quot;
+comma
+id|retval
 )paren
 suffix:semicolon
 )brace
@@ -1057,6 +1069,15 @@ id|pci_get_drvdata
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|dev_dbg
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;resume from state D%d&bslash;n&quot;
+comma
+id|dev-&gt;current_state
 )paren
 suffix:semicolon
 r_if

@@ -3640,6 +3640,45 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* MISC bits */
+DECL|macro|AC97_AD198X_MBC
+mdefine_line|#define AC97_AD198X_MBC&t;&t;0x0003&t;/* mic boost */
+DECL|macro|AC97_AD198X_MBC_20
+mdefine_line|#define AC97_AD198X_MBC_20&t;0x0000&t;/* +20dB */
+DECL|macro|AC97_AD198X_MBC_10
+mdefine_line|#define AC97_AD198X_MBC_10&t;0x0001&t;/* +10dB */
+DECL|macro|AC97_AD198X_MBC_30
+mdefine_line|#define AC97_AD198X_MBC_30&t;0x0002&t;/* +30dB */
+DECL|macro|AC97_AD198X_VREFD
+mdefine_line|#define AC97_AD198X_VREFD&t;0x0004&t;/* VREF high-Z */
+DECL|macro|AC97_AD198X_VREFH
+mdefine_line|#define AC97_AD198X_VREFH&t;0x0008&t;/* 2.25V, 3.7V */
+DECL|macro|AC97_AD198X_VREF_0
+mdefine_line|#define AC97_AD198X_VREF_0&t;0x000c&t;/* 0V */
+DECL|macro|AC97_AD198X_SRU
+mdefine_line|#define AC97_AD198X_SRU&t;&t;0x0010&t;/* sample rate unlock */
+DECL|macro|AC97_AD198X_LOSEL
+mdefine_line|#define AC97_AD198X_LOSEL&t;0x0020&t;/* LINE_OUT amplifiers input select */
+DECL|macro|AC97_AD198X_2MIC
+mdefine_line|#define AC97_AD198X_2MIC&t;0x0040&t;/* 2-channel mic select */
+DECL|macro|AC97_AD198X_SPRD
+mdefine_line|#define AC97_AD198X_SPRD&t;0x0080&t;/* SPREAD enable */
+DECL|macro|AC97_AD198X_DMIX0
+mdefine_line|#define AC97_AD198X_DMIX0&t;0x0100&t;/* downmix mode: 0 = 6-to-4, 1 = 6-to-2 downmix */
+DECL|macro|AC97_AD198X_DMIX1
+mdefine_line|#define AC97_AD198X_DMIX1&t;0x0300&t;/* downmix mode: 1 = enabled */
+DECL|macro|AC97_AD198X_HPSEL
+mdefine_line|#define AC97_AD198X_HPSEL&t;0x0400&t;/* headphone amplifier input select */
+DECL|macro|AC97_AD198X_CLDIS
+mdefine_line|#define AC97_AD198X_CLDIS&t;0x0800&t;/* center/lfe disable */
+DECL|macro|AC97_AD198X_LODIS
+mdefine_line|#define AC97_AD198X_LODIS&t;0x1000&t;/* LINE_OUT disable */
+DECL|macro|AC97_AD198X_MSPLT
+mdefine_line|#define AC97_AD198X_MSPLT&t;0x2000&t;/* mute split */
+DECL|macro|AC97_AD198X_AC97NC
+mdefine_line|#define AC97_AD198X_AC97NC&t;0x4000&t;/* AC97 no compatible mode */
+DECL|macro|AC97_AD198X_DACZ
+mdefine_line|#define AC97_AD198X_DACZ&t;0x8000&t;/* DAC zero-fill mode */
 DECL|function|snd_ac97_ad1980_spdif_source_info
 r_static
 r_int
@@ -3934,6 +3973,7 @@ id|patch_ad1980_build_ops
 suffix:semicolon
 multiline_comment|/* Switch FRONT/SURROUND LINE-OUT/HP-OUT default connection */
 multiline_comment|/* it seems that most vendors connect line-out connector to headphone out of AC&squot;97 */
+multiline_comment|/* Stereo mutes enabled */
 id|misc
 op_assign
 id|snd_ac97_read
@@ -3953,8 +3993,16 @@ id|AC97_AD_MISC
 comma
 id|misc
 op_or
-l_int|0x0420
+id|AC97_AD198X_LOSEL
+op_or
+id|AC97_AD198X_HPSEL
+op_or
+id|AC97_AD198X_MSPLT
 )paren
+suffix:semicolon
+id|ac97-&gt;flags
+op_or_assign
+id|AC97_STEREO_MUTES
 suffix:semicolon
 r_return
 l_int|0
@@ -3997,6 +4045,8 @@ id|AC97_AD_MISC
 suffix:semicolon
 multiline_comment|/* switch front/surround line-out/hp-out */
 multiline_comment|/* center/LFE, surround in High-Z mode */
+multiline_comment|/* AD-compatible mode */
+multiline_comment|/* Stereo mutes enabled */
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -4006,8 +4056,24 @@ id|AC97_AD_MISC
 comma
 id|misc
 op_or
-l_int|0x1c28
+id|AC97_AD198X_VREFD
+op_or
+id|AC97_AD198X_LOSEL
+op_or
+id|AC97_AD198X_HPSEL
+op_or
+id|AC97_AD198X_CLDIS
+op_or
+id|AC97_AD198X_LODIS
+op_or
+id|AC97_AD198X_MSPLT
+op_or
+id|AC97_AD198X_AC97NC
 )paren
+suffix:semicolon
+id|ac97-&gt;flags
+op_or_assign
+id|AC97_STEREO_MUTES
 suffix:semicolon
 r_return
 l_int|0
@@ -4614,17 +4680,32 @@ id|spdif
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: set the below 1 if we can detect the chip rev.E correctly.&n;&t; *        this is used for switching mic and center/lfe, which needs&n;&t; *        resetting GPIO0 level on the older revision.&n;&t; */
 id|ac97-&gt;build_ops
 op_assign
 op_amp
 id|patch_alc650_ops
 suffix:semicolon
+multiline_comment|/* revision E or F */
+multiline_comment|/* FIXME: what about revision D ? */
 id|ac97-&gt;spec.dev_flags
 op_assign
-l_int|0
+(paren
+id|ac97-&gt;id
+op_eq
+l_int|0x414c4722
+op_logical_or
+id|ac97-&gt;id
+op_eq
+l_int|0x414c4723
+)paren
 suffix:semicolon
 multiline_comment|/* check spdif (should be only on rev.E) */
+r_if
+c_cond
+(paren
+id|ac97-&gt;spec.dev_flags
+)paren
+(brace
 id|val
 op_assign
 id|snd_ac97_read
@@ -4646,12 +4727,32 @@ id|spdif
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|spdif
 )paren
 (brace
+multiline_comment|/* enable AC97_ALC650_GPIO_SETUP, AC97_ALC650_CLOCK for R/W */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_GPIO_STATUS
+comma
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_GPIO_STATUS
+)paren
+op_or
+l_int|0x8000
+)paren
+suffix:semicolon
 multiline_comment|/* enable spdif in */
 id|snd_ac97_write_cache
 c_func
@@ -4740,7 +4841,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x76
+id|AC97_ALC650_GPIO_SETUP
 )paren
 suffix:semicolon
 r_if
@@ -4763,7 +4864,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x76
+id|AC97_ALC650_GPIO_SETUP
 comma
 id|val
 )paren
@@ -4775,7 +4876,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x78
+id|AC97_ALC650_GPIO_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -4800,7 +4901,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x78
+id|AC97_ALC650_GPIO_STATUS
 comma
 id|val
 )paren

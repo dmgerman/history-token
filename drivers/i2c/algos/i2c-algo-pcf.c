@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
-macro_line|#include &quot;i2c-pcf8584.h&quot;
+macro_line|#include &quot;i2c-algo-pcf.h&quot;
 multiline_comment|/* ----- global defines ----------------------------------------------- */
 DECL|macro|DEB
 mdefine_line|#define DEB(x) if (i2c_debug&gt;=1) x

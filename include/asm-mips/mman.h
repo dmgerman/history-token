@@ -14,6 +14,10 @@ mdefine_line|#define PROT_EXEC&t;0x04&t;&t;/* page can be executed */
 multiline_comment|/*&t;&t;&t;0x08&t;&t;   reserved for PROT_EXEC_NOFLUSH */
 DECL|macro|PROT_SEM
 mdefine_line|#define PROT_SEM&t;0x10&t;&t;/* page may be used for atomic ops */
+DECL|macro|PROT_GROWSDOWN
+mdefine_line|#define PROT_GROWSDOWN&t;0x01000000&t;/* mprotect flag: extend change to start of growsdown vma */
+DECL|macro|PROT_GROWSUP
+mdefine_line|#define PROT_GROWSUP&t;0x02000000&t;/* mprotect flag: extend change to end of growsup vma */
 multiline_comment|/*&n; * Flags for mmap&n; */
 DECL|macro|MAP_SHARED
 mdefine_line|#define MAP_SHARED&t;0x001&t;&t;/* Share changes */

@@ -148,7 +148,7 @@ DECL|member|buffer_bytes
 r_int
 id|buffer_bytes
 suffix:semicolon
-multiline_comment|/* requested period size */
+multiline_comment|/* requested buffer size */
 DECL|member|bytes
 r_int
 id|bytes
@@ -168,7 +168,7 @@ DECL|member|buffer_used
 r_int
 id|buffer_used
 suffix:semicolon
-multiline_comment|/* used length from buffer */
+multiline_comment|/* used length from period buffer */
 DECL|member|plugin_first
 id|snd_pcm_plugin_t
 op_star
