@@ -1838,8 +1838,6 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|t1isa_add_card
@@ -1879,8 +1877,6 @@ id|card
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|card
 op_assign
@@ -2316,8 +2312,6 @@ id|card
 suffix:semicolon
 id|err
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

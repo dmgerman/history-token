@@ -200,8 +200,6 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|card
 op_assign
 id|b1_alloc_card
@@ -510,8 +508,6 @@ id|card
 suffix:semicolon
 id|err
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -595,8 +591,6 @@ c_func
 (paren
 id|card
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
@@ -795,8 +789,6 @@ id|cinfo
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|card
 op_assign
@@ -1183,8 +1175,6 @@ id|card
 suffix:semicolon
 id|err
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -1268,8 +1258,6 @@ c_func
 (paren
 id|card
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
@@ -1639,7 +1627,7 @@ op_star
 id|p
 suffix:semicolon
 r_int
-id|ncards
+id|retval
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -1843,9 +1831,9 @@ id|driverv4
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ncards
+id|retval
 op_assign
-id|pci_register_driver
+id|pci_module_init
 c_func
 (paren
 op_amp
@@ -1855,9 +1843,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ncards
+id|retval
+OL
+l_int|0
 )paren
-(brace
+r_goto
+id|err
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1866,31 +1858,18 @@ l_string|&quot;%s: %d B1-PCI card(s) detected&bslash;n&quot;
 comma
 id|driver-&gt;name
 comma
-id|ncards
+id|retval
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
+id|retval
+op_assign
 l_int|0
 suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: NO B1-PCI card detected&bslash;n&quot;
-comma
-id|driver-&gt;name
-)paren
+r_goto
+id|out
 suffix:semicolon
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|b1pci_pci_driver
-)paren
-suffix:semicolon
+id|err
+suffix:colon
 id|detach_capi_driver
 c_func
 (paren
@@ -1905,6 +1884,8 @@ id|driverv4
 )paren
 suffix:semicolon
 macro_line|#endif
+id|out
+suffix:colon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
