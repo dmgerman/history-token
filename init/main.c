@@ -206,9 +206,11 @@ macro_line|#else
 DECL|function|acpi_early_init
 r_static
 r_inline
+r_void
 id|acpi_early_init
 c_func
 (paren
+r_void
 )paren
 (brace
 )brace
