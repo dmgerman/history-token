@@ -1,13 +1,13 @@
 macro_line|#ifndef _ASM_IA64_IOCTLS_H
 DECL|macro|_ASM_IA64_IOCTLS_H
 mdefine_line|#define _ASM_IA64_IOCTLS_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/ioctl.h&gt;
 multiline_comment|/* 0x54 is just a magic number to make these relatively unique (&squot;T&squot;) */
 DECL|macro|TCGETS
 mdefine_line|#define TCGETS&t;&t;0x5401
 DECL|macro|TCSETS
-mdefine_line|#define TCSETS&t;&t;0x5402
+mdefine_line|#define TCSETS&t;&t;0x5402&t;/* Clashes with SNDCTL_TMR_START sound ioctl */
 DECL|macro|TCSETSW
 mdefine_line|#define TCSETSW&t;&t;0x5403
 DECL|macro|TCSETSF
