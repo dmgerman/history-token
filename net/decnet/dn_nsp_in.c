@@ -1921,6 +1921,7 @@ r_int
 r_char
 id|lsflags
 suffix:semicolon
+r_int
 r_char
 id|fcval
 suffix:semicolon
