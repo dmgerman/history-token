@@ -2781,12 +2781,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|tags
 (braket
 id|tag
 )braket
 )paren
+r_continue
+suffix:semicolon
 id|tag_clear
 c_func
 (paren
