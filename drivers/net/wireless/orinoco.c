@@ -116,8 +116,6 @@ DECL|macro|TX_NICBUF_SIZE_BUG
 mdefine_line|#define TX_NICBUF_SIZE_BUG&t;1585&t;&t;/* Bug in Symbol firmware */
 DECL|macro|DUMMY_FID
 mdefine_line|#define DUMMY_FID&t;&t;0xFFFF
-DECL|macro|RUP_EVEN
-mdefine_line|#define RUP_EVEN(a) (((a) + 1) &amp; (~1))
 multiline_comment|/*#define MAX_MULTICAST(priv)&t;(priv-&gt;firmware_type == FIRMWARE_TYPE_AGERE ? &bslash;&n;  HERMES_MAX_MULTICAST : 0)*/
 DECL|macro|MAX_MULTICAST
 mdefine_line|#define MAX_MULTICAST(priv)&t;(HERMES_MAX_MULTICAST)
@@ -1614,10 +1612,12 @@ id|USER_BAP
 comma
 id|p
 comma
-id|RUP_EVEN
+id|ALIGN
 c_func
 (paren
 id|data_len
+comma
+l_int|2
 )paren
 comma
 id|txfid
@@ -2838,10 +2838,12 @@ id|IRQ_BAP
 comma
 id|p
 comma
-id|RUP_EVEN
+id|ALIGN
 c_func
 (paren
 id|data_len
+comma
+l_int|2
 )paren
 comma
 id|rxfid
