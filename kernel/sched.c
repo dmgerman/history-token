@@ -15291,7 +15291,7 @@ id|SD_LOAD_BALANCE
 id|printk
 c_func
 (paren
-l_string|&quot;does not balance&quot;
+l_string|&quot;does not load-balance&quot;
 )paren
 suffix:semicolon
 r_if
@@ -15310,8 +15310,6 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|printk
