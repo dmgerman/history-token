@@ -1098,8 +1098,10 @@ id|gpe_bit
 suffix:semicolon
 DECL|member|ec_id
 r_char
-op_star
 id|ec_id
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 id|__attribute__
