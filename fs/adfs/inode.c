@@ -683,7 +683,10 @@ op_eq
 l_int|0
 )paren
 r_return
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|high
 op_assign
