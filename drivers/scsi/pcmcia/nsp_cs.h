@@ -1,11 +1,10 @@
 multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;=========================================================*/
-multiline_comment|/* $Id: nsp_cs.h,v 1.4 2002/11/05 12:06:29 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.h,v 1.19 2003/08/18 11:09:19 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
-macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* for debugging */
-singleline_comment|//#define PCMCIA_DEBUG 9
+singleline_comment|//#define NSP_DEBUG 9
 multiline_comment|/*&n;#define static&n;#define inline&n;*/
 multiline_comment|/************************************&n; * Some useful macros...&n; */
 DECL|macro|NUMBER
@@ -19,9 +18,10 @@ DECL|macro|NSP_INITIATOR_ID
 mdefine_line|#define NSP_INITIATOR_ID  7
 DECL|macro|NSP_SELTIMEOUT
 mdefine_line|#define NSP_SELTIMEOUT 200
-multiline_comment|/* base register */
+multiline_comment|/***************************************************************************&n; * register definitions&n; ***************************************************************************/
+multiline_comment|/*========================================================================&n; * base register&n; ========================================================================*/
 DECL|macro|IRQCONTROL
-mdefine_line|#define&t;IRQCONTROL&t;0x00
+mdefine_line|#define&t;IRQCONTROL&t;0x00  /* R */
 DECL|macro|IRQCONTROL_RESELECT_CLEAR
 macro_line|#  define IRQCONTROL_RESELECT_CLEAR     BIT(0)
 DECL|macro|IRQCONTROL_PHASE_CHANGE_CLEAR
@@ -33,11 +33,11 @@ macro_line|#  define IRQCONTROL_FIFO_CLEAR         BIT(3)
 DECL|macro|IRQCONTROL_ALLMASK
 macro_line|#  define IRQCONTROL_ALLMASK            0xff
 DECL|macro|IRQCONTROL_ALLCLEAR
-macro_line|#  define IRQCONTROL_ALLCLEAR           0x0f
+macro_line|#  define IRQCONTROL_ALLCLEAR           (IRQCONTROL_RESELECT_CLEAR     | &bslash;&n;&t;&t;&t;&t;&t; IRQCONTROL_PHASE_CHANGE_CLEAR | &bslash;&n;&t;&t;&t;&t;&t; IRQCONTROL_TIMER_CLEAR        | &bslash;&n;&t;&t;&t;&t;&t; IRQCONTROL_FIFO_CLEAR          )
 DECL|macro|IRQCONTROL_IRQDISABLE
 macro_line|#  define IRQCONTROL_IRQDISABLE         0xf0
 DECL|macro|IRQSTATUS
-mdefine_line|#define&t;IRQSTATUS&t;0x00
+mdefine_line|#define&t;IRQSTATUS&t;0x00  /* W */
 DECL|macro|IRQSTATUS_SCSI
 macro_line|#  define IRQSTATUS_SCSI  BIT(0)
 DECL|macro|IRQSTATUS_TIMER
@@ -47,36 +47,36 @@ macro_line|#  define IRQSTATUS_FIFO  BIT(3)
 DECL|macro|IRQSTATUS_MASK
 macro_line|#  define IRQSTATUS_MASK  0x0f
 DECL|macro|IFSELECT
-mdefine_line|#define&t;IFSELECT&t;0x01
+mdefine_line|#define&t;IFSELECT&t;0x01 /* W */
 DECL|macro|IF_IFSEL
 macro_line|#  define IF_IFSEL    BIT(0)
 DECL|macro|IF_REGSEL
 macro_line|#  define IF_REGSEL   BIT(2)
 DECL|macro|FIFOSTATUS
-mdefine_line|#define&t;FIFOSTATUS&t;0x01
-DECL|macro|FIFOSTATUS_CHIP_REVISION
-macro_line|#  define FIFOSTATUS_CHIP_REVISION 0x0f
-DECL|macro|FIFOSTATUS_CHIP_ID
-macro_line|#  define FIFOSTATUS_CHIP_ID       0x70
+mdefine_line|#define&t;FIFOSTATUS&t;0x01 /* R */
+DECL|macro|FIFOSTATUS_CHIP_REVISION_MASK
+macro_line|#  define FIFOSTATUS_CHIP_REVISION_MASK 0x0f
+DECL|macro|FIFOSTATUS_CHIP_ID_MASK
+macro_line|#  define FIFOSTATUS_CHIP_ID_MASK       0x70
 DECL|macro|FIFOSTATUS_FULL_EMPTY
-macro_line|#  define FIFOSTATUS_FULL_EMPTY    0x80
+macro_line|#  define FIFOSTATUS_FULL_EMPTY         BIT(7)
 DECL|macro|INDEXREG
-mdefine_line|#define&t;INDEXREG&t;0x02
+mdefine_line|#define&t;INDEXREG&t;0x02 /* R/W */
 DECL|macro|DATAREG
-mdefine_line|#define&t;DATAREG&t;&t;0x03
+mdefine_line|#define&t;DATAREG&t;&t;0x03 /* R/W */
 DECL|macro|FIFODATA
-mdefine_line|#define&t;FIFODATA&t;0x04
+mdefine_line|#define&t;FIFODATA&t;0x04 /* R/W */
 DECL|macro|FIFODATA1
-mdefine_line|#define&t;FIFODATA1&t;0x05
+mdefine_line|#define&t;FIFODATA1&t;0x05 /* R/W */
 DECL|macro|FIFODATA2
-mdefine_line|#define&t;FIFODATA2&t;0x06
+mdefine_line|#define&t;FIFODATA2&t;0x06 /* R/W */
 DECL|macro|FIFODATA3
-mdefine_line|#define&t;FIFODATA3&t;0x07
-multiline_comment|/* indexed register */
+mdefine_line|#define&t;FIFODATA3&t;0x07 /* R/W */
+multiline_comment|/*====================================================================&n; * indexed register&n; ====================================================================*/
 DECL|macro|EXTBUSCTRL
-mdefine_line|#define EXTBUSCTRL&t;0x10
+mdefine_line|#define EXTBUSCTRL&t;0x10 /* R/W,deleted */
 DECL|macro|CLOCKDIV
-mdefine_line|#define CLOCKDIV&t;0x11
+mdefine_line|#define CLOCKDIV&t;0x11 /* R/W */
 DECL|macro|CLOCK_40M
 macro_line|#  define CLOCK_40M 0x02
 DECL|macro|CLOCK_20M
@@ -84,11 +84,11 @@ macro_line|#  define CLOCK_20M 0x01
 DECL|macro|FAST_20
 macro_line|#  define FAST_20   BIT(2)
 DECL|macro|TERMPWRCTRL
-mdefine_line|#define TERMPWRCTRL&t;0x13
+mdefine_line|#define TERMPWRCTRL&t;0x13 /* R/W */
 DECL|macro|POWER_ON
 macro_line|#  define POWER_ON BIT(0)
 DECL|macro|SCSIIRQMODE
-mdefine_line|#define SCSIIRQMODE&t;0x15
+mdefine_line|#define SCSIIRQMODE&t;0x15 /* R/W */
 DECL|macro|SCSI_PHASE_CHANGE_EI
 macro_line|#  define SCSI_PHASE_CHANGE_EI BIT(0)
 DECL|macro|RESELECT_EI
@@ -98,7 +98,7 @@ macro_line|#  define FIFO_IRQ_EI          BIT(5)
 DECL|macro|SCSI_RESET_IRQ_EI
 macro_line|#  define SCSI_RESET_IRQ_EI    BIT(6)
 DECL|macro|IRQPHASESENCE
-mdefine_line|#define IRQPHASESENCE&t;0x16
+mdefine_line|#define IRQPHASESENCE&t;0x16 /* R */
 DECL|macro|LATCHED_MSG
 macro_line|#  define LATCHED_MSG      BIT(0)
 DECL|macro|LATCHED_IO
@@ -116,9 +116,9 @@ macro_line|#  define FIFO_IRQ         BIT(6)
 DECL|macro|SCSI_RESET_IRQ
 macro_line|#  define SCSI_RESET_IRQ   BIT(7)
 DECL|macro|TIMERCOUNT
-mdefine_line|#define TIMERCOUNT&t;0x17
+mdefine_line|#define TIMERCOUNT&t;0x17 /* R/W */
 DECL|macro|SCSIBUSCTRL
-mdefine_line|#define SCSIBUSCTRL&t;0x18
+mdefine_line|#define SCSIBUSCTRL&t;0x18 /* R/W */
 DECL|macro|SCSI_SEL
 macro_line|#  define SCSI_SEL         BIT(0)
 DECL|macro|SCSI_RST
@@ -136,15 +136,15 @@ macro_line|#  define AUTODIRECTION    BIT(6)
 DECL|macro|ACKENB
 macro_line|#  define ACKENB           BIT(7)
 DECL|macro|SCSIBUSMON
-mdefine_line|#define SCSIBUSMON&t;0x19
+mdefine_line|#define SCSIBUSMON&t;0x19 /* R */
 DECL|macro|SETARBIT
-mdefine_line|#define SETARBIT&t;0x1A
+mdefine_line|#define SETARBIT&t;0x1A /* W */
 DECL|macro|ARBIT_GO
 macro_line|#  define ARBIT_GO         BIT(0)
 DECL|macro|ARBIT_FLAG_CLEAR
 macro_line|#  define ARBIT_FLAG_CLEAR BIT(1)
 DECL|macro|ARBITSTATUS
-mdefine_line|#define ARBITSTATUS&t;0x1A
+mdefine_line|#define ARBITSTATUS&t;0x1A /* R */
 multiline_comment|/*#  define ARBIT_GO        BIT(0)*/
 DECL|macro|ARBIT_WIN
 macro_line|#  define ARBIT_WIN        BIT(1)
@@ -163,11 +163,11 @@ macro_line|#  define CLEAR_COMMAND_POINTER BIT(0)
 DECL|macro|AUTO_COMMAND_GO
 macro_line|#  define AUTO_COMMAND_GO       BIT(1)
 DECL|macro|RESELECTID
-mdefine_line|#define RESELECTID&t;0x1C  /* R */
+mdefine_line|#define RESELECTID&t;0x1C  /* R   */
 DECL|macro|COMMANDDATA
-mdefine_line|#define COMMANDDATA&t;0x1D
+mdefine_line|#define COMMANDDATA&t;0x1D  /* R/W */
 DECL|macro|POINTERCLR
-mdefine_line|#define POINTERCLR&t;0x1E  /* W */
+mdefine_line|#define POINTERCLR&t;0x1E  /*   W */
 DECL|macro|POINTER_CLEAR
 macro_line|#  define POINTER_CLEAR      BIT(0)
 DECL|macro|ACK_COUNTER_CLEAR
@@ -177,35 +177,35 @@ macro_line|#  define REQ_COUNTER_CLEAR  BIT(2)
 DECL|macro|HOST_COUNTER_CLEAR
 macro_line|#  define HOST_COUNTER_CLEAR BIT(3)
 DECL|macro|READ_SOURCE
-macro_line|#  define READ_SOURCE        0x30
+macro_line|#  define READ_SOURCE        (BIT(4) | BIT(5))
 DECL|macro|ACK_COUNTER
-macro_line|#   define ACK_COUNTER       (0)
+macro_line|#    define ACK_COUNTER        (0)
 DECL|macro|REQ_COUNTER
-macro_line|#   define REQ_COUNTER       (BIT(4))
+macro_line|#    define REQ_COUNTER        (BIT(4))
 DECL|macro|HOST_COUNTER
-macro_line|#   define HOST_COUNTER      (BIT(5))
+macro_line|#    define HOST_COUNTER       (BIT(5))
 DECL|macro|TRANSFERCOUNT
-mdefine_line|#define TRANSFERCOUNT&t;0x1E  /* R */
+mdefine_line|#define TRANSFERCOUNT&t;0x1E  /* R   */
 DECL|macro|TRANSFERMODE
-mdefine_line|#define TRANSFERMODE&t;0x20
+mdefine_line|#define TRANSFERMODE&t;0x20  /* R/W */
 DECL|macro|MODE_MEM8
-macro_line|#   define MODE_MEM8   BIT(0)
+macro_line|#  define MODE_MEM8   BIT(0)
 DECL|macro|MODE_MEM32
-macro_line|#   define MODE_MEM32  BIT(1)
+macro_line|#  define MODE_MEM32  BIT(1)
 DECL|macro|MODE_ADR24
-macro_line|#   define MODE_ADR24  BIT(2)
+macro_line|#  define MODE_ADR24  BIT(2)
 DECL|macro|MODE_ADR32
-macro_line|#   define MODE_ADR32  BIT(3)
+macro_line|#  define MODE_ADR32  BIT(3)
 DECL|macro|MODE_IO8
-macro_line|#   define MODE_IO8    BIT(4)
+macro_line|#  define MODE_IO8    BIT(4)
 DECL|macro|MODE_IO32
-macro_line|#   define MODE_IO32   BIT(5)
+macro_line|#  define MODE_IO32   BIT(5)
 DECL|macro|TRANSFER_GO
-macro_line|#   define TRANSFER_GO BIT(6)
+macro_line|#  define TRANSFER_GO BIT(6)
 DECL|macro|BRAIND
-macro_line|#   define BRAIND      BIT(7)
+macro_line|#  define BRAIND      BIT(7)
 DECL|macro|SYNCREG
-mdefine_line|#define SYNCREG&t;&t;0x21
+mdefine_line|#define SYNCREG&t;&t;0x21 /* R/W */
 DECL|macro|SYNCREG_OFFSET_MASK
 macro_line|#  define SYNCREG_OFFSET_MASK  0x0f
 DECL|macro|SYNCREG_PERIOD_MASK
@@ -213,19 +213,19 @@ macro_line|#  define SYNCREG_PERIOD_MASK  0xf0
 DECL|macro|SYNCREG_PERIOD_SHIFT
 macro_line|#  define SYNCREG_PERIOD_SHIFT 4
 DECL|macro|SCSIDATALATCH
-mdefine_line|#define SCSIDATALATCH&t;0x22
+mdefine_line|#define SCSIDATALATCH&t;0x22 /*   W */
 DECL|macro|SCSIDATAIN
-mdefine_line|#define SCSIDATAIN&t;0x22
+mdefine_line|#define SCSIDATAIN&t;0x22 /* R   */
 DECL|macro|SCSIDATAWITHACK
-mdefine_line|#define SCSIDATAWITHACK&t;0x23
+mdefine_line|#define SCSIDATAWITHACK&t;0x23 /* R/W */
 DECL|macro|SCAMCONTROL
-mdefine_line|#define SCAMCONTROL&t;0x24
+mdefine_line|#define SCAMCONTROL&t;0x24 /*   W */
 DECL|macro|SCAMSTATUS
-mdefine_line|#define SCAMSTATUS&t;0x24
+mdefine_line|#define SCAMSTATUS&t;0x24 /* R   */
 DECL|macro|SCAMDATA
-mdefine_line|#define SCAMDATA&t;0x25
+mdefine_line|#define SCAMDATA&t;0x25 /* R/W */
 DECL|macro|OTHERCONTROL
-mdefine_line|#define OTHERCONTROL&t;0x26
+mdefine_line|#define OTHERCONTROL&t;0x26 /* R/W */
 DECL|macro|TPL_ROM_WRITE_EN
 macro_line|#  define TPL_ROM_WRITE_EN BIT(0)
 DECL|macro|TPWR_OUT
@@ -235,35 +235,35 @@ macro_line|#  define TPWR_SENSE       BIT(2)
 DECL|macro|RA8_CONTROL
 macro_line|#  define RA8_CONTROL      BIT(3)
 DECL|macro|ACKWIDTH
-mdefine_line|#define ACKWIDTH&t;0x27
+mdefine_line|#define ACKWIDTH&t;0x27 /* R/W */
 DECL|macro|CLRTESTPNT
-mdefine_line|#define CLRTESTPNT&t;0x28
+mdefine_line|#define CLRTESTPNT&t;0x28 /*   W */
 DECL|macro|ACKCNTLD
-mdefine_line|#define ACKCNTLD&t;0x29
+mdefine_line|#define ACKCNTLD&t;0x29 /*   W */
 DECL|macro|REQCNTLD
-mdefine_line|#define REQCNTLD&t;0x2A
+mdefine_line|#define REQCNTLD&t;0x2A /*   W */
 DECL|macro|HSTCNTLD
-mdefine_line|#define HSTCNTLD&t;0x2B
+mdefine_line|#define HSTCNTLD&t;0x2B /*   W */
 DECL|macro|CHECKSUM
-mdefine_line|#define CHECKSUM&t;0x2C
-multiline_comment|/*&n; * Input status bit definitions.&n; */
-DECL|macro|S_ATN
-mdefine_line|#define S_ATN&t;&t;0x80&t;/**/
-DECL|macro|S_SELECT
-mdefine_line|#define S_SELECT&t;0x40&t;/**/
-DECL|macro|S_REQUEST
-mdefine_line|#define S_REQUEST&t;0x20    /* Request line from SCSI bus*/
-DECL|macro|S_ACK
-mdefine_line|#define S_ACK&t;&t;0x10    /* Acknowledge line from SCSI bus*/
-DECL|macro|S_BUSY
-mdefine_line|#define S_BUSY&t;&t;0x08    /* Busy line from SCSI bus*/
-DECL|macro|S_CD
-mdefine_line|#define S_CD&t;&t;0x04    /* Command/Data line from SCSI bus*/
-DECL|macro|S_IO
-mdefine_line|#define S_IO&t;&t;0x02    /* Input/Output line from SCSI bus*/
+mdefine_line|#define CHECKSUM&t;0x2C /* R/W */
+multiline_comment|/************************************************************************&n; * Input status bit definitions.&n; ************************************************************************/
 DECL|macro|S_MESSAGE
-mdefine_line|#define S_MESSAGE&t;0x01    /* Message line from SCSI bus*/
-multiline_comment|/*&n; * Useful Bus Monitor status combinations.&n; */
+mdefine_line|#define S_MESSAGE&t;BIT(0)    /* Message line from SCSI bus      */
+DECL|macro|S_IO
+mdefine_line|#define S_IO&t;&t;BIT(1)    /* Input/Output line from SCSI bus */
+DECL|macro|S_CD
+mdefine_line|#define S_CD&t;&t;BIT(2)    /* Command/Data line from SCSI bus */
+DECL|macro|S_BUSY
+mdefine_line|#define S_BUSY&t;&t;BIT(3)    /* Busy line from SCSI bus         */
+DECL|macro|S_ACK
+mdefine_line|#define S_ACK&t;&t;BIT(4)    /* Acknowlege line from SCSI bus   */
+DECL|macro|S_REQUEST
+mdefine_line|#define S_REQUEST&t;BIT(5)    /* Request line from SCSI bus      */
+DECL|macro|S_SELECT
+mdefine_line|#define S_SELECT&t;BIT(6)&t;  /*                                 */
+DECL|macro|S_ATN
+mdefine_line|#define S_ATN&t;&t;BIT(7)&t;  /*                                 */
+multiline_comment|/***********************************************************************&n; * Useful Bus Monitor status combinations.&n; ***********************************************************************/
 DECL|macro|BUSMON_SEL
 mdefine_line|#define BUSMON_SEL         S_SELECT
 DECL|macro|BUSMON_BSY
@@ -277,21 +277,25 @@ mdefine_line|#define BUSMON_ACK         S_ACK
 DECL|macro|BUSMON_BUS_FREE
 mdefine_line|#define BUSMON_BUS_FREE    0
 DECL|macro|BUSMON_COMMAND
-mdefine_line|#define BUSMON_COMMAND     ( S_BUSY | S_CD | S_REQUEST )
+mdefine_line|#define BUSMON_COMMAND     ( S_BUSY | S_CD |                    S_REQUEST )
 DECL|macro|BUSMON_MESSAGE_IN
-mdefine_line|#define BUSMON_MESSAGE_IN  ( S_BUSY | S_MESSAGE | S_IO | S_CD | S_REQUEST )
+mdefine_line|#define BUSMON_MESSAGE_IN  ( S_BUSY | S_CD | S_IO | S_MESSAGE | S_REQUEST )
 DECL|macro|BUSMON_MESSAGE_OUT
-mdefine_line|#define BUSMON_MESSAGE_OUT ( S_BUSY | S_MESSAGE | S_CD | S_REQUEST )
+mdefine_line|#define BUSMON_MESSAGE_OUT ( S_BUSY | S_CD |        S_MESSAGE | S_REQUEST )
 DECL|macro|BUSMON_DATA_IN
-mdefine_line|#define BUSMON_DATA_IN     ( S_BUSY | S_IO | S_REQUEST )
+mdefine_line|#define BUSMON_DATA_IN     ( S_BUSY |        S_IO |             S_REQUEST )
 DECL|macro|BUSMON_DATA_OUT
-mdefine_line|#define BUSMON_DATA_OUT    ( S_BUSY | S_REQUEST )
+mdefine_line|#define BUSMON_DATA_OUT    ( S_BUSY |                           S_REQUEST )
 DECL|macro|BUSMON_STATUS
-mdefine_line|#define BUSMON_STATUS      ( S_BUSY | S_IO | S_CD | S_REQUEST )
+mdefine_line|#define BUSMON_STATUS      ( S_BUSY | S_CD | S_IO |             S_REQUEST )
+DECL|macro|BUSMON_SELECT
+mdefine_line|#define BUSMON_SELECT      (                 S_IO |                        S_SELECT )
 DECL|macro|BUSMON_RESELECT
-mdefine_line|#define BUSMON_RESELECT    ( S_SELECT | S_IO )
+mdefine_line|#define BUSMON_RESELECT    (                 S_IO |                        S_SELECT )
 DECL|macro|BUSMON_PHASE_MASK
-mdefine_line|#define BUSMON_PHASE_MASK  ( S_SELECT | S_CD | S_MESSAGE | S_IO )
+mdefine_line|#define BUSMON_PHASE_MASK  (          S_CD | S_IO | S_MESSAGE |            S_SELECT )
+DECL|macro|BUSPHASE_SELECT
+mdefine_line|#define BUSPHASE_SELECT      ( BUSMON_SELECT      &amp; BUSMON_PHASE_MASK )
 DECL|macro|BUSPHASE_COMMAND
 mdefine_line|#define BUSPHASE_COMMAND     ( BUSMON_COMMAND     &amp; BUSMON_PHASE_MASK )
 DECL|macro|BUSPHASE_MESSAGE_IN
@@ -304,8 +308,54 @@ DECL|macro|BUSPHASE_DATA_OUT
 mdefine_line|#define BUSPHASE_DATA_OUT    ( BUSMON_DATA_OUT    &amp; BUSMON_PHASE_MASK )
 DECL|macro|BUSPHASE_STATUS
 mdefine_line|#define BUSPHASE_STATUS      ( BUSMON_STATUS      &amp; BUSMON_PHASE_MASK )
-DECL|macro|BUSPHASE_SELECT
-mdefine_line|#define BUSPHASE_SELECT      ( S_SELECT | S_IO )
+multiline_comment|/*====================================================================*/
+DECL|struct|scsi_info_t
+r_typedef
+r_struct
+id|scsi_info_t
+(brace
+DECL|member|link
+id|dev_link_t
+id|link
+suffix:semicolon
+DECL|member|host
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,74))
+DECL|member|node
+id|dev_node_t
+id|node
+suffix:semicolon
+macro_line|#else
+DECL|member|ndev
+r_int
+id|ndev
+suffix:semicolon
+DECL|member|node
+id|dev_node_t
+id|node
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|bus
+r_struct
+id|bus_operations
+op_star
+id|bus
+suffix:semicolon
+macro_line|#endif
+DECL|member|stop
+r_int
+id|stop
+suffix:semicolon
+DECL|typedef|scsi_info_t
+)brace
+id|scsi_info_t
+suffix:semicolon
 multiline_comment|/* synchronous transfer negotiation data */
 DECL|struct|_sync_data
 r_typedef
@@ -374,6 +424,11 @@ id|MmioAddress
 suffix:semicolon
 DECL|macro|NSP_MMIO_OFFSET
 mdefine_line|#define NSP_MMIO_OFFSET 0x0800
+DECL|member|MmioLength
+r_int
+r_int
+id|MmioLength
+suffix:semicolon
 DECL|member|ScsiClockDiv
 r_int
 r_char
@@ -397,21 +452,11 @@ id|Scsi_Cmnd
 op_star
 id|CurrentSC
 suffix:semicolon
+singleline_comment|//int           CurrnetTarget;
 DECL|member|FifoCount
 r_int
 id|FifoCount
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0))
-DECL|member|Residual
-r_int
-id|Residual
-suffix:semicolon
-DECL|macro|RESID
-mdefine_line|#define RESID (data-&gt;Residual)
-macro_line|#else
-DECL|macro|RESID
-mdefine_line|#define RESID (SCpnt-&gt;resid)
-macro_line|#endif
 DECL|macro|MSGBUF_SIZE
 mdefine_line|#define MSGBUF_SIZE 20
 DECL|member|MsgBuffer
@@ -447,18 +492,42 @@ DECL|member|Lock
 id|spinlock_t
 id|Lock
 suffix:semicolon
+DECL|member|ScsiInfo
+id|scsi_info_t
+op_star
+id|ScsiInfo
+suffix:semicolon
+multiline_comment|/* attach &lt;-&gt; detect glue */
+macro_line|#ifdef NSP_DEBUG
+DECL|member|CmdId
+r_int
+id|CmdId
+suffix:semicolon
+multiline_comment|/* Accepted command serial number.&n;&t;&t;      Used for debugging.             */
+macro_line|#endif
 DECL|typedef|nsp_hw_data
 )brace
 id|nsp_hw_data
 suffix:semicolon
-multiline_comment|/* scatter-gather table */
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2))
-DECL|macro|BUFFER_ADDR
-macro_line|# define BUFFER_ADDR ((char *)((unsigned int)(SCpnt-&gt;SCp.buffer-&gt;page) + SCpnt-&gt;SCp.buffer-&gt;offset))
-macro_line|#else
-DECL|macro|BUFFER_ADDR
-macro_line|# define BUFFER_ADDR SCpnt-&gt;SCp.buffer-&gt;address
-macro_line|#endif
+multiline_comment|/****************************************************************************&n; *&n; */
+multiline_comment|/* Card service functions */
+r_static
+id|dev_link_t
+op_star
+id|nsp_cs_attach
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_void
+id|nsp_cs_detach
+(paren
+id|dev_link_t
+op_star
+id|link
+)paren
+suffix:semicolon
 r_static
 r_void
 id|nsp_cs_release
@@ -470,9 +539,17 @@ id|link
 )paren
 suffix:semicolon
 r_static
+r_void
+id|nsp_cs_config
+(paren
+id|dev_link_t
+op_star
+id|link
+)paren
+suffix:semicolon
+r_static
 r_int
 id|nsp_cs_event
-c_func
 (paren
 id|event_t
 id|event
@@ -485,62 +562,45 @@ op_star
 id|args
 )paren
 suffix:semicolon
+multiline_comment|/* Linux SCSI subsystem specific functions */
 r_static
-id|dev_link_t
+r_struct
+id|Scsi_Host
 op_star
-id|nsp_cs_attach
-c_func
+id|nsp_detect
 (paren
-r_void
+id|Scsi_Host_Template
+op_star
+id|sht
 )paren
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
 r_static
-r_void
-id|nsp_cs_detach
-c_func
+r_int
+id|nsp_detect_old
 (paren
-id|dev_link_t
+id|Scsi_Host_Template
 op_star
+id|sht
 )paren
 suffix:semicolon
 r_static
 r_int
-r_int
-id|nsphw_start_selection
+id|nsp_release_old
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|Scsi_Host
 op_star
-id|SCpnt
-comma
-id|nsp_hw_data
-op_star
-id|data
+id|shpnt
 )paren
 suffix:semicolon
-r_static
-r_void
-id|nsp_start_timer
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-comma
-id|nsp_hw_data
-op_star
-id|data
-comma
-r_int
-id|time
-)paren
-suffix:semicolon
+macro_line|#endif
 r_static
 r_const
 r_char
 op_star
 id|nsp_info
-c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -551,13 +611,14 @@ suffix:semicolon
 r_static
 r_int
 id|nsp_proc_info
-c_func
 (paren
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,73))
 r_struct
 id|Scsi_Host
 op_star
 id|host
 comma
+macro_line|#endif
 r_char
 op_star
 id|buffer
@@ -573,6 +634,11 @@ comma
 r_int
 id|length
 comma
+macro_line|#if !(LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,73))
+r_int
+id|hostno
+comma
+macro_line|#endif
 r_int
 id|inout
 )paren
@@ -584,6 +650,7 @@ c_func
 (paren
 id|Scsi_Cmnd
 op_star
+id|SCpnt
 comma
 r_void
 (paren
@@ -593,15 +660,16 @@ id|done
 (paren
 id|Scsi_Cmnd
 op_star
+id|SCpnt
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*static int nsp_eh_abort(Scsi_Cmnd * SCpnt);*/
+multiline_comment|/* Error handler */
+multiline_comment|/*static int nsp_eh_abort       (Scsi_Cmnd *SCpnt);*/
 multiline_comment|/*static int nsp_eh_device_reset(Scsi_Cmnd *SCpnt);*/
 r_static
 r_int
 id|nsp_eh_bus_reset
-c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -611,7 +679,6 @@ suffix:semicolon
 r_static
 r_int
 id|nsp_eh_host_reset
-c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -620,8 +687,48 @@ id|SCpnt
 suffix:semicolon
 r_static
 r_int
-id|nsp_fifo_count
+id|nsp_bus_reset
+(paren
+id|nsp_hw_data
+op_star
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* */
+r_static
+r_int
+id|nsphw_init
+(paren
+id|nsp_hw_data
+op_star
+id|data
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsphw_start_selection
 c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_void
+id|nsp_start_timer
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+comma
+r_int
+id|time
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_fifo_count
 (paren
 id|Scsi_Cmnd
 op_star
@@ -631,46 +738,159 @@ suffix:semicolon
 r_static
 r_void
 id|nsp_pio_read
-c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-id|nsp_hw_data
+)paren
+suffix:semicolon
+r_static
+r_void
+id|nsp_pio_write
+(paren
+id|Scsi_Cmnd
 op_star
-id|data
+id|SCpnt
 )paren
 suffix:semicolon
 r_static
 r_int
 id|nsp_nexus
-c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_void
+id|nsp_scsi_done
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_analyze_sdtr
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_negate_signal
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
 comma
-id|nsp_hw_data
+r_int
+r_char
+id|mask
+comma
+r_char
 op_star
-id|data
+id|str
 )paren
 suffix:semicolon
-macro_line|#ifdef PCMCIA_DEBUG
 r_static
-r_void
-id|show_command
-c_func
+r_int
+id|nsp_expect_signal
 (paren
 id|Scsi_Cmnd
 op_star
-id|ptr
+id|SCpnt
+comma
+r_int
+r_char
+id|current_phase
+comma
+r_int
+r_char
+id|mask
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_xfer
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+comma
+r_int
+id|phase
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_dataphase_bypass
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_reselected
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_struct
+id|Scsi_Host
+op_star
+id|nsp_detect
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+id|sht
+)paren
+suffix:semicolon
+multiline_comment|/* Interrupt handler */
+singleline_comment|//static irqreturn_t nspintr(int irq, void *dev_id, struct pt_regs *regs);
+multiline_comment|/* Module entry point*/
+r_static
+r_int
+id|__init
+id|nsp_cs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_void
+id|__exit
+id|nsp_cs_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Debug */
+macro_line|#ifdef NSP_DEBUG
+r_static
+r_void
+id|show_command
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
 )paren
 suffix:semicolon
 r_static
 r_void
 id|show_phase
-c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -690,7 +910,6 @@ suffix:semicolon
 r_static
 r_void
 id|show_message
-c_func
 (paren
 id|nsp_hw_data
 op_star
@@ -777,12 +996,17 @@ l_int|0
 comma
 DECL|enumerator|BURST_IO32
 id|BURST_IO32
+op_assign
+l_int|1
 comma
 DECL|enumerator|BURST_MEM32
 id|BURST_MEM32
+op_assign
+l_int|2
+comma
 )brace
 suffix:semicolon
-multiline_comment|/* SCSI messaage */
+multiline_comment|/**************************************************************************&n; * SCSI messaage&n; */
 DECL|macro|MSG_COMMAND_COMPLETE
 mdefine_line|#define MSG_COMMAND_COMPLETE 0x00
 DECL|macro|MSG_EXTENDED
@@ -795,5 +1019,168 @@ DECL|macro|MSG_BUS_DEVICE_RESET
 mdefine_line|#define MSG_BUS_DEVICE_RESET 0x0c
 DECL|macro|MSG_EXT_SDTR
 mdefine_line|#define MSG_EXT_SDTR         0x01
+multiline_comment|/**************************************************************************&n; * Compatibility functions&n; */
+multiline_comment|/* for Kernel 2.4 */
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,0))
+DECL|macro|scsi_register_host
+macro_line|#  define scsi_register_host(template)   scsi_register_module(MODULE_SCSI_HA, template)
+DECL|macro|scsi_unregister_host
+macro_line|#  define scsi_unregister_host(template) scsi_unregister_module(MODULE_SCSI_HA, template)
+DECL|macro|scsi_host_put
+macro_line|#  define scsi_host_put(host)            scsi_unregister(host)
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+macro_line|#  define IRQ_NONE      /* */
+DECL|macro|IRQ_HANDLED
+macro_line|#  define IRQ_HANDLED   /* */
+DECL|macro|IRQ_RETVAL
+macro_line|#  define IRQ_RETVAL(x) /* */
+multiline_comment|/* This is ad-hoc version of scsi_host_get_next() */
+DECL|function|scsi_host_get_next
+r_static
+r_inline
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host_get_next
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|host
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+id|scsi_hostlist
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+id|host-&gt;next
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* This is ad-hoc version of scsi_host_hn_get() */
+DECL|function|scsi_host_hn_get
+r_static
+r_inline
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host_hn_get
+c_func
+(paren
+r_int
+r_int
+id|hostno
+)paren
+(brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|host
+op_assign
+id|scsi_host_get_next
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+id|host
+op_ne
+l_int|NULL
+suffix:semicolon
+id|host
+op_assign
+id|scsi_host_get_next
+c_func
+(paren
+id|host
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|host-&gt;host_no
+op_eq
+id|hostno
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+r_return
+id|host
+suffix:semicolon
+)brace
+DECL|function|cs_error
+r_static
+r_void
+id|cs_error
+c_func
+(paren
+id|client_handle_t
+id|handle
+comma
+r_int
+id|func
+comma
+r_int
+id|ret
+)paren
+(brace
+id|error_info_t
+id|err
+op_assign
+(brace
+id|func
+comma
+id|ret
+)brace
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|ReportError
+comma
+id|handle
+comma
+op_amp
+id|err
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* scatter-gather table */
+DECL|macro|BUFFER_ADDR
+macro_line|#  define BUFFER_ADDR (SCpnt-&gt;SCp.buffer-&gt;address)
+macro_line|#endif
+multiline_comment|/* for Kernel 2.6 */
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0))
+multiline_comment|/* scatter-gather table */
+DECL|macro|BUFFER_ADDR
+macro_line|#  define BUFFER_ADDR ((char *)((unsigned int)(SCpnt-&gt;SCp.buffer-&gt;page) + SCpnt-&gt;SCp.buffer-&gt;offset))
+macro_line|#endif
 macro_line|#endif  /*__nsp_cs__*/
+multiline_comment|/* end */
 eof
