@@ -8924,7 +8924,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %p&bslash;n&quot;
+l_string|&quot;sctp_getsockopt_sctp_status(%d): %d %d %d&bslash;n&quot;
 comma
 id|len
 comma
