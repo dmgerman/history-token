@@ -97,6 +97,49 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* flags field for drivers to use */
+multiline_comment|/* Device Properties fields */
+DECL|member|support_sync
+r_int
+r_int
+id|support_sync
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* synchronous support */
+DECL|member|support_wide
+r_int
+r_int
+id|support_wide
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* wide support */
+DECL|member|support_dt
+r_int
+r_int
+id|support_dt
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* allows DT phases */
+DECL|member|support_dt_only
+r_int
+r_int
+id|support_dt_only
+suffix:semicolon
+multiline_comment|/* disallows ST phases */
+DECL|member|support_ius
+r_int
+r_int
+id|support_ius
+suffix:semicolon
+multiline_comment|/* support Information Units */
+DECL|member|support_qas
+r_int
+r_int
+id|support_qas
+suffix:semicolon
+multiline_comment|/* supports quick arbitration and selection */
 multiline_comment|/* Private Fields */
 DECL|member|dv_pending
 r_int
@@ -168,6 +211,18 @@ DECL|macro|spi_pcomp_en
 mdefine_line|#define spi_pcomp_en(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;pcomp_en)
 DECL|macro|spi_initial_dv
 mdefine_line|#define spi_initial_dv(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;initial_dv)
+DECL|macro|spi_support_sync
+mdefine_line|#define spi_support_sync(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_sync)
+DECL|macro|spi_support_wide
+mdefine_line|#define spi_support_wide(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_wide)
+DECL|macro|spi_support_dt
+mdefine_line|#define spi_support_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_dt)
+DECL|macro|spi_support_dt_only
+mdefine_line|#define spi_support_dt_only(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_dt_only)
+DECL|macro|spi_support_ius
+mdefine_line|#define spi_support_ius(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_ius)
+DECL|macro|spi_support_qas
+mdefine_line|#define spi_support_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_qas)
 DECL|macro|spi_flags
 mdefine_line|#define spi_flags(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;flags)
 DECL|macro|spi_signalling

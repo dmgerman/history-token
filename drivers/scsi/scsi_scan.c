@@ -1953,9 +1953,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sdev-&gt;host-&gt;transportt-&gt;device_configure
+)paren
+id|sdev-&gt;host-&gt;transportt
+op_member_access_from_pointer
+id|device_configure
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sdev-&gt;host-&gt;hostt-&gt;slave_configure
 )paren
-(brace
 id|sdev-&gt;host-&gt;hostt
 op_member_access_from_pointer
 id|slave_configure
@@ -1964,7 +1976,6 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Ok, the device is now all set up, we can&n;&t; * register it and tell the rest of the kernel&n;&t; * about it.&n;&t; */
 id|scsi_sysfs_add_sdev
 c_func
