@@ -14,6 +14,14 @@ l_int|18
 )braket
 suffix:semicolon
 r_extern
+r_int
+r_char
+id|usb_stor_sense_invalidCDB
+(braket
+l_int|18
+)braket
+suffix:semicolon
+r_extern
 id|Scsi_Host_Template
 id|usb_stor_host_template
 suffix:semicolon
