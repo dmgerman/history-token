@@ -1688,7 +1688,6 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Note: sw-&gt;ar_unat is UNDEFINED unless the process is being&n;&t; * PTRACED.  However, this is OK because the NaT bits of the&n;&t; * preserved registers (r4-r7) are never being looked at by&n;&t; * the signal handler (registers r4-r7 are used instead).&n;&t; */
 id|nat
 op_assign
 id|ia64_get_scratch_nat_bits
