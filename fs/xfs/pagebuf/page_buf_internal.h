@@ -155,28 +155,6 @@ DECL|macro|PB_TRACE_BUFSIZE
 mdefine_line|#define PB_TRACE_BUFSIZE&t;1024
 DECL|macro|CIRC_INC
 mdefine_line|#define CIRC_INC(i)&t;(((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
-DECL|struct|pagebuf_daemon
-r_typedef
-r_struct
-id|pagebuf_daemon
-(brace
-DECL|member|active
-r_int
-id|active
-suffix:semicolon
-DECL|member|pb_delwrite_lock
-id|spinlock_t
-id|pb_delwrite_lock
-suffix:semicolon
-DECL|member|pb_delwrite_l
-r_struct
-id|list_head
-id|pb_delwrite_l
-suffix:semicolon
-DECL|typedef|pagebuf_daemon_t
-)brace
-id|pagebuf_daemon_t
-suffix:semicolon
 multiline_comment|/*&n; * Tunable pagebuf parameters&n; */
 DECL|macro|P_PARAM
 mdefine_line|#define P_PARAM 4
