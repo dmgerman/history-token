@@ -92,6 +92,8 @@ r_return
 id|nid
 suffix:semicolon
 )brace
+DECL|macro|pfn_to_nid
+mdefine_line|#define pfn_to_nid(pfn) phys_to_nid((unsigned long)(pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|kvaddr_to_nid
 mdefine_line|#define kvaddr_to_nid(kaddr)&t;phys_to_nid(__pa(kaddr))
 DECL|macro|NODE_DATA

@@ -1935,25 +1935,12 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
 id|ray_release
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Break the link with Card Services */
 r_if
 c_cond
@@ -4148,30 +4135,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/* If the device is currently in use, we won&squot;t release until it&n;      is actually closed.&n;    */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;ray_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|del_timer
 c_func
 (paren
@@ -4337,19 +4300,6 @@ c_func
 l_int|2
 comma
 l_string|&quot;ray_release ending&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|ray_detach
-c_func
-(paren
-id|link
 )paren
 suffix:semicolon
 )brace
@@ -7883,19 +7833,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|ray_release
-c_func
-(paren
-id|link
 )paren
 suffix:semicolon
 multiline_comment|/* In here, we should stop the hardware (stop card from beeing active)&n;     * and set local-&gt;card_status to CARD_AWAITING_PARAM, so that while the&n;     * card is closed we can chage its configuration.&n;     * Probably also need a COR reset to get sane state - Jean II */

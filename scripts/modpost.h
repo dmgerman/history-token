@@ -35,6 +35,7 @@ macro_line|#endif
 macro_line|#if KERNEL_ELFDATA != HOST_ELFDATA
 DECL|function|__endian
 r_static
+r_inline
 r_void
 id|__endian
 c_func

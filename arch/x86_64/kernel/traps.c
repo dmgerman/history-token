@@ -1626,6 +1626,11 @@ r_int
 id|err
 )paren
 (brace
+r_int
+id|nl
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_int
 id|die_counter
@@ -1664,6 +1669,53 @@ comma
 l_int|255
 comma
 id|SIGSEGV
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+id|printk
+c_func
+(paren
+l_string|&quot;PREEMPT &quot;
+)paren
+suffix:semicolon
+id|nl
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
+id|printk
+c_func
+(paren
+l_string|&quot;SMP &quot;
+)paren
+suffix:semicolon
+id|nl
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_PAGEALLOC
+id|printk
+c_func
+(paren
+l_string|&quot;DEBUG_PAGEALLOC&quot;
+)paren
+suffix:semicolon
+id|nl
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|nl
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|show_registers

@@ -794,7 +794,7 @@ id|error
 )paren
 id|error
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp
@@ -1354,7 +1354,7 @@ id|error
 )paren
 id|error
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp

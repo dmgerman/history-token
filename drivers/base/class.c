@@ -1,6 +1,9 @@
 multiline_comment|/*&n; * class.c - basic device class management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman&n; * Copyright (c) 2003-2004 IBM Corp.&n; * &n; * This file is released under the GPLv2&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_DEBUG_DRIVER
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

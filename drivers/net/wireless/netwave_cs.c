@@ -1548,36 +1548,12 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
 id|netwave_release
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;netwave_cs: detach postponed, &squot;%s&squot; still &quot;
-l_string|&quot;locked&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Break the link with Card Services */
 r_if
 c_cond
@@ -3925,29 +3901,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/*&n;      If the device is currently in use, we won&squot;t release until it&n;      is actually closed.&n;      */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;netwave_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
 r_if
 c_cond
@@ -3996,19 +3949,6 @@ id|link-&gt;state
 op_and_assign
 op_complement
 id|DEV_CONFIG
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|netwave_detach
-c_func
-(paren
-id|link
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function netwave_event (event, priority, args)&n; *&n; *    The card status event handler.  Mostly, this schedules other&n; *    stuff to run after an event is received.  A CARD_REMOVAL event&n; *    also sets some flags to discourage the net drivers from trying&n; *    to talk to the card any more.&n; *&n; *    When a CARD_REMOVAL event is received, we immediately set a flag&n; *    to block future accesses to this device.  All the functions that&n; *    actually access the device should check this flag to make sure&n; *    the card is still present.&n; *&n; */
@@ -6326,19 +6266,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|netwave_release
-c_func
-(paren
-id|link
 )paren
 suffix:semicolon
 r_return

@@ -984,17 +984,6 @@ id|device
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Will vanish */
-id|tape_hotplug_event
-c_func
-(paren
-id|device
-comma
-id|tapeblock_major
-comma
-id|TAPE_HOTPLUG_BLOCK_ADD
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1025,16 +1014,6 @@ op_star
 id|device
 )paren
 (brace
-id|tape_hotplug_event
-c_func
-(paren
-id|device
-comma
-id|tapeblock_major
-comma
-id|TAPE_HOTPLUG_BLOCK_REMOVE
-)paren
-suffix:semicolon
 id|flush_scheduled_work
 c_func
 (paren

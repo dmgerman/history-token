@@ -313,7 +313,7 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|d-&gt;ohci-&gt;id
+id|d-&gt;ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Freeing dma_iso_ctx %d&quot;
 comma
@@ -538,7 +538,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma_iso_ctx&quot;
 )paren
@@ -638,7 +638,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma buffer&quot;
 )paren
@@ -715,7 +715,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;no free iso %s contexts&quot;
 comma
@@ -772,7 +772,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate ir prg regs&quot;
 )paren
@@ -882,7 +882,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma ir prg&quot;
 )paren
@@ -981,7 +981,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma ir prg&quot;
 )paren
@@ -1072,7 +1072,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma it prg&quot;
 )paren
@@ -1125,7 +1125,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Packet size %d (page_size: %ld) &quot;
 l_string|&quot;not yet supported&bslash;n&quot;
@@ -1218,7 +1218,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate dma it prg&quot;
 )paren
@@ -1328,7 +1328,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate buffer_status&quot;
 )paren
@@ -1356,7 +1356,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate buffer_time&quot;
 )paren
@@ -1384,7 +1384,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate last_used_cmd&quot;
 )paren
@@ -1412,7 +1412,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Failed to allocate next_buffer&quot;
 )paren
@@ -1503,7 +1503,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Iso %s DMA: %d buffers &quot;
 l_string|&quot;of size %d allocated for a frame size %d, each with %d prgs&quot;
@@ -3859,7 +3859,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Found free channel %d&quot;
 comma
@@ -3894,7 +3894,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Iso channel %d out of bounds&quot;
 comma
@@ -3970,7 +3970,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Channel %d is already taken&quot;
 comma
@@ -4003,7 +4003,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Invalid %d length buffer requested&quot;
 comma
@@ -4032,7 +4032,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Invalid %d buffers requested&quot;
 comma
@@ -4059,7 +4059,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;%d buffers of size %d bytes is too big&quot;
 comma
@@ -4112,7 +4112,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Couldn&squot;t allocate ir context&quot;
 )paren
@@ -4155,7 +4155,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;iso context %d listen on channel %d&quot;
 comma
@@ -4198,7 +4198,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Couldn&squot;t allocate it context&quot;
 )paren
@@ -4243,7 +4243,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Iso context %d talk on channel %d&quot;
 comma
@@ -4342,7 +4342,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Iso channel %d out of bound&quot;
 comma
@@ -4379,7 +4379,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Channel %d is not being used&quot;
 comma
@@ -4447,7 +4447,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Iso context %d &quot;
 l_string|&quot;stop talking on channel %d&quot;
@@ -4539,7 +4539,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d out of range&quot;
 comma
@@ -4576,7 +4576,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d is already used&quot;
 comma
@@ -4692,7 +4692,7 @@ l_int|0x8000
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Starting iso DMA ctx=%d&quot;
 comma
@@ -4759,7 +4759,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Waking up iso dma ctx=%d&quot;
 comma
@@ -4860,7 +4860,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d out of range&quot;
 comma
@@ -5032,7 +5032,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d is not queued&quot;
 comma
@@ -5220,7 +5220,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d out of range&quot;
 comma
@@ -5356,7 +5356,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d is already used&quot;
 comma
@@ -5558,7 +5558,7 @@ l_int|0x8000
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Starting iso transmit DMA ctx=%d&quot;
 comma
@@ -5635,7 +5635,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Waking up iso transmit dma ctx=%d&quot;
 comma
@@ -5751,7 +5751,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d out of range&quot;
 comma
@@ -5863,7 +5863,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Buffer %d is not queued&quot;
 comma
@@ -5937,7 +5937,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ctx-&gt;ohci-&gt;id
+id|ctx-&gt;ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Current iso context not set&quot;
 )paren
@@ -6051,7 +6051,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Cannot malloc file_ctx&quot;
 )paren
@@ -6203,7 +6203,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;On release: Channel %d &quot;
 l_string|&quot;is not being used&quot;
@@ -6222,7 +6222,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;On release: Iso %s context &quot;
 l_string|&quot;%d stop listening on channel %d&quot;
@@ -6451,7 +6451,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 comma
 l_string|&quot;Cannot allocate hostinfo&quot;
 )paren
@@ -6478,7 +6478,7 @@ id|video1394_highlevel
 comma
 id|host
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 )paren
 suffix:semicolon
 id|minor
@@ -6487,7 +6487,7 @@ id|IEEE1394_MINOR_BLOCK_VIDEO1394
 op_star
 l_int|16
 op_plus
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 suffix:semicolon
 id|devfs_mk_cdev
 c_func
@@ -6510,7 +6510,7 @@ l_string|&quot;%s/%d&quot;
 comma
 id|VIDEO1394_DRIVER_NAME
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -6551,7 +6551,7 @@ l_string|&quot;%s/%d&quot;
 comma
 id|VIDEO1394_DRIVER_NAME
 comma
-id|ohci-&gt;id
+id|ohci-&gt;host-&gt;id
 )paren
 suffix:semicolon
 r_return
@@ -7263,16 +7263,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cdev_add
-c_func
-(paren
-op_amp
-id|video1394_cdev
-comma
-id|IEEE1394_VIDEO1394_DEV
-comma
-l_int|16
-)paren
+id|ret
 )paren
 (brace
 id|PRINT_G

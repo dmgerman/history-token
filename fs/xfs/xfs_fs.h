@@ -1162,6 +1162,13 @@ DECL|macro|XFS_HANDLE_CMP
 mdefine_line|#define XFS_HANDLE_CMP(h1, h2)&t;memcmp(h1, h2, sizeof(xfs_handle_t))
 DECL|macro|FSHSIZE
 mdefine_line|#define FSHSIZE&t;&t;sizeof(fsid_t)
+multiline_comment|/* &n; * Flags for going down operation&n; */
+DECL|macro|XFS_FSOP_GOING_FLAGS_DEFAULT
+mdefine_line|#define XFS_FSOP_GOING_FLAGS_DEFAULT&t;&t;0x0&t;/* going down */
+DECL|macro|XFS_FSOP_GOING_FLAGS_LOGFLUSH
+mdefine_line|#define XFS_FSOP_GOING_FLAGS_LOGFLUSH&t;&t;0x1&t;/* flush log but not data */
+DECL|macro|XFS_FSOP_GOING_FLAGS_NOLOGFLUSH
+mdefine_line|#define XFS_FSOP_GOING_FLAGS_NOLOGFLUSH&t;&t;0x2&t;/* don&squot;t flush log nor data */
 multiline_comment|/*&n; * ioctl commands that replace IRIX fcntl()&squot;s&n; * For &squot;documentation&squot; purposed more than anything else,&n; * the &quot;cmd #&quot; field reflects the IRIX fcntl number.&n; */
 DECL|macro|XFS_IOC_ALLOCSP
 mdefine_line|#define XFS_IOC_ALLOCSP&t;&t;_IOW (&squot;X&squot;, 10, struct xfs_flock64)
@@ -1247,6 +1254,8 @@ DECL|macro|XFS_IOC_ATTRMULTI_BY_HANDLE
 mdefine_line|#define XFS_IOC_ATTRMULTI_BY_HANDLE  _IOW (&squot;X&squot;, 123, struct xfs_fsop_attrmulti_handlereq)
 DECL|macro|XFS_IOC_FSGEOMETRY
 mdefine_line|#define XFS_IOC_FSGEOMETRY&t;     _IOR (&squot;X&squot;, 124, struct xfs_fsop_geom)
+DECL|macro|XFS_IOC_GOINGDOWN
+mdefine_line|#define XFS_IOC_GOINGDOWN&t;     _IOR (&squot;X&squot;, 125, __uint32_t)
 multiline_comment|/*&t;XFS_IOC_GETFSUUID ---------- deprecated 140&t; */
 macro_line|#ifndef HAVE_BBMACROS
 multiline_comment|/*&n; * Block I/O parameterization.&t;A basic block (BB) is the lowest size of&n; * filesystem allocation, and must equal 512.  Length units given to bio&n; * routines are in BB&squot;s.&n; */

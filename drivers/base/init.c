@@ -43,7 +43,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|sys_bus_init
+id|system_bus_init
 c_func
 (paren
 r_void
@@ -94,7 +94,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sys_bus_init
+id|system_bus_init
 c_func
 (paren
 )paren

@@ -8009,6 +8009,10 @@ id|isicom_normal-&gt;name
 op_assign
 l_string|&quot;ttyM&quot;
 suffix:semicolon
+id|isicom_normal-&gt;devfs_name
+op_assign
+l_string|&quot;isicom/&quot;
+suffix:semicolon
 id|isicom_normal-&gt;major
 op_assign
 id|ISICOM_NMAJOR

@@ -142,7 +142,15 @@ id|do_blank_screen
 c_func
 (paren
 r_int
-id|gfx_mode
+id|entering_gfx
+)paren
+suffix:semicolon
+r_void
+id|do_unblank_screen
+c_func
+(paren
+r_int
+id|leaving_gfx
 )paren
 suffix:semicolon
 r_void

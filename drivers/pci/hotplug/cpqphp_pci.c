@@ -529,7 +529,6 @@ id|u8
 id|irq_num
 )paren
 (brace
-macro_line|#if !defined(CONFIG_X86_IO_APIC)&t;
 r_int
 id|rc
 suffix:semicolon
@@ -544,6 +543,12 @@ r_struct
 id|pci_bus
 id|fakebus
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpqhp_legacy_mode
+)paren
+(brace
 id|fakedev.devfn
 op_assign
 id|dev_num
@@ -670,7 +675,7 @@ comma
 l_int|0x4d1
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 r_return
 l_int|0
 suffix:semicolon

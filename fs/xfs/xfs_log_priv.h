@@ -63,6 +63,10 @@ macro_line|#else
 DECL|macro|XLOG_BTOLRBB
 mdefine_line|#define XLOG_BTOLRBB(b)&t;&t;(((b)+XLOG_RECORD_BSIZE-1) &gt;&gt; XLOG_RECORD_BSHIFT)
 macro_line|#endif
+DECL|macro|XLOG_BTOLSUNIT
+mdefine_line|#define XLOG_BTOLSUNIT(log, b)  (((b)+(log)-&gt;l_mp-&gt;m_sb.sb_logsunit-1) / &bslash;&n;                                 (log)-&gt;l_mp-&gt;m_sb.sb_logsunit)
+DECL|macro|XLOG_LSUNITTOB
+mdefine_line|#define XLOG_LSUNITTOB(log, su) ((su) * (log)-&gt;l_mp-&gt;m_sb.sb_logsunit)
 DECL|macro|XLOG_HEADER_SIZE
 mdefine_line|#define XLOG_HEADER_SIZE&t;512
 DECL|macro|XLOG_REC_SHIFT
@@ -842,11 +846,6 @@ op_star
 op_star
 id|l_buf_cancel_table
 suffix:semicolon
-DECL|member|l_stripemask
-r_int
-id|l_stripemask
-suffix:semicolon
-multiline_comment|/* log stripe mask */
 DECL|member|l_iclog_hsize
 r_int
 id|l_iclog_hsize

@@ -259,7 +259,8 @@ DECL|function|signal_processor_ps
 id|signal_processor_ps
 c_func
 (paren
-id|__u32
+r_int
+r_int
 op_star
 id|statusptr
 comma

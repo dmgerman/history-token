@@ -51,6 +51,10 @@ DECL|member|total_code_vol
 id|__u32
 id|total_code_vol
 suffix:semicolon
+DECL|member|real_code_vol
+id|__u32
+id|real_code_vol
+suffix:semicolon
 DECL|member|max_block_vol
 id|__u16
 id|max_block_vol

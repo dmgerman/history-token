@@ -2540,6 +2540,9 @@ id|conp
 comma
 r_int
 id|blank
+comma
+r_int
+id|mode_switch
 )paren
 (brace
 r_if

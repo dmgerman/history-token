@@ -2673,10 +2673,36 @@ c_func
 id|pcwatchdog_exit
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Ken Hollis &lt;kenji@bitgate.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Berkshire ISA-PC Watchdog driver&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
+)paren
+suffix:semicolon
+DECL|variable|TEMP_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|TEMP_MINOR
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mm/pdflush.c - worker threads for writing back filesystem data&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * 09Apr2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; */
+multiline_comment|/*&n; * mm/pdflush.c - worker threads for writing back filesystem data&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * 09Apr2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; * 29Feb2004&t;kaos@sgi.com&n; *&t;&t;Move worker thread creation to kthread to avoid chewing&n; *&t;&t;up stack space with nested calls to kernel_thread.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/fs.h&gt;&t;&t;
 singleline_comment|// Needed by writeback.h
 macro_line|#include &lt;linux/writeback.h&gt;&t;
 singleline_comment|// Prototypes pdflush_operation()
+macro_line|#include &lt;linux/kthread.h&gt;
 multiline_comment|/*&n; * Minimum and maximum number of pdflush instances&n; */
 DECL|macro|MIN_PDFLUSH_THREADS
 mdefine_line|#define MIN_PDFLUSH_THREADS&t;2
@@ -110,12 +111,6 @@ op_star
 id|my_work
 )paren
 (brace
-id|daemonize
-c_func
-(paren
-l_string|&quot;pdflush&quot;
-)paren
-suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_FLUSHER
@@ -580,14 +575,14 @@ c_func
 r_void
 )paren
 (brace
-id|kernel_thread
+id|kthread_run
 c_func
 (paren
 id|pdflush
 comma
 l_int|NULL
 comma
-id|CLONE_KERNEL
+l_string|&quot;pdflush&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1536,8 +1536,19 @@ r_return
 op_minus
 l_int|2
 suffix:semicolon
+multiline_comment|/* Because of iSeries, we have to pass down the secondary&n;&t; * bucket bit here as well&n;&t; */
 r_return
+(paren
 id|slot
+op_amp
+l_int|7
+)paren
+op_or
+(paren
+id|secondary
+op_lshift
+l_int|3
+)paren
 suffix:semicolon
 )brace
 DECL|variable|pSeries_lpar_tlbie_lock

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;sclp.h&quot;
@@ -1235,6 +1236,12 @@ id|cr0
 comma
 id|cr0_sync
 suffix:semicolon
+multiline_comment|/* Need to irq_enter() to prevent BH from executing. */
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * save cr0&n;&t; * enable service signal external interruption (cr0.22)&n;&t; * disable cr0.20-21, cr0.25, cr0.27, cr0.30-31&n;&t; * don&squot;t touch any other bit in cr0&n;&t; */
 id|__ctl_store
 c_func
@@ -1338,6 +1345,11 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1741,11 +1753,6 @@ id|sclp_state_change
 suffix:semicolon
 multiline_comment|/*&n; * SCLP quiesce event handler&n; */
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|cpu_quiesce_map
-r_static
-id|cpumask_t
-id|cpu_quiesce_map
-suffix:semicolon
 r_static
 r_void
 DECL|function|do_load_quiesce_psw
@@ -1760,16 +1767,12 @@ id|__unused
 id|psw_t
 id|quiesce_psw
 suffix:semicolon
-id|cpu_clear
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|cpu_quiesce_map
-)paren
+r_int
+r_int
+id|status
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -1778,22 +1781,115 @@ id|smp_processor_id
 c_func
 (paren
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
-(brace
-multiline_comment|/* Wait for all other cpus to enter do_load_quiesce_psw */
+id|signal_processor
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|sigp_stop
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for all other cpus to enter stopped state */
+id|i
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
+id|i
+OL
+id|NR_CPUS
+)paren
+(brace
+r_if
+c_cond
+(paren
 op_logical_neg
-id|cpus_empty
+id|cpu_online
 c_func
 (paren
-id|cpu_quiesce_map
+id|i
 )paren
 )paren
+(brace
+id|i
+op_increment
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|signal_processor_ps
+c_func
+(paren
+op_amp
+id|status
+comma
+l_int|0
+comma
+id|i
+comma
+id|sigp_sense
+)paren
+)paren
+(brace
+r_case
+id|sigp_order_code_accepted
+suffix:colon
+r_case
+id|sigp_status_stored
+suffix:colon
+multiline_comment|/* Check for stopped and check stop state */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+l_int|6
+comma
+op_amp
+id|status
+)paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+l_int|4
+comma
+op_amp
+id|status
+)paren
+)paren
+id|i
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|sigp_busy
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|sigp_not_operational
+suffix:colon
+id|i
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Quiesce the last cpu with the special psw */
 id|quiesce_psw.mask
 op_assign
@@ -1812,18 +1908,6 @@ id|quiesce_psw
 )paren
 suffix:semicolon
 )brace
-id|signal_processor
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|sigp_stop
-)paren
-suffix:semicolon
-)brace
 r_static
 r_void
 DECL|function|do_machine_quiesce
@@ -1833,10 +1917,6 @@ c_func
 r_void
 )paren
 (brace
-id|cpu_quiesce_map
-op_assign
-id|cpu_online_map
-suffix:semicolon
 id|on_each_cpu
 c_func
 (paren

@@ -58,10 +58,16 @@ DECL|macro|ACK_BUSY_A
 mdefine_line|#define ACK_BUSY_A               0x5
 DECL|macro|ACK_BUSY_B
 mdefine_line|#define ACK_BUSY_B               0x6
+DECL|macro|ACK_TARDY
+mdefine_line|#define ACK_TARDY                0xb
+DECL|macro|ACK_CONFLICT_ERROR
+mdefine_line|#define ACK_CONFLICT_ERROR       0xc
 DECL|macro|ACK_DATA_ERROR
 mdefine_line|#define ACK_DATA_ERROR           0xd
 DECL|macro|ACK_TYPE_ERROR
 mdefine_line|#define ACK_TYPE_ERROR           0xe 
+DECL|macro|ACK_ADDRESS_ERROR
+mdefine_line|#define ACK_ADDRESS_ERROR        0xf
 multiline_comment|/* Non-standard &quot;ACK codes&quot; for internal use */
 DECL|macro|ACKX_NONE
 mdefine_line|#define ACKX_NONE                (-1)

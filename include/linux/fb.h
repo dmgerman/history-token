@@ -312,6 +312,8 @@ DECL|macro|FB_CHANGE_CMAP_VBL
 mdefine_line|#define FB_CHANGE_CMAP_VBL     32&t;/* change colormap on vbl&t;*/
 DECL|macro|FB_ACTIVATE_ALL
 mdefine_line|#define FB_ACTIVATE_ALL&t;       64&t;/* change all VCs on this fb&t;*/
+DECL|macro|FB_ACTIVATE_FORCE
+mdefine_line|#define FB_ACTIVATE_FORCE     128&t;/* force apply even when no change*/
 DECL|macro|FB_ACCELF_TEXT
 mdefine_line|#define FB_ACCELF_TEXT&t;&t;1&t;/* text mode acceleration */
 DECL|macro|FB_SYNC_HOR_HIGH_ACT

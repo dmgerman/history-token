@@ -15,13 +15,6 @@ suffix:semicolon
 DECL|typedef|per_cr_words32
 )brace
 id|per_cr_words32
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -44,13 +37,6 @@ multiline_comment|/* 0x0a1 */
 DECL|typedef|per_lowcore_words32
 )brace
 id|per_lowcore_words32
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -64,13 +50,6 @@ suffix:semicolon
 DECL|member|control_regs
 )brace
 id|control_regs
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Use these flags instead of setting em_instruction_fetch&n;&t; * directly they are used so that single stepping can be&n;&t; * switched on &amp; off while not affecting other tracing&n;&t; */
 DECL|member|single_step
@@ -111,13 +90,6 @@ suffix:semicolon
 DECL|typedef|per_struct32
 )brace
 id|per_struct32
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|struct|user_regs_struct32
 r_struct

@@ -6508,8 +6508,8 @@ op_minus
 id|err
 )paren
 suffix:semicolon
-r_goto
-id|failed
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* If the caller has the capability, bind to a reserved port */

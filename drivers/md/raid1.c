@@ -330,6 +330,7 @@ suffix:colon
 r_while
 c_loop
 (paren
+op_increment
 id|j
 OL
 id|conf-&gt;raid_disks
@@ -339,7 +340,6 @@ c_func
 (paren
 id|r1_bio-&gt;bios
 (braket
-op_increment
 id|j
 )braket
 )paren

@@ -325,6 +325,12 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 r_return
 id|i
+op_or
+(paren
+id|secondary
+op_lshift
+l_int|3
+)paren
 suffix:semicolon
 )brace
 DECL|function|pSeries_hpte_remove

@@ -3440,7 +3440,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp
@@ -3521,7 +3521,7 @@ c_cond
 id|i8042_sysdev_initialized
 )paren
 (brace
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 op_amp

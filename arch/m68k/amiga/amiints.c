@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amipcmcia.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
 r_int
 id|cia_request_irq

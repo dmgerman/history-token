@@ -2696,6 +2696,17 @@ op_amp
 id|suspend_pagedir_lock
 )paren
 suffix:semicolon
+id|device_resume
+c_func
+(paren
+)paren
+suffix:semicolon
+id|PRINTK
+c_func
+(paren
+l_string|&quot;Fixing swap signatures... &quot;
+)paren
+suffix:semicolon
 id|mark_swapfiles
 c_func
 (paren
@@ -2709,6 +2720,12 @@ l_int|0
 )paren
 comma
 id|MARK_SWAP_RESUME
+)paren
+suffix:semicolon
+id|PRINTK
+c_func
+(paren
+l_string|&quot;ok&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

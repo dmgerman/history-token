@@ -7036,6 +7036,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* hack alert!  We cannot use the supplied completion&n;&t; * function from inside the -&gt;eh_strategy_handler() thread.&n;&t; * libata is the only user of -&gt;eh_strategy_handler() in&n;&t; * any kernel, so the default scsi_done() assumes it is&n;&t; * not being called from the SCSI EH.&n;&t; */
+id|qc-&gt;scsidone
+op_assign
+id|scsi_finish_command
+suffix:semicolon
 r_switch
 c_cond
 (paren

@@ -141,17 +141,6 @@ id|cmd
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|scsi_finish_command
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|scsi_retry_command
 c_func

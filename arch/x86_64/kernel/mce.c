@@ -231,7 +231,19 @@ id|m-&gt;rip
 id|printk
 c_func
 (paren
-l_string|&quot;RIP %02x:&lt;%016Lx&gt; &quot;
+l_string|&quot;RIP%s %02x:&lt;%016Lx&gt; &quot;
+comma
+op_logical_neg
+(paren
+id|m-&gt;mcgstatus
+op_amp
+id|MCG_STATUS_EIPV
+)paren
+ques
+c_cond
+l_string|&quot; !INEXACT!&quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|m-&gt;cs
 comma
@@ -564,12 +576,6 @@ r_if
 c_cond
 (paren
 id|regs
-op_logical_and
-(paren
-id|m.mcgstatus
-op_amp
-id|MCG_STATUS_EIPV
-)paren
 )paren
 (brace
 id|m.rip
@@ -2068,7 +2074,7 @@ id|err
 )paren
 id|err
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp

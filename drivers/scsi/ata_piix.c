@@ -327,7 +327,7 @@ multiline_comment|/* ICH6 operates in two modes, &quot;looks-like-ICH5&quot; mod
 (brace
 l_int|0x8086
 comma
-l_int|0x2562
+l_int|0x2652
 comma
 id|PCI_ANY_ID
 comma

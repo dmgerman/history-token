@@ -40,6 +40,13 @@ c_func
 id|_zb_findmap
 )paren
 suffix:semicolon
+DECL|variable|_sb_findmap
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|_sb_findmap
+)paren
+suffix:semicolon
 DECL|variable|__copy_from_user_asm
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -339,13 +346,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpcmd
-)paren
-suffix:semicolon
-DECL|variable|smp_call_function_on
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_call_function_on
 )paren
 suffix:semicolon
 DECL|variable|sys_ioctl

@@ -15912,31 +15912,6 @@ id|link
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If the device is currently in use, we won&squot;t release until it is&n;   * actually closed. */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-macro_line|#ifdef DEBUG_CONFIG_INFO
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: wv_pcmcia_release: release postponed, device still open&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
 id|iounmap
 c_func
@@ -15994,19 +15969,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|wavelan_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/************************ INTERRUPT HANDLING ************************/
 multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; *&t;1. A packet is received.&n; *&t;2. A packet has successfully been transferred and the unit is&n; *&t;   ready to transmit another packet.&n; *&t;3. A command has completed execution.&n; */
@@ -17376,23 +17338,6 @@ id|HACR_PWR_STAT
 )paren
 suffix:semicolon
 )brace
-r_else
-multiline_comment|/* The card is no more there (flag is activated in wv_pcmcia_release) */
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-(brace
-id|wv_pcmcia_release
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG_CALLBACK_TRACE
 id|printk
 c_func
@@ -17883,29 +17828,6 @@ c_func
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-(brace
-macro_line|#ifdef DEBUG_CONFIG_INFO
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;wavelan_detach: detach postponed,&quot;
-l_string|&quot; &squot;%s&squot; still locked&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Break the link with Card Services */
 r_if

@@ -61,6 +61,12 @@ DECL|struct|ccwgroup_driver
 r_struct
 id|ccwgroup_driver
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 op_star

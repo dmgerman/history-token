@@ -45,9 +45,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|xfs_qmcore_xfs
+DECL|variable|xfs_qmcore_stub
 id|xfs_qmops_t
-id|xfs_qmcore_xfs
+id|xfs_qmcore_stub
 op_assign
 (brace
 dot

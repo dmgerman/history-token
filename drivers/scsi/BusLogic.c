@@ -234,7 +234,6 @@ multiline_comment|/*&n;  BusLogic_UnregisterHostAdapter removes Host Adapter fro
 DECL|function|BusLogic_UnregisterHostAdapter
 r_static
 r_void
-id|__init
 id|BusLogic_UnregisterHostAdapter
 c_func
 (paren

@@ -3,6 +3,7 @@ DECL|macro|_IEEE1394_CORE_H
 mdefine_line|#define _IEEE1394_CORE_H
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 DECL|struct|hpsb_packet
@@ -137,6 +138,10 @@ DECL|member|generation
 r_int
 r_int
 id|generation
+suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
 suffix:semicolon
 multiline_comment|/* Function (and possible data to pass to it) to call when this&n;&t; * packet is completed.  */
 DECL|member|complete_routine

@@ -30,14 +30,6 @@ macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN3X
 macro_line|#include &lt;asm/dvma.h&gt;
-r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|variable|m68k_machtype
 r_int

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
@@ -1225,26 +1226,26 @@ c_cond
 (paren
 id|report_lost_ticks
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;time.c: Lost %ld timer &quot;
-l_string|&quot;tick(s)! (rip %016lx)&bslash;n&quot;
+l_string|&quot;tick(s)! &quot;
 comma
-(paren
-id|offset
-op_minus
-id|vxtime.last
+id|lost
 )paren
-op_div
-id|hpet_tick
-op_minus
-l_int|1
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;rip %s)&bslash;n&quot;
 comma
 id|regs-&gt;rip
 )paren
 suffix:semicolon
+)brace
 id|jiffies
 op_add_assign
 id|lost
@@ -1331,7 +1332,62 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/* RED-PEN: calculation is done in 32bits with multiply for performance&n;   and could overflow, it may be better (but slower)to use an 64bit division. */
+DECL|variable|cyc2ns_scale
+r_static
+r_int
+r_int
+id|cyc2ns_scale
+suffix:semicolon
+DECL|macro|CYC2NS_SCALE_FACTOR
+mdefine_line|#define CYC2NS_SCALE_FACTOR 10 /* 2^10, carefully chosen */
+DECL|function|set_cyc2ns_scale
+r_static
+r_inline
+r_void
+id|set_cyc2ns_scale
+c_func
+(paren
+r_int
+r_int
+id|cpu_mhz
+)paren
+(brace
+id|cyc2ns_scale
+op_assign
+(paren
+l_int|1000
+op_lshift
+id|CYC2NS_SCALE_FACTOR
+)paren
+op_div
+id|cpu_mhz
+suffix:semicolon
+)brace
+DECL|function|cycles_2_ns
+r_static
+r_inline
+r_int
+r_int
+r_int
+id|cycles_2_ns
+c_func
+(paren
+r_int
+r_int
+r_int
+id|cyc
+)paren
+(brace
+r_return
+(paren
+id|cyc
+op_star
+id|cyc2ns_scale
+)paren
+op_rshift
+id|CYC2NS_SCALE_FACTOR
+suffix:semicolon
+)brace
 DECL|function|sched_clock
 r_int
 r_int
@@ -1379,13 +1435,11 @@ id|a
 )paren
 suffix:semicolon
 r_return
+id|cycles_2_ns
+c_func
 (paren
 id|a
-op_star
-id|vxtime.tsc_quot
 )paren
-op_rshift
-l_int|32
 suffix:semicolon
 )brace
 DECL|function|get_cmos_time
@@ -1766,6 +1820,14 @@ op_div
 id|cpu_khz
 suffix:semicolon
 )brace
+id|set_cyc2ns_scale
+c_func
+(paren
+id|cpu_khz_ref
+op_div
+l_int|1000
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2623,6 +2685,14 @@ op_amp
 id|irq0
 )paren
 suffix:semicolon
+id|set_cyc2ns_scale
+c_func
+(paren
+id|cpu_khz
+op_div
+l_int|1000
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ
 id|cpufreq_register_notifier
 c_func
@@ -2868,7 +2938,7 @@ id|error
 )paren
 id|error
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp

@@ -284,16 +284,21 @@ DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info()&t;(current_thread_info_reg)
 multiline_comment|/* thread information allocation */
 macro_line|#if PAGE_SHIFT == 13
-DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk)((struct thread_info *)__get_free_pages(GFP_KERNEL, 1))
-DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti)  free_pages((unsigned long)(ti),1)
+DECL|macro|__THREAD_INFO_ORDER
+mdefine_line|#define __THREAD_INFO_ORDER&t;1
 macro_line|#else /* PAGE_SHIFT == 13 */
-DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk)((struct thread_info *)__get_free_pages(GFP_KERNEL, 0))
-DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti)  free_pages((unsigned long)(ti),0)
+DECL|macro|__THREAD_INFO_ORDER
+mdefine_line|#define __THREAD_INFO_ORDER&t;0
 macro_line|#endif /* PAGE_SHIFT == 13 */
+macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ret;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = (struct thread_info *)&t;&t;&t;&t;&bslash;&n;&t;  __get_free_pages(GFP_KERNEL, __THREAD_INFO_ORDER);&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;memset(ret, 0, PAGE_SIZE&lt;&lt;__THREAD_INFO_ORDER);&t;&bslash;&n;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk) &bslash;&n;&t;((struct thread_info *)__get_free_pages(GFP_KERNEL, __THREAD_INFO_ORDER))
+macro_line|#endif
+DECL|macro|free_thread_info
+mdefine_line|#define free_thread_info(ti) &bslash;&n;&t;free_pages((unsigned long)(ti),__THREAD_INFO_ORDER)
 DECL|macro|__thread_flag_byte_ptr
 mdefine_line|#define __thread_flag_byte_ptr(ti)&t;&bslash;&n;&t;((unsigned char *)(&amp;((ti)-&gt;flags)))
 DECL|macro|__cur_thread_flag_byte_ptr

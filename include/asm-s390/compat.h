@@ -91,6 +91,11 @@ r_typedef
 id|__kernel_fsid_t
 id|compat_fsid_t
 suffix:semicolon
+DECL|typedef|compat_timer_t
+r_typedef
+id|s32
+id|compat_timer_t
+suffix:semicolon
 DECL|typedef|compat_int_t
 r_typedef
 id|s32

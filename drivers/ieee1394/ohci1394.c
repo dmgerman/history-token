@@ -50,10 +50,10 @@ macro_line|#undef DBGMSG
 macro_line|#endif
 macro_line|#ifdef OHCI1394_DEBUG
 DECL|macro|DBGMSG
-mdefine_line|#define DBGMSG(card, fmt, args...) &bslash;&n;printk(KERN_INFO &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
+mdefine_line|#define DBGMSG(fmt, args...) &bslash;&n;printk(KERN_INFO &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, ohci-&gt;host-&gt;id , ## args)
 macro_line|#else
 DECL|macro|DBGMSG
-mdefine_line|#define DBGMSG(card, fmt, args...)
+mdefine_line|#define DBGMSG(fmt, args...)
 macro_line|#endif
 macro_line|#ifdef CONFIG_IEEE1394_OHCI_DMA_DEBUG
 DECL|macro|OHCI_DMA_ALLOC
@@ -78,7 +78,7 @@ DECL|macro|PRINT_G
 mdefine_line|#define PRINT_G(level, fmt, args...) &bslash;&n;printk(level &quot;%s: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME , ## args)
 multiline_comment|/* print card specific information */
 DECL|macro|PRINT
-mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
+mdefine_line|#define PRINT(level, fmt, args...) &bslash;&n;printk(level &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, ohci-&gt;host-&gt;id , ## args)
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -87,7 +87,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1131 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1172 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -454,8 +454,6 @@ id|PRINT
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Get PHY Reg timeout [0x%08x/0x%08x/%d]&quot;
 comma
 id|r
@@ -595,8 +593,6 @@ id|OHCI_LOOP_COUNT
 id|PRINT
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Set PHY Reg timeout [0x%08x/0x%08x/%d]&quot;
 comma
@@ -769,8 +765,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Error in reception of SelfID packets [0x%08x/0x%08x] (count: %d)&quot;
 comma
 id|self_id_count
@@ -808,8 +802,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Too many errors on SelfID error reception, giving up!&quot;
 )paren
@@ -905,8 +897,6 @@ id|q1
 (brace
 id|DBGMSG
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID packet 0x%x received&quot;
 comma
 id|q0
@@ -941,8 +931,6 @@ id|phyid
 )paren
 id|DBGMSG
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID for this node is 0x%08x&quot;
 comma
 id|q0
@@ -955,8 +943,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;SelfID is inconsistent [0x%08x/0x%08x]&quot;
 comma
@@ -978,8 +964,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID complete&quot;
 )paren
 suffix:semicolon
@@ -1053,8 +1037,6 @@ suffix:semicolon
 )brace
 id|DBGMSG
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Soft reset finished&quot;
 )paren
 suffix:semicolon
@@ -1108,8 +1090,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Running dma failed because Node ID is not valid&quot;
 )paren
 suffix:semicolon
@@ -1135,8 +1115,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Running dma failed because Node ID == 63&quot;
 )paren
@@ -1166,8 +1144,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_DEBUG
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s&quot;
 comma
@@ -1474,8 +1450,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Receive DMA ctx=%d initialized&quot;
 comma
 id|d-&gt;ctx
@@ -1575,8 +1549,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Transmit DMA ctx=%d initialized&quot;
 comma
 id|d-&gt;ctx
@@ -1632,8 +1604,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Iso contexts reg: %08x implemented: %08x&quot;
 comma
 id|reg
@@ -2085,8 +2055,6 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;OHCI-1394 %d.%d (PCI): IRQ=[%s]  &quot;
 l_string|&quot;MMIO=[%lx-%lx]  Max Packet=[%d]&quot;
 comma
@@ -2275,8 +2243,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Inserting packet for node &quot;
 id|NODE_BUS_FMT
 l_string|&quot;, tlabel=%d, tcode=0x%x, speed=%d&quot;
@@ -2379,8 +2345,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;cycleTimer: %08x timeStamp: %08x&quot;
 comma
 id|cycleTimer
@@ -2711,8 +2675,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;%s: packet data addr: %p size %Zd bytes &quot;
 l_string|&quot;cross page boundary&quot;
 comma
@@ -3042,8 +3004,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Iso xmit context info: header[%08x %08x]&bslash;n&quot;
 l_string|&quot;                       begin=%08x %08x %08x %08x&bslash;n&quot;
 l_string|&quot;                             %08x %08x %08x %08x&bslash;n&quot;
@@ -3349,8 +3309,6 @@ l_int|0
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Transmit DMA FIFO ctx=%d is full... waiting&quot;
 comma
 id|d-&gt;ctx
@@ -3377,8 +3335,6 @@ l_int|0x8000
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Starting transmit DMA ctx=%d&quot;
 comma
 id|d-&gt;ctx
@@ -3433,8 +3389,6 @@ l_int|0x400
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Waking transmit DMA ctx=%d&quot;
 comma
 id|d-&gt;ctx
@@ -3504,8 +3458,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Transmit packet size %Zd is too big&quot;
 comma
 id|packet-&gt;data_size
@@ -3569,8 +3521,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;legacy IT context cannot be initialized during interrupt&quot;
 )paren
 suffix:semicolon
@@ -3606,8 +3556,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;error initializing legacy IT context&quot;
 )paren
@@ -4056,8 +4004,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;devctl command SET_BUS_ID err&quot;
 )paren
 suffix:semicolon
@@ -4108,8 +4054,6 @@ multiline_comment|/*&n;&t;&t;&t;&t; * enable cycleTimer, cycleMaster&n;&t;&t;&t;
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Cycle master enabled&quot;
 )paren
 suffix:semicolon
@@ -4153,8 +4097,6 @@ suffix:colon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Cancel request received&quot;
 )paren
 suffix:semicolon
@@ -4192,8 +4134,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s: IS0 listen channel %d is out of range&quot;
 comma
@@ -4248,8 +4188,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;%s: failed to allocate an IR context&quot;
 comma
 id|__FUNCTION__
@@ -4276,8 +4214,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;ISO receive legacy context activated&quot;
 )paren
 suffix:semicolon
@@ -4312,8 +4248,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s: IS0 listen channel %d is already used&quot;
 comma
@@ -4392,8 +4326,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Listening enabled on channel %d&quot;
 comma
 id|arg
@@ -4420,8 +4352,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s: IS0 unlisten channel %d is out of range&quot;
 comma
@@ -4468,8 +4398,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s: IS0 unlisten channel %d is not used&quot;
 comma
@@ -4550,8 +4478,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Listening disabled on channel %d&quot;
 comma
 id|arg
@@ -4582,8 +4508,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;ISO receive legacy context deactivated&quot;
 )paren
 suffix:semicolon
@@ -4929,8 +4853,6 @@ l_int|3
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;ohci_iso_recv_init: DMA buffer too small&quot;
 )paren
 suffix:semicolon
@@ -5073,8 +4995,6 @@ multiline_comment|/* this shouldn&squot;t happen, but anyway... */
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;ohci_iso_recv_init: problem choosing a buffer stride&quot;
 )paren
 suffix:semicolon
@@ -5256,8 +5176,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;ohci_iso_recv_init: %s mode, DMA buffer is %lu pages&quot;
 l_string|&quot; (%u bytes), using %u blocks, buf_stride %u, block_irq_interval %d&quot;
 comma
@@ -5909,6 +5827,13 @@ id|recv
 op_assign
 id|iso-&gt;hostdata
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|recv-&gt;ohci
+suffix:semicolon
 id|u32
 id|command
 comma
@@ -6219,8 +6144,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|recv-&gt;ohci-&gt;id
 comma
 l_string|&quot;Error starting IR DMA (ContextControl 0x%08x)&bslash;n&quot;
 comma
@@ -6588,6 +6511,13 @@ id|runaway
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|recv-&gt;ohci
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -6651,8 +6581,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|recv-&gt;ohci-&gt;id
-comma
 l_string|&quot;IR DMA error - Runaway during buffer parsing!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6707,8 +6635,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|recv-&gt;ohci-&gt;id
 comma
 l_string|&quot;IR DMA error - bogus &squot;len&squot; value %u&bslash;n&quot;
 comma
@@ -6963,6 +6889,13 @@ id|recv
 r_int
 id|loop
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|recv-&gt;ohci
+suffix:semicolon
 multiline_comment|/* loop over all blocks */
 r_for
 c_loop
@@ -7054,8 +6987,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|recv-&gt;ohci-&gt;id
-comma
 l_string|&quot;IR DMA error - OHCI error code 0x%02x&bslash;n&quot;
 comma
 id|event
@@ -7129,8 +7060,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|recv-&gt;ohci-&gt;id
-comma
 l_string|&quot;ISO reception overflow - &quot;
 l_string|&quot;ran out of DMA blocks&quot;
 )paren
@@ -7171,6 +7100,13 @@ r_int
 id|wake
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|recv-&gt;ohci
 suffix:semicolon
 multiline_comment|/* loop over the entire buffer */
 r_for
@@ -7284,8 +7220,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|recv-&gt;ohci-&gt;id
-comma
 l_string|&quot;IR DMA error - packet too long for buffer&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7301,8 +7235,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|recv-&gt;ohci-&gt;id
 comma
 l_string|&quot;IR DMA error - OHCI error code 0x%02x&bslash;n&quot;
 comma
@@ -7835,6 +7767,13 @@ id|xmit
 op_assign
 id|iso-&gt;hostdata
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|xmit-&gt;ohci
+suffix:semicolon
 multiline_comment|/* disable interrupts */
 id|reg_write
 c_func
@@ -7868,8 +7807,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|xmit-&gt;ohci-&gt;id
 comma
 l_string|&quot;you probably exceeded the OHCI card&squot;s bandwidth limit - &quot;
 l_string|&quot;reload the module and reduce xmit bandwidth&quot;
@@ -7970,6 +7907,13 @@ id|xmit
 op_assign
 id|iso-&gt;hostdata
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|xmit-&gt;ohci
+suffix:semicolon
 r_int
 id|wake
 op_assign
@@ -8057,8 +8001,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|xmit-&gt;ohci-&gt;id
-comma
 l_string|&quot;IT DMA error - OHCI error code 0x%02x&bslash;n&quot;
 comma
 id|event
@@ -8135,6 +8077,13 @@ id|xmit
 op_assign
 id|iso-&gt;hostdata
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|xmit-&gt;ohci
+suffix:semicolon
 r_int
 id|next_i
 comma
@@ -8179,8 +8128,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|xmit-&gt;ohci-&gt;id
 comma
 l_string|&quot;rawiso xmit: packet %u crosses a page boundary&quot;
 comma
@@ -8551,6 +8498,13 @@ id|xmit
 op_assign
 id|iso-&gt;hostdata
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|xmit-&gt;ohci
+suffix:semicolon
 multiline_comment|/* clear out the control register */
 id|reg_write
 c_func
@@ -8714,8 +8668,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|xmit-&gt;ohci-&gt;id
 comma
 l_string|&quot;Error starting IT DMA (ContextControl 0x%08x)&bslash;n&quot;
 comma
@@ -9029,10 +8981,17 @@ c_func
 id|packet_list
 )paren
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|d-&gt;ohci
+suffix:semicolon
 id|ohci1394_stop_context
 c_func
 (paren
-id|d-&gt;ohci
+id|ohci
 comma
 id|d-&gt;ctrlClear
 comma
@@ -9133,8 +9092,6 @@ c_func
 (paren
 id|KERN_INFO
 comma
-id|d-&gt;ohci-&gt;id
-comma
 l_string|&quot;AT dma reset ctx=%d, aborting transmission&quot;
 comma
 id|d-&gt;ctx
@@ -9150,7 +9107,7 @@ suffix:semicolon
 id|hpsb_packet_sent
 c_func
 (paren
-id|d-&gt;ohci-&gt;host
+id|ohci-&gt;host
 comma
 id|p
 comma
@@ -9376,8 +9333,6 @@ l_int|0
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Device removed.&quot;
 )paren
 suffix:semicolon
@@ -9388,8 +9343,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;IntEvent: %08x&quot;
 comma
 id|event
@@ -9411,8 +9364,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Unrecoverable error!&quot;
 )paren
 suffix:semicolon
@@ -9433,8 +9384,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Async Req Tx Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x]&quot;
@@ -9474,8 +9423,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Async Rsp Tx Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x]&quot;
 comma
@@ -9514,8 +9461,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Async Req Rcv Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x]&quot;
 comma
@@ -9553,8 +9498,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Async Rsp Rcv Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x]&quot;
@@ -9614,8 +9557,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Iso Xmit %d Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x]&quot;
@@ -9691,8 +9632,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Iso Recv %d Context died: &quot;
 l_string|&quot;ctrl[%08x] cmdptr[%08x] match[%08x]&quot;
 comma
@@ -9760,8 +9699,6 @@ multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;OHCI1394_cycleInconsistent&quot;
 )paren
 suffix:semicolon
@@ -9886,8 +9823,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Detected bus-reset loop. Forced a bus reset!&quot;
 )paren
 suffix:semicolon
@@ -9920,8 +9855,6 @@ id|host-&gt;in_bus_reset
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;irq_handler: Bus reset requested&quot;
 )paren
 suffix:semicolon
@@ -9939,7 +9872,6 @@ op_complement
 id|OHCI1394_busReset
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: We need a way to also queue the OHCI1394_reqTxComplete,&n;&t; * but for right now we simply run it upon reception, to make sure&n;&t; * we get sent acks before response packets. This sucks mainly&n;&t; * because it halts the interrupt handler.  */
 r_if
 c_cond
 (paren
@@ -9959,8 +9891,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Got reqTxComplete interrupt &quot;
 l_string|&quot;status=0x%08X&quot;
 comma
@@ -9997,13 +9927,11 @@ l_string|&quot;reqTxComplete&quot;
 )paren
 suffix:semicolon
 r_else
-id|dma_trm_tasklet
+id|tasklet_schedule
+c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|d
+op_amp
+id|d-&gt;task
 )paren
 suffix:semicolon
 id|event
@@ -10031,8 +9959,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Got respTxComplete interrupt &quot;
 l_string|&quot;status=0x%08X&quot;
 comma
@@ -10101,8 +10027,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Got RQPkt interrupt status=0x%08X&quot;
 comma
 id|reg_read
@@ -10170,8 +10094,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Got RSPkt interrupt status=0x%08X&quot;
 comma
 id|reg_read
@@ -10354,8 +10276,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID received, but NodeID invalid &quot;
 l_string|&quot;(probably new bus reset occurred): %08X&quot;
 comma
@@ -10385,8 +10305,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID interrupt received &quot;
 l_string|&quot;(phyid %d, %s)&quot;
 comma
@@ -10538,8 +10456,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;PhyReqFilter=%08x%08x&quot;
 comma
 id|reg_read
@@ -10576,8 +10492,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;SelfID received outside of bus reset sequence&quot;
 )paren
 suffix:semicolon
@@ -10599,8 +10513,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Unhandled interrupt(s) 0x%08x&quot;
 comma
@@ -10644,8 +10556,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Inserting dma buf ctx=%d idx=%d&quot;
 comma
 id|d-&gt;ctx
@@ -10726,8 +10636,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_INFO
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Waking dma ctx=%d ... processing is probably too slow&quot;
 comma
@@ -11235,8 +11143,6 @@ id|d-&gt;buf_size
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Split packet rcv&squot;d&quot;
 )paren
 suffix:semicolon
@@ -11306,8 +11212,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_INFO
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Got only half a packet!&quot;
 )paren
@@ -11484,8 +11388,6 @@ r_else
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Single packet rcv&squot;d&quot;
 )paren
 suffix:semicolon
@@ -11574,8 +11476,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Packet received from node&quot;
 l_string|&quot; %d ack=0x%02X spd=%d tcode=0x%X&quot;
 l_string|&quot; length=%d ctx=%d tlabel=%d&quot;
@@ -11715,8 +11615,6 @@ r_else
 id|PRINT
 (paren
 id|KERN_DEBUG
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Got phy packet ctx=%d ... discarded&quot;
 comma
@@ -11939,8 +11837,6 @@ l_int|0xa
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Stream packet sent to channel %d tcode=0x%X &quot;
 l_string|&quot;ack=0x%X spd=%d dataLength=%d ctx=%d&quot;
 comma
@@ -12019,8 +11915,6 @@ r_else
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Packet sent to node %d tcode=0x%X tLabel=&quot;
 l_string|&quot;0x%02X ack=0x%X spd=%d dataLength=%d ctx=%d&quot;
 comma
@@ -12119,8 +12013,6 @@ r_else
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Packet sent to node %d tcode=0x%X tLabel=&quot;
 l_string|&quot;0x%02X ack=0x%X spd=%d data=0x%08X ctx=%d&quot;
 comma
@@ -12256,8 +12148,6 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Received OHCI evt_* error 0x%x&quot;
 comma
 id|status
@@ -12298,8 +12188,6 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Received OHCI evt_* error 0x%x&quot;
 comma
 id|status
@@ -12336,8 +12224,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_WARNING
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Received OHCI evt_* error 0x%x&quot;
 comma
@@ -12383,8 +12269,6 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Received OHCI evt_* error 0x%x&quot;
 comma
 id|status
@@ -12416,8 +12300,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Unhandled OHCI evt_* error 0x%x&quot;
 comma
@@ -12606,10 +12488,17 @@ id|d
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|d-&gt;ohci
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;ohci
+id|ohci
 op_eq
 l_int|NULL
 )paren
@@ -12618,8 +12507,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|d-&gt;ohci-&gt;id
-comma
 l_string|&quot;Freeing dma_rcv_ctx %d&quot;
 comma
 id|d-&gt;ctx
@@ -12662,7 +12549,7 @@ id|i
 id|pci_free_consistent
 c_func
 (paren
-id|d-&gt;ohci-&gt;dev
+id|ohci-&gt;dev
 comma
 id|d-&gt;buf_size
 comma
@@ -12923,8 +12810,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate dma buffer&quot;
 )paren
 suffix:semicolon
@@ -13019,8 +12904,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate dma prg&quot;
 )paren
 suffix:semicolon
@@ -13089,8 +12972,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;Failed to allocate split buffer&quot;
 )paren
@@ -13204,8 +13085,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate dma buffer&quot;
 )paren
 suffix:semicolon
@@ -13281,8 +13160,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate dma prg&quot;
 )paren
 suffix:semicolon
@@ -13349,8 +13226,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;No IR DMA context available&quot;
 )paren
@@ -13458,10 +13333,17 @@ id|d
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+op_assign
+id|d-&gt;ohci
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;ohci
+id|ohci
 op_eq
 l_int|NULL
 )paren
@@ -13470,8 +13352,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|d-&gt;ohci-&gt;id
-comma
 l_string|&quot;Freeing dma_trm_ctx %d&quot;
 comma
 id|d-&gt;ctx
@@ -13677,8 +13557,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate at dma prg&quot;
 )paren
 suffix:semicolon
@@ -13827,8 +13705,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Failed to allocate at dma prg&quot;
 )paren
 suffix:semicolon
@@ -13896,8 +13772,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;No IT DMA context available&quot;
 )paren
@@ -14227,28 +14101,6 @@ op_star
 id|ent
 )paren
 (brace
-r_struct
-id|csr1212_keyval
-op_star
-id|root
-suffix:semicolon
-r_struct
-id|csr1212_keyval
-op_star
-id|vend_id
-op_assign
-l_int|NULL
-suffix:semicolon
-r_struct
-id|csr1212_keyval
-op_star
-id|text
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_static
 r_int
 id|version_printed
@@ -14348,10 +14200,6 @@ suffix:semicolon
 id|ohci
 op_assign
 id|host-&gt;hostdata
-suffix:semicolon
-id|ohci-&gt;id
-op_assign
-id|host-&gt;id
 suffix:semicolon
 id|ohci-&gt;dev
 op_assign
@@ -14479,8 +14327,6 @@ c_func
 (paren
 id|KERN_WARNING
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Unexpected PCI resource length of %lx!&quot;
 comma
 id|pci_resource_len
@@ -14560,8 +14406,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;Remapped memory spaces reg 0x%p&quot;
 comma
 id|ohci-&gt;registers
@@ -14662,8 +14506,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_INFO
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;SelfID buffer %p is not aligned on &quot;
 l_string|&quot;8Kb boundary... may cause problems on some CXD3222 chip&quot;
@@ -14875,8 +14717,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;%d iso receive contexts available&quot;
 comma
 id|ohci-&gt;nb_iso_rcv_ctx
@@ -14895,8 +14735,6 @@ suffix:semicolon
 id|DBGMSG
 c_func
 (paren
-id|ohci-&gt;id
-comma
 l_string|&quot;%d iso transmit contexts available&quot;
 comma
 id|ohci-&gt;nb_iso_xmit_ctx
@@ -14990,159 +14828,6 @@ c_func
 id|ohci
 )paren
 suffix:semicolon
-multiline_comment|/* Setup initial root directory entries */
-id|root
-op_assign
-id|host-&gt;csr.rom-&gt;root_kv
-suffix:semicolon
-id|vend_id
-op_assign
-id|csr1212_new_immediate
-c_func
-(paren
-id|CSR1212_KV_ID_VENDOR
-comma
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_GUIDHi
-)paren
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-id|text
-op_assign
-id|csr1212_new_string_descriptor_leaf
-c_func
-(paren
-l_string|&quot;Linux 1394 - OHCI&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|vend_id
-op_logical_or
-op_logical_neg
-id|text
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|vend_id
-)paren
-(brace
-id|csr1212_release_keyval
-c_func
-(paren
-id|vend_id
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|text
-)paren
-(brace
-id|csr1212_release_keyval
-c_func
-(paren
-id|text
-)paren
-suffix:semicolon
-)brace
-id|FAIL
-c_func
-(paren
-op_minus
-id|ENOMEM
-comma
-l_string|&quot;Failed to allocate memory for mandatory ConfigROM entries!&quot;
-)paren
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|csr1212_associate_keyval
-c_func
-(paren
-id|vend_id
-comma
-id|text
-)paren
-suffix:semicolon
-id|csr1212_release_keyval
-c_func
-(paren
-id|text
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|CSR1212_SUCCESS
-)paren
-(brace
-id|csr1212_release_keyval
-c_func
-(paren
-id|vend_id
-)paren
-suffix:semicolon
-id|FAIL
-c_func
-(paren
-id|ret
-comma
-l_string|&quot;Failed to associate text descriptor to vendor id&quot;
-)paren
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|csr1212_attach_keyval_to_directory
-c_func
-(paren
-id|root
-comma
-id|vend_id
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|CSR1212_SUCCESS
-)paren
-(brace
-id|csr1212_release_keyval
-c_func
-(paren
-id|vend_id
-)paren
-suffix:semicolon
-id|FAIL
-c_func
-(paren
-id|ret
-comma
-l_string|&quot;Failed to attach vendor id to root directory&quot;
-)paren
-suffix:semicolon
-)brace
-id|host-&gt;update_config_rom
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* Set certain csr values */
 id|host-&gt;csr.guid_hi
 op_assign
@@ -15198,10 +14883,22 @@ op_amp
 l_int|0x7
 suffix:semicolon
 multiline_comment|/* Tell the highlevel this host is ready */
+r_if
+c_cond
+(paren
 id|hpsb_add_host
 c_func
 (paren
 id|host
+)paren
+)paren
+id|FAIL
+c_func
+(paren
+op_minus
+id|ENOMEM
+comma
+l_string|&quot;Failed to register host with highlevel&quot;
 )paren
 suffix:semicolon
 id|ohci-&gt;init_state
@@ -15905,8 +15602,6 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
-comma
 l_string|&quot;Runaway loop while stopping context: %s...&quot;
 comma
 id|msg
@@ -15942,8 +15637,6 @@ id|PRINT
 c_func
 (paren
 id|KERN_ERR
-comma
-id|ohci-&gt;id
 comma
 l_string|&quot;%s: dma prg stopped&quot;
 comma

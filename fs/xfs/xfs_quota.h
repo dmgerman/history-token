@@ -684,22 +684,6 @@ r_struct
 id|bhv_vfsops
 id|xfs_qmops
 suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_QUOTA_H__ */
 eof

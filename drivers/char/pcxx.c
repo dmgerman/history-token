@@ -5202,6 +5202,10 @@ id|pcxe_driver-&gt;name
 op_assign
 l_string|&quot;ttyD&quot;
 suffix:semicolon
+id|pcxe_driver-&gt;devfs_name
+op_assign
+l_string|&quot;pcxe/&quot;
+suffix:semicolon
 id|pcxe_driver-&gt;major
 op_assign
 id|DIGI_MAJOR

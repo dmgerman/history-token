@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/intersil.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/sun3ints.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 r_extern
 r_void

@@ -183,10 +183,7 @@ id|was_dirty
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
-op_or
-l_int|1
 suffix:semicolon
-multiline_comment|/* 0 is special */
 id|list_move
 c_func
 (paren
@@ -468,8 +465,6 @@ suffix:semicolon
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
-op_or
-l_int|1
 suffix:semicolon
 id|list_move
 c_func
@@ -495,8 +490,6 @@ multiline_comment|/* Redirtied */
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
-op_or
-l_int|1
 suffix:semicolon
 id|list_move
 c_func
@@ -521,10 +514,6 @@ id|inode-&gt;i_count
 )paren
 )paren
 (brace
-id|mapping-&gt;dirtied_when
-op_assign
-l_int|0
-suffix:semicolon
 id|list_move
 c_func
 (paren
@@ -538,10 +527,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|mapping-&gt;dirtied_when
-op_assign
-l_int|0
-suffix:semicolon
 id|list_move
 c_func
 (paren
@@ -938,8 +923,6 @@ id|WB_SYNC_HOLD
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
-op_or
-l_int|1
 suffix:semicolon
 id|list_move
 c_func

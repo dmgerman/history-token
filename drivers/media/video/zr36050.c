@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Zoran ZR36050 basic configuration functions&n; *&n; * Copyright (C) 2001 Wolfgang Scherr &lt;scherr@net4you.at&gt;&n; *&n; * $Id: zr36050.c,v 1.1.2.11 2003/08/03 14:54:53 rbultje Exp $&n; *&n; * ------------------------------------------------------------------------&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * ------------------------------------------------------------------------&n; */
 DECL|macro|ZR050_VERSION
-mdefine_line|#define ZR050_VERSION &quot;v0.7&quot;
+mdefine_line|#define ZR050_VERSION &quot;v0.7.1&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2789,18 +2789,7 @@ l_int|3
 suffix:semicolon
 singleline_comment|// low 2 bits always 1
 multiline_comment|/* volume control settings */
-id|zr36050_write
-c_func
-(paren
-id|ptr
-comma
-id|ZR050_MBCV
-comma
-id|ptr-&gt;max_block_vol
-op_rshift
-l_int|1
-)paren
-suffix:semicolon
+multiline_comment|/*zr36050_write(ptr, ZR050_MBCV, ptr-&gt;max_block_vol);*/
 id|zr36050_write
 c_func
 (paren
@@ -3030,7 +3019,7 @@ multiline_comment|/* setup misc. data for compression (target code sizes) */
 multiline_comment|/* size of compressed code to reach without header data */
 id|sum
 op_assign
-id|ptr-&gt;total_code_vol
+id|ptr-&gt;real_code_vol
 op_minus
 id|sum
 suffix:semicolon
@@ -3058,7 +3047,7 @@ id|ptr-&gt;name
 comma
 id|sum
 comma
-id|ptr-&gt;total_code_vol
+id|ptr-&gt;real_code_vol
 comma
 id|bitcnt
 comma
@@ -3547,12 +3536,15 @@ op_star
 )paren
 id|codec-&gt;data
 suffix:semicolon
+r_int
+id|size
+suffix:semicolon
 id|dprintk
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s: set_video %d.%d, %d/%d-%dx%d (0x%x) call&bslash;n&quot;
+l_string|&quot;%s: set_video %d.%d, %d/%d-%dx%d (0x%x) q%d call&bslash;n&quot;
 comma
 id|ptr-&gt;name
 comma
@@ -3569,6 +3561,8 @@ comma
 id|cap-&gt;height
 comma
 id|cap-&gt;decimation
+comma
+id|cap-&gt;quality
 )paren
 suffix:semicolon
 multiline_comment|/* if () return -EINVAL;&n;&t; * trust the master driver that it knows what it does - so&n;&t; * we allow invalid startx/y and norm for now ... */
@@ -3594,6 +3588,73 @@ l_int|8
 )paren
 op_amp
 l_int|0xff
+)paren
+suffix:semicolon
+multiline_comment|/* (KM) JPEG quality */
+id|size
+op_assign
+id|ptr-&gt;width
+op_star
+id|ptr-&gt;height
+suffix:semicolon
+id|size
+op_mul_assign
+l_int|16
+suffix:semicolon
+multiline_comment|/* size in bits */
+multiline_comment|/* apply quality setting */
+id|size
+op_assign
+id|size
+op_star
+id|cap-&gt;quality
+op_div
+l_int|200
+suffix:semicolon
+multiline_comment|/* Minimum: 1kb */
+r_if
+c_cond
+(paren
+id|size
+OL
+l_int|8192
+)paren
+id|size
+op_assign
+l_int|8192
+suffix:semicolon
+multiline_comment|/* Maximum: 7/8 of code buffer */
+r_if
+c_cond
+(paren
+id|size
+OG
+id|ptr-&gt;total_code_vol
+op_star
+l_int|7
+)paren
+id|size
+op_assign
+id|ptr-&gt;total_code_vol
+op_star
+l_int|7
+suffix:semicolon
+id|ptr-&gt;real_code_vol
+op_assign
+id|size
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* in bytes */
+multiline_comment|/* Set max_block_vol here (previously in zr36050_init, moved&n;&t; * here for consistency with zr36060 code */
+id|zr36050_write
+c_func
+(paren
+id|ptr
+comma
+id|ZR050_MBCV
+comma
+id|ptr-&gt;max_block_vol
 )paren
 suffix:semicolon
 r_return
@@ -3817,6 +3878,17 @@ id|ptr-&gt;total_code_vol
 op_assign
 op_star
 id|ival
+suffix:semicolon
+multiline_comment|/* (Kieran Morrissey)&n;&t;&t; * code copied from zr36060.c to ensure proper bitrate */
+id|ptr-&gt;real_code_vol
+op_assign
+(paren
+id|ptr-&gt;total_code_vol
+op_star
+l_int|6
+)paren
+op_rshift
+l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -190,6 +190,11 @@ r_struct
 id|timer_list
 id|delayed_reset
 suffix:semicolon
+DECL|member|config_roms
+r_int
+r_int
+id|config_roms
+suffix:semicolon
 DECL|member|addr_space
 r_struct
 id|list_head
@@ -452,7 +457,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
+r_int
 id|hpsb_add_host
 c_func
 (paren

@@ -258,16 +258,35 @@ id|hotplug_slot_release
 comma
 )brace
 suffix:semicolon
-id|decl_subsys
-c_func
-(paren
-id|pci_hotplug_slots
+multiline_comment|/* &n; * We create a struct subsystem on our own and not use decl_subsys so&n; * we can have a sane name &quot;slots&quot; in sysfs, yet still keep a good&n; * global variable name &quot;pci_hotplug_slots_subsys.&n; * If the decl_subsys() #define ever changes, this declaration will&n; * need to be update to make sure everything is initialized properly.&n; */
+DECL|variable|pci_hotplug_slots_subsys
+r_struct
+id|subsystem
+id|pci_hotplug_slots_subsys
+op_assign
+(brace
+dot
+id|kset
+op_assign
+(brace
+dot
+id|kobj
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;slots&quot;
+)brace
 comma
+dot
+id|ktype
+op_assign
 op_amp
 id|hotplug_slot_ktype
 comma
-l_int|NULL
-)paren
+)brace
+)brace
 suffix:semicolon
 multiline_comment|/* these strings match up with the values in pci_bus_speed */
 DECL|variable|pci_bus_speed_strings
@@ -984,8 +1003,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1073,8 +1090,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1299,8 +1314,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1412,8 +1425,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot

@@ -4473,6 +4473,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|var-&gt;activate
+op_amp
+id|FB_ACTIVATE_FORCE
+)paren
+op_logical_or
 id|memcmp
 c_func
 (paren

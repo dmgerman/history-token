@@ -5099,6 +5099,10 @@ id|pc_driver-&gt;name
 op_assign
 l_string|&quot;ttyD&quot;
 suffix:semicolon
+id|pc_driver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/D&quot;
+suffix:semicolon
 id|pc_driver-&gt;major
 op_assign
 id|DIGI_MAJOR

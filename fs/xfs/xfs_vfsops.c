@@ -1484,7 +1484,7 @@ c_func
 id|p
 )paren
 suffix:colon
-id|xfs_dmcore_xfs
+id|xfs_dmcore_stub
 suffix:semicolon
 id|p
 op_assign
@@ -1512,7 +1512,7 @@ c_func
 id|p
 )paren
 suffix:colon
-id|xfs_qmcore_xfs
+id|xfs_qmcore_stub
 suffix:semicolon
 id|p
 op_assign
@@ -2833,7 +2833,11 @@ op_assign
 id|min_t
 c_func
 (paren
-id|sector_t
+id|typeof
+c_func
+(paren
+id|statp-&gt;f_files
+)paren
 comma
 id|statp-&gt;f_files
 comma

@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;ints.h&quot;
 multiline_comment|/* Clock hardware definitions */
 DECL|macro|CLOCKBASE

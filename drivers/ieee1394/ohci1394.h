@@ -360,11 +360,6 @@ DECL|struct|ti_ohci
 r_struct
 id|ti_ohci
 (brace
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
-multiline_comment|/* sequential card number */
 DECL|member|dev
 r_struct
 id|pci_dev
