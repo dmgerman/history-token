@@ -1457,6 +1457,13 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected AMD64 on-CPU GART&bslash;n&quot;
+)paren
+suffix:semicolon
 id|agp_bridge-&gt;dev
 op_assign
 id|dev
