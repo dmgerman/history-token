@@ -13,6 +13,7 @@ DECL|macro|__ARCH_SI_TRAPNO
 mdefine_line|#define __ARCH_SI_TRAPNO
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/compat.h&gt;
 DECL|union|sigval32
 r_typedef
 r_union
@@ -133,11 +134,11 @@ id|_status
 suffix:semicolon
 multiline_comment|/* exit code */
 DECL|member|_utime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_utime
 suffix:semicolon
 DECL|member|_stime
-id|__kernel_clock_t32
+id|compat_clock_t
 id|_stime
 suffix:semicolon
 DECL|member|_sigchld

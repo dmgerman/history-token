@@ -171,11 +171,6 @@ r_typedef
 r_int
 id|__kernel_ptrdiff_t32
 suffix:semicolon
-DECL|typedef|__kernel_clock_t32
-r_typedef
-r_int
-id|__kernel_clock_t32
-suffix:semicolon
 DECL|typedef|__kernel_pid_t32
 r_typedef
 r_int
