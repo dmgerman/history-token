@@ -1031,12 +1031,12 @@ id|mm-&gt;mmap_sem
 suffix:semicolon
 )brace
 multiline_comment|/* Take the task&squot;s mmap_sem to protect ourselves from&n; * races when we do lookup_dcookie().&n; */
-DECL|function|take_task_mm
+DECL|function|take_tasks_mm
 r_static
 r_struct
 id|mm_struct
 op_star
-id|take_task_mm
+id|take_tasks_mm
 c_func
 (paren
 r_struct
@@ -1049,42 +1049,38 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+suffix:semicolon
+multiline_comment|/* Subtle. We don&squot;t need to keep a reference to this task&squot;s mm,&n;&t; * because, for the mm to be freed on another CPU, that would have&n;&t; * to go through the task exit notifier, which ends up sleeping&n;&t; * on the buffer_sem we hold, so we end up with mutual exclusion&n;&t; * anyway.&n;&t; */
+id|task_lock
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|mm
 op_assign
 id|task-&gt;mm
 suffix:semicolon
-multiline_comment|/* if task-&gt;mm !NULL, mm_count must be at least 1. It cannot&n;&t; * drop to 0 without the task exiting, which will have to sleep&n;&t; * on buffer_sem first. So we do not need to mark mm_count&n;&t; * ourselves.&n;&t; */
+id|task_unlock
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|mm
 )paren
 (brace
-multiline_comment|/* More ugliness. If a task took its mmap&n;&t;&t; * sem then came to sleep on buffer_sem we&n;&t;&t; * will deadlock waiting for it. So we can&n;&t;&t; * but try. This will lose samples :/&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|down_read_trylock
+multiline_comment|/* needed to walk the task&squot;s VMAs */
+id|down_read
 c_func
 (paren
 op_amp
 id|mm-&gt;mmap_sem
 )paren
-)paren
-(brace
-multiline_comment|/* FIXME: this underestimates samples lost */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|oprofile_stats.sample_lost_mmap_sem
-)paren
 suffix:semicolon
-id|mm
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 r_return
 id|mm
@@ -1327,7 +1323,7 @@ id|mm
 suffix:semicolon
 id|mm
 op_assign
-id|take_task_mm
+id|take_tasks_mm
 c_func
 (paren
 r_new
