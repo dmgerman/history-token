@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -175,13 +174,6 @@ DECL|member|drc_enable
 r_int
 id|drc_enable
 suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_PBOOK
-DECL|member|resume_workq
-r_struct
-id|work_struct
-id|resume_workq
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|pmac_tumbler_t
 )brace
 id|pmac_tumbler_t
@@ -3990,7 +3982,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|200
@@ -4005,7 +3997,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|100
@@ -4020,7 +4012,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|100
@@ -4029,33 +4021,30 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/* resume mixer */
-multiline_comment|/* we call the i2c transfer in a workqueue because it may need either schedule()&n; * or completion from timer interrupts.&n; */
-DECL|function|tumbler_resume_work
+DECL|function|tumbler_resume
 r_static
 r_void
-id|tumbler_resume_work
+id|tumbler_resume
 c_func
 (paren
-r_void
-op_star
-id|arg
-)paren
-(brace
 id|pmac_t
 op_star
 id|chip
-op_assign
-(paren
-id|pmac_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|pmac_tumbler_t
 op_star
 id|mix
 op_assign
 id|chip-&gt;mixer_data
+suffix:semicolon
+id|snd_assert
+c_func
+(paren
+id|mix
+comma
+r_return
+)paren
 suffix:semicolon
 id|tumbler_reset_audio
 c_func
@@ -4209,62 +4198,6 @@ c_func
 id|chip
 comma
 l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|tumbler_resume
-r_static
-r_void
-id|tumbler_resume
-c_func
-(paren
-id|pmac_t
-op_star
-id|chip
-)paren
-(brace
-id|pmac_tumbler_t
-op_star
-id|mix
-op_assign
-id|chip-&gt;mixer_data
-suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|mix
-comma
-r_return
-)paren
-suffix:semicolon
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|mix-&gt;resume_workq
-comma
-id|tumbler_resume_work
-comma
-id|chip
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|schedule_work
-c_func
-(paren
-op_amp
-id|mix-&gt;resume_workq
-)paren
-)paren
-r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ALSA tumbler: cannot schedule resume-workqueue.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

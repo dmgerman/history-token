@@ -8295,13 +8295,11 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ICE1724 has not detected EEPROM&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
+singleline_comment|// return -EIO;
 )brace
 id|ice-&gt;eeprom.subvendor
 op_assign

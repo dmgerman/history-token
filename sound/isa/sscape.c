@@ -2903,12 +2903,12 @@ r_int
 id|irq
 )paren
 (brace
+r_static
 r_const
 r_int
 id|valid_irq
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 l_int|9

@@ -9,6 +9,8 @@ DECL|macro|USB_SUBCLASS_AUDIO_STREAMING
 mdefine_line|#define USB_SUBCLASS_AUDIO_STREAMING&t;0x02
 DECL|macro|USB_SUBCLASS_MIDI_STREAMING
 mdefine_line|#define USB_SUBCLASS_MIDI_STREAMING&t;0x03
+DECL|macro|USB_SUBCLASS_VENDOR_SPEC
+mdefine_line|#define USB_SUBCLASS_VENDOR_SPEC&t;0xff
 DECL|macro|USB_DT_CS_DEVICE
 mdefine_line|#define USB_DT_CS_DEVICE                0x21
 DECL|macro|USB_DT_CS_CONFIG
@@ -216,8 +218,10 @@ DECL|macro|QUIRK_COMPOSITE
 mdefine_line|#define QUIRK_COMPOSITE&t;&t;&t;3
 DECL|macro|QUIRK_AUDIO_FIXED_ENDPOINT
 mdefine_line|#define QUIRK_AUDIO_FIXED_ENDPOINT&t;4
-DECL|macro|QUIRK_STANDARD_INTERFACE
-mdefine_line|#define QUIRK_STANDARD_INTERFACE&t;5
+DECL|macro|QUIRK_AUDIO_STANDARD_INTERFACE
+mdefine_line|#define QUIRK_AUDIO_STANDARD_INTERFACE&t;5
+DECL|macro|QUIRK_MIDI_STANDARD_INTERFACE
+mdefine_line|#define QUIRK_MIDI_STANDARD_INTERFACE&t;6
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -291,7 +295,7 @@ multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
 multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
 multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
-multiline_comment|/* for QUIRK_STANDARD_INTERFACE, data is NULL */
+multiline_comment|/* for QUIRK_AUDIO/MIDI_STANDARD_INTERFACE, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -392,6 +396,11 @@ r_struct
 id|list_head
 op_star
 id|p
+comma
+r_struct
+id|usb_driver
+op_star
+id|driver
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */

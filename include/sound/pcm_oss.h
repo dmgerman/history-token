@@ -44,6 +44,16 @@ DECL|member|nonblock
 id|nonblock
 suffix:colon
 l_int|1
+comma
+DECL|member|wholefrag
+id|wholefrag
+suffix:colon
+l_int|1
+comma
+DECL|member|nosilence
+id|nosilence
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|periods
 r_int

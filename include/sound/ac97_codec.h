@@ -354,6 +354,17 @@ DECL|macro|AC97_CM9739_SPDIF_IN_STATUS
 mdefine_line|#define AC97_CM9739_SPDIF_IN_STATUS&t;0x68 /* 32bit */
 DECL|macro|AC97_CM9739_SPDIF_CTRL
 mdefine_line|#define AC97_CM9739_SPDIF_CTRL&t;0x6c
+multiline_comment|/* specific - wolfson */
+DECL|macro|AC97_WM97XX_FMIXER_VOL
+mdefine_line|#define AC97_WM97XX_FMIXER_VOL  0x72
+DECL|macro|AC97_WM9704_RMIXER_VOL
+mdefine_line|#define AC97_WM9704_RMIXER_VOL  0x74
+DECL|macro|AC97_WM9704_TEST
+mdefine_line|#define AC97_WM9704_TEST        0x5a
+DECL|macro|AC97_WM9704_RPCM_VOL
+mdefine_line|#define AC97_WM9704_RPCM_VOL    0x70
+DECL|macro|AC97_WM9711_OUT3VOL
+mdefine_line|#define AC97_WM9711_OUT3VOL     0x16
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
 mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */
@@ -391,6 +402,60 @@ r_typedef
 r_struct
 id|_snd_ac97
 id|ac97_t
+suffix:semicolon
+DECL|struct|snd_ac97_build_ops
+r_struct
+id|snd_ac97_build_ops
+(brace
+DECL|member|build_3d
+r_int
+(paren
+op_star
+id|build_3d
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+DECL|member|build_specific
+r_int
+(paren
+op_star
+id|build_specific
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+DECL|member|build_spdif
+r_int
+(paren
+op_star
+id|build_spdif
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+DECL|member|build_post_spdif
+r_int
+(paren
+op_star
+id|build_post_spdif
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|struct|_snd_ac97
 r_struct
@@ -468,6 +533,12 @@ id|ac97_t
 op_star
 id|ac97
 )paren
+suffix:semicolon
+DECL|member|build_ops
+r_struct
+id|snd_ac97_build_ops
+op_star
+id|build_ops
 suffix:semicolon
 DECL|member|private_data
 r_void

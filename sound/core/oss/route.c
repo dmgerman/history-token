@@ -2250,6 +2250,28 @@ l_int|8
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|width
+template_param
+l_int|3
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;snd-pcm-oss: invalid format %d&bslash;n&quot;
+comma
+id|format
+)paren
+suffix:semicolon
+id|width
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#ifdef SNDRV_LITTLE_ENDIAN
 id|endian
 op_assign

@@ -2317,7 +2317,7 @@ id|opl3-&gt;seq_dev_num
 op_assign
 id|seq_device
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_if
 c_cond
 (paren

@@ -11885,7 +11885,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * gameport interface&n; */
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|struct|snd_cs46xx_gameport
 r_typedef
 r_struct
@@ -12918,7 +12918,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -13148,9 +13148,6 @@ c_func
 id|cs46xx_t
 op_star
 id|chip
-comma
-r_int
-id|busywait
 )paren
 (brace
 r_int
@@ -13352,13 +13349,21 @@ id|CLKCR1_PLLP
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         *  Wait until the PLL has stabilized.&n;&t; */
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|100
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: schedule? */
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* 100ms */
 multiline_comment|/*&n;&t; *  Turn on clocking of the core so that we can setup the serial ports.&n;&t; */
 id|snd_cs46xx_pokeBA0
 c_func
@@ -13518,19 +13523,6 @@ id|ACSTS_CRDY
 r_goto
 id|ok1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|busywait
-)paren
-id|mdelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-r_else
-(brace
 id|set_current_state
 c_func
 (paren
@@ -13549,7 +13541,6 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-)brace
 )brace
 id|snd_printk
 c_func
@@ -13711,19 +13702,6 @@ id|ACISV_ISV4
 r_goto
 id|ok2
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|busywait
-)paren
-id|mdelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-r_else
-(brace
 id|set_current_state
 c_func
 (paren
@@ -13742,7 +13720,6 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
 id|snd_printk
@@ -15812,8 +15789,6 @@ id|snd_cs46xx_chip_init
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -16677,8 +16652,6 @@ id|snd_cs46xx_chip_init
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
