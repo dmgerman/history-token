@@ -102,6 +102,16 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;size
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -288,6 +298,16 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;size
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -572,6 +592,16 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;map
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -788,6 +818,16 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;map
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp

@@ -1340,12 +1340,34 @@ comma
 l_string|&quot;io&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pnp_port_flags
+c_func
+(paren
+id|dev
+comma
+id|i
+)paren
+op_amp
+id|IORESOURCE_DISABLED
+)paren
 id|pnp_printf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot; 0x%lx-0x%lx &bslash;n&quot;
+l_string|&quot; disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|pnp_printf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot; 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|pnp_port_start
 c_func
@@ -1401,12 +1423,34 @@ comma
 l_string|&quot;mem&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pnp_mem_flags
+c_func
+(paren
+id|dev
+comma
+id|i
+)paren
+op_amp
+id|IORESOURCE_DISABLED
+)paren
 id|pnp_printf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot; 0x%lx-0x%lx &bslash;n&quot;
+l_string|&quot; disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|pnp_printf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot; 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|pnp_mem_start
 c_func
@@ -1462,12 +1506,34 @@ comma
 l_string|&quot;irq&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pnp_irq_flags
+c_func
+(paren
+id|dev
+comma
+id|i
+)paren
+op_amp
+id|IORESOURCE_DISABLED
+)paren
 id|pnp_printf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot; %ld &bslash;n&quot;
+l_string|&quot; disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|pnp_printf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot; %ld&bslash;n&quot;
 comma
 id|pnp_irq
 c_func
@@ -1515,12 +1581,34 @@ comma
 l_string|&quot;dma&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pnp_dma_flags
+c_func
+(paren
+id|dev
+comma
+id|i
+)paren
+op_amp
+id|IORESOURCE_DISABLED
+)paren
 id|pnp_printf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot; %ld &bslash;n&quot;
+l_string|&quot; disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|pnp_printf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot; %ld&bslash;n&quot;
 comma
 id|pnp_dma
 c_func
