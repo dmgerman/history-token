@@ -497,6 +497,28 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+DECL|struct|dev_pm_info
+r_struct
+id|dev_pm_info
+(brace
+macro_line|#ifdef&t;CONFIG_PM
+DECL|member|power_state
+id|u32
+id|power_state
+suffix:semicolon
+DECL|member|saved_state
+id|u8
+op_star
+id|saved_state
+suffix:semicolon
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_PM_H */
 eof

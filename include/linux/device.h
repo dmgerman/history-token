@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
@@ -46,32 +47,6 @@ id|RESUME_RESTORE_STATE
 comma
 DECL|enumerator|RESUME_ENABLE
 id|RESUME_ENABLE
-comma
-)brace
-suffix:semicolon
-DECL|enum|device_state
-r_enum
-id|device_state
-(brace
-DECL|enumerator|DEVICE_UNINITIALIZED
-id|DEVICE_UNINITIALIZED
-op_assign
-l_int|0
-comma
-DECL|enumerator|DEVICE_INITIALIZED
-id|DEVICE_INITIALIZED
-op_assign
-l_int|1
-comma
-DECL|enumerator|DEVICE_REGISTERED
-id|DEVICE_REGISTERED
-op_assign
-l_int|2
-comma
-DECL|enumerator|DEVICE_GONE
-id|DEVICE_GONE
-op_assign
-l_int|3
 comma
 )brace
 suffix:semicolon
@@ -1193,6 +1168,11 @@ op_star
 id|platform_data
 suffix:semicolon
 multiline_comment|/* Platform specific data (e.g. ACPI,&n;&t;&t;&t;&t;&t;   BIOS data relevant to device) */
+DECL|member|power
+r_struct
+id|dev_pm_info
+id|power
+suffix:semicolon
 DECL|member|power_state
 id|u32
 id|power_state
