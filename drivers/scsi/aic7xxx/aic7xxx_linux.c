@@ -706,6 +706,10 @@ comma
 r_char
 op_star
 id|end
+comma
+r_char
+op_star
+id|s
 )paren
 suffix:semicolon
 r_static

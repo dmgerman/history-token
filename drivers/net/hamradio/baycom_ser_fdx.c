@@ -2659,6 +2659,12 @@ c_func
 l_string|&quot;Baycom ser12 full duplex amateur radio modem driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|init_baycomserfdx
 r_static

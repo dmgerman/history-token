@@ -6169,6 +6169,12 @@ c_func
 l_string|&quot;Yam amateur radio modem driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|yam_init_driver
 id|module_init
 c_func
