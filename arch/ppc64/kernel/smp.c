@@ -3005,12 +3005,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Backup CPU 0 state if necessary */
-id|__save_cpu_setup
-c_func
-(paren
-)paren
-suffix:semicolon
 id|smp_space_timers
 c_func
 (paren
