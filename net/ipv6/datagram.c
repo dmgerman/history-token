@@ -1574,6 +1574,8 @@ op_amp
 id|src_info-&gt;ipi6_addr
 comma
 id|dev
+comma
+l_int|0
 )paren
 )paren
 (brace

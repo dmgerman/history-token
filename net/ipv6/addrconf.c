@@ -3894,6 +3894,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|strict
 )paren
 (brace
 r_struct
@@ -3976,6 +3979,8 @@ id|IFA_LINK
 op_or
 id|IFA_HOST
 )paren
+op_logical_or
+id|strict
 )paren
 )paren
 r_break
@@ -4110,6 +4115,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|strict
 )paren
 (brace
 r_struct
@@ -4185,6 +4193,8 @@ id|IFA_LINK
 op_or
 id|IFA_HOST
 )paren
+op_logical_or
+id|strict
 )paren
 )paren
 (brace
@@ -6287,6 +6297,8 @@ op_amp
 id|addr
 comma
 id|dev
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -14208,7 +14220,9 @@ c_func
 op_amp
 id|ifp-&gt;addr
 comma
-l_int|NULL
+id|ifp-&gt;idev-&gt;dev
+comma
+l_int|1
 )paren
 )paren
 id|ip6_rt_addr_del
