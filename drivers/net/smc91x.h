@@ -215,6 +215,12 @@ DECL|macro|SMC_insw
 mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r) - 0xa0000000, p, l)
 DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r) - 0xa0000000, p, l)
+DECL|macro|set_irq_type
+mdefine_line|#define set_irq_type(irq, type)&t;do {} while(0)
+DECL|macro|RPC_LSA_DEFAULT
+mdefine_line|#define RPC_LSA_DEFAULT&t;&t;RPC_LED_TX_RX
+DECL|macro|RPC_LSB_DEFAULT
+mdefine_line|#define RPC_LSB_DEFAULT&t;&t;RPC_LED_100_10
 macro_line|#else
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1
