@@ -24,7 +24,7 @@ macro_line|#endif
 macro_line|#include &quot;../fbcon-accel.h&quot;
 multiline_comment|/* version number of this driver */
 DECL|macro|RIVAFB_VERSION
-mdefine_line|#define RIVAFB_VERSION &quot;0.9.2a&quot;
+mdefine_line|#define RIVAFB_VERSION &quot;0.9.3&quot;
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * various helpful macros and constants&n; *&n; * ------------------------------------------------------------------------- */
 DECL|macro|RIVAFBDEBUG
 macro_line|#undef RIVAFBDEBUG
@@ -135,6 +135,20 @@ comma
 DECL|enumerator|CH_QUADRO2_PRO
 id|CH_QUADRO2_PRO
 comma
+DECL|enumerator|CH_GEFORCE2_GO
+id|CH_GEFORCE2_GO
+comma
+DECL|enumerator|CH_GEFORCE3
+id|CH_GEFORCE3
+comma
+DECL|enumerator|CH_GEFORCE3_1
+id|CH_GEFORCE3_1
+comma
+DECL|enumerator|CH_GEFORCE3_2
+id|CH_GEFORCE3_2
+comma
+DECL|enumerator|CH_QUADRO_DDC
+id|CH_QUADRO_DDC
 )brace
 suffix:semicolon
 multiline_comment|/* directly indexed by riva_chips enum, above */
@@ -251,6 +265,35 @@ comma
 id|NV_ARCH_10
 )brace
 comma
+(brace
+l_string|&quot;GeForce2-Go&quot;
+comma
+id|NV_ARCH_10
+)brace
+comma
+(brace
+l_string|&quot;GeForce3&quot;
+comma
+id|NV_ARCH_20
+)brace
+comma
+(brace
+l_string|&quot;GeForce3 Ti 200&quot;
+comma
+id|NV_ARCH_20
+)brace
+comma
+(brace
+l_string|&quot;GeForce3 Ti 500&quot;
+comma
+id|NV_ARCH_20
+)brace
+comma
+(brace
+l_string|&quot;Quadro DDC&quot;
+comma
+id|NV_ARCH_20
+)brace
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -533,6 +576,86 @@ comma
 l_int|0
 comma
 id|CH_QUADRO2_PRO
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_GEFORCE2_GO
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_GEFORCE2_GO
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_GEFORCE3
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_GEFORCE3
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_GEFORCE3_1
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_GEFORCE3_1
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_GEFORCE3_2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_GEFORCE3_2
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_QUADRO_DDC
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_QUADRO_DDC
 )brace
 comma
 (brace
@@ -7076,6 +7199,9 @@ suffix:colon
 r_case
 id|NV_ARCH_10
 suffix:colon
+r_case
+id|NV_ARCH_20
+suffix:colon
 multiline_comment|/* riva_hw.c now doesn&squot;t distinguish between TNT &amp; TNT2 */
 id|default_par-&gt;riva.PCRTC
 op_assign
@@ -7238,7 +7364,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;PCI nVidia NV%d framebuffer ver %s (%s, %dMB @ 0x%lX)&bslash;n&quot;
+l_string|&quot;PCI nVidia NV%x framebuffer ver %s (%s, %dMB @ 0x%lX)&bslash;n&quot;
 comma
 id|default_par-&gt;riva.Architecture
 comma
