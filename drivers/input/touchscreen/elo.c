@@ -267,13 +267,10 @@ id|BTN_TOUCH
 comma
 id|elo-&gt;data
 (braket
-l_int|8
+l_int|2
 )braket
-op_logical_or
-id|elo-&gt;data
-(braket
-l_int|7
-)braket
+op_amp
+l_int|3
 )paren
 suffix:semicolon
 id|input_sync
@@ -572,8 +569,6 @@ id|dev
 comma
 id|BTN_TOUCH
 comma
-op_logical_neg
-op_logical_neg
 id|elo-&gt;data
 (braket
 l_int|5
