@@ -4116,6 +4116,7 @@ op_amp
 id|page-&gt;list
 )paren
 suffix:semicolon
+macro_line|#ifdef WANT_PAGE_VIRTUAL
 r_if
 c_cond
 (paren
@@ -4138,6 +4139,7 @@ id|PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|zone_start_pfn
 op_increment
 suffix:semicolon
