@@ -4997,11 +4997,6 @@ op_star
 )paren
 id|dst
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|xdst-&gt;route
-)paren
 id|dst_release
 c_func
 (paren
