@@ -29,6 +29,12 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */
+DECL|member|local_flags
+r_int
+r_int
+id|local_flags
+suffix:semicolon
+multiline_comment|/* non-racy flags */
 DECL|member|cpu
 r_int
 id|cpu
@@ -46,7 +52,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.local_flags =  0,&t;&t;&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -105,10 +111,12 @@ DECL|macro|TI_EXECDOMAIN
 mdefine_line|#define TI_EXECDOMAIN&t;4
 DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;8
+DECL|macro|TI_LOCAL_FLAGS
+mdefine_line|#define TI_LOCAL_FLAGS&t;12
 DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;12
+mdefine_line|#define TI_CPU&t;&t;16
 DECL|macro|TI_PREEMPT
-mdefine_line|#define TI_PREEMPT&t;16
+mdefine_line|#define TI_PREEMPT&t;20
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
@@ -122,8 +130,6 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;4&t;/* true if poll_idle() is polling&n;&t;&t;&t;&t;&t;   TIF_NEED_RESCHED */
-DECL|macro|TIF_FORCE_NOERROR
-mdefine_line|#define TIF_FORCE_NOERROR&t;5&t;/* don&squot;t return error from current&n;&t;&t;&t;&t;&t;   syscall even if result &lt; 0 */
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
@@ -135,8 +141,12 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
-DECL|macro|_TIF_FORCE_NOERROR
-mdefine_line|#define _TIF_FORCE_NOERROR&t;(1&lt;&lt;TIF_FORCE_NOERROR)
+multiline_comment|/*&n; * Non racy (local) flags bit numbers&n; */
+DECL|macro|TIFL_FORCE_NOERROR
+mdefine_line|#define TIFL_FORCE_NOERROR&t;0&t;/* don&squot;t return error from current&n;&t;&t;&t;&t;&t;   syscall even if result &lt; 0 */
+multiline_comment|/* as above, but as bit values */
+DECL|macro|_TIFL_FORCE_NOERROR
+mdefine_line|#define _TIFL_FORCE_NOERROR&t;(1&lt;&lt;TIFL_FORCE_NOERROR)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof

@@ -766,7 +766,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|done_with_exception
+id|ia64_done_with_exception
 c_func
 (paren
 id|regs
@@ -812,7 +812,9 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unable to handle kernel NULL pointer dereference&quot;
+l_string|&quot;Unable to handle kernel NULL pointer dereference (address %016lx)&bslash;n&quot;
+comma
+id|address
 )paren
 suffix:semicolon
 r_else

@@ -718,10 +718,15 @@ l_int|1
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
-id|smp_do_timer
+multiline_comment|/*&n;&t;&t; * For UP, this is done in do_timer().  Weird, but&n;&t;&t; * fixing that would require updates to all&n;&t;&t; * platforms.&n;&t;&t; */
+id|update_process_times
+c_func
+(paren
+id|user_mode
 c_func
 (paren
 id|regs
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -790,7 +795,7 @@ suffix:semicolon
 )brace
 r_do
 (brace
-multiline_comment|/*&n;&t;     * If we&squot;re too close to the next clock tick for comfort, we increase the&n;&t;     * safety margin by intentionally dropping the next tick(s).  We do NOT update&n;&t;     * itm.next because that would force us to call do_timer() which in turn would&n;&t;     * let our clock run too fast (with the potentially devastating effect of&n;&t;     * losing monotony of time).&n;&t;     */
+multiline_comment|/*&n;&t;&t; * If we&squot;re too close to the next clock tick for&n;&t;&t; * comfort, we increase the safety margin by&n;&t;&t; * intentionally dropping the next tick(s).  We do NOT&n;&t;&t; * update itm.next because that would force us to call&n;&t;&t; * do_timer() which in turn would let our clock run&n;&t;&t; * too fast (with the potentially devastating effect&n;&t;&t; * of losing monotony of time).&n;&t;&t; */
 r_while
 c_loop
 (paren

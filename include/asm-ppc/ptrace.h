@@ -98,7 +98,7 @@ mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (((regs)-&gt;msr &amp; MSR_PR) != 0)
 DECL|macro|force_successful_syscall_return
-mdefine_line|#define force_successful_syscall_return()   set_thread_flag(TIF_FORCE_NOERROR)
+mdefine_line|#define force_successful_syscall_return()   &bslash;&n;&t;do { &bslash;&n;&t;&t;current_thread_info()-&gt;local_flags |= _TIFL_FORCE_NOERROR; &bslash;&n;&t;} while(0)
 multiline_comment|/*&n; * We use the least-significant bit of the trap field to indicate&n; * whether we have saved the full set of registers, or only a&n; * partial set.  A 1 there means the partial set.&n; * On 4xx we use the next bit to indicate whether the exception&n; * is a critical exception (1 means it is).&n; */
 DECL|macro|FULL_REGS
 mdefine_line|#define FULL_REGS(regs)&t;&t;(((regs)-&gt;trap &amp; 1) == 0)

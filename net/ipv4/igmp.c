@@ -5411,6 +5411,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_dev-&gt;mc_initted
+)paren
+r_return
+suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
 id|in_dev-&gt;mr_ifc_count
 op_assign
@@ -5599,6 +5607,10 @@ c_func
 (paren
 id|i
 )paren
+suffix:semicolon
+id|in_dev-&gt;mc_initted
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Device is about to be destroyed: clean up.&n; */

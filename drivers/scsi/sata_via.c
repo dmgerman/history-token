@@ -846,7 +846,7 @@ id|probe_ent-&gt;host_flags
 op_assign
 id|ATA_FLAG_SATA
 op_or
-id|ATA_FLAG_SATA_RESET
+id|ATA_FLAG_SRST
 op_or
 id|ATA_FLAG_NO_LEGACY
 suffix:semicolon

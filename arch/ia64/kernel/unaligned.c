@@ -6362,7 +6362,7 @@ c_cond
 id|eh
 )paren
 (brace
-id|handle_exception
+id|ia64_handle_exception
 c_func
 (paren
 id|regs

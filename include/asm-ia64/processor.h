@@ -330,6 +330,21 @@ id|__u64
 id|itm_next
 suffix:semicolon
 multiline_comment|/* interval timer mask value to use for next clock tick */
+DECL|member|nsec_per_cyc
+id|__u64
+id|nsec_per_cyc
+suffix:semicolon
+multiline_comment|/* (1000000000&lt;&lt;IA64_NSEC_PER_CYC_SHIFT)/itc_freq */
+DECL|member|unimpl_va_mask
+id|__u64
+id|unimpl_va_mask
+suffix:semicolon
+multiline_comment|/* mask of unimplemented virtual address bits (from PAL) */
+DECL|member|unimpl_pa_mask
+id|__u64
+id|unimpl_pa_mask
+suffix:semicolon
+multiline_comment|/* mask of unimplemented physical address bits (from PAL) */
 DECL|member|pgd_quick
 id|__u64
 op_star
@@ -344,6 +359,56 @@ DECL|member|pgtable_cache_sz
 id|__u64
 id|pgtable_cache_sz
 suffix:semicolon
+DECL|member|itc_freq
+id|__u64
+id|itc_freq
+suffix:semicolon
+multiline_comment|/* frequency of ITC counter */
+DECL|member|proc_freq
+id|__u64
+id|proc_freq
+suffix:semicolon
+multiline_comment|/* frequency of processor */
+DECL|member|cyc_per_usec
+id|__u64
+id|cyc_per_usec
+suffix:semicolon
+multiline_comment|/* itc_freq/1000000 */
+DECL|member|ptce_base
+id|__u64
+id|ptce_base
+suffix:semicolon
+DECL|member|ptce_count
+id|__u32
+id|ptce_count
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|ptce_stride
+id|__u32
+id|ptce_stride
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|ksoftirqd
+r_struct
+id|task_struct
+op_star
+id|ksoftirqd
+suffix:semicolon
+multiline_comment|/* kernel softirq daemon for this CPU */
+macro_line|#ifdef CONFIG_SMP
+DECL|member|loops_per_jiffy
+id|__u64
+id|loops_per_jiffy
+suffix:semicolon
+DECL|member|cpu
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* CPUID-derived information: */
 DECL|member|ppn
 id|__u64
@@ -380,83 +445,6 @@ id|vendor
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|itc_freq
-id|__u64
-id|itc_freq
-suffix:semicolon
-multiline_comment|/* frequency of ITC counter */
-DECL|member|proc_freq
-id|__u64
-id|proc_freq
-suffix:semicolon
-multiline_comment|/* frequency of processor */
-DECL|member|cyc_per_usec
-id|__u64
-id|cyc_per_usec
-suffix:semicolon
-multiline_comment|/* itc_freq/1000000 */
-DECL|member|nsec_per_cyc
-id|__u64
-id|nsec_per_cyc
-suffix:semicolon
-multiline_comment|/* (1000000000&lt;&lt;IA64_NSEC_PER_CYC_SHIFT)/itc_freq */
-DECL|member|unimpl_va_mask
-id|__u64
-id|unimpl_va_mask
-suffix:semicolon
-multiline_comment|/* mask of unimplemented virtual address bits (from PAL) */
-DECL|member|unimpl_pa_mask
-id|__u64
-id|unimpl_pa_mask
-suffix:semicolon
-multiline_comment|/* mask of unimplemented physical address bits (from PAL) */
-DECL|member|ptce_base
-id|__u64
-id|ptce_base
-suffix:semicolon
-DECL|member|ptce_count
-id|__u32
-id|ptce_count
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|ptce_stride
-id|__u32
-id|ptce_stride
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|ksoftirqd
-r_struct
-id|task_struct
-op_star
-id|ksoftirqd
-suffix:semicolon
-multiline_comment|/* kernel softirq daemon for this CPU */
-macro_line|#ifdef CONFIG_SMP
-DECL|member|cpu
-r_int
-id|cpu
-suffix:semicolon
-DECL|member|loops_per_jiffy
-id|__u64
-id|loops_per_jiffy
-suffix:semicolon
-DECL|member|ipi_count
-id|__u64
-id|ipi_count
-suffix:semicolon
-DECL|member|prof_counter
-id|__u64
-id|prof_counter
-suffix:semicolon
-DECL|member|prof_multiplier
-id|__u64
-id|prof_multiplier
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|node_data
 r_struct
@@ -1673,7 +1661,7 @@ mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|macro|PREFETCH_STRIDE
-mdefine_line|#define PREFETCH_STRIDE 256
+mdefine_line|#define PREFETCH_STRIDE&t;&t;&t;L1_CACHE_BYTES
 r_static
 r_inline
 r_void
