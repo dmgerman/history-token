@@ -460,13 +460,6 @@ DECL|struct|i2c_client
 r_struct
 id|i2c_client
 (brace
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 DECL|member|id
 r_int
 id|id
@@ -500,20 +493,69 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* and our access routines&t;*/
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* for the clients&t;&t;*/
 DECL|member|usage_count
 r_int
 id|usage_count
 suffix:semicolon
 multiline_comment|/* How many accesses currently  */
 multiline_comment|/* to the client&t;&t;*/
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* the device structure&t;&t;*/
 )brace
 suffix:semicolon
+DECL|macro|to_i2c_client
+mdefine_line|#define to_i2c_client(d) container_of(d, struct i2c_client, dev)
+DECL|function|i2c_get_clientdata
+r_static
+r_inline
+r_void
+op_star
+id|i2c_get_clientdata
+(paren
+r_struct
+id|i2c_client
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|i2c_set_clientdata
+r_static
+r_inline
+r_void
+id|i2c_set_clientdata
+(paren
+r_struct
+id|i2c_client
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The following structs are for those who like to implement new bus drivers:&n; * i2c_algorithm is the interface to a class of hardware solutions which can&n; * be addressed using the same bus algorithms - i.e. bit-banging or the PCF8584&n; * to name two of the most common.&n; */
 DECL|struct|i2c_algorithm
 r_struct
@@ -669,14 +711,6 @@ id|module
 op_star
 id|owner
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-multiline_comment|/* some useful name to identify the adapter&t;*/
 DECL|member|id
 r_int
 r_int
@@ -721,15 +755,6 @@ id|i2c_client
 op_star
 )paren
 suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* private data for the adapter&t;&t;&t;*/
-multiline_comment|/* some data fields that are used by all types&t;*/
-multiline_comment|/* these data fields are readonly to the public&t;*/
-multiline_comment|/* and can be set via the i2c_ioctl call&t;*/
 multiline_comment|/* data fields that are valid for all devices&t;*/
 DECL|member|bus
 r_struct
@@ -781,6 +806,53 @@ macro_line|#endif /* def CONFIG_PROC_FS */
 suffix:semicolon
 DECL|macro|to_i2c_adapter
 mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|function|i2c_get_adapdata
+r_static
+r_inline
+r_void
+op_star
+id|i2c_get_adapdata
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|i2c_set_adapdata
+r_static
+r_inline
+r_void
+id|i2c_set_adapdata
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*flags for the driver struct: */
 DECL|macro|I2C_DF_NOTIFY
 mdefine_line|#define I2C_DF_NOTIFY&t;0x01&t;&t;/* notify on bus (de/a)ttaches &t;*/
