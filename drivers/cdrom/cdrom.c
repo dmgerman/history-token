@@ -12888,7 +12888,7 @@ id|info
 op_plus
 id|pos
 comma
-l_string|&quot;&bslash;nCan read MRW:&quot;
+l_string|&quot;&bslash;nCan read MRW:&bslash;t&quot;
 )paren
 suffix:semicolon
 r_for
@@ -12915,7 +12915,7 @@ id|info
 op_plus
 id|pos
 comma
-l_string|&quot;&bslash;t&bslash;t%d&quot;
+l_string|&quot;&bslash;t%d&quot;
 comma
 id|CDROM_CAN
 c_func
@@ -12935,7 +12935,7 @@ id|info
 op_plus
 id|pos
 comma
-l_string|&quot;&bslash;nCan write MRW:&quot;
+l_string|&quot;&bslash;nCan write MRW:&bslash;t&quot;
 )paren
 suffix:semicolon
 r_for
@@ -12962,7 +12962,7 @@ id|info
 op_plus
 id|pos
 comma
-l_string|&quot;&bslash;t&bslash;t%d&quot;
+l_string|&quot;&bslash;t%d&quot;
 comma
 id|CDROM_CAN
 c_func
