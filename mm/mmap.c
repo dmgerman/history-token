@@ -4713,9 +4713,6 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
-comma
-op_star
-id|prev_vma
 suffix:semicolon
 r_struct
 id|mm_struct
@@ -4726,18 +4723,9 @@ id|current-&gt;mm
 suffix:semicolon
 r_int
 r_int
-id|base
-op_assign
-id|mm-&gt;mmap_base
-comma
 id|addr
 op_assign
 id|addr0
-suffix:semicolon
-r_int
-id|first_time
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* requested length too big for entire address space */
 r_if
@@ -4750,18 +4738,6 @@ id|TASK_SIZE
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-multiline_comment|/* dont allow allocations above current base */
-r_if
-c_cond
-(paren
-id|mm-&gt;free_area_cache
-OG
-id|base
-)paren
-id|mm-&gt;free_area_cache
-op_assign
-id|base
 suffix:semicolon
 multiline_comment|/* requesting a specific address */
 r_if
@@ -4812,75 +4788,83 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-id|try_again
-suffix:colon
+multiline_comment|/* either no address requested or can&squot;t fit in requested address hole */
+id|addr
+op_assign
+id|mm-&gt;free_area_cache
+suffix:semicolon
 multiline_comment|/* make sure it can fit in the remaining address space */
 r_if
 c_cond
 (paren
-id|mm-&gt;free_area_cache
-OL
-id|len
-)paren
-r_goto
-id|fail
-suffix:semicolon
-multiline_comment|/* either no address requested or cant fit in requested address hole */
 id|addr
-op_assign
-(paren
-id|mm-&gt;free_area_cache
-op_minus
+op_ge
 id|len
 )paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-r_do
 (brace
-multiline_comment|/*&n;&t;&t; * Lookup failure means no vma is above this address,&n;&t;&t; * i.e. return with success:&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|vma
 op_assign
-id|find_vma_prev
+id|find_vma
 c_func
 (paren
 id|mm
 comma
 id|addr
-comma
-op_amp
-id|prev_vma
+op_minus
+id|len
 )paren
-)paren
-)paren
-r_return
-id|addr
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * new region fits between prev_vma-&gt;vm_end and&n;&t;&t; * vma-&gt;vm_start, use it:&n;&t;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|vma
+op_logical_or
+id|addr
+op_le
+id|vma-&gt;vm_start
+)paren
+multiline_comment|/* remember the address as a hint for next time */
+r_return
+(paren
+id|mm-&gt;free_area_cache
+op_assign
+id|addr
+op_minus
+id|len
+)paren
+suffix:semicolon
+)brace
+id|addr
+op_assign
+id|mm-&gt;mmap_base
+op_minus
+id|len
+suffix:semicolon
+r_do
+(brace
+multiline_comment|/*&n;&t;&t; * Lookup failure means no vma is above this address,&n;&t;&t; * else if new region fits below vma-&gt;vm_start,&n;&t;&t; * return with success:&n;&t;&t; */
+id|vma
+op_assign
+id|find_vma
+c_func
+(paren
+id|mm
+comma
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma
+op_logical_or
 id|addr
 op_plus
 id|len
 op_le
 id|vma-&gt;vm_start
-op_logical_and
-(paren
-op_logical_neg
-id|prev_vma
-op_logical_or
-(paren
-id|addr
-op_ge
-id|prev_vma-&gt;vm_end
-)paren
-)paren
 )paren
 multiline_comment|/* remember the address as a hint for next time */
 r_return
@@ -4889,19 +4873,6 @@ id|mm-&gt;free_area_cache
 op_assign
 id|addr
 )paren
-suffix:semicolon
-r_else
-multiline_comment|/* pull free_area_cache down to the first hole */
-r_if
-c_cond
-(paren
-id|mm-&gt;free_area_cache
-op_eq
-id|vma-&gt;vm_end
-)paren
-id|mm-&gt;free_area_cache
-op_assign
-id|vma-&gt;vm_start
 suffix:semicolon
 multiline_comment|/* try just below the current vma-&gt;vm_start */
 id|addr
@@ -4919,27 +4890,6 @@ op_le
 id|vma-&gt;vm_start
 )paren
 suffix:semicolon
-id|fail
-suffix:colon
-multiline_comment|/*&n;&t; * if hint left us with no space for the requested&n;&t; * mapping then try again:&n;&t; */
-r_if
-c_cond
-(paren
-id|first_time
-)paren
-(brace
-id|mm-&gt;free_area_cache
-op_assign
-id|base
-suffix:semicolon
-id|first_time
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|try_again
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * A failed mmap() very likely causes application failure,&n;&t; * so fall back to the bottom-up function here. This scenario&n;&t; * can happen with large stack limits and large mmap()&n;&t; * allocations.&n;&t; */
 id|mm-&gt;free_area_cache
 op_assign
@@ -4964,7 +4914,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Restore the topdown base:&n;&t; */
 id|mm-&gt;free_area_cache
 op_assign
-id|base
+id|mm-&gt;mmap_base
 suffix:semicolon
 r_return
 id|addr
@@ -4993,6 +4943,18 @@ id|area-&gt;vm_mm-&gt;free_area_cache
 id|area-&gt;vm_mm-&gt;free_area_cache
 op_assign
 id|area-&gt;vm_end
+suffix:semicolon
+multiline_comment|/* dont allow allocations above current base */
+r_if
+c_cond
+(paren
+id|area-&gt;vm_mm-&gt;free_area_cache
+OG
+id|area-&gt;vm_mm-&gt;mmap_base
+)paren
+id|area-&gt;vm_mm-&gt;free_area_cache
+op_assign
+id|area-&gt;vm_mm-&gt;mmap_base
 suffix:semicolon
 )brace
 r_int
