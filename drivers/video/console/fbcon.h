@@ -80,6 +80,10 @@ DECL|member|accel_flags
 id|u32
 id|accel_flags
 suffix:semicolon
+DECL|member|rotate
+id|u32
+id|rotate
+suffix:semicolon
 DECL|member|red
 r_struct
 id|fb_bitfield

@@ -3194,6 +3194,10 @@ id|disp-&gt;transp
 op_assign
 id|var-&gt;transp
 suffix:semicolon
+id|disp-&gt;rotate
+op_assign
+id|var-&gt;rotate
+suffix:semicolon
 id|disp-&gt;mode
 op_assign
 id|fb_match_mode
@@ -3293,6 +3297,10 @@ suffix:semicolon
 id|var-&gt;transp
 op_assign
 id|disp-&gt;transp
+suffix:semicolon
+id|var-&gt;rotate
+op_assign
+id|disp-&gt;rotate
 suffix:semicolon
 )brace
 DECL|function|fbcon_startup
