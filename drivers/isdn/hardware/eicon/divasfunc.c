@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasfunc.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasfunc.c,v 1.22 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -11,6 +11,11 @@ DECL|macro|DBG_MINIMUM
 mdefine_line|#define DBG_MINIMUM  (DL_LOG + DL_FTL + DL_ERR)
 DECL|macro|DBG_DEFAULT
 mdefine_line|#define DBG_DEFAULT  (DBG_MINIMUM + DL_XLOG + DL_REG)
+DECL|variable|debugmask
+r_static
+r_int
+id|debugmask
+suffix:semicolon
 r_extern
 r_void
 id|DIVA_DIDD_Read
@@ -46,7 +51,7 @@ suffix:semicolon
 r_extern
 r_char
 op_star
-id|DRIVERRELEASE
+id|DRIVERRELEASE_DIVAS
 suffix:semicolon
 DECL|variable|notify_handle
 r_static
@@ -82,12 +87,6 @@ dot
 (brace
 multiline_comment|/* dummy debug function */
 )brace
-DECL|variable|dprintf
-id|DIVA_DI_PRINTF
-id|dprintf
-op_assign
-id|no_printf
-suffix:semicolon
 macro_line|#include &quot;debuglib.c&quot;
 multiline_comment|/*&n; * get the adapters serial number&n; */
 DECL|function|diva_get_vserial_number
@@ -464,8 +463,15 @@ c_func
 (paren
 l_string|&quot;DIVAS&quot;
 comma
-id|DRIVERRELEASE
+id|DRIVERRELEASE_DIVAS
 comma
+(paren
+id|debugmask
+)paren
+ques
+c_cond
+id|debugmask
+suffix:colon
 id|DBG_DEFAULT
 )paren
 suffix:semicolon
@@ -719,6 +725,10 @@ id|IDI_SYNC_REQ_DIDD_REGISTER_ADAPTER_NOTIFY
 suffix:semicolon
 id|req.didd_notify.info.callback
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|didd_callback
 suffix:semicolon
 id|req.didd_notify.info.context
@@ -880,9 +890,18 @@ id|DIVA_INIT_FUNCTION
 id|divasfunc_init
 c_func
 (paren
-r_void
+r_int
+id|dbgmask
 )paren
 (brace
+r_char
+op_star
+id|version
+suffix:semicolon
+id|debugmask
+op_assign
+id|dbgmask
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -906,6 +925,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|version
+op_assign
+id|diva_xdi_common_code_build
+suffix:semicolon
 id|divasa_xdi_driver_entry
 c_func
 (paren

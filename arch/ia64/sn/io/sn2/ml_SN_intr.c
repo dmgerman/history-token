@@ -625,7 +625,7 @@ multiline_comment|/* Share with the same device class */
 r_if
 c_cond
 (paren
-id|irqpdaindr-&gt;current-&gt;vendor
+id|irqpdaindr-&gt;curr-&gt;vendor
 op_eq
 id|irqpdaindr-&gt;device_dev
 (braket
@@ -634,7 +634,7 @@ id|i
 op_member_access_from_pointer
 id|vendor
 op_logical_and
-id|irqpdaindr-&gt;current-&gt;device
+id|irqpdaindr-&gt;curr-&gt;device
 op_eq
 id|irqpdaindr-&gt;device_dev
 (braket

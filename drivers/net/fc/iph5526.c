@@ -78,14 +78,13 @@ DECL|macro|ALIGNED_SFS_ADDR
 mdefine_line|#define ALIGNED_SFS_ADDR(addr) ((((unsigned long)(addr) + (SFS_BUFFER_SIZE - 1)) &amp; ~(SFS_BUFFER_SIZE - 1)) - (unsigned long)(addr))
 DECL|macro|ALIGNED_ADDR
 mdefine_line|#define ALIGNED_ADDR(addr, len) ((((unsigned long)(addr) + (len - 1)) &amp; ~(len - 1)) - (unsigned long)(addr))
-DECL|variable|__initdata
+DECL|variable|iph5526_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|iph5526_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

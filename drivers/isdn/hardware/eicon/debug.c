@@ -2,7 +2,6 @@ macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;pc.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;debug_if.h&quot;
-macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;kst_ifc.h&quot;
 macro_line|#include &quot;maintidi.h&quot;
@@ -473,7 +472,7 @@ id|word
 id|size
 )paren
 (brace
-multiline_comment|/* Allocate &squot;size&squot; bytes at tail of queue which will be filled later&n;   * directly whith callers own message header info and/or message.&n;   * An &squot;alloced&squot; message is marked incomplete by oring the &squot;Size&squot; field&n;   * whith MSG_INCOMPLETE.&n;   * This must be reset via queueCompleteMsg() after the message is filled.&n;   * As long as a message is marked incomplete queuePeekMsg() will return&n;   * a &squot;queue empty&squot; condition when it reaches such a message.  */
+multiline_comment|/* Allocate &squot;size&squot; bytes at tail of queue which will be filled later&n;   * directly with callers own message header info and/or message.&n;   * An &squot;alloced&squot; message is marked incomplete by oring the &squot;Size&squot; field&n;   * with MSG_INCOMPLETE.&n;   * This must be reset via queueCompleteMsg() after the message is filled.&n;   * As long as a message is marked incomplete queuePeekMsg() will return&n;   * a &squot;queue empty&squot; condition when it reaches such a message.  */
 id|MSG_HEAD
 op_star
 id|Msg
@@ -716,7 +715,7 @@ op_star
 id|size
 )paren
 (brace
-multiline_comment|/* Show the first valid message in queue BUT DONT free the message.&n;   * After looking on the message contents it can be freed queueFreeMsg()&n;   * or simply remain in message queue.  */
+multiline_comment|/* Show the first valid message in queue BUT DON&squot;T free the message.&n;   * After looking on the message contents it can be freed queueFreeMsg()&n;   * or simply remain in message queue.  */
 id|MSG_HEAD
 op_star
 id|Msg
@@ -837,7 +836,7 @@ r_static
 id|dword
 id|start_usec
 suffix:semicolon
-multiline_comment|/*&n;&t;INTERFACE:&n;    Initialize run time queue structures.&n;    base:    base of the message queue&n;    length:  length of the message queue&n;    do_init: perfor queue reset&n;&n;    return:  zero on sucess, -1 on error&n;  */
+multiline_comment|/*&n;&t;INTERFACE:&n;    Initialize run time queue structures.&n;    base:    base of the message queue&n;    length:  length of the message queue&n;    do_init: perfor queue reset&n;&n;    return:  zero on success, -1 on error&n;  */
 DECL|function|diva_maint_init
 r_int
 id|diva_maint_init
@@ -1299,7 +1298,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  INTERFACE:&n;    Lock messafe queue and return the pointer to the first&n;    entry.&n;  */
+multiline_comment|/*&n;  INTERFACE:&n;    Lock message queue and return the pointer to the first&n;    entry.&n;  */
 DECL|function|diva_maint_get_message
 id|diva_dbg_entry_head_t
 op_star
@@ -3385,7 +3384,7 @@ id|id
 dot
 id|sec
 suffix:semicolon
-multiline_comment|/* save secounds */
+multiline_comment|/* save seconds */
 op_star
 id|p
 op_increment
@@ -3458,7 +3457,7 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-multiline_comment|/* save msecounds */
+multiline_comment|/* save mseconds */
 op_star
 id|p
 op_increment
@@ -5694,7 +5693,7 @@ id|pmem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* ----------------------------------------------------------------&n;     Low level interface for management interace client&n;   ---------------------------------------------------------------- */
+multiline_comment|/* ----------------------------------------------------------------&n;     Low level interface for management interface client&n;   ---------------------------------------------------------------- */
 multiline_comment|/*&n;  Return handle to client structure&n;  */
 DECL|function|SuperTraceOpenAdapter
 r_void
@@ -7958,7 +7957,7 @@ op_amp
 id|DIVA_MGT_DBG_IFC_STATISTICS
 )paren
 (brace
-multiline_comment|/*&n;          Incoming Statistices&n;          */
+multiline_comment|/*&n;          Incoming Statistics&n;          */
 r_if
 c_cond
 (paren
@@ -8103,7 +8102,7 @@ id|channel-&gt;pInterfaceStat-&gt;inc.Ignored
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;          Outgoing Statistices&n;          */
+multiline_comment|/*&n;          Outgoing Statistics&n;          */
 r_if
 c_cond
 (paren

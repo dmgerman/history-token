@@ -551,13 +551,12 @@ DECL|macro|DEFAULT_JAMSIZE
 mdefine_line|#define DEFAULT_JAMSIZE    4 /* Toe jam */
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* This happy_pci_ids is declared __initdata because it is only used&n;   as an advisory to depmod.  If this is ported to the new PCI interface&n;   where it could be referenced at any time due to hot plugging,&n;   the __initdata reference should be removed. */
-DECL|variable|__initdata
+DECL|variable|happymeal_pci_ids
 r_struct
 id|pci_device_id
 id|happymeal_pci_ids
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

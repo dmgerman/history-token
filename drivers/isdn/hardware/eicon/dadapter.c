@@ -74,13 +74,36 @@ dot
 dot
 )paren
 (brace
-)brace
-DECL|variable|dprintf
-id|DIVA_DI_PRINTF
-id|dprintf
-op_assign
-id|no_printf
+macro_line|#ifdef EBUG
+id|va_list
+id|ap
 suffix:semicolon
+id|va_start
+(paren
+id|ap
+comma
+id|format
+)paren
+suffix:semicolon
+id|debug
+c_func
+(paren
+(paren
+id|format
+comma
+id|ap
+)paren
+)paren
+suffix:semicolon
+id|va_end
+(paren
+id|ap
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+multiline_comment|/* -------------------------------------------------------------------------&n;  Portable debug Library&n;  ------------------------------------------------------------------------- */
+macro_line|#include &quot;debuglib.c&quot;
 DECL|variable|MAdapter
 r_static
 id|DESCRIPTOR
@@ -228,6 +251,14 @@ id|diva_didd_load_time_finit
 r_void
 )paren
 (brace
+id|diva_os_destroy_spin_lock
+(paren
+op_amp
+id|didd_spin
+comma
+l_string|&quot;didd&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;  Called in order to register new adapter in adapter array&n;  return adapter handle (&gt; 0) on success&n;  return -1 adapter array overflow&n;  -------------------------------------------------------------------------- */
 DECL|function|diva_didd_add_descriptor
@@ -1488,6 +1519,4 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* -------------------------------------------------------------------------&n;  Portable debug Library&n;  ------------------------------------------------------------------------- */
-macro_line|#include &quot;debuglib.c&quot;
 eof

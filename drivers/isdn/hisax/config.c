@@ -9710,14 +9710,13 @@ id|cs-&gt;rs
 suffix:semicolon
 )brace
 macro_line|#include &lt;linux/pci.h&gt;
-DECL|variable|__initdata
+DECL|variable|hisax_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|hisax_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 macro_line|#ifdef CONFIG_HISAX_FRITZPCI

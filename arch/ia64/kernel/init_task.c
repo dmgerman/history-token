@@ -59,7 +59,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Initial task structure.&n; *&n; * We need to make sure that this is properly aligned due to the way process stacks are&n; * handled. This is done by having a special &quot;.data.init_task&quot; section...&n; */
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;init_task_mem.s.thread_info
-r_static
 r_union
 (brace
 r_struct
@@ -96,7 +95,7 @@ suffix:semicolon
 id|init_task_mem
 id|asm
 (paren
-l_string|&quot;init_task_mem&quot;
+l_string|&quot;init_task&quot;
 )paren
 id|__attribute__
 c_func
@@ -131,20 +130,5 @@ id|init_task_mem.s.task
 )paren
 )brace
 )brace
-suffix:semicolon
-r_extern
-r_struct
-id|task_struct
-id|init_task
-id|__attribute__
-(paren
-(paren
-id|alias
-c_func
-(paren
-l_string|&quot;init_task_mem&quot;
-)paren
-)paren
-)paren
 suffix:semicolon
 eof

@@ -60,7 +60,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|rxrpc_epoch
-id|u32
+r_uint32
 id|rxrpc_epoch
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
@@ -451,4 +451,160 @@ l_string|&quot;&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_cleanup() */
+multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * clear the dead space between task_struct and kernel stack&n; * - called by supplying -finstrument-functions to gcc&n; */
+macro_line|#if 0
+r_void
+id|__cyg_profile_func_enter
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|no_instrument_function
+)paren
+)paren
+suffix:semicolon
+r_void
+id|__cyg_profile_func_enter
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;  movl    %%esp,%%edi     &bslash;n&quot;
+l_string|&quot;  andl    %0,%%edi        &bslash;n&quot;
+l_string|&quot;  addl    %1,%%edi        &bslash;n&quot;
+l_string|&quot;  movl    %%esp,%%ecx     &bslash;n&quot;
+l_string|&quot;  subl    %%edi,%%ecx     &bslash;n&quot;
+l_string|&quot;  shrl    $2,%%ecx        &bslash;n&quot;
+l_string|&quot;  movl    $0xedededed,%%eax     &bslash;n&quot;
+l_string|&quot;  rep stosl               &bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+op_complement
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+r_sizeof
+(paren
+r_struct
+id|thread_info
+)paren
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;ecx&quot;
+comma
+l_string|&quot;edi&quot;
+comma
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+r_void
+id|__cyg_profile_func_exit
+c_func
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|no_instrument_function
+)paren
+)paren
+suffix:semicolon
+r_void
+id|__cyg_profile_func_exit
+c_func
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;  movl    %%esp,%%edi     &bslash;n&quot;
+l_string|&quot;  andl    %0,%%edi        &bslash;n&quot;
+l_string|&quot;  addl    %1,%%edi        &bslash;n&quot;
+l_string|&quot;  movl    %%esp,%%ecx     &bslash;n&quot;
+l_string|&quot;  subl    %%edi,%%ecx     &bslash;n&quot;
+l_string|&quot;  shrl    $2,%%ecx        &bslash;n&quot;
+l_string|&quot;  movl    $0xdadadada,%%eax     &bslash;n&quot;
+l_string|&quot;  rep stosl               &bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+op_complement
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+r_sizeof
+(paren
+r_struct
+id|thread_info
+)paren
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;ecx&quot;
+comma
+l_string|&quot;edi&quot;
+comma
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 eof

@@ -1987,12 +1987,31 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Commit netif_running(). */
-id|netif_poll_disable
+r_while
+c_loop
+(paren
+id|test_bit
 c_func
 (paren
-id|dev
+id|__LINK_STATE_RX_SCHED
+comma
+op_amp
+id|dev-&gt;state
+)paren
+)paren
+(brace
+multiline_comment|/* No hurry. */
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Call the device specific close. This cannot fail.&n;&t; *&t;Only if device is UP&n;&t; *&n;&t; *&t;We allow it to be called even after a DETACH hot-plug&n;&t; *&t;event.&n;&t; */
 r_if
 c_cond

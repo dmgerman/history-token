@@ -198,11 +198,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|release
-)paren
 id|afs_put_server
 c_func
 (paren

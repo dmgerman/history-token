@@ -22,12 +22,12 @@ r_struct
 id|rxrpc_header
 (brace
 DECL|member|epoch
-id|u32
+r_uint32
 id|epoch
 suffix:semicolon
 multiline_comment|/* client boot timestamp */
 DECL|member|cid
-id|u32
+r_uint32
 id|cid
 suffix:semicolon
 multiline_comment|/* connection and channel ID */
@@ -40,24 +40,24 @@ mdefine_line|#define RXRPC_CIDMASK&t;&t;(~RXRPC_CHANNELMASK)&t;/* mask for conne
 DECL|macro|RXRPC_CIDSHIFT
 mdefine_line|#define RXRPC_CIDSHIFT&t;&t;2&t;&t;&t;/* shift for connection ID */
 DECL|member|callNumber
-id|u32
+r_uint32
 id|callNumber
 suffix:semicolon
 multiline_comment|/* call ID (0 for connection-level packets) */
 DECL|macro|RXRPC_PROCESS_MAXCALLS
 mdefine_line|#define RXRPC_PROCESS_MAXCALLS&t;(1&lt;&lt;2)&t;/* maximum number of active calls per conn (power of 2) */
 DECL|member|seq
-id|u32
+r_uint32
 id|seq
 suffix:semicolon
 multiline_comment|/* sequence number of pkt in call stream */
 DECL|member|serial
-id|u32
+r_uint32
 id|serial
 suffix:semicolon
 multiline_comment|/* serial number of pkt sent to network */
 DECL|member|type
-id|u8
+r_uint8
 id|type
 suffix:semicolon
 multiline_comment|/* packet type */
@@ -80,7 +80,7 @@ mdefine_line|#define RXRPC_PACKET_TYPE_DEBUG&t;&t;8&t;/* debug info request */
 DECL|macro|RXRPC_N_PACKET_TYPES
 mdefine_line|#define RXRPC_N_PACKET_TYPES&t;&t;9&t;/* number of packet types (incl type 0) */
 DECL|member|flags
-id|u8
+r_uint8
 id|flags
 suffix:semicolon
 multiline_comment|/* packet flags */
@@ -97,22 +97,22 @@ mdefine_line|#define RXRPC_JUMBO_PACKET&t;0x20&t;&t;/* [DATA] this is a jumbo pa
 DECL|macro|RXRPC_SLOW_START_OK
 mdefine_line|#define RXRPC_SLOW_START_OK&t;0x20&t;&t;/* [ACK] slow start supported */
 DECL|member|userStatus
-id|u8
+r_uint8
 id|userStatus
 suffix:semicolon
 multiline_comment|/* app-layer defined status */
 DECL|member|securityIndex
-id|u8
+r_uint8
 id|securityIndex
 suffix:semicolon
 multiline_comment|/* security protocol ID */
 DECL|member|_rsvd
-id|u16
+r_uint16
 id|_rsvd
 suffix:semicolon
 multiline_comment|/* reserved (used by kerberos security as cksum) */
 DECL|member|serviceId
-id|u16
+r_uint16
 id|serviceId
 suffix:semicolon
 multiline_comment|/* service ID */
@@ -142,16 +142,16 @@ r_struct
 id|rxrpc_jumbo_header
 (brace
 DECL|member|flags
-id|u8
+r_uint8
 id|flags
 suffix:semicolon
 multiline_comment|/* packet flags (as per rxrpc_header) */
 DECL|member|pad
-id|u8
+r_uint8
 id|pad
 suffix:semicolon
 DECL|member|_rsvd
-id|u16
+r_uint16
 id|_rsvd
 suffix:semicolon
 multiline_comment|/* reserved (used by kerberos security as cksum) */
@@ -166,32 +166,32 @@ r_struct
 id|rxrpc_ackpacket
 (brace
 DECL|member|bufferSpace
-id|u16
+r_uint16
 id|bufferSpace
 suffix:semicolon
 multiline_comment|/* number of packet buffers available */
 DECL|member|maxSkew
-id|u16
+r_uint16
 id|maxSkew
 suffix:semicolon
-multiline_comment|/* diff between serno being ACK&squot;d and highest serial no received */
+multiline_comment|/* diff between serno being ACK&squot;d and highest serial no&n;&t;&t;&t;&t;&t; * received */
 DECL|member|firstPacket
-id|u32
+r_uint32
 id|firstPacket
 suffix:semicolon
 multiline_comment|/* sequence no of first ACK&squot;d packet in attached list */
 DECL|member|previousPacket
-id|u32
+r_uint32
 id|previousPacket
 suffix:semicolon
 multiline_comment|/* sequence no of previous packet received */
 DECL|member|serial
-id|u32
+r_uint32
 id|serial
 suffix:semicolon
 multiline_comment|/* serial no of packet that prompted this ACK */
 DECL|member|reason
-id|u8
+r_uint8
 id|reason
 suffix:semicolon
 multiline_comment|/* reason for ACK */
@@ -214,14 +214,14 @@ mdefine_line|#define RXRPC_ACK_DELAY&t;&t;&t;8&t;/* nothing happened since recei
 DECL|macro|RXRPC_ACK_IDLE
 mdefine_line|#define RXRPC_ACK_IDLE&t;&t;&t;9&t;/* ACK due to fully received ACK window */
 DECL|member|nAcks
-id|u8
+r_uint8
 id|nAcks
 suffix:semicolon
 multiline_comment|/* number of ACKs */
 DECL|macro|RXRPC_MAXACKS
 mdefine_line|#define RXRPC_MAXACKS&t;255
 DECL|member|acks
-id|u8
+r_uint8
 id|acks
 (braket
 l_int|0

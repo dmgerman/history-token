@@ -439,14 +439,13 @@ l_int|0x80
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__initdata
+DECL|variable|via_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|via_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

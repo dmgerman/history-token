@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: dlist.c,v 1.1.2.2 2001/02/11 14:40:41 armin Exp $ */
+multiline_comment|/* $Id: dlist.c,v 1.6 2003/08/25 16:03:35 schindler Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;dlist.h&quot;
 multiline_comment|/*&n;**  Initialize linked list&n;*/
 DECL|function|diva_q_init
+r_static
 r_void
 id|diva_q_init
 c_func
@@ -29,6 +30,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Remove element from linked list&n;*/
 DECL|function|diva_q_remove
+r_static
 r_void
 id|diva_q_remove
 c_func
@@ -109,6 +111,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Add element to the tail of linked list&n;*/
 DECL|function|diva_q_add_tail
+r_static
 r_void
 id|diva_q_add_tail
 c_func
@@ -161,6 +164,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|diva_q_find
+r_static
 id|diva_entity_link_t
 op_star
 id|diva_q_find
@@ -222,6 +226,7 @@ id|diva_current
 suffix:semicolon
 )brace
 DECL|function|diva_q_get_head
+r_static
 id|diva_entity_link_t
 op_star
 id|diva_q_get_head
@@ -238,24 +243,8 @@ id|q-&gt;head
 )paren
 suffix:semicolon
 )brace
-DECL|function|diva_q_get_tail
-id|diva_entity_link_t
-op_star
-id|diva_q_get_tail
-c_func
-(paren
-id|diva_entity_queue_t
-op_star
-id|q
-)paren
-(brace
-r_return
-(paren
-id|q-&gt;tail
-)paren
-suffix:semicolon
-)brace
 DECL|function|diva_q_get_next
+r_static
 id|diva_entity_link_t
 op_star
 id|diva_q_get_next
@@ -276,73 +265,6 @@ c_cond
 id|what-&gt;next
 suffix:colon
 l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|diva_q_get_prev
-id|diva_entity_link_t
-op_star
-id|diva_q_get_prev
-c_func
-(paren
-id|diva_entity_link_t
-op_star
-id|what
-)paren
-(brace
-r_return
-(paren
-(paren
-id|what
-)paren
-ques
-c_cond
-id|what-&gt;prev
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|diva_q_get_nr_of_entries
-r_int
-id|diva_q_get_nr_of_entries
-c_func
-(paren
-r_const
-id|diva_entity_queue_t
-op_star
-id|q
-)paren
-(brace
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_const
-id|diva_entity_link_t
-op_star
-id|diva_current
-op_assign
-id|q-&gt;head
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|diva_current
-)paren
-(brace
-id|i
-op_increment
-suffix:semicolon
-id|diva_current
-op_assign
-id|diva_current-&gt;next
-suffix:semicolon
-)brace
-r_return
-(paren
-id|i
 )paren
 suffix:semicolon
 )brace

@@ -37,25 +37,6 @@ comma
 op_star
 id|PADAPTER_LIST_ENTRY
 suffix:semicolon
-multiline_comment|/* --------------------------------------------------------------------------&n;  Special OS memory support structures&n;  -------------------------------------------------------------------------- */
-DECL|macro|MAX_MAPPED_ENTRIES
-mdefine_line|#define MAX_MAPPED_ENTRIES 8
-r_typedef
-r_struct
-(brace
-DECL|member|Address
-r_void
-op_star
-id|Address
-suffix:semicolon
-DECL|member|Length
-id|dword
-id|Length
-suffix:semicolon
-DECL|typedef|ADAPTER_MEMORY
-)brace
-id|ADAPTER_MEMORY
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;  Configuration of XDI clients carried by XDI&n;  -------------------------------------------------------------------------- */
 DECL|macro|DIVA_XDI_CAPI_CFG_1_DYNAMIC_L1_ON
 mdefine_line|#define DIVA_XDI_CAPI_CFG_1_DYNAMIC_L1_ON      0x01
@@ -129,13 +110,6 @@ l_int|80
 )braket
 suffix:semicolon
 multiline_comment|/*&n;  remember mapped memory areas&n; */
-DECL|member|MappedMemory
-id|ADAPTER_MEMORY
-id|MappedMemory
-(braket
-id|MAX_MAPPED_ENTRIES
-)braket
-suffix:semicolon
 DECL|member|Properties
 id|CARD_PROPERTIES
 id|Properties
@@ -257,6 +231,16 @@ DECL|member|Address
 id|byte
 op_star
 id|Address
+suffix:semicolon
+DECL|member|Config
+id|byte
+op_star
+id|Config
+suffix:semicolon
+DECL|member|Control
+id|byte
+op_star
+id|Control
 suffix:semicolon
 DECL|member|reset
 id|byte

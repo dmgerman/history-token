@@ -102,6 +102,35 @@ c_func
 l_string|&quot;krxiod&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* only certain signals are of interest */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|siginitsetinv
+c_func
+(paren
+op_amp
+id|current-&gt;blocked
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 multiline_comment|/* loop around waiting for work to do */
 r_do
 (brace
@@ -275,7 +304,7 @@ op_amp
 id|rxrpc_krxiod_qcount
 )paren
 suffix:semicolon
-multiline_comment|/* make sure it hasn&squot;t gone away and doesn&squot;t go away */
+multiline_comment|/* make sure it hasn&squot;t gone away and doesn&squot;t go&n;&t;&t;&t;&t; * away */
 r_if
 c_cond
 (paren
@@ -393,7 +422,7 @@ op_amp
 id|rxrpc_krxiod_qcount
 )paren
 suffix:semicolon
-multiline_comment|/* make sure it hasn&squot;t gone away and doesn&squot;t go away */
+multiline_comment|/* make sure it hasn&squot;t gone away and doesn&squot;t go&n;&t;&t;&t;&t; * away */
 r_if
 c_cond
 (paren
@@ -410,7 +439,8 @@ l_int|0
 id|_debug
 c_func
 (paren
-l_string|&quot;@@@ KRXIOD Begin Attend Call %p&quot;
+l_string|&quot;@@@ KRXIOD&quot;
+l_string|&quot; Begin Attend Call %p&quot;
 comma
 id|call
 )paren

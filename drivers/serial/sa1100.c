@@ -3422,6 +3422,10 @@ r_if
 c_cond
 (paren
 id|sport
+op_logical_and
+id|level
+op_eq
+id|SUSPEND_DISABLE
 )paren
 id|uart_suspend_port
 c_func
@@ -3431,8 +3435,6 @@ id|sa1100_reg
 comma
 op_amp
 id|sport-&gt;port
-comma
-id|level
 )paren
 suffix:semicolon
 r_return
@@ -3469,6 +3471,10 @@ r_if
 c_cond
 (paren
 id|sport
+op_logical_and
+id|level
+op_eq
+id|RESUME_ENABLE
 )paren
 id|uart_resume_port
 c_func
@@ -3478,8 +3484,6 @@ id|sa1100_reg
 comma
 op_amp
 id|sport-&gt;port
-comma
-id|level
 )paren
 suffix:semicolon
 r_return

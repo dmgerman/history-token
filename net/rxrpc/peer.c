@@ -36,6 +36,17 @@ c_func
 id|rxrpc_peers_sem
 )paren
 suffix:semicolon
+DECL|variable|rxrpc_peer_timeout
+r_int
+r_int
+id|rxrpc_peer_timeout
+op_assign
+l_int|12
+op_star
+l_int|60
+op_star
+l_int|60
+suffix:semicolon
 DECL|function|__rxrpc_peer_timeout
 r_static
 r_void
@@ -113,7 +124,7 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-id|u32
+r_uint32
 id|addr
 comma
 r_struct
@@ -216,6 +227,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|peer-&gt;conn_idlist
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|peer-&gt;conn_active
 )paren
 suffix:semicolon
@@ -238,6 +256,13 @@ c_func
 (paren
 op_amp
 id|peer-&gt;conn_gy_waitq
+)paren
+suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
+id|peer-&gt;conn_idlock
 )paren
 suffix:semicolon
 id|rwlock_init
@@ -326,7 +351,7 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-id|u32
+r_uint32
 id|addr
 comma
 r_struct
@@ -452,7 +477,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* search the active list again, just in case it appeared whilst we were busy */
+multiline_comment|/* search the active list again, just in case it appeared whilst we&n;&t; * were busy */
 id|write_lock
 c_func
 (paren
@@ -803,7 +828,7 @@ suffix:semicolon
 r_goto
 id|make_active
 suffix:semicolon
-multiline_comment|/* handle finding the peer on the second time through the active list */
+multiline_comment|/* handle finding the peer on the second time through the active&n;&t; * list */
 id|found_active_second_chance
 suffix:colon
 id|rxrpc_get_peer
@@ -818,7 +843,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_peer_lookup() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * finish with a peer record&n; * - it gets sent to the graveyard from where it can be resurrected or timed out&n; */
+multiline_comment|/*&n; * finish with a peer record&n; * - it gets sent to the graveyard from where it can be resurrected or timed&n; *   out&n; */
 DECL|function|rxrpc_put_peer
 r_void
 id|rxrpc_put_peer
@@ -954,8 +979,8 @@ op_amp
 id|trans-&gt;peer_graveyard
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|list_empty
@@ -965,19 +990,14 @@ op_amp
 id|peer-&gt;conn_active
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* discard in 600 secs */
 id|rxrpc_krxtimod_add_timer
 c_func
 (paren
 op_amp
 id|peer-&gt;timeout
 comma
-l_int|100
+id|rxrpc_peer_timeout
 op_star
 id|HZ
 )paren
@@ -1051,8 +1071,8 @@ id|peer-&gt;addr.s_addr
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -1062,10 +1082,6 @@ id|peer-&gt;usage
 )paren
 OL
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* remove from graveyard if still dead */
@@ -1131,8 +1147,8 @@ c_func
 id|peer
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|list_empty
@@ -1142,13 +1158,9 @@ op_amp
 id|peer-&gt;conn_active
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|list_empty
@@ -1157,10 +1169,6 @@ c_func
 op_amp
 id|peer-&gt;conn_graveyard
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* inform the application layer */
@@ -1294,8 +1302,8 @@ id|trans
 )paren
 suffix:semicolon
 multiline_comment|/* there shouldn&squot;t be any active peers remaining */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|list_empty
@@ -1304,10 +1312,6 @@ c_func
 op_amp
 id|trans-&gt;peer_active
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* manually timeout all peers in the graveyard */

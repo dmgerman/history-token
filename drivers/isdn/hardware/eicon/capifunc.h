@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: capifunc.h,v 1.10 2003/08/25 10:06:37 schindler Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef __CAPIFUNC_H__
 DECL|macro|__CAPIFUNC_H__
 mdefine_line|#define __CAPIFUNC_H__
@@ -14,7 +14,7 @@ DECL|macro|M_COMPANY
 mdefine_line|#define M_COMPANY &quot;Eicon Networks&quot;
 r_extern
 r_char
-id|DRIVERRELEASE
+id|DRIVERRELEASE_CAPI
 (braket
 )braket
 suffix:semicolon

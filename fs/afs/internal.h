@@ -17,11 +17,16 @@ DECL|macro|kproto
 mdefine_line|#define kproto(FMT, a...)&t;printk(&quot;### &quot;FMT&quot;&bslash;n&quot; , ## a)
 DECL|macro|knet
 mdefine_line|#define knet(FMT, a...)&t;&t;printk(FMT&quot;&bslash;n&quot; , ## a)
-macro_line|#if 0
+macro_line|#ifdef __KDEBUG
+DECL|macro|_enter
 mdefine_line|#define _enter(FMT, a...)&t;kenter(FMT , ## a)
+DECL|macro|_leave
 mdefine_line|#define _leave(FMT, a...)&t;kleave(FMT , ## a)
+DECL|macro|_debug
 mdefine_line|#define _debug(FMT, a...)&t;kdebug(FMT , ## a)
+DECL|macro|_proto
 mdefine_line|#define _proto(FMT, a...)&t;kproto(FMT , ## a)
+DECL|macro|_net
 mdefine_line|#define _net(FMT, a...)&t;&t;knet(FMT , ## a)
 macro_line|#else
 DECL|macro|_enter
@@ -97,6 +102,13 @@ r_struct
 id|list_head
 id|afs_proc_cells
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_struct
+id|cachefs_index_def
+id|afs_cache_cell_index_def
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * dir.c&n; */
 r_extern
 r_struct
@@ -124,6 +136,25 @@ r_struct
 id|file_operations
 id|afs_file_file_operations
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_int
+id|afs_cache_get_page_cookie
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|cachefs_page
+op_star
+op_star
+id|_page_cookie
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * inode.c&n; */
 r_extern
 r_int
@@ -178,6 +209,14 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * main.c&n; */
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_struct
+id|cachefs_netfs
+id|afs_cache_netfs
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * mntpt.c&n; */
 r_extern
 r_struct
@@ -189,6 +228,23 @@ r_struct
 id|file_operations
 id|afs_mntpt_file_operations
 suffix:semicolon
+macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
+r_extern
+r_struct
+id|afs_timer
+id|afs_mntpt_expiry_timer
+suffix:semicolon
+r_extern
+r_struct
+id|afs_timer_ops
+id|afs_mntpt_expiry_timer_ops
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|afs_mntpt_expiry_timeout
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|afs_mntpt_check_symlink

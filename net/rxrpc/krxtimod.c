@@ -181,6 +181,35 @@ op_amp
 id|krxtimod_alive
 )paren
 suffix:semicolon
+multiline_comment|/* only certain signals are of interest */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|siginitsetinv
+c_func
+(paren
+op_amp
+id|current-&gt;blocked
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 multiline_comment|/* loop around looking for things to attend to */
 id|loop
 suffix:colon
@@ -280,10 +309,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-r_int
-id|tmo
-suffix:semicolon
 id|timer
 op_assign
 id|list_entry
@@ -296,7 +321,7 @@ comma
 id|link
 )paren
 suffix:semicolon
-id|tmo
+id|timeout
 op_assign
 id|timer-&gt;timo_jif
 suffix:semicolon
@@ -310,7 +335,11 @@ c_cond
 id|time_before_eq
 c_func
 (paren
-id|tmo
+(paren
+r_int
+r_int
+)paren
+id|timeout
 comma
 id|jif
 )paren
@@ -318,18 +347,21 @@ id|jif
 r_goto
 id|immediate
 suffix:semicolon
+r_else
+(brace
 id|timeout
 op_assign
 (paren
 r_int
 )paren
-id|tmo
+id|timeout
 op_minus
 (paren
 r_int
 )paren
 id|jiffies
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock
 c_func
@@ -351,7 +383,7 @@ id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* the thing on the front of the queue needs processing&n;&t; * - we come here with the lock held and timer pointing to the expired entry&n;&t; */
+multiline_comment|/* the thing on the front of the queue needs processing&n;&t; * - we come here with the lock held and timer pointing to the expired&n;&t; *   entry&n;&t; */
 id|immediate
 suffix:colon
 id|remove_wait_queue
@@ -462,7 +494,7 @@ op_amp
 id|timer-&gt;link
 )paren
 suffix:semicolon
-multiline_comment|/* the timer was deferred or reset - put it back in the queue at the right place */
+multiline_comment|/* the timer was deferred or reset - put it back in the queue at the&n;&t; * right place */
 id|timer-&gt;timo_jif
 op_assign
 id|jiffies
@@ -535,7 +567,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end rxrpc_krxtimod_queue_vlocation() */
+multiline_comment|/* end rxrpc_krxtimod_add_timer() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * dequeue a timer&n; * - returns 0 if the timer was deleted or -ENOENT if it wasn&squot;t queued&n; */
 DECL|function|rxrpc_krxtimod_del_timer

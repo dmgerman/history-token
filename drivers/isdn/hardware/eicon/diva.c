@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva.c,v 1.1.2.5 2001/02/14 21:10:19 armin Exp $ */
+multiline_comment|/* $Id: diva.c,v 1.17 2003/09/09 06:52:01 schindler Exp $ */
 DECL|macro|CARDTYPE_H_WANT_DATA
 mdefine_line|#define CARDTYPE_H_WANT_DATA            1
 DECL|macro|CARDTYPE_H_WANT_IDI_DATA
@@ -9,7 +9,6 @@ DECL|macro|CARDTYPE_H_WANT_FILE_DATA
 mdefine_line|#define CARDTYPE_H_WANT_FILE_DATA       0
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
-macro_line|#include &quot;diva_pci.h&quot;
 macro_line|#include &quot;cardtype.h&quot;
 macro_line|#include &quot;dlist.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -19,15 +18,14 @@ macro_line|#include &quot;io.h&quot;
 macro_line|#include &quot;pc_maint.h&quot;
 macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
+macro_line|#include &quot;diva_pci.h&quot;
 macro_line|#include &quot;diva.h&quot;
 macro_line|#ifdef CONFIG_ISDN_DIVAS_PRIPCI
 macro_line|#include &quot;os_pri.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVAS_4BRIPCI
-macro_line|#include &quot;os_4bri.h&quot;
-macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_DIVAS_BRIPCI
 macro_line|#include &quot;os_bri.h&quot;
+macro_line|#include &quot;os_4bri.h&quot;
 macro_line|#endif
 DECL|variable|IoAdapters
 id|PISDN_ADAPTER
@@ -229,6 +227,8 @@ l_int|31
 r_struct
 id|pt_regs
 suffix:semicolon
+multiline_comment|/*&n; * include queue functions&n; */
+macro_line|#include &quot;dlist.c&quot;
 multiline_comment|/*&n;**  LOCALS&n;*/
 DECL|variable|adapter_queue
 id|diva_entity_queue_t
@@ -314,7 +314,7 @@ id|diva_pri_init_card
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVAS_4BRIPCI
+macro_line|#ifdef CONFIG_ISDN_DIVAS_BRIPCI
 multiline_comment|/*&n;&t;   4BRI Rev 1 Cards&n;&t; */
 (brace
 id|CARDTYPE_DIVASRV_Q_8M_PCI
@@ -360,8 +360,6 @@ comma
 id|diva_4bri_init_card
 )brace
 comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVAS_BRIPCI
 multiline_comment|/*&n;&t;   BRI&n;&t; */
 (brace
 id|CARDTYPE_MAESTRA_PCI
@@ -653,6 +651,18 @@ op_assign
 op_amp
 id|pdiva-&gt;xdi_adapter
 suffix:semicolon
+id|diva_os_leave_spin_lock
+c_func
+(paren
+op_amp
+id|adapter_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;add card&quot;
+)paren
+suffix:semicolon
 id|create_adapter_proc
 c_func
 (paren
@@ -676,6 +686,18 @@ comma
 id|pdiva-&gt;controller
 )paren
 )paren
+id|diva_os_enter_spin_lock
+c_func
+(paren
+op_amp
+id|adapter_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;add card&quot;
+)paren
+suffix:semicolon
 id|pa
 op_assign
 id|pdiva
@@ -740,6 +762,18 @@ op_assign
 op_amp
 id|pa-&gt;xdi_adapter
 suffix:semicolon
+id|diva_os_leave_spin_lock
+c_func
+(paren
+op_amp
+id|adapter_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;add card&quot;
+)paren
+suffix:semicolon
 id|DBG_LOG
 c_func
 (paren
@@ -756,6 +790,18 @@ id|pa
 )paren
 suffix:semicolon
 multiline_comment|/* add adapter to proc file system */
+id|diva_os_enter_spin_lock
+c_func
+(paren
+op_amp
+id|adapter_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;add card&quot;
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2538,7 +2584,6 @@ op_assign
 id|DivaIdiRequest31
 suffix:semicolon
 )brace
-multiline_comment|/* card:  1-based card number */
 DECL|function|diva_xdi_display_adapter_features
 r_void
 id|diva_xdi_display_adapter_features

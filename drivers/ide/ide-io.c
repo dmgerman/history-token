@@ -3774,7 +3774,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Sanity: don&squot;t accept a request that isn&squot;t a PM request&n;&t;&t; * if we are currently power managed. This is very important as&n;&t;&t; * blk_stop_queue() doesn&squot;t prevent the elv_next_request()&n;&t;&t; * above to return us whatever is in the queue. Since we call&n;&t;&t; * ide_do_request() ourselves, we end up taking requests while&n;&t;&t; * the queue is blocked...&n;&t;&t; * &n;&t;&t; * We let requests forced at head of queue with ide-preempt&n;&t;&t; * though. I hope that doesn&squot;t happen too much, hopefully not&n;&t;&t; * unless the subdriver triggers such a thing in it&squot;s own PM&n;&t;&t; * state machine.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sanity: don&squot;t accept a request that isn&squot;t a PM request&n;&t;&t; * if we are currently power managed. This is very important as&n;&t;&t; * blk_stop_queue() doesn&squot;t prevent the elv_next_request()&n;&t;&t; * above to return us whatever is in the queue. Since we call&n;&t;&t; * ide_do_request() ourselves, we end up taking requests while&n;&t;&t; * the queue is blocked...&n;&t;&t; * &n;&t;&t; * We let requests forced at head of queue with ide-preempt&n;&t;&t; * though. I hope that doesn&squot;t happen too much, hopefully not&n;&t;&t; * unless the subdriver triggers such a thing in its own PM&n;&t;&t; * state machine.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3795,16 +3795,6 @@ id|REQ_PREEMPT
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG_PM
-id|printk
-c_func
-(paren
-l_string|&quot;%s: a request made it&squot;s way while we are power managing...&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We clear busy, there should be no pending ATA command at this point. */
 id|hwgroup-&gt;busy
 op_assign
@@ -5193,16 +5183,23 @@ c_cond
 id|action
 op_eq
 id|ide_preempt
+)paren
+id|hwgroup-&gt;rq
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|action
+op_eq
+id|ide_preempt
 op_logical_or
 id|action
 op_eq
 id|ide_head_wait
 )paren
 (brace
-id|hwgroup-&gt;rq
-op_assign
-l_int|NULL
-suffix:semicolon
 id|where
 op_assign
 id|ELEVATOR_INSERT_FRONT

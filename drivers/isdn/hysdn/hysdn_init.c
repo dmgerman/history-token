@@ -8,14 +8,13 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
-DECL|variable|__initdata
+DECL|variable|hysdn_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|hysdn_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -137,11 +137,6 @@ id|rxrpc_proc_transports_fops
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|open
 op_assign
 id|rxrpc_proc_transports_open
@@ -281,11 +276,6 @@ id|file_operations
 id|rxrpc_proc_peers_fops
 op_assign
 (brace
-dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
 dot
 id|open
 op_assign
@@ -427,11 +417,6 @@ id|rxrpc_proc_conns_fops
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|open
 op_assign
 id|rxrpc_proc_conns_open
@@ -571,11 +556,6 @@ id|file_operations
 id|rxrpc_proc_calls_fops
 op_assign
 (brace
-dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
 dot
 id|open
 op_assign
@@ -816,7 +796,7 @@ suffix:colon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;conns&quot;
+l_string|&quot;connections&quot;
 comma
 id|proc_rxrpc
 )paren
@@ -1301,7 +1281,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_proc_peers_open() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * set up the iterator to start reading from the peers list and return the first item&n; */
+multiline_comment|/*&n; * set up the iterator to start reading from the peers list and return the&n; * first item&n; */
 DECL|function|rxrpc_proc_peers_start
 r_static
 r_void
@@ -1535,7 +1515,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;LOCAL REMOTE   USAGE CONNS  TIMEOUT   MTU RTT(uS)&bslash;n&quot;
+l_string|&quot;LOCAL REMOTE   USAGE CONNS  TIMEOUT&quot;
+l_string|&quot;   MTU RTT(uS)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1617,7 +1598,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_proc_peers_show() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * open &quot;/proc/net/rxrpc/connections&quot; which provides a summary of extant connections&n; */
+multiline_comment|/*&n; * open &quot;/proc/net/rxrpc/connections&quot; which provides a summary of extant&n; * connections&n; */
 DECL|function|rxrpc_proc_conns_open
 r_static
 r_int
@@ -1686,7 +1667,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_proc_conns_open() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * set up the iterator to start reading from the conns list and return the first item&n; */
+multiline_comment|/*&n; * set up the iterator to start reading from the conns list and return the&n; * first item&n; */
 DECL|function|rxrpc_proc_conns_start
 r_static
 r_void
@@ -1811,6 +1792,7 @@ id|v
 suffix:semicolon
 id|_p
 op_assign
+(paren
 id|v
 op_eq
 (paren
@@ -1818,6 +1800,7 @@ r_void
 op_star
 )paren
 l_int|1
+)paren
 ques
 c_cond
 id|rxrpc_conns.next
@@ -1886,6 +1869,12 @@ r_struct
 id|rxrpc_connection
 op_star
 id|conn
+suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
+id|conn
 op_assign
 id|list_entry
 c_func
@@ -1897,10 +1886,6 @@ id|rxrpc_connection
 comma
 id|proc_link
 )paren
-suffix:semicolon
-r_int
-r_int
-id|timeout
 suffix:semicolon
 multiline_comment|/* display header on line 1 */
 r_if
@@ -1920,7 +1905,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;LOCAL REMOTE   RPORT SRVC CONN     END SERIALNO CALLNO     MTU  TIMEOUT&quot;
+l_string|&quot;LOCAL REMOTE   RPORT SRVC CONN     END SERIALNO &quot;
+l_string|&quot;CALLNO     MTU  TIMEOUT&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2082,7 +2068,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_proc_calls_open() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * set up the iterator to start reading from the calls list and return the first item&n; */
+multiline_comment|/*&n; * set up the iterator to start reading from the calls list and return the&n; * first item&n; */
 DECL|function|rxrpc_proc_calls_start
 r_static
 r_void
@@ -2207,6 +2193,7 @@ id|v
 suffix:semicolon
 id|_p
 op_assign
+(paren
 id|v
 op_eq
 (paren
@@ -2214,6 +2201,7 @@ r_void
 op_star
 )paren
 l_int|1
+)paren
 ques
 c_cond
 id|rxrpc_calls.next

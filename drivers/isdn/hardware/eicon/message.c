@@ -21370,7 +21370,7 @@ id|MAX_NCCI
 op_plus
 l_int|1
 suffix:semicolon
-id|i
+id|ncci
 op_increment
 )paren
 (brace
@@ -37499,7 +37499,7 @@ id|ncpi_opt
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|//      HexDump (&quot;MDM N_UDATA:&quot;, plci-&gt;NL.RBuffer-&gt;length, data);
+multiline_comment|/*      HexDump (&quot;MDM N_UDATA:&quot;, plci-&gt;NL.RBuffer-&gt;length, data); */
 r_if
 c_cond
 (paren
@@ -45482,7 +45482,7 @@ id|info
 op_eq
 l_int|2
 op_logical_or
-singleline_comment|// V.110 async
+multiline_comment|/* V.110 async */
 id|READ_WORD
 c_func
 (paren
@@ -45496,7 +45496,7 @@ id|info
 op_eq
 l_int|3
 )paren
-singleline_comment|// V.110 sync
+multiline_comment|/* V.110 sync */
 (brace
 r_if
 c_cond
@@ -45555,7 +45555,7 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// Rate
+multiline_comment|/* Rate */
 r_case
 l_int|0
 suffix:colon
@@ -45579,7 +45579,7 @@ op_eq
 l_int|3
 )paren
 (brace
-singleline_comment|//V.110 sync 56k
+multiline_comment|/* V.110 sync 56k */
 id|dbug
 c_func
 (paren
@@ -45944,7 +45944,7 @@ l_int|1
 op_eq
 l_int|13
 )paren
-singleline_comment|// v.110 async
+multiline_comment|/* v.110 async */
 (brace
 r_if
 c_cond
@@ -46246,7 +46246,7 @@ l_int|6
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//HexDump (&quot;CAI&quot;, sizeof(cai), &amp;cai[0]);
+multiline_comment|/* HexDump (&quot;CAI&quot;, sizeof(cai), &amp;cai[0]); */
 id|add_p
 c_func
 (paren
@@ -52645,7 +52645,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|//HexDump (&quot;DLC&quot;, sizeof(dlc), &amp;dlc[0]);
+multiline_comment|/* HexDump (&quot;DLC&quot;, sizeof(dlc), &amp;dlc[0]); */
 id|add_p
 c_func
 (paren
@@ -52972,7 +52972,7 @@ suffix:semicolon
 id|word
 id|l
 suffix:semicolon
-singleline_comment|//  word i;
+multiline_comment|/*  word i; */
 r_if
 c_cond
 (paren
@@ -53699,7 +53699,7 @@ op_eq
 id|ncci
 )paren
 (brace
-singleline_comment|//dprintf(&quot;N_DISC&quot;);
+multiline_comment|/* dprintf(&quot;N_DISC&quot;); */
 id|plci-&gt;NData
 (braket
 l_int|0
@@ -54976,7 +54976,7 @@ id|i
 id|k
 )braket
 suffix:semicolon
-singleline_comment|//      dbug(1,dprintf(&quot;%x &quot;,facility[j]));
+multiline_comment|/*      dbug(1,dprintf(&quot;%x &quot;,facility[j])); */
 )brace
 )brace
 id|facility
@@ -54994,7 +54994,7 @@ op_assign
 id|facility
 suffix:semicolon
 )brace
-singleline_comment|//  dbug(1,dprintf(&quot;FacArrLen=%d &quot;,len));
+multiline_comment|/*  dbug(1,dprintf(&quot;FacArrLen=%d &quot;,len)); */
 id|len
 op_assign
 id|add_i
@@ -55033,7 +55033,7 @@ id|len
 op_add_assign
 l_int|4
 suffix:semicolon
-singleline_comment|// calculate length of all
+multiline_comment|/* calculate length of all */
 r_return
 id|len
 suffix:semicolon
@@ -55119,7 +55119,7 @@ comma
 l_string|&quot;&bslash;x02&bslash;x01&bslash;x07&quot;
 )paren
 suffix:semicolon
-singleline_comment|// B On, default on 1
+multiline_comment|/* B On, default on 1 */
 id|add_p
 c_func
 (paren
@@ -55130,7 +55130,7 @@ comma
 id|voice_chi
 )paren
 suffix:semicolon
-singleline_comment|// Channel
+multiline_comment|/* Channel */
 id|sig_req
 c_func
 (paren
@@ -55194,7 +55194,7 @@ comma
 l_string|&quot;&bslash;x02&bslash;x01&bslash;x08&quot;
 )paren
 suffix:semicolon
-singleline_comment|// B Off
+multiline_comment|/* B Off */
 id|sig_req
 c_func
 (paren

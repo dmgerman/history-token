@@ -12,7 +12,8 @@ r_struct
 id|afs_super_info
 (brace
 DECL|member|volume
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 suffix:semicolon
