@@ -546,17 +546,6 @@ id|head
 op_assign
 id|head-&gt;next
 suffix:semicolon
-id|WSET
-c_func
-(paren
-id|req-&gt;rq_header
-comma
-id|smb_uid
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 id|req-&gt;rq_bytes_sent
 op_assign
 l_int|0
