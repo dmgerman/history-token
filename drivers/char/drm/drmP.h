@@ -1009,32 +1009,6 @@ DECL|member|flags
 )brace
 id|flags
 suffix:semicolon
-multiline_comment|/** &bslash;name DMA support */
-multiline_comment|/*@{*/
-DECL|member|this_buffer
-id|drm_buf_t
-op_star
-id|this_buffer
-suffix:semicolon
-multiline_comment|/**&lt; Buffer being sent */
-DECL|member|next_buffer
-id|drm_buf_t
-op_star
-id|next_buffer
-suffix:semicolon
-multiline_comment|/**&lt; Selected buffer to send */
-DECL|member|next_queue
-id|drm_queue_t
-op_star
-id|next_queue
-suffix:semicolon
-multiline_comment|/**&lt; Queue from which buffer selected*/
-DECL|member|waiting
-id|wait_queue_head_t
-id|waiting
-suffix:semicolon
-multiline_comment|/**&lt; Processes waiting on free bufs */
-multiline_comment|/*@}*/
 DECL|typedef|drm_device_dma_t
 )brace
 id|drm_device_dma_t

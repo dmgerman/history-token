@@ -4797,13 +4797,12 @@ op_assign
 id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|igs_regs
 r_static
 r_char
 id|igs_regs
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 id|EXT_CRT_IRQ
@@ -5281,7 +5280,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|cyberpro_free_fb_info
 id|cyberpro_free_fb_info
 c_func

@@ -1041,12 +1041,7 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-macro_line|#include &quot;drm_auth.h&quot;
-macro_line|#include &quot;drm_bufs.h&quot;
-macro_line|#include &quot;drm_context.h&quot;
-macro_line|#include &quot;drm_dma.h&quot;
-macro_line|#include &quot;drm_drawable.h&quot;
-macro_line|#include &quot;drm_drv.h&quot;
+macro_line|#include &quot;drm_core.h&quot;
 multiline_comment|/* This functions must be here since it references DRM(numdevs)&n; * which drm_drv.h declares.&n; */
 DECL|function|ffb_presetup
 r_static
@@ -1217,16 +1212,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#include &quot;drm_fops.h&quot;
-macro_line|#include &quot;drm_init.h&quot;
-macro_line|#include &quot;drm_ioctl.h&quot;
-macro_line|#include &quot;drm_irq.h&quot;
-macro_line|#include &quot;drm_lock.h&quot;
-macro_line|#include &quot;drm_memory.h&quot;
-macro_line|#include &quot;drm_proc.h&quot;
-macro_line|#include &quot;drm_vm.h&quot;
-macro_line|#include &quot;drm_stub.h&quot;
-macro_line|#include &quot;drm_scatter.h&quot;
 DECL|function|ffb_driver_release
 r_static
 r_void

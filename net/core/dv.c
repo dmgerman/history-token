@@ -1415,7 +1415,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check if packet should have its dest mac address set to the box itself&n; * for diversion&n; */
 DECL|macro|ETH_DIVERT_FRAME
-mdefine_line|#define&t;ETH_DIVERT_FRAME(skb) &bslash;&n;&t;memcpy(skb-&gt;mac.ethernet, skb-&gt;dev-&gt;dev_addr, ETH_ALEN); &bslash;&n;&t;skb-&gt;pkt_type=PACKET_HOST
+mdefine_line|#define&t;ETH_DIVERT_FRAME(skb) &bslash;&n;&t;memcpy(eth_hdr(skb), skb-&gt;dev-&gt;dev_addr, ETH_ALEN); &bslash;&n;&t;skb-&gt;pkt_type=PACKET_HOST
 DECL|function|divert_frame
 r_void
 id|divert_frame
@@ -1432,7 +1432,11 @@ id|ethhdr
 op_star
 id|eth
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_struct
 id|iphdr

@@ -11,8 +11,10 @@ r_void
 op_star
 id|to
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|from
 comma
 r_int
@@ -59,8 +61,10 @@ r_void
 DECL|function|__ia64_memcpy_toio
 id|__ia64_memcpy_toio
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|to
 comma
 r_void
@@ -111,8 +115,10 @@ r_void
 DECL|function|__ia64_memset_c_io
 id|__ia64_memset_c_io
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|dst
 comma
 r_int
@@ -328,6 +334,7 @@ DECL|function|__ia64_readb
 id|__ia64_readb
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -345,6 +352,7 @@ DECL|function|__ia64_readw
 id|__ia64_readw
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -362,6 +370,7 @@ DECL|function|__ia64_readl
 id|__ia64_readl
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -379,6 +388,7 @@ DECL|function|__ia64_readq
 id|__ia64_readq
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -396,6 +406,7 @@ DECL|function|__ia64_readb_relaxed
 id|__ia64_readb_relaxed
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -413,6 +424,7 @@ DECL|function|__ia64_readw_relaxed
 id|__ia64_readw_relaxed
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -430,6 +442,7 @@ DECL|function|__ia64_readl_relaxed
 id|__ia64_readl_relaxed
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -447,6 +460,7 @@ DECL|function|__ia64_readq_relaxed
 id|__ia64_readq_relaxed
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

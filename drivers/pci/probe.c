@@ -1910,6 +1910,17 @@ id|max
 op_assign
 id|cmax
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|child-&gt;subordinate
+OG
+id|max
+)paren
+id|max
+op_assign
+id|child-&gt;subordinate
+suffix:semicolon
 )brace
 r_else
 (brace

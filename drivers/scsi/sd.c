@@ -4630,6 +4630,11 @@ id|sdkp-&gt;capacity
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * set a bogus sector size so the normal read/write&n;&t;&t; * logic in the block layer will eventually refuse any&n;&t;&t; * request on this device without tripping over power&n;&t;&t; * of two sector size assumptions&n;&t;&t; */
+id|sector_size
+op_assign
+l_int|512
+suffix:semicolon
 )brace
 (brace
 multiline_comment|/*&n;&t;&t; * The msdos fs needs to know the hardware sector size&n;&t;&t; * So I have created this table. See ll_rw_blk.c&n;&t;&t; * Jacques Gelinas (Jacques@solucorp.qc.ca)&n;&t;&t; */

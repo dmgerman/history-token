@@ -218,6 +218,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -232,6 +233,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -246,6 +248,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren
@@ -260,6 +263,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_possible
 c_func
 (paren

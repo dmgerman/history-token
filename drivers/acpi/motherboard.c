@@ -505,8 +505,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Reserve motherboard resources after PCI claim BARs,&n; * but before PCI assign resources for uninitialized PCI devices&n; */
 DECL|variable|acpi_motherboard_init
-id|subsys_initcall
+id|fs_initcall
 c_func
 (paren
 id|acpi_motherboard_init

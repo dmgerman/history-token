@@ -3017,5 +3017,17 @@ id|rv
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Macros for generating the elements of the PCI ID tables. */
+DECL|macro|GETID
+mdefine_line|#define GETID(v, s) (unsigned)(((v) &gt;&gt; (s)) &amp; 0xFFFF ?: PCI_ANY_ID)
+DECL|macro|ID_C
+mdefine_line|#define ID_C(x, c)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;GETID(x,32), GETID(x,48), GETID(x,0), GETID(x,16),&t;&bslash;&n;&t;(c) &lt;&lt; 8, 0xFFFF00, 0&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|ID2C
+mdefine_line|#define ID2C(x)                          &bslash;&n;&t;ID_C(x, PCI_CLASS_STORAGE_SCSI), &bslash;&n;&t;ID_C(x, PCI_CLASS_STORAGE_RAID)
+DECL|macro|IDIROC
+mdefine_line|#define IDIROC(x)  ((x) | ~ID_ALL_IROC_MASK)
+multiline_comment|/* Generate IDs for all 16 possibilites.&n; * The argument has already masked out&n; * the 4 least significant bits of the device id.&n; * (e.g., mask: ID_9005_GENERIC_MASK).&n; */
+DECL|macro|ID16
+mdefine_line|#define ID16(x)                          &bslash;&n;&t;ID(x),                           &bslash;&n;&t;ID((x) | 0x0001000000000000ull), &bslash;&n;&t;ID((x) | 0x0002000000000000ull), &bslash;&n;&t;ID((x) | 0x0003000000000000ull), &bslash;&n;&t;ID((x) | 0x0004000000000000ull), &bslash;&n;&t;ID((x) | 0x0005000000000000ull), &bslash;&n;&t;ID((x) | 0x0006000000000000ull), &bslash;&n;&t;ID((x) | 0x0007000000000000ull), &bslash;&n;&t;ID((x) | 0x0008000000000000ull), &bslash;&n;&t;ID((x) | 0x0009000000000000ull), &bslash;&n;&t;ID((x) | 0x000A000000000000ull), &bslash;&n;&t;ID((x) | 0x000B000000000000ull), &bslash;&n;&t;ID((x) | 0x000C000000000000ull), &bslash;&n;&t;ID((x) | 0x000D000000000000ull), &bslash;&n;&t;ID((x) | 0x000E000000000000ull), &bslash;&n;&t;ID((x) | 0x000F000000000000ull)
 macro_line|#endif /*_AICLIB_H */
 eof

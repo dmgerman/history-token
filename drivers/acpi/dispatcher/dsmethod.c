@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsmethod&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_parse_method&n; *&n; * PARAMETERS:  obj_handle      - Node of the method&n; *              Level           - Current nesting level&n; *              Context         - Points to a method counter&n; *              return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Call the parser and parse the AML that is&n; *              associated with the method.&n; *&n; * MUTEX:       Assumes parser is locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_parse_method&n; *&n; * PARAMETERS:  obj_handle      - Method node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Call the parser and parse the AML that is associated with the&n; *              method.&n; *&n; * MUTEX:       Assumes parser is locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_parse_method
 id|acpi_ds_parse_method
@@ -321,7 +321,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  method_node         - Node of the method&n; *              obj_desc            - The method object&n; *              calling_method_node - Caller of this method (if non-null)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; * MUTEX:       Locks/unlocks parser.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  method_node         - Node of the method&n; *              obj_desc            - The method object&n; *              calling_method_node - Caller of this method (if non-null)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_begin_method_execution
 id|acpi_ds_begin_method_execution
@@ -419,7 +419,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_call_control_method&n; *&n; * PARAMETERS:  walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfer execution to a called control method&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_call_control_method&n; *&n; * PARAMETERS:  Thread              - Info for this thread&n; *              this_walk_state     - Current walk state&n; *              Op                  - Current Op to be walked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfer execution to a called control method&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_call_control_method
 id|acpi_ds_call_control_method
@@ -861,7 +861,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_restart_control_method&n; *&n; * PARAMETERS:  walk_state          - State of the method when it was preempted&n; *              Op                  - Pointer to new current op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Restart a method that was preempted&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_restart_control_method&n; *&n; * PARAMETERS:  walk_state          - State for preempted method (caller)&n; *              return_desc         - Return value from the called method&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Restart a method that was preempted by another (nested) method&n; *              invocation.  Handle the return value (if any) from the callee.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_restart_control_method
 id|acpi_ds_restart_control_method
@@ -887,19 +887,56 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;****Restart [%4.4s] Op %p return_value_from_callee %p&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|walk_state-&gt;method_node-&gt;name
+comma
+id|walk_state-&gt;method_call_op
+comma
+id|return_desc
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;    return_from_this_method_used?=%X res_stack %p Walk %p&bslash;n&quot;
+comma
+id|walk_state-&gt;return_used
+comma
+id|walk_state-&gt;results
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Did the called method return a value? */
 r_if
 c_cond
 (paren
 id|return_desc
 )paren
 (brace
+multiline_comment|/* Are we actually going to use the return value? */
 r_if
 c_cond
 (paren
 id|walk_state-&gt;return_used
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Get the return value (if any) from the previous method.&n;&t;&t;&t; * NULL if no return value&n;&t;&t;&t; */
+multiline_comment|/* Save the return value from the previous method */
 id|status
 op_assign
 id|acpi_ds_result_push
@@ -929,6 +966,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t; * Save as THIS method&squot;s return value in case it is returned&n;&t;&t;&t; * immediately to yet another method&n;&t;&t;&t; */
+id|walk_state-&gt;return_desc
+op_assign
+id|return_desc
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -940,25 +982,6 @@ id|return_desc
 suffix:semicolon
 )brace
 )brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_DISPATCH
-comma
-l_string|&quot;Method=%p Return=%p return_used?=%X res_stack=%p State=%p&bslash;n&quot;
-comma
-id|walk_state-&gt;method_call_op
-comma
-id|return_desc
-comma
-id|walk_state-&gt;return_used
-comma
-id|walk_state-&gt;results
-comma
-id|walk_state
-)paren
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK

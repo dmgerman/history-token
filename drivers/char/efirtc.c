@@ -466,6 +466,7 @@ id|wtime
 suffix:semicolon
 r_struct
 id|rtc_wkalrm
+id|__user
 op_star
 id|ewp
 suffix:semicolon
@@ -593,6 +594,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -642,6 +644,7 @@ comma
 (paren
 r_struct
 id|rtc_time
+id|__user
 op_star
 )paren
 id|arg
@@ -729,6 +732,7 @@ op_assign
 (paren
 r_struct
 id|rtc_wkalrm
+id|__user
 op_star
 )paren
 id|arg
@@ -784,7 +788,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * XXX Fixme:&n;&t;&t;&t; * As of EFI 0.92 with the firmware I have on my&n;&t;&t;&t; * machine this call does not seem to work quite &n;&t;&t;&t; * right&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * XXX Fixme:&n;&t;&t;&t; * As of EFI 0.92 with the firmware I have on my&n;&t;&t;&t; * machine this call does not seem to work quite&n;&t;&t;&t; * right&n;&t;&t;&t; */
 id|status
 op_assign
 id|efi
@@ -883,6 +887,7 @@ op_assign
 (paren
 r_struct
 id|rtc_wkalrm
+id|__user
 op_star
 )paren
 id|arg
@@ -926,10 +931,6 @@ r_return
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ewp-&gt;time
 comma

@@ -515,12 +515,11 @@ id|dev-&gt;priv
 suffix:semicolon
 id|eth
 op_assign
+id|eth_hdr
+c_func
 (paren
-r_struct
-id|ethhdr
-op_star
+id|skb
 )paren
-id|skb-&gt;mac.raw
 suffix:semicolon
 r_if
 c_cond

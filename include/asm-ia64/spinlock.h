@@ -215,12 +215,14 @@ r_struct
 DECL|member|read_counter
 r_volatile
 r_int
+r_int
 id|read_counter
 suffix:colon
 l_int|31
 suffix:semicolon
 DECL|member|write_lock
 r_volatile
+r_int
 r_int
 id|write_lock
 suffix:colon

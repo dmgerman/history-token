@@ -472,7 +472,7 @@ id|uint
 id|type
 )paren
 (brace
-id|vfs_check_frozen
+id|fs_check_frozen
 c_func
 (paren
 id|XFS_MTOVFS
@@ -480,8 +480,6 @@ c_func
 (paren
 id|mp
 )paren
-op_member_access_from_pointer
-id|vfs_super
 comma
 id|SB_FREEZE_TRANS
 )paren

@@ -106,10 +106,6 @@ id|sys_mmap2
 suffix:semicolon
 r_extern
 id|syscall_handler_t
-id|sys_timer_create
-suffix:semicolon
-r_extern
-id|syscall_handler_t
 id|old_mmap_i386
 suffix:semicolon
 r_extern

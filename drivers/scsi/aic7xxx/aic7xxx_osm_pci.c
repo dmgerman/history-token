@@ -73,6 +73,9 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/* Define the macro locally since it&squot;s different for different class of chips.&n;*/
+DECL|macro|ID
+mdefine_line|#define ID(x)&t;ID_C(x, PCI_CLASS_STORAGE_SCSI)
 DECL|variable|ahc_linux_pci_id_table
 r_static
 r_struct
@@ -82,20 +85,14 @@ id|ahc_linux_pci_id_table
 )braket
 op_assign
 (brace
-DECL|macro|LINUXID
-mdefine_line|#define LINUXID(x,s) (unsigned)((((x) &gt;&gt; s) &amp; 0xffff) ?: PCI_ANY_ID)
-DECL|macro|ID
-mdefine_line|#define ID(x) &bslash;&n;&t;{ &bslash;&n;&t;&t;LINUXID(x,32), LINUXID(x,48), LINUXID(x,0), LINUXID(x,16), &bslash;&n;&t;&t;PCI_CLASS_STORAGE_SCSI &lt;&lt; 8, 0xFFFF00, 0 &bslash;&n;&t;}
-DECL|macro|ID4
-mdefine_line|#define ID4(x,y) &bslash;&n;&t;ID(x | ((y+0)&lt;&lt;48)), ID(x | ((y+1)&lt;&lt;48)), ID(x | ((y+2)&lt;&lt;48)), &bslash;&n;&t;ID(x | ((y+3)&lt;&lt;48))
-DECL|macro|ID16
-mdefine_line|#define ID16(x) ID4(x,0ULL), ID4(x,4ULL), ID4(x,8ULL), ID4(x,12ULL)
+multiline_comment|/* aic7850 based controllers */
 id|ID
 c_func
 (paren
 id|ID_AHA_2902_04_10_15_20C_30C
 )paren
 comma
+multiline_comment|/* aic7860 based controllers */
 id|ID
 c_func
 (paren
@@ -134,6 +131,7 @@ op_amp
 id|ID_DEV_VENDOR_MASK
 )paren
 comma
+multiline_comment|/* aic7870 based controllers */
 id|ID
 c_func
 (paren
@@ -170,6 +168,7 @@ c_func
 id|ID_AHA_4944
 )paren
 comma
+multiline_comment|/* aic7880 based controllers */
 id|ID
 c_func
 (paren
@@ -242,6 +241,7 @@ op_amp
 id|ID_DEV_VENDOR_MASK
 )paren
 comma
+multiline_comment|/* aic7890 based controllers */
 id|ID
 c_func
 (paren
@@ -272,10 +272,12 @@ c_func
 id|ID_AHA_2950U2B
 )paren
 comma
-id|ID
+id|ID16
 c_func
 (paren
 id|ID_AIC7890_ARO
+op_amp
+id|ID_AIC7895_ARO_MASK
 )paren
 comma
 id|ID
@@ -284,6 +286,7 @@ c_func
 id|ID_AAA_131U2
 )paren
 comma
+multiline_comment|/* aic7890 based controllers */
 id|ID
 c_func
 (paren
@@ -326,6 +329,7 @@ c_func
 id|ID_AIC7892_ARO
 )paren
 comma
+multiline_comment|/* aic7892 based controllers */
 id|ID
 c_func
 (paren
@@ -380,6 +384,7 @@ c_func
 id|ID_AIC7896_ARO
 )paren
 comma
+multiline_comment|/* aic7899 based controllers */
 id|ID
 c_func
 (paren
@@ -398,6 +403,7 @@ c_func
 id|ID_AIC7899_ARO
 )paren
 comma
+multiline_comment|/* Generic chip probes for devices we don&squot;t know exactly. */
 id|ID
 c_func
 (paren
@@ -450,12 +456,16 @@ id|ID16
 c_func
 (paren
 id|ID_AIC7890
+op_amp
+id|ID_9005_GENERIC_MASK
 )paren
 comma
 id|ID16
 c_func
 (paren
 id|ID_AIC7892
+op_amp
+id|ID_9005_GENERIC_MASK
 )paren
 comma
 id|ID
@@ -466,16 +476,20 @@ op_amp
 id|ID_DEV_VENDOR_MASK
 )paren
 comma
-id|ID
+id|ID16
 c_func
 (paren
 id|ID_AIC7896
+op_amp
+id|ID_9005_GENERIC_MASK
 )paren
 comma
-id|ID
+id|ID16
 c_func
 (paren
 id|ID_AIC7899
+op_amp
+id|ID_9005_GENERIC_MASK
 )paren
 comma
 id|ID

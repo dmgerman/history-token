@@ -292,6 +292,7 @@ id|info
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1047,7 +1048,7 @@ l_int|0
 suffix:semicolon
 id|siginfo.si_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|siginfo.si_imm
 op_assign

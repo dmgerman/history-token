@@ -6,6 +6,7 @@ macro_line|#else
 macro_line|#include &lt;dev/aic7xxx/aic79xx_osm.h&gt;
 macro_line|#include &lt;dev/aic7xxx/aic79xx_inline.h&gt;
 macro_line|#endif
+macro_line|#include &quot;aic79xx_pci.h&quot;
 r_static
 id|__inline
 r_uint64
@@ -63,48 +64,6 @@ id|id
 )paren
 suffix:semicolon
 )brace
-DECL|macro|ID_ALL_MASK
-mdefine_line|#define ID_ALL_MASK&t;&t;&t;0xFFFFFFFFFFFFFFFFull
-DECL|macro|ID_ALL_IROC_MASK
-mdefine_line|#define ID_ALL_IROC_MASK&t;&t;0xFF7FFFFFFFFFFFFFull
-DECL|macro|ID_DEV_VENDOR_MASK
-mdefine_line|#define ID_DEV_VENDOR_MASK&t;&t;0xFFFFFFFF00000000ull
-DECL|macro|ID_9005_GENERIC_MASK
-mdefine_line|#define ID_9005_GENERIC_MASK&t;&t;0xFFF0FFFF00000000ull
-DECL|macro|ID_9005_GENERIC_IROC_MASK
-mdefine_line|#define ID_9005_GENERIC_IROC_MASK&t;0xFF70FFFF00000000ull
-DECL|macro|ID_AIC7901
-mdefine_line|#define ID_AIC7901&t;&t;&t;0x800F9005FFFF9005ull
-DECL|macro|ID_AHA_29320A
-mdefine_line|#define ID_AHA_29320A&t;&t;&t;0x8000900500609005ull
-DECL|macro|ID_AHA_29320ALP
-mdefine_line|#define ID_AHA_29320ALP&t;&t;&t;0x8017900500449005ull
-DECL|macro|ID_AIC7901A
-mdefine_line|#define ID_AIC7901A&t;&t;&t;0x801E9005FFFF9005ull
-DECL|macro|ID_AHA_29320
-mdefine_line|#define ID_AHA_29320&t;&t;&t;0x8012900500429005ull
-DECL|macro|ID_AHA_29320B
-mdefine_line|#define ID_AHA_29320B&t;&t;&t;0x8013900500439005ull
-DECL|macro|ID_AHA_29320LP
-mdefine_line|#define ID_AHA_29320LP&t;&t;&t;0x8014900500449005ull
-DECL|macro|ID_AIC7902
-mdefine_line|#define ID_AIC7902&t;&t;&t;0x801F9005FFFF9005ull
-DECL|macro|ID_AIC7902_B
-mdefine_line|#define ID_AIC7902_B&t;&t;&t;0x801D9005FFFF9005ull
-DECL|macro|ID_AHA_39320
-mdefine_line|#define ID_AHA_39320&t;&t;&t;0x8010900500409005ull
-DECL|macro|ID_AHA_39320_B
-mdefine_line|#define ID_AHA_39320_B&t;&t;&t;0x8015900500409005ull
-DECL|macro|ID_AHA_39320A
-mdefine_line|#define ID_AHA_39320A&t;&t;&t;0x8016900500409005ull
-DECL|macro|ID_AHA_39320D
-mdefine_line|#define ID_AHA_39320D&t;&t;&t;0x8011900500419005ull
-DECL|macro|ID_AHA_39320D_B
-mdefine_line|#define ID_AHA_39320D_B&t;&t;&t;0x801C900500419005ull
-DECL|macro|ID_AHA_39320D_HP
-mdefine_line|#define ID_AHA_39320D_HP&t;&t;0x8011900500AC0E11ull
-DECL|macro|ID_AHA_39320D_B_HP
-mdefine_line|#define ID_AHA_39320D_B_HP&t;&t;0x801C900500AC0E11ull
 DECL|macro|ID_AIC7902_PCI_REV_A4
 mdefine_line|#define ID_AIC7902_PCI_REV_A4&t;&t;0x3
 DECL|macro|ID_AIC7902_PCI_REV_B0

@@ -925,6 +925,27 @@ c_cond
 (paren
 id|val
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|val
+(braket
+op_minus
+l_int|1
+)braket
+op_eq
+l_char|&squot;&quot;&squot;
+)paren
+id|val
+(braket
+op_minus
+l_int|2
+)braket
+op_assign
+l_char|&squot;=&squot;
+suffix:semicolon
+r_else
 id|val
 (braket
 op_minus
@@ -933,6 +954,7 @@ l_int|1
 op_assign
 l_char|&squot;=&squot;
 suffix:semicolon
+)brace
 multiline_comment|/* Handle obsolete-style parameters */
 r_if
 c_cond

@@ -185,6 +185,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
