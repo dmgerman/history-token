@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -54,10 +55,17 @@ id|sp
 comma
 id|bsp
 suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|80
+)braket
+suffix:semicolon
+multiline_comment|/* don&squot;t make it so big that it overflows the stack! */
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nCall Trace: &quot;
+l_string|&quot;&bslash;nCall Trace:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_do
@@ -98,16 +106,31 @@ op_amp
 id|bsp
 )paren
 suffix:semicolon
-id|printk
+id|snprintf
 c_func
 (paren
-l_string|&quot;[&lt;%016lx&gt;] sp=0x%016lx bsp=0x%016lx&bslash;n&quot;
+id|buf
+comma
+r_sizeof
+(paren
+id|buf
+)paren
+comma
+l_string|&quot; [&lt;%016lx&gt;] %%s sp=0x%016lx bsp=0x%016lx&bslash;n&quot;
 comma
 id|ip
 comma
 id|sp
 comma
 id|bsp
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+id|buf
+comma
+id|ip
 )paren
 suffix:semicolon
 )brace
@@ -270,6 +293,14 @@ id|print_tainted
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;ip is at %s&bslash;n&quot;
+comma
+id|ip
 )paren
 suffix:semicolon
 id|printk
