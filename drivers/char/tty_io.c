@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -9539,6 +9540,26 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|tty_devclass
+r_struct
+id|device_class
+id|tty_devclass
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;tty&quot;
+comma
+)brace
+suffix:semicolon
+DECL|variable|tty_devclass
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_devclass
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Ok, now we can initialize the rest of the tty devices and can count&n; * on memory allocations, interrupts etc..&n; */
 DECL|function|tty_init
 r_void
@@ -9549,6 +9570,13 @@ c_func
 r_void
 )paren
 (brace
+id|devclass_register
+c_func
+(paren
+op_amp
+id|tty_devclass
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * dev_tty_driver and dev_console_driver are actually magic&n;&t; * devices which get redirected at open time.  Nevertheless,&n;&t; * we register them so that register_chrdev is called&n;&t; * appropriately.&n;&t; */
 id|memset
 c_func
