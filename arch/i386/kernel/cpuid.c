@@ -203,7 +203,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* ! CONFIG_SMP */
+macro_line|#else&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|do_cpuid
 r_static
 r_inline
@@ -253,7 +253,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ! CONFIG_SMP */
+macro_line|#endif&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|cpuid_seek
 r_static
 id|loff_t
@@ -630,11 +630,13 @@ c_func
 id|cpuid_init
 )paren
 suffix:semicolon
+DECL|variable|cpuid_exit
 id|module_exit
 c_func
 (paren
 id|cpuid_exit
 )paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
