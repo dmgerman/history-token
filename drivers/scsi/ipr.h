@@ -122,8 +122,10 @@ DECL|macro|IPR_MAX_PHYSICAL_DEVS
 mdefine_line|#define IPR_MAX_PHYSICAL_DEVS&t;&t;&t;&t;192
 DECL|macro|IPR_MAX_SGLIST
 mdefine_line|#define IPR_MAX_SGLIST&t;&t;&t;&t;&t;64
-DECL|macro|IPR_MAX_SECTORS
-mdefine_line|#define IPR_MAX_SECTORS&t;&t;&t;&t;&t;512
+DECL|macro|IPR_IOA_MAX_SECTORS
+mdefine_line|#define IPR_IOA_MAX_SECTORS&t;&t;&t;&t;32767
+DECL|macro|IPR_VSET_MAX_SECTORS
+mdefine_line|#define IPR_VSET_MAX_SECTORS&t;&t;&t;&t;512
 DECL|macro|IPR_MAX_CDB_LEN
 mdefine_line|#define IPR_MAX_CDB_LEN&t;&t;&t;&t;&t;16
 DECL|macro|IPR_DEFAULT_BUS_WIDTH
