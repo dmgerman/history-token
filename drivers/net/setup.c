@@ -54,14 +54,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|comx_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|lmc_setup
 c_func
 (paren
@@ -144,14 +136,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_FEC_ENET)
 (brace
 id|fec_enet_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#if defined(CONFIG_COMX)
-(brace
-id|comx_init
 comma
 l_int|0
 )brace

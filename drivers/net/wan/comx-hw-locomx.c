@@ -2016,11 +2016,8 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|macro|comx_hw_locomx_init
-mdefine_line|#define comx_hw_locomx_init init_module
-macro_line|#endif
 DECL|function|comx_hw_locomx_init
+r_static
 r_int
 id|__init
 id|comx_hw_locomx_init
@@ -2040,10 +2037,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|comx_hw_locomx_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|comx_hw_locomx_exit
 c_func
 (paren
 r_void
@@ -2055,8 +2053,19 @@ c_func
 l_string|&quot;locomx&quot;
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|comx_hw_locomx_init
+id|module_init
+c_func
+(paren
+id|comx_hw_locomx_init
+)paren
+suffix:semicolon
+DECL|variable|comx_hw_locomx_exit
+id|module_exit
+c_func
+(paren
+id|comx_hw_locomx_exit
+)paren
+suffix:semicolon
 eof
