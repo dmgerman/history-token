@@ -17,14 +17,6 @@ DECL|macro|NASID_TO_COMPACT_NODEID
 mdefine_line|#define NASID_TO_COMPACT_NODEID(nasid)  (nasid_to_cnodeid(nasid))
 DECL|macro|COMPACT_TO_NASID_NODEID
 mdefine_line|#define COMPACT_TO_NASID_NODEID(cnode)  (cnodeid_to_nasid(cnode))
-DECL|macro|INVALID_NASID
-mdefine_line|#define INVALID_NASID&t;&t;((nasid_t)-1)
-DECL|macro|INVALID_SLAB
-mdefine_line|#define INVALID_SLAB            (slabid_t)-1
-DECL|macro|INVALID_MODULE
-mdefine_line|#define INVALID_MODULE&t;&t;((moduleid_t)-1)
-DECL|macro|INVALID_PARTID
-mdefine_line|#define&t;INVALID_PARTID&t;&t;((partid_t)-1)
 r_extern
 r_void
 id|sn_flush_all_caches
