@@ -1,21 +1,20 @@
-multiline_comment|/*&n; * $Id: usbkbd.c,v 1.20 2001/04/26 08:34:49 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  USB HIDBP Keyboard support&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: usbkbd.c,v 1.27 2001/12/27 10:37:41 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  USB HIDBP Keyboard support&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-DECL|macro|_HID_BOOT_PROTOCOL
-mdefine_line|#define&t;_HID_BOOT_PROTOCOL
-macro_line|#include &quot;hid.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB HID Boot Protocol keyboard driver&quot;
+DECL|macro|DRIVER_LICENSE
+mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
@@ -30,10 +29,11 @@ c_func
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+id|DRIVER_LICENSE
 )paren
 suffix:semicolon
 DECL|variable|usb_kbd_keycode
@@ -592,10 +592,10 @@ comma
 op_star
 id|led
 suffix:semicolon
-DECL|member|dr
+DECL|member|cr
 r_struct
 id|usb_ctrlrequest
-id|dr
+id|cr
 suffix:semicolon
 DECL|member|leds
 DECL|member|newleds
@@ -610,6 +610,13 @@ r_char
 id|name
 (braket
 l_int|128
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|64
 )braket
 suffix:semicolon
 DECL|member|open
@@ -1022,7 +1029,7 @@ c_func
 (paren
 id|kbd-&gt;led
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|err
@@ -1092,7 +1099,7 @@ c_func
 (paren
 id|kbd-&gt;led
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 id|err
@@ -1241,6 +1248,12 @@ comma
 id|maxp
 suffix:semicolon
 r_char
+id|path
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_char
 op_star
 id|buf
 suffix:semicolon
@@ -1327,28 +1340,6 @@ c_func
 (paren
 id|pipe
 )paren
-)paren
-suffix:semicolon
-id|hid_set_protocol
-c_func
-(paren
-id|dev
-comma
-id|interface-&gt;bInterfaceNumber
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|hid_set_idle
-c_func
-(paren
-id|dev
-comma
-id|interface-&gt;bInterfaceNumber
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1586,31 +1577,55 @@ comma
 id|endpoint-&gt;bInterval
 )paren
 suffix:semicolon
-id|kbd-&gt;dr.bRequestType
+id|kbd-&gt;cr.bRequestType
 op_assign
 id|USB_TYPE_CLASS
 op_or
 id|USB_RECIP_INTERFACE
 suffix:semicolon
-id|kbd-&gt;dr.bRequest
+id|kbd-&gt;cr.bRequest
 op_assign
-id|HID_REQ_SET_REPORT
+l_int|0x09
 suffix:semicolon
-id|kbd-&gt;dr.wValue
+id|kbd-&gt;cr.wValue
 op_assign
 l_int|0x200
 suffix:semicolon
-id|kbd-&gt;dr.wIndex
+id|kbd-&gt;cr.wIndex
 op_assign
 id|interface-&gt;bInterfaceNumber
 suffix:semicolon
-id|kbd-&gt;dr.wLength
+id|kbd-&gt;cr.wLength
 op_assign
 l_int|1
+suffix:semicolon
+id|usb_make_path
+c_func
+(paren
+id|dev
+comma
+id|path
+comma
+l_int|64
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|kbd-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|path
+)paren
 suffix:semicolon
 id|kbd-&gt;dev.name
 op_assign
 id|kbd-&gt;name
+suffix:semicolon
+id|kbd-&gt;dev.phys
+op_assign
+id|kbd-&gt;phys
 suffix:semicolon
 id|kbd-&gt;dev.idbus
 op_assign
@@ -1761,7 +1776,7 @@ r_void
 op_star
 )paren
 op_amp
-id|kbd-&gt;dr
+id|kbd-&gt;cr
 comma
 op_amp
 id|kbd-&gt;leds
@@ -1784,17 +1799,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on usb%d:%d.%d&bslash;n&quot;
-comma
-id|kbd-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|kbd-&gt;name
 comma
-id|dev-&gt;bus-&gt;busnum
-comma
-id|dev-&gt;devnum
-comma
-id|ifnum
+id|path
 )paren
 suffix:semicolon
 r_return

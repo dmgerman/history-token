@@ -359,12 +359,16 @@ DECL|macro|VENDOR_BELKIN
 mdefine_line|#define&t;VENDOR_BELKIN&t;&t;0x050d
 DECL|macro|VENDOR_BILLIONTON
 mdefine_line|#define&t;VENDOR_BILLIONTON&t;0x08dd
+DECL|macro|VENDOR_COMPAQ
+mdefine_line|#define&t;VENDOR_COMPAQ&t;&t;0x049f
 DECL|macro|VENDOR_COREGA
 mdefine_line|#define&t;VENDOR_COREGA&t;&t;0x07aa
 DECL|macro|VENDOR_DLINK
 mdefine_line|#define&t;VENDOR_DLINK&t;&t;0x2001
 DECL|macro|VENDOR_ELSA
 mdefine_line|#define&t;VENDOR_ELSA&t;&t;0x05cc
+DECL|macro|VENDOR_HAWKING
+mdefine_line|#define&t;VENDOR_HAWKING&t;&t;0x0e66
 DECL|macro|VENDOR_IODATA
 mdefine_line|#define&t;VENDOR_IODATA&t;&t;0x04bb
 DECL|macro|VENDOR_KINGSTON
@@ -626,6 +630,19 @@ id|HAS_HOME_PNA
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;iPAQ Networking 10/100 USB&quot;
+comma
+id|VENDOR_COMPAQ
+comma
+l_int|0x8511
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;Billionton USBEL-100&quot;
 comma
 id|VENDOR_BILLIONTON
@@ -757,6 +774,19 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;Hawking UF100 10/100 Ethernet&quot;
+comma
+id|VENDOR_HAWKING
+comma
+l_int|0x400c
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;IO DATA USB ET/TX&quot;
 comma
 id|VENDOR_IODATA
@@ -764,6 +794,19 @@ comma
 l_int|0x0904
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;IO DATA USB ET/TX-S&quot;
+comma
+id|VENDOR_IODATA
+comma
+l_int|0x0913
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func
