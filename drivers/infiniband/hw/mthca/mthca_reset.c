@@ -47,7 +47,7 @@ suffix:semicolon
 DECL|macro|MTHCA_RESET_OFFSET
 mdefine_line|#define MTHCA_RESET_OFFSET 0xf0010
 DECL|macro|MTHCA_RESET_VALUE
-mdefine_line|#define MTHCA_RESET_VALUE  cpu_to_be32(1)
+mdefine_line|#define MTHCA_RESET_VALUE  swab32(1)
 multiline_comment|/*&n;&t; * Reset the chip.  This is somewhat ugly because we have to&n;&t; * save off the PCI header before reset and then restore it&n;&t; * after the chip reboots.  We skip config space offsets 22&n;&t; * and 23 since those have a special meaning.&n;&t; *&n;&t; * To make matters worse, for Tavor (PCI-X HCA) we have to&n;&t; * find the associated bridge device and save off its PCI&n;&t; * header as well.&n;&t; */
 r_if
 c_cond
