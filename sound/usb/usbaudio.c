@@ -2721,7 +2721,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * unlink active urbs.&n; * return the number of active urbs.&n; */
+multiline_comment|/*&n; * unlink active urbs.&n; */
 DECL|function|deactivate_urbs
 r_static
 r_int
@@ -2744,8 +2744,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|alive
-comma
 id|async
 suffix:semicolon
 id|subs-&gt;running
@@ -2785,10 +2783,6 @@ c_func
 r_return
 l_int|0
 suffix:semicolon
-id|alive
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2817,9 +2811,6 @@ id|subs-&gt;active_mask
 )paren
 )paren
 (brace
-id|alive
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2906,9 +2897,6 @@ id|subs-&gt;active_mask
 )paren
 )paren
 (brace
-id|alive
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2963,11 +2951,6 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|async
-ques
-c_cond
-id|alive
-suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -3631,9 +3614,6 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* stop urbs (to be sure) */
-r_if
-c_cond
-(paren
 id|deactivate_urbs
 c_func
 (paren
@@ -3643,9 +3623,7 @@ id|force
 comma
 l_int|1
 )paren
-OG
-l_int|0
-)paren
+suffix:semicolon
 id|wait_clear_urbs
 c_func
 (paren
@@ -6026,9 +6004,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* clear urbs (to be sure) */
-r_if
-c_cond
-(paren
 id|deactivate_urbs
 c_func
 (paren
@@ -6036,11 +6011,9 @@ id|subs
 comma
 l_int|0
 comma
-l_int|0
+l_int|1
 )paren
-OG
-l_int|0
-)paren
+suffix:semicolon
 id|wait_clear_urbs
 c_func
 (paren
