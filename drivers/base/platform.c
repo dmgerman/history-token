@@ -414,7 +414,7 @@ id|pdev-&gt;dev.bus_id
 comma
 id|BUS_ID_SIZE
 comma
-l_string|&quot;%s%u&quot;
+l_string|&quot;%s.%u&quot;
 comma
 id|pdev-&gt;name
 comma

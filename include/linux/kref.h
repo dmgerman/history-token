@@ -35,7 +35,7 @@ op_star
 id|kref
 )paren
 suffix:semicolon
-r_void
+r_int
 id|kref_put
 c_func
 (paren

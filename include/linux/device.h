@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -412,10 +411,10 @@ id|bus_type
 op_star
 id|bus
 suffix:semicolon
-DECL|member|unload_sem
+DECL|member|unloaded
 r_struct
-id|semaphore
-id|unload_sem
+id|completion
+id|unloaded
 suffix:semicolon
 DECL|member|kobj
 r_struct
@@ -676,6 +675,12 @@ r_struct
 id|list_head
 id|interfaces
 suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
+multiline_comment|/* locks both the children and interfaces lists */
 DECL|member|class_attrs
 r_struct
 id|class_attribute
@@ -886,6 +891,11 @@ op_star
 r_class
 suffix:semicolon
 multiline_comment|/* required */
+DECL|member|devt
+id|dev_t
+id|devt
+suffix:semicolon
+multiline_comment|/* dev_t, creates the sysfs &quot;dev&quot; */
 DECL|member|dev
 r_struct
 id|device
