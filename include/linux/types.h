@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifndef __KERNEL_STRICT_NAMES
 DECL|typedef|__kernel_dev_t
 r_typedef
-id|__u16
+id|__u32
 id|__kernel_dev_t
 suffix:semicolon
 DECL|typedef|fd_set
