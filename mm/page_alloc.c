@@ -2289,9 +2289,6 @@ id|zone
 op_star
 op_star
 id|zones
-comma
-op_star
-id|classzone
 suffix:semicolon
 r_struct
 id|page
@@ -2344,17 +2341,13 @@ op_assign
 id|zonelist-&gt;zones
 suffix:semicolon
 multiline_comment|/* the list of zones suitable for gfp_mask */
-id|classzone
-op_assign
+r_if
+c_cond
+(paren
 id|zones
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|classzone
 op_eq
 l_int|NULL
 )paren
@@ -2714,7 +2707,7 @@ suffix:semicolon
 id|try_to_free_pages
 c_func
 (paren
-id|classzone
+id|zones
 comma
 id|gfp_mask
 comma
