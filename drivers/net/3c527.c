@@ -44,6 +44,12 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;3c527.h&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|cardname
 r_static

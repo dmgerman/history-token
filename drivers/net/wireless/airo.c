@@ -3202,6 +3202,16 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_void
+id|airo_read_wireless_stats
+(paren
+r_struct
+id|airo_info
+op_star
+id|local
+)paren
+suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT */
 macro_line|#ifdef CISCO_EXT
 r_static
@@ -3418,7 +3428,7 @@ mdefine_line|#define FLAG_PENDING_XMIT11 10
 DECL|macro|FLAG_PCI
 mdefine_line|#define FLAG_PCI&t;11
 DECL|macro|JOB_MASK
-mdefine_line|#define JOB_MASK&t;0xff0000
+mdefine_line|#define JOB_MASK&t;0x1ff0000
 DECL|macro|JOB_DIE
 mdefine_line|#define JOB_DIE&t;&t;16
 DECL|macro|JOB_XMIT
@@ -3435,6 +3445,8 @@ DECL|macro|JOB_EVENT
 mdefine_line|#define JOB_EVENT&t;22
 DECL|macro|JOB_AUTOWEP
 mdefine_line|#define JOB_AUTOWEP&t;23
+DECL|macro|JOB_WSTATS
+mdefine_line|#define JOB_WSTATS&t;24
 DECL|member|bap_read
 r_int
 (paren
@@ -7018,6 +7030,9 @@ comma
 id|StatusRid
 op_star
 id|statr
+comma
+r_int
+id|lock
 )paren
 (brace
 r_int
@@ -7038,7 +7053,7 @@ op_star
 id|statr
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 id|u16
@@ -11005,6 +11020,25 @@ c_cond
 id|test_bit
 c_func
 (paren
+id|JOB_WSTATS
+comma
+op_amp
+id|ai-&gt;flags
+)paren
+)paren
+id|airo_read_wireless_stats
+c_func
+(paren
+id|ai
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
 id|JOB_PROMISC
 comma
 op_amp
@@ -13775,14 +13809,6 @@ id|ai-&gt;config.modulation
 op_assign
 id|MOD_CCK
 suffix:semicolon
-id|ai-&gt;config._reserved1a
-(braket
-l_int|0
-)braket
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* ??? */
 macro_line|#ifdef MICSUPPORT
 r_if
 c_cond
@@ -17970,6 +17996,8 @@ id|apriv
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|readCapabilityRid
@@ -24471,6 +24499,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef WEXT_USECHANNELS
@@ -24783,6 +24813,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Note : if dwrq-&gt;flags != 0, we should&n;&t; * get the relevant SSID from the SSID list... */
@@ -25082,6 +25114,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Tentative. This seems to work, wow, I&squot;m lucky !!! */
@@ -25628,6 +25662,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|vwrq-&gt;value
@@ -28641,6 +28677,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_for
@@ -32126,26 +32164,18 @@ suffix:semicolon
 )brace
 macro_line|#ifdef WIRELESS_EXT
 multiline_comment|/*&n; * Get the Wireless stats out of the driver&n; * Note : irq and spinlock protection will occur in the subroutines&n; *&n; * TODO :&n; *&t;o Check if work in Ad-Hoc mode (otherwise, use SPY, as in wvlan_cs)&n; *&n; * Jean&n; */
-DECL|function|airo_get_wireless_stats
-r_struct
-id|iw_statistics
-op_star
-id|airo_get_wireless_stats
+DECL|function|airo_read_wireless_stats
+r_static
+r_void
+id|airo_read_wireless_stats
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
 r_struct
 id|airo_info
 op_star
 id|local
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
+)paren
+(brace
 id|StatusRid
 id|status_rid
 suffix:semicolon
@@ -32159,6 +32189,15 @@ op_assign
 id|stats_rid.vals
 suffix:semicolon
 multiline_comment|/* Get stats out of the card */
+id|clear_bit
+c_func
+(paren
+id|JOB_WSTATS
+comma
+op_amp
+id|local-&gt;flags
+)paren
+suffix:semicolon
 id|readStatusRid
 c_func
 (paren
@@ -32166,6 +32205,8 @@ id|local
 comma
 op_amp
 id|status_rid
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|readStatsRid
@@ -32178,7 +32219,14 @@ id|stats_rid
 comma
 id|RID_STATS
 comma
-l_int|1
+l_int|0
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|local-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* The status */
@@ -32307,6 +32355,65 @@ id|vals
 (braket
 l_int|34
 )braket
+suffix:semicolon
+)brace
+DECL|function|airo_get_wireless_stats
+r_struct
+id|iw_statistics
+op_star
+id|airo_get_wireless_stats
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|airo_info
+op_star
+id|local
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+multiline_comment|/* Get stats out of the card if available */
+r_if
+c_cond
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|local-&gt;sem
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_bit
+c_func
+(paren
+id|JOB_WSTATS
+comma
+op_amp
+id|local-&gt;flags
+)paren
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|local-&gt;thr_wait
+)paren
+suffix:semicolon
+)brace
+r_else
+id|airo_read_wireless_stats
+c_func
+(paren
+id|local
+)paren
 suffix:semicolon
 r_return
 op_amp

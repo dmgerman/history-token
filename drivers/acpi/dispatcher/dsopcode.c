@@ -1086,24 +1086,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Field [%4.4s] size %d exceeds Buffer [%4.4s] size %d (bits)&bslash;n&quot;
-comma
-(paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
-id|result_desc
-)paren
-op_member_access_from_pointer
-id|name.ascii
+l_string|&quot;Field size %d exceeds Buffer size %d (bits)&bslash;n&quot;
 comma
 id|bit_offset
 op_plus
 id|bit_count
-comma
-id|buffer_desc-&gt;buffer.node-&gt;name.ascii
 comma
 l_int|8
 op_star

@@ -9,6 +9,7 @@ mdefine_line|#define DRV_RELDATE&t;&quot;February 10, 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -4072,13 +4073,16 @@ op_plus
 id|TxDescCtrl
 )paren
 suffix:semicolon
-macro_line|#if defined(ADDR_64BITS)
 id|writel
 c_func
 (paren
+(paren
 id|np-&gt;queue_mem_dma
 op_rshift
-l_int|32
+l_int|16
+)paren
+op_rshift
+l_int|16
 comma
 id|ioaddr
 op_plus
@@ -4088,9 +4092,13 @@ suffix:semicolon
 id|writel
 c_func
 (paren
+(paren
 id|np-&gt;queue_mem_dma
 op_rshift
-l_int|32
+l_int|16
+)paren
+op_rshift
+l_int|16
 comma
 id|ioaddr
 op_plus
@@ -4100,47 +4108,19 @@ suffix:semicolon
 id|writel
 c_func
 (paren
+(paren
 id|np-&gt;queue_mem_dma
 op_rshift
-l_int|32
+l_int|16
+)paren
+op_rshift
+l_int|16
 comma
 id|ioaddr
 op_plus
 id|CompletionHiAddr
 )paren
 suffix:semicolon
-macro_line|#else
-id|writel
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|RxDescQHiAddr
-)paren
-suffix:semicolon
-id|writel
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|TxRingHiAddr
-)paren
-suffix:semicolon
-id|writel
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|CompletionHiAddr
-)paren
-suffix:semicolon
-macro_line|#endif
 id|writel
 c_func
 (paren
