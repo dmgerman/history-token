@@ -5245,15 +5245,16 @@ id|ft_probe_fc10
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|fdc.sra
 comma
 l_int|8
+comma
+l_string|&quot;fdc (ft)&quot;
 )paren
-OL
-l_int|0
 )paren
 (brace
 macro_line|#ifndef BROKEN_FLOPPY_DRIVER
@@ -5274,41 +5275,22 @@ id|fdc.sra
 suffix:semicolon
 macro_line|#endif
 )brace
-id|request_region
-c_func
-(paren
-id|fdc.sra
-comma
-l_int|8
-comma
-l_string|&quot;fdc (ft)&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|fdc.sra
 comma
 l_int|6
-)paren
-OL
-l_int|0
-op_logical_or
-id|check_region
-c_func
-(paren
-id|fdc.dir
 comma
-l_int|1
+l_string|&quot;fdc (ft)&quot;
 )paren
-OL
-l_int|0
 )paren
 (brace
 macro_line|#ifndef BROKEN_FLOPPY_DRIVER
@@ -5329,16 +5311,10 @@ id|fdc.sra
 suffix:semicolon
 macro_line|#endif
 )brace
-id|request_region
-c_func
+r_if
+c_cond
 (paren
-id|fdc.sra
-comma
-l_int|6
-comma
-l_string|&quot;fdc (ft)&quot;
-)paren
-suffix:semicolon
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -5350,7 +5326,36 @@ l_int|1
 comma
 l_string|&quot;fdc (ft)&quot;
 )paren
+)paren
+(brace
+macro_line|#ifndef BROKEN_FLOPPY_DRIVER
+id|release_region
+c_func
+(paren
+id|fdc.sra
+comma
+l_int|6
+)paren
 suffix:semicolon
+id|TRACE_EXIT
+op_minus
+id|EBUSY
+suffix:semicolon
+macro_line|#else
+id|TRACE
+c_func
+(paren
+id|ft_t_warn
+comma
+l_string|&quot;address 0x%03x occupied (by floppy driver?), using it anyway&quot;
+comma
+id|fdc.sra
+op_plus
+l_int|7
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 id|TRACE_EXIT
 l_int|0
