@@ -115,12 +115,6 @@ id|list_head
 id|anon_inode_list
 suffix:semicolon
 multiline_comment|/* inodes having anonymous txns */
-DECL|member|mp_list
-r_struct
-id|list_head
-id|mp_list
-suffix:semicolon
-multiline_comment|/* metapages in inode&squot;s address space */
 multiline_comment|/*&n;&t; * rdwrlock serializes xtree between reads &amp; writes and synchronizes&n;&t; * changes to special inodes.  It&squot;s use would be redundant on&n;&t; * directories since the i_sem taken in the VFS is sufficient.&n;&t; */
 DECL|member|rdwrlock
 r_struct
