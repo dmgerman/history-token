@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/intersil.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
+DECL|macro|SUN3_INT_VECS
+mdefine_line|#define SUN3_INT_VECS 192
 r_void
 id|sun3_enable_irq
 c_func
