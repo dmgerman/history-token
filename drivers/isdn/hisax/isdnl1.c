@@ -7,8 +7,6 @@ id|l1_revision
 op_assign
 l_string|&quot;$Revision: 2.41.6.5 $&quot;
 suffix:semicolon
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;

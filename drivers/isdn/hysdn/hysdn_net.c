@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: hysdn_net.c,v 1.8.6.4 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards, net (ethernet type) handling routines.&n; *&n; * Author    Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; * Copyright 1999 by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * This net module has been inspired by the skeleton driver from&n; * Donald Becker (becker@CESDIS.gsfc.nasa.gov)&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;

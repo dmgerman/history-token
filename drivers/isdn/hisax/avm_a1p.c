@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: avm_a1p.c,v 2.7.6.2 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for the following AVM cards:&n; * A1 PCMCIA&n; * FRITZ!Card PCMCIA&n; * FRITZ!Card PCMCIA 2.0&n; *&n; * Author       Carsten Paeth&n; * Copyright    by Carsten Paeth     &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;
