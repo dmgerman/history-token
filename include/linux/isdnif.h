@@ -405,7 +405,6 @@ DECL|typedef|setup_parm
 )brace
 id|setup_parm
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_TTY_FAX
 multiline_comment|/* T.30 Fax G3 */
 DECL|macro|FAXIDLEN
 mdefine_line|#define FAXIDLEN 21
@@ -824,7 +823,6 @@ DECL|macro|ISDN_FAX_PHASE_D
 mdefine_line|#define ISDN_FAX_PHASE_D   &t;4
 DECL|macro|ISDN_FAX_PHASE_E
 mdefine_line|#define ISDN_FAX_PHASE_E   &t;5
-macro_line|#endif /* TTY_FAX */
 DECL|macro|ISDN_FAX_CLASS1_FAE
 mdefine_line|#define ISDN_FAX_CLASS1_FAE&t;0
 DECL|macro|ISDN_FAX_CLASS1_FTS
