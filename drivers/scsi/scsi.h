@@ -1370,11 +1370,6 @@ id|request_queue_t
 op_star
 id|request_queue
 suffix:semicolon
-DECL|member|device_active
-id|atomic_t
-id|device_active
-suffix:semicolon
-multiline_comment|/* commands checked out for device */
 DECL|member|device_busy
 r_volatile
 r_int
