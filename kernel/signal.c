@@ -3002,11 +3002,6 @@ id|sig
 op_eq
 op_minus
 l_int|1
-op_logical_or
-id|tsk-&gt;exit_signal
-op_eq
-op_minus
-l_int|1
 )paren
 id|BUG
 c_func
