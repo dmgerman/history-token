@@ -80,7 +80,7 @@ r_union
 (brace
 DECL|member|u_vec
 r_struct
-id|iovec
+id|kvec
 id|u_vec
 suffix:semicolon
 DECL|member|u_status
