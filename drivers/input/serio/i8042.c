@@ -239,18 +239,18 @@ comma
 l_string|&quot;Frequency with which keyboard LEDs should blink when kernel panics&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
-DECL|variable|i8042_noacpi
+macro_line|#ifdef CONFIG_PNP
+DECL|variable|i8042_nopnp
 r_static
 r_int
-id|i8042_noacpi
+id|i8042_nopnp
 suffix:semicolon
 id|module_param_named
 c_func
 (paren
-id|noacpi
+id|nopnp
 comma
-id|i8042_noacpi
+id|i8042_nopnp
 comma
 r_bool
 comma
@@ -260,9 +260,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|noacpi
+id|nopnp
 comma
-l_string|&quot;Do not use ACPI to detect controller settings&quot;
+l_string|&quot;Do not use PNP to detect controller settings&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
