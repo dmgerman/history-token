@@ -3,7 +3,6 @@ macro_line|#ifndef&t;__USA26MSG__
 DECL|macro|__USA26MSG__
 mdefine_line|#define&t;__USA26MSG__
 DECL|struct|keyspan_usa26_portControlMessage
-r_typedef
 r_struct
 id|keyspan_usa26_portControlMessage
 (brace
@@ -149,9 +148,7 @@ DECL|member|resetDataToggle
 id|resetDataToggle
 suffix:semicolon
 singleline_comment|// BOTH: reset data toggle state to DATA0
-DECL|typedef|keyspan_usa26_portControlMessage
 )brace
-id|keyspan_usa26_portControlMessage
 suffix:semicolon
 singleline_comment|// defines for bits in lcr
 DECL|macro|USA_DATABITS_5
@@ -183,7 +180,6 @@ DECL|macro|PARITY_0
 mdefine_line|#define&t;PARITY_0&t;&t;0x38
 singleline_comment|// all things called &quot;StatusMessage&quot; are sent on the status endpoint
 DECL|struct|keyspan_usa26_portStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa26_portStatusMessage
 singleline_comment|// one for each port
@@ -227,9 +223,7 @@ DECL|member|controlResponse
 id|controlResponse
 suffix:semicolon
 singleline_comment|// 1=a control message has been processed
-DECL|typedef|keyspan_usa26_portStatusMessage
 )brace
-id|keyspan_usa26_portStatusMessage
 suffix:semicolon
 singleline_comment|// bits in RX data message when STAT byte is included
 DECL|macro|RXERROR_OVERRUN
@@ -241,7 +235,6 @@ mdefine_line|#define&t;RXERROR_FRAMING&t;0x08
 DECL|macro|RXERROR_BREAK
 mdefine_line|#define&t;RXERROR_BREAK&t;0x10
 DECL|struct|keyspan_usa26_globalControlMessage
-r_typedef
 r_struct
 id|keyspan_usa26_globalControlMessage
 (brace
@@ -258,12 +251,9 @@ DECL|member|resetStatusCount
 id|resetStatusCount
 suffix:semicolon
 singleline_comment|// a cycling value
-DECL|typedef|keyspan_usa26_globalControlMessage
 )brace
-id|keyspan_usa26_globalControlMessage
 suffix:semicolon
 DECL|struct|keyspan_usa26_globalStatusMessage
-r_typedef
 r_struct
 id|keyspan_usa26_globalStatusMessage
 (brace
@@ -280,12 +270,9 @@ DECL|member|resetStatusCount
 id|resetStatusCount
 suffix:semicolon
 singleline_comment|// as in request
-DECL|typedef|keyspan_usa26_globalStatusMessage
 )brace
-id|keyspan_usa26_globalStatusMessage
 suffix:semicolon
 DECL|struct|keyspan_usa26_globalDebugMessage
-r_typedef
 r_struct
 id|keyspan_usa26_globalDebugMessage
 (brace
@@ -306,9 +293,7 @@ comma
 DECL|member|d
 id|d
 suffix:semicolon
-DECL|typedef|keyspan_usa26_globalDebugMessage
 )brace
-id|keyspan_usa26_globalDebugMessage
 suffix:semicolon
 singleline_comment|// ie: the maximum length of an EZUSB endpoint buffer
 DECL|macro|MAX_DATA_LEN

@@ -59,6 +59,7 @@ id|active_count
 suffix:semicolon
 DECL|member|device_details
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|device_details
@@ -108,6 +109,7 @@ suffix:semicolon
 multiline_comment|/* Keep duplicate of device details in each port&n;&t;   structure as well - simplifies some of the&n;&t;   callback functions etc. */
 DECL|member|device_details
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|device_details
@@ -533,6 +535,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -955,6 +958,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -1710,6 +1714,7 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
+r_struct
 id|keyspan_usa26_portStatusMessage
 op_star
 id|msg
@@ -1785,6 +1790,7 @@ suffix:semicolon
 id|msg
 op_assign
 (paren
+r_struct
 id|keyspan_usa26_portStatusMessage
 op_star
 )paren
@@ -2361,6 +2367,7 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
+r_struct
 id|keyspan_usa28_portStatusMessage
 op_star
 id|msg
@@ -2440,6 +2447,7 @@ multiline_comment|/* Now do something useful with the data */
 id|msg
 op_assign
 (paren
+r_struct
 id|keyspan_usa28_portStatusMessage
 op_star
 )paren
@@ -2762,6 +2770,7 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
+r_struct
 id|keyspan_usa49_portStatusMessage
 op_star
 id|msg
@@ -2848,6 +2857,7 @@ multiline_comment|/* Now do something useful with the data */
 id|msg
 op_assign
 (paren
+r_struct
 id|keyspan_usa49_portStatusMessage
 op_star
 )paren
@@ -3391,6 +3401,7 @@ op_assign
 id|port-&gt;serial
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -4461,6 +4472,7 @@ op_star
 id|s_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -5281,6 +5293,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -5826,6 +5839,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -6171,6 +6185,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -6667,6 +6682,7 @@ op_star
 id|s_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
@@ -6774,6 +6790,7 @@ op_star
 id|p_priv
 suffix:semicolon
 r_const
+r_struct
 id|keyspan_device_details
 op_star
 id|d_details
