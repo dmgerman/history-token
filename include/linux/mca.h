@@ -5,7 +5,9 @@ mdefine_line|#define _LINUX_MCA_H
 multiline_comment|/* FIXME: This shouldn&squot;t happen, but we need everything that previously&n; * included mca.h to compile.  Take it out later when the MCA #includes&n; * are sorted out */
 macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/* get the platform specific defines */
+macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;asm/mca.h&gt;
+macro_line|#endif
 multiline_comment|/* The detection of MCA bus is done in the real mode (using BIOS).&n; * The information is exported to the protected code, where this&n; * variable is set to one in case MCA bus was detected.&n; */
 macro_line|#ifndef MCA_bus__is_a_macro
 r_extern
