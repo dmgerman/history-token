@@ -159,6 +159,20 @@ op_star
 id|tuple
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|ip_nat_helper
+op_star
+id|__ip_nat_find_helper
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|tuple
+)paren
+suffix:semicolon
 multiline_comment|/* These return true or false. */
 r_extern
 r_int

@@ -2669,7 +2669,7 @@ id|conntrack-&gt;master
 )paren
 id|info-&gt;helper
 op_assign
-id|ip_nat_find_helper
+id|__ip_nat_find_helper
 c_func
 (paren
 op_amp
