@@ -8561,6 +8561,9 @@ suffix:colon
 r_case
 l_int|0x20
 suffix:colon
+r_case
+l_int|0x0C
+suffix:colon
 r_break
 suffix:semicolon
 r_case
@@ -12356,7 +12359,6 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//FIXME - Document
 r_void
 DECL|function|qla2x00_rescan_fcports
 id|qla2x00_rescan_fcports
@@ -12426,12 +12428,14 @@ c_cond
 (paren
 id|rescan_done
 )paren
+(brace
 id|qla2x00_config_os
 c_func
 (paren
 id|ha
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * qla2x00_config_os&n; *&t;Setup OS target and LUN structures.&n; *&n; * Input:&n; *&t;ha = adapter state pointer.&n; *&n; * Context:&n; *&t;Kernel context.&n; */
 r_static
@@ -12494,10 +12498,14 @@ l_int|NULL
 )paren
 r_continue
 suffix:semicolon
-id|tq-&gt;flags
-op_and_assign
-op_complement
+id|clear_bit
+c_func
+(paren
 id|TQF_ONLINE
+comma
+op_amp
+id|tq-&gt;flags
+)paren
 suffix:semicolon
 )brace
 id|list_for_each_entry
@@ -12895,9 +12903,14 @@ id|tq-&gt;fcport
 op_assign
 id|fcport
 suffix:semicolon
-id|tq-&gt;flags
-op_or_assign
+id|set_bit
+c_func
+(paren
 id|TQF_ONLINE
+comma
+op_amp
+id|tq-&gt;flags
+)paren
 suffix:semicolon
 id|tq-&gt;port_down_retry_count
 op_assign

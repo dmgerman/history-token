@@ -254,6 +254,15 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|qla2x00_cmd_timeout
+c_func
+(paren
+id|srb_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|qla2x00_queuecommand
 c_func
@@ -1451,70 +1460,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Global Function Prototypes in qla_xioctl.c source file.&n; */
-macro_line|#ifdef CONFIG_SCSI_QLA2XXX_IOCTL
-r_extern
-r_void
-id|qla2x00_enqueue_aen
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-r_uint16
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|qla2x00_alloc_ioctl_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|qla2x00_free_ioctl_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|qla2x00_get_ioctl_scrap_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-r_void
-op_star
-op_star
-comma
-r_uint32
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|qla2x00_free_ioctl_scrap_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
 DECL|macro|qla2x00_enqueue_aen
 mdefine_line|#define qla2x00_enqueue_aen(ha, cmd, mode)&t;do { } while (0)
 DECL|macro|qla2x00_alloc_ioctl_mem
 mdefine_line|#define qla2x00_alloc_ioctl_mem(ha)&t;&t;(0)
 DECL|macro|qla2x00_free_ioctl_mem
 mdefine_line|#define qla2x00_free_ioctl_mem(ha)&t;&t;do { } while (0)
-macro_line|#endif
 macro_line|#endif /* _QLA_GBL_H */
 eof
