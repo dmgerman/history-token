@@ -2386,6 +2386,29 @@ suffix:colon
 r_case
 id|XFS_IOC_UNRESVSP64
 suffix:colon
+multiline_comment|/* &n;&t;&t; * Only allow the sys admin to reserve space unless&n;&t;&t; * unwritten extents are enabled.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|XFS_SB_VERSION_HASEXTFLGBIT
+c_func
+(paren
+op_amp
+id|mp-&gt;m_sb
+)paren
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 r_return
 id|xfs_ioc_space
 c_func
@@ -2819,18 +2842,9 @@ suffix:semicolon
 id|__uint64_t
 id|in
 suffix:semicolon
-multiline_comment|/* Only allow the sys admin to reserve space unless&n;&t;&t; * unwritten extents are enabled.&n;&t;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|XFS_SB_VERSION_HASEXTFLGBIT
-c_func
-(paren
-op_amp
-id|mp-&gt;m_sb
-)paren
-op_logical_and
 op_logical_neg
 id|capable
 c_func
@@ -3397,24 +3411,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|XFS_ERROR
-c_func
-(paren
-id|EPERM
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|filp-&gt;f_flags
 op_amp
 id|O_RDONLY
@@ -3559,18 +3555,9 @@ id|error
 suffix:semicolon
 multiline_comment|/* done = 1 if there are more stats to get and if bulkstat */
 multiline_comment|/* should be called again (unused here, but used in dmapi) */
-multiline_comment|/* Do not allow space reservation if this is not the admin and&n;&t; * unwritten extents are turned off.&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|XFS_SB_VERSION_HASEXTFLGBIT
-c_func
-(paren
-op_amp
-id|mp-&gt;m_sb
-)paren
-op_logical_and
 op_logical_neg
 id|capable
 c_func
