@@ -15,7 +15,7 @@ macro_line|#include &quot;usbaudio.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Clemens Ladisch &lt;tiwai@suse.de&gt;&quot;
+l_string|&quot;Clemens Ladisch &lt;clemens@ladisch.de&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -27,7 +27,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 DECL|struct|usb_ms_header_descriptor
