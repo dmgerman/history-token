@@ -175,6 +175,36 @@ id|host_name
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* host specific block data */
+DECL|member|max_seg_size
+r_int
+r_int
+id|max_seg_size
+suffix:semicolon
+multiline_comment|/* see blk_queue_max_segment_size */
+DECL|member|max_hw_segs
+r_int
+r_int
+id|max_hw_segs
+suffix:semicolon
+multiline_comment|/* see blk_queue_max_hw_segments */
+DECL|member|max_phys_segs
+r_int
+r_int
+id|max_phys_segs
+suffix:semicolon
+multiline_comment|/* see blk_queue_max_phys_segments */
+DECL|member|max_sectors
+r_int
+r_int
+id|max_sectors
+suffix:semicolon
+multiline_comment|/* see blk_queue_max_sectors */
+DECL|member|unused
+r_int
+r_int
+id|unused
+suffix:semicolon
 multiline_comment|/* private data */
 DECL|member|ios
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mmc/mmc.c&n; *&n; *  Copyright (C) 2003 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/drivers/mmc/mmc.c&n; *&n; *  Copyright (C) 2003-2004 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/mmc/card.h&gt;
 macro_line|#include &lt;linux/mmc/host.h&gt;
@@ -2850,6 +2851,29 @@ suffix:semicolon
 id|host-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * By default, hosts do not support SGIO or large requests.&n;&t;&t; * They have to set these according to their abilities.&n;&t;&t; */
+id|host-&gt;max_hw_segs
+op_assign
+l_int|1
+suffix:semicolon
+id|host-&gt;max_phys_segs
+op_assign
+l_int|1
+suffix:semicolon
+id|host-&gt;max_sectors
+op_assign
+l_int|1
+op_lshift
+(paren
+id|PAGE_CACHE_SHIFT
+op_minus
+l_int|9
+)paren
+suffix:semicolon
+id|host-&gt;max_seg_size
+op_assign
+id|PAGE_CACHE_SIZE
 suffix:semicolon
 )brace
 r_return

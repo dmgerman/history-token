@@ -23,13 +23,6 @@ r_static
 r_int
 id|mmc_major
 suffix:semicolon
-DECL|variable|maxsectors
-r_static
-r_int
-id|maxsectors
-op_assign
-l_int|8
-suffix:semicolon
 multiline_comment|/*&n; * There is one mmc_blk_data per slot.&n; */
 DECL|struct|mmc_blk_data
 r_struct
@@ -1305,14 +1298,6 @@ id|md-&gt;block_bits
 op_assign
 id|card-&gt;csd.read_blkbits
 suffix:semicolon
-id|blk_queue_max_sectors
-c_func
-(paren
-id|md-&gt;queue.queue
-comma
-id|maxsectors
-)paren
-suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
@@ -1928,24 +1913,6 @@ id|module_exit
 c_func
 (paren
 id|mmc_blk_exit
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|maxsectors
-comma
-r_int
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|maxsectors
-comma
-l_string|&quot;Maximum number of sectors for a single request&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
