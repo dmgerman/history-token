@@ -137,6 +137,8 @@ DECL|macro|I2C_DRIVERID_TDA7313
 mdefine_line|#define I2C_DRIVERID_TDA7313&t;62&t;/* TDA7313 audio processor&t;*/
 DECL|macro|I2C_DRIVERID_MAX6900
 mdefine_line|#define I2C_DRIVERID_MAX6900&t;63&t;/* MAX6900 real-time clock&t;*/
+DECL|macro|I2C_DRIVERID_SAA7114H
+mdefine_line|#define I2C_DRIVERID_SAA7114H&t;64&t;/* video decoder&t;&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -281,6 +283,10 @@ DECL|macro|I2C_ALGO_OCP_IOP3XX
 mdefine_line|#define I2C_ALGO_OCP_IOP3XX  0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
 DECL|macro|I2C_ALGO_PCA
 mdefine_line|#define I2C_ALGO_PCA&t;0x150000&t;/* PCA 9564 style adapters&t;*/
+DECL|macro|I2C_ALGO_SIBYTE
+mdefine_line|#define I2C_ALGO_SIBYTE 0x150000&t;/* Broadcom SiByte SOCs&t;&t;*/
+DECL|macro|I2C_ALGO_SGI
+mdefine_line|#define I2C_ALGO_SGI&t;0x160000        /* SGI algorithm                */
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -368,6 +374,14 @@ mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
 multiline_comment|/* --- PowerPC on-chip adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_OCP
 mdefine_line|#define I2C_HW_OCP 0x00&t;/* IBM on-chip I2C adapter &t;*/
+multiline_comment|/* --- Broadcom SiByte adapters&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_SIBYTE
+mdefine_line|#define I2C_HW_SIBYTE&t;0x00
+multiline_comment|/* --- SGI adapters&t;&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_SGI_VINO
+mdefine_line|#define I2C_HW_SGI_VINO&t;0x00
+DECL|macro|I2C_HW_SGI_MACE
+mdefine_line|#define I2C_HW_SGI_MACE&t;0x01
 multiline_comment|/* --- XSCALE on-chip adapters                          */
 DECL|macro|I2C_HW_IOP321
 mdefine_line|#define I2C_HW_IOP321 0x00

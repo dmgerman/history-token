@@ -3465,7 +3465,7 @@ id|address
 comma
 id|WINB_EXTENT
 comma
-l_string|&quot;w83627hf&quot;
+id|w83627hf_driver.name
 )paren
 )paren
 (brace
