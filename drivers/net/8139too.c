@@ -6123,6 +6123,11 @@ id|daemonize
 (paren
 )paren
 suffix:semicolon
+id|reparent_to_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren

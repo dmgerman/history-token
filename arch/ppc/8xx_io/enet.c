@@ -1649,15 +1649,6 @@ id|immap_t
 op_star
 id|immap
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|_get_IMMR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|cp
 op_assign
 id|cpmp
@@ -1670,9 +1661,10 @@ id|immap_t
 op_star
 )paren
 (paren
-id|_get_IMMR
+id|mfspr
 c_func
 (paren
+id|IMMR
 )paren
 op_amp
 l_int|0xFFFF0000

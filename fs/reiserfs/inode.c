@@ -145,6 +145,10 @@ id|inode
 )paren
 suffix:semicolon
 multiline_comment|/* note this must go after the journal_end to prevent deadlock */
+id|inode-&gt;i_blocks
+op_assign
+l_int|0
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1960,12 +1964,15 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+multiline_comment|/* space reserved in transaction batch: &n;        . 3 balancings in direct-&gt;indirect conversion&n;        . 1 block involved into reiserfs_update_sd()&n;       XXX in practically impossible worst case direct2indirect()&n;       can incur (much) more that 3 balancings. */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+op_plus
+l_int|1
 suffix:semicolon
 r_int
 id|version
@@ -1979,7 +1986,12 @@ id|loff_t
 id|new_offset
 op_assign
 (paren
+(paren
+(paren
+id|loff_t
+)paren
 id|block
+)paren
 op_lshift
 id|inode-&gt;i_sb-&gt;s_blocksize_bits
 )paren
@@ -2003,6 +2015,24 @@ id|inode_items_version
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|block
+OL
+l_int|0
+)paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2065,24 +2095,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|block
-OL
-l_int|0
-)paren
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|inode-&gt;u.reiserfs_i.i_pack_on_close
 op_assign
 l_int|1
@@ -2103,16 +2115,8 @@ id|key
 comma
 id|inode
 comma
-(paren
-id|loff_t
-)paren
-id|block
-op_star
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_plus
-l_int|1
+id|new_offset
 comma
-singleline_comment|// k_offset
 id|TYPE_ANY
 comma
 l_int|3
@@ -2126,8 +2130,10 @@ c_cond
 id|new_offset
 op_plus
 id|inode-&gt;i_sb-&gt;s_blocksize
+op_minus
+l_int|1
 )paren
-op_ge
+OG
 id|inode-&gt;i_size
 )paren
 (brace
@@ -2400,15 +2406,26 @@ id|ih
 )paren
 )paren
 (brace
+id|b_blocknr_t
+id|unfm_ptr
+suffix:semicolon
 multiline_comment|/* &squot;block&squot;-th block is in the file already (there is&n;&t;   corresponding cell in some indirect item). But it may be&n;&t;   zero unformatted node pointer (hole) */
-r_if
-c_cond
+id|unfm_ptr
+op_assign
+id|le32_to_cpu
 (paren
-op_logical_neg
 id|item
 (braket
 id|pos_in_item
 )braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unfm_ptr
+op_eq
+l_int|0
 )paren
 (brace
 multiline_comment|/* use allocated block to plug the hole */
@@ -2472,6 +2489,10 @@ id|cpu_to_le32
 id|allocated_block_nr
 )paren
 suffix:semicolon
+id|unfm_ptr
+op_assign
+id|allocated_block_nr
+suffix:semicolon
 id|journal_mark_dirty
 (paren
 op_amp
@@ -2505,13 +2526,7 @@ c_func
 (paren
 id|bh_result
 comma
-id|le32_to_cpu
-(paren
-id|item
-(braket
-id|pos_in_item
-)braket
-)paren
+id|unfm_ptr
 comma
 id|inode
 )paren
@@ -2522,14 +2537,12 @@ op_amp
 id|path
 )paren
 suffix:semicolon
-macro_line|#ifdef REISERFS_CHECK
 id|pop_journal_writer
 c_func
 (paren
 id|windex
 )paren
 suffix:semicolon
-macro_line|#endif /* REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -3220,8 +3233,8 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-: reiserfs_get_block: &quot;
-l_string|&quot;%k should not be found&quot;
+l_string|&quot;vs-825: reiserfs_get_block: &quot;
+l_string|&quot;%k should not be found&bslash;n&quot;
 comma
 op_amp
 id|key

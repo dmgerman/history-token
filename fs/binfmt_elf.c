@@ -2756,7 +2756,7 @@ id|vaddr
 suffix:semicolon
 id|load_addr
 op_add_assign
-id|error
+id|load_bias
 suffix:semicolon
 )brace
 )brace

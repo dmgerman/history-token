@@ -187,30 +187,6 @@ suffix:semicolon
 DECL|macro|find_lock_page
 mdefine_line|#define find_lock_page(mapping, index) &bslash;&n;&t;__find_lock_page(mapping, index, page_hash(mapping, index))
 r_extern
-r_struct
-id|page
-op_star
-id|__find_get_swapcache_page
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-r_int
-id|index
-comma
-r_struct
-id|page
-op_star
-op_star
-id|hash
-)paren
-suffix:semicolon
-DECL|macro|find_get_swapcache_page
-mdefine_line|#define find_get_swapcache_page(mapping, index) &bslash;&n;&t;__find_get_swapcache_page(mapping, index, page_hash(mapping, index))
-r_extern
 r_void
 id|__add_page_to_hash_queue
 c_func

@@ -99,6 +99,16 @@ comma
 id|nr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This code does not work at all for AFS (it has a bitmap&n;&t; * free list).  As AFS is supposed to be read-only no one&n;&t; * should call this for an AFS filesystem anyway...&n;&t; */
+r_if
+c_cond
+(paren
+id|sb-&gt;sv_type
+op_eq
+id|FSTYPE_AFS
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,6 +660,17 @@ id|block
 suffix:semicolon
 r_int
 id|n
+suffix:semicolon
+multiline_comment|/*&n;&t; * This code does not work at all for AFS (it has a bitmap&n;&t; * free list).  As AFS is supposed to be read-only we just&n;&t; * lie and say it has no free block at all.&n;&t; */
+r_if
+c_cond
+(paren
+id|sb-&gt;sv_type
+op_eq
+id|FSTYPE_AFS
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|lock_super
 c_func

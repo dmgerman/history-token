@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/kernel/fork.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-multiline_comment|/*&n; *  &squot;fork.c&squot; contains the help-routines for the &squot;fork&squot; system call&n; * (see also entry.S and others).&n; * Fork is rather simple, once you get the hang of it, but the memory&n; * management can be a bitch. See &squot;mm/memory.c&squot;: &squot;copy_page_tables()&squot;&n; */
+multiline_comment|/*&n; *  &squot;fork.c&squot; contains the help-routines for the &squot;fork&squot; system call&n; * (see also entry.S and others).&n; * Fork is rather simple, once you get the hang of it, but the memory&n; * management can be a bitch. See &squot;mm/memory.c&squot;: &squot;copy_page_range()&squot;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -502,6 +502,10 @@ id|mm-&gt;map_count
 op_assign
 l_int|0
 suffix:semicolon
+id|mm-&gt;rss
+op_assign
+l_int|0
+suffix:semicolon
 id|mm-&gt;cpu_vm_mask
 op_assign
 l_int|0
@@ -514,6 +518,34 @@ id|pprev
 op_assign
 op_amp
 id|mm-&gt;mmap
+suffix:semicolon
+multiline_comment|/*&n;&t; * Add it to the mmlist after the parent.&n;&t; * Doing it this way means that we can order the list,&n;&t; * and fork() won&squot;t mess up the ordering significantly.&n;&t; * Add it first so that swapoff can see any swap entries.&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mmlist_lock
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|mm-&gt;mmlist
+comma
+op_amp
+id|current-&gt;mm-&gt;mmlist
+)paren
+suffix:semicolon
+id|mmlist_nr
+op_increment
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mmlist_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -583,9 +615,6 @@ suffix:semicolon
 id|tmp-&gt;vm_mm
 op_assign
 id|mm
-suffix:semicolon
-id|mm-&gt;map_count
-op_increment
 suffix:semicolon
 id|tmp-&gt;vm_next
 op_assign
@@ -671,7 +700,27 @@ id|inode-&gt;i_mapping-&gt;i_shared_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Copy the pages, but defer checking for errors */
+multiline_comment|/*&n;&t;&t; * Link in the new vma and copy the page table entries:&n;&t;&t; * link in first so that swapoff can see swap entries.&n;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+op_star
+id|pprev
+op_assign
+id|tmp
+suffix:semicolon
+id|pprev
+op_assign
+op_amp
+id|tmp-&gt;vm_next
+suffix:semicolon
+id|mm-&gt;map_count
+op_increment
+suffix:semicolon
 id|retval
 op_assign
 id|copy_page_range
@@ -684,12 +733,16 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|retval
-op_logical_and
 id|tmp-&gt;vm_ops
 op_logical_and
 id|tmp-&gt;vm_ops-&gt;open
@@ -701,17 +754,6 @@ c_func
 (paren
 id|tmp
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Link in the new vma even if an error occurred,&n;&t;&t; * so that exit_mmap() can clean up the mess.&n;&t;&t; */
-op_star
-id|pprev
-op_assign
-id|tmp
-suffix:semicolon
-id|pprev
-op_assign
-op_amp
-id|tmp-&gt;vm_next
 suffix:semicolon
 r_if
 c_cond
@@ -961,6 +1003,32 @@ id|mmlist_lock
 )paren
 )paren
 (brace
+r_extern
+r_struct
+id|mm_struct
+op_star
+id|swap_mm
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|swap_mm
+op_eq
+id|mm
+)paren
+id|swap_mm
+op_assign
+id|list_entry
+c_func
+(paren
+id|mm-&gt;mmlist.next
+comma
+r_struct
+id|mm_struct
+comma
+id|mmlist
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -1193,34 +1261,6 @@ c_func
 (paren
 op_amp
 id|oldmm-&gt;mmap_sem
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Add it to the mmlist after the parent.&n;&t; *&n;&t; * Doing it this way means that we can order&n;&t; * the list, and fork() won&squot;t mess up the&n;&t; * ordering significantly.&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mmlist_lock
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|mm-&gt;mmlist
-comma
-op_amp
-id|oldmm-&gt;mmlist
-)paren
-suffix:semicolon
-id|mmlist_nr
-op_increment
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mmlist_lock
 )paren
 suffix:semicolon
 r_if

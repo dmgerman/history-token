@@ -7092,6 +7092,12 @@ op_eq
 id|FILE_NOT_FOUND
 )paren
 (brace
+id|pathrelse
+(paren
+op_amp
+id|s_search_path
+)paren
+suffix:semicolon
 id|reiserfs_warning
 (paren
 l_string|&quot;PAP-5660: reiserfs_do_truncate: &quot;

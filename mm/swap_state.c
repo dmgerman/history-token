@@ -53,7 +53,12 @@ l_int|1
 r_goto
 id|in_use
 suffix:semicolon
-multiline_comment|/* We could remove it here, but page_launder will do it anyway */
+id|delete_from_swap_cache_nolock
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|UnlockPage
 c_func
 (paren
@@ -233,6 +238,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* clear PG_dirty so a subsequent set_page_dirty takes effect */
 id|flags
 op_assign
 id|page-&gt;flags
@@ -243,6 +249,12 @@ op_complement
 l_int|1
 op_lshift
 id|PG_error
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|PG_dirty
 )paren
 op_or
 (paren
@@ -278,11 +290,10 @@ id|entry.val
 )paren
 suffix:semicolon
 )brace
-DECL|function|remove_from_swap_cache
-r_static
-r_inline
+multiline_comment|/*&n; * This must be called only on pages that have&n; * been verified to be in the swap cache.&n; */
+DECL|function|__delete_from_swap_cache
 r_void
-id|remove_from_swap_cache
+id|__delete_from_swap_cache
 c_func
 (paren
 r_struct
@@ -298,6 +309,14 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
+id|swp_entry_t
+id|entry
+suffix:semicolon
+macro_line|#ifdef SWAP_CACHE_INFO
+id|swap_cache_del_total
+op_increment
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -328,11 +347,14 @@ c_func
 id|page
 )paren
 )paren
-id|PAGE_BUG
+id|BUG
 c_func
 (paren
-id|page
 )paren
+suffix:semicolon
+id|entry.val
+op_assign
+id|page-&gt;index
 suffix:semicolon
 id|PageClearSwapCache
 c_func
@@ -347,37 +369,6 @@ id|page
 )paren
 suffix:semicolon
 id|__remove_inode_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This must be called only on pages that have&n; * been verified to be in the swap cache.&n; */
-DECL|function|__delete_from_swap_cache
-r_void
-id|__delete_from_swap_cache
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-id|swp_entry_t
-id|entry
-suffix:semicolon
-id|entry.val
-op_assign
-id|page-&gt;index
-suffix:semicolon
-macro_line|#ifdef SWAP_CACHE_INFO
-id|swap_cache_del_total
-op_increment
-suffix:semicolon
-macro_line|#endif
-id|remove_from_swap_cache
 c_func
 (paren
 id|page
@@ -439,12 +430,6 @@ c_func
 (paren
 op_amp
 id|pagecache_lock
-)paren
-suffix:semicolon
-id|ClearPageDirty
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|__delete_from_swap_cache
@@ -579,16 +564,9 @@ id|swap_cache_find_total
 op_increment
 suffix:semicolon
 macro_line|#endif
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Right now the pagecache is 32-bit only.  But it&squot;s a 32 bit index. =)&n;&t;&t; */
 id|found
 op_assign
-id|find_get_swapcache_page
+id|find_get_page
 c_func
 (paren
 op_amp
@@ -597,44 +575,13 @@ comma
 id|entry.val
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|found
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageSwapCache
-c_func
-(paren
-id|found
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|found-&gt;mapping
-op_ne
-op_amp
-id|swapper_space
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Unsafe to assert PageSwapCache and mapping on page found:&n;&t; * if SMP nothing prevents swapoff from deleting this page from&n;&t; * the swap cache at this moment.  find_lock_page would prevent&n;&t; * that, but no need to change: we _have_ got the right page.&n;&t; */
 macro_line|#ifdef SWAP_CACHE_INFO
+r_if
+c_cond
+(paren
+id|found
+)paren
 id|swap_cache_find_success
 op_increment
 suffix:semicolon
@@ -643,8 +590,7 @@ r_return
 id|found
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* &n; * Locate a page of swap in physical memory, reserving swap cache space&n; * and reading the disk if it is not already cached.  If wait==0, we are&n; * only doing readahead, so don&squot;t worry if the page is already locked.&n; *&n; * A failure return means that either the page allocation failed or that&n; * the swap entry is no longer in use.&n; */
+multiline_comment|/* &n; * Locate a page of swap in physical memory, reserving swap cache space&n; * and reading the disk if it is not already cached.&n; * A failure return means that either the page allocation failed or that&n; * the swap entry is no longer in use.&n; */
 DECL|function|read_swap_cache_async
 r_struct
 id|page
@@ -660,34 +606,39 @@ r_struct
 id|page
 op_star
 id|found_page
-op_assign
-l_int|0
 comma
 op_star
 id|new_page
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure the swap entry is still in use.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|swap_duplicate
+r_struct
+id|page
+op_star
+op_star
+id|hash
+suffix:semicolon
+multiline_comment|/*&n;&t; * Look for the page in the swap cache.  Since we normally call&n;&t; * this only after lookup_swap_cache() failed, re-calling that&n;&t; * would confuse the statistics: use __find_get_page() directly.&n;&t; */
+id|hash
+op_assign
+id|page_hash
 c_func
 (paren
-id|entry
+op_amp
+id|swapper_space
+comma
+id|entry.val
 )paren
-)paren
-multiline_comment|/* Account for the swap cache */
-r_goto
-id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Look for the page in the swap cache.&n;&t; */
 id|found_page
 op_assign
-id|lookup_swap_cache
+id|__find_get_page
 c_func
 (paren
-id|entry
+op_amp
+id|swapper_space
+comma
+id|entry.val
+comma
+id|hash
 )paren
 suffix:semicolon
 r_if
@@ -696,7 +647,7 @@ c_cond
 id|found_page
 )paren
 r_goto
-id|out_free_swap
+id|out
 suffix:semicolon
 id|new_page
 op_assign
@@ -713,16 +664,21 @@ op_logical_neg
 id|new_page
 )paren
 r_goto
-id|out_free_swap
+id|out
 suffix:semicolon
 multiline_comment|/* Out of memory */
-multiline_comment|/*&n;&t; * Check the swap cache again, in case we stalled above.&n;&t; */
+multiline_comment|/*&n;&t; * Check the swap cache again, in case we stalled above.&n;&t; * The BKL is guarding against races between this check&n;&t; * and where the new page is added to the swap cache below.&n;&t; */
 id|found_page
 op_assign
-id|lookup_swap_cache
+id|__find_get_page
 c_func
 (paren
-id|entry
+op_amp
+id|swapper_space
+comma
+id|entry.val
+comma
+id|hash
 )paren
 suffix:semicolon
 r_if
@@ -730,6 +686,21 @@ c_cond
 (paren
 id|found_page
 )paren
+r_goto
+id|out_free_page
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure the swap entry is still in use.  It could have gone&n;&t; * while caller waited for BKL, or while allocating page above,&n;&t; * or while allocating page in prior call via swapin_readahead.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|swap_duplicate
+c_func
+(paren
+id|entry
+)paren
+)paren
+multiline_comment|/* Account for the swap cache */
 r_goto
 id|out_free_page
 suffix:semicolon
@@ -773,14 +744,6 @@ id|page_cache_release
 c_func
 (paren
 id|new_page
-)paren
-suffix:semicolon
-id|out_free_swap
-suffix:colon
-id|swap_free
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
 id|out

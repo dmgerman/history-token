@@ -5184,14 +5184,6 @@ id|bd_t
 op_star
 id|bd
 suffix:semicolon
-r_extern
-id|uint
-id|_get_IMMR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SCC_ENET
 r_int
 r_char
@@ -5831,9 +5823,10 @@ r_if
 c_cond
 (paren
 (paren
-id|_get_IMMR
+id|mfspr
 c_func
 (paren
+id|IMMR
 )paren
 op_amp
 l_int|0xffff

@@ -2547,6 +2547,14 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|reparent_to_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|daemonize
 c_func
 (paren

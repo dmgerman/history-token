@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_super.c,v 1.25 2001/05/25 18:25:55 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_super.c,v 1.26 2001/08/07 16:13:30 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - superblock related routines.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -148,19 +148,19 @@ c_func
 id|sbp
 )paren
 suffix:semicolon
-id|vxfs_put_inode
+id|vxfs_put_fake_inode
 c_func
 (paren
 id|infp-&gt;vsi_fship
 )paren
 suffix:semicolon
-id|vxfs_put_inode
+id|vxfs_put_fake_inode
 c_func
 (paren
 id|infp-&gt;vsi_ilist
 )paren
 suffix:semicolon
-id|vxfs_put_inode
+id|vxfs_put_fake_inode
 c_func
 (paren
 id|infp-&gt;vsi_stilist
@@ -244,7 +244,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * vxfs_read_super - read superblock into memory and initalize filesystem&n; * @sbp:&t;&t;VFS superblock (to fill)&n; * @dp:&t;&t;&t;fs private mount data&n; * @silent:&t;&t;???&n; *&n; * Description:&n; *   We are called on the first mount of a filesystem to read the&n; *   superblock into memory and do some basic setup.&n; *&n; * Returns:&n; *   The superblock on success, else %NULL.&n; *&n; * Locking:&n; *   We are under the bkl and @sbp-&gt;s_lock.&n; */
+multiline_comment|/**&n; * vxfs_read_super - read superblock into memory and initalize filesystem&n; * @sbp:&t;&t;VFS superblock (to fill)&n; * @dp:&t;&t;&t;fs private mount data&n; * @silent:&t;&t;do not complain loudly when sth is wrong&n; *&n; * Description:&n; *   We are called on the first mount of a filesystem to read the&n; *   superblock into memory and do some basic setup.&n; *&n; * Returns:&n; *   The superblock on success, else %NULL.&n; *&n; * Locking:&n; *   We are under the bkl and @sbp-&gt;s_lock.&n; */
 r_static
 r_struct
 id|super_block
@@ -362,6 +362,13 @@ op_logical_neg
 id|bp
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -369,6 +376,7 @@ id|KERN_WARNING
 l_string|&quot;vxfs: unable to read disk superblock&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|out
 suffix:semicolon
@@ -390,6 +398,12 @@ op_ne
 id|VXFS_SUPER_MAGIC
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 id|printk
 c_func
 (paren
@@ -404,9 +418,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rsbp-&gt;vs_version
 template_param
 l_int|4
+)paren
+op_logical_and
+op_logical_neg
+id|silent
 )paren
 (brace
 id|printk
@@ -446,6 +465,10 @@ id|sbp-&gt;s_magic
 op_assign
 id|rsbp-&gt;vs_magic
 suffix:semicolon
+id|sbp-&gt;s_blocksize
+op_assign
+id|rsbp-&gt;vs_bsize
+suffix:semicolon
 id|sbp-&gt;u.generic_sbp
 op_assign
 (paren
@@ -472,10 +495,6 @@ suffix:semicolon
 id|infp-&gt;vsi_oltsize
 op_assign
 id|rsbp-&gt;vs_oltsize
-suffix:semicolon
-id|sbp-&gt;s_blocksize
-op_assign
-id|rsbp-&gt;vs_bsize
 suffix:semicolon
 r_switch
 c_cond
@@ -512,6 +531,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -521,6 +549,7 @@ comma
 id|rsbp-&gt;vs_bsize
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|out
 suffix:semicolon
@@ -565,8 +594,8 @@ id|KERN_WARNING
 l_string|&quot;vxfs: unable to read fshead&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|sbp-&gt;s_op
@@ -574,10 +603,6 @@ op_assign
 op_amp
 id|vxfs_super_ops
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|sbp-&gt;s_root
 op_assign
 id|d_alloc_root
@@ -591,13 +616,14 @@ comma
 id|VXFS_ROOT_INO
 )paren
 )paren
-)paren
-)paren
-r_return
-(paren
-id|sbp
-)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbp-&gt;s_root
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -605,8 +631,43 @@ id|KERN_WARNING
 l_string|&quot;vxfs: unable to get root dentry.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|out_free_ilist
+suffix:semicolon
+)brace
+r_return
+(paren
+id|sbp
+)paren
+suffix:semicolon
+id|out_free_ilist
+suffix:colon
+id|vxfs_put_fake_inode
+c_func
+(paren
+id|infp-&gt;vsi_fship
+)paren
+suffix:semicolon
+id|vxfs_put_fake_inode
+c_func
+(paren
+id|infp-&gt;vsi_ilist
+)paren
+suffix:semicolon
+id|vxfs_put_fake_inode
+c_func
+(paren
+id|infp-&gt;vsi_stilist
+)paren
+suffix:semicolon
 id|out
 suffix:colon
+id|brelse
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -677,7 +738,8 @@ id|vxfs_fs_type
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_static

@@ -624,6 +624,12 @@ id|inode-&gt;i_mode
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|inode-&gt;i_blocks
+)paren
+(brace
 id|inode-&gt;i_op
 op_assign
 op_amp
@@ -633,6 +639,13 @@ id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|sysv_aops
+suffix:semicolon
+)brace
+r_else
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|sysv_fast_symlink_inode_operations
 suffix:semicolon
 )brace
 r_else

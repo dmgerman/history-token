@@ -2536,6 +2536,13 @@ c_func
 id|cap_bset
 )paren
 suffix:semicolon
+DECL|variable|reparent_to_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|reparent_to_init
+)paren
+suffix:semicolon
 DECL|variable|daemonize
 id|EXPORT_SYMBOL
 c_func

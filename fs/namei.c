@@ -243,7 +243,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;permission()&n; *&n; * is used to check for read/write/execute permissions on a file.&n; * We use &quot;fsuid&quot; for this, letting us set arbitrary permissions&n; * for filesystem access without changing the &quot;normal&quot; uids which&n; * are used for other things..&n; */
+multiline_comment|/*&n; *&t;vfs_permission()&n; *&n; * is used to check for read/write/execute permissions on a file.&n; * We use &quot;fsuid&quot; for this, letting us set arbitrary permissions&n; * for filesystem access without changing the &quot;normal&quot; uids which&n; * are used for other things..&n; */
 DECL|function|vfs_permission
 r_int
 id|vfs_permission
@@ -258,7 +258,7 @@ r_int
 id|mask
 )paren
 (brace
-r_int
+id|umode_t
 id|mode
 op_assign
 id|inode-&gt;i_mode
@@ -266,12 +266,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|mask
 op_amp
-id|S_IWOTH
+id|MAY_WRITE
 )paren
-op_logical_and
+(brace
+multiline_comment|/*&n;&t;&t; * Nobody gets write access to a read-only fs.&n;&t;&t; */
+r_if
+c_cond
+(paren
 id|IS_RDONLY
 c_func
 (paren
@@ -302,16 +305,10 @@ r_return
 op_minus
 id|EROFS
 suffix:semicolon
-multiline_comment|/* Nobody gets write access to a read-only fs */
+multiline_comment|/*&n;&t;&t; * Nobody gets write access to an immutable file.&n;&t;&t; */
 r_if
 c_cond
 (paren
-(paren
-id|mask
-op_amp
-id|S_IWOTH
-)paren
-op_logical_and
 id|IS_IMMUTABLE
 c_func
 (paren
@@ -322,7 +319,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-multiline_comment|/* Nobody gets write access to an immutable file */
+)brace
 r_if
 c_cond
 (paren
@@ -348,6 +345,7 @@ id|mode
 op_rshift_assign
 l_int|3
 suffix:semicolon
+multiline_comment|/*&n;&t; * If the DACs are ok we don&squot;t need any capability check.&n;&t; */
 r_if
 c_cond
 (paren
@@ -357,12 +355,44 @@ id|mode
 op_amp
 id|mask
 op_amp
-id|S_IRWXO
+(paren
+id|MAY_READ
+op_or
+id|MAY_WRITE
+op_or
+id|MAY_EXEC
+)paren
 )paren
 op_eq
 id|mask
 )paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Read/write DACs are always overridable.&n;&t; * Executable DACs are overridable if at least one exec bit is set.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|mask
+op_amp
+(paren
+id|MAY_READ
+op_or
+id|MAY_WRITE
+)paren
+)paren
 op_logical_or
+(paren
+id|inode-&gt;i_mode
+op_amp
+id|S_IXUGO
+)paren
+)paren
+r_if
+c_cond
+(paren
 id|capable
 c_func
 (paren
@@ -372,15 +402,13 @@ id|CAP_DAC_OVERRIDE
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* read and search access */
+multiline_comment|/*&n;&t; * Searching includes executable on directories, else just read.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|mask
 op_eq
-id|S_IROTH
-)paren
+id|MAY_READ
 op_logical_or
 (paren
 id|S_ISDIR
@@ -393,12 +421,7 @@ op_logical_neg
 (paren
 id|mask
 op_amp
-op_complement
-(paren
-id|S_IROTH
-op_or
-id|S_IXOTH
-)paren
+id|MAY_WRITE
 )paren
 )paren
 )paren

@@ -12,8 +12,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
 DECL|macro|DEF_PRIORITY
 mdefine_line|#define DEF_PRIORITY (6)
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
 DECL|function|age_page_up
 r_static
 r_inline
@@ -232,6 +230,14 @@ id|page
 r_return
 suffix:semicolon
 multiline_comment|/* From this point on, the odds are that we&squot;re going to&n;&t; * nuke this pte, so read and clear the pte.  This hook&n;&t; * is needed on CPUs which update the accessed and dirty&n;&t; * bits in hardware.&n;&t; */
+id|flush_cache_page
+c_func
+(paren
+id|vma
+comma
+id|address
+)paren
+suffix:semicolon
 id|pte
 op_assign
 id|ptep_get_and_clear
@@ -330,35 +336,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Is it a clean page? Then it must be recoverable&n;&t; * by just paging it in again, and we can just drop&n;&t; * it..&n;&t; *&n;&t; * However, this won&squot;t actually free any real&n;&t; * memory, as the page will just be in the page cache&n;&t; * somewhere, and as such we should just continue&n;&t; * our scan.&n;&t; *&n;&t; * Basically, this just makes it possible for us to do&n;&t; * some real work in the future in &quot;refill_inactive()&quot;.&n;&t; */
-id|flush_cache_page
-c_func
-(paren
-id|vma
-comma
-id|address
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte_dirty
-c_func
-(paren
-id|pte
-)paren
-)paren
-r_goto
-id|drop_pte
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, it&squot;s really dirty. That means that&n;&t; * we should either create a new swap cache&n;&t; * entry for it, or we should write it back&n;&t; * to its own backing store.&n;&t; */
+multiline_comment|/*&n;&t; * Is it a clean page? Then it must be recoverable&n;&t; * by just paging it in again, and we can just drop&n;&t; * it..  or if it&squot;s dirty but has backing store,&n;&t; * just mark the page dirty and drop it.&n;&t; *&n;&t; * However, this won&squot;t actually free any real&n;&t; * memory, as the page will just be in the page cache&n;&t; * somewhere, and as such we should just continue&n;&t; * our scan.&n;&t; *&n;&t; * Basically, this just makes it possible for us to do&n;&t; * some real work in the future in &quot;refill_inactive()&quot;.&n;&t; */
 r_if
 c_cond
 (paren
 id|page-&gt;mapping
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pte_dirty
+c_func
+(paren
+id|pte
+)paren
+)paren
 id|set_page_dirty
 c_func
 (paren
@@ -369,6 +362,27 @@ r_goto
 id|drop_pte
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Check PageDirty as well as pte_dirty: page may&n;&t; * have been brought back from swap by swapoff.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_dirty
+c_func
+(paren
+id|pte
+)paren
+op_logical_and
+op_logical_neg
+id|PageDirty
+c_func
+(paren
+id|page
+)paren
+)paren
+r_goto
+id|drop_pte
+suffix:semicolon
 multiline_comment|/*&n;&t; * This is a dirty, swappable page.  First of all,&n;&t; * get a suitable swap entry for it, and make sure&n;&t; * we have the swap cache set up to associate the&n;&t; * page with that swap entry.&n;&t; */
 id|entry
 op_assign
@@ -1137,6 +1151,16 @@ r_return
 id|nr
 suffix:semicolon
 )brace
+multiline_comment|/* Placeholder for swap_out(): may be updated by fork.c:mmput() */
+DECL|variable|swap_mm
+r_struct
+id|mm_struct
+op_star
+id|swap_mm
+op_assign
+op_amp
+id|init_mm
+suffix:semicolon
 DECL|function|swap_out
 r_static
 r_void
@@ -1199,11 +1223,6 @@ id|priority
 suffix:semicolon
 r_do
 (brace
-r_struct
-id|list_head
-op_star
-id|p
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1211,43 +1230,51 @@ op_amp
 id|mmlist_lock
 )paren
 suffix:semicolon
-id|p
+id|mm
 op_assign
-id|init_mm.mmlist.next
+id|swap_mm
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|p
+id|mm
 op_eq
 op_amp
-id|init_mm.mmlist
+id|init_mm
 )paren
-r_goto
-id|empty
-suffix:semicolon
-multiline_comment|/* Move it to the back of the queue.. */
-id|list_del
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-id|p
-comma
-op_amp
-id|init_mm.mmlist
-)paren
-suffix:semicolon
+(brace
 id|mm
 op_assign
 id|list_entry
 c_func
 (paren
-id|p
+id|mm-&gt;mmlist.next
+comma
+r_struct
+id|mm_struct
+comma
+id|mmlist
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mm
+op_eq
+op_amp
+id|init_mm
+)paren
+r_goto
+id|empty
+suffix:semicolon
+)brace
+multiline_comment|/* Set pointer for next call to next in the list */
+id|swap_mm
+op_assign
+id|list_entry
+c_func
+(paren
+id|mm-&gt;mmlist.next
 comma
 r_struct
 id|mm_struct
@@ -1880,6 +1907,18 @@ r_struct
 id|page
 op_star
 )paren
+suffix:semicolon
+multiline_comment|/* Can a page get here without page-&gt;mapping? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page-&gt;mapping
+)paren
+r_goto
+id|page_active
+suffix:semicolon
+id|writepage
 op_assign
 id|page-&gt;mapping-&gt;a_ops-&gt;writepage
 suffix:semicolon
@@ -2569,7 +2608,7 @@ id|inactive_target
 suffix:semicolon
 r_int
 r_int
-id|global_incative
+id|global_inactive
 op_assign
 l_int|0
 suffix:semicolon
@@ -2640,7 +2679,7 @@ id|zone-&gt;pages_high
 r_return
 l_int|1
 suffix:semicolon
-id|global_incative
+id|global_inactive
 op_add_assign
 id|inactive
 suffix:semicolon
@@ -2658,7 +2697,7 @@ id|pgdat
 suffix:semicolon
 multiline_comment|/* Global shortage? */
 r_return
-id|global_incative
+id|global_inactive
 OL
 id|global_target
 suffix:semicolon

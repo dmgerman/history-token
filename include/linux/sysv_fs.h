@@ -992,6 +992,9 @@ comma
 DECL|enumerator|FSTYPE_V7
 id|FSTYPE_V7
 comma
+DECL|enumerator|FSTYPE_AFS
+id|FSTYPE_AFS
+comma
 DECL|enumerator|FSTYPE_END
 id|FSTYPE_END
 comma
@@ -1288,6 +1291,11 @@ r_extern
 r_struct
 id|inode_operations
 id|sysv_dir_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|sysv_fast_symlink_inode_operations
 suffix:semicolon
 r_extern
 r_struct

@@ -376,7 +376,7 @@ DECL|macro|PTE_TABLE_MASK
 mdefine_line|#define PTE_TABLE_MASK&t;((PTRS_PER_PTE-1) * sizeof(pte_t))
 DECL|macro|PMD_TABLE_MASK
 mdefine_line|#define PMD_TABLE_MASK&t;((PTRS_PER_PMD-1) * sizeof(pmd_t))
-multiline_comment|/*&n; * copy one vm_area from one task to the other. Assumes the page tables&n; * already present in the new task to be cleared in the whole range&n; * covered by this vma.&n; *&n; * 08Jan98 Merged into one routine from several inline routines to reduce&n; *         variable count and make things faster. -jj&n; */
+multiline_comment|/*&n; * copy one vm_area from one task to the other. Assumes the page tables&n; * already present in the new task to be cleared in the whole range&n; * covered by this vma.&n; *&n; * 08Jan98 Merged into one routine from several inline routines to reduce&n; *         variable count and make things faster. -jj&n; *&n; * dst-&gt;page_table_lock is held on entry and exit,&n; * but may be dropped within pmd_alloc() and pte_alloc().&n; */
 DECL|function|copy_page_range
 r_int
 id|copy_page_range
@@ -456,13 +456,6 @@ id|address
 )paren
 op_minus
 l_int|1
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|dst-&gt;page_table_lock
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -823,6 +816,9 @@ c_func
 id|ptepage
 )paren
 suffix:semicolon
+id|dst-&gt;rss
+op_increment
+suffix:semicolon
 id|cont_copy_pte_range
 suffix:colon
 id|set_pte
@@ -908,25 +904,11 @@ id|src-&gt;page_table_lock
 suffix:semicolon
 id|out
 suffix:colon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dst-&gt;page_table_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|nomem
 suffix:colon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dst-&gt;page_table_lock
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -4494,7 +4476,7 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the number of handles we should do readahead io to. Also,&n;&t; * grab temporary references on them, releasing them as io completes.&n;&t; */
+multiline_comment|/*&n;&t; * Get the number of handles we should do readahead io to.&n;&t; */
 id|num
 op_assign
 id|valid_swaphandles
@@ -4536,42 +4518,11 @@ id|nr_async_pages
 )paren
 op_ge
 id|pager_daemon.swap_cluster
-op_star
-(paren
-l_int|1
 op_lshift
 id|page_cluster
 )paren
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|i
-op_increment
-OL
-id|num
-)paren
-id|swap_free
-c_func
-(paren
-id|SWP_ENTRY
-c_func
-(paren
-id|SWP_TYPE
-c_func
-(paren
-id|entry
-)paren
-comma
-id|offset
-op_increment
-)paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Ok, do the async read-ahead now */
 id|new_page
 op_assign
@@ -4594,30 +4545,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_page
-op_ne
-l_int|NULL
 )paren
+r_break
+suffix:semicolon
 id|page_cache_release
 c_func
 (paren
 id|new_page
-)paren
-suffix:semicolon
-id|swap_free
-c_func
-(paren
-id|SWP_ENTRY
-c_func
-(paren
-id|SWP_TYPE
-c_func
-(paren
-id|entry
-)paren
-comma
-id|offset
-)paren
 )paren
 suffix:semicolon
 )brace

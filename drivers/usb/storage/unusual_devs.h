@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.16 2001/07/30 00:27:59 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.20 2001/09/02 05:12:57 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; */
@@ -126,6 +126,56 @@ id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Made with the help of Edd Dumbill &lt;edd@usefulinc.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0451
+comma
+l_int|0x5409
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Frontier Labs&quot;
+comma
+l_string|&quot;Nex II Digital&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
+multiline_comment|/* Reported by Paul Stewart &lt;stewart@wetlogic.net&gt;&n; * This entry is needed because the device reports Sub=ff */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04a4
+comma
+l_int|0x0004
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Hitachi&quot;
+comma
+l_string|&quot;DVD-CAM DZ-MV100A Camcorder&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -474,6 +524,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Reported by win@geeks.nl */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0025
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;Memorystick NW-MS7&quot;
+comma
+id|US_SC_UFI
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -500,7 +577,7 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
-multiline_comment|/* Submitted by Klaus Mueller &lt;k.mueller@intership.de&gt; */
+multiline_comment|/* Submitted by Klaus Mueller &lt;k.mueller@intershop.de&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -642,30 +719,6 @@ comma
 l_string|&quot;In-System&quot;
 comma
 l_string|&quot;USB/IDE Bridge (ATA/ATAPI)&quot;
-comma
-id|US_SC_ISD200
-comma
-id|US_PR_BULK
-comma
-id|isd200_Initialization
-comma
-l_int|0
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05ab
-comma
-l_int|0x0060
-comma
-l_int|0x0100
-comma
-l_int|0x0110
-comma
-l_string|&quot;In-System&quot;
-comma
-l_string|&quot;USB 2.0/IDE Bridge (ATA/ATAPI)&quot;
 comma
 id|US_SC_ISD200
 comma
