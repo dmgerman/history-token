@@ -340,7 +340,7 @@ c_cond
 (paren
 id|sb-&gt;s_bdev
 )paren
-id|inode-&gt;i_data.backing_dev_info
+id|mapping-&gt;backing_dev_info
 op_assign
 id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
 suffix:semicolon
