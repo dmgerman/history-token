@@ -798,6 +798,9 @@ multiline_comment|/*&n;&t; * If no pte found or not present, send the problem up
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|ptep
 op_logical_or
@@ -807,6 +810,7 @@ c_func
 (paren
 op_star
 id|ptep
+)paren
 )paren
 )paren
 r_return
@@ -820,6 +824,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|access
 op_amp
 op_complement
@@ -829,6 +836,7 @@ c_func
 (paren
 op_star
 id|ptep
+)paren
 )paren
 )paren
 )paren
@@ -890,6 +898,9 @@ multiline_comment|/* We do lazy icache flushing on POWER4 */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|__is_processor
 c_func
 (paren
@@ -903,6 +914,7 @@ id|pte_pfn
 c_func
 (paren
 id|new_pte
+)paren
 )paren
 )paren
 )paren
@@ -981,6 +993,9 @@ multiline_comment|/* Check if pte already has an hpte (case 2) */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|pte_val
 c_func
 (paren
@@ -988,6 +1003,7 @@ id|old_pte
 )paren
 op_amp
 id|_PAGE_HASHPTE
+)paren
 )paren
 (brace
 multiline_comment|/* There MIGHT be an HPTE for this pte */
@@ -1110,6 +1126,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|pte_val
@@ -1119,6 +1138,7 @@ id|old_pte
 )paren
 op_amp
 id|_PAGE_HASHPTE
+)paren
 )paren
 )paren
 (brace
