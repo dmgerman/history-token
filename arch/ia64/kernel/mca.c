@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999, 2004 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; *&n; * 2003-12-08 Keith Owens &lt;kaos@sgi.com&gt;&n; *            smp_call_function() must not be called from interrupt context (can&n; *            deadlock on tasklist_lock).  Use keventd to call smp_call_function().&n; *&n; * 2004-02-01 Keith Owens &lt;kaos@sgi.com&gt;&n; *            Avoid deadlock when using printk() for MCA and INIT records.&n; *            Delete all record printing code, moved to salinfo_decode in user space.&n; */
+multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999, 2004 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; *&n; * 2003-12-08 Keith Owens &lt;kaos@sgi.com&gt;&n; *            smp_call_function() must not be called from interrupt context (can&n; *            deadlock on tasklist_lock).  Use keventd to call smp_call_function().&n; *&n; * 2004-02-01 Keith Owens &lt;kaos@sgi.com&gt;&n; *            Avoid deadlock when using printk() for MCA and INIT records.&n; *            Delete all record printing code, moved to salinfo_decode in user space.&n; *            Mark variables and functions static where possible.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -45,6 +45,7 @@ DECL|typedef|ia64_fptr_t
 id|ia64_fptr_t
 suffix:semicolon
 DECL|variable|ia64_mc_info
+r_static
 id|ia64_mc_info_t
 id|ia64_mc_info
 suffix:semicolon
@@ -154,6 +155,96 @@ id|ia64_log_init
 c_func
 (paren
 r_int
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_rendez_int_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_wakeup_int_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_cmc_int_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_cpe_int_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_cmc_int_caller
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_static
+id|irqreturn_t
+id|ia64_mca_cpe_int_caller
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -525,6 +616,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * platform dependent error handling&n; */
 macro_line|#ifndef PLATFORM_MCA_HANDLERS
+r_static
 r_void
 DECL|function|mca_handler_platform
 id|mca_handler_platform
@@ -533,6 +625,7 @@ r_void
 )paren
 (brace
 )brace
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_handler
 id|ia64_mca_cpe_int_handler
@@ -1641,6 +1734,7 @@ id|pt-&gt;r31
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|init_handler_platform
 id|init_handler_platform
@@ -1826,6 +1920,7 @@ suffix:semicolon
 multiline_comment|/* hang city if no debugger */
 )brace
 multiline_comment|/*&n; * ia64_mca_init_platform&n; *&n; *  External entry for platform specific MCA initialization.&n; *&n; *  Inputs&n; *      None&n; *&n; *  Outputs&n; *      None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_init_platform
 id|ia64_mca_init_platform
@@ -2000,6 +2095,7 @@ id|_IA64_REG_CR_CMCV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_cmc_vector_disable&n; *&n; *  Mask the corrected machine check vector register in the processor.&n; *  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      dummy(unused)&n; *&n; * Outputs&n; *&t;None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_cmc_vector_disable
 id|ia64_mca_cmc_vector_disable
@@ -2051,6 +2147,7 @@ id|cmcv.cmcv_vector
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_cmc_vector_enable&n; *&n; *  Unmask the corrected machine check vector register in the processor.&n; *  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      dummy(unused)&n; *&n; * Outputs&n; *&t;None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_cmc_vector_enable
 id|ia64_mca_cmc_vector_enable
@@ -2717,6 +2814,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup_ipi_wait&n; *&n; *&t;Wait for the inter-cpu interrupt to be sent by the&n; *&t;monarch processor once it is done with handling the&n; *&t;MCA.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_wakeup_ipi_wait
 id|ia64_mca_wakeup_ipi_wait
@@ -2827,6 +2925,7 @@ id|irr_bit
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup&n; *&n; *&t;Send an inter-cpu interrupt to wake-up a particular cpu&n; *&t;and mark that cpu to be out of rendez.&n; *&n; *  Inputs  :   cpuid&n; *  Outputs :   None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_wakeup
 id|ia64_mca_wakeup
@@ -2857,6 +2956,7 @@ id|IA64_MCA_RENDEZ_CHECKIN_NOTDONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup_all&n; *&n; *&t;Wakeup all the cpus which have rendez&squot;ed previously.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
+r_static
 r_void
 DECL|function|ia64_mca_wakeup_all
 id|ia64_mca_wakeup_all
@@ -2915,6 +3015,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * ia64_mca_rendez_interrupt_handler&n; *&n; *&t;This is handler used to put slave processors into spinloop&n; *&t;while the monarch processor does the mca handling and later&n; *&t;wake each slave up once the monarch is done.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_rendez_int_handler
 id|ia64_mca_rendez_int_handler
@@ -2983,6 +3084,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup_int_handler&n; *&n; *&t;The interrupt handler for processing the inter-cpu interrupt to the&n; *&t;slave cpu which was spinning in the rendez loop.&n; *&t;Since this spinning is done by turning off the interrupts and&n; *&t;polling on the wakeup-interrupt bit in the IRR, there is&n; *&t;nothing useful to be done in the handler.&n; *&n; *  Inputs  :   wakeup_irq  (Wakeup-interrupt bit)&n; *&t;arg&t;&t;(Interrupt handler specific argument)&n; *&t;ptregs&t;&t;(Exception frame at the time of the interrupt)&n; *  Outputs :   None&n; *&n; */
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_wakeup_int_handler
 id|ia64_mca_wakeup_int_handler
@@ -3006,6 +3108,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_return_to_sal_check&n; *&n; *&t;This is function called before going back from the OS_MCA handler&n; *&t;to the OS_MCA dispatch code which finally takes the control back&n; *&t;to the SAL.&n; *&t;The main purpose of this routine is to setup the OS_MCA to SAL&n; *&t;return state which can be used by the OS_MCA dispatch code&n; *&t;just before going back to SAL.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
+r_static
 r_void
 DECL|function|ia64_return_to_sal_check
 id|ia64_return_to_sal_check
@@ -3131,6 +3234,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ia64_mca_cmc_int_handler&n; *&n; *  This is corrected machine check interrupt handler.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format.&n; *&n; * Inputs&n; *      interrupt number&n; *      client data arg ptr&n; *      saved registers ptr&n; *&n; * Outputs&n; *&t;None&n; */
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cmc_int_handler
 id|ia64_mca_cmc_int_handler
@@ -3418,6 +3522,7 @@ mdefine_line|#define IA64_LOG_CURR_BUFFER(it)   (void *)((ia64_state_log[it].isl
 DECL|macro|IA64_LOG_COUNT
 mdefine_line|#define IA64_LOG_COUNT(it)         ia64_state_log[it].isl_count
 multiline_comment|/*&n; *  ia64_mca_cmc_int_caller&n; *&n; * &t;Triggered by sw interrupt from CMC polling routine.  Calls&n; * &t;real interrupt handler and either triggers a sw interrupt&n; * &t;on the next cpu or does cleanup at the end.&n; *&n; * Inputs&n; *&t;interrupt number&n; *&t;client data arg ptr&n; *&t;saved registers ptr&n; * Outputs&n; * &t;handled&n; */
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cmc_int_caller
 id|ia64_mca_cmc_int_caller
@@ -3613,6 +3718,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  ia64_mca_cpe_int_caller&n; *&n; * &t;Triggered by sw interrupt from CPE polling routine.  Calls&n; * &t;real interrupt handler and either triggers a sw interrupt&n; * &t;on the next cpu or does cleanup at the end.&n; *&n; * Inputs&n; *&t;interrupt number&n; *&t;client data arg ptr&n; *&t;saved registers ptr&n; * Outputs&n; * &t;handled&n; */
+r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_caller
 id|ia64_mca_cpe_int_caller
@@ -3963,6 +4069,7 @@ suffix:semicolon
 multiline_comment|/* call platform specific routines */
 )brace
 multiline_comment|/*&n; * ia64_log_init&n; *&t;Reset the OS ia64 log buffer&n; * Inputs   :   info_type   (SAL_INFO_TYPE_{MCA,INIT,CMC,CPE})&n; * Outputs&t;:&t;None&n; */
+r_static
 r_void
 DECL|function|ia64_log_init
 id|ia64_log_init
