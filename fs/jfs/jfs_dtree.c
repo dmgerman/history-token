@@ -8392,10 +8392,22 @@ comma
 (paren
 l_string|&quot;dtRelocate: lmxaddr:%Ld xaddr:%Ld:%Ld xlen:%d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lmxaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|oxaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|nxaddr
 comma
 id|xlen
@@ -10998,8 +11010,15 @@ comma
 l_string|&quot;JFS:Dtree error: &quot;
 l_string|&quot;ino = %ld, bn=%Ld, index = %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|ip-&gt;i_ino
 comma
+(paren
+r_int
+r_int
+)paren
 id|bn
 comma
 id|i
