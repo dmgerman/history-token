@@ -180,7 +180,7 @@ op_star
 id|csocket
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * cifs tcp session reconnection&n;&t; * &n;&t; * mark tcp session as reconnecting so temporarily locked&n;&t; * mark all smb sessions as reconnecting for tcp session  (TBD BB)&n;&t; * reconnect tcp session&n;&t; * wake up waiters on reconnection? - (not needed currently)&n;&t; */
+multiline_comment|/* &n;&t; * cifs tcp session reconnection&n;&t; * &n;&t; * mark tcp session as reconnecting so temporarily locked&n;&t; * mark all smb sessions as reconnecting for tcp session&n;&t; * reconnect tcp session&n;&t; * wake up waiters on reconnection? - (not needed currently)&n;&t; */
 r_int
 DECL|function|cifs_reconnect
 id|cifs_reconnect
@@ -1791,6 +1791,8 @@ r_int
 id|temp_len
 comma
 id|i
+comma
+id|j
 suffix:semicolon
 id|vol-&gt;linux_uid
 op_assign
@@ -2000,14 +2002,6 @@ suffix:semicolon
 multiline_comment|/* removed password length check, NTLM passwords&n;&t;&t;&t;&t;can be arbitrarily long */
 multiline_comment|/* if comma in password, the string will be &n;&t;&t;&t;prematurely null terminated.  Commas in password are&n;&t;&t;&t;specified across the cifs mount interface by a double&n;&t;&t;&t;comma ie ,, and a comma used as in other cases ie &squot;,&squot;&n;&t;&t;&t;as a parameter delimiter/separator is single and due&n;&t;&t;&t;to the strsep above is temporarily zeroed. */
 multiline_comment|/* NB: password legally can have multiple commas and&n;&t;&t;&t;the only illegal character in a password is null */
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nvalue: %s&quot;
-comma
-id|value
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2040,6 +2034,11 @@ id|temp_len
 op_assign
 l_char|&squot;,&squot;
 suffix:semicolon
+id|temp_len
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* move after the second comma */
 r_while
 c_loop
 (paren
@@ -2051,9 +2050,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|temp_len
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2082,15 +2078,10 @@ multiline_comment|/* single comma indicating start of next parm */
 r_break
 suffix:semicolon
 )brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nnew value with comma stuffing: %s&quot;
-comma
-id|value
-)paren
+id|temp_len
+op_increment
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2143,6 +2134,10 @@ c_loop
 id|i
 op_assign
 l_int|0
+comma
+id|j
+op_assign
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -2150,11 +2145,14 @@ id|temp_len
 suffix:semicolon
 id|i
 op_increment
+comma
+id|j
+op_increment
 )paren
 (brace
 id|vol-&gt;password
 (braket
-id|i
+id|j
 )braket
 op_assign
 id|value
@@ -4272,27 +4270,6 @@ l_int|7
 op_star
 id|HZ
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;timeout addr: %p &quot;
-comma
-op_amp
-(paren
-(paren
-op_star
-id|csocket
-)paren
-op_member_access_from_pointer
-id|sk-&gt;sk_rcvtimeo
-)paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_return
 id|rc
 suffix:semicolon
@@ -12967,7 +12944,6 @@ l_string|&quot;No session or bad tcon&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* BB future check active count of tcon and then free if needed BB */
 id|cifs_sb-&gt;tcon
 op_assign
 l_int|NULL
