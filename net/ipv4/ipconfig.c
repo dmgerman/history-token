@@ -5186,7 +5186,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ip_auto_config
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|ip_auto_config
