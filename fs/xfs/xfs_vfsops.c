@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * XFS filesystem operations.&n; *&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * XFS filesystem operations.&n; *&n; * Copyright (c) 2000-2005 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -798,7 +798,6 @@ comma
 id|ap-&gt;fsname
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Pull in the &squot;wsync&squot; and &squot;ino64&squot; mount options before we do the real&n;&t; * work of mounting and recovery.  The arg pointer will&n;&t; * be NULL when we are being called from the root mount code.&n;&t; */
 r_if
 c_cond
 (paren
@@ -952,6 +951,17 @@ op_assign
 id|ap-&gt;iosizelog
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|XFSMNT_IHASHSIZE
+)paren
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_IHASHSIZE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5855,6 +5865,10 @@ r_return
 id|EINVAL
 suffix:semicolon
 )brace
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_IHASHSIZE
+suffix:semicolon
 id|args-&gt;ihashsize
 op_assign
 id|simple_strtoul
@@ -6591,6 +6605,25 @@ id|xfs_infop-&gt;str
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|mp-&gt;m_flags
+op_amp
+id|XFS_MOUNT_IHASHSIZE
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_IHASHSIZE
+l_string|&quot;=%d&quot;
+comma
+id|mp-&gt;m_ihsize
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
