@@ -1259,7 +1259,7 @@ id|as
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * interface claiming&n; */
+multiline_comment|/*&n; * interface claims are made only at the request of user level code,&n; * which can also release them (explicitly or by closing files).&n; * they&squot;re also undone when devices disconnect.&n; */
 DECL|function|driver_probe
 r_static
 r_void
@@ -1318,11 +1318,38 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ps
 )paren
+r_return
+suffix:semicolon
+multiline_comment|/* this waits till synchronous requests complete */
+id|down_write
+(paren
+op_amp
+id|ps-&gt;devsem
+)paren
+suffix:semicolon
+multiline_comment|/* prevent new I/O requests */
+id|ps-&gt;dev
+op_assign
+l_int|0
+suffix:semicolon
 id|ps-&gt;ifclaimed
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* force async requests to complete */
+id|destroy_all_async
+(paren
+id|ps
+)paren
+suffix:semicolon
+id|up_write
+(paren
+op_amp
+id|ps-&gt;devsem
+)paren
 suffix:semicolon
 )brace
 DECL|variable|usbdevfs_driver
