@@ -1122,8 +1122,6 @@ suffix:semicolon
 id|dvb_delay
 c_func
 (paren
-id|HZ
-op_div
 l_int|10
 )paren
 suffix:semicolon
