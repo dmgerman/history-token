@@ -3624,6 +3624,10 @@ id|inode
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|ei-&gt;pde
+op_assign
+l_int|NULL
+suffix:semicolon
 id|iput
 c_func
 (paren
