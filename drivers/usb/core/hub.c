@@ -4391,8 +4391,9 @@ r_char
 op_star
 id|id
 comma
-r_int
-id|index
+r_char
+op_star
+id|string
 )paren
 (brace
 )brace
