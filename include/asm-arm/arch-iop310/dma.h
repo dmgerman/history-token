@@ -96,7 +96,7 @@ DECL|member|NDAR
 id|u32
 id|NDAR
 suffix:semicolon
-multiline_comment|/* next descriptor adress */
+multiline_comment|/* next descriptor address */
 DECL|member|PDAR
 id|u32
 id|PDAR

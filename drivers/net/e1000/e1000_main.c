@@ -4561,7 +4561,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_set_multi - Multicast and Promiscuous mode set&n; * @netdev: network interface device structure&n; *&n; * The set_multi entry point is called whenever the multicast address&n; * list or the network interface flags are updated.  This routine is&n; * resposible for configuring the hardware for proper multicast,&n; * promiscuous mode, and all-multi behavior.&n; **/
+multiline_comment|/**&n; * e1000_set_multi - Multicast and Promiscuous mode set&n; * @netdev: network interface device structure&n; *&n; * The set_multi entry point is called whenever the multicast address&n; * list or the network interface flags are updated.  This routine is&n; * responsible for configuring the hardware for proper multicast,&n; * promiscuous mode, and all-multi behavior.&n; **/
 r_static
 r_void
 DECL|function|e1000_set_multi

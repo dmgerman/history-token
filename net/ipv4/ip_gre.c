@@ -1627,7 +1627,7 @@ suffix:semicolon
 r_case
 id|ICMP_FRAG_NEEDED
 suffix:colon
-multiline_comment|/* And it is the only really necesary thing :-) */
+multiline_comment|/* And it is the only really necessary thing :-) */
 id|rel_info
 op_assign
 id|ntohs

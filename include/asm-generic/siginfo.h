@@ -82,16 +82,41 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
+DECL|member|_tid
+id|timer_t
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_pad
+r_char
+id|_pad
+(braket
+r_sizeof
+(paren
+id|__ARCH_SI_UID_T
+)paren
+op_minus
+r_sizeof
+(paren
+r_int
+)paren
+)braket
+suffix:semicolon
+DECL|member|_sigval
+id|sigval_t
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
 DECL|member|_timer
 )brace
 id|_timer
@@ -197,10 +222,12 @@ DECL|macro|si_pid
 mdefine_line|#define si_pid&t;&t;_sifields._kill._pid
 DECL|macro|si_uid
 mdefine_line|#define si_uid&t;&t;_sifields._kill._uid
-DECL|macro|si_timer1
-mdefine_line|#define si_timer1&t;_sifields._timer._timer1
-DECL|macro|si_timer2
-mdefine_line|#define si_timer2&t;_sifields._timer._timer2
+DECL|macro|si_tid
+mdefine_line|#define si_tid&t;&t;_sifields._timer._tid
+DECL|macro|si_overrun
+mdefine_line|#define si_overrun&t;_sifields._timer._overrun
+DECL|macro|si_sys_private
+mdefine_line|#define si_sys_private  _sifields._timer._sys_private
 DECL|macro|si_status
 mdefine_line|#define si_status&t;_sifields._sigchld._status
 DECL|macro|si_utime
@@ -379,6 +406,8 @@ DECL|macro|SIGEV_NONE
 mdefine_line|#define SIGEV_NONE&t;1&t;/* other notification: meaningless */
 DECL|macro|SIGEV_THREAD
 mdefine_line|#define SIGEV_THREAD&t;2&t;/* deliver via thread creation */
+DECL|macro|SIGEV_THREAD_ID
+mdefine_line|#define SIGEV_THREAD_ID 4&t;/* deliver to thread */
 DECL|macro|SIGEV_MAX_SIZE
 mdefine_line|#define SIGEV_MAX_SIZE&t;64
 macro_line|#ifndef SIGEV_PAD_SIZE
@@ -411,6 +440,10 @@ id|_pad
 (braket
 id|SIGEV_PAD_SIZE
 )braket
+suffix:semicolon
+DECL|member|_tid
+r_int
+id|_tid
 suffix:semicolon
 r_struct
 (brace
@@ -447,9 +480,21 @@ DECL|macro|sigev_notify_function
 mdefine_line|#define sigev_notify_function&t;_sigev_un._sigev_thread._function
 DECL|macro|sigev_notify_attributes
 mdefine_line|#define sigev_notify_attributes&t;_sigev_un._sigev_thread._attribute
+DECL|macro|sigev_notify_thread_id
+mdefine_line|#define sigev_notify_thread_id&t; _sigev_un._tid
 macro_line|#ifdef __KERNEL__
 r_struct
 id|siginfo
+suffix:semicolon
+r_void
+id|do_schedule_next_timer
+c_func
+(paren
+r_struct
+id|siginfo
+op_star
+id|info
+)paren
 suffix:semicolon
 macro_line|#ifndef HAVE_ARCH_COPY_SIGINFO
 macro_line|#include &lt;linux/string.h&gt;

@@ -181,24 +181,12 @@ r_extern
 r_char
 id|_stext
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROFILING
-r_extern
-r_void
-id|ppc64_profile_hook
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-id|ppc64_profile_hook
+id|profile_hook
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -715,11 +703,6 @@ id|cpu
 op_assign
 id|lpaca-&gt;xPacaIndex
 suffix:semicolon
-r_struct
-id|ItLpQueue
-op_star
-id|lpq
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
@@ -849,6 +832,10 @@ id|next_dec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
+(brace
+r_struct
+id|ItLpQueue
+op_star
 id|lpq
 op_assign
 id|lpaca-&gt;lpQueuePtr
@@ -874,6 +861,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|irq_exit
 c_func

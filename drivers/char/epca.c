@@ -8902,7 +8902,7 @@ id|ch-&gt;fepstopc
 op_assign
 id|ch-&gt;stopc
 suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------&n;&t;&t;&t;The XON / XOFF characters have changed; propogate these&n;&t;&t;&t;changes to the card.&t;&n;&t;&t;--------------------------------------------------------------- */
+multiline_comment|/* ------------------------------------------------------------&n;&t;&t;&t;The XON / XOFF characters have changed; propagate these&n;&t;&t;&t;changes to the card.&t;&n;&t;&t;--------------------------------------------------------------- */
 id|fepcmd
 c_func
 (paren
@@ -8940,7 +8940,7 @@ id|ch-&gt;fepstopca
 op_assign
 id|ch-&gt;stopca
 suffix:semicolon
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Similar to the above, this time the auxilarly XON / XOFF &n;&t;&t;&t;characters have changed; propogate these changes to the card.&n;&t;&t;------------------------------------------------------------------ */
+multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Similar to the above, this time the auxilarly XON / XOFF &n;&t;&t;&t;characters have changed; propagate these changes to the card.&n;&t;&t;------------------------------------------------------------------ */
 id|fepcmd
 c_func
 (paren

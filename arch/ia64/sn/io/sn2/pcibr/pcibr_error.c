@@ -6292,7 +6292,7 @@ l_int|32
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * need to ensure that the xtalk adress in ioe&n;     * maps to PCI error address read from bridge.&n;     * How to convert PCI address back to Xtalk address ?&n;     * (better idea: convert XTalk address to PCI address&n;     * and then do the compare!)&n;     */
+multiline_comment|/*&n;     * need to ensure that the xtalk address in ioe&n;     * maps to PCI error address read from bridge.&n;     * How to convert PCI address back to Xtalk address ?&n;     * (better idea: convert XTalk address to PCI address&n;     * and then do the compare!)&n;     */
 id|retval
 op_assign
 id|pciio_error_handler

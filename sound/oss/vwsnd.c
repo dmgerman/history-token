@@ -8,14 +8,12 @@ multiline_comment|/*&n; * Locking Notes&n; *&n; *&t;INC_USE_COUNT and DEC_USE_CO
 multiline_comment|/*&n; * Sample Format Notes&n; *&n; *&t;Lithium&squot;s DMA engine has two formats: 16-bit 2&squot;s complement&n; *&t;and 8-bit unsigned .  16-bit transfers the data unmodified, 2&n; *&t;bytes per sample.  8-bit unsigned transfers 1 byte per sample&n; *&t;and XORs each byte with 0x80.  Lithium can input or output&n; *&t;either mono or stereo in either format.&n; *&n; *&t;The AD1843 has four formats: 16-bit 2&squot;s complement, 8-bit&n; *&t;unsigned, 8-bit mu-Law and 8-bit A-Law.&n; *&n; *&t;This driver supports five formats: AFMT_S8, AFMT_U8,&n; *&t;AFMT_MU_LAW, AFMT_A_LAW, and AFMT_S16_LE.&n; *&n; *&t;For AFMT_U8 output, we keep the AD1843 in 16-bit mode, and&n; *&t;rely on Lithium&squot;s XOR to translate between U8 and S8.&n; *&n; *&t;For AFMT_S8, AFMT_MU_LAW and AFMT_A_LAW output, we have to XOR&n; *&t;the 0x80 bit in software to compensate for Lithium&squot;s XOR.&n; *&t;This happens in pcm_copy_{in,out}().&n; *&n; * Changes:&n; * 11-10-2000&t;Bartlomiej Zolnierkiewicz &lt;bkz@linux-ide.org&gt;&n; *&t;&t;Added some __init/__exit&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/semaphore.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;asm/fixmap.h&gt;
-macro_line|#include &lt;asm/cobalt.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/mach-visws/cobalt.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* debug stuff */
@@ -218,6 +216,7 @@ multiline_comment|/*&n; * li_create initializes the lithium_t structure and sets
 DECL|function|li_create
 r_static
 r_int
+id|__init
 id|li_create
 c_func
 (paren
@@ -12432,40 +12431,49 @@ id|file_operations
 id|vwsnd_audio_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|vwsnd_audio_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|vwsnd_audio_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|vwsnd_audio_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|vwsnd_audio_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|vwsnd_audio_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|vwsnd_audio_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|vwsnd_audio_release
 comma
 )brace
@@ -13252,24 +13260,29 @@ id|file_operations
 id|vwsnd_mixer_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|vwsnd_mixer_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|vwsnd_mixer_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|vwsnd_mixer_release
 comma
 )brace
@@ -13448,7 +13461,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;probe_vwsnd: lithium audio found&bslash;n&quot;
+l_string|&quot;vwsnd: lithium audio at mmio %#x irq %d&bslash;n&quot;
+comma
+id|hw_config-&gt;io_base
+comma
+id|hw_config-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -13531,7 +13548,7 @@ id|err
 r_goto
 id|fail1
 suffix:semicolon
-id|init_waitqueue
+id|init_waitqueue_head
 c_func
 (paren
 op_amp
@@ -13793,17 +13810,26 @@ op_assign
 id|devc-&gt;audio_minor
 suffix:semicolon
 multiline_comment|/* Initialize as much of *devc as possible */
+id|init_MUTEX
+c_func
+(paren
+op_amp
 id|devc-&gt;open_sema
-op_assign
-id|MUTEX
+)paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
 id|devc-&gt;io_sema
-op_assign
-id|MUTEX
+)paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
 id|devc-&gt;mix_sema
-op_assign
-id|MUTEX
+)paren
 suffix:semicolon
 id|devc-&gt;open_mode
 op_assign
@@ -13813,7 +13839,7 @@ id|devc-&gt;rport.lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|init_waitqueue
+id|init_waitqueue_head
 c_func
 (paren
 op_amp
@@ -13840,7 +13866,7 @@ id|devc-&gt;wport.lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|init_waitqueue
+id|init_waitqueue_head
 c_func
 (paren
 op_amp
@@ -14144,12 +14170,10 @@ op_amp
 id|the_hw_config
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|attach_vwsnd

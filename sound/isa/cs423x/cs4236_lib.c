@@ -1151,6 +1151,14 @@ id|CS4231_HW_CS4236B_MASK
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+l_string|&quot;CS4236+: MODE3 and extended registers not available, hardware=0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;hardware
+)paren
+suffix:semicolon
 id|snd_device_free
 c_func
 (paren

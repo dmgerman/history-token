@@ -3,6 +3,7 @@ multiline_comment|/* This is the function prototypes for the old legacy MCA inte
 macro_line|#ifndef _LINUX_MCA_LEGACY_H
 DECL|macro|_LINUX_MCA_LEGACY_H
 mdefine_line|#define _LINUX_MCA_LEGACY_H
+macro_line|#warning &quot;MCA legacy - please move your driver to the new sysfs api&quot;
 multiline_comment|/* MCA_NOTFOUND is an error condition.  The other two indicate&n; * motherboard POS registers contain the adapter.  They might be&n; * returned by the mca_find_adapter() function, and can be used as&n; * arguments to mca_read_stored_pos().  I&squot;m not going to allow direct&n; * access to the motherboard registers until we run across an adapter&n; * that requires it.  We don&squot;t know enough about them to know if it&squot;s&n; * safe.&n; *&n; * See Documentation/mca.txt or one of the existing drivers for&n; * more information.&n; */
 DECL|macro|MCA_NOTFOUND
 mdefine_line|#define MCA_NOTFOUND&t;(-1)

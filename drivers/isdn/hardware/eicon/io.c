@@ -2492,7 +2492,7 @@ r_goto
 id|Trapped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * memory based shared ram is accessable from different&n; * processors without disturbing concurrent processes.&n; */
+multiline_comment|/*&n; * memory based shared ram is accessible from different&n; * processors without disturbing concurrent processes.&n; */
 id|a-&gt;ram_out
 (paren
 id|a

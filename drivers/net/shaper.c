@@ -2187,7 +2187,7 @@ c_func
 (paren
 id|shapers
 comma
-l_string|&quot;Traffic shaper: maximum nuber of shapers&quot;
+l_string|&quot;Traffic shaper: maximum number of shapers&quot;
 )paren
 suffix:semicolon
 macro_line|#else /* MODULE */

@@ -3076,6 +3076,14 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+id|debug_printk
+c_func
+(paren
+l_string|&quot;dv1394: initialising %d&bslash;n&quot;
+comma
+id|video-&gt;id
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4273,6 +4281,12 @@ l_int|10
 )paren
 (brace
 multiline_comment|/* still active */
+id|debug_printk
+c_func
+(paren
+l_string|&quot;dv1394: stop_dma: DMA not stopped yet&bslash;n&quot;
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
@@ -4319,6 +4333,13 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
+r_else
+id|debug_printk
+c_func
+(paren
+l_string|&quot;dv1394: stop_dma: already stopped.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4410,13 +4431,14 @@ id|video-&gt;ohci_it_ctx
 )paren
 )paren
 suffix:semicolon
-id|clear_bit
+multiline_comment|/* remove tasklet */
+id|ohci1394_unregister_iso_tasklet
 c_func
 (paren
-id|video-&gt;ohci_it_ctx
+id|video-&gt;ohci
 comma
 op_amp
-id|video-&gt;ohci-&gt;it_ctx_usage
+id|video-&gt;it_tasklet
 )paren
 suffix:semicolon
 id|debug_printk
@@ -4473,13 +4495,14 @@ id|video-&gt;ohci_ir_ctx
 )paren
 )paren
 suffix:semicolon
-id|clear_bit
+multiline_comment|/* remove tasklet */
+id|ohci1394_unregister_iso_tasklet
 c_func
 (paren
-id|video-&gt;ohci_ir_ctx
+id|video-&gt;ohci
 comma
 op_amp
-id|video-&gt;ohci-&gt;ir_ctx_usage
+id|video-&gt;ir_tasklet
 )paren
 suffix:semicolon
 id|debug_printk
@@ -4505,55 +4528,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* remove tasklets */
-r_if
-c_cond
-(paren
-id|video-&gt;ohci_it_ctx
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|ohci1394_unregister_iso_tasklet
-c_func
-(paren
-id|video-&gt;ohci
-comma
-op_amp
-id|video-&gt;it_tasklet
-)paren
-suffix:semicolon
-id|video-&gt;ohci_it_ctx
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|video-&gt;ohci_ir_ctx
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|ohci1394_unregister_iso_tasklet
-c_func
-(paren
-id|video-&gt;ohci
-comma
-op_amp
-id|video-&gt;ir_tasklet
-)paren
-suffix:semicolon
-id|video-&gt;ohci_ir_ctx
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* release the ISO channel */
 r_if
 c_cond
@@ -5958,7 +5932,7 @@ id|cmd
 )paren
 (brace
 r_case
-id|DV1394_SUBMIT_FRAMES
+id|DV1394_IOC_SUBMIT_FRAMES
 suffix:colon
 (brace
 r_int
@@ -6177,7 +6151,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|DV1394_WAIT_FRAMES
+id|DV1394_IOC_WAIT_FRAMES
 suffix:colon
 (brace
 r_int
@@ -6365,7 +6339,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|DV1394_RECEIVE_FRAMES
+id|DV1394_IOC_RECEIVE_FRAMES
 suffix:colon
 (brace
 r_int
@@ -6469,7 +6443,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|DV1394_START_RECEIVE
+id|DV1394_IOC_START_RECEIVE
 suffix:colon
 (brace
 r_if
@@ -6527,7 +6501,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|DV1394_INIT
+id|DV1394_IOC_INIT
 suffix:colon
 (brace
 r_struct
@@ -6604,7 +6578,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|DV1394_SHUTDOWN
+id|DV1394_IOC_SHUTDOWN
 suffix:colon
 id|ret
 op_assign
@@ -6619,7 +6593,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DV1394_GET_STATUS
+id|DV1394_IOC_GET_STATUS
 suffix:colon
 (brace
 r_struct
@@ -9267,6 +9241,13 @@ l_int|256
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;dv1394: discontinuity detected, dropping all frames&bslash;n&quot;
+)paren
+suffix:semicolon
 id|video-&gt;dropped_frames
 op_add_assign
 id|video-&gt;n_clear_frames
@@ -9339,19 +9320,18 @@ id|video-&gt;n_frames
 id|video-&gt;dropped_frames
 op_increment
 suffix:semicolon
-id|video-&gt;n_clear_frames
-op_decrement
-suffix:semicolon
-r_if
-c_cond
+id|printk
+c_func
 (paren
-id|video-&gt;n_clear_frames
-OL
-l_int|0
+id|KERN_WARNING
+l_string|&quot;dv1394: dropped a frame during reception&bslash;n&quot;
 )paren
+suffix:semicolon
 id|video-&gt;n_clear_frames
 op_assign
-l_int|0
+id|video-&gt;n_frames
+op_minus
+l_int|1
 suffix:semicolon
 id|video-&gt;first_clear_frame
 op_assign

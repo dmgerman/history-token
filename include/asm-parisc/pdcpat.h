@@ -123,7 +123,7 @@ mdefine_line|#define PDC_PAT_HPMC               70L /* Cause processor to go int
 DECL|macro|PDC_PAT_HPMC_RENDEZ_CPU
 mdefine_line|#define PDC_PAT_HPMC_RENDEZ_CPU     0L /* go into spin loop */
 DECL|macro|PDC_PAT_HPMC_SET_PARAMS
-mdefine_line|#define PDC_PAT_HPMC_SET_PARAMS     1L /* Allows OS to specify intr which PDC &n;                                        * will use to interupt OS during machine&n;                                        * check rendezvous */
+mdefine_line|#define PDC_PAT_HPMC_SET_PARAMS     1L /* Allows OS to specify intr which PDC &n;                                        * will use to interrupt OS during machine&n;                                        * check rendezvous */
 multiline_comment|/* parameters for PDC_PAT_HPMC_SET_PARAMS: */
 DECL|macro|HPMC_SET_PARAMS_INTR
 mdefine_line|#define HPMC_SET_PARAMS_INTR &t;    1L /* Rendezvous Interrupt */

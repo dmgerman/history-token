@@ -165,7 +165,7 @@ id|err_ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These are the old (and unsafe) way of doing checksums, a warning message &n; * will be printed if they are used and an exeption occurs.&n; *&n; * these functions should go away after some time.&n; */
+multiline_comment|/*&n; * These are the old (and unsafe) way of doing checksums, a warning message &n; * will be printed if they are used and an exception occurs.&n; *&n; * these functions should go away after some time.&n; */
 DECL|macro|csum_partial_copy_fromuser
 mdefine_line|#define csum_partial_copy_fromuser csum_partial_copy_from_user
 r_int

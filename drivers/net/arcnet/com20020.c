@@ -397,6 +397,14 @@ l_int|4
 op_or
 l_int|8
 suffix:semicolon
+multiline_comment|/* CHECK: should we do this for SOHARD cards ? */
+multiline_comment|/* Enable P1Mode for backplane mode */
+id|lp-&gt;setup
+op_assign
+id|lp-&gt;setup
+op_or
+id|P1MODE
+suffix:semicolon
 id|SET_SUBADR
 c_func
 (paren
@@ -857,6 +865,7 @@ multiline_comment|/* reserve the I/O region */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1274,8 +1283,10 @@ c_cond
 (paren
 id|open
 )paren
+(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/* disable transmitter */

@@ -1,4 +1,4 @@
-multiline_comment|/* Bt832 CMOS Camera Video Processor (VP)&n;&n; The Bt832 CMOS Camera Video Processor chip connects a Quartsight CMOS &n;  color digital camera directly to video capture devices via an 8-bit,&n;  4:2:2 YUV or YCrCb video interface.&n;&n; i2c adresses: 0x88 or 0x8a&n; */
+multiline_comment|/* Bt832 CMOS Camera Video Processor (VP)&n;&n; The Bt832 CMOS Camera Video Processor chip connects a Quartsight CMOS &n;  color digital camera directly to video capture devices via an 8-bit,&n;  4:2:2 YUV or YCrCb video interface.&n;&n; i2c addresses: 0x88 or 0x8a&n; */
 multiline_comment|/* The 64 registers: */
 singleline_comment|// Input Processor
 DECL|macro|BT832_OFFSET

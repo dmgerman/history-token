@@ -377,7 +377,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Theory of operation&n; *&n; * The Au1000 MACs use a simple rx and tx descriptor ring scheme. &n; * There are four receive and four transmit descriptors.  These &n; * descriptors are not in memory; rather, they are just a set of &n; * hardware registers.&n; *&n; * Since the Au1000 has a coherent data cache, the receive and&n; * transmit buffers are allocated from the KSEG0 segment. The &n; * hardware registers, however, are still mapped at KSEG1 to&n; * make sure there&squot;s no out-of-order writes, and that all writes&n; * complete immediately.&n; */
-multiline_comment|/*&n; * Base address and interupt of the Au1xxx ethernet macs&n; */
+multiline_comment|/*&n; * Base address and interrupt of the Au1xxx ethernet macs&n; */
 r_static
 r_struct
 (brace
@@ -2009,7 +2009,7 @@ id|mii_status
 op_eq
 l_int|0x0000
 )paren
-multiline_comment|/* the mii is not accessable, try next one */
+multiline_comment|/* the mii is not accessible, try next one */
 r_continue
 suffix:semicolon
 id|phy_id0

@@ -1468,7 +1468,7 @@ id|config.mscp
 l_int|0
 )braket
 dot
-id|SCint-&gt;host
+id|SCint-&gt;device-&gt;host
 )paren
 )paren
 (brace
@@ -2407,7 +2407,7 @@ id|TYPE_TAPE
 suffix:semicolon
 id|my_mscp-&gt;target_id
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|my_mscp-&gt;ch_no
 op_assign
@@ -2415,7 +2415,7 @@ l_int|0
 suffix:semicolon
 id|my_mscp-&gt;lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 r_if
 c_cond
@@ -2831,7 +2831,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -3446,7 +3446,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 macro_line|#if (ULTRASTOR_DEBUG &amp; UD_RESET)
 id|printk

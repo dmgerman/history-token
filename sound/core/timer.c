@@ -6446,13 +6446,6 @@ OG
 l_int|0
 )paren
 (brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|tu-&gt;qlock
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

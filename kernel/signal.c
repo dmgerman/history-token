@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
@@ -1527,7 +1528,6 @@ id|sig
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* XXX: Once POSIX.1b timers are in, if si_code == SI_TIMER,&n;&t;&t;   we need to xchg out the timer overrun values.  */
 )brace
 id|recalc_sigpending
 c_func
@@ -1591,6 +1591,31 @@ comma
 id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|signr
+op_logical_and
+(paren
+(paren
+id|info-&gt;si_code
+op_amp
+id|__SI_MASK
+)paren
+op_eq
+id|__SI_TIMER
+)paren
+op_logical_and
+id|info-&gt;si_sys_private
+)paren
+(brace
+id|do_schedule_next_timer
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 r_return
 id|signr
 suffix:semicolon
@@ -2207,6 +2232,11 @@ id|q
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * fast-pathed signals for kernel-internal things like SIGSTOP&n;&t; * or SIGKILL.&n;&t; */
 r_if
 c_cond
@@ -2348,6 +2378,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 r_if
 c_cond
 (paren
@@ -2374,6 +2405,31 @@ r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|info
+OG
+l_int|1
+)paren
+op_logical_and
+(paren
+id|info-&gt;si_code
+op_eq
+id|SI_TIMER
+)paren
+)paren
+multiline_comment|/*&n;&t;&t;&t; * Set up a return to indicate that we dropped &n;&t;&t;&t; * the signal.&n;&t;&t;&t; */
+id|ret
+op_assign
+id|info-&gt;si_sys_private
+suffix:semicolon
+)brace
 id|out_set
 suffix:colon
 id|sigaddset
@@ -2386,7 +2442,7 @@ id|sig
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|LEGACY_QUEUE
@@ -2413,6 +2469,8 @@ id|t
 (brace
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2446,6 +2504,30 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|info
+OG
+l_int|2
+)paren
+op_logical_and
+(paren
+id|info-&gt;si_code
+op_eq
+id|SI_TIMER
+)paren
+)paren
+multiline_comment|/*&n;&t;&t; * Set up a return to indicate that we dropped the signal.&n;&t;&t; */
+id|ret
+op_assign
+id|info-&gt;si_sys_private
+suffix:semicolon
 multiline_comment|/* Short-circuit ignored signals.  */
 r_if
 c_cond
@@ -2458,8 +2540,8 @@ comma
 id|sig
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Support queueing exactly one non-rt signal, so that we&n;&t;   can get more detailed information about the cause of&n;&t;   the signal. */
 r_if
@@ -2474,8 +2556,8 @@ comma
 id|sig
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|ret
 op_assign
@@ -2516,6 +2598,8 @@ op_eq
 id|SIGKILL
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
@@ -2749,6 +2833,8 @@ id|mask
 suffix:semicolon
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if CONFIG_SMP
 r_if
@@ -2776,6 +2862,30 @@ comma
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|info
+OG
+l_int|2
+)paren
+op_logical_and
+(paren
+id|info-&gt;si_code
+op_eq
+id|SI_TIMER
+)paren
+)paren
+multiline_comment|/*&n;&t;&t; * Set up a return to indicate that we dropped the signal.&n;&t;&t; */
+id|ret
+op_assign
+id|info-&gt;si_sys_private
+suffix:semicolon
 multiline_comment|/* Short-circuit ignored signals.  */
 r_if
 c_cond
@@ -2789,7 +2899,7 @@ id|sig
 )paren
 )paren
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -2805,7 +2915,7 @@ id|sig
 )paren
 multiline_comment|/* This is a non-RT signal and we already have one queued.  */
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t bother zombies and stopped tasks (but&n;&t; * SIGKILL will punch through stopped state)&n;&t; */
 id|mask
@@ -3822,6 +3932,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * These are for backward compatibility with the rest of the kernel source.&n; */
+multiline_comment|/*&n; * XXX should probably nix these interfaces and update the kernel&n; * to specify explicitly whether the signal is a group signal or&n; * specific to a thread.&n; */
 r_int
 DECL|function|send_sig_info
 id|send_sig_info
@@ -3844,7 +3955,14 @@ id|p
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* XXX should nix these interfaces and update the kernel */
+multiline_comment|/*&n;&t; * We need the tasklist lock even for the specific&n;&t; * thread case (when we don&squot;t need to follow the group&n;&t; * lists) in order to avoid races with &quot;p-&gt;sighand&quot;&n;&t; * going away or changing from under us.&n;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3857,13 +3975,6 @@ id|SIG_KERNEL_BROADCAST_MASK
 )paren
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|group_send_sig_info
@@ -3874,13 +3985,6 @@ comma
 id|info
 comma
 id|p
-)paren
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
@@ -3913,6 +4017,13 @@ id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -6261,10 +6372,10 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|from-&gt;si_timer1
+id|from-&gt;si_tid
 comma
 op_amp
-id|to-&gt;si_timer1
+id|to-&gt;si_tid
 )paren
 suffix:semicolon
 id|err
@@ -6272,10 +6383,21 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|from-&gt;si_timer2
+id|from-&gt;si_overrun
 comma
 op_amp
-id|to-&gt;si_timer2
+id|to-&gt;si_overrun
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_ptr
+comma
+op_amp
+id|to-&gt;si_ptr
 )paren
 suffix:semicolon
 r_break

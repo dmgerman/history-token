@@ -228,15 +228,7 @@ DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt init_elf32_binfmt
 DECL|macro|CONFIG_BINFMT_ELF
 macro_line|#undef CONFIG_BINFMT_ELF
-macro_line|#ifdef CONFIG_BINFMT_ELF32
 DECL|macro|CONFIG_BINFMT_ELF
-mdefine_line|#define CONFIG_BINFMT_ELF CONFIG_BINFMT_ELF32
-macro_line|#endif
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-macro_line|#undef CONFIG_BINFMT_ELF_MODULE
-macro_line|#ifdef CONFIG_BINFMT_ELF32_MODULE
-DECL|macro|CONFIG_BINFMT_ELF_MODULE
-mdefine_line|#define CONFIG_BINFMT_ELF_MODULE CONFIG_BINFMT_ELF32_MODULE
-macro_line|#endif
+mdefine_line|#define CONFIG_BINFMT_ELF 1
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 eof

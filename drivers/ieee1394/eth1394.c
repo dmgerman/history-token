@@ -40,7 +40,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 641 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 770 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -1348,6 +1348,11 @@ suffix:semicolon
 id|kfree
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|hi
 )paren
 suffix:semicolon
 r_return

@@ -16,6 +16,8 @@ DECL|macro|EXT3_XATTR_INDEX_POSIX_ACL_ACCESS
 mdefine_line|#define EXT3_XATTR_INDEX_POSIX_ACL_ACCESS&t;2
 DECL|macro|EXT3_XATTR_INDEX_POSIX_ACL_DEFAULT
 mdefine_line|#define EXT3_XATTR_INDEX_POSIX_ACL_DEFAULT&t;3
+DECL|macro|EXT3_XATTR_INDEX_TRUSTED
+mdefine_line|#define EXT3_XATTR_INDEX_TRUSTED&t;&t;4
 DECL|struct|ext3_xattr_header
 r_struct
 id|ext3_xattr_header
@@ -139,6 +141,9 @@ id|name
 comma
 r_int
 id|name_len
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 DECL|member|get
@@ -164,6 +169,9 @@ id|buffer
 comma
 r_int
 id|size
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 DECL|member|set
@@ -260,6 +268,8 @@ r_void
 op_star
 comma
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -273,6 +283,8 @@ op_star
 comma
 r_char
 op_star
+comma
+r_int
 comma
 r_int
 )paren
@@ -289,6 +301,8 @@ comma
 r_const
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -325,6 +339,9 @@ r_char
 op_star
 comma
 r_int
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_extern
@@ -630,5 +647,10 @@ r_extern
 r_struct
 id|ext3_xattr_handler
 id|ext3_xattr_user_handler
+suffix:semicolon
+r_extern
+r_struct
+id|ext3_xattr_handler
+id|ext3_xattr_trusted_handler
 suffix:semicolon
 eof

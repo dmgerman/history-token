@@ -4766,7 +4766,7 @@ id|ahc-&gt;platform_data-&gt;hw_dma_mask
 )paren
 suffix:semicolon
 macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
-multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessable via DMA by the controller.&n;&t; */
+multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessible via DMA by the controller.&n;&t; */
 id|map
 op_assign
 l_int|NULL
@@ -6853,7 +6853,17 @@ id|host-&gt;unique_id
 op_assign
 id|ahc-&gt;unit
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+id|scsi_set_device
+c_func
+(paren
+id|host
+comma
+op_amp
+id|ahc-&gt;dev_softc-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
 id|scsi_set_pci_device
 c_func
 (paren

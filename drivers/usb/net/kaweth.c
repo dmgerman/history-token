@@ -208,6 +208,17 @@ multiline_comment|/* 3Com 3C19250 */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x0506
+comma
+l_int|0x11f8
+)paren
+)brace
+comma
+multiline_comment|/* 3Com 3C460 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x0557
 comma
 l_int|0x2002
@@ -2559,7 +2570,7 @@ id|kaweth
 op_assign
 id|net-&gt;priv
 suffix:semicolon
-r_char
+id|u16
 op_star
 id|private_header
 suffix:semicolon
@@ -2703,6 +2714,8 @@ id|cpu_to_le16
 c_func
 (paren
 id|skb-&gt;len
+op_minus
+l_int|2
 )paren
 suffix:semicolon
 id|kaweth-&gt;tx_skb

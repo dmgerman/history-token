@@ -62,7 +62,7 @@ DECL|macro|MD_DIMM_SIZE_BYTES
 mdefine_line|#define MD_DIMM_SIZE_BYTES(_size, _2bk) (&t;&t;&t;&t; &bslash;&n;&t;&t;( (_size) == 7 ? 0 : ( 0x4000000L &lt;&lt; (_size)) &lt;&lt; (_2bk)))&bslash;&n;
 DECL|macro|MD_DIMM_SIZE_MBYTES
 mdefine_line|#define MD_DIMM_SIZE_MBYTES(_size, _2bk) (&t;&t;&t;&t; &bslash;&n;&t; &t;( (_size) == 7 ? 0 : ( 0x40L &lt;&lt; (_size) ) &lt;&lt; (_2bk)))  &t; &bslash;&n;
-multiline_comment|/* The top 1/32 of each bank is directory memory, and not accessable&n; * via normal reads and writes */
+multiline_comment|/* The top 1/32 of each bank is directory memory, and not accessible&n; * via normal reads and writes */
 DECL|macro|MD_DIMM_USER_SIZE
 mdefine_line|#define MD_DIMM_USER_SIZE(_size)&t;((_size) * 31 / 32)
 multiline_comment|/* Minimum size of a populated bank is 64M (62M usable) */

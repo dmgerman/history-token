@@ -165,7 +165,7 @@ DECL|member|xMinCompatableSlicVrmInd
 id|u16
 id|xMinCompatableSlicVrmInd
 suffix:semicolon
-singleline_comment|// Min compatable OS VRM index x26-x27
+singleline_comment|// Min compatible OS VRM index x26-x27
 DECL|member|xLoadAreaAddr
 id|u64
 id|xLoadAreaAddr

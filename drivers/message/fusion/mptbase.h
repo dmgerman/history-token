@@ -1442,11 +1442,11 @@ r_int
 id|mtrr_reg
 suffix:semicolon
 DECL|member|pcidev
-r_void
+r_struct
+id|pci_dev
 op_star
 id|pcidev
 suffix:semicolon
-multiline_comment|/* struct pci_dev pointer */
 DECL|member|memmap
 id|u8
 op_star

@@ -22492,7 +22492,7 @@ suffix:semicolon
 id|u_int
 id|frame_class
 op_assign
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 suffix:semicolon
 id|u_short
 id|ox_id
@@ -22504,7 +22504,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|iph5526_hostdata
@@ -22603,7 +22603,7 @@ id|jiffies
 op_minus
 id|hostdata-&gt;tag_ages
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 )paren
 OG
@@ -22620,7 +22620,7 @@ id|FCP_CNTL_QTYPE_ORDERED
 suffix:semicolon
 id|hostdata-&gt;tag_ages
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 op_assign
 id|jiffies
@@ -22665,7 +22665,7 @@ op_assign
 id|htons
 c_func
 (paren
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|memcpy
@@ -22803,7 +22803,7 @@ c_func
 (paren
 id|fi
 comma
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_if
@@ -23011,7 +23011,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 r_struct
 id|iph5526_hostdata
@@ -23092,7 +23092,7 @@ c_func
 (paren
 id|fi
 comma
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_if

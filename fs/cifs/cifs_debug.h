@@ -43,27 +43,35 @@ r_extern
 r_int
 id|cifsFYI
 suffix:semicolon
+DECL|macro|cifsfyi
+mdefine_line|#define cifsfyi(format,arg...) if (cifsFYI) printk(KERN_DEBUG &quot; &quot; __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; &quot;&quot; , ## arg)
 DECL|macro|cFYI
-mdefine_line|#define cFYI(button,prspec)&bslash;&n;{ if (button &amp;&amp; cifsFYI) printk prspec; }
+mdefine_line|#define cFYI(button,prspec) if (button) cifsfyi prspec
+DECL|macro|cifswarn
+mdefine_line|#define cifswarn(format, arg...) printk(KERN_WARNING &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
 multiline_comment|/* debug event message: */
-DECL|macro|cEVENT
-mdefine_line|#define cEVENT(button,prspec)&bslash;&n;{ if (button) printk prspec; }
-multiline_comment|/* error event message: e.g., i/o error */
 r_extern
 r_int
 id|cifsERROR
 suffix:semicolon
+DECL|macro|cEVENT
+mdefine_line|#define cEVENT(format,arg...) if (cifsERROR) printk(KERN_EVENT __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+multiline_comment|/* error event message: e.g., i/o error */
+DECL|macro|cifserror
+mdefine_line|#define cifserror(format,arg...) if (cifsERROR) printk(KERN_ERR &quot; CIFS VFS: &quot; format &quot;&bslash;n&quot; &quot;&quot; , ## arg)
 DECL|macro|cERROR
-mdefine_line|#define cERROR(button, prspec)&bslash;&n;{ if (button &amp;&amp; cifsERROR) { printk prspec; if (button &gt; 1) BUG(); } }
+mdefine_line|#define cERROR(button, prspec) if (button) cifserror prspec
 multiline_comment|/*&n; *&t;debug OFF&n; *&t;---------&n; */
-macro_line|#else&t;&t;&t;&t;/* _CIFS_DEBUG */
+macro_line|#else&t;&t;/* _CIFS_DEBUG */
 DECL|macro|cERROR
 mdefine_line|#define cERROR(button,prspec)
 DECL|macro|cEVENT
-mdefine_line|#define cEVENT(button,prspec)
+mdefine_line|#define cEVENT(format,arg...)
 DECL|macro|cFYI
 mdefine_line|#define cFYI(button, prspec)
-macro_line|#endif&t;&t;&t;&t;/* _CIFS_DEBUG */
+DECL|macro|cifserror
+mdefine_line|#define cifserror(format,arg...)
+macro_line|#endif&t;&t;/* _CIFS_DEBUG */
 multiline_comment|/*&n; *&t;statistics&n; *&t;----------&n; */
 macro_line|#ifdef&t;_CIFS_STATISTICS
 DECL|macro|INCREMENT

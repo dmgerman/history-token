@@ -5582,7 +5582,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// test LBA and multiper sector transfer compatability
+singleline_comment|// test LBA and multiper sector transfer compatibility
 r_if
 c_cond
 (paren
@@ -5610,7 +5610,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// test PIO/bus matering mode compatability
+singleline_comment|// test PIO/bus matering mode compatibility
 r_if
 c_cond
 (paren
@@ -10167,7 +10167,7 @@ id|zr
 op_plus
 id|RTR_INT_CONTROL_STATUS
 suffix:semicolon
-singleline_comment|// 16 bit interupt control and status
+singleline_comment|// 16 bit interrupt control and status
 id|padapter-&gt;regScratchPad
 op_assign
 id|zr
@@ -10880,12 +10880,13 @@ id|pcidev
 r_goto
 id|unregister
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|pshost
 comma
-id|pcidev
+op_amp
+id|pcidev-&gt;dev
 )paren
 suffix:semicolon
 id|pshost-&gt;max_id

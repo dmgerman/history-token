@@ -1,5 +1,5 @@
-multiline_comment|/*&n; *  linux/drivers/ide/ide-probe.c&t;Version 1.07&t;March 18, 2001&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; */
-multiline_comment|/*&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the IDE probe module, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move drive probing code from ide.c to ide-probe.c&n; * Version 1.01&t;&t;fix compilation problem for m68k&n; * Version 1.02&t;&t;increase WAIT_PIDENTIFY to avoid CD-ROM locking at boot&n; *&t;&t;&t; by Andrea Arcangeli&n; * Version 1.03&t;&t;fix for (hwif-&gt;chipset == ide_4drives)&n; * Version 1.04&t;&t;fixed buggy treatments of known flash memory cards&n; *&n; * Version 1.05&t;&t;fix for (hwif-&gt;chipset == ide_pdc4030)&n; *&t;&t;&t;added ide6/7/8/9&n; *&t;&t;&t;allowed for secondary flash card to be detectable&n; *&t;&t;&t; with new flag : drive-&gt;ata_flash : 1;&n; * Version 1.06&t;&t;stream line request queue and prep for cascade project.&n; * Version 1.07&t;&t;max_sect &lt;= 255; slower disks would get behind and&n; * &t;&t;&t;then fall over when they get to 256.&t;Paul G.&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ide-probe.c&t;Version 1.10&t;Feb 11, 2003&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; */
+multiline_comment|/*&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the IDE probe module, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move drive probing code from ide.c to ide-probe.c&n; * Version 1.01&t;&t;fix compilation problem for m68k&n; * Version 1.02&t;&t;increase WAIT_PIDENTIFY to avoid CD-ROM locking at boot&n; *&t;&t;&t; by Andrea Arcangeli&n; * Version 1.03&t;&t;fix for (hwif-&gt;chipset == ide_4drives)&n; * Version 1.04&t;&t;fixed buggy treatments of known flash memory cards&n; *&n; * Version 1.05&t;&t;fix for (hwif-&gt;chipset == ide_pdc4030)&n; *&t;&t;&t;added ide6/7/8/9&n; *&t;&t;&t;allowed for secondary flash card to be detectable&n; *&t;&t;&t; with new flag : drive-&gt;ata_flash : 1;&n; * Version 1.06&t;&t;stream line request queue and prep for cascade project.&n; * Version 1.07&t;&t;max_sect &lt;= 255; slower disks would get behind and&n; * &t;&t;&t;then fall over when they get to 256.&t;Paul G.&n; * Version 1.10&t;&t;Update set for new IDE. drive-&gt;id is now always&n; *&t;&t;&t;valid after probe time even with noprobe&n; */
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/config.h&gt;
@@ -23,8 +23,101 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable&n; * hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting&n; * appropriate config bits.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD)&n; * devices, so in linux 2.3.x we should change this to just treat all PCMCIA&n; * drives this way, and get rid of the model-name tests below&n; * (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
+multiline_comment|/**&n; *&t;generic_id&t;&t;-&t;add a generic drive id&n; *&t;@drive:&t;drive to make an ID block for&n; *&t;&n; *&t;Add a fake id field to the drive we are passed. This allows&n; *&t;use to skip a ton of NULL checks (which people always miss) &n; *&t;and make drive properties unconditional outside of this file&n; */
+DECL|function|generic_id
+r_static
+r_int
+id|generic_id
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|drive-&gt;id
+op_assign
+id|kmalloc
+c_func
+(paren
+id|SECTOR_WORDS
+op_star
+l_int|4
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;id
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ide: out of memory for id data.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|drive-&gt;id
+comma
+l_int|0
+comma
+id|SECTOR_WORDS
+op_star
+l_int|4
+)paren
+suffix:semicolon
+id|drive-&gt;id-&gt;cyls
+op_assign
+id|drive-&gt;cyl
+suffix:semicolon
+id|drive-&gt;id-&gt;heads
+op_assign
+id|drive-&gt;head
+suffix:semicolon
+id|drive-&gt;id-&gt;sectors
+op_assign
+id|drive-&gt;sect
+suffix:semicolon
+id|drive-&gt;id-&gt;cur_cyls
+op_assign
+id|drive-&gt;cyl
+suffix:semicolon
+id|drive-&gt;id-&gt;cur_heads
+op_assign
+id|drive-&gt;head
+suffix:semicolon
+id|drive-&gt;id-&gt;cur_sectors
+op_assign
+id|drive-&gt;sect
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;UNKNOWN&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;drive_is_flashcard&t;-&t;check for compact flash&n; *&t;@drive: drive to check&n; *&n; *&t;CompactFlash cards and their brethern pretend to be removable&n; *&t;hard disks, except:&n; * &t;&t;(1) they never have a slave unit, and&n; *&t;&t;(2) they don&squot;t have doorlock mechanisms.&n; *&t;This test catches them, and is invoked elsewhere when setting&n; *&t;appropriate config bits.&n; *&n; *&t;FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD)&n; *&t;devices, so in linux 2.3.x we should change this to just treat all&n; *&t;PCMCIA  drives this way, and get rid of the model-name tests below&n; *&t;(too big of an interface change for 2.4.x).&n; *&t;At that time, we might also consider parameterizing the timeouts and&n; *&t;retries, since these are MUCH faster than mechanical drives. -M.Lord&n; */
 DECL|function|drive_is_flashcard
+r_static
 r_inline
 r_int
 id|drive_is_flashcard
@@ -149,6 +242,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* no, it is not a flash memory card */
 )brace
+multiline_comment|/**&n; *&t;do_identify&t;-&t;identify a drive&n; *&t;@drive: drive to identify &n; *&t;@cmd: command used&n; *&n; *&t;Called when we have issued a drive identify command to&n; *&t;read and parse the results. This function is run with&n; *&t;interrupts disabled. &n; */
 DECL|function|do_identify
 r_static
 r_inline
@@ -723,6 +817,20 @@ id|drive
 )paren
 )paren
 (brace
+macro_line|#if 0
+multiline_comment|/* The new IDE adapter widgets don&squot;t follow this heuristic&n;&t;&t;   so we must nowdays just bite the bullet and take the&n;&t;&t;   probe hit */
+id|ide_drive_t
+op_star
+id|mate
+op_assign
+op_amp
+id|hwif-&gt;drives
+(braket
+l_int|1
+op_xor
+id|drive-&gt;select.b.unit
+)braket
+suffix:semicolon
 id|ide_drive_t
 op_star
 id|mate
@@ -751,6 +859,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif&t;&t;
 id|drive-&gt;is_flash
 op_assign
 l_int|1
@@ -829,7 +938,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * try_to_identify() sends an ATA(PI) IDENTIFY request to a drive&n; * and waits for a response.  It also monitors irqs while this is&n; * happening, in hope of automatically determining which one is&n; * being used by the interface.&n; *&n; * Returns:&t;0  device was identified&n; *&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;2  device aborted the command (refused to identify itself)&n; */
+multiline_comment|/**&n; *&t;actual_try_to_identify&t;-&t;send ata/atapi identify&n; *&t;@drive: drive to identify&n; *&t;@cmd: comamnd to use&n; *&n; *&t;try_to_identify() sends an ATA(PI) IDENTIFY request to a drive&n; *&t;and waits for a response.  It also monitors irqs while this is&n; *&t;happening, in hope of automatically determining which one is&n; *&t;being used by the interface.&n; *&n; *&t;Returns:&t;0  device was identified&n; *&t;&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;&t;2  device aborted the command (refused to identify itself)&n; */
 DECL|function|actual_try_to_identify
 r_static
 r_int
@@ -856,7 +965,8 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|ide_ioreg_t
+r_int
+r_int
 id|hd_status
 suffix:semicolon
 r_int
@@ -920,6 +1030,7 @@ id|INDEX_STAT
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: probing with STATUS(0x%02x) instead of &quot;
 l_string|&quot;ALTSTATUS(0x%02x)&bslash;n&quot;
 comma
@@ -1162,6 +1273,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;try_to_identify&t;-&t;try to identify a drive&n; *&t;@drive: drive to probe&n; *&t;@cmd: comamnd to use&n; *&n; *&t;Issue the identify command and then do IRQ probing to&n; *&t;complete the identification when needed by finding the&n; *&t;IRQ the drive is attached to&n; */
 DECL|function|try_to_identify
 r_static
 r_int
@@ -1353,7 +1465,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_probe() has the difficult job of finding a drive if it exists,&n; * without getting hung up if it doesn&squot;t exist, without trampling on&n; * ethernet cards, and without leaving any IRQs dangling to haunt us later.&n; *&n; * If a drive is &quot;known&quot; to exist (from CMOS or kernel parameters),&n; * but does not respond right away, the probe will &quot;hang in there&quot;&n; * for the maximum wait time (about 30 seconds), otherwise it will&n; * exit much more quickly.&n; *&n; * Returns:&t;0  device was identified&n; *&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;2  device aborted the command (refused to identify itself)&n; *&t;&t;3  bad status from device (possible for ATAPI drives)&n; *&t;&t;4  probe was not attempted because failure was obvious&n; */
+multiline_comment|/**&n; *&t;do_probe&t;&t;-&t;probe an IDE device&n; *&t;@drive: drive to probe&n; *&t;@cmd: command to use&n; *&n; *&t;do_probe() has the difficult job of finding a drive if it exists,&n; *&t;without getting hung up if it doesn&squot;t exist, without trampling on&n; *&t;ethernet cards, and without leaving any IRQs dangling to haunt us later.&n; *&n; *&t;If a drive is &quot;known&quot; to exist (from CMOS or kernel parameters),&n; *&t;but does not respond right away, the probe will &quot;hang in there&quot;&n; *&t;for the maximum wait time (about 30 seconds), otherwise it will&n; *&t;exit much more quickly.&n; *&n; * Returns:&t;0  device was identified&n; *&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;2  device aborted the command (refused to identify itself)&n; *&t;&t;3  bad status from device (possible for ATAPI drives)&n; *&t;&t;4  probe was not attempted because failure was obvious&n; */
 DECL|function|do_probe
 r_static
 r_int
@@ -1972,7 +2084,7 @@ id|WIN_PIDENTIFY
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * probe_for_drive() tests for existence of a given drive using do_probe().&n; *&n; * Returns:&t;0  no device was found&n; *&t;&t;1  device was found (note: drive-&gt;present might still be 0)&n; */
+multiline_comment|/**&n; *&t;probe_for_drives&t;-&t;upper level drive probe&n; *&t;@drive: drive to probe for&n; *&n; *&t;probe_for_drive() tests for existence of a given drive using do_probe()&n; *&t;and presents things to the user as needed.&n; *&n; *&t;Returns:&t;0  no device was found&n; *&t;&t;&t;1  device was found (note: drive-&gt;present might&n; *&t;&t;&t;   still be 0)&n; */
 DECL|function|probe_for_drive
 r_static
 r_inline
@@ -1988,11 +2100,10 @@ multiline_comment|/* skip probing? */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|drive-&gt;noprobe
 )paren
-r_return
-id|drive-&gt;present
-suffix:semicolon
+(brace
 multiline_comment|/* if !(success||timed-out) */
 r_if
 c_cond
@@ -2070,6 +2181,7 @@ id|ide_disk
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: non-IDE drive, CHS=%d/%d/%d&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2094,6 +2206,7 @@ id|ide_cdrom
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ATAPI cdrom (?)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2110,8 +2223,44 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* drive was found */
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive-&gt;present
+)paren
+(brace
 r_return
-l_int|1
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|drive-&gt;id
+op_eq
+l_int|NULL
+)paren
+r_if
+c_cond
+(paren
+id|generic_id
+c_func
+(paren
+id|drive
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|drive-&gt;present
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|drive-&gt;present
 suffix:semicolon
 )brace
 DECL|function|hwif_check_region
@@ -2192,17 +2341,12 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|2000
-)paren
-suffix:semicolon
 )brace
 r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;hwif_check_regions&t;-&t;check resources for IDE&n; *&t;@hwif: interface to use&n; *&n; *&t;Checks if all the needed resources for an interface are free&n; *&t;providing the interface is PIO. Right now core IDE code does&n; *&t;this work which is deeply wrong. MMIO leaves it to the controller&n; *&t;driver, PIO will migrate this way over time&n; */
 DECL|function|hwif_check_regions
 r_static
 r_int
@@ -2530,6 +2674,250 @@ id|hwif-&gt;name
 suffix:semicolon
 )brace
 singleline_comment|//EXPORT_SYMBOL(hwif_register);
+multiline_comment|/* Enable code below on all archs later, for now, I want it on PPC&n; */
+macro_line|#ifdef CONFIG_PPC
+multiline_comment|/*&n; * This function waits for the hwif to report a non-busy status&n; * see comments in probe_hwif()&n; */
+DECL|function|wait_not_busy
+r_static
+r_int
+id|wait_not_busy
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+r_int
+r_int
+id|timeout
+)paren
+(brace
+id|u8
+id|stat
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|timeout
+op_decrement
+)paren
+(brace
+multiline_comment|/* Turn this into a schedule() sleep once I&squot;m sure&n;&t;&t; * about locking issues (2.5 work ?)&n;&t;&t; */
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|stat
+op_assign
+id|hwif
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_STATUS_OFFSET
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|stat
+op_amp
+id|BUSY_STAT
+)paren
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Assume a value of 0xff means nothing is connected to&n;&t;&t; * the interface and it doesn&squot;t implement the pull-down&n;&t;&t; * resistor on D7&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|stat
+op_eq
+l_int|0xff
+)paren
+r_break
+suffix:semicolon
+)brace
+r_return
+(paren
+(paren
+id|stat
+op_amp
+id|BUSY_STAT
+)paren
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+DECL|function|wait_hwif_ready
+r_static
+r_int
+id|wait_hwif_ready
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Probing IDE interface %s...&bslash;n&quot;
+comma
+id|hwif-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* Let HW settle down a bit from whatever init state we&n;&t; * come from */
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for BSY bit to go away, spec timeout is 30 seconds,&n;&t; * I know of at least one disk who takes 31 seconds, I use 35&n;&t; * here to be safe&n;&t; */
+id|rc
+op_assign
+id|wait_not_busy
+c_func
+(paren
+id|hwif
+comma
+l_int|35000
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+multiline_comment|/* Now make sure both master &amp; slave are ready */
+id|SELECT_DRIVE
+c_func
+(paren
+op_amp
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|hwif
+op_member_access_from_pointer
+id|OUTB
+c_func
+(paren
+l_int|8
+comma
+id|hwif-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|wait_not_busy
+c_func
+(paren
+id|hwif
+comma
+l_int|10000
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|SELECT_DRIVE
+c_func
+(paren
+op_amp
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|hwif
+op_member_access_from_pointer
+id|OUTB
+c_func
+(paren
+l_int|8
+comma
+id|hwif-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|wait_not_busy
+c_func
+(paren
+id|hwif
+comma
+l_int|10000
+)paren
+suffix:semicolon
+multiline_comment|/* Exit function with master reselected (let&squot;s be sane) */
+id|SELECT_DRIVE
+c_func
+(paren
+op_amp
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PPC */
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
 r_void
@@ -2638,6 +3026,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ERROR, PORTS ALREADY IN USE&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2658,6 +3047,7 @@ id|msgout
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ports already in use, skipping probe&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2675,33 +3065,6 @@ r_if
 c_cond
 (paren
 id|irqd
-op_ge
-id|NR_IRQS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;***WARNING***: Bogus interrupt reported. Probably a bug in the Linux ACPI&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;***WARNING***: Attempting to continue as best we can.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irqd
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|irqd
 )paren
 id|disable_irq
 c_func
@@ -2715,6 +3078,27 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC
+multiline_comment|/* This is needed on some PPCs and a bunch of BIOS-less embedded&n;&t; * platforms. Typical cases are:&n;&t; * &n;&t; *  - The firmware hard reset the disk before booting the kernel,&n;&t; *    the drive is still doing it&squot;s poweron-reset sequence, that&n;&t; *    can take up to 30 seconds&n;&t; *  - The firmware does nothing (or no firmware), the device is&n;&t; *    still in POST state (same as above actually).&n;&t; *  - Some CD/DVD/Writer combo drives tend to drive the bus during&n;&t; *    their reset sequence even when they are non-selected slave&n;&t; *    devices, thus preventing discovery of the main HD&n;&t; *    &n;&t; *  Doing this wait-for-busy should not harm any existing configuration&n;&t; *  (at least things won&squot;t be worse than what current code does, that&n;&t; *  is blindly go &amp; talk to the drive) and fix some issues like the&n;&t; *  above.&n;&t; *  &n;&t; *  BenH.&n;&t; */
+r_if
+c_cond
+(paren
+id|wait_hwif_ready
+c_func
+(paren
+id|hwif
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Wait for ready failed before probe !&bslash;n&quot;
+comma
+id|hwif-&gt;name
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC */
 multiline_comment|/*&n;&t; * Second drive should only exist if first drive was found,&n;&t; * but a lot of cdrom drives are configured as single slaves.&n;&t; */
 r_for
 c_loop
@@ -2806,6 +3190,9 @@ op_ne
 id|ide_4drives
 op_logical_or
 op_logical_neg
+id|hwif-&gt;mate
+op_logical_or
+op_logical_neg
 id|hwif-&gt;mate-&gt;present
 )paren
 (brace
@@ -2843,6 +3230,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: reset&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2963,6 +3351,11 @@ id|hwif-&gt;drives
 id|unit
 )braket
 suffix:semicolon
+r_int
+id|enable_dma
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2991,6 +3384,19 @@ comma
 l_int|255
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
+r_if
+c_cond
+(paren
+id|drive-&gt;media
+op_ne
+id|ide_disk
+)paren
+id|enable_dma
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; * MAJOR HACK BARF :-/&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: chipsets own this cruft!&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t; * Move here to prevent module loading clashing.&n;&t;&t;&t; */
 singleline_comment|//&t;&t;drive-&gt;autodma = hwif-&gt;autodma;
@@ -3025,6 +3431,11 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|enable_dma
+)paren
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_check
@@ -3077,7 +3488,6 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -3129,7 +3539,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 id|hwif-&gt;initializing
 op_assign
 l_int|0
@@ -3381,22 +3790,6 @@ id|match
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Allocate the buffer and no sleep allowed */
-id|new_hwgroup
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|ide_hwgroup_t
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-macro_line|#else
 multiline_comment|/* Allocate the buffer and potentially sleep first */
 id|new_hwgroup
 op_assign
@@ -3411,7 +3804,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren

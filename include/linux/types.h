@@ -63,6 +63,16 @@ r_typedef
 id|__kernel_suseconds_t
 id|suseconds_t
 suffix:semicolon
+DECL|typedef|timer_t
+r_typedef
+id|__kernel_timer_t
+id|timer_t
+suffix:semicolon
+DECL|typedef|clockid_t
+r_typedef
+id|__kernel_clockid_t
+id|clockid_t
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|typedef|uid_t
 r_typedef

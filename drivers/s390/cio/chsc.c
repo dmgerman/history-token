@@ -1644,7 +1644,7 @@ l_int|4
 comma
 l_string|&quot;chsc_process_crw: &quot;
 l_string|&quot;channel subsystem reports some I/O &quot;
-l_string|&quot;devices may have become accessable&bslash;n&quot;
+l_string|&quot;devices may have become accessible&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pr_debug

@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 multiline_comment|/*&n; * Logic: we&squot;ve got two memory sums for each process, &quot;shared&quot;, and&n; * &quot;non-shared&quot;. Shared memory may get counted more then once, for&n; * each process that owns it. Non-shared memory is counted&n; * accurately.&n; */
 DECL|function|task_mem
 r_char
@@ -231,13 +232,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;sig
+id|current-&gt;sighand
 op_logical_and
 id|atomic_read
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;count
+id|current-&gt;sighand-&gt;count
 )paren
 OG
 l_int|1
@@ -247,7 +248,7 @@ op_add_assign
 id|kobjsize
 c_func
 (paren
-id|current-&gt;sig
+id|current-&gt;sighand
 )paren
 suffix:semicolon
 r_else
@@ -256,7 +257,7 @@ op_add_assign
 id|kobjsize
 c_func
 (paren
-id|current-&gt;sig
+id|current-&gt;sighand
 )paren
 suffix:semicolon
 id|bytes
@@ -317,6 +318,8 @@ suffix:semicolon
 r_int
 r_int
 id|vsize
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -447,6 +450,7 @@ suffix:semicolon
 id|size
 op_add_assign
 (paren
+op_star
 id|text
 op_assign
 id|mm-&gt;end_code
@@ -457,6 +461,7 @@ suffix:semicolon
 id|size
 op_add_assign
 (paren
+op_star
 id|data
 op_assign
 id|mm-&gt;start_stack

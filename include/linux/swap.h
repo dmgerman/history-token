@@ -921,6 +921,8 @@ DECL|macro|free_page_and_swap_cache
 mdefine_line|#define free_page_and_swap_cache(page) &bslash;&n;&t;page_cache_release(page)
 DECL|macro|free_pages_and_swap_cache
 mdefine_line|#define free_pages_and_swap_cache(pages, nr) &bslash;&n;&t;release_pages((pages), (nr), 0);
+DECL|macro|page_referenced
+mdefine_line|#define page_referenced(page) &bslash;&n;&t;TestClearPageReferenced(page)
 DECL|macro|show_swap_cache_info
 mdefine_line|#define show_swap_cache_info()&t;&t;&t;/*NOTHING*/
 DECL|macro|free_swap_and_cache

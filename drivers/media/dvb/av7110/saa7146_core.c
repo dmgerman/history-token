@@ -1783,7 +1783,7 @@ op_amp
 l_int|0xf
 )paren
 suffix:semicolon
-multiline_comment|/* remap the memory from virtual to physical adress */
+multiline_comment|/* remap the memory from virtual to physical address */
 id|saa-&gt;mem
 op_assign
 id|ioremap

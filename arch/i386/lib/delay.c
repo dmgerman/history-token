@@ -102,4 +102,24 @@ l_int|0x000010c6
 suffix:semicolon
 multiline_comment|/* 2**32 / 1000000 */
 )brace
+DECL|function|__ndelay
+r_void
+id|__ndelay
+c_func
+(paren
+r_int
+r_int
+id|nsecs
+)paren
+(brace
+id|__const_udelay
+c_func
+(paren
+id|nsecs
+op_star
+l_int|0x00005
+)paren
+suffix:semicolon
+multiline_comment|/* 2**32 / 1000000000 (rounded up) */
+)brace
 eof

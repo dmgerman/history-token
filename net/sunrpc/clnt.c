@@ -231,14 +231,6 @@ r_uint32
 id|clntid
 suffix:semicolon
 r_int
-id|maxlen
-op_assign
-r_sizeof
-(paren
-id|clnt-&gt;cl_pathname
-)paren
-suffix:semicolon
-r_int
 id|error
 suffix:semicolon
 r_if

@@ -3,7 +3,7 @@ macro_line|#ifndef _SPARC64_PSRCOMPAT_H
 DECL|macro|_SPARC64_PSRCOMPAT_H
 mdefine_line|#define _SPARC64_PSRCOMPAT_H
 macro_line|#include &lt;asm/pstate.h&gt;
-multiline_comment|/* Old 32-bit PSR fields for the compatability conversion code. */
+multiline_comment|/* Old 32-bit PSR fields for the compatibility conversion code. */
 DECL|macro|PSR_CWP
 mdefine_line|#define PSR_CWP     0x0000001f         /* current window pointer     */
 DECL|macro|PSR_ET

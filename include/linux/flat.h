@@ -2,6 +2,7 @@ multiline_comment|/* Copyright (C) 1998  Kenneth Albanowski &lt;kjahds@kjahds.co
 macro_line|#ifndef _LINUX_FLAT_H
 DECL|macro|_LINUX_FLAT_H
 mdefine_line|#define _LINUX_FLAT_H
+macro_line|#include &lt;asm/flat.h&gt;
 DECL|macro|FLAT_VERSION
 mdefine_line|#define&t;FLAT_VERSION&t;&t;&t;0x00000004L
 multiline_comment|/*&n; * To make everything easier to port and manage cross platform&n; * development,  all fields are in network byte order.&n; */

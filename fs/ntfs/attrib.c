@@ -4778,9 +4778,12 @@ id|value_offset
 )paren
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
+r_const
+id|u32
+comma
 id|val_len
 comma
 id|le32_to_cpu

@@ -368,6 +368,13 @@ id|csum_partial_copy_generic
 )paren
 suffix:semicolon
 multiline_comment|/* Delay loops */
+DECL|variable|__ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ndelay
+)paren
+suffix:semicolon
 DECL|variable|__udelay
 id|EXPORT_SYMBOL
 c_func
@@ -673,20 +680,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtc_lock
-)paren
-suffix:semicolon
-DECL|variable|register_profile_notifier
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|register_profile_notifier
-)paren
-suffix:semicolon
-DECL|variable|unregister_profile_notifier
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|unregister_profile_notifier
 )paren
 suffix:semicolon
 DECL|variable|set_nmi_callback

@@ -2053,7 +2053,7 @@ c_func
 (paren
 l_string|&quot;using block group %d(%d)&bslash;n&quot;
 comma
-id|i
+id|group_no
 comma
 id|gdp-&gt;bg_free_blocks_count
 )paren
@@ -2809,7 +2809,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ext3_count_free_blocks: stored = %lu, computed = %lu, %lu&bslash;n&quot;
+l_string|&quot;ext3_count_free_blocks: stored = %u, computed = %lu, %lu&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func

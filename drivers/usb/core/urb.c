@@ -245,6 +245,9 @@ id|urb-&gt;dev
 )paren
 op_logical_or
 op_logical_neg
+id|dev-&gt;present
+op_logical_or
+op_logical_neg
 id|dev-&gt;bus
 op_logical_or
 id|dev-&gt;devnum
@@ -778,6 +781,8 @@ c_cond
 id|urb
 op_logical_and
 id|urb-&gt;dev
+op_logical_and
+id|urb-&gt;dev-&gt;present
 op_logical_and
 id|urb-&gt;dev-&gt;bus
 op_logical_and

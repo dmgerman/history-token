@@ -283,6 +283,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#include &lt;asm-generic/ide_iops.h&gt;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMalpha_IDE_H */
 eof

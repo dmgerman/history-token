@@ -76,7 +76,7 @@ DECL|macro|VTBL_RESERVED_2
 mdefine_line|#define VTBL_RESERVED_2 126
 DECL|macro|VTBL_RESERVED_3
 mdefine_line|#define VTBL_RESERVED_3 127
-multiline_comment|/* compatability with pre revision K */
+multiline_comment|/* compatibility with pre revision K */
 DECL|macro|VTBL_K_CMPR
 mdefine_line|#define VTBL_K_CMPR     120 
 multiline_comment|/*  the next is used by QIC-3020 tapes with format code 6 (&gt;2^16&n; *  segments) It is specified in QIC-113, Rev. G, Section 5 (SCSI&n; *  volume table). The difference is simply, that we only store the&n; *  number of segments used, not the starting segment.&n; */

@@ -10142,7 +10142,7 @@ id|kmsg_redirect
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* read `x&squot; only after setting currecons properly (otherwise&n;&t;   the `x&squot; macro will read the x of the foreground console). */
+multiline_comment|/* read `x&squot; only after setting currcons properly (otherwise&n;&t;   the `x&squot; macro will read the x of the foreground console). */
 id|myx
 op_assign
 id|x
@@ -10553,7 +10553,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *&t;Handling of Linux-specific VC ioctls&n; */
-multiline_comment|/*&n; * Generally a bit racy with respect to console_sem().&n; *&n; * There are some functions which don&squot;t need it.&n; *&n; * There are some functions which can sleep for arbitrary periods (paste_selection)&n; * but we don&squot;t need the lock there anyway.&n; *&n; * set_selection has locking, and definitely needs it&n; */
+multiline_comment|/*&n; * Generally a bit racy with respect to console_sem().&n; *&n; * There are some functions which don&squot;t need it.&n; *&n; * There are some functions which can sleep for arbitrary periods&n; * (paste_selection) but we don&squot;t need the lock there anyway.&n; *&n; * set_selection has locking, and definitely needs it&n; */
 DECL|function|tioclinux
 r_int
 id|tioclinux

@@ -330,7 +330,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * When programming a PDAR, the register should be read immediately&n;         * after writing it. This ensures that address decoders are properly&n;         * configured.&n;&t; * [jsun] is this really necesary?&n;         */
+multiline_comment|/*&n;         * When programming a PDAR, the register should be read immediately&n;         * after writing it. This ensures that address decoders are properly&n;         * configured.&n;&t; * [jsun] is this really necessary?&n;         */
 id|ddb_in32
 c_func
 (paren

@@ -3773,7 +3773,7 @@ op_assign
 id|Adapter
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|cdblen
 op_assign
@@ -3783,7 +3783,7 @@ id|idlun
 op_assign
 (paren
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_lshift
 l_int|5
 )paren
@@ -3792,7 +3792,7 @@ l_int|0xe0
 )paren
 op_or
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_amp
 l_int|7
 )paren
@@ -3810,7 +3810,7 @@ op_assign
 id|alloc_scbs
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 comma
 l_int|1
 )paren
@@ -3875,7 +3875,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;host-&gt;sg_tablesize
+id|SCpnt-&gt;device-&gt;host-&gt;sg_tablesize
 op_eq
 id|SG_NONE
 )paren
@@ -6206,7 +6206,7 @@ op_assign
 id|Adapter
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -6297,7 +6297,7 @@ op_assign
 id|Adapter
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond

@@ -402,7 +402,9 @@ op_amp
 id|MTRR_CHANGE_MASK_FIXED
 )paren
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: your CPUs had inconsistent fixed MTRR settings&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -414,7 +416,9 @@ op_amp
 id|MTRR_CHANGE_MASK_VARIABLE
 )paren
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: your CPUs had inconsistent variable MTRR settings&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -426,14 +430,24 @@ op_amp
 id|MTRR_CHANGE_MASK_DEFTYPE
 )paren
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: your CPUs had inconsistent MTRRdefType settings&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;mtrr: probably your BIOS does not setup all CPUs&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;mtrr: probably your BIOS does not setup all CPUs.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: corrected configuration.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

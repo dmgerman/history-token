@@ -398,7 +398,7 @@ r_int
 id|ipaddr
 )paren
 (brace
-multiline_comment|/* this puts the host interface in the right mode (start interupting) */
+multiline_comment|/* this puts the host interface in the right mode (start interrupting) */
 r_return
 id|ia64_ssc
 c_func

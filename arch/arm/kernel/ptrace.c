@@ -1802,9 +1802,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Ensure no single-step breakpoint is pending.  Returns non-zero&n; * value if child was being single-stepped.&n; */
-DECL|function|__ptrace_cancel_bpt
+DECL|function|ptrace_cancel_bpt
 r_void
-id|__ptrace_cancel_bpt
+id|ptrace_cancel_bpt
 c_func
 (paren
 r_struct
@@ -1884,7 +1884,12 @@ op_star
 id|child
 )paren
 (brace
-id|__ptrace_cancel_bpt
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_SINGLESTEP
+suffix:semicolon
+id|ptrace_cancel_bpt
 c_func
 (paren
 id|child
@@ -1930,7 +1935,7 @@ id|KERN_ERR
 l_string|&quot;ptrace: bogus breakpoint trap&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__ptrace_cancel_bpt
+id|ptrace_cancel_bpt
 c_func
 (paren
 id|tsk
@@ -2601,7 +2606,12 @@ op_assign
 id|data
 suffix:semicolon
 multiline_comment|/* make sure single-step breakpoint is gone. */
-id|__ptrace_cancel_bpt
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_SINGLESTEP
+suffix:semicolon
+id|ptrace_cancel_bpt
 c_func
 (paren
 id|child
@@ -2624,7 +2634,12 @@ r_case
 id|PTRACE_KILL
 suffix:colon
 multiline_comment|/* make sure single-step breakpoint is gone. */
-id|__ptrace_cancel_bpt
+id|child-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_SINGLESTEP
+suffix:semicolon
+id|ptrace_cancel_bpt
 c_func
 (paren
 id|child
@@ -2677,10 +2692,9 @@ id|_NSIG
 )paren
 r_break
 suffix:semicolon
-id|child-&gt;thread.debug.nsaved
-op_assign
-op_minus
-l_int|1
+id|child-&gt;ptrace
+op_or_assign
+id|PT_SINGLESTEP
 suffix:semicolon
 id|clear_tsk_thread_flag
 c_func

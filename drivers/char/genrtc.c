@@ -164,7 +164,7 @@ id|gen_rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * Routine to poll RTC seconds field for change as often as posible,&n; * after first RTC_UIE use timer to reduce polling&n; */
+multiline_comment|/*&n; * Routine to poll RTC seconds field for change as often as possible,&n; * after first RTC_UIE use timer to reduce polling&n; */
 DECL|function|genrtc_troutine
 r_void
 id|genrtc_troutine

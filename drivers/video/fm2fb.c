@@ -878,7 +878,7 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-multiline_comment|/* The below feilds will go away !!!! */
+multiline_comment|/* The below fields will go away !!!! */
 id|fb_alloc_cmap
 c_func
 (paren

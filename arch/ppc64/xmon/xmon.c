@@ -10632,6 +10632,17 @@ suffix:semicolon
 r_int
 id|num_parms
 suffix:semicolon
+multiline_comment|/* dont look for traceback table in userspace */
+r_if
+c_cond
+(paren
+id|codeaddr
+OL
+id|PAGE_OFFSET
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

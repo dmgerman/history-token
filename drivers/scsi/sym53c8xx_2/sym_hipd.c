@@ -4387,7 +4387,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  log message for real hard errors&n; *&n; *  sym0 targ 0?: ERROR (ds:si) (so-si-sd) (sx/s3/s4) @ name (dsp:dbc).&n; *  &t;      reg: r0 r1 r2 r3 r4 r5 r6 ..... rf.&n; *&n; *  exception register:&n; *  &t;ds:&t;dstat&n; *  &t;si:&t;sist&n; *&n; *  SCSI bus lines:&n; *  &t;so:&t;control lines as driven by chip.&n; *  &t;si:&t;control lines as seen by chip.&n; *  &t;sd:&t;scsi data lines as seen by chip.&n; *&n; *  wide/fastmode:&n; *  &t;sx:&t;sxfer  (see the manual)&n; *  &t;s3:&t;scntl3 (see the manual)&n; *  &t;s4:&t;scntl4 (see the manual)&n; *&n; *  current script command:&n; *  &t;dsp:&t;script adress (relative to start of script).&n; *  &t;dbc:&t;first word of script command.&n; *&n; *  First 24 register of the chip:&n; *  &t;r0..rf&n; */
+multiline_comment|/*&n; *  log message for real hard errors&n; *&n; *  sym0 targ 0?: ERROR (ds:si) (so-si-sd) (sx/s3/s4) @ name (dsp:dbc).&n; *  &t;      reg: r0 r1 r2 r3 r4 r5 r6 ..... rf.&n; *&n; *  exception register:&n; *  &t;ds:&t;dstat&n; *  &t;si:&t;sist&n; *&n; *  SCSI bus lines:&n; *  &t;so:&t;control lines as driven by chip.&n; *  &t;si:&t;control lines as seen by chip.&n; *  &t;sd:&t;scsi data lines as seen by chip.&n; *&n; *  wide/fastmode:&n; *  &t;sx:&t;sxfer  (see the manual)&n; *  &t;s3:&t;scntl3 (see the manual)&n; *  &t;s4:&t;scntl4 (see the manual)&n; *&n; *  current script command:&n; *  &t;dsp:&t;script address (relative to start of script).&n; *  &t;dbc:&t;first word of script command.&n; *&n; *  First 24 register of the chip:&n; *  &t;r0..rf&n; */
 DECL|function|sym_log_hard_error
 r_static
 r_void

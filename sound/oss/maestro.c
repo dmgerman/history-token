@@ -7858,7 +7858,7 @@ c_cond
 id|s-&gt;dma_adc.ready
 )paren
 (brace
-multiline_comment|/* oh boy should this all be re-written.  everything in the current code paths think&n;&t;&t;that the various counters/pointers are expressed in bytes to the user but we have&n;&t;&t;two apus doing stereo stuff so we fix it up here.. it propogates to all the various&n;&t;&t;counters from here.  */
+multiline_comment|/* oh boy should this all be re-written.  everything in the current code paths think&n;&t;&t;that the various counters/pointers are expressed in bytes to the user but we have&n;&t;&t;two apus doing stereo stuff so we fix it up here.. it propagates to all the various&n;&t;&t;counters from here.  */
 r_if
 c_cond
 (paren

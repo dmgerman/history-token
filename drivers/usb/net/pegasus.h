@@ -382,6 +382,8 @@ DECL|macro|VENDOR_LINKSYS
 mdefine_line|#define&t;VENDOR_LINKSYS&t;&t;0x066b
 DECL|macro|VENDOR_MELCO
 mdefine_line|#define&t;VENDOR_MELCO&t;&t;0x0411
+DECL|macro|VENDOR_MOBILITY
+mdefine_line|#define&t;VENDOR_MOBILITY&t;&t;0x1342
 DECL|macro|VENDOR_NETGEAR
 mdefine_line|#define&t;VENDOR_NETGEAR&t;&t;0x0846
 DECL|macro|VENDOR_SMARTBRIDGES
@@ -555,6 +557,8 @@ comma
 l_int|0x5046
 comma
 id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func
@@ -831,6 +835,17 @@ op_or
 id|PEGASUS_II
 op_or
 id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;EasiDock Ethernet&quot;
+comma
+id|VENDOR_MOBILITY
+comma
+l_int|0x0304
+comma
+id|DEFAULT_GPIO_RESET
 )paren
 id|PEGASUS_DEV
 c_func

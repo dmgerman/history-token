@@ -216,6 +216,10 @@ DECL|macro|QUIRK_COMPOSITE
 mdefine_line|#define QUIRK_COMPOSITE&t;&t;&t;3
 DECL|macro|QUIRK_AUDIO_FIXED_ENDPOINT
 mdefine_line|#define QUIRK_AUDIO_FIXED_ENDPOINT&t;4
+DECL|macro|QUIRK_BOOT_MASK
+mdefine_line|#define QUIRK_BOOT_MASK&t;&t;&t;0x80
+DECL|macro|QUIRK_BOOT_EXTIGY
+mdefine_line|#define QUIRK_BOOT_EXTIGY&t;&t;(QUIRK_BOOT_MASK | 0)
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct

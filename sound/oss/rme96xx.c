@@ -1784,7 +1784,7 @@ suffix:semicolon
 )brace
 id|COMM
 (paren
-l_string|&quot;interupt disabled&quot;
+l_string|&quot;interrupt disabled&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* first initialize all pointers on card */

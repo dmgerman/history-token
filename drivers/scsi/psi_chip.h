@@ -152,7 +152,7 @@ DECL|member|numDrives
 id|UCHAR
 id|numDrives
 suffix:semicolon
-singleline_comment|// Number of accessable drives
+singleline_comment|// Number of accessible drives
 DECL|member|fastFormat
 id|UCHAR
 id|fastFormat

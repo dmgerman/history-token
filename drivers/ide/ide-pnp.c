@@ -166,7 +166,8 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|pnp_port_start
 c_func
@@ -179,7 +180,8 @@ comma
 id|generic_ide_offsets
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|pnp_port_start
 c_func

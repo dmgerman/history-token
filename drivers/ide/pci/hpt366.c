@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/hpt366.c&t;&t;Version 0.34&t;Sept 17, 2002&n; *&n; * Copyright (C) 1999-2002&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions Copyright (C) 2001&t;        Sun Microsystems, Inc.&n; *&n; * Thanks to HighPoint Technologies for their assistance, and hardware.&n; * Special Thanks to Jon Burchmore in SanDiego for the deep pockets, his&n; * donation of an ABit BP6 mainboard, processor, and memory acellerated&n; * development and support.&n; *&n; * Note that final HPT370 support was done by force extraction of GPL.&n; *&n; * - add function for getting/setting power status of drive&n; * - the HPT370&squot;s state machine can get confused. reset it before each dma &n; *   xfer to prevent that from happening.&n; * - reset state engine whenever we get an error.&n; * - check for busmaster state at end of dma. &n; * - use new highpoint timings.&n; * - detect bus speed using highpoint register.&n; * - use pll if we don&squot;t have a clock table. added a 66MHz table that&squot;s&n; *   just 2x the 33MHz table.&n; * - removed turnaround. NOTE: we never want to switch between pll and&n; *   pci clocks as the chip can glitch in those cases. the highpoint&n; *   approved workaround slows everything down too much to be useful. in&n; *   addition, we would have to serialize access to each chip.&n; * &t;Adrian Sun &lt;a.sun@sun.com&gt;&n; *&n; * add drive timings for 66MHz PCI bus,&n; * fix ATA Cable signal detection, fix incorrect /proc info&n; * add /proc display for per-drive PIO/DMA/UDMA mode and&n; * per-channel ATA-33/66 Cable detect.&n; * &t;Duncan Laurie &lt;void@sun.com&gt;&n; *&n; * fixup /proc output for multiple controllers&n; *&t;Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * On hpt366: &n; * Reset the hpt366 on error, reset on dma&n; * Fix disabling Fast Interrupt hpt366.&n; * &t;Mike Waychison &lt;crlf@sun.com&gt;&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/hpt366.c&t;&t;Version 0.34&t;Sept 17, 2002&n; *&n; * Copyright (C) 1999-2002&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions Copyright (C) 2001&t;        Sun Microsystems, Inc.&n; *&n; * Thanks to HighPoint Technologies for their assistance, and hardware.&n; * Special Thanks to Jon Burchmore in SanDiego for the deep pockets, his&n; * donation of an ABit BP6 mainboard, processor, and memory acellerated&n; * development and support.&n; *&n; * Note that final HPT370 support was done by force extraction of GPL.&n; *&n; * - add function for getting/setting power status of drive&n; * - the HPT370&squot;s state machine can get confused. reset it before each dma &n; *   xfer to prevent that from happening.&n; * - reset state engine whenever we get an error.&n; * - check for busmaster state at end of dma. &n; * - use new highpoint timings.&n; * - detect bus speed using highpoint register.&n; * - use pll if we don&squot;t have a clock table. added a 66MHz table that&squot;s&n; *   just 2x the 33MHz table.&n; * - removed turnaround. NOTE: we never want to switch between pll and&n; *   pci clocks as the chip can glitch in those cases. the highpoint&n; *   approved workaround slows everything down too much to be useful. in&n; *   addition, we would have to serialize access to each chip.&n; * &t;Adrian Sun &lt;a.sun@sun.com&gt;&n; *&n; * add drive timings for 66MHz PCI bus,&n; * fix ATA Cable signal detection, fix incorrect /proc info&n; * add /proc display for per-drive PIO/DMA/UDMA mode and&n; * per-channel ATA-33/66 Cable detect.&n; * &t;Duncan Laurie &lt;void@sun.com&gt;&n; *&n; * fixup /proc output for multiple controllers&n; *&t;Tim Hockin &lt;thockin@sun.com&gt;&n; *&n; * On hpt366: &n; * Reset the hpt366 on error, reset on dma&n; * Fix disabling Fast Interrupt hpt366.&n; * &t;Mike Waychison &lt;crlf@sun.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -4373,9 +4373,13 @@ comma
 l_int|8
 )paren
 )paren
-r_return
-op_minus
-id|EOPNOTSUPP
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_else
 r_if
@@ -4470,9 +4474,13 @@ id|KERN_ERR
 l_string|&quot;HPT37x: 66MHz timings are not supported.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -5011,9 +5019,13 @@ id|KERN_ERR
 l_string|&quot;hpt366: unknown bus timing.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -5710,6 +5722,28 @@ id|dmabase
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_get_drvdata
+c_func
+(paren
+id|hwif-&gt;pci_dev
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;hpt: no known IDE timings, disabling DMA.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|dma_old
 op_assign
 id|hwif

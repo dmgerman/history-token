@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13&t;Tomas Kasparek&t;Initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  Proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;Proc interface update, code cleanup&n; */
-multiline_comment|/* $Id: uda1341.c,v 1.6 2003/01/07 10:36:28 tiwai Exp $ */
+multiline_comment|/*&n; * Philips UDA1341 mixer device driver&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * Portions are Copyright (C) 2000 Lernout &amp; Hauspie Speech Products, N.V.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on uda1341.c from OSS&n; * 2002-03-28   Tomas Kasparek  basic mixer is working (volume, bass, treble)&n; * 2002-03-30   Tomas Kasparek  proc filesystem support, complete mixer and DSP&n; *                              features support&n; * 2002-04-12&t;Tomas Kasparek&t;proc interface update, code cleanup&n; * 2002-05-12   Tomas Kasparek  another code cleanup&n; */
+multiline_comment|/* $Id: uda1341.c,v 1.7 2003/02/13 19:19:19 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -2553,7 +2552,7 @@ multiline_comment|/* }}} */
 multiline_comment|/* {{{ Mixer controls setting */
 multiline_comment|/* {{{ UDA1341 single functions */
 DECL|macro|UDA1341_SINGLE
-mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, .put = snd_uda1341_put_single, &bslash;&n;  .private_value = where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+mdefine_line|#define UDA1341_SINGLE(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_single, &bslash;&n;  .get = snd_uda1341_get_single, .put = snd_uda1341_put_single, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 r_static
 r_int
 id|snd_uda1341_info_single
@@ -2877,7 +2876,7 @@ suffix:semicolon
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ UDA1341 enum functions */
 DECL|macro|UDA1341_ENUM
-mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, .put = snd_uda1341_put_enum, &bslash;&n;  .private_value = where | reg &lt;&lt; 5 | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
+mdefine_line|#define UDA1341_ENUM(xname, where, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_uda1341_info_enum, &bslash;&n;  .get = snd_uda1341_get_enum, .put = snd_uda1341_put_enum, &bslash;&n;  .private_value = where | (reg &lt;&lt; 5) | (shift &lt;&lt; 9) | (mask &lt;&lt; 12) | (invert &lt;&lt; 18) &bslash;&n;}
 r_static
 r_int
 id|snd_uda1341_info_enum

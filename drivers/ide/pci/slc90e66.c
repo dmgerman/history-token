@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/slc90e66.c&t;Version 0.11&t;September 11, 2002&n; *&n; *  Copyright (C) 2000-2002 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * This a look-a-like variation of the ICH0 PIIX4 Ultra-66,&n; * but this keeps the ISA-Bridge and slots alive.&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/slc90e66.c&t;Version 0.11&t;September 11, 2002&n; *&n; *  Copyright (C) 2000-2002 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * This a look-a-like variation of the ICH0 PIIX4 Ultra-66,&n; * but this keeps the ISA-Bridge and slots alive.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

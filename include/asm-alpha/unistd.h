@@ -658,8 +658,10 @@ DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;&t;411
 DECL|macro|__NR_restart_syscall
 mdefine_line|#define __NR_restart_syscall&t;&t;412
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;&t;413
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;413
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;414
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

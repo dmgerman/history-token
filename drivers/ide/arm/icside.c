@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/icside.c&n; *&n; * Copyright (c) 1996-2002 Russell King.&n; *&n; * Changelog:&n; *  08-Jun-1996&t;RMK&t;Created&n; *  12-Sep-1997&t;RMK&t;Added interrupt enable/disable&n; *  17-Apr-1999&t;RMK&t;Added support for V6 EASI&n; *  22-May-1999&t;RMK&t;Added support for V6 DMA&n; */
+multiline_comment|/*&n; * linux/drivers/ide/arm/icside.c&n; *&n; * Copyright (c) 1996-2002 Russell King.&n; *&n; * Changelog:&n; *  08-Jun-1996&t;RMK&t;Created&n; *  12-Sep-1997&t;RMK&t;Added interrupt enable/disable&n; *  17-Apr-1999&t;RMK&t;Added support for V6 EASI&n; *  22-May-1999&t;RMK&t;Added support for V6 DMA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2898,9 +2898,6 @@ id|hwif-&gt;io_ports
 id|IDE_DATA_OFFSET
 )braket
 op_eq
-(paren
-id|ide_ioreg_t
-)paren
 id|dataport
 )paren
 r_goto
@@ -3036,9 +3033,6 @@ id|hwif-&gt;hw.io_ports
 id|i
 )braket
 op_assign
-(paren
-id|ide_ioreg_t
-)paren
 id|port
 suffix:semicolon
 id|hwif-&gt;io_ports
@@ -3046,9 +3040,6 @@ id|hwif-&gt;io_ports
 id|i
 )braket
 op_assign
-(paren
-id|ide_ioreg_t
-)paren
 id|port
 suffix:semicolon
 id|port

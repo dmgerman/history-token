@@ -166,7 +166,7 @@ r_volatile
 r_int
 id|timer_stopped
 suffix:semicolon
-multiline_comment|/* The driver will disable interrupts when it gets into a&n;&t;   situation where it cannot handle messages due to lack of&n;&t;   memory.  Once that situation clears up, it will re-enable&n;&t;   interupts. */
+multiline_comment|/* The driver will disable interrupts when it gets into a&n;&t;   situation where it cannot handle messages due to lack of&n;&t;   memory.  Once that situation clears up, it will re-enable&n;&t;   interrupts. */
 DECL|member|interrupt_disabled
 r_int
 id|interrupt_disabled

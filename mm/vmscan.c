@@ -2992,7 +2992,7 @@ id|WRITE
 comma
 id|HZ
 op_div
-l_int|4
+l_int|10
 )paren
 suffix:semicolon
 id|shrink_slab
@@ -3266,7 +3266,7 @@ id|WRITE
 comma
 id|HZ
 op_div
-l_int|4
+l_int|10
 )paren
 suffix:semicolon
 )brace

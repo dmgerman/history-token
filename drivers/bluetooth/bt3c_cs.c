@@ -1,18 +1,14 @@
 multiline_comment|/*&n; *&n; *  Driver for the 3Com Bluetooth PCMCIA card&n; *&n; *  Copyright (C) 2001-2002  Marcel Holtmann &lt;marcel@holtmann.org&gt;&n; *                           Jose Orlando Pereira &lt;jop@di.uminho.pt&gt;&n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation;&n; *&n; *  Software distributed under the License is distributed on an &quot;AS&n; *  IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n; *  implied. See the License for the specific language governing&n; *  rights and limitations under the License.&n; *&n; *  The initial developer of the original code is David A. Hinds&n; *  &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n; *  are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -1628,22 +1624,26 @@ suffix:semicolon
 multiline_comment|/* ======================== User mode firmware loader ======================== */
 DECL|macro|FW_LOADER
 mdefine_line|#define FW_LOADER  &quot;/sbin/bluefw&quot;
-DECL|variable|errno
+DECL|function|bt3c_firmware_load
 r_static
 r_int
-id|errno
-suffix:semicolon
-DECL|function|bt3c_fw_loader_exec
-r_static
-r_int
-id|bt3c_fw_loader_exec
+id|bt3c_firmware_load
 c_func
 (paren
-r_void
+id|bt3c_info_t
 op_star
-id|dev
+id|info
 )paren
 (brace
+r_char
+id|dev
+(braket
+l_int|16
+)braket
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_char
 op_star
 id|argv
@@ -1676,91 +1676,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|err
-op_assign
-id|exec_usermodehelper
-c_func
-(paren
-id|FW_LOADER
-comma
-id|argv
-comma
-id|envp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Failed to exec &bslash;&quot;%s pccard %s&bslash;&quot;.&bslash;n&quot;
-comma
-id|FW_LOADER
-comma
-(paren
-r_char
-op_star
-)paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-DECL|function|bt3c_firmware_load
-r_static
-r_int
-id|bt3c_firmware_load
-c_func
-(paren
-id|bt3c_info_t
-op_star
-id|info
-)paren
-(brace
-id|sigset_t
-id|tmpsig
-suffix:semicolon
-r_char
-id|dev
-(braket
-l_int|16
-)braket
-suffix:semicolon
-id|pid_t
-id|pid
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
-multiline_comment|/* Check if root fs is mounted */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|current-&gt;fs-&gt;root
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Root filesystem is not mounted.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
 id|sprintf
 c_func
 (paren
@@ -1771,150 +1686,40 @@ comma
 id|info-&gt;link.io.BasePort1
 )paren
 suffix:semicolon
-id|pid
+id|err
 op_assign
-id|kernel_thread
+id|call_usermodehelper
 c_func
 (paren
-id|bt3c_fw_loader_exec
+id|FW_LOADER
 comma
-(paren
-r_void
-op_star
+id|argv
+comma
+id|envp
+comma
+l_int|1
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;bt3c_cs: Failed to run &bslash;&quot;%s pccard %s&bslash;&quot; (errno=%d).&bslash;n&quot;
+comma
+id|FW_LOADER
+comma
 id|dev
 comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pid
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Forking of kernel thread failed (errno=%d).&bslash;n&quot;
-comma
-op_minus
-id|pid
+id|err
 )paren
 suffix:semicolon
 r_return
-id|pid
-suffix:semicolon
-)brace
-multiline_comment|/* Block signals, everything but SIGKILL/SIGSTOP */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|tmpsig
-op_assign
-id|current-&gt;blocked
-suffix:semicolon
-id|siginitsetinv
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-comma
-id|sigmask
-c_func
-(paren
-id|SIGKILL
-)paren
-op_or
-id|sigmask
-c_func
-(paren
-id|SIGSTOP
-)paren
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|waitpid
-c_func
-(paren
-id|pid
-comma
-l_int|NULL
-comma
-id|__WCLONE
-)paren
-suffix:semicolon
-multiline_comment|/* Allow signals again */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|current-&gt;blocked
-op_assign
-id|tmpsig
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-op_ne
-id|pid
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Waiting for pid %d failed (errno=%d).&bslash;n&quot;
-comma
-id|pid
-comma
-op_minus
-id|result
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|result
-suffix:semicolon
-)brace
-r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* ======================== Card services HCI interaction ======================== */

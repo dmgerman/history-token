@@ -45,6 +45,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -19484,7 +19485,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Handle adjtimex compatability. */
+multiline_comment|/* Handle adjtimex compatibility. */
 DECL|struct|timex32
 r_struct
 id|timex32

@@ -222,7 +222,7 @@ suffix:colon
 id|perf_irq
 c_func
 (paren
-id|vector
+id|la_ptr
 comma
 id|regs
 )paren

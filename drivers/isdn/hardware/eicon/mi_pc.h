@@ -283,7 +283,7 @@ mdefine_line|#define MQ_CACHED_ADDR(x)               (((x) &amp; 0x1fffffffL) | 
 DECL|macro|MQ_UNCACHED_ADDR
 mdefine_line|#define MQ_UNCACHED_ADDR(x)             (((x) &amp; 0x1fffffffL) | 0xa0000000L)
 multiline_comment|/*--------------------------------------------------------------------------------------------*/
-multiline_comment|/* Additional definitions reflecting the different adress map of the  SERVER 4BRI V2          */
+multiline_comment|/* Additional definitions reflecting the different address map of the  SERVER 4BRI V2          */
 DECL|macro|MQ2_BREG_RISC
 mdefine_line|#define MQ2_BREG_RISC                   0x0200      /* RISC Reset ect                         */
 DECL|macro|MQ2_BREG_IRQ_TEST

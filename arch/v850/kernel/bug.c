@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/bug.c -- Bug reporting functions&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/bug.c -- Bug reporting functions&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -63,29 +63,6 @@ comma
 id|regs-&gt;pc
 comma
 id|current-&gt;pid
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
-DECL|function|debug_trap
-r_int
-id|debug_trap
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|printk
-(paren
-id|KERN_CRIT
-l_string|&quot;debug trap at 0x%08lx!&bslash;n&quot;
-comma
-id|regs-&gt;pc
 )paren
 suffix:semicolon
 r_return

@@ -285,7 +285,7 @@ DECL|typedef|pic_widget_cfg_t
 )brace
 id|pic_widget_cfg_t
 suffix:semicolon
-multiline_comment|/*&n; * BRIDGE, XBRIDGE, PIC register definitions.  NOTE: Prior to PIC, registers&n; * were a 32bit quantity and double word aligned (and only accessable as a&n; * 32bit word.  PIC registers are 64bits and accessable as words or double&n; * words.  PIC registers that have valid bits (ie. not just reserved) in the&n; * upper 32bits are defined as a union of one 64bit picreg_t and two 32bit&n; * bridgereg_t so we can access them both ways.&n; *&n; * It is generally preferred that hardware registers on the bridge are&n; * located from C code via this structure.&n; *&n; * Generated from Bridge spec dated 04oct95&n; */
+multiline_comment|/*&n; * BRIDGE, XBRIDGE, PIC register definitions.  NOTE: Prior to PIC, registers&n; * were a 32bit quantity and double word aligned (and only accessible as a&n; * 32bit word.  PIC registers are 64bits and accessible as words or double&n; * words.  PIC registers that have valid bits (ie. not just reserved) in the&n; * upper 32bits are defined as a union of one 64bit picreg_t and two 32bit&n; * bridgereg_t so we can access them both ways.&n; *&n; * It is generally preferred that hardware registers on the bridge are&n; * located from C code via this structure.&n; *&n; * Generated from Bridge spec dated 04oct95&n; */
 DECL|struct|bridge_s
 r_typedef
 r_volatile

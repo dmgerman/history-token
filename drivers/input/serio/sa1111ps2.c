@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/input/serio/sa1111ps2.c&n; *&n; *  Copyright (C) 2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1326,6 +1327,12 @@ id|bus
 op_assign
 op_amp
 id|sa1111_bus_type
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|input_devclass
 comma
 dot
 id|probe

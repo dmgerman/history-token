@@ -1222,7 +1222,7 @@ op_eq
 id|rrb_bits
 )paren
 (brace
-multiline_comment|/*&n;&t;    * the old do_pcibr_rrb_free() code only clears the enable bit&n;&t;    * but I say we should clear the whole rrb (ie):&n;&t;    *&t;  reg = reg &amp; ~(RRB_MASK &lt;&lt; (RRB_SIZE * rrb_index));&n;&t;    * But to be compatable with old code we&squot;ll only clear enable.&n;&t;    */
+multiline_comment|/*&n;&t;    * the old do_pcibr_rrb_free() code only clears the enable bit&n;&t;    * but I say we should clear the whole rrb (ie):&n;&t;    *&t;  reg = reg &amp; ~(RRB_MASK &lt;&lt; (RRB_SIZE * rrb_index));&n;&t;    * But to be compatible with old code we&squot;ll only clear enable.&n;&t;    */
 id|reg
 op_assign
 id|reg

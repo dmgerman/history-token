@@ -16,9 +16,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-DECL|macro|CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
-mdefine_line|#define CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
-macro_line|#ifdef CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
 DECL|struct|drive_list_entry
 r_struct
 id|drive_list_entry
@@ -358,55 +355,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
-multiline_comment|/*&n; * good_dma_drives() lists the model names (from &quot;hdparm -i&quot;)&n; * of drives which do not support mode2 DMA but which are&n; * known to work fine with this interface under Linux.&n; */
-DECL|variable|good_dma_drives
-r_const
-r_char
-op_star
-id|good_dma_drives
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;Micropolis 2112A&quot;
-comma
-l_string|&quot;CONNER CTMA 4000&quot;
-comma
-l_string|&quot;CONNER CTT8000-A&quot;
-comma
-l_string|&quot;ST34342A&quot;
-comma
-multiline_comment|/* for Sun Ultra */
-l_int|NULL
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * bad_dma_drives() lists the model names (from &quot;hdparm -i&quot;)&n; * of drives which supposedly support (U)DMA but which are&n; * known to corrupt data with this interface under Linux.&n; *&n; * This is an empirical list. Its generated from bug reports. That means&n; * while it reflects actual problem distributions it doesn&squot;t answer whether&n; * the drive or the controller, or cabling, or software, or some combination&n; * thereof is the fault. If you don&squot;t happen to agree with the kernel&squot;s &n; * opinion of your drive - use hdparm to turn DMA on.&n; */
-DECL|variable|bad_dma_drives
-r_const
-r_char
-op_star
-id|bad_dma_drives
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;WDC AC11000H&quot;
-comma
-l_string|&quot;WDC AC22100H&quot;
-comma
-l_string|&quot;WDC AC32100H&quot;
-comma
-l_string|&quot;WDC AC32500H&quot;
-comma
-l_string|&quot;WDC AC33100H&quot;
-comma
-l_string|&quot;WDC AC31600H&quot;
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
 multiline_comment|/**&n; *&t;ide_dma_intr&t;-&t;IDE DMA interrupt handler&n; *&t;@drive: the drive the interrupt is for&n; *&n; *&t;Handle an interrupt completing a read/write DMA transfer on an &n; *&t;IDE device&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
@@ -2963,9 +2911,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_increment
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2993,7 +2938,6 @@ id|id
 op_assign
 id|drive-&gt;id
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
 r_int
 id|blacklist
 op_assign
@@ -3014,6 +2958,7 @@ id|blacklist
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Disabling (U)DMA for %s&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3025,56 +2970,6 @@ r_return
 id|blacklist
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
-r_const
-r_char
-op_star
-op_star
-id|list
-suffix:semicolon
-multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
-id|list
-op_assign
-id|bad_dma_drives
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|list
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-op_star
-id|list
-op_increment
-comma
-id|id-&gt;model
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Disabling (U)DMA for %s&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|id-&gt;model
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
 r_return
 l_int|0
 suffix:semicolon
@@ -3102,7 +2997,6 @@ id|id
 op_assign
 id|drive-&gt;id
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_NEW_DRIVE_LISTINGS
 r_return
 id|in_drive_list
 c_func
@@ -3111,47 +3005,6 @@ id|id
 comma
 id|drive_whitelist
 )paren
-suffix:semicolon
-macro_line|#else /* !CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
-r_const
-r_char
-op_star
-op_star
-id|list
-suffix:semicolon
-multiline_comment|/* Consult the list of known &quot;good&quot; drives */
-id|list
-op_assign
-id|good_dma_drives
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|list
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-op_star
-id|list
-op_increment
-comma
-id|id-&gt;model
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|__ide_dma_good_drive

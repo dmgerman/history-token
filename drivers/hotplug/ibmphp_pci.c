@@ -2377,7 +2377,7 @@ suffix:semicolon
 multiline_comment|/*_______________This is for debugging purposes only______________________________*/
 id|debug
 (paren
-l_string|&quot;b4 writing, start addres is %x&bslash;n&quot;
+l_string|&quot;b4 writing, start address is %x&bslash;n&quot;
 comma
 id|func-&gt;pfmem
 (braket

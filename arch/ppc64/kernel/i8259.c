@@ -4,10 +4,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &quot;i8259.h&quot;
 DECL|variable|cached_8259
 r_int
 r_char

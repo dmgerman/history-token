@@ -119,7 +119,7 @@ DECL|macro|_PAGE_FLUSH_BIT
 mdefine_line|#define _PAGE_FLUSH_BIT    21   /* (0x400) Software: translation valid */
 multiline_comment|/*             for cache flushing only */
 DECL|macro|_PAGE_USER_BIT
-mdefine_line|#define _PAGE_USER_BIT     20   /* (0x800) Software: User accessable page */
+mdefine_line|#define _PAGE_USER_BIT     20   /* (0x800) Software: User accessible page */
 multiline_comment|/* N.B. The bits are defined in terms of a 32 bit word above, so the */
 multiline_comment|/*      following macro is ok for both 32 and 64 bit.                */
 DECL|macro|xlate_pabit

@@ -3141,7 +3141,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* zft_seg_pos should be greater than the vtbl segpos but not&n;&t; * if in compatability mode and only after we read in the&n;&t; * header segments&n;&t; *&n;&t; * might also be a problem if the user makes a backup with a&n;&t; * *qft* device and rewinds it with a raw device.&n;&t; */
+multiline_comment|/* zft_seg_pos should be greater than the vtbl segpos but not&n;&t; * if in compatibility mode and only after we read in the&n;&t; * header segments&n;&t; *&n;&t; * might also be a problem if the user makes a backup with a&n;&t; * *qft* device and rewinds it with a raw device.&n;&t; */
 r_if
 c_cond
 (paren

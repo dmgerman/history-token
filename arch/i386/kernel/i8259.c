@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
@@ -83,7 +84,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|function|startup_8259A_irq
-r_static
 r_int
 r_int
 id|startup_8259A_irq
@@ -132,19 +132,12 @@ suffix:semicolon
 multiline_comment|/*&n; * 8259A PIC functions to handle ISA devices:&n; */
 multiline_comment|/*&n; * This contains the irq mask for both 8259A irq controllers,&n; */
 DECL|variable|cached_irq_mask
-r_static
 r_int
 r_int
 id|cached_irq_mask
 op_assign
 l_int|0xffff
 suffix:semicolon
-DECL|macro|__byte
-mdefine_line|#define __byte(x,y) &t;(((unsigned char *)&amp;(y))[x])
-DECL|macro|cached_21
-mdefine_line|#define cached_21&t;(__byte(0,cached_irq_mask))
-DECL|macro|cached_A1
-mdefine_line|#define cached_A1&t;(__byte(1,cached_irq_mask))
 multiline_comment|/*&n; * Not all IRQs can be routed through the IO-APIC, eg. on certain (older)&n; * boards the timer interrupt is not really connected to any IO-APIC pin,&n; * it&squot;s fed to the master 8259A&squot;s IR0 line only.&n; *&n; * Any &squot;1&squot; bit in this mask means the IRQ is routed through the IO-APIC.&n; * this &squot;mixed mode&squot; IRQ handling costs nothing because it&squot;s only used&n; * at IRQ setup time.&n; */
 DECL|variable|io_apic_irqs
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/process.c -- Arch-dependent process handling&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/process.c -- Arch-dependent process handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -153,7 +153,7 @@ id|set_fs
 id|KERNEL_DS
 )paren
 suffix:semicolon
-multiline_comment|/* Clone this thread.  */
+multiline_comment|/* Clone this thread.  Note that we don&squot;t pass the clone syscall&squot;s&n;&t;   second argument -- it&squot;s ignored for calls from kernel mode (the&n;&t;   child&squot;s SP is always set to the top of the kernel stack).  */
 id|arg0
 op_assign
 id|flags
@@ -302,7 +302,7 @@ id|regs
 multiline_comment|/* Start pushing stuff from the top of the child&squot;s kernel stack.  */
 r_int
 r_int
-id|ksp
+id|orig_ksp
 op_assign
 (paren
 r_int
@@ -311,6 +311,12 @@ r_int
 id|p-&gt;thread_info
 op_plus
 id|THREAD_SIZE
+suffix:semicolon
+r_int
+r_int
+id|ksp
+op_assign
+id|orig_ksp
 suffix:semicolon
 multiline_comment|/* We push two `state save&squot; stack fames (see entry.S) on the new&n;&t;   kernel stack:&n;&t;     1) The innermost one is what switch_thread would have&n;&t;        pushed, and is used when we context switch to the child&n;&t;&t;thread for the first time.  It&squot;s set up to return to&n;&t;&t;ret_from_fork in entry.S.&n;&t;     2) The outermost one (nearest the top) is what a syscall&n;&t;        trap would have pushed, and is set up to return to the&n;&t;&t;same location as the parent thread, but with a return&n;&t;&t;value of 0. */
 r_struct
@@ -380,6 +386,28 @@ op_assign
 id|v850_reg_t
 )paren
 id|ret_from_fork
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;kernel_mode
+)paren
+multiline_comment|/* Since we&squot;re returning to kernel-mode, make sure the child&squot;s&n;&t;&t;   stored kernel stack pointer agrees with what the actual&n;&t;&t;   stack pointer will be at that point (the trap return code&n;&t;&t;   always restores the SP, even when returning to&n;&t;&t;   kernel-mode).  */
+id|child_trap_regs-&gt;gpr
+(braket
+id|GPR_SP
+)braket
+op_assign
+id|orig_ksp
+suffix:semicolon
+r_else
+multiline_comment|/* Set the child&squot;s user-mode stack-pointer (the name&n;&t;&t;   `stack_start&squot; is a misnomer, it&squot;s just the initial SP&n;&t;&t;   value).  */
+id|child_trap_regs-&gt;gpr
+(braket
+id|GPR_SP
+)braket
+op_assign
+id|stack_start
 suffix:semicolon
 multiline_comment|/* Thread state for the child (everything else is on the stack).  */
 id|p-&gt;thread.ksp

@@ -828,7 +828,6 @@ c_func
 id|cache_cache.lists
 )paren
 comma
-multiline_comment|/* Allow for boot cpu != 0 */
 dot
 id|batchcount
 op_assign

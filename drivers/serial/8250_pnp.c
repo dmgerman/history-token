@@ -1098,7 +1098,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Given a complete unknown PnP device, try to use some heuristics to&n; * detect modems. Currently use such heuristic set:&n; *     - dev-&gt;name or dev-&gt;bus-&gt;name must contain &quot;modem&quot; substring;&n; *     - device must have only one IO region (8 byte long) with base adress&n; *       0x2e8, 0x3e8, 0x2f8 or 0x3f8.&n; *&n; * Such detection looks very ugly, but can detect at least some of numerous&n; * PnP modems, alternatively we must hardcode all modems in pnp_devices[]&n; * table.&n; */
+multiline_comment|/*&n; * Given a complete unknown PnP device, try to use some heuristics to&n; * detect modems. Currently use such heuristic set:&n; *     - dev-&gt;name or dev-&gt;bus-&gt;name must contain &quot;modem&quot; substring;&n; *     - device must have only one IO region (8 byte long) with base address&n; *       0x2e8, 0x3e8, 0x2f8 or 0x3f8.&n; *&n; * Such detection looks very ugly, but can detect at least some of numerous&n; * PnP modems, alternatively we must hardcode all modems in pnp_devices[]&n; * table.&n; */
 DECL|function|serial_pnp_guess_board
 r_static
 r_int

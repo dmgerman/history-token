@@ -274,6 +274,10 @@ id|rq_respages
 id|RPCSVC_MAXPAGES
 )braket
 suffix:semicolon
+DECL|member|rq_restailpage
+r_int
+id|rq_restailpage
+suffix:semicolon
 DECL|member|rq_argused
 r_int
 id|rq_argused

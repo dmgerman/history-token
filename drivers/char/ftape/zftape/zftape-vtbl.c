@@ -403,7 +403,7 @@ id|vtbl_ids
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We used to store the block-size of the volume in the volume-label,&n; * using the keyword &quot;blocksize&quot;. The blocksize written to the&n; * volume-label is in bytes.&n; *&n; * We use this now only for compatability with old zftape version. We&n; * store the blocksize directly as binary number in the vendor&n; * extension part of the volume entry.&n; */
+multiline_comment|/* We used to store the block-size of the volume in the volume-label,&n; * using the keyword &quot;blocksize&quot;. The blocksize written to the&n; * volume-label is in bytes.&n; *&n; * We use this now only for compatibility with old zftape version. We&n; * store the blocksize directly as binary number in the vendor&n; * extension part of the volume entry.&n; */
 DECL|function|check_volume_label
 r_static
 r_int

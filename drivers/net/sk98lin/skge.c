@@ -9417,7 +9417,7 @@ op_minus
 l_int|100
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Do not set the Limit to 0, because this could cause&n;&t;&t; * wrap around with ReQueue&squot;ed buffers (a buffer could&n;&t;&t; * be requeued in the same position, made accessable to&n;&t;&t; * the hardware, and the hardware could change its&n;&t;&t; * contents!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Do not set the Limit to 0, because this could cause&n;&t;&t; * wrap around with ReQueue&squot;ed buffers (a buffer could&n;&t;&t; * be requeued in the same position, made accessible to&n;&t;&t; * the hardware, and the hardware could change its&n;&t;&t; * contents!&n;&t;&t; */
 id|pAC-&gt;RxPort
 (braket
 id|pAC-&gt;ActivePort
