@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the Bright Star Engineering ip-Engine board.  Copied from the MBX stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifndef __MACH_BSEIP_DEFS
 DECL|macro|__MACH_BSEIP_DEFS

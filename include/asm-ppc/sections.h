@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.sections.h 1.11 09/08/01 15:47:43 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_SECTIONS_H
 DECL|macro|_PPC_SECTIONS_H

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/* This is the single file included by all MPC8260 build options.&n; * Since there are many different boards and no standard configuration,&n; * we have a unique include file for each.  Rather than change every&n; * file that has to include MPC8260 configuration, they all include&n; * this one and the configuration switching is done here.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __CONFIG_8260_DEFS

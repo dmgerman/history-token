@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef __PPC_ELF_H
 DECL|macro|__PPC_ELF_H
 mdefine_line|#define __PPC_ELF_H

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  arch/ppc/platforms/chrp_time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *&n; * Adapted for PowerPC (PReP) by Gary Thomas&n; * Modified by Cort Dougan (cort@cs.nmt.edu).&n; * Copied and modified from arch/i386/kernel/time.c&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

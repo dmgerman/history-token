@@ -1,7 +1,6 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 DECL|macro|m68k_debug_device
 mdefine_line|#define m68k_debug_device debug_device
-multiline_comment|/*&n; *  linux/arch/m68k/amiga/config.c&n; *&n; *  Copyright (C) 1993 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; *  arch/ppc/amiga/config.c&n; *&n; *  Copyright (C) 1993 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 multiline_comment|/*&n; * Miscellaneous Amiga stuff&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; * &n; * Makes a tree bootable image for IBM Evaluation boards.&n; * Basically, just take a zImage, skip the ELF header, and stuff&n; * a 32 byte header on the front.&n; *&n; * We use htonl, which is a network macro, to make sure we&squot;re doing&n; * The Right Thing on an LE machine.  It&squot;s non-obvious, but it should&n; * work on anything BSD&squot;ish.&n; */
+multiline_comment|/*&n; * Makes a tree bootable image for IBM Evaluation boards.&n; * Basically, just take a zImage, skip the ELF header, and stuff&n; * a 32 byte header on the front.&n; *&n; * We use htonl, which is a network macro, to make sure we&squot;re doing&n; * The Right Thing on an LE machine.  It&squot;s non-obvious, but it should&n; * work on anything BSD&squot;ish.&n; */
 macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
