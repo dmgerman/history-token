@@ -299,6 +299,13 @@ c_func
 id|__strnlen_user
 )paren
 suffix:semicolon
+DECL|variable|clear_user_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_user_page
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MSCHUNKS
 DECL|variable|msChunks
 id|EXPORT_SYMBOL
