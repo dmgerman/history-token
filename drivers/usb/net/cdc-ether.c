@@ -702,44 +702,8 @@ op_assign
 id|net-&gt;priv
 suffix:semicolon
 r_int
-id|count
-suffix:semicolon
-r_int
 id|res
 suffix:semicolon
-singleline_comment|// If we are told to transmit an ethernet frame that fits EXACTLY 
-singleline_comment|// into an integer number of USB packets, we force it to send one 
-singleline_comment|// more byte so the device will get a runt USB packet signalling the 
-singleline_comment|// end of the ethernet frame
-r_if
-c_cond
-(paren
-(paren
-id|skb-&gt;len
-)paren
-op_xor
-(paren
-id|ether_dev-&gt;data_ep_out_size
-)paren
-)paren
-(brace
-singleline_comment|// It was not an exact multiple
-singleline_comment|// no need to add anything extra
-id|count
-op_assign
-id|skb-&gt;len
-suffix:semicolon
-)brace
-r_else
-(brace
-singleline_comment|// Add one to make it NOT an exact multiple
-id|count
-op_assign
-id|skb-&gt;len
-op_plus
-l_int|1
-suffix:semicolon
-)brace
 singleline_comment|// Tell the kernel, &quot;No more frames &squot;til we are done
 singleline_comment|// with this one.&squot;
 id|netif_stop_queue
@@ -787,7 +751,12 @@ suffix:semicolon
 singleline_comment|// Tell the URB how much it will be transporting today
 id|ether_dev-&gt;tx_urb-&gt;transfer_buffer_length
 op_assign
-id|count
+id|skb-&gt;len
+suffix:semicolon
+multiline_comment|/* Deal with the zero length problem, I hope */
+id|ether_dev-&gt;tx_urb-&gt;transfer_flags
+op_or_assign
+id|URB_ZERO_PACKET
 suffix:semicolon
 singleline_comment|// Send the URB on its merry way.
 r_if
