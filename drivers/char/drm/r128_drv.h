@@ -3,9 +3,7 @@ macro_line|#ifndef __R128_DRV_H__
 DECL|macro|__R128_DRV_H__
 mdefine_line|#define __R128_DRV_H__
 DECL|macro|GET_RING_HEAD
-mdefine_line|#define GET_RING_HEAD(ring)&t;&t;DRM_READ32(  (ring)-&gt;ring_rptr, 0 ) /* (ring)-&gt;head */
-DECL|macro|SET_RING_HEAD
-mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;DRM_WRITE32( (ring)-&gt;ring_rptr, 0, (val) ) /* (ring)-&gt;head */
+mdefine_line|#define GET_RING_HEAD(dev_priv)&t;&t;R128_READ( R128_PM4_BUFFER_DL_RPTR )
 DECL|struct|drm_r128_freelist
 r_typedef
 r_struct
@@ -60,12 +58,6 @@ DECL|member|size_l2qw
 r_int
 id|size_l2qw
 suffix:semicolon
-DECL|member|head
-r_volatile
-id|u32
-op_star
-id|head
-suffix:semicolon
 DECL|member|tail
 id|u32
 id|tail
@@ -81,11 +73,6 @@ suffix:semicolon
 DECL|member|high_mark
 r_int
 id|high_mark
-suffix:semicolon
-DECL|member|ring_rptr
-id|drm_local_map_t
-op_star
-id|ring_rptr
 suffix:semicolon
 DECL|typedef|drm_r128_ring_buffer_t
 )brace
@@ -399,47 +386,6 @@ r_int
 id|n
 )paren
 suffix:semicolon
-r_static
-id|__inline__
-r_void
-DECL|function|r128_update_ring_snapshot
-id|r128_update_ring_snapshot
-c_func
-(paren
-id|drm_r128_ring_buffer_t
-op_star
-id|ring
-)paren
-(brace
-id|ring-&gt;space
-op_assign
-(paren
-id|GET_RING_HEAD
-c_func
-(paren
-id|ring
-)paren
-op_minus
-id|ring-&gt;tail
-)paren
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ring-&gt;space
-op_le
-l_int|0
-)paren
-id|ring-&gt;space
-op_add_assign
-id|ring-&gt;size
-suffix:semicolon
-)brace
 r_extern
 r_int
 id|r128_do_cce_idle
@@ -751,6 +697,8 @@ DECL|macro|R128_PM4_64BM_64VCBM_64INDBM
 macro_line|#&t;define R128_PM4_64BM_64VCBM_64INDBM&t;(8  &lt;&lt; 28)
 DECL|macro|R128_PM4_64PIO_64VCPIO_64INDPIO
 macro_line|#&t;define R128_PM4_64PIO_64VCPIO_64INDPIO&t;(15 &lt;&lt; 28)
+DECL|macro|R128_PM4_BUFFER_CNTL_NOUPDATE
+macro_line|#&t;define R128_PM4_BUFFER_CNTL_NOUPDATE&t;(1  &lt;&lt; 27)
 DECL|macro|R128_PM4_BUFFER_WM_CNTL
 mdefine_line|#define R128_PM4_BUFFER_WM_CNTL&t;&t;0x0708
 DECL|macro|R128_WMA_SHIFT
@@ -938,32 +886,75 @@ DECL|macro|CCE_PACKET2
 mdefine_line|#define CCE_PACKET2()&t;&t;&t;(R128_CCE_PACKET2)
 DECL|macro|CCE_PACKET3
 mdefine_line|#define CCE_PACKET3( pkt, n )&t;&t;(R128_CCE_PACKET3 |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (pkt) | ((n) &lt;&lt; 16))
+r_static
+id|__inline__
+r_void
+DECL|function|r128_update_ring_snapshot
+id|r128_update_ring_snapshot
+c_func
+(paren
+id|drm_r128_private_t
+op_star
+id|dev_priv
+)paren
+(brace
+id|drm_r128_ring_buffer_t
+op_star
+id|ring
+op_assign
+op_amp
+id|dev_priv-&gt;ring
+suffix:semicolon
+id|ring-&gt;space
+op_assign
+(paren
+id|GET_RING_HEAD
+c_func
+(paren
+id|dev_priv
+)paren
+op_minus
+id|ring-&gt;tail
+)paren
+op_star
+r_sizeof
+(paren
+id|u32
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ring-&gt;space
+op_le
+l_int|0
+)paren
+id|ring-&gt;space
+op_add_assign
+id|ring-&gt;size
+suffix:semicolon
+)brace
 multiline_comment|/* ================================================================&n; * Misc helper macros&n; */
 DECL|macro|RING_SPACE_TEST_WITH_RETURN
-mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;r128_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM_UDELAY(1);&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;r128_update_ring_snapshot( dev_priv );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;DRM_UDELAY(1);&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|VB_AGE_TEST_WITH_RETURN
 mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_sarea_t *sarea_priv = dev_priv-&gt;sarea_priv;&t;&t;&bslash;&n;&t;if ( sarea_priv-&gt;last_dispatch &gt;= R128_MAX_VB_AGE ) {&t;&t;&bslash;&n;&t;&t;int __ret = r128_do_cce_idle( dev_priv );&t;&t;&bslash;&n;&t;&t;if ( __ret ) return __ret;&t;&t;&t;&t;&bslash;&n;&t;&t;sarea_priv-&gt;last_dispatch = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;r128_freelist_reset( dev );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|R128_WAIT_UNTIL_PAGE_FLIPPED
 mdefine_line|#define R128_WAIT_UNTIL_PAGE_FLIPPED() do {&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CCE_PACKET0( R128_WAIT_UNTIL, 0 ) );&t;&t;&t;&bslash;&n;&t;OUT_RING( R128_EVENT_CRTC_OFFSET );&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* ================================================================&n; * Ring control&n; */
-macro_line|#if defined(__powerpc__)
-DECL|macro|r128_flush_write_combine
-mdefine_line|#define r128_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
-macro_line|#else
-DECL|macro|r128_flush_write_combine
-mdefine_line|#define r128_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
-macro_line|#endif
 DECL|macro|R128_VERBOSE
 mdefine_line|#define R128_VERBOSE&t;0
 DECL|macro|RING_LOCALS
-mdefine_line|#define RING_LOCALS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int write; unsigned int tail_mask; volatile u32 *ring;
+mdefine_line|#define RING_LOCALS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int write, _nr; unsigned int tail_mask; volatile u32 *ring;
 DECL|macro|BEGIN_RING
-mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   (n), __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;&t;&t;r128_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;tail_mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   (n), __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;&t;&t;COMMIT_RING();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;r128_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_nr = n; dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;tail_mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* You can set this to zero if you want.  If the card locks up, you&squot;ll&n; * need to keep this set.  It works around a bug in early revs of the&n; * Rage 128 chipset, where the CCE would read 32 dwords past the end of&n; * the ring buffer before wrapping around.&n; */
 DECL|macro|R128_BROKEN_CCE
 mdefine_line|#define R128_BROKEN_CCE&t;1
 DECL|macro|ADVANCE_RING
-mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_BROKEN_CCE &amp;&amp; write &lt; 32 ) {&t;&t;&t;&t;&bslash;&n;&t;&t;memcpy( dev_priv-&gt;ring.end,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;ring.start,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;write * sizeof(u32) );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;r128_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE( R128_PM4_BUFFER_DL_WPTR, write );&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_BROKEN_CCE &amp;&amp; write &lt; 32 ) {&t;&t;&t;&t;&bslash;&n;&t;&t;memcpy( dev_priv-&gt;ring.end,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;ring.start,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;write * sizeof(u32) );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((dev_priv-&gt;ring.tail + _nr) &amp; tail_mask) != write) {&t;&bslash;&n;&t;&t;DRM_ERROR( &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ADVANCE_RING(): mismatch: nr: %x write: %x line: %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;((dev_priv-&gt;ring.tail + _nr) &amp; tail_mask),&t;&bslash;&n;&t;&t;&t;write, __LINE__);&t;&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|COMMIT_RING
+mdefine_line|#define COMMIT_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;COMMIT_RING() tail=0x%06x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;ring.tail );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DRM_MEMORYBARRIER();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE( R128_PM4_BUFFER_DL_WPTR, dev_priv-&gt;ring.tail );&t;&bslash;&n;&t;R128_READ( R128_PM4_BUFFER_DL_WPTR );&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING
 mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = cpu_to_le32( x );&t;&t;&t;&t;&bslash;&n;&t;write &amp;= tail_mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __R128_DRV_H__ */
