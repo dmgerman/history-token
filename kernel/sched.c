@@ -367,16 +367,11 @@ op_star
 id|rq
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|rq-&gt;lock
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
