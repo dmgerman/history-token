@@ -603,6 +603,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2540,6 +2541,46 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// Get peripheral clock line
+singleline_comment|// Expects a claimed pdev.
+DECL|function|w9966_i2c_getscl
+r_static
+r_inline
+r_int
+id|w9966_i2c_getscl
+c_func
+(paren
+r_struct
+id|w9966_dev
+op_star
+id|cam
+)paren
+(brace
+r_const
+r_int
+r_char
+id|state
+op_assign
+id|w9966_rReg
+c_func
+(paren
+id|cam
+comma
+l_int|0x18
+)paren
+suffix:semicolon
+r_return
+(paren
+(paren
+id|state
+op_amp
+id|W9966_I2C_R_CLOCK
+)paren
+OG
+l_int|0
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// Sets the clock line on the i2c bus.
 singleline_comment|// Expects a claimed pdev. -1 on error
 DECL|function|w9966_i2c_setscl
@@ -2672,46 +2713,6 @@ r_return
 id|state
 op_amp
 id|W9966_I2C_R_DATA
-)paren
-OG
-l_int|0
-)paren
-suffix:semicolon
-)brace
-singleline_comment|// Get peripheral clock line
-singleline_comment|// Expects a claimed pdev.
-DECL|function|w9966_i2c_getscl
-r_static
-r_inline
-r_int
-id|w9966_i2c_getscl
-c_func
-(paren
-r_struct
-id|w9966_dev
-op_star
-id|cam
-)paren
-(brace
-r_const
-r_int
-r_char
-id|state
-op_assign
-id|w9966_rReg
-c_func
-(paren
-id|cam
-comma
-l_int|0x18
-)paren
-suffix:semicolon
-r_return
-(paren
-(paren
-id|state
-op_amp
-id|W9966_I2C_R_CLOCK
 )paren
 OG
 l_int|0
@@ -3956,6 +3957,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3999,12 +4001,14 @@ suffix:semicolon
 singleline_comment|// ECP, read, CCD-transfer, 00000
 r_int
 r_char
+id|__user
 op_star
 id|dest
 op_assign
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|buf

@@ -180,7 +180,7 @@ l_int|0
 suffix:semicolon
 id|records
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* when copy last to first, dest buffer can contain 0 items */
@@ -725,7 +725,7 @@ id|ih
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-10020: leaf_copy_boundary_item: &quot;
 l_string|&quot;last unformatted node must be filled entirely (%h)&quot;
@@ -2876,7 +2876,7 @@ id|Snew
 suffix:semicolon
 id|dest_bi-&gt;bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dest_bi-&gt;bi_position
 op_assign
@@ -2893,7 +2893,7 @@ r_default
 suffix:colon
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-10250: leaf_define_dest_src_infos: shift type is unknown (%d)&quot;
 comma
@@ -3071,7 +3071,7 @@ id|shift_num
 comma
 id|shift_bytes
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3287,7 +3287,7 @@ id|shift_num
 comma
 id|shift_bytes
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* replace rkey in CFR[0] by the 0-th key from R[0] */
@@ -4150,7 +4150,7 @@ l_string|&quot;10177&quot;
 suffix:semicolon
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-10177: leaf_paste_in_buffer: ero number == %d, paste_size == %d&quot;
 comma

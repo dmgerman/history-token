@@ -5228,7 +5228,7 @@ id|s_del_balance
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -5761,7 +5761,7 @@ id|tb
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -5798,9 +5798,9 @@ id|do_balance
 op_amp
 id|tb
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|M_DELETE
 )paren
@@ -6394,7 +6394,7 @@ id|tail_key
 comma
 id|inode
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/*unbh not needed*/
 )paren
 suffix:semicolon
@@ -6769,7 +6769,7 @@ id|s_cut_balance
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7897,7 +7897,7 @@ id|path
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;PAP-5720: check_research_for_paste: &quot;
 l_string|&quot;found direct item %h or position (%d) does not match to key %K&quot;
@@ -7966,7 +7966,7 @@ l_int|0
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;PAP-5730: check_research_for_paste: &quot;
 l_string|&quot;found indirect item (%h) or position (%d) does not match to key (%K)&quot;

@@ -2361,7 +2361,7 @@ l_int|0
 (brace
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-8025: set_entry_sizes: (mode==%c, insert_size==%d), invalid length of directory item&quot;
 comma

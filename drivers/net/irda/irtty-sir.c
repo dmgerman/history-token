@@ -1811,7 +1811,7 @@ multiline_comment|/* Hm, with a dongle attached the dongle driver wants&n;&t; * 
 multiline_comment|/* we are dead now */
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sirdev_put_instance
 c_func

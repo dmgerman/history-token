@@ -1015,14 +1015,14 @@ id|buffer_head
 op_star
 id|bh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|qnx4_xblk
 op_star
 id|xblk
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|qnx4_inode_entry
@@ -1268,7 +1268,7 @@ id|bh
 suffix:semicolon
 id|bh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

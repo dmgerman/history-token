@@ -857,6 +857,7 @@ suffix:semicolon
 DECL|member|clips
 r_struct
 id|v4l2_clip
+id|__user
 op_star
 id|clips
 suffix:semicolon
@@ -866,6 +867,7 @@ id|clipcount
 suffix:semicolon
 DECL|member|bitmap
 r_void
+id|__user
 op_star
 id|bitmap
 suffix:semicolon

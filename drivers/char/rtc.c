@@ -3512,20 +3512,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|create_proc_read_entry
 (paren
 l_string|&quot;driver/rtc&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rtc_read_proc
 comma
 l_int|NULL
 )paren
-op_eq
-l_int|NULL
 )paren
 (brace
 macro_line|#ifdef RTC_IRQ

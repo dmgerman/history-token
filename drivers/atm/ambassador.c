@@ -3786,7 +3786,7 @@ comma
 op_amp
 id|tx_rate_bits
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|tx_vc_bits
@@ -4741,7 +4741,7 @@ id|dev-&gt;rxer
 id|vci
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop

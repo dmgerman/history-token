@@ -2856,7 +2856,7 @@ id|parse.cftable_entry
 suffix:semicolon
 id|local-&gt;dingo_ccr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DEBUG
 c_func

@@ -985,7 +985,7 @@ id|hexium
 op_star
 id|hexium
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_union
 id|i2c_smbus_data

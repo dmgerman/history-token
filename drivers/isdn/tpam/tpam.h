@@ -507,6 +507,7 @@ id|tpam_card
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_const
@@ -529,6 +530,7 @@ op_star
 comma
 r_const
 r_void
+id|__user
 op_star
 comma
 id|u32

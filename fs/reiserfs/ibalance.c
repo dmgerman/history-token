@@ -4642,7 +4642,7 @@ l_int|1
 id|reiserfs_panic
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;balance_internal: One new node required for creating the new root&quot;
 )paren
@@ -4850,7 +4850,7 @@ id|S_new
 suffix:semicolon
 id|dest_bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dest_bi.bi_position
 op_assign

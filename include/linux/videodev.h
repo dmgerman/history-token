@@ -738,6 +738,7 @@ suffix:semicolon
 DECL|member|clips
 r_struct
 id|video_clip
+id|__user
 op_star
 id|clips
 suffix:semicolon

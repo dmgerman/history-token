@@ -1123,7 +1123,7 @@ id|protocols
 id|pr-&gt;index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|pi_unregister

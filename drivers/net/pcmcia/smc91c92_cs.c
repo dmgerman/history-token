@@ -5661,7 +5661,7 @@ id|dev
 suffix:semicolon
 id|smc-&gt;saved_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|smc-&gt;packets_waiting
 op_assign

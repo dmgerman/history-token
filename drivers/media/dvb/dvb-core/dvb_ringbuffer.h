@@ -37,7 +37,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|DVB_RINGBUFFER_PKTHDRSIZE
 mdefine_line|#define DVB_RINGBUFFER_PKTHDRSIZE 3
-multiline_comment|/*&n;** Notes:&n;** ------&n;** (1) For performance reasons read and write routines don&squot;t check buffer sizes&n;**     and/or number of bytes free/available. This has to be done before these&n;**     routines are called. For example:&n;**&n;**     *** write &lt;buflen&gt; bytes ***&n;**     free = dvb_ringbuffer_free(rbuf);&n;**     if (free &gt;= buflen) &n;**         count = dvb_ringbuffer_write(rbuf, buffer, buflen, 0);&n;**     else&n;**         ...&n;**&n;**     *** read min. 1000, max. &lt;bufsize&gt; bytes ***&n;**     avail = dvb_ringbuffer_avail(rbuf);&n;**     if (avail &gt;= 1000)&n;**         count = dvb_ringbuffer_read(rbuf, buffer, min(avail, bufsize), 0);&n;**     else&n;**         ...&n;**&n;** (2) If there is exactly one reader and one writer, there is no need &n;**     to lock read or write operations.&n;**     Two or more readers must be locked against each other.&n;**     Flushing the buffer counts as a read operation.&n;**     Two or more writers must be locked against each other.&n;*/
+multiline_comment|/*&n;** Notes:&n;** ------&n;** (1) For performance reasons read and write routines don&squot;t check buffer sizes&n;**     and/or number of bytes free/available. This has to be done before these&n;**     routines are called. For example:&n;**&n;**     *** write &lt;buflen&gt; bytes ***&n;**     free = dvb_ringbuffer_free(rbuf);&n;**     if (free &gt;= buflen) &n;**         count = dvb_ringbuffer_write(rbuf, buffer, buflen);&n;**     else&n;**         ...&n;**&n;**     *** read min. 1000, max. &lt;bufsize&gt; bytes ***&n;**     avail = dvb_ringbuffer_avail(rbuf);&n;**     if (avail &gt;= 1000)&n;**         count = dvb_ringbuffer_read(rbuf, buffer, min(avail, bufsize), 0);&n;**     else&n;**         ...&n;**&n;** (2) If there is exactly one reader and one writer, there is no need &n;**     to lock read or write operations.&n;**     Two or more readers must be locked against each other.&n;**     Flushing the buffer counts as a read operation.&n;**     Two or more writers must be locked against each other.&n;*/
 multiline_comment|/* initialize ring buffer, lock and queue */
 r_extern
 r_void
@@ -170,12 +170,9 @@ id|buf
 comma
 r_int
 id|len
-comma
-r_int
-id|usermem
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * Write a packet into the ringbuffer.&n; *&n; * &lt;rbuf&gt; Ringbuffer to write to.&n; * &lt;buf&gt; Buffer to write.&n; * &lt;len&gt; Length of buffer (currently limited to 65535 bytes max).&n; * &lt;usermem&gt; Set to 1 if &lt;buf&gt; is in userspace.&n; * returns Number of bytes written, or -EFAULT, -ENOMEM, -EVINAL.&n; */
+multiline_comment|/**&n; * Write a packet into the ringbuffer.&n; *&n; * &lt;rbuf&gt; Ringbuffer to write to.&n; * &lt;buf&gt; Buffer to write.&n; * &lt;len&gt; Length of buffer (currently limited to 65535 bytes max).&n; * returns Number of bytes written, or -EFAULT, -ENOMEM, -EVINAL.&n; */
 r_extern
 id|ssize_t
 id|dvb_ringbuffer_pkt_write
@@ -192,9 +189,6 @@ id|buf
 comma
 r_int
 id|len
-comma
-r_int
-id|usermem
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Read from a packet in the ringbuffer. Note: unlike dvb_ringbuffer_read(), this&n; * does NOT update the read pointer in the ringbuffer. You must use&n; * dvb_ringbuffer_pkt_dispose() to mark a packet as no longer required.&n; *&n; * &lt;rbuf&gt; Ringbuffer concerned.&n; * &lt;idx&gt; Packet index as returned by dvb_ringbuffer_pkt_next().&n; * &lt;offset&gt; Offset into packet to read from.&n; * &lt;buf&gt; Destination buffer for data.&n; * &lt;len&gt; Size of destination buffer.&n; * &lt;usermem&gt; Set to 1 if &lt;buf&gt; is in userspace.&n; * returns Number of bytes read, or -EFAULT.&n; */

@@ -170,7 +170,7 @@ c_func
 (paren
 id|RDS_RESET
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

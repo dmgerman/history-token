@@ -14150,7 +14150,7 @@ id|iadev-&gt;rx_open
 id|vcc-&gt;vci
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|kfree

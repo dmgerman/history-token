@@ -1219,7 +1219,7 @@ id|MDL_REMOVE
 op_or
 id|REQUEST
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|cs
@@ -1451,7 +1451,7 @@ id|MDL_ERROR
 op_or
 id|RESPONSE
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|cs
@@ -1601,7 +1601,7 @@ id|MDL_REMOVE
 op_or
 id|REQUEST
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|cs

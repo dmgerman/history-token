@@ -4213,7 +4213,7 @@ l_int|0xff
 suffix:semicolon
 id|hwif-&gt;hwif_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hwif-&gt;rqsize
 op_assign

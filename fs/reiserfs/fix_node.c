@@ -10554,7 +10554,7 @@ id|p_s_tb-&gt;L
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|brelse
 (paren
@@ -10569,7 +10569,7 @@ id|p_s_tb-&gt;R
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|brelse
 (paren
@@ -10584,7 +10584,7 @@ id|p_s_tb-&gt;FL
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|brelse
 (paren
@@ -10599,7 +10599,7 @@ id|p_s_tb-&gt;FR
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|brelse
 (paren
@@ -10614,7 +10614,7 @@ id|p_s_tb-&gt;CFL
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|brelse
 (paren
@@ -10629,7 +10629,7 @@ id|p_s_tb-&gt;CFR
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

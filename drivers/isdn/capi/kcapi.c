@@ -667,7 +667,7 @@ id|KCI_CONTRDOWN
 comma
 id|contr
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1722,7 +1722,7 @@ id|card-&gt;procfn
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1827,12 +1827,12 @@ c_func
 (paren
 id|card-&gt;procfn
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|card-&gt;procent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|capi_cards
@@ -2154,7 +2154,7 @@ l_int|0
 suffix:semicolon
 id|ap-&gt;callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -3115,6 +3115,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -3141,7 +3142,7 @@ id|capi_driver
 op_star
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|capiloaddata
 id|ldata
@@ -3187,10 +3188,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma
@@ -3222,10 +3219,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma
@@ -3359,7 +3352,7 @@ r_default
 suffix:colon
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3465,10 +3458,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ldef
 comma
@@ -3490,7 +3479,7 @@ l_int|0
 suffix:semicolon
 id|ldef.t4config.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -3501,10 +3490,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ldef
 comma
@@ -3755,10 +3740,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|rdef
 comma
@@ -3867,6 +3848,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -3921,10 +3903,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|fdef
 comma
@@ -3991,7 +3969,7 @@ id|capi_driver
 op_star
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|capicardparams
 id|cparams
@@ -4011,10 +3989,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma

@@ -3781,7 +3781,7 @@ id|__u32
 op_star
 id|item
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 singleline_comment|// pointer to item we are going to deal with
 r_int

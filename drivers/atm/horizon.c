@@ -3634,7 +3634,7 @@ id|dev-&gt;tx_skb
 suffix:semicolon
 id|dev-&gt;tx_iovec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 singleline_comment|// VC layer stats
 id|atomic_inc
@@ -5911,7 +5911,7 @@ id|tx_iovcnt
 suffix:semicolon
 id|dev-&gt;tx_iovec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* @@@ needs rewritten */
 id|dev-&gt;tx_bytes
@@ -5955,7 +5955,7 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;tx_iovec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;tx_bytes
 op_assign
@@ -7940,7 +7940,7 @@ comma
 op_amp
 id|vcc.tx_pcr_bits
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|vcc.tx_xbr_bits
@@ -9148,7 +9148,7 @@ id|dev-&gt;rxer
 id|channel
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 singleline_comment|// atomically release our rate reservation
@@ -10151,11 +10151,11 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;tx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;tx_iovec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;tx_cell_count
 op_assign

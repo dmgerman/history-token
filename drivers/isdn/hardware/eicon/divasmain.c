@@ -2379,7 +2379,7 @@ id|psoft_isr-&gt;object
 suffix:semicolon
 id|psoft_isr-&gt;object
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_free
 c_func
@@ -2403,6 +2403,7 @@ op_star
 id|os_handle
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -2458,6 +2459,7 @@ id|dst
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -2567,6 +2569,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2706,6 +2709,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3035,7 +3039,7 @@ r_void
 op_star
 id|pdiva
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u8
 id|pci_latency

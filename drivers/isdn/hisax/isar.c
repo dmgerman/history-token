@@ -1118,6 +1118,7 @@ op_star
 id|cs
 comma
 id|u_char
+id|__user
 op_star
 id|buf
 )paren
@@ -1147,6 +1148,7 @@ op_star
 id|sp
 suffix:semicolon
 id|u_char
+id|__user
 op_star
 id|p
 op_assign
@@ -10629,6 +10631,7 @@ id|cs
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|adr

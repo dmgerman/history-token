@@ -1934,7 +1934,7 @@ id|inode
 dot
 id|rsrc_inode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

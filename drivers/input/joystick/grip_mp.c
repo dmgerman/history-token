@@ -234,9 +234,9 @@ id|grip_abs
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|grip_abs_gp
 comma
@@ -252,9 +252,9 @@ id|grip_btn
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|grip_btn_gp
 comma
