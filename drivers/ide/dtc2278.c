@@ -111,6 +111,7 @@ multiline_comment|/* success */
 )brace
 )brace
 )brace
+multiline_comment|/* Assumes IRQ&squot;s are disabled or at least that no other process will&n;   attempt to access the IDE registers concurrently. */
 DECL|function|tune_dtc2278
 r_static
 r_void
@@ -126,10 +127,6 @@ id|u8
 id|pio
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|pio
 op_assign
 id|ata_timing_mode
@@ -152,19 +149,6 @@ op_ge
 l_int|3
 )paren
 (brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 multiline_comment|/*&n;&t;&t; * This enables PIO mode4 (3?) on the first interface&n;&t;&t; */
 id|sub22
 c_func
@@ -182,13 +166,6 @@ comma
 l_int|0xa0
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 )brace
 r_else
 (brace
