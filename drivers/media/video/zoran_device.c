@@ -36,10 +36,11 @@ id|zoran_num_formats
 suffix:semicolon
 r_extern
 r_int
-id|debug
+op_star
+id|zr_debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
 DECL|variable|lml33dpath
 r_static
 r_int
@@ -382,7 +383,8 @@ id|zr
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|2
 )paren
@@ -5134,7 +5136,8 @@ multiline_comment|/* Report error */
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 op_logical_and
@@ -6153,7 +6156,8 @@ id|BUZ_MODE_MOTION_COMPRESS
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 op_logical_and
@@ -6309,7 +6313,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|2
 op_logical_and

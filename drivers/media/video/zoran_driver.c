@@ -327,10 +327,11 @@ macro_line|#   include &lt;linux/bigphysarea.h&gt;
 macro_line|#endif
 r_extern
 r_int
-id|debug
+op_star
+id|zr_debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args);&t;&bslash;&n;&t;} while (0)
 r_extern
 r_int
 id|v4l_nbufs
@@ -4100,7 +4101,8 @@ multiline_comment|/* buffer should now be in BUZ_STATE_DONE */
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|0
 )paren
@@ -5214,7 +5216,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 )paren

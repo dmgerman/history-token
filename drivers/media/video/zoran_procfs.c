@@ -19,10 +19,11 @@ macro_line|#include &quot;zoran.h&quot;
 macro_line|#include &quot;zoran_procfs.h&quot;
 r_extern
 r_int
-id|debug
+op_star
+id|zr_debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|struct|procfs_params_zr36067
 r_struct

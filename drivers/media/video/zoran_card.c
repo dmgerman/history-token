@@ -377,10 +377,19 @@ l_string|&quot;Pass TV signal through to TV-out when idling&quot;
 )paren
 suffix:semicolon
 DECL|variable|debug
+r_static
 r_int
 id|debug
 op_assign
 l_int|1
+suffix:semicolon
+DECL|variable|zr_debug
+r_int
+op_star
+id|zr_debug
+op_assign
+op_amp
+id|debug
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -455,7 +464,7 @@ id|zr36067_pci_tbl
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
 DECL|variable|zoran_num
 r_int
 id|zoran_num
@@ -4523,7 +4532,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 )paren
@@ -4913,7 +4923,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|2
 )paren
