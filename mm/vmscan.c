@@ -851,9 +851,6 @@ id|page
 )paren
 (brace
 r_case
-id|SWAP_ERROR
-suffix:colon
-r_case
 id|SWAP_FAIL
 suffix:colon
 id|pte_chain_unlock
