@@ -2251,7 +2251,7 @@ id|sk
 )paren
 )paren
 suffix:semicolon
-id|sk_add_node
+id|__sk_add_node
 c_func
 (paren
 id|sk
