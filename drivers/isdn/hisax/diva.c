@@ -1474,16 +1474,6 @@ id|ipacx_bc_write
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
-DECL|macro|READHSCX
-mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs-&gt;hw.diva.hscx_adr, &bslash;&n;&t;&t;cs-&gt;hw.diva.hscx, reg + (nr ? 0x40 : 0))
-DECL|macro|WRITEHSCX
-mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs-&gt;hw.diva.hscx_adr, &bslash;&n;                cs-&gt;hw.diva.hscx, reg + (nr ? 0x40 : 0), data)
-DECL|macro|READHSCXFIFO
-mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) readfifo(cs-&gt;hw.diva.hscx_adr, &bslash;&n;&t;&t;cs-&gt;hw.diva.hscx, (nr ? 0x40 : 0), ptr, cnt)
-DECL|macro|WRITEHSCXFIFO
-mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) writefifo(cs-&gt;hw.diva.hscx_adr, &bslash;&n;&t;&t;cs-&gt;hw.diva.hscx, (nr ? 0x40 : 0), ptr, cnt)
-macro_line|#include &quot;hscx_irq.c&quot;
 r_static
 r_void
 DECL|function|diva_interrupt

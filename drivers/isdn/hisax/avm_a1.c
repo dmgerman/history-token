@@ -458,16 +458,6 @@ id|hscx_write_fifo
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
-DECL|macro|READHSCX
-mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs-&gt;hw.avm.hscx[nr], reg)
-DECL|macro|WRITEHSCX
-mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs-&gt;hw.avm.hscx[nr], reg, data)
-DECL|macro|READHSCXFIFO
-mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) read_fifo(cs-&gt;hw.avm.hscxfifo[nr], ptr, cnt)
-DECL|macro|WRITEHSCXFIFO
-mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) write_fifo(cs-&gt;hw.avm.hscxfifo[nr], ptr, cnt)
-macro_line|#include &quot;hscx_irq.c&quot;
 r_static
 r_void
 DECL|function|avm_a1_interrupt
