@@ -23,16 +23,7 @@ op_star
 id|translation
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;Bus #%d is %s&bslash;n&quot;
-comma
-id|m-&gt;mpc_busid
-comma
-id|name
-)paren
-suffix:semicolon
+singleline_comment|//&t;Dprintk(&quot;Bus #%d is %s&bslash;n&quot;, m-&gt;mpc_busid, name);
 )brace
 DECL|function|mpc_oem_pci_bus
 r_static
