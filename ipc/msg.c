@@ -1589,7 +1589,7 @@ id|MSG_STAT
 op_logical_and
 id|msqid
 op_ge
-id|msg_ids.size
+id|msg_ids.entries-&gt;size
 )paren
 (brace
 r_return
