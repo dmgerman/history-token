@@ -4301,6 +4301,8 @@ DECL|macro|TG3_FLG2_PHY_JUST_INITTED
 mdefine_line|#define TG3_FLG2_PHY_JUST_INITTED&t;0x00001000
 DECL|macro|TG3_FLG2_PHY_SERDES
 mdefine_line|#define TG3_FLG2_PHY_SERDES&t;&t;0x00002000
+DECL|macro|TG3_FLG2_CAPACITIVE_COUPLING
+mdefine_line|#define TG3_FLG2_CAPACITIVE_COUPLING&t;0x00004000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
