@@ -829,7 +829,7 @@ id|mp-&gt;m_flags
 op_or_assign
 id|XFS_MOUNT_WSYNC
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -2782,7 +2782,7 @@ id|statp-&gt;f_bfree
 op_lshift
 id|sbp-&gt;sb_inopblog
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 id|fakeinos
 op_add_assign
 id|mp-&gt;m_inoadd
@@ -2808,7 +2808,7 @@ c_cond
 (paren
 id|mp-&gt;m_maxicount
 )paren
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -5714,7 +5714,7 @@ id|args-&gt;flags
 op_or_assign
 id|XFSMNT_INO64
 suffix:semicolon
-macro_line|#ifndef XFS_BIG_FILESYSTEMS
+macro_line|#if !XFS_BIG_INUMS
 id|printk
 c_func
 (paren
@@ -5868,7 +5868,7 @@ op_and_assign
 op_complement
 id|XFSMNT_32BITINODES
 suffix:semicolon
-macro_line|#ifndef XFS_BIG_FILESYSTEMS
+macro_line|#if !XFS_BIG_INUMS
 id|printk
 c_func
 (paren

@@ -331,17 +331,14 @@ id|vap-&gt;va_fsid
 op_assign
 id|mp-&gt;m_dev
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|vap-&gt;va_nodeid
 op_assign
 id|ip-&gt;i_ino
-op_plus
-id|mp-&gt;m_inoadd
 suffix:semicolon
-macro_line|#else
+macro_line|#if XFS_BIG_INUMS
 id|vap-&gt;va_nodeid
-op_assign
-id|ip-&gt;i_ino
+op_add_assign
+id|mp-&gt;m_inoadd
 suffix:semicolon
 macro_line|#endif
 id|vap-&gt;va_nlink

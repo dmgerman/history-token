@@ -23627,7 +23627,7 @@ comma
 id|mp-&gt;m_resblks_avail
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 id|kdb_printf
 c_func
 (paren

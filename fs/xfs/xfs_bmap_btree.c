@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -11184,7 +11184,7 @@ id|BMBT_EXNTFLAG_BITLEN
 op_rshift
 l_int|9
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|s-&gt;br_startblock
 op_assign
 (paren
@@ -11295,7 +11295,7 @@ l_int|21
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 id|s-&gt;br_blockcount
 op_assign
 (paren
@@ -11486,7 +11486,7 @@ op_star
 id|r
 )paren
 (brace
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 r_return
 (paren
 (paren
@@ -11592,7 +11592,7 @@ l_int|21
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 multiline_comment|/*&n; * Extract the startoff field from an in memory bmap extent record.&n; */
 id|xfs_fileoff_t
@@ -11763,7 +11763,7 @@ op_star
 id|r
 )paren
 (brace
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 r_return
 (paren
 (paren
@@ -11899,7 +11899,7 @@ l_int|21
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 multiline_comment|/*&n; * Extract the startoff field from a disk format bmap extent record.&n; */
 id|xfs_fileoff_t
@@ -14020,7 +14020,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|ASSERT
 c_func
 (paren
@@ -14037,8 +14037,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|r-&gt;l0
 op_assign
 (paren
@@ -14095,7 +14093,7 @@ l_int|21
 )paren
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !XFS_BIG_FILESYSTEMS */
+macro_line|#else&t;/* !XFS_BIG_BLKNOS */
 r_if
 c_cond
 (paren
@@ -14219,7 +14217,7 @@ l_int|21
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 multiline_comment|/*&n; * Set all the fields in a bmap extent record from the arguments.&n; */
 r_void
@@ -14312,7 +14310,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|ASSERT
 c_func
 (paren
@@ -14331,8 +14329,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|r-&gt;l0
 op_assign
 (paren
@@ -14389,7 +14385,7 @@ l_int|21
 )paren
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !XFS_BIG_FILESYSTEMS */
+macro_line|#else&t;/* !XFS_BIG_BLKNOS */
 r_if
 c_cond
 (paren
@@ -14513,7 +14509,7 @@ l_int|21
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
 multiline_comment|/*&n; * Set all the fields in a bmap extent record from the uncompressed form.&n; */
@@ -14595,7 +14591,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|ASSERT
 c_func
 (paren
@@ -14612,8 +14608,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|INT_SET
 c_func
 (paren
@@ -14682,7 +14676,7 @@ l_int|21
 )paren
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !XFS_BIG_FILESYSTEMS */
+macro_line|#else&t;/* !XFS_BIG_BLKNOS */
 r_if
 c_cond
 (paren
@@ -14830,7 +14824,7 @@ l_int|21
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 multiline_comment|/*&n; * Set all the fields in a disk format bmap extent record from the arguments.&n; */
 r_void
@@ -14923,7 +14917,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|ASSERT
 c_func
 (paren
@@ -14942,8 +14936,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|INT_SET
 c_func
 (paren
@@ -15012,7 +15004,7 @@ l_int|21
 )paren
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !XFS_BIG_FILESYSTEMS */
+macro_line|#else&t;/* !XFS_BIG_BLKNOS */
 r_if
 c_cond
 (paren
@@ -15160,7 +15152,7 @@ l_int|21
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Set the blockcount field in a bmap extent record.&n; */
@@ -15236,7 +15228,7 @@ id|xfs_fsblock_t
 id|v
 )paren
 (brace
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 id|ASSERT
 c_func
 (paren
@@ -15253,8 +15245,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|r-&gt;l0
 op_assign
 (paren
@@ -15303,7 +15293,7 @@ op_lshift
 l_int|21
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !XFS_BIG_FILESYSTEMS */
+macro_line|#else&t;/* !XFS_BIG_BLKNOS */
 r_if
 c_cond
 (paren
@@ -15398,7 +15388,7 @@ l_int|21
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
 multiline_comment|/*&n; * Set the startoff field in a bmap extent record.&n; */
 r_void

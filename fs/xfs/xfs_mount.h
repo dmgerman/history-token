@@ -1452,7 +1452,7 @@ id|__uint64_t
 id|m_resblks_avail
 suffix:semicolon
 multiline_comment|/* available reserved blocks */
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 DECL|member|m_inoadd
 id|xfs_ino_t
 id|m_inoadd
@@ -1591,10 +1591,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Flags for m_flags.&n; */
 DECL|macro|XFS_MOUNT_WSYNC
 mdefine_line|#define&t;XFS_MOUNT_WSYNC&t;&t;0x00000001&t;/* for nfs - all metadata ops&n;&t;&t;&t;&t;&t;&t;   must be synchronous except&n;&t;&t;&t;&t;&t;&t;   for space allocations */
-macro_line|#if XFS_BIG_FILESYSTEMS
 DECL|macro|XFS_MOUNT_INO64
 mdefine_line|#define&t;XFS_MOUNT_INO64&t;&t;0x00000002
-macro_line|#endif
 multiline_comment|/* 0x00000004&t;-- currently unused */
 multiline_comment|/* 0x00000008&t;-- currently unused */
 DECL|macro|XFS_MOUNT_FS_SHUTDOWN
