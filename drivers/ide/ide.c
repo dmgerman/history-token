@@ -2695,14 +2695,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
+id|destroy_proc_ide_interface
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hwgroup
 op_assign
 id|hwif-&gt;hwgroup
