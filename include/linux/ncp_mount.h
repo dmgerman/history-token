@@ -165,6 +165,8 @@ id|dir_mode
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|NCP_MOUNT_VERSION_V5
+mdefine_line|#define NCP_MOUNT_VERSION_V5&t;(5)&t;/* Text only */
 macro_line|#ifdef __KERNEL__
 DECL|struct|ncp_mount_data_kernel
 r_struct
@@ -237,6 +239,10 @@ suffix:semicolon
 DECL|member|dir_mode
 id|__kernel_mode_t
 id|dir_mode
+suffix:semicolon
+DECL|member|info_fd
+r_int
+id|info_fd
 suffix:semicolon
 )brace
 suffix:semicolon

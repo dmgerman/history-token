@@ -41,6 +41,18 @@ op_star
 id|ncp_sock
 suffix:semicolon
 multiline_comment|/* ncp socket */
+DECL|member|info_filp
+r_struct
+id|file
+op_star
+id|info_filp
+suffix:semicolon
+DECL|member|info_sock
+r_struct
+id|socket
+op_star
+id|info_sock
+suffix:semicolon
 DECL|member|sequence
 id|u8
 id|sequence
@@ -424,6 +436,23 @@ r_int
 id|timeout_retries
 suffix:semicolon
 multiline_comment|/* DGRAM only: retries left */
+r_struct
+(brace
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+DECL|member|data
+id|__u8
+id|data
+(braket
+l_int|128
+)braket
+suffix:semicolon
+DECL|member|unexpected_packet
+)brace
+id|unexpected_packet
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
