@@ -612,11 +612,16 @@ DECL|member|group_exit_code
 r_int
 id|group_exit_code
 suffix:semicolon
+multiline_comment|/* overloaded:&n;&t; * - notify group_exit_task when -&gt;count is equal to notify_count&n;&t; * - everyone except group_exit_task is stopped during signal delivery&n;&t; *   of fatal signals, group_exit_task processes the signal.&n;&t; */
 DECL|member|group_exit_task
 r_struct
 id|task_struct
 op_star
 id|group_exit_task
+suffix:semicolon
+DECL|member|notify_count
+r_int
+id|notify_count
 suffix:semicolon
 multiline_comment|/* thread group stop support, overloads group_exit_code too */
 DECL|member|group_stop_count

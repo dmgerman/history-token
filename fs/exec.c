@@ -2604,6 +2604,10 @@ id|oldsig-&gt;group_exit_task
 op_assign
 id|current
 suffix:semicolon
+id|oldsig-&gt;notify_count
+op_assign
+id|count
+suffix:semicolon
 id|__set_current_state
 c_func
 (paren

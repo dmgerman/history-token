@@ -942,8 +942,8 @@ c_func
 op_amp
 id|sig-&gt;count
 )paren
-op_le
-l_int|2
+op_eq
+id|sig-&gt;notify_count
 )paren
 (brace
 id|wake_up_process
