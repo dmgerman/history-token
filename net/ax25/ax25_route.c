@@ -2325,7 +2325,7 @@ id|ax25_rt
 op_assign
 id|ax25_route_list
 suffix:semicolon
-id|write_unlock
+id|write_lock
 c_func
 (paren
 op_amp

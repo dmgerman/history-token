@@ -145,6 +145,13 @@ id|physical_node_map
 id|MAX_PHYSNODE_ID
 )braket
 suffix:semicolon
+DECL|variable|physical_node_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|physical_node_map
+)paren
+suffix:semicolon
 DECL|variable|numionodes
 r_int
 id|numionodes

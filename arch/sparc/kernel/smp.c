@@ -180,6 +180,29 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XXX */
+DECL|variable|__atomic_hash
+id|spinlock_t
+id|__atomic_hash
+(braket
+id|ATOMIC_HASH_SIZE
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|ATOMIC_HASH_SIZE
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+id|SPIN_LOCK_UNLOCKED
+)brace
+suffix:semicolon
 multiline_comment|/* The only guaranteed locking primitive available on all Sparc&n; * processors is &squot;ldstub [%reg + immediate], %dest_reg&squot; which atomically&n; * places the current byte at the effective address into dest_reg and&n; * places 0xff there afterwards.  Pretty lame locking primitive&n; * compared to the Alpha and the Intel no?  Most Sparcs have &squot;swap&squot;&n; * instruction which is much better...&n; */
 multiline_comment|/* Used to make bitops atomic */
 DECL|variable|bitops_spinlock
