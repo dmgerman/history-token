@@ -4329,8 +4329,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond

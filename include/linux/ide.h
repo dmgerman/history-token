@@ -59,7 +59,7 @@ multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 DECL|macro|HWIF
-mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;hwif)
+mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;channel)
 DECL|macro|HWGROUP
 mdefine_line|#define HWGROUP(drive)&t;&t;(HWIF(drive)-&gt;hwgroup)
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
@@ -209,9 +209,9 @@ mdefine_line|#define WAIT_CMD&t;(10*HZ)&t;&t;/* 10sec  - maximum wait for an IRQ
 DECL|macro|WAIT_MIN_SLEEP
 mdefine_line|#define WAIT_MIN_SLEEP&t;(2*HZ/100)&t;/* 20msec - minimum sleep time */
 DECL|macro|SELECT_DRIVE
-mdefine_line|#define SELECT_DRIVE(hwif,drive)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;selectproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;selectproc(drive);&t;&t;&t;&bslash;&n;&t;OUT_BYTE((drive)-&gt;select.all, hwif-&gt;io_ports[IDE_SELECT_OFFSET]); &bslash;&n;}
+mdefine_line|#define SELECT_DRIVE(channel, drive)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (channel-&gt;selectproc)&t;&t;&t;&t;&bslash;&n;&t;&t;channel-&gt;selectproc(drive);&t;&t;&t;&bslash;&n;&t;OUT_BYTE((drive)-&gt;select.all, channel-&gt;io_ports[IDE_SELECT_OFFSET]); &bslash;&n;}
 DECL|macro|SELECT_MASK
-mdefine_line|#define SELECT_MASK(hwif,drive,mask)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;maskproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;maskproc(drive,mask);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SELECT_MASK(channel, drive, mask)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (channel-&gt;maskproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;channel-&gt;maskproc(drive,mask);&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
 r_struct
 id|hwif_s
@@ -321,12 +321,6 @@ op_star
 id|ack_intr
 suffix:semicolon
 multiline_comment|/* acknowledge interrupt */
-DECL|member|priv
-r_void
-op_star
-id|priv
-suffix:semicolon
-multiline_comment|/* interface specific data */
 DECL|member|chipset
 id|hwif_chipset_t
 id|chipset
@@ -454,6 +448,13 @@ r_typedef
 r_struct
 id|ide_drive_s
 (brace
+DECL|member|channel
+r_struct
+id|hwif_s
+op_star
+id|channel
+suffix:semicolon
+multiline_comment|/* parent pointer to the channel we are attached to  */
 DECL|member|usage
 r_int
 r_int
@@ -789,13 +790,6 @@ r_int
 id|drive_data
 suffix:semicolon
 multiline_comment|/* for use by tuneproc/selectproc as needed */
-DECL|member|hwif
-r_struct
-id|hwif_s
-op_star
-id|hwif
-suffix:semicolon
-multiline_comment|/* parent pointer to the interface we are attached to  */
 DECL|member|wqueue
 id|wait_queue_head_t
 id|wqueue
@@ -1004,7 +998,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * An ide_ideproc_t() performs CPU-polled transfers to/from a drive.&n; * Arguments are: the drive, the buffer pointer, and the length (in bytes or&n; * words depending on if it&squot;s an IDE or ATAPI call).&n; *&n; * If it is not defined for a controller, standard-code is used from ide.c.&n; *&n; * Controllers which are not memory-mapped in the standard way need to &n; * override that mechanism using this function to work.&n; *&n; */
+multiline_comment|/*&n; * An ide_ideproc_t() performs CPU-polled transfers to/from a drive.&n; * Arguments are: the drive, the buffer pointer, and the length (in bytes or&n; * words depending on if it&squot;s an IDE or ATAPI call).&n; *&n; * If it is not defined for a controller, standard-code is used from ide.c.&n; *&n; * Controllers which are not memory-mapped in the standard way need to&n; * override that mechanism using this function to work.&n; *&n; */
 DECL|enumerator|ideproc_ide_input_data
 DECL|enumerator|ideproc_ide_output_data
 r_typedef
@@ -1341,7 +1335,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|80
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* name of interface */
@@ -2464,18 +2458,6 @@ id|hobRegister
 l_int|8
 )braket
 suffix:semicolon
-DECL|member|tf_out_flags
-id|ide_reg_valid_t
-id|tf_out_flags
-suffix:semicolon
-DECL|member|tf_in_flags
-id|ide_reg_valid_t
-id|tf_in_flags
-suffix:semicolon
-DECL|member|data_phase
-r_int
-id|data_phase
-suffix:semicolon
 DECL|member|command_type
 r_int
 id|command_type
@@ -2490,25 +2472,6 @@ id|ide_handler_t
 op_star
 id|handler
 suffix:semicolon
-DECL|member|special
-r_void
-op_star
-id|special
-suffix:semicolon
-multiline_comment|/* valid_t generally */
-DECL|member|rq
-r_struct
-id|request
-op_star
-id|rq
-suffix:semicolon
-multiline_comment|/* copy of request */
-DECL|member|block
-r_int
-r_int
-id|block
-suffix:semicolon
-multiline_comment|/* copy of block */
 DECL|typedef|ide_task_t
 )brace
 id|ide_task_t
@@ -3089,10 +3052,6 @@ id|scan_direction
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-DECL|macro|BAD_DMA_DRIVE
-macro_line|# define BAD_DMA_DRIVE&t;&t;0
-DECL|macro|GOOD_DMA_DRIVE
-macro_line|# define GOOD_DMA_DRIVE&t;&t;1
 r_int
 id|ide_build_dmatable
 (paren

@@ -3840,10 +3840,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * This function is intended to be used prior to invoking ide_do_drive_cmd().&n; */
-DECL|function|ide_init_drive_taskfile
+DECL|function|init_taskfile_request
 r_static
 r_void
-id|ide_init_drive_taskfile
+id|init_taskfile_request
+c_func
 (paren
 r_struct
 id|request
@@ -3870,7 +3871,7 @@ op_assign
 id|REQ_DRIVE_TASKFILE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is kept for internal use only !!!&n; * This is an internal call and nobody in user-space has a damn&n; * reason to call this taskfile.&n; *&n; * ide_raw_taskfile is the one that user-space executes.&n; */
+multiline_comment|/*&n; * This is kept for internal use only !!!&n; * This is an internal call and nobody in user-space has a&n; * reason to call this taskfile.&n; *&n; * ide_raw_taskfile is the one that user-space executes.&n; */
 DECL|function|ide_wait_taskfile
 r_int
 id|ide_wait_taskfile
@@ -4028,7 +4029,7 @@ id|IDE_CONTROL_OFFSET_HOB
 op_assign
 id|hobfile-&gt;control
 suffix:semicolon
-id|ide_init_drive_taskfile
+id|init_taskfile_request
 c_func
 (paren
 op_amp
@@ -4106,7 +4107,7 @@ r_struct
 id|request
 id|rq
 suffix:semicolon
-id|ide_init_drive_taskfile
+id|init_taskfile_request
 c_func
 (paren
 op_amp
@@ -4159,8 +4160,7 @@ id|ide_wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  The taskfile glue table&n; *&n; *  reqtask.data_phase&t;reqtask.req_cmd&n; *&t;&t;&t;args.command_type&t;&t;args.handler&n; *&n; *  TASKFILE_P_OUT_DMAQ&t;??&t;&t;&t;&t;??&n; *  TASKFILE_P_IN_DMAQ&t;??&t;&t;&t;&t;??&n; *  TASKFILE_P_OUT_DMA&t;??&t;&t;&t;&t;??&n; *  TASKFILE_P_IN_DMA&t;??&t;&t;&t;&t;??&n; *  TASKFILE_P_OUT&t;??&t;&t;&t;&t;??&n; *  TASKFILE_P_IN&t;??&t;&t;&t;&t;??&n; *&n; *  TASKFILE_OUT_DMAQ&t;IDE_DRIVE_TASK_RAW_WRITE&t;NULL&n; *  TASKFILE_IN_DMAQ&t;IDE_DRIVE_TASK_IN&t;&t;NULL&n; *&n; *  TASKFILE_OUT_DMA&t;IDE_DRIVE_TASK_RAW_WRITE&t;NULL&n; *  TASKFILE_IN_DMA&t;IDE_DRIVE_TASK_IN&t;&t;NULL&n; *&n; *  TASKFILE_IN_OUT&t;??&t;&t;&t;&t;??&n; *&n; *  TASKFILE_MULTI_OUT&t;IDE_DRIVE_TASK_RAW_WRITE&t;task_mulout_intr&n; *  TASKFILE_MULTI_IN&t;IDE_DRIVE_TASK_IN&t;&t;task_mulin_intr&n; *&n; *  TASKFILE_OUT&t;IDE_DRIVE_TASK_RAW_WRITE&t;task_out_intr&n; *  TASKFILE_OUT&t;IDE_DRIVE_TASK_OUT&t;&t;task_out_intr&n; *&n; *  TASKFILE_IN&t;&t;IDE_DRIVE_TASK_IN&t;&t;task_in_intr&n; *  TASKFILE_NO_DATA&t;IDE_DRIVE_TASK_NO_DATA&t;&t;task_no_data_intr&n; *&n; *&t;&t;&t;IDE_DRIVE_TASK_SET_XFER&t;&t;task_no_data_intr&n; *&t;&t;&t;IDE_DRIVE_TASK_INVALID&n; *&n; */
-multiline_comment|/*&n; * Issue ATA command and wait for completion. use for implementing commands in&n; * kernel.&n; *&n; * The caller has to make sure buf is never NULL!&n; */
+multiline_comment|/*&n; * Issue ATA command and wait for completion. Use for implementing commands in&n; * kernel.&n; *&n; * The caller has to make sure buf is never NULL!&n; */
 DECL|function|ide_wait_cmd
 r_static
 r_int

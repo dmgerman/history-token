@@ -114,6 +114,10 @@ multiline_comment|/* KeyLargo ATA-4 */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
+DECL|macro|BAD_DMA_DRIVE
+macro_line|# define BAD_DMA_DRIVE&t;&t;0
+DECL|macro|GOOD_DMA_DRIVE
+macro_line|# define GOOD_DMA_DRIVE&t;&t;1
 r_typedef
 r_struct
 (brace
