@@ -7,6 +7,25 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &quot;libata.h&quot;
+DECL|typedef|ata_xlat_func_t
+r_typedef
+r_int
+r_int
+(paren
+op_star
+id|ata_xlat_func_t
+)paren
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+comma
+id|u8
+op_star
+id|scsicmd
+)paren
+suffix:semicolon
 r_static
 r_void
 id|ata_scsi_simulate
@@ -941,6 +960,9 @@ r_struct
 id|scsi_cmnd
 op_star
 )paren
+comma
+id|ata_xlat_func_t
+id|xlat_func
 )paren
 (brace
 r_struct
@@ -1009,6 +1031,17 @@ id|qc
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_READ
+op_logical_or
+id|cmd-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_WRITE
+)paren
 id|qc-&gt;flags
 op_or_assign
 id|ATA_QCFLAG_SG
@@ -1017,7 +1050,7 @@ multiline_comment|/* data is present; dma-map it */
 r_if
 c_cond
 (paren
-id|ata_scsi_rw_xlat
+id|xlat_func
 c_func
 (paren
 id|qc
@@ -3150,12 +3183,12 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_xlat_possible - check if SCSI to ATA translation is possible&n; *&t;@cmd: SCSI command opcode to consider&n; *&n; *&t;Look up the SCSI command given, and determine whether the&n; *&t;SCSI command is to be translated or simulated.&n; *&n; *&t;RETURNS:&n; *&t;Non-zero if possible, zero if not.&n; */
-DECL|function|ata_scsi_xlat_possible
+multiline_comment|/**&n; *&t;ata_get_xlat_func - check if SCSI to ATA translation is possible&n; *&t;@cmd: SCSI command opcode to consider&n; *&n; *&t;Look up the SCSI command given, and determine whether the&n; *&t;SCSI command is to be translated or simulated.&n; *&n; *&t;RETURNS:&n; *&t;Pointer to translation function if possible, %NULL if not.&n; */
+DECL|function|ata_get_xlat_func
 r_static
 r_inline
-r_int
-id|ata_scsi_xlat_possible
+id|ata_xlat_func_t
+id|ata_get_xlat_func
 c_func
 (paren
 id|u8
@@ -3187,11 +3220,11 @@ r_case
 id|WRITE_16
 suffix:colon
 r_return
-l_int|1
+id|ata_scsi_rw_xlat
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_scsi_dump_cdb - dump SCSI command contents to dmesg&n; *&t;@ap: ATA port to which the command was being sent&n; *&t;@cmd: SCSI command to dump&n; *&n; *&t;Prints the contents of a SCSI command via printk().&n; */
@@ -3384,10 +3417,10 @@ op_eq
 id|ATA_DEV_ATA
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ata_scsi_xlat_possible
+id|ata_xlat_func_t
+id|xlat_func
+op_assign
+id|ata_get_xlat_func
 c_func
 (paren
 id|cmd-&gt;cmnd
@@ -3395,6 +3428,11 @@ id|cmd-&gt;cmnd
 l_int|0
 )braket
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|xlat_func
 )paren
 id|ata_scsi_translate
 c_func
@@ -3406,6 +3444,8 @@ comma
 id|cmd
 comma
 id|done
+comma
+id|xlat_func
 )paren
 suffix:semicolon
 r_else
