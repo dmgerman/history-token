@@ -5,13 +5,8 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This file contains the definitions for the x86 IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated&n; * to (a) handle it all in a way that makes gcc able to optimize it&n; * as well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; */
 multiline_comment|/*&n; * Thanks to James van Artsdalen for a better timing-fix than&n; * the two short jumps: using outb&squot;s to a nonexistent port seems&n; * to guarantee better timings even on fast machines.&n; *&n; * On the other hand, I&squot;d like to be sure of a non-existent port:&n; * I feel a bit unsafe about using 0x80 (should be safe, though)&n; *&n; *&t;&t;Linus&n; */
 multiline_comment|/*&n;  *  Bit simplified and optimized by Jan Hubicka&n;  *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999.&n;  *&n;  *  isa_memset_io, isa_memcpy_fromio, isa_memcpy_toio added,&n;  *  isa_read[wl] and isa_write[wl] fixed&n;  *  - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;  */
-macro_line|#ifdef SLOW_IO_BY_JUMPING
-DECL|macro|__SLOW_DOWN_IO
-mdefine_line|#define __SLOW_DOWN_IO &quot;&bslash;njmp 1f&bslash;n1:&bslash;tjmp 1f&bslash;n1:&quot;
-macro_line|#else
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO &quot;&bslash;noutb %%al,$0x80&quot;
-macro_line|#endif
 macro_line|#ifdef REALLY_SLOW_IO
 DECL|macro|__FULL_SLOW_DOWN_IO
 mdefine_line|#define __FULL_SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO
