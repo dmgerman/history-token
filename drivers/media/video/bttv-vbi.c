@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    bttv - Bt848 frame grabber driver&n;    vbi interface&n;    &n;    (c) 2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;    &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;    &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-vbi.c,v 1.5 2004/10/06 17:30:51 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;    vbi interface&n;    &n;    (c) 2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;    &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;    &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -147,10 +147,9 @@ r_int
 id|vbi_buffer_setup
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_int
 r_int
@@ -168,7 +167,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|bttv
@@ -217,10 +216,9 @@ r_int
 id|vbi_buffer_prepare
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -237,7 +235,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|bttv
@@ -388,10 +386,9 @@ DECL|function|vbi_buffer_queue
 id|vbi_buffer_queue
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -404,7 +401,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|bttv
@@ -455,7 +452,7 @@ op_eq
 id|btv-&gt;cvbi
 )paren
 (brace
-id|fh-&gt;btv-&gt;curr.irqflags
+id|fh-&gt;btv-&gt;loop_irq
 op_or_assign
 l_int|4
 suffix:semicolon
@@ -465,8 +462,6 @@ c_func
 id|btv
 comma
 l_int|0x0c
-comma
-id|fh-&gt;btv-&gt;curr.irqflags
 )paren
 suffix:semicolon
 )brace
@@ -477,10 +472,9 @@ r_void
 id|vbi_buffer_release
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -493,7 +487,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|bttv
