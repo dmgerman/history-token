@@ -619,7 +619,7 @@ op_assign
 id|c-&gt;hard_math
 op_logical_and
 (paren
-id|ignore_irq13
+id|ignore_fpu_irq
 op_logical_or
 id|cpu_has_fpu
 )paren
