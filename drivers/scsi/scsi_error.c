@@ -1805,14 +1805,12 @@ id|rtn
 op_eq
 id|SUCCESS
 )paren
-id|scsi_eh_finish_cmd
-c_func
-(paren
-id|scmd
-comma
-id|done_q
-)paren
+multiline_comment|/* we don&squot;t want this command reissued, just&n;&t;&t;&t; * finished with the sense data, so set&n;&t;&t;&t; * retries to the max allowed to ensure it&n;&t;&t;&t; * won&squot;t get reissued */
+id|scmd-&gt;retries
+op_assign
+id|scmd-&gt;allowed
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -1822,29 +1820,6 @@ id|NEEDS_RETRY
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we only come in here if we want to retry a&n;&t;&t; * command.  the test to see whether the command&n;&t;&t; * should be retried should be keeping track of the&n;&t;&t; * number of tries, so we don&squot;t end up looping, of&n;&t;&t; * course.&n;&t;&t; */
-id|scmd-&gt;state
-op_assign
-id|NEEDS_RETRY
-suffix:semicolon
-id|rtn
-op_assign
-id|scsi_eh_retry_cmd
-c_func
-(paren
-id|scmd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rtn
-op_ne
-id|SUCCESS
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we eventually hand this one back to the top level.&n;&t;&t; */
 id|scsi_eh_finish_cmd
 c_func
 (paren
@@ -3687,10 +3662,9 @@ id|NEEDS_RETRY
 r_goto
 id|maybe_retry
 suffix:semicolon
-multiline_comment|/* if rtn == FAILED, we have no sense information */
-multiline_comment|/* was: return rtn; */
+multiline_comment|/* if rtn == FAILED, we have no sense information;&n;&t;&t; * returning FAILED will wake the error handler thread&n;&t;&t; * to collect the sense and redo the decide&n;&t;&t; * disposition */
 r_return
-id|SUCCESS
+id|rtn
 suffix:semicolon
 r_case
 id|CONDITION_GOOD
