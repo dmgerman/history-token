@@ -293,8 +293,6 @@ DECL|macro|WAIT_MIN_SLEEP
 mdefine_line|#define WAIT_MIN_SLEEP&t;(2*HZ/100)&t;/* 20msec - minimum sleep time */
 DECL|macro|HOST
 mdefine_line|#define HOST(hwif,chipset)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ((hwif)-&gt;chipset == chipset) ? 1 : 0;&t;&t;&bslash;&n;}
-DECL|macro|IDE_DEBUG
-mdefine_line|#define IDE_DEBUG(lineno) &bslash;&n;&t;printk(&quot;%s,%s,line=%d&bslash;n&quot;, __FILE__, __FUNCTION__, (lineno))
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
 r_struct
 id|hwif_s
@@ -372,6 +370,9 @@ comma
 id|ide_etrax100
 comma
 id|ide_acorn
+comma
+DECL|enumerator|ide_pc9800
+id|ide_pc9800
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
