@@ -711,6 +711,12 @@ r_char
 id|addr_len
 suffix:semicolon
 multiline_comment|/* hardware address length&t;*/
+DECL|member|dev_id
+r_int
+r_int
+id|dev_id
+suffix:semicolon
+multiline_comment|/* for shared network cards */
 DECL|member|mc_list
 r_struct
 id|dev_mc_list
