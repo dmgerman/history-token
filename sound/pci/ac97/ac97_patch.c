@@ -4675,11 +4675,6 @@ r_int
 r_int
 id|val
 suffix:semicolon
-r_int
-id|spdif
-op_assign
-l_int|0
-suffix:semicolon
 id|ac97-&gt;build_ops
 op_assign
 op_amp
@@ -4699,41 +4694,6 @@ op_eq
 l_int|0x414c4723
 )paren
 suffix:semicolon
-multiline_comment|/* check spdif (should be only on rev.E) */
-r_if
-c_cond
-(paren
-id|ac97-&gt;spec.dev_flags
-)paren
-(brace
-id|val
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_EXTENDED_STATUS
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|val
-op_amp
-id|AC97_EA_SPCV
-)paren
-id|spdif
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|spdif
-)paren
-(brace
 multiline_comment|/* enable AC97_ALC650_GPIO_SETUP, AC97_ALC650_CLOCK for R/W */
 id|snd_ac97_write_cache
 c_func
@@ -4753,6 +4713,13 @@ op_or
 l_int|0x8000
 )paren
 suffix:semicolon
+multiline_comment|/* Enable SPDIF-IN only on Rev.E and above */
+r_if
+c_cond
+(paren
+id|ac97-&gt;spec.dev_flags
+)paren
+(brace
 multiline_comment|/* enable spdif in */
 id|snd_ac97_write_cache
 c_func
@@ -4773,13 +4740,6 @@ l_int|0x03
 )paren
 suffix:semicolon
 )brace
-r_else
-id|ac97-&gt;ext_id
-op_and_assign
-op_complement
-id|AC97_EI_SPDIF
-suffix:semicolon
-multiline_comment|/* disable extended-id */
 id|val
 op_assign
 id|snd_ac97_read
