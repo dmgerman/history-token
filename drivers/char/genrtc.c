@@ -1273,8 +1273,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|gen_rtc_status
 op_or_assign
 id|RTC_IS_OPEN
@@ -1323,8 +1321,6 @@ id|gen_rtc_status
 op_and_assign
 op_complement
 id|RTC_IS_OPEN
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
