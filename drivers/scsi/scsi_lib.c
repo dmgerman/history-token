@@ -1883,6 +1883,8 @@ r_if
 c_cond
 (paren
 id|sense_valid
+op_logical_and
+id|req-&gt;sense
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * SG_IO wants current and deferred errors&n;&t;&t;&t;&t; */
