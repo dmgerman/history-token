@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -296,6 +297,45 @@ id|cpufreq_get
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * This is the SA11x0 sched_clock implementation.  This has&n; * a resolution of 271ns, and a maximum value of 1165s.&n; *  ( * 1E9 / 3686400 =&gt; * 78125 / 288)&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+r_int
+id|v
+suffix:semicolon
+id|v
+op_assign
+(paren
+r_int
+r_int
+r_int
+)paren
+id|OSCR
+op_star
+l_int|78125
+suffix:semicolon
+id|do_div
+c_func
+(paren
+id|v
+comma
+l_int|288
+)paren
+suffix:semicolon
+r_return
+id|v
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Default power-off for SA1100&n; */
 DECL|function|sa1100_power_off
 r_static
