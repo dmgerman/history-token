@@ -3,7 +3,6 @@ macro_line|#ifndef MODUTILS_GENKSYMS_H
 DECL|macro|MODUTILS_GENKSYMS_H
 mdefine_line|#define MODUTILS_GENKSYMS_H 1
 macro_line|#include &lt;stdio.h&gt;
-macro_line|#include &lt;assert.h&gt;
 DECL|enum|symbol_type
 r_enum
 id|symbol_type
@@ -318,8 +317,8 @@ multiline_comment|/*------------------------------------------------------------
 DECL|macro|MODUTILS_VERSION
 mdefine_line|#define MODUTILS_VERSION &quot;&lt;in-kernel&gt;&quot;
 DECL|macro|xmalloc
-mdefine_line|#define xmalloc(size) ({ void *__ptr = malloc(size); assert(__ptr || size == 0); __ptr; })
+mdefine_line|#define xmalloc(size) ({ void *__ptr = malloc(size);&t;&t;&bslash;&n;&t;if(!__ptr &amp;&amp; size != 0) {&t;&t;&t;&t;&bslash;&n;&t;&t;fprintf(stderr, &quot;out of memory&bslash;n&quot;);&t;&t;&bslash;&n;&t;&t;exit(1);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ptr; })
 DECL|macro|xstrdup
-mdefine_line|#define xstrdup(str)  ({ char *__str = strdup(str); assert(__str); __str; })
+mdefine_line|#define xstrdup(str)  ({ char *__str = strdup(str);&t;&t;&bslash;&n;&t;if (!__str) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;fprintf(stderr, &quot;out of memory&bslash;n&quot;);&t;&t;&bslash;&n;&t;&t;exit(1);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__str; })
 macro_line|#endif /* genksyms.h */
 eof
