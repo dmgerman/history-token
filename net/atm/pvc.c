@@ -487,7 +487,6 @@ suffix:semicolon
 )brace
 DECL|function|atmpvc_exit
 r_void
-id|__exit
 id|atmpvc_exit
 c_func
 (paren

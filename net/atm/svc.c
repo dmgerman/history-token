@@ -2341,7 +2341,6 @@ suffix:semicolon
 )brace
 DECL|function|atmsvc_exit
 r_void
-id|__exit
 id|atmsvc_exit
 c_func
 (paren
