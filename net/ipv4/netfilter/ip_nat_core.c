@@ -665,7 +665,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* If it&squot;s really a local destination manip, it may need to do a&n;   source manip too. */
 r_static
 r_int
@@ -755,7 +754,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Simple way to iterate through all. */
 DECL|function|fake_cmp
 r_static
@@ -1210,7 +1208,6 @@ id|other_ipp
 op_assign
 id|saved_ip
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_if
 c_cond
 (paren
@@ -1253,7 +1250,6 @@ multiline_comment|/* Can&squot;t route?  This whole range part is&n;&t;&t;&t;&t;
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Count how many others map onto this. */
 id|score
 op_assign
@@ -1457,7 +1453,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Only do extra mangle when required (breaks&n;                           socket binding) */
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_if
 c_cond
 (paren
@@ -1492,7 +1487,6 @@ id|tuple-&gt;src.ip
 r_return
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 id|tuple-&gt;dst.ip
 op_assign
 id|mr-&gt;range
@@ -1939,7 +1933,6 @@ id|NF_IP_POST_ROUTING
 op_assign
 id|NF_IP_PRE_ROUTING
 comma
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 (braket
 id|NF_IP_LOCAL_OUT
 )braket
@@ -1952,7 +1945,6 @@ id|NF_IP_LOCAL_IN
 op_assign
 id|NF_IP_LOCAL_OUT
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 r_int

@@ -383,16 +383,6 @@ op_lshift
 id|maniptype
 )paren
 )paren
-macro_line|#ifndef CONFIG_IP_NF_NAT_LOCAL
-multiline_comment|/* If this session has already been confirmed we must not&n;&t;&t;     * touch it again even if there is no mapping set up.&n;&t;&t;     * Can only happen on local-&gt;local traffic with&n;&t;&t;     * CONFIG_IP_NF_NAT_LOCAL disabled.&n;&t;&t;     */
-op_logical_and
-op_logical_neg
-(paren
-id|ct-&gt;status
-op_amp
-id|IPS_CONFIRMED
-)paren
-macro_line|#endif
 )paren
 (brace
 r_int
@@ -444,7 +434,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* LOCAL_IN hook doesn&squot;t have a chain!  */
 r_if
 c_cond
@@ -466,7 +455,6 @@ id|hooknum
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif
 id|ret
 op_assign
 id|ip_nat_rule_find
@@ -854,7 +842,6 @@ id|okfn
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_static
 r_int
 r_int
@@ -1023,7 +1010,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* We must be after connection tracking and before packet filtering. */
 multiline_comment|/* Before packet filtering, change destination */
 DECL|variable|ip_nat_in_ops
@@ -1095,7 +1081,6 @@ id|NF_IP_PRI_NAT_SRC
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* Before packet filtering, change destination */
 DECL|variable|ip_nat_local_out_ops
 r_static
@@ -1166,7 +1151,6 @@ id|NF_IP_PRI_NAT_SRC
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Protocol registration. */
 DECL|function|ip_nat_protocol_register
 r_int
@@ -1406,7 +1390,6 @@ r_goto
 id|cleanup_inops
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 id|ret
 op_assign
 id|nf_register_hook
@@ -1461,13 +1444,11 @@ r_goto
 id|cleanup_localoutops
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
 id|cleanup
 suffix:colon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 id|nf_unregister_hook
 c_func
 (paren
@@ -1486,7 +1467,6 @@ id|ip_nat_local_out_ops
 suffix:semicolon
 id|cleanup_outops
 suffix:colon
-macro_line|#endif
 id|nf_unregister_hook
 c_func
 (paren
