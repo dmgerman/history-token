@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.60 2004/11/17 17:13:13 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.64 2004/11/20 10:44:07 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -333,6 +333,11 @@ suffix:semicolon
 r_struct
 id|jffs2_full_dirent
 op_star
+id|fd
+suffix:semicolon
+r_struct
+id|jffs2_full_dirent
+op_star
 id|dead_fds
 op_assign
 l_int|NULL
@@ -355,8 +360,8 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
-id|ret
+r_goto
+m_exit
 suffix:semicolon
 id|D1
 c_func
@@ -534,14 +539,6 @@ c_loop
 id|dead_fds
 )paren
 (brace
-r_struct
-id|jffs2_inode_cache
-op_star
-id|ic
-suffix:semicolon
-r_struct
-id|jffs2_full_dirent
-op_star
 id|fd
 op_assign
 id|dead_fds
@@ -622,11 +619,6 @@ comma
 id|ic
 )paren
 (brace
-r_struct
-id|jffs2_full_dirent
-op_star
-id|fd
-suffix:semicolon
 id|D1
 c_func
 (paren
@@ -703,6 +695,51 @@ c_func
 id|c
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+m_exit
+suffix:colon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|for_each_inode
+c_func
+(paren
+id|i
+comma
+id|c
+comma
+id|ic
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|ic-&gt;scan_dents
+)paren
+(brace
+id|fd
+op_assign
+id|ic-&gt;scan_dents
+suffix:semicolon
+id|ic-&gt;scan_dents
+op_assign
+id|fd-&gt;next
+suffix:semicolon
+id|jffs2_free_full_dirent
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
 r_return
 id|ret
 suffix:semicolon
