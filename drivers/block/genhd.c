@@ -1760,7 +1760,9 @@ comma
 id|disk-&gt;read_merges
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|disk-&gt;read_sectors
 comma
@@ -1775,7 +1777,9 @@ comma
 id|disk-&gt;write_merges
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|disk-&gt;write_sectors
 comma
