@@ -897,11 +897,11 @@ op_amp
 id|ctx-&gt;active_reqs
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|ctx-&gt;tq
+id|ctx-&gt;wq
 comma
 id|aio_kick_handler
 comma
@@ -2566,11 +2566,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|ctx-&gt;tq
+id|ctx-&gt;wq
 )paren
 suffix:semicolon
 )brace

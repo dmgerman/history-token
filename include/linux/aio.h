@@ -2,7 +2,7 @@ macro_line|#ifndef __LINUX__AIO_H
 DECL|macro|__LINUX__AIO_H
 mdefine_line|#define __LINUX__AIO_H
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|AIO_MAXSEGS
@@ -317,10 +317,10 @@ r_struct
 id|aio_ring_info
 id|ring_info
 suffix:semicolon
-DECL|member|tq
+DECL|member|wq
 r_struct
-id|tq_struct
-id|tq
+id|work_struct
+id|wq
 suffix:semicolon
 )brace
 suffix:semicolon
