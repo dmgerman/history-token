@@ -1041,24 +1041,9 @@ r_int
 r_int
 id|write_mask
 comma
-r_int
-r_int
-id|a2
-comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1094,7 +1079,7 @@ op_assign
 id|alpha_fp_emul
 c_func
 (paren
-id|regs.pc
+id|regs-&gt;pc
 op_minus
 l_int|4
 )paren
@@ -1105,7 +1090,6 @@ op_assign
 id|alpha_fp_emul_imprecise
 c_func
 (paren
-op_amp
 id|regs
 comma
 id|write_mask
@@ -1117,7 +1101,6 @@ c_func
 (paren
 l_string|&quot;Arithmetic fault&quot;
 comma
-op_amp
 id|regs
 comma
 l_int|0
@@ -1143,7 +1126,7 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|send_sig_info
 c_func
@@ -1167,28 +1150,9 @@ r_int
 r_int
 id|type
 comma
-r_int
-r_int
-id|a1
-comma
-r_int
-r_int
-id|a2
-comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1231,7 +1195,7 @@ r_int
 r_int
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|printk
 c_func
@@ -1281,7 +1245,6 @@ suffix:colon
 l_string|&quot;Instruction fault&quot;
 )paren
 comma
-op_amp
 id|regs
 comma
 id|type
@@ -1322,7 +1285,7 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 r_if
 c_cond
@@ -1334,7 +1297,7 @@ id|current
 )paren
 )paren
 (brace
-id|regs.pc
+id|regs-&gt;pc
 op_sub_assign
 l_int|4
 suffix:semicolon
@@ -1375,7 +1338,7 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|info.si_trapno
 op_assign
@@ -1404,11 +1367,11 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|info.si_trapno
 op_assign
-id|regs.r16
+id|regs-&gt;r16
 suffix:semicolon
 r_switch
 c_cond
@@ -1416,7 +1379,7 @@ c_cond
 (paren
 r_int
 )paren
-id|regs.r16
+id|regs-&gt;r16
 )paren
 (brace
 r_case
@@ -1605,7 +1568,7 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|send_sig_info
 c_func
@@ -1648,7 +1611,7 @@ id|opDEC_testing
 r_if
 c_cond
 (paren
-id|regs.pc
+id|regs-&gt;pc
 op_eq
 id|opDEC_test_pc
 )paren
@@ -1657,7 +1620,7 @@ id|opDEC_fix
 op_assign
 l_int|4
 suffix:semicolon
-id|regs.pc
+id|regs-&gt;pc
 op_add_assign
 l_int|4
 suffix:semicolon
@@ -1671,7 +1634,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|regs.pc
+id|regs-&gt;pc
 op_add_assign
 id|opDEC_fix
 suffix:semicolon
@@ -1681,7 +1644,7 @@ op_assign
 id|alpha_fp_emul
 c_func
 (paren
-id|regs.pc
+id|regs-&gt;pc
 op_minus
 l_int|4
 )paren
@@ -1721,7 +1684,7 @@ op_assign
 r_void
 op_star
 )paren
-id|regs.pc
+id|regs-&gt;pc
 suffix:semicolon
 id|send_sig_info
 c_func
@@ -1791,7 +1754,11 @@ id|ILL_ILLOPC
 suffix:semicolon
 id|info.si_addr
 op_assign
-id|regs.pc
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;pc
 suffix:semicolon
 id|send_sig_info
 c_func
@@ -1812,32 +1779,9 @@ DECL|function|do_entDbg
 id|do_entDbg
 c_func
 (paren
-r_int
-r_int
-id|type
-comma
-r_int
-r_int
-id|a1
-comma
-r_int
-r_int
-id|a2
-comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1849,10 +1793,9 @@ c_func
 (paren
 l_string|&quot;Instruction fault&quot;
 comma
-op_amp
 id|regs
 comma
-id|type
+l_int|0
 comma
 l_int|0
 )paren
@@ -1871,7 +1814,11 @@ id|ILL_ILLOPC
 suffix:semicolon
 id|info.si_addr
 op_assign
-id|regs.pc
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;pc
 suffix:semicolon
 id|force_sig_info
 c_func
@@ -4464,7 +4411,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-multiline_comment|/* Hack for Multia (UDB) and JENSEN: some of their SRMs have&n;&t; * a bug in the handling of the opDEC fault.  Fix it up if so.&n;&t; */
+multiline_comment|/* Hack for Multia (UDB) and JENSEN: some of their SRMs have&n;&t;   a bug in the handling of the opDEC fault.  Fix it up if so.  */
 r_if
 c_cond
 (paren
@@ -4475,12 +4422,10 @@ c_func
 op_eq
 id|IMPLVER_EV4
 )paren
-(brace
 id|opDEC_check
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 eof

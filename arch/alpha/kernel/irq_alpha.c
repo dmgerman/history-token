@@ -79,20 +79,9 @@ r_int
 r_int
 id|la_ptr
 comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -109,7 +98,6 @@ macro_line|#ifdef CONFIG_SMP
 id|handle_ipi
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -141,7 +129,6 @@ suffix:semicolon
 id|smp_percpu_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -180,7 +167,6 @@ c_func
 (paren
 id|RTC_IRQ
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -192,7 +178,6 @@ c_func
 (paren
 id|RTC_IRQ
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -211,7 +196,6 @@ id|vector
 comma
 id|la_ptr
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -227,7 +211,6 @@ c_func
 (paren
 id|vector
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -241,7 +224,6 @@ c_func
 (paren
 id|vector
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -264,11 +246,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;PC = %016lx PS=%04lx&bslash;n&quot;
 comma
-id|regs.pc
+id|regs-&gt;pc
 comma
-id|regs.ps
+id|regs-&gt;ps
 )paren
 suffix:semicolon
 )brace
@@ -323,7 +306,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Uh, this really MUST come first, just in case&n;&t; * the platform init_irq() causes interrupts/mchecks&n;&t; * (as is the case with RAWHIDE, at least).&n;&t; */
+multiline_comment|/* Just in case the platform init_irq() causes interrupts/mchecks&n;&t;   (as is the case with RAWHIDE, at least).  */
 id|wrent
 c_func
 (paren
