@@ -310,6 +310,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|status
 )paren
 suffix:semicolon
 multiline_comment|/* allocate dma-consistent buffer for URB_DMA_NOMAPPING */
@@ -676,7 +679,7 @@ id|bus
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|usb_rh_status_dequeue
 (paren
 r_struct
@@ -1136,6 +1139,10 @@ r_extern
 r_struct
 id|semaphore
 id|usb_bus_list_lock
+suffix:semicolon
+r_extern
+id|wait_queue_head_t
+id|usb_kill_urb_queue
 suffix:semicolon
 r_extern
 r_struct
