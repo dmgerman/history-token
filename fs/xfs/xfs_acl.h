@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_ACL_H__
 DECL|macro|__XFS_ACL_H__
 mdefine_line|#define __XFS_ACL_H__
@@ -77,7 +77,6 @@ DECL|macro|SGI_ACL_FILE_SIZE
 mdefine_line|#define SGI_ACL_FILE_SIZE&t;(sizeof(SGI_ACL_FILE)-1)
 DECL|macro|SGI_ACL_DEFAULT_SIZE
 mdefine_line|#define SGI_ACL_DEFAULT_SIZE&t;(sizeof(SGI_ACL_DEFAULT)-1)
-macro_line|#ifdef __KERNEL__
 macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 r_struct
 id|vattr
@@ -88,6 +87,16 @@ suffix:semicolon
 r_struct
 id|xfs_inode
 suffix:semicolon
+r_extern
+r_struct
+id|kmem_zone
+op_star
+id|xfs_acl_zone
+suffix:semicolon
+DECL|macro|xfs_acl_zone_init
+mdefine_line|#define xfs_acl_zone_init(zone, name)&t;&bslash;&n;&t;&t;(zone) = kmem_zone_init(sizeof(xfs_acl_t), name)
+DECL|macro|xfs_acl_zone_destroy
+mdefine_line|#define xfs_acl_zone_destroy(zone)&t;kmem_cache_destroy(zone)
 r_extern
 r_int
 id|xfs_acl_inherit
@@ -235,28 +244,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|kmem_zone
-op_star
-id|xfs_acl_zone
-suffix:semicolon
 DECL|macro|_ACL_TYPE_ACCESS
 mdefine_line|#define _ACL_TYPE_ACCESS&t;1
 DECL|macro|_ACL_TYPE_DEFAULT
 mdefine_line|#define _ACL_TYPE_DEFAULT&t;2
 DECL|macro|_ACL_PERM_INVALID
 mdefine_line|#define _ACL_PERM_INVALID(perm)&t;((perm) &amp; ~(ACL_READ|ACL_WRITE|ACL_EXECUTE))
-DECL|macro|_ACL_DECL
-mdefine_line|#define _ACL_DECL(a)&t;&t;xfs_acl_t *(a) = NULL
-DECL|macro|_ACL_ALLOC
-mdefine_line|#define _ACL_ALLOC(a)&t;&t;((a) = kmem_zone_alloc(xfs_acl_zone, KM_SLEEP))
-DECL|macro|_ACL_FREE
-mdefine_line|#define _ACL_FREE(a)&t;&t;((a)? kmem_zone_free(xfs_acl_zone, (a)) : 0)
-DECL|macro|_ACL_ZONE_INIT
-mdefine_line|#define _ACL_ZONE_INIT(z,name)&t;((z) = kmem_zone_init(sizeof(xfs_acl_t), name))
-DECL|macro|_ACL_ZONE_DESTROY
-mdefine_line|#define _ACL_ZONE_DESTROY(z)&t;(kmem_cache_destroy(z))
 DECL|macro|_ACL_INHERIT
 mdefine_line|#define _ACL_INHERIT(c,v,d)&t;(xfs_acl_inherit(c,v,d))
 DECL|macro|_ACL_GET_ACCESS
@@ -269,7 +262,15 @@ DECL|macro|_ACL_DEFAULT_EXISTS
 mdefine_line|#define _ACL_DEFAULT_EXISTS&t;xfs_acl_vhasacl_default
 DECL|macro|_ACL_XFS_IACCESS
 mdefine_line|#define _ACL_XFS_IACCESS(i,m,c) (XFS_IFORK_Q(i) ? xfs_acl_iaccess(i,m,c) : -1)
+DECL|macro|_ACL_ALLOC
+mdefine_line|#define _ACL_ALLOC(a)&t;&t;((a) = kmem_zone_alloc(xfs_acl_zone, KM_SLEEP))
+DECL|macro|_ACL_FREE
+mdefine_line|#define _ACL_FREE(a)&t;&t;((a)? kmem_zone_free(xfs_acl_zone, (a)) : 0)
 macro_line|#else
+DECL|macro|xfs_acl_zone_init
+mdefine_line|#define xfs_acl_zone_init(zone,name)
+DECL|macro|xfs_acl_zone_destroy
+mdefine_line|#define xfs_acl_zone_destroy(zone)
 DECL|macro|xfs_acl_vset
 mdefine_line|#define xfs_acl_vset(v,p,sz,t)&t;(-EOPNOTSUPP)
 DECL|macro|xfs_acl_vget
@@ -280,16 +281,10 @@ DECL|macro|xfs_acl_vhasacl_access
 mdefine_line|#define xfs_acl_vhasacl_access(v)&t;(0)
 DECL|macro|xfs_acl_vhasacl_default
 mdefine_line|#define xfs_acl_vhasacl_default(v)&t;(0)
-DECL|macro|_ACL_DECL
-mdefine_line|#define _ACL_DECL(a)&t;&t;((void)0)
 DECL|macro|_ACL_ALLOC
 mdefine_line|#define _ACL_ALLOC(a)&t;&t;(1)&t;/* successfully allocate nothing */
 DECL|macro|_ACL_FREE
 mdefine_line|#define _ACL_FREE(a)&t;&t;((void)0)
-DECL|macro|_ACL_ZONE_INIT
-mdefine_line|#define _ACL_ZONE_INIT(z,name)&t;((void)0)
-DECL|macro|_ACL_ZONE_DESTROY
-mdefine_line|#define _ACL_ZONE_DESTROY(z)&t;((void)0)
 DECL|macro|_ACL_INHERIT
 mdefine_line|#define _ACL_INHERIT(c,v,d)&t;(0)
 DECL|macro|_ACL_GET_ACCESS
@@ -303,6 +298,5 @@ mdefine_line|#define _ACL_DEFAULT_EXISTS&t;(NULL)
 DECL|macro|_ACL_XFS_IACCESS
 mdefine_line|#define _ACL_XFS_IACCESS(i,m,c) (-1)
 macro_line|#endif
-macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_ACL_H__ */
 eof
