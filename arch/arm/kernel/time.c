@@ -1317,6 +1317,13 @@ comma
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timer-&gt;suspend
+op_ne
+l_int|NULL
+)paren
 id|timer
 op_member_access_from_pointer
 id|suspend
@@ -1356,6 +1363,13 @@ comma
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timer-&gt;resume
+op_ne
+l_int|NULL
+)paren
 id|timer
 op_member_access_from_pointer
 id|resume
