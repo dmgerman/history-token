@@ -664,7 +664,6 @@ id|__GFP_IO
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the page is mapped into pagetables then wait on it, to&n;&t;&t; * throttle this allocator to the rate at which we can clear&n;&t;&t; * MAP_SHARED data.  This will also throttle against swapcache&n;&t;&t; * writes.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -674,28 +673,9 @@ c_func
 id|page
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|may_enter_fs
-op_logical_and
-id|page_mapped
-c_func
-(paren
-id|page
-)paren
-)paren
-id|wait_on_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_goto
 id|keep_locked
 suffix:semicolon
-)brace
 id|pte_chain_lock
 c_func
 (paren
