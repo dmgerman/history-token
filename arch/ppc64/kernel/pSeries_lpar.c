@@ -1746,18 +1746,10 @@ id|lpar_rc
 op_eq
 id|H_Not_Found
 )paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp missed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2194,16 +2186,8 @@ id|lpar_rc
 op_eq
 id|H_Not_Found
 )paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;invalidate missed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2251,13 +2235,11 @@ op_star
 id|batch
 op_assign
 op_amp
-id|ppc64_tlb_batch
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|ppc64_tlb_batch
 )paren
-)braket
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
