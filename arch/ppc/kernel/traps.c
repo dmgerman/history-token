@@ -209,6 +209,18 @@ mdefine_line|#define debugger_fault_handler&t;&t;((void (*)(struct pt_regs *))0)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
+r_extern
+r_void
+(paren
+op_star
+id|perf_irq
+)paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock
@@ -2933,6 +2945,24 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
+DECL|function|PerformanceMonitorException
+r_void
+id|PerformanceMonitorException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|perf_irq
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_FSL_BOOKE
 DECL|function|CacheLockingException
 r_void
