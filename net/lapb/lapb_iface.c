@@ -426,6 +426,11 @@ r_int
 id|lapb_register
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_void
 op_star
 id|token
@@ -500,6 +505,10 @@ suffix:semicolon
 id|lapb-&gt;token
 op_assign
 id|token
+suffix:semicolon
+id|lapb-&gt;dev
+op_assign
+id|dev
 suffix:semicolon
 id|lapb-&gt;callbacks
 op_assign

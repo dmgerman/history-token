@@ -553,6 +553,12 @@ op_assign
 id|lapb_register
 c_func
 (paren
+id|hdlc_to_dev
+c_func
+(paren
+id|hdlc
+)paren
+comma
 id|hdlc
 comma
 op_amp

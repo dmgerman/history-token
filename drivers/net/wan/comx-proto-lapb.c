@@ -2247,6 +2247,8 @@ c_cond
 id|lapb_register
 c_func
 (paren
+id|dev
+comma
 id|dev-&gt;priv
 comma
 op_amp

@@ -157,6 +157,12 @@ r_struct
 id|list_head
 id|node
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|token
 r_void
 op_star

@@ -1153,6 +1153,8 @@ op_assign
 id|lapb_register
 c_func
 (paren
+id|dev
+comma
 id|lapbeth
 comma
 op_amp
