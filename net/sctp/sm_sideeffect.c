@@ -3337,6 +3337,12 @@ id|t-&gt;hb_interval
 op_plus
 id|t-&gt;rto
 op_plus
+id|sctp_jitter
+c_func
+(paren
+id|t-&gt;rto
+)paren
+op_plus
 id|jiffies
 )paren
 )paren
@@ -3384,6 +3390,12 @@ comma
 id|t-&gt;hb_interval
 op_plus
 id|t-&gt;rto
+op_plus
+id|sctp_jitter
+c_func
+(paren
+id|t-&gt;rto
+)paren
 op_plus
 id|jiffies
 )paren
