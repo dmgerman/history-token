@@ -562,8 +562,18 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify          (__NR_mq_open+4)
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr      (__NR_mq_open+5)
+DECL|macro|__NR_sys_kexec_load
+mdefine_line|#define __NR_sys_kexec_load&t;283
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;284
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;285
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;286
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;287
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 283
+mdefine_line|#define NR_syscalls 288
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-sh/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-124)) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
