@@ -1,9 +1,4 @@
 r_extern
-r_struct
-id|semaphore
-id|device_sem
-suffix:semicolon
-r_extern
 r_int
 id|bus_add_device
 c_func
