@@ -28,6 +28,8 @@ macro_line|#include &lt;asm/msi.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/io-unit.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* Now the cpu specific definitions. */
 macro_line|#include &lt;asm/viking.h&gt;
 macro_line|#include &lt;asm/mxcc.h&gt;
