@@ -743,7 +743,7 @@ suffix:semicolon
 )brace
 DECL|function|cb_pic_handle_irq
 r_static
-r_void
+id|irqreturn_t
 id|cb_pic_handle_irq
 (paren
 r_int
@@ -759,6 +759,11 @@ op_star
 id|regs
 )paren
 (brace
+id|irqreturn_t
+id|rval
+op_assign
+id|IRQ_NONE
+suffix:semicolon
 r_int
 id|status
 op_assign
@@ -833,6 +838,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|rval
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -845,7 +854,11 @@ id|CB_PIC_INTEN
 op_or_assign
 id|CB_PIC_INT1EN
 suffix:semicolon
+r_return
+id|rval
+suffix:semicolon
 )brace
+"&f;"
 DECL|function|irq_nop
 r_static
 r_void
