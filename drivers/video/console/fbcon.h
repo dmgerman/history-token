@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/fbcon.h -- Low level frame buffer based console driver&n; *&n; *&t;Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/console/fbcon.h -- Low level frame buffer based console driver&n; *&n; *&t;Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#ifndef _VIDEO_FBCON_H
 DECL|macro|_VIDEO_FBCON_H
 mdefine_line|#define _VIDEO_FBCON_H

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
 macro_line|#include &quot;fbcon-accel.h&quot;
 DECL|function|fbcon_accel_setup
 r_void

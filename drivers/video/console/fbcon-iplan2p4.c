@@ -8,8 +8,8 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __mc68000__
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-iplan2p4.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;fbcon-iplan2p4.h&quot;
 multiline_comment|/*&n;     *  Interleaved bitplanes &#xfffd; la Atari (4 planes, 2 bytes interleave)&n;     */
 multiline_comment|/* Increment/decrement 4 plane addresses */
 DECL|macro|INC_4P

@@ -6,8 +6,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-mfb.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;fbcon-mfb.h&quot;
 macro_line|#include &quot;sti.h&quot;
 multiline_comment|/* Translate an address as it would be found in a 2048x2048x1 bit frame&n; * buffer into a logical address Artist actually expects.  Addresses fed&n; * into Artist look like this:&n; *  fixed          Y               X&n; * FFFF FFFF LLLL LLLL LLLC CCCC CCCC CC00&n; *&n; * our &quot;RAM&quot; addresses look like this:&n; * &n; * FFFF FFFF 0000 0LLL LLLL LLLL CCCC CCCC [CCC]&n; *&n; * */
 r_static

@@ -8,8 +8,8 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __mc68000__
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-iplan2p8.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;fbcon-iplan2p8.h&quot;
 multiline_comment|/*&n;     *  Interleaved bitplanes &#xfffd; la Atari (8 planes, 2 bytes interleave)&n;     *&n;     *  In 8 plane mode, 256 colors would be possible, but only the first&n;     *  16 are used by the console code (the upper 4 bits are&n;     *  background/unused). For that, the following functions mask off the&n;     *  higher 4 bits of each color.&n;     */
 multiline_comment|/* Increment/decrement 8 plane addresses */
 DECL|macro|INC_8P
