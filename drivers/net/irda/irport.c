@@ -988,24 +988,12 @@ c_cond
 (paren
 id|self-&gt;netdev
 )paren
-(brace
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 id|self-&gt;netdev
 )paren
 suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Release the IO-port that this driver is using */
 id|IRDA_DEBUG
 c_func
