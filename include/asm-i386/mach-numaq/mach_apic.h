@@ -46,13 +46,8 @@ suffix:semicolon
 )brace
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS (cpu_online_map)
-macro_line|#else
-DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS 0x01
-macro_line|#endif
+mdefine_line|#define TARGET_CPUS (0xf)
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
@@ -89,7 +84,7 @@ c_func
 (paren
 l_string|&quot;Enabling APIC mode:  %s.  Using %d I/O APICs&bslash;n&quot;
 comma
-l_string|&quot;Flat&quot;
+l_string|&quot;NUMA-Q&quot;
 comma
 id|nr_ioapics
 )paren
@@ -107,7 +102,27 @@ id|mps_cpu
 )paren
 (brace
 r_return
+(paren
+(paren
+(paren
 id|mps_cpu
+op_div
+l_int|4
+)paren
+op_star
+l_int|16
+)paren
+op_plus
+(paren
+l_int|1
+op_lshift
+(paren
+id|mps_cpu
+op_mod
+l_int|4
+)paren
+)paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present
