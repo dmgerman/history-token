@@ -1348,6 +1348,16 @@ id|wbc
 r_if
 c_cond
 (paren
+id|wbc-&gt;nr_to_write
+op_le
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|mapping-&gt;a_ops-&gt;writepages
 )paren
 r_return
