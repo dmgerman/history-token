@@ -176,6 +176,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
 DECL|member|update_config_rom
 r_int
 id|update_config_rom

@@ -4529,6 +4529,13 @@ op_amp
 id|bus_attr_destroy
 )paren
 suffix:semicolon
+id|class_register
+c_func
+(paren
+op_amp
+id|hpsb_host_class
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4587,6 +4594,13 @@ suffix:semicolon
 id|cleanup_csr
 c_func
 (paren
+)paren
+suffix:semicolon
+id|class_unregister
+c_func
+(paren
+op_amp
+id|hpsb_host_class
 )paren
 suffix:semicolon
 id|bus_remove_file
