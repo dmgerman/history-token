@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * arch/ppc64/mm/extable.c&n; *&n; * from arch/i386/mm/extable.c&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * lib/extable.c&n; * Derived from arch/ppc/mm/extable.c and arch/i386/mm/extable.c.&n; *&n; * Copyright (C) 2004 Paul Mackerras, IBM Corp.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -16,11 +17,10 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * The exception table needs to be sorted because we use the macros&n; * which put things into the exception table in a variety of segments&n; * as well as the init segment and the main kernel text segment.&n; *&n; * Also used for modules.&n; */
-DECL|function|sort_ex_table
+multiline_comment|/*&n; * The exception table needs to be sorted so that the binary&n; * search that we use to find entries in it works properly.&n; * This is used both for the kernel exception table and for&n; * the exception tables of modules that get loaded.&n; */
+DECL|function|sort_extable
 r_void
-id|__init_or_module
-id|sort_ex_table
+id|sort_extable
 c_func
 (paren
 r_struct
@@ -136,25 +136,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_void
-id|__init
-DECL|function|sort_exception_table
-id|sort_exception_table
-c_func
-(paren
-r_void
-)paren
-(brace
-id|sort_ex_table
-c_func
-(paren
-id|__start___ex_table
-comma
-id|__stop___ex_table
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Simple binary search */
+multiline_comment|/*&n; * Search one exception table for an entry corresponding to the&n; * given instruction address, and return the address of the entry,&n; * or NULL if none is found.&n; * We use a binary search, and thus we assume that the table is&n; * already sorted.&n; */
 r_const
 r_struct
 id|exception_table_entry
@@ -225,7 +207,6 @@ l_int|0
 r_return
 id|mid
 suffix:semicolon
-r_else
 r_if
 c_cond
 (paren

@@ -1913,14 +1913,6 @@ id|calibrate_delay
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|sort_exception_table
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Called into from start_kernel, after lock_kernel has been called.&n; * Initializes bootmem, which is unsed to manage page allocation until&n; * mem_init is called.&n; */
 DECL|function|setup_arch
 r_void
@@ -2048,11 +2040,6 @@ c_func
 )paren
 suffix:semicolon
 id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sort_exception_table
 c_func
 (paren
 )paren

@@ -106,6 +106,28 @@ r_int
 id|value
 )paren
 suffix:semicolon
+r_void
+id|sort_extable
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+suffix:semicolon
+r_void
+id|sort_main_extable
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|macro|___module_cat
 mdefine_line|#define ___module_cat(a,b) __mod_ ## a ## b

@@ -1476,6 +1476,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sort_main_extable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

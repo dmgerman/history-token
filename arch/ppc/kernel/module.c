@@ -1261,7 +1261,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Sort exception table --RR */
 DECL|function|module_finalize
 r_int
 id|module_finalize
