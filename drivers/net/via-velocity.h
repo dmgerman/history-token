@@ -2344,6 +2344,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2465,6 +2466,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2589,6 +2591,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2771,6 +2774,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2959,6 +2963,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -3726,6 +3731,7 @@ suffix:semicolon
 DECL|member|mac_regs
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|mac_regs
 suffix:semicolon
@@ -4095,6 +4101,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign

@@ -13602,6 +13602,7 @@ id|find_eth_addr_in_vpd
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_base
 comma
@@ -13636,6 +13637,7 @@ op_increment
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|p
 op_assign
@@ -13783,6 +13785,7 @@ id|u32
 id|rom_reg_orig
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -15173,10 +15176,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hp-&gt;gregs
 )paren
 suffix:semicolon
@@ -15705,10 +15704,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hp-&gt;gregs
 )paren
 suffix:semicolon

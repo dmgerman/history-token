@@ -1234,6 +1234,7 @@ id|ixgb_hw
 (brace
 DECL|member|hw_addr
 r_uint8
+id|__iomem
 op_star
 id|hw_addr
 suffix:semicolon

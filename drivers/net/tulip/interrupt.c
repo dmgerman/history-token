@@ -235,10 +235,10 @@ c_cond
 (paren
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR5
 )paren
@@ -253,12 +253,12 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Rx stopped due to out of buffers,&n;&t;&t;&t; * restart it&n;&t;&t;&t; */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x01
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR2
 )paren
@@ -408,10 +408,10 @@ r_do
 r_if
 c_cond
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR5
 )paren
@@ -430,7 +430,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Acknowledge current RX interrupt sources. */
-id|outl
+id|iowrite32
 c_func
 (paren
 (paren
@@ -439,7 +439,7 @@ op_or
 id|RxNoBuf
 )paren
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR5
 )paren
@@ -1015,10 +1015,10 @@ r_while
 c_loop
 (paren
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR5
 )paren
@@ -1058,7 +1058,7 @@ id|tp-&gt;mit_on
 op_assign
 l_int|1
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|mit_table
@@ -1066,7 +1066,7 @@ id|mit_table
 id|MIT_TABLE
 )braket
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR11
 )paren
@@ -1085,12 +1085,12 @@ id|tp-&gt;mit_on
 op_assign
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR11
 )paren
@@ -1139,7 +1139,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tulip_tbl
@@ -1149,7 +1149,7 @@ id|tp-&gt;chip_id
 dot
 id|valid_intrs
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR7
 )paren
@@ -1878,19 +1878,6 @@ id|dev
 )paren
 (brace
 macro_line|#ifdef __hppa__
-r_int
-id|csr12
-op_assign
-id|inl
-c_func
-(paren
-id|dev-&gt;base_addr
-op_plus
-id|CSR12
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
 r_struct
 id|tulip_private
 op_star
@@ -1902,6 +1889,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_int
+id|csr12
+op_assign
+id|ioread32
+c_func
+(paren
+id|tp-&gt;base_addr
+op_plus
+id|CSR12
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1911,14 +1911,14 @@ id|tp-&gt;csr12_shadow
 )paren
 (brace
 multiline_comment|/* ack interrupt */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr12
 op_or
 l_int|0x02
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR12
 )paren
@@ -1949,7 +1949,7 @@ id|tp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* clear irq ack bit */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr12
@@ -1957,7 +1957,7 @@ op_amp
 op_complement
 l_int|0x02
 comma
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 op_plus
 id|CSR12
 )paren
@@ -2013,10 +2013,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr5
@@ -2080,7 +2082,7 @@ suffix:semicolon
 multiline_comment|/* Let&squot;s see whether the interrupt really is for us */
 id|csr5
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2151,7 +2153,7 @@ id|rxd
 op_increment
 suffix:semicolon
 multiline_comment|/* Mask RX intrs and add the device to poll list. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tulip_tbl
@@ -2198,7 +2200,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Acknowledge the interrupt sources we handle here ASAP&n;                  the poll function does Rx and RxNoBuf acking */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr5
@@ -2212,7 +2214,7 @@ id|CSR5
 suffix:semicolon
 macro_line|#else 
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr5
@@ -2269,10 +2271,10 @@ id|dev-&gt;name
 comma
 id|csr5
 comma
-id|inl
+id|ioread32
 c_func
 (paren
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|CSR5
 )paren
@@ -2648,7 +2650,7 @@ id|dev-&gt;name
 comma
 id|csr5
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2740,7 +2742,7 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -2771,7 +2773,7 @@ op_amp
 id|COMET_MAC_ADDR
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;mc_filter
@@ -2784,7 +2786,7 @@ op_plus
 l_int|0xAC
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;mc_filter
@@ -2810,7 +2812,7 @@ id|RxDied
 multiline_comment|/* Missed a Rx frame. */
 id|tp-&gt;stats.rx_missed_errors
 op_add_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -2895,7 +2897,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* Clear all error sources, included undocumented ones! */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0800f7ba
@@ -2935,7 +2937,7 @@ comma
 id|csr5
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tulip_tbl
@@ -3002,7 +3004,7 @@ id|oi
 )paren
 suffix:semicolon
 multiline_comment|/* Acknowledge all interrupt sources. */
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x8001ffff
@@ -3021,7 +3023,7 @@ id|HAS_INTR_MITIGATION
 )paren
 (brace
 multiline_comment|/* Josip Loncaric at ICASE did extensive experimentation&n;&t;&t;&t;to develop a good interrupt mitigation setting.*/
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x8b240000
@@ -3042,7 +3044,7 @@ id|LC82C168
 )paren
 (brace
 multiline_comment|/* the LC82C168 doesn&squot;t have a hw timer.*/
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x00
@@ -3071,7 +3073,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Mask all interrupting sources, set timer to&n;&t;&t;&t;&t;re-enable. */
-id|outl
+id|iowrite32
 c_func
 (paren
 (paren
@@ -3092,7 +3094,7 @@ op_plus
 id|CSR7
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0012
@@ -3120,7 +3122,7 @@ r_break
 suffix:semicolon
 id|csr5
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -3247,7 +3249,7 @@ op_eq
 id|LC82C168
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x00
@@ -3283,7 +3285,7 @@ op_eq
 l_int|0
 op_logical_or
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -3315,7 +3317,7 @@ comma
 id|tp-&gt;nir
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tulip_tbl
@@ -3332,7 +3334,7 @@ op_plus
 id|CSR7
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|TimerInt
@@ -3342,7 +3344,7 @@ op_plus
 id|CSR5
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|12
@@ -3366,7 +3368,7 @@ c_cond
 (paren
 id|missed
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -3405,7 +3407,7 @@ l_string|&quot;%s: exiting interrupt, csr5=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr

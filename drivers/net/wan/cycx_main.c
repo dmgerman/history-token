@@ -629,14 +629,6 @@ id|card-&gt;hw.irq
 op_assign
 id|irq
 suffix:semicolon
-id|card-&gt;hw.dpmbase
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|conf-&gt;maddr
-suffix:semicolon
 id|card-&gt;hw.dpmsize
 op_assign
 id|CYCX_WINDOWSIZE
@@ -667,6 +659,8 @@ comma
 id|conf-&gt;data
 comma
 id|conf-&gt;data_size
+comma
+id|conf-&gt;maddr
 )paren
 suffix:semicolon
 r_if

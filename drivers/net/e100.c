@@ -2046,6 +2046,7 @@ suffix:semicolon
 DECL|member|csr
 r_struct
 id|csr
+id|__iomem
 op_star
 id|csr
 suffix:semicolon

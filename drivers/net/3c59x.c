@@ -2987,6 +2987,7 @@ id|gendev
 suffix:semicolon
 DECL|member|cb_fn_base
 r_char
+id|__iomem
 op_star
 id|cb_fn_base
 suffix:semicolon

@@ -10978,6 +10978,15 @@ id|dev-&gt;vlan_rx_kill_vid
 op_assign
 id|typhoon_vlan_rx_kill_vid
 suffix:semicolon
+id|SET_ETHTOOL_OPS
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|ops
+)paren
+suffix:semicolon
 multiline_comment|/* We can handle scatter gather, up to 16 entries, and&n;&t; * we can do IP checksumming (only version 4, doh...)&n;&t; */
 id|dev-&gt;features
 op_or_assign

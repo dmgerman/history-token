@@ -2938,6 +2938,7 @@ id|pc300chan
 (brace
 r_volatile
 id|pcsca_bd_t
+id|__iomem
 op_star
 id|ptdescr
 suffix:semicolon
@@ -2966,6 +2967,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3045,6 +3047,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3101,6 +3104,7 @@ id|pc300chan-&gt;channel
 suffix:semicolon
 r_volatile
 id|pcsca_bd_t
+id|__iomem
 op_star
 id|ptdescr
 suffix:semicolon
@@ -3188,6 +3192,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3257,6 +3262,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3403,6 +3409,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3626,6 +3633,7 @@ id|rx_len
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -3692,6 +3700,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -3970,6 +3979,7 @@ id|flags
 suffix:semicolon
 r_volatile
 id|pcsca_bd_t
+id|__iomem
 op_star
 id|ptdescr
 suffix:semicolon
@@ -4068,6 +4078,7 @@ id|ptdescr
 op_assign
 (paren
 id|pcsca_bd_t
+id|__iomem
 op_star
 )paren
 (paren
@@ -4118,6 +4129,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren

@@ -211,18 +211,21 @@ id|card_s
 (brace
 DECL|member|rambase
 id|u8
+id|__iomem
 op_star
 id|rambase
 suffix:semicolon
 multiline_comment|/* buffer memory base (virtual) */
 DECL|member|scabase
 id|u8
+id|__iomem
 op_star
 id|scabase
 suffix:semicolon
 multiline_comment|/* SCA memory base (virtual) */
 DECL|member|plxbase
 id|plx9052
+id|__iomem
 op_star
 id|plxbase
 suffix:semicolon
@@ -289,6 +292,7 @@ id|new_memcpy_toio
 c_func
 (paren
 r_char
+id|__iomem
 op_star
 id|dest
 comma
@@ -1122,6 +1126,7 @@ id|u8
 id|rev_id
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|p
 suffix:semicolon
