@@ -4935,6 +4935,25 @@ id|isec
 op_assign
 id|inode-&gt;i_security
 suffix:semicolon
+r_struct
+id|superblock_security_struct
+op_star
+id|sbsec
+op_assign
+id|inode-&gt;i_sb-&gt;s_security
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbsec-&gt;initialized
+)paren
+(brace
+multiline_comment|/* Defer initialization to selinux_complete_init. */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|down
 c_func
 (paren
