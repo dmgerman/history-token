@@ -427,6 +427,7 @@ c_func
 (paren
 r_struct
 id|raw_config_request
+op_star
 id|rq
 )paren
 (brace
@@ -438,7 +439,7 @@ c_func
 (paren
 id|RAW_MAJOR
 comma
-id|rq.raw_minor
+id|rq-&gt;raw_minor
 )paren
 )paren
 suffix:semicolon
@@ -452,14 +453,14 @@ c_func
 (paren
 id|RAW_MAJOR
 comma
-id|rq.raw_minor
+id|rq-&gt;raw_minor
 )paren
 comma
 l_int|NULL
 comma
 l_string|&quot;raw%d&quot;
 comma
-id|rq.raw_minor
+id|rq-&gt;raw_minor
 )paren
 suffix:semicolon
 )brace
@@ -770,6 +771,7 @@ suffix:semicolon
 id|bind_device
 c_func
 (paren
+op_amp
 id|rq
 )paren
 suffix:semicolon
