@@ -92,6 +92,8 @@ multiline_comment|/* There are several potential gotchas here.  The 40x hardware
 multiline_comment|/* Definitions for 40x embedded chips. */
 DECL|macro|_PAGE_GUARDED
 mdefine_line|#define&t;_PAGE_GUARDED&t;0x001&t;/* G: page is guarded from prefetch */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x001&t;/* when !present: nonlinear file mapping */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x002&t;/* software: PTE contains a translation */
 DECL|macro|_PAGE_NO_CACHE
@@ -126,6 +128,8 @@ macro_line|#elif defined(CONFIG_8xx)
 multiline_comment|/* Definitions for 8xx embedded chips. */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x0001&t;/* Page is valid */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x0002&t;/* when !present: nonlinear file mapping */
 DECL|macro|_PAGE_NO_CACHE
 mdefine_line|#define _PAGE_NO_CACHE&t;0x0002&t;/* I: cache inhibit */
 DECL|macro|_PAGE_SHARED
@@ -163,6 +167,8 @@ DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001&t;/* software: pte contains a translation */
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0x002&t;/* hash_page has made an HPTE for this pte */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x004&t;/* when !present: nonlinear file mapping */
 DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;0x004&t;/* usermode access allowed */
 DECL|macro|_PAGE_GUARDED
@@ -504,6 +510,27 @@ id|pte
 )paren
 op_amp
 id|_PAGE_ACCESSED
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_uncache
@@ -1212,17 +1239,24 @@ r_int
 id|pmdval
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Encode and decode a swap entry.&n; * Note that the bits we use in a PTE for representing a swap entry&n; * must not include the _PAGE_PRESENT bit, or the _PAGE_HASHPTE bit&n; * (if used).  -- paulus&n; */
+multiline_comment|/*&n; * Encode and decode a swap entry.&n; * Note that the bits we use in a PTE for representing a swap entry&n; * must not include the _PAGE_PRESENT bit, the _PAGE_FILE bit, or the&n; *_PAGE_HASHPTE bit (if used).  -- paulus&n; */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(entry)&t;&t;((entry).val &amp; 0x3f)
+mdefine_line|#define __swp_type(entry)&t;&t;((entry).val &amp; 0x1f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(entry)&t;&t;((entry).val &gt;&gt; 6)
+mdefine_line|#define __swp_offset(entry)&t;&t;((entry).val &gt;&gt; 5)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { (type) | ((offset) &lt;&lt; 6) })
+mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { (type) | ((offset) &lt;&lt; 5) })
 DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; 2 })
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; 3 })
 DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; 2 })
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; 3 })
+multiline_comment|/* Encode and decode a nonlinear file mapping entry */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;29
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; 3)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { ((off) &lt;&lt; 3) | _PAGE_FILE })
 multiline_comment|/* CONFIG_APUS */
 multiline_comment|/* For virtual address to physical address conversion */
 r_extern
