@@ -6111,30 +6111,8 @@ c_func
 id|DescOwn
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|netif_msg_tx_err
-c_func
-(paren
-id|np
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: tx frame #%d is busy.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;dirty_tx
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6693,26 +6671,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* There was a error. */
-r_if
-c_cond
-(paren
-id|netif_msg_rx_err
-c_func
-(paren
-id|np
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  netdev_rx() Rx error was &quot;
-l_string|&quot;%#08x.&bslash;n&quot;
-comma
-id|desc_status
-)paren
-suffix:semicolon
+multiline_comment|/* There was an error. */
 id|np-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
