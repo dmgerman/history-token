@@ -2045,6 +2045,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;        * check if there is an early userspace init, if yes&n;        * let it do all the work&n;        */
+r_if
+c_cond
+(paren
+id|sys_access
+c_func
+(paren
+l_string|&quot;/init&quot;
+comma
+l_int|0
+)paren
+op_eq
+l_int|0
+)paren
+id|execute_command
+op_assign
+l_string|&quot;/init&quot;
+suffix:semicolon
+r_else
 id|prepare_namespace
 c_func
 (paren
