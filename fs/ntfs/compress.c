@@ -171,9 +171,9 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-OL
 id|j
+OL
+id|i
 suffix:semicolon
 id|j
 op_increment

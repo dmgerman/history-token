@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; * &t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; * &t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (C) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -11,7 +11,7 @@ macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,8)
 DECL|macro|page_buffers
 mdefine_line|#define page_buffers(page)&t;(page)-&gt;buffers
 macro_line|#endif
-multiline_comment|/*&n; * Async io completion handler for accessing files. Adapted from&n; * end_buffer_read_mst_async().&n; */
+multiline_comment|/**&n; * end_buffer_read_file_async -&n; *&n; * Async io completion handler for accessing files. Adapted from&n; * end_buffer_read_mst_async().&n; */
 DECL|function|end_buffer_read_file_async
 r_static
 r_void
@@ -308,7 +308,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* NTFS version of block_read_full_page(). Adapted from ntfs_mst_readpage(). */
+multiline_comment|/**&n; * ntfs_file_read_block -&n; *&n; * NTFS version of block_read_full_page(). Adapted from ntfs_mst_readpage().&n; */
 DECL|function|ntfs_file_read_block
 r_static
 r_int
@@ -353,6 +353,8 @@ id|sector_t
 id|iblock
 comma
 id|lblock
+comma
+id|zblock
 suffix:semicolon
 r_int
 r_int
@@ -399,6 +401,16 @@ l_int|1
 op_lshift
 id|blocksize_bits
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
+)paren
 id|create_empty_buffers
 c_func
 (paren
@@ -455,6 +467,18 @@ l_int|1
 op_rshift
 id|blocksize_bits
 suffix:semicolon
+id|zblock
+op_assign
+(paren
+id|ni-&gt;initialized_size
+op_plus
+id|blocksize
+op_minus
+l_int|1
+)paren
+op_rshift
+id|blocksize_bits
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
 c_cond
@@ -491,7 +515,25 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|buffer_mapped
@@ -499,14 +541,20 @@ c_func
 (paren
 id|bh
 )paren
-op_logical_or
-id|buffer_uptodate
-c_func
-(paren
+)paren
+)paren
+(brace
+id|arr
+(braket
+id|nr
+op_increment
+)braket
+op_assign
 id|bh
-)paren
-)paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|bh-&gt;b_dev
 op_assign
 id|VFS_I
@@ -615,6 +663,15 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+multiline_comment|/* Only read initialized data blocks. */
+r_if
+c_cond
+(paren
+id|iblock
+OL
+id|zblock
+)paren
+(brace
 id|arr
 (braket
 id|nr
@@ -624,6 +681,11 @@ op_assign
 id|bh
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* Fully non-initialized data block, zero it. */
+r_goto
+id|handle_zblock
 suffix:semicolon
 )brace
 multiline_comment|/* It is a hole, need to zero it. */
@@ -724,6 +786,8 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+id|handle_zblock
+suffix:colon
 id|memset
 c_func
 (paren
@@ -1249,6 +1313,12 @@ comma
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|kunmap
 c_func
 (paren
@@ -1291,7 +1361,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Async io completion handler for accessing mft bitmap. Adapted from&n; * end_buffer_read_mst_async().&n; */
+multiline_comment|/**&n; * end_buffer_read_mftbmp_async -&n; *&n; * Async io completion handler for accessing mft bitmap. Adapted from&n; * end_buffer_read_mst_async().&n; */
 DECL|function|end_buffer_read_mftbmp_async
 r_static
 r_void
@@ -1589,7 +1659,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Readpage for accessing mft bitmap. Adapted from ntfs_mst_readpage(). */
+multiline_comment|/**&n; * ntfs_mftbmp_readpage -&n; *&n; * Readpage for accessing mft bitmap. Adapted from ntfs_mst_readpage().&n; */
 DECL|function|ntfs_mftbmp_readpage
 r_static
 r_int
@@ -1630,6 +1700,8 @@ id|sector_t
 id|iblock
 comma
 id|lblock
+comma
+id|zblock
 suffix:semicolon
 r_int
 r_int
@@ -1672,6 +1744,16 @@ id|blocksize_bits
 op_assign
 id|vol-&gt;sb-&gt;s_blocksize_bits
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
+)paren
 id|create_empty_buffers
 c_func
 (paren
@@ -1728,6 +1810,18 @@ l_int|1
 op_rshift
 id|blocksize_bits
 suffix:semicolon
+id|zblock
+op_assign
+(paren
+id|vol-&gt;mftbmp_initialized_size
+op_plus
+id|blocksize
+op_minus
+l_int|1
+)paren
+op_rshift
+id|blocksize_bits
+suffix:semicolon
 multiline_comment|/* Loop through all the buffers in the page. */
 id|nr
 op_assign
@@ -1737,7 +1831,25 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|buffer_mapped
@@ -1745,14 +1857,20 @@ c_func
 (paren
 id|bh
 )paren
-op_logical_or
-id|buffer_uptodate
-c_func
-(paren
+)paren
+)paren
+(brace
+id|arr
+(braket
+id|nr
+op_increment
+)braket
+op_assign
 id|bh
-)paren
-)paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|bh-&gt;b_dev
 op_assign
 id|vol-&gt;mft_ino-&gt;i_dev
@@ -1848,6 +1966,15 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+multiline_comment|/* Only read initialized data blocks. */
+r_if
+c_cond
+(paren
+id|iblock
+OL
+id|zblock
+)paren
+(brace
 id|arr
 (braket
 id|nr
@@ -1857,6 +1984,11 @@ op_assign
 id|bh
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* Fully non-initialized data block, zero it. */
+r_goto
+id|handle_zblock
 suffix:semicolon
 )brace
 r_if
@@ -1916,6 +2048,8 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+id|handle_zblock
+suffix:colon
 id|memset
 c_func
 (paren
@@ -2563,7 +2697,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_mst_readpage - fill a @page of the mft or a directory with data&n; * @file:&t;open file/directory to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * Readpage method for the VFS address space operations.&n; *&n; * Fill the page @page of the $MFT or the open directory @dir. We read each&n; * buffer asynchronously and when all buffers are read in our io completion&n; * handler end_buffer_read_mst_async() automatically applies the mst fixups to&n; * the page before finally marking it uptodate and unlocking it.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; *&n; * TODO:/FIXME: The current implementation is simple but wasteful as we perform&n; * actual i/o from disk for all data up to allocated size completely ignoring&n; * the fact that initialized size, and data size for that matter, may well be&n; * lower and hence there is no point in reading them in. We can just zero the&n; * page range, which is what is currently done in our async i/o completion&n; * handler anyway, once the read from disk completes. However, I am not sure how&n; * to setup the buffer heads in that case, so for now we do the pointless i/o.&n; * Any help with this would be appreciated...&n; */
+multiline_comment|/**&n; * ntfs_mst_readpage - fill a @page of the mft or a directory with data&n; * @file:&t;open file/directory to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * Readpage method for the VFS address space operations.&n; *&n; * Fill the page @page of the $MFT or the open directory @dir. We read each&n; * buffer asynchronously and when all buffers are read in our io completion&n; * handler end_buffer_read_mst_async() automatically applies the mst fixups to&n; * the page before finally marking it uptodate and unlocking it.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; */
 DECL|function|ntfs_mst_readpage
 r_int
 id|ntfs_mst_readpage
@@ -2612,6 +2746,8 @@ id|sector_t
 id|iblock
 comma
 id|lblock
+comma
+id|zblock
 suffix:semicolon
 r_int
 r_int
@@ -2674,6 +2810,16 @@ l_int|1
 op_lshift
 id|blocksize_bits
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
+)paren
 id|create_empty_buffers
 c_func
 (paren
@@ -2730,6 +2876,18 @@ l_int|1
 op_rshift
 id|blocksize_bits
 suffix:semicolon
+id|zblock
+op_assign
+(paren
+id|ni-&gt;initialized_size
+op_plus
+id|blocksize
+op_minus
+l_int|1
+)paren
+op_rshift
+id|blocksize_bits
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
 c_cond
@@ -2761,7 +2919,25 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|buffer_mapped
@@ -2769,14 +2945,20 @@ c_func
 (paren
 id|bh
 )paren
-op_logical_or
-id|buffer_uptodate
-c_func
-(paren
+)paren
+)paren
+(brace
+id|arr
+(braket
+id|nr
+op_increment
+)braket
+op_assign
 id|bh
-)paren
-)paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|bh-&gt;b_dev
 op_assign
 id|VFS_I
@@ -2885,6 +3067,15 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+multiline_comment|/* Only read initialized data blocks. */
+r_if
+c_cond
+(paren
+id|iblock
+OL
+id|zblock
+)paren
+(brace
 id|arr
 (braket
 id|nr
@@ -2894,6 +3085,11 @@ op_assign
 id|bh
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* Fully non-initialized data block, zero it. */
+r_goto
+id|handle_zblock
 suffix:semicolon
 )brace
 multiline_comment|/* It is a hole, need to zero it. */
@@ -2994,6 +3190,8 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+id|handle_zblock
+suffix:colon
 id|memset
 c_func
 (paren
@@ -3168,7 +3366,7 @@ r_return
 id|nr
 suffix:semicolon
 )brace
-multiline_comment|/* Address space operations for accessing normal file data. */
+multiline_comment|/**&n; * ntfs_file_aops - address space operations for accessing normal file data&n; */
 DECL|variable|ntfs_file_aops
 r_struct
 id|address_space_operations
@@ -3217,7 +3415,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Address space operations for accessing mftbmp. */
+multiline_comment|/**&n; * ntfs_mftbmp_aops - address space operations for accessing mftbmp&n; */
 DECL|variable|ntfs_mftbmp_aops
 r_struct
 id|address_space_operations
@@ -3255,7 +3453,7 @@ comma
 multiline_comment|/* . */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Address space operations for accessing normal directory data (i.e. index&n; * allocation attribute). We can&squot;t just use the same operations as for files&n; * because 1) the attribute is different and even more importantly 2) the index&n; * records have to be multi sector transfer deprotected (i.e. fixed-up).&n; */
+multiline_comment|/**&n; * ntfs_dir_aops -&n; *&n; * Address space operations for accessing normal directory data (i.e. index&n; * allocation attribute). We can&squot;t just use the same operations as for files&n; * because 1) the attribute is different and even more importantly 2) the index&n; * records have to be multi sector transfer deprotected (i.e. fixed-up).&n; */
 DECL|variable|ntfs_dir_aops
 r_struct
 id|address_space_operations
