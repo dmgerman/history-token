@@ -44,6 +44,14 @@ DECL|macro|SONY_CLIE_NX60_ID
 mdefine_line|#define SONY_CLIE_NX60_ID&t;&t;0x00DA
 DECL|macro|SONY_CLIE_NZ90V_ID
 mdefine_line|#define SONY_CLIE_NZ90V_ID&t;&t;0x00E9
+DECL|macro|SAMSUNG_VENDOR_ID
+mdefine_line|#define SAMSUNG_VENDOR_ID&t;&t;0x04E8
+DECL|macro|SAMSUNG_SCH_I330_ID
+mdefine_line|#define SAMSUNG_SCH_I330_ID&t;&t;0x8001
+DECL|macro|GARMIN_VENDOR_ID
+mdefine_line|#define GARMIN_VENDOR_ID&t;&t;0x091E
+DECL|macro|GARMIN_IQUE_3600_ID
+mdefine_line|#define GARMIN_IQUE_3600_ID&t;&t;0x0004
 multiline_comment|/****************************************************************************&n; * Handspring Visor Vendor specific request codes (bRequest values)&n; * A big thank you to Handspring for providing the following information.&n; * If anyone wants the original file where these values and structures came&n; * from, send email to &lt;greg@kroah.com&gt;.&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * VISOR_REQUEST_BYTES_AVAILABLE asks the visor for the number of bytes that&n; * are available to be transferred to the host for the specified endpoint.&n; * Currently this is not used, and always returns 0x0001&n; ****************************************************************************/
 DECL|macro|VISOR_REQUEST_BYTES_AVAILABLE
