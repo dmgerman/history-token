@@ -9902,6 +9902,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 )brace
 DECL|variable|free_percpu
 id|EXPORT_SYMBOL
