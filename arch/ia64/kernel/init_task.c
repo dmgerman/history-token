@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This is where we statically allocate and initialize the initial&n; * task.&n; *&n; * Copyright (C) 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This is where we statically allocate and initialize the initial&n; * task.&n; *&n; * Copyright (C) 1999, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -92,9 +92,12 @@ r_int
 )paren
 )braket
 suffix:semicolon
-DECL|variable|init_task_mem
 )brace
 id|init_task_mem
+id|asm
+(paren
+l_string|&quot;init_task_mem&quot;
+)paren
 id|__attribute__
 c_func
 (paren
