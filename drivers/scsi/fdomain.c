@@ -1591,6 +1591,7 @@ op_star
 id|iobase
 )paren
 (brace
+macro_line|#ifndef PCMCIA
 r_int
 id|i
 comma
@@ -2073,6 +2074,11 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* success */
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* PCI detection function: int fdomain_pci_bios_detect(int* irq, int*&n;   iobase) This function gets the Interrupt Level and I/O base address from&n;   the PCI configuration registers. */
 macro_line|#ifdef CONFIG_PCI
