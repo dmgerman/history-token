@@ -698,6 +698,7 @@ comma
 id|HVC_CLOSE_WAIT
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Since the line disc doesn&squot;t block writes during tty close&n;&t;&t; * operations we&squot;ll set driver_data to NULL and then make sure&n;&t;&t; * to check tty-&gt;driver_data for NULL in hvc_write().&n;&t;&t; */
 id|tty-&gt;driver_data
 op_assign
 l_int|NULL
@@ -1395,6 +1396,17 @@ id|tty-&gt;driver_data
 suffix:semicolon
 r_int
 id|written
+suffix:semicolon
+multiline_comment|/* This write was probably executed during a tty close. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hp
+)paren
+r_return
+op_minus
+id|EPIPE
 suffix:semicolon
 r_if
 c_cond
