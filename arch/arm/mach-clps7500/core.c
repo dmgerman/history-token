@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial_8250.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -1400,8 +1401,10 @@ id|clps7500_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|clps7500_timer
 r_static
 r_struct
+id|sys_timer
 id|clps7500_timer
 op_assign
 (brace
@@ -1620,7 +1623,7 @@ r_void
 )paren
 (brace
 r_return
-id|platform_register_device
+id|platform_device_register
 c_func
 (paren
 op_amp
@@ -1659,6 +1662,11 @@ c_func
 (paren
 id|clps7500_init_irq
 )paren
+dot
+id|init_machine
+op_assign
+id|clps7500_init
+comma
 dot
 id|timer
 op_assign

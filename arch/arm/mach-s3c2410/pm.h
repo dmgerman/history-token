@@ -85,8 +85,9 @@ r_struct
 id|sleep_save
 (brace
 DECL|member|reg
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg
 suffix:semicolon
 DECL|member|val
