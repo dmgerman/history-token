@@ -466,9 +466,6 @@ op_amp
 id|current-&gt;sig-&gt;shared_pending
 comma
 op_amp
-id|current-&gt;blocked
-comma
-op_amp
 id|info
 )paren
 suffix:semicolon
@@ -485,9 +482,6 @@ c_func
 (paren
 op_amp
 id|current-&gt;pending
-comma
-op_amp
-id|current-&gt;blocked
 comma
 op_amp
 id|info
