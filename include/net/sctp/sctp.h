@@ -1016,6 +1016,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too. &n; */
+DECL|macro|sctp_walk_params
+mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params(((union sctp_params)(pos)), (chunk), member)
+DECL|macro|_sctp_walk_params
+mdefine_line|#define _sctp_walk_params(pos, chunk, member)&bslash;&n;for (pos.v = (void *)&amp;chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + ntohs(chunk-&gt;chunk_hdr.length) - sizeof(sctp_paramhdr_t);&bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)
