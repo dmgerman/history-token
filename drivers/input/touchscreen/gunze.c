@@ -178,8 +178,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_star
-l_int|4
 )paren
 suffix:semicolon
 id|input_report_abs
@@ -189,7 +187,7 @@ id|dev
 comma
 id|ABS_Y
 comma
-l_int|3072
+l_int|1024
 op_minus
 id|simple_strtoul
 c_func
@@ -202,8 +200,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_star
-l_int|3
 )paren
 suffix:semicolon
 id|input_report_key
@@ -470,9 +466,9 @@ id|gunze-&gt;dev
 comma
 id|ABS_X
 comma
-l_int|96
+l_int|24
 comma
-l_int|4000
+l_int|1000
 comma
 l_int|0
 comma
@@ -487,9 +483,9 @@ id|gunze-&gt;dev
 comma
 id|ABS_Y
 comma
-l_int|72
+l_int|24
 comma
-l_int|3000
+l_int|1000
 comma
 l_int|0
 comma

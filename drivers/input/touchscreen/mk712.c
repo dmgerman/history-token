@@ -310,7 +310,6 @@ l_int|0x0fff
 suffix:semicolon
 id|last_y
 op_assign
-(paren
 id|inw
 c_func
 (paren
@@ -320,11 +319,6 @@ id|MK712_Y
 )paren
 op_amp
 l_int|0x0fff
-)paren
-op_star
-l_int|3
-op_div
-l_int|4
 suffix:semicolon
 id|input_sync
 c_func
@@ -594,7 +588,7 @@ comma
 id|ABS_Y
 )braket
 op_assign
-l_int|0xbff
+l_int|0xfff
 )brace
 comma
 dot
