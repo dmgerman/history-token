@@ -272,27 +272,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|slot-&gt;magic
-op_ne
-id|SLOT_MAGIC
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad magic number for slot&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|slot-&gt;hotplug_slot
 )paren

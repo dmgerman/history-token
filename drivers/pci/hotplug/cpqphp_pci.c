@@ -5994,7 +5994,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|bus_mode
+id|bus_node
 )paren
 comma
 id|GFP_KERNEL
