@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
+multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; * 03-06-23 Cosmetic changes. &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
 DECL|macro|PARANOIA
 mdefine_line|#define PARANOIA
 macro_line|#include &lt;linux/major.h&gt;
@@ -132,53 +132,22 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|nbd_open
-r_static
-r_int
-id|nbd_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-r_struct
-id|nbd_device
-op_star
-id|lo
-op_assign
-id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
-suffix:semicolon
-id|lo-&gt;refcnt
-op_increment
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  Send or receive packet.&n; */
-DECL|function|nbd_xmit
+DECL|function|sock_xmit
 r_static
 r_int
-id|nbd_xmit
+id|sock_xmit
 c_func
 (paren
-r_int
-id|send
-comma
 r_struct
 id|socket
 op_star
 id|sock
 comma
-r_char
+r_int
+id|send
+comma
+r_void
 op_star
 id|buf
 comma
@@ -383,7 +352,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NBD (pid %d: %s) got signal %d&bslash;n&quot;
+l_string|&quot;nbd (pid %d: %s) got signal %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -432,7 +401,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NBD: %s - sock=%ld at buf=%ld, size=%d returned %d.&bslash;n&quot;
+l_string|&quot;nbd: %s - sock=%p at buf=%p, size=%d returned %d.&bslash;n&quot;
 comma
 id|send
 ques
@@ -441,14 +410,8 @@ l_string|&quot;send&quot;
 suffix:colon
 l_string|&quot;receive&quot;
 comma
-(paren
-r_int
-)paren
 id|sock
 comma
-(paren
-r_int
-)paren
 id|buf
 comma
 id|size
@@ -550,12 +513,12 @@ id|bvec-&gt;bv_page
 suffix:semicolon
 id|result
 op_assign
-id|nbd_xmit
+id|sock_xmit
 c_func
 (paren
-l_int|1
-comma
 id|sock
+comma
+l_int|1
 comma
 id|kaddr
 op_plus
@@ -576,8 +539,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|macro|FAIL
-mdefine_line|#define FAIL( s ) { printk( KERN_ERR &quot;NBD: &quot; s &quot;(result %d)&bslash;n&quot;, result ); goto error_out; }
 DECL|function|nbd_send_req
 r_void
 id|nbd_send_req
@@ -623,7 +584,7 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-l_string|&quot;NBD: sending control, &quot;
+l_string|&quot;nbd: sending control, &quot;
 )paren
 suffix:semicolon
 id|request.magic
@@ -702,7 +663,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NBD: Attempted sendmsg to closed socket&bslash;n&quot;
+l_string|&quot;%s: Attempted sendmsg to closed socket&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_goto
@@ -711,17 +674,13 @@ suffix:semicolon
 )brace
 id|result
 op_assign
-id|nbd_xmit
+id|sock_xmit
 c_func
 (paren
-l_int|1
-comma
 id|sock
 comma
-(paren
-r_char
-op_star
-)paren
+l_int|1
+comma
 op_amp
 id|request
 comma
@@ -730,6 +689,7 @@ r_sizeof
 id|request
 )paren
 comma
+(paren
 id|nbd_cmd
 c_func
 (paren
@@ -737,6 +697,7 @@ id|req
 )paren
 op_eq
 id|NBD_CMD_WRITE
+)paren
 ques
 c_cond
 id|MSG_MORE
@@ -751,12 +712,22 @@ id|result
 op_le
 l_int|0
 )paren
-id|FAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Sendmsg failed for control.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Sendmsg failed for control (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+r_goto
+id|error_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -846,12 +817,22 @@ id|result
 op_le
 l_int|0
 )paren
-id|FAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Send data failed.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Send data failed (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+r_goto
+id|error_out
+suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -1024,12 +1005,12 @@ id|bvec-&gt;bv_page
 suffix:semicolon
 id|result
 op_assign
-id|nbd_xmit
+id|sock_xmit
 c_func
 (paren
-l_int|0
-comma
 id|sock
+comma
+l_int|0
 comma
 id|kaddr
 op_plus
@@ -1050,8 +1031,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|macro|HARDFAIL
-mdefine_line|#define HARDFAIL( s ) { printk( KERN_ERR &quot;NBD: &quot; s &quot;(result %d)&bslash;n&quot;, result ); lo-&gt;harderror = result; return NULL; }
+multiline_comment|/* NULL returned = something went wrong, inform userspace */
 DECL|function|nbd_read_stat
 r_struct
 id|request
@@ -1064,7 +1044,6 @@ id|nbd_device
 op_star
 id|lo
 )paren
-multiline_comment|/* NULL returned = something went wrong, inform userspace       */
 (brace
 r_int
 id|result
@@ -1097,17 +1076,13 @@ l_int|0
 suffix:semicolon
 id|result
 op_assign
-id|nbd_xmit
+id|sock_xmit
 c_func
 (paren
-l_int|0
-comma
 id|sock
 comma
-(paren
-r_char
-op_star
-)paren
+l_int|0
+comma
 op_amp
 id|reply
 comma
@@ -1126,12 +1101,26 @@ id|result
 op_le
 l_int|0
 )paren
-id|HARDFAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Recv control failed.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Recv control failed (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+id|lo-&gt;harderror
+op_assign
+id|result
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|req
 op_assign
 id|nbd_find_request
@@ -1149,12 +1138,26 @@ id|req
 op_eq
 l_int|NULL
 )paren
-id|HARDFAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Unexpected reply&quot;
+id|KERN_ERR
+l_string|&quot;%s: Unexpected reply (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+id|lo-&gt;harderror
+op_assign
+id|result
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|DEBUG
 c_func
 (paren
@@ -1172,12 +1175,26 @@ id|reply.magic
 op_ne
 id|NBD_REPLY_MAGIC
 )paren
-id|HARDFAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Not enough magic.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Not enough magic (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+id|lo-&gt;harderror
+op_assign
+id|result
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1187,12 +1204,25 @@ c_func
 id|reply.error
 )paren
 )paren
-id|FAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Other side returned error.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Other side returned error (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+id|req-&gt;errors
+op_increment
+suffix:semicolon
+r_return
+id|req
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1259,12 +1289,26 @@ id|result
 op_le
 l_int|0
 )paren
-id|HARDFAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Recv data failed.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Recv data failed (result %d)&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|result
 )paren
 suffix:semicolon
+id|lo-&gt;harderror
+op_assign
+id|result
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -1273,15 +1317,6 @@ c_func
 (paren
 l_string|&quot;done.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-id|req
-suffix:semicolon
-multiline_comment|/* Can we get here? Yes, if other side returns error */
-id|error_out
-suffix:colon
-id|req-&gt;errors
-op_increment
 suffix:semicolon
 r_return
 id|req
@@ -1303,38 +1338,6 @@ id|request
 op_star
 id|req
 suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-id|req
-op_assign
-id|nbd_read_stat
-c_func
-(paren
-id|lo
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|req
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;req should never be null&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
@@ -1343,15 +1346,36 @@ op_ne
 id|LO_MAGIC
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|req
+op_assign
+id|nbd_read_stat
+c_func
+(paren
+id|lo
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
 id|nbd_end_request
 c_func
 (paren
 id|req
 )paren
 suffix:semicolon
-)brace
-id|out
-suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;%s: req should never be null&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1454,15 +1478,9 @@ c_loop
 (paren
 id|req
 )paren
-(brace
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n; * We always wait for result of write, for now. It would be nice to make it optional&n; * in future&n; * if ((req-&gt;cmd == WRITE) &amp;&amp; (lo-&gt;flags &amp; NBD_WRITE_NOCHK)) &n; *   { printk( &quot;Warning: Ignoring result!&bslash;n&quot;); nbd_end_request( req ); }&n; */
-DECL|macro|FAIL
-macro_line|#undef FAIL
-DECL|macro|FAIL
-mdefine_line|#define FAIL( s ) { printk( KERN_ERR &quot;%s: &quot; s &quot;&bslash;n&quot;, req-&gt;rq_disk-&gt;disk_name ); goto error_out; }
 DECL|function|do_nbd_request
 r_static
 r_void
@@ -1500,6 +1518,12 @@ id|nbd_device
 op_star
 id|lo
 suffix:semicolon
+id|blkdev_dequeue_request
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1517,18 +1541,34 @@ id|lo
 op_assign
 id|req-&gt;rq_disk-&gt;private_data
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|lo-&gt;magic
+op_ne
+id|LO_MAGIC
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|lo-&gt;file
 )paren
-id|FAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Request when not-ready.&quot;
+id|KERN_ERR
+l_string|&quot;%s: Request when not-ready&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
+r_goto
+id|error_out
+suffix:semicolon
+)brace
 id|nbd_cmd
 c_func
 (paren
@@ -1564,33 +1604,27 @@ id|lo-&gt;flags
 op_amp
 id|NBD_READ_ONLY
 )paren
-id|FAIL
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Write on read-only&quot;
+id|KERN_ERR
+l_string|&quot;%s: Write on read-only&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
+suffix:semicolon
+r_goto
+id|error_out
 suffix:semicolon
 )brace
-id|BUG_ON
-c_func
-(paren
-id|lo-&gt;magic
-op_ne
-id|LO_MAGIC
-)paren
-suffix:semicolon
+)brace
 id|requests_in
 op_increment
 suffix:semicolon
 id|req-&gt;errors
 op_assign
 l_int|0
-suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|req
-)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -1623,7 +1657,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;nbd: failed between accept and semaphore, file lost&bslash;n&quot;
+l_string|&quot;%s: failed between accept and semaphore, file lost&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 id|req-&gt;errors
@@ -1679,7 +1715,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;nbd: nbd_send_req failed&bslash;n&quot;
+l_string|&quot;%s: nbd_send_req failed&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1731,12 +1769,6 @@ suffix:colon
 id|req-&gt;errors
 op_increment
 suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|req
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1757,6 +1789,89 @@ id|q-&gt;queue_lock
 suffix:semicolon
 )brace
 r_return
+suffix:semicolon
+)brace
+DECL|function|nbd_open
+r_static
+r_int
+id|nbd_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_struct
+id|nbd_device
+op_star
+id|lo
+op_assign
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
+suffix:semicolon
+id|lo-&gt;refcnt
+op_increment
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|nbd_release
+r_static
+r_int
+id|nbd_release
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_struct
+id|nbd_device
+op_star
+id|lo
+op_assign
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lo-&gt;refcnt
+op_le
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;%s: %s: refcount(%d) &lt;= 0&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
+comma
+id|__FUNCTION__
+comma
+id|lo-&gt;refcnt
+)paren
+suffix:semicolon
+id|lo-&gt;refcnt
+op_decrement
+suffix:semicolon
+multiline_comment|/* N.B. Doesn&squot;t lo-&gt;file need an fput?? */
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|nbd_ioctl
@@ -1828,7 +1943,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NBD_DISCONNECT&bslash;n&quot;
+l_string|&quot;%s: NBD_DISCONNECT&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 id|sreq.flags
@@ -1905,7 +2022,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;nbd: Some requests are in progress -&gt; can not turn off.&bslash;n&quot;
+l_string|&quot;%s: Some requests are in progress -&gt; can not turn off.&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_return
@@ -2201,7 +2320,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;nbd: shutting down socket&bslash;n&quot;
+l_string|&quot;%s: shutting down socket&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 id|lo-&gt;sock-&gt;ops
@@ -2259,7 +2380,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;nbd: queue cleared&bslash;n&quot;
+l_string|&quot;%s: queue cleared&bslash;n&quot;
+comma
+id|lo-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_if
@@ -2317,54 +2440,6 @@ macro_line|#endif
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-)brace
-DECL|function|nbd_release
-r_static
-r_int
-id|nbd_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-r_struct
-id|nbd_device
-op_star
-id|lo
-op_assign
-id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lo-&gt;refcnt
-op_le
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;nbd_release: refcount(%d) &lt;= 0&bslash;n&quot;
-comma
-id|lo-&gt;refcnt
-)paren
-suffix:semicolon
-id|lo-&gt;refcnt
-op_decrement
-suffix:semicolon
-multiline_comment|/* N.B. Doesn&squot;t lo-&gt;file need an fput?? */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|nbd_fops
