@@ -171,7 +171,7 @@ op_assign
 l_int|0xbedead
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* Since we dont plan to keep on reseting the watchdog,&n;&t;   the key can be arbitrary hence three */
+multiline_comment|/* Since we don&squot;t plan to keep on reseting the watchdog,&n;&t;   the key can be arbitrary hence three */
 op_star
 id|R_WATCHDOG
 op_assign
@@ -339,7 +339,7 @@ id|swstack-&gt;r9
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* parameter to ret_from_sys_call, 0 == dont restart the syscall */
+multiline_comment|/* parameter to ret_from_sys_call, 0 == don&squot;t restart the syscall */
 multiline_comment|/* we want to return into ret_from_sys_call after the _resume */
 id|swstack-&gt;return_ip
 op_assign

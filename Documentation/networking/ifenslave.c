@@ -1192,7 +1192,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* attach a slave interface to the master */
-multiline_comment|/* two possibilities :&n;&t;&t;&t;   - if hwaddr_notset, do nothing.  The bond will assign the&n;&t;&t;&t;     hwaddr from it&squot;s first slave.&n;&t;&t;&t;   - if !hwaddr_notset, assign the master&squot;s hwaddr to each slave&n;&t;&t;&t;*/
+multiline_comment|/* two possibilities :&n;&t;&t;&t;   - if hwaddr_notset, do nothing.  The bond will assign the&n;&t;&t;&t;     hwaddr from its first slave.&n;&t;&t;&t;   - if !hwaddr_notset, assign the master&squot;s hwaddr to each slave&n;&t;&t;&t;*/
 id|strncpy
 c_func
 (paren

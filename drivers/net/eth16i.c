@@ -4772,7 +4772,7 @@ op_plus
 id|TX_INTR_REG
 )paren
 suffix:semicolon
-multiline_comment|/* eth16i_tx wont be called */
+multiline_comment|/* eth16i_tx won&squot;t be called */
 id|spin_lock
 c_func
 (paren

@@ -734,10 +734,6 @@ r_goto
 id|error3
 suffix:semicolon
 multiline_comment|/* Register a new directory entry with module sensors */
-r_if
-c_cond
-(paren
-(paren
 id|i
 op_assign
 id|i2c_register_entry
@@ -748,10 +744,12 @@ comma
 id|type_name
 comma
 id|lm75_dir_table_template
-comma
-id|THIS_MODULE
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 OL
 l_int|0
 )paren

@@ -1207,7 +1207,7 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size must match what&n; * was provided for in a previous swiotlb_map_single call.  All other usages are&n; * undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guarenteed to see whatever the&n; * device wrote there.&n; */
+multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size must match what&n; * was provided for in a previous swiotlb_map_single call.  All other usages are&n; * undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guaranteed to see whatever the&n; * device wrote there.&n; */
 r_void
 DECL|function|swiotlb_unmap_single
 id|swiotlb_unmap_single

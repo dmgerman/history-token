@@ -769,19 +769,10 @@ DECL|member|mem_lock
 id|spinlock_t
 id|mem_lock
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20303
 DECL|member|tx_queue
 id|wait_queue_head_t
 id|tx_queue
 suffix:semicolon
-macro_line|#else
-DECL|member|tx_queue
-r_struct
-id|wait_queue
-op_star
-id|tx_queue
-suffix:semicolon
-macro_line|#endif
 DECL|member|irq
 id|u8
 id|irq

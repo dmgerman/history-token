@@ -5,10 +5,14 @@ DECL|macro|CRCPOLY_BE
 mdefine_line|#define CRCPOLY_BE 0x04c11db7
 multiline_comment|/* How many bits at a time to use.  Requires a table of 4&lt;&lt;CRC_xx_BITS bytes. */
 multiline_comment|/* For less performance-sensitive, use 4 */
+macro_line|#ifndef CRC_LE_BITS 
 DECL|macro|CRC_LE_BITS
-mdefine_line|#define CRC_LE_BITS 8
+macro_line|# define CRC_LE_BITS 8
+macro_line|#endif
+macro_line|#ifndef CRC_BE_BITS
 DECL|macro|CRC_BE_BITS
-mdefine_line|#define CRC_BE_BITS 8
+macro_line|# define CRC_BE_BITS 8
+macro_line|#endif
 multiline_comment|/*&n; * Little-endian CRC computation.  Used with serial bit streams sent&n; * lsbit-first.  Be sure to use cpu_to_le32() to append the computed CRC.&n; */
 macro_line|#if CRC_LE_BITS &gt; 8 || CRC_LE_BITS &lt; 1 || CRC_LE_BITS &amp; CRC_LE_BITS-1
 macro_line|# error CRC_LE_BITS must be a power of 2 between 1 and 8

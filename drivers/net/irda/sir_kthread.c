@@ -552,7 +552,7 @@ c_func
 (paren
 id|current
 comma
-id|TASK_UNINTERRUPTIBLE
+id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 id|add_wait_queue

@@ -5253,7 +5253,7 @@ c_func
 )paren
 )paren
 (brace
-singleline_comment|// dont forget to set the control lines to zero (?)
+singleline_comment|// don&squot;t forget to set the control lines to zero (?)
 id|DPRINTK
 c_func
 (paren

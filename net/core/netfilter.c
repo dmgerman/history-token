@@ -2800,7 +2800,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* accomodate ip_route_output_slow(), which expects the key src to be&n;&t;   0 or a local address; however some non-standard hacks like&n;&t;   ipt_REJECT.c:send_reset() can cause packets with foreign&n;           saddr to be appear on the NF_IP_LOCAL_OUT hook -MB */
+multiline_comment|/* accommodate ip_route_output_slow(), which expects the key src to be&n;&t;   0 or a local address; however some non-standard hacks like&n;&t;   ipt_REJECT.c:send_reset() can cause packets with foreign&n;           saddr to be appear on the NF_IP_LOCAL_OUT hook -MB */
 r_if
 c_cond
 (paren

@@ -193,7 +193,7 @@ id|PaddrP
 op_assign
 id|info-&gt;location
 suffix:semicolon
-multiline_comment|/*&n;&t;** Check that we are able to accomodate another host&n;&t;*/
+multiline_comment|/*&n;&t;** Check that we are able to accommodate another host&n;&t;*/
 r_if
 c_cond
 (paren

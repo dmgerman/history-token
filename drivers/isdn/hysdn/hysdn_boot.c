@@ -1431,7 +1431,7 @@ suffix:semicolon
 id|len
 op_decrement
 suffix:semicolon
-multiline_comment|/* dont check CRC byte */
+multiline_comment|/* don&squot;t check CRC byte */
 r_while
 c_loop
 (paren

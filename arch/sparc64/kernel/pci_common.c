@@ -2427,7 +2427,7 @@ id|map_slot
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* If we are underneath a PCI bridge, use PROM register&n;&t; * property of the parent bridge which is closest to&n;&t; * the PBM.&n;&t; *&n;&t; * However if that parent bridge has interrupt map/mask&n;&t; * properties of it&squot;s own we use the PROM register property&n;&t; * of the next child device on the path to PDEV.&n;&t; *&n;&t; * In detail the two cases are (note that the &squot;X&squot; below is the&n;&t; * &squot;next child on the path to PDEV&squot; mentioned above):&n;&t; *&n;&t; * 1) PBM --&gt; PCI bus lacking int{map,mask} --&gt; X ... PDEV&n;&t; *&n;&t; *    Here we use regs of &squot;PCI bus&squot; device.&n;&t; *&n;&t; * 2) PBM --&gt; PCI bus with int{map,mask} --&gt; X ... PDEV&n;&t; *&n;&t; *    Here we use regs of &squot;X&squot;.  Note that X can be PDEV.&n;&t; */
+multiline_comment|/* If we are underneath a PCI bridge, use PROM register&n;&t; * property of the parent bridge which is closest to&n;&t; * the PBM.&n;&t; *&n;&t; * However if that parent bridge has interrupt map/mask&n;&t; * properties of its own we use the PROM register property&n;&t; * of the next child device on the path to PDEV.&n;&t; *&n;&t; * In detail the two cases are (note that the &squot;X&squot; below is the&n;&t; * &squot;next child on the path to PDEV&squot; mentioned above):&n;&t; *&n;&t; * 1) PBM --&gt; PCI bus lacking int{map,mask} --&gt; X ... PDEV&n;&t; *&n;&t; *    Here we use regs of &squot;PCI bus&squot; device.&n;&t; *&n;&t; * 2) PBM --&gt; PCI bus with int{map,mask} --&gt; X ... PDEV&n;&t; *&n;&t; *    Here we use regs of &squot;X&squot;.  Note that X can be PDEV.&n;&t; */
 r_if
 c_cond
 (paren

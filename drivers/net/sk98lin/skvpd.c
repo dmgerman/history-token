@@ -1774,7 +1774,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;find the Keyword &squot;key&squot; in the VPD buffer and fills the&n; *&t;parameter sturct &squot;p&squot; with it&squot;s values&n; *&n; * returns&t;*p&t;success&n; *&t;&t;0:&t;parameter was not found or VPD encoding error&n; */
+multiline_comment|/*&n; *&t;find the Keyword &squot;key&squot; in the VPD buffer and fills the&n; *&t;parameter sturct &squot;p&squot; with its values&n; *&n; * returns&t;*p&t;success&n; *&t;&t;0:&t;parameter was not found or VPD encoding error&n; */
 DECL|function|vpd_find_para
 r_static
 id|SK_VPD_PARA

@@ -745,7 +745,7 @@ id|nmi_print_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * the best way to detect whether a CPU has a &squot;hard lockup&squot; problem&n; * is to check it&squot;s local APIC timer IRQ counts. If they are not&n; * changing then that CPU has some problem.&n; *&n; * as these watchdog NMI IRQs are generated on every CPU, we only&n; * have to check the current processor.&n; *&n; * since NMIs dont listen to _any_ locks, we have to be extremely&n; * careful not to rely on unsafe variables. The printk might lock&n; * up though, so we have to break up any console locks first ...&n; * [when there will be more tty-related locks, break them up&n; *  here too!]&n; */
+multiline_comment|/*&n; * the best way to detect whether a CPU has a &squot;hard lockup&squot; problem&n; * is to check it&squot;s local APIC timer IRQ counts. If they are not&n; * changing then that CPU has some problem.&n; *&n; * as these watchdog NMI IRQs are generated on every CPU, we only&n; * have to check the current processor.&n; *&n; * since NMIs don&squot;t listen to _any_ locks, we have to be extremely&n; * careful not to rely on unsafe variables. The printk might lock&n; * up though, so we have to break up any console locks first ...&n; * [when there will be more tty-related locks, break them up&n; *  here too!]&n; */
 r_static
 r_int
 r_int

@@ -303,7 +303,7 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size&n; * must match what was provided for in a previous pci_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guarenteed to see&n; * whatever the device wrote there.&n; */
+multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size&n; * must match what was provided for in a previous pci_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guaranteed to see&n; * whatever the device wrote there.&n; */
 DECL|function|pci_unmap_single
 r_static
 r_inline

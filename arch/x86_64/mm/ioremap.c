@@ -865,6 +865,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 id|p
@@ -970,6 +975,11 @@ op_rshift
 id|PAGE_SHIFT
 comma
 id|PAGE_KERNEL
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

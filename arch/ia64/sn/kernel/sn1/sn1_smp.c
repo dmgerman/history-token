@@ -222,7 +222,7 @@ id|weak
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The following table/struct is for remembering PTC coherency domains. It&n; * is also used to translate sapicid into cpuids. We dont want to start &n; * cpus unless we know their cache domain.&n; */
+multiline_comment|/*&n; * The following table/struct is for remembering PTC coherency domains. It&n; * is also used to translate sapicid into cpuids. We don&squot;t want to start &n; * cpus unless we know their cache domain.&n; */
 macro_line|#ifdef PTC_NOTYET
 DECL|variable|sn_sapicid_info
 id|sn_sapicid_info_t

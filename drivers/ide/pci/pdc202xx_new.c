@@ -1932,7 +1932,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* If its not one we know we should never&n;&t;&t;&t;   arrive here.. */
+multiline_comment|/* If it&squot;s not one we know we should never&n;&t;&t;&t;   arrive here.. */
 id|BUG
 c_func
 (paren

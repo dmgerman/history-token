@@ -604,7 +604,7 @@ id|disable_8259A_irq
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * PIIX4-8259 master/virtual functions to handle interrupt requests&n; * from legacy devices: floppy, parallel, serial, rtc.&n; *&n; * None of these get Cobalt APIC entries, neither do they have IDT&n; * entries. These interrupts are purely virtual and distributed from&n; * the &squot;master&squot; interrupt source: CO_IRQ_8259.&n; *&n; * When the 8259 interrupts its handler figures out which of these&n; * devices is interrupting and dispatches to it&squot;s handler.&n; *&n; * CAREFUL: devices see the &squot;virtual&squot; interrupt only. Thus disable/&n; * enable_irq gets the right irq. This &squot;master&squot; irq is never directly&n; * manipulated by any driver.&n; */
+multiline_comment|/*&n; * PIIX4-8259 master/virtual functions to handle interrupt requests&n; * from legacy devices: floppy, parallel, serial, rtc.&n; *&n; * None of these get Cobalt APIC entries, neither do they have IDT&n; * entries. These interrupts are purely virtual and distributed from&n; * the &squot;master&squot; interrupt source: CO_IRQ_8259.&n; *&n; * When the 8259 interrupts its handler figures out which of these&n; * devices is interrupting and dispatches to its handler.&n; *&n; * CAREFUL: devices see the &squot;virtual&squot; interrupt only. Thus disable/&n; * enable_irq gets the right irq. This &squot;master&squot; irq is never directly&n; * manipulated by any driver.&n; */
 DECL|function|piix4_master_intr
 r_static
 r_void

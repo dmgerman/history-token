@@ -1963,7 +1963,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since we try and ioremap PHBs we dont own, the pte insert&n;&t; * will fail. However we must catch the failure in hash_page&n;&t; * or we will loop forever, so return -2 in this case.&n;&t; */
+multiline_comment|/*&n;&t; * Since we try and ioremap PHBs we don&squot;t own, the pte insert&n;&t; * will fail. However we must catch the failure in hash_page&n;&t; * or we will loop forever, so return -2 in this case.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2039,7 +2039,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* dont remove a bolted entry */
+multiline_comment|/* don&squot;t remove a bolted entry */
 id|lpar_rc
 op_assign
 id|plpar_pte_remove

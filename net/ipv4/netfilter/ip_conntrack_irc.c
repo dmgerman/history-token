@@ -315,7 +315,7 @@ id|ip_conntrack_info
 id|ctinfo
 )paren
 (brace
-multiline_comment|/* tcplen not negative guarenteed by ip_conntrack_tcp.c */
+multiline_comment|/* tcplen not negative guaranteed by ip_conntrack_tcp.c */
 r_struct
 id|tcphdr
 op_star

@@ -1935,7 +1935,7 @@ r_case
 op_minus
 id|ERESTARTNOHAND
 suffix:colon
-multiline_comment|/* ERESTARTNOHAND means that the syscall should only be&n;&t;&t;&t;&t;   restarted if there was no handler for the signal, and since&n;&t;&t;&t;&t;   we only get here if there is a handler, we dont restart */
+multiline_comment|/* ERESTARTNOHAND means that the syscall should only be&n;&t;&t;&t;&t;   restarted if there was no handler for the signal, and since&n;&t;&t;&t;&t;   we only get here if there is a handler, we don&squot;t restart */
 id|regs-&gt;r10
 op_assign
 op_minus

@@ -2620,7 +2620,7 @@ id|proto
 )paren
 suffix:semicolon
 multiline_comment|/* TODO: The above encapsulate function needs to recognize when a&n;&t; * packet needs to be split for a specified node. It should create&n;&t; * a list of skb&squot;s that we could then iterate over for the below&n;&t; * call to schedule our writes.  */
-multiline_comment|/* XXX: Right now we accept that we don&squot;t exactly follow RFC. When&n;&t; * we do, we will send ARP requests via GASP format, and so we wont&n;&t; * need this hack.  */
+multiline_comment|/* XXX: Right now we accept that we don&squot;t exactly follow RFC. When&n;&t; * we do, we will send ARP requests via GASP format, and so we won&squot;t&n;&t; * need this hack.  */
 id|spin_lock_irqsave
 (paren
 op_amp

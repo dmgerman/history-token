@@ -548,7 +548,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/* Special close routine which deletes map information if we are the last&n; * person to close a mapping and its not in the global maplist.&n; */
+multiline_comment|/* Special close routine which deletes map information if we are the last&n; * person to close a mapping and it&squot;s not in the global maplist.&n; */
 DECL|function|vm_shm_close
 r_void
 id|DRM

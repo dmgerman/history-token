@@ -1,6 +1,6 @@
 multiline_comment|/* Miro PCM20 radio driver for Linux radio support&n; * (c) 1998 Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; * Thanks to Norberto Pellici for the ACI device interface specification&n; * The API part is based on the radiotrack driver by M. Kirkwood&n; * This driver relies on the aci mixer (drivers/sound/aci.c)&n; * Look there for further info...&n; */
 multiline_comment|/* Revision history:&n; *&n; *   1998        Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; *   2000-09-05  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        removed unfinished volume control (maybe adding it later again)&n; *        use OSS-mixer; added stereo control&n; */
-multiline_comment|/* What ever you think about the ACI, version 0x07 is not very well!&n; * I cant get frequency, &squot;tuner status&squot;, &squot;tuner flags&squot; or mute/mono&n; * conditions...                Robert &n; */
+multiline_comment|/* What ever you think about the ACI, version 0x07 is not very well!&n; * I can&squot;t get frequency, &squot;tuner status&squot;, &squot;tuner flags&squot; or mute/mono&n; * conditions...                Robert &n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -332,7 +332,7 @@ id|flags
 op_assign
 id|VIDEO_TUNER_STEREO_ON
 suffix:semicolon
-multiline_comment|/* I cant see stereo, when forced to mono */
+multiline_comment|/* I can&squot;t see stereo, when forced to mono */
 id|dev-&gt;stereo
 op_assign
 l_int|1

@@ -3274,7 +3274,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Given the file system, inode OR id, and type (UDQUOT/GDQUOT), return a&n; * a locked dquot, doing an allocation (if requested) as needed.&n; * When both an inode and an id are given, the inode&squot;s id takes precedence.&n; * That is, if the id changes while we dont hold the ilock inside this&n; * function, the new dquot is returned, not necessarily the one requested&n; * in the id argument.&n; */
+multiline_comment|/*&n; * Given the file system, inode OR id, and type (UDQUOT/GDQUOT), return a&n; * a locked dquot, doing an allocation (if requested) as needed.&n; * When both an inode and an id are given, the inode&squot;s id takes precedence.&n; * That is, if the id changes while we don&squot;t hold the ilock inside this&n; * function, the new dquot is returned, not necessarily the one requested&n; * in the id argument.&n; */
 r_int
 DECL|function|xfs_qm_dqget
 id|xfs_qm_dqget

@@ -4119,7 +4119,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef __sparc__
-multiline_comment|/*&n;&t; * On this platform, we know what the best dma settings&n;&t; * are.  We use 64-byte maximum bursts, because if we&n;&t; * burst larger than the cache line size (or even cross&n;&t; * a 64byte boundry in a single burst) the UltraSparc&n;&t; * PCI controller will disconnect at 64-byte multiples.&n;&t; *&n;&t; * Read-multiple will be properly enabled above, and when&n;&t; * set will give the PCI controller proper hints about&n;&t; * prefetching.&n;&t; */
+multiline_comment|/*&n;&t; * On this platform, we know what the best dma settings&n;&t; * are.  We use 64-byte maximum bursts, because if we&n;&t; * burst larger than the cache line size (or even cross&n;&t; * a 64byte boundary in a single burst) the UltraSparc&n;&t; * PCI controller will disconnect at 64-byte multiples.&n;&t; *&n;&t; * Read-multiple will be properly enabled above, and when&n;&t; * set will give the PCI controller proper hints about&n;&t; * prefetching.&n;&t; */
 id|tmp
 op_and_assign
 op_complement

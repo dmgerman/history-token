@@ -75,7 +75,7 @@ r_int
 id|iommu_ctxflush
 suffix:semicolon
 multiline_comment|/* IOMMU context flush register */
-multiline_comment|/* This is a register in the PCI controller, which if&n;&t; * read will have no side-effects but will guarentee&n;&t; * completion of all previous writes into IOMMU/STC.&n;&t; */
+multiline_comment|/* This is a register in the PCI controller, which if&n;&t; * read will have no side-effects but will guarantee&n;&t; * completion of all previous writes into IOMMU/STC.&n;&t; */
 DECL|member|write_complete_reg
 r_int
 r_int

@@ -25,7 +25,7 @@ id|ioapic_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = dont know, 0 = no, 1 = yes&n; */
+multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = don&squot;t know, 0 = no, 1 = yes&n; */
 DECL|variable|sis_apic_bug
 r_int
 id|sis_apic_bug
@@ -631,13 +631,12 @@ id|pending_irq_balance_apicid
 id|NR_IRQS
 )braket
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|irqbalance_disabled
 r_static
 r_int
 id|irqbalance_disabled
-id|__initdata
 op_assign
-l_int|0
+id|NO_BALANCE_IRQ
 suffix:semicolon
 DECL|variable|physical_balance
 r_static
@@ -1804,7 +1803,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|no_balance_irq
+id|irqbalance_disabled
 )paren
 r_return
 suffix:semicolon

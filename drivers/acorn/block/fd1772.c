@@ -3453,7 +3453,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* we must wait for the IRQ here, because the ST-DMA is&n;&t;&t; * released immediatly afterwards and the interrupt may be&n;&t;&t; * delivered to the wrong driver.&n;&t;&t; */
+multiline_comment|/* we must wait for the IRQ here, because the ST-DMA is&n;&t;&t; * released immediately afterwards and the interrupt may be&n;&t;&t; * delivered to the wrong driver.&n;&t;&t; */
 )brace
 )brace
 DECL|function|finish_fdc_done

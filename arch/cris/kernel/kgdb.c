@@ -5666,7 +5666,8 @@ id|debugport.c
 op_logical_and
 id|check
 r_if
-id|its
+id|it
+id|is
 id|a
 id|ctrl
 op_minus

@@ -118,7 +118,7 @@ mdefine_line|#define AHD_SCB_MAX&t;512
 multiline_comment|/*&n; * The maximum number of concurrent transactions supported per driver instance.&n; * Sequencer Control Blocks (SCBs) store per-transaction information.&n; */
 DECL|macro|AHD_MAX_QUEUE
 mdefine_line|#define AHD_MAX_QUEUE&t;AHD_SCB_MAX
-multiline_comment|/*&n; * Define the size of our QIN and QOUT FIFOs.  They must be a power of 2&n; * in size and accomodate as many transactions as can be queued concurrently.&n; */
+multiline_comment|/*&n; * Define the size of our QIN and QOUT FIFOs.  They must be a power of 2&n; * in size and accommodate as many transactions as can be queued concurrently.&n; */
 DECL|macro|AHD_QIN_SIZE
 mdefine_line|#define&t;AHD_QIN_SIZE&t;AHD_MAX_QUEUE
 DECL|macro|AHD_QOUT_SIZE

@@ -41,7 +41,7 @@ r_int
 r_int
 id|cache_decay_ticks
 suffix:semicolon
-multiline_comment|/* initialised so it doesnt end up in bss */
+multiline_comment|/* initialised so it doesn&squot;t end up in bss */
 DECL|variable|cpu_online_map
 r_int
 r_int

@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;suncore.h&quot;
 macro_line|#include &quot;sunzilog.h&quot;
-multiline_comment|/* On 32-bit sparcs we need to delay after register accesses&n; * to accomodate sun4 systems, but we do not need to flush writes.&n; * On 64-bit sparc we only need to flush single writes to ensure&n; * completion.&n; */
+multiline_comment|/* On 32-bit sparcs we need to delay after register accesses&n; * to accommodate sun4 systems, but we do not need to flush writes.&n; * On 64-bit sparc we only need to flush single writes to ensure&n; * completion.&n; */
 macro_line|#ifndef CONFIG_SPARC64
 DECL|macro|ZSDELAY
 mdefine_line|#define ZSDELAY()&t;&t;udelay(5)

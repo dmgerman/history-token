@@ -14,7 +14,7 @@ mdefine_line|#define DEBUG(x...)&t;&t;&t;/* remove when no long debugging */
 DECL|macro|SAA7110_MAX_INPUT
 mdefine_line|#define SAA7110_MAX_INPUT&t;9&t;/* 6 CVBS, 3 SVHS */
 DECL|macro|SAA7110_MAX_OUTPUT
-mdefine_line|#define SAA7110_MAX_OUTPUT&t;0&t;/* its a decoder only */
+mdefine_line|#define SAA7110_MAX_OUTPUT&t;0&t;/* it&squot;s a decoder only */
 DECL|macro|I2C_SAA7110
 mdefine_line|#define&t;I2C_SAA7110&t;&t;0x9C&t;/* or 0x9E */
 DECL|macro|IF_NAME

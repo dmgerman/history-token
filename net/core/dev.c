@@ -3413,7 +3413,7 @@ r_int
 id|dummy
 )paren
 (brace
-multiline_comment|/* 10 ms 0r 1ms -- i dont care -- JHS */
+multiline_comment|/* 10 ms 0r 1ms -- i don&squot;t care -- JHS */
 r_int
 id|next_tick
 op_assign

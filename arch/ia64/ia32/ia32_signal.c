@@ -1737,7 +1737,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * Updating fsr, fcr, fir, fdr.&n;&t; * Just a bit more complicated than save.&n;&t; * - Need to make sure that we dont write any value other than the&n;&t; *   specific fpstate info&n;&t; * - Need to make sure that the untouched part of frs, fdr, fir, fcr&n;&t; *   should remain same while writing.&n;&t; * So, we do a read, change specific fields and write.&n;&t; */
+multiline_comment|/*&n;&t; * Updating fsr, fcr, fir, fdr.&n;&t; * Just a bit more complicated than save.&n;&t; * - Need to make sure that we don&squot;t write any value other than the&n;&t; *   specific fpstate info&n;&t; * - Need to make sure that the untouched part of frs, fdr, fir, fcr&n;&t; *   should remain same while writing.&n;&t; * So, we do a read, change specific fields and write.&n;&t; */
 id|asm
 r_volatile
 (paren

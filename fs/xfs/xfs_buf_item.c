@@ -2804,7 +2804,7 @@ id|bip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Add the given log item with it&squot;s callback to the list of callbacks&n; * to be called when the buffer&squot;s I/O completes.  If it is not set&n; * already, set the buffer&squot;s b_iodone() routine to be&n; * xfs_buf_iodone_callbacks() and link the log item into the list of&n; * items rooted at b_fsprivate.&t; Items are always added as the second&n; * entry in the list if there is a first, because the buf item code&n; * assumes that the buf log item is first.&n; */
+multiline_comment|/*&n; * Add the given log item with its callback to the list of callbacks&n; * to be called when the buffer&squot;s I/O completes.  If it is not set&n; * already, set the buffer&squot;s b_iodone() routine to be&n; * xfs_buf_iodone_callbacks() and link the log item into the list of&n; * items rooted at b_fsprivate.&t; Items are always added as the second&n; * entry in the list if there is a first, because the buf item code&n; * assumes that the buf log item is first.&n; */
 r_void
 DECL|function|xfs_buf_attach_iodone
 id|xfs_buf_attach_iodone

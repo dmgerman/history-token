@@ -838,7 +838,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Re-type the object according to it&squot;s argument */
+multiline_comment|/* Re-type the object according to its argument */
 id|node-&gt;type
 op_assign
 id|ACPI_GET_OBJECT_TYPE

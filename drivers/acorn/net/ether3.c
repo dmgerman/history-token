@@ -192,7 +192,7 @@ DECL|typedef|buffer_rw_t
 )brace
 id|buffer_rw_t
 suffix:semicolon
-multiline_comment|/*&n; * ether3 read/write.  Slow things down a bit...&n; * The SEEQ8005 doesn&squot;t like us writing to it&squot;s registers&n; * too quickly.&n; */
+multiline_comment|/*&n; * ether3 read/write.  Slow things down a bit...&n; * The SEEQ8005 doesn&squot;t like us writing to its registers&n; * too quickly.&n; */
 DECL|function|ether3_outb
 r_static
 r_inline

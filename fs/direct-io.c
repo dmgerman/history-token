@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * How many user pages to map in one call to get_user_pages().  This determines&n; * the size of a structure on the stack.&n; */
 DECL|macro|DIO_PAGES
 mdefine_line|#define DIO_PAGES&t;64
-multiline_comment|/*&n; * This code generally works in units of &quot;dio_blocks&quot;.  A dio_block is&n; * somewhere between the hard sector size and the filesystem block size.  it&n; * is determined on a per-invokation basis.   When talking to the filesystem&n; * we need to convert dio_blocks to fs_blocks by scaling the dio_block quantity&n; * down by dio-&gt;blkfactor.  Similarly, fs-blocksize quantities are converted&n; * to bio_block quantities by shifting left by blkfactor.&n; *&n; * If blkfactor is zero then the user&squot;s request was aligned to the filesystem&squot;s&n; * blocksize.&n; */
+multiline_comment|/*&n; * This code generally works in units of &quot;dio_blocks&quot;.  A dio_block is&n; * somewhere between the hard sector size and the filesystem block size.  it&n; * is determined on a per-invocation basis.   When talking to the filesystem&n; * we need to convert dio_blocks to fs_blocks by scaling the dio_block quantity&n; * down by dio-&gt;blkfactor.  Similarly, fs-blocksize quantities are converted&n; * to bio_block quantities by shifting left by blkfactor.&n; *&n; * If blkfactor is zero then the user&squot;s request was aligned to the filesystem&squot;s&n; * blocksize.&n; */
 DECL|struct|dio
 r_struct
 id|dio

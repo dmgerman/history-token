@@ -3,7 +3,7 @@ DECL|macro|_ALPHA_RWSEM_H
 mdefine_line|#define _ALPHA_RWSEM_H
 multiline_comment|/*&n; * Written by Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;, 2001.&n; * Based on asm-alpha/semaphore.h and asm-i386/rwsem.h&n; */
 macro_line|#ifndef _LINUX_RWSEM_H
-macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
+macro_line|#error &quot;please don&squot;t include asm/rwsem.h directly, use linux/rwsem.h instead&quot;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/compiler.h&gt;

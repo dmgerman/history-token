@@ -3,7 +3,7 @@ macro_line|#ifndef _SPARC64_RWSEM_H
 DECL|macro|_SPARC64_RWSEM_H
 mdefine_line|#define _SPARC64_RWSEM_H
 macro_line|#ifndef _LINUX_RWSEM_H
-macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
+macro_line|#error &quot;please don&squot;t include asm/rwsem.h directly, use linux/rwsem.h instead&quot;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;

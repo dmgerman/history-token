@@ -631,7 +631,7 @@ op_assign
 id|ccp-&gt;reset-&gt;lastid
 op_increment
 suffix:semicolon
-multiline_comment|/* We always expect an Ack if the decompressor doesnt&n;&t;&t;   know&t;better */
+multiline_comment|/* We always expect an Ack if the decompressor doesn&squot;t&n;&t;&t;   know&t;better */
 id|rp-&gt;expra
 op_assign
 l_int|1

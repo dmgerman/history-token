@@ -52,7 +52,7 @@ singleline_comment|// The Tachyon chip can have around 30,000 I/O operations (&q
 singleline_comment|// open at one time.  However, each exchange must be initiated 
 singleline_comment|// synchronously (i.e. each of the 30k I/O had to be started one at a
 singleline_comment|// time by sending a starting frame via Tachyon&squot;s outbound que).  
-singleline_comment|// To accomodate kernel &quot;module&quot; build, this driver limits the exchanges
+singleline_comment|// To accommodate kernel &quot;module&quot; build, this driver limits the exchanges
 singleline_comment|// to 256, because of the contiguous physical memory limitation of 128M.
 singleline_comment|// Typical FC Exchanges are opened presuming the FC frames start without errors,
 singleline_comment|// while Exchange completion is handled in the interrupt handler.  This

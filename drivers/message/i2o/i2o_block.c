@@ -2545,7 +2545,7 @@ id|dev
 op_assign
 id|req-&gt;rq_disk-&gt;private_data
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *&t;Queue depths probably belong with some kind of &n;&t;&t; *&t;generic IOP commit control. Certainly its not right &n;&t;&t; *&t;its global!  &n;&t;&t; */
+multiline_comment|/* &n;&t;&t; *&t;Queue depths probably belong with some kind of &n;&t;&t; *&t;generic IOP commit control. Certainly it&squot;s not right &n;&t;&t; *&t;its global!  &n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6480,7 +6480,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;We may get further callbacks for ourself. The i2o_core&n;&t; *&t;code handles this case reasonably sanely. The problem here&n;&t; *&t;is we shouldn&squot;t get them .. but a couple of cards feel &n;&t; *&t;obliged to tell us stuff we dont care about.&n;&t; *&n;&t; *&t;This isnt ideal at all but will do for now.&n;&t; */
+multiline_comment|/*&n;&t; *&t;We may get further callbacks for ourself. The i2o_core&n;&t; *&t;code handles this case reasonably sanely. The problem here&n;&t; *&t;is we shouldn&squot;t get them .. but a couple of cards feel &n;&t; *&t;obliged to tell us stuff we don&squot;t care about.&n;&t; *&n;&t; *&t;This isnt ideal at all but will do for now.&n;&t; */
 id|set_current_state
 c_func
 (paren

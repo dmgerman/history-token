@@ -9084,7 +9084,7 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#if !PCI_DMA_BUS_IS_PHYS
-multiline_comment|/* IOMMU, just map the guilty area again which is guarenteed to&n;&t; * use different addresses.&n;&t; */
+multiline_comment|/* IOMMU, just map the guilty area again which is guaranteed to&n;&t; * use different addresses.&n;&t; */
 id|i
 op_assign
 l_int|0
@@ -9253,7 +9253,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* New SKB is guarenteed to be linear. */
+multiline_comment|/* New SKB is guaranteed to be linear. */
 id|entry
 op_assign
 op_star
@@ -14908,7 +14908,7 @@ comma
 l_int|0x00000000
 )brace
 suffix:semicolon
-macro_line|#if 0 /* All zeros, dont eat up space with it. */
+macro_line|#if 0 /* All zeros, don&squot;t eat up space with it. */
 id|u32
 id|tg3FwData
 (braket
@@ -18753,7 +18753,7 @@ comma
 l_int|0x00000000
 )brace
 suffix:semicolon
-macro_line|#if 0 /* All zeros, dont eat up space with it. */
+macro_line|#if 0 /* All zeros, don&squot;t eat up space with it. */
 id|u32
 id|tg3TsoFwData
 (braket
@@ -29472,7 +29472,7 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_MBOX_WRITE_REORDER
 suffix:semicolon
-multiline_comment|/* Force memory write invalidate off.  If we leave it on,&n;&t; * then on 5700_BX chips we have to enable a workaround.&n;&t; * The workaround is to set the TG3PCI_DMA_RW_CTRL boundry&n;&t; * to match the cacheline size.  The Broadcom driver have this&n;&t; * workaround but turns MWI off all the times so never uses&n;&t; * it.  This seems to suggest that the workaround is insufficient.&n;&t; */
+multiline_comment|/* Force memory write invalidate off.  If we leave it on,&n;&t; * then on 5700_BX chips we have to enable a workaround.&n;&t; * The workaround is to set the TG3PCI_DMA_RW_CTRL boundary&n;&t; * to match the cacheline size.  The Broadcom driver have this&n;&t; * workaround but turns MWI off all the times so never uses&n;&t; * it.  This seems to suggest that the workaround is insufficient.&n;&t; */
 id|pci_read_config_word
 c_func
 (paren

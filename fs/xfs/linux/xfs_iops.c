@@ -2123,7 +2123,7 @@ multiline_comment|/*&n; * Extended attributes interfaces&n; */
 DECL|macro|SYSTEM_NAME
 mdefine_line|#define SYSTEM_NAME&t;&quot;system.&quot;&t;/* VFS shared names/values */
 DECL|macro|ROOT_NAME
-mdefine_line|#define ROOT_NAME&t;&quot;xfsroot.&quot;&t;/* XFS ondisk names/values */
+mdefine_line|#define ROOT_NAME&t;&quot;trusted.&quot;&t;/* root&squot;s own names/values */
 DECL|macro|USER_NAME
 mdefine_line|#define USER_NAME&t;&quot;user.&quot;&t;&t;/* user&squot;s own names/values */
 DECL|variable|xfs_namespace_array
@@ -2501,7 +2501,7 @@ suffix:semicolon
 id|error
 op_assign
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 id|p
 op_add_assign
@@ -2812,7 +2812,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 )brace
 id|STATIC
@@ -2837,9 +2837,6 @@ id|data
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 id|ssize_t
@@ -2906,7 +2903,7 @@ l_int|0
 id|error
 op_assign
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 id|p
 op_add_assign
@@ -3201,7 +3198,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 )brace
 id|STATIC
@@ -3221,9 +3218,6 @@ id|data
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 id|ssize_t
@@ -3467,9 +3461,6 @@ r_const
 r_char
 op_star
 id|name
-comma
-r_int
-id|flags
 )paren
 (brace
 r_int
@@ -3536,7 +3527,7 @@ l_int|0
 id|error
 op_assign
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 id|p
 op_add_assign
@@ -3762,7 +3753,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|ENOATTR
+id|EOPNOTSUPP
 suffix:semicolon
 )brace
 DECL|variable|linvfs_file_inode_operations

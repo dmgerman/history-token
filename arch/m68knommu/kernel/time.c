@@ -16,6 +16,8 @@ mdefine_line|#define&t;TICK_SIZE (tick_nsec / 1000)
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|function|set_rtc_mmss
 r_static

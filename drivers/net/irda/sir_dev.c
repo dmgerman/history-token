@@ -2091,7 +2091,7 @@ comma
 id|name
 )paren
 suffix:semicolon
-multiline_comment|/* instead of adding tests to protect against drv-&gt;do_write==NULL&n;&t; * at several places we refuse to create a sir_dev instance for&n;&t; * drivers which dont implement do_write.&n;&t; */
+multiline_comment|/* instead of adding tests to protect against drv-&gt;do_write==NULL&n;&t; * at several places we refuse to create a sir_dev instance for&n;&t; * drivers which don&squot;t implement do_write.&n;&t; */
 r_if
 c_cond
 (paren

@@ -2585,7 +2585,7 @@ id|inode-&gt;u.generic_ip
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function get_devfs_entry_from_vfs_inode  */
-multiline_comment|/**&n; *&t;free_dentry - Free the dentry for a device entry and invalidate inode.&n; *&t;@de: The entry.&n; *&n; *&t;This must only be called after the entry has been unhooked from it&squot;s&n; *&t; parent directory.&n; */
+multiline_comment|/**&n; *&t;free_dentry - Free the dentry for a device entry and invalidate inode.&n; *&t;@de: The entry.&n; *&n; *&t;This must only be called after the entry has been unhooked from its&n; *&t; parent directory.&n; */
 DECL|function|free_dentry
 r_static
 r_void
@@ -3633,7 +3633,7 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function _devfs_unhook  */
-multiline_comment|/**&n; *&t;_devfs_unregister - Unregister a device entry from it&squot;s parent.&n; *&t;@dir: The parent directory.&n; *&t;@de: The entry to unregister.&n; *&n; *&t;The caller must have a write lock on the parent directory, which is&n; *&t;unlocked by this function.&n; */
+multiline_comment|/**&n; *&t;_devfs_unregister - Unregister a device entry from its parent.&n; *&t;@dir: The parent directory.&n; *&t;@de: The entry to unregister.&n; *&n; *&t;The caller must have a write lock on the parent directory, which is&n; *&t;unlocked by this function.&n; */
 DECL|function|_devfs_unregister
 r_static
 r_void
@@ -8596,7 +8596,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/*  Now unhook the directory from it&squot;s parent  */
+multiline_comment|/*  Now unhook the directory from its parent  */
 id|write_lock
 (paren
 op_amp

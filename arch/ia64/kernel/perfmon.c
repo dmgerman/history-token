@@ -2075,7 +2075,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * counts the number of PMDS to save per entry.&n; * This code is generic enough to accomodate more than 64 PMDS when they become available&n; */
+multiline_comment|/*&n; * counts the number of PMDS to save per entry.&n; * This code is generic enough to accommodate more than 64 PMDS when they become available&n; */
 r_static
 r_int
 r_int

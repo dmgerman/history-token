@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;OSS driver for Linux 2.4.x for&n; *&n; *&t;Trident 4D-Wave&n; *&t;SiS 7018&n; *&t;ALi 5451&n; *&t;Tvia/IGST CyberPro 5050&n; *&n; *&t;Driver: Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  Built from:&n; *&t;Low level code: &lt;audio@tridentmicro.com&gt; from ALSA&n; *&t;Framework: Thomas Sailer &lt;sailer@ife.ee.ethz.ch&gt;&n; *&t;Extended by: Zach Brown &lt;zab@redhat.com&gt;  &n; *&n; *  Hacked up by:&n; *&t;Aaron Holtzman &lt;aholtzma@ess.engr.uvic.ca&gt;&n; *&t;Ollie Lho &lt;ollie@sis.com.tw&gt; SiS 7018 Audio Core Support&n; *&t;Ching-Ling Lee &lt;cling-li@ali.com.tw&gt; ALi 5451 Audio Core Support &n; *&t;Matt Wu &lt;mattwu@acersoftech.com.cn&gt; ALi 5451 Audio Core Support&n; *&t;Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt; CyberPro5050 support&n; *&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  History&n; *  v0.14.10f&n; *      July 24 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      patch from Eric Lemar (via Ian Soboroff): in suspend and resume, &n; *      fix wrong cast from pci_dev* to struct trident_card*. &n; *  v0.14.10e&n; *      July 19 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      rewrite the DMA buffer allocation/deallcoation functions, to make it &n; *      modular and fix a bug where we would call free_pages on memory &n; *      obtained with pci_alloc_consistent. Also remove unnecessary #ifdef &n; *      CONFIG_PROC_FS and various other cleanups.&n; *  v0.14.10d&n; *      July 19 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      made several printk(KERN_NOTICE...) into TRDBG(...), to avoid spamming&n; *      my syslog with hundreds of messages. &n; *  v0.14.10c&n; *      July 16 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      Cleaned up Lei Hu&squot;s 0.4.10 driver to conform to Documentation/CodingStyle&n; *      and the coding style used in the rest of the file. &n; *  v0.14.10b&n; *      June 23 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      add a missing unlock_set_fmt, remove a superflous lock/unlock pair &n; *      with nothing in between. &n; *  v0.14.10a&n; *      June 21 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt; &n; *      use a debug macro instead of #ifdef CONFIG_DEBUG, trim to 80 columns &n; *      per line, use &squot;do {} while (0)&squot; in statement macros. &n; *  v0.14.10&n; *      June 6 2002 Lei Hu &lt;Lei_hu@ali.com.tw&gt;&n; *      rewrite the part to read/write registers of audio codec for Ali5451 &n; *  v0.14.9e&n; *      January 2 2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt; added gameport&n; *      support to avoid resource conflict with pcigame.c&n; *  v0.14.9d&n; *  &t;October 8 2001 Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t;use set_current_state, properly release resources on failure in&n; *&t;trident_probe, get rid of check_region&n; *  v0.14.9c&n; *&t;August 10 2001 Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt;&n; *&t;added support for Tvia (formerly Integraphics/IGST) CyberPro5050&n; *&t;this chip is often found in settop boxes (combined video+audio)&n; *  v0.14.9b&n; *&t;Switch to static inline not extern inline (gcc 3)&n; *  v0.14.9a&n; *&t;Aug 6 2001 Alan Cox&n; *&t;0.14.9 crashed on rmmod due to a timer/bh left running. Simplified&n; *&t;the existing logic (the BH doesnt help as ac97 is lock_irqsave)&n; *&t;and used del_timer_sync to clean up&n; *&t;Fixed a problem where the ALi change broke my generic card&n; *  v0.14.9&n; *&t;Jul 10 2001 Matt Wu&n; *&t;Add H/W Volume Control&n; *  v0.14.8a&n; *&t;July 7 2001 Alan Cox&n; *&t;Moved Matt Wu&squot;s ac97 register cache into the card structure&n; *  v0.14.8&n; *&t;Apr 30 2001 Matt Wu&n; *&t;Set EBUF1 and EBUF2 to still mode&n; *&t;Add dc97/ac97 reset function&n; *&t;Fix power management: ali_restore_regs&n; *  unreleased &n; *&t;Mar 09 2001 Matt Wu&n; *&t;Add cache for ac97 access&n; *  v0.14.7&n; *&t;Feb 06 2001 Matt Wu&n; *&t;Fix ac97 initialization&n; *&t;Fix bug: an extra tail will be played when playing&n; *&t;Jan 05 2001 Matt Wu&n; *&t;Implement multi-channels and S/PDIF in support for ALi 1535+&n; *  v0.14.6 &n; *&t;Nov 1 2000 Ching-Ling Lee&n; *&t;Fix the bug of memory leak when switching 5.1-channels to 2 channels.&n; *&t;Add lock protection into dynamic changing format of data.&n; *&t;Oct 18 2000 Ching-Ling Lee&n; *&t;5.1-channels support for ALi&n; *&t;June 28 2000 Ching-Ling Lee&n; *&t;S/PDIF out/in(playback/record) support for ALi 1535+, using /proc to be selected by user&n; *&t;Simple Power Management support for ALi&n; *  v0.14.5 May 23 2000 Ollie Lho&n; *  &t;Misc bug fix from the Net&n; *  v0.14.4 May 20 2000 Aaron Holtzman&n; *  &t;Fix kfree&squot;d memory access in release&n; *  &t;Fix race in open while looking for a free virtual channel slot&n; *  &t;remove open_wait wq (which appears to be unused)&n; *  v0.14.3 May 10 2000 Ollie Lho&n; *&t;fixed a small bug in trident_update_ptr, xmms 1.0.1 no longer uses 100% CPU&n; *  v0.14.2 Mar 29 2000 Ching-Ling Lee&n; *&t;Add clear to silence advance in trident_update_ptr &n; *&t;fix invalid data of the end of the sound&n; *  v0.14.1 Mar 24 2000 Ching-Ling Lee&n; *&t;ALi 5451 support added, playback and recording O.K.&n; *&t;ALi 5451 originally developed and structured based on sonicvibes, and&n; *&t;suggested to merge into this file by Alan Cox.&n; *  v0.14 Mar 15 2000 Ollie Lho&n; *&t;5.1 channel output support with channel binding. What&squot;s the Matrix ?&n; *  v0.13.1 Mar 10 2000 Ollie Lho&n; *&t;few minor bugs on dual codec support, needs more testing&n; *  v0.13 Mar 03 2000 Ollie Lho&n; *&t;new pci_* for 2.4 kernel, back ported to 2.2&n; *  v0.12 Feb 23 2000 Ollie Lho&n; *&t;Preliminary Recording support&n; *  v0.11.2 Feb 19 2000 Ollie Lho&n; *&t;removed incomplete full-dulplex support&n; *  v0.11.1 Jan 28 2000 Ollie Lho&n; *&t;small bug in setting sample rate for 4d-nx (reported by Aaron)&n; *  v0.11 Jan 27 2000 Ollie Lho&n; *&t;DMA bug, scheduler latency, second try&n; *  v0.10 Jan 24 2000 Ollie Lho&n; *&t;DMA bug fixed, found kernel scheduling problem&n; *  v0.09 Jan 20 2000 Ollie Lho&n; *&t;Clean up of channel register access routine (prepare for channel binding)&n; *  v0.08 Jan 14 2000 Ollie Lho&n; *&t;Isolation of AC97 codec code&n; *  v0.07 Jan 13 2000 Ollie Lho&n; *&t;Get rid of ugly old low level access routines (e.g. CHRegs.lp****)&n; *  v0.06 Jan 11 2000 Ollie Lho&n; *&t;Preliminary support for dual (more ?) AC97 codecs&n; *  v0.05 Jan 08 2000 Luca Montecchiani &lt;m.luca@iname.com&gt;&n; *&t;adapt to 2.3.x new __setup/__init call&n; *  v0.04 Dec 31 1999 Ollie Lho&n; *&t;Multiple Open, using Middle Loop Interrupt to smooth playback&n; *  v0.03 Dec 24 1999 Ollie Lho&n; *&t;mem leak in prog_dmabuf and dealloc_dmabuf removed&n; *  v0.02 Dec 15 1999 Ollie Lho&n; *&t;SiS 7018 support added, playback O.K.&n; *  v0.01 Alan Cox et. al.&n; *&t;Initial Release in kernel 2.3.30, does not work&n; * &n; *  ToDo&n; *&t;Clean up of low level channel register access code. (done)&n; *&t;Fix the bug on dma buffer management in update_ptr, read/write, drain_dac (done)&n; *&t;Dual AC97 codecs support (done)&n; *&t;Recording support (done)&n; *&t;Mmap support&n; *&t;&quot;Channel Binding&quot; ioctl extension (done)&n; *&t;new pci device driver interface for 2.4 kernel (done)&n; *&n; *&t;Lock order (high-&gt;low)&n; *&t;&t;lock&t;-&t;hardware lock&n; *&t;&t;open_sem - &t;guard opens&n; *&t;&t;sem&t;-&t;guard dmabuf, write re-entry etc&n; */
+multiline_comment|/*&n; *&t;OSS driver for Linux 2.4.x for&n; *&n; *&t;Trident 4D-Wave&n; *&t;SiS 7018&n; *&t;ALi 5451&n; *&t;Tvia/IGST CyberPro 5050&n; *&n; *&t;Driver: Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  Built from:&n; *&t;Low level code: &lt;audio@tridentmicro.com&gt; from ALSA&n; *&t;Framework: Thomas Sailer &lt;sailer@ife.ee.ethz.ch&gt;&n; *&t;Extended by: Zach Brown &lt;zab@redhat.com&gt;  &n; *&n; *  Hacked up by:&n; *&t;Aaron Holtzman &lt;aholtzma@ess.engr.uvic.ca&gt;&n; *&t;Ollie Lho &lt;ollie@sis.com.tw&gt; SiS 7018 Audio Core Support&n; *&t;Ching-Ling Lee &lt;cling-li@ali.com.tw&gt; ALi 5451 Audio Core Support &n; *&t;Matt Wu &lt;mattwu@acersoftech.com.cn&gt; ALi 5451 Audio Core Support&n; *&t;Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt; CyberPro5050 support&n; *      Muli Ben-Yehuda &lt;mulix@mulix.org&gt;&n; *&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  History&n; *  v0.14.10f&n; *      July 24 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      patch from Eric Lemar (via Ian Soboroff): in suspend and resume, &n; *      fix wrong cast from pci_dev* to struct trident_card*. &n; *  v0.14.10e&n; *      July 19 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      rewrite the DMA buffer allocation/deallcoation functions, to make it &n; *      modular and fix a bug where we would call free_pages on memory &n; *      obtained with pci_alloc_consistent. Also remove unnecessary #ifdef &n; *      CONFIG_PROC_FS and various other cleanups.&n; *  v0.14.10d&n; *      July 19 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      made several printk(KERN_NOTICE...) into TRDBG(...), to avoid spamming&n; *      my syslog with hundreds of messages. &n; *  v0.14.10c&n; *      July 16 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      Cleaned up Lei Hu&squot;s 0.4.10 driver to conform to Documentation/CodingStyle&n; *      and the coding style used in the rest of the file. &n; *  v0.14.10b&n; *      June 23 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt;&n; *      add a missing unlock_set_fmt, remove a superflous lock/unlock pair &n; *      with nothing in between. &n; *  v0.14.10a&n; *      June 21 2002 Muli Ben-Yehuda &lt;mulix@actcom.co.il&gt; &n; *      use a debug macro instead of #ifdef CONFIG_DEBUG, trim to 80 columns &n; *      per line, use &squot;do {} while (0)&squot; in statement macros. &n; *  v0.14.10&n; *      June 6 2002 Lei Hu &lt;Lei_hu@ali.com.tw&gt;&n; *      rewrite the part to read/write registers of audio codec for Ali5451 &n; *  v0.14.9e&n; *      January 2 2002 Vojtech Pavlik &lt;vojtech@ucw.cz&gt; added gameport&n; *      support to avoid resource conflict with pcigame.c&n; *  v0.14.9d&n; *  &t;October 8 2001 Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t;use set_current_state, properly release resources on failure in&n; *&t;trident_probe, get rid of check_region&n; *  v0.14.9c&n; *&t;August 10 2001 Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt;&n; *&t;added support for Tvia (formerly Integraphics/IGST) CyberPro5050&n; *&t;this chip is often found in settop boxes (combined video+audio)&n; *  v0.14.9b&n; *&t;Switch to static inline not extern inline (gcc 3)&n; *  v0.14.9a&n; *&t;Aug 6 2001 Alan Cox&n; *&t;0.14.9 crashed on rmmod due to a timer/bh left running. Simplified&n; *&t;the existing logic (the BH doesn&squot;t help as ac97 is lock_irqsave)&n; *&t;and used del_timer_sync to clean up&n; *&t;Fixed a problem where the ALi change broke my generic card&n; *  v0.14.9&n; *&t;Jul 10 2001 Matt Wu&n; *&t;Add H/W Volume Control&n; *  v0.14.8a&n; *&t;July 7 2001 Alan Cox&n; *&t;Moved Matt Wu&squot;s ac97 register cache into the card structure&n; *  v0.14.8&n; *&t;Apr 30 2001 Matt Wu&n; *&t;Set EBUF1 and EBUF2 to still mode&n; *&t;Add dc97/ac97 reset function&n; *&t;Fix power management: ali_restore_regs&n; *  unreleased &n; *&t;Mar 09 2001 Matt Wu&n; *&t;Add cache for ac97 access&n; *  v0.14.7&n; *&t;Feb 06 2001 Matt Wu&n; *&t;Fix ac97 initialization&n; *&t;Fix bug: an extra tail will be played when playing&n; *&t;Jan 05 2001 Matt Wu&n; *&t;Implement multi-channels and S/PDIF in support for ALi 1535+&n; *  v0.14.6 &n; *&t;Nov 1 2000 Ching-Ling Lee&n; *&t;Fix the bug of memory leak when switching 5.1-channels to 2 channels.&n; *&t;Add lock protection into dynamic changing format of data.&n; *&t;Oct 18 2000 Ching-Ling Lee&n; *&t;5.1-channels support for ALi&n; *&t;June 28 2000 Ching-Ling Lee&n; *&t;S/PDIF out/in(playback/record) support for ALi 1535+, using /proc to be selected by user&n; *&t;Simple Power Management support for ALi&n; *  v0.14.5 May 23 2000 Ollie Lho&n; *  &t;Misc bug fix from the Net&n; *  v0.14.4 May 20 2000 Aaron Holtzman&n; *  &t;Fix kfree&squot;d memory access in release&n; *  &t;Fix race in open while looking for a free virtual channel slot&n; *  &t;remove open_wait wq (which appears to be unused)&n; *  v0.14.3 May 10 2000 Ollie Lho&n; *&t;fixed a small bug in trident_update_ptr, xmms 1.0.1 no longer uses 100% CPU&n; *  v0.14.2 Mar 29 2000 Ching-Ling Lee&n; *&t;Add clear to silence advance in trident_update_ptr &n; *&t;fix invalid data of the end of the sound&n; *  v0.14.1 Mar 24 2000 Ching-Ling Lee&n; *&t;ALi 5451 support added, playback and recording O.K.&n; *&t;ALi 5451 originally developed and structured based on sonicvibes, and&n; *&t;suggested to merge into this file by Alan Cox.&n; *  v0.14 Mar 15 2000 Ollie Lho&n; *&t;5.1 channel output support with channel binding. What&squot;s the Matrix ?&n; *  v0.13.1 Mar 10 2000 Ollie Lho&n; *&t;few minor bugs on dual codec support, needs more testing&n; *  v0.13 Mar 03 2000 Ollie Lho&n; *&t;new pci_* for 2.4 kernel, back ported to 2.2&n; *  v0.12 Feb 23 2000 Ollie Lho&n; *&t;Preliminary Recording support&n; *  v0.11.2 Feb 19 2000 Ollie Lho&n; *&t;removed incomplete full-dulplex support&n; *  v0.11.1 Jan 28 2000 Ollie Lho&n; *&t;small bug in setting sample rate for 4d-nx (reported by Aaron)&n; *  v0.11 Jan 27 2000 Ollie Lho&n; *&t;DMA bug, scheduler latency, second try&n; *  v0.10 Jan 24 2000 Ollie Lho&n; *&t;DMA bug fixed, found kernel scheduling problem&n; *  v0.09 Jan 20 2000 Ollie Lho&n; *&t;Clean up of channel register access routine (prepare for channel binding)&n; *  v0.08 Jan 14 2000 Ollie Lho&n; *&t;Isolation of AC97 codec code&n; *  v0.07 Jan 13 2000 Ollie Lho&n; *&t;Get rid of ugly old low level access routines (e.g. CHRegs.lp****)&n; *  v0.06 Jan 11 2000 Ollie Lho&n; *&t;Preliminary support for dual (more ?) AC97 codecs&n; *  v0.05 Jan 08 2000 Luca Montecchiani &lt;m.luca@iname.com&gt;&n; *&t;adapt to 2.3.x new __setup/__init call&n; *  v0.04 Dec 31 1999 Ollie Lho&n; *&t;Multiple Open, using Middle Loop Interrupt to smooth playback&n; *  v0.03 Dec 24 1999 Ollie Lho&n; *&t;mem leak in prog_dmabuf and dealloc_dmabuf removed&n; *  v0.02 Dec 15 1999 Ollie Lho&n; *&t;SiS 7018 support added, playback O.K.&n; *  v0.01 Alan Cox et. al.&n; *&t;Initial Release in kernel 2.3.30, does not work&n; * &n; *  ToDo&n; *&t;Clean up of low level channel register access code. (done)&n; *&t;Fix the bug on dma buffer management in update_ptr, read/write, drain_dac (done)&n; *&t;Dual AC97 codecs support (done)&n; *&t;Recording support (done)&n; *&t;Mmap support&n; *&t;&quot;Channel Binding&quot; ioctl extension (done)&n; *&t;new pci device driver interface for 2.4 kernel (done)&n; *&n; *&t;Lock order (high-&gt;low)&n; *&t;&t;lock&t;-&t;hardware lock&n; *&t;&t;open_sem - &t;guard opens&n; *&t;&t;sem&t;-&t;guard dmabuf, write re-entry etc&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt; 
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1366,7 +1367,7 @@ id|T4D_LFO_GC_CIR
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Enable Loop Interrupts, globctl = 0x%08X&bslash;n&quot;
@@ -1442,7 +1443,7 @@ id|T4D_LFO_GC_CIR
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Disabled Loop Interrupts, globctl = 0x%08X&bslash;n&quot;
@@ -1551,7 +1552,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: enabled IRQ on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1685,7 +1686,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: disabled IRQ on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1788,7 +1789,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: start voice on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -1891,7 +1892,7 @@ id|addr
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: stop voice on channel %d, %s = 0x%08x(addr:%X)&bslash;n&quot;
@@ -2007,7 +2008,7 @@ id|reg
 op_amp
 id|mask
 )paren
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: channel %d has interrupt, %s = 0x%08x&bslash;n&quot;
@@ -2135,7 +2136,7 @@ id|T4D_AINT_B
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: Ack channel %d interrupt, AINT_B = 0x%08x&bslash;n&quot;
@@ -3362,7 +3363,7 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: called trident_set_dac_rate : rate = %d&bslash;n&quot;
@@ -3440,7 +3441,7 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: called trident_set_adc_rate : rate = %d&bslash;n&quot;
@@ -3629,7 +3630,7 @@ id|channel-&gt;control
 op_or_assign
 id|CHANNEL_STEREO
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_play_setup, LBA = 0x%08x, &quot;
@@ -4022,11 +4023,11 @@ id|channel-&gt;control
 op_or_assign
 id|CHANNEL_STEREO
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_rec_setup, LBA = 0x%08x, &quot;
-l_string|&quot;Delat = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
+l_string|&quot;Delta = 0x%08x, ESO = 0x%08x, Control = 0x%08x&bslash;n&quot;
 comma
 id|channel-&gt;lba
 comma
@@ -4157,7 +4158,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_get_dma_addr: chip reported channel: %d, &quot;
@@ -4765,7 +4766,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: allocated %ld (order = %d) bytes at %p&bslash;n&quot;
@@ -5475,11 +5476,12 @@ id|dmabuf-&gt;ready
 op_assign
 l_int|1
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
-l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, format = %d, numfrag = %d, &quot;
-l_string|&quot;fragsize = %d dmasize = %d&bslash;n&quot;
+l_string|&quot;trident: prog_dmabuf(%d), sample rate = %d, &quot;
+l_string|&quot;format = %d, numfrag = %d, fragsize = %d &quot;
+l_string|&quot;dmasize = %d&bslash;n&quot;
 comma
 id|dmabuf-&gt;channel-&gt;num
 comma
@@ -7334,7 +7336,7 @@ id|T4D_AINT_A
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;cyber_address_interrupt: irq_status 0x%X&bslash;n&quot;
@@ -7394,7 +7396,7 @@ id|T4D_AINT_A
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;cyber_interrupt: channel %d&bslash;n&quot;
@@ -7514,7 +7516,7 @@ id|T4D_MISCINT
 )paren
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_interrupt called, MISCINT = 0x%08x&bslash;n&quot;
@@ -7744,7 +7746,7 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_read called, count = %d&bslash;n&quot;
@@ -7990,7 +7992,7 @@ id|tmo
 )paren
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -8235,7 +8237,7 @@ r_int
 r_int
 id|copy_count
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_write called, count = %d&bslash;n&quot;
@@ -8511,7 +8513,7 @@ id|tmo
 )paren
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 id|KERN_ERR
@@ -9418,7 +9420,7 @@ op_logical_and
 id|dmabuf-&gt;mapped
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: trident_ioctl, command = %2d, arg = 0x%08x&bslash;n&quot;
@@ -12144,7 +12146,7 @@ op_amp
 id|card-&gt;open_sem
 )paren
 suffix:semicolon
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: open virtual channel %d, hard channel %d&bslash;n&quot;
@@ -12242,7 +12244,7 @@ id|O_NONBLOCK
 )paren
 suffix:semicolon
 )brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;trident: closing virtual channel %d, hard channel %d&bslash;n&quot;
@@ -13150,7 +13152,7 @@ op_logical_neg
 id|block
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;accesscodecsemaphore: try unlock&bslash;n&quot;
@@ -13563,7 +13565,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ali_ac97_read :try clear busy flag&bslash;n&quot;
@@ -13886,7 +13888,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|TRDBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;ali_ac97_set :try clear busy flag!!&bslash;n&quot;
@@ -18887,15 +18889,17 @@ l_int|5000
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This is non fatal if you have a non PM capable codec.. */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ALi 5451 did not come out of reset.&bslash;n&quot;
+l_string|&quot;ALi 5451 did not come out of reset &quot;
+l_string|&quot;- continuing anyway.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* AC97 codec initialisation. */

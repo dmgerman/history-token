@@ -6,6 +6,8 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#ifdef CONFIG_X86_NUMAQ
 macro_line|#include &lt;asm/numaq.h&gt;
+macro_line|#elif CONFIG_X86_SUMMIT
+macro_line|#include &lt;asm/srat.h&gt;
 macro_line|#else
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)

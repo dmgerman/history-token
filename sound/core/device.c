@@ -416,7 +416,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_device_register - register the device&n; * @card: the card instance&n; * @device_data: the data pointer to register&n; *&n; * Registers the device which was already created via&n; * snd_device_new().  Usually this is called from snd_card_register(),&n; * but it can be called later if any new devices are created after&n; * invokation of snd_card_register().&n; *&n; * Returns zero if successful, or a negative error code on failure or if the&n; * device not found.&n; */
+multiline_comment|/**&n; * snd_device_register - register the device&n; * @card: the card instance&n; * @device_data: the data pointer to register&n; *&n; * Registers the device which was already created via&n; * snd_device_new().  Usually this is called from snd_card_register(),&n; * but it can be called later if any new devices are created after&n; * invocation of snd_card_register().&n; *&n; * Returns zero if successful, or a negative error code on failure or if the&n; * device not found.&n; */
 DECL|function|snd_device_register
 r_int
 id|snd_device_register

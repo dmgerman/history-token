@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &quot;sclp.h&quot;
 DECL|macro|SCLP_CORE_PRINT_HEADER
 mdefine_line|#define SCLP_CORE_PRINT_HEADER &quot;sclp low level driver: &quot;
-multiline_comment|/*&n; * decides wether we make use of the macro MACHINE_IS_VM to&n; * configure the driver for VM at run time (a little bit&n; * different behaviour); otherwise we use the default&n; * settings in sclp_data.init_ioctls&n; */
+multiline_comment|/*&n; * decides whether we make use of the macro MACHINE_IS_VM to&n; * configure the driver for VM at run time (a little bit&n; * different behaviour); otherwise we use the default&n; * settings in sclp_data.init_ioctls&n; */
 DECL|macro|USE_VM_DETECTION
 mdefine_line|#define USE_VM_DETECTION
 multiline_comment|/* Structure for register_early_external_interrupt. */

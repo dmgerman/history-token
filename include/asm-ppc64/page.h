@@ -315,12 +315,12 @@ suffix:semicolon
 DECL|macro|__pa
 mdefine_line|#define __pa(x) ((unsigned long)(x)-PAGE_OFFSET)
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/* align addr on a size boundry - adjust address up/down if needed */
+multiline_comment|/* align addr on a size boundary - adjust address up/down if needed */
 DECL|macro|_ALIGN_UP
 mdefine_line|#define _ALIGN_UP(addr,size)&t;(((addr)+((size)-1))&amp;(~((size)-1)))
 DECL|macro|_ALIGN_DOWN
 mdefine_line|#define _ALIGN_DOWN(addr,size)&t;((addr)&amp;(~((size)-1)))
-multiline_comment|/* align addr on a size boundry - adjust address up if needed */
+multiline_comment|/* align addr on a size boundary - adjust address up if needed */
 DECL|macro|_ALIGN
 mdefine_line|#define _ALIGN(addr,size)     _ALIGN_UP(addr,size)
 multiline_comment|/* to align the pointer to the (next) double word boundary */

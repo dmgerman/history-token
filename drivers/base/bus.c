@@ -1554,7 +1554,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_remove_driver - delete driver from bus&squot;s knowledge.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Detach the driver from the devices it controls, and remove&n; *&t;it from it&squot;s bus&squot;s list of drivers. Finally, we drop the reference&n; *&t;to the bus we took in bus_add_driver().&n; */
+multiline_comment|/**&n; *&t;bus_remove_driver - delete driver from bus&squot;s knowledge.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Detach the driver from the devices it controls, and remove&n; *&t;it from its bus&squot;s list of drivers. Finally, we drop the reference&n; *&t;to the bus we took in bus_add_driver().&n; */
 DECL|function|bus_remove_driver
 r_void
 id|bus_remove_driver

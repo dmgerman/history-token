@@ -4778,6 +4778,16 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|drive_stat_acct
+c_func
+(paren
+id|rq
+comma
+id|rq-&gt;nr_sectors
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|__elv_add_request
 c_func
 (paren
@@ -6406,7 +6416,7 @@ op_assign
 id|bdev-&gt;bd_contains
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * generic_make_request: hand a buffer to it&squot;s device driver for I/O&n; * @bio:  The bio describing the location in memory and on the device.&n; *&n; * generic_make_request() is used to make I/O requests of block&n; * devices. It is passed a &amp;struct bio, which describes the I/O that needs&n; * to be done.&n; *&n; * generic_make_request() does not return any status.  The&n; * success/failure status of the request, along with notification of&n; * completion, is delivered asynchronously through the bio-&gt;bi_end_io&n; * function described (one day) else where.&n; *&n; * The caller of generic_make_request must make sure that bi_io_vec&n; * are set to describe the memory buffer, and that bi_dev and bi_sector are&n; * set to describe the device address, and the&n; * bi_end_io and optionally bi_private are set to describe how&n; * completion notification should be signaled.&n; *&n; * generic_make_request and the drivers it calls may use bi_next if this&n; * bio happens to be merged with someone else, and may change bi_dev and&n; * bi_sector for remaps as it sees fit.  So the values of these fields&n; * should NOT be depended on after the call to generic_make_request.&n; *&n; * */
+multiline_comment|/**&n; * generic_make_request: hand a buffer to its device driver for I/O&n; * @bio:  The bio describing the location in memory and on the device.&n; *&n; * generic_make_request() is used to make I/O requests of block&n; * devices. It is passed a &amp;struct bio, which describes the I/O that needs&n; * to be done.&n; *&n; * generic_make_request() does not return any status.  The&n; * success/failure status of the request, along with notification of&n; * completion, is delivered asynchronously through the bio-&gt;bi_end_io&n; * function described (one day) else where.&n; *&n; * The caller of generic_make_request must make sure that bi_io_vec&n; * are set to describe the memory buffer, and that bi_dev and bi_sector are&n; * set to describe the device address, and the&n; * bi_end_io and optionally bi_private are set to describe how&n; * completion notification should be signaled.&n; *&n; * generic_make_request and the drivers it calls may use bi_next if this&n; * bio happens to be merged with someone else, and may change bi_dev and&n; * bi_sector for remaps as it sees fit.  So the values of these fields&n; * should NOT be depended on after the call to generic_make_request.&n; *&n; * */
 DECL|function|generic_make_request
 r_void
 id|generic_make_request

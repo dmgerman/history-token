@@ -95,6 +95,16 @@ id|p-&gt;mm
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;flags
+op_amp
+id|PF_MEMDIE
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * The memory size of the process is the basis for the badness.&n;&t; */
 id|points
 op_assign

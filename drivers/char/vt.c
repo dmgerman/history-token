@@ -9246,7 +9246,7 @@ op_assign
 id|con_buf
 suffix:semicolon
 )brace
-multiline_comment|/* At this point &squot;buf&squot; is guarenteed to be a kernel buffer&n;&t; * and therefore no access to userspace (and therefore sleeping)&n;&t; * will be needed.  The con_buf_sem serializes all tty based&n;&t; * console rendering and vcs write/read operations.  We hold&n;&t; * the console spinlock during the entire write.&n;&t; */
+multiline_comment|/* At this point &squot;buf&squot; is guaranteed to be a kernel buffer&n;&t; * and therefore no access to userspace (and therefore sleeping)&n;&t; * will be needed.  The con_buf_sem serializes all tty based&n;&t; * console rendering and vcs write/read operations.  We hold&n;&t; * the console spinlock during the entire write.&n;&t; */
 id|acquire_console_sem
 c_func
 (paren
@@ -13506,7 +13506,7 @@ id|currcons
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Font switching&n; *&n; *  Currently we only support fonts up to 32 pixels wide, at a maximum height&n; *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints, &n; *  depending on width) reserved for each character which is kinda wasty, but &n; *  this is done in order to maintain compatibility with the EGA/VGA fonts. It &n; *  is upto the actual low-level console-driver convert data into its favorite&n; *  format (maybe we should add a `fontoffset&squot; field to the `display&squot;&n; *  structure so we wont have to convert the fontdata all the time.&n; *  /Jes&n; */
+multiline_comment|/*&n; *  Font switching&n; *&n; *  Currently we only support fonts up to 32 pixels wide, at a maximum height&n; *  of 32 pixels. Userspace fontdata is stored with 32 bytes (shorts/ints, &n; *  depending on width) reserved for each character which is kinda wasty, but &n; *  this is done in order to maintain compatibility with the EGA/VGA fonts. It &n; *  is upto the actual low-level console-driver convert data into its favorite&n; *  format (maybe we should add a `fontoffset&squot; field to the `display&squot;&n; *  structure so we won&squot;t have to convert the fontdata all the time.&n; *  /Jes&n; */
 DECL|macro|max_font_size
 mdefine_line|#define max_font_size 65536
 DECL|function|con_font_op

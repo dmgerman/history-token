@@ -926,7 +926,7 @@ op_amp
 id|pppoe_hash_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Now restart from the beginning of this&n;&t;&t;&t;&t; * hash chain.  We always NULL out pppoe_dev&n;&t;&t;&t;&t; * so we are guarenteed to make forward&n;&t;&t;&t;&t; * progress.&n;&t;&t;&t;&t; */
+multiline_comment|/* Now restart from the beginning of this&n;&t;&t;&t;&t; * hash chain.  We always NULL out pppoe_dev&n;&t;&t;&t;&t; * so we are guaranteed to make forward&n;&t;&t;&t;&t; * progress.&n;&t;&t;&t;&t; */
 id|po
 op_assign
 id|item_hash_table

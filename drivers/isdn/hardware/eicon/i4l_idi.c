@@ -14492,7 +14492,7 @@ id|chan-&gt;e.D3Id
 )paren
 )paren
 (brace
-multiline_comment|/* I dont know why this happens, should not ! */
+multiline_comment|/* I don&squot;t know why this happens, should not ! */
 multiline_comment|/* just ignoring this RC */
 id|eicon_log
 c_func

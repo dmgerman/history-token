@@ -1779,7 +1779,7 @@ id|io7
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* &n;&t; * There is a local IO7 - redirect all of it&squot;s interrupts here.&n;&t; */
+multiline_comment|/* &n;&t; * There is a local IO7 - redirect all of its interrupts here.&n;&t; */
 id|printk
 c_func
 (paren

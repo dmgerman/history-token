@@ -130,7 +130,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; *&n; * This gets kind of ugly. We want to return _two_ values in &quot;get_user()&quot;&n; * and yet we don&squot;t want to do any pointers, because that is too much&n; * of a performance impact. Thus we have a few rather ugly macros here,&n; * and hide all the uglyness from the user.&n; *&n; * The &quot;__xxx&quot; versions of the user access functions are versions that&n; * do not verify the address space, that must have been done previously&n; * with a separate &quot;access_ok()&quot; call (this is used when we do multiple&n; * accesses to the same area of user memory).&n; */
+multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; *&n; * This gets kind of ugly. We want to return _two_ values in &quot;get_user()&quot;&n; * and yet we don&squot;t want to do any pointers, because that is too much&n; * of a performance impact. Thus we have a few rather ugly macros here,&n; * and hide all the ugliness from the user.&n; *&n; * The &quot;__xxx&quot; versions of the user access functions are versions that&n; * do not verify the address space, that must have been done previously&n; * with a separate &quot;access_ok()&quot; call (this is used when we do multiple&n; * accesses to the same area of user memory).&n; */
 r_extern
 r_void
 id|__get_user_1
@@ -285,7 +285,7 @@ r_int
 id|n
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Here we special-case 1, 2 and 4-byte copy_*_user invokations.  On a fault&n; * we return the initial request size (1, 2 or 4), as copy_*_user should do.&n; * If a store crosses a page boundary and gets a fault, the x86 will not write&n; * anything, so this is accurate.&n; */
+multiline_comment|/*&n; * Here we special-case 1, 2 and 4-byte copy_*_user invocations.  On a fault&n; * we return the initial request size (1, 2 or 4), as copy_*_user should do.&n; * If a store crosses a page boundary and gets a fault, the x86 will not write&n; * anything, so this is accurate.&n; */
 r_static
 r_inline
 r_int

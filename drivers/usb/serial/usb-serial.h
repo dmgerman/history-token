@@ -1183,7 +1183,7 @@ id|function
 )paren
 )paren
 (brace
-multiline_comment|/* then say that we dont have a valid usb_serial thing, which will&n;&t;&t; * end up genrating -ENODEV return values */
+multiline_comment|/* then say that we don&squot;t have a valid usb_serial thing, which will&n;&t;&t; * end up genrating -ENODEV return values */
 r_return
 l_int|NULL
 suffix:semicolon

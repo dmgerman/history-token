@@ -33,6 +33,8 @@ suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|rtc_lock
 id|spinlock_t

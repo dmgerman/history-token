@@ -10632,7 +10632,7 @@ suffix:semicolon
 r_int
 id|num_parms
 suffix:semicolon
-multiline_comment|/* dont look for traceback table in userspace */
+multiline_comment|/* don&squot;t look for traceback table in userspace */
 r_if
 c_cond
 (paren

@@ -1472,22 +1472,21 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Allow the user to distinguish between failed open&n;&t;&t; * and bad superblock on root device.&n;&t;&t; */
 id|printk
+c_func
 (paren
 l_string|&quot;VFS: Cannot open root device &bslash;&quot;%s&bslash;&quot; or %s&bslash;n&quot;
 comma
 id|root_device_name
 comma
-id|kdevname
-(paren
-id|to_kdev_t
+id|__bdevname
 c_func
 (paren
 id|ROOT_DEV
 )paren
 )paren
-)paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;Please append a correct &bslash;&quot;root=&bslash;&quot; boot option&bslash;n&quot;
 )paren
@@ -1497,14 +1496,10 @@ c_func
 (paren
 l_string|&quot;VFS: Unable to mount root fs on %s&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|to_kdev_t
+id|__bdevname
 c_func
 (paren
 id|ROOT_DEV
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1514,14 +1509,10 @@ c_func
 (paren
 l_string|&quot;VFS: Unable to mount root fs on %s&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|to_kdev_t
+id|__bdevname
 c_func
 (paren
 id|ROOT_DEV
-)paren
 )paren
 )paren
 suffix:semicolon

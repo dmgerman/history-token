@@ -23,9 +23,9 @@ mdefine_line|#define SEGTYPE_SP_COEFFICIENT          0x00000004
 DECL|macro|DSP_SPOS_UU
 mdefine_line|#define DSP_SPOS_UU      0x0deadul     /* unused */
 DECL|macro|DSP_SPOS_DC
-mdefine_line|#define DSP_SPOS_DC      0x0badul      /* dont care */
+mdefine_line|#define DSP_SPOS_DC      0x0badul      /* don&squot;t care */
 DECL|macro|DSP_SPOS_DC_DC
-mdefine_line|#define DSP_SPOS_DC_DC   0x0bad0badul  /* dont care */
+mdefine_line|#define DSP_SPOS_DC_DC   0x0bad0badul  /* don&squot;t care */
 DECL|macro|DSP_SPOS_UUUU
 mdefine_line|#define DSP_SPOS_UUUU    0xdeadc0edul  /* unused */
 DECL|macro|DSP_SPOS_UUHI
@@ -33,7 +33,7 @@ mdefine_line|#define DSP_SPOS_UUHI    0xdeadul
 DECL|macro|DSP_SPOS_UULO
 mdefine_line|#define DSP_SPOS_UULO    0xc0edul
 DECL|macro|DSP_SPOS_DCDC
-mdefine_line|#define DSP_SPOS_DCDC    0x0badf1d0ul  /* dont care */
+mdefine_line|#define DSP_SPOS_DCDC    0x0badf1d0ul  /* don&squot;t care */
 DECL|macro|DSP_SPOS_DCDCHI
 mdefine_line|#define DSP_SPOS_DCDCHI  0x0badul
 DECL|macro|DSP_SPOS_DCDCLO

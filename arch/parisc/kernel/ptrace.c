@@ -906,7 +906,7 @@ op_eq
 id|PT_PSW
 )paren
 (brace
-multiline_comment|/* PT_PSW=0, so this is valid for 32 bit processes&n;&t;&t;&t; * under 64 bit kernels.&n;&t;&t;&t; *&n;&t;&t;&t; * Allow writing to Nullify, Divide-step-correction,&n;&t;&t;&t; * and carry/borrow bits.&n;&t;&t;&t; * BEWARE, if you set N, and then single step, it wont&n;&t;&t;&t; * stop on the nullified instruction.&n;&t;&t;&t; */
+multiline_comment|/* PT_PSW=0, so this is valid for 32 bit processes&n;&t;&t;&t; * under 64 bit kernels.&n;&t;&t;&t; *&n;&t;&t;&t; * Allow writing to Nullify, Divide-step-correction,&n;&t;&t;&t; * and carry/borrow bits.&n;&t;&t;&t; * BEWARE, if you set N, and then single step, it won&squot;t&n;&t;&t;&t; * stop on the nullified instruction.&n;&t;&t;&t; */
 id|DBG
 c_func
 (paren

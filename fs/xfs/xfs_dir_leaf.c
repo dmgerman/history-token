@@ -6672,7 +6672,7 @@ id|action
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* blk over 50%, dont try to join */
+multiline_comment|/* blk over 50%, don&squot;t try to join */
 r_return
 l_int|0
 suffix:semicolon

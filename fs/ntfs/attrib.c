@@ -3406,7 +3406,7 @@ id|buf
 id|b
 )braket
 suffix:semicolon
-multiline_comment|/* Change the current lcn to it&squot;s new value. */
+multiline_comment|/* Change the current lcn to its new value. */
 id|lcn
 op_add_assign
 id|deltaxcn

@@ -4233,7 +4233,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * ganularity is byte boundry, good part.&n;&t; */
+multiline_comment|/*&n;&t; * ganularity is byte boundary, good part.&n;&t; */
 r_if
 c_cond
 (paren

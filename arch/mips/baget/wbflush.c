@@ -33,7 +33,7 @@ op_assign
 id|wbflush_baget
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Baget/MIPS doesnt need to write back the WB.&n; */
+multiline_comment|/*&n; * Baget/MIPS doesn&squot;t need to write back the WB.&n; */
 DECL|function|wbflush_baget
 r_static
 r_void

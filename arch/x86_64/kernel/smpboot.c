@@ -163,7 +163,7 @@ id|c
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * TSC synchronization.&n; *&n; * We first check wether all CPUs have their TSC&squot;s synchronized,&n; * then we print a warning if not, and always resync.&n; */
+multiline_comment|/*&n; * TSC synchronization.&n; *&n; * We first check whether all CPUs have their TSC&squot;s synchronized,&n; * then we print a warning if not, and always resync.&n; */
 DECL|variable|tsc_start_flag
 r_static
 id|atomic_t
@@ -2697,7 +2697,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we couldnt find an SMP configuration at boot time,&n;&t; * get out of here now!&n;&t; */
+multiline_comment|/*&n;&t; * If we couldn&squot;t find an SMP configuration at boot time,&n;&t; * get out of here now!&n;&t; */
 r_if
 c_cond
 (paren

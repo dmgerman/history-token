@@ -1657,7 +1657,7 @@ DECL|macro|WFFX_SRSSETMODE
 mdefine_line|#define WFFX_SRSSETMODE&t;        &t;66
 DECL|macro|WFFX_SRSSETDEF
 mdefine_line|#define WFFX_SRSSETDEF&t;&t;        68
-multiline_comment|/* Allow direct user-space control over FX memory/coefficient data.&n;   In theory this could be used to download the FX microprogram,&n;   but it would be a little slower, and involve some wierd code.&n; */
+multiline_comment|/* Allow direct user-space control over FX memory/coefficient data.&n;   In theory this could be used to download the FX microprogram,&n;   but it would be a little slower, and involve some weird code.&n; */
 DECL|macro|WFFX_MEMSET
 mdefine_line|#define WFFX_MEMSET              69
 macro_line|#endif /* __SOUND_WAVEFRONT_H__ */

@@ -8467,7 +8467,7 @@ comma
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * alloc as big a chunk as we can, start with &n;     * 64k &squot;cause we&squot;re insane.  based on order cause&n;     * the amazingly complicated prog_dmabuf wants it.&n;     *&n;     * pci_alloc_sonsistent guarantees that it won&squot;t cross a natural&n;     * boundry; the m3 hardware can&squot;t have dma cross a 64k bus&n;     * address boundry.&n;     */
+multiline_comment|/* &n;     * alloc as big a chunk as we can, start with &n;     * 64k &squot;cause we&squot;re insane.  based on order cause&n;     * the amazingly complicated prog_dmabuf wants it.&n;     *&n;     * pci_alloc_sonsistent guarantees that it won&squot;t cross a natural&n;     * boundary; the m3 hardware can&squot;t have dma cross a 64k bus&n;     * address boundary.&n;     */
 r_for
 c_loop
 (paren

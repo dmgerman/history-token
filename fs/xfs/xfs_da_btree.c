@@ -3746,11 +3746,11 @@ id|action
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* blk over 50%, dont try to join */
+multiline_comment|/* blk over 50%, don&squot;t try to join */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* blk over 50%, dont try to join */
+multiline_comment|/* blk over 50%, don&squot;t try to join */
 )brace
 multiline_comment|/*&n;&t; * Check for the degenerate case of the block being empty.&n;&t; * If the block is empty, we&squot;ll simply delete it, no need to&n;&t; * coalesce it with a sibling block.  We choose (aribtrarily)&n;&t; * to merge with the forward block unless it is NULL.&n;&t; */
 r_if

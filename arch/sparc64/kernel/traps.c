@@ -2835,7 +2835,7 @@ id|flush_size
 op_assign
 id|ecache_flush_size
 suffix:semicolon
-multiline_comment|/* Run through the whole cache to guarentee the timed loop&n;&t; * is really displacing cache lines.&n;&t; */
+multiline_comment|/* Run through the whole cache to guarantee the timed loop&n;&t; * is really displacing cache lines.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func

@@ -7054,7 +7054,7 @@ id|Cmnd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t; * if any of the following are true we do not&n;&t;&t;&t;&t; * call scsi_done.  if the status is CS_ABORTED&n;&t;&t;&t;&t; * we dont have to call done because the upper&n;&t;&t;&t;&t; * level should already know its aborted.&n;&t;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t;&t; * if any of the following are true we do not&n;&t;&t;&t;&t; * call scsi_done.  if the status is CS_ABORTED&n;&t;&t;&t;&t; * we don&squot;t have to call done because the upper&n;&t;&t;&t;&t; * level should already know its aborted.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren

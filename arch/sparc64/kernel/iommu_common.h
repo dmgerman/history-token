@@ -47,7 +47,7 @@ id|npages
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Two addresses are &quot;virtually contiguous&quot; if and only if:&n; * 1) They are equal, or...&n; * 2) They are both on a page boundry&n; */
+multiline_comment|/* Two addresses are &quot;virtually contiguous&quot; if and only if:&n; * 1) They are equal, or...&n; * 2) They are both on a page boundary&n; */
 DECL|macro|VCONTIG
 mdefine_line|#define VCONTIG(__X, __Y)&t;(((__X) == (__Y)) || &bslash;&n;&t;&t;&t;&t; (((__X) | (__Y)) &lt;&lt; (64UL - PAGE_SHIFT)) == 0UL)
 r_extern

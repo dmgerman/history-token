@@ -2417,7 +2417,7 @@ comma
 id|dino_choose_irq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** This enables DINO to generate interrupts when it sees&n;&t;** any of it&squot;s inputs *change*. Just asserting an IRQ&n;&t;** before it&squot;s enabled (ie unmasked) isn&squot;t good enough.&n;&t;*/
+multiline_comment|/*&n;&t;** This enables DINO to generate interrupts when it sees&n;&t;** any of its inputs *change*. Just asserting an IRQ&n;&t;** before it&squot;s enabled (ie unmasked) isn&squot;t good enough.&n;&t;*/
 id|gsc_writel
 c_func
 (paren

@@ -116,7 +116,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves, it doesnt deserve&n; * a generic callback i think.&n; */
+multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves, it doesn&squot;t deserve&n; * a generic callback i think.&n; */
 macro_line|#if CONFIG_X86
 id|printk
 c_func

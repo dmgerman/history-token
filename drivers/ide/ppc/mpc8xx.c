@@ -1100,7 +1100,7 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IDE_8xx_PCCARD
-multiline_comment|/* Make sure we dont get garbage irq */
+multiline_comment|/* Make sure we don&squot;t get garbage irq */
 (paren
 (paren
 id|immap_t

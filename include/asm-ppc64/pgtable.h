@@ -226,7 +226,7 @@ mdefine_line|#define pgd_clear(pgdp)&t;&t;(pgd_val(*(pgdp)) = 0UL)
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd)&t;&t;(__bpn_to_ba(pgd_val(pgd))) 
 multiline_comment|/* &n; * Find an entry in a page-table-directory.  We combine the address region &n; * (the high order N bits) and the pgd portion of the address.&n; */
-multiline_comment|/* to avoid overflow in free_pgtables we dont use PTRS_PER_PGD here */
+multiline_comment|/* to avoid overflow in free_pgtables we don&squot;t use PTRS_PER_PGD here */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; (PGDIR_SHIFT)) &amp; 0x7ff)
 DECL|macro|pgd_offset

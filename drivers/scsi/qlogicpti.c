@@ -4109,7 +4109,7 @@ op_assign
 l_int|40
 suffix:semicolon
 )brace
-multiline_comment|/* The request and response queues must each be aligned&n; * on a page boundry.&n; */
+multiline_comment|/* The request and response queues must each be aligned&n; * on a page boundary.&n; */
 DECL|function|qpti_map_queues
 r_static
 r_int

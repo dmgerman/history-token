@@ -37,7 +37,7 @@ mdefine_line|#define TP_CFG_N_Divisor       32&t;/* Clock = 39.1608 Mhz */
 DECL|macro|TP_CFG_M_Multiplier
 mdefine_line|#define TP_CFG_M_Multiplier    37&t;/* &quot; */
 DECL|macro|TP_CFG_PllBypass
-mdefine_line|#define TP_CFG_PllBypass        0&t;/* dont bypass */
+mdefine_line|#define TP_CFG_PllBypass        0&t;/* don&squot;t bypass */
 DECL|macro|TP_CFG_ChipletEnable
 mdefine_line|#define TP_CFG_ChipletEnable 0xFFFF&t;/* Enable all chiplets */
 r_typedef

@@ -2780,7 +2780,7 @@ l_int|16
 op_star
 id|i
 suffix:semicolon
-multiline_comment|/* Allocate memory for indices.&n;&t; * Indices should be aligned on 32 byte boundries. &n;&t; */
+multiline_comment|/* Allocate memory for indices.&n;&t; * Indices should be aligned on 32 byte boundaries. &n;&t; */
 id|fi-&gt;q.host_ocq_cons_indx
 op_assign
 id|kmalloc
@@ -4120,7 +4120,7 @@ op_minus
 id|current_IMQ_index
 )paren
 suffix:semicolon
-multiline_comment|/* We dont want to look at the same IMQ entry again. &n;&t; */
+multiline_comment|/* We don&squot;t want to look at the same IMQ entry again. &n;&t; */
 id|temp_imq_cons_indx
 op_assign
 id|fi-&gt;q.imq_cons_indx
@@ -12810,7 +12810,7 @@ c_func
 l_string|&quot;tx_logi&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We dont want interrupted for our own logi. &n;&t; * It screws up the port discovery process. &n;&t; */
+multiline_comment|/* We don&squot;t want interrupted for our own logi. &n;&t; * It screws up the port discovery process. &n;&t; */
 r_if
 c_cond
 (paren
@@ -14908,7 +14908,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Perform Port Discovery after timer expires.&n;&t; * We are giving time for the ADISCed nodes to respond&n;&t; * so that we dont have to perform PLOGI to those whose&n;&t; * login are _still_ valid.&n;&t; */
+multiline_comment|/* Perform Port Discovery after timer expires.&n;&t; * We are giving time for the ADISCed nodes to respond&n;&t; * so that we don&squot;t have to perform PLOGI to those whose&n;&t; * login are _still_ valid.&n;&t; */
 id|fi-&gt;explore_timer.function
 op_assign
 id|port_discovery_timer
@@ -20394,7 +20394,7 @@ op_assign
 id|q-&gt;next
 suffix:semicolon
 )brace
-multiline_comment|/* There might be some new nodes to be &n;&t;&t;&t;&t;&t;&t; * discovered. But, some of the earlier &n;&t;&t;&t;&t;&t;&t; * requests as a result of the RSCN might be &n;&t;&t;&t;&t;&t;&t; * in progress. We dont want to duplicate that &n;&t;&t;&t;&t;&t;&t; * effort. So letz call SCR after a lag.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* There might be some new nodes to be &n;&t;&t;&t;&t;&t;&t; * discovered. But, some of the earlier &n;&t;&t;&t;&t;&t;&t; * requests as a result of the RSCN might be &n;&t;&t;&t;&t;&t;&t; * in progress. We don&squot;t want to duplicate that &n;&t;&t;&t;&t;&t;&t; * effort. So letz call SCR after a lag.&n;&t;&t;&t;&t;&t;&t; */
 id|fi-&gt;explore_timer.function
 op_assign
 id|scr_timer

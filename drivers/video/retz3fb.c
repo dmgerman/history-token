@@ -6848,7 +6848,7 @@ id|zinfo-&gt;base
 op_plus
 id|VIDEO_MEM_OFFSET
 suffix:semicolon
-multiline_comment|/* Get memory size - for now we asume its a 4MB board */
+multiline_comment|/* Get memory size - for now we asume it&squot;s a 4MB board */
 id|zinfo-&gt;fbsize
 op_assign
 l_int|0x00400000

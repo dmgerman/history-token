@@ -2468,7 +2468,7 @@ r_int
 )paren
 id|piobuf
 suffix:semicolon
-multiline_comment|/* We know here that both src and dest are on a 16bit boundry. */
+multiline_comment|/* We know here that both src and dest are on a 16bit boundary. */
 op_star
 id|p16
 op_increment

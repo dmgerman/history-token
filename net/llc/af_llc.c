@@ -1053,7 +1053,7 @@ id|llc-&gt;addr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* assign new connection to it&squot;s SAP */
+multiline_comment|/* assign new connection to its SAP */
 id|llc_sap_assign_sock
 c_func
 (paren

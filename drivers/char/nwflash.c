@@ -825,7 +825,7 @@ id|nBlock
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * write ends at exactly 64k boundry?&n;&t; */
+multiline_comment|/*&n;&t; * write ends at exactly 64k boundary?&n;&t; */
 r_if
 c_cond
 (paren

@@ -5011,7 +5011,7 @@ id|length
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-multiline_comment|/* Mask interrupts from the ethercard. &n;&t;   SMP: We have to grab the lock here otherwise the IRQ handler&n;&t;   on another CPU can flip window and race the IRQ mask set. We end&n;&t;   up trashing the mcast filter not disabling irqs if we dont lock */
+multiline_comment|/* Mask interrupts from the ethercard. &n;&t;   SMP: We have to grab the lock here otherwise the IRQ handler&n;&t;   on another CPU can flip window and race the IRQ mask set. We end&n;&t;   up trashing the mcast filter not disabling irqs if we don&squot;t lock */
 id|spin_lock_irqsave
 c_func
 (paren

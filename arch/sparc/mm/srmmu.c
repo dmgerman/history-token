@@ -10277,7 +10277,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dont laugh, static pagetables */
+multiline_comment|/* don&squot;t laugh, static pagetables */
 DECL|function|srmmu_check_pgt_cache
 r_static
 r_void

@@ -300,7 +300,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* dont use any ..._nowait() function if you are not sure what you do... */
+multiline_comment|/* don&squot;t use any ..._nowait() function if you are not sure what you do... */
 DECL|function|rds_rawwrite_nowait
 r_static
 r_inline

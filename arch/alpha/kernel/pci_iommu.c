@@ -1309,7 +1309,7 @@ id|dac_allowed
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Unmap a single streaming mode DMA translation.  The DMA_ADDR and&n;   SIZE must match what was provided for in a previous pci_map_single&n;   call.  All other usages are undefined.  After this call, reads by&n;   the cpu to the buffer are guarenteed to see whatever the device&n;   wrote there.  */
+multiline_comment|/* Unmap a single streaming mode DMA translation.  The DMA_ADDR and&n;   SIZE must match what was provided for in a previous pci_map_single&n;   call.  All other usages are undefined.  After this call, reads by&n;   the cpu to the buffer are guaranteed to see whatever the device&n;   wrote there.  */
 r_void
 DECL|function|pci_unmap_single
 id|pci_unmap_single

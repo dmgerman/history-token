@@ -4902,7 +4902,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-macro_line|#ifndef CONFIG_SH_HICOSH4 /* uses irq#1, so this wont work */
+macro_line|#ifndef CONFIG_SH_HICOSH4 /* uses irq#1, so this won&squot;t work */
 r_if
 c_cond
 (paren

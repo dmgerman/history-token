@@ -34,7 +34,7 @@ r_int
 r_int
 id|powersave_nap
 suffix:semicolon
-multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of it&squot;s own locking&n; */
+multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of its own locking&n; */
 DECL|variable|__pmacdata
 r_static
 id|spinlock_t

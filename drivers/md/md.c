@@ -233,7 +233,7 @@ op_assign
 l_int|0555
 comma
 dot
-id|proc_handler
+id|child
 op_assign
 id|raid_dir_table
 comma
@@ -5636,7 +5636,7 @@ op_logical_neg
 id|chunk_size
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * &squot;default chunksize&squot; in the old md code used to&n;&t;&t;&t; * be PAGE_SIZE, baaad.&n;&t;&t;&t; * we abort here to be on the safe side. We dont&n;&t;&t;&t; * want to continue the bad practice.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * &squot;default chunksize&squot; in the old md code used to&n;&t;&t;&t; * be PAGE_SIZE, baaad.&n;&t;&t;&t; * we abort here to be on the safe side. We don&squot;t&n;&t;&t;&t; * want to continue the bad practice.&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -6942,7 +6942,7 @@ id|mddev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* on success, candidates will be empty, on error&n;&t;&t; * it wont...&n;&t;&t; */
+multiline_comment|/* on success, candidates will be empty, on error&n;&t;&t; * it won&squot;t...&n;&t;&t; */
 id|ITERATE_RDEV_GENERIC
 c_func
 (paren
@@ -9168,7 +9168,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: couldnt set array info. %d&bslash;n&quot;
+l_string|&quot;md: couldn&squot;t set array info. %d&bslash;n&quot;
 comma
 id|err
 )paren

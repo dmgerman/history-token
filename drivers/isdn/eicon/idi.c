@@ -1889,7 +1889,7 @@ comma
 id|this-&gt;ReqCh
 )paren
 suffix:semicolon
-multiline_comment|/* if its a specific request (no ASSIGN) ...                */
+multiline_comment|/* if it&squot;s a specific request (no ASSIGN) ...                */
 r_if
 c_cond
 (paren

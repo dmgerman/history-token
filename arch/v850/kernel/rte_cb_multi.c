@@ -199,7 +199,7 @@ op_eq
 l_int|0x780
 )paren
 (brace
-multiline_comment|/* A `jr&squot; insn, fix up its offset (and yes, the&n;&t;&t;&t;&t;   wierd half-word swapping is intentional). */
+multiline_comment|/* A `jr&squot; insn, fix up its offset (and yes, the&n;&t;&t;&t;&t;   weird half-word swapping is intentional). */
 r_int
 r_int
 id|hi

@@ -8249,7 +8249,7 @@ comma
 id|MII_CONTROL
 )paren
 suffix:semicolon
-multiline_comment|/* enable auto negotiation and reset the negotioation&n;&t;&t;&t;   (I dont really know what the auto negatiotiation reset&n;&t;&t;&t;   really means, but it sounds for me right to do one here)*/
+multiline_comment|/* enable auto negotiation and reset the negotioation&n;&t;&t;&t;   (I don&squot;t really know what the auto negatiotiation reset&n;&t;&t;&t;   really means, but it sounds for me right to do one here)*/
 id|mdio_write
 c_func
 (paren

@@ -1135,7 +1135,7 @@ op_member_access_from_pointer
 id|flags.pgid_supp
 )paren
 (brace
-multiline_comment|/* No, set state online immediatly. */
+multiline_comment|/* No, set state online immediately. */
 id|ccw_device_done
 c_func
 (paren
@@ -1309,7 +1309,7 @@ op_member_access_from_pointer
 id|flags.pgid_supp
 )paren
 (brace
-multiline_comment|/* No, set state offline immediatly. */
+multiline_comment|/* No, set state offline immediately. */
 id|ccw_device_done
 c_func
 (paren

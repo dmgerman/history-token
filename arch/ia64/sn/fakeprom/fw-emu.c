@@ -3839,7 +3839,7 @@ op_assign
 op_minus
 id|checksum
 suffix:semicolon
-multiline_comment|/* If the checksum is correct, the kernel tries to use the&n;&t; * table. We dont build enough table &amp; the kernel aborts.&n;&t; * Note that the PROM hasd thhhe same problem!!&n;&t; */
+multiline_comment|/* If the checksum is correct, the kernel tries to use the&n;&t; * table. We don&squot;t build enough table &amp; the kernel aborts.&n;&t; * Note that the PROM hasd thhhe same problem!!&n;&t; */
 id|md
 op_assign
 op_amp

@@ -255,7 +255,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure its a supported bridge */
+multiline_comment|/* Make sure it&squot;s a supported bridge */
 id|early_read_config_dword
 c_func
 (paren

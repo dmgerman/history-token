@@ -853,7 +853,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* fbdev will set an entire colourmap, but X won&squot;t.  Hopefully&n;&t;   this should accomodate both of them */
+multiline_comment|/* fbdev will set an entire colourmap, but X won&squot;t.  Hopefully&n;&t;   this should accommodate both of them */
 r_if
 c_cond
 (paren

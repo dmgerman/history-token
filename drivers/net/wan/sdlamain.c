@@ -973,7 +973,7 @@ id|err
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If the current card has already been configured&n;         * or its a piggyback card, do not try to allocate&n;         * resources.&n;&t; */
+multiline_comment|/* If the current card has already been configured&n;         * or it&squot;s a piggyback card, do not try to allocate&n;         * resources.&n;&t; */
 r_if
 c_cond
 (paren

@@ -39,6 +39,8 @@ macro_line|#include &quot;do_timer.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|cpu_khz
 r_int

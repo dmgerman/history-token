@@ -2548,7 +2548,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
-multiline_comment|/* set bits for operations that wont block */
+multiline_comment|/* set bits for operations that won&squot;t block */
 r_if
 c_cond
 (paren

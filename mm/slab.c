@@ -5944,9 +5944,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|flags
 op_amp
 id|__GFP_WAIT
+)paren
 )paren
 id|ctor_flags
 op_or_assign
@@ -7580,7 +7582,7 @@ id|limit
 op_assign
 l_int|248
 suffix:semicolon
-macro_line|#ifndef DEBUG
+macro_line|#if DEBUG
 multiline_comment|/* With debugging enabled, large batchcount lead to excessively&n;&t; * long periods with disabled local interrupts. Limit the &n;&t; * batchcount&n;&t; */
 r_if
 c_cond

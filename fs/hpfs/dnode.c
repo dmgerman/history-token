@@ -1296,7 +1296,7 @@ r_return
 id|de
 suffix:semicolon
 )brace
-multiline_comment|/* Delete dirent and don&squot;t care about it&squot;s subtree */
+multiline_comment|/* Delete dirent and don&squot;t care about its subtree */
 DECL|function|hpfs_delete_de
 r_void
 id|hpfs_delete_de

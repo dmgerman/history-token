@@ -904,7 +904,7 @@ op_eq
 id|E820_RAM
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  We dont&squot;t know which RAM region contains kernel data,&n;&t;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t;&t; *  test it.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  We don&squot;t know which RAM region contains kernel data,&n;&t;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t;&t; *  test it.&n;&t;&t;&t; */
 id|request_resource
 c_func
 (paren

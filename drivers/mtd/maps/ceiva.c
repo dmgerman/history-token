@@ -315,7 +315,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_CEIVA_STATICMAP
-multiline_comment|/*&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; *&n; * Please note:&n; *  1. The flash size given should be the largest flash size that can&n; *     be accomodated.&n; *&n; *  2. The bus width must defined in clps_setup_flash.&n; *&n; * The MTD layer will detect flash chip aliasing and reduce the size of&n; * the map accordingly.&n; *&n; */
+multiline_comment|/*&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; *&n; * Please note:&n; *  1. The flash size given should be the largest flash size that can&n; *     be accommodated.&n; *&n; *  2. The bus width must defined in clps_setup_flash.&n; *&n; * The MTD layer will detect flash chip aliasing and reduce the size of&n; * the map accordingly.&n; *&n; */
 macro_line|#ifdef CONFIG_ARCH_CEIVA
 multiline_comment|/* Flash / Partition sizing */
 multiline_comment|/* For the 28F8003, we use the block mapping to calcuate the sizes */

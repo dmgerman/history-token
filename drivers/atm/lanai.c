@@ -4922,7 +4922,7 @@ DECL|macro|DESCRIPTOR_AAL5_STREAM
 mdefine_line|#define DESCRIPTOR_AAL5_STREAM&t;(0x00004000)
 DECL|macro|DESCRIPTOR_CLP
 mdefine_line|#define DESCRIPTOR_CLP&t;&t;(0x00002000)
-multiline_comment|/* Add 32-bit descriptor with it&squot;s padding */
+multiline_comment|/* Add 32-bit descriptor with its padding */
 DECL|function|vcc_tx_add_aal5_descriptor
 r_static
 r_inline

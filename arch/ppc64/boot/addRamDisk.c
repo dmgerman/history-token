@@ -774,7 +774,7 @@ id|sysmapLen
 op_div
 l_int|4096
 suffix:semicolon
-multiline_comment|/* read the whole file line by line, expect that it doesnt fail */
+multiline_comment|/* read the whole file line by line, expect that it doesn&squot;t fail */
 r_while
 c_loop
 (paren

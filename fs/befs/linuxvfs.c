@@ -2424,7 +2424,7 @@ id|maxlen
 op_assign
 id|in_len
 suffix:semicolon
-multiline_comment|/* The utf8-&gt;nls conversion cant make more chars */
+multiline_comment|/* The utf8-&gt;nls conversion can&squot;t make more chars */
 id|befs_debug
 c_func
 (paren

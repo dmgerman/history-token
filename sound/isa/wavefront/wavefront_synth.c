@@ -1912,7 +1912,7 @@ l_int|0
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/***********************************************************************&n;WaveFront data munging   &n;&n;Things here are wierd. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;wierd casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
+multiline_comment|/***********************************************************************&n;WaveFront data munging   &n;&n;Things here are weird. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;weird casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
 r_static
 r_int
 r_char
@@ -3447,7 +3447,7 @@ c_cond
 id|header-&gt;size
 )paren
 (brace
-multiline_comment|/* XXX its a debatable point whether or not RDONLY semantics&n;&t;&t;   on the ROM samples should cover just the sample data or&n;&t;&t;   the sample header. For now, it only covers the sample data,&n;&t;&t;   so anyone is free at all times to rewrite sample headers.&n;&n;&t;&t;   My reason for this is that we have the sample headers&n;&t;&t;   available in the WFB file for General MIDI, and so these&n;&t;&t;   can always be reset if needed. The sample data, however,&n;&t;&t;   cannot be recovered without a complete reset and firmware&n;&t;&t;   reload of the ICS2115, which is a very expensive operation.&n;&n;&t;&t;   So, doing things this way allows us to honor the notion of&n;&t;&t;   &quot;RESETSAMPLES&quot; reasonably cheaply. Note however, that this&n;&t;&t;   is done purely at user level: there is no WFB parser in&n;&t;&t;   this driver, and so a complete reset (back to General MIDI,&n;&t;&t;   or theoretically some other configuration) is the&n;&t;&t;   responsibility of the user level library. &n;&n;&t;&t;   To try to do this in the kernel would be a little&n;&t;&t;   crazy: we&squot;d need 158K of kernel space just to hold&n;&t;&t;   a copy of the patch/program/sample header data.&n;&t;&t;*/
+multiline_comment|/* XXX it&squot;s a debatable point whether or not RDONLY semantics&n;&t;&t;   on the ROM samples should cover just the sample data or&n;&t;&t;   the sample header. For now, it only covers the sample data,&n;&t;&t;   so anyone is free at all times to rewrite sample headers.&n;&n;&t;&t;   My reason for this is that we have the sample headers&n;&t;&t;   available in the WFB file for General MIDI, and so these&n;&t;&t;   can always be reset if needed. The sample data, however,&n;&t;&t;   cannot be recovered without a complete reset and firmware&n;&t;&t;   reload of the ICS2115, which is a very expensive operation.&n;&n;&t;&t;   So, doing things this way allows us to honor the notion of&n;&t;&t;   &quot;RESETSAMPLES&quot; reasonably cheaply. Note however, that this&n;&t;&t;   is done purely at user level: there is no WFB parser in&n;&t;&t;   this driver, and so a complete reset (back to General MIDI,&n;&t;&t;   or theoretically some other configuration) is the&n;&t;&t;   responsibility of the user level library. &n;&n;&t;&t;   To try to do this in the kernel would be a little&n;&t;&t;   crazy: we&squot;d need 158K of kernel space just to hold&n;&t;&t;   a copy of the patch/program/sample header data.&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -3807,7 +3807,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* This one is truly wierd. What kind of wierdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
+multiline_comment|/* This one is truly weird. What kind of weirdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
 id|shptr
 op_assign
 id|munge_int32

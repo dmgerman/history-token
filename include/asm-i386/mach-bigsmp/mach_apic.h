@@ -10,8 +10,8 @@ macro_line|#elif CLUSTERED_APICID
 DECL|macro|xapic_phys_to_log_apicid
 mdefine_line|#define xapic_phys_to_log_apicid(phys_apic) ( (1ul &lt;&lt; ((phys_apic) &amp; 0x3)) |&bslash;&n;&t;&t;((phys_apic) &amp; (~0xf)) )
 macro_line|#endif
-DECL|macro|no_balance_irq
-mdefine_line|#define no_balance_irq (1)
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ (1)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
 DECL|function|apic_id_registered

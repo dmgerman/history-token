@@ -2583,7 +2583,7 @@ id|times
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* if long command, we wont repeat trying */
+multiline_comment|/* if long command, we won&squot;t repeat trying */
 suffix:semicolon
 r_if
 c_cond

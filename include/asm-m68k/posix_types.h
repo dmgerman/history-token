@@ -85,6 +85,16 @@ r_typedef
 r_int
 id|__kernel_clock_t
 suffix:semicolon
+DECL|typedef|__kernel_timer_t
+r_typedef
+r_int
+id|__kernel_timer_t
+suffix:semicolon
+DECL|typedef|__kernel_clockid_t
+r_typedef
+r_int
+id|__kernel_clockid_t
+suffix:semicolon
 DECL|typedef|__kernel_daddr_t
 r_typedef
 r_int

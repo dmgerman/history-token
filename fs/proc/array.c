@@ -1431,6 +1431,8 @@ id|jiffies_64_to_clock_t
 c_func
 (paren
 id|task-&gt;start_time
+op_minus
+id|INITIAL_JIFFIES
 )paren
 comma
 id|vsize

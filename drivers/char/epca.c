@@ -5723,7 +5723,7 @@ op_eq
 l_int|0x1
 )paren
 (brace
-multiline_comment|/* Begin its an XI card */
+multiline_comment|/* Begin it&squot;s an XI card */
 multiline_comment|/* Is it a 64K board */
 r_if
 c_cond

@@ -231,7 +231,7 @@ r_char
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/* usually data is located &n;                                        immediatly behind this struct */
+multiline_comment|/* usually data is located &n;                                        immediately behind this struct */
 DECL|member|locks
 r_int
 r_int

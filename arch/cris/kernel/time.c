@@ -21,6 +21,8 @@ macro_line|#include &lt;asm/svinto.h&gt;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|have_rtc
 r_static

@@ -28,7 +28,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Note: On Intel PCs, the clock ticks at 100 Hz (HZ==100) which is&n; * too slow for certain timeouts (and that clock doesn&squot;t even tick&n; * when interrupts are disabled).  For that reason, the 8254 timer is&n; * used directly to implement fine-grained timeouts.  However, on&n; * Alpha PCs, the 8254 is *not* used to implement the clock tick&n; * (which is 1024 Hz, normally) and the 8254 timer runs at some&n; * &quot;random&quot; frequency (it seems to run at 18Hz, but its not safe to&n; * rely on this value).  Instead, we use the Alpha&squot;s &quot;rpcc&quot;&n; * instruction to read cycle counts.  As this is a 32 bit counter,&n; * it will overflow only once per 30 seconds (on a 200MHz machine),&n; * which is plenty.&n; */
+multiline_comment|/*&n; * Note: On Intel PCs, the clock ticks at 100 Hz (HZ==100) which is&n; * too slow for certain timeouts (and that clock doesn&squot;t even tick&n; * when interrupts are disabled).  For that reason, the 8254 timer is&n; * used directly to implement fine-grained timeouts.  However, on&n; * Alpha PCs, the 8254 is *not* used to implement the clock tick&n; * (which is 1024 Hz, normally) and the 8254 timer runs at some&n; * &quot;random&quot; frequency (it seems to run at 18Hz, but it&squot;s not safe to&n; * rely on this value).  Instead, we use the Alpha&squot;s &quot;rpcc&quot;&n; * instruction to read cycle counts.  As this is a 32 bit counter,&n; * it will overflow only once per 30 seconds (on a 200MHz machine),&n; * which is plenty.&n; */
 DECL|function|ftape_timestamp
 r_int
 r_int

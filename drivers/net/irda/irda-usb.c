@@ -334,7 +334,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/************************ TRANSMIT ROUTINES ************************/
-multiline_comment|/*&n; * Receive packets from the IrDA stack and send them on the USB pipe.&n; * Handle speed change, timeout and lot&squot;s of uglyness...&n; */
+multiline_comment|/*&n; * Receive packets from the IrDA stack and send them on the USB pipe.&n; * Handle speed change, timeout and lot&squot;s of ugliness...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Function irda_usb_build_header(self, skb, header)&n; *&n; *   Builds USB-IrDA outbound header&n; *&n; * When we send an IrDA frame over an USB pipe, we add to it a 1 byte&n; * header. This function create this header with the proper values.&n; *&n; * Important note : the USB-IrDA spec 1.0 say very clearly in chapter 5.4.2.2&n; * that the setting of the link speed and xbof number in this outbound header&n; * should be applied *AFTER* the frame has been sent.&n; * Unfortunately, some devices are not compliant with that... It seems that&n; * reading the spec is far too difficult...&n; * Jean II&n; */
 DECL|function|irda_usb_build_header

@@ -10386,19 +10386,12 @@ op_amp
 id|dev-&gt;mem_lock
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20303
 id|init_waitqueue_head
 (paren
 op_amp
 id|dev-&gt;tx_queue
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tx_queue
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 singleline_comment|// vpi in 0..4, vci in 6..10
 id|dev-&gt;atm_dev-&gt;ci_range.vpi_bits
 op_assign

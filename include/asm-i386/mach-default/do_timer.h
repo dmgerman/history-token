@@ -102,7 +102,7 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#ifdef BUGGY_NEPTUN_TIMER
-multiline_comment|/*&n;&t;&t; * for the Neptun bug we know that the &squot;latch&squot;&n;&t;&t; * command doesnt latch the high and low value&n;&t;&t; * of the counter atomically. Thus we have to &n;&t;&t; * substract 256 from the counter &n;&t;&t; * ... funny, isnt it? :)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * for the Neptun bug we know that the &squot;latch&squot;&n;&t;&t; * command doesn&squot;t latch the high and low value&n;&t;&t; * of the counter atomically. Thus we have to &n;&t;&t; * substract 256 from the counter &n;&t;&t; * ... funny, isnt it? :)&n;&t;&t; */
 id|count
 op_sub_assign
 l_int|256

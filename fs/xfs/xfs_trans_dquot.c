@@ -2441,7 +2441,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Lock the dquot and change the reservation if we can.&n; * This doesnt change the actual usage, just the reservation.&n; * The inode sent in is locked.&n; *&n; * Returns 0 on success, EDQUOT or other errors otherwise&n; */
+multiline_comment|/*&n; * Lock the dquot and change the reservation if we can.&n; * This doesn&squot;t change the actual usage, just the reservation.&n; * The inode sent in is locked.&n; *&n; * Returns 0 on success, EDQUOT or other errors otherwise&n; */
 r_int
 DECL|function|xfs_trans_reserve_quota_nblks
 id|xfs_trans_reserve_quota_nblks

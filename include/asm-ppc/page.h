@@ -127,7 +127,7 @@ mdefine_line|#define __pgd(x)&t;(x)
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;(x)
 macro_line|#endif
-multiline_comment|/* align addr on a size boundry - adjust address up if needed -- Cort */
+multiline_comment|/* align addr on a size boundary - adjust address up if needed -- Cort */
 DECL|macro|_ALIGN
 mdefine_line|#define _ALIGN(addr,size)&t;(((addr)+(size)-1)&amp;(~((size)-1)))
 multiline_comment|/* to align the pointer to the (next) page boundary */
