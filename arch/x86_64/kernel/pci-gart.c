@@ -1955,6 +1955,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
