@@ -1207,6 +1207,7 @@ id|res
 suffix:semicolon
 )brace
 multiline_comment|/* jffs_notify_change()  */
+r_static
 r_struct
 id|inode
 op_star
@@ -1379,6 +1380,7 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/* Get statistics of the file system.  */
+r_static
 r_int
 DECL|function|jffs_statfs
 id|jffs_statfs
@@ -1509,6 +1511,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Rename a file.  */
+r_static
 r_int
 DECL|function|jffs_rename
 id|jffs_rename
@@ -7763,6 +7766,7 @@ id|c-&gt;fmc-&gt;biglock
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|jffs_delete_inode
 id|jffs_delete_inode
@@ -7863,6 +7867,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|jffs_write_super
 id|jffs_write_super

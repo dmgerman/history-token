@@ -48,25 +48,6 @@ DECL|macro|JFFS_GET_PAD_BYTES
 mdefine_line|#define JFFS_GET_PAD_BYTES(size) ( (JFFS_ALIGN_SIZE-1) &amp; -(__u32)(size) )
 DECL|macro|JFFS_PAD
 mdefine_line|#define JFFS_PAD(size) ( (size + (JFFS_ALIGN_SIZE-1)) &amp; ~(JFFS_ALIGN_SIZE-1) )
-r_void
-id|jffs_free_fm
-c_func
-(paren
-r_struct
-id|jffs_fm
-op_star
-id|n
-)paren
-suffix:semicolon
-r_struct
-id|jffs_fm
-op_star
-id|jffs_alloc_fm
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|struct|jffs_node_ref
 r_struct
 id|jffs_node_ref
@@ -417,6 +398,7 @@ op_star
 id|fm
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_void
 id|jffs_print_node_ref
 c_func
@@ -427,5 +409,6 @@ op_star
 id|ref
 )paren
 suffix:semicolon
+macro_line|#endif  /*  0  */
 macro_line|#endif /* __LINUX_JFFS_FM_H__  */
 eof

@@ -533,10 +533,6 @@ r_extern
 r_int
 id|no_jffs_node
 suffix:semicolon
-r_extern
-r_int
-id|no_jffs_file
-suffix:semicolon
 macro_line|#if defined(JFFS_MEMORY_DEBUG) &amp;&amp; JFFS_MEMORY_DEBUG
 r_extern
 r_int

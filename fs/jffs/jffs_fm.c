@@ -19,6 +19,27 @@ id|fm_offset
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
+r_struct
+id|jffs_fm
+op_star
+id|jffs_alloc_fm
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_void
+id|jffs_free_fm
+c_func
+(paren
+r_struct
+id|jffs_fm
+op_star
+id|n
+)paren
+suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
@@ -2146,6 +2167,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* JFFS_MARK_OBSOLETE  */
 multiline_comment|/* check if it&squot;s possible to erase the wanted range, and if not, return&n; * the range that IS erasable, or a negative error code.&n; */
+r_static
 r_int
 DECL|function|jffs_flash_erasable_size
 id|jffs_flash_erasable_size
@@ -2485,6 +2507,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jffs_alloc_fm
+r_static
 r_struct
 id|jffs_fm
 op_star
@@ -2526,6 +2549,7 @@ id|fm
 suffix:semicolon
 )brace
 DECL|function|jffs_free_fm
+r_static
 r_void
 id|jffs_free_fm
 c_func
@@ -2947,8 +2971,8 @@ l_string|&quot;}&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_void
-DECL|function|jffs_print_node_ref
 id|jffs_print_node_ref
 c_func
 (paren
@@ -3015,4 +3039,5 @@ l_string|&quot;}&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 eof

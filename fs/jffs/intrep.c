@@ -22,6 +22,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|no_jffs_file
+r_static
 r_int
 id|no_jffs_file
 op_assign
@@ -98,6 +99,160 @@ op_star
 id|node
 )paren
 suffix:semicolon
+r_static
+r_int
+id|jffs_build_file
+c_func
+(paren
+r_struct
+id|jffs_file
+op_star
+id|f
+)paren
+suffix:semicolon
+r_static
+r_int
+id|jffs_free_file
+c_func
+(paren
+r_struct
+id|jffs_file
+op_star
+id|f
+)paren
+suffix:semicolon
+r_static
+r_int
+id|jffs_free_node_list
+c_func
+(paren
+r_struct
+id|jffs_file
+op_star
+id|f
+)paren
+suffix:semicolon
+r_static
+r_int
+id|jffs_garbage_collect_now
+c_func
+(paren
+r_struct
+id|jffs_control
+op_star
+id|c
+)paren
+suffix:semicolon
+r_static
+r_int
+id|jffs_insert_file_into_hash
+c_func
+(paren
+r_struct
+id|jffs_file
+op_star
+id|f
+)paren
+suffix:semicolon
+r_static
+r_int
+id|jffs_remove_redundant_nodes
+c_func
+(paren
+r_struct
+id|jffs_file
+op_star
+id|f
+)paren
+suffix:semicolon
+multiline_comment|/* Is there enough space on the flash?  */
+DECL|function|JFFS_ENOUGH_SPACE
+r_static
+r_inline
+r_int
+id|JFFS_ENOUGH_SPACE
+c_func
+(paren
+r_struct
+id|jffs_control
+op_star
+id|c
+comma
+id|__u32
+id|space
+)paren
+(brace
+r_struct
+id|jffs_fmcontrol
+op_star
+id|fmc
+op_assign
+id|c-&gt;fmc
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|fmc-&gt;flash_size
+op_minus
+(paren
+id|fmc-&gt;used_size
+op_plus
+id|fmc-&gt;dirty_size
+)paren
+)paren
+op_ge
+id|fmc-&gt;min_free_size
+op_plus
+id|space
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fmc-&gt;dirty_size
+OL
+id|fmc-&gt;sector_size
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|jffs_garbage_collect_now
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;JFFS_ENOUGH_SPACE: jffs_garbage_collect_now() failed.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+)brace
 macro_line|#if CONFIG_JFFS_FS_VERBOSE &gt; 0
 r_static
 id|__u8
@@ -1210,6 +1365,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This routine calculates checksums in JFFS.  */
+r_static
 id|__u32
 DECL|function|jffs_checksum
 id|jffs_checksum
@@ -1271,6 +1427,7 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|jffs_checksum_flash
 id|jffs_checksum_flash
@@ -2598,6 +2755,7 @@ suffix:semicolon
 multiline_comment|/* jffs_build_fs()  */
 multiline_comment|/*&n;  This checks for sectors that were being erased in their previous &n;  lifetimes and for some reason or the other (power fail etc.), &n;  the erase cycles never completed.&n;  As the flash array would have reverted back to read status, &n;  these sectors are detected by the symptom of the &quot;flipping bits&quot;,&n;  i.e. bits being read back differently from the same location in&n;  flash if read multiple times.&n;  The only solution to this is to re-erase the entire&n;  sector.&n;  Unfortunately detecting &quot;flipping bits&quot; is not a simple exercise&n;  as a bit may be read back at 1 or 0 depending on the alignment &n;  of the stars in the universe.&n;  The level of confidence is in direct proportion to the number of &n;  scans done. By power fail testing I (Vipin) have been able to &n;  proove that reading twice is not enough.&n;  Maybe 4 times? Change NUM_REREADS to a higher number if you want&n;  a (even) higher degree of confidence in your mount process. &n;  A higher number would of course slow down your mount.&n;*/
 DECL|function|check_partly_erased_sectors
+r_static
 r_int
 (def_block
 id|check_partly_erased_sectors
@@ -5901,6 +6059,7 @@ id|mod_type
 suffix:semicolon
 )brace
 multiline_comment|/* Remove redundant nodes from a file.  Mark the on-flash memory&n;   as dirty.  */
+r_static
 r_int
 DECL|function|jffs_remove_redundant_nodes
 id|jffs_remove_redundant_nodes
@@ -6128,6 +6287,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Insert a file into the hash table.  */
+r_static
 r_int
 DECL|function|jffs_insert_file_into_hash
 id|jffs_insert_file_into_hash
@@ -6309,6 +6469,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Remove a file from the hash table.  */
+r_static
 r_int
 DECL|function|jffs_unlink_file_from_hash
 id|jffs_unlink_file_from_hash
@@ -8299,6 +8460,7 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/* Free all nodes associated with a file.  */
+r_static
 r_int
 DECL|function|jffs_free_node_list
 id|jffs_free_node_list
@@ -8378,6 +8540,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Free a file and its name.  */
+r_static
 r_int
 DECL|function|jffs_free_file
 id|jffs_free_file
@@ -8443,6 +8606,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|jffs_get_file_count
 id|jffs_get_file_count
@@ -8613,6 +8777,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Build up a file&squot;s range list from scratch by going through the&n;   version list.  */
+r_static
 r_int
 DECL|function|jffs_build_file
 id|jffs_build_file
@@ -10375,8 +10540,8 @@ l_string|&quot;}&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Print the contents of a file.  */
+macro_line|#if 0
 r_int
-DECL|function|jffs_print_file
 id|jffs_print_file
 c_func
 (paren
@@ -10781,6 +10946,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 r_void
 DECL|function|jffs_print_hash_table
 id|jffs_print_hash_table
@@ -11154,6 +11320,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Rewrite `size&squot; bytes, and begin at `node&squot;.  */
+r_static
 r_int
 DECL|function|jffs_rewrite_data
 id|jffs_rewrite_data
@@ -12171,6 +12338,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* jffs_rewrite_data()  */
 multiline_comment|/* jffs_garbage_collect_next implements one step in the garbage collect&n;   process and is often called multiple times at each occasion of a&n;   garbage collect.  */
+r_static
 r_int
 DECL|function|jffs_garbage_collect_next
 id|jffs_garbage_collect_next
@@ -13047,6 +13215,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* jffs_clear_end_of_node()  */
 multiline_comment|/* Try to erase as much as possible of the dirt in the flash memory.  */
+r_static
 r_int
 DECL|function|jffs_try_to_erase
 id|jffs_try_to_erase
@@ -13370,6 +13539,7 @@ id|erase_size
 suffix:semicolon
 )brace
 multiline_comment|/* There are different criteria that should trigger a garbage collect:&n;&n;   1. There is too much dirt in the memory.&n;   2. The free space is becoming small.&n;   3. There are many versions of a node.&n;&n;   The garbage collect should always be done in a manner that guarantees&n;   that future garbage collects cannot be locked.  E.g. Rewritten chunks&n;   should not be too large (span more than one sector in the flash memory&n;   for exemple).  Of course there is a limit on how intelligent this garbage&n;   collection can be.  */
+r_static
 r_int
 DECL|function|jffs_garbage_collect_now
 id|jffs_garbage_collect_now
