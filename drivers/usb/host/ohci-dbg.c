@@ -1831,6 +1831,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|macro|DRIVERFS_DEBUG_FILES
+mdefine_line|#define DRIVERFS_DEBUG_FILES &t;&t;/* only on 2.5 versions */
 macro_line|#else
 DECL|function|ohci_dump
 r_static
@@ -1850,6 +1852,7 @@ id|verbose
 )brace
 macro_line|#endif /* DEBUG */
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifdef DRIVERFS_DEBUG_FILES
 r_static
 id|ssize_t
 DECL|function|show_list
@@ -2847,5 +2850,33 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* empty stubs for creating those files */
+DECL|function|create_debug_files
+r_static
+r_inline
+r_void
+id|create_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|remove_debug_files
+r_static
+r_inline
+r_void
+id|remove_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+macro_line|#endif /* DRIVERFS_DEBUG_FILES */
 multiline_comment|/*-------------------------------------------------------------------------*/
 eof
