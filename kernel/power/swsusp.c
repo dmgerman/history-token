@@ -2016,6 +2016,9 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|device_suspend
 c_func
 (paren
@@ -2023,7 +2026,14 @@ l_int|4
 comma
 id|SUSPEND_NOTIFY
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|device_suspend
 c_func
 (paren
@@ -2031,15 +2041,19 @@ l_int|4
 comma
 id|SUSPEND_SAVE_STATE
 )paren
-suffix:semicolon
-id|device_suspend
+)paren
+(brace
+id|device_resume
 c_func
 (paren
-l_int|4
-comma
-id|SUSPEND_DISABLE
+id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2071,7 +2085,8 @@ l_string|&quot;Problem while sending suspend event&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|pm_suspend_state
@@ -2085,6 +2100,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;PM suspend state already raised&bslash;n&quot;
+)paren
+suffix:semicolon
+id|device_suspend
+c_func
+(paren
+l_int|4
+comma
+id|SUSPEND_DISABLE
 )paren
 suffix:semicolon
 r_return
@@ -2925,7 +2948,6 @@ c_func
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
@@ -2933,7 +2955,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|thaw_processes
 c_func
 (paren
