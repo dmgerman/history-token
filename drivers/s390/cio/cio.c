@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.89 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.90 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1953,6 +1953,10 @@ id|irb
 op_star
 id|irb
 suffix:semicolon
+id|irq_enter
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Get interrupt information from lowcore&n;&t; */
 id|tpi_info
 op_assign
@@ -1987,38 +1991,14 @@ op_eq
 id|IO_INTERRUPT_TYPE
 )paren
 (brace
-id|irq_enter
-(paren
-)paren
-suffix:semicolon
 id|do_adapter_IO
 (paren
 id|tpi_info-&gt;intparm
 )paren
 suffix:semicolon
-id|irq_exit
-(paren
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Store interrupt response block to lowcore. */
-r_if
-c_cond
-(paren
-id|tsch
-(paren
-id|tpi_info-&gt;irq
-comma
-id|irb
-)paren
-op_ne
-l_int|0
-)paren
-multiline_comment|/* Not status pending or not operational. */
-r_continue
-suffix:semicolon
 id|sch
 op_assign
 id|ioinfo
@@ -2029,15 +2009,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sch
 )paren
-r_continue
-suffix:semicolon
-id|irq_enter
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2045,6 +2018,23 @@ op_amp
 id|sch-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* Store interrupt response block to lowcore. */
+r_if
+c_cond
+(paren
+id|tsch
+(paren
+id|tpi_info-&gt;irq
+comma
+id|irb
+)paren
+op_eq
+l_int|0
+op_logical_and
+id|sch
+)paren
+(brace
+multiline_comment|/* Keep subchannel information word up to date. */
 id|memcpy
 (paren
 op_amp
@@ -2059,6 +2049,7 @@ id|irb-&gt;scsw
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Call interrupt handler if there is one. */
 r_if
 c_cond
 (paren
@@ -2075,15 +2066,17 @@ op_amp
 id|sch-&gt;dev
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sch
+)paren
 id|spin_unlock
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-)paren
-suffix:semicolon
-id|irq_exit
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Are more interrupts pending?&n;&t;&t; * If so, the tpi instruction will update the lowcore&n;&t;&t; * to hold the info for the next interrupt.&n;&t;&t; * We don&squot;t do this for VM because a tpi drops the cpu&n;&t;&t; * out of the sie which costs more cycles than it saves.&n;&t;&t; */
@@ -2100,6 +2093,10 @@ l_int|NULL
 )paren
 op_ne
 l_int|0
+)paren
+suffix:semicolon
+id|irq_exit
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
@@ -68,6 +69,10 @@ suffix:semicolon
 r_extern
 r_int
 id|pid_max
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_lower_zone_protection
 suffix:semicolon
 multiline_comment|/* this is needed for the proc_dointvec_minmax for [fs_]overflow UID and GID */
 DECL|variable|maxolduid
@@ -1713,6 +1718,38 @@ id|hugetlb_sysctl_handler
 )brace
 comma
 macro_line|#endif
+(brace
+id|VM_LOWER_ZONE_PROTECTION
+comma
+l_string|&quot;lower_zone_protection&quot;
+comma
+op_amp
+id|sysctl_lower_zone_protection
+comma
+r_sizeof
+(paren
+id|sysctl_lower_zone_protection
+)paren
+comma
+l_int|0644
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec_minmax
+comma
+op_amp
+id|sysctl_intvec
+comma
+l_int|NULL
+comma
+op_amp
+id|zero
+comma
+l_int|NULL
+comma
+)brace
+comma
 (brace
 l_int|0
 )brace

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;

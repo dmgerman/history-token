@@ -534,6 +534,12 @@ op_assign
 l_int|19
 comma
 multiline_comment|/* Tendency to steal mapped memory */
+DECL|enumerator|VM_LOWER_ZONE_PROTECTION
+id|VM_LOWER_ZONE_PROTECTION
+op_assign
+l_int|20
+comma
+multiline_comment|/* Amount of protection of lower zones */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

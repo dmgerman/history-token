@@ -5363,6 +5363,9 @@ c_func
 r_int
 id|signr
 comma
+r_int
+id|exit_code
+comma
 r_struct
 id|pt_regs
 op_star
@@ -5460,6 +5463,14 @@ c_func
 op_amp
 id|mm-&gt;core_done
 )paren
+suffix:semicolon
+id|current-&gt;sig-&gt;group_exit
+op_assign
+l_int|1
+suffix:semicolon
+id|current-&gt;sig-&gt;group_exit_code
+op_assign
+id|exit_code
 suffix:semicolon
 id|coredump_wait
 c_func
@@ -5607,6 +5618,10 @@ id|regs
 comma
 id|file
 )paren
+suffix:semicolon
+id|current-&gt;sig-&gt;group_exit_code
+op_or_assign
+l_int|0x80
 suffix:semicolon
 id|close_fail
 suffix:colon

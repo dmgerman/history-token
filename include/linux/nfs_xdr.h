@@ -1868,10 +1868,6 @@ DECL|member|opnum
 id|u32
 id|opnum
 suffix:semicolon
-DECL|member|nfserr
-id|u32
-id|nfserr
-suffix:semicolon
 r_union
 (brace
 DECL|member|access

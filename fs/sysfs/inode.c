@@ -1427,11 +1427,6 @@ op_assign
 id|simple_readpage
 comma
 dot
-id|writepage
-op_assign
-id|fail_writepage
-comma
-dot
 id|prepare_write
 op_assign
 id|simple_prepare_write

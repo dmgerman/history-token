@@ -77,7 +77,7 @@ suffix:semicolon
 DECL|macro|inia100_REVID
 mdefine_line|#define inia100_REVID &quot;Initio INI-A100U2W SCSI device driver; Revision: 1.02d&quot;
 DECL|macro|INIA100
-mdefine_line|#define INIA100&t;{ &bslash;&n;&t;proc_name:&t;&quot;inia100&quot;, &bslash;&n;&t;name:&t;&t;inia100_REVID, &bslash;&n;&t;detect:&t;&t;inia100_detect, &bslash;&n;&t;release:&t;inia100_release, &bslash;&n;&t;queuecommand:&t;inia100_queue, &bslash;&n;&t;eh_abort_handler:inia100_abort, &bslash;&n;&t;eh_bus_reset_handler:&t;inia100_bus_reset, &bslash;&n;&t;eh_device_reset_handler:inia100_device_reset, &bslash;&n;&t;can_queue:&t;1, &bslash;&n;&t;this_id:&t;1, &bslash;&n;&t;sg_tablesize:&t;SG_ALL, &bslash;&n;&t;cmd_per_lun: &t;1, &bslash;&n;&t;present:&t;0, &bslash;&n;&t;unchecked_isa_dma: 0, &bslash;&n;&t;use_clustering:&t;ENABLE_CLUSTERING, &bslash;&n;}
+mdefine_line|#define INIA100&t;{ &bslash;&n;&t;.proc_name&t;= &quot;inia100&quot;, &bslash;&n;&t;.name&t;&t;= inia100_REVID, &bslash;&n;&t;.detect&t;&t;= inia100_detect, &bslash;&n;&t;.release&t;= inia100_release, &bslash;&n;&t;.queuecommand&t;= inia100_queue, &bslash;&n;&t;.eh_abort_handler = inia100_abort, &bslash;&n;&t;.eh_bus_reset_handler&t;= inia100_bus_reset, &bslash;&n;&t;.eh_device_reset_handler = inia100_device_reset, &bslash;&n;&t;.can_queue&t;= 1, &bslash;&n;&t;.this_id&t;= 1, &bslash;&n;&t;.sg_tablesize&t;= SG_ALL, &bslash;&n;&t;.cmd_per_lun &t;= 1, &bslash;&n;&t;.present&t;= 0, &bslash;&n;&t;.unchecked_isa_dma = 0, &bslash;&n;&t;.use_clustering&t;= ENABLE_CLUSTERING, &bslash;&n;}
 DECL|macro|ULONG
 mdefine_line|#define ULONG   unsigned long
 DECL|macro|PVOID

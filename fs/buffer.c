@@ -676,8 +676,6 @@ c_cond
 (paren
 id|sb-&gt;s_dirt
 op_logical_and
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;write_super
 )paren
 id|sb-&gt;s_op
@@ -686,6 +684,21 @@ id|write_super
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_op-&gt;sync_fs
+)paren
+id|sb-&gt;s_op
+op_member_access_from_pointer
+id|sync_fs
+c_func
+(paren
+id|sb
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|unlock_super
@@ -794,7 +807,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* All mappings and inodes, including block devices */
+multiline_comment|/* All mappings, inodes and their blockdevs */
 id|DQUOT_SYNC
 c_func
 (paren
@@ -807,13 +820,27 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Write the superblocks */
+id|sync_filesystems
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Start syncing the filesystems */
+id|sync_filesystems
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Waitingly sync the filesystems */
 id|sync_inodes
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* All the mappings and inodes, again. */
+multiline_comment|/* Mappings, inodes and blockdevs, again. */
 r_return
 l_int|0
 suffix:semicolon
@@ -876,8 +903,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;write_super
 )paren
 id|sb-&gt;s_op
@@ -5351,7 +5376,7 @@ id|unmap_underlying_metadata
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * NOTE! All mapped/uptodate combinations are valid:&n; *&n; *&t;Mapped&t;Uptodate&t;Meaning&n; *&n; *&t;No&t;No&t;&t;&quot;unknown&quot; - must do get_block()&n; *&t;No&t;Yes&t;&t;&quot;hole&quot; - zero-filled&n; *&t;Yes&t;No&t;&t;&quot;allocated&quot; - allocated on disk, not read in&n; *&t;Yes&t;Yes&t;&t;&quot;valid&quot; - allocated and up-to-date in memory.&n; *&n; * &quot;Dirty&quot; is valid only with the last case (mapped+uptodate).&n; */
-multiline_comment|/*&n; * While block_write_full_page is writing back the dirty buffers under&n; * the page lock, whoever dirtied the buffers may decide to clean them&n; * again at any time.  We handle that by only looking at the buffer&n; * state inside lock_buffer().&n; *&n; * If block_write_full_page() is called for regular writeback&n; * (called_for_sync() is false) then it will return -EAGAIN for a locked&n; * buffer.   This only can happen if someone has written the buffer directly,&n; * with submit_bh().  At the address_space level PageWriteback prevents this&n; * contention from occurring.&n; */
+multiline_comment|/*&n; * While block_write_full_page is writing back the dirty buffers under&n; * the page lock, whoever dirtied the buffers may decide to clean them&n; * again at any time.  We handle that by only looking at the buffer&n; * state inside lock_buffer().&n; *&n; * If block_write_full_page() is called for regular writeback&n; * (called_for_sync() is false) then it will redirty a page which has a locked&n; * buffer.   This only can happen if someone has written the buffer directly,&n; * with submit_bh().  At the address_space level PageWriteback prevents this&n; * contention from occurring.&n; */
 DECL|function|__block_write_full_page
 r_static
 r_int
@@ -5371,15 +5396,15 @@ comma
 id|get_block_t
 op_star
 id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_int
 id|err
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -5645,10 +5670,9 @@ id|bh
 r_if
 c_cond
 (paren
-id|called_for_sync
-c_func
-(paren
-)paren
+id|wbc-&gt;sync_mode
+op_ne
+id|WB_SYNC_NONE
 )paren
 (brace
 id|lock_buffer
@@ -5670,10 +5694,11 @@ id|bh
 )paren
 )paren
 (brace
-id|ret
-op_assign
-op_minus
-id|EAGAIN
+id|__set_page_dirty_nobuffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -5879,16 +5904,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|err
-op_eq
-l_int|0
-)paren
-r_return
-id|ret
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -9511,6 +9526,11 @@ comma
 id|get_block_t
 op_star
 id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -9554,6 +9574,8 @@ comma
 id|page
 comma
 id|get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 multiline_comment|/* Is the page fully outside i_size? (truncate in progress) */
@@ -9639,6 +9661,8 @@ comma
 id|page
 comma
 id|get_block
+comma
+id|wbc
 )paren
 suffix:semicolon
 )brace
@@ -10580,7 +10604,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There are no bdflush tunables left.  But distributions are&n; * still running obsolete flush daemons, so we terminate them here.&n; */
+multiline_comment|/*&n; * There are no bdflush tunables left.  But distributions are&n; * still running obsolete flush daemons, so we terminate them here.&n; *&n; * Use of bdflush() is deprecated and will be removed in a future kernel.&n; * The `pdflush&squot; kernel threads fully replace bdflush daemons and this call.&n; */
 DECL|function|sys_bdflush
 id|asmlinkage
 r_int
@@ -10594,6 +10618,10 @@ r_int
 id|data
 )paren
 (brace
+r_static
+r_int
+id|msg_count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10608,6 +10636,35 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg_count
+OL
+l_int|5
+)paren
+(brace
+id|msg_count
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;warning: process `%s&squot; used the obsolete bdflush&quot;
+l_string|&quot; system call&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Fix your initscripts?&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

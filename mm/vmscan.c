@@ -822,13 +822,13 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
+macro_line|#endif /* CONFIG_SWAP */
 id|pte_chain_unlock
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * If the page is dirty, only perform writeback if that write&n;&t;&t; * will be non-blocking.  To prevent this allocation from being&n;&t;&t; * stalled by pagecache activity.  But note that there may be&n;&t;&t; * stalls if we need to run get_block().  We could test&n;&t;&t; * PagePrivate for that.&n;&t;&t; *&n;&t;&t; * If this process is currently in generic_file_write() against&n;&t;&t; * this page&squot;s queue, we can perform writeback even if that&n;&t;&t; * will block.&n;&t;&t; *&n;&t;&t; * If the page is swapcache, write it back even if that would&n;&t;&t; * block, for some throttling. This happens by accident, because&n;&t;&t; * swap_backing_dev_info is bust: it doesn&squot;t reflect the&n;&t;&t; * congestion state of the swapdevs.  Easy to fix, if needed.&n;&t;&t; * See swapfile.c:page_queue_congested().&n;&t;&t; */
 r_if
 c_cond
@@ -872,7 +872,7 @@ c_cond
 (paren
 id|mapping-&gt;a_ops-&gt;writepage
 op_eq
-id|fail_writepage
+l_int|NULL
 )paren
 r_goto
 id|activate_locked
@@ -919,6 +919,33 @@ id|page
 r_int
 id|res
 suffix:semicolon
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_NONE
+comma
+dot
+id|nr_to_write
+op_assign
+id|SWAP_CLUSTER_MAX
+comma
+dot
+id|nonblocking
+op_assign
+l_int|1
+comma
+dot
+id|for_reclaim
+op_assign
+l_int|1
+comma
+)brace
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -957,6 +984,9 @@ id|writepage
 c_func
 (paren
 id|page
+comma
+op_amp
+id|wbc
 )paren
 suffix:semicolon
 r_if
@@ -964,8 +994,7 @@ c_cond
 (paren
 id|res
 op_eq
-op_minus
-id|EAGAIN
+id|WRITEPAGE_ACTIVATE
 )paren
 (brace
 id|ClearPageReclaim
@@ -974,14 +1003,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__set_page_dirty_nobuffers
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|activate_locked
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -993,7 +1018,7 @@ id|page
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * synchronous writeout or broken&n;&t;&t;&t;&t;&t; * a_ops?&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* synchronous write or broken a_ops? */
 id|ClearPageReclaim
 c_func
 (paren
@@ -2818,7 +2843,7 @@ suffix:semicolon
 id|inc_page_state
 c_func
 (paren
-id|pageoutrun
+id|allocstall
 )paren
 suffix:semicolon
 r_for
@@ -2881,21 +2906,6 @@ id|nr_pages
 )paren
 r_return
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|total_scanned
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: I am buggy&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2983,6 +2993,12 @@ id|priority
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|pageoutrun
+)paren
 suffix:semicolon
 r_for
 c_loop

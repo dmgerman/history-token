@@ -151,10 +151,22 @@ r_struct
 id|semaphore
 id|state_change
 suffix:semicolon
-DECL|member|complete_tq
-r_struct
-id|list_head
-id|complete_tq
+multiline_comment|/* Function (and possible data to pass to it) to call when this&n;&t; * packet is completed.  */
+DECL|member|complete_routine
+r_void
+(paren
+op_star
+id|complete_routine
+)paren
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|member|complete_data
+r_void
+op_star
+id|complete_data
 suffix:semicolon
 multiline_comment|/* Store jiffies for implementing bus timeouts. */
 DECL|member|sendtime
@@ -171,9 +183,9 @@ l_int|5
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* add a new task for when a packet completes */
+multiline_comment|/* Set a task for when a packet completes */
 r_void
-id|hpsb_add_packet_complete_task
+id|hpsb_set_packet_complete_task
 c_func
 (paren
 r_struct
@@ -181,10 +193,19 @@ id|hpsb_packet
 op_star
 id|packet
 comma
-r_struct
-id|hpsb_queue_struct
+r_void
+(paren
 op_star
-id|tq
+id|routine
+)paren
+(paren
+r_void
+op_star
+)paren
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 DECL|function|driver_packet
@@ -346,6 +367,17 @@ id|phyid
 comma
 r_int
 id|isroot
+)paren
+suffix:semicolon
+multiline_comment|/* &n; * Check bus reset results to find cycle master&n; */
+r_void
+id|hpsb_check_cycle_master
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Notify core of sending a packet.  Ackcode is the ack code returned for async&n; * transmits or ACKX_SEND_ERROR if the transmission failed completely; ACKX_NONE&n; * for other cases (internal errors that don&squot;t justify a panic).  Safe to call&n; * from within a transmit packet routine.&n; */

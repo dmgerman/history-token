@@ -26,10 +26,14 @@ DECL|macro|CSR_BUS_MANAGER_ID
 mdefine_line|#define CSR_BUS_MANAGER_ID        0x21c
 DECL|macro|CSR_BANDWIDTH_AVAILABLE
 mdefine_line|#define CSR_BANDWIDTH_AVAILABLE   0x220
+DECL|macro|CSR_CHANNELS_AVAILABLE
+mdefine_line|#define CSR_CHANNELS_AVAILABLE    0x224
 DECL|macro|CSR_CHANNELS_AVAILABLE_HI
 mdefine_line|#define CSR_CHANNELS_AVAILABLE_HI 0x224
 DECL|macro|CSR_CHANNELS_AVAILABLE_LO
 mdefine_line|#define CSR_CHANNELS_AVAILABLE_LO 0x228
+DECL|macro|CSR_BROADCAST_CHANNEL
+mdefine_line|#define CSR_BROADCAST_CHANNEL     0x234
 DECL|macro|CSR_CONFIG_ROM
 mdefine_line|#define CSR_CONFIG_ROM            0x400
 DECL|macro|CSR_CONFIG_ROM_END
@@ -93,6 +97,10 @@ id|quadlet_t
 id|channels_available_hi
 comma
 id|channels_available_lo
+suffix:semicolon
+DECL|member|broadcast_channel
+id|quadlet_t
+id|broadcast_channel
 suffix:semicolon
 DECL|member|rom
 id|quadlet_t

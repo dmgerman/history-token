@@ -115,7 +115,7 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;   sr    %0,01&bslash;n&quot;
+l_string|&quot;   sr    %0,%0&bslash;n&quot;
 l_string|&quot;   lr    2,%1&bslash;n&quot;
 l_string|&quot;   lr    4,%2&bslash;n&quot;
 l_string|&quot;   sacf  512&bslash;n&quot;

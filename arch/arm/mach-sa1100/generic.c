@@ -142,11 +142,11 @@ c_cond
 (paren
 id|policy-&gt;max
 OG
-id|policy-&gt;max_cpu_freq
+id|policy-&gt;cpuinfo.max_freq
 )paren
 id|policy-&gt;max
 op_assign
-id|policy-&gt;max_cpu_freq
+id|policy-&gt;cpuinfo.max_freq
 suffix:semicolon
 id|policy-&gt;max
 op_assign
