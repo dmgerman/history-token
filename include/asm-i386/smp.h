@@ -25,19 +25,6 @@ macro_line|#else
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
 macro_line|#endif
-macro_line|#ifndef clustered_apic_mode
-macro_line|#ifdef CONFIG_CLUSTERED_APIC
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (1)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (1)
-macro_line|#else /* !CONFIG_CLUSTERED_APIC */
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (0)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (0)
-macro_line|#endif /* CONFIG_CLUSTERED_APIC */
-macro_line|#endif 
 DECL|macro|BAD_APICID
 mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#ifdef CONFIG_SMP

@@ -5,6 +5,8 @@ r_extern
 r_int
 id|x86_summit
 suffix:semicolon
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (1)
 DECL|macro|XAPIC_DEST_CPUS_MASK
 mdefine_line|#define XAPIC_DEST_CPUS_MASK    0x0Fu
 DECL|macro|XAPIC_DEST_CLUSTER_MASK

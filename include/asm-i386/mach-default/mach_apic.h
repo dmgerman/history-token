@@ -12,6 +12,8 @@ mdefine_line|#define TARGET_CPUS 0x01
 macro_line|#endif
 DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (0)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (0)
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
