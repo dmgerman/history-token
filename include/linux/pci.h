@@ -3247,6 +3247,8 @@ DECL|macro|PCIPCI_VIAETBF
 mdefine_line|#define PCIPCI_VIAETBF&t;&t;8
 DECL|macro|PCIPCI_VSFX
 mdefine_line|#define PCIPCI_VSFX&t;&t;16
+DECL|macro|PCIPCI_ALIMAGIK
+mdefine_line|#define PCIPCI_ALIMAGIK&t;&t;32
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_PCI_H */
 eof
