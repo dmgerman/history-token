@@ -1755,13 +1755,12 @@ id|fl_owner_t
 id|ls_owner
 suffix:semicolon
 multiline_comment|/* POSIX lock owner */
-DECL|member|ls_parent
-r_struct
-id|nfs4_state
-op_star
-id|ls_parent
+DECL|macro|NFS_LOCK_INITIALIZED
+mdefine_line|#define NFS_LOCK_INITIALIZED 1
+DECL|member|ls_flags
+r_int
+id|ls_flags
 suffix:semicolon
-multiline_comment|/* Parent nfs4_state */
 DECL|member|ls_seqid
 id|u32
 id|ls_seqid
@@ -2049,6 +2048,22 @@ id|nfs4_exception
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|nfs4_lock_reclaim
+c_func
+(paren
+r_struct
+id|nfs4_state
+op_star
+id|state
+comma
+r_struct
+id|file_lock
+op_star
+id|request
+)paren
+suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
 r_extern
 r_void
@@ -2271,7 +2286,7 @@ r_extern
 r_struct
 id|nfs4_lock_state
 op_star
-id|nfs4_alloc_lock_state
+id|nfs4_get_lock_state
 c_func
 (paren
 r_struct
@@ -2313,7 +2328,7 @@ id|nfs4_notify_setlk
 c_func
 (paren
 r_struct
-id|inode
+id|nfs4_state
 op_star
 comma
 r_struct
@@ -2331,7 +2346,7 @@ id|nfs4_notify_unlck
 c_func
 (paren
 r_struct
-id|inode
+id|nfs4_state
 op_star
 comma
 r_struct
