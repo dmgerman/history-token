@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -2273,6 +2274,21 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|show_stack
+c_func
+(paren
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
