@@ -236,6 +236,8 @@ DECL|macro|HID_QUIRK_IGNORE
 mdefine_line|#define HID_QUIRK_IGNORE&t;0x04
 DECL|macro|HID_QUIRK_NOGET
 mdefine_line|#define HID_QUIRK_NOGET&t;&t;0x08
+DECL|macro|HID_QUIRK_HIDDEV
+mdefine_line|#define HID_QUIRK_HIDDEV&t;0x10
 multiline_comment|/*&n; * This is the global enviroment of the parser. This information is&n; * persistent for main-items. The global enviroment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
@@ -288,8 +290,8 @@ DECL|macro|HID_MAX_DESCRIPTOR_SIZE
 mdefine_line|#define HID_MAX_DESCRIPTOR_SIZE&t;&t;4096
 DECL|macro|HID_MAX_USAGES
 mdefine_line|#define HID_MAX_USAGES&t;&t;&t;1024
-DECL|macro|HID_MAX_APPLICATIONS
-mdefine_line|#define HID_MAX_APPLICATIONS&t;&t;16
+DECL|macro|HID_DEFAULT_NUM_COLLECTIONS
+mdefine_line|#define HID_DEFAULT_NUM_COLLECTIONS&t;16
 DECL|struct|hid_local
 r_struct
 id|hid_local
@@ -302,6 +304,14 @@ id|HID_MAX_USAGES
 )braket
 suffix:semicolon
 multiline_comment|/* usage array */
+DECL|member|collection_index
+r_int
+id|collection_index
+(braket
+id|HID_MAX_USAGES
+)braket
+suffix:semicolon
+multiline_comment|/* collection index array */
 DECL|member|usage_index
 r_int
 id|usage_index
@@ -333,6 +343,10 @@ DECL|member|usage
 r_int
 id|usage
 suffix:semicolon
+DECL|member|level
+r_int
+id|level
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|hid_usage
@@ -344,6 +358,11 @@ r_int
 id|hid
 suffix:semicolon
 multiline_comment|/* hid usage code */
+DECL|member|collection_index
+r_int
+id|collection_index
+suffix:semicolon
+multiline_comment|/* index into collection array */
 DECL|member|code
 id|__u16
 id|code
@@ -587,14 +606,23 @@ DECL|member|rsize
 r_int
 id|rsize
 suffix:semicolon
-DECL|member|application
-r_int
-id|application
-(braket
-id|HID_MAX_APPLICATIONS
-)braket
+DECL|member|collection
+r_struct
+id|hid_collection
+op_star
+id|collection
 suffix:semicolon
-multiline_comment|/* List of HID applications */
+multiline_comment|/* List of HID collections */
+DECL|member|collection_size
+r_int
+id|collection_size
+suffix:semicolon
+multiline_comment|/* Number of allocated hid_collections */
+DECL|member|maxcollection
+r_int
+id|maxcollection
+suffix:semicolon
+multiline_comment|/* Number of parsed collections */
 DECL|member|maxapplication
 r_int
 id|maxapplication
@@ -876,8 +904,7 @@ id|hid_local
 id|local
 suffix:semicolon
 DECL|member|collection_stack
-r_struct
-id|hid_collection
+r_int
 id|collection_stack
 (braket
 id|HID_COLLECTION_STACK_SIZE

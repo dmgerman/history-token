@@ -61,6 +61,28 @@ id|num_applications
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|hiddev_collection_info
+r_struct
+id|hiddev_collection_info
+(brace
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+DECL|member|usage
+r_int
+id|usage
+suffix:semicolon
+DECL|member|level
+r_int
+id|level
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|HID_STRING_SIZE
 mdefine_line|#define HID_STRING_SIZE 256
 DECL|struct|hiddev_string_descriptor
@@ -98,7 +120,7 @@ id|num_fields
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* To do a GUSAGE/SUSAGE, fill in at least usage_code,  report_type and &n; * report_id.  Set report_id to REPORT_ID_UNKNOWN if the rest of the fields &n; * are unknown.  Otherwise use a usage_ref struct filled in from a previous &n; * successful GUSAGE/SUSAGE call to save time.  To actually send a value&n; * to the device, perform a SUSAGE first, followed by a SREPORT.  If an&n; * INITREPORT is done, a GREPORT isn&squot;t necessary before a GUSAGE.&n; */
+multiline_comment|/* To do a GUSAGE/SUSAGE, fill in at least usage_code,  report_type and &n; * report_id.  Set report_id to REPORT_ID_UNKNOWN if the rest of the fields &n; * are unknown.  Otherwise use a usage_ref struct filled in from a previous &n; * successful GUSAGE call to save time.  To actually send a value to the&n; * device, perform a SUSAGE first, followed by a SREPORT.  An INITREPORT or a&n; * GREPORT isn&squot;t necessary for a GUSAGE to return valid data.&n; */
 DECL|macro|HID_REPORT_ID_UNKNOWN
 mdefine_line|#define HID_REPORT_ID_UNKNOWN 0xffffffff
 DECL|macro|HID_REPORT_ID_FIRST
@@ -238,7 +260,7 @@ DECL|macro|HID_FIELD_INDEX_NONE
 mdefine_line|#define HID_FIELD_INDEX_NONE 0xffffffff
 multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|HID_VERSION
-mdefine_line|#define HID_VERSION&t;&t;0x010003
+mdefine_line|#define HID_VERSION&t;&t;0x010004
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
 DECL|macro|HIDIOCGVERSION
 mdefine_line|#define HIDIOCGVERSION&t;&t;_IOR(&squot;H&squot;, 0x01, int)
@@ -270,6 +292,10 @@ DECL|macro|HIDIOCGFLAG
 mdefine_line|#define HIDIOCGFLAG&t;&t;_IOR(&squot;H&squot;, 0x0E, int)
 DECL|macro|HIDIOCSFLAG
 mdefine_line|#define HIDIOCSFLAG&t;&t;_IOW(&squot;H&squot;, 0x0F, int)
+DECL|macro|HIDIOCGCOLLECTIONINDEX
+mdefine_line|#define HIDIOCGCOLLECTIONINDEX&t;_IOW(&squot;H&squot;, 0x10, struct hiddev_usage_ref)
+DECL|macro|HIDIOCGCOLLECTIONINFO
+mdefine_line|#define HIDIOCGCOLLECTIONINFO&t;_IOWR(&squot;H&squot;, 0x11, struct hiddev_collection_info)
 multiline_comment|/* &n; * Flags to be used in HIDIOCSFLAG&n; */
 DECL|macro|HIDDEV_FLAG_UREF
 mdefine_line|#define HIDDEV_FLAG_UREF&t;0x1
@@ -333,8 +359,7 @@ macro_line|#else
 DECL|function|hiddev_connect
 r_static
 r_inline
-r_void
-op_star
+r_int
 id|hiddev_connect
 c_func
 (paren
@@ -345,7 +370,8 @@ id|hid
 )paren
 (brace
 r_return
-l_int|NULL
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|hiddev_disconnect
