@@ -16146,7 +16146,7 @@ op_logical_neg
 (paren
 id|tp-&gt;tg3_flags2
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 )paren
 id|tg3_nvram_lock
@@ -16661,7 +16661,7 @@ op_logical_neg
 (paren
 id|tp-&gt;tg3_flags2
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 )paren
 (brace
@@ -35267,7 +35267,7 @@ c_cond
 (paren
 id|tp-&gt;tg3_flags2
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 r_return
 suffix:semicolon
@@ -35663,7 +35663,7 @@ c_cond
 (paren
 id|tp-&gt;tg3_flags2
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 (brace
 id|printk
@@ -35671,7 +35671,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Attempt to do nvram_read on Sun 5704&bslash;n&quot;
+l_string|&quot;Attempt to do nvram_read on Sun 570X&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -37249,7 +37249,7 @@ c_cond
 (paren
 id|tp-&gt;tg3_flags2
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 (brace
 multiline_comment|/* Sun decided not to put the necessary bits in the&n;&t;&t; * NVRAM of their onboard tg3 parts :(&n;&t;&t; */
@@ -37258,7 +37258,7 @@ c_func
 (paren
 id|tp-&gt;board_part_number
 comma
-l_string|&quot;Sun 5704&quot;
+l_string|&quot;Sun 570X&quot;
 )paren
 suffix:semicolon
 r_return
@@ -37570,11 +37570,11 @@ l_string|&quot;none&quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SPARC64
-DECL|function|tg3_is_sun_5704
+DECL|function|tg3_is_sun_570X
 r_static
 r_int
 id|__devinit
-id|tg3_is_sun_5704
+id|tg3_is_sun_570X
 c_func
 (paren
 r_struct
@@ -37612,8 +37612,6 @@ id|pcp-&gt;prom_node
 suffix:semicolon
 id|u32
 id|venid
-comma
-id|devid
 suffix:semicolon
 r_int
 id|err
@@ -37655,53 +37653,12 @@ l_int|1
 r_return
 l_int|0
 suffix:semicolon
-id|err
-op_assign
-id|prom_getproperty
-c_func
-(paren
-id|node
-comma
-l_string|&quot;subsystem-id&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|devid
-comma
-r_sizeof
-(paren
-id|devid
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-op_eq
-l_int|0
-op_logical_or
-id|err
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|venid
 op_eq
 id|PCI_VENDOR_ID_SUN
-op_logical_and
-id|devid
-op_eq
-id|PCI_DEVICE_ID_TIGON3_5704
 )paren
 r_return
 l_int|1
@@ -37749,7 +37706,7 @@ macro_line|#ifdef CONFIG_SPARC64
 r_if
 c_cond
 (paren
-id|tg3_is_sun_5704
+id|tg3_is_sun_570X
 c_func
 (paren
 id|tp
@@ -37757,7 +37714,7 @@ id|tp
 )paren
 id|tp-&gt;tg3_flags2
 op_or_assign
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* If we have an AMD 762 or Intel ICH/ICH0/ICH2 chipset, write&n;&t; * reordering to the mailbox registers done by the host&n;&t; * controller can cause major troubles.  We read back from&n;&t; * every mailbox register write to force the writes to be&n;&t; * posted to the chip in order.&n;&t; */
@@ -39174,7 +39131,7 @@ op_logical_neg
 (paren
 id|tp-&gt;tg3_flags
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 )paren
 (brace
@@ -39341,7 +39298,7 @@ op_logical_neg
 (paren
 id|tp-&gt;tg3_flags
 op_amp
-id|TG3_FLG2_SUN_5704
+id|TG3_FLG2_SUN_570X
 )paren
 op_logical_and
 op_logical_neg

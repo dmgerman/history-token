@@ -4269,8 +4269,8 @@ id|tg3_flags2
 suffix:semicolon
 DECL|macro|TG3_FLG2_RESTART_TIMER
 mdefine_line|#define TG3_FLG2_RESTART_TIMER&t;&t;0x00000001
-DECL|macro|TG3_FLG2_SUN_5704
-mdefine_line|#define TG3_FLG2_SUN_5704&t;&t;0x00000002
+DECL|macro|TG3_FLG2_SUN_570X
+mdefine_line|#define TG3_FLG2_SUN_570X&t;&t;0x00000002
 DECL|macro|TG3_FLG2_NO_ETH_WIRE_SPEED
 mdefine_line|#define TG3_FLG2_NO_ETH_WIRE_SPEED&t;0x00000004
 DECL|macro|TG3_FLG2_IS_5788
