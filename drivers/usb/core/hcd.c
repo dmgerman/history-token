@@ -1824,13 +1824,14 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usb_host_init
-r_void
+r_int
 id|usb_host_init
 c_func
 (paren
 r_void
 )paren
 (brace
+r_return
 id|class_register
 c_func
 (paren
