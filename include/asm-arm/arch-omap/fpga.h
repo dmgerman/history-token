@@ -28,9 +28,7 @@ mdefine_line|#define H2P2_DBG_FPGA_SIZE&t;&t;SZ_4K&t;&t;/* SIZE */
 DECL|macro|H2P2_DBG_FPGA_START
 mdefine_line|#define H2P2_DBG_FPGA_START&t;&t;0x04000000&t;/* PA */
 DECL|macro|H2P2_DBG_FPGA_ETHR_START
-mdefine_line|#define H2P2_DBG_FPGA_ETHR_START&t;H2P2_DBG_FPGA_START
-DECL|macro|H2P2_DBG_FPGA_ETHR_BASE
-mdefine_line|#define H2P2_DBG_FPGA_ETHR_BASE&t;&t;H2P2_DBG_FPGA_BASE
+mdefine_line|#define H2P2_DBG_FPGA_ETHR_START&t;(H2P2_DBG_FPGA_START + 0x300)
 DECL|macro|H2P2_DBG_FPGA_FPGA_REV
 mdefine_line|#define H2P2_DBG_FPGA_FPGA_REV&t;&t;(H2P2_DBG_FPGA_BASE + 0x10)&t;/* FPGA Revision */
 DECL|macro|H2P2_DBG_FPGA_BOARD_REV
@@ -45,17 +43,74 @@ DECL|macro|H2P2_DBG_FPGA_LAN_STATUS
 mdefine_line|#define H2P2_DBG_FPGA_LAN_STATUS&t;(H2P2_DBG_FPGA_BASE + 0x1A)&t;/* LAN Status line */
 DECL|macro|H2P2_DBG_FPGA_LAN_RESET
 mdefine_line|#define H2P2_DBG_FPGA_LAN_RESET&t;&t;(H2P2_DBG_FPGA_BASE + 0x1C)&t;/* LAN Reset line */
-multiline_comment|/* LEDs definition on debug board (16 LEDs) */
-DECL|macro|H2P2_DBG_FPGA_LED_CLAIMRELEASE
-mdefine_line|#define H2P2_DBG_FPGA_LED_CLAIMRELEASE&t;(1 &lt;&lt; 15)
-DECL|macro|H2P2_DBG_FPGA_LED_STARTSTOP
-mdefine_line|#define H2P2_DBG_FPGA_LED_STARTSTOP&t;(1 &lt;&lt; 14)
-DECL|macro|H2P2_DBG_FPGA_LED_HALTED
-mdefine_line|#define H2P2_DBG_FPGA_LED_HALTED&t;(1 &lt;&lt; 13)
-DECL|macro|H2P2_DBG_FPGA_LED_IDLE
-mdefine_line|#define H2P2_DBG_FPGA_LED_IDLE&t;&t;(1 &lt;&lt; 12)
-DECL|macro|H2P2_DBG_FPGA_LED_TIMER
-mdefine_line|#define H2P2_DBG_FPGA_LED_TIMER&t;&t;(1 &lt;&lt; 11)
+multiline_comment|/* NOTE:  most boards don&squot;t have a static mapping for the FPGA ... */
+DECL|struct|h2p2_dbg_fpga
+r_struct
+id|h2p2_dbg_fpga
+(brace
+multiline_comment|/* offset 0x00 */
+DECL|member|smc91x
+id|u16
+id|smc91x
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* offset 0x10 */
+DECL|member|fpga_rev
+id|u16
+id|fpga_rev
+suffix:semicolon
+DECL|member|board_rev
+id|u16
+id|board_rev
+suffix:semicolon
+DECL|member|gpio_outputs
+id|u16
+id|gpio_outputs
+suffix:semicolon
+DECL|member|leds
+id|u16
+id|leds
+suffix:semicolon
+multiline_comment|/* offset 0x18 */
+DECL|member|misc_inputs
+id|u16
+id|misc_inputs
+suffix:semicolon
+DECL|member|lan_status
+id|u16
+id|lan_status
+suffix:semicolon
+DECL|member|lan_reset
+id|u16
+id|lan_reset
+suffix:semicolon
+DECL|member|reserved0
+id|u16
+id|reserved0
+suffix:semicolon
+multiline_comment|/* offset 0x20 */
+DECL|member|ps2_data
+id|u16
+id|ps2_data
+suffix:semicolon
+DECL|member|ps2_ctrl
+id|u16
+id|ps2_ctrl
+suffix:semicolon
+multiline_comment|/* plus also 4 rs232 ports ... */
+)brace
+suffix:semicolon
+multiline_comment|/* LEDs definition on debug board (16 LEDs, all physically green) */
+DECL|macro|H2P2_DBG_FPGA_LED_GREEN
+mdefine_line|#define H2P2_DBG_FPGA_LED_GREEN&t;&t;(1 &lt;&lt; 15)
+DECL|macro|H2P2_DBG_FPGA_LED_AMBER
+mdefine_line|#define H2P2_DBG_FPGA_LED_AMBER&t;&t;(1 &lt;&lt; 14)
+DECL|macro|H2P2_DBG_FPGA_LED_RED
+mdefine_line|#define H2P2_DBG_FPGA_LED_RED&t;&t;(1 &lt;&lt; 13)
+DECL|macro|H2P2_DBG_FPGA_LED_BLUE
+mdefine_line|#define H2P2_DBG_FPGA_LED_BLUE&t;&t;(1 &lt;&lt; 12)
 multiline_comment|/*  cpu0 load-meter LEDs */
 DECL|macro|H2P2_DBG_FPGA_LOAD_METER
 mdefine_line|#define H2P2_DBG_FPGA_LOAD_METER&t;(1 &lt;&lt; 0)&t;
@@ -145,8 +200,6 @@ DECL|macro|INNOVATOR_FPGA_IMR2
 mdefine_line|#define INNOVATOR_FPGA_IMR2&t;&t;&t;(OMAP1510_FPGA_BASE + 0x210)
 DECL|macro|OMAP1510_FPGA_ETHR_START
 mdefine_line|#define OMAP1510_FPGA_ETHR_START&t;&t;(OMAP1510_FPGA_START + 0x300)
-DECL|macro|OMAP1510_FPGA_ETHR_BASE
-mdefine_line|#define OMAP1510_FPGA_ETHR_BASE&t;&t;&t;(OMAP1510_FPGA_BASE + 0x300)
 multiline_comment|/*&n; * Power up Giga UART driver, turn on HID clock.&n; * Turn off BT power, since we&squot;re not using it and it&n; * draws power.&n; */
 DECL|macro|OMAP1510_FPGA_RESET_VALUE
 mdefine_line|#define OMAP1510_FPGA_RESET_VALUE&t;&t;0x42
