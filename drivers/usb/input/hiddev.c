@@ -2719,6 +2719,7 @@ id|arg
 comma
 r_sizeof
 (paren
+op_star
 id|uref_multi
 )paren
 )paren
