@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * ACPI PCI HotPlug glue functions to ACPI CA subsystem&n; *&n; * Copyright (C) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (C) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (C) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
@@ -2932,7 +2931,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* is this already enabled? */
+multiline_comment|/* if already enabled, just skip */
 r_if
 c_cond
 (paren
@@ -3077,7 +3076,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* is this already enabled? */
+multiline_comment|/* if already disabled, just skip */
 r_if
 c_cond
 (paren
@@ -3116,12 +3115,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|func-&gt;pci_dev
+op_logical_and
+(paren
 id|func-&gt;flags
 op_amp
-(paren
 id|FUNC_HAS_PS3
-op_or
-id|FUNC_EXISTS
 )paren
 )paren
 (brace
@@ -3193,12 +3192,12 @@ multiline_comment|/* We don&squot;t want to call _EJ0 on non-existing functions.
 r_if
 c_cond
 (paren
+id|func-&gt;pci_dev
+op_logical_and
+(paren
 id|func-&gt;flags
 op_amp
-(paren
 id|FUNC_HAS_EJ0
-op_or
-id|FUNC_EXISTS
 )paren
 )paren
 (brace
@@ -3262,13 +3261,6 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
-id|func-&gt;flags
-op_and_assign
-(paren
-op_complement
-id|FUNC_EXISTS
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* TBD: evaluate _STA to check if the slot is disabled */
@@ -3565,10 +3557,6 @@ id|retval
 )paren
 r_goto
 id|err_exit
-suffix:semicolon
-id|func-&gt;flags
-op_or_assign
-id|FUNC_EXISTS
 suffix:semicolon
 )brace
 id|slot-&gt;flags
@@ -5255,6 +5243,44 @@ c_cond
 l_int|0
 suffix:colon
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * pci address (seg/bus/dev)&n; */
+DECL|function|acpiphp_get_address
+id|u32
+id|acpiphp_get_address
+(paren
+r_struct
+id|acpiphp_slot
+op_star
+id|slot
+)paren
+(brace
+id|u32
+id|address
+suffix:semicolon
+id|address
+op_assign
+(paren
+(paren
+id|slot-&gt;bridge-&gt;seg
+)paren
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+(paren
+id|slot-&gt;bridge-&gt;bus
+)paren
+op_lshift
+l_int|8
+)paren
+op_or
+id|slot-&gt;device
+suffix:semicolon
+r_return
+id|address
 suffix:semicolon
 )brace
 eof

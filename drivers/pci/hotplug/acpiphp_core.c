@@ -1,12 +1,11 @@
 multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (C) 1995,2001 Compaq Computer Corporation&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2001 IBM Corp.&n; * Copyright (C) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (C) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (C) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *&t;&t;    &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;acpiphp.h&quot;
 r_static
@@ -156,6 +155,20 @@ id|value
 suffix:semicolon
 r_static
 r_int
+id|get_address
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
+comma
+id|u32
+op_star
+id|value
+)paren
+suffix:semicolon
+r_static
+r_int
 id|get_latch_status
 (paren
 r_struct
@@ -263,6 +276,11 @@ dot
 id|get_adapter_status
 op_assign
 id|get_adapter_status
+comma
+dot
+id|get_address
+op_assign
+id|get_address
 comma
 dot
 id|get_max_bus_speed
@@ -926,6 +944,74 @@ op_star
 id|value
 op_assign
 id|acpiphp_get_adapter_status
+c_func
+(paren
+id|slot-&gt;acpi_slot
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * get_address - get pci address of a slot&n; * @hotplug_slot: slot to get status&n; * @busdev: pointer to struct pci_busdev (seg, bus, dev)&n; *&n; */
+DECL|function|get_address
+r_static
+r_int
+id|get_address
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|hotplug_slot
+comma
+id|u32
+op_star
+id|value
+)paren
+(brace
+r_struct
+id|slot
+op_star
+id|slot
+op_assign
+id|get_slot
+c_func
+(paren
+id|hotplug_slot
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|hotplug_slot-&gt;name
+)paren
+suffix:semicolon
+op_star
+id|value
+op_assign
+id|acpiphp_get_address
 c_func
 (paren
 id|slot-&gt;acpi_slot
