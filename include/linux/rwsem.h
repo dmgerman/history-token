@@ -60,6 +60,11 @@ op_star
 id|sem
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -142,6 +147,11 @@ op_star
 id|sem
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren

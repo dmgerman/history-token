@@ -405,6 +405,11 @@ op_assign
 id|size
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|device_class
+id|disk_devclass
+suffix:semicolon
 macro_line|#endif  /*  __KERNEL__  */
 macro_line|#ifdef CONFIG_SOLARIS_X86_PARTITION
 DECL|macro|SOLARIS_X86_NUMSLICE

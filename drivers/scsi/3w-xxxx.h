@@ -130,21 +130,22 @@ singleline_comment|// 0x02A
 l_string|&quot;INFO: Verify complete: Unit #&quot;
 comma
 singleline_comment|// 0x02B
-l_string|&quot;ERROR: Overwrote bad sector during rebuild: Port #&quot;
+l_string|&quot;WARNING: Overwrote bad sector during rebuild: Port #&quot;
 comma
 singleline_comment|//0x02C
 l_string|&quot;ERROR: Encountered bad sector during rebuild: Port #&quot;
 comma
 singleline_comment|//0x02D
-l_string|&quot;INFO: Replacement drive is too small: Port #&quot;
+l_string|&quot;ERROR: Replacement drive is too small: Port #&quot;
 comma
 singleline_comment|//0x02E
 l_string|&quot;WARNING: Verify error: Unit not previously initialized: Unit #&quot;
+comma
 singleline_comment|//0x02F
+l_string|&quot;ERROR: Drive not supported: Port #&quot;
+singleline_comment|// 0x030
 )brace
 suffix:semicolon
-DECL|macro|TW_AEN_STRING_MAX
-mdefine_line|#define TW_AEN_STRING_MAX                      0x030
 multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/
 DECL|variable|tw_sense_table
 r_static
