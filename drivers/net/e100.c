@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.15&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.16&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
@@ -4857,11 +4857,17 @@ comma
 id|nic-&gt;phy
 )paren
 suffix:semicolon
-multiline_comment|/* Handle National tx phy */
+multiline_comment|/* Handle National tx phys */
+DECL|macro|NCS_PHY_MODEL_MASK
+mdefine_line|#define NCS_PHY_MODEL_MASK&t;0xFFF0FFFF
 r_if
 c_cond
 (paren
+(paren
 id|nic-&gt;phy
+op_amp
+id|NCS_PHY_MODEL_MASK
+)paren
 op_eq
 id|phy_nsc_tx
 )paren

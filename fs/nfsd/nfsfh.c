@@ -1629,6 +1629,8 @@ comma
 id|exp-&gt;ex_dentry-&gt;d_inode-&gt;i_ino
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|1
 suffix:colon

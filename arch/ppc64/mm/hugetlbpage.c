@@ -995,9 +995,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mm-&gt;context
-op_amp
-id|CONTEXT_LOW_HPAGES
+id|mm-&gt;context.low_hpages
 )paren
 r_return
 l_int|0
@@ -1179,9 +1177,9 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: do we need to scan for PTEs too? */
-id|mm-&gt;context
-op_or_assign
-id|CONTEXT_LOW_HPAGES
+id|mm-&gt;context.low_hpages
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* the context change must make it to memory before the slbia,&n;&t; * so that further SLB misses do the right thing. */
 id|mb
@@ -3519,7 +3517,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|context
+id|context.id
 comma
 id|ea
 )paren

@@ -4001,9 +4001,22 @@ multiline_comment|/* used = ( samples * 16 bits size ) */
 op_star
 id|used
 op_assign
-id|len
+id|max_in
+OG
+(paren
+id|max_out
 op_lshift
 l_int|1
+)paren
+ques
+c_cond
+(paren
+id|max_out
+op_lshift
+l_int|1
+)paren
+suffix:colon
+id|max_in
 suffix:semicolon
 multiline_comment|/* returned = ( samples * 8 bits size ) */
 op_star

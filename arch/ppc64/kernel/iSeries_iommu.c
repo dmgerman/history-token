@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
+macro_line|#include &lt;asm/iSeries/vio.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|variable|veth_iommu_table
@@ -104,7 +105,6 @@ op_amp
 id|pci_bus_type
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * I wonder what the deal is with these.  Nobody uses them.  Why do they&n; * exist? Why do we export them to modules? Why is this comment here, and&n; * why didn&squot;t I just delete them?&n; */
 DECL|variable|iSeries_veth_dev
 r_struct
 id|pci_dev

@@ -83,6 +83,7 @@ r_struct
 id|file_operations
 id|jfs_dir_operations
 suffix:semicolon
+r_static
 id|s64
 id|commitZeroLink
 c_func
@@ -96,6 +97,7 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n; * NAME:&t;jfs_create(dip, dentry, mode)&n; *&n; * FUNCTION:&t;create a regular file in the parent directory &lt;dip&gt;&n; *&t;&t;with name = &lt;from dentry&gt; and mode = &lt;mode&gt;&n; *&n; * PARAMETER:&t;dip &t;- parent directory vnode&n; *&t;&t;dentry&t;- dentry of new file&n; *&t;&t;mode&t;- create mode (rwxrwxrwx).&n; *&t;&t;nd- nd struct&n; *&n; * RETURN:&t;Errors from subroutines&n; *&n; */
 DECL|function|jfs_create
+r_static
 r_int
 id|jfs_create
 c_func
@@ -304,9 +306,19 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_CREATE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;ino
 op_assign
+id|ip-&gt;i_ino
+suffix:semicolon
+id|tblk-&gt;u.ixpxd
+op_assign
+id|JFS_IP
+c_func
+(paren
 id|ip
+)paren
+op_member_access_from_pointer
+id|ixpxd
 suffix:semicolon
 id|iplist
 (braket
@@ -558,6 +570,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_mkdir(dip, dentry, mode)&n; *&n; * FUNCTION:&t;create a child directory in the parent directory &lt;dip&gt;&n; *&t;&t;with name = &lt;from dentry&gt; and mode = &lt;mode&gt;&n; *&n; * PARAMETER:&t;dip &t;- parent directory vnode&n; *&t;&t;dentry&t;- dentry of child directory&n; *&t;&t;mode&t;- create mode (rwxrwxrwx).&n; *&n; * RETURN:&t;Errors from subroutines&n; *&n; * note:&n; * EACCESS: user needs search+write permission on the parent directory&n; */
 DECL|function|jfs_mkdir
+r_static
 r_int
 id|jfs_mkdir
 c_func
@@ -781,9 +794,19 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_CREATE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;ino
 op_assign
+id|ip-&gt;i_ino
+suffix:semicolon
+id|tblk-&gt;u.ixpxd
+op_assign
+id|JFS_IP
+c_func
+(paren
 id|ip
+)paren
+op_member_access_from_pointer
+id|ixpxd
 suffix:semicolon
 id|iplist
 (braket
@@ -1055,6 +1078,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_rmdir(dip, dentry)&n; *&n; * FUNCTION:&t;remove a link to child directory&n; *&n; * PARAMETER:&t;dip &t;- parent inode&n; *&t;&t;dentry&t;- child directory dentry&n; *&n; * RETURN:&t;-EINVAL&t;- if name is . or ..&n; *&t;&t;-EINVAL  - if . or .. exist but are invalid.&n; *&t;&t;errors from subroutines&n; *&n; * note:&n; * if other threads have the directory open when the last link &n; * is removed, the &quot;.&quot; and &quot;..&quot; entries, if present, are removed before &n; * rmdir() returns and no new entries may be created in the directory, &n; * but the directory is not removed until the last reference to &n; * the directory is released (cf.unlink() of regular file).&n; */
 DECL|function|jfs_rmdir
+r_static
 r_int
 id|jfs_rmdir
 c_func
@@ -1218,7 +1242,7 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_DELETE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 op_assign
 id|ip
 suffix:semicolon
@@ -1543,6 +1567,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_unlink(dip, dentry)&n; *&n; * FUNCTION:&t;remove a link to object &lt;vp&gt; named by &lt;name&gt; &n; *&t;&t;from parent directory &lt;dvp&gt;&n; *&n; * PARAMETER:&t;dip &t;- inode of parent directory&n; *&t;&t;dentry &t;- dentry of object to be removed&n; *&n; * RETURN:&t;errors from subroutines&n; *&n; * note:&n; * temporary file: if one or more processes have the file open&n; * when the last link is removed, the link will be removed before&n; * unlink() returns, but the removal of the file contents will be&n; * postponed until all references to the files are closed.&n; *&n; * JFS does NOT support unlink() on directories.&n; *&n; */
 DECL|function|jfs_unlink
+r_static
 r_int
 id|jfs_unlink
 c_func
@@ -1919,7 +1944,7 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_DELETE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 op_assign
 id|ip
 suffix:semicolon
@@ -2181,6 +2206,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;commitZeroLink()&n; *&n; * FUNCTION:    for non-directory, called by jfs_remove(),&n; *&t;&t;truncate a regular file, directory or symbolic&n; *&t;&t;link to zero length. return 0 if type is not &n; *&t;&t;one of these.&n; *&n; *&t;&t;if the file is currently associated with a VM segment&n; *&t;&t;only permanent disk and inode map resources are freed,&n; *&t;&t;and neither the inode nor indirect blocks are modified&n; *&t;&t;so that the resources can be later freed in the work&n; *&t;&t;map by ctrunc1.&n; *&t;&t;if there is no VM segment on entry, the resources are&n; *&t;&t;freed in both work and permanent map.&n; *&t;&t;(? for temporary file - memory object is cached even &n; *&t;&t;after no reference:&n; *&t;&t;reference count &gt; 0 -   )&n; *&n; * PARAMETERS:&t;cd&t;- pointer to commit data structure.&n; *&t;&t;&t;  current inode is the one to truncate.&n; *&n; * RETURN:&t;Errors from subroutines&n; */
 DECL|function|commitZeroLink
+r_static
 id|s64
 id|commitZeroLink
 c_func
@@ -2713,6 +2739,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_link(vp, dvp, name, crp)&n; *&n; * FUNCTION:&t;create a link to &lt;vp&gt; by the name = &lt;name&gt;&n; *&t;&t;in the parent directory &lt;dvp&gt;&n; *&n; * PARAMETER:&t;vp &t;- target object&n; *&t;&t;dvp&t;- parent directory of new link&n; *&t;&t;name&t;- name of new link to target object&n; *&t;&t;crp&t;- credential&n; *&n; * RETURN:&t;Errors from subroutines&n; *&n; * note:&n; * JFS does NOT support link() on directories (to prevent circular&n; * path in the directory hierarchy);&n; * EPERM: the target object is a directory, and either the caller&n; * does not have appropriate privileges or the implementation prohibits&n; * using link() on directories [XPG4.2].&n; *&n; * JFS does NOT support links between file systems:&n; * EXDEV: target object and new link are on different file systems and&n; * implementation does not support links between file systems [XPG4.2].&n; */
 DECL|function|jfs_link
+r_static
 r_int
 id|jfs_link
 c_func
@@ -3022,6 +3049,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;jfs_symlink(dip, dentry, name)&n; *&n; * FUNCTION:&t;creates a symbolic link to &lt;symlink&gt; by name &lt;name&gt;&n; *&t;&t;        in directory &lt;dip&gt;&n; *&n; * PARAMETER:&t;dip&t;    - parent directory vnode&n; *&t;&t;        dentry &t;- dentry of symbolic link&n; *&t;&t;        name    - the path name of the existing object &n; *&t;&t;&t;              that will be the source of the link&n; *&n; * RETURN:&t;errors from subroutines&n; *&n; * note:&n; * ENAMETOOLONG: pathname resolution of a symbolic link produced&n; * an intermediate result whose length exceeds PATH_MAX [XPG4.2]&n;*/
 DECL|function|jfs_symlink
+r_static
 r_int
 id|jfs_symlink
 c_func
@@ -3259,9 +3287,19 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_CREATE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;ino
 op_assign
+id|ip-&gt;i_ino
+suffix:semicolon
+id|tblk-&gt;u.ixpxd
+op_assign
+id|JFS_IP
+c_func
+(paren
 id|ip
+)paren
+op_member_access_from_pointer
+id|ixpxd
 suffix:semicolon
 multiline_comment|/*&n;&t; * create entry for symbolic link in parent directory&n;&t; */
 id|ino
@@ -3844,6 +3882,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:        jfs_rename&n; *&n; * FUNCTION:    rename a file or directory&n; */
 DECL|function|jfs_rename
+r_static
 r_int
 id|jfs_rename
 c_func
@@ -4415,7 +4454,7 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_DELETE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 op_assign
 id|new_ip
 suffix:semicolon
@@ -4489,7 +4528,7 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_DELETE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 op_assign
 id|new_ip
 suffix:semicolon
@@ -5156,6 +5195,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:        jfs_mknod&n; *&n; * FUNCTION:    Create a special file (device)&n; */
 DECL|function|jfs_mknod
+r_static
 r_int
 id|jfs_mknod
 c_func
@@ -5368,9 +5408,19 @@ id|tblk-&gt;xflag
 op_or_assign
 id|COMMIT_CREATE
 suffix:semicolon
-id|tblk-&gt;ip
+id|tblk-&gt;ino
 op_assign
+id|ip-&gt;i_ino
+suffix:semicolon
+id|tblk-&gt;u.ixpxd
+op_assign
+id|JFS_IP
+c_func
+(paren
 id|ip
+)paren
+op_member_access_from_pointer
+id|ixpxd
 suffix:semicolon
 id|ino
 op_assign

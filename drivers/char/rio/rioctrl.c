@@ -1838,7 +1838,8 @@ id|arg
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_return
@@ -7001,6 +7002,7 @@ ques
 c_cond
 l_int|0
 suffix:colon
+op_minus
 id|EPERM
 suffix:semicolon
 r_case
@@ -7021,6 +7023,7 @@ ques
 c_cond
 l_int|0
 suffix:colon
+op_minus
 id|EPERM
 suffix:semicolon
 r_case

@@ -381,6 +381,20 @@ r_int
 id|cant_block
 )paren
 suffix:semicolon
+r_static
+r_int
+id|lmLogSync
+c_func
+(paren
+r_struct
+id|jfs_log
+op_star
+id|log
+comma
+r_int
+id|nosyncwait
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;statistics&n; */
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 DECL|struct|lmStat
@@ -2225,6 +2239,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;lmPostGC()&n; *&n; * FUNCTION:&t;group commit post-processing&n; *&t;Processes transactions after their commit records have been written&n; *&t;to disk, redriving log I/O if necessary.&n; *&n; * RETURN:&t;None&n; *&n; * NOTE:&n; *&t;This routine is called a interrupt time by lbmIODone&n; */
 DECL|function|lmPostGC
+r_static
 r_void
 id|lmPostGC
 c_func
@@ -2530,6 +2545,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;lmLogSync()&n; *&n; * FUNCTION:&t;write log SYNCPT record for specified log&n; *&t;if new sync address is available&n; *&t;(normally the case if sync() is executed by back-ground&n; *&t;process).&n; *&t;if not, explicitly run jfs_blogsync() to initiate&n; *&t;getting of new sync address.&n; *&t;calculate new value of i_nextsync which determines when&n; *&t;this code is called again.&n; *&n; *&t;this is called only from lmLog().&n; *&n; * PARAMETER:&t;ip&t;- pointer to logs inode.&n; *&n; * RETURN:&t;0&n; *&t;&t;&t;&n; * serialization: LOG_LOCK() held on entry/exit&n; */
 DECL|function|lmLogSync
+r_static
 r_int
 id|lmLogSync
 c_func

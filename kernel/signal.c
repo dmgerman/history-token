@@ -326,7 +326,7 @@ suffix:semicolon
 DECL|macro|PENDING
 mdefine_line|#define PENDING(p,b) has_pending_signals(&amp;(p)-&gt;signal, (b))
 DECL|function|recalc_sigpending_tsk
-r_inline
+id|fastcall
 r_void
 id|recalc_sigpending_tsk
 c_func

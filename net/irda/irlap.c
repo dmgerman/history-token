@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
@@ -544,6 +545,13 @@ r_return
 id|self
 suffix:semicolon
 )brace
+DECL|variable|irlap_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlap_open
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function __irlap_close (self)&n; *&n; *    Remove IrLAP and all allocated memory. Stop any pending timers.&n; *&n; */
 DECL|function|__irlap_close
 r_static
@@ -754,6 +762,13 @@ id|lap
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irlap_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlap_close
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlap_connect_indication (self, skb)&n; *&n; *    Another device is attempting to make a connection&n; *&n; */
 DECL|function|irlap_connect_indication
 r_void

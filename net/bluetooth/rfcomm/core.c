@@ -1699,6 +1699,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_throttle
 r_void
+id|fastcall
 id|__rfcomm_dlc_throttle
 c_func
 (paren
@@ -1748,6 +1749,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_unthrottle
 r_void
+id|fastcall
 id|__rfcomm_dlc_unthrottle
 c_func
 (paren

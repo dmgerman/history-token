@@ -56,6 +56,13 @@ id|proc_dir_entry
 op_star
 id|proc_irda
 suffix:semicolon
+DECL|variable|proc_irda
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|proc_irda
+)paren
+suffix:semicolon
 DECL|variable|irda_dirs
 r_static
 r_struct

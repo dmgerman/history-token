@@ -1,6 +1,7 @@
 multiline_comment|/*********************************************************************&n; *&n; * Filename:      wrapper.c&n; * Version:       1.2&n; * Description:   IrDA SIR async wrapper layer&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Fri Jan 28 13:21:09 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Modified at:   Fri May 28  3:11 CST 1999&n; * Modified by:   Horst von Brand &lt;vonbrand@sleipnir.valparaiso.cl&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
@@ -383,6 +384,13 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|async_wrap_skb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|async_wrap_skb
+)paren
+suffix:semicolon
 multiline_comment|/************************* FRAME UNWRAPPING *************************/
 multiline_comment|/*&n; * Unwrap and unstuff SIR frames&n; *&n; * Complete rewrite by Jean II :&n; * More inline, faster, more compact, more logical. Jean II&n; * (16 bytes on P6 200MHz, old 5 to 7 us, new 4 to 6 us)&n; * (24 bytes on P6 200MHz, old 9 to 10 us, new 7 to 8 us)&n; * (for reference, 115200 b/s is 1 byte every 69 us)&n; * And reduce wrapper.o by ~900B in the process ;-)&n; *&n; * Then, we have the addition of ZeroCopy, which is optional&n; * (i.e. the driver must initiate it) and improve final processing.&n; * (2005 B frame + EOF on P6 200MHz, without 30 to 50 us, with 10 to 25 us)&n; *&n; * Note : at FIR and MIR, HDLC framing is used and usually handled&n; * by the controller, so we come here only for SIR... Jean II&n; */
 multiline_comment|/*&n; * We can also choose where we want to do the CRC calculation. We can&n; * do it &quot;inline&quot;, as we receive the bytes, or &quot;postponed&quot;, when&n; * receiving the End-Of-Frame.&n; * (16 bytes on P6 200MHz, inlined 4 to 6 us, postponed 4 to 5 us)&n; * (24 bytes on P6 200MHz, inlined 7 to 8 us, postponed 5 to 7 us)&n; * With ZeroCopy :&n; * (2005 B frame on P6 200MHz, inlined 10 to 25 us, postponed 140 to 180 us)&n; * Without ZeroCopy :&n; * (2005 B frame on P6 200MHz, inlined 30 to 50 us, postponed 150 to 180 us)&n; * (Note : numbers taken with irq disabled)&n; *&n; * From those numbers, it&squot;s not clear which is the best strategy, because&n; * we end up running through a lot of data one way or another (i.e. cache&n; * misses). I personally prefer to avoid the huge latency spike of the&n; * &quot;postponed&quot; solution, because it come just at the time when we have&n; * lot&squot;s of protocol processing to do and it will hurt our ability to&n; * reach low link turnaround times... Jean II&n; */
@@ -1214,4 +1222,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|async_unwrap_char
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|async_unwrap_char
+)paren
+suffix:semicolon
 eof

@@ -557,6 +557,7 @@ id|close_private_file
 suffix:semicolon
 DECL|function|fput
 r_void
+id|fastcall
 id|fput
 c_func
 (paren
@@ -593,6 +594,7 @@ suffix:semicolon
 multiline_comment|/* __fput is called from task context when aio completion releases the last&n; * last use of a struct file *.  Do not use otherwise.&n; */
 DECL|function|__fput
 r_void
+id|fastcall
 id|__fput
 c_func
 (paren
@@ -731,6 +733,7 @@ suffix:semicolon
 DECL|function|fget
 r_struct
 id|file
+id|fastcall
 op_star
 id|fget
 c_func
@@ -800,6 +803,7 @@ multiline_comment|/*&n; * Lightweight file lookup - no refcnt increment if fd ta
 DECL|function|fget_light
 r_struct
 id|file
+id|fastcall
 op_star
 id|fget_light
 c_func

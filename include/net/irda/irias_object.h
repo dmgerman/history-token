@@ -350,7 +350,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|ias_value
-id|missing
+id|irias_missing
 suffix:semicolon
 r_extern
 id|hashbin_t

@@ -14,6 +14,10 @@ DECL|macro|PCI_PROBE_CONF1
 mdefine_line|#define PCI_PROBE_CONF1&t;&t;0x0002
 DECL|macro|PCI_PROBE_CONF2
 mdefine_line|#define PCI_PROBE_CONF2&t;&t;0x0004
+DECL|macro|PCI_PROBE_MMCONF
+mdefine_line|#define PCI_PROBE_MMCONF&t;0x0008
+DECL|macro|PCI_PROBE_MASK
+mdefine_line|#define PCI_PROBE_MASK&t;&t;0x000f
 DECL|macro|PCI_NO_SORT
 mdefine_line|#define PCI_NO_SORT&t;&t;0x0100
 DECL|macro|PCI_BIOS_SORT

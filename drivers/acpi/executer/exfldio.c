@@ -239,7 +239,12 @@ id|rgn_desc-&gt;region.length
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_RELAXED_AML
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_strict
+)paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Allow access to the field if it is within the region size&n;&t;&t;&t; * rounded up to a multiple of the access byte width.  This&n;&t;&t;&t; * overcomes &quot;off-by-one&quot; programming errors in the AML often&n;&t;&t;&t; * found in Toshiba laptops.  These errors were allowed by&n;&t;&t;&t; * the Microsoft ASL compiler.&n;&t;&t;&t; */
 id|u32
@@ -319,13 +324,14 @@ id|AE_OK
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
+r_else
+(brace
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_REGION_LIMIT
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 id|return_ACPI_STATUS
 (paren

@@ -3833,7 +3833,7 @@ id|idx
 )braket
 )paren
 (brace
-id|printk
+id|Dprintk
 c_func
 (paren
 id|KERN_DEBUG

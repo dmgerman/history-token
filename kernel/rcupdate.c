@@ -75,6 +75,7 @@ mdefine_line|#define RCU_tasklet(cpu) (per_cpu(rcu_tasklet, cpu))
 multiline_comment|/**&n; * call_rcu - Queue an RCU update request.&n; * @head: structure to be used for queueing the RCU updates.&n; * @func: actual update function to be invoked after the grace period&n; * @arg: argument to be passed to the update function&n; *&n; * The update function will be invoked as soon as all CPUs have performed &n; * a context switch or been seen in the idle loop or in a user process. &n; * The read-side of critical section that use call_rcu() for updation must &n; * be protected by rcu_read_lock()/rcu_read_unlock().&n; */
 DECL|function|call_rcu
 r_void
+id|fastcall
 id|call_rcu
 c_func
 (paren

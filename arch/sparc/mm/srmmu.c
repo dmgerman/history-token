@@ -3074,6 +3074,11 @@ id|THREAD_INFO_ORDER
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
+r_if
+c_cond
+(paren
+id|ret
+)paren
 id|memset
 c_func
 (paren

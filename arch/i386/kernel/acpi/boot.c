@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#if defined (CONFIG_X86_LOCAL_APIC)
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
@@ -21,8 +21,6 @@ DECL|variable|__initdata
 r_int
 id|acpi_noirq
 id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* skip ACPI IRQ initialization */
 DECL|variable|__initdata
@@ -41,11 +39,28 @@ DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
 suffix:semicolon
+DECL|variable|acpi_strict
+r_int
+id|acpi_strict
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+DECL|variable|__initdata
+r_static
+id|u64
+id|acpi_lapic_addr
+id|__initdata
+op_assign
+id|APIC_DEFAULT_PHYS_BASE
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
+multiline_comment|/*&n; * The default interrupt routing model is PIC (8259).  This gets&n; * overriden if IOAPICs are enumerated (below).&n; */
 DECL|variable|acpi_irq_model
 r_enum
 id|acpi_irq_model_id
 id|acpi_irq_model
+op_assign
+id|ACPI_IRQ_MODEL_PIC
 suffix:semicolon
 multiline_comment|/*&n; * Temporarily use the virtual area starting from FIX_IO_APIC_BASE_END,&n; * to map the target physical address. The problem is that set_fixmap()&n; * provides a single page, and it is possible that the page is not&n; * sufficient.&n; * By using this area, we can map up to MAX_IO_APICS pages temporarily,&n; * i.e. until the next __va_range() call.&n; *&n; * Important Safety Note:  The fixed I/O APIC page numbers are *subtracted*&n; * from the fixed base.  That&squot;s why we start at FIX_IO_APIC_BASE_END and&n; * count idx down while incrementing the phys address.&n; */
 DECL|function|__acpi_map_table
@@ -181,15 +196,105 @@ id|offset
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-DECL|variable|__initdata
+macro_line|#ifdef CONFIG_PCI_MMCONFIG
+DECL|function|acpi_parse_mcfg
 r_static
-id|u64
-id|acpi_lapic_addr
-id|__initdata
-op_assign
-id|APIC_DEFAULT_PHYS_BASE
+r_int
+id|__init
+id|acpi_parse_mcfg
+c_func
+(paren
+r_int
+r_int
+id|phys_addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_struct
+id|acpi_table_mcfg
+op_star
+id|mcfg
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|phys_addr
+op_logical_or
+op_logical_neg
+id|size
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|mcfg
+op_assign
+(paren
+r_struct
+id|acpi_table_mcfg
+op_star
+)paren
+id|__acpi_map_table
+c_func
+(paren
+id|phys_addr
+comma
+id|size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mcfg
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Unable to map MCFG&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mcfg-&gt;base_reserved
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;MMCONFIG not in low 4GB of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|pci_mmcfg_base_addr
+op_assign
+id|mcfg-&gt;base_address
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PCI_MMCONFIG */
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_static
 r_int
 id|__init
@@ -265,6 +370,7 @@ c_cond
 (paren
 id|madt-&gt;lapic_address
 )paren
+(brace
 id|acpi_lapic_addr
 op_assign
 (paren
@@ -275,13 +381,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 id|PREFIX
 l_string|&quot;Local APIC address 0x%08x&bslash;n&quot;
 comma
 id|madt-&gt;lapic_address
 )paren
 suffix:semicolon
+)brace
 id|acpi_madt_oem_check
 c_func
 (paren
@@ -632,9 +739,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_X86_IO_APIC*/
+macro_line|#endif /* CONFIG_X86_IO_APIC */
 macro_line|#ifdef&t;CONFIG_ACPI_BUS
-multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recogznied or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
+multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recognized or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
 DECL|variable|acpi_pic_sci_trigger
 r_static
 r_int
@@ -999,6 +1106,84 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|acpi_parse_sbf
+r_static
+r_int
+id|__init
+id|acpi_parse_sbf
+c_func
+(paren
+r_int
+r_int
+id|phys_addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_struct
+id|acpi_table_sbf
+op_star
+id|sb
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|phys_addr
+op_logical_or
+op_logical_neg
+id|size
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|sb
+op_assign
+(paren
+r_struct
+id|acpi_table_sbf
+op_star
+)paren
+id|__acpi_map_table
+c_func
+(paren
+id|phys_addr
+comma
+id|size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sb
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Unable to map SBF&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|sbf_port
+op_assign
+id|sb-&gt;sbf_cmos
+suffix:semicolon
+multiline_comment|/* Save CMOS port */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_HPET_TIMER
 r_extern
 r_int
@@ -1308,159 +1493,23 @@ r_return
 id|rsdp_phys
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * acpi_boot_init()&n; *  called from setup_arch(), always.&n; *&t;1. maps ACPI tables for later use&n; *&t;2. enumerates lapics&n; *&t;3. enumerates io-apics&n; *&n; * side effects:&n; *&t;acpi_lapic = 1 if LAPIC found&n; *&t;acpi_ioapic = 1 if IOAPIC found&n; *&t;if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *&t;if acpi_blacklisted() acpi_disabled = 1;&n; *&t;acpi_irq_model=...&n; *&t;...&n; *&n; * return value: (currently ignored)&n; *&t;0: success&n; *&t;!0: failure&n; */
+macro_line|#ifdef&t;CONFIG_X86_LOCAL_APIC
+multiline_comment|/*&n; * Parse LAPIC entries in MADT&n; * returns 0 on success, &lt; 0 on error&n; */
+r_static
 r_int
 id|__init
-DECL|function|acpi_boot_init
-id|acpi_boot_init
+DECL|function|acpi_parse_madt_lapic_entries
+id|acpi_parse_madt_lapic_entries
+c_func
 (paren
 r_void
 )paren
 (brace
 r_int
-id|result
-op_assign
-l_int|0
+id|count
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_disabled
-op_logical_and
-op_logical_neg
-id|acpi_ht
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overriden if IOAPICs are enumerated (below).&n;&t; */
-id|acpi_irq_model
-op_assign
-id|ACPI_IRQ_MODEL_PIC
-suffix:semicolon
-multiline_comment|/* &n;&t; * Initialize the ACPI boot-time table parser.&n;&t; */
-id|result
-op_assign
-id|acpi_table_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-(brace
-id|acpi_disabled
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-id|result
-op_assign
-id|acpi_blacklisted
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
-)paren
-suffix:semicolon
-id|acpi_disabled
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_X86_PM_TIMER
-id|acpi_table_parse
-c_func
-(paren
-id|ACPI_FADT
-comma
-id|acpi_parse_fadt
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
-id|result
-op_assign
-id|acpi_table_parse
-c_func
-(paren
-id|ACPI_APIC
-comma
-id|acpi_parse_madt
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|result
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PREFIX
-l_string|&quot;Error parsing MADT&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|result
-OG
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;Multiple MADT tables exist&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t; * Local APIC&n;&t; * ----------&n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overriden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
-id|result
+multiline_comment|/* &n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overriden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1475,7 +1524,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1489,7 +1538,7 @@ l_string|&quot;Error parsing LAPIC address override entry&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
 id|mp_register_lapic_address
@@ -1498,7 +1547,7 @@ c_func
 id|acpi_lapic_addr
 )paren
 suffix:semicolon
-id|result
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1514,7 +1563,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|result
+id|count
 )paren
 (brace
 id|printk
@@ -1535,7 +1584,7 @@ r_else
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1550,10 +1599,10 @@ l_string|&quot;Error parsing LAPIC entry&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* TBD: Cleanup to allow fallback to MPS */
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
-id|result
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1568,7 +1617,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1583,16 +1632,29 @@ l_string|&quot;Error parsing LAPIC NMI entry&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* TBD: Cleanup to allow fallback to MPS */
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
-id|acpi_lapic
-op_assign
-l_int|1
+r_return
+l_int|0
 suffix:semicolon
-macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
+)brace
+macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
 macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
-multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
+multiline_comment|/*&n; * Parse IOAPIC related entries in MADT&n; * returns 0 on success, &lt; 0 on error&n; */
+r_static
+r_int
+id|__init
+DECL|function|acpi_parse_madt_ioapic_entries
+id|acpi_parse_madt_ioapic_entries
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|count
+suffix:semicolon
 multiline_comment|/*&n;&t; * ACPI interpreter is required to complete interrupt setup,&n;&t; * so if it is off, don&squot;t enumerate the io-apics with ACPI.&n;&t; * If MPS is present, it will handle them,&n;&t; * otherwise the system will stay in PIC mode&n;&t; */
 r_if
 c_cond
@@ -1603,7 +1665,8 @@ id|acpi_noirq
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; &t; * if &quot;noapic&quot; boot option, don&squot;t look for IO-APICs&n;&t; */
@@ -1626,10 +1689,11 @@ l_string|&quot;due to &squot;noapic&squot; option.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
-id|result
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1645,7 +1709,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|result
+id|count
 )paren
 (brace
 id|printk
@@ -1665,7 +1729,7 @@ r_else
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1679,7 +1743,7 @@ l_string|&quot;Error parsing IOAPIC entry&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/* Build a default routing table for legacy (ISA) interrupts. */
@@ -1688,7 +1752,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|result
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1703,7 +1767,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1718,10 +1782,10 @@ l_string|&quot;Error parsing interrupt source overrides entry&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* TBD: Cleanup to allow fallback to MPS */
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
-id|result
+id|count
 op_assign
 id|acpi_table_parse_madt
 c_func
@@ -1736,7 +1800,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|count
 OL
 l_int|0
 )paren
@@ -1751,9 +1815,98 @@ l_string|&quot;Error parsing NMI SRC entry&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* TBD: Cleanup to allow fallback to MPS */
 r_return
-id|result
+id|count
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|acpi_parse_madt_ioapic_entries
+r_static
+r_inline
+r_int
+id|acpi_parse_madt_ioapic_entries
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif /* !(CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER) */
+r_static
+r_void
+id|__init
+DECL|function|acpi_process_madt
+id|acpi_process_madt
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_int
+id|count
+comma
+id|error
+suffix:semicolon
+id|count
+op_assign
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_APIC
+comma
+id|acpi_parse_madt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Parse MADT LAPIC entries&n;&t;&t; */
+id|error
+op_assign
+id|acpi_parse_madt_lapic_entries
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+(brace
+id|acpi_lapic
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Parse MADT IO-APIC entries&n;&t;&t;&t; */
+id|error
+op_assign
+id|acpi_parse_madt_ioapic_entries
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+(brace
 id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_IOAPIC
@@ -1768,16 +1921,6 @@ id|acpi_ioapic
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER */
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-r_if
-c_cond
-(paren
-id|acpi_lapic
-op_logical_and
-id|acpi_ioapic
-)paren
-(brace
 id|smp_found_config
 op_assign
 l_int|1
@@ -1788,14 +1931,152 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+)brace
+macro_line|#endif
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * acpi_boot_init()&n; *  called from setup_arch(), always.&n; *&t;1. checksums all tables&n; *&t;2. enumerates lapics&n; *&t;3. enumerates io-apics&n; *&n; * side effects:&n; *&t;acpi_lapic = 1 if LAPIC found&n; *&t;acpi_ioapic = 1 if IOAPIC found&n; *&t;if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *&t;if acpi_blacklisted() acpi_disabled = 1;&n; *&t;acpi_irq_model=...&n; *&t;...&n; *&n; * return value: (currently ignored)&n; *&t;0: success&n; *&t;!0: failure&n; */
+r_int
+id|__init
+DECL|function|acpi_boot_init
+id|acpi_boot_init
+(paren
+r_void
+)paren
+(brace
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/*&n;&t; * If acpi_disabled, bail out&n;&t; * One exception: acpi=ht continues far enough to enumerate LAPICs&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_disabled
+op_logical_and
+op_logical_neg
+id|acpi_ht
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* &n;&t; * Initialize the ACPI boot-time table parser.&n;&t; */
+id|error
+op_assign
+id|acpi_table_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
+(paren
+r_void
+)paren
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_BOOT
+comma
+id|acpi_parse_sbf
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * blacklist may disable ACPI entirely&n;&t; */
+id|error
+op_assign
+id|acpi_blacklisted
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
+)paren
+suffix:semicolon
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Process the Multiple APIC Description Table (MADT), if present&n;&t; */
+id|acpi_process_madt
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_FADT
+comma
+id|acpi_parse_fadt
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HPET_TIMER
+(paren
+r_void
+)paren
 id|acpi_table_parse
 c_func
 (paren
 id|ACPI_HPET
 comma
 id|acpi_parse_hpet
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PCI_MMCONFIG
+id|error
+op_assign
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_MCFG
+comma
+id|acpi_parse_mcfg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;Error %d parsing MCFG&bslash;n&quot;
+comma
+id|error
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1983,10 +1983,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Setup lookup scope (search starting point) */
@@ -2045,7 +2043,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Cleanup */
 (paren
 r_void
 )paren
@@ -2054,6 +2051,9 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+id|cleanup
+suffix:colon
+multiline_comment|/* Cleanup */
 r_if
 c_cond
 (paren

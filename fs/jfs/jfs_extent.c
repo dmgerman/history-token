@@ -58,22 +58,6 @@ suffix:semicolon
 multiline_comment|/*&n; * external references&n; */
 r_extern
 r_int
-id|dbExtend
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-id|s64
-comma
-id|s64
-comma
-id|s64
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|jfs_commit_inode
 c_func
 (paren

@@ -2256,6 +2256,28 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* acpi=strict disables out-of-spec workarounds */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=strict&quot;
+comma
+l_int|11
+)paren
+)paren
+(brace
+id|acpi_strict
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Limit ACPI just to boot-time to enable HT */
 r_else
 r_if

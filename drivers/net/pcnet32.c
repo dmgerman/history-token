@@ -118,10 +118,10 @@ comma
 id|pcnet32_pci_tbl
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|cards_found
+r_static
 r_int
 id|cards_found
-id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * VLB I/O addresses&n; */
 DECL|variable|__initdata
@@ -6817,7 +6817,19 @@ id|entry
 op_eq
 id|TX_RING_SIZE
 op_div
+l_int|3
+)paren
+op_logical_or
+(paren
+id|entry
+op_eq
+(paren
+id|TX_RING_SIZE
+op_star
 l_int|2
+)paren
+op_div
+l_int|3
 )paren
 op_logical_or
 (paren
@@ -6830,7 +6842,7 @@ l_int|2
 )paren
 )paren
 (brace
-multiline_comment|/* Enable Successful-TxDone interrupt if we have&n;&t; * 1/2 of, or nearly all of, our ring buffer Tx&squot;d&n;&t; * but not yet cleaned up.  Thus, most of the time,&n;&t; * we will not enable Successful-TxDone interrupts.&n;&t; */
+multiline_comment|/* Enable Successful-TxDone interrupt if we have&n;&t; * 1/3, 2/3 or nearly all of, our ring buffer Tx&squot;d&n;&t; * but not yet cleaned up.  Thus, most of the time,&n;&t; * we will not enable Successful-TxDone interrupts.&n;&t; */
 id|status
 op_assign
 l_int|0x9300

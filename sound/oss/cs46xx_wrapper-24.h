@@ -4,7 +4,7 @@ DECL|macro|__CS46XX_WRAPPER24_H
 mdefine_line|#define __CS46XX_WRAPPER24_H
 macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|CS_OWNER
-mdefine_line|#define CS_OWNER owner:
+mdefine_line|#define CS_OWNER .owner =
 DECL|macro|CS_THIS_MODULE
 mdefine_line|#define CS_THIS_MODULE THIS_MODULE,
 DECL|function|cs46xx_null

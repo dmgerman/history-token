@@ -1677,6 +1677,7 @@ multiline_comment|/*&n; *&t;switch_to(x,yn) should switch tasks from x to y.&n; 
 DECL|function|__switch_to
 r_struct
 id|task_struct
+id|fastcall
 op_star
 id|__switch_to
 c_func

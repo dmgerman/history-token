@@ -5,6 +5,8 @@ DECL|macro|asmlinkage
 mdefine_line|#define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
 DECL|macro|FASTCALL
 mdefine_line|#define FASTCALL(x)&t;x __attribute__((regparm(3)))
+DECL|macro|fastcall
+mdefine_line|#define fastcall&t;__attribute__((regparm(3)))
 macro_line|#ifdef CONFIG_X86_ALIGNMENT_16
 DECL|macro|__ALIGN
 mdefine_line|#define __ALIGN .align 16,0x90

@@ -4,34 +4,6 @@ DECL|macro|_H_JFS_ACL
 mdefine_line|#define _H_JFS_ACL
 macro_line|#ifdef CONFIG_JFS_POSIX_ACL
 macro_line|#include &lt;linux/xattr_acl.h&gt;
-r_struct
-id|posix_acl
-op_star
-id|jfs_get_acl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|jfs_set_acl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-comma
-r_struct
-id|posix_acl
-op_star
-)paren
-suffix:semicolon
 r_int
 id|jfs_permission
 c_func

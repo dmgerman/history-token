@@ -271,10 +271,6 @@ DECL|enum|cflags
 r_enum
 id|cflags
 (brace
-DECL|enumerator|COMMIT_New
-id|COMMIT_New
-comma
-multiline_comment|/* never committed inode   */
 DECL|enumerator|COMMIT_Nolink
 id|COMMIT_Nolink
 comma

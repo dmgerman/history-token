@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * I2O Random Block Storage Class OSM&n; *&n; * (C) Copyright 1999-2002 Red Hat&n; *&t;&n; * Written by Alan Cox, Building Number Three Ltd&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the purpose of avoiding doubt the preferred form of the work&n; * for making modifications shall be a standards compliant form such&n; * gzipped tar and not one requiring a proprietary or patent encumbered&n; * tool to unpack.&n; *&n; * This is a beta test release. Most of the good code was taken&n; * from the nbd driver by Pavel Machek, who in turn took some of it&n; * from loop.c. Isn&squot;t free software great for reusability 8)&n; *&n; * Fixes/additions:&n; *&t;Steve Ralston:&t;&n; *&t;&t;Multiple device handling error fixes,&n; *&t;&t;Added a queue depth.&n; *&t;Alan Cox:&t;&n; *&t;&t;FC920 has an rmw bug. Dont or in the end marker.&n; *&t;&t;Removed queue walk, fixed for 64bitness.&n; *&t;&t;Rewrote much of the code over time&n; *&t;&t;Added indirect block lists&n; *&t;&t;Handle 64K limits on many controllers&n; *&t;&t;Don&squot;t use indirects on the Promise (breaks)&n; *&t;&t;Heavily chop down the queue depths&n; *&t;Deepak Saxena:&n; *&t;&t;Independent queues per IOP&n; *&t;&t;Support for dynamic device creation/deletion&n; *&t;&t;Code cleanup&t;&n; *    &t;&t;Support for larger I/Os through merge* functions &n; *       &t;(taken from DAC960 driver)&n; *&t;Boji T Kannanthanam:&n; *&t;&t;Set the I2O Block devices to be detected in increasing &n; *&t;&t;order of TIDs during boot.&n; *&t;&t;Search and set the I2O block device that we boot off from  as&n; *&t;&t;the first device to be claimed (as /dev/i2o/hda)&n; *&t;&t;Properly attach/detach I2O gendisk structure from the system&n; *&t;&t;gendisk list. The I2O block devices now appear in &n; * &t;&t;/proc/partitions.&n; *&n; *&t;To do:&n; *&t;&t;Serial number scanning to find duplicates for FC multipathing&n; */
+multiline_comment|/*&n; * I2O Random Block Storage Class OSM&n; *&n; * (C) Copyright 1999-2002 Red Hat&n; *&t;&n; * Written by Alan Cox, Building Number Three Ltd&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the purpose of avoiding doubt the preferred form of the work&n; * for making modifications shall be a standards compliant form such&n; * gzipped tar and not one requiring a proprietary or patent encumbered&n; * tool to unpack.&n; *&n; * This is a beta test release. Most of the good code was taken&n; * from the nbd driver by Pavel Machek, who in turn took some of it&n; * from loop.c. Isn&squot;t free software great for reusability 8)&n; *&n; * Fixes/additions:&n; *&t;Steve Ralston:&t;&n; *&t;&t;Multiple device handling error fixes,&n; *&t;&t;Added a queue depth.&n; *&t;Alan Cox:&t;&n; *&t;&t;FC920 has an rmw bug. Dont or in the end marker.&n; *&t;&t;Removed queue walk, fixed for 64bitness.&n; *&t;&t;Rewrote much of the code over time&n; *&t;&t;Added indirect block lists&n; *&t;&t;Handle 64K limits on many controllers&n; *&t;&t;Don&squot;t use indirects on the Promise (breaks)&n; *&t;&t;Heavily chop down the queue depths&n; *&t;Deepak Saxena:&n; *&t;&t;Independent queues per IOP&n; *&t;&t;Support for dynamic device creation/deletion&n; *&t;&t;Code cleanup&t;&n; *    &t;&t;Support for larger I/Os through merge* functions &n; *       &t;(taken from DAC960 driver)&n; *&t;Boji T Kannanthanam:&n; *&t;&t;Set the I2O Block devices to be detected in increasing &n; *&t;&t;order of TIDs during boot.&n; *&t;&t;Search and set the I2O block device that we boot off from  as&n; *&t;&t;the first device to be claimed (as /dev/i2o/hda)&n; *&t;&t;Properly attach/detach I2O gendisk structure from the system&n; *&t;&t;gendisk list. The I2O block devices now appear in &n; * &t;&t;/proc/partitions.&n; *&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;:&n; *&t;&t;Minor bugfixes for 2.6.&n; *&n; * To do:&n; *&t;Serial number scanning to find duplicates for FC multipathing&n; */
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -44,37 +44,6 @@ macro_line|#endif
 multiline_comment|/*&n; * Events that this OSM is interested in&n; */
 DECL|macro|I2OB_EVENT_MASK
 mdefine_line|#define I2OB_EVENT_MASK&t;&t;(I2O_EVT_IND_BSA_VOLUME_LOAD |&t;&bslash;&n;&t;&t;&t;&t; I2O_EVT_IND_BSA_VOLUME_UNLOAD | &bslash;&n;&t;&t;&t;&t; I2O_EVT_IND_BSA_VOLUME_UNLOAD_REQ | &bslash;&n;&t;&t;&t;&t; I2O_EVT_IND_BSA_CAPACITY_CHANGE | &bslash;&n;&t;&t;&t;&t; I2O_EVT_IND_BSA_SCSI_SMART )
-multiline_comment|/*&n; * I2O Block Error Codes - should be in a header file really...&n; */
-DECL|macro|I2O_BSA_DSC_SUCCESS
-mdefine_line|#define I2O_BSA_DSC_SUCCESS             0x0000
-DECL|macro|I2O_BSA_DSC_MEDIA_ERROR
-mdefine_line|#define I2O_BSA_DSC_MEDIA_ERROR         0x0001
-DECL|macro|I2O_BSA_DSC_ACCESS_ERROR
-mdefine_line|#define I2O_BSA_DSC_ACCESS_ERROR        0x0002
-DECL|macro|I2O_BSA_DSC_DEVICE_FAILURE
-mdefine_line|#define I2O_BSA_DSC_DEVICE_FAILURE      0x0003
-DECL|macro|I2O_BSA_DSC_DEVICE_NOT_READY
-mdefine_line|#define I2O_BSA_DSC_DEVICE_NOT_READY    0x0004
-DECL|macro|I2O_BSA_DSC_MEDIA_NOT_PRESENT
-mdefine_line|#define I2O_BSA_DSC_MEDIA_NOT_PRESENT   0x0005
-DECL|macro|I2O_BSA_DSC_MEDIA_LOCKED
-mdefine_line|#define I2O_BSA_DSC_MEDIA_LOCKED        0x0006
-DECL|macro|I2O_BSA_DSC_MEDIA_FAILURE
-mdefine_line|#define I2O_BSA_DSC_MEDIA_FAILURE       0x0007
-DECL|macro|I2O_BSA_DSC_PROTOCOL_FAILURE
-mdefine_line|#define I2O_BSA_DSC_PROTOCOL_FAILURE    0x0008
-DECL|macro|I2O_BSA_DSC_BUS_FAILURE
-mdefine_line|#define I2O_BSA_DSC_BUS_FAILURE         0x0009
-DECL|macro|I2O_BSA_DSC_ACCESS_VIOLATION
-mdefine_line|#define I2O_BSA_DSC_ACCESS_VIOLATION    0x000A
-DECL|macro|I2O_BSA_DSC_WRITE_PROTECTED
-mdefine_line|#define I2O_BSA_DSC_WRITE_PROTECTED     0x000B
-DECL|macro|I2O_BSA_DSC_DEVICE_RESET
-mdefine_line|#define I2O_BSA_DSC_DEVICE_RESET        0x000C
-DECL|macro|I2O_BSA_DSC_VOLUME_CHANGED
-mdefine_line|#define I2O_BSA_DSC_VOLUME_CHANGED      0x000D
-DECL|macro|I2O_BSA_DSC_TIMEOUT
-mdefine_line|#define I2O_BSA_DSC_TIMEOUT             0x000E
 DECL|macro|I2O_LOCK
 mdefine_line|#define I2O_LOCK(unit)&t;(i2ob_dev[(unit)].req_queue-&gt;queue_lock)
 multiline_comment|/*&n; *&t;Some of these can be made smaller later&n; */
@@ -3767,6 +3736,65 @@ comma
 id|unit
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If this is the first I2O block device found on this IOP,&n;&t; * we need to initialize all the queue data structures&n;&t; * before any I/O can be performed. If it fails, this&n;&t; * device is useless.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i2ob_queues
+(braket
+id|unit
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i2ob_init_iop
+c_func
+(paren
+id|unit
+)paren
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * This will save one level of lookup/indirection in critical&n;&t; * code so that we can directly get the queue ptr from the&n;&t; * device instead of having to go the IOP data structure.&n;&t; */
+id|dev-&gt;req_queue
+op_assign
+id|i2ob_queues
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
+id|req_queue
+suffix:semicolon
+multiline_comment|/* initialize gendik structure */
+id|i2ob_disk
+(braket
+id|unit
+op_rshift
+l_int|4
+)braket
+op_member_access_from_pointer
+id|private_data
+op_assign
+id|dev
+suffix:semicolon
+id|i2ob_disk
+(braket
+id|unit
+op_rshift
+l_int|4
+)braket
+op_member_access_from_pointer
+id|queue
+op_assign
+id|dev-&gt;req_queue
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Ask for the current media data. If that isn&squot;t supported&n;&t; *&t;then we ask for the device capacity data&n;&t; */
 r_if
 c_cond
@@ -4124,6 +4152,28 @@ op_member_access_from_pointer
 id|disk_name
 )paren
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|i2ob_disk
+(braket
+id|unit
+op_rshift
+l_int|4
+)braket
+op_member_access_from_pointer
+id|devfs_name
+comma
+id|i2ob_disk
+(braket
+id|unit
+op_rshift
+l_int|4
+)braket
+op_member_access_from_pointer
+id|disk_name
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4411,58 +4461,6 @@ id|unit
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * If this is the first I2O block device found on this IOP,&n;&t; * we need to initialize all the queue data structures&n;&t; * before any I/O can be performed. If it fails, this&n;&t; * device is useless.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|i2ob_queues
-(braket
-id|c-&gt;unit
-)braket
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i2ob_init_iop
-c_func
-(paren
-id|c-&gt;unit
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* &n;&t; * This will save one level of lookup/indirection in critical &n;&t; * code so that we can directly get the queue ptr from the&n;&t; * device instead of having to go the IOP data structure.&n;&t; */
-id|dev-&gt;req_queue
-op_assign
-id|i2ob_queues
-(braket
-id|c-&gt;unit
-)braket
-op_member_access_from_pointer
-id|req_queue
-suffix:semicolon
-multiline_comment|/* Register a size before we register for events - otherwise we&n;&t;   might miss and overwrite an event */
-id|set_capacity
-c_func
-(paren
-id|i2ob_disk
-(braket
-id|unit
-op_rshift
-l_int|4
-)braket
-comma
-id|size
-op_rshift
-l_int|9
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Register for the events we&squot;re interested in and that the&n;&t; * device actually supports.&n;&t; */
 id|i2o_event_register
 c_func
@@ -4646,6 +4644,15 @@ id|queue_depth
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|i2ob_queues
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|i2ob_queues
 (braket
@@ -4961,6 +4968,15 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|i2o_release_device
+c_func
+(paren
+id|d
+comma
+op_amp
+id|i2o_block_handler
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5073,15 +5089,6 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
-id|i2o_release_device
-c_func
-(paren
-id|d
-comma
-op_amp
-id|i2o_block_handler
-)paren
-suffix:semicolon
 )brace
 id|i2o_unlock_controller
 c_func
@@ -6376,7 +6383,7 @@ c_func
 (paren
 id|evt_pid
 comma
-id|SIGTERM
+id|SIGKILL
 comma
 l_int|1
 )paren
@@ -6391,7 +6398,7 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;waiting...&quot;
+l_string|&quot;waiting...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

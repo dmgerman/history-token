@@ -6909,16 +6909,12 @@ op_ne
 id|IPPROTO_UDP
 )paren
 (brace
-id|IP_VS_INFO
+id|IP_VS_ERR
 c_func
 (paren
-l_string|&quot;vs_ctl: invalid protocol: %d %d.%d.%d.%d:%d %s&quot;
+l_string|&quot;set_ctl: invalid protocol: %d %d.%d.%d.%d:%d %s&bslash;n&quot;
 comma
-id|ntohs
-c_func
-(paren
 id|usvc-&gt;protocol
-)paren
 comma
 id|NIPQUAD
 c_func

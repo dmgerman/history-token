@@ -393,6 +393,7 @@ op_star
 id|results
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dbExtend
 c_func
@@ -526,6 +527,7 @@ op_star
 id|ipbmap
 )paren
 suffix:semicolon
+r_static
 r_int
 id|blkstol2
 c_func
@@ -534,6 +536,7 @@ id|s64
 id|nb
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cntlz
 c_func
@@ -542,6 +545,7 @@ id|u32
 id|value
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cnttz
 c_func
@@ -639,8 +643,8 @@ id|nblocks
 suffix:semicolon
 multiline_comment|/*&n; *&t;buddy table&n; *&n; * table used for determining buddy sizes within characters of &n; * dmap bitmap words.  the characters themselves serve as indexes&n; * into the table, with the table elements yielding the maximum&n; * binary buddy of free bits within the character.&n; */
 DECL|variable|budtab
-r_int
-r_char
+r_static
+id|s8
 id|budtab
 (braket
 l_int|256
@@ -3786,6 +3790,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef _NOTYET
 multiline_comment|/*&n; * NAME:&t;dbAllocExact()&n; *&n; * FUNCTION:    try to allocate the requested extent;&n; *&n; * PARAMETERS:&n; *      ip&t;- pointer to in-core inode;&n; *      blkno&t;- extent address;&n; *      nblocks&t;- extent length;&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbAllocExact
 r_int
@@ -4020,6 +4025,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* _NOTYET */
 multiline_comment|/*&n; * NAME:&t;dbReAlloc()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.  if these&n; *&t;&t;blocks are not available, this routine will attempt to&n; *&t;&t;allocate a new set of contiguous blocks large enough&n; *&t;&t;to cover the existing allocation plus the additional&n; *&t;&t;number of blocks required.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *      results&t;-      on successful return, set to the starting block number&n; *&t;&t;       of the existing allocation if the existing allocation&n; *&t;&t;       was extended in place or to a newly allocated contiguous&n; *&t;&t;       range if the existing allocation could not be extended&n; *&t;&t;       in place.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 r_int
 DECL|function|dbReAlloc
@@ -4122,6 +4128,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;dbExtend()&n; *&n; * FUNCTION:    attempt to extend a current allocation by a specified&n; *&t;&t;number of blocks.&n; *&n; *&t;&t;this routine attempts to satisfy the allocation request&n; *&t;&t;by first trying to extend the existing allocation in&n; *&t;&t;place by allocating the additional blocks as the blocks&n; *&t;&t;immediately following the current allocation.&n; *&n; * PARAMETERS:&n; *      ip&t;    -  pointer to in-core inode requiring allocation.&n; *      blkno&t;    -  starting block of the current allocation.&n; *      nblocks&t;    -  number of contiguous blocks within the current&n; *&t;&t;       allocation.&n; *      addnblocks  -  number of blocks to add to the allocation.&n; *&n; * RETURN VALUES:&n; *      0&t;- success&n; *      -ENOSPC&t;- insufficient disk resources&n; *      -EIO&t;- i/o error&n; */
 DECL|function|dbExtend
+r_static
 r_int
 id|dbExtend
 c_func
@@ -8866,6 +8873,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;cnttz(uint word)&n; *&n; * FUNCTION:    determine the number of trailing zeros within a 32-bit&n; *&t;&t;value.&n; *&n; * PARAMETERS:&n; *      value&t;-  32-bit value to be examined.&n; *&n; * RETURN VALUES:&n; *      count of trailing zeros&n; */
 DECL|function|cnttz
+r_static
 r_int
 id|cnttz
 c_func
@@ -8914,6 +8922,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;cntlz(u32 value)&n; *&n; * FUNCTION:    determine the number of leading zeros within a 32-bit&n; *&t;&t;value.&n; *&n; * PARAMETERS:&n; *      value&t;-  32-bit value to be examined.&n; *&n; * RETURN VALUES:&n; *      count of leading zeros&n; */
 DECL|function|cntlz
+r_static
 r_int
 id|cntlz
 c_func

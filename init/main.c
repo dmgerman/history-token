@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
@@ -1749,15 +1750,37 @@ c_cond
 (paren
 id|initcall_debug
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;calling initcall 0x%p&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;Calling initcall 0x%p&quot;
 comma
 op_star
 id|call
 )paren
 suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;: %s()&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+op_star
+id|call
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 (paren
 op_star
 id|call

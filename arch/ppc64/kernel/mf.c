@@ -13,14 +13,9 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|iSeries_vio_dev
-suffix:semicolon
+macro_line|#include &lt;asm/iSeries/vio.h&gt;
 multiline_comment|/*&n; * This is the structure layout for the Machine Facilites LPAR event&n; * flows.&n; */
 DECL|union|safe_cast
 r_union
@@ -3210,7 +3205,7 @@ r_char
 op_star
 id|page
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3219,6 +3214,8 @@ id|size
 comma
 op_amp
 id|dma_addr
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3298,7 +3295,7 @@ op_amp
 id|myVspCmd
 )paren
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3346,7 +3343,7 @@ id|dma_addr
 suffix:semicolon
 id|dma_addr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3355,7 +3352,7 @@ id|cmdline
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|memset
@@ -3449,7 +3446,7 @@ l_int|11
 suffix:semicolon
 macro_line|#endif
 )brace
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3459,7 +3456,7 @@ comma
 op_star
 id|size
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_return
@@ -3502,7 +3499,7 @@ r_char
 op_star
 id|page
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3511,6 +3508,8 @@ id|size
 comma
 op_amp
 id|dma_addr
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3621,7 +3620,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3675,7 +3674,7 @@ id|dma_addr
 suffix:semicolon
 id|dma_addr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3684,7 +3683,7 @@ id|buffer
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|memset
@@ -3776,7 +3775,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -3785,7 +3784,7 @@ id|dma_addr
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_return

@@ -455,6 +455,7 @@ suffix:semicolon
 )brace
 DECL|function|kmap_high
 r_void
+id|fastcall
 op_star
 id|kmap_high
 c_func
@@ -556,6 +557,7 @@ id|kmap_high
 suffix:semicolon
 DECL|function|kunmap_high
 r_void
+id|fastcall
 id|kunmap_high
 c_func
 (paren

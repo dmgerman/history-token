@@ -358,6 +358,14 @@ id|ste-&gt;dw0.dw0.v
 )paren
 )paren
 (brace
+id|ste-&gt;dw0.dword0
+op_assign
+l_int|0
+suffix:semicolon
+id|ste-&gt;dw1.dword1
+op_assign
+l_int|0
+suffix:semicolon
 id|ste-&gt;dw1.dw1.vsid
 op_assign
 id|vsid
@@ -626,6 +634,14 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Order update */
+id|castout_ste-&gt;dw0.dword0
+op_assign
+l_int|0
+suffix:semicolon
+id|castout_ste-&gt;dw1.dword1
+op_assign
+l_int|0
+suffix:semicolon
 id|castout_ste-&gt;dw1.dw1.vsid
 op_assign
 id|vsid
@@ -865,7 +881,7 @@ id|ea
 suffix:semicolon
 id|context
 op_assign
-id|REGION_ID
+id|KERNEL_CONTEXT
 c_func
 (paren
 id|ea
@@ -892,7 +908,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|context
+id|context.id
 comma
 id|ea
 )paren
@@ -1053,7 +1069,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|pc
 )paren
@@ -1102,7 +1118,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|stack
 )paren
@@ -1155,7 +1171,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|unmapped_base
 )paren
@@ -1771,7 +1787,7 @@ id|KERNEL_REGION_ID
 (brace
 id|context
 op_assign
-id|REGION_ID
+id|KERNEL_CONTEXT
 c_func
 (paren
 id|ea
@@ -1810,7 +1826,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|context
+id|context.id
 comma
 id|ea
 )paren
@@ -1963,7 +1979,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|pc
 )paren
@@ -2014,7 +2030,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|stack
 )paren
@@ -2069,7 +2085,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|unmapped_base
 )paren

@@ -1852,7 +1852,7 @@ id|softirq
 )paren
 )paren
 suffix:semicolon
-id|for_each_online_cpu
+id|for_each_cpu
 c_func
 (paren
 id|i
@@ -2057,7 +2057,7 @@ op_star
 (paren
 l_int|1
 op_plus
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren

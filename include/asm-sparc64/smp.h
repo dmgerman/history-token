@@ -27,14 +27,6 @@ id|phys_cpu_present_map
 suffix:semicolon
 DECL|macro|cpu_possible_map
 mdefine_line|#define cpu_possible_map phys_cpu_present_map
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
-r_extern
-id|atomic_t
-id|sparc64_num_cpus_possible
-suffix:semicolon
-DECL|macro|num_possible_cpus
-mdefine_line|#define num_possible_cpus()&t;(atomic_read(&amp;sparc64_num_cpus_possible))
 multiline_comment|/*&n; *&t;General functions that each host system must provide.&n; */
 DECL|function|hard_smp_processor_id
 r_static
@@ -204,9 +196,6 @@ suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 macro_line|#endif /* !(__ASSEMBLY__) */
-macro_line|#else
-DECL|macro|num_possible_cpus
-mdefine_line|#define num_possible_cpus()&t;(1)
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF

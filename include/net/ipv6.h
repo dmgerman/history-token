@@ -113,6 +113,10 @@ r_extern
 r_int
 id|sysctl_ipv6_bindv6only
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_mld_max_msf
+suffix:semicolon
 multiline_comment|/* MIBs */
 id|DECLARE_SNMP_STAT
 c_func
