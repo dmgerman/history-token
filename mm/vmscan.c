@@ -1629,16 +1629,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page_count
+id|get_page_testone
 c_func
 (paren
 id|page
 )paren
-op_eq
-l_int|0
 )paren
 (brace
-multiline_comment|/* It is currently in pagevec_release() */
+multiline_comment|/*&n;&t;&t;&t;&t; * It is being freed elsewhere&n;&t;&t;&t;&t; */
+id|__put_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|SetPageLRU
 c_func
 (paren
@@ -1666,12 +1670,6 @@ id|page-&gt;lru
 comma
 op_amp
 id|page_list
-)paren
-suffix:semicolon
-id|page_cache_get
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|nr_taken
@@ -1937,7 +1935,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold zone-&gt;lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop zone-&gt;lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
+multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold zone-&gt;lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop zone-&gt;lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;_count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
 r_static
 r_void
 DECL|function|refill_inactive_zone
@@ -2091,16 +2089,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page_count
+id|get_page_testone
 c_func
 (paren
 id|page
 )paren
-op_eq
-l_int|0
 )paren
 (brace
-multiline_comment|/* It is currently in pagevec_release() */
+multiline_comment|/*&n;&t;&t;&t; * It was already free!  release_pages() or put_page()&n;&t;&t;&t; * are about to remove it from the LRU and free it. So&n;&t;&t;&t; * put the refcount back and put the page back on the&n;&t;&t;&t; * LRU&n;&t;&t;&t; */
+id|__put_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|SetPageLRU
 c_func
 (paren
@@ -2120,12 +2122,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|page_cache_get
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|list_add
 c_func
 (paren
