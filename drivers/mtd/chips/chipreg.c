@@ -244,6 +244,8 @@ op_logical_neg
 id|request_module
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|name
 )paren
 )paren

@@ -1903,7 +1903,9 @@ op_logical_neg
 id|request_module
 c_func
 (paren
-id|name
+l_string|&quot;ip_conntrack%s&quot;
+comma
+id|tmp
 )paren
 op_logical_and
 (paren

@@ -4290,12 +4290,6 @@ r_else
 (brace
 DECL|macro|printable
 mdefine_line|#define printable(c) (((c)==&squot;&bslash;t&squot;) || ((c)==&squot;&bslash;n&squot;) || (0x20&lt;=(c) &amp;&amp; (c)&lt;=0x7e))
-r_char
-id|modname
-(braket
-l_int|20
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4338,11 +4332,9 @@ l_int|3
 r_break
 suffix:semicolon
 multiline_comment|/* -ENOEXEC */
-id|sprintf
+id|request_module
 c_func
 (paren
-id|modname
-comma
 l_string|&quot;binfmt-%04x&quot;
 comma
 op_star
@@ -4358,12 +4350,6 @@ id|bprm-&gt;buf
 l_int|2
 )braket
 )paren
-)paren
-suffix:semicolon
-id|request_module
-c_func
-(paren
-id|modname
 )paren
 suffix:semicolon
 macro_line|#endif

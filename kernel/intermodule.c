@@ -529,6 +529,8 @@ id|result
 id|request_module
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|modname
 )paren
 suffix:semicolon

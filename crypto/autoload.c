@@ -19,6 +19,8 @@ id|name
 id|request_module
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|name
 )paren
 suffix:semicolon

@@ -15,6 +15,23 @@ r_const
 r_char
 op_star
 id|name
+comma
+dot
+dot
+dot
+)paren
+id|__attribute__
+(paren
+(paren
+id|format
+(paren
+id|printf
+comma
+l_int|1
+comma
+l_int|2
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#else
@@ -29,6 +46,10 @@ r_const
 r_char
 op_star
 id|name
+comma
+dot
+dot
+dot
 )paren
 (brace
 r_return
@@ -38,7 +59,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|try_then_request_module
-mdefine_line|#define try_then_request_module(x, mod) ((x) ?: request_module(mod), (x))
+mdefine_line|#define try_then_request_module(x, mod...) ((x) ?: request_module(mod), (x))
 r_extern
 r_int
 id|call_usermodehelper
