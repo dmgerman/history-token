@@ -364,9 +364,9 @@ multiline_comment|/* If we are not in the last page, deal with all subsequent pa
 r_while
 c_loop
 (paren
-id|end_index
-OG
 id|index
+OL
+id|end_index
 )paren
 (brace
 id|BUG_ON
@@ -570,6 +570,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_ne
+id|cnt
+)paren
 id|pos
 op_assign
 id|__ntfs_bitmap_set_bits_in_run
@@ -592,6 +599,11 @@ l_int|1
 comma
 id|TRUE
 )paren
+suffix:semicolon
+r_else
+id|pos
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
