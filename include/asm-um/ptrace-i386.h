@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __UM_PTRACE_I386_H
 DECL|macro|__UM_PTRACE_I386_H
 mdefine_line|#define __UM_PTRACE_I386_H
+macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;asm/ptrace-generic.h&quot;
 DECL|macro|PT_REGS_EAX
 mdefine_line|#define PT_REGS_EAX(r) UPT_EAX(&amp;(r)-&gt;regs)
@@ -38,7 +39,7 @@ mdefine_line|#define PT_REGS_SYSCALL_RET(r) PT_REGS_EAX(r)
 DECL|macro|PT_FIX_EXEC_STACK
 mdefine_line|#define PT_FIX_EXEC_STACK(sp) do ; while(0)
 DECL|macro|user_mode
-mdefine_line|#define user_mode(r) ((r)-&gt;regs.is_user)
+mdefine_line|#define user_mode(r) UPT_IS_USER(&amp;(r)-&gt;regs)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

@@ -8,6 +8,7 @@ macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/errno.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/a.out.h&quot;
+macro_line|#include &quot;uml_uaccess.h&quot;
 DECL|macro|ABOVE_KMEM
 mdefine_line|#define ABOVE_KMEM (16 * 1024 * 1024)
 r_extern
@@ -152,34 +153,6 @@ suffix:colon
 id|n
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|__do_copy_to_user
-c_func
-(paren
-r_void
-op_star
-id|to
-comma
-r_const
-r_void
-op_star
-id|from
-comma
-r_int
-id|n
-comma
-r_void
-op_star
-op_star
-id|fault_addr
-comma
-r_void
-op_star
-op_star
-id|fault_catcher
-)paren
-suffix:semicolon
 DECL|function|copy_to_user_tt
 r_static
 r_inline
