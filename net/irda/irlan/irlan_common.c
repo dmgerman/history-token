@@ -65,6 +65,7 @@ multiline_comment|/* PEER, DIRECT or HOSTED */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|irlan_access
 r_static
+r_const
 r_char
 op_star
 id|irlan_access
@@ -83,6 +84,7 @@ l_string|&quot;HOSTED&quot;
 suffix:semicolon
 DECL|variable|irlan_media
 r_static
+r_const
 r_char
 op_star
 id|irlan_media
@@ -214,6 +216,7 @@ id|self
 suffix:semicolon
 multiline_comment|/*&n; * Function irlan_init (void)&n; *&n; *    Initialize IrLAN layer&n; *&n; */
 DECL|function|irlan_init
+r_static
 r_int
 id|__init
 id|irlan_init
@@ -358,6 +361,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|irlan_cleanup
+r_static
 r_void
 id|__exit
 id|irlan_cleanup
@@ -653,11 +657,6 @@ op_star
 id|self
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -728,24 +727,11 @@ id|self-&gt;client.iriap
 )paren
 suffix:semicolon
 multiline_comment|/* Remove frames queued on the control channel */
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|self-&gt;client.txq
-)paren
-)paren
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Unregister and free self via destructor */
@@ -4428,7 +4414,6 @@ comma
 l_string|&quot;Access type DIRECT=1, PEER=2, HOSTED=3&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize the IrLAN module, this function is called by the&n; *    modprobe(1) program.&n; */
 DECL|variable|irlan_init
 id|module_init
 c_func
@@ -4436,7 +4421,6 @@ c_func
 id|irlan_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Remove the IrLAN module, this function is called by the rmmod(1)&n; *    program&n; */
 DECL|variable|irlan_cleanup
 id|module_exit
 c_func
