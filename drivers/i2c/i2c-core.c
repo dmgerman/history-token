@@ -1481,9 +1481,15 @@ r_sizeof
 id|client-&gt;dev.bus_id
 )paren
 comma
-l_string|&quot;i2c_dev_%d&quot;
+l_string|&quot;%d-%04x&quot;
 comma
-id|i
+id|i2c_adapter_id
+c_func
+(paren
+id|adapter
+)paren
+comma
+id|client-&gt;addr
 )paren
 suffix:semicolon
 id|printk
