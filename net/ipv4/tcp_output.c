@@ -5640,7 +5640,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|tcp_vegas_init
+id|tcp_ca_init
 c_func
 (paren
 id|tp
@@ -5892,7 +5892,7 @@ id|tp-&gt;pushed_seq
 op_assign
 id|tp-&gt;write_seq
 suffix:semicolon
-id|tcp_vegas_init
+id|tcp_ca_init
 c_func
 (paren
 id|tp

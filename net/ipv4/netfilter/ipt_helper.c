@@ -360,6 +360,11 @@ c_func
 r_void
 )paren
 (brace
+id|need_ip_conntrack
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ipt_register_match
 c_func
