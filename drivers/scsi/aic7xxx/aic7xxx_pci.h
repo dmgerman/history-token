@@ -1,60 +1,7 @@
-r_static
-id|__inline
-r_uint64
-DECL|function|ahc_compose_id
-id|ahc_compose_id
-c_func
-(paren
-id|u_int
-id|device
-comma
-id|u_int
-id|vendor
-comma
-id|u_int
-id|subdevice
-comma
-id|u_int
-id|subvendor
-)paren
-(brace
-r_uint64
-id|id
-suffix:semicolon
-id|id
-op_assign
-id|subvendor
-op_or
-(paren
-id|subdevice
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-(paren
-r_uint64
-)paren
-id|vendor
-op_lshift
-l_int|32
-)paren
-op_or
-(paren
-(paren
-r_uint64
-)paren
-id|device
-op_lshift
-l_int|48
-)paren
-suffix:semicolon
-r_return
-(paren
-id|id
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id$&n; *&n; */
+macro_line|#ifndef _AIC7XXX_PCI_H_
+DECL|macro|_AIC7XXX_PCI_H_
+mdefine_line|#define _AIC7XXX_PCI_H_
 DECL|macro|ID_ALL_MASK
 mdefine_line|#define ID_ALL_MASK&t;&t;&t;0xFFFFFFFFFFFFFFFFull
 DECL|macro|ID_DEV_VENDOR_MASK
@@ -195,4 +142,5 @@ DECL|macro|ID_AIC7810
 mdefine_line|#define ID_AIC7810&t;&t;&t;0x1078900400000000ull
 DECL|macro|ID_AIC7815
 mdefine_line|#define ID_AIC7815&t;&t;&t;0x7815900400000000ull
+macro_line|#endif /* _AIC7XXX_PCI_H_ */
 eof
