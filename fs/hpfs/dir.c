@@ -1036,6 +1036,11 @@ id|hpfs_inode_info
 op_star
 id|hpfs_result
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1393,6 +1398,11 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren
@@ -1419,6 +1429,11 @@ id|hpfs_unlock_inode
 c_func
 (paren
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

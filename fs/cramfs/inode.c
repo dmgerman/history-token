@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/cramfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|CRAMFS_SB_MAGIC
@@ -1375,6 +1376,13 @@ l_int|0
 suffix:semicolon
 r_int
 id|sorted
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sorted
 op_assign
 id|dir-&gt;i_sb-&gt;CRAMFS_SB_FLAGS
 op_amp
@@ -1520,6 +1528,12 @@ c_cond
 op_logical_neg
 id|namelen
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1528,6 +1542,7 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1595,6 +1610,11 @@ id|de
 )paren
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1608,6 +1628,11 @@ id|sorted
 r_break
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

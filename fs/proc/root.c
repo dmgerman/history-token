@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|proc_net
 DECL|variable|proc_bus
 DECL|variable|proc_root_fs
@@ -320,18 +321,21 @@ id|PROC_ROOT_INO
 )paren
 (brace
 multiline_comment|/* check for safety... */
-r_int
-id|nlink
-op_assign
-id|proc_root.nlink
-suffix:semicolon
-id|nlink
-op_add_assign
-id|nr_threads
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|dir-&gt;i_nlink
 op_assign
-id|nlink
+id|proc_root.nlink
+op_plus
+id|nr_threads
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -346,9 +350,11 @@ comma
 id|dentry
 )paren
 )paren
+(brace
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 r_return
 id|proc_pid_lookup
 c_func

@@ -9553,6 +9553,11 @@ op_amp
 id|devfs_dops
 suffix:semicolon
 multiline_comment|/*  First try to get the devfs entry for this directory  */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
@@ -9582,6 +9587,12 @@ id|parent
 op_eq
 l_int|NULL
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 (paren
@@ -9589,6 +9600,7 @@ op_minus
 id|ENOENT
 )paren
 suffix:semicolon
+)brace
 id|read_lock
 (paren
 op_amp
@@ -9706,6 +9718,11 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*  Lookup event was not queued to devfsd  */
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 (paren
 id|dentry
@@ -9894,6 +9911,11 @@ suffix:semicolon
 id|devfs_put
 (paren
 id|de
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

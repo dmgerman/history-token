@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -4948,6 +4949,11 @@ id|inode
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5035,6 +5041,11 @@ id|KERN_ERR
 l_string|&quot;COMX: lookup error&bslash;n&quot;
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -5049,6 +5060,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp

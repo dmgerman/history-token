@@ -713,6 +713,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
+multiline_comment|/* SMP-safe */
 DECL|function|usbfs_lookup
 r_static
 r_struct

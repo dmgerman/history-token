@@ -530,6 +530,11 @@ id|dir
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* control object, create inode on the fly */
 r_if
 c_cond
@@ -679,6 +684,12 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -686,6 +697,7 @@ c_func
 id|error
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -718,6 +730,11 @@ comma
 id|name
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -791,6 +808,11 @@ id|C_VATTR
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

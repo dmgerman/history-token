@@ -3,6 +3,7 @@ macro_line|#include &quot;hfs.h&quot;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*================ Forward declarations ================*/
 r_static
 r_struct
@@ -256,6 +257,11 @@ id|inode
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp
@@ -294,7 +300,7 @@ id|dentry-&gt;d_name.len
 )paren
 suffix:semicolon
 multiline_comment|/* no need to check for &quot;.&quot;  or &quot;..&quot; */
-multiline_comment|/* Check for special directories if in a normal directory.&n;&t;   Note that cap_dupdir() does an iput(dir). */
+multiline_comment|/* Check for epecial directories if in a normal directory.&n;&t;   Note that cap_dupdir() does an iput(dir). */
 r_if
 c_cond
 (paren
@@ -502,6 +508,11 @@ suffix:semicolon
 )brace
 id|done
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

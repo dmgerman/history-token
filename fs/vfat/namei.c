@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0
 macro_line|#if (DEBUG_LEVEL &gt;= 1)
@@ -5143,6 +5144,11 @@ id|dentry-&gt;d_name.len
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|table
 op_assign
 (paren
@@ -5237,6 +5243,12 @@ c_cond
 (paren
 id|res
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -5244,6 +5256,7 @@ c_func
 id|res
 )paren
 suffix:semicolon
+)brace
 id|alias
 op_assign
 id|d_find_alias
@@ -5283,6 +5296,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|alias
 suffix:semicolon
@@ -5290,6 +5308,11 @@ suffix:semicolon
 )brace
 id|error
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp

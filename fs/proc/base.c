@@ -3751,6 +3751,7 @@ suffix:semicolon
 multiline_comment|/* Lookups */
 DECL|macro|MAX_MULBY10
 mdefine_line|#define MAX_MULBY10&t;((~0U-9)/10)
+multiline_comment|/* SMP-safe */
 DECL|function|proc_lookupfd
 r_static
 r_struct
@@ -4133,6 +4134,7 @@ id|proc_permission
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* SMP-safe */
 DECL|function|proc_base_lookup
 r_static
 r_struct
@@ -4656,6 +4658,7 @@ id|proc_self_follow_link
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* SMP-safe */
 DECL|function|proc_pid_lookup
 r_struct
 id|dentry

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;devpts_i.h&quot;
 r_static
 r_int
@@ -517,6 +518,11 @@ id|sbi-&gt;max_ptys
 r_return
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -546,6 +552,11 @@ id|sbi-&gt;inodes
 (braket
 id|entry
 )braket
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

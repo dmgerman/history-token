@@ -3919,6 +3919,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Lookup the data. This is trivial - if the dentry didn&squot;t already&n; * exist, we know it is negative.&n; */
+multiline_comment|/* SMP-safe */
 DECL|function|shmem_lookup
 r_static
 r_struct

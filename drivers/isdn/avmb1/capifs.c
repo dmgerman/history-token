@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_DESCRIPTION
@@ -694,6 +695,11 @@ id|tmp
 r_return
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -732,6 +738,11 @@ id|type
 r_break
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

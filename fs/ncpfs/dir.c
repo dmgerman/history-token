@@ -3607,6 +3607,11 @@ id|__name
 id|len
 )braket
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -3832,6 +3837,11 @@ c_func
 l_string|&quot;ncp_lookup: result=%d&bslash;n&quot;
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

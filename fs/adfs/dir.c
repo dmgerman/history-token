@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/adfs_fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;adfs.h&quot;
 multiline_comment|/*&n; * For future.  This should probably be per-directory.&n; */
 DECL|variable|adfs_dir_lock
@@ -1082,6 +1083,11 @@ op_assign
 op_amp
 id|adfs_dentry_operations
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|adfs_dir_lookup_byname
@@ -1131,6 +1137,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

@@ -904,6 +904,11 @@ l_string|&quot;autofs_root_lookup: name = &quot;
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|autofs_say
 c_func
 (paren
@@ -919,6 +924,12 @@ id|dentry-&gt;d_name.len
 OG
 id|NAME_MAX
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -928,6 +939,7 @@ id|ENAMETOOLONG
 )paren
 suffix:semicolon
 multiline_comment|/* File name too long to exist */
+)brace
 id|sbi
 op_assign
 id|autofs_sbi
@@ -1018,6 +1030,12 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1027,6 +1045,12 @@ id|ERESTARTNOINTR
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If this dentry is unhashed, then we shouldn&squot;t honour this&n;&t; * lookup even if the dentry is positive.  Returning ENOENT here&n;&t; * doesn&squot;t do the right thing for all system calls, but it should&n;&t; * be OK for the operations we permit from an autofs.&n;&t; */
 r_if
 c_cond

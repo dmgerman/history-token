@@ -2342,6 +2342,11 @@ op_assign
 op_amp
 id|nfs_dentry_operations
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|NFS_PROTO
@@ -2434,6 +2439,11 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

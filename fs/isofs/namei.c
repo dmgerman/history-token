@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* Joliet? */
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * ok, we cannot use strncmp, as the name is not in our data space.&n; * Thus we&squot;ll have to use isofs_match. No big problem. Match also makes&n; * some sanity tests.&n; */
 r_static
@@ -714,6 +715,11 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ino
 op_assign
 id|isofs_find_entry
@@ -770,6 +776,12 @@ c_cond
 op_logical_neg
 id|inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -779,6 +791,12 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_add
 c_func
 (paren

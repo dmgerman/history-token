@@ -827,11 +827,6 @@ c_cond
 id|dentry
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|dir-&gt;i_op
@@ -842,11 +837,6 @@ c_func
 id|dir
 comma
 id|dentry
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3083,11 +3073,6 @@ r_new
 r_goto
 id|out
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dentry
 op_assign
 id|inode-&gt;i_op
@@ -3098,11 +3083,6 @@ c_func
 id|inode
 comma
 r_new
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
