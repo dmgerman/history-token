@@ -1811,10 +1811,8 @@ id|u32
 id|m
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
+c_func
 (paren
 id|m
 OL
@@ -1825,11 +1823,6 @@ op_ge
 id|c-&gt;out_queue.phys
 op_plus
 id|c-&gt;out_queue.len
-)paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
