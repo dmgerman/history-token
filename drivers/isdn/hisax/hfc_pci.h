@@ -267,6 +267,13 @@ suffix:semicolon
 multiline_comment|/* Z2 pointer 16 Bit */
 DECL|typedef|z_type
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|z_type
 suffix:semicolon
 r_typedef
@@ -330,6 +337,13 @@ suffix:semicolon
 multiline_comment|/* align 16K */
 DECL|typedef|dfifo_type
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|dfifo_type
 suffix:semicolon
 r_typedef
@@ -365,6 +379,13 @@ suffix:semicolon
 multiline_comment|/* alignment */
 DECL|typedef|bzfifo_type
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|bzfifo_type
 suffix:semicolon
 r_typedef
@@ -384,6 +405,13 @@ suffix:semicolon
 multiline_comment|/* D-receive channel */
 DECL|member|d_chan
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|d_chan
 suffix:semicolon
 r_struct
@@ -448,6 +476,13 @@ id|B_FIFO_SIZE
 suffix:semicolon
 DECL|member|b_chans
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|b_chans
 suffix:semicolon
 DECL|member|fill
@@ -459,12 +494,21 @@ l_int|32768
 suffix:semicolon
 DECL|typedef|fifo_area
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 id|fifo_area
 suffix:semicolon
+singleline_comment|//#define Write_hfc(a,b,c) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b) = c) 
+singleline_comment|//#define Read_hfc(a,b) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b))
 DECL|macro|Write_hfc
-mdefine_line|#define Write_hfc(a,b,c) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b) = c) 
+mdefine_line|#define Write_hfc(a,b,c)&t;writeb(c, ((u_char *)a-&gt;hw.hfcpci.pci_io)+b)
 DECL|macro|Read_hfc
-mdefine_line|#define Read_hfc(a,b) (*(((u_char *)a-&gt;hw.hfcpci.pci_io)+b))
+mdefine_line|#define Read_hfc(a,b)&t;&t;readb(((u_char *)a-&gt;hw.hfcpci.pci_io)+b)
 r_extern
 r_void
 id|main_irq_hcpci
