@@ -1434,10 +1434,8 @@ mdefine_line|#define SMC_GET_MAC_ADDR(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&
 macro_line|#endif
 DECL|macro|SMC_SET_MAC_ADDR
 mdefine_line|#define SMC_SET_MAC_ADDR(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( addr[0]|(addr[1] &lt;&lt; 8), ioaddr, ADDR0_REG );&t;&bslash;&n;&t;&t;SMC_outw( addr[2]|(addr[3] &lt;&lt; 8), ioaddr, ADDR1_REG );&t;&bslash;&n;&t;&t;SMC_outw( addr[4]|(addr[5] &lt;&lt; 8), ioaddr, ADDR2_REG );&t;&bslash;&n;&t;} while (0)
-DECL|macro|SMC_CLEAR_MCAST
-mdefine_line|#define SMC_CLEAR_MCAST()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG1 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG2 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG3 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG4 );&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SMC_SET_MCAST
-mdefine_line|#define SMC_SET_MCAST(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned char *mt = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( mt[0] | (mt[1] &lt;&lt; 8), ioaddr, MCAST_REG1 );&t;&bslash;&n;&t;&t;SMC_outw( mt[2] | (mt[3] &lt;&lt; 8), ioaddr, MCAST_REG2 );&t;&bslash;&n;&t;&t;SMC_outw( mt[4] | (mt[5] &lt;&lt; 8), ioaddr, MCAST_REG3 );&t;&bslash;&n;&t;&t;SMC_outw( mt[6] | (mt[7] &lt;&lt; 8), ioaddr, MCAST_REG4 );&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SMC_SET_MCAST(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const unsigned char *mt = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( mt[0] | (mt[1] &lt;&lt; 8), ioaddr, MCAST_REG1 );&t;&bslash;&n;&t;&t;SMC_outw( mt[2] | (mt[3] &lt;&lt; 8), ioaddr, MCAST_REG2 );&t;&bslash;&n;&t;&t;SMC_outw( mt[4] | (mt[5] &lt;&lt; 8), ioaddr, MCAST_REG3 );&t;&bslash;&n;&t;&t;SMC_outw( mt[6] | (mt[7] &lt;&lt; 8), ioaddr, MCAST_REG4 );&t;&bslash;&n;&t;} while (0)
 macro_line|#if SMC_CAN_USE_32BIT
 multiline_comment|/*&n; * Some setups just can&squot;t write 8 or 16 bits reliably when not aligned&n; * to a 32 bit boundary.  I tell you that exists!&n; * We re-do the ones here that can be easily worked around if they can have&n; * their low parts written to 0 without adverse effects.&n; */
 DECL|macro|SMC_SELECT_BANK
