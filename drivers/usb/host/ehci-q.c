@@ -451,9 +451,28 @@ id|EPIPE
 suffix:semicolon
 r_else
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;3strikes&quot;
+id|ehci
+comma
+l_string|&quot;devpath %s ep%d%s 3strikes&bslash;n&quot;
+comma
+id|urb-&gt;dev-&gt;devpath
+comma
+id|usb_pipeendpoint
+(paren
+id|urb-&gt;pipe
+)paren
+comma
+id|usb_pipein
+(paren
+id|urb-&gt;pipe
+)paren
+ques
+c_cond
+l_string|&quot;in&quot;
+suffix:colon
+l_string|&quot;out&quot;
 )paren
 suffix:semicolon
 id|urb-&gt;status
@@ -3089,7 +3108,10 @@ id|qtd-&gt;hw_token
 suffix:semicolon
 id|qtd-&gt;hw_token
 op_assign
-l_int|0
+id|cpu_to_le32
+(paren
+id|QTD_STS_HALT
+)paren
 suffix:semicolon
 id|wmb
 (paren
@@ -3286,17 +3308,11 @@ id|epnum
 op_or_assign
 l_int|0x10
 suffix:semicolon
-id|vdbg
+id|ehci_vdbg
 (paren
-l_string|&quot;%s: submit_async urb %p len %d ep %d-%s qtd %p [qh %p]&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;submit_async urb %p len %d ep%d%s qtd %p [qh %p]&bslash;n&quot;
 comma
 id|urb
 comma
@@ -3483,13 +3499,7 @@ op_amp
 id|ehci-&gt;watchdog
 )paren
 suffix:semicolon
-id|qh-&gt;hw_next
-op_assign
-id|cpu_to_le32
-(paren
-id|qh-&gt;qh_dma
-)paren
-suffix:semicolon
+singleline_comment|// qh-&gt;hw_next = cpu_to_le32 (qh-&gt;qh_dma);
 id|qh-&gt;qh_state
 op_assign
 id|QH_STATE_IDLE
