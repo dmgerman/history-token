@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* Board/System/Debug information/definition ---------------- */
 DECL|macro|PCI_DM9132_ID
 mdefine_line|#define PCI_DM9132_ID   0x91321282      /* Davicom DM9132 ID */
