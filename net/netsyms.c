@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/fcdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
-macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -98,28 +97,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sk_chk_filter
-)paren
-suffix:semicolon
-multiline_comment|/*&t;dst_entry&t;*/
-DECL|variable|dst_alloc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dst_alloc
-)paren
-suffix:semicolon
-DECL|variable|__dst_free
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__dst_free
-)paren
-suffix:semicolon
-DECL|variable|dst_destroy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dst_destroy
 )paren
 suffix:semicolon
 multiline_comment|/* Needed by unix.o */
