@@ -1115,7 +1115,7 @@ id|sym_find_firmware
 c_func
 (paren
 r_struct
-id|sym_pci_chip
+id|sym_chip
 op_star
 id|chip
 )paren
