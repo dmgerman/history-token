@@ -2,11 +2,8 @@ multiline_comment|/* $Id: delay.h,v 1.11 2001/01/01 01:46:15 davem Exp $&n; * de
 macro_line|#ifndef __SPARC_DELAY_H
 DECL|macro|__SPARC_DELAY_H
 mdefine_line|#define __SPARC_DELAY_H
-r_extern
-r_int
-r_int
-id|loops_per_jiffy
-suffix:semicolon
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|function|__delay
 r_extern
 id|__inline__
@@ -44,23 +41,42 @@ suffix:semicolon
 multiline_comment|/* This is too messy with inline asm on the Sparc. */
 r_extern
 r_void
-id|udelay
+id|__udelay
 c_func
 (paren
 r_int
 r_int
 id|usecs
+comma
+r_int
+r_int
+id|lpj
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|ndelay
+id|__ndelay
 c_func
 (paren
 r_int
 r_int
-id|usecs
+id|nsecs
+comma
+r_int
+r_int
+id|lpj
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|__udelay_val
+mdefine_line|#define __udelay_val&t;cpu_data(smp_processor_id()).udelay_val
+macro_line|#else /* SMP */
+DECL|macro|__udelay_val
+mdefine_line|#define __udelay_val&t;loops_per_jiffy
+macro_line|#endif /* SMP */
+DECL|macro|udelay
+mdefine_line|#define udelay(__usecs)&t;__udelay(__usecs, __udelay_val)
+DECL|macro|ndelay
+mdefine_line|#define ndelay(__nsecs)&t;__ndelay(__nsecs, __udelay_val)
 macro_line|#endif /* defined(__SPARC_DELAY_H) */
 eof

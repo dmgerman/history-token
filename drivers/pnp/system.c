@@ -39,7 +39,6 @@ suffix:semicolon
 DECL|function|reserve_ioport_range
 r_static
 r_void
-id|__init
 id|reserve_ioport_range
 c_func
 (paren
@@ -158,7 +157,6 @@ suffix:semicolon
 DECL|function|reserve_resources_of_dev
 r_static
 r_void
-id|__init
 id|reserve_resources_of_dev
 c_func
 (paren

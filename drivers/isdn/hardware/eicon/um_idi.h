@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: um_idi.h,v 1.1.2.2 2002/10/02 14:38:38 armin Exp $ */
+multiline_comment|/* $Id: um_idi.h,v 1.6 2004/03/21 17:26:01 armin Exp $ */
 macro_line|#ifndef __DIVA_USER_MODE_IDI_CORE_H__
 DECL|macro|__DIVA_USER_MODE_IDI_CORE_H__
 mdefine_line|#define __DIVA_USER_MODE_IDI_CORE_H__
@@ -12,13 +12,6 @@ r_void
 suffix:semicolon
 r_void
 id|diva_user_mode_idi_finit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|diva_um_idi_nr_of_adapters
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* -*- linux-c -*-&n; *&n; *  drivers/char/viocons.c&n; *&n; *  iSeries Virtual Terminal&n; *&n; *  Authors: Dave Boutcher &lt;boutcher@us.ibm.com&gt;&n; *           Ryan Arnold &lt;ryanarn@us.ibm.com&gt;&n; *           Colin Devilbiss &lt;devilbis@us.ibm.com&gt;&n; *           Stephen Rothwell &lt;sfr@au1.ibm.com&gt;&n; *&n; * (C) Copyright 2000, 2001, 2002, 2003 IBM Corporation&n; *&n; * This program is free software;  you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) anyu later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/* -*- linux-c -*-&n; *&n; *  drivers/char/viocons.c&n; *&n; *  iSeries Virtual Terminal&n; *&n; *  Authors: Dave Boutcher &lt;boutcher@us.ibm.com&gt;&n; *           Ryan Arnold &lt;ryanarn@us.ibm.com&gt;&n; *           Colin Devilbiss &lt;devilbis@us.ibm.com&gt;&n; *           Stephen Rothwell &lt;sfr@au1.ibm.com&gt;&n; *&n; * (C) Copyright 2000, 2001, 2002, 2003, 2004 IBM Corporation&n; *&n; * This program is free software;  you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) anyu later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -31,6 +31,10 @@ DECL|macro|VTTY_PORTS
 mdefine_line|#define VTTY_PORTS 10
 DECL|macro|VIOTTY_SERIAL_START
 mdefine_line|#define VIOTTY_SERIAL_START 65
+DECL|macro|VIOCONS_KERN_WARN
+mdefine_line|#define VIOCONS_KERN_WARN&t;KERN_WARNING &quot;viocons: &quot;
+DECL|macro|VIOCONS_KERN_INFO
+mdefine_line|#define VIOCONS_KERN_INFO&t;KERN_INFO &quot;viocons: &quot;
 DECL|variable|consolelock
 r_static
 id|spinlock_t
@@ -534,8 +538,8 @@ r_char
 op_star
 id|bad_pi_addr
 op_assign
-id|KERN_WARNING_VIO
-l_string|&quot;Warning: bad address for port_info struct (%s) in %s&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;warning: bad address for port_info struct (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
@@ -543,8 +547,8 @@ r_char
 op_star
 id|badmagic
 op_assign
-id|KERN_WARNING_VIO
-l_string|&quot;Warning: bad magic number for port_info struct (%s) in %s&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;warning: bad magic number for port_info struct (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -1306,8 +1310,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console error sending event! return code %d&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;error sending event! return code %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -2378,8 +2382,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console attempt to open device twice from different ttys&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;attempt to open device twice from different ttys&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3377,8 +3381,8 @@ id|HvLpEvent_Rc_Good
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: event-&gt;xRc != HvLpEvent_Rc_Good, event-&gt;xRc == (%d).&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;handle_open_event: event-&gt;xRc == (%d).&bslash;n&quot;
 comma
 id|event-&gt;xRc
 )paren
@@ -3414,8 +3418,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: wierd...got open ack without atomic&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;wierd...got open ack without atomic&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3433,8 +3437,8 @@ id|HvLpEvent_AckInd_DoAck
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console: viocharopen without ack bit!&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;viocharopen without ack bit!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3558,8 +3562,8 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: console open rejected : bad virtual tty.&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;open rejected: bad virtual tty.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -3573,8 +3577,8 @@ l_int|2
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: console open rejected : console in exclusive use by another partition.&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;open rejected: console in exclusive use by another partition.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Return the acknowledgement */
@@ -3638,8 +3642,8 @@ id|VTTY_PORTS
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: close message from invalid virtual device.&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;close message from invalid virtual device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3689,8 +3693,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;console close from %d&bslash;n&quot;
+id|VIOCONS_KERN_INFO
+l_string|&quot;close from %d&bslash;n&quot;
 comma
 id|event-&gt;xSourceLp
 )paren
@@ -3700,8 +3704,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console got unexpected close acknowlegement&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;got unexpected close acknowlegement&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3751,8 +3755,8 @@ l_int|0x01
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;console window resized to %d: %d: %d: %d&bslash;n&quot;
+id|VIOCONS_KERN_INFO
+l_string|&quot;window resized to %d: %d: %d: %d&bslash;n&quot;
 comma
 id|cevent-&gt;data
 (braket
@@ -3779,8 +3783,8 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console unknown config event&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;unknown config event&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3842,8 +3846,8 @@ id|VTTY_PORTS
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console data on invalid virtual device %d&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;data on invalid virtual device %d&bslash;n&quot;
 comma
 id|port
 )paren
@@ -3914,7 +3918,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOCONS_KERN_WARN
 l_string|&quot;no tty for virtual device %d&bslash;n&quot;
 comma
 id|port
@@ -3943,7 +3947,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
+id|VIOCONS_KERN_WARN
 l_string|&quot;tty bad magic&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4087,8 +4091,8 @@ id|TTY_FLIPBUF_SIZE
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console input buffer overflow!&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;input buffer overflow!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4167,8 +4171,8 @@ id|VTTY_PORTS
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;viocons: data on invalid virtual device&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;data on invalid virtual device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4528,14 +4532,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* Now open to the primary LP */
-id|printk
-c_func
-(paren
-id|KERN_INFO_VIO
-l_string|&quot;console open path to primary&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* +2 for fudge */
 id|rc
 op_assign
@@ -4562,8 +4558,8 @@ id|rc
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console error opening to primary %d&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;error opening to primary %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -4603,8 +4599,8 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;console open path to hosting (%d)&bslash;n&quot;
+id|VIOCONS_KERN_INFO
+l_string|&quot;open path to hosting (%d)&bslash;n&quot;
 comma
 id|viopath_hostLp
 )paren
@@ -4632,8 +4628,8 @@ id|rc
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;console error opening to partition %d: %d&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;error opening to partition %d: %d&bslash;n&quot;
 comma
 id|viopath_hostLp
 comma
@@ -4657,20 +4653,11 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;Error seting handler for console events!&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;error seting handler for console events!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO_VIO
-l_string|&quot;console major number is %d&bslash;n&quot;
-comma
-id|TTY_MAJOR
-)paren
-suffix:semicolon
-multiline_comment|/* First, try to open the console to the hosting lp.&n;&t; * Wait on a semaphore for the response.&n;&t; */
+multiline_comment|/*&n;&t; * First, try to open the console to the hosting lp.&n;&t; * Wait on a semaphore for the response.&n;&t; */
 id|atomic_set
 c_func
 (paren
@@ -4712,8 +4699,8 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
-l_string|&quot;opening console to hosting partition %d&bslash;n&quot;
+id|VIOCONS_KERN_INFO
+l_string|&quot;hosting partition %d&bslash;n&quot;
 comma
 id|viopath_hostLp
 )paren
@@ -4798,7 +4785,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
+id|VIOCONS_KERN_INFO
 l_string|&quot;opening console to primary partition&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4956,8 +4943,8 @@ id|viotty_driver
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;Couldn&squot;t register console driver&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;couldn&squot;t register console driver&bslash;n&quot;
 )paren
 suffix:semicolon
 id|put_tty_driver
@@ -4984,8 +4971,8 @@ id|viottyS_driver
 id|printk
 c_func
 (paren
-id|KERN_WARNING_VIO
-l_string|&quot;Couldn&squot;t register console S driver&bslash;n&quot;
+id|VIOCONS_KERN_WARN
+l_string|&quot;couldn&squot;t register console S driver&bslash;n&quot;
 )paren
 suffix:semicolon
 id|put_tty_driver
@@ -5038,7 +5025,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO_VIO
+id|VIOCONS_KERN_INFO
 l_string|&quot;registering console&bslash;n&quot;
 )paren
 suffix:semicolon

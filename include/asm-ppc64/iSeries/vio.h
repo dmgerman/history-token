@@ -129,14 +129,6 @@ r_extern
 id|HvLpIndex
 id|viopath_ourLp
 suffix:semicolon
-DECL|macro|VIO_MESSAGE
-mdefine_line|#define VIO_MESSAGE &quot;iSeries virtual I/O: &quot;
-DECL|macro|KERN_DEBUG_VIO
-mdefine_line|#define KERN_DEBUG_VIO KERN_DEBUG VIO_MESSAGE
-DECL|macro|KERN_INFO_VIO
-mdefine_line|#define KERN_INFO_VIO KERN_INFO VIO_MESSAGE
-DECL|macro|KERN_WARNING_VIO
-mdefine_line|#define KERN_WARNING_VIO KERN_WARNING VIO_MESSAGE
 DECL|macro|VIOCHAR_MAX_DATA
 mdefine_line|#define VIOCHAR_MAX_DATA 200
 DECL|macro|VIOMAJOR_SUBTYPE_MASK
@@ -147,7 +139,7 @@ DECL|macro|VIOMAJOR_SUBTYPE_SHIFT
 mdefine_line|#define VIOMAJOR_SUBTYPE_SHIFT 8
 DECL|macro|VIOVERSION
 mdefine_line|#define VIOVERSION            0x0101
-multiline_comment|/*&n;This is the general structure for VIO errors; each module should have a table&n;of them, and each table should be terminated by an entry of { 0, 0, NULL }.&n;Then, to find a specific error message, a module should pass its local table&n;and the return code.&n;*/
+multiline_comment|/*&n; * This is the general structure for VIO errors; each module should have&n; * a table of them, and each table should be terminated by an entry of&n; * { 0, 0, NULL }.  Then, to find a specific error message, a module&n; * should pass its local table and the return code.&n; */
 DECL|struct|vio_error_entry
 r_struct
 id|vio_error_entry

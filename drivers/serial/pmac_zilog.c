@@ -6781,10 +6781,6 @@ r_struct
 id|uart_state
 op_star
 id|state
-op_assign
-id|pmz_uart_reg.state
-op_plus
-id|uap-&gt;port.line
 suffix:semicolon
 r_int
 r_int
@@ -6797,9 +6793,17 @@ id|uap
 op_eq
 l_int|NULL
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;HRM... pmz_suspend with NULL uap&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6813,6 +6817,20 @@ l_int|2
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|pmz_debug
+c_func
+(paren
+l_string|&quot;suspend, switching to state %d&bslash;n&quot;
+comma
+id|pm_state
+)paren
+suffix:semicolon
+id|state
+op_assign
+id|pmz_uart_reg.state
+op_plus
+id|uap-&gt;port.line
 suffix:semicolon
 id|down
 c_func
@@ -7010,6 +7028,12 @@ op_amp
 id|pmz_irq_sem
 )paren
 suffix:semicolon
+id|pmz_debug
+c_func
+(paren
+l_string|&quot;suspend, switching complete&bslash;n&quot;
+)paren
+suffix:semicolon
 id|mdev-&gt;ofdev.dev.power_state
 op_assign
 id|pm_state
@@ -7046,10 +7070,6 @@ r_struct
 id|uart_state
 op_star
 id|state
-op_assign
-id|pmz_uart_reg.state
-op_plus
-id|uap-&gt;port.line
 suffix:semicolon
 r_int
 r_int
@@ -7077,6 +7097,18 @@ l_int|0
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|pmz_debug
+c_func
+(paren
+l_string|&quot;resume, switching to state 0&bslash;n&quot;
+)paren
+suffix:semicolon
+id|state
+op_assign
+id|pmz_uart_reg.state
+op_plus
+id|uap-&gt;port.line
 suffix:semicolon
 id|down
 c_func
@@ -7265,6 +7297,8 @@ id|uap-&gt;port.irq
 )paren
 suffix:semicolon
 )brace
+id|bail
+suffix:colon
 id|up
 c_func
 (paren
@@ -7315,8 +7349,12 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
-id|bail
-suffix:colon
+id|pmz_debug
+c_func
+(paren
+l_string|&quot;resume, switching complete&bslash;n&quot;
+)paren
+suffix:semicolon
 id|mdev-&gt;ofdev.dev.power_state
 op_assign
 l_int|0

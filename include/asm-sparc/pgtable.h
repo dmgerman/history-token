@@ -511,6 +511,11 @@ r_int
 r_int
 id|phys_base
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|pfn_base
+suffix:semicolon
 multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 id|pte_t

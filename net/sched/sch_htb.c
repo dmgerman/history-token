@@ -1,4 +1,4 @@
-multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *              Stef Coene &lt;stef.coene@docum.org&gt;&n; *&t;&t;&t;HTB support at LARTC mailing list&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;Wilfried Weissmann&n; *&t;&t;&t;spotted bug in dequeue code and helped with fix&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.24 2003/07/28 15:25:23 devik Exp devik $&n; */
+multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *              Stef Coene &lt;stef.coene@docum.org&gt;&n; *&t;&t;&t;HTB support at LARTC mailing list&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;Wilfried Weissmann&n; *&t;&t;&t;spotted bug in dequeue code and helped with fix&n; *&t;&t;Jiri Fojtasek&n; *&t;&t;&t;fixed requeue routine&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.25 2003/12/07 11:08:25 devik Exp devik $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -43,7 +43,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000f&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x30010&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -2871,11 +2871,18 @@ l_int|1
 comma
 l_string|&quot;htb_enq_ok cl=%X skb=%p&bslash;n&quot;
 comma
-id|htb_classid
-c_func
 (paren
 id|cl
+op_logical_and
+id|cl
+op_ne
+id|HTB_DIRECT
 )paren
+ques
+c_cond
+id|cl-&gt;classid
+suffix:colon
+l_int|0
 comma
 id|skb
 )paren
@@ -2927,6 +2934,11 @@ comma
 id|sch
 )paren
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|tskb
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2949,7 +2961,7 @@ op_logical_and
 id|cl
 )paren
 (brace
-id|__skb_queue_tail
+id|__skb_queue_head
 c_func
 (paren
 op_amp
@@ -2958,22 +2970,37 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|q-&gt;direct_pkts
-op_increment
-suffix:semicolon
 )brace
 r_else
 (brace
+id|__skb_queue_head
+c_func
+(paren
+op_amp
+id|q-&gt;direct_queue
+comma
+id|skb
+)paren
+suffix:semicolon
+id|tskb
+op_assign
+id|__skb_dequeue_tail
+c_func
+(paren
+op_amp
+id|q-&gt;direct_queue
+)paren
+suffix:semicolon
 id|kfree_skb
 (paren
-id|skb
+id|tskb
 )paren
 suffix:semicolon
 id|sch-&gt;stats.drops
 op_increment
 suffix:semicolon
 r_return
-id|NET_XMIT_DROP
+id|NET_XMIT_CN
 suffix:semicolon
 )brace
 )brace
@@ -3024,11 +3051,18 @@ l_int|1
 comma
 l_string|&quot;htb_req_ok cl=%X skb=%p&bslash;n&quot;
 comma
-id|htb_classid
-c_func
 (paren
 id|cl
+op_logical_and
+id|cl
+op_ne
+id|HTB_DIRECT
 )paren
+ques
+c_cond
+id|cl-&gt;classid
+suffix:colon
+l_int|0
 comma
 id|skb
 )paren
@@ -7401,7 +7435,7 @@ op_assign
 id|HTB_CMAGIC
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* create leaf qdisc early because it uses kmalloc(GPF_KERNEL)&n;&t;&t;   so that can&squot;t be used inside of sch_tree_lock&n;&t;&t;   -- thanks to Karlis Peisenieks */
+multiline_comment|/* create leaf qdisc early because it uses kmalloc(GFP_KERNEL)&n;&t;&t;   so that can&squot;t be used inside of sch_tree_lock&n;&t;&t;   -- thanks to Karlis Peisenieks */
 id|new_q
 op_assign
 id|qdisc_create_dflt

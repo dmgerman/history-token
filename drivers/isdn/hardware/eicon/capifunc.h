@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.h,v 1.10 2003/08/25 10:06:37 schindler Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: capifunc.h,v 1.11 2004/03/20 17:19:58 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef __CAPIFUNC_H__
 DECL|macro|__CAPIFUNC_H__
 mdefine_line|#define __CAPIFUNC_H__
@@ -23,15 +23,18 @@ r_typedef
 r_struct
 id|_diva_card
 (brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|remove_in_progress
+r_int
+id|remove_in_progress
+suffix:semicolon
 DECL|member|Id
 r_int
 id|Id
-suffix:semicolon
-DECL|member|next
-r_struct
-id|_diva_card
-op_star
-id|next
 suffix:semicolon
 DECL|member|capi_ctrl
 r_struct

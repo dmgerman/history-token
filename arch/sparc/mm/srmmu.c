@@ -923,10 +923,10 @@ id|__pte
 c_func
 (paren
 (paren
+id|page_to_pfn
+c_func
 (paren
 id|page
-op_minus
-id|mem_map
 )paren
 op_lshift
 (paren
@@ -1225,10 +1225,10 @@ id|i
 suffix:semicolon
 id|ptp
 op_assign
+id|page_to_pfn
+c_func
 (paren
 id|ptep
-op_minus
-id|mem_map
 )paren
 op_lshift
 (paren
@@ -2405,8 +2405,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-id|mem_map
-op_plus
+id|pfn_to_page
+c_func
 (paren
 id|__nocache_pa
 c_func
@@ -2485,15 +2485,13 @@ c_func
 suffix:semicolon
 id|p
 op_assign
-(paren
+id|page_to_pfn
+c_func
 (paren
 id|pte
-op_minus
-id|mem_map
 )paren
 op_lshift
 id|PAGE_SHIFT
-)paren
 suffix:semicolon
 multiline_comment|/* Physical address */
 id|p
@@ -6878,11 +6876,7 @@ id|npages
 op_assign
 id|max_low_pfn
 op_minus
-(paren
-id|phys_base
-op_rshift
-id|PAGE_SHIFT
-)paren
+id|pfn_base
 suffix:semicolon
 id|zones_size
 (braket
@@ -6937,9 +6931,7 @@ l_int|NULL
 comma
 id|zones_size
 comma
-id|phys_base
-op_rshift
-id|PAGE_SHIFT
+id|pfn_base
 comma
 id|zholes_size
 )paren
@@ -6949,20 +6941,6 @@ op_assign
 id|contig_page_data.node_mem_map
 suffix:semicolon
 )brace
-multiline_comment|/* P3: easy to fix, todo. Current code is utterly broken, though. */
-r_if
-c_cond
-(paren
-id|phys_base
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;phys_base nonzero&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|srmmu_mmu_info
 r_static

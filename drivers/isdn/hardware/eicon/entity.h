@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: entity.h,v 1.1.2.1 2001/02/08 12:25:43 armin Exp $ */
+multiline_comment|/* $Id: entity.h,v 1.4 2004/03/21 17:26:01 armin Exp $ */
 macro_line|#ifndef __DIVAS_USER_MODE_IDI_ENTITY__
 DECL|macro|__DIVAS_USER_MODE_IDI_ENTITY__
 mdefine_line|#define __DIVAS_USER_MODE_IDI_ENTITY__
@@ -18,10 +18,10 @@ r_struct
 id|_divas_um_idi_entity
 (brace
 DECL|member|link
-id|diva_entity_link_t
+r_struct
+id|list_head
 id|link
 suffix:semicolon
-multiline_comment|/* should be first */
 DECL|member|adapter
 id|diva_um_idi_adapter_t
 op_star
