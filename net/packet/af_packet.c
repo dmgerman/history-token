@@ -3253,11 +3253,7 @@ id|THIS_MODULE
 suffix:semicolon
 id|po
 op_assign
-id|pkt_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func
