@@ -847,6 +847,8 @@ DECL|macro|OHCI_QUIRK_AMD756
 mdefine_line|#define&t;OHCI_QUIRK_AMD756&t;0x01&t;&t;&t;/* erratum #4 */
 DECL|macro|OHCI_QUIRK_SUPERIO
 mdefine_line|#define&t;OHCI_QUIRK_SUPERIO&t;0x02&t;&t;&t;/* natsemi */
+DECL|macro|OHCI_QUIRK_INITRESET
+mdefine_line|#define&t;OHCI_QUIRK_INITRESET&t;0x04&t;&t;&t;/* SiS, OPTi, ... */
 singleline_comment|// there are also chip quirks/bugs in init logic
 multiline_comment|/*&n;&t; * framework state&n;&t; */
 DECL|member|hcd

@@ -146,6 +146,7 @@ comma
 l_string|&quot;AMD756 erratum 4 workaround&bslash;n&quot;
 )paren
 suffix:semicolon
+singleline_comment|// also somewhat erratum 10 (suspend/resume issues)
 )brace
 multiline_comment|/* FIXME for some of the early AMD 760 southbridges, OHCI&n;&t;&t; * won&squot;t work at all.  blacklist them.&n;&t;&t; */
 multiline_comment|/* Apple&squot;s OHCI driver has a lot of bizarre workarounds&n;&t;&t; * for this chip.  Evidently control and bulk lists&n;&t;&t; * can get confused.  (B&amp;W G3 models, and ...)&n;&t;&t; */
@@ -168,6 +169,11 @@ id|ohci
 comma
 l_string|&quot;WARNING: OPTi workarounds unavailable&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* OPTi sometimes acts wierd during init */
+id|ohci-&gt;flags
+op_assign
+id|OHCI_QUIRK_INITRESET
 suffix:semicolon
 )brace
 multiline_comment|/* Check for NSC87560. We have to look at the bridge (fn1) to&n;&t;&t; * identify the USB (fn2). This quirk might apply to more or&n;&t;&t; * even all NSC stuff.&n;&t;&t; */
@@ -229,6 +235,29 @@ l_string|&quot;Using NSC SuperIO setup&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* SiS sometimes acts wierd during init */
+r_else
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SI
+)paren
+(brace
+id|ohci-&gt;flags
+op_assign
+id|OHCI_QUIRK_INITRESET
+suffix:semicolon
+id|ohci_info
+c_func
+(paren
+id|ohci
+comma
+l_string|&quot;SiS init quirk&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 id|memset
 (paren
@@ -265,6 +294,28 @@ id|hcd
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+multiline_comment|/* NOTE: this is a second reset. the first one helps&n;&t; * keep bios/smm irqs from making trouble, but it was&n;&t; * probably more than 1msec ago...&n;&t; */
+r_if
+c_cond
+(paren
+id|hc_reset
+(paren
+id|ohci
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|ohci_stop
+(paren
+id|hcd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
