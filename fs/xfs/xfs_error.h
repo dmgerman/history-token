@@ -42,6 +42,9 @@ macro_line|#else
 DECL|macro|XFS_ERROR
 mdefine_line|#define XFS_ERROR(e)&t;(e)
 macro_line|#endif
+r_struct
+id|xfs_mount
+suffix:semicolon
 r_extern
 r_void
 id|xfs_error_report
