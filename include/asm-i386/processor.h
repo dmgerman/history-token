@@ -1251,23 +1251,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Copy and release all segment info associated with a VM */
-r_extern
-r_void
-id|copy_segments
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-comma
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
+multiline_comment|/* Release all segment info associated with a VM */
 r_extern
 r_void
 id|release_segments

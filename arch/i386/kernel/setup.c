@@ -11896,7 +11896,7 @@ id|load_LDT
 c_func
 (paren
 op_amp
-id|init_mm
+id|init_mm.context
 )paren
 suffix:semicolon
 multiline_comment|/* Clear %fs and %gs. */
