@@ -331,16 +331,9 @@ op_logical_neg
 id|use_tsc
 )paren
 macro_line|#endif
+multiline_comment|/* no locking but a rare wrong value is not a big deal */
 r_return
-(paren
-r_int
-r_int
-r_int
-)paren
-id|get_jiffies_64
-c_func
-(paren
-)paren
+id|jiffies_64
 op_star
 (paren
 l_int|1000000000
