@@ -7892,11 +7892,6 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-id|pcibios_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pci_for_each_dev
 c_func
 (paren

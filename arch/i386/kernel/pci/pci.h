@@ -214,6 +214,10 @@ r_extern
 r_int
 id|pci_use_acpi_routing
 suffix:semicolon
+r_extern
+id|spinlock_t
+id|pci_config_lock
+suffix:semicolon
 r_void
 id|pcibios_irq_init
 c_func
