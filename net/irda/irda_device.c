@@ -1868,7 +1868,7 @@ c_func
 (paren
 id|channel
 comma
-id|virt_to_bus
+id|isa_virt_to_bus
 c_func
 (paren
 id|buffer
