@@ -292,6 +292,8 @@ DECL|macro|BUSTYPE_VME
 mdefine_line|#define BUSTYPE_VME&t;&quot;VME&quot;
 DECL|macro|BUSTYPE_XPRESS
 mdefine_line|#define BUSTYPE_XPRESS&t;&quot;XPRESS&quot;
+DECL|macro|BUSTYPE_NEC98
+mdefine_line|#define BUSTYPE_NEC98&t;&quot;NEC98&quot;
 DECL|struct|mpc_config_ioapic
 r_struct
 id|mpc_config_ioapic
@@ -545,6 +547,9 @@ id|MP_BUS_PCI
 comma
 DECL|enumerator|MP_BUS_MCA
 id|MP_BUS_MCA
+comma
+DECL|enumerator|MP_BUS_NEC98
+id|MP_BUS_NEC98
 )brace
 suffix:semicolon
 r_extern

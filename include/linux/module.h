@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Indirect stringification */
@@ -31,6 +32,11 @@ DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
 DECL|macro|print_modules
 mdefine_line|#define print_modules()
+multiline_comment|/* v850 toolchain uses a `_&squot; prefix for all user symbols */
+macro_line|#ifndef MODULE_SYMBOL_PREFIX
+DECL|macro|MODULE_SYMBOL_PREFIX
+mdefine_line|#define MODULE_SYMBOL_PREFIX &quot;&quot;
+macro_line|#endif
 DECL|macro|MODULE_NAME_LEN
 mdefine_line|#define MODULE_NAME_LEN (64 - sizeof(unsigned long))
 DECL|struct|kernel_symbol
@@ -52,8 +58,38 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+macro_line|#ifdef KBUILD_MODNAME
+DECL|variable|__module_name
+r_static
+r_const
+r_char
+id|__module_name
+(braket
+id|MODULE_NAME_LEN
+)braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|section
+c_func
+(paren
+l_string|&quot;.gnu.linkonce.modname&quot;
+)paren
+)paren
+)paren
+op_assign
+"&bslash;"
+id|__stringify
+c_func
+(paren
+id|KBUILD_MODNAME
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
 r_extern
 r_struct
@@ -149,10 +185,10 @@ id|symbol
 )paren
 suffix:semicolon
 DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
+mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(MODULE_SYMBOL_PREFIX #x)))
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
 DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, MODULE_SYMBOL_PREFIX #sym }
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
@@ -322,7 +358,7 @@ id|symbol
 )paren
 suffix:semicolon
 DECL|macro|symbol_put
-mdefine_line|#define symbol_put(x) __symbol_put(#x)
+mdefine_line|#define symbol_put(x) __symbol_put(MODULE_SYMBOL_PREFIX #x)
 r_void
 id|symbol_put_addr
 c_func
@@ -650,9 +686,8 @@ DECL|macro|mod_bound
 mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
 multiline_comment|/* Old-style &quot;I&squot;ll just call it init_module and it&squot;ll be run at&n;   insert&quot;.  Use module_init(myroutine) instead. */
 macro_line|#ifdef MODULE
-multiline_comment|/* Used as &quot;int init_module(void) { ... }&quot;.  Get funky to insert modname. */
 DECL|macro|init_module
-mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initfn(void);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;char __module_name[] __attribute__((section(&quot;.modulename&quot;))) =&t;&bslash;&n;&t;__stringify(KBUILD_MODNAME);&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void)
+mdefine_line|#define init_module(voidarg) __initfn(void)
 DECL|macro|cleanup_module
 mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
 macro_line|#endif

@@ -961,10 +961,7 @@ l_int|2
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_IO_APIC 
-r_extern
-r_int
-id|nr_ioapics
-suffix:semicolon
+macro_line|#include &lt;asm/io_apic.h&gt;
 multiline_comment|/*&n; * VIA 686A/B: If an IO-APIC is active, we need to route all on-chip&n; * devices to the external APIC.&n; *&n; * TODO: When we have device-specific interrupt routers,&n; * this code will go away from quirks.&n; */
 DECL|function|quirk_via_ioapic
 r_static
@@ -1938,7 +1935,7 @@ comma
 (brace
 id|PCI_FIXUP_FINAL
 comma
-id|PCI_VENDOR_ID_SIS
+id|PCI_VENDOR_ID_SI
 comma
 id|PCI_ANY_ID
 comma

@@ -10059,18 +10059,15 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * For each attached hard-reset device, clear out&n;&t; * all command structures.  Leave the running&n;&t; * command in place.&n;&t; */
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|SDpnt
-op_assign
-id|info-&gt;host-&gt;host_queue
-suffix:semicolon
-id|SDpnt
-suffix:semicolon
-id|SDpnt
-op_assign
-id|SDpnt-&gt;next
+comma
+op_amp
+id|info-&gt;host-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_int

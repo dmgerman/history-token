@@ -857,8 +857,6 @@ DECL|macro|PCI_VENDOR_ID_FD
 mdefine_line|#define PCI_VENDOR_ID_FD&t;&t;0x1036
 DECL|macro|PCI_DEVICE_ID_FD_36C70
 mdefine_line|#define PCI_DEVICE_ID_FD_36C70&t;&t;0x0000
-DECL|macro|PCI_VENDOR_ID_SIS
-mdefine_line|#define PCI_VENDOR_ID_SIS&t;&t;0x1039
 DECL|macro|PCI_VENDOR_ID_SI
 mdefine_line|#define PCI_VENDOR_ID_SI&t;&t;0x1039
 DECL|macro|PCI_DEVICE_ID_SI_5591_AGP
