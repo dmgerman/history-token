@@ -10,10 +10,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 macro_line|#endif
-DECL|macro|AGPGART_VERSION_MAJOR
-mdefine_line|#define AGPGART_VERSION_MAJOR 0
-DECL|macro|AGPGART_VERSION_MINOR
-mdefine_line|#define AGPGART_VERSION_MINOR 99
 DECL|enum|chipset_type
 r_enum
 id|chipset_type
