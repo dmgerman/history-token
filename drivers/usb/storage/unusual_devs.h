@@ -1240,6 +1240,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Reported by Hanno Boeck &lt;hanno@gmx.de&gt;&n; * Taken from the Lycoris Kernel */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0636
+comma
+l_int|0x0003
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Vivitar&quot;
+comma
+l_string|&quot;Vivicam 35Xx&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
