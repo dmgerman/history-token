@@ -12163,7 +12163,7 @@ suffix:semicolon
 DECL|function|i810_ac97_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|i810_ac97_init
 c_func
 (paren
@@ -13001,7 +13001,7 @@ suffix:semicolon
 DECL|function|i810_configure_clocking
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_configure_clocking
 (paren
 r_void
@@ -13370,7 +13370,7 @@ multiline_comment|/* install the driver, we do not allocate hardware channel nor
 DECL|function|i810_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|i810_probe
 c_func
 (paren

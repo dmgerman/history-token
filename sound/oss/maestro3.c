@@ -10388,7 +10388,7 @@ macro_line|#endif
 DECL|function|m3_codec_install
 r_static
 r_int
-id|__init
+id|__devinit
 id|m3_codec_install
 c_func
 (paren
@@ -11661,7 +11661,7 @@ multiline_comment|/*&n; * great day!  this function is ugly as hell.&n; */
 DECL|function|m3_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|m3_probe
 c_func
 (paren

@@ -19000,7 +19000,7 @@ multiline_comment|/* AC97 codec initialisation. */
 DECL|function|trident_ac97_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|trident_ac97_init
 c_func
 (paren
@@ -19878,7 +19878,7 @@ multiline_comment|/* install the driver, we do not allocate hardware channel nor
 DECL|function|trident_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|trident_probe
 c_func
 (paren

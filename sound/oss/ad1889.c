@@ -3527,8 +3527,6 @@ l_int|0x0404
 )paren
 suffix:semicolon
 multiline_comment|/* attenuation */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3551,8 +3549,6 @@ id|file
 )paren
 (brace
 multiline_comment|/* if we have state free it here */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3564,6 +3560,11 @@ id|file_operations
 id|ad1889_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign
@@ -3643,8 +3644,6 @@ id|file-&gt;private_data
 op_assign
 id|ad1889_dev-&gt;ac97_codec
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3666,8 +3665,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3730,6 +3727,11 @@ id|file_operations
 id|ad1889_mixer_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign
