@@ -54,15 +54,8 @@ id|CPUFREQ_TABLE_END
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
-singleline_comment|//#define SPEEDSTEP_DEBUG
-macro_line|#ifdef SPEEDSTEP_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;speedstep-ich&quot;, msg)
 multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to change the SpeedStep state.&n; */
 DECL|function|speedstep_set_state
 r_static
@@ -128,7 +121,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpufreq: could not find speedstep register&bslash;n&quot;
+l_string|&quot;speedstep-ich: could not find speedstep register&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -149,7 +142,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpufreq: could not find speedstep register&bslash;n&quot;
+l_string|&quot;speedstep-ich: could not find speedstep register&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -176,8 +169,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: read at pmbase 0x%x + 0x50 returned 0x%x&bslash;n&quot;
+l_string|&quot;read at pmbase 0x%x + 0x50 returned 0x%x&bslash;n&quot;
 comma
 id|pmbase
 comma
@@ -196,8 +188,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: writing 0x%x to pmbase 0x%x + 0x50&bslash;n&quot;
+l_string|&quot;writing 0x%x to pmbase 0x%x + 0x50&bslash;n&quot;
 comma
 id|value
 comma
@@ -282,8 +273,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: read at pmbase 0x%x + 0x50 returned 0x%x&bslash;n&quot;
+l_string|&quot;read at pmbase 0x%x + 0x50 returned 0x%x&bslash;n&quot;
 comma
 id|pmbase
 comma
@@ -303,9 +293,9 @@ l_int|0x1
 )paren
 (brace
 id|dprintk
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: change to %u MHz succeeded&bslash;n&quot;
+l_string|&quot;change to %u MHz succeeded&bslash;n&quot;
 comma
 (paren
 id|speedstep_get_processor_frequency
@@ -384,8 +374,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: activating SpeedStep (TM) registers&bslash;n&quot;
+l_string|&quot;activating SpeedStep (TM) registers&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_write_config_word
@@ -545,8 +534,7 @@ l_int|5
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: hostbridge does not support speedstep&bslash;n&quot;
+l_string|&quot;hostbridge does not support speedstep&bslash;n&quot;
 )paren
 suffix:semicolon
 id|speedstep_chipset_dev
@@ -622,6 +610,14 @@ c_func
 id|current
 comma
 id|cpus_allowed
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;detected %u kHz as current frequency&bslash;n&quot;
+comma
+id|speed
 )paren
 suffix:semicolon
 r_return
@@ -736,6 +732,18 @@ suffix:semicolon
 id|freqs.cpu
 op_assign
 id|policy-&gt;cpu
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;transiting from %u to %u kHz&bslash;n&quot;
+comma
+id|freqs.old
+comma
+id|freqs
+dot
+r_new
+)paren
 suffix:semicolon
 multiline_comment|/* no transition necessary */
 r_if
@@ -964,8 +972,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: currently at %s speed setting - %i MHz&bslash;n&quot;
+l_string|&quot;currently at %s speed setting - %i MHz&bslash;n&quot;
 comma
 (paren
 id|speed
@@ -1148,10 +1155,18 @@ c_cond
 op_logical_neg
 id|speedstep_processor
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Intel(R) SpeedStep(TM) capable processor not found&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 multiline_comment|/* detect chipset */
 r_if
 c_cond
@@ -1163,11 +1178,10 @@ c_func
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) for this chipset not (yet) available.&bslash;n&quot;
+l_string|&quot;Intel(R) SpeedStep(TM) for this chipset not (yet) available.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
