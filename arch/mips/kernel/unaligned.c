@@ -155,7 +155,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -255,7 +256,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -351,7 +353,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -453,7 +456,8 @@ multiline_comment|/*&n;&t;&t; * A 32-bit kernel might be running on a 64-bit pro
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -558,7 +562,8 @@ multiline_comment|/*&n;&t;&t; * A 32-bit kernel might be running on a 64-bit pro
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -659,7 +664,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -755,7 +761,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -847,7 +854,8 @@ multiline_comment|/*&n;&t;&t; * A 32-bit kernel might be running on a 64-bit pro
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE

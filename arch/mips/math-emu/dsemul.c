@@ -168,7 +168,8 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -324,7 +325,8 @@ multiline_comment|/*&n;&t; * If we can&squot;t even access the area, something i
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ

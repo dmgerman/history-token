@@ -119,10 +119,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|v
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
+c_func
 (paren
 id|VERIFY_WRITE
 comma
@@ -131,9 +130,9 @@ comma
 id|size
 )paren
 )paren
-)paren
 r_return
-id|v
+op_minus
+id|EFAULT
 suffix:semicolon
 r_for
 c_loop

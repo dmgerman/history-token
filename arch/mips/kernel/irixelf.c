@@ -4093,9 +4093,11 @@ id|hp
 op_assign
 id|user_phdrp
 suffix:semicolon
-id|retval
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -4112,23 +4114,19 @@ op_star
 id|cnt
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 )paren
 (brace
 macro_line|#ifdef DEBUG_ELF
 id|printk
 c_func
 (paren
-l_string|&quot;irix_mapelf: verify_area fails!&bslash;n&quot;
+l_string|&quot;irix_mapelf: access_ok fails!&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_ELF
