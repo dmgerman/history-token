@@ -455,7 +455,7 @@ suffix:semicolon
 )brace
 DECL|function|magellan_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|magellan_interrupt
 c_func
 (paren
@@ -526,6 +526,9 @@ op_assign
 id|data
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * magellan_disconnect() is the opposite of magellan_connect()&n; */
 DECL|function|magellan_disconnect

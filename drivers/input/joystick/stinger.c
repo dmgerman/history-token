@@ -394,7 +394,7 @@ suffix:semicolon
 multiline_comment|/*&n; * stinger_interrupt() is called by the low level driver when characters&n; * are ready for us. We then buffer them for further processing, or call the&n; * packet processing routine.&n; */
 DECL|function|stinger_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|stinger_interrupt
 c_func
 (paren
@@ -464,6 +464,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * stinger_disconnect() is the opposite of stinger_connect()&n; */

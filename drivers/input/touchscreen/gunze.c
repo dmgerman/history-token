@@ -227,7 +227,7 @@ suffix:semicolon
 )brace
 DECL|function|gunze_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|gunze_interrupt
 c_func
 (paren
@@ -298,6 +298,9 @@ op_assign
 id|data
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * gunze_disconnect() is the opposite of gunze_connect()&n; */
 DECL|function|gunze_disconnect
