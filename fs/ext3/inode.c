@@ -7708,7 +7708,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* inode-&gt;i_attr_flags = 0;&t;&t;&t;&t;unused */
 r_if
 c_cond
 (paren
@@ -7716,13 +7715,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_SYNC_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_SYNCRONOUS; unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_SYNC
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7730,13 +7726,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_APPEND_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_APPEND;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_APPEND
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7744,13 +7737,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_IMMUTABLE_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_IMMUTABLE;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_IMMUTABLE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7758,13 +7748,10 @@ id|ei-&gt;i_flags
 op_amp
 id|EXT3_NOATIME_FL
 )paren
-(brace
-multiline_comment|/* inode-&gt;i_attr_flags |= ATTR_FLAG_NOATIME;&t;unused */
 id|inode-&gt;i_flags
 op_or_assign
 id|S_NOATIME
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 id|bad_inode

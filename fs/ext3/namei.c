@@ -2152,7 +2152,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2322,7 +2322,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2506,7 +2506,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4018,7 +4018,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4278,7 +4278,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4569,7 +4569,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4865,7 +4865,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -5047,13 +5047,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|old_dir
 )paren
 op_logical_or
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|new_dir

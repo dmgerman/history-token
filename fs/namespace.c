@@ -1035,6 +1035,12 @@ l_string|&quot;,sync&quot;
 )brace
 comma
 (brace
+id|MS_DIRSYNC
+comma
+l_string|&quot;,dirsync&quot;
+)brace
+comma
+(brace
 id|MS_MANDLOCK
 comma
 l_string|&quot;,mand&quot;
