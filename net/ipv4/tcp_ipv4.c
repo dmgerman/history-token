@@ -447,8 +447,6 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|tcp_bind_hash
-r_static
-r_inline
 r_void
 id|tcp_bind_hash
 c_func
