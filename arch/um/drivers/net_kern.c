@@ -1324,7 +1324,7 @@ id|device
 suffix:semicolon
 id|device-&gt;list
 op_assign
-id|LIST_HEAD_INIT
+id|INIT_LIST_HEAD
 c_func
 (paren
 id|device-&gt;list
@@ -1590,7 +1590,7 @@ id|dev-&gt;priv
 suffix:semicolon
 id|lp-&gt;list
 op_assign
-id|LIST_HEAD_INIT
+id|INIT_LIST_HEAD
 c_func
 (paren
 id|lp-&gt;list
@@ -2493,7 +2493,7 @@ r_new
 op_member_access_from_pointer
 id|list
 op_assign
-id|LIST_HEAD_INIT
+id|INIT_LIST_HEAD
 c_func
 (paren
 r_new
