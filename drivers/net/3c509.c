@@ -5055,7 +5055,38 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;EtherLink III debug level (0-6)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherLink III IRQ number(s) (assigned)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xcvr
+comma
+l_string|&quot;EtherLink III tranceiver(s) (0=internal, 1=external)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;EtherLink III maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -5064,7 +5095,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nopnp
+comma
+l_string|&quot;EtherLink III disable ISA PnP support (0-1)&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

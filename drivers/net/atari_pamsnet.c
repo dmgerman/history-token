@@ -77,6 +77,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|pamsnet_debug
+comma
+l_string|&quot;pamsnet debug enable (0-1)&quot;
+)paren
+suffix:semicolon
 DECL|variable|pamsnet_min_poll_time
 r_static
 r_int

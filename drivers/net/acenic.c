@@ -1547,7 +1547,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1644,7 +1643,54 @@ l_int|8
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|link
+comma
+l_string|&quot;Acenic/3C985/NetGear link state&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|trace
+comma
+l_string|&quot;Acenic/3C985/NetGear firmware trace level&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tx_coal_tick
+comma
+l_string|&quot;Acenic/3C985/NetGear maximum clock ticks to wait for packets&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_tx_desc
+comma
+l_string|&quot;Acenic/3C985/NetGear maximum number of transmit descriptors&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_coal_tick
+comma
+l_string|&quot;Acenic/3C985/NetGear maximum clock ticks to wait for packets&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_rx_desc
+comma
+l_string|&quot;Acenic/3C985/NetGear maximum number of receive descriptors&quot;
+)paren
+suffix:semicolon
 DECL|function|ace_module_cleanup
 r_static
 r_void

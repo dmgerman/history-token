@@ -702,6 +702,38 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;LANCE/PCnet I/O base address(es),required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dma
+comma
+l_string|&quot;LANCE/PCnet ISA DMA channel (ignored for some devices)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;LANCE/PCnet IRQ number (ignored for some devices)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lance_debug
+comma
+l_string|&quot;LANCE/PCnet debug level (0-7)&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

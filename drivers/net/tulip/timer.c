@@ -872,8 +872,6 @@ id|tulip_restart_rxtx
 c_func
 (paren
 id|tp
-comma
-id|tp-&gt;csr6
 )paren
 suffix:semicolon
 id|next_tick

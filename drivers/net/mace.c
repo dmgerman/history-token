@@ -37,6 +37,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|port_aaui
+comma
+l_string|&quot;MACE uses AAUI port (0-1)&quot;
+)paren
+suffix:semicolon
 DECL|macro|N_RX_RING
 mdefine_line|#define N_RX_RING&t;8
 DECL|macro|N_TX_RING

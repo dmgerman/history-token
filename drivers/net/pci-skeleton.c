@@ -1,4 +1,5 @@
 multiline_comment|/*&n;&n;&t;drivers/net/pci-skeleton.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Original code came from 8139too.c, which in turns was based&n;&t;originally on Donald Becker&squot;s rtl8139.c driver, versions 1.11&n;&t;and older.  This driver was originally based on rtl8139.c&n;&t;version 1.07.  Header of rtl8139.c version 1.11:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2000 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;*/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1419,7 +1420,7 @@ l_string|&quot;Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;RealTek RTL-8139 Fast Ethernet driver&quot;
+l_string|&quot;Skeleton for a PCI Fast Ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -1454,6 +1455,34 @@ c_func
 l_int|8
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;pci-skeleton maximum number of filtered multicast addresses&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;pci-skeleton maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|media
+comma
+l_string|&quot;pci-skeleton: Bits 0-3: media type, bit 17: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|debug
+comma
+l_string|&quot;(unused)&quot;
 )paren
 suffix:semicolon
 r_static
@@ -7129,6 +7158,8 @@ id|data
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket
@@ -7188,6 +7219,8 @@ id|data
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket
@@ -7727,15 +7760,19 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 DECL|function|netdrv_suspend
 r_static
-r_void
+r_int
 id|netdrv_suspend
 (paren
 r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+id|u32
+id|state
 )paren
 (brace
 r_struct
@@ -7843,10 +7880,13 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|netdrv_resume
 r_static
-r_void
+r_int
 id|netdrv_resume
 (paren
 r_struct
@@ -7892,7 +7932,11 @@ id|netdrv_hw_start
 id|dev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PM */
 DECL|variable|netdrv_pci_driver
 r_static
 r_struct
@@ -7916,6 +7960,7 @@ id|remove
 suffix:colon
 id|netdrv_remove_one
 comma
+macro_line|#ifdef CONFIG_PM
 id|suspend
 suffix:colon
 id|netdrv_suspend
@@ -7924,6 +7969,7 @@ id|resume
 suffix:colon
 id|netdrv_resume
 comma
+macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 DECL|function|netdrv_init_module

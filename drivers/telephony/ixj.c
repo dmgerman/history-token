@@ -31862,7 +31862,6 @@ id|wLo
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PCMCIA
 macro_line|#ifndef CONFIG_ISAPNP
 DECL|variable|dspio
 r_static
@@ -31873,11 +31872,6 @@ id|IXJMAX
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|xio
 r_static
@@ -31888,11 +31882,6 @@ id|IXJMAX
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -31922,7 +31911,6 @@ id|IXJMAX
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 DECL|function|ixj_exit
 r_void

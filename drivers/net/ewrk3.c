@@ -8443,6 +8443,22 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherWORKS 3 I/O base address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherWORKS 3 IRQ number&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

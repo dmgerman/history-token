@@ -211,8 +211,6 @@ id|tulip_restart_rxtx
 c_func
 (paren
 id|tp
-comma
-id|tp-&gt;csr6
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -359,13 +357,13 @@ op_amp
 l_int|0x0000fdff
 )paren
 suffix:semicolon
-id|tulip_outl_csr
+id|outl
 c_func
 (paren
-id|tp
-comma
 id|tp-&gt;csr6
 comma
+id|ioaddr
+op_plus
 id|CSR6
 )paren
 suffix:semicolon
@@ -875,8 +873,6 @@ id|tulip_restart_rxtx
 c_func
 (paren
 id|tp
-comma
-id|tp-&gt;csr6
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start

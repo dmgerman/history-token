@@ -6264,6 +6264,30 @@ id|ELP_MAX_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherLink Plus I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherLink Plus IRQ number(s) (assigned)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dma
+comma
+l_string|&quot;EtherLink Plus DMA channel(s)&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

@@ -1,5 +1,11 @@
-multiline_comment|/* winbond-840.c: A Linux PCI network adapter skeleton device driver. */
+multiline_comment|/* winbond-840.c: A Linux PCI network adapter device driver. */
 multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/drivers.html&n;&n;&t;Do not remove the copyright infomation.&n;&t;Do not change the version information unless an improvement has been made.&n;&t;Merely removing my name, as Compex has done in the past, does not count&n;&t;as an improvement.&n;&n;&t;Changelog:&n;&t;* ported to 2.4&n;&t;&t;???&n;&t;* spin lock update, memory barriers, new style dma mappings&n;&t;&t;limit each tx buffer to &lt; 1024 bytes&n;&t;&t;remove DescIntr from Rx descriptors (that&squot;s an Tx flag)&n;&t;&t;remove next pointer from Tx descriptors&n;&t;&t;synchronize tx_q_bytes&n;&t;&t;software reset in tx_timeout&n;&t;&t;&t;Copyright (C) 2000 Manfred Spraul&n;&n;&t;TODO:&n;&t;* according to the documentation, the chip supports big endian&n;&t;&t;descriptors. Remove cpu_to_le32, enable BE descriptors.&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;winbond-840&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.01&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;5/15/2000&quot;
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: winbond840_probe&n;config-in: tristate &squot;Winbond W89c840 Ethernet support&squot; CONFIG_WINBOND_840&n;&n;c-help-name: Winbond W89c840 PCI Ethernet support&n;c-help-symbol: CONFIG_WINBOND_840&n;c-help: This driver is for the Winbond W89c840 chip.  It also works with&n;c-help: the TX9882 chip on the Compex RL100-ATX board.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/drivers.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
@@ -147,6 +153,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -160,7 +168,12 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;winbond-840.c:v1.01 (2.4 port) 5/15/2000  Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; (2.4 port) &quot;
+id|DRV_RELDATE
+l_string|&quot;  Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/drivers.html&bslash;n&quot;
 suffix:semicolon
@@ -234,6 +247,54 @@ c_func
 id|MAX_UNITS
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;winbond-840 maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;winbond-840 debug level (0-6)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;winbond-840 copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;winbond-840 maximum number of filtered multicast addresses&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;winbond-840: Bits 0-3: media type, bit 17: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;winbond-840 full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is for the Winbond w89c840 chip.&n;&n;II. Board-specific settings&n;&n;None.&n;&n;III. Driver operation&n;&n;This chip is very similar to the Digital 21*4* &quot;Tulip&quot; family.  The first&n;twelve registers and the descriptor format are nearly identical.  Read a&n;Tulip manual for operational details.&n;&n;A significant difference is that the multicast filter and station address are&n;stored in registers rather than loaded through a pseudo-transmit packet.&n;&n;Unlike the Tulip, transmit buffers are limited to 1KB.  To transmit a&n;full-sized packet we must use both data buffers in a descriptor.  Thus the&n;driver uses ring mode where descriptors are implicitly sequential in memory,&n;rather than using the second descriptor address as a chain pointer to&n;subsequent descriptors.&n;&n;IV. Notes&n;&n;If you are going to almost clone a Tulip, why not go all the way and avoid&n;the need for a new driver?&n;&n;IVb. References&n;&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;http://www.winbond.com.tw/&n;&n;IVc. Errata&n;&n;A horrible bug exists in the transmit FIFO.  Apparently the chip doesn&squot;t&n;correctly detect a full FIFO, and queuing more than 2048 bytes may result in&n;silent data corruption.&n;&n;*/
@@ -1326,7 +1387,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1503,7 +1564,7 @@ c_func
 (paren
 id|pdev
 comma
-l_string|&quot;winbond-840&quot;
+id|DRV_NAME
 )paren
 )paren
 r_goto
@@ -1745,7 +1806,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -6296,10 +6357,130 @@ id|NetworkConfig
 )paren
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -6333,6 +6514,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -6822,7 +7019,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;winbond-840&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

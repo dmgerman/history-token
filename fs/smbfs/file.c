@@ -535,6 +535,10 @@ id|inode-&gt;i_atime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon
+id|inode-&gt;u.smbfs_i.flags
+op_or_assign
+id|SMB_F_LOCALWRITE
+suffix:semicolon
 r_if
 c_cond
 (paren

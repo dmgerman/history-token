@@ -75,6 +75,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|bionet_debug
+comma
+l_string|&quot;bionet debug level (0-2)&quot;
+)paren
+suffix:semicolon
 DECL|variable|bionet_min_poll_time
 r_static
 r_int

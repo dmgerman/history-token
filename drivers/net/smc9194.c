@@ -4601,6 +4601,30 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;SMC 99194 I/O base address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;SMC 99194 IRQ number&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ifport
+comma
+l_string|&quot;SMC 99194 interface port (0-default, 1-TP, 2-AUI)&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

@@ -2605,6 +2605,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;CS89[02]0 debug level (0-5)&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 r_int

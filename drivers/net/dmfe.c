@@ -9073,6 +9073,30 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Davicom DM9xxx enable debugging (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;Davicom DM9xxx: Bit 0: 10/100Mbps, bit 2: duplex, bit 8: HomePNA&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|SF_mode
+comma
+l_string|&quot;Davicom DM9xxx special function (bit 0: VLAN, bit 1 Flow Control, bit 2: TX pause packet)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&t;Description:&n; *&t;when user used insmod to add module, system invoked init_module()&n; *&t;to initilize and register.&n; */
 DECL|function|dmfe_init_module
 r_static

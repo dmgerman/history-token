@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999/2000 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; *&n; * 12/23/00 - Added minimal Cardbus support (Thanks Donald).&n; *&n; * 03/09/01 - Add new pci api, dev_base_lock, general clean up. &n; *&n; * 03/27/01 - Add new dma pci (Thanks to Kyle Lucke) and alloc_trdev&n; *&t;      Change proc_fs behaviour, now one entry per adapter.&n; *&n; * 04/09/01 - Couple of bug fixes to the dma unmaps and ejecting the&n; *&t;      adapter when live does not take the system down with it.&n; * &n; *  To Do:&n; *&n; *&t;     Complete full Cardbus / hot-swap support.&n; *&t;     Wake on lan&t;&n; * &n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
+multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999/2000 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; *&n; * 12/23/00 - Added minimal Cardbus support (Thanks Donald).&n; *&n; * 03/09/01 - Add new pci api, dev_base_lock, general clean up. &n; *&n; * 03/27/01 - Add new dma pci (Thanks to Kyle Lucke) and alloc_trdev&n; *&t;      Change proc_fs behaviour, now one entry per adapter.&n; *&n; * 04/09/01 - Couple of bug fixes to the dma unmaps and ejecting the&n; *&t;      adapter when live does not take the system down with it.&n; * &n; * 06/02/01 - Clean up, copy skb for small packets&n; *&n; *  To Do:&n; *&n; *&t;     Complete full Cardbus / hot-swap support.&n; *&t;     Wake on lan&t;&n; * &n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
 multiline_comment|/* Change OLYMPIC_DEBUG to 1 to get verbose, and I mean really verbose, messages */
 DECL|macro|OLYMPIC_DEBUG
 mdefine_line|#define OLYMPIC_DEBUG 0
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -27,13 +28,15 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;olympic.h&quot;
 multiline_comment|/* I&squot;ve got to put some intelligence into the version number so that Peter and I know&n; * which version of the code somebody has got. &n; * Version Number = a.b.c.d  where a.b.c is the level of code and d is the latest author.&n; * So 0.0.1.pds = Peter, 0.0.1.mlp = Mike&n; * &n; * Official releases will only have an a.b.c version number format. &n; */
-DECL|variable|version
+DECL|variable|__devinitdata
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__devinitdata
 op_assign
-l_string|&quot;Olympic.c v0.9.C 4/18/01 - Peter De Schrijver &amp; Mike Phillips&quot;
+l_string|&quot;Olympic.c v0.9.7 6/02/01 - Peter De Schrijver &amp; Mike Phillips&quot;
 suffix:semicolon
 DECL|variable|open_maj_error
 r_static
@@ -108,6 +111,18 @@ l_string|&quot;FDX Protocol Error&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Module paramters */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Mike Phillips &lt;mikep@linuxtr.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Olympic PCI/Cardbus Chipset Driver &bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Ring Speed 0,4,16,100 &n; * 0 = Autosense         &n; * 4,16 = Selected speed only, no autosense&n; * This allows the card to be the first on the ring&n; * and become the active monitor.&n; * 100 = Nothing at present, 100mbps is autodetected&n; * if FDX is turned on. May be implemented in the future to &n; * fail if 100mpbs is not detected.&n; *&n; * WARNING: Some hubs will allow you to insert&n; * at the wrong speed&n; */
 DECL|variable|ringspeed
 r_static
@@ -256,7 +271,6 @@ id|olympic_pci_tbl
 suffix:semicolon
 r_static
 r_int
-id|__init
 id|olympic_probe
 c_func
 (paren
@@ -457,7 +471,7 @@ suffix:semicolon
 DECL|function|olympic_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|olympic_probe
 c_func
 (paren
@@ -808,6 +822,12 @@ op_assign
 op_amp
 id|olympic_set_mac_address
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -895,7 +915,7 @@ suffix:semicolon
 DECL|function|olympic_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|olympic_init
 c_func
 (paren
@@ -910,7 +930,7 @@ id|olympic_private
 op_star
 id|olympic_priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 comma
@@ -998,7 +1018,7 @@ c_loop
 id|readl
 c_func
 (paren
-id|olympic_priv-&gt;olympic_mmio
+id|olympic_mmio
 op_plus
 id|BCTL
 )paren
@@ -1710,7 +1730,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
@@ -3470,18 +3490,18 @@ c_cond
 id|olympic_priv-&gt;olympic_network_monitor
 )paren
 (brace
-id|__u8
+id|u8
 op_star
 id|oat
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|opt
 suffix:semicolon
 id|oat
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -3493,7 +3513,7 @@ suffix:semicolon
 id|opt
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -3783,13 +3803,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;When we enter the rx routine we do not know how many frames have been &n; *&t;queued on the rx channel.  Therefore we start at the next rx status&n; *&t;position and travel around the receive ring until we have completed&n; *&t;all the frames.&n; *&n; *&t;This means that we may process the frame before we receive the end&n; *&t;of frame interrupt. This is why we always test the status instead&n; *&t;of blindly processing the next frame.&n; *&t;&n; */
+multiline_comment|/*&n; *&t;When we enter the rx routine we do not know how many frames have been &n; *&t;queued on the rx channel.  Therefore we start at the next rx status&n; *&t;position and travel around the receive ring until we have completed&n; *&t;all the frames.&n; *&n; *&t;This means that we may process the frame before we receive the end&n; *&t;of frame interrupt. This is why we always test the status instead&n; *&t;of blindly processing the next frame.&n; *&n; *&t;We also remove the last 4 bytes from the packet as well, these are&n; *&t;just token ring trailer info and upset protocols that don&squot;t check &n; *&t;their own length, i.e. SNA. &n; *&t;&n; */
 DECL|function|olympic_rx
 r_static
 r_void
@@ -3814,7 +3832,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
@@ -3878,7 +3896,7 @@ c_loop
 id|rx_status-&gt;status_buffercnt
 )paren
 (brace
-id|__u32
+id|u32
 id|l_status_buffercnt
 suffix:semicolon
 id|olympic_priv-&gt;rx_status_last_received
@@ -4183,7 +4201,7 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* Optimise based upon number of buffers used. &n;&t;&t;&t;   &t;   &t;   If only one buffer is used we can simply swap the buffers around.&n;&t;&t;&t;   &t;   &t;   If more than one then we must use the new buffer and copy the information&n;&t;&t;&t;   &t;   &t;   first. Ideally all frames would be in a single buffer, this can be tuned by&n;                               &t;   &t;   altering the buffer size. */
+multiline_comment|/* Optimise based upon number of buffers used. &n;&t;&t;&t;   &t;   &t;   If only one buffer is used we can simply swap the buffers around.&n;&t;&t;&t;   &t;   &t;   If more than one then we must use the new buffer and copy the information&n;&t;&t;&t;   &t;   &t;   first. Ideally all frames would be in a single buffer, this can be tuned by&n;                               &t;   &t;   altering the buffer size. If the length of the packet is less than&n;&t;&t;&t;&t;&t;   1500 bytes we&squot;re going to copy it over anyway to stop packets getting&n;&t;&t;&t;&t;&t;   dropped from sockets with buffers small than our pkt_buf_sz. */
 r_if
 c_cond
 (paren
@@ -4207,6 +4225,14 @@ id|rx_ring_last_received
 op_assign
 id|olympic_priv-&gt;rx_ring_last_received
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|length
+OG
+l_int|1500
+)paren
+(brace
 id|skb2
 op_assign
 id|olympic_priv-&gt;rx_ring_skb
@@ -4242,6 +4268,8 @@ c_func
 id|skb2
 comma
 id|length
+op_minus
+l_int|4
 )paren
 suffix:semicolon
 id|skb2-&gt;protocol
@@ -4306,6 +4334,72 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|pci_dma_sync_single
+c_func
+(paren
+id|olympic_priv-&gt;pdev
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|olympic_priv-&gt;olympic_rx_ring
+(braket
+id|rx_ring_last_received
+)braket
+dot
+id|buffer
+)paren
+comma
+id|olympic_priv-&gt;pkt_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|skb_put
+c_func
+(paren
+id|skb
+comma
+id|length
+op_minus
+l_int|4
+)paren
+comma
+id|olympic_priv-&gt;rx_ring_skb
+(braket
+id|rx_ring_last_received
+)braket
+op_member_access_from_pointer
+id|data
+comma
+id|length
+op_minus
+l_int|4
+)paren
+suffix:semicolon
+id|skb-&gt;protocol
+op_assign
+id|tr_type_trans
+c_func
+(paren
+id|skb
+comma
+id|dev
+)paren
+suffix:semicolon
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
 r_do
 (brace
 multiline_comment|/* Walk the buffers */
@@ -4323,6 +4417,27 @@ suffix:semicolon
 id|rx_ring_last_received
 op_assign
 id|olympic_priv-&gt;rx_ring_last_received
+suffix:semicolon
+id|pci_dma_sync_single
+c_func
+(paren
+id|olympic_priv-&gt;pdev
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|olympic_priv-&gt;olympic_rx_ring
+(braket
+id|rx_ring_last_received
+)braket
+dot
+id|buffer
+)paren
+comma
+id|olympic_priv-&gt;pkt_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
 suffix:semicolon
 id|rx_desc
 op_assign
@@ -4378,6 +4493,16 @@ c_loop
 (paren
 op_decrement
 id|i
+)paren
+suffix:semicolon
+id|skb_trim
+c_func
+(paren
+id|skb
+comma
+id|skb-&gt;len
+op_minus
+l_int|4
 )paren
 suffix:semicolon
 id|skb-&gt;protocol
@@ -4531,16 +4656,16 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
 id|olympic_priv-&gt;olympic_mmio
 suffix:semicolon
-id|__u32
+id|u32
 id|sisr
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|adapter_check_area
 suffix:semicolon
@@ -4835,7 +4960,7 @@ suffix:semicolon
 id|adapter_check_area
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -5068,8 +5193,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|dev-&gt;stop
 op_assign
 l_int|NULL
@@ -5245,7 +5368,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
@@ -5424,7 +5547,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
@@ -5892,8 +6015,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5922,18 +6043,18 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
 id|olympic_priv-&gt;olympic_mmio
 suffix:semicolon
-id|__u8
+id|u8
 id|options
 op_assign
 l_int|0
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|srb
 suffix:semicolon
@@ -6326,13 +6447,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
 id|olympic_priv-&gt;olympic_mmio
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|srb
 suffix:semicolon
@@ -7018,13 +7139,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|olympic_mmio
 op_assign
 id|olympic_priv-&gt;olympic_mmio
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|arb_block
 comma
@@ -7034,10 +7155,10 @@ comma
 op_star
 id|srb
 suffix:semicolon
-id|__u8
+id|u8
 id|header_len
 suffix:semicolon
-id|__u16
+id|u16
 id|frame_len
 comma
 id|buffer_len
@@ -7047,18 +7168,18 @@ id|sk_buff
 op_star
 id|mac_frame
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|buf_ptr
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|frame_data
 suffix:semicolon
-id|__u16
+id|u16
 id|buff_off
 suffix:semicolon
-id|__u16
+id|u16
 id|lan_status
 op_assign
 l_int|0
@@ -7066,10 +7187,10 @@ comma
 id|lan_status_diff
 suffix:semicolon
 multiline_comment|/* Initialize to stop compiler warning */
-id|__u8
+id|u8
 id|fdx_prot_error
 suffix:semicolon
-id|__u16
+id|u16
 id|next_ptr
 suffix:semicolon
 r_int
@@ -7078,7 +7199,7 @@ suffix:semicolon
 id|arb_block
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -7090,7 +7211,7 @@ suffix:semicolon
 id|asb_block
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -7102,7 +7223,7 @@ suffix:semicolon
 id|srb
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -8019,8 +8140,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* If serious error */
 r_if
@@ -8357,7 +8476,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|arb_block
 comma
@@ -8367,7 +8486,7 @@ suffix:semicolon
 id|arb_block
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -8379,7 +8498,7 @@ suffix:semicolon
 id|asb_block
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -8571,7 +8690,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u16
+id|u16
 id|max_mtu
 suffix:semicolon
 r_if
@@ -8680,12 +8799,12 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|oat
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -8694,12 +8813,12 @@ op_plus
 id|olympic_priv-&gt;olympic_addr_table_addr
 )paren
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|opt
 op_assign
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -9907,6 +10026,14 @@ id|pci_release_regions
 c_func
 (paren
 id|pdev
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|kfree

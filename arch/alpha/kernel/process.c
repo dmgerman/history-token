@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -132,7 +132,7 @@ l_string|&quot;1-&quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|MAX_UNITS
+id|NUM_UNITS
 )paren
 l_string|&quot;i&quot;
 )paren
@@ -146,7 +146,7 @@ l_string|&quot;1-&quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|MAX_UNITS
+id|NUM_UNITS
 )paren
 l_string|&quot;i&quot;
 )paren
@@ -160,9 +160,49 @@ l_string|&quot;1-&quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|MAX_UNITS
+id|NUM_UNITS
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;ATP maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;ATP debug level (0-7)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;ATP I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;ATP IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xcvr
+comma
+l_string|&quot;ATP tranceiver(s) (0=internal, 1=external)&quot;
 )paren
 suffix:semicolon
 DECL|macro|RUN_AT

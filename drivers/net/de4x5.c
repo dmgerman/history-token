@@ -2916,6 +2916,30 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|de4x5_debug
+comma
+l_string|&quot;de4x5 debug mask&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dec_only
+comma
+l_string|&quot;de4x5 probe only for Digital boards (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|args
+comma
+l_string|&quot;de4x5 full duplex and media type settings; see de4x5.c for details&quot;
+)paren
+suffix:semicolon
 macro_line|# else
 DECL|variable|loading_module
 r_static
@@ -27525,6 +27549,14 @@ c_func
 id|io
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;de4x5 I/O base address&quot;
 )paren
 suffix:semicolon
 r_int

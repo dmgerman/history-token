@@ -3492,6 +3492,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef NOT_CS4281_PM
 DECL|function|printpm
+r_static
 r_void
 id|printpm
 c_func
@@ -3665,6 +3666,7 @@ id|s-&gt;pm.u32MIDCR_Save
 suffix:semicolon
 )brace
 DECL|function|printpipe
+r_static
 r_void
 id|printpipe
 c_func
@@ -3944,6 +3946,7 @@ id|pl-&gt;u32FPDRnAddress
 suffix:semicolon
 )brace
 DECL|function|printpipelines
+r_static
 r_void
 id|printpipelines
 c_func

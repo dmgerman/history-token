@@ -2062,10 +2062,13 @@ op_star
 id|buf
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+r_int
+id|j
+suffix:semicolon
+macro_line|#endif
 r_int
 id|i
-comma
-id|j
 suffix:semicolon
 r_struct
 id|irqaction

@@ -1,5 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
 multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.01&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;4/09/00&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -144,6 +150,8 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -158,7 +166,12 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;sundance.c:v1.01 4/09/00  Written by Donald Becker&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot;  Written by Donald Becker&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/sundance.html&bslash;n&quot;
 suffix:semicolon
@@ -237,6 +250,54 @@ c_func
 id|MAX_UNITS
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;Sundance Alta maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mtu
+comma
+l_string|&quot;Sundance Alta MTU (all boards)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Sundance Alta debug level (0-5)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;Sundance Alta copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;Sundance Alta: Bits 0-3: media type, bit 17: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;Sundance Alta full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the Sundance Technologies &quot;Alta&quot; ST201 chip.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;Some chips explicitly use only 2^N sized rings, while others use a&n;&squot;next descriptor&squot; pointer that the driver forms into rings.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver uses a zero-copy receive and transmit scheme.&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in a later phase of receives.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;A subtle aspect of the operation is that the IP header at offset 14 in an&n;ethernet frame isn&squot;t longword aligned for further processing.&n;Unaligned buffers are permitted by the Sundance hardware, so&n;frames are received into the skbuff at an offset of &quot;+2&quot;, 16-byte aligning&n;the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;lp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;lp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Sundance ST201 datasheet, preliminary version.&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;&n;IVc. Errata&n;&n;*/
@@ -1190,6 +1251,12 @@ id|MII_CNT
 )braket
 suffix:semicolon
 multiline_comment|/* MII device addresses, only first one used. */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The station address location in the EEPROM. */
@@ -1397,7 +1464,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1565,7 +1632,7 @@ c_func
 (paren
 id|pdev
 comma
-l_string|&quot;sundance&quot;
+id|DRV_NAME
 )paren
 )paren
 r_goto
@@ -1684,6 +1751,10 @@ id|chip_idx
 dot
 id|drv_flags
 suffix:semicolon
+id|np-&gt;pci_dev
+op_assign
+id|pdev
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -1785,7 +1856,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -5671,10 +5742,130 @@ id|RxMode
 )paren
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -5708,6 +5899,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -6305,7 +6512,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;sundance&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

@@ -5146,6 +5146,14 @@ comma
 l_string|&quot;1i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|parport
+comma
+l_string|&quot;List of parport device numbers to use by plip&quot;
+)paren
+suffix:semicolon
 DECL|variable|dev_plip
 r_static
 r_struct

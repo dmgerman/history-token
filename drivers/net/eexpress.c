@@ -7536,6 +7536,22 @@ id|EEXP_MAX_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherExpress 16 I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherExpress 16 IRQ number(s)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Ideally the user would give us io=, irq= for every card.  If any parameters&n; * are specified, we verify and then use them.  If no parameters are given, we&n; * autoprobe for one card only.&n; */
 DECL|function|init_module
 r_int

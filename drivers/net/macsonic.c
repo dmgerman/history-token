@@ -2353,6 +2353,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|sonic_debug
+comma
+l_string|&quot;macsonic debug level (1-4)&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 r_int

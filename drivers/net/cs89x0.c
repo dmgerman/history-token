@@ -7442,6 +7442,109 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;cs89x0 I/O base address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;cs89x0 IRQ number&quot;
+)paren
+suffix:semicolon
+macro_line|#if DEBUGGING
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;cs89x0 debug level (0-6)&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|media
+comma
+l_string|&quot;Set cs89x0 adapter(s) media type(s) (rj45,bnc,aui)&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* No other value than -1 for duplex seems to be currently interpreted */
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|duplex
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+macro_line|#if ALLOW_DMA
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dma
+comma
+l_string|&quot;cs89x0 ISA DMA channel; ignored if use_dma=0&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dmasize
+comma
+l_string|&quot;cs89x0 DMA size in kB (16,64); ignored if use_dma=0&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|use_dma
+comma
+l_string|&quot;cs89x0 using DMA (0-1)&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dma
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dmasize
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|use_dma
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -2994,10 +2994,10 @@ c_func
 id|s
 )paren
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|100000
+l_int|100
 )paren
 suffix:semicolon
 id|i365_out
@@ -3011,10 +3011,10 @@ l_int|0x10
 )paren
 suffix:semicolon
 singleline_comment|// power enable
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|200000
+l_int|200
 )paren
 suffix:semicolon
 id|i365_out
@@ -3034,10 +3034,10 @@ l_int|0x80
 )paren
 suffix:semicolon
 singleline_comment|//power enable
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|250000
+l_int|250
 )paren
 suffix:semicolon
 r_if
@@ -3197,10 +3197,10 @@ l_int|0x01
 )paren
 suffix:semicolon
 singleline_comment|// enab mem 
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|10000
+l_int|10
 )paren
 suffix:semicolon
 id|cis
@@ -3220,10 +3220,10 @@ l_int|0x3e0
 op_assign
 l_int|0x45
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|10000
+l_int|10
 )paren
 suffix:semicolon
 id|memcpy_fromio
@@ -3415,10 +3415,10 @@ l_int|0x2
 )paren
 suffix:semicolon
 singleline_comment|// enable io 16bit
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|port
@@ -3500,10 +3500,10 @@ l_int|0x40
 )paren
 suffix:semicolon
 singleline_comment|// enable io window
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|i365_out
@@ -3576,10 +3576,10 @@ op_plus
 l_int|0x34
 )paren
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|10000
+l_int|10
 )paren
 suffix:semicolon
 r_return

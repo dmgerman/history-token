@@ -172,7 +172,7 @@ mdefine_line|#define AUTOFS_FIRST_SYMLINK 2
 DECL|macro|AUTOFS_FIRST_DIR_INO
 mdefine_line|#define AUTOFS_FIRST_DIR_INO (AUTOFS_FIRST_SYMLINK+AUTOFS_MAX_SYMLINKS)
 DECL|macro|AUTOFS_SYMLINK_BITMAP_LEN
-mdefine_line|#define AUTOFS_SYMLINK_BITMAP_LEN ((AUTOFS_MAX_SYMLINKS+31)/32)
+mdefine_line|#define AUTOFS_SYMLINK_BITMAP_LEN &bslash;&n;&t;((AUTOFS_MAX_SYMLINKS+((sizeof(long)*1)-1))/(sizeof(long)*8))
 DECL|macro|AUTOFS_SBI_MAGIC
 mdefine_line|#define AUTOFS_SBI_MAGIC 0x6d4a556d
 DECL|struct|autofs_sb_info
@@ -228,7 +228,8 @@ id|AUTOFS_MAX_SYMLINKS
 )braket
 suffix:semicolon
 DECL|member|symlink_bitmap
-id|u32
+r_int
+r_int
 id|symlink_bitmap
 (braket
 id|AUTOFS_SYMLINK_BITMAP_LEN

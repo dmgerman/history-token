@@ -11473,14 +11473,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|tx_full_rate
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
+singleline_comment|//MODULE_PARM(tx_full_rate,&quot;i&quot;);
 id|MODULE_PARM
 c_func
 (paren
@@ -11543,6 +11536,54 @@ c_func
 id|SSID
 comma
 l_string|&quot;c33&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|awc_debug
+comma
+l_string|&quot;Aironet debug mask&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|channel
+comma
+l_string|&quot;Aironet &quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|adhoc
+comma
+l_string|&quot;Aironet Access Points not available (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|master
+comma
+l_string|&quot;Aironet is Adhoc master (creates network sync) (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|slave
+comma
+l_string|&quot;Aironet is Adhoc slave (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_mtu
+comma
+l_string|&quot;Aironet MTU limit (256-2312)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -407,7 +407,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;el1_probe: &n; *&t;@dev: The device structure to use&n; *&t;@ioaddr: An I/O address to probe at.&n; *&n; *&t;The actual probe. This is iterated over by #el1_probe in order to&n; *&t;check all the applicable device locations.&n; *&n; *&t;Returns 0 for a success, in which case the device is activated,&n; *&t;EAGAIN if the IRQ is in use by another driver, and ENODEV if the&n; *&t;board cannot be found.&n; */
+multiline_comment|/**&n; *&t;el1_probe1: &n; *&t;@dev: The device structure to use&n; *&t;@ioaddr: An I/O address to probe at.&n; *&n; *&t;The actual probe. This is iterated over by #el1_probe in order to&n; *&t;check all the applicable device locations.&n; *&n; *&t;Returns 0 for a success, in which case the device is activated,&n; *&t;EAGAIN if the IRQ is in use by another driver, and ENODEV if the&n; *&t;board cannot be found.&n; */
 DECL|function|el1_probe1
 r_static
 r_int
@@ -2548,6 +2548,22 @@ c_func
 id|irq
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherLink I/O base address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherLink IRQ number&quot;
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * init_module:&n; *&n; * When the driver is loaded as a module this function is called. We fake up&n; * a device structure with the base I/O and interrupt set as if it was being&n; * called from Space.c. This minimises the extra code that would otherwise&n; * be required.&n; *&n; * Returns 0 for success or -EIO if a card is not found. Returning an error&n; * here also causes the module to be unloaded&n; */

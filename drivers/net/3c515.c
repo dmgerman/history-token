@@ -145,6 +145,46 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;3c515 debug level (0-6)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;3c515: Bits 0-2: media type, bit 3: full duplex, bit 4: bus mastering&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;(ignored)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;3c515 copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;3c515 maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* &quot;Knobs&quot; for adjusting internal parameters. */
 multiline_comment|/* Put out somewhat more debugging messages. (0 - no msg, 1 minimal msgs). */
 DECL|macro|DRIVER_DEBUG

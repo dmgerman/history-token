@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -845,7 +846,8 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some unknown Intel IO/APIC (or APIC) errata is biting us with&n;&t; * certain networking cards. If high frequency interrupts are&n;&t; * happening on a particular IOAPIC pin, plus the IOAPIC routing&n;&t; * entry is masked/unmasked at a high rate as well then sooner or&n;&t; * later IOAPIC line gets &squot;stuck&squot;, no more interrupts are received&n;&t; * from the device. If focus CPU is disabled then the hang goes&n;&t; * away, oh well :-(&n;&t; *&n;&t; * [ This bug can be reproduced easily with a level-triggered&n;&t; *   PCI Ne2000 networking cards and PII/PIII processors, dual&n;&t; *   BX chipset. ]&n;&t; */
-macro_line|#if 0
+multiline_comment|/*&n;&t; * Actually disabling the focus CPU check just makes the hang less&n;&t; * frequent as it makes the interrupt distributon model be more&n;&t; * like LRU than MRU (the short-term load is more even across CPUs).&n;&t; * See also the comment in end_level_ioapic_irq().  --macro&n;&t; */
+macro_line|#if 1
 multiline_comment|/* Enable focus processor (bit==0) */
 id|value
 op_and_assign
@@ -2342,8 +2344,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|irq_err_count
-op_increment
+)paren
 suffix:semicolon
 multiline_comment|/* Here is what the APIC error bits mean:&n;&t;   0: Send CS error&n;&t;   1: Receive CS error&n;&t;   2: Send accept error&n;&t;   3: Receive accept error&n;&t;   4: Reserved&n;&t;   5: Send illegal vector&n;&t;   6: Received illegal vector&n;&t;   7: Illegal register address&n;&t;*/
 id|printk

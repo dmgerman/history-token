@@ -163,6 +163,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|i596_debug
+comma
+l_string|&quot;lasi_82596 debug mask&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Copy frames shorter than rx_copybreak, otherwise pass on up in&n; * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).&n; */
 DECL|variable|rx_copybreak
 r_static

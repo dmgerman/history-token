@@ -2741,6 +2741,30 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;FMV-18X I/O address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;FMV-18X IRQ number&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|net_debug
+comma
+l_string|&quot;FMV-18X debug level (0-1,5-6)&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

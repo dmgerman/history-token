@@ -3681,46 +3681,38 @@ comma
 l_int|168
 )paren
 suffix:semicolon
-id|config_writeb
-c_func
-(paren
-id|socket
-comma
-id|PCI_SEC_LATENCY_TIMER
-comma
-l_int|176
-)paren
-suffix:semicolon
-id|config_writeb
+id|config_writel
 c_func
 (paren
 id|socket
 comma
 id|PCI_PRIMARY_BUS
 comma
-id|dev-&gt;bus-&gt;number
-)paren
-suffix:semicolon
-id|config_writeb
-c_func
 (paren
-id|socket
-comma
-id|PCI_SECONDARY_BUS
-comma
-id|dev-&gt;subordinate-&gt;number
+l_int|176
+op_lshift
+l_int|24
 )paren
-suffix:semicolon
-id|config_writeb
-c_func
+op_or
+multiline_comment|/* sec. latency timer */
 (paren
-id|socket
-comma
-id|PCI_SUBORDINATE_BUS
-comma
-id|dev-&gt;subordinate-&gt;number
+id|dev-&gt;subordinate-&gt;subordinate
+op_lshift
+l_int|16
+)paren
+op_or
+multiline_comment|/* subordinate bus */
+(paren
+id|dev-&gt;subordinate-&gt;secondary
+op_lshift
+l_int|8
+)paren
+op_or
+multiline_comment|/* secondary bus */
+id|dev-&gt;subordinate-&gt;primary
 )paren
 suffix:semicolon
+multiline_comment|/* primary bus */
 multiline_comment|/*&n;&t; * Set up the bridging state:&n;&t; *  - enable write posting.&n;&t; *  - memory window 0 prefetchable, window 1 non-prefetchable&n;&t; *  - PCI interrupts enabled if a PCI interrupt exists..&n;&t; */
 id|bridge
 op_assign

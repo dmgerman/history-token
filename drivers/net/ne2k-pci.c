@@ -1,5 +1,11 @@
 multiline_comment|/* ne2k-pci.c: A NE2000 clone on PCI bus driver for Linux. */
 multiline_comment|/*&n;&t;A Linux device driver for PCI NE2000 clones.&n;&n;&t;Authors and other copyright holders:&n;&t;1992-2000 by Donald Becker, NE2000 core and various modifications.&n;&t;1995-1998 by Paul Gortmaker, core modifications and PCI support.&n;&t;Copyright 1993 assigned to the United States Government as represented&n;&t;by the Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Issues remaining:&n;&t;People are making PCI ne2000 clones! Oh the horror, the horror...&n;&t;Limited full-duplex support.&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;ne2k-pci&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;10/19/2000&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -36,9 +42,11 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &quot;8390.h&quot;
@@ -52,7 +60,12 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;ne2k-pci.c:v1.02 10/19/2000 D. Becker/P. Gortmaker&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot; D. Becker/P. Gortmaker&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/ne2k-pci.html&bslash;n&quot;
 suffix:semicolon
@@ -66,6 +79,8 @@ mdefine_line|#define insl insl_ns
 DECL|macro|outsl
 mdefine_line|#define outsl outsl_ns
 macro_line|#endif
+DECL|macro|PFX
+mdefine_line|#define PFX DRV_NAME &quot;: &quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -112,6 +127,30 @@ c_func
 id|MAX_UNITS
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;PCI NE2000 debug level (1-2)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;PCI NE2000: Bit 5: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;PCI NE2000 full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Some defines that people can play with if so inclined. */
@@ -588,6 +627,25 @@ r_int
 id|start_page
 )paren
 suffix:semicolon
+r_static
+r_int
+id|netdev_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/* There is no room in the standard 8390 structure for extra info we need,&n;   so we build a meta/outer-wrapper structure.. */
 DECL|struct|ne2k_pci_card
@@ -750,7 +808,8 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;ne2k-pci: no I/O resource at PCI BAR #0&bslash;n&quot;
+id|PFX
+l_string|&quot;no I/O resource at PCI BAR #0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -767,7 +826,7 @@ id|ioaddr
 comma
 id|NE_IO_EXTENT
 comma
-l_string|&quot;ne2k-pci&quot;
+id|DRV_NAME
 )paren
 op_eq
 l_int|NULL
@@ -776,7 +835,8 @@ l_int|NULL
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;ne2k-pci: I/O resource 0x%x @ 0x%lx busy&bslash;n&quot;
+id|PFX
+l_string|&quot;I/O resource 0x%x @ 0x%lx busy&bslash;n&quot;
 comma
 id|NE_IO_EXTENT
 comma
@@ -922,7 +982,8 @@ id|dev
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;ne2k-pci: cannot allocate ethernet device&bslash;n&quot;
+id|PFX
+l_string|&quot;cannot allocate ethernet device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -991,7 +1052,9 @@ l_int|2
 id|printk
 c_func
 (paren
-l_string|&quot;ne2k-pci: Card failure (no reset ack).&bslash;n&quot;
+id|KERN_ERR
+id|PFX
+l_string|&quot;Card failure (no reset ack).&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1401,6 +1464,14 @@ op_assign
 op_amp
 id|ne2k_pci_get_8390_hdr
 suffix:semicolon
+id|ei_status.priv
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|pdev
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
@@ -1410,6 +1481,11 @@ id|dev-&gt;stop
 op_assign
 op_amp
 id|ne2k_pci_close
+suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+op_amp
+id|netdev_ioctl
 suffix:semicolon
 id|NS8390_init
 c_func
@@ -2691,6 +2767,188 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|ei_device
+op_star
+id|ei
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+op_assign
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+id|ei-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+)brace
 DECL|function|ne2k_pci_remove_one
 r_static
 r_void
@@ -2763,7 +3021,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;ne2k-pci&quot;
+id|DRV_NAME
 comma
 id|probe
 suffix:colon

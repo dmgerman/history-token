@@ -165,6 +165,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|i596_debug
+comma
+l_string|&quot;i82596 debug mask&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Copy frames shorter than rx_copybreak, otherwise pass on up in&n; * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).&n; */
 DECL|variable|rx_copybreak
 r_static
@@ -6615,6 +6623,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;Apricot IRQ number&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 id|MODULE_PARM
 c_func
@@ -6622,6 +6638,14 @@ c_func
 id|debug
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;i82596 debug mask&quot;
 )paren
 suffix:semicolon
 DECL|variable|debug

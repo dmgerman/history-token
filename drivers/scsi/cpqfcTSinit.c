@@ -5894,6 +5894,7 @@ singleline_comment|// good (or NULL) address
 )brace
 macro_line|#ifdef MODULE
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign

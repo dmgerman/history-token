@@ -1,3 +1,6 @@
+macro_line|#ifndef __LINUX_IBMTR_H__
+DECL|macro|__LINUX_IBMTR_H__
+mdefine_line|#define __LINUX_IBMTR_H__
 multiline_comment|/* Definitions for an IBM Token Ring card. */
 multiline_comment|/* This file is distributed under the GNU GPL   */
 multiline_comment|/* ported to the Alpha architecture 02/20/96 (just used the HZ macro) */
@@ -1310,4 +1313,5 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* __LINUX_IBMTR_H__ */
 eof

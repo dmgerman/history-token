@@ -54,11 +54,13 @@ DECL|typedef|dldwd_card_t
 )brace
 id|dldwd_card_t
 suffix:semicolon
-DECL|variable|version
+DECL|variable|__initdata
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__initdata
 op_assign
 l_string|&quot;orinoco_cs.c 0.06 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
@@ -2650,13 +2652,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;dldwd: David&squot;s Less Dodgy WaveLAN/IEEE Driver&bslash;n&quot;
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
+id|KERN_INFO
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|version

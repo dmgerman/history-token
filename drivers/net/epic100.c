@@ -129,6 +129,7 @@ macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
 macro_line|#error You must compile this driver with &quot;-O&quot;.
 macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -145,6 +146,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -246,6 +248,46 @@ c_func
 id|MAX_UNITS
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;EPIC/100 debug level (0-5)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;EPIC/100 maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;EPIC/100: Bits 0-3: media type, bit 4: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;EPIC/100 copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;EPIC/100 full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the SMC &quot;EPIC/100&quot;, the SMC&n;single-chip Ethernet controllers for PCI.  This chip is used on&n;the SMC EtherPower II boards.&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;Note: Kernel versions earlier than 1.3.73 do not support shared PCI&n;interrupt lines.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;IVb. References&n;&n;http://www.smsc.com/main/datasheets/83c171.pdf&n;http://www.smsc.com/main/datasheets/83c175.pdf&n;http://scyld.com/expert/NWay.html&n;http://www.national.com/pf/DP/DP83840A.html&n;&n;IVc. Errata&n;&n;*/
@@ -5977,9 +6019,9 @@ l_string|&quot;%d bytes.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|pkt_len
-comma
 id|status
+comma
+id|pkt_len
 )paren
 suffix:semicolon
 id|pkt_len
@@ -7605,15 +7647,19 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* pci_power_off(pdev, -1); */
 )brace
+macro_line|#ifdef CONFIG_PM
 DECL|function|epic_suspend
 r_static
-r_void
+r_int
 id|epic_suspend
 (paren
 r_struct
 id|pci_dev
 op_star
 id|pdev
+comma
+id|u32
+id|state
 )paren
 (brace
 r_struct
@@ -7643,6 +7689,7 @@ id|dev
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|epic_pause
 c_func
@@ -7662,10 +7709,13 @@ id|GENCTL
 )paren
 suffix:semicolon
 multiline_comment|/* pci_power_off(pdev, -1); */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|epic_resume
 r_static
-r_void
+r_int
 id|epic_resume
 (paren
 r_struct
@@ -7696,6 +7746,7 @@ id|dev
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|epic_restart
 c_func
@@ -7704,7 +7755,11 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* pci_power_on(pdev); */
+r_return
+l_int|0
+suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PM */
 DECL|variable|epic_driver
 r_static
 r_struct
@@ -7728,6 +7783,7 @@ id|remove
 suffix:colon
 id|epic_remove_one
 comma
+macro_line|#ifdef CONFIG_PM
 id|suspend
 suffix:colon
 id|epic_suspend
@@ -7736,6 +7792,7 @@ id|resume
 suffix:colon
 id|epic_resume
 comma
+macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 DECL|function|epic_init

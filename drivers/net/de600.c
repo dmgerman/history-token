@@ -71,6 +71,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|de600_debug
+comma
+l_string|&quot;DE-600 debug level (0-2)&quot;
+)paren
+suffix:semicolon
 DECL|variable|delay_time
 r_static
 r_int
@@ -85,6 +93,14 @@ c_func
 id|delay_time
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|delay_time
+comma
+l_string|&quot;DE-600 deley on I/O in microseconds&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef FAKE_SMALL_MAX

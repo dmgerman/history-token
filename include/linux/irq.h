@@ -230,11 +230,5 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_extern
-r_volatile
-r_int
-r_int
-id|irq_err_count
-suffix:semicolon
 macro_line|#endif /* __asm_h */
 eof

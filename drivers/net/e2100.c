@@ -1626,6 +1626,38 @@ id|MAX_E21_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;E2100 I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;E2100 IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot; E2100 memory base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xcvr
+comma
+l_string|&quot;E2100 tranceiver(s) (0=internal, 1=external)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* This is set up so that only a single autoprobe takes place per call.&n;ISA device autoprobes on a running machine are not recommended. */
 r_int
 DECL|function|init_module

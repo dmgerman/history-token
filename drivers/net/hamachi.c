@@ -1110,6 +1110,126 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;GNIC-II maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mtu
+comma
+l_string|&quot;GNIC-II MTU (all boards)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;GNIC-II debug level (0-7)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|min_rx_pkt
+comma
+l_string|&quot;GNIC-II minimum Rx packets processed between interrupts&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_rx_gap
+comma
+l_string|&quot;GNIC-II maximum Rx inter-packet gap in 8.192 microsecond units&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_rx_latency
+comma
+l_string|&quot;GNIC-II time between Rx interrupts in 8.192 microsecond units&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|min_tx_pkt
+comma
+l_string|&quot;GNIC-II minimum Tx packets processed between interrupts&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_tx_gap
+comma
+l_string|&quot;GNIC-II maximum Tx inter-packet gap in 8.192 microsecond units&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_tx_latency
+comma
+l_string|&quot;GNIC-II time between Tx interrupts in 8.192 microsecond units&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;GNIC-II copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_params
+comma
+l_string|&quot;GNIC-II min_rx_pkt+max_rx_gap+max_rx_latency&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tx_params
+comma
+l_string|&quot;GNIC-II min_tx_pkt+max_tx_gap+max_tx_latency&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;GNIC-II Bits 0-3: media type, bits 4-6: as force32, bit 7: half duplex, bit 9 full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;GNIC-II full duplex setting(s) (1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|force32
+comma
+l_string|&quot;GNIC-II: Bit 0: 32 bit PCI, bit 1: disable parity, bit 2: 64 bit PCI (all boards)&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|read_eeprom

@@ -1386,6 +1386,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|unit
+comma
+l_string|&quot;Ethertap device number&quot;
+)paren
+suffix:semicolon
 DECL|variable|dev_ethertap
 r_static
 r_struct

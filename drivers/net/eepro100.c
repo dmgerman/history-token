@@ -318,10 +318,98 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;eepro100 debug level (0-6)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;epro100: Bits 0-3: tranceiver type, bit 4: full duplex, bit 5: 100Mbps&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;epro100 full duplex setting(s) (1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|congenb
+comma
+l_string|&quot;epro100  Enable congestion control (1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|txfifo
+comma
+l_string|&quot;epro100 Tx FIFO threshold in 4 byte units, (0-15)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rxfifo
+comma
+l_string|&quot;epro100 Rx FIFO threshold in 4 byte units, (0-15)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|txdmaccount
+comma
+l_string|&quot;epro100 Tx DMA burst length; 128 - disable (0-128)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rxdmaccount
+comma
+l_string|&quot;epro100 Rx DMA burst length; 128 - disable (0-128)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;epro100 copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;epro100 maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;epro100 maximum number of filtered multicast addresses&quot;
+)paren
+suffix:semicolon
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
 multiline_comment|/* ACPI power states don&squot;t universally work (yet) */
-macro_line|#ifndef CONFIG_EEPRO100_PM
+macro_line|#ifndef CONFIG_PM
 DECL|macro|pci_set_power_state
 macro_line|#undef pci_set_power_state
 DECL|macro|pci_set_power_state
@@ -346,7 +434,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_EEPRO100_PM */
+macro_line|#endif /* CONFIG_PM */
 DECL|macro|netdevice_start
 mdefine_line|#define netdevice_start(dev)
 DECL|macro|netdevice_stop
@@ -1630,7 +1718,7 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EEPRO100_PM
+macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 id|eepro100_suspend
@@ -9291,11 +9379,15 @@ id|data
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket
 l_int|1
 )braket
+op_amp
+l_int|0x1f
 )paren
 suffix:semicolon
 r_if
@@ -10512,7 +10604,7 @@ id|new_rx_mode
 suffix:semicolon
 )brace
 "&f;"
-macro_line|#ifdef CONFIG_EEPRO100_PM
+macro_line|#ifdef CONFIG_PM
 DECL|function|eepro100_suspend
 r_static
 r_int
@@ -10641,7 +10733,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_EEPRO100_PM */
+macro_line|#endif /* CONFIG_PM */
 DECL|function|eepro100_remove_one
 r_static
 r_void
@@ -10820,7 +10912,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_82820FW_4
+id|PCI_DEVICE_ID_INTEL_82801BA_7
 comma
 id|PCI_ANY_ID
 comma
@@ -10865,7 +10957,7 @@ id|remove
 suffix:colon
 id|eepro100_remove_one
 comma
-macro_line|#ifdef CONFIG_EEPRO100_PM
+macro_line|#ifdef CONFIG_PM
 id|suspend
 suffix:colon
 id|eepro100_suspend
@@ -10874,7 +10966,7 @@ id|resume
 suffix:colon
 id|eepro100_resume
 comma
-macro_line|#endif
+macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,48)

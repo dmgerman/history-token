@@ -1556,6 +1556,30 @@ id|MAX_ES_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;ES3210 I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;ES3210 IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;ES3210 memory base address(es)&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

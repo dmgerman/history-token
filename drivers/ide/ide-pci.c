@@ -30,7 +30,9 @@ mdefine_line|#define DEVID_PIIX4U2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   P
 DECL|macro|DEVID_PIIX4NX
 mdefine_line|#define DEVID_PIIX4NX&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82451NX})
 DECL|macro|DEVID_PIIX4U3
-mdefine_line|#define DEVID_PIIX4U3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82820FW_5})
+mdefine_line|#define DEVID_PIIX4U3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_9})
+DECL|macro|DEVID_PIIX4U4
+mdefine_line|#define DEVID_PIIX4U4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
 DECL|macro|DEVID_VIA_IDE
 mdefine_line|#define DEVID_VIA_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C561})
 DECL|macro|DEVID_VP_IDE
@@ -1425,6 +1427,42 @@ l_int|0
 comma
 (brace
 id|DEVID_PIIX4U3
+comma
+l_string|&quot;PIIX4&quot;
+comma
+id|PCI_PIIX
+comma
+id|ATA66_PIIX
+comma
+id|INIT_PIIX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x41
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+comma
+(brace
+l_int|0x43
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_PIIX4U4
 comma
 l_string|&quot;PIIX4&quot;
 comma

@@ -1,5 +1,13 @@
 multiline_comment|/* yellowfin.c: A Packet Engines G-NIC ethernet driver for linux. */
 multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&t;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;yellowfin&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.05+LK1.1.3&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;May 10, 2001&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX DRV_NAME &quot;: &quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -197,6 +205,8 @@ macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -211,11 +221,16 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;yellowfin.c:v1.05  1/09/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v1.05  1/09/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/yellowfin.html&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;  (unofficial 2.4.x port, LK1.1.3, May 10, 2001)&bslash;n&quot;
+l_string|&quot;  (unofficial 2.4.x port, &quot;
+id|DRV_VERSION
+l_string|&quot;, &quot;
+id|DRV_RELDATE
+l_string|&quot;)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
@@ -326,6 +341,62 @@ c_func
 id|gx_fix
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;G-NIC maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mtu
+comma
+l_string|&quot;G-NIC MTU (all boards)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;G-NIC debug level (0-7)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_copybreak
+comma
+l_string|&quot;G-NIC copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|options
+comma
+l_string|&quot;G-NIC: Bits 0-3: media type, bit 17: full duplex&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|full_duplex
+comma
+l_string|&quot;G-NIC full duplex setting(s) (1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|gx_fix
+comma
+l_string|&quot;G-NIC: enable GX server chipset bug workaround (0-1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the Packet Engines &quot;Yellowfin&quot; Gigabit&n;Ethernet adapter.  The only PCA currently supported is the G-NIC 64-bit&n;PCI card.&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS preferably should assign the&n;PCI INTA signal to an otherwise unused system IRQ line.&n;Note: Kernel versions earlier than 1.3.73 do not support shared PCI&n;interrupt lines.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Yellowfin uses the Descriptor Based DMA Architecture specified by Apple.&n;This is a descriptor list scheme similar to that used by the EEPro100 and&n;Tulip.  This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the Yellowfin as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack and replaced by a newly allocated skbuff.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  For small frames the copying cost is negligible (esp. considering&n;that we are pre-loading the cache with immediately useful header&n;information).  For large frames the copying cost is non-trivial, and the&n;larger copy might flush the cache of useful data.&n;&n;IIIC. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and other software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;yp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;yp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;Thanks to Kim Stearns of Packet Engines for providing a pair of G-NIC boards.&n;Thanks to Bruce Faust of Digitalscape for providing both their SYM53C885 board&n;and an AlphaStation to verifty the Alpha port!&n;&n;IVb. References&n;&n;Yellowfin Engineering Design Specification, 4/23/97 Preliminary/Confidential&n;Symbios SYM53C885 PCI-SCSI/Fast Ethernet Multifunction Controller Preliminary&n;   Data Manual v3.0&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;&n;IVc. Errata&n;&n;See Packet Engines confidential appendix (prototype chips only).&n;*/
@@ -1227,7 +1298,7 @@ id|value
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1512,7 +1583,8 @@ id|dev
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;yellowfin: cannot allocate ethernet device&bslash;n&quot;
+id|PFX
+l_string|&quot;cannot allocate ethernet device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1825,7 +1897,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -6800,10 +6872,130 @@ id|Cnfg
 )paren
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|yellowfin_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -6849,6 +7041,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -7123,7 +7331,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;yellowfin&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

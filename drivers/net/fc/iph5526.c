@@ -1377,6 +1377,7 @@ id|fi
 )paren
 suffix:semicolon
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.45 2001/02/18 09:10:42 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.46 2001/06/05 11:36:55 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -393,6 +393,19 @@ id|icmp6hdr
 )paren
 )paren
 (brace
+id|__u32
+op_star
+id|data
+op_assign
+op_amp
+id|opt-&gt;filter.data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_int
+id|bit_nr
+suffix:semicolon
 id|icmph
 op_assign
 (paren
@@ -402,15 +415,31 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-r_return
-id|test_bit
-c_func
-(paren
+id|bit_nr
+op_assign
 id|icmph-&gt;icmp6_type
-comma
+suffix:semicolon
+r_return
+(paren
+id|data
+(braket
+id|bit_nr
+op_rshift
+l_int|5
+)braket
 op_amp
-id|opt-&gt;filter
+(paren
+l_int|1
+op_lshift
+(paren
+id|bit_nr
+op_amp
+l_int|31
 )paren
+)paren
+)paren
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 r_return

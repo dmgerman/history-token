@@ -310,7 +310,10 @@ id|bmide_dev-&gt;device
 )paren
 (brace
 r_case
-id|PCI_DEVICE_ID_INTEL_82820FW_5
+id|PCI_DEVICE_ID_INTEL_82801BA_8
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_82801BA_9
 suffix:colon
 id|p
 op_add_assign
@@ -2028,7 +2031,13 @@ op_assign
 (paren
 id|dev-&gt;device
 op_eq
-id|PCI_DEVICE_ID_INTEL_82820FW_5
+id|PCI_DEVICE_ID_INTEL_82801BA_8
+)paren
+op_logical_or
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82801BA_9
 )paren
 )paren
 ques

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -187,11 +188,17 @@ id|end_none
 )brace
 suffix:semicolon
 DECL|variable|irq_err_count
-r_volatile
-r_int
-r_int
+id|atomic_t
 id|irq_err_count
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef APIC_MISMATCH_DEBUG
+DECL|variable|irq_mis_count
+id|atomic_t
+id|irq_mis_count
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
 DECL|function|get_irq_list
 r_int
@@ -539,11 +546,37 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;ERR: %10lu&bslash;n&quot;
+l_string|&quot;ERR: %10u&bslash;n&quot;
 comma
+id|atomic_read
+c_func
+(paren
+op_amp
 id|irq_err_count
 )paren
+)paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef APIC_MISMATCH_DEBUG
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;MIS: %10u&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|irq_mis_count
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 r_return
 id|p
 op_minus

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -928,8 +929,12 @@ op_or_assign
 id|irqmask
 suffix:semicolon
 )brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|irq_err_count
-op_increment
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Theoretically we do not have to handle this IRQ,&n;&t;&t; * but in Linux this does not cause problems and is&n;&t;&t; * simpler for us.&n;&t;&t; */
 r_goto

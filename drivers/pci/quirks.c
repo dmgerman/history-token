@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 multiline_comment|/* Deal with broken BIOS&squot;es that neglect to enable passive release,&n;   which can cause problems in combination with the 82441FX/PPro MTRRs */
@@ -844,7 +845,7 @@ r_extern
 r_int
 id|nr_ioapics
 suffix:semicolon
-multiline_comment|/*&n; * VIA 686A/B: If an IO-APIC is active, we need to route all on-chip&n; * devices to the external APIC.&n; */
+multiline_comment|/*&n; * VIA 686A/B: If an IO-APIC is active, we need to route all on-chip&n; * devices to the external APIC.&n; *&n; * TODO: When we have device-specific interrupt routers,&n; * this code will go away from quirks.&n; */
 DECL|function|quirk_via_ioapic
 r_static
 r_void
@@ -879,6 +880,22 @@ op_assign
 l_int|0x1f
 suffix:semicolon
 multiline_comment|/* all known bits (4-0) routed to external APIC */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PCI: %sbling Via external APIC routing&bslash;n&quot;
+comma
+id|tmp
+op_eq
+l_int|0
+ques
+c_cond
+l_string|&quot;Disa&quot;
+suffix:colon
+l_string|&quot;Ena&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Offset 0x58: External APIC IRQ output control */
 id|pci_write_config_byte
 (paren
@@ -891,6 +908,128 @@ id|tmp
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_X86_IO_APIC */
+multiline_comment|/*&n; * Via 686A/B:  The PCI_INTERRUPT_LINE register for the on-chip&n; * devices, USB0/1, AC97, MC97, and ACPI, has an unusual feature:&n; * when written, it makes an internal connection to the PIC.&n; * For these devices, this register is defined to be 4 bits wide.&n; * Normally this is fine.  However for IO-APIC motherboards, or&n; * non-x86 architectures (yes Via exists on PPC among other places),&n; * we must mask the PCI_INTERRUPT_LINE value versus 0xf to get&n; * interrupts delivered properly.&n; *&n; * TODO: When we have device-specific interrupt routers,&n; * quirk_via_irqpic will go away from quirks.&n; */
+multiline_comment|/*&n; * FIXME: it is questionable that quirk_via_acpi&n; * is needed.  It shows up as an ISA bridge, and does not&n; * support the PCI_INTERRUPT_LINE register at all.  Therefore&n; * it seems like setting the pci_dev&squot;s &squot;irq&squot; to the&n; * value of the ACPI SCI interrupt is only done for convenience.&n; *&t;-jgarzik&n; */
+DECL|function|quirk_via_acpi
+r_static
+r_void
+id|__init
+id|quirk_via_acpi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|d
+)paren
+(brace
+multiline_comment|/*&n;&t; * VIA ACPI device: SCI IRQ line in PCI config byte 0x42&n;&t; */
+id|u8
+id|irq
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|d
+comma
+l_int|0x42
+comma
+op_amp
+id|irq
+)paren
+suffix:semicolon
+id|irq
+op_and_assign
+l_int|0xf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_logical_and
+(paren
+id|irq
+op_ne
+l_int|2
+)paren
+)paren
+id|d-&gt;irq
+op_assign
+id|irq
+suffix:semicolon
+)brace
+DECL|function|quirk_via_irqpic
+r_static
+r_void
+id|__init
+id|quirk_via_irqpic
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|u8
+id|irq
+comma
+id|new_irq
+op_assign
+id|dev-&gt;irq
+op_amp
+l_int|0xf
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+op_amp
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_irq
+op_ne
+id|irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PCI: Via IRQ fixup for %s, from %d to %d&bslash;n&quot;
+comma
+id|dev-&gt;slot_name
+comma
+id|irq
+comma
+id|new_irq
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|15
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+id|new_irq
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * PIIX3 USB: We have to disable USB interrupts that are&n; * hardwired to PIRQD# and may be shared with an&n; * external device.&n; *&n; * Legacy Support Register (LEGSUP):&n; *     bit13:  USB PIRQ Enable (USBPIRQDEN),&n; *     bit4:   Trap/SMI On IRQ Enable (USBSMIEN).&n; *&n; * We mask out all r/wc bits, too.&n; */
 DECL|function|quirk_piix3_usb
 r_static
@@ -1324,6 +1463,56 @@ id|quirk_via_ioapic
 )brace
 comma
 macro_line|#endif
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C586_3
+comma
+id|quirk_via_acpi
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C686_4
+comma
+id|quirk_via_acpi
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C586_2
+comma
+id|quirk_via_irqpic
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C686_5
+comma
+id|quirk_via_irqpic
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C686_6
+comma
+id|quirk_via_irqpic
+)brace
+comma
 (brace
 l_int|0
 )brace

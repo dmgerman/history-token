@@ -75,6 +75,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|slip_maxdev
+comma
+l_string|&quot;Maximum number of slip devices&quot;
+)paren
+suffix:semicolon
 DECL|variable|sl_ldisc
 r_static
 r_struct

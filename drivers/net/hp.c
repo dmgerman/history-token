@@ -2033,6 +2033,22 @@ id|MAX_HP_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;HP PC-LAN I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;HP PC-LAN IRQ number(s) (assigned)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* This is set up so that only a single autoprobe takes place per call.&n;ISA device autoprobes on a running machine are not recommended. */
 r_int
 DECL|function|init_module

@@ -6992,6 +6992,38 @@ l_int|1
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherExpress Pro/10 I/O base addres(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherExpress Pro/10 IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;EtherExpress Pro/10 Rx buffer size(es) in kB (3-29)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|autodetect
+comma
+l_string|&quot;EtherExpress Pro/10 force board(s) detection (0-1)&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

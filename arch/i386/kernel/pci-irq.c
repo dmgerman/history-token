@@ -1853,7 +1853,7 @@ l_string|&quot;PIIX&quot;
 comma
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_82820FW_0
+id|PCI_DEVICE_ID_INTEL_82801BA_0
 comma
 id|pirq_piix_get
 comma
@@ -2813,9 +2813,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IRQ routing conflict in pirq table for device %s&bslash;n&quot;
+l_string|&quot;IRQ routing conflict for %s, have irq %d, want irq %d&bslash;n&quot;
 comma
 id|dev2-&gt;slot_name
+comma
+id|dev2-&gt;irq
+comma
+id|irq
 )paren
 suffix:semicolon
 r_continue
@@ -2842,7 +2846,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI: The same IRQ used for device %s&bslash;n&quot;
+l_string|&quot;PCI: Sharing IRQ %d with %s&bslash;n&quot;
+comma
+id|irq
 comma
 id|dev2-&gt;slot_name
 )paren

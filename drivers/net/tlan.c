@@ -134,6 +134,46 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|aui
+comma
+l_string|&quot;ThunderLAN use AUI port(s) (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|duplex
+comma
+l_string|&quot;ThunderLAN duplex setting(s) (0-default, 1-half, 2-full)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|speed
+comma
+l_string|&quot;ThunderLAN port speen setting(s) (0,10,100)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;ThunderLAN debug mask&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|bbuf
+comma
+l_string|&quot;ThunderLAN use big buffer (0-1)&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 multiline_comment|/* Define this to enable Link beat monitoring */
@@ -3188,11 +3228,15 @@ id|data
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket
 l_int|1
 )braket
+op_amp
+l_int|0x1f
 comma
 op_amp
 id|data
@@ -3233,11 +3277,15 @@ id|data
 (braket
 l_int|0
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket
 l_int|1
 )braket
+op_amp
+l_int|0x1f
 comma
 id|data
 (braket

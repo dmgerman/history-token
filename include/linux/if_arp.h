@@ -103,6 +103,8 @@ mdefine_line|#define ARPHRD_FCFABRIC&t;787&t;&t;/* Fibrechannel fabric&t;&t;*/
 multiline_comment|/* 787-&gt;799 reserved for fibrechannel media types */
 DECL|macro|ARPHRD_IEEE802_TR
 mdefine_line|#define ARPHRD_IEEE802_TR 800&t;&t;/* Magic type ident for TR&t;*/
+DECL|macro|ARPHRD_IEEE80211
+mdefine_line|#define ARPHRD_IEEE80211 801&t;&t;/* IEEE 802.11&t;&t;&t;*/
 DECL|macro|ARPHRD_VOID
 mdefine_line|#define ARPHRD_VOID&t;  0xFFFF&t;/* Void type, nothing is known */
 multiline_comment|/* ARP protocol opcodes. */

@@ -421,13 +421,9 @@ id|last_sz
 id|VERBOSE
 c_func
 (paren
-l_string|&quot;%s/%s changed, old=%ld, new=%ld, oz=%ld, nz=%ld&bslash;n&quot;
+l_string|&quot;%ld changed, old=%ld, new=%ld, oz=%ld, nz=%ld&bslash;n&quot;
 comma
-id|DENTRY_PATH
-c_func
-(paren
-id|dentry
-)paren
+id|inode-&gt;i_ino
 comma
 (paren
 r_int

@@ -5408,6 +5408,22 @@ id|MAX_3C523_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;EtherLink/MC I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;EtherLink/MC IRQ number(s)&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

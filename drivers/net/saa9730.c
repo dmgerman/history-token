@@ -1592,10 +1592,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait 1 ms. */
@@ -1656,19 +1656,19 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait 1 ms. */
 )brace
 multiline_comment|/* Wait for 1 ms. */
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Check the link status. */
@@ -1710,10 +1710,10 @@ id|lp-&gt;lan_saa9730_regs-&gt;StationMgmtCtl
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for 1 ms. */
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* set &squot;CONTROL&squot; = force reset and renegotiate */
@@ -1731,12 +1731,10 @@ id|lp-&gt;lan_saa9730_regs-&gt;StationMgmtData
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for 50 ms. */
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|50
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* set &squot;BUSY&squot; to start operation */
@@ -1796,19 +1794,19 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait 1 ms. */
 )brace
 multiline_comment|/* Wait for 1 ms. */
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 r_for
@@ -1881,21 +1879,19 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait 1 ms. */
 )brace
 multiline_comment|/* wait for 3 sec. */
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|3000
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* check the link status */
@@ -2142,10 +2138,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait 1 ms. */

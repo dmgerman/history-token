@@ -4741,6 +4741,30 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Digi RightSwitch enable debugging (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dma
+comma
+l_string|&quot;Digi RightSwitch enable BM DMA (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nicmode
+comma
+l_string|&quot;Digi RightSwitch operating mode (1: switch, 2: multi-NIC)&quot;
+)paren
+suffix:semicolon
 DECL|function|dgrs_init_module
 r_static
 r_int

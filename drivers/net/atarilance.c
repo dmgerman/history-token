@@ -57,6 +57,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lance_debug
+comma
+l_string|&quot;atarilance debug level (0-3)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Print debug messages on probing? */
 DECL|macro|LANCE_DEBUG_PROBE
 macro_line|#undef LANCE_DEBUG_PROBE

@@ -34,8 +34,6 @@ DECL|macro|TRACE_ISP
 mdefine_line|#define TRACE_ISP&t;&t;0
 DECL|macro|DEFAULT_LOOP_COUNT
 mdefine_line|#define DEFAULT_LOOP_COUNT&t;1000000
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
 multiline_comment|/* End Configuration section *************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if TRACE_ISP

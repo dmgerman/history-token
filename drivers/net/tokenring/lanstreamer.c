@@ -9323,52 +9323,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
-DECL|function|streamer_suspend
-r_static
-r_void
-id|streamer_suspend
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-macro_line|#if STREAMER_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;lanstreamer::streamer_suspend entry pdev %p&bslash;n&quot;
-comma
-id|pdev
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-DECL|function|streamer_resume
-r_static
-r_void
-id|streamer_resume
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-macro_line|#if STREAMER_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;lanstreamer::streamer_resume entry pdev %p&bslash;n&quot;
-comma
-id|pdev
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 DECL|variable|streamer_pci_driver
 r_static
 r_struct
@@ -9391,14 +9345,6 @@ comma
 id|remove
 suffix:colon
 id|streamer_remove_one
-comma
-id|suspend
-suffix:colon
-id|streamer_suspend
-comma
-id|resume
-suffix:colon
-id|streamer_resume
 comma
 )brace
 suffix:semicolon

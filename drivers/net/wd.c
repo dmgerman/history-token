@@ -2226,6 +2226,38 @@ id|MAX_WD_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;WD80x3 I/O base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;WD80x3 IRQ number(s) (ignored for PureData boards)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;WD80x3 memory base address(es)(ignored for PureData boards)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem_end
+comma
+l_string|&quot;WD80x3 memory end address(es)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* This is set up so that only a single autoprobe takes place per call.&n;ISA device autoprobes on a running machine are not recommended. */
 r_int
 DECL|function|init_module

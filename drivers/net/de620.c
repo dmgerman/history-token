@@ -172,6 +172,54 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|bnc
+comma
+l_string|&quot;DE-620 set BNC medium (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|utp
+comma
+l_string|&quot;DE-620 set UTP medium (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;DE-620 I/O base address,required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;DE-620 IRQ number,required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|clone
+comma
+l_string|&quot;Check also for non-D-Link DE-620 clones (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|de620_debug
+comma
+l_string|&quot;DE-620 debug level (0-2)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/***********************************************&n; *                                             *&n; * Index to functions, as function prototypes. *&n; *                                             *&n; ***********************************************/
 multiline_comment|/*&n; * Routines used internally. (See also &quot;convenience macros.. below&quot;)&n; */
 multiline_comment|/* Put in the device structure. */

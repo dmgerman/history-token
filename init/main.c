@@ -43,7 +43,22 @@ macro_line|#ifdef CONFIG_ISAPNP
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_IRDA
-macro_line|#include &lt;net/irda/irda_device.h&gt;
+r_extern
+r_int
+id|irda_proto_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|irda_device_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 macro_line|#include &lt;asm/smp.h&gt;

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -465,6 +466,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|clear_page
+)paren
+suffix:semicolon
+DECL|variable|__delay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__delay
+)paren
+suffix:semicolon
+DECL|variable|__udelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__udelay
+)paren
+suffix:semicolon
+DECL|variable|udelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udelay
 )paren
 suffix:semicolon
 DECL|variable|__direct_map_base

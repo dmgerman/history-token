@@ -1556,6 +1556,30 @@ id|MAX_AC32_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;ac3200 I/O base adress(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;ac3200 IRQ number(s)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;ac3200 Memory base address(es)&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

@@ -7415,6 +7415,22 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;SB1000 I/O base addresses&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;SB1000 IRQ number&quot;
+)paren
+suffix:semicolon
 DECL|variable|dev_sb1000
 r_static
 r_struct

@@ -164,6 +164,9 @@ mdefine_line|#define smb_vmalloc(s)&t;&t;vmalloc(s)
 DECL|macro|smb_vfree
 mdefine_line|#define smb_vfree(o)&t;&t;vfree(o)
 macro_line|#endif /* DEBUG_SMB_MALLOC */
+multiline_comment|/*&n; * Flags for the in-memory inode&n; */
+DECL|macro|SMB_F_LOCALWRITE
+mdefine_line|#define SMB_F_LOCALWRITE&t;0x02&t;/* file modified locally */
 multiline_comment|/* NT1 protocol capability bits */
 DECL|macro|SMB_CAP_RAW_MODE
 mdefine_line|#define SMB_CAP_RAW_MODE         0x0001

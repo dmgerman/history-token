@@ -24798,6 +24798,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.07.11&t;Apr. 10 2001&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu  updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
+multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.08.00&t;Jun. 11 2001&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.08.00 Jun. 11 2001 Hui-Fen Hsu workaround for RTL8201 PHY and some bug fix&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu  updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -28,7 +28,7 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;sis900.c: v1.07.11  4/10/2001&bslash;n&quot;
+l_string|&quot;sis900.c: v1.08.00  6/11/2001&bslash;n&quot;
 suffix:semicolon
 DECL|variable|max_interrupt_work
 r_static
@@ -253,6 +253,16 @@ id|MIX
 )brace
 comma
 (brace
+l_string|&quot;Realtek RTL8201 PHY&quot;
+comma
+l_int|0x0000
+comma
+l_int|0x8200
+comma
+id|LAN
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -452,6 +462,30 @@ c_func
 id|debug
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;SiS 900/7016 maximum number of filtered multicast addresses&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_string|&quot;SiS 900/7016 maximum events handled per interrupt&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;SiS 900/7016 debug level (2-4)&quot;
 )paren
 suffix:semicolon
 r_static
@@ -1590,7 +1624,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_region
+id|err_out_unregister
 suffix:semicolon
 )brace
 multiline_comment|/* probe for mii transciver */
@@ -1612,7 +1646,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_region
+id|err_out_unregister
 suffix:semicolon
 )brace
 multiline_comment|/* print some information about our NIC */
@@ -1673,6 +1707,14 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out_unregister
+suffix:colon
+id|unregister_netdev
+c_func
+(paren
+id|net_dev
+)paren
+suffix:semicolon
 id|err_out_cleardev
 suffix:colon
 id|pci_set_drvdata
@@ -1683,8 +1725,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|err_out_region
-suffix:colon
 id|pci_release_regions
 c_func
 (paren
@@ -5471,6 +5511,13 @@ id|sis_priv
 op_assign
 id|net_dev-&gt;priv
 suffix:semicolon
+r_struct
+id|mii_phy
+op_star
+id|phy
+op_assign
+id|sis_priv-&gt;mii
+suffix:semicolon
 r_int
 id|phy_addr
 op_assign
@@ -5552,6 +5599,16 @@ id|autoadv
 op_amp
 id|autorec
 suffix:semicolon
+op_star
+id|speed
+op_assign
+id|HW_SPEED_10_MBPS
+suffix:semicolon
+op_star
+id|duplex
+op_assign
+id|FDX_CAPABLE_HALF_SELECTED
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5567,12 +5624,6 @@ op_star
 id|speed
 op_assign
 id|HW_SPEED_100_MBPS
-suffix:semicolon
-r_else
-op_star
-id|speed
-op_assign
-id|HW_SPEED_10_MBPS
 suffix:semicolon
 r_if
 c_cond
@@ -5590,16 +5641,76 @@ id|duplex
 op_assign
 id|FDX_CAPABLE_FULL_SELECTED
 suffix:semicolon
-r_else
-op_star
-id|duplex
-op_assign
-id|FDX_CAPABLE_HALF_SELECTED
-suffix:semicolon
 id|sis_priv-&gt;autong_complete
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Workaround for Realtek RTL8201 PHY issue */
+r_if
+c_cond
+(paren
+(paren
+id|phy-&gt;phy_id0
+op_eq
+l_int|0x0000
+)paren
+op_logical_and
+(paren
+(paren
+id|phy-&gt;phy_id1
+op_amp
+l_int|0xFFF0
+)paren
+op_eq
+l_int|0x8200
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mdio_read
+c_func
+(paren
+id|net_dev
+comma
+id|phy_addr
+comma
+id|MII_CONTROL
+)paren
+op_amp
+id|MII_CNTL_FDX
+)paren
+(brace
+op_star
+id|duplex
+op_assign
+id|FDX_CAPABLE_FULL_SELECTED
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mdio_read
+c_func
+(paren
+id|net_dev
+comma
+id|phy_addr
+comma
+l_int|0x0019
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+op_star
+id|speed
+op_assign
+id|HW_SPEED_100_MBPS
+suffix:semicolon
+)brace
+)brace
 id|printk
 c_func
 (paren

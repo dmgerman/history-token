@@ -5650,7 +5650,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;eth16i io base address&quot;
+l_string|&quot;eth16i I/O base address(es)&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -5696,7 +5696,7 @@ c_func
 (paren
 id|mediatype
 comma
-l_string|&quot;eth16i interfaceport mediatype&quot;
+l_string|&quot;eth16i media type of interface(s) (bnc,tp,dix,auto,eprom)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -5712,7 +5712,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;eth16i debug level (0-4)&quot;
+l_string|&quot;eth16i debug level (0-6)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

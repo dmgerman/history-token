@@ -2930,7 +2930,7 @@ id|new_fl2
 )paren
 )paren
 r_goto
-id|out
+id|out_nolock
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -3457,6 +3457,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out_nolock
+suffix:colon
 multiline_comment|/*&n;&t; * Free any unused locks.&n;&t; */
 r_if
 c_cond

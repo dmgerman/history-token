@@ -729,7 +729,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|u32
+r_int
 )paren
 op_star
 id|AUTOFS_SYMLINK_BITMAP_LEN

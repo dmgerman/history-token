@@ -361,7 +361,6 @@ multiline_comment|/* Can&squot;t do anything if it&squot;s a fragment. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|offset
 )paren
 r_return
@@ -396,7 +395,7 @@ op_logical_neg
 id|embedded
 )paren
 (brace
-multiline_comment|/* Bad checksum?  Don&squot;t print, just drop. */
+multiline_comment|/* Bad checksum?  Don&squot;t print, just ignore. */
 r_if
 c_cond
 (paren
@@ -512,6 +511,7 @@ id|icmph
 op_plus
 l_int|8
 suffix:semicolon
+multiline_comment|/* datalen &gt; 8 since all ICMP_IS_ERROR types&n;                           have min length &gt; 8 */
 r_if
 c_cond
 (paren
@@ -735,6 +735,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* Code 0 means that upper 8 bits is pointer&n;                           to problem. */
 r_if
 c_cond
 (paren
@@ -871,7 +872,6 @@ multiline_comment|/* Can&squot;t do anything if it&squot;s a fragment. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|offset
 )paren
 r_return
@@ -902,7 +902,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Bad checksum?  Don&squot;t print, just drop. */
+multiline_comment|/* Bad checksum?  Don&squot;t print, just say it&squot;s unclean. */
 multiline_comment|/* FIXME: SRC ROUTE packets won&squot;t match checksum --RR */
 r_if
 c_cond
@@ -1149,11 +1149,7 @@ op_assign
 id|u_int8_t
 op_star
 )paren
-(paren
 id|tcph
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|u_int8_t
 id|tcpflags
@@ -1172,7 +1168,6 @@ multiline_comment|/* Can&squot;t do anything if it&squot;s a fragment. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|offset
 )paren
 r_return
@@ -1210,7 +1205,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Must have ports available (datalen &gt;= 8). */
+multiline_comment|/* Must have ports available (datalen &gt;= 8), from&n;                   check_icmp which set embedded = 1 */
 multiline_comment|/* CHECK: TCP ports inside ICMP error */
 r_if
 c_cond
@@ -1283,7 +1278,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Bad checksum?  Don&squot;t print, just drop. */
+multiline_comment|/* Bad checksum?  Don&squot;t print, just say it&squot;s unclean. */
 multiline_comment|/* FIXME: SRC ROUTE packets won&squot;t match checksum --RR */
 r_if
 c_cond
@@ -1684,6 +1679,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Move to next option */
+id|i
+op_add_assign
+id|opt
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -1718,11 +1723,7 @@ op_assign
 id|u_int8_t
 op_star
 )paren
-(paren
 id|iph
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 r_int
 id|end_of_options
@@ -1928,7 +1929,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* CHECK: zero-length options. */
+multiline_comment|/* CHECK: zero-length or one-length options. */
 r_else
 r_if
 c_cond
@@ -1939,18 +1940,25 @@ id|i
 op_plus
 l_int|1
 )braket
-op_eq
-l_int|0
+OL
+l_int|2
 )paren
 (brace
 id|limpk
 c_func
 (paren
-l_string|&quot;IP option %u 0 len&bslash;n&quot;
+l_string|&quot;IP option %u %u len&bslash;n&quot;
 comma
 id|opt
 (braket
 id|i
+)braket
+comma
+id|opt
+(braket
+id|i
+op_plus
+l_int|1
 )braket
 )paren
 suffix:semicolon
@@ -1971,7 +1979,7 @@ l_int|1
 )braket
 op_plus
 id|i
-op_ge
+OG
 id|iph-&gt;ihl
 op_star
 l_int|4
@@ -1994,6 +2002,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Move to next option */
+id|i
+op_add_assign
+id|opt
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Fragment checks. */
@@ -2200,7 +2218,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* CHECK: Min offset of frag = 128 - 60 (max IP hdr len). */
+multiline_comment|/* CHECK: Min offset of frag = 128 - IP hdr len. */
 r_if
 c_cond
 (paren
@@ -2212,7 +2230,9 @@ l_int|8
 OL
 id|MIN_LIKELY_MTU
 op_minus
-l_int|60
+id|iph-&gt;ihl
+op_star
+l_int|4
 )paren
 (brace
 id|limpk
@@ -2226,7 +2246,9 @@ l_int|8
 comma
 id|MIN_LIKELY_MTU
 op_minus
-l_int|60
+id|iph-&gt;ihl
+op_star
+l_int|4
 )paren
 suffix:semicolon
 r_return

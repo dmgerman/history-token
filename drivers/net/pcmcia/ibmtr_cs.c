@@ -18,6 +18,9 @@ macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
+DECL|macro|PCMCIA
+mdefine_line|#define PCMCIA
+macro_line|#include &quot;../tokenring/ibmtr.c&quot;
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
 r_static
@@ -261,10 +264,13 @@ suffix:semicolon
 r_extern
 r_void
 id|tok_interrupt
-c_func
 (paren
 r_int
 id|irq
+comma
+r_void
+op_star
+id|dev_id
 comma
 r_struct
 id|pt_regs

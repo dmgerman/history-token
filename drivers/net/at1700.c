@@ -36,12 +36,13 @@ multiline_comment|/* When to switch from the 64-entry multicast filter to Rx-all
 DECL|macro|MC_FILTERBREAK
 mdefine_line|#define MC_FILTERBREAK 64
 multiline_comment|/* These unusual address orders are used to verify the CONFIG register. */
-DECL|variable|fmv18x_probe_list
+DECL|variable|__initdata
 r_static
 r_int
 id|fmv18x_probe_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x220
@@ -64,12 +65,13 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;ISA&n; */
-DECL|variable|at1700_probe_list
+DECL|variable|__initdata
 r_static
 r_int
 id|at1700_probe_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x260
@@ -93,12 +95,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;MCA&n; */
 macro_line|#ifdef CONFIG_MCA&t;
-DECL|variable|at1700_ioaddr_pattern
+DECL|variable|__initdata
 r_static
 r_int
 id|at1700_ioaddr_pattern
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -118,12 +121,13 @@ comma
 l_int|0x07
 )brace
 suffix:semicolon
-DECL|variable|at1700_mca_probe_list
+DECL|variable|__initdata
 r_static
 r_int
 id|at1700_mca_probe_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x400
@@ -145,12 +149,13 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|at1700_irq_pattern
+DECL|variable|__initdata
 r_static
 r_int
 id|at1700_irq_pattern
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -481,13 +486,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* rEnE : maybe there are others I don&squot;t know off... */
-DECL|variable|at1720_mca_adapters
+DECL|variable|__initdata
 r_static
 r_struct
 id|at1720_mca_adapters_struct
 id|at1720_mca_adapters
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -1886,6 +1892,7 @@ mdefine_line|#define EE_ERASE_CMD&t;(7 &lt;&lt; 6)
 DECL|function|read_eeprom
 r_static
 r_int
+id|__init
 id|read_eeprom
 c_func
 (paren
@@ -3985,6 +3992,30 @@ c_func
 id|net_debug
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;AT1700/FMV18X I/O base address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;AT1700/FMV18X IRQ number&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|net_debug
+comma
+l_string|&quot;AT1700/FMV18X debug level (0-6)&quot;
 )paren
 suffix:semicolon
 DECL|function|init_module

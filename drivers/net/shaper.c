@@ -2184,6 +2184,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|shapers
+comma
+l_string|&quot;Traffic shaper: maximum nuber of shapers&quot;
+)paren
+suffix:semicolon
 macro_line|#else /* MODULE */
 DECL|function|set_num_shapers
 r_static

@@ -9045,6 +9045,22 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;DEPCA IRQ number&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;DEPCA I/O base address&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* See depca_probe() for autoprobe messages when a module */
 r_int
 DECL|function|init_module

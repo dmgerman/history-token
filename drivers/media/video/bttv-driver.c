@@ -15303,7 +15303,6 @@ op_amp
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/* Should this be &amp;=~ ?? */
 id|command
 op_and_assign
 op_complement

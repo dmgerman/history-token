@@ -5850,6 +5850,38 @@ comma
 l_string|&quot;l&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|io
+comma
+l_string|&quot;NI5210 I/O base address,required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;NI5210 IRQ number,required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|memstart
+comma
+l_string|&quot;NI5210 memory base address,required&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|memend
+comma
+l_string|&quot;NI5210 memory end address,required&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

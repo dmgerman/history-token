@@ -8,11 +8,20 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* undefine, or define to various debugging levels (&gt;4 == obscene levels) */
 DECL|macro|TULIP_DEBUG
 mdefine_line|#define TULIP_DEBUG 1
+multiline_comment|/* undefine USE_IO_OPS for MMIO, define for PIO */
+macro_line|#ifdef CONFIG_TULIP_MMIO
+DECL|macro|USE_IO_OPS
+macro_line|# undef USE_IO_OPS
+macro_line|#else
+DECL|macro|USE_IO_OPS
+macro_line|# define USE_IO_OPS 1
+macro_line|#endif
 DECL|struct|tulip_chip_table
 r_struct
 id|tulip_chip_table
@@ -436,6 +445,11 @@ op_lshift
 l_int|9
 )paren
 comma
+DECL|enumerator|TxOn
+id|TxOn
+op_assign
+l_int|0x2000
+comma
 DECL|enumerator|AcceptBroadcast
 id|AcceptBroadcast
 op_assign
@@ -455,6 +469,20 @@ DECL|enumerator|AcceptRunt
 id|AcceptRunt
 op_assign
 l_int|0x0008
+comma
+DECL|enumerator|RxOn
+id|RxOn
+op_assign
+l_int|0x0002
+comma
+DECL|enumerator|RxTx
+id|RxTx
+op_assign
+(paren
+id|TxOn
+op_or
+id|RxOn
+)paren
 comma
 )brace
 suffix:semicolon
@@ -766,16 +794,6 @@ comma
 multiline_comment|/* Transmit Threshold low bit */
 multiline_comment|/***************************************************************&n;&t; * This table shows transmit threshold values based on media   *&n;&t; * and these two registers (from PNIC1 &amp; 2 docs) Note: this is *&n;&t; * all meaningless if sf is set.                               *&n;&t; ***************************************************************/
 multiline_comment|/***********************************&n;&t; * (trh,trl) * 100BaseTX * 10BaseT *&n;&t; ***********************************&n;&t; *   (0,0)   *     128   *    72   *&n;&t; *   (0,1)   *     256   *    96   *&n;&t; *   (1,0)   *     512   *   128   *&n;&t; *   (1,1)   *    1024   *   160   *&n;&t; ***********************************/
-DECL|enumerator|csr6_st
-id|csr6_st
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|13
-)paren
-comma
-multiline_comment|/* Transmit conrol: 1 = transmit, 0 = stop */
 DECL|enumerator|csr6_fc
 id|csr6_fc
 op_assign
@@ -877,16 +895,6 @@ l_int|2
 )paren
 comma
 multiline_comment|/* Hash-only filtering mode: can&squot;t be set */
-DECL|enumerator|csr6_sr
-id|csr6_sr
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-comma
-multiline_comment|/* Start(1)/Stop(0) Receive */
 DECL|enumerator|csr6_hp
 id|csr6_hp
 op_assign
@@ -1781,34 +1789,79 @@ id|t21041_csr15
 (braket
 )braket
 suffix:semicolon
-DECL|function|tulip_outl_csr
+macro_line|#ifndef USE_IO_OPS
+DECL|macro|inb
+macro_line|#undef inb
+DECL|macro|inw
+macro_line|#undef inw
+DECL|macro|inl
+macro_line|#undef inl
+DECL|macro|outb
+macro_line|#undef outb
+DECL|macro|outw
+macro_line|#undef outw
+DECL|macro|outl
+macro_line|#undef outl
+DECL|macro|inb
+mdefine_line|#define inb(addr) readb((void*)(addr))
+DECL|macro|inw
+mdefine_line|#define inw(addr) readw((void*)(addr))
+DECL|macro|inl
+mdefine_line|#define inl(addr) readl((void*)(addr))
+DECL|macro|outb
+mdefine_line|#define outb(val,addr) writeb((val), (void*)(addr))
+DECL|macro|outw
+mdefine_line|#define outw(val,addr) writew((val), (void*)(addr))
+DECL|macro|outl
+mdefine_line|#define outl(val,addr) writel((val), (void*)(addr))
+macro_line|#endif /* !USE_IO_OPS */
+DECL|function|tulip_start_rxtx
 r_static
 r_inline
 r_void
-id|tulip_outl_csr
+id|tulip_start_rxtx
+c_func
 (paren
 r_struct
 id|tulip_private
 op_star
 id|tp
-comma
-id|u32
-id|newValue
-comma
-r_enum
-id|tulip_offsets
-id|offset
 )paren
 (brace
-id|outl
-(paren
-id|newValue
-comma
+r_int
+id|ioaddr
+op_assign
 id|tp-&gt;base_addr
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|tp-&gt;csr6
+op_or
+id|RxTx
+comma
+id|ioaddr
 op_plus
-id|offset
+id|CSR6
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|CSR6
+)paren
+suffix:semicolon
+multiline_comment|/* mmio sync */
 )brace
 DECL|function|tulip_stop_rxtx
 r_static
@@ -1821,28 +1874,63 @@ r_struct
 id|tulip_private
 op_star
 id|tp
-comma
-id|u32
-id|csr6mask
 )paren
 (brace
-id|tulip_outl_csr
+r_int
+id|ioaddr
+op_assign
+id|tp-&gt;base_addr
+suffix:semicolon
+id|u32
+id|csr6
+op_assign
+id|inl
 c_func
 (paren
-id|tp
-comma
-id|csr6mask
-op_amp
-op_complement
-(paren
-id|csr6_st
-op_or
-id|csr6_sr
-)paren
-comma
+id|ioaddr
+op_plus
 id|CSR6
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr6
+op_amp
+id|RxTx
+)paren
+(brace
+id|outl
+c_func
+(paren
+id|csr6
+op_amp
+op_complement
+id|RxTx
+comma
+id|ioaddr
+op_plus
+id|CSR6
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|CSR6
+)paren
+suffix:semicolon
+multiline_comment|/* mmio sync */
+)brace
 )brace
 DECL|function|tulip_restart_rxtx
 r_static
@@ -1855,35 +1943,24 @@ r_struct
 id|tulip_private
 op_star
 id|tp
-comma
-id|u32
-id|csr6mask
 )paren
 (brace
-id|tulip_outl_csr
+id|tulip_stop_rxtx
 c_func
 (paren
 id|tp
-comma
-id|csr6mask
-op_or
-id|csr6_sr
-comma
-id|CSR6
 )paren
 suffix:semicolon
-id|tulip_outl_csr
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+id|tulip_start_rxtx
 c_func
 (paren
 id|tp
-comma
-id|csr6mask
-op_or
-id|csr6_st
-op_or
-id|csr6_sr
-comma
-id|CSR6
 )paren
 suffix:semicolon
 )brace

@@ -16235,6 +16235,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|printpm
+r_static
 r_void
 id|printpm
 c_func
@@ -17415,6 +17416,7 @@ id|card
 )paren
 suffix:semicolon
 DECL|function|cs46xx_suspend
+r_static
 r_int
 id|cs46xx_suspend
 c_func
@@ -17788,6 +17790,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cs46xx_resume
+r_static
 r_int
 id|cs46xx_resume
 c_func

@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  smctr.c: A network driver for the SMC Token Ring Adapters.&n; *&n; *  Written by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; *  This device driver works with the following SMC adapters:&n; *      - SMC TokenCard Elite   (8115T, chips 825/584)&n; *      - SMC TokenCard Elite/A MCA (8115T/A, chips 825/594)&n; *&n; *  Source(s):&n; *  &t;- SMC TokenCard SDK.&n; *&n; *  Maintainer(s):&n; *    JS        Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; * Changes:&n; *    07102000          JS      Fixed a timing problem in smctr_wait_cmd();&n; *                              Also added a bit more discriptive error msgs.&n; *    07122000          JS      Fixed problem with detecting a card with&n; *&t;&t;&t;&t;module io/irq/mem specified.&n; *&n; *  To do:&n; *    1. Multicast support.&n; */
+macro_line|#if defined(__alpha__) || defined(__ia64__)
+macro_line|#error FIXME: driver does not support 64-bit platforms
+macro_line|#endif
 macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
