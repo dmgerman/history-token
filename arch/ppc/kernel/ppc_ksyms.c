@@ -1110,6 +1110,13 @@ c_func
 id|release_OF_resource
 )paren
 suffix:semicolon
+DECL|variable|pci_busdev_to_OF_node
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_busdev_to_OF_node
+)paren
+suffix:semicolon
 DECL|variable|pci_device_to_OF_node
 id|EXPORT_SYMBOL
 c_func
