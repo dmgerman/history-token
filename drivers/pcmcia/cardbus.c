@@ -905,11 +905,7 @@ l_int|0x7f
 suffix:semicolon
 id|dev-&gt;dev.parent
 op_assign
-id|bus-&gt;device
-suffix:semicolon
-id|dev-&gt;dev.sysdata
-op_assign
-id|bus-&gt;sysdata
+id|bus-&gt;dev
 suffix:semicolon
 id|strcpy
 c_func
