@@ -31,7 +31,7 @@ r_char
 id|__u8
 suffix:semicolon
 multiline_comment|/* Big exception to the &quot;don&squot;t include kernel headers into userspace, which&n; * even potentially has different endianness and word sizes, since &n; * we handle those differences explicitly below */
-macro_line|#include &quot;../include/linux/mod_devicetable.h&quot;
+macro_line|#include &quot;../../include/linux/mod_devicetable.h&quot;
 DECL|macro|ADD
 mdefine_line|#define ADD(str, sep, cond, field)                              &bslash;&n;do {                                                            &bslash;&n;        strcat(str, sep);                                       &bslash;&n;        if (cond)                                               &bslash;&n;                sprintf(str + strlen(str),                      &bslash;&n;                        sizeof(field) == 1 ? &quot;%02X&quot; :           &bslash;&n;                        sizeof(field) == 2 ? &quot;%04X&quot; :           &bslash;&n;                        sizeof(field) == 4 ? &quot;%08X&quot; : &quot;&quot;,       &bslash;&n;                        field);                                 &bslash;&n;        else                                                    &bslash;&n;                sprintf(str + strlen(str), &quot;*&quot;);                &bslash;&n;} while(0)
 multiline_comment|/* Looks like &quot;usb:vNpNdlNdhNdcNdscNdpNicNiscNipN&quot; */
