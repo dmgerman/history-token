@@ -1169,7 +1169,6 @@ id|IW_MODE_MONITOR
 )paren
 (brace
 multiline_comment|/* The card reports full 802.11 packets but with a 20 bytes&n;&t;&t; * header and without the FCS. But there a is a bit that&n;&t;&t; * indicates if the packet is corrupted :-) */
-multiline_comment|/* int i; */
 r_if
 c_cond
 (paren
@@ -1180,15 +1179,11 @@ l_int|8
 op_amp
 l_int|0x01
 )paren
-(brace
 multiline_comment|/* This one is bad. Drop it !*/
 id|discard
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* printk(&quot;BAD&bslash;n&quot;);*/
-)brace
-multiline_comment|/*&n;&t;&t;for(i=0;i&lt;50;i++)&n;&t;&t;&t;printk(&quot;%2.2X:&quot;,skb-&gt;data[i]);&n;&t;&t;printk(&quot;&bslash;n&quot;);&n;&t;&t;*/
 id|skb_pull
 c_func
 (paren
@@ -1516,6 +1511,45 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
+DECL|function|islpci_do_reset_and_wake
+id|islpci_do_reset_and_wake
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+(brace
+id|islpci_private
+op_star
+id|priv
+op_assign
+(paren
+id|islpci_private
+op_star
+)paren
+id|data
+suffix:semicolon
+id|islpci_reset
+c_func
+(paren
+id|priv
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|priv-&gt;ndev
+)paren
+suffix:semicolon
+id|priv-&gt;reset_task_pending
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_void
 DECL|function|islpci_eth_tx_timeout
 id|islpci_eth_tx_timeout
 c_func
@@ -1548,28 +1582,31 @@ multiline_comment|/* increment the transmit error counter */
 id|statistics-&gt;tx_errors
 op_increment
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* don&squot;t do this here! we are not allowed to sleep since we are in interrupt context */
 r_if
 c_cond
 (paren
-id|islpci_reset
+op_logical_neg
+id|priv-&gt;reset_task_pending
+)paren
+(brace
+id|priv-&gt;reset_task_pending
+op_assign
+l_int|1
+suffix:semicolon
+id|netif_stop_queue
 c_func
 (paren
-id|priv
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: error on TX timeout card reset!&bslash;n&quot;
-comma
-id|ndev-&gt;name
+id|ndev
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* netif_wake_queue(ndev); */
+id|schedule_work
+c_func
+(paren
+op_amp
+id|priv-&gt;reset_task
+)paren
+suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace

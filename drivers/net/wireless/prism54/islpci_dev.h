@@ -455,6 +455,15 @@ r_struct
 id|semaphore
 id|wpa_sem
 suffix:semicolon
+DECL|member|reset_task
+r_struct
+id|work_struct
+id|reset_task
+suffix:semicolon
+DECL|member|reset_task_pending
+r_int
+id|reset_task_pending
+suffix:semicolon
 DECL|typedef|islpci_private
 )brace
 id|islpci_private

@@ -2478,6 +2478,21 @@ id|priv-&gt;stats_timestamp
 op_assign
 l_int|0
 suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|priv-&gt;reset_task
+comma
+id|islpci_do_reset_and_wake
+comma
+id|priv
+)paren
+suffix:semicolon
+id|priv-&gt;reset_task_pending
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* allocate various memory areas */
 r_if
 c_cond

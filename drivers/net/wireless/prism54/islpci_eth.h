@@ -45,5 +45,14 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
+r_void
+id|islpci_do_reset_and_wake
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _ISL_GEN_H */
 eof
