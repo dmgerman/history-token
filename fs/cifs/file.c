@@ -4371,7 +4371,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 op_member_access_from_pointer
 id|index
@@ -4383,7 +4383,7 @@ id|tmp_page
 comma
 id|page_list
 comma
-id|list
+id|lru
 )paren
 (brace
 r_if
