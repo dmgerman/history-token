@@ -811,6 +811,8 @@ comma
 r_struct
 id|sk_buff
 op_star
+comma
+id|__u8
 )paren
 suffix:semicolon
 r_void
