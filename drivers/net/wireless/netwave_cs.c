@@ -459,15 +459,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Destroy instance */
-r_static
-r_void
-id|netwave_flush_stale_links
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Destroy all staled instances */
 multiline_comment|/* Hardware configuration */
 r_static
 r_void
@@ -1214,12 +1205,6 @@ comma
 l_string|&quot;netwave_attach()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Perform some cleanup */
-id|netwave_flush_stale_links
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
 id|dev
 op_assign
@@ -1591,10 +1576,6 @@ comma
 id|link-&gt;dev-&gt;dev_name
 )paren
 suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1692,74 +1673,6 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* netwave_detach */
-multiline_comment|/*&n; * Function netwave_flush_stale_links (void)&n; *&n; *    This deletes all driver &quot;instances&quot; that need to be deleted.&n; *    Sometimes, netwave_detach can&squot;t be performed following a call from&n; *    cardmgr (device still open) and the device is put in a STALE_LINK&n; *    state.&n; *    This function is in charge of making the cleanup...&n; */
-DECL|function|netwave_flush_stale_links
-r_static
-r_void
-id|netwave_flush_stale_links
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-suffix:semicolon
-multiline_comment|/* Current node in linked list */
-id|dev_link_t
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Next node in linked list */
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;netwave_flush_stale_links(0x%p)&bslash;n&quot;
-comma
-id|dev_list
-)paren
-suffix:semicolon
-multiline_comment|/* Go through the list */
-r_for
-c_loop
-(paren
-id|link
-op_assign
-id|dev_list
-suffix:semicolon
-id|link
-suffix:semicolon
-id|link
-op_assign
-id|next
-)paren
-(brace
-id|next
-op_assign
-id|link-&gt;next
-suffix:semicolon
-multiline_comment|/* Check if in need of being removed */
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_LINK
-)paren
-(brace
-id|netwave_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/* netwave_flush_stale_links */
 multiline_comment|/*&n; * Wireless Handler : get protocol name&n; */
 DECL|function|netwave_get_name
 r_static
@@ -4072,14 +3985,22 @@ suffix:semicolon
 id|link-&gt;state
 op_and_assign
 op_complement
-(paren
 id|DEV_CONFIG
-op_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
 id|DEV_STALE_CONFIG
+)paren
+id|netwave_detach
+c_func
+(paren
+id|link
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* netwave_release */
 multiline_comment|/*&n; * Function netwave_event (event, priority, args)&n; *&n; *    The card status event handler.  Mostly, this schedules other&n; *    stuff to run after an event is received.  A CARD_REMOVAL event&n; *    also sets some flags to discourage the net drivers from trying&n; *    to talk to the card any more.&n; *&n; *    When a CARD_REMOVAL event is received, we immediately set a flag&n; *    to block future accesses to this device.  All the functions that&n; *    actually access the device should check this flag to make sure&n; *    the card is still present.&n; *&n; */
 DECL|function|netwave_event
 r_static
@@ -6487,12 +6408,6 @@ c_func
 (paren
 op_amp
 id|netwave_driver
-)paren
-suffix:semicolon
-multiline_comment|/* Do some cleanup of the device list */
-id|netwave_flush_stale_links
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

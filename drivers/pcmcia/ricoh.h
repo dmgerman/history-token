@@ -126,7 +126,7 @@ multiline_comment|/* 16-bit IO and memory timing registers */
 DECL|macro|RL5C4XX_16BIT_IO_0
 mdefine_line|#define RL5C4XX_16BIT_IO_0&t;&t;0x0088&t;/* 16 bit */
 DECL|macro|RL5C4XX_16BIT_MEM_0
-mdefine_line|#define RL5C4XX_16BIT_MEM_0&t;&t;0x0088&t;/* 16 bit */
+mdefine_line|#define RL5C4XX_16BIT_MEM_0&t;&t;0x008a&t;/* 16 bit */
 DECL|macro|RL5C4XX_SETUP_MASK
 mdefine_line|#define  RL5C4XX_SETUP_MASK&t;&t;0x0007
 DECL|macro|RL5C4XX_SETUP_SHIFT

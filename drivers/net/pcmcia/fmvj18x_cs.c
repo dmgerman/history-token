@@ -577,56 +577,6 @@ DECL|macro|BANK_1U
 mdefine_line|#define BANK_1U              0x24 /* bank 1 (CONFIG_1) */
 DECL|macro|BANK_2U
 mdefine_line|#define BANK_2U              0x28 /* bank 2 (CONFIG_1) */
-multiline_comment|/*======================================================================&n;&n;    This bit of code is used to avoid unregistering network devices&n;    at inappropriate times.  2.2 and later kernels are fairly picky&n;    about when this can happen.&n;    &n;======================================================================*/
-DECL|function|flush_stale_links
-r_static
-r_void
-id|flush_stale_links
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-comma
-op_star
-id|next
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|link
-op_assign
-id|dev_list
-suffix:semicolon
-id|link
-suffix:semicolon
-id|link
-op_assign
-id|next
-)paren
-(brace
-id|next
-op_assign
-id|link-&gt;next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_LINK
-)paren
-id|fmvj18x_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
-)brace
 DECL|function|fmvj18x_attach
 r_static
 id|dev_link_t
@@ -664,11 +614,6 @@ c_func
 l_int|0
 comma
 l_string|&quot;fmvj18x_attach()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|flush_stale_links
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Make up a FMVJ18x specific data structure */
@@ -1039,14 +984,8 @@ id|link-&gt;state
 op_amp
 id|DEV_STALE_CONFIG
 )paren
-(brace
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Break the link with Card Services */
 r_if
@@ -3135,8 +3074,20 @@ op_and_assign
 op_complement
 id|DEV_CONFIG
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_STALE_CONFIG
+)paren
+id|fmvj18x_detach
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* fmvj18x_release */
 multiline_comment|/*====================================================================*/
 DECL|function|fmvj18x_event
 r_static

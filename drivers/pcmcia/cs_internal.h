@@ -286,16 +286,10 @@ DECL|macro|SOCKET_PRESENT
 mdefine_line|#define SOCKET_PRESENT&t;&t;0x0008
 DECL|macro|SOCKET_INUSE
 mdefine_line|#define SOCKET_INUSE&t;&t;0x0010
-DECL|macro|SOCKET_SHUTDOWN_PENDING
-mdefine_line|#define SOCKET_SHUTDOWN_PENDING&t;0x0020
-DECL|macro|SOCKET_RESET_PENDING
-mdefine_line|#define SOCKET_RESET_PENDING&t;0x0040
 DECL|macro|SOCKET_SUSPEND
 mdefine_line|#define SOCKET_SUSPEND&t;&t;0x0080
 DECL|macro|SOCKET_WIN_REQ
 mdefine_line|#define SOCKET_WIN_REQ(i)&t;(0x0100&lt;&lt;(i))
-DECL|macro|SOCKET_IO_REQ
-mdefine_line|#define SOCKET_IO_REQ(i)&t;(0x1000&lt;&lt;(i))
 DECL|macro|SOCKET_REGION_INFO
 mdefine_line|#define SOCKET_REGION_INFO&t;0x4000
 DECL|macro|SOCKET_CARDBUS
