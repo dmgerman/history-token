@@ -336,7 +336,6 @@ id|dma_addr_t
 id|iqrx_dma
 suffix:semicolon
 DECL|member|scc_regs
-r_volatile
 id|u32
 id|scc_regs
 (braket
@@ -877,6 +876,8 @@ op_assign
 id|dpriv-&gt;scc_regs
 (braket
 id|offset
+op_rshift
+l_int|2
 )braket
 suffix:semicolon
 id|state
@@ -891,6 +892,8 @@ suffix:semicolon
 id|dpriv-&gt;scc_regs
 (braket
 id|offset
+op_rshift
+l_int|2
 )braket
 op_assign
 id|state
@@ -939,6 +942,8 @@ multiline_comment|/*&n;&t; * Thread-UNsafe.&n;&t; * As of 2002/02/16, there are 
 id|dpriv-&gt;scc_regs
 (braket
 id|offset
+op_rshift
+l_int|2
 )braket
 op_assign
 id|bits
@@ -980,6 +985,8 @@ r_return
 id|dpriv-&gt;scc_regs
 (braket
 id|offset
+op_rshift
+l_int|2
 )braket
 suffix:semicolon
 )brace
