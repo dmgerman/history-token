@@ -2323,7 +2323,11 @@ c_func
 id|highstart_pfn
 op_star
 id|PAGE_SIZE
+op_minus
+l_int|1
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 macro_line|#else
 id|high_memory
@@ -2338,7 +2342,11 @@ c_func
 id|max_low_pfn
 op_star
 id|PAGE_SIZE
+op_minus
+l_int|1
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* this will put all low memory onto the freelists */
