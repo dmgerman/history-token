@@ -6827,7 +6827,7 @@ c_func
 (paren
 id|to
 comma
-l_int|0
+id|LOOKUP_PARENT
 comma
 op_amp
 id|nd

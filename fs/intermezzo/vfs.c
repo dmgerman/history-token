@@ -3616,7 +3616,7 @@ comma
 op_amp
 id|nd
 )paren
-)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
