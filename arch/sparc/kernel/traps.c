@@ -514,17 +514,14 @@ r_void
 id|do_hw_interrupt
 c_func
 (paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
 r_int
 r_int
 id|type
-comma
-r_int
-r_int
-id|psr
-comma
-r_int
-r_int
-id|pc
 )paren
 (brace
 id|siginfo_t
@@ -552,14 +549,14 @@ c_func
 (paren
 l_string|&quot;Whee... Hello Mr. Penguin&quot;
 comma
-id|current-&gt;thread.kregs
+id|regs
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|psr
+id|regs-&gt;psr
 op_amp
 id|PSR_PS
 )paren
@@ -569,7 +566,7 @@ c_func
 (paren
 l_string|&quot;Kernel bad trap&quot;
 comma
-id|current-&gt;thread.kregs
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -591,7 +588,7 @@ op_assign
 r_void
 op_star
 )paren
-id|pc
+id|regs-&gt;pc
 suffix:semicolon
 id|info.si_trapno
 op_assign

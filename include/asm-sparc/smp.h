@@ -152,14 +152,14 @@ c_func
 (paren
 r_int
 comma
-id|__smp_processor_id
+id|__hard_smp_processor_id
 comma
 r_void
 )paren
 id|BTFIXUPDEF_BLACKBOX
 c_func
 (paren
-id|smp_processor_id
+id|hard_smp_processor_id
 )paren
 id|BTFIXUPDEF_BLACKBOX
 c_func
@@ -582,7 +582,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;sethi %%hi(___b_smp_processor_id), %0&bslash;n&bslash;t&quot;
+l_string|&quot;sethi %%hi(___b_hard_smp_processor_id), %0&bslash;n&bslash;t&quot;
 l_string|&quot;sethi %%hi(boot_cpu_id), %0&bslash;n&bslash;t&quot;
 l_string|&quot;ldub [%0 + %%lo(boot_cpu_id)], %0&bslash;n&bslash;t&quot;
 suffix:colon
@@ -615,7 +615,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;mov %%o7, %%g1&bslash;n&bslash;t&quot;
-l_string|&quot;call ___f___smp_processor_id&bslash;n&bslash;t&quot;
+l_string|&quot;call ___f___hard_smp_processor_id&bslash;n&bslash;t&quot;
 l_string|&quot; nop&bslash;n&bslash;t&quot;
 l_string|&quot;mov %%g2, %0&bslash;n&bslash;t&quot;
 suffix:colon
