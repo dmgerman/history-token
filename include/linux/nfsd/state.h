@@ -385,5 +385,21 @@ r_int
 id|deny_type
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nfsd4_lock_state
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfsd4_unlock_state
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif   /* NFSD4_STATE_H */
 eof
