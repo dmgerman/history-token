@@ -454,14 +454,14 @@ id|unit
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|hplance_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|hplance_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1290,14 +1290,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_HPLANCE&t;&t;/* HP300 internal Ethernet */
-(brace
-id|hplance_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1316,6 +1308,14 @@ id|m68k_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_HPLANCE&t;&t;/* HP300 internal Ethernet */
+(brace
+id|hplance_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_MVME147_NET&t;/* MVME147 internal Ethernet */
 (brace
 id|mvme147lance_probe
