@@ -33,8 +33,9 @@ r_struct
 id|eni_free
 (brace
 DECL|member|start
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start
 suffix:semicolon
 multiline_comment|/* counting in bytes */
@@ -49,8 +50,9 @@ r_struct
 id|eni_tx
 (brace
 DECL|member|send
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|send
 suffix:semicolon
 multiline_comment|/* base, 0 if unused */
@@ -118,8 +120,9 @@ id|vcc
 suffix:semicolon
 multiline_comment|/* RX function, NULL if none */
 DECL|member|recv
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|recv
 suffix:semicolon
 multiline_comment|/* receive buffer */
@@ -208,44 +211,51 @@ suffix:semicolon
 multiline_comment|/* pending events */
 multiline_comment|/*-------------------------------- base pointers into Midway address&n;&t;&t;&t;&t;&t;   space */
 DECL|member|phy
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|phy
 suffix:semicolon
 multiline_comment|/* PHY interface chip registers */
 DECL|member|reg
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg
 suffix:semicolon
 multiline_comment|/* register base */
 DECL|member|ram
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ram
 suffix:semicolon
 multiline_comment|/* RAM base */
 DECL|member|vci
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|vci
 suffix:semicolon
 multiline_comment|/* VCI table */
 DECL|member|rx_dma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|rx_dma
 suffix:semicolon
 multiline_comment|/* RX DMA queue */
 DECL|member|tx_dma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|tx_dma
 suffix:semicolon
 multiline_comment|/* TX DMA queue */
 DECL|member|service
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|service
 suffix:semicolon
 multiline_comment|/* service list */
