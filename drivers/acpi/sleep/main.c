@@ -10,8 +10,8 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#endif
