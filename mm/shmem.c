@@ -3820,6 +3820,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|SetPageUptodate
 c_func
 (paren
