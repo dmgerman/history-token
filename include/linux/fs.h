@@ -5124,6 +5124,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|filemap_flush
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|filemap_fdatawait
 c_func
 (paren
