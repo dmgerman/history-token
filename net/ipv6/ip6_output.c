@@ -5567,6 +5567,12 @@ id|inet-&gt;cork.length
 op_plus
 id|length
 OG
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+op_plus
 id|IPV6_MAXPLEN
 op_minus
 id|fragheaderlen
@@ -6661,6 +6667,12 @@ c_cond
 (paren
 id|skb-&gt;len
 op_le
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+op_plus
 id|IPV6_MAXPLEN
 )paren
 id|hdr-&gt;payload_len
