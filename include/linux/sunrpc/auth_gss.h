@@ -186,9 +186,10 @@ r_struct
 id|rpc_cred
 id|gc_base
 suffix:semicolon
-DECL|member|gc_flavor
-id|u32
-id|gc_flavor
+DECL|member|gc_service
+r_enum
+id|rpc_gss_svc
+id|gc_service
 suffix:semicolon
 DECL|member|gc_ctx
 r_struct
