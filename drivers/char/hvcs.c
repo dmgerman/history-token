@@ -196,12 +196,12 @@ op_star
 id|hvcs_pi_buff
 suffix:semicolon
 multiline_comment|/* Only allow one hvcs_struct to use the hvcs_pi_buff at a time. */
-DECL|variable|hvcs_pi_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hvcs_pi_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* One vty-server per hvcs_struct */
 DECL|struct|hvcs_struct
@@ -307,12 +307,12 @@ c_func
 id|hvcs_structs
 )paren
 suffix:semicolon
-DECL|variable|hvcs_structs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hvcs_structs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

@@ -134,12 +134,12 @@ id|hvc_structs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Protect the list of hvc_struct instances from inserts and removals during&n; * list traversal.&n; */
-DECL|variable|hvc_structs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hvc_structs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Initial console vtermnos for console API usage prior to full console&n; * initialization.  Any vty adapter outside this range will not have usable&n; * console interfaces but can still be used as a tty device.  This has to be&n; * static because kmalloc will not work during early console init.&n; */
 DECL|variable|vtermnos

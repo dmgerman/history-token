@@ -1402,12 +1402,12 @@ id|batch_head
 comma
 id|batch_tail
 suffix:semicolon
-DECL|variable|batch_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|batch_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|batch_max
 r_static

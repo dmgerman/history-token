@@ -709,12 +709,12 @@ id|tty-&gt;termios_sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This guards the refcounted line discipline lists. The lock&n; *&t;must be taken with irqs off because there are hangup path&n; *&t;callers who will do ldisc lookups and cannot sleep.&n; */
-DECL|variable|tty_ldisc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tty_ldisc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
@@ -2344,12 +2344,12 @@ id|tty_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|redirect_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|redirect_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|redirect
 r_static

@@ -771,12 +771,12 @@ l_string|&quot;Nice All RT Tasks&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Key Operations table and lock */
-DECL|variable|sysrq_key_table_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sysrq_key_table_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|SYSRQ_KEY_TABLE_LENGTH
 mdefine_line|#define SYSRQ_KEY_TABLE_LENGTH 36

@@ -204,12 +204,12 @@ l_int|16
 op_assign
 l_string|&quot;preop_none&quot;
 suffix:semicolon
-DECL|variable|ipmi_read_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ipmi_read_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|data_to_read
 r_static
