@@ -512,24 +512,6 @@ id|MIRROR_SIZE
 op_minus
 l_int|1
 suffix:semicolon
-id|dev-&gt;rmem_start
-op_assign
-id|dev-&gt;mem_start
-op_plus
-id|BUFFER_SIZE
-op_star
-l_int|0
-suffix:semicolon
-id|dev-&gt;rmem_end
-op_assign
-id|dev-&gt;mem_start
-op_plus
-id|BUFFER_SIZE
-op_star
-l_int|2
-op_minus
-l_int|1
-suffix:semicolon
 multiline_comment|/* initialize the rest of the device structure. */
 id|lp
 op_assign

@@ -21,6 +21,13 @@ DECL|typedef|Indirect
 )brace
 id|Indirect
 suffix:semicolon
+DECL|variable|pointers_lock
+r_static
+id|rwlock_t
+id|pointers_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|add_chain
 r_static
 r_inline
@@ -235,7 +242,13 @@ id|bh
 r_goto
 id|failure
 suffix:semicolon
-multiline_comment|/* Reader: pointers */
+id|read_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -270,7 +283,13 @@ op_increment
 id|offsets
 )paren
 suffix:semicolon
-multiline_comment|/* Reader: end */
+id|read_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -286,6 +305,13 @@ l_int|NULL
 suffix:semicolon
 id|changed
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign
@@ -614,8 +640,14 @@ id|num
 r_int
 id|i
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Verify that place we are splicing to is still there and vacant */
-multiline_comment|/* Writer: pointers */
 r_if
 c_cond
 (paren
@@ -633,17 +665,21 @@ op_logical_or
 op_star
 id|where-&gt;p
 )paren
-multiline_comment|/* Writer: end */
 r_goto
 id|changed
 suffix:semicolon
-multiline_comment|/* That&squot;s it */
 op_star
 id|where-&gt;p
 op_assign
 id|where-&gt;key
 suffix:semicolon
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
 op_assign
@@ -674,6 +710,13 @@ l_int|0
 suffix:semicolon
 id|changed
 suffix:colon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -807,11 +850,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|reread
 suffix:colon
 id|partial
@@ -909,11 +947,6 @@ id|partial
 op_decrement
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -1151,7 +1184,13 @@ op_amp
 id|err
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: pointers */
+id|write_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1175,10 +1214,18 @@ op_logical_and
 op_star
 id|partial-&gt;p
 )paren
-multiline_comment|/* Writer: end */
+(brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_goto
 id|no_top
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1240,7 +1287,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren

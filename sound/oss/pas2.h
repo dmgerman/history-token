@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * pas2.h&n; *&n; * Copyright:&t;Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; *&n; */
 multiline_comment|/*&t;From pas_card.c&t;*/
 r_int
 id|pas_set_intr

@@ -3422,8 +3422,6 @@ DECL|variable|prom_ditlb_set
 r_static
 r_int
 id|prom_ditlb_set
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|prom_tlb_entry
 r_struct

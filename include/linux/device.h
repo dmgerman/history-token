@@ -196,7 +196,7 @@ r_void
 op_star
 id|platform_data
 suffix:semicolon
-multiline_comment|/* Platform specific data (e.g. ACPI,&n;&t;&t;&t;&t;&t;   BIOS data relevant to device */
+multiline_comment|/* Platform specific data (e.g. ACPI,&n;&t;&t;&t;&t;&t;   BIOS data relevant to device) */
 DECL|member|current_state
 id|u32
 id|current_state

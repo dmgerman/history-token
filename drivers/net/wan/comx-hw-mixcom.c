@@ -2600,14 +2600,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_restore_flags
-suffix:colon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|err_release_region
 suffix:colon
 id|release_region

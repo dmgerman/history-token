@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/minix/namei.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/minix_fs.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &quot;minix.h&quot;
 DECL|function|inc_count
 r_static
 r_inline

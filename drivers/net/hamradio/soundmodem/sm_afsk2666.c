@@ -451,7 +451,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|convolution12_u8
-r_extern
+r_static
 id|__inline__
 r_int
 id|convolution12_u8
@@ -664,7 +664,7 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|convolution12_s16
-r_extern
+r_static
 id|__inline__
 r_int
 id|convolution12_s16

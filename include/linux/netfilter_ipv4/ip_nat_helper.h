@@ -6,16 +6,43 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
 r_struct
 id|sk_buff
 suffix:semicolon
+multiline_comment|/* Flags */
+multiline_comment|/* NAT helper must be called on every packet (for TCP) */
+DECL|macro|IP_NAT_HELPER_F_ALWAYS
+mdefine_line|#define IP_NAT_HELPER_F_ALWAYS&t;&t;0x01
+multiline_comment|/* Standalone NAT helper, without a conntrack part */
+DECL|macro|IP_NAT_HELPER_F_STANDALONE
+mdefine_line|#define IP_NAT_HELPER_F_STANDALONE&t;0x02
 DECL|struct|ip_nat_helper
 r_struct
 id|ip_nat_helper
 (brace
-multiline_comment|/* Internal use */
 DECL|member|list
 r_struct
 id|list_head
 id|list
 suffix:semicolon
+multiline_comment|/* Internal use */
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+multiline_comment|/* name of the module */
+DECL|member|flags
+r_int
+r_char
+id|flags
+suffix:semicolon
+multiline_comment|/* Flags (see above) */
+DECL|member|me
+r_struct
+id|module
+op_star
+id|me
+suffix:semicolon
+multiline_comment|/* pointer to self */
 multiline_comment|/* Mask of things we will help: vs. tuple from server */
 DECL|member|tuple
 r_struct
@@ -42,6 +69,11 @@ op_star
 id|ct
 comma
 r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+comma
+r_struct
 id|ip_nat_info
 op_star
 id|info
@@ -61,11 +93,35 @@ op_star
 id|pskb
 )paren
 suffix:semicolon
-DECL|member|name
-r_const
-r_char
+multiline_comment|/* Returns verdict and sets up NAT for this connection */
+DECL|member|expect
+r_int
+r_int
+(paren
 op_star
-id|name
+id|expect
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_int
+r_int
+id|hooknum
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|ct
+comma
+r_struct
+id|ip_nat_info
+op_star
+id|info
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -162,11 +218,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|tcphdr
-op_star
-id|tcph
 )paren
 suffix:semicolon
 macro_line|#endif

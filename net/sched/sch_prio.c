@@ -1548,6 +1548,14 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+id|tcm-&gt;tcm_handle
+op_or_assign
+id|TC_H_MIN
+c_func
+(paren
+id|cl
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

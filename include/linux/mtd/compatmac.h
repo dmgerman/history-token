@@ -226,9 +226,9 @@ macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|spin_lock_bh
-mdefine_line|#define spin_lock_bh(lock) do {start_bh_atomic();spin_lock(lock);}while(0);
+mdefine_line|#define spin_lock_bh(lock) do {start_bh_atomic();spin_lock(lock);} while(0)
 DECL|macro|spin_unlock_bh
-mdefine_line|#define spin_unlock_bh(lock) do {spin_unlock(lock);end_bh_atomic();}while(0);
+mdefine_line|#define spin_unlock_bh(lock) do {spin_unlock(lock);end_bh_atomic();} while(0)
 macro_line|#else
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

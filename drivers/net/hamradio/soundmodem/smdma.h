@@ -15,7 +15,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*&n; * ===================== DMA buffer management ===========================&n; */
 multiline_comment|/*&n; * returns the number of samples per fragment&n; */
 DECL|function|dma_setup
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -174,7 +174,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|dma_ptr
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -386,7 +386,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|dma_end_transmit
-r_extern
+r_static
 id|__inline__
 r_int
 id|dma_end_transmit
@@ -462,7 +462,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dma_transmit
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_transmit
@@ -568,7 +568,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|dma_init_transmit
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_init_transmit
@@ -590,7 +590,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dma_start_transmit
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_start_transmit
@@ -660,7 +660,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|dma_clear_transmit
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_clear_transmit
@@ -698,7 +698,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|dma_receive
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_receive
@@ -831,7 +831,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|dma_init_receive
-r_extern
+r_static
 id|__inline__
 r_void
 id|dma_init_receive

@@ -19983,7 +19983,7 @@ c_cond
 (paren
 id|Controller-&gt;GenericDiskInfo.sizes
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|Inode-&gt;i_rdev
@@ -27406,6 +27406,12 @@ id|module_exit
 c_func
 (paren
 id|DAC960_Finalize
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -245,7 +245,7 @@ DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;({preempt_disable();_raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 macro_line|#else
 DECL|macro|preempt_get_count
-mdefine_line|#define preempt_get_count()&t;do { } while (0)
+mdefine_line|#define preempt_get_count()&t;(0)
 DECL|macro|preempt_disable
 mdefine_line|#define preempt_disable()&t;do { } while (0)
 DECL|macro|preempt_enable_no_resched

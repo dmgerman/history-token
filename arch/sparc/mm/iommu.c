@@ -36,8 +36,6 @@ DECL|variable|viking_flush
 r_static
 r_int
 id|viking_flush
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* viking.S */
 r_extern

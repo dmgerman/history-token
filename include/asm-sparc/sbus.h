@@ -276,7 +276,7 @@ mdefine_line|#define for_each_sbus(bus) &bslash;&n;        for((bus) = sbus_root
 DECL|macro|for_each_sbusdev
 mdefine_line|#define for_each_sbusdev(device, bus) &bslash;&n;        for((device) = (bus)-&gt;devices; (device); (device)=(device)-&gt;next)
 DECL|macro|for_all_sbusdev
-mdefine_line|#define for_all_sbusdev(device, bus) &bslash;&n;&t;for((bus) = sbus_root, ((device) = (bus) ? (bus)-&gt;devices : 0); (bus); (device)=((device)-&gt;next ? (device)-&gt;next : ((bus) = (bus)-&gt;next, (bus) ? (bus)-&gt;devices : 0)))
+mdefine_line|#define for_all_sbusdev(device, bus) &bslash;&n;&t;for ((bus) = sbus_root; (bus); (bus) = (bus)-&gt;next) &bslash;&n;&t;&t;for ((device) = (bus)-&gt;devices; (device); (device) = (device)-&gt;next)
 multiline_comment|/* Driver DVMA interfaces. */
 DECL|macro|sbus_can_dma_64bit
 mdefine_line|#define sbus_can_dma_64bit(sdev)&t;(0) /* actually, sparc_cpu_model==sun4d */

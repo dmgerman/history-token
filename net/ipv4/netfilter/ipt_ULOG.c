@@ -32,7 +32,7 @@ DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 DECL|macro|PRINTR
-mdefine_line|#define PRINTR(format, args...) do { if (net_ratelimit()) printk(format, ## args); } while (0);
+mdefine_line|#define PRINTR(format, args...) do { if (net_ratelimit()) printk(format, ## args); } while (0)
 id|MODULE_AUTHOR
 c_func
 (paren

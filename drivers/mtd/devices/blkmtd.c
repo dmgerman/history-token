@@ -958,7 +958,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|dev
+id|rawdevice-&gt;binding
 comma
 id|blocks
 comma
@@ -1652,7 +1652,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|dev
+id|item-&gt;rawdevice-&gt;binding
 comma
 id|blocks
 comma

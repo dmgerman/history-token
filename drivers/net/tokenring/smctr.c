@@ -17007,14 +17007,10 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|dev-&gt;rmem_start
-op_assign
 id|dev-&gt;mem_start
 op_assign
 id|tp-&gt;ram_base
 suffix:semicolon
-id|dev-&gt;rmem_end
-op_assign
 id|dev-&gt;mem_end
 op_assign
 id|dev-&gt;mem_start

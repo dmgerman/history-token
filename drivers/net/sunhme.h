@@ -386,8 +386,8 @@ DECL|macro|BIGMAC_RXCFG_DERR
 mdefine_line|#define BIGMAC_RXCFG_DERR     0x00000080 /* Disable error checking          */
 DECL|macro|BIGMAC_RXCFG_DCRCS
 mdefine_line|#define BIGMAC_RXCFG_DCRCS    0x00000100 /* Disable CRC stripping           */
-DECL|macro|BIGMAC_RXCFG_ME
-mdefine_line|#define BIGMAC_RXCFG_ME       0x00000200 /* Receive packets addressed to me */
+DECL|macro|BIGMAC_RXCFG_REJME
+mdefine_line|#define BIGMAC_RXCFG_REJME    0x00000200 /* Reject packets addressed to me  */
 DECL|macro|BIGMAC_RXCFG_PGRP
 mdefine_line|#define BIGMAC_RXCFG_PGRP     0x00000400 /* Enable promisc group mode       */
 DECL|macro|BIGMAC_RXCFG_HENABLE

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -5653,6 +5654,69 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|fs_table
+r_static
+id|ctl_table
+id|fs_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|FS_NRDQUOT
+comma
+l_string|&quot;dquot-nr&quot;
+comma
+op_amp
+id|nr_dquots
+comma
+l_int|2
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0444
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|dquot_table
+r_static
+id|ctl_table
+id|dquot_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|CTL_FS
+comma
+l_string|&quot;fs&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0555
+comma
+id|fs_table
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|dquot_init
 r_static
 r_int
@@ -5665,6 +5729,14 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|register_sysctl_table
+c_func
+(paren
+id|dquot_table
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_for
 c_loop

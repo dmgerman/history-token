@@ -1381,6 +1381,7 @@ c_func
 (paren
 id|gemtek_pci_remove
 )paren
+comma
 )brace
 suffix:semicolon
 DECL|function|gemtek_pci_init_module

@@ -114,6 +114,10 @@ multiline_comment|/* KeyLargo ATA-4 */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
+DECL|macro|BAD_DMA_DRIVE
+macro_line|# define BAD_DMA_DRIVE&t;&t;0
+DECL|macro|GOOD_DMA_DRIVE
+macro_line|# define GOOD_DMA_DRIVE&t;&t;1
 r_typedef
 r_struct
 (brace
@@ -330,15 +334,12 @@ op_star
 id|drive
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 id|ide_ioreg_t
 id|base
@@ -929,11 +930,7 @@ suffix:semicolon
 id|SELECT_DRIVE
 c_func
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 comma
 id|drive
 )paren
@@ -941,11 +938,7 @@ suffix:semicolon
 id|SELECT_MASK
 c_func
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 comma
 id|drive
 comma
@@ -2205,7 +2198,8 @@ id|irq
 comma
 id|big_delay
 suffix:semicolon
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 suffix:semicolon
@@ -4388,9 +4382,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_floppy
+id|ATA_FLOPPY
 )paren
 id|enable
 op_assign
@@ -4466,9 +4460,9 @@ c_cond
 id|ata4
 op_logical_and
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_disk
+id|ATA_DISK
 )paren
 op_logical_and
 (paren
@@ -4669,12 +4663,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
+)paren
 suffix:semicolon
 id|ide_set_handler
 c_func
@@ -4980,11 +4986,11 @@ multiline_comment|/* FIXME: We only handle the master IDE disk, we shoud&n;&t; *
 r_switch
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 )paren
 (brace
 r_case
-id|ide_disk
+id|ATA_DISK
 suffix:colon
 multiline_comment|/* Spin down the drive */
 id|outb
@@ -5113,13 +5119,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ide_cdrom
+id|ATA_ROM
 suffix:colon
 singleline_comment|// todo
 r_break
 suffix:semicolon
 r_case
-id|ide_floppy
+id|ATA_FLOPPY
 suffix:colon
 singleline_comment|// todo
 r_break
@@ -5177,13 +5183,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|major
+id|drive-&gt;channel-&gt;major
 comma
 (paren
 id|drive-&gt;select.b.unit
@@ -5657,7 +5657,8 @@ op_increment
 id|i
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 suffix:semicolon
@@ -5937,7 +5938,8 @@ op_increment
 id|i
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 suffix:semicolon

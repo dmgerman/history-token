@@ -133,6 +133,8 @@ DECL|macro|X86_VENDOR_RISE
 mdefine_line|#define X86_VENDOR_RISE 6
 DECL|macro|X86_VENDOR_TRANSMETA
 mdefine_line|#define X86_VENDOR_TRANSMETA 7
+DECL|macro|X86_VENDOR_NSC
+mdefine_line|#define X86_VENDOR_NSC 8
 DECL|macro|X86_VENDOR_UNKNOWN
 mdefine_line|#define X86_VENDOR_UNKNOWN 0xff
 multiline_comment|/*&n; * capabilities of CPUs&n; */
@@ -601,7 +603,7 @@ l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *      Cyrix CPU configuration register indexes&n; */
+multiline_comment|/*&n; *      NSC/Cyrix CPU configuration register indexes&n; */
 DECL|macro|CX86_CCR0
 mdefine_line|#define CX86_CCR0 0xc0
 DECL|macro|CX86_CCR1
@@ -626,7 +628,7 @@ DECL|macro|CX86_ARR_BASE
 mdefine_line|#define CX86_ARR_BASE 0xc4
 DECL|macro|CX86_RCR_BASE
 mdefine_line|#define CX86_RCR_BASE 0xdc
-multiline_comment|/*&n; *      Cyrix CPU indexed register access macros&n; */
+multiline_comment|/*&n; *      NSC/Cyrix CPU indexed register access macros&n; */
 DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86

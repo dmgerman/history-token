@@ -66,7 +66,7 @@ r_extern
 r_struct
 id|ip_conntrack_protocol
 op_star
-id|find_proto
+id|ip_ct_find_proto
 c_func
 (paren
 id|u_int8_t

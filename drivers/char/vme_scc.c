@@ -785,6 +785,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SCC: MVME147 Serial Driver&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1109,6 +1110,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SCC: MVME162 Serial Driver&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1422,6 +1424,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SCC: BVME6000 Serial Driver&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1844,7 +1847,9 @@ id|tty
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scc_rx_int with NULL tty!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2003,7 +2008,9 @@ id|tty
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scc_spcond_int with NULL tty!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2196,7 +2203,9 @@ id|port-&gt;gs.tty
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scc_tx_int with NULL tty!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3104,6 +3113,7 @@ l_int|76800
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;SCC: Bad speed requested, %d&bslash;n&quot;
 comma
 id|baud

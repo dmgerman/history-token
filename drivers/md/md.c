@@ -15640,7 +15640,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: md=%d, Specified more then once. &quot;
+l_string|&quot;md: md=%d, Specified more than once. &quot;
 l_string|&quot;Replacing previous definition.&bslash;n&quot;
 comma
 id|minor

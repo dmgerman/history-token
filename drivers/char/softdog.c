@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;SoftDog&t;0.05:&t;A Software Watchdog Device&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Software only watchdog driver. Unlike its big brother the WDT501P&n; *&t;driver this won&squot;t always recover a failed machine.&n; *&n; *  03/96: Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt; :&n; *&t;Modularised.&n; *&t;Added soft_margin; use upon insmod to change the timer delay.&n; *&t;NB: uses same minor as wdt (WATCHDOG_MINOR); we could use separate&n; *&t;    minors.&n; *&n; *  19980911 Alan Cox&n; *&t;Made SMP safe for 2.3.x&n; */
+multiline_comment|/*&n; *&t;SoftDog&t;0.06:&t;A Software Watchdog Device&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Software only watchdog driver. Unlike its big brother the WDT501P&n; *&t;driver this won&squot;t always recover a failed machine.&n; *&n; *  03/96: Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt; :&n; *&t;Modularised.&n; *&t;Added soft_margin; use upon insmod to change the timer delay.&n; *&t;NB: uses same minor as wdt (WATCHDOG_MINOR); we could use separate&n; *&t;    minors.&n; *&n; *  19980911 Alan Cox&n; *&t;Made SMP safe for 2.3.x&n; *&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *      Didn&squot;t add timeout option, as soft_margin option already exists.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -27,6 +27,39 @@ c_func
 id|soft_margin
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -134,10 +167,15 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT&t; 
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif&t;
+)brace
 multiline_comment|/*&n;&t; *&t;Activate timer&n;&t; */
 id|mod_timer
 c_func
@@ -179,8 +217,14 @@ op_star
 id|file
 )paren
 (brace
-multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&squot;s a module and we defined ...NOWAYOUT&n;&t; */
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT&t; 
+multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&squot;s a module and we set nowayout&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|del_timer
 c_func
 (paren
@@ -188,7 +232,7 @@ op_amp
 id|watchdog_ticktock
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+)brace
 id|timer_alive
 op_assign
 l_int|0
@@ -449,7 +493,7 @@ id|banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;Software Watchdog Timer: 0.05, timer margin: %d sec&bslash;n&quot;
+l_string|&quot;Software Watchdog Timer: 0.06, soft_margin: %d sec, nowayout: %d&bslash;n&quot;
 suffix:semicolon
 DECL|function|watchdog_init
 r_static
@@ -487,6 +531,8 @@ c_func
 id|banner
 comma
 id|soft_margin
+comma
+id|nowayout
 )paren
 suffix:semicolon
 r_return

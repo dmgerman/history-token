@@ -420,7 +420,20 @@ l_int|1
 op_lshift
 id|i
 suffix:semicolon
-multiline_comment|/* we schedule the first task manually *&n;&t;&t;del_from_runqueue(p);&n;&t;&t;unhash_process(p);&n;&t;&t;/* Attach to the address space of init_task. */
+multiline_comment|/* we schedule the first task manually */
+id|del_from_runqueue
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|unhash_process
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* Attach to the address space of init_task. */
 id|atomic_inc
 c_func
 (paren

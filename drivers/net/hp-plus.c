@@ -915,7 +915,7 @@ id|dev-&gt;mem_start
 op_assign
 id|mem_start
 suffix:semicolon
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -925,7 +925,7 @@ l_int|256
 suffix:semicolon
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_start
 op_plus

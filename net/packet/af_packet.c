@@ -728,6 +728,17 @@ id|skb-&gt;tail
 op_sub_assign
 id|dev-&gt;hard_header_len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+id|dev-&gt;hard_header_len
+)paren
+id|skb-&gt;nh.raw
+op_assign
+id|skb-&gt;data
+suffix:semicolon
 )brace
 multiline_comment|/* Returns -EFAULT on error */
 id|err

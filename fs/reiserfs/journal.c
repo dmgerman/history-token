@@ -9923,12 +9923,6 @@ id|jdev_name
 l_int|0
 )braket
 )paren
-op_logical_and
-id|SB_ONDISK_JOURNAL_DEVICE
-c_func
-(paren
-id|super
-)paren
 )paren
 (brace
 id|journal
@@ -10003,24 +9997,6 @@ suffix:semicolon
 )brace
 r_return
 id|result
-suffix:semicolon
-)brace
-multiline_comment|/* no &quot;jdev&quot; option and journal is on the host device */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|jdev_name
-op_logical_or
-op_logical_neg
-id|jdev_name
-(braket
-l_int|0
-)braket
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 id|journal

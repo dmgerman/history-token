@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -76,12 +78,6 @@ r_int
 id|mmu_cr4_features
 suffix:semicolon
 multiline_comment|/*&n; * Bus types ..&n; */
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#endif
 DECL|variable|MCA_bus
 r_int
 id|MCA_bus
@@ -390,6 +386,38 @@ id|IORESOURCE_BUSY
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MELAN
+id|standard_io_resources
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+l_string|&quot;pic1&quot;
+comma
+l_int|0x20
+comma
+l_int|0x21
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
+id|standard_io_resources
+(braket
+l_int|5
+)braket
+op_assign
+(brace
+l_string|&quot;pic2&quot;
+comma
+l_int|0xa0
+comma
+l_int|0xa1
+comma
+id|IORESOURCE_BUSY
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|macro|STANDARD_IO_RESOURCES
 mdefine_line|#define STANDARD_IO_RESOURCES (sizeof(standard_io_resources)/sizeof(struct resource))
 DECL|variable|code_resource
@@ -4816,7 +4844,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read Cyrix DEVID registers (DIR) to get more detailed info. about the CPU&n; */
+multiline_comment|/*&n; * Read NSC/Cyrix DEVID registers (DIR) to get more detailed info. about the CPU&n; */
 DECL|function|do_cyrix_devid
 r_static
 r_void
@@ -5570,9 +5598,8 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* MediaGX/GXm */
-multiline_comment|/*&n;&t;&t; *&t;Life sometimes gets weiiiiiiiird if we use this&n;&t;&t; *&t;on the MediaGX. So we turn it off for now. &n;&t;&t; */
 macro_line|#ifdef CONFIG_PCI
-multiline_comment|/* It isnt really a PCI quirk directly, but the cure is the&n;&t;&t;   same. The MediaGX has deep magic SMM stuff that handles the&n;&t;&t;   SB emulation. It thows away the fifo on disable_dma() which&n;&t;&t;   is wrong and ruins the audio. &n;                   &n;&t;&t;   Bug2: VSA1 has a wrap bug so that using maximum sized DMA &n;&t;&t;   causes bad things. According to NatSemi VSA2 has another&n;&t;&t;   bug to do with &squot;hlt&squot;. I&squot;ve not seen any boards using VSA2&n;&t;&t;   and X doesn&squot;t seem to support it either so who cares 8).&n;&t;&t;   VSA1 we work around however.&n;&t;&t;*/
+multiline_comment|/* It isn&squot;t really a PCI quirk directly, but the cure is the&n;&t;&t;   same. The MediaGX has deep magic SMM stuff that handles the&n;&t;&t;   SB emulation. It thows away the fifo on disable_dma() which&n;&t;&t;   is wrong and ruins the audio. &n;&n;&t;&t;   Bug2: VSA1 has a wrap bug so that using maximum sized DMA &n;&t;&t;   causes bad things. According to NatSemi VSA2 has another&n;&t;&t;   bug to do with &squot;hlt&squot;. I&squot;ve not seen any boards using VSA2&n;&t;&t;   and X doesn&squot;t seem to support it either so who cares 8).&n;&t;&t;   VSA1 we work around however.&n;&t;&t;*/
 id|printk
 c_func
 (paren
@@ -5599,6 +5626,21 @@ op_eq
 l_int|2
 )paren
 (brace
+multiline_comment|/* Enable Natsemi MMX extensions */
+id|setCx86
+c_func
+(paren
+id|CX86_CCR7
+comma
+id|getCx86
+c_func
+(paren
+id|CX86_CCR7
+)paren
+op_or
+l_int|1
+)paren
+suffix:semicolon
 id|get_model_name
 c_func
 (paren
@@ -5606,6 +5648,31 @@ id|c
 )paren
 suffix:semicolon
 multiline_comment|/* get CPU marketing name */
+multiline_comment|/*&n;&t;&t;&t; *  The 5510/5520 companion chips have a funky PIT&n;&t;&t;&t; *  that breaks the TSC synchronizing, so turn it off&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_CYRIX
+comma
+id|PCI_DEVICE_ID_CYRIX_5510
+comma
+l_int|NULL
+)paren
+op_logical_or
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_CYRIX
+comma
+id|PCI_DEVICE_ID_CYRIX_5520
+comma
+l_int|NULL
+)paren
+)paren
+(brace
 id|clear_bit
 c_func
 (paren
@@ -5614,6 +5681,7 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
@@ -5655,6 +5723,7 @@ l_int|1
 suffix:colon
 l_int|2
 suffix:semicolon
+macro_line|#ifndef CONFIG_CS5520
 id|clear_bit
 c_func
 (paren
@@ -5664,6 +5733,7 @@ op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_break
 suffix:semicolon
@@ -8861,6 +8931,23 @@ c_func
 (paren
 id|v
 comma
+l_string|&quot;Geode by NSC&quot;
+)paren
+)paren
+id|c-&gt;x86_vendor
+op_assign
+id|X86_VENDOR_NSC
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|v
+comma
 l_string|&quot;UMC UMC UMC &quot;
 )paren
 )paren
@@ -10305,6 +10392,93 @@ id|c-&gt;x86_vendor
 )paren
 (brace
 r_case
+id|X86_VENDOR_AMD
+suffix:colon
+id|init_amd
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_CENTAUR
+suffix:colon
+id|init_centaur
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_CYRIX
+suffix:colon
+id|init_cyrix
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_INTEL
+suffix:colon
+id|init_intel
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_NEXGEN
+suffix:colon
+id|c-&gt;x86_cache_size
+op_assign
+l_int|256
+suffix:semicolon
+multiline_comment|/* A few had 1 MB... */
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_NSC
+suffix:colon
+id|init_cyrix
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_RISE
+suffix:colon
+id|init_rise
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|X86_VENDOR_TRANSMETA
+suffix:colon
+id|init_transmeta
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|X86_VENDOR_UNKNOWN
 suffix:colon
 r_default
@@ -10355,82 +10529,6 @@ l_string|&quot;386&quot;
 )paren
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_CYRIX
-suffix:colon
-id|init_cyrix
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_AMD
-suffix:colon
-id|init_amd
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_CENTAUR
-suffix:colon
-id|init_centaur
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_INTEL
-suffix:colon
-id|init_intel
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_NEXGEN
-suffix:colon
-id|c-&gt;x86_cache_size
-op_assign
-l_int|256
-suffix:semicolon
-multiline_comment|/* A few had 1 MB... */
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_TRANSMETA
-suffix:colon
-id|init_transmeta
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|X86_VENDOR_RISE
-suffix:colon
-id|init_rise
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -10682,9 +10780,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|boot_cpu_data.x86_vendor
 op_eq
 id|X86_VENDOR_CYRIX
+)paren
+op_logical_or
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_NSC
+)paren
 )paren
 id|init_cyrix
 c_func
@@ -10720,6 +10826,8 @@ comma
 l_string|&quot;Rise&quot;
 comma
 l_string|&quot;Transmeta&quot;
+comma
+l_string|&quot;NSC&quot;
 )brace
 suffix:semicolon
 DECL|function|print_cpu_info

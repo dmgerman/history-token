@@ -1426,6 +1426,12 @@ c_func
 l_string|&quot;The X.25 Link Access Procedure B link layer protocol&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|lapb_init
 id|module_init
 c_func
