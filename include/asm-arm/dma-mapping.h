@@ -374,6 +374,31 @@ id|handle
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * dma_alloc_writecombine - allocate writecombining memory for DMA&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @size: required memory size&n; * @handle: bus-specific DMA address&n; *&n; * Allocate some uncached, buffered memory for a device for&n; * performing DMA.  This function allocates pages, and will&n; * return the CPU-viewed address, and sets @handle to be the&n; * device-viewed address.&n; */
+r_extern
+r_void
+op_star
+id|dma_alloc_writecombine
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|handle
+comma
+r_int
+id|gfp
+)paren
+suffix:semicolon
+DECL|macro|dma_free_writecombine
+mdefine_line|#define dma_free_writecombine(dev,size,cpu_addr,handle) &bslash;&n;&t;dma_free_coherent(dev,size,cpu_addr,handle)
 multiline_comment|/**&n; * dma_map_single - map a single buffer for streaming DMA&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @cpu_addr: CPU direct mapped address of buffer&n; * @size: size of buffer to map&n; * @dir: DMA transfer direction&n; *&n; * Ensure that any data held in the cache is appropriately discarded&n; * or written back.&n; *&n; * The device owns this memory once this call has completed.  The CPU&n; * can regain ownership by calling dma_unmap_single() or&n; * dma_sync_single_for_cpu().&n; */
 r_static
 r_inline
