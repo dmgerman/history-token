@@ -3440,7 +3440,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|schedule_work
+id|kblockd_schedule_work
 c_func
 (paren
 op_amp
@@ -3685,7 +3685,7 @@ op_amp
 id|q-&gt;unplug_timer
 )paren
 suffix:semicolon
-id|flush_scheduled_work
+id|kblockd_flush
 c_func
 (paren
 )paren
