@@ -7,6 +7,9 @@ macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/ustack.h&gt;
+multiline_comment|/* Our arch specific arch_init_sched_domain is in arch/ia64/kernel/domain.c */
+DECL|macro|ARCH_HAS_SCHED_DOMAIN
+mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
 DECL|macro|IA64_NUM_DBG_REGS
 mdefine_line|#define IA64_NUM_DBG_REGS&t;8
 multiline_comment|/*&n; * Limits for PMC and PMD are set to less than maximum architected values&n; * but should be sufficient for a while&n; */
