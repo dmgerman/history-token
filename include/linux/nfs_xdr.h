@@ -244,6 +244,11 @@ id|__u32
 id|namelen
 suffix:semicolon
 multiline_comment|/* max name length */
+DECL|member|lease_time
+id|__u32
+id|lease_time
+suffix:semicolon
+multiline_comment|/* in seconds */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Arguments to the read call.&n; */
