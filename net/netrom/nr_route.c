@@ -3773,8 +3773,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|macro|NETROM_PROC_START
-mdefine_line|#define NETROM_PROC_START&t;((void *) 1)
 DECL|function|nr_node_start
 r_static
 r_void
@@ -3823,7 +3821,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 id|nr_node_for_each
 c_func
@@ -3890,7 +3888,7 @@ op_assign
 (paren
 id|v
 op_eq
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 )paren
 ques
 c_cond
@@ -3968,7 +3966,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func
@@ -4230,7 +4228,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 id|nr_neigh_for_each
 c_func
@@ -4294,7 +4292,7 @@ op_assign
 (paren
 id|v
 op_eq
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 )paren
 ques
 c_cond
@@ -4372,7 +4370,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|NETROM_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

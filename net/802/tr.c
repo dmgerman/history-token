@@ -1996,9 +1996,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Generate the /proc/net information for the token ring RIF&n; *&t;routing.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* Magic token to indicate first entry (header line) */
-DECL|macro|RIF_PROC_START
-mdefine_line|#define RIF_PROC_START&t;((void *)1)
 DECL|function|rif_get_idx
 r_static
 r_struct
@@ -2111,7 +2108,7 @@ op_minus
 l_int|1
 )paren
 suffix:colon
-id|RIF_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 )brace
 DECL|function|rif_seq_next
@@ -2154,7 +2151,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|RIF_PROC_START
+id|SEQ_START_TOKEN
 )paren
 (brace
 id|i
@@ -2276,7 +2273,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|RIF_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

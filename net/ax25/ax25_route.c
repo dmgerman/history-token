@@ -1174,8 +1174,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|macro|AX25_PROC_START
-mdefine_line|#define AX25_PROC_START&t;((void *)1)
 DECL|function|ax25_rt_seq_start
 r_static
 r_void
@@ -1219,7 +1217,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|AX25_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 r_for
 c_loop
@@ -1285,7 +1283,7 @@ r_return
 (paren
 id|v
 op_eq
-id|AX25_PROC_START
+id|SEQ_START_TOKEN
 )paren
 ques
 c_cond
@@ -1348,7 +1346,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|AX25_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

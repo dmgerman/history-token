@@ -9666,11 +9666,7 @@ c_cond
 (paren
 id|v
 op_eq
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|SEQ_START_TOKEN
 )paren
 (brace
 id|seq_printf

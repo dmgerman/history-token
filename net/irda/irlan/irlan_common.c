@@ -3921,8 +3921,6 @@ id|n
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|macro|IRLAN_PROC_START_TOKEN
-mdefine_line|#define IRLAN_PROC_START_TOKEN&t;((void *)1)
 multiline_comment|/*&n; * Start of reading /proc entries.&n; * Return entry at pos, &n; *&t;or start_token to indicate print header line&n; *&t;or NULL if end of file&n; */
 DECL|function|irlan_seq_start
 r_static
@@ -3965,7 +3963,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|IRLAN_PROC_START_TOKEN
+id|SEQ_START_TOKEN
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -4033,7 +4031,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|IRLAN_PROC_START_TOKEN
+id|SEQ_START_TOKEN
 )paren
 id|nxt
 op_assign
@@ -4121,7 +4119,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|IRLAN_PROC_START_TOKEN
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

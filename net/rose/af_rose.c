@@ -6025,7 +6025,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|ROSE_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 id|i
 op_assign
@@ -6090,7 +6090,7 @@ r_return
 (paren
 id|v
 op_eq
-id|ROSE_PROC_START
+id|SEQ_START_TOKEN
 )paren
 ques
 c_cond
@@ -6158,7 +6158,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|ROSE_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

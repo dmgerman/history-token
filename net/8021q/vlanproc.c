@@ -100,9 +100,6 @@ op_star
 id|v
 )paren
 suffix:semicolon
-multiline_comment|/* Miscellaneous */
-DECL|macro|SEQ_START_TOKEN
-mdefine_line|#define SEQ_START_TOKEN&t;&t;((void *) 1)
 multiline_comment|/*&n; *&t;Global Data&n; */
 multiline_comment|/*&n; *&t;Names of the proc directory entries &n; */
 DECL|variable|name_root
