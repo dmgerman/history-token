@@ -676,7 +676,7 @@ id|x
 comma
 id|skb
 comma
-id|AF_INET
+id|AF_INET6
 )paren
 suffix:semicolon
 r_if
