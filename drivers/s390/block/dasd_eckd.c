@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.46 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.47 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2288,32 +2288,6 @@ id|dasd_eckd_confdata
 )paren
 )paren
 suffix:semicolon
-id|DEV_MESSAGE
-c_func
-(paren
-id|KERN_INFO
-comma
-id|device
-comma
-l_string|&quot;%04X/%02X(CU:%04X/%02X): Configuration data read&quot;
-comma
-r_private
-op_member_access_from_pointer
-id|rdc_data.dev_type
-comma
-r_private
-op_member_access_from_pointer
-id|rdc_data.dev_model
-comma
-r_private
-op_member_access_from_pointer
-id|rdc_data.cu_type
-comma
-r_private
-op_member_access_from_pointer
-id|rdc_data.cu_model.model
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4081,11 +4055,19 @@ id|addr_t
 )paren
 id|ect
 suffix:semicolon
+id|ccw
+op_increment
+suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
 id|fdata-&gt;intensity
+op_amp
+op_complement
+l_int|0x08
+)paren
 op_amp
 l_int|0x04
 )paren
@@ -4312,6 +4294,9 @@ id|__u32
 id|addr_t
 )paren
 id|ect
+suffix:semicolon
+id|ccw
+op_increment
 suffix:semicolon
 )brace
 )brace
