@@ -961,6 +961,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|xfrm_aalg_get_byid
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_aalg_get_byid
+)paren
+suffix:semicolon
 DECL|function|xfrm_ealg_get_byid
 r_struct
 id|xfrm_algo_desc
@@ -1032,6 +1039,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|xfrm_ealg_get_byid
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_ealg_get_byid
+)paren
+suffix:semicolon
 DECL|function|xfrm_calg_get_byid
 r_struct
 id|xfrm_algo_desc
@@ -1103,6 +1117,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|xfrm_calg_get_byid
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_calg_get_byid
+)paren
+suffix:semicolon
 DECL|function|xfrm_get_byname
 r_static
 r_struct
@@ -1270,6 +1291,13 @@ id|probe
 )paren
 suffix:semicolon
 )brace
+DECL|variable|xfrm_aalg_get_byname
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_aalg_get_byname
+)paren
+suffix:semicolon
 DECL|function|xfrm_ealg_get_byname
 r_struct
 id|xfrm_algo_desc
@@ -1302,6 +1330,13 @@ id|probe
 )paren
 suffix:semicolon
 )brace
+DECL|variable|xfrm_ealg_get_byname
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_ealg_get_byname
+)paren
+suffix:semicolon
 DECL|function|xfrm_calg_get_byname
 r_struct
 id|xfrm_algo_desc
@@ -1334,6 +1369,13 @@ id|probe
 )paren
 suffix:semicolon
 )brace
+DECL|variable|xfrm_calg_get_byname
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_calg_get_byname
+)paren
+suffix:semicolon
 DECL|function|xfrm_aalg_get_byidx
 r_struct
 id|xfrm_algo_desc
@@ -1367,6 +1409,13 @@ id|idx
 )braket
 suffix:semicolon
 )brace
+DECL|variable|xfrm_aalg_get_byidx
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_aalg_get_byidx
+)paren
+suffix:semicolon
 DECL|function|xfrm_ealg_get_byidx
 r_struct
 id|xfrm_algo_desc
@@ -1400,6 +1449,13 @@ id|idx
 )braket
 suffix:semicolon
 )brace
+DECL|variable|xfrm_ealg_get_byidx
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_ealg_get_byidx
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Probe for the availability of crypto algorithms, and set the available&n; * flag for any algorithms found on the system.  This is typically called by&n; * pfkey during userspace SA add, update or register.&n; */
 DECL|function|xfrm_probe_algs
 r_void
@@ -1591,6 +1647,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|variable|xfrm_probe_algs
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_probe_algs
+)paren
+suffix:semicolon
 DECL|function|xfrm_count_auth_supported
 r_int
 id|xfrm_count_auth_supported
@@ -1642,6 +1705,13 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|xfrm_count_auth_supported
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_count_auth_supported
+)paren
+suffix:semicolon
 DECL|function|xfrm_count_enc_supported
 r_int
 id|xfrm_count_enc_supported
@@ -1693,6 +1763,13 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|xfrm_count_enc_supported
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_count_enc_supported
+)paren
+suffix:semicolon
 multiline_comment|/* Move to common area: it is shared with AH. */
 DECL|function|skb_icv_walk
 r_void
@@ -2091,6 +2168,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|skb_icv_walk
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_icv_walk
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
 multiline_comment|/* Looking generic it is not used in another places. */
 r_int
