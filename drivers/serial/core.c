@@ -281,13 +281,13 @@ id|data
 )paren
 (brace
 r_struct
-id|uart_info
+id|uart_state
 op_star
-id|info
+id|state
 op_assign
 (paren
 r_struct
-id|uart_info
+id|uart_state
 op_star
 )paren
 id|data
@@ -299,7 +299,7 @@ id|tty
 suffix:semicolon
 id|tty
 op_assign
-id|info-&gt;tty
+id|state-&gt;info-&gt;tty
 suffix:semicolon
 r_if
 c_cond
@@ -5549,7 +5549,7 @@ comma
 r_int
 r_int
 )paren
-id|state-&gt;info
+id|state
 )paren
 suffix:semicolon
 id|up
