@@ -3261,7 +3261,27 @@ comma
 id|self-&gt;daddr
 )paren
 suffix:semicolon
-multiline_comment|/* Query remote LM-IAS */
+multiline_comment|/* If we don&squot;t have a valid service name, we assume the&n;&t;&t; * user want to connect on a specific LSAP. Prevent&n;&t;&t; * the use of invalid LSAPs (IrLMP 1.1 p10). Jean II */
+r_if
+c_cond
+(paren
+(paren
+id|addr-&gt;sir_name
+(braket
+l_int|0
+)braket
+op_ne
+l_char|&squot;&bslash;0&squot;
+)paren
+op_logical_or
+(paren
+id|addr-&gt;sir_lsap_sel
+op_ge
+l_int|0x70
+)paren
+)paren
+(brace
+multiline_comment|/* Query remote LM-IAS using service name */
 id|err
 op_assign
 id|irda_find_lsap_sel
@@ -3290,6 +3310,15 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 id|err
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* Directly connect to the remote LSAP&n;&t;&t;&t; * specified by the sir_lsap field.&n;&t;&t;&t; * Please use with caution, in IrDA LSAPs are&n;&t;&t;&t; * dynamic and there is no &quot;well-known&quot; LSAP. */
+id|self-&gt;dtsap_sel
+op_assign
+id|addr-&gt;sir_lsap_sel
 suffix:semicolon
 )brace
 )brace
