@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_TYPES_H__
 DECL|macro|__XFS_TYPES_H__
 mdefine_line|#define __XFS_TYPES_H__
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * POSIX Extensions&n; */
 DECL|typedef|uchar_t
 r_typedef
@@ -136,27 +135,6 @@ DECL|typedef|xfs_dev_t
 r_typedef
 id|__u32
 id|xfs_dev_t
-suffix:semicolon
-DECL|typedef|timespec_t
-r_typedef
-r_struct
-id|timespec
-id|timespec_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|__u_bits
-r_int
-r_char
-id|__u_bits
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|typedef|uuid_t
-)brace
-id|uuid_t
 suffix:semicolon
 multiline_comment|/* __psint_t is the same size as a pointer */
 macro_line|#if (BITS_PER_LONG == 32)
@@ -416,6 +394,44 @@ mdefine_line|#define MAXAEXTNUM&t;((xfs_aextnum_t)0x7fff)&t;&t;/* signed short *
 multiline_comment|/*&n; * MAXNAMELEN is the length (including the terminating null) of&n; * the longest permissible file (component) name.&n; */
 DECL|macro|MAXNAMELEN
 mdefine_line|#define MAXNAMELEN&t;256
+DECL|struct|xfs_dirent
+r_typedef
+r_struct
+id|xfs_dirent
+(brace
+multiline_comment|/* data from readdir() */
+DECL|member|d_ino
+id|xfs_ino_t
+id|d_ino
+suffix:semicolon
+multiline_comment|/* inode number of entry */
+DECL|member|d_off
+id|xfs_off_t
+id|d_off
+suffix:semicolon
+multiline_comment|/* offset of disk directory entry */
+DECL|member|d_reclen
+r_int
+r_int
+id|d_reclen
+suffix:semicolon
+multiline_comment|/* length of this record */
+DECL|member|d_name
+r_char
+id|d_name
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* name of file */
+DECL|typedef|xfs_dirent_t
+)brace
+id|xfs_dirent_t
+suffix:semicolon
+DECL|macro|DIRENTBASESIZE
+mdefine_line|#define DIRENTBASESIZE&t;&t;(((xfs_dirent_t *)0)-&gt;d_name - (char *)0)
+DECL|macro|DIRENTSIZE
+mdefine_line|#define DIRENTSIZE(namelen)&t;&bslash;&n;&t;((DIRENTBASESIZE + (namelen) + &bslash;&n;&t;&t;sizeof(xfs_off_t)) &amp; ~(sizeof(xfs_off_t) - 1))
 r_typedef
 r_enum
 (brace

@@ -348,13 +348,9 @@ comma
 multiline_comment|/* inode logging flags */
 r_int
 id|whichfork
-comma
-multiline_comment|/* data or attr fork */
-r_int
-id|async
 )paren
 suffix:semicolon
-multiline_comment|/* xaction can be async */
+multiline_comment|/* data or attr fork */
 macro_line|#ifdef XFSDEBUG
 multiline_comment|/*&n; * Check that the extents list for the inode ip is in the right order.&n; */
 id|STATIC
@@ -412,10 +408,6 @@ op_star
 r_new
 comma
 multiline_comment|/* new data to put in extent list */
-r_int
-id|iflags
-comma
-multiline_comment|/* input flags (meta-data or not) */
 r_int
 op_star
 id|logflagsp
@@ -2883,8 +2875,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -5830,8 +5820,6 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
-comma
 op_amp
 id|i
 )paren
@@ -5887,8 +5875,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -6121,8 +6107,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -6357,8 +6341,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -9379,8 +9361,6 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
-comma
 op_amp
 id|i
 )paren
@@ -12038,12 +12018,8 @@ comma
 multiline_comment|/* inode logging flags */
 r_int
 id|whichfork
-comma
-multiline_comment|/* data or attr fork */
-r_int
-id|async
 )paren
-multiline_comment|/* xaction can be async */
+multiline_comment|/* data or attr fork */
 (brace
 multiline_comment|/* REFERENCED */
 id|xfs_bmbt_block_t
@@ -12290,18 +12266,6 @@ comma
 id|mp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|async
-)paren
-id|xfs_trans_set_sync
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|ip-&gt;i_d.di_nblocks
 op_decrement
 suffix:semicolon
@@ -12453,10 +12417,6 @@ op_star
 id|del
 comma
 multiline_comment|/* data to remove from extent list */
-r_int
-id|iflags
-comma
-multiline_comment|/* input flags */
 r_int
 op_star
 id|logflagsp
@@ -13060,10 +13020,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-id|iflags
-op_amp
-id|XFS_BMAPI_ASYNC
 comma
 op_amp
 id|i
@@ -20615,11 +20571,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|i
 op_plus
 id|num_recs
 OG
 id|room
+)paren
 )paren
 (brace
 id|ASSERT
@@ -20639,8 +20599,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt dinode %Lu, (btree extents).  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt dinode %Lu, (btree extents).  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -20648,6 +20607,16 @@ r_int
 r_int
 )paren
 id|ip-&gt;i_ino
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_bmap_read_extents(1)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
 )paren
 suffix:semicolon
 r_goto
@@ -20776,6 +20745,9 @@ multiline_comment|/*&n;&t;&t;&t; * Check all attribute bmap btree records and&n;
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|xfs_check_nostate_extents
 c_func
 (paren
@@ -20784,7 +20756,18 @@ comma
 id|num_recs
 )paren
 )paren
+)paren
 (brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_bmap_read_extents(2)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_goto
 id|error0
 suffix:semicolon
@@ -21589,8 +21572,19 @@ id|XFS_ATTR_FORK
 suffix:colon
 id|XFS_DATA_FORK
 suffix:semicolon
+id|mp
+op_assign
+id|ip-&gt;i_mount
+suffix:semicolon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|XFS_TEST_ERROR
+c_func
+(paren
 (paren
 id|XFS_IFORK_FORMAT
 c_func
@@ -21622,7 +21616,26 @@ id|whichfork
 op_ne
 id|XFS_DINODE_FMT_LOCAL
 )paren
+comma
+id|mp
+comma
+id|XFS_ERRTAG_BMAPIFORMAT
+comma
+id|XFS_RANDOM_BMAPIFORMAT
+)paren
+)paren
+)paren
 (brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_bmapi&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -21631,10 +21644,6 @@ id|EFSCORRUPTED
 )paren
 suffix:semicolon
 )brace
-id|mp
-op_assign
-id|ip-&gt;i_mount
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23640,8 +23649,6 @@ op_amp
 id|tmp_logflags
 comma
 id|whichfork
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|logflags
@@ -23977,6 +23984,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_IFORK_FORMAT
 c_func
 (paren
@@ -23997,7 +24007,18 @@ id|whichfork
 op_ne
 id|XFS_DINODE_FMT_EXTENTS
 )paren
+)paren
 (brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_bmapi_single&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -24190,10 +24211,6 @@ id|done
 )paren
 multiline_comment|/* set if not done yet */
 (brace
-r_int
-id|async
-suffix:semicolon
-multiline_comment|/* xactions can be async */
 id|xfs_btree_cur_t
 op_star
 id|cur
@@ -24325,6 +24342,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_IFORK_FORMAT
 c_func
 (paren
@@ -24345,7 +24365,18 @@ id|whichfork
 op_ne
 id|XFS_DINODE_FMT_BTREE
 )paren
+)paren
 (brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_bunmapi&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -24373,12 +24404,6 @@ c_func
 (paren
 id|EIO
 )paren
-suffix:semicolon
-id|async
-op_assign
-id|flags
-op_amp
-id|XFS_BMAPI_ASYNC
 suffix:semicolon
 id|rsvd
 op_assign
@@ -25483,8 +25508,6 @@ comma
 op_amp
 id|del
 comma
-id|flags
-comma
 op_amp
 id|tmp_logflags
 comma
@@ -25756,8 +25779,6 @@ op_amp
 id|tmp_logflags
 comma
 id|whichfork
-comma
-id|async
 )paren
 suffix:semicolon
 id|logflags
@@ -26179,6 +26200,9 @@ r_else
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ip-&gt;i_d.di_aformat
 op_ne
 l_int|0
@@ -26187,17 +26211,16 @@ id|ip-&gt;i_d.di_aformat
 op_ne
 id|XFS_DINODE_FMT_EXTENTS
 )paren
+)paren
 (brace
-id|cmn_err
+id|XFS_ERROR_REPORT
 c_func
 (paren
-id|CE_NOTE
+l_string|&quot;xfs_getbmap&quot;
 comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
+id|XFS_ERRLEVEL_LOW
 comma
-id|__FILE__
-comma
-id|__LINE__
+id|ip-&gt;i_mount
 )paren
 suffix:semicolon
 r_return
@@ -28814,6 +28837,9 @@ id|XFS_DINODE_FMT_EXTENTS
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|xfs_bmap_count_leaves
 c_func
 (paren
@@ -28834,17 +28860,16 @@ id|count
 OL
 l_int|0
 )paren
+)paren
 (brace
-id|cmn_err
+id|XFS_ERROR_REPORT
 c_func
 (paren
-id|CE_NOTE
+l_string|&quot;xfs_bmap_count_blocks(1)&quot;
 comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
+id|XFS_ERRLEVEL_LOW
 comma
-id|__FILE__
-comma
-id|__LINE__
+id|mp
 )paren
 suffix:semicolon
 r_return
@@ -28971,6 +28996,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|xfs_bmap_count_tree
 c_func
 (paren
@@ -28987,17 +29015,16 @@ id|count
 OL
 l_int|0
 )paren
+)paren
 (brace
-id|cmn_err
+id|XFS_ERROR_REPORT
 c_func
 (paren
-id|CE_NOTE
+l_string|&quot;xfs_bmap_count_blocks(2)&quot;
 comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
+id|XFS_ERRLEVEL_LOW
 comma
-id|__FILE__
-comma
-id|__LINE__
+id|mp
 )paren
 suffix:semicolon
 r_return
@@ -29243,6 +29270,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 id|error
 op_assign
@@ -29263,6 +29293,7 @@ id|count
 OL
 l_int|0
 )paren
+)paren
 (brace
 id|xfs_trans_brelse
 c_func
@@ -29272,16 +29303,14 @@ comma
 id|bp
 )paren
 suffix:semicolon
-id|cmn_err
+id|XFS_ERROR_REPORT
 c_func
 (paren
-id|CE_NOTE
+l_string|&quot;xfs_bmap_count_tree(1)&quot;
 comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
+id|XFS_ERRLEVEL_LOW
 comma
-id|__FILE__
-comma
-id|__LINE__
+id|mp
 )paren
 suffix:semicolon
 r_return
@@ -29353,6 +29382,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|xfs_bmap_count_leaves
 c_func
 (paren
@@ -29365,6 +29397,7 @@ id|count
 OL
 l_int|0
 )paren
+)paren
 (brace
 id|xfs_trans_brelse
 c_func
@@ -29374,16 +29407,14 @@ comma
 id|bp
 )paren
 suffix:semicolon
-id|cmn_err
+id|XFS_ERROR_REPORT
 c_func
 (paren
-id|CE_NOTE
+l_string|&quot;xfs_bmap_count_tree(2)&quot;
 comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
+id|XFS_ERRLEVEL_LOW
 comma
-id|__FILE__
-comma
-id|__LINE__
+id|mp
 )paren
 suffix:semicolon
 r_return

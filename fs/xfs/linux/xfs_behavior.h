@@ -121,16 +121,6 @@ DECL|macro|BHV_IDENTITY
 mdefine_line|#define BHV_IDENTITY(bdp)&t;((bhv_identity_t *)(bdp)-&gt;bd_ops)
 DECL|macro|BHV_POSITION
 mdefine_line|#define BHV_POSITION(bdp)&t;(BHV_IDENTITY(bdp)-&gt;bi_position)
-DECL|macro|BHV_READ_LOCK
-mdefine_line|#define BHV_READ_LOCK(bhp)
-DECL|macro|BHV_READ_UNLOCK
-mdefine_line|#define BHV_READ_UNLOCK(bhp)
-DECL|macro|BHV_NOT_READ_LOCKED
-mdefine_line|#define BHV_NOT_READ_LOCKED(bhp)&t;1
-DECL|macro|BHV_IS_WRITE_LOCKED
-mdefine_line|#define BHV_IS_WRITE_LOCKED(bhp)&t;1
-DECL|macro|BHV_NOT_WRITE_LOCKED
-mdefine_line|#define BHV_NOT_WRITE_LOCKED(bhp)&t;1
 r_extern
 r_void
 id|bhv_head_init
@@ -176,8 +166,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Initialize a new behavior descriptor.&n; * Arguments:&n; *   bdp - pointer to behavior descriptor&n; *   pdata - pointer to behavior&squot;s private data&n; *   vobj - pointer to associated virtual object&n; *   ops - pointer to ops for this behavior&n; */
 DECL|macro|bhv_desc_init
 mdefine_line|#define bhv_desc_init(bdp, pdata, vobj, ops)&t;&t;&bslash;&n; {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(bdp)-&gt;bd_pdata = pdata;&t;&t;&t;&bslash;&n;&t;(bdp)-&gt;bd_vobj = vobj;&t;&t;&t;&t;&bslash;&n;&t;(bdp)-&gt;bd_ops = ops;&t;&t;&t;&t;&bslash;&n;&t;(bdp)-&gt;bd_next = NULL;&t;&t;&t;&t;&bslash;&n; }
-DECL|macro|BHV_DESC_INIT
-mdefine_line|#define BHV_DESC_INIT(so,A,B)&t;bhv_desc_init(&amp;(so-&gt;so_bhv),so,A,B)
 multiline_comment|/*&n; * Remove a behavior descriptor from a behavior chain.&n; */
 DECL|macro|bhv_remove
 mdefine_line|#define bhv_remove(bhp, bdp)&t;&t;&t;&t;&bslash;&n; {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((bhp)-&gt;bh_first == (bdp)) {&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&bslash;&n;&t;&t;* Remove from front of chain.&t;&t;&bslash;&n;&t;&t; * Atomic wrt oip&squot;s.&t;&t;&t;&bslash;&n;&t;&t;*/&t;&t;&t;&t;&t;&bslash;&n;&t;       (bhp)-&gt;bh_first = (bdp)-&gt;bd_next;&t;&bslash;&n;&t; } else {&t;&t;&t;&t;&t;&bslash;&n;&t;       /* remove from non-front of chain */&t;&bslash;&n;&t;       bhv_remove_not_first(bhp, bdp);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(bdp)-&gt;bd_vobj = NULL;&t;&t;&t;&t;&bslash;&n; }

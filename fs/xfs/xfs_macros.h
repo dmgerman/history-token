@@ -2,9 +2,9 @@ multiline_comment|/*&n; * Copyright (c) 2000 Silicon Graphics, Inc.  All Rights 
 macro_line|#ifndef __XFS_MACROS_H__
 DECL|macro|__XFS_MACROS_H__
 mdefine_line|#define __XFS_MACROS_H__
-multiline_comment|/*&n; * Set for debug kernels and simulation, and 32-bit kernels,&n; * but not for standalone.  These replacements save space.&n; * Used in xfs_macros.c.&n; */
+multiline_comment|/*&n; * Set for debug kernels and simulation&n; * These replacements save space.&n; * Used in xfs_macros.c.&n; */
 DECL|macro|XFS_WANT_SPACE_C
-mdefine_line|#define XFS_WANT_SPACE_C&t;&bslash;&n;&t;(!defined(_STANDALONE) &amp;&amp; &bslash;&n;&t; (defined(DEBUG) || (defined(_KERNEL))))
+mdefine_line|#define XFS_WANT_SPACE_C&t;&bslash;&n;&t;(!defined(_STANDALONE) &amp;&amp; defined(DEBUG))
 multiline_comment|/*&n; * Set for debug simulation and kernel builds, but not for standalone.&n; * These replacements do not save space.&n; * Used in xfs_macros.c.&n; */
 DECL|macro|XFS_WANT_FUNCS_C
 mdefine_line|#define XFS_WANT_FUNCS_C&t;&bslash;&n;&t;(!defined(_STANDALONE) &amp;&amp; defined(DEBUG))

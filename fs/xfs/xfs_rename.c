@@ -1627,17 +1627,6 @@ id|target_ip_dropped
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Do this test while we still hold the locks */
-id|target_link_zero
-op_assign
-(paren
-id|target_ip
-)paren
-op_member_access_from_pointer
-id|i_d.di_nlink
-op_eq
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1670,6 +1659,17 @@ id|abort_return
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Do this test while we still hold the locks */
+id|target_link_zero
+op_assign
+(paren
+id|target_ip
+)paren
+op_member_access_from_pointer
+id|i_d.di_nlink
+op_eq
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* target_ip != NULL */
 multiline_comment|/*&n;&t; * Remove the source.&n;&t; */

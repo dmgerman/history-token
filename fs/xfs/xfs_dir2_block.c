@@ -271,6 +271,9 @@ multiline_comment|/*&n;&t; * Check the magic number, corrupted if wrong.&n;&t; *
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
@@ -281,7 +284,20 @@ id|ARCH_CONVERT
 op_ne
 id|XFS_DIR2_BLOCK_MAGIC
 )paren
+)paren
 (brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_dir2_block_addname&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|block
+)paren
+suffix:semicolon
 id|xfs_da_brelse
 c_func
 (paren
@@ -1965,11 +1981,6 @@ op_star
 id|ptr
 suffix:semicolon
 multiline_comment|/* current data entry */
-r_char
-op_star
-id|savptr
-suffix:semicolon
-multiline_comment|/* saved data entry */
 r_int
 id|wantoff
 suffix:semicolon
@@ -2162,11 +2173,6 @@ op_star
 )paren
 id|ptr
 suffix:semicolon
-id|savptr
-op_assign
-id|ptr
-suffix:semicolon
-multiline_comment|/* In case we need it.. */
 multiline_comment|/*&n;&t;&t; * Bump pointer for the next iteration.&n;&t;&t; */
 id|ptr
 op_add_assign
@@ -2201,7 +2207,6 @@ id|p.namelen
 op_assign
 id|dep-&gt;namelen
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_DB_OFF_TO_DATAPTR
@@ -2211,7 +2216,7 @@ id|mp
 comma
 id|mp-&gt;m_dirdatablk
 comma
-id|savptr
+id|ptr
 op_minus
 (paren
 r_char
