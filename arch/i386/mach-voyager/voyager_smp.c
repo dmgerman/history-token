@@ -18,15 +18,8 @@ macro_line|#include &lt;asm/vic.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-DECL|variable|reboot_smp
-r_int
-id|reboot_smp
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* TLB state -- visible externally, indexed physically */
 id|DEFINE_PER_CPU
 c_func

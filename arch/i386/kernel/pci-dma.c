@@ -575,6 +575,12 @@ id|dev-&gt;dma_mem
 op_assign
 l_int|NULL
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|mem-&gt;virt_base
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
