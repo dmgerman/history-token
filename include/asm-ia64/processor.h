@@ -2900,7 +2900,7 @@ DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|macro|PREFETCH_STRIDE
 mdefine_line|#define PREFETCH_STRIDE 256
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|prefetch
@@ -2925,7 +2925,7 @@ id|x
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|prefetchw
