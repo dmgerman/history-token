@@ -5849,6 +5849,7 @@ id|pid
 comma
 r_int
 r_int
+id|__user
 op_star
 id|stat_addr
 comma
@@ -5857,6 +5858,7 @@ id|options
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
