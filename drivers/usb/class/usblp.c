@@ -1432,7 +1432,7 @@ op_star
 id|usblp
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|usblp-&gt;writeurb
@@ -1443,7 +1443,7 @@ c_cond
 (paren
 id|usblp-&gt;bidir
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|usblp-&gt;readurb

@@ -71,6 +71,10 @@ id|translation
 )paren
 (brace
 )brace
+r_extern
+r_int
+id|usb_early_handoff
+suffix:semicolon
 DECL|function|mps_oem_check
 r_static
 r_inline
@@ -152,6 +156,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|usb_early_handoff
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -225,6 +233,10 @@ id|setup_summit
 c_func
 (paren
 )paren
+suffix:semicolon
+id|usb_early_handoff
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|1

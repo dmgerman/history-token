@@ -2947,7 +2947,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -3024,7 +3024,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
@@ -6220,7 +6220,7 @@ c_cond
 op_logical_neg
 id|command_info-&gt;port_running
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|command_port-&gt;read_urb
@@ -6388,7 +6388,7 @@ id|urb
 op_assign
 id|wrap-&gt;urb
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb

@@ -7527,7 +7527,8 @@ id|TIChasePort
 id|edge_port
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -7583,7 +7584,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* last port is now closed, let&squot;s shut down our interrupt urb */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;serial-&gt;port
 (braket
@@ -8171,7 +8173,8 @@ id|edge_port
 )paren
 suffix:semicolon
 )brace
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

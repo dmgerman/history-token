@@ -402,50 +402,6 @@ id|ifclaimed
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* internal methods &amp; data */
-r_extern
-r_struct
-id|usb_driver
-id|usbdevfs_driver
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|usbdevfs_drivers_fops
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|usbdevfs_devices_fops
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|usbdevfs_device_file_operations
-suffix:semicolon
-r_extern
-r_struct
-id|inode_operations
-id|usbdevfs_device_inode_operations
-suffix:semicolon
-r_extern
-r_struct
-id|inode_operations
-id|usbdevfs_bus_inode_operations
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|usbdevfs_bus_file_operations
-suffix:semicolon
-r_extern
-r_void
-id|usbdevfs_conn_disc_event
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* --------------------------------------------------------------------- */
 macro_line|#endif /* _LINUX_USBDEVICE_FS_H */

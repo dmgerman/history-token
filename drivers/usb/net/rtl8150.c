@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.6.1 (2004/03/13)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.6.2 (2004/08/27)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1394,7 +1394,7 @@ id|dev
 id|u8
 id|data
 op_assign
-l_int|0x10
+l_int|0x11
 suffix:semicolon
 r_int
 id|i

@@ -847,6 +847,8 @@ DECL|macro|OHCI_QUIRK_AMD756
 mdefine_line|#define&t;OHCI_QUIRK_AMD756&t;0x01&t;&t;&t;/* erratum #4 */
 DECL|macro|OHCI_QUIRK_SUPERIO
 mdefine_line|#define&t;OHCI_QUIRK_SUPERIO&t;0x02&t;&t;&t;/* natsemi */
+DECL|macro|OHCI_QUIRK_INITRESET
+mdefine_line|#define&t;OHCI_QUIRK_INITRESET&t;0x04&t;&t;&t;/* SiS, OPTi, ... */
 singleline_comment|// there are also chip quirks/bugs in init logic
 multiline_comment|/*&n;&t; * framework state&n;&t; */
 DECL|member|hcd
@@ -878,8 +880,8 @@ suffix:semicolon
 )brace
 DECL|macro|FI
 mdefine_line|#define&t;FI&t;&t;&t;0x2edf&t;&t;/* 12000 bits per frame (-1) */
-DECL|macro|DEFAULT_FMINTERVAL
-mdefine_line|#define&t;DEFAULT_FMINTERVAL &t;((((6 * (FI - 210)) / 7) &lt;&lt; 16) | FI)
+DECL|macro|FSMP
+mdefine_line|#define&t;FSMP(fi) &t;&t;((6 * ((fi) - 210)) / 7)
 DECL|macro|LSTHRESH
 mdefine_line|#define LSTHRESH&t;&t;0x628&t;&t;/* lowspeed bit threshold */
 DECL|function|periodic_reinit
@@ -894,6 +896,13 @@ op_star
 id|ohci
 )paren
 (brace
+id|u32
+id|fi
+op_assign
+id|ohci-&gt;fminterval
+op_amp
+l_int|0x0ffff
+suffix:semicolon
 id|writel
 (paren
 id|ohci-&gt;fminterval
@@ -908,7 +917,7 @@ id|writel
 (paren
 l_int|9
 op_star
-id|FI
+id|fi
 )paren
 op_div
 l_int|10

@@ -443,9 +443,20 @@ mdefine_line|#define WARN(stuff...)&t;&t;printk(KERN_WARNING &quot;udc: &quot; s
 DECL|macro|INFO
 mdefine_line|#define INFO(stuff...)&t;&t;printk(KERN_INFO &quot;udc: &quot; stuff)
 multiline_comment|/*-------------------------------------------------------------------------*/
-singleline_comment|// #define&t;HMC_1510&t;((MOD_CONF_CTRL_0_REG &gt;&gt; 1) &amp; 0x3f)
+DECL|macro|MOD_CONF_CTRL_0_REG
+mdefine_line|#define&t;MOD_CONF_CTRL_0_REG&t;__REG32(MOD_CONF_CTRL_0)
+DECL|macro|VBUS_W2FC_1510
+mdefine_line|#define&t;VBUS_W2FC_1510&t;&t;(1 &lt;&lt; 17)&t;/* 0 gpio0, 1 dvdd2 pin */
+DECL|macro|FUNC_MUX_CTRL_0_REG
+mdefine_line|#define&t;FUNC_MUX_CTRL_0_REG&t;__REG32(FUNC_MUX_CTRL_0)
+DECL|macro|VBUS_CTRL_1510
+mdefine_line|#define&t;VBUS_CTRL_1510&t;&t;(1 &lt;&lt; 19)&t;/* 1 connected (software) */
+DECL|macro|VBUS_MODE_1510
+mdefine_line|#define&t;VBUS_MODE_1510&t;&t;(1 &lt;&lt; 18)&t;/* 0 hardware, 1 software */
+DECL|macro|HMC_1510
+mdefine_line|#define&t;HMC_1510&t;((MOD_CONF_CTRL_0_REG &gt;&gt; 1) &amp; 0x3f)
 DECL|macro|HMC_1610
 mdefine_line|#define&t;HMC_1610&t;(OTG_SYSCON_2_REG &amp; 0x3f)
 DECL|macro|HMC
-mdefine_line|#define&t;HMC&t;&t; HMC_1610
+mdefine_line|#define&t;HMC&t;&t;(cpu_is_omap15xx() ? HMC_1510 : HMC_1610)
 eof

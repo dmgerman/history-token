@@ -73,6 +73,12 @@ id|reclaim_ready
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|scanning
+r_int
+id|scanning
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/* periodic schedule support */
 DECL|macro|DEFAULT_I_TDPS
 mdefine_line|#define&t;DEFAULT_I_TDPS&t;&t;1024&t;&t;/* some HCs can do less */

@@ -77,11 +77,6 @@ id|list_head
 id|dev_list
 suffix:semicolon
 multiline_comment|/* devices on this bus */
-DECL|member|work
-r_struct
-id|work_struct
-id|work
-suffix:semicolon
 multiline_comment|/*&n;&t; * hardware info/state&n;&t; */
 DECL|member|driver
 r_struct
@@ -1193,6 +1188,21 @@ id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|usb_set_device_state
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_enum
+id|usb_device_state
+id|new_state
+)paren
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* exported only within usbcore */
 r_extern

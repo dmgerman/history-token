@@ -253,9 +253,9 @@ multiline_comment|/* leave as last */
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************/
-DECL|function|usbdevfs_conn_disc_event
+DECL|function|usbfs_conn_disc_event
 r_void
-id|usbdevfs_conn_disc_event
+id|usbfs_conn_disc_event
 c_func
 (paren
 r_void
@@ -2282,11 +2282,6 @@ id|ppos
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|buslist
-suffix:semicolon
-r_struct
 id|usb_bus
 op_star
 id|bus
@@ -2344,36 +2339,24 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* enumerate busses */
 id|down
 (paren
 op_amp
 id|usb_bus_list_lock
 )paren
 suffix:semicolon
-id|list_for_each
+multiline_comment|/* print devices for all busses */
+id|list_for_each_entry
 c_func
 (paren
-id|buslist
+id|bus
 comma
 op_amp
 id|usb_bus_list
-)paren
-(brace
-multiline_comment|/* print devices for this bus */
-id|bus
-op_assign
-id|list_entry
-c_func
-(paren
-id|buslist
-comma
-r_struct
-id|usb_bus
 comma
 id|bus_list
 )paren
-suffix:semicolon
+(brace
 multiline_comment|/* recurse through all children of the root hub */
 r_if
 c_cond
@@ -2753,10 +2736,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|usbdevfs_devices_fops
+DECL|variable|usbfs_devices_fops
 r_struct
 id|file_operations
-id|usbdevfs_devices_fops
+id|usbfs_devices_fops
 op_assign
 (brace
 dot

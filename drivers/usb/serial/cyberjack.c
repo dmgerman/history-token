@@ -554,7 +554,8 @@ op_increment
 id|i
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|serial-&gt;port
 (braket
@@ -727,12 +728,14 @@ id|port-&gt;serial-&gt;dev
 )paren
 (brace
 multiline_comment|/* shutdown any bulk reads that might be going on */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

@@ -479,10 +479,14 @@ l_int|5
 suffix:semicolon
 id|succeed
 suffix:colon
-multiline_comment|/* it&squot;s not USB_STATE_SUSPENDED unless access to this&n;&t; * hub from the non-usb side (PCI, SOC, etc) stopped &n;&t; */
+multiline_comment|/* it&squot;s not HCD_STATE_SUSPENDED unless access to this&n;&t; * hub from the non-usb side (PCI, SOC, etc) stopped &n;&t; */
 id|root-&gt;dev.power.power_state
 op_assign
 l_int|3
+suffix:semicolon
+id|root-&gt;state
+op_assign
+id|USB_STATE_SUSPENDED
 suffix:semicolon
 id|done
 suffix:colon
@@ -1151,7 +1155,7 @@ id|temp
 )paren
 id|writel
 (paren
-id|status
+id|temp
 comma
 op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
@@ -1888,9 +1892,9 @@ macro_line|#endif
 multiline_comment|/* this timer value might be vendor-specific ... */
 DECL|macro|PORT_RESET_HW_MSEC
 mdefine_line|#define&t;PORT_RESET_HW_MSEC&t;10
-multiline_comment|/* wrap-aware logic stolen from &lt;linux/jiffies.h&gt; */
+multiline_comment|/* wrap-aware logic morphed from &lt;linux/jiffies.h&gt; */
 DECL|macro|tick_before
-mdefine_line|#define tick_before(t1,t2) ((((s16)(t1))-((s16)(t2))) &lt; 0)
+mdefine_line|#define tick_before(t1,t2) ((s16)(((s16)(t1))-((s16)(t2))) &lt; 0)
 multiline_comment|/* called from some task, normally khubd */
 DECL|function|root_port_reset
 r_static
