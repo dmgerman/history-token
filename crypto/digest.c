@@ -298,11 +298,7 @@ id|flags
 )paren
 (brace
 r_return
-id|crypto_cipher_flags
-c_func
-(paren
 id|flags
-)paren
 ques
 c_cond
 op_minus

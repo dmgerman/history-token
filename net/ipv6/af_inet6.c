@@ -36,8 +36,7 @@ macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef MODULE
-DECL|variable|unloadable
+macro_line|#if 0 /*def MODULE*/
 r_static
 r_int
 id|unloadable
@@ -45,6 +44,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XX: Turn to one when all is ok within the&n;&t;&t;&t;      module for allowing unload */
+id|MODULE_PARM
+c_func
+(paren
+id|unloadable
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
@@ -58,12 +65,10 @@ c_func
 l_string|&quot;IPv6 protocol stack for Linux&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_LICENSE
 c_func
 (paren
-id|unloadable
-comma
-l_string|&quot;i&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* IPv6 procfs goodies... */
@@ -3665,10 +3670,4 @@ id|inet6_exit
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

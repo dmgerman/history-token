@@ -877,11 +877,9 @@ id|skb_len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_int
 id|snaplen
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -959,7 +957,6 @@ id|skb-&gt;data
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_FILTER
 id|snaplen
 op_assign
 id|skb-&gt;len
@@ -1037,7 +1034,6 @@ op_assign
 id|res
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_FILTER */
 r_if
 c_cond
 (paren
@@ -1169,7 +1165,6 @@ comma
 id|sll-&gt;sll_addr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_if
 c_cond
 (paren
@@ -1184,7 +1179,6 @@ id|snaplen
 r_goto
 id|drop_n_acct
 suffix:semicolon
-macro_line|#endif
 id|skb_set_owner_r
 c_func
 (paren
@@ -1255,10 +1249,8 @@ op_amp
 id|sk-&gt;receive_queue.lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 id|drop_n_restore
 suffix:colon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1459,7 +1451,6 @@ id|snaplen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_if
 c_cond
 (paren
@@ -1533,7 +1524,6 @@ op_assign
 id|res
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -923,6 +923,10 @@ op_increment
 op_assign
 id|x
 suffix:semicolon
+id|iph
+op_assign
+id|skb-&gt;nh.ipv6h
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -989,6 +993,13 @@ op_logical_neg
 id|err
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|decaps
+)paren
+(brace
 id|memcpy
 c_func
 (paren
@@ -1022,6 +1033,7 @@ id|ipv6hdr
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Allocate new secpath or COW existing one. */
 r_if
 c_cond

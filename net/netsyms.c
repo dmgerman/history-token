@@ -608,7 +608,6 @@ c_func
 id|sockfd_lookup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 DECL|variable|sk_run_filter
 id|EXPORT_SYMBOL
 c_func
@@ -623,7 +622,6 @@ c_func
 id|sk_chk_filter
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|neigh_table_init
 id|EXPORT_SYMBOL
 c_func
