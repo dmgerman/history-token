@@ -1297,7 +1297,6 @@ op_assign
 (paren
 id|qtd-&gt;hw_token
 op_amp
-op_complement
 id|__constant_cpu_to_le32
 (paren
 l_int|0x8300
@@ -1313,15 +1312,13 @@ l_int|16
 op_or
 id|__constant_cpu_to_le32
 (paren
-id|QTD_IOC
+id|QTD_STS_ACTIVE
 op_or
 (paren
 id|EHCI_TUNE_CERR
 op_lshift
 l_int|10
 )paren
-op_or
-id|QTD_STS_ACTIVE
 )paren
 suffix:semicolon
 id|qtd-&gt;hw_buf
