@@ -62,16 +62,6 @@ suffix:semicolon
 multiline_comment|/* request, indicate, response, confirm */
 )brace
 suffix:semicolon
-DECL|struct|llc_stat_ev_pdu_if
-r_struct
-id|llc_stat_ev_pdu_if
-(brace
-DECL|member|reason
-id|u8
-id|reason
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|union|llc_stat_ev_if
 r_union
 id|llc_stat_ev_if
@@ -87,11 +77,6 @@ r_struct
 id|llc_stat_ev_prim_if
 id|prim
 suffix:semicolon
-DECL|member|pdu
-r_struct
-id|llc_stat_ev_pdu_if
-id|pdu
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|llc_station_state_ev
@@ -101,6 +86,10 @@ id|llc_station_state_ev
 DECL|member|type
 id|u8
 id|type
+suffix:semicolon
+DECL|member|reason
+id|u8
+id|reason
 suffix:semicolon
 DECL|member|data
 r_union
