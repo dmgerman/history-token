@@ -101,6 +101,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* sw should use wakeup? */
+DECL|member|rh_registered
+r_int
+id|rh_registered
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* is root hub registered? */
 DECL|member|irq
 r_int
 id|irq

@@ -137,6 +137,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|usb_kick_khubd
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* for labeling diagnostics */
 r_extern
 r_const
