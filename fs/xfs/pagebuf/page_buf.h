@@ -579,6 +579,11 @@ r_struct
 id|work_struct
 id|pb_iodone_work
 suffix:semicolon
+DECL|member|pb_io_remaining
+id|atomic_t
+id|pb_io_remaining
+suffix:semicolon
+multiline_comment|/* #outstanding I/O requests */
 DECL|member|pb_iodone
 id|page_buf_iodone_t
 id|pb_iodone
@@ -918,9 +923,12 @@ c_func
 multiline_comment|/* mark buffer I/O complete&t;*/
 id|page_buf_t
 op_star
+comma
+multiline_comment|/* buffer to mark&t;&t;*/
+r_int
 )paren
 suffix:semicolon
-multiline_comment|/* buffer to mark&t;&t;*/
+multiline_comment|/* run completion locally, or in&n;&t;&t;&t;&t;&t; * a helper thread. &t;&t;*/
 r_extern
 r_void
 id|pagebuf_ioerror
@@ -1130,6 +1138,42 @@ id|pagebuf_iorequest
 c_func
 (paren
 id|pb
+)paren
+suffix:semicolon
+)brace
+DECL|function|pagebuf_run_task_queue
+r_static
+id|__inline__
+r_void
+id|pagebuf_run_task_queue
+c_func
+(paren
+id|page_buf_t
+op_star
+id|pb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pb
+op_logical_and
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|pb-&gt;pb_io_remaining
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+r_return
+suffix:semicolon
+id|blk_run_queues
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

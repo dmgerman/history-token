@@ -344,9 +344,10 @@ id|PBF_ASYNC
 op_eq
 l_int|0
 )paren
-id|blk_run_queues
+id|pagebuf_run_task_queue
 c_func
 (paren
+id|bp
 )paren
 suffix:semicolon
 r_return
@@ -405,7 +406,7 @@ DECL|macro|xfs_buftrace
 macro_line|# define xfs_buftrace(id, bp)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|xfs_biodone
-mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb)
+mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, 0)
 DECL|macro|xfs_incore
 mdefine_line|#define xfs_incore(buftarg,blkno,len,lockit) &bslash;&n;&t;    pagebuf_find(buftarg, blkno ,len, lockit)
 DECL|macro|xfs_biomove
@@ -477,9 +478,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|blk_run_queues
+id|pagebuf_run_task_queue
 c_func
 (paren
+id|pb
 )paren
 suffix:semicolon
 id|error

@@ -37,11 +37,6 @@ r_int
 id|pb_flushtime
 suffix:semicolon
 multiline_comment|/* time to flush pagebuf    */
-DECL|member|pb_io_remaining
-id|atomic_t
-id|pb_io_remaining
-suffix:semicolon
-multiline_comment|/* #outstanding I/O requests */
 DECL|member|pb_pin_count
 id|atomic_t
 id|pb_pin_count

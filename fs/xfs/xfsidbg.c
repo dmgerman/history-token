@@ -8410,7 +8410,7 @@ c_func
 (paren
 l_string|&quot;  pb_io_remaining %d pb_error %u&bslash;n&quot;
 comma
-id|bp.pb_io_remaining.counter
+id|bp.pb_common.pb_io_remaining.counter
 comma
 id|bp.pb_common.pb_error
 )paren
