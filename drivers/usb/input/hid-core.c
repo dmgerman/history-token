@@ -6154,6 +6154,10 @@ DECL|macro|USB_VENDOR_ID_ESSENTIAL_REALITY
 mdefine_line|#define USB_VENDOR_ID_ESSENTIAL_REALITY&t;0x0d7f
 DECL|macro|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5&t;0x0100
+DECL|macro|USB_VENDOR_ID_A4TECH
+mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09DA
+DECL|macro|USB_DEVICE_ID_A4TECH_WCP32PU
+mdefine_line|#define USB_DEVICE_ID_A4TECH_WCP32PU&t;0x0006
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6557,6 +6561,14 @@ comma
 id|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_A4TECH
+comma
+id|USB_DEVICE_ID_A4TECH_WCP32PU
+comma
+id|HID_QUIRK_2WHEEL_MOUSE_HACK
 )brace
 comma
 (brace
