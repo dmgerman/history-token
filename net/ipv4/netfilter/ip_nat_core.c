@@ -3247,17 +3247,6 @@ id|pskb
 op_member_access_from_pointer
 id|nh.iph-&gt;protocol
 suffix:semicolon
-multiline_comment|/* Skip everything and don&squot;t call helpers if there are no&n;&t; * manips for this connection */
-r_if
-c_cond
-(paren
-id|info-&gt;num_manips
-op_eq
-l_int|0
-)paren
-r_return
-id|NF_ACCEPT
-suffix:semicolon
 multiline_comment|/* Need nat lock to protect against modification, but neither&n;&t;   conntrack (referenced) and helper (deleted with&n;&t;   synchronize_bh()) can vanish. */
 id|READ_LOCK
 c_func
