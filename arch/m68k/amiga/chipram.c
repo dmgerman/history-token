@@ -20,8 +20,14 @@ id|resource
 id|chipram_res
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Chip RAM&quot;
 comma
+dot
+id|start
+op_assign
 id|CHIP_PHYSADDR
 )brace
 suffix:semicolon
