@@ -99,8 +99,6 @@ mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid((pfn) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;node_data[nid])
-DECL|macro|node_startnr
-mdefine_line|#define node_startnr(nid)&t;(NODE_DATA(nid)-&gt;node_start_mapnr)
 DECL|macro|node_size
 mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|node_localnr
@@ -157,6 +155,8 @@ DECL|macro|node_mem_map
 mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
 mdefine_line|#define node_start_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_start_pfn)
+DECL|macro|node_end_pfn
+mdefine_line|#define node_end_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_end_pfn)
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) 
 macro_line|#if 0
