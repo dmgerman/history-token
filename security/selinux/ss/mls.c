@@ -3172,7 +3172,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|level_datum
@@ -3445,7 +3445,7 @@ r_char
 op_star
 id|key
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|cat_datum

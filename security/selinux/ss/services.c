@@ -1030,12 +1030,12 @@ id|context
 op_star
 id|scontext
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|tcontext
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|rc
@@ -1199,7 +1199,7 @@ suffix:semicolon
 op_star
 id|scontext
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|scontext_len
@@ -2226,12 +2226,12 @@ id|context
 op_star
 id|scontext
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|tcontext
 op_assign
-l_int|0
+l_int|NULL
 comma
 id|newcontext
 suffix:semicolon
@@ -2240,7 +2240,7 @@ id|role_trans
 op_star
 id|roletr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|avtab_key
