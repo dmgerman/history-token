@@ -5931,41 +5931,22 @@ suffix:colon
 id|ntfs_dirty_inode
 comma
 multiline_comment|/* VFS: Called from&n;&t;&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
-id|write_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Write dirty inode to disk. */
-id|put_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Called whenever the reference&n;&t;&t;&t;&t;&t;   count (i_count) of the inode is&n;&t;&t;&t;&t;&t;   going to be decreased but before the&n;&t;&t;&t;&t;&t;   actual decrease. */
-id|delete_inode
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* VFS: Delete inode from disk. Called&n;&t;&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is&n;&t;&t;&t;&t;&t;   also 0. */
+singleline_comment|//write_inode:&t;NULL,&t;&t;/* VFS: Write dirty inode to disk. */
+singleline_comment|//put_inode:&t;NULL,&t;&t;/* VFS: Called whenever the reference
+singleline_comment|//&t;&t;&t;&t;   count (i_count) of the inode is
+singleline_comment|//&t;&t;&t;&t;   going to be decreased but before the
+singleline_comment|//&t;&t;&t;&t;   actual decrease. */
+singleline_comment|//delete_inode:&t;NULL,&t;&t;/* VFS: Delete inode from disk. Called
+singleline_comment|//&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is
+singleline_comment|//&t;&t;&t;&t;   also 0. */
 id|put_super
 suffix:colon
 id|ntfs_put_super
 comma
 multiline_comment|/* Syscall: umount. */
-id|write_super
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Flush dirty super block to disk. */
-id|write_super_lockfs
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* ? */
-id|unlockfs
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* ? */
+singleline_comment|//write_super:&t;NULL,&t;&t;/* Flush dirty super block to disk. */
+singleline_comment|//write_super_lockfs:&t;NULL,&t;/* ? */
+singleline_comment|//unlockfs:&t;NULL,&t;&t;/* ? */
 id|statfs
 suffix:colon
 id|ntfs_statfs
@@ -5981,22 +5962,7 @@ suffix:colon
 id|ntfs_clear_big_inode
 comma
 multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
-id|umount_begin
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Forced umount. */
-multiline_comment|/*&n;&t; * These are NFSd support functions but NTFS is a standard fs so&n;&t; * shouldn&squot;t need to implement these manually. At least we can try&n;&t; * without and if it doesn&squot;t work in some way we can always implement&n;&t; * something here.&n;&t; */
-id|fh_to_dentry
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get dentry for given file handle. */
-id|dentry_to_fh
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get file handle for given dentry. */
+singleline_comment|//umount_begin:&t;NULL,&t;&t;/* Forced umount. */
 id|show_options
 suffix:colon
 id|ntfs_show_options

@@ -258,16 +258,16 @@ r_char
 id|is_internal_modem
 suffix:semicolon
 multiline_comment|/* is connected to an internal modem */
-DECL|member|is_cobalt_modem
-r_char
-id|is_cobalt_modem
-suffix:semicolon
-multiline_comment|/* is a gatwick-based cobalt modem */
 DECL|member|is_irda
 r_char
 id|is_irda
 suffix:semicolon
 multiline_comment|/* is connected to an IrDA codec */
+DECL|member|port_type
+r_int
+id|port_type
+suffix:semicolon
+multiline_comment|/* Port type for pmac_feature */
 DECL|member|tx_active
 r_int
 r_char

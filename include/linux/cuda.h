@@ -49,14 +49,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|via_cuda_start
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|cuda_request
 c_func
 (paren

@@ -294,10 +294,6 @@ id|timer1-&gt;TimerLoad
 op_assign
 id|TIMER_RELOAD
 suffix:semicolon
-id|timer1-&gt;TimerValue
-op_assign
-id|TIMER_RELOAD
-suffix:semicolon
 id|timer1-&gt;TimerControl
 op_assign
 id|TIMER_CTRL

@@ -46,7 +46,7 @@ op_star
 r_int
 r_int
 )paren
-id|task
+id|task-&gt;thread_info
 op_plus
 l_int|8192
 op_minus

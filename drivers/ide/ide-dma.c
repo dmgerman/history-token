@@ -498,6 +498,8 @@ c_func
 (paren
 id|drive
 comma
+id|rq
+comma
 l_string|&quot;dma_intr&quot;
 comma
 id|stat
@@ -1307,7 +1309,7 @@ comma
 r_struct
 id|request
 op_star
-id|__rq
+id|rq
 )paren
 (brace
 multiline_comment|/* FIXME: What&squot;s that? */
@@ -1369,6 +1371,8 @@ id|ide_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 l_string|&quot;dma_timer_expiry&quot;
 comma

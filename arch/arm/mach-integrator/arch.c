@@ -109,9 +109,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|unused
+id|tags
 comma
 r_char
 op_star

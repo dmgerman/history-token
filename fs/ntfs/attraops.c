@@ -96,7 +96,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-singleline_comment|//truncatepage:&t;NULL,&t;&t;&t;/* . */
 )brace
 suffix:semicolon
 eof

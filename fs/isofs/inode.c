@@ -511,6 +511,16 @@ id|isofs_statfs
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* the export_operations structure for describing&n; * how to export (e.g. via kNFSd) is deliberately&n; * empty.&n; * This means that the filesystem want to use iget&n; * to map an inode number into an inode.&n; * The lack of a get_parent operation means that &n; * if something isn&squot;t in the cache, then you cannot&n; * access it.&n; * It should be possible to write a get_parent,&n; * but it would be a bit hairy...&n; */
+DECL|variable|isofs_export_ops
+r_static
+r_struct
+id|export_operations
+id|isofs_export_ops
+op_assign
+(brace
+)brace
+suffix:semicolon
 DECL|variable|isofs_dentry_ops
 r_static
 r_struct
@@ -3457,6 +3467,11 @@ id|s-&gt;s_op
 op_assign
 op_amp
 id|isofs_sops
+suffix:semicolon
+id|s-&gt;s_export_op
+op_assign
+op_amp
+id|isofs_export_ops
 suffix:semicolon
 id|sbi-&gt;s_mapping
 op_assign
