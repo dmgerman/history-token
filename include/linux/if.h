@@ -4,6 +4,7 @@ DECL|macro|_LINUX_IF_H
 mdefine_line|#define _LINUX_IF_H
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;__kernel_caddr_t&quot; et al&t;*/
 macro_line|#include &lt;linux/socket.h&gt;&t;&t;/* for &quot;struct sockaddr&quot; et al&t;*/
+macro_line|#include &lt;linux/hdlc/ioctl.h&gt;
 multiline_comment|/* Standard interface flags (netdevice-&gt;flags). */
 DECL|macro|IFF_UP
 mdefine_line|#define&t;IFF_UP&t;&t;0x1&t;&t;/* interface is up&t;&t;*/
@@ -122,20 +123,29 @@ r_int
 id|type
 suffix:semicolon
 multiline_comment|/* Type of physical device or protocol */
-DECL|member|data_length
-r_int
-r_int
-id|data_length
+r_union
+(brace
+multiline_comment|/* {atm/eth/dsl}_settings anyone ? */
+DECL|member|ifsu_hdlc
+r_union
+id|hdlc_settings
+id|ifsu_hdlc
 suffix:semicolon
-multiline_comment|/* device/protocol data length */
-DECL|member|data
-r_void
-op_star
-id|data
+DECL|member|ifsu_line
+r_union
+id|line_settings
+id|ifsu_line
 suffix:semicolon
-multiline_comment|/* pointer to data, ignored if length = 0 */
+DECL|member|ifs_ifsu
+)brace
+id|ifs_ifsu
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ifs_hdlc
+mdefine_line|#define ifs_hdlc&t;ifs_ifsu.ifsu_hdlc
+DECL|macro|ifs_line
+mdefine_line|#define ifs_line&t;ifs_ifsu.ifsu_line
 multiline_comment|/*&n; * Interface request structure used for socket&n; * ioctl&squot;s.  All interface ioctl&squot;s must have parameter&n; * definitions which begin with ifr_name.  The&n; * remainder may be interface specific.&n; */
 DECL|struct|ifreq
 r_struct
@@ -226,6 +236,7 @@ suffix:semicolon
 DECL|member|ifru_settings
 r_struct
 id|if_settings
+op_star
 id|ifru_settings
 suffix:semicolon
 DECL|member|ifr_ifru

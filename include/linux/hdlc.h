@@ -12,61 +12,6 @@ DECL|macro|CLOCK_TXINT
 mdefine_line|#define CLOCK_TXINT&t;3&t;/* Internal TX and external RX clock */
 DECL|macro|CLOCK_TXFROMRX
 mdefine_line|#define CLOCK_TXFROMRX&t;4&t;/* TX clock derived from external RX clock */
-r_typedef
-r_struct
-(brace
-DECL|member|clock_rate
-r_int
-r_int
-id|clock_rate
-suffix:semicolon
-multiline_comment|/* bits per second */
-DECL|member|clock_type
-r_int
-r_int
-id|clock_type
-suffix:semicolon
-multiline_comment|/* internal, external, TX-internal etc. */
-DECL|member|loopback
-r_int
-r_int
-id|loopback
-suffix:semicolon
-DECL|typedef|sync_serial_settings
-)brace
-id|sync_serial_settings
-suffix:semicolon
-multiline_comment|/* V.35, V.24, X.21 */
-r_typedef
-r_struct
-(brace
-DECL|member|clock_rate
-r_int
-r_int
-id|clock_rate
-suffix:semicolon
-multiline_comment|/* bits per second */
-DECL|member|clock_type
-r_int
-r_int
-id|clock_type
-suffix:semicolon
-multiline_comment|/* internal, external, TX-internal etc. */
-DECL|member|loopback
-r_int
-r_int
-id|loopback
-suffix:semicolon
-DECL|member|slot_map
-r_int
-r_int
-id|slot_map
-suffix:semicolon
-DECL|typedef|te1_settings
-)brace
-id|te1_settings
-suffix:semicolon
-multiline_comment|/* T1, E1 */
 DECL|macro|ENCODING_DEFAULT
 mdefine_line|#define ENCODING_DEFAULT&t;0 /* Default (current) setting */
 DECL|macro|ENCODING_NRZ
@@ -95,23 +40,6 @@ DECL|macro|PARITY_CRC32_PR0_CCITT
 mdefine_line|#define PARITY_CRC32_PR0_CCITT&t;6 /* CRC32, initial value 0x00000000 */
 DECL|macro|PARITY_CRC32_PR1_CCITT
 mdefine_line|#define PARITY_CRC32_PR1_CCITT&t;7 /* CRC32, initial value 0xFFFFFFFF */
-r_typedef
-r_struct
-(brace
-DECL|member|encoding
-r_int
-r_int
-id|encoding
-suffix:semicolon
-DECL|member|parity
-r_int
-r_int
-id|parity
-suffix:semicolon
-DECL|typedef|raw_hdlc_proto
-)brace
-id|raw_hdlc_proto
-suffix:semicolon
 DECL|macro|LMI_DEFAULT
 mdefine_line|#define LMI_DEFAULT&t;&t;0 /* Default (current) setting */
 DECL|macro|LMI_NONE
@@ -120,84 +48,12 @@ DECL|macro|LMI_ANSI
 mdefine_line|#define LMI_ANSI&t;&t;2 /* ANSI Annex D */
 DECL|macro|LMI_CCITT
 mdefine_line|#define LMI_CCITT&t;&t;3 /* ITU-T Annex A */
-r_typedef
-r_struct
-(brace
-DECL|member|t391
-r_int
-r_int
-id|t391
-suffix:semicolon
-DECL|member|t392
-r_int
-r_int
-id|t392
-suffix:semicolon
-DECL|member|n391
-r_int
-r_int
-id|n391
-suffix:semicolon
-DECL|member|n392
-r_int
-r_int
-id|n392
-suffix:semicolon
-DECL|member|n393
-r_int
-r_int
-id|n393
-suffix:semicolon
-DECL|member|lmi
-r_int
-r_int
-id|lmi
-suffix:semicolon
-DECL|member|dce
-r_int
-r_int
-id|dce
-suffix:semicolon
-multiline_comment|/* 1 for DCE (network side) operation */
-DECL|typedef|fr_proto
-)brace
-id|fr_proto
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|dlci
-r_int
-r_int
-id|dlci
-suffix:semicolon
-DECL|typedef|fr_proto_pvc
-)brace
-id|fr_proto_pvc
-suffix:semicolon
-multiline_comment|/* for creating/deleting FR PVCs */
-r_typedef
-r_struct
-(brace
-DECL|member|interval
-r_int
-r_int
-id|interval
-suffix:semicolon
-DECL|member|timeout
-r_int
-r_int
-id|timeout
-suffix:semicolon
-DECL|typedef|cisco_proto
-)brace
-id|cisco_proto
-suffix:semicolon
 multiline_comment|/* PPP doesn&squot;t need any info now - supply length = 0 to ioctl */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
+macro_line|#include &lt;linux/hdlc/ioctl.h&gt;
 DECL|macro|HDLC_MAX_MTU
 mdefine_line|#define HDLC_MAX_MTU 1500&t;/* Ethernet 1500 bytes */
 DECL|macro|HDLC_MAX_MRU
