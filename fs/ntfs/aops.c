@@ -2906,12 +2906,11 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Write outside i_size. Returning i/o error.&quot;
+l_string|&quot;Write outside i_size - truncated?&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
 )brace
 id|ni

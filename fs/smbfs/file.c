@@ -722,9 +722,9 @@ op_logical_neg
 id|offset
 )paren
 r_return
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
+multiline_comment|/* truncated - don&squot;t care */
 id|do_it
 suffix:colon
 id|page_cache_get

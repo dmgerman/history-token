@@ -10014,9 +10014,9 @@ id|page
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
+multiline_comment|/* don&squot;t care */
 )brace
 multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invocation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
 id|kaddr
