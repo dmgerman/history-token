@@ -22,11 +22,12 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/swapops.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/swapops.h&gt;
 r_extern
 r_void
 id|signal_wake_up
@@ -504,6 +505,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Yield is okay here */
 r_if
 c_cond
 (paren
@@ -817,6 +819,16 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|root_swap
+op_eq
+l_int|0xFFFF
+)paren
+multiline_comment|/* ignored */
+r_return
 suffix:semicolon
 id|page
 op_assign
@@ -1844,7 +1856,7 @@ suffix:semicolon
 macro_line|#else
 id|BUG_ON
 (paren
-id|max_mapnr
+id|max_pfn
 op_ne
 id|num_physpages
 )paren
@@ -1859,7 +1871,7 @@ l_int|0
 suffix:semicolon
 id|pfn
 OL
-id|max_mapnr
+id|max_pfn
 suffix:semicolon
 id|pfn
 op_increment
@@ -2792,6 +2804,10 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+id|root_swap
+op_assign
+l_int|0xFFFF
 suffix:semicolon
 id|spin_unlock_irq
 c_func
