@@ -520,12 +520,12 @@ r_default
 suffix:colon
 multiline_comment|/* presumably an error */
 multiline_comment|/* Cause a hub reset after 10 consecutive errors */
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub &squot;%s&squot; status %d for interrupt transfer&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|urb-&gt;dev-&gt;devpath
+l_string|&quot;transfer --&gt; %d&bslash;n&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -627,16 +627,21 @@ id|GFP_ATOMIC
 )paren
 op_ne
 l_int|0
-)paren
-id|err
-(paren
-l_string|&quot;hub &squot;%s-%s&squot; status %d for interrupt resubmit&quot;
-comma
-id|urb-&gt;dev-&gt;bus-&gt;bus_name
-comma
-id|urb-&gt;dev-&gt;devpath
-comma
+multiline_comment|/* ENODEV means we raced disconnect() */
+op_logical_and
 id|status
+op_ne
+op_minus
+id|ENODEV
+)paren
+id|dev_err
+(paren
+op_amp
+id|hub-&gt;intf-&gt;dev
+comma
+l_string|&quot;resubmit --&gt; %d&bslash;n&quot;
+comma
+id|urb-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -2759,16 +2764,16 @@ id|ret
 OL
 l_int|0
 )paren
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;%s(%s-%s) failed (err = %d)&quot;
+id|hubdev
+(paren
+id|hub
+)paren
+comma
+l_string|&quot;%s failed (err = %d)&bslash;n&quot;
 comma
 id|__FUNCTION__
-comma
-id|hub-&gt;bus-&gt;bus_name
-comma
-id|hub-&gt;devpath
 comma
 id|ret
 )paren
@@ -3194,16 +3199,20 @@ c_cond
 (paren
 id|ret
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;cannot disable port %d of hub %s (err = %d)&quot;
+id|hubdev
+c_func
+(paren
+id|hub
+)paren
+comma
+l_string|&quot;cannot disable port %d (err = %d)&bslash;n&quot;
 comma
 id|port
 op_plus
 l_int|1
-comma
-id|hub-&gt;devpath
 comma
 id|ret
 )paren
@@ -4021,12 +4030,12 @@ c_cond
 id|hub-&gt;error
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;resetting hub %s for error %d&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;resetting for error %d&bslash;n&quot;
 comma
 id|hub-&gt;error
 )paren
@@ -4041,12 +4050,12 @@ id|hub
 )paren
 )paren
 (brace
-id|err
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;error resetting hub %s - disconnecting&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;can&squot;t reset; disconnecting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -4199,14 +4208,14 @@ id|i
 )paren
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;already running hub %s port %i &quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
+comma
+l_string|&quot;port %i &quot;
 l_string|&quot;disabled by hub (EMI?), &quot;
 l_string|&quot;re-enabling...&quot;
-comma
-id|dev-&gt;devpath
 comma
 id|i
 op_plus
@@ -4235,12 +4244,12 @@ op_amp
 id|USB_PORT_STAT_C_SUSPEND
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s port %d suspend change&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;suspend change on port %d&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -4268,12 +4277,12 @@ op_amp
 id|USB_PORT_STAT_C_OVERCURRENT
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;hub %s port %d over-current change&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;over-current change on port %d&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -4307,12 +4316,12 @@ op_amp
 id|USB_PORT_STAT_C_RESET
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s port %d reset change&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;reset change on port %d&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -4349,12 +4358,12 @@ id|hubsts
 OL
 l_int|0
 )paren
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;get_hub_status %s failed&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;get_hub_status failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -4385,12 +4394,12 @@ op_amp
 id|HUB_CHANGE_LOCAL_POWER
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s power change&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;power change&bslash;n&quot;
 )paren
 suffix:semicolon
 id|usb_clear_hub_feature
@@ -4410,12 +4419,12 @@ op_amp
 id|HUB_CHANGE_OVERCURRENT
 )paren
 (brace
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;hub %s overcurrent change&quot;
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;overcurrent change&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wait_ms
