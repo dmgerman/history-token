@@ -831,8 +831,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outb
@@ -900,8 +901,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Leave configuration */
@@ -1176,8 +1178,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1360,8 +1363,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1558,8 +1562,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
 comma
 id|cfg_base
 )paren
@@ -1634,8 +1639,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
 comma
 id|cfg_base
 )paren
@@ -1700,8 +1706,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_count
@@ -1799,8 +1806,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s Try to open all known SMC chipsets&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Try to open all known SMC chipsets&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1929,8 +1937,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1952,8 +1961,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: can&squot;t get fir_base of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: can&squot;t get fir_base of 0x%03x&bslash;n&quot;
 comma
 id|fir_base
 )paren
@@ -1983,8 +1993,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: can&squot;t get sir_base of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: can&squot;t get sir_base of 0x%03x&bslash;n&quot;
 comma
 id|sir_base
 )paren
@@ -2094,8 +2105,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), addr 0x%04x - no device found!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), addr 0x%04x - no device found!&bslash;n&quot;
 comma
 id|fir_base
 )paren
@@ -2143,8 +2155,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), to many devices!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), to many devices!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2697,8 +2710,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2758,8 +2772,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown baud rate of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown baud rate of %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -2814,8 +2829,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 576000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 576000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2842,8 +2858,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 1152000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 1152000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2868,8 +2885,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 4000000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 4000000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2957,8 +2975,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), using irport to change speed to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), using irport to change speed to %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -3420,8 +3439,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0&t;
@@ -3672,8 +3692,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -4009,8 +4030,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -4059,8 +4081,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: dma count = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dma count = %d&bslash;n&quot;
 comma
 id|get_dma_residue
 c_func
@@ -4130,8 +4153,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: msgcnt = %d, len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: msgcnt = %d, len=%d&bslash;n&quot;
 comma
 id|msgcnt
 comma
@@ -4402,8 +4426,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), iir = 0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iir = 0x%02x&bslash;n&quot;
 comma
 id|iir
 )paren
@@ -4502,8 +4527,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4523,8 +4549,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: dma count = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dma count = %d&bslash;n&quot;
 comma
 id|get_dma_residue
 c_func
@@ -4577,8 +4604,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4949,8 +4977,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5055,8 +5084,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), releasing 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), releasing 0x%03x&bslash;n&quot;
 comma
 id|iobase
 )paren
@@ -5135,8 +5165,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

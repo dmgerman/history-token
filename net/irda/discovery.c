@@ -215,8 +215,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  If log is missing this means that IrLAP was unable to perform the&n;&t; *  discovery, so restart discovery again with just the half timeout&n;&t; *  of the normal one.&n;&t; */
@@ -321,8 +322,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

@@ -3486,8 +3486,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3528,8 +3529,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -3600,8 +3602,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), UART_LSR_THRE&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), UART_LSR_THRE&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3610,8 +3613,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Changing speed! self-&gt;new_speed = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed! self-&gt;new_speed = %d&bslash;n&quot;
 comma
 id|self-&gt;new_speed
 )paren
@@ -3642,8 +3646,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ali_ircc_change_speed from UART_LSR_TEMT &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ali_ircc_change_speed from UART_LSR_TEMT &bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;ier
@@ -3684,8 +3689,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3719,8 +3725,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -3728,8 +3735,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), setting speed = %d &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), setting speed = %d &bslash;n&quot;
 comma
 id|baud
 )paren
@@ -3822,8 +3830,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3867,8 +3876,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3895,8 +3905,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), self-&gt;io.speed = %d, change to speed = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), self-&gt;io.speed = %d, change to speed = %d&bslash;n&quot;
 comma
 id|self-&gt;io.speed
 comma
@@ -3938,8 +3949,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3994,8 +4006,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -4003,8 +4016,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Setting speed to: %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Setting speed to: %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -4203,8 +4217,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4250,8 +4265,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -4269,8 +4285,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Set Speed for %s , Speed = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Set Speed for %s , Speed = %d&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -4844,8 +4861,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4880,8 +4898,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Tx FIFO should be empty! */
@@ -4907,8 +4926,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed, fifo not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4956,8 +4976,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4982,8 +5003,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Setup to be a normal IrDA network device driver */
@@ -4999,8 +5021,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5039,8 +5062,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5206,8 +5230,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5238,8 +5263,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5335,8 +5361,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5386,8 +5413,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -5579,8 +5607,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* diff = %d ******* &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* diff = %d ******* &bslash;n&quot;
 comma
 id|diff
 )paren
@@ -5635,8 +5664,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ************** mtt = %d ***********&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************** mtt = %d ***********&bslash;n&quot;
 comma
 id|mtt
 )paren
@@ -5840,8 +5870,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5878,8 +5909,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -6151,8 +6183,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* Change to TX mode: FIR_LCR_B = 0x%x ******* &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* Change to TX mode: FIR_LCR_B = 0x%x ******* &bslash;n&quot;
 comma
 id|inb
 c_func
@@ -6215,8 +6248,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6245,8 +6279,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -6422,8 +6457,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6453,8 +6489,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -6620,8 +6657,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), *** Change To RX mode: FIR_LCR_B = 0x%x *** &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), *** Change To RX mode: FIR_LCR_B = 0x%x *** &bslash;n&quot;
 comma
 id|inb
 c_func
@@ -6688,8 +6726,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6737,8 +6776,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|st_fifo
@@ -6782,8 +6822,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Messsage count = %d,&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Messsage count = %d,&bslash;n&quot;
 comma
 id|MessageCount
 )paren
@@ -6863,8 +6904,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), RX Length = 0x%.2x,&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RX Length = 0x%.2x,&bslash;n&quot;
 comma
 id|len
 )paren
@@ -6874,8 +6916,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), RX Status = 0x%.2x,&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RX Status = 0x%.2x,&bslash;n&quot;
 comma
 id|status
 )paren
@@ -6893,8 +6936,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), window is full!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), window is full!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -6997,8 +7041,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* RX Errors ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* RX Errors ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Skip frame */
@@ -7025,8 +7070,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* FIFO Errors ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* FIFO Errors ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7046,8 +7092,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* FRAME Errors ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* FRAME Errors ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7067,8 +7114,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* CRC Errors ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* CRC Errors ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7086,8 +7134,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* Overran DMA buffer ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* Overran DMA buffer ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7107,8 +7156,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ********** Receive Frame Size = 0 ********* &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ********** Receive Frame Size = 0 ********* &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7158,8 +7208,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), ************* BSR_FIFO_NOT_EMPTY ************ &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ************* BSR_FIFO_NOT_EMPTY ************ &bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Put this entry back in fifo */
@@ -7359,8 +7410,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7405,8 +7457,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7583,8 +7636,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7643,8 +7697,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7682,8 +7737,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7705,8 +7761,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), SIOCSBANDWIDTH&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SIOCSBANDWIDTH&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This function will also be used by IrLAP to change the&n;&t;&t; * speed, so we still must allow for speed change within&n;&t;&t; * interrupt context.&n;&t;&t; */
@@ -7767,8 +7824,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), SIOCSMEDIABUSY&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SIOCSMEDIABUSY&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7804,8 +7862,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), SIOCGRECEIVING&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SIOCGRECEIVING&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* This is protected */
@@ -7832,8 +7891,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7870,8 +7930,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7939,8 +8000,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), We are receiving something&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), We are receiving something&bslash;n&quot;
 )paren
 suffix:semicolon
 id|status
@@ -7982,8 +8044,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8021,8 +8084,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -8030,8 +8094,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8056,8 +8121,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|MESSAGE
@@ -8090,8 +8156,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8112,8 +8179,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8147,8 +8215,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8188,8 +8257,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8233,8 +8303,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8273,8 +8344,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), -------- Start -------- ( Enable = %d )&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), -------- Start -------- ( Enable = %d )&bslash;n&quot;
 comma
 id|enable
 )paren
@@ -8397,8 +8469,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8418,8 +8491,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
@@ -8483,8 +8557,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8507,8 +8582,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
@@ -8599,8 +8675,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

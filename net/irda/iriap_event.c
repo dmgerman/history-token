@@ -842,8 +842,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -955,8 +956,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1115,8 +1117,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1162,8 +1165,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1227,8 +1231,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1263,8 +1268,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1294,8 +1300,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1325,8 +1332,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1448,8 +1456,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1484,8 +1493,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -1523,8 +1533,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1558,8 +1569,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1588,8 +1600,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Not implemented&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1619,8 +1632,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -1657,8 +1671,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1691,8 +1706,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1722,8 +1738,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), bad pointer self&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), bad pointer self&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1764,8 +1781,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1797,8 +1815,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), event=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%d&bslash;n&quot;
 comma
 id|event
 )paren

@@ -232,8 +232,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), wrong magic in skb!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), wrong magic in skb!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|xbofs
@@ -253,8 +254,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), xbofs=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), xbofs=%d&bslash;n&quot;
 comma
 id|xbofs
 )paren
@@ -273,8 +275,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), too many xbofs (%d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), too many xbofs (%d)&bslash;n&quot;
 comma
 id|xbofs
 )paren
@@ -831,8 +834,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), abort frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), abort frame&bslash;n&quot;
 )paren
 suffix:semicolon
 id|stats-&gt;rx_errors
@@ -911,8 +915,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Discarding incomplete frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Discarding incomplete frame&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rx_buff-&gt;state
@@ -997,8 +1002,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), rx buffer overflow&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), rx buffer overflow&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rx_buff-&gt;state
@@ -1055,8 +1061,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Discarding incomplete frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Discarding incomplete frame&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rx_buff-&gt;state
@@ -1140,8 +1147,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), crc error&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), crc error&bslash;n&quot;
 )paren
 suffix:semicolon
 id|stats-&gt;rx_errors
@@ -1192,8 +1200,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Rx buffer overflow, aborting&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Rx buffer overflow, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rx_buff-&gt;state

@@ -339,8 +339,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -444,8 +445,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -457,8 +459,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -507,8 +510,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -599,8 +603,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IAS_PROVIDER_NOT_AVAIL&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IAS_PROVIDER_NOT_AVAIL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlan_next_client_state
@@ -663,8 +668,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -676,8 +682,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -726,8 +733,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -793,8 +801,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -806,8 +815,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -856,8 +866,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -943,8 +954,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -956,8 +968,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1006,8 +1019,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1080,8 +1094,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1093,8 +1108,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1147,8 +1163,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1292,8 +1309,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown access type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown access type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1325,8 +1343,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1338,8 +1357,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1388,8 +1408,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1458,8 +1479,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1471,8 +1493,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1524,8 +1547,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1629,8 +1653,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), lost the battle :-(&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), lost the battle :-(&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1673,8 +1698,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IRLAN_WATCHDOG_TIMEOUT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1686,8 +1712,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1736,8 +1763,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1809,8 +1837,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -1859,8 +1888,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1904,8 +1934,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

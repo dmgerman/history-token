@@ -868,8 +868,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), NETDEV_UP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), NETDEV_UP&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* irda_dev_device_up(dev); */
@@ -883,8 +884,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), NETDEV_DOWN&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), NETDEV_DOWN&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* irda_kill_by_device(dev); */
@@ -984,8 +986,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Lower layer of the stack */
