@@ -241,11 +241,6 @@ comma
 )brace
 )brace
 comma
-dot
-id|proto
-op_assign
-id|cp-&gt;protocol
-comma
 )brace
 suffix:semicolon
 r_if
@@ -370,11 +365,6 @@ id|rtos
 comma
 )brace
 )brace
-comma
-dot
-id|proto
-op_assign
-id|cp-&gt;protocol
 comma
 )brace
 suffix:semicolon
