@@ -3997,6 +3997,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#warning pol-&gt;policy is in undefined state here
 id|res
 op_assign
 id|find_match
@@ -4086,9 +4087,8 @@ suffix:semicolon
 )brace
 id|pol-&gt;policy
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
-multiline_comment|/* boot as fast as we can */
 multiline_comment|/* Take a crude guess here. */
 id|pol-&gt;cpuinfo.transition_latency
 op_assign
