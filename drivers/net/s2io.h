@@ -1631,6 +1631,12 @@ DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
 suffix:semicolon
+macro_line|#ifndef CONFIG_S2IO_NAPI
+DECL|member|put_lock
+id|spinlock_t
+id|put_lock
+suffix:semicolon
+macro_line|#endif
 DECL|macro|PROMISC
 mdefine_line|#define PROMISC     1
 DECL|macro|ALL_MULTI
@@ -1680,6 +1686,16 @@ DECL|member|rx_err_count
 id|u16
 id|rx_err_count
 suffix:semicolon
+macro_line|#ifndef CONFIG_S2IO_NAPI
+multiline_comment|/* Index to the absolute position of the put pointer of Rx ring. */
+DECL|member|put_pos
+r_int
+id|put_pos
+(braket
+id|MAX_RX_RINGS
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *  Place holders for the virtual and physical addresses of &n;&t; *  all the Rx Blocks&n;&t; */
 DECL|member|rx_blocks
 id|rx_block_info_t
