@@ -3549,6 +3549,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|urb
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|async
 )paren
 id|urb-&gt;transfer_flags
