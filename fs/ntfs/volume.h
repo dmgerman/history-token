@@ -253,6 +253,30 @@ op_star
 id|secure_ino
 suffix:semicolon
 multiline_comment|/* The VFS inode of $Secure (NTFS3.0+&n;&t;&t;&t;&t;&t;   only, otherwise NULL). */
+DECL|member|extend_ino
+r_struct
+id|inode
+op_star
+id|extend_ino
+suffix:semicolon
+multiline_comment|/* The VFS inode of $Extend (NTFS3.0+&n;&t;&t;&t;&t;&t;   only, otherwise NULL). */
+macro_line|#ifdef NTFS_RW
+multiline_comment|/* $Quota stuff is NTFS3.0+ specific.  Unused/NULL otherwise. */
+DECL|member|quota_ino
+r_struct
+id|inode
+op_star
+id|quota_ino
+suffix:semicolon
+multiline_comment|/* The VFS inode of $Quota. */
+DECL|member|quota_q_ino
+r_struct
+id|inode
+op_star
+id|quota_q_ino
+suffix:semicolon
+multiline_comment|/* Attribute inode for $Quota/$Q. */
+macro_line|#endif /* NTFS_RW */
 DECL|member|nls_map
 r_struct
 id|nls_table
@@ -283,6 +307,10 @@ DECL|enumerator|NV_LogFileEmpty
 id|NV_LogFileEmpty
 comma
 multiline_comment|/* 1: $LogFile journal is empty. */
+DECL|enumerator|NV_QuotaOutOfDate
+id|NV_QuotaOutOfDate
+comma
+multiline_comment|/* 1: $Quota is out of date. */
 DECL|typedef|ntfs_volume_flags
 )brace
 id|ntfs_volume_flags
@@ -310,6 +338,11 @@ id|NVOL_FNS
 c_func
 (paren
 id|LogFileEmpty
+)paren
+id|NVOL_FNS
+c_func
+(paren
+id|QuotaOutOfDate
 )paren
 macro_line|#endif /* _LINUX_NTFS_VOLUME_H */
 eof

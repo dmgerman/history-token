@@ -4057,7 +4057,7 @@ DECL|member|sid
 id|SID
 id|sid
 suffix:semicolon
-multiline_comment|/* The SID of the user/object associated with&n;&t;&t;&t;&t;   this quota entry. Equals zero for the quota&n;&t;&t;&t;&t;   defaults entry. */
+multiline_comment|/* The SID of the user/object associated with&n;&t;&t;&t;&t;   this quota entry.  Equals zero for the quota&n;&t;&t;&t;&t;   defaults entry (and in fact on a WinXP&n;&t;&t;&t;&t;   volume, it is not present at all). */
 DECL|typedef|QUOTA_CONTROL_ENTRY
 )brace
 id|__attribute__
@@ -4103,6 +4103,20 @@ DECL|typedef|PREDEFINED_OWNER_IDS
 )brace
 id|PREDEFINED_OWNER_IDS
 suffix:semicolon
+multiline_comment|/*&n; * Current constants for quota control entries.&n; */
+r_typedef
+r_enum
+(brace
+multiline_comment|/* Current version. */
+DECL|enumerator|QUOTA_VERSION
+id|QUOTA_VERSION
+op_assign
+l_int|2
+comma
+DECL|typedef|QUOTA_CONTROL_ENTRY_CONSTANTS
+)brace
+id|QUOTA_CONTROL_ENTRY_CONSTANTS
+suffix:semicolon
 multiline_comment|/*&n; * Index entry flags (16-bit).&n; */
 r_typedef
 r_enum
@@ -4116,7 +4130,7 @@ c_func
 l_int|1
 )paren
 comma
-multiline_comment|/* This entry contains a sub-node,&n;&t;&t;&t;&t;&t;      i.e. a reference to an index&n;&t;&t;&t;&t;&t;      block in form of a virtual&n;&t;&t;&t;&t;&t;      cluster number (see below). */
+multiline_comment|/* This entry contains a&n;&t;&t;&t;&t;&t;      sub-node, i.e. a reference to an&n;&t;&t;&t;&t;&t;      index block in form of a virtual&n;&t;&t;&t;&t;&t;      cluster number (see below). */
 DECL|enumerator|INDEX_ENTRY_END
 id|INDEX_ENTRY_END
 op_assign
@@ -4126,7 +4140,7 @@ c_func
 l_int|2
 )paren
 comma
-multiline_comment|/* This signifies the last entry in&n;&t;&t;&t;&t;&t;      an index block. The index entry&n;&t;&t;&t;&t;&t;      does not represent a file but it&n;&t;&t;&t;&t;&t;      can point to a sub-node. */
+multiline_comment|/* This signifies the last&n;&t;&t;&t;&t;&t;      entry in an index block.  The&n;&t;&t;&t;&t;&t;      index entry does not represent a&n;&t;&t;&t;&t;&t;      file but it can point to a&n;&t;&t;&t;&t;&t;      sub-node. */
 DECL|enumerator|INDEX_ENTRY_SPACE_FILLER
 id|INDEX_ENTRY_SPACE_FILLER
 op_assign
