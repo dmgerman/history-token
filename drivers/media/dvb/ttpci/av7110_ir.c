@@ -1146,6 +1146,12 @@ c_func
 r_void
 )paren
 (brace
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|e
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1153,12 +1159,6 @@ id|ir_initialized
 )paren
 r_return
 l_int|0
-suffix:semicolon
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|e
 suffix:semicolon
 id|init_timer
 c_func

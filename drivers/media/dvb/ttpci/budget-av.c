@@ -813,6 +813,11 @@ id|saa
 op_assign
 id|budget_av-&gt;budget.dev
 suffix:semicolon
+r_int
+id|max
+op_assign
+l_int|20
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -858,11 +863,6 @@ l_int|0
 comma
 id|SAA7146_GPIO_OUTLO
 )paren
-suffix:semicolon
-r_int
-id|max
-op_assign
-l_int|20
 suffix:semicolon
 r_while
 c_loop
