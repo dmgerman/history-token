@@ -427,12 +427,6 @@ id|u_char
 op_star
 id|cb_cis_virt
 suffix:semicolon
-DECL|member|cb_config
-r_struct
-id|cb_config_t
-op_star
-id|cb_config
-suffix:semicolon
 macro_line|#endif
 r_struct
 (brace
