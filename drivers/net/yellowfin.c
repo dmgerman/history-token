@@ -7289,13 +7289,11 @@ id|mii_ioctl_data
 op_star
 id|data
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|rq
 )paren
-op_amp
-id|rq-&gt;ifr_data
 suffix:semicolon
 r_switch
 c_cond

@@ -3686,16 +3686,18 @@ id|master
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|sk_buff
-op_star
+r_int
 id|skb_checksum_help
 c_func
 (paren
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
+comma
+r_int
+id|inward
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE
