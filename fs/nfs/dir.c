@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 DECL|macro|NFS_PARANOIA
 mdefine_line|#define NFS_PARANOIA 1
 multiline_comment|/* #define NFS_DEBUG_VERBOSE 1 */

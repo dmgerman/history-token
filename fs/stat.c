@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|generic_fillattr
 r_void

@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 DECL|variable|export_op_default
 r_struct
 id|export_operations
