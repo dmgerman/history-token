@@ -1457,10 +1457,6 @@ r_struct
 id|hda_codec
 op_star
 id|codec
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 r_struct
