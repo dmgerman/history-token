@@ -2166,7 +2166,7 @@ r_if
 c_cond
 (paren
 id|vap-&gt;va_size
-OL
+op_le
 id|ip-&gt;i_d.di_size
 )paren
 (brace
@@ -2390,7 +2390,7 @@ c_cond
 (paren
 (paren
 id|vap-&gt;va_size
-OL
+op_le
 id|ip-&gt;i_d.di_size
 )paren
 op_logical_or
