@@ -1783,7 +1783,7 @@ suffix:semicolon
 DECL|function|dmfe_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|dmfe_remove_one
 (paren
 r_struct
