@@ -3353,7 +3353,7 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|to_free
-op_add_assign
+op_sub_assign
 id|reclaim_state-&gt;reclaimed_slab
 suffix:semicolon
 )brace
