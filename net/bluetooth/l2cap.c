@@ -1069,17 +1069,6 @@ op_amp
 id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;sk_protinfo
-)paren
-id|kfree
-c_func
-(paren
-id|sk-&gt;sk_protinfo
-)paren
-suffix:semicolon
 )brace
 DECL|function|l2cap_sock_cleanup_listen
 r_static
