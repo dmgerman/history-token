@@ -386,9 +386,6 @@ id|socket_info_t
 op_star
 id|s
 comma
-id|u_char
-id|fn
-comma
 r_int
 id|space
 comma
@@ -441,7 +438,7 @@ op_assign
 op_amp
 id|s-&gt;cb_config
 (braket
-id|fn
+l_int|0
 )braket
 dot
 id|dev

@@ -617,9 +617,6 @@ id|socket_info_t
 op_star
 id|s
 comma
-id|u_char
-id|fn
-comma
 r_int
 id|space
 comma
