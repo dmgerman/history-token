@@ -968,13 +968,6 @@ id|cs-&gt;bcs
 op_plus
 id|jade
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1053,12 +1046,5 @@ id|jade
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 )brace
 eof

@@ -6655,13 +6655,6 @@ id|BCState
 op_star
 id|bcs
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 id|get_irq_infos
 c_func
 (paren
@@ -7208,13 +7201,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
