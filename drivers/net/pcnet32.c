@@ -86,6 +86,25 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/*&n;     * Adapters that were sold with IBM&squot;s RS/6000 or pSeries hardware have&n;     * the incorrect vendor id.&n;     */
+(brace
+id|PCI_VENDOR_ID_TRIDENT
+comma
+id|PCI_DEVICE_ID_AMD_LANCE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_NETWORK_ETHERNET
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
+comma
+l_int|0
+)brace
+comma
 (brace
 l_int|0
 comma
