@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;include/linux/bfs_fs_i.h&n; *&t;Copyright (C) 1999 T
 macro_line|#ifndef _LINUX_BFS_FS_I
 DECL|macro|_LINUX_BFS_FS_I
 mdefine_line|#define _LINUX_BFS_FS_I
+macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/*&n; * BFS file system in-core inode info&n; */
 DECL|struct|bfs_inode_info
 r_struct

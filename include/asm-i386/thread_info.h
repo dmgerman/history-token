@@ -36,6 +36,11 @@ id|__u32
 id|cpu
 suffix:semicolon
 multiline_comment|/* current CPU */
+DECL|member|preempt_count
+id|__s32
+id|preempt_count
+suffix:semicolon
+multiline_comment|/* 0 =&gt; preemptable, &lt;0 =&gt; BUG */
 DECL|member|addr_limit
 id|mm_segment_t
 id|addr_limit
@@ -60,8 +65,10 @@ DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;0x00000008
 DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;0x0000000C
+DECL|macro|TI_PRE_COUNT
+mdefine_line|#define TI_PRE_COUNT&t;0x00000010
 DECL|macro|TI_ADDR_LIMIT
-mdefine_line|#define TI_ADDR_LIMIT&t;0x00000010
+mdefine_line|#define TI_ADDR_LIMIT&t;0x00000014
 macro_line|#endif
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 macro_line|#ifndef __ASSEMBLY__

@@ -32,6 +32,7 @@ multiline_comment|/* NUD_NOARP &amp; NUD_PERMANENT are pseudostates, they never 
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 DECL|macro|NUD_IN_TIMER
 mdefine_line|#define NUD_IN_TIMER&t;(NUD_INCOMPLETE|NUD_DELAY|NUD_PROBE)
 DECL|macro|NUD_VALID

@@ -211,6 +211,11 @@ r_int
 r_int
 id|vaddr
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -345,9 +350,16 @@ id|vaddr
 OL
 id|FIXADDR_START
 )paren
+(brace
 singleline_comment|// FIXME
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -382,6 +394,11 @@ id|vaddr
 )paren
 suffix:semicolon
 macro_line|#endif
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_HIGHMEM_H */

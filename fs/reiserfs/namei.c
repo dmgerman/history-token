@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; *&n; * Trivial changes by Alan Cox to remove EHASHCOLLISION for compatibility&n; *&n; * Trivial Changes:&n; * Rights granted to Hans Reiser to redistribute under other terms providing&n; * he accepts all liability including but not limited to patent, fitness&n; * for purpose, and direct or indirect claims arising from failure to perform.&n; *&n; * NO WARRANTY&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by r
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 multiline_comment|/* these are used in do_balance.c */
 multiline_comment|/* leaf_move_items&n;   leaf_shift_left&n;   leaf_shift_right&n;   leaf_delete_items&n;   leaf_insert_into_buf&n;   leaf_paste_in_buffer&n;   leaf_cut_from_buffer&n;   leaf_paste_entries&n;   */

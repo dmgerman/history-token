@@ -28,6 +28,7 @@ DECL|macro|EFS_BLOCKSIZE_BITS
 mdefine_line|#define&t;EFS_BLOCKSIZE_BITS&t;9
 DECL|macro|EFS_BLOCKSIZE
 mdefine_line|#define&t;EFS_BLOCKSIZE&t;&t;(1 &lt;&lt; EFS_BLOCKSIZE_BITS)
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/efs_fs_i.h&gt;
 macro_line|#include &lt;linux/efs_dir.h&gt;
 macro_line|#ifndef MIN

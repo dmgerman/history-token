@@ -3,6 +3,7 @@ DECL|macro|__ASM_IO_APIC_H
 mdefine_line|#define __ASM_IO_APIC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 multiline_comment|/*&n; * Intel IO-APIC support for SMP and UP systems.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2000 Ingo Molnar&n; */
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|macro|APIC_MISMATCH_DEBUG

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * proc_devtree.c - handles /proc/device-tree&n; *&n; * Copyright 1997 Paul Mackerras&n; */
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

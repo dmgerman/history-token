@@ -64,6 +64,7 @@ macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;&t;/* just for inode - yeuch.*/
 multiline_comment|/* The AF_UNIX specific socket options */
 DECL|struct|unix_opt
 r_struct

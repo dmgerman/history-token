@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfs/read.c&n; *&n; * Block I/O for NFS&n; *&n; * Partial copy of Linus&squot; read cache modifications to fs/nfs/file.c&n; * modified for async RPC by okir@monad.swb.de&n; *&n; * We do an ugly hack here in order to return proper error codes to the&n; * user program when a read request failed: since generic_file_read&n; * only checks the return value of inode-&gt;i_op-&gt;readpage() which is always 0&n; * for async RPC, we set the error bit of the page to 1 when an error occurs,&n; * and make nfs_readpage transmit requests synchronously when encountering this.&n; * This is only a small problem, though, since we now retry all operations&n; * within the RPC code when root squashing is suspected.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

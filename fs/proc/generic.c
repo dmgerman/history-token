@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * proc/fs/generic.c --- generic routines for the proc-fs&n; *&n; * This file contains generic proc-fs routines for handling&n; * directories and files.&n; * &n; * Copyright (C) 1991, 1992 Linus Torvalds.&n; * Copyright (C) 1997 Theodore Ts&squot;o&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 DECL|macro|__NO_VERSION__

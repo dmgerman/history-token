@@ -1189,7 +1189,7 @@ id|p
 )paren
 (brace
 multiline_comment|/*&n;&t; * The target CPU will unlock the migration spinlock:&n;&t; */
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 op_amp
@@ -1234,7 +1234,7 @@ id|p
 op_assign
 id|new_task
 suffix:semicolon
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 op_amp

@@ -7,7 +7,7 @@ multiline_comment|/* Added 32k buffer block sizes - these are required older ARM
 multiline_comment|/* Thread it... -DaveM */
 multiline_comment|/* async buffer flushing, 1999 Andrea Arcangeli &lt;andrea@suse.de&gt; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;

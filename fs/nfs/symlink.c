@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/nfs/symlink.c&n; *&n; *  Copyright (C) 1992  Rick Sladkey&n; *&n; *  Optimization changes Copyright (C) 1994 Florian La Roche&n; *&n; *  Jun 7 1999, cache symlink lookups in the page cache.  -DaveM&n; *&n; *  nfs symlink handling code&n; */
 DECL|macro|NFS_NEED_XDR_TYPES
 mdefine_line|#define NFS_NEED_XDR_TYPES
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;

@@ -8,7 +8,8 @@ r_int
 id|event
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -115,6 +116,8 @@ DECL|macro|TASK_ZOMBIE
 mdefine_line|#define TASK_ZOMBIE&t;&t;4
 DECL|macro|TASK_STOPPED
 mdefine_line|#define TASK_STOPPED&t;&t;8
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
 macro_line|#ifdef CONFIG_SMP
@@ -1475,11 +1478,6 @@ r_int
 id|itimer_next
 suffix:semicolon
 r_extern
-r_struct
-id|timeval
-id|xtime
-suffix:semicolon
-r_extern
 r_void
 id|do_timer
 c_func
@@ -1505,8 +1503,6 @@ r_int
 r_int
 id|prof_shift
 suffix:semicolon
-DECL|macro|CURRENT_TIME
-mdefine_line|#define CURRENT_TIME (xtime.tv_sec)
 r_extern
 r_void
 id|FASTCALL

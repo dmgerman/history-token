@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_SMB_H
 DECL|macro|_LINUX_SMB_H
 mdefine_line|#define _LINUX_SMB_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 DECL|enum|smb_protocol
 r_enum
 id|smb_protocol

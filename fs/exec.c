@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -1798,18 +1799,18 @@ id|current-&gt;active_mm
 op_assign
 id|mm
 suffix:semicolon
-id|task_unlock
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 id|activate_mm
 c_func
 (paren
 id|active_mm
 comma
 id|mm
+)paren
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
 )paren
 suffix:semicolon
 id|mm_release

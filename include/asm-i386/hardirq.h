@@ -63,6 +63,8 @@ DECL|macro|irq_exit
 mdefine_line|#define irq_exit(cpu, irq)&t;(local_irq_count(cpu)--)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;barrier()
+DECL|macro|release_irqlock
+mdefine_line|#define release_irqlock(cpu)&t;do { } while (0)
 macro_line|#else
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;

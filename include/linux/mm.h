@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 r_extern
 r_int
 r_int

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/fs/transaction.c&n; * &n; * Written by Stephen C. Tweedie &lt;sct@redhat.com&gt;, 1998&n; *&n; * Copyright 1998 Red Hat corp --- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * Generic filesystem transaction handling code; part of the ext2fs&n; * journaling system.  &n; *&n; * This file manages transactions (compound commits managed by the&n; * journaling code) and handles (individual atomic operations by the&n; * filesystem).&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

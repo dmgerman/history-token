@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|function|load_script
 r_static
 r_int

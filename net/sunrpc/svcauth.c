@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcauth.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;RPCDBG_AUTH
 multiline_comment|/*&n; * Type of authenticator function&n; */

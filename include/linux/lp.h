@@ -85,6 +85,8 @@ mdefine_line|#define LP_TIMEOUT_INTERRUPT&t;(60 * HZ)
 DECL|macro|LP_TIMEOUT_POLLED
 mdefine_line|#define LP_TIMEOUT_POLLED&t;(10 * HZ)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* Magic numbers for defining port-device mappings */
 DECL|macro|LP_PARPORT_UNSPEC
 mdefine_line|#define LP_PARPORT_UNSPEC -4

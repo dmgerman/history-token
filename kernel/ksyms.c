@@ -37,6 +37,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2363,6 +2364,15 @@ c_func
 id|schedule
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|variable|preempt_schedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|preempt_schedule
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|schedule_timeout
 id|EXPORT_SYMBOL
 c_func

@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_CAPABILITY_H
 DECL|macro|_LINUX_CAPABILITY_H
 mdefine_line|#define _LINUX_CAPABILITY_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/* User-level do most of the mapping between kernel and user&n;   capabilities based on the version tag given by the kernel. The&n;   kernel might be somewhat backwards compatible, but don&squot;t bet on&n;   it. */
 multiline_comment|/* XXX - Note, cap_t, is defined by POSIX to be an &quot;opaque&quot; pointer to&n;   a set of three capability sets.  The transposition of 3*the&n;   following structure to such a composite is better handled in a user&n;   library since the draft standard requires the use of malloc/free&n;   etc.. */
 DECL|macro|_LINUX_CAPABILITY_VERSION

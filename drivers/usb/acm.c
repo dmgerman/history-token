@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.21&quot;

@@ -13,6 +13,7 @@ macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -1357,12 +1358,6 @@ id|tsk-&gt;mm
 op_assign
 l_int|NULL
 suffix:semicolon
-id|task_unlock
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
 id|enter_lazy_tlb
 c_func
 (paren
@@ -1374,6 +1369,12 @@ id|smp_processor_id
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|mmput

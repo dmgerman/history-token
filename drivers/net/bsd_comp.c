@@ -13,6 +13,7 @@ mdefine_line|#define  PACKETPTR 1
 macro_line|#include &lt;linux/ppp-comp.h&gt;
 DECL|macro|PACKETPTR
 macro_line|#undef   PACKETPTR
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * PPP &quot;BSD compress&quot; compression&n; *  The differences between this compression and the classic BSD LZW&n; *  source are obvious from the requirement that the classic code worked&n; *  with files while this handles arbitrarily long streams that&n; *  are broken into packets.  They are:&n; *&n; *&t;When the code size expands, a block of junk is not emitted by&n; *&t;    the compressor and not expected by the decompressor.&n; *&n; *&t;New codes are not necessarily assigned every time an old&n; *&t;    code is output by the compressor.  This is because a packet&n; *&t;    end forces a code to be emitted, but does not imply that a&n; *&t;    new sequence has been seen.&n; *&n; *&t;The compression ratio is checked at the first end of a packet&n; *&t;    after the appropriate gap.&t;Besides simplifying and speeding&n; *&t;    things up, this makes it more likely that the transmitter&n; *&t;    and receiver will agree when the dictionary is cleared when&n; *&t;    compression is not going well.&n; */
 multiline_comment|/*&n; * Macros to extract protocol version and number of bits&n; * from the third byte of the BSD Compress CCP configuration option.&n; */
 DECL|macro|BSD_VERSION

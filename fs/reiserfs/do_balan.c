@@ -7,7 +7,7 @@ multiline_comment|/* and using buffers obtained after all above.&t;&t;&t;&t;*/
 multiline_comment|/**&n; ** balance_leaf_when_delete&n; ** balance_leaf&n; ** do_balance&n; **&n; **/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 DECL|variable|cur_tb

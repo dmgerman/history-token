@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2622,6 +2624,13 @@ c_func
 id|p-&gt;binfmt-&gt;module
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * schedule_tail drops this_rq()-&gt;lock so we compensate with a count&n;&t; * of 1.  Also, we want to start with kernel preemption disabled.&n;&t; */
+id|p-&gt;thread_info-&gt;preempt_count
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|p-&gt;did_exec
 op_assign
 l_int|0

@@ -2,6 +2,8 @@ macro_line|#ifndef _AFFS_FS_I
 DECL|macro|_AFFS_FS_I
 mdefine_line|#define _AFFS_FS_I
 macro_line|#include &lt;linux/a.out.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|macro|AFFS_CACHE_SIZE
 mdefine_line|#define AFFS_CACHE_SIZE&t;&t;PAGE_SIZE
 singleline_comment|//#define AFFS_CACHE_SIZE&t;&t;(4*4)

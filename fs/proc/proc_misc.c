@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/proc/proc_misc.c&n; *&n; *  linux/fs/proc/array.c&n; *  Copyright (C) 1992  by Linus Torvalds&n; *  based on ideas by Darren Senn&n; *&n; *  This used to be the part of array.c. See the rest of history and credits&n; *  there. I took this into a separate file and switched the thing to generic&n; *  proc_file_inode_operations, leaving in array.c only per-process stuff.&n; *  Inumbers allocation made dynamic (via create_proc_entry()).  AV, May 1999.&n; *&n; * Changes:&n; * Fulton Green      :  Encapsulated position metric calculations.&n; *&t;&t;&t;&lt;kernel@FultonGreen.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/binfmt_aout.c&n; *&n; *  Copyright (C) 1991, 1992, 1996  Linus Torvalds&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;

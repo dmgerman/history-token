@@ -5,6 +5,7 @@ mdefine_line|#define __LINUX_FILE_H
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * The default fd array needs to be at least BITS_PER_LONG,&n; * as this is the granularity returned by copy_fdset().&n; */
 DECL|macro|NR_OPEN_DEFAULT
 mdefine_line|#define NR_OPEN_DEFAULT BITS_PER_LONG

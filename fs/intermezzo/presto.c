@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * intermezzo.c&n; *&n; * This file implements basic routines supporting the semantics&n; *&n; * Author: Peter J. Braam  &lt;braam@cs.cmu.edu&gt;&n; * Copyright (C) 1998 Stelias Computing Inc&n; * Copyright (C) 1999 Red Hat Inc.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

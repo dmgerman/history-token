@@ -430,14 +430,14 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|br_read_lock
-macro_line|# define br_read_lock(idx)&t;((void)(idx))
+macro_line|# define br_read_lock(idx)&t;({ (void)(idx); preempt_disable(); })
 DECL|macro|br_read_unlock
-macro_line|# define br_read_unlock(idx)&t;((void)(idx))
+macro_line|# define br_read_unlock(idx)&t;({ (void)(idx); preempt_enable(); })
 DECL|macro|br_write_lock
-macro_line|# define br_write_lock(idx)&t;((void)(idx))
+macro_line|# define br_write_lock(idx)&t;({ (void)(idx); preempt_disable(); })
 DECL|macro|br_write_unlock
-macro_line|# define br_write_unlock(idx)&t;((void)(idx))
-macro_line|#endif
+macro_line|# define br_write_unlock(idx)&t;({ (void)(idx); preempt_enable(); })
+macro_line|#endif&t;/* CONFIG_SMP */
 multiline_comment|/*&n; * Now enumerate all of the possible sw/hw IRQ protected&n; * versions of the interfaces.&n; */
 DECL|macro|br_read_lock_irqsave
 mdefine_line|#define br_read_lock_irqsave(idx, flags) &bslash;&n;&t;do { local_irq_save(flags); br_read_lock(idx); } while (0)

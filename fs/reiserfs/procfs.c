@@ -5,7 +5,7 @@ multiline_comment|/* proc info support a la one created by Sizif@Botik.RU for PG
 multiline_comment|/* $Id: procfs.c,v 1.1.8.2 2001/07/15 17:08:42 god Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;

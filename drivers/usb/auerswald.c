@@ -3,6 +3,7 @@ multiline_comment|/*&n; *      auerswald.c  --  Auerswald PBX/System Telephone u
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* Standard Linux module include files */
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 DECL|macro|BITMAP_SIZE
 mdefine_line|#define BITMAP_SIZE ((((MAX_PRIO+7)/8)+sizeof(long)-1)/sizeof(long))
@@ -149,6 +150,11 @@ id|__rq
 suffix:semicolon
 id|repeat_lock_task
 suffix:colon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__rq
 op_assign
 id|task_rq
@@ -193,6 +199,11 @@ op_star
 id|flags
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|repeat_lock_task
 suffix:semicolon
@@ -226,6 +237,11 @@ id|rq-&gt;lock
 comma
 op_star
 id|flags
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -544,6 +560,11 @@ id|need_resched
 comma
 id|nrpolling
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* minimise the chance of sending an interrupt to poll_idle() */
 id|nrpolling
 op_assign
@@ -599,6 +620,11 @@ c_func
 id|p-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#else
 id|set_tsk_need_resched
 c_func
@@ -630,6 +656,11 @@ id|rq
 suffix:semicolon
 id|repeat
 suffix:colon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rq
 op_assign
 id|task_rq
@@ -693,6 +724,11 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|repeat
 suffix:semicolon
@@ -704,6 +740,11 @@ id|rq
 comma
 op_amp
 id|flags
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -900,6 +941,13 @@ id|p
 id|runqueue_t
 op_star
 id|rq
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rq
 op_assign
 id|this_rq
 c_func
@@ -973,6 +1021,11 @@ c_func
 (paren
 op_amp
 id|rq-&gt;lock
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -2133,8 +2186,6 @@ r_void
 id|task_t
 op_star
 id|prev
-op_assign
-id|current
 comma
 op_star
 id|next
@@ -2142,11 +2193,6 @@ suffix:semicolon
 id|runqueue_t
 op_star
 id|rq
-op_assign
-id|this_rq
-c_func
-(paren
-)paren
 suffix:semicolon
 id|prio_array_t
 op_star
@@ -2176,6 +2222,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prev
+op_assign
+id|current
+suffix:semicolon
+id|rq
+op_assign
+id|this_rq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|release_kernel_lock
 c_func
 (paren
@@ -2194,6 +2256,26 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * if entering from preempt_schedule, off a kernel preemption,&n;&t; * go straight to picking the next task.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|preempt_get_count
+c_func
+(paren
+)paren
+op_amp
+id|PREEMPT_ACTIVE
+)paren
+)paren
+r_goto
+id|pick_next_task
+suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -2248,7 +2330,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 id|pick_next_task
 suffix:colon
 macro_line|#endif
@@ -2420,9 +2502,68 @@ c_func
 id|current
 )paren
 suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n; * this is is the entry point to schedule() from in-kernel preemption.&n; */
+DECL|function|preempt_schedule
+id|asmlinkage
+r_void
+id|preempt_schedule
+c_func
+(paren
+r_void
+)paren
+(brace
+r_do
+(brace
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|preempt_count
+op_add_assign
+id|PREEMPT_ACTIVE
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|preempt_count
+op_sub_assign
+id|PREEMPT_ACTIVE
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_NEED_RESCHED
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PREEMPT */
 multiline_comment|/*&n; * The core wakeup function.  Non-exclusive wakeups (nr_exclusive == 0) just&n; * wake everything up.  If it&squot;s an exclusive wakeup (nr_exclusive == small +ve&n; * number) then we wake all the non-exclusive tasks and one exclusive task.&n; *&n; * There are circumstances in which we can try to wake a task which has already&n; * started to run but is not in state TASK_RUNNING.  try_to_wake_up() returns&n; * zero in this (rare) case, and we handle it by continuing to scan the queue.&n; */
 DECL|function|__wake_up_common
 r_static
@@ -3899,15 +4040,22 @@ r_void
 id|runqueue_t
 op_star
 id|rq
+suffix:semicolon
+id|prio_array_t
+op_star
+id|array
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rq
 op_assign
 id|this_rq
 c_func
 (paren
 )paren
-suffix:semicolon
-id|prio_array_t
-op_star
-id|array
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decrease the yielding task&squot;s priority by one, to avoid&n;&t; * livelocks. This priority loss is temporary, it&squot;s recovered&n;&t; * once the current timeslice expires.&n;&t; *&n;&t; * If priority is already MAX_PRIO-1 then we still&n;&t; * roundrobin the task within the runlist.&n;&t; */
 id|spin_lock_irq
@@ -4017,6 +4165,11 @@ c_func
 (paren
 op_amp
 id|rq-&gt;lock
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
 )paren
 suffix:semicolon
 id|schedule

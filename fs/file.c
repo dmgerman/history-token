@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/open.c&n; *&n; *  Copyright (C) 1998-1999, Stephen Tweedie and Bill Hawes&n; *&n; *  Manage the dynamic fd arrays in the process files_struct.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

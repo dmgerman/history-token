@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/umsdos/dir.c&n; *&n; *  Written 1993 by Jacques Gelinas&n; *      Inspired from linux/fs/msdos/... : Werner Almesberger&n; *&n; *  Extended MS-DOS directory handling functions&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
