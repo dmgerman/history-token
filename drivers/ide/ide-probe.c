@@ -1282,30 +1282,6 @@ comma
 id|cookie
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_CMD640
-macro_line|#ifdef CMD640_DUMP_REGS
-r_if
-c_cond
-(paren
-id|hwif-&gt;chipset
-op_eq
-id|ide_cmd640
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Hmmm.. probably a driver &quot;
-l_string|&quot;problem.&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-id|CMD640_DUMP_REGS
-suffix:semicolon
-)brace
-macro_line|#endif /* CMD640_DUMP_REGS */
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
 )brace
 )brace
 )brace
