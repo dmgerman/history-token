@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/signal.c&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/signal.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -9,14 +9,14 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;ptrace.h&quot;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
@@ -50,7 +50,7 @@ comma
 id|SWI_THUMB_RT_SIGRETURN
 )brace
 suffix:semicolon
-id|asmlinkage
+r_static
 r_int
 id|do_signal
 c_func
@@ -2293,6 +2293,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; *&n; * Note that we go through the signals twice: once to check the signals that&n; * the kernel can handle, and then we build all the user-level signal handling&n; * stack-frames in one go after that.&n; */
 DECL|function|do_signal
+r_static
 r_int
 id|do_signal
 c_func
@@ -2334,17 +2335,6 @@ id|regs
 )paren
 r_return
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|oldset
-)paren
-id|oldset
-op_assign
-op_amp
-id|current-&gt;blocked
 suffix:semicolon
 id|single_stepping
 op_assign
@@ -2695,6 +2685,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|single_stepping
+op_or_assign
+id|ptrace_cancel_bpt
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -2929,7 +2927,8 @@ id|_TIF_SIGPENDING
 id|do_signal
 c_func
 (paren
-l_int|NULL
+op_amp
+id|current-&gt;blocked
 comma
 id|regs
 comma
