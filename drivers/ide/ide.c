@@ -7487,8 +7487,8 @@ id|__initdata
 id|probe_ali14xx
 suffix:semicolon
 r_extern
-r_void
-id|init_ali14xx
+r_int
+id|ali14xx_init
 c_func
 (paren
 r_void
@@ -10671,7 +10671,10 @@ c_cond
 (paren
 id|probe_ali14xx
 )paren
-id|init_ali14xx
+(paren
+r_void
+)paren
+id|ali14xx_init
 c_func
 (paren
 )paren
