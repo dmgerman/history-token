@@ -856,6 +856,17 @@ r_if
 c_cond
 (paren
 id|status
+op_eq
+id|nfserr_symlink
+)paren
+id|status
+op_assign
+id|nfserr_notdir
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
 )paren
 r_return
 id|status
