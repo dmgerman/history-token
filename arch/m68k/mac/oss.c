@@ -4,9 +4,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt; 
-macro_line|#include &lt;asm/machw.h&gt; 
-macro_line|#include &lt;asm/macintosh.h&gt; 
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/machw.h&gt;
+macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_oss.h&gt;
@@ -292,7 +292,7 @@ id|events
 r_return
 id|IRQ_NONE
 suffix:semicolon
-macro_line|#ifdef DEBUG_IRQS&t;
+macro_line|#ifdef DEBUG_IRQS
 r_if
 c_cond
 (paren

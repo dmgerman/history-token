@@ -656,7 +656,7 @@ r_char
 op_star
 id|pv_monid
 suffix:semicolon
-multiline_comment|/* &n;&t; * Frame buffer output and terminal emulation &n;&t; */
+multiline_comment|/*&n;&t; * Frame buffer output and terminal emulation&n;&t; */
 DECL|member|pv_fbwritechar
 r_int
 (paren
@@ -700,7 +700,7 @@ op_star
 id|bootstr
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Line input and parsing &n;&t; */
+multiline_comment|/*&n;&t; * Line input and parsing&n;&t; */
 DECL|member|pv_linebuf
 r_int
 r_char
@@ -809,7 +809,7 @@ id|pv_setleds
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Non-maskable interrupt  (nmi) information&n;&t; */
+multiline_comment|/*&n;&t; * Non-maskable interrupt  (nmi) information&n;&t; */
 DECL|member|pv_nmiaddr
 r_int
 (paren
@@ -840,7 +840,7 @@ r_int
 op_star
 id|pv_fbtype
 suffix:semicolon
-multiline_comment|/* &n;&t; * Assorted other things &n;&t; */
+multiline_comment|/*&n;&t; * Assorted other things&n;&t; */
 DECL|member|pv_romvers
 r_int
 id|pv_romvers

@@ -275,7 +275,7 @@ r_int
 r_int
 id|vme_brdtype
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 multiline_comment|/*&n;     *  m68k_is040or060 is != 0 for a &squot;040 or higher;&n;     *  used numbers are 4 for 68040 and 6 for 68060.&n;     */
 r_extern
 r_int

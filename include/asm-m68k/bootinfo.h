@@ -143,8 +143,8 @@ mdefine_line|#define BI_MAC_MEMSIZE&t;&t;0x8009&t;/* Mac RAM size (sanity check)
 DECL|macro|BI_MAC_CPUID
 mdefine_line|#define BI_MAC_CPUID&t;&t;0x800a&t;/* Mac CPU type (sanity check) */
 DECL|macro|BI_MAC_ROMBASE
-mdefine_line|#define BI_MAC_ROMBASE&t;&t;0x800b&t;/* Mac system ROM base address */ 
-multiline_comment|/*&n;     *  Macintosh hardware profile data - unused, see macintosh.h for &n;     *  resonable type values &n;     */
+mdefine_line|#define BI_MAC_ROMBASE&t;&t;0x800b&t;/* Mac system ROM base address */
+multiline_comment|/*&n;     *  Macintosh hardware profile data - unused, see macintosh.h for&n;     *  resonable type values&n;     */
 DECL|macro|BI_MAC_VIA1BASE
 mdefine_line|#define BI_MAC_VIA1BASE&t;&t;0x8010&t;/* Mac VIA1 base address (always present) */
 DECL|macro|BI_MAC_VIA2BASE

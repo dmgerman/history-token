@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;asm/q40ints.h&gt;
-multiline_comment|/* &n; * Q40 IRQs are defined as follows: &n; *            3,4,5,6,7,10,11,14,15 : ISA dev IRQs&n; *            16-31: reserved&n; *            32   : keyboard int&n; *            33   : frame int (50/200 Hz periodic timer)&n; *            34   : sample int (10/20 KHz periodic timer)&n; *          &n;*/
+multiline_comment|/*&n; * Q40 IRQs are defined as follows:&n; *            3,4,5,6,7,10,11,14,15 : ISA dev IRQs&n; *            16-31: reserved&n; *            32   : keyboard int&n; *            33   : frame int (50/200 Hz periodic timer)&n; *            34   : sample int (10/20 KHz periodic timer)&n; *&n;*/
 r_extern
 r_int
 id|ints_inited
@@ -821,7 +821,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * this stuff doesn&squot;t really belong here..&n;*/
+multiline_comment|/*&n; * this stuff doesn&squot;t really belong here..&n;*/
 DECL|variable|ql_ticks
 r_int
 id|ql_ticks
@@ -1076,7 +1076,7 @@ id|FRAME_RATE_REG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * tables to translate bits into IRQ numbers &n; * it is a good idea to order the entries by priority&n; * &n;*/
+multiline_comment|/*&n; * tables to translate bits into IRQ numbers&n; * it is a good idea to order the entries by priority&n; *&n;*/
 DECL|struct|IRQ_TABLE
 DECL|member|mask
 DECL|member|irq

@@ -513,6 +513,6 @@ id|next_mm
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
+macro_line|#endif
 macro_line|#endif
 eof

@@ -1874,7 +1874,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* after an exception in a writeback the stack frame corresponding&n; * to that exception is discarded, set a few bits in the old frame &n; * to simulate what it should look like&n; */
+multiline_comment|/* after an exception in a writeback the stack frame corresponding&n; * to that exception is discarded, set a few bits in the old frame&n; * to simulate what it should look like&n; */
 DECL|function|fix_xframe040
 r_static
 r_inline
@@ -2268,7 +2268,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* despite what documentation seems to say, RMW &n;&t;&t; * accesses have always both the LK and RW bits set */
+multiline_comment|/* despite what documentation seems to say, RMW&n;&t;&t; * accesses have always both the LK and RW bits set */
 r_if
 c_cond
 (paren

@@ -142,7 +142,7 @@ DECL|macro|SA_ONESHOT
 mdefine_line|#define SA_ONESHOT&t;SA_RESETHAND
 DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000 /* dummy -- ignored */
-multiline_comment|/* &n; * sigaltstack controls&n; */
+multiline_comment|/*&n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK&t;1
 DECL|macro|SS_DISABLE
