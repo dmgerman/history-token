@@ -15,7 +15,7 @@ r_struct
 id|ippp_ccp
 (brace
 DECL|member|proto
-r_int
+id|u16
 id|proto
 suffix:semicolon
 DECL|member|compressor
@@ -194,7 +194,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren
@@ -215,7 +215,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren
