@@ -2631,8 +2631,9 @@ id|curp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Remapped I/O space can be accessible as pointer on i386 */
+multiline_comment|/* This might be changed in the future */
 macro_line|#ifndef __i386__
-multiline_comment|/* FIXME: I/O space is not accessible via pointers on all architectures */
 multiline_comment|/*&n; * silence / copy for playback&n; */
 r_static
 r_int
@@ -3013,12 +3014,12 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
 id|SNDRV_PCM_INFO_MMAP
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
+id|SNDRV_PCM_INFO_MMAP_IOMEM
+op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
@@ -3099,12 +3100,12 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
 id|SNDRV_PCM_INFO_MMAP
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
+id|SNDRV_PCM_INFO_MMAP_IOMEM
+op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
