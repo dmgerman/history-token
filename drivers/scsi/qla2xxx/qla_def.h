@@ -4549,12 +4549,6 @@ DECL|macro|RFT_ID_SNS_CMD_SIZE
 mdefine_line|#define&t;RFT_ID_SNS_CMD_SIZE&t;60
 DECL|macro|RFT_ID_SNS_DATA_SIZE
 mdefine_line|#define&t;RFT_ID_SNS_DATA_SIZE&t;16
-DECL|macro|RFF_ID_SNS_SCMD_LEN
-mdefine_line|#define&t;RFF_ID_SNS_SCMD_LEN&t;8
-DECL|macro|RFF_ID_SNS_CMD_SIZE
-mdefine_line|#define&t;RFF_ID_SNS_CMD_SIZE&t;32
-DECL|macro|RFF_ID_SNS_DATA_SIZE
-mdefine_line|#define&t;RFF_ID_SNS_DATA_SIZE&t;16
 DECL|macro|RNN_ID_SNS_SCMD_LEN
 mdefine_line|#define&t;RNN_ID_SNS_SCMD_LEN&t;10
 DECL|macro|RNN_ID_SNS_CMD_SIZE
@@ -4644,13 +4638,6 @@ r_uint8
 id|rft_data
 (braket
 id|RFT_ID_SNS_DATA_SIZE
-)braket
-suffix:semicolon
-DECL|member|rff_data
-r_uint8
-id|rff_data
-(braket
-id|RFF_ID_SNS_DATA_SIZE
 )braket
 suffix:semicolon
 DECL|member|rnn_data

@@ -10642,6 +10642,12 @@ multiline_comment|/* Allocate memory for SNS commands */
 r_if
 c_cond
 (paren
+id|IS_QLA2100
+c_func
+(paren
+id|ha
+)paren
+op_logical_or
 id|IS_QLA2200
 c_func
 (paren
@@ -10725,16 +10731,6 @@ id|sns_cmd_pkt
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_QLA2100
-c_func
-(paren
-id|ha
-)paren
-)paren
 (brace
 multiline_comment|/* Get consistent memory allocated for MS IOCB */
 id|ha-&gt;ms_iocb

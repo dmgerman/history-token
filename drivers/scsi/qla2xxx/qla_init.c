@@ -4120,20 +4120,6 @@ id|ha-&gt;loop_id
 op_assign
 id|loop_id
 suffix:semicolon
-multiline_comment|/* Make sure 2100 only has loop, in case of any firmware bug. */
-r_if
-c_cond
-(paren
-id|IS_QLA2100
-c_func
-(paren
-id|ha
-)paren
-)paren
-id|topo
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* initialize */
 id|ha-&gt;min_external_loopid
 op_assign
