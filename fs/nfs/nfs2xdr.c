@@ -213,8 +213,13 @@ id|htonl
 c_func
 (paren
 id|timep-&gt;tv_nsec
+ques
+c_cond
+id|timep-&gt;tv_nsec
 op_div
 l_int|1000
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_return
