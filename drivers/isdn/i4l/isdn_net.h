@@ -247,6 +247,31 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|isdn_net_reset_huptimer
+id|isdn_net_reset_huptimer
+c_func
+(paren
+id|isdn_net_local
+op_star
+id|lp
+comma
+id|isdn_net_local
+op_star
+id|olp
+)paren
+(brace
+id|olp-&gt;huptimer
+op_assign
+l_int|0
+suffix:semicolon
+id|lp-&gt;huptimer
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|ISDN_NET_MAX_QUEUE_LENGTH
 mdefine_line|#define ISDN_NET_MAX_QUEUE_LENGTH 2
 multiline_comment|/*&n; * is this particular channel busy?&n; */
