@@ -1,7 +1,7 @@
 macro_line|#ifndef&t;_CYCLOMX_H
 DECL|macro|_CYCLOMX_H
 mdefine_line|#define&t;_CYCLOMX_H
-multiline_comment|/*&n;* cyclomx.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;User-level API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on wanpipe.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/07/13    acme&t;&t;remove crap #if KERNEL_VERSION &gt; blah&n;* 2000/01/21    acme            rename cyclomx_open to cyclomx_mod_inc_use_count&n;*                               and cyclomx_close to cyclomx_mod_dec_use_count&n;* 1999/05/19&t;acme&t;&t;wait_queue_head_t wait_stats(support for 2.3.*)&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1998/12/27&t;acme&t;&t;cleanup: PACKED not needed&n;* 1998/08/08&t;acme&t;&t;Version 0.0.1&n;*/
+multiline_comment|/*&n;* cyclomx.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;User-level API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on wanpipe.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/07/13    acme&t;&t;remove crap #if KERNEL_VERSION &gt; blah&n;* 2000/01/21    acme            rename cyclomx_open to cyclomx_mod_inc_use_count&n;*                               and cyclomx_close to cyclomx_mod_dec_use_count&n;* 1999/05/19&t;acme&t;&t;wait_queue_head_t wait_stats(support for 2.3.*)&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1998/12/27&t;acme&t;&t;cleanup: PACKED not needed&n;* 1998/08/08&t;acme&t;&t;Version 0.0.1&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -128,7 +128,8 @@ id|u32
 id|hi_svc
 suffix:semicolon
 DECL|member|stats
-id|TX25Stats
+r_struct
+id|cycx_x25_stats
 id|stats
 suffix:semicolon
 DECL|member|lock

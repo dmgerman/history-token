@@ -105,7 +105,7 @@ id|datasize
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct cycx_firmware - CYCX firmware file structure&n; * @signature - CFM file signature&n; * @version - file format version&n; * @checksum - info + image&n; * @reserved - reserved&n; * @descr - description string&n; * @info - firmware module info&n; * @image - code image (variable size)&n; */
+multiline_comment|/**&n; *&t;struct cycx_firmware - CYCX firmware file structure&n; *&t;@signature - CFM file signature&n; *&t;@version - file format version&n; *&t;@checksum - info + image&n; *&t;@reserved - reserved&n; *&t;@descr - description string&n; *&t;@info - firmware module info&n; *&t;@image - code image (variable size)&n; */
 DECL|struct|cycx_firmware
 r_struct
 id|cycx_firmware

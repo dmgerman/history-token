@@ -279,7 +279,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -292,7 +293,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -305,7 +307,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -318,7 +321,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -331,7 +335,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -344,7 +349,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -357,7 +363,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -370,7 +377,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -383,7 +391,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -399,7 +408,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Config
+r_struct
+id|cycx_x25_config
 op_star
 id|conf
 )paren
@@ -656,7 +666,8 @@ r_void
 id|x25_dump_config
 c_func
 (paren
-id|TX25Config
+r_struct
+id|cycx_x25_config
 op_star
 id|conf
 )paren
@@ -666,7 +677,8 @@ r_void
 id|x25_dump_stats
 c_func
 (paren
-id|TX25Stats
+r_struct
+id|cycx_x25_stats
 op_star
 id|stats
 )paren
@@ -709,7 +721,8 @@ op_star
 id|conf
 )paren
 (brace
-id|TX25Config
+r_struct
+id|cycx_x25_config
 id|cfg
 suffix:semicolon
 multiline_comment|/* Verify configuration ID */
@@ -2421,7 +2434,8 @@ op_star
 id|card
 )paren
 (brace
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 id|cmd
 suffix:semicolon
 id|u16
@@ -2662,7 +2676,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -2755,7 +2770,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -3123,7 +3139,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -3373,7 +3390,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -3546,7 +3564,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -3651,7 +3670,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -3768,7 +3788,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -4000,7 +4021,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -4068,7 +4090,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 op_star
 id|cmd
 )paren
@@ -4215,7 +4238,8 @@ r_int
 id|len2
 )paren
 (brace
-id|TX25Cmd
+r_struct
+id|cycx_x25_cmd
 id|c
 suffix:semicolon
 r_int
@@ -4443,7 +4467,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|TX25Config
+r_struct
+id|cycx_x25_config
 op_star
 id|conf
 )paren
@@ -4453,7 +4478,8 @@ r_struct
 id|u16
 id|nlinks
 suffix:semicolon
-id|TX25Config
+r_struct
+id|cycx_x25_config
 id|conf
 (braket
 l_int|2
@@ -6640,7 +6666,8 @@ r_void
 id|x25_dump_config
 c_func
 (paren
-id|TX25Config
+r_struct
+id|cycx_x25_config
 op_star
 id|conf
 )paren
@@ -6817,7 +6844,8 @@ r_void
 id|x25_dump_stats
 c_func
 (paren
-id|TX25Stats
+r_struct
+id|cycx_x25_stats
 op_star
 id|stats
 )paren
