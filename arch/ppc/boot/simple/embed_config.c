@@ -2,6 +2,7 @@ multiline_comment|/* Board specific functions for those embedded 8xx boards that
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#ifdef CONFIG_8xx
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#endif
@@ -1875,15 +1876,12 @@ id|bd-&gt;bi_busfreq
 op_assign
 l_int|100000000
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;mfspr %0, 287&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|pvr
-)paren
+op_assign
+id|mfspr
+c_func
+(paren
+id|PVR
 )paren
 suffix:semicolon
 r_if
