@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/super.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  super.c contains code to handle: - mount structures&n; *                                   - super-block tables&n; *                                   - filesystem drivers list&n; *                                   - mount system call&n; *                                   - umount system call&n; *                                   - ustat system call&n; *&n; * GK 2/5/95  -  Changed to support mounting the root fs via NFS&n; *&n; *  Added kerneld support: Jacques Gelinas and Bjorn Ekwall&n; *  Added change_root: Werner Almesberger &amp; Hans Lermen, Feb &squot;96&n; *  Added options to /proc/mounts:&n; *    Torbj&#xfffd;rn Lindh (torbjorn.lindh@gopta.se), April 14, 1996.&n; *  Added devfs support: Richard Gooch &lt;rgooch@atnf.csiro.au&gt;, 13-JAN-1998&n; *  Heavily rewritten for &squot;one fs - one tree&squot; dcache architecture. AV, Mar 2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
@@ -409,6 +410,13 @@ id|s
 suffix:semicolon
 )brace
 )brace
+DECL|variable|deactivate_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|deactivate_super
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;grab_super&t;- acquire an active reference&n; *&t;@s&t;- reference we are trying to make active&n; *&n; *&t;Tries to acquire an active reference.  grab_super() is used when we&n; * &t;had just found a superblock in super_blocks or fs_type-&gt;fs_supers&n; *&t;and want to turn it into a full-blown active reference.  grab_super()&n; *&t;is called with sb_lock held and drops it.  Returns 1 in case of&n; *&t;success, 0 if we had failed (superblock contents was already dead or&n; *&t;dying when grab_super() had been called).&n; */
 DECL|function|grab_super
 r_static
@@ -690,6 +698,13 @@ id|sb-&gt;s_umount
 )paren
 suffix:semicolon
 )brace
+DECL|variable|generic_shutdown_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_shutdown_super
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;sget&t;-&t;find or create a superblock&n; *&t;@type:&t;filesystem type superblock should belong to&n; *&t;@test:&t;comparison callback&n; *&t;@set:&t;setup callback&n; *&t;@data:&t;argument to each of them&n; */
 DECL|function|sget
 r_struct
@@ -923,6 +938,13 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|variable|sget
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sget
+)paren
+suffix:semicolon
 DECL|function|drop_super
 r_void
 id|drop_super
@@ -948,6 +970,13 @@ id|sb
 )paren
 suffix:semicolon
 )brace
+DECL|variable|drop_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drop_super
+)paren
+suffix:semicolon
 DECL|function|write_super
 r_static
 r_inline
@@ -1417,6 +1446,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|get_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_super
+)paren
+suffix:semicolon
 DECL|function|user_get_super
 r_struct
 id|super_block
@@ -1517,6 +1553,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|user_get_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|user_get_super
+)paren
+suffix:semicolon
 DECL|function|sys_ustat
 id|asmlinkage
 r_int
@@ -2142,6 +2185,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|set_anon_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_anon_super
+)paren
+suffix:semicolon
 DECL|function|kill_anon_super
 r_void
 id|kill_anon_super
@@ -2191,6 +2241,13 @@ id|unnamed_dev_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kill_anon_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kill_anon_super
+)paren
+suffix:semicolon
 DECL|function|kill_litter_super
 r_void
 id|kill_litter_super
@@ -2220,6 +2277,13 @@ id|sb
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kill_litter_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kill_litter_super
+)paren
+suffix:semicolon
 DECL|function|set_bdev_super
 r_static
 r_int
@@ -2549,6 +2613,13 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|variable|get_sb_bdev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_bdev
+)paren
+suffix:semicolon
 DECL|function|kill_block_super
 r_void
 id|kill_block_super
@@ -2590,6 +2661,13 @@ id|BDEV_FS
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kill_block_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kill_block_super
+)paren
+suffix:semicolon
 DECL|function|get_sb_nodev
 r_struct
 id|super_block
@@ -2716,6 +2794,13 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|variable|get_sb_nodev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_nodev
+)paren
+suffix:semicolon
 DECL|function|compare_single
 r_static
 r_int
@@ -2884,6 +2969,13 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|variable|get_sb_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_single
+)paren
+suffix:semicolon
 r_struct
 id|vfsmount
 op_star
@@ -3126,4 +3218,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kern_mount
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kern_mount
+)paren
+suffix:semicolon
 eof
