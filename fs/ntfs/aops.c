@@ -717,6 +717,13 @@ id|ni-&gt;run_list.rl
 op_logical_and
 op_logical_neg
 id|ni-&gt;mft_no
+op_logical_and
+op_logical_neg
+id|NInoAttr
+c_func
+(paren
+id|ni
+)paren
 )paren
 )paren
 id|panic
