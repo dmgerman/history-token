@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; */
+multiline_comment|/*&n; * pci.c - Low-Level PCI Access in IA-64&n; *&n; * Derived from bios32.c of i386 tree.&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note: Above list of copyright holders is incomplete...&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -718,14 +718,19 @@ id|ranges
 )paren
 (brace
 )brace
+r_static
+r_inline
 r_int
-DECL|function|pcibios_enable_device
-id|pcibios_enable_device
+DECL|function|pcibios_enable_resources
+id|pcibios_enable_resources
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 id|u16
@@ -781,6 +786,23 @@ id|idx
 op_increment
 )paren
 (brace
+multiline_comment|/* Only set up the desired resources.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mask
+op_amp
+(paren
+l_int|1
+op_lshift
+id|idx
+)paren
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|r
 op_assign
 op_amp
@@ -880,6 +902,46 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_int
+DECL|function|pcibios_enable_device
+id|pcibios_enable_device
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|mask
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|pcibios_enable_resources
+c_func
+(paren
+id|dev
+comma
+id|mask
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
 id|printk
 c_func
 (paren

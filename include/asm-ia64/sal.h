@@ -15,7 +15,7 @@ multiline_comment|/* SAL spec _requires_ eight args for each call. */
 DECL|macro|__SAL_CALL
 mdefine_line|#define __SAL_CALL(result,a0,a1,a2,a3,a4,a5,a6,a7)&t;&bslash;&n;&t;result = (*ia64_sal)(a0,a1,a2,a3,a4,a5,a6,a7)
 DECL|macro|SAL_CALL
-macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;sal_lock, flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result,args);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;sal_lock, flags);&t;&bslash;&n;} while (0)
+macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];                        &bslash;&n;&t;ia64_save_scratch_fpregs(fr);                   &bslash;&n;&t;spin_lock_irqsave(&amp;sal_lock, flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result,args);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;sal_lock, flags);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);                   &bslash;&n;} while (0)
 DECL|macro|SAL_SET_VECTORS
 mdefine_line|#define SAL_SET_VECTORS&t;&t;&t;0x01000000
 DECL|macro|SAL_GET_STATE_INFO

@@ -181,7 +181,7 @@ macro_line|# define local_irq_save(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&
 DECL|macro|local_irq_disable
 macro_line|# define local_irq_disable()&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long ip, psr;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;mov %0=psr;; rsm psr.i;;&quot; : &quot;=r&quot; (psr) :: &quot;memory&quot;);&t;&bslash;&n;&t;if (psr &amp; (1UL &lt;&lt; 14)) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t;&t;&t;&bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|local_irq_restore
-macro_line|# define local_irq_restore(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long ip, old_psr, psr = (x);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;mov %0=psr;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;cmp.ne p6,p7=%1,r0;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;srlz.d&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      : &quot;=&amp;r&quot; (old_psr) : &quot;r&quot;((psr) &amp; IA64_PSR_I)&t;&bslash;&n;&t;&t;&t;      : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;);&t;&t;&t;&t;&bslash;&n;&t;if ((old_psr &amp; IA64_PSR_I) &amp;&amp; !(psr &amp; IA64_PSR_I)) {&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t;&t;&bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|# define local_irq_restore(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long ip, old_psr, psr = (x);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;mov %0=psr;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;cmp.ne p6,p7=%1,r0;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) srlz.d&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      : &quot;=&amp;r&quot; (old_psr) : &quot;r&quot;((psr) &amp; IA64_PSR_I)&t;&bslash;&n;&t;&t;&t;      : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;);&t;&t;&t;&t;&bslash;&n;&t;if ((old_psr &amp; IA64_PSR_I) &amp;&amp; !(psr &amp; IA64_PSR_I)) {&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot;(ip));&t;&t;&t;&t;&bslash;&n;&t;&t;last_cli_ip = ip;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_IA64_DEBUG_IRQ */
 multiline_comment|/* clearing of psr.i is implicitly serialized (visible by next insn) */
 DECL|macro|local_irq_save
@@ -196,6 +196,8 @@ DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__ (&quot;;; ssm psr.i;; srlz.d&quot; ::: &quot;memory&quot;)
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(flags)&t;__asm__ __volatile__ (&quot;mov %0=psr&quot; : &quot;=r&quot; (flags) :: &quot;memory&quot;)
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;(flags &amp; IA64_PSR_I) == 0;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Force an unresolved reference if someone tries to use&n; * ia64_fetch_and_add() with a bad value.&n; */
 r_extern
 r_int
@@ -471,7 +473,7 @@ op_star
 id|task
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PERFMON)
+macro_line|#ifdef CONFIG_PERFMON
 id|DECLARE_PER_CPU
 c_func
 (paren
@@ -487,7 +489,7 @@ DECL|macro|PERFMON_IS_SYSWIDE
 macro_line|# define PERFMON_IS_SYSWIDE() (0)
 macro_line|#endif
 DECL|macro|__switch_to
-mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Return true if this CPU can call the console drivers in printk() */
 DECL|macro|arch_consoles_callable

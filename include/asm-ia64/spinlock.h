@@ -91,7 +91,9 @@ suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|rwlock_init
-mdefine_line|#define rwlock_init(x) do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+DECL|macro|rwlock_is_locked
+mdefine_line|#define rwlock_is_locked(x)&t;(*(volatile int *) (x) != 0)
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(rw)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int tmp = 0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;1:&bslash;tfetchadd4.acq %0 = [%1], 1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;      &quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;tbit.nz p6,p0 = %0, 31&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) br.cond.sptk.few 2f&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;2:&bslash;tfetchadd4.rel %0 = [%1], -1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;      &quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;3:&bslash;tld4.acq %0 = [%1]&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;tbit.nz p6,p0 = %0, 31&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;(p6) br.cond.sptk.few 3b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;br.cond.sptk.few 1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;;;&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      &quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      : &quot;=&amp;r&quot; (tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;      : &quot;r&quot; (rw) : &quot;p6&quot;, &quot;memory&quot;);&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|_raw_read_unlock
