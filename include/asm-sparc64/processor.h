@@ -418,6 +418,8 @@ DECL|macro|init_task
 mdefine_line|#define init_task&t;(init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_task_union.stack)
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__ASM_SPARC64_PROCESSOR_H) */

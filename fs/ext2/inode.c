@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 r_static
 r_int
 id|ext2_update_inode
@@ -1474,7 +1475,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Verify that place we are splicing to is still there and vacant */
-multiline_comment|/* Writer: pointers, -&gt;i_next_alloc*, -&gt;i_blocks */
+multiline_comment|/* Writer: pointers, -&gt;i_next_alloc* */
 r_if
 c_cond
 (paren
@@ -1520,14 +1521,6 @@ l_int|1
 dot
 id|key
 )paren
-suffix:semicolon
-id|inode-&gt;i_blocks
-op_add_assign
-id|num
-op_star
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_div
-l_int|512
 suffix:semicolon
 multiline_comment|/* Writer: end */
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
@@ -2410,13 +2403,6 @@ id|q
 )paren
 (brace
 r_int
-id|blocks
-op_assign
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_div
-l_int|512
-suffix:semicolon
-r_int
 r_int
 id|block_to_free
 op_assign
@@ -2488,14 +2474,6 @@ op_increment
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* Writer: -&gt;i_blocks */
-id|inode-&gt;i_blocks
-op_sub_assign
-id|blocks
-op_star
-id|count
-suffix:semicolon
-multiline_comment|/* Writer: end */
 id|mark_inode_dirty
 c_func
 (paren
@@ -2532,14 +2510,6 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* Writer: -&gt;i_blocks */
-id|inode-&gt;i_blocks
-op_sub_assign
-id|blocks
-op_star
-id|count
-suffix:semicolon
-multiline_comment|/* Writer: end */
 id|mark_inode_dirty
 c_func
 (paren
@@ -2704,14 +2674,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: -&gt;i_blocks */
-id|inode-&gt;i_blocks
-op_sub_assign
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_div
-l_int|512
-suffix:semicolon
-multiline_comment|/* Writer: end */
 id|ext2_free_blocks
 c_func
 (paren
@@ -4964,6 +4926,38 @@ c_cond
 id|retval
 op_ne
 l_int|0
+op_logical_or
+(paren
+(paren
+(paren
+id|iattr-&gt;ia_valid
+op_amp
+id|ATTR_UID
+op_logical_and
+id|iattr-&gt;ia_uid
+op_ne
+id|inode-&gt;i_uid
+)paren
+op_logical_or
+(paren
+id|iattr-&gt;ia_valid
+op_amp
+id|ATTR_GID
+op_logical_and
+id|iattr-&gt;ia_gid
+op_ne
+id|inode-&gt;i_gid
+)paren
+)paren
+op_logical_and
+id|DQUOT_TRANSFER
+c_func
+(paren
+id|inode
+comma
+id|iattr
+)paren
+)paren
 )paren
 r_goto
 id|out

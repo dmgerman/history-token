@@ -317,6 +317,8 @@ DECL|macro|init_task
 mdefine_line|#define init_task       (init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack      (init_task_union.stack)
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
 multiline_comment|/* Only let our hackers near the condition codes */
 DECL|macro|PSW_MASK_DEBUGCHANGE

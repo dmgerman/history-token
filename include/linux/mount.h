@@ -77,10 +77,6 @@ r_struct
 id|list_head
 id|mnt_list
 suffix:semicolon
-DECL|member|mnt_owner
-id|uid_t
-id|mnt_owner
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|mntget

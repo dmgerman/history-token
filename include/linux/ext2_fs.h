@@ -1067,7 +1067,6 @@ r_extern
 r_int
 id|ext2_new_block
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1089,7 +1088,6 @@ r_extern
 r_void
 id|ext2_free_blocks
 (paren
-r_const
 r_struct
 id|inode
 op_star

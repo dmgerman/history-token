@@ -568,8 +568,6 @@ multiline_comment|/*&n; * usbvideo callbacks (virtual methods). They are set whe
 r_typedef
 r_struct
 (brace
-macro_line|#if defined(usb_device_id_ver)
-multiline_comment|/* New style probe (for 2.4.x kernels with hotplugging) */
 DECL|member|probe
 r_void
 op_star
@@ -591,24 +589,6 @@ id|usb_device_id
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* Old style probe (for 2.2.x kernels) */
-r_void
-op_star
-(paren
-op_star
-id|probe
-)paren
-(paren
-r_struct
-id|usb_device
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|member|userFree
 r_void
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.28 08/17/01 15:23:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.processor.h 1.31 10/05/01 16:26:22 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H
@@ -1244,6 +1244,69 @@ r_int
 id|or_val
 )paren
 suffix:semicolon
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
+multiline_comment|/*&n; * Prefetch macros.&n; */
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;dcbt 0,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|prefetchw
+r_extern
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;dcbtst 0,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|spin_lock_prefetch
+mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|have_of
 mdefine_line|#define have_of (_machine == _MACH_chrp || _machine == _MACH_Pmac)

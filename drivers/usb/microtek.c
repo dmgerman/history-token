@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Microtek Scanmaker X6 USB scanner, and possibly others.&n; *&n; * (C) Copyright 2000 John Fremlin &lt;vii@penguinpowered.com&gt;&n; * (C) Copyright 2000 Oliver Neukum &lt;Oliver.Neukum@lrz.uni-muenchen.de&gt;&n; *&n; * Parts shamelessly stolen from usb-storage and copyright by their&n; * authors. Thanks to Matt Dharm for giving us permission!&n; *&n; * This driver implements a SCSI host controller driver and a USB&n; * device driver. To avoid confusion, all the USB related stuff is&n; * prefixed by mts_usb_ and all the SCSI stuff by mts_scsi_.&n; *&n; * Microtek (www.microtek.com) did not release the specifications for&n; * their USB protocol to us, so we had to reverse engineer them. We&n; * don&squot;t know for which models they are valid.&n; *&n; * The X6 USB has three bulk endpoints, one output (0x1) down which&n; * commands and outgoing data are sent, and two input: 0x82 from which&n; * normal data is read from the scanner (in packets of maximum 32&n; * bytes) and from which the status byte is read, and 0x83 from which&n; * the results of a scan (or preview) are read in up to 64 * 1024 byte&n; * chunks by the Windows driver. We don&squot;t know how much it is possible&n; * to read at a time from 0x83.&n; *&n; * It seems possible to read (with URB transfers) everything from 0x82&n; * in one go, without bothering to read in 32 byte chunks.&n; *&n; * There seems to be an optimisation of a further READ implicit if&n; * you simply read from 0x83.&n; *&n; * Guessed protocol:&n; *&n; *&t;Send raw SCSI command to EP 0x1&n; *&n; *&t;If there is data to receive:&n; *&t;&t;If the command was READ datatype=image:&n; *&t;&t;&t;Read a lot of data from EP 0x83&n; *&t;&t;Else:&n; *&t;&t;&t;Read data from EP 0x82&n; *&t;Else:&n; *&t;&t;If there is data to transmit:&n; *&t;&t;&t;Write it to EP 0x1&n; *&n; *&t;Read status byte from EP 0x82&n; *&n; * References:&n; *&n; * The SCSI command set for the scanner is available from&n; *&t;ftp://ftp.microtek.com/microtek/devpack/&n; *&n; * Microtek NV sent us a more up to date version of the document. If&n; * you want it, just send mail.&n; *&n; * Status:&n; *&n; *&t;Untested with multiple scanners.&n; *&t;Untested on SMP.&n; *&t;Untested on a bigendian machine.&n; *&n; * History:&n; *&n; *&t;20000417 starting history&n; *&t;20000417 fixed load oops&n; *&t;20000417 fixed unload oops&n; *&t;20000419 fixed READ IMAGE detection&n; *&t;20000424 started conversion to use URBs&n; *&t;20000502 handled short transfers as errors&n; *&t;20000513 rename and organisation of functions (john)&n; *&t;20000513 added IDs for all products supported by Windows driver (john)&n; *&t;20000514 Rewrote mts_scsi_queuecommand to use URBs (john)&n; *&t;20000514 Version 0.0.8j&n; *      20000514 Fix reporting of non-existant devices to SCSI layer (john)&n; *&t;20000514 Added MTS_DEBUG_INT (john)&n; *&t;20000514 Changed &quot;usb-microtek&quot; to &quot;microtek&quot; for consistency (john)&n; *&t;20000514 Stupid bug fixes (john)&n; *&t;20000514 Version 0.0.9j&n; *&t;20000515 Put transfer context and URB in mts_desc (john)&n; *&t;20000515 Added prelim turn off debugging support (john)&n; *&t;20000515 Version 0.0.10j&n; *      20000515 Fixed up URB allocation (clear URB on alloc) (john)&n; *      20000515 Version 0.0.11j&n; *&t;20000516 Removed unnecessary spinlock in mts_transfer_context (john)&n; *&t;20000516 Removed unnecessary up on instance lock in mts_remove_nolock (john)&n; *&t;20000516 Implemented (badly) scsi_abort (john)&n; *&t;20000516 Version 0.0.12j&n; *      20000517 Hopefully removed mts_remove_nolock quasideadlock (john)&n; *      20000517 Added mts_debug_dump to print ll USB info (john)&n; *&t;20000518 Tweaks and documentation updates (john)&n; *&t;20000518 Version 0.0.13j&n; *&t;20000518 Cleaned up abort handling (john)&n; *&t;20000523 Removed scsi_command and various scsi_..._resets (john)&n; *&t;20000523 Added unlink URB on scsi_abort, now OHCI supports it (john)&n; *&t;20000523 Fixed last tiresome compile warning (john)&n; *&t;20000523 Version 0.0.14j (though version 0.1 has come out?)&n; *&t;20000602 Added primitive reset&n; *&t;20000602 Version 0.2.0&n; *&t;20000603 various cosmetic changes&n; *&t;20000603 Version 0.2.1&n; *&t;20000620 minor cosmetic changes&n; *&t;20000620 Version 0.2.2&n; *&t;20000822 Hopefully fixed deadlock in mts_remove_nolock()&n; *&t;20000822 Fixed minor race in mts_transfer_cleanup()&n; *&t;20000822 Fixed deadlock on submission error in queuecommand&n; *&t;20000822 Version 0.2.3&n; *&t;20000913 Reduced module size if debugging is off&n; *&t;20000913 Version 0.2.4&n; *      20010210 New abort logic&n; *      20010210 Version 0.3.0&n; *&t;20010217 Merged scatter/gather&n; *&t;20010218 Version 0.4.0&n; *&t;20010218 Cosmetic fixes&n; *&t;20010218 Version 0.4.1&n; *      20010306 Abort while using scatter/gather&n; *      20010306 Version 0.4.2&n; *      20010311 Remove all timeouts and tidy up generally (john)&n; *&t;20010320 check return value of scsi_register()&n; *&t;20010320 Version 0.4.3&n; *&t;20010408 Identify version on module load.&n; */
+multiline_comment|/* Driver for Microtek Scanmaker X6 USB scanner, and possibly others.&n; *&n; * (C) Copyright 2000 John Fremlin &lt;vii@penguinpowered.com&gt;&n; * (C) Copyright 2000 Oliver Neukum &lt;Oliver.Neukum@lrz.uni-muenchen.de&gt;&n; *&n; * Parts shamelessly stolen from usb-storage and copyright by their&n; * authors. Thanks to Matt Dharm for giving us permission!&n; *&n; * This driver implements a SCSI host controller driver and a USB&n; * device driver. To avoid confusion, all the USB related stuff is&n; * prefixed by mts_usb_ and all the SCSI stuff by mts_scsi_.&n; *&n; * Microtek (www.microtek.com) did not release the specifications for&n; * their USB protocol to us, so we had to reverse engineer them. We&n; * don&squot;t know for which models they are valid.&n; *&n; * The X6 USB has three bulk endpoints, one output (0x1) down which&n; * commands and outgoing data are sent, and two input: 0x82 from which&n; * normal data is read from the scanner (in packets of maximum 32&n; * bytes) and from which the status byte is read, and 0x83 from which&n; * the results of a scan (or preview) are read in up to 64 * 1024 byte&n; * chunks by the Windows driver. We don&squot;t know how much it is possible&n; * to read at a time from 0x83.&n; *&n; * It seems possible to read (with URB transfers) everything from 0x82&n; * in one go, without bothering to read in 32 byte chunks.&n; *&n; * There seems to be an optimisation of a further READ implicit if&n; * you simply read from 0x83.&n; *&n; * Guessed protocol:&n; *&n; *&t;Send raw SCSI command to EP 0x1&n; *&n; *&t;If there is data to receive:&n; *&t;&t;If the command was READ datatype=image:&n; *&t;&t;&t;Read a lot of data from EP 0x83&n; *&t;&t;Else:&n; *&t;&t;&t;Read data from EP 0x82&n; *&t;Else:&n; *&t;&t;If there is data to transmit:&n; *&t;&t;&t;Write it to EP 0x1&n; *&n; *&t;Read status byte from EP 0x82&n; *&n; * References:&n; *&n; * The SCSI command set for the scanner is available from&n; *&t;ftp://ftp.microtek.com/microtek/devpack/&n; *&n; * Microtek NV sent us a more up to date version of the document. If&n; * you want it, just send mail.&n; *&n; * Status:&n; *&n; *&t;Untested with multiple scanners.&n; *&t;Untested on SMP.&n; *&t;Untested on a bigendian machine.&n; *&n; * History:&n; *&n; *&t;20000417 starting history&n; *&t;20000417 fixed load oops&n; *&t;20000417 fixed unload oops&n; *&t;20000419 fixed READ IMAGE detection&n; *&t;20000424 started conversion to use URBs&n; *&t;20000502 handled short transfers as errors&n; *&t;20000513 rename and organisation of functions (john)&n; *&t;20000513 added IDs for all products supported by Windows driver (john)&n; *&t;20000514 Rewrote mts_scsi_queuecommand to use URBs (john)&n; *&t;20000514 Version 0.0.8j&n; *      20000514 Fix reporting of non-existant devices to SCSI layer (john)&n; *&t;20000514 Added MTS_DEBUG_INT (john)&n; *&t;20000514 Changed &quot;usb-microtek&quot; to &quot;microtek&quot; for consistency (john)&n; *&t;20000514 Stupid bug fixes (john)&n; *&t;20000514 Version 0.0.9j&n; *&t;20000515 Put transfer context and URB in mts_desc (john)&n; *&t;20000515 Added prelim turn off debugging support (john)&n; *&t;20000515 Version 0.0.10j&n; *      20000515 Fixed up URB allocation (clear URB on alloc) (john)&n; *      20000515 Version 0.0.11j&n; *&t;20000516 Removed unnecessary spinlock in mts_transfer_context (john)&n; *&t;20000516 Removed unnecessary up on instance lock in mts_remove_nolock (john)&n; *&t;20000516 Implemented (badly) scsi_abort (john)&n; *&t;20000516 Version 0.0.12j&n; *      20000517 Hopefully removed mts_remove_nolock quasideadlock (john)&n; *      20000517 Added mts_debug_dump to print ll USB info (john)&n; *&t;20000518 Tweaks and documentation updates (john)&n; *&t;20000518 Version 0.0.13j&n; *&t;20000518 Cleaned up abort handling (john)&n; *&t;20000523 Removed scsi_command and various scsi_..._resets (john)&n; *&t;20000523 Added unlink URB on scsi_abort, now OHCI supports it (john)&n; *&t;20000523 Fixed last tiresome compile warning (john)&n; *&t;20000523 Version 0.0.14j (though version 0.1 has come out?)&n; *&t;20000602 Added primitive reset&n; *&t;20000602 Version 0.2.0&n; *&t;20000603 various cosmetic changes&n; *&t;20000603 Version 0.2.1&n; *&t;20000620 minor cosmetic changes&n; *&t;20000620 Version 0.2.2&n; *&t;20000822 Hopefully fixed deadlock in mts_remove_nolock()&n; *&t;20000822 Fixed minor race in mts_transfer_cleanup()&n; *&t;20000822 Fixed deadlock on submission error in queuecommand&n; *&t;20000822 Version 0.2.3&n; *&t;20000913 Reduced module size if debugging is off&n; *&t;20000913 Version 0.2.4&n; *      20010210 New abort logic&n; *      20010210 Version 0.3.0&n; *&t;20010217 Merged scatter/gather&n; *&t;20010218 Version 0.4.0&n; *&t;20010218 Cosmetic fixes&n; *&t;20010218 Version 0.4.1&n; *      20010306 Abort while using scatter/gather&n; *      20010306 Version 0.4.2&n; *      20010311 Remove all timeouts and tidy up generally (john)&n; *&t;20010320 check return value of scsi_register()&n; *&t;20010320 Version 0.4.3&n; *&t;20010408 Identify version on module load.&n; *&t;20011003 Fix multiple requests&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1514,10 +1514,6 @@ comma
 id|context
 )paren
 suffix:semicolon
-id|transfer-&gt;transfer_flags
-op_assign
-id|USB_ASYNC_UNLINK
-suffix:semicolon
 id|transfer-&gt;status
 op_assign
 l_int|0
@@ -1592,13 +1588,6 @@ id|final_callback
 c_func
 (paren
 id|context-&gt;srb
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|context-&gt;instance-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -2401,13 +2390,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|down
-c_func
-(paren
-op_amp
-id|desc-&gt;lock
-)paren
-suffix:semicolon
 id|FILL_BULK_URB
 c_func
 (paren
@@ -2491,13 +2473,6 @@ id|srb
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|desc-&gt;lock
-)paren
-suffix:semicolon
 )brace
 id|out
 suffix:colon

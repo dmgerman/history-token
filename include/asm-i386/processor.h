@@ -1432,6 +1432,8 @@ l_string|&quot;rep;nop&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;rep_nop()
 multiline_comment|/* Prefetch instructions for Pentium III and AMD Athlon */
 macro_line|#ifdef &t;CONFIG_MPENTIUMIII
 DECL|macro|ARCH_HAS_PREFETCH

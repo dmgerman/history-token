@@ -260,6 +260,8 @@ DECL|macro|init_task
 mdefine_line|#define init_task&t;(init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_task_union.stack)
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 multiline_comment|/*&n; * Create a new kernel thread&n; */
 r_extern
 r_int

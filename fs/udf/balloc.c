@@ -490,7 +490,6 @@ r_void
 id|udf_bitmap_free_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -783,8 +782,6 @@ r_else
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -907,7 +904,6 @@ r_int
 id|udf_bitmap_prealloc_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1175,8 +1171,6 @@ c_cond
 id|DQUOT_PREALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -1210,8 +1204,6 @@ suffix:semicolon
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -1325,7 +1317,6 @@ r_int
 id|udf_bitmap_new_block
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -2001,8 +1992,6 @@ c_cond
 id|DQUOT_ALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -2175,7 +2164,6 @@ r_void
 id|udf_table_free_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -2327,8 +2315,6 @@ multiline_comment|/* We do this up front - There are some error conditions that 
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|count
@@ -3444,7 +3430,6 @@ r_int
 id|udf_table_prealloc_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -4440,7 +4425,6 @@ r_void
 id|udf_free_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -4625,7 +4609,6 @@ r_int
 id|udf_prealloc_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -4811,7 +4794,6 @@ r_int
 id|udf_new_block
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star

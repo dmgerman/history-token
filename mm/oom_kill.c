@@ -622,7 +622,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the buffer and page cache (excluding swap cache) are over&n;&t; * their (/proc tunable) minimum, we&squot;re still not OOM.  We test&n;&t; * this to make sure we don&squot;t return OOM when the system simply&n;&t; * has a hard time with the cache.&n;&t; */
+multiline_comment|/*&n;&t; * If the buffer and page cache (including swap cache) are over&n;&t; * their (/proc tunable) minimum, we&squot;re still not OOM.  We test&n;&t; * this to make sure we don&squot;t return OOM when the system simply&n;&t; * has a hard time with the cache.&n;&t; */
 id|cache_mem
 op_assign
 id|atomic_read
@@ -631,10 +631,6 @@ c_func
 op_amp
 id|page_cache_size
 )paren
-suffix:semicolon
-id|cache_mem
-op_sub_assign
-id|swapper_space.nrpages
 suffix:semicolon
 id|limit
 op_assign

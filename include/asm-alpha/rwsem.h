@@ -6,7 +6,7 @@ macro_line|#ifndef _LINUX_RWSEM_H
 macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/compiler.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 r_struct

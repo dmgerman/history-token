@@ -47,9 +47,6 @@ mdefine_line|#define RS_STROBE_TIME (10*HZ)
 DECL|macro|RS_ISR_PASS_LIMIT
 mdefine_line|#define RS_ISR_PASS_LIMIT 256
 multiline_comment|/*&n; * End of serial driver configuration section.&n; */
-macro_line|#ifdef MODVERSIONS
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifdef LOCAL_HEADERS

@@ -207,23 +207,6 @@ DECL|macro|find_lock_page
 mdefine_line|#define find_lock_page(mapping, index) &bslash;&n;&t;__find_lock_page(mapping, index, page_hash(mapping, index))
 r_extern
 r_void
-id|__add_page_to_hash_queue
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_struct
-id|page
-op_star
-op_star
-id|p
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|add_to_page_cache
 c_func
 (paren

@@ -51,10 +51,6 @@ mdefine_line|#define DEBUG_SYMBOLS
 macro_line|#ifdef DEBUG_SYMBOLS
 DECL|macro|_static
 mdefine_line|#define _static
-macro_line|#ifndef EXPORT_SYMTAB
-DECL|macro|EXPORT_SYMTAB
-mdefine_line|#define EXPORT_SYMTAB
-macro_line|#endif
 macro_line|#else
 DECL|macro|_static
 mdefine_line|#define _static static

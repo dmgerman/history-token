@@ -29,24 +29,6 @@ DECL|macro|QUOTAFILENAME
 mdefine_line|#define QUOTAFILENAME &quot;quota&quot;
 DECL|macro|QUOTAGROUP
 mdefine_line|#define QUOTAGROUP &quot;staff&quot;
-r_extern
-r_int
-id|nr_dquots
-comma
-id|nr_free_dquots
-suffix:semicolon
-r_extern
-r_int
-id|max_dquots
-suffix:semicolon
-r_extern
-r_int
-id|dquot_root_squash
-suffix:semicolon
-DECL|macro|NR_DQHASH
-mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
-DECL|macro|NR_DQUOTS
-mdefine_line|#define NR_DQUOTS 1024          /* Maximum number of quotas active at one time (Configurable from /proc/sys/fs) */
 multiline_comment|/*&n; * Command definitions for the &squot;quotactl&squot; system call.&n; * The commands are broken into a main command defined below&n; * and a subcommand that is used to convey the type of&n; * quota that is being manipulated (see above).&n; */
 DECL|macro|SUBCMDMASK
 mdefine_line|#define SUBCMDMASK  0x00ff
@@ -177,15 +159,22 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Maximum length of a message generated in the quota system,&n; * that needs to be kicked onto the tty.&n; */
-DECL|macro|MAX_QUOTA_MESSAGE
-mdefine_line|#define MAX_QUOTA_MESSAGE 75
+r_extern
+r_int
+id|nr_dquots
+comma
+id|nr_free_dquots
+suffix:semicolon
+r_extern
+r_int
+id|dquot_root_squash
+suffix:semicolon
+DECL|macro|NR_DQHASH
+mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
 DECL|macro|DQ_LOCKED
-mdefine_line|#define DQ_LOCKED     0x01&t;/* locked for update */
-DECL|macro|DQ_WANT
-mdefine_line|#define DQ_WANT       0x02&t;/* wanted for update */
+mdefine_line|#define DQ_LOCKED     0x01&t;/* dquot under IO */
 DECL|macro|DQ_MOD
-mdefine_line|#define DQ_MOD        0x04&t;/* dquot modified since read */
+mdefine_line|#define DQ_MOD        0x02&t;/* dquot modified since read */
 DECL|macro|DQ_BLKS
 mdefine_line|#define DQ_BLKS       0x10&t;/* uid/gid has been warned about blk limit */
 DECL|macro|DQ_INODES
@@ -196,46 +185,34 @@ DECL|struct|dquot
 r_struct
 id|dquot
 (brace
-DECL|member|dq_next
+DECL|member|dq_hash
 r_struct
-id|dquot
-op_star
-id|dq_next
+id|list_head
+id|dq_hash
 suffix:semicolon
-multiline_comment|/* Pointer to next dquot */
-DECL|member|dq_pprev
+multiline_comment|/* Hash list in memory */
+DECL|member|dq_inuse
 r_struct
-id|dquot
-op_star
-op_star
-id|dq_pprev
+id|list_head
+id|dq_inuse
 suffix:semicolon
+multiline_comment|/* List of all quotas */
 DECL|member|dq_free
 r_struct
 id|list_head
 id|dq_free
 suffix:semicolon
-multiline_comment|/* free list element */
-DECL|member|dq_hash_next
-r_struct
-id|dquot
-op_star
-id|dq_hash_next
-suffix:semicolon
-multiline_comment|/* Pointer to next in dquot_hash */
-DECL|member|dq_hash_pprev
-r_struct
-id|dquot
-op_star
-op_star
-id|dq_hash_pprev
-suffix:semicolon
-multiline_comment|/* Pointer to previous in dquot_hash */
-DECL|member|dq_wait
+multiline_comment|/* Free list element */
+DECL|member|dq_wait_lock
 id|wait_queue_head_t
-id|dq_wait
+id|dq_wait_lock
 suffix:semicolon
-multiline_comment|/* Pointer to waitqueue */
+multiline_comment|/* Pointer to waitqueue on dquot lock */
+DECL|member|dq_wait_free
+id|wait_queue_head_t
+id|dq_wait_free
+suffix:semicolon
+multiline_comment|/* Pointer to waitqueue for quota to be unused */
 DECL|member|dq_count
 r_int
 id|dq_count
@@ -287,8 +264,6 @@ suffix:semicolon
 DECL|macro|NODQUOT
 mdefine_line|#define NODQUOT (struct dquot *)NULL
 multiline_comment|/*&n; * Flags used for set_dqblk.&n; */
-DECL|macro|QUOTA_SYSCALL
-mdefine_line|#define QUOTA_SYSCALL     0x01
 DECL|macro|SET_QUOTA
 mdefine_line|#define SET_QUOTA         0x02
 DECL|macro|SET_USE

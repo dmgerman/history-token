@@ -3516,6 +3516,10 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
+id|host-&gt;max_lun
+op_assign
+id|AHC_NUM_LUNS
+suffix:semicolon
 id|ahc_set_unit
 c_func
 (paren

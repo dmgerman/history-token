@@ -2,13 +2,13 @@ macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 multiline_comment|/*&n; * We need the APIC definitions automatically as part of &squot;smp.h&squot;&n; */
-macro_line|#ifndef ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-macro_line|#ifndef ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -18,7 +18,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 macro_line|# ifdef CONFIG_MULTIQUAD
 DECL|macro|TARGET_CPUS
 macro_line|#  define TARGET_CPUS 0xf     /* all CPUs in *THIS* quad */
@@ -31,11 +31,26 @@ DECL|macro|INT_DELIVERY_MODE
 macro_line|#  define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
 macro_line|# endif
 macro_line|#else
+DECL|macro|INT_DELIVERY_MODE
+macro_line|# define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
 DECL|macro|TARGET_CPUS
 macro_line|# define TARGET_CPUS 0x01
 macro_line|#endif
+macro_line|#ifndef clustered_apic_mode
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|macro|clustered_apic_mode
+mdefine_line|#define clustered_apic_mode (1)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (1)
+macro_line|#else /* !CONFIG_MULTIQUAD */
+DECL|macro|clustered_apic_mode
+mdefine_line|#define clustered_apic_mode (0)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (0)
+macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#endif 
 macro_line|#ifdef CONFIG_SMP
-macro_line|#ifndef ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Private routines/data&n; */
 r_extern
 r_void
@@ -192,19 +207,6 @@ id|logical_apicid_to_cpu
 id|MAX_APICID
 )braket
 suffix:semicolon
-macro_line|#ifndef clustered_apic_mode
-macro_line|#ifdef CONFIG_MULTIQUAD
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (1)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (1)
-macro_line|#else /* !CONFIG_MULTIQUAD */
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode (0)
-DECL|macro|esr_disable
-mdefine_line|#define esr_disable (0)
-macro_line|#endif /* CONFIG_MULTIQUAD */
-macro_line|#endif 
 multiline_comment|/*&n; * General functions that each host system must provide.&n; */
 r_extern
 r_void
@@ -285,7 +287,7 @@ id|APIC_LDR
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */

@@ -161,6 +161,8 @@ DECL|macro|MS_NODIRATIME
 mdefine_line|#define MS_NODIRATIME&t;2048&t;/* Do not update directory access times */
 DECL|macro|MS_BIND
 mdefine_line|#define MS_BIND&t;&t;4096
+DECL|macro|MS_REC
+mdefine_line|#define MS_REC&t;&t;16384
 DECL|macro|MS_NOUSER
 mdefine_line|#define MS_NOUSER&t;(1&lt;&lt;31)
 multiline_comment|/*&n; * Superblock flags that can be altered by MS_REMOUNT&n; */
@@ -3583,7 +3585,6 @@ op_star
 id|alloc_block
 )paren
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -3617,7 +3618,6 @@ op_star
 id|free_block
 )paren
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -3650,7 +3650,7 @@ id|transfer
 )paren
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
 comma
 r_struct

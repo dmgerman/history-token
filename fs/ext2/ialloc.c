@@ -573,8 +573,6 @@ multiline_comment|/* Quota is already initialized in iput() */
 id|DQUOT_FREE_INODE
 c_func
 (paren
-id|sb
-comma
 id|inode
 )paren
 suffix:semicolon
@@ -1722,8 +1720,6 @@ c_cond
 id|DQUOT_ALLOC_INODE
 c_func
 (paren
-id|sb
-comma
 id|inode
 )paren
 )paren

@@ -2919,6 +2919,8 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW

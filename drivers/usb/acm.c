@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acm.c  Version 0.20&n; *&n; * Copyright (c) 1999 Armin Fuerst&t;&lt;fuerst@in.tum.de&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 1999 Johannes Erdfelt&t;&lt;jerdfelt@valinux.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Abstract Control Model driver for USB modems and ISDN adapters&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.9  - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.10 - some more cleanups&n; *&t;v0.11 - fixed flow control, read error doesn&squot;t stop reads&n; *&t;v0.12 - added TIOCM ioctls, added break handling, made struct acm kmalloced&n; *&t;v0.13 - added termios, added hangup&n; *&t;v0.14 - sized down struct acm&n; *&t;v0.15 - fixed flow control again - characters could be lost&n; *&t;v0.16 - added code for modems with swapped data and control interfaces&n; *&t;v0.17 - added new style probing&n; *&t;v0.18 - fixed new style probing for devices with more configurations&n; *&t;v0.19 - fixed CLOCAL handling (thanks to Richard Shih-Ping Chan)&n; *      v0.20 - switched to probing on interface (rather than device) class&n; */
+multiline_comment|/*&n; * acm.c  Version 0.21&n; *&n; * Copyright (c) 1999 Armin Fuerst&t;&lt;fuerst@in.tum.de&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 1999 Johannes Erdfelt&t;&lt;johannes@erdfelt.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Abstract Control Model driver for USB modems and ISDN adapters&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.9  - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.10 - some more cleanups&n; *&t;v0.11 - fixed flow control, read error doesn&squot;t stop reads&n; *&t;v0.12 - added TIOCM ioctls, added break handling, made struct acm kmalloced&n; *&t;v0.13 - added termios, added hangup&n; *&t;v0.14 - sized down struct acm&n; *&t;v0.15 - fixed flow control again - characters could be lost&n; *&t;v0.16 - added code for modems with swapped data and control interfaces&n; *&t;v0.17 - added new style probing&n; *&t;v0.18 - fixed new style probing for devices with more configurations&n; *&t;v0.19 - fixed CLOCAL handling (thanks to Richard Shih-Ping Chan)&n; *&t;v0.20 - switched to probing on interface (rather than device) class&n; *&t;v0.21 - revert to probing on device for devices with multiple configs&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,7 +18,7 @@ macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.20&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.21&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Armin Fuerst, Pavel Machek, Johannes Erdfelt, Vojtech Pavlik&quot;
 DECL|macro|DRIVER_DESC
@@ -2888,21 +2888,15 @@ id|acm_ids
 op_assign
 (brace
 (brace
-id|match_flags
-suffix:colon
+id|USB_DEVICE_INFO
+c_func
 (paren
-id|USB_DEVICE_ID_MATCH_INT_CLASS
-op_or
-id|USB_DEVICE_ID_MATCH_INT_SUBCLASS
-)paren
-comma
-id|bInterfaceClass
-suffix:colon
 id|USB_CLASS_COMM
 comma
-id|bInterfaceSubClass
-suffix:colon
-l_int|2
+l_int|0
+comma
+l_int|0
+)paren
 )brace
 comma
 (brace

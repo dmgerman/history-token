@@ -306,6 +306,8 @@ DECL|macro|init_task
 mdefine_line|#define init_task&t;(init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_task_union.stack)
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW

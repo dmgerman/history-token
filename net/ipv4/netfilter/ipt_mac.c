@@ -64,13 +64,13 @@ id|skb-&gt;mac.raw
 op_ge
 id|skb-&gt;head
 op_logical_and
+(paren
 id|skb-&gt;mac.raw
-OL
-id|skb-&gt;head
 op_plus
-id|skb-&gt;len
-op_minus
 id|ETH_HLEN
+)paren
+op_le
+id|skb-&gt;data
 multiline_comment|/* If so, compare... */
 op_logical_and
 (paren

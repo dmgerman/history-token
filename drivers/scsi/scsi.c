@@ -1309,6 +1309,11 @@ id|SCpnt-&gt;serial_number
 op_assign
 id|serial_number
 suffix:semicolon
+id|SCpnt-&gt;pid
+op_assign
+id|scsi_pid
+op_increment
+suffix:semicolon
 multiline_comment|/*&n;&t; * We will wait MIN_RESET_DELAY clock ticks after the last reset so&n;&t; * we can avoid the drive not being ready.&n;&t; */
 id|timeout
 op_assign
@@ -2378,6 +2383,11 @@ id|io_request_lock
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|SCpnt-&gt;pid
+op_assign
+id|scsi_pid
+op_increment
 suffix:semicolon
 id|SCpnt-&gt;owner
 op_assign

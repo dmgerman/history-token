@@ -2096,12 +2096,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|wait_init_idle
-r_volatile
 r_int
 r_int
 id|wait_init_idle
-op_assign
-l_int|0UL
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
@@ -2157,14 +2154,6 @@ id|wait_init_idle
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t wait on me! */
-id|printk
-c_func
-(paren
-l_string|&quot;Waiting on wait_init_idle (map = 0x%lx)&bslash;n&quot;
-comma
-id|wait_init_idle
-)paren
-suffix:semicolon
 id|smp_threads_ready
 op_assign
 l_int|1
@@ -2175,21 +2164,26 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for the other cpus to set up their idle processes */
+id|printk
+c_func
+(paren
+l_string|&quot;Waiting on wait_init_idle (map = 0x%lx)&bslash;n&quot;
+comma
+id|wait_init_idle
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
 id|wait_init_idle
 )paren
-r_break
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-id|rep_nop
+id|barrier
 c_func
 (paren
 )paren

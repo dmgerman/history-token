@@ -4156,7 +4156,6 @@ id|current-&gt;files-&gt;count
 suffix:semicolon
 )brace
 r_extern
-r_volatile
 r_int
 r_int
 id|wait_init_idle

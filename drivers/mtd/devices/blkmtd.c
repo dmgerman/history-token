@@ -8,11 +8,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#if CONFIG_MODVERSION==1
-DECL|macro|MODVERSIONS
-mdefine_line|#define MODVERSIONS
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 multiline_comment|/* Default erase size in K, always make it a multiple of PAGE_SIZE */
 DECL|macro|CONFIG_MTD_BLKDEV_ERASESIZE
 mdefine_line|#define CONFIG_MTD_BLKDEV_ERASESIZE 128

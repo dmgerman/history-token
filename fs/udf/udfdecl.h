@@ -961,7 +961,6 @@ id|inode
 op_star
 id|udf_new_inode
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -989,7 +988,6 @@ r_void
 id|udf_free_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1006,7 +1004,6 @@ r_int
 id|udf_prealloc_blocks
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1023,7 +1020,6 @@ r_int
 id|udf_new_block
 c_func
 (paren
-r_const
 r_struct
 id|inode
 op_star

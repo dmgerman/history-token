@@ -1411,7 +1411,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|ipt_icmp
+id|ipt_reject_info
 )paren
 )paren
 )paren

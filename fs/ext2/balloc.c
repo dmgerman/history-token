@@ -722,11 +722,11 @@ r_return
 id|slot
 suffix:semicolon
 )brace
+multiline_comment|/* Free given blocks, update quota and i_blocks field */
 DECL|function|ext2_free_blocks
 r_void
 id|ext2_free_blocks
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1096,8 +1096,6 @@ r_else
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -1207,12 +1205,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ext2_new_block uses a goal block to assist allocation.  If the goal is&n; * free, or there is a free block within 32 blocks of the goal, that block&n; * is allocated.  Otherwise a forward search is made for a free block; within &n; * each block group the search first looks for an entire free byte in the block&n; * bitmap, and then for any free bit if that fails.&n; */
+multiline_comment|/*&n; * ext2_new_block uses a goal block to assist allocation.  If the goal is&n; * free, or there is a free block within 32 blocks of the goal, that block&n; * is allocated.  Otherwise a forward search is made for a free block; within &n; * each block group the search first looks for an entire free byte in the block&n; * bitmap, and then for any free bit if that fails.&n; * This function also updates quota and i_blocks field.&n; */
 DECL|function|ext2_new_block
 r_int
 id|ext2_new_block
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -1960,8 +1957,6 @@ c_cond
 id|DQUOT_ALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -2065,8 +2060,6 @@ suffix:semicolon
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -2158,8 +2151,6 @@ c_cond
 id|DQUOT_PREALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1
@@ -2193,8 +2184,6 @@ multiline_comment|/* Writer: end */
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 l_int|1

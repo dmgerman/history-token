@@ -488,6 +488,12 @@ DECL|macro|INREG16
 mdefine_line|#define INREG16(mmap, addr)         __raw_readw((mmap)+(addr))
 DECL|macro|INREG8
 mdefine_line|#define INREG8(mmap, addr)         __raw_readb((mmap)+(addr))
+DECL|macro|KB
+mdefine_line|#define KB(x) ((x) * 1024)
+DECL|macro|MB
+mdefine_line|#define MB(x) (KB (KB (x)))
+DECL|macro|GB
+mdefine_line|#define GB(x) (MB (KB (x)))
 DECL|macro|CACHE_FLUSH
 mdefine_line|#define CACHE_FLUSH&t;agp_bridge.cache_flush
 DECL|macro|A_SIZE_8
@@ -577,6 +583,14 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_815_1
 DECL|macro|PCI_DEVICE_ID_INTEL_815_1
 mdefine_line|#define PCI_DEVICE_ID_INTEL_815_1       0x1132
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_830_M_0
+DECL|macro|PCI_DEVICE_ID_INTEL_830_M_0
+mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_0     0x3575
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_830_M_1
+DECL|macro|PCI_DEVICE_ID_INTEL_830_M_1
+mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_1     0x3577
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_82443GX_1
 DECL|macro|PCI_DEVICE_ID_INTEL_82443GX_1
@@ -682,6 +696,35 @@ DECL|macro|I810_DRAM_ROW_0
 mdefine_line|#define I810_DRAM_ROW_0        0x00000001
 DECL|macro|I810_DRAM_ROW_0_SDRAM
 mdefine_line|#define I810_DRAM_ROW_0_SDRAM  0x00000001
+multiline_comment|/* intel i830 registers */
+DECL|macro|I830_GMCH_CTRL
+mdefine_line|#define I830_GMCH_CTRL             0x52
+DECL|macro|I830_GMCH_ENABLED
+mdefine_line|#define I830_GMCH_ENABLED          0x4
+DECL|macro|I830_GMCH_MEM_MASK
+mdefine_line|#define I830_GMCH_MEM_MASK         0x1
+DECL|macro|I830_GMCH_MEM_64M
+mdefine_line|#define I830_GMCH_MEM_64M          0x1
+DECL|macro|I830_GMCH_MEM_128M
+mdefine_line|#define I830_GMCH_MEM_128M         0
+DECL|macro|I830_GMCH_GMS_MASK
+mdefine_line|#define I830_GMCH_GMS_MASK         0x70
+DECL|macro|I830_GMCH_GMS_DISABLED
+mdefine_line|#define I830_GMCH_GMS_DISABLED     0x00
+DECL|macro|I830_GMCH_GMS_LOCAL
+mdefine_line|#define I830_GMCH_GMS_LOCAL        0x10
+DECL|macro|I830_GMCH_GMS_STOLEN_512
+mdefine_line|#define I830_GMCH_GMS_STOLEN_512   0x20
+DECL|macro|I830_GMCH_GMS_STOLEN_1024
+mdefine_line|#define I830_GMCH_GMS_STOLEN_1024  0x30
+DECL|macro|I830_GMCH_GMS_STOLEN_8192
+mdefine_line|#define I830_GMCH_GMS_STOLEN_8192  0x40
+DECL|macro|I830_RDRAM_CHANNEL_TYPE
+mdefine_line|#define I830_RDRAM_CHANNEL_TYPE    0x03010
+DECL|macro|I830_RDRAM_ND
+mdefine_line|#define I830_RDRAM_ND(x)           (((x) &amp; 0x20) &gt;&gt; 5)
+DECL|macro|I830_RDRAM_DDT
+mdefine_line|#define I830_RDRAM_DDT(x)          (((x) &amp; 0x18) &gt;&gt; 3)
 multiline_comment|/* VIA register */
 DECL|macro|VIA_APBASE
 mdefine_line|#define VIA_APBASE      0x10

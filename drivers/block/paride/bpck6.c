@@ -10,8 +10,6 @@ suffix:semicolon
 multiline_comment|/* set this to 1 to see debugging messages and whatnot */
 DECL|macro|BACKPACK_VERSION
 mdefine_line|#define BACKPACK_VERSION &quot;2.0.2&quot;
-DECL|macro|EXPORT_SYMTAB
-mdefine_line|#define EXPORT_SYMTAB 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

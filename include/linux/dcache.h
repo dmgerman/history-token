@@ -585,6 +585,18 @@ c_func
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* quota cache memory management (defined in linux/fs/dquot.c) */
+r_extern
+r_int
+id|shrink_dqcache_memory
+c_func
+(paren
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* only used at mount-time */
 r_extern
 r_struct

@@ -411,8 +411,6 @@ suffix:semicolon
 )brace
 id|DQUOT_FREE_BLOCK
 (paren
-id|sb
-comma
 id|inode
 comma
 id|count
@@ -1023,8 +1021,6 @@ suffix:semicolon
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|uspi-&gt;s_fpb
@@ -2359,8 +2355,6 @@ c_cond
 id|DQUOT_ALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|count
@@ -2860,8 +2854,6 @@ suffix:semicolon
 id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|i
@@ -2945,8 +2937,6 @@ c_cond
 id|DQUOT_ALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|count
@@ -3343,8 +3333,6 @@ c_cond
 id|DQUOT_ALLOC_BLOCK
 c_func
 (paren
-id|sb
-comma
 id|inode
 comma
 id|uspi-&gt;s_fpb

@@ -2391,7 +2391,7 @@ suffix:semicolon
 )brace
 id|error
 op_assign
-id|DQUOT_TRANSFER
+id|notify_change
 c_func
 (paren
 id|dentry

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * cpia CPiA driver&n; *&n; * Supports CPiA based Video Camera&squot;s.&n; *&n; * (C) Copyright 1999-2000 Peter Pregler,&n; * (C) Copyright 1999-2000 Scott J. Bertin,&n; * (C) Copyright 1999-2000 Johannes Erdfelt, jerdfelt@valinux.com&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * cpia CPiA driver&n; *&n; * Supports CPiA based Video Camera&squot;s.&n; *&n; * (C) Copyright 1999-2000 Peter Pregler&n; * (C) Copyright 1999-2000 Scott J. Bertin&n; * (C) Copyright 1999-2000 Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* #define _CPIA_DEBUG_&t;&t;define for verbose debug output */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -58,7 +58,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Scott J. Bertin &lt;sbertin@mindspring.com&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;jerdfelt@valinux.com&gt;&quot;
+l_string|&quot;Scott J. Bertin &lt;sbertin@mindspring.com&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

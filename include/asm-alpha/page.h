@@ -207,7 +207,7 @@ r_return
 id|order
 suffix:semicolon
 )brace
-macro_line|#endif /* !ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)

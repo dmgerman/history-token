@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *&t;audio.c  --  USB Audio Class driver&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&n; * 1999-09-07:  Alan Cox&n; *&t;&t;Parsing Audio descriptor patch&n; * 1999-09-08:  Thomas Sailer&n; *&t;&t;Added OSS compatible data io functions; both parts of the&n; *&t;&t;driver remain to be glued together&n; * 1999-09-10:  Thomas Sailer&n; *&t;&t;Beautified the driver. Added sample format conversions.&n; *&t;&t;Still not properly glued with the parsing code.&n; *&t;&t;The parsing code seems to have its problems btw,&n; *&t;&t;Since it parses all available configs but doesn&squot;t&n; *&t;&t;store which iface/altsetting belongs to which config.&n; * 1999-09-20:  Thomas Sailer&n; *&t;&t;Threw out Alan&squot;s parsing code and implemented my own one.&n; *&t;&t;You cannot reasonnably linearly parse audio descriptors,&n; *&t;&t;especially the AudioClass descriptors have to be considered&n; *&t;&t;pointer lists. Mixer parsing untested, due to lack of device.&n; *&t;&t;First stab at synch pipe implementation, the Dallas USB DAC&n; *&t;&t;wants to use an Asynch out pipe. usb_audio_state now basically&n; *&t;&t;only contains lists of mixer and wave devices. We can therefore&n; *&t;&t;now have multiple mixer/wave devices per USB device.&n; * 1999-10-28:  Thomas Sailer&n; *&t;&t;Converted to URB API. Fixed a taskstate/wakeup semantics mistake&n; *&t;&t;that made the driver consume all available CPU cycles.&n; *&t;&t;Now runs stable on UHCI-Acher/Fliegl/Sailer.&n; * 1999-10-31:  Thomas Sailer&n; *&t;&t;Audio can now be unloaded if it is not in use by any mixer&n; *&t;&t;or dsp client (formerly you had to disconnect the audio devices&n; *&t;&t;from the USB port)&n; *&t;&t;Finally, about three months after ordering, my &quot;Maxxtro SPK222&quot;&n; *&t;&t;speakers arrived, isn&squot;t disdata a great mail order company 8-)&n; *&t;&t;Parse class specific endpoint descriptor of the audiostreaming&n; *&t;&t;interfaces and take the endpoint attributes from there.&n; *&t;&t;Unbelievably, the Philips USB DAC has a sampling rate range&n; *&t;&t;of over a decade, yet does not support the sampling rate control!&n; *&t;&t;No wonder it sounds so bad, has very audible sampling rate&n; *&t;&t;conversion distortion. Don&squot;t try to listen to it using&n; *&t;&t;decent headphones!&n; *&t;&t;&quot;Let&squot;s make things better&quot; -&gt; but please Philips start with your&n; *&t;&t;own stuff!!!!&n; * 1999-11-02:  Thomas Sailer&n; *&t;&t;It takes the Philips boxes several seconds to acquire synchronisation&n; *&t;&t;that means they won&squot;t play short sounds. Should probably maintain&n; *&t;&t;the ISO datastream even if there&squot;s nothing to play.&n; *&t;&t;Fix counting the total_bytes counter, RealPlayer G2 depends on it.&n; * 1999-12-20:  Thomas Sailer&n; *&t;&t;Fix bad bug in conversion to per interface probing.&n; *&t;&t;disconnect was called multiple times for the audio device,&n; *&t;&t;leading to a premature freeing of the audio structures&n; * 2000-05-13:  Thomas Sailer&n; *&t;&t;I don&squot;t remember who changed the find_format routine,&n; *              but the change was completely broken for the Dallas&n; *              chip. Anyway taking sampling rate into account in find_format&n; *              is bad and should not be done unless there are devices with&n; *              completely broken audio descriptors. Unless someone shows&n; *              me such a descriptor, I will not allow find_format to&n; *              take the sampling rate into account.&n; *              Also, the former find_format made:&n; *              - mpg123 play mono instead of stereo&n; *              - sox completely fail for wav&squot;s with sample rates &lt; 44.1kHz&n; *                  for the Dallas chip.&n; *              Also fix a rather long standing problem with applications that&n; *              use &quot;small&quot; writes producing no sound at all.&n; * 2000-05-15:  Thomas Sailer&n; *&t;&t;My fears came true, the Philips camera indeed has pretty stupid&n; *              audio descriptors.&n; * 2000-05-17:  Thomas Sailer&n; *&t;&t;Nemsoft spotted my stupid last minute change, thanks&n; * 2000-05-19:  Thomas Sailer&n; *&t;&t;Fixed FEATURE_UNIT thinkos found thanks to the KC Technology&n; *              Xtend device. Basically the driver treated FEATURE_UNIT&squot;s sourced&n; *              by mono terminals as stereo.&n; * 2000-05-20:  Thomas Sailer&n; *&t;&t;SELECTOR support (and thus selecting record channels from the mixer).&n; *              Somewhat peculiar due to OSS interface limitations. Only works&n; *              for channels where a &quot;slider&quot; is already in front of it (i.e.&n; *              a MIXER unit or a FEATURE unit with volume capability).&n; * 2000-11-26:  Thomas Sailer&n; *              Workaround for Dallas DS4201. The DS4201 uses PCM8 as format tag for&n; *              its 8 bit modes, but expects signed data (and should therefore have used PCM).&n; * 2001-04-08:  gb&n; *              Identify version on module load.&n; *&n; */
+multiline_comment|/*&n; *&t;audio.c  --  USB Audio Class driver&n; *&n; *&t;Copyright (C) 1999, 2000, 2001&n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * Debugging:&n; * &t;Use the &squot;lsusb&squot; utility to dump the descriptors.&n; *&n; * 1999-09-07:  Alan Cox&n; *&t;&t;Parsing Audio descriptor patch&n; * 1999-09-08:  Thomas Sailer&n; *&t;&t;Added OSS compatible data io functions; both parts of the&n; *&t;&t;driver remain to be glued together&n; * 1999-09-10:  Thomas Sailer&n; *&t;&t;Beautified the driver. Added sample format conversions.&n; *&t;&t;Still not properly glued with the parsing code.&n; *&t;&t;The parsing code seems to have its problems btw,&n; *&t;&t;Since it parses all available configs but doesn&squot;t&n; *&t;&t;store which iface/altsetting belongs to which config.&n; * 1999-09-20:  Thomas Sailer&n; *&t;&t;Threw out Alan&squot;s parsing code and implemented my own one.&n; *&t;&t;You cannot reasonnably linearly parse audio descriptors,&n; *&t;&t;especially the AudioClass descriptors have to be considered&n; *&t;&t;pointer lists. Mixer parsing untested, due to lack of device.&n; *&t;&t;First stab at synch pipe implementation, the Dallas USB DAC&n; *&t;&t;wants to use an Asynch out pipe. usb_audio_state now basically&n; *&t;&t;only contains lists of mixer and wave devices. We can therefore&n; *&t;&t;now have multiple mixer/wave devices per USB device.&n; * 1999-10-28:  Thomas Sailer&n; *&t;&t;Converted to URB API. Fixed a taskstate/wakeup semantics mistake&n; *&t;&t;that made the driver consume all available CPU cycles.&n; *&t;&t;Now runs stable on UHCI-Acher/Fliegl/Sailer.&n; * 1999-10-31:  Thomas Sailer&n; *&t;&t;Audio can now be unloaded if it is not in use by any mixer&n; *&t;&t;or dsp client (formerly you had to disconnect the audio devices&n; *&t;&t;from the USB port)&n; *&t;&t;Finally, about three months after ordering, my &quot;Maxxtro SPK222&quot;&n; *&t;&t;speakers arrived, isn&squot;t disdata a great mail order company 8-)&n; *&t;&t;Parse class specific endpoint descriptor of the audiostreaming&n; *&t;&t;interfaces and take the endpoint attributes from there.&n; *&t;&t;Unbelievably, the Philips USB DAC has a sampling rate range&n; *&t;&t;of over a decade, yet does not support the sampling rate control!&n; *&t;&t;No wonder it sounds so bad, has very audible sampling rate&n; *&t;&t;conversion distortion. Don&squot;t try to listen to it using&n; *&t;&t;decent headphones!&n; *&t;&t;&quot;Let&squot;s make things better&quot; -&gt; but please Philips start with your&n; *&t;&t;own stuff!!!!&n; * 1999-11-02:  Thomas Sailer&n; *&t;&t;It takes the Philips boxes several seconds to acquire synchronisation&n; *&t;&t;that means they won&squot;t play short sounds. Should probably maintain&n; *&t;&t;the ISO datastream even if there&squot;s nothing to play.&n; *&t;&t;Fix counting the total_bytes counter, RealPlayer G2 depends on it.&n; * 1999-12-20:  Thomas Sailer&n; *&t;&t;Fix bad bug in conversion to per interface probing.&n; *&t;&t;disconnect was called multiple times for the audio device,&n; *&t;&t;leading to a premature freeing of the audio structures&n; * 2000-05-13:  Thomas Sailer&n; *&t;&t;I don&squot;t remember who changed the find_format routine,&n; *              but the change was completely broken for the Dallas&n; *              chip. Anyway taking sampling rate into account in find_format&n; *              is bad and should not be done unless there are devices with&n; *              completely broken audio descriptors. Unless someone shows&n; *              me such a descriptor, I will not allow find_format to&n; *              take the sampling rate into account.&n; *              Also, the former find_format made:&n; *              - mpg123 play mono instead of stereo&n; *              - sox completely fail for wav&squot;s with sample rates &lt; 44.1kHz&n; *                  for the Dallas chip.&n; *              Also fix a rather long standing problem with applications that&n; *              use &quot;small&quot; writes producing no sound at all.&n; * 2000-05-15:  Thomas Sailer&n; *&t;&t;My fears came true, the Philips camera indeed has pretty stupid&n; *              audio descriptors.&n; * 2000-05-17:  Thomas Sailer&n; *&t;&t;Nemsoft spotted my stupid last minute change, thanks&n; * 2000-05-19:  Thomas Sailer&n; *&t;&t;Fixed FEATURE_UNIT thinkos found thanks to the KC Technology&n; *              Xtend device. Basically the driver treated FEATURE_UNIT&squot;s sourced&n; *              by mono terminals as stereo.&n; * 2000-05-20:  Thomas Sailer&n; *&t;&t;SELECTOR support (and thus selecting record channels from the mixer).&n; *              Somewhat peculiar due to OSS interface limitations. Only works&n; *              for channels where a &quot;slider&quot; is already in front of it (i.e.&n; *              a MIXER unit or a FEATURE unit with volume capability).&n; * 2000-11-26:  Thomas Sailer&n; *              Workaround for Dallas DS4201. The DS4201 uses PCM8 as format tag for&n; *              its 8 bit modes, but expects signed data (and should therefore have used PCM).&n; * 2001-03-10:  Thomas Sailer&n; *              provide abs function, prevent picking up a bogus kernel macro&n; *              for abs. Bug report by Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; * 2001-06-16:  Bryce Nesbitt &lt;bryce@obviously.com&gt;&n; *              Fix SNDCTL_DSP_STEREO API violation&n; */
 multiline_comment|/*&n; * Strategy:&n; *&n; * Alan Cox and Thomas Sailer are starting to dig at opposite ends and&n; * are hoping to meet in the middle, just like tunnel diggers :)&n; * Alan tackles the descriptor parsing, Thomas the actual data IO and the&n; * OSS compatible interface.&n; *&n; * Data IO implementation issues&n; *&n; * A mmap&squot;able ring buffer per direction is implemented, because&n; * almost every OSS app expects it. It is however impractical to&n; * transmit/receive USB data directly into and out of the ring buffer,&n; * due to alignment and synchronisation issues. Instead, the ring buffer&n; * feeds a constant time delay line that handles the USB issues.&n; *&n; * Now we first try to find an alternate setting that exactly matches&n; * the sample format requested by the user. If we find one, we do not&n; * need to perform any sample rate conversions. If there is no matching&n; * altsetting, we choose the closest one and perform sample format&n; * conversions. We never do sample rate conversion; these are too&n; * expensive to be performed in the kernel.&n; *&n; * Current status:&n; * - Pretty stable on UHCI-Acher/Fliegl/Sailer&n; * - Does not work on OHCI due to lack of OHCI driver supporting URB&squot;s&n; *&n; * Generally: Due to the brokenness of the Audio Class spec&n; * it seems generally impossible to write a generic Audio Class driver,&n; * so a reasonable driver should implement the features that are actually&n; * used.&n; *&n; * Parsing implementation issues&n; *&n; * One cannot reasonably parse the AudioClass descriptors linearly.&n; * Therefore the current implementation features routines to look&n; * for a specific descriptor in the descriptor list.&n; *&n; * How does the parsing work? First, all interfaces are searched&n; * for an AudioControl class interface. If found, the config descriptor&n; * that belongs to the current configuration is fetched from the device.&n; * Then the HEADER descriptor is fetched. It contains a list of&n; * all AudioStreaming and MIDIStreaming devices. This list is then walked,&n; * and all AudioStreaming interfaces are classified into input and output&n; * interfaces (according to the endpoint0 direction in altsetting1) (MIDIStreaming&n; * is currently not supported). The input &amp; output list is then used&n; * to group inputs and outputs together and issued pairwise to the&n; * AudioStreaming class parser. Finally, all OUTPUT_TERMINAL descriptors&n; * are walked and issued to the mixer construction routine.&n; *&n; * The AudioStreaming parser simply enumerates all altsettings belonging&n; * to the specified interface. It looks for AS_GENERAL and FORMAT_TYPE&n; * class specific descriptors to extract the sample format/sample rate&n; * data. Only sample format types PCM and PCM8 are supported right now, and&n; * only FORMAT_TYPE_I is handled. The isochronous data endpoint needs to&n; * be the first endpoint of the interface, and the optional synchronisation&n; * isochronous endpoint the second one.&n; *&n; * Mixer construction works as follows: The various TERMINAL and UNIT&n; * descriptors span a tree from the root (OUTPUT_TERMINAL) through the&n; * intermediate nodes (UNITs) to the leaves (INPUT_TERMINAL). We walk&n; * that tree in a depth first manner. FEATURE_UNITs may contribute volume,&n; * bass and treble sliders to the mixer, MIXER_UNITs volume sliders.&n; * The terminal type encoded in the INPUT_TERMINALs feeds a heuristic&n; * to determine &quot;meaningful&quot; OSS slider numbers, however we will see&n; * how well this works in practice. Other features are not used at the&n; * moment, they seem less often used. Also, it seems difficult at least&n; * to construct recording source switches from SELECTOR_UNITs, but&n; * since there are not many USB ADC&squot;s available, we leave that for later.&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
@@ -35,6 +35,24 @@ DECL|macro|SND_DEV_DSP16
 mdefine_line|#define SND_DEV_DSP16   5 
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
+DECL|macro|abs
+macro_line|#undef abs
+r_extern
+r_int
+id|abs
+c_func
+(paren
+r_int
+id|__x
+)paren
+id|__attribute__
+(paren
+(paren
+id|__const__
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Shut up warning */
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * Linked list of all audio devices...&n; */
 DECL|variable|audiodevs
@@ -621,6 +639,36 @@ mdefine_line|#define AFMT_BYTESSHIFT(x) ((AFMT_ISSTEREO(x) ? 1 : 0) + (AFMT_IS16
 DECL|macro|AFMT_BYTES
 mdefine_line|#define AFMT_BYTES(x)      (1&lt;&lt;AFMT_BYTESSHFIT(x))
 multiline_comment|/* --------------------------------------------------------------------- */
+multiline_comment|/* prevent picking up a bogus abs macro */
+DECL|macro|abs
+macro_line|#undef abs
+DECL|function|abs
+r_extern
+r_inline
+r_int
+id|abs
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|x
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|x
+suffix:semicolon
+r_return
+id|x
+suffix:semicolon
+)brace
+multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
 r_extern
 r_inline
@@ -1094,8 +1142,8 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;dmabuf_init: bytepersec %d bufs %d ossfragshift %d ossmaxfrags %d &quot;
-l_string|&quot;fragshift %d fragsize %d numfrag %d dmasize %d bufsize %d fmt 0x%x&bslash;n&quot;
+l_string|&quot;usbaudio: dmabuf_init bytepersec %d bufs %d ossfragshift %d ossmaxfrags %d &quot;
+l_string|&quot;fragshift %d fragsize %d numfrag %d dmasize %d bufsize %d fmt 0x%x srate %d&bslash;n&quot;
 comma
 id|bytepersec
 comma
@@ -1116,6 +1164,8 @@ comma
 id|db-&gt;bufsize
 comma
 id|db-&gt;format
+comma
+id|db-&gt;srate
 )paren
 )paren
 suffix:semicolon
@@ -3646,6 +3696,15 @@ id|u-&gt;dma.format
 )paren
 (brace
 multiline_comment|/* we do not need format conversion */
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_DEBUG
+l_string|&quot;usbaudio: no sample format conversion&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|dmabuf_copyin
 c_func
 (paren
@@ -3661,6 +3720,19 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* we need sampling format conversion */
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_DEBUG
+l_string|&quot;usbaudio: sample format conversion %x != %x&bslash;n&quot;
+comma
+id|u-&gt;format
+comma
+id|u-&gt;dma.format
+)paren
+)paren
+suffix:semicolon
 id|usbin_convert
 c_func
 (paren
@@ -7971,7 +8043,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;usb_audio: set_format_in: usb_set_interface %u %u&bslash;n&quot;
+l_string|&quot;usbaudio: set_format_in: usb_set_interface %u %u&bslash;n&quot;
 comma
 id|alts-&gt;bInterfaceNumber
 comma
@@ -8715,7 +8787,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;usb_audio: set_format_out: usb_set_interface %u %u&bslash;n&quot;
+l_string|&quot;usbaudio: set_format_out: usb_set_interface %u %u&bslash;n&quot;
 comma
 id|alts-&gt;bInterfaceNumber
 comma
@@ -10918,30 +10990,6 @@ id|as-&gt;usbout.dma
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|usb_audio_llseek
-r_static
-id|loff_t
-id|usb_audio_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|usb_audio_open_mixdev
 r_static
 r_int
@@ -11912,7 +11960,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|usb_audio_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -13429,7 +13477,10 @@ id|cinfo
 suffix:semicolon
 r_int
 id|val
-comma
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|val2
 comma
 id|mapped
@@ -13468,6 +13519,37 @@ op_logical_and
 id|as-&gt;usbin.dma.mapped
 )paren
 suffix:semicolon
+macro_line|#if 0
+r_if
+c_cond
+(paren
+id|arg
+)paren
+id|get_user
+c_func
+(paren
+id|val
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;usbaudio: usb_audio_ioctl cmd=%x arg=%lx *arg=%d&bslash;n&quot;
+comma
+id|cmd
+comma
+id|arg
+comma
+id|val
+)paren
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -13696,6 +13778,25 @@ suffix:semicolon
 r_case
 id|SNDCTL_DSP_STEREO
 suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|val
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 id|val2
 op_assign
 (paren
@@ -13712,6 +13813,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|val
+)paren
+id|val2
+op_or_assign
+id|AFMT_STEREO
+suffix:semicolon
+r_else
+id|val2
+op_and_assign
+op_complement
+id|AFMT_STEREO
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|set_format
 c_func
 (paren
@@ -13720,8 +13836,6 @@ comma
 id|file-&gt;f_mode
 comma
 id|val2
-op_or
-id|AFMT_STEREO
 comma
 l_int|0
 )paren
@@ -15053,6 +15167,15 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_DEBUG
+l_string|&quot;usbaudio: usb_audio_ioctl - no command found&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOIOCTLCMD
@@ -15671,7 +15794,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|usb_audio_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -16538,6 +16661,15 @@ OL
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|i
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* altsetting 0 has no endpoints (Section B.3.4.1) */
 id|printk
 c_func
 (paren
@@ -16551,6 +16683,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 r_continue
 suffix:semicolon
 )brace
@@ -16999,6 +17132,15 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: valid input sample rate %u&bslash;n&quot;
+comma
+id|fp-&gt;sratelo
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -17064,6 +17206,15 @@ id|j
 )braket
 op_lshift
 l_int|16
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: valid input sample rate %u&bslash;n&quot;
+comma
+id|k
 )paren
 suffix:semicolon
 r_if
@@ -17244,6 +17395,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* See USB audio formats manual, section 2 */
 id|fmt
 op_assign
 id|find_csinterface_descriptor
@@ -17664,6 +17816,15 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: valid output sample rate %u&bslash;n&quot;
+comma
+id|fp-&gt;sratelo
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -17729,6 +17890,15 @@ id|j
 )braket
 op_lshift
 l_int|16
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: valid output sample rate %u&bslash;n&quot;
+comma
+id|k
 )paren
 suffix:semicolon
 r_if
@@ -17841,6 +18011,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: registered dsp 14,%d&bslash;n&quot;
+comma
+id|as-&gt;dev_audio
+)paren
+suffix:semicolon
 multiline_comment|/* everything successful */
 id|list_add_tail
 c_func
@@ -20580,6 +20759,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* See Audio Class Spec, section 4.3.2.5 */
 DECL|function|usb_audio_featureunit
 r_static
 r_void
@@ -20700,8 +20880,8 @@ l_int|5
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;usbaudio: workaround for broken Philips Camera Microphone descriptor enabled&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;usbaudio: workaround for Philips camera microphone descriptor enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mchftr
@@ -21538,6 +21718,7 @@ suffix:semicolon
 r_case
 id|FEATURE_UNIT
 suffix:colon
+multiline_comment|/* See USB Audio Class Spec 4.3.2.5 */
 r_if
 c_cond
 (paren
@@ -21969,7 +22150,7 @@ multiline_comment|/* mark terminal ID as visited */
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;usbaudio: constructing mixer for Terminal %u type 0x%04x&bslash;n&quot;
 comma
 id|oterm
@@ -22136,6 +22317,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: registered mixer 14,%d&bslash;n&quot;
+comma
+id|ms-&gt;dev_mixer
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -23172,11 +23362,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;usbaudio: cannot get first 8 bytes of config descriptor %d of device %d&bslash;n&quot;
+l_string|&quot;usbaudio: cannot get first 8 bytes of config descriptor %d of device %d (error %d)&bslash;n&quot;
 comma
 id|i
 comma
 id|dev-&gt;devnum
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -23285,11 +23477,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;usbaudio: cannot get config descriptor %d of device %d&bslash;n&quot;
+l_string|&quot;usbaudio: cannot get config descriptor %d of device %d (error %d)&bslash;n&quot;
 comma
 id|i
 comma
 id|dev-&gt;devnum
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -23374,7 +23568,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;usb_audio_disconnect: called with -1&bslash;n&quot;
+l_string|&quot;usbaudio: note, usb_audio_disconnect called with -1&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -23393,7 +23587,7 @@ c_func
 (paren
 (paren
 id|KERN_DEBUG
-l_string|&quot;usb_audio_disconnect: already called for %p!&bslash;n&quot;
+l_string|&quot;usbaudio: error,  usb_audio_disconnect already called for %p!&bslash;n&quot;
 comma
 id|s
 )paren
@@ -23491,12 +23685,23 @@ id|as-&gt;dev_audio
 op_ge
 l_int|0
 )paren
+(brace
 id|unregister_sound_dsp
 c_func
 (paren
 id|as-&gt;dev_audio
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: unregister dsp 14,%d&bslash;n&quot;
+comma
+id|as-&gt;dev_audio
+)paren
+suffix:semicolon
+)brace
 id|as-&gt;dev_audio
 op_assign
 op_minus
@@ -23540,12 +23745,23 @@ id|ms-&gt;dev_mixer
 op_ge
 l_int|0
 )paren
+(brace
 id|unregister_sound_mixer
 c_func
 (paren
 id|ms-&gt;dev_mixer
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;usbaudio: unregister mixer 14,%d&bslash;n&quot;
+comma
+id|ms-&gt;dev_mixer
+)paren
+suffix:semicolon
+)brace
 id|ms-&gt;dev_mixer
 op_assign
 op_minus
@@ -23639,6 +23855,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

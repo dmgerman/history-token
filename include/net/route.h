@@ -8,6 +8,7 @@ macro_line|#include &lt;net/inetpeer.h&gt;
 macro_line|#include &lt;linux/in_route.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#ifndef __KERNEL__
 macro_line|#warning This file is not supposed to be used outside of kernel.
 macro_line|#endif
@@ -211,7 +212,9 @@ r_int
 r_int
 id|out_slow_mc
 suffix:semicolon
+DECL|variable|____cacheline_aligned_in_smp
 )brace
+id|____cacheline_aligned_in_smp
 suffix:semicolon
 r_extern
 r_struct

@@ -21,7 +21,7 @@ op_assign
 id|__FILE__
 l_string|&quot;: v0.98.5 22 Sep 2001 Brad Hards and another&quot;
 suffix:semicolon
-multiline_comment|/* We need to be selective about what we try to match on, to avoiding loading for a CDC&n; * ACM (ISDN or PSTN) modem */
+multiline_comment|/* Take any CDC device, and sort it out in probe() */
 DECL|variable|CDCEther_ids
 r_static
 r_struct
@@ -32,21 +32,15 @@ id|CDCEther_ids
 op_assign
 (brace
 (brace
-id|match_flags
-suffix:colon
+id|USB_DEVICE_INFO
+c_func
 (paren
-id|USB_DEVICE_ID_MATCH_INT_CLASS
-op_or
-id|USB_DEVICE_ID_MATCH_INT_SUBCLASS
-)paren
-comma
-id|bInterfaceClass
-suffix:colon
 id|USB_CLASS_COMM
 comma
-id|bInterfaceSubClass
-suffix:colon
-l_int|6
+l_int|0
+comma
+l_int|0
+)paren
 )brace
 comma
 (brace
