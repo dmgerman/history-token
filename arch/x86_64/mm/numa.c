@@ -1464,12 +1464,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|strcmp
+id|strncmp
 c_func
 (paren
 id|opt
 comma
 l_string|&quot;off&quot;
+comma
+l_int|3
 )paren
 )paren
 id|numa_off
