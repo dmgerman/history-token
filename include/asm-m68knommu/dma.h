@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/coldfire.h&gt;
 macro_line|#include &lt;asm/mcfsim.h&gt;
 macro_line|#include &lt;asm/mcfdma.h&gt;
 multiline_comment|/*&n; * Set number of channels of DMA on ColdFire for different implementations.&n; */
-macro_line|#if defined(CONFIG_M5307) || defined(CONFIG_M5407)
+macro_line|#if defined(CONFIG_M5249) || defined(CONFIG_M5307) || defined(CONFIG_M5407)
 DECL|macro|MAX_M68K_DMA_CHANNELS
 mdefine_line|#define MAX_M68K_DMA_CHANNELS 4
 macro_line|#elif defined(CONFIG_M5272)
