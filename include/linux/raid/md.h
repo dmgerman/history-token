@@ -246,15 +246,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|md_check_ordering
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|md_notify_reboot
 c_func
 (paren

@@ -655,10 +655,6 @@ id|mdp_super_t
 op_star
 id|sb
 suffix:semicolon
-DECL|member|nb_dev
-r_int
-id|nb_dev
-suffix:semicolon
 DECL|member|disks
 r_struct
 id|list_head
@@ -690,11 +686,6 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
 DECL|member|recovery_running
 r_int
 id|recovery_running
@@ -972,9 +963,6 @@ mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&
 multiline_comment|/*&n; * iterates through the &squot;same array disks&squot; ringlist&n; */
 DECL|macro|ITERATE_RDEV
 mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,same_set,rdev,tmp)
-multiline_comment|/*&n; * Same as above, but assumes that the device has rdev-&gt;desc_nr numbered&n; * from 0 to mddev-&gt;nb_dev, and iterates through rdevs in ascending order.&n; */
-DECL|macro|ITERATE_RDEV_ORDERED
-mdefine_line|#define ITERATE_RDEV_ORDERED(mddev,rdev,i)&t;&t;&t;&t;&bslash;&n;&t;for (i = 0; rdev = find_rdev_nr(mddev, i), i &lt; mddev-&gt;nb_dev; i++)
 multiline_comment|/*&n; * Iterates through all &squot;RAID managed disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_ALL
 mdefine_line|#define ITERATE_RDEV_ALL(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(all_raid_disks,all,rdev,tmp)
