@@ -9850,6 +9850,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|amb_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|amb_driver
 r_static
 r_struct
