@@ -9679,8 +9679,6 @@ suffix:semicolon
 )brace
 r_else
 r_return
-id|info-&gt;fbops
-op_member_access_from_pointer
 id|fb_blank
 c_func
 (paren
