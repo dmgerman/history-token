@@ -173,13 +173,6 @@ id|m68k_memoffset
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_SINGLE_MEMORY_CHUNK */
-DECL|variable|mm_vtop_fallback
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mm_vtop_fallback
-)paren
-suffix:semicolon
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
