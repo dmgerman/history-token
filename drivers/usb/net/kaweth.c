@@ -4161,8 +4161,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|err_all
-suffix:colon
 id|usb_buffer_free
 c_func
 (paren
