@@ -2625,7 +2625,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* if this device type has a probe function, call it */
