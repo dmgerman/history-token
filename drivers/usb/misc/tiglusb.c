@@ -1,4 +1,4 @@
-multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2004:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: Documentation/usb/silverlink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; *   1.07, Romain: fixed bad use of usb_clear_halt (invalid argument);&n; *          timeout argument checked in ioctl + clean-up.&n; */
+multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2004:&n; *   Romain Lievin &lt;roms@tilp.info&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: Documentation/usb/silverlink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History:&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; *   1.07, Romain: fixed bad use of usb_clear_halt (invalid argument);&n; *          timeout argument checked in ioctl + clean-up.&n; *   1.08, Romain: added support of USB port embedded on some TI&squot;s handhelds.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.07&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.08&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@tilp.info&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -502,9 +502,8 @@ suffix:semicolon
 id|buffer
 op_assign
 id|kmalloc
-c_func
 (paren
-id|BULK_RCV_MAX
+id|s-&gt;max_ps
 comma
 id|GFP_KERNEL
 )paren
@@ -524,11 +523,11 @@ op_assign
 (paren
 id|count
 op_ge
-id|BULK_RCV_MAX
+id|s-&gt;max_ps
 )paren
 ques
 c_cond
-id|BULK_RCV_MAX
+id|s-&gt;max_ps
 suffix:colon
 id|count
 suffix:semicolon
@@ -797,9 +796,8 @@ suffix:semicolon
 id|buffer
 op_assign
 id|kmalloc
-c_func
 (paren
-id|BULK_SND_MAX
+id|s-&gt;max_ps
 comma
 id|GFP_KERNEL
 )paren
@@ -819,11 +817,11 @@ op_assign
 (paren
 id|count
 op_ge
-id|BULK_SND_MAX
+id|s-&gt;max_ps
 )paren
 ques
 c_cond
-id|BULK_SND_MAX
+id|s-&gt;max_ps
 suffix:colon
 id|count
 suffix:semicolon
@@ -1149,6 +1147,66 @@ id|EIO
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|IOCTL_TIUSB_GET_MAXPS
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+(paren
+r_int
+op_star
+)paren
+id|arg
+comma
+op_amp
+id|s-&gt;max_ps
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IOCTL_TIUSB_GET_DEVID
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+(paren
+r_int
+op_star
+)paren
+id|arg
+comma
+op_amp
+id|s-&gt;dev-&gt;descriptor.idProduct
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ret
@@ -1259,6 +1317,21 @@ suffix:semicolon
 id|ptiglusb_t
 id|s
 suffix:semicolon
+r_struct
+id|usb_host_config
+op_star
+id|conf
+suffix:semicolon
+r_struct
+id|usb_host_interface
+op_star
+id|ifdata
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|max_ps
+suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;probing vendor id 0x%x, device id 0x%x&quot;
@@ -1289,6 +1362,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;descriptor.idVendor
+op_ne
+l_int|0x451
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|dev-&gt;descriptor.idProduct
 op_ne
@@ -1296,9 +1386,15 @@ l_int|0xe001
 )paren
 op_logical_and
 (paren
-id|dev-&gt;descriptor.idVendor
+id|dev-&gt;descriptor.idProduct
 op_ne
-l_int|0x451
+l_int|0xe004
+)paren
+op_logical_and
+(paren
+id|dev-&gt;descriptor.idProduct
+op_ne
+l_int|0xe008
 )paren
 )paren
 (brace
@@ -1311,33 +1407,49 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-singleline_comment|// NOTE:  it&squot;s already in this config, this shouldn&squot;t be needed.
-singleline_comment|// is this working around some hardware bug?
-r_if
-c_cond
-(paren
-id|usb_reset_configuration
-(paren
-id|dev
-)paren
-OL
+multiline_comment|/*&n;         * TI introduced some new handhelds with embedded USB port.&n;         * Port advertises same config as SilverLink cable but with a &n;&t; * different maximum packet size (64 rather than 32).&n;         */
+id|conf
+op_assign
+id|dev-&gt;actconfig
+suffix:semicolon
+id|ifdata
+op_assign
+id|conf-&gt;interface
+(braket
 l_int|0
-)paren
-(brace
-id|err
-(paren
-l_string|&quot;tiglusb_probe: reset_configuration failed&quot;
-)paren
+)braket
+op_member_access_from_pointer
+id|cur_altsetting
 suffix:semicolon
-id|err
+id|max_ps
 op_assign
-op_minus
-id|ENODEV
+id|ifdata-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc.wMaxPacketSize
 suffix:semicolon
-r_goto
-id|out
+id|info
+c_func
+(paren
+l_string|&quot;max packet size of %d/%d bytes&bslash;n&quot;
+comma
+id|ifdata-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc.wMaxPacketSize
+comma
+id|ifdata-&gt;endpoint
+(braket
+l_int|1
+)braket
+dot
+id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Find a tiglusb struct&n;&t; */
 r_for
 c_loop
@@ -1417,6 +1529,10 @@ suffix:semicolon
 id|s-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|s-&gt;max_ps
+op_assign
+id|max_ps
 suffix:semicolon
 id|up
 (paren
