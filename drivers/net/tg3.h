@@ -4327,6 +4327,8 @@ DECL|macro|TG3_FLG2_CAPACITIVE_COUPLING
 mdefine_line|#define TG3_FLG2_CAPACITIVE_COUPLING&t;0x00004000
 DECL|macro|TG3_FLG2_FLASH
 mdefine_line|#define TG3_FLG2_FLASH&t;&t;&t;0x00008000
+DECL|macro|TG3_FLG2_HW_TSO
+mdefine_line|#define TG3_FLG2_HW_TSO&t;&t;&t;0x00010000
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
