@@ -252,10 +252,17 @@ id|S_IWUSR
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with a protocol-incompatible driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
+macro_line|#ifndef&t;CONFIG_USB_ZERO_HNPTEST
 DECL|macro|DRIVER_VENDOR_NUM
 mdefine_line|#define DRIVER_VENDOR_NUM&t;0x0525&t;&t;/* NetChip */
 DECL|macro|DRIVER_PRODUCT_NUM
 mdefine_line|#define DRIVER_PRODUCT_NUM&t;0xa4a0&t;&t;/* Linux-USB &quot;Gadget Zero&quot; */
+macro_line|#else
+DECL|macro|DRIVER_VENDOR_NUM
+mdefine_line|#define DRIVER_VENDOR_NUM&t;0x1a0a&t;&t;/* OTG test device IDs */
+DECL|macro|DRIVER_PRODUCT_NUM
+mdefine_line|#define DRIVER_PRODUCT_NUM&t;0xbadd
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * DESCRIPTORS ... most are static, but strings and (full)&n; * configuration descriptors are built on demand.&n; */
 DECL|macro|STRING_MANUFACTURER
@@ -440,6 +447,31 @@ comma
 multiline_comment|/* self-powered */
 )brace
 suffix:semicolon
+r_static
+r_struct
+id|usb_otg_descriptor
+DECL|variable|otg_descriptor
+id|otg_descriptor
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+r_sizeof
+id|otg_descriptor
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_OTG
+comma
+dot
+id|bmAttributes
+op_assign
+id|USB_OTG_SRP
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* one interface in each configuration */
 r_static
 r_const
@@ -589,6 +621,14 @@ id|usb_descriptor_header
 op_star
 )paren
 op_amp
+id|otg_descriptor
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
 id|source_sink_intf
 comma
 (paren
@@ -622,6 +662,14 @@ id|fs_loopback_function
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 (paren
 r_struct
 id|usb_descriptor_header
@@ -771,6 +819,14 @@ id|usb_descriptor_header
 op_star
 )paren
 op_amp
+id|otg_descriptor
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
 id|source_sink_intf
 comma
 (paren
@@ -804,6 +860,14 @@ id|hs_loopback_function
 )braket
 op_assign
 (brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|otg_descriptor
+comma
 (paren
 r_struct
 id|usb_descriptor_header
@@ -1039,6 +1103,16 @@ id|fs_source_sink_function
 suffix:colon
 id|fs_loopback_function
 suffix:semicolon
+multiline_comment|/* for now, don&squot;t advertise srp-only devices */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;is_otg
+)paren
+id|function
+op_increment
+suffix:semicolon
 id|len
 op_assign
 id|usb_gadget_config_buf
@@ -1208,7 +1282,6 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* optionally require specific source/sink data patterns  */
 r_static
-r_inline
 r_int
 DECL|function|check_read_data
 id|check_read_data
@@ -1329,7 +1402,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|reinit_write_data
 id|reinit_write_data
@@ -2504,6 +2576,12 @@ id|dev-&gt;config
 op_assign
 l_int|0
 suffix:semicolon
+id|del_timer
+(paren
+op_amp
+id|dev-&gt;resume
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* change our operational config.  this code must agree with the code&n; * that returns config descriptors, and altsetting code.&n; *&n; * it&squot;s also responsible for power management interactions. some&n; * configurations might not work with our current power sources.&n; *&n; * note that some device controller hardware will constrain what this&n; * code can do, perhaps by disallowing more than one configuration or&n; * by limiting configuration choices (like the pxa2xx).&n; */
 r_static
@@ -2818,6 +2896,10 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* usually this stores reply data in the pre-allocated ep0 buffer,&n;&t; * but config change events will reconfigure hardware.&n;&t; */
+id|req-&gt;zero
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3019,6 +3101,39 @@ l_int|0
 )paren
 r_goto
 id|unknown
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|gadget-&gt;a_hnp_support
+)paren
+id|DBG
+(paren
+id|dev
+comma
+l_string|&quot;HNP available&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget-&gt;a_alt_hnp_support
+)paren
+id|DBG
+(paren
+id|dev
+comma
+l_string|&quot;HNP needs a different root port&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|VDBG
+(paren
+id|dev
+comma
+l_string|&quot;HNP inactive&bslash;n&quot;
+)paren
 suffix:semicolon
 id|spin_lock
 (paren
@@ -3473,6 +3588,14 @@ r_int
 id|status
 suffix:semicolon
 multiline_comment|/* normally the host would be woken up for something&n;&t; * more significant than just a timer firing...&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;gadget-&gt;speed
+op_ne
+id|USB_SPEED_UNKNOWN
+)paren
+(brace
 id|status
 op_assign
 id|usb_gadget_wakeup
@@ -3489,6 +3612,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
@@ -3921,6 +4045,25 @@ op_assign
 id|fs_sink_desc.bEndpointAddress
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|gadget-&gt;is_otg
+)paren
+(brace
+id|otg_descriptor.bmAttributes
+op_or_assign
+id|USB_OTG_HNP
+comma
+id|source_sink_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+id|loopback_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+)brace
 id|usb_gadget_set_selfpowered
 (paren
 id|gadget

@@ -11,28 +11,14 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;keyspan.h&quot;
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.1.4&quot;
@@ -9867,12 +9853,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1,24 +1,34 @@
-multiline_comment|/***************************************************************************&n; * Video4Linux driver for W996[87]CF JPEG USB Dual Mode Camera Chip.       *&n; *                                                                         *&n; * Copyright (C) 2002-2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * - Memory management code from bttv driver by Ralph Metzler,             *&n; *   Marcus Metzler and Gerd Knorr.                                        *&n; * - I2C interface to kernel, high-level CMOS sensor control routines and  *&n; *   some symbolic names from OV511 driver by Mark W. McClelland.          *&n; * - Low-level I2C fast write function by Piotr Czerczak.                  *&n; * - Low-level I2C read function by Frederic Jouault.                      *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * Video4Linux driver for W996[87]CF JPEG USB Dual Mode Camera Chip.       *&n; *                                                                         *&n; * Copyright (C) 2002-2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * - Memory management code from bttv driver by Ralph Metzler,             *&n; *   Marcus Metzler and Gerd Knorr.                                        *&n; * - I2C interface to kernel, high-level image sensor control routines and *&n; *   some symbolic names from OV511 driver by Mark W. McClelland.          *&n; * - Low-level I2C fast write function by Piotr Czerczak.                  *&n; * - Low-level I2C read function by Frederic Jouault.                      *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/page-flags.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;w9968cf.h&quot;
 macro_line|#include &quot;w9968cf_decoder.h&quot;
-multiline_comment|/****************************************************************************&n; * Module macros and paramaters                                             *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; * Module macros and parameters                                             *&n; ****************************************************************************/
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|usb
+comma
+id|winbond_id_table
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -27,11 +37,17 @@ l_string|&quot; &quot;
 id|W9968CF_AUTHOR_EMAIL
 )paren
 suffix:semicolon
+DECL|variable|W9968CF_MODULE_NAME
 id|MODULE_DESCRIPTION
 c_func
 (paren
 id|W9968CF_MODULE_NAME
-l_string|&quot; &quot;
+)paren
+suffix:semicolon
+DECL|variable|W9968CF_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|W9968CF_MODULE_VERSION
 )paren
 suffix:semicolon
@@ -47,6 +63,13 @@ c_func
 (paren
 l_string|&quot;Video&quot;
 )paren
+suffix:semicolon
+DECL|variable|ovmod_load
+r_static
+r_int
+id|ovmod_load
+op_assign
+id|W9968CF_OVMOD_LOAD
 suffix:semicolon
 DECL|variable|vppmod_load
 r_static
@@ -582,6 +605,17 @@ l_int|24
 )braket
 suffix:semicolon
 multiline_comment|/* number of values per parameter */
+macro_line|#ifdef CONFIG_KMOD
+id|module_param
+c_func
+(paren
+id|ovmod_load
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -592,6 +626,7 @@ comma
 l_int|0444
 )paren
 suffix:semicolon
+macro_line|#endif
 id|module_param
 c_func
 (paren
@@ -599,7 +634,7 @@ id|simcams
 comma
 id|ushort
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param_array
@@ -970,7 +1005,7 @@ id|debug
 comma
 id|ushort
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -980,23 +1015,47 @@ id|specific_debug
 comma
 r_bool
 comma
-l_int|0444
+l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_KMOD
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ovmod_load
+comma
+l_string|&quot;&bslash;n&lt;0|1&gt; Automatic &squot;ovcamchip&squot; module loading.&quot;
+l_string|&quot;&bslash;n0 disabled, 1 enabled.&quot;
+l_string|&quot;&bslash;nIf enabled,&squot;insmod&squot; searches for the required &squot;ovcamchip&squot;&quot;
+l_string|&quot;&bslash;nmodule in the system, according to its configuration, and&quot;
+l_string|&quot;&bslash;nattempts to load that module automatically. This action is&quot;
+l_string|&quot;&bslash;nperformed once as soon as the &squot;w9968cf&squot; module is loaded&quot;
+l_string|&quot;&bslash;ninto memory.&quot;
+l_string|&quot;&bslash;nDefault value is &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|W9968CF_OVMOD_LOAD
+)paren
+l_string|&quot;.&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
 id|vppmod_load
 comma
 l_string|&quot;&bslash;n&lt;0|1&gt; Automatic &squot;w9968cf-vpp&squot; module loading.&quot;
-l_string|&quot;&bslash;n0 disable, 1 enable.&quot;
+l_string|&quot;&bslash;n0 disabled, 1 enabled.&quot;
 l_string|&quot;&bslash;nIf enabled, every time an application attempts to open a&quot;
 l_string|&quot;&bslash;ncamera, &squot;insmod&squot; searches for the video post-processing&quot;
 l_string|&quot;&bslash;nmodule in the system and loads it automatically (if&quot;
-l_string|&quot;&bslash;npresent). The &squot;w9968cf-vpp&squot; module adds extra image&quot;
-l_string|&quot;&bslash;nmanipulation functions to the &squot;w9968cf&squot; module, like&quot;
-l_string|&quot;&bslash;nsoftware up-scaling,colour conversions and video decoding.&quot;
+l_string|&quot;&bslash;npresent). The optional &squot;w9968cf-vpp&squot; module adds extra&quot;
+l_string|&quot;&bslash;n image manipulation functions to the &squot;w9968cf&squot; module,like&quot;
+l_string|&quot;&bslash;nsoftware up-scaling,colour conversions and video decoding&quot;
+l_string|&quot;&bslash;nfor very high frame rates.&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
 c_func
@@ -1007,6 +1066,7 @@ l_string|&quot;.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -1101,8 +1161,8 @@ comma
 l_string|&quot;&bslash;n&lt;0|1[,...]&gt; &quot;
 l_string|&quot;Hardware double buffering: 0 disabled, 1 enabled.&quot;
 l_string|&quot;&bslash;nIt should be enabled if you want smooth video output: if&quot;
-l_string|&quot;&bslash;nyou obtain out of sync. video, disable it at all, or try&quot;
-l_string|&quot;&bslash;nto decrease the &squot;clockdiv&squot; module paramater value.&quot;
+l_string|&quot;&bslash;nyou obtain out of sync. video, disable it, or try to&quot;
+l_string|&quot;&bslash;ndecrease the &squot;clockdiv&squot; module parameter value.&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
 c_func
@@ -1145,7 +1205,7 @@ id|W9968CF_FILTER_TYPE
 )paren
 l_string|&quot; for every device.&quot;
 l_string|&quot;&bslash;nThe filter is used to reduce noise and aliasing artifacts&quot;
-l_string|&quot;&bslash;nproduced by the CCD or CMOS sensor, and the scaling&quot;
+l_string|&quot;&bslash;nproduced by the CCD or CMOS image sensor, and the scaling&quot;
 l_string|&quot; process.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -1182,7 +1242,7 @@ c_func
 id|W9968CF_UPSCALING
 )paren
 l_string|&quot; for every device.&quot;
-l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not loaded, this paramater is&quot;
+l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not present, this parameter is&quot;
 l_string|&quot; set to 0.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -1209,8 +1269,8 @@ c_func
 id|W9968CF_DECOMPRESSION
 )paren
 l_string|&quot; for every device.&quot;
-l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not loaded, forcing decompression is &quot;
-l_string|&quot;&bslash;nnot allowed; in this case this paramater is set to 2.&quot;
+l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not present, forcing decompression is &quot;
+l_string|&quot;&bslash;nnot allowed; in this case this parameter is set to 2.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1301,7 +1361,7 @@ l_string|&quot;&bslash;n- RGB555  16 bpp - Software conversion from UYVY&quot;
 l_string|&quot;&bslash;n- RGB565  16 bpp - Software conversion from UYVY&quot;
 l_string|&quot;&bslash;n- RGB24   24 bpp - Software conversion from UYVY&quot;
 l_string|&quot;&bslash;n- RGB32   32 bpp - Software conversion from UYVY&quot;
-l_string|&quot;&bslash;nWhen not 0, this paramater will override &squot;decompression&squot;.&quot;
+l_string|&quot;&bslash;nWhen not 0, this parameter will override &squot;decompression&squot;.&quot;
 l_string|&quot;&bslash;nDefault value is 0 for every device.&quot;
 l_string|&quot;&bslash;nInitial palette is &quot;
 id|__MODULE_STRING
@@ -1310,7 +1370,7 @@ c_func
 id|W9968CF_PALETTE_DECOMP_ON
 )paren
 l_string|&quot;.&quot;
-l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not loaded, this paramater is&quot;
+l_string|&quot;&bslash;nIf &squot;w9968cf-vpp&squot; is not present, this parameter is&quot;
 l_string|&quot; set to 9 (UYVY).&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -1339,7 +1399,7 @@ c_func
 (paren
 id|autobright
 comma
-l_string|&quot;&bslash;n&lt;0|1[,...]&gt; CMOS sensor automatically changes brightness:&quot;
+l_string|&quot;&bslash;n&lt;0|1[,...]&gt; Image sensor automatically changes brightness:&quot;
 l_string|&quot;&bslash;n 0 = no, 1 = yes&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
@@ -1356,7 +1416,7 @@ c_func
 (paren
 id|autoexp
 comma
-l_string|&quot;&bslash;n&lt;0|1[,...]&gt; CMOS sensor automatically changes exposure:&quot;
+l_string|&quot;&bslash;n&lt;0|1[,...]&gt; Image sensor automatically changes exposure:&quot;
 l_string|&quot;&bslash;n 0 = no, 1 = yes&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
@@ -1416,7 +1476,7 @@ l_string|&quot;&bslash;n&lt;-1|n[,...]&gt; &quot;
 l_string|&quot;Force pixel clock divisor to a specific value (for experts):&quot;
 l_string|&quot;&bslash;n  n may vary from 0 to 127.&quot;
 l_string|&quot;&bslash;n -1 for automatic value.&quot;
-l_string|&quot;&bslash;nSee also the &squot;double_buffer&squot; module paramater.&quot;
+l_string|&quot;&bslash;nSee also the &squot;double_buffer&squot; module parameter.&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
 c_func
@@ -1466,7 +1526,7 @@ c_func
 (paren
 id|monochrome
 comma
-l_string|&quot;&bslash;n&lt;0|1[,...]&gt; Use OV CMOS sensor as monochrome sensor:&quot;
+l_string|&quot;&bslash;n&lt;0|1[,...]&gt; Use image sensor as monochrome sensor:&quot;
 l_string|&quot;&bslash;n 0 = no, 1 = yes&quot;
 l_string|&quot;&bslash;nNot all the sensors support monochrome color.&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
@@ -1574,7 +1634,7 @@ l_string|&quot;&bslash;n3 = configuration or general messages&quot;
 l_string|&quot;&bslash;n4 = warnings&quot;
 l_string|&quot;&bslash;n5 = called functions&quot;
 l_string|&quot;&bslash;n6 = function internals&quot;
-l_string|&quot;&bslash;nLevel 5 and 6 are useful for testing only, when just &quot;
+l_string|&quot;&bslash;nLevel 5 and 6 are useful for testing only, when only &quot;
 l_string|&quot;one device is used.&quot;
 l_string|&quot;&bslash;nDefault value is &quot;
 id|__MODULE_STRING
@@ -1644,25 +1704,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-id|ssize_t
-id|w9968cf_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-id|__user
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 id|w9968cf_mmap
 c_func
@@ -1696,6 +1737,25 @@ r_int
 )paren
 suffix:semicolon
 r_static
+id|ssize_t
+id|w9968cf_read
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_char
+id|__user
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|w9968cf_v4l_ioctl
 c_func
@@ -1712,6 +1772,7 @@ r_int
 r_int
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1724,22 +1785,6 @@ c_func
 r_struct
 id|w9968cf_device
 op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|w9968cf_urb_complete
-c_func
-(paren
-r_struct
-id|urb
-op_star
-id|urb
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
 )paren
 suffix:semicolon
 r_static
@@ -1826,6 +1871,22 @@ c_func
 r_struct
 id|w9968cf_device
 op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|w9968cf_urb_complete
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* Low-level I2C (SMBus) I/O */
@@ -2126,19 +2187,7 @@ id|w9968cf_device
 op_star
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_int
-r_int
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-r_struct
-id|w9968cf_device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* High-level CMOS sensor control functions */
+multiline_comment|/* High-level image sensor control functions */
 r_static
 r_int
 id|w9968cf_sensor_set_control
@@ -2258,6 +2307,16 @@ id|dev_nr
 )paren
 suffix:semicolon
 r_static
+r_void
+id|w9968cf_adjust_configuration
+c_func
+(paren
+r_struct
+id|w9968cf_device
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|w9968cf_turn_on_led
 c_func
@@ -2275,6 +2334,36 @@ c_func
 r_struct
 id|w9968cf_device
 op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+id|u16
+id|w9968cf_valid_palette
+c_func
+(paren
+id|u16
+id|palette
+)paren
+suffix:semicolon
+r_static
+r_inline
+id|u16
+id|w9968cf_valid_depth
+c_func
+(paren
+id|u16
+id|palette
+)paren
+suffix:semicolon
+r_static
+r_inline
+id|u8
+id|w9968cf_need_decompression
+c_func
+(paren
+id|u16
+id|palette
 )paren
 suffix:semicolon
 r_static
@@ -2301,35 +2390,6 @@ op_star
 comma
 r_struct
 id|video_window
-)paren
-suffix:semicolon
-r_static
-r_inline
-id|u16
-id|w9968cf_valid_palette
-c_func
-(paren
-id|u16
-id|palette
-)paren
-suffix:semicolon
-r_static
-id|u16
-id|w9968cf_valid_depth
-c_func
-(paren
-id|u16
-id|palette
-)paren
-suffix:semicolon
-r_static
-r_inline
-id|u8
-id|w9968cf_need_decompression
-c_func
-(paren
-id|u16
-id|palette
 )paren
 suffix:semicolon
 r_static
@@ -2418,7 +2478,9 @@ r_int
 id|w9968cf_vppmod_detect
 c_func
 (paren
-r_void
+r_struct
+id|w9968cf_device
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -2426,124 +2488,9 @@ r_void
 id|w9968cf_vppmod_release
 c_func
 (paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Pointers to registered video post-processing functions */
-DECL|variable|w9968cf_vpp_init_decoder
-r_static
-r_void
-(paren
+r_struct
+id|w9968cf_device
 op_star
-id|w9968cf_vpp_init_decoder
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|w9968cf_vpp_check_headers
-r_static
-r_int
-(paren
-op_star
-id|w9968cf_vpp_check_headers
-)paren
-(paren
-r_const
-r_int
-r_char
-op_star
-comma
-r_const
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|variable|w9968cf_vpp_decode
-r_static
-r_int
-(paren
-op_star
-id|w9968cf_vpp_decode
-)paren
-(paren
-r_const
-r_char
-op_star
-comma
-r_const
-r_int
-comma
-r_const
-r_int
-comma
-r_const
-r_int
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
-DECL|variable|w9968cf_vpp_swap_yuvbytes
-r_static
-r_void
-(paren
-op_star
-id|w9968cf_vpp_swap_yuvbytes
-)paren
-(paren
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|variable|w9968cf_vpp_uyvy_to_rgbx
-r_static
-r_void
-(paren
-op_star
-id|w9968cf_vpp_uyvy_to_rgbx
-)paren
-(paren
-id|u8
-op_star
-comma
-r_int
-r_int
-comma
-id|u8
-op_star
-comma
-id|u16
-comma
-id|u8
-)paren
-suffix:semicolon
-DECL|variable|w9968cf_vpp_scale_up
-r_static
-r_void
-(paren
-op_star
-id|w9968cf_vpp_scale_up
-)paren
-(paren
-id|u8
-op_star
-comma
-id|u8
-op_star
-comma
-id|u16
-comma
-id|u16
-comma
-id|u16
-comma
-id|u16
-comma
-id|u16
 )paren
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * Symbolic names                                                           *&n; ****************************************************************************/
@@ -2657,15 +2604,15 @@ l_string|&quot;Creative Labs Video Blaster WebCam Go Plus&quot;
 comma
 multiline_comment|/* Other cameras (having the same descriptors as Generic W996[87]CF) */
 (brace
-id|W9968CF_MOD_ADPA5R
+id|W9968CF_MOD_ADPVDMA
 comma
-l_string|&quot;Aroma Digi Pen ADG-5000 Refurbished&quot;
+l_string|&quot;Aroma Digi Pen VGA Dual Mode ADG-5000&quot;
 )brace
 comma
 (brace
-id|W9986CF_MOD_AU
+id|W9986CF_MOD_AAU
 comma
-l_string|&quot;AVerTV USB&quot;
+l_string|&quot;AVerMedia AVerTV USB&quot;
 )brace
 comma
 (brace
@@ -2675,9 +2622,9 @@ l_string|&quot;Creative Labs Video Blaster WebCam Go&quot;
 )brace
 comma
 (brace
-id|W9968CF_MOD_DLLDK
+id|W9968CF_MOD_LL
 comma
-l_string|&quot;Die Lebon LDC-D35A Digital Kamera&quot;
+l_string|&quot;Lebon LDC-035A&quot;
 )brace
 comma
 (brace
@@ -2687,9 +2634,27 @@ l_string|&quot;Ezonics EZ-802 EZMega Cam&quot;
 )brace
 comma
 (brace
+id|W9968CF_MOD_OOE
+comma
+l_string|&quot;OmniVision OV8610-EDE&quot;
+)brace
+comma
+(brace
 id|W9968CF_MOD_ODPVDMPC
 comma
 l_string|&quot;OPCOM Digi Pen VGA Dual Mode Pen Camera&quot;
+)brace
+comma
+(brace
+id|W9968CF_MOD_PDPII
+comma
+l_string|&quot;Pretec Digi Pen-II&quot;
+)brace
+comma
+(brace
+id|W9968CF_MOD_PDP480
+comma
+l_string|&quot;Pretec DigiPen-480&quot;
 )brace
 comma
 (brace
@@ -3281,52 +3246,6 @@ id|mem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Return the maximum size (in bytes) of a frame buffer.&n;  --------------------------------------------------------------------------*/
-DECL|function|w9968cf_get_max_bufsize
-r_static
-r_inline
-r_int
-r_int
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-r_struct
-id|w9968cf_device
-op_star
-id|cam
-)paren
-(brace
-id|u8
-id|bpp
-op_assign
-(paren
-id|w9968cf_vppmod_present
-)paren
-ques
-c_cond
-l_int|4
-suffix:colon
-l_int|2
-suffix:semicolon
-r_return
-(paren
-id|cam-&gt;upscaling
-)paren
-ques
-c_cond
-id|W9968CF_MAX_WIDTH
-op_star
-id|W9968CF_MAX_HEIGHT
-op_star
-id|bpp
-suffix:colon
-id|cam-&gt;maxwidth
-op_star
-id|cam-&gt;maxheight
-op_star
-id|bpp
-suffix:semicolon
-)brace
 multiline_comment|/*--------------------------------------------------------------------------&n;  Deallocate previously allocated memory.&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_deallocate_memory
 r_static
@@ -3388,7 +3307,7 @@ c_func
 (paren
 id|cam-&gt;frame_tmp.buffer
 comma
-id|W9968CF_HW_BUF_SIZE
+id|cam-&gt;frame_tmp.size
 )paren
 suffix:semicolon
 id|cam-&gt;frame_tmp.buffer
@@ -3400,22 +3319,18 @@ multiline_comment|/* Free helper buffer */
 r_if
 c_cond
 (paren
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 )paren
 (brace
 id|rvfree
 c_func
 (paren
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 comma
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame_vpp.size
 )paren
 suffix:semicolon
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3444,11 +3359,12 @@ id|buffer
 comma
 id|cam-&gt;nbuffers
 op_star
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|size
 )paren
 suffix:semicolon
 id|cam-&gt;frame
@@ -3470,7 +3386,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Memory successfully deallocated.&quot;
+l_string|&quot;Memory successfully deallocated&quot;
 )paren
 )brace
 multiline_comment|/*--------------------------------------------------------------------------&n;  Allocate memory buffers for USB transfers and video frames.&n;  This function is called by open() only.&n;  Return 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
@@ -3486,17 +3402,6 @@ op_star
 id|cam
 )paren
 (brace
-r_const
-r_int
-r_int
-id|bufsize
-op_assign
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
-suffix:semicolon
 r_const
 id|u16
 id|p_size
@@ -3514,10 +3419,71 @@ id|buff
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+r_int
+id|hw_bufsize
+comma
+id|vpp_bufsize
+suffix:semicolon
 id|u8
 id|i
+comma
+id|bpp
 suffix:semicolon
 multiline_comment|/* NOTE: Deallocation is done elsewhere in case of error */
+multiline_comment|/* Calculate the max amount of raw data per frame from the device */
+id|hw_bufsize
+op_assign
+id|cam-&gt;maxwidth
+op_star
+id|cam-&gt;maxheight
+op_star
+l_int|2
+suffix:semicolon
+multiline_comment|/* Calculate the max buf. size needed for post-processing routines */
+id|bpp
+op_assign
+(paren
+id|w9968cf_vpp
+)paren
+ques
+c_cond
+l_int|4
+suffix:colon
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cam-&gt;upscaling
+)paren
+id|vpp_bufsize
+op_assign
+id|max
+c_func
+(paren
+id|W9968CF_MAX_WIDTH
+op_star
+id|W9968CF_MAX_HEIGHT
+op_star
+id|bpp
+comma
+id|cam-&gt;maxwidth
+op_star
+id|cam-&gt;maxheight
+op_star
+id|bpp
+)paren
+suffix:semicolon
+r_else
+id|vpp_bufsize
+op_assign
+id|cam-&gt;maxwidth
+op_star
+id|cam-&gt;maxheight
+op_star
+id|bpp
+suffix:semicolon
 multiline_comment|/* Allocate memory for the isochronous transfer buffers */
 r_for
 c_loop
@@ -3562,7 +3528,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;Couldn&squot;t allocate memory for the isochronous &quot;
-l_string|&quot;transfer buffers (%d bytes).&quot;
+l_string|&quot;transfer buffers (%u bytes)&quot;
 comma
 id|p_size
 op_star
@@ -3600,7 +3566,7 @@ op_assign
 id|rvmalloc
 c_func
 (paren
-id|W9968CF_HW_BUF_SIZE
+id|hw_bufsize
 )paren
 )paren
 )paren
@@ -3611,20 +3577,29 @@ c_func
 l_int|1
 comma
 l_string|&quot;Couldn&squot;t allocate memory for the temporary &quot;
-l_string|&quot;video frame buffer (%i bytes).&quot;
+l_string|&quot;video frame buffer (%lu bytes)&quot;
 comma
-id|W9968CF_HW_BUF_SIZE
+id|hw_bufsize
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|cam-&gt;frame_tmp.size
+op_assign
+id|hw_bufsize
+suffix:semicolon
+id|cam-&gt;frame_tmp.number
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* Allocate memory for the helper buffer */
 r_if
 c_cond
 (paren
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 (brace
 r_if
@@ -3632,12 +3607,12 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 op_assign
 id|rvmalloc
 c_func
 (paren
-id|bufsize
+id|vpp_bufsize
 )paren
 )paren
 )paren
@@ -3648,18 +3623,22 @@ c_func
 l_int|1
 comma
 l_string|&quot;Couldn&squot;t allocate memory for the helper buffer&quot;
-l_string|&quot; (%li bytes).&quot;
+l_string|&quot; (%lu bytes)&quot;
 comma
-id|bufsize
+id|vpp_bufsize
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|cam-&gt;frame_vpp.size
+op_assign
+id|vpp_bufsize
+suffix:semicolon
 )brace
 r_else
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3687,7 +3666,7 @@ c_func
 (paren
 id|cam-&gt;nbuffers
 op_star
-id|bufsize
+id|vpp_bufsize
 )paren
 )paren
 )paren
@@ -3710,7 +3689,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Couldn&squot;t allocate memory for the video frame buffers.&quot;
+l_string|&quot;Couldn&squot;t allocate memory for the video frame buffers&quot;
 )paren
 id|cam-&gt;nbuffers
 op_assign
@@ -3733,8 +3712,8 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Couldn&squot;t allocate memory for %d video frame buffers. &quot;
-l_string|&quot;Only memory for %d buffers has been allocated.&quot;
+l_string|&quot;Couldn&squot;t allocate memory for %u video frame buffers. &quot;
+l_string|&quot;Only memory for %u buffers has been allocated&quot;
 comma
 id|cam-&gt;max_buffers
 comma
@@ -3766,7 +3745,25 @@ id|buff
 op_plus
 id|i
 op_star
-id|bufsize
+id|vpp_bufsize
+suffix:semicolon
+id|cam-&gt;frame
+(braket
+id|i
+)braket
+dot
+id|size
+op_assign
+id|vpp_bufsize
+suffix:semicolon
+id|cam-&gt;frame
+(braket
+id|i
+)braket
+dot
+id|number
+op_assign
+id|i
 suffix:semicolon
 multiline_comment|/* Circular list */
 r_if
@@ -3822,7 +3819,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Memory successfully allocated.&quot;
+l_string|&quot;Memory successfully allocated&quot;
 )paren
 r_return
 l_int|0
@@ -3867,10 +3864,6 @@ id|f
 suffix:semicolon
 r_int
 r_int
-id|maxbufsize
-suffix:semicolon
-r_int
-r_int
 id|len
 comma
 id|status
@@ -3903,29 +3896,11 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Got interrupt, but not streaming.&quot;
+l_string|&quot;Got interrupt, but not streaming&quot;
 )paren
 r_return
 suffix:semicolon
 )brace
-id|maxbufsize
-op_assign
-id|min
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|W9968CF_HW_BUF_SIZE
-comma
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* &quot;(*f)&quot; will be used instead of &quot;cam-&gt;frame_current&quot; */
 id|f
 op_assign
@@ -4008,18 +3983,14 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Switched from temp. frame to frame #%zd&quot;
+l_string|&quot;Switched from temp. frame to frame #%d&quot;
 comma
 (paren
 op_star
 id|f
 )paren
-op_minus
-op_amp
-id|cam-&gt;frame
-(braket
-l_int|0
-)braket
+op_member_access_from_pointer
+id|number
 )paren
 )brace
 )brace
@@ -4083,7 +4054,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;URB failed, error in data packet &quot;
-l_string|&quot;(error #%d, %s).&quot;
+l_string|&quot;(error #%u, %s)&quot;
 comma
 id|status
 comma
@@ -4159,7 +4130,12 @@ id|length
 op_plus
 id|len
 OG
-id|maxbufsize
+(paren
+op_star
+id|f
+)paren
+op_member_access_from_pointer
+id|size
 )paren
 (brace
 id|DBG
@@ -4167,7 +4143,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Buffer overflow: bad data packets.&quot;
+l_string|&quot;Buffer overflow: bad data packets&quot;
 )paren
 (paren
 op_star
@@ -4245,32 +4221,14 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Frame #%zd successfully grabbed.&quot;
+l_string|&quot;Frame #%d successfully grabbed&quot;
 comma
 (paren
-(paren
 op_star
 id|f
 )paren
-op_eq
-op_amp
-id|cam-&gt;frame_tmp
-ques
-c_cond
-op_minus
-l_int|1
-suffix:colon
-(paren
-op_star
-id|f
-)paren
-op_minus
-op_amp
-id|cam-&gt;frame
-(braket
-l_int|0
-)braket
-)paren
+op_member_access_from_pointer
+id|number
 )paren
 r_if
 c_cond
@@ -4282,10 +4240,10 @@ id|VPP_DECOMPRESSION
 (brace
 id|err
 op_assign
-(paren
-op_star
-id|w9968cf_vpp_check_headers
-)paren
+id|w9968cf_vpp
+op_member_access_from_pointer
+id|check_headers
+c_func
 (paren
 (paren
 op_star
@@ -4415,7 +4373,7 @@ multiline_comment|/* grab it again */
 id|PDBGG
 c_func
 (paren
-l_string|&quot;Frame length %li | pack.#%d | pack.len. %d | state %d&quot;
+l_string|&quot;Frame length %lu | pack.#%u | pack.len. %u | state %d&quot;
 comma
 (paren
 r_int
@@ -4499,7 +4457,6 @@ comma
 id|err
 )paren
 )paren
-suffix:semicolon
 )brace
 id|spin_unlock
 c_func
@@ -4643,7 +4600,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Couldn&squot;t allocate the URB structures.&quot;
+l_string|&quot;Couldn&squot;t allocate the URB structures&quot;
 )paren
 r_return
 op_minus
@@ -4926,7 +4883,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Couldn&squot;t tell the camera to start the data transfer.&quot;
+l_string|&quot;Couldn&squot;t tell the camera to start the data transfer&quot;
 )paren
 r_return
 id|err
@@ -4967,7 +4924,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Isochronous transfer size: %li bytes/frame.&quot;
+l_string|&quot;Isochronous transfer size: %lu bytes/frame&quot;
 comma
 (paren
 r_int
@@ -4984,6 +4941,10 @@ l_int|5
 comma
 l_string|&quot;Starting the isochronous transfer...&quot;
 )paren
+id|cam-&gt;streaming
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Submit the URBs */
 r_for
 c_loop
@@ -5019,6 +4980,10 @@ c_cond
 id|err
 )paren
 (brace
+id|cam-&gt;streaming
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5035,11 +5000,8 @@ suffix:semicolon
 id|j
 op_decrement
 )paren
-r_if
-c_cond
-(paren
-op_logical_neg
-id|usb_unlink_urb
+(brace
+id|usb_kill_urb
 c_func
 (paren
 id|cam-&gt;urb
@@ -5047,7 +5009,7 @@ id|cam-&gt;urb
 id|j
 )braket
 )paren
-)paren
+suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
@@ -5057,13 +5019,14 @@ id|j
 )braket
 )paren
 suffix:semicolon
+)brace
 id|DBG
 c_func
 (paren
 l_int|1
 comma
 l_string|&quot;Couldn&squot;t send a transfer request to the &quot;
-l_string|&quot;USB core (error #%d, %s).&quot;
+l_string|&quot;USB core (error #%d, %s)&quot;
 comma
 id|err
 comma
@@ -5075,12 +5038,11 @@ comma
 id|err
 )paren
 )paren
-)brace
-)brace
-id|cam-&gt;streaming
-op_assign
-l_int|1
+r_return
+id|err
 suffix:semicolon
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5116,6 +5078,15 @@ l_int|0
 suffix:semicolon
 id|s8
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cam-&gt;streaming
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* This avoids race conditions with usb_submit_urb() &n;&t;   in the URB completition handler */
 id|spin_lock_irqsave
@@ -5165,11 +5136,7 @@ id|i
 )braket
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|cam-&gt;urb
@@ -5177,8 +5144,7 @@ id|cam-&gt;urb
 id|i
 )braket
 )paren
-)paren
-(brace
+suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
@@ -5195,7 +5161,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -5283,7 +5248,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Isochronous transfer stopped.&quot;
+l_string|&quot;Isochronous transfer stopped&quot;
 )paren
 r_return
 l_int|0
@@ -5365,7 +5330,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Failed to write a register &quot;
-l_string|&quot;(value 0x%04X, index 0x%02X, error #%d, %s).&quot;
+l_string|&quot;(value 0x%04X, index 0x%02X, error #%d, %s)&quot;
 comma
 id|value
 comma
@@ -5474,7 +5439,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Failed to read a register &quot;
-l_string|&quot;(index 0x%02X, error #%d, %s).&quot;
+l_string|&quot;(index 0x%02X, error #%d, %s)&quot;
 comma
 id|index
 comma
@@ -5591,7 +5556,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Failed to write the FSB registers &quot;
-l_string|&quot;(error #%d, %s).&quot;
+l_string|&quot;(error #%d, %s)&quot;
 comma
 id|res
 comma
@@ -6270,7 +6235,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Couldn&squot;t receive the ACK.&quot;
+l_string|&quot;Couldn&squot;t receive the ACK&quot;
 )paren
 id|err
 op_add_assign
@@ -6992,7 +6957,7 @@ c_func
 l_int|5
 comma
 l_string|&quot;I2C write byte data done, addr.0x%04X, subaddr.0x%02X &quot;
-l_string|&quot;value 0x%02X.&quot;
+l_string|&quot;value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7007,7 +6972,7 @@ c_func
 l_int|5
 comma
 l_string|&quot;I2C write byte data failed, addr.0x%04X, &quot;
-l_string|&quot;subaddr.0x%02X, value 0x%02X.&quot;
+l_string|&quot;subaddr.0x%02X, value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7188,7 +7153,7 @@ c_func
 l_int|5
 comma
 l_string|&quot;I2C read byte data done, addr.0x%04X, &quot;
-l_string|&quot;subaddr.0x%02X, value 0x%02X.&quot;
+l_string|&quot;subaddr.0x%02X, value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7204,7 +7169,7 @@ c_func
 l_int|5
 comma
 l_string|&quot;I2C read byte data failed, addr.0x%04X, &quot;
-l_string|&quot;subaddr.0x%02X, wrong value 0x%02X.&quot;
+l_string|&quot;subaddr.0x%02X, wrong value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7329,8 +7294,8 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;I2C read byte done, addr.0x%04X.&quot;
-l_string|&quot;value 0x%02X.&quot;
+l_string|&quot;I2C read byte done, addr.0x%04X, &quot;
+l_string|&quot;value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7343,8 +7308,8 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;I2C read byte failed, addr.0x%04X.&quot;
-l_string|&quot;wrong value 0x%02X.&quot;
+l_string|&quot;I2C read byte failed, addr.0x%04X, &quot;
+l_string|&quot;wrong value 0x%02X&quot;
 comma
 id|address
 comma
@@ -7379,7 +7344,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;i2c_write_byte() is an unsupported transfer mode.&quot;
+l_string|&quot;i2c_write_byte() is an unsupported transfer mode&quot;
 )paren
 r_return
 op_minus
@@ -7824,12 +7789,10 @@ id|cam-&gt;sensor_client
 op_eq
 id|client
 )paren
-(brace
 id|cam-&gt;sensor_client
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|DBG
 c_func
 (paren
@@ -8017,7 +7980,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Failed to register the I2C adapter.&quot;
+l_string|&quot;Failed to register the I2C adapter&quot;
 )paren
 r_else
 id|DBG
@@ -8025,7 +7988,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;I2C adapter registered.&quot;
+l_string|&quot;I2C adapter registered&quot;
 )paren
 r_return
 id|err
@@ -8138,14 +8101,14 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Couldn&squot;t turn on the LED.&quot;
+l_string|&quot;Couldn&squot;t turn on the LED&quot;
 )paren
 id|DBG
 c_func
 (paren
 l_int|5
 comma
-l_string|&quot;LED turned on.&quot;
+l_string|&quot;LED turned on&quot;
 )paren
 r_return
 id|err
@@ -8164,6 +8127,60 @@ op_star
 id|cam
 )paren
 (brace
+r_int
+r_int
+id|hw_bufsize
+op_assign
+id|cam-&gt;maxwidth
+op_star
+id|cam-&gt;maxheight
+op_star
+l_int|2
+comma
+id|y0
+op_assign
+l_int|0x0000
+comma
+id|u0
+op_assign
+id|y0
+op_plus
+id|hw_bufsize
+op_div
+l_int|2
+comma
+id|v0
+op_assign
+id|u0
+op_plus
+id|hw_bufsize
+op_div
+l_int|4
+comma
+id|y1
+op_assign
+id|v0
+op_plus
+id|hw_bufsize
+op_div
+l_int|4
+comma
+id|u1
+op_assign
+id|y1
+op_plus
+id|hw_bufsize
+op_div
+l_int|2
+comma
+id|v1
+op_assign
+id|u1
+op_plus
+id|hw_bufsize
+op_div
+l_int|4
+suffix:semicolon
 r_int
 id|err
 op_assign
@@ -8228,12 +8245,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0000
+id|y0
+op_amp
+l_int|0xffff
 comma
 l_int|0x20
 )paren
 suffix:semicolon
-multiline_comment|/* Y frame buf.0, low */
+multiline_comment|/* Y buf.0, low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8241,12 +8260,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0000
+id|y0
+op_rshift
+l_int|16
 comma
 l_int|0x21
 )paren
 suffix:semicolon
-multiline_comment|/* Y frame buf.0, high */
+multiline_comment|/* Y buf.0, high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8254,38 +8275,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0xb000
-comma
-l_int|0x22
-)paren
-suffix:semicolon
-multiline_comment|/* Y frame buf.1, low */
-id|err
-op_add_assign
-id|w9968cf_write_reg
-c_func
-(paren
-id|cam
-comma
-l_int|0x0004
-comma
-l_int|0x23
-)paren
-suffix:semicolon
-multiline_comment|/* Y frame buf.1, high */
-id|err
-op_add_assign
-id|w9968cf_write_reg
-c_func
-(paren
-id|cam
-comma
-l_int|0x5800
+id|u0
+op_amp
+l_int|0xffff
 comma
 l_int|0x24
 )paren
 suffix:semicolon
-multiline_comment|/* U frame buf.0, low */
+multiline_comment|/* U buf.0, low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8293,12 +8290,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0002
+id|u0
+op_rshift
+l_int|16
 comma
 l_int|0x25
 )paren
 suffix:semicolon
-multiline_comment|/* U frame buf.0, high */
+multiline_comment|/* U buf.0, high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8306,38 +8305,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0800
-comma
-l_int|0x26
-)paren
-suffix:semicolon
-multiline_comment|/* U frame buf.1, low */
-id|err
-op_add_assign
-id|w9968cf_write_reg
-c_func
-(paren
-id|cam
-comma
-l_int|0x0007
-comma
-l_int|0x27
-)paren
-suffix:semicolon
-multiline_comment|/* U frame buf.1, high */
-id|err
-op_add_assign
-id|w9968cf_write_reg
-c_func
-(paren
-id|cam
-comma
-l_int|0x8400
+id|v0
+op_amp
+l_int|0xffff
 comma
 l_int|0x28
 )paren
 suffix:semicolon
-multiline_comment|/* V frame buf.0, low */
+multiline_comment|/* V buf.0, low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8345,12 +8320,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0003
+id|v0
+op_rshift
+l_int|16
 comma
 l_int|0x29
 )paren
 suffix:semicolon
-multiline_comment|/* V frame buf.0, high */
+multiline_comment|/* V buf.0, high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8358,12 +8335,74 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x3400
+id|y1
+op_amp
+l_int|0xffff
+comma
+l_int|0x22
+)paren
+suffix:semicolon
+multiline_comment|/* Y buf.1, low */
+id|err
+op_add_assign
+id|w9968cf_write_reg
+c_func
+(paren
+id|cam
+comma
+id|y1
+op_rshift
+l_int|16
+comma
+l_int|0x23
+)paren
+suffix:semicolon
+multiline_comment|/* Y buf.1, high */
+id|err
+op_add_assign
+id|w9968cf_write_reg
+c_func
+(paren
+id|cam
+comma
+id|u1
+op_amp
+l_int|0xffff
+comma
+l_int|0x26
+)paren
+suffix:semicolon
+multiline_comment|/* U buf.1, low */
+id|err
+op_add_assign
+id|w9968cf_write_reg
+c_func
+(paren
+id|cam
+comma
+id|u1
+op_rshift
+l_int|16
+comma
+l_int|0x27
+)paren
+suffix:semicolon
+multiline_comment|/* U buf.1, high */
+id|err
+op_add_assign
+id|w9968cf_write_reg
+c_func
+(paren
+id|cam
+comma
+id|v1
+op_amp
+l_int|0xffff
 comma
 l_int|0x2a
 )paren
 suffix:semicolon
-multiline_comment|/* V frame buf.1, low */
+multiline_comment|/* V buf.1, low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8371,12 +8410,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0008
+id|v1
+op_rshift
+l_int|16
 comma
 l_int|0x2b
 )paren
 suffix:semicolon
-multiline_comment|/* V frame buf.1, high */
+multiline_comment|/* V buf.1, high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8384,12 +8425,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x6000
+id|y1
+op_amp
+l_int|0xffff
 comma
 l_int|0x32
 )paren
 suffix:semicolon
-multiline_comment|/* JPEG bitstream buf 0 */
+multiline_comment|/* JPEG buf 0 low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8397,12 +8440,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x0009
+id|y1
+op_rshift
+l_int|16
 comma
 l_int|0x33
 )paren
 suffix:semicolon
-multiline_comment|/* JPEG bitstream buf 0 */
+multiline_comment|/* JPEG buf 0 high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8410,12 +8455,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x2000
+id|y1
+op_amp
+l_int|0xffff
 comma
 l_int|0x34
 )paren
 suffix:semicolon
-multiline_comment|/* JPEG bitstream buf 1 */
+multiline_comment|/* JPEG buf 1 low */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8423,12 +8470,14 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x000d
+id|y1
+op_rshift
+l_int|16
 comma
 l_int|0x35
 )paren
 suffix:semicolon
-multiline_comment|/* JPEG bitstream buf 1 */
+multiline_comment|/* JPEG bug 1 high */
 id|err
 op_add_assign
 id|w9968cf_write_reg
@@ -8512,7 +8561,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Chip initialization failed.&quot;
+l_string|&quot;Chip initialization failed&quot;
 )paren
 r_else
 id|DBG
@@ -8520,10 +8569,162 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Chip successfully initialized.&quot;
+l_string|&quot;Chip successfully initialized&quot;
 )paren
 r_return
 id|err
+suffix:semicolon
+)brace
+multiline_comment|/*--------------------------------------------------------------------------&n;  Return non-zero if the palette is supported, 0 otherwise.&n;  --------------------------------------------------------------------------*/
+DECL|function|w9968cf_valid_palette
+r_static
+r_inline
+id|u16
+id|w9968cf_valid_palette
+c_func
+(paren
+id|u16
+id|palette
+)paren
+(brace
+id|u8
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|palette
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|palette
+op_eq
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|palette
+)paren
+r_return
+id|palette
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*--------------------------------------------------------------------------&n;  Return the depth corresponding to the given palette.&n;  Palette _must_ be supported !&n;  --------------------------------------------------------------------------*/
+DECL|function|w9968cf_valid_depth
+r_static
+r_inline
+id|u16
+id|w9968cf_valid_depth
+c_func
+(paren
+id|u16
+id|palette
+)paren
+(brace
+id|u8
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|palette
+op_ne
+id|palette
+)paren
+id|i
+op_increment
+suffix:semicolon
+r_return
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|depth
+suffix:semicolon
+)brace
+multiline_comment|/*--------------------------------------------------------------------------&n;  Return non-zero if the format requires decompression, 0 otherwise.&n;  --------------------------------------------------------------------------*/
+DECL|function|w9968cf_need_decompression
+r_static
+r_inline
+id|u8
+id|w9968cf_need_decompression
+c_func
+(paren
+id|u16
+id|palette
+)paren
+(brace
+id|u8
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|palette
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|palette
+op_eq
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|palette
+)paren
+r_return
+id|w9968cf_formatlist
+(braket
+id|i
+)braket
+dot
+id|compression
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*--------------------------------------------------------------------------&n;  Change the picture settings of the camera.&n;  Return 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
@@ -8701,7 +8902,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: &squot;hardware double buffer&squot; doesn&squot;t work when compressed video&n;&t;          is enabled (corrupted frames). */
+multiline_comment|/* NOTE: due to memory issues, it is better to disable the hardware&n;&t;         double buffering during compression */
 r_if
 c_cond
 (paren
@@ -8827,11 +9028,12 @@ l_int|0
 comma
 id|cam-&gt;nbuffers
 op_star
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|size
 )paren
 suffix:semicolon
 id|DBG
@@ -8839,7 +9041,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Palette is %s, depth is %d bpp.&quot;
+l_string|&quot;Palette is %s, depth is %u bpp&quot;
 comma
 id|symbolic
 c_func
@@ -8861,7 +9063,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Failed to change picture settings.&quot;
+l_string|&quot;Failed to change picture settings&quot;
 )paren
 r_return
 id|err
@@ -9634,11 +9836,12 @@ l_int|0
 comma
 id|cam-&gt;nbuffers
 op_star
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|size
 )paren
 suffix:semicolon
 id|DBG
@@ -9646,7 +9849,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;The capture area is %dx%d, Offset (x,y)=(%d,%d).&quot;
+l_string|&quot;The capture area is %dx%d, Offset (x,y)=(%u,%u)&quot;
 comma
 id|win.width
 comma
@@ -9659,8 +9862,8 @@ id|win.y
 id|PDBGG
 c_func
 (paren
-l_string|&quot;x=%d ,y=%d, w=%d, h=%d, ax=%d, ay=%d, s_win.x=%d, s_win.y=%d, &quot;
-l_string|&quot;cw=%d, ch=%d, win.x=%d ,win.y=%d, win.width=%d, win.height=%d&quot;
+l_string|&quot;x=%u ,y=%u, w=%u, h=%u, ax=%u, ay=%u, s_win.x=%u, s_win.y=%u, &quot;
+l_string|&quot;cw=%u, ch=%u, win.x=%u, win.y=%u, win.width=%u, win.height=%u&quot;
 comma
 id|x
 comma
@@ -9700,161 +9903,10 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Failed to change the capture area size.&quot;
+l_string|&quot;Failed to change the capture area size&quot;
 )paren
 r_return
 id|err
-suffix:semicolon
-)brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Return non-zero if the palette is supported, 0 otherwise.&n;  --------------------------------------------------------------------------*/
-DECL|function|w9968cf_valid_palette
-r_static
-r_inline
-id|u16
-id|w9968cf_valid_palette
-c_func
-(paren
-id|u16
-id|palette
-)paren
-(brace
-id|u8
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|palette
-op_ne
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|palette
-op_eq
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|palette
-)paren
-r_return
-id|palette
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Return the depth corresponding to the given palette.&n;  Palette _must_ be supported !&n;  --------------------------------------------------------------------------*/
-DECL|function|w9968cf_valid_depth
-r_static
-id|u16
-id|w9968cf_valid_depth
-c_func
-(paren
-id|u16
-id|palette
-)paren
-(brace
-id|u8
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|palette
-op_ne
-id|palette
-)paren
-id|i
-op_increment
-suffix:semicolon
-r_return
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|depth
-suffix:semicolon
-)brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Return non-zero if the format requires decompression, 0 otherwise.&n;  --------------------------------------------------------------------------*/
-DECL|function|w9968cf_need_decompression
-r_static
-r_inline
-id|u8
-id|w9968cf_need_decompression
-c_func
-(paren
-id|u16
-id|palette
-)paren
-(brace
-id|u8
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|palette
-op_ne
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|palette
-op_eq
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|palette
-)paren
-r_return
-id|w9968cf_formatlist
-(braket
-id|i
-)braket
-dot
-id|compression
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------- &n;  Adjust the asked values for window width and height.&n;  Return 0 on success, -1 otherwise.&n;  --------------------------------------------------------------------------*/
@@ -9915,10 +9967,19 @@ op_amp
 id|VPP_DECOMPRESSION
 )paren
 op_logical_and
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 ques
 c_cond
+id|max
+c_func
+(paren
+(paren
+id|u16
+)paren
 id|W9968CF_MAX_WIDTH
+comma
+id|cam-&gt;maxwidth
+)paren
 suffix:colon
 id|cam-&gt;maxwidth
 suffix:semicolon
@@ -9933,10 +9994,19 @@ op_amp
 id|VPP_DECOMPRESSION
 )paren
 op_logical_and
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 ques
 c_cond
+id|max
+c_func
+(paren
+(paren
+id|u16
+)paren
 id|W9968CF_MAX_HEIGHT
+comma
+id|cam-&gt;maxheight
+)paren
 suffix:colon
 id|cam-&gt;maxheight
 suffix:semicolon
@@ -9991,7 +10061,7 @@ suffix:semicolon
 id|PDBGG
 c_func
 (paren
-l_string|&quot;Window size adjusted w=%d, h=%d &quot;
+l_string|&quot;Window size adjusted w=%u, h=%u &quot;
 comma
 op_star
 id|width
@@ -10155,7 +10225,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Frame #%d pushed into the FIFO list. Position %d.&quot;
+l_string|&quot;Frame #%u pushed into the FIFO list. Position %u&quot;
 comma
 id|f_num
 comma
@@ -10247,16 +10317,14 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Popped frame #%zd from the list.&quot;
+l_string|&quot;Popped frame #%d from the list&quot;
 comma
+(paren
 op_star
 id|framep
-op_minus
-op_amp
-id|cam-&gt;frame
-(braket
-l_int|0
-)braket
+)paren
+op_member_access_from_pointer
+id|number
 )paren
 )brace
 multiline_comment|/*--------------------------------------------------------------------------&n;  High-level video post-processing routine on grabbed frames.&n;  Return 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
@@ -10286,7 +10354,7 @@ comma
 op_star
 id|pOut
 op_assign
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 comma
 op_star
 id|tmp
@@ -10358,10 +10426,10 @@ id|pOut
 )paren
 id|err
 op_assign
-(paren
-op_star
-id|w9968cf_vpp_decode
-)paren
+id|w9968cf_vpp
+op_member_access_from_pointer
+id|decode
+c_func
 (paren
 id|pIn
 comma
@@ -10377,7 +10445,7 @@ suffix:semicolon
 id|PDBGG
 c_func
 (paren
-l_string|&quot;Compressed frame length: %li&quot;
+l_string|&quot;Compressed frame length: %lu&quot;
 comma
 (paren
 r_int
@@ -10416,7 +10484,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;An error occurred while decoding the frame: &quot;
-l_string|&quot;%s.&quot;
+l_string|&quot;%s&quot;
 comma
 id|symbolic
 c_func
@@ -10447,10 +10515,10 @@ op_amp
 id|VPP_SWAP_YUV_BYTES
 )paren
 (brace
-(paren
-op_star
-id|w9968cf_vpp_swap_yuvbytes
-)paren
+id|w9968cf_vpp
+op_member_access_from_pointer
+id|swap_yuvbytes
+c_func
 (paren
 id|pIn
 comma
@@ -10462,7 +10530,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Original UYVY component ordering changed.&quot;
+l_string|&quot;Original UYVY component ordering changed&quot;
 )paren
 )brace
 r_if
@@ -10473,10 +10541,10 @@ op_amp
 id|VPP_UPSCALE
 )paren
 (brace
-(paren
-op_star
-id|w9968cf_vpp_scale_up
-)paren
+id|w9968cf_vpp
+op_member_access_from_pointer
+id|scale_up
+c_func
 (paren
 id|pIn
 comma
@@ -10517,7 +10585,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Vertical up-scaling done: %d,%d,%dbpp-&gt;%d,%d&quot;
+l_string|&quot;Vertical up-scaling done: %u,%u,%ubpp-&gt;%u,%u&quot;
 comma
 id|hw_w
 comma
@@ -10538,10 +10606,10 @@ op_amp
 id|VPP_UYVY_TO_RGBX
 )paren
 (brace
-(paren
-op_star
-id|w9968cf_vpp_uyvy_to_rgbx
-)paren
+id|w9968cf_vpp
+op_member_access_from_pointer
+id|uyvy_to_rgbx
+c_func
 (paren
 id|pIn
 comma
@@ -10578,7 +10646,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;UYVY-16bit to %s conversion done.&quot;
+l_string|&quot;UYVY-16bit to %s conversion done&quot;
 comma
 id|symbolic
 c_func
@@ -10601,7 +10669,7 @@ c_func
 (paren
 id|fr-&gt;buffer
 comma
-id|cam-&gt;vpp_buffer
+id|cam-&gt;frame_vpp.buffer
 comma
 id|fr-&gt;length
 )paren
@@ -10610,7 +10678,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; * CMOS sensor control routines                                             *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; * Image sensor control routines                                            *&n; ****************************************************************************/
 r_static
 r_int
 DECL|function|w9968cf_sensor_set_control
@@ -10754,9 +10822,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|c
+op_logical_or
+op_logical_neg
+id|c-&gt;driver
+op_logical_or
+op_logical_neg
 id|c-&gt;driver-&gt;command
 )paren
-(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|rc
 op_assign
 id|c-&gt;driver
@@ -10764,7 +10842,7 @@ op_member_access_from_pointer
 id|command
 c_func
 (paren
-id|cam-&gt;sensor_client
+id|c
 comma
 id|cmd
 comma
@@ -10790,13 +10868,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_else
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Update some settings of the CMOS sensor.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
+multiline_comment|/*--------------------------------------------------------------------------&n;  Update some settings of the image sensor.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_sensor_update_settings
 r_static
 r_int
@@ -10944,7 +11016,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Get some current picture settings from the CMOS sensor and update the&n;  internal &squot;picture&squot; structure of the camera.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
+multiline_comment|/*--------------------------------------------------------------------------&n;  Get some current picture settings from the image sensor and update the&n;  internal &squot;picture&squot; structure of the camera.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_sensor_get_picture
 r_static
 r_int
@@ -11067,13 +11139,13 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Got picture settings from the CMOS sensor.&quot;
+l_string|&quot;Got picture settings from the image sensor&quot;
 )paren
 id|PDBGG
 c_func
 (paren
 l_string|&quot;Brightness, contrast, hue, colour, whiteness are &quot;
-l_string|&quot;%d,%d,%d,%d,%d.&quot;
+l_string|&quot;%u,%u,%u,%u,%u&quot;
 comma
 id|cam-&gt;picture.brightness
 comma
@@ -11089,7 +11161,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*--------------------------------------------------------------------------&n;  Update picture settings of the CMOS sensor.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
+multiline_comment|/*--------------------------------------------------------------------------&n;  Update picture settings of the image sensor.&n;  Returns: 0 on success, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
 r_static
 r_int
 DECL|function|w9968cf_sensor_update_picture
@@ -11149,7 +11221,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Contrast changed from %d to %d.&quot;
+l_string|&quot;Contrast changed from %u to %u&quot;
 comma
 id|cam-&gt;picture.contrast
 comma
@@ -11205,7 +11277,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Brightness changed from %d to %d.&quot;
+l_string|&quot;Brightness changed from %u to %u&quot;
 comma
 id|cam-&gt;picture.brightness
 comma
@@ -11254,7 +11326,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Colour changed from %d to %d.&quot;
+l_string|&quot;Colour changed from %u to %u&quot;
 comma
 id|cam-&gt;picture.colour
 comma
@@ -11303,7 +11375,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Hue changed from %d to %d.&quot;
+l_string|&quot;Hue changed from %u to %u&quot;
 comma
 id|cam-&gt;picture.hue
 comma
@@ -11324,14 +11396,14 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Failed to change sensor picture setting.&quot;
+l_string|&quot;Failed to change sensor picture setting&quot;
 )paren
 r_return
 id|err
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * Camera configuration                                                     *&n; ****************************************************************************/
-multiline_comment|/*--------------------------------------------------------------------------&n;  This function is called when a supported CMOS sensor is detected.&n;  Return 0 if the initialization succeeds, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
+multiline_comment|/*--------------------------------------------------------------------------&n;  This function is called when a supported image sensor is detected.&n;  Return 0 if the initialization succeeds, a negative number otherwise.&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_sensor_init
 r_static
 r_int
@@ -11447,7 +11519,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Not supported CMOS sensor detected for %s.&quot;
+l_string|&quot;Not supported image sensor detected for %s&quot;
 comma
 id|symbolic
 c_func
@@ -11480,7 +11552,7 @@ id|cam-&gt;start_cropy
 op_assign
 l_int|35
 suffix:semicolon
-multiline_comment|/* Seems to work around a bug in the CMOS sensor */
+multiline_comment|/* Seems to work around a bug in the image sensor */
 id|cam-&gt;vs_polarity
 op_assign
 l_int|1
@@ -11553,7 +11625,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s CMOS sensor initialized.&quot;
+l_string|&quot;%s image sensor initialized&quot;
 comma
 id|symbolic
 c_func
@@ -11581,8 +11653,8 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;CMOS sensor initialization failed for %s (/dev/video%d). &quot;
-l_string|&quot;Try to detach and attach this device again.&quot;
+l_string|&quot;Image sensor initialization failed for %s (/dev/video%d). &quot;
+l_string|&quot;Try to detach and attach this device again&quot;
 comma
 id|symbolic
 c_func
@@ -11660,10 +11732,6 @@ suffix:semicolon
 id|cam-&gt;disconnected
 op_assign
 l_int|0
-suffix:semicolon
-id|cam-&gt;usbdev
-op_assign
-id|udev
 suffix:semicolon
 id|cam-&gt;id
 op_assign
@@ -12278,6 +12346,14 @@ op_assign
 id|W9968CF_PALETTE_DECOMP_ON
 suffix:semicolon
 )brace
+id|cam-&gt;picture.depth
+op_assign
+id|w9968cf_valid_depth
+c_func
+(paren
+id|cam-&gt;picture.palette
+)paren
+suffix:semicolon
 id|cam-&gt;force_rgb
 op_assign
 (paren
@@ -12335,59 +12411,12 @@ id|cam-&gt;window.flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* If the video post-processing module is not present, some paramaters&n;&t;   must be overridden: */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|w9968cf_vppmod_present
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cam-&gt;decompression
-op_eq
-l_int|1
-)paren
-id|cam-&gt;decompression
-op_assign
-l_int|2
-suffix:semicolon
-id|cam-&gt;upscaling
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cam-&gt;picture.palette
-op_ne
-id|VIDEO_PALETTE_UYVY
-)paren
-id|cam-&gt;force_palette
-op_assign
-l_int|0
-suffix:semicolon
-id|cam-&gt;picture.palette
-op_assign
-id|VIDEO_PALETTE_UYVY
-suffix:semicolon
-)brace
-id|cam-&gt;picture.depth
-op_assign
-id|w9968cf_valid_depth
-c_func
-(paren
-id|cam-&gt;picture.palette
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
 l_int|3
 comma
-l_string|&quot;%s configured with settings #%d:&quot;
+l_string|&quot;%s configured with settings #%u:&quot;
 comma
 id|symbolic
 c_func
@@ -12404,7 +12433,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Data packet size for USB isochrnous transfer: %d bytes.&quot;
+l_string|&quot;- Data packet size for USB isochrnous transfer: %u bytes&quot;
 comma
 id|wMaxPacketSize
 (braket
@@ -12418,7 +12447,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Number of requested video frame buffers: %d&quot;
+l_string|&quot;- Number of requested video frame buffers: %u&quot;
 comma
 id|cam-&gt;max_buffers
 )paren
@@ -12432,7 +12461,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Hardware double buffering enabled.&quot;
+l_string|&quot;- Hardware double buffering enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12440,7 +12469,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Hardware double buffering disabled.&quot;
+l_string|&quot;- Hardware double buffering disabled&quot;
 )paren
 r_if
 c_cond
@@ -12454,7 +12483,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Video filtering disabled.&quot;
+l_string|&quot;- Video filtering disabled&quot;
 )paren
 r_else
 r_if
@@ -12469,7 +12498,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Video filtering enabled: type 1-2-1.&quot;
+l_string|&quot;- Video filtering enabled: type 1-2-1&quot;
 )paren
 r_else
 r_if
@@ -12484,7 +12513,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Video filtering enabled: type 2-3-6-3-2.&quot;
+l_string|&quot;- Video filtering enabled: type 2-3-6-3-2&quot;
 )paren
 r_if
 c_cond
@@ -12496,7 +12525,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Video data clamping (CCIR-601 format) enabled.&quot;
+l_string|&quot;- Video data clamping (CCIR-601 format) enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12504,7 +12533,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Video data clamping (CCIR-601 format) disabled.&quot;
+l_string|&quot;- Video data clamping (CCIR-601 format) disabled&quot;
 )paren
 r_if
 c_cond
@@ -12516,7 +12545,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Large view enabled.&quot;
+l_string|&quot;- Large view enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12524,7 +12553,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Large view disabled.&quot;
+l_string|&quot;- Large view disabled&quot;
 )paren
 r_if
 c_cond
@@ -12545,7 +12574,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Decompression disabled.&quot;
+l_string|&quot;- Decompression disabled&quot;
 )paren
 r_else
 r_if
@@ -12567,7 +12596,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Decompression forced.&quot;
+l_string|&quot;- Decompression forced&quot;
 )paren
 r_else
 r_if
@@ -12589,7 +12618,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Decompression allowed.&quot;
+l_string|&quot;- Decompression allowed&quot;
 )paren
 r_if
 c_cond
@@ -12601,7 +12630,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Software image scaling enabled.&quot;
+l_string|&quot;- Software image scaling enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12609,7 +12638,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Software image scaling disabled.&quot;
+l_string|&quot;- Software image scaling disabled&quot;
 )paren
 r_if
 c_cond
@@ -12621,7 +12650,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Image palette forced to %s.&quot;
+l_string|&quot;- Image palette forced to %s&quot;
 comma
 id|symbolic
 c_func
@@ -12641,7 +12670,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- RGB component ordering will be used instead of BGR.&quot;
+l_string|&quot;- RGB component ordering will be used instead of BGR&quot;
 )paren
 r_if
 c_cond
@@ -12653,7 +12682,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Auto brightness enabled.&quot;
+l_string|&quot;- Auto brightness enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12661,7 +12690,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Auto brightness disabled.&quot;
+l_string|&quot;- Auto brightness disabled&quot;
 )paren
 r_if
 c_cond
@@ -12673,7 +12702,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Auto exposure enabled.&quot;
+l_string|&quot;- Auto exposure enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12681,7 +12710,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Auto exposure disabled.&quot;
+l_string|&quot;- Auto exposure disabled&quot;
 )paren
 r_if
 c_cond
@@ -12693,7 +12722,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Backlight exposure algorithm enabled.&quot;
+l_string|&quot;- Backlight exposure algorithm enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12701,7 +12730,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Backlight exposure algorithm disabled.&quot;
+l_string|&quot;- Backlight exposure algorithm disabled&quot;
 )paren
 r_if
 c_cond
@@ -12713,7 +12742,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Mirror enabled.&quot;
+l_string|&quot;- Mirror enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12721,7 +12750,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Mirror disabled.&quot;
+l_string|&quot;- Mirror disabled&quot;
 )paren
 r_if
 c_cond
@@ -12733,7 +12762,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Banding filter enabled.&quot;
+l_string|&quot;- Banding filter enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12741,14 +12770,14 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Banding filter disabled.&quot;
+l_string|&quot;- Banding filter disabled&quot;
 )paren
 id|DBG
 c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Power lighting frequency: %d&quot;
+l_string|&quot;- Power lighting frequency: %u&quot;
 comma
 id|cam-&gt;lightfreq
 )paren
@@ -12765,7 +12794,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- Automatic clock divisor enabled.&quot;
+l_string|&quot;- Automatic clock divisor enabled&quot;
 )paren
 r_else
 id|DBG
@@ -12787,7 +12816,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- CMOS sensor used as monochrome.&quot;
+l_string|&quot;- Image sensor used as monochrome&quot;
 )paren
 r_else
 id|DBG
@@ -12795,8 +12824,103 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;- CMOS sensor not used as monochrome.&quot;
+l_string|&quot;- Image sensor not used as monochrome&quot;
 )paren
+)brace
+multiline_comment|/*--------------------------------------------------------------------------&n;  If the video post-processing module is not loaded, some parameters&n;  must be overridden.&n;  --------------------------------------------------------------------------*/
+DECL|function|w9968cf_adjust_configuration
+r_static
+r_void
+id|w9968cf_adjust_configuration
+c_func
+(paren
+r_struct
+id|w9968cf_device
+op_star
+id|cam
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|w9968cf_vpp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cam-&gt;decompression
+op_eq
+l_int|1
+)paren
+(brace
+id|cam-&gt;decompression
+op_assign
+l_int|2
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;Video post-processing module not found: &quot;
+l_string|&quot;&squot;decompression&squot; parameter forced to 2&quot;
+)paren
+)brace
+r_if
+c_cond
+(paren
+id|cam-&gt;upscaling
+)paren
+(brace
+id|cam-&gt;upscaling
+op_assign
+l_int|0
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;Video post-processing module not found: &quot;
+l_string|&quot;&squot;upscaling&squot; parameter forced to 0&quot;
+)paren
+)brace
+r_if
+c_cond
+(paren
+id|cam-&gt;picture.palette
+op_ne
+id|VIDEO_PALETTE_UYVY
+)paren
+(brace
+id|cam-&gt;force_palette
+op_assign
+l_int|0
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;Video post-processing module not found: &quot;
+l_string|&quot;&squot;force_palette&squot; parameter forced to 0&quot;
+)paren
+)brace
+id|cam-&gt;picture.palette
+op_assign
+id|VIDEO_PALETTE_UYVY
+suffix:semicolon
+id|cam-&gt;picture.depth
+op_assign
+id|w9968cf_valid_depth
+c_func
+(paren
+id|cam-&gt;picture.palette
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*--------------------------------------------------------------------------&n;  Release the resources used by the driver.&n;  This function is called on disconnect &n;  (or on close if deallocation has been deferred)&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_release_resources
@@ -12872,13 +12996,6 @@ op_amp
 id|w9968cf_devlist_sem
 )paren
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_int|5
-comma
-l_string|&quot;Resources released.&quot;
-)paren
 )brace
 multiline_comment|/****************************************************************************&n; * Video4Linux interface                                                    *&n; ****************************************************************************/
 DECL|function|w9968cf_open
@@ -12905,6 +13022,22 @@ id|cam
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+multiline_comment|/* This the only safe way to prevent race conditions with disconnect */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+)paren
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
 id|cam
 op_assign
@@ -12943,9 +13076,9 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;No supported CMOS sensor has been detected by the &quot;
+l_string|&quot;No supported image sensor has been detected by the &quot;
 l_string|&quot;&squot;ovcamchip&squot; module for the %s (/dev/video%d). Make &quot;
-l_string|&quot;sure it is loaded *before* the &squot;w9968cf&squot; module.&quot;
+l_string|&quot;sure it is loaded *before* (re)connecting the camera.&quot;
 comma
 id|symbolic
 c_func
@@ -12964,6 +13097,13 @@ op_amp
 id|cam-&gt;dev_sem
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -12980,7 +13120,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s (/dev/video%d) has been already occupied by &squot;%s&squot;.&quot;
+l_string|&quot;%s (/dev/video%d) has been already occupied by &squot;%s&squot;&quot;
 comma
 id|symbolic
 c_func
@@ -13017,13 +13157,18 @@ op_amp
 id|cam-&gt;dev_sem
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EWOULDBLOCK
 suffix:semicolon
 )brace
-id|retry
-suffix:colon
 id|up
 c_func
 (paren
@@ -13033,18 +13178,15 @@ id|cam-&gt;dev_sem
 suffix:semicolon
 id|err
 op_assign
-id|wait_event_interruptible
+id|wait_event_interruptible_exclusive
 c_func
 (paren
 id|cam-&gt;open
 comma
 id|cam-&gt;disconnected
 op_logical_or
-(paren
+op_logical_neg
 id|cam-&gt;users
-op_eq
-l_int|0
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -13052,33 +13194,42 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|up_read
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|cam-&gt;disconnected
 )paren
+(brace
+id|up_read
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|down
 c_func
 (paren
 op_amp
 id|cam-&gt;dev_sem
 )paren
-suffix:semicolon
-multiline_comment|/*recheck - there may be several waiters */
-r_if
-c_cond
-(paren
-id|cam-&gt;users
-)paren
-r_goto
-id|retry
 suffix:semicolon
 )brace
 id|DBG
@@ -13110,12 +13261,23 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|w9968cf_vppmod_detect
 c_func
 (paren
+id|cam
 )paren
+)paren
+)paren
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -13187,6 +13349,13 @@ op_amp
 id|cam-&gt;wait_queue
 )paren
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_int|5
+comma
+l_string|&quot;Video device is open&quot;
+)paren
 id|up
 c_func
 (paren
@@ -13194,13 +13363,13 @@ op_amp
 id|cam-&gt;dev_sem
 )paren
 suffix:semicolon
-id|DBG
+id|up_read
 c_func
 (paren
-l_int|5
-comma
-l_string|&quot;Video device is open.&quot;
+op_amp
+id|w9968cf_disconnect
 )paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -13212,18 +13381,27 @@ c_func
 id|cam
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|DBG
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Failed to open the video device.&quot;
+l_string|&quot;Failed to open the video device&quot;
 )paren
 id|up
 c_func
 (paren
 op_amp
 id|cam-&gt;dev_sem
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
 )paren
 suffix:semicolon
 r_return
@@ -13283,6 +13461,12 @@ c_func
 id|cam
 )paren
 suffix:semicolon
+id|w9968cf_vppmod_release
+c_func
+(paren
+id|cam
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13321,11 +13505,13 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up_interruptible_nr
 c_func
 (paren
 op_amp
 id|cam-&gt;open
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|DBG
@@ -13333,7 +13519,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;Video device closed.&quot;
+l_string|&quot;Video device closed&quot;
 )paren
 id|up
 c_func
@@ -13438,7 +13624,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Device not present.&quot;
+l_string|&quot;Device not present&quot;
 )paren
 id|up
 c_func
@@ -13607,7 +13793,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 id|w9968cf_postprocess_frame
 c_func
@@ -13672,7 +13858,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;%zd bytes read.&quot;
+l_string|&quot;%zu bytes read&quot;
 comma
 id|count
 )paren
@@ -13736,11 +13922,12 @@ id|psize
 op_assign
 id|cam-&gt;nbuffers
 op_star
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|size
 comma
 id|start
 op_assign
@@ -13772,7 +13959,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Device not present.&quot;
+l_string|&quot;Device not present&quot;
 )paren
 r_return
 op_minus
@@ -13790,7 +13977,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;The camera is misconfigured. Close and open it again.&quot;
+l_string|&quot;The camera is misconfigured. Close and open it again&quot;
 )paren
 r_return
 op_minus
@@ -13800,7 +13987,7 @@ suffix:semicolon
 id|PDBGG
 c_func
 (paren
-l_string|&quot;mmapping %li bytes...&quot;
+l_string|&quot;mmapping %lu bytes...&quot;
 comma
 id|vsize
 )paren
@@ -13819,7 +14006,7 @@ id|PAGE_SHIFT
 )paren
 r_return
 op_minus
-id|EAGAIN
+id|EINVAL
 suffix:semicolon
 r_while
 c_loop
@@ -13869,19 +14056,8 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 id|vsize
-op_assign
-(paren
-id|vsize
-OG
+op_sub_assign
 id|PAGE_SIZE
-)paren
-ques
-c_cond
-id|vsize
-op_minus
-id|PAGE_SIZE
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 id|DBG
@@ -13889,7 +14065,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;mmap method successfully called.&quot;
+l_string|&quot;mmap method successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -13970,7 +14146,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Device not present.&quot;
+l_string|&quot;Device not present&quot;
 )paren
 id|up
 c_func
@@ -14022,6 +14198,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -14038,9 +14215,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|function|w9968cf_v4l_ioctl
 r_static
 r_int
-DECL|function|w9968cf_v4l_ioctl
 id|w9968cf_v4l_ioctl
 c_func
 (paren
@@ -14059,6 +14236,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -14067,18 +14245,6 @@ r_struct
 id|w9968cf_device
 op_star
 id|cam
-suffix:semicolon
-r_void
-id|__user
-op_star
-id|user_arg
-op_assign
-(paren
-r_void
-id|__user
-op_star
-)paren
-id|arg
 suffix:semicolon
 r_const
 r_char
@@ -14228,11 +14394,20 @@ op_assign
 (paren
 id|cam-&gt;upscaling
 op_logical_and
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 ques
 c_cond
+id|max
+c_func
+(paren
+(paren
+id|u16
+)paren
 id|W9968CF_MAX_WIDTH
+comma
+id|cam-&gt;maxwidth
+)paren
 suffix:colon
 id|cam-&gt;maxwidth
 suffix:semicolon
@@ -14241,11 +14416,20 @@ op_assign
 (paren
 id|cam-&gt;upscaling
 op_logical_and
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 ques
 c_cond
+id|max
+c_func
+(paren
+(paren
+id|u16
+)paren
 id|W9968CF_MAX_HEIGHT
+comma
+id|cam-&gt;maxheight
+)paren
 suffix:colon
 id|cam-&gt;maxheight
 suffix:semicolon
@@ -14255,7 +14439,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|cap
@@ -14275,7 +14459,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGCAP successfully called.&quot;
+l_string|&quot;VIDIOCGCAP successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -14299,7 +14483,7 @@ c_func
 op_amp
 id|chan
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -14352,7 +14536,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|chan
@@ -14372,7 +14556,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGCHAN successfully called.&quot;
+l_string|&quot;VIDIOCGCHAN successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -14396,7 +14580,7 @@ c_func
 op_amp
 id|chan
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -14424,7 +14608,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCSCHAN successfully called.&quot;
+l_string|&quot;VIDIOCSCHAN successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -14454,7 +14638,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|cam-&gt;picture
@@ -14474,7 +14658,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGPICT successfully called.&quot;
+l_string|&quot;VIDIOCGPICT successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -14503,7 +14687,7 @@ c_func
 op_amp
 id|pict
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -14522,7 +14706,7 @@ c_cond
 id|cam-&gt;force_palette
 op_logical_or
 op_logical_neg
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 op_logical_and
 id|pict.palette
@@ -14535,7 +14719,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Palette %s rejected. Only %s is allowed.&quot;
+l_string|&quot;Palette %s rejected: only %s is allowed&quot;
 comma
 id|symbolic
 c_func
@@ -14574,7 +14758,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Palette %s not supported. VIDIOCSPICT failed.&quot;
+l_string|&quot;Palette %s not supported. VIDIOCSPICT failed&quot;
 comma
 id|symbolic
 c_func
@@ -14620,7 +14804,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Decompression disabled: palette %s is not &quot;
-l_string|&quot;allowed. VIDIOCSPICT failed.&quot;
+l_string|&quot;allowed. VIDIOCSPICT failed&quot;
 comma
 id|symbolic
 c_func
@@ -14662,7 +14846,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Decompression forced: palette %s is not &quot;
-l_string|&quot;allowed. VIDIOCSPICT failed.&quot;
+l_string|&quot;allowed. VIDIOCSPICT failed&quot;
 comma
 id|symbolic
 c_func
@@ -14696,8 +14880,8 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Requested depth %d bpp is not valid for %s &quot;
-l_string|&quot;palette: ignored and changed to %d bpp.&quot;
+l_string|&quot;Requested depth %u bpp is not valid for %s &quot;
+l_string|&quot;palette: ignored and changed to %u bpp&quot;
 comma
 id|pict.depth
 comma
@@ -14837,7 +15021,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCSPICT successfully called.&quot;
+l_string|&quot;VIDIOCSPICT successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -14866,7 +15050,7 @@ c_func
 op_amp
 id|win
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -14883,8 +15067,8 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;VIDIOCSWIN called: clipcount=%d, flags=%d, &quot;
-l_string|&quot;x=%d, y=%d, %dx%d&quot;
+l_string|&quot;VIDIOCSWIN called: clipcount=%d, flags=%u, &quot;
+l_string|&quot;x=%u, y=%u, %ux%u&quot;
 comma
 id|win.clipcount
 comma
@@ -14946,8 +15130,8 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Resolution not supported (%dx%d).&quot;
-l_string|&quot;VIDIOCSWIN failed.&quot;
+l_string|&quot;Resolution not supported (%ux%u). &quot;
+l_string|&quot;VIDIOCSWIN failed&quot;
 comma
 id|win.width
 comma
@@ -15098,7 +15282,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|cam-&gt;window
@@ -15119,7 +15303,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGWIN successfully called.&quot;
+l_string|&quot;VIDIOCGWIN successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -15141,11 +15325,12 @@ id|mbuf.size
 op_assign
 id|cam-&gt;nbuffers
 op_star
-id|w9968cf_get_max_bufsize
-c_func
-(paren
-id|cam
-)paren
+id|cam-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|size
 suffix:semicolon
 id|mbuf.frames
 op_assign
@@ -15198,7 +15383,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|mbuf
@@ -15218,7 +15403,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGMBUF successfully called.&quot;
+l_string|&quot;VIDIOCGMBUF successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -15252,7 +15437,7 @@ c_func
 op_amp
 id|mmap
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -15269,7 +15454,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;VIDIOCMCAPTURE called: frame #%d, format=%s, %dx%d&quot;
+l_string|&quot;VIDIOCMCAPTURE called: frame #%u, format=%s, %dx%d&quot;
 comma
 id|mmap.frame
 comma
@@ -15298,8 +15483,8 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Invalid frame number (%d). &quot;
-l_string|&quot;VIDIOCMCAPTURE failed.&quot;
+l_string|&quot;Invalid frame number (%u). &quot;
+l_string|&quot;VIDIOCMCAPTURE failed&quot;
 comma
 id|mmap.frame
 )paren
@@ -15319,7 +15504,7 @@ op_logical_and
 id|cam-&gt;force_palette
 op_logical_or
 op_logical_neg
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 )paren
 (brace
@@ -15328,7 +15513,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Palette %s rejected. Only %s is allowed.&quot;
+l_string|&quot;Palette %s rejected: only %s is allowed&quot;
 comma
 id|symbolic
 c_func
@@ -15368,7 +15553,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Palette %s not supported. &quot;
-l_string|&quot;VIDIOCMCAPTURE failed.&quot;
+l_string|&quot;VIDIOCMCAPTURE failed&quot;
 comma
 id|symbolic
 c_func
@@ -15414,7 +15599,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Decompression disabled: palette %s is not &quot;
-l_string|&quot;allowed. VIDIOCSPICT failed.&quot;
+l_string|&quot;allowed. VIDIOCSPICT failed&quot;
 comma
 id|symbolic
 c_func
@@ -15456,7 +15641,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Decompression forced: palette %s is not &quot;
-l_string|&quot;allowed. VIDIOCSPICT failed.&quot;
+l_string|&quot;allowed. VIDIOCSPICT failed&quot;
 comma
 id|symbolic
 c_func
@@ -15507,7 +15692,7 @@ c_func
 l_int|4
 comma
 l_string|&quot;Resolution not supported (%dx%d). &quot;
-l_string|&quot;VIDIOCMCAPTURE failed.&quot;
+l_string|&quot;VIDIOCMCAPTURE failed&quot;
 comma
 id|mmap.width
 comma
@@ -15564,7 +15749,7 @@ c_func
 l_int|6
 comma
 l_string|&quot;VIDIOCMCAPTURE. Change settings for &quot;
-l_string|&quot;frame #%d: %dx%d, format %s. Wait...&quot;
+l_string|&quot;frame #%u: %dx%d, format %s. Wait...&quot;
 comma
 id|mmap.frame
 comma
@@ -15724,7 +15909,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;Wait until frame #%d is free.&quot;
+l_string|&quot;Wait until frame #%u is free&quot;
 comma
 id|mmap.frame
 )paren
@@ -15774,7 +15959,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCMCAPTURE(%d): successfully called.&quot;
+l_string|&quot;VIDIOCMCAPTURE(%u): successfully called&quot;
 comma
 id|mmap.frame
 )paren
@@ -15810,7 +15995,7 @@ c_func
 op_amp
 id|f_num
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -15835,8 +16020,8 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Invalid frame number (%d). &quot;
-l_string|&quot;VIDIOCMCAPTURE failed.&quot;
+l_string|&quot;Invalid frame number (%u). &quot;
+l_string|&quot;VIDIOCMCAPTURE failed&quot;
 comma
 id|f_num
 )paren
@@ -15850,7 +16035,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;VIDIOCSYNC called for frame #%d&quot;
+l_string|&quot;VIDIOCSYNC called for frame #%u&quot;
 comma
 id|f_num
 )paren
@@ -15883,7 +16068,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;VIDIOSYNC: Frame #%d not requested!&quot;
+l_string|&quot;VIDIOSYNC: Frame #%u not requested!&quot;
 comma
 id|f_num
 )paren
@@ -15942,7 +16127,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|w9968cf_vppmod_present
+id|w9968cf_vpp
 )paren
 id|w9968cf_postprocess_frame
 c_func
@@ -15961,7 +16146,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCSYNC(%d) successfully called.&quot;
+l_string|&quot;VIDIOCSYNC(%u) successfully called&quot;
 comma
 id|f_num
 )paren
@@ -16012,7 +16197,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|unit
@@ -16032,7 +16217,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGUNIT successfully called.&quot;
+l_string|&quot;VIDIOCGUNIT successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -16054,7 +16239,7 @@ c_cond
 id|clear_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -16072,7 +16257,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGFBUF successfully called.&quot;
+l_string|&quot;VIDIOCGFBUF successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -16095,7 +16280,7 @@ c_func
 op_amp
 id|tuner
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -16152,7 +16337,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|user_arg
+id|arg
 comma
 op_amp
 id|tuner
@@ -16172,7 +16357,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCGTUNER successfully called.&quot;
+l_string|&quot;VIDIOCGTUNER successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -16195,7 +16380,7 @@ c_func
 op_amp
 id|tuner
 comma
-id|user_arg
+id|arg
 comma
 r_sizeof
 (paren
@@ -16234,7 +16419,7 @@ c_func
 (paren
 l_int|5
 comma
-l_string|&quot;VIDIOCSTUNER successfully called.&quot;
+l_string|&quot;VIDIOCSTUNER successfully called&quot;
 )paren
 r_return
 l_int|0
@@ -16285,7 +16470,7 @@ l_string|&quot;Unsupported V4L1 IOCtl: VIDIOC%s &quot;
 l_string|&quot;(type 0x%01X, &quot;
 l_string|&quot;n. 0x%01X, &quot;
 l_string|&quot;dir. 0x%01X, &quot;
-l_string|&quot;size 0x%02X).&quot;
+l_string|&quot;size 0x%02X)&quot;
 comma
 id|V4L1_IOCTL
 c_func
@@ -16332,7 +16517,7 @@ l_string|&quot;Invalid V4L1 IOCtl: VIDIOC%s &quot;
 l_string|&quot;type 0x%01X, &quot;
 l_string|&quot;n. 0x%01X, &quot;
 l_string|&quot;dir. 0x%01X, &quot;
-l_string|&quot;size 0x%02X.&quot;
+l_string|&quot;size 0x%02X&quot;
 comma
 id|V4L1_IOCTL
 c_func
@@ -16560,12 +16745,90 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|cam
+op_assign
+(paren
+r_struct
+id|w9968cf_device
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|w9968cf_device
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cam
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|cam
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|cam
+)paren
+)paren
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|cam-&gt;dev_sem
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|cam-&gt;dev_sem
+)paren
+suffix:semicolon
+id|cam-&gt;usbdev
+op_assign
+id|udev
+suffix:semicolon
+multiline_comment|/* NOTE: a local copy is used to avoid possible race conditions */
+id|memcpy
+c_func
+(paren
+op_amp
+id|cam-&gt;dev
+comma
+op_amp
+id|udev-&gt;dev
+comma
+r_sizeof
+(paren
+r_struct
+id|device
+)paren
+)paren
+suffix:semicolon
 id|DBG
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s detected.&quot;
+l_string|&quot;%s detected&quot;
 comma
 id|symbolic
 c_func
@@ -16626,91 +16889,19 @@ c_func
 l_int|2
 comma
 l_string|&quot;Device rejected: too many connected cameras &quot;
-l_string|&quot;(max. %d)&quot;
+l_string|&quot;(max. %u)&quot;
 comma
 id|simcams
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
-id|cam
-op_assign
-(paren
-r_struct
-id|w9968cf_device
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|w9968cf_device
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cam
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;Couldn&squot;t allocate %zd bytes of kernel memory.&quot;
-comma
-r_sizeof
-(paren
-r_struct
-id|w9968cf_device
-)paren
 )paren
 id|err
 op_assign
 op_minus
-id|ENOMEM
+id|EPERM
 suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|cam
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|cam
-)paren
-)paren
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|cam-&gt;dev_sem
-)paren
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|cam-&gt;dev_sem
-)paren
-suffix:semicolon
 multiline_comment|/* Allocate 2 bytes of memory for camera control USB transfers */
 r_if
 c_cond
@@ -16738,7 +16929,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Couldn&squot;t allocate memory for camera control transfers.&quot;
+l_string|&quot;Couldn&squot;t allocate memory for camera control transfers&quot;
 )paren
 id|err
 op_assign
@@ -16787,7 +16978,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;Couldn&squot;t allocate memory for data &quot;
-l_string|&quot;transfers to the FSB.&quot;
+l_string|&quot;transfers to the FSB&quot;
 )paren
 id|err
 op_assign
@@ -16828,7 +17019,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Could not allocate memory for a V4L structure.&quot;
+l_string|&quot;Could not allocate memory for a V4L structure&quot;
 )paren
 id|err
 op_assign
@@ -16891,6 +17082,11 @@ comma
 id|cam
 )paren
 suffix:semicolon
+id|cam-&gt;v4ldev-&gt;dev
+op_assign
+op_amp
+id|cam-&gt;dev
+suffix:semicolon
 id|err
 op_assign
 id|video_register_device
@@ -16917,7 +17113,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;V4L device registration failed.&quot;
+l_string|&quot;V4L device registration failed&quot;
 )paren
 r_if
 c_cond
@@ -16940,7 +17136,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;Couldn&squot;t find a free /dev/videoX node.&quot;
+l_string|&quot;Couldn&squot;t find a free /dev/videoX node&quot;
 )paren
 id|video_nr
 (braket
@@ -16976,7 +17172,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;V4L device registered as /dev/video%d.&quot;
+l_string|&quot;V4L device registered as /dev/video%d&quot;
 comma
 id|cam-&gt;v4ldev-&gt;minor
 )paren
@@ -17047,13 +17243,6 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|cam-&gt;dev_sem
-)paren
-suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
@@ -17062,18 +17251,19 @@ comma
 id|cam
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|cam-&gt;dev_sem
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|fail
 suffix:colon
 multiline_comment|/* Free unused memory */
-r_if
-c_cond
-(paren
-id|cam
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -17120,7 +17310,6 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -17153,6 +17342,13 @@ c_func
 id|intf
 )paren
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17166,10 +17362,6 @@ c_func
 op_amp
 id|cam-&gt;dev_sem
 )paren
-suffix:semicolon
-id|cam-&gt;streaming
-op_assign
-l_int|0
 suffix:semicolon
 id|cam-&gt;disconnected
 op_assign
@@ -17190,17 +17382,7 @@ comma
 id|cam-&gt;id
 )paren
 )paren
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|cam-&gt;open
-)paren
-)paren
-id|wake_up_interruptible
+id|wake_up_interruptible_all
 c_func
 (paren
 op_amp
@@ -17230,16 +17412,12 @@ id|cam-&gt;misconfigured
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
+id|w9968cf_stop_transfer
 c_func
 (paren
-op_amp
-id|cam-&gt;wait_queue
+id|cam
 )paren
-)paren
+suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -17275,12 +17453,11 @@ id|cam
 )paren
 suffix:semicolon
 )brace
-id|usb_set_intfdata
+id|up_write
 c_func
 (paren
-id|intf
-comma
-l_int|NULL
+op_amp
+id|w9968cf_disconnect
 )paren
 suffix:semicolon
 )brace
@@ -17325,121 +17502,110 @@ r_int
 id|w9968cf_vppmod_detect
 c_func
 (paren
-r_void
+r_struct
+id|w9968cf_device
+op_star
+id|cam
 )paren
 (brace
-id|w9968cf_vpp_init_decoder
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_init_decoder&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|w9968cf_vpp_init_decoder
+id|w9968cf_vpp
 )paren
-(brace
 r_if
 c_cond
 (paren
 id|vppmod_load
 )paren
-id|w9968cf_vpp_init_decoder
-op_assign
-id|inter_module_get_request
+id|request_module
+c_func
 (paren
-l_string|&quot;w9968cf_init_decoder&quot;
-comma
 l_string|&quot;w9968cf-vpp&quot;
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|w9968cf_vpp_init_decoder
+id|w9968cf_vpp
 )paren
 (brace
-id|w9968cf_vppmod_present
-op_assign
-l_int|0
-suffix:semicolon
 id|DBG
 c_func
 (paren
 l_int|4
 comma
-l_string|&quot;Video post-processing module not detected.&quot;
+l_string|&quot;Video post-processing module not detected&quot;
 )paren
+id|w9968cf_adjust_configuration
+c_func
+(paren
+id|cam
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|w9968cf_vpp-&gt;owner
+)paren
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Couldn&squot;t increment the reference count of &quot;
+l_string|&quot;the video post-processing module&quot;
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|ENOSYS
 suffix:semicolon
 )brace
-)brace
-id|w9968cf_vpp_check_headers
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_check_headers&quot;
-)paren
-suffix:semicolon
-id|w9968cf_vpp_decode
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_decode&quot;
-)paren
-suffix:semicolon
-id|w9968cf_vpp_swap_yuvbytes
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_swap_yuvbytes&quot;
-)paren
-suffix:semicolon
-id|w9968cf_vpp_uyvy_to_rgbx
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_uyvy_to_rgbx&quot;
-)paren
-suffix:semicolon
-id|w9968cf_vpp_scale_up
-op_assign
-id|inter_module_get
-c_func
-(paren
-l_string|&quot;w9968cf_scale_up&quot;
-)paren
-suffix:semicolon
-id|w9968cf_vppmod_present
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Initialization */
-(paren
-op_star
-id|w9968cf_vpp_init_decoder
-)paren
-(paren
-)paren
+id|w9968cf_vpp-&gt;busy
+op_increment
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_int|2
+l_int|5
 comma
-l_string|&quot;Video post-processing module detected.&quot;
+l_string|&quot;Video post-processing module detected&quot;
 )paren
+id|out
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -17450,52 +17616,254 @@ r_void
 id|w9968cf_vppmod_release
 c_func
 (paren
-r_void
+r_struct
+id|w9968cf_device
+op_star
+id|cam
 )paren
 (brace
-id|inter_module_put
+id|down
 c_func
 (paren
-l_string|&quot;w9968cf_init_decoder&quot;
+op_amp
+id|w9968cf_vppmod_lock
 )paren
 suffix:semicolon
-id|inter_module_put
+r_if
+c_cond
+(paren
+id|w9968cf_vpp
+op_logical_and
+id|w9968cf_vpp-&gt;busy
+)paren
+(brace
+id|module_put
 c_func
 (paren
-l_string|&quot;w9968cf_check_headers&quot;
+id|w9968cf_vpp-&gt;owner
 )paren
 suffix:semicolon
-id|inter_module_put
-c_func
-(paren
-l_string|&quot;w9968cf_decode&quot;
-)paren
+id|w9968cf_vpp-&gt;busy
+op_decrement
 suffix:semicolon
-id|inter_module_put
+id|wake_up
 c_func
 (paren
-l_string|&quot;w9968cf_swap_yuvbytes&quot;
-)paren
-suffix:semicolon
-id|inter_module_put
-c_func
-(paren
-l_string|&quot;w9968cf_uyvy_to_rgbx&quot;
-)paren
-suffix:semicolon
-id|inter_module_put
-c_func
-(paren
-l_string|&quot;w9968cf_scale_up&quot;
+op_amp
+id|w9968cf_vppmod_wait
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
+l_int|5
+comma
+l_string|&quot;Video post-processing module released&quot;
+)paren
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|w9968cf_vppmod_register
+r_int
+id|w9968cf_vppmod_register
+c_func
+(paren
+r_struct
+id|w9968cf_vpp_t
+op_star
+id|vpp
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|w9968cf_vpp
+)paren
+(brace
+id|KDBG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Video post-processing module already registered&quot;
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|w9968cf_vpp
+op_assign
+id|vpp
+suffix:semicolon
+id|w9968cf_vpp-&gt;busy
+op_assign
+l_int|0
+suffix:semicolon
+id|KDBG
+c_func
+(paren
 l_int|2
 comma
-l_string|&quot;Video post-processing module released.&quot;
+l_string|&quot;Video post-processing module registered&quot;
 )paren
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|w9968cf_vppmod_deregister
+r_int
+id|w9968cf_vppmod_deregister
+c_func
+(paren
+r_struct
+id|w9968cf_vpp_t
+op_star
+id|vpp
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|w9968cf_vpp
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|w9968cf_vpp
+op_ne
+id|vpp
+)paren
+(brace
+id|KDBG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;Only the owner can unregister the video &quot;
+l_string|&quot;post-processing module&quot;
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|w9968cf_vpp-&gt;busy
+)paren
+(brace
+id|KDBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;Video post-processing module busy. Wait for it to be &quot;
+l_string|&quot;released...&quot;
+)paren
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|w9968cf_vppmod_wait
+comma
+op_logical_neg
+id|w9968cf_vpp-&gt;busy
+)paren
+suffix:semicolon
+id|w9968cf_vpp
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|w9968cf_vpp
+op_assign
+l_int|NULL
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|KDBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;Video post-processing module unregistered&quot;
+)paren
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|w9968cf_module_init
 r_static
@@ -17510,7 +17878,7 @@ r_void
 r_int
 id|err
 suffix:semicolon
-id|DBG
+id|KDBG
 c_func
 (paren
 l_int|2
@@ -17519,23 +17887,22 @@ id|W9968CF_MODULE_NAME
 l_string|&quot; &quot;
 id|W9968CF_MODULE_VERSION
 )paren
-id|DBG
+id|KDBG
 c_func
 (paren
 l_int|3
 comma
 id|W9968CF_MODULE_AUTHOR
 )paren
-id|init_MUTEX
-c_func
+r_if
+c_cond
 (paren
-op_amp
-id|w9968cf_devlist_sem
+id|ovmod_load
 )paren
-suffix:semicolon
-id|w9968cf_vppmod_detect
+id|request_module
 c_func
 (paren
+l_string|&quot;ovcamchip&quot;
 )paren
 suffix:semicolon
 r_if
@@ -17552,21 +17919,9 @@ id|w9968cf_usb_driver
 )paren
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|w9968cf_vppmod_present
-)paren
-id|w9968cf_vppmod_release
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -17589,23 +17944,13 @@ op_amp
 id|w9968cf_usb_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|w9968cf_vppmod_present
-)paren
-id|w9968cf_vppmod_release
-c_func
-(paren
-)paren
-suffix:semicolon
-id|DBG
+id|KDBG
 c_func
 (paren
 l_int|2
 comma
 id|W9968CF_MODULE_NAME
-l_string|&quot; deregistered.&quot;
+l_string|&quot; deregistered&quot;
 )paren
 )brace
 DECL|variable|w9968cf_module_init
@@ -17620,6 +17965,20 @@ id|module_exit
 c_func
 (paren
 id|w9968cf_module_exit
+)paren
+suffix:semicolon
+DECL|variable|w9968cf_vppmod_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|w9968cf_vppmod_register
+)paren
+suffix:semicolon
+DECL|variable|w9968cf_vppmod_deregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|w9968cf_vppmod_deregister
 )paren
 suffix:semicolon
 eof

@@ -11,23 +11,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ipaq.h&quot;
 DECL|macro|KP_RETRIES
@@ -42,10 +25,15 @@ mdefine_line|#define DRIVER_DESC &quot;USB PocketPC PDA driver&quot;
 DECL|variable|product
 DECL|variable|vendor
 r_static
-r_int
+id|__u16
 id|product
 comma
 id|vendor
+suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
 suffix:semicolon
 multiline_comment|/* Function prototypes for an ipaq */
 r_static
@@ -606,6 +594,16 @@ c_func
 id|ASUS_VENDOR_ID
 comma
 id|ASUS_A600_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ASUS_VENDOR_ID
+comma
+id|ASUS_A620_PRODUCT_ID
 )paren
 )brace
 comma
@@ -1395,8 +1393,12 @@ r_return
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -1823,7 +1825,10 @@ suffix:semicolon
 id|usb_serial_debug_data
 c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -2750,12 +2755,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2766,12 +2775,14 @@ comma
 l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vendor
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2782,12 +2793,14 @@ comma
 l_string|&quot;User specified USB idVendor&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|product
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

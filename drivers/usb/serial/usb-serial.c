@@ -14,21 +14,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;pl2303.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
@@ -70,6 +55,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* There is no MODULE_DEVICE_TABLE for usbserial.c.  Instead&n;   the MODULE_DEVICE_TABLE declarations in each serial driver&n;   cause the &quot;hotplug&quot; program to pull in whatever module is necessary&n;   via modprobe, and modprobe will load usbserial because the serial&n;   drivers depend on it.&n;*/
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 DECL|variable|serial_table
 r_static
 r_struct

@@ -675,7 +675,7 @@ id|ohci_info
 (paren
 id|ohci
 comma
-l_string|&quot;remote wakeup&bslash;n&quot;
+l_string|&quot;wakeup&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2116,8 +2116,6 @@ comma
 l_string|&quot;GetStatus&quot;
 comma
 id|wIndex
-op_plus
-l_int|1
 comma
 id|temp
 )paren

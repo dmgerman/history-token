@@ -242,6 +242,42 @@ multiline_comment|/* no hw optimizations to apply */
 DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;omap&quot;
+DECL|macro|EP0_MAXPACKET
+mdefine_line|#define EP0_MAXPACKET&t;&t;&t;64
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+id|EP_OUT_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep2out-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_OUT_NUM
+mdefine_line|#define EP_OUT_NUM&t;2
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+id|EP_IN_NAME
+(braket
+)braket
+op_assign
+l_string|&quot;ep1in-bulk&quot;
+suffix:semicolon
+DECL|macro|EP_IN_NUM
+mdefine_line|#define EP_IN_NUM&t;1
+DECL|macro|SELFPOWER
+mdefine_line|#define SELFPOWER &t;&t;&t;USB_CONFIG_ATT_SELFPOWER
+multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
+multiline_comment|/* no hw optimizations to apply */
+DECL|macro|hw_optimize
+mdefine_line|#define hw_optimize(g) do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
 macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP

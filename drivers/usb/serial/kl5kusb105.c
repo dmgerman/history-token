@@ -12,23 +12,13 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;kl5kusb105.h&quot;
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.3a&quot;
@@ -2501,8 +2491,12 @@ id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -2556,8 +2550,12 @@ id|port-&gt;tty
 suffix:semicolon
 multiline_comment|/* we should immediately resubmit the URB, before attempting&n;&t;&t; * to pass the data on to the tty layer. But that needs locking&n;&t;&t; * against re-entry an then mixed-up data because of&n;&t;&t; * intermixed tty_flip_buffer_push()s&n;&t;&t; * FIXME&n;&t;&t; */
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4018,12 +4016,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4034,6 +4036,5 @@ comma
 l_string|&quot;enable extensive debugging messages&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: implement&n;MODULE_PARM(num_urbs, &quot;i&quot;);&n;MODULE_PARM_DESC(num_urbs, &quot;number of URBs to use in write pool&quot;);&n;*/
 multiline_comment|/* vim: set sts=8 ts=8 sw=8: */
 eof

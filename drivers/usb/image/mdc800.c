@@ -2963,10 +2963,6 @@ suffix:semicolon
 multiline_comment|/************************************************************************&n;&t;Init and Cleanup this driver (Main Functions)&n;*************************************************************************/
 DECL|macro|try
 mdefine_line|#define try(A)           if (!(A)) goto cleanup_on_fail;
-DECL|macro|try_free_mem
-mdefine_line|#define try_free_mem(A)  if (A) { kfree (A); A=NULL; }
-DECL|macro|try_free_urb
-mdefine_line|#define try_free_urb(A)  if (A) { usb_free_urb (A); A=NULL; }
 DECL|function|usb_mdc800_init
 r_static
 r_int
@@ -3177,32 +3173,38 @@ id|err
 l_string|&quot;can&squot;t alloc memory!&quot;
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;download_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;write_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_mem
+id|kfree
+c_func
 (paren
 id|mdc800-&gt;irq_urb_buffer
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;write_urb
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;download_urb
 )paren
 suffix:semicolon
-id|try_free_urb
+id|usb_free_urb
+c_func
 (paren
 id|mdc800-&gt;irq_urb
 )paren
@@ -3215,7 +3217,7 @@ suffix:semicolon
 )brace
 id|mdc800
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retval
@@ -3273,7 +3275,7 @@ id|mdc800
 suffix:semicolon
 id|mdc800
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|usb_mdc800_init
