@@ -520,7 +520,7 @@ suffix:semicolon
 id|free_page
 c_func
 (paren
-id|page
+id|start
 )paren
 suffix:semicolon
 op_increment
