@@ -3315,22 +3315,7 @@ id|drive-&gt;disk-&gt;queue
 op_assign
 id|drive-&gt;queue
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Setup the drive for request handling.&n; */
-DECL|function|ide_init_drive
-r_static
-r_void
-id|ide_init_drive
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
+multiline_comment|/* needs drive-&gt;queue to be set */
 id|ide_toggle_bounce
 c_func
 (paren
@@ -3338,6 +3323,9 @@ id|drive
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
@@ -3735,7 +3723,7 @@ r_goto
 id|out_unlink
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Link any new drives into the hwgroup, allocate&n;&t; * the block device queue and initialize the drive.&n;&t; * Note that ide_init_drive sends commands to the new&n;&t; * drive.&n;&t; */
+multiline_comment|/*&n;&t; * For any present drive:&n;&t; * - allocate the block device queue&n;&t; * - link drive into the hwgroup&n;&t; */
 r_for
 c_loop
 (paren
@@ -3839,12 +3827,6 @@ c_func
 (paren
 op_amp
 id|ide_lock
-)paren
-suffix:semicolon
-id|ide_init_drive
-c_func
-(paren
-id|drive
 )paren
 suffix:semicolon
 )brace
@@ -4908,12 +4890,6 @@ id|drive
 )paren
 r_return
 l_int|1
-suffix:semicolon
-id|ide_init_drive
-c_func
-(paren
-id|drive
-)paren
 suffix:semicolon
 r_return
 l_int|0
