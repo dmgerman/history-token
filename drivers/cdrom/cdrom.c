@@ -1056,7 +1056,7 @@ multiline_comment|/* Do this on open.  Don&squot;t wait for mount, because they 
 id|check_disk_change
 c_func
 (paren
-id|dev
+id|ip-&gt;i_bdev
 )paren
 suffix:semicolon
 r_return

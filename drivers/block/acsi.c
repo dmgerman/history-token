@@ -4451,7 +4451,7 @@ macro_line|#endif
 id|check_disk_change
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_if
@@ -4490,7 +4490,7 @@ id|filp-&gt;f_mode
 id|check_disk_change
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_if

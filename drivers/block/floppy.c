@@ -13895,8 +13895,10 @@ r_int
 id|invalidate_drive
 c_func
 (paren
-id|kdev_t
-id|rdev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
 multiline_comment|/* invalidate the buffer track to force a reread */
@@ -13906,7 +13908,11 @@ c_func
 id|DRIVE
 c_func
 (paren
-id|rdev
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 )paren
 comma
 op_amp
@@ -13921,7 +13927,7 @@ suffix:semicolon
 id|check_disk_change
 c_func
 (paren
-id|rdev
+id|bdev
 )paren
 suffix:semicolon
 r_return
@@ -13968,8 +13974,10 @@ comma
 r_int
 id|type
 comma
-id|kdev_t
-id|device
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
 r_int
@@ -14202,10 +14210,10 @@ id|cnt
 dot
 id|fd_ref
 )paren
-id|check_disk_change
+id|__check_disk_change
 c_func
 (paren
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|FLOPPY_MAJOR
@@ -14343,7 +14351,7 @@ id|DRS-&gt;maxtrack
 id|invalidate_drive
 c_func
 (paren
-id|device
+id|bdev
 )paren
 suffix:semicolon
 r_else
@@ -15070,7 +15078,7 @@ r_return
 id|invalidate_drive
 c_func
 (paren
-id|device
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_case
@@ -15092,7 +15100,7 @@ id|drive
 comma
 id|type
 comma
-id|device
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_case
@@ -15244,7 +15252,7 @@ r_return
 id|invalidate_drive
 c_func
 (paren
-id|device
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_case
@@ -16343,7 +16351,7 @@ suffix:semicolon
 id|check_disk_change
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_if

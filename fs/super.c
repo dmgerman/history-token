@@ -2130,7 +2130,7 @@ suffix:semicolon
 id|check_disk_change
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 id|error

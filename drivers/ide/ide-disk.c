@@ -2539,7 +2539,7 @@ l_int|1
 id|check_disk_change
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Ignore the return code from door_lock, since the open() has&n;&t;&t; * already succeeded once, and the door_lock is irrelevant at this&n;&t;&t; * time.&n;&t;&t; */
