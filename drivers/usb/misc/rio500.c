@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2187,21 +2186,25 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|retval
+suffix:semicolon
+id|retval
+op_assign
 id|usb_register
 c_func
 (paren
 op_amp
 id|rio_driver
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 id|info
 c_func
@@ -2211,8 +2214,10 @@ l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|usb_rio_cleanup

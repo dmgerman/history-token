@@ -561,7 +561,7 @@ id|nskb-&gt;nfmark
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 id|nf_bridge_put
 c_func
 (paren
