@@ -1131,9 +1131,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_POWERSAVE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.min_freq
 op_assign
