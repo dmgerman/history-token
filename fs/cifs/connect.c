@@ -4361,7 +4361,7 @@ id|pSesInfo-&gt;server-&gt;tsk
 id|send_sig
 c_func
 (paren
-id|SIGINT
+id|SIGKILL
 comma
 id|pSesInfo-&gt;server-&gt;tsk
 comma
@@ -11545,7 +11545,7 @@ suffix:semicolon
 id|send_sig
 c_func
 (paren
-id|SIGINT
+id|SIGKILL
 comma
 id|ses-&gt;server-&gt;tsk
 comma
