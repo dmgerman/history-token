@@ -33,6 +33,12 @@ comma
 DECL|enumerator|e1000_82540
 id|e1000_82540
 comma
+DECL|enumerator|e1000_82545
+id|e1000_82545
+comma
+DECL|enumerator|e1000_82546
+id|e1000_82546
+comma
 DECL|enumerator|e1000_num_macs
 id|e1000_num_macs
 DECL|typedef|e1000_mac_type
@@ -853,8 +859,16 @@ DECL|macro|E1000_DEV_ID_82540EM
 mdefine_line|#define E1000_DEV_ID_82540EM        0x100E
 DECL|macro|E1000_DEV_ID_82540EM_LOM
 mdefine_line|#define E1000_DEV_ID_82540EM_LOM    0x1015
+DECL|macro|E1000_DEV_ID_82545EM_COPPER
+mdefine_line|#define E1000_DEV_ID_82545EM_COPPER 0x100F
+DECL|macro|E1000_DEV_ID_82545EM_FIBER
+mdefine_line|#define E1000_DEV_ID_82545EM_FIBER  0x1011
+DECL|macro|E1000_DEV_ID_82546EB_COPPER
+mdefine_line|#define E1000_DEV_ID_82546EB_COPPER 0x1010
+DECL|macro|E1000_DEV_ID_82546EB_FIBER
+mdefine_line|#define E1000_DEV_ID_82546EB_FIBER  0x1012
 DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 9
+mdefine_line|#define NUM_DEV_IDS 13
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS

@@ -33,16 +33,21 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#ifdef NETIF_F_HW_VLAN_TX
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#endif
+DECL|macro|BAR_0
+mdefine_line|#define BAR_0&t;&t;0
+DECL|macro|PCI_DMA_64BIT
+mdefine_line|#define PCI_DMA_64BIT&t;0xffffffffffffffffULL
+DECL|macro|PCI_DMA_32BIT
+mdefine_line|#define PCI_DMA_32BIT&t;0x00000000ffffffffULL
 r_struct
 id|e1000_adapter
 suffix:semicolon
 macro_line|#include &quot;e1000_hw.h&quot;
-DECL|macro|BAR_0
-mdefine_line|#define BAR_0 0
 macro_line|#if DBG
 DECL|macro|E1000_DBG
 mdefine_line|#define E1000_DBG(args...) printk(KERN_DEBUG &quot;e1000: &quot; args)
@@ -319,6 +324,13 @@ DECL|member|phy_stats
 r_struct
 id|e1000_phy_stats
 id|phy_stats
+suffix:semicolon
+DECL|member|pci_state
+r_uint32
+id|pci_state
+(braket
+l_int|16
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
