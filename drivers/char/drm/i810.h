@@ -22,11 +22,11 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel i810&quot;
 DECL|macro|DRIVER_DATE
 mdefine_line|#define DRIVER_DATE&t;&t;&quot;20030605&quot;
-multiline_comment|/* Interface history&n; *&n; * 1.1   - XFree86 4.1&n; * 1.2   - XvMC interfaces&n; *       - XFree86 4.2&n; * 1.2.1 - Disable copying code (leave stub ioctls for backwards compatibility)&n; *       - Remove requirement for interrupt (leave stubs again)&n; * 1.3   - Add page flipping.&n; */
+multiline_comment|/* Interface history&n; *&n; * 1.1   - XFree86 4.1&n; * 1.2   - XvMC interfaces&n; *       - XFree86 4.2&n; * 1.2.1 - Disable copying code (leave stub ioctls for backwards compatibility)&n; *       - Remove requirement for interrupt (leave stubs again)&n; * 1.3   - Add page flipping.&n; * 1.4   - fix DRM interface&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;3
+mdefine_line|#define DRIVER_MINOR&t;&t;4
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|DRIVER_IOCTLS
