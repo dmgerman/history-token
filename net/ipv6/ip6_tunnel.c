@@ -1466,8 +1466,8 @@ r_if
 c_cond
 (paren
 id|tel-&gt;encap_limit
-op_le
-l_int|1
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -2426,10 +2426,11 @@ id|opt
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__u8
+r_int
 id|encap_limit
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 id|__u16
 id|offset
@@ -2566,8 +2567,8 @@ r_if
 c_cond
 (paren
 id|tel-&gt;encap_limit
-op_le
-l_int|1
+op_eq
+l_int|0
 )paren
 (brace
 id|icmpv6_send
@@ -2708,7 +2709,7 @@ r_if
 c_cond
 (paren
 id|encap_limit
-OG
+op_ge
 l_int|0
 )paren
 (brace
