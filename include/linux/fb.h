@@ -1318,7 +1318,7 @@ r_void
 op_star
 id|pseudo_palette
 suffix:semicolon
-multiline_comment|/* Fake palette of 16 colors and &n;&t;&t;&t;&t;&t;   the cursor&squot;s color for non&n;                                           palette mode */
+multiline_comment|/* Fake palette of 16 colors */
 multiline_comment|/* From here on everything is device dependent */
 DECL|member|par
 r_void

@@ -10007,6 +10007,11 @@ op_assign
 id|cfb_imageblit
 comma
 macro_line|#endif
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
+comma
 )brace
 suffix:semicolon
 DECL|function|radeon_set_fbinfo
