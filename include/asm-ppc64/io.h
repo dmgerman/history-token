@@ -81,8 +81,6 @@ mdefine_line|#define outw(data,addr)&t;&t;writew(data,((unsigned long)(addr)))
 DECL|macro|outl
 mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
 macro_line|#else
-DECL|macro|IS_MAPPED_VADDR
-mdefine_line|#define IS_MAPPED_VADDR(port)&t;((unsigned long)(port) &gt;&gt; 60UL)
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;eeh_readb((void*)(addr))  
 DECL|macro|readw
@@ -96,50 +94,37 @@ mdefine_line|#define writew(data, addr)&t;eeh_writew((data), ((void*)(addr)))
 DECL|macro|writel
 mdefine_line|#define writel(data, addr)&t;eeh_writel((data), ((void*)(addr)))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;eeh_memset((void *)(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;eeh_memset_io((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;eeh_memcpy_fromio((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;eeh_memcpy_toio((void *)(a),(b),(c))
 DECL|macro|inb
-mdefine_line|#define inb(port)&t;&t;_inb((unsigned long)port)
+mdefine_line|#define inb(port)&t;&t;eeh_inb((unsigned long)port)
 DECL|macro|outb
-mdefine_line|#define outb(val, port)&t;&t;_outb(val, (unsigned long)port)
+mdefine_line|#define outb(val, port)&t;&t;eeh_outb(val, (unsigned long)port)
 DECL|macro|inw
-mdefine_line|#define inw(port)&t;&t;_inw((unsigned long)port)
+mdefine_line|#define inw(port)&t;&t;eeh_inw((unsigned long)port)
 DECL|macro|outw
-mdefine_line|#define outw(val, port)&t;&t;_outw(val, (unsigned long)port)
+mdefine_line|#define outw(val, port)&t;&t;eeh_outw(val, (unsigned long)port)
 DECL|macro|inl
-mdefine_line|#define inl(port)&t;&t;_inl((unsigned long)port)
+mdefine_line|#define inl(port)&t;&t;eeh_inl((unsigned long)port)
 DECL|macro|outl
-mdefine_line|#define outl(val, port)&t;&t;_outl(val, (unsigned long)port)
+mdefine_line|#define outl(val, port)&t;&t;eeh_outl(val, (unsigned long)port)
 multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus */
 DECL|macro|insb
-mdefine_line|#define insb(port, buf, ns)&t;eeh_insb((u8 *)(port), (buf), (ns))
+mdefine_line|#define insb(port, buf, ns)&t;_insb((u8 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsb
-mdefine_line|#define outsb(port, buf, ns)&t;eeh_outsb((u8 *)(port), (buf), (ns))
+mdefine_line|#define outsb(port, buf, ns)&t;_outsb((u8 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|insw
-mdefine_line|#define insw(port, buf, ns)&t;eeh_insw_ns((u16 *)(port), (buf), (ns))
+mdefine_line|#define insw(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, ns)&t;eeh_outsw_ns((u16 *)(port), (buf), (ns))
+mdefine_line|#define outsw(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|insl
-mdefine_line|#define insl(port, buf, nl)&t;eeh_insl_ns((u32 *)(port), (buf), (nl))
+mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|outsl
-mdefine_line|#define outsl(port, buf, nl)&t;eeh_outsl_ns((u32 *)(port), (buf), (nl))
+mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#endif
-multiline_comment|/*&n; * output pause versions need a delay at least for the&n; * w83c105 ide controller in a p610.&n; */
-DECL|macro|inb_p
-mdefine_line|#define inb_p(port)             inb(port)
-DECL|macro|outb_p
-mdefine_line|#define outb_p(val, port)       (udelay(1), outb((val), (port)))
-DECL|macro|inw_p
-mdefine_line|#define inw_p(port)             inw(port)
-DECL|macro|outw_p
-mdefine_line|#define outw_p(val, port)       (udelay(1), outw((val), (port)))
-DECL|macro|inl_p
-mdefine_line|#define inl_p(port)             inl(port)
-DECL|macro|outl_p
-mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val, (port)))
 r_extern
 r_void
 id|_insb
@@ -325,15 +310,28 @@ r_int
 id|nl
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * output pause versions need a delay at least for the&n; * w83c105 ide controller in a p610.&n; */
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port)             inb(port)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(val, port)       (udelay(1), outb((val), (port)))
+DECL|macro|inw_p
+mdefine_line|#define inw_p(port)             inw(port)
+DECL|macro|outw_p
+mdefine_line|#define outw_p(val, port)       (udelay(1), outw((val), (port)))
+DECL|macro|inl_p
+mdefine_line|#define inl_p(port)             inl(port)
+DECL|macro|outl_p
+mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val, (port)))
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
 DECL|macro|insw_ns
-mdefine_line|#define insw_ns(port, buf, ns)&t;insw(port, buf, ns)
+mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsw_ns
-mdefine_line|#define outsw_ns(port, buf, ns)&t;outsw(port, buf, ns)
+mdefine_line|#define outsw_ns(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|insl_ns
-mdefine_line|#define insl_ns(port, buf, nl)&t;insl(port, buf, nl)
+mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|outsl_ns
-mdefine_line|#define outsl_ns(port, buf, nl)&t;outsl(port, buf, nl)
+mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
 DECL|macro|MEM_SPACE_LIMIT
@@ -907,372 +905,6 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_PPC_ISERIES 
 macro_line|#include &lt;asm/eeh.h&gt;
-DECL|function|_inb
-r_static
-r_inline
-id|u8
-id|_inb
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|readb
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-r_return
-id|in_8
-c_func
-(paren
-(paren
-id|u8
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|0xff
-suffix:semicolon
-)brace
-DECL|function|_outb
-r_static
-r_inline
-r_void
-id|_outb
-c_func
-(paren
-id|u8
-id|val
-comma
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|writeb
-c_func
-(paren
-id|val
-comma
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-id|out_8
-c_func
-(paren
-(paren
-id|u8
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-comma
-id|val
-)paren
-suffix:semicolon
-)brace
-DECL|function|_inw
-r_static
-r_inline
-id|u16
-id|_inw
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|readw
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-r_return
-id|in_le16
-c_func
-(paren
-(paren
-id|u16
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|0xffff
-suffix:semicolon
-)brace
-DECL|function|_outw
-r_static
-r_inline
-r_void
-id|_outw
-c_func
-(paren
-id|u16
-id|val
-comma
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|writew
-c_func
-(paren
-id|val
-comma
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-id|out_le16
-c_func
-(paren
-(paren
-id|u16
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-comma
-id|val
-)paren
-suffix:semicolon
-)brace
-DECL|function|_inl
-r_static
-r_inline
-id|u32
-id|_inl
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|readl
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-r_return
-id|in_le32
-c_func
-(paren
-(paren
-id|u32
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|0xffffffff
-suffix:semicolon
-)brace
-DECL|function|_outl
-r_static
-r_inline
-r_void
-id|_outl
-c_func
-(paren
-id|u32
-id|val
-comma
-r_int
-r_int
-id|port
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|IS_MAPPED_VADDR
-c_func
-(paren
-id|port
-)paren
-)paren
-r_return
-id|writel
-c_func
-(paren
-id|val
-comma
-(paren
-r_void
-op_star
-)paren
-id|port
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|_IO_BASE
-)paren
-id|out_le32
-c_func
-(paren
-(paren
-id|u32
-op_star
-)paren
-(paren
-(paren
-id|port
-)paren
-op_plus
-id|_IO_BASE
-)paren
-comma
-id|val
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|function|check_signature

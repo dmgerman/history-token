@@ -210,6 +210,17 @@ id|traverse_func
 id|pre
 )paren
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_find_dev_by_addr
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 r_void
 id|pci_devs_phb_init
 c_func

@@ -364,6 +364,7 @@ r_char
 op_star
 id|full_name
 suffix:semicolon
+multiline_comment|/* PCI stuff probably doesn&squot;t belong here */
 DECL|member|busno
 r_int
 id|busno
@@ -379,6 +380,22 @@ r_int
 id|devfn
 suffix:semicolon
 multiline_comment|/* for pci devices */
+DECL|macro|DN_STATUS_BIST_FAILED
+mdefine_line|#define DN_STATUS_BIST_FAILED (1&lt;&lt;0)
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* Current device status (non-zero is bad) */
+DECL|member|eeh_mode
+r_int
+id|eeh_mode
+suffix:semicolon
+multiline_comment|/* See eeh.h for possible EEH_MODEs */
+DECL|member|eeh_config_addr
+r_int
+id|eeh_config_addr
+suffix:semicolon
 DECL|member|phb
 r_struct
 id|pci_controller
@@ -393,8 +410,6 @@ op_star
 id|tce_table
 suffix:semicolon
 multiline_comment|/* for phb&squot;s or bridges */
-DECL|macro|DN_STATUS_BIST_FAILED
-mdefine_line|#define DN_STATUS_BIST_FAILED (1&lt;&lt;0)
 DECL|member|properties
 r_struct
 id|property
