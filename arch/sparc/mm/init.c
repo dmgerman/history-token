@@ -1594,6 +1594,7 @@ id|end
 )paren
 (brace
 id|set_bit
+c_func
 (paren
 id|start
 op_rshift
