@@ -915,17 +915,9 @@ id|cr2
 )paren
 (brace
 r_return
-(paren
 id|cr1-&gt;cr_uid
 op_eq
 id|cr2-&gt;cr_uid
-)paren
-op_logical_and
-(paren
-id|cr1-&gt;cr_gid
-op_eq
-id|cr2-&gt;cr_gid
-)paren
 suffix:semicolon
 )brace
 )def_block
