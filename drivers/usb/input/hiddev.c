@@ -2974,6 +2974,11 @@ comma
 id|minor
 suffix:colon
 id|HIDDEV_MINOR_BASE
+comma
+id|num_minors
+suffix:colon
+id|HIDDEV_MINORS
+comma
 )brace
 suffix:semicolon
 DECL|function|hiddev_init

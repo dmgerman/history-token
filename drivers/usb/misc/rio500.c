@@ -2090,6 +2090,10 @@ id|minor
 suffix:colon
 id|RIO_MINOR
 comma
+id|num_minors
+suffix:colon
+l_int|1
+comma
 id|id_table
 suffix:colon
 id|rio_table

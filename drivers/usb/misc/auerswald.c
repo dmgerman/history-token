@@ -7808,6 +7808,10 @@ id|minor
 suffix:colon
 id|AUER_MINOR_BASE
 comma
+id|num_minors
+suffix:colon
+id|AUER_MAX_DEVICES
+comma
 id|id_table
 suffix:colon
 id|auerswald_ids
