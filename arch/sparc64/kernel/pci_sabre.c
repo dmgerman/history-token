@@ -6812,10 +6812,6 @@ op_star
 id|iommu
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|tsbsize
 comma
 id|err
