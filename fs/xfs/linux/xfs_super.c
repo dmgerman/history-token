@@ -27,10 +27,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef EVMS_MAJOR
-DECL|macro|EVMS_MAJOR
-macro_line|# define EVMS_MAJOR&t;&t;117
-macro_line|#endif
 multiline_comment|/* For kernels which have the s_maxbytes field - set it */
 macro_line|#ifdef MAX_NON_LFS
 DECL|macro|set_max_bytes
@@ -145,8 +141,6 @@ DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
 DECL|macro|MNTOPT_QUOTA
 mdefine_line|#define MNTOPT_QUOTA&t;&quot;quota&quot;&t;&t;/* disk quotas */
-DECL|macro|MNTOPT_MRQUOTA
-mdefine_line|#define MNTOPT_MRQUOTA&t;&quot;mrquota&quot;&t;/* don&squot;t turnoff if SB has quotas on */
 DECL|macro|MNTOPT_NOQUOTA
 mdefine_line|#define MNTOPT_NOQUOTA&t;&quot;noquota&quot;&t;/* no quotas */
 DECL|macro|MNTOPT_UQUOTA
@@ -2368,6 +2362,69 @@ id|btp
 )paren
 suffix:semicolon
 )brace
+r_void
+DECL|function|xfs_size_buftarg
+id|xfs_size_buftarg
+c_func
+(paren
+id|xfs_buftarg_t
+op_star
+id|btp
+comma
+r_int
+r_int
+id|blocksize
+comma
+r_int
+r_int
+id|sectorsize
+)paren
+(brace
+id|btp-&gt;pbr_bsize
+op_assign
+id|blocksize
+suffix:semicolon
+id|btp-&gt;pbr_sshift
+op_assign
+id|ffs
+c_func
+(paren
+id|sectorsize
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|btp-&gt;pbr_smask
+op_assign
+id|sectorsize
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|set_blocksize
+c_func
+(paren
+id|btp-&gt;pbr_bdev
+comma
+id|sectorsize
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;XFS: Cannot set_blocksize to %u on device 0x%x&bslash;n&quot;
+comma
+id|sectorsize
+comma
+id|btp-&gt;pbr_dev
+)paren
+suffix:semicolon
+)brace
+)brace
 id|xfs_buftarg_t
 op_star
 DECL|function|xfs_alloc_buftarg
@@ -2410,33 +2467,20 @@ id|btp-&gt;pbr_mapping
 op_assign
 id|bdev-&gt;bd_inode-&gt;i_mapping
 suffix:semicolon
-id|btp-&gt;pbr_blocksize
-op_assign
-id|PAGE_CACHE_SIZE
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|MAJOR
+id|xfs_size_buftarg
 c_func
 (paren
-id|btp-&gt;pbr_dev
+id|btp
+comma
+id|PAGE_CACHE_SIZE
+comma
+id|bdev_hardsect_size
+c_func
+(paren
+id|bdev
 )paren
 )paren
-(brace
-r_case
-id|MD_MAJOR
-suffix:colon
-r_case
-id|EVMS_MAJOR
-suffix:colon
-id|btp-&gt;pbr_flags
-op_assign
-id|PBR_ALIGNED_ONLY
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_return
 id|btp
 suffix:semicolon
