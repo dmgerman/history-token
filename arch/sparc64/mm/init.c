@@ -97,7 +97,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|macro|CTX_BMAP_SLOTS
-mdefine_line|#define CTX_BMAP_SLOTS (1UL &lt;&lt; (CTX_VERSION_SHIFT - 6))
+mdefine_line|#define CTX_BMAP_SLOTS (1UL &lt;&lt; (CTX_NR_BITS - 6))
 DECL|variable|mmu_context_bmap
 r_int
 r_int
@@ -693,9 +693,11 @@ c_func
 id|__update_mmu_cache
 c_func
 (paren
+id|CTX_NRBITS
+c_func
+(paren
 id|vma-&gt;vm_mm-&gt;context
-op_amp
-id|TAG_CONTEXT_BITS
+)paren
 comma
 id|address
 comma
@@ -1935,6 +1937,7 @@ l_string|&quot;Remapping the kernel... &quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2213,6 +2216,7 @@ r_int
 id|KERNBASE
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2295,6 +2299,7 @@ id|prom_boot_page
 )paren
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Using plain zero for the context value is&n;&t; *       correct here, we are not using the Linux trap&n;&t; *       tables yet so we should not use the special&n;&t; *       UltraSPARC-III+ page size encodings yet.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -2763,6 +2768,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no cheetah+&n;&t;&t;&t; *       page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3632,6 +3638,7 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no cheetah+&n;&t;&t;&t; *       page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3690,6 +3697,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3818,6 +3826,7 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -3876,6 +3885,7 @@ r_int
 id|tag
 suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4694,6 +4704,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4764,6 +4775,7 @@ l_int|0x0UL
 suffix:semicolon
 )brace
 multiline_comment|/* Spitfire Errata #32 workaround */
+multiline_comment|/* NOTE: Always runs on spitfire, so no&n;&t;&t;&t; *       cheetah+ page size encodings.&n;&t;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4891,6 +4903,10 @@ id|ctx
 comma
 id|new_ctx
 suffix:semicolon
+r_int
+r_int
+id|orig_pgsz_bits
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -4898,15 +4914,23 @@ op_amp
 id|ctx_alloc_lock
 )paren
 suffix:semicolon
+id|orig_pgsz_bits
+op_assign
+(paren
+id|mm-&gt;context.sparc64_ctx_val
+op_amp
+id|CTX_PGSZ_MASK
+)paren
+suffix:semicolon
 id|ctx
 op_assign
-id|CTX_HWBITS
-c_func
 (paren
 id|tlb_context_cache
 op_plus
 l_int|1
 )paren
+op_amp
+id|CTX_NR_MASK
 suffix:semicolon
 id|new_ctx
 op_assign
@@ -4915,9 +4939,9 @@ c_func
 (paren
 id|mmu_context_bmap
 comma
-l_int|1UL
+l_int|1
 op_lshift
-id|CTX_VERSION_SHIFT
+id|CTX_NR_BITS
 comma
 id|ctx
 )paren
@@ -4928,9 +4952,9 @@ c_cond
 id|new_ctx
 op_ge
 (paren
-l_int|1UL
+l_int|1
 op_lshift
-id|CTX_VERSION_SHIFT
+id|CTX_NR_BITS
 )paren
 )paren
 (brace
@@ -5096,16 +5120,18 @@ id|tlb_context_cache
 op_assign
 id|new_ctx
 suffix:semicolon
+id|mm-&gt;context.sparc64_ctx_val
+op_assign
+id|new_ctx
+op_or
+id|orig_pgsz_bits
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
 op_amp
 id|ctx_alloc_lock
 )paren
-suffix:semicolon
-id|mm-&gt;context
-op_assign
-id|new_ctx
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_SMP

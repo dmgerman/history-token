@@ -40,6 +40,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#ifdef CONFIG_IP_PNP
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#endif
@@ -466,7 +467,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CTX_HWBITS
+id|CTX_NRBITS
 c_func
 (paren
 id|mm-&gt;context
@@ -483,7 +484,7 @@ c_cond
 op_logical_neg
 id|mm
 op_logical_or
-id|CTX_HWBITS
+id|CTX_NRBITS
 c_func
 (paren
 id|mm-&gt;context
@@ -635,6 +636,27 @@ l_int|1024
 )paren
 )paren
 (brace
+r_int
+r_int
+id|kernel_pctx
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah_plus
+)paren
+id|kernel_pctx
+op_or_assign
+(paren
+id|CTX_CHEETAH_PLUS_NUC
+op_or
+id|CTX_CHEETAH_PLUS_CTX0
+)paren
+suffix:semicolon
 multiline_comment|/* Spitfire Errata #32 workaround */
 id|__asm__
 id|__volatile__
@@ -647,7 +669,7 @@ multiline_comment|/* No outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-l_int|0
+id|kernel_pctx
 )paren
 comma
 l_string|&quot;r&quot;

@@ -538,9 +538,17 @@ comma
 id|tsk-&gt;mm
 ques
 c_cond
+id|CTX_HWBITS
+c_func
+(paren
 id|tsk-&gt;mm-&gt;context
+)paren
 suffix:colon
+id|CTX_HWBITS
+c_func
+(paren
 id|tsk-&gt;active_mm-&gt;context
+)paren
 )paren
 )paren
 suffix:semicolon

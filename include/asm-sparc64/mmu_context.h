@@ -3,19 +3,6 @@ macro_line|#ifndef __SPARC64_MMU_CONTEXT_H
 DECL|macro|__SPARC64_MMU_CONTEXT_H
 mdefine_line|#define __SPARC64_MMU_CONTEXT_H
 multiline_comment|/* Derived heavily from Linus&squot;s Alpha/AXP ASN code... */
-macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/*&n; * For the 8k pagesize kernel, use only 10 hw context bits to optimize some shifts in&n; * the fast tlbmiss handlers, instead of all 13 bits (specifically for vpte offset&n; * calculation). For other pagesizes, this optimization in the tlbhandlers can not be &n; * done; but still, all 13 bits can not be used because the tlb handlers use &quot;andcc&quot;&n; * instruction which sign extends 13 bit arguments.&n; */
-macro_line|#if PAGE_SHIFT == 13
-DECL|macro|CTX_VERSION_SHIFT
-mdefine_line|#define CTX_VERSION_SHIFT&t;10
-DECL|macro|TAG_CONTEXT_BITS
-mdefine_line|#define TAG_CONTEXT_BITS&t;0x3ff
-macro_line|#else
-DECL|macro|CTX_VERSION_SHIFT
-mdefine_line|#define CTX_VERSION_SHIFT&t;12
-DECL|macro|TAG_CONTEXT_BITS
-mdefine_line|#define TAG_CONTEXT_BITS&t;0xfff
-macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -55,14 +42,6 @@ id|mmu_context_bmap
 (braket
 )braket
 suffix:semicolon
-DECL|macro|CTX_VERSION_MASK
-mdefine_line|#define CTX_VERSION_MASK&t;((~0UL) &lt;&lt; CTX_VERSION_SHIFT)
-DECL|macro|CTX_FIRST_VERSION
-mdefine_line|#define CTX_FIRST_VERSION&t;((1UL &lt;&lt; CTX_VERSION_SHIFT) + 1UL)
-DECL|macro|CTX_VALID
-mdefine_line|#define CTX_VALID(__ctx)&t;&bslash;&n;&t; (!(((__ctx) ^ tlb_context_cache) &amp; CTX_VERSION_MASK))
-DECL|macro|CTX_HWBITS
-mdefine_line|#define CTX_HWBITS(__ctx)&t;((__ctx) &amp; ~CTX_VERSION_MASK)
 r_extern
 r_void
 id|get_new_mmu_context
@@ -76,10 +55,10 @@ id|mm
 suffix:semicolon
 multiline_comment|/* Initialize a new mmu context.  This is invoked when a new&n; * address space instance (unique or shared) is instantiated.&n; * This just needs to set mm-&gt;context to an invalid context.&n; */
 DECL|macro|init_new_context
-mdefine_line|#define init_new_context(__tsk, __mm)&t;(((__mm)-&gt;context = 0UL), 0)
+mdefine_line|#define init_new_context(__tsk, __mm)&t;&bslash;&n;&t;(((__mm)-&gt;context.sparc64_ctx_val = 0UL), 0)
 multiline_comment|/* Destroy a dead context.  This occurs when mmput drops the&n; * mm_users count to zero, the mmaps have been released, and&n; * all the page tables have been flushed.  Our job is to destroy&n; * any remaining processor-specific state, and in the sparc64&n; * case this just means freeing up the mmu context ID held by&n; * this task if valid.&n; */
 DECL|macro|destroy_context
-mdefine_line|#define destroy_context(__mm)&t;&t;&t;&t;&t;&bslash;&n;do {&t;spin_lock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;&t;if (CTX_VALID((__mm)-&gt;context)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long nr = CTX_HWBITS((__mm)-&gt;context);&t;&bslash;&n;&t;&t;mmu_context_bmap[nr&gt;&gt;6] &amp;= ~(1UL &lt;&lt; (nr &amp; 63));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define destroy_context(__mm)&t;&t;&t;&t;&t;&bslash;&n;do {&t;spin_lock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;&t;if (CTX_VALID((__mm)-&gt;context)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long nr = CTX_NRBITS((__mm)-&gt;context);&t;&bslash;&n;&t;&t;mmu_context_bmap[nr&gt;&gt;6] &amp;= ~(1UL &lt;&lt; (nr &amp; 63));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* Reload the two core values used by TLB miss handler&n; * processing on sparc64.  They are:&n; * 1) The physical address of mm-&gt;pgd, when full page&n; *    table walks are necessary, this is where the&n; *    search begins.&n; * 2) A &quot;PGD cache&quot;.  For 32-bit tasks only pgd[0] is&n; *    ever used since that maps the entire low 4GB&n; *    completely.  To speed up TLB miss processing we&n; *    make this value available to the handlers.  This&n; *    decreases the amount of memory traffic incurred.&n; */
 DECL|macro|reload_tlbmiss_state
 mdefine_line|#define reload_tlbmiss_state(__tsk, __mm) &bslash;&n;do { &bslash;&n;&t;register unsigned long paddr asm(&quot;o5&quot;); &bslash;&n;&t;register unsigned long pgd_cache asm(&quot;o4&quot;); &bslash;&n;&t;paddr = __pa((__mm)-&gt;pgd); &bslash;&n;&t;pgd_cache = 0UL; &bslash;&n;&t;if ((__tsk)-&gt;thread_info-&gt;flags &amp; _TIF_32BIT) &bslash;&n;&t;&t;pgd_cache = get_pgd_cache((__mm)-&gt;pgd); &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;%%g0, 0x494, %%pstate&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%3, %%g4&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%0, %%g7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;stxa&t;%1, [%%g4] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;membar&t;#Sync&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;wrpr&t;%%g0, 0x096, %%pstate&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (paddr), &quot;r&quot; (pgd_cache),&bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_DMMU), &quot;i&quot; (TSB_REG)); &bslash;&n;} while(0)
