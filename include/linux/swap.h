@@ -297,6 +297,19 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+r_int
+r_int
+id|nr_free_pages_pgdat
+c_func
+(paren
+id|pg_data_t
+op_star
+id|pgdat
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 r_int
