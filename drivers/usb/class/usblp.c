@@ -2229,7 +2229,7 @@ suffix:colon
 id|retval
 op_assign
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 )brace
 r_else
@@ -2310,7 +2310,7 @@ suffix:colon
 id|retval
 op_assign
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 )brace
 id|done
