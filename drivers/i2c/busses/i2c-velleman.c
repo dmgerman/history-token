@@ -336,11 +336,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|id
-op_assign
-id|I2C_HW_B_VELLE
-comma
-dot
 id|algo_data
 op_assign
 op_amp
