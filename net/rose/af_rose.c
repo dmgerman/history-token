@@ -4381,6 +4381,11 @@ id|rose_sendmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -5201,6 +5206,11 @@ r_int
 id|rose_recvmsg
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star

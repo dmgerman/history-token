@@ -129,28 +129,6 @@ DECL|member|rt6i_ref
 id|atomic_t
 id|rt6i_ref
 suffix:semicolon
-r_union
-(brace
-DECL|member|rt6iu_flowr
-r_struct
-id|flow_rule
-op_star
-id|rt6iu_flowr
-suffix:semicolon
-DECL|member|rt6iu_filter
-r_struct
-id|flow_filter
-op_star
-id|rt6iu_filter
-suffix:semicolon
-DECL|member|flow_u
-)brace
-id|flow_u
-suffix:semicolon
-DECL|macro|rt6i_flowr
-mdefine_line|#define rt6i_flowr&t;&t;&t;flow_u.rt6iu_flowr
-DECL|macro|rt6i_filter
-mdefine_line|#define rt6i_filter&t;&t;&t;flow_u.rt6iu_filter
 DECL|member|rt6i_dst
 r_struct
 id|rt6key

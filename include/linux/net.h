@@ -147,6 +147,9 @@ suffix:semicolon
 r_struct
 id|page
 suffix:semicolon
+r_struct
+id|kiocb
+suffix:semicolon
 DECL|struct|proto_ops
 r_struct
 id|proto_ops
@@ -415,6 +418,11 @@ id|sendmsg
 )paren
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -440,6 +448,11 @@ op_star
 id|recvmsg
 )paren
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
@@ -776,7 +789,7 @@ mdefine_line|#define SOCKCALL_WRAP(name, call, parms, args)&t;&t;&bslash;&n;stat
 DECL|macro|SOCKCALL_UWRAP
 mdefine_line|#define SOCKCALL_UWRAP(name, call, parms, args)&t;&t;&bslash;&n;static unsigned int __lock_##name##_##call  parms&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&t;&t;&bslash;&n;&t;lock_kernel();&t;&t;&t;&t;&t;&bslash;&n;&t;ret = __unlocked_##name##_ops.call  args ;&bslash;&n;&t;unlock_kernel();&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|SOCKOPS_WRAP
-mdefine_line|#define SOCKOPS_WRAP(name, fam)&t;&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, release, (struct socket *sock), (sock))&t;&bslash;&n;SOCKCALL_WRAP(name, bind, (struct socket *sock, struct sockaddr *uaddr, int addr_len), &bslash;&n;&t;      (sock, uaddr, addr_len))&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, connect, (struct socket *sock, struct sockaddr * uaddr, &bslash;&n;&t;&t;&t;      int addr_len, int flags), &t;&bslash;&n;&t;      (sock, uaddr, addr_len, flags))&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, socketpair, (struct socket *sock1, struct socket *sock2), &bslash;&n;&t;      (sock1, sock2))&t;&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, accept, (struct socket *sock, struct socket *newsock, &bslash;&n;&t;&t;&t; int flags), (sock, newsock, flags)) &bslash;&n;SOCKCALL_WRAP(name, getname, (struct socket *sock, struct sockaddr *uaddr, &bslash;&n;&t;&t;&t; int *addr_len, int peer), (sock, uaddr, addr_len, peer)) &bslash;&n;SOCKCALL_UWRAP(name, poll, (struct file *file, struct socket *sock, struct poll_table_struct *wait), &bslash;&n;&t;      (file, sock, wait)) &bslash;&n;SOCKCALL_WRAP(name, ioctl, (struct socket *sock, unsigned int cmd, &bslash;&n;&t;&t;&t; unsigned long arg), (sock, cmd, arg)) &bslash;&n;SOCKCALL_WRAP(name, listen, (struct socket *sock, int len), (sock, len)) &bslash;&n;SOCKCALL_WRAP(name, shutdown, (struct socket *sock, int flags), (sock, flags)) &bslash;&n;SOCKCALL_WRAP(name, setsockopt, (struct socket *sock, int level, int optname, &bslash;&n;&t;&t;&t; char *optval, int optlen), (sock, level, optname, optval, optlen)) &bslash;&n;SOCKCALL_WRAP(name, getsockopt, (struct socket *sock, int level, int optname, &bslash;&n;&t;&t;&t; char *optval, int *optlen), (sock, level, optname, optval, optlen)) &bslash;&n;SOCKCALL_WRAP(name, sendmsg, (struct socket *sock, struct msghdr *m, int len, struct scm_cookie *scm), &bslash;&n;&t;      (sock, m, len, scm)) &bslash;&n;SOCKCALL_WRAP(name, recvmsg, (struct socket *sock, struct msghdr *m, int len, int flags, struct scm_cookie *scm), &bslash;&n;&t;      (sock, m, len, flags, scm)) &bslash;&n;SOCKCALL_WRAP(name, mmap, (struct file *file, struct socket *sock, struct vm_area_struct *vma), &bslash;&n;&t;      (file, sock, vma)) &bslash;&n;&t;      &bslash;&n;static struct proto_ops name##_ops = {&t;&t;&t;&bslash;&n;&t;family:&t;&t;fam,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;release:&t;__lock_##name##_release,&t;&bslash;&n;&t;bind:&t;&t;__lock_##name##_bind,&t;&t;&bslash;&n;&t;connect:&t;__lock_##name##_connect,&t;&bslash;&n;&t;socketpair:&t;__lock_##name##_socketpair,&t;&bslash;&n;&t;accept:&t;&t;__lock_##name##_accept,&t;&t;&bslash;&n;&t;getname:&t;__lock_##name##_getname,&t;&bslash;&n;&t;poll:&t;&t;__lock_##name##_poll,&t;&t;&bslash;&n;&t;ioctl:&t;&t;__lock_##name##_ioctl,&t;&t;&bslash;&n;&t;listen:&t;&t;__lock_##name##_listen,&t;&t;&bslash;&n;&t;shutdown:&t;__lock_##name##_shutdown,&t;&bslash;&n;&t;setsockopt:&t;__lock_##name##_setsockopt,&t;&bslash;&n;&t;getsockopt:&t;__lock_##name##_getsockopt,&t;&bslash;&n;&t;sendmsg:&t;__lock_##name##_sendmsg,&t;&bslash;&n;&t;recvmsg:&t;__lock_##name##_recvmsg,&t;&bslash;&n;&t;mmap:&t;&t;__lock_##name##_mmap,&t;&t;&bslash;&n;};
+mdefine_line|#define SOCKOPS_WRAP(name, fam)&t;&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, release, (struct socket *sock), (sock))&t;&bslash;&n;SOCKCALL_WRAP(name, bind, (struct socket *sock, struct sockaddr *uaddr, int addr_len), &bslash;&n;&t;      (sock, uaddr, addr_len))&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, connect, (struct socket *sock, struct sockaddr * uaddr, &bslash;&n;&t;&t;&t;      int addr_len, int flags), &t;&bslash;&n;&t;      (sock, uaddr, addr_len, flags))&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, socketpair, (struct socket *sock1, struct socket *sock2), &bslash;&n;&t;      (sock1, sock2))&t;&t;&t;&t;&t;&bslash;&n;SOCKCALL_WRAP(name, accept, (struct socket *sock, struct socket *newsock, &bslash;&n;&t;&t;&t; int flags), (sock, newsock, flags)) &bslash;&n;SOCKCALL_WRAP(name, getname, (struct socket *sock, struct sockaddr *uaddr, &bslash;&n;&t;&t;&t; int *addr_len, int peer), (sock, uaddr, addr_len, peer)) &bslash;&n;SOCKCALL_UWRAP(name, poll, (struct file *file, struct socket *sock, struct poll_table_struct *wait), &bslash;&n;&t;      (file, sock, wait)) &bslash;&n;SOCKCALL_WRAP(name, ioctl, (struct socket *sock, unsigned int cmd, &bslash;&n;&t;&t;&t; unsigned long arg), (sock, cmd, arg)) &bslash;&n;SOCKCALL_WRAP(name, listen, (struct socket *sock, int len), (sock, len)) &bslash;&n;SOCKCALL_WRAP(name, shutdown, (struct socket *sock, int flags), (sock, flags)) &bslash;&n;SOCKCALL_WRAP(name, setsockopt, (struct socket *sock, int level, int optname, &bslash;&n;&t;&t;&t; char *optval, int optlen), (sock, level, optname, optval, optlen)) &bslash;&n;SOCKCALL_WRAP(name, getsockopt, (struct socket *sock, int level, int optname, &bslash;&n;&t;&t;&t; char *optval, int *optlen), (sock, level, optname, optval, optlen)) &bslash;&n;SOCKCALL_WRAP(name, sendmsg, (struct kiocb *iocb, struct socket *sock, struct msghdr *m, int len, struct scm_cookie *scm), &bslash;&n;&t;      (iocb, sock, m, len, scm)) &bslash;&n;SOCKCALL_WRAP(name, recvmsg, (struct kiocb *iocb, struct socket *sock, struct msghdr *m, int len, int flags, struct scm_cookie *scm), &bslash;&n;&t;      (iocb, sock, m, len, flags, scm)) &bslash;&n;SOCKCALL_WRAP(name, mmap, (struct file *file, struct socket *sock, struct vm_area_struct *vma), &bslash;&n;&t;      (file, sock, vma)) &bslash;&n;&t;      &bslash;&n;static struct proto_ops name##_ops = {&t;&t;&t;&bslash;&n;&t;family:&t;&t;fam,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;release:&t;__lock_##name##_release,&t;&bslash;&n;&t;bind:&t;&t;__lock_##name##_bind,&t;&t;&bslash;&n;&t;connect:&t;__lock_##name##_connect,&t;&bslash;&n;&t;socketpair:&t;__lock_##name##_socketpair,&t;&bslash;&n;&t;accept:&t;&t;__lock_##name##_accept,&t;&t;&bslash;&n;&t;getname:&t;__lock_##name##_getname,&t;&bslash;&n;&t;poll:&t;&t;__lock_##name##_poll,&t;&t;&bslash;&n;&t;ioctl:&t;&t;__lock_##name##_ioctl,&t;&t;&bslash;&n;&t;listen:&t;&t;__lock_##name##_listen,&t;&t;&bslash;&n;&t;shutdown:&t;__lock_##name##_shutdown,&t;&bslash;&n;&t;setsockopt:&t;__lock_##name##_setsockopt,&t;&bslash;&n;&t;getsockopt:&t;__lock_##name##_getsockopt,&t;&bslash;&n;&t;sendmsg:&t;__lock_##name##_sendmsg,&t;&bslash;&n;&t;recvmsg:&t;__lock_##name##_recvmsg,&t;&bslash;&n;&t;mmap:&t;&t;__lock_##name##_mmap,&t;&t;&bslash;&n;};
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_NET_H */
