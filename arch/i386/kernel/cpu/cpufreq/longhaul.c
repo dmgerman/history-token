@@ -12,6 +12,12 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;longhaul.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;longhaul: &quot;
+DECL|macro|TYPE_LONGHAUL_V1
+mdefine_line|#define TYPE_LONGHAUL_V1&t;1
+DECL|macro|TYPE_LONGHAUL_V2
+mdefine_line|#define TYPE_LONGHAUL_V2&t;2
+DECL|macro|TYPE_POWERSAVER
+mdefine_line|#define TYPE_POWERSAVER&t;&t;3
 DECL|variable|numscales
 DECL|variable|numvscales
 r_static
@@ -288,11 +294,11 @@ c_cond
 (paren
 id|longhaul_version
 op_eq
-l_int|2
+id|TYPE_LONGHAUL_V2
 op_logical_or
 id|longhaul_version
 op_eq
-l_int|3
+id|TYPE_POWERSAVER
 )paren
 (brace
 r_if
@@ -332,11 +338,47 @@ comma
 r_int
 r_int
 id|clock_ratio_index
-comma
-r_int
-id|version
 )paren
 (brace
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+op_assign
+id|cpu_data
+suffix:semicolon
+r_int
+id|version
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|c-&gt;x86_model
+)paren
+(brace
+r_case
+l_int|8
+suffix:colon
+id|version
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|9
+suffix:colon
+id|version
+op_assign
+l_int|0xf
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+suffix:semicolon
+)brace
 id|rdmsrl
 c_func
 (paren
@@ -556,7 +598,10 @@ id|longhaul_version
 (brace
 multiline_comment|/*&n;&t; * Longhaul v1. (Samuel[C5A] and Samuel2 stepping 0[C5B])&n;&t; * Software controlled multipliers only.&n;&t; *&n;&t; * *NB* Until we get voltage scaling working v1 &amp; v2 are the same code.&n;&t; * Longhaul v2 appears in Samuel2 Steppings 1-&gt;7 [C5b] and Ezra [C5C]&n;&t; */
 r_case
-l_int|1
+id|TYPE_LONGHAUL_V1
+suffix:colon
+r_case
+id|TYPE_LONGHAUL_V2
 suffix:colon
 id|rdmsrl
 (paren
@@ -627,9 +672,9 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t; * Longhaul v3 (aka Powersaver). (Ezra-T [C5M])&n;&t; * We can scale voltage with this too, but that&squot;s currently&n;&t; * disabled until we come up with a decent &squot;match freq to voltage&squot;&n;&t; * algorithm.&n;&t; * When we add voltage scaling, we will also need to do the&n;&t; * voltage/freq setting in order depending on the direction&n;&t; * of scaling (like we do in powernow-k7.c)&n;&t; */
+multiline_comment|/*&n;&t; * Longhaul v3 (aka Powersaver). (Ezra-T [C5M] &amp; Nehemiah [C5N])&n;&t; * We can scale voltage with this too, but that&squot;s currently&n;&t; * disabled until we come up with a decent &squot;match freq to voltage&squot;&n;&t; * algorithm.&n;&t; * When we add voltage scaling, we will also need to do the&n;&t; * voltage/freq setting in order depending on the direction&n;&t; * of scaling (like we do in powernow-k7.c)&n;&t; * Nehemiah can do FSB scaling too, but this has never been proven&n;&t; * to work in practice.&n;&t; */
 r_case
-l_int|2
+id|TYPE_POWERSAVER
 suffix:colon
 id|do_powersaver
 c_func
@@ -638,25 +683,6 @@ op_amp
 id|longhaul
 comma
 id|clock_ratio_index
-comma
-l_int|3
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/*&n;&t; * Powersaver. (Nehemiah [C5N])&n;&t; * As for Ezra-T, we don&squot;t do voltage yet.&n;&t; * This can do FSB scaling too, but it has never been proven&n;&t; * to work in practice.&n;&t; */
-r_case
-l_int|3
-suffix:colon
-id|do_powersaver
-c_func
-(paren
-op_amp
-id|longhaul
-comma
-id|clock_ratio_index
-comma
-l_int|0xf
 )paren
 suffix:semicolon
 r_break
@@ -975,7 +1001,10 @@ id|longhaul_version
 )paren
 (brace
 r_case
-l_int|1
+id|TYPE_LONGHAUL_V1
+suffix:colon
+r_case
+id|TYPE_LONGHAUL_V2
 suffix:colon
 multiline_comment|/* Ugh, Longhaul v1 didn&squot;t have the min/max MSRs.&n;&t;&t;   Assume min=3.0x &amp; max = whatever we booted at. */
 id|minmult
@@ -1041,8 +1070,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|TYPE_POWERSAVER
 suffix:colon
+multiline_comment|/* Ezra-T */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|8
+)paren
+(brace
 id|rdmsrl
 (paren
 id|MSR_VIA_LONGHAUL
@@ -1102,9 +1140,16 @@ id|longhaul.bits.MaxMHzFSB
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|3
-suffix:colon
+)brace
+multiline_comment|/* Nehemiah */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|9
+)paren
+(brace
 id|rdmsrl
 (paren
 id|MSR_VIA_LONGHAUL
@@ -1112,10 +1157,10 @@ comma
 id|longhaul.val
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * TODO: This code works, but raises a lot of questions.&n;&t;&t; * - Some Nehemiah&squot;s seem to have broken Min/MaxMHzBR&squot;s.&n;&t;&t; *   We get around this by using a hardcoded multiplier of 5.0x&n;&t;&t; *   for the minimimum speed, and the speed we booted up at for the max.&n;&t;&t; *   This is done in longhaul_get_cpu_mult() by reading the EBLCR register.&n;&t;&t; * - According to some VIA documentation EBLCR is only&n;&t;&t; *   in pre-Nehemiah C3s. How this still works is a mystery.&n;&t;&t; *   We&squot;re possibly using something undocumented and unsupported,&n;&t;&t; *   But it works, so we don&squot;t grumble.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * TODO: This code works, but raises a lot of questions.&n;&t;&t;&t; * - Some Nehemiah&squot;s seem to have broken Min/MaxMHzBR&squot;s.&n;&t;&t;&t; *   We get around this by using a hardcoded multiplier of 4.0x&n;&t;&t;&t; *   for the minimimum speed, and the speed we booted up at for the max.&n;&t;&t;&t; *   This is done in longhaul_get_cpu_mult() by reading the EBLCR register.&n;&t;&t;&t; * - According to some VIA documentation EBLCR is only&n;&t;&t;&t; *   in pre-Nehemiah C3s. How this still works is a mystery.&n;&t;&t;&t; *   We&squot;re possibly using something undocumented and unsupported,&n;&t;&t;&t; *   But it works, so we don&squot;t grumble.&n;&t;&t;&t; */
 id|minmult
 op_assign
-l_int|50
+l_int|40
 suffix:semicolon
 id|maxmult
 op_assign
@@ -1150,6 +1195,7 @@ id|longhaul.bits.MaxMHzFSB
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 id|dprintk
 (paren
@@ -1843,7 +1889,7 @@ l_string|&quot;C3 &squot;Samuel&squot; [C5A]&quot;
 suffix:semicolon
 id|longhaul_version
 op_assign
-l_int|1
+id|TYPE_LONGHAUL_V1
 suffix:semicolon
 id|memcpy
 (paren
@@ -1877,7 +1923,7 @@ suffix:colon
 multiline_comment|/* C5B / C5C */
 id|longhaul_version
 op_assign
-l_int|1
+id|TYPE_LONGHAUL_V1
 suffix:semicolon
 r_switch
 c_cond
@@ -1980,7 +2026,7 @@ l_string|&quot;C3 &squot;Ezra-T&squot; [C5M]&quot;
 suffix:semicolon
 id|longhaul_version
 op_assign
-l_int|2
+id|TYPE_POWERSAVER
 suffix:semicolon
 id|numscales
 op_assign
@@ -2017,7 +2063,7 @@ l_int|9
 suffix:colon
 id|longhaul_version
 op_assign
-l_int|3
+id|TYPE_POWERSAVER
 suffix:semicolon
 id|numscales
 op_assign
@@ -2156,12 +2202,43 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;VIA %s CPU detected. Longhaul v%d supported.&bslash;n&quot;
+l_string|&quot;VIA %s CPU detected.&quot;
 comma
 id|cpuname
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|longhaul_version
+)paren
+(brace
+r_case
+id|TYPE_LONGHAUL_V1
+suffix:colon
+r_case
+id|TYPE_LONGHAUL_V2
+suffix:colon
+id|printk
+(paren
+l_string|&quot;Longhaul v%d supported.&bslash;n&quot;
 comma
 id|longhaul_version
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TYPE_POWERSAVER
+suffix:colon
+id|printk
+(paren
+l_string|&quot;Powersaver supported.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 suffix:semicolon
 id|ret
 op_assign
@@ -2186,7 +2263,7 @@ c_cond
 (paren
 id|longhaul_version
 op_eq
-l_int|2
+id|TYPE_LONGHAUL_V2
 )paren
 op_logical_and
 (paren
