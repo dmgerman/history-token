@@ -2245,12 +2245,12 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Warning: CPU frequency out of sync: cpufreq and timing&quot;
-l_string|&quot;core thinks of %u, is %u kHz.&bslash;n&quot;
-comma
-id|cpu_policy-&gt;cur
+l_string|&quot;Warning: CPU frequency is %u, &quot;
+l_string|&quot;cpufreq assumed %u kHz.&bslash;n&quot;
 comma
 id|cur_freq
+comma
+id|cpu_policy-&gt;cur
 )paren
 suffix:semicolon
 id|freqs.cpu
@@ -2287,6 +2287,10 @@ comma
 op_amp
 id|freqs
 )paren
+suffix:semicolon
+id|cpu_policy-&gt;cur
+op_assign
+id|cur_freq
 suffix:semicolon
 )brace
 )brace
@@ -3796,8 +3800,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Warning: CPU frequency out of sync: &quot;
-l_string|&quot;cpufreq and timing core thinks of %u, is %u kHz.&bslash;n&quot;
+l_string|&quot;Warning: CPU frequency is %u, &quot;
+l_string|&quot;cpufreq assumed %u kHz.&bslash;n&quot;
+comma
+id|freqs-&gt;old
 comma
 id|cpufreq_cpu_data
 (braket
@@ -3805,8 +3811,6 @@ id|freqs-&gt;cpu
 )braket
 op_member_access_from_pointer
 id|cur
-comma
-id|freqs-&gt;old
 )paren
 suffix:semicolon
 id|freqs-&gt;old
