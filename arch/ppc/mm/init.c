@@ -26,13 +26,14 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &quot;mem_pieces.h&quot;
 macro_line|#include &quot;mmu_decl.h&quot;
-macro_line|#ifdef CONFIG_LOWMEM_SIZE_BOOL
+macro_line|#if defined(CONFIG_KERNEL_START_BOOL) || defined(CONFIG_LOWMEM_SIZE_BOOL)
+multiline_comment|/* The ammount of lowmem must be within 0xF0000000 - KERNELBASE. */
+macro_line|#if (CONFIG_LOWMEM_SIZE &gt; (0xF0000000 - KERNELBASE))
+macro_line|#error &quot;You must adjust CONFIG_LOWMEM_SIZE or CONFIG_START_KERNEL&quot;
+macro_line|#endif
+macro_line|#endif
 DECL|macro|MAX_LOW_MEM
 mdefine_line|#define MAX_LOW_MEM&t;CONFIG_LOWMEM_SIZE
-macro_line|#else
-DECL|macro|MAX_LOW_MEM
-mdefine_line|#define MAX_LOW_MEM&t;(0xF0000000UL - KERNELBASE)
-macro_line|#endif /* CONFIG_LOWMEM_SIZE_BOOL */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 r_extern
 r_void
