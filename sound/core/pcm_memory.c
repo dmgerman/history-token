@@ -33,14 +33,6 @@ comma
 l_string|&quot;Preallocate DMA memory when the PCM devices are initialized.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|preallocate_dma
-comma
-id|SNDRV_BOOLEAN_TRUE_DESC
-)paren
-suffix:semicolon
 DECL|variable|maximum_substreams
 r_static
 r_int
@@ -64,14 +56,6 @@ c_func
 id|maximum_substreams
 comma
 l_string|&quot;Maximum substreams with preallocated DMA memory.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|maximum_substreams
-comma
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_minimum_buffer

@@ -117,14 +117,6 @@ comma
 l_string|&quot;PCM device number assigned to 1st OSS device.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dsp_map
-comma
-l_string|&quot;default:0,skill:advanced&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -145,14 +137,6 @@ comma
 l_string|&quot;PCM device number assigned to 2nd OSS device.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|adsp_map
-comma
-l_string|&quot;default:1,skill:advanced&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -169,14 +153,6 @@ c_func
 id|nonblock_open
 comma
 l_string|&quot;Don&squot;t block opening busy PCM devices.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|nonblock_open
-comma
-l_string|&quot;default:0,skill:advanced&quot;
 )paren
 suffix:semicolon
 DECL|variable|SNDRV_MINOR_OSS_PCM

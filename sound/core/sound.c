@@ -62,18 +62,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
-c_func
-(paren
-l_string|&quot;sound&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -92,14 +80,6 @@ comma
 l_string|&quot;Major # for sound driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|major
-comma
-l_string|&quot;default:116,skill:devel&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -116,14 +96,6 @@ c_func
 id|cards_limit
 comma
 l_string|&quot;Count of auto-loadable soundcards.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cards_limit
-comma
-l_string|&quot;default:8,skill:advanced&quot;
 )paren
 suffix:semicolon
 DECL|variable|CONFIG_SND_MAJOR
@@ -150,14 +122,6 @@ c_func
 id|device_mode
 comma
 l_string|&quot;Device file permission mask for devfs.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|device_mode
-comma
-l_string|&quot;default:0666,base:8&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

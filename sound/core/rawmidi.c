@@ -105,14 +105,6 @@ comma
 l_string|&quot;Raw MIDI device number assigned to 1st OSS device.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|midi_map
-comma
-l_string|&quot;default:0,skill:advanced&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -131,14 +123,6 @@ c_func
 id|amidi_map
 comma
 l_string|&quot;Raw MIDI device number assigned to 2nd OSS device.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|amidi_map
-comma
-l_string|&quot;default:1,skill:advanced&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SND_OSSEMUL */

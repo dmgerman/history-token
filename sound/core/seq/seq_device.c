@@ -25,18 +25,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
-c_func
-(paren
-l_string|&quot;sound&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * driver list&n; */
 DECL|typedef|ops_list_t
 r_typedef
