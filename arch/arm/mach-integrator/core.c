@@ -537,7 +537,6 @@ id|timer_reload
 suffix:semicolon
 multiline_comment|/*&n; * Returns number of ms since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
 DECL|function|integrator_gettimeoffset
-r_static
 r_int
 r_int
 id|integrator_gettimeoffset

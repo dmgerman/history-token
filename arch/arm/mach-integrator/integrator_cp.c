@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/mmc.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &quot;common.h&quot;
 macro_line|#include &quot;clock.h&quot;
 DECL|macro|INTCP_PA_MMC_BASE

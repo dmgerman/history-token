@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &quot;common.h&quot;
 multiline_comment|/* &n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Integrator interrupt controller (for header #0,&n; * just for now).&n; */
 DECL|macro|VA_IC_BASE
