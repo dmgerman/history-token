@@ -638,6 +638,32 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* &n; * NFSv4 State&n; */
+macro_line|#ifdef CONFIG_NFSD_V4
+r_void
+id|nfs4_state_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|nfs4_state_shutdown
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|nfs4_state_init
+r_void
+r_static
+r_inline
+DECL|function|nfs4_state_shutdown
+r_void
+r_static
+r_inline
+macro_line|#endif
 multiline_comment|/*&n; * lockd binding&n; */
 r_void
 id|nfsd_lockd_init
@@ -724,6 +750,8 @@ DECL|macro|nfserr_same
 mdefine_line|#define&t;nfserr_same&t;&t;__constant_htonl(NFSERR_SAME)
 DECL|macro|nfserr_clid_inuse
 mdefine_line|#define&t;nfserr_clid_inuse&t;__constant_htonl(NFSERR_CLID_INUSE)
+DECL|macro|nfserr_stale_clientid
+mdefine_line|#define&t;nfserr_stale_clientid&t;__constant_htonl(NFSERR_STALE_CLIENTID)
 DECL|macro|nfserr_resource
 mdefine_line|#define&t;nfserr_resource&t;&t;__constant_htonl(NFSERR_RESOURCE)
 DECL|macro|nfserr_nofilehandle
