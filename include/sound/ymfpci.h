@@ -697,6 +697,11 @@ r_int
 r_int
 id|old_legacy_ctrl
 suffix:semicolon
+DECL|member|joystick_port
+r_int
+r_int
+id|joystick_port
+suffix:semicolon
 DECL|member|work_ptr
 r_void
 op_star
@@ -1049,6 +1054,15 @@ id|chip
 )paren
 suffix:semicolon
 r_int
+id|snd_ymfpci_joystick
+c_func
+(paren
+id|ymfpci_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
 id|snd_ymfpci_voice_alloc
 c_func
 (paren
@@ -1089,9 +1103,6 @@ c_func
 id|ymfpci_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 r_void
@@ -1101,9 +1112,6 @@ c_func
 id|ymfpci_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -8569,7 +8569,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a physical range of kernel memory, defined by a vector&n; * of kiobuf structs (much like a user-space iovec list).&n; *&n; * The kiobuf must already be locked for IO.  IO is submitted&n; * asynchronously: you need to check page-&gt;locked, page-&gt;uptodate, and&n; * maybe wait on page-&gt;wait.&n; *&n; * It is up to the caller to make sure that there are enough blocks&n; * passed in to completely map the iobufs to disk.&n; */
+multiline_comment|/*&n; * Start I/O on a physical range of kernel memory, defined by a vector&n; * of kiobuf structs (much like a user-space iovec list).&n; *&n; * The kiobuf must already be locked for IO.  IO is submitted&n; * asynchronously: you need to check page-&gt;locked and page-&gt;uptodate.&n; *&n; * It is up to the caller to make sure that there are enough blocks&n; * passed in to completely map the iobufs to disk.&n; */
 DECL|function|brw_kiovec
 r_int
 id|brw_kiovec
@@ -8804,7 +8804,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked,&n; * page-&gt;uptodate, and maybe wait on page-&gt;wait.&n; *&n; * brw_page() is SMP-safe, although it&squot;s being called with the&n; * kernel lock held - but the code is ready.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * brw_page() is SMP-safe, although it&squot;s being called with the&n; * kernel lock held - but the code is ready.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page

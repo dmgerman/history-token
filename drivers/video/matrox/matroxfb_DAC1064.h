@@ -23,21 +23,14 @@ r_void
 id|DAC1064_global_init
 c_func
 (paren
-id|CPMINFO
-r_struct
-id|matrox_hw_state
-op_star
+id|WPMINFO2
 )paren
 suffix:semicolon
 r_void
 id|DAC1064_global_restore
 c_func
 (paren
-id|CPMINFO
-r_const
-r_struct
-id|matrox_hw_state
-op_star
+id|WPMINFO2
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -279,14 +272,14 @@ DECL|macro|M1064_XOUTPUTCONN
 mdefine_line|#define M1064_XOUTPUTCONN&t;0x8A
 DECL|macro|M1064_XSYNCCTRL
 mdefine_line|#define M1064_XSYNCCTRL&t;&t;0x8B
-DECL|macro|M1064_XPIXPLL2STAT
-mdefine_line|#define M1064_XPIXPLL2STAT&t;0x8C
-DECL|macro|M1064_XPIXPLL2P
-mdefine_line|#define M1064_XPIXPLL2P&t;&t;0x8D
-DECL|macro|M1064_XPIXPLL2N
-mdefine_line|#define M1064_XPIXPLL2N&t;&t;0x8E
-DECL|macro|M1064_XPIXPLL2M
-mdefine_line|#define M1064_XPIXPLL2M&t;&t;0x8F
+DECL|macro|M1064_XVIDPLLSTAT
+mdefine_line|#define M1064_XVIDPLLSTAT&t;0x8C
+DECL|macro|M1064_XVIDPLLP
+mdefine_line|#define M1064_XVIDPLLP&t;&t;0x8D
+DECL|macro|M1064_XVIDPLLM
+mdefine_line|#define M1064_XVIDPLLM&t;&t;0x8E
+DECL|macro|M1064_XVIDPLLN
+mdefine_line|#define M1064_XVIDPLLN&t;&t;0x8F
 DECL|macro|M1064_XPWRCTRL
 mdefine_line|#define M1064_XPWRCTRL&t;&t;0xA0
 DECL|enum|POS1064

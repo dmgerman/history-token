@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Generic MIDI synth driver for ALSA sequencer&n; *   
 multiline_comment|/* &n;Possible options for midisynth module:&n;&t;- automatic opening of midi ports on first received event or subscription&n;&t;  (close will be performed when client leaves)&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/seq_kernel.h&gt;
@@ -556,7 +557,7 @@ l_int|NULL
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond

@@ -2965,10 +2965,6 @@ comma
 id|buf
 comma
 id|left
-comma
-id|filp-&gt;f_reada
-op_ne
-l_int|0
 )paren
 suffix:semicolon
 r_if

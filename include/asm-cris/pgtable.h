@@ -940,8 +940,6 @@ suffix:semicolon
 DECL|macro|pte_pagenr
 mdefine_line|#define pte_pagenr(pte)         ((__pte_page(pte) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
 multiline_comment|/* permanent address of a page */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)      ((page)-&gt;virtual)
 DECL|macro|__page_address
 mdefine_line|#define __page_address(page)    (PAGE_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT))
 DECL|macro|pte_page

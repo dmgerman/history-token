@@ -8,13 +8,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
-DECL|macro|HIGHMEM_DEBUG
-mdefine_line|#define HIGHMEM_DEBUG 1
-macro_line|#else
-DECL|macro|HIGHMEM_DEBUG
-mdefine_line|#define HIGHMEM_DEBUG 0
-macro_line|#endif
 multiline_comment|/* declarations for highmem.c */
 r_extern
 r_int
@@ -251,7 +244,7 @@ op_plus
 id|idx
 )paren
 suffix:semicolon
-macro_line|#if HIGHMEM_DEBUG
+macro_line|#if CONFIG_DEBUG_HIGHMEM
 r_if
 c_cond
 (paren
@@ -319,7 +312,7 @@ id|km_type
 id|type
 )paren
 (brace
-macro_line|#if HIGHMEM_DEBUG
+macro_line|#if CONFIG_DEBUG_HIGHMEM
 r_int
 r_int
 id|vaddr
@@ -329,6 +322,8 @@ r_int
 r_int
 )paren
 id|kvaddr
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_enum
 id|fixed_addresses

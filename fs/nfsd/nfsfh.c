@@ -3078,7 +3078,11 @@ op_assign
 id|ino_t_to_u32
 c_func
 (paren
-id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|dentry
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -3348,7 +3352,11 @@ op_assign
 id|ino_t_to_u32
 c_func
 (paren
-id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|dentry
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -4,6 +4,9 @@ mdefine_line|#define PLUGIN_DEBUG
 macro_line|#endif
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -6252,6 +6255,20 @@ r_if
 c_cond
 (paren
 id|err
+op_eq
+op_minus
+id|EPIPE
+)paren
+id|delay
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* hack for broken OSS applications */
+r_else
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -9527,9 +9544,24 @@ id|res
 OL
 l_int|0
 )paren
+(brace
+multiline_comment|/* it&squot;s for sure, some broken apps don&squot;t check for error codes */
+id|put_user
+c_func
+(paren
+l_int|0
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 r_return
 id|res
 suffix:semicolon
+)brace
 r_return
 id|put_user
 c_func

@@ -1328,7 +1328,11 @@ l_int|2
 comma
 id|i
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 comma
 id|DT_DIR
 )paren

@@ -3,6 +3,7 @@ multiline_comment|/*&n;  NOTES:&n;  - Capture data is written unaligned starting
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -6525,7 +6526,7 @@ c_func
 id|chip-&gt;res_io_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_io_port
@@ -6544,7 +6545,7 @@ c_func
 id|chip-&gt;res_sb_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_sb_port
@@ -6563,7 +6564,7 @@ c_func
 id|chip-&gt;res_vc_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_vc_port
@@ -6582,7 +6583,7 @@ c_func
 id|chip-&gt;res_mpu_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_mpu_port
@@ -6601,7 +6602,7 @@ c_func
 id|chip-&gt;res_game_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_game_port

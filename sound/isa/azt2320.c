@@ -4,6 +4,15 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#ifndef LINUX_ISAPNP_H
+macro_line|#include &lt;linux/isapnp.h&gt;
+DECL|macro|isapnp_card
+mdefine_line|#define isapnp_card pci_bus
+DECL|macro|isapnp_dev
+mdefine_line|#define isapnp_dev pci_dev
+macro_line|#endif
 macro_line|#include &lt;sound/core.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID

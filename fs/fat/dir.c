@@ -3200,7 +3200,11 @@ l_int|11
 (brace
 id|inum
 op_assign
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 suffix:semicolon
 )brace
 r_else

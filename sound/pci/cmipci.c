@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -255,7 +256,8 @@ c_func
 (paren
 id|snd_mpu_port
 comma
-l_string|&quot;allows:{{-1},{0x330},{0x320},{0x310},{0x300}},dialog:list&quot;
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{-1},{0x330},{0x320},{0x310},{0x300}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -285,7 +287,8 @@ c_func
 (paren
 id|snd_fm_port
 comma
-l_string|&quot;allows:{{-1},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{-1},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef PCI_DEVICE_ID_CMEDIA_CM8738
@@ -11134,7 +11137,7 @@ c_func
 id|cm-&gt;res_iobase
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|cm-&gt;res_iobase
@@ -12273,14 +12276,7 @@ comma
 id|cm-&gt;irq
 )paren
 suffix:semicolon
-id|snd_printd
-c_func
-(paren
-l_string|&quot;%s is detected&bslash;n&quot;
-comma
-id|card-&gt;longname
-)paren
-suffix:semicolon
+singleline_comment|//snd_printd(&quot;%s is detected&bslash;n&quot;, card-&gt;longname);
 r_if
 c_cond
 (paren

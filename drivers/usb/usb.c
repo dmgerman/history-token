@@ -6262,13 +6262,6 @@ c_cond
 (paren
 id|interface-&gt;driver
 )paren
-(brace
-id|put_device
-(paren
-op_amp
-id|interface-&gt;dev
-)paren
-suffix:semicolon
 id|usb_driver_release_interface
 c_func
 (paren
@@ -6278,7 +6271,14 @@ id|interface
 )paren
 suffix:semicolon
 )brace
-)brace
+multiline_comment|/* remove our device node for this interface */
+id|put_device
+c_func
+(paren
+op_amp
+id|interface-&gt;dev
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Free up all the children.. */

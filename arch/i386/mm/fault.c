@@ -1005,6 +1005,8 @@ comma
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We must not directly access the pte in the highpte&n;&t; * case, the page table might be allocated in highmem.&n;&t; * And lets rather not kmap-atomic the pte, just in case&n;&t; * it&squot;s allocated already.&n;&t; */
+macro_line|#ifndef CONFIG_HIGHPTE
 r_if
 c_cond
 (paren
@@ -1051,6 +1053,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|die
 c_func
 (paren
@@ -1330,7 +1333,7 @@ id|pmd_k
 suffix:semicolon
 id|pte_k
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_k

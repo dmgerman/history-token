@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Routines for Gravis UltraSound soundcards&n; *  Copyr
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -406,7 +408,7 @@ c_func
 id|gus-&gt;gf1.res_port1
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|gus-&gt;gf1.res_port1
@@ -425,7 +427,7 @@ c_func
 id|gus-&gt;gf1.res_port2
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|gus-&gt;gf1.res_port2

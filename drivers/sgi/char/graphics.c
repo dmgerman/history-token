@@ -787,6 +787,11 @@ id|virt_add
 comma
 id|phys_add
 suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 (paren
@@ -914,7 +919,7 @@ id|address
 suffix:semicolon
 id|pte
 op_assign
-id|pte_offset
+id|pte_kmap_offset
 c_func
 (paren
 id|pmd
@@ -922,13 +927,23 @@ comma
 id|address
 )paren
 suffix:semicolon
-r_return
+id|page
+op_assign
 id|pte_page
 c_func
 (paren
 op_star
 id|pte
 )paren
+suffix:semicolon
+id|pte_kunmap
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+r_return
+id|page
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We convert a GFX ioctl for mapping hardware registers, in a nice sys_mmap&n; * call, which takes care of everything that must be taken care of.&n; *&n; */

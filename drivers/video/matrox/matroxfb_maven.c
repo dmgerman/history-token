@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.51 2001/01/19&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
@@ -16,6 +16,10 @@ DECL|macro|MODE_TV
 mdefine_line|#define MODE_TV(x)&t;(((x) == MODE_PAL) || ((x) == MODE_NTSC))
 DECL|macro|MODE_MONITOR
 mdefine_line|#define MODE_MONITOR&t;MATROXFB_OUTPUT_MODE_MONITOR
+DECL|macro|MGATVO_B
+mdefine_line|#define MGATVO_B&t;1
+DECL|macro|MGATVO_C
+mdefine_line|#define MGATVO_C&t;2
 DECL|struct|maven_data
 r_struct
 id|maven_data
@@ -35,6 +39,10 @@ suffix:semicolon
 DECL|member|mode
 r_int
 id|mode
+suffix:semicolon
+DECL|member|version
+r_int
+id|version
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3151,6 +3159,31 @@ op_rshift
 l_int|8
 suffix:semicolon
 multiline_comment|/* something end... [A6]+1..[A8] */
+r_if
+c_cond
+(paren
+id|md-&gt;version
+op_eq
+id|MGATVO_B
+)paren
+(brace
+id|m-&gt;regs
+(braket
+l_int|0xA4
+)braket
+op_assign
+l_int|0x04
+suffix:semicolon
+id|m-&gt;regs
+(braket
+l_int|0xA5
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+)brace
+r_else
+(brace
 id|m-&gt;regs
 (braket
 l_int|0xA4
@@ -3165,6 +3198,7 @@ l_int|0xA5
 op_assign
 l_int|0x00
 suffix:semicolon
+)brace
 multiline_comment|/* something start... 0..[A4]-1 */
 id|m-&gt;regs
 (braket
@@ -4343,13 +4377,12 @@ r_struct
 id|my_timming
 op_star
 id|mt
-comma
-r_struct
-id|matrox_hw_state
-op_star
-id|mr
 )paren
 (brace
+DECL|macro|mdinfo
+mdefine_line|#define mdinfo ((struct maven_data*)md)
+DECL|macro|minfo
+mdefine_line|#define minfo (mdinfo-&gt;primary_head)
 r_return
 id|maven_compute_timming
 c_func
@@ -4359,9 +4392,19 @@ comma
 id|mt
 comma
 op_amp
-id|mr-&gt;maven
+id|ACCESS_FBINFO
+c_func
+(paren
+id|hw
+)paren
+dot
+id|maven
 )paren
 suffix:semicolon
+DECL|macro|minfo
+macro_line|#undef minfo
+DECL|macro|mdinfo
+macro_line|#undef mdinfo
 )brace
 DECL|function|maven_out_program
 r_static
@@ -4372,14 +4415,12 @@ c_func
 r_void
 op_star
 id|md
-comma
-r_const
-r_struct
-id|matrox_hw_state
-op_star
-id|mr
 )paren
 (brace
+DECL|macro|mdinfo
+mdefine_line|#define mdinfo ((struct maven_data*)md)
+DECL|macro|minfo
+mdefine_line|#define minfo (mdinfo-&gt;primary_head)
 r_return
 id|maven_program_timming
 c_func
@@ -4387,9 +4428,19 @@ c_func
 id|md
 comma
 op_amp
-id|mr-&gt;maven
+id|ACCESS_FBINFO
+c_func
+(paren
+id|hw
+)paren
+dot
+id|maven
 )paren
 suffix:semicolon
+DECL|macro|minfo
+macro_line|#undef minfo
+DECL|macro|mdinfo
+macro_line|#undef mdinfo
 )brace
 DECL|function|maven_out_start
 r_static
@@ -4659,6 +4710,32 @@ id|output.all
 op_or_assign
 id|MATROXFB_OUTPUT_CONN_SECONDARY
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|maven_get_reg
+c_func
+(paren
+id|clnt
+comma
+l_int|0xB2
+)paren
+OL
+l_int|0x14
+)paren
+(brace
+id|md-&gt;version
+op_assign
+id|MGATVO_B
+suffix:semicolon
+)brace
+r_else
+(brace
+id|md-&gt;version
+op_assign
+id|MGATVO_C
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

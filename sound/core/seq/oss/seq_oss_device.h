@@ -3,6 +3,10 @@ macro_line|#ifndef __SEQ_OSS_DEVICE_H
 DECL|macro|__SEQ_OSS_DEVICE_H
 mdefine_line|#define __SEQ_OSS_DEVICE_H
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/seq_oss.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;

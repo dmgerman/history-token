@@ -314,9 +314,7 @@ DECL|macro|pte_mkold
 mdefine_line|#define pte_mkold(pte)&t;&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&gt;1UL) &amp; ~_PAGE_ACCESSED))
 multiline_comment|/* Permanent address of a page. */
 DECL|macro|__page_address
-mdefine_line|#define __page_address(page)&t;((page)-&gt;virtual)
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;({ __page_address(page); })
+mdefine_line|#define __page_address(page)&t;page_address(page)
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x) (mem_map+(((pte_val(x)&amp;_PAGE_PADDR)-phys_base)&gt;&gt;PAGE_SHIFT))
 multiline_comment|/* Be very careful when you change these three, they are delicate. */

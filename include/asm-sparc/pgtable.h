@@ -1083,9 +1083,6 @@ DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
-multiline_comment|/* Permanent address of a page. */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)  ((page)-&gt;virtual)
 id|BTFIXUPDEF_CALL
 c_func
 (paren

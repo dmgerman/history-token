@@ -3279,11 +3279,10 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:semicolon
-id|wake_up
+id|wake_up_page
 c_func
 (paren
-op_amp
-id|page-&gt;wait
+id|page
 )paren
 suffix:semicolon
 id|free_page
@@ -12004,11 +12003,10 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:semicolon
-id|wake_up
+id|wake_up_page
 c_func
 (paren
-op_amp
-id|page-&gt;wait
+id|page
 )paren
 suffix:semicolon
 id|free_page

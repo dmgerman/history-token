@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -2871,13 +2872,15 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
 id|rme96-&gt;pci-&gt;device
 op_ne
 id|PCI_DEVICE_ID_DIGI96_8_PAD_OR_PST
-op_logical_or
+op_logical_and
 id|rme96-&gt;pci-&gt;device
 op_ne
 id|PCI_DEVICE_ID_DIGI96_8_PRO
+)paren
 op_logical_or
 (paren
 id|rme96-&gt;pci-&gt;device
@@ -6091,7 +6094,7 @@ c_func
 id|rme96-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|rme96-&gt;res_port

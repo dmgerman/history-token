@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -189,6 +190,8 @@ c_func
 (paren
 id|snd_precise_ptr
 comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
@@ -7917,7 +7920,7 @@ c_func
 id|rme9652-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|rme9652-&gt;res_port
@@ -8182,6 +8185,8 @@ comma
 id|pb_bus
 )paren
 suffix:semicolon
+macro_line|#if 0 
+singleline_comment|// not all architectures have this macro
 id|rme9652-&gt;capture_buffer
 op_assign
 id|bus_to_virt
@@ -8198,6 +8203,20 @@ c_func
 id|pb_bus
 )paren
 suffix:semicolon
+macro_line|#else
+id|rme9652-&gt;capture_buffer
+op_add_assign
+id|cb_bus
+op_minus
+id|cb_addr
+suffix:semicolon
+id|rme9652-&gt;playback_buffer
+op_add_assign
+id|pb_bus
+op_minus
+id|pb_addr
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

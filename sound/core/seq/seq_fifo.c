@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;seq_fifo.h&quot;
 macro_line|#include &quot;seq_lock.h&quot;
 multiline_comment|/* FIFO */

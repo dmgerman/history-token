@@ -357,6 +357,16 @@ id|page
 suffix:semicolon
 )brace
 r_extern
+r_void
+id|wake_up_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|page
 op_star

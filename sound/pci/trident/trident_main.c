@@ -5,6 +5,8 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -14608,7 +14610,7 @@ c_func
 id|trident-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|trident-&gt;res_port
@@ -15779,9 +15781,6 @@ c_func
 id|trident_t
 op_star
 id|trident
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -15794,8 +15793,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -15882,9 +15879,6 @@ c_func
 id|trident_t
 op_star
 id|trident
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -15897,8 +15891,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -15999,8 +15991,6 @@ id|snd_trident_resume
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -16015,8 +16005,6 @@ id|snd_trident_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break

@@ -2,6 +2,8 @@ multiline_comment|/*&n; *   ALSA sequencer Priority Queue&n; *   Copyright (c) 1
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_prioq.h&quot;

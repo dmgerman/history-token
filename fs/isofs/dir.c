@@ -903,7 +903,11 @@ l_int|1
 (brace
 id|inode_number
 op_assign
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 suffix:semicolon
 r_if
 c_cond

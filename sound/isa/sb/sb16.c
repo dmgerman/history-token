@@ -2,6 +2,14 @@ multiline_comment|/*&n; *  Driver for SoundBlaster 16/AWE32/AWE64 soundcards&n; 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#ifndef LINUX_ISAPNP_H
+macro_line|#include &lt;linux/isapnp.h&gt;
+DECL|macro|isapnp_card
+mdefine_line|#define isapnp_card pci_bus
+DECL|macro|isapnp_dev
+mdefine_line|#define isapnp_dev pci_dev
+macro_line|#endif
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/sb16_csp.h&gt;
@@ -2192,7 +2200,7 @@ c_func
 id|acard-&gt;fm_res
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|acard-&gt;fm_res

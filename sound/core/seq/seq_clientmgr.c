@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -2186,6 +2187,14 @@ id|quoted
 op_assign
 l_int|0
 suffix:semicolon
+id|direct
+op_assign
+id|snd_seq_ev_is_direct
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
 id|dest
 op_assign
 id|get_event_dest_client
@@ -2249,14 +2258,6 @@ r_goto
 id|__skip
 suffix:semicolon
 )brace
-id|direct
-op_assign
-id|snd_seq_ev_is_direct
-c_func
-(paren
-id|event
-)paren
-suffix:semicolon
 multiline_comment|/* expand the quoted event */
 r_if
 c_cond
@@ -2391,6 +2392,9 @@ c_cond
 id|result
 OL
 l_int|0
+op_logical_and
+op_logical_neg
+id|direct
 )paren
 (brace
 r_if

@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Driver for Aztech Sound Galaxy cards&n; *  Copyright 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/ad1848.h&gt;

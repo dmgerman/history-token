@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -60,6 +61,7 @@ l_string|&quot;{MidiMan M Audio,Audiophile 24/96},&quot;
 l_string|&quot;{TerraTec,EWX 24/96},&quot;
 l_string|&quot;{TerraTec,EWS 88MT},&quot;
 l_string|&quot;{TerraTec,EWS 88D},&quot;
+l_string|&quot;{TerraTec,DMX 6Fire},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1712},&quot;
 l_string|&quot;{ICEnsemble,Generic Envy24}}&quot;
 )paren
@@ -240,6 +242,8 @@ c_func
 (paren
 id|snd_omni
 comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
@@ -21595,9 +21599,9 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0
@@ -21696,7 +21700,7 @@ c_func
 id|ice-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|ice-&gt;res_port
@@ -21715,7 +21719,7 @@ c_func
 id|ice-&gt;res_ddma_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|ice-&gt;res_ddma_port
@@ -21734,7 +21738,7 @@ c_func
 id|ice-&gt;res_dmapath_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|ice-&gt;res_dmapath_port
@@ -21753,7 +21757,7 @@ c_func
 id|ice-&gt;res_profi_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|ice-&gt;res_profi_port

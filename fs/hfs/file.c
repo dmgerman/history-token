@@ -920,11 +920,6 @@ id|hfs_u32
 id|count
 )paren
 (brace
-id|kdev_t
-id|dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 id|hfs_s32
 id|size
 comma

@@ -1232,7 +1232,11 @@ l_string|&quot;inode %lu, DT_DIR.&bslash;n&quot;
 comma
 id|filp-&gt;f_pos
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 )paren
 suffix:semicolon
 id|cb.ret_code
@@ -1248,7 +1252,11 @@ l_int|2
 comma
 id|filp-&gt;f_pos
 comma
-id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+id|parent_ino
+c_func
+(paren
+id|filp-&gt;f_dentry
+)paren
 comma
 id|DT_DIR
 )paren

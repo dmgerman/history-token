@@ -674,9 +674,6 @@ DECL|macro|pmd_present
 mdefine_line|#define&t;pmd_present(pmd)&t;((pmd_val(pmd) &amp; PAGE_MASK) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;do { pmd_val(*(pmdp)) = 0; } while (0)
-multiline_comment|/*&n; * Permanent address of a page.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x)-PPC_MEMSTART) &gt;&gt; PAGE_SHIFT))
 macro_line|#ifndef __ASSEMBLY__

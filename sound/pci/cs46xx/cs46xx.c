@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  The driver for the Cirrus Logic&squot;s Sound Fusion CS46XX based soundcards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n;  NOTES:&n;  - sometimes the sound is metallic and sibilant, unloading and &n;    reloading the module may solve this.&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/cs46xx.h&gt;
 DECL|macro|SNDRV_GET_ID
@@ -243,6 +244,8 @@ c_func
 (paren
 id|snd_external_amp
 comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
@@ -273,6 +276,8 @@ c_func
 (paren
 id|snd_thinkpad
 comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
@@ -691,8 +696,6 @@ id|snd_cs46xx_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -735,8 +738,6 @@ id|snd_cs46xx_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -778,8 +779,6 @@ id|snd_cs46xx_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -817,8 +816,6 @@ id|snd_cs46xx_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
