@@ -121,14 +121,15 @@ id|rq_next
 suffix:semicolon
 multiline_comment|/* free list */
 DECL|member|rq_received
-r_volatile
 r_int
-r_char
 id|rq_received
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* receive completed */
+DECL|member|rq_list
+r_struct
+id|list_head
+id|rq_list
+suffix:semicolon
 multiline_comment|/*&n;&t; * For authentication (e.g. auth_des)&n;&t; */
 DECL|member|rq_creddata
 id|u32
@@ -326,6 +327,11 @@ op_star
 id|snd_task
 suffix:semicolon
 multiline_comment|/* Task blocked in send */
+DECL|member|recv
+r_struct
+id|list_head
+id|recv
+suffix:semicolon
 DECL|member|old_data_ready
 r_void
 (paren
