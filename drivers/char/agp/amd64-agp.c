@@ -1607,7 +1607,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;No usable aperture found.&bslash;n&quot;
 )paren
@@ -1617,7 +1617,7 @@ multiline_comment|/* should port this to i386 */
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;Consider rebooting with iommu=memaper=2 to get a good aperture.&bslash;n&quot;
 )paren
@@ -1652,7 +1652,7 @@ id|MAX_HAMMER_GARTS
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;Too many northbridges for AGP&bslash;n&quot;
 )paren
