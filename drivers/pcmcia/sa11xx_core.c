@@ -39,6 +39,8 @@ id|SA1100_PCMCIA_MAX_SOCK
 suffix:semicolon
 DECL|macro|PCMCIA_SOCKET
 mdefine_line|#define PCMCIA_SOCKET(x)&t;(sa1100_pcmcia_socket + (x))
+DECL|macro|to_sa1100_socket
+mdefine_line|#define to_sa1100_socket(x)&t;container_of(x, struct sa1100_pcmcia_socket, socket)
 multiline_comment|/*&n; * sa1100_pcmcia_default_mecr_timing&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; * Calculate MECR clock wait states for given CPU clock&n; * speed and command wait state. This function can be over-&n; * written by a board specific version.&n; *&n; * The default is to simply calculate the BS values as specified in&n; * the INTEL SA1100 development manual&n; * &quot;Expansion Memory (PCMCIA) Configuration Register (MECR)&quot;&n; * that&squot;s section 10.2.5 in _my_ version of the manual ;)&n; */
 r_static
 r_int
@@ -651,8 +653,9 @@ r_int
 id|sa1100_pcmcia_sock_init
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 )paren
 (brace
@@ -661,7 +664,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -707,8 +710,9 @@ r_int
 id|sa1100_pcmcia_suspend
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 )paren
 (brace
@@ -717,7 +721,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1028,8 +1032,9 @@ DECL|function|sa1100_pcmcia_register_callback
 id|sa1100_pcmcia_register_callback
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_void
@@ -1055,7 +1060,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1114,8 +1119,9 @@ DECL|function|sa1100_pcmcia_inquire_socket
 id|sa1100_pcmcia_inquire_socket
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 id|socket_cap_t
@@ -1128,7 +1134,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1200,8 +1206,9 @@ DECL|function|sa1100_pcmcia_get_status
 id|sa1100_pcmcia_get_status
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_int
@@ -1215,7 +1222,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1245,8 +1252,9 @@ DECL|function|sa1100_pcmcia_get_socket
 id|sa1100_pcmcia_get_socket
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 id|socket_state_t
@@ -1259,7 +1267,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1293,8 +1301,9 @@ DECL|function|sa1100_pcmcia_set_socket
 id|sa1100_pcmcia_set_socket
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 id|socket_state_t
@@ -1307,7 +1316,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1497,8 +1506,9 @@ DECL|function|sa1100_pcmcia_set_io_map
 id|sa1100_pcmcia_set_io_map
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_struct
@@ -1512,7 +1522,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -1763,8 +1773,9 @@ DECL|function|sa1100_pcmcia_set_mem_map
 id|sa1100_pcmcia_set_mem_map
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_struct
@@ -1778,7 +1789,7 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
@@ -2561,8 +2572,9 @@ DECL|function|sa1100_pcmcia_proc_setup
 id|sa1100_pcmcia_proc_setup
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_struct
@@ -2612,7 +2624,7 @@ id|sa1100_pcmcia_proc_status
 suffix:semicolon
 id|entry-&gt;data
 op_assign
-id|PCMCIA_SOCKET
+id|to_sa1100_socket
 c_func
 (paren
 id|sock
