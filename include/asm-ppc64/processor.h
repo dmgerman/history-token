@@ -1015,6 +1015,8 @@ multiline_comment|/* set if process has used altivec */
 macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN 16
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
