@@ -529,7 +529,17 @@ mdefine_line|#define __NR_timer_delete&t;265
 DECL|macro|__NR_timer_create
 mdefine_line|#define __NR_timer_create&t;266
 multiline_comment|/* #define __NR_vserver&t;&t;267 Reserved for VSERVER */
-multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 267, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 267 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-266 range.&n; */
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;268
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;268
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;269
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;270
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;271
+multiline_comment|/* WARNING: You MAY NOT add syscall numbers larger than 271, since&n; *          all of the syscall tables in the Sparc kernel are&n; *          sized to have 272 entries (starting at zero).  Therefore&n; *          find a free slot in the 0-271 range.&n; */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x10&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;bcc 1f&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;mov %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &lt; -255 || __res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 DECL|macro|_syscall1

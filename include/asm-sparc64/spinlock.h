@@ -251,6 +251,15 @@ id|rwlock_t
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|__write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+)paren
+suffix:semicolon
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(p)&t;__read_lock(p)
 DECL|macro|_raw_read_unlock
@@ -259,6 +268,8 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(p)&t;__write_lock(p)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(p)&t;__write_unlock(p)
+DECL|macro|_raw_write_trylock
+mdefine_line|#define _raw_write_trylock(p)&t;__write_trylock(p)
 macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
