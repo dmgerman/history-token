@@ -62,35 +62,33 @@ mdefine_line|#define&t;PFM_REG_CONFIG&t;&t;(0x8&lt;&lt;4|PFM_REG_IMPL) /* config
 DECL|macro|PFM_REG_BUFFER
 mdefine_line|#define PFM_REG_BUFFER&t; &t;(0xc&lt;&lt;4|PFM_REG_IMPL) /* PMD used as buffer */
 DECL|macro|PMC_IS_LAST
-mdefine_line|#define PMC_IS_LAST(i)&t;(pmu_conf.pmc_desc[i].type &amp; PFM_REG_END)
+mdefine_line|#define PMC_IS_LAST(i)&t;(pmu_conf-&gt;pmc_desc[i].type &amp; PFM_REG_END)
 DECL|macro|PMD_IS_LAST
-mdefine_line|#define PMD_IS_LAST(i)&t;(pmu_conf.pmd_desc[i].type &amp; PFM_REG_END)
-DECL|macro|PFM_IS_DISABLED
-mdefine_line|#define PFM_IS_DISABLED() (pmu_conf.enabled == 0)
+mdefine_line|#define PMD_IS_LAST(i)&t;(pmu_conf-&gt;pmd_desc[i].type &amp; PFM_REG_END)
 DECL|macro|PMC_OVFL_NOTIFY
 mdefine_line|#define PMC_OVFL_NOTIFY(ctx, i)&t;((ctx)-&gt;ctx_pmds[i].flags &amp;  PFM_REGFL_OVFL_NOTIFY)
 multiline_comment|/* i assumed unsigned */
 DECL|macro|PMC_IS_IMPL
-mdefine_line|#define PMC_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMCS &amp;&amp; (pmu_conf.pmc_desc[i].type &amp; PFM_REG_IMPL))
+mdefine_line|#define PMC_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMCS &amp;&amp; (pmu_conf-&gt;pmc_desc[i].type &amp; PFM_REG_IMPL))
 DECL|macro|PMD_IS_IMPL
-mdefine_line|#define PMD_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMDS &amp;&amp; (pmu_conf.pmd_desc[i].type &amp; PFM_REG_IMPL))
+mdefine_line|#define PMD_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMDS &amp;&amp; (pmu_conf-&gt;pmd_desc[i].type &amp; PFM_REG_IMPL))
 multiline_comment|/* XXX: these assume that register i is implemented */
 DECL|macro|PMD_IS_COUNTING
-mdefine_line|#define PMD_IS_COUNTING(i) ((pmu_conf.pmd_desc[i].type &amp; PFM_REG_COUNTING) == PFM_REG_COUNTING)
+mdefine_line|#define PMD_IS_COUNTING(i) ((pmu_conf-&gt;pmd_desc[i].type &amp; PFM_REG_COUNTING) == PFM_REG_COUNTING)
 DECL|macro|PMC_IS_COUNTING
-mdefine_line|#define PMC_IS_COUNTING(i) ((pmu_conf.pmc_desc[i].type &amp; PFM_REG_COUNTING) == PFM_REG_COUNTING)
+mdefine_line|#define PMC_IS_COUNTING(i) ((pmu_conf-&gt;pmc_desc[i].type &amp; PFM_REG_COUNTING) == PFM_REG_COUNTING)
 DECL|macro|PMC_IS_MONITOR
-mdefine_line|#define PMC_IS_MONITOR(i)  ((pmu_conf.pmc_desc[i].type &amp; PFM_REG_MONITOR)  == PFM_REG_MONITOR)
+mdefine_line|#define PMC_IS_MONITOR(i)  ((pmu_conf-&gt;pmc_desc[i].type &amp; PFM_REG_MONITOR)  == PFM_REG_MONITOR)
 DECL|macro|PMC_IS_CONTROL
-mdefine_line|#define PMC_IS_CONTROL(i)  ((pmu_conf.pmc_desc[i].type &amp; PFM_REG_CONTROL)  == PFM_REG_CONTROL)
+mdefine_line|#define PMC_IS_CONTROL(i)  ((pmu_conf-&gt;pmc_desc[i].type &amp; PFM_REG_CONTROL)  == PFM_REG_CONTROL)
 DECL|macro|PMC_DFL_VAL
-mdefine_line|#define PMC_DFL_VAL(i)     pmu_conf.pmc_desc[i].default_value
+mdefine_line|#define PMC_DFL_VAL(i)     pmu_conf-&gt;pmc_desc[i].default_value
 DECL|macro|PMC_RSVD_MASK
-mdefine_line|#define PMC_RSVD_MASK(i)   pmu_conf.pmc_desc[i].reserved_mask
+mdefine_line|#define PMC_RSVD_MASK(i)   pmu_conf-&gt;pmc_desc[i].reserved_mask
 DECL|macro|PMD_PMD_DEP
-mdefine_line|#define PMD_PMD_DEP(i)&t;   pmu_conf.pmd_desc[i].dep_pmd[0]
+mdefine_line|#define PMD_PMD_DEP(i)&t;   pmu_conf-&gt;pmd_desc[i].dep_pmd[0]
 DECL|macro|PMC_PMD_DEP
-mdefine_line|#define PMC_PMD_DEP(i)&t;   pmu_conf.pmc_desc[i].dep_pmd[0]
+mdefine_line|#define PMC_PMD_DEP(i)&t;   pmu_conf-&gt;pmc_desc[i].dep_pmd[0]
 DECL|macro|PFM_NUM_IBRS
 mdefine_line|#define PFM_NUM_IBRS&t;  IA64_NUM_DBG_REGS
 DECL|macro|PFM_NUM_DBRS
@@ -126,6 +124,8 @@ DECL|macro|PFM_CPUINFO_SET
 mdefine_line|#define PFM_CPUINFO_SET(v)&t;pfm_get_cpu_var(pfm_syst_info) |= (v)
 DECL|macro|PFM_CPUINFO_GET
 mdefine_line|#define PFM_CPUINFO_GET()&t;pfm_get_cpu_var(pfm_syst_info)
+DECL|macro|RDEP
+mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
 multiline_comment|/*&n; * context protection macros&n; * in SMP:&n; * &t;- we need to protect against CPU concurrency (spin_lock)&n; * &t;- we need to protect against PMU overflow interrupts (local_irq_disable)&n; * in UP:&n; * &t;- we need to protect against PMU overflow interrupts (local_irq_disable)&n; *&n; * spin_lock_irqsave()/spin_lock_irqrestore():&n; * &t;in SMP: local_irq_disable + spin_lock&n; * &t;in UP : local_irq_disable&n; *&n; * spin_lock()/spin_lock():&n; * &t;in UP : removed automatically&n; * &t;in SMP: protect against context accesses from other CPU. interrupts&n; * &t;        are not masked. This is useful for the PMU interrupt handler&n; * &t;        because we know we will not get PMU concurrency in that code.&n; */
 DECL|macro|PROTECT_CTX
 mdefine_line|#define PROTECT_CTX(c, f) &bslash;&n;&t;do {  &bslash;&n;&t;&t;DPRINT((&quot;spinlock_irq_save ctx %p by [%d]&bslash;n&quot;, c, current-&gt;pid)); &bslash;&n;&t;&t;spin_lock_irqsave(&amp;(c)-&gt;ctx_lock, f); &bslash;&n;&t;&t;DPRINT((&quot;spinlocked ctx %p  by [%d]&bslash;n&quot;, c, current-&gt;pid)); &bslash;&n;&t;} while(0)
@@ -670,6 +670,38 @@ DECL|typedef|pfm_session_t
 id|pfm_session_t
 suffix:semicolon
 multiline_comment|/*&n; * information about a PMC or PMD.&n; * dep_pmd[]: a bitmask of dependent PMD registers&n; * dep_pmc[]: a bitmask of dependent PMC registers&n; */
+DECL|typedef|pfm_reg_check_t
+r_typedef
+r_int
+(paren
+op_star
+id|pfm_reg_check_t
+)paren
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+id|pfm_context_t
+op_star
+id|ctx
+comma
+r_int
+r_int
+id|cnum
+comma
+r_int
+r_int
+op_star
+id|val
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -695,66 +727,12 @@ id|reserved_mask
 suffix:semicolon
 multiline_comment|/* bitmask of reserved bits */
 DECL|member|read_check
-r_int
-(paren
-op_star
+id|pfm_reg_check_t
 id|read_check
-)paren
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_int
-r_int
-id|cnum
-comma
-r_int
-r_int
-op_star
-id|val
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
 suffix:semicolon
 DECL|member|write_check
-r_int
-(paren
-op_star
+id|pfm_reg_check_t
 id|write_check
-)paren
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_int
-r_int
-id|cnum
-comma
-r_int
-r_int
-op_star
-id|val
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
 suffix:semicolon
 DECL|member|dep_pmd
 r_int
@@ -778,14 +756,8 @@ id|pfm_reg_desc_t
 suffix:semicolon
 multiline_comment|/* assume cnum is a valid monitor */
 DECL|macro|PMC_PM
-mdefine_line|#define PMC_PM(cnum, val)&t;(((val) &gt;&gt; (pmu_conf.pmc_desc[cnum].pm_pos)) &amp; 0x1)
-DECL|macro|PMC_WR_FUNC
-mdefine_line|#define PMC_WR_FUNC(cnum)&t;(pmu_conf.pmc_desc[cnum].write_check)
-DECL|macro|PMD_WR_FUNC
-mdefine_line|#define PMD_WR_FUNC(cnum)&t;(pmu_conf.pmd_desc[cnum].write_check)
-DECL|macro|PMD_RD_FUNC
-mdefine_line|#define PMD_RD_FUNC(cnum)&t;(pmu_conf.pmd_desc[cnum].read_check)
-multiline_comment|/*&n; * This structure is initialized at boot time and contains&n; * a description of the PMU main characteristics.&n; */
+mdefine_line|#define PMC_PM(cnum, val)&t;(((val) &gt;&gt; (pmu_conf-&gt;pmc_desc[cnum].pm_pos)) &amp; 0x1)
+multiline_comment|/*&n; * This structure is initialized at boot time and contains&n; * a description of the PMU main characteristics.&n; *&n; * If the probe function is defined, detection is based&n; * on its return value: &n; * &t;- 0 means recognized PMU&n; * &t;- anything else means not supported&n; * When the probe function is not defined, then the pmu_family field&n; * is used and it must match the host CPU family such that:&n; * &t;- cpu-&gt;family &amp; config-&gt;pmu_family != 0&n; */
 r_typedef
 r_struct
 (brace
@@ -843,18 +815,18 @@ op_star
 id|pmu_name
 suffix:semicolon
 multiline_comment|/* PMU family name */
-DECL|member|enabled
-r_int
-r_int
-id|enabled
-suffix:semicolon
-multiline_comment|/* indicates if perfmon initialized properly */
 DECL|member|pmu_family
 r_int
 r_int
 id|pmu_family
 suffix:semicolon
 multiline_comment|/* cpuid family pattern used to identify pmu */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* pmu specific flags */
 DECL|member|num_ibrs
 r_int
 r_int
@@ -873,6 +845,17 @@ r_int
 id|num_counters
 suffix:semicolon
 multiline_comment|/* PMC/PMD counting pairs : computed at init time */
+DECL|member|probe
+r_int
+(paren
+op_star
+id|probe
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* customized probe routine */
 DECL|member|use_rr_dbregs
 r_int
 r_int
@@ -885,6 +868,9 @@ DECL|typedef|pmu_config_t
 )brace
 id|pmu_config_t
 suffix:semicolon
+multiline_comment|/*&n; * PMU specific flags&n; */
+DECL|macro|PFM_PMU_IRQ_RESEND
+mdefine_line|#define PFM_PMU_IRQ_RESEND&t;1&t;/* PMU needs explicit IRQ resend */
 multiline_comment|/*&n; * debug register related type definitions&n; */
 r_typedef
 r_struct
@@ -1204,6 +1190,12 @@ c_func
 (paren
 id|pfm_buffer_fmt_list
 )paren
+suffix:semicolon
+DECL|variable|pmu_conf
+r_static
+id|pmu_config_t
+op_star
+id|pmu_conf
 suffix:semicolon
 multiline_comment|/* sysctl() controls */
 DECL|variable|pfm_sysctl
@@ -1788,16 +1780,45 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the HP simulator must be first because&n; * CONFIG_IA64_HP_SIM is independent of CONFIG_MCKINLEY or CONFIG_ITANIUM&n; */
-macro_line|#if defined(CONFIG_IA64_HP_SIM)
+r_static
+r_int
+id|pfm_write_ibr_dbr
+c_func
+(paren
+r_int
+id|mode
+comma
+id|pfm_context_t
+op_star
+id|ctx
+comma
+r_void
+op_star
+id|arg
+comma
+r_int
+id|count
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#include &quot;perfmon_hpsim.h&quot;
-macro_line|#elif   defined(CONFIG_ITANIUM)
 macro_line|#include &quot;perfmon_itanium.h&quot;
-macro_line|#elif defined(CONFIG_MCKINLEY)
 macro_line|#include &quot;perfmon_mckinley.h&quot;
-macro_line|#else
 macro_line|#include &quot;perfmon_generic.h&quot;
-macro_line|#endif
+DECL|variable|pmu_confs
+r_static
+id|pmu_config_t
+op_star
+id|pmu_confs
+(braket
+)braket
+op_assign
+initialization_block
+suffix:semicolon
 r_static
 r_int
 id|pfm_end_notify_user
@@ -2140,7 +2161,7 @@ c_func
 id|i
 )paren
 op_amp
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 )paren
 suffix:semicolon
 )brace
@@ -2168,7 +2189,7 @@ r_int
 r_int
 id|ovfl_val
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 id|ctx-&gt;ctx_pmds
 (braket
@@ -2730,7 +2751,7 @@ id|task-&gt;pid
 suffix:semicolon
 id|ovfl_mask
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 multiline_comment|/*&n;&t; * monitoring can only be masked as a result of a valid&n;&t; * counter overflow. In UP, it means that the PMU still&n;&t; * has an owner. Note that the owner can be different&n;&t; * from the current task. However the PMU state belongs&n;&t; * to the owner.&n;&t; * In SMP, a valid overflow only happens when task is&n;&t; * current. Therefore if we come here, we know that&n;&t; * the PMU state belongs to the current task, therefore&n;&t; * we can access the live registers.&n;&t; *&n;&t; * So in both cases, the live register contains the owner&squot;s&n;&t; * state. We can ONLY touch the PMU registers and NOT the PSR.&n;&t; *&n;&t; * As a consequence to this call, the thread-&gt;pmds[] array&n;&t; * contains stale information which must be ignored&n;&t; * when context is reloaded AND monitoring is active (see&n;&t; * pfm_restart).&n;&t; */
 id|mask
@@ -2977,7 +2998,7 @@ id|ctx-&gt;ctx_fl_system
 suffix:semicolon
 id|ovfl_mask
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 r_if
 c_cond
@@ -3290,7 +3311,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_ibrs
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
 suffix:semicolon
 id|pfm_restore_dbrs
@@ -3298,7 +3319,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_dbrs
 comma
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 )paren
 suffix:semicolon
 )brace
@@ -3435,7 +3456,7 @@ id|val
 comma
 id|ovfl_val
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 r_for
 c_loop
@@ -3533,7 +3554,7 @@ r_int
 r_int
 id|ovfl_val
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 r_int
 r_int
@@ -8504,7 +8525,7 @@ id|ctx-&gt;ctx_all_pmcs
 l_int|0
 )braket
 op_assign
-id|pmu_conf.impl_pmcs
+id|pmu_conf-&gt;impl_pmcs
 (braket
 l_int|0
 )braket
@@ -8518,7 +8539,7 @@ id|ctx-&gt;ctx_all_pmds
 l_int|0
 )braket
 op_assign
-id|pmu_conf.impl_pmds
+id|pmu_conf-&gt;impl_pmds
 (braket
 l_int|0
 )braket
@@ -9959,6 +9980,8 @@ comma
 id|is_loaded
 comma
 id|is_system
+comma
+id|expert_mode
 suffix:semicolon
 r_int
 id|is_monitor
@@ -9972,6 +9995,9 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+id|pfm_reg_check_t
+id|wr_func
 suffix:semicolon
 DECL|macro|PFM_CHECK_PMC_PM
 mdefine_line|#define PFM_CHECK_PMC_PM(x, y, z) ((x)-&gt;ctx_fl_system ^ PMC_PM(y, z))
@@ -10000,7 +10026,7 @@ id|ctx-&gt;ctx_task
 suffix:semicolon
 id|impl_pmds
 op_assign
-id|pmu_conf.impl_pmds
+id|pmu_conf-&gt;impl_pmds
 (braket
 l_int|0
 )braket
@@ -10073,6 +10099,10 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+id|expert_mode
+op_assign
+id|pfm_sysctl.expert_mode
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -10145,7 +10175,7 @@ suffix:semicolon
 )brace
 id|pmc_type
 op_assign
-id|pmu_conf.pmc_desc
+id|pmu_conf-&gt;pmc_desc
 (braket
 id|cnum
 )braket
@@ -10157,7 +10187,7 @@ op_assign
 (paren
 id|value
 op_rshift
-id|pmu_conf.pmc_desc
+id|pmu_conf-&gt;pmc_desc
 (braket
 id|cnum
 )braket
@@ -10234,6 +10264,15 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+id|wr_func
+op_assign
+id|pmu_conf-&gt;pmc_desc
+(braket
+id|cnum
+)braket
+dot
+id|write_check
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the PMC is a monitor, then if the value is not the default:&n;&t;&t; * &t;- system-wide session: PMCx.pm=1 (privileged monitor)&n;&t;&t; * &t;- per-task           : PMCx.pm=0 (user monitor)&n;&t;&t; */
 r_if
 c_cond
@@ -10401,23 +10440,22 @@ multiline_comment|/*&n;&t;&t; * execute write checker, if any&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|pfm_sysctl.expert_mode
+id|likely
+c_func
+(paren
+id|expert_mode
 op_eq
 l_int|0
 op_logical_and
-id|PMC_WR_FUNC
-c_func
-(paren
-id|cnum
+id|wr_func
 )paren
 )paren
 (brace
 id|ret
 op_assign
-id|PMC_WR_FUNC
-c_func
 (paren
-id|cnum
+op_star
+id|wr_func
 )paren
 (paren
 id|task
@@ -10548,7 +10586,7 @@ c_func
 (paren
 id|ctx
 comma
-id|pmu_conf.pmc_desc
+id|pmu_conf-&gt;pmc_desc
 (braket
 id|cnum
 )braket
@@ -10789,12 +10827,17 @@ comma
 id|is_loaded
 comma
 id|is_system
+comma
+id|expert_mode
 suffix:semicolon
 r_int
 id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+id|pfm_reg_check_t
+id|wr_func
 suffix:semicolon
 id|state
 op_assign
@@ -10817,7 +10860,7 @@ id|ctx-&gt;ctx_fl_system
 suffix:semicolon
 id|ovfl_mask
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 id|task
 op_assign
@@ -10904,6 +10947,10 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+id|expert_mode
+op_assign
+id|pfm_sysctl.expert_mode
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -10963,18 +11010,27 @@ c_func
 id|cnum
 )paren
 suffix:semicolon
+id|wr_func
+op_assign
+id|pmu_conf-&gt;pmd_desc
+(braket
+id|cnum
+)braket
+dot
+id|write_check
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * execute write checker, if any&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|pfm_sysctl.expert_mode
+id|unlikely
+c_func
+(paren
+id|expert_mode
 op_eq
 l_int|0
 op_logical_and
-id|PMD_WR_FUNC
-c_func
-(paren
-id|cnum
+id|wr_func
 )paren
 )paren
 (brace
@@ -10986,10 +11042,9 @@ id|value
 suffix:semicolon
 id|ret
 op_assign
-id|PMD_WR_FUNC
-c_func
 (paren
-id|cnum
+op_star
+id|wr_func
 )paren
 (paren
 id|task
@@ -11418,12 +11473,17 @@ comma
 id|is_system
 comma
 id|is_counting
+comma
+id|expert_mode
 suffix:semicolon
 r_int
 id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+id|pfm_reg_check_t
+id|rd_func
 suffix:semicolon
 multiline_comment|/*&n;&t; * access is possible when loaded only for&n;&t; * self-monitoring tasks or in UP mode&n;&t; */
 id|state
@@ -11447,7 +11507,7 @@ id|ctx-&gt;ctx_fl_system
 suffix:semicolon
 id|ovfl_mask
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 id|task
 op_assign
@@ -11540,6 +11600,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|expert_mode
+op_assign
+id|pfm_sysctl.expert_mode
+suffix:semicolon
 id|DPRINT
 c_func
 (paren
@@ -11676,6 +11740,15 @@ suffix:colon
 l_int|0UL
 suffix:semicolon
 )brace
+id|rd_func
+op_assign
+id|pmu_conf-&gt;pmd_desc
+(braket
+id|cnum
+)braket
+dot
+id|read_check
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11699,15 +11772,11 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|pfm_sysctl.expert_mode
+id|expert_mode
 op_eq
 l_int|0
 op_logical_and
-id|PMD_RD_FUNC
-c_func
-(paren
-id|cnum
-)paren
+id|rd_func
 )paren
 )paren
 (brace
@@ -11719,10 +11788,9 @@ id|val
 suffix:semicolon
 id|ret
 op_assign
-id|PMD_RD_FUNC
-c_func
 (paren
-id|cnum
+op_star
+id|rd_func
 )paren
 (paren
 id|ctx-&gt;ctx_task
@@ -12024,7 +12092,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmu_conf.use_rr_dbregs
+id|pmu_conf-&gt;use_rr_dbregs
 op_eq
 l_int|0
 )paren
@@ -12137,7 +12205,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmu_conf.use_rr_dbregs
+id|pmu_conf-&gt;use_rr_dbregs
 op_eq
 l_int|0
 )paren
@@ -12877,7 +12945,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmu_conf.use_rr_dbregs
+id|pmu_conf-&gt;use_rr_dbregs
 op_eq
 l_int|0
 )paren
@@ -13104,7 +13172,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 suffix:semicolon
 id|i
 op_increment
@@ -13138,7 +13206,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 suffix:semicolon
 id|i
 op_increment
@@ -15039,7 +15107,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_ibrs
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
 suffix:semicolon
 id|pfm_restore_dbrs
@@ -15047,7 +15115,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_dbrs
 comma
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 )paren
 suffix:semicolon
 )brace
@@ -16292,10 +16360,9 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|PFM_IS_DISABLED
-c_func
-(paren
-)paren
+id|pmu_conf
+op_eq
+l_int|NULL
 )paren
 )paren
 r_return
@@ -17887,7 +17954,7 @@ id|PMU_FIRST_COUNTER
 suffix:semicolon
 id|ovfl_val
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 id|has_smpl
 op_assign
@@ -19180,7 +19247,7 @@ id|p
 comma
 l_string|&quot;model                     : %s&bslash;n&quot;
 comma
-id|pmu_conf.pmu_name
+id|pmu_conf-&gt;pmu_name
 )paren
 suffix:semicolon
 id|p
@@ -19230,7 +19297,19 @@ id|p
 comma
 l_string|&quot;ovfl_mask                 : 0x%lx&bslash;n&quot;
 comma
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;flags                     : 0x%lx&bslash;n&quot;
+comma
+id|pmu_conf-&gt;flags
 )paren
 suffix:semicolon
 r_for
@@ -20572,6 +20651,9 @@ id|psr
 comma
 id|psr_up
 suffix:semicolon
+r_int
+id|need_irq_resend
+suffix:semicolon
 id|ctx
 op_assign
 id|PFM_GET_CTX
@@ -20640,6 +20722,12 @@ id|pfm_get_psr
 c_func
 (paren
 )paren
+suffix:semicolon
+id|need_irq_resend
+op_assign
+id|pmu_conf-&gt;flags
+op_amp
+id|PFM_PMU_IRQ_RESEND
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -20728,7 +20816,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_ibrs
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
 suffix:semicolon
 id|pfm_restore_dbrs
@@ -20736,7 +20824,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_dbrs
 comma
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 )paren
 suffix:semicolon
 )brace
@@ -20880,8 +20968,12 @@ l_int|0
 op_assign
 l_int|0UL
 suffix:semicolon
-macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|need_irq_resend
+)paren
 id|hw_resend_irq
 c_func
 (paren
@@ -20890,7 +20982,6 @@ comma
 id|IA64_PERFMON_VECTOR
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pfm_stats
 (braket
 id|smp_processor_id
@@ -21013,6 +21104,9 @@ id|psr
 comma
 id|psr_up
 suffix:semicolon
+r_int
+id|need_irq_resend
+suffix:semicolon
 id|owner
 op_assign
 id|GET_PMU_OWNER
@@ -21072,7 +21166,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_ibrs
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
 suffix:semicolon
 id|pfm_restore_dbrs
@@ -21080,7 +21174,7 @@ c_func
 (paren
 id|ctx-&gt;ctx_dbrs
 comma
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 )paren
 suffix:semicolon
 )brace
@@ -21088,6 +21182,12 @@ multiline_comment|/*&n;&t; * retrieved saved psr.up&n;&t; */
 id|psr_up
 op_assign
 id|ctx-&gt;ctx_saved_psr_up
+suffix:semicolon
+id|need_irq_resend
+op_assign
+id|pmu_conf-&gt;flags
+op_amp
+id|PFM_PMU_IRQ_RESEND
 suffix:semicolon
 multiline_comment|/*&n;&t; * short path, our state is still there, just&n;&t; * need to restore psr and we go&n;&t; *&n;&t; * we do not touch either PMC nor PMD. the psr is not touched&n;&t; * by the overflow_handler. So we are safe w.r.t. to interrupt&n;&t; * concurrency even without interrupt masking.&n;&t; */
 r_if
@@ -21213,8 +21313,12 @@ l_int|0
 op_assign
 l_int|0UL
 suffix:semicolon
-macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|need_irq_resend
+)paren
 id|hw_resend_irq
 c_func
 (paren
@@ -21223,7 +21327,6 @@ comma
 id|IA64_PERFMON_VECTOR
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pfm_stats
 (braket
 id|smp_processor_id
@@ -21396,7 +21499,7 @@ suffix:semicolon
 )brace
 id|ovfl_val
 op_assign
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 suffix:semicolon
 multiline_comment|/*&n;&t; * we save all the used pmds&n;&t; * we take care of overflows for counting PMDs&n;&t; *&n;&t; * XXX: sampling situation is not taken into account here&n;&t; */
 id|mask2
@@ -21616,6 +21719,115 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|pfm_probe_pmu
+id|pfm_probe_pmu
+c_func
+(paren
+r_void
+)paren
+(brace
+id|pmu_config_t
+op_star
+op_star
+id|p
+suffix:semicolon
+r_int
+id|family
+suffix:semicolon
+id|family
+op_assign
+id|local_cpu_data-&gt;family
+suffix:semicolon
+id|p
+op_assign
+id|pmu_confs
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|p
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|p
+)paren
+op_member_access_from_pointer
+id|probe
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|p
+)paren
+op_member_access_from_pointer
+id|probe
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+r_goto
+id|found
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|p
+)paren
+op_member_access_from_pointer
+id|pmu_family
+op_eq
+id|family
+op_logical_or
+(paren
+op_star
+id|p
+)paren
+op_member_access_from_pointer
+id|pmu_family
+op_eq
+l_int|0xff
+)paren
+(brace
+r_goto
+id|found
+suffix:semicolon
+)brace
+id|p
+op_increment
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|found
+suffix:colon
+id|pmu_conf
+op_assign
+op_star
+id|p
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_int
 id|__init
 DECL|function|pfm_init
@@ -21645,22 +21857,22 @@ comma
 id|IA64_PERFMON_VECTOR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * PMU type sanity check&n;&t; * XXX: maybe better to implement autodetection (but then we have a larger kernel)&n;&t; */
 r_if
 c_cond
 (paren
-id|local_cpu_data-&gt;family
-op_ne
-id|pmu_conf.pmu_family
+id|pfm_probe_pmu
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;perfmon: disabled, kernel only supports %s PMU family&bslash;n&quot;
+l_string|&quot;perfmon: disabled, there is no support for processor family %d&bslash;n&quot;
 comma
-id|pmu_conf.pmu_name
+id|local_cpu_data-&gt;family
 )paren
 suffix:semicolon
 r_return
@@ -21705,7 +21917,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|pmu_conf.impl_pmcs
+id|pmu_conf-&gt;impl_pmcs
 (braket
 id|i
 op_rshift
@@ -21724,7 +21936,7 @@ id|n
 op_increment
 suffix:semicolon
 )brace
-id|pmu_conf.num_pmcs
+id|pmu_conf-&gt;num_pmcs
 op_assign
 id|n
 suffix:semicolon
@@ -21768,7 +21980,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|pmu_conf.impl_pmds
+id|pmu_conf-&gt;impl_pmds
 (braket
 id|i
 op_rshift
@@ -21799,11 +22011,11 @@ id|n_counters
 op_increment
 suffix:semicolon
 )brace
-id|pmu_conf.num_pmds
+id|pmu_conf-&gt;num_pmds
 op_assign
 id|n
 suffix:semicolon
-id|pmu_conf.num_counters
+id|pmu_conf-&gt;num_counters
 op_assign
 id|n_counters
 suffix:semicolon
@@ -21811,13 +22023,13 @@ multiline_comment|/*&n;&t; * sanity checks on the number of debug registers&n;&t
 r_if
 c_cond
 (paren
-id|pmu_conf.use_rr_dbregs
+id|pmu_conf-&gt;use_rr_dbregs
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 OG
 id|IA64_NUM_DBG_REGS
 )paren
@@ -21828,8 +22040,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;perfmon: unsupported number of code debug registers (%u)&bslash;n&quot;
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
+suffix:semicolon
+id|pmu_conf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -21839,7 +22055,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmu_conf.num_dbrs
+id|pmu_conf-&gt;num_dbrs
 OG
 id|IA64_NUM_DBG_REGS
 )paren
@@ -21850,8 +22066,12 @@ c_func
 id|KERN_INFO
 l_string|&quot;perfmon: unsupported number of data debug registers (%u)&bslash;n&quot;
 comma
-id|pmu_conf.num_ibrs
+id|pmu_conf-&gt;num_ibrs
 )paren
+suffix:semicolon
+id|pmu_conf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -21864,18 +22084,18 @@ c_func
 (paren
 l_string|&quot;perfmon: %s PMU detected, %u PMCs, %u PMDs, %u counters (%lu bits)&bslash;n&quot;
 comma
-id|pmu_conf.pmu_name
+id|pmu_conf-&gt;pmu_name
 comma
-id|pmu_conf.num_pmcs
+id|pmu_conf-&gt;num_pmcs
 comma
-id|pmu_conf.num_pmds
+id|pmu_conf-&gt;num_pmds
 comma
-id|pmu_conf.num_counters
+id|pmu_conf-&gt;num_counters
 comma
 id|ffz
 c_func
 (paren
-id|pmu_conf.ovfl_val
+id|pmu_conf-&gt;ovfl_val
 )paren
 )paren
 suffix:semicolon
@@ -21883,11 +22103,11 @@ multiline_comment|/* sanity check */
 r_if
 c_cond
 (paren
-id|pmu_conf.num_pmds
+id|pmu_conf-&gt;num_pmds
 op_ge
 id|IA64_NUM_PMD_REGS
 op_logical_or
-id|pmu_conf.num_pmcs
+id|pmu_conf-&gt;num_pmcs
 op_ge
 id|IA64_NUM_PMC_REGS
 )paren
@@ -21898,6 +22118,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;perfmon: not enough pmc/pmd, perfmon disabled&bslash;n&quot;
 )paren
+suffix:semicolon
+id|pmu_conf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -21934,6 +22158,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;perfmon: cannot create /proc entry, perfmon disabled&bslash;n&quot;
 )paren
+suffix:semicolon
+id|pmu_conf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -21997,11 +22225,6 @@ op_complement
 l_int|0UL
 suffix:semicolon
 )brace
-multiline_comment|/* we are all set */
-id|pmu_conf.enabled
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -22021,9 +22244,6 @@ id|pfm_init_percpu
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/*&n;&t; * make sure no measurement is active&n;&t; * (may inherit programmed PMCs from EFI).&n;&t; */
 id|pfm_clear_psr_pp
 c_func
@@ -22073,93 +22293,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * we first initialize the PMU to a stable state.&n;&t; * the values may have been changed from their power-up&n;&t; * values by software executed before the kernel took over.&n;&t; *&n;&t; * At this point, pmu_conf has not yet been initialized&n;&t; *&n;&t; * On McKinley, this code is ineffective until PMC4 is initialized&n;&t; * but that&squot;s all right because we take care of pmc0 later.&n;&t; *&n;&t; * XXX: potential problems with pmc1.&n;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-id|PMC_IS_LAST
-c_func
-(paren
-id|i
-)paren
-op_eq
-l_int|0
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|PMC_IS_IMPL
-c_func
-(paren
-id|i
-)paren
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-id|i
-comma
-id|PMC_DFL_VAL
-c_func
-(paren
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|PMD_IS_LAST
-c_func
-(paren
-id|i
-)paren
-op_eq
-l_int|0
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|PMD_IS_IMPL
-c_func
-(paren
-id|i
-)paren
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|ia64_set_pmd
-c_func
-(paren
-id|i
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * used for debug purposes only&n; */
 r_void
