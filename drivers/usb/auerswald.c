@@ -22,7 +22,7 @@ macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------*/
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.9.9&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.9.11&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Wolfgang M&#xfffd;es &lt;wmues@nexgo.de&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -278,6 +278,29 @@ id|auerchain_t
 comma
 op_star
 id|pauerchain_t
+suffix:semicolon
+multiline_comment|/* urb blocking completion helper struct */
+r_typedef
+r_struct
+(brace
+DECL|member|wqh
+id|wait_queue_head_t
+id|wqh
+suffix:semicolon
+multiline_comment|/* wait for completion */
+DECL|member|done
+r_int
+r_int
+id|done
+suffix:semicolon
+multiline_comment|/* completion flag */
+DECL|typedef|auerchain_chs_t
+DECL|typedef|pauerchain_chs_t
+)brace
+id|auerchain_chs_t
+comma
+op_star
+id|pauerchain_chs_t
 suffix:semicolon
 multiline_comment|/* ...................................................................*/
 multiline_comment|/* buffer element */
@@ -830,6 +853,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* check for submit errors */
@@ -1105,6 +1130,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* check for submit errors */
@@ -1797,19 +1824,27 @@ op_star
 id|urb
 )paren
 (brace
-id|wait_queue_head_t
-op_star
-id|wakeup
+id|pauerchain_chs_t
+id|pchs
 op_assign
 (paren
-id|wait_queue_head_t
-op_star
+id|pauerchain_chs_t
 )paren
 id|urb-&gt;context
 suffix:semicolon
+id|pchs-&gt;done
+op_assign
+l_int|1
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|wake_up
 (paren
-id|wakeup
+op_amp
+id|pchs-&gt;wqh
 )paren
 suffix:semicolon
 )brace
@@ -1842,10 +1877,8 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|DECLARE_WAIT_QUEUE_HEAD
-(paren
-id|wqh
-)paren
+id|auerchain_chs_t
+id|chs
 suffix:semicolon
 r_int
 id|status
@@ -1858,17 +1891,22 @@ suffix:semicolon
 id|init_waitqueue_head
 (paren
 op_amp
-id|wqh
+id|chs.wqh
 )paren
 suffix:semicolon
-id|current-&gt;state
+id|chs.done
 op_assign
-id|TASK_INTERRUPTIBLE
+l_int|0
+suffix:semicolon
+id|set_current_state
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 (paren
 op_amp
-id|wqh
+id|chs.wqh
 comma
 op_amp
 id|wait
@@ -1877,7 +1915,7 @@ suffix:semicolon
 id|urb-&gt;context
 op_assign
 op_amp
-id|wqh
+id|chs
 suffix:semicolon
 id|status
 op_assign
@@ -1895,14 +1933,15 @@ id|status
 )paren
 (brace
 multiline_comment|/* something went wrong */
-id|current-&gt;state
-op_assign
+id|set_current_state
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 (paren
 op_amp
-id|wqh
+id|chs.wqh
 comma
 op_amp
 id|wait
@@ -1912,27 +1951,15 @@ r_return
 id|status
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
-)paren
-(brace
 r_while
 c_loop
 (paren
 id|timeout
 op_logical_and
-id|urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
+op_logical_neg
+id|chs.done
 )paren
-id|status
-op_assign
+(brace
 id|timeout
 op_assign
 id|schedule_timeout
@@ -1940,20 +1967,27 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
-)brace
-r_else
-id|status
-op_assign
-l_int|1
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|set_current_state
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 (paren
 op_amp
-id|wqh
+id|chs.wqh
 comma
 op_amp
 id|wait
@@ -1963,10 +1997,34 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|status
+id|timeout
+op_logical_and
+op_logical_neg
+id|chs.done
 )paren
 (brace
-multiline_comment|/* timeout */
+r_if
+c_cond
+(paren
+id|urb-&gt;status
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+multiline_comment|/* No callback?!! */
+id|dbg
+(paren
+l_string|&quot;auerchain_start_wait_urb: raced timeout&quot;
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|urb-&gt;status
+suffix:semicolon
+)brace
+r_else
+(brace
 id|dbg
 (paren
 l_string|&quot;auerchain_start_wait_urb: timeout&quot;
@@ -1985,6 +2043,7 @@ op_assign
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
+)brace
 )brace
 r_else
 id|status
@@ -3123,6 +3182,13 @@ id|auerbuf_releasebuf
 id|bp
 )paren
 suffix:semicolon
+multiline_comment|/* Wake up all processes waiting for a buffer */
+id|wake_up
+(paren
+op_amp
+id|cp-&gt;bufferwait
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3883,6 +3949,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|cp-&gt;inturbp
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|intoend
@@ -4747,9 +4815,6 @@ op_amp
 id|dev_table_mutex
 )paren
 suffix:semicolon
-multiline_comment|/* prevent module unloading */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* we have access to the device. Now lets allocate memory */
 id|ccp
 op_assign
@@ -4913,8 +4978,6 @@ id|auerchar_delete
 (paren
 id|ccp
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|ret
@@ -5573,6 +5636,9 @@ id|bp
 op_assign
 l_int|NULL
 suffix:semicolon
+id|wait_queue_t
+id|wait
+suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;auerchar_read&quot;
@@ -5807,6 +5873,29 @@ suffix:semicolon
 multiline_comment|/* a read buffer is not available. Try to get the next data block. */
 id|doreadlist
 suffix:colon
+multiline_comment|/* Preparing for sleep */
+id|init_waitqueue_entry
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|set_current_state
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|add_wait_queue
+(paren
+op_amp
+id|ccp-&gt;readwait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 id|bp
 op_assign
 l_int|NULL
@@ -5879,6 +5968,20 @@ op_assign
 id|AUH_SIZE
 suffix:semicolon
 multiline_comment|/* for headerbyte */
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+(paren
+op_amp
+id|ccp-&gt;readwait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_goto
 id|doreadbuf
 suffix:semicolon
@@ -5896,6 +5999,20 @@ id|O_NONBLOCK
 id|dbg
 (paren
 l_string|&quot;No read buffer available, returning -EAGAIN&quot;
+)paren
+suffix:semicolon
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+(paren
+op_amp
+id|ccp-&gt;readwait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|up
@@ -5924,10 +6041,18 @@ id|ccp-&gt;mutex
 )paren
 suffix:semicolon
 multiline_comment|/* allow other operations while we wait */
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
 (paren
 op_amp
 id|ccp-&gt;readwait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_if
@@ -6047,6 +6172,9 @@ id|flags
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+id|wait_queue_t
+id|wait
 suffix:semicolon
 id|dbg
 (paren
@@ -6189,6 +6317,29 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+multiline_comment|/* Prepare for sleep */
+id|init_waitqueue_entry
+(paren
+op_amp
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+id|set_current_state
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|add_wait_queue
+(paren
+op_amp
+id|cp-&gt;bufferwait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 multiline_comment|/* Try to get a buffer from the device pool.&n;&t;   We can&squot;t use a buffer from ccp-&gt;bufctl because the write&n;&t;   command will last beond a release() */
 id|bp
 op_assign
@@ -6275,16 +6426,38 @@ op_amp
 id|O_NONBLOCK
 )paren
 (brace
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+(paren
+op_amp
+id|cp-&gt;bufferwait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/* BLOCKING: wait */
-id|interruptible_sleep_on
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
 (paren
 op_amp
 id|cp-&gt;bufferwait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_if
@@ -6304,6 +6477,23 @@ suffix:semicolon
 )brace
 r_goto
 id|write_again
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_current_state
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|remove_wait_queue
+(paren
+op_amp
+id|cp-&gt;bufferwait
+comma
+op_amp
+id|wait
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* protect against too big write requests */
@@ -6342,6 +6532,13 @@ suffix:semicolon
 id|auerbuf_releasebuf
 (paren
 id|bp
+)paren
+suffix:semicolon
+multiline_comment|/* Wake up all processes waiting for a buffer */
+id|wake_up
+(paren
+op_amp
+id|cp-&gt;bufferwait
 )paren
 suffix:semicolon
 id|up
@@ -6479,6 +6676,13 @@ suffix:semicolon
 id|auerbuf_releasebuf
 (paren
 id|bp
+)paren
+suffix:semicolon
+multiline_comment|/* Wake up all processes waiting for a buffer */
+id|wake_up
+(paren
+op_amp
+id|cp-&gt;bufferwait
 )paren
 suffix:semicolon
 id|up
@@ -6659,9 +6863,6 @@ id|auerchar_delete
 (paren
 id|ccp
 )paren
-suffix:semicolon
-multiline_comment|/* release the module */
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
