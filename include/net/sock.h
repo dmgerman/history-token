@@ -1029,6 +1029,23 @@ suffix:semicolon
 multiline_comment|/* The per-socket spinlock must be held here. */
 DECL|macro|sk_add_backlog
 mdefine_line|#define sk_add_backlog(__sk, __skb)&t;&t;&t;&t;&bslash;&n;do {&t;if (!(__sk)-&gt;sk_backlog.tail) {&t;&t;&t;&t;&bslash;&n;&t;&t;(__sk)-&gt;sk_backlog.head =&t;&t;&t;&bslash;&n;&t;&t;     (__sk)-&gt;sk_backlog.tail = (__skb);&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((__sk)-&gt;sk_backlog.tail)-&gt;next = (__skb);&t;&bslash;&n;&t;&t;(__sk)-&gt;sk_backlog.tail = (__skb);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__skb)-&gt;next = NULL;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+DECL|macro|sk_wait_event
+mdefine_line|#define sk_wait_event(__sk, __timeo, __condition)&t;&t;&bslash;&n;({&t;int rc;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;release_sock(__sk);&t;&t;&t;&t;&t;&bslash;&n;&t;rc = __condition;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!rc) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(__timeo) = schedule_timeout(*(__timeo));&t;&bslash;&n;&t;&t;rc = __condition;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;lock_sock(__sk);&t;&t;&t;&t;&t;&bslash;&n;&t;rc;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+r_extern
+r_int
+id|sk_wait_data
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+op_star
+id|timeo
+)paren
+suffix:semicolon
 multiline_comment|/* IP protocol blocks we attach to sockets.&n; * socket layer -&gt; transport layer interface&n; * transport -&gt; network interface is defined by struct inet_proto&n; */
 DECL|struct|proto
 r_struct
