@@ -2407,6 +2407,14 @@ id|us-&gt;irq_urb
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Wait for the aborted command to finish */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|us-&gt;notify
+)paren
+suffix:semicolon
 multiline_comment|/* Reacquire the lock */
 id|scsi_lock
 c_func
