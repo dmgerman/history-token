@@ -607,7 +607,11 @@ id|pcips2_close
 suffix:semicolon
 id|ps2if-&gt;io.name
 op_assign
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|ps2if-&gt;io.phys
 op_assign
