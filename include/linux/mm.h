@@ -294,13 +294,24 @@ id|list_head
 id|lru
 suffix:semicolon
 multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by pagemap_lru_lock !! */
-DECL|member|pte_chain
+r_union
+(brace
+DECL|member|chain
 r_struct
 id|pte_chain
 op_star
-id|pte_chain
+id|chain
 suffix:semicolon
 multiline_comment|/* Reverse pte mapping pointer.&n;&t;&t;&t;&t;&t; * protected by PG_chainlock */
+DECL|member|direct
+id|pte_t
+op_star
+id|direct
+suffix:semicolon
+DECL|member|pte
+)brace
+id|pte
+suffix:semicolon
 DECL|member|private
 r_int
 r_int

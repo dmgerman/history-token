@@ -310,7 +310,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page-&gt;pte_chain
+id|page-&gt;pte.chain
 op_ne
 l_int|NULL
 )paren

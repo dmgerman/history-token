@@ -74,7 +74,7 @@ multiline_comment|/* Page is in somebody&squot;s page tables. */
 r_if
 c_cond
 (paren
-id|page-&gt;pte_chain
+id|page-&gt;pte.chain
 )paren
 r_return
 l_int|1
@@ -485,7 +485,7 @@ multiline_comment|/*&n;&t;&t; * Anonymous process memory without backing store. 
 r_if
 c_cond
 (paren
-id|page-&gt;pte_chain
+id|page-&gt;pte.chain
 op_logical_and
 op_logical_neg
 id|page-&gt;mapping
@@ -580,7 +580,7 @@ multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one o
 r_if
 c_cond
 (paren
-id|page-&gt;pte_chain
+id|page-&gt;pte.chain
 )paren
 (brace
 r_switch
@@ -1135,7 +1135,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;pte_chain
+id|page-&gt;pte.chain
 op_logical_and
 id|page_referenced
 c_func

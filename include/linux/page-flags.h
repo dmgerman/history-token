@@ -33,9 +33,11 @@ mdefine_line|#define PG_private&t;&t;12&t;/* Has something at -&gt;private */
 DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
-mdefine_line|#define PG_nosave&t;&t;15&t;/* Used for system suspend/resume */
+mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
 DECL|macro|PG_chainlock
-mdefine_line|#define PG_chainlock&t;&t;16&t;/* lock bit for -&gt;pte_chain */
+mdefine_line|#define PG_chainlock&t;&t;15&t;/* lock bit for -&gt;pte_chain */
+DECL|macro|PG_direct
+mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.&n; */
 DECL|struct|page_state
 r_extern
@@ -195,6 +197,16 @@ DECL|macro|ClearPageNosave
 mdefine_line|#define ClearPageNosave(page)&t;&t;clear_bit(PG_nosave, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageNosave
 mdefine_line|#define TestClearPageNosave(page)&t;test_and_clear_bit(PG_nosave, &amp;(page)-&gt;flags)
+DECL|macro|PageDirect
+mdefine_line|#define PageDirect(page)&t;test_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|SetPageDirect
+mdefine_line|#define SetPageDirect(page)&t;set_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageDirect
+mdefine_line|#define TestSetPageDirect(page)&t;test_and_set_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageDirect
+mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageDirect
+mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * inlines for acquisition and release of PG_chainlock&n; */
 DECL|function|pte_chain_lock
 r_static
