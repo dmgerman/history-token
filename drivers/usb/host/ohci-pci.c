@@ -1015,6 +1015,19 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
+multiline_comment|/* Check for a pending done list */
+r_if
+c_cond
+(paren
+id|ohci-&gt;hcca-&gt;done_head
+)paren
+id|dl_done_list
+(paren
+id|ohci
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 (paren
 op_amp
@@ -1041,24 +1054,6 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Check for a pending done list */
-r_if
-c_cond
-(paren
-id|ohci-&gt;hcca-&gt;done_head
-)paren
-id|dl_done_list
-(paren
-id|ohci
-comma
-id|dl_reverse_done_list
-(paren
-id|ohci
-)paren
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|writel
 (paren
 id|OHCI_INTR_WDH
