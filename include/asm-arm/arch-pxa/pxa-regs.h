@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/pxa-regs.h&n; *&n; *  Author:&t;Nicolas Pitre&n; *  Created:&t;Jun 15, 2001&n; *  Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#ifndef __PXA_REGS_H
+DECL|macro|__PXA_REGS_H
+mdefine_line|#define __PXA_REGS_H
 macro_line|#include &lt;linux/config.h&gt;
 singleline_comment|// FIXME hack so that SA-1111.h will work [cb]
 macro_line|#ifndef __ASSEMBLY__
@@ -150,6 +153,22 @@ DECL|macro|DCSR_NODESC
 mdefine_line|#define DCSR_NODESC&t;(1 &lt;&lt; 30)&t;/* No-Descriptor Fetch (read / write) */
 DECL|macro|DCSR_STOPIRQEN
 mdefine_line|#define DCSR_STOPIRQEN&t;(1 &lt;&lt; 29)&t;/* Stop Interrupt Enable (read / write) */
+macro_line|#ifdef CONFIG_PXA27x
+DECL|macro|DCSR_EORIRQEN
+mdefine_line|#define DCSR_EORIRQEN&t;(1 &lt;&lt; 28)       /* End of Receive Interrupt Enable (R/W) */
+DECL|macro|DCSR_EORJMPEN
+mdefine_line|#define DCSR_EORJMPEN&t;(1 &lt;&lt; 27)       /* Jump to next descriptor on EOR */
+DECL|macro|DCSR_EORSTOPEN
+mdefine_line|#define DCSR_EORSTOPEN&t;(1 &lt;&lt; 26)       /* STOP on an EOR */
+DECL|macro|DCSR_SETCMPST
+mdefine_line|#define DCSR_SETCMPST&t;(1 &lt;&lt; 25)       /* Set Descriptor Compare Status */
+DECL|macro|DCSR_CLRCMPST
+mdefine_line|#define DCSR_CLRCMPST&t;(1 &lt;&lt; 24)       /* Clear Descriptor Compare Status */
+DECL|macro|DCSR_CMPST
+mdefine_line|#define DCSR_CMPST&t;(1 &lt;&lt; 10)       /* The Descriptor Compare Status */
+DECL|macro|DCSR_ENRINTR
+mdefine_line|#define DCSR_ENRINTR&t;(1 &lt;&lt; 9)        /* The end of Receive */
+macro_line|#endif
 DECL|macro|DCSR_REQPEND
 mdefine_line|#define DCSR_REQPEND&t;(1 &lt;&lt; 8)&t;/* Request Pending (read-only) */
 DECL|macro|DCSR_STOPSTATE
@@ -162,6 +181,8 @@ DECL|macro|DCSR_BUSERR
 mdefine_line|#define DCSR_BUSERR&t;(1 &lt;&lt; 0)&t;/* Bus Error Interrupt (read / write) */
 DECL|macro|DINT
 mdefine_line|#define DINT&t;&t;__REG(0x400000f0)  /* DMA Interrupt Register */
+DECL|macro|DRCMR
+mdefine_line|#define DRCMR(n)&t;__REG2(0x40000100, (n)&lt;&lt;2)
 DECL|macro|DRCMR0
 mdefine_line|#define DRCMR0&t;&t;__REG(0x40000100)  /* Request to Channel Map Register for DREQ 0 */
 DECL|macro|DRCMR1
@@ -242,6 +263,12 @@ DECL|macro|DRCMR38
 mdefine_line|#define DRCMR38&t;&t;__REG(0x40000198)  /* Request to Channel Map Register for USB endpoint 14 Request */
 DECL|macro|DRCMR39
 mdefine_line|#define DRCMR39&t;&t;__REG(0x4000019C)  /* Reserved */
+DECL|macro|DRCMR68
+mdefine_line|#define DRCMR68&t;&t;__REG(0x40001110)  /* Request to Channel Map Register for Camera FIFO 0 Request */
+DECL|macro|DRCMR69
+mdefine_line|#define DRCMR69&t;&t;__REG(0x40001114)  /* Request to Channel Map Register for Camera FIFO 1 Request */
+DECL|macro|DRCMR70
+mdefine_line|#define DRCMR70&t;&t;__REG(0x40001118)  /* Request to Channel Map Register for Camera FIFO 2 Request */
 DECL|macro|DRCMRRXSADR
 mdefine_line|#define DRCMRRXSADR&t;DRCMR2
 DECL|macro|DRCMRTXSADR
@@ -280,10 +307,12 @@ DECL|macro|DRCMRRXMMC
 mdefine_line|#define DRCMRRXMMC&t;DRCMR21
 DECL|macro|DRCMRTXMMC
 mdefine_line|#define DRCMRTXMMC&t;DRCMR22
+DECL|macro|DRCMRUDC
+mdefine_line|#define DRCMRUDC(x)&t;DRCMR((x) + 24)
 DECL|macro|DRCMR_MAPVLD
 mdefine_line|#define DRCMR_MAPVLD&t;(1 &lt;&lt; 7)&t;/* Map Valid (read / write) */
 DECL|macro|DRCMR_CHLNUM
-mdefine_line|#define DRCMR_CHLNUM&t;0x0f&t;&t;/* mask for Channel Number (read / write) */
+mdefine_line|#define DRCMR_CHLNUM&t;0x1f&t;&t;/* mask for Channel Number (read / write) */
 DECL|macro|DDADR0
 mdefine_line|#define DDADR0&t;&t;__REG(0x40000200)  /* DMA Descriptor Address Register Channel 0 */
 DECL|macro|DSADR0
@@ -673,6 +702,16 @@ DECL|macro|ISR
 mdefine_line|#define ISR&t;&t;__REG(0x40301698)  /* I2C Status Register - ISR */
 DECL|macro|ISAR
 mdefine_line|#define ISAR&t;&t;__REG(0x403016A0)  /* I2C Slave Address Register - ISAR */
+DECL|macro|PWRIBMR
+mdefine_line|#define PWRIBMR    __REG(0x40f00180)  /* Power I2C Bus Monitor Register-IBMR */
+DECL|macro|PWRIDBR
+mdefine_line|#define PWRIDBR    __REG(0x40f00188)  /* Power I2C Data Buffer Register-IDBR */
+DECL|macro|PWRICR
+mdefine_line|#define PWRICR __REG(0x40f00190)  /* Power I2C Control Register - ICR */
+DECL|macro|PWRISR
+mdefine_line|#define PWRISR __REG(0x40f00198)  /* Power I2C Status Register - ISR */
+DECL|macro|PWRISAR
+mdefine_line|#define PWRISAR    __REG(0x40f001A0)  /*Power I2C Slave Address Register-ISAR */
 DECL|macro|ICR_START
 mdefine_line|#define ICR_START&t;(1 &lt;&lt; 0)&t;   /* start bit */
 DECL|macro|ICR_STOP
@@ -858,7 +897,8 @@ DECL|macro|PMC_REG_BASE
 mdefine_line|#define PMC_REG_BASE&t;__REG(0x40500400)  /* Primary Modem Codec */
 DECL|macro|SMC_REG_BASE
 mdefine_line|#define SMC_REG_BASE&t;__REG(0x40500500)  /* Secondary Modem Codec */
-multiline_comment|/*&n; * USB Device Controller&n; */
+multiline_comment|/*&n; * USB Device Controller&n; * PXA25x and PXA27x USB device controller registers are different.&n; */
+macro_line|#if defined(CONFIG_PXA25x)
 DECL|macro|UDC_RES1
 mdefine_line|#define UDC_RES1&t;__REG(0x40600004)  /* UDC Undocumented - Reserved1 */
 DECL|macro|UDC_RES2
@@ -1120,7 +1160,403 @@ DECL|macro|USIR1_IR14
 mdefine_line|#define USIR1_IR14&t;(1 &lt;&lt; 6)&t;/* Interrup request ep 14 */
 DECL|macro|USIR1_IR15
 mdefine_line|#define USIR1_IR15&t;(1 &lt;&lt; 7)&t;/* Interrup request ep 15 */
+macro_line|#elif defined(CONFIG_PXA27x)
+DECL|macro|UDCCR
+mdefine_line|#define UDCCR           __REG(0x40600000) /* UDC Control Register */
+DECL|macro|UDCCR_OEN
+mdefine_line|#define UDCCR_OEN&t;(1 &lt;&lt; 31)&t;/* On-the-Go Enable */
+DECL|macro|UDCCR_AALTHNP
+mdefine_line|#define UDCCR_AALTHNP&t;(1 &lt;&lt; 30)&t;/* A-device Alternate Host Negotiation&n;&t;&t;&t;&t;&t;   Protocol Port Support */
+DECL|macro|UDCCR_AHNP
+mdefine_line|#define UDCCR_AHNP&t;(1 &lt;&lt; 29)&t;/* A-device Host Negotiation Protocol&n;&t;&t;&t;&t;&t;   Support */
+DECL|macro|UDCCR_BHNP
+mdefine_line|#define UDCCR_BHNP&t;(1 &lt;&lt; 28)&t;/* B-device Host Negotiation Protocol&n;&t;&t;&t;&t;&t;   Enable */
+DECL|macro|UDCCR_DWRE
+mdefine_line|#define UDCCR_DWRE&t;(1 &lt;&lt; 16)&t;/* Device Remote Wake-up Enable */
+DECL|macro|UDCCR_ACN
+mdefine_line|#define UDCCR_ACN&t;(0x03 &lt;&lt; 11)&t;/* Active UDC configuration Number */
+DECL|macro|UDCCR_ACN_S
+mdefine_line|#define UDCCR_ACN_S&t;11
+DECL|macro|UDCCR_AIN
+mdefine_line|#define UDCCR_AIN&t;(0x07 &lt;&lt; 8)&t;/* Active UDC interface Number */
+DECL|macro|UDCCR_AIN_S
+mdefine_line|#define UDCCR_AIN_S&t;8
+DECL|macro|UDCCR_AAISN
+mdefine_line|#define UDCCR_AAISN&t;(0x07 &lt;&lt; 5)&t;/* Active UDC Alternate Interface&n;&t;&t;&t;&t;&t;   Setting Number */
+DECL|macro|UDCCR_AAISN_S
+mdefine_line|#define UDCCR_AAISN_S&t;5
+DECL|macro|UDCCR_SMAC
+mdefine_line|#define UDCCR_SMAC&t;(1 &lt;&lt; 4)&t;/* Switch Endpoint Memory to Active&n;&t;&t;&t;&t;&t;   Configuration */
+DECL|macro|UDCCR_EMCE
+mdefine_line|#define UDCCR_EMCE&t;(1 &lt;&lt; 3)&t;/* Endpoint Memory Configuration&n;&t;&t;&t;&t;&t;   Error */
+DECL|macro|UDCCR_UDR
+mdefine_line|#define UDCCR_UDR&t;(1 &lt;&lt; 2)&t;/* UDC Resume */
+DECL|macro|UDCCR_UDA
+mdefine_line|#define UDCCR_UDA&t;(1 &lt;&lt; 1)&t;/* UDC Active */
+DECL|macro|UDCCR_UDE
+mdefine_line|#define UDCCR_UDE&t;(1 &lt;&lt; 0)&t;/* UDC Enable */
+DECL|macro|UDCICR0
+mdefine_line|#define UDCICR0         __REG(0x40600004) /* UDC Interrupt Control Register0 */
+DECL|macro|UDCICR1
+mdefine_line|#define UDCICR1         __REG(0x40600008) /* UDC Interrupt Control Register1 */
+DECL|macro|UDCICR_FIFOERR
+mdefine_line|#define UDCICR_FIFOERR&t;(1 &lt;&lt; 1)&t;/* FIFO Error interrupt for EP */
+DECL|macro|UDCICR_PKTCOMPL
+mdefine_line|#define UDCICR_PKTCOMPL (1 &lt;&lt; 0)&t;/* Packet Complete interrupt for EP */
+DECL|macro|UDC_INT_FIFOERROR
+mdefine_line|#define UDC_INT_FIFOERROR  (0x2)
+DECL|macro|UDC_INT_PACKETCMP
+mdefine_line|#define UDC_INT_PACKETCMP  (0x1)
+DECL|macro|UDCICR_INT
+mdefine_line|#define UDCICR_INT(n,intr) (((intr) &amp; 0x03) &lt;&lt; (((n) &amp; 0x0F) * 2))
+DECL|macro|UDCICR1_IECC
+mdefine_line|#define UDCICR1_IECC&t;(1 &lt;&lt; 31)&t;/* IntEn - Configuration Change */
+DECL|macro|UDCICR1_IESOF
+mdefine_line|#define UDCICR1_IESOF&t;(1 &lt;&lt; 30)&t;/* IntEn - Start of Frame */
+DECL|macro|UDCICR1_IERU
+mdefine_line|#define UDCICR1_IERU&t;(1 &lt;&lt; 29)&t;/* IntEn - Resume */
+DECL|macro|UDCICR1_IESU
+mdefine_line|#define UDCICR1_IESU&t;(1 &lt;&lt; 28)&t;/* IntEn - Suspend */
+DECL|macro|UDCICR1_IERS
+mdefine_line|#define UDCICR1_IERS&t;(1 &lt;&lt; 27)&t;/* IntEn - Reset */
+DECL|macro|UDCISR0
+mdefine_line|#define UDCISR0         __REG(0x4060000C) /* UDC Interrupt Status Register 0 */
+DECL|macro|UDCISR1
+mdefine_line|#define UDCISR1         __REG(0x40600010) /* UDC Interrupt Status Register 1 */
+DECL|macro|UDCISR_INT
+mdefine_line|#define UDCISR_INT(n,intr) (((intr) &amp; 0x03) &lt;&lt; (((n) &amp; 0x0F) * 2))
+DECL|macro|UDCISR1_IECC
+mdefine_line|#define UDCISR1_IECC&t;(1 &lt;&lt; 31)&t;/* IntEn - Configuration Change */
+DECL|macro|UDCISR1_IESOF
+mdefine_line|#define UDCISR1_IESOF&t;(1 &lt;&lt; 30)&t;/* IntEn - Start of Frame */
+DECL|macro|UDCISR1_IERU
+mdefine_line|#define UDCISR1_IERU&t;(1 &lt;&lt; 29)&t;/* IntEn - Resume */
+DECL|macro|UDCISR1_IESU
+mdefine_line|#define UDCISR1_IESU&t;(1 &lt;&lt; 28)&t;/* IntEn - Suspend */
+DECL|macro|UDCISR1_IERS
+mdefine_line|#define UDCISR1_IERS&t;(1 &lt;&lt; 27)&t;/* IntEn - Reset */
+DECL|macro|UDCFNR
+mdefine_line|#define UDCFNR          __REG(0x40600014) /* UDC Frame Number Register */
+DECL|macro|UDCOTGICR
+mdefine_line|#define UDCOTGICR&t;__REG(0x40600018) /* UDC On-The-Go interrupt control */
+DECL|macro|UDCOTGICR_IESF
+mdefine_line|#define UDCOTGICR_IESF&t;(1 &lt;&lt; 24)&t;/* OTG SET_FEATURE command recvd */
+DECL|macro|UDCOTGICR_IEXR
+mdefine_line|#define UDCOTGICR_IEXR&t;(1 &lt;&lt; 17)&t;/* Extra Transciever Interrupt&n;&t;&t;&t;&t;&t;   Rising Edge Interrupt Enable */
+DECL|macro|UDCOTGICR_IEXF
+mdefine_line|#define UDCOTGICR_IEXF&t;(1 &lt;&lt; 16)&t;/* Extra Transciever Interrupt&n;&t;&t;&t;&t;&t;   Falling Edge Interrupt Enable */
+DECL|macro|UDCOTGICR_IEVV40R
+mdefine_line|#define UDCOTGICR_IEVV40R (1 &lt;&lt; 9)&t;/* OTG Vbus Valid 4.0V Rising Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IEVV40F
+mdefine_line|#define UDCOTGICR_IEVV40F (1 &lt;&lt; 8)&t;/* OTG Vbus Valid 4.0V Falling Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IEVV44R
+mdefine_line|#define UDCOTGICR_IEVV44R (1 &lt;&lt; 7)&t;/* OTG Vbus Valid 4.4V Rising Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IEVV44F
+mdefine_line|#define UDCOTGICR_IEVV44F (1 &lt;&lt; 6)&t;/* OTG Vbus Valid 4.4V Falling Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IESVR
+mdefine_line|#define UDCOTGICR_IESVR&t;(1 &lt;&lt; 5)&t;/* OTG Session Valid Rising Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IESVF
+mdefine_line|#define UDCOTGICR_IESVF&t;(1 &lt;&lt; 4)&t;/* OTG Session Valid Falling Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IESDR
+mdefine_line|#define UDCOTGICR_IESDR&t;(1 &lt;&lt; 3)&t;/* OTG A-Device SRP Detect Rising&n;&t;&t;&t;&t;&t;   Edge Interrupt Enable */
+DECL|macro|UDCOTGICR_IESDF
+mdefine_line|#define UDCOTGICR_IESDF&t;(1 &lt;&lt; 2)&t;/* OTG A-Device SRP Detect Falling&n;&t;&t;&t;&t;&t;   Edge Interrupt Enable */
+DECL|macro|UDCOTGICR_IEIDR
+mdefine_line|#define UDCOTGICR_IEIDR&t;(1 &lt;&lt; 1)&t;/* OTG ID Change Rising Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCOTGICR_IEIDF
+mdefine_line|#define UDCOTGICR_IEIDF&t;(1 &lt;&lt; 0)&t;/* OTG ID Change Falling Edge&n;&t;&t;&t;&t;&t;   Interrupt Enable */
+DECL|macro|UDCCSN
+mdefine_line|#define UDCCSN(x)&t;__REG2(0x40600100, (x) &lt;&lt; 2)
+DECL|macro|UDCCSR0
+mdefine_line|#define UDCCSR0         __REG(0x40600100) /* UDC Control/Status register - Endpoint 0 */
+DECL|macro|UDCCSR0_SA
+mdefine_line|#define UDCCSR0_SA&t;(1 &lt;&lt; 7)&t;/* Setup Active */
+DECL|macro|UDCCSR0_RNE
+mdefine_line|#define UDCCSR0_RNE&t;(1 &lt;&lt; 6)&t;/* Receive FIFO Not Empty */
+DECL|macro|UDCCSR0_FST
+mdefine_line|#define UDCCSR0_FST&t;(1 &lt;&lt; 5)&t;/* Force Stall */
+DECL|macro|UDCCSR0_SST
+mdefine_line|#define UDCCSR0_SST&t;(1 &lt;&lt; 4)&t;/* Sent Stall */
+DECL|macro|UDCCSR0_DME
+mdefine_line|#define UDCCSR0_DME&t;(1 &lt;&lt; 3)&t;/* DMA Enable */
+DECL|macro|UDCCSR0_FTF
+mdefine_line|#define UDCCSR0_FTF&t;(1 &lt;&lt; 2)&t;/* Flush Transmit FIFO */
+DECL|macro|UDCCSR0_IPR
+mdefine_line|#define UDCCSR0_IPR&t;(1 &lt;&lt; 1)&t;/* IN Packet Ready */
+DECL|macro|UDCCSR0_OPC
+mdefine_line|#define UDCCSR0_OPC&t;(1 &lt;&lt; 0)&t;/* OUT Packet Complete */
+DECL|macro|UDCCSRA
+mdefine_line|#define UDCCSRA         __REG(0x40600104) /* UDC Control/Status register - Endpoint A */
+DECL|macro|UDCCSRB
+mdefine_line|#define UDCCSRB         __REG(0x40600108) /* UDC Control/Status register - Endpoint B */
+DECL|macro|UDCCSRC
+mdefine_line|#define UDCCSRC         __REG(0x4060010C) /* UDC Control/Status register - Endpoint C */
+DECL|macro|UDCCSRD
+mdefine_line|#define UDCCSRD         __REG(0x40600110) /* UDC Control/Status register - Endpoint D */
+DECL|macro|UDCCSRE
+mdefine_line|#define UDCCSRE         __REG(0x40600114) /* UDC Control/Status register - Endpoint E */
+DECL|macro|UDCCSRF
+mdefine_line|#define UDCCSRF         __REG(0x40600118) /* UDC Control/Status register - Endpoint F */
+DECL|macro|UDCCSRG
+mdefine_line|#define UDCCSRG         __REG(0x4060011C) /* UDC Control/Status register - Endpoint G */
+DECL|macro|UDCCSRH
+mdefine_line|#define UDCCSRH         __REG(0x40600120) /* UDC Control/Status register - Endpoint H */
+DECL|macro|UDCCSRI
+mdefine_line|#define UDCCSRI         __REG(0x40600124) /* UDC Control/Status register - Endpoint I */
+DECL|macro|UDCCSRJ
+mdefine_line|#define UDCCSRJ         __REG(0x40600128) /* UDC Control/Status register - Endpoint J */
+DECL|macro|UDCCSRK
+mdefine_line|#define UDCCSRK         __REG(0x4060012C) /* UDC Control/Status register - Endpoint K */
+DECL|macro|UDCCSRL
+mdefine_line|#define UDCCSRL         __REG(0x40600130) /* UDC Control/Status register - Endpoint L */
+DECL|macro|UDCCSRM
+mdefine_line|#define UDCCSRM         __REG(0x40600134) /* UDC Control/Status register - Endpoint M */
+DECL|macro|UDCCSRN
+mdefine_line|#define UDCCSRN         __REG(0x40600138) /* UDC Control/Status register - Endpoint N */
+DECL|macro|UDCCSRP
+mdefine_line|#define UDCCSRP         __REG(0x4060013C) /* UDC Control/Status register - Endpoint P */
+DECL|macro|UDCCSRQ
+mdefine_line|#define UDCCSRQ         __REG(0x40600140) /* UDC Control/Status register - Endpoint Q */
+DECL|macro|UDCCSRR
+mdefine_line|#define UDCCSRR         __REG(0x40600144) /* UDC Control/Status register - Endpoint R */
+DECL|macro|UDCCSRS
+mdefine_line|#define UDCCSRS         __REG(0x40600148) /* UDC Control/Status register - Endpoint S */
+DECL|macro|UDCCSRT
+mdefine_line|#define UDCCSRT         __REG(0x4060014C) /* UDC Control/Status register - Endpoint T */
+DECL|macro|UDCCSRU
+mdefine_line|#define UDCCSRU         __REG(0x40600150) /* UDC Control/Status register - Endpoint U */
+DECL|macro|UDCCSRV
+mdefine_line|#define UDCCSRV         __REG(0x40600154) /* UDC Control/Status register - Endpoint V */
+DECL|macro|UDCCSRW
+mdefine_line|#define UDCCSRW         __REG(0x40600158) /* UDC Control/Status register - Endpoint W */
+DECL|macro|UDCCSRX
+mdefine_line|#define UDCCSRX         __REG(0x4060015C) /* UDC Control/Status register - Endpoint X */
+DECL|macro|UDCCSR_DPE
+mdefine_line|#define UDCCSR_DPE&t;(1 &lt;&lt; 9)&t;/* Data Packet Error */
+DECL|macro|UDCCSR_FEF
+mdefine_line|#define UDCCSR_FEF&t;(1 &lt;&lt; 8)&t;/* Flush Endpoint FIFO */
+DECL|macro|UDCCSR_SP
+mdefine_line|#define UDCCSR_SP&t;(1 &lt;&lt; 7)&t;/* Short Packet Control/Status */
+DECL|macro|UDCCSR_BNE
+mdefine_line|#define UDCCSR_BNE&t;(1 &lt;&lt; 6)&t;/* Buffer Not Empty (IN endpoints) */
+DECL|macro|UDCCSR_BNF
+mdefine_line|#define UDCCSR_BNF&t;(1 &lt;&lt; 6)&t;/* Buffer Not Full (OUT endpoints) */
+DECL|macro|UDCCSR_FST
+mdefine_line|#define UDCCSR_FST&t;(1 &lt;&lt; 5)&t;/* Force STALL */
+DECL|macro|UDCCSR_SST
+mdefine_line|#define UDCCSR_SST&t;(1 &lt;&lt; 4)&t;/* Sent STALL */
+DECL|macro|UDCCSR_DME
+mdefine_line|#define UDCCSR_DME&t;(1 &lt;&lt; 3)&t;/* DMA Enable */
+DECL|macro|UDCCSR_TRN
+mdefine_line|#define UDCCSR_TRN&t;(1 &lt;&lt; 2)&t;/* Tx/Rx NAK */
+DECL|macro|UDCCSR_PC
+mdefine_line|#define UDCCSR_PC&t;(1 &lt;&lt; 1)&t;/* Packet Complete */
+DECL|macro|UDCCSR_FS
+mdefine_line|#define UDCCSR_FS&t;(1 &lt;&lt; 0)&t;/* FIFO needs service */
+DECL|macro|UDCBCN
+mdefine_line|#define UDCBCN(x)&t;__REG2(0x40600200, (x)&lt;&lt;2)
+DECL|macro|UDCBCR0
+mdefine_line|#define UDCBCR0         __REG(0x40600200) /* Byte Count Register - EP0 */
+DECL|macro|UDCBCRA
+mdefine_line|#define UDCBCRA         __REG(0x40600204) /* Byte Count Register - EPA */
+DECL|macro|UDCBCRB
+mdefine_line|#define UDCBCRB         __REG(0x40600208) /* Byte Count Register - EPB */
+DECL|macro|UDCBCRC
+mdefine_line|#define UDCBCRC         __REG(0x4060020C) /* Byte Count Register - EPC */
+DECL|macro|UDCBCRD
+mdefine_line|#define UDCBCRD         __REG(0x40600210) /* Byte Count Register - EPD */
+DECL|macro|UDCBCRE
+mdefine_line|#define UDCBCRE         __REG(0x40600214) /* Byte Count Register - EPE */
+DECL|macro|UDCBCRF
+mdefine_line|#define UDCBCRF         __REG(0x40600218) /* Byte Count Register - EPF */
+DECL|macro|UDCBCRG
+mdefine_line|#define UDCBCRG         __REG(0x4060021C) /* Byte Count Register - EPG */
+DECL|macro|UDCBCRH
+mdefine_line|#define UDCBCRH         __REG(0x40600220) /* Byte Count Register - EPH */
+DECL|macro|UDCBCRI
+mdefine_line|#define UDCBCRI         __REG(0x40600224) /* Byte Count Register - EPI */
+DECL|macro|UDCBCRJ
+mdefine_line|#define UDCBCRJ         __REG(0x40600228) /* Byte Count Register - EPJ */
+DECL|macro|UDCBCRK
+mdefine_line|#define UDCBCRK         __REG(0x4060022C) /* Byte Count Register - EPK */
+DECL|macro|UDCBCRL
+mdefine_line|#define UDCBCRL         __REG(0x40600230) /* Byte Count Register - EPL */
+DECL|macro|UDCBCRM
+mdefine_line|#define UDCBCRM         __REG(0x40600234) /* Byte Count Register - EPM */
+DECL|macro|UDCBCRN
+mdefine_line|#define UDCBCRN         __REG(0x40600238) /* Byte Count Register - EPN */
+DECL|macro|UDCBCRP
+mdefine_line|#define UDCBCRP         __REG(0x4060023C) /* Byte Count Register - EPP */
+DECL|macro|UDCBCRQ
+mdefine_line|#define UDCBCRQ         __REG(0x40600240) /* Byte Count Register - EPQ */
+DECL|macro|UDCBCRR
+mdefine_line|#define UDCBCRR         __REG(0x40600244) /* Byte Count Register - EPR */
+DECL|macro|UDCBCRS
+mdefine_line|#define UDCBCRS         __REG(0x40600248) /* Byte Count Register - EPS */
+DECL|macro|UDCBCRT
+mdefine_line|#define UDCBCRT         __REG(0x4060024C) /* Byte Count Register - EPT */
+DECL|macro|UDCBCRU
+mdefine_line|#define UDCBCRU         __REG(0x40600250) /* Byte Count Register - EPU */
+DECL|macro|UDCBCRV
+mdefine_line|#define UDCBCRV         __REG(0x40600254) /* Byte Count Register - EPV */
+DECL|macro|UDCBCRW
+mdefine_line|#define UDCBCRW         __REG(0x40600258) /* Byte Count Register - EPW */
+DECL|macro|UDCBCRX
+mdefine_line|#define UDCBCRX         __REG(0x4060025C) /* Byte Count Register - EPX */
+DECL|macro|UDCDN
+mdefine_line|#define UDCDN(x)&t;__REG2(0x40600300, (x)&lt;&lt;2)
+DECL|macro|PHYS_UDCDN
+mdefine_line|#define PHYS_UDCDN(x)&t;(0x40600300 + ((x)&lt;&lt;2))
+DECL|macro|PUDCDN
+mdefine_line|#define PUDCDN(x)&t;(volatile u32 *)(io_p2v(PHYS_UDCDN((x))))
+DECL|macro|UDCDR0
+mdefine_line|#define UDCDR0          __REG(0x40600300) /* Data Register - EP0 */
+DECL|macro|UDCDRA
+mdefine_line|#define UDCDRA          __REG(0x40600304) /* Data Register - EPA */
+DECL|macro|UDCDRB
+mdefine_line|#define UDCDRB          __REG(0x40600308) /* Data Register - EPB */
+DECL|macro|UDCDRC
+mdefine_line|#define UDCDRC          __REG(0x4060030C) /* Data Register - EPC */
+DECL|macro|UDCDRD
+mdefine_line|#define UDCDRD          __REG(0x40600310) /* Data Register - EPD */
+DECL|macro|UDCDRE
+mdefine_line|#define UDCDRE          __REG(0x40600314) /* Data Register - EPE */
+DECL|macro|UDCDRF
+mdefine_line|#define UDCDRF          __REG(0x40600318) /* Data Register - EPF */
+DECL|macro|UDCDRG
+mdefine_line|#define UDCDRG          __REG(0x4060031C) /* Data Register - EPG */
+DECL|macro|UDCDRH
+mdefine_line|#define UDCDRH          __REG(0x40600320) /* Data Register - EPH */
+DECL|macro|UDCDRI
+mdefine_line|#define UDCDRI          __REG(0x40600324) /* Data Register - EPI */
+DECL|macro|UDCDRJ
+mdefine_line|#define UDCDRJ          __REG(0x40600328) /* Data Register - EPJ */
+DECL|macro|UDCDRK
+mdefine_line|#define UDCDRK          __REG(0x4060032C) /* Data Register - EPK */
+DECL|macro|UDCDRL
+mdefine_line|#define UDCDRL          __REG(0x40600330) /* Data Register - EPL */
+DECL|macro|UDCDRM
+mdefine_line|#define UDCDRM          __REG(0x40600334) /* Data Register - EPM */
+DECL|macro|UDCDRN
+mdefine_line|#define UDCDRN          __REG(0x40600338) /* Data Register - EPN */
+DECL|macro|UDCDRP
+mdefine_line|#define UDCDRP          __REG(0x4060033C) /* Data Register - EPP */
+DECL|macro|UDCDRQ
+mdefine_line|#define UDCDRQ          __REG(0x40600340) /* Data Register - EPQ */
+DECL|macro|UDCDRR
+mdefine_line|#define UDCDRR          __REG(0x40600344) /* Data Register - EPR */
+DECL|macro|UDCDRS
+mdefine_line|#define UDCDRS          __REG(0x40600348) /* Data Register - EPS */
+DECL|macro|UDCDRT
+mdefine_line|#define UDCDRT          __REG(0x4060034C) /* Data Register - EPT */
+DECL|macro|UDCDRU
+mdefine_line|#define UDCDRU          __REG(0x40600350) /* Data Register - EPU */
+DECL|macro|UDCDRV
+mdefine_line|#define UDCDRV          __REG(0x40600354) /* Data Register - EPV */
+DECL|macro|UDCDRW
+mdefine_line|#define UDCDRW          __REG(0x40600358) /* Data Register - EPW */
+DECL|macro|UDCDRX
+mdefine_line|#define UDCDRX          __REG(0x4060035C) /* Data Register - EPX */
+DECL|macro|UDCCN
+mdefine_line|#define UDCCN(x)       __REG2(0x40600400, (x)&lt;&lt;2)
+DECL|macro|UDCCRA
+mdefine_line|#define UDCCRA          __REG(0x40600404) /* Configuration register EPA */
+DECL|macro|UDCCRB
+mdefine_line|#define UDCCRB          __REG(0x40600408) /* Configuration register EPB */
+DECL|macro|UDCCRC
+mdefine_line|#define UDCCRC          __REG(0x4060040C) /* Configuration register EPC */
+DECL|macro|UDCCRD
+mdefine_line|#define UDCCRD          __REG(0x40600410) /* Configuration register EPD */
+DECL|macro|UDCCRE
+mdefine_line|#define UDCCRE          __REG(0x40600414) /* Configuration register EPE */
+DECL|macro|UDCCRF
+mdefine_line|#define UDCCRF          __REG(0x40600418) /* Configuration register EPF */
+DECL|macro|UDCCRG
+mdefine_line|#define UDCCRG          __REG(0x4060041C) /* Configuration register EPG */
+DECL|macro|UDCCRH
+mdefine_line|#define UDCCRH          __REG(0x40600420) /* Configuration register EPH */
+DECL|macro|UDCCRI
+mdefine_line|#define UDCCRI          __REG(0x40600424) /* Configuration register EPI */
+DECL|macro|UDCCRJ
+mdefine_line|#define UDCCRJ          __REG(0x40600428) /* Configuration register EPJ */
+DECL|macro|UDCCRK
+mdefine_line|#define UDCCRK          __REG(0x4060042C) /* Configuration register EPK */
+DECL|macro|UDCCRL
+mdefine_line|#define UDCCRL          __REG(0x40600430) /* Configuration register EPL */
+DECL|macro|UDCCRM
+mdefine_line|#define UDCCRM          __REG(0x40600434) /* Configuration register EPM */
+DECL|macro|UDCCRN
+mdefine_line|#define UDCCRN          __REG(0x40600438) /* Configuration register EPN */
+DECL|macro|UDCCRP
+mdefine_line|#define UDCCRP          __REG(0x4060043C) /* Configuration register EPP */
+DECL|macro|UDCCRQ
+mdefine_line|#define UDCCRQ          __REG(0x40600440) /* Configuration register EPQ */
+DECL|macro|UDCCRR
+mdefine_line|#define UDCCRR          __REG(0x40600444) /* Configuration register EPR */
+DECL|macro|UDCCRS
+mdefine_line|#define UDCCRS          __REG(0x40600448) /* Configuration register EPS */
+DECL|macro|UDCCRT
+mdefine_line|#define UDCCRT          __REG(0x4060044C) /* Configuration register EPT */
+DECL|macro|UDCCRU
+mdefine_line|#define UDCCRU          __REG(0x40600450) /* Configuration register EPU */
+DECL|macro|UDCCRV
+mdefine_line|#define UDCCRV          __REG(0x40600454) /* Configuration register EPV */
+DECL|macro|UDCCRW
+mdefine_line|#define UDCCRW          __REG(0x40600458) /* Configuration register EPW */
+DECL|macro|UDCCRX
+mdefine_line|#define UDCCRX          __REG(0x4060045C) /* Configuration register EPX */
+DECL|macro|UDCCONR_CN
+mdefine_line|#define UDCCONR_CN&t;(0x03 &lt;&lt; 25)&t;/* Configuration Number */
+DECL|macro|UDCCONR_CN_S
+mdefine_line|#define UDCCONR_CN_S&t;(25)
+DECL|macro|UDCCONR_IN
+mdefine_line|#define UDCCONR_IN&t;(0x07 &lt;&lt; 22)&t;/* Interface Number */
+DECL|macro|UDCCONR_IN_S
+mdefine_line|#define UDCCONR_IN_S&t;(22)
+DECL|macro|UDCCONR_AISN
+mdefine_line|#define UDCCONR_AISN&t;(0x07 &lt;&lt; 19)&t;/* Alternate Interface Number */
+DECL|macro|UDCCONR_AISN_S
+mdefine_line|#define UDCCONR_AISN_S&t;(19)
+DECL|macro|UDCCONR_EN
+mdefine_line|#define UDCCONR_EN&t;(0x0f &lt;&lt; 15)&t;/* Endpoint Number */
+DECL|macro|UDCCONR_EN_S
+mdefine_line|#define UDCCONR_EN_S&t;(15)
+DECL|macro|UDCCONR_ET
+mdefine_line|#define UDCCONR_ET&t;(0x03 &lt;&lt; 13)&t;/* Endpoint Type: */
+DECL|macro|UDCCONR_ET_S
+mdefine_line|#define UDCCONR_ET_S&t;(13)
+DECL|macro|UDCCONR_ET_INT
+mdefine_line|#define UDCCONR_ET_INT&t;(0x03 &lt;&lt; 13)&t;/*   Interrupt */
+DECL|macro|UDCCONR_ET_BULK
+mdefine_line|#define UDCCONR_ET_BULK&t;(0x02 &lt;&lt; 13)&t;/*   Bulk */
+DECL|macro|UDCCONR_ET_ISO
+mdefine_line|#define UDCCONR_ET_ISO&t;(0x01 &lt;&lt; 13)&t;/*   Isochronous */
+DECL|macro|UDCCONR_ET_NU
+mdefine_line|#define UDCCONR_ET_NU&t;(0x00 &lt;&lt; 13)&t;/*   Not used */
+DECL|macro|UDCCONR_ED
+mdefine_line|#define UDCCONR_ED&t;(1 &lt;&lt; 12)&t;/* Endpoint Direction */
+DECL|macro|UDCCONR_MPS
+mdefine_line|#define UDCCONR_MPS&t;(0x3ff &lt;&lt; 2)&t;/* Maximum Packet Size */
+DECL|macro|UDCCONR_MPS_S
+mdefine_line|#define UDCCONR_MPS_S&t;(2)
+DECL|macro|UDCCONR_DE
+mdefine_line|#define UDCCONR_DE&t;(1 &lt;&lt; 1)&t;/* Double Buffering Enable */
+DECL|macro|UDCCONR_EE
+mdefine_line|#define UDCCONR_EE&t;(1 &lt;&lt; 0)&t;/* Endpoint Enable */
+DECL|macro|UDC_INT_FIFOERROR
+mdefine_line|#define UDC_INT_FIFOERROR  (0x2)
+DECL|macro|UDC_INT_PACKETCMP
+mdefine_line|#define UDC_INT_PACKETCMP  (0x1)
+DECL|macro|UDC_FNR_MASK
+mdefine_line|#define UDC_FNR_MASK     (0x7ff)
+DECL|macro|UDCCSR_WR_MASK
+mdefine_line|#define UDCCSR_WR_MASK   (UDCCSR_DME|UDCCSR_FST)
+DECL|macro|UDC_BCR_MASK
+mdefine_line|#define UDC_BCR_MASK    (0x3ff)
+macro_line|#endif
 multiline_comment|/*&n; * Fast Infrared Communication Port&n; */
+DECL|macro|FICP
+mdefine_line|#define FICP&t;&t;__REG(0x40800000)  /* Start of FICP area */
 DECL|macro|ICCR0
 mdefine_line|#define ICCR0&t;&t;__REG(0x40800000)  /* ICP Control Register 0 */
 DECL|macro|ICCR1
@@ -1134,47 +1570,65 @@ mdefine_line|#define ICSR0&t;&t;__REG(0x40800014)  /* ICP Status Register 0 */
 DECL|macro|ICSR1
 mdefine_line|#define ICSR1&t;&t;__REG(0x40800018)  /* ICP Status Register 1 */
 DECL|macro|ICCR0_AME
-mdefine_line|#define ICCR0_AME       (1 &lt;&lt; 7)           /* Address match enable */
+mdefine_line|#define ICCR0_AME&t;(1 &lt;&lt; 7)&t;/* Adress match enable */
 DECL|macro|ICCR0_TIE
-mdefine_line|#define ICCR0_TIE       (1 &lt;&lt; 6)           /* Transmit FIFO interrupt enable */
+mdefine_line|#define ICCR0_TIE&t;(1 &lt;&lt; 6)&t;/* Transmit FIFO interrupt enable */
 DECL|macro|ICCR0_RIE
-mdefine_line|#define ICCR0_RIE       (1 &lt;&lt; 5)           /* Receive FIFO interrupt enable */
+mdefine_line|#define ICCR0_RIE&t;(1 &lt;&lt; 5)&t;/* Recieve FIFO interrupt enable */
 DECL|macro|ICCR0_RXE
-mdefine_line|#define ICCR0_RXE       (1 &lt;&lt; 4)           /* Receive enable */
+mdefine_line|#define ICCR0_RXE&t;(1 &lt;&lt; 4)&t;/* Receive enable */
 DECL|macro|ICCR0_TXE
-mdefine_line|#define ICCR0_TXE       (1 &lt;&lt; 3)           /* Transmit enable */
+mdefine_line|#define ICCR0_TXE&t;(1 &lt;&lt; 3)&t;/* Transmit enable */
 DECL|macro|ICCR0_TUS
-mdefine_line|#define ICCR0_TUS       (1 &lt;&lt; 2)           /* Transmit FIFO underrun select */
+mdefine_line|#define ICCR0_TUS&t;(1 &lt;&lt; 2)&t;/* Transmit FIFO underrun select */
 DECL|macro|ICCR0_LBM
-mdefine_line|#define ICCR0_LBM       (1 &lt;&lt; 1)           /* Loopback mode */
+mdefine_line|#define ICCR0_LBM&t;(1 &lt;&lt; 1)&t;/* Loopback mode */
 DECL|macro|ICCR0_ITR
-mdefine_line|#define ICCR0_ITR       (1 &lt;&lt; 0)           /* IrDA transmission */
+mdefine_line|#define ICCR0_ITR&t;(1 &lt;&lt; 0)&t;/* IrDA transmission */
+macro_line|#ifdef CONFIG_CPU_BULVERDE
+DECL|macro|ICCR2_RXP
+mdefine_line|#define ICCR2_RXP       (1 &lt;&lt; 3)&t;/* Receive Pin Polarity select */
+DECL|macro|ICCR2_TXP
+mdefine_line|#define ICCR2_TXP       (1 &lt;&lt; 2)&t;/* Transmit Pin Polarity select */
+DECL|macro|ICCR2_TRIG
+mdefine_line|#define ICCR2_TRIG&t;(3 &lt;&lt; 0)&t;/* Receive FIFO Trigger threshold */
+DECL|macro|ICCR2_TRIG_8
+mdefine_line|#define ICCR2_TRIG_8    (0 &lt;&lt; 0)&t;/* &t;&gt;= 8 bytes */
+DECL|macro|ICCR2_TRIG_16
+mdefine_line|#define ICCR2_TRIG_16   (1 &lt;&lt; 0)&t;/*&t;&gt;= 16 bytes */
+DECL|macro|ICCR2_TRIG_32
+mdefine_line|#define ICCR2_TRIG_32   (2 &lt;&lt; 0)&t;/*&t;&gt;= 32 bytes */
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_BULVERDE
+DECL|macro|ICSR0_EOC
+mdefine_line|#define ICSR0_EOC&t;(1 &lt;&lt; 6)&t;/* DMA End of Descriptor Chain */
+macro_line|#endif
 DECL|macro|ICSR0_FRE
-mdefine_line|#define ICSR0_FRE       (1 &lt;&lt; 5)           /* Framing error */
+mdefine_line|#define ICSR0_FRE&t;(1 &lt;&lt; 5)&t;/* Framing error */
 DECL|macro|ICSR0_RFS
-mdefine_line|#define ICSR0_RFS       (1 &lt;&lt; 4)           /* Receive FIFO service request */
+mdefine_line|#define ICSR0_RFS&t;(1 &lt;&lt; 4)&t;/* Receive FIFO service request */
 DECL|macro|ICSR0_TFS
-mdefine_line|#define ICSR0_TFS       (1 &lt;&lt; 3)           /* Transnit FIFO service request */
+mdefine_line|#define ICSR0_TFS&t;(1 &lt;&lt; 3)&t;/* Transnit FIFO service request */
 DECL|macro|ICSR0_RAB
-mdefine_line|#define ICSR0_RAB       (1 &lt;&lt; 2)           /* Receiver abort */
+mdefine_line|#define ICSR0_RAB&t;(1 &lt;&lt; 2)&t;/* Receiver abort */
 DECL|macro|ICSR0_TUR
-mdefine_line|#define ICSR0_TUR       (1 &lt;&lt; 1)           /* Trunsmit FIFO underun */
+mdefine_line|#define ICSR0_TUR&t;(1 &lt;&lt; 1)&t;/* Trunsmit FIFO underun */
 DECL|macro|ICSR0_EIF
-mdefine_line|#define ICSR0_EIF       (1 &lt;&lt; 0)           /* End/Error in FIFO */
+mdefine_line|#define ICSR0_EIF&t;(1 &lt;&lt; 0)&t;/* End/Error in FIFO */
 DECL|macro|ICSR1_ROR
-mdefine_line|#define ICSR1_ROR       (1 &lt;&lt; 6)           /* Receiver FIFO underrun  */
+mdefine_line|#define ICSR1_ROR&t;(1 &lt;&lt; 6)&t;/* Receiver FIFO underrun  */
 DECL|macro|ICSR1_CRE
-mdefine_line|#define ICSR1_CRE       (1 &lt;&lt; 5)           /* CRC error */
+mdefine_line|#define ICSR1_CRE&t;(1 &lt;&lt; 5)&t;/* CRC error */
 DECL|macro|ICSR1_EOF
-mdefine_line|#define ICSR1_EOF       (1 &lt;&lt; 4)           /* End of frame */
+mdefine_line|#define ICSR1_EOF&t;(1 &lt;&lt; 4)&t;/* End of frame */
 DECL|macro|ICSR1_TNF
-mdefine_line|#define ICSR1_TNF       (1 &lt;&lt; 3)           /* Transmit FIFO not full */
+mdefine_line|#define ICSR1_TNF&t;(1 &lt;&lt; 3)&t;/* Transmit FIFO not full */
 DECL|macro|ICSR1_RNE
-mdefine_line|#define ICSR1_RNE       (1 &lt;&lt; 2)           /* Receive FIFO not empty */
+mdefine_line|#define ICSR1_RNE&t;(1 &lt;&lt; 2)&t;/* Receive FIFO not empty */
 DECL|macro|ICSR1_TBY
-mdefine_line|#define ICSR1_TBY       (1 &lt;&lt; 1)           /* Tramsmiter busy flag */
+mdefine_line|#define ICSR1_TBY&t;(1 &lt;&lt; 1)&t;/* Tramsmiter busy flag */
 DECL|macro|ICSR1_RSY
-mdefine_line|#define ICSR1_RSY       (1 &lt;&lt; 0)           /* Recevier synchronized flag */
+mdefine_line|#define ICSR1_RSY&t;(1 &lt;&lt; 0)&t;/* Recevier synchronized flag */
 multiline_comment|/*&n; * Real Time Clock&n; */
 DECL|macro|RCNR
 mdefine_line|#define RCNR&t;&t;__REG(0x40900000)  /* RTC Count Register */
@@ -1184,6 +1638,12 @@ DECL|macro|RTSR
 mdefine_line|#define RTSR&t;&t;__REG(0x40900008)  /* RTC Status Register */
 DECL|macro|RTTR
 mdefine_line|#define RTTR&t;&t;__REG(0x4090000C)  /* RTC Timer Trim Register */
+DECL|macro|PIAR
+mdefine_line|#define PIAR&t;&t;__REG(0x40900038)  /* Periodic Interrupt Alarm Register */
+DECL|macro|RTSR_PICE
+mdefine_line|#define RTSR_PICE&t;(1 &lt;&lt; 15)&t;/* Periodic interrupt count enable */
+DECL|macro|RTSR_PIALE
+mdefine_line|#define RTSR_PIALE&t;(1 &lt;&lt; 14)&t;/* Periodic interrupt Alarm enable */
 DECL|macro|RTSR_HZE
 mdefine_line|#define RTSR_HZE&t;(1 &lt;&lt; 3)&t;/* HZ interrupt enable */
 DECL|macro|RTSR_ALE
@@ -1201,8 +1661,14 @@ DECL|macro|OSMR2
 mdefine_line|#define OSMR2&t;&t;__REG(0x40A00008)  /* */
 DECL|macro|OSMR3
 mdefine_line|#define OSMR3&t;&t;__REG(0x40A0000C)  /* */
+DECL|macro|OSMR4
+mdefine_line|#define OSMR4&t;&t;__REG(0x40A00080)  /* */
 DECL|macro|OSCR
 mdefine_line|#define OSCR&t;&t;__REG(0x40A00010)  /* OS Timer Counter Register */
+DECL|macro|OSCR4
+mdefine_line|#define OSCR4&t;&t;__REG(0x40A00040)  /* OS Timer Counter Register */
+DECL|macro|OMCR4
+mdefine_line|#define OMCR4&t;&t;__REG(0x40A000C0)  /* */
 DECL|macro|OSSR
 mdefine_line|#define OSSR&t;&t;__REG(0x40A00014)  /* OS Timer Status Register */
 DECL|macro|OWER
@@ -1307,10 +1773,73 @@ mdefine_line|#define GAFR1_U&t;&t;__REG(0x40E00060)  /* GPIO Alternate Function 
 DECL|macro|GAFR2_L
 mdefine_line|#define GAFR2_L&t;&t;__REG(0x40E00064)  /* GPIO Alternate Function Select Register GPIO&lt;79:64&gt; */
 DECL|macro|GAFR2_U
-mdefine_line|#define GAFR2_U&t;&t;__REG(0x40E00068)  /* GPIO Alternate Function Select Register GPIO 80 */
+mdefine_line|#define GAFR2_U&t;&t;__REG(0x40E00068)  /* GPIO Alternate Function Select Register GPIO&lt;95-80&gt; */
+DECL|macro|GAFR3_L
+mdefine_line|#define GAFR3_L&t;&t;__REG(0x40E0006C)  /* GPIO Alternate Function Select Register GPIO&lt;111:96&gt; */
+DECL|macro|GAFR3_U
+mdefine_line|#define GAFR3_U&t;&t;__REG(0x40E00070)  /* GPIO Alternate Function Select Register GPIO&lt;127:112&gt; */
+DECL|macro|GPLR3
+mdefine_line|#define GPLR3&t;&t;__REG(0x40E00100)  /* GPIO Pin-Level Register GPIO&lt;127:96&gt; */
+DECL|macro|GPDR3
+mdefine_line|#define GPDR3&t;&t;__REG(0x40E0010C)  /* GPIO Pin Direction Register GPIO&lt;127:96&gt; */
+DECL|macro|GPSR3
+mdefine_line|#define GPSR3&t;&t;__REG(0x40E00118)  /* GPIO Pin Output Set Register GPIO&lt;127:96&gt; */
+DECL|macro|GPCR3
+mdefine_line|#define GPCR3&t;&t;__REG(0x40E00124)  /* GPIO Pin Output Clear Register GPIO&lt;127:96&gt; */
+DECL|macro|GRER3
+mdefine_line|#define GRER3&t;&t;__REG(0x40E00130)  /* GPIO Rising-Edge Detect Register GPIO&lt;127:96&gt; */
+DECL|macro|GFER3
+mdefine_line|#define GFER3&t;&t;__REG(0x40E0013C)  /* GPIO Falling-Edge Detect Register GPIO&lt;127:96&gt; */
+DECL|macro|GEDR3
+mdefine_line|#define GEDR3&t;&t;__REG(0x40E00148)  /* GPIO Edge Detect Status Register GPIO&lt;127:96&gt; */
 multiline_comment|/* More handy macros.  The argument is a literal GPIO number. */
 DECL|macro|GPIO_bit
 mdefine_line|#define GPIO_bit(x)&t;(1 &lt;&lt; ((x) &amp; 0x1f))
+macro_line|#ifdef CONFIG_PXA27x
+multiline_comment|/* Interrupt Controller */
+DECL|macro|ICIP2
+mdefine_line|#define ICIP2&t;&t;__REG(0x40D0009C)  /* Interrupt Controller IRQ Pending Register 2 */
+DECL|macro|ICMR2
+mdefine_line|#define ICMR2&t;&t;__REG(0x40D000A0)  /* Interrupt Controller Mask Register 2 */
+DECL|macro|ICLR2
+mdefine_line|#define ICLR2&t;&t;__REG(0x40D000A4)  /* Interrupt Controller Level Register 2 */
+DECL|macro|ICFP2
+mdefine_line|#define ICFP2&t;&t;__REG(0x40D000A8)  /* Interrupt Controller FIQ Pending Register 2 */
+DECL|macro|ICPR2
+mdefine_line|#define ICPR2&t;&t;__REG(0x40D000AC)  /* Interrupt Controller Pending Register 2 */
+DECL|macro|_GPLR
+mdefine_line|#define _GPLR(x)&t;__REG2(0x40E00000, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GPDR
+mdefine_line|#define _GPDR(x)&t;__REG2(0x40E0000C, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GPSR
+mdefine_line|#define _GPSR(x)&t;__REG2(0x40E00018, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GPCR
+mdefine_line|#define _GPCR(x)&t;__REG2(0x40E00024, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GRER
+mdefine_line|#define _GRER(x)&t;__REG2(0x40E00030, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GFER
+mdefine_line|#define _GFER(x)&t;__REG2(0x40E0003C, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GEDR
+mdefine_line|#define _GEDR(x)&t;__REG2(0x40E00048, ((x) &amp; 0x60) &gt;&gt; 3)
+DECL|macro|_GAFR
+mdefine_line|#define _GAFR(x)&t;__REG2(0x40E00054, ((x) &amp; 0x70) &gt;&gt; 2)
+DECL|macro|GPLR
+mdefine_line|#define GPLR(x) &t;((((x) &amp; 0x7f) &lt; 96) ? _GPLR(x) : GPLR3)
+DECL|macro|GPDR
+mdefine_line|#define GPDR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPDR(x) : GPDR3)
+DECL|macro|GPSR
+mdefine_line|#define GPSR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPSR(x) : GPSR3)
+DECL|macro|GPCR
+mdefine_line|#define GPCR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GPCR(x) : GPCR3)
+DECL|macro|GRER
+mdefine_line|#define GRER(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GRER(x) : GRER3)
+DECL|macro|GFER
+mdefine_line|#define GFER(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GFER(x) : GFER3)
+DECL|macro|GEDR
+mdefine_line|#define GEDR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GEDR(x) : GEDR3)
+DECL|macro|GAFR
+mdefine_line|#define GAFR(x)&t;&t;((((x) &amp; 0x7f) &lt; 96) ? _GAFR(x) : &bslash;&n;&t;&t;&t; ((((x) &amp; 0x7f) &lt; 112) ? GAFR3_L : GAFR3_U))
+macro_line|#else
 DECL|macro|GPLR
 mdefine_line|#define GPLR(x)&t;&t;__REG2(0x40E00000, ((x) &amp; 0x60) &gt;&gt; 3)
 DECL|macro|GPDR
@@ -1327,6 +1856,7 @@ DECL|macro|GEDR
 mdefine_line|#define GEDR(x)&t;&t;__REG2(0x40E00048, ((x) &amp; 0x60) &gt;&gt; 3)
 DECL|macro|GAFR
 mdefine_line|#define GAFR(x)&t;&t;__REG2(0x40E00054, ((x) &amp; 0x70) &gt;&gt; 2)
+macro_line|#endif
 multiline_comment|/* GPIO alternate function assignments */
 DECL|macro|GPIO1_RST
 mdefine_line|#define GPIO1_RST&t;&t;1&t;/* reset */
@@ -1734,8 +2264,105 @@ DECL|macro|PGSR1
 mdefine_line|#define PGSR1&t;&t;__REG(0x40F00024)  /* Power Manager GPIO Sleep State Register for GP[63-32] */
 DECL|macro|PGSR2
 mdefine_line|#define PGSR2&t;&t;__REG(0x40F00028)  /* Power Manager GPIO Sleep State Register for GP[84-64] */
+DECL|macro|PGSR3
+mdefine_line|#define PGSR3&t;&t;__REG(0x40F0002C)  /* Power Manager GPIO Sleep State Register for GP[118-96] */
 DECL|macro|RCSR
 mdefine_line|#define RCSR&t;&t;__REG(0x40F00030)  /* Reset Controller Status Register */
+DECL|macro|PSLR
+mdefine_line|#define PSLR&t;&t;__REG(0x40F00034)&t;/* Power Manager Sleep Config Register */
+DECL|macro|PSTR
+mdefine_line|#define PSTR&t;&t;__REG(0x40F00038)&t;/*Power Manager Standby Config Register */
+DECL|macro|PSNR
+mdefine_line|#define PSNR&t;&t;__REG(0x40F0003C)&t;/*Power Manager Sense Config Register */
+DECL|macro|PVCR
+mdefine_line|#define PVCR&t;&t;__REG(0x40F00040)&t;/*Power Manager VoltageControl Register */
+DECL|macro|PKWR
+mdefine_line|#define PKWR&t;&t;__REG(0x40F00050)&t;/* Power Manager KB Wake-up Enable Reg */
+DECL|macro|PKSR
+mdefine_line|#define PKSR&t;&t;__REG(0x40F00054)&t;/* Power Manager KB Level-Detect Register */
+DECL|macro|PCMD
+mdefine_line|#define PCMD(x)&t;__REG2(0x40F00080, (x)&lt;&lt;2)
+DECL|macro|PCMD0
+mdefine_line|#define PCMD0&t;__REG(0x40F00080 + 0 * 4)
+DECL|macro|PCMD1
+mdefine_line|#define PCMD1&t;__REG(0x40F00080 + 1 * 4)
+DECL|macro|PCMD2
+mdefine_line|#define PCMD2&t;__REG(0x40F00080 + 2 * 4)
+DECL|macro|PCMD3
+mdefine_line|#define PCMD3&t;__REG(0x40F00080 + 3 * 4)
+DECL|macro|PCMD4
+mdefine_line|#define PCMD4&t;__REG(0x40F00080 + 4 * 4)
+DECL|macro|PCMD5
+mdefine_line|#define PCMD5&t;__REG(0x40F00080 + 5 * 4)
+DECL|macro|PCMD6
+mdefine_line|#define PCMD6&t;__REG(0x40F00080 + 6 * 4)
+DECL|macro|PCMD7
+mdefine_line|#define PCMD7&t;__REG(0x40F00080 + 7 * 4)
+DECL|macro|PCMD8
+mdefine_line|#define PCMD8&t;__REG(0x40F00080 + 8 * 4)
+DECL|macro|PCMD9
+mdefine_line|#define PCMD9&t;__REG(0x40F00080 + 9 * 4)
+DECL|macro|PCMD10
+mdefine_line|#define PCMD10&t;__REG(0x40F00080 + 10 * 4)
+DECL|macro|PCMD11
+mdefine_line|#define PCMD11&t;__REG(0x40F00080 + 11 * 4)
+DECL|macro|PCMD12
+mdefine_line|#define PCMD12&t;__REG(0x40F00080 + 12 * 4)
+DECL|macro|PCMD13
+mdefine_line|#define PCMD13&t;__REG(0x40F00080 + 13 * 4)
+DECL|macro|PCMD14
+mdefine_line|#define PCMD14&t;__REG(0x40F00080 + 14 * 4)
+DECL|macro|PCMD15
+mdefine_line|#define PCMD15&t;__REG(0x40F00080 + 15 * 4)
+DECL|macro|PCMD16
+mdefine_line|#define PCMD16&t;__REG(0x40F00080 + 16 * 4)
+DECL|macro|PCMD17
+mdefine_line|#define PCMD17&t;__REG(0x40F00080 + 17 * 4)
+DECL|macro|PCMD18
+mdefine_line|#define PCMD18&t;__REG(0x40F00080 + 18 * 4)
+DECL|macro|PCMD19
+mdefine_line|#define PCMD19&t;__REG(0x40F00080 + 19 * 4)
+DECL|macro|PCMD20
+mdefine_line|#define PCMD20&t;__REG(0x40F00080 + 20 * 4)
+DECL|macro|PCMD21
+mdefine_line|#define PCMD21&t;__REG(0x40F00080 + 21 * 4)
+DECL|macro|PCMD22
+mdefine_line|#define PCMD22&t;__REG(0x40F00080 + 22 * 4)
+DECL|macro|PCMD23
+mdefine_line|#define PCMD23&t;__REG(0x40F00080 + 23 * 4)
+DECL|macro|PCMD24
+mdefine_line|#define PCMD24&t;__REG(0x40F00080 + 24 * 4)
+DECL|macro|PCMD25
+mdefine_line|#define PCMD25&t;__REG(0x40F00080 + 25 * 4)
+DECL|macro|PCMD26
+mdefine_line|#define PCMD26&t;__REG(0x40F00080 + 26 * 4)
+DECL|macro|PCMD27
+mdefine_line|#define PCMD27&t;__REG(0x40F00080 + 27 * 4)
+DECL|macro|PCMD28
+mdefine_line|#define PCMD28&t;__REG(0x40F00080 + 28 * 4)
+DECL|macro|PCMD29
+mdefine_line|#define PCMD29&t;__REG(0x40F00080 + 29 * 4)
+DECL|macro|PCMD30
+mdefine_line|#define PCMD30&t;__REG(0x40F00080 + 30 * 4)
+DECL|macro|PCMD31
+mdefine_line|#define PCMD31&t;__REG(0x40F00080 + 31 * 4)
+DECL|macro|PCMD_MBC
+mdefine_line|#define PCMD_MBC&t;(1&lt;&lt;12)
+DECL|macro|PCMD_DCE
+mdefine_line|#define PCMD_DCE&t;(1&lt;&lt;11)
+DECL|macro|PCMD_LC
+mdefine_line|#define PCMD_LC&t;(1&lt;&lt;10)
+multiline_comment|/* FIXME:  PCMD_SQC need be checked.   */
+DECL|macro|PCMD_SQC
+mdefine_line|#define PCMD_SQC&t;(3&lt;&lt;8)&t;/* currently only bit 8 is changeable,&n;&t;&t;&t;&t;   bit 9 should be 0 all day. */
+DECL|macro|PVCR_VCSA
+mdefine_line|#define PVCR_VCSA&t;(0x1&lt;&lt;14)
+DECL|macro|PVCR_CommandDelay
+mdefine_line|#define PVCR_CommandDelay (0xf80)
+DECL|macro|PCFR_PI2C_EN
+mdefine_line|#define PCFR_PI2C_EN&t;(0x1 &lt;&lt; 6)
+DECL|macro|PSSR_OTGPH
+mdefine_line|#define PSSR_OTGPH&t;(1 &lt;&lt; 7)&t;/* OTG Peripheral control Hold */
 DECL|macro|PSSR_RDH
 mdefine_line|#define PSSR_RDH&t;(1 &lt;&lt; 5)&t;/* Read Disable Hold */
 DECL|macro|PSSR_PH
@@ -1746,6 +2373,20 @@ DECL|macro|PSSR_BFS
 mdefine_line|#define PSSR_BFS&t;(1 &lt;&lt; 1)&t;/* Battery Fault Status */
 DECL|macro|PSSR_SSS
 mdefine_line|#define PSSR_SSS&t;(1 &lt;&lt; 0)&t;/* Software Sleep Status */
+DECL|macro|PCFR_RO
+mdefine_line|#define PCFR_RO&t;&t;(1 &lt;&lt; 15)&t;/* RDH Override */
+DECL|macro|PCFR_PO
+mdefine_line|#define PCFR_PO&t;&t;(1 &lt;&lt; 14)&t;/* PH Override */
+DECL|macro|PCFR_GPROD
+mdefine_line|#define PCFR_GPROD&t;(1 &lt;&lt; 12)&t;/* GPIO nRESET_OUT Disable */
+DECL|macro|PCFR_L1_EN
+mdefine_line|#define PCFR_L1_EN&t;(1 &lt;&lt; 11)&t;/* Sleep Mode L1 converter Enable */
+DECL|macro|PCFR_FVC
+mdefine_line|#define PCFR_FVC&t;(1 &lt;&lt; 10)&t;/* Frequency/Voltage Change */
+DECL|macro|PCFR_DC_EN
+mdefine_line|#define PCFR_DC_EN&t;(1 &lt;&lt; 7)&t;/* Sleep/deep-sleep DC-DC Converter Enable */
+DECL|macro|PCFR_PI2CEN
+mdefine_line|#define PCFR_PI2CEN&t;(1 &lt;&lt; 6)&t;/* Enable PI2C controller */
 DECL|macro|PCFR_DS
 mdefine_line|#define PCFR_DS&t;&t;(1 &lt;&lt; 3)&t;/* Deep Sleep Mode */
 DECL|macro|PCFR_FS
@@ -1869,14 +2510,34 @@ DECL|macro|CKEN
 mdefine_line|#define CKEN&t;&t;__REG(0x41300004)  /* Clock Enable Register */
 DECL|macro|OSCC
 mdefine_line|#define OSCC&t;&t;__REG(0x41300008)  /* Oscillator Configuration Register */
+DECL|macro|CCSR
+mdefine_line|#define CCSR&t;&t;__REG(0x4130000C)  /* Core Clock Status Register */
 DECL|macro|CCCR_N_MASK
 mdefine_line|#define CCCR_N_MASK&t;0x0380&t;&t;/* Run Mode Frequency to Turbo Mode Frequency Multiplier */
 DECL|macro|CCCR_M_MASK
 mdefine_line|#define CCCR_M_MASK&t;0x0060&t;&t;/* Memory Frequency to Run Mode Frequency Multiplier */
 DECL|macro|CCCR_L_MASK
 mdefine_line|#define CCCR_L_MASK&t;0x001f&t;&t;/* Crystal Frequency to Memory Frequency Multiplier */
+DECL|macro|CKEN24_CAMERA
+mdefine_line|#define CKEN24_CAMERA&t;(1 &lt;&lt; 24)&t;/* Camera Interface Clock Enable */
+DECL|macro|CKEN23_SSP1
+mdefine_line|#define CKEN23_SSP1&t;(1 &lt;&lt; 23)&t;/* SSP1 Unit Clock Enable */
+DECL|macro|CKEN22_MEMC
+mdefine_line|#define CKEN22_MEMC&t;(1 &lt;&lt; 22)&t;/* Memory Controller Clock Enable */
+DECL|macro|CKEN21_MEMSTK
+mdefine_line|#define CKEN21_MEMSTK&t;(1 &lt;&lt; 21)&t;/* Memory Stick Host Controller */
+DECL|macro|CKEN20_IM
+mdefine_line|#define CKEN20_IM&t;(1 &lt;&lt; 20)&t;/* Internal Memory Clock Enable */
+DECL|macro|CKEN19_KEYPAD
+mdefine_line|#define CKEN19_KEYPAD&t;(1 &lt;&lt; 19)&t;/* Keypad Interface Clock Enable */
+DECL|macro|CKEN18_USIM
+mdefine_line|#define CKEN18_USIM&t;(1 &lt;&lt; 18)&t;/* USIM Unit Clock Enable */
+DECL|macro|CKEN17_MSL
+mdefine_line|#define CKEN17_MSL&t;(1 &lt;&lt; 17)&t;/* MSL Unit Clock Enable */
 DECL|macro|CKEN16_LCD
 mdefine_line|#define CKEN16_LCD&t;(1 &lt;&lt; 16)&t;/* LCD Unit Clock Enable */
+DECL|macro|CKEN15_PWRI2C
+mdefine_line|#define CKEN15_PWRI2C&t;(1 &lt;&lt; 15)&t;/* PWR I2C Unit Clock Enable */
 DECL|macro|CKEN14_I2C
 mdefine_line|#define CKEN14_I2C&t;(1 &lt;&lt; 14)&t;/* I2C Unit Clock Enable */
 DECL|macro|CKEN13_FICP
@@ -1885,6 +2546,10 @@ DECL|macro|CKEN12_MMC
 mdefine_line|#define CKEN12_MMC&t;(1 &lt;&lt; 12)&t;/* MMC Unit Clock Enable */
 DECL|macro|CKEN11_USB
 mdefine_line|#define CKEN11_USB&t;(1 &lt;&lt; 11)&t;/* USB Unit Clock Enable */
+DECL|macro|CKEN10_USBHOST
+mdefine_line|#define CKEN10_USBHOST&t;(1 &lt;&lt; 10)&t;/* USB Host Unit Clock Enable */
+DECL|macro|CKEN9_OSTIMER
+mdefine_line|#define CKEN9_OSTIMER&t;(1 &lt;&lt; 9)&t;/* OS Timer Unit Clock Enable */
 DECL|macro|CKEN8_I2S
 mdefine_line|#define CKEN8_I2S&t;(1 &lt;&lt; 8)&t;/* I2S Unit Clock Enable */
 DECL|macro|CKEN7_BTUART
@@ -1893,8 +2558,12 @@ DECL|macro|CKEN6_FFUART
 mdefine_line|#define CKEN6_FFUART&t;(1 &lt;&lt; 6)&t;/* FFUART Unit Clock Enable */
 DECL|macro|CKEN5_STUART
 mdefine_line|#define CKEN5_STUART&t;(1 &lt;&lt; 5)&t;/* STUART Unit Clock Enable */
+DECL|macro|CKEN4_SSP3
+mdefine_line|#define CKEN4_SSP3&t;(1 &lt;&lt; 4)&t;/* SSP3 Unit Clock Enable */
 DECL|macro|CKEN3_SSP
 mdefine_line|#define CKEN3_SSP&t;(1 &lt;&lt; 3)&t;/* SSP Unit Clock Enable */
+DECL|macro|CKEN3_SSP2
+mdefine_line|#define CKEN3_SSP2&t;(1 &lt;&lt; 3)&t;/* SSP2 Unit Clock Enable */
 DECL|macro|CKEN2_AC97
 mdefine_line|#define CKEN2_AC97&t;(1 &lt;&lt; 2)&t;/* AC97 Unit Clock Enable */
 DECL|macro|CKEN1_PWM1
@@ -2203,4 +2872,450 @@ DECL|macro|MDREFR_K0RUN
 mdefine_line|#define MDREFR_K0RUN&t;(1 &lt;&lt; 13)&t;/* SDCLK0 Run Control/Status */
 DECL|macro|MDREFR_E0PIN
 mdefine_line|#define MDREFR_E0PIN&t;(1 &lt;&lt; 12)&t;/* SDCKE0 Level Control/Status */
+macro_line|#ifdef CONFIG_PXA27x
+multiline_comment|/*&n; * Keypad&n; */
+DECL|macro|KPC
+mdefine_line|#define KPC             __REG(0x41500000) /* Keypad Interface Control register */
+DECL|macro|KPDK
+mdefine_line|#define KPDK            __REG(0x41500008) /* Keypad Interface Direct Key register */
+DECL|macro|KPREC
+mdefine_line|#define KPREC           __REG(0x41500010) /* Keypad Interface Rotary Encoder register */
+DECL|macro|KPMK
+mdefine_line|#define KPMK            __REG(0x41500018) /* Keypad Interface Matrix Key register */
+DECL|macro|KPAS
+mdefine_line|#define KPAS            __REG(0x41500020) /* Keypad Interface Automatic Scan register */
+DECL|macro|KPASMKP0
+mdefine_line|#define KPASMKP0        __REG(0x41500028) /* Keypad Interface Automatic Scan Multiple Key Presser register 0 */
+DECL|macro|KPASMKP1
+mdefine_line|#define KPASMKP1        __REG(0x41500030) /* Keypad Interface Automatic Scan Multiple Key Presser register 1 */
+DECL|macro|KPASMKP2
+mdefine_line|#define KPASMKP2        __REG(0x41500038) /* Keypad Interface Automatic Scan Multiple Key Presser register 2 */
+DECL|macro|KPASMKP3
+mdefine_line|#define KPASMKP3        __REG(0x41500040) /* Keypad Interface Automatic Scan Multiple Key Presser register 3 */
+DECL|macro|KPKDI
+mdefine_line|#define KPKDI           __REG(0x41500048) /* Keypad Interface Key Debounce Interval register */
+DECL|macro|KPC_AS
+mdefine_line|#define KPC_AS          (0x1 &lt;&lt; 30)  /* Automatic Scan bit */
+DECL|macro|KPC_ASACT
+mdefine_line|#define KPC_ASACT       (0x1 &lt;&lt; 29)  /* Automatic Scan on Activity */
+DECL|macro|KPC_MI
+mdefine_line|#define KPC_MI          (0x1 &lt;&lt; 22)  /* Matrix interrupt bit */
+DECL|macro|KPC_IMKP
+mdefine_line|#define KPC_IMKP        (0x1 &lt;&lt; 21)  /* Ignore Multiple Key Press */
+DECL|macro|KPC_MS7
+mdefine_line|#define KPC_MS7         (0x1 &lt;&lt; 20)  /* Matrix scan line 7 */
+DECL|macro|KPC_MS6
+mdefine_line|#define KPC_MS6         (0x1 &lt;&lt; 19)  /* Matrix scan line 6 */
+DECL|macro|KPC_MS5
+mdefine_line|#define KPC_MS5         (0x1 &lt;&lt; 18)  /* Matrix scan line 5 */
+DECL|macro|KPC_MS4
+mdefine_line|#define KPC_MS4         (0x1 &lt;&lt; 17)  /* Matrix scan line 4 */
+DECL|macro|KPC_MS3
+mdefine_line|#define KPC_MS3         (0x1 &lt;&lt; 16)  /* Matrix scan line 3 */
+DECL|macro|KPC_MS2
+mdefine_line|#define KPC_MS2         (0x1 &lt;&lt; 15)  /* Matrix scan line 2 */
+DECL|macro|KPC_MS1
+mdefine_line|#define KPC_MS1         (0x1 &lt;&lt; 14)  /* Matrix scan line 1 */
+DECL|macro|KPC_MS0
+mdefine_line|#define KPC_MS0         (0x1 &lt;&lt; 13)  /* Matrix scan line 0 */
+DECL|macro|KPC_MS_ALL
+mdefine_line|#define KPC_MS_ALL      (KPC_MS0 | KPC_MS1 | KPC_MS2 | KPC_MS3 | KPC_MS4 | KPC_MS5 | KPC_MS6 | KPC_MS7)
+DECL|macro|KPC_ME
+mdefine_line|#define KPC_ME          (0x1 &lt;&lt; 12)  /* Matrix Keypad Enable */
+DECL|macro|KPC_MIE
+mdefine_line|#define KPC_MIE         (0x1 &lt;&lt; 11)  /* Matrix Interrupt Enable */
+DECL|macro|KPC_DK_DEB_SEL
+mdefine_line|#define KPC_DK_DEB_SEL&t;(0x1 &lt;&lt;  9)  /* Direct Keypad Debounce Select */
+DECL|macro|KPC_DI
+mdefine_line|#define KPC_DI          (0x1 &lt;&lt;  5)  /* Direct key interrupt bit */
+DECL|macro|KPC_RE_ZERO_DEB
+mdefine_line|#define KPC_RE_ZERO_DEB (0x1 &lt;&lt;  4)  /* Rotary Encoder Zero Debounce */
+DECL|macro|KPC_REE1
+mdefine_line|#define KPC_REE1        (0x1 &lt;&lt;  3)  /* Rotary Encoder1 Enable */
+DECL|macro|KPC_REE0
+mdefine_line|#define KPC_REE0        (0x1 &lt;&lt;  2)  /* Rotary Encoder0 Enable */
+DECL|macro|KPC_DE
+mdefine_line|#define KPC_DE          (0x1 &lt;&lt;  1)  /* Direct Keypad Enable */
+DECL|macro|KPC_DIE
+mdefine_line|#define KPC_DIE         (0x1 &lt;&lt;  0)  /* Direct Keypad interrupt Enable */
+DECL|macro|KPDK_DKP
+mdefine_line|#define KPDK_DKP        (0x1 &lt;&lt; 31)
+DECL|macro|KPDK_DK7
+mdefine_line|#define KPDK_DK7        (0x1 &lt;&lt;  7)
+DECL|macro|KPDK_DK6
+mdefine_line|#define KPDK_DK6        (0x1 &lt;&lt;  6)
+DECL|macro|KPDK_DK5
+mdefine_line|#define KPDK_DK5        (0x1 &lt;&lt;  5)
+DECL|macro|KPDK_DK4
+mdefine_line|#define KPDK_DK4        (0x1 &lt;&lt;  4)
+DECL|macro|KPDK_DK3
+mdefine_line|#define KPDK_DK3        (0x1 &lt;&lt;  3)
+DECL|macro|KPDK_DK2
+mdefine_line|#define KPDK_DK2        (0x1 &lt;&lt;  2)
+DECL|macro|KPDK_DK1
+mdefine_line|#define KPDK_DK1        (0x1 &lt;&lt;  1)
+DECL|macro|KPDK_DK0
+mdefine_line|#define KPDK_DK0        (0x1 &lt;&lt;  0)
+DECL|macro|KPREC_OF1
+mdefine_line|#define KPREC_OF1       (0x1 &lt;&lt; 31)
+DECL|macro|kPREC_UF1
+mdefine_line|#define kPREC_UF1       (0x1 &lt;&lt; 30)
+DECL|macro|KPREC_OF0
+mdefine_line|#define KPREC_OF0       (0x1 &lt;&lt; 15)
+DECL|macro|KPREC_UF0
+mdefine_line|#define KPREC_UF0       (0x1 &lt;&lt; 14)
+DECL|macro|KPMK_MKP
+mdefine_line|#define KPMK_MKP        (0x1 &lt;&lt; 31)
+DECL|macro|KPAS_SO
+mdefine_line|#define KPAS_SO         (0x1 &lt;&lt; 31)
+DECL|macro|KPASMKPx_SO
+mdefine_line|#define KPASMKPx_SO     (0x1 &lt;&lt; 31)
+multiline_comment|/*&n; * UHC: USB Host Controller (OHCI-like) register definitions&n; */
+DECL|macro|UHC_BASE_PHYS
+mdefine_line|#define UHC_BASE_PHYS&t;(0x4C000000)
+DECL|macro|UHCREV
+mdefine_line|#define UHCREV&t;&t;__REG(0x4C000000) /* UHC HCI Spec Revision */
+DECL|macro|UHCHCON
+mdefine_line|#define UHCHCON&t;&t;__REG(0x4C000004) /* UHC Host Control Register */
+DECL|macro|UHCCOMS
+mdefine_line|#define UHCCOMS&t;&t;__REG(0x4C000008) /* UHC Command Status Register */
+DECL|macro|UHCINTS
+mdefine_line|#define UHCINTS&t;&t;__REG(0x4C00000C) /* UHC Interrupt Status Register */
+DECL|macro|UHCINTE
+mdefine_line|#define UHCINTE&t;&t;__REG(0x4C000010) /* UHC Interrupt Enable */
+DECL|macro|UHCINTD
+mdefine_line|#define UHCINTD&t;&t;__REG(0x4C000014) /* UHC Interrupt Disable */
+DECL|macro|UHCHCCA
+mdefine_line|#define UHCHCCA&t;&t;__REG(0x4C000018) /* UHC Host Controller Comm. Area */
+DECL|macro|UHCPCED
+mdefine_line|#define UHCPCED&t;&t;__REG(0x4C00001C) /* UHC Period Current Endpt Descr */
+DECL|macro|UHCCHED
+mdefine_line|#define UHCCHED&t;&t;__REG(0x4C000020) /* UHC Control Head Endpt Descr */
+DECL|macro|UHCCCED
+mdefine_line|#define UHCCCED&t;&t;__REG(0x4C000024) /* UHC Control Current Endpt Descr */
+DECL|macro|UHCBHED
+mdefine_line|#define UHCBHED&t;&t;__REG(0x4C000028) /* UHC Bulk Head Endpt Descr */
+DECL|macro|UHCBCED
+mdefine_line|#define UHCBCED&t;&t;__REG(0x4C00002C) /* UHC Bulk Current Endpt Descr */
+DECL|macro|UHCDHEAD
+mdefine_line|#define UHCDHEAD&t;__REG(0x4C000030) /* UHC Done Head */
+DECL|macro|UHCFMI
+mdefine_line|#define UHCFMI&t;&t;__REG(0x4C000034) /* UHC Frame Interval */
+DECL|macro|UHCFMR
+mdefine_line|#define UHCFMR&t;&t;__REG(0x4C000038) /* UHC Frame Remaining */
+DECL|macro|UHCFMN
+mdefine_line|#define UHCFMN&t;&t;__REG(0x4C00003C) /* UHC Frame Number */
+DECL|macro|UHCPERS
+mdefine_line|#define UHCPERS&t;&t;__REG(0x4C000040) /* UHC Periodic Start */
+DECL|macro|UHCLS
+mdefine_line|#define UHCLS&t;&t;__REG(0x4C000044) /* UHC Low Speed Threshold */
+DECL|macro|UHCRHDA
+mdefine_line|#define UHCRHDA&t;&t;__REG(0x4C000048) /* UHC Root Hub Descriptor A */
+DECL|macro|UHCRHDB
+mdefine_line|#define UHCRHDB&t;&t;__REG(0x4C00004C) /* UHC Root Hub Descriptor B */
+DECL|macro|UHCRHS
+mdefine_line|#define UHCRHS&t;&t;__REG(0x4C000050) /* UHC Root Hub Status */
+DECL|macro|UHCRHPS1
+mdefine_line|#define UHCRHPS1&t;__REG(0x4C000054) /* UHC Root Hub Port 1 Status */
+DECL|macro|UHCRHPS2
+mdefine_line|#define UHCRHPS2&t;__REG(0x4C000058) /* UHC Root Hub Port 2 Status */
+DECL|macro|UHCRHPS3
+mdefine_line|#define UHCRHPS3&t;__REG(0x4C00005C) /* UHC Root Hub Port 3 Status */
+DECL|macro|UHCSTAT
+mdefine_line|#define UHCSTAT&t;&t;__REG(0x4C000060) /* UHC Status Register */
+DECL|macro|UHCSTAT_UPS3
+mdefine_line|#define UHCSTAT_UPS3&t;(1 &lt;&lt; 16)&t;/* USB Power Sense Port3 */
+DECL|macro|UHCSTAT_SBMAI
+mdefine_line|#define UHCSTAT_SBMAI&t;(1 &lt;&lt; 15)&t;/* System Bus Master Abort Interrupt*/
+DECL|macro|UHCSTAT_SBTAI
+mdefine_line|#define UHCSTAT_SBTAI&t;(1 &lt;&lt; 14)&t;/* System Bus Target Abort Interrupt*/
+DECL|macro|UHCSTAT_UPRI
+mdefine_line|#define UHCSTAT_UPRI&t;(1 &lt;&lt; 13)&t;/* USB Port Resume Interrupt */
+DECL|macro|UHCSTAT_UPS2
+mdefine_line|#define UHCSTAT_UPS2&t;(1 &lt;&lt; 12)&t;/* USB Power Sense Port 2 */
+DECL|macro|UHCSTAT_UPS1
+mdefine_line|#define UHCSTAT_UPS1&t;(1 &lt;&lt; 11)&t;/* USB Power Sense Port 1 */
+DECL|macro|UHCSTAT_HTA
+mdefine_line|#define UHCSTAT_HTA&t;(1 &lt;&lt; 10)&t;/* HCI Target Abort */
+DECL|macro|UHCSTAT_HBA
+mdefine_line|#define UHCSTAT_HBA&t;(1 &lt;&lt; 8)&t;/* HCI Buffer Active */
+DECL|macro|UHCSTAT_RWUE
+mdefine_line|#define UHCSTAT_RWUE&t;(1 &lt;&lt; 7)&t;/* HCI Remote Wake Up Event */
+DECL|macro|UHCHR
+mdefine_line|#define UHCHR           __REG(0x4C000064) /* UHC Reset Register */
+DECL|macro|UHCHR_SSEP3
+mdefine_line|#define UHCHR_SSEP3&t;(1 &lt;&lt; 11)&t;/* Sleep Standby Enable for Port3 */
+DECL|macro|UHCHR_SSEP2
+mdefine_line|#define UHCHR_SSEP2&t;(1 &lt;&lt; 10)&t;/* Sleep Standby Enable for Port2 */
+DECL|macro|UHCHR_SSEP1
+mdefine_line|#define UHCHR_SSEP1&t;(1 &lt;&lt; 9)&t;/* Sleep Standby Enable for Port1 */
+DECL|macro|UHCHR_PCPL
+mdefine_line|#define UHCHR_PCPL&t;(1 &lt;&lt; 7)&t;/* Power control polarity low */
+DECL|macro|UHCHR_PSPL
+mdefine_line|#define UHCHR_PSPL&t;(1 &lt;&lt; 6)&t;/* Power sense polarity low */
+DECL|macro|UHCHR_SSE
+mdefine_line|#define UHCHR_SSE&t;(1 &lt;&lt; 5)&t;/* Sleep Standby Enable */
+DECL|macro|UHCHR_UIT
+mdefine_line|#define UHCHR_UIT&t;(1 &lt;&lt; 4)&t;/* USB Interrupt Test */
+DECL|macro|UHCHR_SSDC
+mdefine_line|#define UHCHR_SSDC&t;(1 &lt;&lt; 3)&t;/* Simulation Scale Down Clock */
+DECL|macro|UHCHR_CGR
+mdefine_line|#define UHCHR_CGR&t;(1 &lt;&lt; 2)&t;/* Clock Generation Reset */
+DECL|macro|UHCHR_FHR
+mdefine_line|#define UHCHR_FHR&t;(1 &lt;&lt; 1)&t;/* Force Host Controller Reset */
+DECL|macro|UHCHR_FSBIR
+mdefine_line|#define UHCHR_FSBIR&t;(1 &lt;&lt; 0)&t;/* Force System Bus Iface Reset */
+DECL|macro|UHCHIE
+mdefine_line|#define UHCHIE          __REG(0x4C000068) /* UHC Interrupt Enable Register*/
+DECL|macro|UHCHIE_UPS3IE
+mdefine_line|#define UHCHIE_UPS3IE&t;(1 &lt;&lt; 14)&t;/* Power Sense Port3 IntEn */
+DECL|macro|UHCHIE_UPRIE
+mdefine_line|#define UHCHIE_UPRIE&t;(1 &lt;&lt; 13)&t;/* Port Resume IntEn */
+DECL|macro|UHCHIE_UPS2IE
+mdefine_line|#define UHCHIE_UPS2IE&t;(1 &lt;&lt; 12)&t;/* Power Sense Port2 IntEn */
+DECL|macro|UHCHIE_UPS1IE
+mdefine_line|#define UHCHIE_UPS1IE&t;(1 &lt;&lt; 11)&t;/* Power Sense Port1 IntEn */
+DECL|macro|UHCHIE_TAIE
+mdefine_line|#define UHCHIE_TAIE&t;(1 &lt;&lt; 10)&t;/* HCI Interface Transfer Abort&n;&t;&t;&t;&t;&t;   Interrupt Enable*/
+DECL|macro|UHCHIE_HBAIE
+mdefine_line|#define UHCHIE_HBAIE&t;(1 &lt;&lt; 8)&t;/* HCI Buffer Active IntEn */
+DECL|macro|UHCHIE_RWIE
+mdefine_line|#define UHCHIE_RWIE&t;(1 &lt;&lt; 7)&t;/* Remote Wake-up IntEn */
+DECL|macro|UHCHIT
+mdefine_line|#define UHCHIT          __REG(0x4C00006C) /* UHC Interrupt Test register */
+multiline_comment|/* Camera Interface */
+DECL|macro|CICR0
+mdefine_line|#define CICR0&t;&t;__REG(0x50000000)
+DECL|macro|CICR1
+mdefine_line|#define CICR1&t;&t;__REG(0x50000004)
+DECL|macro|CICR2
+mdefine_line|#define CICR2&t;&t;__REG(0x50000008)
+DECL|macro|CICR3
+mdefine_line|#define CICR3&t;&t;__REG(0x5000000C)
+DECL|macro|CICR4
+mdefine_line|#define CICR4&t;&t;__REG(0x50000010)
+DECL|macro|CISR
+mdefine_line|#define CISR&t;&t;__REG(0x50000014)
+DECL|macro|CIFR
+mdefine_line|#define CIFR&t;&t;__REG(0x50000018)
+DECL|macro|CITOR
+mdefine_line|#define CITOR&t;&t;__REG(0x5000001C)
+DECL|macro|CIBR0
+mdefine_line|#define CIBR0&t;&t;__REG(0x50000028)
+DECL|macro|CIBR1
+mdefine_line|#define CIBR1&t;&t;__REG(0x50000030)
+DECL|macro|CIBR2
+mdefine_line|#define CIBR2&t;&t;__REG(0x50000038)
+DECL|macro|CICR0_DMAEN
+mdefine_line|#define CICR0_DMAEN&t;(1 &lt;&lt; 31)&t;/* DMA request enable */
+DECL|macro|CICR0_PAR_EN
+mdefine_line|#define CICR0_PAR_EN&t;(1 &lt;&lt; 30)&t;/* Parity enable */
+DECL|macro|CICR0_SL_CAP_EN
+mdefine_line|#define CICR0_SL_CAP_EN&t;(1 &lt;&lt; 29)&t;/* Capture enable for slave mode */
+DECL|macro|CICR0_ENB
+mdefine_line|#define CICR0_ENB&t;(1 &lt;&lt; 28)&t;/* Camera interface enable */
+DECL|macro|CICR0_DIS
+mdefine_line|#define CICR0_DIS&t;(1 &lt;&lt; 27)&t;/* Camera interface disable */
+DECL|macro|CICR0_SIM
+mdefine_line|#define CICR0_SIM&t;(0x7 &lt;&lt; 24)&t;/* Sensor interface mode mask */
+DECL|macro|CICR0_TOM
+mdefine_line|#define CICR0_TOM&t;(1 &lt;&lt; 9)&t;/* Time-out mask */
+DECL|macro|CICR0_RDAVM
+mdefine_line|#define CICR0_RDAVM&t;(1 &lt;&lt; 8)&t;/* Receive-data-available mask */
+DECL|macro|CICR0_FEM
+mdefine_line|#define CICR0_FEM&t;(1 &lt;&lt; 7)&t;/* FIFO-empty mask */
+DECL|macro|CICR0_EOLM
+mdefine_line|#define CICR0_EOLM&t;(1 &lt;&lt; 6)&t;/* End-of-line mask */
+DECL|macro|CICR0_PERRM
+mdefine_line|#define CICR0_PERRM&t;(1 &lt;&lt; 5)&t;/* Parity-error mask */
+DECL|macro|CICR0_QDM
+mdefine_line|#define CICR0_QDM&t;(1 &lt;&lt; 4)&t;/* Quick-disable mask */
+DECL|macro|CICR0_CDM
+mdefine_line|#define CICR0_CDM&t;(1 &lt;&lt; 3)&t;/* Disable-done mask */
+DECL|macro|CICR0_SOFM
+mdefine_line|#define CICR0_SOFM&t;(1 &lt;&lt; 2)&t;/* Start-of-frame mask */
+DECL|macro|CICR0_EOFM
+mdefine_line|#define CICR0_EOFM&t;(1 &lt;&lt; 1)&t;/* End-of-frame mask */
+DECL|macro|CICR0_FOM
+mdefine_line|#define CICR0_FOM&t;(1 &lt;&lt; 0)&t;/* FIFO-overrun mask */
+DECL|macro|CICR1_TBIT
+mdefine_line|#define CICR1_TBIT&t;(1 &lt;&lt; 31)&t;/* Transparency bit */
+DECL|macro|CICR1_RGBT_CONV
+mdefine_line|#define CICR1_RGBT_CONV&t;(0x3 &lt;&lt; 30)&t;/* RGBT conversion mask */
+DECL|macro|CICR1_PPL
+mdefine_line|#define CICR1_PPL&t;(0x3f &lt;&lt; 15)&t;/* Pixels per line mask */
+DECL|macro|CICR1_RGB_CONV
+mdefine_line|#define CICR1_RGB_CONV&t;(0x7 &lt;&lt; 12)&t;/* RGB conversion mask */
+DECL|macro|CICR1_RGB_F
+mdefine_line|#define CICR1_RGB_F&t;(1 &lt;&lt; 11)&t;/* RGB format */
+DECL|macro|CICR1_YCBCR_F
+mdefine_line|#define CICR1_YCBCR_F&t;(1 &lt;&lt; 10)&t;/* YCbCr format */
+DECL|macro|CICR1_RGB_BPP
+mdefine_line|#define CICR1_RGB_BPP&t;(0x7 &lt;&lt; 7)&t;/* RGB bis per pixel mask */
+DECL|macro|CICR1_RAW_BPP
+mdefine_line|#define CICR1_RAW_BPP&t;(0x3 &lt;&lt; 5)&t;/* Raw bis per pixel mask */
+DECL|macro|CICR1_COLOR_SP
+mdefine_line|#define CICR1_COLOR_SP&t;(0x3 &lt;&lt; 3)&t;/* Color space mask */
+DECL|macro|CICR1_DW
+mdefine_line|#define CICR1_DW&t;(0x7 &lt;&lt; 0)&t;/* Data width mask */
+DECL|macro|CICR2_BLW
+mdefine_line|#define CICR2_BLW&t;(0xff &lt;&lt; 24)&t;/* Beginning-of-line pixel clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR2_ELW
+mdefine_line|#define CICR2_ELW&t;(0xff &lt;&lt; 16)&t;/* End-of-line pixel clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR2_HSW
+mdefine_line|#define CICR2_HSW&t;(0x3f &lt;&lt; 10)&t;/* Horizontal sync pulse width mask */
+DECL|macro|CICR2_BFPW
+mdefine_line|#define CICR2_BFPW&t;(0x3f &lt;&lt; 3)&t;/* Beginning-of-frame pixel clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR2_FSW
+mdefine_line|#define CICR2_FSW&t;(0x7 &lt;&lt; 0)&t;/* Frame stabilization&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR3_BFW
+mdefine_line|#define CICR3_BFW&t;(0xff &lt;&lt; 24)&t;/* Beginning-of-frame line clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR3_EFW
+mdefine_line|#define CICR3_EFW&t;(0xff &lt;&lt; 16)&t;/* End-of-frame line clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR3_VSW
+mdefine_line|#define CICR3_VSW&t;(0x3f &lt;&lt; 10)&t;/* Vertical sync pulse width mask */
+DECL|macro|CICR3_BFPW
+mdefine_line|#define CICR3_BFPW&t;(0x3f &lt;&lt; 3)&t;/* Beginning-of-frame pixel clock&n;&t;&t;&t;&t;&t;   wait count mask */
+DECL|macro|CICR3_LPF
+mdefine_line|#define CICR3_LPF&t;(0x3ff &lt;&lt; 0)&t;/* Lines per frame mask */
+DECL|macro|CICR4_MCLK_DLY
+mdefine_line|#define CICR4_MCLK_DLY&t;(0x3 &lt;&lt; 24)&t;/* MCLK Data Capture Delay mask */
+DECL|macro|CICR4_PCLK_EN
+mdefine_line|#define CICR4_PCLK_EN&t;(1 &lt;&lt; 23)&t;/* Pixel clock enable */
+DECL|macro|CICR4_PCP
+mdefine_line|#define CICR4_PCP&t;(1 &lt;&lt; 22)&t;/* Pixel clock polarity */
+DECL|macro|CICR4_HSP
+mdefine_line|#define CICR4_HSP&t;(1 &lt;&lt; 21)&t;/* Horizontal sync polarity */
+DECL|macro|CICR4_VSP
+mdefine_line|#define CICR4_VSP&t;(1 &lt;&lt; 20)&t;/* Vertical sync polarity */
+DECL|macro|CICR4_MCLK_EN
+mdefine_line|#define CICR4_MCLK_EN&t;(1 &lt;&lt; 19)&t;/* MCLK enable */
+DECL|macro|CICR4_FR_RATE
+mdefine_line|#define CICR4_FR_RATE&t;(0x7 &lt;&lt; 8)&t;/* Frame rate mask */
+DECL|macro|CICR4_DIV
+mdefine_line|#define CICR4_DIV&t;(0xff &lt;&lt; 0)&t;/* Clock divisor mask */
+DECL|macro|CISR_FTO
+mdefine_line|#define CISR_FTO&t;(1 &lt;&lt; 15)&t;/* FIFO time-out */
+DECL|macro|CISR_RDAV_2
+mdefine_line|#define CISR_RDAV_2&t;(1 &lt;&lt; 14)&t;/* Channel 2 receive data available */
+DECL|macro|CISR_RDAV_1
+mdefine_line|#define CISR_RDAV_1&t;(1 &lt;&lt; 13)&t;/* Channel 1 receive data available */
+DECL|macro|CISR_RDAV_0
+mdefine_line|#define CISR_RDAV_0&t;(1 &lt;&lt; 12)&t;/* Channel 0 receive data available */
+DECL|macro|CISR_FEMPTY_2
+mdefine_line|#define CISR_FEMPTY_2&t;(1 &lt;&lt; 11)&t;/* Channel 2 FIFO empty */
+DECL|macro|CISR_FEMPTY_1
+mdefine_line|#define CISR_FEMPTY_1&t;(1 &lt;&lt; 10)&t;/* Channel 1 FIFO empty */
+DECL|macro|CISR_FEMPTY_0
+mdefine_line|#define CISR_FEMPTY_0&t;(1 &lt;&lt; 9)&t;/* Channel 0 FIFO empty */
+DECL|macro|CISR_EOL
+mdefine_line|#define CISR_EOL&t;(1 &lt;&lt; 8)&t;/* End of line */
+DECL|macro|CISR_PAR_ERR
+mdefine_line|#define CISR_PAR_ERR&t;(1 &lt;&lt; 7)&t;/* Parity error */
+DECL|macro|CISR_CQD
+mdefine_line|#define CISR_CQD&t;(1 &lt;&lt; 6)&t;/* Camera interface quick disable */
+DECL|macro|CISR_SOF
+mdefine_line|#define CISR_SOF&t;(1 &lt;&lt; 5)&t;/* Start of frame */
+DECL|macro|CISR_CDD
+mdefine_line|#define CISR_CDD&t;(1 &lt;&lt; 4)&t;/* Camera interface disable done */
+DECL|macro|CISR_EOF
+mdefine_line|#define CISR_EOF&t;(1 &lt;&lt; 3)&t;/* End of frame */
+DECL|macro|CISR_IFO_2
+mdefine_line|#define CISR_IFO_2&t;(1 &lt;&lt; 2)&t;/* FIFO overrun for Channel 2 */
+DECL|macro|CISR_IFO_1
+mdefine_line|#define CISR_IFO_1&t;(1 &lt;&lt; 1)&t;/* FIFO overrun for Channel 1 */
+DECL|macro|CISR_IFO_0
+mdefine_line|#define CISR_IFO_0&t;(1 &lt;&lt; 0)&t;/* FIFO overrun for Channel 0 */
+DECL|macro|CIFR_FLVL2
+mdefine_line|#define CIFR_FLVL2&t;(0x7f &lt;&lt; 23)&t;/* FIFO 2 level mask */
+DECL|macro|CIFR_FLVL1
+mdefine_line|#define CIFR_FLVL1&t;(0x7f &lt;&lt; 16)&t;/* FIFO 1 level mask */
+DECL|macro|CIFR_FLVL0
+mdefine_line|#define CIFR_FLVL0&t;(0xff &lt;&lt; 8)&t;/* FIFO 0 level mask */
+DECL|macro|CIFR_THL_0
+mdefine_line|#define CIFR_THL_0&t;(0x3 &lt;&lt; 4)&t;/* Threshold Level for Channel 0 FIFO */
+DECL|macro|CIFR_RESET_F
+mdefine_line|#define CIFR_RESET_F&t;(1 &lt;&lt; 3)&t;/* Reset input FIFOs */
+DECL|macro|CIFR_FEN2
+mdefine_line|#define CIFR_FEN2&t;(1 &lt;&lt; 2)&t;/* FIFO enable for channel 2 */
+DECL|macro|CIFR_FEN1
+mdefine_line|#define CIFR_FEN1&t;(1 &lt;&lt; 1)&t;/* FIFO enable for channel 1 */
+DECL|macro|CIFR_FEN0
+mdefine_line|#define CIFR_FEN0&t;(1 &lt;&lt; 0)&t;/* FIFO enable for channel 0 */
+DECL|macro|SRAM_SIZE
+mdefine_line|#define SRAM_SIZE&t;&t;0x40000 /* 4x64K  */
+DECL|macro|SRAM_MEM_PHYS
+mdefine_line|#define SRAM_MEM_PHYS&t;&t;0x5C000000
+DECL|macro|IMPMCR
+mdefine_line|#define IMPMCR&t;&t;__REG(0x58000000) /* IM Power Management Control Reg */
+DECL|macro|IMPMSR
+mdefine_line|#define IMPMSR&t;&t;__REG(0x58000008) /* IM Power Management Status Reg */
+DECL|macro|IMPMCR_PC3
+mdefine_line|#define IMPMCR_PC3&t;&t;(0x3 &lt;&lt; 22) /* Bank 3 Power Control */
+DECL|macro|IMPMCR_PC3_RUN_MODE
+mdefine_line|#define IMPMCR_PC3_RUN_MODE&t;(0x0 &lt;&lt; 22) /*   Run mode */
+DECL|macro|IMPMCR_PC3_STANDBY_MODE
+mdefine_line|#define IMPMCR_PC3_STANDBY_MODE&t;(0x1 &lt;&lt; 22) /*   Standby mode */
+DECL|macro|IMPMCR_PC3_AUTO_MODE
+mdefine_line|#define IMPMCR_PC3_AUTO_MODE&t;(0x3 &lt;&lt; 22) /*   Automatically controlled */
+DECL|macro|IMPMCR_PC2
+mdefine_line|#define IMPMCR_PC2&t;&t;(0x3 &lt;&lt; 20) /* Bank 2 Power Control */
+DECL|macro|IMPMCR_PC2_RUN_MODE
+mdefine_line|#define IMPMCR_PC2_RUN_MODE&t;(0x0 &lt;&lt; 20) /*   Run mode */
+DECL|macro|IMPMCR_PC2_STANDBY_MODE
+mdefine_line|#define IMPMCR_PC2_STANDBY_MODE&t;(0x1 &lt;&lt; 20) /*   Standby mode */
+DECL|macro|IMPMCR_PC2_AUTO_MODE
+mdefine_line|#define IMPMCR_PC2_AUTO_MODE&t;(0x3 &lt;&lt; 20) /*   Automatically controlled */
+DECL|macro|IMPMCR_PC1
+mdefine_line|#define IMPMCR_PC1&t;&t;(0x3 &lt;&lt; 18) /* Bank 1 Power Control */
+DECL|macro|IMPMCR_PC1_RUN_MODE
+mdefine_line|#define IMPMCR_PC1_RUN_MODE&t;(0x0 &lt;&lt; 18) /*   Run mode */
+DECL|macro|IMPMCR_PC1_STANDBY_MODE
+mdefine_line|#define IMPMCR_PC1_STANDBY_MODE&t;(0x1 &lt;&lt; 18) /*   Standby mode */
+DECL|macro|IMPMCR_PC1_AUTO_MODE
+mdefine_line|#define IMPMCR_PC1_AUTO_MODE&t;(0x3 &lt;&lt; 18) /*   Automatically controlled */
+DECL|macro|IMPMCR_PC0
+mdefine_line|#define IMPMCR_PC0&t;&t;(0x3 &lt;&lt; 16) /* Bank 0 Power Control */
+DECL|macro|IMPMCR_PC0_RUN_MODE
+mdefine_line|#define IMPMCR_PC0_RUN_MODE&t;(0x0 &lt;&lt; 16) /*   Run mode */
+DECL|macro|IMPMCR_PC0_STANDBY_MODE
+mdefine_line|#define IMPMCR_PC0_STANDBY_MODE&t;(0x1 &lt;&lt; 16) /*   Standby mode */
+DECL|macro|IMPMCR_PC0_AUTO_MODE
+mdefine_line|#define IMPMCR_PC0_AUTO_MODE&t;(0x3 &lt;&lt; 16) /*   Automatically controlled */
+DECL|macro|IMPMCR_AW3
+mdefine_line|#define IMPMCR_AW3&t;&t;(1 &lt;&lt; 11) /* Bank 3 Automatic Wake-up enable */
+DECL|macro|IMPMCR_AW2
+mdefine_line|#define IMPMCR_AW2&t;&t;(1 &lt;&lt; 10) /* Bank 2 Automatic Wake-up enable */
+DECL|macro|IMPMCR_AW1
+mdefine_line|#define IMPMCR_AW1&t;&t;(1 &lt;&lt; 9)  /* Bank 1 Automatic Wake-up enable */
+DECL|macro|IMPMCR_AW0
+mdefine_line|#define IMPMCR_AW0&t;&t;(1 &lt;&lt; 8)  /* Bank 0 Automatic Wake-up enable */
+DECL|macro|IMPMCR_DST
+mdefine_line|#define IMPMCR_DST&t;&t;(0xFF &lt;&lt; 0) /* Delay Standby Time, ms */
+DECL|macro|IMPMSR_PS3
+mdefine_line|#define IMPMSR_PS3&t;&t;(0x3 &lt;&lt; 6) /* Bank 3 Power Status: */
+DECL|macro|IMPMSR_PS3_RUN_MODE
+mdefine_line|#define IMPMSR_PS3_RUN_MODE&t;(0x0 &lt;&lt; 6) /*    Run mode */
+DECL|macro|IMPMSR_PS3_STANDBY_MODE
+mdefine_line|#define IMPMSR_PS3_STANDBY_MODE&t;(0x1 &lt;&lt; 6) /*    Standby mode */
+DECL|macro|IMPMSR_PS2
+mdefine_line|#define IMPMSR_PS2&t;&t;(0x3 &lt;&lt; 4) /* Bank 2 Power Status: */
+DECL|macro|IMPMSR_PS2_RUN_MODE
+mdefine_line|#define IMPMSR_PS2_RUN_MODE&t;(0x0 &lt;&lt; 4) /*    Run mode */
+DECL|macro|IMPMSR_PS2_STANDBY_MODE
+mdefine_line|#define IMPMSR_PS2_STANDBY_MODE&t;(0x1 &lt;&lt; 4) /*    Standby mode */
+DECL|macro|IMPMSR_PS1
+mdefine_line|#define IMPMSR_PS1&t;&t;(0x3 &lt;&lt; 2) /* Bank 1 Power Status: */
+DECL|macro|IMPMSR_PS1_RUN_MODE
+mdefine_line|#define IMPMSR_PS1_RUN_MODE&t;(0x0 &lt;&lt; 2) /*    Run mode */
+DECL|macro|IMPMSR_PS1_STANDBY_MODE
+mdefine_line|#define IMPMSR_PS1_STANDBY_MODE&t;(0x1 &lt;&lt; 2) /*    Standby mode */
+DECL|macro|IMPMSR_PS0
+mdefine_line|#define IMPMSR_PS0&t;&t;(0x3 &lt;&lt; 0) /* Bank 0 Power Status: */
+DECL|macro|IMPMSR_PS0_RUN_MODE
+mdefine_line|#define IMPMSR_PS0_RUN_MODE&t;(0x0 &lt;&lt; 0) /*    Run mode */
+DECL|macro|IMPMSR_PS0_STANDBY_MODE
+mdefine_line|#define IMPMSR_PS0_STANDBY_MODE&t;(0x1 &lt;&lt; 0) /*    Standby mode */
+macro_line|#endif
+macro_line|#endif
 eof

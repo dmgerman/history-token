@@ -501,7 +501,7 @@ c_func
 id|pxa_gpio_mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Note that 0xfffe0000-0xffffffff is reserved for the vector table and&n; * cache flush area.&n; */
+multiline_comment|/*&n; * Intel PXA2xx internal register mapping.&n; *&n; * Note 1: not all PXA2xx variants implement all those addresses.&n; *&n; * Note 2: virtual 0xfffe0000-0xffffffff is reserved for the vector table&n; *         and cache flush area.&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -514,40 +514,18 @@ op_assign
 (brace
 multiline_comment|/* virtual     physical    length      type */
 (brace
-l_int|0xf6000000
-comma
-l_int|0x20000000
-comma
-l_int|0x01000000
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* PCMCIA0 IO */
-(brace
-l_int|0xf7000000
-comma
-l_int|0x30000000
-comma
-l_int|0x01000000
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* PCMCIA1 IO */
-(brace
-l_int|0xf8000000
+l_int|0xf2000000
 comma
 l_int|0x40000000
 comma
-l_int|0x01400000
+l_int|0x01800000
 comma
 id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Devs */
 (brace
-l_int|0xfa000000
+l_int|0xf4000000
 comma
 l_int|0x44000000
 comma
@@ -558,7 +536,7 @@ id|MT_DEVICE
 comma
 multiline_comment|/* LCD */
 (brace
-l_int|0xfc000000
+l_int|0xf6000000
 comma
 l_int|0x48000000
 comma
@@ -568,6 +546,39 @@ id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Mem Ctl */
+(brace
+l_int|0xf8000000
+comma
+l_int|0x4c000000
+comma
+l_int|0x00100000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* USB host */
+(brace
+l_int|0xfa000000
+comma
+l_int|0x50000000
+comma
+l_int|0x00100000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* Camera */
+(brace
+l_int|0xfe000000
+comma
+l_int|0x58000000
+comma
+l_int|0x00100000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* IMem ctl */
 (brace
 l_int|0xff000000
 comma
