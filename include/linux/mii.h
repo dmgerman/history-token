@@ -336,11 +336,6 @@ id|generic_mii_ioctl
 c_func
 (paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
 id|mii_if_info
 op_star
 id|mii_if

@@ -1075,11 +1075,6 @@ id|generic_mii_ioctl
 c_func
 (paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
 id|mii_if_info
 op_star
 id|mii_if
@@ -1136,7 +1131,7 @@ op_member_access_from_pointer
 id|mdio_read
 c_func
 (paren
-id|dev
+id|mii_if-&gt;dev
 comma
 id|mii_data-&gt;phy_id
 comma
@@ -1268,7 +1263,7 @@ op_member_access_from_pointer
 id|mdio_write
 c_func
 (paren
-id|dev
+id|mii_if-&gt;dev
 comma
 id|mii_data-&gt;phy_id
 comma

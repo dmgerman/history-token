@@ -7386,8 +7386,6 @@ op_assign
 id|generic_mii_ioctl
 c_func
 (paren
-id|dev
-comma
 op_amp
 id|np-&gt;mii
 comma
