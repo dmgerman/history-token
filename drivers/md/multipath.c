@@ -302,7 +302,7 @@ op_star
 id|mp_bh
 comma
 r_int
-id|uptodate
+id|err
 )paren
 (brace
 r_struct
@@ -329,13 +329,7 @@ id|bio
 comma
 id|bio-&gt;bi_size
 comma
-id|uptodate
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|EIO
+id|err
 )paren
 suffix:semicolon
 id|mempool_free
@@ -430,7 +424,7 @@ c_func
 (paren
 id|mp_bh
 comma
-id|uptodate
+l_int|0
 )paren
 suffix:semicolon
 r_else
@@ -494,7 +488,7 @@ c_func
 (paren
 id|mp_bh
 comma
-l_int|0
+id|error
 )paren
 suffix:semicolon
 id|rdev_dec_pending
@@ -1703,7 +1697,8 @@ c_func
 (paren
 id|mp_bh
 comma
-l_int|0
+op_minus
+id|EIO
 )paren
 suffix:semicolon
 )brace
