@@ -840,7 +840,7 @@ comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp
