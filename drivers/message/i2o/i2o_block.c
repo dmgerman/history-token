@@ -1199,7 +1199,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1228,7 +1228,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * FAILed message from controller&n;&t;&t; * We increment the error count and abort it&n;&t;&t; *&n;&t;&t; * In theory this will never happen.  The I2O block class&n;&t;&t; * specification states that block devices never return&n;&t;&t; * FAILs but instead use the REQ status field...but&n;&t;&t; * better be on the safe side since no one really follows&n;&t;&t; * the spec to the book :)&n;&t;&t; */
 id|pm
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1240,9 +1240,13 @@ l_int|3
 suffix:semicolon
 id|pmsg
 op_assign
-id|c-&gt;in_queue.virt
-op_plus
+id|i2o_msg_in_to_virt
+c_func
+(paren
+id|c
+comma
 id|pm
+)paren
 suffix:semicolon
 id|req
 op_assign
@@ -1251,7 +1255,7 @@ c_func
 (paren
 id|c
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1316,7 +1320,7 @@ comma
 op_logical_neg
 id|req-&gt;errors
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1379,7 +1383,7 @@ c_func
 (paren
 id|c
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1462,7 +1466,7 @@ comma
 op_logical_neg
 id|req-&gt;errors
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1512,7 +1516,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *      Lets see what is cooking. We stuffed the&n;&t; *      request in the context.&n;&t; */
 id|st
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1573,7 +1577,7 @@ l_string|&quot;Volume has changed, waiting for acknowledgement&quot;
 suffix:semicolon
 id|err
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1596,7 +1600,7 @@ id|dev-&gt;gd-&gt;disk_name
 comma
 id|bsa_errors
 (braket
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1613,7 +1617,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1632,7 +1636,7 @@ id|KERN_ERR
 l_string|&quot; - DDM attempted %d retries&quot;
 comma
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1669,14 +1673,13 @@ c_cond
 (paren
 op_logical_neg
 id|end_that_request_chunk
-c_func
 (paren
 id|req
 comma
 op_logical_neg
 id|req-&gt;errors
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp

@@ -916,7 +916,7 @@ c_func
 (paren
 id|c
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -950,7 +950,7 @@ id|pm
 suffix:semicolon
 id|pm
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -962,9 +962,13 @@ l_int|3
 suffix:semicolon
 id|pmsg
 op_assign
-id|c-&gt;in_queue.virt
-op_plus
+id|i2o_msg_in_to_virt
+c_func
+(paren
+id|c
+comma
 id|pm
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -1169,7 +1173,7 @@ op_assign
 (paren
 id|u8
 )paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1185,7 +1189,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1204,7 +1208,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1236,7 +1240,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;SCSI abort: %08X&quot;
 comma
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1290,7 +1294,7 @@ l_int|0x06
 suffix:colon
 id|count
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -1378,7 +1382,7 @@ r_default
 suffix:colon
 id|error
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp

@@ -791,7 +791,7 @@ id|msg
 r_if
 c_cond
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -816,7 +816,7 @@ id|pm
 suffix:semicolon
 id|pm
 op_assign
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -828,9 +828,13 @@ l_int|3
 suffix:semicolon
 id|pmsg
 op_assign
-id|c-&gt;in_queue.virt
-op_plus
+id|i2o_msg_in_to_virt
+c_func
+(paren
+id|c
+comma
 id|pm
+)paren
 suffix:semicolon
 id|i2o_report_status
 c_func
@@ -860,7 +864,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
@@ -884,7 +888,7 @@ r_if
 c_cond
 (paren
 (paren
-id|readl
+id|le32_to_cpu
 c_func
 (paren
 op_amp
