@@ -4176,7 +4176,7 @@ comma
 dot
 id|sock_init
 op_assign
-id|ti113x_init
+id|ti_init
 comma
 )brace
 comma
@@ -4203,7 +4203,7 @@ comma
 dot
 id|sock_init
 op_assign
-id|ti113x_init
+id|ti_init
 comma
 )brace
 comma
@@ -4230,7 +4230,7 @@ comma
 dot
 id|sock_init
 op_assign
-id|ti1250_init
+id|ti_init
 comma
 )brace
 comma
