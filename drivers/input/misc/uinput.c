@@ -916,7 +916,7 @@ suffix:semicolon
 )brace
 DECL|function|uinput_write
 r_static
-r_int
+id|ssize_t
 id|uinput_write
 c_func
 (paren
