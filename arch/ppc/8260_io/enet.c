@@ -155,7 +155,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_enet_interrupt
 c_func
 (paren
@@ -169,7 +169,6 @@ comma
 r_struct
 id|pt_regs
 op_star
-id|regs
 )paren
 suffix:semicolon
 r_static
@@ -627,7 +626,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler.&n; * This is called from the CPM handler, not the MPC core interrupt.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|scc_enet_interrupt
 id|scc_enet_interrupt
 c_func
@@ -995,6 +994,7 @@ l_string|&quot;SCC ENET: BSY can&squot;t happen.&bslash;n&quot;
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* During a receive, the cur_rx points to the current incoming buffer.&n; * When we update through the ring, if the next incoming buffer has&n; * not been given to the system, we just set the empty indicator,&n; * effectively tossing the packet.&n; */
