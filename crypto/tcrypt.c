@@ -50,9 +50,9 @@ r_char
 op_star
 id|tvmem
 suffix:semicolon
-DECL|function|hexdump
 r_static
 r_void
+DECL|function|hexdump
 id|hexdump
 c_func
 (paren
@@ -88,9 +88,9 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|test_md5
 r_static
 r_void
+DECL|function|test_md5
 id|test_md5
 c_func
 (paren
@@ -1038,9 +1038,9 @@ id|tfm
 )paren
 suffix:semicolon
 )brace
-DECL|function|test_md4
 r_static
 r_void
+DECL|function|test_md4
 id|test_md4
 c_func
 (paren
@@ -1316,9 +1316,9 @@ id|tfm
 )paren
 suffix:semicolon
 )brace
-DECL|function|test_sha1
 r_static
 r_void
+DECL|function|test_sha1
 id|test_sha1
 c_func
 (paren
@@ -2266,8 +2266,8 @@ id|tfm
 )paren
 suffix:semicolon
 )brace
-DECL|function|test_des
 r_void
+DECL|function|test_des
 id|test_des
 c_func
 (paren
@@ -7997,8 +7997,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|test_des3_ede
 r_void
+DECL|function|test_des3_ede
 id|test_des3_ede
 c_func
 (paren
@@ -8031,7 +8031,7 @@ r_char
 op_star
 id|key
 suffix:semicolon
-multiline_comment|/*char res[8];*/
+multiline_comment|/*char res[8]; */
 r_struct
 id|des_tv
 op_star
@@ -8620,9 +8620,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|do_test
 r_static
 r_void
+DECL|function|do_test
 id|do_test
 c_func
 (paren
@@ -8728,10 +8728,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|init
 r_static
 r_int
 id|__init
+DECL|function|init
 id|init
 c_func
 (paren

@@ -574,7 +574,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * Transform user interface.&n; */
-multiline_comment|/*&n; * crypto_alloc_tfm() will first attempt to locate an already loaded algorithm.&n; * If that fails and the kernel supports dynamically loadable modules, it&n; * will then attempt to load a module of the same name or alias.  A refcount&n; * is grabbed on the algorithm which is then associated with the new transform.&n; */
+multiline_comment|/*&n; * crypto_alloc_tfm() will first attempt to locate an already loaded algorithm.&n; * If that fails and the kernel supports dynamically loadable modules, it&n; * will then attempt to load a module of the same name or alias.  A refcount&n; * is grabbed on the algorithm which is then associated with the new transform.&n; *&n; * crypto_free_tfm() frees up the transform and any associated resources,&n; * then drops the refcount on the associated algorithm.&n; */
 r_struct
 id|crypto_tfm
 op_star

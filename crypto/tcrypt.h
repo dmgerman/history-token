@@ -265,7 +265,8 @@ l_int|0xe4
 )brace
 comma
 (brace
-l_string|&quot;12345678901234567890123456789012345678901234567890123456789012345678901234567890&quot;
+l_string|&quot;123456789012345678901234567890123456789012345678901234567890123&quot;
+l_string|&quot;45678901234567890&quot;
 comma
 (brace
 l_int|0xe3
@@ -1573,7 +1574,8 @@ comma
 l_int|0x00
 )brace
 comma
-l_string|&quot;Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data&quot;
+l_string|&quot;Test Using Larger Than Block-Size Key and Larger Than One &quot;
+l_string|&quot;Block-Size Data&quot;
 comma
 (brace
 l_int|0x6f
@@ -2653,7 +2655,8 @@ comma
 l_int|0x00
 )brace
 comma
-l_string|&quot;Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data&quot;
+l_string|&quot;Test Using Larger Than Block-Size Key and Larger Than One &quot;
+l_string|&quot;Block-Size Data&quot;
 comma
 (brace
 l_int|0xe8
