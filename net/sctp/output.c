@@ -1468,7 +1468,15 @@ c_cond
 op_logical_neg
 id|sp-&gt;nodelay
 op_logical_and
+id|SCTP_IP_OVERHEAD
+op_eq
+id|packet-&gt;size
+op_logical_and
 id|q-&gt;outstanding_bytes
+op_logical_and
+id|SCTP_STATE_ESTABLISHED
+op_eq
+id|asoc-&gt;state
 )paren
 (brace
 r_int

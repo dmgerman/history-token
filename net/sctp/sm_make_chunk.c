@@ -1497,7 +1497,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|asoc-&gt;rwnd
+id|asoc-&gt;a_rwnd
 )paren
 suffix:semicolon
 id|sack.num_gap_ack_blocks
