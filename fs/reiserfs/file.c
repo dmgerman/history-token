@@ -1651,6 +1651,8 @@ id|POSITION_FOUND
 suffix:semicolon
 )paren
 (brace
+id|retry
+suffix:colon
 r_if
 c_cond
 (paren
@@ -1937,8 +1939,12 @@ op_amp
 id|path
 )paren
 suffix:semicolon
-singleline_comment|// Itempos is still the same
-r_continue
+id|itempos
+op_assign
+id|path.pos_in_item
+suffix:semicolon
+r_goto
+id|retry
 suffix:semicolon
 )brace
 id|modifying_this_item
@@ -3954,8 +3960,19 @@ id|res
 op_ne
 id|POSITION_FOUND
 )paren
+(brace
+multiline_comment|/* make sure later loops don&squot;t use this item */
+id|itembuf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|item
+op_assign
+l_int|NULL
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 multiline_comment|/* Update information about current indirect item */
 id|itembuf
 op_assign
