@@ -2489,17 +2489,6 @@ id|bdi
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bdi_write_congested
-c_func
-(paren
-id|bdi
-)paren
-)paren
-r_return
-suffix:semicolon
 id|flags
 op_or_assign
 (paren
