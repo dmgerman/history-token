@@ -1117,11 +1117,7 @@ suffix:colon
 multiline_comment|/* size in sectors, works up to 2 TB */
 id|ullval
 op_assign
-id|blkdev_size_in_bytes
-c_func
-(paren
-id|dev
-)paren
+id|bdev-&gt;bd_inode-&gt;i_size
 suffix:semicolon
 r_return
 id|put_user
@@ -1151,11 +1147,7 @@ suffix:colon
 multiline_comment|/* size in bytes */
 id|ullval
 op_assign
-id|blkdev_size_in_bytes
-c_func
-(paren
-id|dev
-)paren
+id|bdev-&gt;bd_inode-&gt;i_size
 suffix:semicolon
 r_return
 id|put_user
