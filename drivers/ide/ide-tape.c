@@ -606,18 +606,24 @@ DECL|typedef|idetape_pc_t
 id|idetape_pc_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;Packet command flag bits.&n; */
+multiline_comment|/* Set when an error is considered normal - We won&squot;t retry */
 DECL|macro|PC_ABORT
-mdefine_line|#define&t;PC_ABORT&t;&t;&t;0&t;/* Set when an error is considered normal - We won&squot;t retry */
+mdefine_line|#define&t;PC_ABORT&t;&t;&t;0
+multiline_comment|/* 1 When polling for DSC on a media access command */
 DECL|macro|PC_WAIT_FOR_DSC
-mdefine_line|#define PC_WAIT_FOR_DSC&t;&t;&t;1&t;/* 1 When polling for DSC on a media access command */
+mdefine_line|#define PC_WAIT_FOR_DSC&t;&t;&t;1
+multiline_comment|/* 1 when we prefer to use DMA if possible */
 DECL|macro|PC_DMA_RECOMMENDED
-mdefine_line|#define PC_DMA_RECOMMENDED&t;&t;2&t;/* 1 when we prefer to use DMA if possible */
+mdefine_line|#define PC_DMA_RECOMMENDED&t;&t;2
+multiline_comment|/* 1 while DMA in progress */
 DECL|macro|PC_DMA_IN_PROGRESS
-mdefine_line|#define&t;PC_DMA_IN_PROGRESS&t;&t;3&t;/* 1 while DMA in progress */
+mdefine_line|#define&t;PC_DMA_IN_PROGRESS&t;&t;3
+multiline_comment|/* 1 when encountered problem during DMA */
 DECL|macro|PC_DMA_ERROR
-mdefine_line|#define&t;PC_DMA_ERROR&t;&t;&t;4&t;/* 1 when encountered problem during DMA */
+mdefine_line|#define&t;PC_DMA_ERROR&t;&t;&t;4
+multiline_comment|/* Data direction */
 DECL|macro|PC_WRITING
-mdefine_line|#define&t;PC_WRITING&t;&t;&t;5&t;/* Data direction */
+mdefine_line|#define&t;PC_WRITING&t;&t;&t;5
 multiline_comment|/*&n; *&t;Capabilities and Mechanical Status Page&n; */
 r_typedef
 r_struct
@@ -1095,18 +1101,19 @@ op_star
 id|drive
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Since a typical character device operation requires more&n;&t; *&t;than one packet command, we provide here enough memory&n;&t; *&t;for the maximum of interconnected packet commands.&n;&t; *&t;The packet commands are stored in the circular array pc_stack.&n;&t; *&t;pc_stack_index points to the last used entry, and warps around&n;&t; *&t;to the start when we get to the last array entry.&n;&t; *&n;&t; *&t;pc points to the current processed packet command.&n;&t; *&n;&t; *&t;failed_pc points to the last failed packet command, or contains&n;&t; *&t;NULL if we do not need to retry any packet command. This is&n;&t; *&t;required since an additional packet command is needed before the&n;&t; *&t;retry, to get detailed information on what went wrong.&n;&t; */
+multiline_comment|/* Current packet command */
 DECL|member|pc
 id|idetape_pc_t
 op_star
 id|pc
 suffix:semicolon
-multiline_comment|/* Current packet command */
+multiline_comment|/* Last failed packet command */
 DECL|member|failed_pc
 id|idetape_pc_t
 op_star
 id|failed_pc
 suffix:semicolon
-multiline_comment|/* Last failed packet command */
+multiline_comment|/* Packet command stack */
 DECL|member|pc_stack
 id|idetape_pc_t
 id|pc_stack
@@ -1114,12 +1121,11 @@ id|pc_stack
 id|IDETAPE_PC_STACK
 )braket
 suffix:semicolon
-multiline_comment|/* Packet command stack */
+multiline_comment|/* Next free packet command storage space */
 DECL|member|pc_stack_index
 r_int
 id|pc_stack_index
 suffix:semicolon
-multiline_comment|/* Next free packet command storage space */
 DECL|member|rq_stack
 r_struct
 id|request
@@ -1128,11 +1134,11 @@ id|rq_stack
 id|IDETAPE_PC_STACK
 )braket
 suffix:semicolon
+multiline_comment|/* We implement a circular array */
 DECL|member|rq_stack_index
 r_int
 id|rq_stack_index
 suffix:semicolon
-multiline_comment|/* We implement a circular array */
 multiline_comment|/*&n;&t; *&t;DSC polling variables.&n;&t; *&n;&t; *&t;While polling for DSC we use postponed_rq to postpone the&n;&t; *&t;current request so that ide.c will be able to service&n;&t; *&t;pending requests on the other device. Note that at most&n;&t; *&t;we will have only one DSC (usually data transfer) request&n;&t; *&t;in the device request queue. Additional requests can be&n;&t; *&t;queued in our internal pipeline, but they will be visible&n;&t; *&t;to ide.c only one at a time.&n;&t; */
 DECL|member|postponed_rq
 r_struct
@@ -1140,47 +1146,47 @@ id|request
 op_star
 id|postponed_rq
 suffix:semicolon
+multiline_comment|/* The time in which we started polling for DSC */
 DECL|member|dsc_polling_start
 r_int
 r_int
 id|dsc_polling_start
 suffix:semicolon
-multiline_comment|/* The time in which we started polling for DSC */
+multiline_comment|/* Timer used to poll for dsc */
 DECL|member|dsc_timer
 r_struct
 id|timer_list
 id|dsc_timer
 suffix:semicolon
-multiline_comment|/* Timer used to poll for dsc */
+multiline_comment|/* Read/Write dsc polling frequency */
 DECL|member|best_dsc_rw_frequency
 r_int
 r_int
 id|best_dsc_rw_frequency
 suffix:semicolon
-multiline_comment|/* Read/Write dsc polling frequency */
+multiline_comment|/* The current polling frequency */
 DECL|member|dsc_polling_frequency
 r_int
 r_int
 id|dsc_polling_frequency
 suffix:semicolon
-multiline_comment|/* The current polling frequency */
+multiline_comment|/* Maximum waiting time */
 DECL|member|dsc_timeout
 r_int
 r_int
 id|dsc_timeout
 suffix:semicolon
-multiline_comment|/* Maximum waiting time */
 multiline_comment|/*&n;&t; *&t;Read position information&n;&t; */
 DECL|member|partition
 id|u8
 id|partition
 suffix:semicolon
+multiline_comment|/* Current block */
 DECL|member|first_frame_position
 r_int
 r_int
 id|first_frame_position
 suffix:semicolon
-multiline_comment|/* Current block */
 DECL|member|last_frame_position
 r_int
 r_int
@@ -1208,6 +1214,7 @@ r_int
 r_int
 id|minor
 suffix:semicolon
+multiline_comment|/* device name */
 DECL|member|name
 r_char
 id|name
@@ -1215,41 +1222,40 @@ id|name
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* device name */
+multiline_comment|/* Current character device data transfer direction */
 DECL|member|chrdev_direction
 id|idetape_chrdev_direction_t
 id|chrdev_direction
 suffix:semicolon
-multiline_comment|/* Current character device data transfer direction */
 multiline_comment|/*&n;&t; *&t;Device information&n;&t; */
+multiline_comment|/* Usually 512 or 1024 bytes */
 DECL|member|tape_block_size
 r_int
 r_int
 id|tape_block_size
 suffix:semicolon
-multiline_comment|/* Usually 512 or 1024 bytes */
 DECL|member|user_bs_factor
 r_int
 id|user_bs_factor
 suffix:semicolon
+multiline_comment|/* Copy of the tape&squot;s Capabilities and Mechanical Page */
 DECL|member|capabilities
 id|idetape_capabilities_page_t
 id|capabilities
 suffix:semicolon
-multiline_comment|/* Copy of the tape&squot;s Capabilities and Mechanical Page */
 multiline_comment|/*&n;&t; *&t;Active data transfer request parameters.&n;&t; *&n;&t; *&t;At most, there is only one ide-tape originated data transfer&n;&t; *&t;request in the device request queue. This allows ide.c to&n;&t; *&t;easily service requests from the other device when we&n;&t; *&t;postpone our active request. In the pipelined operation&n;&t; *&t;mode, we use our internal pipeline structure to hold&n;&t; *&t;more data requests.&n;&t; *&n;&t; *&t;The data buffer size is chosen based on the tape&squot;s&n;&t; *&t;recommendation.&n;&t; */
+multiline_comment|/* Pointer to the request which is waiting in the device request queue */
 DECL|member|active_data_request
 r_struct
 id|request
 op_star
 id|active_data_request
 suffix:semicolon
-multiline_comment|/* Pointer to the request which is waiting in the device request queue */
+multiline_comment|/* Data buffer size (chosen based on the tape&squot;s recommendation */
 DECL|member|stage_size
 r_int
 id|stage_size
 suffix:semicolon
-multiline_comment|/* Data buffer size (chosen based on the tape&squot;s recommendation */
 DECL|member|merge_stage
 id|idetape_stage_t
 op_star
@@ -1275,16 +1281,17 @@ r_int
 id|b_count
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Pipeline parameters.&n;&t; *&n;&t; *&t;To accomplish non-pipelined mode, we simply set the following&n;&t; *&t;variables to zero (or NULL, where appropriate).&n;&t; */
+multiline_comment|/* Number of currently used stages */
 DECL|member|nr_stages
 r_int
 id|nr_stages
 suffix:semicolon
-multiline_comment|/* Number of currently used stages */
+multiline_comment|/* Number of pending stages */
 DECL|member|nr_pending_stages
 r_int
 id|nr_pending_stages
 suffix:semicolon
-multiline_comment|/* Number of pending stages */
+multiline_comment|/* We will not allocate more than this number of stages */
 DECL|member|max_stages
 DECL|member|min_pipeline
 DECL|member|max_pipeline
@@ -1295,57 +1302,56 @@ id|min_pipeline
 comma
 id|max_pipeline
 suffix:semicolon
-multiline_comment|/* We will not allocate more than this number of stages */
+multiline_comment|/* The first stage which will be removed from the pipeline */
 DECL|member|first_stage
 id|idetape_stage_t
 op_star
 id|first_stage
 suffix:semicolon
-multiline_comment|/* The first stage which will be removed from the pipeline */
+multiline_comment|/* The currently active stage */
 DECL|member|active_stage
 id|idetape_stage_t
 op_star
 id|active_stage
 suffix:semicolon
-multiline_comment|/* The currently active stage */
+multiline_comment|/* Will be serviced after the currently active request */
 DECL|member|next_stage
 id|idetape_stage_t
 op_star
 id|next_stage
 suffix:semicolon
-multiline_comment|/* Will be serviced after the currently active request */
+multiline_comment|/* New requests will be added to the pipeline here */
 DECL|member|last_stage
 id|idetape_stage_t
 op_star
 id|last_stage
 suffix:semicolon
-multiline_comment|/* New requests will be added to the pipeline here */
+multiline_comment|/* Optional free stage which we can use */
 DECL|member|cache_stage
 id|idetape_stage_t
 op_star
 id|cache_stage
 suffix:semicolon
-multiline_comment|/* Optional free stage which we can use */
 DECL|member|pages_per_stage
 r_int
 id|pages_per_stage
 suffix:semicolon
+multiline_comment|/* Wasted space in each stage */
 DECL|member|excess_bh_size
 r_int
 id|excess_bh_size
 suffix:semicolon
-multiline_comment|/* Wasted space in each stage */
+multiline_comment|/* Status/Action flags: long for set_bit */
 DECL|member|flags
 r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Status/Action flags: long for set_bit */
+multiline_comment|/* protects the ide-tape queue */
 DECL|member|spinlock
 id|spinlock_t
 id|spinlock
 suffix:semicolon
-multiline_comment|/* protects the ide-tape queue */
 multiline_comment|/*&n;&t; * Measures average tape speed&n;&t; */
 DECL|member|avg_time
 r_int
@@ -1360,11 +1366,11 @@ DECL|member|avg_speed
 r_int
 id|avg_speed
 suffix:semicolon
+multiline_comment|/* last sense information */
 DECL|member|sense
 id|idetape_request_sense_result_t
 id|sense
 suffix:semicolon
-multiline_comment|/* last sense information */
 DECL|member|vendor_id
 r_char
 id|vendor_id
@@ -1390,72 +1396,73 @@ DECL|member|firmware_revision_num
 r_int
 id|firmware_revision_num
 suffix:semicolon
+multiline_comment|/* the door is currently locked */
 DECL|member|door_locked
 r_int
 id|door_locked
 suffix:semicolon
-multiline_comment|/* the door is currently locked */
 multiline_comment|/*&n;&t; * OnStream flags&n;&t; */
+multiline_comment|/* the tape is an OnStream tape */
 DECL|member|onstream
 r_int
 id|onstream
 suffix:semicolon
-multiline_comment|/* the tape is an OnStream tape */
+multiline_comment|/* OnStream raw access (32.5KB block size) */
 DECL|member|raw
 r_int
 id|raw
 suffix:semicolon
-multiline_comment|/* OnStream raw access (32.5KB block size) */
+multiline_comment|/* current number of frames in internal buffer */
 DECL|member|cur_frames
 r_int
 id|cur_frames
 suffix:semicolon
-multiline_comment|/* current number of frames in internal buffer */
+multiline_comment|/* max number of frames in internal buffer */
 DECL|member|max_frames
 r_int
 id|max_frames
 suffix:semicolon
-multiline_comment|/* max number of frames in internal buffer */
+multiline_comment|/* logical block number */
 DECL|member|logical_blk_num
 r_int
 id|logical_blk_num
 suffix:semicolon
-multiline_comment|/* logical block number */
+multiline_comment|/* write pass counter */
 DECL|member|wrt_pass_cntr
 id|__u16
 id|wrt_pass_cntr
 suffix:semicolon
-multiline_comment|/* write pass counter */
+multiline_comment|/* update frame counter */
 DECL|member|update_frame_cntr
 id|__u32
 id|update_frame_cntr
 suffix:semicolon
-multiline_comment|/* update frame counter */
 DECL|member|waiting
 r_struct
 id|completion
 op_star
 id|waiting
 suffix:semicolon
+multiline_comment|/* write error recovery active */
 DECL|member|onstream_write_error
 r_int
 id|onstream_write_error
 suffix:semicolon
-multiline_comment|/* write error recovery active */
+multiline_comment|/* header frame verified ok */
 DECL|member|header_ok
 r_int
 id|header_ok
 suffix:semicolon
-multiline_comment|/* header frame verified ok */
+multiline_comment|/* reading linux-specific media */
 DECL|member|linux_media
 r_int
 id|linux_media
 suffix:semicolon
-multiline_comment|/* reading linux-specific media */
 DECL|member|linux_media_version
 r_int
 id|linux_media_version
 suffix:semicolon
+multiline_comment|/* application signature */
 DECL|member|application_sig
 r_char
 id|application_sig
@@ -1463,7 +1470,6 @@ id|application_sig
 l_int|5
 )braket
 suffix:semicolon
-multiline_comment|/* application signature */
 DECL|member|filemark_cnt
 r_int
 id|filemark_cnt
@@ -1495,17 +1501,17 @@ r_int
 id|capacity
 suffix:semicolon
 multiline_comment|/*&n;&t; * Optimize the number of &quot;buffer filling&quot;&n;&t; * mode sense commands.&n;&t; */
+multiline_comment|/* last time in which we issued fill cmd */
 DECL|member|last_buffer_fill
 r_int
 r_int
 id|last_buffer_fill
 suffix:semicolon
-multiline_comment|/* last time in which we issued fill cmd */
+multiline_comment|/* buffer fill command requested */
 DECL|member|req_buffer_fill
 r_int
 id|req_buffer_fill
 suffix:semicolon
-multiline_comment|/* buffer fill command requested */
 DECL|member|writes_since_buffer_fill
 r_int
 id|writes_since_buffer_fill
@@ -1515,11 +1521,11 @@ r_int
 id|reads_since_buffer_fill
 suffix:semicolon
 multiline_comment|/*&n;&t; * Limit the number of times a request can&n;&t; * be postponed, to avoid an infinite postpone&n;&t; * deadlock.&n;&t; */
+multiline_comment|/* request postpone count limit */
 DECL|member|postpone_cnt
 r_int
 id|postpone_cnt
 suffix:semicolon
-multiline_comment|/* request postpone count limit */
 multiline_comment|/*&n;&t; * Measures number of frames:&n;&t; *&n;&t; * 1. written/read to/from the driver pipeline (pipeline_head).&n;&t; * 2. written/read to/from the tape buffers (idetape_bh).&n;&t; * 3. written/read by the tape to/from the media (tape_head).&n;&t; */
 DECL|member|pipeline_head
 r_int
@@ -1575,43 +1581,51 @@ r_int
 id|speed_control
 suffix:semicolon
 DECL|member|pipeline_head_speed
-DECL|member|controlled_pipeline_head_speed
-DECL|member|uncontrolled_pipeline_head_speed
 r_int
 id|pipeline_head_speed
-comma
+suffix:semicolon
+DECL|member|controlled_pipeline_head_speed
+r_int
 id|controlled_pipeline_head_speed
-comma
+suffix:semicolon
+DECL|member|uncontrolled_pipeline_head_speed
+r_int
 id|uncontrolled_pipeline_head_speed
 suffix:semicolon
 DECL|member|controlled_last_pipeline_head
-DECL|member|uncontrolled_last_pipeline_head
 r_int
 id|controlled_last_pipeline_head
-comma
+suffix:semicolon
+DECL|member|uncontrolled_last_pipeline_head
+r_int
 id|uncontrolled_last_pipeline_head
 suffix:semicolon
 DECL|member|uncontrolled_pipeline_head_time
-DECL|member|controlled_pipeline_head_time
 r_int
 r_int
 id|uncontrolled_pipeline_head_time
-comma
+suffix:semicolon
+DECL|member|controlled_pipeline_head_time
+r_int
+r_int
 id|controlled_pipeline_head_time
 suffix:semicolon
 DECL|member|controlled_previous_pipeline_head
-DECL|member|uncontrolled_previous_pipeline_head
 r_int
 id|controlled_previous_pipeline_head
-comma
+suffix:semicolon
+DECL|member|uncontrolled_previous_pipeline_head
+r_int
 id|uncontrolled_previous_pipeline_head
 suffix:semicolon
 DECL|member|controlled_previous_head_time
-DECL|member|uncontrolled_previous_head_time
 r_int
 r_int
 id|controlled_previous_head_time
-comma
+suffix:semicolon
+DECL|member|uncontrolled_previous_head_time
+r_int
+r_int
 id|uncontrolled_previous_head_time
 suffix:semicolon
 DECL|member|restart_speed_control_req
@@ -4566,6 +4580,7 @@ op_logical_neg
 id|tape-&gt;onstream
 )paren
 id|idetape_increase_max_pipeline_stages
+c_func
 (paren
 id|drive
 )paren
@@ -5306,6 +5321,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Retry operation */
 r_return
 id|idetape_retry_pc
 c_func
@@ -5313,7 +5329,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Retry operation */
 )brace
 id|pc-&gt;error
 op_assign
@@ -5353,13 +5368,13 @@ id|jiffies
 op_plus
 id|IDETAPE_DSC_MA_TIMEOUT
 suffix:semicolon
+multiline_comment|/* Allow ide.c to handle other requests */
 id|idetape_postpone_request
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Allow ide.c to handle other requests */
 r_return
 id|ide_stopped
 suffix:semicolon
@@ -5375,6 +5390,7 @@ id|tape-&gt;failed_pc
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Command finished - Call the callback function */
 r_return
 id|pc
 op_member_access_from_pointer
@@ -5384,7 +5400,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Command finished - Call the callback function */
 )brace
 r_if
 c_cond
@@ -5659,6 +5674,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
+multiline_comment|/* Write the current buffer */
 id|HWIF
 c_func
 (paren
@@ -5675,7 +5691,6 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-multiline_comment|/* Write the current buffer */
 )brace
 r_else
 (brace
@@ -5697,6 +5712,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 r_else
+multiline_comment|/* Read the current buffer */
 id|HWIF
 c_func
 (paren
@@ -5713,13 +5729,12 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-multiline_comment|/* Read the current buffer */
 )brace
+multiline_comment|/* Update the current position */
 id|pc-&gt;actually_transferred
 op_add_assign
 id|bcount.all
 suffix:semicolon
-multiline_comment|/* Update the current position */
 id|pc-&gt;current_position
 op_add_assign
 id|bcount.all
@@ -5747,6 +5762,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* And set the interrupt handler again */
 id|ide_set_handler
 c_func
 (paren
@@ -5760,12 +5776,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* And set the interrupt handler again */
 r_return
 id|ide_started
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Packet Command Interface&n; *&n; *&t;The current Packet Command is available in tape-&gt;pc, and will not&n; *&t;change until we finish handling it. Each packet command is associated&n; *&t;with a callback function that will be called when the command is&n; *&t;finished.&n; *&n; *&t;The handling will be done in three stages:&n; *&n; *&t;1.&t;idetape_issue_packet_command will send the packet command to the&n; *&t;&t;drive, and will set the interrupt handler to idetape_pc_intr.&n; *&n; *&t;2.&t;On each interrupt, idetape_pc_intr will be called. This step&n; *&t;&t;will be repeated until the device signals us that no more&n; *&t;&t;interrupts will be issued.&n; *&n; *&t;3.&t;ATAPI Tape media access commands have immediate status with a&n; *&t;&t;delayed process. In case of a successful initiation of a&n; *&t;&t;media access packet command, the DSC bit will be set when the&n; *&t;&t;actual execution of the command is finished. &n; *&t;&t;Since the tape drive will not issue an interrupt, we have to&n; *&t;&t;poll for this event. In this case, we define the request as&n; *&t;&t;&quot;low priority request&quot; by setting rq_status to&n; *&t;&t;IDETAPE_RQ_POSTPONED, &t;set a timer to poll for DSC and exit&n; *&t;&t;the driver.&n; *&n; *&t;&t;ide.c will then give higher priority to requests which&n; *&t;&t;originate from the other device, until will change rq_status&n; *&t;&t;to RQ_ACTIVE.&n; *&n; *&t;4.&t;When the packet command is finished, it will be checked for errors.&n; *&n; *&t;5.&t;In case an error was found, we queue a request sense packet command&n; *&t;&t;in front of the request queue and retry the operation up to&n; *&t;&t;IDETAPE_MAX_PC_RETRIES times.&n; *&n; *&t;6.&t;In case no error was found, or we decided to give up and not&n; *&t;&t;to retry again, the callback function will be called and then&n; *&t;&t;we will handle the next request.&n; *&n; */
+multiline_comment|/*&n; *&t;Packet Command Interface&n; *&n; *&t;The current Packet Command is available in tape-&gt;pc, and will not&n; *&t;change until we finish handling it. Each packet command is associated&n; *&t;with a callback function that will be called when the command is&n; *&t;finished.&n; *&n; *&t;The handling will be done in three stages:&n; *&n; *&t;1.&t;idetape_issue_packet_command will send the packet command to the&n; *&t;&t;drive, and will set the interrupt handler to idetape_pc_intr.&n; *&n; *&t;2.&t;On each interrupt, idetape_pc_intr will be called. This step&n; *&t;&t;will be repeated until the device signals us that no more&n; *&t;&t;interrupts will be issued.&n; *&n; *&t;3.&t;ATAPI Tape media access commands have immediate status with a&n; *&t;&t;delayed process. In case of a successful initiation of a&n; *&t;&t;media access packet command, the DSC bit will be set when the&n; *&t;&t;actual execution of the command is finished. &n; *&t;&t;Since the tape drive will not issue an interrupt, we have to&n; *&t;&t;poll for this event. In this case, we define the request as&n; *&t;&t;&quot;low priority request&quot; by setting rq_status to&n; *&t;&t;IDETAPE_RQ_POSTPONED, &t;set a timer to poll for DSC and exit&n; *&t;&t;the driver.&n; *&n; *&t;&t;ide.c will then give higher priority to requests which&n; *&t;&t;originate from the other device, until will change rq_status&n; *&t;&t;to RQ_ACTIVE.&n; *&n; *&t;4.&t;When the packet command is finished, it will be checked for errors.&n; *&n; *&t;5.&t;In case an error was found, we queue a request sense packet&n; *&t;&t;command in front of the request queue and retry the operation&n; *&t;&t;up to IDETAPE_MAX_PC_RETRIES times.&n; *&n; *&t;6.&t;In case no error was found, or we decided to give up and not&n; *&t;&t;to retry again, the callback function will be called and then&n; *&t;&t;we will handle the next request.&n; *&n; */
 DECL|function|idetape_transfer_pc
 r_static
 id|ide_startstop_t
@@ -5954,6 +5969,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+multiline_comment|/* Begin DMA, if necessary */
 r_if
 c_cond
 (paren
@@ -5966,7 +5982,6 @@ op_amp
 id|pc-&gt;flags
 )paren
 )paren
-multiline_comment|/* Begin DMA, if necessary */
 (paren
 r_void
 )paren
@@ -6087,11 +6102,11 @@ id|tape-&gt;failed_pc
 op_assign
 id|pc
 suffix:semicolon
+multiline_comment|/* Set the current packet command */
 id|tape-&gt;pc
 op_assign
 id|pc
 suffix:semicolon
-multiline_comment|/* Set the current packet command */
 r_if
 c_cond
 (paren
@@ -6209,11 +6224,11 @@ id|tape-&gt;name
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Giving up */
 id|pc-&gt;error
 op_assign
 id|IDETAPE_ERROR_GENERAL
 suffix:semicolon
-multiline_comment|/* Giving up */
 )brace
 id|tape-&gt;failed_pc
 op_assign
@@ -6255,20 +6270,20 @@ macro_line|#endif /* IDETAPE_DEBUG_LOG */
 id|pc-&gt;retries
 op_increment
 suffix:semicolon
+multiline_comment|/* We haven&squot;t transferred any data yet */
 id|pc-&gt;actually_transferred
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We haven&squot;t transferred any data yet */
 id|pc-&gt;current_position
 op_assign
 id|pc-&gt;buffer
 suffix:semicolon
+multiline_comment|/* Request to transfer the entire buffer at once */
 id|bcount.all
 op_assign
 id|pc-&gt;request_transfer
 suffix:semicolon
-multiline_comment|/* Request to transfer the entire buffer at once */
 r_if
 c_cond
 (paren
@@ -7285,6 +7300,7 @@ comma
 id|tape-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* Retry operation */
 r_return
 id|idetape_retry_pc
 c_func
@@ -7292,7 +7308,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Retry operation */
 )brace
 id|pc-&gt;error
 op_assign
@@ -10350,6 +10365,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* shouldn&squot;t this be htonl ?? */
 id|aux-&gt;filemark_cnt
 op_assign
 id|ntohl
@@ -10376,7 +10392,6 @@ c_func
 id|tape-&gt;last_mark_addr
 )paren
 suffix:semicolon
-multiline_comment|/* shouldn&squot;t this be htonl ?? */
 )brace
 multiline_comment|/*&n; *&t;idetape_wait_for_request installs a completion in a pending request&n; *&t;and sleeps until it is serviced.&n; *&n; *&t;The caller should ensure that the request will not be serviced&n; *&t;before we install the completion (usually by disabling interrupts).&n; */
 DECL|function|idetape_wait_for_request
@@ -10789,7 +10804,7 @@ op_amp
 id|idetape_pc_callback
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idetape_queue_pc_tail is based on the following functions:&n; *&n; *&t;ide_do_drive_cmd from ide.c&n; *&t;cdrom_queue_request and cdrom_queue_packet_command from ide-cd.c&n; *&n; *&t;We add a special packet command request to the tail of the request queue,&n; *&t;and wait for it to be serviced.&n; *&n; *&t;This is not to be called from within the request handling part&n; *&t;of the driver ! We allocate here data in the stack, and it is valid&n; *&t;until the request is finished. This is not the case for the bottom&n; *&t;part of the driver, where we are always leaving the functions to wait&n; *&t;for an interrupt or a timer event.&n; *&n; *&t;From the bottom part of the driver, we should allocate safe memory&n; *&t;using idetape_next_pc_storage and idetape_next_rq_storage, and add&n; *&t;the request to the request list without waiting for it to be serviced !&n; *&t;In that case, we usually use idetape_queue_pc_head.&n; */
+multiline_comment|/*&n; *&t;idetape_queue_pc_tail is based on the following functions:&n; *&n; *&t;ide_do_drive_cmd from ide.c&n; *&t;cdrom_queue_request and cdrom_queue_packet_command from ide-cd.c&n; *&n; *&t;We add a special packet command request to the tail of the request&n; *&t;queue, and wait for it to be serviced.&n; *&n; *&t;This is not to be called from within the request handling part&n; *&t;of the driver ! We allocate here data in the stack, and it is valid&n; *&t;until the request is finished. This is not the case for the bottom&n; *&t;part of the driver, where we are always leaving the functions to wait&n; *&t;for an interrupt or a timer event.&n; *&n; *&t;From the bottom part of the driver, we should allocate safe memory&n; *&t;using idetape_next_pc_storage and idetape_next_rq_storage, and add&n; *&t;the request to the request list without waiting for it to be serviced !&n; *&t;In that case, we usually use idetape_queue_pc_head.&n; */
 DECL|function|__idetape_queue_pc_tail
 r_static
 r_int
@@ -13830,11 +13845,11 @@ id|rq-&gt;flags
 op_assign
 id|IDETAPE_WRITE_RQ
 suffix:semicolon
+multiline_comment|/* Doesn&squot;t actually matter - We always assume sequential access */
 id|rq-&gt;sector
 op_assign
 id|tape-&gt;first_frame_position
 suffix:semicolon
-multiline_comment|/* Doesn&squot;t actually matter - We always assume sequential access */
 id|rq-&gt;nr_sectors
 op_assign
 id|rq-&gt;current_nr_sectors
@@ -14493,6 +14508,7 @@ id|blocks
 op_assign
 id|tape-&gt;capabilities.ctl
 suffix:semicolon
+multiline_comment|/* Initialize read operation */
 r_if
 c_cond
 (paren
@@ -14501,7 +14517,6 @@ op_ne
 id|idetape_direction_read
 )paren
 (brace
-multiline_comment|/* Initialize read operation */
 r_if
 c_cond
 (paren
@@ -14511,11 +14526,13 @@ id|idetape_direction_write
 )paren
 (brace
 id|idetape_empty_write_pipeline
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_flush_tape_buffers
+c_func
 (paren
 id|drive
 )paren
@@ -14953,11 +14970,11 @@ id|position
 OL
 l_int|3080
 )paren
+multiline_comment|/* Why is this check and number ??? MM */
 id|position
 op_add_assign
 l_int|32
 suffix:semicolon
-multiline_comment|/* Why is this check and number ??? MM */
 r_if
 c_cond
 (paren
@@ -14974,7 +14991,7 @@ op_assign
 l_int|3000
 suffix:semicolon
 r_else
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * compensate for write errors that generally skip 80 frames,&n;&t;&t;&t;&t;&t; * expect around 20 read errors in a row...&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * compensate for write errors that&n;&t;&t;&t;&t;&t; * generally skip 80 frames, expect&n;&t;&t;&t;&t;&t; * around 20 read errors in a row...&n;&t;&t;&t;&t;&t; */
 id|position
 op_add_assign
 l_int|60
@@ -15005,6 +15022,7 @@ comma
 id|position
 )paren
 suffix:semicolon
+multiline_comment|/* seems to be needed to correctly position&n;&t;&t;&t;&t; * at block 3000 MM&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -15012,7 +15030,6 @@ id|position
 op_eq
 l_int|3000
 )paren
-multiline_comment|/* seems to be needed to correctly position at block 3000 MM */
 id|idetape_position_tape
 c_func
 (paren
@@ -18763,7 +18780,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Check if we reach the end of the tape. Just assume the&n;&t;&t; * whole pipeline is filled with write requests!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if we reach the end of the tape. Just assume the whole&n;&t;&t; * pipeline is filled with write requests!&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -18808,6 +18825,7 @@ id|ENOSPC
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Initialize write operation */
 r_if
 c_cond
 (paren
@@ -18816,7 +18834,6 @@ op_ne
 id|idetape_direction_write
 )paren
 (brace
-multiline_comment|/* Initialize write operation */
 r_if
 c_cond
 (paren
@@ -19235,7 +19252,9 @@ op_le
 l_int|0
 )paren
 r_return
+(paren
 id|retval
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -19289,7 +19308,9 @@ op_le
 l_int|0
 )paren
 r_return
+(paren
 id|retval
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -19354,6 +19375,7 @@ op_logical_neg
 id|tape-&gt;onstream
 )paren
 (brace
+multiline_comment|/* Write a filemark */
 id|idetape_create_write_filemark_cmd
 c_func
 (paren
@@ -19365,7 +19387,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Write a filemark */
 r_if
 c_cond
 (paren
@@ -24297,6 +24318,7 @@ suffix:semicolon
 id|capabilities-&gt;max_speed
 op_assign
 id|ntohs
+c_func
 (paren
 id|capabilities-&gt;max_speed
 )paren
@@ -24304,6 +24326,7 @@ suffix:semicolon
 id|capabilities-&gt;ctl
 op_assign
 id|ntohs
+c_func
 (paren
 id|capabilities-&gt;ctl
 )paren
@@ -24311,6 +24334,7 @@ suffix:semicolon
 id|capabilities-&gt;speed
 op_assign
 id|ntohs
+c_func
 (paren
 id|capabilities-&gt;speed
 )paren
@@ -24318,6 +24342,7 @@ suffix:semicolon
 id|capabilities-&gt;buffer_size
 op_assign
 id|ntohs
+c_func
 (paren
 id|capabilities-&gt;buffer_size
 )paren
@@ -25685,11 +25710,11 @@ id|drive-&gt;driver_data
 op_assign
 id|tape
 suffix:semicolon
+multiline_comment|/* An ATAPI device ignores DRDY */
 id|drive-&gt;ready_stat
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* An ATAPI device ignores DRDY */
 r_if
 c_cond
 (paren
@@ -26252,6 +26277,7 @@ r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|IDETAPE_BUSY
 comma
