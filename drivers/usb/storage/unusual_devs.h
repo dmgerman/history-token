@@ -1080,7 +1080,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; */
+multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; *&n; * ST818 slim drives (rev 0.02) don&squot;t need special care.&n;*/
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1090,7 +1090,7 @@ l_int|0x0702
 comma
 l_int|0x0000
 comma
-l_int|0xffff
+l_int|0x0001
 comma
 l_string|&quot;EagleTec&quot;
 comma
