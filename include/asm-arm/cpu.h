@@ -19,11 +19,6 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-DECL|member|ipi_count
-r_int
-r_int
-id|ipi_count
-suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon

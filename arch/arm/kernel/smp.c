@@ -9,14 +9,15 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * bitmask of present and online CPUs.&n; * The present bitmask indicates that the CPU is physically present.&n; * The online bitmask indicates that the CPU is up and running.&n; */
 DECL|variable|cpu_present_mask
 id|cpumask_t
@@ -34,6 +35,11 @@ id|ipi_data
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|ipi_count
+r_int
+r_int
+id|ipi_count
 suffix:semicolon
 DECL|member|bits
 r_int
@@ -792,14 +798,15 @@ id|p
 )paren
 (brace
 r_int
+r_int
 id|cpu
 suffix:semicolon
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|p
 comma
-l_string|&quot;IPI: &quot;
+l_string|&quot;IPI:&quot;
 )paren
 suffix:semicolon
 id|for_each_online_cpu
@@ -812,12 +819,12 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%10lu &quot;
+l_string|&quot; %10lu&quot;
 comma
 id|per_cpu
 c_func
 (paren
-id|cpu_data
+id|ipi_data
 comma
 id|cpu
 )paren
@@ -1052,29 +1059,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|per_cpu
-c_func
-(paren
-id|cpu_data
-comma
-id|cpu
-)paren
-dot
-id|ipi_count
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ipimask
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-)paren
-(brace
 r_struct
 id|ipi_data
 op_star
@@ -1089,6 +1073,21 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+id|ipi-&gt;ipi_count
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ipimask
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+)paren
+(brace
 r_for
 c_loop
 (paren
