@@ -128,9 +128,6 @@ suffix:semicolon
 id|u32
 id|pte
 suffix:semicolon
-id|u64
-id|addr
-suffix:semicolon
 id|num_entries
 op_assign
 id|agp_num_entries
@@ -254,7 +251,7 @@ id|j
 op_increment
 )paren
 (brace
-id|addr
+id|tmp
 op_assign
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
@@ -268,10 +265,6 @@ id|i
 comma
 id|mem-&gt;type
 )paren
-suffix:semicolon
-id|tmp
-op_assign
-id|addr
 suffix:semicolon
 id|BUG_ON
 c_func
