@@ -127,7 +127,6 @@ id|cpufreq_governor_sem
 )paren
 suffix:semicolon
 DECL|function|cpufreq_cpu_get
-r_static
 r_struct
 id|cpufreq_policy
 op_star
@@ -258,8 +257,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|cpufreq_cpu_get
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpufreq_cpu_get
+)paren
+suffix:semicolon
 DECL|function|cpufreq_cpu_put
-r_static
 r_void
 id|cpufreq_cpu_put
 c_func
@@ -284,6 +289,13 @@ id|cpufreq_driver-&gt;owner
 )paren
 suffix:semicolon
 )brace
+DECL|variable|cpufreq_cpu_put
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpufreq_cpu_put
+)paren
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                     UNIFIED DEBUG HELPERS                         *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
 multiline_comment|/* what part(s) of the CPUfreq subsystem are debugged? */
