@@ -547,7 +547,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MODULE sutff&n; */
+multiline_comment|/*&n; * MODULE stuff&n; */
 DECL|function|alsa_card_pmac_init
 r_static
 r_int
