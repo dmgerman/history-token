@@ -254,6 +254,10 @@ op_logical_and
 id|time_before
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|xtime.tv_sec
 comma
 id|next_rtc_update
