@@ -1181,7 +1181,11 @@ id|cs461x_pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|cs461x_pci_remove
+)paren
 comma
 )brace
 suffix:semicolon

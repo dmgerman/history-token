@@ -906,10 +906,6 @@ id|pci_controller
 op_star
 id|hose
 suffix:semicolon
-r_int
-r_int
-id|sg_size
-suffix:semicolon
 id|hose
 op_assign
 id|alloc_pci_controller
