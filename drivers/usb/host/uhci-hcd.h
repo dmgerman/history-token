@@ -242,7 +242,7 @@ mdefine_line|#define TD_CTRL_ANY_ERROR&t;(TD_CTRL_STALLED | TD_CTRL_DBUFERR | &b
 DECL|macro|uhci_maxerr
 mdefine_line|#define uhci_maxerr(err)&t;&t;((err) &lt;&lt; TD_CTRL_C_ERR_SHIFT)
 DECL|macro|uhci_status_bits
-mdefine_line|#define uhci_status_bits(ctrl_sts)&t;((ctrl_sts) &amp; 0xFE0000)
+mdefine_line|#define uhci_status_bits(ctrl_sts)&t;((ctrl_sts) &amp; 0xF60000)
 DECL|macro|uhci_actual_length
 mdefine_line|#define uhci_actual_length(ctrl_sts)&t;(((ctrl_sts) + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
 multiline_comment|/*&n; * for TD &lt;info&gt;: (a.k.a. Token)&n; */

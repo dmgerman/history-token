@@ -53,7 +53,6 @@ DECL|macro|EHCI_VERBOSE_DEBUG
 macro_line|#undef EHCI_VERBOSE_DEBUG
 DECL|macro|EHCI_URB_TRACE
 macro_line|#undef EHCI_URB_TRACE
-singleline_comment|// #define have_split_iso
 macro_line|#ifdef DEBUG
 DECL|macro|EHCI_STATS
 mdefine_line|#define EHCI_STATS
@@ -2184,7 +2183,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* the IO watchdog guards against hardware or driver bugs that&n;&t; * misplace IRQs, and should let us run completely without IRQs.&n;&t; */
+multiline_comment|/* the IO watchdog guards against hardware or driver bugs that&n;&t; * misplace IRQs, and should let us run completely without IRQs.&n;&t; * such lossage has been observed on both VT6202 and VT8235. &n;&t; */
 r_if
 c_cond
 (paren
@@ -2628,7 +2627,6 @@ comma
 id|mem_flags
 )paren
 suffix:semicolon
-macro_line|#ifdef have_split_iso
 r_else
 r_return
 id|sitd_submit
@@ -2640,17 +2638,6 @@ comma
 id|mem_flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|dbg
-(paren
-l_string|&quot;no split iso support yet&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-macro_line|#endif /* have_split_iso */
 )brace
 )brace
 multiline_comment|/* remove from hardware lists&n; * completions normally happen asynchronously&n; */

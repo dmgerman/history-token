@@ -3021,7 +3021,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Map status to standard result codes&n; *&n; * &lt;status&gt; is (td-&gt;status &amp; 0xFE0000) [a.k.a. uhci_status_bits(td-&gt;status)]&n; * &lt;dir_out&gt; is True for output TDs and False for input TDs.&n; */
+multiline_comment|/*&n; * Map status to standard result codes&n; *&n; * &lt;status&gt; is (td-&gt;status &amp; 0xF60000) [a.k.a. uhci_status_bits(td-&gt;status)]&n; * Note: status does not include the TD_CTRL_NAK bit.&n; * &lt;dir_out&gt; is True for output TDs and False for input TDs.&n; */
 DECL|function|uhci_map_status
 r_static
 r_int
@@ -3072,7 +3072,7 @@ id|dir_out
 )paren
 r_return
 op_minus
-id|ETIMEDOUT
+id|EPROTO
 suffix:semicolon
 r_else
 r_return
@@ -3080,18 +3080,6 @@ op_minus
 id|EILSEQ
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|TD_CTRL_NAK
-)paren
-multiline_comment|/* NAK */
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3128,20 +3116,17 @@ r_return
 op_minus
 id|EPIPE
 suffix:semicolon
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|status
 op_amp
 id|TD_CTRL_ACTIVE
 )paren
+suffix:semicolon
 multiline_comment|/* Active */
 r_return
 l_int|0
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control transfers&n; */
@@ -3258,7 +3243,7 @@ id|status
 op_or_assign
 id|TD_CTRL_LS
 suffix:semicolon
-multiline_comment|/*&n;&t; * Build the TD for the control request&n;&t; */
+multiline_comment|/*&n;&t; * Build the TD for the control request setup packet&n;&t; */
 id|td
 op_assign
 id|uhci_alloc_td
@@ -3862,7 +3847,7 @@ op_assign
 id|head-&gt;prev
 suffix:semicolon
 r_goto
-id|status_phase
+id|status_stage
 suffix:semicolon
 )brace
 id|tmp
@@ -3882,7 +3867,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* The first TD is the SETUP phase, check the status, but skip */
+multiline_comment|/* The first TD is the SETUP stage, check the status, but skip */
 multiline_comment|/*  the count */
 id|status
 op_assign
@@ -4068,7 +4053,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|status_phase
+id|status_stage
 suffix:colon
 id|td
 op_assign
@@ -4083,7 +4068,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* Control status phase */
+multiline_comment|/* Control status stage */
 id|status
 op_assign
 id|td_status
@@ -4116,6 +4101,14 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|status
+op_assign
+id|uhci_status_bits
+c_func
+(paren
+id|status
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4130,11 +4123,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|uhci_status_bits
-c_func
-(paren
 id|status
-)paren
 )paren
 r_goto
 id|td_error
@@ -5112,11 +5101,6 @@ id|urb-&gt;interval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Bulk and interrupt use common result&n; */
-DECL|macro|uhci_result_bulk
-mdefine_line|#define uhci_result_bulk uhci_result_common
-DECL|macro|uhci_result_interrupt
-mdefine_line|#define uhci_result_interrupt uhci_result_common
 multiline_comment|/*&n; * Isochronous transfers&n; */
 DECL|function|isochronous_find_limits
 r_static
@@ -6261,26 +6245,16 @@ op_amp
 id|urbp-&gt;urb_list
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|uhci-&gt;urb_list_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|uhci_destroy_urb_priv
+c_func
 (paren
 id|uhci
 comma
 id|urb
 )paren
 suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
 )brace
+r_else
 id|ret
 op_assign
 l_int|0
@@ -6383,26 +6357,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PIPE_BULK
+suffix:colon
+r_case
 id|PIPE_INTERRUPT
 suffix:colon
 id|ret
 op_assign
-id|uhci_result_interrupt
-c_func
-(paren
-id|uhci
-comma
-id|urb
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PIPE_BULK
-suffix:colon
-id|ret
-op_assign
-id|uhci_result_bulk
+id|uhci_result_common
 c_func
 (paren
 id|uhci
@@ -6883,8 +6845,6 @@ r_struct
 id|urb_priv
 op_star
 id|urbp
-op_assign
-id|urb-&gt;hcpriv
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -6894,6 +6854,20 @@ id|uhci-&gt;urb_list_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|urbp
+op_assign
+id|urb-&gt;hcpriv
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|urbp
+)paren
+multiline_comment|/* URB was never linked! */
+r_goto
+id|done
 suffix:semicolon
 id|list_del_init
 c_func
@@ -6951,6 +6925,8 @@ op_amp
 id|uhci-&gt;urb_remove_list_lock
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -7850,14 +7826,6 @@ op_star
 id|uhci
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|tmp
-comma
-op_star
-id|head
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -7865,52 +7833,30 @@ op_amp
 id|uhci-&gt;urb_remove_list_lock
 )paren
 suffix:semicolon
-id|head
-op_assign
+id|spin_lock
+c_func
+(paren
+op_amp
+id|uhci-&gt;complete_list_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Splice the urb_remove_list onto the end of the complete_list */
+id|list_splice_init
+c_func
+(paren
 op_amp
 id|uhci-&gt;urb_remove_list
-suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|tmp
-op_ne
-id|head
+comma
+id|uhci-&gt;complete_list.prev
 )paren
-(brace
-r_struct
-id|urb_priv
-op_star
-id|urbp
-op_assign
-id|list_entry
+suffix:semicolon
+id|spin_unlock
 c_func
 (paren
-id|tmp
-comma
-r_struct
-id|urb_priv
-comma
-id|urb_list
+op_amp
+id|uhci-&gt;complete_list_lock
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-id|tmp-&gt;next
-suffix:semicolon
-id|uhci_moveto_complete
-c_func
-(paren
-id|uhci
-comma
-id|urbp
-)paren
-suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -10350,10 +10296,29 @@ id|uhci-&gt;state
 op_eq
 id|UHCI_SUSPENDED
 )paren
+(brace
+multiline_comment|/*&n;&t;&t; * Some systems clear the Interrupt Enable register during&n;&t;&t; * PM suspend/resume, so reinitialize it.&n;&t;&t; */
+id|outw
+c_func
+(paren
+id|USBINTR_TIMEOUT
+op_or
+id|USBINTR_RESUME
+op_or
+id|USBINTR_IOC
+op_or
+id|USBINTR_SP
+comma
+id|uhci-&gt;io_addr
+op_plus
+id|USBINTR
+)paren
+suffix:semicolon
 id|uhci-&gt;resume_detect
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_else
 (brace
 id|reset_hc

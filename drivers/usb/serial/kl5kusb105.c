@@ -880,6 +880,9 @@ id|i
 op_increment
 )paren
 (brace
+r_int
+id|j
+suffix:semicolon
 id|priv
 op_assign
 id|kmalloc
@@ -967,15 +970,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|j
 OL
 id|NUM_URBS
 suffix:semicolon
-id|i
+id|j
 op_increment
 )paren
 (brace
@@ -994,7 +997,7 @@ id|GFP_KERNEL
 suffix:semicolon
 id|priv-&gt;write_urb_pool
 (braket
-id|i
+id|j
 )braket
 op_assign
 id|urb

@@ -407,7 +407,5 @@ DECL|macro|scsi_unlock
 mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)
 DECL|macro|scsi_lock
 mdefine_line|#define scsi_lock(host)&t;&t;spin_lock_irq(host-&gt;host_lock)
-DECL|macro|sg_address
-mdefine_line|#define sg_address(psg)&t;&t;(page_address((psg).page) + (psg).offset)
 macro_line|#endif
 eof

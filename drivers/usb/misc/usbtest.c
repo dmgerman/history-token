@@ -1737,7 +1737,7 @@ l_int|0
 op_logical_or
 id|alternate
 op_ge
-id|iface-&gt;num_altsetting
+l_int|256
 )paren
 r_return
 op_minus
@@ -1953,6 +1953,8 @@ suffix:semicolon
 r_int
 id|i
 comma
+id|alt
+comma
 id|retval
 suffix:semicolon
 multiline_comment|/* [9.2.3] if there&squot;s more than one altsetting, we need to be able to&n;&t; * set and get each one.  mostly trusts the descriptors from usbcore.&n;&t; */
@@ -1971,18 +1973,26 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* 9.2.3 constrains the range here, and Linux ensures&n;&t;&t; * they&squot;re ordered meaningfully in this array&n;&t;&t; */
-r_if
-c_cond
-(paren
+multiline_comment|/* 9.2.3 constrains the range here */
+id|alt
+op_assign
 id|iface-&gt;altsetting
 (braket
 id|i
 )braket
 dot
 id|desc.bAlternateSetting
-op_ne
-id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|alt
+OL
+l_int|0
+op_logical_or
+id|alt
+op_ge
+id|iface-&gt;num_altsetting
 )paren
 (brace
 id|dev_dbg
@@ -1994,19 +2004,8 @@ l_string|&quot;invalid alt [%d].bAltSetting = %d&bslash;n&quot;
 comma
 id|i
 comma
-id|iface-&gt;altsetting
-(braket
-id|i
-)braket
-dot
-id|desc
-dot
-id|bAlternateSetting
+id|alt
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EDOM
 suffix:semicolon
 )brace
 multiline_comment|/* [real world] get/set unimplemented if there&squot;s only one */
@@ -2028,7 +2027,7 @@ id|set_altsetting
 (paren
 id|dev
 comma
-id|i
+id|alt
 )paren
 suffix:semicolon
 r_if
@@ -2044,7 +2043,7 @@ id|iface-&gt;dev
 comma
 l_string|&quot;can&squot;t set_interface = %d, %d&bslash;n&quot;
 comma
-id|i
+id|alt
 comma
 id|retval
 )paren
@@ -2066,7 +2065,7 @@ c_cond
 (paren
 id|retval
 op_ne
-id|i
+id|alt
 )paren
 (brace
 id|dev_dbg
@@ -2076,7 +2075,7 @@ id|iface-&gt;dev
 comma
 l_string|&quot;get alt should be %d, was %d&bslash;n&quot;
 comma
-id|i
+id|alt
 comma
 id|retval
 )paren

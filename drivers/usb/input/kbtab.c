@@ -290,7 +290,6 @@ comma
 id|kbtab-&gt;y
 )paren
 suffix:semicolon
-multiline_comment|/*input_report_abs(dev, ABS_PRESSURE, kbtab-&gt;pressure);*/
 multiline_comment|/*input_report_key(dev, BTN_TOUCH , data[0] &amp; 0x01);*/
 id|input_report_key
 c_func
@@ -307,6 +306,28 @@ op_amp
 l_int|0x02
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_eq
+id|kb_pressure_click
+)paren
+(brace
+id|input_report_abs
+c_func
+(paren
+id|dev
+comma
+id|ABS_PRESSURE
+comma
+id|kbtab-&gt;pressure
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|input_report_key
 c_func
 (paren
@@ -325,6 +346,8 @@ l_int|1
 suffix:colon
 l_int|0
 )paren
+suffix:semicolon
+)brace
 suffix:semicolon
 id|input_sync
 c_func

@@ -794,6 +794,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* This entry is needed because the device reports Sub=ff */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0010
+comma
+l_int|0x0500
+comma
+l_int|0x0500
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;DSC-T1&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* Reported by wim@geeks.nl */
 id|UNUSUAL_DEV
 c_func
@@ -1205,7 +1232,7 @@ l_string|&quot;Lexar&quot;
 comma
 l_string|&quot;Jumpshot USB CF Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
 id|US_PR_JUMPSHOT
 comma
@@ -1407,30 +1434,6 @@ comma
 l_string|&quot;Minolta&quot;
 comma
 l_string|&quot;DiMAGE 7&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x400b
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DiMAGE 7i&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -2014,7 +2017,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; */
+multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * - Some cameras with idProduct=0x1001 and bcdDevice=0x1000 have&n; *   bInterfaceProtocol=0x00 (US_PR_CBI) while others have 0x01 (US_PR_CB).&n; *   So don&squot;t remove the US_PR_CB override!&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2108,6 +2111,31 @@ comma
 id|US_SC_DEVICE
 comma
 id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
+multiline_comment|/* Entry needed for flags. Moreover, all devices with this ID use&n; * bulk-only transport, but _some_ falsely report Control/Bulk instead.&n; * One example is &quot;Trumpion Digital Research MYMP3&quot;.&n; * Submitted by Bjoern Brill &lt;brill(at)fs.math.uni-frankfurt.de&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x090a
+comma
+l_int|0x1001
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Trumpion&quot;
+comma
+l_string|&quot;t33520 USB Flash Card Controller&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_BULK
 comma
 l_int|NULL
 comma
@@ -2237,33 +2265,6 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* This entry from &lt;matthias@ma-c.de&gt; in the Debian mailing list */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x0006
-comma
-l_int|0x0000
-comma
-l_int|0xffff
-comma
-l_string|&quot;Pentax&quot;
-comma
-l_string|&quot;Optio 330GS&quot;
-comma
-id|US_SC_8070
-comma
-id|US_PR_CB
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-op_or
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2272,9 +2273,9 @@ l_int|0x0a17
 comma
 l_int|0x006
 comma
-l_int|0x1000
+l_int|0x0000
 comma
-l_int|0x9009
+l_int|0xffff
 comma
 l_string|&quot;Pentax&quot;
 comma

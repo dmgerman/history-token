@@ -1057,7 +1057,7 @@ id|driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* utility to simplify dealing with string descriptors */
-multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in ISO-8859/1 characters&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
+multiline_comment|/**&n; * struct usb_string - wraps a C string and its USB id&n; * @id:the (nonzero) ID for this string&n; * @s:the string, in UTF-8 encoding&n; *&n; * If you&squot;re using usb_gadget_get_string(), use this to wrap a string&n; * together with its ID.&n; */
 DECL|struct|usb_string
 r_struct
 id|usb_string
@@ -1107,6 +1107,51 @@ comma
 id|u8
 op_star
 id|buf
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* utility to simplify managing config descriptors */
+multiline_comment|/* write vector of descriptors into buffer */
+r_int
+id|usb_descriptor_fillbuf
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* build config descriptor from single descriptor vector */
+r_int
+id|usb_gadget_config_buf
+c_func
+(paren
+r_const
+r_struct
+id|usb_config_descriptor
+op_star
+id|config
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|buflen
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+id|desc
 )paren
 suffix:semicolon
 macro_line|#endif  /* __KERNEL__ */
