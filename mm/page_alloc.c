@@ -3652,7 +3652,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu
@@ -3691,7 +3691,7 @@ id|cpu
 OL
 id|NR_CPUS
 op_logical_and
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu
