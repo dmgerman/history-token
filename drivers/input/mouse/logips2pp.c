@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Logitech PS/2++ mouse driver&n; *&n; * Copyright (c) 1999-2003 Vojtech Pavlik &lt;vojtech@suse.cz&gt;&n; * Copyright (c) 2003 Eric Wong &lt;eric@yhbt.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &quot;psmouse.h&quot;
 macro_line|#include &quot;logips2pp.h&quot;
 multiline_comment|/*&n; * Process a PS2++ or PS2T++ packet.&n; */
