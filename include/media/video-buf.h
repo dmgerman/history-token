@@ -73,6 +73,10 @@ DECL|struct|videobuf_dmabuf
 r_struct
 id|videobuf_dmabuf
 (brace
+DECL|member|magic
+id|u32
+id|magic
+suffix:semicolon
 multiline_comment|/* for userland buffer */
 DECL|member|offset
 r_int
@@ -116,6 +120,16 @@ r_int
 id|direction
 suffix:semicolon
 )brace
+suffix:semicolon
+r_void
+id|videobuf_dma_init
+c_func
+(paren
+r_struct
+id|videobuf_dmabuf
+op_star
+id|dma
+)paren
 suffix:semicolon
 r_int
 id|videobuf_dma_init_user
@@ -316,6 +330,10 @@ DECL|member|i
 r_int
 r_int
 id|i
+suffix:semicolon
+DECL|member|magic
+id|u32
+id|magic
 suffix:semicolon
 multiline_comment|/* info about the buffer */
 DECL|member|width
