@@ -2329,7 +2329,6 @@ id|check_disk_change
 )paren
 suffix:semicolon
 DECL|function|bd_set_size
-r_static
 r_void
 id|bd_set_size
 c_func
@@ -2391,6 +2390,13 @@ id|bsize
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bd_set_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bd_set_size
+)paren
+suffix:semicolon
 DECL|function|do_open
 r_static
 r_int
