@@ -8,6 +8,8 @@ multiline_comment|/*************************************************************
 DECL|macro|H8300_NE_DEFINE
 mdefine_line|#define H8300_NE_DEFINE
 macro_line|#include &lt;asm/machine-depend.h&gt;
+DECL|macro|NE2000_IRQ_VECTOR
+mdefine_line|#define NE2000_IRQ_VECTOR&t;(12 + NE2000_IRQ)
 DECL|macro|H8300_NE_DEFINE
 macro_line|#undef  H8300_NE_DEFINE
 multiline_comment|/****************************************************************************/

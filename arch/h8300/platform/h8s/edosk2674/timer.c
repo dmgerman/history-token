@@ -46,7 +46,7 @@ id|mstpcrl
 suffix:semicolon
 id|mstpcrl
 op_assign
-id|inb
+id|ctrl_inb
 c_func
 (paren
 id|MSTPCRL
@@ -58,7 +58,7 @@ op_and_assign
 op_complement
 l_int|0x01
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|mstpcrl
@@ -66,7 +66,7 @@ comma
 id|MSTPCRL
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|H8300_TIMER_COUNT_DATA
@@ -74,7 +74,7 @@ comma
 id|_8TCORA1
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x00
@@ -96,7 +96,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x40

@@ -1,7 +1,6 @@
 multiline_comment|/* AE-3068 board depend header */
 multiline_comment|/* TIMER rate define */
 macro_line|#ifdef H8300_TIMER_DEFINE
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|H8300_TIMER_COUNT_DATA
 mdefine_line|#define H8300_TIMER_COUNT_DATA 20000*10/8192
 DECL|macro|H8300_TIMER_FREQ
@@ -13,16 +12,8 @@ DECL|macro|NE2000_ADDR
 mdefine_line|#define NE2000_ADDR&t;&t;0x200000
 DECL|macro|NE2000_IRQ
 mdefine_line|#define NE2000_IRQ              5
-DECL|macro|NE2000_IRQ_VECTOR
-mdefine_line|#define NE2000_IRQ_VECTOR&t;(12 + NE2000_IRQ)
 DECL|macro|NE2000_BYTE
 mdefine_line|#define&t;NE2000_BYTE&t;&t;volatile unsigned short
-DECL|macro|IER
-mdefine_line|#define IER                     0xfee015
-DECL|macro|ISR
-mdefine_line|#define ISR&t;&t;&t;0xfee016
-DECL|macro|IRQ_MASK
-mdefine_line|#define IRQ_MASK&t;&t;(1 &lt;&lt; NE2000_IRQ)
 DECL|macro|WCRL
 mdefine_line|#define WCRL                    0xfee023
 DECL|macro|MAR0A

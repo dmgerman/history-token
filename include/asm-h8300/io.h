@@ -4,6 +4,13 @@ mdefine_line|#define _H8300_IO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/virtconvert.h&gt;
+macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
+macro_line|#include &lt;asm/regs306x.h&gt;
+macro_line|#elif defined(CONFIG_H8S2678)
+macro_line|#include &lt;asm/regs2678.h&gt;
+macro_line|#else
+macro_line|#error UNKNOWN CPU TYPE
+macro_line|#endif
 multiline_comment|/*&n; * These are for ISA/PCI shared memory _only_ and should never be used&n; * on any other type of memory, including Zorro memory. They are meant to&n; * access the bus in the bus byte order which is little-endian!.&n; *&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the m68k architecture, we just read/write the&n; * memory location directly.&n; */
 multiline_comment|/* ++roman: The assignments to temp. vars avoid that gcc sometimes generates&n; * two accesses to memory, which may be undesireable for some devices.&n; */
 multiline_comment|/*&n; * swap functions are sometimes needed to interface little-endian hardware&n; */
@@ -89,23 +96,23 @@ l_int|24
 suffix:semicolon
 )brace
 DECL|macro|readb
-mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) (addr &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) ((addr) &amp; 0x00ffffff)); __v; })
 DECL|macro|readw
-mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) ((addr) &amp; 0x00ffffff)); __v; })
 DECL|macro|readl
-mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) ((addr) &amp; 0x00ffffff)); __v; })
+DECL|macro|writeb
+mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) ((addr) &amp; 0x00ffffff)) = (b))
+DECL|macro|writew
+mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) ((addr) &amp; 0x00ffffff)) = (b))
+DECL|macro|writel
+mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) ((addr) &amp; 0x00ffffff)) = (b))
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
 DECL|macro|readw_relaxed
 mdefine_line|#define readw_relaxed(addr) readw(addr)
 DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) readl(addr)
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) (addr &amp; 0x00ffffff)) = (b))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) (addr &amp; 0x00ffffff)) = (b))
-DECL|macro|writel
-mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) (addr &amp; 0x00ffffff)) = (b))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb readb
 DECL|macro|__raw_readw
@@ -118,6 +125,45 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
+DECL|function|h8300_buswidth
+r_static
+r_inline
+r_int
+id|h8300_buswidth
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+(paren
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|ABWCR
+op_amp
+(paren
+l_int|1
+op_lshift
+(paren
+id|addr
+op_rshift
+l_int|21
+)paren
+op_amp
+l_int|7
+)paren
+)paren
+op_eq
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|io_outsb
 r_static
 r_inline
@@ -141,12 +187,26 @@ r_volatile
 r_int
 r_char
 op_star
-id|ap
+id|ap_b
 op_assign
 (paren
 r_volatile
 r_int
 r_char
+op_star
+)paren
+id|addr
+suffix:semicolon
+r_volatile
+r_int
+r_int
+op_star
+id|ap_w
+op_assign
+(paren
+r_volatile
+r_int
+r_int
 op_star
 )paren
 id|addr
@@ -163,6 +223,22 @@ op_star
 )paren
 id|buf
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|h8300_buswidth
+c_func
+(paren
+id|addr
+)paren
+op_logical_and
+(paren
+id|addr
+op_amp
+l_int|1
+)paren
+)paren
+(brace
 r_while
 c_loop
 (paren
@@ -170,12 +246,29 @@ id|len
 op_decrement
 )paren
 op_star
-id|ap
+id|ap_w
 op_assign
 op_star
 id|bp
 op_increment
 suffix:semicolon
+)brace
+r_else
+(brace
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|ap_b
+op_assign
+op_star
+id|bp
+op_increment
+suffix:semicolon
+)brace
 )brace
 DECL|function|io_outsw
 r_static
@@ -231,13 +324,9 @@ op_decrement
 op_star
 id|ap
 op_assign
-id|_swapw
-c_func
-(paren
 op_star
 id|bp
 op_increment
-)paren
 suffix:semicolon
 )brace
 DECL|function|io_outsl
@@ -294,13 +383,9 @@ op_decrement
 op_star
 id|ap
 op_assign
-id|_swapl
-c_func
-(paren
 op_star
 id|bp
 op_increment
-)paren
 suffix:semicolon
 )brace
 DECL|function|io_insb
@@ -327,14 +412,6 @@ r_int
 r_char
 op_star
 id|ap
-op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|addr
 suffix:semicolon
 r_int
 r_char
@@ -347,6 +424,42 @@ r_char
 op_star
 )paren
 id|buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|h8300_buswidth
+c_func
+(paren
+id|addr
+)paren
+)paren
+(brace
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+(paren
+id|addr
+op_xor
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|addr
 suffix:semicolon
 r_while
 c_loop
@@ -417,12 +530,8 @@ op_star
 id|bp
 op_increment
 op_assign
-id|_swapw
-c_func
-(paren
 op_star
 id|ap
-)paren
 suffix:semicolon
 )brace
 DECL|function|io_insl
@@ -480,12 +589,8 @@ op_star
 id|bp
 op_increment
 op_assign
-id|_swapl
-c_func
-(paren
 op_star
 id|ap
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;make the short names macros so specific devices&n; *&t;can override them as required&n; */
@@ -496,17 +601,17 @@ mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 DECL|macro|inb
-mdefine_line|#define inb(addr)      readb(addr)
+mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readb(addr ^ 1) &amp; 0xff:readb(addr))
 DECL|macro|inw
-mdefine_line|#define inw(addr)    readw(addr)
+mdefine_line|#define inw(addr)    _swapw(readw(addr))
 DECL|macro|inl
-mdefine_line|#define inl(addr)    readl(addr)
+mdefine_line|#define inl(addr)    _swapl(readl(addr))
 DECL|macro|outb
-mdefine_line|#define outb(x,addr) ((void) writeb(x,addr))
+mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; (addr &amp; 1))?writew(x,addr):writeb(x,addr)))
 DECL|macro|outw
-mdefine_line|#define outw(x,addr) ((void) writew(x,addr))
+mdefine_line|#define outw(x,addr) ((void) writew(_swapw(x),addr))
 DECL|macro|outl
-mdefine_line|#define outl(x,addr) ((void) writel(x,addr))
+mdefine_line|#define outl(x,addr) ((void) writel(_swapl(x),addr))
 DECL|macro|inb_p
 mdefine_line|#define inb_p(addr)    inb(addr)
 DECL|macro|inw_p
@@ -575,7 +680,7 @@ id|size
 )paren
 suffix:semicolon
 DECL|function|ioremap
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -604,7 +709,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 )brace
 DECL|function|ioremap_nocache
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -633,7 +738,7 @@ id|IOMAP_NOCACHE_SER
 suffix:semicolon
 )brace
 DECL|function|ioremap_writethrough
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -662,7 +767,7 @@ id|IOMAP_WRITETHROUGH
 suffix:semicolon
 )brace
 DECL|function|ioremap_fullcache
-r_extern
+r_static
 r_inline
 r_void
 op_star

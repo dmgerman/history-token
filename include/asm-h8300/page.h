@@ -1,12 +1,12 @@
-macro_line|#ifndef _H8300NOMMU_PAGE_H
-DECL|macro|_H8300NOMMU_PAGE_H
-mdefine_line|#define _H8300NOMMU_PAGE_H
+macro_line|#ifndef _H8300_PAGE_H
+DECL|macro|_H8300_PAGE_H
+mdefine_line|#define _H8300_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;(12)
 DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE&t;(4096)
+mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
@@ -198,5 +198,5 @@ DECL|macro|virt_addr_valid
 mdefine_line|#define&t;virt_addr_valid(kaddr)&t;(((void *)(kaddr) &gt;= (void *)PAGE_OFFSET) &amp;&amp; &bslash;&n;&t;&t;&t;&t;((void *)(kaddr) &lt; (void *)memory_end))
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _H8300NOMMU_PAGE_H */
+macro_line|#endif /* _H8300_PAGE_H */
 eof

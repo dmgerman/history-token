@@ -23,11 +23,11 @@ mdefine_line|#define __sti() asm volatile (&quot;andc #0x7f,ccr&quot;)
 DECL|macro|__cli
 mdefine_line|#define __cli() asm volatile (&quot;orc  #0x80,ccr&quot;)
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;stc ccr,r0l&bslash;n&bslash;tmov.l er0,%0&quot;:&quot;=r&quot; (x) : : &quot;er0&quot;)
+mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;stc ccr,%w0&quot;:&quot;=r&quot; (x))
 DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) &bslash;&n;       asm volatile (&quot;mov.l %0,er0&bslash;n&bslash;tldc r0l,ccr&quot;: :&quot;r&quot; (x) : &quot;er0&quot;)
+mdefine_line|#define __restore_flags(x) &bslash;&n;       asm volatile (&quot;ldc %w0,ccr&quot;: :&quot;r&quot; (x))
 DECL|macro|irqs_disabled
-mdefine_line|#define&t;irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;__save_flags(flags);&t;        &bslash;&n;&t;((flags &amp; 0x80) == 0x80);&t;&bslash;&n;})
+mdefine_line|#define&t;irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char flags;&t;&t;&bslash;&n;&t;__save_flags(flags);&t;        &bslash;&n;&t;((flags &amp; 0x80) == 0x80);&t;&bslash;&n;})
 DECL|macro|iret
 mdefine_line|#define iret() __asm__ __volatile__ (&quot;rte&quot;: : :&quot;memory&quot;, &quot;sp&quot;, &quot;cc&quot;)
 multiline_comment|/* For spinlocks etc */
