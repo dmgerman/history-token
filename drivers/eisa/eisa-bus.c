@@ -485,12 +485,6 @@ op_star
 id|edrv
 )paren
 (brace
-id|bus_remove_driver
-(paren
-op_amp
-id|edrv-&gt;driver
-)paren
-suffix:semicolon
 id|driver_unregister
 (paren
 op_amp
