@@ -412,6 +412,8 @@ DECL|macro|SetPageReserved
 mdefine_line|#define SetPageReserved(page)&t;set_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageReserved
 mdefine_line|#define ClearPageReserved(page)&t;clear_bit(PG_reserved, &amp;(page)-&gt;flags)
+DECL|macro|__ClearPageReserved
+mdefine_line|#define __ClearPageReserved(page)&t;__clear_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|SetPagePrivate
 mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|ClearPagePrivate
