@@ -10794,11 +10794,8 @@ c_cond
 id|sysctl_tcp_window_scaling
 )paren
 (brace
-id|opt_rx-&gt;wscale_ok
-op_assign
-l_int|1
-suffix:semicolon
-id|opt_rx-&gt;snd_wscale
+id|__u8
+id|snd_wscale
 op_assign
 op_star
 (paren
@@ -10807,10 +10804,14 @@ op_star
 )paren
 id|ptr
 suffix:semicolon
+id|opt_rx-&gt;wscale_ok
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 OG
 l_int|14
 )paren
@@ -10831,15 +10832,19 @@ id|KERN_INFO
 l_string|&quot;tcp_parse_options: Illegal window &quot;
 l_string|&quot;scaling value %d &gt;14 received.&bslash;n&quot;
 comma
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 )paren
 suffix:semicolon
 )brace
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 op_assign
 l_int|14
 suffix:semicolon
 )brace
+id|opt_rx-&gt;snd_wscale
+op_assign
+id|snd_wscale
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon

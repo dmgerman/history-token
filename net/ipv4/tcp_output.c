@@ -5873,6 +5873,9 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|__u8
+id|rcv_wscale
+suffix:semicolon
 multiline_comment|/* We&squot;ll fix this up when we get a response from the other end.&n;&t; * See tcp_input.c:tcp_rcv_state_process case TCP_SYN_SENT.&n;&t; */
 id|tp-&gt;tcp_header_len
 op_assign
@@ -5990,8 +5993,12 @@ comma
 id|sysctl_tcp_window_scaling
 comma
 op_amp
-id|tp-&gt;rx_opt.rcv_wscale
+id|rcv_wscale
 )paren
+suffix:semicolon
+id|tp-&gt;rx_opt.rcv_wscale
+op_assign
+id|rcv_wscale
 suffix:semicolon
 id|tp-&gt;rcv_ssthresh
 op_assign
