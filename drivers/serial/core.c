@@ -2954,7 +2954,7 @@ id|port-&gt;flags
 op_assign
 id|new_serial.flags
 op_amp
-id|UPF_FLAGS
+id|UPF_CHANGE_MASK
 suffix:semicolon
 id|port-&gt;custom_divisor
 op_assign

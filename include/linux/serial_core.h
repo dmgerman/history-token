@@ -575,8 +575,8 @@ DECL|macro|UPF_RESOURCES
 mdefine_line|#define UPF_RESOURCES&t;&t;(1 &lt;&lt; 30)
 DECL|macro|UPF_IOREMAP
 mdefine_line|#define UPF_IOREMAP&t;&t;(1 &lt;&lt; 31)
-DECL|macro|UPF_FLAGS
-mdefine_line|#define UPF_FLAGS&t;&t;(0x7fff)
+DECL|macro|UPF_CHANGE_MASK
+mdefine_line|#define UPF_CHANGE_MASK&t;&t;(0x7fff)
 DECL|macro|UPF_USR_MASK
 mdefine_line|#define UPF_USR_MASK&t;&t;(UPF_SPD_MASK|UPF_LOW_LATENCY)
 DECL|member|mctrl
@@ -836,6 +836,63 @@ op_star
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Baud rate helpers.&n; */
+r_void
+id|uart_update_timeout
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_int
+r_int
+id|cflag
+comma
+r_int
+r_int
+id|quot
+)paren
+suffix:semicolon
+r_int
+r_int
+id|uart_get_baud_rate
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_struct
+id|termios
+op_star
+id|termios
+)paren
+suffix:semicolon
+r_int
+r_int
+id|uart_get_divisor
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_struct
+id|termios
+op_star
+id|termios
+comma
+r_struct
+id|termios
+op_star
+id|old_termios
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Console helpers.&n; */
 r_struct
 id|uart_port
 op_star
@@ -908,6 +965,7 @@ r_int
 id|flow
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Port/driver registration/removal&n; */
 r_int
 id|uart_register_driver
 c_func
