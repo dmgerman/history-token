@@ -10289,6 +10289,17 @@ id|mdk_rdev_t
 op_star
 id|rdev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mddev-&gt;pers
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|rdev
 op_assign
 id|find_rdev
