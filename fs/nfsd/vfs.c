@@ -496,7 +496,7 @@ op_assign
 id|exp_get_by_name
 c_func
 (paren
-id|rqstp-&gt;rq_client
+id|exp-&gt;ex_client
 comma
 id|mnt
 comma

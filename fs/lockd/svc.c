@@ -1257,6 +1257,12 @@ l_string|&quot;lockd&quot;
 comma
 multiline_comment|/* service name */
 dot
+id|pg_class
+op_assign
+l_string|&quot;nfsd&quot;
+comma
+multiline_comment|/* share authentication with nfsd */
+dot
 id|pg_stats
 op_assign
 op_amp

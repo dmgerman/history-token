@@ -305,6 +305,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rqstp-&gt;rq_client
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rqstp-&gt;rq_vers
 OG
 l_int|2

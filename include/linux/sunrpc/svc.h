@@ -349,6 +349,12 @@ op_star
 id|pg_name
 suffix:semicolon
 multiline_comment|/* service name */
+DECL|member|pg_class
+r_char
+op_star
+id|pg_class
+suffix:semicolon
+multiline_comment|/* class name: services sharing authentication */
 DECL|member|pg_stats
 r_struct
 id|svc_stat

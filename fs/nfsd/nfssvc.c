@@ -725,16 +725,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Validate the client&squot;s address. This will also defeat&n;&t;&t; * port probes on port 2049 by unauthorized clients.&n;&t;&t; */
-id|rqstp-&gt;rq_client
-op_assign
-id|exp_getclient
-c_func
-(paren
-op_amp
-id|rqstp-&gt;rq_addr
-)paren
-suffix:semicolon
 multiline_comment|/* Process request with signals blocked.  */
 id|spin_lock_irq
 c_func
@@ -773,23 +763,6 @@ id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* Unlock export hash tables */
-r_if
-c_cond
-(paren
-id|rqstp-&gt;rq_client
-)paren
-(brace
-id|auth_domain_put
-c_func
-(paren
-id|rqstp-&gt;rq_client
-)paren
-suffix:semicolon
-id|rqstp-&gt;rq_client
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 id|exp_readunlock
 c_func
 (paren
@@ -1401,6 +1374,12 @@ op_assign
 l_string|&quot;nfsd&quot;
 comma
 multiline_comment|/* program name */
+dot
+id|pg_class
+op_assign
+l_string|&quot;nfsd&quot;
+comma
+multiline_comment|/* authentication class */
 dot
 id|pg_stats
 op_assign
