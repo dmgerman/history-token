@@ -1,4 +1,4 @@
-multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_ax25.c: sysctl interface to net AX.25 subsystem.&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/ax25 directory entry (empty =) ). [MS]&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) 1996 Mike Shaver (shaver@zeroknowledge.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -1034,7 +1034,7 @@ op_assign
 l_int|0555
 suffix:semicolon
 macro_line|#ifndef CONFIG_AX25_DAMA_SLAVE
-multiline_comment|/* &n;&t;&t; * We do not wish to have a representation of this parameter&n;&t;&t; * in /proc/sys/ when configured *not* to include the&n;&t;&t; * AX.25 DAMA slave code, do we?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We do not wish to have a representation of this parameter&n;&t;&t; * in /proc/sys/ when configured *not* to include the&n;&t;&t; * AX.25 DAMA slave code, do we?&n;&t;&t; */
 id|child
 (braket
 id|AX25_VALUES_DS_TIMEOUT

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Most of this code is based on the SDL diagrams published in the 7th&n; *&t;ARRL Computer Networking Conference papers. The diagrams have mistakes&n; *&t;in them, but are mostly correct. Before you modify the code could you&n; *&t;read the SDL diagrams as the code is not obvious and probably very&n; *&t;easy to break;&n; *&n; *&t;History&n; *&t;AX.25 028a&t;Jonathan(G4KLX)&t;New state machine based on SDL diagrams.&n; *&t;AX.25 029&t;Alan(GW4PTS)&t;Switched to KA9Q constant names.&n; *&t;&t;&t;Jonathan(G4KLX)&t;Only poll when window is full.&n; *&t;AX.25 030&t;Jonathan(G4KLX)&t;Added fragmentation to ax25_output.&n; *&t;&t;&t;&t;&t;Added support for extended AX.25.&n; *&t;AX.25 031&t;Joerg(DL1BKE)&t;Added DAMA support&n; *&t;&t;&t;Joerg(DL1BKE)&t;Modified fragmenter to fragment vanilla &n; *&t;&t;&t;&t;&t;AX.25 I-Frames. Added PACLEN parameter.&n; *&t;&t;&t;Joerg(DL1BKE)&t;Fixed a problem with buffer allocation&n; *&t;&t;&t;&t;&t;for fragments.&n; *&t;AX.25 037&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;Joerg(DL1BKE)&t;Fixed DAMA Slave mode: will work&n; *&t;&t;&t;&t;&t;on non-DAMA interfaces like AX25L2V2&n; *&t;&t;&t;&t;&t;again (this behaviour is _required_).&n; *&t;&t;&t;Joerg(DL1BKE)&t;ax25_check_iframes_acked() returns a &n; *&t;&t;&t;&t;&t;value now (for DAMA n2count handling)&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Alan Cox GW4PTS (alan@lxorguk.ukuu.org.uk)&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Joerg Reuter DL1BKE (jreuter@yaina.de)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -742,7 +742,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_AX25_DAMA_SLAVE
-multiline_comment|/* &n;&t; * A DAMA slave is _required_ to work as normal AX.25L2V2&n;&t; * if no DAMA master is available.&n;&t; */
+multiline_comment|/*&n;&t; * A DAMA slave is _required_ to work as normal AX.25L2V2&n;&t; * if no DAMA master is available.&n;&t; */
 r_case
 id|AX25_PROTO_DAMA_SLAVE
 suffix:colon
@@ -763,7 +763,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-multiline_comment|/* &n; *  This procedure is passed a buffer descriptor for an iframe. It builds&n; *  the rest of the control part of the frame and then writes it out.&n; */
+multiline_comment|/*&n; *  This procedure is passed a buffer descriptor for an iframe. It builds&n; *  the rest of the control part of the frame and then writes it out.&n; */
 DECL|function|ax25_send_iframe
 r_static
 r_void

@@ -613,7 +613,7 @@ suffix:semicolon
 r_struct
 id|sock
 op_star
-id|ax25_find_socket
+id|ax25_get_socket
 c_func
 (paren
 id|ax25_address

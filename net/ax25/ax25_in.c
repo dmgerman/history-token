@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Most of this code is based on the SDL diagrams published in the 7th&n; *&t;ARRL Computer Networking Conference papers. The diagrams have mistakes&n; *&t;in them, but are mostly correct. Before you modify the code could you&n; *&t;read the SDL diagrams as the code is not obvious and probably very&n; *&t;easy to break;&n; *&n; *&t;History&n; *&t;AX.25 028a&t;Jonathan(G4KLX)&t;New state machine based on SDL diagrams.&n; *&t;AX.25 028b&t;Jonathan(G4KLX) Extracted AX25 control block from&n; *&t;&t;&t;&t;&t;the sock structure.&n; *&t;AX.25 029&t;Alan(GW4PTS)&t;Switched to KA9Q constant names.&n; *&t;&t;&t;Jonathan(G4KLX)&t;Added IP mode registration.&n; *&t;AX.25 030&t;Jonathan(G4KLX)&t;Added AX.25 fragment reception.&n; *&t;&t;&t;&t;&t;Upgraded state machine for SABME.&n; *&t;&t;&t;&t;&t;Added arbitrary protocol id support.&n; *&t;AX.25 031&t;Joerg(DL1BKE)&t;Added DAMA support&n; *&t;&t;&t;HaJo(DD8NE)&t;Added Idle Disc Timer T5&n; *&t;&t;&t;Joerg(DL1BKE)   Renamed it to &quot;IDLE&quot; with a slightly&n; *&t;&t;&t;&t;&t;different behaviour. Fixed defrag&n; *&t;&t;&t;&t;&t;routine (I hope)&n; *&t;AX.25 032&t;Darryl(G7LED)&t;AX.25 segmentation fixed.&n; *&t;AX.25 033&t;Jonathan(G4KLX)&t;Remove auto-router.&n; *&t;&t;&t;&t;&t;Modularisation changes.&n; *&t;AX.25 035&t;Hans(PE1AYX)&t;Fixed interface to IP layer.&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Move DAMA code into own file.&n; *&t;&t;&t;Joerg(DL1BKE)&t;Fixed DAMA Slave.&n; *&t;AX.25 037&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;Thomas(DL9SAU)  Fixed missing initialization of skb-&gt;protocol.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Alan Cox GW4PTS (alan@lxorguk.ukuu.org.uk)&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Joerg Reuter DL1BKE (jreuter@yaina.de)&n; * Copyright (C) Hans-Joachim Hetscher DD8NE (dd8ne@bnv-bamberg.de)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -373,7 +373,7 @@ op_eq
 id|AX25_P_IP
 )paren
 (brace
-multiline_comment|/* working around a TCP bug to keep additional listeners &n;&t;&t; * happy. TCP re-uses the buffer and destroys the original&n;&t;&t; * content.&n;&t;&t; */
+multiline_comment|/* working around a TCP bug to keep additional listeners&n;&t;&t; * happy. TCP re-uses the buffer and destroys the original&n;&t;&t; * content.&n;&t;&t; */
 r_struct
 id|sk_buff
 op_star
@@ -714,20 +714,37 @@ op_star
 id|ptype
 )paren
 (brace
-r_struct
-id|sock
+id|ax25_address
+id|src
+comma
+id|dest
+comma
 op_star
-id|make
-suffix:semicolon
-r_struct
-id|sock
-op_star
-id|sk
+id|next_digi
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
 op_assign
 l_int|0
+comma
+id|mine
+op_assign
+l_int|0
+comma
+id|dama
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|make
+comma
+op_star
+id|sk
+comma
+op_star
+id|raw
 suffix:semicolon
 id|ax25_digi
 id|dp
@@ -738,33 +755,9 @@ id|ax25_cb
 op_star
 id|ax25
 suffix:semicolon
-id|ax25_address
-id|src
-comma
-id|dest
-suffix:semicolon
-id|ax25_address
-op_star
-id|next_digi
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ax25_dev
 op_star
 id|ax25_dev
-suffix:semicolon
-r_struct
-id|sock
-op_star
-id|raw
-suffix:semicolon
-r_int
-id|mine
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|dama
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Process the AX.25/LAPB frame.&n;&t; */
 id|skb-&gt;h.raw
@@ -967,6 +960,7 @@ id|dest
 op_ne
 l_int|NULL
 )paren
+(brace
 id|ax25_send_to_raw
 c_func
 (paren
@@ -980,6 +974,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|release_sock
+c_func
+(paren
+id|raw
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1125,13 +1126,9 @@ r_case
 id|AX25_P_TEXT
 suffix:colon
 multiline_comment|/* Now find a suitable dgram socket */
-r_if
-c_cond
-(paren
-(paren
 id|sk
 op_assign
-id|ax25_find_socket
+id|ax25_get_socket
 c_func
 (paren
 op_amp
@@ -1142,7 +1139,11 @@ id|src
 comma
 id|SOCK_DGRAM
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk
 op_ne
 l_int|NULL
 )paren
@@ -1198,6 +1199,12 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+id|release_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1285,7 +1292,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;Process the frame. If it is queued up internally it returns one otherwise we&n;&t;&t; *&t;free it immediately. This routine itself wakes the user context layers so we&n;&t;&t; *&t;do no further work&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;Process the frame. If it is queued up internally it&n;&t;&t; *&t;returns one otherwise we free it immediately. This&n;&t;&t; *&t;routine itself wakes the user context layers so we do&n;&t;&t; *&t;no further work&n;&t;&t; */
 r_if
 c_cond
 (paren
