@@ -374,16 +374,6 @@ op_assign
 id|e
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|in
-op_logical_and
-id|out
-)paren
-r_goto
-id|found
-suffix:semicolon
 r_continue
 suffix:semicolon
 id|try_iso
@@ -420,17 +410,25 @@ op_assign
 id|e
 suffix:semicolon
 )brace
+)brace
 r_if
 c_cond
+(paren
+(paren
+id|in
+op_logical_and
+id|out
+)paren
+op_logical_or
 (paren
 id|iso_in
 op_logical_and
 id|iso_out
 )paren
+)paren
 r_goto
 id|found
 suffix:semicolon
-)brace
 )brace
 r_return
 op_minus
@@ -504,7 +502,6 @@ id|USB_ENDPOINT_NUMBER_MASK
 )paren
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -592,6 +589,7 @@ comma
 r_int
 id|pipe
 comma
+r_int
 r_int
 id|bytes
 )paren
@@ -3504,7 +3502,6 @@ id|usb_interface_descriptor
 suffix:semicolon
 id|expected
 op_assign
-op_minus
 id|EPIPE
 suffix:semicolon
 r_break
@@ -3618,7 +3615,6 @@ id|usb_interface_descriptor
 suffix:semicolon
 id|expected
 op_assign
-op_minus
 id|EPIPE
 suffix:semicolon
 r_break
@@ -4211,9 +4207,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;submit/unlink fail %d&quot;
+op_amp
+id|dev-&gt;intf-&gt;dev
+comma
+l_string|&quot;submit fail %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -4253,9 +4252,12 @@ id|EBUSY
 )paren
 (brace
 multiline_comment|/* we can&squot;t unlink urbs while they&squot;re completing.&n;&t;&t; * &quot;normal&quot; drivers would prevent resubmission, but&n;&t;&t; * since we&squot;re testing unlink paths, we can&squot;t.&n;&t;&t; */
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unlink retry&quot;
+op_amp
+id|dev-&gt;intf-&gt;dev
+comma
+l_string|&quot;unlink retry&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4278,9 +4280,12 @@ id|EINPROGRESS
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;submit/unlink fail %d&quot;
+op_amp
+id|dev-&gt;intf-&gt;dev
+comma
+l_string|&quot;unlink fail %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -4304,8 +4309,39 @@ id|simple_free_urb
 id|urb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|async
+)paren
 r_return
+(paren
 id|retval
+op_ne
+op_minus
+id|ECONNRESET
+)paren
+ques
+c_cond
+op_minus
+id|ECONNRESET
+suffix:colon
+l_int|0
+suffix:semicolon
+r_else
+r_return
+(paren
+id|retval
+op_ne
+op_minus
+id|ENOENT
+)paren
+ques
+c_cond
+op_minus
+id|ENOENT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|unlink_simple
@@ -7093,9 +7129,15 @@ c_cond
 (paren
 id|retval
 )paren
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unlink reads failed, iterations left %d&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;unlink reads failed %d, &quot;
+l_string|&quot;iterations left %d&bslash;n&quot;
+comma
+id|retval
 comma
 id|i
 )paren
@@ -7165,9 +7207,15 @@ c_cond
 (paren
 id|retval
 )paren
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unlink writes failed, iterations left %d&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;unlink writes failed %d, &quot;
+l_string|&quot;iterations left %d&bslash;n&quot;
+comma
+id|retval
 comma
 id|i
 )paren
@@ -8092,8 +8140,25 @@ comma
 dot
 id|alt
 op_assign
-l_int|0
+l_int|1
 comma
+dot
+id|autoconf
+op_assign
+l_int|1
+comma
+singleline_comment|// iso and ctrl_out need autoconf
+dot
+id|ctrl_out
+op_assign
+l_int|1
+comma
+dot
+id|iso
+op_assign
+l_int|1
+comma
+singleline_comment|// iso_ep&squot;s are #8 in/out
 )brace
 suffix:semicolon
 multiline_comment|/* peripheral running Linux and &squot;zero.c&squot; test firmware, or&n; * its user-mode cousin. different versions of this use&n; * different hardware with the same vendor/product codes.&n; * host side MUST rely on the endpoint descriptors.&n; */
