@@ -5047,6 +5047,15 @@ c_func
 id|ps
 )paren
 suffix:semicolon
+id|ps-&gt;pgpgin
+op_div_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* sectors -&gt; kbytes */
+id|ps-&gt;pgpgout
+op_div_assign
+l_int|2
+suffix:semicolon
 r_return
 (paren
 r_int

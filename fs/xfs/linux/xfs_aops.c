@@ -3,7 +3,6 @@ macro_line|#include &lt;xfs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
-macro_line|#include &lt;linux/iobuf.h&gt;
 id|STATIC
 r_int
 id|delalloc_convert
