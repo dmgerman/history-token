@@ -87,7 +87,5 @@ DECL|macro|N_SD_MAJORS
 mdefine_line|#define N_SD_MAJORS&t;8
 DECL|macro|SD_MAJOR_MASK
 mdefine_line|#define SD_MAJOR_MASK&t;(N_SD_MAJORS - 1)
-DECL|macro|SD_PARTITION
-mdefine_line|#define SD_PARTITION(i)&t;&t;(((major(i) &amp; SD_MAJOR_MASK) &lt;&lt; 8) | (minor(i) &amp; 255))
 macro_line|#endif
 eof

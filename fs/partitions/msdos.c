@@ -13,7 +13,9 @@ op_star
 id|ide_xlate_1024_hook
 )paren
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 comma

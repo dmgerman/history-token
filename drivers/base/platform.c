@@ -108,7 +108,7 @@ c_cond
 (paren
 id|pdev
 )paren
-id|put_device
+id|device_unregister
 c_func
 (paren
 op_amp
