@@ -69,37 +69,7 @@ id|ip_nat_protos
 id|MAX_IP_NAT_PROTO
 )braket
 suffix:semicolon
-multiline_comment|/* We keep extra hashes for each conntrack, for fast searching. */
-r_static
-r_inline
-r_int
-DECL|function|hash_by_ipsproto
-id|hash_by_ipsproto
-c_func
-(paren
-id|u_int32_t
-id|src
-comma
-id|u_int32_t
-id|dst
-comma
-id|u_int16_t
-id|proto
-)paren
-(brace
-multiline_comment|/* Modified src and dst, to ensure we don&squot;t create two&n;           identical streams. */
-r_return
-(paren
-id|src
-op_plus
-id|dst
-op_plus
-id|proto
-)paren
-op_mod
-id|ip_nat_htable_size
-suffix:semicolon
-)brace
+multiline_comment|/* We keep an extra hash for each conntrack, for fast searching. */
 r_static
 r_inline
 r_int
@@ -154,8 +124,6 @@ suffix:semicolon
 r_int
 r_int
 id|hs
-comma
-id|hp
 suffix:semicolon
 r_if
 c_cond
@@ -181,33 +149,6 @@ comma
 id|conn-&gt;tuplehash
 (braket
 id|IP_CT_DIR_ORIGINAL
-)braket
-dot
-id|tuple.dst.protonum
-)paren
-suffix:semicolon
-id|hp
-op_assign
-id|hash_by_ipsproto
-c_func
-(paren
-id|conn-&gt;tuplehash
-(braket
-id|IP_CT_DIR_REPLY
-)braket
-dot
-id|tuple.src.ip
-comma
-id|conn-&gt;tuplehash
-(braket
-id|IP_CT_DIR_REPLY
-)braket
-dot
-id|tuple.dst.ip
-comma
-id|conn-&gt;tuplehash
-(braket
-id|IP_CT_DIR_REPLY
 )braket
 dot
 id|tuple.dst.protonum
@@ -1248,7 +1189,7 @@ op_increment
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;%u:%s%s%s %u.%u.%u.%u - %u.%u.%u.%u %u - %u&bslash;n&quot;
+l_string|&quot;%u:%s%s %u.%u.%u.%u - %u.%u.%u.%u %u - %u&bslash;n&quot;
 comma
 id|i
 comma
@@ -1281,22 +1222,6 @@ id|IP_NAT_RANGE_PROTO_SPECIFIED
 ques
 c_cond
 l_string|&quot; PROTO_SPECIFIED&quot;
-suffix:colon
-l_string|&quot;&quot;
-comma
-(paren
-id|mr-&gt;range
-(braket
-id|i
-)braket
-dot
-id|flags
-op_amp
-id|IP_NAT_RANGE_FULL
-)paren
-ques
-c_cond
-l_string|&quot; FULL&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma

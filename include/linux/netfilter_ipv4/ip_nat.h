@@ -23,9 +23,6 @@ DECL|macro|IP_NAT_RANGE_MAP_IPS
 mdefine_line|#define IP_NAT_RANGE_MAP_IPS 1
 DECL|macro|IP_NAT_RANGE_PROTO_SPECIFIED
 mdefine_line|#define IP_NAT_RANGE_PROTO_SPECIFIED 2
-multiline_comment|/* Used internally by get_unique_tuple(). */
-DECL|macro|IP_NAT_RANGE_FULL
-mdefine_line|#define IP_NAT_RANGE_FULL 4
 multiline_comment|/* NAT sequence number modifications */
 DECL|struct|ip_nat_seq
 r_struct
@@ -100,7 +97,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Worst case: local-out manip + 1 post-routing, and reverse dirn. */
 DECL|macro|IP_NAT_MAX_MANIPS
-mdefine_line|#define IP_NAT_MAX_MANIPS (2*3)
+mdefine_line|#define IP_NAT_MAX_MANIPS (2*2)
 DECL|struct|ip_nat_info_manip
 r_struct
 id|ip_nat_info_manip
