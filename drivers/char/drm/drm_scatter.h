@@ -954,6 +954,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|drm_core_check_feature
 c_func
 (paren
