@@ -578,14 +578,6 @@ dot
 dot
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* functions for dealing with other cpus */
-DECL|member|smp_ops
-r_struct
-id|smp_ops_t
-id|smp_ops
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 )brace
 suffix:semicolon
 r_extern
