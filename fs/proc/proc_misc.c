@@ -2622,12 +2622,6 @@ op_star
 id|data
 )paren
 (brace
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
 r_int
 id|len
 suffix:semicolon

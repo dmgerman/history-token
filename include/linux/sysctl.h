@@ -629,6 +629,12 @@ op_assign
 l_int|25
 comma
 multiline_comment|/* permitted hugetlb group */
+DECL|enumerator|VM_VFS_CACHE_PRESSURE
+id|VM_VFS_CACHE_PRESSURE
+op_assign
+l_int|26
+comma
+multiline_comment|/* dcache/icache reclaim pressure */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.16 2004/03/16 00:10:54 lethal Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
+multiline_comment|/* $Id: traps.c,v 1.17 2004/05/02 01:46:30 sugioka Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
 multiline_comment|/*&n; * &squot;Traps.c&squot; handles hardware traps and faults after we have saved some&n; * state in &squot;entry.S&squot;.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2069,15 +2069,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
-c_func
-(paren
-id|CPU_HAS_DSP
-comma
-op_amp
 (paren
 id|cpu_data-&gt;flags
-)paren
+op_amp
+id|CPU_HAS_DSP
 )paren
 op_logical_or
 (paren
@@ -2356,15 +2351,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
-c_func
-(paren
-id|CPU_HAS_FPU
-comma
-op_amp
 (paren
 id|cpu_data-&gt;flags
-)paren
+op_amp
+id|CPU_HAS_FPU
 )paren
 )paren
 (brace

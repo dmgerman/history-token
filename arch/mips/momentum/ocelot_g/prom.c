@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/pmon.h&gt;
-macro_line|#include &quot;gt64240.h&quot;
+macro_line|#include &lt;asm/gt64240.h&gt;
 macro_line|#include &quot;ocelot_pld.h&quot;
 DECL|variable|debug_vectors
 r_struct
@@ -49,7 +49,6 @@ r_return
 l_string|&quot;Momentum Ocelot&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* [jsun@junsun.net] PMON passes arguments in C main() style */
 DECL|function|prom_init
 r_void
 id|__init
@@ -59,9 +58,6 @@ c_func
 r_void
 )paren
 (brace
-r_uint32
-id|tmp
-suffix:semicolon
 r_int
 id|argc
 op_assign
@@ -295,19 +291,10 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-op_star
 id|env
 op_increment
 suffix:semicolon
 )brace
-id|debug_vectors
-op_member_access_from_pointer
-id|printf
-c_func
-(paren
-l_string|&quot;Booting Linux kernel...&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
 r_int

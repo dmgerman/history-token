@@ -24,9 +24,6 @@ mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;/* UART CLK   P
 macro_line|#endif
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS STD_SERIAL_PORT_DEFNS
-multiline_comment|/* XXX: This should be moved ino irq.h */
-DECL|macro|irq_canonicalize
-mdefine_line|#define irq_canonicalize(x) (x)
 macro_line|#endif
 macro_line|#endif /* _ASM_SERIAL_H */
 eof

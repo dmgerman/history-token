@@ -72,10 +72,10 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;lock) &lt;= 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
-DECL|macro|_raw_spin_lock_flags
-mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 DECL|macro|spin_lock_string
 mdefine_line|#define spin_lock_string &bslash;&n;&t;&quot;&bslash;n1:&bslash;t&quot; &bslash;&n;&t;&quot;lock ; decb %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;js 2f&bslash;n&quot; &bslash;&n;&t;LOCK_SECTION_START(&quot;&quot;) &bslash;&n;&t;&quot;2:&bslash;t&quot; &bslash;&n;&t;&quot;rep;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;cmpb $0,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jle 2b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp 1b&bslash;n&quot; &bslash;&n;&t;LOCK_SECTION_END
+DECL|macro|spin_lock_string_flags
+mdefine_line|#define spin_lock_string_flags &bslash;&n;&t;&quot;&bslash;n1:&bslash;t&quot; &bslash;&n;&t;&quot;lock ; decb %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;js 2f&bslash;n&bslash;t&quot; &bslash;&n;&t;LOCK_SECTION_START(&quot;&quot;) &bslash;&n;&t;&quot;2:&bslash;t&quot; &bslash;&n;&t;&quot;testl $0x200, %1&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jz 3f&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sti&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;3:&bslash;t&quot; &bslash;&n;&t;&quot;rep;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;cmpb $0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jle 3b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;cli&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp 1b&bslash;n&quot; &bslash;&n;&t;LOCK_SECTION_END
 multiline_comment|/*&n; * This works. Despite all the confusion.&n; * (except on PPro SMP or if we are using OOSTORE)&n; * (PPro errata 66, 92)&n; */
 macro_line|#if !defined(CONFIG_X86_OOSTORE) &amp;&amp; !defined(CONFIG_X86_PPRO_FENCE)
 DECL|macro|spin_unlock_string
@@ -273,6 +273,75 @@ l_string|&quot;=m&quot;
 id|lock-&gt;lock
 )paren
 suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|_raw_spin_lock_flags
+r_static
+r_inline
+r_void
+id|_raw_spin_lock_flags
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_int
+r_int
+id|flags
+)paren
+(brace
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+id|__label__
+id|here
+suffix:semicolon
+id|here
+suffix:colon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|lock-&gt;magic
+op_ne
+id|SPINLOCK_MAGIC
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;eip: %p&bslash;n&quot;
+comma
+op_logical_and
+id|here
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|__asm__
+id|__volatile__
+c_func
+(paren
+id|spin_lock_string_flags
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|lock-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|flags
+)paren
 suffix:colon
 l_string|&quot;memory&quot;
 )paren

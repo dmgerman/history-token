@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define&t;DEBUG
+macro_line|#undef&t;DEBUG
 macro_line|#ifdef &t;DEBUG
 DECL|macro|DBG
 mdefine_line|#define&t;DBG(x...)&t;printk(x)
@@ -206,6 +206,9 @@ id|current_bus
 comma
 r_int
 id|pci_devfn
+comma
+r_int
+id|bar_limit
 )paren
 (brace
 id|u32
@@ -246,13 +249,14 @@ id|PCI_BASE_ADDRESS_0
 suffix:semicolon
 id|bar
 op_le
-id|PCI_BASE_ADDRESS_5
+id|bar_limit
 suffix:semicolon
 id|bar
 op_add_assign
 l_int|4
 )paren
 (brace
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 id|u32
 id|bar_addr
 suffix:semicolon
@@ -274,6 +278,7 @@ op_amp
 id|bar_addr
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Tickle the BAR and get the response */
 id|early_write_config_dword
 c_func
@@ -308,6 +313,7 @@ op_amp
 id|bar_response
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 multiline_comment|/* &n;&t;&t; * Write the old BAR value back out, only update the BAR&n;&t;&t; * if we implicitly want resources to be updated, which&n;&t;&t; * is done by the generic code further down. -- PFM.&n;&t;&t; */
 id|early_write_config_dword
 c_func
@@ -325,6 +331,7 @@ comma
 id|bar_addr
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* If BAR is not implemented go to the next BAR */
 r_if
 c_cond
@@ -843,6 +850,7 @@ id|sub_bus
 id|u32
 id|temp
 suffix:semicolon
+multiline_comment|/*&n;&t; * [jsun] we always bump up baselines a little, so that if there&n;&t; * nothing behind P2P bridge, we don&squot;t wind up overlapping IO/MEM&n;&t; * spaces.&n;&t; */
 id|pciauto_lower_memspc
 op_add_assign
 l_int|1
@@ -1183,7 +1191,8 @@ id|sub_bus
 id|u32
 id|temp
 suffix:semicolon
-multiline_comment|/* &n;        * [jsun] we always bump up baselines a little, so that if there &n;        * nothing behind P2P bridge, we don&squot;t wind up overlapping IO/MEM &n;        * spaces.&n;        */
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
+multiline_comment|/*&n;&t; * [jsun] we always bump up baselines a little, so that if there&n;&t; * nothing behind P2P bridge, we don&squot;t wind up overlapping IO/MEM&n;&t; * spaces.&n;&t; */
 id|pciauto_lower_memspc
 op_add_assign
 l_int|1
@@ -1192,7 +1201,8 @@ id|pciauto_lower_iospc
 op_add_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;        * Configure subordinate bus number.  The PCI subsystem&n;        * bus scan will renumber buses (reserving three additional&n;        * for this PCI&lt;-&gt;CardBus bridge for the case where a CardBus&n;        * adapter contains a P2P or CB2CB bridge.&n;        */
+macro_line|#endif
+multiline_comment|/*&n;&t; * Configure subordinate bus number.  The PCI subsystem&n;&t; * bus scan will renumber buses (reserving three additional&n;&t; * for this PCI&lt;-&gt;CardBus bridge for the case where a CardBus&n;&t; * adapter contains a P2P or CB2CB bridge.&n;&t; */
 id|early_write_config_byte
 c_func
 (paren
@@ -1209,7 +1219,17 @@ comma
 id|sub_bus
 )paren
 suffix:semicolon
-multiline_comment|/*&n;        * Reserve an additional 4MB for mem space and 16KB for&n;        * I/O space.  This should cover any additional space&n;        * requirement of unusual CardBus devices with &n;        * additional bridges that can consume more address space.&n;        * &n;        * Although pcmcia-cs currently will reprogram bridge&n;        * windows, the goal is to add an option to leave them&n;        * alone and use the bridge window ranges as the regions&n;        * that are searched for free resources upon hot-insertion&n;        * of a device.  This will allow a PCI&lt;-&gt;CardBus bridge&n;        * configured by this routine to happily live behind a&n;        * P2P bridge in a system.&n;        */
+multiline_comment|/*&n;&t; * Reserve an additional 4MB for mem space and 16KB for&n;&t; * I/O space.  This should cover any additional space&n;&t; * requirement of unusual CardBus devices with&n;&t; * additional bridges that can consume more address space.&n;&t; *&n;&t; * Although pcmcia-cs currently will reprogram bridge&n;&t; * windows, the goal is to add an option to leave them&n;&t; * alone and use the bridge window ranges as the regions&n;&t; * that are searched for free resources upon hot-insertion&n;&t; * of a device.  This will allow a PCI&lt;-&gt;CardBus bridge&n;&t; * configured by this routine to happily live behind a&n;&t; * P2P bridge in a system.&n;&t; */
+macro_line|#if defined(CONFIG_SH_HS7751RVOIP) || defined(CONFIG_SH_RTS7751R2D)
+id|pciauto_lower_memspc
+op_add_assign
+l_int|0x00400000
+suffix:semicolon
+id|pciauto_lower_iospc
+op_add_assign
+l_int|0x00004000
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Align memory and I/O to 4KB and 4 byte boundaries. */
 id|pciauto_lower_memspc
 op_assign
@@ -1328,7 +1348,7 @@ id|PCI_COMMAND_MASTER
 suffix:semicolon
 )brace
 DECL|macro|PCIAUTO_IDE_MODE_MASK
-mdefine_line|#define      PCIAUTO_IDE_MODE_MASK           0x05
+mdefine_line|#define&t;PCIAUTO_IDE_MODE_MASK&t;&t;0x05
 r_static
 r_int
 id|__init
@@ -1601,6 +1621,22 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SH_HS7751RVOIP) || defined(CONFIG_SH_RTS7751R2D)
+id|pciauto_setup_bars
+c_func
+(paren
+id|hose
+comma
+id|top_bus
+comma
+id|current_bus
+comma
+id|pci_devfn
+comma
+id|PCI_BASE_ADDRESS_1
+)paren
+suffix:semicolon
+macro_line|#endif
 id|pciauto_prescan_setup_bridge
 c_func
 (paren
@@ -1722,6 +1758,8 @@ comma
 id|current_bus
 comma
 id|pci_devfn
+comma
+id|PCI_BASE_ADDRESS_0
 )paren
 suffix:semicolon
 id|pciauto_prescan_setup_cardbus_bridge
@@ -1915,6 +1953,8 @@ comma
 id|current_bus
 comma
 id|pci_devfn
+comma
+id|PCI_BASE_ADDRESS_5
 )paren
 suffix:semicolon
 )brace

@@ -2406,7 +2406,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;unswap: map[i=%lu]=%u nr_swap=%u&bslash;n&quot;
+l_string|&quot;unswap: map[i=%lu]=%u nr_swap=%ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -2535,7 +2535,7 @@ macro_line|#endif
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;unswap: map[i=%lu]=%u nr_swap=%u&bslash;n&quot;
+l_string|&quot;unswap: map[i=%lu]=%u nr_swap=%ld&bslash;n&quot;
 comma
 id|i
 comma

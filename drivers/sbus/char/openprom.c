@@ -502,12 +502,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
 r_static
 r_int
 id|cnt

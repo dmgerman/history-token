@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.26 2004/02/06 14:14:14 kkojima Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
+multiline_comment|/* $Id: process.c,v 1.28 2004/05/05 16:54:23 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -13,6 +13,11 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#if defined(CONFIG_SH_HS7751RVOIP)
+macro_line|#include &lt;asm/hs7751rvoip/hs7751rvoip.h&gt;
+macro_line|#elif defined(CONFIG_SH_RTS7751R2D)
+macro_line|#include &lt;asm/rts7751r2d/rts7751r2d.h&gt;
+macro_line|#endif
 DECL|variable|hlt_counter
 r_static
 r_int
@@ -81,6 +86,30 @@ c_loop
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|hlt_counter
+)paren
+(brace
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+r_if
+c_cond
+(paren
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_else
+(brace
 r_while
 c_loop
 (paren
@@ -90,11 +119,12 @@ c_func
 (paren
 )paren
 )paren
-id|cpu_relax
+id|cpu_sleep
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|schedule
 c_func
 (paren
@@ -163,12 +193,47 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_SH_HS7751RVOIP)
+r_int
+r_int
+id|value
+suffix:semicolon
+id|value
+op_assign
+id|ctrl_inw
+c_func
+(paren
+id|PA_OUTPORTR
+)paren
+suffix:semicolon
+id|ctrl_outw
+c_func
+(paren
+(paren
+id|value
+op_amp
+l_int|0xffdf
+)paren
+comma
+id|PA_OUTPORTR
+)paren
+suffix:semicolon
+macro_line|#elif defined(CONFIG_SH_RTS7751R2D)
+id|ctrl_outw
+c_func
+(paren
+l_int|0x0001
+comma
+id|PA_POWOFF
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
 l_int|1
 )paren
-id|cpu_relax
+id|cpu_sleep
 c_func
 (paren
 )paren
@@ -189,6 +254,41 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_SH_HS7751RVOIP)
+r_int
+r_int
+id|value
+suffix:semicolon
+id|value
+op_assign
+id|ctrl_inw
+c_func
+(paren
+id|PA_OUTPORTR
+)paren
+suffix:semicolon
+id|ctrl_outw
+c_func
+(paren
+(paren
+id|value
+op_amp
+l_int|0xffdf
+)paren
+comma
+id|PA_OUTPORTR
+)paren
+suffix:semicolon
+macro_line|#elif defined(CONFIG_SH_RTS7751R2D)
+id|ctrl_outw
+c_func
+(paren
+l_int|0x0001
+comma
+id|PA_POWOFF
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|machine_power_off
 id|EXPORT_SYMBOL

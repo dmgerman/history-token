@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq_ipr.c,v 1.1.2.1 2002/11/17 10:53:43 mrbrown Exp $&n; *&n; * linux/arch/sh/kernel/irq_ipr.c&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Interrupt handling for IPR-based IRQ.&n; *&n; * Supported system:&n; *&t;On-chip supporting modules (TMU, RTC, etc.).&n; *&t;On-chip supporting modules for SH7709/SH7709A/SH7729.&n; *&t;Hitachi SolutionEngine external I/O:&n; *&t;&t;MS7709SE01, MS7709ASE01, and MS7750SE01&n; *&n; */
+multiline_comment|/* $Id: irq_ipr.c,v 1.1.2.1 2002/11/17 10:53:43 mrbrown Exp $&n; *&n; * linux/arch/sh/kernel/irq_ipr.c&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; * Copyright (C) 2003 Takashi Kusuda &lt;kusuda-takashi@hitachi-ul.co.jp&gt;&n; *&n; * Interrupt handling for IPR-based IRQ.&n; *&n; * Supported system:&n; *&t;On-chip supporting modules (TMU, RTC, etc.).&n; *&t;On-chip supporting modules for SH7709/SH7709A/SH7729/SH7300.&n; *&t;Hitachi SolutionEngine external I/O:&n; *&t;&t;MS7709SE01, MS7709ASE01, and MS7750SE01&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -306,7 +306,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 multiline_comment|/* This is needed when we use edge triggered setting */
 multiline_comment|/* XXX: Is it really needed? */
 r_if
@@ -465,7 +465,7 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7705) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7707) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7709)
 DECL|variable|pint_map
 r_static
 r_int
@@ -812,7 +812,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7705) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7707) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7709)
 r_int
 id|i
 suffix:semicolon
@@ -841,6 +841,7 @@ comma
 id|TIMER1_PRIORITY
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SH_RTC)
 id|make_ipr_irq
 c_func
 (paren
@@ -853,6 +854,7 @@ comma
 id|RTC_PRIORITY
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef SCI_ERI_IRQ
 id|make_ipr_irq
 c_func
@@ -938,6 +940,56 @@ comma
 id|SCIF1_IPR_POS
 comma
 id|SCIF1_PRIORITY
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+id|make_ipr_irq
+c_func
+(paren
+id|SCIF0_IRQ
+comma
+id|SCIF0_IPR_ADDR
+comma
+id|SCIF0_IPR_POS
+comma
+id|SCIF0_PRIORITY
+)paren
+suffix:semicolon
+id|make_ipr_irq
+c_func
+(paren
+id|DMTE2_IRQ
+comma
+id|DMA1_IPR_ADDR
+comma
+id|DMA1_IPR_POS
+comma
+id|DMA1_PRIORITY
+)paren
+suffix:semicolon
+id|make_ipr_irq
+c_func
+(paren
+id|DMTE3_IRQ
+comma
+id|DMA1_IPR_ADDR
+comma
+id|DMA1_IPR_POS
+comma
+id|DMA1_PRIORITY
+)paren
+suffix:semicolon
+id|make_ipr_irq
+c_func
+(paren
+id|VIO_IRQ
+comma
+id|VIO_IPR_ADDR
+comma
+id|VIO_IPR_POS
+comma
+id|VIO_PRIORITY
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1041,7 +1093,7 @@ id|IRDA_PRIORITY
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 multiline_comment|/*&n;&t; * Initialize the Interrupt Controller (INTC)&n;&t; * registers to their power on values&n;&t; */
 multiline_comment|/*&n;&t; * Enable external irq (INTC IRQ mode).&n;&t; * You should set corresponding bits of PFC to &quot;00&quot;&n;&t; * to enable these interrupts.&n;&t; */
 id|make_ipr_irq
@@ -1116,6 +1168,7 @@ comma
 id|IRQ5_PRIORITY
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_CPU_SUBTYPE_SH7300)
 id|make_ipr_irq
 c_func
 (paren
@@ -1327,7 +1380,8 @@ l_int|7
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_CPU_SUBTYPE_SH7707 || CONFIG_CPU_SUBTYPE_SH7709 */
+macro_line|#endif /* !CONFIG_CPU_SUBTYPE_SH7300 */
+macro_line|#endif /* CONFIG_CPU_SUBTYPE_SH7707 || CONFIG_CPU_SUBTYPE_SH7709  || CONFIG_CPU_SUBTYPE_SH7300*/
 multiline_comment|/* Perform the machine specific initialisation */
 r_if
 c_cond
@@ -1346,7 +1400,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7300) || defined(CONFIG_CPU_SUBTYPE_SH7705)
 DECL|function|ipr_irq_demux
 r_int
 id|ipr_irq_demux
@@ -1356,6 +1410,7 @@ r_int
 id|irq
 )paren
 (brace
+macro_line|#if !defined(CONFIG_CPU_SUBTYPE_SH7300)
 r_int
 r_int
 id|creg
@@ -1579,6 +1634,7 @@ id|d
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|irq
 suffix:semicolon

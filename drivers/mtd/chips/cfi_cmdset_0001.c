@@ -1915,7 +1915,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Chip not ready after erase &quot;
-l_string|&quot;suspended: status = 0x%x&bslash;n&quot;
+l_string|&quot;suspended: status = 0x%llx&bslash;n&quot;
 comma
 id|status
 )paren
@@ -4754,7 +4754,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;SR.4 or SR.5 bits set in buffer write (status %x). Clearing.&bslash;n&quot;
+l_string|&quot;SR.4 or SR.5 bits set in buffer write (status %llx). Clearing.&bslash;n&quot;
 comma
 id|status
 )paren

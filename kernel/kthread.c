@@ -209,11 +209,6 @@ op_assign
 op_minus
 id|EINTR
 suffix:semicolon
-id|cpumask_t
-id|mask
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 id|kthread_exit_files
 c_func
 (paren
@@ -259,7 +254,7 @@ c_func
 (paren
 id|current
 comma
-id|mask
+id|CPU_MASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/* OK, tell user we&squot;re spawned, wait for stop or wakeup */

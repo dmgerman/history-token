@@ -1018,6 +1018,10 @@ r_int
 id|is_dir
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_vfs_cache_pressure
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_DCACHE_H */
 eof

@@ -63,6 +63,7 @@ suffix:semicolon
 id|u32
 id|intr
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_BOARDS_GEN
 r_if
 c_cond
 (paren
@@ -79,13 +80,17 @@ c_func
 id|devfn
 )paren
 op_eq
-l_int|0
+l_int|17
 )paren
 )paren
+(brace
+multiline_comment|/* MIPS Core boards have SOCit connected as device 17 */
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Clear status register bits. */
 id|MSC_WRITE
 c_func

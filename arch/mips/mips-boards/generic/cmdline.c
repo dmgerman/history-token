@@ -120,6 +120,7 @@ l_int|0
 )braket
 )paren
 )paren
+(brace
 multiline_comment|/* get rid of trailing space */
 op_decrement
 id|cp
@@ -129,5 +130,6 @@ id|cp
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+)brace
 )brace
 eof

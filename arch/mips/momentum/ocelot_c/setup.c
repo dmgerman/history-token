@@ -615,7 +615,7 @@ id|rtc_base
 l_int|0x7ffc
 )braket
 op_assign
-id|CONV_BIN2BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_wday

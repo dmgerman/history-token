@@ -15,8 +15,9 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/irq_cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;asm/mv64340.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 r_extern
 id|asmlinkage
@@ -54,7 +55,7 @@ id|no_action
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade via FPGA&quot;
 comma
@@ -74,7 +75,7 @@ id|no_action
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade via MV64340&quot;
 comma

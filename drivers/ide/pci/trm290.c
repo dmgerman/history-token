@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/pci/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/pci/trm290.c&t;&t;Version 1.02&t;Mar. 18, 2000&n; *&n; *  Copyright (c) 1997-1998  Mark Lord&n; *  May be copied or modified under the terms of the GNU General Public License&n; *&n; *  June 22, 2004 - get rid of check_region&n; *                  Jesper Juhl &lt;juhl-lkml@dif.dk&gt;&n; *&n; */
 multiline_comment|/*&n; * This module provides support for the bus-master IDE DMA function&n; * of the Tekram TRM290 chip, used on a variety of PCI IDE add-on boards,&n; * including a &quot;Precision Instruments&quot; board.  The TRM290 pre-dates&n; * the sff-8038 standard (ide-dma.c) by a few months, and differs&n; * significantly enough to warrant separate routines for some functions,&n; * while re-using others from ide-dma.c.&n; *&n; * EXPERIMENTAL!  It works for me (a sample of one).&n; *&n; * Works reliably for me in DMA mode (READs only),&n; * DMA WRITEs are disabled by default (see #define below);&n; *&n; * DMA is not enabled automatically for this chipset,&n; * but can be turned on manually (with &quot;hdparm -d1&quot;) at run time.&n; *&n; * I need volunteers with &quot;spare&quot; drives for further testing&n; * and development, and maybe to help figure out the peculiarities.&n; * Even knowing the registers (below), some things behave strangely.&n; */
 DECL|macro|TRM290_NO_DMA_WRITES
 mdefine_line|#define TRM290_NO_DMA_WRITES&t;/* DMA writes seem unreliable sometimes */
@@ -1181,37 +1181,6 @@ op_add_assign
 l_int|0x400
 )paren
 suffix:semicolon
-macro_line|#  if 1
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|compat
-op_plus
-l_int|2
-comma
-l_int|1
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: check_region failure at 0x%04x&bslash;n&quot;
-comma
-id|hwif-&gt;name
-comma
-(paren
-id|compat
-op_plus
-l_int|2
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * The region check is not needed; however.........&n;&t;&t;&t; * Since this is the checked in ide-probe.c,&n;&t;&t;&t; * this is only an assignment.&n;&t;&t;&t; */
-macro_line|#  endif
 id|hwif-&gt;io_ports
 (braket
 id|IDE_CONTROL_OFFSET

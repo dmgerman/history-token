@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;mach.h&quot;
 multiline_comment|/* These symbols are all defined in the linker map to delineate various&n;   statically allocated regions of memory.  */
@@ -87,14 +88,7 @@ DECL|variable|command_line
 r_char
 id|command_line
 (braket
-l_int|512
-)braket
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-l_int|512
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Memory not used by the kernel.  */

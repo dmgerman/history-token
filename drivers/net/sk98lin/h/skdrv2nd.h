@@ -258,6 +258,7 @@ id|s_IOCTL
 (brace
 DECL|member|pData
 r_char
+id|__user
 op_star
 id|pData
 suffix:semicolon

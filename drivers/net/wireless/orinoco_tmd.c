@@ -674,7 +674,6 @@ id|orinoco_tmd_driver
 suffix:semicolon
 )brace
 DECL|function|orinoco_tmd_exit
-r_extern
 r_void
 id|__exit
 id|orinoco_tmd_exit

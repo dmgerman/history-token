@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_BOOTINFO_H
 DECL|macro|_ASM_BOOTINFO_H
 mdefine_line|#define _ASM_BOOTINFO_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/*&n; * The MACH_GROUP_ IDs are the equivalent to PCI vendor IDs; the remaining&n; * MACH_ values equivalent to product IDs.  As such the numbers do not&n; * necessarily reflect technical relations or similarities between systems.&n; */
 multiline_comment|/*&n; * Valid machtype values for group unknown&n; */
 DECL|macro|MACH_GROUP_UNKNOWN
@@ -215,7 +216,7 @@ mdefine_line|#define MACH_GROUP_TITAN       22&t;/* PMC-Sierra Titan&t;&t;*/
 DECL|macro|MACH_TITAN_YOSEMITE
 mdefine_line|#define  MACH_TITAN_YOSEMITE&t;1&t;/* PMC-Sierra Yosemite&t;&t;*/
 DECL|macro|CL_SIZE
-mdefine_line|#define CL_SIZE&t;&t;&t;(256)
+mdefine_line|#define CL_SIZE&t;&t;&t;COMMAND_LINE_SIZE
 r_const
 r_char
 op_star

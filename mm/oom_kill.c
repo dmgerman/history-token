@@ -644,16 +644,6 @@ id|now
 comma
 id|since
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enough swap space left?  Not OOM.&n;&t; */
-r_if
-c_cond
-(paren
-id|nr_swap_pages
-OG
-l_int|0
-)paren
-r_return
-suffix:semicolon
 id|spin_lock
 c_func
 (paren

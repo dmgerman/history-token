@@ -13,5 +13,7 @@ DECL|macro|SMP_CACHE_SHIFT
 mdefine_line|#define SMP_CACHE_SHIFT&t;&t;L1_CACHE_SHIFT
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;&t;L1_CACHE_BYTES
+DECL|macro|ARCH_KMALLOC_MINALIGN
+mdefine_line|#define ARCH_KMALLOC_MINALIGN&t;8
 macro_line|#endif /* _ASM_CACHE_H */
 eof

@@ -6,6 +6,7 @@ DECL|macro|PROMLIB_INTERNAL
 mdefine_line|#define PROMLIB_INTERNAL
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -216,12 +217,6 @@ op_star
 comma
 id|__kernel_size_t
 )paren
-suffix:semicolon
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_void

@@ -234,6 +234,7 @@ op_star
 id|file
 comma
 id|__u8
+id|__user
 op_star
 id|buf
 comma
@@ -258,6 +259,7 @@ id|file
 comma
 r_const
 id|__u8
+id|__user
 op_star
 id|buf
 comma
@@ -1678,6 +1680,7 @@ op_star
 id|file
 comma
 id|__u8
+id|__user
 op_star
 id|buf
 comma
@@ -1958,6 +1961,7 @@ id|file
 comma
 r_const
 id|__u8
+id|__user
 op_star
 id|data
 comma
@@ -2387,6 +2391,7 @@ id|count
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2450,6 +2455,7 @@ id|count
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

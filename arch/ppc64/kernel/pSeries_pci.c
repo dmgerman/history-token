@@ -84,11 +84,10 @@ id|val
 )paren
 (brace
 r_int
-r_int
 id|returnval
 op_assign
-op_complement
-l_int|0L
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 r_int

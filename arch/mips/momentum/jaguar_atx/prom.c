@@ -1172,25 +1172,6 @@ id|end
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * SMP support&n; */
-DECL|function|prom_setup_smp
-r_int
-id|prom_setup_smp
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|num_cpus
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/*&n;&t; * We know that the RM9000 on the Jaguar ATX board has 2 cores.&n;&t; * Hence, this can be hardcoded for now.&n;&t; */
-r_return
-id|num_cpus
-suffix:semicolon
-)brace
 DECL|function|prom_boot_secondary
 r_int
 id|prom_boot_secondary

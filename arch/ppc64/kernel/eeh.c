@@ -1209,7 +1209,8 @@ suffix:semicolon
 r_int
 r_int
 id|ret
-comma
+suffix:semicolon
+r_int
 id|rets
 (braket
 l_int|2
@@ -1530,7 +1531,7 @@ id|panic_on_oops
 id|panic
 c_func
 (paren
-l_string|&quot;EEH: MMIO failure (%ld) on device:%s %s&bslash;n&quot;
+l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
 comma
 id|rets
 (braket
@@ -1564,7 +1565,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;EEH: MMIO failure (%ld) on device:%s %s&bslash;n&quot;
+l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
 comma
 id|rets
 (braket

@@ -121,7 +121,31 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&t;28 */
+DECL|member|cpustart
+r_int
+(paren
+op_star
+id|cpustart
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&t;32 */
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|callvectors
+op_star
+id|debug_vectors
 suffix:semicolon
 macro_line|#endif /* _ASM_PMON_H */
 eof

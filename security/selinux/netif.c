@@ -481,7 +481,8 @@ r_void
 id|sel_netif_free
 c_func
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
 id|p
 )paren
@@ -491,7 +492,16 @@ id|sel_netif
 op_star
 id|netif
 op_assign
+id|container_of
+c_func
+(paren
 id|p
+comma
+r_struct
+id|sel_netif
+comma
+id|rcu_head
+)paren
 suffix:semicolon
 id|DEBUGP
 c_func
@@ -563,8 +573,6 @@ op_amp
 id|netif-&gt;rcu_head
 comma
 id|sel_netif_free
-comma
-id|netif
 )paren
 suffix:semicolon
 )brace

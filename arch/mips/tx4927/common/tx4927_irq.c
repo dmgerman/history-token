@@ -360,7 +360,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|macro|TX4927_PIC_ACTION
-mdefine_line|#define TX4927_PIC_ACTION(s) { no_action, 0, 0, s, NULL, NULL }
+mdefine_line|#define TX4927_PIC_ACTION(s) { no_action, 0, CPU_MASK_NONE, s, NULL, NULL }
 DECL|variable|tx4927_irq_pic_action
 r_static
 r_struct

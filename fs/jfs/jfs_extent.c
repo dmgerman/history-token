@@ -1513,6 +1513,8 @@ op_amp
 id|daddr
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* if something other than an out of space error,&n;&t;&t; * stop and return this error.&n;&t;&t; */

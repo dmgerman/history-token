@@ -1,21 +1,11 @@
 macro_line|#ifndef __HAL2_H
 DECL|macro|__HAL2_H
 mdefine_line|#define __HAL2_H
-multiline_comment|/*&n; *  Driver for HAL2 sound processors&n; *  Copyright (c) 1999 Ulf Carlsson &lt;ulfc@bun.falkenberg.se&gt;&n; *  Copyright (c) 2001 Ladislav Michl &lt;ladis@psi.cz&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as &n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *  Driver for HAL2 sound processors&n; *  Copyright (c) 1999 Ulf Carlsson &lt;ulfc@bun.falkenberg.se&gt;&n; *  Copyright (c) 2001, 2002, 2003 Ladislav Michl &lt;ladis@linux-mips.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as &n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
+macro_line|#include &lt;asm/sgi/hpc3.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-DECL|macro|H2_HAL2_BASE
-mdefine_line|#define H2_HAL2_BASE&t;&t;0x58000
-DECL|macro|H2_CTL_PIO
-mdefine_line|#define H2_CTL_PIO&t;&t;(H2_HAL2_BASE + 0 * 0x400)
-DECL|macro|H2_AES_PIO
-mdefine_line|#define H2_AES_PIO&t;&t;(H2_HAL2_BASE + 1 * 0x400)
-DECL|macro|H2_VOL_PIO
-mdefine_line|#define H2_VOL_PIO&t;&t;(H2_HAL2_BASE + 2 * 0x400)
-DECL|macro|H2_SYN_PIO
-mdefine_line|#define H2_SYN_PIO&t;&t;(H2_HAL2_BASE + 3 * 0x400)
 multiline_comment|/* Indirect status register */
 DECL|macro|H2_ISR_TSTATUS
 mdefine_line|#define H2_ISR_TSTATUS&t;&t;0x01&t;/* RO: transaction status 1=busy */
@@ -219,120 +209,110 @@ DECL|macro|H2I_UTIME_2_LD
 mdefine_line|#define H2I_UTIME_2_LD&t;&t;0xffff&t;&t;/* seconds, LSB&squot;s */
 DECL|macro|H2I_UTIME_3_LD
 mdefine_line|#define H2I_UTIME_3_LD&t;&t;0xffff&t;&t;/* seconds, MSB&squot;s */
-DECL|typedef|hal2_reg_t
-r_typedef
-r_volatile
-id|u32
-id|hal2_reg_t
-suffix:semicolon
-DECL|typedef|hal2_ctl_regs_t
-r_typedef
+DECL|struct|hal2_ctl_regs
 r_struct
-id|stru_hal2_ctl_regs
-id|hal2_ctl_regs_t
-suffix:semicolon
-DECL|struct|stru_hal2_ctl_regs
-r_struct
-id|stru_hal2_ctl_regs
+id|hal2_ctl_regs
 (brace
 DECL|member|_unused0
-id|hal2_reg_t
+id|u32
 id|_unused0
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|isr
-id|hal2_reg_t
+r_volatile
+id|u32
 id|isr
 suffix:semicolon
 multiline_comment|/* 0x10 Status Register */
 DECL|member|_unused1
-id|hal2_reg_t
+id|u32
 id|_unused1
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|rev
-id|hal2_reg_t
+r_volatile
+id|u32
 id|rev
 suffix:semicolon
 multiline_comment|/* 0x20 Revision Register */
 DECL|member|_unused2
-id|hal2_reg_t
+id|u32
 id|_unused2
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|iar
-id|hal2_reg_t
+r_volatile
+id|u32
 id|iar
 suffix:semicolon
 multiline_comment|/* 0x30 Indirect Address Register */
 DECL|member|_unused3
-id|hal2_reg_t
+id|u32
 id|_unused3
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|idr0
-id|hal2_reg_t
+r_volatile
+id|u32
 id|idr0
 suffix:semicolon
 multiline_comment|/* 0x40 Indirect Data Register 0 */
 DECL|member|_unused4
-id|hal2_reg_t
+id|u32
 id|_unused4
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|idr1
-id|hal2_reg_t
+r_volatile
+id|u32
 id|idr1
 suffix:semicolon
 multiline_comment|/* 0x50 Indirect Data Register 1 */
 DECL|member|_unused5
-id|hal2_reg_t
+id|u32
 id|_unused5
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|idr2
-id|hal2_reg_t
+r_volatile
+id|u32
 id|idr2
 suffix:semicolon
 multiline_comment|/* 0x60 Indirect Data Register 2 */
 DECL|member|_unused6
-id|hal2_reg_t
+id|u32
 id|_unused6
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|idr3
-id|hal2_reg_t
+r_volatile
+id|u32
 id|idr3
 suffix:semicolon
 multiline_comment|/* 0x70 Indirect Data Register 3 */
 )brace
 suffix:semicolon
-DECL|typedef|hal2_aes_regs_t
-r_typedef
+DECL|struct|hal2_aes_regs
 r_struct
-id|stru_hal2_aes_regs
-id|hal2_aes_regs_t
-suffix:semicolon
-DECL|struct|stru_hal2_aes_regs
-r_struct
-id|stru_hal2_aes_regs
+id|hal2_aes_regs
 (brace
 DECL|member|rx_stat
-id|hal2_reg_t
+r_volatile
+id|u32
 id|rx_stat
 (braket
 l_int|2
@@ -340,7 +320,8 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Status registers */
 DECL|member|rx_cr
-id|hal2_reg_t
+r_volatile
+id|u32
 id|rx_cr
 (braket
 l_int|2
@@ -348,7 +329,8 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Control registers */
 DECL|member|rx_ud
-id|hal2_reg_t
+r_volatile
+id|u32
 id|rx_ud
 (braket
 l_int|4
@@ -356,7 +338,8 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* User data window */
 DECL|member|rx_st
-id|hal2_reg_t
+r_volatile
+id|u32
 id|rx_st
 (braket
 l_int|24
@@ -364,7 +347,8 @@ l_int|24
 suffix:semicolon
 multiline_comment|/* Channel status data */
 DECL|member|tx_stat
-id|hal2_reg_t
+r_volatile
+id|u32
 id|tx_stat
 (braket
 l_int|1
@@ -372,7 +356,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Status register */
 DECL|member|tx_cr
-id|hal2_reg_t
+r_volatile
+id|u32
 id|tx_cr
 (braket
 l_int|3
@@ -380,7 +365,8 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Control registers */
 DECL|member|tx_ud
-id|hal2_reg_t
+r_volatile
+id|u32
 id|tx_ud
 (braket
 l_int|4
@@ -388,7 +374,8 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* User data window */
 DECL|member|tx_st
-id|hal2_reg_t
+r_volatile
+id|u32
 id|tx_st
 (braket
 l_int|24
@@ -397,341 +384,72 @@ suffix:semicolon
 multiline_comment|/* Channel status data */
 )brace
 suffix:semicolon
-DECL|typedef|hal2_vol_regs_t
-r_typedef
+DECL|struct|hal2_vol_regs
 r_struct
-id|stru_hal2_vol_regs
-id|hal2_vol_regs_t
-suffix:semicolon
-DECL|struct|stru_hal2_vol_regs
-r_struct
-id|stru_hal2_vol_regs
+id|hal2_vol_regs
 (brace
 DECL|member|right
-id|hal2_reg_t
+r_volatile
+id|u32
 id|right
 suffix:semicolon
-multiline_comment|/* 0x00 Right volume */
+multiline_comment|/* Right volume */
 DECL|member|left
-id|hal2_reg_t
+r_volatile
+id|u32
 id|left
 suffix:semicolon
-multiline_comment|/* 0x04 Left volume */
+multiline_comment|/* Left volume */
 )brace
 suffix:semicolon
-DECL|typedef|hal2_syn_regs_t
-r_typedef
+DECL|struct|hal2_syn_regs
 r_struct
-id|stru_hal2_syn_regs
-id|hal2_syn_regs_t
-suffix:semicolon
-DECL|struct|stru_hal2_syn_regs
-r_struct
-id|stru_hal2_syn_regs
+id|hal2_syn_regs
 (brace
 DECL|member|_unused0
-id|hal2_reg_t
+id|u32
 id|_unused0
 (braket
 l_int|2
 )braket
 suffix:semicolon
 DECL|member|page
-id|hal2_reg_t
+r_volatile
+id|u32
 id|page
 suffix:semicolon
 multiline_comment|/* DOC Page register */
 DECL|member|regsel
-id|hal2_reg_t
+r_volatile
+id|u32
 id|regsel
 suffix:semicolon
 multiline_comment|/* DOC Register selection */
 DECL|member|dlow
-id|hal2_reg_t
+r_volatile
+id|u32
 id|dlow
 suffix:semicolon
 multiline_comment|/* DOC Data low */
 DECL|member|dhigh
-id|hal2_reg_t
+r_volatile
+id|u32
 id|dhigh
 suffix:semicolon
 multiline_comment|/* DOC Data high */
 DECL|member|irq
-id|hal2_reg_t
+r_volatile
+id|u32
 id|irq
 suffix:semicolon
 multiline_comment|/* IRQ Status */
 DECL|member|dram
-id|hal2_reg_t
+r_volatile
+id|u32
 id|dram
 suffix:semicolon
 multiline_comment|/* DRAM Access */
 )brace
 suffix:semicolon
-multiline_comment|/* HAL2 specific structures */
-DECL|typedef|hal2_pbus_t
-r_typedef
-r_struct
-id|stru_hal2_pbus
-id|hal2_pbus_t
-suffix:semicolon
-DECL|struct|stru_hal2_pbus
-r_struct
-id|stru_hal2_pbus
-(brace
-DECL|member|pbus
-r_struct
-id|hpc3_pbus_dmacregs
-op_star
-id|pbus
-suffix:semicolon
-DECL|member|pbusnr
-r_int
-id|pbusnr
-suffix:semicolon
-DECL|member|ctrl
-r_int
-r_int
-id|ctrl
-suffix:semicolon
-multiline_comment|/* Current state of pbus-&gt;pbdma_ctrl */
-)brace
-suffix:semicolon
-DECL|typedef|hal2_binfo_t
-r_typedef
-r_struct
-id|stru_hal2_binfo
-id|hal2_binfo_t
-suffix:semicolon
-DECL|typedef|hal2_buf_t
-r_typedef
-r_struct
-id|stru_hal2_buffer
-id|hal2_buf_t
-suffix:semicolon
-DECL|struct|stru_hal2_binfo
-r_struct
-id|stru_hal2_binfo
-(brace
-DECL|member|desc
-r_volatile
-r_struct
-id|hpc_dma_desc
-id|desc
-suffix:semicolon
-DECL|member|next
-id|hal2_buf_t
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* pointer to next buffer */
-DECL|member|cnt
-r_int
-id|cnt
-suffix:semicolon
-multiline_comment|/* bytes in buffer */
-)brace
-suffix:semicolon
-DECL|macro|H2_BUFFER_SIZE
-mdefine_line|#define H2_BUFFER_SIZE&t;(PAGE_SIZE - &bslash;&n;&t;&t;((sizeof(hal2_binfo_t) - 1) / 8 + 1) * 8)
-DECL|struct|stru_hal2_buffer
-r_struct
-id|stru_hal2_buffer
-(brace
-DECL|member|info
-id|hal2_binfo_t
-id|info
-suffix:semicolon
-DECL|member|data
-r_char
-id|data
-(braket
-id|H2_BUFFER_SIZE
-)braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|typedef|hal2_codec_t
-r_typedef
-r_struct
-id|stru_hal2_codec
-id|hal2_codec_t
-suffix:semicolon
-DECL|struct|stru_hal2_codec
-r_struct
-id|stru_hal2_codec
-(brace
-DECL|member|head
-id|hal2_buf_t
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|hal2_buf_t
-op_star
-id|tail
-suffix:semicolon
-DECL|member|pbus
-id|hal2_pbus_t
-id|pbus
-suffix:semicolon
-DECL|member|format
-r_int
-r_int
-id|format
-suffix:semicolon
-multiline_comment|/* Audio data format */
-DECL|member|voices
-r_int
-id|voices
-suffix:semicolon
-multiline_comment|/* mono/stereo */
-DECL|member|sample_rate
-r_int
-r_int
-id|sample_rate
-suffix:semicolon
-DECL|member|master
-r_int
-r_int
-id|master
-suffix:semicolon
-multiline_comment|/* Master frequency */
-DECL|member|mod
-r_int
-r_int
-id|mod
-suffix:semicolon
-multiline_comment|/* MOD value */
-DECL|member|inc
-r_int
-r_int
-id|inc
-suffix:semicolon
-multiline_comment|/* INC value */
-DECL|member|dma_wait
-id|wait_queue_head_t
-id|dma_wait
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
-DECL|member|usecount
-r_int
-id|usecount
-suffix:semicolon
-multiline_comment|/* recording and playback are &n;&t;&t;&t;&t;&t; * independent */
-)brace
-suffix:semicolon
-DECL|macro|H2_MIX_OUTPUT_ATT
-mdefine_line|#define H2_MIX_OUTPUT_ATT&t;0
-DECL|macro|H2_MIX_INPUT_GAIN
-mdefine_line|#define H2_MIX_INPUT_GAIN&t;1
-DECL|macro|H2_MIXERS
-mdefine_line|#define H2_MIXERS&t;&t;2
-DECL|typedef|hal2_mixer_t
-r_typedef
-r_struct
-id|stru_hal2_mixer
-id|hal2_mixer_t
-suffix:semicolon
-DECL|struct|stru_hal2_mixer
-r_struct
-id|stru_hal2_mixer
-(brace
-DECL|member|modcnt
-r_int
-id|modcnt
-suffix:semicolon
-DECL|member|volume
-r_int
-r_int
-id|volume
-(braket
-id|H2_MIXERS
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|typedef|hal2_card_t
-r_typedef
-r_struct
-id|stru_hal2_card
-id|hal2_card_t
-suffix:semicolon
-DECL|struct|stru_hal2_card
-r_struct
-id|stru_hal2_card
-(brace
-DECL|member|dev_dsp
-r_int
-id|dev_dsp
-suffix:semicolon
-multiline_comment|/* audio device */
-DECL|member|dev_mixer
-r_int
-id|dev_mixer
-suffix:semicolon
-multiline_comment|/* mixer device */
-DECL|member|dev_midi
-r_int
-id|dev_midi
-suffix:semicolon
-multiline_comment|/* midi device */
-DECL|member|ctl_regs
-id|hal2_ctl_regs_t
-op_star
-id|ctl_regs
-suffix:semicolon
-multiline_comment|/* HAL2 ctl registers */
-DECL|member|aes_regs
-id|hal2_aes_regs_t
-op_star
-id|aes_regs
-suffix:semicolon
-multiline_comment|/* HAL2 vol registers */
-DECL|member|vol_regs
-id|hal2_vol_regs_t
-op_star
-id|vol_regs
-suffix:semicolon
-multiline_comment|/* HAL2 aes registers */
-DECL|member|syn_regs
-id|hal2_syn_regs_t
-op_star
-id|syn_regs
-suffix:semicolon
-multiline_comment|/* HAL2 syn registers */
-DECL|member|dac
-id|hal2_codec_t
-id|dac
-suffix:semicolon
-DECL|member|adc
-id|hal2_codec_t
-id|adc
-suffix:semicolon
-DECL|member|mixer
-id|hal2_mixer_t
-id|mixer
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __HAL2_H */
+macro_line|#endif&t;/* __HAL2_H */
 eof

@@ -539,6 +539,8 @@ comma
 l_string|&quot;,&quot;
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if

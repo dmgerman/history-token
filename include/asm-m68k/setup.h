@@ -418,6 +418,8 @@ DECL|macro|NUM_MEMINFO
 mdefine_line|#define NUM_MEMINFO&t;4
 DECL|macro|CL_SIZE
 mdefine_line|#define CL_SIZE&t;&t;256
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE&t;CL_SIZE
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_int

@@ -355,7 +355,7 @@ op_star
 id|cpu_mask_to_apicid
 )paren
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 suffix:semicolon

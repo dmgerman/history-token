@@ -544,8 +544,26 @@ DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;272
 DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;273
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind              274
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy      275
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy      276
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open            277
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink          (__NR_mq_open+1)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend       (__NR_mq_open+2)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive    (__NR_mq_open+3)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify          (__NR_mq_open+4)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr      (__NR_mq_open+5)
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 274
+mdefine_line|#define NR_syscalls 283
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-sh/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-124)) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
@@ -613,6 +631,7 @@ macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit

@@ -2345,7 +2345,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;waiting for chip to be ready timed out in buffer write Xstatus = %x, status = %x&bslash;n&quot;
+l_string|&quot;waiting for chip to be ready timed out in buffer write Xstatus = %x, status = %llx&bslash;n&quot;
 comma
 id|status
 comma
@@ -4251,7 +4251,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;waiting for erase to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
+l_string|&quot;waiting for erase to complete timed out. Xstatus = %x, status = %llx.&bslash;n&quot;
 comma
 id|status
 comma
@@ -5527,7 +5527,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;waiting for lock to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
+l_string|&quot;waiting for lock to complete timed out. Xstatus = %x, status = %llx.&bslash;n&quot;
 comma
 id|status
 comma
@@ -6269,7 +6269,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;waiting for unlock to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
+l_string|&quot;waiting for unlock to complete timed out. Xstatus = %x, status = %llx.&bslash;n&quot;
 comma
 id|status
 comma
