@@ -253,6 +253,17 @@ c_func
 r_int
 )paren
 suffix:semicolon
+id|STATIC
+r_void
+id|pagebuf_delwri_queue
+c_func
+(paren
+id|page_buf_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|variable|pagebuf_workqueue
 id|STATIC
 r_struct
@@ -5380,6 +5391,7 @@ id|pbd_delwrite_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|STATIC
 r_void
 DECL|function|pagebuf_delwri_queue
 id|pagebuf_delwri_queue

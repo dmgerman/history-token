@@ -1037,17 +1037,6 @@ multiline_comment|/* check if pagebuf is pinned&t;*/
 multiline_comment|/* Reading and writing pages */
 r_extern
 r_void
-id|pagebuf_delwri_queue
-c_func
-(paren
-id|page_buf_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pagebuf_delwri_dequeue
 c_func
 (paren
