@@ -4510,7 +4510,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I810
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -4769,7 +4769,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I810
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -4906,7 +4906,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I820
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5028,7 +5028,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I830_M
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5267,7 +5267,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I845
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5389,7 +5389,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I850
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5511,7 +5511,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_I860
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5633,7 +5633,7 @@ op_assign
 dot
 id|type
 op_assign
-id|INTEL_E7505
+id|INTEL_GENERIC
 comma
 dot
 id|masks
@@ -5964,7 +5964,7 @@ id|intel_generic_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_LX
+id|INTEL_GENERIC
 suffix:semicolon
 id|name
 op_assign
@@ -5982,7 +5982,7 @@ id|intel_generic_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_BX
+id|INTEL_GENERIC
 suffix:semicolon
 id|name
 op_assign
@@ -6000,7 +6000,7 @@ id|intel_generic_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_GX
+id|INTEL_GENERIC
 suffix:semicolon
 id|name
 op_assign
@@ -6236,7 +6236,7 @@ id|intel_845_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_I845_G
+id|INTEL_GENERIC
 suffix:semicolon
 )brace
 id|name
@@ -6291,7 +6291,7 @@ id|intel_845_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_I855_PM
+id|INTEL_GENERIC
 suffix:semicolon
 id|name
 op_assign
@@ -6342,7 +6342,7 @@ id|intel_845_bridge
 suffix:semicolon
 id|bridge-&gt;type
 op_assign
-id|INTEL_I865_G
+id|INTEL_GENERIC
 suffix:semicolon
 )brace
 id|name
