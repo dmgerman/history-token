@@ -6532,38 +6532,21 @@ r_static
 id|_cmsg
 id|s_cmsg
 suffix:semicolon
-DECL|function|capidrv_signal
+DECL|function|capidrv_recv_message
 r_static
 r_void
-id|capidrv_signal
+id|capidrv_recv_message
 c_func
 (paren
 r_struct
 id|capi20_appl
 op_star
 id|ap
-)paren
-(brace
+comma
 r_struct
 id|sk_buff
 op_star
 id|skb
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|capi20_get_message
-c_func
-(paren
-id|ap
-comma
-op_amp
-id|skb
-)paren
-op_eq
-id|CAPI_NOERROR
 )paren
 (brace
 id|capi_message2cmsg
@@ -6622,7 +6605,7 @@ suffix:semicolon
 id|global.nrecvdatapkt
 op_increment
 suffix:semicolon
-r_continue
+r_return
 suffix:semicolon
 )brace
 r_if
@@ -6670,7 +6653,7 @@ op_amp
 id|s_cmsg
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * data of skb used in s_cmsg,&n;&t;&t; * free data when s_cmsg is not used again&n;&t;&t; * thanks to Lars Heete &lt;hel@admin.de&gt;&n;&t;&t; */
+multiline_comment|/*&n;&t; * data of skb used in s_cmsg,&n;&t; * free data when s_cmsg is not used again&n;&t; * thanks to Lars Heete &lt;hel@admin.de&gt;&n;&t; */
 id|kfree_skb
 c_func
 (paren
@@ -6680,7 +6663,6 @@ suffix:semicolon
 id|global.nrecvctlpkt
 op_increment
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* ------------------------------------------------------------------- */
 DECL|macro|PUTBYTE_TO_STATUS
@@ -11416,6 +11398,10 @@ id|global.ap.rparam.datablklen
 op_assign
 l_int|2048
 suffix:semicolon
+id|global.ap.recv_message
+op_assign
+id|capidrv_recv_message
+suffix:semicolon
 id|errcode
 op_assign
 id|capi20_register
@@ -11480,15 +11466,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|capi20_set_signal
-c_func
-(paren
-op_amp
-id|global.ap
-comma
-id|capidrv_signal
-)paren
-suffix:semicolon
 id|ncontr
 op_assign
 id|profile.ncontroller

@@ -79,9 +79,9 @@ mdefine_line|#define KCAPI_TRACE_FULL&t;&t;4
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|macro|KCI_CONTRUP
-mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* struct capi_profile */
+mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* arg: struct capi_profile */
 DECL|macro|KCI_CONTRDOWN
-mdefine_line|#define&t;KCI_CONTRDOWN&t;1&t;/* NULL */
+mdefine_line|#define&t;KCI_CONTRDOWN&t;1&t;/* arg: NULL */
 DECL|struct|capi20_appl
 r_struct
 id|capi20_appl
@@ -94,40 +94,30 @@ DECL|member|rparam
 id|capi_register_params
 id|rparam
 suffix:semicolon
-DECL|member|private
-r_void
-op_star
-r_private
-suffix:semicolon
-multiline_comment|/* internal to kernelcapi.o */
-DECL|member|signal
+DECL|member|recv_message
 r_void
 (paren
 op_star
-id|signal
+id|recv_message
 )paren
 (paren
 r_struct
 id|capi20_appl
 op_star
 id|ap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 suffix:semicolon
-DECL|member|recv_queue
-r_struct
-id|sk_buff_head
-id|recv_queue
-suffix:semicolon
-DECL|member|nncci
-r_int
-id|nncci
-suffix:semicolon
-DECL|member|nccilist
-r_struct
-id|capi_ncci
+DECL|member|private
+r_void
 op_star
-id|nccilist
+r_private
 suffix:semicolon
+multiline_comment|/* internal to kernelcapi.o */
 DECL|member|nrecvctlpkt
 r_int
 r_int
@@ -210,44 +200,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-)paren
-suffix:semicolon
-id|u16
-id|capi20_get_message
-c_func
-(paren
-r_struct
-id|capi20_appl
-op_star
-id|ap
-comma
-r_struct
-id|sk_buff
-op_star
-op_star
-id|msgp
-)paren
-suffix:semicolon
-id|u16
-id|capi20_set_signal
-c_func
-(paren
-r_struct
-id|capi20_appl
-op_star
-id|ap
-comma
-r_void
-(paren
-op_star
-id|signal
-)paren
-(paren
-r_struct
-id|capi20_appl
-op_star
-id|ap
-)paren
 )paren
 suffix:semicolon
 id|u16
