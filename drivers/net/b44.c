@@ -6349,10 +6349,13 @@ id|nstat-&gt;tx_aborted_errors
 op_assign
 id|hwstat-&gt;tx_underruns
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Carrier lost counter seems to be broken for some devices */
 id|nstat-&gt;tx_carrier_errors
 op_assign
 id|hwstat-&gt;tx_carrier_lost
 suffix:semicolon
+macro_line|#endif
 r_return
 id|nstat
 suffix:semicolon
