@@ -485,6 +485,7 @@ r_int
 r_int
 id|x
 comma
+r_volatile
 r_void
 op_star
 id|ptr
