@@ -23,7 +23,7 @@ DECL|macro|TASK31_SIZE
 mdefine_line|#define TASK31_SIZE&t;&t;(0x80000000UL)
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;set_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;set_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE

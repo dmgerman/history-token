@@ -614,7 +614,7 @@ DECL|macro|CONFIG_BINFMT_ELF_MODULE
 macro_line|# define CONFIG_BINFMT_ELF_MODULE&t;CONFIG_BINFMT_ELF32_MODULE
 macro_line|#endif
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(r)&t;&t;elf32_init(r)
+mdefine_line|#define ELF_PLAT_INIT(r, load_addr)&t;elf32_init(r)
 DECL|macro|setup_arg_pages
 mdefine_line|#define setup_arg_pages(bprm)&t;&t;ia32_setup_arg_pages(bprm)
 r_int

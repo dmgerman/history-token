@@ -4129,6 +4129,12 @@ r_int
 id|max_cpus
 )paren
 (brace
+id|setup_ioapic_dest
+c_func
+(paren
+id|TARGET_CPUS
+)paren
+suffix:semicolon
 id|zap_low_mappings
 c_func
 (paren

@@ -946,7 +946,7 @@ id|regs
 )paren
 suffix:semicolon
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;ia64_elf32_init(_r)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;ia64_elf32_init(_r)
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t&t;u32
 multiline_comment|/* ELF register definitions.  This is needed for core dump support.  */
