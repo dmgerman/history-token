@@ -13,6 +13,10 @@ DECL|macro|ARBITRARY_ADDR
 mdefine_line|#define ARBITRARY_ADDR -1
 DECL|macro|FAILURE_PID
 mdefine_line|#define FAILURE_PID    -1
+DECL|macro|STAT_PATH_LEN
+mdefine_line|#define STAT_PATH_LEN sizeof(&quot;/proc/#######/stat&bslash;0&quot;)
+DECL|macro|COMM_SCANF
+mdefine_line|#define COMM_SCANF &quot;%*[^)])&quot;
 DECL|function|os_process_pc
 r_int
 r_int
@@ -26,10 +30,7 @@ id|pid
 r_char
 id|proc_stat
 (braket
-r_sizeof
-(paren
-l_string|&quot;/proc/#####/stat&bslash;0&quot;
-)paren
+id|STAT_PATH_LEN
 )braket
 comma
 id|buf
@@ -160,9 +161,11 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%*d %*s %*c %*d %*d %*d %*d %*d %*d %*d %*d &quot;
+l_string|&quot;%*d &quot;
+id|COMM_SCANF
+l_string|&quot; %*c %*d %*d %*d %*d %*d %*d %*d %*d &quot;
 l_string|&quot;%*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d &quot;
-l_string|&quot;%*d %*d %*d %*d %ld&quot;
+l_string|&quot;%*d %*d %*d %*d %lu&quot;
 comma
 op_amp
 id|pc
@@ -196,10 +199,7 @@ id|pid
 r_char
 id|stat
 (braket
-r_sizeof
-(paren
-l_string|&quot;/proc/nnnnn/stat&bslash;0&quot;
-)paren
+id|STAT_PATH_LEN
 )braket
 suffix:semicolon
 r_char
@@ -334,7 +334,6 @@ id|parent
 op_assign
 id|FAILURE_PID
 suffix:semicolon
-multiline_comment|/* XXX This will break if there is a space in the command */
 id|n
 op_assign
 id|sscanf
@@ -342,7 +341,9 @@ c_func
 (paren
 id|data
 comma
-l_string|&quot;%*d %*s %*c %d&quot;
+l_string|&quot;%*d &quot;
+id|COMM_SCANF
+l_string|&quot; %*c %d&quot;
 comma
 op_amp
 id|parent
