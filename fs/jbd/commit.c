@@ -753,7 +753,7 @@ id|write_out_data_locked
 suffix:semicolon
 id|sync_datalist_empty
 suffix:colon
-multiline_comment|/*&n;&t; * Wait for all the async writepage data.  As they become unlocked&n;&t; * in end_buffer_io_async(), the only place where they can be&n;&t; * reaped is in try_to_free_buffers(), and we&squot;re locked against&n;&t; * that.&n;&t; */
+multiline_comment|/*&n;&t; * Wait for all the async writepage data.  As they become unlocked&n;&t; * in end_buffer_async_write(), the only place where they can be&n;&t; * reaped is in try_to_free_buffers(), and we&squot;re locked against&n;&t; * that.&n;&t; */
 r_while
 c_loop
 (paren

@@ -1,8 +1,7 @@
-multiline_comment|/*&n; * include/linux/buffer_head.h&n; *&n; * Everything to do with buffer_head.b_state.&n; */
+multiline_comment|/*&n; * include/linux/buffer_head.h&n; *&n; * Everything to do with buffer_heads.&n; */
 macro_line|#ifndef BUFFER_FLAGS_H
 DECL|macro|BUFFER_FLAGS_H
 mdefine_line|#define BUFFER_FLAGS_H
-multiline_comment|/* bh state bits */
 DECL|enum|bh_state_bits
 r_enum
 id|bh_state_bits
@@ -10,35 +9,39 @@ id|bh_state_bits
 DECL|enumerator|BH_Uptodate
 id|BH_Uptodate
 comma
-multiline_comment|/* 1 if the buffer contains valid data */
+multiline_comment|/* Contains valid data */
 DECL|enumerator|BH_Dirty
 id|BH_Dirty
 comma
-multiline_comment|/* 1 if the buffer is dirty */
+multiline_comment|/* Is dirty */
 DECL|enumerator|BH_Lock
 id|BH_Lock
 comma
-multiline_comment|/* 1 if the buffer is locked */
+multiline_comment|/* Is locked */
 DECL|enumerator|BH_Req
 id|BH_Req
 comma
-multiline_comment|/* 0 if the buffer has been invalidated */
+multiline_comment|/* Has been submitted for I/O */
 DECL|enumerator|BH_Mapped
 id|BH_Mapped
 comma
-multiline_comment|/* 1 if the buffer has a disk mapping */
+multiline_comment|/* Has a disk mapping */
 DECL|enumerator|BH_New
 id|BH_New
 comma
-multiline_comment|/* 1 if the buffer is new and not yet written out */
-DECL|enumerator|BH_Async
-id|BH_Async
+multiline_comment|/* Disk mapping was newly created by get_block */
+DECL|enumerator|BH_Async_Read
+id|BH_Async_Read
 comma
-multiline_comment|/* 1 if the buffer is under end_buffer_io_async I/O */
+multiline_comment|/* Is under end_buffer_async_read I/O */
+DECL|enumerator|BH_Async_Write
+id|BH_Async_Write
+comma
+multiline_comment|/* Is under end_buffer_async_write I/O */
 DECL|enumerator|BH_JBD
 id|BH_JBD
 comma
-multiline_comment|/* 1 if it has an attached journal_head */
+multiline_comment|/* Has an attached ext3 journal_head */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -72,40 +75,23 @@ r_int
 id|uptodate
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Try to keep the most commonly used fields in single cache lines (16&n; * bytes) to improve performance.  This ordering should be&n; * particularly beneficial on 32-bit processors.&n; * &n; * We use the first 16 bytes for the data which is used in searches&n; * over the block hash lists (ie. getblk() and friends).&n; * &n; * The second 16 bytes we use for lru buffer scans, as used by&n; * sync_buffers() and refill_freelist().  -- sct&n; */
+multiline_comment|/*&n; * Keep related fields in common cachelines.  The most commonly accessed&n; * field (b_state) goes at the start so the compiler does not generate&n; * indexed addressing for it.&n; */
 DECL|struct|buffer_head
 r_struct
 id|buffer_head
 (brace
 multiline_comment|/* First cache line: */
-DECL|member|b_blocknr
-id|sector_t
-id|b_blocknr
-suffix:semicolon
-multiline_comment|/* block number */
-DECL|member|b_size
-r_int
-r_int
-id|b_size
-suffix:semicolon
-multiline_comment|/* block size */
-DECL|member|b_bdev
-r_struct
-id|block_device
-op_star
-id|b_bdev
-suffix:semicolon
-DECL|member|b_count
-id|atomic_t
-id|b_count
-suffix:semicolon
-multiline_comment|/* users using this block */
 DECL|member|b_state
 r_int
 r_int
 id|b_state
 suffix:semicolon
 multiline_comment|/* buffer state bitmap (see above) */
+DECL|member|b_count
+id|atomic_t
+id|b_count
+suffix:semicolon
+multiline_comment|/* users using this block */
 DECL|member|b_this_page
 r_struct
 id|buffer_head
@@ -120,12 +106,29 @@ op_star
 id|b_page
 suffix:semicolon
 multiline_comment|/* the page this bh is mapped to */
+DECL|member|b_blocknr
+id|sector_t
+id|b_blocknr
+suffix:semicolon
+multiline_comment|/* block number */
+DECL|member|b_size
+r_int
+r_int
+id|b_size
+suffix:semicolon
+multiline_comment|/* block size */
 DECL|member|b_data
 r_char
 op_star
 id|b_data
 suffix:semicolon
 multiline_comment|/* pointer to data block */
+DECL|member|b_bdev
+r_struct
+id|block_device
+op_star
+id|b_bdev
+suffix:semicolon
 DECL|member|b_end_io
 id|bh_end_io_t
 op_star
@@ -152,6 +155,7 @@ mdefine_line|#define BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&t;&bslash;&n;static in
 multiline_comment|/*&n; * test_set_buffer_foo() and test_clear_buffer_foo()&n; */
 DECL|macro|TAS_BUFFER_FNS
 mdefine_line|#define TAS_BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&bslash;&n;static inline int test_set_buffer_##name(struct buffer_head *bh)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int test_clear_buffer_##name(struct buffer_head *bh)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
+multiline_comment|/*&n; * Emit the buffer bitops functions.   Note that there are also functions&n; * of the form &quot;mark_buffer_foo()&quot;.  These are higher-level functions which&n; * do something in addition to setting a b_state bit.&n; */
 id|BUFFER_FNS
 c_func
 (paren
@@ -211,12 +215,18 @@ r_new
 id|BUFFER_FNS
 c_func
 (paren
-id|Async
+id|Async_Read
 comma
-id|async
+id|async_read
 )paren
-multiline_comment|/*&n; * Utility macros&n; */
-multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Clean this up with blockdev-in-highmem infrastructure.&n; */
+id|BUFFER_FNS
+c_func
+(paren
+id|Async_Write
+comma
+id|async_write
+)paren
+multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
 DECL|macro|touch_buffer
@@ -346,9 +356,18 @@ id|list_head
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* reiserfs_writepage needs this */
 r_void
-id|set_buffer_async_io
+id|mark_buffer_async_read
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_void
+id|mark_buffer_async_write
 c_func
 (paren
 r_struct

@@ -8258,7 +8258,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|set_buffer_async_io
+id|mark_buffer_async_write
 c_func
 (paren
 id|bh
