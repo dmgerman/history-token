@@ -1551,10 +1551,6 @@ id|skb
 comma
 r_int
 r_int
-id|mss
-comma
-r_int
-r_int
 id|mss_std
 )paren
 (brace
@@ -1596,7 +1592,7 @@ l_int|1
 suffix:semicolon
 id|factor
 op_div_assign
-id|mss
+id|mss_std
 suffix:semicolon
 id|TCP_SKB_CB
 c_func
@@ -1985,8 +1981,6 @@ c_func
 (paren
 id|skb
 comma
-id|tp-&gt;mss_cache
-comma
 id|tp-&gt;mss_cache_std
 )paren
 suffix:semicolon
@@ -1994,8 +1988,6 @@ id|tcp_set_skb_tso_factor
 c_func
 (paren
 id|buff
-comma
-id|tp-&gt;mss_cache
 comma
 id|tp-&gt;mss_cache_std
 )paren
@@ -6657,8 +6649,6 @@ id|tcp_set_skb_tso_factor
 c_func
 (paren
 id|skb
-comma
-id|mss
 comma
 id|tp-&gt;mss_cache_std
 )paren
