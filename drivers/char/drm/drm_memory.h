@@ -3,9 +3,7 @@ multiline_comment|/* &n; * Created: Thu Feb  4 14:00:34 1999 by faith@valinux.co
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &quot;drmP.h&quot;
-multiline_comment|/**&n; * Cut down version of drm_memory_debug.h, which used to be called&n; * drm_memory.h.  If you want the debug functionality, change 0 to 1&n; * below.&n; */
-DECL|macro|DEBUG_MEMORY
-mdefine_line|#define DEBUG_MEMORY 0
+multiline_comment|/**&n; * Cut down version of drm_memory_debug.h, which used to be called&n; * drm_memory.h.  &n; */
 macro_line|#if __OS_HAS_AGP
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#ifdef HAVE_PAGE_AGP
@@ -731,7 +729,7 @@ id|pt
 )paren
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_MEMORY
+macro_line|#ifdef DEBUG_MEMORY
 macro_line|#include &quot;drm_memory_debug.h&quot;
 macro_line|#else
 multiline_comment|/** No-op. */
@@ -785,33 +783,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/** Wrapper around kmalloc() */
-DECL|function|alloc
-r_void
-op_star
-id|DRM
-c_func
-(paren
-id|alloc
-)paren
-(paren
-r_int
-id|size
-comma
-r_int
-id|area
-)paren
-(brace
-r_return
-id|kmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/** Wrapper around kmalloc() */
 DECL|function|calloc
 r_void
 op_star
@@ -822,10 +793,10 @@ id|calloc
 )paren
 (paren
 r_int
-id|size
+id|nmemb
 comma
 r_int
-id|nmemb
+id|size
 comma
 r_int
 id|area
@@ -948,33 +919,6 @@ suffix:semicolon
 )brace
 r_return
 id|pt
-suffix:semicolon
-)brace
-multiline_comment|/** Wrapper around kfree() */
-DECL|function|free
-r_void
-id|DRM
-c_func
-(paren
-id|free
-)paren
-(paren
-r_void
-op_star
-id|pt
-comma
-r_int
-id|size
-comma
-r_int
-id|area
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|pt
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Allocate pages.&n; *&n; * &bslash;param order size order.&n; * &bslash;param area memory area. (Not used.)&n; * &bslash;return page address on success, or zero on failure.&n; *&n; * Allocate and reserve free pages.&n; */
