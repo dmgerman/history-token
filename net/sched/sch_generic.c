@@ -1544,7 +1544,6 @@ id|dev
 op_assign
 id|qdisc-&gt;dev
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_SCHED
 r_if
 c_cond
 (paren
@@ -1609,7 +1608,6 @@ op_amp
 id|qdisc-&gt;stats
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
