@@ -72,12 +72,6 @@ mdefine_line|#define&t;BIT30&t;0x40000000
 DECL|macro|BIT31
 mdefine_line|#define&t;BIT31&t;0x80000000
 multiline_comment|/*&n; *  The first part is the high level driver of the gigE ethernet ports.&n; */
-DECL|macro|ETH_PORT0_IRQ_NUM
-mdefine_line|#define ETH_PORT0_IRQ_NUM 48&t;&t;&t;/* main high register, bit0 */
-DECL|macro|ETH_PORT1_IRQ_NUM
-mdefine_line|#define ETH_PORT1_IRQ_NUM ETH_PORT0_IRQ_NUM+1&t;/* main high register, bit1 */
-DECL|macro|ETH_PORT2_IRQ_NUM
-mdefine_line|#define ETH_PORT2_IRQ_NUM ETH_PORT0_IRQ_NUM+2&t;/* main high register, bit1 */
 multiline_comment|/* Checksum offload for Tx works */
 DECL|macro|MV64340_CHECKSUM_OFFLOAD_TX
 mdefine_line|#define  MV64340_CHECKSUM_OFFLOAD_TX

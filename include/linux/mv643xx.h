@@ -1057,6 +1057,10 @@ mdefine_line|#define MV64340_I2O_OUTBOUND_POST_TAIL_POINTER_REG_CPU1_SIDE       
 multiline_comment|/****************************************/
 multiline_comment|/*        Ethernet Unit Registers  &t;&t;*/
 multiline_comment|/****************************************/
+DECL|macro|MV64340_ETH_SHARED_REGS
+mdefine_line|#define MV64340_ETH_SHARED_REGS                                     0x2000
+DECL|macro|MV64340_ETH_SHARED_REGS_SIZE
+mdefine_line|#define MV64340_ETH_SHARED_REGS_SIZE                                0x2000
 DECL|macro|MV64340_ETH_PHY_ADDR_REG
 mdefine_line|#define MV64340_ETH_PHY_ADDR_REG                                    0x2000
 DECL|macro|MV64340_ETH_SMI_REG
@@ -1773,6 +1777,24 @@ DECL|member|brg_clk_freq
 id|u32
 id|brg_clk_freq
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|MV64340_ETH_DESC_SIZE
+mdefine_line|#define MV64340_ETH_DESC_SIZE&t;&t;&t;&t;64
+DECL|macro|MV64XXX_ETH_SHARED_NAME
+mdefine_line|#define MV64XXX_ETH_SHARED_NAME&t;&quot;mv64xxx_eth_shared&quot;
+DECL|macro|MV64XXX_ETH_NAME
+mdefine_line|#define MV64XXX_ETH_NAME&t;&quot;mv64xxx_eth&quot;
+DECL|struct|mv64xxx_eth_platform_data
+r_struct
+id|mv64xxx_eth_platform_data
+(brace
+DECL|member|mac_addr
+r_char
+op_star
+id|mac_addr
+suffix:semicolon
+multiline_comment|/* pointer to mac address */
 )brace
 suffix:semicolon
 macro_line|#endif /* __ASM_MV64340_H */
