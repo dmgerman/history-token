@@ -2630,13 +2630,13 @@ id|ULTRA_NIC_OFFSET
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|idev
 op_assign
 (paren
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 )paren
 id|ei_status.priv
@@ -2646,9 +2646,7 @@ c_cond
 (paren
 id|idev
 )paren
-id|idev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_device_detach
 c_func
 (paren
 id|idev

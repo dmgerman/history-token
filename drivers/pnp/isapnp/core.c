@@ -223,11 +223,6 @@ suffix:semicolon
 r_extern
 r_struct
 id|pnp_protocol
-id|isapnp_card_protocol
-suffix:semicolon
-r_extern
-r_struct
-id|pnp_protocol
 id|isapnp_protocol
 suffix:semicolon
 DECL|function|write_data
@@ -5652,7 +5647,7 @@ id|protocol_for_each_card
 c_func
 (paren
 op_amp
-id|isapnp_card_protocol
+id|isapnp_protocol
 comma
 id|card
 )paren
