@@ -7,8 +7,6 @@ macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6t_esp.h&gt;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
