@@ -68,10 +68,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|variable|console_table
 r_static
 r_struct
@@ -3615,7 +3611,7 @@ id|ss
 suffix:semicolon
 id|rlth
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|osr
@@ -14357,7 +14353,6 @@ c_func
 id|console_blank_hook
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
 DECL|variable|vt_cons
 id|EXPORT_SYMBOL
 c_func
@@ -14365,7 +14360,6 @@ c_func
 id|vt_cons
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef VT_SINGLE_DRIVER
 DECL|variable|take_over_console
 id|EXPORT_SYMBOL
