@@ -2136,10 +2136,24 @@ id|console
 op_star
 id|c
 suffix:semicolon
-id|acquire_console_sem
+multiline_comment|/*&n;&t; * Try to get the console semaphore. If someone else owns it&n;&t; * we have to return without unblanking because console_unblank&n;&t; * may be called in interrupt context.&n;&t; */
+r_if
+c_cond
+(paren
+id|down_trylock
 c_func
 (paren
+op_amp
+id|console_sem
 )paren
+op_ne
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|console_may_schedule
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop

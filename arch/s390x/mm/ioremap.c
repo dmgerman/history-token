@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  arch/s390/mm/ioremap.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/extable.c&quot;&n; *    (C) Copyright 1995 1996 Linus Torvalds&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;

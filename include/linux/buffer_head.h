@@ -239,7 +239,6 @@ id|Boundary
 comma
 id|boundary
 )paren
-multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
 DECL|macro|touch_buffer
@@ -249,10 +248,6 @@ DECL|macro|page_buffers
 mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PagePrivate(page))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
 DECL|macro|page_has_buffers
 mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
-DECL|macro|set_page_buffers
-mdefine_line|#define set_page_buffers(page, buffers)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SetPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = (unsigned long)buffers;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|clear_page_buffers
-mdefine_line|#define clear_page_buffers(page)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ClearPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = 0;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|invalidate_buffers
 mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0)
 DECL|macro|destroy_buffers
@@ -559,7 +554,7 @@ suffix:semicolon
 r_struct
 id|buffer_head
 op_star
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 r_struct
@@ -632,8 +627,7 @@ op_star
 id|alloc_buffer_head
 c_func
 (paren
-r_int
-id|async
+r_void
 )paren
 suffix:semicolon
 r_void
@@ -644,27 +638,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-)paren
-suffix:semicolon
-r_int
-id|brw_page
-c_func
-(paren
-r_int
-comma
-r_struct
-id|page
-op_star
-comma
-r_struct
-id|block_device
-op_star
-comma
-id|sector_t
-(braket
-)braket
-comma
-r_int
 )paren
 suffix:semicolon
 r_void
@@ -1110,8 +1083,8 @@ r_inline
 r_struct
 id|buffer_head
 op_star
-DECL|function|sb_get_hash_table
-id|sb_get_hash_table
+DECL|function|sb_find_get_block
+id|sb_find_get_block
 c_func
 (paren
 r_struct
@@ -1124,7 +1097,7 @@ id|block
 )paren
 (brace
 r_return
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|sb-&gt;s_bdev

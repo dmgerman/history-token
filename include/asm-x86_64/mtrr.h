@@ -11,14 +11,12 @@ r_struct
 id|mtrr_sentry
 (brace
 DECL|member|base
-r_int
-r_int
+id|__u64
 id|base
 suffix:semicolon
 multiline_comment|/*  Base address     */
 DECL|member|size
-r_int
-r_int
+id|__u32
 id|size
 suffix:semicolon
 multiline_comment|/*  Size of region   */
@@ -34,24 +32,22 @@ DECL|struct|mtrr_gentry
 r_struct
 id|mtrr_gentry
 (brace
+DECL|member|base
+id|__u64
+id|base
+suffix:semicolon
+multiline_comment|/*  Base address     */
+DECL|member|size
+id|__u32
+id|size
+suffix:semicolon
+multiline_comment|/*  Size of region   */
 DECL|member|regnum
 r_int
 r_int
 id|regnum
 suffix:semicolon
 multiline_comment|/*  Register number  */
-DECL|member|base
-r_int
-r_int
-id|base
-suffix:semicolon
-multiline_comment|/*  Base address     */
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/*  Size of region   */
 DECL|member|type
 r_int
 r_int
@@ -133,17 +129,15 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*  The following functions are for use by other drivers  */
-macro_line|# ifdef CONFIG_MTRR
+macro_line|#ifdef CONFIG_MTRR
 r_extern
 r_int
 id|mtrr_add
 (paren
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 comma
 r_int
@@ -158,12 +152,10 @@ r_extern
 r_int
 id|mtrr_add_page
 (paren
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 comma
 r_int
@@ -181,12 +173,10 @@ id|mtrr_del
 r_int
 id|reg
 comma
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 )paren
 suffix:semicolon
@@ -197,43 +187,24 @@ id|mtrr_del_page
 r_int
 id|reg
 comma
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|mtrr_centaur_report_mcr
-c_func
-(paren
-r_int
-id|mcr
-comma
-id|u32
-id|lo
-comma
-id|u32
-id|hi
-)paren
-suffix:semicolon
-macro_line|#  else
+macro_line|#else
 DECL|function|mtrr_add
 r_static
 id|__inline__
 r_int
 id|mtrr_add
 (paren
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 comma
 r_int
@@ -255,12 +226,10 @@ id|__inline__
 r_int
 id|mtrr_add_page
 (paren
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 comma
 r_int
@@ -285,12 +254,10 @@ id|mtrr_del
 r_int
 id|reg
 comma
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 )paren
 (brace
@@ -308,12 +275,10 @@ id|mtrr_del_page
 r_int
 id|reg
 comma
-r_int
-r_int
+id|__u64
 id|base
 comma
-r_int
-r_int
+id|__u32
 id|size
 )paren
 (brace
@@ -322,26 +287,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|mtrr_centaur_report_mcr
-r_static
-id|__inline__
-r_void
-id|mtrr_centaur_report_mcr
-c_func
-(paren
-r_int
-id|mcr
-comma
-id|u32
-id|lo
-comma
-id|u32
-id|hi
-)paren
-(brace
-suffix:semicolon
-)brace
-macro_line|#  endif
+macro_line|#endif
 multiline_comment|/*  The following functions are for initialisation: don&squot;t use them!  */
 r_extern
 r_int
@@ -350,7 +296,7 @@ id|mtrr_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#  if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_MTRR)
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_MTRR)
 r_extern
 r_void
 id|mtrr_init_boot_cpu
@@ -365,7 +311,7 @@ id|mtrr_init_secondary_cpu
 r_void
 )paren
 suffix:semicolon
-macro_line|#  endif
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif  /*  _LINUX_MTRR_H  */
 eof

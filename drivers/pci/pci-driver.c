@@ -816,4 +816,11 @@ c_func
 id|pci_dev_driver
 )paren
 suffix:semicolon
+DECL|variable|pci_bus_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_type
+)paren
+suffix:semicolon
 eof

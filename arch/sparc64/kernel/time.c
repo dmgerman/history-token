@@ -55,6 +55,10 @@ op_assign
 l_int|0UL
 suffix:semicolon
 macro_line|#endif
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|mstk48t08_regs
 r_static
 r_int

@@ -123,8 +123,6 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 r_int
-id|j
-comma
 id|cpu
 suffix:semicolon
 id|printk

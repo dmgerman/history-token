@@ -34,6 +34,10 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 multiline_comment|/* keep track of when we need to update the rtc */
 DECL|variable|last_rtc_update
 id|time_t
