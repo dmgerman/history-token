@@ -8,24 +8,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
-DECL|variable|km_types
-r_static
+r_extern
 r_enum
 id|km_type
-id|km_types
+id|crypto_km_types
 (braket
 )braket
-op_assign
-(brace
-id|KM_USER0
-comma
-id|KM_USER1
-comma
-id|KM_SOFTIRQ0
-comma
-id|KM_SOFTIRQ1
-comma
-)brace
 suffix:semicolon
 DECL|function|crypto_kmap_type
 r_static
@@ -40,7 +28,7 @@ id|out
 )paren
 (brace
 r_return
-id|km_types
+id|crypto_km_types
 (braket
 (paren
 id|in_softirq
