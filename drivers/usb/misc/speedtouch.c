@@ -2887,6 +2887,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|tasklet_kill
+(paren
+op_amp
+id|instance-&gt;recvqueue_tasklet
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
