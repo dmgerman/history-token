@@ -350,7 +350,7 @@ id|cmi9880_ch6_init
 )braket
 op_assign
 (brace
-multiline_comment|/* set line-in PIN for input */
+multiline_comment|/* set line-in PIN for output */
 (brace
 l_int|0x0c
 comma
@@ -359,7 +359,7 @@ comma
 l_int|0x40
 )brace
 comma
-multiline_comment|/* set mic PIN for input, also enable vref */
+multiline_comment|/* set mic PIN for output */
 (brace
 l_int|0x0d
 comma
@@ -391,7 +391,7 @@ id|cmi9880_ch8_init
 )braket
 op_assign
 (brace
-multiline_comment|/* set line-in PIN for input */
+multiline_comment|/* set line-in PIN for output */
 (brace
 l_int|0x0c
 comma
@@ -400,7 +400,7 @@ comma
 l_int|0x40
 )brace
 comma
-multiline_comment|/* set mic PIN for input, also enable vref */
+multiline_comment|/* set mic PIN for output */
 (brace
 l_int|0x0d
 comma
