@@ -46,12 +46,6 @@ id|i
 comma
 id|ret
 suffix:semicolon
-id|ecard_claim
-c_func
-(paren
-id|ec
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -152,12 +146,6 @@ id|ec
 )paren
 (brace
 multiline_comment|/* need to do more */
-id|ecard_release
-c_func
-(paren
-id|ec
-)paren
-suffix:semicolon
 )brace
 DECL|variable|rapide_ids
 r_static
