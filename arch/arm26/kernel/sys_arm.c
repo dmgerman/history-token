@@ -876,7 +876,7 @@ id|raddr
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -940,7 +940,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

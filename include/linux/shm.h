@@ -231,8 +231,9 @@ DECL|macro|SHM_LOCKED
 mdefine_line|#define SHM_LOCKED      02000   /* segment will not be swapped */
 DECL|macro|SHM_HUGETLB
 mdefine_line|#define SHM_HUGETLB     04000   /* segment will use huge TLB pages */
+macro_line|#ifdef CONFIG_SYSVIPC
 r_int
-id|sys_shmat
+id|do_shmat
 (paren
 r_int
 id|shmid
@@ -251,6 +252,35 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|do_shmat
+r_inline
+r_int
+id|do_shmat
+(paren
+r_int
+id|shmid
+comma
+r_char
+id|__user
+op_star
+id|shmaddr
+comma
+r_int
+id|shmflg
+comma
+r_int
+r_int
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+macro_line|#endif
 id|asmlinkage
 r_int
 id|sys_shmget
