@@ -150,16 +150,6 @@ id|init_time
 r_void
 )paren
 suffix:semicolon
-DECL|member|gettimeoffset
-r_void
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|init_machine
 r_void
 (paren
