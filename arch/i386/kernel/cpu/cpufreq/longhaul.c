@@ -806,6 +806,7 @@ suffix:semicolon
 DECL|function|longhaul_get_cpu_fsb
 r_static
 r_int
+r_int
 id|longhaul_get_cpu_fsb
 (paren
 r_void
@@ -1577,6 +1578,13 @@ suffix:semicolon
 r_union
 id|msr_longhaul
 id|longhaul
+suffix:semicolon
+id|fsb
+op_assign
+id|longhaul_get_cpu_fsb
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
