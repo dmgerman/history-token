@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 multiline_comment|/*&n; * balloc.c contains the blocks allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free blocks are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.  The descriptors are loaded in memory&n; * when a file system is mounted (see ext2_read_super).&n; */
 DECL|macro|in_range
-mdefine_line|#define in_range(b, first, len)&t;&t;((b) &gt;= (first) &amp;&amp; (b) &lt;= (first) + (len) - 1)
+mdefine_line|#define in_range(b, first, len)&t;((b) &gt;= (first) &amp;&amp; (b) &lt;= (first) + (len) - 1)
 DECL|function|ext2_get_group_desc
 r_struct
 id|ext2_group_desc
@@ -36,12 +36,12 @@ id|group_desc
 suffix:semicolon
 r_int
 r_int
-id|desc
+id|offset
 suffix:semicolon
 r_struct
 id|ext2_group_desc
 op_star
-id|gdp
+id|desc
 suffix:semicolon
 r_struct
 id|ext2_sb_info
@@ -87,7 +87,7 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|desc
+id|offset
 op_assign
 id|block_group
 op_mod
@@ -120,14 +120,14 @@ id|block_group
 comma
 id|group_desc
 comma
-id|desc
+id|offset
 )paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|gdp
+id|desc
 op_assign
 (paren
 r_struct
@@ -155,9 +155,9 @@ id|group_desc
 )braket
 suffix:semicolon
 r_return
-id|gdp
-op_plus
 id|desc
+op_plus
+id|offset
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the bitmap for a given block_group, reading into the specified &n; * slot in the superblock&squot;s bitmap cache.&n; *&n; * Return buffer_head on success or NULL in case of failure.&n; */
@@ -182,7 +182,7 @@ id|block_group
 r_struct
 id|ext2_group_desc
 op_star
-id|gdp
+id|desc
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -191,7 +191,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -206,7 +206,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_goto
 id|error_out
@@ -221,7 +221,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_block_bitmap
+id|desc-&gt;bg_block_bitmap
 )paren
 )paren
 suffix:semicolon
@@ -246,7 +246,7 @@ comma
 r_int
 r_int
 )paren
-id|gdp-&gt;bg_block_bitmap
+id|desc-&gt;bg_block_bitmap
 )paren
 suffix:semicolon
 id|error_out
@@ -385,7 +385,7 @@ id|ext2_panic
 (paren
 id|sb
 comma
-l_string|&quot;__load_block_bitmap&quot;
+l_string|&quot;load_block_bitmap&quot;
 comma
 l_string|&quot;block_group != block_bitmap_number&quot;
 )paren
@@ -927,7 +927,7 @@ suffix:semicolon
 r_struct
 id|ext2_group_desc
 op_star
-id|gdp
+id|desc
 suffix:semicolon
 r_struct
 id|ext2_super_block
@@ -1088,7 +1088,7 @@ id|bh
 r_goto
 id|error_return
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -1104,7 +1104,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_goto
 id|error_return
@@ -1117,7 +1117,7 @@ id|in_range
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_block_bitmap
+id|desc-&gt;bg_block_bitmap
 )paren
 comma
 id|block
@@ -1130,7 +1130,7 @@ id|in_range
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_bitmap
+id|desc-&gt;bg_inode_bitmap
 )paren
 comma
 id|block
@@ -1145,7 +1145,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_table
+id|desc-&gt;bg_inode_table
 )paren
 comma
 id|sb-&gt;u.ext2_sb.s_itb_per_group
@@ -1162,7 +1162,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_table
+id|desc-&gt;bg_inode_table
 )paren
 comma
 id|sb-&gt;u.ext2_sb.s_itb_per_group
@@ -1265,7 +1265,7 @@ suffix:semicolon
 id|group_release_blocks
 c_func
 (paren
-id|gdp
+id|desc
 comma
 id|bh2
 comma
@@ -1564,6 +1564,11 @@ id|buffer_head
 op_star
 id|bh2
 suffix:semicolon
+r_struct
+id|ext2_group_desc
+op_star
+id|desc
+suffix:semicolon
 r_int
 id|i
 comma
@@ -1612,11 +1617,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-r_struct
-id|ext2_group_desc
-op_star
-id|gdp
-suffix:semicolon
 r_int
 id|prealloc_goal
 op_assign
@@ -1631,18 +1631,6 @@ id|es_alloc
 comma
 id|dq_alloc
 suffix:semicolon
-macro_line|#ifdef EXT2FS_DEBUG
-r_static
-r_int
-id|goal_hits
-op_assign
-l_int|0
-comma
-id|goal_attempts
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1790,7 +1778,7 @@ id|es-&gt;s_first_data_block
 op_div
 id|group_size
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -1806,7 +1794,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_goto
 id|io_error
@@ -1816,7 +1804,7 @@ op_assign
 id|group_reserve_blocks
 c_func
 (paren
-id|gdp
+id|desc
 comma
 id|bh2
 comma
@@ -1845,16 +1833,6 @@ op_mod
 id|group_size
 )paren
 suffix:semicolon
-macro_line|#ifdef EXT2FS_DEBUG
-r_if
-c_cond
-(paren
-id|j
-)paren
-id|goal_attempts
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|bh
 op_assign
 id|load_block_bitmap
@@ -1910,7 +1888,7 @@ suffix:semicolon
 id|group_release_blocks
 c_func
 (paren
-id|gdp
+id|desc
 comma
 id|bh2
 comma
@@ -1929,7 +1907,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now search the rest of the groups.  We assume that &n;&t; * i and gdp correctly point to the last group visited.&n;&t; */
+multiline_comment|/*&n;&t; * Now search the rest of the groups.  We assume that &n;&t; * i and desc correctly point to the last group visited.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1962,7 +1940,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -1978,7 +1956,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_goto
 id|io_error
@@ -1988,7 +1966,7 @@ op_assign
 id|group_reserve_blocks
 c_func
 (paren
-id|gdp
+id|desc
 comma
 id|bh2
 comma
@@ -2069,12 +2047,13 @@ suffix:semicolon
 id|got_block
 suffix:colon
 id|ext2_debug
+c_func
 (paren
 l_string|&quot;using block group %d(%d)&bslash;n&quot;
 comma
 id|i
 comma
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 suffix:semicolon
 id|tmp
@@ -2099,7 +2078,7 @@ op_eq
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_block_bitmap
+id|desc-&gt;bg_block_bitmap
 )paren
 op_logical_or
 id|tmp
@@ -2107,7 +2086,7 @@ op_eq
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_bitmap
+id|desc-&gt;bg_inode_bitmap
 )paren
 op_logical_or
 id|in_range
@@ -2117,7 +2096,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_table
+id|desc-&gt;bg_inode_table
 )paren
 comma
 id|sbi-&gt;s_itb_per_group
@@ -2309,13 +2288,8 @@ suffix:semicolon
 id|ext2_debug
 (paren
 l_string|&quot;allocating block %d. &quot;
-l_string|&quot;Goal hits %d of %d.&bslash;n&quot;
 comma
-id|j
-comma
-id|goal_hits
-comma
-id|goal_attempts
+id|block
 )paren
 suffix:semicolon
 id|out_release
@@ -2323,7 +2297,7 @@ suffix:colon
 id|group_release_blocks
 c_func
 (paren
-id|gdp
+id|desc
 comma
 id|bh2
 comma
@@ -2403,7 +2377,7 @@ suffix:semicolon
 r_struct
 id|ext2_group_desc
 op_star
-id|gdp
+id|desc
 suffix:semicolon
 r_int
 id|i
@@ -2425,7 +2399,7 @@ id|bitmap_count
 op_assign
 l_int|0
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2449,7 +2423,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -2464,7 +2438,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_continue
 suffix:semicolon
@@ -2473,7 +2447,7 @@ op_add_assign
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 suffix:semicolon
 id|bh
@@ -2514,7 +2488,7 @@ comma
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 comma
 id|x
@@ -2824,7 +2798,7 @@ suffix:semicolon
 r_struct
 id|ext2_group_desc
 op_star
-id|gdp
+id|desc
 suffix:semicolon
 r_int
 id|i
@@ -2841,7 +2815,7 @@ id|bitmap_count
 op_assign
 l_int|0
 suffix:semicolon
-id|gdp
+id|desc
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2860,7 +2834,7 @@ id|i
 op_increment
 )paren
 (brace
-id|gdp
+id|desc
 op_assign
 id|ext2_get_group_desc
 (paren
@@ -2875,7 +2849,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gdp
+id|desc
 )paren
 r_continue
 suffix:semicolon
@@ -2884,7 +2858,7 @@ op_add_assign
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 suffix:semicolon
 id|bh
@@ -3001,7 +2975,7 @@ id|block_in_use
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_block_bitmap
+id|desc-&gt;bg_block_bitmap
 )paren
 comma
 id|sb
@@ -3029,7 +3003,7 @@ id|block_in_use
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_bitmap
+id|desc-&gt;bg_inode_bitmap
 )paren
 comma
 id|sb
@@ -3071,7 +3045,7 @@ id|block_in_use
 id|le32_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_inode_table
+id|desc-&gt;bg_inode_table
 )paren
 op_plus
 id|j
@@ -3110,7 +3084,7 @@ c_cond
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 op_ne
 id|x
@@ -3129,7 +3103,7 @@ comma
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 comma
 id|x
