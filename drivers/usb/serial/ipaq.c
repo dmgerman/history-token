@@ -34,7 +34,7 @@ DECL|macro|KP_RETRIES
 mdefine_line|#define KP_RETRIES&t;100
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.2&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -2338,6 +2338,13 @@ c_func
 r_void
 )paren
 (brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|write_list_lock
+)paren
+suffix:semicolon
 id|usb_serial_register
 c_func
 (paren
