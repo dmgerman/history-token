@@ -235,22 +235,6 @@ comma
 )brace
 comma
 multiline_comment|/* RTN_THROW */
-macro_line|#ifdef CONFIG_IP_ROUTE_NAT
-(brace
-dot
-id|error
-op_assign
-l_int|0
-comma
-dot
-id|scope
-op_assign
-id|RT_SCOPE_HOST
-comma
-)brace
-comma
-multiline_comment|/* RTN_NAT */
-macro_line|#else
 (brace
 dot
 id|error
@@ -266,7 +250,6 @@ comma
 )brace
 comma
 multiline_comment|/* RTN_NAT */
-macro_line|#endif
 (brace
 dot
 id|error
@@ -2120,47 +2103,6 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_IP_ROUTE_NAT
-r_if
-c_cond
-(paren
-id|r-&gt;rtm_type
-op_eq
-id|RTN_NAT
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|rta-&gt;rta_gw
-op_eq
-l_int|NULL
-op_logical_or
-id|nhs
-op_ne
-l_int|1
-op_logical_or
-id|rta-&gt;rta_oif
-)paren
-r_goto
-id|err_inval
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-op_amp
-id|fi-&gt;fib_nh-&gt;nh_gw
-comma
-id|rta-&gt;rta_gw
-comma
-l_int|4
-)paren
-suffix:semicolon
-r_goto
-id|link_it
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2515,28 +2457,6 @@ c_cond
 id|type
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_ROUTE_NAT
-r_case
-id|RTN_NAT
-suffix:colon
-id|FIB_RES_RESET
-c_func
-(paren
-op_star
-id|res
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|fi-&gt;fib_clntref
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_case
 id|RTN_UNICAST
 suffix:colon
