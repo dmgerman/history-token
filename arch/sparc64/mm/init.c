@@ -133,29 +133,30 @@ id|bigkernel
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|do_check_pgt_cache
-r_int
-id|do_check_pgt_cache
+multiline_comment|/* XXX Tune this... */
+DECL|macro|PGT_CACHE_LOW
+mdefine_line|#define PGT_CACHE_LOW&t;25
+DECL|macro|PGT_CACHE_HIGH
+mdefine_line|#define PGT_CACHE_HIGH&t;50
+DECL|function|check_pgt_cache
+r_void
+id|check_pgt_cache
 c_func
 (paren
-r_int
-id|low
-comma
-r_int
-id|high
+r_void
 )paren
 (brace
-r_int
-id|freed
-op_assign
-l_int|0
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|pgtable_cache_size
 OG
-id|high
+id|PGT_CACHE_HIGH
 )paren
 (brace
 r_do
@@ -174,9 +175,6 @@ c_func
 (paren
 )paren
 )paren
-comma
-id|freed
-op_increment
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -198,9 +196,6 @@ comma
 l_int|0
 )paren
 )paren
-comma
-id|freed
-op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -227,9 +222,6 @@ l_int|10
 )paren
 )paren
 )paren
-comma
-id|freed
-op_increment
 suffix:semicolon
 )brace
 r_while
@@ -237,17 +229,17 @@ c_loop
 (paren
 id|pgtable_cache_size
 OG
-id|low
+id|PGT_CACHE_LOW
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SMP 
+macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
 id|pgd_cache_size
 OG
-id|high
+id|PGT_CACHE_HIGH
 op_div
 l_int|4
 )paren
@@ -329,9 +321,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|freed
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -356,7 +345,7 @@ c_cond
 (paren
 id|pgd_cache_size
 op_le
-id|low
+id|PGT_CACHE_LOW
 op_div
 l_int|4
 )paren
@@ -376,8 +365,10 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_return
-id|freed
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
@@ -502,13 +493,16 @@ r_int
 r_int
 id|non_cpu_bits
 op_assign
+op_complement
 (paren
+(paren
+id|NR_CPUS
+op_minus
 l_int|1UL
+)paren
 op_lshift
 l_int|24UL
 )paren
-op_minus
-l_int|1UL
 suffix:semicolon
 id|mask
 op_assign
@@ -596,6 +590,7 @@ l_string|&quot;! test_and_clear_dcache_dirty&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;srlx&t;%%g7, 24, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%%g5, %3, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;%%g5, %0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%icc, 2f&bslash;n&bslash;t&quot;
 l_string|&quot; andn&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
@@ -621,6 +616,13 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|page-&gt;flags
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|NR_CPUS
+op_minus
+l_int|1UL
 )paren
 suffix:colon
 l_string|&quot;g5&quot;
@@ -712,9 +714,17 @@ r_int
 id|cpu
 op_assign
 (paren
+(paren
 id|pg_flags
 op_rshift
 l_int|24
+)paren
+op_amp
+(paren
+id|NR_CPUS
+op_minus
+l_int|1UL
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* This is just to optimize away some function calls&n;&t;&t; * in the SMP case.&n;&t;&t; */
@@ -815,13 +825,19 @@ c_cond
 (paren
 id|page-&gt;mapping
 op_logical_and
+id|list_empty
+c_func
+(paren
+op_amp
 id|page-&gt;mapping-&gt;i_mmap
-op_eq
-l_int|NULL
+)paren
 op_logical_and
+id|list_empty
+c_func
+(paren
+op_amp
 id|page-&gt;mapping-&gt;i_mmap_shared
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 r_if
@@ -917,7 +933,7 @@ r_return
 suffix:semicolon
 id|ptep
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -1084,6 +1100,14 @@ id|page
 suffix:semicolon
 )brace
 )brace
+id|pte_unmap
+c_func
+(paren
+id|ptep
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 )brace
 DECL|function|flush_cache_pmd_range
 r_static
@@ -1717,7 +1741,7 @@ op_assign
 id|pte_t
 op_star
 )paren
-id|pmd_page
+id|__pmd_page
 c_func
 (paren
 op_star
@@ -2234,7 +2258,7 @@ op_assign
 id|pte_t
 op_star
 )paren
-id|pmd_page
+id|__pmd_page
 c_func
 (paren
 op_star
@@ -5528,10 +5552,10 @@ macro_line|#else
 DECL|macro|DC_ALIAS_SHIFT
 mdefine_line|#define DC_ALIAS_SHIFT&t;0
 macro_line|#endif
-DECL|function|pte_alloc_one
+DECL|function|pte_alloc_one_kernel
 id|pte_t
 op_star
-id|pte_alloc_one
+id|pte_alloc_one_kernel
 c_func
 (paren
 r_struct
@@ -5548,6 +5572,42 @@ r_struct
 id|page
 op_star
 id|page
+suffix:semicolon
+r_int
+r_int
+id|color
+suffix:semicolon
+(brace
+id|pte_t
+op_star
+id|ptep
+op_assign
+id|pte_alloc_one_fast
+c_func
+(paren
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptep
+)paren
+r_return
+id|ptep
+suffix:semicolon
+)brace
+id|color
+op_assign
+id|VPTE_COLOR
+c_func
+(paren
+id|address
+)paren
+suffix:semicolon
+id|page
 op_assign
 id|alloc_pages
 c_func
@@ -5555,16 +5615,6 @@ c_func
 id|GFP_KERNEL
 comma
 id|DC_ALIAS_SHIFT
-)paren
-suffix:semicolon
-r_int
-r_int
-id|color
-op_assign
-id|VPTE_COLOR
-c_func
-(paren
-id|address
 )paren
 suffix:semicolon
 r_if
@@ -5685,6 +5735,11 @@ suffix:semicolon
 )brace
 macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
 multiline_comment|/* Now free the other one up, adjust cache size. */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 op_star
 id|to_free
 op_assign
@@ -5710,6 +5765,11 @@ id|to_free
 suffix:semicolon
 id|pgtable_cache_size
 op_increment
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 r_return

@@ -991,7 +991,7 @@ op_amp
 id|pre_mem
 suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These don&squot;t seem to be implemented on the Integrator I have, which&n; * means I can&squot;t get additional information on the reason for the pm2fb&n; * problems.  I suppose I&squot;ll just have to mind-meld with the machine. ;)&n; */
@@ -1421,6 +1421,11 @@ id|nr
 op_eq
 l_int|0
 )paren
+(brace
+id|sys-&gt;mem_offset
+op_assign
+l_int|0x40000000
+suffix:semicolon
 id|ret
 op_assign
 id|pci_v3_setup_resources
@@ -1429,6 +1434,7 @@ c_func
 id|sys-&gt;resource
 )paren
 suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -1780,9 +1786,6 @@ r_void
 r_int
 r_int
 id|pci_cmd
-suffix:semicolon
-r_int
-id|ret
 suffix:semicolon
 id|pci_cmd
 op_assign

@@ -9,18 +9,10 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/cramfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|CRAMFS_SB_MAGIC
-mdefine_line|#define CRAMFS_SB_MAGIC u.cramfs_sb.magic
-DECL|macro|CRAMFS_SB_SIZE
-mdefine_line|#define CRAMFS_SB_SIZE u.cramfs_sb.size
-DECL|macro|CRAMFS_SB_BLOCKS
-mdefine_line|#define CRAMFS_SB_BLOCKS u.cramfs_sb.blocks
-DECL|macro|CRAMFS_SB_FILES
-mdefine_line|#define CRAMFS_SB_FILES u.cramfs_sb.files
-DECL|macro|CRAMFS_SB_FLAGS
-mdefine_line|#define CRAMFS_SB_FLAGS u.cramfs_sb.flags
 DECL|variable|cramfs_ops
 r_static
 r_struct
@@ -702,6 +694,29 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
+DECL|function|cramfs_put_super
+r_static
+r_void
+id|cramfs_put_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|sb-&gt;u.generic_sbp
+)paren
+suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 DECL|function|cramfs_fill_super
 r_static
 r_int
@@ -731,6 +746,39 @@ suffix:semicolon
 r_int
 r_int
 id|root_offset
+suffix:semicolon
+r_struct
+id|cramfs_sb_info
+op_star
+id|sbi
+suffix:semicolon
+id|sbi
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|cramfs_sb_info
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbi
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+id|sbi
 suffix:semicolon
 id|sb_set_blocksize
 c_func
@@ -916,41 +964,41 @@ op_amp
 id|CRAMFS_FLAG_FSID_VERSION_2
 )paren
 (brace
-id|sb-&gt;CRAMFS_SB_SIZE
+id|sbi-&gt;size
 op_assign
 id|super.size
 suffix:semicolon
-id|sb-&gt;CRAMFS_SB_BLOCKS
+id|sbi-&gt;blocks
 op_assign
 id|super.fsid.blocks
 suffix:semicolon
-id|sb-&gt;CRAMFS_SB_FILES
+id|sbi-&gt;files
 op_assign
 id|super.fsid.files
 suffix:semicolon
 )brace
 r_else
 (brace
-id|sb-&gt;CRAMFS_SB_SIZE
+id|sbi-&gt;size
 op_assign
 l_int|1
 op_lshift
 l_int|28
 suffix:semicolon
-id|sb-&gt;CRAMFS_SB_BLOCKS
+id|sbi-&gt;blocks
 op_assign
 l_int|0
 suffix:semicolon
-id|sb-&gt;CRAMFS_SB_FILES
+id|sbi-&gt;files
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|sb-&gt;CRAMFS_SB_MAGIC
+id|sbi-&gt;magic
 op_assign
 id|super.magic
 suffix:semicolon
-id|sb-&gt;CRAMFS_SB_FLAGS
+id|sbi-&gt;flags
 op_assign
 id|super.flags
 suffix:semicolon
@@ -1043,6 +1091,16 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
+id|kfree
+c_func
+(paren
+id|sbi
+)paren
+suffix:semicolon
+id|sb-&gt;u.generic_sbp
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -1075,7 +1133,13 @@ id|PAGE_CACHE_SIZE
 suffix:semicolon
 id|buf-&gt;f_blocks
 op_assign
-id|sb-&gt;CRAMFS_SB_BLOCKS
+id|CRAMFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|blocks
 suffix:semicolon
 id|buf-&gt;f_bfree
 op_assign
@@ -1087,7 +1151,13 @@ l_int|0
 suffix:semicolon
 id|buf-&gt;f_files
 op_assign
-id|sb-&gt;CRAMFS_SB_FILES
+id|CRAMFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|files
 suffix:semicolon
 id|buf-&gt;f_ffree
 op_assign
@@ -1384,7 +1454,13 @@ c_func
 suffix:semicolon
 id|sorted
 op_assign
-id|dir-&gt;i_sb-&gt;CRAMFS_SB_FLAGS
+id|CRAMFS_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|flags
 op_amp
 id|CRAMFS_FLAG_SORTED_DIRS
 suffix:semicolon
@@ -1957,6 +2033,10 @@ id|super_operations
 id|cramfs_ops
 op_assign
 (brace
+id|put_super
+suffix:colon
+id|cramfs_put_super
+comma
 id|statfs
 suffix:colon
 id|cramfs_statfs

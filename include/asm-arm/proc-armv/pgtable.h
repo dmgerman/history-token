@@ -1,14 +1,14 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgtable.h&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  12-Jan-1997&t;RMK&t;Altered flushing routines to use function pointers&n; *&t;&t;&t;now possible to combine ARM6, ARM7 and StrongARM versions.&n; *  17-Apr-1999&t;RMK&t;Now pass an area size to clean_cache_area and&n; *&t;&t;&t;flush_icache_area.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgtable.h&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  12-Jan-1997&t;RMK&t;Altered flushing routines to use function pointers&n; *&t;&t;&t;now possible to combine ARM6, ARM7 and StrongARM versions.&n; *  17-Apr-1999&t;RMK&t;Now pass an area size to clean_cache_area and&n; *&t;&t;&t;flush_icache_area.&n; */
 macro_line|#ifndef __ASM_PROC_PGTABLE_H
 DECL|macro|__ASM_PROC_PGTABLE_H
 mdefine_line|#define __ASM_PROC_PGTABLE_H
-multiline_comment|/*&n; * entries per page directory level: they are two-level, so&n; * we don&squot;t really have any PMD directory.&n; */
+multiline_comment|/*&n; * We pull a couple of tricks here:&n; *  1. We wrap the PMD into the PGD.&n; *  2. We lie about the size of the PTE and PGD.&n; * Even though we have 256 PTE entries and 4096 PGD entries, we tell&n; * Linux that we actually have 512 PTE entries and 2048 PGD entries.&n; * Each &quot;Linux&quot; PGD entry is made up of two hardware PGD entries, and&n; * each PTE table is actually two hardware PTE tables.&n; */
 DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;&t;256
+mdefine_line|#define PTRS_PER_PTE&t;&t;512
 DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;&t;1
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;4096
+mdefine_line|#define PTRS_PER_PGD&t;&t;2048
 multiline_comment|/*&n; * Hardware page table definitions.&n; *&n; * + Level 1 descriptor (PMD)&n; *   - common&n; */
 DECL|macro|PMD_TYPE_MASK
 mdefine_line|#define PMD_TYPE_MASK&t;&t;(3 &lt;&lt; 0)
@@ -102,70 +102,51 @@ DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdp,pmd)&t;cpu_set_pmd(pmdp, pmd)
-DECL|function|__mk_pmd
+DECL|function|pmd_clear
 r_static
 r_inline
-id|pmd_t
-id|__mk_pmd
+r_void
+id|pmd_clear
 c_func
 (paren
-id|pte_t
+id|pmd_t
 op_star
-id|ptep
-comma
-r_int
-r_int
-id|prot
+id|pmdp
 )paren
 (brace
-r_int
-r_int
-id|pte_ptr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ptep
-suffix:semicolon
-id|pmd_t
-id|pmd
-suffix:semicolon
-id|pte_ptr
-op_sub_assign
-id|PTRS_PER_PTE
-op_star
-r_sizeof
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The pmd must be loaded with the physical&n;&t; * address of the PTE table&n;&t; */
-id|pmd_val
+id|set_pmd
 c_func
 (paren
-id|pmd
-)paren
-op_assign
-id|__virt_to_phys
+id|pmdp
+comma
+id|__pmd
 c_func
 (paren
-id|pte_ptr
+l_int|0
 )paren
-op_or
-id|prot
+)paren
 suffix:semicolon
-r_return
-id|pmd
+id|set_pmd
+c_func
+(paren
+id|pmdp
+op_plus
+l_int|1
+comma
+id|__pmd
+c_func
+(paren
+l_int|0
+)paren
+)paren
 suffix:semicolon
 )brace
-DECL|function|__pmd_page
+DECL|function|pmd_page_kernel
 r_static
 r_inline
-r_int
-r_int
-id|__pmd_page
+id|pte_t
+op_star
+id|pmd_page_kernel
 c_func
 (paren
 id|pmd_t
@@ -208,13 +189,25 @@ op_star
 )paren
 suffix:semicolon
 r_return
-id|__phys_to_virt
+id|__va
 c_func
 (paren
 id|ptr
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd) virt_to_page(__va(pmd_val(pmd)))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pte)&t;cpu_set_pte(ptep,pte)
 multiline_comment|/*&n; * The following macros handle the cache and bufferable bits...&n; */
@@ -330,6 +323,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Mark the prot value as uncacheable and unbufferable.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;__pgprot(pgprot_val(prot) &amp; ~(L_PTE_CACHEABLE | L_PTE_BUFFERABLE))
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init() do { } while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof

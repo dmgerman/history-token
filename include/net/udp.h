@@ -3,6 +3,7 @@ macro_line|#ifndef _UDP_H
 DECL|macro|_UDP_H
 mdefine_line|#define _UDP_H
 macro_line|#include &lt;linux/udp.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|UDP_HTABLE_SIZE
 mdefine_line|#define UDP_HTABLE_SIZE&t;&t;128
@@ -67,15 +68,19 @@ id|sk-&gt;next
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|num
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0

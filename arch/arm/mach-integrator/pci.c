@@ -195,10 +195,6 @@ id|integrator_pci
 id|__initdata
 op_assign
 (brace
-id|mem_offset
-suffix:colon
-l_int|0x40000000
-comma
 id|swizzle
 suffix:colon
 id|integrator_swizzle

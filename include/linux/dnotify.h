@@ -30,6 +30,10 @@ id|file
 op_star
 id|dn_filp
 suffix:semicolon
+DECL|member|dn_owner
+id|fl_owner_t
+id|dn_owner
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DNOTIFY_MAGIC

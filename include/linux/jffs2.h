@@ -1,8 +1,7 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: jffs2.h,v 1.19 2001/10/09 13:20:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: jffs2.h,v 1.23 2002/02/21 17:03:45 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS2_H__
 DECL|macro|__LINUX_JFFS2_H__
 mdefine_line|#define __LINUX_JFFS2_H__
-macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|JFFS2_SUPER_MAGIC
 mdefine_line|#define JFFS2_SUPER_MAGIC 0x72b6
 multiline_comment|/* Values we may expect to find in the &squot;magic&squot; field */
@@ -59,12 +58,11 @@ DECL|macro|JFFS2_NODETYPE_INODE
 mdefine_line|#define JFFS2_NODETYPE_INODE (JFFS2_FEATURE_INCOMPAT | JFFS2_NODE_ACCURATE | 2)
 DECL|macro|JFFS2_NODETYPE_CLEANMARKER
 mdefine_line|#define JFFS2_NODETYPE_CLEANMARKER (JFFS2_FEATURE_RWCOMPAT_DELETE | JFFS2_NODE_ACCURATE | 3)
+DECL|macro|JFFS2_NODETYPE_PADDING
+mdefine_line|#define JFFS2_NODETYPE_PADDING (JFFS2_FEATURE_RWCOMPAT_DELETE | JFFS2_NODE_ACCURATE | 4)
 singleline_comment|// Maybe later...
 singleline_comment|//#define JFFS2_NODETYPE_CHECKPOINT (JFFS2_FEATURE_RWCOMPAT_DELETE | JFFS2_NODE_ACCURATE | 3)
 singleline_comment|//#define JFFS2_NODETYPE_OPTIONS (JFFS2_FEATURE_RWCOMPAT_COPY | JFFS2_NODE_ACCURATE | 4)
-multiline_comment|/* Same as the non_ECC versions, but with extra space for real &n; * ECC instead of just the checksum. For use on NAND flash &n; */
-singleline_comment|//#define JFFS2_NODETYPE_DIRENT_ECC (JFFS2_FEATURE_INCOMPAT | JFFS2_NODE_ACCURATE | 5)
-singleline_comment|//#define JFFS2_NODETYPE_INODE_ECC (JFFS2_FEATURE_INCOMPAT | JFFS2_NODE_ACCURATE | 6)
 DECL|macro|JFFS2_INO_FLAG_PREREAD
 mdefine_line|#define JFFS2_INO_FLAG_PREREAD&t;  1&t;/* Do read_inode() for this one at &n;&t;&t;&t;&t;&t;   mount time, don&squot;t wait for it to &n;&t;&t;&t;&t;&t;   happen later */
 DECL|macro|JFFS2_INO_FLAG_USERCOMPR
@@ -75,20 +73,20 @@ id|jffs2_unknown_node
 (brace
 multiline_comment|/* All start like this */
 DECL|member|magic
-id|__u16
+r_uint16
 id|magic
 suffix:semicolon
 DECL|member|nodetype
-id|__u16
+r_uint16
 id|nodetype
 suffix:semicolon
 DECL|member|totlen
-id|__u32
+r_uint32
 id|totlen
 suffix:semicolon
 multiline_comment|/* So we can skip over nodes we don&squot;t grok */
 DECL|member|hdr_crc
-id|__u32
+r_uint32
 id|hdr_crc
 suffix:semicolon
 )brace
@@ -105,64 +103,64 @@ r_struct
 id|jffs2_raw_dirent
 (brace
 DECL|member|magic
-id|__u16
+r_uint16
 id|magic
 suffix:semicolon
 DECL|member|nodetype
-id|__u16
+r_uint16
 id|nodetype
 suffix:semicolon
 multiline_comment|/* == JFFS_NODETYPE_DIRENT */
 DECL|member|totlen
-id|__u32
+r_uint32
 id|totlen
 suffix:semicolon
 DECL|member|hdr_crc
-id|__u32
+r_uint32
 id|hdr_crc
 suffix:semicolon
 DECL|member|pino
-id|__u32
+r_uint32
 id|pino
 suffix:semicolon
 DECL|member|version
-id|__u32
+r_uint32
 id|version
 suffix:semicolon
 DECL|member|ino
-id|__u32
+r_uint32
 id|ino
 suffix:semicolon
 multiline_comment|/* == zero for unlink */
 DECL|member|mctime
-id|__u32
+r_uint32
 id|mctime
 suffix:semicolon
 DECL|member|nsize
-id|__u8
+r_uint8
 id|nsize
 suffix:semicolon
 DECL|member|type
-id|__u8
+r_uint8
 id|type
 suffix:semicolon
 DECL|member|unused
-id|__u8
+r_uint8
 id|unused
 (braket
 l_int|2
 )braket
 suffix:semicolon
 DECL|member|node_crc
-id|__u32
+r_uint32
 id|node_crc
 suffix:semicolon
 DECL|member|name_crc
-id|__u32
+r_uint32
 id|name_crc
 suffix:semicolon
 DECL|member|name
-id|__u8
+r_uint8
 id|name
 (braket
 l_int|0
@@ -184,110 +182,110 @@ r_struct
 id|jffs2_raw_inode
 (brace
 DECL|member|magic
-id|__u16
+r_uint16
 id|magic
 suffix:semicolon
 multiline_comment|/* A constant magic number.  */
 DECL|member|nodetype
-id|__u16
+r_uint16
 id|nodetype
 suffix:semicolon
 multiline_comment|/* == JFFS_NODETYPE_INODE */
 DECL|member|totlen
-id|__u32
+r_uint32
 id|totlen
 suffix:semicolon
 multiline_comment|/* Total length of this node (inc data, etc.) */
 DECL|member|hdr_crc
-id|__u32
+r_uint32
 id|hdr_crc
 suffix:semicolon
 DECL|member|ino
-id|__u32
+r_uint32
 id|ino
 suffix:semicolon
 multiline_comment|/* Inode number.  */
 DECL|member|version
-id|__u32
+r_uint32
 id|version
 suffix:semicolon
 multiline_comment|/* Version number.  */
 DECL|member|mode
-id|__u32
+r_uint32
 id|mode
 suffix:semicolon
 multiline_comment|/* The file&squot;s type or mode.  */
 DECL|member|uid
-id|__u16
+r_uint16
 id|uid
 suffix:semicolon
 multiline_comment|/* The file&squot;s owner.  */
 DECL|member|gid
-id|__u16
+r_uint16
 id|gid
 suffix:semicolon
 multiline_comment|/* The file&squot;s group.  */
 DECL|member|isize
-id|__u32
+r_uint32
 id|isize
 suffix:semicolon
 multiline_comment|/* Total resultant size of this inode (used for truncations)  */
 DECL|member|atime
-id|__u32
+r_uint32
 id|atime
 suffix:semicolon
 multiline_comment|/* Last access time.  */
 DECL|member|mtime
-id|__u32
+r_uint32
 id|mtime
 suffix:semicolon
 multiline_comment|/* Last modification time.  */
 DECL|member|ctime
-id|__u32
+r_uint32
 id|ctime
 suffix:semicolon
 multiline_comment|/* Change time.  */
 DECL|member|offset
-id|__u32
+r_uint32
 id|offset
 suffix:semicolon
 multiline_comment|/* Where to begin to write.  */
 DECL|member|csize
-id|__u32
+r_uint32
 id|csize
 suffix:semicolon
 multiline_comment|/* (Compressed) data size */
 DECL|member|dsize
-id|__u32
+r_uint32
 id|dsize
 suffix:semicolon
 multiline_comment|/* Size of the node&squot;s data. (after decompression) */
 DECL|member|compr
-id|__u8
+r_uint8
 id|compr
 suffix:semicolon
 multiline_comment|/* Compression algorithm used */
 DECL|member|usercompr
-id|__u8
+r_uint8
 id|usercompr
 suffix:semicolon
 multiline_comment|/* Compression algorithm requested by the user */
 DECL|member|flags
-id|__u16
+r_uint16
 id|flags
 suffix:semicolon
 multiline_comment|/* See JFFS2_INO_FLAG_* */
 DECL|member|data_crc
-id|__u32
+r_uint32
 id|data_crc
 suffix:semicolon
 multiline_comment|/* CRC for the (compressed) data.  */
 DECL|member|node_crc
-id|__u32
+r_uint32
 id|node_crc
 suffix:semicolon
 multiline_comment|/* CRC for the raw inode (excluding data)  */
-singleline_comment|//&t;__u8 data[dsize];
+singleline_comment|//&t;uint8_t data[dsize];
 )brace
 id|__attribute__
 c_func

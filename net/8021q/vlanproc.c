@@ -732,9 +732,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+id|h
+comma
 id|i
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star
@@ -832,19 +832,42 @@ id|buf
 op_plus
 id|cnt
 comma
-l_string|&quot;Name-Type: %s  bad_proto_recvd: %lu&bslash;n&quot;
+l_string|&quot;Name-Type: %s&bslash;n&quot;
 comma
 id|nm_type
-comma
-id|vlan_bad_proto_recvd
+)paren
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|vlan_group_lock
 )paren
 suffix:semicolon
 r_for
 c_loop
 (paren
+id|h
+op_assign
+l_int|0
+suffix:semicolon
+id|h
+OL
+id|VLAN_GRP_HASH_SIZE
+suffix:semicolon
+id|h
+op_increment
+)paren
+(brace
+r_for
+c_loop
+(paren
 id|grp
 op_assign
-id|p802_1Q_vlan_list
+id|vlan_group_hash
+(braket
+id|h
+)braket
 suffix:semicolon
 id|grp
 op_ne
@@ -855,19 +878,6 @@ op_assign
 id|grp-&gt;next
 )paren
 (brace
-multiline_comment|/* loop through all devices for this device */
-macro_line|#ifdef VLAN_DEBUG
-id|printk
-c_func
-(paren
-id|VLAN_DBG
-id|__FUNCTION__
-l_string|&quot;: found a group, addr: %p&bslash;n&quot;
-comma
-id|grp
-)paren
-suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -898,18 +908,6 @@ id|vlandev
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifdef VLAN_DEBUG
-id|printk
-c_func
-(paren
-id|VLAN_DBG
-id|__FUNCTION__
-l_string|&quot;: found a vlan_dev, addr: %p&bslash;n&quot;
-comma
-id|vlandev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -951,26 +949,8 @@ comma
 id|term_msg
 )paren
 suffix:semicolon
-r_return
-id|cnt
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|vlandev-&gt;priv
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot;: ERROR: vlandev-&gt;priv is NULL&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|dev_info
@@ -981,22 +961,6 @@ c_func
 id|vlandev
 )paren
 suffix:semicolon
-macro_line|#ifdef VLAN_DEBUG
-id|printk
-c_func
-(paren
-id|VLAN_DBG
-id|__FUNCTION__
-l_string|&quot;: got a good vlandev, addr: %p&bslash;n&quot;
-comma
-id|VLAN_DEV_INFO
-c_func
-(paren
-id|vlandev
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|cnt
 op_add_assign
 id|sprintf
@@ -1017,6 +981,16 @@ id|dev_info-&gt;real_dev-&gt;name
 suffix:semicolon
 )brace
 )brace
+)brace
+id|out
+suffix:colon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|vlan_group_lock
+)paren
+suffix:semicolon
 r_return
 id|cnt
 suffix:semicolon
@@ -1133,18 +1107,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef VLAN_DEBUG
-id|printk
-c_func
-(paren
-id|VLAN_DBG
-id|__FUNCTION__
-l_string|&quot;: vlandev: %p&bslash;n&quot;
-comma
-id|vlandev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1156,9 +1118,11 @@ l_int|NULL
 op_logical_or
 (paren
 op_logical_neg
+(paren
 id|vlandev-&gt;priv_flags
 op_amp
 id|IFF_802_1Q_VLAN
+)paren
 )paren
 )paren
 r_return

@@ -8347,8 +8347,7 @@ multiline_comment|/*&n;&t; * This wastes time, since we can&squot;t return until
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -8378,8 +8377,7 @@ id|STAT_INT
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|fas216_intr
@@ -8391,8 +8389,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -8400,8 +8397,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -9342,12 +9338,11 @@ id|info
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ugly ugly ugly!&n;&t; * We need to release the io_request_lock and enable&n;&t; * IRQs if we sleep, but we must relock and disable&n;&t; * IRQs after the sleep.&n;&t; */
+multiline_comment|/*&n;&t; * Ugly ugly ugly!&n;&t; * We need to release the host_lock and enable&n;&t; * IRQs if we sleep, but we must relock and disable&n;&t; * IRQs after the sleep.&n;&t; */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_sleep
@@ -9363,8 +9358,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Release the SCSI reset.&n;&t; */
@@ -9969,8 +9963,7 @@ multiline_comment|/*&n;&t; * scsi standard says wait 250ms&n;&t; */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_sleep
@@ -9986,8 +9979,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|info-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|outb

@@ -140,6 +140,11 @@ r_int
 r_char
 id|net
 suffix:semicolon
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ec_sk

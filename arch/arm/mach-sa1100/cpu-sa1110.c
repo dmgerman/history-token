@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.6 2001/10/22 11:53:47 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.8 2002/01/09 17:13:27 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -198,6 +198,47 @@ id|twr
 suffix:colon
 l_int|9
 comma
+id|refresh
+suffix:colon
+l_int|64000
+comma
+id|cas_latency
+suffix:colon
+l_int|3
+comma
+)brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|sdram_params
+id|samsung_km416s4030ct
+id|__initdata
+op_assign
+(brace
+id|rows
+suffix:colon
+l_int|13
+comma
+id|tck
+suffix:colon
+l_int|8
+comma
+id|trcd
+suffix:colon
+l_int|24
+comma
+multiline_comment|/* 3 CLKs */
+id|trp
+suffix:colon
+l_int|24
+comma
+multiline_comment|/* 3 CLKs */
+id|twr
+suffix:colon
+l_int|16
+comma
+multiline_comment|/* Trdl: 2 CLKs */
 id|refresh
 suffix:colon
 l_int|64000
@@ -985,6 +1026,19 @@ id|sdram
 op_assign
 op_amp
 id|samsung_k4s641632d_tc75
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_h3100
+c_func
+(paren
+)paren
+)paren
+id|sdram
+op_assign
+op_amp
+id|samsung_km416s4030ct
 suffix:semicolon
 r_if
 c_cond

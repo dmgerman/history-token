@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
@@ -3053,94 +3054,17 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|wait_queue_head_t
-op_star
-id|wait
-op_assign
-id|zone-&gt;wait_table
-suffix:semicolon
-r_int
-r_int
-id|hash
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|page
-suffix:semicolon
-macro_line|#if BITS_PER_LONG == 64
-multiline_comment|/*  Sigh, gcc can&squot;t optimise this alone like it does for 32 bits. */
-r_int
-r_int
-id|n
-op_assign
-id|hash
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|18
-suffix:semicolon
-id|hash
-op_sub_assign
-id|n
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|33
-suffix:semicolon
-id|hash
-op_sub_assign
-id|n
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|3
-suffix:semicolon
-id|hash
-op_add_assign
-id|n
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|3
-suffix:semicolon
-id|hash
-op_sub_assign
-id|n
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|4
-suffix:semicolon
-id|hash
-op_add_assign
-id|n
-suffix:semicolon
-id|n
-op_lshift_assign
-l_int|2
-suffix:semicolon
-id|hash
-op_add_assign
-id|n
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* On some cpus multiply is faster, on others gcc will do shifts */
-id|hash
-op_mul_assign
-id|GOLDEN_RATIO_PRIME
-suffix:semicolon
-macro_line|#endif
-id|hash
-op_rshift_assign
-id|zone-&gt;wait_table_shift
-suffix:semicolon
 r_return
 op_amp
-id|wait
+id|zone-&gt;wait_table
 (braket
-id|hash
+id|hash_ptr
+c_func
+(paren
+id|page
+comma
+id|zone-&gt;wait_table_bits
+)paren
 )braket
 suffix:semicolon
 )brace

@@ -130,7 +130,13 @@ c_cond
 id|block
 op_ge
 (paren
-id|inode-&gt;i_sb-&gt;u.minix_sb.s_max_size
+id|minix_sb
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_max_size
 op_div
 id|BLOCK_SIZE
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Directory notifications for Linux.&n; *&n; * Copyright (C) 2000 Stephen Rothwell&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
+multiline_comment|/*&n; * Directory notifications for Linux.&n; *&n; * Copyright (C) 2000,2001,2002 Stephen Rothwell&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
@@ -243,9 +243,17 @@ id|prev
 r_if
 c_cond
 (paren
+(paren
+id|odn-&gt;dn_owner
+op_eq
+id|current-&gt;files
+)paren
+op_logical_and
+(paren
 id|odn-&gt;dn_filp
 op_eq
 id|filp
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -336,6 +344,10 @@ suffix:semicolon
 id|dn-&gt;dn_filp
 op_assign
 id|filp
+suffix:semicolon
+id|dn-&gt;dn_owner
+op_assign
+id|current-&gt;files
 suffix:semicolon
 id|inode-&gt;i_dnotify_mask
 op_or_assign
