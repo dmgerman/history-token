@@ -69,6 +69,9 @@ comma
 id|sigset_t
 op_star
 id|oldset
+comma
+r_int
+id|error
 )paren
 (brace
 id|__sighandler_t
@@ -91,13 +94,11 @@ id|sigset_t
 id|save
 suffix:semicolon
 r_int
-id|error
-comma
 id|err
 comma
 id|ret
 suffix:semicolon
-id|error
+id|err
 op_assign
 id|PT_REGS_SYSCALL_RET
 c_func
@@ -123,7 +124,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|error
+id|err
 )paren
 (brace
 r_case
@@ -428,6 +429,9 @@ comma
 id|sigset_t
 op_star
 id|oldset
+comma
+r_int
+id|error
 )paren
 (brace
 r_struct
@@ -490,6 +494,8 @@ op_amp
 id|info
 comma
 id|oldset
+comma
+id|error
 )paren
 suffix:semicolon
 r_return
@@ -634,6 +640,8 @@ op_amp
 id|current-&gt;thread.regs
 comma
 l_int|NULL
+comma
+id|error
 )paren
 suffix:semicolon
 )brace
@@ -728,6 +736,9 @@ id|current-&gt;thread.regs
 comma
 op_amp
 id|saveset
+comma
+op_minus
+id|EINTR
 )paren
 )paren
 (brace
@@ -866,6 +877,9 @@ id|current-&gt;thread.regs
 comma
 op_amp
 id|saveset
+comma
+op_minus
+id|EINTR
 )paren
 )paren
 r_return
