@@ -171,7 +171,7 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Release the dentry&squot;s inode, using the filesystem&n; * d_iput() operation if defined.&n; * Called with dcache_lock held, drops it.&n; */
+multiline_comment|/*&n; * Release the dentry&squot;s inode, using the filesystem&n; * d_iput() operation if defined.&n; * Called with dcache_lock and per dentry lock held, drops both.&n; */
 DECL|function|dentry_iput
 r_static
 r_inline
@@ -213,6 +213,13 @@ id|spin_unlock
 c_func
 (paren
 op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
@@ -242,6 +249,14 @@ id|inode
 suffix:semicolon
 )brace
 r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -249,6 +264,7 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* &n; * This is dput&n; *&n; * This is complicated by the fact that we do not want to put&n; * dentries that are no longer on any hash chain on the unused&n; * list: we&squot;d much rather just get rid of them immediately.&n; *&n; * However, that implies that we have to traverse the dentry&n; * tree upwards to the parents which might _also_ now be&n; * scheduled for deletion (it may have been only waiting for&n; * its last child to go away).&n; *&n; * This tail recursion is done by hand as we don&squot;t want to depend&n; * on the compiler to always get this right (gcc generally doesn&squot;t).&n; * Real recursion would eat up our stack space.&n; */
 multiline_comment|/*&n; * dput - release a dentry&n; * @dentry: dentry to release &n; *&n; * Release a dentry. This will drop the usage count and if appropriate&n; * call the dentry unlink method as well as removing it from the queues and&n; * releasing its resources. If the parent dentries were scheduled for release&n; * they too may now get deleted.&n; *&n; * no dcache lock, please.&n; */
@@ -453,18 +469,11 @@ op_amp
 id|dentry-&gt;d_child
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_lock
-)paren
-suffix:semicolon
 id|dentry_stat.nr_dentry
 op_decrement
 suffix:semicolon
 multiline_comment|/* For d_free, below */
-multiline_comment|/* drops the lock, at that point nobody can reach this dentry */
+multiline_comment|/*drops the locks, at that point nobody can reach this dentry */
 id|dentry_iput
 c_func
 (paren
@@ -1018,13 +1027,6 @@ c_func
 (paren
 op_amp
 id|dentry-&gt;d_child
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 id|dentry_stat.nr_dentry
@@ -3601,13 +3603,6 @@ op_eq
 l_int|1
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_lock
-)paren
-suffix:semicolon
 id|dentry_iput
 c_func
 (paren
