@@ -100,6 +100,9 @@ id|acpi_ev_walk_gpe_list
 (paren
 id|ACPI_GPE_CALLBACK
 id|gpe_walk_callback
+comma
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|u8

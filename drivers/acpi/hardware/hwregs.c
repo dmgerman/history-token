@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwregs&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  Flags           - Lock the hardware or not&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  Flags           - Lock the hardware or not&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_acpi_status
 id|acpi_hw_clear_acpi_status
@@ -136,6 +136,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_clear_gpe_block
+comma
+id|ACPI_ISR
 )paren
 suffix:semicolon
 id|unlock_and_exit

@@ -28,7 +28,7 @@ r_struct
 id|acpi_os_dpc
 (brace
 DECL|member|function
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 id|function
 suffix:semicolon
 DECL|member|context
@@ -61,7 +61,7 @@ id|acpi_irq_irq
 suffix:semicolon
 DECL|variable|acpi_irq_handler
 r_static
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|acpi_irq_handler
 suffix:semicolon
 DECL|variable|acpi_irq_context
@@ -748,7 +748,7 @@ c_func
 id|u32
 id|gsi
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|handler
 comma
 r_void
@@ -850,7 +850,7 @@ c_func
 id|u32
 id|irq
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|handler
 )paren
 (brace
@@ -2176,7 +2176,7 @@ c_func
 id|u32
 id|priority
 comma
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 id|function
 comma
 r_void

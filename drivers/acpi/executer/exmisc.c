@@ -1186,37 +1186,7 @@ r_case
 id|AML_LGREATER_OP
 suffix:colon
 multiline_comment|/* LGreater (Operand0, Operand1) */
-multiline_comment|/* Check lengths first */
-r_if
-c_cond
-(paren
-id|length0
-OG
-id|length1
-)paren
-(brace
-r_return
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|length0
-OL
-id|length1
-)paren
-(brace
-r_return
-(paren
-id|FALSE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Lengths equal, now scan the data */
+multiline_comment|/* Lexicographic compare:  Scan the 1-to-1 data */
 r_for
 c_loop
 (paren
@@ -1224,9 +1194,17 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+(paren
 id|i
 OL
 id|length0
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|length1
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -1253,6 +1231,22 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Bytes match, now check lengths */
+r_if
+c_cond
+(paren
+id|length0
+OG
+id|length1
+)paren
+(brace
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Length0 &lt;= Length1 */
 r_return
 (paren
 id|FALSE
@@ -1262,37 +1256,7 @@ r_case
 id|AML_LLESS_OP
 suffix:colon
 multiline_comment|/* LLess (Operand0, Operand1) */
-multiline_comment|/* Check lengths first */
-r_if
-c_cond
-(paren
-id|length0
-OL
-id|length1
-)paren
-(brace
-r_return
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|length0
-OG
-id|length1
-)paren
-(brace
-r_return
-(paren
-id|FALSE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Lengths equal, now scan the data */
+multiline_comment|/* Lexicographic compare:  Scan the 1-to-1 data */
 r_for
 c_loop
 (paren
@@ -1300,9 +1264,17 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+(paren
 id|i
 OL
 id|length0
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|length1
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -1329,6 +1301,22 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Bytes match, now check lengths */
+r_if
+c_cond
+(paren
+id|length0
+OL
+id|length1
+)paren
+(brace
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Length0 &gt;= Length1 */
 r_return
 (paren
 id|FALSE

@@ -1194,11 +1194,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
 r_typedef
 id|u32
-DECL|typedef|OSD_HANDLER
+DECL|typedef|acpi_osd_handler
 (paren
 id|ACPI_SYSTEM_XFACE
 op_star
-id|OSD_HANDLER
+id|acpi_osd_handler
 )paren
 (paren
 r_void
@@ -1208,11 +1208,11 @@ id|context
 suffix:semicolon
 r_typedef
 r_void
-DECL|typedef|OSD_EXECUTION_CALLBACK
+DECL|typedef|acpi_osd_exec_callback
 (paren
 id|ACPI_SYSTEM_XFACE
 op_star
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 )paren
 (paren
 r_void

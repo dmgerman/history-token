@@ -560,6 +560,7 @@ id|status
 op_assign
 id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -585,6 +586,7 @@ id|status
 op_assign
 id|acpi_hw_enable_all_wakeup_gpes
 (paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -951,6 +953,7 @@ id|status
 op_assign
 id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -976,6 +979,7 @@ id|status
 op_assign
 id|acpi_hw_enable_all_wakeup_gpes
 (paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -1060,7 +1064,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *              Called with interrupts ENABLED.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_leave_sleep_state
 id|acpi_leave_sleep_state
@@ -1372,6 +1376,7 @@ id|status
 op_assign
 id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 r_if
@@ -1397,6 +1402,7 @@ id|status
 op_assign
 id|acpi_hw_enable_all_runtime_gpes
 (paren
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 r_if
