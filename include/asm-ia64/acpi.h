@@ -30,8 +30,8 @@ mdefine_line|#define ACPI_FLUSH_CPU_CACHE()
 r_static
 r_inline
 r_int
-DECL|function|acpi_acquire_global_lock
-id|acpi_acquire_global_lock
+DECL|function|ia64_acpi_acquire_global_lock
+id|ia64_acpi_acquire_global_lock
 (paren
 r_int
 r_int
@@ -84,7 +84,7 @@ op_assign
 id|ia64_cmpxchg4_acq
 c_func
 (paren
-id|GLptr
+id|lock
 comma
 r_new
 comma
@@ -120,8 +120,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|acpi_release_global_lock
-id|acpi_release_global_lock
+DECL|function|ia64_acpi_release_global_lock
+id|ia64_acpi_release_global_lock
 (paren
 r_int
 r_int
@@ -182,9 +182,9 @@ l_int|0x1
 suffix:semicolon
 )brace
 DECL|macro|ACPI_ACQUIRE_GLOBAL_LOCK
-mdefine_line|#define ACPI_ACQUIRE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = acpi_acquire_global_lock((unsigned int *) GLptr))
+mdefine_line|#define ACPI_ACQUIRE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = ia64_acpi_acquire_global_lock((unsigned int *) GLptr))
 DECL|macro|ACPI_RELEASE_GLOBAL_LOCK
-mdefine_line|#define ACPI_RELEASE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = acpi_release_global_lock((unsigned int *) GLptr))
+mdefine_line|#define ACPI_RELEASE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = ia64_acpi_release_global_lock((unsigned int *) GLptr))
 r_const
 r_char
 op_star
