@@ -447,14 +447,7 @@ op_star
 id|dquot
 )paren
 (brace
-id|list_del
-c_func
-(paren
-op_amp
-id|dquot-&gt;dq_hash
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -669,14 +662,7 @@ id|dquot-&gt;dq_free
 )paren
 r_return
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|dquot-&gt;dq_free
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -3071,7 +3057,7 @@ id|act_head
 op_assign
 id|act_head-&gt;next
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -3079,13 +3065,6 @@ id|dquot-&gt;dq_free
 )paren
 suffix:semicolon
 multiline_comment|/* Remove dquot from the list so we won&squot;t have problems... */
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dquot-&gt;dq_free
-)paren
-suffix:semicolon
 id|dqput
 c_func
 (paren

@@ -3849,13 +3849,7 @@ c_func
 id|hub-&gt;intf
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 id|tmp

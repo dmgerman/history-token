@@ -435,14 +435,7 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_hash
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp

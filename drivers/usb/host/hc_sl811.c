@@ -3339,13 +3339,7 @@ id|usb_free_bus
 id|hci-&gt;bus
 )paren
 suffix:semicolon
-id|list_del
-(paren
-op_amp
-id|hci-&gt;hci_hcd_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 (paren
 op_amp
 id|hci-&gt;hci_hcd_list

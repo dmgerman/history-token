@@ -3309,14 +3309,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|ds-&gt;list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
