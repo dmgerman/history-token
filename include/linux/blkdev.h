@@ -1103,14 +1103,6 @@ DECL|macro|MIN_READAHEAD
 mdefine_line|#define MIN_READAHEAD&t;3
 DECL|macro|blkdev_entry_to_request
 mdefine_line|#define blkdev_entry_to_request(entry) list_entry((entry), struct request, queuelist)
-DECL|macro|blkdev_entry_next_request
-mdefine_line|#define blkdev_entry_next_request(entry) blkdev_entry_to_request((entry)-&gt;next)
-DECL|macro|blkdev_entry_prev_request
-mdefine_line|#define blkdev_entry_prev_request(entry) blkdev_entry_to_request((entry)-&gt;prev)
-DECL|macro|blkdev_next_request
-mdefine_line|#define blkdev_next_request(req) blkdev_entry_to_request((req)-&gt;queuelist.next)
-DECL|macro|blkdev_prev_request
-mdefine_line|#define blkdev_prev_request(req) blkdev_entry_to_request((req)-&gt;queuelist.prev)
 r_extern
 r_void
 id|drive_stat_acct

@@ -132,14 +132,6 @@ id|dst
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|macro|DUMP_TUPLE
-mdefine_line|#define DUMP_TUPLE(tp)&t;&t;&t;&t;&t;&t;&bslash;&n;DEBUGP(&quot;tuple %p: %u %u.%u.%u.%u:%hu -&gt; %u.%u.%u.%u:%hu&bslash;n&quot;,&t;&bslash;&n;       (tp), (tp)-&gt;dst.protonum,&t;&t;&t;&t;&bslash;&n;       NIPQUAD((tp)-&gt;src.ip), ntohs((tp)-&gt;src.u.all),&t;&t;&bslash;&n;       NIPQUAD((tp)-&gt;dst.ip), ntohs((tp)-&gt;dst.u.all))
-DECL|macro|CTINFO2DIR
-mdefine_line|#define CTINFO2DIR(ctinfo) ((ctinfo) &gt;= IP_CT_IS_REPLY ? IP_CT_DIR_REPLY : IP_CT_DIR_ORIGINAL)
-multiline_comment|/* If we&squot;re the first tuple, it&squot;s the original dir. */
-DECL|macro|DIRECTION
-mdefine_line|#define DIRECTION(h) ((enum ip_conntrack_dir)(&amp;(h)-&gt;ctrack-&gt;tuplehash[1] == (h)))
 DECL|enum|ip_conntrack_dir
 r_enum
 id|ip_conntrack_dir
@@ -154,6 +146,39 @@ DECL|enumerator|IP_CT_DIR_MAX
 id|IP_CT_DIR_MAX
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|macro|DUMP_TUPLE
+mdefine_line|#define DUMP_TUPLE(tp)&t;&t;&t;&t;&t;&t;&bslash;&n;DEBUGP(&quot;tuple %p: %u %u.%u.%u.%u:%hu -&gt; %u.%u.%u.%u:%hu&bslash;n&quot;,&t;&bslash;&n;       (tp), (tp)-&gt;dst.protonum,&t;&t;&t;&t;&bslash;&n;       NIPQUAD((tp)-&gt;src.ip), ntohs((tp)-&gt;src.u.all),&t;&t;&bslash;&n;       NIPQUAD((tp)-&gt;dst.ip), ntohs((tp)-&gt;dst.u.all))
+DECL|macro|CTINFO2DIR
+mdefine_line|#define CTINFO2DIR(ctinfo) ((ctinfo) &gt;= IP_CT_IS_REPLY ? IP_CT_DIR_REPLY : IP_CT_DIR_ORIGINAL)
+multiline_comment|/* If we&squot;re the first tuple, it&squot;s the original dir. */
+DECL|macro|DIRECTION
+mdefine_line|#define DIRECTION(h) ((enum ip_conntrack_dir)(&amp;(h)-&gt;ctrack-&gt;tuplehash[1] == (h)))
+multiline_comment|/* Connections have two entries in the hash table: one for each way */
+DECL|struct|ip_conntrack_tuple_hash
+r_struct
+id|ip_conntrack_tuple_hash
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|tuple
+r_struct
+id|ip_conntrack_tuple
+id|tuple
+suffix:semicolon
+multiline_comment|/* this == &amp;ctrack-&gt;tuplehash[DIRECTION(this)]. */
+DECL|member|ctrack
+r_struct
+id|ip_conntrack
+op_star
+id|ctrack
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 DECL|function|ip_ct_tuple_src_equal
 r_static
 r_inline
@@ -337,30 +362,5 @@ id|mask-&gt;dst.protonum
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Connections have two entries in the hash table: one for each way */
-DECL|struct|ip_conntrack_tuple_hash
-r_struct
-id|ip_conntrack_tuple_hash
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|tuple
-r_struct
-id|ip_conntrack_tuple
-id|tuple
-suffix:semicolon
-multiline_comment|/* this == &amp;ctrack-&gt;tuplehash[DIRECTION(this)]. */
-DECL|member|ctrack
-r_struct
-id|ip_conntrack
-op_star
-id|ctrack
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_TUPLE_H */
 eof

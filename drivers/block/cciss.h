@@ -319,6 +319,14 @@ id|blocksizes
 l_int|256
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
+DECL|member|scsi_ctlr
+r_void
+op_star
+id|scsi_ctlr
+suffix:semicolon
+multiline_comment|/* ptr to structure containing scsi related stuff */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*  Defining the diffent access_menthods */

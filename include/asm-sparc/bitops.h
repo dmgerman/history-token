@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bitops.h,v 1.65 2001/10/30 04:08:26 davem Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright 2001 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.67 2001/11/19 18:36:34 davem Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright 2001 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#ifndef _SPARC_BITOPS_H
 DECL|macro|_SPARC_BITOPS_H
 mdefine_line|#define _SPARC_BITOPS_H

@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 DECL|macro|NS8390_CORE
@@ -2823,96 +2824,6 @@ op_amp
 id|ei_local-&gt;stat
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Update the given Autodin II CRC value with another data byte.&n; */
-DECL|function|update_crc
-r_static
-r_inline
-id|u32
-id|update_crc
-c_func
-(paren
-id|u8
-id|byte
-comma
-id|u32
-id|current_crc
-)paren
-(brace
-r_int
-id|bit
-suffix:semicolon
-id|u8
-id|ah
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-l_int|0
-suffix:semicolon
-id|bit
-OL
-l_int|8
-suffix:semicolon
-id|bit
-op_increment
-)paren
-(brace
-id|u8
-id|carry
-op_assign
-(paren
-id|current_crc
-op_rshift
-l_int|31
-)paren
-suffix:semicolon
-id|current_crc
-op_lshift_assign
-l_int|1
-suffix:semicolon
-id|ah
-op_assign
-(paren
-(paren
-id|ah
-op_lshift
-l_int|1
-)paren
-op_or
-id|carry
-)paren
-op_xor
-id|byte
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ah
-op_amp
-l_int|1
-)paren
-id|current_crc
-op_xor_assign
-l_int|0x04C11DB7
-suffix:semicolon
-multiline_comment|/* CRC polynomial */
-id|ah
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|byte
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|current_crc
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Form the 64 bit 8390 multicast table from the linked list of addresses&n; * associated with this dev structure.&n; */
 DECL|function|make_mc_bits
 r_static
@@ -2950,9 +2861,6 @@ op_assign
 id|dmi-&gt;next
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|u32
 id|crc
 suffix:semicolon
@@ -2978,34 +2886,12 @@ suffix:semicolon
 )brace
 id|crc
 op_assign
-l_int|0xffffffff
-suffix:semicolon
-multiline_comment|/* initial CRC value */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ETH_ALEN
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|crc
-op_assign
-id|update_crc
+id|ether_crc
 c_func
 (paren
-id|dmi-&gt;dmi_addr
-(braket
-id|i
-)braket
+id|ETH_ALEN
 comma
-id|crc
+id|dmi-&gt;dmi_addr
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * The 8390 uses the 6 most significant bits of the&n;&t;&t; * CRC to index the multicast table.&n;&t;&t; */

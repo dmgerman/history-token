@@ -2743,6 +2743,16 @@ id|epoch
 suffix:semicolon
 macro_line|#endif
 macro_line|#if RTC_IRQ
+r_if
+c_cond
+(paren
+id|rtc_has_irq
+op_eq
+l_int|0
+)paren
+r_goto
+id|no_irq2
+suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -2793,6 +2803,8 @@ id|rtc_freq
 op_assign
 l_int|1024
 suffix:semicolon
+id|no_irq2
+suffix:colon
 macro_line|#endif
 id|printk
 c_func

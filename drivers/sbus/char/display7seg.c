@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: display7seg.c,v 1.5 2001/10/08 22:19:51 davem Exp $&n; *&n; * display7seg - Driver implementation for the 7-segment display&n; * present on Sun Microsystems CP1400 and CP1500&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* $Id: display7seg.c,v 1.6 2002/01/08 16:00:16 davem Exp $&n; *&n; * display7seg - Driver implementation for the 7-segment display&n; * present on Sun Microsystems CP1400 and CP1500&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -170,7 +170,7 @@ c_cond
 (paren
 id|D7S_MINOR
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -208,7 +208,7 @@ c_cond
 (paren
 id|D7S_MINOR
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -326,7 +326,7 @@ c_cond
 (paren
 id|D7S_MINOR
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

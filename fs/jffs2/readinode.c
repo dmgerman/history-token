@@ -3,10 +3,10 @@ multiline_comment|/* Given an inode, probably with existing list of fragments, a
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-macro_line|#include &quot;crc32.h&quot;
 id|D1
 c_func
 (paren

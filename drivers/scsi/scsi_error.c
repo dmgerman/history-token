@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  scsi_error.c Copyright (C) 1997 Eric Youngdale&n; *&n; *  SCSI error/timeout handling&n; *      Initial versions: Eric Youngdale.  Based upon conversations with&n; *                        Leonard Zubkoff and David Miller at Linux Expo, &n; *                        ideas originating from all over the place.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -1486,7 +1484,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 l_int|0
@@ -1538,7 +1535,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1557,7 +1553,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1591,7 +1586,6 @@ multiline_comment|/*&n;&t;&t;&t; * As far as the low level driver is&n;&t;&t;&t;
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1613,7 +1607,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1658,7 +1651,6 @@ multiline_comment|/*&n;&t;&t; * We damn well had better never use this code.  Th
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -1677,7 +1669,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -1981,7 +1972,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2000,7 +1990,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2056,7 +2045,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2075,7 +2063,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2143,7 +2130,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2162,7 +2148,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2282,7 +2267,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2301,7 +2285,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -2989,7 +2972,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 l_int|0
@@ -3019,7 +3001,6 @@ multiline_comment|/*&n;&t; * Finally we need to re-initiate requests that may be
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -3089,7 +3070,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -3152,7 +3132,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 l_int|0
@@ -4736,12 +4715,6 @@ id|sem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * We only listen to signals if the HA was loaded as a module.&n;         * If the HA was compiled into the kernel, then we don&squot;t listen&n;         * to any signals.&n;         */
-r_if
-c_cond
-(paren
-id|host-&gt;loaded_as_module
-)paren
-(brace
 id|siginitsetinv
 c_func
 (paren
@@ -4751,19 +4724,6 @@ comma
 id|SHUTDOWN_SIGS
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|siginitsetinv
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 id|lock_kernel
 c_func
 (paren
@@ -4851,12 +4811,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;loaded_as_module
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|signal_pending
 c_func
 (paren
@@ -4865,7 +4819,6 @@ id|current
 )paren
 r_break
 suffix:semicolon
-)brace
 id|SCSI_LOG_ERROR_RECOVERY
 c_func
 (paren

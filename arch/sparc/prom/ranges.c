@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ranges.c,v 1.14 1999/10/06 19:28:54 zaitcev Exp $&n; * ranges.c: Handle ranges in newer proms for obio/sbus.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: ranges.c,v 1.15 2001/12/19 00:29:51 davem Exp $&n; * ranges.c: Handle ranges in newer proms for obio/sbus.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -18,6 +18,7 @@ r_int
 id|num_obio_ranges
 suffix:semicolon
 multiline_comment|/* Adjust register values based upon the ranges parameters. */
+r_static
 r_void
 DECL|function|prom_adjust_regs
 id|prom_adjust_regs
@@ -90,53 +91,9 @@ id|rngc
 )braket
 dot
 id|ot_child_space
-op_logical_and
-id|regp
-(braket
-id|regc
-)braket
-dot
-id|phys_addr
-op_ge
-id|rangep
-(braket
-id|rngc
-)braket
-dot
-id|ot_child_base
-op_logical_and
-id|regp
-(braket
-id|regc
-)braket
-dot
-id|phys_addr
-op_plus
-id|regp
-(braket
-id|regc
-)braket
-dot
-id|reg_size
-op_le
-id|rangep
-(braket
-id|rngc
-)braket
-dot
-id|ot_child_base
-op_plus
-id|rangep
-(braket
-id|rngc
-)braket
-dot
-id|or_size
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Fount it */
 r_if
 c_cond
@@ -145,7 +102,6 @@ id|rngc
 op_eq
 id|nranges
 )paren
-(brace
 multiline_comment|/* oops */
 id|prom_printf
 c_func
@@ -153,7 +109,6 @@ c_func
 l_string|&quot;adjust_regs: Could not find range with matching bus type...&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|regp
 (braket
 id|regc
@@ -174,6 +129,20 @@ id|regc
 )braket
 dot
 id|phys_addr
+op_sub_assign
+id|rangep
+(braket
+id|rngc
+)braket
+dot
+id|ot_child_base
+suffix:semicolon
+id|regp
+(braket
+id|regc
+)braket
+dot
+id|phys_addr
 op_add_assign
 id|rangep
 (braket
@@ -184,6 +153,7 @@ id|ot_parent_base
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|prom_adjust_ranges
 id|prom_adjust_ranges

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc.c,v 1.54 2001/10/28 20:49:13 davem Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
+multiline_comment|/* $Id: sys_sparc.c,v 1.56 2001/12/21 04:56:15 davem Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -38,7 +38,7 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 DECL|macro|COLOUR_ALIGN
-mdefine_line|#define COLOUR_ALIGN(addr)&t;(((addr)+SHMLBA-1)&amp;~(SHMLBA-1))
+mdefine_line|#define COLOUR_ALIGN(addr,pgoff)&t;&t;&bslash;&n;&t;((((addr)+SHMLBA-1)&amp;~(SHMLBA-1)) +&t;&bslash;&n;&t; (((pgoff)&lt;&lt;PAGE_SHIFT) &amp; (SHMLBA-1)))
 DECL|function|arch_get_unmapped_area
 r_int
 r_int
@@ -77,6 +77,9 @@ r_int
 id|task_size
 op_assign
 id|TASK_SIZE
+suffix:semicolon
+r_int
+id|do_color_align
 suffix:semicolon
 r_if
 c_cond
@@ -151,12 +154,29 @@ id|addr
 op_assign
 id|TASK_UNMAPPED_BASE
 suffix:semicolon
+id|do_color_align
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
+(paren
+id|filp
+op_logical_or
 (paren
 id|flags
 op_amp
 id|MAP_SHARED
+)paren
+)paren
+id|do_color_align
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|do_color_align
 )paren
 id|addr
 op_assign
@@ -164,6 +184,8 @@ id|COLOUR_ALIGN
 c_func
 (paren
 id|addr
+comma
+id|pgoff
 )paren
 suffix:semicolon
 r_else
@@ -262,9 +284,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|flags
-op_amp
-id|MAP_SHARED
+id|do_color_align
 )paren
 id|addr
 op_assign
@@ -272,6 +292,8 @@ id|COLOUR_ALIGN
 c_func
 (paren
 id|addr
+comma
+id|pgoff
 )paren
 suffix:semicolon
 )brace
@@ -1184,18 +1206,7 @@ id|personality
 )paren
 (brace
 r_int
-r_int
 id|ret
-comma
-id|trying
-comma
-id|orig_ret
-suffix:semicolon
-id|trying
-op_assign
-id|ret
-op_assign
-id|personality
 suffix:semicolon
 r_if
 c_cond
@@ -1204,65 +1215,34 @@ id|current-&gt;personality
 op_eq
 id|PER_LINUX32
 op_logical_and
-id|trying
+id|personality
 op_eq
 id|PER_LINUX
 )paren
-id|trying
-op_assign
-id|ret
+id|personality
 op_assign
 id|PER_LINUX32
-suffix:semicolon
-multiline_comment|/* For PER_LINUX32 we want to retain &amp;default_exec_domain.  */
-r_if
-c_cond
-(paren
-id|trying
-op_eq
-id|PER_LINUX32
-)paren
-id|ret
-op_assign
-id|PER_LINUX
-suffix:semicolon
-id|orig_ret
-op_assign
-id|ret
 suffix:semicolon
 id|ret
 op_assign
 id|sys_personality
 c_func
 (paren
-id|ret
+id|personality
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|orig_ret
-op_eq
-id|PER_LINUX
-op_logical_and
-id|trying
+id|ret
 op_eq
 id|PER_LINUX32
 )paren
-(brace
-id|current-&gt;personality
-op_assign
-id|PER_LINUX32
-suffix:semicolon
 id|ret
 op_assign
 id|PER_LINUX
 suffix:semicolon
-)brace
 r_return
-(paren
-r_int
-)paren
 id|ret
 suffix:semicolon
 )brace

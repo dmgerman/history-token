@@ -565,6 +565,10 @@ op_amp
 id|bh-&gt;b_state
 )paren
 suffix:semicolon
+id|bh-&gt;b_bdev
+op_assign
+l_int|NULL
+suffix:semicolon
 id|unlock_buffer
 c_func
 (paren

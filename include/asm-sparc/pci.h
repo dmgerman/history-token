@@ -40,6 +40,8 @@ id|irq
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
 multiline_comment|/* Dynamic DMA mapping stuff.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|pci_dev

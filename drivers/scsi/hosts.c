@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  hosts.c Copyright (C) 1992 Drew Eckhardt&n; *          Copyright (C) 1993, 1994, 1995 Eric Youngdale&n; *&n; *  mid to lowlevel SCSI driver interface&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *  Added QLOGIC QLA1280 SCSI controller kernel host support. &n; *     August 4, 1999 Fred Lewis, Intel DuPont&n; *&n; *  Updated to reflect the new initialization scheme for the higher &n; *  level of scsi drivers (sd/sr/st)&n; *  September 17, 2000 Torben Mathiasen &lt;tmm@image.dk&gt;&n; */
 multiline_comment|/*&n; *  This file contains the medium level SCSI&n; *  host interface initialization, as well as the scsi_hosts array of SCSI&n; *  hosts currently present in the system.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,9 +14,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 multiline_comment|/*&n;static const char RCSid[] = &quot;$Header: /vger/u4/cvs/linux/drivers/scsi/hosts.c,v 1.20 1996/12/12 19:18:32 davem Exp $&quot;;&n;*/
 multiline_comment|/*&n; *  The scsi host entries should be in the order you wish the&n; *  cards to be detected.  A driver may appear more than once IFF&n; *  it can deal with being detected (and therefore initialized)&n; *  with more than one simultaneous host number, can handle being&n; *  reentrant, etc.&n; *&n; *  They may appear in any order, as each SCSI host is told which host &n; *  number it is during detection.&n; */
-multiline_comment|/* This is a placeholder for controllers that are not configured into&n; * the system - we do this to ensure that the controller numbering is&n; * always consistent, no matter how the kernel is configured. */
-DECL|macro|NO_CONTROLLER
-mdefine_line|#define NO_CONTROLLER {NULL, NULL, NULL, NULL, NULL, NULL, NULL, &bslash;&n;&t;&t;&t;   NULL, NULL, 0, 0, 0, 0, 0, 0}
 multiline_comment|/*&n; *  When figure is run, we don&squot;t want to link to any object code.  Since&n; *  the macro for each host will contain function pointers, we cannot&n; *  use it and instead must use a &quot;blank&quot; that does no such&n; *  idiocy.&n; */
 DECL|variable|scsi_hosts
 id|Scsi_Host_Template
@@ -399,10 +394,6 @@ id|shn-&gt;host_registered
 op_assign
 l_int|1
 suffix:semicolon
-id|shn-&gt;loaded_as_module
-op_assign
-l_int|1
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -411,7 +402,16 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|retval-&gt;host_lock
+id|retval-&gt;default_lock
+)paren
+suffix:semicolon
+id|scsi_assign_lock
+c_func
+(paren
+id|retval
+comma
+op_amp
+id|retval-&gt;default_lock
 )paren
 suffix:semicolon
 id|atomic_set
@@ -430,29 +430,6 @@ suffix:semicolon
 id|retval-&gt;host_failed
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-OG
-l_int|0xffff
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;Too many extra bytes requested&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-id|retval-&gt;extra_bytes
-op_assign
-id|j
-suffix:semicolon
-id|retval-&gt;loaded_as_module
-op_assign
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -543,10 +520,6 @@ id|max_scsi_hosts
 op_increment
 suffix:semicolon
 id|shn-&gt;host_registered
-op_assign
-l_int|1
-suffix:semicolon
-id|shn-&gt;loaded_as_module
 op_assign
 l_int|1
 suffix:semicolon

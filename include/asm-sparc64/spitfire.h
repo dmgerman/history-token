@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: spitfire.h,v 1.16 2001/09/24 21:17:57 kanoj Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: spitfire.h,v 1.18 2001/11/29 16:42:10 kanoj Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_SPITFIRE_H
 DECL|macro|_SPARC64_SPITFIRE_H
 mdefine_line|#define _SPARC64_SPITFIRE_H
@@ -33,6 +33,8 @@ DECL|macro|VIRT_WATCHPOINT
 mdefine_line|#define VIRT_WATCHPOINT&t;&t;0x0000000000000038
 DECL|macro|PHYS_WATCHPOINT
 mdefine_line|#define PHYS_WATCHPOINT&t;&t;0x0000000000000040
+DECL|macro|SPITFIRE_HIGHEST_LOCKED_TLBENT
+mdefine_line|#define SPITFIRE_HIGHEST_LOCKED_TLBENT&t;(64 - 1)
 macro_line|#ifndef __ASSEMBLY__
 DECL|enum|ultra_tlb_layout
 r_enum
@@ -56,8 +58,6 @@ id|tlb_type
 suffix:semicolon
 DECL|macro|SPARC64_USE_STICK
 mdefine_line|#define SPARC64_USE_STICK&t;(tlb_type == cheetah)
-DECL|macro|SPITFIRE_HIGHEST_LOCKED_TLBENT
-mdefine_line|#define SPITFIRE_HIGHEST_LOCKED_TLBENT&t;(64 - 1)
 DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
 DECL|macro|L1DCACHE_SIZE
@@ -1273,7 +1273,7 @@ id|ASI_IMMU_DEMAP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Cheetah has a 4-tlb layout so direct access is a bit different.&n; * The first two TLBs are fully assosciative, hold 16 entries, and are&n; * used only for locked and &gt;8K sized translations.  One exists for&n; * data accesses and one for instruction accesses.&n; *&n; * The third TLB is for data accesses to 8K non-locked translations, is&n; * 2 way assosciative, and holds 512 entries.  The fourth TLB is for&n; * instruction accesses to 8K non-locked translations, is 2 way&n; * assosciative, and holds 128 entries.&n; */
+multiline_comment|/* Cheetah has a 4-tlb layout so direct access is a bit different.&n; * The first two TLBs are fully assosciative, hold 16 entries, and are&n; * used only for locked and &gt;8K sized translations.  One exists for&n; * data accesses and one for instruction accesses.&n; *&n; * The third TLB is for data accesses to 8K non-locked translations, is&n; * 2 way assosciative, and holds 512 entries.  The fourth TLB is for&n; * instruction accesses to 8K non-locked translations, is 2 way&n; * assosciative, and holds 128 entries.&n; *&n; * Cheetah has some bug where bogus data can be returned from&n; * ASI_{D,I}TLB_DATA_ACCESS loads, doing the load twice fixes&n; * the problem for me. -DaveM&n; */
 DECL|function|cheetah_get_ldtlb_data
 r_extern
 id|__inline__
@@ -1294,6 +1294,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;ldxa&t;[%1] %2, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %2, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -1346,6 +1347,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;ldxa&t;[%1] %2, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %2, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -1604,6 +1606,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;ldxa&t;[%1] %2, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %2, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -1759,6 +1762,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;ldxa&t;[%1] %2, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %2, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;

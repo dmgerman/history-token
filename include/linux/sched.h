@@ -685,10 +685,10 @@ r_int
 r_int
 id|time_slice
 suffix:semicolon
-DECL|member|swap_cnt_last
+DECL|member|sleep_jtime
 r_int
 r_int
-id|swap_cnt_last
+id|sleep_jtime
 suffix:semicolon
 DECL|member|policy
 r_int

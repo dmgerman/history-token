@@ -1375,6 +1375,10 @@ id|jh_in
 op_member_access_from_pointer
 id|b_size
 suffix:semicolon
+id|new_bh-&gt;b_bdev
+op_assign
+id|transaction-&gt;t_journal-&gt;j_dev
+suffix:semicolon
 id|new_bh-&gt;b_dev
 op_assign
 id|to_kdev_t

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Userspace interface&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_if.c,v 1.5 2000/11/08 05:16:40 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Userspace interface&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_if.c,v 1.7 2001/12/24 00:59:55 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
@@ -915,6 +915,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;hard_start_xmit
+op_eq
+id|br_dev_xmit
+)paren
+r_return
+op_minus
+id|ELOOP
+suffix:semicolon
 id|dev_hold
 c_func
 (paren
@@ -1095,10 +1106,6 @@ id|br
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|i
-op_assign
-l_int|0
 suffix:semicolon
 id|br
 op_assign

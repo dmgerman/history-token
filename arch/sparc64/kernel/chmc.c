@@ -1,9 +1,13 @@
-multiline_comment|/* $Id: chmc.c,v 1.3 2001/04/03 12:49:47 davem Exp $&n; * memctrlr.c: Driver for UltraSPARC-III memory controller.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: chmc.c,v 1.4 2002/01/08 16:00:14 davem Exp $&n; * memctrlr.c: Driver for UltraSPARC-III memory controller.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/chmctrl.h&gt;

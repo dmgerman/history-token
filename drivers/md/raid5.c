@@ -2339,6 +2339,7 @@ id|i
 dot
 id|dev
 suffix:semicolon
+multiline_comment|/* FIXME - later we will need bdev here */
 id|bh-&gt;b_blocknr
 op_assign
 id|block
@@ -6084,6 +6085,7 @@ id|skip
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* FIXME - later we will need bdev here */
 r_if
 c_cond
 (paren

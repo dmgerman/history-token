@@ -3048,22 +3048,20 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|list_empty
+id|blk_queue_empty
 c_func
 (paren
-op_amp
-id|q-&gt;queue_head
+id|q
 )paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *&t;On an IRQ completion if there is an inactive&n;&t;&t; *&t;request on the queue head it means it isnt yet&n;&t;&t; *&t;ready to dispatch.&n;&t;&t; */
 id|req
 op_assign
-id|blkdev_entry_next_request
+id|elv_next_request
 c_func
 (paren
-op_amp
-id|q-&gt;queue_head
+id|q
 )paren
 suffix:semicolon
 r_if

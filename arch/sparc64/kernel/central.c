@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: central.c,v 1.14 2000/09/21 06:25:14 anton Exp $&n; * central.c: Central FHC driver for Sunfire/Starfire/Wildfire.&n; *&n; * Copyright (C) 1997, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: central.c,v 1.15 2001/12/19 00:29:51 davem Exp $&n; * central.c: Central FHC driver for Sunfire/Starfire/Wildfire.&n; *&n; * Copyright (C) 1997, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -303,6 +303,20 @@ id|rngc
 )braket
 dot
 id|ot_parent_space
+suffix:semicolon
+id|regp
+(braket
+id|regc
+)braket
+dot
+id|phys_addr
+op_sub_assign
+id|rangep
+(braket
+id|rngc
+)braket
+dot
+id|ot_child_base
 suffix:semicolon
 id|regp
 (braket

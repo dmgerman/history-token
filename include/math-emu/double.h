@@ -1,4 +1,7 @@
 multiline_comment|/* Software floating-point emulation.&n;   Definitions for IEEE Double Precision&n;   Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.&n;   This file is part of the GNU C Library.&n;   Contributed by Richard Henderson (rth@cygnus.com),&n;&t;&t;  Jakub Jelinek (jj@ultra.linux.cz),&n;&t;&t;  David S. Miller (davem@redhat.com) and&n;&t;&t;  Peter Maydell (pmaydell@chiark.greenend.org.uk).&n;&n;   The GNU C Library is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU Library General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The GNU C Library is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;   Library General Public License for more details.&n;&n;   You should have received a copy of the GNU Library General Public&n;   License along with the GNU C Library; see the file COPYING.LIB.  If&n;   not, write to the Free Software Foundation, Inc.,&n;   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+macro_line|#ifndef    __MATH_EMU_DOUBLE_H__
+DECL|macro|__MATH_EMU_DOUBLE_H__
+mdefine_line|#define    __MATH_EMU_DOUBLE_H__
 macro_line|#if _FP_W_TYPE_SIZE &lt; 32
 macro_line|#error &quot;Here&squot;s a nickel kid.  Go buy yourself a real computer.&quot;
 macro_line|#endif
@@ -288,4 +291,5 @@ mdefine_line|#define _FP_FRAC_HIGH_D(X)&t;_FP_FRAC_HIGH_1(X)
 DECL|macro|_FP_FRAC_HIGH_RAW_D
 mdefine_line|#define _FP_FRAC_HIGH_RAW_D(X)&t;_FP_FRAC_HIGH_1(X)
 macro_line|#endif /* W_TYPE_SIZE &lt; 64 */
+macro_line|#endif /* __MATH_EMU_DOUBLE_H__ */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Amiga Linux/68k A2065 Ethernet Driver&n; *&n; * (C) Copyright 1995 by Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; *&n; * Fixes and tips by:&n; *&t;- Janos Farkas (CHEXUM@sparta.banki.hu)&n; *&t;- Jes Degn Soerensen (jds@kom.auc.dk)&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This program is based on&n; *&n; *&t;ariadne.?:&t;Amiga Linux/68k Ariadne Ethernet Driver&n; *&t;&t;&t;(C) Copyright 1995 by Geert Uytterhoeven,&n; *                                            Peter De Schrijver&n; *&n; *&t;lance.c:&t;An AMD LANCE ethernet driver for linux.&n; *&t;&t;&t;Written 1993-94 by Donald Becker.&n; *&n; *&t;Am79C960:&t;PCnet(tm)-ISA Single-Chip Ethernet Controller&n; *&t;&t;&t;Advanced Micro Devices&n; *&t;&t;&t;Publication #16907, Rev. B, Amendment/0, May 1994&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of the Linux&n; * distribution for more details.&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * The A2065 is a Zorro-II board made by Commodore/Ameristar. It contains:&n; *&n; *&t;- an Am7990 Local Area Network Controller for Ethernet (LANCE) with&n; *&t;  both 10BASE-2 (thin coax) and AUI (DB-15) connectors&n; */
+multiline_comment|/*&n; * Amiga Linux/68k A2065 Ethernet Driver&n; *&n; * (C) Copyright 1995 by Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; *&n; * Fixes and tips by:&n; *&t;- Janos Farkas (CHEXUM@sparta.banki.hu)&n; *&t;- Jes Degn Soerensen (jds@kom.auc.dk)&n; *&t;- Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This program is based on&n; *&n; *&t;ariadne.?:&t;Amiga Linux/68k Ariadne Ethernet Driver&n; *&t;&t;&t;(C) Copyright 1995 by Geert Uytterhoeven,&n; *                                            Peter De Schrijver&n; *&n; *&t;lance.c:&t;An AMD LANCE ethernet driver for linux.&n; *&t;&t;&t;Written 1993-94 by Donald Becker.&n; *&n; *&t;Am79C960:&t;PCnet(tm)-ISA Single-Chip Ethernet Controller&n; *&t;&t;&t;Advanced Micro Devices&n; *&t;&t;&t;Publication #16907, Rev. B, Amendment/0, May 1994&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of the Linux&n; * distribution for more details.&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * The A2065 is a Zorro-II board made by Commodore/Ameristar. It contains:&n; *&n; *&t;- an Am7990 Local Area Network Controller for Ethernet (LANCE) with&n; *&t;  both 10BASE-2 (thin coax) and AUI (DB-15) connectors&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -2584,10 +2585,6 @@ id|byte
 suffix:semicolon
 id|u32
 id|crc
-comma
-id|poly
-op_assign
-id|CRC_POLYNOMIAL_LE
 suffix:semicolon
 multiline_comment|/* set all multicast bits */
 r_if
@@ -2670,80 +2667,14 @@ r_continue
 suffix:semicolon
 id|crc
 op_assign
-l_int|0xffffffff
-suffix:semicolon
-r_for
-c_loop
+id|ether_crc_le
+c_func
 (paren
-id|byte
-op_assign
-l_int|0
-suffix:semicolon
-id|byte
-OL
 l_int|6
-suffix:semicolon
-id|byte
-op_increment
-)paren
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-op_star
+comma
 id|addrs
-op_increment
-comma
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-l_int|8
-suffix:semicolon
-id|j
-op_increment
-comma
-id|bit
-op_rshift_assign
-l_int|1
-)paren
-(brace
-r_int
-id|test
-suffix:semicolon
-id|test
-op_assign
-(paren
-(paren
-id|bit
-op_xor
-id|crc
-)paren
-op_amp
-l_int|0x01
 )paren
 suffix:semicolon
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test
-)paren
-(brace
-id|crc
-op_assign
-id|crc
-op_xor
-id|poly
-suffix:semicolon
-)brace
-)brace
 id|crc
 op_assign
 id|crc

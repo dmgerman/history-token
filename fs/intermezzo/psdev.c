@@ -14,14 +14,15 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
@@ -1035,7 +1036,7 @@ id|readmount.io_len
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -2538,7 +2539,7 @@ suffix:semicolon
 )brace
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

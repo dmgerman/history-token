@@ -1,4 +1,4 @@
-multiline_comment|/*------------------------------------------------------------------------&n; . smc9194.c&n; . This is a driver for SMC&squot;s 9000 series of Ethernet cards.&n; .&n; . Copyright (C) 1996 by Erik Stahlman&n; . This software may be used and distributed according to the terms&n; . of the GNU General Public License, incorporated herein by reference.&n; .&n; . &quot;Features&quot; of the SMC chip:&n; .   4608 byte packet memory. ( for the 91C92.  Others have more )&n; .   EEPROM for configuration&n; .   AUI/TP selection  ( mine has 10Base2/10BaseT select )&n; .&n; . Arguments:&n; . &t;io&t;&t; = for the base address&n; .&t;irq&t; = for the IRQ&n; .&t;ifport = 0 for autodetect, 1 for TP, 2 for AUI ( or 10base2 )&n; .&n; . author:&n; . &t;Erik Stahlman&t;&t;&t;&t;( erik@vt.edu )&n; . contributors:&n; .      Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; .&n; . Hardware multicast code from Peter Cammaert ( pc@denkart.be )&n; .&n; . Sources:&n; .    o   SMC databook&n; .    o   skeleton.c by Donald Becker ( becker@scyld.com )&n; .    o   ( a LOT of advice from Becker as well )&n; .&n; . History:&n; .&t;12/07/95  Erik Stahlman  written, got receive/xmit handled&n; . &t;01/03/96  Erik Stahlman  worked out some bugs, actually usable!!! :-)&n; .&t;01/06/96  Erik Stahlman&t; cleaned up some, better testing, etc&n; .&t;01/29/96  Erik Stahlman&t; fixed autoirq, added multicast&n; . &t;02/01/96  Erik Stahlman&t; 1. disabled all interrupts in smc_reset&n; .&t;&t;   &t;&t; 2. got rid of post-decrementing bug -- UGH.&n; .&t;02/13/96  Erik Stahlman  Tried to fix autoirq failure.  Added more&n; .&t;&t;&t;&t; descriptive error messages.&n; .&t;02/15/96  Erik Stahlman  Fixed typo that caused detection failure&n; . &t;02/23/96  Erik Stahlman&t; Modified it to fit into kernel tree&n; .&t;&t;&t;&t; Added support to change hardware address&n; .&t;&t;&t;&t; Cleared stats on opens&n; .&t;02/26/96  Erik Stahlman&t; Trial support for Kernel 1.2.13&n; .&t;&t;&t;&t; Kludge for automatic IRQ detection&n; .&t;03/04/96  Erik Stahlman&t; Fixed kernel 1.3.70 +&n; .&t;&t;&t;&t; Fixed bug reported by Gardner Buchanan in&n; .&t;&t;&t;&t;   smc_enable, with outw instead of outb&n; .&t;03/06/96  Erik Stahlman  Added hardware multicast from Peter Cammaert&n; .&t;04/14/00  Heiko Pruessing (SMA Regelsysteme)  Fixed bug in chip memory&n; .&t;&t;&t;&t; allocation&n; .      08/20/00  Arnaldo Melo   fix kfree(skb) in smc_hardware_send_packet&n; .      12/15/00  Christian Jullien fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; ----------------------------------------------------------------------------*/
+multiline_comment|/*------------------------------------------------------------------------&n; . smc9194.c&n; . This is a driver for SMC&squot;s 9000 series of Ethernet cards.&n; .&n; . Copyright (C) 1996 by Erik Stahlman&n; . This software may be used and distributed according to the terms&n; . of the GNU General Public License, incorporated herein by reference.&n; .&n; . &quot;Features&quot; of the SMC chip:&n; .   4608 byte packet memory. ( for the 91C92.  Others have more )&n; .   EEPROM for configuration&n; .   AUI/TP selection  ( mine has 10Base2/10BaseT select )&n; .&n; . Arguments:&n; . &t;io&t;&t; = for the base address&n; .&t;irq&t; = for the IRQ&n; .&t;ifport = 0 for autodetect, 1 for TP, 2 for AUI ( or 10base2 )&n; .&n; . author:&n; . &t;Erik Stahlman&t;&t;&t;&t;( erik@vt.edu )&n; . contributors:&n; .      Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; .&n; . Hardware multicast code from Peter Cammaert ( pc@denkart.be )&n; .&n; . Sources:&n; .    o   SMC databook&n; .    o   skeleton.c by Donald Becker ( becker@scyld.com )&n; .    o   ( a LOT of advice from Becker as well )&n; .&n; . History:&n; .&t;12/07/95  Erik Stahlman  written, got receive/xmit handled&n; . &t;01/03/96  Erik Stahlman  worked out some bugs, actually usable!!! :-)&n; .&t;01/06/96  Erik Stahlman&t; cleaned up some, better testing, etc&n; .&t;01/29/96  Erik Stahlman&t; fixed autoirq, added multicast&n; . &t;02/01/96  Erik Stahlman&t; 1. disabled all interrupts in smc_reset&n; .&t;&t;   &t;&t; 2. got rid of post-decrementing bug -- UGH.&n; .&t;02/13/96  Erik Stahlman  Tried to fix autoirq failure.  Added more&n; .&t;&t;&t;&t; descriptive error messages.&n; .&t;02/15/96  Erik Stahlman  Fixed typo that caused detection failure&n; . &t;02/23/96  Erik Stahlman&t; Modified it to fit into kernel tree&n; .&t;&t;&t;&t; Added support to change hardware address&n; .&t;&t;&t;&t; Cleared stats on opens&n; .&t;02/26/96  Erik Stahlman&t; Trial support for Kernel 1.2.13&n; .&t;&t;&t;&t; Kludge for automatic IRQ detection&n; .&t;03/04/96  Erik Stahlman&t; Fixed kernel 1.3.70 +&n; .&t;&t;&t;&t; Fixed bug reported by Gardner Buchanan in&n; .&t;&t;&t;&t;   smc_enable, with outw instead of outb&n; .&t;03/06/96  Erik Stahlman  Added hardware multicast from Peter Cammaert&n; .&t;04/14/00  Heiko Pruessing (SMA Regelsysteme)  Fixed bug in chip memory&n; .&t;&t;&t;&t; allocation&n; .      08/20/00  Arnaldo Melo   fix kfree(skb) in smc_hardware_send_packet&n; .      12/15/00  Christian Jullien fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; .      11/08/01 Matt Domsch     Use common crc32 function&n; ----------------------------------------------------------------------------*/
 DECL|variable|version
 r_static
 r_const
@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -211,20 +212,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-)paren
-suffix:semicolon
-multiline_comment|/*&n; . CRC compute&n; */
-r_static
-r_int
-id|crc32
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_int
-id|length
 )paren
 suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------&n; .&n; . Interrupt level calls..&n; .&n; ----------------------------------------------------------------*/
@@ -746,12 +733,12 @@ suffix:semicolon
 multiline_comment|/* only use the low order bits */
 id|position
 op_assign
-id|crc32
+id|ether_crc_le
 c_func
 (paren
-id|cur_addr-&gt;dmi_addr
-comma
 l_int|6
+comma
+id|cur_addr-&gt;dmi_addr
 )paren
 op_amp
 l_int|0x3f
@@ -821,120 +808,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;  Finds the CRC32 of a set of bytes.&n;  Again, from Peter Cammaert&squot;s code.&n;*/
-DECL|function|crc32
-r_static
-r_int
-id|crc32
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_int
-id|length
-)paren
-(brace
-multiline_comment|/* indices */
-r_int
-id|perByte
-suffix:semicolon
-r_int
-id|perBit
-suffix:semicolon
-multiline_comment|/* crc polynomial for Ethernet */
-r_const
-r_int
-r_int
-id|poly
-op_assign
-l_int|0xedb88320
-suffix:semicolon
-multiline_comment|/* crc value - preinitialized to all 1&squot;s */
-r_int
-r_int
-id|crc_value
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|perByte
-op_assign
-l_int|0
-suffix:semicolon
-id|perByte
-OL
-id|length
-suffix:semicolon
-id|perByte
-op_increment
-)paren
-(brace
-r_int
-r_char
-id|c
-suffix:semicolon
-id|c
-op_assign
-op_star
-(paren
-id|s
-op_increment
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|perBit
-op_assign
-l_int|0
-suffix:semicolon
-id|perBit
-OL
-l_int|8
-suffix:semicolon
-id|perBit
-op_increment
-)paren
-(brace
-id|crc_value
-op_assign
-(paren
-id|crc_value
-op_rshift
-l_int|1
-)paren
-op_xor
-(paren
-(paren
-(paren
-id|crc_value
-op_xor
-id|c
-)paren
-op_amp
-l_int|0x01
-)paren
-ques
-c_cond
-id|poly
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-id|c
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-id|crc_value
-suffix:semicolon
 )brace
 multiline_comment|/*&n; . Function: smc_wait_to_send_packet( struct sk_buff * skb, struct net_device * )&n; . Purpose:&n; .    Attempt to allocate memory for a packet, if chip-memory is not&n; .    available, then tell the card to generate an interrupt when it&n; .    is available.&n; .&n; . Algorithm:&n; .&n; . o&t;if the saved_skb is not currently null, then drop this packet&n; .&t;on the floor.  This should never happen, because of TBUSY.&n; . o&t;if the saved_skb is null, then replace it with the current packet,&n; . o&t;See if I can sending it now.&n; . o &t;(NO): Enable interrupts and let the interrupt handler deal with it.&n; . o&t;(YES):Send it now.&n;*/
 DECL|function|smc_wait_to_send_packet

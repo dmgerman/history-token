@@ -4,6 +4,7 @@ DECL|macro|_SPARC64_SMP_H
 mdefine_line|#define _SPARC64_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
@@ -41,9 +42,8 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Per processor Sparc parameters we need. */
 multiline_comment|/* Keep this a multiple of 64-bytes for cache reasons. */
-DECL|struct|cpuinfo_sparc
+r_typedef
 r_struct
-id|cpuinfo_sparc
 (brace
 multiline_comment|/* Dcache line 1 */
 DECL|member|__pad0
@@ -113,10 +113,12 @@ id|irq_worklists
 l_int|16
 )braket
 suffix:semicolon
+DECL|typedef|cpuinfo_sparc
 )brace
+id|____cacheline_aligned
+id|cpuinfo_sparc
 suffix:semicolon
 r_extern
-r_struct
 id|cpuinfo_sparc
 id|cpu_data
 (braket
@@ -318,10 +320,10 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;processor)
-multiline_comment|/* This needn&squot;t do anything as we do not sleep the cpu&n; * inside of the idler task, so an interrupt is not needed&n; * to get a clean fast response.&n; *&n; * Addendum: We do want it to do something for the signal&n; *           delivery case, we detect that by just seeing&n; *           if we are trying to send this to an idler or not.&n; */
+mdefine_line|#define smp_processor_id() (current-&gt;cpu)
+multiline_comment|/* This needn&squot;t do anything as we do not sleep the cpu&n; * inside of the idler task, so an interrupt is not needed&n; * to get a clean fast response.&n; *&n; * XXX Reverify this assumption... -DaveM&n; *&n; * Addendum: We do want it to do something for the signal&n; *           delivery case, we detect that by just seeing&n; *           if we are trying to send this to an idler or not.&n; */
 DECL|function|smp_send_reschedule
-r_extern
+r_static
 id|__inline__
 r_void
 id|smp_send_reschedule
@@ -351,14 +353,12 @@ id|idle_volume
 op_eq
 l_int|0
 )paren
-(brace
 id|smp_receive_signal
 c_func
 (paren
 id|cpu
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* This is a nop as well because we capture all other cpus&n; * anyways when making the PROM active.&n; */
 DECL|function|smp_send_stop
@@ -373,8 +373,6 @@ r_void
 (brace
 )brace
 macro_line|#endif /* !(__ASSEMBLY__) */
-DECL|macro|PROC_CHANGE_PENALTY
-mdefine_line|#define PROC_CHANGE_PENALTY&t;20
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF

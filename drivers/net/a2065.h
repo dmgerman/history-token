@@ -18,10 +18,6 @@ suffix:semicolon
 multiline_comment|/* Register Address Port */
 )brace
 suffix:semicolon
-DECL|macro|CRC_POLYNOMIAL_BE
-mdefine_line|#define CRC_POLYNOMIAL_BE 0x04c11db7UL  /* Ethernet CRC, big endian */
-DECL|macro|CRC_POLYNOMIAL_LE
-mdefine_line|#define CRC_POLYNOMIAL_LE 0xedb88320UL  /* Ethernet CRC, little endian */
 multiline_comment|/*&n; *&t;&t;Am7990 Control and Status Registers&n; */
 DECL|macro|LE_CSR0
 mdefine_line|#define LE_CSR0&t;&t;0x0000&t;&t;/* LANCE Controller Status */

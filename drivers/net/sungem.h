@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.8 2001/10/17 05:55:39 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.10 2001/11/29 03:57:33 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -722,91 +722,45 @@ DECL|macro|PROM_SIZE
 mdefine_line|#define PROM_SIZE&t;0x0fffffUL&t;/* Size of ROM&t;&t;&t;*/
 DECL|macro|PROM_END
 mdefine_line|#define PROM_END&t;0x200000UL&t;/* End of ROM&t;&t;&t;*/
-multiline_comment|/* MII phy registers */
-DECL|macro|PHY_CTRL
-mdefine_line|#define PHY_CTRL&t;0x00
-DECL|macro|PHY_STAT
-mdefine_line|#define PHY_STAT&t;0x01
-DECL|macro|PHY_ID0
-mdefine_line|#define PHY_ID0&t;&t;0x02
-DECL|macro|PHY_ID1
-mdefine_line|#define PHY_ID1&t;&t;0x03
-DECL|macro|PHY_ADV
-mdefine_line|#define PHY_ADV&t;&t;0x04
-DECL|macro|PHY_LPA
-mdefine_line|#define PHY_LPA&t;&t;0x05
-DECL|macro|PHY_CTRL_SPD2
-mdefine_line|#define PHY_CTRL_SPD2&t;0x0040&t;&t;/* Gigabit enable? (bcm5411)&t;*/
-DECL|macro|PHY_CTRL_FDPLX
-mdefine_line|#define PHY_CTRL_FDPLX&t;0x0100&t;&t;/* Full duplex&t;&t;&t;*/
-DECL|macro|PHY_CTRL_ISO
-mdefine_line|#define PHY_CTRL_ISO&t;0x0400&t;&t;/* Isloate MII from PHY&t;&t;*/
-DECL|macro|PHY_CTRL_ANRES
-mdefine_line|#define PHY_CTRL_ANRES&t;0x0200&t;&t;/* Auto-negotiation restart&t;*/
-DECL|macro|PHY_CTRL_ANENAB
-mdefine_line|#define PHY_CTRL_ANENAB&t;0x1000&t;&t;/* Auto-negotiation enable&t;*/
-DECL|macro|PHY_CTRL_SPD100
-mdefine_line|#define PHY_CTRL_SPD100&t;0x2000&t;&t;/* Select 100Mbps&t;&t;*/
-DECL|macro|PHY_CTRL_RST
-mdefine_line|#define PHY_CTRL_RST&t;0x8000&t;&t;/* Reset PHY&t;&t;&t;*/
-DECL|macro|PHY_STAT_LSTAT
-mdefine_line|#define PHY_STAT_LSTAT&t;0x0004&t;&t;/* Link status&t;&t;&t;*/
-DECL|macro|PHY_STAT_ANEGC
-mdefine_line|#define PHY_STAT_ANEGC&t;0x0020&t;&t;/* Auto-negotiation complete&t;*/
-DECL|macro|PHY_ADV_10HALF
-mdefine_line|#define PHY_ADV_10HALF&t;0x0020
-DECL|macro|PHY_ADV_10FULL
-mdefine_line|#define PHY_ADV_10FULL&t;0x0040
-DECL|macro|PHY_ADV_100HALF
-mdefine_line|#define PHY_ADV_100HALF&t;0x0080
-DECL|macro|PHY_ADV_100FULL
-mdefine_line|#define PHY_ADV_100FULL&t;0x0100
-DECL|macro|PHY_LPA_10HALF
-mdefine_line|#define PHY_LPA_10HALF&t;0x0020
-DECL|macro|PHY_LPA_10FULL
-mdefine_line|#define PHY_LPA_10FULL&t;0x0040
-DECL|macro|PHY_LPA_100HALF
-mdefine_line|#define PHY_LPA_100HALF&t;0x0080
-DECL|macro|PHY_LPA_100FULL
-mdefine_line|#define PHY_LPA_100FULL&t;0x0100
-DECL|macro|PHY_LPA_PAUSE
-mdefine_line|#define PHY_LPA_PAUSE&t;0x0400
-DECL|macro|PHY_LPA_FAULT
-mdefine_line|#define PHY_LPA_FAULT&t;0x2000
+multiline_comment|/* MII definitions missing from mii.h */
+DECL|macro|BMCR_SPD2
+mdefine_line|#define BMCR_SPD2&t;0x0040&t;&t;/* Gigabit enable? (bcm5411)&t;*/
+DECL|macro|LPA_PAUSE
+mdefine_line|#define LPA_PAUSE&t;0x0400
 multiline_comment|/* More PHY registers (specific to Broadcom models) */
 multiline_comment|/* MII BCM5201 MULTIPHY interrupt register */
-DECL|macro|PHY_BCM5201_INTERRUPT
-mdefine_line|#define PHY_BCM5201_INTERRUPT&t;&t;&t;0x1A
-DECL|macro|PHY_BCM5201_INTERRUPT_INTENABLE
-mdefine_line|#define PHY_BCM5201_INTERRUPT_INTENABLE&t;&t;0x4000
-DECL|macro|PHY_BCM5201_AUXMODE2
-mdefine_line|#define PHY_BCM5201_AUXMODE2&t;&t;&t;0x1B
-DECL|macro|PHY_BCM5201_AUXMODE2_LOWPOWER
-mdefine_line|#define PHY_BCM5201_AUXMODE2_LOWPOWER&t;&t;0x0008
-DECL|macro|PHY_BCM5201_MULTIPHY
-mdefine_line|#define PHY_BCM5201_MULTIPHY                    0x1E
+DECL|macro|MII_BCM5201_INTERRUPT
+mdefine_line|#define MII_BCM5201_INTERRUPT&t;&t;&t;0x1A
+DECL|macro|MII_BCM5201_INTERRUPT_INTENABLE
+mdefine_line|#define MII_BCM5201_INTERRUPT_INTENABLE&t;&t;0x4000
+DECL|macro|MII_BCM5201_AUXMODE2
+mdefine_line|#define MII_BCM5201_AUXMODE2&t;&t;&t;0x1B
+DECL|macro|MII_BCM5201_AUXMODE2_LOWPOWER
+mdefine_line|#define MII_BCM5201_AUXMODE2_LOWPOWER&t;&t;0x0008
+DECL|macro|MII_BCM5201_MULTIPHY
+mdefine_line|#define MII_BCM5201_MULTIPHY                    0x1E
 multiline_comment|/* MII BCM5201 MULTIPHY register bits */
-DECL|macro|PHY_BCM5201_MULTIPHY_SERIALMODE
-mdefine_line|#define PHY_BCM5201_MULTIPHY_SERIALMODE         0x0002
-DECL|macro|PHY_BCM5201_MULTIPHY_SUPERISOLATE
-mdefine_line|#define PHY_BCM5201_MULTIPHY_SUPERISOLATE       0x0008
+DECL|macro|MII_BCM5201_MULTIPHY_SERIALMODE
+mdefine_line|#define MII_BCM5201_MULTIPHY_SERIALMODE         0x0002
+DECL|macro|MII_BCM5201_MULTIPHY_SUPERISOLATE
+mdefine_line|#define MII_BCM5201_MULTIPHY_SUPERISOLATE       0x0008
 multiline_comment|/* MII BCM5400 1000-BASET Control register */
-DECL|macro|PHY_BCM5400_GB_CONTROL
-mdefine_line|#define PHY_BCM5400_GB_CONTROL&t;&t;&t;0x09
-DECL|macro|PHY_BCM5400_GB_CONTROL_FULLDUPLEXCAP
-mdefine_line|#define PHY_BCM5400_GB_CONTROL_FULLDUPLEXCAP&t;0x0200
+DECL|macro|MII_BCM5400_GB_CONTROL
+mdefine_line|#define MII_BCM5400_GB_CONTROL&t;&t;&t;0x09
+DECL|macro|MII_BCM5400_GB_CONTROL_FULLDUPLEXCAP
+mdefine_line|#define MII_BCM5400_GB_CONTROL_FULLDUPLEXCAP&t;0x0200
 multiline_comment|/* MII BCM5400 AUXCONTROL register */
-DECL|macro|PHY_BCM5400_AUXCONTROL
-mdefine_line|#define PHY_BCM5400_AUXCONTROL                  0x18
-DECL|macro|PHY_BCM5400_AUXCONTROL_PWR10BASET
-mdefine_line|#define PHY_BCM5400_AUXCONTROL_PWR10BASET       0x0004
+DECL|macro|MII_BCM5400_AUXCONTROL
+mdefine_line|#define MII_BCM5400_AUXCONTROL                  0x18
+DECL|macro|MII_BCM5400_AUXCONTROL_PWR10BASET
+mdefine_line|#define MII_BCM5400_AUXCONTROL_PWR10BASET       0x0004
 multiline_comment|/* MII BCM5400 AUXSTATUS register */
-DECL|macro|PHY_BCM5400_AUXSTATUS
-mdefine_line|#define PHY_BCM5400_AUXSTATUS                   0x19
-DECL|macro|PHY_BCM5400_AUXSTATUS_LINKMODE_MASK
-mdefine_line|#define PHY_BCM5400_AUXSTATUS_LINKMODE_MASK     0x0700
-DECL|macro|PHY_BCM5400_AUXSTATUS_LINKMODE_SHIFT
-mdefine_line|#define PHY_BCM5400_AUXSTATUS_LINKMODE_SHIFT    8  
+DECL|macro|MII_BCM5400_AUXSTATUS
+mdefine_line|#define MII_BCM5400_AUXSTATUS                   0x19
+DECL|macro|MII_BCM5400_AUXSTATUS_LINKMODE_MASK
+mdefine_line|#define MII_BCM5400_AUXSTATUS_LINKMODE_MASK     0x0700
+DECL|macro|MII_BCM5400_AUXSTATUS_LINKMODE_SHIFT
+mdefine_line|#define MII_BCM5400_AUXSTATUS_LINKMODE_SHIFT    8  
 multiline_comment|/* When it can, GEM internally caches 4 aligned TX descriptors&n; * at a time, so that it can use full cacheline DMA reads.&n; *&n; * Note that unlike HME, there is no ownership bit in the descriptor&n; * control word.  The same functionality is obtained via the TX-Kick&n; * and TX-Complete registers.  As a result, GEM need not write back&n; * updated values to the TX descriptor ring, it only performs reads.&n; *&n; * Since TX descriptors are never modified by GEM, the driver can&n; * use the buffer DMA address as a place to keep track of allocated&n; * DMA mappings for a transmitted packet.&n; */
 DECL|struct|gem_txd
 r_struct
@@ -945,6 +899,20 @@ DECL|macro|RX_BUF_ALLOC_SIZE
 mdefine_line|#define RX_BUF_ALLOC_SIZE(gp)&t;((gp)-&gt;dev-&gt;mtu + 46 + RX_OFFSET + 64)
 DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD  256
+macro_line|#if TX_RING_SIZE &lt; 128
+DECL|macro|INIT_BLOCK_TX_RING_SIZE
+mdefine_line|#define INIT_BLOCK_TX_RING_SIZE&t;&t;128
+macro_line|#else
+DECL|macro|INIT_BLOCK_TX_RING_SIZE
+mdefine_line|#define INIT_BLOCK_TX_RING_SIZE&t;&t;TX_RING_SIZE
+macro_line|#endif
+macro_line|#if RX_RING_SIZE &lt; 128
+DECL|macro|INIT_BLOCK_RX_RING_SIZE
+mdefine_line|#define INIT_BLOCK_RX_RING_SIZE&t;&t;128
+macro_line|#else
+DECL|macro|INIT_BLOCK_RX_RING_SIZE
+mdefine_line|#define INIT_BLOCK_RX_RING_SIZE&t;&t;RX_RING_SIZE
+macro_line|#endif
 DECL|struct|gem_init_block
 r_struct
 id|gem_init_block
@@ -954,7 +922,7 @@ r_struct
 id|gem_txd
 id|txd
 (braket
-id|TX_RING_SIZE
+id|INIT_BLOCK_TX_RING_SIZE
 )braket
 suffix:semicolon
 DECL|member|rxd
@@ -962,7 +930,7 @@ r_struct
 id|gem_rxd
 id|rxd
 (braket
-id|RX_RING_SIZE
+id|INIT_BLOCK_RX_RING_SIZE
 )braket
 suffix:semicolon
 )brace
@@ -1013,15 +981,31 @@ DECL|enum|link_state
 r_enum
 id|link_state
 (brace
-DECL|enumerator|aneg_wait
-id|aneg_wait
+DECL|enumerator|link_down
+id|link_down
+op_assign
+l_int|0
 comma
-DECL|enumerator|force_wait
-id|force_wait
+multiline_comment|/* No link, will retry */
+DECL|enumerator|link_aneg
+id|link_aneg
 comma
-DECL|enumerator|aneg_up
-id|aneg_up
+multiline_comment|/* Autoneg in progress */
+DECL|enumerator|link_force_try
+id|link_force_try
 comma
+multiline_comment|/* Try Forced link speed */
+DECL|enumerator|link_force_ret
+id|link_force_ret
+comma
+multiline_comment|/* Forced mode worked, retrying autoneg */
+DECL|enumerator|link_force_ok
+id|link_force_ok
+comma
+multiline_comment|/* Stay in forced mode */
+DECL|enumerator|link_up
+id|link_up
+multiline_comment|/* Link is up */
 )brace
 suffix:semicolon
 DECL|struct|gem
@@ -1055,6 +1039,25 @@ multiline_comment|/* Set when chip is actually in operational state&n;&t; * (ie.
 DECL|member|hw_running
 r_int
 id|hw_running
+suffix:semicolon
+DECL|member|opened
+r_int
+id|opened
+suffix:semicolon
+DECL|member|pm_sem
+r_struct
+id|semaphore
+id|pm_sem
+suffix:semicolon
+DECL|member|pm_task
+r_struct
+id|tq_struct
+id|pm_task
+suffix:semicolon
+DECL|member|pm_timer
+r_struct
+id|timer_list
+id|pm_timer
 suffix:semicolon
 DECL|member|init_block
 r_struct
@@ -1115,14 +1118,27 @@ DECL|member|mii_phy_addr
 r_int
 id|mii_phy_addr
 suffix:semicolon
-multiline_comment|/* Diagnostic counters and state. */
-DECL|member|pause_entered
-id|u64
-id|pause_entered
+DECL|member|gigabit_capable
+r_int
+id|gigabit_capable
 suffix:semicolon
-DECL|member|pause_last_time_recvd
-id|u16
-id|pause_last_time_recvd
+multiline_comment|/* Autoneg &amp; PHY control */
+DECL|member|link_cntl
+r_int
+id|link_cntl
+suffix:semicolon
+DECL|member|link_advertise
+r_int
+id|link_advertise
+suffix:semicolon
+DECL|member|link_fcntl
+r_int
+id|link_fcntl
+suffix:semicolon
+DECL|member|lstate
+r_enum
+id|link_state
+id|lstate
 suffix:semicolon
 DECL|member|link_timer
 r_struct
@@ -1133,10 +1149,28 @@ DECL|member|timer_ticks
 r_int
 id|timer_ticks
 suffix:semicolon
-DECL|member|lstate
-r_enum
-id|link_state
-id|lstate
+DECL|member|wake_on_lan
+r_int
+id|wake_on_lan
+suffix:semicolon
+DECL|member|reset_task
+r_struct
+id|tq_struct
+id|reset_task
+suffix:semicolon
+DECL|member|reset_task_pending
+r_volatile
+r_int
+id|reset_task_pending
+suffix:semicolon
+multiline_comment|/* Diagnostic counters and state. */
+DECL|member|pause_entered
+id|u64
+id|pause_entered
+suffix:semicolon
+DECL|member|pause_last_time_recvd
+id|u16
+id|pause_last_time_recvd
 suffix:semicolon
 DECL|member|gblock_dvma
 id|dma_addr_t

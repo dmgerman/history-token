@@ -1,7 +1,8 @@
 multiline_comment|/* devices.c: Initial scan of the prom device tree for important&n; *&t;      Sparc device nodes which we need to find.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;

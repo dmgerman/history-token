@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-macro_line|#include &quot;crc32.h&quot;
 DECL|macro|DIRTY_SPACE
 mdefine_line|#define DIRTY_SPACE(x) do { typeof(x) _x = (x); &bslash;&n;&t;&t;c-&gt;free_size -= _x; c-&gt;dirty_size += _x; &bslash;&n;&t;&t;jeb-&gt;free_size -= _x ; jeb-&gt;dirty_size += _x; &bslash;&n;&t;&t;}while(0)
 DECL|macro|USED_SPACE

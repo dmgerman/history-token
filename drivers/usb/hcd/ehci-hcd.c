@@ -2369,7 +2369,7 @@ id|DRIVER_INFO
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;block sizes: qh %d qtd %d itd %d sitd %d&quot;
+l_string|&quot;block sizes: qh %Zd qtd %Zd itd %Zd sitd %Zd&quot;
 comma
 r_sizeof
 (paren

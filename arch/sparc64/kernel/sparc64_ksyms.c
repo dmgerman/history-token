@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.116 2001/10/26 15:49:21 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.120 2001/12/21 04:56:15 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -513,7 +513,7 @@ r_extern
 r_int
 id|smp_num_cpus
 suffix:semicolon
-macro_line|#ifdef SPIN_LOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
 id|_do_spin_lock
@@ -606,7 +606,7 @@ id|phys_base
 suffix:semicolon
 multiline_comment|/* used by various drivers */
 macro_line|#ifdef CONFIG_SMP
-macro_line|#ifndef SPIN_LOCK_DEBUG
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 multiline_comment|/* Out of line rw-locking implementation. */
 DECL|variable|__read_lock
 id|EXPORT_SYMBOL
@@ -723,7 +723,7 @@ id|__cpu_logical_map
 )paren
 suffix:semicolon
 multiline_comment|/* Spinlock debugging library, optional. */
-macro_line|#ifdef SPIN_LOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|variable|_do_spin_lock
 id|EXPORT_SYMBOL
 c_func
@@ -1634,13 +1634,6 @@ c_func
 id|_clear_page
 )paren
 suffix:semicolon
-DECL|variable|_copy_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_copy_page
-)paren
-suffix:semicolon
 DECL|variable|clear_user_page
 id|EXPORT_SYMBOL
 c_func
@@ -1794,10 +1787,19 @@ r_void
 suffix:semicolon
 multiline_comment|/* RAID code needs this */
 DECL|variable|VISenter
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|VISenter
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+DECL|variable|do_BUG
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_BUG
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

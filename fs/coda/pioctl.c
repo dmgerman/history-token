@@ -260,7 +260,11 @@ l_string|&quot;target ino: 0x%ld, dev: 0x%x&bslash;n&quot;
 comma
 id|target_inode-&gt;i_ino
 comma
+id|kdev_val
+c_func
+(paren
 id|target_inode-&gt;i_dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* return if it is not a Coda inode */

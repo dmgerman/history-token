@@ -193947,5 +193947,5 @@ DECL|macro|MYRI_NetReceiveBadCrcs
 mdefine_line|#define MYRI_NetReceiveBadCrcs       0xB8D4
 DECL|macro|MYRI_NetReceiveBytes
 mdefine_line|#define MYRI_NetReceiveBytes         0xB8DC
-macro_line|#endif SYMBOL_DEFINES_COMPILED
+macro_line|#endif /* SYMBOL_DEFINES_COMPILED */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Ethernet-type device handling.&n; *&n; * Authors:&t;Ben Greear &lt;greearb@candelatech.com&gt;, &lt;greearb@agcs.com&gt;&n; * &n; * Fixes:       Mar 22 2001: Martin Bokaemper &lt;mbokaemper@unispherenetworks.com&gt;&n; *                - reset skb-&gt;pkt_type on incoming packets when MAC was changed&n; *                - see that changed MAC is saddr for outgoing packets&n; *              Oct 20, 2001:  Ard van Breeman:&n; *                - Fix MC-list, finally.&n; *                - Flush MC-list on VLAN destroy.&n; *                &n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;802.1Q VLAN&n; *&t;&t;Ethernet-type device handling.&n; *&n; * Authors:&t;Ben Greear &lt;greearb@candelatech.com&gt;&n; *              Please send support related email to: vlan@scry.wanfear.com&n; *              VLAN Home Page: http://www.candelatech.com/~greear/vlan.html&n; * &n; * Fixes:       Mar 22 2001: Martin Bokaemper &lt;mbokaemper@unispherenetworks.com&gt;&n; *                - reset skb-&gt;pkt_type on incoming packets when MAC was changed&n; *                - see that changed MAC is saddr for outgoing packets&n; *              Oct 20, 2001:  Ard van Breeman:&n; *                - Fix MC-list, finally.&n; *                - Flush MC-list on VLAN destroy.&n; *                &n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -1564,24 +1564,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|VLAN_FMEM_DBG
-c_func
-(paren
-l_string|&quot;net_device free, addr: %p&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 )brace
 DECL|function|vlan_dev_set_ingress_priority

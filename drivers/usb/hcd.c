@@ -1994,7 +1994,7 @@ op_assign
 id|__irq_itoa
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif

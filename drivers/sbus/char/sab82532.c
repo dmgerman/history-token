@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sab82532.c,v 1.65 2001/10/13 08:27:50 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; * Fixed to use tty_get_baud_rate, and to allow for arbitrary baud&n; * rates to be programmed into the UART.  Also eliminated a lot of&n; * duplicated code in the console setup.&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
+multiline_comment|/* $Id: sab82532.c,v 1.66 2002/01/08 16:00:16 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; * Fixed to use tty_get_baud_rate, and to allow for arbitrary baud&n; * rates to be programmed into the UART.  Also eliminated a lot of&n; * duplicated code in the console setup.&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -8293,7 +8293,7 @@ suffix:semicolon
 macro_line|#endif
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -9673,7 +9673,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.65 $&quot;
+l_string|&quot;$Revision: 1.66 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -11202,7 +11202,7 @@ id|con
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR

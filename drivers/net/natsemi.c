@@ -1,11 +1,11 @@
 multiline_comment|/* natsemi.c: A Linux PCI Ethernet driver for the NatSemi DP8381x series. */
-multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&t;Portions copyright (c) 2001 Sun Microsystems (thockin@sun.com)&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&t;Version 1.0.5:&n;&t;&t;- { fill me in }&n;&t;Version 1.0.6:&n;&t;&t;* ethtool support (jgarzik)&n;&t;&t;* Proper initialization of the card (which sometimes&n;&t;&t;fails to occur and leaves the card in a non-functional&n;&t;&t;state). (uzi)&n;&n;&t;&t;* Some documented register settings to optimize some&n;&t;&t;of the 100Mbit autodetection circuitry in rev C cards. (uzi)&n;&n;&t;&t;* Polling of the PHY intr for stuff like link state&n;&t;&t;change and auto- negotiation to finally work properly. (uzi)&n;&n;&t;&t;* One-liner removal of a duplicate declaration of&n;&t;&t;netdev_error(). (uzi)&n;&n;&t;Version 1.0.7: (Manfred Spraul)&n;&t;&t;* pci dma&n;&t;&t;* SMP locking update&n;&t;&t;* full reset added into tx_timeout&n;&t;&t;* correct multicast hash generation (both big and little endian)&n;&t;&t;&t;[copied from a natsemi driver version&n;&t;&t;&t; from Myrio Corporation, Greg Smith]&n;&t;&t;* suspend/resume&n;&n;&t;version 1.0.8 (Tim Hockin &lt;thockin@sun.com&gt;)&n;&t;&t;* ETHTOOL_* support&n;&t;&t;* Wake on lan support (Erik Gilling)&n;&t;&t;* MXDMA fixes for serverworks&n;&t;&t;* EEPROM reload&n;&n;&t;version 1.0.9 (Manfred Spraul)&n;&t;&t;* Main change: fix lack of synchronize&n;&t;&t;netif_close/netif_suspend against a last interrupt&n;&t;&t;or packet.&n;&t;&t;* do not enable superflous interrupts (e.g. the&n;&t;&t;drivers relies on TxDone - TxIntr not needed)&n;&t;&t;* wait that the hardware has really stopped in close&n;&t;&t;and suspend.&n;&t;&t;* workaround for the (at least) gcc-2.95.1 compiler&n;&t;&t;problem. Also simplifies the code a bit.&n;&t;&t;* disable_irq() in tx_timeout - needed to protect&n;&t;&t;against rx interrupts.&n;&t;&t;* stop the nic before switching into silent rx mode&n;&t;&t;for wol (required according to docu).&n;&n;&t;version 1.0.10:&n;&t;&t;* use long for ee_addr (various)&n;&t;&t;* print pointers properly (DaveM)&n;&t;&t;* include asm/irq.h (?)&n;&t;&n;&t;version 1.0.11:&n;&t;&t;* check and reset if PHY errors appear (Adrian Sun)&n;&t;&t;* WoL cleanup (Tim Hockin)&n;&t;&t;* Magic number cleanup (Tim Hockin)&n;&t;&t;* Don&squot;t reload EEPROM on every reset (Tim Hockin)&n;&t;&t;* Save and restore EEPROM state across reset (Tim Hockin)&n;&t;&t;* MDIO Cleanup (Tim Hockin)&n;&t;&t;* Reformat register offsets/bits (jgarzik)&n;&n;&t;version 1.0.12:&n;&t;&t;* ETHTOOL_* further support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* ETHTOOL_[GS]EEPROM support (Tim Hockin)&n;&n;&t;TODO:&n;&t;* big endian support with CFG:BEM instead of cpu_to_le32&n;&t;* support for an external PHY&n;&t;* flow control&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&t;Portions copyright (c) 2001 Sun Microsystems (thockin@sun.com)&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&t;Version 1.0.5:&n;&t;&t;- { fill me in }&n;&t;Version 1.0.6:&n;&t;&t;* ethtool support (jgarzik)&n;&t;&t;* Proper initialization of the card (which sometimes&n;&t;&t;fails to occur and leaves the card in a non-functional&n;&t;&t;state). (uzi)&n;&n;&t;&t;* Some documented register settings to optimize some&n;&t;&t;of the 100Mbit autodetection circuitry in rev C cards. (uzi)&n;&n;&t;&t;* Polling of the PHY intr for stuff like link state&n;&t;&t;change and auto- negotiation to finally work properly. (uzi)&n;&n;&t;&t;* One-liner removal of a duplicate declaration of&n;&t;&t;netdev_error(). (uzi)&n;&n;&t;Version 1.0.7: (Manfred Spraul)&n;&t;&t;* pci dma&n;&t;&t;* SMP locking update&n;&t;&t;* full reset added into tx_timeout&n;&t;&t;* correct multicast hash generation (both big and little endian)&n;&t;&t;&t;[copied from a natsemi driver version&n;&t;&t;&t; from Myrio Corporation, Greg Smith]&n;&t;&t;* suspend/resume&n;&n;&t;version 1.0.8 (Tim Hockin &lt;thockin@sun.com&gt;)&n;&t;&t;* ETHTOOL_* support&n;&t;&t;* Wake on lan support (Erik Gilling)&n;&t;&t;* MXDMA fixes for serverworks&n;&t;&t;* EEPROM reload&n;&n;&t;version 1.0.9 (Manfred Spraul)&n;&t;&t;* Main change: fix lack of synchronize&n;&t;&t;netif_close/netif_suspend against a last interrupt&n;&t;&t;or packet.&n;&t;&t;* do not enable superflous interrupts (e.g. the&n;&t;&t;drivers relies on TxDone - TxIntr not needed)&n;&t;&t;* wait that the hardware has really stopped in close&n;&t;&t;and suspend.&n;&t;&t;* workaround for the (at least) gcc-2.95.1 compiler&n;&t;&t;problem. Also simplifies the code a bit.&n;&t;&t;* disable_irq() in tx_timeout - needed to protect&n;&t;&t;against rx interrupts.&n;&t;&t;* stop the nic before switching into silent rx mode&n;&t;&t;for wol (required according to docu).&n;&n;&t;version 1.0.10:&n;&t;&t;* use long for ee_addr (various)&n;&t;&t;* print pointers properly (DaveM)&n;&t;&t;* include asm/irq.h (?)&n;&t;&n;&t;version 1.0.11:&n;&t;&t;* check and reset if PHY errors appear (Adrian Sun)&n;&t;&t;* WoL cleanup (Tim Hockin)&n;&t;&t;* Magic number cleanup (Tim Hockin)&n;&t;&t;* Don&squot;t reload EEPROM on every reset (Tim Hockin)&n;&t;&t;* Save and restore EEPROM state across reset (Tim Hockin)&n;&t;&t;* MDIO Cleanup (Tim Hockin)&n;&t;&t;* Reformat register offsets/bits (jgarzik)&n;&n;&t;version 1.0.12:&n;&t;&t;* ETHTOOL_* further support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* ETHTOOL_[GS]EEPROM support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* crc cleanup (Matt Domsch &lt;Matt_Domsch@dell.com&gt;)&n;&n;&t;TODO:&n;&t;* big endian support with CFG:BEM instead of cpu_to_le32&n;&t;* support for an external PHY&n;&t;* flow control&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;natsemi&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.07+LK1.0.13&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Oct 19, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Nov 12, 2001&quot;
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: natsemi_probe&n;config-in: tristate &squot;National Semiconductor DP8381x series PCI Ethernet support&squot; CONFIG_NATSEMI&n;&n;c-help-name: National Semiconductor DP8381x series PCI Ethernet support&n;c-help-symbol: CONFIG_NATSEMI&n;c-help: This driver is for the National Semiconductor DP8381x series,&n;c-help: including the 8381[56] chips.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/natsemi.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
@@ -7324,114 +7324,13 @@ op_amp
 id|np-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/* The little-endian AUTODIN II ethernet CRC calculations.&n;   A big-endian version is also available.&n;   This is slow but compact code.  Do not use this routine for bulk data,&n;   use a table-based routine instead.&n;   This is common code and should be moved to net/core/crc.c.&n;   Chips may use the upper or lower CRC bits, and may reverse and/or invert&n;   them.  Select the endian-ness that results in minimal calculations.&n;*/
-macro_line|#if 0
-r_static
-r_int
-r_const
-id|ethernet_polynomial_le
-op_assign
-l_int|0xedb88320U
-suffix:semicolon
-r_static
-r_inline
-r_int
-id|ether_crc_le
-c_func
-(paren
-r_int
-id|length
-comma
-r_int
-r_char
-op_star
-id|data
-)paren
-(brace
-r_int
-r_int
-id|crc
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-multiline_comment|/* Initial value. */
-r_while
-c_loop
-(paren
-op_decrement
-id|length
-op_ge
-l_int|0
-)paren
-(brace
-r_int
-r_char
-id|current_octet
-op_assign
-op_star
-id|data
-op_increment
-suffix:semicolon
-r_int
-id|bit
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-l_int|8
-suffix:semicolon
-op_decrement
-id|bit
-op_ge
-l_int|0
-suffix:semicolon
-id|current_octet
-op_rshift_assign
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|crc
-op_xor
-id|current_octet
-)paren
-op_amp
-l_int|1
-)paren
-(brace
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|crc
-op_xor_assign
-id|ethernet_polynomial_le
-suffix:semicolon
-)brace
-r_else
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-id|crc
-suffix:semicolon
-)brace
-macro_line|#else
+multiline_comment|/**&n; * dp83815_crc - computer CRC for hash table entries&n; *&n; * Note - this is, for some reason, *not* the same function&n; * as ether_crc_le() or ether_crc(), though it uses the&n; * same big-endian polynomial.&n; */
 DECL|macro|DP_POLYNOMIAL
 mdefine_line|#define DP_POLYNOMIAL&t;&t;&t;0x04C11DB7
-multiline_comment|/* dp83815_crc - computer CRC for hash table entries */
-DECL|function|ether_crc_le
+DECL|function|dp83815_crc
 r_static
 r_int
-id|ether_crc_le
+id|dp83815_crc
 c_func
 (paren
 r_int
@@ -7545,7 +7444,6 @@ id|crc
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|set_bit_le
 r_void
 id|set_bit_le
@@ -7725,7 +7623,7 @@ id|mclist-&gt;next
 id|set_bit_le
 c_func
 (paren
-id|ether_crc_le
+id|dp83815_crc
 c_func
 (paren
 id|ETH_ALEN

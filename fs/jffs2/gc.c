@@ -6,8 +6,8 @@ macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-macro_line|#include &quot;crc32.h&quot;
 r_static
 r_int
 id|jffs2_garbage_collect_metadata

@@ -2738,11 +2738,11 @@ c_func
 id|read_ahead
 )paren
 suffix:semicolon
-DECL|variable|get_hash_table
+DECL|variable|__get_hash_table
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|get_hash_table
+id|__get_hash_table
 )paren
 suffix:semicolon
 DECL|variable|get_empty_inode

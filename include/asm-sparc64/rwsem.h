@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rwsem.h,v 1.4 2001/04/26 02:36:36 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
+multiline_comment|/* $Id: rwsem.h,v 1.5 2001/11/18 00:12:56 davem Exp $&n; * rwsem.h: R/W semaphores implemented using CAS&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
 macro_line|#ifndef _SPARC64_RWSEM_H
 DECL|macro|_SPARC64_RWSEM_H
 mdefine_line|#define _SPARC64_RWSEM_H
@@ -155,7 +155,7 @@ l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;&t;%%g7, 1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
-l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection&t;2&bslash;n&quot;
 l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
@@ -220,7 +220,7 @@ l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
-l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection&t;2&bslash;n&quot;
 l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
@@ -288,7 +288,7 @@ l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
-l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection&t;2&bslash;n&quot;
 l_string|&quot;3:&bslash;tsethi&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
@@ -364,7 +364,7 @@ l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sub&t;&t;%%g7, %%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
-l_string|&quot; membar&t;#StoreStore&bslash;n&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
 l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
@@ -437,7 +437,7 @@ l_string|&quot;add&t;&t;%%g5, %1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cas&t;&t;[%2], %%g5, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; nop&bslash;n&bslash;t&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g7, %0&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -527,7 +527,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;cas&t;[%2], %3, %0&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#StoreStore | #StoreLoad&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

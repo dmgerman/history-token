@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -7864,107 +7865,6 @@ multiline_comment|/* Nothing to update - the 91c92 is a pretty primative chip. *
 r_return
 op_amp
 id|smc-&gt;stats
-suffix:semicolon
-)brace
-multiline_comment|/*======================================================================&n;&n;    Compute the AUTODIN polynomial &quot;CRC32&quot; for ethernet packets.&n;&n;======================================================================*/
-DECL|variable|ethernet_polynomial
-r_static
-r_const
-id|u_int
-id|ethernet_polynomial
-op_assign
-l_int|0x04c11db7U
-suffix:semicolon
-DECL|function|ether_crc
-r_static
-id|u_int
-id|ether_crc
-c_func
-(paren
-r_int
-id|length
-comma
-id|u_char
-op_star
-id|data
-)paren
-(brace
-r_int
-id|crc
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-multiline_comment|/* Initial value. */
-r_while
-c_loop
-(paren
-op_decrement
-id|length
-op_ge
-l_int|0
-)paren
-(brace
-id|u_char
-id|current_octet
-op_assign
-op_star
-id|data
-op_increment
-suffix:semicolon
-r_int
-id|bit
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-l_int|0
-suffix:semicolon
-id|bit
-OL
-l_int|8
-suffix:semicolon
-id|bit
-op_increment
-comma
-id|current_octet
-op_rshift_assign
-l_int|1
-)paren
-(brace
-id|crc
-op_assign
-(paren
-id|crc
-op_lshift
-l_int|1
-)paren
-op_xor
-(paren
-(paren
-id|crc
-OL
-l_int|0
-)paren
-op_xor
-(paren
-id|current_octet
-op_amp
-l_int|1
-)paren
-ques
-c_cond
-id|ethernet_polynomial
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* The hash index is the either the upper or lower bits of the CRC, so&n;     * we return the entire CRC.&n;     */
-r_return
-id|crc
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;  &n;    Calculate values for the hardware multicast filter hash table.&n;    &n;======================================================================*/

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: iommu_common.c,v 1.8 2001/12/11 11:13:06 davem Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.c,v 1.9 2001/12/17 07:05:09 davem Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* You are _strongly_ advised to enable the following debugging code&n; * any time you make changes to the sg code below, run it for a while&n; * with filesystems mounted read-only before buying the farm... -DaveM&n; */
 macro_line|#ifdef VERIFY_SG
@@ -305,11 +305,6 @@ r_int
 r_int
 )paren
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
 id|page_address
 c_func
 (paren
@@ -553,11 +548,6 @@ r_int
 r_int
 )paren
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
 id|page_address
 c_func
 (paren
@@ -852,17 +842,28 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;sg(%d): address(%p) length(%x) &quot;
+l_string|&quot;sg(%d): page_addr(%p) off(%x) length(%x) &quot;
 l_string|&quot;dma_address[%016lx] dma_length[%016lx]&bslash;n&quot;
 comma
 id|i
+comma
+id|page_address
+c_func
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|page
+)paren
 comma
 id|sg
 (braket
 id|i
 )braket
 dot
-id|address
+id|offset
 comma
 id|sg
 (braket
@@ -929,11 +930,6 @@ r_int
 r_int
 )paren
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
 id|page_address
 c_func
 (paren
@@ -966,11 +962,6 @@ r_int
 r_int
 )paren
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
 id|page_address
 c_func
 (paren
@@ -1008,11 +999,6 @@ r_int
 r_int
 )paren
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
 id|page_address
 c_func
 (paren

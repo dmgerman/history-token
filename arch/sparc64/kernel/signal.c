@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: signal.c,v 1.56 2001/03/21 11:46:20 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: signal.c,v 1.57 2001/12/11 04:55:51 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;

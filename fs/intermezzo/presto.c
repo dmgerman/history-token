@@ -219,9 +219,13 @@ id|cache
 id|printk
 c_func
 (paren
-l_string|&quot;PRESTO: BAD: cannot find cache for dev %d, ino %ld&bslash;n&quot;
+l_string|&quot;PRESTO: BAD: cannot find cache for dev %x, ino %ld&bslash;n&quot;
 comma
+id|kdev_val
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 )paren

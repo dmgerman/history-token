@@ -3959,9 +3959,11 @@ c_cond
 op_logical_neg
 id|sb
 op_logical_or
+(paren
 id|sb-&gt;s_flags
 op_amp
 id|MS_ACTIVE
+)paren
 )paren
 r_return
 suffix:semicolon

@@ -496,7 +496,7 @@ id|LINUX_RAID_PARTITION
 id|md_autodetect_dev
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|hd-&gt;major
@@ -2658,7 +2658,7 @@ id|LINUX_RAID_PARTITION
 id|md_autodetect_dev
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|hd-&gt;major

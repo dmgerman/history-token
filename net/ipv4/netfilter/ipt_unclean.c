@@ -1108,6 +1108,10 @@ DECL|macro|TH_ACK
 mdefine_line|#define&t;TH_ACK&t;0x10
 DECL|macro|TH_URG
 mdefine_line|#define&t;TH_URG&t;0x20
+DECL|macro|TH_ECE
+mdefine_line|#define&t;TH_ECE&t;0x40
+DECL|macro|TH_CWR
+mdefine_line|#define&t;TH_CWR&t;0x80
 multiline_comment|/* TCP-specific checks. */
 r_static
 r_int
@@ -1395,6 +1399,7 @@ id|tcpflags
 op_assign
 (paren
 (paren
+(paren
 id|u_int8_t
 op_star
 )paren
@@ -1403,6 +1408,14 @@ id|tcph
 (braket
 l_int|13
 )braket
+op_amp
+op_complement
+(paren
+id|TH_ECE
+op_or
+id|TH_CWR
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1418,6 +1431,10 @@ id|TH_SYN
 op_or
 id|TH_ACK
 )paren
+op_logical_and
+id|tcpflags
+op_ne
+id|TH_RST
 op_logical_and
 id|tcpflags
 op_ne

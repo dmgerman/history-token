@@ -407,8 +407,13 @@ id|Scsi_Device
 op_star
 id|host_queue
 suffix:semicolon
+DECL|member|default_lock
+id|spinlock_t
+id|default_lock
+suffix:semicolon
 DECL|member|host_lock
 id|spinlock_t
+op_star
 id|host_lock
 suffix:semicolon
 DECL|member|ehandler
@@ -476,11 +481,6 @@ id|host_failed
 suffix:semicolon
 multiline_comment|/* commands that failed. */
 multiline_comment|/* public: */
-DECL|member|extra_bytes
-r_int
-r_int
-id|extra_bytes
-suffix:semicolon
 DECL|member|host_no
 r_int
 r_int
@@ -597,13 +597,6 @@ suffix:semicolon
 DECL|member|highmem_io
 r_int
 id|highmem_io
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;     * True if this host was loaded as a loadable module&n;     */
-DECL|member|loaded_as_module
-r_int
-id|loaded_as_module
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -767,10 +760,6 @@ r_int
 r_int
 id|host_registered
 suffix:semicolon
-DECL|member|loaded_as_module
-r_int
-id|loaded_as_module
-suffix:semicolon
 DECL|typedef|Scsi_Host_Name
 )brace
 id|Scsi_Host_Name
@@ -866,6 +855,28 @@ op_star
 id|SHpnt
 )paren
 suffix:semicolon
+DECL|function|scsi_assign_lock
+r_static
+r_inline
+r_void
+id|scsi_assign_lock
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+id|host-&gt;host_lock
+op_assign
+id|lock
+suffix:semicolon
+)brace
 DECL|function|scsi_set_pci_device
 r_static
 r_inline

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -2012,9 +2013,6 @@ op_amp
 id|p-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * CRC polynomial - used in working out multicast filter bits.&n; */
-DECL|macro|CRC_POLY
-mdefine_line|#define CRC_POLY&t;0xedb88320
 DECL|function|mace68k_set_multicast
 r_static
 r_void
@@ -2056,8 +2054,7 @@ id|k
 comma
 id|b
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|crc
 suffix:semicolon
 id|mp-&gt;maccc
@@ -2164,78 +2161,14 @@ op_increment
 (brace
 id|crc
 op_assign
-op_complement
-l_int|0
-suffix:semicolon
-r_for
-c_loop
+id|ether_crc_le
+c_func
 (paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
 l_int|6
-suffix:semicolon
-op_increment
-id|j
-)paren
-(brace
-id|b
-op_assign
+comma
 id|dmi-&gt;dmi_addr
-(braket
-id|j
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|k
-op_assign
-l_int|0
-suffix:semicolon
-id|k
-OL
-l_int|8
-suffix:semicolon
-op_increment
-id|k
 )paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|crc
-op_xor
-id|b
-)paren
-op_amp
-l_int|1
-)paren
-id|crc
-op_assign
-(paren
-id|crc
-op_rshift
-l_int|1
-)paren
-op_xor
-id|CRC_POLY
 suffix:semicolon
-r_else
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|b
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
 id|j
 op_assign
 id|crc

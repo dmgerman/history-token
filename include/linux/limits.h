@@ -20,7 +20,7 @@ mdefine_line|#define MAX_INPUT        255&t;/* size of the type-ahead buffer */
 DECL|macro|NAME_MAX
 mdefine_line|#define NAME_MAX         255&t;/* # chars in a file name */
 DECL|macro|PATH_MAX
-mdefine_line|#define PATH_MAX        4095&t;/* # chars in a path name */
+mdefine_line|#define PATH_MAX        4096&t;/* # chars in a path name including nul */
 DECL|macro|PIPE_BUF
 mdefine_line|#define PIPE_BUF        4096&t;/* # bytes in atomic write to a pipe */
 DECL|macro|RTSIG_MAX

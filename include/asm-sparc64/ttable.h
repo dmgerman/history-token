@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ttable.h,v 1.16 2001/03/28 10:56:34 davem Exp $ */
+multiline_comment|/* $Id: ttable.h,v 1.17 2001/11/28 23:32:16 davem Exp $ */
 macro_line|#ifndef _SPARC64_TTABLE_H
 DECL|macro|_SPARC64_TTABLE_H
 mdefine_line|#define _SPARC64_TTABLE_H
@@ -12,10 +12,14 @@ DECL|macro|CLEAN_WINDOW
 mdefine_line|#define CLEAN_WINDOW&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rdpr&t;%cleanwin, %l0;&t;&t;add&t;%l0, 1, %l0;&t;&t;&bslash;&n;&t;wrpr&t;%l0, 0x0, %cleanwin;&t;&t;&t;&t;&t;&bslash;&n;&t;clr&t;%o0;&t;clr&t;%o1;&t;clr&t;%o2;&t;clr&t;%o3;&t;&bslash;&n;&t;clr&t;%o4;&t;clr&t;%o5;&t;clr&t;%o6;&t;clr&t;%o7;&t;&bslash;&n;&t;clr&t;%l0;&t;clr&t;%l1;&t;clr&t;%l2;&t;clr&t;%l3;&t;&bslash;&n;&t;clr&t;%l4;&t;clr&t;%l5;&t;clr&t;%l6;&t;clr&t;%l7;&t;&bslash;&n;&t;retry;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop;nop;nop;nop;nop;nop;nop;nop;nop;nop;nop;nop;
 DECL|macro|TRAP
 mdefine_line|#define TRAP(routine)&t;&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etrap;&t;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;&t;&t;&t;&t;&t;&bslash;&n;&t;nop;
+DECL|macro|TRAP_7INSNS
+mdefine_line|#define TRAP_7INSNS(routine)&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etrap;&t;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;
 DECL|macro|TRAP_SAVEFPU
 mdefine_line|#define TRAP_SAVEFPU(routine)&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, do_fptrap;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;&t;&t;&t;&t;&t;&bslash;&n;&t;nop;
 DECL|macro|TRAP_NOSAVE
 mdefine_line|#define TRAP_NOSAVE(routine)&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, routine;&t;&t;&t;&t;&bslash;&n;&t; nop;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop; nop; nop; nop; nop; nop;
+DECL|macro|TRAP_NOSAVE_7INSNS
+mdefine_line|#define TRAP_NOSAVE_7INSNS(routine)&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, routine;&t;&t;&t;&t;&bslash;&n;&t; nop;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop; nop; nop; nop; nop;
 DECL|macro|TRAPTL1
 mdefine_line|#define TRAPTL1(routine)&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etraptl1;&t;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;&t;&t;&t;&t;&t;&bslash;&n;&t;nop;
 DECL|macro|TRAP_ARG

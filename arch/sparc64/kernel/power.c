@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: power.c,v 1.9 2001/06/08 02:28:22 davem Exp $&n; * power.c: Power management driver.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: power.c,v 1.10 2001/12/11 01:57:16 davem Exp $&n; * power.c: Power management driver.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -360,6 +360,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|edev-&gt;irqs
+(braket
+l_int|0
+)braket
+op_ne
+id|PCI_IRQ_NONE
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|kernel_thread
 c_func
 (paren
@@ -391,17 +402,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|edev-&gt;irqs
-(braket
-l_int|0
-)braket
-op_ne
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|request_irq
 c_func
 (paren
@@ -429,6 +429,15 @@ id|printk
 c_func
 (paren
 l_string|&quot;power: Error, cannot register IRQ handler.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;not using powerd.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

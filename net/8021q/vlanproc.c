@@ -184,7 +184,6 @@ multiline_comment|/*&n; *&t;Interface functions&n; */
 multiline_comment|/*&n; *&t;Clean up /proc/net/vlan entries&n; */
 DECL|function|vlan_proc_cleanup
 r_void
-id|__exit
 id|vlan_proc_cleanup
 c_func
 (paren
@@ -1593,7 +1592,6 @@ suffix:semicolon
 )brace
 DECL|function|vlan_proc_cleanup
 r_void
-id|__exit
 id|vlan_proc_cleanup
 c_func
 (paren

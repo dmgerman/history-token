@@ -752,8 +752,6 @@ DECL|macro|MBOX_IDLECPU2
 mdefine_line|#define MBOX_IDLECPU2         0xFD
 DECL|macro|MBOX_STOPCPU2
 mdefine_line|#define MBOX_STOPCPU2         0xFE
-DECL|macro|PROC_CHANGE_PENALTY
-mdefine_line|#define PROC_CHANGE_PENALTY     15
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID            0xFF

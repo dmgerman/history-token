@@ -2749,6 +2749,10 @@ id|KERN_WARNING
 l_string|&quot;Use a HIGHMEM enabled kernel.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|max_pfn
+op_assign
+id|MAXMEM_PFN
+suffix:semicolon
 macro_line|#else /* !CONFIG_HIGHMEM */
 macro_line|#ifndef CONFIG_X86_PAE
 r_if

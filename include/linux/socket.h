@@ -346,6 +346,8 @@ DECL|macro|AF_PPPOX
 mdefine_line|#define AF_PPPOX&t;24&t;/* PPPoX sockets&t;&t;*/
 DECL|macro|AF_WANPIPE
 mdefine_line|#define AF_WANPIPE&t;25&t;/* Wanpipe API Sockets */
+DECL|macro|AF_LLC
+mdefine_line|#define AF_LLC&t;&t;26&t;/* Linux LLC&t;&t;&t;*/
 DECL|macro|AF_BLUETOOTH
 mdefine_line|#define AF_BLUETOOTH&t;31&t;/* Bluetooth sockets &t;&t;*/
 DECL|macro|AF_MAX
@@ -405,6 +407,8 @@ DECL|macro|PF_PPPOX
 mdefine_line|#define PF_PPPOX&t;AF_PPPOX
 DECL|macro|PF_WANPIPE
 mdefine_line|#define PF_WANPIPE&t;AF_WANPIPE
+DECL|macro|PF_LLC
+mdefine_line|#define PF_LLC&t;&t;AF_LLC
 DECL|macro|PF_BLUETOOTH
 mdefine_line|#define PF_BLUETOOTH&t;AF_BLUETOOTH
 DECL|macro|PF_MAX
@@ -485,6 +489,10 @@ DECL|macro|SOL_AAL
 mdefine_line|#define SOL_AAL&t;&t;265&t;/* ATM Adaption Layer (packet level) */
 DECL|macro|SOL_IRDA
 mdefine_line|#define SOL_IRDA        266
+DECL|macro|SOL_NETBEUI
+mdefine_line|#define SOL_NETBEUI&t;267
+DECL|macro|SOL_LLC
+mdefine_line|#define SOL_LLC&t;&t;268
 multiline_comment|/* IPX options */
 DECL|macro|IPX_TYPE
 mdefine_line|#define IPX_TYPE&t;1

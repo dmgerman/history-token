@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-macro_line|#include &quot;crc32.h&quot;
 DECL|struct|erase_priv_struct
 r_struct
 id|erase_priv_struct

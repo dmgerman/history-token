@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: semaphore.c,v 1.8 2001/05/18 08:01:35 davem Exp $&n; * semaphore.c: Sparc64 semaphore implementation.&n; *&n; * This is basically the PPC semaphore scheme ported to use&n; * the sparc64 atomic instructions, so see the PPC code for&n; * credits.&n; */
+multiline_comment|/* $Id: semaphore.c,v 1.9 2001/11/18 00:12:56 davem Exp $&n; * semaphore.c: Sparc64 semaphore implementation.&n; *&n; * This is basically the PPC semaphore scheme ported to use&n; * the sparc64 atomic instructions, so see the PPC code for&n; * credits.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; */
 DECL|function|__sem_update_count
@@ -36,7 +36,7 @@ l_string|&quot;&t;add&t;%1, %4, %1&bslash;n&quot;
 l_string|&quot;&t;cas&t;[%3], %0, %1&bslash;n&quot;
 l_string|&quot;&t;cmp&t;%0, %1&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
-l_string|&quot;&t; nop&bslash;n&quot;
+l_string|&quot;&t; membar #StoreLoad | #StoreStore&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

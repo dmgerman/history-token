@@ -1,4 +1,4 @@
-multiline_comment|/* IRC extension for TCP NAT alteration.&n; * (C) 2000 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; * based on a copy of RR&squot;s ip_nat_ftp.c&n; *&n; * ip_nat_irc.c,v 1.15 2001/10/22 10:43:53 laforge Exp&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Module load syntax:&n; * &t;insmod ip_nat_irc.o ports=port1,port2,...port&lt;MAX_PORTS&gt;&n; *&t;&n; * &t;please give the ports of all IRC servers You wish to connect to.&n; *&t;If You don&squot;t specify ports, the default will be port 6667&n; */
+multiline_comment|/* IRC extension for TCP NAT alteration.&n; * (C) 2000-2001 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; * based on a copy of RR&squot;s ip_nat_ftp.c&n; *&n; * ip_nat_irc.c,v 1.16 2001/12/06 07:42:10 laforge Exp&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Module load syntax:&n; * &t;insmod ip_nat_irc.o ports=port1,port2,...port&lt;MAX_PORTS&gt;&n; *&t;&n; * &t;please give the ports of all IRC servers You wish to connect to.&n; *&t;If You don&squot;t specify ports, the default will be port 6667&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -234,12 +234,12 @@ id|tuple.src.ip
 suffix:semicolon
 id|newsrcip
 op_assign
-id|master-&gt;tuplehash
+id|ct-&gt;tuplehash
 (braket
 id|IP_CT_DIR_ORIGINAL
 )braket
 dot
-id|tuple.dst.ip
+id|tuple.src.ip
 suffix:semicolon
 id|DEBUGP
 c_func

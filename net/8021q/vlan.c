@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Ethernet-type device handling.&n; *&n; * Authors:&t;Ben Greear &lt;greearb@candelatech.com&gt;, &lt;greearb@agcs.com&gt;&n; * &n; * Fixes:&n; *              Fix for packet capture - Nick Eggleston &lt;nick@dccinc.com&gt;;&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;802.1Q VLAN&n; *&t;&t;Ethernet-type device handling.&n; *&n; * Authors:&t;Ben Greear &lt;greearb@candelatech.com&gt;&n; *              Please send support related email to: vlan@scry.wanfear.com&n; *              VLAN Home Page: http://www.candelatech.com/~greear/vlan.html&n; * &n; * Fixes:&n; *              Fix for packet capture - Nick Eggleston &lt;nick@dccinc.com&gt;;&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt; /* for copy_from_user */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -46,7 +46,7 @@ r_int
 r_int
 id|vlan_release
 op_assign
-l_int|5
+l_int|6
 suffix:semicolon
 DECL|variable|vlan_copyright
 r_static
@@ -243,6 +243,63 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Cleanup of groups before exit&n; */
+DECL|function|vlan_group_cleanup
+r_static
+r_void
+id|vlan_group_cleanup
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|vlan_group
+op_star
+id|grp
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
+id|vlan_group
+op_star
+id|nextgroup
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|grp
+op_assign
+id|p802_1Q_vlan_list
+suffix:semicolon
+(paren
+id|grp
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+)paren
+(brace
+id|nextgroup
+op_assign
+id|grp-&gt;next
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|grp
+)paren
+suffix:semicolon
+id|grp
+op_assign
+id|nextgroup
+suffix:semicolon
+)brace
+id|p802_1Q_vlan_list
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *     Module &squot;remove&squot; entry point.&n; *     o delete /proc/net/router directory and static entries.&n; */
 DECL|function|vlan_cleanup_module
 r_static
@@ -270,6 +327,11 @@ id|vlan_packet_type
 )paren
 suffix:semicolon
 id|vlan_proc_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|vlan_group_cleanup
 c_func
 (paren
 )paren
@@ -973,6 +1035,10 @@ suffix:semicolon
 id|new_dev-&gt;destructor
 op_assign
 id|vlan_dev_destruct
+suffix:semicolon
+id|new_dev-&gt;features
+op_or_assign
+id|NETIF_F_DYNALLOC
 suffix:semicolon
 multiline_comment|/* new_dev-&gt;ifindex = 0;  it will be set when added to&n;&t; * the global list.&n;&t; * iflink is set as well.&n;&t; */
 id|new_dev-&gt;get_stats

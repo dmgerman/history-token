@@ -58,7 +58,11 @@ op_amp
 l_int|0x000F
 op_amp
 (paren
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 )paren
 )paren
 op_plus
@@ -67,7 +71,11 @@ op_plus
 l_int|0x0F00
 op_amp
 (paren
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 )paren
 )paren
 op_rshift
@@ -221,9 +229,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|cache-&gt;cache_dev
-op_eq
+comma
 id|dev
+)paren
 )paren
 (brace
 r_return
@@ -275,7 +287,11 @@ c_func
 (paren
 l_string|&quot;WARNING: no presto cache for dev %x, ino %ld&bslash;n&quot;
 comma
+id|kdev_val
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -686,9 +702,13 @@ l_int|0
 suffix:semicolon
 r_return
 (paren
+id|kdev_same
+c_func
+(paren
 id|inode-&gt;i_dev
-op_eq
+comma
 id|cache-&gt;cache_dev
+)paren
 )paren
 suffix:semicolon
 )brace

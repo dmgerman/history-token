@@ -2244,8 +2244,8 @@ op_minus
 l_int|1
 )paren
 )paren
-op_div
-l_int|512
+op_rshift
+l_int|9
 suffix:semicolon
 id|MSDOS_I
 c_func
@@ -4998,8 +4998,8 @@ op_minus
 l_int|1
 )paren
 )paren
-op_div
-l_int|512
+op_rshift
+l_int|9
 suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign

@@ -1721,7 +1721,6 @@ id|ahc
 id|spin_lock_init
 c_func
 (paren
-op_amp
 id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -1752,7 +1751,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 comma
 op_star
@@ -1781,7 +1779,6 @@ id|flags
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 comma
 op_star
@@ -1837,7 +1834,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 op_star
@@ -1873,7 +1869,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 op_star

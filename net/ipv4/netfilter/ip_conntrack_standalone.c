@@ -1157,7 +1157,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ip_conntrack: can&squot;t register in hook.&bslash;n&quot;
+l_string|&quot;ip_conntrack: can&squot;t register pre-routing hook.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sunos32.c,v 1.61 2001/08/13 14:40:07 davem Exp $&n; * sys_sunos32.c: SunOS binary compatability layer on sparc64.&n; *&n; * Copyright (C) 1995, 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * Based upon preliminary work which is:&n; *&n; * Copyright (C) 1995 Adrian M. Rodriguez (adrian@remus.rutgers.edu)&n; */
+multiline_comment|/* $Id: sys_sunos32.c,v 1.62 2002/01/08 16:00:14 davem Exp $&n; * sys_sunos32.c: SunOS binary compatability layer on sparc64.&n; *&n; * Copyright (C) 1995, 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * Based upon preliminary work which is:&n; *&n; * Copyright (C) 1995 Adrian M. Rodriguez (adrian@remus.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -143,11 +143,9 @@ id|fd
 op_ge
 id|SUNOS_NR_OPEN
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|file
 op_assign
 id|fget
@@ -172,7 +170,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -180,7 +178,7 @@ id|inode-&gt;i_rdev
 op_eq
 id|MEM_MAJOR
 op_logical_and
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -220,12 +218,10 @@ op_amp
 id|MAP_FIXED
 )paren
 )paren
-(brace
 id|addr
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -321,7 +317,6 @@ c_cond
 op_logical_neg
 id|ret_type
 )paren
-(brace
 id|retval
 op_assign
 (paren
@@ -337,7 +332,6 @@ suffix:colon
 id|retval
 )paren
 suffix:semicolon
-)brace
 id|out_putf
 suffix:colon
 r_if

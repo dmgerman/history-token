@@ -1,8 +1,9 @@
-multiline_comment|/*&n;  This is a module which is used for resending packets with inverted src and dst.&n;&n;  Based on code from: ip_nat_dumb.c,v 1.9 1999/08/20&n;  and various sources.&n;&n;  Copyright (C) 2000 Emmanuel Roger &lt;winfield@freegates.be&gt;&n;&n;  This program is free software; you can redistribute it and/or modify it&n;  under the terms of the GNU General Public License as published by the&n;  Free Software Foundation; either version 2 of the License, or (at your&n;  option) any later version.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  General Public License for more details.&n;&n;  You should have received a copy of the GNU General Public License&n;  along with this program; if not, write to the Free Software Foundation,&n;  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; */
+multiline_comment|/*&n;  This is a module which is used for resending packets with inverted src and dst.&n;&n;  Based on code from: ip_nat_dumb.c,v 1.9 1999/08/20&n;  and various sources.&n;&n;  Copyright (C) 2000 Emmanuel Roger &lt;winfield@freegates.be&gt;&n;&n;  Changes:&n;&t;25 Aug 2001 Harald Welte &lt;laforge@gnumonks.org&gt;&n;&t;&t;- decrement and check TTL if not called from FORWARD hook&n;&n;  This program is free software; you can redistribute it and/or modify it&n;  under the terms of the GNU General Public License as published by the&n;  Free Software Foundation; either version 2 of the License, or (at your&n;  option) any later version.&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  General Public License for more details.&n;&n;  You should have received a copy of the GNU General Public License&n;  along with this program; if not, write to the Free Software Foundation,&n;  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
@@ -292,6 +293,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 op_star
 id|pskb
 )paren
@@ -300,10 +302,7 @@ id|dst
 op_ne
 l_int|NULL
 )paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|route_mirror
 c_func
 (paren
@@ -319,7 +318,61 @@ op_star
 id|pskb
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t let conntrack code see this packet:&n;                           it will think we are starting a new&n;                           connection! --RR */
+multiline_comment|/* If we are not at FORWARD hook (INPUT/PREROUTING),&n;&t;&t; * the TTL isn&squot;t decreased by the IP stack */
+r_if
+c_cond
+(paren
+id|hooknum
+op_ne
+id|NF_IP_FORWARD
+)paren
+(brace
+r_struct
+id|iphdr
+op_star
+id|iph
+op_assign
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nh.iph
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iph-&gt;ttl
+op_le
+l_int|1
+)paren
+(brace
+multiline_comment|/* this will traverse normal stack, and &n;&t;&t;&t;&t; * thus call conntrack on the icmp packet */
+id|icmp_send
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|ICMP_TIME_EXCEEDED
+comma
+id|ICMP_EXC_TTL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|NF_DROP
+suffix:semicolon
+)brace
+id|ip_decrease_ttl
+c_func
+(paren
+id|iph
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Don&squot;t let conntrack code see this packet:&n;                   it will think we are starting a new&n;                   connection! --RR */
 id|ip_direct_send
 c_func
 (paren
@@ -330,7 +383,6 @@ suffix:semicolon
 r_return
 id|NF_STOLEN
 suffix:semicolon
-)brace
 )brace
 r_return
 id|NF_DROP

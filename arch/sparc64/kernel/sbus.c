@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.17 2001/10/09 02:24:33 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.18 2001/12/17 07:05:09 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1732,7 +1732,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|macro|SG_ENT_PHYS_ADDRESS
-mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;((SG)-&gt;address ? &bslash;&n;&t; __pa((SG)-&gt;address) : &bslash;&n;&t; (__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset))
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;(__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset)
 DECL|function|fill_sg
 r_static
 r_inline
@@ -2203,12 +2203,6 @@ c_func
 id|sdev
 comma
 (paren
-id|sg-&gt;address
-ques
-c_cond
-id|sg-&gt;address
-suffix:colon
-(paren
 id|page_address
 c_func
 (paren
@@ -2216,7 +2210,6 @@ id|sg-&gt;page
 )paren
 op_plus
 id|sg-&gt;offset
-)paren
 )paren
 comma
 id|sg-&gt;length

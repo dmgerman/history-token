@@ -1370,7 +1370,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -1387,7 +1386,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -4216,10 +4214,9 @@ id|rq-&gt;flags
 op_assign
 id|REQ_SPECIAL
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|cmd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -4238,7 +4235,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|cmd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon

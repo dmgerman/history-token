@@ -145,6 +145,7 @@ DECL|typedef|slave_t
 )brace
 id|slave_t
 suffix:semicolon
+multiline_comment|/*&n; * Here are the locking policies for the two bonding locks:&n; *&n; * 1) Get bond-&gt;lock when reading/writing slave list.&n; * 2) Get bond-&gt;ptrlock when reading/writing bond-&gt;current_slave.&n; *    (It is unnecessary when the write-lock is put with bond-&gt;lock.)&n; * 3) When we lock with bond-&gt;ptrlock, we must lock with bond-&gt;lock&n; *    beforehand.&n; */
 DECL|struct|bonding
 r_typedef
 r_struct

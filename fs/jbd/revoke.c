@@ -776,8 +776,10 @@ id|journal_t
 op_star
 id|journal
 suffix:semicolon
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 suffix:semicolon
 r_int
 id|err
@@ -827,13 +829,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|dev
+id|bdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
-id|journal-&gt;j_fs_dev-&gt;bd_dev
-)paren
+id|journal-&gt;j_fs_dev
 suffix:semicolon
 id|bh
 op_assign
@@ -848,10 +846,10 @@ id|bh
 (brace
 id|bh
 op_assign
-id|get_hash_table
+id|__get_hash_table
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|blocknr
 comma
@@ -883,10 +881,10 @@ suffix:semicolon
 multiline_comment|/* If there is a different buffer_head lying around in&n;&t;&t; * memory anywhere... */
 id|bh2
 op_assign
-id|get_hash_table
+id|__get_hash_table
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|blocknr
 comma
@@ -1266,10 +1264,10 @@ id|bh2
 suffix:semicolon
 id|bh2
 op_assign
-id|get_hash_table
+id|__get_hash_table
 c_func
 (paren
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 comma
 id|bh-&gt;b_blocknr
 comma

@@ -23130,13 +23130,11 @@ id|cp
 comma
 id|leftlen
 comma
-l_string|&quot; unchecked_isa_dma %d, use_clustering %d, loaded_as_module %d&bslash;n&quot;
+l_string|&quot; unchecked_isa_dma %d, use_clustering %d&bslash;n&quot;
 comma
 id|shp-&gt;unchecked_isa_dma
 comma
 id|shp-&gt;use_clustering
-comma
-id|shp-&gt;loaded_as_module
 )paren
 suffix:semicolon
 id|ASC_PRT_NEXT
@@ -27702,15 +27700,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; cmd_per_lun %d, sg_tablesize %d, unchecked_isa_dma %d, loaded_as_module %d&bslash;n&quot;
+l_string|&quot; cmd_per_lun %d, sg_tablesize %d, unchecked_isa_dma %d&bslash;n&quot;
 comma
 id|s-&gt;cmd_per_lun
 comma
 id|s-&gt;sg_tablesize
 comma
 id|s-&gt;unchecked_isa_dma
-comma
-id|s-&gt;loaded_as_module
 )paren
 suffix:semicolon
 r_if

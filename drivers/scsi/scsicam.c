@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * scsicam.c - SCSI CAM support functions, use for HDIO_GETGEO, etc.&n; *&n; * Copyright 1993, 1994 Drew Eckhardt&n; *      Visionary Computing &n; *      (Unix and Linux consulting and custom programming)&n; *      drew@Colorado.EDU&n; *      +1 (303) 786-7975&n; *&n; * For more information, please consult the SCSI-CAM draft.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;

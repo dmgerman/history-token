@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  scsi_scan.c Copyright (C) 2000 Eric Youngdale&n; *&n; *  Bus scan logic.&n; *&n; *  This used to live in scsi.c, but that file was just a laundry basket&n; *  full of misc stuff.  This got separated out in order to make things&n; *  clearer.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -2137,11 +2137,7 @@ suffix:semicolon
 macro_line|#if ( XPRAM_VERSION == 24 )
 id|current_req
 op_assign
-id|blkdev_entry_next_request
-(paren
-op_amp
-id|queue-&gt;queue_head
-)paren
+id|CURRENT
 suffix:semicolon
 macro_line|#endif /* V24 */
 id|dev_no

@@ -123,15 +123,9 @@ id|sdev_lock
 suffix:semicolon
 DECL|member|swap_file
 r_struct
-id|dentry
+id|file
 op_star
 id|swap_file
-suffix:semicolon
-DECL|member|swap_vfsmnt
-r_struct
-id|vfsmount
-op_star
-id|swap_vfsmnt
 suffix:semicolon
 DECL|member|swap_map
 r_int
@@ -507,9 +501,6 @@ id|swp_entry_t
 comma
 r_int
 r_int
-op_star
-comma
-id|kdev_t
 op_star
 comma
 r_struct

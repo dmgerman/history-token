@@ -389,7 +389,7 @@ comma
 id|pte_t
 )paren
 suffix:semicolon
-macro_line|#ifdef DCFLUSH_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 DECL|variable|dcpage_flushes
 id|atomic_t
 id|dcpage_flushes
@@ -425,7 +425,7 @@ op_star
 id|page
 )paren
 (brace
-macro_line|#ifdef DCFLUSH_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 id|atomic_inc
 c_func
 (paren
@@ -544,7 +544,7 @@ l_string|&quot;or&t;%%g5, %0, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; nop&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -611,7 +611,7 @@ l_string|&quot; andn&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; nop&bslash;n&quot;
+l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
 multiline_comment|/* no outputs */
@@ -1024,7 +1024,7 @@ comma
 l_string|&quot;MMU Type&bslash;t: ???&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DCFLUSH_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 id|seq_printf
 c_func
 (paren
@@ -1057,7 +1057,7 @@ id|dcpage_flushes_xcall
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#endif /* DCFLUSH_DEBUG */
+macro_line|#endif /* CONFIG_DEBUG_DCFLUSH */
 )brace
 DECL|struct|linux_prom_translation
 r_struct

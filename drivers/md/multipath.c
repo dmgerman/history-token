@@ -944,6 +944,7 @@ id|bh_req-&gt;b_dev
 op_assign
 id|multipath-&gt;dev
 suffix:semicolon
+multiline_comment|/* FIXME - later we will need bdev here */
 id|bh_req-&gt;b_rdev
 op_assign
 id|multipath-&gt;dev

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.40 2001/09/06 02:44:28 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
+multiline_comment|/* $Id: time.c,v 1.41 2001/11/20 18:24:55 kanoj Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2740,12 +2740,6 @@ comma
 op_amp
 id|clock
 )paren
-suffix:semicolon
-id|timer_tick_offset
-op_assign
-id|clock
-op_div
-id|HZ
 suffix:semicolon
 id|timer_ticks_per_usec_quotient
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.76 2001/10/08 09:32:13 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: processor.h,v 1.80 2001/11/17 00:10:48 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __ASM_SPARC64_PROCESSOR_H
 DECL|macro|__ASM_SPARC64_PROCESSOR_H
 mdefine_line|#define __ASM_SPARC64_PROCESSOR_H
@@ -146,6 +146,18 @@ id|xfsr
 l_int|7
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+multiline_comment|/* How many spinlocks held by this thread.&n;&t; * Used with spin lock debugging to catch tasks&n;&t; * sleeping illegally with locks held.&n;&t; */
+DECL|member|smp_lock_count
+r_int
+id|smp_lock_count
+suffix:semicolon
+DECL|member|smp_lock_pc
+r_int
+r_int
+id|smp_lock_pc
+suffix:semicolon
+macro_line|#endif
 DECL|member|reg_window
 r_struct
 id|reg_window
@@ -204,8 +216,13 @@ DECL|macro|FAULT_CODE_ITLB
 mdefine_line|#define FAULT_CODE_ITLB&t;&t;0x04&t;/* Miss happened in I-TLB&t;&t;*/
 DECL|macro|FAULT_CODE_WINFIXUP
 mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/fill&t;*/
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   xfsr, */&t;&t;&t;&t;&bslash;&n;   0,&t;   { 0 }, { 0 },&t;&t;&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
+macro_line|#else /* CONFIG_DEBUG_SPINLOCK */
+DECL|macro|INIT_THREAD
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   xfsr,  smp_lock_count, smp_lock_pc, */&bslash;&n;   0,&t;   { 0 }, { 0 }, 0,&t;&t; 0,&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
+macro_line|#endif /* !(CONFIG_DEBUG_SPINLOCK) */
 macro_line|#ifdef __KERNEL__
 macro_line|#if PAGE_SHIFT == 13
 DECL|macro|THREAD_SIZE

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mmu_context.h,v 1.51 2001/08/17 04:55:09 kanoj Exp $ */
+multiline_comment|/* $Id: mmu_context.h,v 1.52 2002/01/11 08:45:38 davem Exp $ */
 macro_line|#ifndef __SPARC64_MMU_CONTEXT_H
 DECL|macro|__SPARC64_MMU_CONTEXT_H
 mdefine_line|#define __SPARC64_MMU_CONTEXT_H
@@ -20,6 +20,72 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 168-bit bitmap where the first 128 bits are&n; * unlikely to be clear. It&squot;s guaranteed that at least one of the 168&n; * bits is cleared.&n; */
+macro_line|#if MAX_RT_PRIO != 128 || MAX_PRIO != 168
+macro_line|# error update this function.
+macro_line|#endif
+DECL|function|sched_find_first_zero_bit
+r_static
+r_inline
+r_int
+id|sched_find_first_zero_bit
+c_func
+(paren
+r_int
+r_int
+op_star
+id|b
+)paren
+(brace
+r_int
+r_int
+id|rt
+suffix:semicolon
+id|rt
+op_assign
+id|b
+(braket
+l_int|0
+)braket
+op_amp
+id|b
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|rt
+op_ne
+l_int|0xffffffffffffffff
+)paren
+)paren
+r_return
+id|find_first_zero_bit
+c_func
+(paren
+id|b
+comma
+id|MAX_RT_PRIO
+)paren
+suffix:semicolon
+r_return
+id|ffz
+c_func
+(paren
+id|b
+(braket
+l_int|2
+)braket
+)paren
+op_plus
+id|MAX_RT_PRIO
+suffix:semicolon
+)brace
 DECL|function|enter_lazy_tlb
 r_static
 r_inline

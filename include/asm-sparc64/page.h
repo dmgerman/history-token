@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: page.h,v 1.36 2000/08/10 01:04:53 davem Exp $ */
+multiline_comment|/* $Id: page.h,v 1.38 2001/11/30 01:04:10 davem Exp $ */
 macro_line|#ifndef _SPARC64_PAGE_H
 DECL|macro|_SPARC64_PAGE_H
 mdefine_line|#define _SPARC64_PAGE_H
@@ -16,8 +16,27 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+r_extern
+r_void
+id|do_BUG
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+suffix:semicolon
+DECL|macro|BUG
+mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&bslash;&n;&t;do_BUG(__FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__builtin_trap();&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
 DECL|macro|BUG
 mdefine_line|#define BUG()&t;&t;__builtin_trap()
+macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;BUG()
 r_extern
@@ -30,24 +49,8 @@ op_star
 id|page
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|_copy_page
-c_func
-(paren
-r_void
-op_star
-id|to
-comma
-r_void
-op_star
-id|from
-)paren
-suffix:semicolon
 DECL|macro|clear_page
 mdefine_line|#define clear_page(X)&t;_clear_page((void *)(X))
-DECL|macro|copy_page
-mdefine_line|#define copy_page(X,Y)&t;_copy_page((void *)(X), (void *)(Y))
 r_extern
 r_void
 id|clear_user_page

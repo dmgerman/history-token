@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elf.h,v 1.30 2001/08/30 23:35:38 kanoj Exp $ */
+multiline_comment|/* $Id: elf.h,v 1.31 2002/01/08 16:00:20 davem Exp $ */
 macro_line|#ifndef __ASM_SPARC64_ELF_H
 DECL|macro|__ASM_SPARC64_ELF_H
 mdefine_line|#define __ASM_SPARC64_ELF_H
@@ -85,7 +85,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;unsigned char flags = current-&gt;thread.flags;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&bslash;&n;&t;&t;flags |= SPARC_FLAG_32BIT;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flags &amp;= ~SPARC_FLAG_32BIT;&t;&t;&bslash;&n;&t;if (flags != current-&gt;thread.flags) {&t;&t;&bslash;&n;&t;&t;unsigned long pgd_cache = 0UL;&t;&t;&bslash;&n;&t;&t;if (flags &amp; SPARC_FLAG_32BIT) {&t;&t;&bslash;&n;&t;&t;  pgd_t *pgd0 = &amp;current-&gt;mm-&gt;pgd[0];&t;&bslash;&n;&t;&t;  if (pgd_none (*pgd0)) {&t;&t;&bslash;&n;&t;&t;    pmd_t *page = pmd_alloc_one_fast(NULL, 0);&t;&bslash;&n;&t;&t;    if (!page)&t;&t;&t;&t;&bslash;&n;&t;&t;      page = pmd_alloc_one(NULL, 0);&t;&bslash;&n;                    pgd_set(pgd0, page);&t;&t;&bslash;&n;&t;&t;  }&t;&t;&t;&t;&t;&bslash;&n;&t;&t;  pgd_cache = pgd_val(*pgd0) &lt;&lt; 11UL;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;stxa&bslash;t%0, [%1] %2&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;membar #Sync&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: /* no outputs */&t;&t;&bslash;&n;&t;&t;&t;: &quot;r&quot; (pgd_cache),&t;&t;&bslash;&n;&t;&t;&t;  &quot;r&quot; (TSB_REG),&t;&t;&bslash;&n;&t;&t;&t;  &quot;i&quot; (ASI_DMMU));&t;&t;&bslash;&n;&t;&t;current-&gt;thread.flags = flags;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;unsigned char flags = current-&gt;thread.flags;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&bslash;&n;&t;&t;flags |= SPARC_FLAG_32BIT;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flags &amp;= ~SPARC_FLAG_32BIT;&t;&t;&bslash;&n;&t;if (flags != current-&gt;thread.flags) {&t;&t;&bslash;&n;&t;&t;/* flush_thread will update pgd cache */&bslash;&n;&t;&t;current-&gt;thread.flags = flags;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif /* !(__ASM_SPARC64_ELF_H) */
 eof

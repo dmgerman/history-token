@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.95 2001/03/15 02:11:10 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.98 2002/01/05 01:13:43 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1023,6 +1023,20 @@ id|rngnum
 )braket
 dot
 id|ot_parent_space
+suffix:semicolon
+id|regs
+(braket
+id|regnum
+)braket
+dot
+id|phys_addr
+op_sub_assign
+id|ranges
+(braket
+id|rngnum
+)braket
+dot
+id|ot_child_base
 suffix:semicolon
 id|regs
 (braket

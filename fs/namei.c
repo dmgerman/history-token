@@ -18,7 +18,7 @@ multiline_comment|/* [Feb-1997 T. Schoebel-Theuer]&n; * Fundamental changes in t
 multiline_comment|/* [24-Feb-97 T. Schoebel-Theuer] Side effects caused by new implementation:&n; * New symlink semantics: when open() is called with flags O_CREAT | O_EXCL&n; * and the name already exists in form of a symlink, try to create the new&n; * name indicated by the symlink. The old code always complained that the&n; * name already exists, due to not following the symlink even if its target&n; * is nonexistent.  The new semantics affects also mknod() and link() when&n; * the name is a symlink pointing to a non-existant name.&n; *&n; * I don&squot;t know which semantics is the right one, since I have no access&n; * to standards. But I found by trial that HP-UX 9.0 has the full &quot;new&quot;&n; * semantics implemented, while SunOS 4.1.1 and Solaris (SunOS 5.4) have the&n; * &quot;old&quot; one. Personally, I think the new semantics is much more logical.&n; * Note that &quot;ln old new&quot; where &quot;new&quot; is a symlink pointing to a non-existing&n; * file does succeed in both HP-UX and SunOs, but not in Solaris&n; * and in the old Linux semantics.&n; */
 multiline_comment|/* [16-Dec-97 Kevin Buhr] For security reasons, we change some symlink&n; * semantics.  See the comments in &quot;open_namei&quot; and &quot;do_link&quot; below.&n; *&n; * [10-Sep-98 Alan Modra] Another symlink change.&n; */
 multiline_comment|/* [Feb-Apr 2000 AV] Complete rewrite. Rules for symlinks:&n; *&t;inside the path - always follow.&n; *&t;in the last component in creation/removal/renaming - never follow.&n; *&t;if LOOKUP_FOLLOW passed - follow.&n; *&t;if the pathname has trailing slashes - follow.&n; *&t;otherwise - don&squot;t follow.&n; * (applied in that order).&n; *&n; * [Jun 2000 AV] Inconsistent behaviour of open() in case if flags==O_CREAT&n; * restored for 2.4. This is the last surviving part of old 4.2BSD bug.&n; * During the 2.4 we need to fix the userland stuff depending on it -&n; * hopefully we will be able to get rid of that wart in 2.5. So far only&n; * XEmacs seems to be relying on it...&n; */
-multiline_comment|/* In order to reduce some races, while at the same time doing additional&n; * checking and hopefully speeding things up, we copy filenames to the&n; * kernel data space before using them..&n; *&n; * POSIX.1 2.4: an empty pathname is invalid (ENOENT).&n; */
+multiline_comment|/* In order to reduce some races, while at the same time doing additional&n; * checking and hopefully speeding things up, we copy filenames to the&n; * kernel data space before using them..&n; *&n; * POSIX.1 2.4: an empty pathname is invalid (ENOENT).&n; * PATH_MAX includes the nul terminator --RR.&n; */
 DECL|function|do_getname
 r_static
 r_inline
@@ -44,8 +44,6 @@ r_int
 id|len
 op_assign
 id|PATH_MAX
-op_plus
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -92,8 +90,6 @@ r_int
 id|filename
 OL
 id|PATH_MAX
-op_plus
-l_int|1
 )paren
 id|len
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fs.c,v 1.25 2001/09/19 00:04:30 davem Exp $&n; * fs.c: fs related syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *&n; * 1999-08-19 Implemented solaris F_FREESP (truncate)&n; *            fcntl, by Jason Rappleye (rappleye@ccr.buffalo.edu)&n; */
+multiline_comment|/* $Id: fs.c,v 1.26 2002/01/08 16:00:21 davem Exp $&n; * fs.c: fs related syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *&n; * 1999-08-19 Implemented solaris F_FREESP (truncate)&n; *            fcntl, by Jason Rappleye (rappleye@ccr.buffalo.edu)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2611,7 +2611,11 @@ id|__put_user
 id|R4_DEV
 c_func
 (paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_sb-&gt;s_dev
+)paren
 )paren
 comma
 op_amp
@@ -2863,7 +2867,11 @@ id|__put_user
 id|R4_DEV
 c_func
 (paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_sb-&gt;s_dev
+)paren
 )paren
 comma
 op_amp

@@ -4173,10 +4173,6 @@ id|enet_stats
 )paren
 suffix:semicolon
 )brace
-DECL|macro|CRC_POLYNOMIAL_BE
-mdefine_line|#define CRC_POLYNOMIAL_BE 0x04c11db7UL  /* Ethernet CRC, big endian */
-DECL|macro|CRC_POLYNOMIAL_LE
-mdefine_line|#define CRC_POLYNOMIAL_LE 0xedb88320UL  /* Ethernet CRC, little endian */
 DECL|function|myri_set_multicast
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: socksys.c,v 1.18 2001/02/13 01:16:44 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
+multiline_comment|/* $Id: socksys.c,v 1.20 2002/01/08 16:00:21 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -205,7 +205,7 @@ id|family
 op_assign
 (paren
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -243,7 +243,7 @@ id|protocol
 op_assign
 id|af_inet_protocols
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

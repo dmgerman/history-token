@@ -5497,6 +5497,10 @@ op_amp
 id|bh-&gt;b_state
 )paren
 suffix:semicolon
+id|bh-&gt;b_bdev
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 id|may_free
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: string.h,v 1.35 2000/05/02 01:47:01 davem Exp $&n; * string.h: External definitions for optimized assembly string&n; *           routines for the Linux Kernel.&n; *&n; * Copyright (C) 1995,1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: string.h,v 1.36 2001/12/21 00:54:31 davem Exp $&n; * string.h: External definitions for optimized assembly string&n; *           routines for the Linux Kernel.&n; *&n; * Copyright (C) 1995,1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef __SPARC_STRING_H__
 DECL|macro|__SPARC_STRING_H__
 mdefine_line|#define __SPARC_STRING_H__
@@ -389,9 +389,35 @@ DECL|macro|memscan
 mdefine_line|#define memscan(__arg0, __char, __arg2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_zero(void *, size_t);&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_generic(void *, int, size_t);&t;&t;&t;&bslash;&n;&t;void *__retval, *__addr = (__arg0);&t;&t;&t;&t;&t;&bslash;&n;&t;size_t __size = (__arg2);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if(__builtin_constant_p(__char) &amp;&amp; !(__char))&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_zero(__addr, __size);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_generic(__addr, (__char), __size);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMCMP
 mdefine_line|#define __HAVE_ARCH_MEMCMP
+r_extern
+r_int
+id|memcmp
+c_func
+(paren
+r_const
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
 multiline_comment|/* Now the str*() stuff... */
 DECL|macro|__HAVE_ARCH_STRLEN
 mdefine_line|#define __HAVE_ARCH_STRLEN
+r_extern
+id|__kernel_size_t
+id|strlen
+c_func
+(paren
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRNCMP
 mdefine_line|#define __HAVE_ARCH_STRNCMP
 r_extern

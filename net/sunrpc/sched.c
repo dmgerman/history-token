@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
+macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;&t;RPCDBG_SCHED

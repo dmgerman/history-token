@@ -203,11 +203,10 @@ id|queue
 )paren
 (brace
 r_return
-id|blkdev_entry_next_request
+id|elv_next_request
 c_func
 (paren
-op_amp
-id|queue-&gt;queue_head
+id|queue
 )paren
 suffix:semicolon
 )brace

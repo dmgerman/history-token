@@ -8,6 +8,7 @@ macro_line|#endif
 macro_line|#include &quot;../sd.h&quot;&t;&t;/* For geometry detection */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * To generate the correct addresses for the controller to issue&n; * on the bus.  Originally added for DEC Alpha support.&n; */
 DECL|macro|VIRT_TO_BUS
 mdefine_line|#define VIRT_TO_BUS(a) (uint32_t)virt_to_bus((void *)(a))

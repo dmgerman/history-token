@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunqe.c,v 1.52 2001/10/18 08:18:08 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunqe.c,v 1.53 2001/12/21 00:54:31 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
 DECL|variable|version
 r_static
 r_char
@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2199,6 +2200,7 @@ suffix:semicolon
 )brace
 id|next
 suffix:colon
+suffix:semicolon
 )brace
 id|qec_status
 op_rshift_assign
@@ -2720,10 +2722,6 @@ op_amp
 id|qep-&gt;net_stats
 suffix:semicolon
 )brace
-DECL|macro|CRC_POLYNOMIAL_BE
-mdefine_line|#define CRC_POLYNOMIAL_BE 0x04c11db7UL  /* Ethernet CRC, big endian */
-DECL|macro|CRC_POLYNOMIAL_LE
-mdefine_line|#define CRC_POLYNOMIAL_LE 0xedb88320UL  /* Ethernet CRC, little endian */
 DECL|function|qe_set_multicast
 r_static
 r_void
@@ -2775,10 +2773,6 @@ id|byte
 suffix:semicolon
 id|u32
 id|crc
-comma
-id|poly
-op_assign
-id|CRC_POLYNOMIAL_LE
 suffix:semicolon
 multiline_comment|/* Lock out others. */
 id|netif_stop_queue
@@ -2968,80 +2962,14 @@ r_continue
 suffix:semicolon
 id|crc
 op_assign
-l_int|0xffffffffU
-suffix:semicolon
-r_for
-c_loop
+id|ether_crc_le
+c_func
 (paren
-id|byte
-op_assign
-l_int|0
-suffix:semicolon
-id|byte
-OL
 l_int|6
-suffix:semicolon
-id|byte
-op_increment
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-op_star
+comma
 id|addrs
-op_increment
-comma
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-l_int|8
-suffix:semicolon
-id|j
-op_increment
-comma
-id|bit
-op_rshift_assign
-l_int|1
-)paren
-(brace
-r_int
-id|test
-suffix:semicolon
-id|test
-op_assign
-(paren
-(paren
-id|bit
-op_xor
-id|crc
-)paren
-op_amp
-l_int|0x01
 )paren
 suffix:semicolon
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test
-)paren
-id|crc
-op_assign
-id|crc
-op_xor
-id|poly
-suffix:semicolon
-)brace
-)brace
 id|crc
 op_rshift_assign
 l_int|26

@@ -4144,8 +4144,6 @@ c_func
 l_string|&quot;names_cache&quot;
 comma
 id|PATH_MAX
-op_plus
-l_int|1
 comma
 l_int|0
 comma

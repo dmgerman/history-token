@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: oplib.h,v 1.13 2000/05/09 17:40:15 davem Exp $&n; * oplib.h:  Describes the interface and available routines in the&n; *           Linux Prom library.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: oplib.h,v 1.14 2001/12/19 00:29:51 davem Exp $&n; * oplib.h:  Describes the interface and available routines in the&n; *           Linux Prom library.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef __SPARC64_OPLIB_H
 DECL|macro|__SPARC64_OPLIB_H
 mdefine_line|#define __SPARC64_OPLIB_H
@@ -929,74 +929,6 @@ c_func
 r_int
 r_int
 id|tba
-)paren
-suffix:semicolon
-multiline_comment|/* Dorking with Bus ranges... */
-multiline_comment|/* Adjust reg values with the passed ranges. */
-r_extern
-r_void
-id|prom_adjust_regs
-c_func
-(paren
-r_struct
-id|linux_prom_registers
-op_star
-id|regp
-comma
-r_int
-id|nregs
-comma
-r_struct
-id|linux_prom_ranges
-op_star
-id|rangep
-comma
-r_int
-id|nranges
-)paren
-suffix:semicolon
-multiline_comment|/* Adjust child ranges with the passed parent ranges. */
-r_extern
-r_void
-id|prom_adjust_ranges
-c_func
-(paren
-r_struct
-id|linux_prom_ranges
-op_star
-id|cranges
-comma
-r_int
-id|ncranges
-comma
-r_struct
-id|linux_prom_ranges
-op_star
-id|pranges
-comma
-r_int
-id|npranges
-)paren
-suffix:semicolon
-multiline_comment|/* Apply ranges of any prom node (and optionally parent node as well) to registers. */
-r_extern
-r_void
-id|prom_apply_generic_ranges
-c_func
-(paren
-r_int
-id|node
-comma
-r_int
-id|parent
-comma
-r_struct
-id|linux_prom_registers
-op_star
-id|sbusregs
-comma
-r_int
-id|nregs
 )paren
 suffix:semicolon
 r_extern

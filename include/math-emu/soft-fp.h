@@ -1,7 +1,7 @@
 multiline_comment|/* Software floating-point emulation.&n;   Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.&n;   This file is part of the GNU C Library.&n;   Contributed by Richard Henderson (rth@cygnus.com),&n;&t;&t;  Jakub Jelinek (jj@ultra.linux.cz),&n;&t;&t;  David S. Miller (davem@redhat.com) and&n;&t;&t;  Peter Maydell (pmaydell@chiark.greenend.org.uk).&n;&n;   The GNU C Library is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU Library General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The GNU C Library is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;   Library General Public License for more details.&n;&n;   You should have received a copy of the GNU Library General Public&n;   License along with the GNU C Library; see the file COPYING.LIB.  If&n;   not, write to the Free Software Foundation, Inc.,&n;   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
-macro_line|#ifndef SOFT_FP_H
-DECL|macro|SOFT_FP_H
-mdefine_line|#define SOFT_FP_H
+macro_line|#ifndef __MATH_EMU_SOFT_FP_H__
+DECL|macro|__MATH_EMU_SOFT_FP_H__
+mdefine_line|#define __MATH_EMU_SOFT_FP_H__
 macro_line|#include &lt;asm/sfp-machine.h&gt;
 multiline_comment|/* Allow sfp-machine to have its own byte order definitions. */
 macro_line|#ifndef __BYTE_ORDER
@@ -211,5 +211,5 @@ macro_line|#endif
 macro_line|#ifndef umul_ppmm
 macro_line|#include &lt;stdlib/longlong.h&gt;
 macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* __MATH_EMU_SOFT_FP_H__ */
 eof

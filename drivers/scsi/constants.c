@@ -1,6 +1,4 @@
 multiline_comment|/* &n; * ASCII values for a number of symbolic constants, printing functions,&n; * etc.&n; * Additions for SCSI 2 and Linux 2.2.x by D. Gilbert (990422)&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;

@@ -568,14 +568,6 @@ suffix:semicolon
 )brace
 r_extern
 r_void
-id|rpciod_tcp_dispatcher
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|rpciod_wake_up
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&t;$Id: aurora.c,v 1.18 2001/10/26 17:59:31 davem Exp $&n; *&t;linux/drivers/sbus/char/aurora.c -- Aurora multiport driver&n; *&n; *&t;Copyright (c) 1999 by Oliver Aldulea (oli at bv dot ro)&n; *&n; *&t;This code is based on the RISCom/8 multiport serial driver written&n; *&t;by Dmitry Gorodchanin (pgmdsg@ibi.com), based on the Linux serial&n; *&t;driver, written by Linus Torvalds, Theodore T&squot;so and others.&n; *&t;The Aurora multiport programming info was obtained mainly from the&n; *&t;Cirrus Logic CD180 documentation (available on the web), and by&n; *&t;doing heavy tests on the board. Many thanks to Eddie C. Dost for the&n; *&t;help on the sbus interface.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Revision 1.0&n; *&n; *&t;This is the first public release.&n; *&n; *&t;Most of the information you need is in the aurora.h file. Please&n; *&t;read that file before reading this one.&n; *&n; *&t;Several parts of the code do not have comments yet.&n; * &n; * n.b.  The board can support 115.2 bit rates, but only on a few&n; * ports. The total badwidth of one chip (ports 0-7 or 8-15) is equal&n; * to OSC_FREQ div 16. In case of my board, each chip can take 6&n; * channels of 115.2 kbaud.  This information is not well-tested.&n; * &n; * Fixed to use tty_get_baud_rate().&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
+multiline_comment|/*&t;$Id: aurora.c,v 1.19 2002/01/08 16:00:16 davem Exp $&n; *&t;linux/drivers/sbus/char/aurora.c -- Aurora multiport driver&n; *&n; *&t;Copyright (c) 1999 by Oliver Aldulea (oli at bv dot ro)&n; *&n; *&t;This code is based on the RISCom/8 multiport serial driver written&n; *&t;by Dmitry Gorodchanin (pgmdsg@ibi.com), based on the Linux serial&n; *&t;driver, written by Linus Torvalds, Theodore T&squot;so and others.&n; *&t;The Aurora multiport programming info was obtained mainly from the&n; *&t;Cirrus Logic CD180 documentation (available on the web), and by&n; *&t;doing heavy tests on the board. Many thanks to Eddie C. Dost for the&n; *&t;help on the sbus interface.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Revision 1.0&n; *&n; *&t;This is the first public release.&n; *&n; *&t;Most of the information you need is in the aurora.h file. Please&n; *&t;read that file before reading this one.&n; *&n; *&t;Several parts of the code do not have comments yet.&n; * &n; * n.b.  The board can support 115.2 bit rates, but only on a few&n; * ports. The total badwidth of one chip (ports 0-7 or 8-15) is equal&n; * to OSC_FREQ div 16. In case of my board, each chip can take 6&n; * channels of 115.2 kbaud.  This information is not well-tested.&n; * &n; * Fixed to use tty_get_baud_rate().&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7279,7 +7279,7 @@ op_assign
 id|AURORA_BOARD
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -7351,7 +7351,7 @@ op_plus
 id|AURORA_PORT
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

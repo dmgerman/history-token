@@ -1394,7 +1394,7 @@ id|entry
 id|kfree
 c_func
 (paren
-id|dentry
+id|entry
 )paren
 suffix:semicolon
 r_return

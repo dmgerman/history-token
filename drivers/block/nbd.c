@@ -779,11 +779,10 @@ id|xreq
 suffix:semicolon
 id|req
 op_assign
-id|blkdev_entry_prev_request
+id|blkdev_entry_to_request
 c_func
 (paren
-op_amp
-id|lo-&gt;queue_head
+id|lo-&gt;queue_head.prev
 )paren
 suffix:semicolon
 r_if
@@ -1002,11 +1001,10 @@ c_cond
 (paren
 id|req
 op_ne
-id|blkdev_entry_prev_request
+id|blkdev_entry_to_request
 c_func
 (paren
-op_amp
-id|lo-&gt;queue_head
+id|lo-&gt;queue_head.prev
 )paren
 )paren
 (brace
@@ -1148,11 +1146,10 @@ id|lo-&gt;queue_head
 (brace
 id|req
 op_assign
-id|blkdev_entry_prev_request
+id|blkdev_entry_to_request
 c_func
 (paren
-op_amp
-id|lo-&gt;queue_head
+id|lo-&gt;queue_head.prev
 )paren
 suffix:semicolon
 macro_line|#ifdef PARANOIA

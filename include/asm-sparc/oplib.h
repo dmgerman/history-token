@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: oplib.h,v 1.21 2000/08/26 02:38:04 anton Exp $&n; * oplib.h:  Describes the interface and available routines in the&n; *           Linux Prom library.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: oplib.h,v 1.23 2001/12/21 00:54:31 davem Exp $&n; * oplib.h:  Describes the interface and available routines in the&n; *           Linux Prom library.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __SPARC_OPLIB_H
 DECL|macro|__SPARC_OPLIB_H
 mdefine_line|#define __SPARC_OPLIB_H
@@ -803,53 +803,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Dorking with Bus ranges... */
-multiline_comment|/* Adjust reg values with the passed ranges. */
-r_extern
-r_void
-id|prom_adjust_regs
-c_func
-(paren
-r_struct
-id|linux_prom_registers
-op_star
-id|regp
-comma
-r_int
-id|nregs
-comma
-r_struct
-id|linux_prom_ranges
-op_star
-id|rangep
-comma
-r_int
-id|nranges
-)paren
-suffix:semicolon
-multiline_comment|/* Adjust child ranges with the passed parent ranges. */
-r_extern
-r_void
-id|prom_adjust_ranges
-c_func
-(paren
-r_struct
-id|linux_prom_ranges
-op_star
-id|cranges
-comma
-r_int
-id|ncranges
-comma
-r_struct
-id|linux_prom_ranges
-op_star
-id|pranges
-comma
-r_int
-id|npranges
-)paren
-suffix:semicolon
-multiline_comment|/* Apply promlib probed OBIO ranges to registers. */
+multiline_comment|/* Apply promlib probes OBIO ranges to registers. */
 r_extern
 r_void
 id|prom_apply_obio_ranges

@@ -35,18 +35,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
-macro_line|#ifdef CONFIG_NF_DEBUG
-DECL|macro|IP_NF_ASSERT
-mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t;&bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;NF_IP_ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t;&bslash;&n;} while(0)
-macro_line|#else
-DECL|macro|IP_NF_ASSERT
-mdefine_line|#define IP_NF_ASSERT(x)
-macro_line|#endif
 multiline_comment|/* Bitset representing status of connection. */
 DECL|enum|ip_conntrack_status
 r_enum
@@ -99,6 +87,18 @@ id|IPS_ASSURED_BIT
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
+macro_line|#ifdef CONFIG_NF_DEBUG
+DECL|macro|IP_NF_ASSERT
+mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t;&bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;NF_IP_ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t;&bslash;&n;} while(0)
+macro_line|#else
+DECL|macro|IP_NF_ASSERT
+mdefine_line|#define IP_NF_ASSERT(x)
+macro_line|#endif
 DECL|struct|ip_conntrack_expect
 r_struct
 id|ip_conntrack_expect

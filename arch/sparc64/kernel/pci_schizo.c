@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.22 2001/10/11 00:44:38 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.23 2001/11/14 13:17:56 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1197,6 +1197,22 @@ id|ino
 r_int
 id|ret
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev
+op_logical_and
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SUN_RIO_USB
+)paren
+r_return
+l_int|9
+suffix:semicolon
 id|ret
 op_assign
 id|schizo_pil_table
@@ -1279,6 +1295,9 @@ id|PCI_BASE_CLASS_MEMORY
 suffix:colon
 r_case
 id|PCI_BASE_CLASS_BRIDGE
+suffix:colon
+r_case
+id|PCI_BASE_CLASS_SERIAL
 suffix:colon
 id|ret
 op_assign

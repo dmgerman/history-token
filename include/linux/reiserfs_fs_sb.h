@@ -387,9 +387,11 @@ op_star
 id|bh
 suffix:semicolon
 multiline_comment|/* real buffer head */
-DECL|member|dev
-id|kdev_t
-id|dev
+DECL|member|sb
+r_struct
+id|super_block
+op_star
+id|sb
 suffix:semicolon
 multiline_comment|/* dev of real buffer head */
 DECL|member|blocknr

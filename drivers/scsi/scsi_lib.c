@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  scsi_lib.c Copyright (C) 1999 Eric Youngdale&n; *&n; *  SCSI queueing library.&n; *      Initial versions: Eric Youngdale (eric@andante.org).&n; *                        Based upon conversations with large numbers&n; *                        of people at Linux Expo.&n; */
 multiline_comment|/*&n; * The fundamental purpose of this file is to contain a library of utility&n; * routines that can be used by low-level drivers.   Ultimately the idea&n; * is that there should be a sufficiently rich number of functions that it&n; * would be possible for a driver author to fashion a queueing function for&n; * a low-level driver if they wished.   Note however that this file also&n; * contains the &quot;default&quot; versions of these functions, as we don&squot;t want to&n; * go through and retrofit queueing functions into all 30 some-odd drivers.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -687,7 +685,7 @@ c_func
 (paren
 id|req
 comma
-l_int|1
+id|uptodate
 comma
 id|sectors
 )paren
@@ -818,7 +816,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 l_int|0

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; 08/23/2000&n; * - get rid of some verify_areas and use __copy*user and __get/put_user&n; *   for the ones that remain&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3507,107 +3508,6 @@ id|lp-&gt;stats
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  Set the multicast/promiscuous mode for this adaptor.&n;*/
-multiline_comment|/* The little-endian AUTODIN II ethernet CRC calculation.&n;   N.B. Do not use for bulk data, use a table-based routine instead.&n;   This is common code and should be moved to net/core/crc.c */
-DECL|variable|ethernet_polynomial_le
-r_static
-r_int
-r_const
-id|ethernet_polynomial_le
-op_assign
-l_int|0xedb88320U
-suffix:semicolon
-DECL|function|ether_crc_le
-r_static
-r_inline
-r_int
-id|ether_crc_le
-c_func
-(paren
-r_int
-id|length
-comma
-r_int
-r_char
-op_star
-id|data
-)paren
-(brace
-r_int
-r_int
-id|crc
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-multiline_comment|/* Initial value. */
-r_while
-c_loop
-(paren
-op_decrement
-id|length
-op_ge
-l_int|0
-)paren
-(brace
-r_int
-r_char
-id|current_octet
-op_assign
-op_star
-id|data
-op_increment
-suffix:semicolon
-r_int
-id|bit
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|bit
-op_assign
-l_int|8
-suffix:semicolon
-op_decrement
-id|bit
-op_ge
-l_int|0
-suffix:semicolon
-id|current_octet
-op_rshift_assign
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|crc
-op_xor
-id|current_octet
-)paren
-op_amp
-l_int|1
-)paren
-(brace
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|crc
-op_xor_assign
-id|ethernet_polynomial_le
-suffix:semicolon
-)brace
-r_else
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-id|crc
-suffix:semicolon
-)brace
 r_static
 r_void
 DECL|function|set_rx_mode

@@ -153,6 +153,8 @@ singleline_comment|//STRUCTURES
 singleline_comment|//###########################################################################
 DECL|macro|CISS_MAX_LUN
 mdefine_line|#define CISS_MAX_LUN&t;16&t;
+DECL|macro|CISS_MAX_PHYS_LUN
+mdefine_line|#define CISS_MAX_PHYS_LUN&t;1024
 singleline_comment|// SCSI-3 Cmmands 
 macro_line|#pragma pack(1)&t;
 DECL|macro|CISS_INQUIRY
@@ -176,6 +178,8 @@ id|InquiryData_struct
 suffix:semicolon
 DECL|macro|CISS_REPORT_LOG
 mdefine_line|#define CISS_REPORT_LOG 0xc2    /* Report Logical LUNs */
+DECL|macro|CISS_REPORT_PHYS
+mdefine_line|#define CISS_REPORT_PHYS 0xc3   /* Report Physical LUNs */
 singleline_comment|// Data returned
 DECL|struct|_ReportLUNdata_struct
 r_typedef
@@ -641,6 +645,12 @@ DECL|macro|CMD_IOCTL_PEND
 mdefine_line|#define CMD_IOCTL_PEND  0x01
 DECL|macro|CMD_IOCTL_DONE
 mdefine_line|#define CMD_IOCTL_DONE  0x02
+DECL|macro|CMD_SCSI
+mdefine_line|#define CMD_SCSI&t;0x03
+DECL|macro|CMD_MSG_DONE
+mdefine_line|#define CMD_MSG_DONE&t;0x04
+DECL|macro|CMD_MSG_TIMEOUT
+mdefine_line|#define CMD_MSG_TIMEOUT 0x05
 DECL|struct|_CommandList_struct
 r_typedef
 r_struct
@@ -703,6 +713,13 @@ id|request
 op_star
 id|rq
 suffix:semicolon
+macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
+DECL|member|scsi_cmd
+r_void
+op_star
+id|scsi_cmd
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|CommandList_struct
 )brace
 id|CommandList_struct

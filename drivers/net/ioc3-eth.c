@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#ifdef CONFIG_SERIAL
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -6515,8 +6516,6 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Given a multicast ethernet address, this routine calculates the&n; * address&squot;s bit index in the logical address filter mask&n; */
-DECL|macro|CRC_MASK
-mdefine_line|#define CRC_MASK        0xedb88320
 r_static
 r_inline
 r_int
@@ -6542,87 +6541,22 @@ r_int
 r_char
 id|byte
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|crc
 suffix:semicolon
 r_int
 id|bits
-comma
-id|len
 suffix:semicolon
-id|len
+id|crc
 op_assign
+id|ether_crc_le
+c_func
+(paren
 id|ETH_ALEN
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|crc
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-op_decrement
-id|len
-op_ge
-l_int|0
-suffix:semicolon
+comma
 id|addr
-op_increment
 )paren
-(brace
-id|byte
-op_assign
-op_star
-id|addr
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|bits
-op_assign
-l_int|8
-suffix:semicolon
-op_decrement
-id|bits
-op_ge
-l_int|0
-suffix:semicolon
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|byte
-op_xor
-id|crc
-)paren
-op_amp
-l_int|1
-)paren
-id|crc
-op_assign
-(paren
-id|crc
-op_rshift
-l_int|1
-)paren
-op_xor
-id|CRC_MASK
-suffix:semicolon
-r_else
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|byte
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
 id|crc
 op_and_assign
 l_int|0x3f

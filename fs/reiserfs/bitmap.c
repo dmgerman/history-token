@@ -720,11 +720,7 @@ c_func
 (paren
 id|s
 comma
-id|s-&gt;s_dev
-comma
 id|block_to_try
-comma
-id|s-&gt;s_blocksize
 comma
 id|for_unformatted
 comma

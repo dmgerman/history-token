@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.18 2001/11/08 04:41:33 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
+multiline_comment|/* $Id: ebus.c,v 1.20 2002/01/05 01:13:43 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

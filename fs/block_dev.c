@@ -602,6 +602,10 @@ id|bh-&gt;b_dev
 op_assign
 id|inode-&gt;i_rdev
 suffix:semicolon
+id|bh-&gt;b_bdev
+op_assign
+id|inode-&gt;i_bdev
+suffix:semicolon
 id|bh-&gt;b_blocknr
 op_assign
 id|iblock

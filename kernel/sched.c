@@ -8,6 +8,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 DECL|macro|BITMAP_SIZE
 mdefine_line|#define BITMAP_SIZE ((MAX_PRIO+7)/8)
+DECL|macro|PRIO_INTERACTIVE
+mdefine_line|#define PRIO_INTERACTIVE&t;(MAX_RT_PRIO + (MAX_PRIO - MAX_RT_PRIO) / 4)
+DECL|macro|TASK_INTERACTIVE
+mdefine_line|#define TASK_INTERACTIVE(p)&t;((p)-&gt;prio &gt;= MAX_RT_PRIO &amp;&amp; (p)-&gt;prio &lt;= PRIO_INTERACTIVE)
+DECL|macro|JSLEEP_TO_PRIO
+mdefine_line|#define JSLEEP_TO_PRIO(t)&t;(((t) * 20) / HZ)
 DECL|typedef|runqueue_t
 r_typedef
 r_struct
@@ -78,11 +84,6 @@ id|curr
 comma
 op_star
 id|idle
-suffix:semicolon
-DECL|member|swap_cnt
-r_int
-r_int
-id|swap_cnt
 suffix:semicolon
 DECL|member|active
 DECL|member|expired
@@ -257,9 +258,13 @@ r_int
 r_int
 id|prio_bonus
 op_assign
-id|rq-&gt;swap_cnt
+id|JSLEEP_TO_PRIO
+c_func
+(paren
+id|jiffies
 op_minus
-id|p-&gt;swap_cnt_last
+id|p-&gt;sleep_jtime
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -332,9 +337,9 @@ id|p-&gt;array
 op_assign
 l_int|NULL
 suffix:semicolon
-id|p-&gt;swap_cnt_last
+id|p-&gt;sleep_jtime
 op_assign
-id|rq-&gt;swap_cnt
+id|jiffies
 suffix:semicolon
 )brace
 DECL|function|resched_task
@@ -1722,6 +1727,24 @@ id|p-&gt;time_slice
 op_assign
 id|time_slice
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|TASK_INTERACTIVE
+c_func
+(paren
+id|p
+)paren
+)paren
+id|enqueue_task
+c_func
+(paren
+id|p
+comma
+id|rq-&gt;active
+)paren
+suffix:semicolon
+r_else
 id|enqueue_task
 c_func
 (paren
@@ -1936,9 +1959,6 @@ suffix:semicolon
 id|array
 op_assign
 id|rq-&gt;active
-suffix:semicolon
-id|rq-&gt;swap_cnt
-op_increment
 suffix:semicolon
 )brace
 id|idx
@@ -4804,10 +4824,6 @@ suffix:semicolon
 id|rq-&gt;cpu
 op_assign
 id|i
-suffix:semicolon
-id|rq-&gt;swap_cnt
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop

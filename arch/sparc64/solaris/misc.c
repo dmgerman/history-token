@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: misc.c,v 1.33 2001/09/18 22:29:06 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: misc.c,v 1.35 2002/01/08 16:00:21 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/types.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -436,7 +437,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -444,7 +445,7 @@ id|inode-&gt;i_rdev
 op_eq
 id|MEM_MAJOR
 op_logical_and
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

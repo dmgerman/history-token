@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.79 2001/09/21 02:14:39 kanoj Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: traps.c,v 1.83 2002/01/11 08:45:38 davem Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
 multiline_comment|/*&n; * I like traps on v9, :))))&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
@@ -38,6 +38,12 @@ r_int
 id|lvl
 )paren
 (brace
+r_char
+id|buffer
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -49,17 +55,43 @@ OL
 l_int|0x100
 )paren
 (brace
-r_char
-id|buffer
-(braket
-l_int|24
-)braket
-suffix:semicolon
 id|sprintf
+c_func
 (paren
 id|buffer
 comma
 l_string|&quot;Bad hw trap %lx at tl0&bslash;n&quot;
+comma
+id|lvl
+)paren
+suffix:semicolon
+id|die_if_kernel
+c_func
+(paren
+id|buffer
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+id|lvl
+op_sub_assign
+l_int|0x100
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;tstate
+op_amp
+id|TSTATE_PRIV
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Kernel bad sw trap %lx&quot;
 comma
 id|lvl
 )paren
@@ -72,20 +104,6 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|regs-&gt;tstate
-op_amp
-id|TSTATE_PRIV
-)paren
-id|die_if_kernel
-(paren
-l_string|&quot;Kernel bad trap&quot;
-comma
-id|regs
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -130,8 +148,6 @@ suffix:semicolon
 id|info.si_trapno
 op_assign
 id|lvl
-op_minus
-l_int|0x100
 suffix:semicolon
 id|force_sig_info
 c_func
@@ -181,6 +197,39 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+DECL|function|do_BUG
+r_void
+id|do_BUG
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+(brace
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;kernel BUG at %s:%d!&bslash;n&quot;
+comma
+id|file
+comma
+id|line
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|instruction_access_exception
 r_void
 id|instruction_access_exception
@@ -5367,6 +5416,7 @@ c_func
 l_string|&quot;ldxa&t;[%0] %3, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %3, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;casxa&t;[%2] %3, %%g0, %%g0&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%0] %3, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %3, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;membar&t;#Sync&quot;
@@ -8411,6 +8461,7 @@ l_int|0xffffffff
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Only invoked on boot processor. */
 DECL|function|trap_init
 r_void
 id|trap_init
@@ -8419,7 +8470,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Attach to the address space of init_task. */
+multiline_comment|/* Attach to the address space of init_task.  On SMP we&n;&t; * do this in smp.c:smp_callin for other cpus.&n;&t; */
 id|atomic_inc
 c_func
 (paren
@@ -8432,6 +8483,14 @@ op_assign
 op_amp
 id|init_mm
 suffix:semicolon
-multiline_comment|/* NOTE: Other cpus have this done as they are started&n;&t; *       up on SMP.&n;&t; */
+macro_line|#ifdef CONFIG_SMP
+id|current-&gt;cpu
+op_assign
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

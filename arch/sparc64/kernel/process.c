@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: process.c,v 1.122 2001/10/18 09:06:36 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: process.c,v 1.128 2002/01/11 08:45:38 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -51,15 +51,6 @@ op_minus
 id|EPERM
 suffix:semicolon
 multiline_comment|/* endless idle loop with no priority at all */
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -97,9 +88,9 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * the idle loop on a UltraMultiPenguin...&n; */
 DECL|macro|idle_me_harder
-mdefine_line|#define idle_me_harder()&t;(cpu_data[current-&gt;processor].idle_volume += 1)
+mdefine_line|#define idle_me_harder()&t;(cpu_data[smp_processor_id()].idle_volume += 1)
 DECL|macro|unidle_me
-mdefine_line|#define unidle_me()&t;&t;(cpu_data[current-&gt;processor].idle_volume = 0)
+mdefine_line|#define unidle_me()&t;&t;(cpu_data[smp_processor_id()].idle_volume = 0)
 DECL|function|cpu_idle
 r_int
 id|cpu_idle
@@ -108,15 +99,6 @@ c_func
 r_void
 )paren
 (brace
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1294,13 +1276,30 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spin_lock_irqsave
+multiline_comment|/* Protect against xcall ipis which might lead to livelock on the lock */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rdpr      %%pstate, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr      %0, %1, %%pstate&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|flags
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|PSTATE_IE
+)paren
+)paren
+suffix:semicolon
+id|spin_lock
 c_func
 (paren
 op_amp
 id|regdump_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|printk
@@ -1459,13 +1458,24 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|regdump_lock
-comma
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;wrpr&t;%0, 0, %%pstate&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
 id|flags
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2313,6 +2323,10 @@ l_int|6
 )paren
 )paren
 suffix:semicolon
+id|fp
+op_add_assign
+id|STACK_BIAS
+suffix:semicolon
 )brace
 r_else
 id|__get_user
@@ -2872,6 +2886,16 @@ r_char
 op_star
 id|child_trap_frame
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+id|t-&gt;smp_lock_count
+op_assign
+l_int|0
+suffix:semicolon
+id|t-&gt;smp_lock_pc
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Calculate offset to stack_frame &amp; pt_regs */
 id|child_trap_frame
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: audio.c,v 1.62 2001/10/08 22:19:50 davem Exp $&n; * drivers/sbus/audio/audio.c&n; *&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; * Copyright 1997,1998,1999 Derrick J. Brashear (shadow@dementia.org)&n; * Copyright 1997 Brent Baccala (baccala@freesoft.org)&n; * &n; * Mixer code adapted from code contributed by and&n; * Copyright 1998 Michael Mraka (michael@fi.muni.cz)&n; * and with fixes from Michael Shuey (shuey@ecn.purdue.edu)&n; * The mixer code cheats; Sparc hardware doesn&squot;t generally allow independent&n; * line control, and this fakes it badly.&n; *&n; * SNDCTL_DSP_SETFMT based on code contributed by&n; * Ion Badulescu (ionut@moisil.cs.columbia.edu)&n; *&n; * This is the audio midlayer that sits between the VFS character&n; * devices and the low-level audio hardware device drivers.&n; */
+multiline_comment|/* $Id: audio.c,v 1.63 2002/01/08 16:00:21 davem Exp $&n; * drivers/sbus/audio/audio.c&n; *&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; * Copyright 1997,1998,1999 Derrick J. Brashear (shadow@dementia.org)&n; * Copyright 1997 Brent Baccala (baccala@freesoft.org)&n; * &n; * Mixer code adapted from code contributed by and&n; * Copyright 1998 Michael Mraka (michael@fi.muni.cz)&n; * and with fixes from Michael Shuey (shuey@ecn.purdue.edu)&n; * The mixer code cheats; Sparc hardware doesn&squot;t generally allow independent&n; * line control, and this fakes it badly.&n; *&n; * SNDCTL_DSP_SETFMT based on code contributed by&n; * Ion Badulescu (ionut@moisil.cs.columbia.edu)&n; *&n; * This is the audio midlayer that sits between the VFS character&n; * devices and the low-level audio hardware device drivers.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -662,7 +662,7 @@ op_assign
 id|drivers
 (braket
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -785,7 +785,7 @@ op_assign
 id|drivers
 (braket
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1119,7 +1119,7 @@ op_assign
 id|drivers
 (braket
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1521,7 +1521,7 @@ op_assign
 id|drivers
 (braket
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -3339,7 +3339,7 @@ suffix:semicolon
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -8118,7 +8118,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -8643,7 +8643,7 @@ op_assign
 id|drivers
 (braket
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

@@ -38,6 +38,8 @@ DECL|macro|TRIDENT_STATE_MAGIC
 mdefine_line|#define TRIDENT_STATE_MAGIC&t;0x63657373 /* &quot;cess&quot; */
 DECL|macro|TRIDENT_DMA_MASK
 mdefine_line|#define TRIDENT_DMA_MASK&t;0x3fffffff /* DMA buffer mask for pci_alloc_consist */
+DECL|macro|ALI_DMA_MASK
+mdefine_line|#define ALI_DMA_MASK&t;&t;0xffffffff /* ALI Tridents lack the 30-bit limitation */
 DECL|macro|NR_HW_CH
 mdefine_line|#define NR_HW_CH&t;&t;32
 multiline_comment|/* maxinum nuber of AC97 codecs connected, AC97 2.0 defined 4, but 7018 and 4D-NX only&n;   have 2 SDATA_IN lines (currently) */
@@ -11721,7 +11723,7 @@ suffix:semicolon
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -18272,7 +18274,7 @@ suffix:semicolon
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -19358,6 +19360,9 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+id|u64
+id|dma_mask
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19373,12 +19378,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pci_dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_ALI_5451
+)paren
+id|dma_mask
+op_assign
+id|ALI_DMA_MASK
+suffix:semicolon
+r_else
+id|dma_mask
+op_assign
+id|TRIDENT_DMA_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
 id|pci_dev
 comma
-id|TRIDENT_DMA_MASK
+id|dma_mask
 )paren
 )paren
 (brace
@@ -19387,7 +19408,16 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;trident: architecture does not support&quot;
-l_string|&quot; 30bit PCI busmaster DMA&bslash;n&quot;
+l_string|&quot; %s PCI busmaster DMA&bslash;n&quot;
+comma
+id|pci_dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_ALI_5451
+ques
+c_cond
+l_string|&quot;32-bit&quot;
+suffix:colon
+l_string|&quot;30-bit&quot;
 )paren
 suffix:semicolon
 r_goto

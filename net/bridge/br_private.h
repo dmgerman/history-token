@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.6 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.7 2001/12/24 00:59:55 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _BR_PRIVATE_H
 DECL|macro|_BR_PRIVATE_H
 mdefine_line|#define _BR_PRIVATE_H
@@ -384,6 +384,22 @@ r_void
 id|br_dev_setup
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|br_dev_xmit
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
 r_struct
 id|net_device
 op_star

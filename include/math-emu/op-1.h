@@ -1,4 +1,7 @@
 multiline_comment|/* Software floating-point emulation.&n;   Basic one-word fraction declaration and manipulation.&n;   Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.&n;   This file is part of the GNU C Library.&n;   Contributed by Richard Henderson (rth@cygnus.com),&n;&t;&t;  Jakub Jelinek (jj@ultra.linux.cz),&n;&t;&t;  David S. Miller (davem@redhat.com) and&n;&t;&t;  Peter Maydell (pmaydell@chiark.greenend.org.uk).&n;&n;   The GNU C Library is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU Library General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The GNU C Library is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;   Library General Public License for more details.&n;&n;   You should have received a copy of the GNU Library General Public&n;   License along with the GNU C Library; see the file COPYING.LIB.  If&n;   not, write to the Free Software Foundation, Inc.,&n;   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+macro_line|#ifndef    __MATH_EMU_OP_1_H__
+DECL|macro|__MATH_EMU_OP_1_H__
+mdefine_line|#define    __MATH_EMU_OP_1_H__
 DECL|macro|_FP_FRAC_DECL_1
 mdefine_line|#define _FP_FRAC_DECL_1(X)&t;_FP_W_TYPE X##_f
 DECL|macro|_FP_FRAC_COPY_1
@@ -89,4 +92,5 @@ mdefine_line|#define _FP_FRAC_DISASSEMBLE_1(X, r, rsize)&t;(X##_f = r)
 multiline_comment|/*&n; * Convert FP values between word sizes&n; */
 DECL|macro|_FP_FRAC_CONV_1_1
 mdefine_line|#define _FP_FRAC_CONV_1_1(dfs, sfs, D, S)&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    D##_f = S##_f;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (_FP_WFRACBITS_##sfs &gt; _FP_WFRACBITS_##dfs)&t;&t;&t;&bslash;&n;      {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (S##_c != FP_CLS_NAN)&t;&t;&t;&t;&t;&bslash;&n;&t;  _FP_FRAC_SRS_1(D, (_FP_WFRACBITS_##sfs-_FP_WFRACBITS_##dfs),&t;&bslash;&n;&t;&t;&t; _FP_WFRACBITS_##sfs);&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  _FP_FRAC_SRL_1(D, (_FP_WFRACBITS_##sfs-_FP_WFRACBITS_##dfs));&t;&bslash;&n;      }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      D##_f &lt;&lt;= _FP_WFRACBITS_##dfs - _FP_WFRACBITS_##sfs;&t;&t;&bslash;&n;  } while (0)
+macro_line|#endif /* __MATH_EMU_OP_1_H__ */
 eof

@@ -2,10 +2,11 @@ multiline_comment|/* spinlock.h: 64-bit Sparc spinlock support.&n; *&n; * Copyri
 macro_line|#ifndef __SPARC64_SPINLOCK_H
 DECL|macro|__SPARC64_SPINLOCK_H
 mdefine_line|#define __SPARC64_SPINLOCK_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* To get debugging spinlocks which detect and catch&n; * deadlock situations, set DEBUG_SPINLOCKS in the sparc64&n; * specific makefile and rebuild your kernel.&n; */
+multiline_comment|/* To get debugging spinlocks which detect and catch&n; * deadlock situations, set CONFIG_DEBUG_SPINLOCK&n; * and rebuild your kernel.&n; */
 multiline_comment|/* All of these locking primitives are expected to work properly&n; * even in an RMO memory model, which currently is what the kernel&n; * runs in.&n; *&n; * There is another issue.  Because we play games to save cycles&n; * in the non-contention case, we need to be extra careful about&n; * branch targets into the &quot;spinning&quot; code.  They live in their&n; * own section, but the newer V9 branches have a shorter range&n; * than the traditional 32-bit sparc branch variants.  The rule&n; * is that the branches that go into and out of the spinner sections&n; * must be pre-V9 branches.&n; */
-macro_line|#ifndef SPIN_LOCK_DEBUG
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|typedef|spinlock_t
 r_typedef
 r_int
@@ -133,7 +134,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* !(SPIN_LOCK_DEBUG) */
+macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
 (brace
@@ -199,9 +200,9 @@ DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
 DECL|macro|spin_unlock
 mdefine_line|#define spin_unlock(lock)&t;_do_spin_unlock(lock)
-macro_line|#endif /* SPIN_LOCK_DEBUG */
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 multiline_comment|/* Multi-reader locks, these are much saner than the 32-bit Sparc ones... */
-macro_line|#ifndef SPIN_LOCK_DEBUG
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|typedef|rwlock_t
 r_typedef
 r_int
@@ -256,7 +257,7 @@ DECL|macro|write_lock
 mdefine_line|#define write_lock(p)&t;__write_lock(p)
 DECL|macro|write_unlock
 mdefine_line|#define write_unlock(p)&t;__write_unlock(p)
-macro_line|#else /* !(SPIN_LOCK_DEBUG) */
+macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
 (brace
@@ -349,7 +350,7 @@ DECL|macro|write_lock
 mdefine_line|#define write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
 DECL|macro|write_unlock
 mdefine_line|#define write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
-macro_line|#endif /* SPIN_LOCK_DEBUG */
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SPINLOCK_H) */
 eof

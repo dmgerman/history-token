@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.121 2001/10/30 04:54:22 davem Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.122 2001/11/17 07:19:26 davem Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -561,23 +561,25 @@ r_int
 id|address
 )paren
 (brace
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
 r_int
 r_int
 id|g2
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
 r_int
 id|insn
 suffix:semicolon
-r_struct
-id|pt_regs
-id|regs
+r_int
+id|i
 suffix:semicolon
 id|i
 op_assign
 id|search_exception_table
+c_func
 (paren
 id|ret_pc
 comma
@@ -591,24 +593,29 @@ c_cond
 id|i
 )paren
 (brace
-multiline_comment|/* load &amp; store will be handled by fixup */
 r_case
 l_int|3
 suffix:colon
+multiline_comment|/* load &amp; store will be handled by fixup */
 r_return
 l_int|3
 suffix:semicolon
-multiline_comment|/* store will be handled by fixup, load will bump out */
-multiline_comment|/* for _to_ macros */
 r_case
 l_int|1
 suffix:colon
+multiline_comment|/* store will be handled by fixup, load will bump out */
+multiline_comment|/* for _to_ macros */
 id|insn
 op_assign
+op_star
+(paren
 (paren
 r_int
+r_int
+op_star
 )paren
 id|pc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -626,17 +633,22 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* load will be handled by fixup, store will bump out */
-multiline_comment|/* for _from_ macros */
 r_case
 l_int|2
 suffix:colon
+multiline_comment|/* load will be handled by fixup, store will bump out */
+multiline_comment|/* for _from_ macros */
 id|insn
 op_assign
+op_star
+(paren
 (paren
 r_int
+r_int
+op_star
 )paren
 id|pc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -674,7 +686,9 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 id|memset
+c_func
 (paren
 op_amp
 id|regs
@@ -699,6 +713,7 @@ l_int|4
 suffix:semicolon
 id|__asm__
 id|__volatile__
+c_func
 (paren
 l_string|&quot;rd %%psr, %0&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
@@ -712,6 +727,7 @@ id|regs.psr
 )paren
 suffix:semicolon
 id|unhandled_fault
+c_func
 (paren
 id|address
 comma

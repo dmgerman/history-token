@@ -36,6 +36,9 @@ op_or
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|data
 suffix:semicolon
 r_return

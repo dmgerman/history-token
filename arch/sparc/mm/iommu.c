@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: iommu.c,v 1.21 2001/02/13 01:16:43 davem Exp $&n; * iommu.c:  IOMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: iommu.c,v 1.22 2001/12/17 07:05:09 davem Exp $&n; * iommu.c:  IOMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek    (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -865,12 +865,23 @@ op_assign
 id|__u32
 )paren
 (paren
+id|page_address
+c_func
+(paren
 id|sg
 (braket
 id|sz
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 )paren
 suffix:semicolon
 id|sg
@@ -943,12 +954,23 @@ op_assign
 id|__u32
 )paren
 (paren
+id|page_address
+c_func
+(paren
 id|sg
 (braket
 id|sz
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 )paren
 suffix:semicolon
 id|sg
@@ -1020,7 +1042,7 @@ id|sg
 id|sz
 )braket
 dot
-id|address
+id|offset
 )paren
 op_amp
 id|PAGE_MASK
@@ -1047,12 +1069,23 @@ r_int
 r_int
 )paren
 (paren
+id|page_address
+c_func
+(paren
 id|sg
 (braket
 id|sz
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 op_plus
 id|sg
 (braket
@@ -1085,12 +1118,23 @@ op_assign
 id|__u32
 )paren
 (paren
+id|page_address
+c_func
+(paren
 id|sg
 (braket
 id|sz
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 )paren
 suffix:semicolon
 id|sg

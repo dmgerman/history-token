@@ -1,12 +1,10 @@
-multiline_comment|/* $Id: debuglocks.c,v 1.6 2001/04/24 01:09:12 davem Exp $&n; * debuglocks.c: Debugging versions of SMP locking primitives.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: debuglocks.c,v 1.9 2001/11/17 00:10:48 davem Exp $&n; * debuglocks.c: Debugging versions of SMP locking primitives.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* To enable this code, just define SPIN_LOCK_DEBUG in asm/spinlock.h */
-macro_line|#ifdef SPIN_LOCK_DEBUG
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_DEBUG_SPINLOCK)
 DECL|macro|GET_CALLER
 mdefine_line|#define GET_CALLER(PC) __asm__ __volatile__(&quot;mov %%i7, %0&quot; : &quot;=r&quot; (PC))
 DECL|function|show
@@ -228,6 +226,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
 id|GET_CALLER
 c_func
 (paren
@@ -284,6 +287,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show
 c_func
 (paren
@@ -323,6 +334,19 @@ suffix:semicolon
 id|lock-&gt;owner_cpu
 op_assign
 id|cpu
+suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_increment
+suffix:semicolon
+id|current-&gt;thread.smp_lock_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
 suffix:semicolon
 )brace
 DECL|function|_spin_trylock
@@ -404,6 +428,19 @@ id|lock-&gt;owner_cpu
 op_assign
 id|cpu
 suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_increment
+suffix:semicolon
+id|current-&gt;thread.smp_lock_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
+suffix:semicolon
 )brace
 r_return
 id|val
@@ -439,6 +476,9 @@ id|lock-&gt;lock
 op_assign
 l_int|0
 suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_decrement
+suffix:semicolon
 )brace
 multiline_comment|/* Keep INIT_STUCK the same... */
 DECL|function|_do_read_lock
@@ -473,6 +513,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
 id|GET_CALLER
 c_func
 (paren
@@ -505,6 +550,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_read
 c_func
 (paren
@@ -587,6 +640,19 @@ r_int
 id|caller
 )paren
 suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_increment
+suffix:semicolon
+id|current-&gt;thread.smp_lock_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
+suffix:semicolon
 )brace
 DECL|function|_do_read_unlock
 r_void
@@ -620,6 +686,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
 id|GET_CALLER
 c_func
 (paren
@@ -633,6 +704,9 @@ id|cpu
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_decrement
 suffix:semicolon
 id|runlock_again
 suffix:colon
@@ -681,6 +755,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_read
 c_func
 (paren
@@ -733,6 +815,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
 id|GET_CALLER
 c_func
 (paren
@@ -763,6 +850,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_write
 c_func
 (paren
@@ -839,6 +934,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_write
 c_func
 (paren
@@ -887,6 +990,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_write
 c_func
 (paren
@@ -952,6 +1063,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_write
 c_func
 (paren
@@ -993,6 +1112,19 @@ id|rw-&gt;writer_cpu
 op_assign
 id|cpu
 suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_increment
+suffix:semicolon
+id|current-&gt;thread.smp_lock_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
+suffix:semicolon
 )brace
 DECL|function|_do_write_unlock
 r_void
@@ -1015,6 +1147,11 @@ id|stuck
 op_assign
 id|INIT_STUCK
 suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
 id|GET_CALLER
 c_func
 (paren
@@ -1029,6 +1166,9 @@ suffix:semicolon
 id|rw-&gt;writer_cpu
 op_assign
 id|NO_PROC_ID
+suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_decrement
 suffix:semicolon
 id|wlock_again
 suffix:colon
@@ -1080,6 +1220,14 @@ op_decrement
 id|stuck
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|shown
+op_increment
+op_le
+l_int|2
+)paren
 id|show_write
 c_func
 (paren
@@ -1100,6 +1248,47 @@ id|wlock_again
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* SPIN_LOCK_DEBUG */
-macro_line|#endif /* CONFIG_SMP */
+DECL|function|atomic_dec_and_lock
+r_int
+id|atomic_dec_and_lock
+c_func
+(paren
+id|atomic_t
+op_star
+id|atomic
+comma
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+id|atomic
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_SMP &amp;&amp; CONFIG_DEBUG_SPINLOCK */
 eof

@@ -2,11 +2,11 @@ multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-macro_line|#include &quot;crc32.h&quot;
 r_static
 r_int
 id|jffs2_readdir

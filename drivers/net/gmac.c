@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network device driver for the GMAC ethernet controller on&n; * Apple G4 Powermacs.&n; *&n; * Copyright (C) 2000 Paul Mackerras &amp; Ben. Herrenschmidt&n; * &n; * portions based on sunhme.c by David S. Miller&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/06/2000&n; * - check init_etherdev return in gmac_probe1&n; * BenH &lt;benh@kernel.crashing.org&gt; - 03/09/2000&n; * - Add support for new PHYs&n; * - Add some PowerBook sleep code&n; * BenH &lt;benh@kernel.crashing.org&gt; - ??/??/????&n; *  - PHY updates&n; * BenH &lt;benh@kernel.crashing.org&gt; - 08/08/2001&n; * - Add more PHYs, fixes to sleep code&n; */
+multiline_comment|/*&n; * Network device driver for the GMAC ethernet controller on&n; * Apple G4 Powermacs.&n; *&n; * Copyright (C) 2000 Paul Mackerras &amp; Ben. Herrenschmidt&n; * &n; * portions based on sunhme.c by David S. Miller&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/06/2000&n; * - check init_etherdev return in gmac_probe1&n; * BenH &lt;benh@kernel.crashing.org&gt; - 03/09/2000&n; * - Add support for new PHYs&n; * - Add some PowerBook sleep code&n; * BenH &lt;benh@kernel.crashing.org&gt; - ??/??/????&n; *  - PHY updates&n; * BenH &lt;benh@kernel.crashing.org&gt; - 08/08/2001&n; * - Add more PHYs, fixes to sleep code&n; * Matt Domsch &lt;Matt_Domsch@dell.com&gt; - 11/12/2001&n; * - use library crc32 functions&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -4674,8 +4675,6 @@ l_int|20
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Configure promisc mode and setup multicast hash table&n; * filter&n; */
-DECL|macro|CRC_POLY
-mdefine_line|#define CRC_POLY&t;0xedb88320
 r_static
 r_void
 DECL|function|gmac_set_multicast
@@ -4716,8 +4715,7 @@ id|k
 comma
 id|b
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|crc
 suffix:semicolon
 r_int
@@ -4825,78 +4823,14 @@ op_increment
 (brace
 id|crc
 op_assign
-op_complement
-l_int|0
-suffix:semicolon
-r_for
-c_loop
+id|ether_crc_le
+c_func
 (paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
 l_int|6
-suffix:semicolon
-op_increment
-id|j
-)paren
-(brace
-id|b
-op_assign
+comma
 id|dmi-&gt;dmi_addr
-(braket
-id|j
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|k
-op_assign
-l_int|0
-suffix:semicolon
-id|k
-OL
-l_int|8
-suffix:semicolon
-op_increment
-id|k
 )paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|crc
-op_xor
-id|b
-)paren
-op_amp
-l_int|1
-)paren
-id|crc
-op_assign
-(paren
-id|crc
-op_rshift
-l_int|1
-)paren
-op_xor
-id|CRC_POLY
 suffix:semicolon
-r_else
-id|crc
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|b
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
 id|j
 op_assign
 id|crc

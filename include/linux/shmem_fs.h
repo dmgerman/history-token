@@ -4,7 +4,7 @@ mdefine_line|#define __SHMEM_FS_H
 multiline_comment|/* inode in-kernel data */
 DECL|macro|SHMEM_NR_DIRECT
 mdefine_line|#define SHMEM_NR_DIRECT 16
-multiline_comment|/*&n; * A swap entry has to fit into a &quot;unsigned long&quot;, as&n; * the entry is hidden in the &quot;index&quot; field of the&n; * swapper address space.&n; *&n; * We have to move it here, since not every user of fs.h is including&n; * mm.h, but m.h is including fs.h via sched .h :-/&n; */
+multiline_comment|/*&n; * A swap entry has to fit into a &quot;unsigned long&quot;, as&n; * the entry is hidden in the &quot;index&quot; field of the&n; * swapper address space.&n; *&n; * We have to move it here, since not every user of fs.h is including&n; * mm.h, but mm.h is including fs.h via sched .h :-/&n; */
 r_typedef
 r_struct
 (brace

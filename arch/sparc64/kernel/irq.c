@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.109 2001/11/12 22:22:37 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: irq.c,v 1.114 2002/01/11 08:45:38 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -27,6 +28,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#ifdef CONFIG_SMP
 r_static
 r_void
@@ -50,7 +52,7 @@ id|__attribute__
 (paren
 id|aligned
 (paren
-l_int|64
+id|SMP_CACHE_BYTES
 )paren
 )paren
 )paren
@@ -68,7 +70,7 @@ id|__attribute__
 (paren
 id|aligned
 (paren
-l_int|64
+id|SMP_CACHE_BYTES
 )paren
 )paren
 )paren
@@ -251,7 +253,7 @@ id|irq_action
 r_continue
 suffix:semicolon
 )brace
-id|seq_print
+id|seq_printf
 c_func
 (paren
 id|p
@@ -262,7 +264,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|seq_print
+id|seq_printf
 c_func
 (paren
 id|p
@@ -291,7 +293,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|seq_print
+id|seq_printf
 c_func
 (paren
 id|p
@@ -312,7 +314,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|seq_print
+id|seq_printf
 c_func
 (paren
 id|p
@@ -342,7 +344,7 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|seq_print
+id|seq_printf
 c_func
 (paren
 id|p
@@ -516,7 +518,10 @@ c_func
 (paren
 id|imap
 comma
-id|current-&gt;processor
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 op_lshift
 l_int|26
@@ -3362,6 +3367,19 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+l_int|9
+)paren
+id|kbd_pt_regs
+op_assign
+id|regs
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Sliiiick... */
 macro_line|#ifndef CONFIG_SMP
 id|bp
@@ -5122,6 +5140,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Only invoked on boot processor. */
 DECL|function|init_IRQ
 r_void
 id|__init
@@ -5131,24 +5150,6 @@ c_func
 r_void
 )paren
 (brace
-r_static
-r_int
-id|called
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|called
-op_eq
-l_int|0
-)paren
-(brace
-id|called
-op_assign
-l_int|1
-suffix:semicolon
 id|map_prom_timers
 c_func
 (paren
@@ -5195,7 +5196,6 @@ id|__up_workvec
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
 multiline_comment|/* We need to clear any IRQ&squot;s pending in the soft interrupt&n;&t; * registers, a spurious one could be left around from the&n;&t; * PROM timer which we just disabled.&n;&t; */
 id|clear_softint
 c_func

@@ -1919,6 +1919,10 @@ op_lshift
 id|BH_Mapped
 )paren
 suffix:semicolon
+id|bh_result-&gt;b_bdev
+op_assign
+l_int|NULL
+suffix:semicolon
 singleline_comment|// unlock cache
 id|affs_unlock_ext
 c_func

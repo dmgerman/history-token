@@ -258,11 +258,11 @@ mdefine_line|#define&t;SYM_LOCK_DRIVER(flags)    spin_lock_irqsave(&amp;sym53c8x
 DECL|macro|SYM_UNLOCK_DRIVER
 mdefine_line|#define&t;SYM_UNLOCK_DRIVER(flags)  spin_unlock_irqrestore(&amp;sym53c8xx_lock,flags)
 DECL|macro|SYM_INIT_LOCK_HCB
-mdefine_line|#define SYM_INIT_LOCK_HCB(np)&t;&t;spin_lock_init(&amp;np-&gt;s.host-&gt;host_lock);
+mdefine_line|#define SYM_INIT_LOCK_HCB(np)&t;&t;spin_lock_init((np)-&gt;s.host-&gt;host_lock);
 DECL|macro|SYM_LOCK_HCB
-mdefine_line|#define&t;SYM_LOCK_HCB(np, flags)&t;&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave(&amp;np-&gt;s.host-&gt;host_lock, flags)
+mdefine_line|#define&t;SYM_LOCK_HCB(np, flags)&t;&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave((np)-&gt;s.host-&gt;host_lock, flags)
 DECL|macro|SYM_UNLOCK_HCB
-mdefine_line|#define&t;SYM_UNLOCK_HCB(np, flags)&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore(&amp;np-&gt;s.host-&gt;host_lock, flags)
+mdefine_line|#define&t;SYM_UNLOCK_HCB(np, flags)&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore((np)-&gt;s.host-&gt;host_lock, flags)
 multiline_comment|/*&n; *  These simple macros limit expression involving &n; *  kernel time values (jiffies) to some that have &n; *  chance not to be too much incorrect. :-)&n; */
 DECL|macro|ktime_get
 mdefine_line|#define ktime_get(o)&t;&t;(jiffies + (u_long) o)

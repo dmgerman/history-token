@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: io.h,v 1.29 2001/11/10 09:28:34 davem Exp $&n; */
+multiline_comment|/*&n; * $Id: io.h,v 1.30 2001/12/21 01:23:21 davem Exp $&n; */
 macro_line|#ifndef __SPARC_IO_H
 DECL|macro|__SPARC_IO_H
 mdefine_line|#define __SPARC_IO_H
@@ -7,10 +7,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;  /* struct resource */
 macro_line|#include &lt;asm/page.h&gt;      /* IO address mapping routines need this */
 macro_line|#include &lt;asm/system.h&gt;
-DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus virt_to_phys
-DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt phys_to_virt
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 DECL|function|flip_dword
 r_static
 id|__inline__

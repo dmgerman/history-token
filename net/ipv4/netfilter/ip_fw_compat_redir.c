@@ -779,6 +779,21 @@ op_amp
 id|redir-&gt;destroyme
 )paren
 suffix:semicolon
+id|redir-&gt;destroyme.expires
+op_assign
+id|jiffies
+op_plus
+l_int|75
+op_star
+id|HZ
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|redir-&gt;destroyme
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* In case mangling has changed, rewrite this part. */
 id|redir-&gt;core

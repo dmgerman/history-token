@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.16 2001/10/09 02:24:33 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.17 2001/12/17 07:05:09 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1918,7 +1918,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|macro|SG_ENT_PHYS_ADDRESS
-mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;((SG)-&gt;address ? &bslash;&n;&t; __pa((SG)-&gt;address) : &bslash;&n;&t; (__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset))
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;(__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset)
 DECL|function|fill_sg
 r_static
 r_inline
@@ -2380,12 +2380,6 @@ c_func
 id|pdev
 comma
 (paren
-id|sglist-&gt;address
-ques
-c_cond
-id|sglist-&gt;address
-suffix:colon
-(paren
 id|page_address
 c_func
 (paren
@@ -2393,7 +2387,6 @@ id|sglist-&gt;page
 )paren
 op_plus
 id|sglist-&gt;offset
-)paren
 )paren
 comma
 id|sglist-&gt;length
