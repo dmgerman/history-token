@@ -5101,11 +5101,6 @@ id|urb-&gt;interval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Bulk and interrupt use common result&n; */
-DECL|macro|uhci_result_bulk
-mdefine_line|#define uhci_result_bulk uhci_result_common
-DECL|macro|uhci_result_interrupt
-mdefine_line|#define uhci_result_interrupt uhci_result_common
 multiline_comment|/*&n; * Isochronous transfers&n; */
 DECL|function|isochronous_find_limits
 r_static
@@ -6362,26 +6357,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PIPE_BULK
+suffix:colon
+r_case
 id|PIPE_INTERRUPT
 suffix:colon
 id|ret
 op_assign
-id|uhci_result_interrupt
-c_func
-(paren
-id|uhci
-comma
-id|urb
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PIPE_BULK
-suffix:colon
-id|ret
-op_assign
-id|uhci_result_bulk
+id|uhci_result_common
 c_func
 (paren
 id|uhci
