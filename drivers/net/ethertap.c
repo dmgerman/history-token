@@ -1434,6 +1434,7 @@ id|lp-&gt;stats
 suffix:semicolon
 )brace
 DECL|function|ethertap_init
+r_static
 r_int
 id|__init
 id|ethertap_init
@@ -1574,6 +1575,7 @@ id|ethertap_init
 )paren
 suffix:semicolon
 DECL|function|ethertap_cleanup
+r_static
 r_void
 id|__exit
 id|ethertap_cleanup
