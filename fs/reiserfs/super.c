@@ -3196,7 +3196,7 @@ id|s
 r_int
 id|i
 comma
-id|bmp
+id|bmap_nr
 suffix:semicolon
 id|SB_AP_BITMAP
 (paren
@@ -3243,7 +3243,7 @@ id|i
 op_assign
 l_int|0
 comma
-id|bmp
+id|bmap_nr
 op_assign
 id|REISERFS_DISK_OFFSET_IN_BYTES
 op_div
@@ -3262,7 +3262,7 @@ suffix:semicolon
 id|i
 op_increment
 comma
-id|bmp
+id|bmap_nr
 op_assign
 id|s-&gt;s_blocksize
 op_star
@@ -3284,7 +3284,7 @@ c_func
 (paren
 id|s
 comma
-id|bmp
+id|bmap_nr
 )paren
 suffix:semicolon
 r_if
