@@ -3985,11 +3985,6 @@ id|raw3215_info
 op_star
 id|raw
 suffix:semicolon
-r_int
-id|length
-comma
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
