@@ -7714,6 +7714,7 @@ c_func
 suffix:semicolon
 id|next
 suffix:colon
+suffix:semicolon
 )brace
 id|check_irq_on
 c_func
