@@ -3,6 +3,8 @@ macro_line|#ifndef __ISDN_H__
 DECL|macro|__ISDN_H__
 mdefine_line|#define __ISDN_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
+singleline_comment|// FIXME!!!
+macro_line|#include &lt;../drivers/isdn/i4l/isdn_fsm.h&gt;
 macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
 multiline_comment|/* Save memory */
 DECL|macro|ISDN_MAX_DRIVERS
@@ -933,16 +935,17 @@ id|timer_list
 id|dial_timer
 suffix:semicolon
 multiline_comment|/* dial events timer                */
+DECL|member|fi
+r_struct
+id|fsm_inst
+id|fi
+suffix:semicolon
+multiline_comment|/* call control state machine       */
 DECL|member|dial_event
 r_int
 id|dial_event
 suffix:semicolon
 multiline_comment|/* event in case of timer expiry    */
-DECL|member|dialstate
-r_int
-id|dialstate
-suffix:semicolon
-multiline_comment|/* State for dialing                */
 DECL|member|dial
 r_int
 id|dial
