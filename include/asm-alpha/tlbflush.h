@@ -219,6 +219,7 @@ id|mm
 )paren
 (brace
 r_int
+r_int
 op_star
 id|mmc
 op_assign

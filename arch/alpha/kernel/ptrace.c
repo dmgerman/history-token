@@ -579,10 +579,12 @@ suffix:semicolon
 DECL|variable|zero
 r_static
 r_int
+r_int
 id|zero
 suffix:semicolon
 multiline_comment|/*&n; * Get address of register REGNO in task TASK.&n; */
 r_static
+r_int
 r_int
 op_star
 DECL|function|get_reg_addr
@@ -599,6 +601,7 @@ r_int
 id|regno
 )paren
 (brace
+r_int
 r_int
 op_star
 id|addr
@@ -660,12 +663,8 @@ r_else
 id|addr
 op_assign
 (paren
-r_int
+r_void
 op_star
-)paren
-(paren
-(paren
-r_int
 )paren
 id|task-&gt;thread_info
 op_plus
@@ -673,7 +672,6 @@ id|regoff
 (braket
 id|regno
 )braket
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -682,6 +680,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get contents of register REGNO in task TASK.&n; */
 r_static
+r_int
 r_int
 DECL|function|get_reg
 id|get_reg
@@ -770,6 +769,7 @@ r_int
 r_int
 id|regno
 comma
+r_int
 r_int
 id|data
 )paren
@@ -970,7 +970,8 @@ id|nsaved
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|insn
 comma
 id|op_code
@@ -998,6 +999,10 @@ id|child
 comma
 id|pc
 comma
+(paren
+r_int
+op_star
+)paren
 op_amp
 id|insn
 )paren
@@ -1176,6 +1181,10 @@ id|child-&gt;thread_info-&gt;bpt_addr
 id|i
 )braket
 comma
+(paren
+r_int
+op_star
+)paren
 op_amp
 id|insn
 )paren
