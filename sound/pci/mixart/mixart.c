@@ -1961,7 +1961,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  prepare callback for all pcms&n; *&n; *  NOTE: this callback is non-atomic (pcm-&gt;info_flags |= SNDRV_PCM_INFO_NONATOMIC_OPS)&n; */
+multiline_comment|/*&n; *  prepare callback for all pcms&n; */
 DECL|function|snd_mixart_prepare
 r_static
 r_int
@@ -4002,7 +4002,7 @@ id|snd_mixart_capture_ops
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-id|SNDRV_PCM_INFO_NONATOMIC_OPS
+l_int|0
 suffix:semicolon
 id|strcpy
 c_func
@@ -4131,7 +4131,7 @@ id|snd_mixart_capture_ops
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-id|SNDRV_PCM_INFO_NONATOMIC_OPS
+l_int|0
 suffix:semicolon
 id|strcpy
 c_func
