@@ -39,7 +39,9 @@ DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG PFX format &quot;&bslash;n&quot; , ## arg); } while (0)
 multiline_comment|/* Module and Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.00 (28/02/2004)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.00&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE &quot;12 Jun 2004&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Wim Van Sebroeck &lt;wim@iguana.be&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1690,6 +1692,10 @@ id|usb_pcwd_device
 )paren
 suffix:semicolon
 )brace
+id|expect_release
+op_assign
+l_int|0
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -1698,10 +1704,6 @@ comma
 op_amp
 id|is_active
 )paren
-suffix:semicolon
-id|expect_release
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -2620,14 +2622,22 @@ multiline_comment|/* Check that the heartbeat value is within it&squot;s range ;
 r_if
 c_cond
 (paren
+id|usb_pcwd_set_heartbeat
+c_func
+(paren
+id|usb_pcwd
+comma
 id|heartbeat
-template_param
-l_int|0xFFFF
+)paren
 )paren
 (brace
-id|heartbeat
-op_assign
+id|usb_pcwd_set_heartbeat
+c_func
+(paren
+id|usb_pcwd
+comma
 id|WATCHDOG_HEARTBEAT
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2636,19 +2646,10 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;heartbeat value must be 0&lt;heartbeat&lt;65536, using %d&bslash;n&quot;
 comma
-id|heartbeat
+id|WATCHDOG_HEARTBEAT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate the watchdog&squot;s heartbeat */
-id|usb_pcwd_set_heartbeat
-c_func
-(paren
-id|usb_pcwd
-comma
-id|heartbeat
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|register_reboot_notifier
@@ -2686,39 +2687,6 @@ id|misc_register
 c_func
 (paren
 op_amp
-id|usb_pcwd_miscdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
-comma
-id|WATCHDOG_MINOR
-comma
-id|retval
-)paren
-suffix:semicolon
-r_goto
-id|err_out_unregister_reboot
-suffix:semicolon
-)brace
-id|retval
-op_assign
-id|misc_register
-c_func
-(paren
-op_amp
 id|usb_pcwd_temperature_miscdev
 )paren
 suffix:semicolon
@@ -2738,6 +2706,39 @@ id|PFX
 l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
 comma
 id|TEMP_MINOR
+comma
+id|retval
+)paren
+suffix:semicolon
+r_goto
+id|err_out_unregister_reboot
+suffix:semicolon
+)brace
+id|retval
+op_assign
+id|misc_register
+c_func
+(paren
+op_amp
+id|usb_pcwd_miscdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+comma
+id|WATCHDOG_MINOR
 comma
 id|retval
 )paren
@@ -2775,7 +2776,7 @@ id|misc_deregister
 c_func
 (paren
 op_amp
-id|usb_pcwd_miscdev
+id|usb_pcwd_temperature_miscdev
 )paren
 suffix:semicolon
 id|err_out_unregister_reboot
@@ -2870,14 +2871,14 @@ id|misc_deregister
 c_func
 (paren
 op_amp
-id|usb_pcwd_temperature_miscdev
+id|usb_pcwd_miscdev
 )paren
 suffix:semicolon
 id|misc_deregister
 c_func
 (paren
 op_amp
-id|usb_pcwd_miscdev
+id|usb_pcwd_temperature_miscdev
 )paren
 suffix:semicolon
 id|unregister_reboot_notifier
@@ -2968,9 +2969,11 @@ c_func
 id|KERN_INFO
 id|PFX
 id|DRIVER_DESC
-l_string|&quot; &quot;
+l_string|&quot; v&quot;
 id|DRIVER_VERSION
-l_string|&quot;&bslash;n&quot;
+l_string|&quot; (&quot;
+id|DRIVER_DATE
+l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

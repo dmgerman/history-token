@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;sc1200.h&quot;
 DECL|macro|SC1200_REV_A
 mdefine_line|#define SC1200_REV_A&t;0x00
 DECL|macro|SC1200_REV_B1
@@ -2540,6 +2539,45 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|sc1200_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SC1200&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_sc1200
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_sc1200
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 DECL|function|sc1200_init_one
 r_static
 r_int
@@ -2565,10 +2603,7 @@ c_func
 id|dev
 comma
 op_amp
-id|sc1200_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
+id|sc1200_chipset
 )paren
 suffix:semicolon
 r_return

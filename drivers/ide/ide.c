@@ -8556,6 +8556,14 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+id|pnpide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|h8300_ide_init
 c_func
 (paren
@@ -8741,25 +8749,13 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_BUDDHA */
-macro_line|#if defined(CONFIG_BLK_DEV_IDEPNP) &amp;&amp; defined(CONFIG_PNP)
-(brace
-r_extern
-r_void
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPNP
 id|pnpide_init
 c_func
 (paren
-r_int
-id|enable
 )paren
 suffix:semicolon
-id|pnpide_init
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPNP */
+macro_line|#endif
 macro_line|#ifdef CONFIG_H8300
 id|h8300_ide_init
 c_func
@@ -9417,14 +9413,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDEPNP) &amp;&amp; defined(CONFIG_PNP) &amp;&amp; defined(MODULE)
-id|pnpide_init
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPNP */
 macro_line|#ifdef CONFIG_PROC_FS
 id|ide_remove_proc_entries
 c_func

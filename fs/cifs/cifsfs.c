@@ -1650,6 +1650,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|read_data
 comma
@@ -1779,6 +1780,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|write_data
 comma

@@ -1,55 +1,7 @@
 multiline_comment|/*&n; * linux/drivers/ide/ide-pnp.c&n; *&n; * This file provides autodetection for ISA PnP IDE interfaces.&n; * It was tested with &quot;ESS ES1868 Plug and Play AudioDrive&quot; IDE interface.&n; *&n; * Copyright (C) 2000 Andrey Panin &lt;pazke@donpac.ru&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  &n; */
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
-DECL|macro|GENERIC_HD_DATA
-mdefine_line|#define GENERIC_HD_DATA&t;&t;0
-DECL|macro|GENERIC_HD_ERROR
-mdefine_line|#define GENERIC_HD_ERROR&t;1
-DECL|macro|GENERIC_HD_NSECTOR
-mdefine_line|#define GENERIC_HD_NSECTOR&t;2
-DECL|macro|GENERIC_HD_SECTOR
-mdefine_line|#define GENERIC_HD_SECTOR&t;3
-DECL|macro|GENERIC_HD_LCYL
-mdefine_line|#define GENERIC_HD_LCYL&t;&t;4
-DECL|macro|GENERIC_HD_HCYL
-mdefine_line|#define GENERIC_HD_HCYL&t;&t;5
-DECL|macro|GENERIC_HD_SELECT
-mdefine_line|#define GENERIC_HD_SELECT&t;6
-DECL|macro|GENERIC_HD_STATUS
-mdefine_line|#define GENERIC_HD_STATUS&t;7
-DECL|variable|generic_ide_offsets
-r_static
-r_int
-id|generic_ide_offsets
-(braket
-id|IDE_NR_PORTS
-)braket
-op_assign
-(brace
-id|GENERIC_HD_DATA
-comma
-id|GENERIC_HD_ERROR
-comma
-id|GENERIC_HD_NSECTOR
-comma
-id|GENERIC_HD_SECTOR
-comma
-id|GENERIC_HD_LCYL
-comma
-id|GENERIC_HD_HCYL
-comma
-id|GENERIC_HD_SELECT
-comma
-id|GENERIC_HD_STATUS
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-suffix:semicolon
+macro_line|#include &lt;linux/ide.h&gt;
 multiline_comment|/* Add your devices here :)) */
 DECL|variable|idepnp_devices
 r_struct
@@ -142,16 +94,26 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|ide_setup_ports
+id|memset
 c_func
 (paren
 op_amp
 id|hw
 comma
+l_int|0
+comma
+r_sizeof
 (paren
-r_int
-r_int
+id|hw
 )paren
+)paren
+suffix:semicolon
+id|ide_std_init_ports
+c_func
+(paren
+op_amp
+id|hw
+comma
 id|pnp_port_start
 c_func
 (paren
@@ -160,12 +122,6 @@ comma
 l_int|0
 )paren
 comma
-id|generic_ide_offsets
-comma
-(paren
-r_int
-r_int
-)paren
 id|pnp_port_start
 c_func
 (paren
@@ -173,12 +129,10 @@ id|dev
 comma
 l_int|1
 )paren
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-singleline_comment|//&t;&t;&t;generic_pnp_ide_iops,
+)paren
+suffix:semicolon
+id|hw.irq
+op_assign
 id|pnp_irq
 c_func
 (paren
@@ -186,7 +140,10 @@ id|dev
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+id|hw.dma
+op_assign
+id|NO_DMA
 suffix:semicolon
 id|index
 op_assign
@@ -310,29 +267,14 @@ comma
 suffix:semicolon
 DECL|function|pnpide_init
 r_void
+id|__init
 id|pnpide_init
 c_func
 (paren
-r_int
-id|enable
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|enable
+r_void
 )paren
 (brace
 id|pnp_register_driver
-c_func
-(paren
-op_amp
-id|idepnp_driver
-)paren
-suffix:semicolon
-)brace
-r_else
-id|pnp_unregister_driver
 c_func
 (paren
 op_amp

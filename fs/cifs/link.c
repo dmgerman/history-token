@@ -796,6 +796,7 @@ op_star
 id|direntry
 comma
 r_char
+id|__user
 op_star
 id|pBuffer
 comma

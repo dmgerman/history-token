@@ -3642,8 +3642,9 @@ DECL|function|init_chipset_cmd64x
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_cmd64x
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -4046,8 +4047,9 @@ DECL|function|ata66_cmd64x
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|ata66_cmd64x
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4117,8 +4119,9 @@ suffix:semicolon
 DECL|function|init_hwif_cmd64x
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_cmd64x
+c_func
 (paren
 id|ide_hwif_t
 op_star

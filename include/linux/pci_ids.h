@@ -1313,6 +1313,8 @@ DECL|macro|PCI_DEVICE_ID_TI_1420
 mdefine_line|#define PCI_DEVICE_ID_TI_1420&t;&t;0xac51
 DECL|macro|PCI_DEVICE_ID_TI_1451A
 mdefine_line|#define PCI_DEVICE_ID_TI_1451A&t;&t;0xac52
+DECL|macro|PCI_DEVICE_ID_TI_1620
+mdefine_line|#define PCI_DEVICE_ID_TI_1620&t;&t;0xac54
 DECL|macro|PCI_DEVICE_ID_TI_1520
 mdefine_line|#define PCI_DEVICE_ID_TI_1520&t;&t;0xac55
 DECL|macro|PCI_DEVICE_ID_TI_1510
