@@ -3976,6 +3976,14 @@ op_rshift
 l_int|32
 )paren
 suffix:semicolon
+id|pSMB-&gt;Reserved
+op_assign
+l_int|0xFFFFFFFF
+suffix:semicolon
+id|pSMB-&gt;WriteMode
+op_assign
+l_int|0
+suffix:semicolon
 id|pSMB-&gt;Remaining
 op_assign
 l_int|0

@@ -552,7 +552,7 @@ id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
-multiline_comment|/* clear through bcc + 1, making an even 40 bytes */
+multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
 r_if
 c_cond
 (paren
@@ -572,7 +572,7 @@ r_struct
 id|smb_hdr
 )paren
 op_plus
-l_int|3
+l_int|27
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -673,7 +673,7 @@ id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
-multiline_comment|/* clear through bcc + 1, making an even 40 bytes */
+multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
 r_if
 c_cond
 (paren
@@ -693,7 +693,7 @@ r_struct
 id|smb_hdr
 )paren
 op_plus
-l_int|3
+l_int|27
 )paren
 suffix:semicolon
 id|atomic_inc
