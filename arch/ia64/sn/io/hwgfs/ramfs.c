@@ -334,6 +334,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|unused
 )paren
 (brace
 r_return
