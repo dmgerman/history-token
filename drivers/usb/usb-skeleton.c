@@ -1058,7 +1058,7 @@ op_logical_neg
 (paren
 id|endpoint-&gt;bEndpointAddress
 op_amp
-id|USB_DIR_IN
+id|USB_DIR_OUT
 )paren
 op_logical_and
 (paren
