@@ -1912,6 +1912,17 @@ comma
 id|list
 )paren
 suffix:semicolon
+multiline_comment|/* Control transfers always start with toggle 0 */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|usb_pipecontrol
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
 id|usb_settoggle
 c_func
 (paren
@@ -2083,7 +2094,23 @@ comma
 id|queue_list
 )paren
 suffix:semicolon
-multiline_comment|/* Fix up the toggle for the next URB&squot;s */
+multiline_comment|/*&n;&t; * Fix up the toggle for the following URBs in the queue.&n;&t; * Only needed for bulk and interrupt: control and isochronous&n;&t; * endpoints don&squot;t propagate toggles between messages.&n;&t; */
+r_if
+c_cond
+(paren
+id|usb_pipebulk
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+op_logical_or
+id|usb_pipeint
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2113,8 +2140,8 @@ id|urb-&gt;pipe
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* If we&squot;re in the middle of the queue, grab the toggle */
-multiline_comment|/*  from the TD previous to us */
+multiline_comment|/* If we&squot;re in the middle of the queue, grab the */
+multiline_comment|/* toggle from the TD previous to us */
 id|purbp
 op_assign
 id|list_entry
@@ -2234,6 +2261,7 @@ comma
 id|toggle
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
