@@ -139,6 +139,11 @@ r_int
 id|period_bytes
 suffix:semicolon
 multiline_comment|/* requested period size */
+DECL|member|period_ptr
+r_int
+id|period_ptr
+suffix:semicolon
+multiline_comment|/* actual write pointer to period */
 DECL|member|periods
 r_int
 r_int
