@@ -5396,6 +5396,12 @@ id|zone-&gt;free_pages
 op_assign
 l_int|0
 suffix:semicolon
+id|zone-&gt;temp_priority
+op_assign
+id|zone-&gt;prev_priority
+op_assign
+id|DEF_PRIORITY
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The per-cpu-pages pools are set to around 1000th of the&n;&t;&t; * size of the zone.  But no more than 1/4 of a meg - there&squot;s&n;&t;&t; * no point in going beyond the size of L2 cache.&n;&t;&t; *&n;&t;&t; * OK, so we don&squot;t know how big the cache is.  So guess.&n;&t;&t; */
 id|batch
 op_assign

@@ -280,6 +280,9 @@ DECL|macro|ZONES_SHIFT
 mdefine_line|#define ZONES_SHIFT&t;&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x03
+multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we will scan in one&n; * go. A value of 12 for DEF_PRIORITY implies that we will scan 1/4096th of the&n; * queues (&quot;queue_length &gt;&gt; 12&quot;) during an aging round.&n; */
+DECL|macro|DEF_PRIORITY
+mdefine_line|#define DEF_PRIORITY 12
 multiline_comment|/*&n; * One allocation request operates on a zonelist. A zonelist&n; * is a list of zones, the first one is the &squot;goal&squot; of the&n; * allocation, the other zones are fallback zones, in decreasing&n; * priority.&n; *&n; * Right now a zonelist takes up less than a cacheline. We never&n; * modify it apart from boot-up, and only a few indices are used,&n; * so despite the zonelist table being relatively big, the cache&n; * footprint of this construct is very small.&n; */
 DECL|struct|zonelist
 r_struct
