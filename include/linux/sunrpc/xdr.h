@@ -556,6 +556,27 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|read_bytes_from_xdr_buf
+c_func
+(paren
+r_struct
+id|xdr_buf
+op_star
+id|buf
+comma
+r_int
+id|base
+comma
+r_void
+op_star
+id|obj
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Helper structure for copying from an sk_buff.&n; */
 r_typedef
 r_struct

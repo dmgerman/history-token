@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * IA-64 semaphore implementation (derived from x86 version).&n; *&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter: The &quot;count&quot;&n; * variable is decremented for each process that tries to acquire the&n; * semaphore, while the &quot;sleepers&quot; variable is a count of such&n; * acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can efficiently&n; * test if they need to do any extra work (up needs to do something&n; * only if count was negative before the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is protected&n; * by the spinlock in the semaphore&squot;s waitqueue head.&n; *&n; * Note that these functions are only called when there is contention&n; * on the lock, and as such all this is the &quot;non-critical&quot; part of the&n; * whole semaphore business. The critical part is the inline stuff in&n; * &lt;asm/semaphore.h&gt; where we want to avoid any extra jumps and calls.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Logic:&n; *  - Only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - When we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleepers&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
@@ -22,8 +23,9 @@ id|sem-&gt;wait
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|__down
+r_void
+id|__sched
 id|__down
 (paren
 r_struct
@@ -177,8 +179,9 @@ op_assign
 id|TASK_RUNNING
 suffix:semicolon
 )brace
-r_int
 DECL|function|__down_interruptible
+r_int
+id|__sched
 id|__down_interruptible
 (paren
 r_struct

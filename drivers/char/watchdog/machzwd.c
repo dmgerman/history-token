@@ -294,7 +294,7 @@ DECL|macro|dprintk
 macro_line|#&t;define dprintk(format, args...)
 macro_line|#else
 DECL|macro|dprintk
-macro_line|#&t;define dprintk(format, args...) printk(KERN_DEBUG PFX; &quot;:&quot; __FUNCTION__ &quot;:%d: &quot; format, __LINE__ , ## args)
+macro_line|#&t;define dprintk(format, args...) printk(KERN_DEBUG PFX &quot;:%s:%d: &quot; format, __FUNCTION__, __LINE__ , ## args)
 macro_line|#endif
 multiline_comment|/* STATUS register functions */
 DECL|function|zf_get_status

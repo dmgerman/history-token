@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page(),&
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -404,7 +404,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Must be called with page&squot;s pte_chain_lock held. */
+multiline_comment|/* Must be called with page&squot;s rmap lock held. */
 DECL|function|page_mapping_inuse
 r_static
 r_inline
@@ -422,8 +422,6 @@ r_struct
 id|address_space
 op_star
 id|mapping
-op_assign
-id|page-&gt;mapping
 suffix:semicolon
 multiline_comment|/* Page is in somebody&squot;s page tables. */
 r_if
@@ -438,16 +436,6 @@ id|page
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* XXX: does this happen ? */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mapping
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Be more reluctant to reclaim swapcache than pagecache */
 r_if
 c_cond
@@ -461,37 +449,30 @@ id|page
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* File is mmap&squot;d by somebody. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
+id|mapping
+op_assign
+id|page_mapping
 c_func
 (paren
-op_amp
-id|mapping-&gt;i_mmap
+id|page
 )paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
+id|mapping
 )paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+multiline_comment|/* File is mmap&squot;d by somebody? */
+r_return
+id|mapping_mapped
+c_func
+(paren
+id|mapping
+)paren
 suffix:semicolon
 )brace
 DECL|function|is_page_cache_freeable
@@ -617,7 +598,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_eq
 id|mapping
 )paren
@@ -676,6 +661,9 @@ comma
 r_int
 op_star
 id|nr_scanned
+comma
+r_int
+id|do_writepage
 )paren
 (brace
 r_struct
@@ -810,7 +798,7 @@ id|page
 r_goto
 id|keep_locked
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -837,7 +825,7 @@ id|page
 )paren
 (brace
 multiline_comment|/* In active use or really unfreeable.  Activate it. */
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -849,31 +837,40 @@ suffix:semicolon
 )brace
 id|mapping
 op_assign
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|may_enter_fs
+op_assign
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_FS
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
-multiline_comment|/*&n;&t;&t; * Anonymous process memory without backing store. Try to&n;&t;&t; * allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Anonymous process memory has backing store?&n;&t;&t; * Try to allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|page_mapped
+id|PageAnon
 c_func
 (paren
 id|page
 )paren
 op_logical_and
 op_logical_neg
-id|mapping
-op_logical_and
-op_logical_neg
-id|PagePrivate
+id|PageSwapCache
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -892,40 +889,38 @@ id|page
 r_goto
 id|activate_locked
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-id|mapping
-op_assign
-id|page-&gt;mapping
-suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SWAP */
-id|may_enter_fs
-op_assign
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-op_logical_or
+r_if
+c_cond
 (paren
 id|PageSwapCache
 c_func
 (paren
 id|page
 )paren
-op_logical_and
+)paren
+(brace
+id|mapping
+op_assign
+op_amp
+id|swapper_space
+suffix:semicolon
+id|may_enter_fs
+op_assign
 (paren
 id|gfp_mask
 op_amp
 id|__GFP_IO
 )paren
-)paren
 suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
 c_cond
@@ -952,7 +947,7 @@ id|page
 r_case
 id|SWAP_FAIL
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -964,7 +959,7 @@ suffix:semicolon
 r_case
 id|SWAP_AGAIN
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -980,7 +975,7 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -1059,17 +1054,21 @@ id|mapping-&gt;backing_dev_info
 r_goto
 id|keep_locked
 suffix:semicolon
-id|spin_lock
-c_func
+r_if
+c_cond
 (paren
-op_amp
-id|mapping-&gt;page_lock
+id|laptop_mode
+op_logical_and
+op_logical_neg
+id|do_writepage
 )paren
+r_goto
+id|keep_locked
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_clear_page_dirty
+id|clear_page_dirty_for_io
 c_func
 (paren
 id|page
@@ -1105,23 +1104,6 @@ op_assign
 l_int|1
 comma
 )brace
-suffix:semicolon
-id|list_move
-c_func
-(paren
-op_amp
-id|page-&gt;list
-comma
-op_amp
-id|mapping-&gt;locked_pages
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
 suffix:semicolon
 id|SetPageReclaim
 c_func
@@ -1200,13 +1182,6 @@ r_goto
 id|keep
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * If the page has buffers, try to free the buffer mappings&n;&t;&t; * associated with this page. If we succeed we try to free&n;&t;&t; * the page as well.&n;&t;&t; *&n;&t;&t; * We do this even if the page is PageDirty().&n;&t;&t; * try_to_release_page() does not perform I/O, but it is&n;&t;&t; * possible for a page to have PageDirty set, but it is actually&n;&t;&t; * clean (all its buffers are clean).  This happens if the&n;&t;&t; * buffers were written out directly, with submit_bh(). ext3&n;&t;&t; * will do this, as well as the blockdev mapping. &n;&t;&t; * try_to_release_page() will discover that cleanness and will&n;&t;&t; * drop the buffers and mark the page clean - it can be freed.&n;&t;&t; *&n;&t;&t; * Rarely, pages can have buffers and no -&gt;mapping.  These are&n;&t;&t; * the pages which were not successfully invalidated in&n;&t;&t; * truncate_complete_page().  We try to drop those buffers here&n;&t;&t; * and if that worked, and the page is no longer mapped into&n;&t;&t; * process address space (page_count == 0) it can be freed.&n;&t;&t; * Otherwise, leave the page on the LRU so it is swappable.&n;&t;&t; */
 r_if
@@ -1262,11 +1237,11 @@ r_goto
 id|keep_locked
 suffix:semicolon
 multiline_comment|/* truncate got there first */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The non-racy check for busy page.  It is critical to check&n;&t;&t; * PageDirty _after_ making sure that the page is freeable and&n;&t;&t; * not in use by anybody. &t;(pagecache + us == 2)&n;&t;&t; */
@@ -1288,11 +1263,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_goto
@@ -1317,7 +1292,9 @@ op_assign
 dot
 id|val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 )brace
 suffix:semicolon
 id|__delete_from_swap_cache
@@ -1326,11 +1303,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|swap_free
@@ -1357,11 +1334,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|__put_page
@@ -1505,6 +1482,9 @@ comma
 r_int
 op_star
 id|total_scanned
+comma
+r_int
+id|do_writepage
 )paren
 (brace
 id|LIST_HEAD
@@ -1749,6 +1729,8 @@ comma
 id|gfp_mask
 comma
 id|total_scanned
+comma
+id|do_writepage
 )paren
 suffix:semicolon
 op_star
@@ -2254,7 +2236,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -2270,7 +2252,7 @@ id|page
 )paren
 )paren
 (brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -2289,7 +2271,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -2304,11 +2286,7 @@ id|total_swap_pages
 op_eq
 l_int|0
 op_logical_and
-op_logical_neg
-id|page-&gt;mapping
-op_logical_and
-op_logical_neg
-id|PagePrivate
+id|PageAnon
 c_func
 (paren
 id|page
@@ -2715,6 +2693,9 @@ r_struct
 id|page_state
 op_star
 id|ps
+comma
+r_int
+id|do_writepage
 )paren
 (brace
 r_int
@@ -2839,6 +2820,8 @@ comma
 id|count
 comma
 id|total_scanned
+comma
+id|do_writepage
 )paren
 suffix:semicolon
 )brace
@@ -2873,6 +2856,9 @@ r_struct
 id|page_state
 op_star
 id|ps
+comma
+r_int
+id|do_writepage
 )paren
 (brace
 r_int
@@ -2957,6 +2943,8 @@ comma
 id|total_scanned
 comma
 id|ps
+comma
+id|do_writepage
 )paren
 suffix:semicolon
 )brace
@@ -3008,6 +2996,17 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|total_scanned
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|do_writepage
+op_assign
+l_int|0
+suffix:semicolon
 id|inc_page_state
 c_func
 (paren
@@ -3056,7 +3055,7 @@ op_decrement
 )paren
 (brace
 r_int
-id|total_scanned
+id|scanned
 op_assign
 l_int|0
 suffix:semicolon
@@ -3081,18 +3080,20 @@ comma
 id|priority
 comma
 op_amp
-id|total_scanned
+id|scanned
 comma
 id|gfp_mask
 comma
 op_amp
 id|ps
+comma
+id|do_writepage
 )paren
 suffix:semicolon
 id|shrink_slab
 c_func
 (paren
-id|total_scanned
+id|scanned
 comma
 id|gfp_mask
 )paren
@@ -3141,18 +3142,44 @@ id|__GFP_FS
 r_break
 suffix:semicolon
 multiline_comment|/* Let the caller handle it */
-multiline_comment|/*&n;&t;&t; * Try to write back as many pages as we just scanned.  Not&n;&t;&t; * sure if that makes sense, but it&squot;s an attempt to avoid&n;&t;&t; * creating IO storms unnecessarily&n;&t;&t; */
-id|wakeup_bdflush
-c_func
-(paren
+multiline_comment|/*&n;&t;&t; * Try to write back as many pages as we just scanned.  This&n;&t;&t; * tends to cause slow streaming writers to write data to the&n;&t;&t; * disk smoothly, at the dirtying rate, which is nice.   But&n;&t;&t; * that&squot;s undesirable in laptop mode, where we *want* lumpy&n;&t;&t; * writeout.  So in laptop mode, write out the whole world.&n;&t;&t; */
 id|total_scanned
-)paren
+op_add_assign
+id|scanned
 suffix:semicolon
-multiline_comment|/* Take a nap, wait for some writeback to complete */
 r_if
 c_cond
 (paren
 id|total_scanned
+OG
+id|SWAP_CLUSTER_MAX
+op_plus
+id|SWAP_CLUSTER_MAX
+op_div
+l_int|2
+)paren
+(brace
+id|wakeup_bdflush
+c_func
+(paren
+id|laptop_mode
+ques
+c_cond
+l_int|0
+suffix:colon
+id|total_scanned
+)paren
+suffix:semicolon
+id|do_writepage
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Take a nap, wait for some writeback to complete */
+r_if
+c_cond
+(paren
+id|scanned
 op_logical_and
 id|priority
 OL
@@ -3267,6 +3294,23 @@ id|reclaim_state
 op_assign
 id|current-&gt;reclaim_state
 suffix:semicolon
+r_int
+r_int
+id|total_scanned
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|total_reclaimed
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|do_writepage
+op_assign
+l_int|0
+suffix:semicolon
 id|inc_page_state
 c_func
 (paren
@@ -3319,11 +3363,6 @@ r_int
 id|all_zones_ok
 op_assign
 l_int|1
-suffix:semicolon
-r_int
-id|pages_scanned
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|end_zone
@@ -3435,15 +3474,15 @@ op_plus
 id|i
 suffix:semicolon
 r_int
-id|total_scanned
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|max_scan
 suffix:semicolon
 r_int
 id|reclaimed
+suffix:semicolon
+r_int
+id|scanned
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3499,14 +3538,16 @@ comma
 id|GFP_KERNEL
 comma
 op_amp
-id|total_scanned
+id|scanned
 comma
 id|ps
+comma
+id|do_writepage
 )paren
 suffix:semicolon
 id|total_scanned
 op_add_assign
-id|pages_scanned
+id|scanned
 suffix:semicolon
 id|reclaim_state-&gt;reclaimed_slab
 op_assign
@@ -3515,7 +3556,7 @@ suffix:semicolon
 id|shrink_slab
 c_func
 (paren
-id|total_scanned
+id|scanned
 comma
 id|GFP_KERNEL
 )paren
@@ -3523,6 +3564,10 @@ suffix:semicolon
 id|reclaimed
 op_add_assign
 id|reclaim_state-&gt;reclaimed_slab
+suffix:semicolon
+id|total_reclaimed
+op_add_assign
+id|reclaimed
 suffix:semicolon
 id|to_free
 op_sub_assign
@@ -3545,6 +3590,28 @@ op_star
 l_int|2
 )paren
 id|zone-&gt;all_unreclaimable
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If we&squot;ve done a decent amount of scanning and&n;&t;&t;&t; * the reclaim ratio is low, start doing writepage&n;&t;&t;&t; * even in laptop mode&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|total_scanned
+OG
+id|SWAP_CLUSTER_MAX
+op_star
+l_int|2
+op_logical_and
+id|total_scanned
+OG
+id|total_reclaimed
+op_plus
+id|total_reclaimed
+op_div
+l_int|2
+)paren
+id|do_writepage
 op_assign
 l_int|1
 suffix:semicolon
@@ -3573,7 +3640,7 @@ multiline_comment|/*&n;&t;&t; * OK, kswapd is getting into trouble.  Take a nap,
 r_if
 c_cond
 (paren
-id|pages_scanned
+id|total_scanned
 op_logical_and
 id|priority
 OL
@@ -3624,9 +3691,7 @@ id|zone-&gt;temp_priority
 suffix:semicolon
 )brace
 r_return
-id|nr_pages
-op_minus
-id|to_free
+id|total_reclaimed
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The background pageout daemon, started as a kernel thread&n; * from the init process. &n; *&n; * This basically trickles out pages so that we have _some_&n; * free memory available even if there is no other activity&n; * that frees anything up. This is needed for things like routing&n; * etc, where we otherwise might have all activity going on in&n; * asynchronous contexts that cannot page things out.&n; *&n; * If there are applications that are active memory-allocators&n; * (most normal use), this basically shouldn&squot;t matter.&n; */

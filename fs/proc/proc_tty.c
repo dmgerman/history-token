@@ -1029,7 +1029,7 @@ id|off
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Thsi function is called by register_tty_driver() to handle&n; * registering the driver&squot;s /proc handler into /proc/tty/driver/&lt;foo&gt;&n; */
+multiline_comment|/*&n; * This function is called by tty_register_driver() to handle&n; * registering the driver&squot;s /proc handler into /proc/tty/driver/&lt;foo&gt;&n; */
 DECL|function|proc_tty_register_driver
 r_void
 id|proc_tty_register_driver
@@ -1105,7 +1105,7 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called by unregister_tty_driver()&n; */
+multiline_comment|/*&n; * This function is called by tty_unregister_driver()&n; */
 DECL|function|proc_tty_unregister_driver
 r_void
 id|proc_tty_unregister_driver

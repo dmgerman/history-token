@@ -81,6 +81,48 @@ id|lun
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * A LAN Address.  This is an address to/from a LAN interface bridged&n; * by the BMC, not an address actually out on the LAN.&n; *&n; * A concious decision was made here to deviate slightly from the IPMI&n; * spec.  We do not use rqSWID and rsSWID like it shows in the&n; * message.  Instead, we use remote_SWID and local_SWID.  This means&n; * that any message (a request or response) from another device will&n; * always have exactly the same address.  If you didn&squot;t do this,&n; * requests and responses from the same device would have different&n; * addresses, and that&squot;s not too cool.&n; *&n; * In this address, the remote_SWID is always the SWID the remote&n; * message came from, or the SWID we are sending the message to.&n; * local_SWID is always our SWID.  Note that having our SWID in the&n; * message is a little wierd, but this is required.&n; */
+DECL|macro|IPMI_LAN_ADDR_TYPE
+mdefine_line|#define IPMI_LAN_ADDR_TYPE&t;&t;0x04
+DECL|struct|ipmi_lan_addr
+r_struct
+id|ipmi_lan_addr
+(brace
+DECL|member|addr_type
+r_int
+id|addr_type
+suffix:semicolon
+DECL|member|channel
+r_int
+id|channel
+suffix:semicolon
+DECL|member|privilege
+r_int
+r_char
+id|privilege
+suffix:semicolon
+DECL|member|session_handle
+r_int
+r_char
+id|session_handle
+suffix:semicolon
+DECL|member|remote_SWID
+r_int
+r_char
+id|remote_SWID
+suffix:semicolon
+DECL|member|local_SWID
+r_int
+r_char
+id|local_SWID
+suffix:semicolon
+DECL|member|lun
+r_int
+r_char
+id|lun
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Channel for talking directly with the BMC.  When using this&n; * channel, This is for the system interface address type only.  FIXME&n; * - is this right, or should we use -1?&n; */
 DECL|macro|IPMI_BMC_CHANNEL
 mdefine_line|#define IPMI_BMC_CHANNEL  0xf
@@ -121,17 +163,20 @@ DECL|macro|IPMI_TIMEOUT_COMPLETION_CODE
 mdefine_line|#define IPMI_TIMEOUT_COMPLETION_CODE&t;&t;0xC3
 DECL|macro|IPMI_UNKNOWN_ERR_COMPLETION_CODE
 mdefine_line|#define IPMI_UNKNOWN_ERR_COMPLETION_CODE&t;0xff
-multiline_comment|/*&n; * Receive types for messages coming from the receive interface.  This&n; * is used for the receive in-kernel interface and in the receive&n; * IOCTL.&n; */
+multiline_comment|/*&n; * Receive types for messages coming from the receive interface.  This&n; * is used for the receive in-kernel interface and in the receive&n; * IOCTL.&n; *&n; * The &quot;IPMI_RESPONSE_RESPNOSE_TYPE&quot; is a little strange sounding, but&n; * it allows you to get the message results when you send a response&n; * message.&n; */
 DECL|macro|IPMI_RESPONSE_RECV_TYPE
 mdefine_line|#define IPMI_RESPONSE_RECV_TYPE&t;&t;1 /* A response to a command */
 DECL|macro|IPMI_ASYNC_EVENT_RECV_TYPE
 mdefine_line|#define IPMI_ASYNC_EVENT_RECV_TYPE&t;2 /* Something from the event queue */
 DECL|macro|IPMI_CMD_RECV_TYPE
 mdefine_line|#define IPMI_CMD_RECV_TYPE&t;&t;3 /* A command from somewhere else */
+DECL|macro|IPMI_RESPONSE_RESPONSE_TYPE
+mdefine_line|#define IPMI_RESPONSE_RESPONSE_TYPE&t;4 /* The response for&n;&t;&t;&t;&t;&t;      a sent response, giving any&n;&t;&t;&t;&t;&t;      error status for sending the&n;&t;&t;&t;&t;&t;      response.  When you send a&n;&t;&t;&t;&t;&t;      response message, this will&n;&t;&t;&t;&t;&t;      be returned. */
 multiline_comment|/* Note that async events and received commands do not have a completion&n;   code as the first byte of the incoming data, unlike a response. */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * The in-kernel interface.&n; */
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/* Opaque type for a IPMI message user.  One of these is needed to&n;   send and receive messages. */
 DECL|typedef|ipmi_user_t
 r_typedef
@@ -172,6 +217,12 @@ DECL|member|msg
 r_struct
 id|ipmi_msg
 id|msg
+suffix:semicolon
+multiline_comment|/* The user_msg_data is the data supplied when a message was&n;&t;   sent, if this is a response to a sent message.  If this is&n;&t;   not a response to a sent message, then user_msg_data will&n;&t;   be NULL. */
+DECL|member|user_msg_data
+r_void
+op_star
+id|user_msg_data
 suffix:semicolon
 multiline_comment|/* Call this when done with the message.  It will presumably free&n;&t;   the message and do any other necessary cleanup. */
 DECL|member|done
@@ -234,7 +285,7 @@ DECL|struct|ipmi_user_hndl
 r_struct
 id|ipmi_user_hndl
 (brace
-multiline_comment|/* Routine type to call when a message needs to be routed to&n;&t;   the upper layer.  This will be called with some locks held,&n;&t;   the only IPMI routines that can be called are ipmi_request&n;&t;   and the alloc/free operations. */
+multiline_comment|/* Routine type to call when a message needs to be routed to&n;&t;   the upper layer.  This will be called with some locks held,&n;&t;   the only IPMI routines that can be called are ipmi_request&n;&t;   and the alloc/free operations.  The handler_data is the&n;&t;   variable supplied when the receive handler was registered. */
 DECL|member|ipmi_recv_hndl
 r_void
 (paren
@@ -249,7 +300,7 @@ id|msg
 comma
 r_void
 op_star
-id|handler_data
+id|user_msg_data
 )paren
 suffix:semicolon
 multiline_comment|/* Called when the interface detects a watchdog pre-timeout.  If&n;&t;   this is NULL, it will be ignored for the user. */
@@ -290,7 +341,7 @@ op_star
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/* Destroy the given user of the IPMI layer. */
+multiline_comment|/* Destroy the given user of the IPMI layer.  Note that after this&n;   function returns, the system is guaranteed to not call any&n;   callbacks for the user.  Thus as long as you destroy all the users&n;   before you unload a module, you will be safe.  And if you destroy&n;   the users before you destroy the callback structures, it should be&n;   safe, too. */
 r_int
 id|ipmi_destroy_user
 c_func
@@ -361,7 +412,7 @@ id|ipmi_user_t
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Send a command request from the given user.  The address is the&n; * proper address for the channel type.  If this is a command, then&n; * the message response comes back, the receive handler for this user&n; * will be called with the given msgid value in the recv msg.  If this&n; * is a response to a command, then the msgid will be used as the&n; * sequence number for the response (truncated if necessary), so when&n; * sending a response you should use the sequence number you received&n; * in the msgid field of the received command.  If the priority is &gt;&n; * 0, the message will go into a high-priority queue and be sent&n; * first.  Otherwise, it goes into a normal-priority queue.&n; */
+multiline_comment|/*&n; * Send a command request from the given user.  The address is the&n; * proper address for the channel type.  If this is a command, then&n; * the message response comes back, the receive handler for this user&n; * will be called with the given msgid value in the recv msg.  If this&n; * is a response to a command, then the msgid will be used as the&n; * sequence number for the response (truncated if necessary), so when&n; * sending a response you should use the sequence number you received&n; * in the msgid field of the received command.  If the priority is &gt;&n; * 0, the message will go into a high-priority queue and be sent&n; * first.  Otherwise, it goes into a normal-priority queue.&n; * The user_msg_data field will be returned in any response to this&n; * message.&n; *&n; * Note that if you send a response (with the netfn lower bit set),&n; * you *will* get back a SEND_MSG response telling you what happened&n; * when the response was sent.  You will not get back a response to&n; * the message itself.&n; */
 r_int
 id|ipmi_request
 c_func
@@ -382,8 +433,48 @@ id|ipmi_msg
 op_star
 id|msg
 comma
+r_void
+op_star
+id|user_msg_data
+comma
 r_int
 id|priority
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Like ipmi_request, but lets you specify the number of retries and&n; * the retry time.  The retries is the number of times the message&n; * will be resent if no reply is received.  If set to -1, the default&n; * value will be used.  The retry time is the time in milliseconds&n; * between retries.  If set to zero, the default value will be&n; * used.&n; *&n; * Don&squot;t use this unless you *really* have to.  It&squot;s primarily for the&n; * IPMI over LAN converter; since the LAN stuff does its own retries,&n; * it makes no sense to do it here.  However, this can be used if you&n; * have unusual requirements.&n; */
+r_int
+id|ipmi_request_settime
+c_func
+(paren
+id|ipmi_user_t
+id|user
+comma
+r_struct
+id|ipmi_addr
+op_star
+id|addr
+comma
+r_int
+id|msgid
+comma
+r_struct
+id|ipmi_msg
+op_star
+id|msg
+comma
+r_void
+op_star
+id|user_msg_data
+comma
+r_int
+id|priority
+comma
+r_int
+id|max_retries
+comma
+r_int
+r_int
+id|retry_time_ms
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Like ipmi_request, but lets you specify the slave return address.&n; */
@@ -406,6 +497,10 @@ r_struct
 id|ipmi_msg
 op_star
 id|msg
+comma
+r_void
+op_star
+id|user_msg_data
 comma
 r_int
 id|priority
@@ -439,6 +534,10 @@ r_struct
 id|ipmi_msg
 op_star
 id|msg
+comma
+r_void
+op_star
+id|user_msg_data
 comma
 r_void
 op_star
@@ -524,6 +623,13 @@ DECL|member|link
 r_struct
 id|list_head
 id|link
+suffix:semicolon
+multiline_comment|/* You must set the owner to the current module, if you are in&n;&t;   a module (generally just set it to &quot;THIS_MODULE&quot;). */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 multiline_comment|/* These two are called with read locks held for the interface&n;&t;   the watcher list.  So you can add and remove users from the&n;&t;   IPMI interface, send messages, etc., but you cannot add&n;&t;   or remove SMI watchers or SMI interfaces. */
 DECL|member|new_smi
@@ -649,6 +755,31 @@ suffix:semicolon
 multiline_comment|/*&n; * Send a message to the interfaces.  error values are:&n; *   - EFAULT - an address supplied was invalid.&n; *   - EINVAL - The address supplied was not valid, or the command&n; *              was not allowed.&n; *   - EMSGSIZE - The message to was too large.&n; *   - ENOMEM - Buffers could not be allocated for the command.&n; */
 DECL|macro|IPMICTL_SEND_COMMAND
 mdefine_line|#define IPMICTL_SEND_COMMAND&t;&t;_IOR(IPMI_IOC_MAGIC, 13,&t;&bslash;&n;&t;&t;&t;&t;&t;     struct ipmi_req)
+multiline_comment|/* Messages sent to the interface with timing parameters are this&n;   format. */
+DECL|struct|ipmi_req_settime
+r_struct
+id|ipmi_req_settime
+(brace
+DECL|member|req
+r_struct
+id|ipmi_req
+id|req
+suffix:semicolon
+multiline_comment|/* See ipmi_request_settime() above for details on these&n;           values. */
+DECL|member|retries
+r_int
+id|retries
+suffix:semicolon
+DECL|member|retry_time_ms
+r_int
+r_int
+id|retry_time_ms
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Send a message to the interfaces with timing parameters.  error values&n; * are:&n; *   - EFAULT - an address supplied was invalid.&n; *   - EINVAL - The address supplied was not valid, or the command&n; *              was not allowed.&n; *   - EMSGSIZE - The message to was too large.&n; *   - ENOMEM - Buffers could not be allocated for the command.&n; */
+DECL|macro|IPMICTL_SEND_COMMAND_SETTIME
+mdefine_line|#define IPMICTL_SEND_COMMAND_SETTIME&t;_IOR(IPMI_IOC_MAGIC, 21,&t;&bslash;&n;&t;&t;&t;&t;&t;     struct ipmi_req_settime)
 multiline_comment|/* Messages received from the interface are this format. */
 DECL|struct|ipmi_recv
 r_struct
@@ -726,5 +857,25 @@ DECL|macro|IPMICTL_SET_MY_LUN_CMD
 mdefine_line|#define IPMICTL_SET_MY_LUN_CMD&t;&t;_IOR(IPMI_IOC_MAGIC, 19, unsigned int)
 DECL|macro|IPMICTL_GET_MY_LUN_CMD
 mdefine_line|#define IPMICTL_GET_MY_LUN_CMD&t;&t;_IOR(IPMI_IOC_MAGIC, 20, unsigned int)
+multiline_comment|/*&n; * Get/set the default timing values for an interface.  You shouldn&squot;t&n; * generally mess with these.&n; */
+DECL|struct|ipmi_timing_parms
+r_struct
+id|ipmi_timing_parms
+(brace
+DECL|member|retries
+r_int
+id|retries
+suffix:semicolon
+DECL|member|retry_time_ms
+r_int
+r_int
+id|retry_time_ms
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|IPMICTL_SET_TIMING_PARMS_CMD
+mdefine_line|#define IPMICTL_SET_TIMING_PARMS_CMD&t;_IOR(IPMI_IOC_MAGIC, 22, &bslash;&n;&t;&t;&t;&t;&t;     struct ipmi_timing_parms)
+DECL|macro|IPMICTL_GET_TIMING_PARMS_CMD
+mdefine_line|#define IPMICTL_GET_TIMING_PARMS_CMD&t;_IOR(IPMI_IOC_MAGIC, 23, &bslash;&n;&t;&t;&t;&t;&t;     struct ipmi_timing_parms)
 macro_line|#endif /* __LINUX_IPMI_H */
 eof

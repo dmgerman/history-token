@@ -272,10 +272,6 @@ id|s
 )paren
 )paren
 suffix:semicolon
-id|s-&gt;s_dirt
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 id|unused_objectid
 suffix:semicolon
@@ -361,10 +357,6 @@ id|SB_BUFFER_WITH_SB
 id|s
 )paren
 )paren
-suffix:semicolon
-id|s-&gt;s_dirt
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* start at the beginning of the objectid map (i = 0) and go to&n;       the end of it (i = disk_sb-&gt;s_oid_cursize).  Linear search is&n;       what we use, though it is possible that binary search would be&n;       more efficient after performing lots of deletions (which is&n;       when oids is large.)  We only check even i&squot;s. */
 r_while

@@ -37,8 +37,8 @@ DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
 mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
-DECL|macro|PG_chainlock
-mdefine_line|#define PG_chainlock&t;&t;15&t;/* lock bit for -&gt;pte_chain */
+DECL|macro|PG_maplock
+mdefine_line|#define PG_maplock&t;&t;15&t;/* Lock bit for rmap to ptes */
 DECL|macro|PG_direct
 mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 DECL|macro|PG_mappedtodisk
@@ -47,6 +47,10 @@ DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_compound
 mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
+DECL|macro|PG_anon
+mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous page: anon_vma in mapping*/
+DECL|macro|PG_swapcache
+mdefine_line|#define PG_swapcache&t;&t;21&t;/* Swap page: swp_entry_t in private */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -462,18 +466,22 @@ DECL|macro|SetPageCompound
 mdefine_line|#define SetPageCompound(page)&t;set_bit(PG_compound, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageCompound
 mdefine_line|#define ClearPageCompound(page)&t;clear_bit(PG_compound, &amp;(page)-&gt;flags)
-multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
+DECL|macro|PageAnon
+mdefine_line|#define PageAnon(page)&t;&t;test_bit(PG_anon, &amp;(page)-&gt;flags)
+DECL|macro|SetPageAnon
+mdefine_line|#define SetPageAnon(page)&t;set_bit(PG_anon, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageAnon
+mdefine_line|#define ClearPageAnon(page)&t;clear_bit(PG_anon, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_SWAP
-r_extern
-r_struct
-id|address_space
-id|swapper_space
-suffix:semicolon
 DECL|macro|PageSwapCache
-mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+mdefine_line|#define PageSwapCache(page)&t;test_bit(PG_swapcache, &amp;(page)-&gt;flags)
+DECL|macro|SetPageSwapCache
+mdefine_line|#define SetPageSwapCache(page)&t;set_bit(PG_swapcache, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageSwapCache
+mdefine_line|#define ClearPageSwapCache(page) clear_bit(PG_swapcache, &amp;(page)-&gt;flags)
 macro_line|#else
 DECL|macro|PageSwapCache
-mdefine_line|#define PageSwapCache(page) 0
+mdefine_line|#define PageSwapCache(page)&t;0
 macro_line|#endif
 r_struct
 id|page
@@ -481,6 +489,36 @@ suffix:semicolon
 multiline_comment|/* forward declaration */
 r_int
 id|test_clear_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_int
+id|__clear_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_int
+id|test_clear_page_writeback
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_int
+id|test_set_page_writeback
 c_func
 (paren
 r_struct
@@ -503,6 +541,26 @@ id|page
 )paren
 (brace
 id|test_clear_page_dirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+DECL|function|set_page_writeback
+r_static
+r_inline
+r_void
+id|set_page_writeback
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|test_set_page_writeback
 c_func
 (paren
 id|page

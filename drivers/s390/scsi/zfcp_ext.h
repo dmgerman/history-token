@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.45 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.49 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -160,8 +160,28 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|zfcp_adapter_debug_register
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|zfcp_adapter_dequeue
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_adapter_debug_unregister
 c_func
 (paren
 r_struct
@@ -978,15 +998,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|zfcp_erp_scsi_low_mem_buffer_timeout_handler
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|zfcp_erp_thread_setup
 c_func
@@ -1017,13 +1028,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|zfcp_erp_fsf_req_handler
+r_int
+id|zfcp_erp_async_handler
 c_func
 (paren
 r_struct
-id|zfcp_fsf_req
+id|zfcp_erp_action
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern

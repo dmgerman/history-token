@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc64/kernel/iSeries_iommu.c&n; *&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; * &n; * Rewrite, cleanup: &n; *&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Dynamic DMA mapping support, iSeries-specific parts.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * arch/ppc64/kernel/iSeries_iommu.c&n; *&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; *&n; * Rewrite, cleanup:&n; *&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Dynamic DMA mapping support, iSeries-specific parts.&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -16,127 +17,8 @@ macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
-macro_line|#include &lt;asm/iSeries/vio.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|variable|veth_iommu_table
-r_static
-r_struct
-id|iommu_table
-id|veth_iommu_table
-suffix:semicolon
-multiline_comment|/* Tce table for virtual ethernet */
-DECL|variable|vio_iommu_table
-r_static
-r_struct
-id|iommu_table
-id|vio_iommu_table
-suffix:semicolon
-multiline_comment|/* Tce table for virtual I/O */
-DECL|variable|veth_dev_node
-r_static
-r_struct
-id|iSeries_Device_Node
-id|veth_dev_node
-op_assign
-(brace
-dot
-id|LogicalSlot
-op_assign
-l_int|0xFF
-comma
-dot
-id|iommu_table
-op_assign
-op_amp
-id|veth_iommu_table
-)brace
-suffix:semicolon
-DECL|variable|vio_dev_node
-r_static
-r_struct
-id|iSeries_Device_Node
-id|vio_dev_node
-op_assign
-(brace
-dot
-id|LogicalSlot
-op_assign
-l_int|0xFF
-comma
-dot
-id|iommu_table
-op_assign
-op_amp
-id|vio_iommu_table
-)brace
-suffix:semicolon
-DECL|variable|_veth_dev
-r_static
-r_struct
-id|pci_dev
-id|_veth_dev
-op_assign
-(brace
-dot
-id|sysdata
-op_assign
-op_amp
-id|veth_dev_node
-)brace
-suffix:semicolon
-DECL|variable|_vio_dev
-r_static
-r_struct
-id|pci_dev
-id|_vio_dev
-op_assign
-(brace
-dot
-id|sysdata
-op_assign
-op_amp
-id|vio_dev_node
-comma
-dot
-id|dev.bus
-op_assign
-op_amp
-id|pci_bus_type
-)brace
-suffix:semicolon
-DECL|variable|iSeries_veth_dev
-r_struct
-id|pci_dev
-op_star
-id|iSeries_veth_dev
-op_assign
-op_amp
-id|_veth_dev
-suffix:semicolon
-DECL|variable|iSeries_vio_dev
-r_struct
-id|device
-op_star
-id|iSeries_vio_dev
-op_assign
-op_amp
-id|_vio_dev.dev
-suffix:semicolon
-DECL|variable|iSeries_veth_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_veth_dev
-)paren
-suffix:semicolon
-DECL|variable|iSeries_vio_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_vio_dev
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|list_head
@@ -163,7 +45,8 @@ r_int
 r_int
 id|uaddr
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -217,7 +100,7 @@ c_cond
 (paren
 id|direction
 op_ne
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 id|tce.te_bits.tb_rdwr
 op_assign
@@ -237,7 +120,7 @@ c_cond
 (paren
 id|direction
 op_ne
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 id|tce.te_bits.tb_pciwr
 op_assign
@@ -356,177 +239,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|function|iommu_vio_init
-r_void
-id|__init
-id|iommu_vio_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|iommu_table
-op_star
-id|t
-suffix:semicolon
-r_struct
-id|iommu_table_cb
-id|cb
-suffix:semicolon
-r_int
-r_int
-id|cbp
-suffix:semicolon
-id|cb.itc_busno
-op_assign
-l_int|255
-suffix:semicolon
-multiline_comment|/* Bus 255 is the virtual bus */
-id|cb.itc_virtbus
-op_assign
-l_int|0xff
-suffix:semicolon
-multiline_comment|/* Ask for virtual bus */
-id|cbp
-op_assign
-id|virt_to_abs
-c_func
-(paren
-op_amp
-id|cb
-)paren
-suffix:semicolon
-id|HvCallXm_getTceTableParms
-c_func
-(paren
-id|cbp
-)paren
-suffix:semicolon
-id|veth_iommu_table.it_size
-op_assign
-id|cb.itc_size
-op_div
-l_int|2
-suffix:semicolon
-id|veth_iommu_table.it_busno
-op_assign
-id|cb.itc_busno
-suffix:semicolon
-id|veth_iommu_table.it_offset
-op_assign
-id|cb.itc_offset
-suffix:semicolon
-id|veth_iommu_table.it_index
-op_assign
-id|cb.itc_index
-suffix:semicolon
-id|veth_iommu_table.it_type
-op_assign
-id|TCE_VB
-suffix:semicolon
-id|veth_iommu_table.it_entrysize
-op_assign
-r_sizeof
-(paren
-r_union
-id|tce_entry
-)paren
-suffix:semicolon
-id|veth_iommu_table.it_blocksize
-op_assign
-l_int|1
-suffix:semicolon
-id|t
-op_assign
-id|iommu_init_table
-c_func
-(paren
-op_amp
-id|veth_iommu_table
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|t
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Virtual Bus VETH TCE table failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|vio_iommu_table.it_size
-op_assign
-id|cb.itc_size
-op_minus
-id|veth_iommu_table.it_size
-suffix:semicolon
-id|vio_iommu_table.it_busno
-op_assign
-id|cb.itc_busno
-suffix:semicolon
-id|vio_iommu_table.it_offset
-op_assign
-id|cb.itc_offset
-op_plus
-id|veth_iommu_table.it_size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_union
-id|tce_entry
-)paren
-)paren
-suffix:semicolon
-id|vio_iommu_table.it_index
-op_assign
-id|cb.itc_index
-suffix:semicolon
-id|vio_iommu_table.it_type
-op_assign
-id|TCE_VB
-suffix:semicolon
-id|vio_iommu_table.it_entrysize
-op_assign
-r_sizeof
-(paren
-r_union
-id|tce_entry
-)paren
-suffix:semicolon
-id|vio_iommu_table.it_blocksize
-op_assign
-l_int|1
-suffix:semicolon
-id|t
-op_assign
-id|iommu_init_table
-c_func
-(paren
-op_amp
-id|vio_iommu_table
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|t
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Virtual Bus VIO TCE table failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This function compares the known tables to find an iommu_table&n; * that has already been built for hardware TCEs.                          &n; */
+multiline_comment|/*&n; * This function compares the known tables to find an iommu_table&n; * that has already been built for hardware TCEs.&n; */
 DECL|function|iommu_table_find
 r_static
 r_struct
@@ -607,7 +320,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Call Hv with the architected data structure to get TCE table info.&n; * info. Put the returned data into the Linux representation of the   &n; * TCE table data.                                                     &n; * The Hardware Tce table comes in three flavors.                     &n; * 1. TCE table shared between Buses.                                  &n; * 2. TCE table per Bus.                                               &n; * 3. TCE Table per IOA.                                               &n; */
+multiline_comment|/*&n; * Call Hv with the architected data structure to get TCE table info.&n; * info. Put the returned data into the Linux representation of the&n; * TCE table data.&n; * The Hardware Tce table comes in three flavors.&n; * 1. TCE table shared between Buses.&n; * 2. TCE table per Bus.&n; * 3. TCE Table per IOA.&n; */
 DECL|function|iommu_table_getparms
 r_static
 r_void

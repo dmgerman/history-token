@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

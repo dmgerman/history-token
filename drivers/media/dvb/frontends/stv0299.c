@@ -1262,8 +1262,6 @@ l_int|4
 )braket
 suffix:semicolon
 r_int
-id|i
-comma
 id|divisor
 comma
 id|regcode

@@ -24,6 +24,8 @@ DECL|macro|PT_PC
 mdefine_line|#define PT_PC&t;   9
 DECL|macro|PT_USP
 mdefine_line|#define PT_USP&t;   10
+DECL|macro|PT_EXR
+mdefine_line|#define PT_EXR     12
 multiline_comment|/* this struct defines the way the registers are stored on the&n;   stack during a system call. */
 DECL|struct|pt_regs
 r_struct
@@ -110,6 +112,17 @@ macro_line|#ifndef PS_S
 DECL|macro|PS_S
 mdefine_line|#define PS_S  (0x10)
 macro_line|#endif
+macro_line|#if defined(__H8300H__)
+DECL|macro|H8300_REGS_NO
+mdefine_line|#define H8300_REGS_NO 11
+macro_line|#endif
+macro_line|#if defined(__H8300S__)
+DECL|macro|H8300_REGS_NO
+mdefine_line|#define H8300_REGS_NO 12
+macro_line|#endif
+multiline_comment|/* Find the stack offset for a register, relative to thread.esp0. */
+DECL|macro|PT_REG
+mdefine_line|#define PT_REG(reg)&t;((long)&amp;((struct pt_regs *)0)-&gt;reg)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;ccr &amp; PS_S))
 DECL|macro|instruction_pointer

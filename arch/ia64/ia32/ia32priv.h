@@ -1293,6 +1293,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|exec_stack
 )paren
 suffix:semicolon
 r_extern

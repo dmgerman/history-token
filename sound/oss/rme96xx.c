@@ -3199,8 +3199,9 @@ c_func
 id|printk
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3591,8 +3592,9 @@ c_func
 id|printk
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -6250,8 +6252,9 @@ c_func
 id|printk
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

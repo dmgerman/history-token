@@ -35,6 +35,14 @@ macro_line|#endif
 multiline_comment|/* Shouldn&squot;t this be in a header file somewhere? */
 DECL|macro|BYTES_PER_WORD
 mdefine_line|#define&t;BYTES_PER_WORD&t;&t;sizeof(void *)
+macro_line|#ifndef cache_line_size
+DECL|macro|cache_line_size
+mdefine_line|#define cache_line_size()&t;L1_CACHE_BYTES
+macro_line|#endif
+macro_line|#ifndef ARCH_KMALLOC_MINALIGN
+DECL|macro|ARCH_KMALLOC_MINALIGN
+mdefine_line|#define ARCH_KMALLOC_MINALIGN 0
+macro_line|#endif
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
@@ -288,6 +296,11 @@ DECL|member|slabp_cache
 id|kmem_cache_t
 op_star
 id|slabp_cache
+suffix:semicolon
+DECL|member|slab_size
+r_int
+r_int
+id|slab_size
 suffix:semicolon
 DECL|member|dflags
 r_int
@@ -819,13 +832,13 @@ id|BREAK_GFP_ORDER_LO
 suffix:semicolon
 multiline_comment|/* Macros for storing/retrieving the cachep and or slab from the&n; * global &squot;mem_map&squot;. These are used to find the slab an obj belongs to.&n; * With kfree(), these are used to find the cache which an obj belongs to.&n; */
 DECL|macro|SET_PAGE_CACHE
-mdefine_line|#define&t;SET_PAGE_CACHE(pg,x)  ((pg)-&gt;list.next = (struct list_head *)(x))
+mdefine_line|#define&t;SET_PAGE_CACHE(pg,x)  ((pg)-&gt;lru.next = (struct list_head *)(x))
 DECL|macro|GET_PAGE_CACHE
-mdefine_line|#define&t;GET_PAGE_CACHE(pg)    ((kmem_cache_t *)(pg)-&gt;list.next)
+mdefine_line|#define&t;GET_PAGE_CACHE(pg)    ((kmem_cache_t *)(pg)-&gt;lru.next)
 DECL|macro|SET_PAGE_SLAB
-mdefine_line|#define&t;SET_PAGE_SLAB(pg,x)   ((pg)-&gt;list.prev = (struct list_head *)(x))
+mdefine_line|#define&t;SET_PAGE_SLAB(pg,x)   ((pg)-&gt;lru.prev = (struct list_head *)(x))
 DECL|macro|GET_PAGE_SLAB
-mdefine_line|#define&t;GET_PAGE_SLAB(pg)     ((struct slab *)(pg)-&gt;list.prev)
+mdefine_line|#define&t;GET_PAGE_SLAB(pg)     ((struct slab *)(pg)-&gt;lru.prev)
 multiline_comment|/* These are the default caches for kmalloc. Custom caches can have other sizes. */
 DECL|variable|malloc_sizes
 r_struct
@@ -968,15 +981,20 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
 dot
-id|colour_off
-op_assign
-id|L1_CACHE_BYTES
-comma
-dot
 id|name
 op_assign
 l_string|&quot;kmem_cache&quot;
 comma
+macro_line|#if DEBUG
+dot
+id|reallen
+op_assign
+r_sizeof
+(paren
+id|kmem_cache_t
+)paren
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Guard access to the cache-chain. */
@@ -1131,6 +1149,9 @@ r_int
 id|size
 comma
 r_int
+id|align
+comma
+r_int
 id|flags
 comma
 r_int
@@ -1201,7 +1222,7 @@ id|i
 op_star
 id|size
 op_plus
-id|L1_CACHE_ALIGN
+id|ALIGN
 c_func
 (paren
 id|base
@@ -1209,6 +1230,8 @@ op_plus
 id|i
 op_star
 id|extra
+comma
+id|align
 )paren
 op_le
 id|wastage
@@ -1250,7 +1273,7 @@ id|size
 suffix:semicolon
 id|wastage
 op_sub_assign
-id|L1_CACHE_ALIGN
+id|ALIGN
 c_func
 (paren
 id|base
@@ -1258,6 +1281,8 @@ op_plus
 id|i
 op_star
 id|extra
+comma
+id|align
 )paren
 suffix:semicolon
 op_star
@@ -1805,6 +1830,13 @@ op_amp
 id|cache_chain
 )paren
 suffix:semicolon
+id|cache_cache.colour_off
+op_assign
+id|cache_line_size
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cache_cache.array
 (braket
 id|smp_processor_id
@@ -1816,12 +1848,30 @@ op_assign
 op_amp
 id|initarray_cache.cache
 suffix:semicolon
+id|cache_cache.objsize
+op_assign
+id|ALIGN
+c_func
+(paren
+id|cache_cache.objsize
+comma
+id|cache_line_size
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|cache_estimate
 c_func
 (paren
 l_int|0
 comma
 id|cache_cache.objsize
+comma
+id|cache_line_size
+c_func
+(paren
+)paren
 comma
 l_int|0
 comma
@@ -1853,6 +1903,30 @@ id|cache_cache.colour_next
 op_assign
 l_int|0
 suffix:semicolon
+id|cache_cache.slab_size
+op_assign
+id|ALIGN
+c_func
+(paren
+id|cache_cache.num
+op_star
+r_sizeof
+(paren
+id|kmem_bufctl_t
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|slab
+)paren
+comma
+id|cache_line_size
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* 2+3) create the kmalloc caches */
 id|sizes
 op_assign
@@ -1878,9 +1952,9 @@ id|names-&gt;name
 comma
 id|sizes-&gt;cs_size
 comma
-l_int|0
+id|ARCH_KMALLOC_MINALIGN
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma
@@ -1939,11 +2013,9 @@ id|names-&gt;name_dma
 comma
 id|sizes-&gt;cs_size
 comma
-l_int|0
+id|ARCH_KMALLOC_MINALIGN
 comma
 id|SLAB_CACHE_DMA
-op_or
-id|SLAB_HWCACHE_ALIGN
 comma
 l_int|NULL
 comma
@@ -3582,7 +3654,7 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @offset: The offset to use within the page.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; *&n; * @name must be valid until the cache is destroyed. This implies that&n; * the module calling this has to destroy the cache before getting &n; * unloaded.&n; * &n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - Align the objects in this cache to a hardware&n; * cacheline.  This can be beneficial if you&squot;re counting cycles as closely&n; * as davem.&n; */
+multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @align: The required alignment for the objects.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; *&n; * @name must be valid until the cache is destroyed. This implies that&n; * the module calling this has to destroy the cache before getting &n; * unloaded.&n; * &n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - This flag has no effect and will be removed soon.&n; *&n; */
 id|kmem_cache_t
 op_star
 DECL|function|kmem_cache_create
@@ -3597,7 +3669,7 @@ r_int
 id|size
 comma
 r_int
-id|offset
+id|align
 comma
 r_int
 r_int
@@ -3638,8 +3710,6 @@ r_int
 (brace
 r_int
 id|left_over
-comma
-id|align
 comma
 id|slab_size
 suffix:semicolon
@@ -3689,9 +3759,9 @@ id|ctor
 )paren
 op_logical_or
 (paren
-id|offset
-template_param
-id|size
+id|align
+OL
+l_int|0
 )paren
 )paren
 (brace
@@ -3759,7 +3829,7 @@ id|SLAB_DEBUG_INITIAL
 suffix:semicolon
 )brace
 macro_line|#if FORCED_DEBUG
-multiline_comment|/*&n;&t; * Enable redzoning and last user accounting, except&n;&t; * - for caches with forced alignment: redzoning would violate the&n;&t; *   alignment&n;&t; * - for caches with large objects, if the increased size would&n;&t; *   increase the object size above the next power of two: caches&n;&t; *   with object sizes just above a power of two have a significant&n;&t; *   amount of internal fragmentation&n;&t; */
+multiline_comment|/*&n;&t; * Enable redzoning and last user accounting, except for caches with&n;&t; * large objects, if the increased size would increase the object size&n;&t; * above the next power of two: caches with object sizes just above a&n;&t; * power of two have a significant amount of internal fragmentation.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3788,22 +3858,13 @@ op_star
 id|BYTES_PER_WORD
 )paren
 )paren
-op_logical_and
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|SLAB_MUST_HWCACHE_ALIGN
 )paren
-)paren
-(brace
 id|flags
 op_or_assign
 id|SLAB_RED_ZONE
 op_or
 id|SLAB_STORE_USER
 suffix:semicolon
-)brace
 id|flags
 op_or_assign
 id|SLAB_POISON
@@ -3824,6 +3885,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|align
+)paren
+(brace
+multiline_comment|/* minimum supported alignment: */
+r_if
+c_cond
+(paren
+id|align
+OL
+id|BYTES_PER_WORD
+)paren
+id|align
+op_assign
+id|BYTES_PER_WORD
+suffix:semicolon
+multiline_comment|/* combinations of forced alignment and advanced debugging is&n;&t;&t; * not yet implemented.&n;&t;&t; */
+id|flags
+op_and_assign
+op_complement
+(paren
+id|SLAB_RED_ZONE
+op_or
+id|SLAB_STORE_USER
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Get cache&squot;s description obj. */
 id|cachep
 op_assign
@@ -3862,12 +3952,6 @@ id|kmem_cache_t
 )paren
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
-id|cachep-&gt;reallen
-op_assign
-id|size
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Check that size is in terms of words.  This is needed to avoid&n;&t; * unaligned accesses for some archs when redzoning is used, and makes&n;&t; * sure any on-slab bufctl&squot;s are also correctly aligned.&n;&t; */
 r_if
 c_cond
@@ -3900,6 +3984,10 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#if DEBUG
+id|cachep-&gt;reallen
+op_assign
+id|size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3908,11 +3996,10 @@ op_amp
 id|SLAB_RED_ZONE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * There is no point trying to honour cache alignment&n;&t;&t; * when redzoning.&n;&t;&t; */
-id|flags
-op_and_assign
-op_complement
-id|SLAB_HWCACHE_ALIGN
+multiline_comment|/* redzoning only works with word aligned caches */
+id|align
+op_assign
+id|BYTES_PER_WORD
 suffix:semicolon
 multiline_comment|/* add space for red zone words */
 id|cachep-&gt;dbghead
@@ -3934,16 +4021,15 @@ op_amp
 id|SLAB_STORE_USER
 )paren
 (brace
-id|flags
-op_and_assign
-op_complement
-id|SLAB_HWCACHE_ALIGN
+multiline_comment|/* user store requires word alignment and&n;&t;&t; * one word storage behind the end of the real&n;&t;&t; * object.&n;&t;&t; */
+id|align
+op_assign
+id|BYTES_PER_WORD
 suffix:semicolon
 id|size
 op_add_assign
 id|BYTES_PER_WORD
 suffix:semicolon
-multiline_comment|/* add space */
 )brace
 macro_line|#if FORCED_DEBUG &amp;&amp; defined(CONFIG_DEBUG_PAGEALLOC)
 r_if
@@ -3955,7 +4041,10 @@ l_int|128
 op_logical_and
 id|cachep-&gt;reallen
 OG
-id|L1_CACHE_BYTES
+id|cache_line_size
+c_func
+(paren
+)paren
 op_logical_and
 id|size
 OL
@@ -3975,21 +4064,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
-id|align
-op_assign
-id|BYTES_PER_WORD
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|SLAB_HWCACHE_ALIGN
-)paren
-id|align
-op_assign
-id|L1_CACHE_BYTES
-suffix:semicolon
 multiline_comment|/* Determine if the slab management is &squot;on&squot; or &squot;off&squot; slab. */
 r_if
 c_cond
@@ -4010,13 +4084,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|flags
-op_amp
-id|SLAB_HWCACHE_ALIGN
+op_logical_neg
+id|align
 )paren
 (brace
-multiline_comment|/* Need to adjust size so that objs are cache aligned. */
-multiline_comment|/* Small obj size, can get at least two per cache line. */
+multiline_comment|/* Default alignment: compile time specified l1 cache size.&n;&t;&t; * Except if an object is really small, then squeeze multiple&n;&t;&t; * into one cacheline.&n;&t;&t; */
+id|align
+op_assign
+id|cache_line_size
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4030,26 +4109,17 @@ id|align
 op_div_assign
 l_int|2
 suffix:semicolon
+)brace
 id|size
 op_assign
+id|ALIGN
+c_func
 (paren
 id|size
-op_plus
+comma
 id|align
-op_minus
-l_int|1
-)paren
-op_amp
-(paren
-op_complement
-(paren
-id|align
-op_minus
-l_int|1
-)paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Cal size (in pages) of slabs, and the num of objs per slab.&n;&t; * This could be made much more intelligent.  For now, try to avoid&n;&t; * using high page-orders for slabs.  When the gfp() funcs are more&n;&t; * friendly towards high-order requests, this should be changed.&n;&t; */
 r_do
 (brace
@@ -4067,6 +4137,8 @@ c_func
 id|cachep-&gt;gfporder
 comma
 id|size
+comma
+id|align
 comma
 id|flags
 comma
@@ -4199,7 +4271,7 @@ suffix:semicolon
 )brace
 id|slab_size
 op_assign
-id|L1_CACHE_ALIGN
+id|ALIGN
 c_func
 (paren
 id|cachep-&gt;num
@@ -4214,6 +4286,8 @@ r_sizeof
 r_struct
 id|slab
 )paren
+comma
+id|align
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the slab has been placed off-slab, and we have enough space then&n;&t; * move it on-slab. This is at the expense of any extra colouring.&n;&t; */
@@ -4239,43 +4313,59 @@ op_sub_assign
 id|slab_size
 suffix:semicolon
 )brace
-multiline_comment|/* Offset must be a multiple of the alignment. */
-id|offset
-op_add_assign
-(paren
-id|align
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|offset
-op_and_assign
-op_complement
-(paren
-id|align
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|offset
+id|flags
+op_amp
+id|CFLGS_OFF_SLAB
 )paren
-id|offset
+(brace
+multiline_comment|/* really off slab. No need for manual alignment */
+id|slab_size
 op_assign
-id|L1_CACHE_BYTES
+id|cachep-&gt;num
+op_star
+r_sizeof
+(paren
+id|kmem_bufctl_t
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|slab
+)paren
 suffix:semicolon
+)brace
 id|cachep-&gt;colour_off
 op_assign
-id|offset
+id|cache_line_size
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Offset must be a multiple of the alignment. */
+r_if
+c_cond
+(paren
+id|cachep-&gt;colour_off
+OL
+id|align
+)paren
+id|cachep-&gt;colour_off
+op_assign
+id|align
 suffix:semicolon
 id|cachep-&gt;colour
 op_assign
 id|left_over
 op_div
-id|offset
+id|cachep-&gt;colour_off
+suffix:semicolon
+id|cachep-&gt;slab_size
+op_assign
+id|slab_size
 suffix:semicolon
 id|cachep-&gt;flags
 op_assign
@@ -5415,22 +5505,7 @@ id|colour_off
 suffix:semicolon
 id|colour_off
 op_add_assign
-id|L1_CACHE_ALIGN
-c_func
-(paren
-id|cachep-&gt;num
-op_star
-r_sizeof
-(paren
-id|kmem_bufctl_t
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|slab
-)paren
-)paren
+id|cachep-&gt;slab_size
 suffix:semicolon
 )brace
 id|slabp-&gt;inuse

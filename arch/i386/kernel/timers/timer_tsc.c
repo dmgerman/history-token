@@ -729,7 +729,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;TSC cannot be used as a timesource.  &quot;
+l_string|&quot;TSC cannot be used as a timesource.  &bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

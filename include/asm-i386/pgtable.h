@@ -10,20 +10,6 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#ifndef _I386_BITOPS_H
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
-DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-r_extern
-r_int
-r_int
-id|empty_zero_page
-(braket
-l_int|1024
-)braket
-suffix:semicolon
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -32,73 +18,6 @@ l_int|1024
 )braket
 suffix:semicolon
 r_extern
-id|kmem_cache_t
-op_star
-id|pgd_cache
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
-id|pmd_cache
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|pgd_lock
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|pgd_list
-suffix:semicolon
-r_void
-id|pmd_ctor
-c_func
-(paren
-r_void
-op_star
-comma
-id|kmem_cache_t
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_void
-id|pgd_ctor
-c_func
-(paren
-r_void
-op_star
-comma
-id|kmem_cache_t
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_void
-id|pgd_dtor
-c_func
-(paren
-r_void
-op_star
-comma
-id|kmem_cache_t
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_void
-id|pgtable_cache_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|paging_init
 c_func
@@ -106,13 +25,36 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
+r_extern
+r_int
+r_int
+id|empty_zero_page
+(braket
+l_int|1024
+)braket
+suffix:semicolon
+DECL|macro|ZERO_PAGE
+mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-time dual-mode&squot;, it&n; * implements both the traditional 2-level x86 page tables and the&n; * newer 3-level PAE-mode page tables.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_X86_PAE
 macro_line|# include &lt;asm/pgtable-3level.h&gt;
+multiline_comment|/*&n; * Need to initialise the X86 PAE caches&n; */
+r_extern
+r_void
+id|pgtable_cache_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else
 macro_line|# include &lt;asm/pgtable-2level.h&gt;
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif
 macro_line|#endif
 DECL|macro|PMD_SIZE
@@ -169,6 +111,12 @@ DECL|macro|_PAGE_BIT_PSE
 mdefine_line|#define _PAGE_BIT_PSE&t;&t;7&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
 DECL|macro|_PAGE_BIT_GLOBAL
 mdefine_line|#define _PAGE_BIT_GLOBAL&t;8&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_BIT_UNUSED1
+mdefine_line|#define _PAGE_BIT_UNUSED1&t;9&t;/* available for programmer */
+DECL|macro|_PAGE_BIT_UNUSED2
+mdefine_line|#define _PAGE_BIT_UNUSED2&t;10
+DECL|macro|_PAGE_BIT_UNUSED3
+mdefine_line|#define _PAGE_BIT_UNUSED3&t;11
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_RW
@@ -187,6 +135,12 @@ DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_UNUSED1
+mdefine_line|#define _PAGE_UNUSED1&t;0x200&t;/* available for programmer */
+DECL|macro|_PAGE_UNUSED2
+mdefine_line|#define _PAGE_UNUSED2&t;0x400
+DECL|macro|_PAGE_UNUSED3
+mdefine_line|#define _PAGE_UNUSED3&t;0x800
 DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;0x040&t;/* set:pagecache unset:swap */
 DECL|macro|_PAGE_PROTNONE

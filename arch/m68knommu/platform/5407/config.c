@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -27,7 +28,7 @@ r_void
 id|coldfire_timer_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -109,6 +110,14 @@ op_plus
 id|MCFDMA_BASE3
 comma
 )brace
+suffix:semicolon
+DECL|variable|dma_device_address
+r_int
+r_int
+id|dma_device_address
+(braket
+id|MAX_M68K_DMA_CHANNELS
+)braket
 suffix:semicolon
 multiline_comment|/***************************************************************************/
 DECL|function|mcf_autovector
@@ -370,6 +379,27 @@ c_func
 id|MCFSIM_IMR_MASKALL
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BOOTPARAM)
+id|strncpy
+c_func
+(paren
+id|commandp
+comma
+id|CONFIG_BOOTPARAM_STRING
+comma
+id|size
+)paren
+suffix:semicolon
+id|commandp
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 id|memset
 c_func
 (paren
@@ -380,6 +410,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_CLEOPATRA)
 multiline_comment|/* Different timer setup - to prevent device clash */
 id|mcf_timervector

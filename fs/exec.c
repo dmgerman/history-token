@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -1340,6 +1340,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 (brace
 r_int
@@ -1751,18 +1754,52 @@ op_assign
 id|STACK_TOP
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Adjust stack execute permissions; explicitly enable&n;&t;&t; * for EXSTACK_ENABLE_X, disable for EXSTACK_DISABLE_X&n;&t;&t; * and leave alone (arch default) otherwise. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|executable_stack
+op_eq
+id|EXSTACK_ENABLE_X
+)paren
+)paren
+id|mpnt-&gt;vm_flags
+op_assign
+id|VM_STACK_FLAGS
+op_or
+id|VM_EXEC
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|executable_stack
+op_eq
+id|EXSTACK_DISABLE_X
+)paren
+id|mpnt-&gt;vm_flags
+op_assign
+id|VM_STACK_FLAGS
+op_amp
+op_complement
+id|VM_EXEC
+suffix:semicolon
+r_else
+id|mpnt-&gt;vm_flags
+op_assign
+id|VM_STACK_FLAGS
+suffix:semicolon
 id|mpnt-&gt;vm_page_prot
 op_assign
 id|protection_map
 (braket
-id|VM_STACK_FLAGS
+id|mpnt-&gt;vm_flags
 op_amp
 l_int|0x7
 )braket
-suffix:semicolon
-id|mpnt-&gt;vm_flags
-op_assign
-id|VM_STACK_FLAGS
 suffix:semicolon
 id|mpnt-&gt;vm_ops
 op_assign
@@ -2583,6 +2620,22 @@ c_func
 op_amp
 id|newsig-&gt;shared_pending
 )paren
+suffix:semicolon
+id|newsig-&gt;pgrp
+op_assign
+id|oldsig-&gt;pgrp
+suffix:semicolon
+id|newsig-&gt;session
+op_assign
+id|oldsig-&gt;session
+suffix:semicolon
+id|newsig-&gt;leader
+op_assign
+id|oldsig-&gt;leader
+suffix:semicolon
+id|newsig-&gt;tty_old_pgrp
+op_assign
+id|oldsig-&gt;tty_old_pgrp
 suffix:semicolon
 )brace
 r_if
@@ -3538,12 +3591,6 @@ id|flush_old_files
 c_func
 (paren
 id|current-&gt;files
-)paren
-suffix:semicolon
-id|exit_itimers
-c_func
-(paren
-id|current
 )paren
 suffix:semicolon
 r_return

@@ -7,6 +7,7 @@ macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &quot;pdaudiocf.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; */
 DECL|macro|CARD_NAME
 mdefine_line|#define CARD_NAME&t;&quot;PDAudio-CF&quot;

@@ -55,7 +55,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|bad_interrupt
 c_func
 (paren
@@ -63,7 +63,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler
 c_func
 (paren
@@ -670,6 +670,7 @@ id|node-&gt;dev_id
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Warning: dev_id of %s is zero&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -805,6 +806,7 @@ id|flags
 suffix:semicolon
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;%s: tried to remove invalid irq&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -821,7 +823,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -878,6 +880,7 @@ id|INTERNAL_IRQS
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -924,6 +927,7 @@ id|IRQ_FLG_LOCK
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: IRQ %d from %s is not replaceable&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -954,6 +958,7 @@ id|IRQ_FLG_REPLACE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s can&squot;t replace IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1062,6 +1067,7 @@ id|INTERNAL_IRQS
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1087,6 +1093,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: removing probably wrong IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1180,6 +1187,7 @@ id|INTERNAL_IRQS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1239,6 +1247,7 @@ id|INTERNAL_IRQS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1317,12 +1326,9 @@ id|int_irq_list
 id|i
 )braket
 dot
-id|flags
-op_amp
-id|IRQ_FLG_STD
+id|devname
 )paren
-r_continue
-suffix:semicolon
+(brace
 id|seq_printf
 c_func
 (paren
@@ -1388,6 +1394,7 @@ dot
 id|devname
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1497,6 +1504,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unregistered interrupt %d!&bslash;nTurning it off in the CIMR...&bslash;n&quot;
 comma
 id|irq
@@ -1517,5 +1525,8 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 eof

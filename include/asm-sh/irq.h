@@ -546,5 +546,27 @@ DECL|macro|irq_canonicalize
 mdefine_line|#define irq_canonicalize(irq)&t;(irq)
 DECL|macro|irq_demux
 mdefine_line|#define irq_demux(irq)&t;&t;__irq_demux(sh_mv.mv_irq_demux(irq))
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_SH_IRQ_H */
 eof

@@ -530,7 +530,9 @@ id|req_complete
 suffix:semicolon
 id|req.arg
 op_assign
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 ques
 c_cond
 op_amp
@@ -572,7 +574,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 )paren
 id|wait_for_completion
 c_func
@@ -626,7 +630,9 @@ id|req_complete
 suffix:semicolon
 id|req.arg
 op_assign
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 ques
 c_cond
 op_amp
@@ -669,7 +675,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 )paren
 id|wait_for_completion
 c_func

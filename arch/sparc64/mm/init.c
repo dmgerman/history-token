@@ -447,7 +447,11 @@ op_eq
 id|spitfire
 )paren
 op_logical_and
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_ne
 l_int|NULL
 )paren
@@ -457,7 +461,11 @@ macro_line|#else
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_ne
 l_int|NULL
 op_logical_and
@@ -724,7 +732,11 @@ c_func
 id|pfn
 )paren
 comma
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 op_logical_and
 (paren
@@ -855,20 +867,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
-op_logical_and
-id|list_empty
+id|page_mapping
 c_func
 (paren
-op_amp
-id|page-&gt;mapping-&gt;i_mmap
+id|page
 )paren
 op_logical_and
-id|list_empty
+op_logical_neg
+id|mapping_mapped
 c_func
 (paren
-op_amp
-id|page-&gt;mapping-&gt;i_mmap_shared
+id|page-&gt;mapping
 )paren
 )paren
 (brace
@@ -908,7 +917,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We could delay the flush for the !page-&gt;mapping&n;&t;&t; * case too.  But that case is for exec env/arg&n;&t;&t; * pages and those are %99 certainly going to get&n;&t;&t; * faulted into the tlb (and thus flushed) anyways.&n;&t;&t; */
+multiline_comment|/* We could delay the flush for the !page_mapping&n;&t;&t; * case too.  But that case is for exec env/arg&n;&t;&t; * pages and those are %99 certainly going to get&n;&t;&t; * faulted into the tlb (and thus flushed) anyways.&n;&t;&t; */
 id|flush_dcache_page_impl
 c_func
 (paren
@@ -1102,7 +1111,11 @@ id|page
 )paren
 op_logical_or
 op_logical_neg
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 r_continue
 suffix:semicolon

@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -1711,16 +1711,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
-op_logical_and
 id|pte_young
 c_func
 (paren
 id|pte
 )paren
 op_logical_and
-op_logical_neg
-id|PageSwapCache
+id|page_mapping
 c_func
 (paren
 id|page
@@ -2084,10 +2081,10 @@ macro_line|#if !defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
 mdefine_line|#define ZAP_BLOCK_SIZE&t;(256 * PAGE_SIZE)
 macro_line|#endif
-multiline_comment|/* No preempt: go for the best straight-line efficiency */
+multiline_comment|/* No preempt: go for improved straight-line efficiency */
 macro_line|#if !defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
-mdefine_line|#define ZAP_BLOCK_SIZE&t;(~(0UL))
+mdefine_line|#define ZAP_BLOCK_SIZE&t;(1024 * PAGE_SIZE)
 macro_line|#endif
 multiline_comment|/**&n; * unmap_vmas - unmap a range of memory covered by a list of vma&squot;s&n; * @tlbp: address of the caller&squot;s struct mmu_gather&n; * @mm: the controlling mm_struct&n; * @vma: the starting vma&n; * @start_addr: virtual address at which to start unmapping&n; * @end_addr: virtual address at which to end unmapping&n; * @nr_accounted: Place number of unmapped pages in vm-accountable vma&squot;s here&n; *&n; * Returns the number of vma&squot;s which were covered by the unmapping.&n; *&n; * Unmap all pages in the vma list.  Called under page_table_lock.&n; *&n; * We aim to not hold page_table_lock for too long (for scheduling latency&n; * reasons).  So zap pages in ZAP_BLOCK_SIZE bytecounts.  This means we need to&n; * return the ending mmu_gather to the caller.&n; *&n; * Only addresses between `start&squot; and `end&squot; will be unmapped.&n; *&n; * The VMA list must be sorted in ascending virtual address order.&n; *&n; * unmap_vmas() assumes that the caller will flush the whole unmapped address&n; * range after unmap_vmas() returns.  So the only responsibility here is to&n; * ensure that any thus-far unmapped pages are flushed before unmap_vmas()&n; * drops the lock and schedules.&n; */
 DECL|function|unmap_vmas
@@ -2919,6 +2916,114 @@ r_return
 id|page
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+DECL|function|untouched_anonymous_page
+id|untouched_anonymous_page
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+id|pgd_t
+op_star
+id|pgd
+suffix:semicolon
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+multiline_comment|/* Check if the vma is for an anonymous mapping. */
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_ops
+op_logical_and
+id|vma-&gt;vm_ops-&gt;nopage
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Check if page directory entry exists. */
+id|pgd
+op_assign
+id|pgd_offset
+c_func
+(paren
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pgd_none
+c_func
+(paren
+op_star
+id|pgd
+)paren
+op_logical_or
+id|pgd_bad
+c_func
+(paren
+op_star
+id|pgd
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* Check if page middle directory entry exists. */
+id|pmd
+op_assign
+id|pmd_offset
+c_func
+(paren
+id|pgd
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmd_none
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_logical_or
+id|pmd_bad
+c_func
+(paren
+op_star
+id|pmd
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* There is a pte slot for &squot;address&squot; in &squot;mm&squot;. */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|get_user_pages
 r_int
 id|get_user_pages
@@ -3318,6 +3423,35 @@ id|lookup_write
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Shortcut for anonymous pages. We don&squot;t want&n;&t;&t;&t;&t; * to force the creation of pages tables for&n;&t;&t;&t;&t; * insanly big anonymously mapped areas that&n;&t;&t;&t;&t; * nobody touched so far. This is important&n;&t;&t;&t;&t; * for doing a core dump for these mappings.&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lookup_write
+op_logical_and
+id|untouched_anonymous_page
+c_func
+(paren
+id|mm
+comma
+id|vma
+comma
+id|start
+)paren
+)paren
+(brace
+id|map
+op_assign
+id|ZERO_PAGE
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren

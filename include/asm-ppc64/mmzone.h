@@ -20,10 +20,9 @@ id|numa_cpu_lookup_table
 )braket
 suffix:semicolon
 r_extern
-r_int
+r_char
+op_star
 id|numa_memory_lookup_table
-(braket
-)braket
 suffix:semicolon
 r_extern
 id|cpumask_t
@@ -39,9 +38,9 @@ id|nr_cpus_in_node
 suffix:semicolon
 DECL|macro|MAX_MEMORY
 mdefine_line|#define MAX_MEMORY (1UL &lt;&lt; 41)
-multiline_comment|/* 256MB regions */
+multiline_comment|/* 16MB regions */
 DECL|macro|MEMORY_INCREMENT_SHIFT
-mdefine_line|#define MEMORY_INCREMENT_SHIFT 28
+mdefine_line|#define MEMORY_INCREMENT_SHIFT 24
 DECL|macro|MEMORY_INCREMENT
 mdefine_line|#define MEMORY_INCREMENT (1UL &lt;&lt; MEMORY_INCREMENT_SHIFT)
 multiline_comment|/* NUMA debugging, will not work on a DLPAR machine */

@@ -2512,13 +2512,6 @@ op_amp
 id|dev_info-&gt;dev
 )paren
 suffix:semicolon
-id|put_device
-c_func
-(paren
-op_amp
-id|dev_info-&gt;dev
-)paren
-suffix:semicolon
 id|segment_unload
 c_func
 (paren
@@ -2531,6 +2524,13 @@ c_func
 l_string|&quot;Segment %s unloaded successfully&bslash;n&quot;
 comma
 id|dev_info-&gt;segment_name
+)paren
+suffix:semicolon
+id|put_device
+c_func
+(paren
+op_amp
+id|dev_info-&gt;dev
 )paren
 suffix:semicolon
 id|rc

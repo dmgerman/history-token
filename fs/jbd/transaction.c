@@ -1538,13 +1538,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 multiline_comment|/* We now hold the buffer lock so it is safe to query the buffer&n;&t; * state.  Is the buffer dirty? &n;&t; * &n;&t; * If so, there are two possibilities.  The buffer may be&n;&t; * non-journaled, and undergoing a quite legitimate writeback.&n;&t; * Otherwise, it is journaled, and we don&squot;t expect dirty buffers&n;&t; * in that state (the buffers should be marked JBD_Dirty&n;&t; * instead.)  So either the IO is being done under our own&n;&t; * control and this is a bug, or it&squot;s a third party IO such as&n;&t; * dump(8) (which may leave the buffer scheduled for read ---&n;&t; * ie. locked but not dirty) or tune2fs (which may actually have&n;&t; * the buffer dirtied, ugh.)  */
 r_if
 c_cond
@@ -1556,7 +1549,7 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* First question: is this buffer already part of the&n;&t;&t; * current transaction or the existing committing&n;&t;&t; * transaction? */
+multiline_comment|/*&n;&t;&t; * First question: is this buffer already part of the current&n;&t;&t; * transaction or the existing committing transaction?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1629,13 +1622,6 @@ id|handle
 )paren
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
 (paren
@@ -1643,14 +1629,14 @@ id|bh
 )paren
 suffix:semicolon
 r_goto
-id|out_unlocked
+id|out
 suffix:semicolon
 )brace
 id|error
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* The buffer is already part of this transaction if&n;&t; * b_transaction or b_next_transaction points to it. */
+multiline_comment|/*&n;&t; * The buffer is already part of this transaction if b_transaction or&n;&t; * b_next_transaction points to it&n;&t; */
 r_if
 c_cond
 (paren
@@ -1663,9 +1649,9 @@ op_eq
 id|transaction
 )paren
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
-multiline_comment|/* If there is already a copy-out version of this buffer, then&n;&t; * we don&squot;t need to make another one. */
+multiline_comment|/*&n;&t; * If there is already a copy-out version of this buffer, then we don&squot;t&n;&t; * need to make another one&n;&t; */
 r_if
 c_cond
 (paren
@@ -1719,7 +1705,7 @@ id|credits
 op_increment
 suffix:semicolon
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* Is there data here we need to preserve? */
@@ -1780,13 +1766,6 @@ c_func
 id|jh
 comma
 l_string|&quot;on shadow: sleep&quot;
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -1859,13 +1838,6 @@ comma
 l_string|&quot;allocate memory for buffer&quot;
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
 (paren
@@ -1923,15 +1895,8 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
 )brace
 r_goto
@@ -1978,7 +1943,7 @@ id|credits
 )paren
 op_increment
 suffix:semicolon
-multiline_comment|/* Finally, if the buffer is not journaled right now, we need to&n;&t; * make sure it doesn&squot;t get written to disk before the caller&n;&t; * actually commits the new data. */
+multiline_comment|/*&n;&t; * Finally, if the buffer is not journaled right now, we need to make&n;&t; * sure it doesn&squot;t get written to disk before the caller actually&n;&t; * commits the new data&n;&t; */
 r_if
 c_cond
 (paren
@@ -2015,6 +1980,13 @@ comma
 l_string|&quot;file as BJ_Reserved&quot;
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 id|__journal_file_buffer
 c_func
 (paren
@@ -2025,9 +1997,6 @@ comma
 id|BJ_Reserved
 )paren
 suffix:semicolon
-)brace
-id|done_locked
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -2035,6 +2004,9 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
+)brace
+id|done
+suffix:colon
 r_if
 c_cond
 (paren
@@ -2143,7 +2115,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* If we are about to journal a buffer, then any revoke pending&n;           on it is no longer valid. */
+multiline_comment|/*&n;&t; * If we are about to journal a buffer, then any revoke pending on it is&n;&t; * no longer valid&n;&t; */
 id|journal_cancel_revoke
 c_func
 (paren
@@ -2152,7 +2124,7 @@ comma
 id|jh
 )paren
 suffix:semicolon
-id|out_unlocked
+id|out
 suffix:colon
 r_if
 c_cond
@@ -2842,6 +2814,10 @@ op_logical_and
 id|jh-&gt;b_jlist
 op_ne
 id|BJ_SyncData
+op_logical_and
+id|jh-&gt;b_jlist
+op_ne
+id|BJ_Locked
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -2934,10 +2910,6 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/* The buffer will be refiled below */
 )brace
@@ -2948,6 +2920,10 @@ c_cond
 id|jh-&gt;b_jlist
 op_ne
 id|BJ_SyncData
+op_logical_and
+id|jh-&gt;b_jlist
+op_ne
+id|BJ_Locked
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -2973,10 +2949,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 id|JBUFFER_TRACE
 c_func
@@ -3469,10 +3441,6 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* &n;&t;&t; * We are no longer going to journal this buffer.&n;&t;&t; * However, the commit of this transaction is still&n;&t;&t; * important to the buffer: the delete that we are now&n;&t;&t; * processing might obsolete an old log entry, so by&n;&t;&t; * committing, we can satisfy the buffer&squot;s checkpoint.&n;&t;&t; *&n;&t;&t; * So, if we have a checkpoint on the buffer, we should&n;&t;&t; * now refile the buffer on our BJ_Forget list so that&n;&t;&t; * we know to remove the checkpoint after we commit. &n;&t;&t; */
 r_if
 c_cond
@@ -3783,21 +3751,22 @@ c_cond
 id|handle-&gt;h_sync
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 r_do
 (brace
 id|old_handle_count
 op_assign
 id|transaction-&gt;t_handle_count
 suffix:semicolon
-id|schedule
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -4292,7 +4261,8 @@ id|jh-&gt;b_jlist
 r_case
 id|BJ_None
 suffix:colon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|BJ_SyncData
@@ -4377,6 +4347,16 @@ id|transaction-&gt;t_reserved_list
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|BJ_Locked
+suffix:colon
+id|list
+op_assign
+op_amp
+id|transaction-&gt;t_locked_list
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|__blist_del_buffer
 c_func
@@ -4406,6 +4386,12 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* Expose it to the VM */
+id|out
+suffix:colon
+id|jh-&gt;b_transaction
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|journal_unfile_buffer
 r_void
@@ -4546,6 +4532,10 @@ c_cond
 id|jh-&gt;b_jlist
 op_eq
 id|BJ_SyncData
+op_logical_or
+id|jh-&gt;b_jlist
+op_eq
+id|BJ_Locked
 )paren
 (brace
 multiline_comment|/* A written-back ordered data buffer */
@@ -4562,10 +4552,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 id|journal_remove_journal_head
 c_func
@@ -4826,10 +4812,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5649,7 +5631,6 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-r_else
 id|jh-&gt;b_transaction
 op_assign
 id|transaction
@@ -5753,6 +5734,16 @@ id|list
 op_assign
 op_amp
 id|transaction-&gt;t_reserved_list
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BJ_Locked
+suffix:colon
+id|list
+op_assign
+op_amp
+id|transaction-&gt;t_locked_list
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5908,10 +5899,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 r_return
 suffix:semicolon

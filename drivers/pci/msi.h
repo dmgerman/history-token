@@ -1,13 +1,8 @@
-multiline_comment|/*&n; * File:&t;msi.h&n; *&n; * Copyright (C) 2003-2004 Intel&n; * Copyright (C) Tom Long Nguyen (tom.l.nguyen@intel.com)&n; */
+multiline_comment|/*&n; * Copyright (C) 2003-2004 Intel&n; * Copyright (C) Tom Long Nguyen (tom.l.nguyen@intel.com)&n; */
 macro_line|#ifndef MSI_H
 DECL|macro|MSI_H
 mdefine_line|#define MSI_H
-DECL|macro|MSI_AUTO
-mdefine_line|#define MSI_AUTO -1
-DECL|macro|NR_REPEATS
-mdefine_line|#define NR_REPEATS&t;23
-DECL|macro|NR_RESERVED_VECTORS
-mdefine_line|#define NR_RESERVED_VECTORS 3 /*FIRST_DEVICE_VECTOR,FIRST_SYSTEM_VECTOR,0x80 */
+macro_line|#include &lt;asm/msi.h&gt;
 multiline_comment|/*&n; * Assume the maximum number of hot plug slots supported by the system is about&n; * ten. The worstcase is that each of these slots is hot-added with a device,&n; * which has two MSI/MSI-X capable functions. To avoid any MSI-X driver, which&n; * attempts to request all available vectors, NR_HP_RESERVED_VECTORS is defined&n; * as below to ensure at least one message is assigned to each detected MSI/&n; * MSI-X device function.&n; */
 DECL|macro|NR_HP_RESERVED_VECTORS
 mdefine_line|#define NR_HP_RESERVED_VECTORS &t;20
@@ -15,7 +10,7 @@ r_extern
 r_int
 id|vector_irq
 (braket
-id|NR_IRQS
+id|NR_VECTORS
 )braket
 suffix:semicolon
 r_extern
@@ -38,6 +33,18 @@ id|NR_IRQS
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pci_vector_resources
+c_func
+(paren
+r_int
+id|last
+comma
+r_int
+id|nr_released
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_msi_irq_affinity
 mdefine_line|#define set_msi_irq_affinity&t;set_msi_affinity
@@ -58,48 +65,6 @@ id|vector
 )paren
 (brace
 )brace
-macro_line|#endif
-macro_line|#ifndef CONFIG_X86_IO_APIC
-DECL|function|get_ioapic_vector
-r_static
-r_inline
-r_int
-id|get_ioapic_vector
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|restore_ioapic_irq_handler
-r_static
-r_inline
-r_void
-id|restore_ioapic_irq_handler
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-)brace
-macro_line|#else
-r_extern
-r_void
-id|restore_ioapic_irq_handler
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * MSI-X Address Register&n; */
 DECL|macro|PCI_MSIX_FLAGS_QSIZE
@@ -169,8 +134,8 @@ DECL|macro|MSI_ADDRESS_HEADER_SHIFT
 mdefine_line|#define MSI_ADDRESS_HEADER_SHIFT&t;12
 DECL|macro|MSI_ADDRESS_HEADER_MASK
 mdefine_line|#define MSI_ADDRESS_HEADER_MASK&t;&t;0xfff000
-DECL|macro|MSI_TARGET_CPU_SHIFT
-mdefine_line|#define MSI_TARGET_CPU_SHIFT&t;&t;4
+DECL|macro|MSI_ADDRESS_DEST_ID_MASK
+mdefine_line|#define MSI_ADDRESS_DEST_ID_MASK&t;0xfff0000f
 DECL|macro|MSI_TARGET_CPU_MASK
 mdefine_line|#define MSI_TARGET_CPU_MASK&t;&t;0xff
 DECL|macro|MSI_DELIVERY_MODE
@@ -179,17 +144,12 @@ DECL|macro|MSI_LEVEL_MODE
 mdefine_line|#define MSI_LEVEL_MODE&t;&t;&t;1&t;/* Edge always assert */
 DECL|macro|MSI_TRIGGER_MODE
 mdefine_line|#define MSI_TRIGGER_MODE&t;&t;0&t;/* MSI is edge sensitive */
+DECL|macro|MSI_PHYSICAL_MODE
+mdefine_line|#define MSI_PHYSICAL_MODE&t;&t;0
 DECL|macro|MSI_LOGICAL_MODE
 mdefine_line|#define MSI_LOGICAL_MODE&t;&t;1
 DECL|macro|MSI_REDIRECTION_HINT_MODE
 mdefine_line|#define MSI_REDIRECTION_HINT_MODE&t;0
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|MSI_TARGET_CPU
-mdefine_line|#define MSI_TARGET_CPU&t;&t;&t;logical_smp_processor_id()
-macro_line|#else
-DECL|macro|MSI_TARGET_CPU
-mdefine_line|#define MSI_TARGET_CPU&t;&t;&t;TARGET_CPUS
-macro_line|#endif
 DECL|struct|msg_data
 r_struct
 id|msg_data

@@ -111,6 +111,8 @@ r_struct
 id|_snd_es1688
 id|es1688_t
 suffix:semicolon
+DECL|macro|chip_t
+mdefine_line|#define chip_t es1688_t
 multiline_comment|/* I/O ports */
 DECL|macro|ES1688P
 mdefine_line|#define ES1688P(codec, x) ((codec)-&gt;port + e_s_s_ESS1688##x)

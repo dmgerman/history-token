@@ -32,7 +32,7 @@ DECL|macro|AICA_RTC_SECS_H
 mdefine_line|#define AICA_RTC_SECS_H&t;&t;0xa0710000
 DECL|macro|AICA_RTC_SECS_L
 mdefine_line|#define AICA_RTC_SECS_L&t;&t;0xa0710004
-multiline_comment|/**&n; * aica_rtc_gettimeofday - Get the time from the AICA RTC&n; * @tv: pointer to resulting timeval&n; *&n; * Grabs the current RTC seconds counter and adjusts it to the Unix Epoch.&n; */
+multiline_comment|/**&n; * aica_rtc_gettimeofday - Get the time from the AICA RTC&n; * @ts: pointer to resulting timespec&n; *&n; * Grabs the current RTC seconds counter and adjusts it to the Unix Epoch.&n; */
 DECL|function|aica_rtc_gettimeofday
 r_void
 id|aica_rtc_gettimeofday
@@ -125,7 +125,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * aica_rtc_settimeofday - Set the AICA RTC to the current time&n; * @tv: contains the timeval to set&n; *&n; * Adjusts the given @tv to the AICA Epoch and sets the RTC seconds counter.&n; */
+multiline_comment|/**&n; * aica_rtc_settimeofday - Set the AICA RTC to the current time&n; * @secs: contains the time_t to set&n; *&n; * Adjusts the given @tv to the AICA Epoch and sets the RTC seconds counter.&n; */
 DECL|function|aica_rtc_settimeofday
 r_int
 id|aica_rtc_settimeofday

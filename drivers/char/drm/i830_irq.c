@@ -389,6 +389,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace

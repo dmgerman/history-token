@@ -3213,7 +3213,7 @@ op_amp
 id|data-&gt;pages
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|req-&gt;wb_page

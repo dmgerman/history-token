@@ -213,12 +213,14 @@ id|regs
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Format %02x  Vector: %04x  PC: %08lx  Status: %04x    %s&bslash;n&quot;
 comma
 id|regs-&gt;format
@@ -238,6 +240,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;ORIG_D0: %08lx  D0: %08lx  A2: %08lx  A1: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;orig_d0
@@ -252,6 +255,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;A0: %08lx  D5: %08lx  D4: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;a0
@@ -264,6 +268,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;D3: %08lx  D2: %08lx  D1: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;d3
@@ -286,6 +291,7 @@ id|PS_S
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;USP: %08lx&bslash;n&quot;
 comma
 id|rdusp
@@ -359,7 +365,8 @@ l_string|&quot;movel&t;%3, %%sp@-&bslash;n&bslash;t&quot;
 l_string|&quot;jsr&t;%4@&bslash;n&bslash;t&quot;
 l_string|&quot;movel&t;%2, %%d0&bslash;n&bslash;t&quot;
 l_string|&quot;trap&t;#0&bslash;n&quot;
-l_string|&quot;1:&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;movel&t;%%d0, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -1259,12 +1266,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nCURRENT PROCESS:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;COMM=%s PID=%d&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -1281,6 +1290,7 @@ id|current-&gt;mm
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;TEXT=%08x-%08x DATA=%08x-%08x BSS=%08x-%08x&bslash;n&quot;
 comma
 (paren
@@ -1317,6 +1327,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;USER-STACK=%08x  KERNEL-STACK=%08x&bslash;n&bslash;n&quot;
 comma
 (paren
@@ -1344,6 +1355,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;PC: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;pc
@@ -1352,6 +1364,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;SR: %08lx    SP: %08lx&bslash;n&quot;
 comma
 (paren
@@ -1368,6 +1381,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;d0: %08lx    d1: %08lx    d2: %08lx    d3: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;d0
@@ -1382,6 +1396,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;d4: %08lx    d5: %08lx    a0: %08lx    a1: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;d4
@@ -1396,6 +1411,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nUSP: %08x   TRAPFRAME: %08x&bslash;n&quot;
 comma
 (paren
@@ -1417,6 +1433,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nCODE:&quot;
 )paren
 suffix:semicolon
@@ -1474,6 +1491,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n%08x: &quot;
 comma
 (paren
@@ -1489,6 +1507,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;%08x &quot;
 comma
 (paren
@@ -1503,12 +1522,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nKERNEL STACK:&quot;
 )paren
 suffix:semicolon
@@ -1566,6 +1587,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n%08x: &quot;
 comma
 (paren
@@ -1581,6 +1603,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;%08x &quot;
 comma
 (paren
@@ -1595,18 +1618,21 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nUSER STACK:&quot;
 )paren
 suffix:semicolon
@@ -1667,6 +1693,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n%08x: &quot;
 comma
 (paren
@@ -1682,6 +1709,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;%08x &quot;
 comma
 (paren
@@ -1696,6 +1724,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1807,22 +1836,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched
@@ -1930,7 +1943,6 @@ id|fp
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* FIXME: This depends on the order of these functions. */
 r_if
 c_cond
 (paren
@@ -1982,22 +1994,6 @@ op_star
 id|tsk
 )paren
 (brace
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_struct
 id|switch_stack
 op_star

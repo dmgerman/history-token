@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3178,22 +3179,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|get_wchan
 r_int
 r_int

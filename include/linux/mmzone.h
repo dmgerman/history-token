@@ -108,6 +108,18 @@ DECL|variable|____cacheline_aligned_in_smp
 )brace
 id|____cacheline_aligned_in_smp
 suffix:semicolon
+DECL|macro|ZONE_DMA
+mdefine_line|#define ZONE_DMA&t;&t;0
+DECL|macro|ZONE_NORMAL
+mdefine_line|#define ZONE_NORMAL&t;&t;1
+DECL|macro|ZONE_HIGHMEM
+mdefine_line|#define ZONE_HIGHMEM&t;&t;2
+DECL|macro|MAX_NR_ZONES
+mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with ZONES_SHIFT */
+DECL|macro|ZONES_SHIFT
+mdefine_line|#define ZONES_SHIFT&t;&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
+DECL|macro|GFP_ZONEMASK
+mdefine_line|#define GFP_ZONEMASK&t;0x03
 multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone
 r_struct
@@ -133,6 +145,15 @@ comma
 id|pages_low
 comma
 id|pages_high
+suffix:semicolon
+multiline_comment|/*&n;&t; * protection[] is a pre-calculated number of extra pages that must be&n;&t; * available in a zone in order for __alloc_pages() to allocate memory&n;&t; * from the zone. i.e., for a GFP_KERNEL alloc of &quot;order&quot; there must&n;&t; * be &quot;(1&lt;&lt;order) + protection[ZONE_NORMAL]&quot; free pages in the zone&n;&t; * for us to choose to allocate the page from that zone.&n;&t; *&n;&t; * It uses both min_free_kbytes and sysctl_lower_zone_protection.&n;&t; * The protection values are recalculated if either of these values&n;&t; * change.  The array elements are in zonelist order:&n;&t; *&t;[0] == GFP_DMA, [1] == GFP_KERNEL, [2] == GFP_HIGHMEM.&n;&t; */
+DECL|member|protection
+r_int
+r_int
+id|protection
+(braket
+id|MAX_NR_ZONES
+)braket
 suffix:semicolon
 id|ZONE_PADDING
 c_func
@@ -272,18 +293,6 @@ DECL|variable|____cacheline_maxaligned_in_smp
 )brace
 id|____cacheline_maxaligned_in_smp
 suffix:semicolon
-DECL|macro|ZONE_DMA
-mdefine_line|#define ZONE_DMA&t;&t;0
-DECL|macro|ZONE_NORMAL
-mdefine_line|#define ZONE_NORMAL&t;&t;1
-DECL|macro|ZONE_HIGHMEM
-mdefine_line|#define ZONE_HIGHMEM&t;&t;2
-DECL|macro|MAX_NR_ZONES
-mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with ZONES_SHIFT */
-DECL|macro|ZONES_SHIFT
-mdefine_line|#define ZONES_SHIFT&t;&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
-DECL|macro|GFP_ZONEMASK
-mdefine_line|#define GFP_ZONEMASK&t;0x03
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we will scan in one&n; * go. A value of 12 for DEF_PRIORITY implies that we will scan 1/4096th of the&n; * queues (&quot;queue_length &gt;&gt; 12&quot;) during an aging round.&n; */
 DECL|macro|DEF_PRIORITY
 mdefine_line|#define DEF_PRIORITY 12
@@ -441,6 +450,9 @@ op_star
 id|zone
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * zone_idx() returns 0 for the ZONE_DMA zone, 1 for the ZONE_NORMAL zone, etc.&n; */
+DECL|macro|zone_idx
+mdefine_line|#define zone_idx(zone)&t;&t;((zone) - (zone)-&gt;zone_pgdat-&gt;node_zones)
 multiline_comment|/**&n; * for_each_pgdat - helper macro to iterate over all nodes&n; * @pgdat - pointer to a pg_data_t variable&n; *&n; * Meant to help with common loops of the form&n; * pgdat = pgdat_list;&n; * while(pgdat) {&n; * &t;...&n; * &t;pgdat = pgdat-&gt;pgdat_next;&n; * }&n; */
 DECL|macro|for_each_pgdat
 mdefine_line|#define for_each_pgdat(pgdat) &bslash;&n;&t;for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;pgdat_next)
@@ -564,6 +576,28 @@ id|file
 suffix:semicolon
 r_int
 id|min_free_kbytes_sysctl_handler
+c_func
+(paren
+r_struct
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+id|__user
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_int
+id|lower_zone_protection_sysctl_handler
 c_func
 (paren
 r_struct

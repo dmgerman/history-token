@@ -2386,9 +2386,6 @@ id|parport_default_proc_unregister
 r_void
 )paren
 (brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|parport_device_proc_register

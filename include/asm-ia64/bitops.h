@@ -753,7 +753,7 @@ r_return
 id|oldbitset
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
+multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 r_static
 id|__inline__
 r_int

@@ -579,6 +579,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n68360 QUICC support (C) 2000 Lineo Inc.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -586,6 +587,7 @@ macro_line|#if defined(CONFIG_UCQUICC) &amp;&amp; 0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCquicc serial string [%s]&bslash;n&quot;
 comma
 id|getserialnum
@@ -607,6 +609,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCquicc hwaddr %.2x:%.2x:%.2x:%.2x:%.2x:%.2x&bslash;n&quot;
 comma
 id|p

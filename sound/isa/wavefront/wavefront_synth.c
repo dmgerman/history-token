@@ -6821,11 +6821,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 r_static
 r_int
 id|__init

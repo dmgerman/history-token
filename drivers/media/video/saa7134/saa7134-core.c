@@ -544,7 +544,7 @@ op_assign
 (brace
 l_string|&quot;0&quot;
 comma
-l_string|&quot;CGAP&quot;
+l_string|&quot;GCAP&quot;
 comma
 l_string|&quot;GCHAN&quot;
 comma
@@ -2481,7 +2481,7 @@ multiline_comment|/* audio capture -- dma 3 */
 r_if
 c_cond
 (paren
-id|dev-&gt;oss.recording
+id|dev-&gt;oss.dma_running
 )paren
 (brace
 id|ctrl

@@ -223,6 +223,27 @@ id|header
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
+DECL|variable|bios_cpu_apicid
+id|u8
+id|bios_cpu_apicid
+(braket
+id|NR_CPUS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
+)braket
+op_assign
+id|BAD_APICID
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
 DECL|function|mpf_checksum
@@ -445,6 +466,15 @@ id|m-&gt;mpc_apicid
 )braket
 op_assign
 id|ver
+suffix:semicolon
+id|bios_cpu_apicid
+(braket
+id|num_processors
+op_minus
+l_int|1
+)braket
+op_assign
+id|m-&gt;mpc_apicid
 suffix:semicolon
 )brace
 DECL|function|MP_bus_info

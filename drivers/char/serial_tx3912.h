@@ -76,9 +76,9 @@ suffix:semicolon
 DECL|macro|rs_dprintk
 mdefine_line|#define rs_dprintk(f, str...) if (rs_debug &amp; f) printk (str)
 DECL|macro|func_enter
-mdefine_line|#define func_enter() rs_dprintk (TX3912_UART_DEBUG_FLOW,&t;&bslash;&n;&t;&t;&t;&t;&quot;rs: enter &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_enter() rs_dprintk (TX3912_UART_DEBUG_FLOW,&t;&bslash;&n;&t;&t;&t;&t;&quot;rs: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
-mdefine_line|#define func_exit() rs_dprintk (TX3912_UART_DEBUG_FLOW,&t;&bslash;&n;&t;&t;&t;&t;&quot;rs: exit &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_exit() rs_dprintk (TX3912_UART_DEBUG_FLOW,&t;&bslash;&n;&t;&t;&t;&t;&quot;rs: exit %s&bslash;n&quot;, __FUNCTION__)
 macro_line|#else
 DECL|macro|rs_dprintk
 mdefine_line|#define rs_dprintk(f, str...)

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * i386 semaphore implementation.&n; *&n; * (C) Copyright
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is protected&n; * by the spinlock in the semaphore&squot;s waitqueue head.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
@@ -28,6 +29,7 @@ suffix:semicolon
 DECL|function|__down
 id|asmlinkage
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -185,6 +187,7 @@ suffix:semicolon
 DECL|function|__down_interruptible
 id|asmlinkage
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren
@@ -458,7 +461,7 @@ multiline_comment|/*&n; * The semaphore operations have a special calling sequen
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed&bslash;n&quot;
 l_string|&quot;__down_failed:&bslash;n&bslash;t&quot;
@@ -483,7 +486,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed_interruptible&bslash;n&quot;
 l_string|&quot;__down_failed_interruptible:&bslash;n&bslash;t&quot;
@@ -506,7 +509,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __down_failed_trylock&bslash;n&quot;
 l_string|&quot;__down_failed_trylock:&bslash;n&bslash;t&quot;
@@ -529,7 +532,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align 4&bslash;n&quot;
 l_string|&quot;.globl __up_wakeup&bslash;n&quot;
 l_string|&quot;__up_wakeup:&bslash;n&bslash;t&quot;
@@ -548,7 +551,7 @@ macro_line|#if defined(CONFIG_SMP)
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align&t;4&bslash;n&quot;
 l_string|&quot;.globl&t;__write_lock_failed&bslash;n&quot;
 l_string|&quot;__write_lock_failed:&bslash;n&bslash;t&quot;
@@ -572,7 +575,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;.section .sched.text&bslash;n&quot;
 l_string|&quot;.align&t;4&bslash;n&quot;
 l_string|&quot;.globl&t;__read_lock_failed&bslash;n&quot;
 l_string|&quot;__read_lock_failed:&bslash;n&bslash;t&quot;

@@ -679,7 +679,7 @@ id|PAGE_SIZE
 comma
 l_string|&quot;%u&quot;
 comma
-id|POLICYDB_VERSION
+id|POLICYDB_VERSION_MAX
 )paren
 suffix:semicolon
 r_if

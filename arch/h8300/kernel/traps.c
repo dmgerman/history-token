@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * linux/arch/h8300/boot/traps.c -- general exception handling code&n; * H8/300 support Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; * &n; * Cloned from Linux/m68k.&n; *&n; * No original Copyright holder listed,&n; * Probabily original (C) Roman Zippel (assigned DJD, 1999)&n; *&n; * Copyright 1999-2000 D. Jeff Dionne, &lt;jeff@rt-control.com&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -76,34 +77,6 @@ c_func
 l_string|&quot;&bslash;nCURRENT PROCESS:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-(brace
-r_extern
-r_int
-id|swt_lastjiffies
-comma
-id|swt_reference
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;WATCHDOG: jiffies=%d lastjiffies=%d [%d] reference=%d&bslash;n&quot;
-comma
-id|jiffies
-comma
-id|swt_lastjiffies
-comma
-(paren
-id|swt_lastjiffies
-op_minus
-id|jiffies
-)paren
-comma
-id|swt_reference
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -179,54 +152,10 @@ id|current
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|show_regs
 c_func
 (paren
-l_string|&quot;PC: %08lx&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|fp-&gt;pc
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;CCR: %02x   SP: %08lx&bslash;n&quot;
-comma
-id|fp-&gt;ccr
-comma
-(paren
-r_int
-)paren
 id|fp
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;ER0: %08lx  ER1: %08lx   ER2: %08lx   ER3: %08lx&bslash;n&quot;
-comma
-id|fp-&gt;er0
-comma
-id|fp-&gt;er1
-comma
-id|fp-&gt;er2
-comma
-id|fp-&gt;er3
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;ER4: %08lx  ER5: %08lx   ER6: %08lx&bslash;n&quot;
-comma
-id|fp-&gt;er4
-comma
-id|fp-&gt;er5
-comma
-id|fp-&gt;er6
 )paren
 suffix:semicolon
 id|printk
@@ -444,29 +373,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|show_trace_task
-r_void
-id|show_trace_task
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-multiline_comment|/* DAVIDM: we can do better, need a proper stack dump */
-id|printk
-c_func
-(paren
-l_string|&quot;STACK ksp=0x%lx, usp=0x%lx&bslash;n&quot;
-comma
-id|tsk-&gt;thread.ksp
-comma
-id|tsk-&gt;thread.usp
 )paren
 suffix:semicolon
 )brace
@@ -742,4 +648,53 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|show_trace_task
+r_void
+id|show_trace_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|show_stack
+c_func
+(paren
+id|tsk
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|tsk-&gt;thread.esp0
+)paren
+suffix:semicolon
+)brace
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|show_stack
+c_func
+(paren
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 eof

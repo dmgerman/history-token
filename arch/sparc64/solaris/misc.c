@@ -2237,7 +2237,7 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
 suffix:semicolon

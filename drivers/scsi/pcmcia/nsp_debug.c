@@ -503,7 +503,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*printk(KERN_DEBUG __FUNCTION__ &quot; &quot;);*/
+multiline_comment|/*printk(KERN_DEBUG &quot;%s &quot;, __FUNCTION__);*/
 r_if
 c_cond
 (paren

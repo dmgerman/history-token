@@ -9762,10 +9762,6 @@ id|status
 suffix:semicolon
 r_int
 r_int
-id|result
-suffix:semicolon
-r_int
-r_int
 id|flags
 suffix:semicolon
 r_if
@@ -9964,10 +9960,6 @@ id|mxser_struct
 op_star
 )paren
 id|tty-&gt;driver_data
-suffix:semicolon
-r_int
-r_int
-id|arg
 suffix:semicolon
 r_int
 r_int

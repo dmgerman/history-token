@@ -141,9 +141,6 @@ r_struct
 id|address_space
 suffix:semicolon
 r_struct
-id|pte_chain
-suffix:semicolon
-r_struct
 id|sysinfo
 suffix:semicolon
 r_struct
@@ -522,72 +519,7 @@ r_extern
 r_int
 id|vm_swappiness
 suffix:semicolon
-multiline_comment|/* linux/mm/rmap.c */
 macro_line|#ifdef CONFIG_MMU
-r_int
-id|FASTCALL
-c_func
-(paren
-id|page_referenced
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-r_struct
-id|pte_chain
-op_star
-id|FASTCALL
-c_func
-(paren
-id|page_add_rmap
-c_func
-(paren
-r_struct
-id|page
-op_star
-comma
-id|pte_t
-op_star
-comma
-r_struct
-id|pte_chain
-op_star
-)paren
-)paren
-suffix:semicolon
-r_void
-id|FASTCALL
-c_func
-(paren
-id|page_remove_rmap
-c_func
-(paren
-r_struct
-id|page
-op_star
-comma
-id|pte_t
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|FASTCALL
-c_func
-(paren
-id|try_to_unmap
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* linux/mm/shmem.c */
 r_extern
 r_int
@@ -603,19 +535,17 @@ op_star
 id|page
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|page_referenced
-mdefine_line|#define page_referenced(page)&t;TestClearPageReferenced(page)
-DECL|macro|try_to_unmap
-mdefine_line|#define try_to_unmap(page)&t;SWAP_FAIL
 macro_line|#endif /* CONFIG_MMU */
-multiline_comment|/* return values of try_to_unmap */
-DECL|macro|SWAP_SUCCESS
-mdefine_line|#define&t;SWAP_SUCCESS&t;0
-DECL|macro|SWAP_AGAIN
-mdefine_line|#define&t;SWAP_AGAIN&t;1
-DECL|macro|SWAP_FAIL
-mdefine_line|#define&t;SWAP_FAIL&t;2
+r_extern
+r_void
+id|swap_unplug_io_fn
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/* linux/mm/page_io.c */
 r_extern
@@ -892,6 +822,9 @@ r_struct
 id|page
 op_star
 )paren
+suffix:semicolon
+r_struct
+id|backing_dev_info
 suffix:semicolon
 r_extern
 r_struct
