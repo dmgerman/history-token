@@ -2319,22 +2319,32 @@ DECL|macro|NIC_SRAM_DATA_SIG_MAGIC
 mdefine_line|#define  NIC_SRAM_DATA_SIG_MAGIC&t; 0x4b657654 /* ascii for &squot;KevT&squot; */
 DECL|macro|NIC_SRAM_DATA_CFG
 mdefine_line|#define NIC_SRAM_DATA_CFG&t;&t;&t;0x00000b58
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x0000000c
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN&t; 0x00000000
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER&t; 0x00000008
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MASK
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x00000030
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x0000000c
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN
 mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN&t; 0x00000000
 DECL|macro|NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000010
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000004
+DECL|macro|NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN&t; 0x00000004
 DECL|macro|NIC_SRAM_DATA_CFG_LED_LINK_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000020
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_LED_OUTPUT
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OUTPUT&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x00000030
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN&t; 0x00000000
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER&t; 0x00000010
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER&t; 0x00000020
+DECL|macro|NIC_SRAM_DATA_CFG_WOL_ENABLE
+mdefine_line|#define  NIC_SRAM_DATA_CFG_WOL_ENABLE&t;&t; 0x00000040
+DECL|macro|NIC_SRAM_DATA_CFG_ASF_ENABLE
+mdefine_line|#define  NIC_SRAM_DATA_CFG_ASF_ENABLE&t;&t; 0x00000080
+DECL|macro|NIC_SRAM_DATA_CFG_EEPROM_WP
+mdefine_line|#define  NIC_SRAM_DATA_CFG_EEPROM_WP&t;&t; 0x00000100
 DECL|macro|NIC_SRAM_DATA_PHY_ID
 mdefine_line|#define NIC_SRAM_DATA_PHY_ID&t;&t;0x00000b74
 DECL|macro|NIC_SRAM_DATA_PHY_ID1_MASK
@@ -2526,6 +2536,8 @@ id|vlan_tag
 suffix:semicolon
 DECL|macro|TXD_VLAN_TAG_SHIFT
 mdefine_line|#define TXD_VLAN_TAG_SHIFT&t;&t;0
+DECL|macro|TXD_MSS_SHIFT
+mdefine_line|#define TXD_MSS_SHIFT&t;&t;&t;16
 )brace
 suffix:semicolon
 DECL|macro|TXD_ADDR
@@ -3235,6 +3247,26 @@ id|mapping
 )paren
 )brace
 suffix:semicolon
+DECL|struct|tx_ring_info
+r_struct
+id|tx_ring_info
+(brace
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|DECLARE_PCI_UNMAP_ADDR
+c_func
+(paren
+id|mapping
+)paren
+id|u32
+id|prev_vlan_tag
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|tg3_config_info
 r_struct
 id|tg3_config_info
@@ -3416,14 +3448,16 @@ DECL|macro|TG3_FLAG_USE_MI_INTERRUPT
 mdefine_line|#define TG3_FLAG_USE_MI_INTERRUPT&t;0x00000010
 DECL|macro|TG3_FLAG_POLL_SERDES
 mdefine_line|#define TG3_FLAG_POLL_SERDES&t;&t;0x00000080
-DECL|macro|TG3_FLAG_PHY_RESET_ON_INIT
-mdefine_line|#define TG3_FLAG_PHY_RESET_ON_INIT&t;0x00000100
+DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
+mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0x00000100
 DECL|macro|TG3_FLAG_PCIX_TARGET_HWBUG
 mdefine_line|#define TG3_FLAG_PCIX_TARGET_HWBUG&t;0x00000200
 DECL|macro|TG3_FLAG_WOL_SPEED_100MB
 mdefine_line|#define TG3_FLAG_WOL_SPEED_100MB&t;0x00000400
 DECL|macro|TG3_FLAG_WOL_ENABLE
-mdefine_line|#define TG3_FLAG_WOL_ENABLE&t;&t;0x00001000
+mdefine_line|#define TG3_FLAG_WOL_ENABLE&t;&t;0x00000800
+DECL|macro|TG3_FLAG_EEPROM_WRITE_PROT
+mdefine_line|#define TG3_FLAG_EEPROM_WRITE_PROT&t;0x00001000
 DECL|macro|TG3_FLAG_NVRAM
 mdefine_line|#define TG3_FLAG_NVRAM&t;&t;&t;0x00002000
 DECL|macro|TG3_FLAG_NVRAM_BUFFERED
@@ -3725,7 +3759,7 @@ id|tx_ring
 suffix:semicolon
 DECL|member|tx_buffers
 r_struct
-id|ring_info
+id|tx_ring_info
 op_star
 id|tx_buffers
 suffix:semicolon
