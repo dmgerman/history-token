@@ -114,6 +114,22 @@ c_func
 id|high_memory
 )paren
 suffix:semicolon
+macro_line|#elif defined(__x86_64__)
+multiline_comment|/* &n;&t; * This is broken because it can generate memory type aliases,&n;&t; * which can cause cache corruptions&n;&t; * But it is only available for root and we have to be bug-to-bug&n;&t; * compatible with i386.&n;&t; */
+r_if
+c_cond
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_SYNC
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* same behaviour as i386. PAT always set to cached and MTRRs control the&n;&t;   caching behaviour. &n;&t;   Hopefully a full PAT implementation will fix that soon. */
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#elif defined(CONFIG_IA64)
 multiline_comment|/*&n;&t; * On ia64, we ignore O_SYNC because we cannot tolerate memory attribute aliases.&n;&t; */
 r_return
