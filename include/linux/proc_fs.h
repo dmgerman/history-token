@@ -802,33 +802,6 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fs/proc/kcore.c&n; */
-r_extern
-r_void
-id|kclist_add
-c_func
-(paren
-r_struct
-id|kcore_list
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|kcore_list
-op_star
-id|kclist_del
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
 macro_line|#else
 DECL|macro|proc_root_driver
 mdefine_line|#define proc_root_driver NULL
@@ -1112,6 +1085,8 @@ r_struct
 id|proc_dir_entry
 id|proc_root
 suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
+macro_line|#if !defined(CONFIG_PROC_FS) || defined(CONFIG_KCORE_AOUT)
 DECL|function|kclist_add
 r_static
 r_inline
@@ -1151,7 +1126,34 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PROC_FS */
+macro_line|#else
+r_extern
+r_void
+id|kclist_add
+c_func
+(paren
+r_struct
+id|kcore_list
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|kcore_list
+op_star
+id|kclist_del
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|struct|proc_inode
 r_struct
 id|proc_inode

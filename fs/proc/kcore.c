@@ -101,9 +101,7 @@ op_star
 id|ppos
 )paren
 (brace
-r_int
-r_int
-r_int
+id|loff_t
 id|p
 op_assign
 op_star
@@ -383,6 +381,9 @@ op_star
 (paren
 id|PAGE_OFFSET
 op_plus
+(paren
+r_int
+)paren
 id|p
 op_minus
 id|PAGE_SIZE
