@@ -1114,7 +1114,7 @@ id|m_maxagi
 suffix:semicolon
 multiline_comment|/* highest inode alloc group */
 DECL|member|m_ihsize
-r_int
+id|uint
 id|m_ihsize
 suffix:semicolon
 multiline_comment|/* size of next field */
@@ -1543,7 +1543,7 @@ id|m_dirfreeblk
 suffix:semicolon
 multiline_comment|/* blockno of dirfreeindex v2 */
 DECL|member|m_chsize
-r_int
+id|uint
 id|m_chsize
 suffix:semicolon
 multiline_comment|/* size of next field */

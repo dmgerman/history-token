@@ -1311,6 +1311,8 @@ mdefine_line|#define VOP_IOCTL(vp, inode, filp, fl, cmd, arg, rv)&t;&t;&t;&bslas
 DECL|macro|VOP_IFLUSH
 mdefine_line|#define VOP_IFLUSH(vp, flags, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_iflush, vp)((vp)-&gt;v_fbhv, flags)
 multiline_comment|/*&n; * Flags for read/write calls - same values as IRIX&n; */
+DECL|macro|IO_ISAIO
+mdefine_line|#define IO_ISAIO&t;0x00001&t;&t;/* don&squot;t wait for completion */
 DECL|macro|IO_ISDIRECT
 mdefine_line|#define IO_ISDIRECT&t;0x00004&t;&t;/* bypass page cache */
 DECL|macro|IO_INVIS
