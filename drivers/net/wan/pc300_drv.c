@@ -11034,7 +11034,8 @@ id|ch
 op_assign
 id|chan-&gt;channel
 suffix:semicolon
-id|uclong
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|ucchar
@@ -11220,7 +11221,8 @@ id|ch
 op_assign
 id|chan-&gt;channel
 suffix:semicolon
-id|uclong
+r_int
+r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef PC300_DEBUG_TX
@@ -14675,7 +14677,8 @@ id|scabase
 op_assign
 id|card-&gt;hw.scabase
 suffix:semicolon
-id|uclong
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|tx_dma_buf_check
@@ -15720,7 +15723,8 @@ op_star
 op_amp
 id|chan-&gt;falc
 suffix:semicolon
-id|uclong
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|CPC_LOCK
@@ -19587,7 +19591,8 @@ op_star
 )paren
 id|chan-&gt;card
 suffix:semicolon
-id|uclong
+r_int
+r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef&t;PC300_DEBUG_OTHER
