@@ -762,7 +762,7 @@ op_logical_neg
 (paren
 id|bus0_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_DEC
@@ -786,6 +786,12 @@ suffix:semicolon
 id|bus0
 op_assign
 id|bus0_dev-&gt;subordinate
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|bus0_dev
+)paren
 suffix:semicolon
 id|status
 op_assign
