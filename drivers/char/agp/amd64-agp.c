@@ -1694,7 +1694,7 @@ r_char
 op_star
 id|revstring
 op_assign
-l_string|&quot;  &quot;
+l_int|NULL
 suffix:semicolon
 id|cap_ptr
 op_assign
