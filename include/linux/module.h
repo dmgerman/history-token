@@ -15,8 +15,6 @@ macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Not Yet Implemented */
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(name)
 DECL|macro|MODULE_AUTHOR
 mdefine_line|#define MODULE_AUTHOR(name)
 DECL|macro|MODULE_DESCRIPTION
@@ -75,11 +73,16 @@ DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
+multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;))) = license
 macro_line|#else  /* !MODULE */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
@@ -99,6 +102,11 @@ r_struct
 id|module
 op_star
 id|owner
+suffix:semicolon
+multiline_comment|/* Are we internal use only? */
+DECL|member|gplonly
+r_int
+id|gplonly
 suffix:semicolon
 DECL|member|num_syms
 r_int
@@ -169,7 +177,7 @@ mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct ke
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__gpl_ksymtab&quot;)))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -226,6 +234,12 @@ r_struct
 id|kernel_symbol_group
 id|symbols
 suffix:semicolon
+multiline_comment|/* GPL-only exported symbols. */
+DECL|member|gpl_symbols
+r_struct
+id|kernel_symbol_group
+id|gpl_symbols
+suffix:semicolon
 multiline_comment|/* Exception tables */
 DECL|member|extable
 r_struct
@@ -274,6 +288,11 @@ multiline_comment|/* Am I unsafe to unload? */
 DECL|member|unsafe
 r_int
 id|unsafe
+suffix:semicolon
+multiline_comment|/* Am I GPL-compatible */
+DECL|member|license_gplok
+r_int
+id|license_gplok
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 multiline_comment|/* Reference counts */
@@ -702,6 +721,22 @@ id|owner
 op_assign
 op_amp
 id|__this_module
+)brace
+comma
+dot
+id|gpl_symbols
+op_assign
+(brace
+dot
+id|owner
+op_assign
+op_amp
+id|__this_module
+comma
+dot
+id|gplonly
+op_assign
+l_int|1
 )brace
 comma
 dot
