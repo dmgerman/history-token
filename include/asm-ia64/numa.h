@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 r_extern
-r_volatile
 id|u8
 id|cpu_to_node_map
 (braket
@@ -20,7 +19,6 @@ id|NR_CPUS
 id|__cacheline_aligned
 suffix:semicolon
 r_extern
-r_volatile
 id|cpumask_t
 id|node_to_cpu_mask
 (braket

@@ -1513,7 +1513,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* on which node is each logical CPU (one cacheline even for 64 CPUs) */
 DECL|variable|__cacheline_aligned
-r_volatile
 id|u8
 id|cpu_to_node_map
 (braket
@@ -1530,7 +1529,6 @@ id|cpu_to_node_map
 suffix:semicolon
 multiline_comment|/* which logical CPUs are on which nodes */
 DECL|variable|__cacheline_aligned
-r_volatile
 id|cpumask_t
 id|node_to_cpu_mask
 (braket
@@ -1888,8 +1886,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Total of %lu processors activated (%lu.%02lu BogoMIPS).&bslash;n&quot;
+l_string|&quot;Total of %d processors activated (%lu.%02lu BogoMIPS).&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|num_online_cpus
 c_func
 (paren
