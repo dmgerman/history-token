@@ -2566,7 +2566,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|flow-&gt;vcc-&gt;tx_inuse
+id|flow-&gt;vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB
