@@ -781,6 +781,7 @@ id|r-&gt;poolinfo.POOLBYTES
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|free_entropy_store
 r_static
 r_void
@@ -811,6 +812,7 @@ id|r
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * This function adds a byte into the entropy &quot;pool&quot;.  It does not&n; * update the entropy estimate.  The caller should call&n; * credit_entropy_store if this is appropriate.&n; * &n; * The pool is stirred with a primitive polynomial of the appropriate&n; * degree, and then twisted.  We twist by three bits at a time because&n; * it&squot;s cheap to do so and helps slightly in the expected case where&n; * the entropy is concentrated in the low-order bits.&n; */
 DECL|function|add_entropy_words
 r_static
