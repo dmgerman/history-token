@@ -1249,12 +1249,12 @@ DECL|macro|IDLE_CALC_LIMIT
 mdefine_line|#define IDLE_CALC_LIMIT   (HZ * 100)
 DECL|macro|IDLE_LEAKY_MAX
 mdefine_line|#define IDLE_LEAKY_MAX    16
-DECL|variable|sys_idle
+DECL|variable|original_pm_idle
 r_static
 r_void
 (paren
 op_star
-id|sys_idle
+id|original_pm_idle
 )paren
 (paren
 r_void
@@ -1296,7 +1296,7 @@ id|last_stime
 suffix:semicolon
 multiline_comment|/* = 0 */
 r_int
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|0
 suffix:semicolon
@@ -1310,7 +1310,7 @@ id|last_jiffies
 suffix:semicolon
 r_int
 r_int
-id|t1
+id|bucket
 suffix:semicolon
 id|recalc
 suffix:colon
@@ -1379,7 +1379,7 @@ op_assign
 id|current-&gt;times.tms_stime
 suffix:semicolon
 )brace
-id|t1
+id|bucket
 op_assign
 id|IDLE_LEAKY_MAX
 suffix:semicolon
@@ -1419,7 +1419,7 @@ c_func
 r_case
 l_int|0
 suffix:colon
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|1
 suffix:semicolon
@@ -1434,10 +1434,10 @@ id|jiffies
 r_if
 c_cond
 (paren
-id|t1
+id|bucket
 )paren
 (brace
-id|t1
+id|bucket
 op_assign
 id|IDLE_LEAKY_MAX
 suffix:semicolon
@@ -1449,10 +1449,10 @@ r_else
 r_if
 c_cond
 (paren
-id|t1
+id|bucket
 )paren
 (brace
-id|t1
+id|bucket
 op_decrement
 suffix:semicolon
 r_continue
@@ -1463,20 +1463,25 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* BIOS refused */
 )brace
 )brace
 r_if
 c_cond
 (paren
-id|sys_idle
+id|original_pm_idle
 )paren
-id|sys_idle
+id|original_pm_idle
 c_func
 (paren
 )paren
@@ -1507,7 +1512,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|apm_is_idle
+id|apm_idle_done
 )paren
 id|apm_do_busy
 c_func
@@ -6361,7 +6366,7 @@ OL
 l_int|100
 )paren
 (brace
-id|sys_idle
+id|original_pm_idle
 op_assign
 id|pm_idle
 suffix:semicolon
@@ -6398,7 +6403,7 @@ id|set_pm_idle
 )paren
 id|pm_idle
 op_assign
-id|sys_idle
+id|original_pm_idle
 suffix:semicolon
 r_if
 c_cond
