@@ -3457,30 +3457,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|swap_bytes
-r_static
-id|u16
-id|swap_bytes
-c_func
-(paren
-id|u16
-id|val
-)paren
-(brace
-r_return
-(paren
-id|val
-op_rshift
-l_int|8
-)paren
-op_or
-(paren
-id|val
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* The SMBus locks itself, usually, but nothing may access the chip between&n;   bank switches. */
 DECL|function|asb100_read_value
 r_static
@@ -3605,7 +3581,7 @@ suffix:colon
 multiline_comment|/* TEMP */
 id|res
 op_assign
-id|swap_bytes
+id|swab16
 c_func
 (paren
 id|i2c_smbus_read_word_data
@@ -3640,7 +3616,7 @@ suffix:colon
 multiline_comment|/* HYST */
 id|res
 op_assign
-id|swap_bytes
+id|swab16
 c_func
 (paren
 id|i2c_smbus_read_word_data
@@ -3661,7 +3637,7 @@ r_default
 suffix:colon
 id|res
 op_assign
-id|swap_bytes
+id|swab16
 c_func
 (paren
 id|i2c_smbus_read_word_data
@@ -3853,7 +3829,7 @@ id|cl
 comma
 l_int|2
 comma
-id|swap_bytes
+id|swab16
 c_func
 (paren
 id|value
@@ -3873,7 +3849,7 @@ id|cl
 comma
 l_int|3
 comma
-id|swap_bytes
+id|swab16
 c_func
 (paren
 id|value
