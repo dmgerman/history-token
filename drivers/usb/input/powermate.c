@@ -1739,11 +1739,10 @@ l_int|0
 )paren
 suffix:semicolon
 singleline_comment|// set default pulse parameters
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|pm
 )paren
@@ -1770,18 +1769,15 @@ id|powermate_device
 op_star
 id|pm
 op_assign
-id|dev_get_drvdata
-c_func
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
