@@ -57,6 +57,17 @@ c_func
 (paren
 id|i
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_buffer
+(braket
+id|i
+)braket
+dot
+id|buffer
+)paren
 id|vfree
 c_func
 (paren
@@ -68,6 +79,7 @@ dot
 id|buffer
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|alloc_cpu_buffers
 r_int
