@@ -1111,12 +1111,32 @@ singleline_comment|// Since we are writing past the file&squot;s end, we need to
 singleline_comment|// there is a hole that needs to be inserted before our writing
 singleline_comment|// position, and how many blocks it is going to cover (we need to
 singleline_comment|//  populate pointers to file blocks representing the hole with zeros)
+(brace
+r_int
+id|item_offset
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;     * if ih is stat data, its offset is 0 and we don&squot;t want to&n;&t;     * add 1 to pos in the hole_size calculation&n;&t;     */
+r_if
+c_cond
+(paren
+id|is_statdata_le_ih
+c_func
+(paren
+id|ih
+)paren
+)paren
+id|item_offset
+op_assign
+l_int|0
+suffix:semicolon
 id|hole_size
 op_assign
 (paren
 id|pos
 op_plus
-l_int|1
+id|item_offset
 op_minus
 (paren
 id|le_key_k_offset
@@ -1146,6 +1166,7 @@ id|inode-&gt;i_sb-&gt;s_blocksize
 op_rshift
 id|inode-&gt;i_sb-&gt;s_blocksize_bits
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
