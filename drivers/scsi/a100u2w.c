@@ -18,7 +18,7 @@ macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;inia100.h&quot;
+macro_line|#include &quot;a100u2w.h&quot;
 DECL|macro|ORC_RDWORD
 mdefine_line|#define ORC_RDWORD(x,y)         (short)(inl((int)((ULONG)((ULONG)x+(UCHAR)y)) ))
 DECL|variable|inia100_Copyright
