@@ -1751,12 +1751,6 @@ l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* reset the chip */
-id|pcnet32_dwio_reset
-c_func
-(paren
-id|ioaddr
-)paren
-suffix:semicolon
 id|pcnet32_wio_reset
 c_func
 (paren
@@ -1792,6 +1786,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|pcnet32_dwio_reset
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
