@@ -1166,8 +1166,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the mintt is sensible.&n;&t; */
@@ -1235,8 +1236,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), adjusting max turn time from %d to 500 ms&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), adjusting max turn time from %d to 500 ms&bslash;n&quot;
 comma
 id|qos-&gt;max_turn_time.value
 )paren
@@ -1299,8 +1301,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), reducing data size to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reducing data size to %d&bslash;n&quot;
 comma
 id|qos-&gt;data_size.value
 )paren
@@ -1347,8 +1350,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), reducing window size to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reducing window size to %d&bslash;n&quot;
 comma
 id|qos-&gt;window_size.value
 )paren
@@ -1376,8 +1380,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), reducing data size to %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reducing data size to %d&bslash;n&quot;
 comma
 id|qos-&gt;data_size.value
 )paren
@@ -1388,8 +1393,9 @@ r_else
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), nothing more we can do!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), nothing more we can do!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1919,8 +1925,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), baud rate = 0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), baud rate = 0x%02x&bslash;n&quot;
 comma
 id|param-&gt;pv.i
 )paren
@@ -2507,8 +2514,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), speed=%d, max_turn_time=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), speed=%d, max_turn_time=%d&bslash;n&quot;
 comma
 id|speed
 comma
@@ -2598,8 +2606,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), line capacity=%d bytes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), line capacity=%d bytes&bslash;n&quot;
 comma
 id|line_capacity
 )paren
@@ -2647,8 +2656,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), requested line capacity=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), requested line capacity=%d&bslash;n&quot;
 comma
 id|line_capacity
 )paren

@@ -157,8 +157,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hashbin_delete
@@ -217,8 +218,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), service_type=0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), service_type=0x%02x&bslash;n&quot;
 comma
 id|service_type
 )paren
@@ -384,8 +386,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Disconnect link if any */
@@ -499,8 +502,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|entry
@@ -584,8 +588,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -688,8 +693,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the packet contains data on the control channel */
@@ -738,8 +744,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), missing handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -801,8 +808,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -857,8 +865,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -891,8 +900,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), missing handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -928,8 +938,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1018,8 +1029,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1057,8 +1069,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), missing handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1156,8 +1169,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), data was control info only!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), data was control info only!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1193,8 +1207,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1292,8 +1307,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ctrl_skb
@@ -1350,8 +1366,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), missing handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1391,8 +1408,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1474,8 +1492,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1517,8 +1536,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), missing handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1549,8 +1569,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT

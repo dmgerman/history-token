@@ -491,8 +491,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), using 1 byte&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), using 1 byte&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p.pl
@@ -514,8 +515,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), using 2 bytes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), using 2 bytes&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p.pl
@@ -530,8 +532,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), using 4 bytes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), using 4 bytes&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p.pl
@@ -572,8 +575,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), pi=%#x, pl=%d, pi=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), pi=%#x, pl=%d, pi=%d&bslash;n&quot;
 comma
 id|p.pi
 comma
@@ -1011,8 +1015,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), pi=%#x, pl=%d, pi=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), pi=%#x, pl=%d, pi=%d&bslash;n&quot;
 comma
 id|p.pi
 comma
@@ -1099,8 +1104,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|p.pi
@@ -1121,8 +1127,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), pi=%#x, pl=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), pi=%#x, pl=%d&bslash;n&quot;
 comma
 id|p.pi
 comma
@@ -1178,8 +1185,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), str=0x%02x 0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), str=0x%02x 0x%02x&bslash;n&quot;
 comma
 (paren
 id|__u8
@@ -1326,8 +1334,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not impl&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not impl&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1912,8 +1921,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), no handler for parameter=0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler for parameter=0x%02x&bslash;n&quot;
 comma
 id|pi
 )paren
@@ -2118,8 +2128,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), no handler for parameter=0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler for parameter=0x%02x&bslash;n&quot;
 comma
 id|buf
 (braket
@@ -2164,8 +2175,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), pi=[%d,%d], type=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), pi=[%d,%d], type=%d&bslash;n&quot;
 comma
 id|pi_major
 comma

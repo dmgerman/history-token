@@ -213,8 +213,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -264,8 +265,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -317,8 +319,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -498,8 +501,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -548,8 +552,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -642,8 +647,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -692,8 +698,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -777,8 +784,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren

@@ -27,8 +27,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register callbacks */
@@ -94,8 +95,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%sfailed to allocate tsap&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;failed to allocate tsap&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -160,8 +162,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -216,8 +219,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Any userdata supplied? */
@@ -330,8 +334,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -437,8 +442,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|line
@@ -474,8 +480,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), didn&squot;t find myself&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), didn&squot;t find myself&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -527,8 +534,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), asking TTY to start again!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), asking TTY to start again!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;flow_status
@@ -613,8 +621,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), sending frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending frame&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skb-&gt;destructor
@@ -643,8 +652,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), asking TTY to slow down!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), asking TTY to slow down!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;flow_status
@@ -741,8 +751,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -852,8 +863,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -978,8 +990,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1096,8 +1109,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT

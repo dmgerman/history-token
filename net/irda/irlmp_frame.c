@@ -84,8 +84,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), sending expedited data&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending expedited data&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_data_request
@@ -146,8 +147,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -287,8 +289,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -373,9 +376,10 @@ c_func
 (paren
 l_int|3
 comma
-id|__FUNCTION__
-l_string|&quot;(), incoming connection, &quot;
+l_string|&quot;%s(), incoming connection, &quot;
 l_string|&quot;source LSAP=%d, dest LSAP=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|slsap_sel
 comma
@@ -412,8 +416,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), incoming connection for LSAP already connected&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), incoming connection for LSAP already connected&bslash;n&quot;
 )paren
 suffix:semicolon
 id|lsap
@@ -472,8 +477,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), slsap_sel = %02x, dlsap_sel = %02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), slsap_sel = %02x, dlsap_sel = %02x&bslash;n&quot;
 comma
 id|slsap_sel
 comma
@@ -496,8 +502,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), received control frame %02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), received control frame %02x&bslash;n&quot;
 comma
 id|fp
 (braket
@@ -513,8 +520,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), received data frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), received data frame&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -590,8 +598,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Disconnect indication!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Disconnect indication!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_do_lsap_event
@@ -651,8 +660,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown control frame %02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown control frame %02x&bslash;n&quot;
 comma
 id|fp
 (braket
@@ -784,8 +794,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -862,8 +873,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), extension in PID not supp!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), extension in PID not supp!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -897,8 +909,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), dropping frame!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dropping frame!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1010,8 +1023,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), found no matching LSAP!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), found no matching LSAP!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1053,8 +1067,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1144,8 +1159,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Copy QoS settings for this session */
@@ -1207,8 +1223,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1350,8 +1367,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
