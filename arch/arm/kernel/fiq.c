@@ -8,11 +8,6 @@ macro_line|#include &lt;asm/fiq.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 4)
-macro_line|#warning This file requires GCC 3.3.x or older to build.  Alternatively,
-macro_line|#warning please talk to GCC people to resolve the issues with the
-macro_line|#warning assembly clobber list.
-macro_line|#endif
 DECL|variable|no_fiq_insn
 r_static
 r_int
@@ -180,9 +175,16 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Taking an interrupt in FIQ mode is death, so both these functions&n; * disable irqs for the duration. &n; */
+multiline_comment|/*&n; * Taking an interrupt in FIQ mode is death, so both these functions&n; * disable irqs for the duration.  Note - these functions are almost&n; * entirely coded in assembly.&n; */
 DECL|function|set_fiq_regs
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|naked
+)paren
+)paren
 id|set_fiq_regs
 c_func
 (paren
@@ -197,10 +199,10 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
-id|__asm__
+id|asm
 r_volatile
 (paren
-l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
+l_string|&quot;mov&t;ip, sp&bslash;n&bslash;&n;&t;stmfd&t;sp!, {fp, ip, lr, pc}&bslash;n&bslash;&n;&t;sub&t;fp, ip, #4&bslash;n&bslash;&n;&t;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmea&t;fp, {fp, sp, pc}&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -221,26 +223,18 @@ id|PSR_F_BIT
 op_or
 id|FIQ_MODE
 )paren
-multiline_comment|/* These registers aren&squot;t modified by the above code in a way&n;&t;   visible to the compiler, but we mark them as clobbers anyway&n;&t;   so that GCC won&squot;t put any of the input or output operands in&n;&t;   them.  */
-suffix:colon
-l_string|&quot;r8&quot;
-comma
-l_string|&quot;r9&quot;
-comma
-l_string|&quot;r10&quot;
-comma
-l_string|&quot;r11&quot;
-comma
-l_string|&quot;r12&quot;
-comma
-l_string|&quot;r13&quot;
-comma
-l_string|&quot;r14&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|get_fiq_regs
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|naked
+)paren
+)paren
 id|get_fiq_regs
 c_func
 (paren
@@ -255,10 +249,10 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
-id|__asm__
+id|asm
 r_volatile
 (paren
-l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;stmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
+l_string|&quot;mov&t;ip, sp&bslash;n&bslash;&n;&t;stmfd&t;sp!, {fp, ip, lr, pc}&bslash;n&bslash;&n;&t;sub&t;fp, ip, #4&bslash;n&bslash;&n;&t;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;stmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmea&t;fp, {fp, sp, pc}&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -279,21 +273,6 @@ id|PSR_F_BIT
 op_or
 id|FIQ_MODE
 )paren
-multiline_comment|/* These registers aren&squot;t modified by the above code in a way&n;&t;   visible to the compiler, but we mark them as clobbers anyway&n;&t;   so that GCC won&squot;t put any of the input or output operands in&n;&t;   them.  */
-suffix:colon
-l_string|&quot;r8&quot;
-comma
-l_string|&quot;r9&quot;
-comma
-l_string|&quot;r10&quot;
-comma
-l_string|&quot;r11&quot;
-comma
-l_string|&quot;r12&quot;
-comma
-l_string|&quot;r13&quot;
-comma
-l_string|&quot;r14&quot;
 )paren
 suffix:semicolon
 )brace

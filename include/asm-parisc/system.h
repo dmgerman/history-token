@@ -370,5 +370,7 @@ mdefine_line|#define purge_tlb_start(x) do { } while(0)
 DECL|macro|purge_tlb_end
 mdefine_line|#define purge_tlb_end(x) do { } while (0)
 macro_line|#endif
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif
 eof

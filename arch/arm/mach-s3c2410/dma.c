@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  18-Nov-2004 BJD  Removed error for loading onto stopped channel&n; *  10-Nov-2004 BJD  Ensure all external symbols exported for modules&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
+multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003-2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  27-Feb-2005 BJD  Added kmem cache for dma descriptors&n; *  18-Nov-2004 BJD  Removed error for loading onto stopped channel&n; *  10-Nov-2004 BJD  Ensure all external symbols exported for modules&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_S3C2410_DMA_DEBUG
 DECL|macro|DEBUG
@@ -27,6 +27,12 @@ r_void
 id|__iomem
 op_star
 id|dma_base
+suffix:semicolon
+DECL|variable|dma_kmem
+r_static
+id|kmem_cache_t
+op_star
+id|dma_kmem
 suffix:semicolon
 multiline_comment|/* dma channel state information */
 DECL|variable|s3c2410_chans
@@ -1152,18 +1158,10 @@ id|size
 suffix:semicolon
 id|buf
 op_assign
-(paren
-id|s3c2410_dma_buf_t
-op_star
-)paren
-id|kmalloc
+id|kmem_cache_alloc
 c_func
 (paren
-r_sizeof
-(paren
-op_star
-id|buf
-)paren
+id|dma_kmem
 comma
 id|GFP_ATOMIC
 )paren
@@ -1481,9 +1479,11 @@ c_cond
 id|magicok
 )paren
 (brace
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|dma_kmem
+comma
 id|buf
 )paren
 suffix:semicolon
@@ -3367,6 +3367,40 @@ id|s3c2410_dma_resume
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* kmem cache implementation */
+DECL|function|s3c2410_dma_cache_ctor
+r_static
+r_void
+id|s3c2410_dma_cache_ctor
+c_func
+(paren
+r_void
+op_star
+id|p
+comma
+id|kmem_cache_t
+op_star
+id|c
+comma
+r_int
+r_int
+id|f
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|p
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|s3c2410_dma_buf_t
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* initialisation code */
 DECL|function|s3c2410_init_dma
 r_static
@@ -3447,6 +3481,51 @@ c_func
 id|KERN_ERR
 l_string|&quot;dma sysclass registration failed&bslash;n&quot;
 )paren
+suffix:semicolon
+r_goto
+id|err
+suffix:semicolon
+)brace
+id|dma_kmem
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;dma_desc&quot;
+comma
+r_sizeof
+(paren
+id|s3c2410_dma_buf_t
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+id|s3c2410_dma_cache_ctor
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_kmem
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dma failed to make kmem cache&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_goto
 id|err
@@ -3563,6 +3642,12 @@ l_int|0
 suffix:semicolon
 id|err
 suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|dma_kmem
+)paren
+suffix:semicolon
 id|iounmap
 c_func
 (paren

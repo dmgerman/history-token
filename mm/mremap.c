@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -1129,16 +1128,6 @@ id|new_len
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|new_addr
 suffix:semicolon
@@ -1749,16 +1738,6 @@ id|new_len
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|addr

@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/immap_85xx.h&gt;
+macro_line|#include &lt;asm/ppc_sys.h&gt;
 macro_line|#include &lt;mm/mmu_decl.h&gt;
 macro_line|#include &lt;platforms/85xx/mpc85xx_ads_common.h&gt;
 macro_line|#ifndef CONFIG_PCI
@@ -438,56 +439,29 @@ c_func
 (paren
 id|m
 comma
+l_string|&quot;chip&bslash;t&bslash;t: MPC%s&bslash;n&quot;
+comma
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
 l_string|&quot;Vendor&bslash;t&bslash;t: Freescale Semiconductor&bslash;n&quot;
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|svid
-op_amp
-l_int|0xffff0000
-)paren
-(brace
-r_case
-id|SVR_8540
-suffix:colon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;Machine&bslash;t&bslash;t: mpc8540ads&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SVR_8560
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
+l_string|&quot;Machine&bslash;t&bslash;t: mpc%sads&bslash;n&quot;
 comma
-l_string|&quot;Machine&bslash;t&bslash;t: mpc8560ads&bslash;n&quot;
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;Machine&bslash;t&bslash;t: unknown&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|seq_printf
 c_func
 (paren

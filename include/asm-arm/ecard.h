@@ -391,17 +391,15 @@ id|ECARD_NUM_RESOURCES
 suffix:semicolon
 multiline_comment|/* Public data */
 DECL|member|irqaddr
-r_volatile
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|irqaddr
 suffix:semicolon
 multiline_comment|/* address of IRQ register&t;*/
 DECL|member|fiqaddr
-r_volatile
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|fiqaddr
 suffix:semicolon
@@ -572,12 +570,15 @@ r_int
 id|num
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Obtain the address of a card&n; */
-r_extern
+multiline_comment|/*&n; * Obtain the address of a card.  This returns the &quot;old style&quot; address&n; * and should no longer be used.&n; */
+r_static
+r_inline
+r_int
+r_int
 id|__deprecated
-r_int
-r_int
+DECL|function|ecard_address
 id|ecard_address
+c_func
 (paren
 r_struct
 id|expansion_card
@@ -585,12 +586,39 @@ op_star
 id|ec
 comma
 id|card_type_t
-id|card_type
+id|type
 comma
 id|card_speed_t
 id|speed
 )paren
+(brace
+r_extern
+r_int
+r_int
+id|__ecard_address
+c_func
+(paren
+r_struct
+id|expansion_card
+op_star
+comma
+id|card_type_t
+comma
+id|card_speed_t
+)paren
 suffix:semicolon
+r_return
+id|__ecard_address
+c_func
+(paren
+id|ec
+comma
+id|type
+comma
+id|speed
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Request and release ecard resources&n; */
 r_extern
 r_int

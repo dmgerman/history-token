@@ -568,6 +568,8 @@ suffix:semicolon
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxchg((ptr),(unsigned long)(o),&bslash;&n;&t;&t;&t;&t;&t;(unsigned long)(n),sizeof(*(ptr))))
 macro_line|#endif
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_SYSTEM_H */
 eof

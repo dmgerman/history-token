@@ -9,11 +9,34 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
+r_static
+r_union
+(brace
+DECL|member|data
+r_struct
+id|systemcfg
+id|data
+suffix:semicolon
+DECL|member|page
+id|u8
+id|page
+(braket
+id|PAGE_SIZE
+)braket
+suffix:semicolon
+DECL|variable|__page_aligned
+)brace
+id|systemcfg_store
+id|__page_aligned
+suffix:semicolon
 DECL|variable|systemcfg
 r_struct
 id|systemcfg
 op_star
 id|systemcfg
+op_assign
+op_amp
+id|systemcfg_store.data
 suffix:semicolon
 DECL|variable|systemcfg
 id|EXPORT_SYMBOL
@@ -1867,5 +1890,12 @@ macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 )brace
+suffix:semicolon
+DECL|variable|paca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|paca
+)paren
 suffix:semicolon
 eof

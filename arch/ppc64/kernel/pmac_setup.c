@@ -1560,6 +1560,13 @@ id|__initdata
 id|pmac_md
 op_assign
 (brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+dot
+id|cpu_die
+op_assign
+id|generic_mach_cpu_die
+comma
+macro_line|#endif
 dot
 id|probe
 op_assign

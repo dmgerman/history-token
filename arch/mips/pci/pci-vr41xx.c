@@ -1132,7 +1132,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|vr41xx_pciu_init
-id|early_initcall
+id|arch_initcall
 c_func
 (paren
 id|vr41xx_pciu_init

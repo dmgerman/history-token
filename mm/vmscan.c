@@ -1397,7 +1397,7 @@ r_goto
 id|keep_locked
 suffix:semicolon
 multiline_comment|/* truncate got there first */
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1423,7 +1423,7 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1463,7 +1463,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1494,7 +1494,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp

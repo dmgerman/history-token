@@ -707,6 +707,7 @@ suffix:semicolon
 DECL|variable|dest
 r_static
 id|iarr
+id|__initdata
 op_star
 id|dest
 (braket

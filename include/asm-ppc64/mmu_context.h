@@ -226,9 +226,11 @@ macro_line|#ifdef CONFIG_ALTIVEC
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_ALTIVEC
+)paren
 )paren
 id|asm
 r_volatile
@@ -240,9 +242,11 @@ macro_line|#endif /* CONFIG_ALTIVEC */
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_SLB
+)paren
 )paren
 id|switch_slb
 c_func

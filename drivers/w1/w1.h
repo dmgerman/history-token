@@ -351,10 +351,6 @@ DECL|member|kpid
 id|pid_t
 id|kpid
 suffix:semicolon
-DECL|member|kwait
-id|wait_queue_head_t
-id|kwait
-suffix:semicolon
 DECL|member|mutex
 r_struct
 id|semaphore

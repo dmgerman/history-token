@@ -3212,7 +3212,10 @@ r_void
 id|update_mem_hiwater
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+id|tsk
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC

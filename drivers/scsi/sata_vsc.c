@@ -1217,7 +1217,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFFULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -1235,7 +1235,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFFULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if

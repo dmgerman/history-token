@@ -786,6 +786,9 @@ id|todc_info-&gt;rtc_type
 )paren
 (brace
 r_case
+id|TODC_TYPE_DS1553
+suffix:colon
+r_case
 id|TODC_TYPE_DS1557
 suffix:colon
 r_case
@@ -963,6 +966,9 @@ c_cond
 id|todc_info-&gt;rtc_type
 )paren
 (brace
+r_case
+id|TODC_TYPE_DS1553
+suffix:colon
 r_case
 id|TODC_TYPE_DS1557
 suffix:colon
@@ -1377,6 +1383,9 @@ id|todc_info-&gt;rtc_type
 )paren
 (brace
 r_case
+id|TODC_TYPE_DS1553
+suffix:colon
+r_case
 id|TODC_TYPE_DS1557
 suffix:colon
 r_case
@@ -1431,6 +1440,9 @@ c_cond
 id|todc_info-&gt;rtc_type
 )paren
 (brace
+r_case
+id|TODC_TYPE_DS1553
+suffix:colon
 r_case
 id|TODC_TYPE_DS1557
 suffix:colon

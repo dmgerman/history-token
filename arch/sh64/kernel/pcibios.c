@@ -140,7 +140,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Error while updating region &quot;
 l_string|&quot;%s/%d (%08x != %08x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|resource
 comma
@@ -454,7 +458,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -4239,7 +4239,11 @@ op_star
 )paren
 id|ent-&gt;driver_data
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|retval

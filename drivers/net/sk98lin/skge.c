@@ -12106,7 +12106,11 @@ op_assign
 id|ParseDeviceNbrFromSlotName
 c_func
 (paren
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -35,6 +35,7 @@ DECL|macro|CALL
 mdefine_line|#define&t;CALL(ops,fun) ((ops-&gt;fun)?(ops-&gt;fun):export_op_default.fun)
 multiline_comment|/*&n; * our acceptability function.&n; * if NOSUBTREECHECK, accept anything&n; * if not, require that we can walk up to exp-&gt;ex_dentry&n; * doing some checks on the &squot;x&squot; bits&n; */
 DECL|function|nfsd_acceptable
+r_static
 r_int
 id|nfsd_acceptable
 c_func
@@ -1129,6 +1130,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compose a file handle for an NFS reply.&n; *&n; * Note that when first composed, the dentry may not yet have&n; * an inode.  In this case a call to fh_update should be made&n; * before the fh goes out on the wire ...&n; */
 DECL|function|_fh_update
+r_static
 r_inline
 r_int
 id|_fh_update
@@ -1203,6 +1205,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * for composing old style file handles&n; */
 DECL|function|_fh_update_old
+r_static
 r_inline
 r_void
 id|_fh_update_old

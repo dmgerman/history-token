@@ -501,5 +501,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif
 eof

@@ -510,9 +510,11 @@ multiline_comment|/* On U3 based machines, we need to reserve the DART area and&
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_16M_PAGE
+)paren
 )paren
 id|use_largepages
 op_assign

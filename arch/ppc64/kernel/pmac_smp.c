@@ -1141,5 +1141,19 @@ op_assign
 op_amp
 id|core99_smp_ops
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+id|smp_ops-&gt;cpu_enable
+op_assign
+id|generic_cpu_enable
+suffix:semicolon
+id|smp_ops-&gt;cpu_disable
+op_assign
+id|generic_cpu_disable
+suffix:semicolon
+id|smp_ops-&gt;cpu_die
+op_assign
+id|generic_cpu_die
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

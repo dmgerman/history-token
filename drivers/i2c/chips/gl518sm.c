@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Addresses to scan */
@@ -437,12 +438,6 @@ op_assign
 id|gl518_detach_client
 comma
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|gl518_id
-r_static
-r_int
-id|gl518_id
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show
@@ -1940,11 +1935,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|gl518_id
-op_increment
-suffix:semicolon
 id|data-&gt;type
 op_assign
 id|kind
@@ -2581,22 +2571,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

@@ -6,5 +6,5 @@ mdefine_line|#define VMALLOC_START&t;    (((unsigned long)high_memory + VMALLOC_
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)   ((unsigned long)(x))
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;    0xfb000000
+mdefine_line|#define VMALLOC_END&t;    0xfaffefff
 eof

@@ -4208,7 +4208,11 @@ id|cap-&gt;bus_info
 comma
 l_string|&quot;PCI:%s&quot;
 comma
-id|dev-&gt;pci-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev-&gt;pci
+)paren
 )paren
 suffix:semicolon
 id|cap-&gt;version

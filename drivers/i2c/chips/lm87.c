@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -412,12 +413,6 @@ id|u8
 id|vrm
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm87_id
-r_static
-r_int
-id|lm87_id
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|function|lm87_read_value
@@ -2094,11 +2089,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm87_id
-op_increment
-suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
@@ -3116,15 +3106,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
-op_logical_or
-id|jiffies
-OL
-id|data-&gt;last_updated
+)paren
 op_logical_or
 op_logical_neg
 id|data-&gt;valid

@@ -520,9 +520,9 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|flush_dcache_mmap_lock
-mdefine_line|#define flush_dcache_mmap_lock(mapping) &bslash;&n;&t;spin_lock_irq(&amp;(mapping)-&gt;tree_lock)
+mdefine_line|#define flush_dcache_mmap_lock(mapping) &bslash;&n;&t;write_lock_irq(&amp;(mapping)-&gt;tree_lock)
 DECL|macro|flush_dcache_mmap_unlock
-mdefine_line|#define flush_dcache_mmap_unlock(mapping) &bslash;&n;&t;spin_unlock_irq(&amp;(mapping)-&gt;tree_lock)
+mdefine_line|#define flush_dcache_mmap_unlock(mapping) &bslash;&n;&t;write_unlock_irq(&amp;(mapping)-&gt;tree_lock)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,page,addr,len) &bslash;&n;&t;flush_dcache_page(page)
 multiline_comment|/*&n; * We don&squot;t appear to need to do anything here.  In fact, if we did, we&squot;d&n; * duplicate cache flushing elsewhere performed by flush_dcache_page().&n; */
