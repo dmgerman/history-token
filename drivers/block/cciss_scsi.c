@@ -2407,9 +2407,12 @@ id|shba-&gt;scsi_host
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|shba-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|shba-&gt;registered
 op_assign
