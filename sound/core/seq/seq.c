@@ -468,7 +468,7 @@ id|snd_seq_event_port_detach
 )paren
 suffix:semicolon
 multiline_comment|/* seq_lock.c */
-macro_line|#if defined(__SMP__) || defined(CONFIG_SND_DEBUG)
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_SND_DEBUG)
 multiline_comment|/*EXPORT_SYMBOL(snd_seq_sleep_in_lock);*/
 multiline_comment|/*EXPORT_SYMBOL(snd_seq_sleep_timeout_in_lock);*/
 DECL|variable|snd_use_lock_sync_helper

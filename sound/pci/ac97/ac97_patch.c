@@ -10,6 +10,32 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &quot;ac97_patch.h&quot;
 multiline_comment|/*&n; *  Chip specific initialization&n; */
+DECL|function|patch_yamaha_ymf753
+r_int
+id|patch_yamaha_ymf753
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+multiline_comment|/* Patch for Yamaha YMF753, Copyright (c) by David Shust, dshust@shustring.com.&n;&t;   This chip has nonstandard and extended behaviour with regard to its S/PDIF output.&n;&t;   The AC&squot;97 spec states that the S/PDIF signal is to be output at pin 48.&n;&t;   The YMF753 will ouput the S/PDIF signal to pin 43, 47 (EAPD), or 48.&n;&t;   By default, no output pin is selected, and the S/PDIF signal is not output.&n;&t;   There is also a bit to mute S/PDIF output in a vendor-specific register.&n;&t;*/
+id|ac97-&gt;caps
+op_or_assign
+id|AC97_BC_BASS_TREBLE
+suffix:semicolon
+id|ac97-&gt;caps
+op_or_assign
+l_int|0x04
+op_lshift
+l_int|10
+suffix:semicolon
+multiline_comment|/* Yamaha 3D enhancement */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|patch_wolfson00
 r_int
 id|patch_wolfson00

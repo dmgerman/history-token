@@ -476,7 +476,7 @@ r_if
 c_cond
 (paren
 id|pos
-OG
+op_ge
 id|runtime-&gt;buffer_size
 )paren
 (brace
@@ -806,7 +806,7 @@ r_if
 c_cond
 (paren
 id|pos
-OG
+op_ge
 id|runtime-&gt;buffer_size
 )paren
 (brace

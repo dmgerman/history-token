@@ -41,6 +41,12 @@ DECL|macro|AC97_ID_CS4201
 mdefine_line|#define AC97_ID_CS4201&t;&t;0x43525948
 DECL|macro|AC97_ID_CS4205
 mdefine_line|#define AC97_ID_CS4205&t;&t;0x43525958
+DECL|macro|AC97_ID_CS_MASK
+mdefine_line|#define AC97_ID_CS_MASK&t;&t;0xfffffff8&t;/* bit 0-2: rev */
 DECL|macro|AC97_ID_ALC650
 mdefine_line|#define AC97_ID_ALC650&t;&t;0x414c4720
+DECL|macro|AC97_ID_YMF753
+mdefine_line|#define AC97_ID_YMF753&t;&t;0x594d4803
+DECL|macro|AC97_ID_VT1616
+mdefine_line|#define AC97_ID_VT1616&t;&t;0x49434551
 eof

@@ -7320,7 +7320,7 @@ id|chip-&gt;midcr
 op_or_assign
 id|BA0_MIDCR_TXE
 suffix:semicolon
-id|chip-&gt;midi_input
+id|chip-&gt;midi_output
 op_assign
 id|substream
 suffix:semicolon

@@ -173,6 +173,10 @@ id|snd_card_t
 op_star
 id|card
 suffix:semicolon
+DECL|member|shutdown
+r_int
+id|shutdown
+suffix:semicolon
 DECL|member|num_interfaces
 r_int
 id|num_interfaces
