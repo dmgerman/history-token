@@ -4429,7 +4429,9 @@ id|lp-&gt;pci_dev
 comma
 id|rx_skbuff-&gt;tail
 comma
-id|rx_skbuff-&gt;len
+id|PKT_BUF_SZ
+op_minus
+l_int|2
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -4463,6 +4465,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
+l_int|2
 op_minus
 id|PKT_BUF_SZ
 )paren
@@ -6116,7 +6119,9 @@ id|lp-&gt;rx_dma_addr
 id|entry
 )braket
 comma
-id|skb-&gt;len
+id|PKT_BUF_SZ
+op_minus
+l_int|2
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6151,7 +6156,9 @@ id|lp-&gt;pci_dev
 comma
 id|newskb-&gt;tail
 comma
-id|newskb-&gt;len
+id|PKT_BUF_SZ
+op_minus
+l_int|2
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6330,6 +6337,8 @@ id|entry
 )braket
 comma
 id|PKT_BUF_SZ
+op_minus
+l_int|2
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6399,6 +6408,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
+l_int|2
 op_minus
 id|PKT_BUF_SZ
 )paren
@@ -6575,12 +6585,9 @@ id|lp-&gt;rx_dma_addr
 id|i
 )braket
 comma
-id|lp-&gt;rx_skbuff
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|len
+id|PKT_BUF_SZ
+op_minus
+l_int|2
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
