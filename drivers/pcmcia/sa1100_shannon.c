@@ -295,8 +295,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
+l_string|&quot;%s(): CS asked for 0V, still applying 3.3V..&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(): CS asked for 0V, still applying 3.3V..&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -308,8 +309,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
+l_string|&quot;%s(): CS asked for 5V, applying 3.3V..&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(): CS asked for 5V, applying 3.3V..&bslash;n&quot;
 )paren
 suffix:semicolon
 r_case
@@ -323,8 +325,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s(): unrecognized Vcc %u&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(): unrecognized Vcc %u&bslash;n&quot;
 comma
 id|state-&gt;Vcc
 )paren
@@ -338,8 +341,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
+l_string|&quot;%s(): Warning, Can&squot;t perform reset&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(): Warning, Can&squot;t perform reset&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Silently ignore Vpp, output enable, speaker enable. */

@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/parport.h&gt;
 singleline_comment|//#define DEBUG&t;&t;&t;&t;// Undef me for production
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTF
-mdefine_line|#define DPRINTF(x, a...) printk(KERN_DEBUG &quot;W9966: &quot;__FUNCTION__ &quot;(): &quot;x, ##a)
+mdefine_line|#define DPRINTF(x, a...) printk(KERN_DEBUG &quot;W9966: %s(): &quot;x, __FUNCTION__ , ##a)
 macro_line|#else
 DECL|macro|DPRINTF
 mdefine_line|#define DPRINTF(x...)

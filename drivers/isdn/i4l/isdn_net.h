@@ -444,8 +444,8 @@ id|lp
 op_assign
 id|nd-&gt;queue
 suffix:semicolon
-singleline_comment|//&t;printk(KERN_DEBUG __FUNCTION__&quot;: lp:%s(%p) nlp:%s(%p) last(%p)&bslash;n&quot;,
-singleline_comment|//&t;&t;lp-&gt;name, lp, nlp-&gt;name, nlp, lp-&gt;last); 
+singleline_comment|//&t;printk(KERN_DEBUG &quot;%s: lp:%s(%p) nlp:%s(%p) last(%p)&bslash;n&quot;,
+singleline_comment|//&t;&t;__FUNCTION__, lp-&gt;name, lp, nlp-&gt;name, nlp, lp-&gt;last);
 id|nlp-&gt;last
 op_assign
 id|lp-&gt;last
@@ -512,8 +512,8 @@ op_star
 )paren
 id|lp-&gt;master-&gt;priv
 suffix:semicolon
-singleline_comment|//&t;printk(KERN_DEBUG __FUNCTION__&quot;: lp:%s(%p) mlp:%s(%p) last(%p) next(%p) mndq(%p)&bslash;n&quot;,
-singleline_comment|//&t;&t;lp-&gt;name, lp, master_lp-&gt;name, master_lp, lp-&gt;last, lp-&gt;next, master_lp-&gt;netdev-&gt;queue); 
+singleline_comment|//&t;printk(KERN_DEBUG &quot;%s: lp:%s(%p) mlp:%s(%p) last(%p) next(%p) mndq(%p)&bslash;n&quot;,
+singleline_comment|//&t;&t;__FUNCTION__, lp-&gt;name, lp, master_lp-&gt;name, master_lp, lp-&gt;last, lp-&gt;next, master_lp-&gt;netdev-&gt;queue);
 id|spin_lock_irqsave
 c_func
 (paren
@@ -565,8 +565,8 @@ op_assign
 id|lp
 suffix:semicolon
 multiline_comment|/* (re)set own pointers */
-singleline_comment|//&t;printk(KERN_DEBUG __FUNCTION__&quot;: mndq(%p)&bslash;n&quot;,
-singleline_comment|//&t;&t;master_lp-&gt;netdev-&gt;queue); 
+singleline_comment|//&t;printk(KERN_DEBUG &quot;%s: mndq(%p)&bslash;n&quot;,
+singleline_comment|//&t;&t;__FUNCTION__, master_lp-&gt;netdev-&gt;queue);
 id|spin_unlock_irqrestore
 c_func
 (paren
