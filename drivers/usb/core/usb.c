@@ -2135,7 +2135,7 @@ id|i
 )braket
 suffix:semicolon
 multiline_comment|/* remove this interface */
-id|put_device
+id|device_unregister
 c_func
 (paren
 op_amp
@@ -2167,7 +2167,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|put_device
+id|device_unregister
 c_func
 (paren
 op_amp

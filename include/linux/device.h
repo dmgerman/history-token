@@ -1098,6 +1098,10 @@ op_star
 id|platform_data
 suffix:semicolon
 multiline_comment|/* Platform specific data (e.g. ACPI,&n;&t;&t;&t;&t;&t;   BIOS data relevant to device) */
+DECL|member|present
+id|u32
+id|present
+suffix:semicolon
 DECL|member|current_state
 id|u32
 id|current_state
@@ -1223,6 +1227,17 @@ multiline_comment|/*&n; * High level routines for use by the bus drivers&n; */
 r_extern
 r_int
 id|device_register
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_unregister
 c_func
 (paren
 r_struct

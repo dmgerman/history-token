@@ -9899,7 +9899,7 @@ id|g
 op_assign
 id|drive-&gt;disk
 suffix:semicolon
-id|put_device
+id|device_unregister
 c_func
 (paren
 op_amp
