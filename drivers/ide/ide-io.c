@@ -3954,13 +3954,17 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * un-busy the hwgroup etc, and clear any pending DMA status. we want to&n; * retry the current request in pio mode instead of risking tossing it&n; * all away&n; */
 DECL|function|ide_dma_timeout_retry
-r_void
+r_static
+id|ide_startstop_t
 id|ide_dma_timeout_retry
 c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
+comma
+r_int
+id|error
 )paren
 (brace
 id|ide_hwif_t
@@ -3978,11 +3982,37 @@ id|request
 op_star
 id|rq
 suffix:semicolon
+id|ide_startstop_t
+id|ret
+op_assign
+id|ide_stopped
+suffix:semicolon
 multiline_comment|/*&n;&t; * end current dma transaction&n;&t; */
+r_if
+c_cond
+(paren
+id|error
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: DMA timeout error&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren
-id|hwif
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
 op_member_access_from_pointer
 id|ide_dma_end
 c_func
@@ -3990,12 +4020,38 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * complain a little, later we might remove some of this verbosity&n;&t; */
+id|ret
+op_assign
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|error
+c_func
+(paren
+id|drive
+comma
+l_string|&quot;dma timeout error&quot;
+comma
+id|hwif
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: timeout waiting for DMA&bslash;n&quot;
+l_string|&quot;%s: DMA timeout retry&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
@@ -4011,6 +4067,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * disable dma for now, but remember that we did so because of&n;&t; * a timeout -- we&squot;ll reenable after we finish this next request&n;&t; * (or rather the first chunk of it) in pio.&n;&t; */
 id|drive-&gt;retry_pio
 op_increment
@@ -4084,14 +4141,10 @@ id|rq-&gt;buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-DECL|variable|ide_dma_timeout_retry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_dma_timeout_retry
-)paren
+r_return
+id|ret
 suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;ide_timer_expiry&t;-&t;handle lack of an IDE interrupt&n; *&t;@data: timer callback magic (hwgroup)&n; *&n; *&t;An IDE command has timed out before the expected drive return&n; *&t;occurred. At this point we attempt to clean up the current&n; *&t;mess. If the current handler includes an expiry handler then&n; *&t;we invoke the expiry handler, and providing it is happy the&n; *&t;work is done. If that fails we apply generic recovery rules&n; *&t;invoking the handler and checking the drive DMA status. We&n; *&t;have an excessively incestuous relationship with the DMA&n; *&t;logic that wants cleaning up.&n; */
 DECL|function|ide_timer_expiry
 r_void
@@ -4127,6 +4180,9 @@ suffix:semicolon
 r_int
 r_int
 id|wait
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -4135,13 +4191,6 @@ op_amp
 id|ide_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|hwgroup-&gt;timer
 )paren
 suffix:semicolon
 r_if
@@ -4258,7 +4307,7 @@ c_func
 id|drive
 )paren
 )paren
-op_ne
+OG
 l_int|0
 )paren
 (brace
@@ -4412,12 +4461,12 @@ id|drive-&gt;waiting_for_dma
 (brace
 id|startstop
 op_assign
-id|ide_stopped
-suffix:semicolon
 id|ide_dma_timeout_retry
 c_func
 (paren
 id|drive
+comma
+id|wait
 )paren
 suffix:semicolon
 )brace
@@ -4459,17 +4508,17 @@ id|jiffies
 op_minus
 id|drive-&gt;service_start
 suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|hwif-&gt;irq
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ide_lock
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|hwif-&gt;irq
 )paren
 suffix:semicolon
 r_if

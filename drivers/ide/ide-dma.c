@@ -1463,7 +1463,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I don&squot;t care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
+multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I don&squot;t care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt we let it complete the I/O.&n; *&t;But only one time - we clear expiry and if it&squot;s still not&n; *&t;completed after WAIT_CMD, we error and retry in PIO.&n; *&t;This can occur if an interrupt is lost or due to hang or bugs.&n; */
 DECL|function|dma_timer_expiry
 r_static
 r_int
@@ -1540,43 +1540,11 @@ id|dma_stat
 op_amp
 l_int|2
 )paren
-(brace
 multiline_comment|/* ERROR */
-(paren
-r_void
-)paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_end
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_return
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|error
-c_func
-(paren
-id|drive
-comma
-l_string|&quot;dma_timer_expiry&quot;
-comma
-id|hwif
-op_member_access_from_pointer
-id|INB
-c_func
-(paren
-id|IDE_STATUS_REG
-)paren
-)paren
+op_minus
+l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1596,21 +1564,13 @@ op_amp
 l_int|4
 )paren
 multiline_comment|/* Got an Interrupt */
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-c_func
-(paren
-id|drive
-)paren
+r_return
+id|WAIT_CMD
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Status is unknown -- reset the bus */
 )brace
 multiline_comment|/**&n; *&t;__ide_dma_host_off&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Perform the generic IDE controller DMA off operation. This&n; *&t;works for most IDE bus mastering controllers&n; */
 DECL|function|__ide_dma_host_off
