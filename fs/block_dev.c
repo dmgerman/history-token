@@ -1035,10 +1035,11 @@ id|bdev_hashtable
 id|HASH_SIZE
 )braket
 suffix:semicolon
-DECL|variable|bdev_lock
+DECL|variable|__cacheline_aligned_in_smp
 r_static
 id|spinlock_t
 id|bdev_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

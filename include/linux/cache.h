@@ -33,5 +33,14 @@ DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned&t;&t;&t;&t;&t;&bslash;&n;  __attribute__((__aligned__(SMP_CACHE_BYTES),&t;&t;&t;&bslash;&n;&t;&t; __section__(&quot;.data.cacheline_aligned&quot;)))
 macro_line|#endif
 macro_line|#endif /* __cacheline_aligned */
+macro_line|#ifndef __cacheline_aligned_in_smp
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|__cacheline_aligned_in_smp
+mdefine_line|#define __cacheline_aligned_in_smp __cacheline_aligned
+macro_line|#else
+DECL|macro|__cacheline_aligned_in_smp
+mdefine_line|#define __cacheline_aligned_in_smp
+macro_line|#endif /* CONFIG_SMP */
+macro_line|#endif
 macro_line|#endif /* __LINUX_CACHE_H */
 eof

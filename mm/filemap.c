@@ -42,18 +42,18 @@ op_star
 op_star
 id|page_hash_table
 suffix:semicolon
-DECL|variable|____cacheline_aligned_in_smp
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|pagecache_lock
-id|____cacheline_aligned_in_smp
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * NOTE: to avoid deadlocking you must never acquire the pagemap_lru_lock &n; *&t;with the pagecache_lock held.&n; *&n; * Ordering:&n; *&t;swap_lock -&gt;&n; *&t;&t;pagemap_lru_lock -&gt;&n; *&t;&t;&t;pagecache_lock&n; */
-DECL|variable|____cacheline_aligned_in_smp
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|pagemap_lru_lock
-id|____cacheline_aligned_in_smp
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

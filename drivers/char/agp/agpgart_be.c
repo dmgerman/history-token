@@ -5823,8 +5823,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_AGP_I810 */
 macro_line|#ifdef CONFIG_AGP_INTEL
-macro_line|#endif /* CONFIG_AGP_I810 */
-macro_line|#ifdef CONFIG_AGP_INTEL
 DECL|function|intel_fetch_size
 r_static
 r_int
@@ -15083,20 +15081,6 @@ comma
 l_string|&quot;AMD&quot;
 comma
 l_string|&quot;Irongate&quot;
-comma
-id|amd_irongate_setup
-)brace
-comma
-(brace
-id|PCI_DEVICE_ID_AMD_762_0
-comma
-id|PCI_VENDOR_ID_AMD
-comma
-id|AMD_IRONGATE
-comma
-l_string|&quot;AMD&quot;
-comma
-l_string|&quot;AMD 760MP&quot;
 comma
 id|amd_irongate_setup
 )brace

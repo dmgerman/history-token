@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.3, Sep 30, 2001&n; *&n; *&t;Copyright (c) 2001 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.3a, Nov 10, 2001&n; *&n; *&t;Copyright (c) 2001 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1781,7 +1781,7 @@ id|IFF_MIR
 id|config
 op_xor_assign
 (paren
-id|IRENABLE_FIR_ON
+id|IRENABLE_MIR_ON
 op_or
 id|IRENABLE_CRC16_ON
 )paren
@@ -3533,6 +3533,17 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
+id|outw
+c_func
+(paren
+l_int|0
+comma
+id|ndev-&gt;base_addr
+op_plus
+id|VLSI_PIO_PROMPT
+)paren
+suffix:semicolon
+multiline_comment|/* kick hw state machine */
 id|printk
 c_func
 (paren
@@ -4840,14 +4851,6 @@ id|idev
 suffix:semicolon
 r_int
 id|alloc_size
-suffix:semicolon
-id|vlsi_reg_debug
-c_func
-(paren
-l_int|0x3000
-comma
-l_string|&quot;vlsi initial state&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond

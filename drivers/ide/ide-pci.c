@@ -21,22 +21,22 @@ DECL|macro|DEVID_PIIX3
 mdefine_line|#define DEVID_PIIX3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371SB_1})
 DECL|macro|DEVID_PIIX4
 mdefine_line|#define DEVID_PIIX4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82371AB})
-DECL|macro|DEVID_PIIX4E
-mdefine_line|#define DEVID_PIIX4E&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AB_1})
+DECL|macro|DEVID_ICH0
+mdefine_line|#define DEVID_ICH0&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AB_1})
 DECL|macro|DEVID_PIIX4E2
 mdefine_line|#define DEVID_PIIX4E2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82443MX_1})
-DECL|macro|DEVID_PIIX4U
-mdefine_line|#define DEVID_PIIX4U&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AA_1})
+DECL|macro|DEVID_ICH
+mdefine_line|#define DEVID_ICH&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801AA_1})
 DECL|macro|DEVID_PIIX4U2
 mdefine_line|#define DEVID_PIIX4U2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82372FB_1})
 DECL|macro|DEVID_PIIX4NX
 mdefine_line|#define DEVID_PIIX4NX&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82451NX})
-DECL|macro|DEVID_PIIX4U3
-mdefine_line|#define DEVID_PIIX4U3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_9})
-DECL|macro|DEVID_PIIX4U4
-mdefine_line|#define DEVID_PIIX4U4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
-DECL|macro|DEVID_PIIX4U5
-mdefine_line|#define DEVID_PIIX4U5&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801CA_10})
+DECL|macro|DEVID_ICH2
+mdefine_line|#define DEVID_ICH2&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_9})
+DECL|macro|DEVID_ICH2M
+mdefine_line|#define DEVID_ICH2M&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
+DECL|macro|DEVID_ICH3
+mdefine_line|#define DEVID_ICH3&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801CA_10})
 DECL|macro|DEVID_VIA_IDE
 mdefine_line|#define DEVID_VIA_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C561})
 DECL|macro|DEVID_MR_IDE
@@ -1429,9 +1429,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_PIIX4E
+id|DEVID_ICH0
 comma
-l_string|&quot;PIIX4&quot;
+l_string|&quot;ICH0&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1501,9 +1501,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_PIIX4U
+id|DEVID_ICH
 comma
-l_string|&quot;PIIX4&quot;
+l_string|&quot;ICH&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1609,45 +1609,9 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_PIIX4U3
+id|DEVID_ICH2
 comma
-l_string|&quot;PIIX4&quot;
-comma
-id|PCI_PIIX
-comma
-id|ATA66_PIIX
-comma
-id|INIT_PIIX
-comma
-l_int|NULL
-comma
-(brace
-(brace
-l_int|0x41
-comma
-l_int|0x80
-comma
-l_int|0x80
-)brace
-comma
-(brace
-l_int|0x43
-comma
-l_int|0x80
-comma
-l_int|0x80
-)brace
-)brace
-comma
-id|ON_BOARD
-comma
-l_int|0
-)brace
-comma
-(brace
-id|DEVID_PIIX4U4
-comma
-l_string|&quot;PIIX4&quot;
+l_string|&quot;ICH2&quot;
 comma
 id|PCI_PIIX
 comma
@@ -1681,9 +1645,45 @@ l_int|0
 )brace
 comma
 (brace
-id|DEVID_PIIX4U5
+id|DEVID_ICH2M
 comma
-l_string|&quot;PIIX4&quot;
+l_string|&quot;ICH2-M&quot;
+comma
+id|PCI_PIIX
+comma
+id|ATA66_PIIX
+comma
+id|INIT_PIIX
+comma
+l_int|NULL
+comma
+(brace
+(brace
+l_int|0x41
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+comma
+(brace
+l_int|0x43
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_ICH3
+comma
+l_string|&quot;ICH3&quot;
 comma
 id|PCI_PIIX
 comma
@@ -5650,13 +5650,11 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -5835,13 +5833,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -5867,13 +5863,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
 comma
 id|d2-&gt;name
 comma
-id|dev2-&gt;bus-&gt;number
-comma
-id|dev2-&gt;devfn
+id|dev2-&gt;slot_name
 )paren
 suffix:semicolon
 id|ide_setup_pci_device
@@ -6140,13 +6134,11 @@ id|IDE_PCI_DEVID_NULL
 id|printk
 c_func
 (paren
-l_string|&quot;%s: unknown IDE controller on PCI bus %02x device %02x, VID=%04x, DID=%04x&bslash;n&quot;
+l_string|&quot;%s: unknown IDE controller on PCI slot %s, VID=%04x, DID=%04x&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev-&gt;slot_name
 comma
 id|devid.vid
 comma
@@ -6157,13 +6149,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
+l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
 comma
 id|d-&gt;name
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|ide_setup_pci_device

@@ -1279,6 +1279,7 @@ c_func
 l_string|&quot;%ld sectors total, %d sectors done.&bslash;n&quot;
 comma
 id|req-&gt;nr_sectors
+comma
 id|good_sectors
 )paren
 )paren

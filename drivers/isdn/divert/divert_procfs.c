@@ -186,12 +186,6 @@ op_assign
 id|ib
 suffix:semicolon
 multiline_comment|/* new tail */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* delete old entrys */
 r_while
 c_loop
@@ -235,7 +229,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* divert_info_head-&gt;next */
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -669,12 +663,6 @@ op_assign
 id|inf-&gt;next
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

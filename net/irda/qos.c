@@ -13,11 +13,18 @@ op_assign
 l_int|16000000
 suffix:semicolon
 multiline_comment|/*&n; * Maximum value of the lap disconnect timer we negociate with the other end.&n; * Most often, the value below represent the best compromise, but some user&n; * may want to keep the LAP alive longuer or shorter in case of link failure.&n; * Remember that the threshold time (early warning) is fixed to 3s...&n; */
-DECL|variable|sysctl_max_inactive_time
+DECL|variable|sysctl_max_noreply_time
 r_int
-id|sysctl_max_inactive_time
+id|sysctl_max_noreply_time
 op_assign
 l_int|12
+suffix:semicolon
+multiline_comment|/*&n; * Minimum turn time to be applied before transmitting to the peer.&n; * Nonzero values (usec) are used as lower limit to the per-connection&n; * mtt value which was announced by the other end during negotiation.&n; * Might be helpful if the peer device provides too short mtt.&n; * Default is 10 which means using the unmodified value given by the peer&n; * except if it&squot;s 0 (0 is likely a bug in the other stack).&n; */
+DECL|variable|sysctl_min_tx_turn_time
+r_int
+id|sysctl_min_tx_turn_time
+op_assign
+l_int|10
 suffix:semicolon
 r_static
 r_int
@@ -739,7 +746,7 @@ id|array
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function value_lower_bits (value, array)&n; *&n; *    Returns a bit field marking all possibility lower than value.&n; *    We may need a &quot;value_higher_bits&quot; in the future...&n; */
+multiline_comment|/*&n; * Function value_lower_bits (value, array)&n; *&n; *    Returns a bit field marking all possibility lower than value.&n; */
 DECL|function|value_lower_bits
 r_static
 r_inline
@@ -813,6 +820,107 @@ id|value
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Send back a valid index */
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|size
+)paren
+(brace
+id|i
+op_assign
+id|size
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Last item */
+op_star
+id|field
+op_assign
+id|result
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function value_highest_bit (value, array)&n; *&n; *    Returns a bit field marking the highest possibility lower than value.&n; */
+DECL|function|value_highest_bit
+r_static
+r_inline
+r_int
+id|value_highest_bit
+c_func
+(paren
+id|__u32
+id|value
+comma
+id|__u32
+op_star
+id|array
+comma
+r_int
+id|size
+comma
+id|__u16
+op_star
+id|field
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|__u16
+id|mask
+op_assign
+l_int|0x1
+suffix:semicolon
+id|__u16
+id|result
+op_assign
+l_int|0x0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|size
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* Finished ? */
+r_if
+c_cond
+(paren
+id|array
+(braket
+id|i
+)braket
+op_le
+id|value
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Shift mask */
+id|mask
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Set the current value to the bit field */
+id|result
+op_or_assign
+id|mask
+suffix:semicolon
 multiline_comment|/* Send back a valid index */
 r_if
 c_cond
@@ -978,7 +1086,7 @@ op_assign
 id|value_lower_bits
 c_func
 (paren
-id|sysctl_max_inactive_time
+id|sysctl_max_noreply_time
 comma
 id|link_disc_times
 comma
@@ -988,7 +1096,7 @@ op_amp
 id|qos-&gt;link_disc_time.bits
 )paren
 suffix:semicolon
-id|sysctl_max_inactive_time
+id|sysctl_max_noreply_time
 op_assign
 id|index_value
 c_func
@@ -1055,6 +1163,49 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure the mintt is sensible.&n;&t; */
+r_if
+c_cond
+(paren
+id|sysctl_min_tx_turn_time
+OG
+id|qos-&gt;min_turn_time.value
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* We don&squot;t really need bits, but easier this way */
+id|i
+op_assign
+id|value_highest_bit
+c_func
+(paren
+id|sysctl_min_tx_turn_time
+comma
+id|min_turn_times
+comma
+l_int|8
+comma
+op_amp
+id|qos-&gt;min_turn_time.bits
+)paren
+suffix:semicolon
+id|sysctl_min_tx_turn_time
+op_assign
+id|index_value
+c_func
+(paren
+id|i
+comma
+id|min_turn_times
+)paren
+suffix:semicolon
+id|qos-&gt;min_turn_time.value
+op_assign
+id|sysctl_min_tx_turn_time
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t; * Not allowed to use a max turn time less than 500 ms if the baudrate&n;&t; * is less than 115200&n;&t; */
 r_if
 c_cond

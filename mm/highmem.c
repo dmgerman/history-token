@@ -1211,9 +1211,6 @@ id|bio
 op_star
 op_star
 id|bio_orig
-comma
-r_int
-id|gfp_mask
 )paren
 (brace
 r_struct
@@ -1329,7 +1326,7 @@ op_assign
 id|alloc_bounce_page
 c_func
 (paren
-id|gfp_mask
+id|GFP_NOHIGHIO
 )paren
 suffix:semicolon
 id|to-&gt;bv_len

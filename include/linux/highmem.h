@@ -34,9 +34,6 @@ id|bio
 op_star
 op_star
 id|bio_orig
-comma
-r_int
-id|gfp_mask
 )paren
 suffix:semicolon
 DECL|function|bh_kmap

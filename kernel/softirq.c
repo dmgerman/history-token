@@ -14,7 +14,7 @@ id|irq_stat
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|variable|__cacheline_aligned
+DECL|variable|__cacheline_aligned_in_smp
 r_static
 r_struct
 id|softirq_action
@@ -22,7 +22,7 @@ id|softirq_vec
 (braket
 l_int|32
 )braket
-id|__cacheline_aligned
+id|__cacheline_aligned_in_smp
 suffix:semicolon
 multiline_comment|/*&n; * we cannot loop indefinitely here to avoid userspace starvation,&n; * but we also don&squot;t want to introduce a worst case 1/HZ latency&n; * to the pending events, so lets the scheduler to balance&n; * the softirq load for us.&n; */
 DECL|function|wakeup_softirqd
@@ -369,23 +369,23 @@ id|action
 suffix:semicolon
 )brace
 multiline_comment|/* Tasklets */
-DECL|variable|__cacheline_aligned
+DECL|variable|__cacheline_aligned_in_smp
 r_struct
 id|tasklet_head
 id|tasklet_vec
 (braket
 id|NR_CPUS
 )braket
-id|__cacheline_aligned
+id|__cacheline_aligned_in_smp
 suffix:semicolon
-DECL|variable|__cacheline_aligned
+DECL|variable|__cacheline_aligned_in_smp
 r_struct
 id|tasklet_head
 id|tasklet_hi_vec
 (braket
 id|NR_CPUS
 )braket
-id|__cacheline_aligned
+id|__cacheline_aligned_in_smp
 suffix:semicolon
 DECL|function|__tasklet_schedule
 r_void

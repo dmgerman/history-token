@@ -3206,15 +3206,12 @@ op_assign
 id|max_header_size
 suffix:semicolon
 multiline_comment|/* Clean up the original one to keep it in listen state */
-id|self-&gt;lsap-&gt;dlsap_sel
-op_assign
-id|LSAP_ANY
+id|irlmp_listen
+c_func
+(paren
+id|self-&gt;lsap
+)paren
 suffix:semicolon
-id|self-&gt;lsap-&gt;lsap_state
-op_assign
-id|LSAP_DISCONNECTED
-suffix:semicolon
-multiline_comment|/* FIXME: refcount in irlmp might get wrong */
 id|iriap_do_server_event
 c_func
 (paren

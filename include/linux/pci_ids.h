@@ -2121,6 +2121,8 @@ DECL|macro|PCI_DEVICE_ID_AVM_C4
 mdefine_line|#define PCI_DEVICE_ID_AVM_C4&t;&t;0x0800
 DECL|macro|PCI_DEVICE_ID_AVM_A1
 mdefine_line|#define PCI_DEVICE_ID_AVM_A1&t;&t;0x0a00
+DECL|macro|PCI_DEVICE_ID_AVM_A1_V2
+mdefine_line|#define PCI_DEVICE_ID_AVM_A1_V2&t;&t;0x0e00
 DECL|macro|PCI_DEVICE_ID_AVM_C2
 mdefine_line|#define PCI_DEVICE_ID_AVM_C2&t;&t;0x1100
 DECL|macro|PCI_DEVICE_ID_AVM_T1

@@ -3758,11 +3758,6 @@ op_star
 id|q
 )paren
 (brace
-r_struct
-id|buffer_head
-op_star
-id|bh
-suffix:semicolon
 r_int
 id|unit
 suffix:semicolon
@@ -3819,10 +3814,6 @@ suffix:semicolon
 id|pd_count
 op_assign
 id|CURRENT-&gt;current_nr_sectors
-suffix:semicolon
-id|bh
-op_assign
-id|CURRENT-&gt;bh
 suffix:semicolon
 r_if
 c_cond
@@ -3940,7 +3931,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -3962,7 +3953,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4024,7 +4015,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4127,7 +4118,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4152,7 +4143,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4256,7 +4247,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4281,7 +4272,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4343,7 +4334,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4368,7 +4359,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4471,7 +4462,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4496,7 +4487,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4570,7 +4561,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4595,7 +4586,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4725,7 +4716,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4750,7 +4741,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4768,7 +4759,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren
@@ -4793,7 +4784,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|saved_flags
 )paren

@@ -1426,35 +1426,7 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* Make sure the timer has sensible value (the user&n;&t;&t;&t; * may have set it) - Jean II */
-r_if
-c_cond
-(paren
-id|sysctl_lap_keepalive_time
-OL
-l_int|100
-)paren
-(brace
-multiline_comment|/* 100ms */
-id|sysctl_lap_keepalive_time
-op_assign
-l_int|100
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|sysctl_lap_keepalive_time
-OG
-l_int|10000
-)paren
-(brace
-multiline_comment|/* 10s */
-id|sysctl_lap_keepalive_time
-op_assign
-l_int|10000
-suffix:semicolon
-)brace
+multiline_comment|/* Timer value is checked in irsysctl - Jean II */
 id|irlmp_start_idle_timer
 c_func
 (paren

@@ -10495,7 +10495,6 @@ id|size
 op_assign
 id|bio-&gt;bi_size
 suffix:semicolon
-suffix:semicolon
 id|buffer
 op_assign
 id|bio_data

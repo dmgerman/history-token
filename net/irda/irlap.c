@@ -33,6 +33,13 @@ l_int|1000
 op_div
 id|HZ
 suffix:semicolon
+multiline_comment|/* This is the delay of missed pf period before generating an event&n; * to the application. The spec mandate 3 seconds, but in some cases&n; * it&squot;s way too long. - Jean II */
+DECL|variable|sysctl_warn_noreply_time
+r_int
+id|sysctl_warn_noreply_time
+op_assign
+l_int|3
+suffix:semicolon
 r_extern
 r_void
 id|irlap_queue_xmit
@@ -1852,48 +1859,7 @@ id|info.discovery
 op_assign
 id|discovery
 suffix:semicolon
-multiline_comment|/* Check if the slot timeout is within limits */
-r_if
-c_cond
-(paren
-id|sysctl_slot_timeout
-OL
-l_int|20
-)paren
-(brace
-id|ERROR
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot;(), to low value for slot timeout!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sysctl_slot_timeout
-op_assign
-l_int|20
-suffix:semicolon
-)brace
-multiline_comment|/* &n;&t; * Highest value is actually 8, but we allow higher since&n;&t; * some devices seems to require it.&n;&t; */
-r_if
-c_cond
-(paren
-id|sysctl_slot_timeout
-OG
-l_int|160
-)paren
-(brace
-id|ERROR
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot;(), to high value for slot timeout!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sysctl_slot_timeout
-op_assign
-l_int|160
-suffix:semicolon
-)brace
+multiline_comment|/* sysctl_slot_timeout bounds are checked in irsysctl.c - Jean II */
 id|self-&gt;slot_timeout
 op_assign
 id|sysctl_slot_timeout
@@ -3039,8 +3005,6 @@ l_int|0x01
 suffix:semicolon
 multiline_comment|/* Set data size */
 multiline_comment|/*self-&gt;qos_rx.data_size.bits &amp;= 0x03;*/
-multiline_comment|/* Set disconnect time -&gt; done properly in qos.c */
-multiline_comment|/*self-&gt;qos_rx.link_disc_time.bits &amp;= 0x07;*/
 id|irda_qos_bits_to_value
 c_func
 (paren
@@ -3383,13 +3347,13 @@ op_star
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * N1 and N2 are maximum retry count for *both* the final timer&n;&t; * and the wd timer (with a factor 2) as defined above.&n;&t; * After N1 retry of a timer, we give a warning to the user.&n;&t; * After N2 retry, we consider the link dead and disconnect it.&n;&t; * Jean II&n;&t; */
-multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to &n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; */
+multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to &n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; *  Actually, it&squot;s not always 3 seconds, as we allow to set&n;&t; *  it via sysctl... Max maxtt is 500ms, and N1 need to be multiple&n;&t; *  of 2, so 1 second is minimum we can allow. - Jean II&n;&t; */
 r_if
 c_cond
 (paren
 id|self-&gt;qos_tx.link_disc_time.value
 op_eq
-l_int|3
+id|sysctl_warn_noreply_time
 )paren
 multiline_comment|/* &n;&t;&t; * If we set N1 to 0, it will trigger immediately, which is&n;&t;&t; * not what we want. What we really want is to disable it,&n;&t;&t; * Jean II &n;&t;&t; */
 id|self-&gt;N1
@@ -3401,7 +3365,9 @@ multiline_comment|/* Disable - Need to be multiple of 2*/
 r_else
 id|self-&gt;N1
 op_assign
-l_int|3000
+id|sysctl_warn_noreply_time
+op_star
+l_int|1000
 op_div
 id|self-&gt;qos_rx.max_turn_time.value
 suffix:semicolon

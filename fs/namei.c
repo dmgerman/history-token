@@ -1491,6 +1491,26 @@ op_assign
 id|parent
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+id|d_mountpoint
+c_func
+(paren
+id|nd-&gt;dentry
+)paren
+op_logical_and
+id|__follow_down
+c_func
+(paren
+op_amp
+id|nd-&gt;mnt
+comma
+op_amp
+id|nd-&gt;dentry
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Name resolution.&n; *&n; * This is the basic name resolution function, turning a pathname&n; * into the final dentry.&n; *&n; * We expect &squot;base&squot; to be positive and a directory.&n; */
 DECL|function|link_path_walk

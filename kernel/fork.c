@@ -787,10 +787,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|__cacheline_aligned
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|mmlist_lock
-id|__cacheline_aligned
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

@@ -313,7 +313,6 @@ op_amp
 id|busy_flag
 )paren
 )paren
-)paren
 (brace
 id|TRACE_ABORT
 c_func

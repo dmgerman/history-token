@@ -1758,6 +1758,13 @@ c_func
 id|wait
 )paren
 suffix:semicolon
+id|request_queue_t
+op_star
+id|q
+op_assign
+op_amp
+id|SRpnt-&gt;sr_device-&gt;request_queue
+suffix:semicolon
 id|SRpnt-&gt;sr_request.waiting
 op_assign
 op_amp
@@ -1786,6 +1793,12 @@ comma
 id|timeout
 comma
 id|retries
+)paren
+suffix:semicolon
+id|generic_unplug_device
+c_func
+(paren
+id|q
 )paren
 suffix:semicolon
 id|wait_for_completion

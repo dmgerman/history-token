@@ -320,11 +320,6 @@ r_int
 r_int
 id|bounce_pfn
 suffix:semicolon
-multiline_comment|/*&n;&t; * for memory zoning (&lt;= 4GB and &gt; 4GB)&n;&t; */
-DECL|member|bounce_gfp
-r_int
-id|bounce_gfp
-suffix:semicolon
 multiline_comment|/*&n;&t; * This is used to remove the plug when tq_disk runs.&n;&t; */
 DECL|member|plug_tq
 r_struct
@@ -474,9 +469,6 @@ id|bio
 op_star
 op_star
 id|bio_orig
-comma
-r_int
-id|gfp_mask
 )paren
 suffix:semicolon
 DECL|function|blk_queue_bounce
@@ -503,8 +495,6 @@ c_func
 id|q-&gt;bounce_pfn
 comma
 id|bio
-comma
-id|q-&gt;bounce_gfp
 )paren
 suffix:semicolon
 )brace

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;asm/s390mach.h&gt;
 macro_line|#include &lt;asm/ccwcache.h&gt;
@@ -2730,6 +2731,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* bring up the device tree */
+id|device_driver_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 id|pci_init
 c_func

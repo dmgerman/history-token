@@ -429,7 +429,7 @@ id|bn
 )paren
 (brace
 id|current-&gt;policy
-op_assign
+op_or_assign
 id|SCHED_YIELD
 suffix:semicolon
 id|schedule

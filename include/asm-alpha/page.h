@@ -154,6 +154,8 @@ DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;BUG()
 DECL|macro|BUG_ON
 mdefine_line|#define BUG_ON(condition)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely((long)(condition)))&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|BUG_ON
+mdefine_line|#define BUG_ON(condition)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely((int)(condition)))&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern

@@ -876,9 +876,9 @@ r_int
 id|rw
 comma
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|bh
+id|bio
 )paren
 (brace
 r_int
@@ -938,7 +938,7 @@ id|chunk_size
 suffix:semicolon
 id|block
 op_assign
-id|bh-&gt;b_rsector
+id|bio-&gt;bi_sector
 op_rshift
 l_int|1
 suffix:semicolon
@@ -963,7 +963,7 @@ id|chunk_size
 )paren
 op_plus
 (paren
-id|bh-&gt;b_size
+id|bio-&gt;bi_size
 op_rshift
 l_int|10
 )paren
@@ -1022,7 +1022,7 @@ id|hash-&gt;zone0
 suffix:semicolon
 id|sect_in_chunk
 op_assign
-id|bh-&gt;b_rsector
+id|bio-&gt;bi_sector
 op_amp
 (paren
 (paren
@@ -1080,11 +1080,11 @@ op_plus
 id|sect_in_chunk
 suffix:semicolon
 multiline_comment|/*&n;&t; * The new BH_Lock semantics in ll_rw_blk.c guarantee that this&n;&t; * is the only IO operation happening on this bh.&n;&t; */
-id|bh-&gt;b_rdev
+id|bio-&gt;bi_dev
 op_assign
 id|tmp_dev-&gt;dev
 suffix:semicolon
-id|bh-&gt;b_rsector
+id|bio-&gt;bi_sector
 op_assign
 id|rsect
 suffix:semicolon
@@ -1100,9 +1100,9 @@ l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks o
 comma
 id|chunk_size
 comma
-id|bh-&gt;b_rsector
+id|bio-&gt;bi_sector
 comma
-id|bh-&gt;b_size
+id|bio-&gt;bi_size
 op_rshift
 l_int|10
 )paren
@@ -1146,10 +1146,10 @@ id|block
 suffix:semicolon
 id|outerr
 suffix:colon
-id|buffer_IO_error
+id|bio_io_error
 c_func
 (paren
-id|bh
+id|bio
 )paren
 suffix:semicolon
 r_return

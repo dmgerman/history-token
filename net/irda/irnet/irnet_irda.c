@@ -2637,15 +2637,11 @@ suffix:semicolon
 )brace
 macro_line|#endif /* STREAM_COMPAT */
 multiline_comment|/* Clean up the original one to keep it in listen state */
-id|server-&gt;tsap-&gt;dtsap_sel
-op_assign
-id|server-&gt;tsap-&gt;lsap-&gt;dlsap_sel
-op_assign
-id|LSAP_ANY
-suffix:semicolon
-id|server-&gt;tsap-&gt;lsap-&gt;lsap_state
-op_assign
-id|LSAP_DISCONNECTED
+id|irttp_listen
+c_func
+(paren
+id|server-&gt;tsap
+)paren
 suffix:semicolon
 multiline_comment|/* Send a connection response on the new socket */
 id|irttp_connect_response
@@ -2847,15 +2843,11 @@ id|self-&gt;rname
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up the server to keep it in listen state */
-id|self-&gt;tsap-&gt;dtsap_sel
-op_assign
-id|self-&gt;tsap-&gt;lsap-&gt;dlsap_sel
-op_assign
-id|LSAP_ANY
-suffix:semicolon
-id|self-&gt;tsap-&gt;lsap-&gt;lsap_state
-op_assign
-id|LSAP_DISCONNECTED
+id|irttp_listen
+c_func
+(paren
+id|self-&gt;tsap
+)paren
 suffix:semicolon
 id|DEXIT
 c_func
@@ -3354,9 +3346,10 @@ op_star
 id|instance
 suffix:semicolon
 r_int
-id|test
-op_assign
-l_int|0
+id|test_open
+suffix:semicolon
+r_int
+id|test_connect
 suffix:semicolon
 id|DENTER
 c_func
@@ -3400,7 +3393,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/* Prevent higher layer from accessing IrTTP */
-id|test
+id|test_open
 op_assign
 id|test_and_clear_bit
 c_func
@@ -3412,8 +3405,8 @@ id|self-&gt;ttp_open
 )paren
 suffix:semicolon
 multiline_comment|/* Not connecting anymore...&n;   * (note : TSAP is open, so IAP callbacks are no longer pending...) */
-id|test
-op_or_assign
+id|test_connect
+op_assign
 id|test_and_clear_bit
 c_func
 (paren
@@ -3428,7 +3421,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test
+(paren
+id|test_open
+op_logical_or
+id|test_connect
+)paren
 )paren
 (brace
 id|DERROR
@@ -3446,14 +3443,7 @@ multiline_comment|/* If we were active, notify the control channel */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|self-&gt;ttp_open
-)paren
+id|test_open
 )paren
 (brace
 id|irnet_post_event

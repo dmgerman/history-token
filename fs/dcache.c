@@ -13,9 +13,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DCACHE_PARANOIA
 mdefine_line|#define DCACHE_PARANOIA 1
 multiline_comment|/* #define DCACHE_DEBUG 1 */
-DECL|variable|dcache_lock
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|dcache_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

@@ -1679,6 +1679,7 @@ comma
 id|self-&gt;dlsap_sel
 )paren
 suffix:semicolon
+multiline_comment|/* Note : self-&gt;lap is set in irlmp_link_data_indication(),&n;&t; * (case CONNECT_CMD:) because we have no way to set it here.&n;&t; * Similarly, self-&gt;dlsap_sel is usually set in irlmp_find_lsap().&n;&t; * Jean II */
 id|self-&gt;qos
 op_assign
 op_star
@@ -2141,6 +2142,8 @@ id|notify.instance
 op_assign
 id|instance
 suffix:semicolon
+multiline_comment|/* new-&gt;lap = orig-&gt;lap; =&gt; done in the memcpy() */
+multiline_comment|/* new-&gt;slsap_sel = orig-&gt;slsap_sel; =&gt; done in the memcpy() */
 id|init_timer
 c_func
 (paren

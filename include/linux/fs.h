@@ -166,6 +166,8 @@ DECL|macro|MS_NODIRATIME
 mdefine_line|#define MS_NODIRATIME&t;2048&t;/* Do not update directory access times */
 DECL|macro|MS_BIND
 mdefine_line|#define MS_BIND&t;&t;4096
+DECL|macro|MS_MOVE
+mdefine_line|#define MS_MOVE&t;&t;8192
 DECL|macro|MS_REC
 mdefine_line|#define MS_REC&t;&t;16384
 DECL|macro|MS_VERBOSE

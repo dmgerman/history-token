@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * New 2.5 block I/O model&n; *&n; * Copyright (C) 2001 Jens Axboe &lt;axboe@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or mo&n; * it under the terms of the GNU General Public License as publishe&n; * the Free Software Foundation; either version 2 of the License, o&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public Licens&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-&n; */
+multiline_comment|/*&n; * 2.5 block I/O model&n; *&n; * Copyright (C) 2001 Jens Axboe &lt;axboe@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public Licens&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-&n; */
 macro_line|#ifndef __LINUX_BIO_H
 DECL|macro|__LINUX_BIO_H
 mdefine_line|#define __LINUX_BIO_H
@@ -192,7 +192,7 @@ multiline_comment|/*&n; * merge helpers etc&n; */
 DECL|macro|__BVEC_END
 mdefine_line|#define __BVEC_END(bio) bio_iovec_idx((bio), (bio)-&gt;bi_idx - 1)
 DECL|macro|BIO_CONTIG
-mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio)) + (bio)-&gt;bi_size) ==bio_to_phys((nxt)))
+mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio)) + (bio)-&gt;bi_size) == bio_to_phys((nxt)))
 DECL|macro|__BIO_SEG_BOUNDARY
 mdefine_line|#define __BIO_SEG_BOUNDARY(addr1, addr2, mask) &bslash;&n;&t;(((addr1) | (mask)) == (((addr2) - 1) | (mask)))
 DECL|macro|BIO_SEG_BOUNDARY

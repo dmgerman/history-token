@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/cramfs_fs.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|CRAMFS_SB_MAGIC
 mdefine_line|#define CRAMFS_SB_MAGIC u.cramfs_sb.magic
@@ -42,6 +43,13 @@ r_static
 r_struct
 id|address_space_operations
 id|cramfs_aops
+suffix:semicolon
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|read_mutex
+)paren
 suffix:semicolon
 multiline_comment|/* These two macros may change in future, to provide better st_ino&n;   semantics. */
 DECL|macro|CRAMINO
@@ -772,6 +780,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 multiline_comment|/* Read the first block and get the superblock from it */
 id|memcpy
 c_func
@@ -796,6 +811,13 @@ r_sizeof
 (paren
 id|super
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|read_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* Do sanity checks on the superblock */
@@ -1194,6 +1216,13 @@ id|namelen
 comma
 id|error
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 id|de
 op_assign
 id|cramfs_read
@@ -1216,6 +1245,13 @@ id|de
 )paren
 op_plus
 l_int|256
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|read_mutex
 )paren
 suffix:semicolon
 id|name
@@ -1384,6 +1420,13 @@ id|namelen
 comma
 id|retval
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 id|de
 op_assign
 id|cramfs_read
@@ -1406,6 +1449,13 @@ id|de
 )paren
 op_plus
 l_int|256
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|read_mutex
 )paren
 suffix:semicolon
 id|name
@@ -1682,6 +1732,13 @@ id|maxblock
 op_star
 l_int|4
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1727,6 +1784,13 @@ op_minus
 id|start_offset
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 id|pgdata
 op_assign
 id|kmap
@@ -1745,6 +1809,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* hole */
 r_else
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
 id|bytes_filled
 op_assign
 id|cramfs_uncompress_block
@@ -1767,6 +1839,14 @@ comma
 id|compr_len
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|read_mutex
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 id|pgdata

@@ -480,7 +480,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we die, we re-parent all our children to&n; * the global child reaper process (ie &quot;init&quot;)&n; */
+multiline_comment|/*&n; * When we die, we re-parent all our children.&n; * Try to give them to another thread in our process&n; * group, and if no such member exists, give it to&n; * the global child reaper process (ie &quot;init&quot;)&n; */
 DECL|function|forget_original_parent
 r_static
 r_inline
@@ -498,6 +498,9 @@ r_struct
 id|task_struct
 op_star
 id|p
+comma
+op_star
+id|reaper
 suffix:semicolon
 id|read_lock
 c_func
@@ -505,6 +508,26 @@ c_func
 op_amp
 id|tasklist_lock
 )paren
+suffix:semicolon
+multiline_comment|/* Next in our thread group */
+id|reaper
+op_assign
+id|next_thread
+c_func
+(paren
+id|father
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reaper
+op_eq
+id|father
+)paren
+id|reaper
+op_assign
+id|child_reaper
 suffix:semicolon
 id|for_each_task
 c_func
@@ -528,9 +551,22 @@ suffix:semicolon
 id|p-&gt;self_exec_id
 op_increment
 suffix:semicolon
+multiline_comment|/* Make sure we&squot;re not reparenting to ourselves */
+r_if
+c_cond
+(paren
+id|p
+op_eq
+id|reaper
+)paren
 id|p-&gt;p_opptr
 op_assign
 id|child_reaper
+suffix:semicolon
+r_else
+id|p-&gt;p_opptr
+op_assign
+id|reaper
 suffix:semicolon
 r_if
 c_cond

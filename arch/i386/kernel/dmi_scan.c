@@ -759,7 +759,7 @@ mdefine_line|#define NO_MATCH&t;{ NONE, NULL}
 DECL|macro|MATCH
 mdefine_line|#define MATCH(a,b)&t;{ a, b }
 multiline_comment|/*&n; *&t;We have problems with IDE DMA on some platforms. In paticular the&n; *&t;KT7 series. On these it seems the newer BIOS has fixed them. The&n; *&t;rule needs to be improved to match specific BIOS revisions with&n; *&t;corruption problems&n; */
-DECL|function|disable_ide_dma
+macro_line|#if 0
 r_static
 id|__init
 r_int
@@ -804,6 +804,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Computer Corporation so their systems &quot;just work&quot;. :-)&n; */
 multiline_comment|/* &n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
 DECL|function|set_bios_reboot

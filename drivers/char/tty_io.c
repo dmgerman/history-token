@@ -33,15 +33,6 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#ifdef CONFIG_VT
-r_extern
-r_void
-id|con_init_devfs
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|CONSOLE_DEV
 mdefine_line|#define CONSOLE_DEV MKDEV(TTY_MAJOR,0)
 DECL|macro|TTY_DEV
@@ -9382,6 +9373,21 @@ id|dev_ptmx_driver
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
+r_extern
+r_void
+id|con_init_devfs
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|console_map_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|dev_console_driver
 r_static
 r_struct

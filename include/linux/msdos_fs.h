@@ -1084,7 +1084,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|iblock
 comma
 r_struct
