@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ata.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*&n; * compile-time options&n; */
 DECL|macro|ATA_FORCE_PIO
 macro_line|#undef ATA_FORCE_PIO&t;&t;/* do not configure or use DMA */
@@ -533,15 +534,6 @@ id|THR_PIO_ERR
 op_assign
 (paren
 id|THR_PIO_LAST_POLL
-op_plus
-l_int|1
-)paren
-comma
-DECL|enumerator|THR_PACKET
-id|THR_PACKET
-op_assign
-(paren
-id|THR_PIO_ERR
 op_plus
 l_int|1
 )paren
@@ -1206,6 +1198,11 @@ DECL|member|thr_timeout
 r_int
 r_int
 id|thr_timeout
+suffix:semicolon
+DECL|member|packet_task
+r_struct
+id|work_struct
+id|packet_task
 suffix:semicolon
 DECL|member|private_data
 r_void

@@ -42,6 +42,12 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|workqueue_struct
+op_star
+id|ata_wq
+suffix:semicolon
 multiline_comment|/* libata-core.c */
 r_extern
 r_void

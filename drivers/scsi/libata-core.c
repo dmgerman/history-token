@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -19,17 +20,6 @@ macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;libata.h&quot;
-r_static
-r_void
-id|atapi_cdb_send
-c_func
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-)paren
-suffix:semicolon
 r_static
 r_int
 r_int
@@ -163,6 +153,14 @@ id|ata_unique_id
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|ata_wq
+r_struct
+id|workqueue_struct
+op_star
+id|ata_wq
+op_assign
+l_int|NULL
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -216,8 +214,6 @@ comma
 l_string|&quot;THR_PIO_LAST_POLL&quot;
 comma
 l_string|&quot;THR_PIO_ERR&quot;
-comma
-l_string|&quot;THR_PACKET&quot;
 comma
 )brace
 suffix:semicolon
@@ -9439,17 +9435,6 @@ id|HZ
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|THR_PACKET
-suffix:colon
-id|atapi_cdb_send
-c_func
-(paren
-id|ap
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -9737,19 +9722,25 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;atapi_cdb_send - Write CDB bytes to hardware&n; *&t;@ap: Port to which ATAPI device is attached.&n; *&n; *&t;When device has indicated its readiness to accept&n; *&t;a CDB, this function is called.  Send the CDB.&n; *&t;If DMA is to be performed, exit immediately.&n; *&t;Otherwise, we are in polling mode, so poll&n; *&t;status under operation succeeds or fails.&n; *&n; *&t;LOCKING:&n; *&t;Kernel thread context (may sleep)&n; */
-DECL|function|atapi_cdb_send
+multiline_comment|/**&n; *&t;atapi_packet_task - Write CDB bytes to hardware&n; *&t;@_data: Port to which ATAPI device is attached.&n; *&n; *&t;When device has indicated its readiness to accept&n; *&t;a CDB, this function is called.  Send the CDB.&n; *&t;If DMA is to be performed, exit immediately.&n; *&t;Otherwise, we are in polling mode, so poll&n; *&t;status under operation succeeds or fails.&n; *&n; *&t;LOCKING:&n; *&t;Kernel thread context (may sleep)&n; */
+DECL|function|atapi_packet_task
 r_static
 r_void
-id|atapi_cdb_send
+id|atapi_packet_task
 c_func
 (paren
+r_void
+op_star
+id|_data
+)paren
+(brace
 r_struct
 id|ata_port
 op_star
 id|ap
-)paren
-(brace
+op_assign
+id|_data
+suffix:semicolon
 r_struct
 id|ata_queued_cmd
 op_star
@@ -9848,6 +9839,7 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: start DMA here */
 multiline_comment|/* if we are DMA&squot;ing, irq handler takes over from here */
 r_if
 c_cond
@@ -10242,6 +10234,17 @@ c_func
 (paren
 op_amp
 id|ap-&gt;eng.q
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|ap-&gt;packet_task
+comma
+id|atapi_packet_task
+comma
+id|ap
 )paren
 suffix:semicolon
 r_for
@@ -12499,6 +12502,24 @@ c_func
 r_void
 )paren
 (brace
+id|ata_wq
+op_assign
+id|create_workqueue
+c_func
+(paren
+l_string|&quot;ata&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ata_wq
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -12512,11 +12533,35 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ata_exit
+r_static
+r_void
+id|__exit
+id|ata_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|destroy_workqueue
+c_func
+(paren
+id|ata_wq
+)paren
+suffix:semicolon
+)brace
 DECL|variable|ata_init
 id|module_init
 c_func
 (paren
 id|ata_init
+)paren
+suffix:semicolon
+DECL|variable|ata_exit
+id|module_exit
+c_func
+(paren
+id|ata_exit
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * libata is essentially a library of internal helper functions for&n; * low-level ATA host controller drivers.  As such, the API/ABI is&n; * likely to change as new drivers are added and updated.&n; * Do not depend on ABI/API stability.&n; */

@@ -6,6 +6,7 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;libata.h&quot;
 DECL|typedef|ata_xlat_func_t
 r_typedef
@@ -2968,12 +2969,13 @@ op_amp
 id|ATA_BUSY
 )paren
 (brace
-id|ata_thread_wake
+id|queue_work
 c_func
 (paren
-id|ap
+id|ata_wq
 comma
-id|THR_PACKET
+op_amp
+id|ap-&gt;packet_task
 )paren
 suffix:semicolon
 r_return
@@ -3018,12 +3020,13 @@ c_cond
 op_logical_neg
 id|doing_dma
 )paren
-id|ata_thread_wake
+id|queue_work
 c_func
 (paren
-id|ap
+id|ata_wq
 comma
-id|THR_PACKET
+op_amp
+id|ap-&gt;packet_task
 )paren
 suffix:semicolon
 id|VPRINTK
