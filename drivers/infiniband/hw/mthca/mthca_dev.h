@@ -601,6 +601,12 @@ r_struct
 id|mthca_alloc
 id|alloc
 suffix:semicolon
+DECL|member|table
+r_struct
+id|mthca_icm_table
+op_star
+id|table
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|mthca_dev
