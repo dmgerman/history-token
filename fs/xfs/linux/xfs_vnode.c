@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|variable|vn_generation
 r_uint64
 id|vn_generation
@@ -184,8 +183,6 @@ r_if
 c_cond
 (paren
 id|vp-&gt;v_fbhv
-op_ne
-l_int|NULL
 )paren
 (brace
 id|VOP_RECLAIM
@@ -285,7 +282,6 @@ id|vp-&gt;v_flag
 op_amp
 id|VWAIT
 )paren
-(brace
 id|sv_broadcast
 c_func
 (paren
@@ -296,7 +292,6 @@ id|vp
 )paren
 )paren
 suffix:semicolon
-)brace
 id|vp-&gt;v_flag
 op_and_assign
 op_complement
@@ -575,9 +570,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|inode
-op_eq
-l_int|NULL
 )paren
 multiline_comment|/* Inode not present */
 r_return
@@ -613,9 +607,6 @@ op_star
 id|vp
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -623,6 +614,9 @@ id|inode
 suffix:semicolon
 id|vattr_t
 id|va
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|vn_trace_entry
 c_func
@@ -1041,9 +1035,8 @@ multiline_comment|/*&n;&t; * Since we always get called from put_inode we know&n
 r_if
 c_cond
 (paren
+op_logical_neg
 id|vcnt
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * As soon as we turn this on, noone can find us in vn_get&n;&t;&t; * until we turn off VINACT or VRECLM&n;&t;&t; */
@@ -1064,10 +1057,7 @@ r_if
 c_cond
 (paren
 id|vp-&gt;v_fbhv
-op_ne
-l_int|NULL
 )paren
-(brace
 id|VOP_INACTIVE
 c_func
 (paren
@@ -1078,7 +1068,6 @@ comma
 id|cache
 )paren
 suffix:semicolon
-)brace
 id|VN_LOCK
 c_func
 (paren
@@ -1092,15 +1081,6 @@ id|vp-&gt;v_flag
 op_amp
 id|VWAIT
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|vp-&gt;v_flag
-op_amp
-id|VWAIT
-)paren
-(brace
 id|sv_broadcast
 c_func
 (paren
@@ -1111,8 +1091,6 @@ id|vp
 )paren
 )paren
 suffix:semicolon
-)brace
-)brace
 id|vp-&gt;v_flag
 op_and_assign
 op_complement
@@ -1162,7 +1140,6 @@ op_star
 id|vp
 )paren
 (brace
-multiline_comment|/* REFERENCED */
 id|vmap_t
 id|vmap
 suffix:semicolon

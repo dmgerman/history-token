@@ -29,6 +29,16 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+id|STATIC
+r_void
+id|xfs_uuid_unmount
+c_func
+(paren
+id|xfs_mount_t
+op_star
+id|mp
+)paren
+suffix:semicolon
 DECL|variable|xfs_uuidtabmon
 id|mutex_t
 id|xfs_uuidtabmon
