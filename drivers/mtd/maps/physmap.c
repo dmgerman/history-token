@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: physmap.c,v 1.33 2004/07/12 14:37:24 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * 031022 - [jsun] add run-time configure and partition setup&n; */
+multiline_comment|/*&n; * $Id: physmap.c,v 1.34 2004/07/21 00:16:14 jwboyer Exp $&n; *&n; * Normal mappings of chips in physical memory&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * 031022 - [jsun] add run-time configure and partition setup&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,6 +26,22 @@ dot
 id|name
 op_assign
 l_string|&quot;phys_mapped_flash&quot;
+comma
+dot
+id|phys
+op_assign
+id|CONFIG_MTD_PHYSMAP_START
+comma
+dot
+id|size
+op_assign
+id|CONFIG_MTD_PHYSMAP_LEN
+comma
+dot
+id|bankwidth
+op_assign
+id|CONFIG_MTD_PHYSMAP_BANKWIDTH
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
