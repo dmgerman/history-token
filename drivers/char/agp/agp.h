@@ -73,7 +73,6 @@ suffix:semicolon
 macro_line|#else
 DECL|function|global_cache_flush
 r_static
-r_inline
 r_void
 id|global_cache_flush
 c_func
