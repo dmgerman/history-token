@@ -664,6 +664,21 @@ id|smb_msg.msg_controllen
 op_assign
 l_int|0
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;about to rcv csocket %p tcpStatus %d&quot;
+comma
+id|csocket
+comma
+id|server-&gt;tcpStatus
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 id|length
 op_assign
 id|sock_recvmsg
@@ -687,6 +702,29 @@ id|MSG_PEEK
 multiline_comment|/* flags see socket.h */
 )paren
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;rcv csocket %p with rc 0x%x smb len of 0x%x tcpStatus %d&quot;
+comma
+id|csocket
+comma
+id|length
+comma
+id|ntohl
+c_func
+(paren
+id|smb_buffer-&gt;smb_buf_length
+)paren
+comma
+id|server-&gt;tcpStatus
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 r_if
 c_cond
 (paren
@@ -715,6 +753,36 @@ id|csocket
 op_assign
 id|server-&gt;ssocket
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|length
+op_eq
+op_minus
+id|ERESTARTSYS
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;ERESTARTSYS returned from sock_recvmsg&quot;
+)paren
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* minimum sleep to prevent looping&n;&t;&t;&t;&t;allowing socket to clear and app threads to set&n;&t;&t;&t;&t;tcpStatus CifsNeedReconnect if server hung */
 r_continue
 suffix:semicolon
 )brace
@@ -756,26 +824,34 @@ id|csocket
 op_assign
 id|server-&gt;ssocket
 suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* find define for the -512 returned at unmount time */
-id|cFYI
+id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;Error on sock_recvmsg(peek) length = %d&quot;
+l_string|&quot;Unexpected error on sock_recvmsg(peek) = %d&quot;
 comma
 id|length
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* there may be other non-fatal &n;&t;&t;&t;&t;&t;errors that the tcp stack can return &n;&t;&t;&t;&t;&t;to kernel that are not documented yet&n;&t;&t;&t;&t;&t;and that are not checked above. */
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
 )brace
-r_break
+r_continue
 suffix:semicolon
 )brace
 r_else
@@ -3888,6 +3964,10 @@ suffix:semicolon
 id|tval.tv_sec
 op_assign
 l_int|10
+suffix:semicolon
+id|tval.tv_usec
+op_assign
+l_int|0
 suffix:semicolon
 id|cFYI
 c_func
