@@ -1920,66 +1920,79 @@ id|super_operations
 id|ext3_sops
 op_assign
 (brace
+dot
 id|alloc_inode
-suffix:colon
+op_assign
 id|ext3_alloc_inode
 comma
+dot
 id|destroy_inode
-suffix:colon
+op_assign
 id|ext3_destroy_inode
 comma
+dot
 id|read_inode
-suffix:colon
+op_assign
 id|ext3_read_inode
 comma
 multiline_comment|/* BKL held */
+dot
 id|write_inode
-suffix:colon
+op_assign
 id|ext3_write_inode
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|dirty_inode
-suffix:colon
+op_assign
 id|ext3_dirty_inode
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|put_inode
-suffix:colon
+op_assign
 id|ext3_put_inode
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|delete_inode
-suffix:colon
+op_assign
 id|ext3_delete_inode
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|put_super
-suffix:colon
+op_assign
 id|ext3_put_super
 comma
 multiline_comment|/* BKL held */
+dot
 id|write_super
-suffix:colon
+op_assign
 id|ext3_write_super
 comma
 multiline_comment|/* BKL not held. We take it. Needed? */
+dot
 id|write_super_lockfs
-suffix:colon
+op_assign
 id|ext3_write_super_lockfs
 comma
 multiline_comment|/* BKL not held. Take it */
+dot
 id|unlockfs
-suffix:colon
+op_assign
 id|ext3_unlockfs
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|statfs
-suffix:colon
+op_assign
 id|ext3_statfs
 comma
 multiline_comment|/* BKL not held. */
+dot
 id|remount_fs
-suffix:colon
+op_assign
 id|ext3_remount
 comma
 multiline_comment|/* BKL held */
@@ -2004,8 +2017,9 @@ id|export_operations
 id|ext3_export_ops
 op_assign
 (brace
+dot
 id|get_parent
-suffix:colon
+op_assign
 id|ext3_get_parent
 comma
 )brace
@@ -7818,24 +7832,29 @@ id|file_system_type
 id|ext3_fs_type
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ext3&quot;
 comma
+dot
 id|get_sb
-suffix:colon
+op_assign
 id|ext3_get_sb
 comma
+dot
 id|kill_sb
-suffix:colon
+op_assign
 id|kill_block_super
 comma
+dot
 id|fs_flags
-suffix:colon
+op_assign
 id|FS_REQUIRES_DEV
 comma
 )brace

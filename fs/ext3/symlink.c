@@ -98,13 +98,15 @@ id|inode_operations
 id|ext3_fast_symlink_inode_operations
 op_assign
 (brace
+dot
 id|readlink
-suffix:colon
+op_assign
 id|ext3_readlink
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|follow_link
-suffix:colon
+op_assign
 id|ext3_follow_link
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */

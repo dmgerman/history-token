@@ -51,22 +51,26 @@ id|file_operations
 id|ext3_dir_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_read_dir
 comma
+dot
 id|readdir
-suffix:colon
+op_assign
 id|ext3_readdir
 comma
 multiline_comment|/* we take BKL. needed?*/
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ext3_ioctl
 comma
 multiline_comment|/* BKL held */
+dot
 id|fsync
-suffix:colon
+op_assign
 id|ext3_sync_file
 comma
 multiline_comment|/* BKL held */
