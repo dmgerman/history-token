@@ -1647,6 +1647,11 @@ DECL|enumerator|NET_IPV6_MAX_ADDRESSES
 id|NET_IPV6_MAX_ADDRESSES
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_IPV6_FORCE_MLD_VERSION
+id|NET_IPV6_FORCE_MLD_VERSION
+op_assign
+l_int|17
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */

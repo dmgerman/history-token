@@ -434,7 +434,7 @@ mdefine_line|#define IGMP6_UNSOLICITED_IVAL&t;(10*HZ)
 DECL|macro|MLD_QRV_DEFAULT
 mdefine_line|#define MLD_QRV_DEFAULT&t;&t;2
 DECL|macro|MLD_V1_SEEN
-mdefine_line|#define MLD_V1_SEEN(idev) ((idev)-&gt;mc_v1_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (idev)-&gt;mc_v1_seen))
+mdefine_line|#define MLD_V1_SEEN(idev) (ipv6_devconf.force_mld_version == 1 || &bslash;&n;&t;&t;(idev)-&gt;cnf.force_mld_version == 1 || &bslash;&n;&t;&t;((idev)-&gt;mc_v1_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (idev)-&gt;mc_v1_seen)))
 DECL|macro|MLDV2_MASK
 mdefine_line|#define MLDV2_MASK(value, nb) ((nb)&gt;=32 ? (value) : ((1&lt;&lt;(nb))-1) &amp; (value))
 DECL|macro|MLDV2_EXP
