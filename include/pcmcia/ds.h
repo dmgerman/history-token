@@ -485,6 +485,12 @@ DECL|member|client
 )brace
 id|client
 suffix:semicolon
+multiline_comment|/* registration by cardmgr done? */
+DECL|member|cardmgr
+r_int
+r_int
+id|cardmgr
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
