@@ -1,12 +1,10 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_BEHAVIOR_H__
 DECL|macro|__XFS_BEHAVIOR_H__
 mdefine_line|#define __XFS_BEHAVIOR_H__
 multiline_comment|/*&n; * Header file used to associate behaviors with virtualized objects.&n; *&n; * A virtualized object is an internal, virtualized representation of&n; * OS entities such as persistent files, processes, or sockets.&t; Examples&n; * of virtualized objects include vnodes, vprocs, and vsockets.&t; Often&n; * a virtualized object is referred to simply as an &quot;object.&quot;&n; *&n; * A behavior is essentially an implementation layer associated with&n; * an object.  Multiple behaviors for an object are chained together,&n; * the order of chaining determining the order of invocation.  Each&n; * behavior of a given object implements the same set of interfaces&n; * (e.g., the VOP interfaces).&n; *&n; * Behaviors may be dynamically inserted into an object&squot;s behavior chain,&n; * such that the addition is transparent to consumers that already have&n; * references to the object.  Typically, a given behavior will be inserted&n; * at a particular location in the behavior chain.  Insertion of new&n; * behaviors is synchronized with operations-in-progress (oip&squot;s) so that&n; * the oip&squot;s always see a consistent view of the chain.&n; *&n; * The term &quot;interpostion&quot; is used to refer to the act of inserting&n; * a behavior such that it interposes on (i.e., is inserted in front&n; * of) a particular other behavior.  A key example of this is when a&n; * system implementing distributed single system image wishes to&n; * interpose a distribution layer (providing distributed coherency)&n; * in front of an object that is otherwise only accessed locally.&n; *&n; * Note that the traditional vnode/inode combination is simply a virtualized&n; * object that has exactly one associated behavior.&n; *&n; * Behavior synchronization is logic which is necessary under certain&n; * circumstances that there is no conflict between ongoing operations&n; * traversing the behavior chain and those dunamically modifying the&n; * behavior chain.  Because behavior synchronization adds extra overhead&n; * to virtual operation invocation, we want to restrict, as much as&n; * we can, the requirement for this extra code, to those situations&n; * in which it is truly necessary.&n; *&n; * Behavior synchronization is needed whenever there&squot;s at least one class&n; * of object in the system for which:&n; * 1) multiple behaviors for a given object are supported,&n; * -- AND --&n; * 2a) insertion of a new behavior can happen dynamically at any time during&n; *     the life of an active object,&n; *&t;-- AND --&n; *&t;3a) insertion of a new behavior needs to synchronize with existing&n; *&t;    ops-in-progress.&n; *&t;-- OR --&n; *&t;3b) multiple different behaviors can be dynamically inserted at&n; *&t;    any time during the life of an active object&n; *&t;-- OR --&n; *&t;3c) removal of a behavior can occur at any time during the life of&n; *&t;    an active object.&n; * -- OR --&n; * 2b) removal of a behavior can occur at any time during the life of an&n; *     active object&n; *&n; */
-DECL|typedef|bhv_head_lock_t
-r_typedef
-r_void
-id|bhv_head_lock_t
+r_struct
+id|bhv_head_lock
 suffix:semicolon
 multiline_comment|/*&n; * Behavior head.  Head of the chain of behaviors.&n; * Contained within each virtualized object data structure.&n; */
 DECL|struct|bhv_head
@@ -22,7 +20,8 @@ id|bh_first
 suffix:semicolon
 multiline_comment|/* first behavior in chain */
 DECL|member|bh_lockp
-id|bhv_head_lock_t
+r_struct
+id|bhv_head_lock
 op_star
 id|bh_lockp
 suffix:semicolon
@@ -143,11 +142,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|bhv_head_reinit
+r_int
+id|bhv_insert
 c_func
 (paren
 id|bhv_head_t
+op_star
+comma
+id|bhv_desc_t
 op_star
 )paren
 suffix:semicolon
@@ -202,22 +204,24 @@ suffix:semicolon
 r_extern
 id|bhv_desc_t
 op_star
-id|bhv_lookup_unlocked
+id|bhv_lookup_range
 c_func
 (paren
 id|bhv_head_t
 op_star
 id|bhp
 comma
-r_void
-op_star
-id|ops
+r_int
+id|low
+comma
+r_int
+id|high
 )paren
 suffix:semicolon
 r_extern
 id|bhv_desc_t
 op_star
-id|bhv_base_unlocked
+id|bhv_base
 c_func
 (paren
 id|bhv_head_t
@@ -225,5 +229,10 @@ op_star
 id|bhp
 )paren
 suffix:semicolon
+multiline_comment|/* No bhv locking on Linux */
+DECL|macro|bhv_lookup_unlocked
+mdefine_line|#define bhv_lookup_unlocked&t;bhv_lookup
+DECL|macro|bhv_base_unlocked
+mdefine_line|#define bhv_base_unlocked&t;bhv_base
 macro_line|#endif /* __XFS_BEHAVIOR_H__ */
 eof
