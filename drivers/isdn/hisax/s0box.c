@@ -34,24 +34,30 @@ DECL|function|writereg
 id|writereg
 c_func
 (paren
-r_int
-r_int
-id|padr
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
-r_int
 r_int
 id|addr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|val
 )paren
 (brace
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+r_int
+id|padr
+op_assign
+id|cs-&gt;hw.teles3.cfg_reg
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -156,7 +162,7 @@ suffix:semicolon
 )brace
 DECL|variable|nibtab
 r_static
-id|u_char
+id|u8
 id|nibtab
 (braket
 )braket
@@ -213,25 +219,24 @@ l_int|0xe
 suffix:semicolon
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
 (paren
-r_int
-r_int
-id|padr
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
-r_int
 r_int
 id|addr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
-r_register
-id|u_char
+id|u8
 id|n1
 comma
 id|n2
@@ -239,6 +244,12 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+r_int
+id|padr
+op_assign
+id|cs-&gt;hw.teles3.cfg_reg
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -397,15 +408,16 @@ DECL|function|read_fifo
 id|read_fifo
 c_func
 (paren
-r_int
-r_int
-id|padr
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -416,11 +428,16 @@ id|size
 r_int
 id|i
 suffix:semicolon
-r_register
-id|u_char
+id|u8
 id|n1
 comma
 id|n2
+suffix:semicolon
+r_int
+r_int
+id|padr
+op_assign
+id|cs-&gt;hw.teles3.cfg_reg
 suffix:semicolon
 id|outb_p
 c_func
@@ -570,8 +587,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_inline
@@ -580,15 +595,16 @@ DECL|function|write_fifo
 id|write_fifo
 c_func
 (paren
-r_int
-r_int
-id|padr
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -598,6 +614,12 @@ id|size
 (brace
 r_int
 id|i
+suffix:semicolon
+r_int
+r_int
+id|padr
+op_assign
+id|cs-&gt;hw.teles3.cfg_reg
 suffix:semicolon
 id|outb_p
 c_func
@@ -697,8 +719,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* Interface functions */
 r_static
@@ -717,16 +737,14 @@ id|offset
 )paren
 (brace
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
 id|offset
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -751,7 +769,7 @@ id|value
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
@@ -783,7 +801,7 @@ id|size
 id|read_fifo
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isacfifo
 comma
@@ -815,7 +833,7 @@ id|size
 id|write_fifo
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isacfifo
 comma
@@ -873,11 +891,10 @@ id|offset
 )paren
 (brace
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -885,7 +902,6 @@ id|hscx
 )braket
 comma
 id|offset
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -913,7 +929,7 @@ id|value
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -947,13 +963,13 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
 DECL|macro|READHSCX
-mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs-&gt;hw.teles3.cfg_reg, cs-&gt;hw.teles3.hscx[nr], reg)
+mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs, cs-&gt;hw.teles3.hscx[nr], reg)
 DECL|macro|WRITEHSCX
-mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs-&gt;hw.teles3.cfg_reg, cs-&gt;hw.teles3.hscx[nr], reg, data)
+mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs, cs-&gt;hw.teles3.hscx[nr], reg, data)
 DECL|macro|READHSCXFIFO
-mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) read_fifo(cs-&gt;hw.teles3.cfg_reg, cs-&gt;hw.teles3.hscxfifo[nr], ptr, cnt)
+mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) read_fifo(cs, cs-&gt;hw.teles3.hscxfifo[nr], ptr, cnt)
 DECL|macro|WRITEHSCXFIFO
-mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) write_fifo(cs-&gt;hw.teles3.cfg_reg, cs-&gt;hw.teles3.hscxfifo[nr], ptr, cnt)
+mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) write_fifo(cs, cs-&gt;hw.teles3.hscxfifo[nr], ptr, cnt)
 macro_line|#include &quot;hscx_irq.c&quot;
 r_static
 r_void
@@ -1003,7 +1019,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -1033,7 +1049,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
@@ -1063,7 +1079,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -1107,7 +1123,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
@@ -1162,7 +1178,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -1177,7 +1193,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -1192,7 +1208,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
@@ -1204,7 +1220,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.isac
 comma
@@ -1216,7 +1232,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket
@@ -1231,7 +1247,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.teles3.cfg_reg
+id|cs
 comma
 id|cs-&gt;hw.teles3.hscx
 (braket

@@ -159,25 +159,25 @@ DECL|macro|SEDL_RESET
 mdefine_line|#define SEDL_RESET      0x3&t;/* same as DOS driver */
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|readreg
 id|readreg
 c_func
 (paren
-r_int
-r_int
-id|ale
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 )paren
 (brace
-r_register
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 r_int
@@ -196,7 +196,7 @@ suffix:semicolon
 id|byteout
 c_func
 (paren
-id|ale
+id|cs-&gt;hw.sedl.adr
 comma
 id|off
 )paren
@@ -219,9 +219,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -231,18 +229,19 @@ DECL|function|readfifo
 id|readfifo
 c_func
 (paren
-r_int
-r_int
-id|ale
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -250,11 +249,23 @@ r_int
 id|size
 )paren
 (brace
-multiline_comment|/* fifo read without cli because it&squot;s allready done  */
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sedlbauer_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|byteout
 c_func
 (paren
-id|ale
+id|cs-&gt;hw.sedl.adr
 comma
 id|off
 )paren
@@ -269,6 +280,15 @@ comma
 id|size
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sedlbauer_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_static
 r_inline
@@ -277,18 +297,19 @@ DECL|function|writereg
 id|writereg
 c_func
 (paren
-r_int
-r_int
-id|ale
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 id|data
 )paren
 (brace
@@ -308,7 +329,7 @@ suffix:semicolon
 id|byteout
 c_func
 (paren
-id|ale
+id|cs-&gt;hw.sedl.adr
 comma
 id|off
 )paren
@@ -338,18 +359,19 @@ DECL|function|writefifo
 id|writefifo
 c_func
 (paren
-r_int
-r_int
-id|ale
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 comma
 r_int
 r_int
 id|adr
 comma
-id|u_char
+id|u8
 id|off
 comma
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -357,11 +379,23 @@ r_int
 id|size
 )paren
 (brace
-multiline_comment|/* fifo write without cli because it&squot;s allready done  */
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sedlbauer_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|byteout
 c_func
 (paren
-id|ale
+id|cs-&gt;hw.sedl.adr
 comma
 id|off
 )paren
@@ -374,6 +408,15 @@ comma
 id|data
 comma
 id|size
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sedlbauer_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -394,16 +437,14 @@ id|offset
 )paren
 (brace
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
 id|offset
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -428,7 +469,7 @@ id|value
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -460,7 +501,7 @@ id|size
 id|readfifo
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -494,7 +535,7 @@ id|size
 id|writefifo
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -551,18 +592,16 @@ id|offset
 )paren
 (brace
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
 id|offset
 op_or
 l_int|0x80
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -587,7 +626,7 @@ id|value
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -621,7 +660,7 @@ id|size
 id|readfifo
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -655,7 +694,7 @@ id|size
 id|writefifo
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -715,11 +754,10 @@ id|offset
 )paren
 (brace
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -732,7 +770,6 @@ c_cond
 l_int|0x40
 suffix:colon
 l_int|0
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -761,7 +798,7 @@ id|value
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -826,16 +863,14 @@ op_eq
 l_int|0
 )paren
 r_return
-(paren
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
 id|offset
-)paren
 )paren
 suffix:semicolon
 r_else
@@ -893,7 +928,7 @@ l_int|0
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -950,13 +985,13 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
 DECL|macro|READHSCX
-mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs-&gt;hw.sedl.adr, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, reg + (nr ? 0x40 : 0))
+mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, reg + (nr ? 0x40 : 0))
 DECL|macro|WRITEHSCX
-mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs-&gt;hw.sedl.adr, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, reg + (nr ? 0x40 : 0), data)
+mdefine_line|#define WRITEHSCX(cs, nr, reg, data) writereg(cs, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, reg + (nr ? 0x40 : 0), data)
 DECL|macro|READHSCXFIFO
-mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) readfifo(cs-&gt;hw.sedl.adr, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, (nr ? 0x40 : 0), ptr, cnt)
+mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) readfifo(cs, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, (nr ? 0x40 : 0), ptr, cnt)
 DECL|macro|WRITEHSCXFIFO
-mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) writefifo(cs-&gt;hw.sedl.adr, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, (nr ? 0x40 : 0), ptr, cnt)
+mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) writefifo(cs, &bslash;&n;&t;&t;cs-&gt;hw.sedl.hscx, (nr ? 0x40 : 0), ptr, cnt)
 macro_line|#include &quot;hscx_irq.c&quot;
 r_static
 r_void
@@ -1037,7 +1072,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1066,7 +1101,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1093,7 +1128,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1132,7 +1167,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1167,7 +1202,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1179,7 +1214,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1193,7 +1228,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1205,7 +1240,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1217,7 +1252,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1229,7 +1264,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1298,7 +1333,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1337,7 +1372,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1408,7 +1443,7 @@ op_amp
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1459,7 +1494,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1509,7 +1544,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1521,7 +1556,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1577,7 +1612,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1604,7 +1639,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1631,7 +1666,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1675,7 +1710,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1734,7 +1769,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1746,7 +1781,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1758,7 +1793,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1770,7 +1805,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -1893,7 +1928,7 @@ id|SEDL_CHIP_IPAC
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1923,7 +1958,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1953,7 +1988,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1965,7 +2000,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1977,7 +2012,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -1989,7 +2024,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -2001,7 +2036,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -2191,7 +2226,7 @@ id|SEDL_CHIP_ISAC_ISAR
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -2203,7 +2238,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -2221,7 +2256,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -2233,7 +2268,7 @@ suffix:semicolon
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
@@ -2266,7 +2301,7 @@ id|SEDL_CHIP_ISAC_ISAR
 id|writereg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.hscx
 comma
@@ -3391,14 +3426,18 @@ op_ne
 id|SEDL_BUS_PCI
 )paren
 (brace
+id|cs-&gt;hw.sedl.adr
+op_assign
+id|cs-&gt;hw.sedl.cfg_reg
+op_plus
+id|SEDL_IPAC_ANY_ADR
+suffix:semicolon
 id|val
 op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.cfg_reg
-op_plus
-id|SEDL_IPAC_ANY_ADR
+id|cs
 comma
 id|cs-&gt;hw.sedl.cfg_reg
 op_plus
@@ -3566,7 +3605,7 @@ op_assign
 id|readreg
 c_func
 (paren
-id|cs-&gt;hw.sedl.adr
+id|cs
 comma
 id|cs-&gt;hw.sedl.isac
 comma
