@@ -6,60 +6,53 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _LINUX_TYPES_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#endif
-DECL|macro|__HAVE_ARCH_MEMCHR
-mdefine_line|#define __HAVE_ARCH_MEMCHR
-DECL|macro|__HAVE_ARCH_MEMCPY
-mdefine_line|#define __HAVE_ARCH_MEMCPY
-DECL|macro|__HAVE_ARCH_MEMSET
-mdefine_line|#define __HAVE_ARCH_MEMSET
-DECL|macro|__HAVE_ARCH_STRCAT
-mdefine_line|#define __HAVE_ARCH_STRCAT
-DECL|macro|__HAVE_ARCH_STRCMP
-mdefine_line|#define __HAVE_ARCH_STRCMP
-DECL|macro|__HAVE_ARCH_STRCPY
-mdefine_line|#define __HAVE_ARCH_STRCPY
-DECL|macro|__HAVE_ARCH_STRLEN
-mdefine_line|#define __HAVE_ARCH_STRLEN
-DECL|macro|__HAVE_ARCH_STRNCPY
-mdefine_line|#define __HAVE_ARCH_STRNCPY
-DECL|macro|__HAVE_ARCH_MEMMOVE
-macro_line|#undef __HAVE_ARCH_MEMMOVE
-DECL|macro|__HAVE_ARCH_STRNICMP
-macro_line|#undef __HAVE_ARCH_STRNICMP
-DECL|macro|__HAVE_ARCH_STRNCAT
-macro_line|#undef __HAVE_ARCH_STRNCAT
-DECL|macro|__HAVE_ARCH_STRNCMP
-macro_line|#undef __HAVE_ARCH_STRNCMP
-DECL|macro|__HAVE_ARCH_STRCHR
-macro_line|#undef __HAVE_ARCH_STRCHR
-DECL|macro|__HAVE_ARCH_STRRCHR
-macro_line|#undef __HAVE_ARCH_STRRCHR
-DECL|macro|__HAVE_ARCH_STRNLEN
-macro_line|#undef __HAVE_ARCH_STRNLEN
-DECL|macro|__HAVE_ARCH_STRSPN
-macro_line|#undef __HAVE_ARCH_STRSPN
-DECL|macro|__HAVE_ARCH_STRPBRK
-macro_line|#undef __HAVE_ARCH_STRPBRK
-DECL|macro|__HAVE_ARCH_STRTOK
-macro_line|#undef __HAVE_ARCH_STRTOK
 DECL|macro|__HAVE_ARCH_BCOPY
-macro_line|#undef __HAVE_ARCH_BCOPY
+mdefine_line|#define __HAVE_ARCH_BCOPY&t;/* arch function */
+DECL|macro|__HAVE_ARCH_MEMCHR
+mdefine_line|#define __HAVE_ARCH_MEMCHR&t;/* inline &amp; arch function */
 DECL|macro|__HAVE_ARCH_MEMCMP
-macro_line|#undef __HAVE_ARCH_MEMCMP
+mdefine_line|#define __HAVE_ARCH_MEMCMP&t;/* arch function */
+DECL|macro|__HAVE_ARCH_MEMCPY
+mdefine_line|#define __HAVE_ARCH_MEMCPY&t;/* gcc builtin &amp; arch function */
 DECL|macro|__HAVE_ARCH_MEMSCAN
-macro_line|#undef __HAVE_ARCH_MEMSCAN
+mdefine_line|#define __HAVE_ARCH_MEMSCAN&t;/* inline &amp; arch function */
+DECL|macro|__HAVE_ARCH_MEMSET
+mdefine_line|#define __HAVE_ARCH_MEMSET&t;/* gcc builtin &amp; arch function */
+DECL|macro|__HAVE_ARCH_STRCAT
+mdefine_line|#define __HAVE_ARCH_STRCAT&t;/* inline &amp; arch function */
+DECL|macro|__HAVE_ARCH_STRCMP
+mdefine_line|#define __HAVE_ARCH_STRCMP&t;/* arch function */
+DECL|macro|__HAVE_ARCH_STRCPY
+mdefine_line|#define __HAVE_ARCH_STRCPY&t;/* inline &amp; arch function */
+DECL|macro|__HAVE_ARCH_STRLCAT
+mdefine_line|#define __HAVE_ARCH_STRLCAT&t;/* arch function */
+DECL|macro|__HAVE_ARCH_STRLCPY
+mdefine_line|#define __HAVE_ARCH_STRLCPY&t;/* arch function */
+DECL|macro|__HAVE_ARCH_STRLEN
+mdefine_line|#define __HAVE_ARCH_STRLEN&t;/* inline &amp; arch function */
+DECL|macro|__HAVE_ARCH_STRNCAT
+mdefine_line|#define __HAVE_ARCH_STRNCAT&t;/* arch function */
+DECL|macro|__HAVE_ARCH_STRNCPY
+mdefine_line|#define __HAVE_ARCH_STRNCPY&t;/* arch function */
+DECL|macro|__HAVE_ARCH_STRNLEN
+mdefine_line|#define __HAVE_ARCH_STRNLEN&t;/* inline &amp; arch function */
+DECL|macro|__HAVE_ARCH_STRRCHR
+mdefine_line|#define __HAVE_ARCH_STRRCHR&t;/* arch function */
 DECL|macro|__HAVE_ARCH_STRSTR
-macro_line|#undef __HAVE_ARCH_STRSTR
+mdefine_line|#define __HAVE_ARCH_STRSTR&t;/* arch function */
+multiline_comment|/* Prototypes for non-inlined arch strings functions. */
 r_extern
-r_void
-op_star
-id|memset
+r_int
+id|memcmp
 c_func
 (paren
+r_const
 r_void
 op_star
 comma
-r_int
+r_const
+r_void
+op_star
 comma
 r_int
 )paren
@@ -83,14 +76,72 @@ suffix:semicolon
 r_extern
 r_void
 op_star
-id|memmove
+id|memset
 c_func
 (paren
 r_void
 op_star
 comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|strcmp
+c_func
+(paren
 r_const
-r_void
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|strlcat
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|strlcpy
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|strncat
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
 op_star
 comma
 r_int
@@ -113,8 +164,22 @@ r_int
 )paren
 suffix:semicolon
 r_extern
+r_char
+op_star
+id|strrchr
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
 r_int
-id|strcmp
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|strstr
 c_func
 (paren
 r_const
@@ -126,6 +191,23 @@ r_char
 op_star
 )paren
 suffix:semicolon
+DECL|macro|__HAVE_ARCH_MEMMOVE
+macro_line|#undef __HAVE_ARCH_MEMMOVE
+DECL|macro|__HAVE_ARCH_STRCHR
+macro_line|#undef __HAVE_ARCH_STRCHR
+DECL|macro|__HAVE_ARCH_STRNCHR
+macro_line|#undef __HAVE_ARCH_STRNCHR
+DECL|macro|__HAVE_ARCH_STRNCMP
+macro_line|#undef __HAVE_ARCH_STRNCMP
+DECL|macro|__HAVE_ARCH_STRNICMP
+macro_line|#undef __HAVE_ARCH_STRNICMP
+DECL|macro|__HAVE_ARCH_STRPBRK
+macro_line|#undef __HAVE_ARCH_STRPBRK
+DECL|macro|__HAVE_ARCH_STRSEP
+macro_line|#undef __HAVE_ARCH_STRSEP
+DECL|macro|__HAVE_ARCH_STRSPN
+macro_line|#undef __HAVE_ARCH_STRSPN
+macro_line|#if !defined(IN_ARCH_STRING_C)
 DECL|function|memchr
 r_static
 r_inline
@@ -137,83 +219,158 @@ c_func
 r_const
 r_void
 op_star
-id|cs
+id|s
 comma
 r_int
 id|c
 comma
 r_int
-id|count
+id|n
 )paren
 (brace
+r_register
+r_int
+id|r0
+id|asm
+c_func
+(paren
+l_string|&quot;0&quot;
+)paren
+op_assign
+(paren
+r_char
+)paren
+id|c
+suffix:semicolon
+r_const
 r_void
 op_star
-id|ptr
+id|ret
+op_assign
+id|s
+op_plus
+id|n
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-macro_line|#ifndef __s390x__
-l_string|&quot;   lr    0,%2&bslash;n&quot;
-l_string|&quot;   lr    1,%1&bslash;n&quot;
-l_string|&quot;   la    %0,0(%3,%1)&bslash;n&quot;
-l_string|&quot;0: srst  %0,1&bslash;n&quot;
+l_string|&quot;0: srst  %0,%1&bslash;n&quot;
 l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   brc   13,1f&bslash;n&quot;
-l_string|&quot;   slr   %0,%0&bslash;n&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;   lgr   0,%2&bslash;n&quot;
-l_string|&quot;   lgr   1,%1&bslash;n&quot;
-l_string|&quot;   la    %0,0(%3,%1)&bslash;n&quot;
-l_string|&quot;0: srst  %0,1&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   brc   13,1f&bslash;n&quot;
-l_string|&quot;   slgr  %0,%0&bslash;n&quot;
-macro_line|#endif /* __s390x__ */
+l_string|&quot;   jl&t;1f&bslash;n&quot;
+l_string|&quot;   la    %0,0&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
-l_string|&quot;=&amp;a&quot;
+l_string|&quot;+a&quot;
 (paren
-id|ptr
+id|ret
+)paren
+comma
+l_string|&quot;+&amp;a&quot;
+(paren
+id|s
 )paren
 suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|cs
-)paren
-comma
 l_string|&quot;d&quot;
 (paren
-id|c
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|count
+id|r0
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
-comma
-l_string|&quot;1&quot;
 )paren
 suffix:semicolon
 r_return
-id|ptr
+(paren
+r_void
+op_star
+)paren
+id|ret
 suffix:semicolon
 )brace
-DECL|function|strcpy
+DECL|function|memscan
 r_static
-id|__inline__
+r_inline
+r_void
+op_star
+id|memscan
+c_func
+(paren
+r_void
+op_star
+id|s
+comma
+r_int
+id|c
+comma
+r_int
+id|n
+)paren
+(brace
+r_register
+r_int
+id|r0
+id|asm
+c_func
+(paren
+l_string|&quot;0&quot;
+)paren
+op_assign
+(paren
+r_char
+)paren
+id|c
+suffix:semicolon
+r_const
+r_void
+op_star
+id|ret
+op_assign
+id|s
+op_plus
+id|n
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;0: srst  %0,%1&bslash;n&quot;
+l_string|&quot;   jo    0b&bslash;n&quot;
+suffix:colon
+l_string|&quot;+a&quot;
+(paren
+id|ret
+)paren
+comma
+l_string|&quot;+&amp;a&quot;
+(paren
+id|s
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|r0
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+id|ret
+suffix:semicolon
+)brace
+DECL|function|strcat
+r_static
+r_inline
 r_char
 op_star
-id|strcpy
+id|strcat
 c_func
 (paren
 r_char
 op_star
-id|dest
+id|dst
 comma
 r_const
 r_char
@@ -221,28 +378,113 @@ op_star
 id|src
 )paren
 (brace
+r_register
+r_int
+id|r0
+id|asm
+c_func
+(paren
+l_string|&quot;0&quot;
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|dummy
+suffix:semicolon
 r_char
 op_star
-id|tmp
+id|ret
 op_assign
-id|dest
+id|dst
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-macro_line|#ifndef __s390x__
-l_string|&quot;   sr    0,0&bslash;n&quot;
+l_string|&quot;0: srst  %0,%1&bslash;n&quot;
+l_string|&quot;   jo    0b&bslash;n&quot;
+l_string|&quot;1: mvst  %0,%2&bslash;n&quot;
+l_string|&quot;   jo    1b&quot;
+suffix:colon
+l_string|&quot;=&amp;a&quot;
+(paren
+id|dummy
+)paren
+comma
+l_string|&quot;+a&quot;
+(paren
+id|dst
+)paren
+comma
+l_string|&quot;+a&quot;
+(paren
+id|src
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|r0
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+l_int|0
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|strcpy
+r_static
+r_inline
+r_char
+op_star
+id|strcpy
+c_func
+(paren
+r_char
+op_star
+id|dst
+comma
+r_const
+r_char
+op_star
+id|src
+)paren
+(brace
+r_register
+r_int
+id|r0
+id|asm
+c_func
+(paren
+l_string|&quot;0&quot;
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+r_char
+op_star
+id|ret
+op_assign
+id|dst
+suffix:semicolon
+id|asm
+r_volatile
+(paren
 l_string|&quot;0: mvst  %0,%1&bslash;n&quot;
 l_string|&quot;   jo    0b&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;   slgr  0,0&bslash;n&quot;
-l_string|&quot;0: mvst  %0,%1&bslash;n&quot;
-l_string|&quot;   jo    0b&quot;
-macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;+&amp;a&quot;
 (paren
-id|dest
+id|dst
 )paren
 comma
 l_string|&quot;+&amp;a&quot;
@@ -250,21 +492,23 @@ l_string|&quot;+&amp;a&quot;
 id|src
 )paren
 suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|r0
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 r_return
-id|tmp
+id|ret
 suffix:semicolon
 )brace
 DECL|function|strlen
 r_static
-id|__inline__
+r_inline
 r_int
 id|strlen
 c_func
@@ -275,123 +519,129 @@ op_star
 id|s
 )paren
 (brace
+r_register
 r_int
-id|len
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-macro_line|#ifndef __s390x__
-l_string|&quot;   sr    0,0&bslash;n&quot;
-l_string|&quot;   lr    %0,%1&bslash;n&quot;
-l_string|&quot;0: srst  0,%0&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   lr    %0,0&bslash;n&quot;
-l_string|&quot;   sr    %0,%1&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;   slgr  0,0&bslash;n&quot;
-l_string|&quot;   lgr   %0,%1&bslash;n&quot;
-l_string|&quot;0: srst  0,%0&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   lgr   %0,0&bslash;n&quot;
-l_string|&quot;   sgr   %0,%1&quot;
-macro_line|#endif /* __s390x__ */
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|len
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|s
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;0&quot;
-)paren
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-DECL|function|strcat
-r_static
-id|__inline__
-r_char
-op_star
-id|strcat
+r_int
+id|r0
+id|asm
 c_func
 (paren
-r_char
-op_star
-id|dest
-comma
-r_const
-r_char
-op_star
-id|src
+l_string|&quot;0&quot;
 )paren
-(brace
+op_assign
+l_int|0
+suffix:semicolon
+r_const
 r_char
 op_star
 id|tmp
 op_assign
-id|dest
+id|s
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-macro_line|#ifndef __s390x__
-l_string|&quot;   sr    0,0&bslash;n&quot;
-l_string|&quot;0: srst  0,%0&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   lr    %0,0&bslash;n&quot;
-l_string|&quot;   sr    0,0&bslash;n&quot;
-l_string|&quot;1: mvst  %0,%1&bslash;n&quot;
-l_string|&quot;   jo    1b&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;   slgr  0,0&bslash;n&quot;
-l_string|&quot;0: srst  0,%0&bslash;n&quot;
-l_string|&quot;   jo    0b&bslash;n&quot;
-l_string|&quot;   lgr   %0,0&bslash;n&quot;
-l_string|&quot;   slgr  0,0&bslash;n&quot;
-l_string|&quot;1: mvst  %0,%1&bslash;n&quot;
-l_string|&quot;   jo    1b&quot;
-macro_line|#endif /* __s390x__ */
+l_string|&quot;0: srst  %0,%1&bslash;n&quot;
+l_string|&quot;   jo    0b&quot;
 suffix:colon
-l_string|&quot;+&amp;a&quot;
+l_string|&quot;+d&quot;
 (paren
-id|dest
+id|r0
 )paren
 comma
-l_string|&quot;+&amp;a&quot;
+l_string|&quot;+a&quot;
 (paren
-id|src
+id|tmp
 )paren
 suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 r_return
-id|tmp
-suffix:semicolon
-)brace
-r_extern
-r_void
-op_star
-id|alloca
-c_func
+id|r0
+op_minus
 (paren
 r_int
+r_int
+)paren
+id|s
+suffix:semicolon
+)brace
+DECL|function|strnlen
+r_static
+r_inline
+r_int
+id|strnlen
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+comma
+r_int
+id|n
+)paren
+(brace
+r_register
+r_int
+id|r0
+id|asm
+c_func
+(paren
+l_string|&quot;0&quot;
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+r_const
+r_char
+op_star
+id|tmp
+op_assign
+id|s
+suffix:semicolon
+r_const
+r_char
+op_star
+id|end
+op_assign
+id|s
+op_plus
+id|n
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;0: srst  %0,%1&bslash;n&quot;
+l_string|&quot;   jo    0b&quot;
+suffix:colon
+l_string|&quot;+a&quot;
+(paren
+id|end
+)paren
+comma
+l_string|&quot;+a&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|r0
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
+r_return
+id|end
+op_minus
+id|s
+suffix:semicolon
+)brace
+macro_line|#endif /* !IN_ARCH_STRING_C */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __S390_STRING_H_ */
 eof

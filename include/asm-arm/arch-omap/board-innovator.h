@@ -4,107 +4,107 @@ DECL|macro|__ASM_ARCH_OMAP_INNOVATOR_H
 mdefine_line|#define __ASM_ARCH_OMAP_INNOVATOR_H
 macro_line|#if defined (CONFIG_ARCH_OMAP1510)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; *  OMAP-1510 FPGA&n; * ---------------------------------------------------------------------------&n; */
-DECL|macro|OMAP1510P1_FPGA_BASE
-mdefine_line|#define OMAP1510P1_FPGA_BASE&t;&t;&t;0xE8000000&t;/* Virtual */
-DECL|macro|OMAP1510P1_FPGA_SIZE
-mdefine_line|#define OMAP1510P1_FPGA_SIZE&t;&t;&t;SZ_4K
-DECL|macro|OMAP1510P1_FPGA_START
-mdefine_line|#define OMAP1510P1_FPGA_START&t;&t;&t;0x08000000&t;/* Physical */
+DECL|macro|OMAP1510_FPGA_BASE
+mdefine_line|#define OMAP1510_FPGA_BASE&t;&t;&t;0xE8000000&t;/* Virtual */
+DECL|macro|OMAP1510_FPGA_SIZE
+mdefine_line|#define OMAP1510_FPGA_SIZE&t;&t;&t;SZ_4K
+DECL|macro|OMAP1510_FPGA_START
+mdefine_line|#define OMAP1510_FPGA_START&t;&t;&t;0x08000000&t;/* Physical */
 multiline_comment|/* Revision */
-DECL|macro|OMAP1510P1_FPGA_REV_LOW
-mdefine_line|#define OMAP1510P1_FPGA_REV_LOW&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x0)
-DECL|macro|OMAP1510P1_FPGA_REV_HIGH
-mdefine_line|#define OMAP1510P1_FPGA_REV_HIGH&t;&t;(OMAP1510P1_FPGA_BASE + 0x1)
-DECL|macro|OMAP1510P1_FPGA_LCD_PANEL_CONTROL
-mdefine_line|#define OMAP1510P1_FPGA_LCD_PANEL_CONTROL&t;(OMAP1510P1_FPGA_BASE + 0x2)
-DECL|macro|OMAP1510P1_FPGA_LED_DIGIT
-mdefine_line|#define OMAP1510P1_FPGA_LED_DIGIT&t;&t;(OMAP1510P1_FPGA_BASE + 0x3)
+DECL|macro|OMAP1510_FPGA_REV_LOW
+mdefine_line|#define OMAP1510_FPGA_REV_LOW&t;&t;&t;(OMAP1510_FPGA_BASE + 0x0)
+DECL|macro|OMAP1510_FPGA_REV_HIGH
+mdefine_line|#define OMAP1510_FPGA_REV_HIGH&t;&t;&t;(OMAP1510_FPGA_BASE + 0x1)
+DECL|macro|OMAP1510_FPGA_LCD_PANEL_CONTROL
+mdefine_line|#define OMAP1510_FPGA_LCD_PANEL_CONTROL&t;&t;(OMAP1510_FPGA_BASE + 0x2)
+DECL|macro|OMAP1510_FPGA_LED_DIGIT
+mdefine_line|#define OMAP1510_FPGA_LED_DIGIT&t;&t;&t;(OMAP1510_FPGA_BASE + 0x3)
 DECL|macro|INNOVATOR_FPGA_HID_SPI
-mdefine_line|#define INNOVATOR_FPGA_HID_SPI&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x4)
-DECL|macro|OMAP1510P1_FPGA_POWER
-mdefine_line|#define OMAP1510P1_FPGA_POWER&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x5)
+mdefine_line|#define INNOVATOR_FPGA_HID_SPI&t;&t;&t;(OMAP1510_FPGA_BASE + 0x4)
+DECL|macro|OMAP1510_FPGA_POWER
+mdefine_line|#define OMAP1510_FPGA_POWER&t;&t;&t;(OMAP1510_FPGA_BASE + 0x5)
 multiline_comment|/* Interrupt status */
-DECL|macro|OMAP1510P1_FPGA_ISR_LO
-mdefine_line|#define OMAP1510P1_FPGA_ISR_LO&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x6)
-DECL|macro|OMAP1510P1_FPGA_ISR_HI
-mdefine_line|#define OMAP1510P1_FPGA_ISR_HI&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x7)
+DECL|macro|OMAP1510_FPGA_ISR_LO
+mdefine_line|#define OMAP1510_FPGA_ISR_LO&t;&t;&t;(OMAP1510_FPGA_BASE + 0x6)
+DECL|macro|OMAP1510_FPGA_ISR_HI
+mdefine_line|#define OMAP1510_FPGA_ISR_HI&t;&t;&t;(OMAP1510_FPGA_BASE + 0x7)
 multiline_comment|/* Interrupt mask */
-DECL|macro|OMAP1510P1_FPGA_IMR_LO
-mdefine_line|#define OMAP1510P1_FPGA_IMR_LO&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x8)
-DECL|macro|OMAP1510P1_FPGA_IMR_HI
-mdefine_line|#define OMAP1510P1_FPGA_IMR_HI&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x9)
+DECL|macro|OMAP1510_FPGA_IMR_LO
+mdefine_line|#define OMAP1510_FPGA_IMR_LO&t;&t;&t;(OMAP1510_FPGA_BASE + 0x8)
+DECL|macro|OMAP1510_FPGA_IMR_HI
+mdefine_line|#define OMAP1510_FPGA_IMR_HI&t;&t;&t;(OMAP1510_FPGA_BASE + 0x9)
 multiline_comment|/* Reset registers */
-DECL|macro|OMAP1510P1_FPGA_HOST_RESET
-mdefine_line|#define OMAP1510P1_FPGA_HOST_RESET&t;&t;(OMAP1510P1_FPGA_BASE + 0xa)
-DECL|macro|OMAP1510P1_FPGA_RST
-mdefine_line|#define OMAP1510P1_FPGA_RST&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0xb)
-DECL|macro|OMAP1510P1_FPGA_AUDIO
-mdefine_line|#define OMAP1510P1_FPGA_AUDIO&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0xc)
-DECL|macro|OMAP1510P1_FPGA_DIP
-mdefine_line|#define OMAP1510P1_FPGA_DIP&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0xe)
-DECL|macro|OMAP1510P1_FPGA_FPGA_IO
-mdefine_line|#define OMAP1510P1_FPGA_FPGA_IO&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0xf)
-DECL|macro|OMAP1510P1_FPGA_UART1
-mdefine_line|#define OMAP1510P1_FPGA_UART1&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x14)
-DECL|macro|OMAP1510P1_FPGA_UART2
-mdefine_line|#define OMAP1510P1_FPGA_UART2&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x15)
-DECL|macro|OMAP1510P1_FPGA_OMAP1510_STATUS
-mdefine_line|#define OMAP1510P1_FPGA_OMAP1510_STATUS&t;&t;(OMAP1510P1_FPGA_BASE + 0x16)
-DECL|macro|OMAP1510P1_FPGA_BOARD_REV
-mdefine_line|#define OMAP1510P1_FPGA_BOARD_REV&t;&t;(OMAP1510P1_FPGA_BASE + 0x18)
+DECL|macro|OMAP1510_FPGA_HOST_RESET
+mdefine_line|#define OMAP1510_FPGA_HOST_RESET&t;&t;(OMAP1510_FPGA_BASE + 0xa)
+DECL|macro|OMAP1510_FPGA_RST
+mdefine_line|#define OMAP1510_FPGA_RST&t;&t;&t;(OMAP1510_FPGA_BASE + 0xb)
+DECL|macro|OMAP1510_FPGA_AUDIO
+mdefine_line|#define OMAP1510_FPGA_AUDIO&t;&t;&t;(OMAP1510_FPGA_BASE + 0xc)
+DECL|macro|OMAP1510_FPGA_DIP
+mdefine_line|#define OMAP1510_FPGA_DIP&t;&t;&t;(OMAP1510_FPGA_BASE + 0xe)
+DECL|macro|OMAP1510_FPGA_FPGA_IO
+mdefine_line|#define OMAP1510_FPGA_FPGA_IO&t;&t;&t;(OMAP1510_FPGA_BASE + 0xf)
+DECL|macro|OMAP1510_FPGA_UART1
+mdefine_line|#define OMAP1510_FPGA_UART1&t;&t;&t;(OMAP1510_FPGA_BASE + 0x14)
+DECL|macro|OMAP1510_FPGA_UART2
+mdefine_line|#define OMAP1510_FPGA_UART2&t;&t;&t;(OMAP1510_FPGA_BASE + 0x15)
+DECL|macro|OMAP1510_FPGA_OMAP1510_STATUS
+mdefine_line|#define OMAP1510_FPGA_OMAP1510_STATUS&t;&t;(OMAP1510_FPGA_BASE + 0x16)
+DECL|macro|OMAP1510_FPGA_BOARD_REV
+mdefine_line|#define OMAP1510_FPGA_BOARD_REV&t;&t;&t;(OMAP1510_FPGA_BASE + 0x18)
 DECL|macro|OMAP1510P1_PPT_DATA
-mdefine_line|#define OMAP1510P1_PPT_DATA&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x100)
+mdefine_line|#define OMAP1510P1_PPT_DATA&t;&t;&t;(OMAP1510_FPGA_BASE + 0x100)
 DECL|macro|OMAP1510P1_PPT_STATUS
-mdefine_line|#define OMAP1510P1_PPT_STATUS&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x101)
+mdefine_line|#define OMAP1510P1_PPT_STATUS&t;&t;&t;(OMAP1510_FPGA_BASE + 0x101)
 DECL|macro|OMAP1510P1_PPT_CONTROL
-mdefine_line|#define OMAP1510P1_PPT_CONTROL&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x102)
-DECL|macro|OMAP1510P1_FPGA_TOUCHSCREEN
-mdefine_line|#define OMAP1510P1_FPGA_TOUCHSCREEN&t;&t;(OMAP1510P1_FPGA_BASE + 0x204)
+mdefine_line|#define OMAP1510P1_PPT_CONTROL&t;&t;&t;(OMAP1510_FPGA_BASE + 0x102)
+DECL|macro|OMAP1510_FPGA_TOUCHSCREEN
+mdefine_line|#define OMAP1510_FPGA_TOUCHSCREEN&t;&t;(OMAP1510_FPGA_BASE + 0x204)
 DECL|macro|INNOVATOR_FPGA_INFO
-mdefine_line|#define INNOVATOR_FPGA_INFO&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x205)
+mdefine_line|#define INNOVATOR_FPGA_INFO&t;&t;&t;(OMAP1510_FPGA_BASE + 0x205)
 DECL|macro|INNOVATOR_FPGA_LCD_BRIGHT_LO
-mdefine_line|#define INNOVATOR_FPGA_LCD_BRIGHT_LO&t;&t;(OMAP1510P1_FPGA_BASE + 0x206)
+mdefine_line|#define INNOVATOR_FPGA_LCD_BRIGHT_LO&t;&t;(OMAP1510_FPGA_BASE + 0x206)
 DECL|macro|INNOVATOR_FPGA_LCD_BRIGHT_HI
-mdefine_line|#define INNOVATOR_FPGA_LCD_BRIGHT_HI&t;&t;(OMAP1510P1_FPGA_BASE + 0x207)
+mdefine_line|#define INNOVATOR_FPGA_LCD_BRIGHT_HI&t;&t;(OMAP1510_FPGA_BASE + 0x207)
 DECL|macro|INNOVATOR_FPGA_LED_GRN_LO
-mdefine_line|#define INNOVATOR_FPGA_LED_GRN_LO&t;&t;(OMAP1510P1_FPGA_BASE + 0x208)
+mdefine_line|#define INNOVATOR_FPGA_LED_GRN_LO&t;&t;(OMAP1510_FPGA_BASE + 0x208)
 DECL|macro|INNOVATOR_FPGA_LED_GRN_HI
-mdefine_line|#define INNOVATOR_FPGA_LED_GRN_HI&t;&t;(OMAP1510P1_FPGA_BASE + 0x209)
+mdefine_line|#define INNOVATOR_FPGA_LED_GRN_HI&t;&t;(OMAP1510_FPGA_BASE + 0x209)
 DECL|macro|INNOVATOR_FPGA_LED_RED_LO
-mdefine_line|#define INNOVATOR_FPGA_LED_RED_LO&t;&t;(OMAP1510P1_FPGA_BASE + 0x20a)
+mdefine_line|#define INNOVATOR_FPGA_LED_RED_LO&t;&t;(OMAP1510_FPGA_BASE + 0x20a)
 DECL|macro|INNOVATOR_FPGA_LED_RED_HI
-mdefine_line|#define INNOVATOR_FPGA_LED_RED_HI&t;&t;(OMAP1510P1_FPGA_BASE + 0x20b)
+mdefine_line|#define INNOVATOR_FPGA_LED_RED_HI&t;&t;(OMAP1510_FPGA_BASE + 0x20b)
 DECL|macro|INNOVATOR_FPGA_CAM_USB_CONTROL
-mdefine_line|#define INNOVATOR_FPGA_CAM_USB_CONTROL&t;&t;(OMAP1510P1_FPGA_BASE + 0x20c)
+mdefine_line|#define INNOVATOR_FPGA_CAM_USB_CONTROL&t;&t;(OMAP1510_FPGA_BASE + 0x20c)
 DECL|macro|INNOVATOR_FPGA_EXP_CONTROL
-mdefine_line|#define INNOVATOR_FPGA_EXP_CONTROL&t;&t;(OMAP1510P1_FPGA_BASE + 0x20d)
+mdefine_line|#define INNOVATOR_FPGA_EXP_CONTROL&t;&t;(OMAP1510_FPGA_BASE + 0x20d)
 DECL|macro|INNOVATOR_FPGA_ISR2
-mdefine_line|#define INNOVATOR_FPGA_ISR2&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x20e)
+mdefine_line|#define INNOVATOR_FPGA_ISR2&t;&t;&t;(OMAP1510_FPGA_BASE + 0x20e)
 DECL|macro|INNOVATOR_FPGA_IMR2
-mdefine_line|#define INNOVATOR_FPGA_IMR2&t;&t;&t;(OMAP1510P1_FPGA_BASE + 0x210)
-DECL|macro|OMAP1510P1_FPGA_ETHR_START
-mdefine_line|#define OMAP1510P1_FPGA_ETHR_START&t;&t;(OMAP1510P1_FPGA_START + 0x300)
-DECL|macro|OMAP1510P1_FPGA_ETHR_BASE
-mdefine_line|#define OMAP1510P1_FPGA_ETHR_BASE&t;&t;(OMAP1510P1_FPGA_BASE + 0x300)
+mdefine_line|#define INNOVATOR_FPGA_IMR2&t;&t;&t;(OMAP1510_FPGA_BASE + 0x210)
+DECL|macro|OMAP1510_FPGA_ETHR_START
+mdefine_line|#define OMAP1510_FPGA_ETHR_START&t;&t;(OMAP1510_FPGA_START + 0x300)
+DECL|macro|OMAP1510_FPGA_ETHR_BASE
+mdefine_line|#define OMAP1510_FPGA_ETHR_BASE&t;&t;&t;(OMAP1510_FPGA_BASE + 0x300)
 multiline_comment|/*&n; * Power up Giga UART driver, turn on HID clock.&n; * Turn off BT power, since we&squot;re not using it and it&n; * draws power.&n; */
-DECL|macro|OMAP1510P1_FPGA_RESET_VALUE
-mdefine_line|#define OMAP1510P1_FPGA_RESET_VALUE&t;&t;0x42
-DECL|macro|OMAP1510P1_FPGA_PCR_IF_PD0
-mdefine_line|#define OMAP1510P1_FPGA_PCR_IF_PD0&t;&t;(1 &lt;&lt; 7)
-DECL|macro|OMAP1510P1_FPGA_PCR_COM2_EN
-mdefine_line|#define OMAP1510P1_FPGA_PCR_COM2_EN&t;&t;(1 &lt;&lt; 6)
-DECL|macro|OMAP1510P1_FPGA_PCR_COM1_EN
-mdefine_line|#define OMAP1510P1_FPGA_PCR_COM1_EN&t;&t;(1 &lt;&lt; 5)
-DECL|macro|OMAP1510P1_FPGA_PCR_EXP_PD0
-mdefine_line|#define OMAP1510P1_FPGA_PCR_EXP_PD0&t;&t;(1 &lt;&lt; 4)
-DECL|macro|OMAP1510P1_FPGA_PCR_EXP_PD1
-mdefine_line|#define OMAP1510P1_FPGA_PCR_EXP_PD1&t;&t;(1 &lt;&lt; 3)
-DECL|macro|OMAP1510P1_FPGA_PCR_48MHZ_CLK
-mdefine_line|#define OMAP1510P1_FPGA_PCR_48MHZ_CLK&t;&t;(1 &lt;&lt; 2)
-DECL|macro|OMAP1510P1_FPGA_PCR_4MHZ_CLK
-mdefine_line|#define OMAP1510P1_FPGA_PCR_4MHZ_CLK&t;&t;(1 &lt;&lt; 1)
-DECL|macro|OMAP1510P1_FPGA_PCR_RSRVD_BIT0
-mdefine_line|#define OMAP1510P1_FPGA_PCR_RSRVD_BIT0&t;&t;(1 &lt;&lt; 0)
+DECL|macro|OMAP1510_FPGA_RESET_VALUE
+mdefine_line|#define OMAP1510_FPGA_RESET_VALUE&t;&t;0x42
+DECL|macro|OMAP1510_FPGA_PCR_IF_PD0
+mdefine_line|#define OMAP1510_FPGA_PCR_IF_PD0&t;&t;(1 &lt;&lt; 7)
+DECL|macro|OMAP1510_FPGA_PCR_COM2_EN
+mdefine_line|#define OMAP1510_FPGA_PCR_COM2_EN&t;&t;(1 &lt;&lt; 6)
+DECL|macro|OMAP1510_FPGA_PCR_COM1_EN
+mdefine_line|#define OMAP1510_FPGA_PCR_COM1_EN&t;&t;(1 &lt;&lt; 5)
+DECL|macro|OMAP1510_FPGA_PCR_EXP_PD0
+mdefine_line|#define OMAP1510_FPGA_PCR_EXP_PD0&t;&t;(1 &lt;&lt; 4)
+DECL|macro|OMAP1510_FPGA_PCR_EXP_PD1
+mdefine_line|#define OMAP1510_FPGA_PCR_EXP_PD1&t;&t;(1 &lt;&lt; 3)
+DECL|macro|OMAP1510_FPGA_PCR_48MHZ_CLK
+mdefine_line|#define OMAP1510_FPGA_PCR_48MHZ_CLK&t;&t;(1 &lt;&lt; 2)
+DECL|macro|OMAP1510_FPGA_PCR_4MHZ_CLK
+mdefine_line|#define OMAP1510_FPGA_PCR_4MHZ_CLK&t;&t;(1 &lt;&lt; 1)
+DECL|macro|OMAP1510_FPGA_PCR_RSRVD_BIT0
+mdefine_line|#define OMAP1510_FPGA_PCR_RSRVD_BIT0&t;&t;(1 &lt;&lt; 0)
 multiline_comment|/*&n; * Innovator/OMAP1510 FPGA HID register bit definitions&n; */
 DECL|macro|FPGA_HID_SCLK
 mdefine_line|#define FPGA_HID_SCLK&t;(1&lt;&lt;0)&t;/* output */

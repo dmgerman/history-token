@@ -5,6 +5,8 @@ multiline_comment|/*&n; *&t;include/linux/kmod.h&n; *&n; *      This program is 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+DECL|macro|KMOD_PATH_LEN
+mdefine_line|#define KMOD_PATH_LEN 256
 macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/* modprobe exit status on success, -ve on error.  Return value&n; * usually useless though. */
 r_extern

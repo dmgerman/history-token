@@ -20,16 +20,16 @@ DECL|macro|DBF_LIKE_HELL
 mdefine_line|#define DBF_LIKE_HELL
 macro_line|#ifdef  DBF_LIKE_HELL
 DECL|macro|DBF_LH
-mdefine_line|#define DBF_LH(level, str, ...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(tape_dbf_area, level, str, ## __VA_ARGS__); &bslash;&n;} while (0)
+mdefine_line|#define DBF_LH(level, str, ...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(TAPE_DBF_AREA, level, str, ## __VA_ARGS__); &bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|DBF_LH
 mdefine_line|#define DBF_LH(level, str, ...) do {} while(0)
 macro_line|#endif
 multiline_comment|/*&n; * macros s390 debug feature (dbf)&n; */
 DECL|macro|DBF_EVENT
-mdefine_line|#define DBF_EVENT(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(tape_dbf_area, d_level, d_str); &bslash;&n;} while (0)
+mdefine_line|#define DBF_EVENT(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(TAPE_DBF_AREA, d_level, d_str); &bslash;&n;} while (0)
 DECL|macro|DBF_EXCEPTION
-mdefine_line|#define DBF_EXCEPTION(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_exception(tape_dbf_area, d_level, d_str); &bslash;&n;} while (0)
+mdefine_line|#define DBF_EXCEPTION(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_exception(TAPE_DBF_AREA, d_level, d_str); &bslash;&n;} while (0)
 DECL|macro|TAPE_VERSION_MAJOR
 mdefine_line|#define TAPE_VERSION_MAJOR 2
 DECL|macro|TAPE_VERSION_MINOR
@@ -1175,7 +1175,7 @@ multiline_comment|/* The debug area */
 r_extern
 id|debug_info_t
 op_star
-id|tape_dbf_area
+id|TAPE_DBF_AREA
 suffix:semicolon
 multiline_comment|/* functions for building ccws */
 r_static

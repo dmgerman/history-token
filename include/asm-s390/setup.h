@@ -10,6 +10,8 @@ DECL|macro|RAMDISK_ORIGIN
 mdefine_line|#define RAMDISK_ORIGIN&t;&t;0x800000
 DECL|macro|RAMDISK_SIZE
 mdefine_line|#define RAMDISK_SIZE&t;&t;0x800000
+DECL|macro|MEMORY_CHUNKS
+mdefine_line|#define MEMORY_CHUNKS&t;&t;16&t;/* max 0x7fff */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifndef __s390x__
 DECL|macro|IPL_DEVICE

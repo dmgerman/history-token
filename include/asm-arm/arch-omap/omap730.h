@@ -85,9 +85,9 @@ mdefine_line|#define OMAP730_DSP_M_CTL&t;0xfffbb804
 DECL|macro|OMAP730_DSP_MMU_BASE
 mdefine_line|#define OMAP730_DSP_MMU_BASE&t;0xfffed200
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * OMAP730 PCC_UPLD configuration registers&n; * ----------------------------------------------------------------------------&n; */
-DECL|macro|OMAP730_PCC_UPLD_CTRL_REG_BASE
-mdefine_line|#define OMAP730_PCC_UPLD_CTRL_REG_BASE&t;(0xfffe0900)
-DECL|macro|OMAP730_PCC_UPLD_CTRL_REG
-mdefine_line|#define OMAP730_PCC_UPLD_CTRL_REG&t;(OMAP730_PCC_UPLD_CTRL_REG_BASE + 0x00)
+DECL|macro|OMAP730_PCC_UPLD_CTRL_BASE
+mdefine_line|#define OMAP730_PCC_UPLD_CTRL_BASE&t;(0xfffe0900)
+DECL|macro|OMAP730_PCC_UPLD_CTRL
+mdefine_line|#define OMAP730_PCC_UPLD_CTRL&t;&t;(OMAP730_PCC_UPLD_CTRL_BASE + 0x00)
 macro_line|#endif /*  __ASM_ARCH_OMAP730_H */
 eof

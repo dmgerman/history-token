@@ -70,7 +70,7 @@ comma
 id|reg2
 suffix:semicolon
 id|__asm__
-id|__volatile
+id|__volatile__
 c_func
 (paren
 l_string|&quot;    bras  %0,1f&bslash;n&quot;
@@ -118,7 +118,7 @@ comma
 id|reg2
 suffix:semicolon
 id|__asm__
-id|__volatile
+id|__volatile__
 c_func
 (paren
 l_string|&quot;    bras  %1,1f&bslash;n&quot;
@@ -188,7 +188,7 @@ r_int
 id|result
 suffix:semicolon
 id|__asm__
-id|__volatile
+id|__volatile__
 c_func
 (paren
 l_string|&quot;    basr  %1,0&bslash;n&quot;
@@ -252,7 +252,7 @@ r_int
 id|old
 suffix:semicolon
 id|__asm__
-id|__volatile
+id|__volatile__
 c_func
 (paren
 l_string|&quot;cs %0,%3,0(%4)&quot;

@@ -108,6 +108,7 @@ id|copy_siginfo_to_user32
 c_func
 (paren
 id|siginfo_t32
+id|__user
 op_star
 id|to
 comma
@@ -503,6 +504,7 @@ op_star
 id|regs
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -761,11 +763,13 @@ comma
 r_const
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction32
+id|__user
 op_star
 id|oact
 )paren
@@ -1000,11 +1004,13 @@ comma
 r_const
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|oact
 comma
@@ -1417,10 +1423,12 @@ c_func
 (paren
 r_const
 id|stack_t32
+id|__user
 op_star
 id|uss
 comma
 id|stack_t32
+id|__user
 op_star
 id|uoss
 comma
@@ -1535,6 +1543,12 @@ op_assign
 id|do_sigaltstack
 c_func
 (paren
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
+(paren
 id|uss
 ques
 c_cond
@@ -1542,7 +1556,14 @@ op_amp
 id|kss
 suffix:colon
 l_int|NULL
+)paren
 comma
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
+(paren
 id|uoss
 ques
 c_cond
@@ -1550,6 +1571,7 @@ op_amp
 id|koss
 suffix:colon
 l_int|NULL
+)paren
 comma
 id|regs-&gt;gprs
 (braket
@@ -1656,6 +1678,7 @@ op_star
 id|regs
 comma
 id|_sigregs32
+id|__user
 op_star
 id|sregs
 )paren
@@ -1802,6 +1825,7 @@ op_star
 id|regs
 comma
 id|_sigregs32
+id|__user
 op_star
 id|sregs
 )paren
@@ -1980,11 +2004,13 @@ id|regs
 )paren
 (brace
 id|sigframe32
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 id|sigframe32
+id|__user
 op_star
 )paren
 id|regs-&gt;gprs
@@ -2114,11 +2140,13 @@ id|regs
 )paren
 (brace
 id|rt_sigframe32
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 id|rt_sigframe32
+id|__user
 op_star
 )paren
 id|regs-&gt;gprs
@@ -2301,6 +2329,11 @@ suffix:semicolon
 id|do_sigaltstack
 c_func
 (paren
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|st
 comma
@@ -2342,6 +2375,7 @@ multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -2441,6 +2475,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2528,6 +2563,7 @@ id|regs
 )paren
 (brace
 id|sigframe32
+id|__user
 op_star
 id|frame
 op_assign
@@ -2661,6 +2697,7 @@ id|__NR_sigreturn
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 (paren
@@ -2687,6 +2724,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|frame
@@ -2808,6 +2846,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|rt_sigframe32
+id|__user
 op_star
 id|frame
 op_assign
@@ -3001,6 +3040,7 @@ id|__NR_rt_sigreturn
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 (paren
@@ -3024,6 +3064,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|frame
