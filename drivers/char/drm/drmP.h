@@ -1087,6 +1087,12 @@ r_int
 id|mode
 suffix:semicolon
 multiline_comment|/**&lt; AGP mode */
+DECL|member|bridge
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+suffix:semicolon
 DECL|member|enabled
 r_int
 id|enabled
@@ -2736,6 +2742,11 @@ op_star
 id|drm_alloc_agp
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 id|pages
 comma
@@ -3864,7 +3875,9 @@ op_star
 id|drm_agp_init
 c_func
 (paren
-r_void
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -3896,7 +3909,9 @@ r_void
 id|drm_agp_do_release
 c_func
 (paren
-r_void
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -4073,6 +4088,11 @@ op_star
 id|drm_agp_allocate_memory
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 id|pages
 comma

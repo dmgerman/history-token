@@ -300,6 +300,7 @@ op_assign
 id|drm_agp_init
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 r_if

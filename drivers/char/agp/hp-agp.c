@@ -1145,7 +1145,10 @@ r_int
 DECL|function|hp_zx1_create_gatt_table
 id|hp_zx1_create_gatt_table
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -1271,7 +1274,10 @@ r_int
 DECL|function|hp_zx1_free_gatt_table
 id|hp_zx1_free_gatt_table
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -1513,6 +1519,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|paddr
 comma
 id|type
@@ -1636,6 +1644,11 @@ r_int
 DECL|function|hp_zx1_mask_memory
 id|hp_zx1_mask_memory
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 r_int
 id|addr
@@ -1655,6 +1668,11 @@ r_void
 DECL|function|hp_zx1_enable
 id|hp_zx1_enable
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -1687,6 +1705,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|bridge
+comma
 id|mode
 comma
 id|command

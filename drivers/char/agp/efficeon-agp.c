@@ -456,7 +456,10 @@ r_int
 id|efficeon_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int
@@ -583,7 +586,10 @@ r_int
 id|efficeon_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int
@@ -718,6 +724,7 @@ id|page
 id|efficeon_free_gatt_table
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_return
@@ -1796,7 +1803,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

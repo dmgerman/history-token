@@ -581,7 +581,10 @@ r_int
 id|serverworks_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -833,7 +836,10 @@ r_int
 id|serverworks_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -1597,6 +1603,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -1841,6 +1849,11 @@ r_void
 id|serverworks_agp_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -1853,7 +1866,7 @@ c_func
 (paren
 id|serverworks_private.svrwrks_dev
 comma
-id|agp_bridge-&gt;capndx
+id|bridge-&gt;capndx
 op_plus
 id|PCI_AGP_STATUS
 comma
@@ -1866,6 +1879,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|bridge
+comma
 id|mode
 comma
 id|command
@@ -1891,7 +1906,7 @@ c_func
 (paren
 id|serverworks_private.svrwrks_dev
 comma
-id|agp_bridge-&gt;capndx
+id|bridge-&gt;capndx
 op_plus
 id|PCI_AGP_COMMAND
 comma
@@ -2482,7 +2497,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

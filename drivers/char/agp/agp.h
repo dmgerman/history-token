@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART&n; * Copyright (C) 2002-2004 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART&n; * Copyright (C) 2004 Silicon Graphics, Inc.&n; * Copyright (C) 2002-2004 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_PRIV_H
 DECL|macro|_AGP_BACKEND_PRIV_H
 mdefine_line|#define _AGP_BACKEND_PRIV_H 1
@@ -222,6 +222,10 @@ op_star
 id|agp_enable
 )paren
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+comma
 id|u32
 )paren
 suffix:semicolon
@@ -255,6 +259,10 @@ op_star
 id|mask_memory
 )paren
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+comma
 r_int
 r_int
 comma
@@ -278,7 +286,9 @@ op_star
 id|create_gatt_table
 )paren
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
 )paren
 suffix:semicolon
 DECL|member|free_gatt_table
@@ -288,7 +298,9 @@ op_star
 id|free_gatt_table
 )paren
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
 )paren
 suffix:semicolon
 DECL|member|insert_memory
@@ -357,7 +369,9 @@ op_star
 id|agp_alloc_page
 )paren
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
 )paren
 suffix:semicolon
 DECL|member|agp_destroy_page
@@ -483,6 +497,10 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 DECL|member|major_version
 r_char
 id|major_version
@@ -490,6 +508,11 @@ suffix:semicolon
 DECL|member|minor_version
 r_char
 id|minor_version
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -729,6 +752,11 @@ r_void
 id|agp_generic_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -737,14 +765,20 @@ r_int
 id|agp_generic_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 suffix:semicolon
 r_int
 id|agp_generic_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 suffix:semicolon
 r_struct
@@ -817,7 +851,10 @@ op_star
 id|agp_generic_alloc_page
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 suffix:semicolon
 r_void
@@ -848,6 +885,11 @@ id|u32
 id|agp_collect_device_status
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 comma
@@ -898,12 +940,29 @@ r_int
 id|agp_generic_mask_memory
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 r_int
 id|addr
 comma
 r_int
 id|type
+)paren
+suffix:semicolon
+r_struct
+id|agp_bridge_data
+op_star
+id|agp_generic_find_bridge
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* generic routines for agp&gt;=3 */
@@ -1015,5 +1074,15 @@ DECL|macro|AGPCTRL_APERENB
 mdefine_line|#define AGPCTRL_APERENB&t;&t;(1&lt;&lt;8)
 DECL|macro|AGPCTRL_GTLBEN
 mdefine_line|#define AGPCTRL_GTLBEN&t;&t;(1&lt;&lt;7)
+DECL|macro|AGP2_RESERVED_MASK
+mdefine_line|#define AGP2_RESERVED_MASK 0x00fffcc8
+DECL|macro|AGP3_RESERVED_MASK
+mdefine_line|#define AGP3_RESERVED_MASK 0x00ff00cc
+DECL|macro|AGP_ERRATA_FASTWRITES
+mdefine_line|#define AGP_ERRATA_FASTWRITES 1&lt;&lt;0
+DECL|macro|AGP_ERRATA_SBA
+mdefine_line|#define AGP_ERRATA_SBA&t; 1&lt;&lt;1
+DECL|macro|AGP_ERRATA_1X
+mdefine_line|#define AGP_ERRATA_1X 1&lt;&lt;2
 macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof

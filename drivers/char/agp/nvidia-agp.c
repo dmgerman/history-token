@@ -1015,6 +1015,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -1954,7 +1956,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

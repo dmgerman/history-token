@@ -7543,6 +7543,11 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+suffix:semicolon
 id|i810_fix_offsets
 c_func
 (paren
@@ -7558,9 +7563,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|bridge
+op_assign
 id|agp_backend_acquire
 c_func
 (paren
+id|par-&gt;dev
+)paren
 )paren
 )paren
 (brace
@@ -7585,6 +7596,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|size
 op_rshift
 l_int|12
@@ -7604,6 +7617,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
@@ -7632,6 +7646,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
@@ -7649,6 +7664,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|par-&gt;cursor_heap.size
 op_rshift
 l_int|12
@@ -7668,6 +7685,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
@@ -7696,6 +7714,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
@@ -7716,6 +7735,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_return

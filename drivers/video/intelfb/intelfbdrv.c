@@ -1516,6 +1516,11 @@ r_char
 op_star
 id|s
 suffix:semicolon
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+suffix:semicolon
 id|DBG_MSG
 c_func
 (paren
@@ -2135,9 +2140,15 @@ multiline_comment|/* Use agpgart to manage the GATT */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|bridge
+op_assign
 id|agp_backend_acquire
 c_func
 (paren
+id|pdev
+)paren
 )paren
 )paren
 (brace
@@ -2165,6 +2176,8 @@ c_cond
 id|agp_copy_info
 c_func
 (paren
+id|bridge
+comma
 op_amp
 id|gtt_info
 )paren
@@ -2179,6 +2192,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 id|cleanup
@@ -2281,6 +2295,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|dinfo-&gt;ring.size
 op_rshift
 l_int|12
@@ -2299,6 +2315,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 id|cleanup
@@ -2333,6 +2350,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 id|cleanup
@@ -2402,6 +2420,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|dinfo-&gt;cursor.size
 op_rshift
 l_int|12
@@ -2420,6 +2440,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 id|cleanup
@@ -2454,6 +2475,7 @@ suffix:semicolon
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 id|cleanup
@@ -2518,6 +2540,8 @@ op_assign
 id|agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|dinfo-&gt;fb.size
 op_rshift
 l_int|12
@@ -2610,6 +2634,7 @@ multiline_comment|/* release agpgart */
 id|agp_backend_release
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_if

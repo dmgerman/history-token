@@ -1370,6 +1370,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -1544,7 +1546,10 @@ r_int
 id|ati_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -1873,7 +1878,10 @@ r_int
 id|ati_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 id|ati_page_map
@@ -2470,7 +2478,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

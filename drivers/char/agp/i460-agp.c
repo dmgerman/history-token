@@ -779,7 +779,10 @@ r_static
 r_int
 id|i460_create_gatt_table
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int
@@ -882,7 +885,10 @@ r_static
 r_int
 id|i460_free_gatt_table
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int
@@ -1172,6 +1178,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|paddr
 comma
 id|mem-&gt;type
@@ -1743,6 +1751,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|lp-&gt;paddr
 comma
 l_int|0
@@ -2159,7 +2169,10 @@ r_void
 op_star
 id|i460_alloc_page
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_void
@@ -2178,6 +2191,7 @@ op_assign
 id|agp_generic_alloc_page
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_else
@@ -2227,6 +2241,11 @@ r_int
 r_int
 id|i460_mask_memory
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 r_int
 id|addr
@@ -2237,7 +2256,7 @@ id|type
 (brace
 multiline_comment|/* Make sure the returned address is a valid GATT entry */
 r_return
-id|agp_bridge-&gt;driver-&gt;masks
+id|bridge-&gt;driver-&gt;masks
 (braket
 l_int|0
 )braket
@@ -2654,7 +2673,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

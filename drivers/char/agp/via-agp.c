@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * VIA AGPGART routines. &n; */
+multiline_comment|/*&n; * VIA AGPGART routines.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -122,6 +122,16 @@ id|size
 suffix:semicolon
 )brace
 )brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Unknown aperture size from AGP bridge (0x%x)&bslash;n&quot;
+comma
+id|temp
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -260,15 +270,32 @@ op_star
 id|mem
 )paren
 (brace
-id|pci_write_config_dword
+id|u32
+id|temp
+suffix:semicolon
+id|pci_read_config_dword
 c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
 id|VIA_GARTCTRL
 comma
-l_int|0x0000008f
+op_amp
+id|temp
 )paren
+suffix:semicolon
+id|temp
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|7
+)paren
+suffix:semicolon
+id|temp
+op_and_assign
+op_complement
+l_int|0x7f
 suffix:semicolon
 id|pci_write_config_dword
 c_func
@@ -277,7 +304,31 @@ id|agp_bridge-&gt;dev
 comma
 id|VIA_GARTCTRL
 comma
-l_int|0x0000000f
+id|temp
+)paren
+suffix:semicolon
+id|temp
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|7
+)paren
+suffix:semicolon
+id|temp
+op_and_assign
+op_complement
+l_int|0x7f
+suffix:semicolon
+id|pci_write_config_dword
+c_func
+(paren
+id|agp_bridge-&gt;dev
+comma
+id|VIA_GARTCTRL
+comma
+id|temp
 )paren
 suffix:semicolon
 )brace
@@ -287,7 +338,7 @@ r_struct
 id|aper_size_info_8
 id|via_generic_sizes
 (braket
-l_int|7
+l_int|9
 )braket
 op_assign
 (brace
@@ -359,6 +410,26 @@ comma
 l_int|0
 comma
 l_int|252
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|512
+comma
+l_int|0
+comma
+l_int|254
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|256
+comma
+l_int|0
+comma
+l_int|255
 )brace
 )brace
 suffix:semicolon
@@ -523,7 +594,7 @@ op_amp
 l_int|0xfffff000
 )paren
 suffix:semicolon
-multiline_comment|/* 1. Enable GTLB in RX90&lt;7&gt;, all AGP aperture access needs to fetch &n;&t; *    translation table first.&n;&t; * 2. Enable AGP aperture in RX91&lt;0&gt;. This bit controls the enabling of the&n;&t; *    graphics AGP aperture for the AGP3.0 port.&n;&t; */
+multiline_comment|/* 1. Enable GTLB in RX90&lt;7&gt;, all AGP aperture access needs to fetch&n;&t; *    translation table first.&n;&t; * 2. Enable AGP aperture in RX91&lt;0&gt;. This bit controls the enabling of the&n;&t; *    graphics AGP aperture for the AGP3.0 port.&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -774,7 +845,7 @@ comma
 dot
 id|num_aperture_sizes
 op_assign
-l_int|7
+l_int|9
 comma
 dot
 id|configure
@@ -1871,7 +1942,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
