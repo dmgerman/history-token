@@ -762,6 +762,26 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;  fmif level     : %s&bslash;n&quot;
+comma
+(paren
+id|buf
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x20
+)paren
+ques
+c_cond
+l_string|&quot;high&quot;
+suffix:colon
+l_string|&quot;low&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 l_string|&quot;  afc window     : %s&bslash;n&quot;
 comma
 (paren

@@ -104,6 +104,8 @@ DECL|macro|TUNER_MICROTUNE_4042FI5
 mdefine_line|#define TUNER_MICROTUNE_4042FI5  49&t;/* FusionHDTV 3 Gold - 4042 FI5 (3X 8147) */
 DECL|macro|TUNER_TCL_2002N
 mdefine_line|#define TUNER_TCL_2002N          50
+DECL|macro|TUNER_PHILIPS_FM1256_IH3
+mdefine_line|#define TUNER_PHILIPS_FM1256_IH3   51
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
