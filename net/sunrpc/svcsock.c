@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
@@ -248,6 +249,52 @@ id|dr
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Any space to write?&n; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|svc_sock_wspace
+id|svc_sock_wspace
+c_func
+(paren
+r_struct
+id|svc_sock
+op_star
+id|svsk
+)paren
+(brace
+r_int
+id|wspace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|svsk-&gt;sk_sock-&gt;type
+op_eq
+id|SOCK_STREAM
+)paren
+id|wspace
+op_assign
+id|tcp_wspace
+c_func
+(paren
+id|svsk-&gt;sk_sk
+)paren
+suffix:semicolon
+r_else
+id|wspace
+op_assign
+id|sock_wspace
+c_func
+(paren
+id|svsk-&gt;sk_sk
+)paren
+suffix:semicolon
+r_return
+id|wspace
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Queue up a socket with data pending. If there are idle nfsd&n; * processes, wake &squot;em up.&n; *&n; */
 r_static
 r_void
@@ -406,10 +453,10 @@ id|serv-&gt;sv_bufsz
 op_star
 l_int|2
 OG
-id|sock_wspace
+id|svc_sock_wspace
 c_func
 (paren
-id|svsk-&gt;sk_sk
+id|svsk
 )paren
 )paren
 op_logical_and
@@ -446,10 +493,10 @@ id|svsk-&gt;sk_reserved
 op_plus
 id|serv-&gt;sv_bufsz
 comma
-id|sock_wspace
+id|svc_sock_wspace
 c_func
 (paren
-id|svsk-&gt;sk_sk
+id|svsk
 )paren
 )paren
 suffix:semicolon
