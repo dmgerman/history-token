@@ -5,7 +5,7 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.52 2002/07/10 13:28:44 abz Exp $ */
+multiline_comment|/* $Id: i2c-id.h,v 1.56 2002/10/13 15:50:02 mds Exp $ */
 macro_line|#ifndef I2C_ID_H
 DECL|macro|I2C_ID_H
 mdefine_line|#define I2C_ID_H
@@ -194,6 +194,10 @@ DECL|macro|I2C_DRIVERID_VT1211
 mdefine_line|#define I2C_DRIVERID_VT1211 1032
 DECL|macro|I2C_DRIVERID_LM92
 mdefine_line|#define I2C_DRIVERID_LM92 1033
+DECL|macro|I2C_DRIVERID_VT8231
+mdefine_line|#define I2C_DRIVERID_VT8231 1034
+DECL|macro|I2C_DRIVERID_SMARTBATT
+mdefine_line|#define I2C_DRIVERID_SMARTBATT 1035
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -215,6 +219,8 @@ DECL|macro|I2C_ALGO_IIC
 mdefine_line|#define I2C_ALGO_IIC    0x080000 &t;/* ITE IIC bus */
 DECL|macro|I2C_ALGO_SAA7134
 mdefine_line|#define I2C_ALGO_SAA7134 0x090000
+DECL|macro|I2C_ALGO_MPC824X
+mdefine_line|#define I2C_ALGO_MPC824X 0x0a0000&t;/* Motorola 8240 / 8245         */
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -279,6 +285,9 @@ mdefine_line|#define I2C_HW_P_ELEK&t;0x02&t;/* Elektor ISA Bus inteface card&t;*
 multiline_comment|/* --- ACPI Embedded controller algorithms                              */
 DECL|macro|I2C_HW_ACPI_EC
 mdefine_line|#define I2C_HW_ACPI_EC          0x00
+multiline_comment|/* --- MPC824x PowerPC adapters&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_MPC824X
+mdefine_line|#define I2C_HW_MPC824X 0x00&t;/* Motorola 8240 / 8245                 */
 multiline_comment|/* --- MPC8xx PowerPC adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_MPC8XX_EPON
 mdefine_line|#define I2C_HW_MPC8XX_EPON 0x00&t;/* Eponymous MPC8xx I2C adapter &t;*/
@@ -305,6 +314,10 @@ DECL|macro|I2C_HW_SMBUS_SIS5595
 mdefine_line|#define I2C_HW_SMBUS_SIS5595&t;0x06
 DECL|macro|I2C_HW_SMBUS_ALI1535
 mdefine_line|#define I2C_HW_SMBUS_ALI1535&t;0x07
+DECL|macro|I2C_HW_SMBUS_SIS630
+mdefine_line|#define I2C_HW_SMBUS_SIS630&t;0x08
+DECL|macro|I2C_HW_SMBUS_SIS645
+mdefine_line|#define I2C_HW_SMBUS_SIS645&t;0x09
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00
