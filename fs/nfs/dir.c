@@ -4246,11 +4246,10 @@ id|dentry
 )paren
 )paren
 (brace
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 id|need_rehash

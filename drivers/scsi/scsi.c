@@ -6266,12 +6266,14 @@ id|bus_type
 id|scsi_driverfs_bus_type
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;scsi&quot;
 comma
+dot
 id|match
-suffix:colon
+op_assign
 id|scsi_bus_match
 comma
 )brace

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;

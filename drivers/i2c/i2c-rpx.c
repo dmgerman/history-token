@@ -271,8 +271,9 @@ id|i2c_algo_8xx_data
 id|rpx_data
 op_assign
 (brace
+dot
 id|setisr
-suffix:colon
+op_assign
 id|rpx_install_isr
 )brace
 suffix:semicolon
