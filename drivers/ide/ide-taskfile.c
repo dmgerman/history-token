@@ -1499,17 +1499,6 @@ id|stat
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|stat
-op_amp
-id|BUSY_STAT
-)paren
-)paren
-(brace
 id|ide_set_handler
 c_func
 (paren
@@ -1526,7 +1515,6 @@ suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
-)brace
 )brace
 id|task_buffer_sectors
 c_func
