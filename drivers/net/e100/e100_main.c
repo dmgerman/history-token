@@ -383,7 +383,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.1.29-k1&quot;
+l_string|&quot;2.1.29-k2&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -5568,6 +5568,10 @@ id|CB_S_BIT
 op_or
 id|CB_TX_SF_BIT
 suffix:semicolon
+id|bdp-&gt;tx_count
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7193,19 +7197,12 @@ op_or
 id|SCB_STATUS_ACK_CX
 )paren
 )paren
-(brace
-id|bdp-&gt;tx_count
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* restart tx interrupt batch count */
 id|e100_tx_srv
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
-)brace
 id|e100_set_intr_mask
 c_func
 (paren
@@ -8152,7 +8149,7 @@ c_func
 id|CB_S_BIT
 )paren
 suffix:semicolon
-multiline_comment|/* set the I bit on the modulo tcbs, so we will get an interrupt * to&n;&t; * clean things up */
+multiline_comment|/* Set I (Interrupt) bit on every (TX_FRAME_CNT)th packet */
 r_if
 c_cond
 (paren
@@ -8164,7 +8161,6 @@ op_mod
 id|TX_FRAME_CNT
 )paren
 )paren
-(brace
 id|tcb-&gt;tcb_hdr.cb_cmd
 op_or_assign
 id|__constant_cpu_to_le16
@@ -8173,7 +8169,17 @@ c_func
 id|CB_I_BIT
 )paren
 suffix:semicolon
-)brace
+r_else
+multiline_comment|/* Clear I bit on other packets */
+id|tcb-&gt;tcb_hdr.cb_cmd
+op_and_assign
+op_complement
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|CB_I_BIT
+)paren
+suffix:semicolon
 id|tcb-&gt;tcb_skb
 op_assign
 id|skb
