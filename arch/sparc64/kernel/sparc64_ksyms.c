@@ -1937,4 +1937,11 @@ c_func
 id|sys_call_table
 )paren
 suffix:semicolon
+DECL|variable|tick_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tick_ops
+)paren
+suffix:semicolon
 eof
