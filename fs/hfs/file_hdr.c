@@ -111,6 +111,8 @@ id|hfs_hdr_layout
 id|hfs_dbl_fil_hdr_layout
 op_assign
 (brace
+id|magic
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -118,6 +120,8 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+id|version
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -125,6 +129,8 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+id|entries
+suffix:colon
 l_int|6
 comma
 multiline_comment|/* entries */
@@ -288,6 +294,8 @@ id|hfs_hdr_layout
 id|hfs_dbl_dir_hdr_layout
 op_assign
 (brace
+id|magic
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -295,6 +303,8 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+id|version
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -302,6 +312,8 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+id|entries
+suffix:colon
 l_int|5
 comma
 multiline_comment|/* entries */
@@ -445,6 +457,8 @@ id|hfs_hdr_layout
 id|hfs_nat2_hdr_layout
 op_assign
 (brace
+id|magic
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -452,6 +466,8 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+id|version
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -459,6 +475,8 @@ id|HFS_HDR_VERSION_2
 )paren
 comma
 multiline_comment|/* version */
+id|entries
+suffix:colon
 l_int|9
 comma
 multiline_comment|/* entries */
@@ -698,6 +716,8 @@ id|hfs_hdr_layout
 id|hfs_nat_hdr_layout
 op_assign
 (brace
+id|magic
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -705,6 +725,8 @@ id|HFS_DBL_MAGIC
 )paren
 comma
 multiline_comment|/* magic   */
+id|version
+suffix:colon
 id|__constant_htonl
 c_func
 (paren
@@ -712,6 +734,8 @@ id|HFS_HDR_VERSION_1
 )paren
 comma
 multiline_comment|/* version */
+id|entries
+suffix:colon
 l_int|5
 comma
 multiline_comment|/* entries */

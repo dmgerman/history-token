@@ -5761,20 +5761,34 @@ id|dquot_operations
 id|dquot_operations
 op_assign
 (brace
+id|initialize
+suffix:colon
 id|dquot_initialize
 comma
 multiline_comment|/* mandatory */
+id|drop
+suffix:colon
 id|dquot_drop
 comma
 multiline_comment|/* mandatory */
+id|alloc_block
+suffix:colon
 id|dquot_alloc_block
 comma
+id|alloc_inode
+suffix:colon
 id|dquot_alloc_inode
 comma
+id|free_block
+suffix:colon
 id|dquot_free_block
 comma
+id|free_inode
+suffix:colon
 id|dquot_free_inode
 comma
+id|transfer
+suffix:colon
 id|dquot_transfer
 )brace
 suffix:semicolon
