@@ -341,7 +341,7 @@ macro_line|#if RTC_IRQ
 multiline_comment|/*&n; *&t;A very tiny interrupt handler. It runs with SA_INTERRUPT set,&n; *&t;but there is possibility of conflicting with the set_rtc_mmss()&n; *&t;call (the rtc irq and the timer irq can easily run at the same&n; *&t;time in two different CPUs). So we need to serialize&n; *&t;accesses to the chip with the rtc_lock spinlock that each&n; *&t;architecture should implement in the timer code.&n; *&t;(See ./arch/XXXX/kernel/time.c for the set_rtc_mmss() function.)&n; */
 DECL|function|rtc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rtc_interrupt
 c_func
 (paren
@@ -462,6 +462,9 @@ id|SIGIO
 comma
 id|POLL_IN
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif
