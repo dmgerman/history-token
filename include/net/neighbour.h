@@ -32,6 +32,7 @@ multiline_comment|/* NUD_NOARP &amp; NUD_PERMANENT are pseudostates, they never 
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|macro|NUD_IN_TIMER
@@ -40,6 +41,9 @@ DECL|macro|NUD_VALID
 mdefine_line|#define NUD_VALID&t;(NUD_PERMANENT|NUD_NOARP|NUD_REACHABLE|NUD_PROBE|NUD_STALE|NUD_DELAY)
 DECL|macro|NUD_CONNECTED
 mdefine_line|#define NUD_CONNECTED&t;(NUD_PERMANENT|NUD_NOARP|NUD_REACHABLE)
+r_struct
+id|neighbour
+suffix:semicolon
 DECL|struct|neigh_parms
 r_struct
 id|neigh_parms

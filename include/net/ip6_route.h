@@ -14,8 +14,10 @@ mdefine_line|#define IP6_RT_FLOW_MASK&t;0x00ff
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/ip6_fib.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/ipv6.h&gt;
 DECL|struct|pol_chain
 r_struct
 id|pol_chain
