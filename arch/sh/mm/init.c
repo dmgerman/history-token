@@ -775,8 +775,6 @@ c_func
 l_int|1
 )paren
 comma
-l_int|0
-comma
 id|zones_size
 comma
 id|__MEMORY_START_2ND
