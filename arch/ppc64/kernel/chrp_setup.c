@@ -39,7 +39,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;xics.h&quot;

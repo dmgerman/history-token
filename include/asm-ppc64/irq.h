@@ -123,6 +123,8 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+DECL|macro|NR_MASK_WORDS
+mdefine_line|#define NR_MASK_WORDS&t;((NR_IRQS + 63) / 64)
 macro_line|#endif /* _ASM_IRQ_H */
 macro_line|#endif /* __KERNEL__ */
 eof
