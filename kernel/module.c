@@ -555,7 +555,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|mod-&gt;num_ksyms
+id|mod-&gt;num_syms
 suffix:semicolon
 id|i
 op_increment
@@ -6265,7 +6265,7 @@ r_if
 c_cond
 (paren
 (paren
-id|mod-&gt;num_ksyms
+id|mod-&gt;num_kallsyms
 op_logical_and
 op_logical_neg
 id|crcindex
@@ -6438,7 +6438,7 @@ id|symindex
 dot
 id|sh_addr
 suffix:semicolon
-id|mod-&gt;num_syms
+id|mod-&gt;num_kallsyms
 op_assign
 id|sechdrs
 (braket
@@ -7107,7 +7107,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|mod-&gt;num_syms
+id|mod-&gt;num_kallsyms
 suffix:semicolon
 id|i
 op_increment
