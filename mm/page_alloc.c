@@ -1844,7 +1844,7 @@ op_logical_neg
 (paren
 id|current-&gt;flags
 op_amp
-id|PF_RADIX_TREE
+id|PF_NOWARN
 )paren
 )paren
 (brace

@@ -7724,6 +7724,10 @@ id|scsi_sg_pools
 op_plus
 id|SCpnt-&gt;sglist_len
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_NOWARN
+suffix:semicolon
 id|sgl
 op_assign
 id|mempool_alloc
@@ -7733,6 +7737,11 @@ id|sgp-&gt;pool
 comma
 id|gfp_mask
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_NOWARN
 suffix:semicolon
 r_if
 c_cond

@@ -1107,8 +1107,8 @@ DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
-DECL|macro|PF_RADIX_TREE
-mdefine_line|#define PF_RADIX_TREE&t;0x00008000&t;/* debug: performing radix tree alloc */
+DECL|macro|PF_NOWARN
+mdefine_line|#define PF_NOWARN&t;0x00008000&t;/* debug: don&squot;t warn if alloc fails */
 DECL|macro|PF_FREEZE
 mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
 DECL|macro|PF_IOTHREAD

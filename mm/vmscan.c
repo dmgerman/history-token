@@ -81,7 +81,7 @@ id|PF_MEMALLOC
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_RADIX_TREE
+id|PF_NOWARN
 suffix:semicolon
 id|ClearPageUptodate
 c_func
