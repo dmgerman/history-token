@@ -1306,6 +1306,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|tso_factor
 )paren
 (brace
 id|skb-&gt;csum
@@ -1351,6 +1354,16 @@ op_member_access_from_pointer
 id|sacked
 op_assign
 l_int|0
+suffix:semicolon
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_factor
+op_assign
+id|tso_factor
 suffix:semicolon
 id|__skb_queue_tail
 c_func
@@ -1579,6 +1592,8 @@ id|sk
 suffix:semicolon
 r_int
 id|mss_now
+comma
+id|mss_factor_now
 suffix:semicolon
 r_int
 id|err
@@ -1659,6 +1674,9 @@ id|flags
 op_amp
 id|MSG_OOB
 )paren
+comma
+op_amp
+id|mss_factor_now
 )paren
 suffix:semicolon
 id|copied
@@ -1801,6 +1819,8 @@ comma
 id|tp
 comma
 id|skb
+comma
+id|mss_factor_now
 )paren
 suffix:semicolon
 id|copy
@@ -2104,6 +2124,9 @@ id|flags
 op_amp
 id|MSG_OOB
 )paren
+comma
+op_amp
+id|mss_factor_now
 )paren
 suffix:semicolon
 )brace
@@ -2395,6 +2418,8 @@ id|flags
 suffix:semicolon
 r_int
 id|mss_now
+comma
+id|mss_factor_now
 suffix:semicolon
 r_int
 id|err
@@ -2493,6 +2518,9 @@ id|flags
 op_amp
 id|MSG_OOB
 )paren
+comma
+op_amp
+id|mss_factor_now
 )paren
 suffix:semicolon
 multiline_comment|/* Ok commence sending. */
@@ -2655,6 +2683,8 @@ comma
 id|tp
 comma
 id|skb
+comma
+id|mss_factor_now
 )paren
 suffix:semicolon
 id|copy
@@ -3268,6 +3298,9 @@ id|flags
 op_amp
 id|MSG_OOB
 )paren
+comma
+op_amp
+id|mss_factor_now
 )paren
 suffix:semicolon
 )brace
@@ -6436,9 +6469,14 @@ id|tp-&gt;probes_out
 op_assign
 l_int|0
 suffix:semicolon
+id|tcp_set_pcount
+c_func
+(paren
+op_amp
 id|tp-&gt;packets_out
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|tp-&gt;snd_ssthresh
 op_assign
